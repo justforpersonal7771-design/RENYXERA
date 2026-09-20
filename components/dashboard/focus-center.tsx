@@ -112,7 +112,8 @@ export function FocusCenter({
             <motion.div
               key={card.title + i}
               initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
               transition={{ delay: i * 0.1 }}
               className={`flex flex-col justify-between p-5 border rounded-2xl shadow-sm relative overflow-hidden group ${card.color}`}
             >

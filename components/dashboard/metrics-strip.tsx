@@ -117,7 +117,8 @@ export function MetricsStrip({
       {/* Study Momentum */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
         className="card-glass rounded-2xl p-4 shadow-sm"
       >
         <div className="flex items-center gap-2 mb-3 px-0.5">
@@ -141,7 +142,8 @@ export function MetricsStrip({
       {/* Performance Signals */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-60px" }}
         transition={{ delay: 0.05 }}
         className="card-glass rounded-2xl p-4 shadow-sm"
       >

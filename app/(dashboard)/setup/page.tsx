@@ -1067,6 +1067,12 @@ export default function ExamSetupPage() {
                       {DEPLOYMENT_TYPE_INFO[examType].description}
                     </p>
 
+                    {isGoalSliderActive && (examType === "YEAR_PAPER" || examType === "TOPIC_TEST") && (
+                      <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 rounded-lg px-2.5 py-2 leading-relaxed">
+                        Focus Target is on, but doesn't apply here — {examType === "YEAR_PAPER" ? "Official Year Papers" : "a single Topic Spotlight"} stay unfiltered. Switch to Subject Mastery, Section Sprint, or Custom to use it.
+                      </p>
+                    )}
+
                     {examType === "YEAR_PAPER" && paperPreviewStats && (
                       <div className="pt-3 mt-1 border-t border-[var(--border-subtle)] grid grid-cols-2 gap-2 text-center">
                         <div>

@@ -110,12 +110,15 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -8, scale: 0.98 }}
       transition={{ duration: 0.15 }}
-      className={`fixed sm:absolute left-4 right-4 sm:left-auto top-16 sm:top-full sm:right-0 mt-0 sm:mt-2 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden z-50 transition-[width] duration-200 ${
+      className={`fixed sm:absolute left-4 right-4 sm:left-auto top-16 sm:top-full sm:right-0 mt-0 sm:mt-2 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl z-50 transition-[width] duration-200 ${
         isExpanded ? "sm:w-[min(520px,calc(100vw-2rem))]" : "sm:w-[360px]"
       }`}
     >
-      {/* Header */}
-      <div className="relative overflow-hidden p-4 flex items-center justify-between gap-2 bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700">
+      {/* Header — clips its own decorative blur + matches the panel's rounded top corners.
+          The outer panel itself must NOT clip (overflow-hidden), or the quick-add
+          CustomDropdown's popover list — absolutely positioned within this panel —
+          gets cut off and never appears. */}
+      <div className="relative overflow-hidden rounded-t-2xl p-4 flex items-center justify-between gap-2 bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700">
         <div className="absolute -top-6 -right-6 w-24 h-24 bg-white/10 rounded-full blur-2xl pointer-events-none" />
         <div className="relative flex items-center gap-2">
           {isExpanded && (
@@ -285,7 +288,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
 
       {/* Footer stats */}
       {(overdueCount > 0 || upcomingCount > 0) && (
-        <div className="px-4 py-2.5 border-t border-[var(--border-subtle)] bg-[var(--surface-secondary)]/30 flex items-center justify-center gap-4 text-[9px] font-black uppercase tracking-wider">
+        <div className="px-4 py-2.5 border-t border-[var(--border-subtle)] bg-[var(--surface-secondary)]/30 rounded-b-2xl overflow-hidden flex items-center justify-center gap-4 text-[9px] font-black uppercase tracking-wider">
           {overdueCount > 0 && <span className="text-rose-500">{overdueCount} Overdue</span>}
           {upcomingCount > 0 && <span className="text-[var(--text-muted)]">{upcomingCount} Upcoming (7d)</span>}
         </div>

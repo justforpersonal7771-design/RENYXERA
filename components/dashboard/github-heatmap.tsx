@@ -38,7 +38,8 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.35 }}
       className="card-glass rounded-2xl p-6 shadow-sm flex flex-col justify-between hover-lift"
     >
