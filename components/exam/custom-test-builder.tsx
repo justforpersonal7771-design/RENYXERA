@@ -7,15 +7,20 @@ import { CustomDropdown } from "@/components/ui/custom-dropdown";
 
 interface CustomTestBuilderProps {
   onGenerate: (config: TestConfig) => void;
+  /** Focus Target's currently in-goal topics, when active — every block's available
+   * count and generated pool gets restricted to this set, matching Subject Mastery /
+   * Section Sprint. Undefined/empty means Focus Target isn't active. */
+  focusTopics?: string[];
 }
 
-export function CustomTestBuilder({ onGenerate }: CustomTestBuilderProps) {
+export function CustomTestBuilder({ onGenerate, focusTopics }: CustomTestBuilderProps) {
   const [blocks, setBlocks] = useState<CustomTestBlock[]>([]);
   const [templates, setTemplates] = useState<CustomTestTemplate[]>([]);
   const [templateName, setTemplateName] = useState("");
   const [errorLine, setErrorLine] = useState("");
 
   const repo = QuestionRepository;
+  const focusSet = focusTopics && focusTopics.length > 0 ? new Set(focusTopics) : null;
 
   const loadTemplates = async () => {
     const list = await IDBManager.getAllCustomTemplates();
@@ -33,6 +38,7 @@ export function CustomTestBuilder({ onGenerate }: CustomTestBuilderProps) {
     if (block.section) pool = pool.filter(q => q.section === block.section);
     if (block.subject) pool = pool.filter(q => q.subject === block.subject);
     if (block.topic) pool = pool.filter(q => q.topic === block.topic);
+    if (focusSet) pool = pool.filter(q => focusSet.has(q.topic));
     return pool.length;
   };
 
@@ -161,7 +167,13 @@ export function CustomTestBuilder({ onGenerate }: CustomTestBuilderProps) {
 
   return (
     <div className="space-y-6">
-      
+
+      {focusSet && (
+        <div className="text-[11px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 rounded-lg px-3 py-2 leading-relaxed">
+          Focus Target is on ({focusSet.size} in-goal topics) — every block below is restricted to those topics. "Available" counts already reflect this.
+        </div>
+      )}
+
       {errorLine && <div className="text-red-500 font-medium text-sm">{errorLine}</div>}
 
       <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-4">
@@ -228,6 +240,7 @@ export function CustomTestBuilder({ onGenerate }: CustomTestBuilderProps) {
 
           let finalPool = poolForTopic;
           if (block.topic) finalPool = finalPool.filter(q => q.topic === block.topic);
+          if (focusSet) finalPool = finalPool.filter(q => focusSet.has(q.topic));
           const available = finalPool.length;
 
           return (
@@ -330,6 +343,7 @@ export function CustomTestBuilder({ onGenerate }: CustomTestBuilderProps) {
             onGenerate({
               examType: "CUSTOM_TEST",
               customBlocks: blocks,
+              focusTopics: focusSet ? Array.from(focusSet) : undefined,
             });
           }}
           disabled={blocks.length === 0}

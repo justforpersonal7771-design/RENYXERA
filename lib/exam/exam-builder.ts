@@ -121,6 +121,9 @@ export class ExamBuilder {
       let finalQuestions: RenderableQuestion[] = [];
       const seenIds = new Set<string>();
       const rng = new SeededRandom(seed);
+      const focusSet = config.focusTopics && config.focusTopics.length > 0
+        ? new Set(config.focusTopics)
+        : null;
 
       for (const block of config.customBlocks) {
         let pool = repo.getAllQuestions();
@@ -136,6 +139,13 @@ export class ExamBuilder {
         }
         if (block.topic) {
            pool = pool.filter(q => q.topic === block.topic);
+        }
+        // Focus Target: restrict every block to the currently in-goal topic set,
+        // same as Subject Mastery / Section Sprint already do (previously this
+        // path ignored Focus Target entirely — the custom builder has its own
+        // generation code, separate from the page's shared handleGenerate).
+        if (focusSet) {
+           pool = pool.filter(q => focusSet.has(q.topic));
         }
 
         pool = pool.filter(q => !seenIds.has(q.question_id));

@@ -52,6 +52,10 @@ export interface TestConfig {
   customBlocks?: CustomTestBlock[];
   isAiGenerated?: boolean;
   goalTag?: GoalTag;
+  // When Focus Target is active, the exact set of topics it currently recommends —
+  // custom-block generation restricts every block's pool to this set, same as
+  // Subject Mastery / Section Sprint already do. Undefined/omitted means unfiltered.
+  focusTopics?: string[];
 }
 
 export interface ExamQuestion {

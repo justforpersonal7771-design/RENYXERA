@@ -941,11 +941,22 @@ export default function ExamSetupPage() {
 
               {examType === "CUSTOM_TEST" ? (
                 <div className="mt-8 pt-8 border-t border-[var(--border-subtle)]">
-                   <CustomTestBuilder onGenerate={(config) => {
-                      const start = performance.now();
-                      createDraft(config);
-                      setGenerationTimeMs(performance.now() - start);
-                   }} />
+                   <CustomTestBuilder
+                      focusTopics={isGoalSliderActive ? Array.from(goalRecommendedTopics) : undefined}
+                      onGenerate={(config) => {
+                        const start = performance.now();
+                        createDraft(goalSliderResult ? {
+                          ...config,
+                          goalTag: {
+                            targetPercent: goalTargetPercent,
+                            topicsCount: goalSliderResult.includedTopics.length,
+                            totalTopics: goalSliderResult.totalTopics,
+                            marksCaptured: goalSliderResult.marksCaptured,
+                          },
+                        } : config);
+                        setGenerationTimeMs(performance.now() - start);
+                      }}
+                   />
                 </div>
               ) : (
                 <div className="space-y-6">
