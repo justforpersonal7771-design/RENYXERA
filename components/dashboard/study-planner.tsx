@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 import { toLocalDateStr, formatTime12h } from "@/lib/utils";
 import { useCalendarStore } from "@/store/use-calendar-store";
 import { requestNotificationPermission } from "@/lib/notifications/reminder-scheduler";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { DatePicker } from "@/components/ui/date-picker";
 
 export function StudyPlanner() {
   const router = useRouter();
@@ -557,17 +559,18 @@ export function StudyPlanner() {
 
                   <div className="flex items-center gap-1.5">
                     {/* Status selection popover dropdown to track states */}
-                    <select
+                    <CustomDropdown
                       value={e.status || "Pending"}
-                      onChange={(ev) => handleStatusChange(e.id, ev.target.value as any)}
-                      className="text-[9px] font-bold bg-[var(--surface)] border border-[var(--border)] rounded-md px-1.5 py-0.5 outline-none text-[var(--text-secondary)] cursor-pointer"
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Completed">Completed</option>
-                      <option value="Skipped">Skipped</option>
-                      <option value="Cancelled">Cancelled</option>
-                    </select>
+                      onChange={(v) => handleStatusChange(e.id, v as any)}
+                      options={[
+                        { label: "Pending", value: "Pending" },
+                        { label: "In Progress", value: "In Progress" },
+                        { label: "Completed", value: "Completed" },
+                        { label: "Skipped", value: "Skipped" },
+                        { label: "Cancelled", value: "Cancelled" },
+                      ]}
+                      className="w-[104px] text-[9px] [&>button]:px-1.5 [&>button]:py-0.5 [&>button]:rounded-md"
+                    />
 
                     {/* Launch Engine */}
                     <button
@@ -643,33 +646,35 @@ export function StudyPlanner() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Study Type</label>
-                    <select 
-                      value={newEvent.studyType}
-                      onChange={e => setNewEvent({ ...newEvent, studyType: e.target.value as any })}
-                      className="w-full p-3 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                    >
-                      <option value="Study">Study</option>
-                      <option value="Revision">Revision</option>
-                      <option value="Mock Test">Mock Test</option>
-                      <option value="Custom Test">Custom Test</option>
-                      <option value="Mistakes">Mistakes Review</option>
-                      <option value="Bookmarks">Bookmarks Review</option>
-                      <option value="Weak Topics">Weak Topics Practice</option>
-                      <option value="Random Practice">Random Practice</option>
-                    </select>
+                    <CustomDropdown
+                      value={newEvent.studyType || "Study"}
+                      onChange={(v) => setNewEvent({ ...newEvent, studyType: v as any })}
+                      options={[
+                        { label: "Study", value: "Study" },
+                        { label: "Revision", value: "Revision" },
+                        { label: "Mock Test", value: "Mock Test" },
+                        { label: "Custom Test", value: "Custom Test" },
+                        { label: "Mistakes Review", value: "Mistakes" },
+                        { label: "Bookmarks Review", value: "Bookmarks" },
+                        { label: "Weak Topics Practice", value: "Weak Topics" },
+                        { label: "Random Practice", value: "Random Practice" },
+                      ]}
+                      className="w-full text-sm [&>button]:p-3 [&>button]:rounded-xl"
+                    />
                   </div>
                   
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Priority</label>
-                    <select 
-                      value={newEvent.priority}
-                      onChange={e => setNewEvent({ ...newEvent, priority: e.target.value as any })}
-                      className="w-full p-3 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                    >
-                      <option value="Low">Low</option>
-                      <option value="Medium">Medium</option>
-                      <option value="High">High</option>
-                    </select>
+                    <CustomDropdown
+                      value={newEvent.priority || "Medium"}
+                      onChange={(v) => setNewEvent({ ...newEvent, priority: v as any })}
+                      options={[
+                        { label: "Low", value: "Low" },
+                        { label: "Medium", value: "Medium" },
+                        { label: "High", value: "High" },
+                      ]}
+                      className="w-full text-sm [&>button]:p-3 [&>button]:rounded-xl"
+                    />
                   </div>
                 </div>
 
@@ -709,15 +714,16 @@ export function StudyPlanner() {
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Difficulty</label>
-                    <select 
-                      value={newEvent.difficulty}
-                      onChange={e => setNewEvent({ ...newEvent, difficulty: e.target.value as any })}
-                      className="w-full p-2.5 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-xs rounded-xl outline-none"
-                    >
-                      <option value="Easy">Easy</option>
-                      <option value="Medium">Medium</option>
-                      <option value="Hard">Hard</option>
-                    </select>
+                    <CustomDropdown
+                      value={newEvent.difficulty || "Medium"}
+                      onChange={(v) => setNewEvent({ ...newEvent, difficulty: v as any })}
+                      options={[
+                        { label: "Easy", value: "Easy" },
+                        { label: "Medium", value: "Medium" },
+                        { label: "Hard", value: "Hard" },
+                      ]}
+                      className="w-full text-xs [&>button]:p-2.5 [&>button]:rounded-xl"
+                    />
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Target Questions</label>
@@ -730,44 +736,45 @@ export function StudyPlanner() {
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Revision Cycle</label>
-                    <select 
-                      value={newEvent.revisionCycle}
-                      onChange={e => setNewEvent({ ...newEvent, revisionCycle: e.target.value as any })}
-                      className="w-full p-2.5 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-xs rounded-xl outline-none"
-                    >
-                      <option value="One Time">One Time</option>
-                      <option value="Daily">Daily</option>
-                      <option value="Weekly">Weekly</option>
-                      <option value="Every 3 Days">Every 3 Days</option>
-                      <option value="Every 7 Days">Every 7 Days</option>
-                      <option value="Every 14 Days">Every 14 Days</option>
-                      <option value="Every Month">Every Month</option>
-                    </select>
+                    <CustomDropdown
+                      value={newEvent.revisionCycle || "One Time"}
+                      onChange={(v) => setNewEvent({ ...newEvent, revisionCycle: v as any })}
+                      options={[
+                        { label: "One Time", value: "One Time" },
+                        { label: "Daily", value: "Daily" },
+                        { label: "Weekly", value: "Weekly" },
+                        { label: "Every 3 Days", value: "Every 3 Days" },
+                        { label: "Every 7 Days", value: "Every 7 Days" },
+                        { label: "Every 14 Days", value: "Every 14 Days" },
+                        { label: "Every Month", value: "Every Month" },
+                      ]}
+                      className="w-full text-xs [&>button]:p-2.5 [&>button]:rounded-xl"
+                    />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Date</label>
-                    <input 
-                      type="date" 
-                      value={newEvent.date}
-                      onChange={e => setNewEvent({ ...newEvent, date: e.target.value })}
-                      className="w-full p-3 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                    <DatePicker
+                      value={newEvent.date || ""}
+                      onChange={(v) => setNewEvent({ ...newEvent, date: v })}
+                      className="w-full"
                     />
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Time Range Mode</label>
-                    <select 
-                      value={newEvent.timeRangeType}
-                      onChange={e => setNewEvent({ ...newEvent, timeRangeType: e.target.value as any })}
-                      className="w-full p-3 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
-                    >
-                      <option value="date_only">Date Only (No Time)</option>
-                      <option value="start_time">Date + Start Time</option>
-                      <option value="start_end">Date + Start & End Time</option>
-                      <option value="duration">Date + Start Time + Duration</option>
-                    </select>
+                    <CustomDropdown
+                      value={newEvent.timeRangeType || "date_only"}
+                      onChange={(v) => setNewEvent({ ...newEvent, timeRangeType: v as any })}
+                      options={[
+                        { label: "Date Only (No Time)", value: "date_only" },
+                        { label: "Date + Start Time", value: "start_time" },
+                        { label: "Date + Start & End Time", value: "start_end" },
+                        { label: "Date + Start Time + Duration", value: "duration" },
+                      ]}
+                      className="w-full text-sm [&>button]:p-3 [&>button]:rounded-xl"
+                    />
                   </div>
                 </div>
 

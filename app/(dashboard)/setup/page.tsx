@@ -938,7 +938,7 @@ export default function ExamSetupPage() {
         ) : (
           <div className="w-full flex flex-col lg:flex-row gap-5">
             <div className="flex-1 card-glass rounded-2xl shadow-sm p-5 md:p-6">
-             <div className={examType === "CUSTOM_TEST" ? "" : "flex flex-col lg:flex-row gap-6"}>
+             <div>
               <div className="flex-1 min-w-0">
               <div className="mb-5 max-w-md">
                 <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">
@@ -956,6 +956,9 @@ export default function ExamSetupPage() {
                   ]}
                   className="w-full text-sm font-medium"
                 />
+                <p className="mt-2 text-xs text-[var(--text-secondary)] font-medium leading-relaxed">
+                  {DEPLOYMENT_TYPE_INFO[examType].description}
+                </p>
               </div>
 
               {examType === "CUSTOM_TEST" ? (
@@ -978,10 +981,10 @@ export default function ExamSetupPage() {
                    />
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
 
                   {examType === "YEAR_PAPER" && (
-                    <div className="max-w-md">
+                    <div>
                       <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target Year & Shift</label>
                       <div className="relative">
                         <CustomDropdown
@@ -994,7 +997,7 @@ export default function ExamSetupPage() {
                   )}
 
                   {examType === "SECTION_TEST" && (
-                    <div className="max-w-md">
+                    <div>
                       <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target Section</label>
                       <div className="relative">
                         <CustomDropdown
@@ -1007,7 +1010,7 @@ export default function ExamSetupPage() {
                   )}
 
                   {(examType === "SUBJECT_TEST" || examType === "TOPIC_TEST") && (
-                    <div className="max-w-md">
+                    <div>
                       <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target Subject</label>
                       <div className="relative">
                         <CustomDropdown
@@ -1020,7 +1023,7 @@ export default function ExamSetupPage() {
                   )}
 
                   {examType === "TOPIC_TEST" && (
-                    <div className="max-w-md mt-6">
+                    <div>
                       <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2 flex items-center gap-1.5">
                         Target Topic
                         {isGoalSliderActive && (
@@ -1054,7 +1057,7 @@ export default function ExamSetupPage() {
                   )}
 
                   {examType !== "YEAR_PAPER" && (
-                    <div className="max-w-md">
+                    <div>
                       <label className="flex justify-between text-sm font-bold text-[var(--text-secondary)] mb-2">
                         <span>Volume (Questions)</span>
                         <span className="text-[var(--text-muted)] font-medium">Available: {maxAvailable}</span>
@@ -1074,7 +1077,33 @@ export default function ExamSetupPage() {
                     </div>
                   )}
 
-                  <div className="pt-4 flex justify-center">
+                  {isGoalSliderActive && (
+                    <p className={`md:col-span-2 text-[11px] font-bold rounded-lg px-3 py-2 leading-relaxed ${
+                      examType === "YEAR_PAPER"
+                        ? "text-amber-600 dark:text-amber-400 bg-amber-500/10"
+                        : "text-indigo-600 dark:text-indigo-400 bg-indigo-500/10"
+                    }`}>
+                      {examType === "YEAR_PAPER"
+                        ? "Focus Target is on, but an Official Year Paper is an exact replica of that year's paper, so it's never filtered."
+                        : "Focus Target is on — the pickers above only list options that still have in-goal questions."}
+                    </p>
+                  )}
+
+                  {examType === "YEAR_PAPER" && paperPreviewStats && (
+                    <div className="md:col-span-2 flex items-center gap-6 text-sm">
+                      <span className="font-semibold text-[var(--text-secondary)]">
+                        <span className="font-black font-mono text-[var(--text-primary)]">{paperPreviewStats.count}</span> questions
+                      </span>
+                      <span className="font-semibold text-[var(--text-secondary)]">
+                        <span className="font-black font-mono text-[var(--text-primary)]">{paperPreviewStats.totalMarks}</span> marks
+                      </span>
+                      <span className="font-semibold text-[var(--text-secondary)]">
+                        <span className="font-black font-mono text-[var(--text-primary)]">{paperPreviewStats.estimatedMinutes}</span> min
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="md:col-span-2 pt-2 flex justify-center">
                     <motion.button
                       whileTap={{ scale: 0.97 }}
                       onClick={handleGenerate}
@@ -1087,54 +1116,6 @@ export default function ExamSetupPage() {
               )}
               </div>
 
-              {examType !== "CUSTOM_TEST" && (
-                <div className="w-full lg:w-[260px] shrink-0 lg:border-l lg:border-[var(--border-subtle)] lg:pl-6">
-                  <div className="p-4 card-glass rounded-2xl space-y-3">
-                    <h4 className="text-xs font-extrabold uppercase tracking-widest text-indigo-500">
-                      {DEPLOYMENT_TYPE_INFO[examType].title}
-                    </h4>
-                    <p className="text-xs text-[var(--text-secondary)] font-medium leading-relaxed">
-                      {DEPLOYMENT_TYPE_INFO[examType].description}
-                    </p>
-
-                    {isGoalSliderActive && examType === "YEAR_PAPER" && (
-                      <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 rounded-lg px-2.5 py-2 leading-relaxed">
-                        Focus Target is on, but doesn't apply here — an Official Year Paper is an exact replica of that year's paper, so it's never filtered. Every other deployment type respects it.
-                      </p>
-                    )}
-
-                    {isGoalSliderActive && examType !== "YEAR_PAPER" && (
-                      <p className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 rounded-lg px-2.5 py-2 leading-relaxed">
-                        Focus Target is on — the pickers above only list options that still have in-goal questions.
-                      </p>
-                    )}
-
-                    {examType === "YEAR_PAPER" && paperPreviewStats && (
-                      <div className="pt-3 mt-1 border-t border-[var(--border-subtle)] grid grid-cols-2 gap-2 text-center">
-                        <div>
-                          <div className="text-lg font-black text-[var(--text-primary)] font-mono">{paperPreviewStats.count}</div>
-                          <div className="text-[9px] font-bold uppercase text-[var(--text-muted)] tracking-wide">Questions</div>
-                        </div>
-                        <div>
-                          <div className="text-lg font-black text-[var(--text-primary)] font-mono">{paperPreviewStats.totalMarks}</div>
-                          <div className="text-[9px] font-bold uppercase text-[var(--text-muted)] tracking-wide">Marks</div>
-                        </div>
-                        <div className="col-span-2">
-                          <div className="text-lg font-black text-[var(--text-primary)] font-mono">{paperPreviewStats.estimatedMinutes} min</div>
-                          <div className="text-[9px] font-bold uppercase text-[var(--text-muted)] tracking-wide">Duration</div>
-                        </div>
-                      </div>
-                    )}
-
-                    {examType !== "YEAR_PAPER" && maxAvailable > 0 && (
-                      <div className="pt-3 mt-1 border-t border-[var(--border-subtle)] text-center">
-                        <div className="text-lg font-black text-[var(--text-primary)] font-mono">{maxAvailable}</div>
-                        <div className="text-[9px] font-bold uppercase text-[var(--text-muted)] tracking-wide">Questions Available</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
              </div>
             </div>
 

@@ -15,6 +15,7 @@ import {
   HelpCircle, ShieldCheck, TrendingUp, Calendar, BookOpen, Layers, CheckCircle2, Flame, Award, CalendarPlus, Check, Search, StickyNote
 } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { DatePicker } from "@/components/ui/date-picker";
 import { MathJaxContext } from "better-react-mathjax";
 import { useToastStore } from "@/store/use-toast-store";
 import { useCalendarStore } from "@/store/use-calendar-store";
@@ -439,21 +440,22 @@ export default function AIMentorPage() {
 
                       {!isAdded && (
                         <div className="flex items-center gap-2">
-                          <input
-                            type="date"
+                          <DatePicker
+                            compact
+                            className="flex-1 min-w-0"
                             value={override.date}
-                            onChange={(e) => setSuggestionOverrides(prev => ({ ...prev, [s.id]: { ...override, date: e.target.value } }))}
-                            className="flex-1 min-w-0 px-2 py-1.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-[10px] font-bold text-[var(--text-primary)] outline-none"
+                            onChange={(v) => setSuggestionOverrides(prev => ({ ...prev, [s.id]: { ...override, date: v } }))}
                           />
-                          <select
+                          <CustomDropdown
                             value={override.priority}
-                            onChange={(e) => setSuggestionOverrides(prev => ({ ...prev, [s.id]: { ...override, priority: e.target.value as any } }))}
-                            className="px-2 py-1.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-[10px] font-bold text-[var(--text-primary)] outline-none cursor-pointer"
-                          >
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                          </select>
+                            onChange={(v) => setSuggestionOverrides(prev => ({ ...prev, [s.id]: { ...override, priority: v as any } }))}
+                            options={[
+                              { label: "Low", value: "Low" },
+                              { label: "Medium", value: "Medium" },
+                              { label: "High", value: "High" },
+                            ]}
+                            className="w-[104px] shrink-0 text-[10px] [&>button]:px-2 [&>button]:py-1.5 [&>button]:rounded-lg"
+                          />
                         </div>
                       )}
 

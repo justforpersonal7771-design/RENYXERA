@@ -111,6 +111,12 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   const handleReset = () => {
     setDraftPercent(GOAL_SLIDER_DEFAULT_PERCENT);
     draftPercentRef.current = GOAL_SLIDER_DEFAULT_PERCENT;
@@ -196,13 +202,16 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm"
+      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
       <motion.div
         initial={{ opacity: 0, y: 12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 12, scale: 0.98 }}
         transition={{ duration: 0.15 }}
-        className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden"
+        className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl w-full max-w-5xl h-[88vh] flex flex-col overflow-hidden"
       >
         {/* Header */}
         <div className="shrink-0 flex items-center justify-between gap-3 p-4 border-b border-[var(--border-subtle)] bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700">
@@ -242,7 +251,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
           <div className="flex-1 min-h-0 p-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
             {/* Left: chart + stats */}
             <div className="lg:col-span-3 min-h-0 flex flex-col gap-3">
-              <div className="bg-[var(--surface-secondary)]/40 border border-[var(--border-subtle)] rounded-xl p-3 shrink-0">
+              <div className="bg-[var(--surface-secondary)]/40 border border-[var(--border-subtle)] rounded-xl p-3 flex-1 min-h-0 flex flex-col">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wide">
                     Drag on the graph to set your target
@@ -250,7 +259,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   <span className="text-base font-black text-indigo-500">{draftPercent}% syllabus</span>
                 </div>
 
-                <div className="h-[190px] select-none" style={{ cursor: isDragging ? "grabbing" : "grab" }}>
+                <div className="flex-1 min-h-[180px] select-none" style={{ cursor: isDragging ? "grabbing" : "grab" }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                       data={curve}

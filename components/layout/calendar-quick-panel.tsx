@@ -10,6 +10,7 @@ import { toLocalDateStr, formatTime12h, GATE_2027_EXAM_DATE } from "@/lib/utils"
 import { CalendarEvent } from "@/types/calendar.types";
 import { CompactCalendarView } from "./compact-calendar-view";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { DatePicker } from "@/components/ui/date-picker";
 
 const TARGET_EXAM_DATE_KEY = "target_exam_date";
 const QUICK_TYPE_OPTIONS = [
@@ -156,13 +157,12 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
           Target Exam
         </div>
         {editingExamDate ? (
-          <input
-            type="date"
-            autoFocus
-            defaultValue={examDate || ""}
-            onBlur={(e) => e.target.value && handleSaveExamDate(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
-            className="text-[10px] font-bold bg-[var(--background)] border border-[var(--border)] rounded px-1.5 py-0.5 outline-none text-[var(--text-primary)]"
+          <DatePicker
+            compact
+            autoOpen
+            value={examDate || ""}
+            onChange={(v) => handleSaveExamDate(v)}
+            onClose={() => setEditingExamDate(false)}
           />
         ) : (
           <button

@@ -35,6 +35,7 @@ export function Topbar() {
   const todoRef = useRef<HTMLDivElement>(null);
   const [isGoalSliderOpen, setIsGoalSliderOpen] = useState(false);
   const { targetPercent, load: loadGoalSlider } = useGoalSliderStore();
+  const isFocusTargetActive = targetPercent < GOAL_SLIDER_DEFAULT_PERCENT;
 
   useEffect(() => {
     loadGoalSlider();
@@ -199,18 +200,19 @@ export function Topbar() {
                 className={`relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
                     ? "text-white bg-indigo-600 shadow-sm"
-                    : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]"
+                    : isFocusTargetActive
+                      ? "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-1 ring-amber-500/40 hover:bg-amber-500/25"
+                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]"
                 }`}
                 aria-label="Focus Target"
-                title="Focus Target"
+                title={isFocusTargetActive ? `Focus Target active — ${targetPercent}% syllabus` : "Focus Target"}
              >
                 <Target className="w-4 h-4" />
-                {/* Amber dot means "a Focus Target goal is configured" — a persistent status
-                    signal, kept visually distinct from the button's own open/closed fill
-                    (previously the whole icon turned solid indigo whenever a goal was active,
-                    identical to the Calendar/To-Do buttons' "panel is open" state, which made
-                    Focus Target look permanently pressed/open even when its panel was closed). */}
-                {targetPercent < GOAL_SLIDER_DEFAULT_PERCENT && (
+                {/* "A goal is configured" is a persistent state, so it gets its own amber
+                    treatment (tinted fill + ring + dot) rather than reusing the indigo fill
+                    that means "this panel is currently open" on the Calendar/To-Do buttons.
+                    The dot alone was too easy to miss. */}
+                {isFocusTargetActive && (
                    <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-amber-400 border border-[var(--surface)]" />
                 )}
              </button>
