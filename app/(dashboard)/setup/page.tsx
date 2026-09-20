@@ -1055,7 +1055,7 @@ export default function ExamSetupPage() {
                     </div>
                   )}
 
-                  <div className="pt-4 flex justify-center lg:justify-start">
+                  <div className="pt-4 flex justify-center">
                     <motion.button
                       whileTap={{ scale: 0.97 }}
                       onClick={handleGenerate}
