@@ -118,7 +118,7 @@ export function MetricsStrip({
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 shadow-sm"
+        className="card-glass rounded-2xl p-4 shadow-sm"
       >
         <div className="flex items-center gap-2 mb-3 px-0.5">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm shadow-indigo-500/30">
@@ -143,7 +143,7 @@ export function MetricsStrip({
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.05 }}
-        className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 shadow-sm"
+        className="card-glass rounded-2xl p-4 shadow-sm"
       >
         <div className="flex items-center gap-2 mb-3 px-0.5">
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-sm shadow-rose-500/30">

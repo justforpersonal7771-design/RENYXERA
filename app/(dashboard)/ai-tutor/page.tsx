@@ -520,7 +520,7 @@ export default function AITutorWorkspace() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col overflow-hidden bg-[var(--background)]">
+      <div className="w-full h-full flex flex-col overflow-hidden">
 
         {/* Sticky Command Bar */}
         <header className="flex-none bg-[var(--surface)] border-b border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
@@ -768,7 +768,7 @@ export default function AITutorWorkspace() {
                       >
 
                      {/* 1. OVERVIEW CARD */}
-                        <div id="card-overview" className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                        <div id="card-overview" className="card-glass rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
                           <button
                             onClick={() => setExpandedCards(prev => ({ ...prev, overview: !prev.overview }))}
                             className="w-full flex justify-between items-center px-4 py-3 bg-[var(--surface-secondary)]/30 border-b border-[var(--border-subtle)] text-left"
@@ -798,7 +798,7 @@ export default function AITutorWorkspace() {
 
                         {/* 2. STEP BY STEP SOLUTION */}
                         {data.steps && data.steps.length > 0 && (
-                          <div id="card-steps" className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                          <div id="card-steps" className="card-glass rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
                             <button
                               onClick={() => setExpandedCards(prev => ({ ...prev, steps: !prev.steps }))}
                               className="w-full flex justify-between items-center px-4 py-3 bg-[var(--surface-secondary)]/30 border-b border-[var(--border-subtle)] text-left"
@@ -834,7 +834,7 @@ export default function AITutorWorkspace() {
 
                         {/* 3. FORMULA SUMMARY CARD */}
                         {data.formulas && data.formulas.length > 0 && (
-                          <div id="card-formulas" className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                          <div id="card-formulas" className="card-glass rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
                             <button
                               onClick={() => setExpandedCards(prev => ({ ...prev, formulas: !prev.formulas }))}
                               className="w-full flex justify-between items-center px-4 py-3 bg-[var(--surface-secondary)]/30 border-b border-[var(--border-subtle)] text-left"
@@ -881,7 +881,7 @@ export default function AITutorWorkspace() {
 
                         {/* 4. SHORTCUT TRICK CARD */}
                         {data.shortcut && (
-                          <div id="card-shortcut" className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
+                          <div id="card-shortcut" className="card-glass rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition">
                             <button
                               onClick={() => setExpandedCards(prev => ({ ...prev, shortcut: !prev.shortcut }))}
                               className="w-full flex justify-between items-center px-4 py-3 bg-[var(--surface-secondary)]/30 border-b border-[var(--border-subtle)] text-left"

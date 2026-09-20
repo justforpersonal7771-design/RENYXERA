@@ -76,7 +76,7 @@ export function QuickActions({ hasActiveSession, onResume }: QuickActionsProps) 
               onClick={act.onClick}
               whileHover={{ scale: 1.025, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className={`flex items-start gap-4 p-5 text-left border rounded-2xl bg-[var(--surface)] transition shadow-sm hover:shadow-md cursor-pointer ${act.color}`}
+              className={`flex items-start gap-4 p-5 text-left border rounded-2xl card-glass transition shadow-sm hover:shadow-md cursor-pointer ${act.color}`}
             >
               <div className="p-3 bg-white/5 dark:bg-black/10 rounded-xl shrink-0">
                 <Icon className="w-5 h-5" />

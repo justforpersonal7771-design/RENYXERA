@@ -111,7 +111,7 @@ export default function AnalyticsDashboardPage() {
   });
 
   return (
-    <div className="w-full mx-auto p-4 md:p-6 space-y-8 bg-[var(--background)] font-sans">
+    <div className="w-full mx-auto p-4 md:p-6 space-y-8 font-sans">
       
       {/* Page Title */}
       <motion.div
@@ -165,7 +165,7 @@ export default function AnalyticsDashboardPage() {
       {!loadingIntel && intel && (
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Smart Insights Feed */}
-          <div className="lg:col-span-8 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-8 card-glass rounded-2xl p-6 shadow-sm flex flex-col justify-between">
             <div>
               <h3 className="font-extrabold text-sm uppercase tracking-widest text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
@@ -190,7 +190,7 @@ export default function AnalyticsDashboardPage() {
           </div>
 
           {/* Today's Adaptive Recommendations */}
-          <div className="lg:col-span-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-4 card-glass rounded-2xl p-6 shadow-sm flex flex-col justify-between">
             <div className="space-y-5">
               <h3 className="font-extrabold text-sm uppercase tracking-widest text-[var(--text-primary)] flex items-center gap-2">
                 <Compass className="w-4 h-4 text-emerald-500" />
@@ -359,7 +359,7 @@ export default function AnalyticsDashboardPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-sm overflow-hidden flex flex-col"
+          className="card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col"
         >
           <div className="px-5 py-4 border-b border-[var(--border-subtle)] bg-rose-500/10 flex items-center">
             <h3 className="font-extrabold text-xs uppercase tracking-widest text-rose-600 dark:text-rose-400">Weak Topics (&lt; 50% Accuracy)</h3>
@@ -405,7 +405,7 @@ export default function AnalyticsDashboardPage() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-sm overflow-hidden flex flex-col"
+          className="card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col"
         >
           <div className="px-5 py-4 border-b border-[var(--border-subtle)] bg-emerald-500/10 flex items-center">
             <h3 className="font-extrabold text-xs uppercase tracking-widest text-emerald-600 dark:text-emerald-400">Strong Topics (&gt; 75% Accuracy)</h3>

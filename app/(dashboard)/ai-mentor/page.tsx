@@ -316,7 +316,7 @@ export default function AIMentorPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-      <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 space-y-6 pb-16">
+      <div className="min-h-screen p-4 md:p-8 space-y-6 pb-16">
 
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center gap-3">
@@ -398,7 +398,7 @@ export default function AIMentorPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4"
+              className="card-glass rounded-2xl p-5 shadow-sm space-y-4"
             >
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
                 <div>
@@ -508,7 +508,7 @@ export default function AIMentorPage() {
               </div>
 
               {/* AI Prerequisite Knowledge Graph */}
-              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
                   <div>
                     <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
@@ -587,7 +587,7 @@ export default function AIMentorPage() {
 
               {/* Saved Shortcuts Library (Part 4) — AI-generated tricks/shortcuts only;
                   plain personal notes live in the separate Saved Notes card below. */}
-              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
                   <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
                     <Zap className="w-4 h-4 text-amber-500" />
@@ -651,7 +651,7 @@ export default function AIMentorPage() {
 
               {/* Saved Notes — plain personal notes/observations, kept separate from the
                   AI-generated Shortcut Library above. */}
-              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
                   <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
                     <StickyNote className="w-4 h-4 text-indigo-500" />
@@ -713,7 +713,7 @@ export default function AIMentorPage() {
             >
 
               {/* Mistake Cognitive Patterns (Part 5) */}
-              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
                 <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
                   <AlertTriangle className="w-4 h-4 text-rose-500 animate-pulse" />
                   Mistake Cognitive Patterns
@@ -753,7 +753,7 @@ export default function AIMentorPage() {
               </div>
 
               {/* Learning Timeline Journey Map (Part 12) */}
-              <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
                 <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
                   <Activity className="w-4 h-4 text-indigo-500" />
                   Your Learning Timeline

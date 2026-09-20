@@ -265,10 +265,10 @@ export default function MistakesPage() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col md:flex-row gap-4 p-2 relative overflow-hidden bg-[var(--background)]">
+      <div className="w-full h-full flex flex-col md:flex-row gap-4 p-2 relative overflow-hidden">
 
         {/* Sidebar merged into a single card */}
-        <div className={`flex flex-col bg-[var(--surface)] border border-[var(--border)] rounded-xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
+        <div className={`flex flex-col card-glass rounded-xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           <div className="p-4 space-y-3 flex flex-col shrink-0 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/10">
             <div className="flex justify-between items-center">
               <h2 className="font-extrabold text-lg text-[var(--text-primary)]">Mistakes Bank</h2>
@@ -395,7 +395,7 @@ export default function MistakesPage() {
         </button>
 
         {/* Main Content Area */}
-        <div className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
+        <div className="flex-1 card-glass rounded-xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
           {activeMistake && question && activeEntry ? (
             <>
               {/* Header bar */}
@@ -638,7 +638,7 @@ export default function MistakesPage() {
             animate={{ opacity: 1, x: 0, width: 320 }}
             exit={{ opacity: 0, x: 24, width: 0 }}
             transition={{ type: "spring", stiffness: 350, damping: 32 }}
-            className="h-full flex flex-col bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-sm shrink-0 overflow-hidden"
+            className="h-full flex flex-col card-glass rounded-xl shadow-sm shrink-0 overflow-hidden"
           >
             {/* Header */}
             <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">

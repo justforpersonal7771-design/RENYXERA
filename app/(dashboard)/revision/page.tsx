@@ -96,7 +96,7 @@ export default function RevisionBuilderPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col gap-4 bg-[var(--background)] font-sans h-full overflow-hidden">
+    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col gap-4 font-sans h-full overflow-hidden">
 
       {/* Title */}
       <div className="shrink-0 flex items-center gap-2">
@@ -110,7 +110,7 @@ export default function RevisionBuilderPage() {
       <div className="shrink-0 grid grid-cols-1 lg:grid-cols-12 gap-4">
 
         {/* Left Side: Revision Modes selection (Spans 7) */}
-        <div className="lg:col-span-7 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+        <div className="lg:col-span-7 card-glass rounded-2xl p-4 shadow-sm">
           <h3 className="text-xs font-extrabold uppercase tracking-widest text-[var(--text-primary)] mb-3">
             Select Revision Parameters
           </h3>
@@ -192,7 +192,7 @@ export default function RevisionBuilderPage() {
         </div>
 
         {/* Right Side: Quick Adaptive recommendations (Spans 5) */}
-        <div className="lg:col-span-5 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-4 shadow-sm">
+        <div className="lg:col-span-5 card-glass rounded-2xl p-4 shadow-sm">
           <h3 className="text-xs font-extrabold uppercase tracking-widest text-[var(--text-primary)] mb-3">
             Engine Suggestions
           </h3>
@@ -226,7 +226,7 @@ export default function RevisionBuilderPage() {
       </div>
 
       {/* 3. Reordered Revision Queue list — fills remaining space, scrolls internally */}
-      <div className="flex-1 min-h-0 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-sm overflow-hidden flex flex-col">
+      <div className="flex-1 min-h-0 card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col">
         <div className="shrink-0 px-5 py-3 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/50 flex justify-between items-center">
           <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] flex items-center gap-1.5">
             <BookOpen className="w-4 h-4 text-indigo-500" />

@@ -71,7 +71,7 @@ export function IncompleteTests() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="flex items-center justify-between gap-3 p-3 bg-[var(--surface)] border border-[var(--border-subtle)] rounded-xl overflow-hidden"
+              className="flex items-center justify-between gap-3 p-3 card-glass rounded-xl overflow-hidden"
             >
               <div className="min-w-0">
                 <p className="text-xs font-bold text-[var(--text-primary)] truncate">

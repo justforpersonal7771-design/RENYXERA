@@ -40,7 +40,7 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex flex-col justify-between hover-lift"
+      className="card-glass rounded-2xl p-6 shadow-sm flex flex-col justify-between hover-lift"
     >
       <div>
         <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-5 flex items-center gap-1.5">

@@ -550,7 +550,7 @@ export default function ExamSetupPage() {
 
         {sourceType === "ai_generated" ? (
           <div className="space-y-6">
-            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-5 shadow-sm space-y-4">
+            <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex-1 flex flex-col sm:flex-row gap-3">
                   <input
@@ -625,7 +625,7 @@ export default function ExamSetupPage() {
             </div>
 
             {groupedAIQuestions.size === 0 ? (
-              <div className="flex flex-col items-center justify-center py-20 bg-[var(--surface)] border border-[var(--border)] rounded-3xl text-center p-6 space-y-4">
+              <div className="flex flex-col items-center justify-center py-20 card-glass rounded-3xl text-center p-6 space-y-4">
                 <div className="w-16 h-16 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-500 flex items-center justify-center">
                   <Sparkles className="w-8 h-8 animate-pulse" />
                 </div>
@@ -661,7 +661,7 @@ export default function ExamSetupPage() {
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: Math.min(sectionIdx * 0.06, 0.3) }}
-                      className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 shadow-sm space-y-4"
+                      className="card-glass rounded-2xl p-6 shadow-sm space-y-4"
                     >
                       <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3 bg-[var(--surface-secondary)]/10 px-3 py-2 rounded-xl">
                         <div className="flex items-center gap-3">
@@ -918,7 +918,7 @@ export default function ExamSetupPage() {
           </div>
         ) : (
           <div className="w-full flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-sm p-6 md:p-8">
+            <div className="flex-1 card-glass rounded-2xl shadow-sm p-6 md:p-8">
              <div className={examType === "CUSTOM_TEST" ? "" : "flex flex-col lg:flex-row gap-10"}>
               <div className="flex-1 min-w-0">
               <div className="mb-8 max-w-md">

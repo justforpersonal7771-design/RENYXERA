@@ -101,7 +101,7 @@ export default function Home() {
 
   if (!isInitialized || (loading && !dashboardMetrics)) {
     return (
-      <div className="flex h-[80vh] w-full flex-col items-center justify-center bg-[var(--background)]">
+      <div className="flex h-[80vh] w-full flex-col items-center justify-center">
          <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mb-3" />
          <span className="font-extrabold tracking-widest text-xs text-[var(--text-muted)] uppercase animate-pulse">Initializing Dashboard...</span>
       </div>
@@ -129,7 +129,7 @@ export default function Home() {
   const avgTimePerQuestion = overview?.avgTimePerQuestionMs ? Math.round(overview.avgTimePerQuestionMs / 1000) : 0;
 
   return (
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-8 bg-[var(--background)] min-h-screen">
+    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-8 min-h-screen">
       
       {/* 1. Hero Section Banner */}
       <HeroSection 

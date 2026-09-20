@@ -43,7 +43,7 @@ export function ExamCountdownCard() {
   }, [events, todayStr]);
 
   return (
-    <div className="bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-5 shadow-sm relative overflow-hidden">
+    <div className="card-glass rounded-3xl p-5 shadow-sm relative overflow-hidden">
       <div className="absolute -top-8 -right-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative flex items-center justify-between mb-4">

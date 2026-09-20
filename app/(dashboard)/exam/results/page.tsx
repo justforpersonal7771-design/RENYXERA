@@ -266,7 +266,7 @@ export default function ResultSummaryPage() {
       : { label: "Keep Practicing", message: "Every attempt builds understanding. Review the breakdown and revisit the fundamentals." };
 
   return (
-    <div className="w-full mx-auto bg-[var(--background)] font-sans flex flex-col gap-6 lg:h-full lg:overflow-hidden">
+    <div className="w-full mx-auto font-sans flex flex-col gap-6 lg:h-full lg:overflow-hidden">
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:flex-1 lg:min-h-0">
 
@@ -412,7 +412,7 @@ export default function ResultSummaryPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.18 }}
-          className="lg:col-span-7 bg-[var(--surface)] border border-[var(--border)] rounded-3xl shadow-sm p-6 flex flex-col min-h-[420px] lg:h-full lg:min-h-0"
+          className="lg:col-span-7 card-glass rounded-3xl shadow-sm p-6 flex flex-col min-h-[420px] lg:h-full lg:min-h-0"
         >
           {/* Header */}
           <div className="flex-none border-b border-[var(--border-subtle)] pb-4 mb-4 flex items-center justify-between gap-4 flex-wrap">

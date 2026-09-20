@@ -272,7 +272,7 @@ export function StudyPlanner() {
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
       
       {/* Left Column: Visual study calendar planner dashboard */}
-      <div className="lg:col-span-8 bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-5 md:p-6 shadow-sm flex flex-col h-[560px] overflow-hidden">
+      <div className="lg:col-span-8 card-glass rounded-3xl p-5 md:p-6 shadow-sm flex flex-col h-[560px] overflow-hidden">
         
         {/* Planner Header controls */}
         <div className="flex-none flex flex-col sm:flex-row gap-4 justify-between sm:items-center border-b border-[var(--border-subtle)] pb-4 mb-4">
@@ -469,7 +469,7 @@ export function StudyPlanner() {
       </div>
 
       {/* Right Column: High Fidelity Planner widgets / Details Sidebar */}
-      <div className="lg:col-span-4 bg-[var(--surface)] border border-[var(--border)] rounded-3xl p-5 shadow-sm flex flex-col h-[560px] overflow-hidden divide-y divide-[var(--border)]">
+      <div className="lg:col-span-4 card-glass rounded-3xl p-5 shadow-sm flex flex-col h-[560px] overflow-hidden divide-y divide-[var(--border)]">
         
         {/* Schedule preview header */}
         <div className="flex-none pb-4">

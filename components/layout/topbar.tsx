@@ -117,7 +117,7 @@ export function Topbar() {
 
   return (
     <>
-    <header className="h-16 relative bg-[var(--background)]/85 backdrop-blur-md sticky top-0 z-40 transition-colors">
+    <header className="h-16 relative bg-[var(--background)]/45 backdrop-blur-xl sticky top-0 z-40 transition-colors">
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
       <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between">
 

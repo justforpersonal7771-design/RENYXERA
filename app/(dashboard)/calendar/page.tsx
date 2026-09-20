@@ -10,7 +10,7 @@ const StudyPlanner = dynamic(() => import("@/components/dashboard/study-planner"
 
 export default function CalendarPage() {
   return (
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6 bg-[var(--background)] min-h-screen">
+    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-6 min-h-screen">
       <div className="flex items-center gap-3">
         <div className="p-2.5 bg-indigo-600 text-white rounded-xl shadow-md">
           <Calendar className="w-5 h-5" />

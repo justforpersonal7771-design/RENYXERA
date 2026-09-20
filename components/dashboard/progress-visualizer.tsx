@@ -39,7 +39,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       
       {/* Left: Overall Completion Circle */}
-      <div className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group">
+      <div className="card-glass rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-bl-full pointer-events-none" />
         <h4 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-6 flex items-center gap-1.5">
           <GraduationCap className="w-4 h-4 text-indigo-500" />
@@ -82,7 +82,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
       </div>
 
       {/* Middle & Right: Subject Mastery Progress Bars */}
-      <div className="md:col-span-2 bg-[var(--surface)] border border-[var(--border)] rounded-2xl p-6 shadow-sm flex flex-col">
+      <div className="md:col-span-2 card-glass rounded-2xl p-6 shadow-sm flex flex-col">
         <h4 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-5 flex items-center gap-1.5">
           <PieChart className="w-4 h-4 text-indigo-500" />
           <span>Subject Accuracy matrix</span>
