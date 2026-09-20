@@ -266,9 +266,9 @@ export default function ResultSummaryPage() {
       : { label: "Keep Practicing", message: "Every attempt builds understanding. Review the breakdown and revisit the fundamentals." };
 
   return (
-    <div className="w-full mx-auto font-sans flex flex-col gap-6 lg:h-full lg:overflow-hidden">
+    <div className="w-full mx-auto font-sans flex flex-col lg:h-full lg:min-h-0 lg:overflow-hidden pb-2">
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:flex-1 lg:min-h-0">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:flex-1 lg:min-h-0 lg:overflow-hidden">
 
         {/* Left Side: single non-scrolling card — verdict + score breakdown + actions
             all live together instead of two stacked cards inside a scrolling column. */}
@@ -276,7 +276,7 @@ export default function ResultSummaryPage() {
           initial={{ opacity: 0, y: -12, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="lg:col-span-5 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm"
+          className="lg:col-span-5 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm lg:h-full lg:min-h-0"
         >
           {/* Verdict hero band */}
           <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-5">
@@ -294,28 +294,94 @@ export default function ResultSummaryPage() {
                 )}
               </div>
 
-              {/* Accuracy ring */}
-              <div className="relative w-24 h-24 shrink-0">
-                <svg className="w-full h-full -rotate-90" viewBox="0 0 128 128">
-                  <circle cx="64" cy="64" r={radius} strokeWidth="8" className="stroke-white/20 fill-none" />
+              {/* Accuracy ring — the focal point of the card, so it carries the motion:
+                  a slow flowing gradient around the arc, a counter-rotating halo, a
+                  breathing glow and a tracer dot riding the arc's leading edge. */}
+              <motion.div
+                className="relative w-44 h-44 sm:w-48 sm:h-48 shrink-0 cursor-default"
+                initial={{ scale: 0.86, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ scale: 1.04 }}
+              >
+                {/* breathing glow */}
+                <motion.div
+                  className="absolute inset-2 rounded-full bg-white/25 blur-2xl pointer-events-none"
+                  animate={{ opacity: [0.35, 0.7, 0.35], scale: [0.92, 1.06, 0.92] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                />
+                {/* counter-rotating dashed halo */}
+                <motion.div
+                  className="absolute inset-0 rounded-full border border-dashed border-white/25 pointer-events-none"
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+                />
+
+                <svg className="w-full h-full -rotate-90 relative" viewBox="0 0 128 128">
+                  <defs>
+                    <linearGradient id="accArc" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#ffffff" />
+                      <stop offset="50%" stopColor="#c7d2fe" />
+                      <stop offset="100%" stopColor="#f5d0fe" />
+                      <animateTransform
+                        attributeName="gradientTransform"
+                        type="rotate"
+                        from="0 0.5 0.5"
+                        to="360 0.5 0.5"
+                        dur="6s"
+                        repeatCount="indefinite"
+                      />
+                    </linearGradient>
+                    <filter id="accGlow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="2.5" result="b" />
+                      <feMerge>
+                        <feMergeNode in="b" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+
+                  <circle cx="64" cy="64" r={radius} strokeWidth="9" className="stroke-white/20 fill-none" />
                   <motion.circle
                     cx="64"
                     cy="64"
                     r={radius}
-                    strokeWidth="8"
-                    className="stroke-white fill-none"
+                    strokeWidth="9"
+                    stroke="url(#accArc)"
+                    filter="url(#accGlow)"
+                    className="fill-none"
                     strokeDasharray={circumference}
                     strokeLinecap="round"
                     initial={{ strokeDashoffset: circumference }}
                     animate={{ strokeDashoffset }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
                   />
+
+                  {/* tracer dot parked at the arc's leading edge */}
+                  <motion.g
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: accuracyRatio * 360 }}
+                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+                    style={{ originX: "64px", originY: "64px" }}
+                  >
+                    <motion.circle
+                      cx={64 + radius}
+                      cy="64"
+                      r="5"
+                      className="fill-white"
+                      animate={{ opacity: [1, 0.45, 1], r: [5, 6.5, 5] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  </motion.g>
                 </svg>
+
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl font-black font-mono"><CountUp value={accuracy} decimals={0} />%</span>
-                  <span className="text-[8px] font-black uppercase tracking-widest text-indigo-100">Accuracy</span>
+                  <span className="text-5xl sm:text-[3.25rem] font-black font-mono leading-none drop-shadow-sm">
+                    <CountUp value={accuracy} decimals={0} />%
+                  </span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100 mt-1.5">Accuracy</span>
                 </div>
-              </div>
+              </motion.div>
 
               <div>
                 <h1 className="text-lg md:text-xl font-black tracking-tight">{verdict.label}</h1>
@@ -339,7 +405,7 @@ export default function ResultSummaryPage() {
 
           {/* Scoreboard content — same card, continues below the hero band. Deliberately
               not scrollable: this card now sizes to its content rather than clipping it. */}
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-5 space-y-4">
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar px-5 py-4 flex flex-col justify-evenly gap-4">
             <div>
               <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
               <div className="grid grid-cols-2 gap-4">
