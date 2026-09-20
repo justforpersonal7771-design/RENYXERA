@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { Topbar } from "./topbar";
 import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
@@ -25,14 +25,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const loadRepository = useDataStore((state) => state.loadRepository);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
-  const mainRef = useRef<HTMLElement>(null);
-  const prefersReducedMotion = useReducedMotion();
-
-  // Parallax: the ambient gradient lives on its own fixed layer behind <main> and drifts
-  // at a fraction of scroll speed, instead of being painted onto <main> itself (which would
-  // just scroll it at 1:1 with the content, i.e. no parallax at all).
-  const { scrollY } = useScroll({ container: mainRef });
-  const bgY = useTransform(scrollY, [0, 1600], [0, prefersReducedMotion ? 0 : -220]);
 
   useEffect(() => {
     loadRepository();
@@ -85,16 +77,13 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-background text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter relative">
-      {/* Parallax layer: absolutely positioned behind everything, drifts on scroll via bgY. */}
-      <motion.div className="absolute inset-0 ambient-gradient pointer-events-none" style={{ y: bgY }} />
+    <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter relative">
       <LaunchIntro />
       {/* Topbar is fixed (not sticky-in-flow), so page content genuinely scrolls
           underneath it — required for its glass/blur effect to actually reveal
           anything, instead of always sitting over a static, empty strip. */}
       <Topbar />
       <main
-        ref={mainRef}
         className="relative z-10 w-full h-full overflow-y-auto pt-20 sm:pt-24 md:pt-28 px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 custom-scrollbar"
       >
         <motion.div

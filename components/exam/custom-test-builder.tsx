@@ -223,7 +223,14 @@ export function CustomTestBuilder({ onGenerate, focusTopics }: CustomTestBuilder
 
       <div className="space-y-4">
         {blocks.map((block, index) => {
-          const poolForYear = repo.getAllQuestions();
+          // When Focus Target is active, every dropdown below (Year, Section, Subject,
+          // Topic) is scoped to only the options that actually have in-goal questions —
+          // previously the "Available" count reflected the filter but the pickers
+          // themselves still listed every option, including ones focus target would
+          // reduce to zero.
+          const poolForYear = focusSet
+            ? repo.getAllQuestions().filter(q => focusSet.has(q.topic))
+            : repo.getAllQuestions();
           const availableYears = Array.from(new Set(poolForYear.map(q => q.year_shift))).filter(Boolean).sort();
           
           let poolForSection = poolForYear;

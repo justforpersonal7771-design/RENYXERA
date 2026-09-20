@@ -148,7 +148,7 @@ export function Topbar() {
         {/* Right Actions */}
         <div className="flex items-center gap-3">
 
-          <div className="flex items-center gap-0.5 card-glass rounded-xl p-1 shadow-sm">
+          <div className="flex items-center gap-0.5 bg-[var(--surface)]/80 border border-[var(--border)] backdrop-blur-md rounded-xl p-1 shadow-sm">
              <div className="relative" ref={calendarRef}>
                 <button
                    onClick={() => setIsCalendarOpen(prev => !prev)}

@@ -249,7 +249,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
                 value={quickTitle}
                 onChange={e => setQuickTitle(e.target.value)}
                 onKeyDown={e => { if (e.key === "Enter") handleQuickAdd(); if (e.key === "Escape") setIsAdding(false); }}
-                className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] text-xs font-semibold text-[var(--text-primary)] rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-2 bg-[var(--background)] border border-[var(--border)] text-xs font-semibold text-[var(--text-primary)] rounded-lg outline-none focus:border-indigo-500 transition-colors"
               />
               <div className="flex items-center gap-2">
                 <div className="flex-1">

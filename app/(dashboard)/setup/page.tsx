@@ -490,14 +490,14 @@ export default function ExamSetupPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-    <div className="w-full flex justify-center pb-12">
-      <div className="w-full flex flex-col gap-6">
+    <div className="w-full flex justify-center pb-6">
+      <div className="w-full flex flex-col gap-4">
 
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35 }}
-          className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-4"
+          className="mb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3"
         >
           <div className="flex items-center gap-4">
             <div className="p-3 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl">
@@ -917,11 +917,11 @@ export default function ExamSetupPage() {
             )}
           </div>
         ) : (
-          <div className="w-full flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 card-glass rounded-2xl shadow-sm p-6 md:p-8">
-             <div className={examType === "CUSTOM_TEST" ? "" : "flex flex-col lg:flex-row gap-10"}>
+          <div className="w-full flex flex-col lg:flex-row gap-5">
+            <div className="flex-1 card-glass rounded-2xl shadow-sm p-5 md:p-6">
+             <div className={examType === "CUSTOM_TEST" ? "" : "flex flex-col lg:flex-row gap-6"}>
               <div className="flex-1 min-w-0">
-              <div className="mb-8 max-w-md">
+              <div className="mb-5 max-w-md">
                 <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">
                   Deployment Type
                 </label>
@@ -940,7 +940,7 @@ export default function ExamSetupPage() {
               </div>
 
               {examType === "CUSTOM_TEST" ? (
-                <div className="mt-8 pt-8 border-t border-[var(--border-subtle)]">
+                <div className="mt-5 pt-5 border-t border-[var(--border-subtle)]">
                    <CustomTestBuilder
                       focusTopics={isGoalSliderActive ? Array.from(goalRecommendedTopics) : undefined}
                       onGenerate={(config) => {
@@ -1055,7 +1055,7 @@ export default function ExamSetupPage() {
                     </div>
                   )}
 
-                  <div className="pt-6">
+                  <div className="pt-4 flex justify-center lg:justify-start">
                     <motion.button
                       whileTap={{ scale: 0.97 }}
                       onClick={handleGenerate}
@@ -1069,7 +1069,7 @@ export default function ExamSetupPage() {
               </div>
 
               {examType !== "CUSTOM_TEST" && (
-                <div className="w-full lg:w-[260px] shrink-0 lg:border-l lg:border-[var(--border-subtle)] lg:pl-10">
+                <div className="w-full lg:w-[260px] shrink-0 lg:border-l lg:border-[var(--border-subtle)] lg:pl-6">
                   <div className="p-4 card-glass rounded-2xl space-y-3">
                     <h4 className="text-xs font-extrabold uppercase tracking-widest text-indigo-500">
                       {DEPLOYMENT_TYPE_INFO[examType].title}
@@ -1116,9 +1116,9 @@ export default function ExamSetupPage() {
             <div className="w-full lg:w-[420px] shrink-0">
                <motion.div
                  layout
-                 className={`sticky top-24 card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col max-h-[calc(100vh-7rem)]`}
+                 className={`sticky top-20 card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col max-h-[calc(100vh-6rem)]`}
                >
-                  <div className="flex items-center gap-3 p-6 pb-4 shrink-0">
+                  <div className="flex items-center gap-3 p-5 pb-3 shrink-0">
                     <div className={`p-2 rounded-lg ${currentDraft ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-[var(--surface-secondary)] text-[var(--text-muted)]'}`}>
                        <FileText className="w-5 h-5" />
                     </div>
@@ -1136,7 +1136,7 @@ export default function ExamSetupPage() {
                       transition={{ duration: 0.25 }}
                       className="flex flex-col min-h-0"
                     >
-                      <div className="px-6 space-y-6 overflow-y-auto custom-scrollbar pb-2">
+                      <div className="px-5 space-y-4 overflow-y-auto custom-scrollbar pb-2">
 
                       <div className="grid grid-cols-2 gap-3">
                          <div className="p-4 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-2xl border border-indigo-500/20">
@@ -1226,7 +1226,7 @@ export default function ExamSetupPage() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.25 }}
-                      className="flex flex-col items-center justify-center py-12 text-center border-2 border-dashed border-[var(--border)] rounded-2xl bg-[var(--surface-secondary)]/50 p-6 mx-6 mb-6"
+                      className="flex flex-col items-center justify-center py-8 text-center border-2 border-dashed border-[var(--border)] rounded-2xl bg-[var(--surface-secondary)]/50 p-5 mx-5 mb-5"
                     >
                        <ServerCog className="w-10 h-10 text-gray-300 dark:text-gray-700 mb-3" />
                        <h4 className="font-bold text-[var(--text-primary)] text-sm mb-1">Awaiting Configuration</h4>
