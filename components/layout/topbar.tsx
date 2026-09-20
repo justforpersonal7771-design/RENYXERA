@@ -167,7 +167,7 @@ export function Topbar() {
         {/* Right Actions */}
         <div className="flex items-center gap-3">
           {/* Connection sync status indicators */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold bg-[var(--surface-secondary)] text-[var(--text-secondary)] transition-colors shadow-sm border border-[var(--border-subtle)]">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold card-glass text-[var(--text-secondary)] transition-colors shadow-sm">
             {isOnline ? (
               syncStatus === "syncing" ? (
                 <>
@@ -189,7 +189,7 @@ export function Topbar() {
           </div>
 
           {isInitialized && diagnostics && (
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-[var(--surface-secondary)] text-[var(--text-secondary)] transition-colors shadow-sm border border-[var(--border-subtle)]" title={diagnostics.cacheSource === "INDEXEDDB_AST" ? "IDB Synced" : "Network JSON"}>
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold card-glass text-[var(--text-secondary)] transition-colors shadow-sm" title={diagnostics.cacheSource === "INDEXEDDB_AST" ? "IDB Synced" : "Network JSON"}>
               {diagnostics.cacheSource === "INDEXEDDB_AST" ? (
                 <Database className="w-3.5 h-3.5 text-indigo-500" />
               ) : (
@@ -198,7 +198,7 @@ export function Topbar() {
             </div>
           )}
 
-          <div className="flex items-center gap-0.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl p-1 shadow-sm">
+          <div className="flex items-center gap-0.5 card-glass rounded-xl p-1 shadow-sm">
              <div className="relative" ref={calendarRef}>
                 <button
                    onClick={() => setIsCalendarOpen(prev => !prev)}

@@ -509,7 +509,7 @@ export default function ExamSetupPage() {
             </div>
           </div>
 
-          <div className="relative flex bg-[var(--surface-secondary)] border border-[var(--border-subtle)] p-1 rounded-xl shadow-sm">
+          <div className="relative flex card-glass p-1 rounded-xl shadow-sm">
             <button
               onClick={() => setSourceType("standard")}
               className={`relative z-10 px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-colors cursor-pointer ${
@@ -1059,7 +1059,7 @@ export default function ExamSetupPage() {
 
               {examType !== "CUSTOM_TEST" && (
                 <div className="w-full lg:w-[260px] shrink-0 lg:border-l lg:border-[var(--border-subtle)] lg:pl-10">
-                  <div className="p-4 bg-[var(--surface-secondary)]/60 rounded-2xl border border-[var(--border-subtle)] space-y-3">
+                  <div className="p-4 card-glass rounded-2xl space-y-3">
                     <h4 className="text-xs font-extrabold uppercase tracking-widest text-indigo-500">
                       {DEPLOYMENT_TYPE_INFO[examType].title}
                     </h4>
@@ -1099,7 +1099,7 @@ export default function ExamSetupPage() {
             <div className="w-full lg:w-[420px] shrink-0">
                <motion.div
                  layout
-                 className={`sticky top-24 bg-[var(--surface)] border ${currentDraft ? 'border-emerald-200 dark:border-emerald-900/50' : 'border-[var(--border)]'} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col max-h-[calc(100vh-7rem)]`}
+                 className={`sticky top-24 card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col max-h-[calc(100vh-7rem)]`}
                >
                   <div className="flex items-center gap-3 p-6 pb-4 shrink-0">
                     <div className={`p-2 rounded-lg ${currentDraft ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-[var(--surface-secondary)] text-[var(--text-muted)]'}`}>
