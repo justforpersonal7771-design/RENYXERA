@@ -279,9 +279,9 @@ export default function ResultSummaryPage() {
           className="lg:col-span-5 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm"
         >
           {/* Verdict hero band */}
-          <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700 text-white p-6">
-            <div className="absolute top-0 right-0 w-56 h-56 bg-white/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-purple-400/20 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />
+          <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-6">
+            <div className="absolute top-0 right-0 w-56 h-56 bg-cyan-300/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-fuchsia-400/20 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />
 
             <div className="relative z-10 flex flex-col items-center text-center gap-4">
               <div className="flex items-center gap-2 flex-wrap justify-center">

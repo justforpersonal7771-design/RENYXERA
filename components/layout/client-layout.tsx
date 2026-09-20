@@ -65,7 +65,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   if (isExamSession) {
     return (
-      <div className="h-screen w-screen overflow-hidden bg-background text-text-primary font-sans transition-colors selection:bg-accent/30 relative">
+      <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 relative">
         <LaunchIntro />
         <main className="w-full h-full overflow-hidden">
           {children}
@@ -77,7 +77,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="h-screen w-screen overflow-hidden bg-background text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter flex flex-col relative">
+    <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter flex flex-col relative">
       <LaunchIntro />
       <Topbar />
       <div className="flex-1 w-full overflow-hidden">

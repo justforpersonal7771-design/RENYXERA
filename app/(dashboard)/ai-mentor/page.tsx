@@ -332,10 +332,10 @@ export default function AIMentorPage() {
             initial={{ opacity: 0, y: -8, scale: 0.99 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700 text-white p-6 md:p-7 rounded-3xl shadow-lg shadow-indigo-600/20 relative overflow-hidden"
+            className="bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-6 md:p-7 rounded-3xl shadow-lg shadow-violet-600/20 relative overflow-hidden"
           >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-purple-400/20 rounded-full blur-3xl -ml-8 -mb-8 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-300/20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-fuchsia-400/20 rounded-full blur-3xl -ml-8 -mb-8 pointer-events-none" />
 
             <div className="relative z-10 flex flex-col lg:flex-row gap-6 lg:items-stretch">
               {/* Identity + coach message */}

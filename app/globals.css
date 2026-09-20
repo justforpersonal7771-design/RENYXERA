@@ -68,6 +68,20 @@
     transform: translateY(-2px);
     box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--text-primary) 18%, transparent);
   }
+
+  /* Ambient wash mirroring the logo mark's own diagonal ribbon sweep —
+     cyan top-left, through blue and violet, out to magenta bottom-right.
+     Applied to the app shell itself (not just <body>) because the shell is
+     an opaque, full-viewport div that would otherwise fully occlude a
+     body-level background. */
+  .ambient-gradient {
+    background-image:
+      radial-gradient(ellipse 60% 45% at 8% -8%, var(--bg-gradient-accent-1), transparent),
+      radial-gradient(ellipse 55% 45% at 48% 12%, var(--bg-gradient-accent-2), transparent),
+      radial-gradient(ellipse 60% 50% at 88% 52%, var(--bg-gradient-accent-3), transparent),
+      radial-gradient(ellipse 55% 42% at 62% 102%, var(--bg-gradient-accent-4), transparent);
+    background-attachment: fixed;
+  }
 }
 
 @layer base {
@@ -108,8 +122,18 @@
     --option-border: #cbd5e1;
     --option-border-selected: #6366f1;
 
-    --bg-gradient-accent-1: rgba(99, 102, 241, 0.07);
-    --bg-gradient-accent-2: rgba(168, 85, 247, 0.05);
+    /* Brand spectrum sampled directly from the RENYXERA mark's ribbon
+       (cyan -> blue -> violet -> magenta), so the app's ambient wash reads
+       as the same product, not a generic indigo tint. */
+    --brand-cyan: #06c2fb;
+    --brand-blue: #0a5ff2;
+    --brand-violet: #5b21e0;
+    --brand-magenta: #dd42fb;
+
+    --bg-gradient-accent-1: rgba(6, 194, 251, 0.09);
+    --bg-gradient-accent-2: rgba(10, 95, 242, 0.07);
+    --bg-gradient-accent-3: rgba(91, 33, 224, 0.06);
+    --bg-gradient-accent-4: rgba(221, 66, 251, 0.06);
   }
 
   .dark {
@@ -149,8 +173,15 @@
     --scrollbar-thumb-hover: #a1a1aa;
     --scrollbar-track: transparent;
 
-    --bg-gradient-accent-1: rgba(99, 102, 241, 0.12);
-    --bg-gradient-accent-2: rgba(168, 85, 247, 0.09);
+    --brand-cyan: #06c2fb;
+    --brand-blue: #0a5ff2;
+    --brand-violet: #5b21e0;
+    --brand-magenta: #dd42fb;
+
+    --bg-gradient-accent-1: rgba(6, 194, 251, 0.11);
+    --bg-gradient-accent-2: rgba(10, 95, 242, 0.17);
+    --bg-gradient-accent-3: rgba(91, 33, 224, 0.15);
+    --bg-gradient-accent-4: rgba(221, 66, 251, 0.10);
   }
 
   * {
@@ -159,13 +190,16 @@
 
   body {
     background-color: var(--background);
-    /* Subtle ambient indigo/purple wash instead of a flat background — consistent
-       with the app's existing premium theme (hero banners, logo mark) without
-       competing with individual card surfaces, which sit on top unaffected. */
+    /* Ambient wash mirrors the logo mark's own diagonal ribbon sweep —
+       cyan top-left, through blue and violet, out to magenta bottom-right —
+       instead of a flat background, so the whole shell reads as one product
+       with the mark rather than the mark being the only spot of color.
+       Individual card surfaces sit on top unaffected. */
     background-image:
-      radial-gradient(ellipse 70% 50% at 15% -10%, var(--bg-gradient-accent-1), transparent),
-      radial-gradient(ellipse 60% 45% at 100% 10%, var(--bg-gradient-accent-2), transparent),
-      radial-gradient(ellipse 55% 40% at 50% 100%, var(--bg-gradient-accent-1), transparent);
+      radial-gradient(ellipse 60% 45% at 8% -8%, var(--bg-gradient-accent-1), transparent),
+      radial-gradient(ellipse 55% 45% at 48% 12%, var(--bg-gradient-accent-2), transparent),
+      radial-gradient(ellipse 60% 50% at 88% 52%, var(--bg-gradient-accent-3), transparent),
+      radial-gradient(ellipse 55% 42% at 62% 102%, var(--bg-gradient-accent-4), transparent);
     background-attachment: fixed;
     color: var(--text-primary);
     scrollbar-width: thin;
