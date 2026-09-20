@@ -116,7 +116,7 @@ ${repeatedMistakesStr || "No repeated mistakes registered yet."}
     }
 
     const systemInstruction = `
-You are the advanced GATE OS Personal Tutor AI. 
+You are the advanced RENYXERA Personal Tutor AI. 
 Analyze the learner's profile, diagnostic weaknesses, and recent mistakes to deliver a highly personalized, targeted conceptual explanation.
 
 Tone Guidance: ${personalityGuidance}
@@ -164,7 +164,7 @@ Please explain this question, referencing the learner's weaknesses${context.curr
     }
 
     const systemInstruction = `
-You are the advanced GATE OS personal tutor AI. Provide 3 progressive hints for the question without revealing the final correct option or direct value.
+You are the advanced RENYXERA personal tutor AI. Provide 3 progressive hints for the question without revealing the final correct option or direct value.
 Output a JSON response matching:
 {
   "hintLevel1": "Subtle clue pointing to the relevant topic formulas or standard theorem",
@@ -196,7 +196,7 @@ Generate progressive hints in the requested JSON structure.
     }
 
     const systemInstruction = `
-You are the advanced GATE OS personalization engine. Provide a time-saving shortcut trick or math verification rule of thumb for this question.
+You are the advanced RENYXERA personalization engine. Provide a time-saving shortcut trick or math verification rule of thumb for this question.
 Output JSON:
 {
   "concept": "Shortcut Concept Name",
@@ -253,7 +253,7 @@ Provide the time-saving shortcut trick in JSON format.
     const varietyNonce = Math.random().toString(36).slice(2, 8);
 
     const systemInstruction = `
-You are the advanced GATE OS Question Generator.
+You are the advanced RENYXERA Question Generator.
 Create ${count} custom practice questions STRICTLY on the subject "${subject}", topic "${topic}".
 The generated questions must:
 1. Stay entirely within "${topic}" (within "${subject}") — do not drift into other subjects or only-loosely-related topics. Every question must be unambiguously about this exact topic.
@@ -306,7 +306,7 @@ ${samplesText}
     const profile = this.formatLearnerProfile(context);
 
     const systemInstruction = `
-You are the advanced GATE OS study planner engine. 
+You are the advanced RENYXERA study planner engine. 
 Generate a custom revision plan for the subject "${subject}" based on the learner's consistency, mistakes, and confidence levels.
 Output JSON matching:
 {
@@ -343,7 +343,7 @@ Generate a revision plan in JSON structure for the subject: ${subject}.
     const q = context.currentQuestion;
 
     const systemInstruction = `
-You are the advanced GATE OS Personal Tutor AI.
+You are the advanced RENYXERA Personal Tutor AI.
 Answer the student's follow-up questions about the active question. Keep conversation memory in context.
 Output JSON matching this schema:
 {

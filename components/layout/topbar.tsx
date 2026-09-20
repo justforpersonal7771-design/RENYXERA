@@ -124,10 +124,14 @@ export function Topbar() {
         {/* Logo and Desktop Nav */}
         <div className="flex items-center gap-8 h-full">
           <Link href="/" className="font-black text-xl text-[var(--text-primary)] shrink-0 flex items-center gap-2.5 group">
-             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center transition-transform group-hover:scale-105 group-hover:rotate-3 shadow-lg shadow-indigo-600/30">
-                G
-             </div>
-             <span className="hidden sm:inline">GATE OS</span>
+             <img
+                src={mounted && resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
+                alt="RENYXERA"
+                className="w-8 h-8 rounded-xl object-cover transition-transform group-hover:scale-105 group-hover:rotate-3 shadow-lg shadow-indigo-600/30"
+             />
+             <span className="hidden sm:inline">
+                RENYX<span className="bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 bg-clip-text text-transparent">ERA</span>
+             </span>
           </Link>
 
           <nav className="hidden lg:flex items-center h-full gap-1 relative">

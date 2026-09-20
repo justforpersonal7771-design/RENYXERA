@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Topbar } from "./topbar";
+import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
 
@@ -65,6 +66,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   if (isExamSession) {
     return (
       <div className="h-screen w-screen overflow-hidden bg-background text-text-primary font-sans transition-colors selection:bg-accent/30 relative">
+        <LaunchIntro />
         <main className="w-full h-full overflow-hidden">
           {children}
         </main>
@@ -76,6 +78,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="h-screen w-screen overflow-hidden bg-background text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter flex flex-col relative">
+      <LaunchIntro />
       <Topbar />
       <div className="flex-1 w-full overflow-hidden">
         <main className="w-full h-full overflow-y-auto p-4 sm:p-6 md:p-8 z-0 custom-scrollbar">

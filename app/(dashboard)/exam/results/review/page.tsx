@@ -19,7 +19,7 @@ export default function ReviewPage() {
   const router = useRouter();
   const id = searchParams?.get("id");
   const initialQParam = searchParams?.get("q");
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
 
   const [session, setSession] = useState<ExamSession | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,10 +141,14 @@ export default function ReviewPage() {
             <div className="flex items-center gap-2 min-w-0">
               <button
                 onClick={() => router.push("/")}
-                className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center font-black text-xs shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
+                className="w-7 h-7 rounded-lg overflow-hidden shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
                 title="Back to Dashboard"
               >
-                G
+                <img
+                  src={resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
+                  alt="RENYXERA"
+                  className="w-full h-full object-cover"
+                />
               </button>
               <span className="text-[9px] bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-400 px-2 py-1 rounded-md font-black uppercase tracking-wider shrink-0">Review Mode</span>
               {q && (

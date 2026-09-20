@@ -7,8 +7,20 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mon
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-display' });
 
 export const metadata: Metadata = {
-  title: 'GATE CSE 2027 OS',
-  description: 'Premium Preparation Ecosystem',
+  title: 'RENYXERA — A New ERA of Intelligent Learning',
+  description: 'RENYXERA is a premium, adaptive GATE CSE preparation workspace — analyze weaknesses, drill weak topics, and track mastery with an AI mentor built in.',
+  manifest: '/manifest.json',
+  icons: {
+    icon: [
+      { url: '/brand/favicon-16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/brand/favicon-32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: '/brand/apple-touch-icon.png',
+  },
+};
+
+export const viewport = {
+  themeColor: '#4f46e5',
 };
 
 export default function RootLayout({children}: {children: React.ReactNode}) {

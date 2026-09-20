@@ -47,7 +47,7 @@ export interface StudyReportInput {
 export function buildStudyReportMarkdown(input: StudyReportInput): string {
   const lines: string[] = [];
 
-  lines.push(`# GATE OS — AI Mentor Study Report`);
+  lines.push(`# RENYXERA — AI Mentor Study Report`);
   lines.push(``);
   lines.push(`_Generated ${input.generatedAt}_`);
   lines.push(``);

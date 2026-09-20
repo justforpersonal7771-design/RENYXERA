@@ -1,21 +1,21 @@
 {
-  "name": "GATE OS Preparational Workspace",
-  "short_name": "GATE OS",
-  "description": "Premium preparation ecosystem & adaptive diagnostic engine for GATE CSE.",
+  "name": "RENYXERA — A New ERA of Intelligent Learning",
+  "short_name": "RENYXERA",
+  "description": "A premium, adaptive GATE CSE preparation workspace with a built-in AI mentor.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#09090b",
-  "theme_color": "#6366f1",
+  "background_color": "#05060a",
+  "theme_color": "#4f46e5",
   "icons": [
     {
-      "src": "/images/logo-192.png",
+      "src": "/brand/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/images/logo-512.png",
+      "src": "/brand/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"

@@ -22,7 +22,7 @@ import { motion, AnimatePresence } from "motion/react";
 export default function ExamSessionPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { theme, setTheme } = useTheme();
+  const { theme, resolvedTheme, setTheme } = useTheme();
   const { isInitialized, error: storeError } = useDataStore();
 
   const startSession = useExamRuntimeStore((state) => state.startSession);
@@ -253,10 +253,14 @@ export default function ExamSessionPage() {
                        router.push("/");
                      }
                    }}
-                   className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center font-black text-xs shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
+                   className="w-7 h-7 rounded-lg overflow-hidden shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
                    title="Leave exam (pauses and saves progress)"
                  >
-                   G
+                   <img
+                     src={resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
+                     alt="RENYXERA"
+                     className="w-full h-full object-cover"
+                   />
                  </button>
                  {currentQuestion && (
                     <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-mono text-[11px] shrink-0">

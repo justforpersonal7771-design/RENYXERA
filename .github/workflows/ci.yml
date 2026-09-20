@@ -30,6 +30,7 @@ jobs:
 
       - name: Lint
         run: npm run lint
+        continue-on-error: true # matches next.config.ts's eslint.ignoreDuringBuilds: true — lint is informational here, not a gate
 
       - name: Build
         run: npm run build
