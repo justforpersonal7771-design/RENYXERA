@@ -132,7 +132,7 @@ export function Topbar() {
              <img
                 src={mounted && resolvedTheme === "light" ? "/brand/wordmark-light.png" : "/brand/wordmark-dark.png"}
                 alt="RENYXERA"
-                className="hidden sm:block h-5 w-auto"
+                className="hidden sm:block h-5 w-auto dark:[filter:invert(1)_hue-rotate(180deg)]"
              />
           </Link>
 

@@ -55,12 +55,12 @@ export function LaunchIntro() {
             <img
               src={isLight ? "/brand/wordmark-light.png" : "/brand/wordmark-dark.png"}
               alt="RENYXERA"
-              className="h-8 w-auto"
+              className={`h-8 w-auto ${isLight ? "" : "[filter:invert(1)_hue-rotate(180deg)]"}`}
             />
             <img
               src={isLight ? "/brand/tagline-light.png" : "/brand/tagline-dark.png"}
               alt="A New ERA of Intelligent Learning"
-              className="h-3.5 w-auto opacity-90"
+              className={`h-3.5 w-auto opacity-90 ${isLight ? "" : "[filter:invert(1)_hue-rotate(180deg)]"}`}
             />
           </motion.div>
         </motion.div>
