@@ -26,35 +26,6 @@ const mathJaxConfig = {
   },
 };
 
-// Fills the previously-empty right-hand space next to the (often short, 1-2 field)
-// configuration form with a genuinely useful explanation of what each deployment
-// type actually does, instead of leaving a wide blank void beside a narrow form.
-const DEPLOYMENT_TYPE_INFO: Record<ExamType, { title: string; description: string }> = {
-  YEAR_PAPER: {
-    title: "Official Year Paper",
-    description: "An unmodified replica of that year's real GATE paper — same questions, same marks distribution, same timing. Nothing is filtered or reordered, even if a Focus Target goal is active.",
-  },
-  SECTION_TEST: {
-    title: "Section Sprint",
-    description: "Every question from one exam section (e.g. General Aptitude), pulled from across all years. Good for a focused, shorter practice block on a single section.",
-  },
-  SUBJECT_TEST: {
-    title: "Subject Mastery",
-    description: "Every question tagged to one subject across all years and papers — the deepest single-subject practice pool available.",
-  },
-  TOPIC_TEST: {
-    title: "Topic Spotlight",
-    description: "Drills one specific topic within a subject. Best once Subject Mastery has surfaced a clear weak spot to isolate.",
-  },
-  CUSTOM_TEST: {
-    title: "Custom Advanced Generator",
-    description: "Full manual control over sections, subjects, difficulty mix, and question types — build an exact blueprint from scratch.",
-  },
-  GRAND_MOCK: {
-    title: "Grand Mock",
-    description: "A full-length simulated GATE paper blended across years — the closest thing to sitting the real exam.",
-  },
-};
 
 export default function ExamSetupPage() {
   const router = useRouter();
@@ -507,15 +478,15 @@ export default function ExamSetupPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-    <div className="w-full flex justify-center pb-6">
-      <div className="w-full flex flex-col gap-4">
+    <div className="w-full h-full flex justify-center">
+      <div className="w-full h-full min-h-0 flex flex-col gap-4">
 
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3"
+          className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3"
         >
           <div className="flex items-center gap-4">
             <div className="p-3 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl">
@@ -567,7 +538,7 @@ export default function ExamSetupPage() {
         </motion.div>
 
         {sourceType === "ai_generated" ? (
-          <div className="space-y-6">
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-6 pr-1">
             <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -936,8 +907,8 @@ export default function ExamSetupPage() {
             )}
           </div>
         ) : (
-          <div className="w-full flex flex-col lg:flex-row gap-5">
-            <div className="flex-1 card-glass rounded-2xl shadow-sm p-5 md:p-6">
+          <div className="w-full flex-1 min-h-0 flex flex-col lg:flex-row gap-5">
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar card-glass rounded-2xl shadow-sm p-5 md:p-6">
              <div>
               <div className="flex-1 min-w-0">
               <div className="mb-5 max-w-md">
@@ -956,9 +927,6 @@ export default function ExamSetupPage() {
                   ]}
                   className="w-full text-sm font-medium"
                 />
-                <p className="mt-2 text-xs text-[var(--text-secondary)] font-medium leading-relaxed">
-                  {DEPLOYMENT_TYPE_INFO[examType].description}
-                </p>
               </div>
 
               {examType === "CUSTOM_TEST" ? (
@@ -1119,10 +1087,10 @@ export default function ExamSetupPage() {
              </div>
             </div>
 
-            <div className="w-full lg:w-[420px] shrink-0">
+            <div className="w-full lg:w-[420px] shrink-0 lg:h-full lg:min-h-0">
                <motion.div
                  layout
-                 className={`sticky top-20 card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col max-h-[calc(100vh-6rem)]`}
+                 className={`card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col lg:h-full`}
                >
                   <div className="flex items-center gap-3 p-5 pb-3 shrink-0">
                     <div className={`p-2 rounded-lg ${currentDraft ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-[var(--surface-secondary)] text-[var(--text-muted)]'}`}>
@@ -1140,9 +1108,9 @@ export default function ExamSetupPage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.25 }}
-                      className="flex flex-col min-h-0"
+                      className="flex-1 min-h-0 flex flex-col"
                     >
-                      <div className="px-5 space-y-4 overflow-y-auto custom-scrollbar pb-2">
+                      <div className="flex-1 min-h-0 px-5 space-y-4 overflow-y-auto custom-scrollbar pb-2">
 
                       <div className="grid grid-cols-2 gap-3">
                          <div className="p-4 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-2xl border border-indigo-500/20">
@@ -1232,7 +1200,7 @@ export default function ExamSetupPage() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.25 }}
-                      className="flex flex-col items-center justify-center py-8 text-center border-2 border-dashed border-[var(--border)] rounded-2xl bg-[var(--surface-secondary)]/50 p-5 mx-5 mb-5"
+                      className="flex-1 min-h-0 flex flex-col items-center justify-center text-center border-2 border-dashed border-[var(--border)] rounded-2xl bg-[var(--surface-secondary)]/50 p-5 mx-5 mb-5"
                     >
                        <ServerCog className="w-10 h-10 text-gray-300 dark:text-gray-700 mb-3" />
                        <h4 className="font-bold text-[var(--text-primary)] text-sm mb-1">Awaiting Configuration</h4>
