@@ -143,10 +143,10 @@ export default function AnalyticsDashboardPage() {
           ].map((stat, idx) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 72 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.55, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.75, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
               className="relative card-glass p-5 rounded-2xl shadow-sm overflow-hidden hover-lift group"
             >
               <div className={`absolute -top-10 -right-10 w-28 h-28 rounded-full blur-3xl opacity-[0.15] ${stat.glow} pointer-events-none group-hover:opacity-25 transition-opacity`} />
@@ -223,10 +223,10 @@ export default function AnalyticsDashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Trend Chart */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 72 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="card-glass p-6 rounded-2xl shadow-sm"
         >
           <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2">
@@ -258,10 +258,10 @@ export default function AnalyticsDashboardPage() {
 
         {/* Difficulty Analysis */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 72 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.75, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
           className="card-glass p-6 rounded-2xl shadow-sm"
         >
           <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2">
@@ -294,10 +294,10 @@ export default function AnalyticsDashboardPage() {
           this is real signal (GATE scoring assumes 108s/1-mark, 216s/2-mark) that was
           being thrown away. */}
       <motion.div
-        initial={{ opacity: 0, y: 28 }}
+        initial={{ opacity: 0, y: 72 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
         className="card-glass p-6 rounded-2xl shadow-sm"
       >
         <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-1 flex items-center gap-2">
@@ -329,10 +329,10 @@ export default function AnalyticsDashboardPage() {
 
       {/* Subject Dashboard */}
       <motion.div
-        initial={{ opacity: 0, y: 28 }}
+        initial={{ opacity: 0, y: 72 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.15 }}
-        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
         className="card-glass p-6 rounded-2xl shadow-sm"
       >
         <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2">
@@ -362,10 +362,10 @@ export default function AnalyticsDashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Weak Topics */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 72 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col"
         >
           <div className="px-5 py-4 border-b border-[var(--border-subtle)] bg-rose-500/10 flex items-center">
@@ -409,10 +409,10 @@ export default function AnalyticsDashboardPage() {
 
         {/* Strong Topics */}
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 72 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col"
         >
           <div className="px-5 py-4 border-b border-[var(--border-subtle)] bg-emerald-500/10 flex items-center">

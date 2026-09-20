@@ -625,10 +625,10 @@ export default function MistakesPage() {
             </>
           ) : (
             <motion.div
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 72 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 flex flex-col items-center justify-center p-8 text-[var(--text-secondary)]"
             >
               <AlertTriangle className="w-12 h-12 text-[var(--text-muted)] mb-4" />

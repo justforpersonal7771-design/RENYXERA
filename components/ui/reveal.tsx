@@ -16,7 +16,7 @@ interface RevealProps extends Omit<HTMLMotionProps<"div">, "initial" | "whileInV
  * negative `margin` — the margin form silently fails to hold back elements that are only
  * just past the fold, which made the effect look like it wasn't running at all.
  */
-export function Reveal({ children, delay = 0, y = 28, className, ...props }: RevealProps) {
+export function Reveal({ children, delay = 0, y = 72, className, ...props }: RevealProps) {
   const prefersReducedMotion = useReducedMotion();
 
   if (prefersReducedMotion) {
@@ -27,8 +27,8 @@ export function Reveal({ children, delay = 0, y = 28, className, ...props }: Rev
     <motion.div
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.55, delay, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.75, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
       {...props}
     >

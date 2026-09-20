@@ -482,10 +482,10 @@ export default function ExamSetupPage() {
       <div className="w-full h-full min-h-0 flex flex-col gap-4">
 
         <motion.div
-          initial={{ opacity: 0, y: 28 }}
+          initial={{ opacity: 0, y: 72 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3"
         >
           <div className="flex items-center gap-4">
@@ -647,10 +647,10 @@ export default function ExamSetupPage() {
                   return (
                     <motion.div
                       key={sectionName}
-                      initial={{ opacity: 0, y: 28 }}
+                      initial={{ opacity: 0, y: 72 }}
                       whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.15 }}
-                      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                       className="card-glass rounded-2xl p-6 shadow-sm space-y-4"
                     >
                       <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3 bg-[var(--surface-secondary)]/10 px-3 py-2 rounded-xl">
