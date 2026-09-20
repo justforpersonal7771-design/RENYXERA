@@ -1,4 +1,4 @@
-const CACHE_NAME = "gateos-pwa-cache-v3";
+const CACHE_NAME = "gateos-pwa-cache-v4";
 const ASSETS_TO_CACHE = [
   "/",
   "/manifest.json",
@@ -45,38 +45,29 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
-// Fetch Strategy (Cache First with Network Fallback)
+// Fetch Strategy (Network First, cache as an offline fallback only).
+// This app ships multiple deploys per session — cache-first (the previous
+// strategy) meant every visitor was served yesterday's cached shell first,
+// with a fresh copy only quietly updated in the background for *next* time,
+// so fixes never actually reached anyone no matter how often they reloaded.
+// Network-first means online users always get what's actually deployed;
+// the cache only kicks in once a request genuinely fails (offline).
 self.addEventListener("fetch", (event) => {
   // Only handle GET requests
   if (event.request.method !== "GET") return;
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Fetch fresh copy in background to update cache
-        fetch(event.request)
-          .then((networkResponse) => {
-            if (networkResponse.status === 200) {
-              caches.open(CACHE_NAME).then((cache) => cache.put(event.request, networkResponse));
-            }
-          })
-          .catch(() => null);
-        return cachedResponse;
-      }
-
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== "basic") {
-          return networkResponse;
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic") {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
         }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-
         return networkResponse;
-      }).catch(async () => {
-        // Offline fallbacks for major routes if offline
+      })
+      .catch(async () => {
+        const cached = await caches.match(event.request);
+        if (cached) return cached;
         const cache = await caches.open(CACHE_NAME);
         const fallback = await cache.match("/");
         return fallback || new Response("Offline mode active. Please connect to the internet.", {
@@ -84,7 +75,6 @@ self.addEventListener("fetch", (event) => {
           statusText: "Service Unavailable",
           headers: new Headers({ "Content-Type": "text/html" })
         });
-      });
-    })
+      })
   );
 });
