@@ -50,23 +50,18 @@ export function LaunchIntro() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: prefersReducedMotion ? 0 : 0.35, ease: "easeOut" }}
-            className="flex flex-col items-center gap-2"
+            className="flex flex-col items-center gap-3"
           >
-            <span
-              className="font-black text-2xl tracking-tight"
-              style={{ color: isLight ? "#0f172a" : "#ffffff" }}
-            >
-              RENYX
-              <span className="bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 bg-clip-text text-transparent">
-                ERA
-              </span>
-            </span>
-            <span
-              className="text-[11px] font-semibold tracking-[0.2em] uppercase"
-              style={{ color: isLight ? "#64748b" : "#94a3b8" }}
-            >
-              A New <span className="text-indigo-400">Era</span> of Intelligent Learning
-            </span>
+            <img
+              src={isLight ? "/brand/wordmark-light.png" : "/brand/wordmark-dark.png"}
+              alt="RENYXERA"
+              className="h-8 w-auto"
+            />
+            <img
+              src={isLight ? "/brand/tagline-light.png" : "/brand/tagline-dark.png"}
+              alt="A New ERA of Intelligent Learning"
+              className="h-3.5 w-auto opacity-90"
+            />
           </motion.div>
         </motion.div>
       )}
