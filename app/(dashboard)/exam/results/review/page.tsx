@@ -147,7 +147,7 @@ export default function ReviewPage() {
                 <img
                   src={resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
                   alt="RENYXERA"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </button>
               <span className="text-[9px] bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-400 px-2 py-1 rounded-md font-black uppercase tracking-wider shrink-0">Review Mode</span>

@@ -41,7 +41,7 @@ export function LaunchIntro() {
           <motion.img
             src={isLight ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
             alt="RENYXERA"
-            className="w-20 h-20 rounded-2xl shadow-2xl shadow-indigo-600/30"
+            className="h-24 w-auto object-contain drop-shadow-[0_8px_28px_rgba(79,70,229,0.4)]"
             initial={{ opacity: 0, scale: 0.7, rotate: -8 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: prefersReducedMotion ? 0.15 : 0.6, ease: [0.16, 1, 0.3, 1] }}

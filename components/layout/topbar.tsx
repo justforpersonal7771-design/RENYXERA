@@ -127,7 +127,7 @@ export function Topbar() {
              <img
                 src={mounted && resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
                 alt="RENYXERA"
-                className="w-8 h-8 rounded-xl object-cover transition-transform group-hover:scale-105 group-hover:rotate-3 shadow-lg shadow-indigo-600/30"
+                className="h-8 w-auto object-contain transition-transform group-hover:scale-105 group-hover:rotate-3 drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]"
              />
              <img
                 src={mounted && resolvedTheme === "light" ? "/brand/wordmark-light.png" : "/brand/wordmark-dark.png"}

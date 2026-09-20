@@ -259,7 +259,7 @@ export default function ExamSessionPage() {
                    <img
                      src={resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
                      alt="RENYXERA"
-                     className="w-full h-full object-cover"
+                     className="w-full h-full object-contain"
                    />
                  </button>
                  {currentQuestion && (
