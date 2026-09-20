@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { LearningEngine, PersonalizedIntelligence } from "@/lib/learning/LearningEngine";
 import { motion } from "motion/react";
+import { Reveal } from "@/components/ui/reveal";
 
 export default function AnalyticsDashboardPage() {
   const { isInitialized } = useDataStore();
@@ -142,10 +143,10 @@ export default function AnalyticsDashboardPage() {
           ].map((stat, idx) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ delay: 0.05 + idx * 0.05 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.55, delay: idx * 0.06, ease: [0.16, 1, 0.3, 1] }}
               className="relative card-glass p-5 rounded-2xl shadow-sm overflow-hidden hover-lift group"
             >
               <div className={`absolute -top-10 -right-10 w-28 h-28 rounded-full blur-3xl opacity-[0.15] ${stat.glow} pointer-events-none group-hover:opacity-25 transition-opacity`} />
@@ -164,7 +165,7 @@ export default function AnalyticsDashboardPage() {
 
       {/* 2. Smart Insights Panel & Today's Adaptive Focus (Part 3) */}
       {!loadingIntel && intel && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Smart Insights Feed */}
           <div className="lg:col-span-8 card-glass rounded-2xl p-6 shadow-sm flex flex-col justify-between">
             <div>
@@ -215,17 +216,18 @@ export default function AnalyticsDashboardPage() {
               </div>
             </div>
           </div>
-        </div>
+        </Reveal>
       )}
 
       {/* Charts HUD Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Trend Chart */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 }}
-          className="bg-[var(--surface)] p-6 rounded-2xl border border-[var(--border)] shadow-sm"
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          className="card-glass p-6 rounded-2xl shadow-sm"
         >
           <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-indigo-500" />
@@ -256,10 +258,11 @@ export default function AnalyticsDashboardPage() {
 
         {/* Difficulty Analysis */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-[var(--surface)] p-6 rounded-2xl border border-[var(--border)] shadow-sm"
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
+          className="card-glass p-6 rounded-2xl shadow-sm"
         >
           <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2">
             <Target className="w-4 h-4 text-rose-500" />
@@ -291,10 +294,11 @@ export default function AnalyticsDashboardPage() {
           this is real signal (GATE scoring assumes 108s/1-mark, 216s/2-mark) that was
           being thrown away. */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.12 }}
-        className="bg-[var(--surface)] p-6 rounded-2xl border border-[var(--border)] shadow-sm"
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="card-glass p-6 rounded-2xl shadow-sm"
       >
         <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-1 flex items-center gap-2">
           <Clock className="w-4 h-4 text-amber-500" />
@@ -325,10 +329,11 @@ export default function AnalyticsDashboardPage() {
 
       {/* Subject Dashboard */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.15 }}
-        className="bg-[var(--surface)] p-6 rounded-2xl border border-[var(--border)] shadow-sm"
+        initial={{ opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        className="card-glass p-6 rounded-2xl shadow-sm"
       >
         <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2">
           <BookOpen className="w-4 h-4 text-indigo-500" />
@@ -357,9 +362,10 @@ export default function AnalyticsDashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Weak Topics */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col"
         >
           <div className="px-5 py-4 border-b border-[var(--border-subtle)] bg-rose-500/10 flex items-center">
@@ -403,9 +409,10 @@ export default function AnalyticsDashboardPage() {
 
         {/* Strong Topics */}
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col"
         >
           <div className="px-5 py-4 border-b border-[var(--border-subtle)] bg-emerald-500/10 flex items-center">

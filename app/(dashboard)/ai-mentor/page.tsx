@@ -418,9 +418,10 @@ export default function AIMentorPage() {
                   return (
                     <motion.div
                       key={s.id}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.05 }}
+                      initial={{ opacity: 0, y: 28 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.15 }}
+                      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                       className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] rounded-xl p-4 space-y-2.5 flex flex-col justify-between"
                     >
                       <div className="space-y-1.5">
@@ -624,9 +625,10 @@ export default function AIMentorPage() {
                     {filteredShortcuts.map((b, idx) => (
                       <motion.div
                         key={b.questionId}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: Math.min(idx * 0.04, 0.3) }}
+                        initial={{ opacity: 0, y: 28 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.15 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                         className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
                       >
                         <div className="flex justify-between items-center">
@@ -688,9 +690,10 @@ export default function AIMentorPage() {
                     {filteredNotes.map((b, idx) => (
                       <motion.div
                         key={b.questionId}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: Math.min(idx * 0.04, 0.3) }}
+                        initial={{ opacity: 0, y: 28 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.15 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                         className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
                       >
                         <span className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{b.subject}</span>
@@ -708,9 +711,10 @@ export default function AIMentorPage() {
 
             {/* RIGHT SIDE PANEL: Predictor Dashboard & Timeline */}
             <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 }}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-6"
             >
 
@@ -730,9 +734,10 @@ export default function AIMentorPage() {
                     {mistakePatterns.map((p, idx) => (
                       <motion.div
                         key={p.id}
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: idx * 0.06 }}
+                        initial={{ opacity: 0, y: 28 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.15 }}
+                        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                         className="p-3 bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] rounded-xl space-y-1.5"
                       >
                         <div className="flex justify-between items-center">

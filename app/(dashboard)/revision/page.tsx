@@ -246,9 +246,10 @@ export default function RevisionBuilderPage() {
                   {bookmarks.filter(b => b.aiShortcut || b.personalObservations).map((b, idx) => (
                     <motion.div
                       key={b.questionId}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: Math.min(idx * 0.04, 0.3) }}
+                      initial={{ opacity: 0, y: 28 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.15 }}
+                      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                       className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-3 shadow-sm hover-lift"
                     >
                       <div className="flex justify-between items-center">

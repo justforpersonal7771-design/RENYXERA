@@ -205,7 +205,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
         className="bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden"
       >
         {/* Header */}
-        <div className="shrink-0 flex items-center justify-between gap-3 p-5 border-b border-[var(--border-subtle)] bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700">
+        <div className="shrink-0 flex items-center justify-between gap-3 p-4 border-b border-[var(--border-subtle)] bg-gradient-to-br from-indigo-600 via-indigo-600 to-purple-700">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-white/15 flex items-center justify-center shrink-0">
               <Sparkles className="w-4.5 h-4.5 text-white" />
@@ -239,10 +239,10 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
             Loading question repository…
           </div>
         ) : (
-          <div className="flex-1 min-h-0 p-5 grid grid-cols-1 lg:grid-cols-5 gap-5">
+          <div className="flex-1 min-h-0 p-4 grid grid-cols-1 lg:grid-cols-5 gap-4">
             {/* Left: chart + stats */}
-            <div className="lg:col-span-3 min-h-0 overflow-y-auto custom-scrollbar pr-1 space-y-4">
-              <div className="bg-[var(--surface-secondary)]/40 border border-[var(--border-subtle)] rounded-xl p-4">
+            <div className="lg:col-span-3 min-h-0 flex flex-col gap-3">
+              <div className="bg-[var(--surface-secondary)]/40 border border-[var(--border-subtle)] rounded-xl p-3 shrink-0">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wide">
                     Drag on the graph to set your target
@@ -250,7 +250,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   <span className="text-base font-black text-indigo-500">{draftPercent}% syllabus</span>
                 </div>
 
-                <div className="h-[260px] select-none" style={{ cursor: isDragging ? "grabbing" : "grab" }}>
+                <div className="h-[190px] select-none" style={{ cursor: isDragging ? "grabbing" : "grab" }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                       data={curve}
@@ -302,13 +302,10 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                     <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" /> Syllabus Covered
                   </span>
                 </div>
-                <p className="text-[10px] text-[var(--text-muted)] font-medium text-center mt-2">
-                  Marks coverage can reach 100% well before full syllabus — high-yield topics are prioritized first.
-                </p>
               </div>
 
               {/* Stat tiles */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-4 gap-2 shrink-0">
                 <StatTile icon={Target} label="Topics Selected" value={`${effectiveTopics.length}/${result.totalTopics}`} color="indigo" />
                 <StatTile icon={TrendingUp} label="Marks Covered" value={`${effectiveMarksCaptured.toFixed(1)}%`} color="amber" />
                 <StatTile icon={FileQuestion} label="PYQ Questions" value={`${launchPool.length}/${result.totalPyqQuestions}`} color="blue" />
@@ -402,11 +399,11 @@ function StatTile({ icon: Icon, label, value, color }: { icon: any; label: strin
     emerald: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
   };
   return (
-    <div className="p-3 bg-[var(--surface-secondary)]/40 border border-[var(--border-subtle)] rounded-xl">
-      <div className={`w-6 h-6 rounded-md flex items-center justify-center mb-1.5 ${colorMap[color]}`}>
-        <Icon className="w-3.5 h-3.5" />
+    <div className="p-2.5 bg-[var(--surface-secondary)]/40 border border-[var(--border-subtle)] rounded-xl">
+      <div className={`w-5 h-5 rounded-md flex items-center justify-center mb-1 ${colorMap[color]}`}>
+        <Icon className="w-3 h-3" />
       </div>
-      <p className="text-sm font-black text-[var(--text-primary)]">{value}</p>
+      <p className="text-sm font-black text-[var(--text-primary)] leading-tight">{value}</p>
       <p className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wide">{label}</p>
     </div>
   );

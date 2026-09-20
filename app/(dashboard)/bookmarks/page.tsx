@@ -675,9 +675,10 @@ export default function BookmarksPage() {
             </>
           ) : (
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
               className="flex-1 flex flex-col items-center justify-center p-8 text-[var(--text-secondary)]"
             >
                <BookmarkMinus className="w-12 h-12 text-[var(--text-muted)] mb-4" />

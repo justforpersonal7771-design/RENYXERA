@@ -285,7 +285,15 @@ export default function ExamSetupPage() {
   useEffect(() => {
     if (isInitialized) {
       const repo = QuestionRepository;
-      const allQs = repo.getAllQuestions().filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated);
+      let allQs = repo.getAllQuestions().filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated);
+
+      // Focus Target scopes the pickers themselves, not just the resulting counts: at a
+      // 5% target only a handful of topics are in-goal, so every Subject / Topic / Section
+      // that has nothing in-goal left is dropped from its dropdown entirely instead of
+      // being offered and then silently resolving to "Available: 0".
+      if (isGoalSliderActive && sourceType === "standard") {
+        allQs = allQs.filter(q => goalRecommendedTopics.has(q.topic));
+      }
 
       const papers = Array.from(new Set(allQs.map(q => q.year_shift).filter(Boolean)));
       const subjects = Array.from(new Set(allQs.map(q => q.subject).filter(Boolean)));
@@ -322,32 +330,38 @@ export default function ExamSetupPage() {
       setSelectedPaper(papers.length > 0 ? papers[0] : "");
       setSelectedSection(sections.length > 0 ? sections[0] : "");
     }
-  }, [isInitialized, sourceType, totalQuestions, searchParams]);
+  }, [isInitialized, sourceType, totalQuestions, searchParams, isGoalSliderActive, goalRecommendedTopics]);
 
   useEffect(() => {
     if (isInitialized && selectedSubject && (examType === "TOPIC_TEST" || examType === "SUBJECT_TEST")) {
       const repo = QuestionRepository;
-      const allQs = repo.getSubjectBank(selectedSubject).filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated);
+      let allQs = repo.getSubjectBank(selectedSubject).filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated);
+      // Same Focus Target scoping as the top-level lists — otherwise picking a subject
+      // here would repopulate the Topic dropdown with that subject's full topic set and
+      // quietly undo the filter.
+      if (isGoalSliderActive && sourceType === "standard") {
+        allQs = allQs.filter(q => goalRecommendedTopics.has(q.topic));
+      }
       const filteredTopics = Array.from(new Set(allQs.map(q => q.topic).filter(Boolean)));
-      
+
       setAvailableTopics(filteredTopics.sort());
       if (filteredTopics.length > 0 && !filteredTopics.includes(selectedTopic)) setSelectedTopic(filteredTopics[0]);
     }
-  }, [selectedSubject, isInitialized, examType, selectedTopic, sourceType]);
+  }, [selectedSubject, isInitialized, examType, selectedTopic, sourceType, isGoalSliderActive, goalRecommendedTopics]);
 
   useEffect(() => {
     if (isInitialized) {
       const repo = QuestionRepository;
       let count = 0;
       const focusFilterActive = isGoalSliderActive && sourceType === "standard" &&
-        (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST");
+        (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST" || examType === "TOPIC_TEST");
       const applyFocusFilter = (qs: any[]) =>
         focusFilterActive ? qs.filter((q: any) => goalRecommendedTopics.has(q.topic)) : qs;
 
       if (examType === "SUBJECT_TEST" && selectedSubject) {
         count = applyFocusFilter(repo.getSubjectBank(selectedSubject).filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated)).length;
       } else if (examType === "TOPIC_TEST" && selectedTopic) {
-        count = repo.getQuestionsByTopic(selectedTopic).filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated).length;
+        count = applyFocusFilter(repo.getQuestionsByTopic(selectedTopic).filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated)).length;
       } else if (examType === "SECTION_TEST" && selectedSection) {
         count = applyFocusFilter(repo.getQuestionsBySection(selectedSection).filter(q => sourceType === "ai_generated" ? (q as any).isAiGenerated === true : !(q as any).isAiGenerated)).length;
       }
@@ -388,21 +402,24 @@ export default function ExamSetupPage() {
 
     const start = performance.now();
 
-    // When Focus Target is active, Subject/Section/Custom tests should actually respect it:
+    // When Focus Target is active, every deployment type except YEAR_PAPER respects it:
     // restrict the pool to in-goal topics and order questions easy -> medium -> hard (within
-    // a tier, higher-priority topics first) instead of a random shuffle. Deliberately excluded:
-    // YEAR_PAPER (must stay a true, unmodified replica of that year's real exam) and TOPIC_TEST
-    // (the student already picked one specific topic — filtering by the goal set here could
-    // wipe the pool out entirely if that topic isn't one of the in-goal ones).
+    // a tier, higher-priority topics first) instead of a random shuffle. Only YEAR_PAPER is
+    // excluded, since it must stay a true, unmodified replica of that year's real exam.
+    // TOPIC_TEST is included now that the Topic picker itself only offers in-goal topics —
+    // the old worry (a hand-picked out-of-goal topic filtering down to an empty pool) can no
+    // longer happen.
     const applyFocusTarget = isGoalSliderActive && sourceType === "standard" &&
-      (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST");
+      (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST" || examType === "TOPIC_TEST");
 
     if (applyFocusTarget) {
       let pool = examType === "SUBJECT_TEST"
         ? QuestionRepository.getSubjectBank(selectedSubject)
         : examType === "SECTION_TEST"
           ? QuestionRepository.getQuestionsBySection(selectedSection)
-          : QuestionRepository.getAllQuestions();
+          : examType === "TOPIC_TEST"
+            ? QuestionRepository.getQuestionsByTopic(selectedTopic)
+            : QuestionRepository.getAllQuestions();
       pool = pool.filter(q => !(q as any).isAiGenerated);
       pool = pool.filter(q => goalRecommendedTopics.has(q.topic));
 
@@ -494,9 +511,10 @@ export default function ExamSetupPage() {
       <div className="w-full flex flex-col gap-4">
 
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35 }}
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           className="mb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3"
         >
           <div className="flex items-center gap-4">
@@ -658,9 +676,10 @@ export default function ExamSetupPage() {
                   return (
                     <motion.div
                       key={sectionName}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: Math.min(sectionIdx * 0.06, 0.3) }}
+                      initial={{ opacity: 0, y: 28 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.15 }}
+                      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
                       className="card-glass rounded-2xl p-6 shadow-sm space-y-4"
                     >
                       <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3 bg-[var(--surface-secondary)]/10 px-3 py-2 rounded-xl">
@@ -1078,9 +1097,15 @@ export default function ExamSetupPage() {
                       {DEPLOYMENT_TYPE_INFO[examType].description}
                     </p>
 
-                    {isGoalSliderActive && (examType === "YEAR_PAPER" || examType === "TOPIC_TEST") && (
+                    {isGoalSliderActive && examType === "YEAR_PAPER" && (
                       <p className="text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-500/10 rounded-lg px-2.5 py-2 leading-relaxed">
-                        Focus Target is on, but doesn't apply here — {examType === "YEAR_PAPER" ? "Official Year Papers" : "a single Topic Spotlight"} stay unfiltered. Switch to Subject Mastery, Section Sprint, or Custom to use it.
+                        Focus Target is on, but doesn't apply here — an Official Year Paper is an exact replica of that year's paper, so it's never filtered. Every other deployment type respects it.
+                      </p>
+                    )}
+
+                    {isGoalSliderActive && examType !== "YEAR_PAPER" && (
+                      <p className="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-500/10 rounded-lg px-2.5 py-2 leading-relaxed">
+                        Focus Target is on — the pickers above only list options that still have in-goal questions.
                       </p>
                     )}
 

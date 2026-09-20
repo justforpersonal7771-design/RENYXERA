@@ -98,7 +98,14 @@ export function Topbar() {
 
   return (
     <>
-    <header className="h-16 fixed top-0 left-0 right-0 bg-[var(--background)]/45 backdrop-blur-xl z-40 transition-colors">
+    {/* Stays genuinely translucent (you can see content move underneath) but at a tint
+        strong enough to hold text contrast. The bar is fixed over a scrolling page, so
+        the backdrop behind the labels keeps changing — a near-black hero one moment, a
+        white card the next — while the label colour is fixed per theme. At 45% the
+        labels visibly dissolved into dark content passing under. Heavier blur turns that
+        content into a smooth wash rather than hard shapes, and the extra tint keeps the
+        labels readable at every scroll position. */}
+    <header className="h-16 fixed top-0 left-0 right-0 bg-[var(--background)]/72 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-colors">
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
       <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between">
 
@@ -127,7 +134,7 @@ export function Topbar() {
                   className={`relative flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-colors z-10 ${
                     isActive
                       ? "text-white"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
+                      : "text-[var(--text-primary)]/75 hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
                   }`}
                 >
                   {isActive && (

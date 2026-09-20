@@ -10,6 +10,7 @@ import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
 import { Loader2 } from "lucide-react";
+import { Reveal } from "@/components/ui/reveal";
 
 // Dynamic imports with Skeleton Loading placeholders to guarantee performance (Part 12)
 const HeroSection = dynamic(() => import("@/components/dashboard/hero-section").then(m => m.HeroSection), {
@@ -185,16 +186,18 @@ export default function Home() {
       {/* 3. Grouped metrics — Study Momentum vs Performance Signals, deliberately
           distinct from the hero's Streak/Solved/Accuracy/Mastery/Readiness cards
           above. Every value here is real and uncapped. */}
-      <MetricsStrip
-        studyHours={studyHours}
-        bookmarksCount={bookmarksCount}
-        bestStreak={bestStreak}
-        avgTimePerQuestion={avgTimePerQuestion}
-        weakTopicsCount={weakTopicsCount}
-        strongTopicsCount={strongTopicsCount}
-        pendingMistakesCount={pendingMistakesCount}
-        masteredMistakesCount={masteredMistakesCount}
-      />
+      <Reveal>
+        <MetricsStrip
+          studyHours={studyHours}
+          bookmarksCount={bookmarksCount}
+          bestStreak={bestStreak}
+          avgTimePerQuestion={avgTimePerQuestion}
+          weakTopicsCount={weakTopicsCount}
+          strongTopicsCount={strongTopicsCount}
+          pendingMistakesCount={pendingMistakesCount}
+          masteredMistakesCount={masteredMistakesCount}
+        />
+      </Reveal>
 
       {/* 4. Main Two-Column Content Grid — items-start (not stretch): the two columns
           hold very different amounts of content, and stretching the shorter one to
@@ -206,43 +209,55 @@ export default function Home() {
         {/* Left Side (Spans 8 columns) */}
         <div className="lg:col-span-8 space-y-8 flex flex-col justify-start">
           {/* Progress Circular and Mastery Rings */}
-          <ProgressVisualizer 
-            subjectPerformance={dashboardMetrics?.subjectPerformance || []}
-            totalSolved={solvedCount}
-          />
+          <Reveal>
+            <ProgressVisualizer
+              subjectPerformance={dashboardMetrics?.subjectPerformance || []}
+              totalSolved={solvedCount}
+            />
+          </Reveal>
 
           {/* Today's Focus Widget */}
-          <FocusCenter 
-            subjectPerformance={dashboardMetrics?.subjectPerformance || []}
-            topicPerformance={dashboardMetrics?.topicPerformance || []}
-            mistakesCount={mistakesCount}
-            bookmarksCount={bookmarksCount}
-            hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"}
-            onContinueSession={handleResume}
-          />
+          <Reveal>
+            <FocusCenter
+              subjectPerformance={dashboardMetrics?.subjectPerformance || []}
+              topicPerformance={dashboardMetrics?.topicPerformance || []}
+              mistakesCount={mistakesCount}
+              bookmarksCount={bookmarksCount}
+              hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"}
+              onContinueSession={handleResume}
+            />
+          </Reveal>
         </div>
 
         {/* Right Side (Spans 4 columns) */}
         <div className="lg:col-span-4 space-y-8 flex flex-col justify-start">
           {/* GATE 2027 Countdown + Scheduled tests */}
-          <ExamCountdownCard />
+          <Reveal>
+            <ExamCountdownCard />
+          </Reveal>
 
           {/* Contribution Heatmap */}
-          <GithubHeatmap
-            snapshots={snapshots}
-          />
+          <Reveal>
+            <GithubHeatmap
+              snapshots={snapshots}
+            />
+          </Reveal>
 
           {/* Recent Exam logs */}
-          <RecentExams
-            recentSessions={dashboardMetrics?.recentSessions || []}
-          />
+          <Reveal>
+            <RecentExams
+              recentSessions={dashboardMetrics?.recentSessions || []}
+            />
+          </Reveal>
 
           {/* Activity timeline logs */}
-          <ActivityTimeline 
-            recentSessions={dashboardMetrics?.recentSessions || []}
-            bookmarks={bookmarks}
-            mistakes={mistakes}
-          />
+          <Reveal>
+            <ActivityTimeline
+              recentSessions={dashboardMetrics?.recentSessions || []}
+              bookmarks={bookmarks}
+              mistakes={mistakes}
+            />
+          </Reveal>
         </div>
 
       </div>
