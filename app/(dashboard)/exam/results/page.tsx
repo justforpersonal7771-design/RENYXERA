@@ -279,11 +279,11 @@ export default function ResultSummaryPage() {
           className="lg:col-span-5 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm"
         >
           {/* Verdict hero band */}
-          <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-6">
+          <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-5">
             <div className="absolute top-0 right-0 w-56 h-56 bg-cyan-300/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-fuchsia-400/20 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />
 
-            <div className="relative z-10 flex flex-col items-center text-center gap-4">
+            <div className="relative z-10 flex flex-col items-center text-center gap-3">
               <div className="flex items-center gap-2 flex-wrap justify-center">
                 <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest bg-white/15 px-3 py-1 rounded-full">
                   <Sparkles className="w-3 h-3" />
@@ -295,7 +295,7 @@ export default function ResultSummaryPage() {
               </div>
 
               {/* Accuracy ring */}
-              <div className="relative w-28 h-28 shrink-0">
+              <div className="relative w-24 h-24 shrink-0">
                 <svg className="w-full h-full -rotate-90" viewBox="0 0 128 128">
                   <circle cx="64" cy="64" r={radius} strokeWidth="8" className="stroke-white/20 fill-none" />
                   <motion.circle
@@ -318,7 +318,7 @@ export default function ResultSummaryPage() {
               </div>
 
               <div>
-                <h1 className="text-xl md:text-2xl font-black tracking-tight">{verdict.label}</h1>
+                <h1 className="text-lg md:text-xl font-black tracking-tight">{verdict.label}</h1>
                 <p className="text-indigo-100 text-xs font-semibold max-w-sm mt-1">{verdict.message}</p>
               </div>
 
@@ -339,7 +339,7 @@ export default function ResultSummaryPage() {
 
           {/* Scoreboard content — same card, continues below the hero band. Deliberately
               not scrollable: this card now sizes to its content rather than clipping it. */}
-          <div className="p-6 space-y-6">
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-5 space-y-4">
             <div>
               <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
               <div className="grid grid-cols-2 gap-4">
@@ -356,7 +356,7 @@ export default function ResultSummaryPage() {
             </div>
 
             {/* Metric Cards — colorful, semantic per stat instead of a flat gray tile */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-4 gap-2.5">
               {[
                 { icon: CheckCircle, label: "Correct", value: correct, color: "text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
                 { icon: XCircle, label: "Wrong", value: wrong, color: "text-rose-500", bg: "bg-gradient-to-br from-rose-500/10 to-rose-500/5 border-rose-500/20" },
@@ -368,21 +368,25 @@ export default function ResultSummaryPage() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + idx * 0.05 }}
-                  className={`border p-4 rounded-2xl flex flex-col items-center justify-center text-center hover-lift ${stat.bg}`}
+                  className={`border p-2.5 rounded-xl flex flex-col items-center justify-center text-center hover-lift ${stat.bg}`}
                 >
-                  <stat.icon className={`w-5 h-5 mb-1 ${stat.color}`} />
+                  <stat.icon className={`w-4 h-4 mb-1 ${stat.color}`} />
                   <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
                   <span className="text-base font-black text-[var(--text-primary)] font-mono">{stat.value}</span>
                 </motion.div>
               ))}
             </div>
 
-            {/* Actions Desk */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-[var(--border-subtle)]">
+          </div>
+
+          {/* Actions Desk — outside the scrolling body so Dashboard / Retry / Review are
+              always reachable no matter how tall the scoreboard content gets. */}
+          <div className="shrink-0 border-t border-[var(--border-subtle)] p-4">
+            <div className="flex flex-col sm:flex-row gap-2.5">
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push("/")}
-                className="flex-1 px-5 py-3.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] font-bold uppercase tracking-wider rounded-xl transition shadow-sm text-xs flex items-center justify-center gap-2 cursor-pointer"
+                className="flex-1 px-4 py-3 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] font-bold uppercase tracking-wider rounded-xl transition shadow-sm text-xs flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Home className="w-4 h-4" />
                 <span>Dashboard</span>
@@ -390,7 +394,7 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={handleRetry}
-                className="flex-1 px-5 py-3.5 bg-amber-600 hover:bg-amber-700 text-white font-extrabold uppercase tracking-wider rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer text-xs"
+                className="flex-1 px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white font-extrabold uppercase tracking-wider rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer text-xs"
               >
                 <RefreshCw className="w-4 h-4" />
                 <span>Retry Test</span>
@@ -398,7 +402,7 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push(`/exam/results/review?id=${id}`)}
-                className="flex-[1.5] px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold uppercase tracking-wider rounded-xl shadow-lg shadow-indigo-500/10 transition flex items-center justify-center gap-2 cursor-pointer text-xs"
+                className="flex-[1.5] px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold uppercase tracking-wider rounded-xl shadow-lg shadow-indigo-500/10 transition flex items-center justify-center gap-2 cursor-pointer text-xs"
               >
                 <span>Review</span>
                 <ArrowRight className="w-4 h-4" />
@@ -465,7 +469,7 @@ export default function ResultSummaryPage() {
           {rightPanelView === "grid" ? (
             <div className="flex-1 flex flex-col min-h-0">
               <div className="flex-1 overflow-y-auto pr-1 -mr-1 custom-scrollbar">
-                <div className="grid grid-cols-6 sm:grid-cols-8 gap-2">
+                <div className="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-12 gap-1.5">
                   {questionGrid.map((item, idx) => {
                     let cellClass = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]";
                     if (item.isAttempted) {
@@ -481,7 +485,7 @@ export default function ResultSummaryPage() {
                         transition={{ delay: Math.min(idx * 0.008, 0.3) }}
                         whileTap={{ scale: 0.92 }}
                         onClick={() => router.push(`/exam/results/review?id=${id}&q=${idx}`)}
-                        className={`relative aspect-square rounded-lg flex items-center justify-center font-bold text-xs cursor-pointer ${cellClass}`}
+                        className={`relative h-9 rounded-lg flex items-center justify-center font-bold text-xs cursor-pointer ${cellClass}`}
                         title={`Question ${idx + 1}${item.isMarked ? " (Marked for review)" : ""}`}
                       >
                         {idx + 1}

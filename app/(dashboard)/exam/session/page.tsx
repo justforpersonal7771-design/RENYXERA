@@ -263,8 +263,8 @@ export default function ExamSessionPage() {
                    />
                  </button>
                  {currentQuestion && (
-                    <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-mono text-[11px] shrink-0">
-                      Q<span className="text-indigo-600 dark:text-indigo-400 font-bold">{currentQuestionIndex + 1}</span><span className="text-[var(--text-muted)] font-normal">/{totalQuestions}</span>
+                    <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-mono text-[13px] font-bold shrink-0">
+                      {currentQuestionIndex + 1}<span className="text-[var(--text-muted)]">/{totalQuestions}</span>
                     </span>
                  )}
                  {currentQuestion && (
@@ -338,31 +338,34 @@ export default function ExamSessionPage() {
 
            {/* Row 2: type/marks/difficulty + section/subject/topic — collapsible on
                mobile, always visible from sm: up */}
+           {/* One line, never wrapping: the type/marks/difficulty group keeps its full
+               width and the section > subject > topic trail takes whatever is left,
+               truncating the longest label rather than pushing the header onto a third
+               row. */}
            {currentQuestion && (
-              <div className={`${showDetails ? "flex" : "hidden"} sm:flex flex-col gap-1.5 px-4 pb-2.5 sm:px-5 border-t border-[var(--border-subtle)] sm:border-t-0 pt-2 sm:pt-0`}>
-                 <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-black uppercase tracking-wider">
-                    <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)] shadow-sm">
-                      <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
-                        {currentQuestion.question_type}
-                      </span>
-                      <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-mono normal-case">
-                        +{currentQuestion.marks}/{currentQuestion.question_type === "MCQ" ? `-${(currentQuestion.marks / 3).toFixed(2)}` : "0"}
-                      </span>
-                      <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">
-                        {currentQuestion.difficulty}
-                      </span>
-                    </div>
+              <div className={`${showDetails ? "flex" : "hidden"} sm:flex items-center gap-2 min-w-0 px-4 pb-2 sm:px-5 border-t border-[var(--border-subtle)] sm:border-t-0 pt-2 sm:pt-0 text-[10px] font-black uppercase tracking-wider`}>
+                 <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)] shadow-sm">
+                   <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
+                     {currentQuestion.question_type}
+                   </span>
+                   <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-mono normal-case">
+                     +{currentQuestion.marks}/{currentQuestion.question_type === "MCQ" ? `-${(currentQuestion.marks / 3).toFixed(2)}` : "0"}
+                   </span>
+                   <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">
+                     {currentQuestion.difficulty}
+                   </span>
                  </div>
-                 <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">
-                    <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded inline-block" title={currentQuestion.section}>
-                      {currentQuestion.section || "General"}
-                    </span>
-                    <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded inline-block" title={currentQuestion.subject}>
-                      {currentQuestion.subject || "General"}
-                    </span>
-                    <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded inline-block" title={currentQuestion.topic}>
-                      {currentQuestion.topic || "General"}
-                    </span>
+
+                 <div className="flex items-center gap-1.5 min-w-0 text-[var(--text-secondary)]">
+                   <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded shrink-0 hidden md:inline-block" title={currentQuestion.section}>
+                     {currentQuestion.section || "General"}
+                   </span>
+                   <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded shrink-0 max-w-[180px] truncate" title={currentQuestion.subject}>
+                     {currentQuestion.subject || "General"}
+                   </span>
+                   <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded min-w-0 truncate" title={currentQuestion.topic}>
+                     {currentQuestion.topic || "General"}
+                   </span>
                  </div>
               </div>
            )}

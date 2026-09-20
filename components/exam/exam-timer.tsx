@@ -70,6 +70,36 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
   const ringSize = compact ? "w-8 h-8" : "w-10 h-10";
   const iconSize = compact ? "w-3.5 h-3.5" : "w-4 h-4";
 
+  // In-exam header: remaining time is the only thing that matters at a glance, so it's
+  // shown on its own, large, in a glass pill matching the topbar's icon cluster — no
+  // progress ring, clock glyph, "rem" label or projected end time competing with it.
+  if (compact) {
+    return (
+      <div
+        className={`flex items-center px-3 py-1.5 rounded-xl border backdrop-blur-md shadow-md select-none transition-colors ${
+          remainingRatio <= 0.15
+            ? "bg-rose-500/10 border-rose-500/40"
+            : remainingRatio <= 0.3
+              ? "bg-amber-500/10 border-amber-500/40"
+              : "bg-[var(--surface)]/80 border-[var(--border)]"
+        }`}
+        title="Time remaining"
+      >
+        <span
+          className={`font-mono font-black tabular-nums tracking-tight text-lg sm:text-xl leading-none ${
+            remainingRatio <= 0.15
+              ? "text-rose-600 dark:text-rose-400 animate-pulse"
+              : remainingRatio <= 0.3
+                ? "text-amber-600 dark:text-amber-400"
+                : "text-[var(--text-primary)]"
+          }`}
+        >
+          {formatTime(remaining)}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <div className={`flex items-center text-xs font-bold text-[var(--text-secondary)] select-none ${compact ? "gap-2" : "gap-4"}`}>
       {/* SVG Timer Progress Ring */}

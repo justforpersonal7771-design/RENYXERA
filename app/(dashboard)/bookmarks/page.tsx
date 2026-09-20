@@ -178,7 +178,14 @@ export default function BookmarksPage() {
   }, [bookmarks, searchQuery, selectedFolder, selectedTag, selectedPriority, showOnlyFavorites, sortBy]);
 
   const activeEntry = activeBookmark ? bookmarks.find(b => b.questionId === activeBookmark) : null;
-  const question = activeEntry ? QuestionRepository.getQuestionById(activeEntry.questionId) : null;
+  // Gated on isInitialized: bookmarks/mistakes come from IndexedDB and can resolve
+  // before the question repository finishes loading. This runs above the
+  // !isInitialized early-return, so without the guard the first render after study
+  // data arrives threw "QuestionRepository is not initialized" and the whole page
+  // fell through to the error boundary — which is why saved items looked missing.
+  const question = isInitialized && activeEntry
+    ? QuestionRepository.getQuestionById(activeEntry.questionId)
+    : null;
 
   const activeIndex = processedBookmarks.findIndex(b => b.questionId === activeBookmark);
   const handlePrev = activeIndex > 0 ? () => {
