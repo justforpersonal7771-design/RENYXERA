@@ -9,7 +9,7 @@ import { RenderableQuestion } from "@/types/question.types";
 import { QuestionRenderer } from "@/components/exam/question-renderer";
 import { MathJaxContext } from "better-react-mathjax";
 import { useStudyStore } from "@/store/use-study-store";
-import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, ChevronDown, LayoutGrid, X } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X } from "lucide-react";
 import { useDataStore } from "@/store/use-data-store";
 import { ExamTimer } from "@/components/exam/exam-timer";
 import { QuestionPalette } from "@/components/exam/question-palette";
@@ -60,7 +60,6 @@ export default function ExamSessionPage() {
   const [mounted, setMounted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<RenderableQuestion | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
   const [showMobilePalette, setShowMobilePalette] = useState(false);
 
   useEffect(() => {
@@ -244,8 +243,8 @@ export default function ExamSessionPage() {
                they can never squash/overlap each other on narrow screens; if content still
                can't fit, the row scrolls horizontally instead of breaking (graceful
                degradation, not silent corruption). */}
-           <div className="flex items-center justify-between px-2 sm:px-5 gap-1 sm:gap-2 overflow-x-auto">
-              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+           <div className="flex items-center justify-between px-2 sm:px-5 gap-2 sm:gap-3 h-14">
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
                  <button
                    onClick={async () => {
                      if (confirm("Leave this exam? It will be paused and saved so you can resume later.")) {
@@ -267,24 +266,42 @@ export default function ExamSessionPage() {
                       {currentQuestionIndex + 1}<span className="text-[var(--text-muted)]">/{totalQuestions}</span>
                     </span>
                  )}
+                 {/* Meta trail shares row 1 rather than claiming a second row. Each label
+                     is capped and truncates with an ellipsis; the full value is always
+                     available via its tooltip on hover. */}
                  {currentQuestion && (
-                    <button
-                      onClick={() => setShowDetails(v => !v)}
-                      className="sm:hidden p-1.5 rounded-md text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition-colors cursor-pointer shrink-0"
-                      title={showDetails ? "Hide details" : "Show topic/marks details"}
-                    >
-                      <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showDetails ? "rotate-180" : ""}`} />
-                    </button>
+                    <div className="hidden md:flex items-center gap-1.5 min-w-0 text-[10px] font-black uppercase tracking-wider">
+                      <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)] shadow-sm">
+                        <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
+                          {currentQuestion.question_type}
+                        </span>
+                        <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-mono normal-case">
+                          +{currentQuestion.marks}/{currentQuestion.question_type === "MCQ" ? `-${(currentQuestion.marks / 3).toFixed(2)}` : "0"}
+                        </span>
+                        <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">
+                          {currentQuestion.difficulty}
+                        </span>
+                      </div>
+                      <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded shrink-0 max-w-[110px] truncate hidden xl:inline-block" title={currentQuestion.section}>
+                        {currentQuestion.section || "General"}
+                      </span>
+                      <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded shrink-0 max-w-[130px] truncate" title={currentQuestion.subject}>
+                        {currentQuestion.subject || "General"}
+                      </span>
+                      <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded min-w-0 max-w-[240px] truncate" title={currentQuestion.topic}>
+                        {currentQuestion.topic || "General"}
+                      </span>
+                    </div>
                  )}
               </div>
 
-              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
                  <ExamTimer compact />
 
-                 <div className="flex items-center gap-0.5 sm:gap-1 border-l border-[var(--border)] pl-1.5 sm:pl-3 h-8 shrink-0">
+                 <div className="flex items-center gap-1 border-l border-[var(--border)] pl-2 sm:pl-3 h-9 shrink-0">
                    <button
                      onClick={() => setShowMobilePalette(true)}
-                     className="lg:hidden p-1 sm:p-1.5 rounded-md text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition relative"
+                     className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition relative"
                      title="Question Grid"
                    >
                      <LayoutGrid className="w-4 h-4" />
@@ -295,7 +312,7 @@ export default function ExamSessionPage() {
 
                    <button
                      onClick={handleBookmarkToggle}
-                     className="hidden sm:inline-flex p-1 sm:p-1.5 rounded-md text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                     className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                      title="Bookmark Question"
                    >
                      {isCurrentBookmarked ? <BookmarkCheck className="w-4 h-4 text-indigo-500" /> : <Bookmark className="w-4 h-4" />}
@@ -303,7 +320,7 @@ export default function ExamSessionPage() {
 
                    <button
                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                     className="hidden sm:inline-flex p-1.5 rounded-md text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                     className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                      title="Toggle Dark Mode"
                    >
                      {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -312,7 +329,7 @@ export default function ExamSessionPage() {
                    {sessionStatus === "IN_PROGRESS" ? (
                      <button
                        onClick={() => pauseSession()}
-                       className="p-1.5 sm:p-2 text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 rounded-lg transition-colors cursor-pointer"
+                       className="inline-flex items-center justify-center w-9 h-9 text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 rounded-lg transition-colors cursor-pointer shrink-0"
                        title="Pause Exam"
                      >
                        <Pause className="w-4 h-4" />
@@ -320,7 +337,7 @@ export default function ExamSessionPage() {
                    ) : (
                      <button
                        onClick={() => resumeSession()}
-                       className="p-1.5 sm:p-2 text-emerald-700 bg-emerald-100 hover:bg-emerald-200 dark:text-emerald-400 dark:bg-emerald-900/40 rounded-lg transition-colors cursor-pointer"
+                       className="inline-flex items-center justify-center w-9 h-9 text-emerald-700 bg-emerald-100 hover:bg-emerald-200 dark:text-emerald-400 dark:bg-emerald-900/40 rounded-lg transition-colors cursor-pointer shrink-0"
                        title="Resume Exam"
                      >
                        <Play className="w-4 h-4" />
@@ -328,7 +345,7 @@ export default function ExamSessionPage() {
                    )}
                    <button
                      onClick={() => setShowSubmitModal(true)}
-                     className="px-3 sm:px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-lg transition shadow-md cursor-pointer"
+                     className="h-9 px-4 sm:px-5 inline-flex items-center text-xs font-extrabold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-lg transition shadow-md cursor-pointer shrink-0"
                    >
                      Submit
                    </button>
@@ -343,7 +360,7 @@ export default function ExamSessionPage() {
                truncating the longest label rather than pushing the header onto a third
                row. */}
            {currentQuestion && (
-              <div className={`${showDetails ? "flex" : "hidden"} sm:flex items-center gap-2 min-w-0 px-4 pb-2 sm:px-5 border-t border-[var(--border-subtle)] sm:border-t-0 pt-2 sm:pt-0 text-[10px] font-black uppercase tracking-wider`}>
+              <div className="md:hidden flex items-center gap-2 min-w-0 px-4 pb-2 border-t border-[var(--border-subtle)] pt-2 text-[10px] font-black uppercase tracking-wider overflow-x-auto">
                  <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)] shadow-sm">
                    <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
                      {currentQuestion.question_type}

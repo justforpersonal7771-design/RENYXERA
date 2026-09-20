@@ -74,26 +74,32 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
   // shown on its own, large, in a glass pill matching the topbar's icon cluster — no
   // progress ring, clock glyph, "rem" label or projected end time competing with it.
   if (compact) {
+    const tone =
+      remainingRatio <= 0.15
+        ? {
+            box: "bg-rose-500/10 border-rose-500/30 ring-rose-500/10",
+            text: "text-rose-600 dark:text-rose-400",
+            dot: "bg-rose-500",
+          }
+        : remainingRatio <= 0.3
+          ? {
+              box: "bg-amber-500/10 border-amber-500/30 ring-amber-500/10",
+              text: "text-amber-600 dark:text-amber-400",
+              dot: "bg-amber-500",
+            }
+          : {
+              box: "bg-[var(--surface-secondary)]/70 border-[var(--border)] ring-black/[0.03] dark:ring-white/[0.04]",
+              text: "text-[var(--text-primary)]",
+              dot: "bg-emerald-500",
+            };
+
     return (
       <div
-        className={`flex items-center px-3 py-1.5 rounded-xl border backdrop-blur-md shadow-md select-none transition-colors ${
-          remainingRatio <= 0.15
-            ? "bg-rose-500/10 border-rose-500/40"
-            : remainingRatio <= 0.3
-              ? "bg-amber-500/10 border-amber-500/40"
-              : "bg-[var(--surface)]/80 border-[var(--border)]"
-        }`}
+        className={`h-9 flex items-center gap-2 pl-2.5 pr-3 rounded-xl border ring-1 backdrop-blur-md shadow-sm select-none shrink-0 transition-colors ${tone.box}`}
         title="Time remaining"
       >
-        <span
-          className={`font-mono font-black tabular-nums tracking-tight text-lg sm:text-xl leading-none ${
-            remainingRatio <= 0.15
-              ? "text-rose-600 dark:text-rose-400 animate-pulse"
-              : remainingRatio <= 0.3
-                ? "text-amber-600 dark:text-amber-400"
-                : "text-[var(--text-primary)]"
-          }`}
-        >
+        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${tone.dot} ${remainingRatio <= 0.15 ? "animate-pulse" : ""}`} />
+        <span className={`font-mono font-bold tabular-nums text-[15px] sm:text-base leading-none tracking-tight ${tone.text}`}>
           {formatTime(remaining)}
         </span>
       </div>
