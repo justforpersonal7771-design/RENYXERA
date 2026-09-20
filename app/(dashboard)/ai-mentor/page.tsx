@@ -396,7 +396,8 @@ export default function AIMentorPage() {
           {studyPlanSuggestions.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: 0.1 }}
               className="card-glass rounded-2xl p-5 shadow-sm space-y-4"
             >
@@ -490,9 +491,10 @@ export default function AIMentorPage() {
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
                     transition={{ delay: 0.1 + idx * 0.05 }}
-                    className="relative bg-[var(--surface)] border border-[var(--border)] p-4 rounded-2xl flex flex-col justify-between shadow-sm hover-lift overflow-hidden group"
+                    className="relative card-glass p-4 rounded-2xl flex flex-col justify-between shadow-sm hover-lift overflow-hidden group"
                   >
                     <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-[0.15] ${item.glow} pointer-events-none group-hover:opacity-25 transition-opacity`} />
                     <div className={`relative w-9 h-9 rounded-xl ${item.badge} flex items-center justify-center mb-3`}>

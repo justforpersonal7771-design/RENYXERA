@@ -142,10 +142,11 @@ export default function AnalyticsDashboardPage() {
           ].map((stat, idx) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: 0.05 + idx * 0.05 }}
-              className="relative bg-[var(--surface)] p-5 border border-[var(--border)] rounded-2xl shadow-sm overflow-hidden hover-lift group"
+              className="relative card-glass p-5 rounded-2xl shadow-sm overflow-hidden hover-lift group"
             >
               <div className={`absolute -top-10 -right-10 w-28 h-28 rounded-full blur-3xl opacity-[0.15] ${stat.glow} pointer-events-none group-hover:opacity-25 transition-opacity`} />
               <div className={`relative w-9 h-9 rounded-xl ${stat.badge} flex items-center justify-center mb-3`}>

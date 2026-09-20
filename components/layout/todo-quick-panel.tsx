@@ -12,9 +12,12 @@ const PRIORITY_COLORS: Record<TodoItem["priority"], string> = {
   High: "bg-rose-500",
 };
 
+const PRIORITY_OPTIONS: TodoItem["priority"][] = ["Low", "Medium", "High"];
+
 export function TodoQuickPanel() {
   const { items, loadItems, addItem, toggleItem, deleteItem, reorderItems } = useTodoStore();
   const [text, setText] = useState("");
+  const [priority, setPriority] = useState<TodoItem["priority"]>("Medium");
   const inputRef = useRef<HTMLInputElement>(null);
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dragOverId, setDragOverId] = useState<string | null>(null);
@@ -32,8 +35,9 @@ export function TodoQuickPanel() {
 
   const handleAdd = () => {
     if (!text.trim()) return;
-    addItem(text);
+    addItem(text, priority);
     setText("");
+    setPriority("Medium");
   };
 
   return (
@@ -55,22 +59,41 @@ export function TodoQuickPanel() {
         </span>
       </div>
 
-      <div className="p-3 border-b border-[var(--border-subtle)] flex items-center gap-2">
-        <input
-          ref={inputRef}
-          type="text"
-          placeholder="Quick task, no due date..."
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-          className="flex-1 px-3 py-2 bg-[var(--background)] border border-[var(--border)] text-xs font-semibold text-[var(--text-primary)] rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
-        />
-        <button
-          onClick={handleAdd}
-          className="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors cursor-pointer shrink-0"
-        >
-          <Plus className="w-3.5 h-3.5" />
-        </button>
+      <div className="p-3 border-b border-[var(--border-subtle)] space-y-2">
+        <div className="flex items-center gap-2">
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Quick task, no due date..."
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleAdd()}
+            className="flex-1 px-3 py-2 bg-[var(--background)] border border-[var(--border)] text-xs font-semibold text-[var(--text-primary)] rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+          <button
+            onClick={handleAdd}
+            className="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors cursor-pointer shrink-0"
+          >
+            <Plus className="w-3.5 h-3.5" />
+          </button>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <span className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)] mr-0.5">Priority</span>
+          {PRIORITY_OPTIONS.map((p) => (
+            <button
+              key={p}
+              onClick={() => setPriority(p)}
+              className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold transition-colors cursor-pointer ${
+                priority === p
+                  ? "bg-[var(--surface-secondary)] text-[var(--text-primary)] ring-1 ring-[var(--border-strong)]"
+                  : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]/60"
+              }`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${PRIORITY_COLORS[p]}`} />
+              {p}
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="max-h-[300px] overflow-y-auto custom-scrollbar">

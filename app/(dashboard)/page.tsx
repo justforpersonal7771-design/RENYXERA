@@ -196,8 +196,12 @@ export default function Home() {
         masteredMistakesCount={masteredMistakesCount}
       />
 
-      {/* 4. Main Two-Column Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      {/* 4. Main Two-Column Content Grid — items-start (not stretch): the two columns
+          hold very different amounts of content, and stretching the shorter one to
+          match forces its stacked cards to flex-shrink below their natural height,
+          which combined with overflow-hidden silently clipped the Countdown card's
+          "Scheduled Ahead" section instead of showing it. */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         {/* Left Side (Spans 8 columns) */}
         <div className="lg:col-span-8 space-y-8 flex flex-col justify-start">
