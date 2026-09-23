@@ -1,11 +1,16 @@
 import { ContextBuilder } from "./ai-context-builder";
-import { PromptBuilder } from "./ai-prompts";
 import { AIClient } from "./ai-client";
 import { ContextCompressor } from "./token-estimator";
-import { 
-  AIResponse, AIExplanation, AIHint, AIRecommendation, 
-  AIRevisionPlan, AIPracticeQuestion 
+import {
+  AIResponse, AIExplanation, AIHint, AIRecommendation,
+  AIRevisionPlan, AIPracticeQuestion
 } from "@/types/ai.types";
+
+// The actual prompt/systemInstruction templates now live server-side only
+// (app/api/ai/generate/route.ts, via lib/ai/ai-prompts.ts). This service builds the
+// learner CONTEXT (from local IndexedDB data) and sends it as structured `params` under
+// a server-owned `type` key — it no longer assembles or sends instruction text itself.
+// See lib/security/ai-request-schema.ts for the full contract.
 
 export class AIService {
   /**
@@ -35,18 +40,15 @@ export class AIService {
   ): Promise<AIResponse<AIExplanation>> {
     // 1. Build Raw Context
     const rawContext = await ContextBuilder.buildContext(questionId, currentResponse);
-    
+
     // 2. Compress Context
     const compressedContext = ContextCompressor.compress(rawContext);
 
-    // 3. Build Standardized Prompts
-    const { systemInstruction, prompt } = PromptBuilder.buildExplainPrompt(compressedContext, mode, personality);
-
-    // 4. Request Gemini execution
+    // 3. Request Gemini execution — server builds the prompt from `type` + `params`
     return await AIClient.request<AIExplanation>(
       `explain_${questionId}_${mode || "default"}_${personality || "default"}`,
-      systemInstruction,
-      prompt,
+      "EXPLAIN",
+      { context: compressedContext, mode, personality },
       {
         questionId,
         topic: rawContext.currentQuestion?.topic,
@@ -64,12 +66,11 @@ export class AIService {
   ): Promise<AIResponse<AIHint>> {
     const rawContext = await ContextBuilder.buildContext(questionId);
     const compressedContext = ContextCompressor.compress(rawContext);
-    const { systemInstruction, prompt } = PromptBuilder.buildHintPrompt(compressedContext);
 
     return await AIClient.request<AIHint>(
       `hint_${questionId}`,
-      systemInstruction,
-      prompt,
+      "HINT",
+      { context: compressedContext },
       {
         questionId,
         topic: rawContext.currentQuestion?.topic,
@@ -87,12 +88,11 @@ export class AIService {
   ): Promise<AIResponse<AIExplanation>> {
     const rawContext = await ContextBuilder.buildContext(questionId);
     const compressedContext = ContextCompressor.compress(rawContext);
-    const { systemInstruction, prompt } = PromptBuilder.buildShortcutPrompt(compressedContext);
 
     return await AIClient.request<AIExplanation>(
       `shortcut_${questionId}`,
-      systemInstruction,
-      prompt,
+      "SHORTCUT",
+      { context: compressedContext },
       {
         questionId,
         topic: rawContext.currentQuestion?.topic,
@@ -126,12 +126,10 @@ export class AIService {
       console.warn("Failed to retrieve sample questions for practice prompt builder context", e);
     }
 
-    const { systemInstruction, prompt } = PromptBuilder.buildPracticePrompt(compressedContext, topic, subject, count, samples, currentQuestion);
-
     return await AIClient.request<{ questions: AIPracticeQuestion[] }>(
       `practice_${topic}_${count}`,
-      systemInstruction,
-      prompt,
+      "PRACTICE",
+      { context: compressedContext, topic, subject, count, samples, currentQuestion },
       {
         topic,
         bypassCache
@@ -148,12 +146,11 @@ export class AIService {
   ): Promise<AIResponse<AIRevisionPlan>> {
     const rawContext = await ContextBuilder.buildContext(undefined);
     const compressedContext = ContextCompressor.compress(rawContext);
-    const { systemInstruction, prompt } = PromptBuilder.buildRevisionPrompt(compressedContext, subject);
 
     return await AIClient.request<AIRevisionPlan>(
       `revision_${subject}`,
-      systemInstruction,
-      prompt,
+      "REVISION",
+      { context: compressedContext, subject },
       {
         bypassCache
       }
@@ -182,12 +179,11 @@ export class AIService {
   ): Promise<AIResponse<AIExplanation>> {
     const rawContext = await ContextBuilder.buildContext(questionId);
     const compressedContext = ContextCompressor.compress(rawContext);
-    const { systemInstruction, prompt } = PromptBuilder.buildFollowUpPrompt(compressedContext, history, nextMessage);
 
     return await AIClient.request<AIExplanation>(
       `chat_${questionId}_${Date.now()}`, // Chat handles dynamic IDs
-      systemInstruction,
-      prompt,
+      "FOLLOWUP",
+      { context: compressedContext, history, nextMessage },
       {
         questionId,
         topic: rawContext.currentQuestion?.topic,

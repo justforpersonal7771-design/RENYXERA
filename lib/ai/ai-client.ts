@@ -3,12 +3,19 @@ import { TokenEstimator } from "./token-estimator";
 import { IDBManager } from "../repository/storage/idb-manager";
 import { AIResponse, AITokenUsage } from "@/types/ai.types";
 
+// The set of server-owned prompt templates — must stay in sync with the discriminated
+// union in lib/security/ai-request-schema.ts and the switch in app/api/ai/generate/route.ts.
+export type AIRequestType = "EXPLAIN" | "HINT" | "SHORTCUT" | "PRACTICE" | "REVISION" | "FOLLOWUP";
+
 export class AIClient {
   /**
-   * Deterministic hash helper to generate cache keys.
+   * Deterministic hash helper to generate cache keys. Hashes the request `type` plus its
+   * `params` (rather than the old systemInstruction+prompt strings) — same identity
+   * property (same inputs -> same hash -> cache hit), but now over the data the client
+   * actually sends, since the instruction text itself is built server-side.
    */
-  public static generateHash(systemInstruction: string, prompt: string): string {
-    const combined = `${systemInstruction}||${prompt}`;
+  public static generateHash(type: string, params: unknown): string {
+    const combined = `${type}||${JSON.stringify(params)}`;
     let hash = 5381;
     for (let i = 0; i < combined.length; i++) {
       hash = (hash * 33) ^ combined.charCodeAt(i);
@@ -75,11 +82,15 @@ export class AIClient {
 
   /**
    * Dispatches request to Google Gemini under rate limiter guards, incorporating IDB caching.
+   *
+   * `type` names one of the server-owned prompt templates (see ai-request-schema.ts);
+   * `params` is the structured data that template needs. The server builds the actual
+   * systemInstruction/prompt strings itself — this client never sends instruction text.
    */
   public static async request<T>(
     requestId: string,
-    systemInstruction: string,
-    prompt: string,
+    type: AIRequestType,
+    params: Record<string, unknown>,
     options: {
       questionId?: string;
       topic?: string;
@@ -87,7 +98,7 @@ export class AIClient {
       bypassCache?: boolean;
     } = {}
   ): Promise<AIResponse<T>> {
-    const hash = this.generateHash(systemInstruction, prompt);
+    const hash = this.generateHash(type, params);
     const bypassCache = options.bypassCache || false;
     const ttlHours = options.ttlHours || 24; // 24 hours cache duration by default
 
@@ -115,7 +126,7 @@ export class AIClient {
         const res = await fetch("/api/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ systemInstruction, prompt }),
+          body: JSON.stringify({ type, params }),
           signal,
         });
 
@@ -140,8 +151,9 @@ export class AIClient {
       const cleaned = this.cleanJsonString(responseText);
       const data = JSON.parse(cleaned) as T;
 
-      // Token estimation
-      const promptTokens = TokenEstimator.estimateTokens(systemInstruction + prompt);
+      // Token estimation — approximated from the outgoing params payload since the actual
+      // systemInstruction/prompt strings are now built server-side and never seen here.
+      const promptTokens = TokenEstimator.estimateTokens(JSON.stringify(params));
       const candidatesTokens = TokenEstimator.estimateTokens(responseText);
       const tokenUsage: AITokenUsage = {
         promptTokens,

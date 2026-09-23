@@ -28,6 +28,46 @@ import { CustomTestTemplate } from "@/types/exam.types";
 export class IDBManager {
   private static dbPromise: Promise<IDBPDatabase<GatePrepDB>> | null = null;
 
+  // Namespacing prep for per-user data isolation (master plan Module 4F-1, FINDING-4).
+  // `null` (the default — nothing sets this today, since auth doesn't exist yet) means
+  // "use the database exactly as it's named today": getDatabaseName() then returns the
+  // original DATABASE_NAME unchanged, so every current user's existing IndexedDB data
+  // stays exactly where it is. This is deliberate — silently renaming the physical
+  // database would orphan every existing user's bookmarks/mistakes/sessions overnight,
+  // since browsers do not migrate data between differently-named IndexedDB databases.
+  // Once Release 4 auth exists, its sign-in/sign-out flow calls setActiveNamespace(userId
+  // | null) to open a per-user database (e.g. "GatePrepOS_DB__<userId>") and
+  // resetAllStores() (see lib/store/reset-all-stores.ts) to clear in-memory state —
+  // together those two calls are the full fix for two students sharing one device seeing
+  // each other's data.
+  private static activeNamespace: string | null = null;
+
+  private static getDatabaseName(): string {
+    return this.activeNamespace ? `${DATABASE_NAME}__${this.activeNamespace}` : DATABASE_NAME;
+  }
+
+  /** Switches which physical IndexedDB database subsequent calls read/write. Closes the
+   *  currently-open connection (if any) and drops the cached open-promise so the next
+   *  call to any IDBManager method transparently reopens under the new namespace — every
+   *  existing call site (28 files, all going through this class rather than calling
+   *  openDB directly) picks this up with no changes on their part. Passing the same
+   *  namespace that's already active is a no-op (avoids closing/reopening a connection
+   *  that callers may still be mid-transaction against, e.g. on a redundant call). */
+  public static async setActiveNamespace(namespace: string | null): Promise<void> {
+    if (namespace === this.activeNamespace) return;
+    if (this.dbPromise) {
+      try {
+        const db = await this.dbPromise;
+        db.close();
+      } catch {
+        // Connection may already be in a bad state (e.g. blocked/erroring) — proceed to
+        // drop it regardless so the next call opens a fresh one.
+      }
+    }
+    this.activeNamespace = namespace;
+    this.dbPromise = null;
+  }
+
   public static async initializeDatabase(): Promise<IDBPDatabase<GatePrepDB>> {
     if (!this.dbPromise) {
       if (typeof window === "undefined") {
@@ -36,7 +76,7 @@ export class IDBManager {
         );
       }
 
-      this.dbPromise = openDB<GatePrepDB>(DATABASE_NAME, DATABASE_VERSION, {
+      this.dbPromise = openDB<GatePrepDB>(this.getDatabaseName(), DATABASE_VERSION, {
         upgrade(db) {
           if (!db.objectStoreNames.contains(STORE_METADATA)) {
             db.createObjectStore(STORE_METADATA, { keyPath: "key" });

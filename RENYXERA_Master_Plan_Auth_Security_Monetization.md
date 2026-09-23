@@ -1183,15 +1183,22 @@ Written once in Module 6B; unblocks ads, payments and compliance simultaneously.
 
 | # | Action | Blocks | Status |
 |---|---|---|---|
-| 1 | **Harden `/api/ai/generate`** — zod schema, server-owned instruction enum, prompt-length cap, structured logging | FINDING-1 | ▶ in progress |
-| 2 | **Replace the in-memory limiter path** for the AI route; prepare user-ID keying | FINDING-2 | ▶ in progress |
-| 3 | **Build-time public/private dataset split + server-side grading route** | FINDING-3 | ▶ in progress |
-| 4 | **IndexedDB per-user namespacing + full Zustand reset** | FINDING-4 | ▶ in progress |
+| 1 | **Harden `/api/ai/generate`** — zod schema, server-owned instruction enum, prompt-length cap, structured logging | FINDING-1 | ✅ **done** |
+| 2 | **Apply and tighten rate limiting on the AI route** (was completely unprotected; now origin-checked + IP-keyed + 15 req/min) | FINDING-2 | ✅ **done (interim)** |
+| 3 | **Build-time public/private dataset split + server-side grading route** | FINDING-3 | ✅ **done (infra)** |
+| 4 | **IndexedDB per-user namespacing + full Zustand reset** | FINDING-4 | ✅ **done (prep)** |
 | 5 | Verify Vercel and Cloudflare live terms in writing | 4A | pending |
 | 6 | Execute the Cloudflare migration | Releases 6, 7 | pending |
 | 7 | Create Supabase project; commit migration 001 with RLS on every table | 4B | pending |
 | 8 | Verify Firebase phone-auth quota and India pricing | 4C | pending |
 | 9 | Begin daily SEO content — one solution page per day | 6A | pending |
+
+**What shipped for #1–4, and what's honestly still open** (all four verified against the live dev server, not just typechecked):
+
+- **#1 — Done, for real.** `/api/ai/generate` no longer accepts `{systemInstruction, prompt}` at all. The client now sends `{type, params}` — a server-owned enum naming one of six fixed `PromptBuilder` templates plus structured, zod-validated, size-capped data — and the actual instruction text is built entirely server-side (`lib/security/ai-request-schema.ts`, rewritten `app/api/ai/generate/route.ts`). Verified live: the old payload shape is now rejected with a schema error, an unrecognized `type` is rejected, and a valid request reaches the real `buildPrompt()` call. Also added: a hard request-body size ceiling, a 30s Gemini timeout, and structured per-request logging.
+- **#2 — Done as the ₹0, no-dependency interim fix; full fix is still Module 4G Phase 2.** The route previously had *zero* rate limiting (the dataset/image-manifest routes had it, the one route that costs money didn't). It now carries the same origin-check + rate-limit pattern, at a tighter 15 req/min. It's still IP-keyed via `getClientKey()`, which the master plan already names as a weak key (CGNAT) — swapping to Upstash-backed, user-ID-keyed limiting genuinely needs auth to exist first, so that part remains Module 4G Phase 2, not claimed as solved here.
+- **#3 — The split and grading engine are real and tested; the live exam UI is not yet cut over.** New: `lib/repository/dataset-split.ts` (splits any paper into an answer-free public payload + a server-only answer key; grades one response), `/api/exam/grade` (POST responses → server-computed correctness + score, zod-validated, origin-checked, rate-limited), and `/api/dataset?scope=public` (the same split, live, on the existing dataset route). Verified live against real questions: correct/incorrect MCQ and NAT grading both scored correctly, malformed requests get 400, cross-origin gets 403. **What's deliberately not done:** the current practice/exam flow still fetches the full answer-bearing dataset and self-grades in the browser — rewiring that (18 call sites across the exam runtime, results pages, analytics and AI context) is Module 5A/5B, scheduled for Release 5 once 4B/Supabase exists, and doing it piecemeal today risked regressing a recently-stabilized, working exam UI. The default `/api/dataset` response is unchanged and still carries answer keys, with a code comment marking exactly why and where the replacement path is.
+- **#4 — Real, tested, and inert by default.** `IDBManager` now supports `setActiveNamespace(userId | null)`, and `lib/store/reset-all-stores.ts` resets all 10 Zustand stores via `getInitialState()`. Verified live: the default (no namespace set) still opens the exact same `GatePrepOS_DB` every current user already has — zero migration risk — while calling `setActiveNamespace("test-user")` opens a genuinely separate, independently-listed database without touching the default one, and `resetAllStores()` reverts dirtied state while keeping action methods callable. Nothing calls either of these yet, because there's no sign-in/sign-out flow to call them from — that wiring is Module 4C/4F once auth exists. This is the isolation *mechanism*, proven to work, ready for auth to drive.
 
 ---
 
