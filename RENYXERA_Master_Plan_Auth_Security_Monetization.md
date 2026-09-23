@@ -1,523 +1,694 @@
 # RENYXERA — Master Plan
-## Authentication, Exam Security, Profiles, and Zero-Investment Monetization
+## Infrastructure, Authentication, Exam Security, Multi-Branch Expansion & Zero-Investment Monetization
 ### Release-by-Release / Module-by-Module Execution Report
 
-**Document version:** 1.0
-**Date:** 23 September 2026
+**Document version:** 2.0
+**Date:** 24 September 2026
+**Owner:** Lead Technical Architect & Product Owner
 **Repository:** `D:\0-UI\r2ma-stable`
-**Production:** https://renyxera.vercel.app/
-**Prepared against:** current `master` (82 commits), plus `GATE_OS_Deployment_and_Monetization_Plan.md`, `GATE_OS_Growth_Security_Marketing_Plan.md`, `GATE_OS_Release_4_and_Future_Releases_Master_Prompt.md`, `BUGS.md`
+**Current production:** https://renyxera.vercel.app/ → **migrating to Cloudflare (P0)**
+**Supersedes:** v1.0 (23 Sep 2026)
+**Source documents folded in:** `GATE_OS_Deployment_and_Monetization_Plan.md`, `GATE_OS_Growth_Security_Marketing_Plan.md`, `GATE_OS_Release_4_and_Future_Releases_Master_Prompt.md`, `BUGS.md`
 
 ---
 
-## 0. How to read this document
+## 0. The Governing Doctrine
 
-This is the single planning document for everything after the current UI/UX stabilisation. It is organised as:
+Three rules govern every decision in this document. Where a mandate and a rule conflict, the conflict is named explicitly and resolved in the open — never silently.
 
-- **Part I** — verified current state, including real security holes found while writing this.
-- **Part II** — the zero-rupee doctrine: the exact free-tier stack, its ceilings, and the one licensing conflict that will bite us the day we turn on ads.
-- **Part III** — Releases 4 through 9, module by module, with acceptance criteria.
-- **Part IV** — the money: ads, subscriptions, and seven other revenue lines, with honest arithmetic.
-- **Part V** — cross-cutting concerns: legal, privacy, compliance, metrics, risks.
-- **Part VI** — sequencing and the immediate next actions.
+> **Rule 1 — The Zero-Investment Doctrine.** The complete platform is built, launched, secured, and monetized at **₹0 out-of-pocket infrastructure cost**. The only money that ever leaves our hands is a percentage of revenue already received (payment gateway fees). Any module that cannot meet this is flagged, and a ₹0 alternative is supplied.
+>
+> **Rule 2 — The Client Is Hostile.** Our users are CS/IT students preparing for the hardest computer-science exam in the country. They read minified bundles, inspect Network tabs, and enumerate API routes for fun. Every check that matters happens on a server we control. A client-side check is a UI affordance, never a security boundary.
+>
+> **Rule 3 — Sequence Is Strategy.** Security and infrastructure first, retention second, monetization third, community fourth. Monetizing an app whose scores can be forged destroys the brand permanently and cannot be undone by a later patch.
 
-Every module carries a **Cost** line. If it is not `₹0`, it is flagged and an alternative is given. The constraint for this entire plan is: **the complete application ships and runs without spending a single rupee.** The only money that ever leaves our hands is a percentage of revenue we have already received (payment gateway fees), and that only begins in Release 7.
+**Priority ordering used throughout:** `P0` (blocking, ship immediately) → `P1` (this release) → `P2` (next release) → `P3` (backlog).
+
+**Document map:**
+
+| Part | Contents |
+|---|---|
+| I | Verified current state and the four findings |
+| II | Zero-Investment infrastructure doctrine, Cloudflare-first stack, asset architecture |
+| III | Releases 4–9, module by module, with acceptance criteria |
+| IV | Economics: pay-per-exam pricing, ads, seasonality, diversification |
+| V | Cross-cutting: legal, compliance, security model, metrics, risk register |
+| VI | Sequencing, dependency graph, immediate execution queue |
 
 ---
 
-# PART I — WHERE WE ACTUALLY ARE TODAY
+# PART I — WHERE WE ACTUALLY ARE
 
-## 1.1 What is built and working
+## 1.1 Built and working
 
 | Area | State |
 |---|---|
 | Frontend | Next.js 15.4 App Router, React 19, TypeScript, Tailwind v4 |
 | State | 10 Zustand stores (`analytics, calendar, data, exam-runtime, exam, goal-slider, study, toast, todo, ui`) |
-| Persistence | IndexedDB via `idb`, 12 object stores, single fixed database name |
-| Question bank | 975 questions across 15 papers, `data/Aggregated_Output.json` (1.3 MB) |
+| Persistence | IndexedDB via `idb`, 12 object stores, **one fixed database name** |
+| Question bank | 975 questions / 15 papers, `data/Aggregated_Output.json` (1.3 MB), **static JSON, no database** |
 | Assets | `public/images` 6.1 MB, `public/brand` 2.5 MB |
-| Exam engine | Full test builder — Subject / Section / Topic / Year / Custom modes; Focus Target filtering verified end-to-end |
-| AI | Gemini via `@google/genai`, proxied server-side through `/api/ai/generate` |
-| PWA | Service worker, now network-first (`gateos-pwa-cache-v4`) |
+| Exam engine | Subject / Section / Topic / Year / Custom modes; Focus Target filtering verified end-to-end |
+| AI | Gemini via `@google/genai`, proxied through `/api/ai/generate` |
+| PWA | Service worker, network-first (`gateos-pwa-cache-v4`) |
 | Theming | Brand gradient system, glass morphism, dark/light, scroll reveal |
 | Routes | 14 pages, 3 API routes |
-| Auth | **None.** No auth dependency is installed. |
+| Hosting | **Vercel Hobby — non-commercial licence (P0 blocker for all revenue)** |
+| Auth | **None.** No auth dependency installed. |
 | Backend DB | **None.** IndexedDB is the sole source of truth. |
 | Users | **The concept does not exist in the codebase.** |
+| Branches | CSE only |
 
-## 1.2 Four findings (verified in code, not theoretical)
+## 1.2 The four findings — verified against source, not assumed
 
-These were confirmed by reading the source and the dataset while preparing this plan. They define the first work items.
+### FINDING-1 · P0 · The only route that costs money has no protection
 
-### FINDING-1 — The only route that costs money is the only route with no protection
+`app/api/ai/generate/route.ts` reads `{ systemInstruction, prompt }` from the request body and forwards both to Gemini using our server-held key. Confirmed in source: **no authentication, no rate limiting, no prompt-length cap, and the client supplies the system instruction verbatim.**
 
-`app/api/ai/generate/route.ts` accepts a POST of `{ systemInstruction, prompt }` and forwards it to Gemini using our server-held API key. It has:
+Meanwhile `/api/dataset` and `/api/image-manifest` — which serve free, already-public static data — *both* call `checkRateLimit`/`getClientKey`. **Protection is applied exactly backwards.**
 
-- no authentication
-- no rate limiting
-- no per-caller accounting
-- no prompt size ceiling
+Three distinct exposures, not one:
+- **Quota drain** — a loop takes the AI Mentor offline for every real user.
+- **Cost** — uncapped spend the moment we leave the Gemini free tier.
+- **Prompt injection / brand safety** — a caller-supplied `systemInstruction` means our API key can be steered to generate arbitrary content that is attributable to RENYXERA.
 
-Meanwhile `app/api/dataset/route.ts` and `app/api/image-manifest/route.ts` — which serve static, free, already-public data — **both** call `checkRateLimit` / `getClientKey`. The protection is applied exactly backwards. Anyone who opens DevTools can read the endpoint shape and drain the entire Gemini free-tier quota in minutes, taking the AI Mentor offline for every real user. On a paid Gemini tier it becomes a direct, uncapped bill.
+### FINDING-2 · P0 · The rate limiter cannot work where it is deployed
 
-**This is the highest-priority item in the entire plan.** It is Module 4F.
+`lib/security/rate-limiter.ts` is an in-memory `Map` sliding window. Its own header comment concedes it only stops "casual bulk scrape" against a warm instance. On serverless, each invocation may land on a fresh instance with fresh memory. `getClientKey` falls back to IP — and a large share of Indian mobile traffic arrives via CGNAT, so IP keying simultaneously throttles whole cities together and lets a single rotating user run free. Real limiting requires shared state keyed on **user ID**.
 
-### FINDING-2 — The rate limiter cannot work where it is deployed
+### FINDING-3 · P0 · The answer key is shipped to the browser
 
-`lib/security/rate-limiter.ts` is an in-memory sliding window. Its own comments concede it only deters "casual bulk scrape." On serverless, each invocation may land on a fresh instance with fresh memory, so the counter resets arbitrarily. It is security theatre. Real limiting needs shared state — Upstash Redis free tier, or a Postgres counter table. Both are ₹0, both are in Module 4F.
-
-### FINDING-3 — The answer key is shipped to the browser
-
-Confirmed by inspecting `data/Aggregated_Output.json`. Every question object carries:
+Verified by inspecting `data/Aggregated_Output.json`. Every question carries:
 
 ```json
-"options": [ { "option_id": "A", "text": "...", "is_correct": false }, ... ]
+"options": [ { "option_id": "A", "text": "…", "is_correct": false }, … ],
+"nat_answer_range": { … }
 ```
 
-`is_correct` is in the payload delivered to the client and then written into IndexedDB. During a live test, the correct answer to every question is sitting in the user's browser, readable from the Network tab or from `indexedDB` in the console.
+`is_correct` and `nat_answer_range` reach the client and are written to IndexedDB. During a live test, every correct answer sits in the user's browser, readable from the Network tab or `indexedDB` in the console.
 
-For a free, local-first, honour-system practice tool this is acceptable — the user is only cheating themselves. **The moment we add any of: leaderboards, All India Test Series, ranks, certificates, or paid tiers, it becomes fatal.** Scores stop being meaningful, and the competitive product we intend to sell is worthless.
+For honour-system self-practice this is tolerable. **For a paid, ranked, leaderboard product sold to CS students it is fatal** — and this audience is precisely the one that will find it.
 
-This defines Release 5 in its entirety.
+### FINDING-4 · P0 · Storage has no concept of a user
 
-### FINDING-4 — Storage has no concept of a user (structural)
+`lib/repository/storage/idb-manager.ts` opens a single database under one fixed `DATABASE_NAME`. Store keyPaths are bare — `STORE_MISTAKES` on `questionId`, `STORE_BOOKMARKS` on `questionId`. There is no `userId` anywhere in the schema.
 
-`lib/repository/storage/idb-manager.ts` opens one database under a single fixed `DATABASE_NAME`. Object stores use bare keyPaths — `STORE_MISTAKES` keyed on `questionId`, `STORE_BOOKMARKS` keyed on `questionId`. There is no `userId` anywhere in the schema.
-
-Consequence: the day two people log in on the same laptop — a shared hostel machine, a college lab, a sibling — **user B sees user A's bookmarks, mistakes, exam history and analytics.** Authentication alone does not fix this; the storage layer itself must become user-aware. This is a hard prerequisite for "separate sessions per user," and it is Module 4D.
+The day two students log in on one hostel or lab machine, **user B sees user A's bookmarks, mistakes, attempt history and analytics.** Authentication does not fix this; the storage layer itself must become user-aware. One screenshot of this in a college WhatsApp group is a reputational event we do not recover from.
 
 ---
 
-# PART II — THE ZERO-RUPEE DOCTRINE
+# PART II — THE ZERO-INVESTMENT INFRASTRUCTURE DOCTRINE
 
-## 2.1 The complete free stack
+## 2.1 ⚠️ P0 — The Vercel licence conflict, and why Cloudflare is not optional
+
+**Vercel's Hobby plan is for non-commercial, personal use.** Serving advertising or taking payments makes a deployment commercial. The moment AdSense or Razorpay goes live on `renyxera.vercel.app`, we are in breach of the plan hosting us, and the remedy is Vercel Pro at ~$20/month — which breaks Rule 1 on day one of monetization.
+
+**Cloudflare Pages/Workers permits commercial activity, ad serving and payments on its free tier**, with unlimited static bandwidth and edge compute at ₹0.
+
+This is therefore not a cost optimisation. It is a **licensing prerequisite for the existence of every revenue line in this plan**, and it is scheduled as Module 4A — the first thing built, before auth, before the database, before anything.
+
+> **Standing instruction:** verify both providers' live policy text before executing the migration. Hosting terms change; this decision must rest on the current terms, not on this document.
+
+## 2.2 The complete ₹0 stack
 
 | Need | Service | Free ceiling | Cost |
 |---|---|---|---|
-| Hosting / CDN | **Cloudflare Pages** (see 2.2) | Unlimited bandwidth, 500 builds/mo | ₹0 |
-| Hosting (current) | Vercel Hobby | ~100 GB bandwidth/mo | ₹0 *(licence conflict — see 2.2)* |
-| Auth | **Supabase Auth** | ~50,000 monthly active users | ₹0 |
+| Hosting / CDN / edge compute | **Cloudflare Pages + Workers** | Unlimited static bandwidth; 100k Worker req/day; 500 builds/mo | ₹0 |
+| Object storage (images, PDFs) | **Cloudflare R2** | 10 GB storage, **zero egress fees** | ₹0 |
 | Database | **Supabase Postgres** | 500 MB DB, ~5 GB egress | ₹0 |
-| Row-level security | Supabase RLS | included | ₹0 |
-| Rate limiting | **Upstash Redis** | ~10,000 commands/day | ₹0 |
+| Row security | Supabase RLS | included | ₹0 |
+| Auth — Google / Email | **Supabase Auth** | ~50k MAU | ₹0 |
+| Auth — Mobile OTP | **Firebase Auth** (SMS), bridged into Supabase | ~10k verifications/mo *(verify — see 2.4)* | ₹0 |
+| Server-side evaluation | **Supabase Edge Functions** or **Cloudflare Workers** | within above | ₹0 |
+| Rate limiting | **Upstash Redis** | ~10k commands/day | ₹0 |
 | Bot / abuse gate | **Cloudflare Turnstile** | unlimited | ₹0 |
-| Avatars | **DiceBear** (`@dicebear/collection`, MIT) | self-hosted, unlimited | ₹0 |
-| Transactional email | Supabase built-in, or **Resend** | ~3,000 emails/mo | ₹0 |
-| Error tracking | **Sentry** | ~5,000 errors/mo | ₹0 |
-| Product analytics | **Cloudflare Web Analytics** or Umami Cloud | free, cookieless | ₹0 |
+| Avatars | **DiceBear** (`@dicebear/collection`, MIT) | self-hosted SVG, unlimited | ₹0 |
+| Transactional email | Supabase SMTP / **Resend** | ~3,000 emails/mo | ₹0 |
+| Error tracking | **Sentry** | ~5,000 events/mo | ₹0 |
+| Product analytics | **Cloudflare Web Analytics** | free, cookieless | ₹0 |
 | CI/CD | **GitHub Actions** | 2,000 min/mo | ₹0 |
-| AI | **Gemini free tier** | rate-limited | ₹0 |
-| Ads | Google AdSense / Ezoic | free to join — they pay us | ₹0 |
-| Payments | Razorpay | no setup fee, ~2% per transaction | ₹0 upfront |
-| Source control | GitHub | unlimited | ₹0 |
-| Domain | `.vercel.app` / `.pages.dev` subdomain | free | ₹0 |
+| AI inference + vision PDF parsing | **Gemini free tier** | rate-limited | ₹0 |
+| Ads | AdSense / Ezoic / Media.net | free to join — they pay us | ₹0 |
+| Payments | Razorpay | no setup fee; UPI MDR currently nil *(see 4.4)* | ₹0 upfront |
+| Domain | `*.pages.dev` | free | ₹0 |
 
-**Total recurring cost to launch and operate: ₹0.**
+**Recurring infrastructure cost to build, launch, secure and monetize: ₹0.**
 
-The first rupee we ever spend is the ~2% Razorpay cut on money a customer has already paid us. That is revenue-contingent, not investment.
+Optional, revenue-funded, never prerequisites: custom domain ~₹1,000/yr; Google Play developer account ~₹2,100 one-time (Module 9D).
 
-> **Optional, not required:** a custom domain (`renyxera.com`) costs roughly ₹800–1,200/year. It is **not** needed for launch, ads, or payments — a `.pages.dev` subdomain works for all three. Treat it as the first thing to buy *out of revenue*, not out of pocket.
+## 2.3 Image & binary asset architecture — a P0 design rule
 
-## 2.2 ⚠️ The licensing conflict that must be resolved before ads go live
+Three storage options exist and only one is correct. Getting this wrong silently destroys the free tier.
 
-**Vercel's Hobby plan is for non-commercial, personal use.** Displaying advertising or taking subscription payments makes a deployment commercial. The moment we switch on AdSense at `renyxera.vercel.app`, we are in breach of the plan we are hosted under, and the remedy is Vercel Pro at roughly $20/month — which breaks the zero-rupee constraint on day one of monetization.
+| Option | Verdict | Why |
+|---|---|---|
+| Binary images in Supabase Postgres (`bytea`/base64) | **FORBIDDEN** | Our `public/images` is already 6.1 MB against a **500 MB total database quota**. Multi-branch expansion (Release 8) multiplies diagram volume 5×. Storing binaries here consumes the quota that user data, attempts and analytics need, and bloats every query and backup. |
+| Raw GitHub repository URLs / `raw.githubusercontent.com` | **FORBIDDEN** | Not a CDN. Subject to hotlink throttling and rate limits, no cache-control guarantees, no custom headers, and an availability dependency on a service that does not promise asset delivery. |
+| **Cloudflare Pages CDN (`public/images/`) + Cloudflare R2** | **MANDATED** | Unlimited static bandwidth on Pages; R2 gives 10 GB with **zero egress fees** for the larger multi-branch diagram corpus. |
 
-**Resolution: migrate hosting to Cloudflare Pages before Release 6.**
+**The rule, stated once and enforced everywhere:**
 
-- Cloudflare's free tier permits commercial use.
-- Bandwidth is unlimited — which matters, because `public/images` is already 6.1 MB and an ad-supported content strategy is bandwidth-hungry by design.
-- Next.js deploys via `@cloudflare/next-on-pages` or OpenNext.
-- Turnstile and Cloudflare Web Analytics then sit natively alongside it, also free.
+> **The database stores relative path strings only.** `images/cse/2023/q42-circuit.png` — never a binary, never a base64 blob, never an absolute third-party URL. Resolution to a full URL happens at render time from a single configurable CDN base. This keeps the database small, makes the CDN swappable without a migration, and keeps every asset path portable across branches and years.
 
-**Action:** verify both providers' current terms directly before migrating — hosting terms change, and this decision should rest on the live policy text rather than on this document. But plan for the migration. It is Module 6A, and it **blocks** every ad-based revenue line.
+**Split rule:** assets shipped with the app and needed offline (brand, UI, the CSE core set) live in `public/images/` on the Pages CDN. Bulk and long-tail assets (multi-branch diagram corpus from Release 8) live in R2, fetched on demand.
 
-## 2.3 The ceilings, and what happens when we hit them
+## 2.4 Free-tier ceilings and their ₹0 answers
 
-| Ceiling | Hit at roughly | Symptom | ₹0 mitigation |
+| Ceiling | Reached at | Symptom | ₹0 mitigation |
 |---|---|---|---|
-| Supabase 500 MB DB | ~50k–100k users of profile + attempt data | Writes fail | Archive old attempt rows into compressed JSON; keep aggregates only |
-| Supabase pauses after ~1 week idle | Pre-launch only | Project sleeps | Irrelevant once daily traffic exists; a free cron ping covers the gap |
-| Upstash 10k commands/day | ~2,000 AI calls/day | Limiter degrades | Fall back to a Postgres counter; add a per-user daily AI quota (which we want anyway) |
-| Gemini free-tier RPM | Concurrent AI spikes | 429s | Queue + cache by prompt hash (`STORE_AI_RESPONSES` already exists); make heavy AI a Pro benefit |
-| Vercel 100 GB bandwidth | ~30k–50k sessions/mo | Overage / throttle | Moot after the Cloudflare migration |
-| Resend 3,000 emails/mo | ~3,000 signups/mo | Verification mail stops | Supabase built-in SMTP; batch non-critical mail |
+| Supabase 500 MB DB | ~50k–100k users of profiles + attempts | Writes fail | Enforced by §2.3 (no binaries); archive aged attempt rows to R2 as compressed JSON, retain aggregates |
+| Supabase idle pause (~1 wk) | Pre-launch only | Project sleeps | Free scheduled Worker ping; irrelevant once daily traffic exists |
+| Upstash 10k cmd/day | ~2,000 AI calls/day | Limiter degrades | Postgres counter fallback + per-user daily AI quota (wanted regardless) |
+| Gemini free-tier RPM | Concurrent AI spikes | 429s | Prompt-hash caching (`STORE_AI_RESPONSES` exists); queue; heavy AI becomes a paid tier |
+| **Firebase SMS quota** | ~10k OTPs/mo | OTP login fails | **Verify current India quota and pricing before building — Google has repriced phone auth.** Fallbacks: make OTP one of three auth paths (Google OAuth absorbs load), route overflow to email OTP at ₹0, or MSG91 free-tier trial. Never make SMS the *only* door. |
+| R2 10 GB | Multi-branch full corpus | Uploads fail | Aggressive WebP/AVIF compression at ingest; the vision pipeline (8B) crops diagrams rather than storing full pages |
+| Cloudflare Workers 100k req/day | ~10k+ graded submissions/day | Throttle | Batch grading; static content served by Pages, not Workers |
+| Resend 3,000 mail/mo | ~3,000 signups/mo | Verification stops | Supabase SMTP; batch non-critical mail |
 
-Every ceiling above has a ₹0 answer. None forces a payment.
+Every ceiling has a ₹0 answer. None forces a payment.
 
 ---
 
 # PART III — THE RELEASE PLAN
 
-> **Notation.** Each module lists: **Goal → Deliverables → Acceptance criteria → Cost → Depends on.**
-> Modules within a release are ordered by dependency. Releases are ordered by risk-reduction first, revenue second — because shipping ads on top of an insecure, single-user app would burn the brand permanently.
+> **Module notation:** Priority · Goal · Deliverables · Acceptance criteria · Cost · Depends on.
+> Modules are dependency-ordered within a release. Releases follow Rule 3: **infrastructure and security → retention → monetization → community**.
 
 ---
 
-## RELEASE 4 — IDENTITY & TRUST
-### *"Who is this person, and is their data actually theirs?"*
+## RELEASE 4 — FOUNDATION: INFRASTRUCTURE, DATA & IDENTITY
+### *Make it commercial-legal, make it multi-user, make it safe.*
 
-This release converts RENYXERA from a single-device local tool into a real multi-user product. Nothing after this release is possible without it.
-
-**Release goal:** a user can sign up, log in on any device, own a profile with a chosen avatar, have their data follow them, and be unable to see anyone else's — while the AI endpoint stops being a free-for-all.
+Nothing in Releases 5–9 is possible before this release completes. It converts RENYXERA from a single-device local tool on a non-commercial host into a legally monetizable multi-user platform.
 
 ---
 
-### Module 4A — Supabase Foundation
+### Module 4A · P0 · Cloudflare Migration — **EXECUTE FIRST**
 
-**Goal.** Stand up the backend that every later module depends on, without touching app behaviour yet.
+**Goal.** Be legally permitted to earn money, and gain unlimited bandwidth and edge compute at ₹0.
 
 **Deliverables**
-- Supabase project created; free tier.
-- Environment discipline: `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` client-side; `SUPABASE_SERVICE_ROLE_KEY` **server-only, never in a `NEXT_PUBLIC_` variable**, never imported into a client component. Add a CI grep that fails the build if a service-role key appears outside `app/api/**` or `lib/server/**`.
-- Core schema:
+- Verify Vercel Hobby non-commercial terms and Cloudflare's commercial-use position from live policy text; record the finding in the repo.
+- Migrate to **Cloudflare Pages** via `@cloudflare/next-on-pages` (or OpenNext). Validate every surface: middleware, all three API routes, the service worker and PWA install, image optimisation, `next/font`, build reproducibility.
+- Stand up **Cloudflare Workers** as the edge-compute target for Release 5's server-authoritative evaluation.
+- Provision **Cloudflare R2** bucket for the Release 8 asset corpus; wire the CDN base URL as a single environment variable per §2.3.
+- Move DNS, Web Analytics and Turnstile into the same Cloudflare account — one free control plane.
+- Keep the Vercel deployment live as a rollback target until parity is proven, then decommission.
+
+**Acceptance criteria**
+- Full feature parity on Cloudflare, verified against the existing Playwright suite.
+- Service worker and offline PWA behaviour unchanged.
+- Hosting terms permit advertising **and** payments — in writing.
+- Rollback path documented and tested.
+
+**Cost:** ₹0 **Depends on:** nothing — **blocks all of Releases 6 and 7**
+
+---
+
+### Module 4B · P0 · Data Layer Migration — Static JSON → Supabase Postgres
+
+**Goal.** Move the question bank out of a shipped static file into a queryable, access-controlled database — the precondition for answer-key withholding, multi-branch scale, and server-side evaluation.
+
+**Deliverables**
+- Supabase project; environment discipline enforced: `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` client-side; `SUPABASE_SERVICE_ROLE_KEY` **server-only, never under a `NEXT_PUBLIC_` prefix, never imported into a client component.** A CI grep fails the build if a service-role key appears outside `app/api/**` or `lib/server/**`.
+- Migrate `data/Aggregated_Output.json` (975 questions / 15 papers) into Postgres with the **public/private split baked into the schema from day one** — this is what makes FINDING-3 fixable:
 
 ```sql
--- profiles: one row per auth user
-create table profiles (
-  id uuid primary key references auth.users on delete cascade,
-  username text unique,
-  display_name text,
-  avatar_seed text not null,          -- DiceBear seed, NOT a file
-  avatar_style text not null default 'adventurer',
-  target_year int,
-  target_branch text default 'CSE',
-  tier text not null default 'free',  -- 'free' | 'pro'
-  active_session_id uuid,             -- single-device enforcement (Module 4D)
-  daily_ai_calls int not null default 0,
-  daily_ai_reset_at timestamptz,
-  created_at timestamptz default now(),
-  updated_at timestamptz default now()
+-- BRANCHES: multi-branch from the first migration, not retrofitted later
+create table branches (
+  code text primary key,                 -- 'CSE','ECE','EE','ME','CE','DA'
+  name text not null,
+  status text not null default 'coming_soon',  -- 'live' | 'coming_soon'
+  question_count int default 0,
+  sort_order int default 0
 );
 
--- exam attempts: append-only, server-owned truth
+-- QUESTIONS: public half only. Safe to send to any client.
+create table questions (
+  id text primary key,                   -- GATE_CS_2026_FN_Q1
+  branch_code text not null references branches(code),
+  year int not null, session text, question_no int,
+  question_type text not null,           -- MCQ | MSQ | NAT
+  marks numeric not null,
+  section text, subject text, topic text, difficulty text,
+  question_text text not null,
+  image_paths text[] default '{}',       -- RELATIVE PATHS ONLY (§2.3)
+  created_at timestamptz default now()
+);
+
+-- OPTIONS: text only. is_correct deliberately absent.
+create table question_options (
+  question_id text not null references questions(id) on delete cascade,
+  option_id text not null,               -- A|B|C|D
+  text text not null,
+  image_path text,                       -- relative path only
+  primary key (question_id, option_id)
+);
+
+-- ANSWER KEY: private half. NEVER exposed to the anon role.
+create table question_answers (
+  question_id text primary key references questions(id) on delete cascade,
+  correct_option_ids text[],             -- MCQ/MSQ
+  nat_min numeric, nat_max numeric,      -- NAT range
+  solution_text text,
+  solution_image_paths text[] default '{}'
+);
+
+-- USER DATA
+create table profiles (
+  id uuid primary key references auth.users on delete cascade,
+  username text unique, display_name text,
+  phone text unique, phone_verified boolean default false,
+  avatar_seed text not null, avatar_style text not null default 'adventurer',
+  target_branch text default 'CSE' references branches(code),
+  target_year int, target_rank int, target_score numeric,
+  daily_study_hours numeric default 2,      -- drives Goal Slider (4E)
+  entitlements jsonb default '{}'::jsonb,   -- per-exam & pass grants (7A)
+  daily_ai_calls int default 0, daily_ai_reset_at timestamptz,
+  status text not null default 'active',    -- 'active'|'suspended'|'anonymized'
+  created_at timestamptz default now(), updated_at timestamptz default now()
+);
+
 create table exam_attempts (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users on delete cascade,
+  branch_code text not null references branches(code),
   config jsonb not null,
-  started_at timestamptz not null,
+  question_ids text[] not null,
+  mode text not null default 'practice',    -- 'practice' | 'graded'
+  server_started_at timestamptz not null,
+  duration_seconds int not null,
   submitted_at timestamptz,
-  server_score numeric,               -- computed server-side (Release 5)
+  server_score numeric, server_max numeric, -- server-computed truth only
+  percentile numeric, air int,
   status text not null default 'in_progress',
   integrity_flags jsonb default '[]'::jsonb
 );
 
--- user question state: bookmarks, mistakes, notes
+create table exam_responses (               -- APPEND-ONLY
+  id uuid primary key default gen_random_uuid(),
+  attempt_id uuid not null references exam_attempts(id) on delete cascade,
+  question_id text not null,
+  selected_option_ids text[], nat_value numeric,
+  time_spent_seconds int, marked_for_review boolean default false,
+  created_at timestamptz default now()
+);
+
 create table user_question_state (
   user_id uuid not null references auth.users on delete cascade,
-  question_id text not null,
-  bookmarked boolean default false,
-  mistake_count int default 0,
-  last_seen_at timestamptz,
-  note text,
+  question_id text not null references questions(id) on delete cascade,
+  bookmarked boolean default false, mistake_count int default 0,
+  last_seen_at timestamptz, note text,
   primary key (user_id, question_id)
+);
+
+create table branch_waitlist (              -- Module 4H "Notify Me"
+  id uuid primary key default gen_random_uuid(),
+  branch_code text not null references branches(code),
+  email text, user_id uuid references auth.users on delete set null,
+  created_at timestamptz default now()
 );
 ```
 
-- **RLS enabled on every table from the first migration.** Default-deny; explicit `auth.uid() = user_id` policies. A table without RLS is treated as a build-blocking defect.
-- A seeded migration file checked into the repo — schema lives in version control, never only in the Supabase dashboard.
+- **RLS enabled on every table in the first migration. Default-deny.**
+  - `questions`, `question_options`, `branches` → readable by `authenticated` and `anon` (public half; safe).
+  - **`question_answers` → no policy for `anon` or `authenticated` at all.** Reachable only by the service role inside Edge Functions/Workers. This single line is the structural fix for FINDING-3: the answer key is not "hidden" from the client, it is **unreachable** by it.
+  - `profiles`, `exam_attempts`, `exam_responses`, `user_question_state` → `auth.uid() = user_id`.
+  - `exam_responses` → `INSERT` only; no `UPDATE`, no `DELETE` for users (append-only integrity).
+- Migrations live in version control; the Supabase dashboard is never the source of truth.
+- `profiles` row created by a Postgres trigger on `auth.users` insert — never by a client call that can be skipped or forged.
+- Seed `branches` with all six codes: CSE `live`, ECE/EE/ME/CE/DA `coming_soon`.
+- **Offline is preserved:** the public half syncs into IndexedDB for practice mode. Only graded mode requires the network. The local-first speed advantage is not traded away.
 
 **Acceptance criteria**
-- With RLS on, a raw anon-key query for another user's row returns zero rows — proven by an automated test, not by inspection.
-- The service-role key does not appear in any client bundle (verified by grepping the built output).
-- `profiles` row is auto-created by a Postgres trigger on `auth.users` insert — no client-side "create my profile" call that can be skipped or forged.
-
-**Cost:** ₹0 **Depends on:** nothing
-
----
-
-### Module 4B — Authentication Layer
-
-**Goal.** Real accounts, with the lowest possible signup friction for a student on a phone.
-
-**Deliverables**
-- **Email + password** with verification.
-- **Google OAuth** — for this audience (engineering students) this will be the majority path and removes password-reset support load entirely. Free via Supabase.
-- Password reset flow (request → emailed link → set new password).
-- Session persistence across reloads; silent token refresh.
-- **Route protection** at the middleware layer, not in page components — `middleware.ts` gates `/dashboard`, `/exam`, `/analytics`, `/bookmarks`, `/mistakes`, `/revision`, `/setup`, `/ai-mentor`. Client-side redirects are a UX affordance, never the security boundary.
-- **Anonymous / guest mode preserved.** This is a deliberate product decision, not a shortcut: forcing signup before a student has felt the product is the single biggest conversion killer for edtech. A guest gets the full local-first experience; on signup, their existing IndexedDB data is **migrated into their new account** rather than discarded.
-- Account deletion (DPDP-relevant — see §5.2), with a cascade that genuinely removes rows.
-- Auth UI built in the existing glass/gradient design language, not a default Supabase widget.
-
-**Acceptance criteria**
-- Hitting a protected route while logged out redirects, and the protected data never appears in the network response.
-- A guest with 40 bookmarks who signs up has 40 bookmarks on the server afterwards, and zero duplicates.
-- Session survives a hard reload and a browser restart.
-- Deleting an account removes every row across all three tables (verified by query).
+- A query against `question_answers` with the anon key returns **zero rows** — proven by an automated test in CI, not by inspection.
+- Service-role key absent from the built client bundle (CI grep over build output).
+- All 975 questions render identically from Postgres as from the old JSON.
+- Practice mode works fully offline after first sync.
 
 **Cost:** ₹0 **Depends on:** 4A
 
 ---
 
-### Module 4C — Profile Section with Pre-Populated Avatars
+### Module 4C · P1 · Authentication — Three Doors
 
-**Goal.** Give every user an identity they chose, with zero storage cost and zero moderation risk.
-
-**The avatar decision — and why it is the right one.** Uploaded profile photos would mean: storage quota consumed, bandwidth consumed, an image-moderation obligation (our users include minors; user-uploaded imagery on a platform with minors is a real liability), EXIF/privacy handling, and a resize pipeline. Every one of those costs money or risk.
-
-**Use DiceBear instead.** Install `@dicebear/core` + `@dicebear/collection` (MIT licence) and generate avatars **locally in the browser as SVG from a seed string**. Consequences:
-
-- Storage cost: **zero bytes.** We persist only `avatar_seed` (a short string) and `avatar_style` — not an image.
-- Bandwidth cost: **zero.** Nothing is fetched; the SVG is generated client-side.
-- Works fully **offline**, which matters for a PWA.
-- Moderation risk: **eliminated.** A user cannot upload anything.
-- Infinite variety without an asset library to design or host.
+**Goal.** Real accounts with the lowest possible friction for an Indian student on a mid-range Android phone.
 
 **Deliverables**
-- `/profile` route with sections: Identity, Avatar, Exam Goals, Preferences, Account, Danger Zone.
-- **Avatar picker:** a grid of 6–8 curated DiceBear styles (`adventurer`, `bottts`, `notionists`, `thumbs`, `lorelei`, `micah`, `shapes`, `identicon`), each showing live previews; a "Shuffle" control that rerolls the seed; a colour/accessory variation row. All rendered inline, instantly, offline.
-- **Identity:** unique username (validated against a reserved/profanity list, checked server-side for uniqueness), display name.
-- **Exam goals:** target GATE year, target branch, target rank/score, daily study-hour target — these feed the existing Goal Slider and Focus Target features rather than being decorative.
-- **Preferences:** theme (light/dark/system), default test duration, notification opt-ins, reduced-motion respect, question language/format preferences.
-- **Stats strip:** total questions attempted, accuracy, streak, hours studied, tests completed — computed, read-only. This is the emotional payload of the profile page and the reason people return to it.
-- **Achievements / badges** (see Module 9B) surfaced here.
-- **Account:** email, connected providers, password change, active devices (from 4D), export my data (JSON), delete my account.
 
-**Acceptance criteria**
-- Choosing an avatar writes only a seed string to the database — confirmed by inspecting the row; no binary, no URL to external storage.
-- Avatar renders identically offline, after a cold PWA start, in both themes.
-- Username uniqueness is enforced by a database constraint, not just a client check.
-- Every profile field round-trips: edit → save → hard reload → value persists.
+**Three parallel auth paths — none of them is the only door:**
 
-**Cost:** ₹0 **Depends on:** 4B
-
----
-
-### Module 4D — Per-User Session Isolation
-
-**Goal.** Deliver the user's explicit requirement — *separate sessions per user* — at both layers: separate **data**, and separate **device sessions**.
-
-This module has two distinct halves. Both are required; doing only one leaves a real hole.
-
-#### 4D-1 — Storage isolation (fixes FINDING-4)
-
-The IndexedDB layer must become user-aware. Two viable approaches:
-
-| Approach | How | Trade-off |
+| Path | Rationale | Cost |
 |---|---|---|
-| **A. Per-user database** (recommended) | `openDB(\`renyxera-${userId}\`, ...)` — one physical DB per account | Cleanest isolation; logout/switch is trivial; no migration of keyPaths needed |
-| B. Composite keys | Add `userId` to every keyPath: `[userId, questionId]` | One DB, but requires a schema version bump and a migration of all 12 stores |
+| **Google OAuth** | Engineering students overwhelmingly have a Google account already. Expected majority path; eliminates password-reset support load entirely. | ₹0 |
+| **Mobile OTP (SMS)** | The single lowest-friction identity in India — many students trust a phone number over an email they rarely check. Firebase Auth SMS, bridged to Supabase via third-party JWT auth. | ₹0 within quota |
+| **Email + password** | Fallback; required for institutional/college users (Release 8 B2B) and for anyone SMS fails for. | ₹0 |
 
-Approach **A** is recommended: it requires no change to the 12 object-store keyPaths, makes isolation structural rather than query-dependent (there is no query that *can* leak, because the other user's data is in a different database), and makes "sign out and wipe" a single `deleteDB` call.
+- **Firebase↔Supabase bridge:** Firebase issues the phone-verified JWT; Supabase is configured to trust Firebase as a third-party auth provider so a single `profiles` row and one RLS model serve all three paths. **Do not** build two parallel user tables — one identity, three doors.
+- **SMS quota discipline** (from §2.4): OTP is rate-limited per phone number *and* per IP *and* per device, gated by Turnstile, with resend cooldown and a hard daily cap. SMS is the one auth path with a real-world unit cost behind the free quota; an unprotected OTP endpoint is an attacker's way to burn it. Treat the OTP endpoint with the same seriousness as the AI route.
+- Route protection at **middleware**, not in page components. Client-side redirects are UX, never the boundary.
+- Session persistence across reloads; silent token refresh; "sign out everywhere" on credential change.
+- Auth UI built in the existing glass/gradient design language — no default vendor widget.
 
-**Deliverables**
-- `idb-manager.ts` takes the active user id and opens the namespaced database.
-- Guest data lives in `renyxera-guest`; on signup it is migrated into `renyxera-<uid>` and the guest DB is dropped.
-- Sign-out closes the handle and clears in-memory Zustand state — **all 10 stores** must be reset, or the next user sees the previous user's state hydrated from memory even with a fresh DB. This is an easy bug to ship; make it an explicit checklist item with a test.
-- A "switch account" path that never requires a page reload to be safe.
-
-#### 4D-2 — Device session management
-
-**Deliverables**
-- `profiles.active_session_id` written on login (already designed in `GATE_OS_Growth_Security_Marketing_Plan.md`).
-- A **device sessions table** — device label, browser, approximate location, last-seen — surfaced in Profile → Account → Active Devices, with "sign out this device" and "sign out everywhere."
-- **Policy for Release 4: multi-device allowed, all sessions visible.** Do *not* enforce a single-device limit yet. Enforcement is a Pro-tier anti-sharing control and belongs in Release 7 (Module 7D), where it protects revenue. Enforcing it on free users in Release 4 would only generate support pain with zero benefit.
-- Idle-session expiry and explicit "sign out everywhere" on password change.
+**No-Account-Deletion Policy** *(mandate — implemented, with a compliance guard)*
+- **No delete-account control anywhere in the user UI.** Retention metrics, historical testing telemetry, leaderboard integrity and fraud history are preserved. Attempt history in particular must survive, or ranks and percentiles become reconstructible fiction.
+- ⚠️ **Compliance guard — deliberate, and not a softening of the policy.** India's DPDP Act grants a right to erasure, and Google Play policy requires an account-deletion path for listed apps (Module 9D). A hard "no deletion under any circumstances" with no path at all creates real legal and store-listing exposure that a free-tier product cannot absorb. The policy is therefore implemented as:
+  - **UI: no deletion control.** Mandate satisfied literally.
+  - **Legal backstop: a manual, support-request-only erasure path**, disclosed in the Privacy Policy, executed as **anonymization rather than deletion** — `profiles.status = 'anonymized'`, PII fields nulled, username replaced with an opaque token. **Attempt rows, scores and telemetry are retained in anonymized form.**
+  - This preserves 100% of the analytics and anti-fraud value the mandate is protecting, while keeping us compliant. It is the strictly better version of the same policy.
 
 **Acceptance criteria**
-- Two accounts logged in sequentially on one browser: account B sees zero bookmarks, zero mistakes, zero attempt history from account A — verified in the UI *and* by listing IndexedDB databases in DevTools.
-- Sign out → sign in as a different user → no stale Zustand state anywhere (analytics, calendar, todo, study, goal-slider all reset).
-- Active Devices lists every real session and "sign out everywhere" invalidates all of them.
+- All three auth paths converge on one `profiles` row; no duplicate identities.
+- A protected route hit while logged out never returns the protected data in the network response.
+- OTP endpoint survives a scripted abuse attempt without exhausting the SMS quota.
+- No deletion control exists in any UI surface; the documented anonymization path works and retains attempt history.
 
 **Cost:** ₹0 **Depends on:** 4B
 
 ---
 
-### Module 4E — Cloud Sync
+### Module 4D · P1 · Guest Walkthrough / Teaser Mode
 
-**Goal.** The user's progress follows them from laptop to phone, without losing the local-first speed that makes the app feel instant.
+**Goal.** Let a visitor feel the product before being asked for anything — then convert them at the exact moment they want the thing that is locked.
 
-**Design principle: local-first stays.** IndexedDB remains the read path — the UI never waits on the network. Supabase is the durable mirror and the cross-device channel. This preserves offline use, which is a genuine differentiator for students on unreliable connections.
+Forcing signup before a student has experienced the product is the single largest conversion killer in edtech. Equally, an unlimited guest mode gives away the assets we intend to sell. The resolution is a **teaser**: full UI, real but bounded substance, contextual locks.
 
 **Deliverables**
-- Sync engine with the status model already specified in the Release 4 master prompt: `Offline / Pending / Syncing / Synced / Conflict / Failed`, surfaced as a small, non-intrusive indicator.
-- **Exam responses are append-only.** Never updated in place, never deleted by the client. This is both a correctness property and the foundation of Release 5's integrity model.
-- Conflict resolution: last-write-wins for preferences; union-merge for bookmarks; max-value for counters; **server-wins, always, for anything score-related.**
-- Backoff and retry; a sync queue that survives a browser close.
-- Manual "sync now" and "export my data as JSON" in Profile.
+
+| Surface | Guest | Signed in |
+|---|---|---|
+| Full UI exploration, navigation, theming | ✅ | ✅ |
+| Practice questions (capped sample set) | ✅ | ✅ full bank |
+| Basic result screen | ✅ | ✅ |
+| **Full mock exams** | 🔒 | ✅ |
+| **AI Mentor** | 🔒 | ✅ |
+| **Deep weakness analytics** | 🔒 | ✅ |
+| **Subject leaderboards** | 🔒 | ✅ |
+| Bookmarks / mistakes persistence | Local only, warned | ✅ synced |
+
+- **Contextual signup triggers** — never a wall on arrival. The prompt appears at the moment of intent, and states what is being unlocked: *"Sign in to start a full 3-hour mock and get your All India percentile."* A modal on page load converts far worse than a lock on a button the user just chose to press.
+- **Value-visible locks.** Locked features render **blurred-but-present** with a real preview — a guest must see the weakness heatmap they are missing, not an empty state. Desire precedes conversion.
+- Guest data lives in the `renyxera-guest` IndexedDB namespace and is **migrated into the new account on signup**, never discarded. Losing a guest's 40 bookmarks at the exact moment they sign up is the worst possible first impression.
+- Guest AI calls: zero, or a single hard-capped trial call behind Turnstile. Guests must not be a path around per-user AI quotas (4G).
+
+**Acceptance criteria**
+- A guest can navigate every screen without an account.
+- Each locked feature shows a preview plus a contextual, specific unlock prompt.
+- Guest → signup migrates all local data with zero loss and zero duplicates.
+
+**Cost:** ₹0 **Depends on:** 4C
+
+---
+
+### Module 4E · P1 · Profile, Pre-Populated Avatars & the Dynamic Exam Goals Engine
+
+**Goal.** An identity the user chose, at zero storage cost — and a goals section that **actually drives the product** instead of decorating it.
+
+#### 4E-1 · Avatars — DiceBear, generated client-side
+
+Uploaded photos would cost storage quota, bandwidth, a resize pipeline, EXIF handling, and an **image-moderation obligation on a platform used by minors**. Every one of those costs money or carries risk.
+
+**DiceBear** (`@dicebear/core` + `@dicebear/collection`, MIT) generates avatars as **SVG in the browser from a seed string**:
+
+| Property | Result |
+|---|---|
+| Storage | **Zero bytes** — we persist `avatar_seed` + `avatar_style`, never an image |
+| Bandwidth | **Zero** — nothing fetched, generated locally |
+| Offline | Works fully — matters for a PWA |
+| Moderation risk | **Eliminated** — nothing can be uploaded |
+| Variety | Effectively infinite, with no asset library to design or host |
+
+Picker: 6–8 curated styles (`adventurer`, `bottts`, `notionists`, `thumbs`, `lorelei`, `micah`, `shapes`, `identicon`) with live previews, a "Shuffle" reroll, and a colour/accessory variation row — all instant, all offline.
+
+#### 4E-2 · The Dynamic Exam Goals Engine *(mandate — goals must drive behaviour)*
+
+The four goal fields are **inputs to the existing Focus Target and Goal Slider algorithms**, not stored strings. This is the difference between a profile form and a coaching product.
+
+| Field | What it actually drives |
+|---|---|
+| **Target GATE Year** | Days-remaining countdown → syllabus pacing; compresses or expands the study plan; weights recent-year PYQs higher as the date nears |
+| **Target Branch** | Question pool scoping; subject weightage model; which leaderboards the user appears on (multi-branch ready from 4B) |
+| **Target Rank / Score** | Sets the **Focus Target percentage automatically** instead of the user guessing a slider value. A target of AIR 500 implies a required accuracy and coverage profile; the engine derives the focus band from it and re-derives after every graded attempt. |
+| **Daily Study-Hour Target** | Sizes the daily question set and session length; drives streak definitions, reminder cadence, and the "you are N hours behind" signal |
+
+- **Closed loop:** every graded attempt updates the mastery model, which re-derives the recommended focus band, which changes tomorrow's question set. The Goal Slider stops being a manual control the user fiddles with and becomes a **recommendation with a manual override**.
+- **Feasibility feedback:** if the target rank and the days remaining and the daily hours are mutually impossible, the profile says so honestly and proposes the nearest achievable target. Honesty here builds more trust than flattery.
+
+#### 4E-3 · Profile surface
+
+`/profile` sections: **Identity** (unique username validated server-side against reserved/profanity lists, display name) · **Avatar** (4E-1) · **Exam Goals** (4E-2) · **Preferences** (theme, default duration, notifications, reduced motion) · **Stats** (attempted, accuracy, streak, hours, tests — the emotional payload that brings people back) · **Achievements** (Module 9B) · **Account** (email/phone, linked providers, active devices, export my data). **No Danger Zone, no delete control** (4C).
+
+**Acceptance criteria**
+- Choosing an avatar writes only a seed string — verified by inspecting the row; no binary, no external URL.
+- Avatar renders identically offline, after a cold PWA start, in both themes.
+- Changing Target Rank **measurably changes the next recommended question set** — demonstrated in a test, not asserted.
+- Username uniqueness enforced by a database constraint, not a client check.
+
+**Cost:** ₹0 **Depends on:** 4C
+
+---
+
+### Module 4F · P0 · Per-User Isolation & Device Sessions *(fixes FINDING-4)*
+
+**Goal.** Deliver true separate sessions per user at both layers: separate **data** and separate **devices**.
+
+#### 4F-1 · Storage isolation
+
+| Approach | Mechanism | Verdict |
+|---|---|---|
+| **Per-user database** | `openDB(\`renyxera-${userId}\`, …)` | **MANDATED** — isolation becomes structural, not query-dependent. There is no query that *can* leak, because the other user's data is in a different database. No keyPath migration needed across the 12 stores. Sign-out wipe is one `deleteDB` call. |
+| Composite keys `[userId, questionId]` | One DB, schema version bump | Rejected — migrates all 12 stores and leaves leakage a query bug away |
+
+- `idb-manager.ts` takes the active user id and opens the namespaced database. Guests use `renyxera-guest`.
+- **Sign-out must reset all 10 Zustand stores.** A fresh database with stale in-memory state still shows user A's analytics to user B. This is the easy bug to ship here — it gets an explicit test, listed store by store: `analytics, calendar, data, exam-runtime, exam, goal-slider, study, toast, todo, ui`.
+- Account switching without a page reload must be safe by construction.
+
+#### 4F-2 · Device sessions
+
+- Device sessions table: label, browser, approximate location, last seen — surfaced in Profile → Account → **Active Devices**, with "sign out this device" and "sign out everywhere."
+- **Release 4 policy: multi-device allowed, all sessions visible, no enforcement.** Enforcement is a paid-tier anti-sharing control and belongs in Module 7D, where it protects revenue. Enforcing it on free users now generates support pain for zero benefit.
+- Idle expiry; forced re-auth on credential change.
+
+**Acceptance criteria**
+- Two accounts used sequentially in one browser: account B sees **zero** bookmarks, mistakes or attempts from account A — verified in the UI *and* by listing IndexedDB databases in DevTools.
+- Sign out → sign in as a different user → no stale state in any of the 10 stores.
+- "Sign out everywhere" invalidates every listed session.
+
+**Cost:** ₹0 **Depends on:** 4C
+
+---
+
+### Module 4G · P0 · API Hardening *(fixes FINDING-1 and FINDING-2)*
+
+**Goal.** Close the live, exploitable hole. **The validation half of this module ships before everything else in this document** — it needs no Supabase and no auth.
+
+**Deliverables — Phase 1, immediate (no dependencies)**
+- **Zod schema validation** on `/api/ai/generate`: body shape, prompt max length, type enforcement.
+- **Server-owned system-instruction enum.** The client sends a *key* (`"mentor" | "explain" | "generate_questions" | …`); the server maps it to instruction text held in server-only code. A client-supplied instruction string is rejected outright. This closes the prompt-injection and brand-safety exposure, not merely the cost one.
+- Response size caps, request timeouts, and structured logging (route, outcome, latency, caller key).
+
+**Deliverables — Phase 2, after auth**
+- **Supabase JWT verification required.** Anonymous callers receive 401 and **no Gemini call is made**.
+- **Upstash Redis rate limiting keyed on `user_id`** — never on IP (CGNAT, §1.2 FINDING-2). Replaces the in-memory limiter for this route.
+- **Per-user daily quota enforced in Postgres** (`profiles.daily_ai_calls`, `daily_ai_reset_at`) so it survives Redis eviction and cannot be bypassed by key rotation. This is also the natural upsell surface for the ₹99 AI Mentor add-on (7A).
+- **Server-side prompt-hash response cache** mirroring the existing client `STORE_AI_RESPONSES` — repeated identical questions cost zero quota.
+- **Cloudflare Turnstile** on signup, login, password reset **and OTP request** — scripted account creation is otherwise the trivial route around per-user quotas.
+- Reprioritise the existing limiter: keep it on `/api/dataset` and `/api/image-manifest`, but the expensive route now carries the strongest controls.
+
+**Acceptance criteria**
+- Unauthenticated POST to `/api/ai/generate` → 401, zero Gemini calls.
+- A client-supplied `systemInstruction` string outside the server enum → 400.
+- A single account exceeding its daily quota is refused by the database counter across concurrent serverless instances.
+- 100 scripted signups blocked by Turnstile.
+
+**Cost:** ₹0 **Depends on:** Phase 1 none; Phase 2 on 4C
+
+---
+
+### Module 4H · P1 · Multi-Branch Teaser & Waitlist *(immediate UI, backend in Release 8)*
+
+**Goal.** Capture demand for ECE/EE/ME/CE/DA **now**, months before the data exists — at near-zero engineering cost.
+
+Shipping the selector early is deliberate: it converts a gap in our catalogue into a **free, compounding acquisition asset**. A student who searches "GATE ECE PYQ" and finds a branch page with a waitlist becomes a launch-day user instead of a bounce.
+
+**Deliverables**
+- Branch selector in onboarding and Profile → Exam Goals showing all six branches, driven by `branches.status` (4B). CSE selectable; the other five carry a **"Coming Soon"** badge.
+- **"Notify Me" trigger** on each unreleased branch → writes to `branch_waitlist` (email for guests, `user_id` for members). Instant confirmation; no dead-end.
+- Waitlist counts visible internally — **they are the prioritisation signal for Release 8.** We build the branch the market asked for, not the one we guessed.
+- Public landing pages per branch (`/gate-ece`, `/gate-da`, …) — indexable from day one, feeding Release 6's SEO engine while the data pipeline is still being built.
+- Automated launch email to the waitlist when a branch flips to `live`.
+
+**Acceptance criteria**
+- All six branches visible; five clearly marked Coming Soon and non-selectable as a target.
+- "Notify Me" persists for both guests and members and confirms immediately.
+- Branch landing pages are statically generated and indexable.
+
+**Cost:** ₹0 **Depends on:** 4B
+
+---
+
+### Module 4I · P2 · Cloud Sync
+
+**Goal.** Progress follows the user across devices without surrendering local-first speed.
+
+**Design principle:** IndexedDB remains the **read path** — the UI never waits on the network. Supabase is the durable mirror and the cross-device channel. Offline capability is a genuine differentiator for students on unreliable connections and is not traded away for sync.
+
+**Deliverables**
+- Sync status model: `Offline / Pending / Syncing / Synced / Conflict / Failed`, surfaced as a small non-intrusive indicator.
+- **`exam_responses` are append-only** — never updated in place, never client-deleted. Correctness property *and* the foundation of Release 5's integrity model.
+- Conflict resolution: last-write-wins for preferences; union-merge for bookmarks; max for counters; **server-wins unconditionally for anything score-related.**
+- Durable sync queue surviving browser close; exponential backoff; manual "Sync now" and "Export my data (JSON)".
 
 **Acceptance criteria**
 - Bookmark on phone → appears on laptop within one sync cycle.
-- Airplane mode: the app remains fully usable; queued writes flush on reconnect with no duplicates.
+- Airplane mode: app fully usable; queued writes flush on reconnect with no duplicates.
 - Killing the browser mid-sync loses nothing.
 
-**Cost:** ₹0 **Depends on:** 4A, 4D
-
----
-
-### Module 4F — API Hardening *(fixes FINDING-1 and FINDING-2)*
-
-**Goal.** Stop the AI endpoint from being an open, uncapped, uncounted gateway to our Gemini quota.
-
-> **This module should ship first in Release 4, or even before it, out of sequence.** It is the only item in this document that is actively exploitable right now.
-
-**Deliverables**
-- **Authentication required** on `/api/ai/generate`. Verify the Supabase JWT server-side; reject anonymous callers with 401. (During the guest-mode window, issue a short-lived, low-quota guest token rather than leaving the route open.)
-- **Durable rate limiting** — replace the in-memory limiter with Upstash Redis (`@upstash/ratelimit`), keyed on `user_id`, not IP. IP keying fails on CGNAT, which is how a large share of Indian mobile traffic reaches us; an IP key would throttle entire cities together while letting one user with a changing IP run free.
-- **Per-user daily AI quota**, enforced in Postgres (`profiles.daily_ai_calls`, `daily_ai_reset_at`) so it cannot be bypassed by rotating Redis keys. Free tier: a modest daily allowance. This doubles as the Pro upsell surface in Release 7.
-- **Input validation with `zod`** (already a dependency): maximum prompt length, allowed `systemInstruction` values from a **server-side enum** — the client must not be able to supply an arbitrary system instruction. Today it can, which is also a prompt-injection and brand-safety problem, not only a cost problem.
-- **Response caching by prompt hash** — `STORE_AI_RESPONSES` (keyPath `promptHash`) already exists client-side; mirror it server-side so repeated identical questions cost zero quota.
-- **Cloudflare Turnstile** on signup, login and password reset to stop scripted account creation (which would otherwise be the trivial way around per-user quotas).
-- Keep the existing rate limiting on `/api/dataset` and `/api/image-manifest`, but reprioritise: the expensive route gets the strongest controls.
-- Structured request logging (user id, route, latency, outcome) to make abuse visible.
-
-**Acceptance criteria**
-- An unauthenticated POST to `/api/ai/generate` returns 401 and makes **no** Gemini call.
-- A single account exceeding its daily quota is refused by the database counter even across many concurrent serverless instances.
-- A client-supplied `systemInstruction` outside the server enum is rejected.
-- 100 accounts created by script are blocked by Turnstile.
-
-**Cost:** ₹0 **Depends on:** 4B (for identity); the validation and enum work can start immediately
+**Cost:** ₹0 **Depends on:** 4B, 4F
 
 ---
 
 ### Release 4 — Definition of Done
 
-- [ ] Signup, login, Google OAuth, password reset, account deletion all work end-to-end
-- [ ] RLS proven by automated cross-user access tests
-- [ ] Profile page complete with DiceBear avatar picker storing only a seed
-- [ ] Per-user IndexedDB namespacing; no cross-account data bleed on a shared device
-- [ ] All 10 Zustand stores reset on sign-out
+- [ ] Running on Cloudflare Pages/Workers; commercial use permitted; Vercel decommissioned
+- [ ] R2 provisioned; CDN base URL configurable; **no binary assets in Postgres, no GitHub raw URLs**
+- [ ] 975 questions in Postgres with the public/private split; `question_answers` unreachable by anon/authenticated (CI-proven)
+- [ ] Google OAuth + Mobile OTP + Email/Password all converge on one identity
+- [ ] No account-deletion control in any UI; anonymization backstop documented and working
+- [ ] Guest teaser mode with contextual locks and lossless signup migration
+- [ ] Profile with DiceBear avatars storing only a seed
+- [ ] Exam Goals measurably drive Focus Target and Goal Slider
+- [ ] Per-user IndexedDB namespacing; all 10 Zustand stores reset on sign-out; no cross-account bleed
 - [ ] Active Devices list + sign out everywhere
-- [ ] Sync works offline-first with no data loss
-- [ ] `/api/ai/generate` authenticated, quota-enforced, input-validated
-- [ ] Service-role key absent from the client bundle (CI-enforced)
-- [ ] Guest→account data migration loses nothing
+- [ ] `/api/ai/generate` authenticated, zod-validated, server-enum-instructed, user-ID rate-limited, quota-enforced
+- [ ] Six branches visible; five Coming Soon with working waitlist
+- [ ] Service-role key absent from client bundle (CI-enforced)
 
 ---
 
-## RELEASE 5 — EXAM INTEGRITY & TEST SECURITY
-### *"Make a score mean something."*
+## RELEASE 5 — EXAM INTEGRITY: THE HACKER-PROOFING RELEASE
+### *Make a score mean something to a room full of people who can read your bundle.*
 
-This is the user's explicit "add security to our tests." It is also the release that makes every competitive and paid feature possible — leaderboards, test series, ranks, certificates. Without it, those features are decorative.
-
-The governing principle: **the client is untrusted.** Today the client holds the answers, runs the clock, and computes the score. All three must move.
+Our users are the exact demographic most capable of, and most motivated by, defeating a client-side exam engine. This release assumes they will try, and removes the possibility rather than obscuring it.
 
 ---
 
-### Module 5A — Answer Key Withholding *(fixes FINDING-3)*
+### Module 5A · P0 · Answer Key Withholding *(fixes FINDING-3)*
 
-**Goal.** The correct answer must not be in the browser during a live, graded attempt.
+**Goal.** The correct answer must not exist in the browser during a live graded test — not hidden, not obfuscated, **not present**.
+
+The schema from 4B already enforces this at the database layer. This module enforces it at the delivery layer.
 
 **Deliverables**
-- Split the question payload into **public** and **private** halves:
-  - Public (shipped freely): `question_id, question_text, options[].text, marks, subject, topic, section, difficulty, images`.
-  - Private (server-only): `is_correct`, `nat_answer_range`, solution/explanation text.
-- Build the dataset split at build time — one script, no new infrastructure. `data/Aggregated_Output.json` stays as the authoring source; the build emits `public.json` (client) and seeds a Supabase `question_answers` table (server).
-- **Graded attempts** (test series, leaderboard-eligible, Pro mocks) fetch questions from the public payload and submit answers to the server for grading.
-- **Practice mode keeps the current instant-feedback behaviour**, because immediate feedback is pedagogically valuable and this mode is not competitive. The difference must be visible in the UI: a clear "Graded" vs "Practice" badge. Do not silently degrade the practice experience in the name of security.
-- Offline graded attempts: allowed, queued, **graded on reconnect** — status shown as "Pending evaluation" rather than a fake score.
+- **Graded-mode payload contains exactly:** `question_id`, `question_text`, `option_id` + `text` per option, `marks`, `question_type`, `image_paths`. Nothing else.
+- **Never transmitted in graded mode:** `is_correct`, `correct_option_ids`, `nat_min`/`nat_max`, `solution_text`, `solution_image_paths`.
+- Obfuscation is explicitly rejected as a strategy — encrypted blobs, shuffled keys, checksum tricks. Anything the client can decrypt, the client can be made to reveal. **The key simply is not sent.**
+- **Practice mode keeps instant feedback and full offline capability.** Immediate feedback is pedagogically valuable and practice is not competitive. The modes are visually distinct — a clear **Graded** vs **Practice** badge — so the difference is a stated product decision, never a silent degradation.
+- Offline graded attempts: permitted, queued, **evaluated on reconnect**, shown as "Pending evaluation" — never a fabricated local score.
 
 **Acceptance criteria**
-- In a graded attempt, `is_correct` appears nowhere in any network response or IndexedDB record before submission — verified by DevTools inspection and an automated check.
-- Practice mode retains instant feedback and full offline capability.
+- In a graded attempt, no answer-bearing field appears in any network response, any IndexedDB record, or any JS heap object before submission — verified by DevTools inspection **and** an automated check in CI.
+- Practice mode retains instant feedback offline.
 
-**Cost:** ₹0 **Depends on:** 4A
+**Cost:** ₹0 **Depends on:** 4B
 
 ---
 
-### Module 5B — Server-Authoritative Timer and Scoring
+### Module 5B · P0 · Server-Authoritative Evaluation
 
-**Goal.** Remove the client's ability to invent a score or a duration.
+**Goal.** Remove the client's ability to invent a score, a duration, or a submission.
 
-Today `components/exam/exam-timer.tsx` computes remaining time from a client-held `elapsedSeconds` in the Zustand store, and auto-submits when it reaches zero. A user can edit that value in the console. Total time is derived client-side from question marks.
+Today `components/exam/exam-timer.tsx` derives remaining time from a client-held `elapsedSeconds` in a Zustand store and auto-submits at zero. A console edit defeats it. Total duration is computed client-side from question marks. All of it moves.
 
 **Deliverables**
-- On attempt start, the server issues an **attempt token**: `{ attempt_id, server_started_at, duration_seconds, question_ids[], nonce }`, signed and stored in `exam_attempts`.
-- The client clock becomes a **display** driven by the server-issued start time and duration. Drift is reconciled on each sync tick.
-- Submission is validated server-side: is this attempt open, is it within `duration + grace`, does the question set match the token, has it already been submitted?
-- **All scoring happens server-side.** `exam_attempts.server_score` is the only score that can appear on a leaderboard, in analytics, or on a certificate.
-- Late submissions accepted with a grace window (network reality), flagged beyond it.
-- Idempotent submission — a double-tap or a retry cannot create two attempts.
+- **Attempt token issued server-side on start:** `{ attempt_id, server_started_at, duration_seconds, question_ids[], nonce }`, signed and persisted in `exam_attempts`.
+- The client timer becomes a **display** driven by the server start time and duration, reconciled on each sync tick. Tampering changes the pixels, not the deadline.
+- **Evaluation runs on Cloudflare Workers or Supabase Edge Functions** with the service role — the only context that can read `question_answers`.
+- **The client submits only `{ attempt_id, [{ question_id, selected_option_ids | nat_value, time_spent_seconds }] }`.** It submits selections. It never submits a score.
+- Server validates on submit: is this attempt open, within `duration + grace`, does the question set match the token, has it already been submitted?
+- `exam_attempts.server_score` is **the only score** that may appear in analytics, on a leaderboard, or on a certificate.
+- Idempotent submission — a double-tap or network retry cannot create two attempts or two scores.
+- Late submissions accepted inside a grace window (network reality in India is not negotiable); flagged beyond it.
 
 **Acceptance criteria**
 - Editing `elapsedSeconds` in the console does not extend the real deadline.
-- A replayed or tampered submission payload is rejected.
-- Client-computed and server-computed scores match for 100 honest attempts (regression suite).
+- A replayed, forged, or score-bearing submission payload is rejected.
+- Server and honest-client scores agree across a 100-attempt regression suite.
+- Answer key never leaves the Worker/Edge Function boundary.
 
-**Cost:** ₹0 **Depends on:** 5A
+**Cost:** ₹0 **Depends on:** 5A, 4A
 
 ---
 
-### Module 5C — Attempt Integrity Signals
+### Module 5C · P1 · Attempt Integrity Signals
 
-**Goal.** Detect likely cheating on competitive attempts without turning the product into spyware.
+**Goal.** Protect leaderboard credibility without turning the product into spyware.
 
-**Explicit stance:** we will **not** build webcam proctoring, screen recording, or keystroke surveillance. They are expensive, they are hostile, they destroy trust with a student audience, and they carry serious privacy obligations. We collect cheap behavioural signals, disclose them plainly, and use them only to protect leaderboard integrity.
+**Stated position:** we will **not** build webcam proctoring, screen recording, or keystroke surveillance. They are expensive, hostile, destroy trust with a student audience, and carry serious privacy obligations. We collect cheap behavioural signals, disclose them plainly, and use them narrowly.
 
 **Deliverables**
-- Signals recorded into `exam_attempts.integrity_flags` during graded attempts only:
-  - tab/window blur count and total time away
-  - impossibly fast answers (below a per-difficulty floor)
-  - accuracy statistically inconsistent with the user's history
-  - copy/paste and devtools-open events (best-effort)
-  - multiple concurrent attempts from one account
-- **Transparency requirement:** before a graded attempt starts, a plain-language notice states exactly what is monitored. No hidden collection.
+- Signals written to `exam_attempts.integrity_flags`, **graded attempts only**: tab/window blur count and time away; answers faster than a per-difficulty floor; accuracy statistically inconsistent with the user's own history; copy/paste and devtools-open events (best-effort); multiple concurrent attempts on one account.
+- **Transparency requirement:** before a graded attempt begins, a plain-language notice states exactly what is monitored. No hidden collection, ever.
 - Graded attempts declared **full-screen recommended, single-tab**, with a soft warning rather than a hard block.
-- Flagged attempts are excluded from leaderboards, not deleted; the user's practice value is preserved and they are told why.
-- Shadow-flag first: run the signals silently for a full cycle and tune thresholds against real data before any enforcement. False accusations are far more damaging than a few undetected cheats.
+- Flagged attempts are **excluded from leaderboards, never deleted** — the user keeps their full analysis and is told why.
+- **Shadow-flag first.** Run signals silently for a full cycle and tune thresholds against real data before any enforcement. A false accusation costs far more than an undetected cheat.
 
 **Acceptance criteria**
-- Signals recorded for graded attempts only, never in practice mode.
-- The disclosure notice appears before any collection begins.
-- A flagged attempt still shows the user their full analysis.
+- Signals recorded in graded mode only, never in practice.
+- Disclosure notice precedes any collection.
+- A flagged user still sees their complete performance analysis.
 
 **Cost:** ₹0 **Depends on:** 5B
 
 ---
 
-### Module 5D — Question Bank Protection
+### Module 5D · P1 · Question Bank Protection
 
-**Goal.** Make wholesale scraping of the 975-question bank (and everything we add) uneconomic, without harming legitimate offline use.
+**Goal.** Make wholesale scraping uneconomic without harming legitimate offline use.
 
 **Deliverables**
-- The full bank is no longer delivered in a single 1.3 MB fetch. Paginate and scope by what the user is actually doing.
-- Free tier gets a capped working set; deep bank access becomes a Pro benefit — this serves both security and monetization.
-- Per-account fetch-volume limits (Upstash), with anomaly alerting on outliers.
-- Image assets served through the CDN with hotlink protection (free on Cloudflare).
-- Invisible per-account watermarking of served question sets so a leaked dump is traceable to an account.
-- Terms of Service explicitly prohibiting scraping and redistribution (needed for AdSense anyway — see §5.1).
+- No single request returns the whole bank. Paginate and scope to what the user is actually doing.
+- Per-account fetch-volume limits (Upstash) with anomaly alerting on outliers.
+- Free tier receives a capped working set; full-bank offline download is a paid entitlement — serving security and monetization with one control.
+- R2/CDN hotlink protection on images (free on Cloudflare).
+- Invisible per-account watermarking of served question sets, so a leaked dump is traceable to an account.
+- ToS clause prohibiting scraping and redistribution — required for AdSense regardless (§5.1).
 
-**Reality check:** anything rendered in a browser can be copied by a determined person. The goal is to raise cost, not to achieve the impossible. Do not over-invest here at the expense of Release 6.
-
-**Acceptance criteria**
-- No single request returns the entire bank.
-- Legitimate offline use is unaffected for the user's scoped working set.
+**Reality check:** anything rendered in a browser can be copied by a determined person. The goal is to raise cost, not achieve the impossible. **Do not over-invest here at the expense of Release 6.**
 
 **Cost:** ₹0 **Depends on:** 5A
 
 ---
 
-### Module 5E — Leaderboards and All India Test Series
+### Module 5E · P1 · Leaderboards & All-India Test Series *(Community Phase A)*
 
-**Goal.** Cash in the integrity work. This is the highest-retention feature in competitive-exam products, and it is only credible after 5A–5C.
+**Goal.** Cash in the integrity work. This is the highest-retention feature class in competitive-exam products — and it is only credible after 5A–5C.
 
 **Deliverables**
-- Scheduled All India Mock Tests — everyone attempts in the same window, results released together. The "everyone at once" format is what creates the event, the social sharing, and the WhatsApp-group traffic spike.
-- Server-computed rank, percentile, subject-wise comparison against the cohort.
-- Leaderboards: all-India, college-level, friends. Opt-in, with a privacy toggle and the option to appear under a username rather than a real name.
-- Streaks, weekly challenges, topic-wise ladders.
-- Shareable result cards (image generated client-side) — **this is a free growth engine**, not a vanity feature. Every shared card is an impression in a group of exactly our target users.
+- **Scheduled All-India Mock Tests** — a common attempt window, results released together. The synchronised format is what creates the event, the sharing, and the WhatsApp-group traffic spike.
+- **Real-time percentile and AIR**, server-computed; subject-wise comparison against the cohort.
+- Leaderboards: All-India, **subject-wise**, college-level, friends. Opt-in, with a privacy toggle and the option to appear under a username rather than a real name.
+- **Branch-scoped** from the start (4B) — no rework when Release 8 lands.
+- Streaks, weekly challenges, topic ladders.
+- **Shareable result cards** generated client-side. This is a free growth engine, not vanity: every card shared into a GATE group is an impression in front of exactly our target user.
 - Flagged attempts silently excluded from ranking.
 
 **Acceptance criteria**
-- 1,000 simultaneous submissions rank correctly and within free-tier limits.
-- No user can alter their own rank via any client-side action.
+- 1,000 simultaneous submissions rank correctly within free-tier limits.
+- No client-side action can alter a rank.
 
 **Cost:** ₹0 **Depends on:** 5B, 5C
 
 ---
 
-## RELEASE 6 — MONETIZATION I: ADVERTISING
-### *"Income from traffic, the way news sites do it."*
-
-This directly answers the request to run ads like news sites do. It also comes with arithmetic that must be understood before effort is invested, because the intuition that "ads on a website make money" is only true at scale most apps never reach.
+## RELEASE 6 — MONETIZATION I: CONTENT ENGINE & ADVERTISING
+### *Income from traffic, the way news sites earn it.*
 
 ---
 
-### 6.0 The honest arithmetic — read this first
+### 6.0 The arithmetic, stated before any effort is spent
 
-Display advertising pays per thousand page views (RPM). For **Indian** traffic in the education category, realistic RPM is roughly **₹15–₹80**, varying by ad network, placement, season, and how much of the traffic is mobile.
+Display advertising pays per thousand page views (RPM). For **Indian education traffic**, realistic RPM is roughly **₹15–₹80**.
 
 | Monthly page views | Realistic monthly ad revenue |
 |---|---|
@@ -526,423 +697,501 @@ Display advertising pays per thousand page views (RPM). For **Indian** traffic i
 | 200,000 | ₹3,000 – ₹16,000 |
 | 1,000,000 | ₹15,000 – ₹80,000 |
 
-Three consequences follow, and they shape the whole release:
+Three consequences shape this entire release:
 
-1. **Ads are a volume business.** They do not meaningfully pay until we are well past 100k monthly page views. Until then, subscriptions will out-earn ads by a wide margin at a fraction of the traffic — 100 subscribers at ₹99 is ₹9,900/month, which would otherwise require roughly 500,000 ad page views.
-2. **An app shell generates very few page views.** A student doing a 3-hour mock produces *one* page view on a single-page app. **Content pages** — solutions, notes, PYQ explanations, syllabus guides — are what generate the page-view volume ads need. That is precisely why news sites earn from ads and apps generally do not.
-3. **Therefore the content engine (6B) is not optional.** It is the actual product change that makes ad revenue possible. Ad code without it earns approximately nothing.
+1. **Ads are a volume business.** They do not pay meaningfully below ~100k monthly page views. Meanwhile **340 students buying one ₹29 exam is ₹9,860** — revenue that would otherwise require roughly 500,000 ad page views.
+2. **An app shell generates almost no page views.** A student doing a 3-hour mock produces *one* page view on an SPA. **Content pages** generate the volume ads need. This is precisely why news sites earn from ads and apps do not.
+3. **Therefore the content engine (6A) is not an accessory — it is the product change that makes ad revenue exist at all.** Ad code without it earns approximately nothing.
 
-**Strategic conclusion: build ads as a long-horizon compounding asset on the SEO/content surface, while subscriptions (Release 7) carry the near-term revenue.** Do not reverse this order.
-
----
-
-### Module 6A — Commercial Hosting Migration ⚠️ BLOCKER
-
-**Goal.** Be legally able to earn money from the deployment.
-
-**Deliverables**
-- Verify Vercel Hobby's current non-commercial terms and Cloudflare Pages' current commercial-use position, from the live policy text.
-- Migrate to Cloudflare Pages (`@cloudflare/next-on-pages` or OpenNext). Validate: middleware/auth routes, the three API routes, PWA/service-worker behaviour, image optimisation, and build reproducibility.
-- Move DNS/analytics/Turnstile into the same account for one free control plane.
-- Keep the Vercel deployment live as a rollback target until the migration is proven.
-
-**Acceptance criteria**
-- Full feature parity on Cloudflare, verified against the existing Playwright suite.
-- Hosting terms permit advertising and paid subscriptions.
-
-**Cost:** ₹0 **Depends on:** nothing technical; **blocks 6C, 6D, and all of Release 7's payment flows**
+> **Strategic conclusion:** ads are a **long-horizon compounding asset built on the SEO surface**, monetizing the ~90% who will never pay. **Pay-per-exam (Release 7) carries near-term revenue.** Do not reverse this order — but do not skip ads either, because they are the only way the free majority ever produces income.
 
 ---
 
-### Module 6B — The Content & SEO Engine *(the actual revenue enabler)*
+### Module 6A · P1 · The Content & Programmatic SEO Engine
 
-**Goal.** Create the indexed, crawlable, high-page-view surface that both ad revenue and organic user acquisition depend on.
+**Goal.** Build the indexed, crawlable, high-page-view surface that both ad revenue and organic acquisition depend on.
 
-We already own the raw material: **975 questions with subjects, topics, difficulty, and (soon) solutions.** That is potentially thousands of genuinely useful pages that nobody has to write from scratch.
+We already own the raw material: **975 questions with subject, topic, difficulty and solutions** — thousands of genuinely useful pages nobody has to invent.
 
 **Deliverables**
-- **Programmatic SEO pages**, statically generated:
-  - `/questions/[question-id]` — one page per question, with full solution, related questions, topic context. ~975 pages at launch.
-  - `/subject/[subject]` — 18 subject hubs with syllabus, weightage analysis, recommended sequence.
-  - `/topic/[topic]` — topic pages with PYQ counts and trend data.
-  - `/pyq/gate-cse-[year]` — 15 year-wise paper pages with full analysis.
-  - `/syllabus/gate-cse-2027` — the highest-intent search term in this niche.
-- **Editorial content** targeting real search demand: "GATE CSE preparation strategy", "GATE cutoff analysis", "how to prepare in 6 months", "best books for GATE CSE", "GATE vs placement". These are searched constantly and rank achievably.
-- **Genuine value on every page.** AdSense rejects thin, auto-generated, low-value pages, and Google's helpful-content systems demote them. Each page must carry real analysis a student would want even with no ads on it. Programmatic must not mean empty.
-- Technical SEO: SSG/ISR for all content routes, `sitemap.xml`, `robots.txt`, canonical URLs, OpenGraph/Twitter cards, `Article` + `FAQPage` + `Quiz` structured data, Core Web Vitals budget.
-- **Free tools as link magnets:** GATE rank predictor, score calculator, normalisation calculator, college predictor, study-plan generator. These attract organic backlinks better than articles do, and every one is a high-page-view, ad-friendly page.
+- **Programmatic pages**, statically generated from Postgres:
+  - `/questions/[id]` — one page per question with full solution, related questions, topic context (~975 at launch, ~5,000 after Release 8)
+  - `/subject/[subject]` — 18 CSE subject hubs: syllabus, weightage analysis, recommended sequence
+  - `/topic/[topic]` — PYQ counts and trend data
+  - `/pyq/gate-[branch]-[year]` — year-wise paper analysis
+  - `/syllabus/gate-cse-2027` — the highest-intent query in the niche
+  - `/gate-ece`, `/gate-da`, … — branch landing pages from 4H, live before the data is
+- **Editorial content** against real search demand: preparation strategy, cutoff analysis, 6-month plans, book recommendations, GATE-vs-placement.
+- **Genuine value on every page.** AdSense rejects thin auto-generated pages and Google's helpful-content systems demote them. **Programmatic must not mean empty** — every page carries analysis worth reading with no ads on it.
+- Technical SEO: SSG/ISR, `sitemap.xml`, `robots.txt`, canonicals, OpenGraph/Twitter cards, `Article` + `FAQPage` + `Quiz` structured data, a Core Web Vitals budget.
+- **Free tools as link magnets:** rank predictor, score calculator, normalisation calculator, college predictor, study-plan generator. These earn backlinks better than articles and are themselves high-page-view, ad-friendly pages.
 
 **Acceptance criteria**
-- 1,000+ indexable pages, each with substantive unique content.
-- Lighthouse SEO ≥ 95; Core Web Vitals green (ads must not break this — see 6D).
+- 1,000+ indexable pages with substantive unique content.
+- Lighthouse SEO ≥ 95; Core Web Vitals green.
 - Sitemap submitted; indexing confirmed in Search Console.
 
-**Cost:** ₹0 **Depends on:** 5A (solutions must exist server-side to publish them)
+**Cost:** ₹0 **Depends on:** 4A, 4B, 5A (solutions must be server-held before they are published)
 
 ---
 
-### Module 6C — Ad Network Onboarding
+### Module 6B · P1 · Legal Pages & Ad Network Onboarding
 
-**Goal.** Get approved, which takes longer than people expect and has hard prerequisites.
+**Goal.** Get approved — which takes longer than expected and has hard prerequisites.
 
-**AdSense approval prerequisites — all mandatory:**
-- Substantial original content (6B delivers this; applying before it means near-certain rejection)
-- Privacy Policy, Terms of Service, About, Contact pages — **AdSense requires these; they are also needed for DPDP compliance and for Razorpay onboarding.** Build once, use three times.
-- Clear site navigation; no under-construction sections
-- Account holder must be 18+
-- Typical review: days to several weeks; rejection is common and re-application is allowed after fixing the cited reason
+**AdSense prerequisites, all mandatory:** substantial original content (6A — applying first means near-certain rejection) · Privacy Policy, Terms, About, Contact · clear navigation, no under-construction sections · 18+ account holder · review typically days to weeks, rejection common, re-application permitted after remediation.
 
 **Deliverables**
-- Legal pages: Privacy Policy (naming every data type collected, including Release 5 integrity signals), Terms of Service (incl. anti-scraping), Cookie Policy, About, Contact, Refund Policy (needed for Release 7).
-- AdSense application, with the content engine live first.
-- **Fallbacks if AdSense declines or underperforms:** Ezoic (lower entry bar, often better optimisation at small scale), Media.net, AdPushup, PropellerAds. Never depend on a single network.
-- **Direct sponsorships** as a parallel track: coaching institutes, book publishers, laptop/tablet brands, and hostel/study-abroad services pay far better per impression than programmatic, and they can be sold from day one at low traffic. A single direct sponsor can exceed months of AdSense revenue at our early scale.
+- **Legal pack, written once, used three times** (AdSense + Razorpay + DPDP): Privacy Policy (naming every data type including 5C integrity signals and the 4C anonymization path), Terms of Service (incl. anti-scraping), Cookie Policy, About, Contact, **Refund & Cancellation Policy (§4.4)**, Disclaimer ("not affiliated with any IIT or the GATE organising institute" — easy to forget, important to have).
+- AdSense application **after** the content engine is live.
+- **Fallbacks:** Ezoic (lower entry bar, often better optimisation at small scale), Media.net, AdPushup. **Never depend on a single network.**
+- **Direct sponsorships as a parallel track from day one** — coaching institutes, publishers, laptop brands, hostel and study-abroad services. They pay far better per impression than programmatic and can be sold at low traffic. **One direct sponsor can exceed months of AdSense revenue at our early scale.**
 
-**Acceptance criteria**
-- Approval obtained, or a fallback network live.
-- All legal pages published and linked in the footer.
-
-**Cost:** ₹0 **Depends on:** 6A, 6B
+**Cost:** ₹0 **Depends on:** 6A
 
 ---
 
-### Module 6D — Ad Placement Architecture *(without wrecking the product)*
+### Module 6C · P1 · Ad Placement Architecture
 
-**Goal.** Earn from ads without damaging the experience that makes people stay and subscribe.
+**Goal.** Earn from ads without damaging the experience that produces paying users.
 
 **Hard rules — non-negotiable:**
 
 | Rule | Reason |
 |---|---|
-| **Zero ads during an active exam** | Breaking concentration in a 3-hour mock is the fastest way to lose a serious user. Also an integrity risk. |
-| **Zero ads for Pro subscribers** | "Remove ads" is one of the strongest reasons to pay; its value must be real. |
-| **No ads on the auth or payment flows** | Conversion and trust. |
-| **Layout-reserved slots** | Ads must not cause layout shift; CLS damage hurts SEO, which is the very traffic ads depend on. |
+| **Zero ads during an active exam** | Breaking concentration in a 3-hour mock is the fastest way to lose a serious user. Also an integrity vector. |
+| **Zero ads for Pro Test Plan and AI Mentor subscribers** | "Ad-free" is a headline benefit of the ₹49 tier. Its value must be real. |
+| **Ads permitted on Basic ₹29 plan** | This is the explicit trade: Basic is cheaper *because* it is ad-supported. Disclosed at checkout. |
+| **No ads on auth, checkout or payment flows** | Conversion and trust. |
+| **Layout-reserved slots** | CLS damage hurts SEO — the very traffic ads depend on. |
 | **Lazy-load below the fold** | Protects Core Web Vitals. |
 | **No interstitials on core app routes** | Content pages only, if at all. |
 
-**Permitted placements:** content/solution pages (in-article, sidebar, end-of-article), the dashboard sidebar for free users, between result sections (post-submission only), and a *rewarded* format — watch an ad to unlock one extra AI Mentor call today, which converts ad inventory into a soft paywall nudge.
-
-**Deliverables**
-- `<AdSlot>` component: tier-aware (renders nothing for Pro), route-aware (renders nothing in `/exam/session`), consent-aware, reserved-height, lazy-loaded, with a graceful empty state when the network returns no fill.
-- **Service worker interaction must be tested.** Our SW is network-first with caching; ad scripts must be excluded from caching or they will break fill and reporting.
-- Consent management for GDPR/DPDP where applicable; non-personalised ads for users who decline or are flagged as minors.
-- An A/B framework for density — measure ad revenue *against* subscription conversion and retention, and be willing to remove a unit that earns ₹200/month while costing a ₹99/month subscriber.
+- **`<AdSlot>` component:** entitlement-aware (renders nothing for ad-free tiers), route-aware (renders nothing in `/exam/session`), consent-aware, reserved-height, lazy-loaded, graceful on no-fill.
+- **Service-worker interaction must be tested** — our SW is network-first with caching; ad scripts must be excluded from caching or fill and reporting break.
+- Consent management for DPDP/GDPR; **non-personalised ads for users under 18** (§5.2).
+- A/B framework measuring ad revenue **against** paid conversion and retention. Be willing to remove a unit earning ₹200/month that costs a ₹49 purchase.
 
 **Acceptance criteria**
-- Pro users see zero ad requests in the network tab.
-- CLS stays under 0.1 with ads live.
-- No ads render on `/exam/session` under any condition.
+- Ad-free entitlement holders trigger zero ad network requests.
+- CLS < 0.1 with ads live.
+- No ad renders on `/exam/session` under any condition.
 
-**Cost:** ₹0 **Depends on:** 6C
-
----
-
-## RELEASE 7 — MONETIZATION II: SUBSCRIPTIONS & ANTI-MISUSE
-### *"The revenue line that actually pays the bills."*
-
-This is where the user's "application security to avoid misuse when the subscription comes in" lands.
+**Cost:** ₹0 **Depends on:** 6B
 
 ---
 
-### Module 7A — Tier Model and Entitlements
+## RELEASE 7 — MONETIZATION II: PAY-PER-EXAM, PASSES & ANTI-MISUSE
+### *Disruptive micro-pricing for a price-sensitive market.*
 
-**Goal.** A free tier generous enough to build habit and word-of-mouth; a Pro tier valuable enough that a serious aspirant pays without hesitation.
+---
 
-**Proposed split** (refined from `GATE_OS_Growth_Security_Marketing_Plan.md`):
+### Module 7A · P1 · The Tier & Entitlement Model
 
-| Capability | Free | Pro |
+**Goal.** Price below the psychological threshold where a student deliberates. ₹29 is less than a coffee; the decision is reflexive, not considered.
+
+**The strategic bet:** competitors sell ₹2,000–₹15,000 courses. We sell **individual exams at ₹29**. This trades margin per transaction for **volume, reach, and a near-zero barrier to first purchase** — and first purchase is the hardest conversion in the funnel. Every subsequent sale to that user is far easier.
+
+| Product | Price | Includes |
 |---|---|---|
-| PYQ bank | Capped working set | Full 975+ bank |
-| Practice tests | Unlimited | Unlimited |
-| Full-length mocks | 2/month | Unlimited |
-| AI Mentor | Small daily quota | High quota |
-| AI question generation | ✗ | ✓ |
-| Analytics | Basic | Full — weakness maps, trend forecasting, rank prediction |
-| Focus Target / Goal Slider | Basic | Full adaptive engine |
-| All India Test Series | Participation | Participation + detailed comparative analysis |
-| Ads | Yes | **No** |
-| Offline full-bank download | ✗ | ✓ |
-| Devices | 2 | 2 (enforced) |
-| Support | Community | Priority |
-
-**Pricing (India, students — price is a positioning decision, not a spreadsheet output):**
-- Monthly **₹99**
-- Quarterly **₹249** (₹83/mo)
-- Annual **₹599** (₹50/mo) ← push this hard; it front-loads cash and removes monthly churn
-- **Lifetime / "Founding Member" ₹999**, limited to the first 500 users — this is the single best early cash-flow instrument. It funds nothing (we spend nothing) but it proves willingness-to-pay and creates evangelists.
-- **Grandfather every early subscriber permanently.** Cheap, and it creates the loudest possible advocates.
+| **Basic Test Plan** | **₹29 / exam** | Full mock exam access, server-graded score, AIR & percentile, basic analysis. **Ad-supported (non-intrusive display).** |
+| **Pro Test Plan** | **₹49 / exam** | Everything in Basic + **100% ad-free** + advanced analytics (weakness heatmap, time-per-question, comparative subject breakdown, rank projection) |
+| **AI Mentor Add-On** | **₹99 / month** | Tiered AI quota — personalised doubt resolution, step-by-step derivations, adaptive plan generation. Quota tiers priced above the base. |
+| **Season Pass (All-Access)** | **₹199** | **Peak-window instrument (Sept–Jan).** All mocks in the season, ad-free, full analytics. The cash-flow product — see §4.3. |
+| **Free** | ₹0 | Practice bank (capped), 2 free mocks, basic analytics, ads, leaderboard participation |
 
 **Deliverables**
-- Entitlement checks **server-side on every gated action.** A client-side `tier === 'pro'` check is a UI hint, never a gate. Assume the client is hostile.
-- Feature flags driven by the server-held tier.
-- Graceful degradation at limits — a warm upsell, never a hard wall mid-task.
+- **Entitlements stored server-side** in `profiles.entitlements` (jsonb): per-exam grants, pass validity windows, AI quota tier. **Every gated action re-checks server-side.** A client-side `tier === 'pro'` check is a UI hint, never a gate (Rule 2).
+- Entitlement checks live inside the same Edge Function that evaluates the exam — a user cannot obtain a graded score without a valid grant, because grading and entitlement are the same server call.
+- Upgrade path inside a Basic attempt: "Remove ads and unlock deep analytics for ₹20 more" at the results screen, when the value is most visible.
+- Graceful degradation at quota limits — a warm upsell, never a hard wall mid-task.
+- **Bundling nudges:** after a user's third individual ₹29 purchase, surface the ₹199 pass with the arithmetic shown plainly. Honest maths converts better than urgency.
 
-**Cost:** ₹0 **Depends on:** 4B
+**Cost:** ₹0 **Depends on:** 4C
 
 ---
 
-### Module 7B — Payments (Razorpay)
+### Module 7B · P1 · Payments — Razorpay, UPI-First
 
-**Goal.** Take money from Indian students with the lowest possible friction.
+**Goal.** Take ₹29 from a student with as close to zero friction as the rails allow.
 
 **Deliverables**
-- Razorpay integration — **UPI first**, then cards, netbanking, wallets. UPI is how this audience actually pays; a card-first checkout would lose most of them.
-- Razorpay Subscriptions for recurring; one-time for lifetime.
-- Server-side **webhook** handling as the source of truth for entitlement changes — never trust a client-side success callback.
-- Idempotent webhook processing; signature verification on every webhook.
-- Invoice generation, GST handling, refund policy and flow.
-- Payment-failure recovery: retry prompts, dunning email, grace period before downgrade.
+- Razorpay integration, **UPI first**, then cards, netbanking, wallets. UPI is how this audience pays; a card-first checkout loses most of them.
+- **Micro-transaction viability:** UPI P2M MDR is currently nil under Indian regulation, which is what makes a ₹29 price point economically sane. **Confirm Razorpay's actually-applied rate for our account before launch** — the pricing tiers in 7A assume near-zero MDR on UPI. If a platform fee applies, the ₹199 pass and bundling become proportionally more important.
+- One-time payments for per-exam and pass purchases; Razorpay Subscriptions for the ₹99 AI Mentor recurring mandate.
+- **Server-side webhook is the sole source of truth** for entitlement changes. A client-side success callback is never trusted. Signature verification on every webhook; idempotent processing.
+- Invoicing, GST handling, payment-failure recovery and dunning for the recurring add-on.
 
-**Costs:** ₹0 upfront; ~2% + GST per transaction, deducted from revenue received. Compliant with the zero-investment constraint.
+#### The No-Refunds / No-Cancellations Policy *(mandate — implemented, with the wording that makes it enforceable)*
 
-**Depends on:** 6A (commercial hosting), 7A
+- **Policy: no refunds and no cancellations.** Disclosed at three points: the in-app checkout screen (with an explicit acknowledgement checkbox), the Razorpay payment page description, and the Refund & Cancellation Policy page.
+- **Justification is genuine and should be stated plainly to users:** exam content, the answer key and the full analysis are delivered instantly and irreversibly on purchase. This is standard and accepted for instantly-delivered digital goods.
+- ⚠️ **Two wording constraints — these protect the policy, they do not weaken it:**
+  1. **Razorpay requires a published refund/cancellation policy.** "No refunds" is permitted; **having no policy page at all is not.** The page is mandatory for onboarding.
+  2. **For the ₹99 recurring mandate, "no cancellation" cannot mean "the user cannot stop future billing."** Under the RBI e-mandate framework a user can always revoke a UPI AutoPay mandate at their bank, and advertising otherwise invites a Razorpay account review — an existential risk to the only revenue rail we have. **Correct enforceable wording:** *"No refunds. Cancellation stops future renewals only; no pro-rata refund is issued and access continues to the end of the paid period."* This is the same commercial outcome, stated in a way that survives scrutiny.
+- **Chargeback posture:** card networks permit disputes regardless of our policy; UPI disputes are materially harder to raise. This is a second, independent reason to drive UPI as the default rail.
+
+**Cost:** ₹0 upfront **Depends on:** 4A (commercial hosting), 7A
 
 ---
 
-### Module 7C — Subscription Abuse Prevention
+### Module 7C · P1 · Subscription & Purchase Abuse Prevention
 
-**Goal.** Protect the revenue without punishing honest users.
+**Goal.** Protect revenue without punishing honest buyers.
 
 **Deliverables**
-- Server-side entitlement verification on every Pro action (restating 7A because it is the control that matters most).
-- Trial abuse prevention: one trial per verified email *and* per device fingerprint; Turnstile on signup; disposable-email domain blocklist.
-- Refund abuse monitoring — subscribe → mass-download → refund is the obvious attack; flag accounts with abnormal download volume in a refund window.
-- Payment-fraud signals: many cards on one account, rapid subscribe/cancel cycles.
-- Admin dashboard for manual review — a human must be able to see and act.
+- Server-side entitlement verification on every paid action — restated because it is the control that matters most.
+- **Micro-payment fraud patterns** specific to a ₹29 price point: card-testing (many small transactions on rotating cards), velocity limits per account and per payment instrument, blocked disposable-email domains.
+- **Content-extraction abuse:** because there are no refunds, the refund-abuse vector largely closes — but purchase-then-mass-scrape remains. Flag accounts whose fetch volume after a single ₹29 purchase is wildly disproportionate (ties to 5D watermarking).
+- Turnstile on checkout initiation.
+- Admin review dashboard — a human must be able to see and act.
 
 **Cost:** ₹0 **Depends on:** 7B
 
 ---
 
-### Module 7D — Account-Sharing Prevention
+### Module 7D · P1 · Account-Sharing Prevention
 
-**Goal.** Stop one subscription serving a WhatsApp group of forty.
-
-This is the largest revenue leak in Indian edtech, and the control already exists in our schema (`profiles.active_session_id`).
+**Goal.** Stop one ₹199 pass serving a WhatsApp group of forty. This is the largest revenue leak in Indian edtech, and the control already exists in our schema.
 
 **Deliverables**
-- **Two-device limit for Pro**, enforced server-side. Two, not one — students genuinely use a phone and a laptop, and a one-device limit would generate constant, legitimate complaints.
-- Netflix-style behaviour: logging in on a third device shows "You are signed in on 2 devices" with a chooser to sign one out. Never a silent failure.
-- Concurrent-session detection: the same account taking two tests simultaneously from different cities is a hard signal.
-- Device change cooldown to stop credential rotation through a group.
-- Escalation ladder: warn → force re-auth → temporary lock → manual review. **Never auto-ban a paying customer**; a wrongly banned subscriber is a public complaint.
+- **Two-device limit on paid entitlements**, enforced server-side. **Two, not one** — students genuinely use a phone and a laptop; a one-device limit generates constant legitimate complaints and support load we cannot staff.
+- Netflix-style behaviour: a third device shows *"You're signed in on 2 devices"* with a chooser to sign one out. Never a silent failure.
+- Concurrent-session detection: one account taking two graded tests simultaneously from different regions is a hard signal.
+- Device-change cooldown to block credential rotation through a group.
+- Escalation ladder: warn → force re-auth → temporary lock → manual review. **Never auto-ban a paying customer** — and with no refunds, a wrongly locked buyer is a guaranteed public complaint.
 
-**Acceptance criteria**
-- A legitimate phone + laptop user is never interrupted.
-- A third concurrent device is blocked with a clear, actionable message.
-
-**Cost:** ₹0 **Depends on:** 4D-2
+**Cost:** ₹0 **Depends on:** 4F-2
 
 ---
 
-### Module 7E — Referral and Growth Loops
+### Module 7E · P2 · Referral & Growth Loops
 
-**Goal.** Make acquisition compound without an advertising budget — because there isn't one.
+**Goal.** Compound acquisition without an advertising budget — because there is none.
 
 **Deliverables**
-- Referral: both sides get free Pro days. Attribution via a unique code on the profile.
-- Shareable achievements: result cards, rank cards, streak milestones — pre-formatted for WhatsApp and Instagram Stories, which is where this audience lives.
-- College ambassador programme: free Pro + leaderboard status for verified campus reps.
-- Study-group invitations — a social hook with a built-in acquisition side effect.
-- "Free Pro for a month" in exchange for a genuine review/testimonial, early on.
+- Referral: both sides receive a **free exam credit** (not a discount — a credit converts better and costs us nothing at ₹0 marginal delivery cost). Attribution via a profile code.
+- Shareable achievements: result cards, AIR cards, streak milestones — pre-formatted for WhatsApp and Instagram Stories, where this audience lives.
+- **College ambassador programme:** free Season Pass + leaderboard status for verified campus reps.
+- Study-group invitations — a social hook with an acquisition side effect.
+- Early-user testimonials exchanged for exam credits.
 
 **Cost:** ₹0 (paid in product, not cash) **Depends on:** 7A
 
 ---
 
-## RELEASE 8 — REVENUE DIVERSIFICATION
-### *"Many ways to generate income," as requested.*
+## RELEASE 8 — MULTI-BRANCH EXPANSION & REVENUE DIVERSIFICATION
+### *The cheapest available multiplier on total addressable market.*
 
-Ads and subscriptions are lines one and two. Here are seven more, ordered by effort-to-return at our scale.
-
-| # | Stream | How | Realistic contribution | Effort |
-|---|---|---|---|---|
-| 1 | **Direct sponsorships** | Coaching institutes, publishers, laptop brands buy placements/newsletter slots directly | High per deal; ₹5k–50k/month once traffic is real | Low tech, high sales |
-| 2 | **Affiliate** | Amazon Associates India on book-recommendation pages; course affiliates; gadget guides | ₹2k–20k/month at moderate traffic | Low |
-| 3 | **Digital products** | Formula sheets, condensed notes, topic-wise PYQ compilations, last-month revision packs as paid PDFs | ₹100–299 each; high margin; converts non-subscribers | Medium |
-| 4 | **B2B / college licences** | Sell batch access to colleges and coaching centres (per-seat, 50–500 students) | The single largest per-deal revenue line; one college can exceed 100 individual subscribers | High sales, medium tech |
-| 5 | **Sponsored content** | Clearly labelled sponsored articles on the content engine | ₹3k–15k per placement | Low |
-| 6 | **Job / internship board** | Companies pay to post to a pool of final-year CSE students | Later stage, once the audience is sizeable | Medium |
-| 7 | **Certification / mentorship** | Paid AIR-holder doubt sessions, revenue-shared; verified performance certificates | Medium | High ops |
-
-**An eighth, treated with care:** aggregate, fully anonymised insight reports ("GATE CSE 2027 preparation trends") sold or used as PR. Only ever anonymised and aggregated; never individual data; never without an explicit privacy-policy basis. Used well, this is more valuable as free PR that earns backlinks than as a product.
-
-**Sequencing:** streams 1, 2 and 3 require almost no new engineering and should start as soon as Release 6's content engine has traffic. Stream 4 (colleges) is where the largest money is, and it needs Release 5's test series to be credible.
+The exam engine is **branch-agnostic**. Only the dataset changes. This is the highest-leverage growth work in the entire plan: the same code, roughly five times the audience.
 
 ---
 
-## RELEASE 9 — PRODUCT DEPTH
-### *Features that drive retention — which is what makes every revenue line above work.*
+### Module 8A · P1 · Vision-Based PDF Extraction Pipeline
 
-A subscription business is a retention business. These are ordered by expected impact on retention per unit of effort.
+**Goal.** Convert past-paper PDFs for ECE, EE, ME, CE and DA into structured database seeds — automatically, at ₹0.
 
-### Module 9A — Adaptive Learning Engine
-Spaced repetition (SM-2 or FSRS) over the existing mistakes store; automatic weak-topic detection; a daily adaptive question set; a mastery model per topic that feeds the existing Goal Slider. **Highest-impact item in this release** — it converts the app from a question bank into a coach, which is the core of the Pro pitch.
+Manual transcription of five branches × 10+ years × ~65 questions is roughly 3,000+ questions with diagrams. It is not feasible by hand. **Gemini's free-tier vision capability makes it feasible by machine.**
 
-### Module 9B — Gamification and Habit
-Streaks with freeze days, XP and levels, badges surfaced on the profile (Module 4C), daily goals, weekly challenges, study-time leaderboards. Cheap to build, disproportionate effect on daily active use.
+**Pipeline stages**
+1. **Ingest** — source official past papers as PDFs; page-split; render pages to images.
+2. **Vision extraction** — Gemini vision per page, returning structured JSON: `question_no`, `question_text` (LaTeX-preserved for mathematical notation), `question_type` (MCQ/MSQ/NAT), `marks`, `options[]`, `has_diagram`, diagram bounding boxes.
+3. **Diagram cropping** — crop each detected diagram from the page image, compress to WebP/AVIF, upload to **R2 under a deterministic relative path** (`images/ece/2023/q42-circuit.webp`). **Only the relative path is written to the database (§2.3).** Cropping rather than storing full pages is what keeps us inside the 10 GB R2 ceiling.
+4. **Answer-key extraction** — parse official answer keys into `question_answers`. Separate stage, separate table, never merged into the public payload.
+5. **Classification** — Gemini assigns subject, topic and difficulty against the branch syllabus taxonomy, enabling Focus Target and the Goal Slider on day one for the new branch.
+6. **Human validation gate** — a review UI for spot-checking. **Mandatory.** A wrong answer key in a paid, ranked product is a trust-destroying defect, and vision models do misread mathematical notation. Nothing goes `live` unvalidated.
+7. **Publish** — flip `branches.status` to `live`; fire the 4H waitlist launch email.
 
-### Module 9C — Social and Community
-Study groups, group leaderboards, peer doubt-solving with upvotes, discussion threads on individual questions (which also adds user-generated content to the SEO surface — a compounding benefit for Release 6), a mentor/mentee pairing for AIR holders.
+**Deliverables**
+- Repeatable, resumable, rate-limit-aware pipeline scripts (Gemini free-tier RPM is the binding constraint — the pipeline runs over days, not minutes, and must checkpoint).
+- Validation dashboard with accept/edit/reject per question.
+- Extraction quality metrics per batch.
 
-### Module 9D — Mobile Presence — ₹0
-Trusted Web Activity to ship the existing PWA to the Play Store, or Capacitor for a fuller wrapper. **Note the one genuine cost in this entire document: the Google Play developer account is a one-time ~$25 (~₹2,100).** It is optional — the PWA installs directly from the browser without it — so it stays out of the zero-rupee path. Buy it out of revenue if and when the Play Store listing is worth it. Apple's ₹8,000+/year fee is firmly out of scope.
+**Sequencing:** branch order is decided by **`branch_waitlist` counts from Module 4H** — build what the market asked for. DA is a reasonable early bet (new, fast-growing, underserved by incumbents, and closest to our existing CS taxonomy), but the waitlist decides, not intuition.
 
-### Module 9E — AI Depth
-Personalised study-plan generation, AI doubt-solving with step-by-step derivations, AI-generated mocks calibrated to a weakness profile, natural-language question search, a voice-based revision mode. Heavier AI usage is the clearest Pro-tier justification and the cleanest quota boundary.
+**Acceptance criteria**
+- ≥95% extraction accuracy on a validated sample before a branch goes live.
+- Every diagram in R2 under a relative path; **zero binaries in Postgres**.
+- A new branch goes live with full Focus Target / Goal Slider support and no code changes.
 
-### Module 9F — Content Expansion
-Beyond CSE: GATE DA (Data Science & AI), ECE, ME, CE. **The engine is branch-agnostic; only the dataset changes.** This is the cheapest available multiplier on total addressable market in the entire plan — the same code, several times the audience.
+**Cost:** ₹0 **Depends on:** 4B, 4H
+
+---
+
+### Module 8B · P2 · Revenue Diversification — Seven More Lines
+
+Ads and per-exam sales are lines one and two. Ordered by effort-to-return at our scale:
+
+| # | Stream | Mechanism | Realistic contribution | Effort |
+|---|---|---|---|---|
+| 1 | **Direct sponsorships** | Coaching institutes, publishers, laptop brands buy placements and newsletter slots directly | ₹5k–50k/mo once traffic is real | Low tech, high sales |
+| 2 | **Affiliate** | Amazon Associates India on book pages; course and gadget affiliates | ₹2k–20k/mo at moderate traffic | Low |
+| 3 | **Digital products** | Formula sheets, condensed notes, topic-wise PYQ compilations, last-month revision packs | ₹49–199 each, high margin; converts non-subscribers | Medium |
+| 4 | **B2B / college licences** | Batch access sold to colleges and coaching centres (50–500 seats) | **Largest per-deal line** — one college can exceed 300 individual ₹29 sales | High sales, medium tech |
+| 5 | **Sponsored content** | Clearly labelled sponsored articles on the 6A surface | ₹3k–15k per placement | Low |
+| 6 | **Job / internship board** | Companies pay to reach final-year CSE/ECE students | Later stage | Medium |
+| 7 | **Mentorship marketplace** | Paid AIR-holder doubt sessions, revenue-shared | Medium | High ops |
+
+**An eighth, handled carefully:** aggregate, fully anonymised insight reports ("GATE CSE 2027 preparation trends"). Only aggregated, never individual, never without an explicit Privacy Policy basis. Likely more valuable as **free PR earning backlinks** than as a product.
+
+**Sequencing:** 1, 2 and 3 need almost no new engineering and start as soon as 6A has traffic. **Line 4 is where the largest money is**, and it needs Release 5's test series to be credible.
+
+**Cost:** ₹0 **Depends on:** 6A, 5E
+
+---
+
+## RELEASE 9 — PRODUCT DEPTH & CONTROLLED COMMUNITY
+### *Retention is what makes every revenue line above actually work.*
+
+---
+
+### Module 9A · P1 · Adaptive Learning Engine
+
+Spaced repetition (SM-2 or FSRS) over the existing mistakes store; automatic weak-topic detection; a daily adaptive set; a per-topic mastery model feeding the 4E-2 Goals Engine.
+
+**Highest-impact module in this release.** It converts RENYXERA from a question bank into a coach — which is the entire justification for the ₹99 AI Mentor tier and the strongest defence against a competitor who simply has more questions.
+
+### Module 9B · P1 · Gamification & Habit
+
+Streaks with freeze days, XP and levels, badges surfaced on the profile (4E-3), daily goals, weekly challenges, study-time leaderboards. Cheap to build, disproportionate effect on daily active use — and daily active use is what makes ad inventory worth anything.
+
+### Module 9C · P2 · Controlled Community *(Community Phase B)*
+
+A peer doubt-solving forum — **launched only with moderation infrastructure in place, never before.** An unmoderated student forum becomes a liability within weeks, and we cannot staff human moderation at ₹0.
+
+**Required before a single thread opens:**
+- **Automated language moderation and toxicity scoring** on every submission, pre-publication. A free-tier classifier (Gemini, or an open toxicity model) scores content; above threshold it is held, not published.
+- **Enforced Terms of Service** with a clear, specific code of conduct.
+- Rate limits on posting; new accounts restricted; **reputation gating** — the right to post freely is earned through verified activity.
+- User reporting with an escalation queue, plus shadow-ban and suspension capability (`profiles.status`).
+- **Zero tolerance, automated:** content that is abusive, sexual, casteist/communal, or that solicits exam malpractice or leaked material.
+- Structured by question and topic — which makes every resolved thread **user-generated content feeding the 6A SEO surface**, a compounding benefit.
+
+**Explicit rule:** if moderation cannot keep pace, the forum closes. A damaged brand costs more than a missing feature.
+
+### Module 9D · P2 · Mobile Presence
+
+Trusted Web Activity to publish the existing PWA to the Play Store, or Capacitor for a fuller wrapper.
+
+⚠️ **The one genuine cost in this document: a Google Play developer account, ~$25 (~₹2,100) one-time.** It is **optional** — the PWA installs directly from the browser — so it stays outside the zero-rupee path. Buy it from revenue if and when a store listing is worth it. **Note the interaction with Module 4C:** Play policy requires an account-deletion path for listed apps, which the documented anonymization backstop satisfies. Apple's ~₹9,000/year is out of scope.
+
+### Module 9E · P2 · AI Depth
+
+Personalised study-plan generation, step-by-step derivations, AI-generated mocks calibrated to a weakness profile, natural-language question search, voice revision mode. Heavier AI is the clearest justification for the ₹99 tier and the cleanest quota boundary.
 
 ---
 
 # PART IV — THE ECONOMICS
 
-## 4.1 Which revenue line actually carries us
+## 4.1 Revenue model at scale
 
-At a realistic 2–5% free-to-paid conversion:
+Blended assumptions: ~8% of registered users make at least one paid purchase; ~2.5 exams per paying user per season at a ₹39 blended price; ~1.5% take the ₹99 AI add-on; ~15 page views per user per month.
 
-| Registered users | Paying (3%) | Subscription revenue @ ₹99 avg | Ad revenue (~15 PV/user/mo) | Total |
-|---|---|---|---|---|
-| 1,000 | 30 | ₹2,970 | ₹225 – ₹1,200 | ~₹3,200 – ₹4,200 |
-| 10,000 | 300 | ₹29,700 | ₹2,250 – ₹12,000 | ~₹32,000 – ₹42,000 |
-| 50,000 | 1,500 | ₹1,48,500 | ₹11,250 – ₹60,000 | ~₹1.6L – ₹2.1L |
-| 200,000 | 6,000 | ₹5,94,000 | ₹45,000 – ₹2,40,000 | ~₹6.4L – ₹8.3L |
+| Registered | Paying (8%) | Per-exam revenue | AI add-on (1.5%) | Ad revenue | Total / month |
+|---|---|---|---|---|---|
+| 1,000 | 80 | ₹7,800 | ₹1,485 | ₹225 – ₹1,200 | **~₹9,500 – ₹10,500** |
+| 10,000 | 800 | ₹78,000 | ₹14,850 | ₹2,250 – ₹12,000 | **~₹95,000 – ₹1.05L** |
+| 50,000 | 4,000 | ₹3.90L | ₹74,250 | ₹11,250 – ₹60,000 | **~₹4.8L – ₹5.3L** |
+| 200,000 | 16,000 | ₹15.6L | ₹2.97L | ₹45,000 – ₹2.40L | **~₹19L – ₹21L** |
 
-These are illustrative, not forecasts. The structural point holds regardless of which end of each range is true: **subscriptions dominate at every scale, but ads become materially significant once the content engine is mature, and they earn from the ~97% of users who will never pay.** That is exactly why both belong in the plan — ads monetise the free majority; subscriptions monetise intent.
+Illustrative, not forecasts. The **structural** conclusions hold across the whole range:
 
-**Seasonality matters enormously here.** GATE is an annual February exam. Traffic and conversion will spike from roughly September through January and collapse in March–May. Plan cash flow around this: push annual plans hard in the peak, and use the trough for content and feature work rather than acquisition spend.
+- **Micro-pricing out-earns classic subscription SaaS at every scale here**, because 8% paying ₹29–49 beats 3% paying ₹99/month in a market this price-sensitive — and the first purchase is dramatically easier to obtain.
+- **Ads monetize the ~92% who never pay.** Structurally small early, structurally significant past 200k page views, and they cost nothing to keep running.
+- **The Season Pass is the margin lever.** Converting a 3-exam buyer (₹87–147) into a ₹199 pass increases revenue per user *and* removes per-transaction friction *and* front-loads cash into the peak window.
 
-## 4.2 What makes this product succeed
+## 4.2 Why ₹29 is the right number
 
-Ranked by what will actually decide the outcome:
+- Below the deliberation threshold. ₹29 is a reflex; ₹299 is a decision requiring parental consultation for many of our users.
+- **Undercuts every incumbent by an order of magnitude.** Competitors sell ₹2,000–₹15,000 packages; we are not competing on the same axis, which is the strongest position available to a new entrant with no brand.
+- **UPI makes it collectable.** A ₹29 transaction is viable in India in a way it is not in most markets, and nil UPI MDR is what preserves the margin (7B).
+- **Trades margin for funnel.** The hardest conversion is ₹0 → ₹1. Once crossed, ₹49 and ₹199 become easy.
+- **Ad-supported Basic vs ad-free Pro is an honest, legible upgrade.** The customer understands exactly what the extra ₹20 buys — and 6C guarantees the ad-free promise is real.
 
-1. **Trust in the scores.** Release 5 is the moat. A rank that cannot be gamed is the thing a serious aspirant will pay for, and it is the thing free competitors will not bother to build.
-2. **The AI coach, done narrowly and well.** Not a generic chatbot — a system that knows this user's weak topics and tells them what to do on Tuesday morning. Module 9A + 9E.
-3. **Speed and offline capability.** The existing local-first architecture is a genuine, hard-won advantage. Many competitors are slow web apps. Protect this; do not let Release 4's sync work erode it.
-4. **The free tier being genuinely good.** Word of mouth in college WhatsApp groups is the entire acquisition strategy. A stingy free tier kills it at the source.
-5. **The content engine.** It compounds — every page written keeps earning traffic for years. It is simultaneously acquisition, SEO, and the ad-revenue substrate.
-6. **Being priced for a student.** ₹99/month is an easy yes. ₹499/month invites comparison with full coaching.
-7. **Consistency.** Weekly shipping during the September–January peak is worth more than any single feature.
+## 4.3 GATE seasonality — the execution calendar
 
-## 4.3 What will most likely kill it
+GATE is an annual **February** exam. Traffic and willingness-to-pay swing violently, and the business must be run against that calendar, not against a flat month.
 
-- Ad density degrading the experience enough to cost more in subscriptions than the ads earn. **Measure this explicitly.**
-- Building Release 6 before Release 5 — monetising an app whose scores can be faked.
-- The free tier being too thin to spread by word of mouth.
-- A security incident on the AI route producing a bill or an outage during peak season (FINDING-1).
-- Burning the September–January window on infrastructure work instead of shipping to users.
-- Cross-user data leakage on a shared college machine (FINDING-4) — one screenshot of that in a student group is a reputational event.
+### Peak window — September to January
+- **Push the ₹199 Season Pass hard.** It front-loads cash into the window where intent is maximal and removes repeat-purchase friction for the rest of the season.
+- **All-India Mock Series** on a published schedule — the single strongest acquisition and retention event we have (5E).
+- Referral loops and ambassador activity at maximum intensity (7E).
+- Ship nothing risky. **Reliability during peak outranks any feature.** A failed mock in January is unrecoverable.
+- Ad inventory is at its most valuable — and this is when a direct sponsor will pay most (8B line 1).
+
+### Trough window — March to May *(post-exam)*
+- **Halt all paid acquisition effort.** Intent collapses; anything spent here is wasted. (At ₹0 budget this means halting *time*, which is the scarce resource.)
+- Reallocate entirely to compounding work:
+  - **Programmatic SEO content generation (6A)** — SEO takes months to compound, so the trough is exactly when to build the asset that pays in the next peak.
+  - **Branch data ingestion (8A)** — the vision pipeline runs for days and needs validation time. This is its window.
+  - **Platform depth (9A, 9B)** — adaptive engine and gamification, built when nobody is mid-exam.
+  - Infrastructure, debt, and the `BUGS.md` backlog.
+- Retain the prior cohort with result analysis, next-year planning tools, and early-bird passes for the following season.
+
+### June to August — ramp
+New aspirants begin. Launch new branches here (8A), with SEO from the trough already indexing and the waitlist ready to convert.
+
+## 4.4 What decides success
+
+1. **Trust in the scores.** Release 5 is the moat. A rank that cannot be gamed is what a serious aspirant pays for, and what a free competitor will not bother to build.
+2. **Price disruption.** ₹29 reframes the category.
+3. **The AI coach, narrow and good.** Not a chatbot — a system that knows this user's weak topics and says what to do on Tuesday morning (9A + 9E).
+4. **Speed and offline.** The local-first architecture is a hard-won advantage over slow competitor web apps. **Release 4's sync work must not erode it.**
+5. **A genuinely good free tier.** College WhatsApp groups are the entire acquisition strategy; a stingy free tier kills it at the source.
+6. **The content engine.** Compounds for years; simultaneously acquisition, SEO and ad substrate.
+7. **Multi-branch reach.** Same code, ~5× the market.
+8. **Shipping weekly through September–January.**
+
+## 4.5 What would kill it
+
+- Monetizing before Release 5 — selling ranks that a CS student can forge.
+- Ad density costing more in lost purchases than it earns (measure it explicitly, 6C).
+- Cross-user data leakage on a shared college machine (FINDING-4) — one screenshot in a student group is reputational.
+- An AI-route incident producing an outage or a bill during peak season (FINDING-1).
+- A vision-pipeline answer-key error shipping unvalidated into a paid ranked test (8A gate 6).
+- The forum opening before moderation exists (9C).
+- Burning September–January on infrastructure instead of shipping to users.
+- A Razorpay account review triggered by misworded refund terms (7B).
 
 ---
 
 # PART V — CROSS-CUTTING CONCERNS
 
-## 5.1 Legal pages — required, and required early
+## 5.1 Legal pack — required early, used everywhere
 
-| Page | Needed for |
+| Page | Required for |
 |---|---|
-| Privacy Policy | AdSense, Razorpay, DPDP, app stores |
-| Terms of Service | AdSense, anti-scraping enforcement, subscriptions |
-| Refund / Cancellation Policy | Razorpay onboarding (mandatory) |
+| Privacy Policy | AdSense, Razorpay, DPDP, Play Store |
+| Terms of Service | AdSense, anti-scraping enforcement, paid access, forum conduct |
+| **Refund & Cancellation Policy** | **Razorpay onboarding — mandatory even to state "no refunds"** |
 | Cookie Policy | Ad consent |
 | About + Contact | AdSense approval |
-| Disclaimer | "Not affiliated with IIT/GATE organising institute" — important, and easy to forget |
+| Disclaimer | "Not affiliated with any IIT or the GATE organising institute" |
 
-Write these once in Release 6, and they unblock ads, payments, and compliance simultaneously.
+Written once in Module 6B; unblocks ads, payments and compliance simultaneously.
 
-## 5.2 Privacy and India's DPDP Act
+## 5.2 Privacy & India's DPDP Act
 
-- Collect the minimum. Every field on the profile must justify itself.
+- **Minimum collection.** Every profile field must justify itself.
 - Explicit consent for analytics and personalised advertising.
-- **Minors:** some users will be under 18. DPDP has stricter requirements for children's data, and ad networks restrict personalised advertising to minors. Simplest safe posture: collect a birth year, and serve only non-personalised ads to anyone under 18.
-- Data export and account deletion — already in Module 4C; these are rights, not features.
+- **Minors:** some users will be under 18. DPDP imposes stricter requirements for children's data and ad networks restrict personalised ads to minors. Posture: collect birth year; **serve only non-personalised ads to under-18 users.**
+- **Data export** available (4E-3). **Erasure** handled via the documented anonymization backstop (4C) — the mandate's retention goals preserved, the legal right honoured.
+- 5C integrity signals and the anonymization path must both be named explicitly in the Privacy Policy.
 - Breach-notification readiness.
-- Integrity signals from Module 5C must be named explicitly in the Privacy Policy.
 
 ## 5.3 The security model, stated once
 
 | Layer | Control |
 |---|---|
 | Transport | HTTPS everywhere; HSTS |
-| Auth | Supabase JWT; httpOnly refresh; middleware-enforced routes |
-| Authorization | Postgres RLS, default-deny; service-role key server-only |
-| API | Auth required; `zod` validation; Upstash rate limits; Turnstile |
-| Exam integrity | Server-held answer key, server timer, server scoring, integrity flags |
-| Data isolation | Per-user IndexedDB namespace + RLS |
-| Payments | Webhook signature verification; server-side entitlements only |
-| Secrets | `NEXT_PUBLIC_` vs server-only, CI-enforced |
-| Headers | CSP, X-Frame-Options, Referrer-Policy (CSP needs care once ad scripts load) |
+| Hosting | Cloudflare — WAF, DDoS protection, bot management at ₹0 |
+| Auth | Supabase JWT (+ Firebase bridge for OTP); httpOnly refresh; **middleware-enforced routes** |
+| Authorization | Postgres RLS, default-deny; **`question_answers` unreachable by anon and authenticated roles** |
+| Secrets | `NEXT_PUBLIC_` vs server-only; CI grep over build output |
+| API | Auth required; zod validation; **server-owned system-instruction enum**; Upstash limits keyed on user ID; Turnstile |
+| Exam integrity | Server-held key, server timer, server evaluation on Workers/Edge, append-only responses, integrity flags |
+| Data isolation | Per-user IndexedDB namespace + RLS + full Zustand reset on sign-out |
+| Payments | Webhook signature verification; entitlements server-side only |
+| Assets | Relative paths in DB; CDN/R2 delivery; hotlink protection; watermarking |
+| Content | Automated toxicity scoring pre-publication (9C) |
 | Monitoring | Sentry; structured API logs; anomaly alerts |
 
-**The single governing rule: the client is untrusted.** Every check that matters happens on a server we control.
+**Governing rule (Rule 2): the client is hostile. Every check that matters runs on a server we control.**
 
-## 5.4 Metrics to instrument from day one
+## 5.4 Metrics from day one
 
-**Acquisition:** signups/day, source, organic sessions, indexed pages, keyword ranks.
-**Activation:** % completing a first test within 24h — the strongest early predictor of retention.
+**Acquisition:** signups/day by source, organic sessions, indexed pages, keyword ranks, **branch waitlist counts** (the Release 8 prioritisation signal).
+**Activation:** % completing a first test within 24h — the strongest early retention predictor.
 **Retention:** D1/D7/D30, weekly active, streak distribution.
-**Revenue:** free→paid conversion, ARPU, MRR, churn, LTV, ad RPM, revenue per free user.
-**Health:** error rate, p95 latency, sync failure rate, AI quota utilisation, free-tier headroom on every service in §2.1.
-**Integrity:** flagged attempt rate, false-positive rate (audit manually — this one lies if unwatched).
+**Revenue:** free→paid conversion, exams per paying user, ₹29 vs ₹49 mix, pass attach rate, AI add-on take rate, ad RPM, **revenue per free user**.
+**Health:** error rate, p95 latency, sync failure rate, AI quota utilisation, **headroom on every free tier in §2.2**.
+**Integrity:** flagged attempt rate, and a manually audited false-positive rate — this metric lies if left unwatched.
 
 ## 5.5 Risk register
 
 | Risk | Impact | Response |
 |---|---|---|
-| AI route abused before 4F ships | High — outage or bill | Ship 4F first, out of sequence |
-| AdSense rejection | Medium | Content engine first; Ezoic/Media.net fallback; direct sponsors |
-| Vercel ToS breach at monetization | High | Module 6A migration, before any ad code |
-| Supabase free tier exceeded | Medium | Archive strategy; the revenue at that scale funds the upgrade |
-| Seasonal revenue collapse (Mar–May) | Medium | Annual plans; use the trough for building |
-| Competitor undercuts on price | Medium | Compete on integrity and the AI coach, not price |
-| Cross-user leak on shared device | High (reputational) | Module 4D, with an explicit test |
-| Solo-founder bandwidth | High | Strict release sequencing; resist parallel work |
+| AI route abused before 4G | High | 4G Phase 1 ships first, out of sequence |
+| Vercel ToS breach at monetization | **Critical** | 4A migration before any ad or payment code |
+| Firebase SMS quota repriced/exhausted | Medium | Three auth doors; OTP never the only path; strict OTP rate limiting (§2.4) |
+| Supabase 500 MB exhausted by assets | High | §2.3 enforced — relative paths only; R2 for bulk |
+| Answer key leak | **Critical** | 5A + RLS denial; CI test asserting anon cannot read `question_answers` |
+| Vision pipeline ships a wrong answer key | **Critical** | Mandatory human validation gate before `live` (8A stage 6) |
+| AdSense rejection | Medium | Content engine first; Ezoic/Media.net fallback; direct sponsors in parallel |
+| Razorpay review over refund wording | High | Precise enforceable wording (7B); published policy page |
+| DPDP challenge to no-deletion | Medium | Anonymization backstop (4C) |
+| Cross-user leak on shared device | High (reputational) | 4F with an explicit two-account test |
+| Forum toxicity | High (reputational) | 9C gated on moderation; close it if moderation cannot keep pace |
+| Seasonal revenue collapse (Mar–May) | Expected | Season passes; trough reallocated to compounding work (§4.3) |
+| Solo-founder bandwidth | High | Strict sequencing; resist parallel work |
 
 ---
 
 # PART VI — SEQUENCING
 
-## 6.1 Dependency order (this order is not optional)
+## 6.1 Dependency graph
 
 ```
-4F (AI route hardening)  ← DO THIS FIRST, it is live and exploitable
-   ↓
-4A Supabase → 4B Auth → 4C Profile+Avatars
-                  ↓
-              4D Session isolation → 4E Sync
-                  ↓
-5A Answer withholding → 5B Server timer/scoring → 5C Integrity → 5E Leaderboards
-                  ↓                                    ↓
-              5D Bank protection                       │
-                  ↓                                    │
-6A Cloudflare migration ⚠ BLOCKER ──────────────────────┤
-   ↓                                                   │
-6B Content engine → 6C Ad networks → 6D Ad placement    │
-   ↓                                                   │
-7A Tiers → 7B Razorpay → 7C Abuse → 7D Device limits → 7E Referrals
-   ↓
-Release 8 (diversification) ∥ Release 9 (depth)
+┌─ IMMEDIATE (no dependencies, ship now) ────────────────────────┐
+│ 4G-Phase1  zod validation + server instruction enum + caps     │
+│ 4F-prep    IndexedDB namespacing plumbing (guest namespace)    │
+│ 5A-prep    build-time public/private dataset split + grade API │
+└────────────────────────────────────────────────────────────────┘
+                              ↓
+4A  Cloudflare migration  ⚠ P0 — blocks ALL of Releases 6 & 7
+                              ↓
+4B  Postgres + RLS + public/private schema + asset path rule
+                              ↓
+        ┌─────────────────────┼─────────────────────┐
+        ↓                     ↓                     ↓
+4C Auth (3 doors)        4H Branch teaser      4G-Phase2 (auth-gated)
+        ↓                  + waitlist
+   ┌────┼────┐                  │
+   ↓    ↓    ↓                  │
+4D Guest 4E Profile 4F Isolation│
+        + Goals Engine    ↓     │
+                       4I Sync  │
+                              ↓ ↓
+5A Answer withholding → 5B Server evaluation → 5C Integrity → 5E Leaderboards
+                              ↓         ↓
+                        5D Bank protection
+                              ↓
+6A Content/SEO engine → 6B Legal + ad networks → 6C Ad placement
+                              ↓
+7A Tiers/entitlements → 7B Razorpay → 7C Abuse → 7D Device limits → 7E Referrals
+                              ↓
+        ┌─────────────────────┴─────────────────────┐
+        ↓                                           ↓
+8A Vision pipeline → multi-branch launch     8B Revenue diversification
+        ↓                                           ↓
+9A Adaptive · 9B Gamification · 9C Community(gated) · 9D Mobile · 9E AI depth
 ```
 
-## 6.2 Suggested rhythm
+## 6.2 Calendar alignment
 
-Given a solo developer and a February exam date, the shape that matters is: **security and identity before the peak; monetization during it; depth in the trough.**
+| Window | Focus |
+|---|---|
+| **Now → peak** | Releases 4 and 5. Security and identity **must** be complete before the peak. |
+| **Sept – Jan (peak)** | Release 7 monetization live; 5E mock series running; 6A content published continuously; **ship nothing risky** |
+| **Feb (exam)** | Freeze. Reliability only. |
+| **Mar – May (trough)** | 8A branch ingestion, 6A SEO at volume, 9A/9B depth, backlog |
+| **Jun – Aug (ramp)** | Launch new branches; convert the 4H waitlist; early-bird passes |
 
-- **Release 4** — the foundation. Nothing else is possible first.
-- **Release 5** — before any competitive or paid feature is announced.
-- **Release 6** — content engine started early and continuously, because SEO takes months to compound; start writing content *during* Releases 4 and 5, not after.
-- **Release 7** — target the pre-exam peak, when willingness to pay is at its maximum.
-- **Releases 8 and 9** — the post-exam trough.
+**Start 6A content immediately and continuously.** SEO compounds on a months-long clock and is the only line in this plan that cannot be rushed later.
 
-## 6.3 The next five actions
+## 6.3 Immediate execution queue
 
-1. **Harden `/api/ai/generate` today** — add `zod` validation, a server-side `systemInstruction` enum, and a prompt-length cap. These need no Supabase and no auth, and they close the worst of the hole immediately.
-2. **Create the Supabase project** and commit the first migration with RLS enabled on every table.
-3. **Install `@dicebear/core` + `@dicebear/collection`** and build the avatar picker — it is self-contained, visible, and proves out the profile shape.
-4. **Verify Vercel's and Cloudflare's current terms** in writing before any monetization work begins. This single check determines the hosting decision.
-5. **Start writing content.** One solution page per day, beginning now. SEO compounds on a months-long clock, and it is the only line in this plan that cannot be rushed later.
+| # | Action | Blocks | Status |
+|---|---|---|---|
+| 1 | **Harden `/api/ai/generate`** — zod schema, server-owned instruction enum, prompt-length cap, structured logging | FINDING-1 | ▶ in progress |
+| 2 | **Replace the in-memory limiter path** for the AI route; prepare user-ID keying | FINDING-2 | ▶ in progress |
+| 3 | **Build-time public/private dataset split + server-side grading route** | FINDING-3 | ▶ in progress |
+| 4 | **IndexedDB per-user namespacing + full Zustand reset** | FINDING-4 | ▶ in progress |
+| 5 | Verify Vercel and Cloudflare live terms in writing | 4A | pending |
+| 6 | Execute the Cloudflare migration | Releases 6, 7 | pending |
+| 7 | Create Supabase project; commit migration 001 with RLS on every table | 4B | pending |
+| 8 | Verify Firebase phone-auth quota and India pricing | 4C | pending |
+| 9 | Begin daily SEO content — one solution page per day | 6A | pending |
 
 ---
 
@@ -950,19 +1199,39 @@ Given a solo developer and a February exam date, the shape that matters is: **se
 
 | Item | Cost |
 |---|---|
-| Hosting, database, auth, storage, CDN, rate limiting, bot protection, email, analytics, error tracking, CI, AI, avatars | **₹0** |
-| Razorpay | ~2% of revenue received — no upfront |
-| Custom domain *(optional)* | ~₹1,000/yr — buy from revenue, not required |
-| Google Play account *(optional, Module 9D)* | ~₹2,100 one-time — buy from revenue, not required |
-| **Required investment to build, launch, and monetize** | **₹0** |
+| Hosting, edge compute, CDN, object storage, database, auth, rate limiting, bot protection, email, analytics, error tracking, CI, AI inference, vision extraction, avatars | **₹0** |
+| Razorpay | % of revenue received; UPI MDR currently nil — no upfront cost |
+| Custom domain *(optional)* | ~₹1,000/yr — from revenue |
+| Google Play account *(optional, 9D)* | ~₹2,100 one-time — from revenue |
+| **Required investment to build, launch, secure and monetize** | **₹0** |
 
-## Appendix B — Source documents
+## Appendix B — Mandate traceability
 
-- `GATE_OS_Deployment_and_Monetization_Plan.md` — free-tier limits, freemium hypothesis, phase sequencing
-- `GATE_OS_Growth_Security_Marketing_Plan.md` — tier split, `active_session_id` device enforcement, penetration pricing, zero-budget channels, competitive analysis
-- `GATE_OS_Release_4_and_Future_Releases_Master_Prompt.md` — Supabase schema and sync statuses (4A), auth and security validation matrix (4B)
+| # | Mandate | Module |
+|---|---|---|
+| 1 | Immediate Cloudflare migration (P0) | 4A |
+| 2 | Image asset architecture — no DB binaries, no GitHub URLs, CDN/R2 + relative paths | §2.3, 4B, 8A |
+| 3 | Mobile OTP via Firebase + Google OAuth + Email | 4C |
+| 4 | No account deletion in UI | 4C (+ compliance backstop) |
+| 5 | Guest walkthrough / teaser mode with contextual locks | 4D |
+| 6 | Per-user IndexedDB namespacing + Zustand reset | 4F-1 |
+| 7 | Answer key withholding | 5A, 4B schema |
+| 8 | Server-authoritative evaluation on Workers/Edge Functions | 5B |
+| 9 | API hardening — JWT, zod, server enum, Upstash by user ID | 4G |
+| 10 | JSON → Supabase Postgres with RLS | 4B |
+| 11 | Dynamic Exam Goals Engine driving Focus Target / Goal Slider | 4E-2 |
+| 12 | Multi-branch: Coming Soon UI + Notify Me; vision extraction backend | 4H, 8A |
+| 13 | Leaderboards Phase A; moderated community Phase B | 5E, 9C |
+| 14 | ₹29 / ₹49 / ₹99 pricing; no refunds, no cancellations | 7A, 7B |
+| 15 | Seasonality — peak passes and mock series; trough SEO and ingestion | §4.3 |
+
+## Appendix C — Source documents
+
+- `GATE_OS_Deployment_and_Monetization_Plan.md` — free-tier limits, phase sequencing
+- `GATE_OS_Growth_Security_Marketing_Plan.md` — device enforcement, zero-budget channels, competitive analysis
+- `GATE_OS_Release_4_and_Future_Releases_Master_Prompt.md` — Supabase schema and sync statuses, auth security validation matrix
 - `BUGS.md` — P0–P3 backlog to fold into each release
-- Live codebase at `D:\0-UI\r2ma-stable` — the four findings in §1.2 were verified directly against source and data
+- Live codebase at `D:\0-UI\r2ma-stable` — the four findings in §1.2 verified directly against source and data
 
 ---
 
