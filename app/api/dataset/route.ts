@@ -1,13 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { splitDataset, type RawPaper } from "@/lib/repository/dataset-split";
+// Bundled at build time rather than read from disk at request time (`fs.readFile`
+// against `process.cwd()`). Cloudflare Workers — the Module 4A migration target — run in
+// a V8 isolate sandbox with no filesystem at request time, so a runtime `fs` read cannot
+// work there under any adapter; a build-time import is the portable form and behaves
+// identically on Vercel's Node runtime today. See RENYXERA_Master_Plan §4A.
+import rawDataset from "@/data/Aggregated_Output.json";
 
 export const runtime = "nodejs";
 
-const DATA_PATH = path.join(process.cwd(), "data", "Aggregated_Output.json");
+const dataset = rawDataset as unknown as RawPaper[];
 
 // The question repository fetches this exactly once per app load (then caches in
 // IndexedDB), so a real user session needs at most a handful of requests. This limit is
@@ -43,19 +47,14 @@ export async function GET(req: NextRequest) {
   const scope = req.nextUrl.searchParams.get("scope");
 
   try {
-    const raw = await fs.readFile(DATA_PATH, "utf-8");
-    const data = JSON.parse(raw) as RawPaper[];
-
     if (scope === "public") {
-      const { publicPapers } = splitDataset(data);
+      const { publicPapers } = splitDataset(dataset);
       return NextResponse.json(publicPapers, {
         headers: { "Cache-Control": "no-store" },
       });
     }
 
-    // Re-serialize (no pretty-printing) rather than streaming the file as-is — keeps the
-    // wire format minified regardless of how the source file on disk is formatted.
-    return NextResponse.json(data, {
+    return NextResponse.json(dataset, {
       headers: { "Cache-Control": "no-store" },
     });
   } catch (err) {

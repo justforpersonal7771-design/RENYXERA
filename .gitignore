@@ -8,3 +8,9 @@ coverage/
 .env.local
 scratch/
 .vercel
+
+# Cloudflare (Module 4A)
+.open-next/
+.wrangler/
+cloudflare-env.d.ts
+.dev.vars

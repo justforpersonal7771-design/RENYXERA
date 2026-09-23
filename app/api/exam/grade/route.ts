@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
 import { buildAnswerKey, gradeResponse, type RawPaper } from "@/lib/repository/dataset-split";
 import { gradeRequestSchema } from "@/lib/security/grade-request-schema";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
+// Bundled at build time rather than read from disk at request time — see the comment in
+// app/api/dataset/route.ts for why (Cloudflare Workers have no filesystem at runtime).
+import rawDataset from "@/data/Aggregated_Output.json";
 
 export const runtime = "nodejs";
 
-const DATA_PATH = path.join(process.cwd(), "data", "Aggregated_Output.json");
+const dataset = rawDataset as unknown as RawPaper[];
 const MAX_BODY_BYTES = 60_000;
 
 // A real user submits at most a handful of graded attempts per session (an attempt is
@@ -17,20 +18,17 @@ const MAX_BODY_BYTES = 60_000;
 // "attempts" repeatedly to fish for the correct option.
 const RATE_LIMIT = { limit: 20, windowMs: 60_000 };
 
-// Marks-by-question lookup is built once per cold start alongside the answer key, from
-// the same source file — avoids a second read/parse of the dataset per request.
+// Built once per cold start from the bundled dataset rather than per request.
 let cachedMarksById: Map<string, number> | null = null;
 let cachedAnswerKey: ReturnType<typeof buildAnswerKey> | null = null;
 
-async function loadGradingData() {
+function loadGradingData() {
   if (cachedAnswerKey && cachedMarksById) {
     return { answerKey: cachedAnswerKey, marksById: cachedMarksById };
   }
-  const raw = await fs.readFile(DATA_PATH, "utf-8");
-  const papers = JSON.parse(raw) as RawPaper[];
-  const answerKey = buildAnswerKey(papers);
+  const answerKey = buildAnswerKey(dataset);
   const marksById = new Map<string, number>();
-  for (const paper of papers) {
+  for (const paper of dataset) {
     for (const q of paper.questions) {
       marksById.set(q.question_id, q.marks);
     }
@@ -88,7 +86,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { answerKey, marksById } = await loadGradingData();
+    const { answerKey, marksById } = loadGradingData();
 
     let score = 0;
     let maxScore = 0;

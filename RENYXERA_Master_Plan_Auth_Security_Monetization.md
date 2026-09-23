@@ -101,13 +101,29 @@ The day two students log in on one hostel or lab machine, **user B sees user A's
 
 ## 2.1 ⚠️ P0 — The Vercel licence conflict, and why Cloudflare is not optional
 
-**Vercel's Hobby plan is for non-commercial, personal use.** Serving advertising or taking payments makes a deployment commercial. The moment AdSense or Razorpay goes live on `renyxera.vercel.app`, we are in breach of the plan hosting us, and the remedy is Vercel Pro at ~$20/month — which breaks Rule 1 on day one of monetization.
+**Verified 24 Sep 2026 against live source text (not summaries) — both sides of this decision.**
 
-**Cloudflare Pages/Workers permits commercial activity, ad serving and payments on its free tier**, with unlimited static bandwidth and edge compute at ₹0.
+**Vercel — confirmed, verbatim, current** (`vercel.com/docs/limits/fair-use-guidelines`, doc dated 2026-09-14):
+
+> "Hobby teams are restricted to non-commercial personal use only. All commercial usage of the platform requires either a Pro or Enterprise plan." Commercial usage is defined as any deployment "used for the purpose of financial gain of **anyone** involved in **any part of the production** of the project" and explicitly lists: *"Any method of requesting or processing payment from visitors of the site,"* *"Advertising the sale of a product or service,"* and *"The inclusion of advertisements, including but not limited to online advertising platforms like Google AdSense."* Enforcement: Vercel "reserves the right to disable or remove any Project... with or without notice at its sole discretion."
+
+This is unambiguous and names our exact two monetization mechanisms (ads, payments) by name. The moment AdSense or Razorpay goes live on `renyxera.vercel.app`, we are in breach of the plan hosting us, and the remedy is Vercel Pro at ~$20/month — which breaks Rule 1 on day one of monetization.
+
+**Cloudflare — confirmed permissive on commercial use, with one real clause worth naming.** Cloudflare's Self-Serve Subscription Agreement (`cloudflare.com/terms/`) has no blanket prohibition on commercial use of Free Services. It does contain, in **Section 2.2.1(h)**, a restriction against using Free Services to *"process or collect personal or business credit card information on any web property that is receiving Free Services."* Read literally this sounds concerning for Module 7B (card payments), but the standard, PCI-DSS-standard mitigation makes it moot: **Razorpay's hosted Checkout / tokenized flow (the only integration path this plan ever specifies) means raw card data goes directly from the payer's browser to Razorpay's own PCI-compliant servers — it never touches our Cloudflare-hosted property or our own code.** We are not "processing or collecting" card data under any reasonable reading of that clause; Razorpay is. This is also simply correct payment-integration practice independent of Cloudflare's ToS (it's what keeps us out of PCI DSS scope at all). **Action item, carried forward: never build a custom card-entry form that submits PAN data to our own backend — always Razorpay's hosted/tokenized surface.** Section 2.6 also notes Cloudflare can discontinue Free Services at will with no liability — ordinary free-tier platform risk, mitigated by keeping the CDN base URL and DNS user-owned and portable (§2.3).
 
 This is therefore not a cost optimisation. It is a **licensing prerequisite for the existence of every revenue line in this plan**, and it is scheduled as Module 4A — the first thing built, before auth, before the database, before anything.
 
-> **Standing instruction:** verify both providers' live policy text before executing the migration. Hosting terms change; this decision must rest on the current terms, not on this document.
+### 2.1.1 Technical path, verified end-to-end against this actual codebase
+
+Cloudflare's own current docs (fetched 24 Sep 2026) name **vinext** as the new officially-recommended Next.js runtime for Workers — but its own compatibility dashboard describes it as **beta**, under active development, with several feature categories still marked unsupported or deferred. Not the right foundation for a revenue-bearing app on day one. **`@opennextjs/cloudflare` reached its 1.0 GA milestone in February 2026** and is Cloudflare's documented fallback path; that's what this plan uses, and it's now installed (`^1.20.6`) and proven against our real code, not just plausible in theory:
+
+- **Blocking technical fact, true regardless of adapter:** Cloudflare Workers run in a V8 isolate sandbox with **no filesystem at request time**. Our three data-serving API routes (`/api/dataset`, `/api/exam/grade`, `/api/image-manifest`) all read `data/*.json` via `fs.readFile(path.join(process.cwd(), …))` — a pattern that cannot work on Workers under any adapter. **Fixed:** all three now `import` their JSON directly (Next.js/TypeScript already had `resolveJsonModule` on), so the data is bundled at build time instead of read from disk at request time. Verified behaviorally identical on the existing Vercel/Node path before and after — same responses, same grading results, same rate limiting — so this was a safe, zero-risk refactor to make immediately, independent of when the actual migration happens.
+- **`npm run build:cf` (added, wraps `opennextjs-cloudflare build`) succeeds end-to-end** on the real app — full `next build` plus the Cloudflare bundle-generation step complete with no errors, across every dependency (`@google/genai`, `zod`, `idb`, `motion`, `recharts`, all 23 routes). This is the single most important verification in this section: **the app is genuinely Workers-compatible**, not hypothetically compatible.
+- **`wrangler deploy --dry-run` (no Cloudflare login required) computed the real final upload size: 9,489 KiB uncompressed / 2,089 KiB gzip.** Cloudflare raised the Workers script-size ceiling to a flat **64 MiB uncompressed on every plan (free included)** on 4 Sep 2026, retiring the old 3 MB(free)/10 MB(paid) *compressed* limits this plan would otherwise have needed to worry about. At ~9.3 MB we're using ~15% of that ceiling — comfortable headroom even after Release 8's ~5× multi-branch data growth.
+- **Scaffolded, committed, and additive-only:** `wrangler.jsonc` (name, `compatibility_date`, `nodejs_compat` flag, assets binding), `open-next.config.ts`, and `build:cf`/`preview:cf`/`deploy:cf`/`cf-typegen` npm scripts. **The existing `dev`/`build`/`start` scripts and the live Vercel deployment are completely untouched** — this is a parallel, opt-in path, not a cutover.
+- **What remains and needs the account owner, not this session:** creating the actual Cloudflare account, `wrangler login` (or an API token), running `deploy:cf` for real, connecting the domain/DNS, verifying the live deployment against the Playwright suite, and only then decommissioning Vercel. These are account-level, outward-facing, hard-to-reverse actions outside what an assistant should do unattended.
+
+> **Standing instruction:** verify both providers' live policy text before executing the migration. Hosting terms change; this decision must rest on the current terms, not on this document. (Done above, 24 Sep 2026 — re-verify if this section is acted on much later.)
 
 ## 2.2 The complete ₹0 stack
 
@@ -1187,11 +1203,13 @@ Written once in Module 6B; unblocks ads, payments and compliance simultaneously.
 | 2 | **Apply and tighten rate limiting on the AI route** (was completely unprotected; now origin-checked + IP-keyed + 15 req/min) | FINDING-2 | ✅ **done (interim)** |
 | 3 | **Build-time public/private dataset split + server-side grading route** | FINDING-3 | ✅ **done (infra)** |
 | 4 | **IndexedDB per-user namespacing + full Zustand reset** | FINDING-4 | ✅ **done (prep)** |
-| 5 | Verify Vercel and Cloudflare live terms in writing | 4A | pending |
-| 6 | Execute the Cloudflare migration | Releases 6, 7 | pending |
-| 7 | Create Supabase project; commit migration 001 with RLS on every table | 4B | pending |
-| 8 | Verify Firebase phone-auth quota and India pricing | 4C | pending |
-| 9 | Begin daily SEO content — one solution page per day | 6A | pending |
+| 5 | Verify Vercel and Cloudflare live terms in writing | 4A | ✅ **done** — see §2.1 |
+| 6 | Convert `fs.readFile` data loading to build-time imports (Workers has no runtime filesystem) | 4A | ✅ **done** |
+| 7 | Scaffold OpenNext/Wrangler config; prove `build:cf` succeeds and compute real bundle size | 4A | ✅ **done** — see §2.1.1 |
+| 8 | Create Cloudflare account, `wrangler login`, run `deploy:cf` for real, cut over DNS | 4A | ⏸ **needs account owner** |
+| 9 | Create Supabase project; commit migration 001 with RLS on every table | 4B | pending |
+| 10 | Verify Firebase phone-auth quota and India pricing | 4C | pending |
+| 11 | Begin daily SEO content — one solution page per day | 6A | pending |
 
 **What shipped for #1–4, and what's honestly still open** (all four verified against the live dev server, not just typechecked):
 
@@ -1199,6 +1217,14 @@ Written once in Module 6B; unblocks ads, payments and compliance simultaneously.
 - **#2 — Done as the ₹0, no-dependency interim fix; full fix is still Module 4G Phase 2.** The route previously had *zero* rate limiting (the dataset/image-manifest routes had it, the one route that costs money didn't). It now carries the same origin-check + rate-limit pattern, at a tighter 15 req/min. It's still IP-keyed via `getClientKey()`, which the master plan already names as a weak key (CGNAT) — swapping to Upstash-backed, user-ID-keyed limiting genuinely needs auth to exist first, so that part remains Module 4G Phase 2, not claimed as solved here.
 - **#3 — The split and grading engine are real and tested; the live exam UI is not yet cut over.** New: `lib/repository/dataset-split.ts` (splits any paper into an answer-free public payload + a server-only answer key; grades one response), `/api/exam/grade` (POST responses → server-computed correctness + score, zod-validated, origin-checked, rate-limited), and `/api/dataset?scope=public` (the same split, live, on the existing dataset route). Verified live against real questions: correct/incorrect MCQ and NAT grading both scored correctly, malformed requests get 400, cross-origin gets 403. **What's deliberately not done:** the current practice/exam flow still fetches the full answer-bearing dataset and self-grades in the browser — rewiring that (18 call sites across the exam runtime, results pages, analytics and AI context) is Module 5A/5B, scheduled for Release 5 once 4B/Supabase exists, and doing it piecemeal today risked regressing a recently-stabilized, working exam UI. The default `/api/dataset` response is unchanged and still carries answer keys, with a code comment marking exactly why and where the replacement path is.
 - **#4 — Real, tested, and inert by default.** `IDBManager` now supports `setActiveNamespace(userId | null)`, and `lib/store/reset-all-stores.ts` resets all 10 Zustand stores via `getInitialState()`. Verified live: the default (no namespace set) still opens the exact same `GatePrepOS_DB` every current user already has — zero migration risk — while calling `setActiveNamespace("test-user")` opens a genuinely separate, independently-listed database without touching the default one, and `resetAllStores()` reverts dirtied state while keeping action methods callable. Nothing calls either of these yet, because there's no sign-in/sign-out flow to call them from — that wiring is Module 4C/4F once auth exists. This is the isolation *mechanism*, proven to work, ready for auth to drive.
+- **#5–7 — the Vercel/Cloudflare licence question is closed, and the technical migration path is proven, not just planned.** Full detail in §2.1/§2.1.1: Vercel's ToS confirmed to name ads and payments explicitly as prohibited on Hobby; Cloudflare confirmed permissive with one card-processing clause that Razorpay's hosted checkout already satisfies. `@opennextjs/cloudflare` (GA, not the newer beta `vinext`) is installed, `wrangler.jsonc`/`open-next.config.ts` are scaffolded, `npm run build:cf` succeeds against the real app, and a no-login `wrangler deploy --dry-run` measured the actual upload at 9.3 MB / 2.0 MB gzip — well inside Cloudflare's current 64 MiB (all-plans) ceiling.
+- **#8 — genuinely blocked on the account owner, not on more engineering.** Creating the Cloudflare account, authenticating Wrangler, running a real `deploy:cf`, pointing DNS at it, and decommissioning Vercel only after the live Cloudflare deployment passes the same Playwright verification this app already has — these are account-level and outward-facing, so they're listed here as the exact next steps rather than done unattended:
+  1. Create a Cloudflare account (free) and add the domain if a custom one is in use, otherwise a `*.pages.dev`/`*.workers.dev` subdomain works immediately.
+  2. `npx wrangler login` locally (or generate a scoped API token) to authenticate Wrangler to that account.
+  3. `npm run deploy:cf` — builds and pushes the real Worker.
+  4. Smoke-test the live Cloudflare URL against the existing Playwright suite before touching DNS.
+  5. Repoint the domain (or share traffic during a verification window) — only once step 4 passes.
+  6. Decommission the Vercel project once the Cloudflare deployment has run cleanly for a few days.
 
 ---
 

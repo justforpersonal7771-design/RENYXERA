@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
+// Bundled at build time rather than read from disk at request time — see the comment in
+// app/api/dataset/route.ts for why (Cloudflare Workers have no filesystem at runtime).
+import manifest from "@/data/image-manifest.json";
 
 export const runtime = "nodejs";
-
-const MANIFEST_PATH = path.join(process.cwd(), "data", "image-manifest.json");
 
 const RATE_LIMIT = { limit: 20, windowMs: 60_000 };
 
@@ -22,9 +21,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const raw = await fs.readFile(MANIFEST_PATH, "utf-8");
-    const data = JSON.parse(raw);
-    return NextResponse.json(data, {
+    return NextResponse.json(manifest, {
       headers: { "Cache-Control": "no-store" },
     });
   } catch (err) {

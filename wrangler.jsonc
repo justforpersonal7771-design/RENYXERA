@@ -1,0 +1,35 @@
+{
+  // Cloudflare Workers config for the Module 4A migration (see
+  // RENYXERA_Master_Plan_Auth_Security_Monetization.md §2.1/§6.1). This is scaffolding
+  // only — nothing here is deployed yet. `npm run build`/`start` (Vercel's path) are
+  // completely untouched; this is exercised only via the separate `build:cf`/`preview:cf`
+  // /`deploy:cf` scripts added in package.json, and `deploy:cf` additionally needs a
+  // Cloudflare account connected via `wrangler login` (or an API token), which is an
+  // account-level step outside what this session can do.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "main": ".open-next/worker.js",
+  "name": "renyxera",
+  "compatibility_date": "2026-09-24",
+  "compatibility_flags": [
+    // Required: without this, none of the Node.js built-ins our API routes rely on
+    // indirectly (through Next.js internals, zod, etc.) would resolve on Workers. Our
+    // own route handlers no longer touch `fs`/`path` at runtime (see the comments in
+    // app/api/dataset/route.ts) — that conversion was a prerequisite for this file to
+    // even be meaningful, not something this flag alone would have fixed.
+    "nodejs_compat",
+    "global_fetch_strictly_public"
+  ],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "renyxera"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}
