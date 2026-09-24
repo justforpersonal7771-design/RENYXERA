@@ -86,7 +86,10 @@ export function AuthListener() {
         resetAllStores();
 
         if (isRealChange && !isFirstResolve) {
-          window.location.reload();
+          // Signing out lands on the dashboard (not a reload of e.g. /profile,
+          // which is meaningless once signed out); signing in stays put.
+          if (userId === null) window.location.replace("/");
+          else window.location.reload();
         }
       };
 

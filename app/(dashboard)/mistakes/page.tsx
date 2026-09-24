@@ -272,7 +272,7 @@ export default function MistakesPage() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col md:flex-row gap-4 relative overflow-hidden">
+      <div className="w-full h-full flex flex-col md:flex-row gap-4 relative">
 
         {/* Sidebar merged into a single card */}
         <div className={`flex flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>

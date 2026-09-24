@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Registered so the scrollbar thumb's opacity can transition (see
+   .custom-scrollbar below); unregistered custom properties just snap. */
+@property --sb-alpha {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @theme {
   --color-background: var(--background);
   --color-surface: var(--surface);
@@ -85,39 +93,26 @@
 
   /* Premium glass card — frosted, semi-transparent surface that lets the
      app shell's ambient-gradient show through instead of sitting on a flat
-     opaque panel. Differentiated from the page by a brand-tinted wash and a
-     soft top highlight/shadow — deliberately no border line, so cards read
-     as distinct surfaces without a hard edge cutting them out of the scene.
-     A full-bleed layout (Mistakes/Bookmarks' sidebar+content pair, both
-     stretched h-full edge-to-edge) leaves almost no exposed ambient
-     background around the card for the backdrop-filter blur/saturate to pick
-     up a color from, so its definition has to come from the card's own tint
-     and shadow rather than contrast with what's behind it. Two changes from
-     the original: the base tint is --surface-secondary, not --surface — in
-     light mode --surface is #fff against a #fcfcfc page body, a 3-unit
-     difference that's invisible regardless of opacity; --surface-secondary
-     (#f4f4f5) actually reads as a distinct shade. And the brand-blue wash
-     (the real "premium" cue) went from a faint 8%-opacity sliver fading out
-     at 60% of the card to a fuller 16%-opacity wash covering the whole
-     surface, so the card's own color carries its definition instead of
-     depending on contrast with whatever happens to be visible behind it. */
+     opaque panel. Differentiated from the page by a faint brand-tinted wash
+     and a soft top highlight/shadow instead of a border line, so cards read
+     as distinct surfaces without a hard edge cutting them out of the scene. */
   .card-glass {
     background:
-      linear-gradient(135deg, color-mix(in srgb, var(--brand-blue) 16%, transparent), color-mix(in srgb, var(--brand-violet) 6%, transparent) 100%),
-      color-mix(in srgb, var(--surface-secondary) 65%, transparent);
+      linear-gradient(135deg, color-mix(in srgb, var(--brand-blue) 6%, transparent), transparent 60%),
+      color-mix(in srgb, var(--surface) 42%, transparent);
     backdrop-filter: blur(24px) saturate(1.4);
     -webkit-backdrop-filter: blur(24px) saturate(1.4);
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, white 14%, transparent),
-      0 2px 8px color-mix(in srgb, black 12%, transparent),
-      0 16px 40px -12px color-mix(in srgb, black 36%, transparent);
+      inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+      0 2px 6px color-mix(in srgb, black 10%, transparent),
+      0 16px 40px -12px color-mix(in srgb, black 32%, transparent);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .card-glass:hover {
     box-shadow:
-      inset 0 1px 0 color-mix(in srgb, white 16%, transparent),
-      0 4px 10px color-mix(in srgb, black 14%, transparent),
-      0 22px 50px -12px color-mix(in srgb, black 40%, transparent);
+      inset 0 1px 0 color-mix(in srgb, white 12%, transparent),
+      0 4px 10px color-mix(in srgb, black 12%, transparent),
+      0 22px 50px -12px color-mix(in srgb, black 38%, transparent);
   }
 }
 
@@ -153,7 +148,13 @@
        blue-to-violet slice of it, so the scrollbar reads as an intentional
        piece of the product's own visual identity. */
     --scrollbar-thumb: color-mix(in srgb, var(--brand-blue) 40%, #71717a);
-    --scrollbar-thumb-gradient: linear-gradient(180deg, var(--brand-cyan), var(--brand-blue), var(--brand-violet), var(--brand-magenta));
+    /* Brand ribbon (cyan -> blue -> violet -> magenta) as bare RGB triplets so
+       the thumb can fade them in/out via --sb-alpha. */
+    --sb-c1: 6 194 251;
+    --sb-c2: 10 95 242;
+    --sb-c3: 91 33 224;
+    --sb-c4: 221 66 251;
+    --scrollbar-thumb-gradient: linear-gradient(180deg, rgb(var(--sb-c1)), rgb(var(--sb-c2)) 35%, rgb(var(--sb-c3)) 70%, rgb(var(--sb-c4)));
     --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-violet) 55%, transparent);
     --scrollbar-track: transparent;
 
@@ -216,7 +217,12 @@
     --accent-foreground: #000000;
 
     --scrollbar-thumb: color-mix(in srgb, var(--brand-blue) 45%, #a1a1aa);
-    --scrollbar-thumb-gradient: linear-gradient(180deg, var(--brand-cyan), var(--brand-blue), var(--brand-violet), var(--brand-magenta));
+    /* Brightened ribbon so the thumb stays legible on dark surfaces. */
+    --sb-c1: 94 220 255;
+    --sb-c2: 77 141 255;
+    --sb-c3: 139 92 246;
+    --sb-c4: 232 121 249;
+    --scrollbar-thumb-gradient: linear-gradient(180deg, rgb(var(--sb-c1)), rgb(var(--sb-c2)) 35%, rgb(var(--sb-c3)) 70%, rgb(var(--sb-c4)));
     --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-violet) 65%, transparent);
     --scrollbar-track: transparent;
 
@@ -264,43 +270,25 @@
       radial-gradient(ellipse 55% 42% at 62% 102%, var(--bg-gradient-accent-4), transparent);
     background-attachment: fixed;
     color: var(--text-primary);
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* ============================================================
-     PREMIUM AUTO-HIDE SCROLLBAR — v2, rebuilt for reliability
+     PREMIUM AUTO-HIDE SCROLLBAR
      ============================================================
-     v1 hid the thumb via `opacity: 0` + CSS `:hover`. That tested correctly
-     in automated headless-browser checks but was confirmed live (real
-     screenshots) to NOT actually stay hidden — the exact cause wasn't
-     pinned down remotely, so rather than keep debugging a technique that
-     demonstrably isn't reliable in the field, this rebuilds on a
-     structurally stronger mechanism:
+     Chrome 121+ ignores ALL ::-webkit-scrollbar styling on an element whose
+     scrollbar-width or scrollbar-color is set — and scrollbar-color is
+     inherited, so even a value on <body> counts. That is why earlier
+     versions either showed a plain OS bar with arrows (body's
+     scrollbar-color) or nothing at all (scrollbar-width: none). The standard
+     properties now live only in the Firefox block at the end.
 
-     WIDTH is the primary hide/reveal control, not opacity. At rest the
-     scrollbar is `width: 0` / `height: 0` — there is no track, no thumb, no
-     button, NOTHING for the browser to paint, so no rendering edge case can
-     make anything appear. On reveal it grows to a real width. This also
-     directly delivers the requested "expand/bump" effect for free — growing
-     from 0 is itself the pop-in animation, not a separate effect layered on
-     top.
-
-     Visibility is driven ENTIRELY by JS (components/system/scrollbar-
-     activity.tsx sets `data-scrollbar-reveal="true"` on the scrollable
-     element itself, on real scroll or pointer-move activity, clearing it
-     ~900ms after the last of either) — CSS `:hover` is kept only as a
-     harmless redundant fallback, never the primary mechanism this time.
-
-     Native up/down arrow buttons: killed for every pseudo-class variant
-     Chromium/Windows is known to still render them under, same as before —
-     kept as-is, this part was already correct; the visibility bug was
-     entirely about the thumb never truly disappearing.
-
-     Firefox has no equivalent (scrollbar-width/scrollbar-color have no
-     hide-until-active mode) — it keeps its own always-visible thin bar,
-     an unavoidable, minor cross-browser gap CSS can't close. */
+     The track width stays fixed: Chromium does not reliably repaint a
+     scrollbar whose ::-webkit-scrollbar width changes after layout. Hiding
+     is done on the thumb's colour instead — its gradient stops are
+     multiplied by --sb-alpha, which fades 0 -> 1 when
+     components/system/scrollbar-activity.tsx sets data-scrollbar-reveal on
+     real scroll/pointer activity, and back to 0 once it goes idle. */
 
   ::-webkit-scrollbar-button,
   ::-webkit-scrollbar-button:start,
@@ -337,47 +325,56 @@
      transition: filter 0.3s ease;
   }
 
-  /* The one class actually applied across the app (setup, exam session, AI
-     Mentor, revision, <main> itself, 24+ usages) — every scroll surface in
-     the app goes through here, one definition covers all of them. */
   .custom-scrollbar {
-    scrollbar-width: none; /* Firefox: no hide-until-active mode exists, so
-                               fully hiding is closer to the "premium,
-                               unobtrusive" intent than an always-on bar —
-                               this is the one browser where the requested
-                               behavior genuinely can't be matched exactly. */
+    transition: --sb-alpha 0.3s ease;
   }
 
   .custom-scrollbar::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
-    transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-                height 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .custom-scrollbar[data-scrollbar-reveal="true"]::-webkit-scrollbar,
-  .custom-scrollbar:hover::-webkit-scrollbar {
     width: 10px;
     height: 10px;
+    background: transparent;
   }
 
-  /* A constant, low-intensity glow on the thumb itself (not just on
-     interaction) so the revealed bar reads as an obviously visible, deliberate
-     UI element the instant it appears, rather than a thin, easy-to-miss line —
-     the interaction-triggered glow below still layers a stronger one on top. */
-  .custom-scrollbar[data-scrollbar-reveal="true"]::-webkit-scrollbar-thumb,
-  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-    box-shadow: 0 0 4px 0.5px var(--scrollbar-thumb-glow);
+  .custom-scrollbar::-webkit-scrollbar-track,
+  .custom-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
   }
 
-  /* The "bump": grows a little further and picks up a glow the instant the
-     pointer is actually over the thumb (not just the scrollable area) or
-     it's being dragged — confirms it's grabbable. */
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    background-image: linear-gradient(
+      180deg,
+      rgb(var(--sb-c1) / var(--sb-alpha)),
+      rgb(var(--sb-c2) / var(--sb-alpha)) 35%,
+      rgb(var(--sb-c3) / var(--sb-alpha)) 70%,
+      rgb(var(--sb-c4) / var(--sb-alpha))
+    );
+  }
+
+  .custom-scrollbar[data-scrollbar-reveal="true"] {
+    --sb-alpha: 1;
+  }
+
+  /* The "bump": the thumb thickens from 4px to 8px (thinner transparent
+     border) and glows while the pointer is on it or it's being dragged. */
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover,
+  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+    --sb-alpha: 1;
+    border-width: 1px;
     box-shadow: 0 0 8px 1px var(--scrollbar-thumb-glow);
   }
-  .custom-scrollbar::-webkit-scrollbar-thumb:active {
-    box-shadow: 0 0 10px 2px var(--scrollbar-thumb-glow);
+
+  /* Firefox has no scrollbar pseudo-elements; fade the standard colours. */
+  @supports not selector(::-webkit-scrollbar) {
+    .custom-scrollbar {
+      scrollbar-width: thin;
+      scrollbar-color: transparent transparent;
+    }
+    .custom-scrollbar[data-scrollbar-reveal="true"] {
+      scrollbar-color: var(--scrollbar-thumb) transparent;
+    }
   }
 }
 

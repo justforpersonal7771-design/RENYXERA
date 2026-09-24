@@ -1,14 +1,36 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { Loader2, Save, LogOut, CheckCircle2, User as UserIcon } from "lucide-react";
+import {
+  Loader2, Save, LogOut, CheckCircle2, User as UserIcon, Palette, IdCard, Target,
+  GraduationCap, CalendarDays, Trophy, Clock, Mail, Sparkles,
+} from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
+import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
-import { randomAvatarSeed } from "@/lib/avatar/generate-avatar";
+import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-avatar";
+
+const INPUT_CLASS =
+  "w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-shadow";
+
+const LABEL_CLASS = "flex items-center gap-1.5 text-xs font-bold text-[var(--text-secondary)] mb-1.5";
+
+function SectionHeader({ icon: Icon, title, subtitle, tint }: { icon: typeof UserIcon; title: string; subtitle: string; tint: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-5">
+      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${tint}`}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <div>
+        <h2 className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{title}</h2>
+        <p className="text-xs text-[var(--text-secondary)]">{subtitle}</p>
+      </div>
+    </div>
+  );
+}
 
 const BRANCHES = [
   { label: "Computer Science & IT", value: "CSE" },
@@ -45,6 +67,10 @@ export default function ProfilePage() {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [signingOut, setSigningOut] = useState(false);
+  const openAuthModal = useAuthModalStore((s) => s.open);
+
+  const avatarUri = useMemo(() => generateAvatarDataUri(avatar.style, avatar.seed, { size: 160 }), [avatar]);
+  const branchLabel = BRANCHES.find((b) => b.value === targetBranch)?.label.replace(" — Coming Soon", "") ?? targetBranch;
 
   // Seed local form state from the loaded profile once it arrives.
   useEffect(() => {
@@ -102,7 +128,7 @@ export default function ProfilePage() {
       const supabase = createClient();
       await supabase.auth.signOut();
       // AuthListener's onAuthStateChange handler switches the IndexedDB namespace back
-      // to guest, resets every store, and reloads — nothing else to do here.
+      // to guest, resets every store, and redirects to the dashboard.
     } catch {
       setSigningOut(false);
     }
@@ -118,136 +144,172 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-center px-4">
-        <UserIcon className="w-10 h-10 text-[var(--text-muted)]" />
-        <div>
-          <h1 className="text-lg font-bold text-[var(--text-primary)] mb-1">You're not signed in</h1>
-          <p className="text-sm text-[var(--text-secondary)]">Sign in to set up your profile and sync your progress.</p>
+      <div className="w-full h-full flex items-center justify-center px-4">
+        <div className="card-glass rounded-3xl p-8 sm:p-10 max-w-md w-full text-center">
+          <div className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-500 via-indigo-600 to-fuchsia-500 text-white shadow-lg shadow-indigo-500/30">
+            <UserIcon className="w-8 h-8" />
+          </div>
+          <h1 className="text-xl font-extrabold text-[var(--text-primary)] mb-1.5">You&apos;re not signed in</h1>
+          <p className="text-sm text-[var(--text-secondary)] mb-6">Sign in to set up your profile and sync your progress across devices.</p>
+          <button
+            onClick={() => openAuthModal("login", "/profile")}
+            className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-md shadow-indigo-500/25 transition-colors"
+          >
+            Sign In
+          </button>
         </div>
-        <Link
-          href="/login?redirect=/profile"
-          className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm transition-colors"
-        >
-          Sign In
-        </Link>
       </div>
     );
   }
 
+  const name = displayName.trim() || user.email?.split("@")[0] || "Aspirant";
+
   return (
-    <div className="w-full h-full overflow-y-auto custom-scrollbar">
-      <div className="max-w-2xl mx-auto px-1 py-2 space-y-6">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
-          className="flex items-center justify-between"
-        >
-          <div>
-            <h1 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight">Profile</h1>
-            <p className="text-sm font-medium text-[var(--text-secondary)]">{user.email}</p>
+    <div className="w-full max-w-5xl mx-auto pb-4 space-y-6">
+      {/* Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-[0_24px_60px_-20px_rgba(79,70,229,0.6)]"
+      >
+        <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-20 w-72 h-72 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div aria-hidden="true" className="pointer-events-none absolute -bottom-28 left-1/3 w-80 h-80 rounded-full bg-fuchsia-300/25 blur-3xl" />
+
+        <div className="relative flex flex-col sm:flex-row sm:items-center gap-5">
+          <div className="w-24 h-24 shrink-0 rounded-2xl overflow-hidden bg-white/15 backdrop-blur-md shadow-xl ring-4 ring-white/25">
+            {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}
+            <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={160} height={160} />
           </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight truncate">{name}</h1>
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur text-[10px] font-black uppercase tracking-wider">
+                <Sparkles className="w-3 h-3" /> {profile?.tier || "free"}
+              </span>
+            </div>
+            {username && <p className="text-sm font-semibold text-white/80">@{username}</p>}
+            <p className="flex items-center gap-1.5 text-sm text-white/75 mt-0.5">
+              <Mail className="w-3.5 h-3.5" /> {user.email}
+            </p>
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-bold">
+                <GraduationCap className="w-3.5 h-3.5" /> GATE {targetYear || "—"} · {branchLabel}
+              </span>
+              {targetRank && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-bold">
+                  <Trophy className="w-3.5 h-3.5" /> Target AIR {targetRank}
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-xs font-bold">
+                <Clock className="w-3.5 h-3.5" /> {dailyHours || 0}h / day
+              </span>
+            </div>
+          </div>
+
           <button
             onClick={handleSignOut}
             disabled={signingOut}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-[var(--text-secondary)] hover:text-rose-500 hover:bg-rose-500/10 transition-colors disabled:opacity-50"
+            className="self-start sm:self-center flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold bg-white/15 hover:bg-white/25 backdrop-blur transition-colors disabled:opacity-50"
           >
             {signingOut ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <LogOut className="w-3.5 h-3.5" />}
             Sign Out
           </button>
+        </div>
+      </motion.div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* Avatar */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.05 }}
+          className="lg:col-span-2 lg:self-start card-glass rounded-3xl p-6"
+        >
+          <SectionHeader icon={Palette} title="Avatar" subtitle="Pick a style and shuffle until it feels like you." tint="bg-fuchsia-500/10 text-fuchsia-500" />
+          <AvatarPicker value={avatar} onChange={setAvatar} />
         </motion.div>
 
-        <div className="card-glass rounded-2xl p-5 space-y-3">
-          <h2 className="text-sm font-black uppercase tracking-wider text-[var(--text-muted)]">Avatar</h2>
-          <AvatarPicker value={avatar} onChange={setAvatar} />
-        </div>
-
-        <div className="card-glass rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-black uppercase tracking-wider text-[var(--text-muted)]">Identity</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">Display Name</label>
-              <input
-                value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
-                maxLength={60}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                placeholder="Your name"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">Username</label>
-              <input
-                value={username}
-                onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ""))}
-                maxLength={24}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                placeholder="username"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="card-glass rounded-2xl p-5 space-y-4">
-          <h2 className="text-sm font-black uppercase tracking-wider text-[var(--text-muted)]">Exam Goals</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">Target Branch</label>
-              <CustomDropdown value={targetBranch} onChange={setTargetBranch} options={BRANCHES} className="w-full text-sm font-medium" />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">Target Year</label>
-              <input
-                type="number"
-                value={targetYear}
-                onChange={(e) => setTargetYear(e.target.value)}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">Target Rank (optional)</label>
-              <input
-                type="number"
-                value={targetRank}
-                onChange={(e) => setTargetRank(e.target.value)}
-                placeholder="e.g. 500"
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">Daily Study Hours</label>
-              <input
-                type="number"
-                step="0.5"
-                min="0"
-                value={dailyHours}
-                onChange={(e) => setDailyHours(e.target.value)}
-                className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-              />
-            </div>
-          </div>
-        </div>
-
-        {error && (
-          <div role="alert" className="flex items-center gap-2 text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
-            {error}
-          </div>
-        )}
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-xl font-bold text-sm shadow-sm transition-colors"
+        <div className="lg:col-span-3 space-y-6">
+          {/* Identity */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="card-glass rounded-3xl p-6"
           >
-            {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            Save Changes
-          </button>
-          {saved && (
-            <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-500">
-              <CheckCircle2 className="w-4 h-4" /> Saved
-            </span>
-          )}
+            <SectionHeader icon={IdCard} title="Identity" subtitle="How you show up across RENYXERA." tint="bg-indigo-500/10 text-indigo-500" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={LABEL_CLASS}>Display Name</label>
+                <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} maxLength={60} className={INPUT_CLASS} placeholder="Your name" />
+              </div>
+              <div>
+                <label className={LABEL_CLASS}>Username</label>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-[var(--text-muted)]">@</span>
+                  <input
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ""))}
+                    maxLength={24}
+                    className={`${INPUT_CLASS} pl-8`}
+                    placeholder="username"
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Exam goals */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.15 }}
+            className="card-glass rounded-3xl p-6"
+          >
+            <SectionHeader icon={Target} title="Exam Goals" subtitle="Your target for this attempt." tint="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={LABEL_CLASS}><GraduationCap className="w-3.5 h-3.5" /> Target Branch</label>
+                <CustomDropdown value={targetBranch} onChange={setTargetBranch} options={BRANCHES} className="w-full text-sm font-medium" />
+              </div>
+              <div>
+                <label className={LABEL_CLASS}><CalendarDays className="w-3.5 h-3.5" /> Target Year</label>
+                <input type="number" value={targetYear} onChange={(e) => setTargetYear(e.target.value)} className={INPUT_CLASS} />
+              </div>
+              <div>
+                <label className={LABEL_CLASS}><Trophy className="w-3.5 h-3.5" /> Target Rank (optional)</label>
+                <input type="number" value={targetRank} onChange={(e) => setTargetRank(e.target.value)} placeholder="e.g. 500" className={INPUT_CLASS} />
+              </div>
+              <div>
+                <label className={LABEL_CLASS}><Clock className="w-3.5 h-3.5" /> Daily Study Hours</label>
+                <input type="number" step="0.5" min="0" value={dailyHours} onChange={(e) => setDailyHours(e.target.value)} className={INPUT_CLASS} />
+              </div>
+            </div>
+
+            {error && (
+              <div role="alert" className="mt-5 flex items-center gap-2 text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
+                {error}
+              </div>
+            )}
+
+            <div className="mt-6 pt-5 border-t border-[var(--border-subtle)] flex items-center justify-end gap-3">
+              {saved && (
+                <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-500">
+                  <CheckCircle2 className="w-4 h-4" /> Saved
+                </span>
+              )}
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 text-white rounded-xl font-bold text-sm shadow-md shadow-indigo-500/25 transition-colors"
+              >
+                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
+                Save Changes
+              </button>
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>
