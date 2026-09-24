@@ -12,6 +12,7 @@ import { GoalSliderPanel } from "./goal-slider-panel";
 import { useToastStore } from "@/store/use-toast-store";
 import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goal-slider-store";
 import { isInsidePortalPopover } from "@/lib/utils";
+import { AccountButton } from "./account-button";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -244,6 +245,10 @@ export function Topbar() {
                    <Moon className="w-4 h-4" />
                 )}
              </button>
+
+             <div className="w-px h-5 bg-[var(--border)] mx-0.5" />
+
+             <AccountButton />
 
              <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

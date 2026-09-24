@@ -2,6 +2,7 @@ import type {Metadata} from 'next';
 import { Inter, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
 import './globals.css'; // Global styles
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
+import { AuthListener } from '@/components/system/auth-listener';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
@@ -29,6 +30,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`}>
       <body suppressHydrationWarning className="font-sans antialiased">
         <ScrollbarActivity />
+        <AuthListener />
         {children}
       </body>
     </html>
