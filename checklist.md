@@ -9,13 +9,13 @@ Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action ·
 
 ## 🔴 Pending — needs YOUR action specifically
 
-| # | Task | Why it matters |
+| # | Task | Status |
 |---|---|---|
-| 1 | **Rotate the Supabase `service_role` key** | It appeared (partially) in a screenshot sent into this chat — treat as compromised. Supabase → Project Settings → API → regenerate → update `.env.local` + Vercel env vars. *(Flagged earlier, not yet confirmed done.)* |
-| 2 | **Change Cloudflare org type** Educational → Company/Startup | RENYXERA is commercial, not an educational institution. Org settings, easy fix. |
-| 3 | **Update Google OAuth Console branding** — home/Privacy/Terms links and Authorised domain, from `renyxera.vercel.app` → `https://gate.renyxera.workers.dev` (use the real `/privacy` and `/terms` paths now that they exist) | Still points at the domain we're moving off. |
-| 4 | **Update Supabase Auth → URL Configuration** — Site URL + Redirect URLs, add `https://gate.renyxera.workers.dev` and `.../auth/callback` | Needed for OAuth/email-confirmation redirects once this is the real production URL. |
-| 5 | **Decide Vercel's fate** — disconnect its GitHub auto-deploy (keep as dormant rollback) or delete the project outright | I can't do either myself; just tell me which. |
+| ~~1~~ | ~~Rotate the Supabase `service_role` key~~ | ✅ **done** — rotated, updated in `.env.local`, Vercel, and pushed as a Cloudflare Worker secret |
+| ~~2~~ | ~~Change Cloudflare org type~~ | **Closed, not fixable and not worth it.** Confirmed via Cloudflare directly: org type is set once at signup and cannot be edited on a Self-Serve/Free account — the only way to change it is creating an entirely new account and migrating the Worker, secrets, DNS, and GitHub Actions config over. It's signup-questionnaire metadata with no legal or functional weight (Cloudflare's commercial-use permission doesn't depend on it). Leaving it as "Educational." |
+| 3 | **Google OAuth Console — Authorised domain still needs one fix** | Home/Privacy/Terms links are already correctly updated to `gate.renyxera.workers.dev`. The domain field errored because Google wants the *top private domain*, not a subdomain — `workers.dev` is itself on the Public Suffix List (like `vercel.app`), so the registrable boundary is one level deeper. **Fix: enter `renyxera.workers.dev` (no `gate.` prefix) as Authorised domain 2** — covers the subdomain automatically. |
+| ~~4~~ | ~~Update Supabase Auth → URL Configuration~~ | ✅ **done** |
+| ~~5~~ | ~~Decide Vercel's fate~~ | ✅ **decided — leave it as is**, dormant, not disconnecting or deleting |
 | ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** — first two automated runs failed on a Node version mismatch (wrangler requires Node ≥22, workflow was pinned to 20), fixed in commit `2e4411a`, third run succeeded. Confirmed live: a real Supabase error response came back from the CI-built deploy, proving the secrets correctly reached the build. |
 
 Once those 3 exist, push anything to `main` and check the **Actions** tab on GitHub — you'll see it build and deploy automatically, same as Vercel used to.
