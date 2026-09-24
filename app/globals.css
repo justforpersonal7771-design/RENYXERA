@@ -131,12 +131,15 @@
     --accent-hover: #27272a;
     --accent-foreground: #ffffff;
     
-    /* Neutral and barely-there at rest so it never competes with content; the
-       hover state below shifts toward the brand blue for a deliberate, branded
-       feel rather than a generic OS-gray thumb. */
-    --scrollbar-thumb: color-mix(in srgb, #71717a 38%, transparent);
-    --scrollbar-thumb-hover: color-mix(in srgb, var(--brand-blue) 55%, #52525b);
-    --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-blue) 35%, transparent);
+    /* Firefox only supports a flat scrollbar-color, not a gradient, so
+       --scrollbar-thumb stays a plain (branded-neutral) fallback for it.
+       WebKit/Chromium get the real premium treatment: a permanent, faint
+       brand-blue-to-violet gradient thumb (not just a hover tint) via
+       --scrollbar-thumb-gradient, so it reads as deliberately designed at a
+       glance rather than a slightly-tinted OS default. */
+    --scrollbar-thumb: color-mix(in srgb, var(--brand-blue) 40%, #71717a);
+    --scrollbar-thumb-gradient: linear-gradient(180deg, var(--brand-blue), var(--brand-violet));
+    --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-blue) 55%, transparent);
     --scrollbar-track: transparent;
 
     /* Exam specific elements */
@@ -197,9 +200,9 @@
     --accent-hover: #e4e4e7;
     --accent-foreground: #000000;
 
-    --scrollbar-thumb: color-mix(in srgb, #a1a1aa 32%, transparent);
-    --scrollbar-thumb-hover: color-mix(in srgb, var(--brand-blue) 60%, #a1a1aa);
-    --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-blue) 45%, transparent);
+    --scrollbar-thumb: color-mix(in srgb, var(--brand-blue) 45%, #a1a1aa);
+    --scrollbar-thumb-gradient: linear-gradient(180deg, var(--brand-blue), var(--brand-violet));
+    --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-blue) 65%, transparent);
     --scrollbar-track: transparent;
 
     --brand-cyan: #06c2fb;
@@ -236,16 +239,16 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Premium floating scrollbar — hairline-thin, near-invisible at rest so it
-     never competes with content, with a 1.5px transparent border (clipped to
-     padding-box) that insets the thumb slightly off the track edge for a
-     floating-pill look rather than an edge-to-edge bar. On hover it solidifies
-     and picks up a soft brand-blue glow — a deliberate branded moment instead
-     of a generic OS-gray scrollbar. Applied globally (this selector, unscoped)
-     so every scroll surface in the app gets the same feel by default; the
-     `.custom-scrollbar` class below is only for panels that need it slimmer
-     still. Same treatment, one shared definition — nothing to opt into per
-     component. */
+  /* Premium floating scrollbar — hairline-thin, with the thumb itself always
+     carrying a faint brand-blue-to-violet gradient (not just on hover) so it
+     reads as a deliberate branded element at a glance rather than a tinted
+     version of the OS default. A 2px transparent border (clipped to
+     padding-box) insets it off the track edge for a floating-pill look. On
+     hover/drag the gradient fully saturates and picks up a soft glow ring.
+     Applied globally (this selector, unscoped) so every scroll surface in
+     the app gets the same feel by default; `.custom-scrollbar` below is the
+     same treatment, just a hair slimmer for tight panels — nothing to opt
+     into per component, one definition covers the whole app. */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -256,23 +259,24 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb);
+    background-image: var(--scrollbar-thumb-gradient);
     border-radius: 9999px;
-    border: 1.5px solid transparent;
+    border: 2px solid transparent;
     background-clip: padding-box;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    opacity: 0.75;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover);
+    opacity: 1;
     background-clip: padding-box;
-    box-shadow: 0 0 0 3px var(--scrollbar-thumb-glow);
+    box-shadow: 0 0 8px 1px var(--scrollbar-thumb-glow);
   }
 
   ::-webkit-scrollbar-thumb:active {
-    background-color: var(--scrollbar-thumb-hover);
+    opacity: 1;
     background-clip: padding-box;
-    box-shadow: 0 0 0 4px var(--scrollbar-thumb-glow);
+    box-shadow: 0 0 10px 2px var(--scrollbar-thumb-glow);
   }
 
   ::-webkit-scrollbar-corner {
@@ -306,21 +310,22 @@
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: var(--scrollbar-thumb);
+    background-image: var(--scrollbar-thumb-gradient);
     border-radius: 9999px;
-    border: 1px solid transparent;
+    border: 1.5px solid transparent;
     background-clip: padding-box;
-    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    transition: opacity 0.2s ease, box-shadow 0.2s ease;
+    opacity: 0.75;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: var(--scrollbar-thumb-hover);
+    opacity: 1;
     background-clip: padding-box;
-    box-shadow: 0 0 0 3px var(--scrollbar-thumb-glow);
+    box-shadow: 0 0 6px 1px var(--scrollbar-thumb-glow);
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:active {
-    background-color: var(--scrollbar-thumb-hover);
+    opacity: 1;
     background-clip: padding-box;
-    box-shadow: 0 0 0 4px var(--scrollbar-thumb-glow);
+    box-shadow: 0 0 8px 2px var(--scrollbar-thumb-glow);
   }
 }
 

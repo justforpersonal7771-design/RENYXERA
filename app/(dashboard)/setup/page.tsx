@@ -916,12 +916,18 @@ export default function ExamSetupPage() {
               {/* Sticky toolbar: bleeds to the card's edges (negative margins cancel
                   the card's own padding) and carries its own glass background + blur +
                   shadow, matching the topbar's treatment, so it reads as a deliberate
-                  floating bar rather than bare buttons with nothing behind them. For
-                  the Custom Advanced Generator specifically, "Generate" sits right
-                  beside the dropdown instead of scrolling far below the block list. */}
+                  floating bar rather than bare buttons with nothing behind them.
+                  "Generate" now sits beside the dropdown for every deployment type, not
+                  just Custom — a fixed-width dropdown plus a flex-1 button means the
+                  button fills the rest of the row's width instead of leaving dead space
+                  next to it. The invisible spacer label above the button exists purely
+                  so its top edge lines up with the dropdown's top edge (matching the
+                  real "Deployment Type" label's height+margin exactly) — items-end then
+                  aligns both controls' bottom edges too, so the whole row reads as one
+                  deliberate unit instead of two mismatched pieces. */}
               <div className="sticky top-0 z-10 px-5 md:px-6 pt-5 md:pt-6 pb-4 mb-1 bg-[var(--surface)]/85 backdrop-blur-xl border-b border-[var(--border-subtle)] shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-end gap-3">
-                  <div className="flex-1 min-w-0 max-w-md">
+                  <div className="w-full sm:w-64 shrink-0">
                     <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">
                       Deployment Type
                     </label>
@@ -938,15 +944,18 @@ export default function ExamSetupPage() {
                       className="w-full text-sm font-medium"
                     />
                   </div>
-                  {examType === "CUSTOM_TEST" && (
+                  <div className="flex-1 min-w-0 flex flex-col">
+                    <span aria-hidden="true" className="hidden sm:block text-sm font-bold mb-2 opacity-0 select-none">·</span>
                     <motion.button
-                      whileTap={{ scale: 0.97 }}
-                      onClick={() => customBuilderRef.current?.generate()}
-                      className="shrink-0 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-bold text-sm shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer border-0"
+                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ scale: 1.005 }}
+                      onClick={() => examType === "CUSTOM_TEST" ? customBuilderRef.current?.generate() : handleGenerate()}
+                      className="w-full py-3 px-5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-bold text-sm shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer border-0"
                     >
-                      <Target className="w-4 h-4" /> Generate Custom Draft ({customTotal} total)
+                      <Target className="w-4 h-4" />
+                      {examType === "CUSTOM_TEST" ? `Generate Custom Draft (${customTotal} total)` : "Generate Blueprint"}
                     </motion.button>
-                  )}
+                  </div>
                 </div>
               </div>
 
@@ -1094,15 +1103,9 @@ export default function ExamSetupPage() {
                     </div>
                   )}
 
-                  <div className="md:col-span-2 pt-2 flex justify-center">
-                    <motion.button
-                      whileTap={{ scale: 0.97 }}
-                      onClick={handleGenerate}
-                      className="w-full sm:w-auto px-8 py-3.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-bold tracking-wide shadow-md transition-all flex items-center justify-center gap-2 group cursor-pointer border-0"
-                    >
-                      <Target className="w-5 h-5 group-hover:scale-110 transition-transform" /> Generate Blueprint
-                    </motion.button>
-                  </div>
+                  {/* "Generate Blueprint" now lives in the sticky bar above, beside
+                      the Deployment Type dropdown, for every exam type — no longer
+                      duplicated down here. */}
                 </div>
               )}
               </div>
@@ -1148,26 +1151,26 @@ export default function ExamSetupPage() {
 
                       {/* Compact tiles, same visual language as the Questions/Marks
                           cards above (tinted gradient, uppercase label, bold number)
-                          just denser — replaces four stacked bordered rows with a
-                          2x2 grid that's both more polished and noticeably shorter,
-                          which is most of what actually made this panel need its own
-                          scroll before. */}
-                      <div className="grid grid-cols-2 gap-2.5">
-                         <div className="p-3 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-xl border border-blue-500/20">
-                            <span className="text-[9px] font-bold text-blue-500 uppercase tracking-widest mb-0.5 block">Sections</span>
-                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.sections}</div>
+                          just denser — one row of four rather than stacked rows or a
+                          2x2 grid, which is both more polished and noticeably shorter,
+                          most of what actually made this panel need its own scroll
+                          before. */}
+                      <div className="grid grid-cols-4 gap-2">
+                         <div className="p-2.5 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-xl border border-blue-500/20">
+                            <span className="text-[8px] font-bold text-blue-500 uppercase tracking-wide mb-0.5 block truncate">Sections</span>
+                            <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.sections}</div>
                          </div>
-                         <div className="p-3 bg-gradient-to-br from-fuchsia-500/10 to-fuchsia-500/5 rounded-xl border border-fuchsia-500/20">
-                            <span className="text-[9px] font-bold text-fuchsia-500 uppercase tracking-widest mb-0.5 block">Subjects</span>
-                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.subjects}</div>
+                         <div className="p-2.5 bg-gradient-to-br from-fuchsia-500/10 to-fuchsia-500/5 rounded-xl border border-fuchsia-500/20">
+                            <span className="text-[8px] font-bold text-fuchsia-500 uppercase tracking-wide mb-0.5 block truncate">Subjects</span>
+                            <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.subjects}</div>
                          </div>
-                         <div className="p-3 bg-gradient-to-br from-amber-500/10 to-amber-500/5 rounded-xl border border-amber-500/20">
-                            <span className="text-[9px] font-bold text-amber-500 uppercase tracking-widest mb-0.5 block">Topics</span>
-                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.topics}</div>
+                         <div className="p-2.5 bg-gradient-to-br from-amber-500/10 to-amber-500/5 rounded-xl border border-amber-500/20">
+                            <span className="text-[8px] font-bold text-amber-500 uppercase tracking-wide mb-0.5 block truncate">Topics</span>
+                            <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.topics}</div>
                          </div>
-                         <div className="p-3 bg-gradient-to-br from-teal-500/10 to-teal-500/5 rounded-xl border border-teal-500/20">
-                            <span className="text-[9px] font-bold text-teal-500 uppercase tracking-widest mb-0.5 block">Duration</span>
-                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.estimatedMinutes}<span className="text-xs font-bold text-[var(--text-muted)] ml-0.5">min</span></div>
+                         <div className="p-2.5 bg-gradient-to-br from-teal-500/10 to-teal-500/5 rounded-xl border border-teal-500/20">
+                            <span className="text-[8px] font-bold text-teal-500 uppercase tracking-wide mb-0.5 block truncate">Duration</span>
+                            <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight truncate">{draftStats.estimatedMinutes}<span className="text-[10px] font-bold text-[var(--text-muted)] ml-0.5">min</span></div>
                          </div>
                       </div>
 
