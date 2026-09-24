@@ -99,6 +99,11 @@ export function CustomDropdown({ options, value, onChange, placeholder = "Select
           {isOpen && rect && (
             <motion.ul
               ref={listRef}
+              // See isInsidePortalPopover in lib/utils.ts — lets an ancestor panel's own
+              // outside-click handler recognize clicks in here as "still inside" even
+              // though this list is portaled to document.body, not a DOM descendant of
+              // that panel.
+              data-portal-popover="true"
               initial={{ opacity: 0, y: rect.openUp ? 6 : -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: rect.openUp ? 6 : -6 }}

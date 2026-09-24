@@ -11,6 +11,7 @@ import { TodoQuickPanel } from "./todo-quick-panel";
 import { GoalSliderPanel } from "./goal-slider-panel";
 import { useToastStore } from "@/store/use-toast-store";
 import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goal-slider-store";
+import { isInsidePortalPopover } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -49,6 +50,7 @@ export function Topbar() {
   useEffect(() => {
     if (!isCalendarOpen) return;
     const handleClickOutside = (event: MouseEvent) => {
+      if (isInsidePortalPopover(event.target)) return;
       if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
         setIsCalendarOpen(false);
       }
@@ -60,6 +62,7 @@ export function Topbar() {
   useEffect(() => {
     if (!isTodoOpen) return;
     const handleClickOutside = (event: MouseEvent) => {
+      if (isInsidePortalPopover(event.target)) return;
       if (todoRef.current && !todoRef.current.contains(event.target as Node)) {
         setIsTodoOpen(false);
       }

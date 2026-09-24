@@ -133,6 +133,12 @@ export function DatePicker({
           {isOpen && rect && (
             <motion.div
               ref={popRef}
+              // Lets ancestor panels' own outside-click handlers recognize this portaled
+              // popup as "still inside" even though it's not a DOM descendant of them
+              // (it's rendered directly under document.body) — see isInsidePortalPopover
+              // in lib/utils.ts for why this exists. Without it, clicking the month nav
+              // arrows here closed the enclosing calendar quick-panel entirely.
+              data-portal-popover="true"
               initial={{ opacity: 0, y: rect.openUp ? 6 : -6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: rect.openUp ? 6 : -6 }}

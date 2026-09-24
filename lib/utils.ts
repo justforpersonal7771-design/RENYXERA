@@ -5,6 +5,24 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/**
+ * The attribute every portal-rendered popover (DatePicker, CustomDropdown — anything
+ * using `createPortal(..., document.body)`) sets on its own root node. A portaled popup
+ * is not a DOM descendant of whatever container it's logically nested inside (it's
+ * appended directly under `document.body`), so a naive `containerRef.current.contains
+ * (event.target)` "close on outside click" check on an ANCESTOR panel treats a click
+ * inside the portaled popup as "outside" and closes the ancestor too — this is exactly
+ * what caused the calendar quick-panel to close when clicking the date picker's month
+ * navigation arrows. Any outside-click handler that might have a portaled popover
+ * nested inside what it's watching should check `isInsidePortalPopover(event.target)`
+ * first and bail out if true.
+ */
+export const PORTAL_POPOVER_ATTR = "data-portal-popover";
+
+export function isInsidePortalPopover(target: EventTarget | null): boolean {
+  return target instanceof Element && target.closest(`[${PORTAL_POPOVER_ATTR}]`) !== null;
+}
+
 /** Default GATE 2027 exam date (first day of the exam window per the official
  * GATE 2027 schedule) used as the countdown fallback until the user overrides it. */
 export const GATE_2027_EXAM_DATE = "2027-02-13";
