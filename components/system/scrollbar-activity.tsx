@@ -2,44 +2,63 @@
 
 import { useEffect } from "react";
 
+const REVEAL_ATTR = "data-scrollbar-reveal";
+const HIDE_DELAY_MS = 900;
+
 /**
- * Makes the app's hide-until-hover scrollbars (app/globals.css) also reveal
- * themselves during an actual scroll gesture — trackpad, mouse wheel, or a drag on the
- * thumb itself — not just while the pointer happens to be hovering the scrollable area.
- * Without this, scrolling with a mouse wheel from outside the scrollable region (a very
- * common way to scroll) would leave the bar invisible the whole time, no indication
- * where you are in the content.
+ * Drives the app's hide-until-active scrollbars (app/globals.css) entirely from JS,
+ * setting a single `data-scrollbar-reveal` attribute rather than relying on CSS
+ * `:hover` on the WebKit scrollbar pseudo-elements. That combination proved unreliable
+ * in the field (confirmed live: scrollbars kept showing fully visible at rest despite
+ * `opacity: 0` + `:hover` rules that passed automated headless-browser testing) — moving
+ * the whole show/hide decision into one JS listener, checked directly against real
+ * pointer/scroll activity, removes that ambiguity rather than debugging it further.
  *
- * A single document-level listener with `capture: true` catches the `scroll` event on
- * every scrollable element in the app (native `scroll` doesn't bubble, so this has to
- * use the capture phase rather than a normal bubble-phase listener) — one mount here
- * covers every one of the 24+ `.custom-scrollbar` usages and the page-level scroll,
- * rather than needing each of them wired up individually. Mounted once, in the root
- * layout, for the whole app.
+ * Reveals on either signal, on whichever scrollable element it happens on:
+ *  - an actual scroll gesture (wheel, trackpad, thumb drag)
+ *  - the pointer moving over the scrollable area (not just sitting still over it)
+ * and hides again ~900ms after the last of either. A single pair of document-level,
+ * capture-phase listeners covers every `.custom-scrollbar` usage in the app (`scroll`
+ * doesn't bubble, so capture is required to catch it on the actual scrolling element;
+ * `mousemove` is delegated the same way for one shared implementation) — nothing to
+ * wire up per component. Mounted once in the root layout.
  */
 export function ScrollbarActivity() {
   useEffect(() => {
-    const timers = new WeakMap<EventTarget, ReturnType<typeof setTimeout>>();
+    const timers = new WeakMap<Element, ReturnType<typeof setTimeout>>();
 
-    const handleScroll = (event: Event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) return;
-
-      target.setAttribute("data-scrolling", "true");
-
+    const reveal = (target: Element) => {
+      target.setAttribute(REVEAL_ATTR, "true");
       const existing = timers.get(target);
       if (existing) clearTimeout(existing);
-
       const timer = setTimeout(() => {
-        target.removeAttribute("data-scrolling");
+        target.removeAttribute(REVEAL_ATTR);
         timers.delete(target);
-      }, 900);
-
+      }, HIDE_DELAY_MS);
       timers.set(target, timer);
     };
 
+    const handleScroll = (event: Event) => {
+      if (event.target instanceof Element) reveal(event.target);
+    };
+
+    // mousemove doesn't need capture to find the scrollable element itself — it fires
+    // directly on whatever's under the cursor — but a scrollable container's own
+    // children (cards, buttons inside it) are what's actually under the pointer most of
+    // the time, so walk up to the nearest `.custom-scrollbar` ancestor.
+    const handleMouseMove = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const scrollable = target.closest(".custom-scrollbar");
+      if (scrollable) reveal(scrollable);
+    };
+
     document.addEventListener("scroll", handleScroll, { capture: true, passive: true });
-    return () => document.removeEventListener("scroll", handleScroll, true);
+    document.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      document.removeEventListener("scroll", handleScroll, true);
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return null;

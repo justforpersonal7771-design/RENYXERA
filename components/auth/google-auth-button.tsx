@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -35,6 +35,21 @@ export function GoogleAuthButton({
   onError?: (message: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
+
+  // If the browser navigated to Google and the user comes back via the back button
+  // (rather than completing sign-in), Chrome/Firefox often restore this page from
+  // bfcache instead of reloading it — resurrecting whatever React state was frozen
+  // at the moment of navigating away, including the `loading: true` set right before
+  // the redirect. Nothing else ever resets it after that, so the button is stuck
+  // spinning forever. `pageshow`'s `persisted` flag is the standard signal for "this
+  // page came back from bfcache, not a fresh load" — reset loading when it fires.
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) setLoading(false);
+    };
+    window.addEventListener("pageshow", handlePageShow);
+    return () => window.removeEventListener("pageshow", handlePageShow);
+  }, []);
 
   async function handleClick() {
     setLoading(true);

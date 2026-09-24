@@ -272,10 +272,10 @@ export default function MistakesPage() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col md:flex-row gap-4 p-2 relative overflow-hidden">
+      <div className="w-full h-full flex flex-col md:flex-row gap-4 relative overflow-hidden">
 
         {/* Sidebar merged into a single card */}
-        <div className={`flex flex-col card-glass rounded-xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
+        <div className={`flex flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           <div className="p-4 space-y-3 flex flex-col shrink-0 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/10">
             <div className="flex justify-between items-center">
               <h2 className="font-extrabold text-lg text-[var(--text-primary)]">Mistakes Bank</h2>
@@ -402,7 +402,7 @@ export default function MistakesPage() {
         </button>
 
         {/* Main Content Area */}
-        <div className="flex-1 card-glass rounded-xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
+        <div className="flex-1 card-glass rounded-2xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
           {activeMistake && question && activeEntry ? (
             <>
               {/* Header bar */}

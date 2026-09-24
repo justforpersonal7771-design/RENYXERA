@@ -254,30 +254,39 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Premium floating scrollbar — hairline-thin, brand-gradient thumb,
-     genuinely hidden until you hover the scrollable area (not just faint —
-     fully transparent at rest), and with the browser's native up/down arrow
-     buttons explicitly killed (Chrome/Edge render those on their own unless
-     told not to, regardless of how the thumb/track are styled — that's what
-     was showing through before). `:hover::-webkit-scrollbar-thumb` targets
-     "whatever scrollable element is currently being hovered," which is the
-     standard trick for a reveal-on-hover scrollbar; hovering the thumb
-     itself goes one step further (solid + glow) so it's obvious it's
-     grabbable. Applied globally (unscoped) so every scroll surface gets this
-     by default; `.custom-scrollbar` below is the same treatment, just a
-     hair slimmer for tight panels — nothing to opt into per component.
-     Firefox has no equivalent hide-until-hover mechanism for scrollbar-width,
-     so it keeps its always-visible thin bar — an unavoidable, minor
-     cross-browser gap, not something CSS can close. */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
+  /* ============================================================
+     PREMIUM AUTO-HIDE SCROLLBAR — v2, rebuilt for reliability
+     ============================================================
+     v1 hid the thumb via `opacity: 0` + CSS `:hover`. That tested correctly
+     in automated headless-browser checks but was confirmed live (real
+     screenshots) to NOT actually stay hidden — the exact cause wasn't
+     pinned down remotely, so rather than keep debugging a technique that
+     demonstrably isn't reliable in the field, this rebuilds on a
+     structurally stronger mechanism:
 
-  /* Some Chromium/Windows combinations keep rendering the native up/down
-     buttons even with a bare `display: none` unless every specific
-     pseudo-class variant (start/end/increment/decrement) is covered — this
-     belt-and-braces version is what actually suppresses them reliably. */
+     WIDTH is the primary hide/reveal control, not opacity. At rest the
+     scrollbar is `width: 0` / `height: 0` — there is no track, no thumb, no
+     button, NOTHING for the browser to paint, so no rendering edge case can
+     make anything appear. On reveal it grows to a real width. This also
+     directly delivers the requested "expand/bump" effect for free — growing
+     from 0 is itself the pop-in animation, not a separate effect layered on
+     top.
+
+     Visibility is driven ENTIRELY by JS (components/system/scrollbar-
+     activity.tsx sets `data-scrollbar-reveal="true"` on the scrollable
+     element itself, on real scroll or pointer-move activity, clearing it
+     ~900ms after the last of either) — CSS `:hover` is kept only as a
+     harmless redundant fallback, never the primary mechanism this time.
+
+     Native up/down arrow buttons: killed for every pseudo-class variant
+     Chromium/Windows is known to still render them under, same as before —
+     kept as-is, this part was already correct; the visibility bug was
+     entirely about the thumb never truly disappearing.
+
+     Firefox has no equivalent (scrollbar-width/scrollbar-color have no
+     hide-until-active mode) — it keeps its own always-visible thin bar,
+     an unavoidable, minor cross-browser gap CSS can't close. */
+
   ::-webkit-scrollbar-button,
   ::-webkit-scrollbar-button:start,
   ::-webkit-scrollbar-button:end,
@@ -294,42 +303,10 @@
     background: transparent;
   }
 
-  /* Shown only while actively scrolling (data-scrolling, set by
-     components/system/scrollbar-activity.tsx via a document-level scroll
-     listener) or while hovering the scrollable area (:hover below) — never
-     just sitting there. This is what makes it a true auto-hiding scrollbar
-     rather than merely a faint one. */
   ::-webkit-scrollbar-thumb {
     background-image: var(--scrollbar-thumb-gradient);
     border-radius: 9999px;
-    border: 2px solid transparent;
     background-clip: padding-box;
-    opacity: 0;
-    transition: opacity 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  :hover::-webkit-scrollbar-thumb {
-    opacity: 0.7;
-  }
-
-  /* The scroll-triggered reveal — set by ScrollbarActivity's document-level
-     scroll listener, independent of and in addition to :hover above, so it
-     shows during an actual scroll gesture (trackpad, wheel, drag) even when
-     the pointer isn't hovering the scrollable area at all. */
-  [data-scrolling="true"]::-webkit-scrollbar-thumb {
-    opacity: 0.85;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    opacity: 1;
-    background-clip: padding-box;
-    box-shadow: 0 0 8px 1px var(--scrollbar-thumb-glow);
-  }
-
-  ::-webkit-scrollbar-thumb:active {
-    opacity: 1;
-    background-clip: padding-box;
-    box-shadow: 0 0 10px 2px var(--scrollbar-thumb-glow);
   }
 
   ::-webkit-scrollbar-corner {
@@ -345,54 +322,38 @@
      transition: filter 0.3s ease;
   }
 
-  /* Scoped scrollbar for inner panels (sidebars, chat logs, code blocks,
-     scrollable cards) — the same premium hairline treatment as the global one
-     above, just a hair slimmer so it disappears into tight columns. This is
-     the class actually applied across the app (setup, exam session, AI
-     Mentor, revision, etc.) — update it here once and every one of those
-     surfaces picks it up automatically. */
+  /* The one class actually applied across the app (setup, exam session, AI
+     Mentor, revision, <main> itself, 24+ usages) — every scroll surface in
+     the app goes through here, one definition covers all of them. */
   .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: none; /* Firefox: no hide-until-active mode exists, so
+                               fully hiding is closer to the "premium,
+                               unobtrusive" intent than an always-on bar —
+                               this is the one browser where the requested
+                               behavior genuinely can't be matched exactly. */
   }
+
   .custom-scrollbar::-webkit-scrollbar {
-    height: 5px;
-    width: 5px;
+    width: 0px;
+    height: 0px;
+    transition: width 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                height 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
-  .custom-scrollbar::-webkit-scrollbar-button,
-  .custom-scrollbar::-webkit-scrollbar-button:start,
-  .custom-scrollbar::-webkit-scrollbar-button:end,
-  .custom-scrollbar::-webkit-scrollbar-button:vertical:start,
-  .custom-scrollbar::-webkit-scrollbar-button:vertical:end,
-  .custom-scrollbar::-webkit-scrollbar-button:horizontal:start,
-  .custom-scrollbar::-webkit-scrollbar-button:horizontal:end {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
+
+  .custom-scrollbar[data-scrollbar-reveal="true"]::-webkit-scrollbar,
+  .custom-scrollbar:hover::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
   }
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-image: var(--scrollbar-thumb-gradient);
-    border-radius: 9999px;
-    border: 1.5px solid transparent;
-    background-clip: padding-box;
-    opacity: 0;
-    transition: opacity 0.2s ease, box-shadow 0.2s ease;
-  }
-  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
-    opacity: 0.7;
-  }
+
+  /* The "bump": grows a little further and picks up a glow the instant the
+     pointer is actually over the thumb (not just the scrollable area) or
+     it's being dragged — confirms it's grabbable. */
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    opacity: 1;
-    background-clip: padding-box;
-    box-shadow: 0 0 6px 1px var(--scrollbar-thumb-glow);
+    box-shadow: 0 0 8px 1px var(--scrollbar-thumb-glow);
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:active {
-    opacity: 1;
-    background-clip: padding-box;
-    box-shadow: 0 0 8px 2px var(--scrollbar-thumb-glow);
+    box-shadow: 0 0 10px 2px var(--scrollbar-thumb-glow);
   }
 }
 

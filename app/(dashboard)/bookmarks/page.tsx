@@ -225,9 +225,9 @@ export default function BookmarksPage() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col md:flex-row gap-4 p-2 relative overflow-hidden">
+      <div className="w-full h-full flex flex-col md:flex-row gap-4 relative overflow-hidden">
         {/* Sidebar merged into a single continuous card */}
-        <div className={`flex flex-col card-glass rounded-xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
+        <div className={`flex flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           
           {/* Header Title & Filter controls in same container */}
           <div className="p-4 shadow-sm space-y-3 shrink-0 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/10">
@@ -399,7 +399,7 @@ export default function BookmarksPage() {
         </button>
         
         {/* Main Content Area */}
-        <div className="flex-1 card-glass rounded-xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
+        <div className="flex-1 card-glass rounded-2xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
           {activeBookmark && question && activeEntry ? (
             <>
               <div className="p-4 md:p-6 border-b border-[var(--border-subtle)] flex flex-wrap justify-between items-center bg-[var(--surface-secondary)] dark:bg-[var(--surface-secondary)] gap-4">

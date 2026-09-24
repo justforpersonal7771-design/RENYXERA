@@ -79,22 +79,35 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter relative">
       <LaunchIntro />
-      {/* Topbar is fixed (not sticky-in-flow), so page content genuinely scrolls
-          underneath it — required for its glass/blur effect to actually reveal
-          anything, instead of always sitting over a static, empty strip. */}
+      {/* Topbar is fixed (not sticky-in-flow); the ambient body gradient
+          (background-attachment: fixed, unaffected by scroll position) still
+          shows through its glass/blur regardless of how the content below is
+          structured. */}
       <Topbar />
-      <main
-        className="relative z-10 w-full h-full overflow-y-auto pt-20 sm:pt-24 md:pt-28 px-4 sm:px-6 md:px-8 pb-4 sm:pb-6 md:pb-8 custom-scrollbar"
-      >
-        <motion.div
-          key={pathname}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-          className="h-full"
-        >
-          {children}
-        </motion.div>
+      {/* <main> itself no longer owns the scroll — it's a full-height,
+          non-scrolling passthrough. The actual scrolling element is the inner
+          div below, explicitly positioned to start exactly at the topbar's
+          own height (top-16 = 64px, matching header.h-16 in topbar.tsx) and
+          run to the bottom. That's a structural fix, not a cosmetic one: the
+          native scrollbar a browser renders is always sized to match the
+          scrolling element's own box — as long as that box spanned the full
+          viewport height (the previous h-full + pt-* padding approach), the
+          scrollbar necessarily extended up behind the fixed topbar too, no
+          matter how the thumb itself was styled. Starting the box below the
+          topbar is the only way to keep the scrollbar from ever reaching that
+          region. */}
+      <main className="relative z-10 w-full h-full overflow-hidden">
+        <div className="absolute inset-x-0 bottom-0 top-16 overflow-y-auto custom-scrollbar px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8">
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="h-full"
+          >
+            {children}
+          </motion.div>
+        </div>
       </main>
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
