@@ -6,7 +6,8 @@
 **Date:** 24 September 2026
 **Owner:** Lead Technical Architect & Product Owner
 **Repository:** `D:\0-UI\r2ma-stable`
-**Current production:** https://renyxera.vercel.app/ → **migrating to Cloudflare (P0)**
+**Current production (Vercel, pending decommission):** https://renyxera.vercel.app/
+**Live on Cloudflare (verified, Module 4A complete):** https://gate.renyxera.workers.dev — see `checklist.md` for what's still pending on the account-owner side before Vercel is fully retired.
 **Supersedes:** v1.0 (23 Sep 2026)
 **Source documents folded in:** `GATE_OS_Deployment_and_Monetization_Plan.md`, `GATE_OS_Growth_Security_Marketing_Plan.md`, `GATE_OS_Release_4_and_Future_Releases_Master_Prompt.md`, `BUGS.md`
 
@@ -134,7 +135,7 @@ Cloudflare's own current docs (fetched 24 Sep 2026) name **vinext** as the new o
 | Database | **Supabase Postgres** | 500 MB DB, ~5 GB egress | ₹0 |
 | Row security | Supabase RLS | included | ₹0 |
 | Auth — Google / Email | **Supabase Auth** | ~50k MAU | ₹0 |
-| Auth — Mobile OTP | **Firebase Auth** (SMS), bridged into Supabase | ~10k verifications/mo *(verify — see 2.4)* | ₹0 |
+| Auth — Mobile OTP | **Firebase Auth** (SMS), bridged into Supabase | **10 SMS/day without billing** — see 2.4 | ₹0 |
 | Server-side evaluation | **Supabase Edge Functions** or **Cloudflare Workers** | within above | ₹0 |
 | Rate limiting | **Upstash Redis** | ~10k commands/day | ₹0 |
 | Bot / abuse gate | **Cloudflare Turnstile** | unlimited | ₹0 |
@@ -176,7 +177,7 @@ Three storage options exist and only one is correct. Getting this wrong silently
 | Supabase idle pause (~1 wk) | Pre-launch only | Project sleeps | Free scheduled Worker ping; irrelevant once daily traffic exists |
 | Upstash 10k cmd/day | ~2,000 AI calls/day | Limiter degrades | Postgres counter fallback + per-user daily AI quota (wanted regardless) |
 | Gemini free-tier RPM | Concurrent AI spikes | 429s | Prompt-hash caching (`STORE_AI_RESPONSES` exists); queue; heavy AI becomes a paid tier |
-| **Firebase SMS quota** | ~10k OTPs/mo | OTP login fails | **Verify current India quota and pricing before building — Google has repriced phone auth.** Fallbacks: make OTP one of three auth paths (Google OAuth absorbs load), route overflow to email OTP at ₹0, or MSG91 free-tier trial. Never make SMS the *only* door. |
+| **Firebase SMS quota** | **10/day — verified live in the actual Firebase console (24 Sep 2026), not the ~10k/mo originally assumed.** Enabling Phone auth on a fresh project shows: *"To prevent abuse, new projects currently have a sent SMS daily quota of 10/day. To increase this quota, please add a billing account to the project."* | OTP unusable beyond a trickle of test signups | 10/day covers development and a soft launch only. Raising it needs a **Blaze (pay-as-you-go) billing account attached** — a real step (valid payment method on file), though Firebase's free allowances still apply under Blaze so it doesn't necessarily mean being charged. Google + Email already work without this, so it's not blocking today; attach billing before Mobile OTP is promoted to real users at any volume. Three auth doors (§4C) mean this was never the only path regardless. |
 | R2 10 GB | Multi-branch full corpus | Uploads fail | Aggressive WebP/AVIF compression at ingest; the vision pipeline (8B) crops diagrams rather than storing full pages |
 | Cloudflare Workers 100k req/day | ~10k+ graded submissions/day | Throttle | Batch grading; static content served by Pages, not Workers |
 | Resend 3,000 mail/mo | ~3,000 signups/mo | Verification stops | Supabase SMTP; batch non-critical mail |

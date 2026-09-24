@@ -8,7 +8,13 @@
   // account-level step outside what this session can do.
   "$schema": "node_modules/wrangler/config-schema.json",
   "main": ".open-next/worker.js",
-  "name": "renyxera",
+  // Worker name — this is the FIRST segment of the workers.dev URL: <name>.<account
+  // subdomain>.workers.dev. The account's workers.dev subdomain ("renyxera") is a
+  // one-time, permanent registration (confirmed against Cloudflare's API — it rejects
+  // any attempt to change it once set), so "gate" here is the only lever left to avoid
+  // gate.renyxera.workers.dev's alternative, renyxera.renyxera.workers.dev, repeating
+  // the name twice.
+  "name": "gate",
   "compatibility_date": "2026-09-24",
   "compatibility_flags": [
     // Required: without this, none of the Node.js built-ins our API routes rely on
@@ -26,7 +32,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "renyxera"
+      "service": "gate"
     }
   ],
   "observability": {
