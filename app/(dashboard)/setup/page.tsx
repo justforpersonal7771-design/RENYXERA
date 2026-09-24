@@ -8,7 +8,7 @@ import { useExamStore } from "@/store/use-exam-store";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { ExamType, TestConfig, ExamSessionDraft } from "@/types/exam.types";
-import { CustomTestBuilder } from "@/components/exam/custom-test-builder";
+import { CustomTestBuilder, CustomTestBuilderHandle } from "@/components/exam/custom-test-builder";
 import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, ChevronDown, ChevronUp, ChevronRight, Search, X } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
@@ -31,6 +31,8 @@ export default function ExamSetupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const deepLinkAppliedRef = useRef(false);
+  const customBuilderRef = useRef<CustomTestBuilderHandle>(null);
+  const [customTotal, setCustomTotal] = useState(0);
   const { isInitialized, totalQuestions } = useDataStore();
   const { createDraft, currentDraft } = useExamStore();
   const { targetPercent: goalTargetPercent, load: loadGoalSlider } = useGoalSliderStore();
@@ -479,18 +481,18 @@ export default function ExamSetupPage() {
   return (
     <MathJaxContext config={mathJaxConfig}>
     <div className="w-full h-full flex justify-center">
-      <div className="w-full h-full min-h-0 flex flex-col gap-4">
+      <div className="w-full h-full min-h-0 flex flex-col gap-3">
 
         <motion.div
           initial={{ opacity: 0, y: 72 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-          className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[var(--border)] pb-3"
+          className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-2.5"
         >
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl">
-               <Settings className="w-6 h-6" />
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl">
+               <Settings className="w-5 h-5" />
             </div>
             <div>
                <h1 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight">Configuration Engine</h1>
@@ -908,30 +910,51 @@ export default function ExamSetupPage() {
           </div>
         ) : (
           <div className="w-full flex-1 min-h-0 flex flex-col lg:flex-row gap-5">
-            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar card-glass rounded-2xl shadow-sm p-5 md:p-6">
+            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar card-glass rounded-2xl shadow-sm relative">
              <div>
               <div className="flex-1 min-w-0">
-              <div className="mb-5 max-w-md">
-                <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">
-                  Deployment Type
-                </label>
-                <CustomDropdown
-                  value={examType}
-                  onChange={(val) => setExamType(val as ExamType)}
-                  options={[
-                    { label: "Official Year Paper", value: "YEAR_PAPER" },
-                    { label: "Section Sprint", value: "SECTION_TEST" },
-                    { label: "Subject Mastery", value: "SUBJECT_TEST" },
-                    { label: "Topic Spotlight", value: "TOPIC_TEST" },
-                    { label: "Custom Advanced Generator", value: "CUSTOM_TEST" }
-                  ]}
-                  className="w-full text-sm font-medium"
-                />
+              {/* Sticky toolbar: bleeds to the card's edges (negative margins cancel
+                  the card's own padding) and carries its own glass background + blur +
+                  shadow, matching the topbar's treatment, so it reads as a deliberate
+                  floating bar rather than bare buttons with nothing behind them. For
+                  the Custom Advanced Generator specifically, "Generate" sits right
+                  beside the dropdown instead of scrolling far below the block list. */}
+              <div className="sticky top-0 z-10 px-5 md:px-6 pt-5 md:pt-6 pb-4 mb-1 bg-[var(--surface)]/85 backdrop-blur-xl border-b border-[var(--border-subtle)] shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-end gap-3">
+                  <div className="flex-1 min-w-0 max-w-md">
+                    <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">
+                      Deployment Type
+                    </label>
+                    <CustomDropdown
+                      value={examType}
+                      onChange={(val) => setExamType(val as ExamType)}
+                      options={[
+                        { label: "Official Year Paper", value: "YEAR_PAPER" },
+                        { label: "Section Sprint", value: "SECTION_TEST" },
+                        { label: "Subject Mastery", value: "SUBJECT_TEST" },
+                        { label: "Topic Spotlight", value: "TOPIC_TEST" },
+                        { label: "Custom Advanced Generator", value: "CUSTOM_TEST" }
+                      ]}
+                      className="w-full text-sm font-medium"
+                    />
+                  </div>
+                  {examType === "CUSTOM_TEST" && (
+                    <motion.button
+                      whileTap={{ scale: 0.97 }}
+                      onClick={() => customBuilderRef.current?.generate()}
+                      className="shrink-0 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-bold text-sm shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer border-0"
+                    >
+                      <Target className="w-4 h-4" /> Generate Custom Draft ({customTotal} total)
+                    </motion.button>
+                  )}
+                </div>
               </div>
 
               {examType === "CUSTOM_TEST" ? (
-                <div className="mt-5 pt-5 border-t border-[var(--border-subtle)]">
+                <div className="px-5 md:px-6 pb-5 md:pb-6 pt-4">
                    <CustomTestBuilder
+                      ref={customBuilderRef}
+                      onTotalChange={setCustomTotal}
                       focusTopics={isGoalSliderActive ? Array.from(goalRecommendedTopics) : undefined}
                       onGenerate={(config) => {
                         const start = performance.now();
@@ -949,7 +972,7 @@ export default function ExamSetupPage() {
                    />
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start px-5 md:px-6 pb-5 md:pb-6 pt-4">
 
                   {examType === "YEAR_PAPER" && (
                     <div>
@@ -1092,7 +1115,7 @@ export default function ExamSetupPage() {
                  layout
                  className={`card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col lg:h-full`}
                >
-                  <div className="flex items-center gap-3 p-5 pb-3 shrink-0">
+                  <div className="flex items-center gap-3 p-4 pb-2.5 shrink-0">
                     <div className={`p-2 rounded-lg ${currentDraft ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-[var(--surface-secondary)] text-[var(--text-muted)]'}`}>
                        <FileText className="w-5 h-5" />
                     </div>
@@ -1110,7 +1133,7 @@ export default function ExamSetupPage() {
                       transition={{ duration: 0.25 }}
                       className="flex-1 min-h-0 flex flex-col"
                     >
-                      <div className="flex-1 min-h-0 px-5 space-y-4 overflow-y-auto custom-scrollbar pb-2">
+                      <div className="flex-1 min-h-0 px-5 space-y-3 overflow-y-auto custom-scrollbar pb-2">
 
                       <div className="grid grid-cols-2 gap-3">
                          <div className="p-4 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-2xl border border-indigo-500/20">
@@ -1123,22 +1146,28 @@ export default function ExamSetupPage() {
                          </div>
                       </div>
 
-                      <div className="space-y-3">
-                         <div className="flex justify-between items-center text-sm border-b border-[var(--border-subtle)] pb-2">
-                           <span className="font-medium text-[var(--text-secondary)]">Sections</span>
-                           <span className="font-bold text-[var(--text-primary)]">{draftStats.sections}</span>
+                      {/* Compact tiles, same visual language as the Questions/Marks
+                          cards above (tinted gradient, uppercase label, bold number)
+                          just denser — replaces four stacked bordered rows with a
+                          2x2 grid that's both more polished and noticeably shorter,
+                          which is most of what actually made this panel need its own
+                          scroll before. */}
+                      <div className="grid grid-cols-2 gap-2.5">
+                         <div className="p-3 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-xl border border-blue-500/20">
+                            <span className="text-[9px] font-bold text-blue-500 uppercase tracking-widest mb-0.5 block">Sections</span>
+                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.sections}</div>
                          </div>
-                         <div className="flex justify-between items-center text-sm border-b border-[var(--border-subtle)] pb-2">
-                           <span className="font-medium text-[var(--text-secondary)]">Subjects</span>
-                           <span className="font-bold text-[var(--text-primary)]">{draftStats.subjects}</span>
+                         <div className="p-3 bg-gradient-to-br from-fuchsia-500/10 to-fuchsia-500/5 rounded-xl border border-fuchsia-500/20">
+                            <span className="text-[9px] font-bold text-fuchsia-500 uppercase tracking-widest mb-0.5 block">Subjects</span>
+                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.subjects}</div>
                          </div>
-                         <div className="flex justify-between items-center text-sm border-b border-[var(--border-subtle)] pb-2">
-                           <span className="font-medium text-[var(--text-secondary)]">Topics</span>
-                           <span className="font-bold text-[var(--text-primary)]">{draftStats.topics}</span>
+                         <div className="p-3 bg-gradient-to-br from-amber-500/10 to-amber-500/5 rounded-xl border border-amber-500/20">
+                            <span className="text-[9px] font-bold text-amber-500 uppercase tracking-widest mb-0.5 block">Topics</span>
+                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.topics}</div>
                          </div>
-                         <div className="flex justify-between items-center text-sm pt-1">
-                           <span className="font-medium text-[var(--text-secondary)]">Est. Duration</span>
-                           <span className="font-bold text-[var(--text-primary)]">{draftStats.estimatedMinutes} mins</span>
+                         <div className="p-3 bg-gradient-to-br from-teal-500/10 to-teal-500/5 rounded-xl border border-teal-500/20">
+                            <span className="text-[9px] font-bold text-teal-500 uppercase tracking-widest mb-0.5 block">Duration</span>
+                            <div className="text-lg font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.estimatedMinutes}<span className="text-xs font-bold text-[var(--text-muted)] ml-0.5">min</span></div>
                          </div>
                       </div>
 
@@ -1179,7 +1208,7 @@ export default function ExamSetupPage() {
                       </div>
                       </div>
 
-                      <div className="p-6 pt-4 shrink-0">
+                      <div className="p-5 pt-3 shrink-0">
                       <motion.button
                         whileTap={{ scale: 0.97 }}
                         onClick={async () => {
