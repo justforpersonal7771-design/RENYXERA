@@ -1,0 +1,42 @@
+name: Deploy to Cloudflare
+
+# Matches what Vercel's GitHub integration did automatically: every push to
+# main rebuilds and redeploys the live site, with no manual step.
+on:
+  push:
+    branches: [main]
+  # Lets you trigger a redeploy by hand from the Actions tab without a new
+  # commit — useful right after rotating a secret, for example.
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Runs the same `opennextjs-cloudflare build && opennextjs-cloudflare deploy`
+      # pipeline already proven working from local manual deploys — nothing new
+      # to debug here, just automated.
+      #
+      # NEXT_PUBLIC_* vars must be present at BUILD time (Next.js inlines them
+      # into the client bundle) — there's no .env.local in a fresh CI checkout,
+      # so these have to come from repo secrets. GEMINI_API_KEY and
+      # SUPABASE_SERVICE_ROLE_KEY are deliberately NOT listed here: those are
+      # already set as Cloudflare Worker secrets directly (`wrangler secret
+      # put`), which persist across deploys independent of the build — redeclaring
+      # them here would do nothing (wrangler deploy doesn't touch existing
+      # Worker secrets unless you explicitly set new ones).
+      - run: npm run deploy:cf
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 6005189c8ffd675eb8f06813a8efbc9a
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}

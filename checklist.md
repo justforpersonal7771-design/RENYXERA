@@ -16,6 +16,19 @@ Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action ·
 | 3 | **Update Google OAuth Console branding** — home/Privacy/Terms links and Authorised domain, from `renyxera.vercel.app` → `https://gate.renyxera.workers.dev` (use the real `/privacy` and `/terms` paths now that they exist) | Still points at the domain we're moving off. |
 | 4 | **Update Supabase Auth → URL Configuration** — Site URL + Redirect URLs, add `https://gate.renyxera.workers.dev` and `.../auth/callback` | Needed for OAuth/email-confirmation redirects once this is the real production URL. |
 | 5 | **Decide Vercel's fate** — disconnect its GitHub auto-deploy (keep as dormant rollback) or delete the project outright | I can't do either myself; just tell me which. |
+| 6 | **Add 3 GitHub repo secrets** so every push to `main` auto-deploys to Cloudflare, matching what Vercel did — see exact steps below | Without this, every deploy still needs someone to manually run `npm run deploy:cf`, same as today. |
+
+### Setting up #6 — automated Cloudflare deploys on every push
+
+The workflow file (`.github/workflows/deploy-cloudflare.yml`) is already written and committed — it just needs 3 secrets to actually run. GitHub → your repo → **Settings → Secrets and variables → Actions → New repository secret**, add these three:
+
+1. **`CLOUDFLARE_API_TOKEN`** — go to [dash.cloudflare.com/profile/api-tokens](https://dash.cloudflare.com/profile/api-tokens) → **Create Token** → use the **"Edit Cloudflare Workers"** template (Cloudflare-maintained, has exactly the right permissions) → scope it to your account → **Continue to summary → Create Token** → copy the token (shown once) → paste as this secret's value.
+2. **`NEXT_PUBLIC_SUPABASE_URL`** — same value as in your `.env.local`.
+3. **`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`** — same value as in your `.env.local`.
+
+(`GEMINI_API_KEY` and `SUPABASE_SERVICE_ROLE_KEY` don't need to go here — they're already set directly as Cloudflare Worker secrets and stay set across every deploy on their own.)
+
+Once those 3 exist, push anything to `main` and check the **Actions** tab on GitHub — you'll see it build and deploy automatically, same as Vercel used to.
 
 ---
 
@@ -33,7 +46,7 @@ Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action ·
 | `GEMINI_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY` secrets set on the Worker | ✅ |
 | Full live verification (pages, dataset, grading, AI/Gemini, Supabase auth) on Cloudflare | ✅ |
 | Old duplicate Worker deleted | ✅ |
-| GitHub Actions CI/CD (auto-deploy on push to `main`) | ⬜ |
+| GitHub Actions CI/CD (auto-deploy on push to `main`) | 🔶 workflow written, needs 2 repo secrets added — see 🔴 section |
 | Vercel decommissioned | 🔶 *(see 🔴#5)* |
 | Custom domain | ⬜ *(declined for now, `workers.dev` is fine — revisit once there's revenue)* |
 
