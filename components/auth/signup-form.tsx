@@ -60,11 +60,11 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
           Click it to finish creating your account.
         </p>
         {onSwitchToLogin ? (
-          <button type="button" onClick={onSwitchToLogin} className="inline-block mt-5 text-sm font-semibold text-[var(--accent)] hover:underline">
+          <button type="button" onClick={onSwitchToLogin} className="inline-block mt-5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
             Back to sign in
           </button>
         ) : (
-          <Link href="/login" className="inline-block mt-5 text-sm font-semibold text-[var(--accent)] hover:underline">
+          <Link href="/login" className="inline-block mt-5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
             Back to sign in
           </Link>
         )}
@@ -97,7 +97,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             placeholder="you@example.com"
           />
         </div>
@@ -115,7 +115,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
               autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 pr-10 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 pr-10 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               placeholder="At least 8 characters"
             />
             <button
@@ -138,7 +138,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
         <button
           type="submit"
           disabled={loading}
-          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--accent)] text-[var(--accent-foreground)] hover:bg-[var(--accent-hover)] font-bold text-sm px-4 py-2.5 transition-colors disabled:opacity-50 disabled:pointer-events-none mt-1"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm px-4 py-2.5 transition-colors disabled:opacity-50 disabled:pointer-events-none mt-1"
         >
           {loading && <Loader2 className="w-4 h-4 animate-spin" />}
           Create account
@@ -148,11 +148,11 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
       <p className="text-center text-sm text-[var(--text-secondary)] mt-6">
         Already have an account?{" "}
         {onSwitchToLogin ? (
-          <button type="button" onClick={onSwitchToLogin} className="font-semibold text-[var(--accent)] hover:underline">
+          <button type="button" onClick={onSwitchToLogin} className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
             Sign in
           </button>
         ) : (
-          <Link href="/login" className="font-semibold text-[var(--accent)] hover:underline">
+          <Link href="/login" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
             Sign in
           </Link>
         )}
