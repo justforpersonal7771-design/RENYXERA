@@ -3,21 +3,25 @@
 import Link from "next/link";
 import { LogIn } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
+import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { generateAvatarDataUri } from "@/lib/avatar/generate-avatar";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 
 /**
  * Topbar auth entry point — self-contained so it can sit in topbar.tsx's icon cluster
  * without adding to that file's own state/effects. Signed out: a compact "Sign In"
- * link. Signed in: the user's DiceBear avatar (rendered from their stored seed/style —
- * zero extra network request, same as the profile picker), linking to /profile.
- * Deliberately no dropdown/sign-out menu here yet — that lives on the profile page
- * itself for now, to keep this component small; a proper menu is an easy follow-up.
+ * button that opens the AuthModal in place (no navigation away from whatever page
+ * the user is on). Signed in: the user's DiceBear avatar (rendered from their stored
+ * seed/style — zero extra network request, same as the profile picker), linking to
+ * /profile. Deliberately no dropdown/sign-out menu here yet — that lives on the
+ * profile page itself for now, to keep this component small; a proper menu is an easy
+ * follow-up.
  */
 export function AccountButton() {
   const user = useAuthStore((s) => s.user);
   const profile = useAuthStore((s) => s.profile);
   const loading = useAuthStore((s) => s.loading);
+  const openAuthModal = useAuthModalStore((s) => s.open);
 
   if (loading) {
     return <div className="w-8 h-8 rounded-lg bg-[var(--surface-secondary)] animate-pulse" aria-hidden="true" />;
@@ -25,13 +29,14 @@ export function AccountButton() {
 
   if (!user) {
     return (
-      <Link
-        href="/login"
+      <button
+        type="button"
+        onClick={() => openAuthModal("login")}
         className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors"
       >
         <LogIn className="w-4 h-4" />
         <span className="hidden sm:inline">Sign In</span>
-      </Link>
+      </button>
     );
   }
 

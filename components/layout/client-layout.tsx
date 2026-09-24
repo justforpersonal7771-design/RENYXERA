@@ -7,6 +7,7 @@ import { Topbar } from "./topbar";
 import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
+import { AuthModal } from "@/components/auth/auth-modal";
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -111,6 +112,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </main>
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
+      <AuthModal />
     </div>
   );
 }
