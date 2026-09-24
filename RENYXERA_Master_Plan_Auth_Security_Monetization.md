@@ -1206,10 +1206,19 @@ Written once in Module 6B; unblocks ads, payments and compliance simultaneously.
 | 5 | Verify Vercel and Cloudflare live terms in writing | 4A | ✅ **done** — see §2.1 |
 | 6 | Convert `fs.readFile` data loading to build-time imports (Workers has no runtime filesystem) | 4A | ✅ **done** |
 | 7 | Scaffold OpenNext/Wrangler config; prove `build:cf` succeeds and compute real bundle size | 4A | ✅ **done** — see §2.1.1 |
-| 8 | Create Cloudflare account, `wrangler login`, run `deploy:cf` for real, cut over DNS | 4A | ⏸ **needs account owner** |
-| 9 | Create Supabase project; commit migration 001 with RLS on every table | 4B | pending |
-| 10 | Verify Firebase phone-auth quota and India pricing | 4C | pending |
-| 11 | Begin daily SEO content — one solution page per day | 6A | pending |
+| 8 | Create Cloudflare account, `wrangler login`, run `deploy:cf` for real, cut over DNS | 4A | ⏸ **in progress (account owner)** |
+| 9 | Write migration 0001 (schema + RLS on every table); scaffold Next.js client/server/middleware | 4B | ✅ **done** — `supabase/migrations/0001_init.sql`, `lib/supabase/*` |
+| 10 | Create the actual Supabase project; run migration 0001; set env vars | 4B | ⏸ **in progress (account owner)** |
+| 11 | DiceBear avatar picker (zero storage cost) | 4E-1 | ✅ **done** |
+| 12 | Login / signup / reset-password UI + OAuth callback route | 4C | ✅ **built, live-testing blocked on #10** |
+| 13 | Verify Firebase phone-auth quota and India pricing | 4C | pending |
+| 14 | Begin daily SEO content — one solution page per day | 6A | pending |
+
+**What shipped for #9, #11, #12** (same rigor as #1–4/#5–8 — verified, not assumed):
+
+- **#9 — the schema is real and matches FINDING-3's structural fix exactly**, not just described in prose: `question_answers` has RLS enabled with **zero policies** for `anon`/`authenticated`, which in Postgres means those roles see no rows under any query — not filtered, absent. `profiles` rows are created only by a trigger on `auth.users`, never client-insertable. `exam_attempts`/`exam_responses` have no write policy for `authenticated` at all — only the service-role grading path can write a score, which is what makes it authoritative rather than advisory. The Next.js client/server/middleware wiring was written against **current** Supabase guidance verified live (not assumed from training data 8 months stale): `getClaims()` over `getSession()` for authorization decisions, and both the new "publishable key" and legacy "anon key" env var names supported. **Caught and fixed a real one before it shipped:** the middleware runs on every request site-wide the instant it deploys, and threw when Supabase env vars were missing — which would have taken the live site down on push, since no project exists yet. Now no-ops safely until configured; verified via a full build and a live server check with today's actual (unconfigured) environment.
+- **#11 — also caught a real staleness issue.** The original plan named `@dicebear/collection`; that package is now three major versions behind — DiceBear v10 renamed it to `@dicebear/styles` with a different (class-based) API. Verified the current API against the installed package's own type declarations rather than trusting docs summaries, confirmed all 8 curated styles exist in the real export map, and verified the actual component with a live Playwright session: all 8 render as genuine SVG data URIs, selection/shuffle/keyboard-activation all work.
+- **#12 — built and build-verified; explicitly not yet live-tested against a real backend**, because one doesn't exist yet (#10). What *was* verified with a live browser session: every page renders, navigation between login/signup/reset-password works, and — the check that actually mattered — submitting the login form today (no Supabase configured) shows a clear error and the page stays intact rather than crashing. **Not yet linked from the app's navigation** on purpose, so nothing currently-live points at an unverified flow. Re-verify `signInWithPassword`/`signUp`/`signInWithOAuth` and the Google redirect for real the moment #10 lands.
 
 **What shipped for #1–4, and what's honestly still open** (all four verified against the live dev server, not just typechecked):
 
