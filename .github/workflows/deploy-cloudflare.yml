@@ -17,7 +17,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # GitHub deprecated Node 20 on Actions runners (2025-09-19 changelog) —
+          # confirmed via a "Node.js 20 is deprecated" warning annotation on this
+          # workflow's own failed runs. 22 is the current LTS.
+          node-version: 22
           cache: npm
 
       - run: npm ci
