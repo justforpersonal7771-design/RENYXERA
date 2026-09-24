@@ -16,7 +16,7 @@ Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action ·
 | 3 | **Update Google OAuth Console branding** — home/Privacy/Terms links and Authorised domain, from `renyxera.vercel.app` → `https://gate.renyxera.workers.dev` (use the real `/privacy` and `/terms` paths now that they exist) | Still points at the domain we're moving off. |
 | 4 | **Update Supabase Auth → URL Configuration** — Site URL + Redirect URLs, add `https://gate.renyxera.workers.dev` and `.../auth/callback` | Needed for OAuth/email-confirmation redirects once this is the real production URL. |
 | 5 | **Decide Vercel's fate** — disconnect its GitHub auto-deploy (keep as dormant rollback) or delete the project outright | I can't do either myself; just tell me which. |
-| ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done** — all 3 confirmed present in repo Settings → Secrets. First automated run is being verified now. |
+| ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** — first two automated runs failed on a Node version mismatch (wrangler requires Node ≥22, workflow was pinned to 20), fixed in commit `2e4411a`, third run succeeded. Confirmed live: a real Supabase error response came back from the CI-built deploy, proving the secrets correctly reached the build. |
 
 Once those 3 exist, push anything to `main` and check the **Actions** tab on GitHub — you'll see it build and deploy automatically, same as Vercel used to.
 
@@ -36,7 +36,7 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | `GEMINI_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY` secrets set on the Worker | ✅ |
 | Full live verification (pages, dataset, grading, AI/Gemini, Supabase auth) on Cloudflare | ✅ |
 | Old duplicate Worker deleted | ✅ |
-| GitHub Actions CI/CD (auto-deploy on push to `main`) | 🔶 secrets added, verifying the first automated run now (this commit is the test) |
+| GitHub Actions CI/CD (auto-deploy on push to `main`) | ✅ **done and verified live** — every push to `main` now builds and deploys to Cloudflare automatically, matching Vercel's old behavior |
 | Vercel decommissioned | 🔶 *(see 🔴#5)* |
 | Custom domain | ⬜ *(declined for now, `workers.dev` is fine — revisit once there's revenue)* |
 
