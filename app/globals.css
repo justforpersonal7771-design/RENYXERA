@@ -239,19 +239,30 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Premium floating scrollbar — hairline-thin, with the thumb itself always
-     carrying a faint brand-blue-to-violet gradient (not just on hover) so it
-     reads as a deliberate branded element at a glance rather than a tinted
-     version of the OS default. A 2px transparent border (clipped to
-     padding-box) insets it off the track edge for a floating-pill look. On
-     hover/drag the gradient fully saturates and picks up a soft glow ring.
-     Applied globally (this selector, unscoped) so every scroll surface in
-     the app gets the same feel by default; `.custom-scrollbar` below is the
-     same treatment, just a hair slimmer for tight panels — nothing to opt
-     into per component, one definition covers the whole app. */
+  /* Premium floating scrollbar — hairline-thin, brand-gradient thumb,
+     genuinely hidden until you hover the scrollable area (not just faint —
+     fully transparent at rest), and with the browser's native up/down arrow
+     buttons explicitly killed (Chrome/Edge render those on their own unless
+     told not to, regardless of how the thumb/track are styled — that's what
+     was showing through before). `:hover::-webkit-scrollbar-thumb` targets
+     "whatever scrollable element is currently being hovered," which is the
+     standard trick for a reveal-on-hover scrollbar; hovering the thumb
+     itself goes one step further (solid + glow) so it's obvious it's
+     grabbable. Applied globally (unscoped) so every scroll surface gets this
+     by default; `.custom-scrollbar` below is the same treatment, just a
+     hair slimmer for tight panels — nothing to opt into per component.
+     Firefox has no equivalent hide-until-hover mechanism for scrollbar-width,
+     so it keeps its always-visible thin bar — an unavoidable, minor
+     cross-browser gap, not something CSS can close. */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
   }
 
   ::-webkit-scrollbar-track {
@@ -263,8 +274,12 @@
     border-radius: 9999px;
     border: 2px solid transparent;
     background-clip: padding-box;
+    opacity: 0;
     transition: opacity 0.2s ease, box-shadow 0.2s ease;
-    opacity: 0.75;
+  }
+
+  :hover::-webkit-scrollbar-thumb {
+    opacity: 0.7;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -306,6 +321,11 @@
     height: 5px;
     width: 5px;
   }
+  .custom-scrollbar::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
@@ -314,8 +334,11 @@
     border-radius: 9999px;
     border: 1.5px solid transparent;
     background-clip: padding-box;
+    opacity: 0;
     transition: opacity 0.2s ease, box-shadow 0.2s ease;
-    opacity: 0.75;
+  }
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    opacity: 0.7;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     opacity: 1;
