@@ -8,6 +8,7 @@ import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
 import { AuthModal } from "@/components/auth/auth-modal";
+import { ConfirmHost } from "@/components/ui/confirm-dialog";
 import { useToastStore } from "@/store/use-toast-store";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { MathJaxContext } from "better-react-mathjax";
@@ -88,6 +89,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         </main>
         <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
         <ToastContainer />
+        <ConfirmHost />
       </div>
       </MathJaxContext>
     );
@@ -132,6 +134,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
       <AuthModal />
+      <ConfirmHost />
     </div>
     </MathJaxContext>
   );

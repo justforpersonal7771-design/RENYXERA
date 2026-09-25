@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useMemo } from "react";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { useExamStore } from "@/store/use-exam-store";
@@ -280,7 +281,7 @@ export default function ExamSessionPage() {
               <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
                  <button
                    onClick={async () => {
-                     if (confirm("Leave this exam? It will be paused and saved so you can resume later.")) {
+                     if (await confirmDialog({ title: "Leave this exam?", message: "It will be paused and saved, so you can resume it later from the dashboard.", confirmLabel: "Pause & leave", cancelLabel: "Keep going", tone: "warning", icon: "leave" })) {
                        await pauseSession();
                        router.push("/");
                      }
@@ -436,7 +437,7 @@ export default function ExamSessionPage() {
                     </button>
                     <button
                       onClick={async () => {
-                        if (confirm("Cancel this exam? Your progress so far will be discarded and this cannot be undone.")) {
+                        if (await confirmDialog({ title: "Cancel this exam?", message: "Your answers so far will be discarded. This can't be undone.", confirmLabel: "Cancel exam", cancelLabel: "Keep it", tone: "danger" })) {
                           await clearSession();
                           router.push("/");
                         }

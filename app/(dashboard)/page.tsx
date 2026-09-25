@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { useRouter } from "next/navigation";
 import { useDataStore } from "@/store/use-data-store";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
@@ -185,7 +186,7 @@ export default function Home() {
             </button>
             <button
               onClick={async () => {
-                if (confirm("Discard this exam session? All progress will be lost.")) {
+                if (await confirmDialog({ title: "Discard this exam?", message: "All progress in this paused session will be lost.", confirmLabel: "Discard", tone: "danger" })) {
                   await clearSession();
                 }
               }}

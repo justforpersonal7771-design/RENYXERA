@@ -9,6 +9,31 @@ Every deliverable and acceptance criterion in the master plan has a row below. T
 
 ---
 
+## ▶️ Execution order (what gets built next, top to bottom)
+
+Ordered by the plan's rule — security & integrity first, then retention, then money — and by dependency (nothing starts before what it needs). Each step ships as one batch.
+
+| # | Step | Modules | Why now |
+|---|---|---|---|
+| 1 | **Close the AI abuse route**: per-user daily AI quota in Postgres + server-side prompt cache | 4G | The only route that costs money; live today |
+| 2 | **Bot gate**: Cloudflare Turnstile on sign-up, login and reset | 4G | Stops scripted accounts farming the quota from step 1 |
+| 3 | **Route protection in middleware** + guest caps (practice sample, "local only" warning) | 4C, 4D | Server-side boundary instead of UI-only locks |
+| 4 | **CI security checks**: service-role grep over build output, anon-can't-read-answers test | Platform | Makes steps 1–3 and 4B regressions impossible to ship silently |
+| 5 | **Question bank into Postgres** (975 questions, public/private split, offline sync) | 4B | Prerequisite for everything in Release 5 |
+| 6 | **Answer-key withholding + server-graded attempts** (attempt token, graded/practice modes) | 5A, 5B | Makes scores trustworthy |
+| 7 | **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
+| 8 | **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
+| 9 | **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay |
+| 10 | **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
+| 11 | Integrity signals, bank protection, leaderboards & All-India mocks | 5C–5E | Only credible after step 6 |
+| 12 | Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
+| 13 | Payments & entitlements, then anti-abuse/anti-sharing | 7A–7D | Needs 5B + 6B |
+| 14 | Practice bank, study materials, multi-branch data & pipeline | 6D, 6E, 8A–8C | Largest content effort; trough season (Mar–May) |
+| 15 | Growth loops, revenue lines, depth, community, mobile | 7E, 8B, 9A–9E | After revenue exists |
+| — | Cloud sync (4I) slots in after step 5; R2 + CDN base URL after step 5 | 4I, Platform | Depends on Postgres data |
+
+---
+
 ## 🔴 Pending — needs YOUR action specifically
 
 | # | Task | Status |
@@ -20,6 +45,7 @@ Every deliverable and acceptance criterion in the master plan has a row below. T
 | 7b | ~~Homepage/privacy content issues~~ | ✅ **root-caused and fixed** — server-rendered homepage now explains the product; privacy policy has the Google-user-data section. |
 | 7c | **Homepage URL ownership — cannot be completed on `workers.dev`** | OAuth branding needs a DNS-verified Domain property; `workers.dev`'s DNS isn't yours. Merged into the domain backlog item below. |
 | 8 | **Run migration `supabase/migrations/0002_username_lowercase.sql`** in the Supabase SQL editor | ⬜ Lowercases existing usernames and makes the database enforce lowercase + case-insensitive uniqueness (the app already does both; this makes it a DB guarantee, as 4E-3 requires). |
+| 9 | **Run migration `supabase/migrations/0003_ai_quota_and_cache.sql`** in the Supabase SQL editor | ⬜ Turns on the per-user daily AI quota and the shared answer cache. Until then the AI route logs a warning and allows requests. |
 | ~~4~~ | ~~Update Supabase Auth → URL Configuration~~ | ✅ **done** |
 | ~~5~~ | ~~Decide Vercel's fate~~ | ✅ **decided — leave it as is**, dormant |
 | ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** |
@@ -56,7 +82,7 @@ Every deliverable and acceptance criterion in the master plan has a row below. T
 | CI on every push: typecheck, lint, production build | ✅ *(.github/workflows/ci.yml)* |
 | Service-role key can't reach client code (`import "server-only"` build-time guard) | ✅ |
 | CI grep over the **built output** proving no service-role key is in the client bundle | ⬜ |
-| CI test proving the anon key reads **zero rows** from `question_answers` | ⬜ |
+| CI test proving the anon key reads **zero rows** from `question_answers` | 🟨 *(verified manually against production 26 Sep: 0 rows; not yet automated in CI)* |
 | Automated Playwright regression suite in CI (desktop + mobile, light + dark) | ⬜ *(run manually on every change today; not in CI)* |
 | Error tracking (Sentry free tier) | ⬜ |
 | Product analytics (Cloudflare Web Analytics, cookieless) | ⬜ |
@@ -100,7 +126,7 @@ Every deliverable and acceptance criterion in the master plan has a row below. T
 | **975 questions seeded into Postgres** with the public/private split | ⬜ *(the app still serves the question bank from the static `public/data/questions.json`)* |
 | All 975 questions render identically from Postgres as from the JSON | ⬜ |
 | Practice mode works fully offline after first sync | 🟨 *(works offline today from IndexedDB; not yet from a Postgres sync)* |
-| `profiles` auto-create trigger confirmed firing on a real signup | ⬜ *(signup verified live; trigger not yet double-checked in Table Editor)* |
+| `profiles` auto-create trigger confirmed firing on a real signup | ✅ *(verified 26 Sep against production: 3 auth users, 3 profile rows)* |
 
 ### 4C · P1 · Authentication — Three Doors
 | Task | Status |
@@ -178,8 +204,8 @@ Every deliverable and acceptance criterion in the master plan has a row below. T
 | Supabase JWT required on `/api/ai/generate` (401, no Gemini call, for guests) | ✅ |
 | Response size caps and request timeouts | 🟨 *(body-size caps done; timeouts not explicit)* |
 | Upstash Redis, user-ID-keyed limiting | ⬜ *(current limiting is IP-keyed)* |
-| Per-user daily AI quota in Postgres | ⬜ |
-| Server-side prompt-hash response cache | ⬜ |
+| Per-user daily AI quota in Postgres | 🔶 *(built: atomic `consume_ai_call` (30/day, IST reset) wired into /api/ai/generate — run migration 0003: 🔴#9)* |
+| Server-side prompt-hash response cache | 🔶 *(built: `ai_response_cache`, cache hits cost no quota — needs migration 0003)* |
 | Turnstile on signup/login/reset/OTP | ⬜ |
 
 ### 4H · P1 · Multi-Branch Teaser & Waitlist

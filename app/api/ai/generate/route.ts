@@ -5,6 +5,7 @@ import { aiRequestSchema, type AIGenerateRequest } from "@/lib/security/ai-reque
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
+import { createServiceRoleClient } from "@/lib/supabase/service-role";
 
 export const runtime = "nodejs";
 
@@ -17,6 +18,14 @@ export const runtime = "nodejs";
 // (up to 60 history turns, each carrying a serialized prior explanation) plus the
 // learner-context object, while still ruling out pathological payloads.
 const MAX_BODY_BYTES = 220_000;
+
+// Free-tier AI requests per user per day (IST). Configurable without a code change.
+const AI_DAILY_LIMIT = Math.max(1, Number(process.env.AI_DAILY_LIMIT) || 30);
+
+async function sha256(input: string): Promise<string> {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(input));
+  return Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, "0")).join("");
+}
 
 // This is the only route in the app that costs money per call, so it gets its own
 // tighter window rather than reusing the dataset/image-manifest limits. A real session
@@ -144,6 +153,7 @@ export async function POST(req: NextRequest) {
   }
 
   const startedAt = Date.now();
+  let remainingQuota: number | null = null;
   let systemInstruction: string, prompt: string;
   try {
     ({ systemInstruction, prompt } = buildPrompt(parsed.data));
@@ -151,6 +161,36 @@ export async function POST(req: NextRequest) {
     // PromptBuilder throws when required context (e.g. currentQuestion) is missing for a
     // template that needs it — that's a caller error, not a server error.
     return NextResponse.json({ error: err?.message || "Invalid params for request type." }, { status: 400 });
+  }
+
+  // ---- Module 4G: server-side cache, then per-user daily quota (both in Postgres) ----
+  const userId = String(claims.sub);
+  const promptHash = await sha256([GEMINI_MODEL, systemInstruction, prompt].join("\n"));
+  let db: ReturnType<typeof createServiceRoleClient> | null = null;
+  try { db = createServiceRoleClient(); } catch { db = null; }
+
+  if (db) {
+    const { data: cached } = await db.from("ai_response_cache").select("response,hits").eq("prompt_hash", promptHash).maybeSingle();
+    if (cached?.response) {
+      void db.from("ai_response_cache").update({ hits: (cached.hits ?? 0) + 1 }).eq("prompt_hash", promptHash);
+      console.log(`[ai/generate] type=${parsed.data.type} user=${userId} status=200 cache=hit`);
+      return NextResponse.json({ text: cached.response, cached: true });
+    }
+
+    const { data: quota, error: quotaErr } = await db.rpc("consume_ai_call", { p_user: userId, p_limit: AI_DAILY_LIMIT });
+    if (quotaErr) {
+      // Migration 0003 not applied yet (or DB hiccup): don't take AI Mentor down — log loudly.
+      console.warn(`[ai/generate] quota check unavailable (${quotaErr.code}); allowing request`);
+    } else {
+      const row = Array.isArray(quota) ? quota[0] : quota;
+      if (row && !row.allowed) {
+        return NextResponse.json(
+          { error: `You've used today's ${row.day_limit} AI requests. They reset at midnight (IST).`, quotaExceeded: true },
+          { status: 429, headers: { "X-AI-Quota-Remaining": "0" } }
+        );
+      }
+      if (row) remainingQuota = Math.max(0, row.day_limit - row.used);
+    }
   }
 
   const controller = new AbortController();
@@ -174,7 +214,11 @@ export async function POST(req: NextRequest) {
     console.log(
       `[ai/generate] type=${parsed.data.type} client=${clientKey} status=200 latencyMs=${Date.now() - startedAt}`
     );
-    return NextResponse.json({ text });
+    if (db) void db.from("ai_response_cache").upsert({ prompt_hash: promptHash, response: text });
+    return NextResponse.json(
+      { text },
+      remainingQuota !== null ? { headers: { "X-AI-Quota-Remaining": String(remainingQuota) } } : undefined
+    );
   } catch (err: any) {
     console.error(
       `[ai/generate] type=${parsed.data.type} client=${clientKey} status=error latencyMs=${Date.now() - startedAt}`,

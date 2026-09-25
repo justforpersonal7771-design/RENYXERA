@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, ShieldAlert, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
@@ -118,7 +119,7 @@ export function Topbar() {
   };
 
   const handleDeveloperReset = async () => {
-    if (!confirm("Are you sure you want to hard reset the app? This will clear all data, caches, and unregister service workers.")) return;
+    if (!(await confirmDialog({ title: "Hard reset the app?", message: "This clears all local data and caches and unregisters the service worker.", confirmLabel: "Reset everything", tone: "danger" }))) return;
     
     setIsResetting(true);
     try {

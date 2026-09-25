@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { AnimatePresence, motion } from "motion/react";
 import { useStudyStore } from "@/store/use-study-store";
 import { useDataStore } from "@/store/use-data-store";
@@ -469,7 +470,7 @@ export default function MistakesPage() {
 
                   <button
                     onClick={async () => {
-                      if (confirm("Remove this mistake from history?")) {
+                      if (await confirmDialog({ title: "Remove this mistake?", message: "It will be removed from your mistakes history.", confirmLabel: "Remove", tone: "danger" })) {
                         await removeMistake(activeMistake);
                         setActiveMistake(null);
                       }
