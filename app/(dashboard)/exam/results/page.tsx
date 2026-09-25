@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { TiltCard, CountUp as CountUpFx } from "@/components/ui/interactive";
 import { useSearchParams, useRouter } from "next/navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { ExamSession } from "@/types/exam-runtime.types";
@@ -416,29 +417,46 @@ export default function ResultSummaryPage() {
                 </div>
                 <div>
                   <span className="text-2xl font-black text-[var(--text-primary)] font-num">{session.totalQuestions - totalAttempted}</span>
-                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Skipped Tasks</p>
+                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Skipped</p>
                 </div>
+              </div>
+              {/* correct / wrong / skipped as one split bar */}
+              <div className="mt-3 flex h-2.5 w-full overflow-hidden rounded-full bg-[var(--surface-secondary)]">
+                {[
+                  { v: correct, c: "from-emerald-400 to-green-500" },
+                  { v: wrong, c: "from-rose-400 to-red-500" },
+                  { v: session.totalQuestions - totalAttempted, c: "from-slate-300 to-slate-400 dark:from-slate-600 dark:to-slate-500" },
+                ].map((seg, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${session.totalQuestions ? (seg.v / session.totalQuestions) * 100 : 0}%` }}
+                    transition={{ duration: 1, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                    className={`h-full bg-gradient-to-r ${seg.c}`}
+                  />
+                ))}
               </div>
             </div>
 
             {/* Metric Cards — colorful, semantic per stat instead of a flat gray tile */}
             <div className="grid grid-cols-4 gap-2.5">
               {[
-                { icon: CheckCircle, label: "Correct", value: correct, color: "text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
-                { icon: XCircle, label: "Wrong", value: wrong, color: "text-rose-500", bg: "bg-gradient-to-br from-rose-500/10 to-rose-500/5 border-rose-500/20" },
-                { icon: TrendingUp, label: "+ Marks", value: `+${totalPositiveMarks.toFixed(1)}`, color: "text-emerald-600 dark:text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
-                { icon: AlertCircle, label: "- Penalty", value: `-${totalNegativeMarks.toFixed(1)}`, color: "text-red-500 dark:text-red-400", bg: "bg-gradient-to-br from-red-500/10 to-red-500/5 border-red-500/20" },
+                { icon: CheckCircle, label: "Correct", value: correct, decimals: 0, prefix: "", color: "text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
+                { icon: XCircle, label: "Wrong", value: wrong, decimals: 0, prefix: "", color: "text-rose-500", bg: "bg-gradient-to-br from-rose-500/10 to-rose-500/5 border-rose-500/20" },
+                { icon: TrendingUp, label: "+ Marks", value: totalPositiveMarks, decimals: 1, prefix: "+", color: "text-emerald-600 dark:text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
+                { icon: AlertCircle, label: "- Penalty", value: totalNegativeMarks, decimals: 1, prefix: "-", color: "text-red-500 dark:text-red-400", bg: "bg-gradient-to-br from-red-500/10 to-red-500/5 border-red-500/20" },
               ].map((stat, idx) => (
                 <motion.div
                   key={stat.label}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + idx * 0.05 }}
-                  className={`border p-2.5 rounded-xl flex flex-col items-center justify-center text-center hover-lift ${stat.bg}`}
                 >
-                  <stat.icon className={`w-4 h-4 mb-1 ${stat.color}`} />
-                  <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
-                  <span className="text-base font-black text-[var(--text-primary)] font-num">{stat.value}</span>
+                  <TiltCard max={8} className={`group border p-2.5 rounded-xl flex flex-col items-center justify-center text-center ${stat.bg}`}>
+                    <stat.icon className={`w-4 h-4 mb-1 transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-6 ${stat.color}`} />
+                    <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
+                    <CountUpFx value={stat.value} decimals={stat.decimals} prefix={stat.prefix} className="text-base font-black text-[var(--text-primary)]" />
+                  </TiltCard>
                 </motion.div>
               ))}
             </div>
@@ -452,26 +470,27 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push("/")}
-                className="flex-1 px-4 py-3 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] font-bold uppercase tracking-wider rounded-xl transition shadow-sm text-xs flex items-center justify-center gap-2 cursor-pointer"
+                className="group flex-1 px-4 py-3 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] font-semibold rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer"
               >
-                <Home className="w-4 h-4" />
+                <Home className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
                 <span>Dashboard</span>
               </motion.button>
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={handleRetry}
-                className="flex-1 px-4 py-3 bg-amber-600 hover:bg-amber-700 text-white font-extrabold uppercase tracking-wider rounded-xl transition shadow-md flex items-center justify-center gap-2 cursor-pointer text-xs"
+                className="group flex-1 px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-md shadow-amber-500/30 hover:brightness-110 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
               >
-                <RefreshCw className="w-4 h-4" />
-                <span>Retry Test</span>
+                <RefreshCw className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180" />
+                <span>Retry test</span>
               </motion.button>
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push(`/exam/results/review?id=${id}`)}
-                className="flex-[1.5] px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold uppercase tracking-wider rounded-xl shadow-lg shadow-indigo-500/10 transition flex items-center justify-center gap-2 cursor-pointer text-xs"
+                className="group relative overflow-hidden flex-[1.5] px-6 py-3 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
               >
-                <span>Review</span>
-                <ArrowRight className="w-4 h-4" />
+                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
+                <span className="relative">Review answers</span>
+                <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-1" />
               </motion.button>
             </div>
           </div>
@@ -540,8 +559,8 @@ export default function ResultSummaryPage() {
                     let cellClass = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]";
                     if (item.isAttempted) {
                       cellClass = item.isCorrect
-                        ? "bg-emerald-500 text-white border-emerald-600 shadow-sm"
-                        : "bg-rose-500 text-white border-rose-600 shadow-sm";
+                        ? "bg-gradient-to-br from-emerald-400 to-green-600 text-white border border-transparent shadow-md shadow-emerald-500/25"
+                        : "bg-gradient-to-br from-rose-400 to-red-600 text-white border border-transparent shadow-md shadow-rose-500/25";
                     }
                     return (
                       <motion.button
@@ -549,9 +568,10 @@ export default function ResultSummaryPage() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: Math.min(idx * 0.008, 0.3) }}
+                        whileHover={{ scale: 1.12, y: -2 }}
                         whileTap={{ scale: 0.92 }}
                         onClick={() => router.push(`/exam/results/review?id=${id}&q=${idx}`)}
-                        className={`relative h-9 rounded-lg flex items-center justify-center font-bold text-xs cursor-pointer ${cellClass}`}
+                        className={`relative h-9 rounded-lg flex items-center justify-center font-num font-bold text-xs cursor-pointer ${cellClass}`}
                         title={`Question ${idx + 1}${item.isMarked ? " (Marked for review)" : ""}`}
                       >
                         {idx + 1}
@@ -593,8 +613,16 @@ export default function ResultSummaryPage() {
                       transition={{ delay: Math.min(idx * 0.04, 0.3) }}
                       className="p-4 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-2xl shadow-sm hover-lift"
                     >
-                      <div className="font-bold text-xs text-[var(--text-primary)] mb-3 pb-1 border-b border-[var(--border)]/50 truncate">
-                        {item.label}
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="font-bold text-xs text-[var(--text-primary)] truncate flex-1">{item.label}</div>
+                        <div className="w-24 h-1.5 shrink-0 rounded-full bg-[var(--surface)] overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${itemAccuracy}%` }}
+                            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 + Math.min(idx * 0.04, 0.3) }}
+                            className={`h-full rounded-full bg-gradient-to-r ${itemAccuracy >= 75 ? "from-emerald-400 to-teal-500" : itemAccuracy >= 50 ? "from-amber-400 to-orange-500" : "from-rose-400 to-red-500"}`}
+                          />
+                        </div>
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">

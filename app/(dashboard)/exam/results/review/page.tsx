@@ -8,7 +8,7 @@ import { QuestionRepository } from "@/lib/repository/question-repository";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { MathJaxContext } from "better-react-mathjax";
 import { useStudyStore } from "@/store/use-study-store";
-import { Bookmark, BookmarkCheck, Sun, Moon, ArrowLeft, ArrowRight, Home, StickyNote, Activity, RefreshCw } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sun, Moon, ArrowLeft, ArrowRight, Home, StickyNote, Activity, RefreshCw, CheckCircle2, XCircle, MinusCircle, Sparkles } from "lucide-react";
 import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { useTheme } from "next-themes";
@@ -128,6 +128,16 @@ export default function ReviewPage() {
     tex: { packages: { "[+]": ["html"] }, inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] },
   };
 
+  // Summary + "next wrong" shortcut, from the same correctness check the navigator uses.
+  const reviewResults = draftQuestions.map((qr) => checkCorrectness(qr.questionId));
+  const reviewSummary = {
+    correct: reviewResults.filter((r) => r.isAttempted && r.isCorrect).length,
+    wrong: reviewResults.filter((r) => r.isAttempted && !r.isCorrect).length,
+    skipped: reviewResults.filter((r) => !r.isAttempted).length,
+  };
+  const nextWrongOffset = reviewResults.slice(currentIndex + 1).findIndex((r) => r.isAttempted && !r.isCorrect);
+  const nextWrongIndex = nextWrongOffset === -1 ? null : currentIndex + 1 + nextWrongOffset;
+
   return (
     <MathJaxContext config={mathJaxConfig}>
       <div className="flex flex-col h-screen w-full overflow-hidden bg-[var(--background)] font-sans">
@@ -150,7 +160,7 @@ export default function ReviewPage() {
                   className="w-full h-full object-contain"
                 />
               </button>
-              <span className="text-[9px] bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-400 px-2 py-1 rounded-md font-black uppercase tracking-wider shrink-0">Review Mode</span>
+              <span className="hidden sm:inline-block text-[10px] bg-violet-500/10 text-violet-700 dark:text-violet-300 px-2 py-1 rounded-md font-semibold shrink-0">Review mode</span>
               {q && (
                 <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-num text-[11px] shrink-0">
                   Q<span className="text-indigo-600 dark:text-indigo-400 font-bold">{currentIndex + 1}</span><span className="text-[var(--text-muted)] font-normal">/{draftQuestions.length}</span>
@@ -159,13 +169,23 @@ export default function ReviewPage() {
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              {isAttempted ? (
-                isCorrect
-                  ? <span className="px-2.5 py-1 bg-green-500 text-white rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm">Correct</span>
-                  : <span className="px-2.5 py-1 bg-red-500 text-white rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm">Wrong</span>
-              ) : (
-                <span className="px-2.5 py-1 bg-gray-500 text-white rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm">Skipped</span>
-              )}
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={qId + String(isAttempted) + String(isCorrect)}
+                  initial={{ scale: 0.6, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.6, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 22 }}
+                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold text-white shadow-md ${
+                    !isAttempted ? "bg-gradient-to-r from-slate-400 to-slate-500 shadow-slate-500/20"
+                    : isCorrect ? "bg-gradient-to-r from-emerald-500 to-green-600 shadow-emerald-500/30"
+                    : "bg-gradient-to-r from-rose-500 to-red-600 shadow-rose-500/30"
+                  }`}
+                >
+                  {!isAttempted ? <MinusCircle className="w-3.5 h-3.5" /> : isCorrect ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                  {!isAttempted ? "Skipped" : isCorrect ? "Correct" : "Wrong"}
+                </motion.span>
+              </AnimatePresence>
 
               <div className="flex items-center gap-1 border-l border-[var(--border)] pl-2 sm:pl-3 h-8 shrink-0">
                 <button
@@ -186,18 +206,19 @@ export default function ReviewPage() {
 
                 <button
                   onClick={() => router.push(`/ai-tutor?qid=${qId}`)}
-                  className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs font-black uppercase tracking-wider bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition shadow-md cursor-pointer"
-                  title="Explain with AI Tutor"
+                  className="group relative overflow-hidden flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs font-semibold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer"
+                  title="Explain this question with the AI Tutor"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">AI</span>
+                  <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
+                  <Sparkles className="relative w-3.5 h-3.5 transition-transform group-hover:rotate-12" />
+                  <span className="relative hidden sm:inline">Explain with AI</span>
                 </button>
 
                 <button
                   onClick={() => router.push(`/exam/results?id=${id}`)}
-                  className="px-3 sm:px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest bg-[var(--surface-elevated)] hover:bg-[var(--surface-secondary)] text-[var(--text-primary)] rounded-lg transition shadow-md border border-[var(--border)] cursor-pointer"
+                  className="px-3 sm:px-4 py-1.5 text-xs font-semibold bg-[var(--surface-secondary)] hover:border-[var(--border-strong)] text-[var(--text-primary)] rounded-lg transition border border-[var(--border)] cursor-pointer"
                 >
-                  Exit
+                  Exit review
                 </button>
               </div>
             </div>
@@ -275,29 +296,55 @@ export default function ReviewPage() {
                       <div className="w-full">
                         {(q.question_type === "MCQ" || q.question_type === "MSQ") && (
                           <div className={`grid gap-3 ${q.options?.some(opt => opt.contentAst.some(n => n.type === 'image')) ? 'grid-cols-2 lg:grid-cols-4' : 'grid-cols-1 md:grid-cols-2'}`}>
-                            {q.options?.map(o => {
+                            {q.options?.map((o, oi) => {
                               const isActuallyCorrect = o.is_correct;
                               const isUserSelected = (currentResponse?.selectedOptions || []).includes(o.option_id);
                               let borderClass = "border-[var(--border)] bg-[var(--surface)]";
+                              let badge: { text: string; cls: string; icon: typeof CheckCircle2 } | null = null;
 
-                              if (isActuallyCorrect && isUserSelected) borderClass = "border-green-500 bg-green-50 dark:bg-green-900/20 ring-1 ring-green-500";
-                              else if (isActuallyCorrect && !isUserSelected) borderClass = "border-green-500 bg-[var(--surface)] ring-2 ring-green-500 border-transparent border-dashed text-green-700 dark:text-green-500";
-                              else if (!isActuallyCorrect && isUserSelected) borderClass = "border-red-500 bg-red-50 dark:bg-red-900/20 ring-1 ring-red-500 text-red-700 dark:text-red-500";
+                              if (isActuallyCorrect && isUserSelected) {
+                                borderClass = "border-emerald-500 bg-emerald-500/10 shadow-[0_8px_24px_-12px_rgba(16,185,129,0.6)]";
+                                badge = { text: "Your answer · correct", cls: "bg-emerald-500 text-white", icon: CheckCircle2 };
+                              } else if (isActuallyCorrect && !isUserSelected) {
+                                borderClass = "border-emerald-500 border-dashed bg-emerald-500/5";
+                                badge = { text: "Correct answer", cls: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300", icon: CheckCircle2 };
+                              } else if (!isActuallyCorrect && isUserSelected) {
+                                borderClass = "border-rose-500 bg-rose-500/10 shadow-[0_8px_24px_-12px_rgba(244,63,94,0.55)]";
+                                badge = { text: "Your answer", cls: "bg-rose-500 text-white", icon: XCircle };
+                              }
 
                               return (
-                                <div key={o.option_id} className={`p-4 border-[2px] rounded-xl ${borderClass} overflow-hidden`}>
+                                <motion.div
+                                  key={o.option_id}
+                                  initial={{ opacity: 0, y: 8 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  transition={{ delay: 0.05 + oi * 0.06 }}
+                                  className={`relative p-4 border-[2px] rounded-2xl ${borderClass} overflow-hidden`}
+                                >
                                   <div className="flex items-start gap-3 w-full">
-                                    <div className="shrink-0 font-black text-inherit w-5 mt-0.5">{o.option_id}.</div>
-                                    <div className="text-[var(--text-primary)] max-w-full overflow-hidden break-words"><AstNodeRenderer nodes={o.contentAst} /></div>
+                                    <div className={`shrink-0 w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold ${
+                                      isActuallyCorrect ? "bg-gradient-to-br from-emerald-400 to-green-600 text-white" : isUserSelected ? "bg-gradient-to-br from-rose-400 to-red-600 text-white" : "bg-[var(--surface-secondary)] text-[var(--text-secondary)]"
+                                    }`}>{o.option_id}</div>
+                                    <div className="flex-1 min-w-0 text-[var(--text-primary)] max-w-full overflow-hidden break-words"><AstNodeRenderer nodes={o.contentAst} /></div>
                                   </div>
-                                </div>
+                                  {badge && (
+                                    <motion.span
+                                      initial={{ scale: 0.7, opacity: 0 }}
+                                      animate={{ scale: 1, opacity: 1 }}
+                                      transition={{ delay: 0.25 + oi * 0.06, type: "spring", stiffness: 500, damping: 22 }}
+                                      className={`mt-2.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold ${badge.cls}`}
+                                    >
+                                      <badge.icon className="w-3 h-3" /> {badge.text}
+                                    </motion.span>
+                                  )}
+                                </motion.div>
                               );
                             })}
                           </div>
                         )}
 
                         {q.question_type === "NAT" && (
-                          <div className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl w-full">
+                          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl w-full">
                             <div className="flex-1 flex justify-between items-center bg-[var(--surface-secondary)] p-3 border border-[var(--border-subtle)] rounded-xl">
                               <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
                               <span className="font-num font-bold text-green-600 dark:text-green-400">
@@ -313,7 +360,7 @@ export default function ReviewPage() {
                               <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Your Answer</span>
                               <span className="font-num font-bold">{currentResponse?.natValue || "None"}</span>
                             </div>
-                          </div>
+                          </motion.div>
                         )}
                       </div>
                     </div>
@@ -321,20 +368,32 @@ export default function ReviewPage() {
                 </AnimatePresence>
 
                 {/* BOTTOM ACTION BAR */}
-                <div className="flex-none px-4 py-4 sm:px-6 flex justify-between items-center border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur z-20">
+                <div className="flex-none px-4 py-3 sm:px-6 flex justify-between items-center gap-2 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur z-20">
                   <button
                     disabled={currentIndex === 0}
                     onClick={() => setCurrentIndex(i => i - 1)}
-                    className="px-6 py-3 bg-[var(--surface-secondary)] border border-[var(--border)] shadow-sm hover:bg-[var(--surface-elevated)] text-[var(--text-primary)] font-bold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] cursor-pointer"
+                    className="group inline-flex items-center gap-1.5 px-5 py-2.5 bg-[var(--surface-secondary)] border border-[var(--border)] hover:border-[var(--border-strong)] text-[var(--text-primary)] font-semibold rounded-xl transition disabled:opacity-45 disabled:cursor-not-allowed active:scale-[0.97] cursor-pointer"
                   >
-                    Previous
+                    <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" /> <span className="hidden sm:inline">Previous</span>
                   </button>
+                  {nextWrongIndex !== null && (
+                    <motion.button
+                      whileTap={{ scale: 0.96 }}
+                      onClick={() => setCurrentIndex(nextWrongIndex)}
+                      className="group inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/25 hover:bg-rose-500/20 text-sm font-semibold transition cursor-pointer"
+                      title="Jump to the next question you got wrong"
+                    >
+                      <XCircle className="w-4 h-4 transition-transform group-hover:rotate-90" /> Next wrong
+                    </motion.button>
+                  )}
                   <button
                     disabled={currentIndex === draftQuestions.length - 1}
                     onClick={() => setCurrentIndex(i => i + 1)}
-                    className="px-8 py-3 bg-indigo-600 text-white font-extrabold tracking-wide uppercase text-sm rounded-lg hover:bg-indigo-700 transition shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    className="group relative overflow-hidden inline-flex items-center gap-1.5 px-7 py-2.5 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold text-sm rounded-xl shadow-md shadow-violet-500/30 transition active:scale-[0.97] disabled:opacity-45 disabled:cursor-not-allowed cursor-pointer"
                   >
-                    Next
+                    <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
+                    <span className="relative">Next</span>
+                    <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                   </button>
                 </div>
               </>
@@ -349,7 +408,21 @@ export default function ReviewPage() {
           <div className="w-full lg:w-[340px] flex-none border-t lg:border-t-0 lg:border-l border-[var(--border)] bg-[var(--surface)] z-20 flex flex-col h-[50vh] lg:h-full overflow-hidden divide-y divide-[var(--border)]">
             {/* Top Half: Review Navigator */}
             <div className="flex-1 min-h-0 flex flex-col p-4 sm:p-5 overflow-hidden">
-              <div className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-4 px-1">Review Navigator</div>
+              <div className="flex items-center justify-between mb-3 px-1">
+                <span className="font-bold text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">Review navigator</span>
+              </div>
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {[
+                  { label: "Correct", v: reviewSummary.correct, cls: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },
+                  { label: "Wrong", v: reviewSummary.wrong, cls: "text-rose-600 dark:text-rose-400 bg-rose-500/10" },
+                  { label: "Skipped", v: reviewSummary.skipped, cls: "text-[var(--text-secondary)] bg-[var(--surface-secondary)]" },
+                ].map((c) => (
+                  <div key={c.label} className={`rounded-xl px-2.5 py-2 text-center ${c.cls}`}>
+                    <div className="text-lg font-bold font-num leading-tight">{c.v}</div>
+                    <div className="text-[10px] font-semibold">{c.label}</div>
+                  </div>
+                ))}
+              </div>
 
               <div className="flex-1 overflow-y-auto px-1 -mx-1 py-1.5 -my-1.5 custom-scrollbar content-start">
                 <div className="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-5 gap-2">
@@ -359,9 +432,9 @@ export default function ReviewPage() {
 
                     if (resInfo.isAttempted) {
                       if (resInfo.isCorrect) {
-                        colorClass = "bg-green-500 text-white border-green-600 dark:border-green-400 shadow-sm";
+                        colorClass = "bg-gradient-to-br from-emerald-400 to-green-600 text-white border-transparent shadow-md shadow-emerald-500/25";
                       } else {
-                        colorClass = "bg-red-500 text-white border-red-600 dark:border-red-400 shadow-sm";
+                        colorClass = "bg-gradient-to-br from-rose-400 to-red-600 text-white border-transparent shadow-md shadow-rose-500/25";
                       }
                     }
 
@@ -371,12 +444,22 @@ export default function ReviewPage() {
                       <motion.button
                         key={qRef.questionId + idx}
                         onClick={() => setCurrentIndex(idx)}
-                        whileTap={{ scale: 0.95 }}
-                        className={`aspect-square w-full rounded-lg flex items-center justify-center font-bold text-sm transition-colors border focus:outline-none cursor-pointer ${colorClass} ${isCurrent
-                            ? "ring-2 ring-inset ring-[var(--surface)] shadow-[0_0_0_2px_theme(colors.indigo.500)] scale-105 z-10"
-                            : "hover:bg-opacity-80"
-                          }`}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: isCurrent ? 1.06 : 1 }}
+                        transition={{ delay: Math.min(idx * 0.012, 0.35), type: "spring", stiffness: 400, damping: 24 }}
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.93 }}
+                        aria-current={isCurrent ? "step" : undefined}
+                        className={`relative aspect-square w-full rounded-xl flex items-center justify-center font-num font-bold text-sm transition-colors border focus:outline-none cursor-pointer ${colorClass}`}
                       >
+                        {isCurrent && (
+                          <motion.span
+                            layoutId="review-current"
+                            aria-hidden="true"
+                            className="absolute -inset-[4px] rounded-[14px] border-2 border-indigo-500 shadow-[0_0_14px_rgba(99,102,241,0.55)]"
+                            transition={{ type: "spring", stiffness: 500, damping: 34 }}
+                          />
+                        )}
                         {idx + 1}
                       </motion.button>
                     );
@@ -395,7 +478,7 @@ export default function ReviewPage() {
                 value={notesValue}
                 onChange={(e) => handleNotesChange(e.target.value)}
                 placeholder="Add personal hints, formulas, or reminders for this question... (Auto-saves on change)"
-                className="w-full flex-1 p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)] focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none text-xs leading-relaxed"
+                className="w-full flex-1 p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)] resize-none text-xs leading-relaxed"
               />
             </div>
           </div>

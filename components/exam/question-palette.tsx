@@ -112,30 +112,38 @@ export function QuestionPalette() {
             const st = responses[localQId]?.status;
             const isCurrent = currentQuestionIndex === idx;
 
-            let colorClass = "bg-[var(--surface-elevated)] text-[var(--text-secondary)] border-[var(--border)]";
+            let colorClass = "bg-[var(--surface-elevated)] text-[var(--text-secondary)] border-[var(--border)] hover:border-indigo-400/60";
 
             if (st === "ANSWERED") {
-              colorClass = "bg-green-500 text-white border-green-600 dark:border-green-400 shadow-sm";
+              colorClass = "bg-gradient-to-br from-emerald-400 to-green-600 text-white border-transparent shadow-md shadow-emerald-500/30";
             } else if (st === "VISITED") {
-              colorClass = "bg-red-500 text-white border-red-600 dark:border-red-400 shadow-sm";
+              colorClass = "bg-gradient-to-br from-rose-400 to-red-600 text-white border-transparent shadow-md shadow-rose-500/30";
             } else if (st === "MARKED") {
-              colorClass = "bg-purple-500 text-white border-purple-600 dark:border-purple-400 shadow-sm";
+              colorClass = "bg-gradient-to-br from-violet-400 to-purple-600 text-white border-transparent shadow-md shadow-violet-500/30";
             } else if (st === "MARKED_AND_ANSWERED") {
-              colorClass = "bg-purple-500 text-white border-purple-600 dark:border-purple-400 shadow-sm relative";
+              colorClass = "bg-gradient-to-br from-violet-400 to-purple-600 text-white border-transparent shadow-md shadow-violet-500/30";
             }
 
             return (
               <motion.button
                 key={localQId || idx}
                 onClick={() => handleJump(idx)}
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-                className={`aspect-square w-11 rounded-xl flex items-center justify-center font-bold text-xs transition border cursor-pointer ${colorClass} ${
-                  isCurrent
-                    ? "ring-2 ring-inset ring-[var(--surface)] shadow-[0_0_0_2px_theme(colors.indigo.500)] scale-105"
-                    : ""
-                }`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: isCurrent ? 1.08 : 1 }}
+                transition={{ delay: Math.min(idx * 0.015, 0.4), type: "spring", stiffness: 400, damping: 24 }}
+                whileHover={{ scale: 1.12, y: -2 }}
+                whileTap={{ scale: 0.92 }}
+                aria-current={isCurrent ? "step" : undefined}
+                className={`relative aspect-square w-11 rounded-xl flex items-center justify-center font-num font-bold text-xs transition-colors border cursor-pointer ${colorClass}`}
               >
+                {isCurrent && (
+                  <motion.span
+                    layoutId="palette-current"
+                    aria-hidden="true"
+                    className="absolute -inset-[5px] rounded-[14px] border-2 border-indigo-500 shadow-[0_0_14px_rgba(99,102,241,0.55)]"
+                    transition={{ type: "spring", stiffness: 500, damping: 34 }}
+                  />
+                )}
                 {idx + 1}
                 {st === "MARKED_AND_ANSWERED" && (
                   <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-green-400 rounded-full border border-[var(--surface)]" />
