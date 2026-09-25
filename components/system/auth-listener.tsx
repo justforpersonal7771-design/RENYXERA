@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useAuthStore, type Profile } from "@/store/use-auth-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { resetAllStores } from "@/lib/store/reset-all-stores";
+import { migrateGuestDataToAccount } from "@/lib/repository/storage/guest-migration";
 
 /**
  * Mounted once in the root layout (matching ScrollbarActivity's pattern) — subscribes
@@ -20,12 +21,12 @@ import { resetAllStores } from "@/lib/store/reset-all-stores";
  * resolves asynchronously (a Supabase local-storage read + a network round trip for the
  * profile), while page components mount and fire their own IndexedDB load effects in
  * the same tick — there's a real, small race where a component could read from the
- * about-to-be-replaced namespace before this finishes switching it. Not fixed here: no
- * route yet builds meaningfully on a signed-in user's local data (Module 4D's guest
- * locks / a real /profile flow don't exist yet), so there's no real user data at stake
- * from getting this slightly wrong on first load today. For an actual sign-in/sign-out
- * *during* a session (the common, real case), this reloads the page after switching,
- * which sidesteps the race entirely by remounting everything fresh.
+ * about-to-be-replaced namespace before this finishes switching it. Left as-is: for an
+ * actual sign-in/sign-out *during* a session (the common, real case), this reloads the
+ * page after switching, which sidesteps the race entirely by remounting everything
+ * fresh; first-load races only matter once a route builds meaningfully on a signed-in
+ * user's local data, which /profile and the 4D guest locks now do — worth revisiting
+ * if it ever shows up as a real bug rather than a theoretical one.
  */
 export function AuthListener() {
   const setSession = useAuthStore((s) => s.setSession);
@@ -78,9 +79,20 @@ export function AuthListener() {
         if (userId === previousUserId.current) return;
         const isNoOpGuestFirstResolve = isFirstResolve && userId === null;
         const isRealChange = previousUserId.current !== undefined;
+        // A real guest session (not just "auth hasn't resolved yet", which is
+        // `undefined`) becoming signed-in — covers a fresh signup and an existing
+        // user who browsed as a guest on this device before signing in equally.
+        const wasGuest = previousUserId.current === null;
         previousUserId.current = userId;
 
         if (isNoOpGuestFirstResolve) return;
+
+        // Must run before setActiveNamespace switches away from the guest database —
+        // see guest-migration.ts (master plan Module 4D: guest data is migrated into
+        // the new account on signup, never discarded).
+        if (userId && wasGuest) {
+          await migrateGuestDataToAccount(userId);
+        }
 
         await IDBManager.setActiveNamespace(userId);
         resetAllStores();

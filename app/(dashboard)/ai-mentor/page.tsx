@@ -22,6 +22,7 @@ import { useCalendarStore } from "@/store/use-calendar-store";
 import { AnimatePresence, motion } from "motion/react";
 import { buildStudyReportMarkdown, downloadTextFile } from "@/lib/export/markdown-export";
 import { Download } from "lucide-react";
+import { GuestLock } from "@/components/auth/guest-lock";
 
 export default function AIMentorPage() {
   const { mistakes, bookmarks, loadStudyData } = useStudyStore();
@@ -316,6 +317,10 @@ export default function AIMentorPage() {
   };
 
   return (
+    <GuestLock
+      feature="AI Mentor"
+      description="Get personalized explanations, hints, and a revision plan built from your own mistakes — sign in to start."
+    >
     <MathJaxContext config={mathJaxConfig}>
       <div className="min-h-screen p-4 md:p-8 space-y-6 pb-16">
 
@@ -802,5 +807,6 @@ export default function AIMentorPage() {
 
       </div>
     </MathJaxContext>
+    </GuestLock>
   );
 }

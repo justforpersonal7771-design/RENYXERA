@@ -17,6 +17,7 @@ import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { PersonalNotesDrawer } from "@/components/ui/personal-notes-drawer";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
+import { GuestDataBanner } from "@/components/auth/guest-data-banner";
 
 export default function MistakesPage() {
   const router = useRouter();
@@ -283,6 +284,8 @@ export default function MistakesPage() {
                 {filteredMistakes.length} Total
               </span>
             </div>
+
+            <GuestDataBanner />
 
             <div className="flex bg-[var(--surface-elevated)] p-1 rounded-lg">
               <button

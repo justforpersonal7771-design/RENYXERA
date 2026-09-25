@@ -19,6 +19,7 @@ import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { useRouter } from "next/navigation";
 import { AIResponseParser } from "@/lib/ai/ai-response-parser";
 import { useToastStore } from "@/store/use-toast-store";
+import { GuestDataBanner } from "@/components/auth/guest-data-banner";
 
 export default function BookmarksPage() {
   const router = useRouter();
@@ -237,6 +238,8 @@ export default function BookmarksPage() {
                 {processedBookmarks.length} Items
               </span>
             </div>
+
+            <GuestDataBanner />
 
             {/* Global Search inside sidebar */}
             <div className="relative">

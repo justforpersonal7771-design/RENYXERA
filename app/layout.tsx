@@ -25,6 +25,12 @@ export const metadata: Metadata = {
     ],
     apple: '/brand/apple-touch-icon.png',
   },
+  // Proves ownership of gate.renyxera.workers.dev to Google Search Console (under
+  // renyxera@gmail.com) — needed to clear the "homepage URL is not registered to you"
+  // branding-verification issue on the Google OAuth consent screen.
+  verification: {
+    google: 'c3t_O6hCIMk3dM6oOGOQ9w1RgweDyttKmyhMNj9tjQM',
+  },
 };
 
 export const viewport = {

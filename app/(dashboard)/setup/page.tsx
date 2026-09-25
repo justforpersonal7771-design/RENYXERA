@@ -17,6 +17,9 @@ import { MathJaxContext } from "better-react-mathjax";
 import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goal-slider-store";
 import { computeGoalSliderResult, filterOfficialQuestions } from "@/lib/analytics/goal-slider-engine";
 import { GoalTagBadge } from "@/components/ui/goal-tag-badge";
+import { useAuthStore } from "@/store/use-auth-store";
+import { useAuthModalStore } from "@/store/use-auth-modal-store";
+import { useToastStore } from "@/store/use-toast-store";
 
 const mathJaxConfig = {
   loader: { load: ["input/tex", "output/chtml"] },
@@ -36,6 +39,8 @@ export default function ExamSetupPage() {
   const { isInitialized, totalQuestions } = useDataStore();
   const { createDraft, currentDraft } = useExamStore();
   const { targetPercent: goalTargetPercent, load: loadGoalSlider } = useGoalSliderStore();
+  const guestUser = useAuthStore((s) => s.user);
+  const openAuthModal = useAuthModalStore((s) => s.open);
 
   const [examType, setExamType] = useState<ExamType>("YEAR_PAPER");
 
@@ -352,6 +357,18 @@ export default function ExamSetupPage() {
   const DIFFICULTY_RANK: Record<string, number> = { Easy: 0, Moderate: 1, Medium: 1, Hard: 2 };
 
   const handleGenerate = () => {
+    // Master plan Module 4D: full mock exams (a complete, timed, official-paper replica)
+    // are the one deployment type reserved for signed-in students — everything else
+    // (Section/Subject/Topic Sprint, Custom) stays open as the guest's "capped sample
+    // set" of practice. Gated only at the moment they actually try to generate one
+    // ("never a wall on arrival") — a guest can still browse the dropdown, pick a year,
+    // and see the stats/preview freely before hitting this.
+    if (examType === "YEAR_PAPER" && !guestUser) {
+      useToastStore.getState().show("Sign in to start a full mock exam and save your results.", "info");
+      openAuthModal("login");
+      return;
+    }
+
     const config: TestConfig = {
       examType,
       isAiGenerated: sourceType === "ai_generated"

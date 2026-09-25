@@ -4,6 +4,7 @@ import { PromptBuilder } from "@/lib/ai/ai-prompts";
 import { aiRequestSchema, type AIGenerateRequest } from "@/lib/security/ai-request-schema";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
+import { getVerifiedClaims } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
@@ -93,6 +94,23 @@ export async function POST(req: NextRequest) {
   const { allowed } = checkRateLimit(`ai-generate:${clientKey}`, RATE_LIMIT);
   if (!allowed) {
     return NextResponse.json({ error: "Too many requests. Please slow down." }, { status: 429 });
+  }
+
+  // Master plan Module 4D: "Guest AI calls: zero... guests must not be a path around
+  // per-user AI quotas." The AI Mentor UI already locks itself for guests (GuestLock),
+  // but that's cosmetic on its own — this is the actual enforcement, since the UI lock
+  // is trivially bypassed by calling this route directly. getVerifiedClaims()
+  // re-validates the session's JWT against Supabase rather than trusting a client-
+  // supplied user id, and throws if Supabase isn't configured at all — treated the same
+  // as "no session" here, matching every other Supabase call site's fallback behavior.
+  let claims;
+  try {
+    claims = await getVerifiedClaims();
+  } catch {
+    claims = null;
+  }
+  if (!claims) {
+    return NextResponse.json({ error: "Sign in to use AI Mentor." }, { status: 401 });
   }
 
   const contentLength = req.headers.get("content-length");

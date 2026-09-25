@@ -14,13 +14,20 @@ Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action ·
 | ~~1~~ | ~~Rotate the Supabase `service_role` key~~ | ✅ **done** — rotated, updated in `.env.local`, Vercel, and pushed as a Cloudflare Worker secret |
 | ~~2~~ | ~~Change Cloudflare org type~~ | **Closed, not fixable and not worth it.** Confirmed via Cloudflare directly: org type is set once at signup and cannot be edited on a Self-Serve/Free account — the only way to change it is creating an entirely new account and migrating the Worker, secrets, DNS, and GitHub Actions config over. It's signup-questionnaire metadata with no legal or functional weight (Cloudflare's commercial-use permission doesn't depend on it). Leaving it as "Educational." |
 | ~~3~~ | ~~Google OAuth Console — Authorised domain~~ | ✅ **done** — `renyxera.workers.dev` added as Authorised domain 2 |
-| 7 | **Google OAuth branding verification — 2 open issues** | App is "In production" but branding isn't verified yet, so the consent screen shows the raw Supabase domain instead of "RENYXERA" (cosmetic only — sign-in itself works, confirmed live via wrangler tail logs). (a) Homepage URL ownership: verify `gate.renyxera.workers.dev` in Google Search Console under `renyxera@gmail.com` via the HTML-tag method, then send the verification code to add to `app/layout.tsx`. (b) Logo flagged as "doesn't uniquely identify your brand": current `icon-512.png` is a bare abstract mark with no text — needs a square (512×512, solid background) lockup combining the mark + "RENYXERA" wordmark. |
-| 8 | **Supabase confirmation emails send from Supabase's own domain, not RENYXERA's** | Needs custom SMTP configured in Supabase Dashboard → Project Settings → Auth → SMTP Settings, with a real sending provider (Resend or Brevo both have zero-cost free tiers). Needs your account/credentials — once set up, template copy/from-address can be wired from this repo. |
+| 7 | **Google OAuth branding verification — 2 open issues** | App is "In production" but branding isn't verified yet, so the consent screen shows the raw Supabase domain instead of "RENYXERA" (cosmetic only — sign-in itself works, confirmed live via wrangler tail logs). (a) Homepage URL ownership — 🔶 **meta tag added and deployed** (`google-site-verification` in `app/layout.tsx`'s metadata, code `c3t_O6h...`); still needs you to click **Verify** in Google Search Console (added `gate.renyxera.workers.dev` under `renyxera@gmail.com`), then re-check branding verification in Cloud Console. (b) Logo flagged as "doesn't uniquely identify your brand": current `icon-512.png` is a bare abstract mark with no text — needs a square (512×512, solid background) lockup combining the mark + "RENYXERA" wordmark. |
 | ~~4~~ | ~~Update Supabase Auth → URL Configuration~~ | ✅ **done** |
 | ~~5~~ | ~~Decide Vercel's fate~~ | ✅ **decided — leave it as is**, dormant, not disconnecting or deleting |
 | ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** — first two automated runs failed on a Node version mismatch (wrangler requires Node ≥22, workflow was pinned to 20), fixed in commit `2e4411a`, third run succeeded. Confirmed live: a real Supabase error response came back from the CI-built deploy, proving the secrets correctly reached the build. |
 
 Once those 3 exist, push anything to `main` and check the **Actions** tab on GitHub — you'll see it build and deploy automatically, same as Vercel used to.
+
+---
+
+## 🟡 Backlog — deferred until there's a reason to spend money
+
+| # | Task | Why it's parked |
+|---|---|---|
+| 1 | **Custom-domain confirmation emails** (RENYXERA sender instead of Supabase's default) | Needs a real domain with DNS access (`renyxera.workers.dev` doesn't qualify — you don't control its DNS) — that's a ~$10-12/year registration, the one thing in this stack that genuinely can't stay $0. Steps are ready (Resend account → verify domain via 3 DNS records → API key → Supabase Dashboard → Auth → SMTP Settings) whenever a domain gets bought. Revisit alongside Module 4A's own "Custom domain" line (also parked for the same reason). |
 
 ---
 

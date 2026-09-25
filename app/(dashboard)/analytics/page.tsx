@@ -15,6 +15,7 @@ import {
 import { LearningEngine, PersonalizedIntelligence } from "@/lib/learning/LearningEngine";
 import { motion } from "motion/react";
 import { Reveal } from "@/components/ui/reveal";
+import { GuestLock } from "@/components/auth/guest-lock";
 
 export default function AnalyticsDashboardPage() {
   const { isInitialized } = useDataStore();
@@ -112,8 +113,12 @@ export default function AnalyticsDashboardPage() {
   });
 
   return (
+    <GuestLock
+      feature="Advanced Analytics"
+      description="See your mastery score, readiness index, and weak-topic insights — sign in to track them across every attempt."
+    >
     <div className="w-full mx-auto p-4 md:p-6 space-y-8 font-sans">
-      
+
       {/* Page Title */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -456,5 +461,6 @@ export default function AnalyticsDashboardPage() {
       </div>
 
     </div>
+    </GuestLock>
   );
 }
