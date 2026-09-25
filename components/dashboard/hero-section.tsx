@@ -6,6 +6,7 @@ import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring 
 import { Sparkles, Flame, CheckCircle2, TrendingUp, Trophy, Compass, ArrowRight, BrainCircuit } from "lucide-react";
 import { CountUp, RadialGauge, TiltCard, InfoTip } from "@/components/ui/interactive";
 import { useDisplayName } from "@/store/use-auth-store";
+import { BrandName } from "@/components/brand/wordmark";
 
 interface HeroSectionProps {
   streak: number;
@@ -67,7 +68,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
   // visitor's), so the first paint shows a neutral welcome that then personalises.
   const [greet, setGreet] = useState<string | null>(null);
   useEffect(() => setGreet(timeGreeting()), []);
-  const greetingLine = greet ? `${greet}${first ? `, ${first}` : ""}` : `Welcome${first ? `, ${first}` : " to RENYXERA"}`;
+  const greetingLine = greet ? `${greet}${first ? `, ${first}` : ""}` : first ? `Welcome, ${first}` : null;
 
   const rank = useMemo(() => {
     let i = 0;
@@ -122,7 +123,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs sm:text-[13px] font-semibold border border-white/10 text-indigo-50">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
               <span suppressHydrationWarning>
-                {greetingLine} <span className="text-indigo-200/80 font-medium">— ready for today&apos;s session?</span>
+                {greetingLine ?? <>Welcome to <BrandName onDark /></>} <span className="text-indigo-200/80 font-medium">— ready for today&apos;s session?</span>
               </span>
             </div>
 
@@ -139,7 +140,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
             </h1>
 
             <p className="text-indigo-100/80 font-medium text-sm md:text-base leading-relaxed max-w-xl">
-              RENYXERA is your GATE CSE study engine: practise real previous-year questions, find your weak spots with
+              <BrandName onDark /> is your GATE CSE study engine: practise real previous-year questions, find your weak spots with
               analytics, and get unstuck with an AI Mentor. Keep your streak going every day.
             </p>
           </div>
@@ -168,7 +169,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
 
         {/* Interactive stat tiles */}
         <div className="flex-1 max-w-xl grid grid-cols-2 md:grid-cols-3 gap-3.5">
-          <TiltCard as="button" onClick={() => router.push("/calendar")} title="Open your study calendar" className={tile}>
+          <TiltCard as="button" onClick={() => router.push("/calendar")} ariaLabel="Open your study calendar" className={tile}>
             <div className="text-[10px] font-bold text-rose-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
               <Flame className="w-3.5 h-3.5 fill-rose-500 stroke-none" />
               <span>Streak</span>
@@ -178,7 +179,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
             </div>
           </TiltCard>
 
-          <TiltCard as="button" onClick={() => router.push("/analytics")} title="See your analytics" className={tile}>
+          <TiltCard as="button" onClick={() => router.push("/analytics")} ariaLabel="See your analytics" className={tile}>
             <div className="text-[10px] font-bold text-sky-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Solved</span>
@@ -188,7 +189,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
             </div>
           </TiltCard>
 
-          <TiltCard as="button" onClick={() => router.push("/analytics")} title="See accuracy by subject" wrapperClassName="col-span-2 md:col-span-1" className={tile}>
+          <TiltCard as="button" onClick={() => router.push("/analytics")} ariaLabel="See accuracy by subject" wrapperClassName="col-span-2 md:col-span-1" className={tile}>
             <div className="text-[10px] font-bold text-emerald-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5" />
               <span>Accuracy</span>
@@ -206,7 +207,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
             </div>
           </TiltCard>
 
-          <TiltCard as="button" onClick={() => router.push("/analytics")} title="Your rank ladder" wrapperClassName="col-span-2" className={tile}>
+          <TiltCard as="button" onClick={() => router.push("/analytics")} ariaLabel="Your rank ladder" wrapperClassName="col-span-2" className={tile}>
             <div className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
               <Trophy className="w-3.5 h-3.5" />
               <span>Mastery rank</span>
@@ -227,7 +228,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
             </div>
           </TiltCard>
 
-          <TiltCard as="button" onClick={() => router.push("/ai-mentor")} title="Open your readiness report in AI Mentor" className={`${tile} items-center`}>
+          <TiltCard as="button" onClick={() => router.push("/ai-mentor")} ariaLabel="Open your readiness report in AI Mentor" className={`${tile} items-center`}>
             <div className="w-full text-[10px] font-bold text-violet-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5" />
               <span>Readiness</span>

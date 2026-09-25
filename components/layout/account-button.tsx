@@ -45,15 +45,31 @@ export function AccountButton() {
   const seed = profile?.avatar_seed || user.id;
   const avatarUri = generateAvatarDataUri(style, seed, { size: 64 });
 
+  const name = profile?.display_name?.trim() || null;
+
+  // Hover: a brand-gradient ring sweeps round the avatar, a glossy sheen crosses the
+  // picture and (on wide screens) the name slides out beside it. A small "synced" dot
+  // with a soft ripple shows the account is signed in. Styles: .avatar-fx in globals.css.
   return (
     <Link
       href="/profile"
-      className="block w-8 h-8 rounded-lg overflow-hidden border border-[var(--border)] hover:border-indigo-500 transition-colors shrink-0"
-      title={profile?.display_name?.trim() ? `${profile.display_name.trim()} · Your profile` : "Your profile"}
-      aria-label={profile?.display_name?.trim() ? `${profile.display_name.trim()} — open your profile` : "Open your profile"}
+      aria-label={name ? `${name} — open your profile` : "Open your profile"}
+      className="avatar-fx group relative flex items-center gap-2 rounded-xl outline-none shrink-0"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}
-      <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={64} height={64} />
+      <span className="relative block w-8 h-8">
+        <span className="avatar-ring" aria-hidden="true" />
+        <span className="relative block w-8 h-8 rounded-[9px] overflow-hidden border border-[var(--border)] bg-[var(--surface-secondary)] transition-[filter] duration-300 group-hover:saturate-150 group-hover:brightness-110">
+          {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}
+          <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={64} height={64} />
+          <span className="avatar-sheen" aria-hidden="true" />
+        </span>
+        <span className="avatar-dot absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[var(--surface)]" aria-hidden="true" />
+      </span>
+      {name && (
+        <span className="hidden xl:block max-w-0 group-hover:max-w-[140px] group-focus-visible:max-w-[140px] overflow-hidden whitespace-nowrap text-xs font-semibold text-[var(--text-primary)] opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all duration-300 ease-out pr-0 group-hover:pr-1.5">
+          {name.split(/\s+/)[0]}
+        </span>
+      )}
     </Link>
   );
 }

@@ -5,6 +5,7 @@ import {
   animate, motion, useInView, useMotionValue, useReducedMotion, useSpring, useTransform,
 } from "motion/react";
 import { Info } from "lucide-react";
+import { createPortal } from "react-dom";
 
 /**
  * Shared interactive building blocks for the Dashboard, Analytics and AI Mentor
@@ -151,39 +152,76 @@ export function TiltCard({
   );
 }
 
-/** Small "i" that shows an explanation on hover or keyboard focus. */
+/** Small "i" that shows an explanation on hover or keyboard focus.
+ *
+ * The popup is portalled to <body> with fixed positioning: these icons live inside
+ * cards that clip their overflow (and inside tilting 3D tiles), so a popup rendered in
+ * place got cut off at the card's edge. It opens below the icon, flips above when there
+ * isn't room, and is clamped to stay inside the viewport horizontally. */
 export function InfoTip({ children, className = "", align = "center" }: {
   children: ReactNode; className?: string; align?: "center" | "left" | "right";
 }) {
   const [open, setOpen] = useState(false);
-  const pos = align === "left" ? "left-0" : align === "right" ? "right-0" : "left-1/2 -translate-x-1/2";
+  // `top` is the distance from the viewport top, or from the bottom when `above`.
+  const [pos, setPos] = useState<{ top: number; left: number; above: boolean } | null>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const WIDTH = 240;
+
+  const place = () => {
+    const el = btnRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const margin = 12;
+    let left = align === "left" ? r.left : align === "right" ? r.right - WIDTH : r.left + r.width / 2 - WIDTH / 2;
+    left = Math.max(margin, Math.min(left, window.innerWidth - WIDTH - margin));
+    const above = window.innerHeight - r.bottom < 160 && r.top > 160;
+    setPos({ top: above ? window.innerHeight - r.top + 8 : r.bottom + 8, left, above });
+  };
+
+  const show = () => { place(); setOpen(true); };
+  const hide = () => setOpen(false);
+
+  useEffect(() => {
+    if (!open) return;
+    const onMove = () => place();
+    window.addEventListener("scroll", onMove, true);
+    window.addEventListener("resize", onMove);
+    return () => {
+      window.removeEventListener("scroll", onMove, true);
+      window.removeEventListener("resize", onMove);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   return (
-    <span
-      className={`relative inline-flex ${className}`}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
+    <span className={`relative inline-flex ${className}`} onMouseEnter={show} onMouseLeave={hide}>
       <button
+        ref={btnRef}
         type="button"
         aria-label="More info"
-        onFocus={() => setOpen(true)}
-        onBlur={() => setOpen(false)}
-        onClick={(e) => { e.stopPropagation(); setOpen((v) => !v); }}
+        aria-expanded={open}
+        onFocus={show}
+        onBlur={hide}
+        onClick={(e) => { e.stopPropagation(); open ? hide() : show(); }}
+        onKeyDown={(e) => e.stopPropagation()}
         className="inline-flex items-center justify-center w-4 h-4 rounded-full opacity-60 hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-opacity"
       >
         <Info className="w-3.5 h-3.5" />
       </button>
-      {open && (
-        <motion.span
-          role="tooltip"
-          initial={{ opacity: 0, y: 4, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.15 }}
-          className={`absolute top-full mt-2 ${pos} z-50 w-60 rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3 text-[11px] font-medium normal-case tracking-normal leading-relaxed text-[var(--text-secondary)] shadow-xl`}
-        >
-          {children}
-        </motion.span>
-      )}
+      {open && pos && typeof document !== "undefined" &&
+        createPortal(
+          <motion.span
+            role="tooltip"
+            initial={{ opacity: 0, y: pos.above ? 4 : -4, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.15 }}
+            style={pos.above ? { position: "fixed", bottom: pos.top, left: pos.left, width: WIDTH } : { position: "fixed", top: pos.top, left: pos.left, width: WIDTH }}
+            className="z-[200] pointer-events-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] p-3 text-[12px] font-medium normal-case tracking-normal leading-relaxed text-[var(--text-secondary)] shadow-2xl"
+          >
+            {children}
+          </motion.span>,
+          document.body
+        )}
     </span>
   );
 }

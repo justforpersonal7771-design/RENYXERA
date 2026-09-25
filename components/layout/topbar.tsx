@@ -56,6 +56,18 @@ export function Topbar() {
     progressRaw.set(0);
   }, [pathname, progressRaw]);
 
+  // Gliding hover highlight inside the action cluster.
+  const clusterRef = useRef<HTMLDivElement>(null);
+  const [actPill, setActPill] = useState<{ x: number; w: number } | null>(null);
+  const onClusterOver = (e: React.MouseEvent) => {
+    const btn = (e.target as HTMLElement).closest(".nav-act") as HTMLElement | null;
+    const box = clusterRef.current;
+    if (!btn || !box) return;
+    const b = btn.getBoundingClientRect();
+    const c = box.getBoundingClientRect();
+    setActPill({ x: b.left - c.left, w: b.width });
+  };
+
   const openPalette = () =>
     window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }));
 
@@ -210,10 +222,30 @@ export function Topbar() {
         {/* Right Actions */}
         <div className="flex items-center gap-3">
 
-          <div className="flex items-center gap-0.5 bg-[var(--surface)]/80 border border-[var(--border)] backdrop-blur-md rounded-xl p-1 shadow-sm">
+          {/* Action cluster: brand comet circling the border (.nav-cluster), a highlight
+              that glides to whichever icon is hovered, and icons that re-draw their
+              strokes on hover (.nav-act). */}
+          <div
+            ref={clusterRef}
+            onMouseOver={onClusterOver}
+            onMouseLeave={() => setActPill(null)}
+            className="nav-cluster relative flex items-center gap-0.5 rounded-xl p-1 shadow-sm"
+          >
+             <AnimatePresence>
+                {actPill && (
+                   <motion.span
+                      aria-hidden="true"
+                      initial={{ opacity: 0, x: actPill.x, width: actPill.w }}
+                      animate={{ opacity: 1, x: actPill.x, width: actPill.w }}
+                      exit={{ opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 520, damping: 38 }}
+                      className="absolute top-1 bottom-1 left-0 rounded-lg bg-[var(--surface-secondary)] pointer-events-none"
+                   />
+                )}
+             </AnimatePresence>
              <button
                 onClick={openPalette}
-                className="hidden md:flex items-center gap-2 p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer"
+                className="nav-act relative z-10 hidden md:flex items-center gap-2 p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                 aria-label="Search and commands (Ctrl+K)"
                 title="Search & commands (Ctrl+K)"
              >
@@ -222,10 +254,10 @@ export function Topbar() {
              <div className="relative" ref={calendarRef}>
                 <button
                    onClick={() => setIsCalendarOpen(prev => !prev)}
-                   className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                   className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isCalendarOpen
                        ? "text-white bg-indigo-600 shadow-sm"
-                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]"
+                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="Study Planner Quick Access"
                    title="Study Planner"
@@ -245,10 +277,10 @@ export function Topbar() {
              <div className="relative" ref={todoRef}>
                 <button
                    onClick={() => setIsTodoOpen(prev => !prev)}
-                   className={`p-2 rounded-lg transition-colors cursor-pointer ${
+                   className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isTodoOpen
                        ? "text-white bg-indigo-600 shadow-sm"
-                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]"
+                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="To-Do List Quick Access"
                    title="To-Do List"
@@ -270,12 +302,12 @@ export function Topbar() {
                  instead needs no extra plumbing. */}
              <button
                 onClick={() => setIsGoalSliderOpen(true)}
-                className={`hidden sm:flex relative p-2 rounded-lg transition-colors cursor-pointer ${
+                className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
                     ? "text-white bg-indigo-600 shadow-sm"
                     : isFocusTargetActive
                       ? "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-1 ring-amber-500/40 hover:bg-amber-500/25"
-                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)]"
+                      : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                 }`}
                 aria-label="Focus Target"
                 title={isFocusTargetActive ? `Focus Target active — ${targetPercent}% syllabus` : "Focus Target"}
@@ -290,7 +322,7 @@ export function Topbar() {
                 )}
              </button>
 
-             <div className="hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
+             <div className="relative z-10 hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
 
              {/* Dev Reset is a one-tap "wipe everything" action — desktop-only (lg:,
                  matching the main nav's own collapse point), and deliberately not
@@ -300,7 +332,7 @@ export function Topbar() {
              <button
                 onClick={handleDeveloperReset}
                 disabled={isResetting}
-                className="hidden lg:flex p-2 text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+                className="nav-act relative z-10 hidden lg:flex p-2 text-[var(--danger)] rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
                 aria-label="Developer Reset"
                 title="Perform Hard Reset"
              >
@@ -309,24 +341,32 @@ export function Topbar() {
 
              <button
                 onClick={toggleTheme}
-                className="p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] rounded-lg transition-colors cursor-pointer"
+                className="nav-act relative z-10 p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer overflow-hidden"
                 aria-label="Toggle Theme"
                 suppressHydrationWarning
              >
-                {mounted && resolvedTheme === "dark" ? (
-                   <Sun className="w-4 h-4" />
-                ) : (
-                   <Moon className="w-4 h-4" />
-                )}
+                {/* Sun and moon swap with a spin-and-drop rather than an instant cut. */}
+                <AnimatePresence mode="wait" initial={false}>
+                   <motion.span
+                      key={mounted && resolvedTheme === "dark" ? "sun" : "moon"}
+                      initial={{ rotate: -90, y: -10, opacity: 0 }}
+                      animate={{ rotate: 0, y: 0, opacity: 1 }}
+                      exit={{ rotate: 90, y: 10, opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="block"
+                   >
+                      {mounted && resolvedTheme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                   </motion.span>
+                </AnimatePresence>
              </button>
 
-             <div className="w-px h-5 bg-[var(--border)] mx-0.5" />
+             <div className="relative z-10 w-px h-5 bg-[var(--border)] mx-0.5" />
 
-             <AccountButton />
+             <div className="relative z-10 flex items-center"><AccountButton /></div>
 
              <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="lg:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] rounded-lg transition-colors cursor-pointer"
+                className="nav-act relative z-10 lg:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer"
              >
                 {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
              </button>

@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Syne } from 'next/font/google';
+import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC } from 'next/font/google';
 import './globals.css'; // Global styles
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
@@ -13,14 +13,14 @@ import { ThemeProvider } from '@/components/theme-provider';
 //  - JetBrains Mono — code only; numbers use Sora's tabular figures instead
 //  - Playball  — script accent for the dashboard headline (.font-script)
 //  - Cinzel    — classical luxe serif for "GATE 2027" (.font-luxe)
-//  - Syne      — the RENYXERA wordmark only (.font-brand), so the product name stands apart
+//  - Bruno Ace SC — the RENYXERA wordmark only (.font-brand), so the product name stands apart
 const bodySans = Manrope({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 const displaySans = Sora({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
 const accentSerif = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['SOFT', 'opsz'], variable: '--font-serif', display: 'swap' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 const script = Playball({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap' });
 const luxe = Cinzel({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-luxe', display: 'swap' });
-const brand = Syne({ subsets: ['latin'], weight: ['700', '800'], variable: '--font-brand', display: 'swap' });
+const brand = Bruno_Ace_SC({ subsets: ['latin'], weight: '400', variable: '--font-brand', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'RENYXERA — A New ERA of Intelligent Learning',

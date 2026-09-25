@@ -9,6 +9,13 @@
   initial-value: 0;
 }
 
+/* Angle for the rotating conic borders (navbar action cluster, avatar ring). */
+@property --ang {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 @theme {
   --color-background: var(--background);
   --color-surface: var(--surface);
@@ -111,6 +118,82 @@
   @media (prefers-reduced-motion: reduce) {
     .gate-anim, .gate-anim .gate-text, .gate-anim .gate-spark { animation: none; }
     .gate-anim .gate-spark { opacity: 0.8; }
+  }
+
+  /* Navbar action cluster: a brand-coloured comet travels round its border forever. */
+  .nav-cluster {
+    border: 1px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      conic-gradient(from var(--ang), var(--border) 0deg, var(--border) 250deg, #06c2fb 290deg, #5b21e0 320deg, #dd42fb 345deg, var(--border) 360deg) border-box;
+    animation: ang-spin 7s linear infinite;
+    transition: box-shadow 0.3s ease;
+  }
+  .nav-cluster:hover {
+    box-shadow: 0 8px 26px -10px rgba(91, 33, 224, 0.45);
+  }
+  @keyframes ang-spin {
+    to { --ang: 360deg; }
+  }
+
+  /* Icons in the cluster re-draw their own strokes on hover, like a quick sketch. */
+  .nav-act:hover svg :is(path, line, circle, rect, polyline, polygon) {
+    stroke-dasharray: 64;
+    animation: icon-draw 0.7s ease-out;
+  }
+  @keyframes icon-draw {
+    from { stroke-dashoffset: 64; }
+    to { stroke-dashoffset: 0; }
+  }
+
+  /* Avatar: gradient ring sweeping round, glossy sheen, synced dot with a ripple. */
+  .avatar-fx .avatar-ring {
+    position: absolute;
+    inset: -3px;
+    border-radius: 12px;
+    padding: 2px;
+    background: conic-gradient(from var(--ang), #06c2fb, #5b21e0, #dd42fb, #06c2fb);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: ang-spin 2.4s linear infinite;
+  }
+  .avatar-fx:hover .avatar-ring, .avatar-fx:focus-visible .avatar-ring {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .avatar-fx .avatar-sheen {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.75) 48%, transparent 66%);
+    transform: translateX(-120%);
+    pointer-events: none;
+  }
+  .avatar-fx:hover .avatar-sheen {
+    animation: avatar-sheen 0.9s ease-out;
+  }
+  @keyframes avatar-sheen {
+    to { transform: translateX(120%); }
+  }
+  .avatar-fx .avatar-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: inherit;
+    animation: avatar-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes avatar-ping {
+    0% { transform: scale(1); opacity: 0.7; }
+    70%, 100% { transform: scale(2.6); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav-cluster, .avatar-fx .avatar-ring, .avatar-fx .avatar-dot::after { animation: none; }
+    .nav-act:hover svg * { animation: none; }
+    .avatar-fx:hover .avatar-sheen { animation: none; }
   }
 
   /* First-load splash. Pure CSS on purpose: it's in the server-rendered HTML and fades
