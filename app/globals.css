@@ -390,6 +390,10 @@
 
     --border: #e4e4e7;
     --border-subtle: #f4f4f5;
+    /* Used by 12 hover/selected states (dropdowns, filters, setup cards). It was never
+       defined, so those borders fell back to the text colour — the near-black outline
+       that showed on hovered/open dropdowns. */
+    --border-strong: #cfcbe3;
 
     --success: #10b981;
     --warning: #f59e0b;
@@ -467,6 +471,7 @@
 
     --border: #27272a;
     --border-subtle: #18181b;
+    --border-strong: #3f3c55;
 
     --success: #10b981;
     --warning: #f59e0b;

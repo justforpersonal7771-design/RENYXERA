@@ -118,11 +118,15 @@ export function DatePicker({
         ref={buttonRef}
         type="button"
         onClick={() => (isOpen ? close() : setIsOpen(true))}
-        className={
+        className={`${
           compact
-            ? "flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-indigo-500 transition-colors cursor-pointer"
-            : "w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-indigo-500 transition-colors cursor-pointer"
-        }
+            ? "flex items-center gap-1.5 px-2 py-1 rounded-lg text-[10px] font-bold"
+            : "w-full flex items-center justify-between gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold"
+        } border text-[var(--text-primary)] outline-none transition-all duration-200 cursor-pointer ${
+          isOpen
+            ? "bg-[var(--surface)] border-violet-500/70 shadow-[0_0_0_4px_rgba(124,58,237,0.14),0_8px_24px_-12px_rgba(124,58,237,0.45)]"
+            : "bg-[var(--surface-secondary)] border-[var(--border)] hover:border-violet-400/60 focus-visible:border-violet-500/70 focus-visible:shadow-[0_0_0_4px_rgba(124,58,237,0.14),0_8px_24px_-12px_rgba(124,58,237,0.45)]"
+        }`}
       >
         <span className={selected ? "" : "text-[var(--text-muted)]"}>{label}</span>
         <CalendarIcon className={compact ? "w-3 h-3 text-[var(--text-muted)]" : "w-4 h-4 text-[var(--text-muted)]"} />

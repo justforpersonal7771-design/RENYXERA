@@ -84,14 +84,18 @@ export function CustomDropdown({ options, value, onChange, placeholder = "Select
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         onKeyDown={handleKeyDown}
-        className="w-full flex items-center justify-between px-4 py-3 bg-[var(--surface-secondary)] hover:bg-[var(--surface-secondary)]/80 hover:border-[var(--border-strong)] border border-[var(--border)] rounded-xl text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--info)] transition-all cursor-pointer"
+        className={`w-full flex items-center justify-between px-4 py-3 border rounded-xl text-left outline-none transition-all duration-200 cursor-pointer ${
+          isOpen
+            ? "bg-[var(--surface)] border-violet-500/70 shadow-[0_0_0_4px_rgba(124,58,237,0.14),0_8px_24px_-12px_rgba(124,58,237,0.45)]"
+            : "bg-[var(--surface-secondary)] border-[var(--border)] hover:border-violet-400/60 hover:bg-[var(--surface)] focus-visible:border-violet-500/70 focus-visible:shadow-[0_0_0_4px_rgba(124,58,237,0.14),0_8px_24px_-12px_rgba(124,58,237,0.45)]"
+        }`}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
         <span className={`block truncate ${!selectedOption ? "text-[var(--text-muted)]" : "text-[var(--text-primary)] font-medium"}`}>
           {selectedOption ? selectedOption.label : placeholder}
         </span>
-        <ChevronDown className={`w-4 h-4 text-[var(--text-secondary)] transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown className={`w-4 h-4 transition-all duration-200 ${isOpen ? "rotate-180 text-violet-500" : "text-[var(--text-secondary)]"}`} />
       </button>
 
       {mounted && createPortal(
@@ -130,7 +134,7 @@ export function CustomDropdown({ options, value, onChange, placeholder = "Select
                       setIsOpen(false);
                     }}
                     className={`flex items-center justify-between px-4 py-2 cursor-pointer transition-colors ${
-                      isSelected ? "bg-[var(--info)]/10 text-[var(--info)]" : "text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
+                      isSelected ? "bg-violet-500/10 text-violet-600 dark:text-violet-300" : "text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
                     }`}
                   >
                     <div className="flex flex-col min-w-0">
@@ -143,7 +147,7 @@ export function CustomDropdown({ options, value, onChange, placeholder = "Select
                         </span>
                       )}
                     </div>
-                    {isSelected && <Check className="w-4 h-4 text-[var(--info)] shrink-0" />}
+                    {isSelected && <Check className="w-4 h-4 text-violet-500 shrink-0" />}
                   </li>
                 );
               })}
