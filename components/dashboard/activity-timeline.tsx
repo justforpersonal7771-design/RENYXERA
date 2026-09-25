@@ -107,7 +107,10 @@ export function ActivityTimeline({ recentSessions, bookmarks, mistakes }: Activi
         </h3>
       </div>
 
-      <div className="flex-1 overflow-y-auto pr-1 -mr-1 custom-scrollbar space-y-6">
+      {/* Fills whatever height the card is given (the dashboard stretches it to line up
+          with the other column) and scrolls inside it, so no empty space below the list. */}
+      <div className="relative flex-1 min-h-[260px]">
+      <div className="absolute inset-0 overflow-y-auto pr-1 -mr-1 custom-scrollbar space-y-6">
         {groupedEvents.length === 0 ? (
           <div className="h-full flex items-center justify-center text-center p-8 text-[var(--text-muted)] text-xs">
             Start solving quizzes or bookmarking questions to populate your activity.
@@ -155,6 +158,7 @@ export function ActivityTimeline({ recentSessions, bookmarks, mistakes }: Activi
             </div>
           ))
         )}
+      </div>
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
   };
 
   return (
-    <div className="card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
+    <div className="@container card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
       <div className="px-6 py-5 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
         <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1.5">
           <Award className="w-4 h-4 text-indigo-500" />
@@ -58,7 +58,10 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
         </h3>
       </div>
 
-      <div className="flex-1 overflow-y-auto max-h-[380px] custom-scrollbar divide-y divide-[var(--border-subtle)]">
+      {/* Fills whatever height the card is given (the dashboard stretches it to line up
+          with the other column) and scrolls inside it, so no empty space below the list. */}
+      <div className="relative flex-1 min-h-[260px]">
+      <div className="absolute inset-0 overflow-y-auto custom-scrollbar divide-y divide-[var(--border-subtle)]">
         {recentSessions.length === 0 ? (
           <div className="p-12 text-center text-[var(--text-secondary)] flex flex-col items-center justify-center">
             <CheckSquare className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-700" />
@@ -76,7 +79,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
                 transition={{ delay: index * 0.05 }}
                 className="hover:bg-[var(--surface-secondary)]/50 transition-colors"
               >
-                <div className="p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                <div className="p-5 flex flex-col @lg:flex-row justify-between @lg:items-center gap-3 @lg:gap-4">
                   <button
                     onClick={() => setExpandedId(isExpanded ? null : session.id)}
                     className="flex items-start gap-2 text-left cursor-pointer flex-1 min-w-0"
@@ -84,7 +87,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
                     <ChevronDown className={`w-4 h-4 mt-0.5 shrink-0 text-[var(--text-muted)] transition-transform ${isExpanded ? "rotate-180" : ""}`} />
                     <div className="space-y-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <h4 className="font-bold text-sm text-[var(--text-primary)] truncate">
+                        <h4 className="font-bold text-sm text-[var(--text-primary)] line-clamp-2 break-words">
                           {testConfig ? describeTestConfig(testConfig) : "GATE Mock Session"}
                         </h4>
                         {testConfig?.goalTag && <GoalTagBadge tag={testConfig.goalTag} />}
@@ -108,10 +111,10 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
                     </div>
                   </button>
 
-                  <div className="flex items-center gap-2.5 shrink-0">
+                  <div className="grid grid-cols-2 @lg:flex items-center gap-2.5 shrink-0 pl-6 @lg:pl-0">
                     <button
                       onClick={() => handleReview(session.id)}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-primary)] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+                      className="flex items-center justify-center gap-1.5 px-4 py-2 bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-primary)] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       <span>Review</span>
@@ -119,7 +122,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
                     <button
                       onClick={() => handlePracticeAgain(session)}
                       disabled={!testConfig || relaunchingId === session.id}
-                      className="flex items-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/20 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-900/40 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/20 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-900/40 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {relaunchingId === session.id
                         ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -156,6 +159,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
             );
           })
         )}
+      </div>
       </div>
     </div>
   );
