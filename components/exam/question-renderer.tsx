@@ -84,8 +84,11 @@ export const QuestionRenderer = memo(function QuestionRenderer({
           isNextDisabled={isNextDisabled}
         />
       )}
-      {/* Main Question Text (Scrollable) */}
-      <div className="flex-1 overflow-y-auto px-4 py-8 sm:px-12 custom-scrollbar">
+      {/* Main Question Text (Scrollable). Top padding clears the full-screen button
+          pinned in the corner (top-4, ~36px tall) — at py-8 the first line ran underneath
+          it on phones, hiding the end of the line (same clearance the Bookmarks, Mistakes,
+          Review and Revision viewers already use). */}
+      <div className="flex-1 overflow-y-auto px-4 pb-8 pt-16 sm:px-12 sm:pt-16 custom-scrollbar">
         <div className="text-lg md:text-xl font-medium leading-relaxed text-[var(--question-text)] mb-8">
           <AstNodeRenderer nodes={question.contentAst} />
         </div>

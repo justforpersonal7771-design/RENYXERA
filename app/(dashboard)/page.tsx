@@ -221,20 +221,25 @@ export default function Home() {
           match forces its stacked cards to flex-shrink below their natural height,
           which combined with overflow-hidden silently clipped the Countdown card's
           "Scheduled Ahead" section instead of showing it. */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
+      {/* Balanced two-column grid. Each column is a flex stack whose LAST card grows
+          (flex-1) to meet the other column's bottom edge, so the columns always end on
+          the same line whatever their content — no empty gap under the shorter side.
+          Only the last card grows; the rest keep their natural height (shrink-0),
+          which is what previously clipped the Countdown card's "Scheduled Ahead" list
+          when the whole column was stretched. Activity Timeline sits on the left to
+          even out the two columns' natural heights. */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+
         {/* Left Side (Spans 8 columns) */}
-        <div className="lg:col-span-8 space-y-8 flex flex-col justify-start">
-          {/* Progress Circular and Mastery Rings */}
-          <Reveal>
+        <div className="lg:col-span-8 flex flex-col gap-8">
+          <Reveal className="shrink-0">
             <ProgressVisualizer
               subjectPerformance={dashboardMetrics?.subjectPerformance || []}
               totalSolved={solvedCount}
             />
           </Reveal>
 
-          {/* Today's Focus Widget */}
-          <Reveal>
+          <Reveal className="shrink-0">
             <FocusCenter
               subjectPerformance={dashboardMetrics?.subjectPerformance || []}
               topicPerformance={dashboardMetrics?.topicPerformance || []}
@@ -244,35 +249,31 @@ export default function Home() {
               onContinueSession={handleResume}
             />
           </Reveal>
+
+          <Reveal className="flex-1 flex flex-col min-h-[260px] [&>*]:flex-1">
+            <ActivityTimeline
+              recentSessions={dashboardMetrics?.recentSessions || []}
+              bookmarks={bookmarks}
+              mistakes={mistakes}
+            />
+          </Reveal>
         </div>
 
         {/* Right Side (Spans 4 columns) */}
-        <div className="lg:col-span-4 space-y-8 flex flex-col justify-start">
-          {/* GATE 2027 Countdown + Scheduled tests */}
-          <Reveal>
+        <div className="lg:col-span-4 flex flex-col gap-8">
+          <Reveal className="shrink-0">
             <ExamCountdownCard />
           </Reveal>
 
-          {/* Contribution Heatmap */}
-          <Reveal>
+          <Reveal className="shrink-0">
             <GithubHeatmap
               snapshots={snapshots}
             />
           </Reveal>
 
-          {/* Recent Exam logs */}
-          <Reveal>
+          <Reveal className="flex-1 flex flex-col min-h-[260px] [&>*]:flex-1">
             <RecentExams
               recentSessions={dashboardMetrics?.recentSessions || []}
-            />
-          </Reveal>
-
-          {/* Activity timeline logs */}
-          <Reveal>
-            <ActivityTimeline
-              recentSessions={dashboardMetrics?.recentSessions || []}
-              bookmarks={bookmarks}
-              mistakes={mistakes}
             />
           </Reveal>
         </div>

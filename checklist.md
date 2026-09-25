@@ -92,7 +92,7 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Profile save now updates the shared auth store immediately (previously saved to Supabase but avatar/name changes wouldn't show anywhere — including the topbar — until a hard reload) | ✅ |
 | Sign-out UX: redirects to the dashboard with a "Signed out" toast, instead of flashing this page's own "not signed in" prompt for a couple seconds first | ✅ |
 | Stats/Achievements sections from the master plan's profile spec | ✅ *(Stats: accuracy, attempted, streak, hours, tests, mastered. 15 achievements derived from local progress in lib/achievements.ts — unlock retroactively, "New" badge for freshly earned ones)* |
-| Dynamic Exam Goals Engine (goals drive Focus Target/Goal Slider) | ⬜ *(goal fields save correctly; nothing reads target_rank/target_year to derive a recommended focus band yet)* |
+| Dynamic Exam Goals Engine (goals drive Focus Target/Goal Slider) | ✅ *(lib/goals/goal-engine.ts: target rank → marks → coverage at your accuracy → recommended focus % + topic set, with honest time/accuracy feasibility. Live "Goal plan" on the profile; "My goal" preset + Apply in the Focus Target panel. Acceptance test: `npm run check:goals` — AIR 100 vs AIR 5000 recommend different topic sets. Uses an approximate rank↔marks curve until 4J lands)* |
 
 ### 4F · P0 · Per-User Isolation & Device Sessions
 | Task | Status |
@@ -124,6 +124,17 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Conflict resolution rules | ⬜ |
 
 ---
+
+### 4J · P0 · Calibration Data Foundation *(makes predictions accurate)*
+| Task | Status |
+|---|---|
+| Marks ↔ AIR data (general + categories) for the last 3+ GATE CSE years, from official/cited sources | ⬜ |
+| Qualifying cut-offs, candidates appeared, GATE score formula & normalisation constants | ⬜ |
+| Official exam schedule per year; official syllabus per branch | ⬜ |
+| Versioned `calibration/<branch>/<year>.json` + `calibration/SOURCES.md` source/licence ledger | ⬜ |
+| Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | ⬜ |
+| Opt-in anonymised scorecard submissions from users to improve the curve | ⬜ |
+| Annual recalibration each March after results | ⬜ *(recurring)* |
 
 ## RELEASE 5 — Exam Integrity
 
@@ -190,6 +201,24 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 
 ---
 
+### 6D · P1 · Practice Question Bank (beyond PYQs)
+| Task | Status |
+|---|---|
+| Authoring pipeline: AI-assisted draft → mandatory expert review → publish | ⬜ |
+| Original practice sets for every CSE topic (MCQ/MSQ/NAT, worked solutions) | ⬜ |
+| Same taxonomy tags as PYQs + difficulty; clearly labelled "Practice" vs "PYQ" | ⬜ |
+| Difficulty recalibrated from real learner response data | ⬜ |
+| Annual Trend Refresh each March: add new papers, recompute weights, rebalance the bank, publish "What changed" note | ⬜ *(recurring)* |
+
+### 6E · P1 · Study Materials
+| Task | Status |
+|---|---|
+| One page per topic for every branch → section → subject → topic (notes, formulas, traps, worked examples) | ⬜ |
+| Each page linked to its PYQs, practice questions and prerequisite topics | ⬜ |
+| Original writing only, AI-draft → expert-review, sources cited | ⬜ |
+| Public pages feed SEO (6A); deeper material in the paid tier (7A) | ⬜ |
+| Yearly review with the Trend Refresh / syllabus changes | ⬜ *(recurring)* |
+
 ## RELEASE 7 — Monetization II: Pay-Per-Exam & Anti-Misuse
 
 ### 7A · P1 · Tier & Entitlement Model
@@ -240,6 +269,16 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Direct sponsorships, affiliate, digital products, B2B/college licences | ⬜ |
 
 ---
+
+### 8C · P1 · Multi-Branch Data Acquisition
+| Task | Status |
+|---|---|
+| Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | ⬜ |
+| Official syllabus → topic taxonomy per branch | ⬜ |
+| Calibration data per branch (4J) | ⬜ |
+| Rights check recorded in the source ledger before ingestion | ⬜ |
+| Extraction (8A) → answer-key match → tagging → human QA sample (≥98% first-pass accuracy) | ⬜ |
+| Launch gate: PYQs + keys + taxonomy + starter practice (6D) + topic pages (6E) before a branch leaves "Coming Soon" | ⬜ |
 
 ## RELEASE 9 — Product Depth & Controlled Community
 

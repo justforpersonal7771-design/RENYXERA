@@ -565,6 +565,37 @@ Shipping the selector early is deliberate: it converts a gap in our catalogue in
 
 ---
 
+### Module 4J · P0 · Calibration Data Foundation *(what makes every prediction honest)*
+
+**Goal.** Every number the product predicts — expected rank, marks needed for a target AIR, readiness, the Goals Engine's recommended focus band (4E-2) — must come from **real, sourced, versioned data**, not a hand-tuned curve. Today the Goals Engine uses an approximate rank↔marks table labelled as an estimate; this module replaces it with the real thing.
+
+**Data to acquire (per branch, per year, starting with CSE)**
+
+| Dataset | Used for | Where it comes from |
+|---|---|---|
+| Marks ↔ AIR distribution (general + each category) | Rank predictor, marks-for-target-rank, 4E-2 focus band | Official GATE result statistics / press releases from the organising IIT; published topper & cut-off tables; opt-in, anonymised scorecard submissions from our own users (with consent) |
+| Qualifying cut-offs per category | "Will I qualify" signal, feasibility checks | Official GATE brochure / results notification |
+| Candidates registered / appeared | Rank ↔ percentile conversion | Official results statistics |
+| GATE score formula & normalisation constants (multi-session papers) | Converting raw marks → normalised marks → GATE score | Official GATE information brochure |
+| Exam dates & session schedule | Countdown, days-left pacing | Official GATE schedule each year |
+| Official syllabus (per branch) | Topic taxonomy, coverage %, study-material structure (6E) | Official GATE syllabus PDF per branch |
+| Subject/topic weightage by year | Focus Target ranking, trend refresh (6D) | Derived from our own PYQ dataset (already done for CSE), recomputed each year |
+
+**Engineering**
+- Stored as versioned, source-cited files: `calibration/<branch>/<year>.json`, each with `source_url`, `retrieved_at`, `method`, and a confidence note. **No figure without a citation.**
+- The Goals Engine, readiness predictor and AI Mentor read from calibration data instead of constants; the UI states the vintage ("based on GATE 2026 results") and falls back to the labelled estimate only when data is missing.
+- A **source ledger** (`calibration/SOURCES.md`) records every source, its licence/terms, and what was used — copyright and ToS checked before anything is ingested.
+- **Annual recalibration** every March, after results are declared (see 4.3).
+
+**Acceptance criteria**
+- The rank↔marks curve used in production is traceable to cited sources for at least the last 3 GATE years.
+- Changing the calibration year measurably changes the predictor's output (tested, like 4E-3's criterion).
+- The UI never shows a prediction without its data vintage or an explicit "estimate" label.
+
+**Cost:** ₹0 (public data + our own anonymised data) **Depends on:** 4B (storage), 4E (consumer)
+
+---
+
 ### Release 4 — Definition of Done
 
 - [ ] Running on Cloudflare Pages/Workers; commercial use permitted; Vercel decommissioned
@@ -575,6 +606,7 @@ Shipping the selector early is deliberate: it converts a gap in our catalogue in
 - [ ] Guest teaser mode with contextual locks and lossless signup migration
 - [ ] Profile with DiceBear avatars storing only a seed
 - [ ] Exam Goals measurably drive Focus Target and Goal Slider
+- [ ] Predictions (rank, marks needed, readiness) read from cited, versioned calibration data (4J), with the data vintage shown
 - [ ] Per-user IndexedDB namespacing; all 10 Zustand stores reset on sign-out; no cross-account bleed
 - [ ] Active Devices list + sign out everywhere
 - [ ] `/api/ai/generate` authenticated, zod-validated, server-enum-instructed, user-ID rate-limited, quota-enforced
@@ -798,6 +830,44 @@ We already own the raw material: **975 questions with subject, topic, difficulty
 
 ---
 
+### Module 6D · P1 · Practice Question Bank — beyond PYQs, refreshed with the trends
+
+**Goal.** PYQs alone run out (~65 per paper per year) and a serious aspirant exhausts them. A large, **original**, trend-aware practice bank is what keeps people practising daily — and what a paid tier can credibly sell.
+
+**What it is**
+- Original questions (MCQ / MSQ / NAT) for every branch → section → subject → topic in the syllabus taxonomy, with worked solutions.
+- **Authoring pipeline:** AI-assisted drafts (Gemini free tier, prompted with the topic, the PYQ style and difficulty) → **mandatory expert review** (answer verified, solution checked, ambiguity removed) → published. No unreviewed AI question ever reaches a learner.
+- Tagged with the same taxonomy as PYQs plus difficulty and "concept tested", so Focus Target, weak-topic drills and the AI Mentor can use practice and PYQs interchangeably.
+- **Difficulty calibrated from real response data** (accuracy and time per question) after enough attempts, replacing the author's guess.
+- Clearly labelled in the UI as *Practice* vs *PYQ* — never passed off as a past paper.
+
+**Annual Trend Refresh (every March, after the new GATE papers)**
+1. Add the new year's official papers to the PYQ set (8A/8C pipeline).
+2. Recompute subject/topic weightage and question-type mix; diff against previous years to find rising/falling topics.
+3. Rebalance the practice bank: author new sets for rising topics and new question patterns; retire or down-weight stale ones.
+4. Recalibrate predictions (4J).
+5. Publish a "What changed in GATE <year>" note — doubles as SEO content (6A).
+
+**Acceptance criteria:** every practice question has a verified answer, a solution and a reviewer on record; the practice mix for a topic tracks that topic's recent PYQ weight.
+
+**Cost:** ₹0 in cash (free-tier AI + review time) **Depends on:** 4B, 4J, 8A/8C (for new PYQs)
+
+### Module 6E · P1 · Study Materials — for every branch, section, subject and topic
+
+**Goal.** Let a learner go from "I got this wrong" to "I understand this" without leaving the product.
+
+- Structured exactly like the syllabus taxonomy: **branch → section → subject → topic**, one page per topic.
+- Each topic page: concise concept notes, key formulas / cheat-sheet, common traps, 2–3 worked examples, and links to the PYQs and practice questions for that topic (and to its prerequisites via the knowledge graph).
+- **Original writing only** — no copied textbook or coaching material; the same AI-draft → expert-review pipeline as 6D, with sources cited where facts are stated.
+- Reviewed each year alongside the Trend Refresh and whenever the official syllabus changes.
+- Public, indexable versions of topic pages feed the SEO engine (6A); deeper material (full worked-example sets, downloadable sheets) can sit behind the paid tier (7A).
+
+**Acceptance criteria:** every syllabus topic of a live branch has a published page; every page links to at least its PYQs; every page has a reviewer on record.
+
+**Cost:** ₹0 in cash **Depends on:** 4B (taxonomy), 6D (shared pipeline); feeds 6A
+
+---
+
 ## RELEASE 7 — MONETIZATION II: PAY-PER-EXAM, PASSES & ANTI-MISUSE
 ### *Disruptive micro-pricing for a price-sensitive market.*
 
@@ -957,6 +1027,24 @@ Ads and per-exam sales are lines one and two. Ordered by effort-to-return at our
 
 ---
 
+### Module 8C · P1 · Multi-Branch Data Acquisition — PYQs, answer keys, syllabus, calibration
+
+**Goal.** Before a branch goes live, gather everything that branch needs — the same completeness CSE has today.
+
+**Per branch (DA, ECE, EE, ME, CE first; then IN, CH, BT, PI and others by demand from the 4H waitlist)**
+- Official question papers for every available year and session, and the **official final answer keys** (not coaching keys).
+- Official syllabus → the branch's topic taxonomy.
+- Calibration data per 4J (marks↔AIR, cut-offs, candidates, normalisation).
+- Rights check recorded in the source ledger before ingestion.
+
+**Pipeline:** papers go through the 8A vision extraction → answer keys matched by question number → topic tagging against the new taxonomy → human QA on a sample from every paper (target: ≥98% of questions correct first time; failures fixed and the sample widened) → load as seeds (4B).
+
+**Readiness gate for launch:** a branch leaves "Coming Soon" only when its PYQs, answer keys, taxonomy and at least a starter practice set (6D) and topic pages (6E) are in place.
+
+**Cost:** ₹0 **Depends on:** 8A, 4J; feeds 6D, 6E, 4H
+
+---
+
 ## RELEASE 9 — PRODUCT DEPTH & CONTROLLED COMMUNITY
 ### *Retention is what makes every revenue line above actually work.*
 
@@ -1040,7 +1128,8 @@ GATE is an annual **February** exam. Traffic and willingness-to-pay swing violen
 - **Halt all paid acquisition effort.** Intent collapses; anything spent here is wasted. (At ₹0 budget this means halting *time*, which is the scarce resource.)
 - Reallocate entirely to compounding work:
   - **Programmatic SEO content generation (6A)** — SEO takes months to compound, so the trough is exactly when to build the asset that pays in the next peak.
-  - **Branch data ingestion (8A)** — the vision pipeline runs for days and needs validation time. This is its window.
+  - **Branch data ingestion (8A, 8C)** — the vision pipeline runs for days and needs validation time. This is its window.
+  - **Annual data cycle** — as soon as results are declared: recalibrate predictions from the new results (4J), add the new papers and run the Trend Refresh on the practice bank (6D), and revise study materials (6E).
   - **Platform depth (9A, 9B)** — adaptive engine and gamification, built when nobody is mid-exam.
   - Infrastructure, debt, and the `BUGS.md` backlog.
 - Retain the prior cohort with result analysis, next-year planning tools, and early-bird passes for the following season.

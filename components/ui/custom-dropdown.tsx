@@ -9,6 +9,8 @@ interface Option {
   label: string;
   value: string;
   subLabel?: string;
+  /** Shown but not selectable (e.g. "Coming soon" branches). */
+  disabled?: boolean;
 }
 
 interface CustomDropdownProps {
@@ -129,12 +131,16 @@ export function CustomDropdown({ options, value, onChange, placeholder = "Select
                     key={option.value}
                     role="option"
                     aria-selected={isSelected}
+                    aria-disabled={option.disabled || undefined}
                     onClick={() => {
+                      if (option.disabled) return;
                       onChange(option.value);
                       setIsOpen(false);
                     }}
-                    className={`flex items-center justify-between px-4 py-2 cursor-pointer transition-colors ${
-                      isSelected ? "bg-violet-500/10 text-violet-600 dark:text-violet-300" : "text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
+                    className={`flex items-center justify-between px-4 py-2 transition-colors ${
+                      option.disabled
+                        ? "cursor-not-allowed opacity-45"
+                        : isSelected ? "cursor-pointer bg-violet-500/10 text-violet-600 dark:text-violet-300" : "cursor-pointer text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
                     }`}
                   >
                     <div className="flex flex-col min-w-0">

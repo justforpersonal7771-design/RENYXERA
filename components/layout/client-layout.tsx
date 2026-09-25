@@ -10,6 +10,8 @@ import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
 import { AuthModal } from "@/components/auth/auth-modal";
 import { useToastStore } from "@/store/use-toast-store";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
+import { MathJaxContext } from "better-react-mathjax";
+import { MATHJAX_CONFIG } from "@/lib/mathjax-config";
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -78,6 +80,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   if (isExamSession) {
     return (
+      <MathJaxContext config={MATHJAX_CONFIG}>
       <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 relative">
         <LaunchIntro />
         <main className="w-full h-full overflow-hidden">
@@ -86,10 +89,14 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
         <ToastContainer />
       </div>
+      </MathJaxContext>
     );
   }
 
   return (
+    // App-level MathJax context: starts the MathJax download as soon as the app opens
+    // (see lib/mathjax-config.ts); page-level contexts reuse it.
+    <MathJaxContext config={MATHJAX_CONFIG}>
     <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter relative">
       <LaunchIntro />
       {/* Topbar is fixed (not sticky-in-flow); the ambient body gradient
@@ -126,6 +133,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <ToastContainer />
       <AuthModal />
     </div>
+    </MathJaxContext>
   );
 }
 

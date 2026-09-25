@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/copy-static-data.mjs",
     "build": "next build",
+    "check:goals": "node --experimental-strip-types --no-warnings scripts/check-goal-engine.mts",
     "start": "next start",
     "lint": "eslint .",
     "clean": "next clean",

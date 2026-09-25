@@ -61,6 +61,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${luxe.variable} ${brand.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
+        {/* MathJax (formulas) comes from this CDN; warming the connection early shaves
+            the DNS/TLS round-trips off the first question with maths. */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
       </head>
       <body suppressHydrationWarning className="font-sans antialiased">
         {/* Root, not nested in (dashboard)/layout.tsx — next-themes' anti-flash

@@ -235,6 +235,20 @@
     .badge-sheen, .group:hover .badge-sheen { animation: none; }
   }
 
+  /* Focus Target panel: pulsing halo on the chart's drag handle. */
+  .focus-handle-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: focus-pulse 1.8s ease-out infinite;
+  }
+  @keyframes focus-pulse {
+    0% { transform: scale(0.4); opacity: 0.55; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .focus-handle-pulse { animation: none; opacity: 0; }
+  }
+
   /* First-load splash. Pure CSS on purpose: it's in the server-rendered HTML and fades
      itself out, so it's on screen from the very first paint (the old JS version only
      appeared after hydration — the page showed, then the splash popped over it, then

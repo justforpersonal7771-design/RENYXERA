@@ -12,6 +12,7 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
 import { StatsAchievements } from "@/components/profile/stats-achievements";
+import { GoalPlan } from "@/components/profile/goal-plan";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-avatar";
@@ -38,11 +39,11 @@ function SectionHeader({ icon: Icon, title, subtitle, tint }: { icon: typeof Use
 
 const BRANCHES = [
   { label: "Computer Science & IT", value: "CSE" },
-  { label: "Data Science & AI — Coming Soon", value: "DA" },
-  { label: "Electronics & Comm. — Coming Soon", value: "ECE" },
-  { label: "Electrical Engg. — Coming Soon", value: "EE" },
-  { label: "Mechanical Engg. — Coming Soon", value: "ME" },
-  { label: "Civil Engg. — Coming Soon", value: "CE" },
+  { label: "Data Science & AI — Coming Soon", value: "DA", disabled: true },
+  { label: "Electronics & Comm. — Coming Soon", value: "ECE", disabled: true },
+  { label: "Electrical Engg. — Coming Soon", value: "EE", disabled: true },
+  { label: "Mechanical Engg. — Coming Soon", value: "ME", disabled: true },
+  { label: "Civil Engg. — Coming Soon", value: "CE", disabled: true },
 ];
 
 /**
@@ -124,7 +125,8 @@ export default function ProfilePage() {
     });
     setDisplayName(profile.display_name || "");
     setUsername((profile.username || "").toLowerCase());
-    setTargetBranch(profile.target_branch || "CSE");
+    // Only CSE is live; a "Coming Soon" branch saved before those were locked reads as CSE.
+    setTargetBranch(BRANCHES.find((b) => b.value === profile.target_branch && !b.disabled)?.value ?? "CSE");
     setTargetYear(profile.target_year ? String(profile.target_year) : "2027");
     setTargetRank(profile.target_rank ? String(profile.target_rank) : "");
     setDailyHours(profile.daily_study_hours ? String(profile.daily_study_hours) : "2");
@@ -289,15 +291,26 @@ export default function ProfilePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Avatar */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.05 }}
-          className="lg:col-span-2 lg:self-start card-glass rounded-3xl p-6"
-        >
-          <SectionHeader icon={Palette} title="Avatar" subtitle="Pick a style and shuffle until it feels like you." tint="bg-fuchsia-500/10 text-fuchsia-500" />
-          <AvatarPicker value={avatar} onChange={setAvatar} />
-        </motion.div>
+        <div className="lg:col-span-2 space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.05 }}
+            className="card-glass rounded-3xl p-6"
+          >
+            <SectionHeader icon={Palette} title="Avatar" subtitle="Pick a style and shuffle until it feels like you." tint="bg-fuchsia-500/10 text-fuchsia-500" />
+            <AvatarPicker value={avatar} onChange={setAvatar} />
+          </motion.div>
+
+          {/* Fills the column beside Identity/Exam Goals and reacts to them live. */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12 }}>
+            <GoalPlan
+              targetRank={Number(targetRank) > 0 ? Number(targetRank) : null}
+              targetYear={Number(targetYear) || 2027}
+              dailyHours={Number(dailyHours) || 0}
+            />
+          </motion.div>
+        </div>
 
         <div className="lg:col-span-3 space-y-6">
           {/* Identity */}
