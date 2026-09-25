@@ -213,6 +213,28 @@
     .toggle-shine::after { animation: none; }
   }
 
+  /* Unlocked achievement medals: a light glint crosses them every few seconds, and
+     straight away on hover. */
+  .badge-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.7) 48%, transparent 66%);
+    transform: translateX(-130%);
+    animation: badge-sheen 4.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .group:hover .badge-sheen {
+    animation: badge-sheen 0.9s ease-out;
+  }
+  @keyframes badge-sheen {
+    0%, 70% { transform: translateX(-130%); }
+    100% { transform: translateX(130%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .badge-sheen, .group:hover .badge-sheen { animation: none; }
+  }
+
   /* First-load splash. Pure CSS on purpose: it's in the server-rendered HTML and fades
      itself out, so it's on screen from the very first paint (the old JS version only
      appeared after hydration — the page showed, then the splash popped over it, then

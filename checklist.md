@@ -80,8 +80,8 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 ### 4D · P1 · Guest Walkthrough / Teaser Mode
 | Task | Status |
 |---|---|
-| Contextual feature locks (blurred previews, "sign in to unlock") | ⬜ |
-| Guest → account IndexedDB migration on signup | ⬜ |
+| Contextual feature locks (blurred previews, "sign in to unlock") | ✅ *(GuestLock on Analytics / AI Mentor; clipped to one screen so the unlock card is always visible)* |
+| Guest → account IndexedDB migration on signup | ✅ *(lib/repository/storage/guest-migration.ts, run by AuthListener before the namespace switch; never overwrites existing account records)* |
 | Wire route protection into middleware once this exists | ⬜ |
 
 ### 4E · P1 · Profile, Avatars & Goals Engine
@@ -91,7 +91,7 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Full `/profile` page (identity, avatar, goals, sign-out) — gradient hero, real card layout | ✅ |
 | Profile save now updates the shared auth store immediately (previously saved to Supabase but avatar/name changes wouldn't show anywhere — including the topbar — until a hard reload) | ✅ |
 | Sign-out UX: redirects to the dashboard with a "Signed out" toast, instead of flashing this page's own "not signed in" prompt for a couple seconds first | ✅ |
-| Stats/Achievements sections from the master plan's profile spec | ⬜ |
+| Stats/Achievements sections from the master plan's profile spec | ✅ *(Stats: accuracy, attempted, streak, hours, tests, mastered. 15 achievements derived from local progress in lib/achievements.ts — unlock retroactively, "New" badge for freshly earned ones)* |
 | Dynamic Exam Goals Engine (goals drive Focus Target/Goal Slider) | ⬜ *(goal fields save correctly; nothing reads target_rank/target_year to derive a recommended focus band yet)* |
 
 ### 4F · P0 · Per-User Isolation & Device Sessions

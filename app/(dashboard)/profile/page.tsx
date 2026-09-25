@@ -11,6 +11,7 @@ import { normalizeUsername, usernameProblem } from "@/lib/username";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
+import { StatsAchievements } from "@/components/profile/stats-achievements";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-avatar";
@@ -402,6 +403,8 @@ export default function ProfilePage() {
           </motion.div>
         </div>
       </div>
+
+      <StatsAchievements />
     </div>
   );
 }
