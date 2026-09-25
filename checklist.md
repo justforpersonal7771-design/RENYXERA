@@ -44,8 +44,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 7 | **Google OAuth branding verification — logo only, fixable now** | Branding isn't verified, so the consent screen shows the raw Supabase domain instead of "RENYXERA" (cosmetic only — sign-in works). A square 512×512 lockup (mark + wordmark) exists at `public/brand/oauth-logo.png`; upload it in the Google console. |
 | 7b | ~~Homepage/privacy content issues~~ | ✅ **root-caused and fixed** — server-rendered homepage now explains the product; privacy policy has the Google-user-data section. |
 | 7c | **Homepage URL ownership — cannot be completed on `workers.dev`** | OAuth branding needs a DNS-verified Domain property; `workers.dev`'s DNS isn't yours. Merged into the domain backlog item below. |
-| 8 | **Run migration `supabase/migrations/0002_username_lowercase.sql`** in the Supabase SQL editor | ⬜ Lowercases existing usernames and makes the database enforce lowercase + case-insensitive uniqueness (the app already does both; this makes it a DB guarantee, as 4E-3 requires). |
-| 9 | **Run migration `supabase/migrations/0003_ai_quota_and_cache.sql`** in the Supabase SQL editor | ⬜ Turns on the per-user daily AI quota and the shared answer cache. Until then the AI route logs a warning and allows requests. |
+| ~~8~~ | ~~Run migration 0002 (usernames)~~ | ✅ **done** — verified 26 Sep: the database rejects an uppercase username |
+| ~~9~~ | ~~Run migration 0003 (AI quota + cache)~~ | ✅ **done** — verified 26 Sep: quota function and cache live; the public key is blocked from calling the quota function |
 | ~~4~~ | ~~Update Supabase Auth → URL Configuration~~ | ✅ **done** |
 | ~~5~~ | ~~Decide Vercel's fate~~ | ✅ **decided — leave it as is**, dormant |
 | ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** |
@@ -171,7 +171,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Profile save updates the shared auth store immediately | ✅ |
 | Sign-out UX: redirect to dashboard with a "Signed out" toast | ✅ |
 | Username: lowercase, validated, live availability check (server-side), reserved names blocked | ✅ |
-| Username uniqueness enforced by a **database constraint** (case-insensitive) | 🔶 *(migration 0002 written — run it: 🔴#8)* |
+| Username uniqueness enforced by a **database constraint** (case-insensitive) | ✅ *(migration 0002 live)* |
 | Username profanity list | ⬜ |
 | Display name used for greetings across the app | ✅ |
 | Stats section (accuracy, attempted, streak, hours, tests, mistakes mastered) | ✅ |
@@ -204,8 +204,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Supabase JWT required on `/api/ai/generate` (401, no Gemini call, for guests) | ✅ |
 | Response size caps and request timeouts | 🟨 *(body-size caps done; timeouts not explicit)* |
 | Upstash Redis, user-ID-keyed limiting | ⬜ *(current limiting is IP-keyed)* |
-| Per-user daily AI quota in Postgres | 🔶 *(built: atomic `consume_ai_call` (30/day, IST reset) wired into /api/ai/generate — run migration 0003: 🔴#9)* |
-| Server-side prompt-hash response cache | 🔶 *(built: `ai_response_cache`, cache hits cost no quota — needs migration 0003)* |
+| Per-user daily AI quota in Postgres | ✅ *(atomic `consume_ai_call`, 30/day, IST reset; live)* |
+| Server-side prompt-hash response cache | ✅ *(`ai_response_cache`; cache hits cost no quota; live)* |
 | Turnstile on signup/login/reset/OTP | ⬜ |
 
 ### 4H · P1 · Multi-Branch Teaser & Waitlist
