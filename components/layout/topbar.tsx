@@ -154,8 +154,8 @@ export function Topbar() {
       data-scrolled={scrolled ? "" : undefined}
       className={`h-16 fixed top-0 left-0 right-0 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-[background-color,box-shadow] duration-300 ${
         scrolled
-          ? "bg-[var(--background)]/85 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.28)]"
-          : "bg-[var(--background)]/65"
+          ? "bg-[var(--background)]/72 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.28)]"
+          : "bg-[var(--background)]/55"
       }`}
     >
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
@@ -180,7 +180,7 @@ export function Topbar() {
         <div className="hidden lg:flex flex-1 justify-center min-w-0">
           <nav
             onMouseLeave={() => setHovered(null)}
-            className="flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/55 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
+            className="flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/45 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
           >
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href;

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { NumberStepper } from "@/components/ui/number-stepper";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { Target, X, RotateCcw, Clock3, FileQuestion, TrendingUp, Sparkles, Check, Play, ListChecks } from "lucide-react";
@@ -373,13 +374,14 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   <label className="text-[9px] font-black uppercase tracking-wide text-[var(--text-muted)] flex items-center gap-1">
                     <ListChecks className="w-3 h-3" /> Questions
                   </label>
-                  <input
-                    type="number"
+                  <NumberStepper
+                    size="sm"
+                    className="w-32"
+                    ariaLabel="Questions to launch"
                     min={1}
                     max={Math.max(1, launchPool.length)}
                     value={Math.min(launchCount, Math.max(1, launchPool.length))}
-                    onChange={(e) => setLaunchCount(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-16 px-2 py-1 text-xs font-bold text-right bg-[var(--surface-secondary)] border border-[var(--border)] rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
+                    onChange={(v) => setLaunchCount(Math.max(1, v))}
                   />
                   <span className="text-[10px] text-[var(--text-muted)] font-semibold">/ {launchPool.length} available</span>
                 </div>

@@ -3,13 +3,14 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useRouter, useSearchParams } from "next/navigation";
+import { NumberStepper } from "@/components/ui/number-stepper";
 import { useDataStore } from "@/store/use-data-store";
 import { useExamStore } from "@/store/use-exam-store";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { ExamType, TestConfig, ExamSessionDraft } from "@/types/exam.types";
 import { CustomTestBuilder, CustomTestBuilderHandle } from "@/components/exam/custom-test-builder";
-import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight } from "lucide-react";
+import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, GraduationCap, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { motion, AnimatePresence } from "motion/react";
@@ -33,6 +34,7 @@ const mathJaxConfig = {
 export default function ExamSetupPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [toggleRipple, setToggleRipple] = useState<{ key: number; value: string }>({ key: 0, value: "" });
   const deepLinkAppliedRef = useRef(false);
   const customBuilderRef = useRef<CustomTestBuilderHandle>(null);
   const [customTotal, setCustomTotal] = useState(0);
@@ -517,42 +519,57 @@ export default function ExamSetupPage() {
             </div>
           </div>
 
-          <div className="relative flex card-glass p-1 rounded-xl shadow-sm">
-            <button
-              onClick={() => setSourceType("standard")}
-              className={`relative z-10 px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-colors cursor-pointer ${
-                sourceType === "standard"
-                  ? "text-white"
-                  : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-              }`}
-            >
-              {sourceType === "standard" && (
-                <motion.span
-                  layoutId="setup-source-pill"
-                  className="absolute inset-0 bg-indigo-600 rounded-lg shadow-sm -z-10"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                />
-              )}
-              Standard GATE
-            </button>
-            <button
-              onClick={() => setSourceType("ai_generated")}
-              className={`relative z-10 px-4 py-2 text-xs font-black uppercase tracking-wider rounded-lg transition-colors flex items-center gap-1 cursor-pointer ${
-                sourceType === "ai_generated"
-                  ? "text-white"
-                  : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
-              }`}
-            >
-              {sourceType === "ai_generated" && (
-                <motion.span
-                  layoutId="setup-source-pill"
-                  className="absolute inset-0 bg-indigo-600 rounded-lg shadow-sm -z-10"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
-                />
-              )}
-              <Sparkles className="w-3.5 h-3.5" />
-              AI Generated
-            </button>
+          {/* Source toggle: comet border, a gradient pill that springs between the
+              options with a recurring light sweep, a ripple on click, and icons that
+              pop when their option becomes active. */}
+          <div role="tablist" aria-label="Question source" className="nav-cluster relative flex p-1 rounded-2xl shadow-sm">
+            {([
+              { value: "standard", label: "Standard GATE", icon: GraduationCap },
+              { value: "ai_generated", label: "AI Generated", icon: Sparkles },
+            ] as const).map((opt) => {
+              const active = sourceType === opt.value;
+              return (
+                <motion.button
+                  key={opt.value}
+                  role="tab"
+                  aria-selected={active}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => { setSourceType(opt.value); setToggleRipple((r) => ({ key: r.key + 1, value: opt.value })); }}
+                  className={`group relative z-10 flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold rounded-xl transition-colors duration-300 cursor-pointer overflow-hidden ${
+                    active ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]/70"
+                  }`}
+                >
+                  {active && (
+                    <motion.span
+                      layoutId="setup-source-pill"
+                      className="toggle-shine absolute inset-0 rounded-xl -z-10 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-[0_6px_20px_-4px_rgba(124,58,237,0.6)] overflow-hidden"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <AnimatePresence>
+                    {toggleRipple.value === opt.value && toggleRipple.key > 0 && (
+                      <motion.span
+                        key={toggleRipple.key}
+                        aria-hidden="true"
+                        initial={{ scale: 0, opacity: 0.5 }}
+                        animate={{ scale: 3, opacity: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                        className="absolute left-1/2 top-1/2 -ml-6 -mt-6 w-12 h-12 rounded-full bg-white/50 pointer-events-none -z-0"
+                      />
+                    )}
+                  </AnimatePresence>
+                  <motion.span
+                    animate={active ? { rotate: [0, -14, 10, 0], scale: [1, 1.25, 1] } : { rotate: 0, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="relative flex group-hover:-translate-y-px transition-transform"
+                  >
+                    <opt.icon className="w-4 h-4" />
+                  </motion.span>
+                  <span className="relative whitespace-nowrap">{opt.label}</span>
+                </motion.button>
+              );
+            })}
           </div>
         </motion.div>
 
@@ -1096,17 +1113,12 @@ export default function ExamSetupPage() {
                         <span>Volume (Questions)</span>
                         <span className="text-[var(--text-muted)] font-medium">Available: {maxAvailable}</span>
                       </label>
-                      <input
-                        type="number"
-                        min="5"
+                      <NumberStepper
+                        ariaLabel="Number of questions"
+                        min={Math.min(5, maxAvailable > 0 ? maxAvailable : 5)}
                         max={maxAvailable > 0 ? maxAvailable : 100}
                         value={questionCount}
-                        onChange={(e) => {
-                          let val = parseInt(e.target.value) || 10;
-                          if (maxAvailable > 0 && val > maxAvailable) val = maxAvailable;
-                          setQuestionCount(val);
-                        }}
-                        className="w-full px-4 py-3 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
+                        onChange={setQuestionCount}
                       />
                     </div>
                   )}

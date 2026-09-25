@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { NumberStepper } from "@/components/ui/number-stepper";
 import { motion } from "motion/react";
 import {
   Loader2, Save, LogOut, CheckCircle2, User as UserIcon, Palette, IdCard, Target,
@@ -365,15 +366,15 @@ export default function ProfilePage() {
               </div>
               <div>
                 <label className={LABEL_CLASS}><CalendarDays className="w-3.5 h-3.5" /> Target Year</label>
-                <input type="number" value={targetYear} onChange={(e) => setTargetYear(e.target.value)} className={INPUT_CLASS} />
+                <NumberStepper ariaLabel="Target year" min={2025} max={2035} value={Number(targetYear) || 2027} onChange={(v) => setTargetYear(String(v))} />
               </div>
               <div>
                 <label className={LABEL_CLASS}><Trophy className="w-3.5 h-3.5" /> Target Rank (optional)</label>
-                <input type="number" value={targetRank} onChange={(e) => setTargetRank(e.target.value)} placeholder="e.g. 500" className={INPUT_CLASS} />
+                <NumberStepper ariaLabel="Target rank (0 = not set)" min={0} max={100000} step={10} value={Number(targetRank) || 0} onChange={(v) => setTargetRank(v > 0 ? String(v) : "")} />
               </div>
               <div>
                 <label className={LABEL_CLASS}><Clock className="w-3.5 h-3.5" /> Daily Study Hours</label>
-                <input type="number" step="0.5" min="0" value={dailyHours} onChange={(e) => setDailyHours(e.target.value)} className={INPUT_CLASS} />
+                <NumberStepper ariaLabel="Daily study hours" min={0} max={16} step={0.5} decimals={1} value={Number(dailyHours) || 0} onChange={(v) => setDailyHours(String(v))} />
               </div>
             </div>
 

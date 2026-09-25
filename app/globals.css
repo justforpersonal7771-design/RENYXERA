@@ -196,6 +196,23 @@
     .avatar-fx:hover .avatar-sheen { animation: none; }
   }
 
+  /* Active pill of the Standard / AI source toggle: a light sweep every few seconds. */
+  .toggle-shine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+    transform: translateX(-120%);
+    animation: toggle-shine 3.6s ease-in-out infinite;
+  }
+  @keyframes toggle-shine {
+    0%, 55% { transform: translateX(-120%); }
+    85%, 100% { transform: translateX(120%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .toggle-shine::after { animation: none; }
+  }
+
   /* First-load splash. Pure CSS on purpose: it's in the server-rendered HTML and fades
      itself out, so it's on screen from the very first paint (the old JS version only
      appeared after hydration — the page showed, then the splash popped over it, then
@@ -500,6 +517,36 @@
 
   @media (prefers-reduced-motion: reduce) {
     .card-glass::before, .spotlight::before { display: none; }
+  }
+
+  /* App-wide focus + selection, replacing the browser's heavy black outline. Fields get
+     a soft violet border and glow; keyboard focus on buttons/links gets a violet ring.
+     :where() keeps specificity at zero so any component's own focus utilities win. */
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select):focus {
+    outline: none;
+  }
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), textarea, select):not(:where(.stepper *)):focus-visible {
+    border-color: rgb(139 92 246 / 0.7);
+    box-shadow: 0 0 0 4px rgb(124 58 237 / 0.14), 0 8px 24px -12px rgb(124 58 237 / 0.45);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  :where(a, button, [role="button"], [role="tab"], summary):focus-visible {
+    outline: 2px solid rgb(139 92 246 / 0.75);
+    outline-offset: 2px;
+    border-radius: 10px;
+  }
+  ::selection {
+    background: rgb(124 58 237 / 0.24);
+  }
+  /* Any number field not yet on <NumberStepper> still loses the old OS spinners. */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
 
   /* Headings get the display face everywhere without touching each page. A class

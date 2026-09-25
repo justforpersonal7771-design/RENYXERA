@@ -1,4 +1,5 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import { NumberStepper } from "@/components/ui/number-stepper";
 import { CustomTestBlock, CustomTestTemplate, TestConfig } from "@/types/exam.types";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
@@ -376,16 +377,13 @@ export const CustomTestBuilder = forwardRef<CustomTestBuilderHandle, CustomTestB
                       <span className="text-[var(--text-muted)]">All matching</span>
                     )}
                   </label>
-                  <input
-                    type="number"
-                    min="1"
+                  <NumberStepper
+                    size="sm"
+                    ariaLabel={`Selection block ${index + 1} question count`}
+                    min={1}
                     max={available > 0 ? available : 100}
                     value={block.count}
-                    onChange={(e) => {
-                      const val = parseInt(e.target.value) || 1;
-                      handleCountChange(block.id, val);
-                    }}
-                    className="w-full p-2 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-md"
+                    onChange={(val) => handleCountChange(block.id, val)}
                   />
                 </div>
               </div>

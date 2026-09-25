@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { NumberStepper } from "@/components/ui/number-stepper";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { 
@@ -727,11 +728,13 @@ export function StudyPlanner() {
                   </div>
                   <div className="space-y-1">
                     <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Target Questions</label>
-                    <input 
-                      type="number" 
-                      value={newEvent.targetQuestions}
-                      onChange={e => setNewEvent({ ...newEvent, targetQuestions: Number(e.target.value) })}
-                      className="w-full p-2.5 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-xs rounded-xl outline-none"
+                    <NumberStepper
+                      size="sm"
+                      ariaLabel="Target questions"
+                      min={0}
+                      max={500}
+                      value={Number(newEvent.targetQuestions) || 0}
+                      onChange={v => setNewEvent({ ...newEvent, targetQuestions: v })}
                     />
                   </div>
                   <div className="space-y-1">
@@ -803,11 +806,14 @@ export function StudyPlanner() {
                     {(newEvent.timeRangeType === "duration" || newEvent.timeRangeType === "start_end") && (
                       <div className="space-y-1">
                         <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Duration (Mins)</label>
-                        <input 
-                          type="number" 
-                          value={newEvent.durationMin}
-                          onChange={e => setNewEvent({ ...newEvent, durationMin: Number(e.target.value) })}
-                          className="w-full p-2.5 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-xs rounded-xl outline-none"
+                        <NumberStepper
+                          size="sm"
+                          ariaLabel="Duration in minutes"
+                          min={0}
+                          max={600}
+                          step={5}
+                          value={Number(newEvent.durationMin) || 0}
+                          onChange={v => setNewEvent({ ...newEvent, durationMin: v })}
                         />
                       </div>
                     )}
