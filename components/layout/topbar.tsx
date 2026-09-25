@@ -1,7 +1,7 @@
-import { motion, AnimatePresence } from "motion/react";
+"use client";
 
-// ... keep icons and other imports
-import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, ShieldAlert, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target } from "lucide-react";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
+import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, ShieldAlert, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goal-slider-store";
 import { isInsidePortalPopover } from "@/lib/utils";
 import { AccountButton } from "./account-button";
+import { BrandMark, Wordmark } from "@/components/brand/wordmark";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -30,6 +31,33 @@ export function Topbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const pathname = usePathname();
+  const [hovered, setHovered] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
+  // Scroll progress of the page's own scroller (<main>'s inner div — html/body never
+  // scroll in this app), shown as a thin brand-gradient line under the bar.
+  const progressRaw = useMotionValue(0);
+  const progress = useSpring(progressRaw, { stiffness: 200, damping: 30, restDelta: 0.001 });
+
+  useEffect(() => {
+    const onScroll = (e: Event) => {
+      const el = e.target as HTMLElement;
+      if (!(el instanceof HTMLElement) || !el.closest("main")) return;
+      setScrolled(el.scrollTop > 8);
+      const max = el.scrollHeight - el.clientHeight;
+      progressRaw.set(max > 0 ? el.scrollTop / max : 0);
+    };
+    document.addEventListener("scroll", onScroll, { capture: true, passive: true });
+    return () => document.removeEventListener("scroll", onScroll, { capture: true } as any);
+  }, [progressRaw]);
+
+  // New page → starts at the top.
+  useEffect(() => {
+    setScrolled(false);
+    progressRaw.set(0);
+  }, [pathname, progressRaw]);
+
+  const openPalette = () =>
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }));
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -110,26 +138,38 @@ export function Topbar() {
         labels visibly dissolved into dark content passing under. Heavier blur turns that
         content into a smooth wash rather than hard shapes, and the extra tint keeps the
         labels readable at every scroll position. */}
-    <header className="h-16 fixed top-0 left-0 right-0 bg-[var(--background)]/72 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-colors">
+    <header
+      data-scrolled={scrolled ? "" : undefined}
+      className={`h-16 fixed top-0 left-0 right-0 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-[background-color,box-shadow] duration-300 ${
+        scrolled
+          ? "bg-[var(--background)]/85 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.28)]"
+          : "bg-[var(--background)]/65"
+      }`}
+    >
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
-      <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between">
+      {/* Scroll progress */}
+      <motion.div
+        aria-hidden="true"
+        style={{ scaleX: progress }}
+        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb]"
+      />
+      <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between gap-4">
 
-        {/* Logo and Desktop Nav */}
-        <div className="flex items-center gap-4 xl:gap-8 h-full min-w-0">
-          <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
-             <img
-                src={mounted && resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
-                alt="RENYXERA"
-                className="h-8 w-auto object-contain transition-transform group-hover:scale-105 group-hover:rotate-3 drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]"
-             />
-             <img
-                src={mounted && resolvedTheme === "light" ? "/brand/wordmark-light.png" : "/brand/wordmark-dark.png"}
-                alt="RENYXERA"
-                className="hidden sm:block lg:hidden 2xl:block h-5 w-auto dark:[filter:invert(1)_hue-rotate(180deg)]"
-             />
-          </Link>
+        {/* Logo */}
+        <Link href="/" aria-label="RENYXERA — Dashboard" className="shrink-0 flex items-center gap-2.5 group">
+          <span className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]">
+            <BrandMark className="h-8 w-8" />
+          </span>
+          <Wordmark className="hidden sm:inline" />
+        </Link>
 
-          <nav className="hidden lg:flex items-center h-full gap-0.5 xl:gap-1 relative">
+        {/* Desktop nav — a floating glass dock with a hover highlight that glides
+            between items and a gradient pill on the active page. */}
+        <div className="hidden lg:flex flex-1 justify-center min-w-0">
+          <nav
+            onMouseLeave={() => setHovered(null)}
+            className="flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/55 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
+          >
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -138,20 +178,28 @@ export function Topbar() {
                   href={item.href}
                   title={item.label}
                   aria-label={item.label}
-                  className={`relative flex items-center gap-2 px-2.5 xl:px-3.5 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-colors z-10 ${
-                    isActive
-                      ? "text-white"
-                      : "text-[var(--text-primary)]/75 hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
+                  aria-current={isActive ? "page" : undefined}
+                  onMouseEnter={() => setHovered(item.href)}
+                  onFocus={() => setHovered(item.href)}
+                  className={`group relative flex items-center gap-2 px-2.5 xl:px-3 2xl:px-3.5 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
+                    isActive ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
+                  {hovered === item.href && !isActive && (
+                    <motion.span
+                      layoutId="topbar-hover-pill"
+                      className="absolute inset-0 rounded-xl bg-[var(--surface-secondary)] -z-10"
+                      transition={{ type: "spring", stiffness: 500, damping: 38 }}
+                    />
+                  )}
                   {isActive && (
-                    <motion.div
+                    <motion.span
                       layoutId="topbar-active-pill"
-                      className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg -z-10 shadow-md shadow-indigo-600/25"
+                      className="absolute inset-0 rounded-xl -z-10 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 shadow-[0_6px_18px_-4px_rgba(124,58,237,0.55)]"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <item.icon className="w-4 h-4 shrink-0 xl:hidden 2xl:block" />
+                  <item.icon className="w-4 h-4 shrink-0 xl:hidden 2xl:block transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
                   <span className="hidden xl:inline">{item.label}</span>
                 </Link>
               );
@@ -163,6 +211,14 @@ export function Topbar() {
         <div className="flex items-center gap-3">
 
           <div className="flex items-center gap-0.5 bg-[var(--surface)]/80 border border-[var(--border)] backdrop-blur-md rounded-xl p-1 shadow-sm">
+             <button
+                onClick={openPalette}
+                className="hidden md:flex items-center gap-2 p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors cursor-pointer"
+                aria-label="Search and commands (Ctrl+K)"
+                title="Search & commands (Ctrl+K)"
+             >
+                <Search className="w-4 h-4" />
+             </button>
              <div className="relative" ref={calendarRef}>
                 <button
                    onClick={() => setIsCalendarOpen(prev => !prev)}
@@ -297,9 +353,9 @@ export function Topbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                       isActive
-                        ? "bg-[var(--surface-secondary)] text-[var(--text-primary)] border border-[var(--border-subtle)]"
+                        ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25"
                         : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
                     }`}
                   >

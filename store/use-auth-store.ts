@@ -46,3 +46,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   setProfile: (profile) => set({ profile }),
   setLoading: (loading) => set({ loading }),
 }));
+
+/**
+ * The signed-in user's chosen display name (never the @username), for greetings and
+ * other personal touches across the app. `first` is the first word, for casual lines
+ * like "Good evening, Adil". Both are null for guests or when no display name is set —
+ * callers fall back to neutral copy rather than inventing a name.
+ */
+export function useDisplayName(): { full: string | null; first: string | null } {
+  const name = useAuthStore((s) => s.profile?.display_name?.trim() || null);
+  return { full: name, first: name ? name.split(/\s+/)[0] : null };
+}

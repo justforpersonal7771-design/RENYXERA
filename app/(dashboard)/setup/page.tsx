@@ -9,7 +9,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { ExamType, TestConfig, ExamSessionDraft } from "@/types/exam.types";
 import { CustomTestBuilder, CustomTestBuilderHandle } from "@/components/exam/custom-test-builder";
-import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, ChevronDown, ChevronUp, ChevronRight, Search, X } from "lucide-react";
+import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { motion, AnimatePresence } from "motion/react";
@@ -967,16 +967,26 @@ export default function ExamSetupPage() {
                       className="w-full text-sm font-medium"
                     />
                   </div>
-                  <div className="flex-1 min-w-0 flex flex-col">
+                  {/* Sized to its label and pinned to the right of the row (full width
+                      only on phones) — stretched across the whole row it read as a
+                      banner rather than a button. */}
+                  <div className="sm:ml-auto flex flex-col">
                     <span aria-hidden="true" className="hidden sm:block text-sm font-bold mb-2 opacity-0 select-none">·</span>
                     <motion.button
-                      whileTap={{ scale: 0.98 }}
-                      whileHover={{ scale: 1.005 }}
+                      whileTap={{ scale: 0.97 }}
+                      whileHover={{ y: -1 }}
                       onClick={() => examType === "CUSTOM_TEST" ? customBuilderRef.current?.generate() : handleGenerate()}
-                      className="w-full py-3 px-5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-bold text-sm shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer border-0"
+                      className="group relative overflow-hidden w-full sm:w-auto h-[46px] pl-5 pr-4 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold text-sm shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45 transition-shadow flex items-center justify-center gap-2.5 cursor-pointer border-0 whitespace-nowrap"
                     >
-                      <Target className="w-4 h-4" />
-                      {examType === "CUSTOM_TEST" ? `Generate Custom Draft (${customTotal} total)` : "Generate Blueprint"}
+                      {/* light sweep on hover */}
+                      <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-0 group-hover:translate-x-[300%] transition-transform duration-700" />
+                      <Sparkles className="relative w-4 h-4" />
+                      <span className="relative">
+                        {examType === "CUSTOM_TEST" ? <>Generate custom draft <span className="font-num opacity-80">· {customTotal} Qs</span></> : "Generate blueprint"}
+                      </span>
+                      <span className="relative flex items-center justify-center w-6 h-6 rounded-lg bg-white/15 transition-transform group-hover:translate-x-0.5">
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
                     </motion.button>
                   </div>
                 </div>

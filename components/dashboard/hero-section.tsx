@@ -1,16 +1,21 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { Sparkles, Flame, CheckCircle2, TrendingUp, Trophy, Compass, ArrowRight, BrainCircuit } from "lucide-react";
 import { CountUp, RadialGauge, TiltCard, InfoTip } from "@/components/ui/interactive";
+import { useDisplayName } from "@/store/use-auth-store";
 
 interface HeroSectionProps {
   streak: number;
   solved: number;
   accuracy: number;
   onNewExam: () => void;
+  /** True while the question bank / analytics are still loading. The hero renders
+   *  straight away (it's server-rendered) with placeholder values in the tiles, so the
+   *  page never swaps a separate loading screen for the real one. */
+  loading?: boolean;
 }
 
 const RANKS = [
@@ -20,7 +25,7 @@ const RANKS = [
   { name: "Grandmaster Scholar", min: 301 },
 ];
 
-function greeting() {
+function timeGreeting() {
   const h = new Date().getHours();
   if (h < 5) return "Burning the midnight oil";
   if (h < 12) return "Good morning";
@@ -28,12 +33,38 @@ function greeting() {
   return "Good evening";
 }
 
-export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSectionProps) {
+/** "GATE 2027", one span per character so each can ride the wave (CSS: .gate-anim). */
+function GateTitle({ text, className = "" }: { text: string; className?: string }) {
+  return (
+    <span className={`gate-anim ${className}`} aria-label={text} role="text">
+      {Array.from(text).map((ch, i) =>
+        ch === " " ? (
+          <span key={i} className="gate-space" aria-hidden="true" />
+        ) : (
+          <span key={i} className="gate-ch" aria-hidden="true" style={{ ["--i" as any]: i }}>
+            {ch}
+          </span>
+        )
+      )}
+    </span>
+  );
+}
+
+function Placeholder({ w = "w-14" }: { w?: string }) {
+  return <span className={`inline-block h-8 ${w} rounded-md bg-white/10 animate-pulse align-middle`} />;
+}
+
+export function HeroSection({ streak, solved, accuracy, onNewExam, loading = false }: HeroSectionProps) {
   const router = useRouter();
   const reduce = useReducedMotion();
+  const { first } = useDisplayName();
 
-  // Rank ladder: current rank, next rank and progress toward it (same thresholds
-  // as before: >50 Advanced, >150 Master, >300 Grandmaster).
+  // Time-of-day greeting is client-only (the server's clock/timezone isn't the
+  // visitor's), so the first paint shows a neutral welcome that then personalises.
+  const [greet, setGreet] = useState<string | null>(null);
+  useEffect(() => setGreet(timeGreeting()), []);
+  const greetingLine = greet ? `${greet}${first ? `, ${first}` : ""}` : `Welcome${first ? `, ${first}` : " to RENYXERA"}`;
+
   const rank = useMemo(() => {
     let i = 0;
     for (let k = 0; k < RANKS.length; k++) if (solved >= RANKS[k].min) i = k;
@@ -57,6 +88,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
   };
 
   const tile = "h-full bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 hover:border-white/20 backdrop-blur-md rounded-2xl p-4 flex flex-col justify-between shadow-lg relative overflow-hidden transition-colors group";
+  const val = (node: ReactNode, w?: string) => (loading ? <Placeholder w={w} /> : node);
 
   return (
     <div
@@ -68,58 +100,47 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
         <motion.div
           animate={reduce ? undefined : { scale: [1, 1.2, 1], x: [0, 40, 0], y: [0, -30, 0], opacity: [0.15, 0.25, 0.15] }}
           transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 blur-3xl"
+          className="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 blur-3xl opacity-20"
         />
         <motion.div
           animate={reduce ? undefined : { scale: [1.2, 1, 1.2], x: [0, -40, 0], y: [0, 30, 0], opacity: [0.1, 0.2, 0.1] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 blur-3xl"
+          className="absolute -bottom-24 -right-24 w-96 h-96 rounded-full bg-gradient-to-br from-pink-500 to-violet-600 blur-3xl opacity-15"
         />
         <motion.div className="absolute inset-0" style={{ background: glow }} />
       </div>
 
       <div className="relative z-10 flex flex-col xl:flex-row gap-8 justify-between items-stretch">
-        {/* Welcome block */}
+        {/* Welcome block — plain elements (no entrance fade) so the headline is visible
+            in the very first server-rendered paint, not only after hydration. */}
         <div className="flex flex-col justify-between max-w-2xl">
           <div className="space-y-4">
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[11px] font-semibold border border-white/10 tracking-wide text-indigo-100"
-            >
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/10 backdrop-blur-md rounded-full text-xs sm:text-[13px] font-semibold border border-white/10 text-indigo-50">
               <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>{greeting()} — ready for today&apos;s session?</span>
-            </motion.div>
+              <span suppressHydrationWarning>
+                {greetingLine} <span className="text-indigo-200/80 font-medium">— ready for today&apos;s session?</span>
+              </span>
+            </div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-[1.1]"
-            >
-              Conquer your{" "}
-              <span className="font-serif italic font-medium tracking-normal pr-1 bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 via-violet-300 to-pink-300">
-                GATE 2027
-              </span>{" "}
-              goals
-            </motion.h1>
+            <h1 className="tracking-normal leading-none">
+              <span className="font-script block text-[2.6rem] sm:text-5xl md:text-[3.6rem] leading-[1.15] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)]">
+                Conquer your
+              </span>
+              <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mt-1">
+                <GateTitle text="GATE 2027" className="font-tech font-bold text-[1.9rem] sm:text-4xl md:text-[2.9rem] leading-tight" />
+                <span className="font-script text-[2.6rem] sm:text-5xl md:text-[3.6rem] leading-[1.15] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)]">
+                  goals
+                </span>
+              </span>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-indigo-100/80 font-medium text-sm md:text-base leading-relaxed max-w-xl"
-            >
-              Your personal study engine. Find your weak spots, practise with real GATE questions, and keep your streak going every day.
-            </motion.p>
+            <p className="text-indigo-100/80 font-medium text-sm md:text-base leading-relaxed max-w-xl">
+              RENYXERA is your GATE CSE study engine: practise real previous-year questions, find your weak spots with
+              analytics, and get unstuck with an AI Mentor. Keep your streak going every day.
+            </p>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-wrap gap-3 mt-6 xl:mt-8"
-          >
+          <div className="flex flex-wrap gap-3 mt-6 xl:mt-8">
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -138,7 +159,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
               <BrainCircuit className="w-4 h-4" />
               Ask AI Mentor
             </motion.button>
-          </motion.div>
+          </div>
         </div>
 
         {/* Interactive stat tiles */}
@@ -149,8 +170,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
               <span>Streak</span>
             </div>
             <div className="mt-3 flex items-baseline gap-1">
-              <CountUp value={streak} className="text-3xl font-bold text-white" />
-              <span className="text-xs text-rose-200 font-semibold">{streak === 1 ? "day" : "days"}</span>
+              {val(<><CountUp value={streak} className="text-3xl font-bold text-white" /><span className="text-xs text-rose-200 font-semibold">{streak === 1 ? "day" : "days"}</span></>)}
             </div>
           </TiltCard>
 
@@ -160,8 +180,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
               <span>Solved</span>
             </div>
             <div className="mt-3 flex items-baseline gap-1">
-              <CountUp value={solved} className="text-3xl font-bold text-white" />
-              <span className="text-xs text-sky-200 font-semibold">questions</span>
+              {val(<><CountUp value={solved} className="text-3xl font-bold text-white" /><span className="text-xs text-sky-200 font-semibold">questions</span></>)}
             </div>
           </TiltCard>
 
@@ -171,11 +190,11 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
               <span>Accuracy</span>
             </div>
             <div className="mt-3">
-              <CountUp value={accuracy} suffix="%" className="text-3xl font-bold text-white" />
+              {val(<CountUp value={accuracy} suffix="%" className="text-3xl font-bold text-white" />)}
               <div className="mt-2 h-1 rounded-full bg-white/10 overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(100, accuracy)}%` }}
+                  animate={{ width: `${loading ? 0 : Math.min(100, accuracy)}%` }}
                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
                   className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-teal-300"
                 />
@@ -189,17 +208,17 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
               <span>Mastery rank</span>
             </div>
             <div className="mt-2.5">
-              <div className="font-display font-bold text-lg text-amber-50 truncate">{rank.name}</div>
+              <div className="font-display font-bold text-lg text-amber-50 truncate">{loading ? <Placeholder w="w-40" /> : rank.name}</div>
               <div className="mt-2 h-1.5 rounded-full bg-white/10 overflow-hidden">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${rank.pct}%` }}
+                  animate={{ width: `${loading ? 0 : rank.pct}%` }}
                   transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
                   className="h-full rounded-full bg-gradient-to-r from-amber-400 to-orange-400"
                 />
               </div>
-              <div className="mt-1.5 text-[11px] font-medium text-amber-100/70">
-                {rank.next ? <>{rank.remaining} more to <span className="text-amber-100 font-semibold">{rank.next.name}</span></> : "Top rank reached"}
+              <div className="mt-1.5 text-[11px] font-medium text-amber-100/70 min-h-[16px]">
+                {!loading && (rank.next ? <>{rank.remaining} more to <span className="text-amber-100 font-semibold">{rank.next.name}</span></> : "Top rank reached")}
               </div>
             </div>
           </TiltCard>
@@ -214,8 +233,8 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
                 </InfoTip>
               </span>
             </div>
-            <RadialGauge value={estimatedReadiness} size={74} stroke={7} from="#a78bfa" to="#f472b6" track="#fff" trackOpacity={0.12} className="mt-2">
-              <CountUp value={estimatedReadiness} suffix="%" className="text-lg font-bold text-white" />
+            <RadialGauge value={loading ? 0 : estimatedReadiness} size={74} stroke={7} from="#a78bfa" to="#f472b6" track="#fff" trackOpacity={0.12} className="mt-2">
+              {loading ? <span className="w-8 h-4 rounded bg-white/10 animate-pulse" /> : <CountUp value={estimatedReadiness} suffix="%" className="text-lg font-bold text-white" />}
             </RadialGauge>
           </TiltCard>
         </div>

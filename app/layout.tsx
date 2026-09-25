@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import { Manrope, Sora, Fraunces, JetBrains_Mono } from 'next/font/google';
+import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Syncopate } from 'next/font/google';
 import './globals.css'; // Global styles
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
@@ -11,10 +11,14 @@ import { ThemeProvider } from '@/components/theme-provider';
 //  - Sora      — every h1–h4 (globals.css) and big stat numbers (.font-num)
 //  - Fraunces  — italic accent words only ("font-serif italic")
 //  - JetBrains Mono — code only; numbers use Sora's tabular figures instead
+//  - Playball  — script accent for the dashboard headline (.font-script)
+//  - Syncopate — wide techy display for "GATE 2027" (.font-tech)
 const bodySans = Manrope({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 const displaySans = Sora({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
 const accentSerif = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['SOFT', 'opsz'], variable: '--font-serif', display: 'swap' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
+const script = Playball({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap' });
+const tech = Syncopate({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-tech', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'RENYXERA — A New ERA of Intelligent Learning',
@@ -48,11 +52,11 @@ export const viewport = {
 // the local `next start` build isn't affected, which is why local tests passed).
 // This defines the missing helper so next-themes' script works again, and applies the
 // saved theme itself as a belt-and-braces guarantee. Light is the default.
-const THEME_BOOTSTRAP = `(function(){try{if(typeof window.__name!=="function"){window.__name=function(f){return f}}var t=localStorage.getItem("theme");var v=t==="dark"?"dark":"light";var d=document.documentElement;d.classList.remove("light","dark");d.classList.add(v);d.style.colorScheme=v}catch(e){}})();`;
+const THEME_BOOTSTRAP = `(function(){try{if(typeof window.__name!=="function"){window.__name=function(f){return f}}var t=localStorage.getItem("theme");var v=t==="dark"?"dark":"light";var d=document.documentElement;d.classList.remove("light","dark");d.classList.add(v);d.style.colorScheme=v}catch(e){}try{if(sessionStorage.getItem("renyxera_intro_seen")){document.documentElement.setAttribute("data-intro-seen","")}else{sessionStorage.setItem("renyxera_intro_seen","1")}}catch(e){}})();`;
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${tech.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
       </head>

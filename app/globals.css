@@ -32,6 +32,8 @@
   --font-mono: var(--font-mono);
   --font-display: var(--font-display);
   --font-serif: var(--font-serif);
+  --font-script: var(--font-script);
+  --font-tech: var(--font-tech);
 }
 
 @layer utilities {
@@ -43,6 +45,116 @@
      one-screen height by putting data-fill-height on their root element. */
   .page-shell {
     min-height: 100%;
+  }
+
+  .font-script {
+    font-family: var(--font-script), cursive;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+  .font-tech {
+    font-family: var(--font-tech), var(--font-display), sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  /* "GATE 2027" on the dashboard hero — animated for as long as it's on screen, not
+     just on entrance: the gradient keeps flowing, a light sweep crosses it every few
+     seconds, the glow breathes, and each character bobs on a staggered wave. */
+  .gate-anim {
+    position: relative;
+    display: inline-flex;
+    white-space: nowrap;
+    filter: drop-shadow(0 0 18px rgba(139, 92, 246, 0.45));
+    animation: gate-glow 3.2s ease-in-out infinite;
+  }
+  .gate-anim .gate-ch {
+    display: inline-block;
+    /* Two layers, both clipped to the glyphs: a white light band on top (the sweep)
+       over a looping multi-colour gradient (the flow). */
+    background-image:
+      linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%),
+      linear-gradient(100deg, #67e8f9 0%, #a5b4fc 22%, #f0abfc 44%, #67e8f9 66%, #c4b5fd 88%, #67e8f9 100%);
+    background-size: 300% 100%, 320% 100%;
+    background-repeat: no-repeat, repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation:
+      gate-flow 6s linear infinite,
+      gate-wave 2.8s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.07s), calc(var(--i) * 0.11s);
+  }
+  .gate-anim .gate-space {
+    display: inline-block;
+    width: 0.45em;
+  }
+  /* Sweep crosses left→right in the first 30% of the cycle, then rests while the
+     colours keep flowing (both move at the same rate so the flow never stutters). */
+  @keyframes gate-flow {
+    0% { background-position: 150% 0, 0% 0; }
+    30% { background-position: -50% 0, -96% 0; }
+    100% { background-position: -50% 0, -320% 0; }
+  }
+  @keyframes gate-wave {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-0.06em); }
+  }
+  @keyframes gate-glow {
+    0%, 100% { filter: drop-shadow(0 0 14px rgba(139, 92, 246, 0.35)); }
+    50% { filter: drop-shadow(0 0 26px rgba(236, 72, 153, 0.55)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gate-anim, .gate-anim .gate-ch { animation: none; }
+  }
+
+  /* First-load splash. Pure CSS on purpose: it's in the server-rendered HTML and fades
+     itself out, so it's on screen from the very first paint (the old JS version only
+     appeared after hydration — the page showed, then the splash popped over it, then
+     faded again). html[data-intro-seen] (set by the head script) hides it for the rest
+     of the tab's session. */
+  .intro-splash {
+    animation: intro-out 0.5s ease 1.25s forwards;
+  }
+  html[data-intro-seen] .intro-splash {
+    display: none;
+  }
+  .intro-splash .intro-mark {
+    animation: intro-mark 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .intro-splash .intro-text {
+    animation: intro-text 0.6s ease 0.25s both;
+  }
+  .intro-splash .intro-bar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #06c2fb, #5b21e0, #dd42fb);
+    transform-origin: left;
+    animation: intro-bar 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+  }
+  @keyframes loader-slide {
+    0% { left: -50%; }
+    100% { left: 100%; }
+  }
+  @keyframes intro-out {
+    to { opacity: 0; visibility: hidden; }
+  }
+  @keyframes intro-mark {
+    from { opacity: 0; transform: scale(0.7) rotate(-8deg); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes intro-text {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes intro-bar {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .intro-splash { animation-delay: 0.2s; animation-duration: 0.2s; }
+    .intro-splash .intro-mark, .intro-splash .intro-text, .intro-splash .intro-bar::after { animation: none; }
   }
 
   /* Big numbers (stats, scores, timers): Sora with tabular figures, so counting-up

@@ -49,7 +49,8 @@ export function AccountButton() {
     <Link
       href="/profile"
       className="block w-8 h-8 rounded-lg overflow-hidden border border-[var(--border)] hover:border-indigo-500 transition-colors shrink-0"
-      title={profile?.display_name || profile?.username || user.email || "Your profile"}
+      title={profile?.display_name?.trim() ? `${profile.display_name.trim()} · Your profile` : "Your profile"}
+      aria-label={profile?.display_name?.trim() ? `${profile.display_name.trim()} — open your profile` : "Open your profile"}
     >
       {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}
       <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={64} height={64} />

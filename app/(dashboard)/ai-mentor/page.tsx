@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useStudyStore } from "@/store/use-study-store";
+import { useDisplayName } from "@/store/use-auth-store";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { MemoryEngine, KnowledgeGraph, InsightMemory, MistakePattern, LearnerTimelineMilestone, ReadinessScorecard } from "@/lib/ai/memory/MemoryEngine";
 import { StudyPlanEngine, StudyPlanSuggestion } from "@/lib/ai/memory/StudyPlanEngine";
@@ -29,6 +30,7 @@ import { CountUp, RadialGauge, TiltCard, InfoTip } from "@/components/ui/interac
 
 export default function AIMentorPage() {
   const router = useRouter();
+  const { first: firstName } = useDisplayName();
   const { mistakes, bookmarks, loadStudyData } = useStudyStore();
   // Knowledge-graph drill-down trail (topic -> prerequisite -> its prerequisite ...)
   const [graphTrail, setGraphTrail] = useState<string[]>([]);
@@ -285,7 +287,7 @@ export default function AIMentorPage() {
   const coachAdvice = useMemo(() => {
     if (mistakes.length === 0) {
       return {
-        greeting: "Welcome to your AI Mentor Workspace!",
+        greeting: firstName ? `Welcome, ${firstName}. Let's get started.` : "Welcome to your AI Mentor workspace",
         body: "You have not recorded any study session mistakes yet. Complete mock tests and practice questions to feed context back to the AI coach."
       };
     }
@@ -302,16 +304,16 @@ export default function AIMentorPage() {
 
     if (!weakTopic || pendingCount === 0) {
       return {
-        greeting: "Good to see you back.",
+        greeting: firstName ? `Good to see you back, ${firstName}.` : "Good to see you back.",
         body: `${activitySummary} You have no open mistakes right now — solid position. Consider a fresh practice set or revisiting bookmarks to keep momentum.`
       };
     }
 
     return {
-      greeting: "Good to see you back.",
+      greeting: firstName ? `Good to see you back, ${firstName}.` : "Good to see you back.",
       body: `${activitySummary} Your concept retention is flagged on "${weakTopic}" — you have ${pendingCount} pending mistake${pendingCount === 1 ? "" : "s"} there. Today, we recommend reviewing "${weakTopic}" before starting any new subject.`
     };
-  }, [mistakes, dashboardMetrics]);
+  }, [mistakes, dashboardMetrics, firstName]);
 
   // Weakest real topic by MasteryEngine score (only topics actually attempted).
   const weakestTopic = Object.values(topicMasteryMap)

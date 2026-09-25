@@ -4,8 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
 import {
   Loader2, Save, LogOut, CheckCircle2, User as UserIcon, Palette, IdCard, Target,
-  GraduationCap, CalendarDays, Trophy, Clock, Mail, Sparkles,
+  GraduationCap, CalendarDays, Trophy, Clock, Mail, Sparkles, XCircle,
 } from "lucide-react";
+import { normalizeUsername, usernameProblem } from "@/lib/username";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
@@ -71,6 +72,44 @@ export default function ProfilePage() {
   const [signingOut, setSigningOut] = useState(false);
   const openAuthModal = useAuthModalStore((s) => s.open);
 
+  // Live username availability: idle (unchanged/empty) → checking → available/taken/invalid.
+  type NameStatus = { state: "idle" | "checking" | "available" | "unavailable" | "error"; reason?: string };
+  const [nameStatus, setNameStatus] = useState<NameStatus>({ state: "idle" });
+  const savedUsername = (profile?.username || "").toLowerCase();
+
+  useEffect(() => {
+    const name = username.trim();
+    if (!name || name === savedUsername) {
+      setNameStatus({ state: "idle" });
+      return;
+    }
+    const problem = usernameProblem(name);
+    if (problem) {
+      setNameStatus({ state: "unavailable", reason: problem });
+      return;
+    }
+    setNameStatus({ state: "checking" });
+    const ctrl = new AbortController();
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch(`/api/username/check?u=${encodeURIComponent(name)}`, { signal: ctrl.signal });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          setNameStatus({ state: "error", reason: body.error || "Couldn't check right now." });
+        } else if (body.available) {
+          setNameStatus({ state: "available" });
+        } else {
+          setNameStatus({ state: "unavailable", reason: body.reason || "That username is taken." });
+        }
+      } catch (e: any) {
+        if (e?.name !== "AbortError") setNameStatus({ state: "error", reason: "Couldn't check right now." });
+      }
+    }, 450);
+    return () => { clearTimeout(t); ctrl.abort(); };
+  }, [username, savedUsername]);
+
+  const usernameBlocksSave = nameStatus.state === "checking" || nameStatus.state === "unavailable";
+
   const avatarUri = useMemo(() => generateAvatarDataUri(avatar.style, avatar.seed, { size: 160 }), [avatar]);
   const branchLabel = BRANCHES.find((b) => b.value === targetBranch)?.label.replace(" — Coming Soon", "") ?? targetBranch;
 
@@ -82,7 +121,7 @@ export default function ProfilePage() {
       seed: profile.avatar_seed,
     });
     setDisplayName(profile.display_name || "");
-    setUsername(profile.username || "");
+    setUsername((profile.username || "").toLowerCase());
     setTargetBranch(profile.target_branch || "CSE");
     setTargetYear(profile.target_year ? String(profile.target_year) : "2027");
     setTargetRank(profile.target_rank ? String(profile.target_rank) : "");
@@ -91,6 +130,10 @@ export default function ProfilePage() {
 
   async function handleSave() {
     if (!user) return;
+    if (usernameBlocksSave) {
+      setError(nameStatus.reason || "Wait for the username check to finish.");
+      return;
+    }
     setSaving(true);
     setError(null);
     setSaved(false);
@@ -99,7 +142,7 @@ export default function ProfilePage() {
       const supabase = createClient();
       const updates = {
         display_name: displayName.trim() || null,
-        username: username.trim() || null,
+        username: normalizeUsername(username.trim()) || null,
         avatar_seed: avatar.seed,
         avatar_style: avatar.style,
         target_branch: targetBranch,
@@ -109,7 +152,15 @@ export default function ProfilePage() {
       };
       const { error } = await supabase.from("profiles").update(updates).eq("id", user.id);
       if (error) {
-        setError(error.message);
+        // 23505 = unique violation: someone claimed the name between check and save.
+        if ((error as any).code === "23505" || /duplicate|unique/i.test(error.message)) {
+          setNameStatus({ state: "unavailable", reason: "That username was just taken." });
+          setError("That username was just taken — try another.");
+        } else if (/profiles_username_format/.test(error.message)) {
+          setError("Usernames can only use lowercase letters, numbers and underscores.");
+        } else {
+          setError(error.message);
+        }
         return;
       }
       // The topbar's AccountButton (and this page, on a future visit) read the avatar
@@ -266,12 +317,35 @@ export default function ProfilePage() {
                   <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-[var(--text-muted)]">@</span>
                   <input
                     value={username}
-                    onChange={(e) => setUsername(e.target.value.replace(/[^a-zA-Z0-9_]/g, ""))}
-                    maxLength={24}
-                    className={`${INPUT_CLASS} pl-8`}
+                    onChange={(e) => setUsername(normalizeUsername(e.target.value))}
+                    maxLength={20}
+                    autoCapitalize="none"
+                    autoCorrect="off"
+                    spellCheck={false}
+                    aria-invalid={nameStatus.state === "unavailable"}
+                    aria-describedby="username-status"
+                    className={`${INPUT_CLASS} pl-8 pr-9 ${
+                      nameStatus.state === "unavailable" ? "border-rose-500/60 focus-visible:ring-rose-500"
+                      : nameStatus.state === "available" ? "border-emerald-500/60 focus-visible:ring-emerald-500" : ""
+                    }`}
                     placeholder="username"
                   />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {nameStatus.state === "checking" && <Loader2 className="w-4 h-4 animate-spin text-[var(--text-muted)]" />}
+                    {nameStatus.state === "available" && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+                    {nameStatus.state === "unavailable" && <XCircle className="w-4 h-4 text-rose-500" />}
+                  </span>
                 </div>
+                <p id="username-status" aria-live="polite" className={`mt-1.5 text-[11px] font-medium min-h-[16px] ${
+                  nameStatus.state === "available" ? "text-emerald-600 dark:text-emerald-400"
+                  : nameStatus.state === "unavailable" ? "text-rose-500"
+                  : "text-[var(--text-muted)]"
+                }`}>
+                  {nameStatus.state === "available" && `@${username} is available`}
+                  {nameStatus.state === "checking" && "Checking availability…"}
+                  {(nameStatus.state === "unavailable" || nameStatus.state === "error") && nameStatus.reason}
+                  {nameStatus.state === "idle" && "Lowercase letters, numbers and _ · 3–20 characters"}
+                </p>
               </div>
             </div>
           </motion.div>
@@ -317,7 +391,7 @@ export default function ProfilePage() {
               )}
               <button
                 onClick={handleSave}
-                disabled={saving}
+                disabled={saving || usernameBlocksSave}
                 className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 text-white rounded-xl font-bold text-sm shadow-md shadow-indigo-500/25 transition-colors"
               >
                 {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}

@@ -13,11 +13,12 @@ import { Loader2 } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 import { Footer } from "@/components/layout/footer";
 
-// Dynamic imports with Skeleton Loading placeholders to guarantee performance (Part 12)
-const HeroSection = dynamic(() => import("@/components/dashboard/hero-section").then(m => m.HeroSection), {
-  ssr: false,
-  loading: () => <div className="skeleton-shimmer h-64 rounded-3xl" />
-});
+// The hero is a normal (server-rendered) import: it's the first thing on screen, and it
+// stays mounted from the very first paint through data loading (it shows placeholder
+// values while loading), so there's no separate loading page that gets swapped out.
+import { HeroSection } from "@/components/dashboard/hero-section";
+
+// Everything below the hero is client-only and code-split.
 
 const ProgressVisualizer = dynamic(() => import("@/components/dashboard/progress-visualizer").then(m => m.ProgressVisualizer), {
   ssr: false,
@@ -101,43 +102,7 @@ export default function Home() {
     router.push("/setup");
   };
 
-  if (!isInitialized || (loading && !dashboardMetrics)) {
-    // This branch is what every server-rendered response actually returns — the real
-    // dashboard below depends entirely on client-only IndexedDB data (isInitialized
-    // starts false on the server, always), so a crawler that doesn't execute JS (e.g.
-    // Google's OAuth branding-verification checker) never sees anything past this
-    // point. Confirmed live: fetching this page with JS disabled returned 241 bytes of
-    // visible text total — just nav labels and "Initializing Dashboard..." — which is
-    // the literal cause of two rejected verification issues, "your homepage does not
-    // explain the purpose of your app" and "your homepage is behind a login page"
-    // (an empty shell with a prominent Sign In button reads the same way to an
-    // automated check as an actual login wall). The content below is real and
-    // substantial for exactly that reason, not just filler — it also happens to be
-    // genuinely better SEO/first-impression copy than a bare spinner. Shown only
-    // briefly to a real visitor (IndexedDB init is normally well under a second) before
-    // the interactive dashboard replaces it.
-    return (
-      <div className="w-full max-w-3xl mx-auto px-4 py-10 sm:py-16 text-center">
-        <h1 className="text-2xl sm:text-3xl font-display font-extrabold text-[var(--text-primary)] mb-3">
-          RENYXERA — GATE CSE Exam Preparation
-        </h1>
-        <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed mb-8">
-          RENYXERA is an adaptive study workspace built for GATE Computer Science & IT
-          aspirants. Practice with real official-paper questions and custom-built tests,
-          get personalized explanations and hints from an AI Mentor trained on your own
-          mistakes, and track your readiness with weakness analytics that update after
-          every attempt. Bookmark tricky questions, revisit a mistakes bank that
-          resurfaces what you actually need to review, and follow a countdown built
-          around your own target GATE year — all in one place, free to start without an
-          account.
-        </p>
-        <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-          <span className="font-extrabold tracking-widest text-xs text-[var(--text-muted)] uppercase animate-pulse">Initializing Dashboard...</span>
-        </div>
-      </div>
-    );
-  }
+  const isLoading = !isInitialized || (loading && !dashboardMetrics);
 
   // Premium metrics definition (Part 7)
   const accuracyValue = overview?.overallAccuracy || 0;
@@ -163,12 +128,34 @@ export default function Home() {
     <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-8">
       
       {/* 1. Hero Section Banner */}
-      <HeroSection 
+      <HeroSection
         streak={streakDays}
         solved={solvedCount}
         accuracy={accuracyValue}
         onNewExam={handleNewExam}
+        loading={isLoading}
       />
+
+      {isLoading ? (
+        // Same shape as the real content below, so the swap is a fill-in, not a jump.
+        <div className="space-y-8" aria-busy="true" aria-label="Loading your dashboard">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div className="skeleton-shimmer h-[150px] rounded-2xl" />
+            <div className="skeleton-shimmer h-[150px] rounded-2xl" />
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <div className="lg:col-span-8 space-y-8">
+              <div className="skeleton-shimmer h-[300px] rounded-2xl" />
+              <div className="skeleton-shimmer h-[220px] rounded-2xl" />
+            </div>
+            <div className="lg:col-span-4 space-y-8">
+              <div className="skeleton-shimmer h-[220px] rounded-2xl" />
+              <div className="skeleton-shimmer h-[180px] rounded-2xl" />
+            </div>
+          </div>
+        </div>
+      ) : (
+      <>
 
       {/* 2. Active Session Banner Alert */}
       <AnimatePresence>
@@ -293,6 +280,8 @@ export default function Home() {
       </div>
 
       <Footer />
+      </>
+      )}
     </div>
   );
 }

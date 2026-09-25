@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Footer } from "@/components/layout/footer";
+import { BrandMark, Wordmark } from "@/components/brand/wordmark";
 
 // Server-rendered shell for public, no-login pages (the /about landing page). No
 // client JS is needed to read any of it — the point is that a first-time visitor,
@@ -10,13 +11,9 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
     <div className="h-full overflow-y-auto custom-scrollbar">
       <header className="sticky top-0 z-20 bg-[var(--background)]/80 backdrop-blur-xl border-b border-[var(--border-subtle)]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <Link href="/about" className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/mark-light.png" alt="" className="h-8 w-auto dark:hidden" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/mark-dark.png" alt="" className="h-8 w-auto hidden dark:block" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/wordmark-light.png" alt="RENYXERA" className="h-4 sm:h-5 w-auto dark:[filter:invert(1)_hue-rotate(180deg)]" />
+          <Link href="/about" aria-label="RENYXERA" className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+            <BrandMark className="h-8 w-8" />
+            <Wordmark size="sm" className="sm:text-lg" />
           </Link>
           <Link
             href="/"

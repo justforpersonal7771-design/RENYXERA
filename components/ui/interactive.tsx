@@ -116,11 +116,26 @@ export function TiltCard({
     py.set(0.5);
   };
 
-  const Comp = as === "button" ? motion.button : motion.div;
+  // Clickable tiles are a div with role="button" rather than a real <button>: tiles
+  // can contain their own controls (e.g. an InfoTip), and a <button> inside a
+  // <button> is invalid HTML that breaks hydration. Keyboard support is added by hand.
+  const clickable = !!onClick || as === "button";
   return (
     <div style={{ perspective: 900 }} className={`h-full ${wrapperClassName}`}>
-      <Comp
-        type={as === "button" ? "button" : undefined}
+      <motion.div
+        role={clickable ? "button" : undefined}
+        tabIndex={clickable ? 0 : undefined}
+        onKeyDown={
+          clickable
+            ? (e) => {
+                if (e.target !== e.currentTarget) return;
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onClick?.();
+                }
+              }
+            : undefined
+        }
         onPointerMove={handleMove}
         onPointerLeave={reset}
         onClick={onClick}
@@ -128,10 +143,10 @@ export function TiltCard({
         aria-label={ariaLabel}
         whileTap={onClick ? { scale: 0.97 } : undefined}
         style={reduce ? undefined : { rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
-        className={`spotlight h-full w-full text-left ${onClick ? "cursor-pointer" : ""} ${className}`}
+        className={`spotlight h-full w-full text-left outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${clickable ? "cursor-pointer" : ""} ${className}`}
       >
         {children}
-      </Comp>
+      </motion.div>
     </div>
   );
 }

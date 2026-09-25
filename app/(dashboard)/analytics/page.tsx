@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { useDataStore } from "@/store/use-data-store";
 import { useStudyStore } from "@/store/use-study-store";
+import { useDisplayName } from "@/store/use-auth-store";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer,
   AreaChart, Area, Cell, ReferenceLine,
@@ -60,6 +61,7 @@ function ChartTooltip({ active, payload, label, unit }: any) {
 
 export default function AnalyticsDashboardPage() {
   const router = useRouter();
+  const { first: firstName } = useDisplayName();
   const { isInitialized } = useDataStore();
   const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
   const { loadStudyData } = useStudyStore();
@@ -178,7 +180,7 @@ export default function AnalyticsDashboardPage() {
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-            Your <span className="font-serif italic font-medium bg-gradient-to-r from-indigo-500 via-violet-500 to-pink-500 bg-clip-text text-transparent pr-1">analytics</span>
+            {firstName ? `${firstName}'s` : "Your"} <span className="font-serif italic font-medium bg-gradient-to-r from-indigo-500 via-violet-500 to-pink-500 bg-clip-text text-transparent pr-1">analytics</span>
           </h1>
           <p className="mt-2 text-sm text-[var(--text-secondary)] font-medium">
             Hover, click and filter anything below. Click a subject bar to narrow the topic explorer to it.
