@@ -33,7 +33,8 @@
   --font-display: var(--font-display);
   --font-serif: var(--font-serif);
   --font-script: var(--font-script);
-  --font-tech: var(--font-tech);
+  --font-luxe: var(--font-luxe);
+  --font-brand: var(--font-brand);
 }
 
 @layer utilities {
@@ -52,59 +53,64 @@
     letter-spacing: 0;
     font-weight: 400;
   }
-  .font-tech {
-    font-family: var(--font-tech), var(--font-display), sans-serif;
-    letter-spacing: 0.02em;
+  .font-luxe {
+    font-family: var(--font-luxe), Georgia, serif;
+  }
+  .font-brand {
+    font-family: var(--font-brand), var(--font-display), sans-serif;
   }
 
-  /* "GATE 2027" on the dashboard hero — animated for as long as it's on screen, not
-     just on entrance: the gradient keeps flowing, a light sweep crosses it every few
-     seconds, the glow breathes, and each character bobs on a staggered wave. */
+  /* "GATE 2027" on the dashboard hero. Continuous but calm: a champagne-gold → lilac
+     metallic fill whose colours drift slowly, a soft light sweep that glides across the
+     letters every few seconds, a breathing glow, and a few twinkling sparkles
+     (.gate-spark) around it. One text box (not per-letter spans) so the sheen travels
+     across the whole word as a single piece of metal. */
   .gate-anim {
     position: relative;
-    display: inline-flex;
-    white-space: nowrap;
-    filter: drop-shadow(0 0 18px rgba(139, 92, 246, 0.45));
-    animation: gate-glow 3.2s ease-in-out infinite;
-  }
-  .gate-anim .gate-ch {
     display: inline-block;
-    /* Two layers, both clipped to the glyphs: a white light band on top (the sweep)
-       over a looping multi-colour gradient (the flow). */
+    white-space: nowrap;
+    animation: gate-glow 4s ease-in-out infinite;
+  }
+  .gate-anim .gate-text {
+    display: inline-block;
     background-image:
-      linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%),
-      linear-gradient(100deg, #67e8f9 0%, #a5b4fc 22%, #f0abfc 44%, #67e8f9 66%, #c4b5fd 88%, #67e8f9 100%);
-    background-size: 300% 100%, 320% 100%;
+      linear-gradient(110deg, transparent 40%, rgba(255, 255, 255, 0.95) 50%, transparent 60%),
+      linear-gradient(100deg, #fde68a 0%, #fbcfe8 25%, #e9d5ff 45%, #c4b5fd 60%, #fde68a 80%, #fbcfe8 100%);
+    background-size: 250% 100%, 300% 100%;
     background-repeat: no-repeat, repeat;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation:
-      gate-flow 6s linear infinite,
-      gate-wave 2.8s ease-in-out infinite;
-    animation-delay: calc(var(--i) * 0.07s), calc(var(--i) * 0.11s);
+    animation: gate-sheen 7s linear infinite;
+    padding: 0 0.04em;
   }
-  .gate-anim .gate-space {
-    display: inline-block;
-    width: 0.45em;
+  .gate-anim .gate-spark {
+    position: absolute;
+    width: 0.32em;
+    height: 0.32em;
+    color: #fde68a;
+    pointer-events: none;
+    animation: gate-twinkle 2.6s ease-in-out infinite;
+    filter: drop-shadow(0 0 6px rgba(253, 230, 138, 0.9));
   }
-  /* Sweep crosses left→right in the first 30% of the cycle, then rests while the
-     colours keep flowing (both move at the same rate so the flow never stutters). */
-  @keyframes gate-flow {
-    0% { background-position: 150% 0, 0% 0; }
-    30% { background-position: -50% 0, -96% 0; }
-    100% { background-position: -50% 0, -320% 0; }
-  }
-  @keyframes gate-wave {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-0.06em); }
+  /* One linear cycle: the sheen crosses in the first 35% then rests, while the colour
+     layer drifts exactly one pattern period (300% size -> -150%) so it loops seamlessly. */
+  @keyframes gate-sheen {
+    0% { background-position: 160% 0, 0% 0; }
+    35% { background-position: -60% 0, -52.5% 0; }
+    100% { background-position: -60% 0, -150% 0; }
   }
   @keyframes gate-glow {
-    0%, 100% { filter: drop-shadow(0 0 14px rgba(139, 92, 246, 0.35)); }
-    50% { filter: drop-shadow(0 0 26px rgba(236, 72, 153, 0.55)); }
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(196, 181, 253, 0.30)); }
+    50% { filter: drop-shadow(0 0 24px rgba(253, 230, 138, 0.45)); }
+  }
+  @keyframes gate-twinkle {
+    0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+    45%, 55% { opacity: 1; transform: scale(1) rotate(45deg); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .gate-anim, .gate-anim .gate-ch { animation: none; }
+    .gate-anim, .gate-anim .gate-text, .gate-anim .gate-spark { animation: none; }
+    .gate-anim .gate-spark { opacity: 0.8; }
   }
 
   /* First-load splash. Pure CSS on purpose: it's in the server-rendered HTML and fades

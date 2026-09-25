@@ -1,5 +1,5 @@
 import type {Metadata} from 'next';
-import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Syncopate } from 'next/font/google';
+import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Syne } from 'next/font/google';
 import './globals.css'; // Global styles
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
@@ -12,13 +12,15 @@ import { ThemeProvider } from '@/components/theme-provider';
 //  - Fraunces  — italic accent words only ("font-serif italic")
 //  - JetBrains Mono — code only; numbers use Sora's tabular figures instead
 //  - Playball  — script accent for the dashboard headline (.font-script)
-//  - Syncopate — wide techy display for "GATE 2027" (.font-tech)
+//  - Cinzel    — classical luxe serif for "GATE 2027" (.font-luxe)
+//  - Syne      — the RENYXERA wordmark only (.font-brand), so the product name stands apart
 const bodySans = Manrope({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 const displaySans = Sora({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
 const accentSerif = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['SOFT', 'opsz'], variable: '--font-serif', display: 'swap' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 const script = Playball({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap' });
-const tech = Syncopate({ subsets: ['latin'], weight: ['400', '700'], variable: '--font-tech', display: 'swap' });
+const luxe = Cinzel({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-luxe', display: 'swap' });
+const brand = Syne({ subsets: ['latin'], weight: ['700', '800'], variable: '--font-brand', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'RENYXERA — A New ERA of Intelligent Learning',
@@ -56,7 +58,7 @@ const THEME_BOOTSTRAP = `(function(){try{if(typeof window.__name!=="function"){w
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${tech.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${luxe.variable} ${brand.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
       </head>

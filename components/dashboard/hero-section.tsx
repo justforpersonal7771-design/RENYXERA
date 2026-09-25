@@ -33,19 +33,23 @@ function timeGreeting() {
   return "Good evening";
 }
 
-/** "GATE 2027", one span per character so each can ride the wave (CSS: .gate-anim). */
+/** Four-point sparkle used around "GATE 2027". */
+function Spark({ style }: { style: React.CSSProperties }) {
+  return (
+    <svg viewBox="0 0 24 24" className="gate-spark" style={style} aria-hidden="true">
+      <path fill="currentColor" d="M12 0c.6 5.6 1.9 9.4 12 12-10.1 2.6-11.4 6.4-12 12-.6-5.6-1.9-9.4-12-12C10.1 9.4 11.4 5.6 12 0z" />
+    </svg>
+  );
+}
+
+/** "GATE 2027" in Cinzel with a continuous metallic sheen (CSS: .gate-anim). */
 function GateTitle({ text, className = "" }: { text: string; className?: string }) {
   return (
-    <span className={`gate-anim ${className}`} aria-label={text} role="text">
-      {Array.from(text).map((ch, i) =>
-        ch === " " ? (
-          <span key={i} className="gate-space" aria-hidden="true" />
-        ) : (
-          <span key={i} className="gate-ch" aria-hidden="true" style={{ ["--i" as any]: i }}>
-            {ch}
-          </span>
-        )
-      )}
+    <span className={`gate-anim ${className}`}>
+      <span className="gate-text">{text}</span>
+      <Spark style={{ top: "-0.18em", left: "-0.22em", animationDelay: "0s" }} />
+      <Spark style={{ top: "-0.28em", right: "18%", animationDelay: "0.9s", width: "0.24em", height: "0.24em" }} />
+      <Spark style={{ bottom: "-0.1em", right: "-0.2em", animationDelay: "1.7s" }} />
     </span>
   );
 }
@@ -127,7 +131,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
                 Conquer your
               </span>
               <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mt-1">
-                <GateTitle text="GATE 2027" className="font-tech font-bold text-[1.9rem] sm:text-4xl md:text-[2.9rem] leading-tight" />
+                <GateTitle text="GATE 2027" className="font-luxe font-bold tracking-[0.04em] text-[2.3rem] sm:text-5xl md:text-[3.5rem] leading-tight" />
                 <span className="font-script text-[2.6rem] sm:text-5xl md:text-[3.6rem] leading-[1.15] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)]">
                   goals
                 </span>

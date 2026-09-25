@@ -54,7 +54,7 @@ class QuestionRepositorySingleton {
   }
 
   public async initialize(
-    dataUrl: string = "/api/dataset",
+    dataUrl: string = "/data/questions.json",
   ): Promise<void> {
     if (this.status === "READY") return;
     if (this.initPromise) return this.initPromise;
@@ -74,8 +74,8 @@ class QuestionRepositorySingleton {
         try {
           // Fetch dataset and manifest in parallel
           const [response, manifestResponse] = await Promise.all([
-            fetch(dataUrl, { cache: "no-store" }),
-            fetch("/api/image-manifest", { cache: "no-store" })
+            fetch(dataUrl, { cache: "no-cache" }),
+            fetch("/data/image-manifest.json", { cache: "no-cache" })
           ]);
           
           if (!response.ok) throw new Error("Failed to fetch dataset");
