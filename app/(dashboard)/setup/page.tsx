@@ -910,22 +910,28 @@ export default function ExamSetupPage() {
           </div>
         ) : (
           <div className="w-full flex-1 min-h-0 flex flex-col lg:flex-row gap-5">
-            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar card-glass rounded-2xl shadow-sm relative">
-             <div>
-              <div className="flex-1 min-w-0">
-              {/* Sticky toolbar: bleeds to the card's edges (negative margins cancel
-                  the card's own padding) and carries its own glass background + blur +
-                  shadow, matching the topbar's treatment, so it reads as a deliberate
-                  floating bar rather than bare buttons with nothing behind them.
-                  "Generate" now sits beside the dropdown for every deployment type, not
-                  just Custom — a fixed-width dropdown plus a flex-1 button means the
-                  button fills the rest of the row's width instead of leaving dead space
-                  next to it. The invisible spacer label above the button exists purely
-                  so its top edge lines up with the dropdown's top edge (matching the
-                  real "Deployment Type" label's height+margin exactly) — items-end then
-                  aligns both controls' bottom edges too, so the whole row reads as one
-                  deliberate unit instead of two mismatched pieces. */}
-              <div className="sticky top-0 z-10 px-5 md:px-6 pt-5 md:pt-6 pb-4 mb-1 bg-[var(--surface)]/85 backdrop-blur-xl border-b border-[var(--border-subtle)] shadow-sm">
+            <div className="flex-1 min-h-0 flex flex-col card-glass rounded-2xl shadow-sm relative overflow-hidden">
+              {/* This header used to be `sticky top-0` inside the same scrolling element
+                  as the content below it — which meant the scrollbar (styled to be
+                  visible while active) was still owned by that same element, so its
+                  thumb rendered right through/behind this bar as if it started at the
+                  very top. Same fix as the topbar/main scroll split in client-layout.tsx:
+                  the header is now a real, non-scrolling flex child, and only the
+                  content below it (a separate div) owns the scroll — so the scrollbar's
+                  box can never extend up into this region no matter how it's styled.
+                  Bleeds to the card's edges (negative margins cancel the card's own
+                  padding) and carries its own glass background + blur + shadow, matching
+                  the topbar's treatment, so it reads as a deliberate floating bar rather
+                  than bare buttons with nothing behind them. "Generate" now sits beside
+                  the dropdown for every deployment type, not just Custom — a fixed-width
+                  dropdown plus a flex-1 button means the button fills the rest of the
+                  row's width instead of leaving dead space next to it. The invisible
+                  spacer label above the button exists purely so its top edge lines up
+                  with the dropdown's top edge (matching the real "Deployment Type"
+                  label's height+margin exactly) — items-end then aligns both controls'
+                  bottom edges too, so the whole row reads as one deliberate unit instead
+                  of two mismatched pieces. */}
+              <div className="shrink-0 z-10 px-5 md:px-6 pt-5 md:pt-6 pb-4 bg-[var(--surface)]/85 backdrop-blur-xl border-b border-[var(--border-subtle)] shadow-sm">
                 <div className="flex flex-col sm:flex-row sm:items-end gap-3">
                   <div className="w-full sm:w-64 shrink-0">
                     <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">
@@ -959,6 +965,7 @@ export default function ExamSetupPage() {
                 </div>
               </div>
 
+              <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
               {examType === "CUSTOM_TEST" ? (
                 <div className="px-5 md:px-6 pb-5 md:pb-6 pt-4">
                    <CustomTestBuilder
@@ -1109,8 +1116,6 @@ export default function ExamSetupPage() {
                 </div>
               )}
               </div>
-
-             </div>
             </div>
 
             <div className="w-full lg:w-[420px] shrink-0 lg:h-full lg:min-h-0">

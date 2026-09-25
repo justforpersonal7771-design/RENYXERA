@@ -14,13 +14,15 @@ interface LoginFormProps {
    *  instead of navigating (the page already reflects the new session once
    *  AuthListener's reload runs). */
   onSuccess?: () => void;
-  /** Renders the "Create an account" / "Continue as guest" links as in-place mode
-   *  switches (for the modal) rather than full navigations (for the standalone page). */
+  /** Renders the "Create an account" / "Forgot?" / "Continue as guest" links as
+   *  in-place mode switches (for the modal) rather than full navigations (for the
+   *  standalone page). */
   onSwitchToSignup?: () => void;
+  onSwitchToForgot?: () => void;
   onDismiss?: () => void;
 }
 
-export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onDismiss }: LoginFormProps) {
+export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwitchToForgot, onDismiss }: LoginFormProps) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -88,9 +90,15 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onDis
             <label htmlFor="login-password" className="block text-xs font-bold text-[var(--text-secondary)]">
               Password
             </label>
-            <Link href="/reset-password" onClick={onDismiss} className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
-              Forgot?
-            </Link>
+            {onSwitchToForgot ? (
+              <button type="button" onClick={onSwitchToForgot} className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                Forgot?
+              </button>
+            ) : (
+              <Link href="/reset-password" className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">
+                Forgot?
+              </Link>
+            )}
           </div>
           <div className="relative">
             <input

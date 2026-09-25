@@ -8,6 +8,9 @@ import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
 import { AuthModal } from "@/components/auth/auth-modal";
+import { Footer } from "./footer";
+import { useToastStore } from "@/store/use-toast-store";
+import { SIGNED_OUT_FLAG } from "@/lib/utils";
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -26,6 +29,16 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const loadRepository = useDataStore((state) => state.loadRepository);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+
+  // Sign-out's redirect (auth-listener.tsx) always lands here fresh — surface the
+  // confirmation as a toast on this page rather than a dedicated "you're signed out"
+  // screen, which is what the profile page briefly showed before this existed.
+  useEffect(() => {
+    if (sessionStorage.getItem(SIGNED_OUT_FLAG)) {
+      sessionStorage.removeItem(SIGNED_OUT_FLAG);
+      useToastStore.getState().show("Signed out", "success");
+    }
+  }, []);
 
   useEffect(() => {
     loadRepository();
@@ -108,6 +121,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           >
             {children}
           </motion.div>
+          <Footer />
         </div>
       </main>
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type AuthModalMode = "login" | "signup";
+type AuthModalMode = "login" | "signup" | "forgot";
 
 interface AuthModalState {
   isOpen: boolean;

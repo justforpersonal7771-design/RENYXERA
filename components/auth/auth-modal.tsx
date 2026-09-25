@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { LoginForm } from "@/components/auth/login-form";
 import { SignupForm } from "@/components/auth/signup-form";
+import { ForgotPasswordForm } from "@/components/auth/forgot-password-form";
 
 /**
  * Mounted once in client-layout.tsx (dashboard shell only — the standalone /login and
@@ -73,15 +74,20 @@ export function AuthModal() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/brand/mark-dark.png" alt="" className="h-9 w-auto mb-4 hidden dark:block drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]" />
 
-          {mode === "login" ? (
+          {mode === "login" && (
             <LoginForm
               redirectTo={redirectTo}
               onSuccess={close}
               onSwitchToSignup={() => setMode("signup")}
+              onSwitchToForgot={() => setMode("forgot")}
               onDismiss={close}
             />
-          ) : (
+          )}
+          {mode === "signup" && (
             <SignupForm onSwitchToLogin={() => setMode("login")} onDismiss={close} />
+          )}
+          {mode === "forgot" && (
+            <ForgotPasswordForm onSwitchToLogin={() => setMode("login")} />
           )}
         </div>
       </motion.div>

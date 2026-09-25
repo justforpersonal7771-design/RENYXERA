@@ -12,6 +12,7 @@ import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-pick
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-avatar";
+import { SIGNED_OUT_FLAG } from "@/lib/utils";
 
 const INPUT_CLASS =
   "w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-shadow";
@@ -54,6 +55,7 @@ export default function ProfilePage() {
   const user = useAuthStore((s) => s.user);
   const profile = useAuthStore((s) => s.profile);
   const authLoading = useAuthStore((s) => s.loading);
+  const setProfile = useAuthStore((s) => s.setProfile);
 
   const [avatar, setAvatar] = useState<AvatarValue>({ style: "adventurer", seed: randomAvatarSeed() });
   const [displayName, setDisplayName] = useState("");
@@ -95,23 +97,27 @@ export default function ProfilePage() {
     try {
       const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
-      const { error } = await supabase
-        .from("profiles")
-        .update({
-          display_name: displayName.trim() || null,
-          username: username.trim() || null,
-          avatar_seed: avatar.seed,
-          avatar_style: avatar.style,
-          target_branch: targetBranch,
-          target_year: targetYear ? Number(targetYear) : null,
-          target_rank: targetRank ? Number(targetRank) : null,
-          daily_study_hours: dailyHours ? Number(dailyHours) : 2,
-        })
-        .eq("id", user.id);
+      const updates = {
+        display_name: displayName.trim() || null,
+        username: username.trim() || null,
+        avatar_seed: avatar.seed,
+        avatar_style: avatar.style,
+        target_branch: targetBranch,
+        target_year: targetYear ? Number(targetYear) : null,
+        target_rank: targetRank ? Number(targetRank) : null,
+        daily_study_hours: dailyHours ? Number(dailyHours) : 2,
+      };
+      const { error } = await supabase.from("profiles").update(updates).eq("id", user.id);
       if (error) {
         setError(error.message);
         return;
       }
+      // The topbar's AccountButton (and this page, on a future visit) read the avatar
+      // and other fields straight from this store — without updating it here too, a
+      // successful save would only be reflected once something else happened to
+      // refetch the profile (a sign-out/in or a hard reload), so the avatar (and name,
+      // goals, ...) looked like they "didn't update" even though the write succeeded.
+      setProfile(profile ? { ...profile, ...updates } : null);
       setSaved(true);
       setTimeout(() => setSaved(false), 2500);
     } catch (err: any) {
@@ -124,17 +130,26 @@ export default function ProfilePage() {
   async function handleSignOut() {
     setSigningOut(true);
     try {
+      // Read by ClientLayout on the next page load to surface a "Signed out" toast —
+      // sessionStorage survives the navigation, a JS variable wouldn't.
+      sessionStorage.setItem(SIGNED_OUT_FLAG, "1");
       const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
       await supabase.auth.signOut();
       // AuthListener's onAuthStateChange handler switches the IndexedDB namespace back
-      // to guest, resets every store, and redirects to the dashboard.
+      // to guest, resets every store, and redirects to the dashboard. `signingOut` stays
+      // true (never reset on this success path) so the render below keeps showing a
+      // spinner instead of this page's own "not signed in" prompt — user becomes null a
+      // moment before that redirect actually fires, and without this check that CTA
+      // card would flash on screen first, reading like a broken/dead-end page rather
+      // than an in-progress sign-out.
     } catch {
+      sessionStorage.removeItem(SIGNED_OUT_FLAG);
       setSigningOut(false);
     }
   }
 
-  if (authLoading) {
+  if (authLoading || signingOut) {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <Loader2 className="w-6 h-6 animate-spin text-[var(--text-muted)]" />

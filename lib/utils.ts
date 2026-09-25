@@ -28,6 +28,14 @@ export function isInsidePortalPopover(target: EventTarget | null): boolean {
 export const GATE_2027_EXAM_DATE = "2027-02-13";
 
 /**
+ * Set right before signOut() (app/(dashboard)/profile/page.tsx), read once by
+ * ClientLayout on the fresh page load that sign-out's redirect lands on to surface a
+ * "Signed out" toast — sessionStorage is just the only thing that survives the
+ * navigation in between; it isn't the notification itself.
+ */
+export const SIGNED_OUT_FLAG = "renyxera_just_signed_out";
+
+/**
  * Formats a Date as YYYY-MM-DD using LOCAL calendar fields, not UTC.
  * Never use `date.toISOString().split("T")[0]` for day-bucketing — it
  * silently shifts the date by a day for any timezone ahead of UTC (e.g.

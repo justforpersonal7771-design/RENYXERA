@@ -174,6 +174,9 @@ export function Topbar() {
                 >
                    <CalendarIcon className="w-4 h-4" />
                 </button>
+                {/* Already renders as a fixed, full-width bottom-anchored sheet below
+                    sm: (calendar-quick-panel.tsx), so this stays visible at every
+                    width rather than moving into the mobile menu. */}
                 <AnimatePresence>
                    {isCalendarOpen && (
                       <CalendarQuickPanel onClose={() => setIsCalendarOpen(false)} />
@@ -199,9 +202,17 @@ export function Topbar() {
                 </AnimatePresence>
              </div>
 
+             {/* Focus Target and Dev Reset move into the mobile menu below sm:/lg: —
+                 with Calendar + Todo already taking two slots, keeping all five
+                 (plus theme toggle, account, hamburger) in one row left every icon
+                 nearly untappable on a phone, and Sign In specifically label-less
+                 (its text is hidden below sm: — see AccountButton). GoalSliderPanel
+                 itself renders as a centered fixed modal outside this row (not
+                 anchored to this button), so triggering it from the mobile menu
+                 instead needs no extra plumbing. */}
              <button
                 onClick={() => setIsGoalSliderOpen(true)}
-                className={`relative p-2 rounded-lg transition-colors cursor-pointer ${
+                className={`hidden sm:flex relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
                     ? "text-white bg-indigo-600 shadow-sm"
                     : isFocusTargetActive
@@ -221,12 +232,17 @@ export function Topbar() {
                 )}
              </button>
 
-             <div className="w-px h-5 bg-[var(--border)] mx-0.5" />
+             <div className="hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
 
+             {/* Dev Reset is a one-tap "wipe everything" action — desktop-only (lg:,
+                 matching the main nav's own collapse point), and deliberately not
+                 duplicated into the mobile menu at all (unlike Focus Target above) —
+                 a touchscreen makes a mis-tap easier, not harder, and there's less
+                 reason to need it on a phone in the first place. */}
              <button
                 onClick={handleDeveloperReset}
                 disabled={isResetting}
-                className="p-2 text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
+                className="hidden lg:flex p-2 text-[var(--danger)] hover:bg-[var(--danger)]/10 rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
                 aria-label="Developer Reset"
                 title="Perform Hard Reset"
              >
@@ -290,6 +306,25 @@ export function Topbar() {
                   </Link>
                 );
               })}
+              {/* Focus Target's own trigger button is hidden below sm: (see the Right
+                  Actions row above) — mirrored here so it stays reachable on a phone. */}
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setIsGoalSliderOpen(true);
+                }}
+                className={`sm:hidden flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-bold transition-colors ${
+                  isFocusTargetActive
+                    ? "text-amber-600 dark:text-amber-400 bg-amber-500/10"
+                    : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
+                }`}
+              >
+                <Target className="w-4 h-4 shrink-0" />
+                Focus Target
+                {isFocusTargetActive && (
+                  <span className="ml-auto w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+                )}
+              </button>
             </nav>
           </motion.div>
         )}
