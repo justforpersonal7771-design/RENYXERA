@@ -17,7 +17,7 @@ export default function PrivacyPolicyPage() {
       <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--text-primary)] mb-1">
         Privacy Policy
       </h1>
-      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 24 September 2026</p>
+      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 25 September 2026</p>
 
       <div className="space-y-8 text-[var(--text-secondary)] leading-relaxed">
         <section>
@@ -41,7 +41,22 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">3. Graded / competitive attempts</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">3. Cookies and local storage</h2>
+          <p>
+            If you sign in, we set one essential cookie (managed by our authentication
+            provider, Supabase) to keep you signed in between visits — this cookie
+            contains no advertising or tracking identifiers, and we do not use any
+            optional/analytics cookies today. Separately, and for every visitor whether
+            signed in or not, your browser's own IndexedDB and localStorage are used to
+            store your practice history, preferences, and (for a signed-out guest) all
+            of your data, entirely on your device — see §2 above. You can clear this at
+            any time through your browser's own site-data settings; doing so does not
+            affect anything already synced to your account if you're signed in.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">4. Graded / competitive attempts</h2>
           <p>
             For graded mock tests and leaderboards, we record behavioural signals to protect the
             integrity of rankings other users rely on — for example whether the browser tab lost
@@ -53,12 +68,12 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">4. How we use your data</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">5. How we use your data</h2>
           <p>To provide the service (sync your progress, grade attempts, power the AI Mentor); to protect the platform (rate-limiting, fraud and abuse prevention); to improve RENYXERA (aggregate, non-identifying usage patterns); and, if you've opted in, to send you product updates or reminders. We do not sell your personal data to anyone.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">5. Advertising (planned, not yet live)</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">6. Advertising (planned, not yet live)</h2>
           <p>
             RENYXERA does not currently display advertising. When it does, ads will never appear
             during an active exam, and paid subscribers will never see ads. Where legally
@@ -69,7 +84,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">6. Payments (planned, not yet live)</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">7. Payments (planned, not yet live)</h2>
           <p>
             When paid plans launch, payments will be processed by Razorpay. We do not, and will
             not, handle or store your card details ourselves — that happens entirely on
@@ -78,17 +93,17 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">7. Who we share data with</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">8. Who we share data with</h2>
           <p>We share data only with the service providers that make RENYXERA work, each bound to use it only to provide their service to us: Supabase (database and authentication hosting), Google (Gemini AI, and Google Sign-In if you use it), and, once live, Razorpay (payments) and an advertising network (for non-personalised or, where permitted, personalised ads). We do not share your data with anyone else, and never sell it.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">8. Children and minors</h2>
-          <p>Many GATE aspirants are 18 or older, but some are younger. We collect the minimum data necessary regardless of age, and — per §5 above — never show personalised advertising to a user we know to be under 18.</p>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">9. Children and minors</h2>
+          <p>Many GATE aspirants are 18 or older, but some are younger. We collect the minimum data necessary regardless of age, and — per §6 above — never show personalised advertising to a user we know to be under 18.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">9. Your rights and account deletion</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">10. Your rights and account deletion</h2>
           <p>
             You can export your data at any time from your profile. RENYXERA does not offer an
             in-app "delete my account" button, because your exam history is also what makes
@@ -104,17 +119,17 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">10. Data security</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">11. Data security</h2>
           <p>We use industry-standard measures to protect your data — encrypted connections (HTTPS) everywhere, database-level access controls (Row Level Security) so your data is only ever readable by you, and secrets are never exposed to the browser. No system is perfectly secure, and we'll notify affected users if a breach affecting their data ever occurs.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">11. Changes to this policy</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">12. Changes to this policy</h2>
           <p>We'll update the date at the top of this page when this policy changes, and for material changes we'll make a reasonable effort to notify account holders directly.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">12. Contact</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">13. Contact</h2>
           <p>
             Questions, requests, or concerns about your data:{" "}
             <a href="mailto:renyxera@gmail.com" className="text-[var(--accent)]">renyxera@gmail.com</a>

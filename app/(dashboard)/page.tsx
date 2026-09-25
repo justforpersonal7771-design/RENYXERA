@@ -101,10 +101,39 @@ export default function Home() {
   };
 
   if (!isInitialized || (loading && !dashboardMetrics)) {
+    // This branch is what every server-rendered response actually returns — the real
+    // dashboard below depends entirely on client-only IndexedDB data (isInitialized
+    // starts false on the server, always), so a crawler that doesn't execute JS (e.g.
+    // Google's OAuth branding-verification checker) never sees anything past this
+    // point. Confirmed live: fetching this page with JS disabled returned 241 bytes of
+    // visible text total — just nav labels and "Initializing Dashboard..." — which is
+    // the literal cause of two rejected verification issues, "your homepage does not
+    // explain the purpose of your app" and "your homepage is behind a login page"
+    // (an empty shell with a prominent Sign In button reads the same way to an
+    // automated check as an actual login wall). The content below is real and
+    // substantial for exactly that reason, not just filler — it also happens to be
+    // genuinely better SEO/first-impression copy than a bare spinner. Shown only
+    // briefly to a real visitor (IndexedDB init is normally well under a second) before
+    // the interactive dashboard replaces it.
     return (
-      <div className="flex h-[80vh] w-full flex-col items-center justify-center">
-         <Loader2 className="w-10 h-10 animate-spin text-indigo-500 mb-3" />
-         <span className="font-extrabold tracking-widest text-xs text-[var(--text-muted)] uppercase animate-pulse">Initializing Dashboard...</span>
+      <div className="w-full max-w-3xl mx-auto px-4 py-10 sm:py-16 text-center">
+        <h1 className="text-2xl sm:text-3xl font-display font-extrabold text-[var(--text-primary)] mb-3">
+          RENYXERA — GATE CSE Exam Preparation
+        </h1>
+        <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed mb-8">
+          RENYXERA is an adaptive study workspace built for GATE Computer Science & IT
+          aspirants. Practice with real official-paper questions and custom-built tests,
+          get personalized explanations and hints from an AI Mentor trained on your own
+          mistakes, and track your readiness with weakness analytics that update after
+          every attempt. Bookmark tricky questions, revisit a mistakes bank that
+          resurfaces what you actually need to review, and follow a countdown built
+          around your own target GATE year — all in one place, free to start without an
+          account.
+        </p>
+        <div className="flex flex-col items-center gap-3">
+          <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+          <span className="font-extrabold tracking-widest text-xs text-[var(--text-muted)] uppercase animate-pulse">Initializing Dashboard...</span>
+        </div>
       </div>
     );
   }
