@@ -115,7 +115,7 @@ export function Topbar() {
       <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between">
 
         {/* Logo and Desktop Nav */}
-        <div className="flex items-center gap-8 h-full">
+        <div className="flex items-center gap-4 xl:gap-8 h-full min-w-0">
           <Link href="/" className="shrink-0 flex items-center gap-2.5 group">
              <img
                 src={mounted && resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
@@ -125,18 +125,20 @@ export function Topbar() {
              <img
                 src={mounted && resolvedTheme === "light" ? "/brand/wordmark-light.png" : "/brand/wordmark-dark.png"}
                 alt="RENYXERA"
-                className="hidden sm:block h-5 w-auto dark:[filter:invert(1)_hue-rotate(180deg)]"
+                className="hidden sm:block lg:hidden 2xl:block h-5 w-auto dark:[filter:invert(1)_hue-rotate(180deg)]"
              />
           </Link>
 
-          <nav className="hidden lg:flex items-center h-full gap-1 relative">
+          <nav className="hidden lg:flex items-center h-full gap-0.5 xl:gap-1 relative">
             {NAV_ITEMS.map((item) => {
               const isActive = pathname === item.href;
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`relative flex items-center gap-2 px-3.5 py-2 rounded-lg font-bold text-sm transition-colors z-10 ${
+                  title={item.label}
+                  aria-label={item.label}
+                  className={`relative flex items-center gap-2 px-2.5 xl:px-3.5 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-colors z-10 ${
                     isActive
                       ? "text-white"
                       : "text-[var(--text-primary)]/75 hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"
@@ -149,8 +151,8 @@ export function Topbar() {
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <item.icon className="w-4 h-4" />
-                  {item.label}
+                  <item.icon className="w-4 h-4 shrink-0 xl:hidden 2xl:block" />
+                  <span className="hidden xl:inline">{item.label}</span>
                 </Link>
               );
             })}

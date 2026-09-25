@@ -1,18 +1,31 @@
 import type {Metadata} from 'next';
-import { Geist, Geist_Mono, Space_Grotesk } from 'next/font/google';
+import { Bricolage_Grotesque, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css'; // Global styles
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
 import { ThemeProvider } from '@/components/theme-provider';
 
-// Geist (Vercel's flagship typeface) for body/UI text — the current standard for a
-// clean, modern, premium SaaS look, replacing Inter. Geist Mono replaces JetBrains
-// Mono for the same reason, as a matched pair from the same family rather than two
-// unrelated typefaces. Space Grotesk stays for display headings (the geometric,
-// slightly-distinctive display companion Geist itself doesn't provide).
-const geistSans = Geist({ subsets: ['latin'], variable: '--font-sans' });
-const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-mono' });
-const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-display' });
+// Four deliberately different families, each with one job:
+//  - Plus Jakarta Sans  — body & UI text, with its "Lancip" (sharp) alternates, ss01
+//  - Bricolage Grotesque — every h1–h4 (applied globally in globals.css)
+//  - Instrument Serif   — italic accent words only (.font-serif / "font-serif italic")
+//  - JetBrains Mono     — numbers, timers, code (font-mono)
+// Self-hosted from the designer's official release (tokotype/PlusJakartaSans, SIL OFL
+// 1.1 — licence alongside in app/fonts) rather than Google Fonts: Google's web cut is
+// subset to 285 glyphs with the stylistic sets stripped, so ss01 "Lancip Alternates"
+// simply doesn't exist in it. Enabled globally in globals.css.
+const bodySans = localFont({
+  src: [
+    { path: './fonts/PlusJakartaSans-Variable.woff2', weight: '200 800', style: 'normal' },
+    { path: './fonts/PlusJakartaSans-Italic-Variable.woff2', weight: '200 800', style: 'italic' },
+  ],
+  variable: '--font-sans',
+  display: 'swap',
+});
+const displaySans = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
+const accentSerif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: ['normal', 'italic'], variable: '--font-serif' });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export const metadata: Metadata = {
   title: 'RENYXERA — A New ERA of Intelligent Learning',
@@ -50,7 +63,7 @@ const THEME_BOOTSTRAP = `(function(){try{if(typeof window.__name!=="function"){w
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
       </head>

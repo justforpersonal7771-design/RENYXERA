@@ -33,10 +33,10 @@ export function AccountButton() {
         type="button"
         onClick={() => openAuthModal("login")}
         aria-label="Sign In"
-        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors"
+        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-bold whitespace-nowrap text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-elevated)] transition-colors"
       >
         <LogIn className="w-4 h-4" />
-        <span className="hidden sm:inline">Sign In</span>
+        <span className="hidden sm:inline lg:hidden 2xl:inline">Sign In</span>
       </button>
     );
   }

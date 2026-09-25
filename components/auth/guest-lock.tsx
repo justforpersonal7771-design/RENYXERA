@@ -41,7 +41,11 @@ export function GuestLock({ feature, description, children }: GuestLockProps) {
   if (user) return <>{children}</>;
 
   return (
-    <div className="relative w-full h-full">
+    // data-fill-height pins this to exactly one screen (see .page-shell in globals.css)
+    // and overflow-hidden clips the blurred preview to it. Without that the preview
+    // grew to the locked page's full height (~1,450px on AI Mentor) and the centred
+    // unlock card ended up below the fold, leaving guests a blurred page to scroll.
+    <div data-fill-height className="relative w-full h-full overflow-hidden">
       {/* `inert` (not just pointer-events-none) also pulls this out of keyboard/
           screen-reader focus — a blurred, non-interactive preview shouldn't be
           tabbable. */}

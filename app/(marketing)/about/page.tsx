@@ -78,7 +78,7 @@ export default function AboutPage() {
         </span>
         <h1 className="text-4xl sm:text-5xl font-display font-extrabold tracking-tight text-[var(--text-primary)] leading-tight">
           A new era of intelligent{" "}
-          <span className="bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent">
+          <span className="font-serif italic font-normal tracking-normal pr-1 bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent">
             GATE preparation
           </span>
         </h1>

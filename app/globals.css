@@ -31,6 +31,7 @@
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-display: var(--font-display);
+  --font-serif: var(--font-serif);
 }
 
 @layer utilities {
@@ -42,6 +43,14 @@
      one-screen height by putting data-fill-height on their root element. */
   .page-shell {
     min-height: 100%;
+  }
+
+  /* Keep Lancip (ss01) scoped to Plus Jakarta Sans — see the body rule in @layer base. */
+  .font-mono, .font-serif, .font-display {
+    font-feature-settings: normal;
+  }
+  .font-sans {
+    font-feature-settings: "ss01";
   }
   .page-shell:has(> [data-fill-height]) {
     height: 100%;
@@ -265,6 +274,26 @@
   html {
     height: 100%;
     overflow: hidden;
+  }
+
+  /* Headings get the display face everywhere without touching each page. A class
+     on the element (e.g. font-sans, tracking-widest) still wins, since utilities
+     beat this base layer. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    letter-spacing: -0.015em;
+    font-feature-settings: normal;
+  }
+
+  /* Plus Jakarta Sans "Lancip" (sharp) alternates — ss01 in the official font. Set
+     once here and inherited by all body text; switched back off for text in the
+     other families (headings above, code/mono/serif below), whose own ss01 means
+     something unrelated. */
+  body {
+    font-feature-settings: "ss01";
+  }
+  code, pre, kbd, samp {
+    font-feature-settings: normal;
   }
 
   body {

@@ -112,7 +112,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam }: HeroSection
               transition={{ delay: 0.1 }}
               className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight"
             >
-              Conquer your <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300">GATE 2027 Goals</span>
+              Conquer your <span className="font-serif italic font-normal tracking-normal pr-1 bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300">GATE 2027 Goals</span>
             </motion.h1>
             
             <motion.p 
