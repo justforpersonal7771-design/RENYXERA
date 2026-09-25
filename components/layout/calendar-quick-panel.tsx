@@ -1,12 +1,15 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useToastStore } from "@/store/use-toast-store";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { Calendar, Plus, Play, Check, X, Clock3, ChevronRight, ChevronLeft, Target } from "lucide-react";
 import { useCalendarStore } from "@/store/use-calendar-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
-import { toLocalDateStr, formatTime12h, GATE_2027_EXAM_DATE } from "@/lib/utils";
+import { toLocalDateStr, formatTime12h } from "@/lib/utils";
+import { useTargetYear } from "@/store/use-auth-store";
+import { examDateFor } from "@/lib/goals/exam-year";
 import { CalendarEvent } from "@/types/calendar.types";
 import { CompactCalendarView } from "./compact-calendar-view";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
@@ -27,7 +30,9 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
   const [isAdding, setIsAdding] = useState(false);
   const [quickTitle, setQuickTitle] = useState("");
   const [quickType, setQuickType] = useState<CalendarEvent["studyType"]>("Study");
-  const [examDate, setExamDate] = useState<string | null>(GATE_2027_EXAM_DATE);
+  const targetYear = useTargetYear();
+  const [savedExamDate, setSavedExamDate] = useState<string | null>(null);
+  const examDate = examDateFor(targetYear, savedExamDate);
   const [editingExamDate, setEditingExamDate] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,7 +40,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     loadEvents();
     IDBManager.getMetadata(TARGET_EXAM_DATE_KEY).then(rec => {
-      if (rec?.value) setExamDate(String(rec.value));
+      if (rec?.value) setSavedExamDate(String(rec.value));
     });
   }, [loadEvents]);
 
@@ -66,7 +71,14 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
     : null;
 
   const handleSaveExamDate = async (value: string) => {
-    setExamDate(value);
+    // The countdown follows the target year; a date in another year would be ignored,
+    // so say so instead of silently not applying it.
+    if (!value.startsWith(String(targetYear))) {
+      setEditingExamDate(false);
+      useToastStore.getState().show(`Pick a date in ${targetYear}, your target GATE year. Change the year on your profile.`, "error");
+      return;
+    }
+    setSavedExamDate(value);
     setEditingExamDate(false);
     await IDBManager.setMetadata(TARGET_EXAM_DATE_KEY, value);
   };

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { useGoalPlan } from "@/lib/goals/use-goal-plan";
+import { effectiveTargetYear } from "@/lib/goals/exam-year";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
@@ -63,7 +64,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
   const goalRank = profile?.target_rank && profile.target_rank > 0 ? profile.target_rank : null;
   const { plan: goalPlan } = useGoalPlan({
     targetRank: goalRank,
-    targetYear: profile?.target_year || 2027,
+    targetYear: effectiveTargetYear(profile?.target_year),
     dailyHours: profile?.daily_study_hours ?? 2,
   });
 

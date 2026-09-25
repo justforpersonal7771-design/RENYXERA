@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { CalendarClock, ChevronRight, Flag } from "lucide-react";
 import { useCalendarStore } from "@/store/use-calendar-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
-import { toLocalDateStr, formatTime12h, GATE_2027_EXAM_DATE } from "@/lib/utils";
+import { toLocalDateStr, formatTime12h } from "@/lib/utils";
+import { useTargetYear } from "@/store/use-auth-store";
+import { examDateFor } from "@/lib/goals/exam-year";
 
 const TARGET_EXAM_DATE_KEY = "target_exam_date";
 
@@ -18,14 +20,19 @@ const PRIORITY_DOT: Record<string, string> = {
 export function ExamCountdownCard() {
   const router = useRouter();
   const { events, loadEvents } = useCalendarStore();
-  const [examDate, setExamDate] = useState<string>(GATE_2027_EXAM_DATE);
+  const targetYear = useTargetYear();
+  const [savedExamDate, setSavedExamDate] = useState<string | null>(null);
 
   useEffect(() => {
     loadEvents();
     IDBManager.getMetadata(TARGET_EXAM_DATE_KEY).then((rec) => {
-      if (rec?.value) setExamDate(String(rec.value));
+      if (rec?.value) setSavedExamDate(String(rec.value));
     });
   }, [loadEvents]);
+
+  // Follows the learner's target year; an exact date they set is used only when it's in
+  // that year and still ahead (lib/goals/exam-year.ts).
+  const examDate = examDateFor(targetYear, savedExamDate);
 
   const todayStr = toLocalDateStr();
 
@@ -49,7 +56,7 @@ export function ExamCountdownCard() {
       <div className="relative flex items-center justify-between mb-4">
         <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1.5">
           <CalendarClock className="w-3.5 h-3.5 text-indigo-500" />
-          GATE 2027 Countdown
+          GATE {targetYear} Countdown
         </h3>
         <button
           onClick={() => router.push("/setup")}

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { effectiveTargetYear } from "@/lib/goals/exam-year";
 
 export interface Profile {
   id: string;
@@ -56,4 +57,12 @@ export const useAuthStore = create<AuthState>((set) => ({
 export function useDisplayName(): { full: string | null; first: string | null } {
   const name = useAuthStore((s) => s.profile?.display_name?.trim() || null);
   return { full: name, first: name ? name.split(/\s+/)[0] : null };
+}
+
+/** The GATE year this learner is preparing for (profile target, rolled forward once that
+ *  exam has passed; the next upcoming exam for guests). Drives every "GATE <year>" label,
+ *  the countdown and the goals engine. See lib/goals/exam-year.ts. */
+export function useTargetYear(): number {
+  const saved = useAuthStore((s) => s.profile?.target_year ?? null);
+  return effectiveTargetYear(saved);
 }

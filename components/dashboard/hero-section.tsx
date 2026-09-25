@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { Sparkles, Flame, CheckCircle2, TrendingUp, Trophy, Compass, ArrowRight, BrainCircuit } from "lucide-react";
 import { CountUp, RadialGauge, TiltCard, InfoTip } from "@/components/ui/interactive";
-import { useDisplayName } from "@/store/use-auth-store";
+import { useDisplayName, useTargetYear } from "@/store/use-auth-store";
 import { BrandName } from "@/components/brand/wordmark";
 
 interface HeroSectionProps {
@@ -45,9 +45,15 @@ function Spark({ style }: { style: React.CSSProperties }) {
 
 /** "GATE 2027" in Cinzel with a continuous metallic sheen (CSS: .gate-anim). */
 function GateTitle({ text, className = "" }: { text: string; className?: string }) {
+  // Re-key once mounted so the visitor's local year replaces whatever the server rendered
+  // (suppressHydrationWarning alone keeps the server text and never patches it).
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   return (
     <span className={`gate-anim ${className}`}>
-      <span className="gate-text">{text}</span>
+      {/* The year comes from the visitor's local date; around the February roll-over the
+          server (UTC) can briefly disagree, so a differing year isn't a hydration error. */}
+      <span key={mounted ? "client" : "server"} className="gate-text" suppressHydrationWarning>{text}</span>
       <Spark style={{ top: "-0.18em", left: "-0.22em", animationDelay: "0s" }} />
       <Spark style={{ top: "-0.28em", right: "18%", animationDelay: "0.9s", width: "0.24em", height: "0.24em" }} />
       <Spark style={{ bottom: "-0.1em", right: "-0.2em", animationDelay: "1.7s" }} />
@@ -63,6 +69,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
   const router = useRouter();
   const reduce = useReducedMotion();
   const { first } = useDisplayName();
+  const targetYear = useTargetYear();
 
   // Time-of-day greeting is client-only (the server's clock/timezone isn't the
   // visitor's), so the first paint shows a neutral welcome that then personalises.
@@ -132,7 +139,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
                 Conquer your
               </span>
               <span className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mt-1">
-                <GateTitle text="GATE 2027" className="font-luxe font-bold tracking-[0.04em] text-[2.3rem] sm:text-5xl md:text-[3.5rem] leading-tight" />
+                <GateTitle text={`GATE ${targetYear}`} className="font-luxe font-bold tracking-[0.04em] text-[2.3rem] sm:text-5xl md:text-[3.5rem] leading-tight" />
                 <span className="font-script text-[2.6rem] sm:text-5xl md:text-[3.6rem] leading-[1.15] text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.25)]">
                   goals
                 </span>

@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { computeTopicFrequencies, filterOfficialQuestions, type TopicFrequency } from "@/lib/analytics/goal-slider-engine";
-import { computeGoalPlan, defaultExamDate, type GoalPlan } from "@/lib/goals/goal-engine";
+import { computeGoalPlan, type GoalPlan } from "@/lib/goals/goal-engine";
+import { examDateFor } from "@/lib/goals/exam-year";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { toLocalDateStr } from "@/lib/utils";
@@ -38,11 +39,7 @@ export function useGoalPlan(goals: { targetRank: number | null; targetYear: numb
 
   // An exact date set in the Calendar wins when it's in the target year; otherwise GATE's
   // usual slot (second Saturday of February) of the target year.
-  const examDate = savedExamDate === undefined
-    ? null
-    : savedExamDate && savedExamDate.startsWith(String(goals.targetYear))
-      ? savedExamDate
-      : defaultExamDate(goals.targetYear);
+  const examDate = savedExamDate === undefined ? null : examDateFor(goals.targetYear, savedExamDate);
 
   const plan = useMemo(() => {
     if (!ranked || !examDate) return null;

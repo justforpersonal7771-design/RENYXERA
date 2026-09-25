@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { upcomingExamYear, effectiveTargetYear, targetYearRolledForward } from "@/lib/goals/exam-year";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import { motion } from "motion/react";
 import {
@@ -65,7 +66,10 @@ export default function ProfilePage() {
   const [displayName, setDisplayName] = useState("");
   const [username, setUsername] = useState("");
   const [targetBranch, setTargetBranch] = useState("CSE");
-  const [targetYear, setTargetYear] = useState("2027");
+  const upcomingYear = upcomingExamYear();
+  const [targetYear, setTargetYear] = useState(String(upcomingYear));
+  // A saved year whose exam is already over rolls forward to the next GATE.
+  const yearRolled = targetYearRolledForward(profile?.target_year);
   const [targetRank, setTargetRank] = useState("");
   const [dailyHours, setDailyHours] = useState("2");
 
@@ -127,7 +131,7 @@ export default function ProfilePage() {
     setUsername((profile.username || "").toLowerCase());
     // Only CSE is live; a "Coming Soon" branch saved before those were locked reads as CSE.
     setTargetBranch(BRANCHES.find((b) => b.value === profile.target_branch && !b.disabled)?.value ?? "CSE");
-    setTargetYear(profile.target_year ? String(profile.target_year) : "2027");
+    setTargetYear(String(effectiveTargetYear(profile.target_year)));
     setTargetRank(profile.target_rank ? String(profile.target_rank) : "");
     setDailyHours(profile.daily_study_hours ? String(profile.daily_study_hours) : "2");
   }, [profile]);
@@ -306,7 +310,7 @@ export default function ProfilePage() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12 }}>
             <GoalPlan
               targetRank={Number(targetRank) > 0 ? Number(targetRank) : null}
-              targetYear={Number(targetYear) || 2027}
+              targetYear={Number(targetYear) || upcomingYear}
               dailyHours={Number(dailyHours) || 0}
             />
           </motion.div>
@@ -380,7 +384,12 @@ export default function ProfilePage() {
               </div>
               <div>
                 <label className={LABEL_CLASS}><CalendarDays className="w-3.5 h-3.5" /> Target Year</label>
-                <NumberStepper ariaLabel="Target year" min={2025} max={2035} value={Number(targetYear) || 2027} onChange={(v) => setTargetYear(String(v))} />
+                <NumberStepper ariaLabel="Target year" min={upcomingYear} max={upcomingYear + 5} value={Number(targetYear) || upcomingYear} onChange={(v) => setTargetYear(String(v))} />
+                {yearRolled && Number(targetYear) === upcomingYear && (
+                  <p className="mt-1.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
+                    GATE {profile?.target_year} is over, so we moved you to GATE {upcomingYear}. Save to keep it.
+                  </p>
+                )}
               </div>
               <div>
                 <label className={LABEL_CLASS}><Trophy className="w-3.5 h-3.5" /> Target Rank (optional)</label>
