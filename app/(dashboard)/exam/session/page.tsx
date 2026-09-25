@@ -262,7 +262,7 @@ export default function ExamSessionPage() {
                    />
                  </button>
                  {currentQuestion && (
-                    <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-mono text-[13px] font-bold shrink-0">
+                    <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-num text-[13px] font-bold shrink-0">
                       {currentQuestionIndex + 1}<span className="text-[var(--text-muted)]">/{totalQuestions}</span>
                     </span>
                  )}
@@ -275,7 +275,7 @@ export default function ExamSessionPage() {
                         <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
                           {currentQuestion.question_type}
                         </span>
-                        <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-mono normal-case">
+                        <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-num normal-case">
                           +{currentQuestion.marks}/{currentQuestion.question_type === "MCQ" ? `-${(currentQuestion.marks / 3).toFixed(2)}` : "0"}
                         </span>
                         <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">
@@ -365,7 +365,7 @@ export default function ExamSessionPage() {
                    <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
                      {currentQuestion.question_type}
                    </span>
-                   <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-mono normal-case">
+                   <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-num normal-case">
                      +{currentQuestion.marks}/{currentQuestion.question_type === "MCQ" ? `-${(currentQuestion.marks / 3).toFixed(2)}` : "0"}
                    </span>
                    <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">

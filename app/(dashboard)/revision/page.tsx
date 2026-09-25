@@ -324,16 +324,16 @@ export default function RevisionBuilderPage() {
                         <td className="px-5 py-3.5">
                           <span className="text-[11px] text-[var(--text-secondary)] font-semibold">{item.reason}</span>
                         </td>
-                        <td className="px-5 py-3.5 text-center font-bold font-mono text-[var(--text-secondary)]">
+                        <td className="px-5 py-3.5 text-center font-bold font-num text-[var(--text-secondary)]">
                           {item.estimatedTimeMin}m
                         </td>
-                        <td className="px-5 py-3.5 text-center font-bold font-mono text-[var(--text-secondary)]">
+                        <td className="px-5 py-3.5 text-center font-bold font-num text-[var(--text-secondary)]">
                           {item.confidencePercent}%
                         </td>
-                        <td className="px-5 py-3.5 text-center font-bold font-mono text-[var(--text-secondary)]">
+                        <td className="px-5 py-3.5 text-center font-bold font-num text-[var(--text-secondary)]">
                           {item.revisionCount} reviews
                         </td>
-                        <td className="px-5 py-3.5 text-right text-[10px] font-bold text-[var(--text-muted)] font-mono">
+                        <td className="px-5 py-3.5 text-right text-[10px] font-bold text-[var(--text-muted)] font-num">
                           {item.nextSuggestedRevision}
                         </td>
                       </motion.tr>

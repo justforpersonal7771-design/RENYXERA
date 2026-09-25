@@ -71,7 +71,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
             />
           </svg>
           <div className="absolute flex flex-col items-center justify-center">
-            <span className="text-3xl font-black text-[var(--text-primary)] font-mono">{overallCompletionPercentage}%</span>
+            <span className="text-3xl font-black text-[var(--text-primary)] font-num">{overallCompletionPercentage}%</span>
             <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mt-0.5">Syllabus solved</span>
           </div>
         </div>
@@ -105,7 +105,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
                     <span className="font-bold text-xs text-[var(--text-primary)] line-clamp-1 w-[70%]" title={subj.subject}>
                       {subj.subject}
                     </span>
-                    <span className="font-black text-xs text-[var(--text-primary)] font-mono">{subj.acc}%</span>
+                    <span className="font-black text-xs text-[var(--text-primary)] font-num">{subj.acc}%</span>
                   </div>
                   
                   {/* Progress Bar container */}

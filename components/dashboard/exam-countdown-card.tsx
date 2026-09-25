@@ -60,7 +60,7 @@ export function ExamCountdownCard() {
       </div>
 
       <div className="relative flex items-baseline gap-2 mb-1">
-        <span className="text-4xl font-black font-mono text-[var(--text-primary)]">
+        <span className="text-4xl font-black font-num text-[var(--text-primary)]">
           {daysLeft >= 0 ? daysLeft : 0}
         </span>
         <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wide">

@@ -152,7 +152,7 @@ export default function ReviewPage() {
               </button>
               <span className="text-[9px] bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-400 px-2 py-1 rounded-md font-black uppercase tracking-wider shrink-0">Review Mode</span>
               {q && (
-                <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-mono text-[11px] shrink-0">
+                <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-num text-[11px] shrink-0">
                   Q<span className="text-indigo-600 dark:text-indigo-400 font-bold">{currentIndex + 1}</span><span className="text-[var(--text-muted)] font-normal">/{draftQuestions.length}</span>
                 </span>
               )}
@@ -210,7 +210,7 @@ export default function ReviewPage() {
                   <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
                     {q.question_type}
                   </span>
-                  <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-mono normal-case">
+                  <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-num normal-case">
                     +{q.marks}/{q.question_type === "MCQ" ? `-${(q.marks / 3).toFixed(2)}` : "0"}
                   </span>
                   <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">
@@ -300,7 +300,7 @@ export default function ReviewPage() {
                           <div className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl w-full">
                             <div className="flex-1 flex justify-between items-center bg-[var(--surface-secondary)] p-3 border border-[var(--border-subtle)] rounded-xl">
                               <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
-                              <span className="font-mono font-bold text-green-600 dark:text-green-400">
+                              <span className="font-num font-bold text-green-600 dark:text-green-400">
                                 {q.nat_answer_range ? `${q.nat_answer_range.min} to ${q.nat_answer_range.max}` : "N/A"}
                               </span>
                             </div>
@@ -311,7 +311,7 @@ export default function ReviewPage() {
                                 : 'border-[var(--border-subtle)] text-[var(--text-secondary)]'
                               }`}>
                               <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Your Answer</span>
-                              <span className="font-mono font-bold">{currentResponse?.natValue || "None"}</span>
+                              <span className="font-num font-bold">{currentResponse?.natValue || "None"}</span>
                             </div>
                           </div>
                         )}

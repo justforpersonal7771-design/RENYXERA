@@ -550,10 +550,10 @@ export default function MistakesPage() {
                             placeholder="Enter Numerical Answer"
                             value={userNatValue}
                             onChange={(e) => setUserNatValue(e.target.value)}
-                            className="flex-1 w-full bg-[var(--surface)] border border-[var(--border)] px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-semibold font-mono"
+                            className="flex-1 w-full bg-[var(--surface)] border border-[var(--border)] px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm font-semibold font-num"
                           />
                           {activeEntry.natValue && (
-                            <div className="bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 px-3.5 py-3 rounded-xl text-xs font-bold shrink-0 font-mono">
+                            <div className="bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 px-3.5 py-3 rounded-xl text-xs font-bold shrink-0 font-num">
                               Previously incorrect choice: {activeEntry.natValue}
                             </div>
                           )}
@@ -569,15 +569,15 @@ export default function MistakesPage() {
                   <div className="flex items-center gap-3">
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
                       <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">Occurrences</span>
-                      <span className="text-xs font-black text-rose-500 font-mono">{activeEntry.occurrences || 1}</span>
+                      <span className="text-xs font-black text-rose-500 font-num">{activeEntry.occurrences || 1}</span>
                     </div>
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
                       <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">Solved Retries</span>
-                      <span className="text-xs font-black text-emerald-500 font-mono">{activeEntry.solvedCount || 0} / {activeEntry.retryCount || 0}</span>
+                      <span className="text-xs font-black text-emerald-500 font-num">{activeEntry.solvedCount || 0} / {activeEntry.retryCount || 0}</span>
                     </div>
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
                       <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">Mastery</span>
-                      <span className="text-xs font-black text-indigo-500 font-mono">{activeEntry.mastery || 0}%</span>
+                      <span className="text-xs font-black text-indigo-500 font-num">{activeEntry.mastery || 0}%</span>
                     </div>
                   </div>
 

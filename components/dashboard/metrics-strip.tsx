@@ -75,7 +75,7 @@ function MiniStat({
         </div>
         <span className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{label}</span>
       </div>
-      <div className="relative text-xl font-black text-[var(--text-primary)] font-mono tracking-tight">
+      <div className="relative text-xl font-black text-[var(--text-primary)] font-num tracking-tight">
         {Math.round(animated)}{suffix}
       </div>
     </motion.button>

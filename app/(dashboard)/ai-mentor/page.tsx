@@ -23,9 +23,16 @@ import { AnimatePresence, motion } from "motion/react";
 import { buildStudyReportMarkdown, downloadTextFile } from "@/lib/export/markdown-export";
 import { Download } from "lucide-react";
 import { GuestLock } from "@/components/auth/guest-lock";
+import { useRouter } from "next/navigation";
+import { ArrowRight, ChevronDown, ChevronRight, Target, MessageSquareText, ClipboardList } from "lucide-react";
+import { CountUp, RadialGauge, TiltCard, InfoTip } from "@/components/ui/interactive";
 
 export default function AIMentorPage() {
+  const router = useRouter();
   const { mistakes, bookmarks, loadStudyData } = useStudyStore();
+  // Knowledge-graph drill-down trail (topic -> prerequisite -> its prerequisite ...)
+  const [graphTrail, setGraphTrail] = useState<string[]>([]);
+  const [openPattern, setOpenPattern] = useState<string | null>(null);
   const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
 
   const [mounted, setMounted] = useState(false);
@@ -260,8 +267,9 @@ export default function AIMentorPage() {
   // Handle prerequisite diagnosis whenever a topic is selected. Uses the same
   // real MasteryEngine scores the rest of the app relies on (topicMasteryMap),
   // not an ad hoc estimate.
-  const handleDiagnosePrerequisites = (topic: string) => {
+  const handleDiagnosePrerequisites = (topic: string, keepTrail = false) => {
     setSelectedTopic(topic);
+    setGraphTrail((t) => (keepTrail ? [...t, topic] : [topic]));
 
     const masteries: Record<string, number> = {};
     Object.values(topicMasteryMap).forEach(tm => {
@@ -304,6 +312,34 @@ export default function AIMentorPage() {
       body: `${activitySummary} Your concept retention is flagged on "${weakTopic}" — you have ${pendingCount} pending mistake${pendingCount === 1 ? "" : "s"} there. Today, we recommend reviewing "${weakTopic}" before starting any new subject.`
     };
   }, [mistakes, dashboardMetrics]);
+
+  // Weakest real topic by MasteryEngine score (only topics actually attempted).
+  const weakestTopic = Object.values(topicMasteryMap)
+    .filter((t) => t.totalAttempts > 0)
+    .sort((a, b) => a.score - b.score)[0];
+  const quickActions = [
+    ...(weakestTopic && weakestTopic.score < 60
+      ? [{ label: `Practise ${weakestTopic.topic.length > 26 ? weakestTopic.topic.slice(0, 25) + "…" : weakestTopic.topic}`, icon: Target, onClick: () => router.push(`/setup?topic=${encodeURIComponent(weakestTopic.topic)}`) }]
+      : []),
+    { label: "Review mistakes", icon: ClipboardList, onClick: () => router.push("/mistakes") },
+    { label: "Open AI Tutor", icon: MessageSquareText, onClick: () => router.push("/ai-tutor") },
+  ];
+
+  const masteryOf = (topic: string): number | null => {
+    const m = Object.values(topicMasteryMap).find((t) => t.topic === topic);
+    return m && m.totalAttempts > 0 ? m.score : null;
+  };
+  const toneOf = (v: number | null) =>
+    v === null ? "border-[var(--border)] text-[var(--text-secondary)] bg-[var(--surface)]"
+      : v < 60 ? "border-rose-500/40 text-rose-600 dark:text-rose-400 bg-rose-500/10"
+      : v < 80 ? "border-amber-500/40 text-amber-600 dark:text-amber-400 bg-amber-500/10"
+      : "border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10";
+  // Quick picks: graph topics you have actually attempted, weakest first.
+  const graphQuickPicks = KnowledgeGraph.getAllNodes()
+    .map((n) => ({ topic: n.topic, m: masteryOf(n.topic) }))
+    .filter((n) => n.m !== null)
+    .sort((a, b) => (a.m as number) - (b.m as number))
+    .slice(0, 6);
 
   if (!mounted) return null;
 
@@ -362,10 +398,25 @@ export default function AIMentorPage() {
                     </button>
                   </div>
                 </div>
-                <h1 className="text-xl md:text-2xl font-black tracking-tight">{coachAdvice.greeting}</h1>
-                <p className="text-sm font-semibold leading-relaxed text-indigo-100 max-w-2xl">
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{coachAdvice.greeting}</h1>
+                <p className="text-sm font-medium leading-relaxed text-indigo-100 max-w-2xl">
                   {coachAdvice.body}
                 </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {quickActions.map((a) => (
+                    <motion.button
+                      key={a.label}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={a.onClick}
+                      className="group inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold cursor-pointer transition-colors"
+                    >
+                      <a.icon className="w-3.5 h-3.5" />
+                      {a.label}
+                      <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+                    </motion.button>
+                  ))}
+                </div>
               </div>
 
               {/* Readiness scorecard */}
@@ -377,9 +428,18 @@ export default function AIMentorPage() {
                     </span>
                     <span className="px-2 py-0.5 bg-white text-indigo-700 rounded text-[9px] font-black uppercase tracking-wider">{readiness.readinessRating}</span>
                   </div>
-                  <div className="text-center py-1">
-                    <span className="text-3xl font-black font-mono">#{readiness.expectedRank}</span>
-                    <p className="text-[9px] font-bold text-indigo-200 uppercase tracking-wider mt-0.5">Expected Marks Rank · {readiness.confidenceInterval[0]}-{readiness.confidenceInterval[1]} Marks</p>
+                  <div className="flex items-center gap-4 py-1">
+                    <RadialGauge value={readiness.expectedMarks} size={86} stroke={8} from="#67e8f9" to="#f0abfc" track="#fff" trackOpacity={0.15}>
+                      <div className="text-center leading-none">
+                        <CountUp value={readiness.expectedMarks} className="text-xl font-bold" />
+                        <span className="block text-[8px] font-semibold text-indigo-200 mt-0.5">/ 100</span>
+                      </div>
+                    </RadialGauge>
+                    <div className="min-w-0">
+                      <span className="block text-[9px] font-bold text-indigo-200 uppercase tracking-wider">Expected rank</span>
+                      <span className="block text-2xl font-bold">#<CountUp value={readiness.expectedRank} /></span>
+                      <span className="block text-[10px] font-medium text-indigo-100/80">Likely range {readiness.confidenceInterval[0]}–{readiness.confidenceInterval[1]} marks</span>
+                    </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-[10px] font-bold pt-1 border-t border-white/15">
                     <div className="flex flex-col">
@@ -437,7 +497,7 @@ export default function AIMentorPage() {
                             s.priority === "Medium" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400" :
                             "bg-indigo-500/10 text-indigo-500"
                           }`}>Suggested: {s.priority}</span>
-                          <span className="text-[9px] font-bold text-[var(--text-muted)] font-mono">Was: {s.suggestedDate}</span>
+                          <span className="text-[9px] font-bold text-[var(--text-muted)] font-num">Was: {s.suggestedDate}</span>
                         </div>
                         <h4 className="font-extrabold text-xs text-[var(--text-primary)] leading-snug">{s.title}</h4>
                         <p className="text-[10px] text-[var(--text-secondary)] font-semibold leading-relaxed">{s.reason}</p>
@@ -491,10 +551,14 @@ export default function AIMentorPage() {
               {/* Learning Health Metrics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {[
-                  { label: "Learning Velocity", val: `${readiness?.velocityScore ?? 50}/100`, desc: "Solving rate index", icon: TrendingUp, badge: "bg-indigo-500/10", color: "text-indigo-500", glow: "bg-indigo-500" },
-                  { label: "Spaced Revision Debt", val: `${mistakes.filter(m => !m.mastered).length} items`, desc: "Pending queue", icon: Layers, badge: "bg-amber-500/10", color: "text-amber-500", glow: "bg-amber-500" },
-                  { label: "Burnout Risk", val: readiness?.burnoutRisk ?? "Low", desc: "Planner & solves density", icon: Flame, badge: "bg-rose-500/10", color: "text-rose-500", glow: "bg-rose-500" },
-                  { label: "Days to Target Exam", val: daysToExam !== null ? (daysToExam >= 0 ? `${daysToExam}d` : "Passed") : "Not Set", desc: daysToExam !== null ? "Countdown active" : "Set date in Calendar", icon: Calendar, badge: "bg-emerald-500/10", color: "text-emerald-500", glow: "bg-emerald-500" }
+                  { label: "Learning Velocity", val: `${readiness?.velocityScore ?? 50}/100`, desc: "Solving rate index", icon: TrendingUp, badge: "bg-indigo-500/10", color: "text-indigo-500", glow: "bg-indigo-500", href: "/analytics",
+                    info: "How quickly you are getting through material, from your recent solving rate. Higher means you are covering ground faster." },
+                  { label: "Spaced Revision Debt", val: `${mistakes.filter(m => !m.mastered).length} items`, desc: "Pending queue", icon: Layers, badge: "bg-amber-500/10", color: "text-amber-500", glow: "bg-amber-500", href: "/mistakes",
+                    info: "Mistakes you have not mastered yet. Clearing these is usually the fastest way to gain marks. Click to review them." },
+                  { label: "Burnout Risk", val: readiness?.burnoutRisk ?? "Low", desc: "Planner & solves density", icon: Flame, badge: "bg-rose-500/10", color: "text-rose-500", glow: "bg-rose-500", href: "/calendar",
+                    info: "Based on how packed your planner is and how intensely you have been solving. If it is high, plan a lighter day." },
+                  { label: "Days to Target Exam", val: daysToExam !== null ? (daysToExam >= 0 ? `${daysToExam}d` : "Passed") : "Not Set", desc: daysToExam !== null ? "Countdown active" : "Set date in Calendar", icon: Calendar, badge: "bg-emerald-500/10", color: "text-emerald-500", glow: "bg-emerald-500", href: "/calendar",
+                    info: "Counts down to the exam date you set in the Calendar. Click to change it." }
                 ].map((item, idx) => (
                   <motion.div
                     key={idx}
@@ -502,17 +566,21 @@ export default function AIMentorPage() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ delay: 0.1 + idx * 0.05 }}
-                    className="relative card-glass p-4 rounded-2xl flex flex-col justify-between shadow-sm hover-lift overflow-hidden group"
                   >
-                    <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-[0.15] ${item.glow} pointer-events-none group-hover:opacity-25 transition-opacity`} />
-                    <div className={`relative w-9 h-9 rounded-xl ${item.badge} flex items-center justify-center mb-3`}>
-                      <item.icon className={`w-4.5 h-4.5 ${item.color}`} />
-                    </div>
-                    <span className="relative text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{item.label}</span>
-                    <div className="relative mt-1.5">
-                      <span className="block text-2xl font-black text-[var(--text-primary)] font-mono tracking-tight">{item.val}</span>
-                      <span className="text-[10px] font-bold text-[var(--text-muted)]">{item.desc}</span>
-                    </div>
+                    <TiltCard as="button" onClick={() => router.push(item.href)} className="card-glass p-4 rounded-2xl flex flex-col justify-between shadow-sm overflow-hidden group">
+                      <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-[0.15] ${item.glow} pointer-events-none group-hover:opacity-30 transition-opacity`} />
+                      <div className="relative flex items-start justify-between w-full mb-3">
+                        <div className={`w-9 h-9 rounded-xl ${item.badge} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:-rotate-6`}>
+                          <item.icon className={`w-4.5 h-4.5 ${item.color}`} />
+                        </div>
+                        <span onClick={(e) => e.stopPropagation()} className="text-[var(--text-muted)]"><InfoTip align="right">{item.info}</InfoTip></span>
+                      </div>
+                      <span className="relative text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">{item.label}</span>
+                      <div className="relative mt-1.5">
+                        <span className="block text-2xl font-bold text-[var(--text-primary)] font-num">{item.val}</span>
+                        <span className="text-[10px] font-semibold text-[var(--text-muted)] inline-flex items-center gap-1">{item.desc}<ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
+                      </div>
+                    </TiltCard>
                   </motion.div>
                 ))}
               </div>
@@ -540,6 +608,25 @@ export default function AIMentorPage() {
                       placeholder="Choose topic..."
                       className="text-xs font-bold w-full"
                     />
+                    {graphQuickPicks.length > 0 && (
+                      <div className="pt-2 space-y-1.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] block">Your weakest, one click</span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {graphQuickPicks.map((q) => (
+                            <motion.button
+                              key={q.topic}
+                              whileHover={{ y: -1 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleDiagnosePrerequisites(q.topic)}
+                              title={q.topic}
+                              className={`max-w-full truncate px-2 py-1 rounded-lg border text-[10px] font-semibold cursor-pointer ${toneOf(q.m)} ${selectedTopic === q.topic ? "ring-2 ring-indigo-500/50" : ""}`}
+                            >
+                              {q.topic.length > 22 ? q.topic.slice(0, 21) + "…" : q.topic} · <span className="font-num">{q.m}%</span>
+                            </motion.button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Diagnostic Output */}
@@ -554,9 +641,65 @@ export default function AIMentorPage() {
                         transition={{ duration: 0.15 }}
                         className="space-y-3"
                       >
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-black text-[var(--text-primary)]">{selectedTopic}</span>
-                          <span className="text-[9px] bg-indigo-500/10 text-indigo-500 px-2 py-0.5 rounded font-black uppercase">Active Nodes Checked</span>
+                        {/* Breadcrumb trail — click to step back up the chain */}
+                        {graphTrail.length > 1 && (
+                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-semibold text-[var(--text-muted)]">
+                            {graphTrail.map((t, i) => (
+                              <span key={t + i} className="inline-flex items-center gap-1">
+                                {i > 0 && <ChevronRight className="w-3 h-3" />}
+                                <button
+                                  onClick={() => {
+                                    setGraphTrail(graphTrail.slice(0, i + 1));
+                                    setSelectedTopic(t);
+                                    const masteries: Record<string, number> = {};
+                                    Object.values(topicMasteryMap).forEach((tm) => { masteries[tm.topic] = tm.score; });
+                                    setDiagnostics(KnowledgeGraph.diagnosePrerequisiteWeaknesses(t, masteries));
+                                  }}
+                                  className={`hover:text-indigo-500 cursor-pointer truncate max-w-[160px] ${i === graphTrail.length - 1 ? "text-[var(--text-primary)]" : ""}`}
+                                >
+                                  {t}
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Node map: the selected concept and what it builds on */}
+                        <div className="flex flex-col items-center gap-0">
+                          <div className={`px-3.5 py-2 rounded-xl border-2 text-xs font-bold text-center max-w-full ${toneOf(masteryOf(selectedTopic))}`}>
+                            {selectedTopic}
+                            <span className="block text-[10px] font-semibold opacity-80 mt-0.5">
+                              {masteryOf(selectedTopic) === null ? "Not attempted yet" : <>Mastery <span className="font-num">{masteryOf(selectedTopic)}%</span></>}
+                            </span>
+                          </div>
+                          {(KnowledgeGraph.getNode(selectedTopic)?.prerequisites.length ?? 0) > 0 ? (
+                            <>
+                              <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} className="w-px h-4 bg-[var(--border)] origin-top" />
+                              <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1.5">Builds on · click to explore</span>
+                              <div className="flex flex-wrap justify-center gap-2">
+                                {KnowledgeGraph.getNode(selectedTopic)!.prerequisites.map((p, i) => {
+                                  const m = masteryOf(p);
+                                  return (
+                                    <motion.button
+                                      key={p}
+                                      initial={{ opacity: 0, y: 6 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{ delay: 0.05 * i }}
+                                      whileHover={{ y: -2, scale: 1.03 }}
+                                      whileTap={{ scale: 0.96 }}
+                                      onClick={() => handleDiagnosePrerequisites(p, true)}
+                                      className={`px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer text-left max-w-[260px] ${toneOf(m)}`}
+                                    >
+                                      <span className="block truncate">{p}</span>
+                                      <span className="block text-[9px] opacity-80">{m === null ? "no data" : <><span className="font-num">{m}%</span> mastery</>}</span>
+                                    </motion.button>
+                                  );
+                                })}
+                              </div>
+                            </>
+                          ) : (
+                            <span className="mt-2 text-[10px] font-semibold text-[var(--text-muted)]">A foundation topic — it has no prerequisites.</span>
+                          )}
                         </div>
 
                         {diagnostics.length === 0 ? (
@@ -579,7 +722,15 @@ export default function AIMentorPage() {
                                   <span className="font-extrabold text-[var(--text-primary)] block">{d.topic}</span>
                                   <span className="text-[9px] text-[var(--text-muted)] font-semibold mt-0.5">{d.description}</span>
                                 </div>
-                                <span className="text-rose-500 font-extrabold font-mono shrink-0 ml-2">Mastery: {d.mastery}%</span>
+                                <div className="flex items-center gap-2 shrink-0 ml-2">
+                                  <span className="text-rose-500 font-bold font-num">{d.mastery}%</span>
+                                  <button
+                                    onClick={() => router.push(`/setup?topic=${encodeURIComponent(d.topic)}`)}
+                                    className="px-2 py-1 rounded-md bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-bold cursor-pointer"
+                                  >
+                                    Fix
+                                  </button>
+                                </div>
                               </motion.div>
                             ))}
                           </div>
@@ -747,19 +898,47 @@ export default function AIMentorPage() {
                         transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                         className="p-3 bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] rounded-xl space-y-1.5"
                       >
-                        <div className="flex justify-between items-center">
-                          <span className="font-black text-xs text-[var(--text-primary)]">{p.name}</span>
-                          <span className="text-[9px] font-black uppercase text-rose-500">Prob: {p.probability}%</span>
-                        </div>
-                        <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed font-semibold">
-                          {p.description}
-                        </p>
-                        <details className="cursor-pointer text-[10px] text-indigo-500 font-extrabold">
-                          <summary className="hover:underline">Suggested AI Coaching Fix</summary>
-                          <p className="mt-1 p-2 bg-[var(--surface)] border border-[var(--border-subtle)] rounded text-[10px] text-[var(--text-secondary)] font-medium leading-relaxed">
-                            {p.suggestedFix}
+                        <button
+                          type="button"
+                          onClick={() => setOpenPattern(openPattern === p.id ? null : p.id)}
+                          className="w-full text-left space-y-1.5 cursor-pointer"
+                        >
+                          <div className="flex justify-between items-center gap-2">
+                            <span className="font-bold text-xs text-[var(--text-primary)]">{p.name}</span>
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-rose-500">
+                              <span className="font-num">{p.probability}%</span>
+                              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${openPattern === p.id ? "rotate-180" : ""}`} />
+                            </span>
+                          </div>
+                          <div className="h-1 rounded-full bg-[var(--surface-secondary)] overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${p.probability}%` }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                              className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500"
+                            />
+                          </div>
+                          <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed font-medium">
+                            {p.description}
                           </p>
-                        </details>
+                        </button>
+                        <AnimatePresence initial={false}>
+                          {openPattern === p.id && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="mt-1 p-2.5 bg-indigo-500/5 border border-indigo-500/20 rounded-lg text-[11px] text-[var(--text-secondary)] font-medium leading-relaxed">
+                                <span className="block text-[10px] font-bold uppercase tracking-wider text-indigo-500 mb-1">How to fix it</span>
+                                {p.suggestedFix}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </motion.div>
                     ))}
                   </div>

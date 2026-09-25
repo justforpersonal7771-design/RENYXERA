@@ -376,7 +376,7 @@ export default function ResultSummaryPage() {
                 </svg>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-5xl sm:text-[3.25rem] font-black font-mono leading-none drop-shadow-sm">
+                  <span className="text-5xl sm:text-[3.25rem] font-black font-num leading-none drop-shadow-sm">
                     <CountUp value={accuracy} decimals={0} />%
                   </span>
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100 mt-1.5">Accuracy</span>
@@ -390,11 +390,11 @@ export default function ResultSummaryPage() {
 
               <div className="flex gap-8 pt-2 border-t border-white/15 w-full justify-center">
                 <div className="text-center">
-                  <div className="text-xl font-black font-mono"><CountUp value={marks} decimals={2} /></div>
+                  <div className="text-xl font-black font-num"><CountUp value={marks} decimals={2} /></div>
                   <div className="text-[8px] font-black uppercase tracking-widest text-indigo-200">/ {maxPossibleMarks} Marks</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-xl font-black font-mono">{m}m {s}s</div>
+                  <div className="text-xl font-black font-num">{m}m {s}s</div>
                   <div className="text-[8px] font-black uppercase tracking-widest text-indigo-200 flex items-center gap-1 justify-center">
                     <Clock className="w-3 h-3" /> Time
                   </div>
@@ -410,12 +410,12 @@ export default function ResultSummaryPage() {
               <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <span className="text-2xl font-black text-[var(--text-primary)] font-mono">{totalAttempted}</span>
-                  <span className="text-sm font-bold text-[var(--text-muted)] font-mono"> / {session.totalQuestions}</span>
+                  <span className="text-2xl font-black text-[var(--text-primary)] font-num">{totalAttempted}</span>
+                  <span className="text-sm font-bold text-[var(--text-muted)] font-num"> / {session.totalQuestions}</span>
                   <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Attempted</p>
                 </div>
                 <div>
-                  <span className="text-2xl font-black text-[var(--text-primary)] font-mono">{session.totalQuestions - totalAttempted}</span>
+                  <span className="text-2xl font-black text-[var(--text-primary)] font-num">{session.totalQuestions - totalAttempted}</span>
                   <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Skipped Tasks</p>
                 </div>
               </div>
@@ -438,7 +438,7 @@ export default function ResultSummaryPage() {
                 >
                   <stat.icon className={`w-4 h-4 mb-1 ${stat.color}`} />
                   <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
-                  <span className="text-base font-black text-[var(--text-primary)] font-mono">{stat.value}</span>
+                  <span className="text-base font-black text-[var(--text-primary)] font-num">{stat.value}</span>
                 </motion.div>
               ))}
             </div>
@@ -599,19 +599,19 @@ export default function ResultSummaryPage() {
                       <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
                           <div className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Score</div>
-                          <div className="font-mono text-xs text-indigo-600 dark:text-indigo-400">
+                          <div className="font-num text-xs text-indigo-600 dark:text-indigo-400">
                             {item.marks.toFixed(1)} <span className="text-[9px] text-[var(--text-muted)] font-normal">/ {item.max}</span>
                           </div>
                         </div>
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
                           <div className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Accuracy</div>
-                          <div className="font-mono text-xs text-[var(--text-secondary)]">
+                          <div className="font-num text-xs text-[var(--text-secondary)]">
                             {itemAccuracy.toFixed(0)}%
                           </div>
                         </div>
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
                           <div className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Attempts</div>
-                          <div className="font-mono text-xs text-[var(--text-secondary)] flex justify-center gap-1">
+                          <div className="font-num text-xs text-[var(--text-secondary)] flex justify-center gap-1">
                             <span className="text-emerald-500">{item.correct}</span>
                             <span className="text-[var(--text-muted)]">/</span>
                             <span className="text-rose-500">{item.wrong}</span>

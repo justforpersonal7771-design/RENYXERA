@@ -54,7 +54,7 @@ export function TodoQuickPanel() {
           <ListTodo className="w-4 h-4 text-white" />
           <span className="font-extrabold text-xs uppercase tracking-widest text-white">To-Do List</span>
         </div>
-        <span className="relative text-[10px] font-black text-white/90 uppercase tracking-wider font-mono">
+        <span className="relative text-[10px] font-black text-white/90 uppercase tracking-wider font-num">
           {pending.length} pending
         </span>
       </div>

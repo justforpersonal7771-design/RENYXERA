@@ -167,7 +167,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
         ) : (
           <button
             onClick={() => setEditingExamDate(true)}
-            className={`text-[10px] font-black font-mono px-2 py-0.5 rounded-full transition-colors cursor-pointer ${
+            className={`text-[10px] font-black font-num px-2 py-0.5 rounded-full transition-colors cursor-pointer ${
               daysToExam === null
                 ? "text-[var(--text-primary)] hover:text-indigo-500"
                 : daysToExam < 0

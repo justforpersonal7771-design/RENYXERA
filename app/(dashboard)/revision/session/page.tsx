@@ -172,7 +172,7 @@ function RevisionSessionContent() {
                    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-2xl w-full">
                      <div className="flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl">
                        <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
-                       <span className="font-mono font-bold text-green-600 dark:text-green-400">
+                       <span className="font-num font-bold text-green-600 dark:text-green-400">
                          {currentQuestion.nat_answer_range?.min} {currentQuestion.nat_answer_range?.min !== currentQuestion.nat_answer_range?.max && `- ${currentQuestion.nat_answer_range?.max}`}
                        </span>
                      </div>
@@ -184,7 +184,7 @@ function RevisionSessionContent() {
                            : 'border-red-500 text-red-700 dark:text-red-500'
                        }`}>
                          <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Your Answer</span>
-                         <span className="font-mono font-bold">{natValue}</span>
+                         <span className="font-num font-bold">{natValue}</span>
                        </div>
                      )}
                    </div>

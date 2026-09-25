@@ -1,31 +1,20 @@
 import type {Metadata} from 'next';
-import { Bricolage_Grotesque, Instrument_Serif, JetBrains_Mono } from 'next/font/google';
-import localFont from 'next/font/local';
+import { Manrope, Sora, Fraunces, JetBrains_Mono } from 'next/font/google';
 import './globals.css'; // Global styles
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
+import { CardSpotlight } from '@/components/system/card-spotlight';
 import { ThemeProvider } from '@/components/theme-provider';
 
-// Four deliberately different families, each with one job:
-//  - Plus Jakarta Sans  — body & UI text, with its "Lancip" (sharp) alternates, ss01
-//  - Bricolage Grotesque — every h1–h4 (applied globally in globals.css)
-//  - Instrument Serif   — italic accent words only (.font-serif / "font-serif italic")
-//  - JetBrains Mono     — numbers, timers, code (font-mono)
-// Self-hosted from the designer's official release (tokotype/PlusJakartaSans, SIL OFL
-// 1.1 — licence alongside in app/fonts) rather than Google Fonts: Google's web cut is
-// subset to 285 glyphs with the stylistic sets stripped, so ss01 "Lancip Alternates"
-// simply doesn't exist in it. Enabled globally in globals.css.
-const bodySans = localFont({
-  src: [
-    { path: './fonts/PlusJakartaSans-Variable.woff2', weight: '200 800', style: 'normal' },
-    { path: './fonts/PlusJakartaSans-Italic-Variable.woff2', weight: '200 800', style: 'italic' },
-  ],
-  variable: '--font-sans',
-  display: 'swap',
-});
-const displaySans = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display' });
-const accentSerif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: ['normal', 'italic'], variable: '--font-serif' });
-const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+// One family per job, all SIL OFL (served via next/font, self-hosted at build):
+//  - Manrope   — body & UI text: calm, open, very legible at small sizes
+//  - Sora      — every h1–h4 (globals.css) and big stat numbers (.font-num)
+//  - Fraunces  — italic accent words only ("font-serif italic")
+//  - JetBrains Mono — code only; numbers use Sora's tabular figures instead
+const bodySans = Manrope({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
+const displaySans = Sora({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
+const accentSerif = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['SOFT', 'opsz'], variable: '--font-serif', display: 'swap' });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
 
 export const metadata: Metadata = {
   title: 'RENYXERA — A New ERA of Intelligent Learning',
@@ -79,6 +68,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           <ScrollbarActivity />
           <AuthListener />
+          <CardSpotlight />
           {children}
         </ThemeProvider>
       </body>

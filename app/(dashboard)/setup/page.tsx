@@ -797,7 +797,7 @@ export default function ExamSetupPage() {
                                                     >
                                                       <div className="min-w-0 flex-1">
                                                         <div className="flex items-center gap-2">
-                                                          <span className="text-[9px] font-black text-indigo-500 uppercase font-mono tracking-wider">Q{q.question_no}</span>
+                                                          <span className="text-[9px] font-black text-indigo-500 uppercase font-num tracking-wider">Q{q.question_no}</span>
                                                           <span className="text-[9px] px-1.5 py-0.5 bg-[var(--surface-secondary)] text-[var(--text-muted)] font-black uppercase rounded-md">{q.question_type}</span>
                                                           <span className={`text-[9px] px-1.5 py-0.5 font-bold uppercase rounded-md ${
                                                             q.difficulty === "Hard" 
@@ -862,7 +862,7 @@ export default function ExamSetupPage() {
                                                     {q.nat_answer_range && (
                                                       <div className="p-3 bg-green-500/5 border border-green-500/20 rounded-xl text-green-700 dark:text-green-400 font-bold flex justify-between max-w-sm">
                                                         <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Correct Answer Range</span>
-                                                        <span className="font-mono">{q.nat_answer_range.min} - {q.nat_answer_range.max}</span>
+                                                        <span className="font-num">{q.nat_answer_range.min} - {q.nat_answer_range.max}</span>
                                                       </div>
                                                     )}
                                                   </div>
@@ -903,7 +903,7 @@ export default function ExamSetupPage() {
                   >
                     <div>
                       <span className="text-[9px] font-black uppercase text-[var(--text-muted)] block tracking-wide">Selected</span>
-                      <span className="text-lg font-black text-indigo-500 font-mono leading-none">{selectedQIds.size}</span>
+                      <span className="text-lg font-black text-indigo-500 font-num leading-none">{selectedQIds.size}</span>
                     </div>
                     <button
                       onClick={() => setSelectedQIds(new Set())}
@@ -1116,13 +1116,13 @@ export default function ExamSetupPage() {
                   {examType === "YEAR_PAPER" && paperPreviewStats && (
                     <div className="md:col-span-2 flex items-center gap-6 text-sm">
                       <span className="font-semibold text-[var(--text-secondary)]">
-                        <span className="font-black font-mono text-[var(--text-primary)]">{paperPreviewStats.count}</span> questions
+                        <span className="font-black font-num text-[var(--text-primary)]">{paperPreviewStats.count}</span> questions
                       </span>
                       <span className="font-semibold text-[var(--text-secondary)]">
-                        <span className="font-black font-mono text-[var(--text-primary)]">{paperPreviewStats.totalMarks}</span> marks
+                        <span className="font-black font-num text-[var(--text-primary)]">{paperPreviewStats.totalMarks}</span> marks
                       </span>
                       <span className="font-semibold text-[var(--text-secondary)]">
-                        <span className="font-black font-mono text-[var(--text-primary)]">{paperPreviewStats.estimatedMinutes}</span> min
+                        <span className="font-black font-num text-[var(--text-primary)]">{paperPreviewStats.estimatedMinutes}</span> min
                       </span>
                     </div>
                   )}

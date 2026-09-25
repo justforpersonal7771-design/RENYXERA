@@ -95,7 +95,7 @@ export function CompactCalendarView({ onClose }: { onClose: () => void }) {
           <button onClick={() => changeMonth(-1)} className="p-1 rounded-md hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] cursor-pointer">
             <ChevronLeft className="w-3.5 h-3.5" />
           </button>
-          <span className="text-[11px] font-black text-[var(--text-primary)] font-mono">
+          <span className="text-[11px] font-black text-[var(--text-primary)] font-num">
             {cursor.toLocaleDateString(undefined, { month: "short", year: "numeric" })}
           </span>
           <button onClick={() => changeMonth(1)} className="p-1 rounded-md hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] cursor-pointer">

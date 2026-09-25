@@ -309,7 +309,7 @@ export function StudyPlanner() {
               <button onClick={() => changeMonth(-1)} className="p-1.5 hover:bg-[var(--surface)] rounded-lg transition text-[var(--text-secondary)] cursor-pointer">
                 <ChevronLeft className="w-4 h-4" />
               </button>
-              <span className="px-3 text-xs font-bold text-[var(--text-primary)] min-w-[90px] text-center font-mono">
+              <span className="px-3 text-xs font-bold text-[var(--text-primary)] min-w-[90px] text-center font-num">
                 {currentDate.toLocaleDateString(undefined, { 
                   month: "short", 
                   year: "numeric",
@@ -357,7 +357,7 @@ export function StudyPlanner() {
                           : "border-[var(--border-subtle)] bg-[var(--surface)] hover:bg-[var(--surface-secondary)]"
                       } ${!slot.isCurrentMonth ? "opacity-35" : ""}`}
                     >
-                      <span className={`text-[10px] font-black font-mono w-5 h-5 rounded-full flex items-center justify-center ${isToday ? 'bg-indigo-600 text-white' : 'text-[var(--text-secondary)]'}`}>
+                      <span className={`text-[10px] font-black font-num w-5 h-5 rounded-full flex items-center justify-center ${isToday ? 'bg-indigo-600 text-white' : 'text-[var(--text-secondary)]'}`}>
                         {slot.date.getDate()}
                       </span>
                       
@@ -371,7 +371,7 @@ export function StudyPlanner() {
                             />
                           ))}
                           {dayEvents.length > 3 && (
-                            <span className="text-[7px] font-bold text-[var(--text-muted)] leading-none font-mono">+{dayEvents.length - 3}</span>
+                            <span className="text-[7px] font-bold text-[var(--text-muted)] leading-none font-num">+{dayEvents.length - 3}</span>
                           )}
                         </div>
                       )}
@@ -406,7 +406,7 @@ export function StudyPlanner() {
                       <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider">
                         {day.toLocaleDateString(undefined, { weekday: "short" })}
                       </p>
-                      <p className={`text-base font-black font-mono mt-0.5 w-6 h-6 rounded-full flex items-center justify-center ${isToday ? 'bg-indigo-600 text-white' : 'text-[var(--text-primary)]'}`}>
+                      <p className={`text-base font-black font-num mt-0.5 w-6 h-6 rounded-full flex items-center justify-center ${isToday ? 'bg-indigo-600 text-white' : 'text-[var(--text-primary)]'}`}>
                         {day.getDate()}
                       </p>
                     </button>
@@ -479,7 +479,7 @@ export function StudyPlanner() {
             <h4 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)]">
               Tasks: {new Date(selectedDateStr + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" })}
             </h4>
-            <span className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest font-mono">
+            <span className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest font-num">
               {selectedDayEvents.length} Scheduled
             </span>
           </div>
@@ -552,7 +552,7 @@ export function StudyPlanner() {
                 </div>
 
                 <div className="flex justify-between items-center mt-2 pt-2 border-t border-[var(--border-subtle)]/50">
-                  <div className="flex items-center gap-2 text-[9px] text-[var(--text-secondary)] font-bold font-mono">
+                  <div className="flex items-center gap-2 text-[9px] text-[var(--text-secondary)] font-bold font-num">
                     <Clock3 className="w-3 h-3 text-[var(--text-muted)]" />
                     <span>{formatTime12h(e.startTime || "10:00")}{e.endTime ? ` - ${formatTime12h(e.endTime)}` : ""}</span>
                   </div>
@@ -592,15 +592,15 @@ export function StudyPlanner() {
         <div className="flex-none pt-4 bg-[var(--surface-secondary)]/10">
           <div className="grid grid-cols-3 gap-2 text-center text-[9px] font-black uppercase text-[var(--text-secondary)] tracking-wider">
             <div className="bg-[var(--surface-secondary)] border border-[var(--border-subtle)] p-2 rounded-xl">
-              <span className="block text-rose-500 text-sm font-black font-mono">{stats.overdue.length}</span>
+              <span className="block text-rose-500 text-sm font-black font-num">{stats.overdue.length}</span>
               <span>Overdue</span>
             </div>
             <div className="bg-[var(--surface-secondary)] border border-[var(--border-subtle)] p-2 rounded-xl">
-              <span className="block text-indigo-500 text-sm font-black font-mono">{stats.pendingToday}</span>
+              <span className="block text-indigo-500 text-sm font-black font-num">{stats.pendingToday}</span>
               <span>Pending Today</span>
             </div>
             <div className="bg-[var(--surface-secondary)] border border-[var(--border-subtle)] p-2 rounded-xl">
-              <span className="block text-emerald-500 text-sm font-black font-mono">{stats.completedToday}</span>
+              <span className="block text-emerald-500 text-sm font-black font-num">{stats.completedToday}</span>
               <span>Solved Today</span>
             </div>
           </div>

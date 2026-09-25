@@ -99,7 +99,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
         title="Time remaining"
       >
         <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${tone.dot} ${remainingRatio <= 0.15 ? "animate-pulse" : ""}`} />
-        <span className={`font-mono font-bold tabular-nums text-[15px] sm:text-base leading-none tracking-tight ${tone.text}`}>
+        <span className={`font-num font-bold tabular-nums text-[15px] sm:text-base leading-none tracking-tight ${tone.text}`}>
           {formatTime(remaining)}
         </span>
       </div>
@@ -141,7 +141,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
       </div>
 
       {/* Time Stats Columns */}
-      <div className="flex flex-col font-mono">
+      <div className="flex flex-col font-num">
         <div className="flex items-baseline gap-1.5">
           <span className={`font-black text-[var(--text-primary)] leading-none ${compact ? "text-xs" : "text-sm"}`}>{formatTime(remaining)}</span>
           <span className="text-[8px] text-[var(--text-muted)] font-black uppercase tracking-wider leading-none">rem</span>

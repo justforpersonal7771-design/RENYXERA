@@ -353,7 +353,7 @@ export default function BookmarksPage() {
                           </div>
                           <div className="flex items-center justify-between gap-2 mb-2">
                             <span className="text-[11px] text-[var(--text-secondary)] line-clamp-1 font-medium">{b.topic}</span>
-                            <span className="text-[9px] text-[var(--text-muted)] font-bold font-mono shrink-0" title={new Date(b.createdAt).toLocaleString()}>
+                            <span className="text-[9px] text-[var(--text-muted)] font-bold font-num shrink-0" title={new Date(b.createdAt).toLocaleString()}>
                               {new Date(b.createdAt).toLocaleDateString(undefined, { month: "short", day: "numeric" })}
                             </span>
                           </div>
@@ -662,7 +662,7 @@ export default function BookmarksPage() {
                       <div className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-2xl w-full">
                         <div className="flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl">
                           <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
-                          <span className="font-mono font-bold text-green-600 dark:text-green-400">
+                          <span className="font-num font-bold text-green-600 dark:text-green-400">
                             {question.nat_answer_range?.min} {question.nat_answer_range?.min !== question.nat_answer_range?.max && `- ${question.nat_answer_range?.max}`}
                           </span>
                         </div>
@@ -674,7 +674,7 @@ export default function BookmarksPage() {
                               : 'border-red-500 text-red-700 dark:text-red-500'
                           }`}>
                             <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Your Answer</span>
-                            <span className="font-mono font-bold">{activeEntry.natValue}</span>
+                            <span className="font-num font-bold">{activeEntry.natValue}</span>
                           </div>
                         )}
                       </div>

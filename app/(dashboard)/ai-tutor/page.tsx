@@ -673,7 +673,7 @@ export default function AITutorWorkspace() {
                   )}
 
                   {question.question_type === "NAT" && question.nat_answer_range && (
-                    <div className="p-3 bg-emerald-500/5 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-semibold font-mono flex justify-between items-center">
+                    <div className="p-3 bg-emerald-500/5 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-semibold font-num flex justify-between items-center">
                       <span>Correct Answer Range</span>
                       <span>{question.nat_answer_range.min} - {question.nat_answer_range.max}</span>
                     </div>
@@ -1202,7 +1202,7 @@ export default function AITutorWorkspace() {
                                 {q.natAnswerRange && (
                                   <div className="p-2.5 bg-green-500/10 border border-green-500/30 rounded-lg text-green-700 dark:text-green-400 font-bold text-xs flex justify-between">
                                     <span>NAT Range:</span>
-                                    <span className="font-mono">{q.natAnswerRange.min} - {q.natAnswerRange.max}</span>
+                                    <span className="font-num">{q.natAnswerRange.min} - {q.natAnswerRange.max}</span>
                                   </div>
                                 )}
 
