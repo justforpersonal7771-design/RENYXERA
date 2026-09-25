@@ -266,7 +266,7 @@ export default function ResultSummaryPage() {
       : { label: "Keep Practicing", message: "Every attempt builds understanding. Review the breakdown and revisit the fundamentals." };
 
   return (
-    <div className="w-full mx-auto font-sans flex flex-col lg:h-full lg:min-h-0 lg:overflow-hidden pb-2">
+    <div className="w-full mx-auto font-sans flex flex-col lg:h-full lg:min-h-0 lg:overflow-hidden pb-2" data-fill-height>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:flex-1 lg:min-h-0 lg:overflow-hidden">
 

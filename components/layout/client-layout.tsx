@@ -8,7 +8,6 @@ import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
 import { AuthModal } from "@/components/auth/auth-modal";
-import { Footer } from "./footer";
 import { useToastStore } from "@/store/use-toast-store";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 
@@ -117,11 +116,10 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="h-full"
+            className="page-shell"
           >
             {children}
           </motion.div>
-          <Footer />
         </div>
       </main>
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />

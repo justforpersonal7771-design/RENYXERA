@@ -37,9 +37,23 @@ export const viewport = {
   themeColor: '#4f46e5',
 };
 
+// Runs in <head>, before anything paints. Kept as a plain string on purpose: the
+// Cloudflare build (OpenNext/esbuild with keepNames) rewrites next-themes' own inline
+// script — which is generated from a function via toString() — to call an esbuild
+// helper, `__name(...)`, that doesn't exist in the browser. That script then threw a
+// ReferenceError before applying the theme, so a dark-mode reload showed the light
+// theme for ~2s until React hydrated (measured on production via screencast frames;
+// the local `next start` build isn't affected, which is why local tests passed).
+// This defines the missing helper so next-themes' script works again, and applies the
+// saved theme itself as a belt-and-braces guarantee. Light is the default.
+const THEME_BOOTSTRAP = `(function(){try{if(typeof window.__name!=="function"){window.__name=function(f){return f}}var t=localStorage.getItem("theme");var v=t==="dark"?"dark":"light";var d=document.documentElement;d.classList.remove("light","dark");d.classList.add(v);d.style.colorScheme=v}catch(e){}})();`;
+
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
+      </head>
       <body suppressHydrationWarning className="font-sans antialiased">
         {/* Root, not nested in (dashboard)/layout.tsx — next-themes' anti-flash
             script has to be part of <body>'s very first content to run before

@@ -497,7 +497,7 @@ export default function ExamSetupPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-full flex justify-center" data-fill-height>
       <div className="w-full h-full min-h-0 flex flex-col gap-3">
 
         <motion.div

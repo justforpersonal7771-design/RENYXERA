@@ -96,7 +96,7 @@ export default function RevisionBuilderPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col gap-4 font-sans h-full overflow-hidden">
+    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col gap-4 font-sans h-full overflow-hidden" data-fill-height>
 
       {/* Title */}
       <div className="shrink-0 flex items-center gap-2">

@@ -80,7 +80,7 @@ export default function AnalyticsDashboardPage() {
   const strongTopics = topicsWithAcc.filter(t => t.acc >= 75).sort((a,b) => b.acc - a.acc);
 
   const ChartEmptyState = ({ label }: { label: string }) => (
-    <div className="h-full w-full flex flex-col items-center justify-center text-center gap-2">
+    <div className="h-full w-full flex flex-col items-center justify-center text-center gap-2" data-fill-height>
       <TrendingUp className="w-8 h-8 text-[var(--text-muted)] opacity-40" />
       <p className="text-xs font-bold text-[var(--text-secondary)]">No data yet</p>
       <p className="text-[11px] text-[var(--text-muted)] max-w-[220px]">{label}</p>

@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
 import { Loader2 } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { Footer } from "@/components/layout/footer";
 
 // Dynamic imports with Skeleton Loading placeholders to guarantee performance (Part 12)
 const HeroSection = dynamic(() => import("@/components/dashboard/hero-section").then(m => m.HeroSection), {
@@ -159,7 +160,7 @@ export default function Home() {
   const avgTimePerQuestion = overview?.avgTimePerQuestionMs ? Math.round(overview.avgTimePerQuestionMs / 1000) : 0;
 
   return (
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-8 min-h-screen">
+    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-8">
       
       {/* 1. Hero Section Banner */}
       <HeroSection 
@@ -291,6 +292,7 @@ export default function Home() {
 
       </div>
 
+      <Footer />
     </div>
   );
 }

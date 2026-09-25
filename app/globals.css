@@ -34,6 +34,19 @@
 }
 
 @layer utilities {
+  /* The dashboard's per-page wrapper (client-layout.tsx). Default: at least one
+     screen tall, growing with content, so the footer after it always lands after
+     the page — a fixed one-screen height let long pages (Dashboard, AI Mentor)
+     spill past it and the footer rendered on top of their cards. Full-screen tool
+     pages that scroll internally (Mistakes, Setup, ...) opt back into an exact
+     one-screen height by putting data-fill-height on their root element. */
+  .page-shell {
+    min-height: 100%;
+  }
+  .page-shell:has(> [data-fill-height]) {
+    height: 100%;
+  }
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }

@@ -54,6 +54,24 @@ export const CustomTestBuilder = forwardRef<CustomTestBuilderHandle, CustomTestB
     return pool.length;
   };
 
+  // Re-derives a block's count against the current filters AND current Focus Target:
+  // "include all" blocks follow the full matching pool, manual counts are capped to it.
+  const syncBlockCount = (b: CustomTestBlock): CustomTestBlock => {
+    const available = calculateAvailableCount(b);
+    if (b.includeAll !== false) return b.count === available ? b : { ...b, count: available };
+    return b.count > available ? { ...b, count: available } : b;
+  };
+
+  // Counts used to be computed only when a block was added or edited, so changing the
+  // Focus Target afterwards left existing blocks at their old, larger pool size (e.g. 881
+  // per block while the goal only allowed far fewer) even though the banner above says
+  // counts already reflect Focus Target.
+  const focusKey = focusTopics && focusTopics.length > 0 ? [...focusTopics].sort().join("|") : "";
+  useEffect(() => {
+    setBlocks((prev) => prev.map(syncBlockCount));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusKey]);
+
   const addBlock = () => {
     const available = calculateAvailableCount({});
     setBlocks([
@@ -164,7 +182,9 @@ export const CustomTestBuilder = forwardRef<CustomTestBuilderHandle, CustomTestB
   };
 
   const handleLoadTemplate = (template: CustomTestTemplate) => {
-    setBlocks([...template.blocks]);
+    // A saved template's counts reflect the pool when it was saved — re-sync them to the
+    // current Focus Target so a loaded template can't ask for more than is available.
+    setBlocks(template.blocks.map(syncBlockCount));
     setErrorLine("");
   };
 

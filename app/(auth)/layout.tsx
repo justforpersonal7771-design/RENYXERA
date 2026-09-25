@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { Footer } from "@/components/layout/footer";
 
 /**
  * Minimal shell for /login and /signup — deliberately its own route group, separate
@@ -34,9 +33,6 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         />
       </Link>
       <div className="w-full max-w-sm">{children}</div>
-      <div className="w-full max-w-sm">
-        <Footer />
-      </div>
     </div>
     </div>
   );

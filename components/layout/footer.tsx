@@ -1,10 +1,9 @@
 import Link from "next/link";
 
 /**
- * Rendered once, at the bottom of the main scroll area (client-layout.tsx), after
- * {children} — every dashboard page picks it up automatically rather than each page
- * needing its own. Deliberately plain/low-contrast so it doesn't compete with actual
- * page content above it; it's reference material, not a feature.
+ * Shown only at the bottom of the dashboard home page (app/(dashboard)/page.tsx) and
+ * the public /about page — deliberately not on every screen. Plain and low-contrast
+ * so it doesn't compete with the content above it.
  */
 export function Footer() {
   const year = new Date().getFullYear();

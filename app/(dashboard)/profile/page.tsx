@@ -151,7 +151,7 @@ export default function ProfilePage() {
 
   if (authLoading || signingOut) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center" data-fill-height>
         <Loader2 className="w-6 h-6 animate-spin text-[var(--text-muted)]" />
       </div>
     );
@@ -159,7 +159,7 @@ export default function ProfilePage() {
 
   if (!user) {
     return (
-      <div className="w-full h-full flex items-center justify-center px-4">
+      <div className="w-full h-full flex items-center justify-center px-4" data-fill-height>
         <div className="card-glass rounded-3xl p-8 sm:p-10 max-w-md w-full text-center">
           <div className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-500 via-indigo-600 to-fuchsia-500 text-white shadow-lg shadow-indigo-500/30">
             <UserIcon className="w-8 h-8" />

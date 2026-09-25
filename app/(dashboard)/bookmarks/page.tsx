@@ -212,7 +212,7 @@ export default function BookmarksPage() {
 
   if (!isInitialized) {
     return (
-      <div className="p-12 flex justify-center h-full items-center bg-[var(--background)]">
+      <div className="p-12 flex justify-center h-full items-center bg-[var(--background)]" data-fill-height>
         <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
       </div>
     );
@@ -226,7 +226,7 @@ export default function BookmarksPage() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col md:flex-row gap-4 relative">
+      <div className="w-full h-full flex flex-col md:flex-row gap-4 relative" data-fill-height>
         {/* Sidebar merged into a single continuous card */}
         <div className={`flex flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           
