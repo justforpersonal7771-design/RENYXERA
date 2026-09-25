@@ -41,7 +41,19 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">3. Cookies and local storage</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">3. How we handle Google user data</h2>
+          <p>This section applies when you choose &quot;Continue with Google&quot; to sign in. It describes exactly what Google user data RENYXERA accesses and what we do with it.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">Data we access.</strong> RENYXERA requests only Google&apos;s basic sign-in scopes (<code>openid</code>, <code>email</code>, <code>profile</code>). Through these we receive your Google account&apos;s email address, your name, your profile picture URL, and a unique Google account identifier. We do not request, and cannot access, your Gmail, Google Drive, Calendar, Contacts, or any other Google service data.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">How we use it.</strong> We use this data only to create and sign you in to your RENYXERA account, to show your name and email on your own profile page, and to contact you about your account when necessary. We do not use Google user data for any other purpose.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">How we store and protect it.</strong> The data is stored in our authentication and database provider, Supabase, as part of your account record. It is transmitted only over encrypted connections (HTTPS/TLS), is encrypted at rest by our provider, and is protected by database-level access controls (Row Level Security) so that it can only be read by you and by the service itself. Access keys that can bypass those controls are kept server-side only and are never exposed to the browser.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">How we share it.</strong> We do not sell, rent, or trade Google user data. We do not share, transfer, or disclose it to any third party, except to Supabase, which processes it solely to provide authentication and database hosting to us, or where required by law. Google user data is never sent to our AI provider as part of AI Mentor requests.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">What we never do with it.</strong> We do not use Google user data for advertising (targeted, personalised, or otherwise), we do not sell it to data brokers or information resellers, we do not use it to determine credit-worthiness or for lending purposes, and we do not use it to develop, improve, or train generalised or non-personalised AI or machine-learning models. No person at RENYXERA reads your Google user data, except with your explicit consent, where necessary for security purposes (such as investigating abuse), or to comply with applicable law.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">Retention and deletion.</strong> We keep Google user data for as long as your account exists. You can ask us to delete it at any time by emailing <a href="mailto:renyxera@gmail.com" className="text-[var(--accent)]">renyxera@gmail.com</a>; we will delete your Google-derived account data (email, name, profile picture URL, and Google account identifier) within 30 days of your request. You can also revoke RENYXERA&apos;s access to your Google account at any time from your Google Account&apos;s &quot;Third-party apps &amp; services&quot; page (myaccount.google.com/connections), after which we receive no further data from Google.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">Limited Use.</strong> RENYXERA&apos;s use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer" className="text-[var(--accent)]">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">4. Cookies and local storage</h2>
           <p>
             If you sign in, we set one essential cookie (managed by our authentication
             provider, Supabase) to keep you signed in between visits — this cookie
@@ -56,7 +68,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">4. Graded / competitive attempts</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">5. Graded / competitive attempts</h2>
           <p>
             For graded mock tests and leaderboards, we record behavioural signals to protect the
             integrity of rankings other users rely on — for example whether the browser tab lost
@@ -68,12 +80,12 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">5. How we use your data</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">6. How we use your data</h2>
           <p>To provide the service (sync your progress, grade attempts, power the AI Mentor); to protect the platform (rate-limiting, fraud and abuse prevention); to improve RENYXERA (aggregate, non-identifying usage patterns); and, if you've opted in, to send you product updates or reminders. We do not sell your personal data to anyone.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">6. Advertising (planned, not yet live)</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">7. Advertising (planned, not yet live)</h2>
           <p>
             RENYXERA does not currently display advertising. When it does, ads will never appear
             during an active exam, and paid subscribers will never see ads. Where legally
@@ -84,7 +96,7 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">7. Payments (planned, not yet live)</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">8. Payments (planned, not yet live)</h2>
           <p>
             When paid plans launch, payments will be processed by Razorpay. We do not, and will
             not, handle or store your card details ourselves — that happens entirely on
@@ -93,17 +105,17 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">8. Who we share data with</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">9. Who we share data with</h2>
           <p>We share data only with the service providers that make RENYXERA work, each bound to use it only to provide their service to us: Supabase (database and authentication hosting), Google (Gemini AI, and Google Sign-In if you use it), and, once live, Razorpay (payments) and an advertising network (for non-personalised or, where permitted, personalised ads). We do not share your data with anyone else, and never sell it.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">9. Children and minors</h2>
-          <p>Many GATE aspirants are 18 or older, but some are younger. We collect the minimum data necessary regardless of age, and — per §6 above — never show personalised advertising to a user we know to be under 18.</p>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">10. Children and minors</h2>
+          <p>Many GATE aspirants are 18 or older, but some are younger. We collect the minimum data necessary regardless of age, and — per §7 above — never show personalised advertising to a user we know to be under 18.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">10. Your rights and account deletion</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">11. Your rights and account deletion</h2>
           <p>
             You can export your data at any time from your profile. RENYXERA does not offer an
             in-app "delete my account" button, because your exam history is also what makes
@@ -119,17 +131,17 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">11. Data security</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">12. Data security</h2>
           <p>We use industry-standard measures to protect your data — encrypted connections (HTTPS) everywhere, database-level access controls (Row Level Security) so your data is only ever readable by you, and secrets are never exposed to the browser. No system is perfectly secure, and we'll notify affected users if a breach affecting their data ever occurs.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">12. Changes to this policy</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">13. Changes to this policy</h2>
           <p>We'll update the date at the top of this page when this policy changes, and for material changes we'll make a reasonable effort to notify account holders directly.</p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">13. Contact</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">14. Contact</h2>
           <p>
             Questions, requests, or concerns about your data:{" "}
             <a href="mailto:renyxera@gmail.com" className="text-[var(--accent)]">renyxera@gmail.com</a>
