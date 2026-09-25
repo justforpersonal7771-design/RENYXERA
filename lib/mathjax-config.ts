@@ -11,7 +11,8 @@ export const MATHJAX_CONFIG = {
   loader: { load: ["input/tex", "output/chtml", "[tex]/html"] },
   tex: {
     packages: { "[+]": ["html"] },
-    inlineMath: [["\(", "\)"]],
-    displayMath: [["\[", "\]"]],
+    // "\\(" in source is the two characters \( — the delimiters the dataset uses.
+    inlineMath: [["\\(", "\\)"]],
+    displayMath: [["\\[", "\\]"]],
   },
 };

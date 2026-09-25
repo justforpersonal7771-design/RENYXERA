@@ -1,8 +1,8 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useContext, useEffect, useRef } from "react";
 import { RenderNode } from "@/types/ast.types";
-import { MathJax } from "better-react-mathjax";
+import { MathJax, MathJaxBaseContext } from "better-react-mathjax";
 
 import { CodeBlock } from "@/components/ui/code-block";
 import { ImageThemeAdapter } from "./image-theme-adapter";
@@ -36,14 +36,54 @@ function formatMarkdownText(text: string): React.ReactNode {
   });
 }
 
+// A stable id per parsed node array, so the body remounts (fresh DOM) whenever the
+// content changes — see the typesetting note in AstBody.
+const nodeIds = new WeakMap<RenderNode[], number>();
+let nextNodeId = 1;
+function idFor(nodes: RenderNode[]): number {
+  let id = nodeIds.get(nodes);
+  if (!id) { id = nextNodeId++; nodeIds.set(nodes, id); }
+  return id;
+}
+
+// Unwrapped TeX in text: "\(" or "\[" delimiters (what the dataset uses).
+const RAW_MATH = /\\\(|\\\[/;
+
 export const AstNodeRenderer = memo(function AstNodeRenderer({
   nodes,
   className = "",
 }: AstNodeRendererProps) {
   if (!nodes || nodes.length === 0) return null;
+  return <AstBody key={idFor(nodes)} nodes={nodes} className={className} />;
+});
+
+function AstBody({ nodes, className = "" }: AstNodeRendererProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const mathJax = useContext(MathJaxBaseContext);
+
+  // Some questions carry formulas inside plain text (e.g. "\( f_1 \in F \)") rather than
+  // as latex nodes. <MathJax> components only typeset their own children, so that text
+  // used to render only by luck — MathJax's one-time whole-page scan on first load. Now
+  // that MathJax loads at app start (before any question is on screen), typeset this
+  // body explicitly once MathJax is ready. The body is keyed by its content (above), so
+  // React never has to patch DOM that MathJax has rewritten.
+  const hasRawMath = nodes.some((n) => (n.type === "text" || n.type === "html") && RAW_MATH.test(n.content));
+  useEffect(() => {
+    if (!hasRawMath || !mathJax?.promise) return;
+    let cancelled = false;
+    mathJax.promise
+      .then((MJ: any) => (MJ?.startup?.promise ?? Promise.resolve()).then(() => MJ))
+      .then((MJ: any) => {
+        if (cancelled || !ref.current || typeof MJ?.typesetPromise !== "function") return;
+        return MJ.typesetPromise([ref.current]);
+      })
+      .catch(() => { /* leave the raw text readable rather than break the question */ });
+    return () => { cancelled = true; };
+  }, [hasRawMath, mathJax]);
 
   return (
     <div
+      ref={ref}
       className={`ast-content ${className} items-center font-sans text-[var(--text-primary)]`}
     >
       {nodes.map((node, i) => {
@@ -128,4 +168,4 @@ export const AstNodeRenderer = memo(function AstNodeRenderer({
       })}
     </div>
   );
-});
+}
