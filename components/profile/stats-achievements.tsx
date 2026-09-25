@@ -174,7 +174,7 @@ export function StatsAchievements() {
                 {/* Medal */}
                 <div className="relative shrink-0">
                   <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
+                    className={`relative w-12 h-12 rounded-full flex items-center justify-center overflow-hidden ${
                       a.unlocked
                         ? `bg-gradient-to-br ${tier.medal} shadow-lg ${tier.ring} ${tier.icon}`
                         : "bg-[var(--surface-secondary)] text-[var(--text-muted)]"

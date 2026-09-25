@@ -168,11 +168,21 @@ export function Topbar() {
       <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between gap-4">
 
         {/* Logo */}
-        <Link href="/" aria-label="RENYXERA — Dashboard" className="shrink-0 flex items-center gap-2.5 group">
-          <span className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]">
-            <BrandMark className="h-8 w-8" />
+        {/* Logo hover (.logo-fx): the mark spins once in 3D inside a glowing halo with an
+            expanding ripple, and a light sweeps across the wordmark while its "ERA"
+            gradient starts flowing. */}
+        <Link href="/" aria-label="RENYXERA — Dashboard" className="logo-fx shrink-0 flex items-center gap-2.5">
+          <span className="logo-mark relative flex items-center justify-center">
+            <span className="logo-halo" aria-hidden="true" />
+            <span className="logo-ripple" aria-hidden="true" />
+            <span className="logo-spin relative drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]">
+              <BrandMark className="h-8 w-8" />
+            </span>
           </span>
-          <Wordmark className="hidden sm:inline" />
+          <span className="logo-word relative hidden sm:inline-block overflow-hidden">
+            <Wordmark />
+            <span className="logo-sweep" aria-hidden="true" />
+          </span>
         </Link>
 
         {/* Desktop nav — a floating glass dock with a hover highlight that glides

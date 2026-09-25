@@ -19,7 +19,7 @@ export function Wordmark({ className = "", size = "md" }: { className?: string; 
       className={`font-brand font-normal tracking-[0.04em] leading-none select-none whitespace-nowrap ${sizes[size]} ${className}`}
     >
       <span aria-hidden="true" className="text-[var(--text-primary)]">RENYX</span>
-      <span aria-hidden="true" className="bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent dark:from-[#5edcff] dark:via-[#8b5cf6] dark:to-[#e879f9]">
+      <span aria-hidden="true" className="wordmark-era bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent dark:from-[#5edcff] dark:via-[#8b5cf6] dark:to-[#e879f9]">
         ERA
       </span>
     </span>

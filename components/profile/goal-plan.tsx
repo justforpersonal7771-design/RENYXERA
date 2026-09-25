@@ -23,7 +23,7 @@ export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: n
   const hoursPct = plan ? Math.min(100, (plan.hoursAvailable / Math.max(1, plan.hoursNeeded)) * 100) : 0;
 
   return (
-    <div className="card-glass rounded-3xl p-6">
+    <div className="card-glass rounded-3xl p-6 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-5">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-violet-500/10 text-violet-500">
           <Compass className="w-5 h-5" />
@@ -40,7 +40,7 @@ export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: n
           <div className="skeleton-shimmer h-16 rounded-2xl" />
         </div>
       ) : !plan.hasTarget ? (
-        <div className="rounded-2xl border border-dashed border-[var(--border)] p-5 text-center">
+        <div className="flex-1 flex flex-col items-center justify-center rounded-2xl border border-dashed border-[var(--border)] p-5 text-center">
           <Target className="w-8 h-8 mx-auto text-violet-500/70 mb-2" />
           <p className="text-sm font-semibold text-[var(--text-primary)]">Set a target rank to get your plan</p>
           <p className="text-xs text-[var(--text-muted)] mt-1 leading-relaxed">
@@ -52,7 +52,7 @@ export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: n
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="flex-1 flex flex-col gap-4">
           {/* Headline: marks needed + recommended focus */}
           <div className="flex items-center gap-4 rounded-2xl bg-[var(--surface-secondary)]/60 p-4">
             <RadialGauge value={plan.recommendedPercent} size={78} stroke={7} from="#8b5cf6" to="#ec4899" className="text-[var(--text-primary)] shrink-0">
@@ -154,7 +154,7 @@ export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: n
               await setTargetPercent(plan.recommendedPercent);
               useToastStore.getState().show(`Focus Target set to ${plan.recommendedPercent}% of the syllabus`);
             }}
-            className={`w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
+            className={`mt-auto w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
               applied
                 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 cursor-default"
                 : "bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45"
