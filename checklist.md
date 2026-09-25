@@ -13,7 +13,9 @@ Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action ·
 |---|---|---|
 | ~~1~~ | ~~Rotate the Supabase `service_role` key~~ | ✅ **done** — rotated, updated in `.env.local`, Vercel, and pushed as a Cloudflare Worker secret |
 | ~~2~~ | ~~Change Cloudflare org type~~ | **Closed, not fixable and not worth it.** Confirmed via Cloudflare directly: org type is set once at signup and cannot be edited on a Self-Serve/Free account — the only way to change it is creating an entirely new account and migrating the Worker, secrets, DNS, and GitHub Actions config over. It's signup-questionnaire metadata with no legal or functional weight (Cloudflare's commercial-use permission doesn't depend on it). Leaving it as "Educational." |
-| 3 | **Google OAuth Console — Authorised domain still needs one fix** | Home/Privacy/Terms links are already correctly updated to `gate.renyxera.workers.dev`. The domain field errored because Google wants the *top private domain*, not a subdomain — `workers.dev` is itself on the Public Suffix List (like `vercel.app`), so the registrable boundary is one level deeper. **Fix: enter `renyxera.workers.dev` (no `gate.` prefix) as Authorised domain 2** — covers the subdomain automatically. |
+| ~~3~~ | ~~Google OAuth Console — Authorised domain~~ | ✅ **done** — `renyxera.workers.dev` added as Authorised domain 2 |
+| 7 | **Google OAuth branding verification — 2 open issues** | App is "In production" but branding isn't verified yet, so the consent screen shows the raw Supabase domain instead of "RENYXERA" (cosmetic only — sign-in itself works, confirmed live via wrangler tail logs). (a) Homepage URL ownership: verify `gate.renyxera.workers.dev` in Google Search Console under `renyxera@gmail.com` via the HTML-tag method, then send the verification code to add to `app/layout.tsx`. (b) Logo flagged as "doesn't uniquely identify your brand": current `icon-512.png` is a bare abstract mark with no text — needs a square (512×512, solid background) lockup combining the mark + "RENYXERA" wordmark. |
+| 8 | **Supabase confirmation emails send from Supabase's own domain, not RENYXERA's** | Needs custom SMTP configured in Supabase Dashboard → Project Settings → Auth → SMTP Settings, with a real sending provider (Resend or Brevo both have zero-cost free tiers). Needs your account/credentials — once set up, template copy/from-address can be wired from this repo. |
 | ~~4~~ | ~~Update Supabase Auth → URL Configuration~~ | ✅ **done** |
 | ~~5~~ | ~~Decide Vercel's fate~~ | ✅ **decided — leave it as is**, dormant, not disconnecting or deleting |
 | ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** — first two automated runs failed on a Node version mismatch (wrangler requires Node ≥22, workflow was pinned to 20), fixed in commit `2e4411a`, third run succeeded. Confirmed live: a real Supabase error response came back from the CI-built deploy, proving the secrets correctly reached the build. |
@@ -54,8 +56,11 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Task | Status |
 |---|---|
 | Login / signup / reset-password pages + `/auth/callback` | ✅ |
+| Login/signup/forgot-password as an in-place modal (not a page navigation) | ✅ |
 | Google OAuth button, Google Cloud client, consent screen published | ✅ |
-| Live-tested: real signup, unconfirmed-login error, Google OAuth redirect — all against production Supabase | ✅ |
+| Live-tested: real signup, unconfirmed-login error, Google OAuth redirect, and a full real Google sign-in reaching `/profile` — all against production Supabase | ✅ |
+| `/auth/callback` excluded from middleware's session-refresh matcher (was redundant CPU work on Cloudflare's free-tier 10ms budget, root-caused a real "Error 1102" seen live) | ✅ |
+| GoogleAuthButton bfcache bug (loading spinner stuck forever if you hit Back from Google's consent screen) | ✅ |
 | Firebase project + Phone provider enabled | ✅ |
 | Mobile OTP wired into the app | ⬜ |
 | Firebase Blaze billing (needed past 10 SMS/day) | ⬜ *(not urgent yet)* |
@@ -73,14 +78,17 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Task | Status |
 |---|---|
 | DiceBear avatar picker component | ✅ |
-| Full `/profile` page (identity, goals, stats, account settings) | ⬜ |
-| Dynamic Exam Goals Engine (goals drive Focus Target/Goal Slider) | ⬜ |
+| Full `/profile` page (identity, avatar, goals, sign-out) — gradient hero, real card layout | ✅ |
+| Profile save now updates the shared auth store immediately (previously saved to Supabase but avatar/name changes wouldn't show anywhere — including the topbar — until a hard reload) | ✅ |
+| Sign-out UX: redirects to the dashboard with a "Signed out" toast, instead of flashing this page's own "not signed in" prompt for a couple seconds first | ✅ |
+| Stats/Achievements sections from the master plan's profile spec | ⬜ |
+| Dynamic Exam Goals Engine (goals drive Focus Target/Goal Slider) | ⬜ *(goal fields save correctly; nothing reads target_rank/target_year to derive a recommended focus band yet)* |
 
 ### 4F · P0 · Per-User Isolation & Device Sessions
 | Task | Status |
 |---|---|
 | `IDBManager.setActiveNamespace()` + `resetAllStores()` — verified live | ✅ |
-| Wired into a real sign-in/sign-out flow | ⬜ |
+| Wired into a real sign-in/sign-out flow (`AuthListener`, catching and fixing a real regression where a guest's first page load was incorrectly treated as a namespace change and reset the data store mid-load) | ✅ |
 | Active Devices list / sign-out-everywhere | ⬜ |
 
 ### 4G · P0 · API Hardening
