@@ -1,9 +1,11 @@
 # RENYXERA — Progress Checklist
 
-**Last updated:** 24 September 2026
+**Last updated:** 26 September 2026 (full cross-check against the master plan, module by module)
 **Companion to:** `RENYXERA_Master_Plan_Auth_Security_Monetization.md` (full rationale, module-by-module — this file is status only)
 
-Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action · ⬜ Not started
+Legend: ✅ Done and verified · 🟨 Partly done · 🔶 Done but needs your confirmation/action · ⬜ Not started
+
+Every deliverable and acceptance criterion in the master plan has a row below. The 26 Sep audit added the rows that were missing (asset/image architecture, CI security checks, monitoring, legal pack, and several per-module items); statuses were verified against the code, not assumed.
 
 ---
 
@@ -12,16 +14,15 @@ Legend: ✅ Done and verified · 🔶 Done but needs your confirmation/action ·
 | # | Task | Status |
 |---|---|---|
 | ~~1~~ | ~~Rotate the Supabase `service_role` key~~ | ✅ **done** — rotated, updated in `.env.local`, Vercel, and pushed as a Cloudflare Worker secret |
-| ~~2~~ | ~~Change Cloudflare org type~~ | **Closed, not fixable and not worth it.** Confirmed via Cloudflare directly: org type is set once at signup and cannot be edited on a Self-Serve/Free account — the only way to change it is creating an entirely new account and migrating the Worker, secrets, DNS, and GitHub Actions config over. It's signup-questionnaire metadata with no legal or functional weight (Cloudflare's commercial-use permission doesn't depend on it). Leaving it as "Educational." |
+| ~~2~~ | ~~Change Cloudflare org type~~ | **Closed, not fixable and not worth it.** Org type is set once at signup and can't be edited on a Free account; it's metadata with no legal or functional weight. Leaving it as "Educational." |
 | ~~3~~ | ~~Google OAuth Console — Authorised domain~~ | ✅ **done** — `renyxera.workers.dev` added as Authorised domain 2 |
-| 7 | **Google OAuth branding verification — logo only, fixable now** | App is "In production" but branding isn't verified, so the consent screen shows the raw Supabase domain instead of "RENYXERA" (cosmetic only — sign-in itself works, confirmed live via wrangler tail logs). Logo flagged as "doesn't uniquely identify your brand": current `icon-512.png` is a bare abstract mark with no text — needs a square (512×512, solid background) lockup combining the mark + "RENYXERA" wordmark. |
-| 7b | ~~Homepage/privacy content issues ("doesn't explain purpose", "behind a login page", "privacy policy insufficient")~~ | ✅ **root-caused and fixed** — the dashboard homepage is a client-only React component; its server-rendered HTML (all any non-JS crawler, including Google's branding checker, ever sees) was just a loading spinner (confirmed live: 241 bytes of visible text total). Added real, substantial purpose-explaining copy to that server-rendered loading state, and an explicit Cookies/local-storage section to the privacy policy. Deployed — should clear on Google's next verification pass. |
-| 7c | **Homepage URL ownership — cannot be completed on `workers.dev`, merged into the domain-purchase backlog item below** | Corrected after reading Google's own docs (support.google.com/cloud/answer/13804266): OAuth branding verification specifically requires a **Domain property verified via a DNS TXT record at the root domain** in Search Console — not the URL-prefix/HTML-tag method (which I'd set up first; it's a valid Search Console verification but doesn't satisfy this specific OAuth check). `renyxera.workers.dev`'s DNS zone is controlled by Cloudflare, not you, so a root-domain TXT record isn't something you can add — this is a hard structural limit of the free subdomain, not a config mistake. Needs a real, owned domain. |
+| 7 | **Google OAuth branding verification — logo only, fixable now** | Branding isn't verified, so the consent screen shows the raw Supabase domain instead of "RENYXERA" (cosmetic only — sign-in works). A square 512×512 lockup (mark + wordmark) exists at `public/brand/oauth-logo.png`; upload it in the Google console. |
+| 7b | ~~Homepage/privacy content issues~~ | ✅ **root-caused and fixed** — server-rendered homepage now explains the product; privacy policy has the Google-user-data section. |
+| 7c | **Homepage URL ownership — cannot be completed on `workers.dev`** | OAuth branding needs a DNS-verified Domain property; `workers.dev`'s DNS isn't yours. Merged into the domain backlog item below. |
+| 8 | **Run migration `supabase/migrations/0002_username_lowercase.sql`** in the Supabase SQL editor | ⬜ Lowercases existing usernames and makes the database enforce lowercase + case-insensitive uniqueness (the app already does both; this makes it a DB guarantee, as 4E-3 requires). |
 | ~~4~~ | ~~Update Supabase Auth → URL Configuration~~ | ✅ **done** |
-| ~~5~~ | ~~Decide Vercel's fate~~ | ✅ **decided — leave it as is**, dormant, not disconnecting or deleting |
-| ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** — first two automated runs failed on a Node version mismatch (wrangler requires Node ≥22, workflow was pinned to 20), fixed in commit `2e4411a`, third run succeeded. Confirmed live: a real Supabase error response came back from the CI-built deploy, proving the secrets correctly reached the build. |
-
-Once those 3 exist, push anything to `main` and check the **Actions** tab on GitHub — you'll see it build and deploy automatically, same as Vercel used to.
+| ~~5~~ | ~~Decide Vercel's fate~~ | ✅ **decided — leave it as is**, dormant |
+| ~~6~~ | ~~Add 3 GitHub repo secrets~~ | ✅ **done and verified end-to-end** |
 
 ---
 
@@ -29,8 +30,39 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 
 | # | Task | Why it's parked |
 |---|---|---|
-| 1 | **Custom-domain confirmation emails** (RENYXERA sender instead of Supabase's default) | Needs a real domain with DNS access (`renyxera.workers.dev` doesn't qualify — you don't control its DNS) — that's a ~$10-12/year registration, the one thing in this stack that genuinely can't stay $0. Steps are ready (Resend account → verify domain via 3 DNS records → API key → Supabase Dashboard → Auth → SMTP Settings) whenever a domain gets bought. Revisit alongside Module 4A's own "Custom domain" line (also parked for the same reason). |
-| 2 | **Full Google OAuth branding verification** ("RENYXERA" name instead of the raw domain on the consent screen) | Same blocker as #1: needs DNS-level domain-property verification in Search Console, which requires owning a domain outright. Buy one domain, point it at both — same DNS access unlocks the branded consent screen and the branded confirmation emails together. |
+| 1 | **Custom-domain confirmation emails** (RENYXERA sender) | Needs an owned domain with DNS access (~$10-12/yr). Steps are ready (Resend → verify domain → API key → Supabase SMTP). |
+| 2 | **Full Google OAuth branding verification** | Same blocker: needs DNS-level domain verification. One domain unlocks both. |
+| 3 | **Firebase Blaze billing** (Mobile OTP past 10 SMS/day) | Only needed once OTP is promoted to real users (4C). |
+| 4 | **Google Play developer account** (~₹2,100 one-time) | Optional; only for a Play Store listing (9D). The PWA already installs from the browser. |
+
+---
+
+## PLATFORM-WIDE — rules and controls that span every release
+
+### Images & binary assets (§2.3 — P0 design rule)
+| Task | Status |
+|---|---|
+| Question images served as static files from Cloudflare's CDN (`public/images/`, 6.1 MB), never from GitHub raw URLs | ✅ |
+| Image references stored/resolved as **relative paths** (`/images/2026-FN/2.png`), never binaries or absolute third-party URLs | ✅ *(lib/services/image-resolver.ts)* |
+| Single configurable CDN base URL (one env var) used to resolve every image path at render time | ⬜ *(paths are currently root-relative; no base-URL variable yet)* |
+| Cloudflare R2 bucket provisioned and bound for the bulk / multi-branch diagram corpus | ⬜ |
+| No binary assets in Postgres (`image_paths` / `image_path` columns hold relative paths only) | ✅ *(schema in 0001 enforces text paths; no images stored)* |
+| WebP/AVIF compression at ingest for new diagrams | ⬜ *(needed with 8A)* |
+| Hotlink protection on images (CDN/R2) | ⬜ *(5D)* |
+
+### Security, CI & monitoring (§5.3, §5.4)
+| Task | Status |
+|---|---|
+| CI on every push: typecheck, lint, production build | ✅ *(.github/workflows/ci.yml)* |
+| Service-role key can't reach client code (`import "server-only"` build-time guard) | ✅ |
+| CI grep over the **built output** proving no service-role key is in the client bundle | ⬜ |
+| CI test proving the anon key reads **zero rows** from `question_answers` | ⬜ |
+| Automated Playwright regression suite in CI (desktop + mobile, light + dark) | ⬜ *(run manually on every change today; not in CI)* |
+| Error tracking (Sentry free tier) | ⬜ |
+| Product analytics (Cloudflare Web Analytics, cookieless) | ⬜ |
+| Structured API logs + anomaly alerts | 🟨 *(route-level logging exists; no alerting)* |
+| Supabase idle-pause keep-alive (scheduled ping) | ⬜ *(only matters pre-launch)* |
+| Worker CPU budget: prerendered pages + static dataset served without the Worker (fixes Error 1102) | ✅ |
 
 ---
 
@@ -47,83 +79,126 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Renamed Worker → `gate` (final URL: **https://gate.renyxera.workers.dev**) | ✅ |
 | `GEMINI_API_KEY` + `SUPABASE_SERVICE_ROLE_KEY` secrets set on the Worker | ✅ |
 | Full live verification (pages, dataset, grading, AI/Gemini, Supabase auth) on Cloudflare | ✅ |
+| Service worker + PWA install working on Cloudflare | ✅ |
 | Old duplicate Worker deleted | ✅ |
-| GitHub Actions CI/CD (auto-deploy on push to `main`) | ✅ **done and verified live** — every push to `main` now builds and deploys to Cloudflare automatically, matching Vercel's old behavior |
-| Vercel decommissioned | 🔶 *(see 🔴#5)* |
-| Custom domain | ⬜ *(declined for now, `workers.dev` is fine — revisit once there's revenue)* |
+| GitHub Actions CI/CD (auto-deploy on push to `main`) | 🟨 *(set up and verified earlier; recent deploys have been made locally with `npm run deploy:cf` because pushes weren't landing — check the Actions tab)* |
+| R2 bucket provisioned; CDN base URL as a single env var | ⬜ *(see Platform-wide → Images)* |
+| DNS, Web Analytics and Turnstile in the same Cloudflare account | ⬜ |
+| Rollback path documented and tested | ⬜ |
+| Vercel decommissioned | 🔶 *(kept dormant by decision — 🔴#5)* |
+| Custom domain | ⬜ *(declined for now — revisit once there's revenue)* |
 
 ### 4B · P0 · Data Layer Migration (Postgres + RLS)
 | Task | Status |
 |---|---|
 | Schema + RLS migration written (`supabase/migrations/0001_init.sql`) | ✅ |
 | `question_answers` locked from anon/authenticated (structural FINDING-3 fix) | ✅ |
+| `branches` seeded with all six codes (CSE live, five coming soon) | ✅ |
 | Supabase project created, migration run in production | ✅ |
-| Env vars wired (`.env.local` + Vercel) | ✅ |
+| Env vars wired (`.env.local` + Worker secrets + CI secrets) | ✅ |
 | `lib/supabase/*` client/server/middleware scaffolding, verified safe when unconfigured | ✅ |
-| `profiles` auto-create trigger confirmed firing on a real signup | ⬜ *(signup call verified live; trigger itself not yet double-checked in Table Editor)* |
+| **975 questions seeded into Postgres** with the public/private split | ⬜ *(the app still serves the question bank from the static `public/data/questions.json`)* |
+| All 975 questions render identically from Postgres as from the JSON | ⬜ |
+| Practice mode works fully offline after first sync | 🟨 *(works offline today from IndexedDB; not yet from a Postgres sync)* |
+| `profiles` auto-create trigger confirmed firing on a real signup | ⬜ *(signup verified live; trigger not yet double-checked in Table Editor)* |
 
 ### 4C · P1 · Authentication — Three Doors
 | Task | Status |
 |---|---|
 | Login / signup / reset-password pages + `/auth/callback` | ✅ |
-| Login/signup/forgot-password as an in-place modal (not a page navigation) | ✅ |
+| Login/signup/forgot-password as an in-place modal | ✅ |
 | Google OAuth button, Google Cloud client, consent screen published | ✅ |
-| Live-tested: real signup, unconfirmed-login error, Google OAuth redirect, and a full real Google sign-in reaching `/profile` — all against production Supabase | ✅ |
-| `/auth/callback` excluded from middleware's session-refresh matcher (was redundant CPU work on Cloudflare's free-tier 10ms budget, root-caused a real "Error 1102" seen live) | ✅ |
-| GoogleAuthButton bfcache bug (loading spinner stuck forever if you hit Back from Google's consent screen) | ✅ |
+| Live-tested real signup, unconfirmed-login error, Google OAuth, full Google sign-in | ✅ |
+| `/auth/callback` excluded from middleware session refresh (Error 1102 root cause) | ✅ |
+| GoogleAuthButton bfcache bug fixed | ✅ |
+| Auth UI in the app's own glass/gradient design (no vendor widget) | ✅ |
+| Session persistence across reloads; silent token refresh | ✅ |
 | Firebase project + Phone provider enabled | ✅ |
-| Mobile OTP wired into the app | ⬜ |
-| Firebase Blaze billing (needed past 10 SMS/day) | ⬜ *(not urgent yet)* |
-| No-account-deletion UI policy + anonymization backstop | ⬜ |
-| Auth pages linked from navigation / route protection | ⬜ *(deliberately deferred to 4D)* |
+| Mobile OTP wired into the app (Firebase ↔ Supabase third-party JWT bridge) | ⬜ |
+| OTP abuse controls: per-phone/IP/device limits, Turnstile, resend cooldown, daily cap | ⬜ |
+| All three auth paths converge on one `profiles` row | 🟨 *(Google + email do; OTP not built)* |
+| Route protection enforced in **middleware** (not page components) | ⬜ |
+| "Sign out everywhere" on credential change | ⬜ |
+| No delete-account control anywhere in the UI | ✅ |
+| Anonymization backstop (support-request erasure → `status='anonymized'`, PII nulled, attempts kept) documented in the Privacy Policy and working | ⬜ |
+| Firebase Blaze billing (past 10 SMS/day) | ⬜ *(backlog #3)* |
 
 ### 4D · P1 · Guest Walkthrough / Teaser Mode
 | Task | Status |
 |---|---|
-| Contextual feature locks (blurred previews, "sign in to unlock") | ✅ *(GuestLock on Analytics / AI Mentor; clipped to one screen so the unlock card is always visible)* |
-| Guest → account IndexedDB migration on signup | ✅ *(lib/repository/storage/guest-migration.ts, run by AuthListener before the namespace switch; never overwrites existing account records)* |
-| Wire route protection into middleware once this exists | ⬜ |
+| Guest can explore every screen without an account | ✅ |
+| Contextual feature locks (blurred previews, "sign in to unlock") | ✅ *(GuestLock on Analytics / AI Mentor, clipped to one screen)* |
+| Full official mock papers locked for guests with a contextual sign-in prompt | ✅ |
+| Guest AI calls: zero (server returns 401 without a session) | ✅ |
+| Guest → account IndexedDB migration on signup | ✅ *(lib/repository/storage/guest-migration.ts; never overwrites account records)* |
+| Capped practice sample for guests (full bank for signed-in users) | ⬜ |
+| Bookmarks/mistakes marked "local only" for guests with a warning | ⬜ |
+| Subject leaderboards locked for guests | ⬜ *(leaderboards themselves are 5E)* |
+| Wire route protection into middleware | ⬜ *(same as 4C)* |
 
 ### 4E · P1 · Profile, Avatars & Goals Engine
 | Task | Status |
 |---|---|
-| DiceBear avatar picker component | ✅ |
-| Full `/profile` page (identity, avatar, goals, sign-out) — gradient hero, real card layout | ✅ |
-| Profile save now updates the shared auth store immediately (previously saved to Supabase but avatar/name changes wouldn't show anywhere — including the topbar — until a hard reload) | ✅ |
-| Sign-out UX: redirects to the dashboard with a "Signed out" toast, instead of flashing this page's own "not signed in" prompt for a couple seconds first | ✅ |
-| Stats/Achievements sections from the master plan's profile spec | ✅ *(Stats: accuracy, attempted, streak, hours, tests, mastered. 15 achievements derived from local progress in lib/achievements.ts — unlock retroactively, "New" badge for freshly earned ones)* |
-| Dynamic Exam Goals Engine (goals drive Focus Target/Goal Slider) | ✅ *(lib/goals/goal-engine.ts: target rank → marks → coverage at your accuracy → recommended focus % + topic set, with honest time/accuracy feasibility. Live "Goal plan" on the profile; "My goal" preset + Apply in the Focus Target panel. Acceptance test: `npm run check:goals` — AIR 100 vs AIR 5000 recommend different topic sets. Uses an approximate rank↔marks curve until 4J lands)* |
+| DiceBear avatar picker (8 styles, shuffle) storing only a seed + style | ✅ |
+| Avatar renders offline and in both themes | ✅ |
+| Full `/profile` page: identity, avatar, goals, sign-out, premium header | ✅ |
+| Profile save updates the shared auth store immediately | ✅ |
+| Sign-out UX: redirect to dashboard with a "Signed out" toast | ✅ |
+| Username: lowercase, validated, live availability check (server-side), reserved names blocked | ✅ |
+| Username uniqueness enforced by a **database constraint** (case-insensitive) | 🔶 *(migration 0002 written — run it: 🔴#8)* |
+| Username profanity list | ⬜ |
+| Display name used for greetings across the app | ✅ |
+| Stats section (accuracy, attempted, streak, hours, tests, mistakes mastered) | ✅ |
+| Achievements section (15 badges from real progress, "New" chip) | ✅ |
+| Dynamic Exam Goals Engine: target rank → marks → coverage → recommended focus % + topics, honest feasibility, "Apply" + "My goal" preset | ✅ *(`npm run check:goals` proves AIR 100 vs AIR 5000 recommend different topic sets)* |
+| Target year drives countdown and every "GATE <year>" label; rolls forward after each exam | ✅ |
+| Target branch: CSE live, others Coming Soon and non-selectable | ✅ |
+| Daily hours size the daily question target and the time check | ✅ |
+| Daily hours drive reminder cadence and a "you are N hours behind" signal | ⬜ |
+| Target year weights recent-year PYQs higher as the exam nears | ⬜ |
+| Closed loop: each graded attempt re-derives the recommended focus band | 🟨 *(re-derives from measured accuracy; graded attempts are 5B)* |
+| Preferences section (theme, default duration, notifications, reduced motion) | ⬜ |
+| Account section (email/phone, linked providers, active devices, export my data) | ⬜ |
 
 ### 4F · P0 · Per-User Isolation & Device Sessions
 | Task | Status |
 |---|---|
-| `IDBManager.setActiveNamespace()` + `resetAllStores()` — verified live | ✅ |
-| Wired into a real sign-in/sign-out flow (`AuthListener`, catching and fixing a real regression where a guest's first page load was incorrectly treated as a namespace change and reset the data store mid-load) | ✅ |
-| Active Devices list / sign-out-everywhere | ⬜ |
+| Per-user IndexedDB namespace (`IDBManager.setActiveNamespace`) + `resetAllStores()` — verified live | ✅ |
+| Wired into real sign-in/sign-out (`AuthListener`) incl. a fixed guest-first-load regression | ✅ |
+| Explicit two-account test: account B sees zero data from account A, and all 10 stores reset | ⬜ *(behaviour implemented; the documented store-by-store test isn't written)* |
+| Device sessions table + Active Devices list | ⬜ |
+| "Sign out this device" / "sign out everywhere" | ⬜ |
+| Idle expiry; forced re-auth on credential change | ⬜ |
 
 ### 4G · P0 · API Hardening
 | Task | Status |
 |---|---|
 | `/api/ai/generate` zod validation + server-owned instruction enum | ✅ |
-| Rate limiting + origin check applied (previously missing entirely) | ✅ |
-| Upstash Redis, user-ID-keyed limiting | ⬜ *(current limiting is IP-keyed; needs auth wired + Upstash account)* |
+| Rate limiting + origin check (previously missing entirely) | ✅ |
+| Supabase JWT required on `/api/ai/generate` (401, no Gemini call, for guests) | ✅ |
+| Response size caps and request timeouts | 🟨 *(body-size caps done; timeouts not explicit)* |
+| Upstash Redis, user-ID-keyed limiting | ⬜ *(current limiting is IP-keyed)* |
 | Per-user daily AI quota in Postgres | ⬜ |
-| Turnstile on signup/login/OTP | ⬜ |
+| Server-side prompt-hash response cache | ⬜ |
+| Turnstile on signup/login/reset/OTP | ⬜ |
 
 ### 4H · P1 · Multi-Branch Teaser & Waitlist
 | Task | Status |
 |---|---|
-| Branch selector UI (CSE live, 5 "Coming Soon") | ⬜ |
-| "Notify Me" waitlist capture | ⬜ *(table exists in the schema — `branch_waitlist`)* |
-| Branch landing pages for SEO | ⬜ |
+| Branch selector (Profile → Exam Goals) with CSE live, 5 Coming Soon, non-selectable | ✅ |
+| Branch selector in onboarding | ⬜ |
+| "Notify Me" waitlist capture (guests: email; members: user id) | ⬜ *(table exists — `branch_waitlist`)* |
+| Internal waitlist counts (prioritises Release 8) | ⬜ |
+| Branch landing pages for SEO (`/gate-ece`, `/gate-da`, …) | ⬜ |
+| Launch email to the waitlist when a branch goes live | ⬜ |
 
 ### 4I · P2 · Cloud Sync
 | Task | Status |
 |---|---|
-| Sync status model (Offline/Pending/Syncing/Synced/Conflict/Failed) | ⬜ |
-| Conflict resolution rules | ⬜ |
-
----
+| Sync status model (Offline/Pending/Syncing/Synced/Conflict/Failed) + indicator | ⬜ |
+| Conflict rules (LWW prefs, union bookmarks, max counters, server wins on scores) | ⬜ |
+| Durable sync queue with backoff; "Sync now" | ⬜ |
+| "Export my data (JSON)" | ⬜ |
 
 ### 4J · P0 · Calibration Data Foundation *(makes predictions accurate)*
 | Task | Status |
@@ -132,9 +207,11 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Qualifying cut-offs, candidates appeared, GATE score formula & normalisation constants | ⬜ |
 | Official exam schedule per year; official syllabus per branch | ⬜ |
 | Versioned `calibration/<branch>/<year>.json` + `calibration/SOURCES.md` source/licence ledger | ⬜ |
-| Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | ⬜ |
+| Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | ⬜ *(estimates are labelled as estimates meanwhile)* |
 | Opt-in anonymised scorecard submissions from users to improve the curve | ⬜ |
 | Annual recalibration each March after results | ⬜ *(recurring)* |
+
+---
 
 ## RELEASE 5 — Exam Integrity
 
@@ -143,7 +220,10 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 |---|---|
 | `lib/repository/dataset-split.ts` public/private split logic | ✅ |
 | `/api/dataset?scope=public` answer-free payload | ✅ |
-| Live exam UI cut over to the public payload (still self-grades from full dataset today) | ⬜ |
+| Live graded exam UI uses the public payload (no answer fields in network, IndexedDB or memory) | ⬜ *(the app currently loads the full dataset for practice)* |
+| Visible **Graded** vs **Practice** badge | ⬜ |
+| Offline graded attempts queued and shown "Pending evaluation" | ⬜ |
+| CI check that no answer field appears in a graded attempt | ⬜ |
 
 ### 5B · P0 · Server-Authoritative Evaluation
 | Task | Status |
@@ -151,25 +231,33 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | `/api/exam/grade` server-side grading endpoint | ✅ |
 | Attempt token (server start time/duration, tamper-proof timer) | ⬜ |
 | Live exam session wired to submit-for-grading instead of self-grading | ⬜ |
+| Server validation on submit (open, in time + grace, matching question set, not already submitted) | ⬜ |
+| Idempotent submissions; late-submission grace window | ⬜ |
+| 100-attempt server-vs-client score regression suite | ⬜ |
 
 ### 5C · P1 · Attempt Integrity Signals
 | Task | Status |
 |---|---|
-| Tab-blur / timing-anomaly detection | ⬜ |
+| Tab-blur / timing-anomaly / concurrent-attempt signals (graded only, shadow-flag first) | ⬜ |
 | Disclosure notice before graded attempts | ⬜ |
+| Flagged attempts excluded from leaderboards, never deleted | ⬜ |
 
 ### 5D · P1 · Question Bank Protection
 | Task | Status |
 |---|---|
 | Paginated/scoped delivery (no full-bank single request) | ⬜ |
-| Per-account fetch-volume limits | ⬜ |
-| Watermarking | ⬜ |
+| Per-account fetch-volume limits + anomaly alerts | ⬜ |
+| Full-bank offline download as a paid entitlement | ⬜ |
+| Hotlink protection on images | ⬜ |
+| Invisible per-account watermarking | ⬜ |
+| ToS clause prohibiting scraping/redistribution | ⬜ |
 
 ### 5E · P1 · Leaderboards & All-India Test Series
 | Task | Status |
 |---|---|
-| Scheduled mock tests, percentile/AIR | ⬜ |
-| Leaderboards (All-India/subject/college/friends) | ⬜ |
+| Scheduled All-India mock tests; server-computed percentile/AIR | ⬜ |
+| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | ⬜ |
+| Streaks, weekly challenges, topic ladders | 🟨 *(streaks exist; challenges/ladders not built)* |
 | Shareable result cards | ⬜ |
 
 ---
@@ -179,27 +267,36 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 ### 6A · P1 · Content & Programmatic SEO Engine
 | Task | Status |
 |---|---|
-| Per-question pages, subject/topic hubs, PYQ year pages | ⬜ |
-| Free tools (rank predictor, score calculator, etc.) | ⬜ |
-| Technical SEO (sitemap, structured data, Core Web Vitals) | ⬜ |
+| Public, server-rendered `/about` landing page | ✅ |
+| Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | ⬜ |
+| Editorial content (strategy, cut-off analysis, study plans) | ⬜ |
+| Free tools (rank predictor, score / normalisation calculator, college predictor) | ⬜ |
+| Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | ⬜ |
+| Sitemap submitted; indexing confirmed in Search Console | ⬜ |
 
 ### 6B · P1 · Legal Pages & Ad Network Onboarding
 | Task | Status |
 |---|---|
-| Privacy Policy | ✅ |
+| Privacy Policy (incl. Google user data section) | ✅ |
 | Terms of Service | ✅ |
-| Refund & Cancellation Policy | ⬜ *(needed before Razorpay goes live for real transactions)* |
+| About page | ✅ |
+| Contact page | ⬜ |
+| Disclaimer ("not affiliated with any IIT or the GATE organising institute") | ⬜ |
+| Refund & Cancellation Policy | ⬜ *(needed before Razorpay goes live)* |
 | Cookie Policy | ⬜ |
-| Professional legal review before real money moves | ⬜ *(current pages are solid drafts, not a lawyer's pass)* |
-| AdSense application | ⬜ *(needs 6A content live first)* |
+| Privacy Policy names 5C integrity signals and the 4C anonymization path | ⬜ |
+| Professional legal review before real money moves | ⬜ |
+| AdSense application (after 6A); Ezoic/Media.net fallbacks | ⬜ |
+| Direct sponsorships track | ⬜ |
 
 ### 6C · P1 · Ad Placement Architecture
 | Task | Status |
 |---|---|
-| `<AdSlot>` component (tier-aware, route-aware, no ads mid-exam/for Pro) | ⬜ |
-| Consent management | ⬜ |
-
----
+| `<AdSlot>` component (tier-, route- and consent-aware; reserved height; lazy) | ⬜ |
+| Zero ads in exams, auth and checkout; zero for ad-free tiers | ⬜ |
+| Service worker excludes ad scripts from caching | ⬜ |
+| Consent management; non-personalised ads for under-18s | ⬜ |
+| A/B measurement of ad revenue vs paid conversion | ⬜ |
 
 ### 6D · P1 · Practice Question Bank (beyond PYQs)
 | Task | Status |
@@ -208,50 +305,61 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Original practice sets for every CSE topic (MCQ/MSQ/NAT, worked solutions) | ⬜ |
 | Same taxonomy tags as PYQs + difficulty; clearly labelled "Practice" vs "PYQ" | ⬜ |
 | Difficulty recalibrated from real learner response data | ⬜ |
-| Annual Trend Refresh each March: add new papers, recompute weights, rebalance the bank, publish "What changed" note | ⬜ *(recurring)* |
+| Annual Trend Refresh each March: add new papers, recompute weights, rebalance, publish "What changed" | ⬜ *(recurring)* |
 
 ### 6E · P1 · Study Materials
 | Task | Status |
 |---|---|
-| One page per topic for every branch → section → subject → topic (notes, formulas, traps, worked examples) | ⬜ |
+| One page per topic for every branch → section → subject → topic | ⬜ |
 | Each page linked to its PYQs, practice questions and prerequisite topics | ⬜ |
 | Original writing only, AI-draft → expert-review, sources cited | ⬜ |
 | Public pages feed SEO (6A); deeper material in the paid tier (7A) | ⬜ |
 | Yearly review with the Trend Refresh / syllabus changes | ⬜ *(recurring)* |
+
+---
 
 ## RELEASE 7 — Monetization II: Pay-Per-Exam & Anti-Misuse
 
 ### 7A · P1 · Tier & Entitlement Model
 | Task | Status |
 |---|---|
-| Server-side entitlement checks | ⬜ |
-| Pricing tiers implemented (₹29/₹49/₹99/₹199) | ⬜ |
+| Entitlements stored server-side (`profiles.entitlements`), re-checked on every gated action | ⬜ |
+| Pricing tiers implemented (Free / ₹29 / ₹49 / ₹99 / ₹199) | ⬜ |
+| Entitlement check inside the grading call | ⬜ |
+| Upgrade path on the results screen; warm upsell at quota limits; bundling nudge after 3 purchases | ⬜ |
 
 ### 7B · P1 · Payments — Razorpay
 | Task | Status |
 |---|---|
 | Razorpay account created, KYC approved, activated | ✅ *(ahead of schedule)* |
-| Checkout integration wired into the app | ⬜ |
-| Webhook handling (source of truth for entitlements) | ⬜ |
-| No-refund policy text finalized on checkout | ⬜ |
+| Confirm the actually-applied UPI MDR on the account | ⬜ |
+| UPI-first checkout wired into the app | ⬜ |
+| Webhook handling (signature-verified, idempotent; sole source of truth) | ⬜ |
+| Razorpay Subscriptions for the ₹99 add-on; invoicing/GST; dunning | ⬜ |
+| No-refund policy shown at checkout (acknowledgement), on Razorpay, and on the policy page — with the enforceable renewal wording | ⬜ |
 
 ### 7C · P1 · Subscription & Purchase Abuse Prevention
-| Task | Status | 
+| Task | Status |
 |---|---|
-| Velocity limits, disposable-email blocking | ⬜ |
+| Velocity limits, card-testing detection, disposable-email blocking | ⬜ |
+| Turnstile on checkout | ⬜ |
+| Purchase-then-scrape flagging | ⬜ |
 | Admin review dashboard | ⬜ |
 
 ### 7D · P1 · Account-Sharing Prevention
 | Task | Status |
 |---|---|
-| Two-device limit enforcement | ⬜ |
-| Concurrent-session detection | ⬜ |
+| Two-device limit on paid entitlements with a device chooser | ⬜ |
+| Concurrent-session detection; device-change cooldown | ⬜ |
+| Escalation ladder (warn → re-auth → temp lock → manual review) | ⬜ |
 
 ### 7E · P2 · Referral & Growth Loops
 | Task | Status |
 |---|---|
-| Referral credits | ⬜ |
+| Referral credits (both sides) | ⬜ |
+| Shareable achievement / result / AIR cards | ⬜ |
 | College ambassador programme | ⬜ |
+| Study-group invitations; testimonials for credits | ⬜ |
 
 ---
 
@@ -260,15 +368,20 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 ### 8A · P1 · Vision-Based PDF Extraction Pipeline
 | Task | Status |
 |---|---|
-| Gemini vision ingestion pipeline for ECE/EE/ME/CE/DA papers | ⬜ |
-| Human validation gate before a branch goes live | ⬜ |
+| Resumable, rate-limit-aware Gemini vision pipeline (ingest → extract → classify) | ⬜ |
+| Diagram cropping → WebP/AVIF → R2 under deterministic relative paths | ⬜ |
+| Answer-key extraction into `question_answers` (separate stage) | ⬜ |
+| Validation dashboard (accept/edit/reject) + per-batch quality metrics | ⬜ |
+| Human validation gate (≥95% accuracy) before a branch goes live | ⬜ |
 
 ### 8B · P2 · Revenue Diversification
 | Task | Status |
 |---|---|
-| Direct sponsorships, affiliate, digital products, B2B/college licences | ⬜ |
-
----
+| Direct sponsorships | ⬜ |
+| Affiliate (books, courses, gadgets) | ⬜ |
+| Digital products (formula sheets, notes, revision packs) | ⬜ |
+| B2B / college licences | ⬜ |
+| Sponsored content; job board; mentorship marketplace | ⬜ |
 
 ### 8C · P1 · Multi-Branch Data Acquisition
 | Task | Status |
@@ -280,15 +393,19 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 | Extraction (8A) → answer-key match → tagging → human QA sample (≥98% first-pass accuracy) | ⬜ |
 | Launch gate: PYQs + keys + taxonomy + starter practice (6D) + topic pages (6E) before a branch leaves "Coming Soon" | ⬜ |
 
+---
+
 ## RELEASE 9 — Product Depth & Controlled Community
 
 | Module | Task | Status |
 |---|---|---|
-| 9A | Adaptive learning engine (spaced repetition, weak-topic detection) | ⬜ |
-| 9B | Gamification (streaks, XP, badges) | ⬜ |
-| 9C | Controlled community/forum (moderation-gated) | ⬜ |
-| 9D | Mobile presence (Play Store via TWA/Capacitor) | ⬜ |
-| 9E | AI depth (study-plan generation, voice revision) | ⬜ |
+| 9A | Spaced repetition (SM-2/FSRS) over the mistakes store; daily adaptive set; per-topic mastery feeding 4E-2 | 🟨 *(weak-topic detection and a mastery model exist; SRS scheduling not built)* |
+| 9B | Streaks | ✅ |
+| 9B | Badges on the profile | ✅ *(15 achievements)* |
+| 9B | Streak freeze days, XP & levels, daily goals, weekly challenges, study-time leaderboards | ⬜ |
+| 9C | Moderated community (automated toxicity scoring, reputation gating, reporting) — opens only with moderation in place | ⬜ |
+| 9D | Play Store listing via TWA/Capacitor (optional ₹2,100 — backlog #4) | ⬜ |
+| 9E | AI study-plan generation, AI mocks from weakness profile, natural-language search, voice revision | 🟨 *(AI Mentor study-plan suggestions exist; the rest not built)* |
 
 ---
 
@@ -297,3 +414,4 @@ Once those 3 exist, push anything to `main` and check the **Actions** tab on Git
 - When something moves status, update this file in the same commit that finishes the work.
 - The 🔴 section at the top is the "go click this right now" list — keep it current above everything else.
 - Full rationale and the complete plan live in `RENYXERA_Master_Plan_Auth_Security_Monetization.md`; this file is status only, no explanation.
+- Every new module or deliverable added to the master plan gets a row here in the same commit.
