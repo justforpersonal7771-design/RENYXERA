@@ -3,8 +3,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
-import { Clock } from "lucide-react";
-import { motion } from "motion/react";
+import { Clock, Pause } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
 
 export function ExamTimer({ compact = false }: { compact?: boolean }) {
   const status = useExamRuntimeStore((state) => state.activeSession?.status);
@@ -70,37 +70,66 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
   const ringSize = compact ? "w-8 h-8" : "w-10 h-10";
   const iconSize = compact ? "w-3.5 h-3.5" : "w-4 h-4";
 
-  // In-exam header: remaining time is the only thing that matters at a glance, so it's
-  // shown on its own, large, in a glass pill matching the topbar's icon cluster — no
-  // progress ring, clock glyph, "rem" label or projected end time competing with it.
+  // In-exam header timer: a draining ring round a heartbeat dot, rolling digits, and a
+  // calm → amber → red progression with a breathing glow when time is short. Hover (or
+  // focus) shows elapsed time and the projected finish.
   if (compact) {
-    const tone =
-      remainingRatio <= 0.15
-        ? {
-            box: "bg-rose-500/10 border-rose-500/30 ring-rose-500/10",
-            text: "text-rose-600 dark:text-rose-400",
-            dot: "bg-rose-500",
-          }
-        : remainingRatio <= 0.3
-          ? {
-              box: "bg-amber-500/10 border-amber-500/30 ring-amber-500/10",
-              text: "text-amber-600 dark:text-amber-400",
-              dot: "bg-amber-500",
-            }
-          : {
-              box: "bg-[var(--surface-secondary)]/70 border-[var(--border)] ring-black/[0.03] dark:ring-white/[0.04]",
-              text: "text-[var(--text-primary)]",
-              dot: "bg-emerald-500",
-            };
+    const paused = status !== "IN_PROGRESS";
+    const critical = remainingRatio <= 0.15;
+    const warning = !critical && remainingRatio <= 0.3;
+    const lastMinute = remaining <= 60 && !paused;
+    const tone = paused
+      ? { box: "bg-[var(--surface-secondary)] border-[var(--border)]", text: "text-[var(--text-muted)]", ring: "#94a3b8", dot: "bg-slate-400", glow: "" }
+      : critical
+        ? { box: "bg-rose-500/10 border-rose-500/40", text: "text-rose-600 dark:text-rose-400", ring: "#f43f5e", dot: "bg-rose-500", glow: "timer-glow-critical" }
+        : warning
+          ? { box: "bg-amber-500/10 border-amber-500/40", text: "text-amber-600 dark:text-amber-400", ring: "#f59e0b", dot: "bg-amber-500", glow: "" }
+          : { box: "bg-[var(--surface-secondary)]/70 border-[var(--border)]", text: "text-[var(--text-primary)]", ring: "#10b981", dot: "bg-emerald-500", glow: "" };
+    const R = 9;
+    const C = 2 * Math.PI * R;
 
     return (
       <div
-        className={`h-9 flex items-center gap-2 pl-2.5 pr-3 rounded-xl border ring-1 backdrop-blur-md shadow-sm select-none shrink-0 transition-colors ${tone.box}`}
-        title="Time remaining"
+        tabIndex={0}
+        aria-label={`Time remaining ${formatTime(remaining)}${paused ? ", paused" : ""}`}
+        className={`group relative h-9 flex items-center gap-2 pl-1.5 pr-3 rounded-xl border backdrop-blur-md shadow-sm select-none shrink-0 transition-colors duration-500 outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 ${tone.box} ${tone.glow}`}
       >
-        <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${tone.dot} ${remainingRatio <= 0.15 ? "animate-pulse" : ""}`} />
-        <span className={`font-num font-bold tabular-nums text-[15px] sm:text-base leading-none tracking-tight ${tone.text}`}>
-          {formatTime(remaining)}
+        {/* Ring + heartbeat dot */}
+        <span className="relative w-6 h-6 flex items-center justify-center shrink-0">
+          <svg viewBox="0 0 24 24" className="absolute inset-0 -rotate-90">
+            <circle cx="12" cy="12" r={R} fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[var(--border)]" />
+            <motion.circle
+              cx="12" cy="12" r={R} fill="none" stroke={tone.ring} strokeWidth="2.5" strokeLinecap="round"
+              strokeDasharray={C}
+              initial={false}
+              animate={{ strokeDashoffset: C * (1 - remainingRatio) }}
+              transition={{ duration: 0.9, ease: "linear" }}
+            />
+          </svg>
+          {paused ? (
+            <Pause className="relative w-2.5 h-2.5 text-[var(--text-muted)]" />
+          ) : (
+            <span className="relative flex w-2 h-2">
+              <span className={`absolute inset-0 rounded-full ${tone.dot} opacity-60 animate-ping`} style={{ animationDuration: critical ? "1s" : "2s" }} />
+              <span className={`relative w-2 h-2 rounded-full ${tone.dot}`} />
+            </span>
+          )}
+        </span>
+
+        <motion.span
+          key={lastMinute ? remaining : "steady"}
+          initial={lastMinute ? { scale: 1.12 } : false}
+          animate={{ scale: 1 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className={`flex font-num font-bold tabular-nums text-[15px] sm:text-base leading-none tracking-tight ${tone.text}`}
+        >
+          <RollingTime value={formatTime(remaining)} />
+        </motion.span>
+
+        {/* Hover/focus detail */}
+        <span className="pointer-events-none absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap rounded-xl border border-[var(--border)] bg-[var(--surface-elevated)] px-3 py-2 text-[11px] font-medium text-[var(--text-secondary)] shadow-xl opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-200 z-50">
+          <span className="block"><span className="text-[var(--text-muted)]">Elapsed</span> <span className="font-num font-semibold text-[var(--text-primary)]">{formatTime(elapsed)}</span></span>
+          <span className="block"><span className="text-[var(--text-muted)]">{paused ? "Paused" : "Ends at"}</span> {!paused && <span className="font-num font-semibold text-[var(--text-primary)]">{estFinishTime}</span>}</span>
         </span>
       </div>
     );
@@ -160,5 +189,33 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
         )}
       </div>
     </div>
+  );
+}
+
+/** Clock digits that roll up as they change (only the digits that actually changed). */
+function RollingTime({ value }: { value: string }) {
+  return (
+    <>
+      {value.split("").map((ch, i) =>
+        ch === ":" ? (
+          <span key={`c${i}`} className="px-[1px] opacity-60">:</span>
+        ) : (
+          <span key={`d${i}`} className="relative inline-block w-[0.62em] h-[1.1em] overflow-hidden text-center">
+            <AnimatePresence initial={false}>
+              <motion.span
+                key={ch}
+                initial={{ y: "-100%" }}
+                animate={{ y: "0%" }}
+                exit={{ y: "100%" }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                {ch}
+              </motion.span>
+            </AnimatePresence>
+          </span>
+        )
+      )}
+    </>
   );
 }

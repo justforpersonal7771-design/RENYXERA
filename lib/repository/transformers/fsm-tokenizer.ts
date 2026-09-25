@@ -6,6 +6,9 @@ import {
   ImageNode,
 } from "@/types/ast.types";
 
+// TeX command words that mark backtick-wrapped text as maths rather than code.
+const TEX_COMMAND = /\\(rightarrow|leftarrow|Rightarrow|Leftarrow|leftrightarrow|to|text|mathrm|mathbf|mathit|mathbb|frac|dfrac|sqrt|sum|prod|int|in|notin|cup|cap|subset|subseteq|supset|emptyset|le|leq|ge|geq|neq|approx|equiv|times|cdot|div|pm|alpha|beta|gamma|delta|epsilon|theta|lambda|mu|pi|sigma|tau|phi|omega|Sigma|Delta|Theta|Omega|log|ln|lim|infty|forall|exists|neg|lnot|lor|land|vee|wedge|oplus|implies|iff|mid|lfloor|rfloor|lceil|rceil|binom|overline|bar|hat|ldots|dots|cdots|langle|rangle)(?![a-zA-Z])/;
+
 export class FsmTokenizer {
   public static tokenize(input: string): RenderNode[] {
     if (!input) return [];
@@ -219,11 +222,20 @@ export class FsmTokenizer {
 
         case "IN_INLINE_CODE":
           if (char === "`") {
-            tokens.push({
-              type: "code",
-              language: "inline", // Denote inline
-              content: buffer,
-            } as any);
+            // The AI sometimes wraps maths in backticks (`D \rightarrow \text{id L}`);
+            // shown as code it reads as raw TeX. Backtick text that uses TeX commands is
+            // rendered as inline maths instead; real code (e.g. printf("\n")) still
+            // renders as code because it uses no TeX command words.
+            const looksLikeTex = TEX_COMMAND.test(buffer);
+            tokens.push(
+              looksLikeTex
+                ? ({ type: "latex-inline", content: buffer.trim() } as any)
+                : ({
+                    type: "code",
+                    language: "inline", // Denote inline
+                    content: buffer,
+                  } as any)
+            );
             buffer = "";
             state = "READ_TEXT";
           } else {
