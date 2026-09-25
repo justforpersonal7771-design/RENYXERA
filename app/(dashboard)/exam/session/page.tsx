@@ -18,6 +18,7 @@ import { ImagePrefetcher } from "@/lib/exam/image-prefetcher";
 import { useTheme } from "next-themes";
 import { SectionTabs } from "@/components/exam/section-tabs";
 import { motion, AnimatePresence } from "motion/react";
+import { QuestionMetaChips } from "@/components/exam/question-meta";
 
 export default function ExamSessionPage() {
   const router = useRouter();
@@ -388,39 +389,6 @@ export default function ExamSessionPage() {
               </div>
            </div>
 
-           {/* Row 2: type/marks/difficulty + section/subject/topic — collapsible on
-               mobile, always visible from sm: up */}
-           {/* One line, never wrapping: the type/marks/difficulty group keeps its full
-               width and the section > subject > topic trail takes whatever is left,
-               truncating the longest label rather than pushing the header onto a third
-               row. */}
-           {currentQuestion && (
-              <div className="md:hidden flex items-center gap-2 min-w-0 px-4 pb-2 border-t border-[var(--border-subtle)] pt-2 text-[10px] font-black uppercase tracking-wider overflow-x-auto">
-                 <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)] shadow-sm">
-                   <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
-                     {currentQuestion.question_type}
-                   </span>
-                   <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-num normal-case">
-                     +{currentQuestion.marks}/{currentQuestion.question_type === "MCQ" ? `-${(currentQuestion.marks / 3).toFixed(2)}` : "0"}
-                   </span>
-                   <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">
-                     {currentQuestion.difficulty}
-                   </span>
-                 </div>
-
-                 <div className="flex items-center gap-1.5 min-w-0 text-[var(--text-secondary)]">
-                   <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded shrink-0 hidden md:inline-block" title={currentQuestion.section}>
-                     {currentQuestion.section || "General"}
-                   </span>
-                   <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded shrink-0 max-w-[180px] truncate" title={currentQuestion.subject}>
-                     {currentQuestion.subject || "General"}
-                   </span>
-                   <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded min-w-0 truncate" title={currentQuestion.topic}>
-                     {currentQuestion.topic || "General"}
-                   </span>
-                 </div>
-              </div>
-           )}
           {/* Progress: answered share of the whole test, animated */}
           <div className="relative h-[3px] w-full bg-[var(--border)]/60 overflow-hidden" role="progressbar" aria-label="Questions answered" aria-valuenow={stats.answered + stats.markedAndAnswered} aria-valuemax={stats.total}>
             <motion.div
@@ -503,6 +471,7 @@ export default function ExamSessionPage() {
                             onNext={nextQuestion}
                             isPrevDisabled={currentQuestionIndex === 0}
                             isNextDisabled={currentQuestionIndex === totalQuestions - 1}
+                            topSlot={<div className="md:hidden"><QuestionMetaChips q={currentQuestion as any} /></div>}
                           />
                       ) : (
                         <div className="flex h-full items-center justify-center text-red-500 font-bold">

@@ -17,6 +17,9 @@ interface QuestionRendererProps {
   onNext?: () => void;
   isPrevDisabled?: boolean;
   isNextDisabled?: boolean;
+  /** Rendered at the top of the scrolling question area (used for question details on
+   *  phones, so the exam header can stay a single row). */
+  topSlot?: React.ReactNode;
 }
 
 export const QuestionRenderer = memo(function QuestionRenderer({
@@ -27,6 +30,7 @@ export const QuestionRenderer = memo(function QuestionRenderer({
   onNext,
   isPrevDisabled,
   isNextDisabled,
+  topSlot,
 }: QuestionRendererProps) {
   const handleOptionSelect = useCallback((optionId: string) => {
     let newSelections = response?.selectedOptions
@@ -89,6 +93,7 @@ export const QuestionRenderer = memo(function QuestionRenderer({
           it on phones, hiding the end of the line (same clearance the Bookmarks, Mistakes,
           Review and Revision viewers already use). */}
       <div className="flex-1 overflow-y-auto px-4 pb-8 pt-16 sm:px-12 sm:pt-16 custom-scrollbar">
+        {topSlot && <div className="mb-4 -mt-10 pr-12">{topSlot}</div>}
         <div className="text-lg md:text-xl font-medium leading-relaxed text-[var(--question-text)] mb-8">
           <AstNodeRenderer nodes={question.contentAst} />
         </div>

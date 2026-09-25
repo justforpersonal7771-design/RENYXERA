@@ -364,6 +364,24 @@
     .logo-fx:hover .logo-spin, .logo-fx:hover .logo-ripple, .logo-fx:hover .logo-sweep, .logo-fx:hover .wordmark-era { animation: none; }
   }
 
+  /* Question grids scroll one row at a time, smoothly: rows snap to the top edge. */
+  .grid-snap {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    scroll-padding-top: 4px;
+    overscroll-behavior: contain;
+  }
+  .grid-snap > .grid > * {
+    scroll-snap-align: start;
+  }
+  /* Full-screen question views: themed backdrop so the switch doesn't flash black. */
+  :where(#exam-question-container, #review-workspace-container, #bookmark-workspace-container, #mistake-workspace-container, #revision-question-container):fullscreen {
+    background: var(--surface);
+  }
+  ::backdrop {
+    background: var(--background, #09090b);
+  }
+
   /* First-load splash. Pure CSS on purpose: it's in the server-rendered HTML and fades
      itself out, so it's on screen from the very first paint (the old JS version only
      appeared after hydration — the page showed, then the splash popped over it, then

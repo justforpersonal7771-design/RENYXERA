@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { QuestionMetaChips, useKeepCurrentCellVisible } from "@/components/exam/question-meta";
 import { useSearchParams, useRouter } from "next/navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { ExamSession } from "@/types/exam-runtime.types";
@@ -8,7 +9,7 @@ import { QuestionRepository } from "@/lib/repository/question-repository";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { MathJaxContext } from "better-react-mathjax";
 import { useStudyStore } from "@/store/use-study-store";
-import { Bookmark, BookmarkCheck, Sun, Moon, ArrowLeft, ArrowRight, Home, StickyNote, Activity, RefreshCw, CheckCircle2, XCircle, MinusCircle, Sparkles } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sun, Moon, ArrowLeft, ArrowRight, Home, StickyNote, Activity, RefreshCw, CheckCircle2, XCircle, MinusCircle, Sparkles, LayoutGrid, X } from "lucide-react";
 import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { useTheme } from "next-themes";
@@ -28,6 +29,12 @@ export default function ReviewPage() {
     const parsed = initialQParam ? parseInt(initialQParam, 10) : 0;
     return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
   });
+
+  const [showNav, setShowNav] = useState(false);
+  const navGridRef = useRef<HTMLDivElement>(null);
+  const navSheetGridRef = useRef<HTMLDivElement>(null);
+  useKeepCurrentCellVisible(navGridRef, currentIndex);
+  useKeepCurrentCellVisible(navSheetGridRef, currentIndex + (showNav ? 0.5 : 0));
 
   useEffect(() => {
     loadStudyData();
@@ -146,9 +153,11 @@ export default function ReviewPage() {
             always-visible essentials row, plus a details row for type/marks/difficulty
             and section/subject/topic. Logo replaces the old "GATE OS" text and, like the
             exam session's, navigates home when clicked. */}
+        {/* One-row command bar (all widths): essentials left, question details inline
+            on md+ (they move into the question area on phones), actions right. */}
         <header className="flex-none bg-[var(--surface)] border-b border-[var(--border)] shadow-sm shrink-0 z-30">
-          <div className="flex items-center justify-between px-4 py-2 sm:px-5 gap-2">
-            <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center justify-between gap-2 px-3 sm:px-5 h-14">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
               <button
                 onClick={() => router.push("/")}
                 className="w-7 h-7 rounded-lg overflow-hidden shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
@@ -160,15 +169,20 @@ export default function ReviewPage() {
                   className="w-full h-full object-contain"
                 />
               </button>
-              <span className="hidden sm:inline-block text-[10px] bg-violet-500/10 text-violet-700 dark:text-violet-300 px-2 py-1 rounded-md font-semibold shrink-0">Review mode</span>
+              <span className="hidden lg:inline-block text-[10px] bg-violet-500/10 text-violet-700 dark:text-violet-300 px-2 py-1 rounded-md font-semibold shrink-0">Review</span>
               {q && (
-                <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-num text-[11px] shrink-0">
-                  Q<span className="text-indigo-600 dark:text-indigo-400 font-bold">{currentIndex + 1}</span><span className="text-[var(--text-muted)] font-normal">/{draftQuestions.length}</span>
+                <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-num text-[12px] font-bold shrink-0">
+                  {currentIndex + 1}<span className="text-[var(--text-muted)] font-normal">/{draftQuestions.length}</span>
                 </span>
+              )}
+              {q && (
+                <div className="hidden md:flex min-w-0">
+                  <QuestionMetaChips q={q as any} compact />
+                </div>
               )}
             </div>
 
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1.5 shrink-0">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={qId + String(isAttempted) + String(isCorrect)}
@@ -187,71 +201,47 @@ export default function ReviewPage() {
                 </motion.span>
               </AnimatePresence>
 
-              <div className="flex items-center gap-1 border-l border-[var(--border)] pl-2 sm:pl-3 h-8 shrink-0">
+              <div className="flex items-center gap-1 border-l border-[var(--border)] pl-2 h-8 shrink-0">
+                <button
+                  onClick={() => setShowNav(true)}
+                  className="lg:hidden inline-flex items-center justify-center w-8 h-8 rounded-lg text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition"
+                  title="Question grid and notes"
+                  aria-label="Open question grid and notes"
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
                 <button
                   onClick={handleBookmarkToggle}
-                  className="p-1.5 rounded-md text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                  className="hidden sm:inline-flex items-center justify-center w-8 h-8 rounded-lg text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition"
                   title="Bookmark Question"
                 >
                   {isCurrentBookmarked ? <BookmarkCheck className="w-4 h-4 text-indigo-500" /> : <Bookmark className="w-4 h-4" />}
                 </button>
-
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="hidden sm:inline-flex p-1.5 rounded-md text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                  className="hidden sm:inline-flex items-center justify-center w-8 h-8 rounded-lg text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition"
                   title="Toggle Dark Mode"
                 >
                   {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                 </button>
-
                 <button
                   onClick={() => router.push(`/ai-tutor?qid=${qId}`)}
-                  className="group relative overflow-hidden flex items-center gap-1.5 px-3 sm:px-4 py-1.5 text-xs font-semibold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer"
+                  className="group relative overflow-hidden flex items-center gap-1.5 h-8 px-2.5 sm:px-3 text-xs font-semibold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer"
                   title="Explain this question with the AI Tutor"
                 >
                   <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                   <Sparkles className="relative w-3.5 h-3.5 transition-transform group-hover:rotate-12" />
-                  <span className="relative hidden sm:inline">Explain with AI</span>
+                  <span className="relative hidden xl:inline">Explain with AI</span>
                 </button>
-
                 <button
                   onClick={() => router.push(`/exam/results?id=${id}`)}
-                  className="px-3 sm:px-4 py-1.5 text-xs font-semibold bg-[var(--surface-secondary)] hover:border-[var(--border-strong)] text-[var(--text-primary)] rounded-lg transition border border-[var(--border)] cursor-pointer"
+                  className="h-8 px-2.5 sm:px-3 text-xs font-semibold bg-[var(--surface-secondary)] hover:border-[var(--border-strong)] text-[var(--text-primary)] rounded-lg transition border border-[var(--border)] cursor-pointer"
                 >
-                  Exit review
+                  Exit
                 </button>
               </div>
             </div>
           </div>
-
-          {q && (
-            <div className="flex flex-col gap-1.5 px-4 pb-2.5 sm:px-5">
-              <div className="flex items-center gap-1.5 flex-wrap">
-                <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)] shadow-sm text-[10px] font-black uppercase tracking-wider">
-                  <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
-                    {q.question_type}
-                  </span>
-                  <span className="bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 px-2 py-1 font-num normal-case">
-                    +{q.marks}/{q.question_type === "MCQ" ? `-${(q.marks / 3).toFixed(2)}` : "0"}
-                  </span>
-                  <span className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 px-2 py-1">
-                    {q.difficulty}
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5 flex-wrap text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">
-                <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded inline-block" title={q.section}>
-                  {q.section || "General"}
-                </span>
-                <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded inline-block" title={q.subject}>
-                  {q.subject || "General"}
-                </span>
-                <span className="bg-slate-100 text-slate-800 dark:bg-slate-800/40 dark:text-slate-400 px-2 py-1 rounded inline-block" title={q.topic}>
-                  {q.topic || "General"}
-                </span>
-              </div>
-            </div>
-          )}
         </header>
 
         {/* MAIN WORKSPACE */}
@@ -286,6 +276,7 @@ export default function ReviewPage() {
 
                     {/* Question Content (Scrollable) */}
                     <div className="flex-1 overflow-y-auto px-6 py-8 sm:px-12 custom-scrollbar pt-12 sm:pt-14">
+                      <div className="md:hidden mb-4 -mt-6 pr-12"><QuestionMetaChips q={q as any} /></div>
                       <div className="text-lg md:text-xl font-medium leading-relaxed text-[var(--text-primary)] mb-8">
                         <AstNodeRenderer nodes={q.contentAst} />
                       </div>
@@ -327,16 +318,7 @@ export default function ReviewPage() {
                                     }`}>{o.option_id}</div>
                                     <div className="flex-1 min-w-0 text-[var(--text-primary)] max-w-full overflow-hidden break-words"><AstNodeRenderer nodes={o.contentAst} /></div>
                                   </div>
-                                  {badge && (
-                                    <motion.span
-                                      initial={{ scale: 0.7, opacity: 0 }}
-                                      animate={{ scale: 1, opacity: 1 }}
-                                      transition={{ delay: 0.25 + oi * 0.06, type: "spring", stiffness: 500, damping: 22 }}
-                                      className={`mt-2.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold ${badge.cls}`}
-                                    >
-                                      <badge.icon className="w-3 h-3" /> {badge.text}
-                                    </motion.span>
-                                  )}
+
                                 </motion.div>
                               );
                             })}
@@ -404,28 +386,11 @@ export default function ReviewPage() {
             )}
           </div>
 
-          {/* Right Palette (Top: Navigator, Bottom: Personal Notes) */}
-          <div className="w-full lg:w-[340px] flex-none border-t lg:border-t-0 lg:border-l border-[var(--border)] bg-[var(--surface)] z-20 flex flex-col h-[50vh] lg:h-full overflow-hidden divide-y divide-[var(--border)]">
-            {/* Top Half: Review Navigator */}
-            <div className="flex-1 min-h-0 flex flex-col p-4 sm:p-5 overflow-hidden">
-              <div className="flex items-center justify-between mb-3 px-1">
-                <span className="font-bold text-xs uppercase tracking-[0.12em] text-[var(--text-muted)]">Review navigator</span>
-              </div>
-              <div className="grid grid-cols-3 gap-2 mb-4">
-                {[
-                  { label: "Correct", v: reviewSummary.correct, cls: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },
-                  { label: "Wrong", v: reviewSummary.wrong, cls: "text-rose-600 dark:text-rose-400 bg-rose-500/10" },
-                  { label: "Skipped", v: reviewSummary.skipped, cls: "text-[var(--text-secondary)] bg-[var(--surface-secondary)]" },
-                ].map((c) => (
-                  <div key={c.label} className={`rounded-xl px-2.5 py-2 text-center ${c.cls}`}>
-                    <div className="text-lg font-bold font-num leading-tight">{c.v}</div>
-                    <div className="text-[10px] font-semibold">{c.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex-1 overflow-y-auto px-1 -mx-1 py-1.5 -my-1.5 custom-scrollbar content-start">
-                <div className="grid grid-cols-5 sm:grid-cols-6 lg:grid-cols-5 gap-2">
+          {/* Navigator + notes. Desktop: side panel, grid gets most of the height and
+              keeps the current question in view. Phones: a bottom sheet from the header. */}
+          {(() => {
+            const renderGrid = (layoutKey: string) => (
+                <div className="grid grid-cols-5 gap-2 p-1">
                   {draftQuestions.map((qRef, idx) => {
                     const resInfo = checkCorrectness(qRef.questionId);
                     let colorClass = "bg-[var(--surface-elevated)] text-[var(--text-secondary)] border border-[var(--border)]";
@@ -443,20 +408,20 @@ export default function ReviewPage() {
                     return (
                       <motion.button
                         key={qRef.questionId + idx}
-                        onClick={() => setCurrentIndex(idx)}
+                        onClick={() => { setCurrentIndex(idx); setShowNav(false); }}
                         initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: isCurrent ? 1.06 : 1 }}
+                        animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: Math.min(idx * 0.012, 0.35), type: "spring", stiffness: 400, damping: 24 }}
-                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.93 }}
                         aria-current={isCurrent ? "step" : undefined}
                         className={`relative aspect-square w-full rounded-xl flex items-center justify-center font-num font-bold text-sm transition-colors border focus:outline-none cursor-pointer ${colorClass}`}
                       >
                         {isCurrent && (
                           <motion.span
-                            layoutId="review-current"
+                            layoutId={layoutKey}
                             aria-hidden="true"
-                            className="absolute -inset-[4px] rounded-[14px] border-2 border-indigo-500 shadow-[0_0_14px_rgba(99,102,241,0.55)]"
+                            className="absolute inset-0 rounded-xl ring-[3px] ring-inset ring-indigo-500 dark:ring-indigo-400 shadow-[0_0_14px_rgba(99,102,241,0.5)]"
                             transition={{ type: "spring", stiffness: 500, damping: 34 }}
                           />
                         )}
@@ -465,24 +430,100 @@ export default function ReviewPage() {
                     );
                   })}
                 </div>
+            );
+            return (
+              <>
+                <div className="hidden lg:flex w-[340px] flex-none border-l border-[var(--border)] bg-[var(--surface)] z-20 flex-col h-full overflow-hidden">
+                  <div className="flex-[3] min-h-0 flex flex-col p-4 pb-3 overflow-hidden">
+                    <div className="font-bold text-xs uppercase tracking-[0.12em] text-[var(--text-muted)] mb-3 px-1">Review navigator</div>
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {[
+                  { label: "Correct", v: reviewSummary.correct, cls: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },
+                  { label: "Wrong", v: reviewSummary.wrong, cls: "text-rose-600 dark:text-rose-400 bg-rose-500/10" },
+                  { label: "Skipped", v: reviewSummary.skipped, cls: "text-[var(--text-secondary)] bg-[var(--surface-secondary)]" },
+                ].map((c) => (
+                  <div key={c.label} className={`rounded-xl px-2.5 py-1.5 text-center ${c.cls}`}>
+                    <div className="text-base font-bold font-num leading-tight">{c.v}</div>
+                    <div className="text-[10px] font-semibold">{c.label}</div>
+                  </div>
+                ))}
               </div>
-            </div>
-
-            {/* Bottom Half: Personal Notes */}
-            <div className="flex-1 min-h-0 flex flex-col p-4 sm:p-5">
-              <div className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-3 px-1 flex items-center gap-1.5 text-amber-500">
+                    <div ref={navGridRef} className="grid-snap flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                      {renderGrid("review-current")}
+                    </div>
+                  </div>
+                  <div className="flex-1 min-h-[150px] max-h-[220px] flex flex-col p-4 pt-3 border-t border-[var(--border)]">
+              <div className="font-bold text-xs uppercase tracking-[0.12em] mb-2 px-1 flex items-center gap-1.5 text-amber-500">
                 <StickyNote className="w-3.5 h-3.5" />
-                <span>Personal Notes</span>
+                <span>Personal notes</span>
               </div>
               <textarea
                 value={notesValue}
                 onChange={(e) => handleNotesChange(e.target.value)}
-                placeholder="Add personal hints, formulas, or reminders for this question... (Auto-saves on change)"
-                className="w-full flex-1 p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)] resize-none text-xs leading-relaxed"
+                placeholder="Hints, formulas or reminders for this question (saves automatically)"
+                className="w-full flex-1 min-h-[72px] p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)] resize-none text-xs leading-relaxed"
               />
-            </div>
-          </div>
+                  </div>
+                </div>
 
+                <AnimatePresence>
+                  {showNav && (
+                    <div className="lg:hidden fixed inset-0 z-40 flex flex-col justify-end">
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setShowNav(false)} className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+                      <motion.div
+                        initial={{ y: "100%" }}
+                        animate={{ y: 0 }}
+                        exit={{ y: "100%" }}
+                        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                        className="relative bg-[var(--surface)] border-t border-[var(--border)] rounded-t-2xl shadow-2xl z-10 flex flex-col max-h-[80vh] overflow-hidden"
+                      >
+                        <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-subtle)] shrink-0">
+                          <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Question grid</span>
+                          <div className="flex items-center gap-1">
+                            <button onClick={handleBookmarkToggle} className="p-1.5 rounded-md text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition-colors" title="Bookmark Question">
+                              {isCurrentBookmarked ? <BookmarkCheck className="w-4 h-4 text-indigo-500" /> : <Bookmark className="w-4 h-4" />}
+                            </button>
+                            <button onClick={() => setShowNav(false)} className="p-1.5 rounded-md text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition-colors" aria-label="Close">
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="p-4 pb-2 shrink-0">
+              <div className="grid grid-cols-3 gap-2 mb-3">
+                {[
+                  { label: "Correct", v: reviewSummary.correct, cls: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },
+                  { label: "Wrong", v: reviewSummary.wrong, cls: "text-rose-600 dark:text-rose-400 bg-rose-500/10" },
+                  { label: "Skipped", v: reviewSummary.skipped, cls: "text-[var(--text-secondary)] bg-[var(--surface-secondary)]" },
+                ].map((c) => (
+                  <div key={c.label} className={`rounded-xl px-2.5 py-1.5 text-center ${c.cls}`}>
+                    <div className="text-base font-bold font-num leading-tight">{c.v}</div>
+                    <div className="text-[10px] font-semibold">{c.label}</div>
+                  </div>
+                ))}
+              </div>
+                        </div>
+                        <div ref={navSheetGridRef} className="grid-snap px-4 max-h-[34vh] overflow-y-auto overflow-x-hidden custom-scrollbar">
+                          {renderGrid("review-current-sheet")}
+                        </div>
+                        <div className="p-4 flex flex-col h-[170px] border-t border-[var(--border-subtle)] mt-3">
+              <div className="font-bold text-xs uppercase tracking-[0.12em] mb-2 px-1 flex items-center gap-1.5 text-amber-500">
+                <StickyNote className="w-3.5 h-3.5" />
+                <span>Personal notes</span>
+              </div>
+              <textarea
+                value={notesValue}
+                onChange={(e) => handleNotesChange(e.target.value)}
+                placeholder="Hints, formulas or reminders for this question (saves automatically)"
+                className="w-full flex-1 min-h-[72px] p-3 rounded-xl border border-[var(--border)] bg-[var(--background)] text-[var(--text-primary)] resize-none text-xs leading-relaxed"
+              />
+                        </div>
+                      </motion.div>
+                    </div>
+                  )}
+                </AnimatePresence>
+              </>
+            );
+          })()}
         </div>
       </div>
     </MathJaxContext>

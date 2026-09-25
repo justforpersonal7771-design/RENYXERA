@@ -280,11 +280,11 @@ export default function ResultSummaryPage() {
           className="lg:col-span-5 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm lg:h-full lg:min-h-0"
         >
           {/* Verdict hero band */}
-          <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-5">
+          <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-5 [@media(max-height:860px)]:p-4">
             <div className="absolute top-0 right-0 w-56 h-56 bg-cyan-300/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-fuchsia-400/20 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />
 
-            <div className="relative z-10 flex flex-col items-center text-center gap-3">
+            <div className="relative z-10 flex flex-col items-center text-center gap-3 [@media(max-height:860px)]:gap-2">
               <div className="flex items-center gap-2 flex-wrap justify-center">
                 <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest bg-white/15 px-3 py-1 rounded-full">
                   <Sparkles className="w-3 h-3" />
@@ -299,7 +299,7 @@ export default function ResultSummaryPage() {
                   a slow flowing gradient around the arc, a counter-rotating halo, a
                   breathing glow and a tracer dot riding the arc's leading edge. */}
               <motion.div
-                className="relative w-44 h-44 sm:w-48 sm:h-48 shrink-0 cursor-default"
+                className="relative w-44 h-44 sm:w-48 sm:h-48 [@media(max-height:860px)]:w-32 [@media(max-height:860px)]:h-32 shrink-0 cursor-default"
                 initial={{ scale: 0.86, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -377,7 +377,7 @@ export default function ResultSummaryPage() {
                 </svg>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-5xl sm:text-[3.25rem] font-black font-num leading-none drop-shadow-sm">
+                  <span className="text-5xl sm:text-[3.25rem] [@media(max-height:860px)]:text-4xl font-black font-num leading-none drop-shadow-sm">
                     <CountUp value={accuracy} decimals={0} />%
                   </span>
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100 mt-1.5">Accuracy</span>
@@ -406,7 +406,8 @@ export default function ResultSummaryPage() {
 
           {/* Scoreboard content — same card, continues below the hero band. Deliberately
               not scrollable: this card now sizes to its content rather than clipping it. */}
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar px-5 py-4 flex flex-col justify-evenly gap-4">
+          {/* Never scrolls: sized to fit one screen (the hero shrinks on short screens). */}
+          <div className="flex-1 min-h-0 overflow-hidden px-5 py-4 [@media(max-height:860px)]:py-3 flex flex-col justify-evenly gap-4 [@media(max-height:860px)]:gap-3">
             <div>
               <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
               <div className="grid grid-cols-2 gap-4">
@@ -465,12 +466,12 @@ export default function ResultSummaryPage() {
 
           {/* Actions Desk — outside the scrolling body so Dashboard / Retry / Review are
               always reachable no matter how tall the scoreboard content gets. */}
-          <div className="shrink-0 border-t border-[var(--border-subtle)] p-4">
+          <div className="shrink-0 border-t border-[var(--border-subtle)] p-4 [@media(max-height:860px)]:p-3">
             <div className="flex flex-col sm:flex-row gap-2.5">
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push("/")}
-                className="group flex-1 px-4 py-3 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] font-semibold rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer"
+                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] font-semibold rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Home className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
                 <span>Dashboard</span>
@@ -478,7 +479,7 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={handleRetry}
-                className="group flex-1 px-4 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-md shadow-amber-500/30 hover:brightness-110 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
+                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-md shadow-amber-500/30 hover:brightness-110 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
               >
                 <RefreshCw className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180" />
                 <span>Retry test</span>
@@ -486,7 +487,7 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push(`/exam/results/review?id=${id}`)}
-                className="group relative overflow-hidden flex-[1.5] px-6 py-3 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
+                className="group relative overflow-hidden flex-[1.5] px-6 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
               >
                 <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                 <span className="relative">Review answers</span>
@@ -505,47 +506,47 @@ export default function ResultSummaryPage() {
         >
           {/* Header */}
           <div className="flex-none border-b border-[var(--border-subtle)] pb-4 mb-4 flex items-center justify-between gap-4 flex-wrap">
-            <h3 className="text-xs font-extrabold text-[var(--text-primary)] uppercase tracking-widest flex items-center gap-1.5">
+            <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
               {rightPanelView === "grid" ? <LayoutGrid className="w-4 h-4 text-indigo-500" /> : <BarChart2 className="w-4 h-4 text-indigo-500" />}
               <span>{rightPanelView === "grid" ? "Question Grid" : "Diagnostics Breakdown"}</span>
             </h3>
 
-            <div className="flex bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl p-0.5 text-[9px] font-black uppercase tracking-wider">
+            <div className="flex bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl p-1 text-xs font-semibold">
               {(["grid", "breakdown"] as const).map(view => (
                 <button
                   key={view}
                   onClick={() => setRightPanelView(view)}
-                  className={`relative px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${rightPanelView === view ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}
+                  className={`relative px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${rightPanelView === view ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
                 >
                   {rightPanelView === view && (
                     <motion.div
                       layoutId="results-view-pill"
-                      className="absolute inset-0 bg-[var(--surface)] shadow rounded-lg -z-10"
+                      className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30 rounded-lg"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  {view === "grid" ? "Question Grid" : "Breakdown"}
+                  <span className="relative">{view === "grid" ? "Question grid" : "Breakdown"}</span>
                 </button>
               ))}
             </div>
           </div>
 
           {rightPanelView === "breakdown" && (
-            <div className="flex-none mb-4 flex bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl p-0.5 text-[9px] font-black uppercase tracking-wider w-fit">
+            <div className="flex-none mb-4 flex bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl p-1 text-xs font-semibold capitalize w-fit max-w-full overflow-x-auto">
               {(["subject", "section", "difficulty", "type"] as const).map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`relative px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${activeTab === tab ? 'text-[var(--text-primary)]' : 'text-[var(--text-secondary)]'}`}
+                  className={`relative px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${activeTab === tab ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
                 >
                   {activeTab === tab && (
                     <motion.div
                       layoutId="results-tab-pill"
-                      className="absolute inset-0 bg-[var(--surface)] shadow rounded-lg -z-10"
+                      className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30 rounded-lg"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  {tab}
+                  <span className="relative">{tab}</span>
                 </button>
               ))}
             </div>
@@ -553,8 +554,8 @@ export default function ResultSummaryPage() {
 
           {rightPanelView === "grid" ? (
             <div className="flex-1 flex flex-col min-h-0">
-              <div className="flex-1 overflow-y-auto pr-1 -mr-1 custom-scrollbar">
-                <div className="grid grid-cols-8 sm:grid-cols-10 lg:grid-cols-12 gap-1.5">
+              <div className="grid-snap flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] gap-2.5 p-1.5">
                   {questionGrid.map((item, idx) => {
                     let cellClass = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]";
                     if (item.isAttempted) {
@@ -568,15 +569,15 @@ export default function ResultSummaryPage() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: Math.min(idx * 0.008, 0.3) }}
-                        whileHover={{ scale: 1.12, y: -2 }}
+                        whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.92 }}
                         onClick={() => router.push(`/exam/results/review?id=${id}&q=${idx}`)}
-                        className={`relative h-9 rounded-lg flex items-center justify-center font-num font-bold text-xs cursor-pointer ${cellClass}`}
+                        className={`relative h-12 rounded-xl flex items-center justify-center font-num font-bold text-sm cursor-pointer ${cellClass}`}
                         title={`Question ${idx + 1}${item.isMarked ? " (Marked for review)" : ""}`}
                       >
                         {idx + 1}
                         {item.isMarked && (
-                          <Flag className="absolute -top-1 -right-1 w-3 h-3 text-amber-500 fill-amber-500" />
+                          <Flag className="absolute top-1 right-1 w-3 h-3 text-amber-300 fill-amber-300" />
                         )}
                       </motion.button>
                     );
@@ -584,7 +585,7 @@ export default function ResultSummaryPage() {
                 </div>
               </div>
 
-              <div className="flex-none pt-4 mt-4 border-t border-[var(--border-subtle)] flex items-center justify-center gap-4 text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">
+              <div className="flex-none pt-4 mt-4 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold text-[var(--text-secondary)]">
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Correct</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Wrong</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[var(--surface-secondary)] border border-[var(--border)]" /> Skipped</span>
@@ -593,7 +594,7 @@ export default function ResultSummaryPage() {
             </div>
           ) : (
           /* Matrix items list */
-          <div className="flex-1 overflow-y-auto pr-1 -mr-1 custom-scrollbar space-y-4">
+          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pr-1 -mr-1 custom-scrollbar space-y-4">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -614,7 +615,7 @@ export default function ResultSummaryPage() {
                       className="p-4 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-2xl shadow-sm hover-lift"
                     >
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="font-bold text-xs text-[var(--text-primary)] truncate flex-1">{item.label}</div>
+                        <div className="font-bold text-sm text-[var(--text-primary)] truncate flex-1">{item.label}</div>
                         <div className="w-24 h-1.5 shrink-0 rounded-full bg-[var(--surface)] overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
@@ -626,20 +627,20 @@ export default function ResultSummaryPage() {
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Score</div>
-                          <div className="font-num text-xs text-indigo-600 dark:text-indigo-400">
+                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Score</div>
+                          <div className="font-num text-sm font-bold text-indigo-600 dark:text-indigo-400">
                             {item.marks.toFixed(1)} <span className="text-[9px] text-[var(--text-muted)] font-normal">/ {item.max}</span>
                           </div>
                         </div>
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Accuracy</div>
-                          <div className="font-num text-xs text-[var(--text-secondary)]">
+                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Accuracy</div>
+                          <div className="font-num text-sm font-bold text-[var(--text-secondary)]">
                             {itemAccuracy.toFixed(0)}%
                           </div>
                         </div>
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[8px] font-black text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Attempts</div>
-                          <div className="font-num text-xs text-[var(--text-secondary)] flex justify-center gap-1">
+                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Attempts</div>
+                          <div className="font-num text-sm font-bold text-[var(--text-secondary)] flex justify-center gap-1">
                             <span className="text-emerald-500">{item.correct}</span>
                             <span className="text-[var(--text-muted)]">/</span>
                             <span className="text-rose-500">{item.wrong}</span>

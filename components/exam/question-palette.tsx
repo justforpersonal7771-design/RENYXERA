@@ -2,7 +2,8 @@
 
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { useExamStore } from "@/store/use-exam-store";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
+import { useKeepCurrentCellVisible } from "./question-meta";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { motion } from "motion/react";
 
@@ -43,6 +44,9 @@ export function QuestionPalette() {
       markedAndAnswered: responsesList.filter((r) => r?.status === "MARKED_AND_ANSWERED").length,
     };
   }, [responsesList]);
+
+  const gridRef = useRef<HTMLDivElement>(null);
+  useKeepCurrentCellVisible(gridRef, currentQuestionIndex);
 
   const handleJump = useCallback(
     (index: number) => {
@@ -105,8 +109,8 @@ export function QuestionPalette() {
       </div>
 
       {/* 3. Center Aligned Questions Palette Grid */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5 custom-scrollbar">
-        <div className="grid grid-cols-5 gap-2 max-w-[280px] mx-auto justify-items-center">
+      <div ref={gridRef} className="grid-snap flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-5 custom-scrollbar">
+        <div className="grid grid-cols-5 gap-2.5 max-w-[300px] mx-auto justify-items-center">
           {sectionQuestions.map(({ q, idx }) => {
             const localQId = q.questionId;
             const st = responses[localQId]?.status;
@@ -129,18 +133,18 @@ export function QuestionPalette() {
                 key={localQId || idx}
                 onClick={() => handleJump(idx)}
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: isCurrent ? 1.08 : 1 }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: Math.min(idx * 0.015, 0.4), type: "spring", stiffness: 400, damping: 24 }}
-                whileHover={{ scale: 1.12, y: -2 }}
+                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.92 }}
                 aria-current={isCurrent ? "step" : undefined}
-                className={`relative aspect-square w-11 rounded-xl flex items-center justify-center font-num font-bold text-xs transition-colors border cursor-pointer ${colorClass}`}
+                className={`relative aspect-square w-12 rounded-xl flex items-center justify-center font-num font-bold text-sm transition-colors border cursor-pointer ${colorClass}`}
               >
                 {isCurrent && (
                   <motion.span
                     layoutId="palette-current"
                     aria-hidden="true"
-                    className="absolute -inset-[5px] rounded-[14px] border-2 border-indigo-500 shadow-[0_0_14px_rgba(99,102,241,0.55)]"
+                    className="absolute inset-0 rounded-xl ring-[3px] ring-inset ring-indigo-500 dark:ring-indigo-400 shadow-[0_0_14px_rgba(99,102,241,0.5)]"
                     transition={{ type: "spring", stiffness: 500, damping: 34 }}
                   />
                 )}
