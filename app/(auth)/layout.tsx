@@ -17,7 +17,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
   useEffect(() => setMounted(true), []);
 
   return (
-    <div className="ambient-gradient min-h-screen flex flex-col items-center justify-center px-4 py-10">
+    // Own scroll container for the same reason as (legal)/layout.tsx — html/body are
+    // overflow:hidden app-wide, so on a short/mobile screen the form was clipped.
+    <div className="h-full overflow-y-auto custom-scrollbar">
+    <div className="ambient-gradient min-h-full flex flex-col items-center justify-center px-4 py-10">
       <Link href="/" className="mb-8 flex items-center gap-2.5 group">
         <img
           src={mounted && resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
@@ -34,6 +37,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <div className="w-full max-w-sm">
         <Footer />
       </div>
+    </div>
     </div>
   );
 }

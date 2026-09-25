@@ -12,7 +12,10 @@ export function Footer() {
   return (
     <footer className="mt-10 pt-6 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--text-muted)]">
       <p>© {year} RENYXERA. All rights reserved.</p>
-      <nav className="flex items-center gap-5">
+      <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+        <Link href="/about" className="hover:text-[var(--text-secondary)] transition-colors">
+          About
+        </Link>
         <Link href="/terms" className="hover:text-[var(--text-secondary)] transition-colors">
           Terms of Service
         </Link>

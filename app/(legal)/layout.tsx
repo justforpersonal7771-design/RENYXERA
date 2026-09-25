@@ -7,8 +7,12 @@ import Link from "next/link";
  * so legibility and a stable, printable layout matter more than visual flourish here.
  */
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
+  // html/body are overflow:hidden app-wide (globals.css) so the dashboard's own inner
+  // scroller is the only one — pages outside that shell must scroll themselves, or
+  // everything past the first screen is simply unreachable (it was: this page is
+  // ~4,300px tall and couldn't be scrolled at all).
   return (
-    <div className="min-h-screen bg-[var(--background)]">
+    <div className="h-full overflow-y-auto custom-scrollbar bg-[var(--background)]">
       <header className="border-b border-[var(--border)] px-4 sm:px-8 py-4">
         <Link href="/" className="text-sm font-bold text-[var(--text-primary)]">
           ← RENYXERA
