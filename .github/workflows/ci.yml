@@ -49,3 +49,47 @@ jobs:
 
       - name: Calibration data checks
         run: npm run check:calibration
+
+  # Auto-deploy: every push to main that passes ALL checks above goes live on Cloudflare.
+  # Pull requests and failing builds never deploy. Needs repo secrets CLOUDFLARE_API_TOKEN
+  # and CLOUDFLARE_ACCOUNT_ID, plus the public NEXT_PUBLIC_* values (baked in at build).
+  # Server-only secrets (service role, Gemini) already live on the Worker itself.
+  deploy:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and deploy to Cloudflare Workers
+        run: npm run deploy:cf
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
+          NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
+          NEXT_PUBLIC_CF_BEACON_TOKEN: ${{ secrets.NEXT_PUBLIC_CF_BEACON_TOKEN }}
+
+      - name: Smoke-test the live site
+        run: |
+          for path in / /about /gate-cse /sitemap.xml; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" "https://gate.renyxera.workers.dev$path")
+            echo "$path -> $code"
+            [ "$code" = "200" ] || exit 1
+          done
