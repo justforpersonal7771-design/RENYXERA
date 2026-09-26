@@ -1,0 +1,14 @@
+{
+  "year": 2026,
+  "paper": "CS",
+  "organising_institute": "IIT Guwahati",
+  "appeared": 211020,
+  "appeared_source": "collegedunia-2026",
+  "qualifying_marks": { "general": 30, "obc_ncl_ews": 27, "sc_st_pwd": 20 },
+  "qualifying_source": "themlhub (general); categories by the official rule (OBC-NCL/EWS = 90%, SC/ST/PwD = 2/3 of general)",
+  "topper_marks": null,
+  "score_formula": { "Sq": 350, "St": 900, "Mq": 30, "Mt": null },
+  "marks_vs_rank": [],
+  "confidence": "partial",
+  "notes": "Official qualifying marks and candidates appeared are in; no reliable marks-vs-rank table published yet (portals only show 'expected' tables, deliberately not used). Update this file when a results-based table is available."
+}

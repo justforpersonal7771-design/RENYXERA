@@ -25,7 +25,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 7 | ✅ **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
 | 8 | ✅ **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
 | 9 | ✅ **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay — *before Razorpay: add operator legal name + address to /contact* |
-| 10 | **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
+| 10 | 🟨 **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
 | 11 | Integrity signals, bank protection, leaderboards & All-India mocks | 5C–5E | Only credible after step 6 |
 | 12 | Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
 | 13 | Payments & entitlements, then anti-abuse/anti-sharing | 7A–7D | Needs 5B + 6B |
@@ -233,11 +233,11 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 4J · P0 · Calibration Data Foundation *(makes predictions accurate)*
 | Task | Status |
 |---|---|
-| Marks ↔ AIR data (general + categories) for the last 3+ GATE CSE years, from official/cited sources | ⬜ |
-| Qualifying cut-offs, candidates appeared, GATE score formula & normalisation constants | ⬜ |
+| Marks ↔ AIR data (general + categories) for the last 3+ GATE CSE years, from official/cited sources | 🟨 *(2023–2025 tables from 2 cited portals, blended to a median + band; category curves and an official rank table still wanted)* |
+| Qualifying cut-offs, candidates appeared, GATE score formula & normalisation constants | ✅ *(cut-offs 2023–2026 all categories; appeared 2024–2026; Sq/St/Mq per year, Mt 2024; 2023 appeared unknown → null)* |
 | Official exam schedule per year; official syllabus per branch | ⬜ |
-| Versioned `calibration/<branch>/<year>.json` + `calibration/SOURCES.md` source/licence ledger | ⬜ |
-| Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | ⬜ *(estimates are labelled as estimates meanwhile)* |
+| Versioned `calibration/<branch>/<year>.json` + `calibration/SOURCES.md` source/licence ledger | ✅ *(data/calibration/cse/2023–2026.json; `npm run check:calibration` in CI)* |
+| Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | 🟨 *(Goals Engine + goal plan use it and show the range, GATE score, qualifying mark and data vintage; AI Mentor/readiness next)* |
 | Opt-in anonymised scorecard submissions from users to improve the curve | ⬜ |
 | Annual recalibration each March after results | ⬜ *(recurring)* |
 

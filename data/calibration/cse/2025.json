@@ -1,0 +1,44 @@
+{
+  "year": 2025,
+  "paper": "CS",
+  "organising_institute": "IIT Roorkee",
+  "appeared": 170825,
+  "appeared_source": "themlhub",
+  "qualifying_marks": { "general": 29.2, "obc_ncl_ews": 26.2, "sc_st_pwd": 19.4 },
+  "qualifying_source": "themlhub (general); categories by the official rule (OBC-NCL/EWS = 90%, SC/ST/PwD = 2/3 of general)",
+  "topper_marks": 100,
+  "topper_source": "careers360-toppers-2025",
+  "score_formula": { "Sq": 350, "St": 900, "Mq": 29.2, "Mt": null },
+  "marks_vs_rank": [
+    {
+      "source": "collegedekho",
+      "rows": [
+        { "marks": [85, 100], "rank": [1, 10] },
+        { "marks": [80, 85], "rank": [10, 50] },
+        { "marks": [75, 80], "rank": [50, 100] },
+        { "marks": [70, 75], "rank": [100, 200] },
+        { "marks": [65, 70], "rank": [200, 500] },
+        { "marks": [60, 65], "rank": [500, 1000] },
+        { "marks": [55, 60], "rank": [1000, 2000] },
+        { "marks": [50, 55], "rank": [2000, 5000] },
+        { "marks": [40, 50], "rank": [5000, 10000] }
+      ]
+    },
+    {
+      "source": "themlhub",
+      "note": "Published as a combined 2024–2025 table.",
+      "rows": [
+        { "marks": [85, 100], "rank": [1, 10] },
+        { "marks": [80, 84], "rank": [11, 50] },
+        { "marks": [75, 79], "rank": [51, 200] },
+        { "marks": [70, 74], "rank": [200, 600] },
+        { "marks": [65, 69], "rank": [600, 1500] },
+        { "marks": [60, 64], "rank": [1500, 3000] },
+        { "marks": [55, 59], "rank": [3000, 6000] },
+        { "marks": [50, 54], "rank": [6000, 10000] }
+      ]
+    }
+  ],
+  "confidence": "secondary",
+  "notes": "Marks-vs-rank tables are compiled by education portals from candidate-reported results; the organising IIT does not publish a full table. Treat as an estimate band."
+}

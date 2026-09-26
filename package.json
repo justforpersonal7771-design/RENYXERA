@@ -11,6 +11,7 @@
     "check:keys": "node --env-file=.env.local scripts/check-answer-keys.mjs",
     "check:goals": "node --experimental-strip-types --no-warnings scripts/check-goal-engine.mts",
     "check:grading": "node --experimental-strip-types --no-warnings scripts/check-grading.mts",
+    "check:calibration": "node --experimental-strip-types --no-warnings scripts/check-calibration.mts",
     "start": "next start",
     "lint": "eslint .",
     "clean": "next clean",

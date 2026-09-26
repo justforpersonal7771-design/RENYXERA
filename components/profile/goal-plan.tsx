@@ -7,6 +7,7 @@ import { useGoalPlan } from "@/lib/goals/use-goal-plan";
 import { useGoalSliderStore } from "@/store/use-goal-slider-store";
 import { CountUp, RadialGauge, InfoTip } from "@/components/ui/interactive";
 import { useToastStore } from "@/store/use-toast-store";
+import { CALIBRATION_LABEL, gateScore, marksBandForRank, qualifyingMarks } from "@/lib/calibration";
 
 /**
  * Profile "Goal plan" (master plan 4E-2): what the learner's target rank, year and daily
@@ -65,12 +66,20 @@ export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: n
               <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)] flex items-center gap-1">
                 AIR <span className="font-num">{targetRank?.toLocaleString()}</span> needs about
                 <InfoTip align="right">
-                  An estimate from recent GATE CSE results (general category). Real cut-offs move a few marks each year with paper difficulty.
+                  Median of published results ({CALIBRATION_LABEL}, general category). The range shows how much sources and years disagree — real cut-offs move with paper difficulty.
                 </InfoTip>
               </p>
               <p className="text-2xl font-bold text-[var(--text-primary)] leading-tight">
                 <CountUp value={plan.requiredMarks} decimals={0} /> <span className="text-sm font-semibold text-[var(--text-secondary)]">/ 100 marks</span>
               </p>
+              {targetRank && (() => {
+                const band = marksBandForRank(targetRank);
+                return (
+                  <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
+                    Range <span className="font-num font-semibold text-[var(--text-secondary)]">{Math.round(band.low)}–{Math.round(band.high)}</span> marks · GATE score ≈ <span className="font-num font-semibold text-[var(--text-secondary)]">{gateScore(plan.requiredMarks)}</span> · qualifying {qualifyingMarks()}
+                  </p>
+                );
+              })()}
               <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
                 Cover the top <span className="font-num font-semibold text-[var(--text-secondary)]">{plan.includedTopics.length}</span> of {plan.totalTopics} topics by past-paper weight
               </p>

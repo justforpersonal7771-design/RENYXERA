@@ -46,3 +46,6 @@ jobs:
 
       - name: Grading edge cases
         run: npm run check:grading
+
+      - name: Calibration data checks
+        run: npm run check:calibration

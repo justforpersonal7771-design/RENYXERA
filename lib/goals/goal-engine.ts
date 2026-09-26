@@ -1,4 +1,5 @@
 import type { TopicFrequency } from "@/lib/analytics/goal-slider-engine";
+import { CURVE, TYPICAL_TOPPER_MARKS } from "../calibration.ts";
 
 /**
  * Dynamic Exam Goals Engine (master plan 4E-2).
@@ -12,15 +13,14 @@ import type { TopicFrequency } from "@/lib/analytics/goal-slider-engine";
  * storage, so the same numbers can be recomputed on the profile, in the Focus Target
  * panel, and in scripts/check-goal-engine.mts (the acceptance test).
  *
- * The rank ↔ marks curve is an approximation of recent GATE CSE results (general
- * category, marks out of 100). It is shown to users as an estimate, never as a promise.
+ * The rank ↔ marks curve comes from lib/calibration.ts (GATE CS results, general
+ * category, marks out of 100). It is shown to users as an estimate band, never a promise.
  */
 
-/** (AIR, marks) anchors, best rank first. Interpolated on log(rank). */
-const RANK_MARKS: [number, number][] = [
-  [1, 90], [10, 82], [50, 75], [100, 72], [200, 68], [500, 62], [1000, 57],
-  [2000, 51], [5000, 42], [10000, 34], [20000, 27], [40000, 22],
-];
+/** (AIR, marks) anchors, best rank first. Interpolated on log(rank). Derived from real
+ *  published GATE CS results (median across sources/years) in lib/calibration.ts — the
+ *  top anchor is the typical topper score, not the 100 cap of a portal's table. */
+const RANK_MARKS: [number, number][] = CURVE.map((c) => [c.rank, c.rank === 1 ? TYPICAL_TOPPER_MARKS : c.marks]);
 
 export const DEFAULT_ACCURACY = 0.72; // typical accuracy on topics actually studied
 export const MIN_ATTEMPTS_FOR_MEASURED_ACCURACY = 40;

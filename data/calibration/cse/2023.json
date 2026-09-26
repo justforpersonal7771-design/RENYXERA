@@ -1,0 +1,28 @@
+{
+  "year": 2023,
+  "paper": "CS",
+  "organising_institute": "IIT Kanpur",
+  "appeared": null,
+  "qualifying_marks": { "general": 32.5, "obc_ncl_ews": 29.2, "sc_st_pwd": 21.6 },
+  "qualifying_source": "widely-reported",
+  "topper_marks": null,
+  "score_formula": { "Sq": 350, "St": 900, "Mq": 32.5, "Mt": null },
+  "marks_vs_rank": [
+    {
+      "source": "collegedekho",
+      "rows": [
+        { "marks": [80, 100], "rank": [1, 10] },
+        { "marks": [75, 80], "rank": [10, 50] },
+        { "marks": [72, 75], "rank": [50, 100] },
+        { "marks": [68, 72], "rank": [100, 200] },
+        { "marks": [62, 68], "rank": [200, 500] },
+        { "marks": [56, 62], "rank": [500, 1000] },
+        { "marks": [50, 56], "rank": [1000, 2000] },
+        { "marks": [40, 50], "rank": [2000, 5000] },
+        { "marks": [32, 40], "rank": [5000, 10000] }
+      ]
+    }
+  ],
+  "confidence": "secondary",
+  "notes": "Candidates-appeared and topper marks not yet confirmed from an official source — left null rather than guessed."
+}

@@ -1,0 +1,30 @@
+{
+  "year": 2024,
+  "paper": "CS",
+  "organising_institute": "IISc Bangalore",
+  "appeared": 123967,
+  "appeared_source": "careers360-stats",
+  "qualifying_marks": { "general": 27.6, "obc_ncl_ews": 24.8, "sc_st_pwd": 18.4 },
+  "qualifying_source": "themlhub (general); categories by the official rule (OBC-NCL/EWS = 90%, SC/ST/PwD = 2/3 of general)",
+  "topper_marks": 90,
+  "topper_source": "collegedekho-toppers",
+  "score_formula": { "Sq": 350, "St": 900, "Mq": 27.6, "Mt": 78, "Mt_source": "themlhub (citing the official statistical report)" },
+  "marks_vs_rank": [
+    {
+      "source": "themlhub",
+      "note": "Published as a combined 2024–2025 table.",
+      "rows": [
+        { "marks": [85, 100], "rank": [1, 10] },
+        { "marks": [80, 84], "rank": [11, 50] },
+        { "marks": [75, 79], "rank": [51, 200] },
+        { "marks": [70, 74], "rank": [200, 600] },
+        { "marks": [65, 69], "rank": [600, 1500] },
+        { "marks": [60, 64], "rank": [1500, 3000] },
+        { "marks": [55, 59], "rank": [3000, 6000] },
+        { "marks": [50, 54], "rank": [6000, 10000] }
+      ]
+    }
+  ],
+  "confidence": "secondary",
+  "notes": "Topper: 90 raw marks, GATE score 1000. The 2024 paper was harder at the top than 2025 (topper 90 vs 100)."
+}
