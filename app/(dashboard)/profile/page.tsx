@@ -348,6 +348,10 @@ export default function ProfilePage() {
               <div>
                 <label className={LABEL_CLASS}><GraduationCap className="w-3.5 h-3.5" /> Target Branch</label>
                 <CustomDropdown value={targetBranch} onChange={setTargetBranch} options={BRANCHES} className="w-full text-sm font-medium" />
+                <p className="mt-1.5 text-[11px] text-[var(--text-muted)]">
+                  Studying another branch?{" "}
+                  <a href="/gate-da" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Get notified when it launches</a>
+                </p>
               </div>
               <div>
                 <label className={LABEL_CLASS}><CalendarDays className="w-3.5 h-3.5" /> Target Year</label>

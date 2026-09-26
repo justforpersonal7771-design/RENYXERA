@@ -5,6 +5,7 @@ import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
 import { CardSpotlight } from '@/components/system/card-spotlight';
 import { ThemeProvider } from '@/components/theme-provider';
+import { SITE_URL } from "@/lib/site";
 
 // One family per job, all SIL OFL (served via next/font, self-hosted at build):
 //  - Manrope   — body & UI text: calm, open, very legible at small sizes
@@ -23,6 +24,7 @@ const luxe = Cinzel({ subsets: ['latin'], weight: ['600', '700'], variable: '--f
 const brand = Bruno_Ace_SC({ subsets: ['latin'], weight: '400', variable: '--font-brand', display: 'swap' });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: 'RENYXERA — A New ERA of Intelligent Learning',
   description: 'RENYXERA is a premium, adaptive GATE CSE preparation workspace — analyze weaknesses, drill weak topics, and track mastery with an AI mentor built in.',
   manifest: '/manifest.json',
