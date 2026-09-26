@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { upcomingExamYear, effectiveTargetYear, targetYearRolledForward } from "@/lib/goals/exam-year";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { upcomingExamYear, effectiveTargetYear, targetYearRolledForward, examDateFor } from "@/lib/goals/exam-year";
 import { NumberStepper } from "@/components/ui/number-stepper";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Loader2, Save, LogOut, CheckCircle2, User as UserIcon, Palette, IdCard, Target,
   GraduationCap, CalendarDays, Trophy, Clock, Mail, Sparkles, XCircle,
+  LayoutGrid, SlidersHorizontal, ShieldCheck, Laptop, Download, BookX, Bookmark, RefreshCw, PieChart, ArrowRight,
 } from "lucide-react";
 import { normalizeUsername, usernameProblem } from "@/lib/username";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -14,7 +16,7 @@ import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
 import { StatsAchievements } from "@/components/profile/stats-achievements";
 import { GoalPlan } from "@/components/profile/goal-plan";
-import { AccountSettings } from "@/components/profile/account-settings";
+import { PreferencesCard, AccountSecurityCard, DevicesCard } from "@/components/profile/account-settings";
 import { ProfileHero } from "@/components/profile/profile-hero";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
@@ -39,6 +41,24 @@ function SectionHeader({ icon: Icon, title, subtitle, tint }: { icon: typeof Use
     </div>
   );
 }
+
+const SECTIONS = [
+  { id: "overview", label: "Overview", subtitle: "Your progress, streaks and achievements at a glance.", icon: LayoutGrid, tint: "bg-indigo-500/10 text-indigo-500" },
+  { id: "profile", label: "Profile", subtitle: "Your avatar, name and username.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
+  { id: "goals", label: "Exam goals", subtitle: "Your target, and the plan it builds for you.", icon: Target, tint: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
+  { id: "preferences", label: "Preferences", subtitle: "Theme, motion and reminders on this device.", icon: SlidersHorizontal, tint: "bg-violet-500/10 text-violet-500" },
+  { id: "security", label: "Account & security", subtitle: "Sign-in details, password and your data.", icon: ShieldCheck, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+  { id: "devices", label: "Devices", subtitle: "Where you're signed in.", icon: Laptop, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
+] as const;
+type SectionId = (typeof SECTIONS)[number]["id"];
+
+const SHORTCUTS = [
+  { href: "/downloads", label: "Downloads", icon: Download, tint: "bg-violet-500/10 text-violet-500" },
+  { href: "/mistakes", label: "Mistakes", icon: BookX, tint: "bg-rose-500/10 text-rose-500" },
+  { href: "/bookmarks", label: "Bookmarks", icon: Bookmark, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+  { href: "/revision", label: "Revision", icon: RefreshCw, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
+  { href: "/analytics", label: "Analytics", icon: PieChart, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
+];
 
 const BRANCHES = [
   { label: "Computer Science & IT", value: "CSE" },
@@ -122,8 +142,8 @@ export default function ProfilePage() {
   const avatarUri = useMemo(() => generateAvatarDataUri(avatar.style, avatar.seed, { size: 160 }), [avatar]);
   const branchLabel = BRANCHES.find((b) => b.value === targetBranch)?.label.replace(" — Coming Soon", "") ?? targetBranch;
 
-  // Seed local form state from the loaded profile once it arrives.
-  useEffect(() => {
+  // Seed local form state from the loaded profile (on arrival, and for "Discard").
+  const resetFromProfile = useCallback(() => {
     if (!profile) return;
     setAvatar({
       style: isAvatarStyleId(profile.avatar_style) ? profile.avatar_style : "adventurer",
@@ -136,7 +156,38 @@ export default function ProfilePage() {
     setTargetYear(String(effectiveTargetYear(profile.target_year)));
     setTargetRank(profile.target_rank ? String(profile.target_rank) : "");
     setDailyHours(profile.daily_study_hours ? String(profile.daily_study_hours) : "2");
+    setError(null);
   }, [profile]);
+  useEffect(() => { resetFromProfile(); }, [resetFromProfile]);
+
+  const dirty = !!profile && (
+    displayName !== (profile.display_name || "") ||
+    username !== (profile.username || "").toLowerCase() ||
+    avatar.seed !== profile.avatar_seed ||
+    avatar.style !== (isAvatarStyleId(profile.avatar_style) ? profile.avatar_style : "adventurer") ||
+    targetBranch !== (profile.target_branch || "CSE") ||
+    // A never-saved year matches the default; a past year (rolled forward) counts as a change to save.
+    targetYear !== String(profile.target_year ?? effectiveTargetYear(null)) ||
+    targetRank !== (profile.target_rank ? String(profile.target_rank) : "") ||
+    dailyHours !== (profile.daily_study_hours ? String(profile.daily_study_hours) : "2")
+  );
+
+  // Sections, synced to the URL hash so /profile#devices opens that section directly.
+  const [tab, setTab] = useState<SectionId>("overview");
+  useEffect(() => {
+    const read = () => {
+      const h = window.location.hash.slice(1) as SectionId;
+      if (SECTIONS.some((x) => x.id === h)) setTab(h);
+    };
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
+  }, []);
+  const selectTab = (id: SectionId) => {
+    setTab(id);
+    history.replaceState(null, "", `#${id}`);
+    if (window.innerWidth < 1024) document.getElementById("profile-section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   async function handleSave() {
     if (!user) return;
@@ -239,57 +290,25 @@ export default function ProfilePage() {
   }
 
   const name = displayName.trim() || user.email?.split("@")[0] || "Aspirant";
+  const examDate = examDateFor(Number(targetYear) || upcomingYear, null);
+  const daysLeft = Math.ceil((new Date(examDate + "T09:00:00").getTime() - Date.now()) / 86_400_000);
 
-  return (
-    <div className="w-full max-w-5xl mx-auto pb-4 space-y-6">
-      <ProfileHero
-        name={name}
-        username={username}
-        email={user.email}
-        tier={profile?.tier || "free"}
-        avatarUri={avatarUri}
-        targetYear={targetYear}
-        branchLabel={branchLabel}
-        targetRank={targetRank}
-        dailyHours={dailyHours}
-        signingOut={signingOut}
-        onSignOut={handleSignOut}
-      />
-
-      {/* Two columns that always end on the same line: the last card in each column
-          grows (flex-1) to meet the other's bottom, live as content changes — e.g. the
-          Goal plan getting taller once a target rank is set. Buttons are pinned to the
-          bottom of their cards so a stretched card still looks deliberate. */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-stretch">
-        {/* Avatar */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.05 }}
-            className="card-glass rounded-3xl p-6 shrink-0"
-          >
-            <SectionHeader icon={Palette} title="Avatar" subtitle="Pick a style and shuffle until it feels like you." tint="bg-fuchsia-500/10 text-fuchsia-500" />
-            <AvatarPicker value={avatar} onChange={setAvatar} />
-          </motion.div>
-
-          {/* Fills the column beside Identity/Exam Goals and reacts to them live. */}
-          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.12 }} className="flex-1 flex flex-col">
-            <GoalPlan
-              targetRank={Number(targetRank) > 0 ? Number(targetRank) : null}
-              targetYear={Number(targetYear) || upcomingYear}
-              dailyHours={Number(dailyHours) || 0}
-            />
-          </motion.div>
-        </div>
-
-        <div className="lg:col-span-3 flex flex-col gap-6">
+  const tabBody = (() => {
+    switch (tab) {
+      case "profile":
+        return (
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 items-start">
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="xl:col-span-2 card-glass rounded-3xl p-6">
+              <SectionHeader icon={Palette} title="Avatar" subtitle="Pick a style and shuffle until it feels like you." tint="bg-fuchsia-500/10 text-fuchsia-500" />
+              <AvatarPicker value={avatar} onChange={setAvatar} />
+            </motion.div>
+            <div className="xl:col-span-3">
           {/* Identity */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="card-glass rounded-3xl p-6 shrink-0"
+            className="card-glass rounded-3xl p-6"
           >
             <SectionHeader icon={IdCard} title="Identity" subtitle="How you show up across RENYXERA." tint="bg-indigo-500/10 text-indigo-500" />
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -336,6 +355,13 @@ export default function ProfilePage() {
             </div>
           </motion.div>
 
+            </div>
+          </div>
+        );
+      case "goals":
+        return (
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-6 items-stretch">
+            <div className="xl:col-span-3 flex flex-col">
           {/* Exam goals */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -396,34 +422,127 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {error && (
-              <div role="alert" className="mt-5 flex items-center gap-2 text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
-                {error}
-              </div>
-            )}
+          </motion.div>
+            </div>
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08 }} className="xl:col-span-2 flex flex-col">
+              <GoalPlan targetRank={Number(targetRank) > 0 ? Number(targetRank) : null} targetYear={Number(targetYear) || upcomingYear} dailyHours={Number(dailyHours) || 0} />
+            </motion.div>
+          </div>
+        );
+      case "preferences":
+        return <PreferencesCard />;
+      case "security":
+        return <AccountSecurityCard />;
+      case "devices":
+        return <DevicesCard />;
+      default:
+        return (
+          <div className="space-y-6">
+            <StatsAchievements />
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }}>
+              <GoalPlan targetRank={Number(targetRank) > 0 ? Number(targetRank) : null} targetYear={Number(targetYear) || upcomingYear} dailyHours={Number(dailyHours) || 0} />
+            </motion.div>
+          </div>
+        );
+    }
+  })();
 
-            <div className="mt-6 pt-5 border-t border-[var(--border-subtle)] flex items-center justify-end gap-3">
-              {saved && (
-                <span className="flex items-center gap-1.5 text-xs font-bold text-emerald-500">
-                  <CheckCircle2 className="w-4 h-4" /> Saved
-                </span>
+  const current = SECTIONS.find((x) => x.id === tab) ?? SECTIONS[0];
+
+  return (
+    <div className="w-full max-w-7xl mx-auto pb-24 flex flex-col lg:flex-row gap-6">
+      {/* Sidebar: vertical profile card + quick access */}
+      <aside className="lg:w-[300px] xl:w-[320px] shrink-0 flex flex-col gap-4 lg:sticky lg:top-2 lg:self-start">
+        <ProfileHero
+          name={name}
+          username={username}
+          email={user.email}
+          tier={profile?.tier || "free"}
+          avatarUri={avatarUri}
+          targetYear={targetYear}
+          branchLabel={branchLabel}
+          targetRank={targetRank}
+          dailyHours={dailyHours}
+          signingOut={signingOut}
+          onSignOut={handleSignOut}
+          daysLeft={daysLeft}
+        />
+
+        <motion.nav aria-label="Profile sections" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.08 }}
+          className="card-glass rounded-3xl p-2.5">
+          <p className="px-2.5 pt-1.5 pb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)] hidden lg:block">Quick access</p>
+          <div className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible custom-scrollbar">
+            {SECTIONS.map((sct) => {
+              const active = sct.id === tab;
+              return (
+                <button key={sct.id} onClick={() => selectTab(sct.id)} aria-current={active ? "page" : undefined}
+                  className={`group relative shrink-0 flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-left transition-colors cursor-pointer ${active ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]/70"}`}>
+                  {active && <motion.span layoutId="profile-tab" transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30" />}
+                  <sct.icon className="relative w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
+                  <span className="relative whitespace-nowrap">{sct.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          <div className="hidden lg:block mt-2 pt-2 border-t border-[var(--border-subtle)]">
+            <p className="px-2.5 pt-1 pb-2 text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)]">Shortcuts</p>
+            <div className="grid grid-cols-1 gap-0.5">
+              {SHORTCUTS.map((sc, i) => (
+                <motion.div key={sc.href} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 + i * 0.04 }}>
+                  <Link href={sc.href} className="group flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]/70 transition-colors">
+                    <span className={`w-7 h-7 rounded-lg flex items-center justify-center ${sc.tint}`}><sc.icon className="w-3.5 h-3.5" /></span>
+                    <span className="flex-1 font-medium">{sc.label}</span>
+                    <ArrowRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.nav>
+      </aside>
+
+      {/* Section content */}
+      <section id="profile-section" className="flex-1 min-w-0 scroll-mt-24">
+        <div className="mb-4 flex items-center gap-3">
+          <span className={`w-10 h-10 rounded-xl flex items-center justify-center ${current.tint}`}><current.icon className="w-5 h-5" /></span>
+          <div>
+            <h2 className="text-xl font-extrabold text-[var(--text-primary)] leading-tight">{current.label}</h2>
+            <p className="text-xs text-[var(--text-secondary)]">{current.subtitle}</p>
+          </div>
+        </div>
+        <AnimatePresence mode="wait">
+          <motion.div key={tab} initial={{ opacity: 0, y: 14, filter: "blur(4px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -10, filter: "blur(4px)" }} transition={{ duration: 0.25 }}>
+            {tabBody}
+          </motion.div>
+        </AnimatePresence>
+      </section>
+
+      {/* Floating save bar — only when there are unsaved changes (or a result to show) */}
+      <AnimatePresence>
+        {(dirty || saving || saved || error) && (
+          <motion.div initial={{ opacity: 0, y: 40, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 40, scale: 0.96 }} transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            className="fixed bottom-4 inset-x-0 mx-auto z-40 w-[calc(100%-2rem)] max-w-xl">
+            <div className="nav-cluster rounded-2xl px-4 py-3 flex items-center gap-3 shadow-[0_20px_50px_-15px_rgba(76,29,149,0.45)]">
+              {error ? (
+                <p role="alert" className="flex-1 min-w-0 text-xs font-semibold text-rose-500">{error}</p>
+              ) : saved && !dirty ? (
+                <p className="flex-1 text-sm font-semibold text-emerald-600 dark:text-emerald-400 inline-flex items-center gap-1.5"><CheckCircle2 className="w-4 h-4" /> Changes saved</p>
+              ) : (
+                <p className="flex-1 min-w-0 text-sm font-semibold text-[var(--text-primary)]"><span className="sm:hidden">Unsaved changes</span><span className="hidden sm:inline">You have unsaved changes</span></p>
               )}
-              <button
-                onClick={handleSave}
-                disabled={saving || usernameBlocksSave}
-                className="flex items-center gap-2 px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-50 text-white rounded-xl font-bold text-sm shadow-md shadow-indigo-500/25 transition-colors"
-              >
-                {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-                Save Changes
-              </button>
+              {dirty && (
+                <button onClick={resetFromProfile} disabled={saving} className="shrink-0 h-9 px-3 rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer">Discard</button>
+              )}
+              {(dirty || error) && (
+                <button onClick={handleSave} disabled={saving || usernameBlocksSave}
+                  className="shrink-0 inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-bold shadow-md shadow-violet-500/30 disabled:opacity-50 cursor-pointer">
+                  {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />} Save changes
+                </button>
+              )}
             </div>
           </motion.div>
-        </div>
-      </div>
-
-      <AccountSettings />
-
-      <StatsAchievements />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

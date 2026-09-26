@@ -68,43 +68,12 @@ async function supabaseClient() {
   return createClient();
 }
 
-export function AccountSettings() {
-  const user = useAuthStore((s) => s.user);
-  const toast = useToastStore((s) => s.show);
+export function PreferencesCard() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const { motion: motionPref, setMotion, reminders, setReminders } = usePreferencesStore();
-
-  const [providers, setProviders] = useState<string[] | null>(null);
-  const [pw, setPw] = useState({ next: "", confirm: "", show: false, saving: false, error: "", done: false });
-  const [exporting, setExporting] = useState(false);
-  const [devices, setDevices] = useState<Device[] | null>(null);
-  const [devicesError, setDevicesError] = useState(false);
-  const [busyDevice, setBusyDevice] = useState<string | null>(null);
-
+  const toast = useToastStore((s) => s.show);
   useEffect(() => setMounted(true), []);
-
-  useEffect(() => {
-    if (!user) return;
-    supabaseClient().then((sb) => sb.auth.getUser()).then(({ data }) => {
-      const list = (data.user?.identities ?? []).map((i) => i.provider);
-      setProviders(list.length ? [...new Set(list)] : ["email"]);
-    }).catch(() => setProviders([]));
-  }, [user]);
-
-  const loadDevices = useCallback(async () => {
-    try {
-      const res = await fetch("/api/devices");
-      if (!res.ok) throw new Error();
-      const j = (await res.json()) as { devices: Device[] };
-      const mine = getDeviceId();
-      setDevices(j.devices.map((d) => ({ ...d, current: d.current || d.device_id === mine })));
-      setDevicesError(false);
-    } catch {
-      setDevicesError(true);
-    }
-  }, []);
-  useEffect(() => { if (user) void loadDevices(); }, [user, loadDevices]);
 
   const toggleReminders = async (on: boolean) => {
     if (on && typeof Notification !== "undefined" && Notification.permission !== "granted") {
@@ -116,6 +85,56 @@ export function AccountSettings() {
     }
     setReminders(on);
   };
+
+
+  return (
+      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="card-glass rounded-3xl p-6 flex flex-col">
+        <Header icon={SlidersHorizontal} title="Preferences" subtitle="How RENYXERA looks and behaves on this device." tint="bg-violet-500/10 text-violet-500" />
+        <div className="space-y-5">
+          <div>
+            <p className="text-xs font-bold text-[var(--text-secondary)] mb-2">Theme</p>
+            {mounted && (
+              <Segmented label="Theme" value={(theme as "light" | "dark" | "system") ?? "system"} onChange={setTheme}
+                options={[{ value: "light", label: "Light", icon: Sun }, { value: "dark", label: "Dark", icon: Moon }, { value: "system", label: "System", icon: Monitor }]} />
+            )}
+          </div>
+          <div>
+            <p className="text-xs font-bold text-[var(--text-secondary)] mb-2">Motion</p>
+            <Segmented<MotionPref> label="Motion" value={motionPref} onChange={setMotion}
+              options={[{ value: "system", label: "System", icon: Monitor }, { value: "reduce", label: "Reduced", icon: Eye }, { value: "full", label: "Full", icon: Sparkles }]} />
+            <p className="mt-1.5 text-[11px] text-[var(--text-muted)]">Reduced turns off animations — easier on the eyes and on older phones.</p>
+          </div>
+          <div className="flex items-center justify-between gap-4 rounded-2xl bg-[var(--surface-secondary)]/50 p-3.5">
+            <div className="flex items-start gap-3 min-w-0">
+              <span className="w-8 h-8 shrink-0 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center"><Bell className="w-4 h-4" /></span>
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-[var(--text-primary)]">Study reminders</p>
+                <p className="text-[11px] text-[var(--text-muted)]">Notifications for planner events that have a reminder set.</p>
+              </div>
+            </div>
+            <Toggle label="Study reminders" on={reminders} onChange={toggleReminders} />
+          </div>
+        </div>
+      </motion.section>
+
+  );
+}
+
+export function AccountSecurityCard() {
+  const user = useAuthStore((s) => s.user);
+  const toast = useToastStore((s) => s.show);
+  const { theme } = useTheme();
+  const { motion: motionPref, reminders } = usePreferencesStore();
+  const [providers, setProviders] = useState<string[] | null>(null);
+  const [pw, setPw] = useState({ next: "", confirm: "", show: false, saving: false, error: "", done: false });
+  const [exporting, setExporting] = useState(false);
+  useEffect(() => {
+    if (!user) return;
+    supabaseClient().then((sb) => sb.auth.getUser()).then(({ data }) => {
+      const list = (data.user?.identities ?? []).map((i) => i.provider);
+      setProviders(list.length ? [...new Set(list)] : ["email"]);
+    }).catch(() => setProviders([]));
+  }, [user]);
 
   const changePassword = async () => {
     const problem = passwordProblem(pw.next, true);
@@ -160,73 +179,12 @@ export function AccountSettings() {
     }
   };
 
-  const signOutDevice = async (d: Device) => {
-    if (!(await confirmDialog({ title: `Sign out ${d.label}?`, message: "That device will be signed out within a few minutes, and its offline downloads will be removed.", confirmLabel: "Sign out device", tone: "danger", icon: "leave" }))) return;
-    setBusyDevice(d.id);
-    const res = await fetch("/api/devices", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "revoke", id: d.id }) }).catch(() => null);
-    setBusyDevice(null);
-    if (!res?.ok) return toast("Couldn't sign that device out. Try again.", "error");
-    toast(`${d.label} signed out`, "success");
-    void loadDevices();
-  };
-
-  const signOutOthers = async (everywhere: boolean) => {
-    const ok = await confirmDialog(everywhere
-      ? { title: "Sign out everywhere?", message: "You'll be signed out on every device, including this one.", confirmLabel: "Sign out everywhere", tone: "danger", icon: "leave" }
-      : { title: "Sign out all other devices?", message: "Every other device will be signed out. You'll stay signed in here.", confirmLabel: "Sign out others", tone: "danger", icon: "leave" });
-    if (!ok) return;
-    setBusyDevice(everywhere ? "__all" : "__others");
-    await fetch("/api/devices", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "revoke_others", device_id: getDeviceId() }) }).catch(() => null);
-    const sb = await supabaseClient();
-    if (everywhere) {
-      sessionStorage.setItem(SIGNED_OUT_FLAG, "everywhere");
-      await sb.auth.signOut({ scope: "global" }).catch(() => sb.auth.signOut({ scope: "local" }));
-      return; // AuthListener wipes local data and redirects
-    }
-    await sb.auth.signOut({ scope: "others" }).catch(() => {});
-    setBusyDevice(null);
-    toast("Signed out of all other devices", "success");
-    void loadDevices();
-  };
-
   if (!user) return null;
   const hasPassword = providers?.includes("email");
   const inputCls = "w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 pr-10 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500";
 
   return (
-    <div id="settings" className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch scroll-mt-24">
-      {/* Preferences */}
       <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="card-glass rounded-3xl p-6 flex flex-col">
-        <Header icon={SlidersHorizontal} title="Preferences" subtitle="How RENYXERA looks and behaves on this device." tint="bg-violet-500/10 text-violet-500" />
-        <div className="space-y-5">
-          <div>
-            <p className="text-xs font-bold text-[var(--text-secondary)] mb-2">Theme</p>
-            {mounted && (
-              <Segmented label="Theme" value={(theme as "light" | "dark" | "system") ?? "system"} onChange={setTheme}
-                options={[{ value: "light", label: "Light", icon: Sun }, { value: "dark", label: "Dark", icon: Moon }, { value: "system", label: "System", icon: Monitor }]} />
-            )}
-          </div>
-          <div>
-            <p className="text-xs font-bold text-[var(--text-secondary)] mb-2">Motion</p>
-            <Segmented<MotionPref> label="Motion" value={motionPref} onChange={setMotion}
-              options={[{ value: "system", label: "System", icon: Monitor }, { value: "reduce", label: "Reduced", icon: Eye }, { value: "full", label: "Full", icon: Sparkles }]} />
-            <p className="mt-1.5 text-[11px] text-[var(--text-muted)]">Reduced turns off animations — easier on the eyes and on older phones.</p>
-          </div>
-          <div className="flex items-center justify-between gap-4 rounded-2xl bg-[var(--surface-secondary)]/50 p-3.5">
-            <div className="flex items-start gap-3 min-w-0">
-              <span className="w-8 h-8 shrink-0 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center"><Bell className="w-4 h-4" /></span>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-[var(--text-primary)]">Study reminders</p>
-                <p className="text-[11px] text-[var(--text-muted)]">Notifications for planner events that have a reminder set.</p>
-              </div>
-            </div>
-            <Toggle label="Study reminders" on={reminders} onChange={toggleReminders} />
-          </div>
-        </div>
-      </motion.section>
-
-      {/* Account & security */}
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.05 }} className="card-glass rounded-3xl p-6 flex flex-col">
         <Header icon={ShieldCheck} title="Account & security" subtitle="Your sign-in details and your data." tint="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" />
         <div className="space-y-4 flex-1">
           <div className="flex items-center gap-3 rounded-2xl bg-[var(--surface-secondary)]/50 p-3.5">
@@ -277,8 +235,61 @@ export function AccountSettings() {
         </div>
       </motion.section>
 
-      {/* Active devices */}
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} className="card-glass rounded-3xl p-6 lg:col-span-2">
+  );
+}
+
+export function DevicesCard() {
+  const user = useAuthStore((s) => s.user);
+  const toast = useToastStore((s) => s.show);
+  const [devices, setDevices] = useState<Device[] | null>(null);
+  const [devicesError, setDevicesError] = useState(false);
+  const [busyDevice, setBusyDevice] = useState<string | null>(null);
+  const loadDevices = useCallback(async () => {
+    try {
+      const res = await fetch("/api/devices");
+      if (!res.ok) throw new Error();
+      const j = (await res.json()) as { devices: Device[] };
+      const mine = getDeviceId();
+      setDevices(j.devices.map((d) => ({ ...d, current: d.current || d.device_id === mine })));
+      setDevicesError(false);
+    } catch {
+      setDevicesError(true);
+    }
+  }, []);
+  useEffect(() => { if (user) void loadDevices(); }, [user, loadDevices]);
+
+  const signOutDevice = async (d: Device) => {
+    if (!(await confirmDialog({ title: `Sign out ${d.label}?`, message: "That device will be signed out within a few minutes, and its offline downloads will be removed.", confirmLabel: "Sign out device", tone: "danger", icon: "leave" }))) return;
+    setBusyDevice(d.id);
+    const res = await fetch("/api/devices", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "revoke", id: d.id }) }).catch(() => null);
+    setBusyDevice(null);
+    if (!res?.ok) return toast("Couldn't sign that device out. Try again.", "error");
+    toast(`${d.label} signed out`, "success");
+    void loadDevices();
+  };
+
+  const signOutOthers = async (everywhere: boolean) => {
+    const ok = await confirmDialog(everywhere
+      ? { title: "Sign out everywhere?", message: "You'll be signed out on every device, including this one.", confirmLabel: "Sign out everywhere", tone: "danger", icon: "leave" }
+      : { title: "Sign out all other devices?", message: "Every other device will be signed out. You'll stay signed in here.", confirmLabel: "Sign out others", tone: "danger", icon: "leave" });
+    if (!ok) return;
+    setBusyDevice(everywhere ? "__all" : "__others");
+    await fetch("/api/devices", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "revoke_others", device_id: getDeviceId() }) }).catch(() => null);
+    const sb = await supabaseClient();
+    if (everywhere) {
+      sessionStorage.setItem(SIGNED_OUT_FLAG, "everywhere");
+      await sb.auth.signOut({ scope: "global" }).catch(() => sb.auth.signOut({ scope: "local" }));
+      return; // AuthListener wipes local data and redirects
+    }
+    await sb.auth.signOut({ scope: "others" }).catch(() => {});
+    setBusyDevice(null);
+    toast("Signed out of all other devices", "success");
+    void loadDevices();
+  };
+
+  if (!user) return null;
+  return (
+      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="card-glass rounded-3xl p-6">
         <Header icon={Laptop} title="Active devices" subtitle="Where your account is signed in. Sign out anything you don't recognise." tint="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" />
         {devicesError ? (
           <div className="flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-xs text-amber-800 dark:text-amber-200">
@@ -319,6 +330,5 @@ export function AccountSettings() {
           </button>
         </div>
       </motion.section>
-    </div>
   );
 }

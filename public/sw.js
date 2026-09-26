@@ -1,4 +1,9 @@
-const CACHE_NAME = "gateos-pwa-cache-v6";
+const CACHE_NAME = "gateos-pwa-cache-v7";
+// Content-hashed build files (/_next/static/*) never change, so they live in their own
+// cache that survives deploys: a tab opened on the previous version can still load the
+// chunks it needs instead of failing with "Loading chunk … failed" or losing its styles.
+const STATIC_CACHE = "renyxera-static-v1";
+const STATIC_MAX_ENTRIES = 800;
 
 // App pages that must open offline (their data lives in IndexedDB). Each page's HTML is
 // precached together with the /_next/static scripts and styles it references, so an
@@ -43,7 +48,10 @@ async function precache() {
       for (const m of html.matchAll(/(?:src|href)="(\/_next\/static\/[^"]+)"/g)) assetUrls.add(m[1]);
     })
   );
-  await Promise.all([...assetUrls].map(put));
+  const staticCache = await caches.open(STATIC_CACHE);
+  await Promise.all([...assetUrls].map((u) =>
+    fetch(u).then((res) => (res.ok ? staticCache.put(u, res) : undefined)).catch(() => {})
+  ));
 }
 
 self.addEventListener("install", (event) => {
@@ -53,10 +61,32 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.map((key) => (key !== CACHE_NAME ? caches.delete(key) : undefined))))
+    caches.keys()
+      .then((keys) => Promise.all(keys.map((key) => (key !== CACHE_NAME && key !== STATIC_CACHE ? caches.delete(key) : undefined))))
+      .then(trimStatic)
   );
   self.clients.claim();
 });
+
+async function trimStatic() {
+  const cache = await caches.open(STATIC_CACHE);
+  const keys = await cache.keys();
+  // Oldest first (insertion order); drop the overflow so storage stays bounded.
+  await Promise.all(keys.slice(0, Math.max(0, keys.length - STATIC_MAX_ENTRIES)).map((k) => cache.delete(k)));
+}
+
+async function staticAsset(req) {
+  const cache = await caches.open(STATIC_CACHE);
+  const hit = await cache.match(req);
+  if (hit) return hit;
+  try {
+    const res = await fetch(req);
+    if (res.ok) cache.put(req, res.clone());
+    return res;
+  } catch {
+    return (await caches.match(req)) || new Response("", { status: 504 });
+  }
+}
 
 // Network first, cache only as an offline fallback — online users always get what's
 // actually deployed. API calls are never cached (answers, grading, AI are private).
@@ -65,6 +95,10 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
+  if (url.pathname.startsWith("/_next/static/")) {
+    event.respondWith(staticAsset(req));
+    return;
+  }
 
   event.respondWith(
     fetch(req)

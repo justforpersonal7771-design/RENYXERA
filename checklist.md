@@ -15,15 +15,15 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 
 | # | Step | Modules | Why now |
 |---|---|---|---|
-| 1 | **Close the AI abuse route**: per-user daily AI quota in Postgres + server-side prompt cache | 4G | The only route that costs money; live today |
-| 2 | **Bot gate**: Cloudflare Turnstile on sign-up, login and reset | 4G | Stops scripted accounts farming the quota from step 1 |
-| 3 | **Route protection in middleware** + guest caps (practice sample, "local only" warning) | 4C, 4D | Server-side boundary instead of UI-only locks |
-| 4 | **CI security checks**: service-role grep over build output, anon-can't-read-answers test | Platform | Makes steps 1–3 and 4B regressions impossible to ship silently |
-| 5 | **Question bank into Postgres** (975 questions, public/private split, offline sync) | 4B | Prerequisite for everything in Release 5 |
-| 6 | **Answer-key withholding + server-graded attempts** (attempt token, graded/practice modes) | 5A, 5B | Makes scores trustworthy |
+| 1 | ✅ **Close the AI abuse route**: per-user daily AI quota in Postgres + server-side prompt cache | 4G | The only route that costs money; live today |
+| 2 | ✅ **Bot gate**: Cloudflare Turnstile on sign-up, login and reset | 4G | Stops scripted accounts farming the quota from step 1 |
+| 3 | ✅ **Route protection in middleware** + guest caps (practice sample, "local only" warning) | 4C, 4D | Server-side boundary instead of UI-only locks |
+| 4 | ✅ **CI security checks**: service-role grep over build output, anon-can't-read-answers test | Platform | Makes steps 1–3 and 4B regressions impossible to ship silently |
+| 5 | ✅ **Question bank into Postgres** (975 questions, public/private split, offline sync) | 4B | Prerequisite for everything in Release 5 |
+| 6 | 🟨 **Answer-key withholding + server-graded attempts** (attempt token, graded/practice modes) | 5A, 5B | Makes scores trustworthy — *remaining: attempt token (server start time, grace window)* |
 | 6b | ✅ **Protected offline Downloads** (26 Sep): /downloads + protected viewer; AES-GCM packs in a per-account vault DB; non-extractable key, 14-day offline renewal; account watermark; copy/print/context-menu/save blocked; blur shield; wiped on sign-out. **Follow-ups:** persistent per-day download cap (needs a table), rasterised "flattened" page rendering for TeX/images, key rotation/revocation with Active Devices (7) | 5A, 6 | Question bank never downloadable as a file |
 | 7 | ✅ **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
-| 8 | **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
+| 8 | ✅ **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
 | 9 | **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay |
 | 10 | **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
 | 11 | Integrity signals, bank protection, leaderboards & All-India mocks | 5C–5E | Only credible after step 6 |
@@ -215,9 +215,9 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Branch selector (Profile → Exam Goals) with CSE live, 5 Coming Soon, non-selectable | ✅ |
 | Branch selector in onboarding | ⬜ |
-| "Notify Me" waitlist capture (guests: email; members: user id) | ⬜ *(table exists — `branch_waitlist`)* |
-| Internal waitlist counts (prioritises Release 8) | ⬜ |
-| Branch landing pages for SEO (`/gate-ece`, `/gate-da`, …) | ⬜ |
+| "Notify Me" waitlist capture (guests: email; members: user id) | ✅ *(/api/waitlist: validation, honeypot, rate limit, dedupe; migration 0006 removed the open insert policy)* |
+| Internal waitlist counts (prioritises Release 8) | ✅ *(GET /api/waitlist; shown on landing pages from 25+)* |
+| Branch landing pages for SEO (`/gate-ece`, `/gate-da`, …) | ✅ *(6 static pages, FAQ JSON-LD, sitemap.xml + robots.txt)* |
 | Launch email to the waitlist when a branch goes live | ⬜ |
 
 ### 4I · P2 · Cloud Sync
