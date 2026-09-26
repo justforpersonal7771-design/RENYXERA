@@ -32,9 +32,9 @@ export function BrandMark({ className = "h-8 w-8" }: { className?: string }) {
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/brand/mark-light.png" alt="" aria-hidden="true" className={`object-contain dark:hidden ${className}`} />
+      <img src="/brand/mark-light.png" alt="" aria-hidden="true" width={40} height={40} style={{ maxWidth: 80, maxHeight: 80 }} className={`object-contain dark:hidden ${className}`} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/brand/mark-dark.png" alt="" aria-hidden="true" className={`object-contain hidden dark:block ${className}`} />
+      <img src="/brand/mark-dark.png" alt="" aria-hidden="true" width={40} height={40} style={{ maxWidth: 80, maxHeight: 80 }} className={`object-contain hidden dark:block ${className}`} />
     </>
   );
 }
@@ -47,6 +47,21 @@ export function BrandName({ onDark = false, className = "" }: { onDark?: boolean
     <span aria-label="RENYXERA" className={`font-brand font-normal tracking-[0.04em] text-[0.95em] whitespace-nowrap ${className}`}>
       <span aria-hidden="true" className={onDark ? "text-white" : "text-[var(--text-primary)]"}>RENYX</span>
       <span aria-hidden="true" className="bg-gradient-to-r from-[#5edcff] via-[#a78bfa] to-[#f0abfc] bg-clip-text text-transparent">ERA</span>
+    </span>
+  );
+}
+
+/** The logo mark with the navbar's hover effect (.logo-fx: halo, ripple, 3D spin) —
+ *  used wherever the logo appears so it behaves the same across the app. Put it inside
+ *  a link/button that carries the `logo-fx` class, or pass `standalone` to add it here. */
+export function LogoMarkFx({ className = "h-8 w-8", standalone = false }: { className?: string; standalone?: boolean }) {
+  return (
+    <span className={`${standalone ? "logo-fx " : ""}logo-mark relative inline-flex items-center justify-center shrink-0`}>
+      <span className="logo-halo" aria-hidden="true" />
+      <span className="logo-ripple" aria-hidden="true" />
+      <span className="logo-spin relative drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]">
+        <BrandMark className={className} />
+      </span>
     </span>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "next-themes";
 import {
   SlidersHorizontal, Sun, Moon, Monitor, Sparkles, Bell, ShieldCheck, Mail, KeyRound, Download,
-  Loader2, Smartphone, Laptop, LogOut, CheckCircle2, Eye, EyeOff, AlertTriangle,
+  Loader2, Trash2, Smartphone, Laptop, LogOut, CheckCircle2, Eye, EyeOff, AlertTriangle,
 } from "lucide-react";
 import { usePreferencesStore, type MotionPref } from "@/store/use-preferences-store";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -128,13 +128,34 @@ export function AccountSecurityCard() {
   const [providers, setProviders] = useState<string[] | null>(null);
   const [pw, setPw] = useState({ next: "", confirm: "", show: false, saving: false, error: "", done: false });
   const [exporting, setExporting] = useState(false);
+  const studentId = useAuthStore((s) => s.profile?.student_id);
+  const [meta, setMeta] = useState<{ created?: string; lastSignIn?: string; verified: boolean } | null>(null);
+  const [del, setDel] = useState({ open: false, email: "", busy: false, error: "" });
   useEffect(() => {
     if (!user) return;
     supabaseClient().then((sb) => sb.auth.getUser()).then(({ data }) => {
       const list = (data.user?.identities ?? []).map((i) => i.provider);
       setProviders(list.length ? [...new Set(list)] : ["email"]);
+      setMeta({ created: data.user?.created_at, lastSignIn: data.user?.last_sign_in_at, verified: !!data.user?.email_confirmed_at });
     }).catch(() => setProviders([]));
   }, [user]);
+
+  const deleteAccount = async () => {
+    setDel((d) => ({ ...d, busy: true, error: "" }));
+    try {
+      const res = await fetch("/api/account/delete", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ confirmEmail: del.email }) });
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) return setDel((d) => ({ ...d, busy: false, error: j.error || "Couldn't delete your account." }));
+      // Account is gone: clear this device and leave.
+      const uid = user!.id;
+      try { const { wipeVault } = await import("@/lib/vault/vault"); await wipeVault(uid); } catch {}
+      try { indexedDB.deleteDatabase(`GatePrepOS_DB__${uid}`); } catch {}
+      try { await (await supabaseClient()).auth.signOut({ scope: "local" }); } catch {}
+      window.location.replace("/");
+    } catch {
+      setDel((d) => ({ ...d, busy: false, error: "You seem to be offline. Please try again." }));
+    }
+  };
 
   const changePassword = async () => {
     const problem = passwordProblem(pw.next, true);
@@ -222,6 +243,20 @@ export function AccountSecurityCard() {
             <p className="text-[11px] text-[var(--text-muted)]">You sign in with {providers.join(", ") || "a linked account"}, so there's no password to manage here.</p>
           ))}
 
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            {[
+              { label: "Student ID", value: studentId || "—" },
+              { label: "Member since", value: meta?.created ? new Date(meta.created).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) : "—" },
+              { label: "Last sign-in", value: meta?.lastSignIn ? new Date(meta.lastSignIn).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "—" },
+              { label: "Email", value: meta ? (meta.verified ? "Verified" : "Not verified") : "—" },
+            ].map((m) => (
+              <div key={m.label} className="rounded-xl bg-[var(--surface-secondary)]/50 px-3 py-2.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{m.label}</p>
+                <p className={`mt-0.5 text-sm font-semibold ${m.value === "Verified" ? "text-emerald-600 dark:text-emerald-400" : m.value === "Not verified" ? "text-amber-600 dark:text-amber-400" : "text-[var(--text-primary)]"}`}>{m.value}</p>
+              </div>
+            ))}
+          </div>
+
           <div className="rounded-2xl border border-[var(--border)] p-3.5 flex items-center gap-3">
             <Download className="w-4 h-4 text-violet-500 shrink-0" />
             <div className="flex-1 min-w-0">
@@ -231,6 +266,37 @@ export function AccountSecurityCard() {
             <button onClick={exportData} disabled={exporting} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50 disabled:opacity-60 cursor-pointer">
               {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} Export
             </button>
+          </div>
+
+          {/* Danger zone */}
+          <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-3.5">
+            <div className="flex items-center gap-3">
+              <Trash2 className="w-4 h-4 text-rose-500 shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-[var(--text-primary)]">Delete my account</p>
+                <p className="text-[11px] text-[var(--text-muted)]">Permanently deletes your account, profile, saved tests and devices. This can&apos;t be undone.</p>
+              </div>
+              {!del.open && (
+                <button onClick={() => setDel({ open: true, email: "", busy: false, error: "" })} className="shrink-0 h-9 px-3.5 rounded-xl border border-rose-500/40 text-sm font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 cursor-pointer">Delete…</button>
+              )}
+            </div>
+            <AnimatePresence>
+              {del.open && (
+                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
+                  <p className="mt-3 text-xs text-[var(--text-secondary)]">Type <strong className="text-[var(--text-primary)]">{user.email}</strong> to confirm. Export your data first if you want to keep it.</p>
+                  <div className="mt-2 flex flex-col sm:flex-row gap-2">
+                    <input value={del.email} onChange={(e) => setDel((d) => ({ ...d, email: e.target.value, error: "" }))} placeholder="your@email.com" aria-label="Type your email to confirm" autoComplete="off"
+                      className="flex-1 h-9 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm text-[var(--text-primary)] focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-500" />
+                    <button onClick={() => setDel({ open: false, email: "", busy: false, error: "" })} className="h-9 px-3 rounded-xl text-sm font-semibold text-[var(--text-secondary)] cursor-pointer">Cancel</button>
+                    <button onClick={deleteAccount} disabled={del.busy || del.email.trim().toLowerCase() !== (user.email ?? "").toLowerCase()}
+                      className="h-9 px-4 inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-red-600 text-white text-sm font-semibold disabled:opacity-40 cursor-pointer">
+                      {del.busy && <Loader2 className="w-4 h-4 animate-spin" />} Delete forever
+                    </button>
+                  </div>
+                  {del.error && <p role="alert" className="mt-1.5 text-[11px] font-medium text-rose-500">{del.error}</p>}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       </motion.section>

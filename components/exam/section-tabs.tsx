@@ -7,7 +7,11 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 
 export function SectionTabs() {
-  const { currentDraft } = useExamStore();
+  // The running test carries its own copy of the question list; the setup draft can be
+  // cleared (store reset on sign-in, resumed or archived tests) and left this empty.
+  const setupDraft = useExamStore((st) => st.currentDraft);
+  const sessionDraft = useExamRuntimeStore((st) => st.activeSession?.draftConfig);
+  const currentDraft = sessionDraft ?? setupDraft;
   const currentQuestionIndex = useExamRuntimeStore(
     (state) => state.activeSession?.currentQuestionIndex || 0,
   );

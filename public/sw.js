@@ -1,14 +1,11 @@
-const CACHE_NAME = "gateos-pwa-cache-v7";
+const CACHE_NAME = "gateos-pwa-cache-v8";
 // Content-hashed build files (/_next/static/*) never change, so they live in their own
 // cache that survives deploys: a tab opened on the previous version can still load the
 // chunks it needs instead of failing with "Loading chunk … failed" or losing its styles.
 const STATIC_CACHE = "renyxera-static-v1";
 const STATIC_MAX_ENTRIES = 800;
 
-// App pages that must open offline (their data lives in IndexedDB). Each page's HTML is
-// precached together with the /_next/static scripts and styles it references, so an
-// offline visit to a page the user hasn't opened yet still works instead of falling back
-// to the dashboard.
+// App pages that must open offline (their data lives in IndexedDB).
 const APP_ROUTES = [
   "/",
   "/setup",
@@ -25,37 +22,14 @@ const APP_ROUTES = [
 ];
 const STATIC_ASSETS = ["/manifest.json", "/data/questions.json", "/data/image-manifest.json"];
 
-async function precache() {
-  const cache = await caches.open(CACHE_NAME);
-  const put = (url) =>
-    fetch(url, { credentials: "same-origin" })
-      .then((res) => {
-        // A redirect (e.g. a signed-out visit to /downloads → /login) must not be cached
-        // under the page's own URL.
-        if (res.ok && !res.redirected) return cache.put(url, res.clone()).then(() => res);
-        console.warn("SW precache skipped (non-OK response):", url, res.status);
-      })
-      .catch((err) => console.warn("SW precache skipped (fetch failed):", url, err));
-
-  // Each entry independently: one failing URL must not drop the rest.
-  await Promise.all(STATIC_ASSETS.map(put));
-  const assetUrls = new Set();
-  await Promise.all(
-    APP_ROUTES.map(async (route) => {
-      const res = await put(route);
-      if (!res) return;
-      const html = await res.text();
-      for (const m of html.matchAll(/(?:src|href)="(\/_next\/static\/[^"]+)"/g)) assetUrls.add(m[1]);
-    })
-  );
-  const staticCache = await caches.open(STATIC_CACHE);
-  await Promise.all([...assetUrls].map((u) =>
-    fetch(u).then((res) => (res.ok ? staticCache.put(u, res) : undefined)).catch(() => {})
-  ));
-}
-
+// Install stays tiny so a new version never competes with the page for bandwidth (a big
+// burst here used to delay the page's own stylesheet, leaving it unstyled for seconds).
 self.addEventListener("install", (event) => {
-  event.waitUntil(precache());
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) =>
+      Promise.all(STATIC_ASSETS.map((u) => fetch(u).then((r) => (r.ok ? cache.put(u, r) : undefined)).catch(() => {})))
+    )
+  );
   self.skipWaiting();
 });
 
@@ -67,6 +41,48 @@ self.addEventListener("activate", (event) => {
   );
   self.clients.claim();
 });
+
+// The page asks for the offline warm-up once it's loaded and idle; it runs two requests
+// at a time so it never crowds out what the user is doing.
+let warming = null;
+self.addEventListener("message", (event) => {
+  if (event.data === "warm-offline" && !warming) {
+    warming = warmOffline().finally(() => { warming = null; });
+    event.waitUntil(warming);
+  }
+});
+
+async function pool(items, limit, fn) {
+  const queue = [...items];
+  await Promise.all(Array.from({ length: limit }, async () => {
+    while (queue.length) await fn(queue.shift());
+  }));
+}
+
+async function warmOffline() {
+  const pages = await caches.open(CACHE_NAME);
+  const statics = await caches.open(STATIC_CACHE);
+  const assets = new Set();
+  await pool(APP_ROUTES, 2, async (route) => {
+    try {
+      const res = await fetch(route, { credentials: "same-origin" });
+      // A redirect (e.g. a signed-out visit to /downloads → /login) must not be cached
+      // under the page's own URL.
+      if (!res.ok || res.redirected) return;
+      await pages.put(route, res.clone());
+      const html = await res.text();
+      for (const m of html.matchAll(/(?:src|href)="(\/_next\/static\/[^"]+)"/g)) assets.add(m[1]);
+    } catch {}
+  });
+  const missing = [];
+  for (const u of assets) if (!(await statics.match(u))) missing.push(u);
+  await pool(missing, 2, async (u) => {
+    try {
+      const res = await fetch(u);
+      if (res.ok) await statics.put(u, res);
+    } catch {}
+  });
+}
 
 async function trimStatic() {
   const cache = await caches.open(STATIC_CACHE);
@@ -88,18 +104,21 @@ async function staticAsset(req) {
   }
 }
 
-// Network first, cache only as an offline fallback — online users always get what's
-// actually deployed. API calls are never cached (answers, grading, AI are private).
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
+  // Next.js router data / prefetches: always straight to the network, never through here
+  // (routing them via the worker left prefetches hanging and pages never finishing load).
+  if (url.searchParams.has("_rsc") || req.headers.get("RSC") || req.headers.get("Next-Router-Prefetch")) return;
+
   if (url.pathname.startsWith("/_next/static/")) {
     event.respondWith(staticAsset(req));
     return;
   }
 
+  // Everything else: network first; the cache is only an offline fallback.
   event.respondWith(
     fetch(req)
       .then((networkResponse) => {

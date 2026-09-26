@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, ShieldAlert, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -31,7 +31,6 @@ export function Topbar() {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isResetting, setIsResetting] = useState(false);
   const pathname = usePathname();
   const signedIn = useAuthStore((st) => !!st.user);
   const [hovered, setHovered] = useState<string | null>(null);
@@ -120,29 +119,7 @@ export function Topbar() {
     setTheme(resolvedTheme === "light" ? "dark" : "light");
   };
 
-  const handleDeveloperReset = async () => {
-    if (!(await confirmDialog({ title: "Hard reset the app?", message: "This clears all local data and caches and unregisters the service worker.", confirmLabel: "Reset everything", tone: "danger" }))) return;
-    
-    setIsResetting(true);
-    try {
-      indexedDB.deleteDatabase("GatePrepOS_DB");
-      localStorage.clear();
-      sessionStorage.clear();
-      if ('caches' in window) {
-        const keys = await caches.keys();
-        await Promise.all(keys.map(key => caches.delete(key)));
-      }
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for (const r of regs) await r.unregister();
-      }
-      window.location.reload();
-    } catch (e) {
-      console.error("Reset failed", e);
-      setIsResetting(false);
-      useToastStore.getState().show("Reset failed: " + e, "error");
-    }
-  };
+
 
   return (
     <>
@@ -349,22 +326,6 @@ export function Topbar() {
              )}
 
              <div className="relative z-10 hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
-
-             {/* Dev Reset is a one-tap "wipe everything" action — desktop-only (lg:,
-                 matching the main nav's own collapse point), and deliberately not
-                 duplicated into the mobile menu at all (unlike Focus Target above) —
-                 a touchscreen makes a mis-tap easier, not harder, and there's less
-                 reason to need it on a phone in the first place. */}
-             <button
-                onClick={handleDeveloperReset}
-                disabled={isResetting}
-                className="nav-act relative z-10 hidden lg:flex p-2 text-[var(--danger)] rounded-lg transition-colors disabled:opacity-50 cursor-pointer"
-                aria-label="Developer Reset"
-                title="Perform Hard Reset"
-             >
-                <ShieldAlert className={`w-4 h-4 ${isResetting ? "animate-spin" : ""}`} />
-             </button>
-
              <button
                 onClick={toggleTheme}
                 className="nav-act relative z-10 p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer overflow-hidden"

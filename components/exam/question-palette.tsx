@@ -6,9 +6,14 @@ import { useCallback, useMemo, useRef } from "react";
 import { useKeepCurrentCellVisible } from "./question-meta";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { motion } from "motion/react";
+import { SmartTruncate } from "@/components/ui/smart-truncate";
 
 export function QuestionPalette() {
-  const { currentDraft } = useExamStore();
+  // The running test carries its own copy of the question list; the setup draft can be
+  // cleared (store reset on sign-in, resumed or archived tests) and left this empty.
+  const setupDraft = useExamStore((st) => st.currentDraft);
+  const sessionDraft = useExamRuntimeStore((st) => st.activeSession?.draftConfig);
+  const currentDraft = sessionDraft ?? setupDraft;
   const responses = useExamRuntimeStore((state) => state.activeSession?.responses);
   const totalQuestions = useExamRuntimeStore((state) => state.activeSession?.totalQuestions || 0);
   const currentQuestionIndex = useExamRuntimeStore((state) => state.activeSession?.currentQuestionIndex || 0);
@@ -66,15 +71,15 @@ export function QuestionPalette() {
           <div className="space-y-3">
             <div>
               <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block mb-0.5">Current Section</span>
-              <span className="text-xs font-bold text-[var(--text-primary)] block truncate" title={currentQData.section}>{currentQData.section || "N/A"}</span>
+              <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.section || "N/A"} />
             </div>
             <div>
               <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block mb-0.5">Current Subject</span>
-              <span className="text-xs font-bold text-[var(--text-primary)] block truncate" title={currentQData.subject}>{currentQData.subject || "N/A"}</span>
+              <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.subject || "N/A"} />
             </div>
             <div>
               <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block mb-0.5">Current Topic</span>
-              <span className="text-xs font-bold text-[var(--text-primary)] block truncate" title={currentQData.topic}>{currentQData.topic || "N/A"}</span>
+              <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.topic || "N/A"} />
             </div>
           </div>
         ) : null}

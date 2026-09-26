@@ -214,7 +214,7 @@ export const CustomTestBuilder = forwardRef<CustomTestBuilderHandle, CustomTestB
     generate: handleGenerateClick,
   }));
 
-  const papers = repo.getAvailablePapers().sort();
+  const papers = repo.getAvailablePapers(); // newest first
   const sections = repo.getAvailableSections().sort();
   const subjects = repo.getAvailableSubjects().sort();
   const topics = repo.getAvailableTopics().sort();

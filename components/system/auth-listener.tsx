@@ -57,7 +57,7 @@ export function AuthListener() {
         try {
           const { data } = await supabase
             .from("profiles")
-            .select("id, username, display_name, avatar_seed, avatar_style, target_branch, target_year, target_rank, target_score, daily_study_hours, tier")
+            .select("*") // all columns: new optional profile fields appear without a code change
             .eq("id", userId)
             .single();
           return (data as Profile) ?? null;

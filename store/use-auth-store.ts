@@ -13,6 +13,21 @@ export interface Profile {
   target_score: number | null;
   daily_study_hours: number;
   tier: string;
+  created_at?: string;
+  // Added by migration 0007 (optional until it has run).
+  bio?: string | null;
+  college?: string | null;
+  degree?: string | null;
+  graduation_year?: number | null;
+  state?: string | null;
+  city?: string | null;
+  aspirant_status?: string | null;
+  attempt_number?: number | null;
+  exam_date?: string | null;
+  study_days_per_week?: number | null;
+  preferred_study_time?: string | null;
+  student_id?: string | null;
+  onboarded_at?: string | null;
 }
 
 interface AuthUser {

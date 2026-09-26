@@ -330,9 +330,15 @@ class QuestionRepositorySingleton {
     return this.indexes!.questionsBySection.get(section) || [];
   }
 
+  /** Newest paper first (2026-FN, 2026-AN, 2025-FN, …); forenoon before afternoon. */
   public getAvailablePapers(): string[] {
     this.checkReady();
-    return Array.from(this.indexes!.questionsByYearShift.keys());
+    const shiftRank = (s: string) => (s === "FN" ? 0 : s === "AN" ? 1 : 2);
+    return Array.from(this.indexes!.questionsByYearShift.keys()).sort((a, b) => {
+      const [ya, sa = ""] = a.split("-");
+      const [yb, sb = ""] = b.split("-");
+      return Number(yb) - Number(ya) || shiftRank(sa) - shiftRank(sb) || a.localeCompare(b);
+    });
   }
 
   public generateDiagnostics(): RepositoryDiagnostics {

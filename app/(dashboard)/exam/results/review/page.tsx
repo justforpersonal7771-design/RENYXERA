@@ -19,6 +19,7 @@ import { formatNatAnswer, isResponseCorrect } from "@/lib/grading";
 import { hasAnswer, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
 import { useDataStore } from "@/store/use-data-store";
 import { AnswersPendingBanner } from "@/components/exam/answers-pending-banner";
+import { LogoMarkFx } from "@/components/brand/wordmark";
 export default function ReviewPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -168,14 +169,11 @@ export default function ReviewPage() {
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <button
                 onClick={() => router.push("/")}
-                className="w-7 h-7 rounded-lg overflow-hidden shrink-0 cursor-pointer hover:opacity-90 transition-opacity"
+                className="logo-fx w-7 h-7 shrink-0 inline-flex items-center justify-center cursor-pointer"
                 title="Back to Dashboard"
+                aria-label="Back to Dashboard"
               >
-                <img
-                  src={resolvedTheme === "light" ? "/brand/mark-light.png" : "/brand/mark-dark.png"}
-                  alt="RENYXERA"
-                  className="w-full h-full object-contain"
-                />
+                <LogoMarkFx className="h-7 w-7" />
               </button>
               <span className="hidden lg:inline-block text-[10px] bg-violet-500/10 text-violet-700 dark:text-violet-300 px-2 py-1 rounded-md font-semibold shrink-0">Review</span>
               {q && (

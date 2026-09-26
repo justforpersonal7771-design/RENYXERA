@@ -18,6 +18,7 @@ import { MotionPrefs } from "@/components/system/motion-prefs";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { useAuthStore } from "@/store/use-auth-store";
+import { OnboardingGate } from "@/components/auth/onboarding-gate";
 
 const CommandPalette = dynamic(
   () => import("../exam/command-palette").then(m => m.CommandPalette),
@@ -66,7 +67,13 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     // any time.
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js")
-        .then((reg) => console.log("SW registered:", reg.scope))
+        .then((reg) => {
+          // Offline warm-up only once the page is loaded and idle (see public/sw.js).
+          const warm = () => navigator.serviceWorker.ready.then((r) => r.active?.postMessage("warm-offline"));
+          const idle = (cb: () => void) => ("requestIdleCallback" in window ? (window as any).requestIdleCallback(cb, { timeout: 8000 }) : setTimeout(cb, 4000));
+          if (document.readyState === "complete") idle(warm); else window.addEventListener("load", () => idle(warm), { once: true });
+          return reg;
+        })
         .catch((err) => console.warn("SW failed:", err));
     }
   }, [loadRepository]);
@@ -105,6 +112,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
         <ToastContainer />
         <ConfirmHost />
+        <OnboardingGate />
       </div>
       </MathJaxContext></MotionPrefs>
     );
@@ -150,6 +158,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <ToastContainer />
       <AuthModal />
       <ConfirmHost />
+        <OnboardingGate />
     </div>
     </MathJaxContext></MotionPrefs>
   );

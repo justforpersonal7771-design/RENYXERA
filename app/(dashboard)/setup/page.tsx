@@ -281,7 +281,13 @@ export default function ExamSetupPage() {
       const topics = Array.from(new Set(allQs.map(q => q.topic).filter(Boolean)));
       const sections = Array.from(new Set(allQs.map(q => q.section).filter(Boolean)));
 
-      setAvailablePapers(papers.sort());
+      // Newest paper first; forenoon before afternoon within a year.
+      const shiftRank = (x: string) => (x === "FN" ? 0 : x === "AN" ? 1 : 2);
+      setAvailablePapers(papers.sort((a, b) => {
+        const [ya, sa = ""] = a.split("-");
+        const [yb, sb = ""] = b.split("-");
+        return Number(yb) - Number(ya) || shiftRank(sa) - shiftRank(sb) || a.localeCompare(b);
+      }));
       setAvailableSubjects(subjects.sort());
       setAvailableTopics(topics.sort());
       setAvailableSections(sections.sort());
