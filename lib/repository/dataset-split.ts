@@ -1,3 +1,4 @@
+import { isNatCorrect, isOptionsCorrect, parseNatRanges } from "@/lib/grading";
 /**
  * Server-only utilities for splitting the question bank into a public half (safe to
  * serve to any client) and a private answer key (never served directly — only used to
@@ -55,21 +56,9 @@ export interface AnswerKeyEntry {
   correct_option_ids: string[]; // MCQ (len 1) / MSQ (len >=1)
   nat_min: number | null;
   nat_max: number | null;
+  nat_ranges: { min: number; max: number }[];
 }
 
-/** Parses the dataset's "X to Y" NAT range string into numeric bounds. Falls back to
- *  treating a single value ("5") as an exact-match range. Returns nulls if unparseable —
- *  callers should treat that as "no NAT answer available" rather than crash. */
-function parseNatRange(raw: string | null): { min: number | null; max: number | null } {
-  if (!raw) return { min: null, max: null };
-  const rangeMatch = raw.match(/^\s*(-?\d+(?:\.\d+)?)\s*to\s*(-?\d+(?:\.\d+)?)\s*$/i);
-  if (rangeMatch) {
-    return { min: Number(rangeMatch[1]), max: Number(rangeMatch[2]) };
-  }
-  const single = Number(raw.trim());
-  if (Number.isFinite(single)) return { min: single, max: single };
-  return { min: null, max: null };
-}
 
 /** Strips every answer-bearing field from a question, leaving only what's safe to hand
  *  to an unauthenticated or not-yet-graded client. */
@@ -103,12 +92,13 @@ export function buildAnswerKey(papers: RawPaper[]): Map<string, AnswerKeyEntry> 
   const key = new Map<string, AnswerKeyEntry>();
   for (const paper of papers) {
     for (const q of paper.questions) {
-      const { min, max } = parseNatRange(q.nat_answer_range);
+      const ranges = parseNatRanges(q.nat_answer_range);
       key.set(q.question_id, {
         question_type: q.question_type,
         correct_option_ids: (q.options || []).filter((o) => o.is_correct).map((o) => o.option_id),
-        nat_min: min,
-        nat_max: max,
+        nat_min: ranges[0]?.min ?? null,
+        nat_max: ranges[0]?.max ?? null,
+        nat_ranges: ranges,
       });
     }
   }
@@ -140,19 +130,6 @@ export function gradeResponse(
 ): boolean {
   const entry = answerKey.get(response.question_id);
   if (!entry) return false;
-
-  if (entry.question_type === "NAT") {
-    if (
-      typeof response.nat_value === "number" &&
-      entry.nat_min !== null &&
-      entry.nat_max !== null
-    ) {
-      return response.nat_value >= entry.nat_min && response.nat_value <= entry.nat_max;
-    }
-    return false;
-  }
-
-  const selected = new Set(response.selected_option_ids || []);
-  const correct = new Set(entry.correct_option_ids);
-  return selected.size === correct.size && [...selected].every((id) => correct.has(id));
+  if (entry.question_type === "NAT") return isNatCorrect(response.nat_value, entry.nat_ranges);
+  return isOptionsCorrect(entry.question_type, response.selected_option_ids, entry.correct_option_ids);
 }

@@ -21,6 +21,7 @@ import { AIResponseParser } from "@/lib/ai/ai-response-parser";
 import { ConversationMemory } from "@/lib/ai/memory/ConversationMemory";
 import { useToastStore } from "@/store/use-toast-store";
 
+import { formatNatAnswer } from "@/lib/grading";
 const EXPLAIN_MODES = [
   "Detailed",
   "Simple",
@@ -675,7 +676,7 @@ export default function AITutorWorkspace() {
                   {question.question_type === "NAT" && question.nat_answer_range && (
                     <div className="p-3 bg-emerald-500/5 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-semibold font-num flex justify-between items-center">
                       <span>Correct Answer Range</span>
-                      <span>{question.nat_answer_range.min} - {question.nat_answer_range.max}</span>
+                      <span>{formatNatAnswer(question.nat_answer_range)}</span>
                     </div>
                   )}
                 </div>

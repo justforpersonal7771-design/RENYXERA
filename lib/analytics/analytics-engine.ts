@@ -3,6 +3,7 @@ import { QuestionRepository } from "@/lib/repository/question-repository";
 import { DashboardMetrics, SubjectAnalytics, TopicAnalytics, DifficultyAnalytics, StudyMetrics } from "@/types/analytics.types";
 import { StreakEngine } from "./streak-engine";
 
+import { isResponseCorrect } from "@/lib/grading";
 export class AnalyticsEngine {
   public static async generateDashboardMetrics(sessions: ExamSession[]): Promise<DashboardMetrics> {
     await QuestionRepository.initialize();
@@ -61,17 +62,7 @@ export class AnalyticsEngine {
           sessionStat.attempted++;
 
           let isCorrect = false;
-          if (question.question_type === "MCQ" || question.question_type === "MSQ") {
-             const correctOptions = (question.options || []).filter(o => o.is_correct).map(o => o.option_id).sort().join(",");
-             const userOptions = (qContext.selectedOptions || []).sort().join(",");
-             isCorrect = correctOptions === userOptions;
-           } else if (question.question_type === "NAT") {
-             // simplified NAT check: match single value or range
-             if (question.nat_answer_range && qContext.natValue) {
-               const val = parseFloat(qContext.natValue);
-               isCorrect = !isNaN(val) && val >= question.nat_answer_range.min && val <= question.nat_answer_range.max;
-             }
-           }
+          isCorrect = isResponseCorrect(question, qContext.selectedOptions, qContext.natValue);
 
           if (isCorrect) {
             totalCorrect++;

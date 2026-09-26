@@ -7,6 +7,7 @@ import { AdaptiveEngine, AdaptiveRevisionItem } from "./AdaptiveEngine";
 import { StreakEngine } from "@/lib/analytics/streak-engine";
 import { ExamSession } from "@/types/exam-runtime.types";
 
+import { isResponseCorrect } from "@/lib/grading";
 export interface PersonalizedIntelligence {
   masteryScore: number;
   readinessScore: number;
@@ -58,14 +59,7 @@ export class LearningEngine {
           if (!q) return;
 
           let isCorrect = false;
-          if (q.question_type === "MCQ" || q.question_type === "MSQ") {
-            const correctOpts = (q.options || []).filter(o => o.is_correct).map(o => o.option_id).sort().join(",");
-            const userOpts = (r.selectedOptions || []).sort().join(",");
-            isCorrect = correctOpts === userOpts;
-          } else if (q.question_type === "NAT" && q.nat_answer_range && r.natValue) {
-            const val = parseFloat(r.natValue);
-            isCorrect = !isNaN(val) && val >= q.nat_answer_range.min && val <= q.nat_answer_range.max;
-          }
+          isCorrect = isResponseCorrect(q, r.selectedOptions, r.natValue);
 
           if (isCorrect) totalCorrect++;
         }

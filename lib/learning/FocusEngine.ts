@@ -3,6 +3,7 @@ import { MistakeEntry, BookmarkEntry } from "@/types/study.types";
 import { ExamSession } from "@/types/exam-runtime.types";
 import { TopicMastery } from "./MasteryEngine";
 
+import { isResponseCorrect } from "@/lib/grading";
 export class FocusEngine {
   public static analyzeFocus(
     allQuestions: RenderableQuestion[],
@@ -79,14 +80,7 @@ export class FocusEngine {
           }
 
           let isCorrect = false;
-          if (q.question_type === "MCQ" || q.question_type === "MSQ") {
-            const correctOpts = (q.options || []).filter(o => o.is_correct).map(o => o.option_id).sort().join(",");
-            const userOpts = (r.selectedOptions || []).sort().join(",");
-            isCorrect = correctOpts === userOpts;
-          } else if (q.question_type === "NAT" && q.nat_answer_range && r.natValue) {
-            const val = parseFloat(r.natValue);
-            isCorrect = !isNaN(val) && val >= q.nat_answer_range.min && val <= q.nat_answer_range.max;
-          }
+          isCorrect = isResponseCorrect(q, r.selectedOptions, r.natValue);
 
           if (type === 'first') {
             topicTrend[q.topic].firstTotal++;

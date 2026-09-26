@@ -15,6 +15,7 @@ import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "motion/react";
 
+import { formatNatAnswer, isResponseCorrect } from "@/lib/grading";
 export default function ReviewPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -100,16 +101,7 @@ export default function ReviewPage() {
     const resLocal = session.responses[qIdLocal];
     if (resLocal && (resLocal.status === "ANSWERED" || resLocal.status === "MARKED_AND_ANSWERED")) {
       a = true;
-      if (qLocal?.question_type === "MCQ" || qLocal?.question_type === "MSQ") {
-        const correctOpts = qLocal.options.filter(o => o.is_correct).map(o => o.option_id).sort();
-        const selectedOpts = [...(resLocal.selectedOptions || [])].sort();
-        c = JSON.stringify(correctOpts) === JSON.stringify(selectedOpts);
-      } else if (qLocal?.question_type === "NAT") {
-        const val = parseFloat(resLocal.natValue || "");
-        if (!isNaN(val) && qLocal.nat_answer_range) {
-          c = val >= qLocal.nat_answer_range.min && val <= qLocal.nat_answer_range.max;
-        }
-      }
+      c = !!qLocal && isResponseCorrect(qLocal, resLocal.selectedOptions, resLocal.natValue);
     }
     return { isAttempted: a, isCorrect: c };
   };
@@ -330,7 +322,7 @@ export default function ReviewPage() {
                             <div className="flex-1 flex justify-between items-center bg-[var(--surface-secondary)] p-3 border border-[var(--border-subtle)] rounded-xl">
                               <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
                               <span className="font-num font-bold text-green-600 dark:text-green-400">
-                                {q.nat_answer_range ? `${q.nat_answer_range.min} to ${q.nat_answer_range.max}` : "N/A"}
+                                {formatNatAnswer(q.nat_answer_range)}
                               </span>
                             </div>
                             <div className={`flex-1 flex justify-between items-center bg-[var(--surface-secondary)] p-3 border rounded-xl ${isAttempted

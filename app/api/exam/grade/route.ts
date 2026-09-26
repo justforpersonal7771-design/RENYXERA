@@ -7,6 +7,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 // app/api/dataset/route.ts for why (Cloudflare Workers have no filesystem at runtime).
 import rawDataset from "@/data/Aggregated_Output.json";
 
+import { marksFor } from "@/lib/grading";
 export const runtime = "nodejs";
 
 const dataset = rawDataset as unknown as RawPaper[];
@@ -94,7 +95,9 @@ export async function POST(req: NextRequest) {
       const isCorrect = gradeResponse(answerKey, response);
       const marks = marksById.get(response.question_id) ?? 0;
       maxScore += marks;
-      if (isCorrect) score += marks;
+      const qType = answerKey.get(response.question_id)?.question_type ?? "NAT";
+      const attempted = !!response.selected_option_ids?.length || typeof response.nat_value === "number";
+      score += marksFor(qType, marks, attempted, isCorrect);
       return { question_id: response.question_id, is_correct: isCorrect, marks };
     });
 

@@ -43,3 +43,6 @@ jobs:
 
       - name: Goals engine acceptance test
         run: npm run check:goals
+
+      - name: Grading edge cases
+        run: npm run check:grading

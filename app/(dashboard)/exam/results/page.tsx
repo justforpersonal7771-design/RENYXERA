@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { GoalTagBadge } from "@/components/ui/goal-tag-badge";
 
+import { isResponseCorrect } from "@/lib/grading";
 /** Animated count-up for a numeric value, e.g. marks or accuracy percentage. */
 function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
   const motionValue = useMotionValue(0);
@@ -108,16 +109,7 @@ export default function ResultSummaryPage() {
         typeSplits[qtype].attempted++;
 
         let isCorrect = false;
-        if (q.question_type === "MCQ" || q.question_type === "MSQ") {
-          const correctOpts = q.options.filter(o => o.is_correct).map(o => o.option_id).sort();
-          const selectedOpts = [...(res.selectedOptions || [])].sort();
-          isCorrect = JSON.stringify(correctOpts) === JSON.stringify(selectedOpts);
-        } else if (q.question_type === "NAT") {
-          const val = parseFloat(res.natValue || "");
-          if (!isNaN(val) && q.nat_answer_range) {
-             isCorrect = val >= q.nat_answer_range.min && val <= q.nat_answer_range.max;
-          }
-        }
+        isCorrect = isResponseCorrect(q, res!.selectedOptions, res!.natValue);
         
         if (isCorrect) {
           correct++;
@@ -185,16 +177,7 @@ export default function ResultSummaryPage() {
 
       let isCorrect = false;
       if (isAttempted && q) {
-        if (q.question_type === "MCQ" || q.question_type === "MSQ") {
-          const correctOpts = q.options.filter(o => o.is_correct).map(o => o.option_id).sort();
-          const selectedOpts = [...(res!.selectedOptions || [])].sort();
-          isCorrect = JSON.stringify(correctOpts) === JSON.stringify(selectedOpts);
-        } else if (q.question_type === "NAT") {
-          const val = parseFloat(res!.natValue || "");
-          if (!isNaN(val) && q.nat_answer_range) {
-            isCorrect = val >= q.nat_answer_range.min && val <= q.nat_answer_range.max;
-          }
-        }
+        isCorrect = isResponseCorrect(q, res!.selectedOptions, res!.natValue);
       }
 
       return {

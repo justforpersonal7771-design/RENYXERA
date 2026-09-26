@@ -1,4 +1,5 @@
 import { Question, RenderableQuestion, RenderableOption } from "@/types/question.types";
+import { parseNatRanges } from "@/lib/grading";
 import { parseToAst } from "./ast-parser";
 
 export interface NormalizationContext {
@@ -52,14 +53,8 @@ export function normalizeQuestion(
 
   let parsedNatRange: any = rawQuestion.nat_answer_range;
   if (typeof parsedNatRange === "string") {
-    const parts = (parsedNatRange as string)
-      .split("to")
-      .map((s) => parseFloat(s.trim()));
-    if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
-      parsedNatRange = { min: parts[0], max: parts[1] };
-    } else {
-      parsedNatRange = undefined;
-    }
+    const ranges = parseNatRanges(parsedNatRange);
+    parsedNatRange = ranges.length ? { min: ranges[0].min, max: ranges[0].max, ranges } : undefined;
   }
 
   return {

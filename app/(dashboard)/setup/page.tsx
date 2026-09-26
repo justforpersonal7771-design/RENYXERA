@@ -22,6 +22,7 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
 
+import { formatNatAnswer } from "@/lib/grading";
 const mathJaxConfig = {
   loader: { load: ["input/tex", "output/chtml"] },
   tex: {
@@ -879,7 +880,7 @@ export default function ExamSetupPage() {
                                                     {q.nat_answer_range && (
                                                       <div className="p-3 bg-green-500/5 border border-green-500/20 rounded-xl text-green-700 dark:text-green-400 font-bold flex justify-between max-w-sm">
                                                         <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Correct Answer Range</span>
-                                                        <span className="font-num">{q.nat_answer_range.min} - {q.nat_answer_range.max}</span>
+                                                        <span className="font-num">{formatNatAnswer(q.nat_answer_range)}</span>
                                                       </div>
                                                     )}
                                                   </div>

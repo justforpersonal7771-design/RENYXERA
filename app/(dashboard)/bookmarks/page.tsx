@@ -23,6 +23,7 @@ import { AIResponseParser } from "@/lib/ai/ai-response-parser";
 import { useToastStore } from "@/store/use-toast-store";
 import { GuestDataBanner } from "@/components/auth/guest-data-banner";
 
+import { formatNatAnswer, isNatCorrect, natRangesOf } from "@/lib/grading";
 export default function BookmarksPage() {
   const router = useRouter();
   const { isInitialized } = useDataStore();
@@ -667,13 +668,12 @@ export default function BookmarksPage() {
                         <div className="flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl">
                           <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
                           <span className="font-num font-bold text-green-600 dark:text-green-400">
-                            {question.nat_answer_range?.min} {question.nat_answer_range?.min !== question.nat_answer_range?.max && `- ${question.nat_answer_range?.max}`}
+                            {formatNatAnswer(question.nat_answer_range)}
                           </span>
                         </div>
                         {activeEntry.natValue && (
                           <div className={`flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border rounded-xl ${
-                            parseFloat(activeEntry.natValue) >= (question.nat_answer_range?.min || 0) &&
-                            parseFloat(activeEntry.natValue) <= (question.nat_answer_range?.max || 0)
+                            isNatCorrect(activeEntry.natValue, natRangesOf(question.nat_answer_range))
                               ? 'border-green-500 text-green-700 dark:text-green-500'
                               : 'border-red-500 text-red-700 dark:text-red-500'
                           }`}>

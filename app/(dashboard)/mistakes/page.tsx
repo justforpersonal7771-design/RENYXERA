@@ -21,6 +21,7 @@ import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { GuestDataBanner } from "@/components/auth/guest-data-banner";
 
+import { isResponseCorrect } from "@/lib/grading";
 export default function MistakesPage() {
   const router = useRouter();
   const { isInitialized } = useDataStore();
@@ -132,21 +133,7 @@ export default function MistakesPage() {
 
     let isCorrect = false;
 
-    if (question.question_type === "MCQ" || question.question_type === "MSQ") {
-      const correctOptionIds = (question.options || [])
-        .filter(o => o.is_correct)
-        .map(o => o.option_id)
-        .sort()
-        .join(",");
-
-      const userOptionIds = [...userSelected].sort().join(",");
-      isCorrect = correctOptionIds === userOptionIds;
-    } else if (question.question_type === "NAT" && question.nat_answer_range) {
-      const val = parseFloat(userNatValue);
-      isCorrect = !isNaN(val) &&
-        val >= question.nat_answer_range.min &&
-        val <= question.nat_answer_range.max;
-    }
+    isCorrect = isResponseCorrect(question, [...userSelected], userNatValue);
 
     if (isCorrect) {
       setValidationOutcome("correct");

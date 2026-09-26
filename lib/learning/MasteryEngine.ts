@@ -3,6 +3,7 @@ import { MistakeEntry, BookmarkEntry } from "@/types/study.types";
 import { ExamSession } from "@/types/exam-runtime.types";
 import { SubjectAnalytics, TopicAnalytics } from "@/types/analytics.types";
 
+import { isResponseCorrect } from "@/lib/grading";
 export interface TopicMastery {
   topic: string;
   subject: string;
@@ -43,14 +44,7 @@ export class MasteryEngine {
 
         // Basic evaluation check
         let isCorrect = false;
-        if (question.question_type === "MCQ" || question.question_type === "MSQ") {
-          const correctOpts = (question.options || []).filter(o => o.is_correct).map(o => o.option_id).sort().join(",");
-          const userOpts = (res.selectedOptions || []).sort().join(",");
-          isCorrect = correctOpts === userOpts;
-        } else if (question.question_type === "NAT" && question.nat_answer_range && res.natValue) {
-          const val = parseFloat(res.natValue);
-          isCorrect = !isNaN(val) && val >= question.nat_answer_range.min && val <= question.nat_answer_range.max;
-        }
+        isCorrect = isResponseCorrect(question, res.selectedOptions, res.natValue);
 
         if (isCorrect) {
           topicStats[question.topic].correct++;

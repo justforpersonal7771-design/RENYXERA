@@ -13,6 +13,7 @@ import { Loader2, ArrowLeft, ArrowRight, ChevronLeft, Sparkles } from "lucide-re
 import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 
+import { formatNatAnswer, isNatCorrect, natRangesOf } from "@/lib/grading";
 function RevisionSessionContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -173,13 +174,12 @@ function RevisionSessionContent() {
                      <div className="flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl">
                        <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
                        <span className="font-num font-bold text-green-600 dark:text-green-400">
-                         {currentQuestion.nat_answer_range?.min} {currentQuestion.nat_answer_range?.min !== currentQuestion.nat_answer_range?.max && `- ${currentQuestion.nat_answer_range?.max}`}
+                         {formatNatAnswer(currentQuestion.nat_answer_range)}
                        </span>
                      </div>
                      {natValue && (
                        <div className={`flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border rounded-xl ${
-                         parseFloat(natValue) >= (currentQuestion.nat_answer_range?.min || 0) &&
-                         parseFloat(natValue) <= (currentQuestion.nat_answer_range?.max || 0)
+                         isNatCorrect(natValue, natRangesOf(currentQuestion.nat_answer_range))
                            ? 'border-green-500 text-green-700 dark:text-green-500'
                            : 'border-red-500 text-red-700 dark:text-red-500'
                        }`}>

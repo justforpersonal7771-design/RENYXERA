@@ -2,6 +2,7 @@ import { ExamSession } from "@/types/exam-runtime.types";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 
+import { isResponseCorrect } from "@/lib/grading";
 export class MistakeEngine {
   public static async processSession(session: ExamSession): Promise<void> {
     const responses = Object.values(session.responses || {});
@@ -21,16 +22,7 @@ export class MistakeEngine {
         isMistake = true;
       } else if (isAnswered) {
         let isCorrect = false;
-        if (question.question_type === "MCQ" || question.question_type === "MSQ") {
-          const correctOptions = (question.options || []).filter(o => o.is_correct).map(o => o.option_id).sort().join(",");
-          const userOptions = (response.selectedOptions || []).sort().join(",");
-          isCorrect = correctOptions === userOptions;
-        } else if (question.question_type === "NAT") {
-          if (question.nat_answer_range && response.natValue) {
-            const val = parseFloat(response.natValue);
-            isCorrect = !isNaN(val) && val >= question.nat_answer_range.min && val <= question.nat_answer_range.max;
-          }
-        }
+        isCorrect = isResponseCorrect(question, response.selectedOptions, response.natValue);
         
         if (!isCorrect) {
           isMistake = true;

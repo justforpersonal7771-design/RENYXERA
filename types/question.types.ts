@@ -20,6 +20,8 @@ export interface RenderableOption {
 export interface NatAnswerRange {
   min: number;
   max: number;
+  /** Every accepted range when the official key says "a to b OR c to d" (min/max = first). */
+  ranges?: { min: number; max: number }[];
 }
 
 export interface Question {
