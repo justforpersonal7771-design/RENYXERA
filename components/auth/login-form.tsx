@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Loader2, Eye, EyeOff } from "lucide-react";
@@ -29,6 +30,8 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -37,8 +40,9 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password, options: { captchaToken: captchaToken ?? undefined } });
       if (error) {
+        turnstileRef.current?.reset();
         setError(error.message);
         setLoading(false);
         return;
@@ -122,6 +126,8 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
           </div>
         </div>
 
+        <TurnstileWidget ref={turnstileRef} onToken={setCaptchaToken} />
+
         {error && (
           <p role="alert" className="text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
             {error}
@@ -130,7 +136,7 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !captchaToken}
           className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm px-4 py-2.5 transition-colors disabled:opacity-50 disabled:pointer-events-none mt-1"
         >
           {loading && <Loader2 className="w-4 h-4 animate-spin" />}

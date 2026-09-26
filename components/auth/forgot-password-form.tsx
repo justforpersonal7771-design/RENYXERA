@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { Loader2, CheckCircle2, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
@@ -13,6 +14,8 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const [submitted, setSubmitted] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -23,8 +26,10 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
       const supabase = createClient();
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/auth/callback?next=/reset-password/confirm`,
+        captchaToken: captchaToken ?? undefined,
       });
       if (error) {
+        turnstileRef.current?.reset();
         setError(error.message);
         setLoading(false);
         return;
@@ -94,6 +99,8 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
           />
         </div>
 
+        <TurnstileWidget ref={turnstileRef} onToken={setCaptchaToken} />
+
         {error && (
           <p role="alert" className="text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">
             {error}
@@ -102,7 +109,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !captchaToken}
           className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm px-4 py-2.5 transition-colors disabled:opacity-50 disabled:pointer-events-none mt-1"
         >
           {loading && <Loader2 className="w-4 h-4 animate-spin" />}
