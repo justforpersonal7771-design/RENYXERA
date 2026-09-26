@@ -3,14 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { LogIn, LayoutGrid, IdCard, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, Download, LogOut, ChevronRight } from "lucide-react";
+import { LogIn, LayoutGrid, IdCard, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { generateAvatarDataUri } from "@/lib/avatar/generate-avatar";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 
 const ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutGrid, tint: "from-indigo-500 to-violet-600" },
@@ -26,7 +27,7 @@ const ITEMS = [
  * Topbar account entry. Signed out: "Sign In" (opens the auth modal in place).
  * Signed in: the avatar (brand ring, sheen, synced dot — .avatar-fx) with a quick-access
  * menu on hover/click/focus: mini profile card, every profile section as an icon row
- * (smooth zoom-and-slide on hover, a highlight gliding between rows), Downloads and
+ * (smooth zoom-and-slide on hover, a highlight gliding between rows), and
  * Sign out. Portaled so the navbar's rounded cluster can't clip it.
  */
 export function AccountButton() {
@@ -35,7 +36,6 @@ export function AccountButton() {
   const loading = useAuthStore((s) => s.loading);
   const openAuthModal = useAuthModalStore((s) => s.open);
   const pathname = usePathname();
-  const router = useRouter();
 
   const btnRef = useRef<HTMLAnchorElement>(null);
   const [open, setOpen] = useState(false);
@@ -91,6 +91,7 @@ export function AccountButton() {
   };
   const signOut = async () => {
     setOpen(false);
+    if (!(await confirmDialog({ title: "Sign out?", message: "You'll need to sign in again to sync your progress. Anything saved on this device stays here.", confirmLabel: "Sign out", cancelLabel: "Stay signed in", tone: "warning", icon: "leave" }))) return;
     sessionStorage.setItem(SIGNED_OUT_FLAG, "1");
     const { createClient } = await import("@/lib/supabase/client");
     await createClient().auth.signOut().catch(() => {});
@@ -153,13 +154,9 @@ export function AccountButton() {
                 ))}
               </div>
 
-              <div className="mt-1 pt-1 border-t border-[var(--border-subtle)] grid grid-cols-2 gap-1">
-                <button type="button" onClick={() => { setOpen(false); router.push("/downloads"); }}
-                  className="group flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] transition-all hover:scale-[1.03] cursor-pointer">
-                  <Download className="w-3.5 h-3.5 transition-transform group-hover:translate-y-0.5" /> Downloads
-                </button>
+              <div className="mt-1 pt-1 border-t border-[var(--border-subtle)]">
                 <button type="button" onClick={signOut}
-                  className="group flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-all hover:scale-[1.03] cursor-pointer">
+                  className="group w-full flex items-center justify-center gap-1.5 rounded-xl px-2 py-2 text-xs font-semibold text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition-all hover:scale-[1.03] cursor-pointer">
                   <LogOut className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" /> Sign out
                 </button>
               </div>

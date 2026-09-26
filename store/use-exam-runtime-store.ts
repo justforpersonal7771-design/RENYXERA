@@ -73,50 +73,50 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
   submitSession: async () => {
     const { activeSession } = get();
     if (!activeSession) return null;
-    let updated: ExamSession = { ...activeSession, status: "SUBMITTED" as const, updatedAt: new Date().toISOString() };
+    const updated: ExamSession = { ...activeSession, status: "SUBMITTED" as const, updatedAt: new Date().toISOString() };
 
-    // Step 6: grade on the server and unlock this test's answer keys before anything
-    // (results, mistakes, analytics) reads them. Never blocks submission: offline or on
-    // error the test is still saved and the results screen shows "answers pending".
-    try {
-      const { submitForGrading } = await import("@/lib/repository/answer-keys");
-      const graded = await submitForGrading(updated);
-      if (graded) updated = { ...updated, serverScore: graded.score, serverMaxScore: graded.maxScore, serverStored: graded.stored };
-    } catch (e) {
-      console.warn("Server grading unavailable; answers will unlock when online", e);
-    }
-    
-    // Save to history before clearing active session
+    // Save and show "Test submitted" straight away — the confirmation must never wait on
+    // the network. Server grading, answer unlock, mistakes and analytics follow in the
+    // background; the results screen shows "checking…" until the keys arrive, and the
+    // grader is idempotent, so the results page retrying at the same time is harmless.
     await SessionManager.saveToHistory(updated);
-    // Process mistakes
-    try {
-      const MistakeEngine = (await import("@/lib/analytics/mistake-engine")).MistakeEngine;
-      await MistakeEngine.processSession(updated);
-    } catch(e) {
-      console.warn("Failed to process mistakes", e);
-    }
-    // Clear session from persistence since it is submitted
     await SessionManager.clearSession();
-    // Keep updated session in memory state to avoid immediate blank out
     set({ activeSession: updated });
 
     try {
-       const useExamStore = (await import("@/store/use-exam-store")).useExamStore;
-       useExamStore.getState().clearDraft();
-    } catch(e) {
-       console.error("Failed to clear draft", e);
+      const useExamStore = (await import("@/store/use-exam-store")).useExamStore;
+      useExamStore.getState().clearDraft();
+    } catch (e) {
+      console.error("Failed to clear draft", e);
     }
 
-    // A completed exam changes what Dashboard/Analytics show — drop the cached metrics so
-    // the next visit recomputes instead of either showing stale data or (the old behavior)
-    // recomputing unconditionally on every single navigation regardless of whether anything
-    // changed.
-    try {
-       const useAnalyticsStore = (await import("@/store/use-analytics-store")).useAnalyticsStore;
-       useAnalyticsStore.getState().invalidate();
-    } catch(e) {
-       console.error("Failed to invalidate analytics cache", e);
-    }
+    void (async () => {
+      let final = updated;
+      try {
+        const { submitForGrading } = await import("@/lib/repository/answer-keys");
+        const graded = await submitForGrading(updated);
+        if (graded) {
+          final = { ...updated, serverScore: graded.score, serverMaxScore: graded.maxScore, serverStored: graded.stored };
+          await SessionManager.saveToHistory(final);
+        }
+      } catch (e) {
+        console.warn("Server grading unavailable; answers will unlock when online", e);
+      }
+      // Mistakes need the unlocked keys (answers still locked are skipped, never counted wrong).
+      try {
+        const MistakeEngine = (await import("@/lib/analytics/mistake-engine")).MistakeEngine;
+        await MistakeEngine.processSession(final);
+      } catch (e) {
+        console.warn("Failed to process mistakes", e);
+      }
+      // A completed exam changes what Dashboard/Analytics show — recompute on next visit.
+      try {
+        const useAnalyticsStore = (await import("@/store/use-analytics-store")).useAnalyticsStore;
+        useAnalyticsStore.getState().invalidate();
+      } catch (e) {
+        console.error("Failed to invalidate analytics cache", e);
+      }
+    })();
 
     return updated.id;
   },

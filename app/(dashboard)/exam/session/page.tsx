@@ -283,7 +283,7 @@ export default function ExamSessionPage() {
                can't fit, the row scrolls horizontally instead of breaking (graceful
                degradation, not silent corruption). */}
            <div className="flex items-center justify-between px-2 sm:px-5 gap-2 sm:gap-3 h-14">
-              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 md:shrink md:min-w-0 md:flex-1">
                  <button
                    onClick={async () => {
                      if (await confirmDialog({ title: "Leave this exam?", message: "It will be paused and saved, so you can resume it later from the dashboard.", confirmLabel: "Pause & leave", cancelLabel: "Keep going", tone: "warning", icon: "leave" })) {
@@ -298,7 +298,7 @@ export default function ExamSessionPage() {
                    <LogoMarkFx className="h-7 w-7" />
                  </button>
                  {currentQuestion && (
-                    <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-2 py-1 rounded-md border border-[var(--border)] font-num text-[13px] font-bold shrink-0">
+                    <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-1.5 sm:px-2 py-1 rounded-md border border-[var(--border)] font-num text-[12px] sm:text-[13px] font-bold shrink-0 whitespace-nowrap">
                       {currentQuestionIndex + 1}<span className="text-[var(--text-muted)]">/{totalQuestions}</span>
                     </span>
                  )}
@@ -320,6 +320,11 @@ export default function ExamSessionPage() {
                       </div>
                     </div>
                  )}
+              </div>
+
+              {/* Section switcher lives in the bar on wider screens (frees a whole row for the question). */}
+              <div className="hidden md:flex flex-1 justify-center min-w-0 px-2">
+                <SectionTabs variant="bar" />
               </div>
 
               <div className="flex items-center gap-1 sm:gap-2 shrink-0">
@@ -394,7 +399,7 @@ export default function ExamSessionPage() {
         </header>
 
         {/* SECTION TABS ROW */}
-        <div className="flex-none bg-[var(--surface)] border-b border-[var(--border)] z-20 w-full overflow-x-auto shadow-sm">
+        <div className="md:hidden flex-none bg-[var(--surface)] border-b border-[var(--border)] z-20 w-full overflow-x-auto shadow-sm">
            <SectionTabs />
         </div>
 

@@ -150,7 +150,21 @@ type SubmittableSession = {
  * users, and returns this test's answer keys (merged + cached here). Returns null when
  * grading isn't possible right now (offline / error) — the caller still saves the test.
  */
-export async function submitForGrading(
+const inflightGrading = new Map<string, Promise<{ score: number; maxScore: number; stored: boolean } | null>>();
+
+/** One grading request per test at a time — later callers share the in-flight result. */
+export function submitForGrading(
+  session: SubmittableSession,
+  opts: { timeoutMs?: number } = {}
+): Promise<{ score: number; maxScore: number; stored: boolean } | null> {
+  const running = inflightGrading.get(session.id);
+  if (running) return running;
+  const p = gradeNow(session, opts).finally(() => inflightGrading.delete(session.id));
+  inflightGrading.set(session.id, p);
+  return p;
+}
+
+async function gradeNow(
   session: SubmittableSession,
   opts: { timeoutMs?: number } = {}
 ): Promise<{ score: number; maxScore: number; stored: boolean } | null> {

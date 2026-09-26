@@ -550,7 +550,7 @@ export default function ResultSummaryPage() {
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <span className="relative">{tab}</span>
+                  <span className="relative">{tab[0].toUpperCase() + tab.slice(1)}</span>
                 </button>
               ))}
             </div>

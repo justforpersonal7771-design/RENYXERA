@@ -9,6 +9,7 @@ import { upcomingExamYear } from "@/lib/goals/exam-year";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 
 const STATUSES = [
   { label: "Select…", value: "" },
@@ -106,6 +107,7 @@ export function OnboardingGate() {
   };
 
   const signOut = async () => {
+    if (!(await confirmDialog({ title: "Sign out?", message: "You'll need to sign in again to sync your progress. Your account setup will wait for you — you'll finish it next time.", confirmLabel: "Sign out", cancelLabel: "Stay signed in", tone: "warning", icon: "leave" }))) return;
     sessionStorage.setItem(SIGNED_OUT_FLAG, "1");
     const { createClient } = await import("@/lib/supabase/client");
     await createClient().auth.signOut().catch(() => {});

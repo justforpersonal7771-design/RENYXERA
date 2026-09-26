@@ -6,7 +6,19 @@ import { QuestionRepository } from "@/lib/repository/question-repository";
 import { useMemo } from "react";
 import { motion } from "motion/react";
 
-export function SectionTabs() {
+/** "GENERAL APTITUDE (GA)" → "General Aptitude"; keeps short codes like "CS" upper. */
+function shortName(name: string) {
+  return name.replace(/\s*\(.*?\)\s*/g, " ").trim().toLowerCase()
+    .replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\bCs\b/g, "CS").replace(/\bGa\b/g, "GA")
+    .replace("Mathematical Foundations", "Maths");
+}
+
+/**
+ * Section switcher. `row` (default): full-width tabs under the top bar (phones).
+ * `bar`: a compact pill control that lives inside the exam top bar on wider screens —
+ * a gradient pill slides between sections, each with an answered/total count.
+ */
+export function SectionTabs({ variant = "row" }: { variant?: "row" | "bar" }) {
   // The running test carries its own copy of the question list; the setup draft can be
   // cleared (store reset on sign-in, resumed or archived tests) and left this empty.
   const setupDraft = useExamStore((st) => st.currentDraft);
@@ -16,6 +28,7 @@ export function SectionTabs() {
     (state) => state.activeSession?.currentQuestionIndex || 0,
   );
   const goToQuestion = useExamRuntimeStore((state) => state.goToQuestion);
+  const responses = useExamRuntimeStore((state) => state.activeSession?.responses);
 
   const sections = useMemo(() => {
     if (!currentDraft) return [];
@@ -48,6 +61,27 @@ export function SectionTabs() {
   const activeSectionName = currentQData?.section || "Unknown";
 
   if (sections.length <= 1) return null;
+
+  if (variant === "bar") {
+    return (
+      <div role="tablist" aria-label="Sections" className="relative flex items-center gap-0.5 p-1 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] min-w-0">
+        {sections.map((sec) => {
+          const isActive = activeSectionName === sec.name;
+          const ids = currentDraft!.questions.slice(sec.startIdx, sec.startIdx + sec.count).map((q) => q.questionId);
+          const answered = ids.filter((id) => { const st = responses?.[id]?.status; return st === "ANSWERED" || st === "MARKED_AND_ANSWERED"; }).length;
+          return (
+            <button key={sec.name} role="tab" aria-selected={isActive} title={sec.name} onClick={() => goToQuestion(sec.startIdx)}
+              className={`group relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer ${isActive ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+              {isActive && <motion.span layoutId="sectionBarPill" transition={{ type: "spring", stiffness: 420, damping: 32 }} className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-md shadow-violet-500/30" />}
+              <span className="relative transition-transform duration-200 group-hover:scale-[1.04]">{shortName(sec.name)}</span>
+              <span className={`relative font-num text-[10px] px-1.5 py-0.5 rounded-md ${isActive ? "bg-white/20" : "bg-[var(--surface)] text-[var(--text-muted)]"}`}>{answered}/{sec.count}</span>
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
+
 
   return (
     <div 

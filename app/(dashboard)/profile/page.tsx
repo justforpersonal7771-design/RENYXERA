@@ -24,6 +24,7 @@ import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-a
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { Combobox, type ComboOption } from "@/components/ui/combobox";
 import { DEGREES, customDegrees, rememberCustomDegree } from "@/lib/degrees";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 
 const INPUT = "w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-shadow";
 const LABEL = "flex items-center gap-1.5 text-xs font-bold text-[var(--text-secondary)] mb-1.5";
@@ -263,6 +264,7 @@ export default function ProfilePage() {
   }
 
   async function handleSignOut() {
+    if (!(await confirmDialog({ title: "Sign out?", message: "You'll need to sign in again to sync your progress. Anything saved on this device stays here.", confirmLabel: "Sign out", cancelLabel: "Stay signed in", tone: "warning", icon: "leave" }))) return;
     setSigningOut(true);
     try {
       sessionStorage.setItem(SIGNED_OUT_FLAG, "1");

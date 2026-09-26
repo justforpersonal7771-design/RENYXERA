@@ -2,7 +2,7 @@
 
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { useExamStore } from "@/store/use-exam-store";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useKeepCurrentCellVisible } from "./question-meta";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { motion } from "motion/react";
@@ -24,6 +24,16 @@ export function QuestionPalette() {
     : null;
   const currentSection = currentQData?.section || "Unknown";
 
+  // Grid shows the current section (default) or every question in order.
+  const [gridMode, setGridMode] = useState<"section" | "all">("section");
+  useEffect(() => {
+    try { if (localStorage.getItem("renyxera_grid_mode") === "all") setGridMode("all"); } catch {}
+  }, []);
+  const changeGridMode = (m: "section" | "all") => {
+    setGridMode(m);
+    try { localStorage.setItem("renyxera_grid_mode", m); } catch {}
+  };
+
   const sectionQuestions = useMemo(() => {
     if (!currentDraft) return [];
     return currentDraft.questions
@@ -32,8 +42,8 @@ export function QuestionPalette() {
         idx,
         qData: QuestionRepository.getQuestionById(q.questionId),
       }))
-      .filter((item) => (item.qData?.section || "Unknown") === currentSection);
-  }, [currentDraft, currentSection]);
+      .filter((item) => gridMode === "all" || (item.qData?.section || "Unknown") === currentSection);
+  }, [currentDraft, currentSection, gridMode]);
 
   const responsesList = useMemo(() => {
     if (!responses) return [];
@@ -110,6 +120,19 @@ export function QuestionPalette() {
             </div>
             <span>Marked & Answered ({stats.markedAndAnswered})</span>
           </div>
+        </div>
+      </div>
+
+      {/* Grid view toggle */}
+      <div className="flex-none px-4 sm:px-5 pt-3">
+        <div role="tablist" aria-label="Question grid view" className="relative grid grid-cols-2 p-1 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)]">
+          {([["section", "By section"], ["all", `All ${currentDraft.questions.length}`]] as const).map(([m, label]) => (
+            <button key={m} role="tab" aria-selected={gridMode === m} onClick={() => changeGridMode(m)}
+              className={`relative py-1.5 rounded-lg text-[11px] font-bold transition-colors cursor-pointer ${gridMode === m ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+              {gridMode === m && <motion.span layoutId="palette-grid-mode" transition={{ type: "spring", stiffness: 420, damping: 32 }} className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30" />}
+              <span className="relative">{label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
