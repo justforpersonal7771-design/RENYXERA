@@ -31,17 +31,19 @@ for (const paper of papers) {
     for (const o of q.options ?? []) {
       options.push({ question_id: q.question_id, option_id: o.option_id, text: o.text ?? "" });
     }
-    let natMin = null, natMax = null;
+    let natRanges = null;
     if (q.nat_answer_range) {
-      const ranges = String(q.nat_answer_range).split(/\s+OR\s+/i);
-      if (ranges.length > 1) multiRange++;
-      const nums = ranges[0].match(/-?\d+(\.\d+)?/g)?.map(Number) ?? [];
-      natMin = nums[0] ?? null; natMax = nums[1] ?? nums[0] ?? null;
+      natRanges = String(q.nat_answer_range).split(/\s+OR\s+/i).map((r) => {
+        const nums = r.match(/-?\d+(\.\d+)?/g)?.map(Number) ?? [];
+        return [nums[0] ?? null, nums[1] ?? nums[0] ?? null];
+      });
+      if (natRanges.length > 1) multiRange++;
     }
     answers.push({
       question_id: q.question_id,
       correct_option_ids: (q.options ?? []).filter((o) => o.is_correct).map((o) => o.option_id),
-      nat_min: natMin, nat_max: natMax,
+      nat_min: natRanges?.[0][0] ?? null, nat_max: natRanges?.[0][1] ?? null,
+      nat_ranges: natRanges,
     });
   }
 }
@@ -58,4 +60,4 @@ await upsert("questions", questions, "id");
 await upsert("question_options", options, "question_id,option_id");
 await upsert("question_answers", answers, "question_id");
 await db.from("branches").update({ question_count: questions.length }).eq("code", "CSE");
-console.log(`NAT questions with an "A OR B" answer (only first range stored): ${multiRange}`);
+console.log(`NAT questions with an "A OR B" answer (all ranges in nat_ranges): ${multiRange}`);
