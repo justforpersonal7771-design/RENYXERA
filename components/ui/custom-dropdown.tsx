@@ -121,7 +121,7 @@ export function CustomDropdown({ options, value, onChange, placeholder = "Select
                 left: rect.left,
                 width: rect.width,
               }}
-              className="z-[200] bg-[var(--surface)] border border-[var(--border-subtle)] rounded-xl shadow-2xl max-h-60 overflow-auto custom-scrollbar focus:outline-none"
+              className="z-[400] bg-[var(--surface)] border border-[var(--border-subtle)] rounded-xl shadow-2xl max-h-60 overflow-auto custom-scrollbar focus:outline-none"
               role="listbox"
             >
               {options.map((option) => {
