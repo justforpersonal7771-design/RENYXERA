@@ -504,7 +504,7 @@ export default function ProfilePage() {
 
   return (
     // Desktop: fixed header + fixed section menu; only the right-hand details scroll.
-    <div data-fill-height className="w-full max-w-[1500px] mx-auto flex flex-col gap-4 lg:h-full lg:min-h-0">
+    <div data-fill-height data-savebar={dirty || saving || saved || !!error ? "true" : undefined} className="w-full max-w-[1500px] mx-auto flex flex-col gap-4 lg:h-full lg:min-h-0">
       <div className="shrink-0">
         <ProfileHeader name={name} username={f.username} email={user.email} bio={f.bio} tier={profile?.tier || "free"} avatarUri={avatarUri}
           targetYear={f.targetYear} branchLabel={branchLabel} targetRank={f.targetRank} dailyHours={f.dailyHours} location={location}
@@ -531,7 +531,7 @@ export default function ProfilePage() {
           </div>
         </motion.nav>
 
-        <section id="profile-scroll" className="profile-scroll flex-1 min-w-0 lg:min-h-0 lg:overflow-y-auto custom-scrollbar lg:-ml-4 lg:pl-4 lg:pr-4 lg:-mr-2 lg:pt-2 pb-24">
+        <section id="profile-scroll" className={`profile-scroll flex-1 min-w-0 lg:min-h-0 lg:overflow-y-auto custom-scrollbar lg:-ml-4 lg:pl-4 lg:pr-4 lg:-mr-2 lg:pt-2 transition-[padding] duration-300 ${dirty || saving || saved || error ? "pb-44 lg:pb-32" : "pb-24"}`}>
           <div className="mb-4 flex items-center gap-3">
             <span className={`w-10 h-10 rounded-xl flex items-center justify-center ${current.tint}`}><current.icon className="w-5 h-5" /></span>
             <div>
