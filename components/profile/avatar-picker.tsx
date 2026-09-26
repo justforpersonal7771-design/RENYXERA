@@ -19,7 +19,7 @@ export interface AvatarValue {
  */
 export function AvatarPicker({ value, onChange, className = "" }: { value: AvatarValue; onChange: (value: AvatarValue) => void; className?: string }) {
   const [spin, setSpin] = useState(0);
-  const [variationSeeds, setVariationSeeds] = useState<string[]>(() => Array.from({ length: 6 }, randomAvatarSeed));
+  const [variationSeeds, setVariationSeeds] = useState<string[]>(() => Array.from({ length: 8 }, randomAvatarSeed));
 
   const styles = useMemo(
     () => AVATAR_STYLES.map((s) => ({ ...s, dataUri: generateAvatarDataUri(s.id, value.seed, { size: 96 }) })),
@@ -38,10 +38,10 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
   };
 
   return (
-    <div className={`flex flex-col md:flex-row gap-6 md:gap-8 ${className}`}>
+    <div className={`@container ${className}`}><div className="flex flex-col @3xl:flex-row gap-5 @3xl:gap-8">
       {/* Preview */}
-      <div className="flex md:flex-col items-center gap-4 md:w-52 shrink-0">
-        <div className="hero-avatar relative w-28 h-28 md:w-40 md:h-40 shrink-0">
+      <div className="flex @3xl:flex-col items-center gap-4 @3xl:w-52 shrink-0">
+        <div className="hero-avatar relative w-24 h-24 @md:w-28 @md:h-28 @3xl:w-40 @3xl:h-40 shrink-0">
           <motion.span aria-hidden="true" className="absolute -inset-3 rounded-[2rem] bg-gradient-to-br from-cyan-400/40 via-violet-500/40 to-fuchsia-500/40 blur-2xl"
             animate={{ opacity: [0.55, 0.9, 0.55] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
           <span className="hero-avatar-ring" style={{ borderRadius: 30 }} aria-hidden="true" />
@@ -53,7 +53,7 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
             </AnimatePresence>
           </div>
         </div>
-        <div className="flex-1 md:flex-none md:text-center min-w-0">
+        <div className="flex-1 @3xl:flex-none @3xl:text-center min-w-0">
           <p className="text-base font-extrabold text-[var(--text-primary)]">{current.label}</p>
           <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Generated just for you — never an uploaded photo.</p>
           <motion.button type="button" onClick={shuffle} whileTap={{ scale: 0.95 }}
@@ -68,7 +68,7 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
         {/* Styles */}
         <div>
           <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)] mb-2.5">Style</p>
-          <div role="radiogroup" aria-label="Avatar style" className="grid grid-cols-4 sm:grid-cols-8 gap-2.5">
+          <div role="radiogroup" aria-label="Avatar style" className="grid grid-cols-4 @md:grid-cols-8 gap-2 @md:gap-2.5">
             {styles.map((p, i) => {
               const selected = p.id === value.style;
               return (
@@ -97,12 +97,12 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
         <div>
           <div className="flex items-center justify-between mb-2.5">
             <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)] inline-flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5 text-violet-500" /> More {current.label} looks</p>
-            <button type="button" onClick={() => setVariationSeeds(Array.from({ length: 6 }, randomAvatarSeed))}
+            <button type="button" onClick={() => setVariationSeeds(Array.from({ length: 8 }, randomAvatarSeed))}
               className="group inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 cursor-pointer">
               <RefreshCw className="w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-180" /> More
             </button>
           </div>
-          <div className="grid grid-cols-6 gap-2.5">
+          <div className="grid grid-cols-4 @md:grid-cols-8 gap-2 @md:gap-2.5">
             <AnimatePresence mode="popLayout">
               {variations.map((v, i) => (
                 <motion.button key={v.seed} type="button" onClick={() => onChange({ ...value, seed: v.seed })} aria-label={`Use variation ${i + 1}`}
@@ -117,6 +117,6 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
           </div>
         </div>
       </div>
-    </div>
+    </div></div>
   );
 }

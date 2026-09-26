@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   Loader2, Save, CheckCircle2, User as UserIcon, Palette, IdCard, Target, GraduationCap, CalendarDays,
   Trophy, Clock, XCircle, LayoutGrid, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, MapPin, BookOpen,
-  Building2, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles,
+  Building2, Copy, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles,
 } from "lucide-react";
 import { upcomingExamYear, effectiveTargetYear, targetYearRolledForward, examDateFor } from "@/lib/goals/exam-year";
 import { NumberStepper } from "@/components/ui/number-stepper";
@@ -25,6 +25,7 @@ import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { Combobox, type ComboOption } from "@/components/ui/combobox";
 import { DEGREES, customDegrees, rememberCustomDegree } from "@/lib/degrees";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
+import { useToastStore } from "@/store/use-toast-store";
 
 const INPUT = "w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 transition-shadow";
 const LABEL = "flex items-center gap-1.5 text-xs font-bold text-[var(--text-secondary)] mb-1.5";
@@ -310,10 +311,10 @@ export default function ProfilePage() {
       case "personal":
         return (
           <div className="space-y-5">
-            <Card icon={Palette} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations." tint="bg-fuchsia-500/10 text-fuchsia-500">
-              <AvatarPicker value={{ style: f.avatarStyle as any, seed: f.avatarSeed }} onChange={(v) => setForm((x) => ({ ...x, avatarStyle: v.style, avatarSeed: v.seed }))} />
-            </Card>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-stretch">
+              <Card icon={Palette} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations." tint="bg-fuchsia-500/10 text-fuchsia-500" className="h-full">
+                <AvatarPicker value={{ style: f.avatarStyle as any, seed: f.avatarSeed }} onChange={(v) => setForm((x) => ({ ...x, avatarStyle: v.style, avatarSeed: v.seed }))} />
+              </Card>
               <Card icon={IdCard} title="Identity" subtitle="How you show up across RENYXERA." tint="bg-indigo-500/10 text-indigo-500" delay={0.04} className="h-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -348,7 +349,7 @@ export default function ProfilePage() {
                         <Sparkles className="w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-180" /> {bioSuggestions.length ? "More ideas" : "Suggest a bio"}
                       </motion.button>
                     </div>
-                    <textarea value={f.bio} onChange={(e) => set("bio", e.target.value.slice(0, 160))} rows={2} className={`${INPUT} resize-none`} placeholder="A line about you — e.g. Final-year CSE, aiming for IISc." />
+                    <textarea value={f.bio} onChange={(e) => set("bio", e.target.value.slice(0, 160))} rows={3} className={`${INPUT} resize-none`} placeholder="A line about you — e.g. Final-year CSE, aiming for IISc." />
                     <AnimatePresence>
                       {bioSuggestions.length > 0 && (
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
@@ -367,11 +368,30 @@ export default function ProfilePage() {
                     </AnimatePresence>
                     <p className="mt-1 text-right text-[11px] text-[var(--text-muted)] font-num">{f.bio.length}/160</p>
                   </div>
+                  <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3.5 py-2.5 min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Student ID</p>
+                      <div className="mt-0.5 flex items-center gap-2 min-w-0">
+                        <span className="font-mono text-sm font-semibold text-[var(--text-primary)] truncate select-all">{profile?.student_id || "—"}</span>
+                        {profile?.student_id && (
+                          <button type="button" title="Copy student ID" onClick={() => { navigator.clipboard?.writeText(profile.student_id!).then(() => useToastStore.getState().show("Student ID copied", "success")).catch(() => {}); }}
+                            className="shrink-0 p-1 rounded-md text-[var(--text-muted)] hover:text-violet-600 hover:bg-violet-500/10 transition-colors cursor-pointer"><Copy className="w-3.5 h-3.5" /></button>
+                        )}
+                      </div>
+                      <p className="text-[10px] text-[var(--text-muted)]">Permanent — can&apos;t be changed</p>
+                    </div>
+                    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3.5 py-2.5 min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Email</p>
+                      <p className="mt-0.5 text-sm font-semibold text-[var(--text-primary)] truncate">{user.email}</p>
+                      <p className="text-[10px] text-[var(--text-muted)]">Sign-in email · manage in Account &amp; security</p>
+                    </div>
+                  </div>
                 </div>
               </Card>
+            </div>
 
-              <Card icon={GraduationCap} title="Background" subtitle="Helps us tailor plans and, later, peer comparisons." tint="bg-violet-500/10 text-violet-500" delay={0.08} className="h-full">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Card icon={GraduationCap} title="Background" subtitle="Helps us tailor plans and, later, peer comparisons." tint="bg-violet-500/10 text-violet-500" delay={0.08}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                   <div>
                     <label className={LABEL}><UserIcon className="w-3.5 h-3.5" /> I am a</label>
                     <CustomDropdown value={f.aspirantStatus} onChange={(v) => set("aspirantStatus", v)} options={STATUSES} className="w-full text-sm font-medium" />
@@ -379,6 +399,10 @@ export default function ProfilePage() {
                   <div>
                     <label className={LABEL}><Hash className="w-3.5 h-3.5" /> GATE attempt</label>
                     <NumberStepper ariaLabel="Which GATE attempt this is" min={1} max={10} value={f.attemptNumber ?? 1} onChange={(v) => set("attemptNumber", v)} />
+                  </div>
+                  <div>
+                    <label className={LABEL}><CalendarDays className="w-3.5 h-3.5" /> Graduation year</label>
+                    <NumberStepper ariaLabel="Graduation year" min={1990} max={2040} value={f.graduationYear ?? new Date().getFullYear()} onChange={(v) => set("graduationYear", v)} />
                   </div>
                   <div>
                     <label className={LABEL}><Building2 className="w-3.5 h-3.5" /> College / university</label>
@@ -389,20 +413,14 @@ export default function ProfilePage() {
                     <Combobox ariaLabel="Degree" value={f.degree} onChange={(v) => set("degree", v.slice(0, 80))} options={degreeOptions} placeholder="Choose your degree" addLabel="Add degree" onAddCustom={(v) => { rememberCustomDegree(v.slice(0, 80)); setCustomDegreeList(customDegrees()); }} />
                   </div>
                   <div>
-                    <label className={LABEL}><CalendarDays className="w-3.5 h-3.5" /> Graduation year</label>
-                    <NumberStepper ariaLabel="Graduation year" min={1990} max={2040} value={f.graduationYear ?? new Date().getFullYear()} onChange={(v) => set("graduationYear", v)} />
-                  </div>
-                  <div>
-                    <label className={LABEL}><MapPin className="w-3.5 h-3.5" /> State</label>
-                    <CustomDropdown value={f.state} onChange={(v) => set("state", v)} options={STATES} className="w-full text-sm font-medium" />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label className={LABEL}><MapPin className="w-3.5 h-3.5" /> City</label>
-                    <input value={f.city} onChange={(e) => set("city", e.target.value)} maxLength={60} className={INPUT} placeholder="e.g. Hyderabad" />
+                    <label className={LABEL}><MapPin className="w-3.5 h-3.5" /> Location</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <CustomDropdown value={f.state} onChange={(v) => set("state", v)} options={STATES} className="w-full text-sm font-medium" />
+                      <input value={f.city} onChange={(e) => set("city", e.target.value)} maxLength={60} className={INPUT} placeholder="City" aria-label="City" />
+                    </div>
                   </div>
                 </div>
-              </Card>
-            </div>
+            </Card>
           </div>
         );
       case "goals":
