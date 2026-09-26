@@ -1,79 +1,92 @@
-const CACHE_NAME = "gateos-pwa-cache-v4";
-const ASSETS_TO_CACHE = [
-  "/",
-  "/manifest.json",
-  "/api/dataset",
-  "/api/image-manifest",
-];
+const CACHE_NAME = "gateos-pwa-cache-v5";
 
-// Install Event
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // cache.addAll() is all-or-nothing — a single failing URL (e.g. a stale entry that
-      // no longer resolves) silently drops precaching for every other entry too, with no
-      // visible error. Cache each entry independently instead so one bad URL can't take
-      // the rest down; genuinely missing entries just get skipped (and logged).
-      return Promise.all(
-        ASSETS_TO_CACHE.map((url) =>
-          fetch(url)
-            .then((res) => {
-              if (res.ok) return cache.put(url, res);
-              console.warn("SW precache skipped (non-OK response):", url, res.status);
-            })
-            .catch((err) => console.warn("SW precache skipped (fetch failed):", url, err))
-        )
-      );
+// App pages that must open offline (their data lives in IndexedDB). Each page's HTML is
+// precached together with the /_next/static scripts and styles it references, so an
+// offline visit to a page the user hasn't opened yet still works instead of falling back
+// to the dashboard.
+const APP_ROUTES = [
+  "/",
+  "/setup",
+  "/exam/session",
+  "/exam/results",
+  "/exam/results/review",
+  "/mistakes",
+  "/bookmarks",
+  "/revision",
+  "/revision/session",
+  "/analytics",
+];
+const STATIC_ASSETS = ["/manifest.json", "/data/questions.json", "/data/image-manifest.json"];
+
+async function precache() {
+  const cache = await caches.open(CACHE_NAME);
+  const put = (url) =>
+    fetch(url, { credentials: "same-origin" })
+      .then((res) => {
+        if (res.ok) return cache.put(url, res.clone()).then(() => res);
+        console.warn("SW precache skipped (non-OK response):", url, res.status);
+      })
+      .catch((err) => console.warn("SW precache skipped (fetch failed):", url, err));
+
+  // Each entry independently: one failing URL must not drop the rest.
+  await Promise.all(STATIC_ASSETS.map(put));
+  const assetUrls = new Set();
+  await Promise.all(
+    APP_ROUTES.map(async (route) => {
+      const res = await put(route);
+      if (!res) return;
+      const html = await res.text();
+      for (const m of html.matchAll(/(?:src|href)="(\/_next\/static\/[^"]+)"/g)) assetUrls.add(m[1]);
     })
   );
+  await Promise.all([...assetUrls].map(put));
+}
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(precache());
   self.skipWaiting();
 });
 
-// Activate Event
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
+    caches.keys().then((keys) => Promise.all(keys.map((key) => (key !== CACHE_NAME ? caches.delete(key) : undefined))))
   );
   self.clients.claim();
 });
 
-// Fetch Strategy (Network First, cache as an offline fallback only).
-// This app ships multiple deploys per session — cache-first (the previous
-// strategy) meant every visitor was served yesterday's cached shell first,
-// with a fresh copy only quietly updated in the background for *next* time,
-// so fixes never actually reached anyone no matter how often they reloaded.
-// Network-first means online users always get what's actually deployed;
-// the cache only kicks in once a request genuinely fails (offline).
+// Network first, cache only as an offline fallback — online users always get what's
+// actually deployed. API calls are never cached (answers, grading, AI are private).
 self.addEventListener("fetch", (event) => {
-  // Only handle GET requests
-  if (event.request.method !== "GET") return;
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
 
   event.respondWith(
-    fetch(event.request)
+    fetch(req)
       .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic") {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, responseToCache));
+          const copy = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         }
         return networkResponse;
       })
       .catch(async () => {
-        const cached = await caches.match(event.request);
-        if (cached) return cached;
         const cache = await caches.open(CACHE_NAME);
-        const fallback = await cache.match("/");
-        return fallback || new Response("Offline mode active. Please connect to the internet.", {
+        const exact = await cache.match(req);
+        if (exact) return exact;
+        if (req.mode === "navigate") {
+          // Pages like /exam/results?id=… render from IndexedDB: the cached page shell
+          // for the path works for any query.
+          const page = await cache.match(url.pathname, { ignoreSearch: true });
+          if (page) return page;
+          const home = await cache.match("/");
+          if (home) return home;
+        }
+        return new Response("Offline mode active. Please connect to the internet.", {
           status: 503,
           statusText: "Service Unavailable",
-          headers: new Headers({ "Content-Type": "text/html" })
+          headers: new Headers({ "Content-Type": "text/html" }),
         });
       })
   );

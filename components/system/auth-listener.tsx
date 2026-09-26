@@ -45,17 +45,24 @@ export function AuthListener() {
         supabase = createClient();
       } catch {
         // Not configured — stay in guest mode.
+        IDBManager.markNamespaceResolved();
         if (!cancelled) setLoading(false);
         return;
       }
 
+      // Never throws: offline or on a network error the profile is just unknown for now,
+      // and sign-in state still resolves (otherwise the app waits on auth forever).
       const fetchProfile = async (userId: string): Promise<Profile | null> => {
-        const { data } = await supabase
-          .from("profiles")
-          .select("id, username, display_name, avatar_seed, avatar_style, target_branch, target_year, target_rank, target_score, daily_study_hours, tier")
-          .eq("id", userId)
-          .single();
-        return (data as Profile) ?? null;
+        try {
+          const { data } = await supabase
+            .from("profiles")
+            .select("id, username, display_name, avatar_seed, avatar_style, target_branch, target_year, target_rank, target_score, daily_study_hours, tier")
+            .eq("id", userId)
+            .single();
+          return (data as Profile) ?? null;
+        } catch {
+          return null;
+        }
       };
 
       /** Applies the isolation mechanisms when the signed-in user id actually changes.
@@ -105,14 +112,18 @@ export function AuthListener() {
         }
       };
 
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      let session = null;
+      try {
+        ({ data: { session } } = await supabase.auth.getSession());
+      } catch {
+        // Unreadable session: continue as a guest rather than leaving storage locked.
+      }
       if (cancelled) return;
 
       const user = session?.user ? { id: session.user.id, email: session.user.email ?? null } : null;
       setSession(user);
       await applyUserChange(user?.id ?? null, true);
+      IDBManager.markNamespaceResolved();
       if (user) setProfile(await fetchProfile(user.id));
       setLoading(false);
 

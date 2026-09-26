@@ -54,6 +54,14 @@ export const useDataStore = create<DataState>((set, get) => ({
 
       const diagnostics = QuestionRepository.generateDiagnostics();
 
+      // Background: unlock answers for older history, then refresh analytics if needed.
+      void import("@/lib/repository/answer-keys").then(async ({ syncHistoryAnswers }) => {
+        if (await syncHistoryAnswers()) {
+          const { useAnalyticsStore } = await import("@/store/use-analytics-store");
+          useAnalyticsStore.getState().invalidate();
+        }
+      }).catch(() => {});
+
       set({
         isInitialized: true,
         isLoading: false,

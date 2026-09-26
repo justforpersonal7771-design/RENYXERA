@@ -1,66 +1,42 @@
 import { NextRequest, NextResponse } from "next/server";
-import { buildAnswerKey, gradeResponse, type RawPaper } from "@/lib/repository/dataset-split";
 import { gradeRequestSchema } from "@/lib/security/grade-request-schema";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
-// Bundled at build time rather than read from disk at request time — see the comment in
-// app/api/dataset/route.ts for why (Cloudflare Workers have no filesystem at runtime).
-import rawDataset from "@/data/Aggregated_Output.json";
+import { getVerifiedClaims } from "@/lib/supabase/server";
+import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { isNatCorrect, isOptionsCorrect, marksFor } from "@/lib/grading";
 
-import { marksFor } from "@/lib/grading";
 export const runtime = "nodejs";
 
-const dataset = rawDataset as unknown as RawPaper[];
 const MAX_BODY_BYTES = 60_000;
 
-// A real user submits at most a handful of graded attempts per session (an attempt is
-// typically one submission, occasionally re-checked). Sized to comfortably cover retries
-// without allowing a script to brute-force answers by resubmitting single-question
-// "attempts" repeatedly to fish for the correct option.
+// A real user submits a handful of tests per session. Sized to cover retries without
+// letting a script fish for answers by resubmitting single-question "attempts".
 const RATE_LIMIT = { limit: 20, windowMs: 60_000 };
 
-// Built once per cold start from the bundled dataset rather than per request.
-let cachedMarksById: Map<string, number> | null = null;
-let cachedAnswerKey: ReturnType<typeof buildAnswerKey> | null = null;
-
-function loadGradingData() {
-  if (cachedAnswerKey && cachedMarksById) {
-    return { answerKey: cachedAnswerKey, marksById: cachedMarksById };
-  }
-  const answerKey = buildAnswerKey(dataset);
-  const marksById = new Map<string, number>();
-  for (const paper of dataset) {
-    for (const q of paper.questions) {
-      marksById.set(q.question_id, q.marks);
-    }
-  }
-  cachedAnswerKey = answerKey;
-  cachedMarksById = marksById;
-  return { answerKey, marksById };
-}
-
 /**
- * Server-authoritative grading for a submitted set of responses. The client sends only
- * what it can honestly know about its own attempt (question_id + selection/value) —
- * never a score or a correctness flag. See lib/repository/dataset-split.ts for the scope
- * note on how this fits into the current (not-yet-cut-over) exam flow.
+ * Step 6 (5B): server-authoritative grading. The client sends only what it picked or
+ * typed; the key and marks are read here from Postgres (question_answers is service-role
+ * only). For a signed-in submission with `attempt`, the graded attempt is stored in
+ * exam_attempts/exam_responses — idempotently, so a retried submit can't duplicate it.
+ * The response also carries the unlocked keys, so the results screen needs one call.
  */
 export async function POST(req: NextRequest) {
   if (isCrossOriginRequest(req)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const clientKey = getClientKey(req);
-  const { allowed } = checkRateLimit(`exam-grade:${clientKey}`, RATE_LIMIT);
+  const claims = await getVerifiedClaims().catch(() => null);
+  const userId = typeof claims?.sub === "string" ? claims.sub : null;
+  const { allowed } = checkRateLimit(`exam-grade:${userId ?? getClientKey(req)}`, RATE_LIMIT);
   if (!allowed) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }
 
-  const contentLength = req.headers.get("content-length");
-  if (contentLength && Number(contentLength) > MAX_BODY_BYTES) {
+  const contentLength = Number(req.headers.get("content-length") ?? 0);
+  if (contentLength > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Request body too large." }, { status: 413 });
   }
-
   let rawBody: string;
   try {
     rawBody = await req.text();
@@ -70,43 +46,116 @@ export async function POST(req: NextRequest) {
   if (rawBody.length > MAX_BODY_BYTES) {
     return NextResponse.json({ error: "Request body too large." }, { status: 413 });
   }
-
   let json: unknown;
   try {
     json = JSON.parse(rawBody);
   } catch {
     return NextResponse.json({ error: "Invalid JSON body." }, { status: 400 });
   }
-
   const parsed = gradeRequestSchema.safeParse(json);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Invalid request.", issues: parsed.error.issues.slice(0, 5) },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid request.", issues: parsed.error.issues.slice(0, 5) }, { status: 400 });
   }
 
+  // One response per question: a duplicated id can't be counted twice.
+  const byId = new Map(parsed.data.responses.map((r) => [r.question_id, r]));
+  const responses = [...byId.values()];
+  const ids = [...byId.keys()];
+
   try {
-    const { answerKey, marksById } = loadGradingData();
+    const db = createServiceRoleClient();
+    const [{ data: keys, error: kErr }, { data: qs, error: qErr }] = await Promise.all([
+      db.from("question_answers").select("question_id, correct_option_ids, nat_min, nat_max, nat_ranges").in("question_id", ids),
+      db.from("questions").select("id, question_type, marks").in("id", ids),
+    ]);
+    if (kErr) throw kErr;
+    if (qErr) throw qErr;
+
+    const keyOf = new Map((keys ?? []).map((k) => [k.question_id, k]));
+    const qOf = new Map((qs ?? []).map((q) => [q.id, q]));
+    const answers: Record<string, { c: string[]; n: [number, number][] | null }> = {};
 
     let score = 0;
     let maxScore = 0;
-    const results = parsed.data.responses.map((response) => {
-      const isCorrect = gradeResponse(answerKey, response);
-      const marks = marksById.get(response.question_id) ?? 0;
+    const results = responses.map((r) => {
+      const q = qOf.get(r.question_id);
+      const k = keyOf.get(r.question_id);
+      // Unknown ids (AI-generated / tampered) are ignored: no marks either way.
+      if (!q || !k) return { question_id: r.question_id, is_correct: false, marks: 0, awarded: 0, known: false };
+
+      const ranges: [number, number][] =
+        Array.isArray(k.nat_ranges) && k.nat_ranges.length
+          ? (k.nat_ranges as [number, number][])
+          : k.nat_min !== null && k.nat_max !== null ? [[Number(k.nat_min), Number(k.nat_max)]] : [];
+      answers[r.question_id] = { c: k.correct_option_ids ?? [], n: ranges.length ? ranges : null };
+
+      const attempted = q.question_type === "NAT" ? typeof r.nat_value === "number" : !!r.selected_option_ids?.length;
+      const correct = attempted && (q.question_type === "NAT"
+        ? isNatCorrect(r.nat_value, ranges.map(([min, max]) => ({ min, max })))
+        : isOptionsCorrect(q.question_type, r.selected_option_ids, k.correct_option_ids ?? []));
+      const marks = Number(q.marks) || 0;
+      const awarded = marksFor(q.question_type, marks, attempted, correct);
       maxScore += marks;
-      const qType = answerKey.get(response.question_id)?.question_type ?? "NAT";
-      const attempted = !!response.selected_option_ids?.length || typeof response.nat_value === "number";
-      score += marksFor(qType, marks, attempted, isCorrect);
-      return { question_id: response.question_id, is_correct: isCorrect, marks };
+      score += awarded;
+      return { question_id: r.question_id, is_correct: correct, marks, awarded, known: true };
     });
+    score = Math.round(score * 100) / 100;
+
+    let stored = false;
+    const attempt = parsed.data.attempt;
+    if (userId && attempt) {
+      const known = results.filter((r) => r.known);
+      if (known.length) {
+        const { data: inserted, error: aErr } = await db
+          .from("exam_attempts")
+          .upsert(
+            {
+              id: attempt.id,
+              user_id: userId,
+              branch_code: "CSE",
+              config: { title: attempt.title ?? null },
+              question_ids: known.map((r) => r.question_id),
+              mode: attempt.mode,
+              server_started_at: attempt.started_at ?? new Date().toISOString(),
+              duration_seconds: attempt.duration_seconds,
+              submitted_at: new Date().toISOString(),
+              server_score: score,
+              server_max: maxScore,
+              status: "submitted",
+            },
+            { onConflict: "id", ignoreDuplicates: true }
+          )
+          .select("id");
+        if (aErr) {
+          console.error("storing attempt failed", aErr);
+        } else if (inserted?.length) {
+          const { error: rErr } = await db.from("exam_responses").insert(
+            known.map((r) => {
+              const src = byId.get(r.question_id)!;
+              return {
+                attempt_id: attempt.id,
+                question_id: r.question_id,
+                selected_option_ids: src.selected_option_ids ?? null,
+                nat_value: src.nat_value ?? null,
+                time_spent_seconds: src.time_spent_seconds ?? null,
+                marked_for_review: !!src.marked_for_review,
+              };
+            })
+          );
+          if (rErr) console.error("storing responses failed", rErr);
+          stored = !rErr;
+        } else {
+          stored = true; // already stored by an earlier (retried) submit
+        }
+      }
+    }
 
     return NextResponse.json(
-      { results, score, max_score: maxScore },
-      { headers: { "Cache-Control": "no-store" } }
+      { results, score, max_score: maxScore, answers, stored },
+      { headers: { "Cache-Control": "private, no-store" } }
     );
   } catch (err) {
     console.error("Failed to grade exam submission:", err);
-    return NextResponse.json({ error: "Failed to grade submission" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to grade submission" }, { status: 503 });
   }
 }

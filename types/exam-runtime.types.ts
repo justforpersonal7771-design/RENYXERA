@@ -23,4 +23,9 @@ export interface ExamSession {
   responses: Record<string, QuestionResponse>;
   elapsedSeconds: number;
   updatedAt?: string;
+  /** Step 6: score computed by the server grader (absent if submitted offline). */
+  serverScore?: number;
+  serverMaxScore?: number;
+  /** True once the attempt is saved to the account (signed-in users). */
+  serverStored?: boolean;
 }

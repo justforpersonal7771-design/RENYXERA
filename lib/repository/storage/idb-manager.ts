@@ -53,8 +53,42 @@ export class IDBManager {
    *  openDB directly) picks this up with no changes on their part. Passing the same
    *  namespace that's already active is a no-op (avoids closing/reopening a connection
    *  that callers may still be mid-transaction against, e.g. on a redundant call). */
+  // Nothing may open a database until the auth listener knows who is signed in —
+  // otherwise a page loaded directly (refresh, deep link, offline reload) reads the
+  // guest database before the switch and shows "not found". Opens after the first
+  // resolve, or after NAMESPACE_WAIT_MS as a safety net so storage can never hang.
+  private static namespaceResolved = false;
+  private static resolveNamespaceGate: () => void = () => {};
+  private static namespaceGate: Promise<void> | null = null;
+  private static readonly NAMESPACE_WAIT_MS = 4000;
+
+  private static waitForNamespace(): Promise<void> {
+    if (this.namespaceResolved) return Promise.resolve();
+    if (!this.namespaceGate) {
+      this.namespaceGate = new Promise<void>((resolve) => {
+        this.resolveNamespaceGate = resolve;
+        setTimeout(() => this.markNamespaceResolved(), this.NAMESPACE_WAIT_MS);
+      });
+    }
+    return this.namespaceGate;
+  }
+
+  /** Called by the auth listener once the first sign-in state is known (also for guests). */
+  public static markNamespaceResolved(): void {
+    if (this.namespaceResolved) return;
+    this.namespaceResolved = true;
+    this.resolveNamespaceGate();
+  }
+
   public static async setActiveNamespace(namespace: string | null): Promise<void> {
     if (namespace === this.activeNamespace) return;
+    if (!this.namespaceResolved) {
+      // Nothing has actually opened yet (opens wait on the gate and read the name after
+      // it), so just set the namespace and let the waiting opens proceed with it.
+      this.activeNamespace = namespace;
+      this.markNamespaceResolved();
+      return;
+    }
     if (this.dbPromise) {
       try {
         const db = await this.dbPromise;
@@ -76,7 +110,7 @@ export class IDBManager {
         );
       }
 
-      this.dbPromise = openDB<GatePrepDB>(this.getDatabaseName(), DATABASE_VERSION, {
+      this.dbPromise = this.waitForNamespace().then(() => openDB<GatePrepDB>(this.getDatabaseName(), DATABASE_VERSION, {
         upgrade(db) {
           if (!db.objectStoreNames.contains(STORE_METADATA)) {
             db.createObjectStore(STORE_METADATA, { keyPath: "key" });
@@ -119,7 +153,7 @@ export class IDBManager {
             db.createObjectStore(STORE_AI_MEMORY, { keyPath: "key" });
           }
         },
-      });
+      }));
     }
     return this.dbPromise;
   }

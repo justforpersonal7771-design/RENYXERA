@@ -4,6 +4,7 @@ import { DashboardMetrics, SubjectAnalytics, TopicAnalytics, DifficultyAnalytics
 import { StreakEngine } from "./streak-engine";
 
 import { isResponseCorrect } from "@/lib/grading";
+import { hasAnswer } from "@/lib/repository/answer-keys";
 export class AnalyticsEngine {
   public static async generateDashboardMetrics(sessions: ExamSession[]): Promise<DashboardMetrics> {
     await QuestionRepository.initialize();
@@ -54,6 +55,9 @@ export class AnalyticsEngine {
         const isVisited = qContext.status !== "NOT_VISITED";
         const isAttempted = qContext.status === "ANSWERED" || qContext.status === "MARKED_AND_ANSWERED";
         
+        // Answer key still locked (submitted offline): leave it out until it unlocks.
+        if (isAttempted && !hasAnswer(question.question_id, question)) return;
+
         if (isAttempted) {
           totalQuestionsAttempted++;
           subjects[subject].attempted++;

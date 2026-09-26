@@ -125,8 +125,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Supabase project created, migration run in production | ✅ |
 | Env vars wired (`.env.local` + Worker secrets + CI secrets) | ✅ |
 | `lib/supabase/*` client/server/middleware scaffolding, verified safe when unconfigured | ✅ |
-| **975 questions seeded into Postgres** with the public/private split | ✅ *(scripts/seed-questions.mjs, 26 Sep: 975 q · 2776 options · 975 answers; anon sees 0 answers. 4 NAT "A OR B" answers keep only the first range until step 6 adds nat_ranges)* |
-| All 975 questions render identically from Postgres as from the JSON | ⬜ *(client switches to Postgres in step 6)* |
+| **975 questions seeded into Postgres** with the public/private split | ✅ *(scripts/seed-questions.mjs, 26 Sep: 975 q · 2776 options · 975 answers; anon sees 0 answers. all NAT "A OR B" ranges in nat_ranges; `npm run check:keys` validates every key)* |
+| All 975 questions render identically from Postgres as from the JSON | 🟨 *(by design the question text is served from the answer-free static bank on the CDN — cheaper and offline-friendly; Postgres serves answers + attempts)* |
 | Practice mode works fully offline after first sync | 🟨 *(works offline today from IndexedDB; not yet from a Postgres sync)* |
 | `profiles` auto-create trigger confirmed firing on a real signup | ✅ *(verified 26 Sep against production: 3 auth users, 3 profile rows)* |
 
@@ -246,21 +246,21 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 5A · P0 · Answer Key Withholding
 | Task | Status |
 |---|---|
-| `lib/repository/dataset-split.ts` public/private split logic | ✅ |
-| `/api/dataset?scope=public` answer-free payload | ✅ |
-| Live graded exam UI uses the public payload (no answer fields in network, IndexedDB or memory) | ⬜ *(the app currently loads the full dataset for practice)* |
+| Public/private split logic | ✅ *(dataset-split.ts retired: answers stripped at build in copy-static-data.mjs; keys only in Postgres)* |
+| Answer-free public payload | ✅ *(public/data/questions.json has no answer fields; `/api/dataset` removed)* |
+| Live graded exam UI uses the public payload (no answer fields in network, IndexedDB or memory) | ✅ *(keys unlock only after submit via /api/exam/grade, or per question on practice screens via /api/answers)* |
 | Visible **Graded** vs **Practice** badge | ⬜ |
-| Offline graded attempts queued and shown "Pending evaluation" | ⬜ |
-| CI check that no answer field appears in a graded attempt | ⬜ |
+| Offline graded attempts queued and shown "Pending evaluation" | ✅ *(amber pending state + auto-retry on reconnect; never counted as wrong)* |
+| CI check that no answer field appears in a graded attempt | ✅ *(build fails if an answer field reaches the public bank)* |
 
 ### 5B · P0 · Server-Authoritative Evaluation
 | Task | Status |
 |---|---|
 | `/api/exam/grade` server-side grading endpoint | ✅ |
 | Attempt token (server start time/duration, tamper-proof timer) | ⬜ |
-| Live exam session wired to submit-for-grading instead of self-grading | ⬜ |
-| Server validation on submit (open, in time + grace, matching question set, not already submitted) | ⬜ |
-| Idempotent submissions; late-submission grace window | ⬜ |
+| Live exam session wired to submit-for-grading instead of self-grading | ✅ *(attempt stored in exam_attempts/exam_responses for signed-in users)* |
+| Server validation on submit (open, in time + grace, matching question set, not already submitted) | 🟨 *(duplicates collapsed, unknown ids ignored, re-submits can't overwrite; time/question-set checks need the attempt token)* |
+| Idempotent submissions; late-submission grace window | 🟨 *(idempotent on attempt id ✅; grace window needs the attempt token)* |
 | 100-attempt server-vs-client score regression suite | ⬜ |
 
 ### 5C · P1 · Attempt Integrity Signals

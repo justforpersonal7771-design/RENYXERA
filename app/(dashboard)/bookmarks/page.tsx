@@ -24,6 +24,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { GuestDataBanner } from "@/components/auth/guest-data-banner";
 
 import { formatNatAnswer, isNatCorrect, natRangesOf } from "@/lib/grading";
+import { useEnsureAnswer } from "@/components/exam/answers-pending-banner";
 export default function BookmarksPage() {
   const router = useRouter();
   const { isInitialized } = useDataStore();
@@ -190,6 +191,7 @@ export default function BookmarksPage() {
   const question = isInitialized && activeEntry
     ? QuestionRepository.getQuestionById(activeEntry.questionId)
     : null;
+  useEnsureAnswer(question?.question_id);
 
   const activeIndex = processedBookmarks.findIndex(b => b.questionId === activeBookmark);
   const handlePrev = activeIndex > 0 ? () => {

@@ -89,6 +89,40 @@ function buildPrompt(req: AIGenerateRequest): { systemInstruction: string; promp
 }
 
 /**
+ * Step 6: the browser's copy of a question may not carry its answer (the public bank has
+ * none), so explanations would be built blind. Fill the key in from Postgres for any
+ * official question in the request. Fails open — the prompt is simply built without it.
+ */
+async function attachServerAnswers(req: AIGenerateRequest) {
+  const params = req.params as Record<string, any>;
+  const targets = [params?.context?.currentQuestion, params?.currentQuestion].filter(
+    (q) => q && typeof q.question_id === "string" && /^GATE_/.test(q.question_id)
+  );
+  if (!targets.length) return;
+  try {
+    const { data } = await createServiceRoleClient()
+      .from("question_answers")
+      .select("question_id, correct_option_ids, nat_min, nat_max, nat_ranges")
+      .in("question_id", [...new Set(targets.map((q) => q.question_id))]);
+    const byId = new Map((data ?? []).map((k) => [k.question_id, k]));
+    for (const q of targets) {
+      const k = byId.get(q.question_id);
+      if (!k) continue;
+      if (Array.isArray(q.options)) {
+        q.options = q.options.map((o: any) => ({ ...o, is_correct: (k.correct_option_ids ?? []).includes(o?.option_id) }));
+      }
+      const ranges: [number, number][] = Array.isArray(k.nat_ranges) && k.nat_ranges.length
+        ? k.nat_ranges : k.nat_min !== null && k.nat_max !== null ? [[Number(k.nat_min), Number(k.nat_max)]] : [];
+      if (ranges.length) {
+        q.nat_answer_range = { min: ranges[0][0], max: ranges[0][1], ranges: ranges.map(([min, max]) => ({ min, max })) };
+      }
+    }
+  } catch (err) {
+    console.warn("attachServerAnswers failed; prompt built without the key", err);
+  }
+}
+
+/**
  * Server-only Gemini proxy. The API key never leaves this route handler. Clients
  * (AIClient) send {type, params} — a server-owned template name plus structured data —
  * and get back {text}. See lib/security/ai-request-schema.ts for the full contract and
@@ -154,6 +188,7 @@ export async function POST(req: NextRequest) {
 
   const startedAt = Date.now();
   let remainingQuota: number | null = null;
+  await attachServerAnswers(parsed.data);
   let systemInstruction: string, prompt: string;
   try {
     ({ systemInstruction, prompt } = buildPrompt(parsed.data));

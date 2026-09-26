@@ -7,6 +7,7 @@ import {
 import { IDBManager } from "./storage/idb-manager";
 import { CompilerFacade } from "./transformers/compiler-facade";
 import { AST_VERSION } from "./storage/cache-constants";
+import { attachRepository, hydrateAnswerKeys } from "./answer-keys";
 
 export interface RepositoryDiagnostics {
   totalQuestions: number;
@@ -101,10 +102,8 @@ class QuestionRepositorySingleton {
           const compiler = new CompilerFacade();
           let compiledQuestions = await compiler.compile(rawQuestions);
 
-          // Deep Freeze
-          questions = compiledQuestions.map((q) => {
-            return Object.freeze(q);
-          });
+          // Not frozen: answer keys are merged in after unlock (see answer-keys.ts).
+          questions = compiledQuestions;
           
           await IDBManager.clearQuestionCache(); // Clean up old cache data
         } catch(e) {
@@ -183,6 +182,8 @@ class QuestionRepositorySingleton {
         };
 
         this.status = "READY";
+        attachRepository((id) => this.indexes?.questionsById.get(id) as any);
+        await hydrateAnswerKeys();
       } catch (error: any) {
         this.status = "ERROR";
         console.error("Repository initialization failed:", error);

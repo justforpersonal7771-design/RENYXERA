@@ -3,6 +3,7 @@ import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 
 import { isResponseCorrect } from "@/lib/grading";
+import { hasAnswer } from "@/lib/repository/answer-keys";
 export class MistakeEngine {
   public static async processSession(session: ExamSession): Promise<void> {
     const responses = Object.values(session.responses || {});
@@ -21,6 +22,8 @@ export class MistakeEngine {
       if (isUnanswered) {
         isMistake = true;
       } else if (isAnswered) {
+        // Answer key not unlocked yet (submitted offline): don't record a false mistake.
+        if (!hasAnswer(question.question_id, question)) continue;
         let isCorrect = false;
         isCorrect = isResponseCorrect(question, response.selectedOptions, response.natValue);
         

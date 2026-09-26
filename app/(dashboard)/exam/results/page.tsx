@@ -15,6 +15,9 @@ import {
 import { GoalTagBadge } from "@/components/ui/goal-tag-badge";
 
 import { isResponseCorrect } from "@/lib/grading";
+import { hasAnswer, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
+import { useDataStore } from "@/store/use-data-store";
+import { AnswersPendingBanner } from "@/components/exam/answers-pending-banner";
 /** Animated count-up for a numeric value, e.g. marks or accuracy percentage. */
 function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
   const motionValue = useMotionValue(0);
@@ -42,6 +45,10 @@ export default function ResultSummaryPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"subject" | "section" | "difficulty" | "type">("subject");
   const [rightPanelView, setRightPanelView] = useState<"grid" | "breakdown">("grid");
+  const answersVersion = useAnswerKeysVersion((s) => s.version);
+  // Direct loads / refreshes: the question bank loads asynchronously — never read it early.
+  const repoReady = useDataStore((s) => s.isInitialized);
+  const repoError = useDataStore((s) => s.error);
 
   useEffect(() => {
     async function load() {
@@ -64,7 +71,7 @@ export default function ResultSummaryPage() {
   }, [id]);
 
   const statsCalculations = useMemo(() => {
-    if (!session) return null;
+    if (!session || !repoReady) return null;
 
     let marks = 0;
     let correct = 0;
@@ -108,9 +115,13 @@ export default function ResultSummaryPage() {
         difficultySplits[diff].attempted++;
         typeSplits[qtype].attempted++;
 
+        // Answer still locked (submitted offline): neither right nor wrong yet — it
+        // mustn't be scored as a mistake or penalised. The banner explains the gap.
+        if (!hasAnswer(q.question_id, q)) return;
+
         let isCorrect = false;
         isCorrect = isResponseCorrect(q, res!.selectedOptions, res!.natValue);
-        
+
         if (isCorrect) {
           correct++;
           subjectSplits[subj].correct++;
@@ -165,10 +176,10 @@ export default function ResultSummaryPage() {
       difficultySplits,
       typeSplits
     };
-  }, [session]);
+  }, [session, answersVersion, repoReady]);
 
   const questionGrid = useMemo(() => {
-    if (!session) return [];
+    if (!session || !repoReady) return [];
     return session.draftConfig.questions.map((qRef, idx) => {
       const q = QuestionRepository.getQuestionById(qRef.questionId);
       const res = session.responses[qRef.questionId];
@@ -176,7 +187,8 @@ export default function ResultSummaryPage() {
       const isAttempted = !!res && (res.status === "ANSWERED" || res.status === "MARKED_AND_ANSWERED");
 
       let isCorrect = false;
-      if (isAttempted && q) {
+      const isPending = isAttempted && !!q && !hasAnswer(q.question_id, q);
+      if (isAttempted && q && !isPending) {
         isCorrect = isResponseCorrect(q, res!.selectedOptions, res!.natValue);
       }
 
@@ -185,10 +197,11 @@ export default function ResultSummaryPage() {
         questionId: qRef.questionId,
         isAttempted,
         isCorrect,
+        isPending,
         isMarked,
       };
     });
-  }, [session]);
+  }, [session, answersVersion, repoReady]);
 
   const handleRetry = async () => {
     if (!session) return;
@@ -200,7 +213,14 @@ export default function ResultSummaryPage() {
     router.push("/exam/session");
   };
 
-  if (loading) return (
+  if (session && !repoReady && repoError) return (
+    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 bg-[var(--background)] p-6 text-center">
+      <p className="font-bold text-[var(--text-primary)]">Couldn't load the question bank.</p>
+      <p className="text-sm text-[var(--text-secondary)]">Your test is saved. Check your connection and try again.</p>
+      <button onClick={() => window.location.reload()} className="mt-1 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white cursor-pointer">Try again</button>
+    </div>
+  );
+  if (loading || (session && !repoReady)) return (
     <div className="flex h-screen w-full items-center justify-center bg-[var(--background)]">
        <div className="font-bold tracking-widest uppercase animate-pulse text-indigo-600 dark:text-indigo-400">Loading Result Summary...</div>
     </div>
@@ -251,6 +271,7 @@ export default function ResultSummaryPage() {
 
   return (
     <div className="w-full mx-auto font-sans flex flex-col lg:h-full lg:min-h-0 lg:overflow-hidden pb-2" data-fill-height>
+      <AnswersPendingBanner session={session} onGraded={setSession} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:flex-1 lg:min-h-0 lg:overflow-hidden">
 
@@ -541,7 +562,9 @@ export default function ResultSummaryPage() {
                 <div className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] gap-2.5 p-1.5">
                   {questionGrid.map((item, idx) => {
                     let cellClass = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]";
-                    if (item.isAttempted) {
+                    if (item.isPending) {
+                      cellClass = "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-dashed border-amber-500/50";
+                    } else if (item.isAttempted) {
                       cellClass = item.isCorrect
                         ? "bg-gradient-to-br from-emerald-400 to-green-600 text-white border border-transparent shadow-md shadow-emerald-500/25"
                         : "bg-gradient-to-br from-rose-400 to-red-600 text-white border border-transparent shadow-md shadow-rose-500/25";
@@ -573,6 +596,9 @@ export default function ResultSummaryPage() {
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Wrong</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[var(--surface-secondary)] border border-[var(--border)]" /> Skipped</span>
                 <span className="flex items-center gap-1.5"><Flag className="w-2.5 h-2.5 text-amber-500 fill-amber-500" /> Marked</span>
+                {questionGrid.some((g) => g.isPending) && (
+                  <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-dashed border-amber-500" /> Pending</span>
+                )}
               </div>
             </div>
           ) : (

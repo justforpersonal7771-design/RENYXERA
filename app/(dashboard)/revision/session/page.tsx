@@ -14,6 +14,7 @@ import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 
 import { formatNatAnswer, isNatCorrect, natRangesOf } from "@/lib/grading";
+import { useEnsureAnswer } from "@/components/exam/answers-pending-banner";
 function RevisionSessionContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -53,6 +54,7 @@ function RevisionSessionContent() {
   }, [mode, mistakes, bookmarks, dashboardMetrics]);
 
   const currentQuestion = questions[currentIndex];
+  useEnsureAnswer(currentQuestion?.question_id);
 
   const currentEntry = useMemo(() => {
     if (!currentQuestion) return null;

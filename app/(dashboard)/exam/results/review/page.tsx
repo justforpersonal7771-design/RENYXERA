@@ -16,6 +16,9 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "motion/react";
 
 import { formatNatAnswer, isResponseCorrect } from "@/lib/grading";
+import { hasAnswer, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
+import { useDataStore } from "@/store/use-data-store";
+import { AnswersPendingBanner } from "@/components/exam/answers-pending-banner";
 export default function ReviewPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -25,6 +28,9 @@ export default function ReviewPage() {
 
   const [session, setSession] = useState<ExamSession | null>(null);
   const [loading, setLoading] = useState(true);
+  useAnswerKeysVersion((s) => s.version); // re-render when answers unlock
+  const repoReady = useDataStore((s) => s.isInitialized);
+  const repoError = useDataStore((s) => s.error);
   const { bookmarks, mistakes, addBookmark, removeBookmark, updateBookmarkNotes, updateMistakeNotes, loadStudyData } = useStudyStore();
   const [currentIndex, setCurrentIndex] = useState(() => {
     const parsed = initialQParam ? parseInt(initialQParam, 10) : 0;
@@ -68,7 +74,14 @@ export default function ReviewPage() {
     load();
   }, [id]);
 
-  if (loading) return (
+  if (session && !repoReady && repoError) return (
+    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 bg-[var(--background)] p-6 text-center">
+      <p className="font-bold text-[var(--text-primary)]">Couldn't load the question bank.</p>
+      <p className="text-sm text-[var(--text-secondary)]">Your test is saved. Check your connection and try again.</p>
+      <button onClick={() => window.location.reload()} className="mt-1 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white cursor-pointer">Try again</button>
+    </div>
+  );
+  if (loading || (session && !repoReady)) return (
     <div className="flex h-screen w-full items-center justify-center bg-[var(--background)]">
       <div className="font-bold tracking-widest uppercase animate-pulse text-indigo-600 dark:text-indigo-400">Loading Review Engine...</div>
     </div>
@@ -97,16 +110,18 @@ export default function ReviewPage() {
   const checkCorrectness = (qIdLocal: string) => {
     let c = false;
     let a = false;
+    let p = false; // answered, but the key is still locked (submitted offline)
     const qLocal = QuestionRepository.getQuestionById(qIdLocal);
     const resLocal = session.responses[qIdLocal];
     if (resLocal && (resLocal.status === "ANSWERED" || resLocal.status === "MARKED_AND_ANSWERED")) {
       a = true;
-      c = !!qLocal && isResponseCorrect(qLocal, resLocal.selectedOptions, resLocal.natValue);
+      p = !!qLocal && !hasAnswer(qLocal.question_id, qLocal);
+      c = !p && !!qLocal && isResponseCorrect(qLocal, resLocal.selectedOptions, resLocal.natValue);
     }
-    return { isAttempted: a, isCorrect: c };
+    return { isAttempted: a, isCorrect: c, isPending: p };
   };
 
-  const { isAttempted, isCorrect } = checkCorrectness(qId);
+  const { isAttempted, isCorrect, isPending } = checkCorrectness(qId);
 
   const currentBookmark = bookmarks.find(b => b.questionId === qId);
   const currentMistake = mistakes.find(m => m.questionId === qId);
@@ -131,15 +146,16 @@ export default function ReviewPage() {
   const reviewResults = draftQuestions.map((qr) => checkCorrectness(qr.questionId));
   const reviewSummary = {
     correct: reviewResults.filter((r) => r.isAttempted && r.isCorrect).length,
-    wrong: reviewResults.filter((r) => r.isAttempted && !r.isCorrect).length,
+    wrong: reviewResults.filter((r) => r.isAttempted && !r.isCorrect && !r.isPending).length,
     skipped: reviewResults.filter((r) => !r.isAttempted).length,
   };
-  const nextWrongOffset = reviewResults.slice(currentIndex + 1).findIndex((r) => r.isAttempted && !r.isCorrect);
+  const nextWrongOffset = reviewResults.slice(currentIndex + 1).findIndex((r) => r.isAttempted && !r.isCorrect && !r.isPending);
   const nextWrongIndex = nextWrongOffset === -1 ? null : currentIndex + 1 + nextWrongOffset;
 
   return (
     <MathJaxContext config={mathJaxConfig}>
       <div className="flex flex-col h-screen w-full overflow-hidden bg-[var(--background)] font-sans">
+        <AnswersPendingBanner session={session} onGraded={setSession} className="mx-3 mt-3 shrink-0" />
 
         {/* COMMAND BAR — matches the exam session Topbar's structure: a compact
             always-visible essentials row, plus a details row for type/marks/difficulty
@@ -177,19 +193,20 @@ export default function ReviewPage() {
             <div className="flex items-center gap-1.5 shrink-0">
               <AnimatePresence mode="wait">
                 <motion.span
-                  key={qId + String(isAttempted) + String(isCorrect)}
+                  key={qId + String(isAttempted) + String(isCorrect) + String(isPending)}
                   initial={{ scale: 0.6, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.6, opacity: 0 }}
                   transition={{ type: "spring", stiffness: 500, damping: 22 }}
                   className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-semibold text-white shadow-md ${
                     !isAttempted ? "bg-gradient-to-r from-slate-400 to-slate-500 shadow-slate-500/20"
+                    : isPending ? "bg-gradient-to-r from-amber-500 to-orange-500 shadow-amber-500/30"
                     : isCorrect ? "bg-gradient-to-r from-emerald-500 to-green-600 shadow-emerald-500/30"
                     : "bg-gradient-to-r from-rose-500 to-red-600 shadow-rose-500/30"
                   }`}
                 >
-                  {!isAttempted ? <MinusCircle className="w-3.5 h-3.5" /> : isCorrect ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
-                  {!isAttempted ? "Skipped" : isCorrect ? "Correct" : "Wrong"}
+                  {!isAttempted || isPending ? <MinusCircle className="w-3.5 h-3.5" /> : isCorrect ? <CheckCircle2 className="w-3.5 h-3.5" /> : <XCircle className="w-3.5 h-3.5" />}
+                  {!isAttempted ? "Skipped" : isPending ? "Pending" : isCorrect ? "Correct" : "Wrong"}
                 </motion.span>
               </AnimatePresence>
 
@@ -387,7 +404,9 @@ export default function ReviewPage() {
                     const resInfo = checkCorrectness(qRef.questionId);
                     let colorClass = "bg-[var(--surface-elevated)] text-[var(--text-secondary)] border border-[var(--border)]";
 
-                    if (resInfo.isAttempted) {
+                    if (resInfo.isPending) {
+                      colorClass = "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-dashed border-amber-500/50";
+                    } else if (resInfo.isAttempted) {
                       if (resInfo.isCorrect) {
                         colorClass = "bg-gradient-to-br from-emerald-400 to-green-600 text-white border-transparent shadow-md shadow-emerald-500/25";
                       } else {

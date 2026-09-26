@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 // Bundled at build time rather than read from disk at request time — see the comment in
-// app/api/dataset/route.ts for why (Cloudflare Workers have no filesystem at runtime).
+// the note in scripts/copy-static-data.mjs for why (Cloudflare Workers have no filesystem at runtime).
 import manifest from "@/data/image-manifest.json";
 
 export const runtime = "nodejs";

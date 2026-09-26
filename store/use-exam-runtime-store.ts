@@ -73,7 +73,18 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
   submitSession: async () => {
     const { activeSession } = get();
     if (!activeSession) return null;
-    const updated = { ...activeSession, status: "SUBMITTED" as const, updatedAt: new Date().toISOString() };
+    let updated: ExamSession = { ...activeSession, status: "SUBMITTED" as const, updatedAt: new Date().toISOString() };
+
+    // Step 6: grade on the server and unlock this test's answer keys before anything
+    // (results, mistakes, analytics) reads them. Never blocks submission: offline or on
+    // error the test is still saved and the results screen shows "answers pending".
+    try {
+      const { submitForGrading } = await import("@/lib/repository/answer-keys");
+      const graded = await submitForGrading(updated);
+      if (graded) updated = { ...updated, serverScore: graded.score, serverMaxScore: graded.maxScore, serverStored: graded.stored };
+    } catch (e) {
+      console.warn("Server grading unavailable; answers will unlock when online", e);
+    }
     
     // Save to history before clearing active session
     await SessionManager.saveToHistory(updated);

@@ -22,6 +22,9 @@ import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { GuestDataBanner } from "@/components/auth/guest-data-banner";
 
 import { isResponseCorrect } from "@/lib/grading";
+import { useEnsureAnswer } from "@/components/exam/answers-pending-banner";
+import { ensureAnswers } from "@/lib/repository/answer-keys";
+import { useToastStore } from "@/store/use-toast-store";
 export default function MistakesPage() {
   const router = useRouter();
   const { isInitialized } = useDataStore();
@@ -128,8 +131,12 @@ export default function MistakesPage() {
   };
 
   // Perform option validation without revealing correct answer initially
-  const handleValidateAnswer = () => {
+  const handleValidateAnswer = async () => {
     if (!activeEntry || !question) return;
+    if (!answerReady && !(await ensureAnswers([question.question_id]))) {
+      useToastStore.getState().show("Can't check this answer offline — reconnect and try again.", "error");
+      return;
+    }
 
     let isCorrect = false;
 
@@ -236,6 +243,7 @@ export default function MistakesPage() {
   const question = isInitialized && activeEntry
     ? QuestionRepository.getQuestionById(activeEntry.questionId)
     : null;
+  const { ready: answerReady } = useEnsureAnswer(question?.question_id);
   const activeIndex = filteredMistakes.findIndex(m => m.questionId === activeMistake);
 
   const handlePrev = activeIndex > 0 ? () => {
