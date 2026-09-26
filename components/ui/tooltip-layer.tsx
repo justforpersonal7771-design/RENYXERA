@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 
@@ -17,6 +17,17 @@ export function TooltipLayer() {
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const current = useRef<Element | null>(null);
   const seq = useRef(0);
+  const box = useRef<HTMLDivElement>(null);
+  // Measured placement: the box is clamped on screen by its REAL width, and the arrow
+  // points at the hovered element's centre even when the box had to shift.
+  const [place, setPlace] = useState<{ key: number; left: number; arrow: number } | null>(null);
+  useLayoutEffect(() => {
+    if (!tip || !box.current) return;
+    const w = box.current.offsetWidth;
+    const left = Math.min(Math.max(tip.x - w / 2, 8), window.innerWidth - w - 8);
+    const arrow = Math.min(Math.max(tip.x - left, 12), w - 12);
+    setPlace({ key: tip.key, left, arrow });
+  }, [tip]);
 
   useEffect(() => {
     const clear = () => {
@@ -72,7 +83,7 @@ export function TooltipLayer() {
 
   if (typeof document === "undefined") return null;
   const maxW = 280;
-  const left = tip ? Math.min(Math.max(tip.x, maxW / 2 + 8), window.innerWidth - maxW / 2 - 8) : 0;
+  const ready = !!tip && place?.key === tip.key;
 
   return createPortal(
     <AnimatePresence>
@@ -84,11 +95,12 @@ export function TooltipLayer() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97, transition: { duration: 0.1 } }}
           transition={{ type: "spring", stiffness: 500, damping: 32 }}
-          style={{ position: "fixed", left, top: tip.y, maxWidth: maxW, translateX: "-50%", translateY: tip.below ? "0%" : "-100%" }}
+          ref={box}
+          style={{ position: "fixed", left: ready ? place!.left : tip.x, top: tip.y, maxWidth: maxW, translateY: tip.below ? "0%" : "-100%", visibility: ready ? "visible" : "hidden" }}
           className="pointer-events-none z-[500] w-max rounded-xl px-3 py-2 text-[12px] font-medium leading-snug text-white bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md border border-white/10 shadow-[0_12px_32px_-8px_rgba(15,23,42,0.55)]"
         >
-          <span aria-hidden="true" className="absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-inherit border-white/10"
-            style={tip.below ? { top: -5, borderLeftWidth: 1, borderTopWidth: 1 } : { bottom: -5, borderRightWidth: 1, borderBottomWidth: 1 }} />
+          <span aria-hidden="true" className="absolute -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-inherit border-white/10"
+            style={{ left: ready ? place!.arrow : "50%", ...(tip.below ? { top: -5, borderLeftWidth: 1, borderTopWidth: 1 } : { bottom: -5, borderRightWidth: 1, borderBottomWidth: 1 }) }} />
           <span className="relative">{tip.text}</span>
         </motion.div>
       )}
