@@ -17,6 +17,7 @@ import { MotionPrefs } from "@/components/system/motion-prefs";
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useAuthStore } from "@/store/use-auth-store";
 
 const CommandPalette = dynamic(
   () => import("../exam/command-palette").then(m => m.CommandPalette),
@@ -45,6 +46,15 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         flag === "remote" ? "info" : "success"
       );
     }
+  }, []);
+
+  // Step 9: error monitoring (no-op unless NEXT_PUBLIC_SENTRY_DSN is set).
+  useEffect(() => {
+    void import("@/lib/monitoring").then(({ initMonitoring, setMonitoringUser }) => {
+      void initMonitoring();
+      setMonitoringUser(useAuthStore.getState().user?.id ?? null);
+      return useAuthStore.subscribe((st) => setMonitoringUser(st.user?.id ?? null));
+    });
   }, []);
 
   useEffect(() => {

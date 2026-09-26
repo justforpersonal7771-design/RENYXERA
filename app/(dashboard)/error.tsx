@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
 import { isStaleDeployError, reloadForNewVersion } from "@/lib/stale-deploy";
+import { reportError } from "@/lib/monitoring";
 
 export default function DashboardError({
   error,
@@ -16,6 +17,7 @@ export default function DashboardError({
 
   useEffect(() => {
     console.error(error);
+    if (!stale) reportError(error, { digest: error.digest, boundary: "dashboard" });
     // A new version was deployed while this tab was open — load it instead of erroring.
     if (stale && !reloadForNewVersion()) setReloading(false);
   }, [error, stale]);

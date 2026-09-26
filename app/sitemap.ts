@@ -8,6 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_URL}/about`, lastModified: now, changeFrequency: "monthly", priority: 1 },
     ...BRANCHES.map((b) => ({ url: `${SITE_URL}/${b.slug}`, lastModified: now, changeFrequency: "weekly" as const, priority: b.live ? 0.9 : 0.7 })),
-    ...["privacy", "terms"].map((p) => ({ url: `${SITE_URL}/${p}`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.3 })),
+    ...["privacy", "terms", "cookies", "refunds", "disclaimer", "contact"].map((p) => ({ url: `${SITE_URL}/${p}`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.3 })),
   ];
 }

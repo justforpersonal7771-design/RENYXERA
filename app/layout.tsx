@@ -74,6 +74,10 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
             the DNS/TLS round-trips off the first question with maths. */}
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+        {/* Step 9: Cloudflare Web Analytics — cookieless, free; only when a token is set. */}
+        {process.env.NEXT_PUBLIC_CF_BEACON_TOKEN && (
+          <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: process.env.NEXT_PUBLIC_CF_BEACON_TOKEN })} />
+        )}
       </head>
       <body suppressHydrationWarning className="font-sans antialiased">
         {/* Root, not nested in (dashboard)/layout.tsx — next-themes' anti-flash
