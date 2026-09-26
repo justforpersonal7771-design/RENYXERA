@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin } from "lucide-react";
+import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin, AtSign, IdCard } from "lucide-react";
 
 /**
  * Compact, horizontal profile header: exactly as tall as the avatar, pinned above the
@@ -45,21 +45,18 @@ export function ProfileHeader({
           <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 border-[3px] border-violet-600" aria-hidden="true" />
         </div>
 
+        {/* Left: big name, bio, goal chips */}
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 min-w-0">
-            <h1 className="shine-text text-lg sm:text-2xl font-extrabold tracking-tight truncate">{name}</h1>
+          <div className="flex items-center gap-2.5 min-w-0">
+            <h1 className="shine-text text-2xl sm:text-3xl xl:text-[2.1rem] font-extrabold tracking-tight leading-tight truncate">{name}</h1>
             <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur text-[10px] font-black uppercase tracking-wider">
               <Sparkles className="w-3 h-3" /> {tier}
             </span>
           </div>
-          <p className="flex items-center gap-1.5 text-xs text-white/80 min-w-0">
-            {username && <span className="font-semibold shrink-0">@{username}</span>}
-            {username && <span className="opacity-50">·</span>}
-            <Mail className="w-3 h-3 shrink-0 opacity-80" /><span className="truncate">{email}</span>
-            {studentId && <><span className="opacity-50 hidden sm:inline">·</span><span className="hidden sm:inline font-num font-semibold tracking-wide shrink-0" title="Your permanent student ID">ID {studentId}</span></>}
-          </p>
-          {bio && <p className="hidden md:block mt-0.5 text-xs text-white/75 truncate italic">&ldquo;{bio}&rdquo;</p>}
-          <div className="hidden sm:flex mt-2 gap-1.5 overflow-hidden flex-wrap max-h-[26px]">
+          {/* On small screens the identity block below is hidden — keep the handle here. */}
+          {username && <p className="lg:hidden text-xs font-semibold text-white/80 truncate">@{username}</p>}
+          {bio && <p className="hidden md:block mt-0.5 text-[13px] text-white/80 truncate italic">&ldquo;{bio}&rdquo;</p>}
+          <div className="hidden sm:flex mt-2.5 gap-1.5 overflow-hidden flex-wrap max-h-[26px]">
             {chips.map((c, i) => (
               <motion.span key={c.text} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 + i * 0.06 }} whileHover={{ y: -2 }}
                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 hover:bg-white/25 border border-white/15 backdrop-blur text-[11px] font-bold whitespace-nowrap transition-colors">
@@ -68,6 +65,21 @@ export function ProfileHeader({
             ))}
           </div>
         </div>
+
+        {/* Right: identity block — username, email, student ID */}
+        <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
+          className="hidden lg:flex flex-col gap-1.5 shrink-0 min-w-0 max-w-[300px] rounded-2xl bg-black/10 border border-white/15 backdrop-blur px-3.5 py-2.5">
+          {username && (
+            <p className="flex items-center gap-2 text-xs min-w-0"><AtSign className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="font-semibold truncate">{username}</span></p>
+          )}
+          <p className="flex items-center gap-2 text-xs min-w-0"><Mail className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="truncate text-white/90">{email}</span></p>
+          {studentId && (
+            <p className="flex items-center gap-2 text-xs min-w-0" title="Your permanent student ID">
+              <IdCard className="w-3.5 h-3.5 shrink-0 text-white/70" />
+              <span className="font-mono font-semibold tracking-wide truncate select-all">{studentId}</span>
+            </p>
+          )}
+        </motion.div>
 
         {/* Profile completeness */}
         <div className="hidden md:flex items-center gap-2.5 shrink-0" title="Fill in your details to personalise your plan">

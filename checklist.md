@@ -61,6 +61,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 2 | **Full Google OAuth branding verification** | Same blocker: needs DNS-level domain verification. One domain unlocks both. |
 | 3 | **Firebase Blaze billing** (Mobile OTP past 10 SMS/day) | Only needed once OTP is promoted to real users (4C). |
 | 5 | **Turn "Confirm email" back ON** (Supabase → Authentication → Sign In / Providers → Email) | Switched off 26 Sep 2026 because Supabase's free built-in email sender only allows a few emails per hour, which blocked sign-ups ("email rate limit exceeded"). Re-enable once there's revenue for a domain + custom SMTP (#1), so unverified addresses can't be used. No code change needed — the sign-up screen already falls back to "check your inbox" when confirmation is required. |
+| 6 | **Cascading degree filter by exam** | When a second exam launches, the profile Degree picker should list only degrees eligible for the chosen exam. The data is already tagged (`lib/degrees.ts` → `exams`). |
 | 4 | **Google Play developer account** (~₹2,100 one-time) | Optional; only for a Play Store listing (9D). The PWA already installs from the browser. |
 
 ---

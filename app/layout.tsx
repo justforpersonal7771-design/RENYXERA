@@ -6,6 +6,7 @@ import { AuthListener } from '@/components/system/auth-listener';
 import { CardSpotlight } from '@/components/system/card-spotlight';
 import { ThemeProvider } from '@/components/theme-provider';
 import { SITE_URL } from "@/lib/site";
+import { TooltipLayer } from "@/components/ui/tooltip-layer";
 
 // One family per job, all SIL OFL (served via next/font, self-hosted at build):
 //  - Manrope   — body & UI text: calm, open, very legible at small sizes
@@ -91,6 +92,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           <ScrollbarActivity />
           <AuthListener />
+          <TooltipLayer />
           <CardSpotlight />
           {children}
         </ThemeProvider>
