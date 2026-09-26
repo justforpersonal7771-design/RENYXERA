@@ -34,3 +34,12 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Security checks (no service-role key in bundle; anon can't read answer keys)
+        run: npm run check:security
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Goals engine acceptance test
+        run: npm run check:goals

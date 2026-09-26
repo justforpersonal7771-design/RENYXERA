@@ -24,6 +24,8 @@ import { NextResponse, type NextRequest } from "next/server";
  * through untouched) until NEXT_PUBLIC_SUPABASE_URL is actually configured. Once you add
  * that env var, this activates automatically — nothing else to flip.
  */
+const PROTECTED_PREFIXES = ["/profile"];
+
 export async function updateSession(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const publishableKey =
@@ -55,7 +57,20 @@ export async function updateSession(request: NextRequest) {
   // Re-validates the token's signature (rather than trusting the cookie) so a refresh
   // actually happens when needed. Deliberately not used here to gate access — see the
   // file-level comment — just to trigger the refresh side effect.
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+
+  // Module 4C/4D route protection, enforced here (server side) rather than in page code.
+  // Most screens are deliberately open to guests (teaser mode, with contextual locks);
+  // only pages that are meaningless without an account redirect to sign-in.
+  const path = request.nextUrl.pathname;
+  if (!data?.claims && PROTECTED_PREFIXES.some((p) => path === p || path.startsWith(p + "/"))) {
+    const to = request.nextUrl.clone();
+    to.pathname = "/login";
+    to.search = `?redirect=${encodeURIComponent(path + request.nextUrl.search)}`;
+    const redirect = NextResponse.redirect(to);
+    for (const c of supabaseResponse.cookies.getAll()) redirect.cookies.set(c);
+    return redirect;
+  }
 
   return supabaseResponse;
 }

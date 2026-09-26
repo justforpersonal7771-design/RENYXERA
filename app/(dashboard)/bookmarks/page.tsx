@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
+import { GuestLocalNotice } from "@/components/auth/guest-local-notice";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { AnimatePresence, motion } from "motion/react";
 import { useStudyStore } from "@/store/use-study-store";
@@ -227,7 +228,9 @@ export default function BookmarksPage() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col md:flex-row gap-4 relative" data-fill-height>
+      <div className="w-full h-full flex flex-col" data-fill-height>
+      <GuestLocalNotice what="bookmarks" />
+      <div className="flex-1 min-h-0 w-full flex flex-col md:flex-row gap-4 relative">
         {/* Sidebar merged into a single continuous card */}
         <div className={`flex flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           
@@ -775,6 +778,7 @@ export default function BookmarksPage() {
           </motion.div>
         )}
         </AnimatePresence>
+      </div>
       </div>
     </MathJaxContext>
   );

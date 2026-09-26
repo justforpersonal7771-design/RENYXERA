@@ -82,8 +82,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | CI on every push: typecheck, lint, production build | ✅ *(.github/workflows/ci.yml)* |
 | Service-role key can't reach client code (`import "server-only"` build-time guard) | ✅ |
-| CI grep over the **built output** proving no service-role key is in the client bundle | ⬜ |
-| CI test proving the anon key reads **zero rows** from `question_answers` | 🟨 *(verified manually against production 26 Sep: 0 rows; not yet automated in CI)* |
+| CI grep over the **built output** proving no service-role key is in the client bundle | ✅ *(scripts/check-security.mjs in CI)* |
+| CI test proving the anon key reads **zero rows** from `question_answers` | ✅ *(automated in CI via check:security)* |
 | Automated Playwright regression suite in CI (desktop + mobile, light + dark) | ⬜ *(run manually on every change today; not in CI)* |
 | Error tracking (Sentry free tier) | ⬜ |
 | Product analytics (Cloudflare Web Analytics, cookieless) | ⬜ |
@@ -144,7 +144,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Mobile OTP wired into the app (Firebase ↔ Supabase third-party JWT bridge) | ⬜ |
 | OTP abuse controls: per-phone/IP/device limits, Turnstile, resend cooldown, daily cap | ⬜ |
 | All three auth paths converge on one `profiles` row | 🟨 *(Google + email do; OTP not built)* |
-| Route protection enforced in **middleware** (not page components) | ⬜ |
+| Route protection enforced in **middleware** (not page components) | ✅ *(/profile → /login?redirect=)* |
 | "Sign out everywhere" on credential change | ⬜ |
 | No delete-account control anywhere in the UI | ✅ |
 | Anonymization backstop (support-request erasure → `status='anonymized'`, PII nulled, attempts kept) documented in the Privacy Policy and working | ⬜ |
@@ -158,10 +158,10 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Full official mock papers locked for guests with a contextual sign-in prompt | ✅ |
 | Guest AI calls: zero (server returns 401 without a session) | ✅ |
 | Guest → account IndexedDB migration on signup | ✅ *(lib/repository/storage/guest-migration.ts; never overwrites account records)* |
-| Capped practice sample for guests (full bank for signed-in users) | ⬜ |
-| Bookmarks/mistakes marked "local only" for guests with a warning | ⬜ |
+| Capped practice sample for guests (full bank for signed-in users) | ✅ *(guests capped at 15 questions)* |
+| Bookmarks/mistakes marked "local only" for guests with a warning | ✅ *(GuestLocalNotice)* |
 | Subject leaderboards locked for guests | ⬜ *(leaderboards themselves are 5E)* |
-| Wire route protection into middleware | ⬜ *(same as 4C)* |
+| Wire route protection into middleware | ✅ |
 
 ### 4E · P1 · Profile, Avatars & Goals Engine
 | Task | Status |
