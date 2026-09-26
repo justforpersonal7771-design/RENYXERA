@@ -90,7 +90,18 @@ export function AuthListener() {
         // `undefined`) becoming signed-in — covers a fresh signup and an existing
         // user who browsed as a guest on this device before signing in equally.
         const wasGuest = previousUserId.current === null;
+        const signedOutFrom = !isFirstResolve && userId === null ? previousUserId.current : null;
         previousUserId.current = userId;
+
+        // Step 6b: signing out removes that account's protected offline packs + key.
+        if (signedOutFrom) {
+          try {
+            const { wipeVault } = await import("@/lib/vault/vault");
+            await wipeVault(signedOutFrom);
+          } catch {
+            // best effort — the packs stay encrypted and need the account's key anyway
+          }
+        }
 
         if (isNoOpGuestFirstResolve) return;
 

@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, ShieldAlert, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, ShieldAlert, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -15,6 +15,7 @@ import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goa
 import { isInsidePortalPopover } from "@/lib/utils";
 import { AccountButton } from "./account-button";
 import { BrandMark, Wordmark } from "@/components/brand/wordmark";
+import { useAuthStore } from "@/store/use-auth-store";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -32,6 +33,7 @@ export function Topbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isResetting, setIsResetting] = useState(false);
   const pathname = usePathname();
+  const signedIn = useAuthStore((st) => !!st.user);
   const [hovered, setHovered] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   // Scroll progress of the page's own scroller (<main>'s inner div — html/body never
@@ -333,6 +335,19 @@ export function Topbar() {
                 )}
              </button>
 
+             {signedIn && (
+               <Link
+                  href="/downloads"
+                  className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors ${
+                    pathname?.startsWith("/downloads") ? "text-white bg-indigo-600 shadow-sm" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  }`}
+                  aria-label="Downloads"
+                  title="Downloads — study offline"
+               >
+                  <Download className="w-4 h-4" />
+               </Link>
+             )}
+
              <div className="relative z-10 hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
 
              {/* Dev Reset is a one-tap "wipe everything" action — desktop-only (lg:,
@@ -415,6 +430,20 @@ export function Topbar() {
                   </Link>
                 );
               })}
+              {signedIn && (
+                <Link
+                  href="/downloads"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`sm:hidden flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                    pathname?.startsWith("/downloads")
+                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25"
+                      : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  <Download className="w-4 h-4 shrink-0" />
+                  Downloads
+                </Link>
+              )}
               {/* Focus Target's own trigger button is hidden below sm: (see the Right
                   Actions row above) — mirrored here so it stays reachable on a phone. */}
               <button

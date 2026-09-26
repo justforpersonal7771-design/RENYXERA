@@ -24,7 +24,7 @@ import { NextResponse, type NextRequest } from "next/server";
  * through untouched) until NEXT_PUBLIC_SUPABASE_URL is actually configured. Once you add
  * that env var, this activates automatically — nothing else to flip.
  */
-const PROTECTED_PREFIXES = ["/profile"];
+const PROTECTED_PREFIXES = ["/profile", "/downloads"];
 
 export async function updateSession(request: NextRequest) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

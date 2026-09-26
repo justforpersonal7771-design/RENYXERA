@@ -21,7 +21,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 4 | **CI security checks**: service-role grep over build output, anon-can't-read-answers test | Platform | Makes steps 1–3 and 4B regressions impossible to ship silently |
 | 5 | **Question bank into Postgres** (975 questions, public/private split, offline sync) | 4B | Prerequisite for everything in Release 5 |
 | 6 | **Answer-key withholding + server-graded attempts** (attempt token, graded/practice modes) | 5A, 5B | Makes scores trustworthy |
-| 6b | **Protected offline Downloads**: remove public question JSON, encrypted IndexedDB packs, canvas viewer with user watermark (see docs/CONTENT_STRATEGY.md §7) | 5A, 6 | Question bank never downloadable as a file |
+| 6b | ✅ **Protected offline Downloads** (26 Sep): /downloads + protected viewer; AES-GCM packs in a per-account vault DB; non-extractable key, 14-day offline renewal; account watermark; copy/print/context-menu/save blocked; blur shield; wiped on sign-out. **Follow-ups:** persistent per-day download cap (needs a table), rasterised "flattened" page rendering for TeX/images, key rotation/revocation with Active Devices (7) | 5A, 6 | Question bank never downloadable as a file |
 | 7 | **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
 | 8 | **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
 | 9 | **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay |

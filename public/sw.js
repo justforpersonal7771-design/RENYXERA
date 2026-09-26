@@ -1,4 +1,4 @@
-const CACHE_NAME = "gateos-pwa-cache-v5";
+const CACHE_NAME = "gateos-pwa-cache-v6";
 
 // App pages that must open offline (their data lives in IndexedDB). Each page's HTML is
 // precached together with the /_next/static scripts and styles it references, so an
@@ -15,6 +15,8 @@ const APP_ROUTES = [
   "/revision",
   "/revision/session",
   "/analytics",
+  "/downloads",
+  "/downloads/view",
 ];
 const STATIC_ASSETS = ["/manifest.json", "/data/questions.json", "/data/image-manifest.json"];
 
@@ -23,7 +25,9 @@ async function precache() {
   const put = (url) =>
     fetch(url, { credentials: "same-origin" })
       .then((res) => {
-        if (res.ok) return cache.put(url, res.clone()).then(() => res);
+        // A redirect (e.g. a signed-out visit to /downloads → /login) must not be cached
+        // under the page's own URL.
+        if (res.ok && !res.redirected) return cache.put(url, res.clone()).then(() => res);
         console.warn("SW precache skipped (non-OK response):", url, res.status);
       })
       .catch((err) => console.warn("SW precache skipped (fetch failed):", url, err));
@@ -65,7 +69,7 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(req)
       .then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic") {
+        if (networkResponse && networkResponse.status === 200 && networkResponse.type === "basic" && !networkResponse.redirected) {
           const copy = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         }
