@@ -124,8 +124,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Supabase project created, migration run in production | ✅ |
 | Env vars wired (`.env.local` + Worker secrets + CI secrets) | ✅ |
 | `lib/supabase/*` client/server/middleware scaffolding, verified safe when unconfigured | ✅ |
-| **975 questions seeded into Postgres** with the public/private split | ⬜ *(the app still serves the question bank from the static `public/data/questions.json`)* |
-| All 975 questions render identically from Postgres as from the JSON | ⬜ |
+| **975 questions seeded into Postgres** with the public/private split | ✅ *(scripts/seed-questions.mjs, 26 Sep: 975 q · 2776 options · 975 answers; anon sees 0 answers. 4 NAT "A OR B" answers keep only the first range until step 6 adds nat_ranges)* |
+| All 975 questions render identically from Postgres as from the JSON | ⬜ *(client switches to Postgres in step 6)* |
 | Practice mode works fully offline after first sync | 🟨 *(works offline today from IndexedDB; not yet from a Postgres sync)* |
 | `profiles` auto-create trigger confirmed firing on a real signup | ✅ *(verified 26 Sep against production: 3 auth users, 3 profile rows)* |
 
