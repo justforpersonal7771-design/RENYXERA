@@ -5,6 +5,8 @@ import { emailProblem, passwordProblem, friendlyAuthError } from "@/lib/auth-mes
 import { FieldError } from "@/components/auth/field-error";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useToastStore } from "@/store/use-toast-store";
 import { Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { GoogleAuthButton } from "@/components/auth/google-auth-button";
@@ -15,6 +17,7 @@ interface SignupFormProps {
 }
 
 export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +39,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
     setLoading(true);
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -48,6 +51,16 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
         turnstileRef.current?.reset();
         setError(friendlyAuthError(error.message));
         setLoading(false);
+        return;
+      }
+      // "Confirm email" is off in Supabase (see checklist backlog #5), so sign-up returns a
+      // live session: go straight in. If confirmation is turned back on later, no session
+      // comes back and the "check your inbox" screen below is shown instead.
+      if (data.session) {
+        useToastStore.getState().show("Welcome to RENYXERA! Your account is ready.", "success");
+        if (onDismiss) onDismiss();
+        else router.push("/");
+        router.refresh();
         return;
       }
       setSubmitted(true);
