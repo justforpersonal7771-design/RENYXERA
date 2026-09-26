@@ -128,97 +128,151 @@ function Viewer() {
   const shown = !!q && (revealAll || revealed[q.question_id]);
   const natText = key?.n?.map(([a, b]) => (a === b ? `${a}` : `${a} to ${b}`)).join(" or ");
 
+  const prev = () => setIndex((i) => Math.max(i - 1, 0));
+  const next = () => setIndex((i) => Math.min(i + 1, questions.length - 1));
+  const revealButton = (full = false) => (
+    <button onClick={() => setRevealAll((v) => !v)} className={`${full ? "w-full justify-center" : ""} inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/40 cursor-pointer`}>
+      {revealAll ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />} {revealAll ? "Hide answers" : "Show all answers"}
+    </button>
+  );
+  const hasImageOptions = !!q?.options?.some((o) => o.contentAst?.some((n) => n.type === "image"));
+
   return (
-    <div className="w-full max-w-4xl mx-auto flex flex-col gap-4 pb-8 select-none [-webkit-touch-callout:none]">
+    // Desktop: the question takes all the width; navigation lives in a right-hand panel.
+    // Mobile: stacked, with a scrollable number strip under the question.
+    <div data-fill-height className="w-full flex flex-col lg:flex-row gap-4 lg:h-full lg:min-h-0 pb-6 lg:pb-0 select-none [-webkit-touch-callout:none]">
       <style>{`@media print { html.vault-open body * { display: none !important; } html.vault-open body::after { content: "Printing is disabled for protected content."; display: block; padding: 48px; font: 600 16px system-ui; } }`}</style>
 
-      {/* Toolbar */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <Link href="/downloads" className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/40">
-          <ArrowLeft className="w-4 h-4" /> Downloads
-        </Link>
-        <div className="order-last basis-full sm:order-none sm:basis-auto flex-1 min-w-0">
-          <p className="font-bold text-[var(--text-primary)] truncate">{pack.title}</p>
-          <p className="text-[11px] text-[var(--text-muted)] inline-flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-emerald-500" /> Protected · watermarked to your account</p>
-        </div>
-        <button onClick={() => setRevealAll((v) => !v)} className="ml-auto sm:ml-0 inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/40 cursor-pointer">
-          {revealAll ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />} {revealAll ? "Hide answers" : "Show all answers"}
-        </button>
-      </div>
-
-      {/* Question card with watermark overlay */}
-      <div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)]">
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-20" style={{ backgroundImage: bg }} />
-        {q ? (
-          <AnimatePresence mode="wait">
-            <motion.div key={q.question_id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.18 }} className="relative z-10 p-5 sm:p-7 [&_img]:pointer-events-none">
-              <div className="flex items-center gap-2 flex-wrap mb-4 text-[11px] font-semibold">
-                <span className="px-2 py-0.5 rounded-md bg-violet-500/15 text-violet-700 dark:text-violet-300">Q{index + 1} / {questions.length}</span>
-                <span className="px-2 py-0.5 rounded-md bg-[var(--surface-secondary)] text-[var(--text-secondary)]">{q.question_type} · {q.marks} mark{q.marks === 1 ? "" : "s"}</span>
-                <span className="px-2 py-0.5 rounded-md bg-[var(--surface-secondary)] text-[var(--text-secondary)] truncate max-w-[60%]">{q.subject} · {q.topic}</span>
-              </div>
-              <div className="text-[15px] leading-relaxed text-[var(--text-primary)]">
-                <AstNodeRenderer nodes={q.contentAst || []} />
-              </div>
-
-              {q.question_type !== "NAT" && (
-                <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-2.5">
-                  {(q.options || []).map((o) => {
-                    const correct = shown && !!key?.c.includes(o.option_id);
-                    return (
-                      <div key={o.option_id} className={`flex items-start gap-3 rounded-xl border p-3 transition-colors ${correct ? "border-emerald-500/60 bg-emerald-500/10" : "border-[var(--border)] bg-[var(--surface-secondary)]/40"}`}>
-                        <span className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-bold ${correct ? "bg-emerald-500 text-white" : "bg-[var(--surface-secondary)] text-[var(--text-secondary)]"}`}>{o.option_id}</span>
-                        <div className="min-w-0 text-sm text-[var(--text-primary)]"><AstNodeRenderer nodes={o.contentAst || []} /></div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              <div className="mt-5 flex items-center gap-3 flex-wrap">
-                <button onClick={() => setRevealed((r) => ({ ...r, [q.question_id]: !r[q.question_id] }))} disabled={revealAll}
-                  className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-semibold shadow-md shadow-violet-500/25 disabled:opacity-60 cursor-pointer">
-                  {shown ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />} {shown ? "Hide answer" : "Show answer"}
-                </button>
-                {shown && (
-                  <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
-                    {!key ? "Answer not available for this question."
-                      : q.question_type === "NAT" ? `Answer: ${natText ?? "—"}`
-                      : key.c.length > 1 && key.c.length === (q.options?.length ?? 0) ? "Marks to all (official key)"
-                      : `Answer: ${key.c.join(" or ")}`}
-                  </span>
-                )}
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        ) : (
-          <p className="relative z-10 p-8 text-center text-sm text-[var(--text-muted)]">This pack has no questions available.</p>
-        )}
-
-        {/* Privacy shield when the tab/window loses focus */}
-        <AnimatePresence>
-          {shielded && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-[var(--surface)]/80 backdrop-blur-xl text-center p-6">
-              <ShieldCheck className="w-8 h-8 text-violet-500" />
-              <p className="font-semibold text-[var(--text-primary)]">Protected content hidden</p>
-              <p className="text-xs text-[var(--text-secondary)]">Click back into the page to continue studying.</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* Navigator */}
-      <div className="flex items-center gap-2">
-        <button onClick={() => setIndex((i) => Math.max(i - 1, 0))} disabled={index === 0} aria-label="Previous question" className="h-10 w-10 inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /></button>
-        <div className="flex-1 overflow-x-auto custom-scrollbar">
-          <div className="flex gap-1.5 py-1">
-            {questions.map((qq, i) => (
-              <button key={qq.question_id} onClick={() => setIndex(i)} className={`h-9 min-w-9 px-2 rounded-lg text-xs font-bold shrink-0 cursor-pointer ${i === index ? "bg-gradient-to-br from-indigo-600 to-violet-600 text-white" : "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]"}`}>{i + 1}</button>
-            ))}
+      <div className="flex-1 min-w-0 flex flex-col gap-3 lg:min-h-0">
+        {/* Toolbar — phones/tablets only; desktop has it in the side panel */}
+        <div className="lg:hidden flex items-center gap-2 flex-wrap">
+          <Link href="/downloads" className="inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/40">
+            <ArrowLeft className="w-4 h-4" /> Downloads
+          </Link>
+          <div className="ml-auto">{revealButton()}</div>
+          <div className="basis-full min-w-0">
+            <p className="font-bold text-[var(--text-primary)] truncate">{pack.title}</p>
+            <p className="text-[11px] text-[var(--text-muted)] inline-flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-emerald-500" /> Protected · watermarked to your account</p>
           </div>
         </div>
-        <button onClick={() => setIndex((i) => Math.min(i + 1, questions.length - 1))} disabled={index >= questions.length - 1} aria-label="Next question" className="h-10 w-10 inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] disabled:opacity-40 cursor-pointer"><ChevronRight className="w-4 h-4" /></button>
+
+        {/* Question card with watermark overlay */}
+        <div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] lg:flex-1 lg:min-h-0">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-20" style={{ backgroundImage: bg }} />
+          <div className="relative z-10 lg:h-full lg:overflow-y-auto custom-scrollbar">
+            {q ? (
+              <AnimatePresence mode="wait">
+                <motion.div key={q.question_id} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.18 }} className="p-5 sm:p-7 xl:p-8 [&_img]:pointer-events-none [&_img]:max-w-full">
+                  <div className="flex items-center gap-2 flex-wrap mb-4 text-[11px] font-semibold">
+                    <span className="px-2 py-0.5 rounded-md bg-violet-500/15 text-violet-700 dark:text-violet-300">Q{index + 1} / {questions.length}</span>
+                    <span className="px-2 py-0.5 rounded-md bg-[var(--surface-secondary)] text-[var(--text-secondary)]">{q.question_type} · {q.marks} mark{q.marks === 1 ? "" : "s"}</span>
+                    <span className="px-2 py-0.5 rounded-md bg-[var(--surface-secondary)] text-[var(--text-secondary)] truncate max-w-full">{q.subject} · {q.topic}</span>
+                  </div>
+                  <div className="text-[15px] xl:text-base leading-relaxed text-[var(--text-primary)]">
+                    <AstNodeRenderer nodes={q.contentAst || []} />
+                  </div>
+
+                  {q.question_type !== "NAT" && (
+                    <div className={`mt-6 grid gap-3 ${hasImageOptions ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4" : "grid-cols-1 md:grid-cols-2"}`}>
+                      {(q.options || []).map((o) => {
+                        const correct = shown && !!key?.c.includes(o.option_id);
+                        return (
+                          <div key={o.option_id} className={`flex items-start gap-3 rounded-xl border p-3.5 transition-colors ${correct ? "border-emerald-500/60 bg-emerald-500/10" : "border-[var(--border)] bg-[var(--surface-secondary)]/40"}`}>
+                            <span className={`w-7 h-7 shrink-0 rounded-lg flex items-center justify-center text-xs font-bold ${correct ? "bg-emerald-500 text-white" : "bg-[var(--surface-secondary)] text-[var(--text-secondary)]"}`}>{o.option_id}</span>
+                            <div className="min-w-0 flex-1 text-sm xl:text-[15px] text-[var(--text-primary)]"><AstNodeRenderer nodes={o.contentAst || []} /></div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  <div className="mt-6 flex items-center gap-3 flex-wrap">
+                    <button onClick={() => setRevealed((r) => ({ ...r, [q.question_id]: !r[q.question_id] }))} disabled={revealAll}
+                      className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-semibold shadow-md shadow-violet-500/25 disabled:opacity-60 cursor-pointer">
+                      {shown ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />} {shown ? "Hide answer" : "Show answer"}
+                    </button>
+                    {shown && (
+                      <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+                        {!key ? "Answer not available for this question."
+                          : q.question_type === "NAT" ? `Answer: ${natText ?? "—"}`
+                          : key.c.length > 1 && key.c.length === (q.options?.length ?? 0) ? "Marks to all (official key)"
+                          : `Answer: ${key.c.join(" or ")}`}
+                      </span>
+                    )}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            ) : (
+              <p className="p-8 text-center text-sm text-[var(--text-muted)]">This pack has no questions available.</p>
+            )}
+          </div>
+
+          {/* Privacy shield when the tab/window loses focus */}
+          <AnimatePresence>
+            {shielded && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-2 bg-[var(--surface)]/80 backdrop-blur-xl text-center p-6">
+                <ShieldCheck className="w-8 h-8 text-violet-500" />
+                <p className="font-semibold text-[var(--text-primary)]">Protected content hidden</p>
+                <p className="text-xs text-[var(--text-secondary)]">Click back into the page to continue studying.</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Number strip — phones/tablets only */}
+        <div className="lg:hidden flex items-center gap-2">
+          <button onClick={prev} disabled={index === 0} aria-label="Previous question" className="h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /></button>
+          <div className="flex-1 overflow-x-auto custom-scrollbar">
+            <div className="flex gap-1.5 py-1">
+              {questions.map((qq, i) => (
+                <button key={qq.question_id} onClick={() => setIndex(i)} className={`h-9 min-w-9 px-2 rounded-lg text-xs font-bold shrink-0 cursor-pointer ${i === index ? "bg-gradient-to-br from-indigo-600 to-violet-600 text-white" : "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]"}`}>{i + 1}</button>
+              ))}
+            </div>
+          </div>
+          <button onClick={next} disabled={index >= questions.length - 1} aria-label="Next question" className="h-10 w-10 shrink-0 inline-flex items-center justify-center rounded-xl border border-[var(--border)] bg-[var(--surface)] disabled:opacity-40 cursor-pointer"><ChevronRight className="w-4 h-4" /></button>
+        </div>
       </div>
+
+      {/* Right-hand panel — desktop */}
+      <aside className="hidden lg:flex w-[280px] xl:w-[300px] shrink-0 flex-col gap-3 min-h-0">
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 flex flex-col gap-3">
+          <Link href="/downloads" className="self-start inline-flex items-center gap-1.5 h-8 px-2.5 rounded-lg border border-[var(--border)] text-xs font-semibold text-[var(--text-primary)] hover:border-violet-500/40">
+            <ArrowLeft className="w-3.5 h-3.5" /> Downloads
+          </Link>
+          <div className="min-w-0">
+            <p className="font-bold text-[var(--text-primary)] leading-snug">{pack.title}</p>
+            <p className="mt-0.5 text-[11px] text-[var(--text-muted)] inline-flex items-center gap-1"><ShieldCheck className="w-3 h-3 text-emerald-500" /> Protected · watermarked to your account</p>
+          </div>
+          {revealButton(true)}
+        </div>
+
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 flex-1 min-h-0 flex flex-col">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">Questions</p>
+            <p className="text-[11px] font-semibold text-[var(--text-secondary)]">{index + 1} of {questions.length}</p>
+          </div>
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar -mr-1 pr-1">
+            <div className="grid grid-cols-5 gap-1.5">
+              {questions.map((qq, i) => {
+                const seen = revealAll || revealed[qq.question_id];
+                return (
+                  <button key={qq.question_id} onClick={() => setIndex(i)} aria-label={`Question ${i + 1}`} aria-current={i === index}
+                    className={`relative h-10 rounded-lg text-xs font-bold cursor-pointer transition-colors ${i === index ? "bg-gradient-to-br from-indigo-600 to-violet-600 text-white shadow-md shadow-violet-500/25" : "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)] hover:border-violet-500/40"}`}>
+                    {i + 1}
+                    {seen && i !== index && <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-emerald-500" />}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <p className="mt-3 text-[10px] text-[var(--text-muted)] inline-flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Answer shown · ← → keys to move</p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2">
+          <button onClick={prev} disabled={index === 0} className="h-11 inline-flex items-center justify-center gap-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] disabled:opacity-40 cursor-pointer"><ChevronLeft className="w-4 h-4" /> Previous</button>
+          <button onClick={next} disabled={index >= questions.length - 1} className="h-11 inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-semibold shadow-md shadow-violet-500/25 disabled:opacity-40 cursor-pointer">Next <ChevronRight className="w-4 h-4" /></button>
+        </div>
+      </aside>
     </div>
   );
 }

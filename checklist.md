@@ -22,7 +22,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 5 | **Question bank into Postgres** (975 questions, public/private split, offline sync) | 4B | Prerequisite for everything in Release 5 |
 | 6 | **Answer-key withholding + server-graded attempts** (attempt token, graded/practice modes) | 5A, 5B | Makes scores trustworthy |
 | 6b | ✅ **Protected offline Downloads** (26 Sep): /downloads + protected viewer; AES-GCM packs in a per-account vault DB; non-extractable key, 14-day offline renewal; account watermark; copy/print/context-menu/save blocked; blur shield; wiped on sign-out. **Follow-ups:** persistent per-day download cap (needs a table), rasterised "flattened" page rendering for TeX/images, key rotation/revocation with Active Devices (7) | 5A, 6 | Question bank never downloadable as a file |
-| 7 | **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
+| 7 | ✅ **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
 | 8 | **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
 | 9 | **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay |
 | 10 | **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
@@ -185,8 +185,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Daily hours drive reminder cadence and a "you are N hours behind" signal | ⬜ |
 | Target year weights recent-year PYQs higher as the exam nears | ⬜ |
 | Closed loop: each graded attempt re-derives the recommended focus band | 🟨 *(re-derives from measured accuracy; graded attempts are 5B)* |
-| Preferences section (theme, default duration, notifications, reduced motion) | ⬜ |
-| Account section (email/phone, linked providers, active devices, export my data) | ⬜ |
+| Preferences section (theme, default duration, notifications, reduced motion) | ✅ *(theme, motion System/Reduced/Full, study-reminder switch; default duration n/a — tests use official durations)* |
+| Account section (email/phone, linked providers, active devices, export my data) | ✅ *(email + sign-in methods, change password, JSON export, active devices)* |
 
 ### 4F · P0 · Per-User Isolation & Device Sessions
 | Task | Status |
@@ -194,8 +194,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Per-user IndexedDB namespace (`IDBManager.setActiveNamespace`) + `resetAllStores()` — verified live | ✅ |
 | Wired into real sign-in/sign-out (`AuthListener`) incl. a fixed guest-first-load regression | ✅ |
 | Explicit two-account test: account B sees zero data from account A, and all 10 stores reset | ⬜ *(behaviour implemented; the documented store-by-store test isn't written)* |
-| Device sessions table + Active Devices list | ⬜ |
-| "Sign out this device" / "sign out everywhere" | ⬜ |
+| Device sessions table + Active Devices list | ✅ *(migration 0005; heartbeat on load/5 min/tab focus)* |
+| "Sign out this device" / "sign out everywhere" | ✅ *(per device, all others, everywhere — tested across 3 sessions; remote device signs itself out + wipes downloads)* |
 | Idle expiry; forced re-auth on credential change | ⬜ |
 
 ### 4G · P0 · API Hardening
