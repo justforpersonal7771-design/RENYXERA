@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { emailProblem, passwordProblem, friendlyAuthError } from "@/lib/auth-messages";
+import { FieldError } from "@/components/auth/field-error";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { Loader2, CheckCircle2, ArrowLeft } from "lucide-react";
@@ -15,11 +17,15 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string | null; password?: string | null }>({});
   const turnstileRef = useRef<TurnstileHandle>(null);
   const [submitted, setSubmitted] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const fe = { email: emailProblem(email) };
+    setFieldErrors(fe);
+    if (fe.email) return;
     setError(null);
     setLoading(true);
     try {
@@ -30,7 +36,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
       });
       if (error) {
         turnstileRef.current?.reset();
-        setError(error.message);
+        setError(friendlyAuthError(error.message));
         setLoading(false);
         return;
       }
@@ -82,7 +88,7 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
       <h1 className="text-xl font-display font-bold text-[var(--text-primary)] mb-1">Reset your password</h1>
       <p className="text-sm text-[var(--text-secondary)] mb-6">We&apos;ll email you a link to set a new one.</p>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.5">
         <div>
           <label htmlFor="forgot-email" className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">
             Email
@@ -93,10 +99,11 @@ export function ForgotPasswordForm({ onSwitchToLogin }: ForgotPasswordFormProps)
             required
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); setFieldErrors((f) => ({ ...f, email: null })); }}
             className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             placeholder="you@example.com"
           />
+          <FieldError message={fieldErrors.email} />
         </div>
 
         <TurnstileWidget ref={turnstileRef} onToken={setCaptchaToken} />

@@ -206,7 +206,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Upstash Redis, user-ID-keyed limiting | ⬜ *(current limiting is IP-keyed)* |
 | Per-user daily AI quota in Postgres | ✅ *(atomic `consume_ai_call`, 30/day, IST reset; live)* |
 | Server-side prompt-hash response cache | ✅ *(`ai_response_cache`; cache hits cost no quota; live)* |
-| Turnstile on signup/login/reset/OTP | ⬜ |
+| Turnstile on signup/login/reset | ✅ *(live; Supabase Captcha protection on; verified by you in a real browser 26 Sep. OTP gets it when OTP is built)* |
 
 ### 4H · P1 · Multi-Branch Teaser & Waitlist
 | Task | Status |

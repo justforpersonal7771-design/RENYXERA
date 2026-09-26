@@ -1,6 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { emailProblem, passwordProblem, friendlyAuthError } from "@/lib/auth-messages";
+import { FieldError } from "@/components/auth/field-error";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { Loader2, Eye, EyeOff, CheckCircle2 } from "lucide-react";
@@ -19,17 +21,17 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string | null; password?: string | null }>({});
   const turnstileRef = useRef<TurnstileHandle>(null);
   const [submitted, setSubmitted] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const fe = { email: emailProblem(email), password: passwordProblem(password, true) };
+    setFieldErrors(fe);
+    if (fe.email || fe.password) return;
     setError(null);
 
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
-      return;
-    }
 
     setLoading(true);
     try {
@@ -44,7 +46,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
       });
       if (error) {
         turnstileRef.current?.reset();
-        setError(error.message);
+        setError(friendlyAuthError(error.message));
         setLoading(false);
         return;
       }
@@ -90,7 +92,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
         <div className="h-px flex-1 bg-[var(--border)]" />
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3.5">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-3.5">
         <div>
           <label htmlFor="signup-email" className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">
             Email
@@ -101,10 +103,11 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
             required
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); setFieldErrors((f) => ({ ...f, email: null })); }}
             className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
             placeholder="you@example.com"
           />
+          <FieldError message={fieldErrors.email} />
         </div>
 
         <div>
@@ -119,7 +122,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
               minLength={8}
               autoComplete="new-password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => { setPassword(e.target.value); setFieldErrors((f) => ({ ...f, password: null })); }}
               className="w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3.5 py-2.5 pr-10 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
               placeholder="At least 8 characters"
             />
@@ -132,6 +135,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           </div>
+          <FieldError message={fieldErrors.password} />
         </div>
 
         <TurnstileWidget ref={turnstileRef} onToken={setCaptchaToken} />
