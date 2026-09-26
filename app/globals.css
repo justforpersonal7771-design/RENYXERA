@@ -936,3 +936,12 @@
     border-radius: 8px !important;
   }
 }
+/* Settings → Preferences → Reduce motion ("reduce" forces it on regardless of the OS). */
+html[data-motion="reduce"] *,
+html[data-motion="reduce"] *::before,
+html[data-motion="reduce"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}

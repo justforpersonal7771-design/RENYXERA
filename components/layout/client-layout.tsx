@@ -13,6 +13,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { MathJaxContext } from "better-react-mathjax";
 import { MATHJAX_CONFIG } from "@/lib/mathjax-config";
+import { MotionPrefs } from "@/components/system/motion-prefs";
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
@@ -36,9 +37,13 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   // confirmation as a toast on this page rather than a dedicated "you're signed out"
   // screen, which is what the profile page briefly showed before this existed.
   useEffect(() => {
-    if (sessionStorage.getItem(SIGNED_OUT_FLAG)) {
+    const flag = sessionStorage.getItem(SIGNED_OUT_FLAG);
+    if (flag) {
       sessionStorage.removeItem(SIGNED_OUT_FLAG);
-      useToastStore.getState().show("Signed out", "success");
+      useToastStore.getState().show(
+        flag === "remote" ? "This device was signed out from your account settings." : flag === "everywhere" ? "Signed out on all devices" : "Signed out",
+        flag === "remote" ? "info" : "success"
+      );
     }
   }, []);
 
@@ -81,7 +86,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   if (isExamSession) {
     return (
-      <MathJaxContext config={MATHJAX_CONFIG}>
+      <MotionPrefs><MathJaxContext config={MATHJAX_CONFIG}>
       <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 relative">
         <LaunchIntro />
         <main className="w-full h-full overflow-hidden">
@@ -91,14 +96,14 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <ToastContainer />
         <ConfirmHost />
       </div>
-      </MathJaxContext>
+      </MathJaxContext></MotionPrefs>
     );
   }
 
   return (
     // App-level MathJax context: starts the MathJax download as soon as the app opens
     // (see lib/mathjax-config.ts); page-level contexts reuse it.
-    <MathJaxContext config={MATHJAX_CONFIG}>
+    <MotionPrefs><MathJaxContext config={MATHJAX_CONFIG}>
     <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter relative">
       <LaunchIntro />
       {/* Topbar is fixed (not sticky-in-flow); the ambient body gradient
@@ -136,7 +141,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <AuthModal />
       <ConfirmHost />
     </div>
-    </MathJaxContext>
+    </MathJaxContext></MotionPrefs>
   );
 }
 

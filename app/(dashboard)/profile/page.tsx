@@ -14,6 +14,7 @@ import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
 import { StatsAchievements } from "@/components/profile/stats-achievements";
 import { GoalPlan } from "@/components/profile/goal-plan";
+import { AccountSettings } from "@/components/profile/account-settings";
 import { ProfileHero } from "@/components/profile/profile-hero";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
@@ -415,6 +416,8 @@ export default function ProfilePage() {
           </motion.div>
         </div>
       </div>
+
+      <AccountSettings />
 
       <StatsAchievements />
     </div>

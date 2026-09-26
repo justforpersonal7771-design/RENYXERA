@@ -36,6 +36,9 @@ export async function requestNotificationPermission(): Promise<boolean> {
 export async function checkDueReminders(): Promise<void> {
   if (typeof window === "undefined" || !("Notification" in window)) return;
   if (Notification.permission !== "granted") return;
+  // Settings → Preferences → Study reminders (master switch for this device).
+  const { usePreferencesStore } = await import("@/store/use-preferences-store");
+  if (!usePreferencesStore.getState().reminders) return;
 
   const events = await IDBManager.getCalendarEvents();
   const todayStr = toLocalDateStr();

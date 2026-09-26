@@ -36,6 +36,7 @@ export function AuthListener() {
 
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
+    let stopHeartbeat: (() => void) | undefined;
     let cancelled = false;
 
     (async () => {
@@ -135,6 +136,25 @@ export function AuthListener() {
       setSession(user);
       await applyUserChange(user?.id ?? null, true);
       IDBManager.markNamespaceResolved();
+
+      // Step 7: Active Devices check-in — on load, every 5 minutes while visible, and
+      // when the tab comes back. A device signed out from another device's settings
+      // signs itself out here (wiping its protected downloads on the way).
+      const checkIn = async () => {
+        if (cancelled || document.hidden || !useAuthStore.getState().user) return;
+        const { deviceHeartbeat } = await import("@/lib/devices/device");
+        const r = await deviceHeartbeat();
+        if (r?.revoked && !cancelled) {
+          const { SIGNED_OUT_FLAG } = await import("@/lib/utils");
+          sessionStorage.setItem(SIGNED_OUT_FLAG, "remote");
+          await supabase.auth.signOut({ scope: "local" }).catch(() => {});
+        }
+      };
+      void checkIn();
+      const beat = setInterval(checkIn, 5 * 60_000);
+      const onVisible = () => { if (!document.hidden) void checkIn(); };
+      document.addEventListener("visibilitychange", onVisible);
+      stopHeartbeat = () => { clearInterval(beat); document.removeEventListener("visibilitychange", onVisible); };
       if (user) setProfile(await fetchProfile(user.id));
       setLoading(false);
 
@@ -152,6 +172,7 @@ export function AuthListener() {
     return () => {
       cancelled = true;
       unsubscribe?.();
+      stopHeartbeat?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
