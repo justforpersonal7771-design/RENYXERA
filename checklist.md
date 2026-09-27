@@ -259,7 +259,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | `/api/exam/grade` server-side grading endpoint | ✅ |
-| Attempt token (server start time/duration, tamper-proof timer) | ⬜ |
+| Attempt token (server start time/duration, tamper-proof timer) | ✅ *(/api/exam/start: server start time, question set, server-computed limit)* |
 | Live exam session wired to submit-for-grading instead of self-grading | ✅ *(attempt stored in exam_attempts/exam_responses for signed-in users)* |
 | Server validation on submit (open, in time + grace, matching question set, not already submitted) | 🟨 *(duplicates collapsed, unknown ids ignored, re-submits can't overwrite; time/question-set checks need the attempt token)* |
 | Idempotent submissions; late-submission grace window | 🟨 *(idempotent on attempt id ✅; grace window needs the attempt token)* |
@@ -268,8 +268,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 5C · P1 · Attempt Integrity Signals
 | Task | Status |
 |---|---|
-| Tab-blur / timing-anomaly / concurrent-attempt signals (graded only, shadow-flag first) | ⬜ |
-| Disclosure notice before graded attempts | ⬜ |
+| Tab-blur / timing-anomaly / concurrent-attempt signals (graded only, shadow-flag first) | ✅ *(tab switches, fullscreen exits, over-time, long pause, rapid answers, question-set mismatch, no start token — flags only)* |
+| Disclosure notice before graded attempts | ✅ |
 | Flagged attempts excluded from leaderboards, never deleted | ⬜ |
 
 ### 5D · P1 · Question Bank Protection

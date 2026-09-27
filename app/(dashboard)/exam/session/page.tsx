@@ -46,6 +46,21 @@ export default function ExamSessionPage() {
   const pauseSession = useExamRuntimeStore((state) => state.pauseSession);
   const resumeSession = useExamRuntimeStore((state) => state.resumeSession);
   const submitSession = useExamRuntimeStore((state) => state.submitSession);
+
+  // Step 11 (5C): integrity signals — counted, sent with the submission as flags only.
+  const recordSignal = useExamRuntimeStore((state) => state.recordSignal);
+  useEffect(() => {
+    const onVis = () => { if (document.hidden) recordSignal("blur"); };
+    let wasFull = !!document.fullscreenElement;
+    const onFs = () => {
+      const isFull = !!document.fullscreenElement;
+      if (wasFull && !isFull) recordSignal("fullscreen_exit");
+      wasFull = isFull;
+    };
+    document.addEventListener("visibilitychange", onVis);
+    document.addEventListener("fullscreenchange", onFs);
+    return () => { document.removeEventListener("visibilitychange", onVis); document.removeEventListener("fullscreenchange", onFs); };
+  }, [recordSignal]);
   const nextQuestion = useExamRuntimeStore((state) => state.nextQuestion);
   const previousQuestion = useExamRuntimeStore((state) => state.previousQuestion);
   const saveResponse = useExamRuntimeStore((state) => state.saveResponse);

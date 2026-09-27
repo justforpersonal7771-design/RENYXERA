@@ -106,46 +106,56 @@ export async function POST(req: NextRequest) {
     if (userId && attempt) {
       const known = results.filter((r) => r.known);
       if (known.length) {
-        const { data: inserted, error: aErr } = await db
-          .from("exam_attempts")
-          .upsert(
-            {
-              id: attempt.id,
-              user_id: userId,
-              branch_code: "CSE",
+        const nowIso = new Date().toISOString();
+        const { data: row } = await db.from("exam_attempts")
+          .select("id, user_id, status, server_started_at, duration_seconds, question_ids")
+          .eq("id", attempt.id).maybeSingle();
+
+        if (row && row.user_id !== userId) {
+          stored = false; // someone else's attempt id — never touch it
+        } else if (row && row.status === "submitted") {
+          stored = true; // retried submit — already recorded
+        } else {
+          const flags = integrityFlags({ row, attempt, responses, knownIds: known.map((r) => r.question_id), nowIso });
+          let attemptOk = false;
+          if (row) {
+            const { error } = await db.from("exam_attempts").update({
+              submitted_at: nowIso, server_score: score, server_max: maxScore,
+              status: "submitted", mode: attempt.mode, integrity_flags: flags,
+            }).eq("id", attempt.id).eq("status", "in_progress");
+            attemptOk = !error;
+            if (error) console.error("updating attempt failed", error);
+          } else {
+            const { error } = await db.from("exam_attempts").insert({
+              id: attempt.id, user_id: userId, branch_code: "CSE",
               config: { title: attempt.title ?? null },
               question_ids: known.map((r) => r.question_id),
               mode: attempt.mode,
-              server_started_at: attempt.started_at ?? new Date().toISOString(),
+              server_started_at: attempt.started_at ?? nowIso,
               duration_seconds: attempt.duration_seconds,
-              submitted_at: new Date().toISOString(),
-              server_score: score,
-              server_max: maxScore,
-              status: "submitted",
-            },
-            { onConflict: "id", ignoreDuplicates: true }
-          )
-          .select("id");
-        if (aErr) {
-          console.error("storing attempt failed", aErr);
-        } else if (inserted?.length) {
-          const { error: rErr } = await db.from("exam_responses").insert(
-            known.map((r) => {
-              const src = byId.get(r.question_id)!;
-              return {
-                attempt_id: attempt.id,
-                question_id: r.question_id,
-                selected_option_ids: src.selected_option_ids ?? null,
-                nat_value: src.nat_value ?? null,
-                time_spent_seconds: src.time_spent_seconds ?? null,
-                marked_for_review: !!src.marked_for_review,
-              };
-            })
-          );
-          if (rErr) console.error("storing responses failed", rErr);
-          stored = !rErr;
-        } else {
-          stored = true; // already stored by an earlier (retried) submit
+              submitted_at: nowIso, server_score: score, server_max: maxScore,
+              status: "submitted", integrity_flags: flags,
+            });
+            attemptOk = !error || error.code === "23505";
+            if (error && error.code !== "23505") console.error("storing attempt failed", error);
+          }
+          if (attemptOk) {
+            const { error: rErr } = await db.from("exam_responses").insert(
+              known.map((r) => {
+                const src = byId.get(r.question_id)!;
+                return {
+                  attempt_id: attempt.id,
+                  question_id: r.question_id,
+                  selected_option_ids: src.selected_option_ids ?? null,
+                  nat_value: src.nat_value ?? null,
+                  time_spent_seconds: src.time_spent_seconds ?? null,
+                  marked_for_review: !!src.marked_for_review,
+                };
+              })
+            );
+            if (rErr) console.error("storing responses failed", rErr);
+            stored = !rErr;
+          }
         }
       }
     }
@@ -158,4 +168,38 @@ export async function POST(req: NextRequest) {
     console.error("Failed to grade exam submission:", err);
     return NextResponse.json({ error: "Failed to grade submission" }, { status: 503 });
   }
+}
+
+type Flag = { code: string; value?: number };
+
+/**
+ * Step 11 (5C): integrity signals, recorded — never used to reject or re-score (shadow
+ * flags first). Flagged attempts are excluded from leaderboards, never deleted.
+ */
+function integrityFlags(input: {
+  row: { server_started_at: string; duration_seconds: number; question_ids: string[] } | null;
+  attempt: { integrity?: { tab_blurs?: number; fullscreen_exits?: number; paused_seconds?: number } };
+  responses: { question_id: string; time_spent_seconds?: number; selected_option_ids?: string[]; nat_value?: number }[];
+  knownIds: string[];
+  nowIso: string;
+}): Flag[] {
+  const flags: Flag[] = [];
+  const sig = input.attempt.integrity ?? {};
+  if (!input.row) {
+    flags.push({ code: "no_start_token" });
+  } else {
+    const elapsed = (Date.parse(input.nowIso) - Date.parse(input.row.server_started_at)) / 1000;
+    const paused = Math.max(0, sig.paused_seconds ?? 0);
+    const GRACE = 600; // network hiccups, slow submit
+    if (elapsed - paused > input.row.duration_seconds + GRACE) flags.push({ code: "over_time", value: Math.round(elapsed - paused - input.row.duration_seconds) });
+    if (paused > 7200) flags.push({ code: "long_pause", value: Math.round(paused) });
+    const allowed = new Set(input.row.question_ids);
+    const outside = input.knownIds.filter((id) => !allowed.has(id)).length;
+    if (outside) flags.push({ code: "question_set_mismatch", value: outside });
+  }
+  if ((sig.tab_blurs ?? 0) >= 5) flags.push({ code: "tab_switches", value: sig.tab_blurs });
+  if ((sig.fullscreen_exits ?? 0) >= 3) flags.push({ code: "fullscreen_exits", value: sig.fullscreen_exits });
+  const rapid = input.responses.filter((r) => (r.selected_option_ids?.length || typeof r.nat_value === "number") && typeof r.time_spent_seconds === "number" && r.time_spent_seconds < 5).length;
+  if (rapid >= 10) flags.push({ code: "rapid_answers", value: rapid });
+  return flags;
 }

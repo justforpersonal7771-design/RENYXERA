@@ -12,6 +12,12 @@ export const gradeRequestSchema = z.object({
       duration_seconds: z.number().int().min(0).max(24 * 3600),
       mode: z.enum(["practice", "graded"]).default("practice"),
       title: z.string().max(200).optional(),
+      /** Client-observed signals (Step 11 / 5C) — recorded as flags, never trusted for scoring. */
+      integrity: z.object({
+        tab_blurs: z.number().int().min(0).max(100000).optional(),
+        fullscreen_exits: z.number().int().min(0).max(100000).optional(),
+        paused_seconds: z.number().int().min(0).max(30 * 24 * 3600).optional(),
+      }).optional(),
     })
     .optional(),
   responses: z

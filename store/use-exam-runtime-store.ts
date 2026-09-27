@@ -22,6 +22,7 @@ interface RuntimeState {
   toggleMarkForReview: (questionId: string) => Promise<void>;
   clearResponse: (questionId: string) => Promise<void>;
   tickTimer: () => void;
+  recordSignal: (kind: "blur" | "fullscreen_exit") => void;
   clearSession: () => Promise<void>;
   resumeArchivedSession: (session: ExamSession) => Promise<void>;
 }
@@ -49,15 +50,36 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
       await SessionManager.archiveIncomplete(outgoing);
     }
 
-    const session = SessionManager.createSessionFromDraft(draft);
+    const session: ExamSession = { ...SessionManager.createSessionFromDraft(draft), integrity: { tabBlurs: 0, fullscreenExits: 0, pausedSeconds: 0 } };
     set({ activeSession: session, isHydrated: true });
     await SessionManager.serializeSession(session);
+
+    // Step 11 (5B): register the start with the server (signed-in, online). Best effort:
+    // offline or signed out, the submission is simply stored with a "no_start_token" flag.
+    void (async () => {
+      try {
+        const ids = session.draftConfig.questions.map((q) => q.questionId);
+        if (!ids.some((id) => /^GATE_/.test(id))) return;
+        const exam = session.draftConfig.config?.examType;
+        await fetch("/api/exam/start", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            attempt_id: session.id,
+            question_ids: ids.slice(0, 200),
+            mode: exam === "GRAND_MOCK" || exam === "YEAR_PAPER" ? "graded" : "practice",
+            title: [exam, session.draftConfig.config?.yearShift].filter(Boolean).join(" ").slice(0, 200) || undefined,
+          }),
+        });
+      } catch {}
+    })();
   },
 
   pauseSession: async () => {
     const { activeSession } = get();
     if (!activeSession) return;
-    const updated = { ...activeSession, status: "PAUSED" as const };
+    const integrity = { tabBlurs: 0, fullscreenExits: 0, pausedSeconds: 0, ...activeSession.integrity, pausedAt: new Date().toISOString() };
+    const updated = { ...activeSession, status: "PAUSED" as const, integrity };
     set({ activeSession: updated });
     await SessionManager.serializeSession(updated);
   },
@@ -65,9 +87,22 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
   resumeSession: async () => {
     const { activeSession } = get();
     if (!activeSession) return;
-    const updated = { ...activeSession, status: "IN_PROGRESS" as const };
+    const prev = { tabBlurs: 0, fullscreenExits: 0, pausedSeconds: 0, ...activeSession.integrity };
+    const gap = prev.pausedAt ? Math.max(0, Math.round((Date.now() - Date.parse(prev.pausedAt)) / 1000)) : 0;
+    const integrity = { tabBlurs: prev.tabBlurs, fullscreenExits: prev.fullscreenExits, pausedSeconds: prev.pausedSeconds + gap };
+    const updated = { ...activeSession, status: "IN_PROGRESS" as const, integrity };
     set({ activeSession: updated });
     await SessionManager.serializeSession(updated);
+  },
+
+  recordSignal: (kind) => {
+    const { activeSession } = get();
+    if (!activeSession || activeSession.status !== "IN_PROGRESS") return;
+    const i = { tabBlurs: 0, fullscreenExits: 0, pausedSeconds: 0, ...activeSession.integrity };
+    if (kind === "blur") i.tabBlurs += 1; else i.fullscreenExits += 1;
+    const updated = { ...activeSession, integrity: i };
+    set({ activeSession: updated });
+    void SessionManager.serializeSession(updated);
   },
 
   submitSession: async () => {

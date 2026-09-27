@@ -10,7 +10,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { ExamType, TestConfig, ExamSessionDraft } from "@/types/exam.types";
 import { CustomTestBuilder, CustomTestBuilderHandle } from "@/components/exam/custom-test-builder";
-import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, GraduationCap, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight } from "lucide-react";
+import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, GraduationCap, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight , ShieldCheck } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { motion, AnimatePresence } from "motion/react";
@@ -1263,6 +1263,12 @@ export default function ExamSetupPage() {
                       </div>
 
                       <div className="p-5 pt-3 shrink-0">
+                      {(currentDraft.config.examType === "GRAND_MOCK" || currentDraft.config.examType === "YEAR_PAPER") && (
+                        <p className="mb-3 flex items-start gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/60 px-3 py-2 text-[11px] leading-snug text-[var(--text-secondary)]">
+                          <ShieldCheck className="w-3.5 h-3.5 mt-0.5 shrink-0 text-emerald-500" />
+                          <span>Graded paper: to keep rankings fair, tab switches, leaving fullscreen, pauses and timing are recorded with your attempt. They never change your score.</span>
+                        </p>
+                      )}
                       <motion.button
                         whileTap={{ scale: 0.97 }}
                         onClick={async () => {

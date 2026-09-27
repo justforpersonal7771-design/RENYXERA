@@ -142,6 +142,7 @@ type SubmittableSession = {
   startedAt?: string;
   elapsedSeconds?: number;
   draftConfig?: { config?: { examType?: string; yearShift?: string } };
+  integrity?: { tabBlurs?: number; fullscreenExits?: number; pausedSeconds?: number };
   responses: Record<string, { questionId: string; status: string; selectedOptions?: string[]; natValue?: string; timeSpentSeconds?: number }>;
 };
 
@@ -208,6 +209,11 @@ async function gradeNow(
                 duration_seconds: Math.max(0, Math.min(86_400, Math.round(session.elapsedSeconds ?? 0))),
                 mode: graded ? "graded" : "practice",
                 title: [cfg?.examType, cfg?.yearShift].filter(Boolean).join(" ").slice(0, 200) || undefined,
+                integrity: session.integrity ? {
+                  tab_blurs: Math.max(0, Math.round(session.integrity.tabBlurs ?? 0)),
+                  fullscreen_exits: Math.max(0, Math.round(session.integrity.fullscreenExits ?? 0)),
+                  paused_seconds: Math.max(0, Math.round(session.integrity.pausedSeconds ?? 0)),
+                } : undefined,
               }
             : undefined,
           responses: part,
