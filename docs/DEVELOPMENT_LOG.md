@@ -42,7 +42,8 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - **Built:** entry open 10:00–10:30; everyone gets the full 180 min from their own server start (hard close 13:30); no pause; results 13:45. Wall-clock timer so a reload/sleep can't gain time.
 - **Peak-load hardening:** start and submit retry with backoff + jitter; one attempt id reused (retry = resume); grading idempotent; mock submit timeout raised to 90 s; questions served from CDN.
 - **Privacy (user):** leaderboard display choice — anonymous / username / username + student ID. Display only; no route accepts a username or student ID for sign-in, lookup or changes.
-- Migration **0010** written — **waiting for the user to run it.**
+- Migration **0010** run by the user ✅. Next 4 Sunday mocks scheduled (4, 11, 18, 25 Oct).
+- **Tested end-to-end (27 Sep)** with 4 temporary accounts: early start refused; entry closed after 30 min; wrong paper refused; late start in grace still gets 180 min; same-id retry resumes; second attempt refused (409); duplicate submit safe; tab-switch flag stored; leaderboard hidden until results; flagged attempt unranked; all three display options; no emails exposed; other profiles unreadable; student ID not editable. Mocks page checked on desktop/mobile × light/dark — no overflow, no errors.
 
 ### 27 Sep 2026 — Official documentation ✅
 - `docs/TECHNICAL_REFERENCE.md` — architecture, stack, data, full schema explanation, security/privacy, API, every module, flows, CI/CD, config, runbook, capacity.
@@ -52,7 +53,5 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 ---
 
 ## Next up
-1. User runs migration 0010.
-2. Schedule the next 4 mocks; end-to-end test with several throwaway accounts (entry window, second attempt refused, late start in grace, entry closed, flagged attempt unranked, three display options) on desktop/mobile × light/dark.
-3. Push the batch (11a + 11b + docs) → auto-deploy.
-4. Continue the checklist.
+1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
+2. Continue the checklist.
