@@ -52,6 +52,12 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 
 ---
 
+### 27 Sep 2026 — Shuffled mock order + test mock ✅
+- **Decision (user):** same questions for everyone, different order per person, GA first then Maths + Core mixed; results must stay exact.
+- Built `lib/exam/mock-order.ts` (seeded by user + mock → stable on reload/other device). Grading was already keyed by question id; found that float sums of −⅓ differ in the 15th digit by order — the server already rounds to 2 decimals, so stored scores/ranks are order-independent. New CI check `check:mock-order`.
+- Scheduler gained `--at` / `--title` for one-off mocks. **Test Mock scheduled today 1:00 PM IST** (entry until 1:30, 180 min, hard close 4:30, results 4:45).
+- **Decision (user):** Admin Console added to the checklist as Release 10 (strict login, roles/privileges, mock scheduling, integrity review, content, users, dashboards, audit log) — deferred until every other release is done and the app is stable.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

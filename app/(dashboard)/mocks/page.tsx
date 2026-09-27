@@ -10,6 +10,8 @@ import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useDataStore } from "@/store/use-data-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
+import { QuestionRepository } from "@/lib/repository/question-repository";
+import { mockOrder } from "@/lib/exam/mock-order";
 
 interface Mock { id: string; title: string; starts_at: string; ends_at: string; results_at: string; question_ids: string[]; duration_seconds: number; start_grace_minutes?: number }
 
@@ -94,7 +96,8 @@ export default function MocksPage() {
       await startSession({
         id: attemptId,
         config: { examType: "GRAND_MOCK", mockId: m.id, timeLimitSeconds: limit, deadlineAt, title: m.title },
-        questions: m.question_ids.map((questionId, i) => ({ questionId, sequence: i + 1 })),
+        questions: mockOrder(m.question_ids, user.id, m.id, (id) => /APTITUDE/i.test(QuestionRepository.getQuestionById(id)?.section ?? ""))
+          .map((questionId, i) => ({ questionId, sequence: i + 1 })),
         createdAt: new Date().toISOString(),
       });
       router.push("/exam/session");

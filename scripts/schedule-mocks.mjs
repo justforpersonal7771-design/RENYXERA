@@ -7,6 +7,12 @@
 // recent mocks. Needs SUPABASE_SERVICE_ROLE_KEY.
 import { createClient } from "@supabase/supabase-js";
 
+// One-off test mock at any time, same paper rules and timing (not numbered):
+//   node --env-file=.env.local scripts/schedule-mocks.mjs --at=2026-09-27T13:00+05:30 --title="Test Mock"
+const arg = (k) => process.argv.find((a) => a.startsWith(`--${k}=`))?.slice(k.length + 3);
+const AT = arg("at");
+const TITLE = arg("title");
+if (AT && Number.isNaN(Date.parse(AT))) throw new Error(`--at is not a valid date: ${AT}`);
 const WEEKS = Math.max(1, Math.min(12, Number(process.argv[2]) || 4));
 const SECONDS_PER_MARK = 108;
 // GATE CS: GA 10 Q (5×1 + 5×2 = 15), technical 55 Q (25×1 + 30×2 = 85) ≈ 13 maths + 72 core.
@@ -70,7 +76,7 @@ const recentlyUsed = new Set((existing ?? []).slice(0, 8).flatMap((m) => m.quest
 const { count: total } = await db.from("mock_events").select("id", { count: "exact", head: true });
 let n = (total ?? 0);
 
-for (const start of nextSundays(WEEKS)) {
+for (const start of AT ? [new Date(AT)] : nextSundays(WEEKS)) {
   if (scheduled.has(start.toISOString())) { console.log("already scheduled:", start.toISOString()); continue; }
   const paper = [];
   for (const b of BLUEPRINT) {
@@ -81,14 +87,14 @@ for (const start of nextSundays(WEEKS)) {
     paper.push(...picked);
   }
   const marks = paper.reduce((s, q) => s + Number(q.marks), 0);
-  n += 1;
+  if (!TITLE) n += 1;
   const GRACE_MIN = 30;
   const DURATION = 180 * 60;
   const ends = new Date(start.getTime() + (GRACE_MIN * 60 + DURATION) * 1000); // 13:30 hard close
   const results = new Date(ends.getTime() + 15 * 60_000); // 13:45
   const label = start.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" });
   const { error } = await db.from("mock_events").insert({
-    title: `All-India Mock #${n} — ${label}`,
+    title: TITLE ?? `All-India Mock #${n} — ${label}`,
     branch_code: "CSE",
     starts_at: start.toISOString(),
     ends_at: ends.toISOString(),

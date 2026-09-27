@@ -472,6 +472,7 @@ Each module lists **purpose → main code → how it works → what it depends o
 - **Code:** `supabase/migrations/0009…`, `0010…`, `scripts/schedule-mocks.mjs`, `app/api/exam/start` (mock rules), `app/(dashboard)/mocks/page.tsx`, `app/(dashboard)/mocks/results/page.tsx`.
 - **Timing (mirrors the real exam):** paper Sunday 10:00–13:00 IST, exactly 180 minutes, no pause. Starts accepted 10:00–10:30 (grace for network/server trouble); every attempt still gets 180 minutes, so the hard close is 13:30. Results and ranks at 13:45.
 - **Paper:** 65 questions / 100 marks in the official split — GA 5×1 + 5×2; Maths 5×1 + 4×2; Core CS 20×1 + 26×2 — spread across subjects, avoiding questions used in the last 8 mocks.
+- **Question order:** everyone gets the same 65 questions, each person in a different order — General Aptitude first, then Maths + Core CS mixed (`lib/exam/mock-order.ts`, seeded by user + mock so a reload or another device keeps the order). Answers and grading are keyed by question id and scores are rounded to 2 decimals, so order never changes marks or ranks (`npm run check:mock-order`, in CI).
 - **Rules (server-enforced):** start only within the entry window; exact paper; one attempt per person (unique index); timer is a wall-clock deadline from the server start; submissions after the hard close (+2 min) are not ranked; flagged attempts are not ranked.
 - **Peak-load behaviour:** questions come from the CDN (no server load); start and submit retry with exponential backoff + jitter; start reuses one attempt id (retry = resume); grading is idempotent; auto-submit happens at each person's own deadline, spreading load.
 - **Leaderboard:** `mock_leaderboard()` returns top N + the caller, rank, percentile = share of ranked aspirants scored above; display per privacy choice.
@@ -574,7 +575,7 @@ mock schedule ──> mocks page ──> exam session ──> grading ──> le
 | Static data | `prebuild` → `scripts/copy-static-data.mjs` | Writes answer-free `questions.json` (fails on leak) + manifest |
 | Build | `npm run build` | Next.js production build |
 | Cloudflare build/deploy | `npm run deploy:cf` | OpenNext build + `wrangler deploy` |
-| Checks | `check:security`, `check:goals`, `check:grading`, `check:calibration`, `check:keys` | Service-role leak + anon-can't-read-keys; goals engine acceptance; 50 grading edge cases; calibration consistency; answer-key integrity (manual) |
+| Checks | `check:security`, `check:goals`, `check:grading`, `check:calibration`, `check:mock-order`, `check:keys` | Service-role leak + anon-can't-read-keys; goals engine acceptance; 50 grading edge cases; calibration consistency; mock order (same paper, GA first, order-independent score); answer-key integrity (manual) |
 | CI | `.github/workflows/ci.yml` job `check` | Install, type-check, lint (informational), build, all checks |
 | CD | same workflow, job `deploy` | Runs only on push to `main` (or manual "Run workflow") **after `check` passes**; deploys; smoke-tests `/`, `/about`, `/gate-cse`, `/sitemap.xml` |
 | E2E | Playwright scripts (local) | Desktop 1440 + mobile 390, light + dark; signed-in tests use an admin magic-link helper |
@@ -611,6 +612,7 @@ Secrets are never pasted into chat or committed. Worker secrets: `npx wrangler s
 | Apply a migration | Supabase → SQL Editor → paste `supabase/migrations/NNNN_*.sql` → Run → verify in Table Editor → `npm run schema:build` |
 | Re-seed questions / keys | `npm run seed:questions` then `npm run check:keys` |
 | Schedule mocks | `node --env-file=.env.local scripts/schedule-mocks.mjs 4` (next 4 Sundays; skips already scheduled) |
+| One-off test mock | `node --env-file=.env.local scripts/schedule-mocks.mjs --at=2026-09-27T13:00:00+05:30 "--title=Test Mock"` (same paper rules, grace and 180 min; not numbered) |
 | Refresh calibration (each March) | Update `data/calibration/cse/<year>.json` + `SOURCES.md` → `npm run check:calibration` |
 | Redeploy without a commit | GitHub → Actions → CI → Run workflow (main) |
 | Rotate a secret | Update Worker secret / GitHub secret → manual redeploy |

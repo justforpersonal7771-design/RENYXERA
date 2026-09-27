@@ -52,6 +52,9 @@ jobs:
       - name: Calibration data checks
         run: npm run check:calibration
 
+      - name: Mock question order (same paper, GA first, score order-independent)
+        run: npm run check:mock-order
+
   # Auto-deploy: every push to main that passes ALL checks above goes live on Cloudflare.
   # Pull requests and failing builds never deploy. Needs repo secrets CLOUDFLARE_API_TOKEN
   # and CLOUDFLARE_ACCOUNT_ID, plus the public NEXT_PUBLIC_* values (baked in at build).

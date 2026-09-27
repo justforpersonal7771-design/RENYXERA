@@ -270,7 +270,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Tab-blur / timing-anomaly / concurrent-attempt signals (graded only, shadow-flag first) | ✅ *(tab switches, fullscreen exits, over-time, long pause, rapid answers, question-set mismatch, no start token — flags only)* |
 | Disclosure notice before graded attempts | ✅ |
-| Flagged attempts excluded from leaderboards, never deleted | ⬜ |
+| Flagged attempts excluded from leaderboards, never deleted | ✅ *(mock_leaderboard ranks only unflagged, on-time attempts)* |
 
 ### 5D · P1 · Question Bank Protection
 | Task | Status |
@@ -285,8 +285,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 5E · P1 · Leaderboards & All-India Test Series
 | Task | Status |
 |---|---|
-| Scheduled All-India mock tests; server-computed percentile/AIR | ⬜ |
-| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | ⬜ |
+| Scheduled All-India mock tests; server-computed percentile/AIR | ✅ *(Sundays 10:00–13:00 IST, 30-min entry grace, exactly 180 min, results 13:45; same paper per person in a different order — GA first, then Maths + Core mixed; one attempt each)* |
+| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(All-India ✅ with display choice: anonymous / username / username + student ID; subject/college/friends not built)* |
 | Streaks, weekly challenges, topic ladders | 🟨 *(streaks exist; challenges/ladders not built)* |
 | Shareable result cards | ⬜ |
 
@@ -436,6 +436,26 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 9C | Moderated community (automated toxicity scoring, reputation gating, reporting) — opens only with moderation in place | ⬜ |
 | 9D | Play Store listing via TWA/Capacitor (optional ₹2,100 — backlog #4) | ⬜ |
 | 9E | AI study-plan generation, AI mocks from weakness profile, natural-language search, voice revision | 🟨 *(AI Mentor study-plan suggestions exist; the rest not built)* |
+
+---
+
+## RELEASE 10 — Admin Console *(deferred: start only after Releases 5–9 are done and the app is stable)*
+
+A separate admin site (its own route group / subdomain, its own layout) — not the student screens.
+
+| Module | Task | Status |
+|---|---|---|
+| 10A | **Strict admin login** — separate `/admin` sign-in; admins exist only in a server-side `admin_users` table seeded by SQL (no self sign-up, no way for any user to add themselves); mandatory 2FA (TOTP); IP/device allow-list option; short sessions; every admin action audited | ⬜ |
+| 10B | **Roles & explicit privileges** — owner / admin / moderator / content editor / support / analyst; fine-grained permissions (e.g. `mocks.schedule`, `questions.edit`, `users.suspend`, `payments.refund`); only the owner grants or revokes; all checks enforced in Postgres (RLS + security-definer functions), not just the UI | ⬜ |
+| 10C | **Mock & test-series management** — schedule/edit/cancel mocks from a calendar; build papers from the blueprint or by hand; preview the paper; change entry grace/results time; extend time for everyone on server trouble; publish/withhold results; re-rank | ⬜ |
+| 10D | **Integrity review** — queue of flagged attempts with the signals; approve (rank) or keep excluded; notes; ban repeat offenders | ⬜ |
+| 10E | **Question bank & content** — edit questions/options/answer keys with versioning and a second-person review; mark "marks to all"; upload images; manage practice questions (6D) and study materials (6E) | ⬜ |
+| 10F | **User management** — search users; view profile, attempts, devices; suspend/unsuspend; sign out sessions; reset AI quota; export/delete on request (DPDP); impersonation-free support view | ⬜ |
+| 10G | **Dashboards & insights** — signups/DAU/retention; mock turnout, score distribution, question difficulty and discrimination from real attempts; AI usage and cost vs quota; free-tier usage (Workers requests, DB size); errors (Sentry); waitlist by branch | ⬜ |
+| 10H | **Monetization admin** — tiers, entitlements, coupons, refunds, payment reconciliation (after Release 7) | ⬜ |
+| 10I | **Communications** — announcements/banners, email campaigns to waitlists, mock reminders | ⬜ |
+| 10J | **Audit log & safety** — append-only log of every admin action (who, what, before/after); alerts on sensitive actions; data-access reports | ⬜ |
+| 10K | **Settings & feature flags** — rate limits, AI daily limit, maintenance mode, kill switches | ⬜ |
 
 ---
 
