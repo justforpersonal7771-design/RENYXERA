@@ -52,13 +52,14 @@ export async function POST(req: NextRequest) {
     const mockId = parsed.data.mock_id;
     if (mockId) {
       // All-India mock: only inside its live window, only its exact paper, once per person.
-      const { data: mock } = await db.from("mock_events").select("id, starts_at, ends_at, question_ids, duration_seconds").eq("id", mockId).maybeSingle();
+      const { data: mock } = await db.from("mock_events").select("id, starts_at, ends_at, question_ids, duration_seconds, start_grace_minutes").eq("id", mockId).maybeSingle();
       if (!mock) return NextResponse.json({ error: "Mock not found." }, { status: 404 });
+      const lastStart = Date.parse(mock.starts_at) + (mock.start_grace_minutes ?? 30) * 60_000;
       if (nowMs < Date.parse(mock.starts_at)) return NextResponse.json({ error: "This mock hasn't started yet." }, { status: 403 });
-      if (nowMs >= Date.parse(mock.ends_at)) return NextResponse.json({ error: "This mock has ended." }, { status: 403 });
+      if (nowMs > lastStart) return NextResponse.json({ error: "Entry to this mock has closed (starts are accepted for the first 30 minutes)." }, { status: 403 });
       const paper = new Set<string>(mock.question_ids);
       if (ids.length !== paper.size || ids.some((id) => !paper.has(id))) return NextResponse.json({ error: "Question set doesn't match this mock." }, { status: 400 });
-      // Late joiners get the time left in the window, never more than the paper's limit.
+      // Everyone gets exactly the paper's time (180 min); the hard close only guards the edge.
       duration = Math.max(60, Math.min(mock.duration_seconds, Math.floor((Date.parse(mock.ends_at) - nowMs) / 1000)));
     } else {
       // Time limit from the official questions' marks (AI-generated ids aren't in the bank).

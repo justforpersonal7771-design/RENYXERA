@@ -108,7 +108,7 @@ export async function POST(req: NextRequest) {
       if (known.length) {
         const nowIso = new Date().toISOString();
         const { data: row } = await db.from("exam_attempts")
-          .select("id, user_id, status, server_started_at, duration_seconds, question_ids")
+          .select("id, user_id, status, server_started_at, duration_seconds, question_ids, mock_id")
           .eq("id", attempt.id).maybeSingle();
 
         if (row && row.user_id !== userId) {
@@ -177,7 +177,7 @@ type Flag = { code: string; value?: number };
  * flags first). Flagged attempts are excluded from leaderboards, never deleted.
  */
 function integrityFlags(input: {
-  row: { server_started_at: string; duration_seconds: number; question_ids: string[] } | null;
+  row: { server_started_at: string; duration_seconds: number; question_ids: string[]; mock_id?: string | null } | null;
   attempt: { integrity?: { tab_blurs?: number; fullscreen_exits?: number; paused_seconds?: number } };
   responses: { question_id: string; time_spent_seconds?: number; selected_option_ids?: string[]; nat_value?: number }[];
   knownIds: string[];
@@ -189,8 +189,9 @@ function integrityFlags(input: {
     flags.push({ code: "no_start_token" });
   } else {
     const elapsed = (Date.parse(input.nowIso) - Date.parse(input.row.server_started_at)) / 1000;
-    const paused = Math.max(0, sig.paused_seconds ?? 0);
-    const GRACE = 600; // network hiccups, slow submit
+    // Mocks can't be paused (like the real exam): paused time never excuses over-time there.
+    const paused = input.row.mock_id ? 0 : Math.max(0, sig.paused_seconds ?? 0);
+    const GRACE = input.row.mock_id ? 120 : 600; // network hiccups, slow submit (tighter for mocks)
     if (elapsed - paused > input.row.duration_seconds + GRACE) flags.push({ code: "over_time", value: Math.round(elapsed - paused - input.row.duration_seconds) });
     if (paused > 7200) flags.push({ code: "long_pause", value: Math.round(paused) });
     const allowed = new Set(input.row.question_ids);

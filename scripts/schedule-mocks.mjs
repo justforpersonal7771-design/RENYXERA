@@ -1,8 +1,9 @@
 // Step 11 (5E): schedule the weekly All-India Mock.
 //   node --env-file=.env.local scripts/schedule-mocks.mjs [weeks=4]
-// Creates one mock per Sunday for the next N weeks (skips Sundays already scheduled):
-// window 10:00–14:00 IST (3-hour paper, start by 11:00 to use the full time), results
-// released 14:15 IST. Each paper follows the GATE CS pattern and avoids questions used in
+// Creates one mock per Sunday for the next N weeks (skips Sundays already scheduled).
+// Timing mirrors the real exam: paper 10:00–13:00 IST, exactly 180 minutes. If something
+// goes wrong at 10:00 (server trouble, a slow network), starts are accepted until 10:30;
+// every attempt still gets exactly 180 minutes, so the hard close is 13:30. Results 13:45. Each paper follows the GATE CS pattern and avoids questions used in
 // recent mocks. Needs SUPABASE_SERVICE_ROLE_KEY.
 import { createClient } from "@supabase/supabase-js";
 
@@ -81,8 +82,10 @@ for (const start of nextSundays(WEEKS)) {
   }
   const marks = paper.reduce((s, q) => s + Number(q.marks), 0);
   n += 1;
-  const ends = new Date(start.getTime() + 4 * 3600_000);
-  const results = new Date(ends.getTime() + 15 * 60_000);
+  const GRACE_MIN = 30;
+  const DURATION = 180 * 60;
+  const ends = new Date(start.getTime() + (GRACE_MIN * 60 + DURATION) * 1000); // 13:30 hard close
+  const results = new Date(ends.getTime() + 15 * 60_000); // 13:45
   const label = start.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" });
   const { error } = await db.from("mock_events").insert({
     title: `All-India Mock #${n} — ${label}`,
@@ -91,7 +94,8 @@ for (const start of nextSundays(WEEKS)) {
     ends_at: ends.toISOString(),
     results_at: results.toISOString(),
     question_ids: paper.map((q) => q.id),
-    duration_seconds: marks * SECONDS_PER_MARK,
+    duration_seconds: Math.min(DURATION, marks * SECONDS_PER_MARK),
+    start_grace_minutes: GRACE_MIN,
   });
   if (error) throw error;
   console.log(`scheduled #${n}: ${label} · ${paper.length} questions · ${marks} marks`);

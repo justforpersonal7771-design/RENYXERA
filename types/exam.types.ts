@@ -60,6 +60,8 @@ export interface TestConfig {
   mockId?: string;
   /** Server-set time limit in seconds (mocks: shortened for late joiners). */
   timeLimitSeconds?: number;
+  /** Wall-clock deadline (ISO). Mocks: the clock never stops, even if you leave the page. */
+  deadlineAt?: string;
   title?: string;
 }
 

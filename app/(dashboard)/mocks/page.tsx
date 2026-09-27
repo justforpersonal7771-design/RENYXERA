@@ -11,7 +11,10 @@ import { useDataStore } from "@/store/use-data-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 
-interface Mock { id: string; title: string; starts_at: string; ends_at: string; results_at: string; question_ids: string[]; duration_seconds: number }
+interface Mock { id: string; title: string; starts_at: string; ends_at: string; results_at: string; question_ids: string[]; duration_seconds: number; start_grace_minutes?: number }
+
+const entryCloses = (m: Mock) => Date.parse(m.starts_at) + (m.start_grace_minutes ?? 30) * 60_000;
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 interface MyAttempt { id: string; mock_id: string; status: string; server_score: number | null; server_max: number | null; integrity_flags: unknown[] }
 
 function useNow(ms = 1000) {
@@ -43,7 +46,7 @@ export default function MocksPage() {
   const load = useCallback(async () => {
     const { createClient } = await import("@/lib/supabase/client");
     const sb = createClient();
-    const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_ids,duration_seconds").order("starts_at", { ascending: false }).limit(24);
+    const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_ids,duration_seconds,start_grace_minutes").order("starts_at", { ascending: false }).limit(24);
     if (error) { setUnavailable(true); setMocks([]); return; }
     setMocks(data as Mock[]);
     if (user) {
@@ -56,7 +59,7 @@ export default function MocksPage() {
   const { live, upcoming, past } = useMemo(() => {
     const list = mocks ?? [];
     return {
-      live: list.find((m) => Date.parse(m.starts_at) <= now && now < Date.parse(m.ends_at)) ?? null,
+      live: list.find((m) => Date.parse(m.starts_at) <= now && now < Date.parse(m.ends_at)) ?? null, // entry window or papers still running
       upcoming: list.filter((m) => Date.parse(m.starts_at) > now).sort((a, b) => Date.parse(a.starts_at) - Date.parse(b.starts_at)),
       past: list.filter((m) => Date.parse(m.ends_at) <= now),
     };
@@ -68,16 +71,29 @@ export default function MocksPage() {
     if (!repoReady) return toast("Questions are still loading — try again in a moment.", "info");
     setStarting(m.id);
     try {
+      // The same attempt id is reused on every retry, so a retry after a lost response is
+      // safe (the server treats it as a resume). Backoff with jitter spreads the 10:00 rush.
       const attemptId = crypto.randomUUID();
-      const res = await fetch("/api/exam/start", {
-        method: "POST", headers: { "content-type": "application/json" },
-        body: JSON.stringify({ attempt_id: attemptId, question_ids: m.question_ids, mode: "graded", title: m.title, mock_id: m.id }),
-      });
-      const j = await res.json().catch(() => ({}));
-      if (!res.ok) { toast(j.error || "Couldn't start the mock.", "error"); return; }
+      let res: Response | null = null;
+      let j: { error?: string; duration_seconds?: number; started_at?: string } = {};
+      for (let attempt = 0; attempt < 5; attempt++) {
+        try {
+          res = await fetch("/api/exam/start", {
+            method: "POST", headers: { "content-type": "application/json" },
+            body: JSON.stringify({ attempt_id: attemptId, question_ids: m.question_ids, mode: "graded", title: m.title, mock_id: m.id }),
+          });
+          j = await res.json().catch(() => ({}));
+          if (res.ok || (res.status < 500 && res.status !== 429)) break;
+        } catch { res = null; }
+        await sleep(Math.min(8000, 800 * 2 ** attempt) + Math.random() * 1200);
+      }
+      if (!res) { toast("You seem to be offline — mocks need a connection to start.", "error"); return; }
+      if (!res.ok) { toast(j.error || "The server is busy — please try again in a moment.", "error"); return; }
+      const limit = j.duration_seconds ?? m.duration_seconds;
+      const deadlineAt = new Date(Date.parse(j.started_at ?? new Date().toISOString()) + limit * 1000).toISOString();
       await startSession({
         id: attemptId,
-        config: { examType: "GRAND_MOCK", mockId: m.id, timeLimitSeconds: j.duration_seconds, title: m.title },
+        config: { examType: "GRAND_MOCK", mockId: m.id, timeLimitSeconds: limit, deadlineAt, title: m.title },
         questions: m.question_ids.map((questionId, i) => ({ questionId, sequence: i + 1 })),
         createdAt: new Date().toISOString(),
       });
@@ -99,7 +115,7 @@ export default function MocksPage() {
           <span className="w-12 h-12 shrink-0 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center"><Trophy className="w-6 h-6" /></span>
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">All-India Mock</h1>
-            <p className="mt-1 text-sm text-white/85 max-w-2xl">Every Sunday, 10 AM – 2 PM IST: a fresh 65-question GATE CS paper in the official pattern. One attempt each, ranked when the window closes — see your All-India rank and percentile.</p>
+            <p className="mt-1 text-sm text-white/85 max-w-2xl">Every Sunday, 10 AM – 1 PM IST: a fresh 65-question GATE CS paper in the official pattern, exactly 180 minutes. One attempt each; ranks and percentiles are released at 1:45 PM.</p>
           </div>
         </div>
       </motion.header>
@@ -119,13 +135,23 @@ export default function MocksPage() {
                   <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }}><Radio className="w-3.5 h-3.5" /></motion.span> Live now
                 </span>
                 <h2 className="mt-2 text-xl font-extrabold text-[var(--text-primary)]">{live.title}</h2>
-                <p className="text-sm text-[var(--text-secondary)]">{live.question_ids.length} questions · {Math.round(live.duration_seconds / 60)} min · closes in <span className="font-num font-bold text-[var(--text-primary)]">{fmtCountdown(Date.parse(live.ends_at) - now)}</span></p>
-                <p className="mt-2 flex items-start gap-1.5 text-[11px] text-[var(--text-muted)]"><ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500 mt-0.5" /> Graded: tab switches, leaving fullscreen, pauses and timing are recorded with your attempt. Flagged attempts aren&apos;t ranked. Joining late gives you the time left in the window.</p>
+                <p className="text-sm text-[var(--text-secondary)]">{live.question_ids.length} questions · exactly {Math.round(live.duration_seconds / 60)} minutes · {now < entryCloses(live)
+                  ? <>entry closes in <span className="font-num font-bold text-[var(--text-primary)]">{fmtCountdown(entryCloses(live) - now)}</span></>
+                  : <>entry closed · results {fmtWhen(live.results_at)}</>}</p>
+                <p className="mt-2 flex items-start gap-1.5 text-[11px] text-[var(--text-muted)]"><ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500 mt-0.5" /> Like the real exam: 180 minutes that can&apos;t be paused. You can start until 30 minutes after the start time (in case of network or server trouble) and still get the full 180 minutes. Tab switches, leaving fullscreen and timing are recorded; flagged attempts aren&apos;t ranked.</p>
               </div>
               {a ? (
-                <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-secondary)]">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" /> {a.status === "submitted" ? "Submitted — results after the window closes" : "In progress"}
-                </span>
+                a.status === "submitted" ? (
+                  <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-secondary)]">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Submitted — results at {fmtWhen(live.results_at)}
+                  </span>
+                ) : (
+                  <Link href="/exam/session" className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/30">
+                    <Play className="w-5 h-5 fill-current" /> Continue your mock
+                  </Link>
+                )
+              ) : now > entryCloses(live) ? (
+                <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-muted)]"><Lock className="w-4 h-4" /> Entry closed</span>
               ) : (
                 <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => start(live)} disabled={!!starting}
                   className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold shadow-lg shadow-emerald-500/30 disabled:opacity-60 cursor-pointer">

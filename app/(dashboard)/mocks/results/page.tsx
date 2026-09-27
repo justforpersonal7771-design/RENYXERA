@@ -4,7 +4,7 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "motion/react";
-import { ArrowLeft, Crown, Loader2, Medal, ShieldAlert, Trophy, Users, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Crown, Loader2, Medal, ShieldAlert, Trophy, Users } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 
@@ -49,14 +49,13 @@ function Results() {
   }, [id, user]);
   useEffect(() => { if (id) void load(); else setState("missing"); }, [id, load]);
 
-  const toggleOptIn = async () => {
+  const setDisplay = async (next: "anonymous" | "username" | "username_student_id") => {
     if (!user || !profile) return;
-    const next = !profile.leaderboard_opt_in;
     const { createClient } = await import("@/lib/supabase/client");
-    const { error } = await createClient().from("profiles").update({ leaderboard_opt_in: next }).eq("id", user.id);
+    const { error } = await createClient().from("profiles").update({ leaderboard_display: next }).eq("id", user.id);
     if (error) return toast("Couldn't update that setting.", "error");
-    setProfile({ ...profile, leaderboard_opt_in: next });
-    toast(next ? "Your name will show on leaderboards" : "You'll appear as an anonymous aspirant", "success");
+    setProfile({ ...profile, leaderboard_display: next });
+    toast("Leaderboard display updated", "success");
     void load();
   };
 
@@ -100,10 +99,26 @@ function Results() {
           ) : null}
 
           {user && profile && (
-            <button onClick={toggleOptIn} className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer">
-              {profile.leaderboard_opt_in ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
-              {profile.leaderboard_opt_in ? "Your name is shown on leaderboards — hide it" : "You're shown as an anonymous aspirant — show my name"}
-            </button>
+            <div className="card-glass rounded-2xl p-4">
+              <p className="text-xs font-bold text-[var(--text-secondary)] mb-2">How you appear on leaderboards</p>
+              <div role="radiogroup" className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                {([
+                  ["anonymous", "Anonymous", `Aspirant ${(profile.student_id ?? "0000").slice(-4)}`],
+                  ["username", "Username", `@${profile.username ?? "username"}`],
+                  ["username_student_id", "Username + student ID", `@${profile.username ?? "username"} · ${profile.student_id ?? ""}`],
+                ] as const).map(([v, label, preview]) => {
+                  const on = (profile.leaderboard_display ?? "anonymous") === v;
+                  return (
+                    <button key={v} role="radio" aria-checked={on} onClick={() => setDisplay(v)}
+                      className={`text-left rounded-xl border px-3 py-2 transition-colors cursor-pointer ${on ? "border-violet-500 bg-violet-500/10" : "border-[var(--border)] hover:border-violet-500/40"}`}>
+                      <span className="block text-sm font-semibold text-[var(--text-primary)]">{label}</span>
+                      <span className="block text-[11px] font-mono text-[var(--text-muted)] truncate">{preview}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="mt-2 text-[11px] text-[var(--text-muted)]">Display only — your username and student ID can&apos;t be used to sign in, look you up or change anything.</p>
+            </div>
           )}
 
           <div className="card-glass rounded-3xl overflow-hidden">

@@ -141,7 +141,7 @@ type SubmittableSession = {
   id: string;
   startedAt?: string;
   elapsedSeconds?: number;
-  draftConfig?: { config?: { examType?: string; yearShift?: string } };
+  draftConfig?: { config?: { examType?: string; yearShift?: string; mockId?: string } };
   integrity?: { tabBlurs?: number; fullscreenExits?: number; pausedSeconds?: number };
   responses: Record<string, { questionId: string; status: string; selectedOptions?: string[]; natValue?: string; timeSpentSeconds?: number }>;
 };
@@ -195,9 +195,11 @@ async function gradeNow(
   for (let i = 0; i < responses.length; i += 200) {
     const part = responses.slice(i, i + 200);
     const ctrl = new AbortController();
-    const timer = setTimeout(() => ctrl.abort(), opts.timeoutMs ?? 15_000);
+    const timer = setTimeout(() => ctrl.abort(), opts.timeoutMs ?? (cfg?.mockId ? 90_000 : 15_000));
     try {
-      const res = await fetch("/api/exam/grade", {
+      // Mocks end for many people at once: retry busy/failed submits with backoff + jitter
+      // (the grader is idempotent on the attempt id, so a repeat can never double-count).
+      const send = () => fetch("/api/exam/grade", {
         method: "POST",
         headers: { "content-type": "application/json" },
         signal: ctrl.signal,
@@ -219,7 +221,13 @@ async function gradeNow(
           responses: part,
         }),
       });
-      if (!res.ok) return null;
+      let res = await send().catch(() => null);
+      const tries = cfg?.mockId ? 5 : 1;
+      for (let t = 1; t < tries && (!res || res.status >= 500 || res.status === 429); t++) {
+        await new Promise((r) => setTimeout(r, Math.min(10_000, 1000 * 2 ** t) + Math.random() * 2000));
+        res = await send().catch(() => null);
+      }
+      if (!res || !res.ok) return null;
       const data = (await res.json()) as { score: number; max_score: number; stored?: boolean; answers?: Record<string, AnswerKey> };
       for (const [id, k] of Object.entries(data.answers ?? {})) {
         if (k && Array.isArray(k.c)) { keys.set(id, k); applyOne(id); }

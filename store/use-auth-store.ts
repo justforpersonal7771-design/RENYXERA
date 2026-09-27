@@ -29,6 +29,7 @@ export interface Profile {
   student_id?: string | null;
   onboarded_at?: string | null;
   leaderboard_opt_in?: boolean;
+  leaderboard_display?: "anonymous" | "username" | "username_student_id";
 }
 
 interface AuthUser {

@@ -18,6 +18,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
   const draftQuestions = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.questions);
   // Server-set limit (All-India mocks: shortened for late joiners).
   const serverLimit = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.timeLimitSeconds);
+  const deadlineAt = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.deadlineAt);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -45,7 +46,10 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
     }, 0);
   }, [draftQuestions, serverLimit]);
 
-  const remaining = Math.max(0, TOTAL_TIME - elapsed);
+  // Mocks count down to a fixed deadline (wall clock); other tests count time on screen.
+  const remaining = deadlineAt
+    ? Math.max(0, Math.floor((Date.parse(deadlineAt) - Date.now()) / 1000))
+    : Math.max(0, TOTAL_TIME - elapsed);
 
   useEffect(() => {
     if (remaining === 0 && status === "IN_PROGRESS") {

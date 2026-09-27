@@ -44,6 +44,7 @@ export default function ExamSessionPage() {
   const sessionGoalTag = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.goalTag);
 
   const pauseSession = useExamRuntimeStore((state) => state.pauseSession);
+  const isMockSession = useExamRuntimeStore((state) => !!state.activeSession?.draftConfig?.config?.mockId);
   const resumeSession = useExamRuntimeStore((state) => state.resumeSession);
   const submitSession = useExamRuntimeStore((state) => state.submitSession);
 
@@ -301,7 +302,11 @@ export default function ExamSessionPage() {
               <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 md:shrink md:min-w-0 md:flex-1">
                  <button
                    onClick={async () => {
-                     if (await confirmDialog({ title: "Leave this exam?", message: "It will be paused and saved, so you can resume it later from the dashboard.", confirmLabel: "Pause & leave", cancelLabel: "Keep going", tone: "warning", icon: "leave" })) {
+                     if (isMockSession) {
+                       if (await confirmDialog({ title: "Leave the mock?", message: "The All-India Mock clock keeps running — like the real exam, it can't be paused. Come back from the Mocks page to continue before time runs out.", confirmLabel: "Leave anyway", cancelLabel: "Keep going", tone: "warning", icon: "leave" })) {
+                         router.push("/mocks");
+                       }
+                     } else if (await confirmDialog({ title: "Leave this exam?", message: "It will be paused and saved, so you can resume it later from the dashboard.", confirmLabel: "Pause & leave", cancelLabel: "Keep going", tone: "warning", icon: "leave" })) {
                        await pauseSession();
                        router.push("/");
                      }
@@ -373,7 +378,7 @@ export default function ExamSessionPage() {
                      {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                    </button>
 
-                   {sessionStatus === "IN_PROGRESS" ? (
+                   {isMockSession ? null : sessionStatus === "IN_PROGRESS" ? (
                      <button
                        onClick={() => pauseSession()}
                        className="inline-flex items-center justify-center w-9 h-9 text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 rounded-lg transition-colors cursor-pointer shrink-0"
