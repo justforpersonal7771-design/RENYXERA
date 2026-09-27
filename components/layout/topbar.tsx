@@ -179,7 +179,6 @@ export function Topbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  title={item.label}
                   aria-label={item.label}
                   aria-current={isActive ? "page" : undefined}
                   onMouseEnter={() => setHovered(item.href)}
