@@ -28,6 +28,7 @@ export interface Profile {
   preferred_study_time?: string | null;
   student_id?: string | null;
   onboarded_at?: string | null;
+  leaderboard_opt_in?: boolean;
 }
 
 interface AuthUser {

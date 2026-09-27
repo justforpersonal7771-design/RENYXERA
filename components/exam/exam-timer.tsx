@@ -16,6 +16,8 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
   // started from a hand-built draft (e.g. the AI Generated "Start Test" flow) left this
   // timer with no draft to read and silently fell back to a hardcoded 3-hour duration.
   const draftQuestions = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.questions);
+  // Server-set limit (All-India mocks: shortened for late joiners).
+  const serverLimit = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.timeLimitSeconds);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -30,6 +32,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
   }, [status, tickTimer]);
 
   const TOTAL_TIME = useMemo(() => {
+    if (serverLimit && serverLimit > 0) return serverLimit;
     if (!draftQuestions || draftQuestions.length === 0) return 10800; // default to 3 hours
     return draftQuestions.reduce((acc, q) => {
       const questionData = QuestionRepository.getQuestionById(q.questionId);
@@ -40,7 +43,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
       }
       return acc + 108;
     }, 0);
-  }, [draftQuestions]);
+  }, [draftQuestions, serverLimit]);
 
   const remaining = Math.max(0, TOTAL_TIME - elapsed);
 

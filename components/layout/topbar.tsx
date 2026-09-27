@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download, Trophy } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -20,6 +20,7 @@ import { useAuthStore } from "@/store/use-auth-store";
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "Exam Setup", href: "/setup", icon: Settings },
+  { label: "Mocks", href: "/mocks", icon: Trophy },
   { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit },
   { label: "Mistakes", href: "/mistakes", icon: ClipboardList },
   { label: "Bookmarks", href: "/bookmarks", icon: Bookmark },

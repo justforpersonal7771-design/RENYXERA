@@ -19,8 +19,11 @@ export class SessionManager {
     }
 
     return {
-      id:
-        typeof crypto !== "undefined" && crypto.randomUUID
+      // All-India mocks are registered with the server before they start; the session must
+      // keep that attempt id so the submission matches its start token.
+      id: draft.config?.mockId
+        ? draft.id
+        : typeof crypto !== "undefined" && crypto.randomUUID
           ? crypto.randomUUID()
           : Date.now().toString(),
       draftId: draft.id,

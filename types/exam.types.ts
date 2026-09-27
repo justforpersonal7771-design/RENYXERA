@@ -56,6 +56,11 @@ export interface TestConfig {
   // custom-block generation restricts every block's pool to this set, same as
   // Subject Mastery / Section Sprint already do. Undefined/omitted means unfiltered.
   focusTopics?: string[];
+  /** All-India mock this test belongs to (Step 11 / 5E). */
+  mockId?: string;
+  /** Server-set time limit in seconds (mocks: shortened for late joiners). */
+  timeLimitSeconds?: number;
+  title?: string;
 }
 
 export interface ExamQuestion {

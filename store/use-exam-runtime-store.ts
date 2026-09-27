@@ -69,6 +69,7 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
             question_ids: ids.slice(0, 200),
             mode: exam === "GRAND_MOCK" || exam === "YEAR_PAPER" ? "graded" : "practice",
             title: [exam, session.draftConfig.config?.yearShift].filter(Boolean).join(" ").slice(0, 200) || undefined,
+            mock_id: session.draftConfig.config?.mockId,
           }),
         });
       } catch {}
