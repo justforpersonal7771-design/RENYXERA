@@ -241,6 +241,7 @@ what each object is for.
 | 0008 | `0008_student_id_format.sql` | Student ID format `RNX-GATE-<BRANCH>-<6 digits>` |
 | 0009 | `0009_all_india_mocks.sql` | Scheduled mocks, one-attempt-per-mock, leaderboard function |
 | 0010 | `0010_mock_timing_and_leaderboard_privacy.sql` | Late-start grace per mock; leaderboard display choice (anonymous / username / username + student ID) |
+| 0011 | `0011_gate_style_results.sql` | Private GATE category + PwD on profiles; `mock_my_result` (GATE qualifying marks, GATE score, category rank); tie-correct leaderboard percentile |
 
 **Procedure for schema changes:** add `supabase/migrations/NNNN_name.sql` (idempotent:
 `if not exists`, `drop … if exists` before `create`), run it in the Supabase SQL editor,
@@ -472,6 +473,7 @@ Each module lists **purpose → main code → how it works → what it depends o
 - **Code:** `supabase/migrations/0009…`, `0010…`, `scripts/schedule-mocks.mjs`, `app/api/exam/start` (mock rules), `app/(dashboard)/mocks/page.tsx`, `app/(dashboard)/mocks/results/page.tsx`.
 - **Timing (mirrors the real exam):** paper Sunday 10:00–13:00 IST, exactly 180 minutes, no pause. Starts accepted 10:00–10:30 (grace for network/server trouble); every attempt still gets 180 minutes, so the hard close is 13:30. Results and ranks at 13:45.
 - **Paper:** 65 questions / 100 marks in the official split — GA 5×1 + 5×2; Maths 5×1 + 4×2; Core CS 20×1 + 26×2 — spread across subjects, avoiding questions used in the last 8 mocks.
+- **Results the GATE way** (`mock_my_result`, migration 0011): one common All-India Rank by marks (2 decimals); equal marks share a rank with no tie-breaker (GATE uses none — so date of birth/age are not collected); General qualifying mark = max(25, mean + SD), OBC-NCL/EWS = 0.9×, SC/ST/PwD = ⅔×; GATE score = 350 + 550 × (M − Mq)/(Mt − Mq), Mt = mean of the top 0.1% or top 10 (whichever larger), shown only when qualified; a private category rank (PwD ranks among PwD). Category and PwD live in `profiles.category` / `profiles.pwd`, owner-only, never on leaderboards. Leaderboard percentile = share of ranked candidates strictly below (tie-correct).
 - **Question order:** everyone gets the same 65 questions, each person in a different order — General Aptitude first, then Maths + Core CS mixed (`lib/exam/mock-order.ts`, seeded by user + mock so a reload or another device keeps the order). Answers and grading are keyed by question id and scores are rounded to 2 decimals, so order never changes marks or ranks (`npm run check:mock-order`, in CI).
 - **Rules (server-enforced):** start only within the entry window; exact paper; one attempt per person (unique index); timer is a wall-clock deadline from the server start; submissions after the hard close (+2 min) are not ranked; flagged attempts are not ranked.
 - **Peak-load behaviour:** questions come from the CDN (no server load); start and submit retry with exponential backoff + jitter; start reuses one attempt id (retry = resume); grading is idempotent; auto-submit happens at each person's own deadline, spreading load.

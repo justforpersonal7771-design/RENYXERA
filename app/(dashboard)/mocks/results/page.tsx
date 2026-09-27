@@ -10,6 +10,14 @@ import { useToastStore } from "@/store/use-toast-store";
 
 interface Row { rank: number; display_name: string; score: number; percentile: number; is_me: boolean; total: number }
 interface Mock { id: string; title: string; results_at: string; ends_at: string }
+interface MyResult {
+  status: "ranked" | "flagged" | "late" | "not_attempted" | "pending";
+  marks: number | null; max_marks: number | null; air: number | null; candidates: number; percentile: number | null;
+  category: string; pwd: boolean; category_rank: number | null;
+  qualifying_general: number; qualifying_obc_ews: number; qualifying_sc_st_pwd: number; my_qualifying: number;
+  qualified: boolean | null; gate_score: number | null; mean_marks: number | null; sd_marks: number | null; topper_mean: number | null;
+}
+const CAT_LABEL: Record<string, string> = { GEN: "General", EWS: "General-EWS", OBC_NCL: "OBC-NCL", SC: "SC", ST: "ST" };
 
 const FLAG_LABELS: Record<string, string> = {
   no_start_token: "started without a server check-in",
@@ -30,6 +38,7 @@ function Results() {
   const [mock, setMock] = useState<Mock | null>(null);
   const [rows, setRows] = useState<Row[] | null>(null);
   const [myFlags, setMyFlags] = useState<{ code: string }[] | null>(null);
+  const [mine, setMine] = useState<MyResult | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "pending" | "missing">("loading");
 
   const load = useCallback(async () => {
@@ -44,6 +53,8 @@ function Results() {
     if (user) {
       const { data: a } = await sb.from("exam_attempts").select("integrity_flags,status").eq("mock_id", id).maybeSingle();
       setMyFlags(a ? ((a.integrity_flags as { code: string }[]) ?? []) : null);
+      const { data: r } = await sb.rpc("mock_my_result", { p_mock: id });
+      setMine(((r as MyResult[] | null) ?? [])[0] ?? null);
     }
     setState("ready");
   }, [id, user]);
@@ -97,6 +108,32 @@ function Results() {
           ) : user ? (
             <p className="text-sm text-[var(--text-muted)]">You didn&apos;t take part in this mock.</p>
           ) : null}
+
+          {mine && mine.status === "ranked" && (
+            <div className="card-glass rounded-2xl p-5">
+              <p className="text-xs font-black uppercase tracking-wider text-[var(--text-muted)]">Your scorecard · computed the GATE way</p>
+              <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {([
+                  ["Marks", `${mine.marks} / ${mine.max_marks ?? 100}`],
+                  ["GATE score", mine.gate_score != null ? String(mine.gate_score) : "—"],
+                  ["Qualifying mark", `${mine.my_qualifying} (${mine.pwd ? "PwD" : CAT_LABEL[mine.category] ?? "General"})`],
+                  [mine.pwd ? "PwD rank" : `${CAT_LABEL[mine.category] ?? "General"} rank`, `#${mine.category_rank}`],
+                ] as const).map(([k, v]) => (
+                  <div key={k} className="rounded-xl bg-[var(--surface-secondary)]/60 px-3 py-2.5 min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{k}</p>
+                    <p className="text-base font-extrabold font-num text-[var(--text-primary)] truncate">{v}</p>
+                  </div>
+                ))}
+              </div>
+              <p className={`mt-3 text-sm font-semibold ${mine.qualified ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"}`}>
+                {mine.qualified ? "Qualified" : "Not qualified"} — cut-offs: General {mine.qualifying_general} · OBC-NCL/EWS {mine.qualifying_obc_ews} · SC/ST/PwD {mine.qualifying_sc_st_pwd}
+              </p>
+              <p className="mt-1 text-[11px] leading-relaxed text-[var(--text-muted)]">
+                As in GATE: one All-India Rank for everyone by marks; equal marks share a rank (no tie-breaker — not age or date of birth). General qualifying mark = higher of 25 and mean + standard deviation ({mine.mean_marks} + {mine.sd_marks}); OBC-NCL/EWS 90% of it, SC/ST/PwD two-thirds. GATE score = 350 + 550 × (marks − qualifying) ÷ (top-candidates mean {mine.topper_mean} − qualifying), shown only when qualified.
+                {!profile?.category && <> <Link href="/profile#personal" className="text-violet-600 dark:text-violet-400 font-semibold">Set your category</Link> (private) for your own cut-off and category rank.</>}
+              </p>
+            </div>
+          )}
 
           {user && profile && (
             <div className="card-glass rounded-2xl p-4">

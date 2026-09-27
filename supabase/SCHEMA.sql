@@ -1,7 +1,7 @@
 -- ============================================================================
 -- RENYXERA — complete database schema (Supabase Postgres)
 -- ============================================================================
--- This file is the ordered migration history (supabase/migrations/0001…0010) as one
+-- This file is the ordered migration history (supabase/migrations/0001…0011) as one
 -- script. On a NEW Supabase project, run it top to bottom in the SQL Editor to recreate
 -- the full schema. Never edit it by hand: add a new numbered migration, then regenerate:
 --   npm run schema:build
@@ -756,3 +756,186 @@ $$;
 
 revoke all on function public.mock_leaderboard(uuid, int) from public;
 grant execute on function public.mock_leaderboard(uuid, int) to anon, authenticated;
+
+
+-- ############################################################################
+-- ##  0011_gate_style_results.sql
+-- ############################################################################
+
+-- RENYXERA — Step 11c (5E): mock results computed exactly the way GATE computes them.
+-- Run once in the Supabase SQL Editor. Safe to re-run.
+--
+-- How GATE results work (GATE information brochure, 2021 onwards) and what we mirror:
+--   * All-India Rank is ONE common list for every category, ordered by marks (to 2
+--     decimals). Candidates with equal marks get the SAME rank; the next rank skips
+--     (1, 2, 2, 4). GATE uses NO tie-breaker — not date of birth, age, or anything else —
+--     so date of birth is deliberately not collected.
+--   * Qualifying mark (single-session paper, out of 100):
+--       General      = max(25, mean + standard deviation of all candidates' marks)
+--       OBC-NCL/EWS  = 0.9 × General
+--       SC/ST/PwD    = 2/3 × General        (PwD applies whatever the caste category)
+--   * GATE score = Sq + (St − Sq) × (M − Mq) / (Mt − Mq), with Sq = 350, St = 900,
+--       Mq = General qualifying mark, Mt = mean marks of the top 0.1% of candidates or the
+--       top 10, whichever is larger. Clamped to 0–1000. Issued only to qualified candidates.
+--   * GATE does not publish a category rank; PSUs/IITs derive one. We show it privately
+--     (only to the candidate) because students use it.
+
+-- 1. Category and PwD — private, only the owner can read them (profiles RLS), never shown
+--    on leaderboards. Optional: without them we assume General for the qualifying check.
+alter table public.profiles add column if not exists category text;
+alter table public.profiles drop constraint if exists profiles_category_check;
+alter table public.profiles add constraint profiles_category_check
+  check (category is null or category in ('GEN', 'EWS', 'OBC_NCL', 'SC', 'ST'));
+alter table public.profiles add column if not exists pwd boolean not null default false;
+grant update (category, pwd) on public.profiles to authenticated;
+
+-- 2. The caller's own GATE-style result for a mock (after results are released).
+--    Uses the same ranked population as the leaderboard: submitted, on time, unflagged.
+drop function if exists public.mock_my_result(uuid);
+create function public.mock_my_result(p_mock uuid)
+returns table (
+  status text,              -- 'ranked' | 'flagged' | 'late' | 'not_attempted' | 'pending'
+  marks numeric,
+  max_marks numeric,
+  air bigint,               -- All-India Rank (ties share a rank)
+  candidates bigint,        -- ranked candidates
+  percentile numeric,
+  category text,
+  pwd boolean,
+  category_rank bigint,     -- among ranked candidates of the same category (PwD: among PwD)
+  qualifying_general numeric,
+  qualifying_obc_ews numeric,
+  qualifying_sc_st_pwd numeric,
+  my_qualifying numeric,
+  qualified boolean,
+  gate_score int,
+  mean_marks numeric,
+  sd_marks numeric,
+  topper_mean numeric
+)
+language plpgsql
+security definer
+stable
+set search_path = ''
+as $$
+declare
+  v_uid uuid := auth.uid();
+  v_mock public.mock_events%rowtype;
+  v_att public.exam_attempts%rowtype;
+  v_n bigint; v_mean numeric; v_sd numeric; v_q numeric; v_top_n int; v_mt numeric;
+  v_cat text; v_pwd boolean; v_myq numeric;
+  v_uids uuid[]; v_marks numeric[]; v_cats text[]; v_pwds boolean[];
+  v_mine numeric; v_in boolean;
+begin
+  if v_uid is null then return; end if;
+  select * into v_mock from public.mock_events where id = p_mock;
+  if not found then return; end if;
+  select * into v_att from public.exam_attempts where mock_id = p_mock and user_id = v_uid;
+  if now() < v_mock.results_at then
+    return query select 'pending'::text, null::numeric, null::numeric, null::bigint, null::bigint, null::numeric, null::text, null::boolean, null::bigint, null::numeric, null::numeric, null::numeric, null::numeric, null::boolean, null::int, null::numeric, null::numeric, null::numeric;
+    return;
+  end if;
+
+  -- Ranked population (same rules as mock_leaderboard), held in arrays (read-only function).
+  select coalesce(array_agg(a.user_id), '{}'), coalesce(array_agg(a.server_score), '{}'),
+         coalesce(array_agg(coalesce(p.category, 'GEN')), '{}'), coalesce(array_agg(coalesce(p.pwd, false)), '{}')
+    into v_uids, v_marks, v_cats, v_pwds
+    from public.exam_attempts a join public.profiles p on p.id = a.user_id
+    where a.mock_id = p_mock and a.status = 'submitted' and a.server_score is not null
+      and a.submitted_at <= v_mock.ends_at + interval '2 minutes'
+      and coalesce(jsonb_array_length(a.integrity_flags), 0) = 0;
+
+  select count(*), avg(m), coalesce(stddev_pop(m), 0) into v_n, v_mean, v_sd from unnest(v_marks) m;
+  v_q := round(greatest(25, coalesce(v_mean, 0) + coalesce(v_sd, 0)), 2);
+  v_top_n := greatest(10, ceil(v_n * 0.001)::int);
+  select avg(t.m) into v_mt from (select m from unnest(v_marks) m order by m desc limit v_top_n) t;
+  v_in := v_uid = any(v_uids);
+  if v_in then v_mine := v_marks[array_position(v_uids, v_uid)]; end if;
+
+  select coalesce(p.category, 'GEN'), coalesce(p.pwd, false) into v_cat, v_pwd from public.profiles p where p.id = v_uid;
+  v_myq := case when v_pwd or v_cat in ('SC', 'ST') then round(v_q * 2 / 3, 2)
+                when v_cat in ('OBC_NCL', 'EWS') then round(v_q * 0.9, 2)
+                else v_q end;
+
+  if v_att.id is null then
+    return query select 'not_attempted'::text, null::numeric, null::numeric, null::bigint, v_n, null::numeric, v_cat, v_pwd, null::bigint,
+      v_q, round(v_q * 0.9, 2), round(v_q * 2 / 3, 2), v_myq, null::boolean, null::int, round(v_mean, 2), round(v_sd, 2), round(v_mt, 2);
+    return;
+  end if;
+  if not v_in then
+    return query select (case when coalesce(jsonb_array_length(v_att.integrity_flags), 0) > 0 then 'flagged' else 'late' end)::text,
+      v_att.server_score, v_att.server_max, null::bigint, v_n, null::numeric, v_cat, v_pwd, null::bigint,
+      v_q, round(v_q * 0.9, 2), round(v_q * 2 / 3, 2), v_myq, null::boolean, null::int, round(v_mean, 2), round(v_sd, 2), round(v_mt, 2);
+    return;
+  end if;
+
+  return query
+  with g as (select * from unnest(v_marks, v_cats, v_pwds) as t(marks, cat, pwd))
+  select 'ranked'::text,
+    v_mine,
+    v_att.server_max,
+    (select count(*) from g where g.marks > v_mine) + 1,
+    v_n,
+    round(100.0 * (select count(*) from g where g.marks < v_mine) / greatest(v_n - 1, 1), 2),
+    v_cat, v_pwd,
+    (select count(*) from g where g.marks > v_mine
+       and (case when v_pwd then g.pwd else g.cat = v_cat end)) + 1,
+    v_q, round(v_q * 0.9, 2), round(v_q * 2 / 3, 2), v_myq,
+    v_mine >= v_myq,
+    case when v_mine >= v_myq and v_mt is not null and v_mt > v_q
+      then least(1000, greatest(0, round(350 + (900 - 350) * (v_mine - v_q) / (v_mt - v_q))))::int
+      else null end,
+    round(v_mean, 2), round(v_sd, 2), round(v_mt, 2);
+end;
+$$;
+
+-- 3. Leaderboard percentile made tie-correct: share of ranked candidates scored strictly
+--    below you (equal marks → equal rank AND equal percentile). Otherwise as in 0010.
+create or replace function public.mock_leaderboard(p_mock uuid, p_limit int default 50)
+returns table (rank bigint, display_name text, score numeric, percentile numeric, is_me boolean, total bigint)
+language sql
+security definer
+stable
+set search_path = ''
+as $$
+  with m as (
+    select * from public.mock_events where id = p_mock and now() >= results_at
+  ),
+  eligible as (
+    select a.user_id, a.server_score
+    from public.exam_attempts a
+    join m on a.mock_id = m.id
+    where a.status = 'submitted'
+      and a.server_score is not null
+      and a.submitted_at <= m.ends_at + interval '2 minutes'
+      and coalesce(jsonb_array_length(a.integrity_flags), 0) = 0
+  ),
+  ranked as (
+    select e.user_id, e.server_score,
+           rank() over (order by e.server_score desc) as rnk,
+           rank() over (order by e.server_score asc) - 1 as below,
+           count(*) over () as n
+    from eligible e
+  )
+  select r.rnk,
+         case
+           when p.leaderboard_display = 'username_student_id' and p.username is not null
+             then '@' || p.username || ' · ' || coalesce(p.student_id, '')
+           when p.leaderboard_display = 'username' and p.username is not null
+             then '@' || p.username
+           else 'Aspirant ' || right(coalesce(p.student_id, '0000'), 4)
+         end,
+         r.server_score,
+         round(100.0 * r.below / greatest(r.n - 1, 1), 2),
+         r.user_id = auth.uid(),
+         r.n
+  from ranked r
+  join public.profiles p on p.id = r.user_id
+  where r.rnk <= greatest(1, least(p_limit, 200)) or r.user_id = auth.uid()
+  order by r.rnk;
+$$;
+revoke all on function public.mock_leaderboard(uuid, int) from public;
+grant execute on function public.mock_leaderboard(uuid, int) to anon, authenticated;
+
+revoke all on function public.mock_my_result(uuid) from public;
+grant execute on function public.mock_my_result(uuid) to authenticated;

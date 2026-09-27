@@ -61,6 +61,16 @@ const STATUSES = [
   { label: "Working professional", value: "working" },
   { label: "Full-time aspirant / dropper", value: "dropper" },
 ];
+// GATE categories (as on the GATE application). Used only for the qualifying mark and a
+// private category rank in mock results — never shown to anyone else.
+const CATEGORIES = [
+  { label: "Not set (treated as General)", value: "" },
+  { label: "General (GEN)", value: "GEN" },
+  { label: "General-EWS", value: "EWS" },
+  { label: "OBC (Non-Creamy Layer)", value: "OBC_NCL" },
+  { label: "SC", value: "SC" },
+  { label: "ST", value: "ST" },
+];
 const STATES = ["", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman & Nicobar", "Chandigarh", "Dadra & Nagar Haveli and Daman & Diu", "Delhi", "Jammu & Kashmir", "Ladakh", "Lakshadweep", "Puducherry", "Outside India"].map((s) => ({ label: s || "Select…", value: s }));
 const STUDY_TIMES = [
   { value: "early_morning", label: "Early morning", icon: Sunrise },
@@ -116,7 +126,7 @@ function suggestBios(f: Form, branchLabel: string, round: number): string[] {
 interface Form {
   displayName: string; username: string; avatarStyle: string; avatarSeed: string;
   bio: string; college: string; degree: string; graduationYear: number | null; state: string; city: string;
-  aspirantStatus: string; attemptNumber: number | null;
+  aspirantStatus: string; attemptNumber: number | null; category: string; pwd: boolean;
   targetBranch: string; targetYear: string; examDate: string; targetRank: string; targetScore: number | null;
   dailyHours: string; studyDays: number; studyTime: string;
 }
@@ -130,6 +140,7 @@ function fromProfile(p: Profile | null): Form {
     bio: p?.bio || "", college: p?.college || "", degree: p?.degree || "",
     graduationYear: p?.graduation_year ?? null, state: p?.state || "", city: p?.city || "",
     aspirantStatus: p?.aspirant_status || "", attemptNumber: p?.attempt_number ?? null,
+    category: p?.category || "", pwd: !!p?.pwd,
     // Only CSE is live; a "Coming Soon" branch saved before those were locked reads as CSE.
     targetBranch: BRANCHES.find((b) => b.value === p?.target_branch && !b.disabled)?.value ?? "CSE",
     targetYear: String(effectiveTargetYear(p?.target_year)),
@@ -232,6 +243,7 @@ export default function ProfilePage() {
         bio: f.bio.trim() || null, college: f.college.trim() || null, degree: f.degree.trim() || null,
         graduation_year: f.graduationYear, state: f.state || null, city: f.city.trim() || null,
         aspirant_status: f.aspirantStatus || null, attempt_number: f.attemptNumber,
+        category: f.category || null, pwd: f.pwd,
         target_branch: f.targetBranch,
         target_year: f.targetYear ? Number(f.targetYear) : null,
         exam_date: f.examDate || null,
@@ -419,6 +431,24 @@ export default function ProfilePage() {
                       <input value={f.city} onChange={(e) => set("city", e.target.value)} maxLength={60} className={INPUT} placeholder="City" aria-label="City" />
                     </div>
                   </div>
+                </div>
+                <div className="mt-5 pt-5 border-t border-[var(--border-subtle)] grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
+                  <div>
+                    <label className={LABEL}><ShieldCheck className="w-3.5 h-3.5" /> GATE category</label>
+                    <CustomDropdown value={f.category} onChange={(v) => set("category", v)} options={CATEGORIES} className="w-full text-sm font-medium" />
+                  </div>
+                  <div>
+                    <label className={LABEL}><UserIcon className="w-3.5 h-3.5" /> Person with disability (PwD)</label>
+                    <div role="radiogroup" aria-label="Person with disability" className="grid grid-cols-2 gap-2">
+                      {([[false, "No"], [true, "Yes"]] as const).map(([v, l]) => (
+                        <button key={l} type="button" role="radio" aria-checked={f.pwd === v} onClick={() => set("pwd", v)}
+                          className={`h-[42px] rounded-xl border text-sm font-semibold transition-colors cursor-pointer ${f.pwd === v ? "border-violet-500 bg-violet-500/10 text-[var(--text-primary)]" : "border-[var(--border)] text-[var(--text-secondary)] hover:border-violet-500/40"}`}>{l}</button>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-[11px] leading-relaxed text-[var(--text-muted)] sm:col-span-2 xl:col-span-1 xl:pt-6">
+                    Private — only you can see it. Used exactly as GATE does: for your qualifying mark and a category rank in mock results. It never changes your All-India Rank or appears on leaderboards.
+                  </p>
                 </div>
             </Card>
           </div>

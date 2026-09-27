@@ -58,6 +58,13 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Scheduler gained `--at` / `--title` for one-off mocks. **Test Mock scheduled today 1:00 PM IST** (entry until 1:30, 180 min, hard close 4:30, results 4:45).
 - **Decision (user):** Admin Console added to the checklist as Release 10 (strict login, roles/privileges, mock scheduling, integrity review, content, users, dashboards, audit log) — deferred until every other release is done and the app is stable.
 
+### 27 Sep 2026 — GATE-accurate results 🟡
+- **Decision (user):** ranking must replicate GATE; collect whatever is essential (category, age/DOB if needed).
+- **Finding:** GATE has no tie-breaker — equal marks share the AIR — so DOB/age are *not* needed and not collected. Category and PwD matter only for the qualifying mark (General max(25, μ+σ); OBC-NCL/EWS 90%; SC/ST/PwD ⅔) and a category rank (GATE itself doesn't issue one).
+- Built: private category + PwD in Profile → Personal info; migration 0011 with `mock_my_result` (marks, AIR, percentile, qualifying marks, qualified, GATE score 350 + 550×(M−Mq)/(Mt−Mq), category rank); tie-correct leaderboard percentile; scorecard on the results page.
+- Browser test of the per-person order: 2 accounts, desktop light + mobile dark, both mobile modes — same 65, GA first, different order.
+- **Waiting:** user to run migration 0011, then push.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

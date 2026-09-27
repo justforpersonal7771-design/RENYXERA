@@ -22,6 +22,8 @@ export interface Profile {
   state?: string | null;
   city?: string | null;
   aspirant_status?: string | null;
+  category?: string | null;
+  pwd?: boolean;
   attempt_number?: number | null;
   exam_date?: string | null;
   study_days_per_week?: number | null;
