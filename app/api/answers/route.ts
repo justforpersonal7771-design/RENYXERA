@@ -4,6 +4,7 @@ import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { mockEmbargo } from "@/lib/security/mock-embargo";
 
 export const runtime = "nodejs";
 
@@ -50,10 +51,14 @@ export async function POST(req: NextRequest) {
   const ids = [...new Set(parsed.data.question_ids)].slice(0, userId ? 100 : 40);
 
   try {
-    const { data, error } = await createServiceRoleClient()
-      .from("question_answers")
-      .select("question_id, correct_option_ids, nat_min, nat_max, nat_ranges")
-      .in("question_id", ids);
+    const db = createServiceRoleClient();
+    // Questions of a running All-India mock: no answers until its results time.
+    const embargo = await mockEmbargo(db);
+    const embargoed = ids.filter((id) => embargo.ids.has(id));
+    const open = ids.filter((id) => !embargo.ids.has(id));
+    const { data, error } = open.length
+      ? await db.from("question_answers").select("question_id, correct_option_ids, nat_min, nat_max, nat_ranges").in("question_id", open)
+      : { data: [], error: null };
     if (error) throw error;
 
     const answers: Record<string, { c: string[]; n: [number, number][] | null }> = {};
@@ -66,7 +71,7 @@ export async function POST(req: NextRequest) {
       }
       answers[row.question_id] = { c: row.correct_option_ids ?? [], n };
     }
-    return NextResponse.json({ answers }, { headers: { "Cache-Control": "private, no-store" } });
+    return NextResponse.json({ answers, embargoed }, { headers: { "Cache-Control": "private, no-store" } });
   } catch (err) {
     console.error("answers route failed", err);
     return NextResponse.json({ error: "Couldn't load answers right now." }, { status: 503 });

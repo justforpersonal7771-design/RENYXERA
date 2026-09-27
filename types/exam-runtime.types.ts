@@ -25,6 +25,8 @@ export interface ExamSession {
   updatedAt?: string;
   /** Step 6: score computed by the server grader (absent if submitted offline). */
   serverScore?: number;
+  /** All-India mock: results (score, answers) are released at this time. */
+  resultsAt?: string;
   serverMaxScore?: number;
   /** True once the attempt is saved to the account (signed-in users). */
   serverStored?: boolean;

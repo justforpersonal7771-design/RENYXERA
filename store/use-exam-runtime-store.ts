@@ -131,7 +131,11 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
       try {
         const { submitForGrading } = await import("@/lib/repository/answer-keys");
         const graded = await submitForGrading(updated);
-        if (graded) {
+        if (graded?.withheld) {
+          // All-India mock: stored on the server; score, answers and mistakes after results time.
+          final = { ...updated, serverStored: graded.stored, resultsAt: graded.resultsAt };
+          await SessionManager.saveToHistory(final);
+        } else if (graded) {
           final = { ...updated, serverScore: graded.score, serverMaxScore: graded.maxScore, serverStored: graded.stored };
           await SessionManager.saveToHistory(final);
         }
@@ -141,7 +145,7 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
       // Mistakes need the unlocked keys (answers still locked are skipped, never counted wrong).
       try {
         const MistakeEngine = (await import("@/lib/analytics/mistake-engine")).MistakeEngine;
-        await MistakeEngine.processSession(final);
+        if (!final.resultsAt) await MistakeEngine.processSession(final);
       } catch (e) {
         console.warn("Failed to process mistakes", e);
       }

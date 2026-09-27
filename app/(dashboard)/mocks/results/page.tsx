@@ -59,6 +59,14 @@ function Results() {
     setState("ready");
   }, [id, user]);
   useEffect(() => { if (id) void load(); else setState("missing"); }, [id, load]);
+  // Pending → opens by itself at the results time.
+  useEffect(() => {
+    if (state !== "pending" || !mock) return;
+    const wait = Date.parse(mock.results_at) - Date.now();
+    if (wait > 24 * 3600_000) return;
+    const t = setTimeout(() => void load(), Math.max(0, wait) + 1500);
+    return () => clearTimeout(t);
+  }, [state, mock, load]);
 
   const setDisplay = async (next: "anonymous" | "username" | "username_student_id") => {
     if (!user || !profile) return;

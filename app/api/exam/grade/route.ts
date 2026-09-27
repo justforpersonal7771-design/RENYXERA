@@ -5,6 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { isNatCorrect, isOptionsCorrect, marksFor } from "@/lib/grading";
+import { mockEmbargo } from "@/lib/security/mock-embargo";
 
 export const runtime = "nodejs";
 
@@ -158,6 +159,18 @@ export async function POST(req: NextRequest) {
           }
         }
       }
+    }
+
+    // A running All-India mock's questions: the attempt is graded and stored above, but the
+    // score, per-question results and keys stay hidden until the results time.
+    const embargo = await mockEmbargo(db);
+    const locked = ids.filter((id) => embargo.ids.has(id));
+    if (locked.length) {
+      const resultsAt = locked.map((id) => embargo.resultsAt.get(id)!).sort().at(-1);
+      return NextResponse.json(
+        { withheld: true, results_at: resultsAt, stored },
+        { headers: { "Cache-Control": "private, no-store" } }
+      );
     }
 
     return NextResponse.json(

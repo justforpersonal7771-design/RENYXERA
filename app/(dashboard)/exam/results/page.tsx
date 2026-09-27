@@ -18,6 +18,7 @@ import { isResponseCorrect } from "@/lib/grading";
 import { hasAnswer, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
 import { useDataStore } from "@/store/use-data-store";
 import { AnswersPendingBanner } from "@/components/exam/answers-pending-banner";
+import { useMockResultsGate, MockResultsLocked } from "@/components/exam/mock-results-gate";
 /** Animated count-up for a numeric value, e.g. marks or accuracy percentage. */
 function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
   const motionValue = useMotionValue(0);
@@ -69,6 +70,10 @@ export default function ResultSummaryPage() {
     }
     load();
   }, [id]);
+
+  // All-India mock: hidden until the results time, then unlocks itself.
+  const gate = useMockResultsGate(session);
+  useEffect(() => { if (gate.released) setSession(gate.released); }, [gate.released]);
 
   const statsCalculations = useMemo(() => {
     if (!session || !repoReady) return null;
@@ -226,6 +231,7 @@ export default function ResultSummaryPage() {
     </div>
   );
   
+  if (session && gate.locked) return <MockResultsLocked resultsAt={gate.resultsAt} now={gate.now} mockId={gate.mockId} />;
   if (!session || !statsCalculations) return <div className="p-8 text-center text-rose-500 font-bold bg-[var(--background)] h-screen">Result not found.</div>;
 
   const {

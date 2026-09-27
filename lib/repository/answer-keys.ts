@@ -119,12 +119,16 @@ export async function ensureAnswers(ids: Iterable<string>, opts: { timeoutMs?: n
         signal: ctrl.signal,
       }).finally(() => clearTimeout(timer));
       if (!res.ok) { ok = false; continue; }
-      const data = (await res.json()) as { answers?: Record<string, AnswerKey> };
+      const data = (await res.json()) as { answers?: Record<string, AnswerKey>; embargoed?: string[] };
       const got = data.answers ?? {};
+      // Questions of a running All-India mock: locked until its results time, not "no key".
+      const locked = new Set(data.embargoed ?? []);
+      if (locked.size) ok = false;
+      for (const id of locked) mockLocked.add(id);
       for (const id of batch) {
         const k = got[id];
         if (k && Array.isArray(k.c)) { keys.set(id, k); applyOne(id); }
-        else unknown.add(id);
+        else if (!locked.has(id)) unknown.add(id);
       }
     } catch {
       ok = false;
@@ -151,13 +155,17 @@ type SubmittableSession = {
  * users, and returns this test's answer keys (merged + cached here). Returns null when
  * grading isn't possible right now (offline / error) — the caller still saves the test.
  */
-const inflightGrading = new Map<string, Promise<{ score: number; maxScore: number; stored: boolean } | null>>();
+/** Questions whose answers are locked because they're in a running All-India mock. */
+export const mockLocked = new Set<string>();
+
+export type GradeResult = { score: number; maxScore: number; stored: boolean; withheld?: boolean; resultsAt?: string };
+const inflightGrading = new Map<string, Promise<GradeResult | null>>();
 
 /** One grading request per test at a time — later callers share the in-flight result. */
 export function submitForGrading(
   session: SubmittableSession,
   opts: { timeoutMs?: number } = {}
-): Promise<{ score: number; maxScore: number; stored: boolean } | null> {
+): Promise<GradeResult | null> {
   const running = inflightGrading.get(session.id);
   if (running) return running;
   const p = gradeNow(session, opts).finally(() => inflightGrading.delete(session.id));
@@ -168,7 +176,7 @@ export function submitForGrading(
 async function gradeNow(
   session: SubmittableSession,
   opts: { timeoutMs?: number } = {}
-): Promise<{ score: number; maxScore: number; stored: boolean } | null> {
+): Promise<GradeResult | null> {
   await hydrateAnswerKeys();
   const { parseNatValue } = await import("@/lib/grading");
   const responses = Object.values(session.responses ?? {})
@@ -189,7 +197,7 @@ async function gradeNow(
 
   const cfg = session.draftConfig?.config;
   const graded = cfg?.examType === "GRAND_MOCK" || cfg?.examType === "YEAR_PAPER";
-  const results: { score: number; maxScore: number; stored: boolean } = { score: 0, maxScore: 0, stored: false };
+  const results: GradeResult = { score: 0, maxScore: 0, stored: false };
   // The server takes up to 200 responses per call; longer custom tests are sent in parts
   // (only the first part carries the attempt, so it is stored once).
   for (let i = 0; i < responses.length; i += 200) {
@@ -228,7 +236,14 @@ async function gradeNow(
         res = await send().catch(() => null);
       }
       if (!res || !res.ok) return null;
-      const data = (await res.json()) as { score: number; max_score: number; stored?: boolean; answers?: Record<string, AnswerKey> };
+      const data = (await res.json()) as { score: number; max_score: number; stored?: boolean; answers?: Record<string, AnswerKey>; withheld?: boolean; results_at?: string };
+      if (data.withheld) {
+        // All-India mock still running: stored on the server, score + answers after results time.
+        if (i === 0) results.stored = !!data.stored;
+        results.withheld = true;
+        results.resultsAt = data.results_at;
+        continue;
+      }
       for (const [id, k] of Object.entries(data.answers ?? {})) {
         if (k && Array.isArray(k.c)) { keys.set(id, k); applyOne(id); }
       }

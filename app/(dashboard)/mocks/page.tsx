@@ -13,10 +13,11 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { mockOrder } from "@/lib/exam/mock-order";
 
-interface Mock { id: string; title: string; starts_at: string; ends_at: string; results_at: string; question_ids: string[]; duration_seconds: number; start_grace_minutes?: number }
+interface Mock { id: string; title: string; starts_at: string; ends_at: string; results_at: string; question_count: number; duration_seconds: number; start_grace_minutes?: number }
 
 const entryCloses = (m: Mock) => Date.parse(m.starts_at) + (m.start_grace_minutes ?? 30) * 60_000;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+interface BoardRow { rank: number; display_name: string; score: number; percentile: number; is_me: boolean; total: number }
 interface MyAttempt { id: string; mock_id: string; status: string; server_score: number | null; server_max: number | null; integrity_flags: unknown[] }
 
 function useNow(ms = 1000) {
@@ -44,19 +45,34 @@ export default function MocksPage() {
   const [mine, setMine] = useState<MyAttempt[]>([]);
   const [unavailable, setUnavailable] = useState(false);
   const [starting, setStarting] = useState<string | null>(null);
+  const [board, setBoard] = useState<{ mock: Mock; rows: BoardRow[] } | null>(null);
 
   const load = useCallback(async () => {
     const { createClient } = await import("@/lib/supabase/client");
     const sb = createClient();
-    const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_ids,duration_seconds,start_grace_minutes").order("starts_at", { ascending: false }).limit(24);
+    const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_count,duration_seconds,start_grace_minutes").order("starts_at", { ascending: false }).limit(24);
     if (error) { setUnavailable(true); setMocks([]); return; }
     setMocks(data as Mock[]);
+    // Leaderboard: always shows the latest released mock (updates when the next results go out).
+    const nowIso = new Date().toISOString();
+    const latest = (data as Mock[]).filter((m) => m.results_at <= nowIso).sort((a, b) => b.results_at.localeCompare(a.results_at))[0];
+    if (latest) {
+      const { data: rows } = await sb.rpc("mock_leaderboard", { p_mock: latest.id, p_limit: 10 });
+      setBoard({ mock: latest, rows: (rows as BoardRow[]) ?? [] });
+    } else setBoard(null);
     if (user) {
       const { data: a } = await sb.from("exam_attempts").select("id,mock_id,status,server_score,server_max,integrity_flags").not("mock_id", "is", null);
       setMine((a as MyAttempt[]) ?? []);
     }
   }, [user]);
   useEffect(() => { void load(); }, [load]);
+  // Refresh the moment the next results are released (leaderboard + scores update live).
+  useEffect(() => {
+    const next = (mocks ?? []).map((m) => Date.parse(m.results_at)).filter((t) => t > Date.now()).sort((a, b) => a - b)[0];
+    if (!next || next - Date.now() > 24 * 3600_000) return;
+    const t = setTimeout(() => void load(), next - Date.now() + 1500);
+    return () => clearTimeout(t);
+  }, [mocks, load]);
 
   const { live, upcoming, past } = useMemo(() => {
     const list = mocks ?? [];
@@ -75,6 +91,11 @@ export default function MocksPage() {
     try {
       // The same attempt id is reused on every retry, so a retry after a lost response is
       // safe (the server treats it as a resume). Backoff with jitter spreads the 10:00 rush.
+      // The paper's question ids are secret until the start (server-enforced).
+      const { createClient } = await import("@/lib/supabase/client");
+      const { data: paper } = await createClient().rpc("mock_paper", { p_mock: m.id });
+      const questionIds = (paper as string[] | null) ?? [];
+      if (!questionIds.length) { toast("Couldn't load the paper — try again in a moment.", "error"); return; }
       const attemptId = crypto.randomUUID();
       let res: Response | null = null;
       let j: { error?: string; duration_seconds?: number; started_at?: string } = {};
@@ -82,7 +103,7 @@ export default function MocksPage() {
         try {
           res = await fetch("/api/exam/start", {
             method: "POST", headers: { "content-type": "application/json" },
-            body: JSON.stringify({ attempt_id: attemptId, question_ids: m.question_ids, mode: "graded", title: m.title, mock_id: m.id }),
+            body: JSON.stringify({ attempt_id: attemptId, question_ids: questionIds, mode: "graded", title: m.title, mock_id: m.id }),
           });
           j = await res.json().catch(() => ({}));
           if (res.ok || (res.status < 500 && res.status !== 429)) break;
@@ -96,7 +117,7 @@ export default function MocksPage() {
       await startSession({
         id: attemptId,
         config: { examType: "GRAND_MOCK", mockId: m.id, timeLimitSeconds: limit, deadlineAt, title: m.title },
-        questions: mockOrder(m.question_ids, user.id, m.id, (id) => /APTITUDE/i.test(QuestionRepository.getQuestionById(id)?.section ?? ""))
+        questions: mockOrder(questionIds, user.id, m.id, (id) => /APTITUDE/i.test(QuestionRepository.getQuestionById(id)?.section ?? ""))
           .map((questionId, i) => ({ questionId, sequence: i + 1 })),
         createdAt: new Date().toISOString(),
       });
@@ -138,7 +159,7 @@ export default function MocksPage() {
                   <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }}><Radio className="w-3.5 h-3.5" /></motion.span> Live now
                 </span>
                 <h2 className="mt-2 text-xl font-extrabold text-[var(--text-primary)]">{live.title}</h2>
-                <p className="text-sm text-[var(--text-secondary)]">{live.question_ids.length} questions · exactly {Math.round(live.duration_seconds / 60)} minutes · {now < entryCloses(live)
+                <p className="text-sm text-[var(--text-secondary)]">{live.question_count} questions · exactly {Math.round(live.duration_seconds / 60)} minutes · {now < entryCloses(live)
                   ? <>entry closes in <span className="font-num font-bold text-[var(--text-primary)]">{fmtCountdown(entryCloses(live) - now)}</span></>
                   : <>entry closed · results {fmtWhen(live.results_at)}</>}</p>
                 <p className="mt-2 flex items-start gap-1.5 text-[11px] text-[var(--text-muted)]"><ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500 mt-0.5" /> Like the real exam: 180 minutes that can&apos;t be paused. You can start until 30 minutes after the start time (in case of network or server trouble) and still get the full 180 minutes. Tab switches, leaving fullscreen and timing are recorded; flagged attempts aren&apos;t ranked.</p>
@@ -166,6 +187,34 @@ export default function MocksPage() {
           </motion.section>
         );
       })()}
+
+      {/* Leaderboard — always visible; shows the latest released mock */}
+      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card-glass rounded-3xl p-5 sm:p-6">
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <div className="min-w-0">
+            <h2 className="text-lg font-extrabold text-[var(--text-primary)] inline-flex items-center gap-2"><Trophy className="w-5 h-5 text-amber-500" /> Leaderboard</h2>
+            <p className="text-xs text-[var(--text-muted)] truncate">{board ? `${board.mock.title} · ${(board.rows[0]?.total ?? 0).toLocaleString("en-IN")} ranked` : "Ranks appear here when the first results are released"}</p>
+          </div>
+          {board && (
+            <Link href={`/mocks/results?id=${board.mock.id}`} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50 transition-colors">
+              <BarChart3 className="w-4 h-4" /> Full list
+            </Link>
+          )}
+        </div>
+        {board && board.rows.length > 0 ? (
+          <ol className="divide-y divide-[var(--border-subtle)]">
+            {board.rows.map((r, i) => (
+              <li key={`${r.rank}-${i}`} className={`flex items-center gap-3 py-2 px-2 rounded-lg ${r.is_me ? "bg-violet-500/10" : ""}`}>
+                <span className="w-10 font-num font-bold text-[var(--text-primary)]">#{r.rank}</span>
+                <span className="flex-1 min-w-0 truncate text-sm text-[var(--text-primary)]">{r.display_name}{r.is_me && <span className="ml-2 text-[10px] font-bold text-violet-600 dark:text-violet-300">You</span>}</span>
+                <span className="font-num font-semibold text-sm">{r.score}</span>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="text-sm text-[var(--text-muted)] py-3">{board ? "No ranked attempts in the latest mock." : upcoming[0] || live ? `Next results: ${fmtWhen((live ?? upcoming[0]).results_at)}` : "No mocks yet."}</p>
+        )}
+      </motion.section>
 
       {/* Upcoming */}
       {upcoming.length > 0 && (
@@ -195,7 +244,7 @@ export default function MocksPage() {
                 <div key={m.id} className="flex items-center gap-3 p-4">
                   <div className="flex-1 min-w-0">
                     <p className="font-semibold text-[var(--text-primary)] truncate">{m.title}</p>
-                    <p className="text-xs text-[var(--text-muted)]">{a?.status === "submitted" ? `You scored ${a.server_score ?? "—"} / ${a.server_max ?? 100}` : "You didn't take this one"}</p>
+                    <p className="text-xs text-[var(--text-muted)]">{a?.status === "submitted" ? (released ? `You scored ${a.server_score ?? "—"} / ${a.server_max ?? 100}` : "Submitted — score released with the results") : "You didn't take this one"}</p>
                   </div>
                   {released ? (
                     <Link href={`/mocks/results?id=${m.id}`} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50 transition-colors">

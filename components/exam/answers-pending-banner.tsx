@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { WifiOff, RefreshCw, Loader2 } from "lucide-react";
 import type { ExamSession } from "@/types/exam-runtime.types";
-import { ensureAnswers, hasAnswer, submitForGrading, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
+import { ensureAnswers, hasAnswer, mockLocked, submitForGrading, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
 import { useToastStore } from "@/store/use-toast-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 
@@ -38,6 +38,7 @@ export function AnswersPendingBanner({ session, onGraded, className = "mb-4" }: 
     const graded = await submitForGrading(session).catch(() => null);
     setBusy(false);
     setFailed(!graded);
+    if (graded?.withheld) return; // mock still running — the results page shows the countdown
     if (graded) {
       const updated = { ...session, serverScore: graded.score, serverMaxScore: graded.maxScore, serverStored: graded.stored };
       await IDBManager.saveExamSession({ id: session.id, sessionData: updated, updatedAt: new Date().toISOString() }).catch(() => {});
@@ -89,7 +90,10 @@ export function useEnsureAnswer(questionId: string | null | undefined) {
     if (!questionId || hasAnswer(questionId)) return;
     let cancelled = false;
     ensureAnswers([questionId]).then((ok) => {
-      if (!ok && !cancelled) useToastStore.getState().show("This answer couldn't load — check your connection.", "error");
+      if (ok || cancelled) return;
+      useToastStore.getState().show(mockLocked.has(questionId)
+        ? "This question is in a running All-India Mock — its answer unlocks when results are released."
+        : "This answer couldn't load — check your connection.", mockLocked.has(questionId) ? "info" : "error");
     });
     return () => { cancelled = true; };
   }, [questionId]);

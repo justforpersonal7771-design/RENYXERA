@@ -71,6 +71,13 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Fixes: one-screen layout only from 1024px (chat/lock screens opt in with `data-fill-height="always"`); `h-dvh` for the app shell and exam; question + options scroll together below 1024px; "Starting…" state on Deploy; compact Submit on narrow phones; Escape closes the question grid; Mistakes/Bookmarks become list → detail with Back on phones; blueprint duration uses the timer's rule (180 min / 100 marks, was 2.5 min/question); difficulty bar order matches its labels; "Penalty"/"Marks" labels no longer wrap.
 - Tested: full flow (setup → deploy → answer → grid → submit → results → review → mistakes → revision) on iPhone-size light + dark and desktop light + dark; all pages without horizontal scroll or errors.
 
+### 27 Sep 2026 — Mock results released only at results time 🟡
+- **User report:** a mock's full result (score + right/wrong grid) showed right after submitting.
+- **Found a bigger hole:** mock papers are past-year questions, so during a live mock anyone could get the keys via `/api/answers` or by "practice-grading" the same ids, and `mock_events.question_ids` was public before the start.
+- **Built:** server embargo (`lib/security/mock-embargo.ts`): from start to results time, `/api/answers` returns no keys for the paper's questions and `/api/exam/grade` stores + grades the attempt but returns `withheld` (no score, results or keys). Results and review pages show a locked countdown and open themselves at release (then fetch score + keys and record mistakes). Mocks page: an always-visible Leaderboard card (latest released mock, refreshes at release); past scores hidden until release. Migration 0013 hides question ids until the start (`mock_paper()` RPC, `question_count` column).
+- Tested (dev server): answers locked for users and guests, practice-grading locked, submit stored + withheld, server score recorded, everything opens after release.
+- **Waiting:** user to run migration 0013, then push.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.
