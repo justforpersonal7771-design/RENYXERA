@@ -32,6 +32,9 @@ export default function BookmarksPage() {
   
   const [activeBookmark, setActiveBookmark] = useState<string | null>(null);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  // Phones: list first; tapping an item opens its detail full-width, Back returns (md+: side by side).
+  const [mobileDetail, setMobileDetail] = useState(false);
+  useEffect(() => { if (!activeBookmark) setMobileDetail(false); }, [activeBookmark]);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [notesPreviewMode, setNotesPreviewMode] = useState(false);
 
@@ -235,7 +238,7 @@ export default function BookmarksPage() {
       <GuestLocalNotice what="bookmarks" />
       <div className="flex-1 min-h-0 w-full flex flex-col md:flex-row gap-4 relative">
         {/* Sidebar merged into a single continuous card */}
-        <div className={`flex flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
+        <div className={`${mobileDetail ? "hidden md:flex" : "flex"} flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 md:h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           
           {/* Header Title & Filter controls in same container */}
           <div className="p-4 shadow-sm space-y-3 shrink-0 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/10">
@@ -346,6 +349,7 @@ export default function BookmarksPage() {
                         <button
                           onClick={() => {
                             setActiveBookmark(b.questionId);
+                            setMobileDetail(true);
                             handleUpdateBookmarkMeta(b.questionId, { recentlyViewedAt: new Date().toISOString() });
                           }}
                           className={`w-full text-left p-4 hover:bg-[var(--surface-elevated)] transition-all duration-200 relative border-l-4 ${activeBookmark === b.questionId ? "bg-indigo-50/50 dark:bg-indigo-900/10 " : ""}${priorityRowClasses}`}
@@ -409,13 +413,13 @@ export default function BookmarksPage() {
         </button>
         
         {/* Main Content Area */}
-        <div className="flex-1 card-glass rounded-2xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
+        <div className={`${mobileDetail ? "flex" : "hidden md:flex"} flex-1 card-glass rounded-2xl shadow-sm flex-col md:h-full overflow-hidden min-w-0`}>
           {activeBookmark && question && activeEntry ? (
             <>
               <div className="p-4 md:p-6 border-b border-[var(--border-subtle)] flex flex-wrap justify-between items-center bg-[var(--surface-secondary)] dark:bg-[var(--surface-secondary)] gap-4">
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                    onClick={() => setMobileDetail(false)} aria-label="Back to list"
                     className="md:hidden p-2 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition cursor-pointer"
                     title="Toggle Sidebar"
                   >

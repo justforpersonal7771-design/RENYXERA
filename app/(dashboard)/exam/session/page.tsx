@@ -122,7 +122,8 @@ export default function ExamSessionPage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (sessionStatus !== "IN_PROGRESS") return;
-      
+      if (e.key === "Escape") { setShowMobilePalette(false); return; }
+
       const isInputFocused = ["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName || "");
       if (isInputFocused) return;
 
@@ -149,7 +150,7 @@ export default function ExamSessionPage() {
 
   if (!isInitialized || storeError) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[var(--background)]">
+      <div className="flex h-dvh items-center justify-center bg-[var(--background)]">
         <div className="text-red-500 font-bold text-lg">
           {storeError ? `Database Error: ${storeError}` : "Loading Workspace Repository..."}
         </div>
@@ -159,7 +160,7 @@ export default function ExamSessionPage() {
 
   if (isHydrated && !activeSessionExists) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center p-8 bg-[var(--background)]">
+      <div className="flex h-dvh flex-col items-center justify-center p-8 bg-[var(--background)]">
         <div className="p-8 text-center space-y-4 max-w-md bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-lg">
           <h2 className="text-2xl font-bold text-[var(--text-primary)]">No Active Session</h2>
           <p className="text-[var(--text-secondary)] text-sm">
@@ -287,7 +288,7 @@ export default function ExamSessionPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-      <div className="flex flex-col h-screen w-full overflow-hidden bg-[var(--background)] font-sans">
+      <div className="flex flex-col h-dvh w-full overflow-hidden bg-[var(--background)] font-sans">
         
         {/* REDESIGNED COMMAND BAR — a compact always-visible row (logo, Q counter, timer,
             actions) that never wraps, plus a details row (type/marks/difficulty and
@@ -398,11 +399,11 @@ export default function ExamSessionPage() {
                    <motion.button
                      whileTap={{ scale: 0.95 }}
                      onClick={() => setShowSubmitModal(true)}
-                     className="group relative overflow-hidden h-9 px-4 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
+                     className="group relative overflow-hidden h-9 px-3 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
                    >
                      <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                      <Send className="relative w-3.5 h-3.5" />
-                     <span className="relative">Submit</span>
+                     <span className="relative max-[400px]:sr-only">Submit</span>
                    </motion.button>
                  </div>
               </div>

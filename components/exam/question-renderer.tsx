@@ -76,7 +76,10 @@ export const QuestionRenderer = memo(function QuestionRenderer({
   }, [onResponseUpdate]);
 
   return (
-    <div id="exam-question-container" className="flex flex-col h-full w-full bg-[var(--question-surface)] animate-in fade-in slide-in-from-bottom-2 duration-300 relative">
+    // Phones/tablets: question + options scroll together as one page (a pinned options
+    // block left one line of question visible). Desktop (lg+): question scrolls, options pinned.
+    <div id="exam-question-container" className="flex flex-col h-full w-full bg-[var(--question-surface)] animate-in fade-in slide-in-from-bottom-2 duration-300 relative overflow-y-auto lg:overflow-visible custom-scrollbar">
+
       <div className="absolute top-4 right-4 z-50">
         <FullscreenToggle targetId="exam-question-container" />
       </div>
@@ -92,15 +95,15 @@ export const QuestionRenderer = memo(function QuestionRenderer({
           pinned in the corner (top-4, ~36px tall) — at py-8 the first line ran underneath
           it on phones, hiding the end of the line (same clearance the Bookmarks, Mistakes,
           Review and Revision viewers already use). */}
-      <div className="flex-1 overflow-y-auto px-4 pb-8 pt-16 sm:px-12 sm:pt-16 custom-scrollbar">
+      <div className="flex-none lg:flex-1 lg:overflow-y-auto px-4 pb-2 lg:pb-8 pt-16 sm:px-12 sm:pt-16 custom-scrollbar">
         {topSlot && <div className="mb-4 -mt-10 pr-12">{topSlot}</div>}
-        <div className="text-lg md:text-xl font-medium leading-relaxed text-[var(--question-text)] mb-8">
+        <div className="text-base sm:text-lg md:text-xl font-medium leading-relaxed text-[var(--question-text)] mb-4 lg:mb-8">
           <AstNodeRenderer nodes={question.contentAst} />
         </div>
       </div>
 
       {/* Options or NAT Input (Fixed at bottom) */}
-      <div className="flex-none bg-[var(--question-surface)] px-4 py-6 sm:px-12 border-t border-[var(--question-border)] shadow-sm dark:shadow-none z-10 w-full relative">
+      <div className="flex-none bg-[var(--question-surface)] px-4 py-4 lg:py-6 sm:px-12 border-t border-[var(--question-border)] shadow-sm dark:shadow-none z-10 w-full relative">
         <div className="absolute inset-0 bg-gradient-to-t from-transparent to-[var(--surface-secondary)] opacity-0 dark:opacity-0 transition-opacity" />
         <div className="w-full relative z-10">
           {question.question_type === "NAT" ? (

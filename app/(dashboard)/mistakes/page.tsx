@@ -35,6 +35,9 @@ export default function MistakesPage() {
   const [filterTopic, setFilterTopic] = useState<string>("ALL");
   const [showMastered, setShowMastered] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  // Phones: list first; tapping an item opens its detail full-width, Back returns (md+: side by side).
+  const [mobileDetail, setMobileDetail] = useState(false);
+  useEffect(() => { if (!activeMistake) setMobileDetail(false); }, [activeMistake]);
   const [isNotesOpen, setIsNotesOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -275,7 +278,7 @@ export default function MistakesPage() {
       <div className="flex-1 min-h-0 w-full flex flex-col md:flex-row gap-4 relative">
 
         {/* Sidebar merged into a single card */}
-        <div className={`flex flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
+        <div className={`${mobileDetail ? "hidden md:flex" : "flex"} flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 md:h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           <div className="p-4 space-y-3 flex flex-col shrink-0 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/10">
             <div className="flex justify-between items-center">
               <h2 className="font-extrabold text-lg text-[var(--text-primary)]">Mistakes Bank</h2>
@@ -359,7 +362,7 @@ export default function MistakesPage() {
                       transition={{ delay: Math.min(idx * 0.03, 0.4), duration: 0.2 }}
                     >
                       <button
-                        onClick={() => setActiveMistake(m.questionId)}
+                        onClick={() => { setActiveMistake(m.questionId); setMobileDetail(true); }}
                         className={`w-full text-left px-4 py-2.5 hover:bg-[var(--surface-elevated)] transition-all duration-200 border-l-4 ${isCurrent
                             ? 'bg-indigo-50/50 dark:bg-indigo-900/10 border-indigo-500'
                             : 'border-transparent hover:border-indigo-500/30'
@@ -404,14 +407,14 @@ export default function MistakesPage() {
         </button>
 
         {/* Main Content Area */}
-        <div className="flex-1 card-glass rounded-2xl shadow-sm flex flex-col h-full overflow-hidden min-w-0">
+        <div className={`${mobileDetail ? "flex" : "hidden md:flex"} flex-1 card-glass rounded-2xl shadow-sm flex-col md:h-full overflow-hidden min-w-0`}>
           {activeMistake && question && activeEntry ? (
             <>
               {/* Header bar */}
               <div className="p-4 md:p-6 border-b border-[var(--border-subtle)] flex flex-wrap justify-between items-center bg-[var(--surface-secondary)] dark:bg-[var(--surface-secondary)] gap-4 shrink-0">
                 <div className="flex items-center gap-3">
                   <button
-                    onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                    onClick={() => setMobileDetail(false)} aria-label="Back to list"
                     className="md:hidden p-2 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition cursor-pointer"
                     title="Toggle Sidebar"
                   >

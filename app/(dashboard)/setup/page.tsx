@@ -10,7 +10,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { ExamType, TestConfig, ExamSessionDraft } from "@/types/exam.types";
 import { CustomTestBuilder, CustomTestBuilderHandle } from "@/components/exam/custom-test-builder";
-import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, GraduationCap, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight , ShieldCheck } from "lucide-react";
+import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, GraduationCap, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight , ShieldCheck, Loader2 } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { motion, AnimatePresence } from "motion/react";
@@ -59,6 +59,7 @@ export default function ExamSetupPage() {
   const [questionCount, setQuestionCount] = useState<number>(10);
   const [maxAvailable, setMaxAvailable] = useState<number>(0);
   const [sourceType, setSourceType] = useState<"standard" | "ai_generated">("standard");
+  const [deploying, setDeploying] = useState(false);
 
   // Live stats for the selected Official Year Paper — the Volume field only shows for
   // non-YEAR_PAPER modes, so this was the one deployment type with no feedback at all
@@ -486,7 +487,7 @@ export default function ExamSetupPage() {
       sections: sections.size,
       subjects: subjects.size,
       topics: topics.size,
-      estimatedMinutes: Math.ceil(currentDraft.questions.length * 2.5) // ~2.5 mins per question avg
+      estimatedMinutes: Math.round((totalMarks * 108) / 60) // same rule as the exam timer: GATE pacing, 180 min per 100 marks
     };
   }, [currentDraft]);
 
@@ -1246,7 +1247,7 @@ export default function ExamSetupPage() {
                       <div className="pb-2">
                          <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2 block">Difficulty Split</span>
                          <div className="flex h-3 rounded-full overflow-hidden w-full gap-0.5">
-                            {['Hard', 'Medium', 'Easy'].map(d => {
+                            {['Easy', 'Medium', 'Hard'].map(d => {
                                const count = draftStats.diffs[d] || 0;
                                if(count===0) return null;
                                const percent = (count/currentDraft.questions.length)*100;
@@ -1271,13 +1272,21 @@ export default function ExamSetupPage() {
                       )}
                       <motion.button
                         whileTap={{ scale: 0.97 }}
+                        disabled={deploying}
                         onClick={async () => {
-                          await useExamRuntimeStore.getState().startSession(currentDraft);
-                          router.push("/exam/session");
+                          // Immediate feedback: on a slow phone the session build + route
+                          // load takes a moment, and a silent button looked broken.
+                          setDeploying(true);
+                          try {
+                            await useExamRuntimeStore.getState().startSession(currentDraft);
+                            router.push("/exam/session");
+                          } catch {
+                            setDeploying(false);
+                          }
                         }}
-                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-black tracking-wider uppercase shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer border-0"
+                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-80 disabled:cursor-wait text-white rounded-xl font-black tracking-wider uppercase shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer border-0"
                       >
-                        Deploy Session <Play className="w-5 h-5 fill-current" />
+                        {deploying ? <>Starting… <Loader2 className="w-5 h-5 animate-spin" /></> : <>Deploy Session <Play className="w-5 h-5 fill-current" /></>}
                       </motion.button>
                       </div>
 

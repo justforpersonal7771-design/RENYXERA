@@ -487,8 +487,16 @@
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
   }
-  .page-shell:has(> [data-fill-height]) {
+  /* Full-screen tool pages fit one screen only on desktop; on phones/tablets they grow and
+     the page scrolls (a fixed height clipped their cards and hid buttons like Deploy Session).
+     data-fill-height="always" (chat, lock screens) keeps one screen everywhere. */
+  .page-shell:has(> [data-fill-height="always"]) {
     height: 100%;
+  }
+  @media (min-width: 1024px) {
+    .page-shell:has(> [data-fill-height]) {
+      height: 100%;
+    }
   }
 
   .scrollbar-hide::-webkit-scrollbar {

@@ -65,6 +65,12 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Browser test of the per-person order: 2 accounts, desktop light + mobile dark, both mobile modes — same 65, GA first, different order.
 - **Waiting:** user to run migration 0011, then push.
 
+### 27 Sep 2026 — GATE results verified + mobile pass ✅
+- Migrations 0011 + 0012 run by the user. 12-account test: equal marks share AIR (1, 2, 2, 4), qualifying marks per category, GATE score, category/PwD rank, flagged excluded, category private — all pass. 0012 fixed an undefined GATE score in small mocks (top-10 mean ≤ qualifying mark → use topper's marks).
+- **Mobile (user report: couldn't deploy a test on phone).** Root causes: tool pages were pinned to one screen height and the Setup card clipped the Deploy Session button; `100vh` hid the exam's bottom bar under the phone browser's toolbar; the question text and options scrolled separately, leaving one visible line of question.
+- Fixes: one-screen layout only from 1024px (chat/lock screens opt in with `data-fill-height="always"`); `h-dvh` for the app shell and exam; question + options scroll together below 1024px; "Starting…" state on Deploy; compact Submit on narrow phones; Escape closes the question grid; Mistakes/Bookmarks become list → detail with Back on phones; blueprint duration uses the timer's rule (180 min / 100 marks, was 2.5 min/question); difficulty bar order matches its labels; "Penalty"/"Marks" labels no longer wrap.
+- Tested: full flow (setup → deploy → answer → grid → submit → results → review → mistakes → revision) on iPhone-size light + dark and desktop light + dark; all pages without horizontal scroll or errors.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

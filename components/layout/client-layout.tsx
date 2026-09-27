@@ -104,7 +104,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   if (isExamSession) {
     return (
       <MotionPrefs><MathJaxContext config={MATHJAX_CONFIG}>
-      <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 relative">
+      <div className="h-dvh w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 relative">
         <LaunchIntro />
         <main className="w-full h-full overflow-hidden">
           {children}
@@ -122,7 +122,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     // App-level MathJax context: starts the MathJax download as soon as the app opens
     // (see lib/mathjax-config.ts); page-level contexts reuse it.
     <MotionPrefs><MathJaxContext config={MATHJAX_CONFIG}>
-    <div className="h-screen w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter relative">
+    <div className="h-dvh w-screen overflow-hidden bg-background ambient-gradient text-text-primary font-sans transition-colors selection:bg-accent/30 font-inter relative">
       <LaunchIntro />
       {/* Topbar is fixed (not sticky-in-flow); the ambient body gradient
           (background-attachment: fixed, unaffected by scroll position) still

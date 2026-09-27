@@ -521,7 +521,7 @@ export default function AITutorWorkspace() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col overflow-hidden" data-fill-height>
+      <div className="w-full h-full flex flex-col overflow-hidden" data-fill-height="always">
 
         {/* Sticky Command Bar */}
         <header className="flex-none bg-[var(--surface)] border-b border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">

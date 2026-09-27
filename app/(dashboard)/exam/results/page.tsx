@@ -448,8 +448,8 @@ export default function ResultSummaryPage() {
               {[
                 { icon: CheckCircle, label: "Correct", value: correct, decimals: 0, prefix: "", color: "text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
                 { icon: XCircle, label: "Wrong", value: wrong, decimals: 0, prefix: "", color: "text-rose-500", bg: "bg-gradient-to-br from-rose-500/10 to-rose-500/5 border-rose-500/20" },
-                { icon: TrendingUp, label: "+ Marks", value: totalPositiveMarks, decimals: 1, prefix: "+", color: "text-emerald-600 dark:text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
-                { icon: AlertCircle, label: "- Penalty", value: totalNegativeMarks, decimals: 1, prefix: "-", color: "text-red-500 dark:text-red-400", bg: "bg-gradient-to-br from-red-500/10 to-red-500/5 border-red-500/20" },
+                { icon: TrendingUp, label: "Marks", value: totalPositiveMarks, decimals: 1, prefix: "+", color: "text-emerald-600 dark:text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
+                { icon: AlertCircle, label: "Penalty", value: totalNegativeMarks, decimals: 1, prefix: "-", color: "text-red-500 dark:text-red-400", bg: "bg-gradient-to-br from-red-500/10 to-red-500/5 border-red-500/20" },
               ].map((stat, idx) => (
                 <motion.div
                   key={stat.label}
