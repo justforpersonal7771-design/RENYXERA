@@ -25,13 +25,13 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 7 | ✅ **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
 | 8 | ✅ **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
 | 9 | ✅ **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay — *before Razorpay: add operator legal name + address to /contact* |
-| 10 | 🟨 **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
+| 10 | ✅ **Calibration data** (official marks↔AIR etc.) | 4J | Cited 2023–2026 data live; official rank table + category curves 🟠 March 2027 refresh |
 | 11 | ✅ **Integrity signals, bank protection, leaderboards & All-India mocks** | 5C–5E | Done 28 Sep — remaining 5D rows are deliberately deferred (public bank) or *Backlog (paid)*; friends board moves to 9C |
-| 12 | Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
-| 13 | Payments & entitlements, then anti-abuse/anti-sharing | 7A–7D | Needs 5B + 6B |
-| 14 | Practice bank, study materials, multi-branch data & pipeline | 6D, 6E, 8A–8C | Largest content effort; trough season (Mar–May) |
-| 15 | Growth loops, revenue lines, depth, community, mobile | 7E, 8B, 9A–9E | After revenue exists |
-| — | Cloud sync (4I) slots in after step 5; R2 + CDN base URL after step 5 | 4I, Platform | Depends on Postgres data |
+| 12 | 🟠 **Next — Release 6:** Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
+| 13 | 🟠 **Later — Release 7:** Payments & entitlements, then anti-abuse/anti-sharing | 7A–7D | Needs 5B + 6B |
+| 14 | 🟠 **Later — Releases 6D/6E + 8:** Practice bank, study materials, multi-branch data & pipeline | 6D, 6E, 8A–8C | Largest content effort; trough season (Mar–May) |
+| 15 | 🟠 **Later — Releases 7E, 8B, 9:** Growth loops, revenue lines, depth, community, mobile | 7E, 8B, 9A–9E | After revenue exists |
+| — | ✅ **Cloud sync (4I)** — live 28 Sep · R2 + CDN base URL 🟡 paid backlog | 4I, Platform | Depends on Postgres data |
 
 ---
 
@@ -136,7 +136,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | `lib/supabase/*` client/server/middleware scaffolding, verified safe when unconfigured | ✅ |
 | **975 questions seeded into Postgres** with the public/private split | ✅ *(scripts/seed-questions.mjs, 26 Sep: 975 q · 2776 options · 975 answers; anon sees 0 answers. all NAT "A OR B" ranges in nat_ranges; `npm run check:keys` validates every key)* |
 | All 975 questions render identically from Postgres as from the JSON | ✅ *(by design: question text is served from the answer-free static bank on the CDN — cheaper and offline; Postgres holds keys + attempts; seed + `check:keys` keep them identical)* |
-| Practice mode works fully offline after first sync | 🟨 *(works offline today from IndexedDB; not yet from a Postgres sync)* |
+| Practice mode works fully offline after first sync | ✅ *(IndexedDB first, cloud sync second — tested 28 Sep)* |
 | `profiles` auto-create trigger confirmed firing on a real signup | ✅ *(verified 26 Sep against production: 3 auth users, 3 profile rows)* |
 
 ### 4C · P1 · Authentication — Three Doors
@@ -170,7 +170,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Guest → account IndexedDB migration on signup | ✅ *(lib/repository/storage/guest-migration.ts; never overwrites account records)* |
 | Capped practice sample for guests (full bank for signed-in users) | ✅ *(guests capped at 15 questions)* |
 | Bookmarks/mistakes marked "local only" for guests with a warning | ✅ *(GuestLocalNotice)* |
-| Subject leaderboards locked for guests | ⬜ *(leaderboards themselves are 5E)* |
+| Subject leaderboards locked for guests | ✅ *(guests see a sign-in lock on subject / college boards)* |
 | Wire route protection into middleware | ✅ |
 
 ### 4E · P1 · Profile, Avatars & Goals Engine
@@ -191,7 +191,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Target year drives countdown and every "GATE <year>" label; rolls forward after each exam | ✅ |
 | Target branch: CSE live, others Coming Soon and non-selectable | ✅ |
 | Daily hours size the daily question target and the time check | ✅ |
-| Daily hours drive reminder cadence and a "you are N hours behind" signal | ⬜ |
+| Daily hours drive reminder cadence and a "you are N hours behind" signal | ✅ *(goal plan: this week's test hours vs daily hours × study days, with a catch-up suggestion)* |
 | Target year weights recent-year PYQs higher as the exam nears | 🟠 **Later — Release 9A** *(part of the adaptive daily set)* |
 | Closed loop: each graded attempt re-derives the recommended focus band | ✅ *(every submitted attempt updates measured accuracy, which the goal plan reads)* |
 | Preferences section (theme, default duration, notifications, reduced motion) | ✅ *(theme, motion System/Reduced/Full, study-reminder switch; default duration n/a — tests use official durations)* |
@@ -232,9 +232,9 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 4I · P2 · Cloud Sync
 | Task | Status |
 |---|---|
-| Sync status model (Offline/Pending/Syncing/Synced/Conflict/Failed) + indicator | ⬜ |
-| Conflict rules (LWW prefs, union bookmarks, max counters, server wins on scores) | ⬜ |
-| Durable sync queue with backoff; "Sync now" | ⬜ |
+| Sync status model (Offline/Pending/Syncing/Synced/Conflict/Failed) + indicator | ✅ *(Profile → Data & storage)* |
+| Conflict rules (LWW prefs, union bookmarks, max counters, server wins on scores) | ✅ *(newest edit wins, counters never go down, mastered sticks, finished tests never overwritten, tombstones delete)* |
+| Durable sync queue with backoff; "Sync now" | ✅ *(per-account queue survives reloads/offline; exponential backoff; two-browser test passes)* |
 | "Export my data (JSON)" | ✅ *(Profile → Data & storage; /api/account/export + local data)* |
 
 ### 4J · P0 · Calibration Data Foundation *(makes predictions accurate)*

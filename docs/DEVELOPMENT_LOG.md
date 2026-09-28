@@ -116,6 +116,12 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Migration 0016 run ✅. Live test (mobile dark + desktop light): challenge attempt stored with 10 per-question marks; Challenge / Practice / My college boards list the user; no errors.
 - **Topic ladders** on Analytics (Bronze → Diamond by accuracy, ≥3 attempts, progress to the next tier). **Release 5 complete** (deferred / paid rows noted).
 
+### 28 Sep 2026 — Cloud sync live; Releases 4 & 5 closed out ✅
+- **4I Cloud sync** (migration 0017 `user_records`, RLS own rows, 256 KB/record): bookmarks, mistakes and finished tests; per-account durable queue (tests queued by reference), exponential backoff, pull by server clock; merge = newest edit wins, counters never go down, mastered sticks, finished tests never overwritten, tombstones delete. Status + Sync now in Profile → Data & storage.
+- **Two-browser test** (same account): A → 1 bookmark (+1 removed), 73 mistakes, 1 test uploaded; B pulled exactly the same, the removed bookmark stayed removed.
+- Guest lock on subject/college boards; weekly "hours behind" signal in the goal plan.
+- **Checklist (user):** every open row in Platform, Release 4 and Release 5 is now ✅, 🟠 (named later release) or 🟡 (paid backlog); new 🟠 legend; build-order rows coloured. No white rows left before Release 6.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.
