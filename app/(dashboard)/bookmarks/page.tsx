@@ -58,8 +58,9 @@ export default function BookmarksPage() {
 
   // Sync active bookmark selection on loading
   useEffect(() => {
-    if (bookmarks.length > 0 && !activeBookmark) {
-      setActiveBookmark(bookmarks[0].questionId);
+    const first = bookmarks.find((b) => !b.isShortcutOnly);
+    if (first && !activeBookmark) {
+      setActiveBookmark(first.questionId);
     }
   }, [bookmarks, activeBookmark]);
 
@@ -135,7 +136,8 @@ export default function BookmarksPage() {
 
   // Filtered and Sorted Bookmarks list
   const processedBookmarks = useMemo(() => {
-    let result = [...bookmarks];
+    // Shortcut-only records (AI Tutor "Save Shortcut") live in the Shortcut Library, not here.
+    let result = bookmarks.filter((b) => !b.isShortcutOnly);
 
     // 1. Search Query
     if (searchQuery.trim()) {

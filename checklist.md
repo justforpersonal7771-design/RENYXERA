@@ -1,6 +1,6 @@
 # RENYXERA — Progress Checklist
 
-**Last updated:** 26 September 2026 (full cross-check against the master plan, module by module)
+**Last updated:** 28 September 2026 (Release 5 integrity, mocks and leaderboards; earlier full cross-check 26 Sep)
 **Companion to:** `RENYXERA_Master_Plan_Auth_Security_Monetization.md` (full rationale, module-by-module — this file is status only)
 
 Legend: ✅ Done and verified · 🟨 Partly done · 🔶 Done but needs your confirmation/action · ⬜ Not started
@@ -20,13 +20,13 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 3 | ✅ **Route protection in middleware** + guest caps (practice sample, "local only" warning) | 4C, 4D | Server-side boundary instead of UI-only locks |
 | 4 | ✅ **CI security checks**: service-role grep over build output, anon-can't-read-answers test | Platform | Makes steps 1–3 and 4B regressions impossible to ship silently |
 | 5 | ✅ **Question bank into Postgres** (975 questions, public/private split, offline sync) | 4B | Prerequisite for everything in Release 5 |
-| 6 | 🟨 **Answer-key withholding + server-graded attempts** (attempt token, graded/practice modes) | 5A, 5B | Makes scores trustworthy — *remaining: attempt token (server start time, grace window)* |
+| 6 | ✅ **Answer-key withholding + server-graded attempts** (attempt token, graded/practice modes) | 5A, 5B | Makes scores trustworthy — attempt token live 27 Sep |
 | 6b | ✅ **Protected offline Downloads** (26 Sep): /downloads + protected viewer; AES-GCM packs in a per-account vault DB; non-extractable key, 14-day offline renewal; account watermark; copy/print/context-menu/save blocked; blur shield; wiped on sign-out. **Follow-ups:** persistent per-day download cap (needs a table), rasterised "flattened" page rendering for TeX/images, key rotation/revocation with Active Devices (7) | 5A, 6 | Question bank never downloadable as a file |
 | 7 | ✅ **Account surface**: Preferences, Account (export my data), Active Devices, sign-out everywhere | 4E, 4F | Completes identity; needed for 7D later |
 | 8 | ✅ **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
 | 9 | ✅ **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay — *before Razorpay: add operator legal name + address to /contact* |
 | 10 | 🟨 **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
-| 11 | Integrity signals, bank protection, leaderboards & All-India mocks | 5C–5E | Only credible after step 6 |
+| 11 | 🟨 **Integrity signals, bank protection, leaderboards & All-India mocks** | 5C–5E | 5C ✅, 5E ✅ (mocks, GATE-style results, leaderboards); *remaining: 5D bank protection, score regression suite, shareable cards* |
 | 12 | Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
 | 13 | Payments & entitlements, then anti-abuse/anti-sharing | 7A–7D | Needs 5B + 6B |
 | 14 | Practice bank, study materials, multi-branch data & pipeline | 6D, 6E, 8A–8C | Largest content effort; trough season (Mar–May) |
@@ -261,32 +261,33 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | `/api/exam/grade` server-side grading endpoint | ✅ |
 | Attempt token (server start time/duration, tamper-proof timer) | ✅ *(/api/exam/start: server start time, question set, server-computed limit)* |
 | Live exam session wired to submit-for-grading instead of self-grading | ✅ *(attempt stored in exam_attempts/exam_responses for signed-in users)* |
-| Server validation on submit (open, in time + grace, matching question set, not already submitted) | 🟨 *(duplicates collapsed, unknown ids ignored, re-submits can't overwrite; time/question-set checks need the attempt token)* |
-| Idempotent submissions; late-submission grace window | 🟨 *(idempotent on attempt id ✅; grace window needs the attempt token)* |
-| 100-attempt server-vs-client score regression suite | ⬜ |
+| Server validation on submit (open, in time + grace, matching question set, not already submitted) | ✅ *(attempt token: server start + limit + question set; over-time / mismatch / no-token flags; re-submits can't overwrite)* |
+| Idempotent submissions; late-submission grace window | ✅ *(idempotent on attempt id; 10 min grace for practice, 2 min for mocks; mock results held until results time)* |
+| 100-attempt server-vs-client score regression suite | ✅ *(`npm run check:score` — 100 random attempts incl. NAT edges, multi-answer MCQs; all agree exactly, 28 Sep)* |
 
 ### 5C · P1 · Attempt Integrity Signals
 | Task | Status |
 |---|---|
 | Tab-blur / timing-anomaly / concurrent-attempt signals (graded only, shadow-flag first) | ✅ *(tab switches, fullscreen exits, over-time, long pause, rapid answers, question-set mismatch, no start token — flags only)* |
 | Disclosure notice before graded attempts | ✅ |
-| Flagged attempts excluded from leaderboards, never deleted | ✅ *(mock_leaderboard ranks only unflagged, on-time attempts)* |
+| Flagged attempts excluded from leaderboards, never deleted | ✅ *(only disqualifying flags exclude — migration 0015; informational flags never cost a rank)* |
+| Warn on each exit from the exam window; auto-submit + disqualify on the 5th (mocks and practice) | ✅ *(28 Sep)* |
 
 ### 5D · P1 · Question Bank Protection
 | Task | Status |
 |---|---|
-| Paginated/scoped delivery (no full-bank single request) | ⬜ |
+| Paginated/scoped delivery (no full-bank single request) | ⏸ *Deliberately deferred: the bank is public past GATE papers and must work offline as one file; the protected part — answer keys — is server-only, rate-limited and never in the bundle.* |
 | Per-account fetch-volume limits + anomaly alerts | ⬜ |
 | Full-bank offline download as a paid entitlement | ⬜ |
 | Hotlink protection on images | ⬜ |
 | Invisible per-account watermarking | ⬜ |
-| ToS clause prohibiting scraping/redistribution | ⬜ |
+| ToS clause prohibiting scraping/redistribution | ✅ *(Terms §Acceptable use)* |
 
 ### 5E · P1 · Leaderboards & All-India Test Series
 | Task | Status |
 |---|---|
 | Scheduled All-India mock tests; server-computed percentile/AIR | ✅ *(Sundays 10:00–13:00 IST, 30-min entry grace, exactly 180 min, results 13:45; same paper per person in a different order — GA first, then Maths + Core mixed; one attempt each)* |
-| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(All-India ✅ with display choice: anonymous / username / username + student ID; subject/college/friends not built)* |
+| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(navbar Leaderboard: All-India Mock + weekly Practice boards with animated rank movement and a results-published alert; display choice anonymous / username / username + student ID; subject/college/friends not built)* |
 | Streaks, weekly challenges, topic ladders | 🟨 *(streaks exist; challenges/ladders not built)* |
 | Shareable result cards | ⬜ |
 

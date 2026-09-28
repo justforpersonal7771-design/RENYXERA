@@ -91,6 +91,12 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Leaderboard: dot no longer clipped; readable *New entry / ▲▼* chip in the header.
 - Tested (production build): 25 checks pass on desktop light + mobile dark. **Waiting:** migration 0015.
 
+### 28 Sep 2026 — Score regression, shortcuts ≠ bookmarks, stale-copy guard ✅
+- Migration 0015 verified live: fast answers no longer disqualify; disqualified / over-time still excluded; lone candidate → 100th percentile.
+- **5B regression suite:** `npm run check:score` — 100 random attempts (right / wrong / skipped, NAT edges, partial MSQ) graded by the live server vs the client: all agree exactly. (A first run "disagreed" only because the harness skipped the app's NAT-key normalisation — fixed in the script, not the app.)
+- **Bug (user):** Save Shortcut also marked the question Bookmarked (and could overwrite a real bookmark's notes). Shortcut-only records are no longer bookmarks anywhere (AI Tutor button, Bookmarks page, dashboard count); saving a shortcut adds to an existing bookmark; un-bookmarking keeps a saved shortcut.
+- **Bug (user):** Leaderboard icon and mock cards "disappeared" — the live build had them; the tab had fallen back to an older cached copy. New `VersionWatch` + `/api/version`: on focus, every 5 min and on navigation the tab compares builds and reloads quietly (never during a test; at most once a minute).
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

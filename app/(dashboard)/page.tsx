@@ -79,7 +79,7 @@ export default function Home() {
     }
     
     // Fetch count details for stats cards
-    IDBManager.getAllBookmarks().then(b => setBookmarksCount(b.length)).catch(()=>null);
+    IDBManager.getAllBookmarks().then(b => setBookmarksCount(b.filter((x) => !x.isShortcutOnly).length)).catch(()=>null);
     IDBManager.getAllMistakes().then(m => setMistakesCount(m.length)).catch(()=>null);
   }, [loadRepository, initializeStore, isHydrated, loadStudyData]);
 

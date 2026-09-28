@@ -279,13 +279,26 @@ export default function AITutorWorkspace() {
     chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [history, chatLoading]);
 
+  // A record saved only for its shortcut is not a bookmark.
+  const isRealBookmark = !!activeBookmarkEntry && !activeBookmarkEntry.isShortcutOnly;
+
   // Switch bookmark state
   const handleToggleBookmark = async () => {
     if (!question) return;
-    const isBookmarked = !!activeBookmarkEntry;
-    if (isBookmarked) {
-      await useStudyStore.getState().removeBookmark(qid);
-      setActiveBookmarkEntry(null);
+    if (isRealBookmark && activeBookmarkEntry) {
+      if (activeBookmarkEntry.aiShortcut) {
+        // Un-bookmark but keep the saved shortcut in the Shortcut Library.
+        await IDBManager.saveBookmark({ ...activeBookmarkEntry, isShortcutOnly: true });
+        await loadStudyData();
+      } else {
+        await useStudyStore.getState().removeBookmark(qid);
+        setActiveBookmarkEntry(null);
+      }
+    } else if (activeBookmarkEntry) {
+      // Only a shortcut was saved so far: promote the same record to a real bookmark.
+      const folders = Array.from(new Set([...(activeBookmarkEntry.folders ?? []), "AI Tutor"]));
+      await IDBManager.saveBookmark({ ...activeBookmarkEntry, isShortcutOnly: false, folders });
+      await loadStudyData();
     } else {
       await useStudyStore.getState().addBookmark(
         qid,
@@ -342,6 +355,14 @@ export default function AITutorWorkspace() {
 
   const handleSaveShortcut = async () => {
     if (!question || !explanation || !explanation.shortcut) return;
+    if (activeBookmarkEntry) {
+      // Add the shortcut to the existing record — never overwrite a real bookmark or its notes.
+      await IDBManager.saveBookmark({ ...activeBookmarkEntry, aiShortcut: explanation.shortcut });
+      await loadStudyData();
+      setIsShortcutBookmarked(true);
+      useToastStore.getState().show("Shortcut trick saved to your Library!");
+      return;
+    }
     await useStudyStore.getState().addBookmark(
       qid,
       "",
@@ -565,13 +586,13 @@ export default function AITutorWorkspace() {
             {/* Bookmark button */}
             <button
               onClick={handleToggleBookmark}
-              className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black uppercase tracking-wider ${activeBookmarkEntry
+              className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black uppercase tracking-wider ${isRealBookmark
                 ? "bg-amber-500/10 border-amber-500/30 text-amber-500"
                 : "bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-amber-500"
                 }`}
             >
-              <Bookmark className={`w-4 h-4 ${activeBookmarkEntry ? "fill-amber-500" : ""}`} />
-              <span>{activeBookmarkEntry ? "Bookmarked" : "Bookmark"}</span>
+              <Bookmark className={`w-4 h-4 ${isRealBookmark ? "fill-amber-500" : ""}`} />
+              <span>{isRealBookmark ? "Bookmarked" : "Bookmark"}</span>
             </button>
 
             {/* Save Shortcut button */}
