@@ -113,7 +113,8 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - **Leaderboards:** one `board()` function — Practice overall / by subject / my college, and a **Weekly Challenge** (10 past-GATE questions per IST week, same for everyone; the server rejects a challenge-titled test with any other set; only server-started attempts rank). Panel gets Mock · Practice · Challenge tabs with Overall / By subject / My college; Mocks page gets a Challenge card. Marks per question now stored (`exam_responses.awarded`).
 - **Per-account daily cap** on answer-key lookups (800/day, Postgres counter, logged when hit).
 - Verified: client and server compute the identical challenge set (975 = 975 ids).
-- **Waiting:** migration 0016 before pushing (the grader writes the new column).
+- Migration 0016 run ✅. Live test (mobile dark + desktop light): challenge attempt stored with 10 per-question marks; Challenge / Practice / My college boards list the user; no errors.
+- **Topic ladders** on Analytics (Bronze → Diamond by accuracy, ≥3 attempts, progress to the next tier). **Release 5 complete** (deferred / paid rows noted).
 
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.

@@ -18,6 +18,7 @@ import { LearningEngine, PersonalizedIntelligence } from "@/lib/learning/Learnin
 import { AnimatePresence, motion } from "motion/react";
 import { Reveal } from "@/components/ui/reveal";
 import { MockAnalytics } from "@/components/analytics/mock-analytics";
+import { TopicLadders } from "@/components/analytics/topic-ladders";
 import { GuestLock } from "@/components/auth/guest-lock";
 import { CountUp, RadialGauge, TiltCard, InfoTip, Segmented } from "@/components/ui/interactive";
 
@@ -217,6 +218,7 @@ export default function AnalyticsDashboardPage() {
 
         {/* All-India Mock history (empty state when none) */}
         <Reveal><MockAnalytics /></Reveal>
+        <Reveal><TopicLadders topics={dashboardMetrics.topicPerformance ?? []} /></Reveal>
 
         {/* 2. Insights + adaptive path */}
         {!loadingIntel && intel && (

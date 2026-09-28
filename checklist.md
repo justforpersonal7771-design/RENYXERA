@@ -26,7 +26,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 8 | ✅ **Waitlist + branch landing pages** | 4H | Free demand capture; feeds Release 8 ordering |
 | 9 | ✅ **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay — *before Razorpay: add operator legal name + address to /contact* |
 | 10 | 🟨 **Calibration data** (official marks↔AIR etc.) | 4J | Makes predictions accurate — data gathering, not just code |
-| 11 | 🟨 **Integrity signals, bank protection, leaderboards & All-India mocks** | 5C–5E | 5C ✅, 5E ✅ (mocks, GATE-style results, leaderboards); *remaining: 5D bank protection, score regression suite, shareable cards* |
+| 11 | ✅ **Integrity signals, bank protection, leaderboards & All-India mocks** | 5C–5E | Done 28 Sep — remaining 5D rows are deliberately deferred (public bank) or *Backlog (paid)*; friends board moves to 9C |
 | 12 | Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
 | 13 | Payments & entitlements, then anti-abuse/anti-sharing | 7A–7D | Needs 5B + 6B |
 | 14 | Practice bank, study materials, multi-branch data & pipeline | 6D, 6E, 8A–8C | Largest content effort; trough season (Mar–May) |
@@ -295,7 +295,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Scheduled All-India mock tests; server-computed percentile/AIR | ✅ *(Sundays 10:00–13:00 IST, 30-min entry grace, exactly 180 min, results 13:45; same paper per person in a different order — GA first, then Maths + Core mixed; one attempt each)* |
 | Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(All-India Mock, weekly Practice, by subject, my college, Weekly Challenge ✅ — migration 0016; friends needs a friends feature → with 9C community)* |
-| Streaks, weekly challenges, topic ladders | 🟨 *(streaks ✅; Weekly Challenge ✅ — same 10 questions for everyone each week, server-verified set, own board; topic ladders not built)* |
+| Streaks, weekly challenges, topic ladders | ✅ *(streaks; Weekly Challenge with its own board; topic ladders Bronze→Diamond on Analytics)* |
 | Shareable result cards | ✅ *(28 Sep: mock scorecard + practice results → PNG card via share sheet / download; name follows the leaderboard display choice)* |
 
 ---

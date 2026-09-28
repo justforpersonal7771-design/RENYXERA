@@ -276,6 +276,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
               {tab === "mock" ? (mocks.length ? "No ranked attempts in this mock." : "Mock ranks appear here when the first results are published.")
                 : tab === "challenge" ? <>Nobody has taken this week&apos;s challenge yet. <Link href="/mocks#challenge" onClick={onClose} className="font-semibold text-violet-600 dark:text-violet-400">Take it</Link></>
                 : scope === "college" ? "Add your college in Profile → Personal info to see classmates here."
+                : scope === "subject" ? `No marks in ${subject} this week yet — practise it to get on this board.`
                 : signedIn ? "No practice scored this week yet — take a test to get on the board." : "Sign in and take a test to join the board."}
             </p>
           ) : (
