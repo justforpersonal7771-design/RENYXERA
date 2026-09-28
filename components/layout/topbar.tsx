@@ -1,5 +1,6 @@
 "use client";
 
+import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download, Trophy } from "lucide-react";
@@ -312,6 +313,7 @@ export function Topbar() {
                 )}
              </button>
 
+             <LeaderboardButton />
              {signedIn && (
                <Link
                   href="/downloads"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useFullscreenState } from "@/components/ui/fullscreen-toggle";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -17,19 +17,7 @@ export function FullscreenNavigation({
   isPrevDisabled = false,
   isNextDisabled = false,
 }: FullscreenNavigationProps) {
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    
-    // Check initially
-    setIsFullscreen(!!document.fullscreenElement);
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => document.removeEventListener("fullscreenchange", handleFullscreenChange);
-  }, []);
+  const isFullscreen = useFullscreenState();
 
   if (!isFullscreen) return null;
 

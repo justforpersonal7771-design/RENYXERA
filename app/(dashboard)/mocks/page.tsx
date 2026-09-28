@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion } from "motion/react";
-import { Trophy, Clock, CalendarDays, Play, Loader2, ShieldCheck, CheckCircle2, BarChart3, Radio, Lock } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { Trophy, Clock, CalendarDays, Play, Loader2, ShieldCheck, CheckCircle2, BarChart3, Radio, Lock, DoorOpen, DoorClosed, Send, Medal, Target, TrendingUp, Timer } from "lucide-react";
+import { openLeaderboard } from "@/components/layout/leaderboard-panel";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useDataStore } from "@/store/use-data-store";
@@ -17,7 +18,6 @@ interface Mock { id: string; title: string; starts_at: string; ends_at: string; 
 
 const entryCloses = (m: Mock) => Date.parse(m.starts_at) + (m.start_grace_minutes ?? 30) * 60_000;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-interface BoardRow { rank: number; display_name: string; score: number; percentile: number; is_me: boolean; total: number }
 interface MyAttempt { id: string; mock_id: string; status: string; server_score: number | null; server_max: number | null; integrity_flags: unknown[] }
 
 function useNow(ms = 1000) {
@@ -45,7 +45,6 @@ export default function MocksPage() {
   const [mine, setMine] = useState<MyAttempt[]>([]);
   const [unavailable, setUnavailable] = useState(false);
   const [starting, setStarting] = useState<string | null>(null);
-  const [board, setBoard] = useState<{ mock: Mock; rows: BoardRow[] } | null>(null);
 
   const load = useCallback(async () => {
     const { createClient } = await import("@/lib/supabase/client");
@@ -53,13 +52,6 @@ export default function MocksPage() {
     const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_count,duration_seconds,start_grace_minutes").order("starts_at", { ascending: false }).limit(24);
     if (error) { setUnavailable(true); setMocks([]); return; }
     setMocks(data as Mock[]);
-    // Leaderboard: always shows the latest released mock (updates when the next results go out).
-    const nowIso = new Date().toISOString();
-    const latest = (data as Mock[]).filter((m) => m.results_at <= nowIso).sort((a, b) => b.results_at.localeCompare(a.results_at))[0];
-    if (latest) {
-      const { data: rows } = await sb.rpc("mock_leaderboard", { p_mock: latest.id, p_limit: 10 });
-      setBoard({ mock: latest, rows: (rows as BoardRow[]) ?? [] });
-    } else setBoard(null);
     if (user) {
       const { data: a } = await sb.from("exam_attempts").select("id,mock_id,status,server_score,server_max,integrity_flags").not("mock_id", "is", null);
       setMine((a as MyAttempt[]) ?? []);
@@ -131,16 +123,77 @@ export default function MocksPage() {
 
   if (mocks === null) return <div className="flex items-center justify-center py-24"><Loader2 className="w-6 h-6 animate-spin text-violet-500" /></div>;
 
+  const next = upcoming[0] ?? null;
+  const submitted = mine.filter((a) => a.status === "submitted");
+  const releasedScores = submitted.filter((a) => { const m = (mocks ?? []).find((x) => x.id === a.mock_id); return m && now >= Date.parse(m.results_at) && a.server_score !== null; }).map((a) => Number(a.server_score));
+  const best = releasedScores.length ? Math.max(...releasedScores) : null;
+  const avg = releasedScores.length ? Math.round((releasedScores.reduce((x, y) => x + y, 0) / releasedScores.length) * 10) / 10 : null;
+  const pendingResults = (mocks ?? []).filter((m) => now < Date.parse(m.results_at) && Date.parse(m.starts_at) <= now).sort((a, b) => Date.parse(a.results_at) - Date.parse(b.results_at))[0];
+  const dayRef = live ?? next;
+
   return (
     <div className="w-full max-w-5xl mx-auto pb-10 space-y-6">
-      <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-[0_24px_60px_-20px_rgba(79,70,229,0.6)]">
-        <div className="absolute -top-16 -right-10 w-56 h-56 rounded-full bg-cyan-300/25 blur-3xl pointer-events-none" />
-        <div className="relative flex items-start gap-4">
-          <span className="w-12 h-12 shrink-0 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center"><Trophy className="w-6 h-6" /></span>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">All-India Mock</h1>
-            <p className="mt-1 text-sm text-white/85 max-w-2xl">Every Sunday, 10 AM – 1 PM IST: a fresh 65-question GATE CS paper in the official pattern, exactly 180 minutes. One attempt each; ranks and percentiles are released at 1:45 PM.</p>
+      {/* Hero: live paper, or a ticking countdown to the next one */}
+      <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-indigo-700 via-violet-600 to-fuchsia-600 text-white shadow-[0_24px_60px_-20px_rgba(79,70,229,0.6)]">
+        <motion.div aria-hidden="true" className="absolute -top-20 -right-16 w-72 h-72 rounded-full bg-cyan-300/25 blur-3xl" animate={{ x: [0, -20, 0], y: [0, 15, 0] }} transition={{ duration: 9, repeat: Infinity }} />
+        <motion.div aria-hidden="true" className="absolute -bottom-24 -left-10 w-72 h-72 rounded-full bg-amber-300/20 blur-3xl" animate={{ x: [0, 25, 0] }} transition={{ duration: 11, repeat: Infinity }} />
+        <div className="relative flex flex-col gap-6">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <motion.span whileHover={{ rotate: -12, scale: 1.08 }} className="w-12 h-12 shrink-0 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center"><Trophy className="w-6 h-6 text-amber-200" /></motion.span>
+              <div className="min-w-0">
+                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">All-India Mock</h1>
+                <p className="text-xs sm:text-sm text-white/80">Every Sunday · GATE CS pattern · ranked nationally</p>
+              </div>
+            </div>
+            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => openLeaderboard()}
+              className="shrink-0 inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-sm font-bold cursor-pointer backdrop-blur">
+              <Medal className="w-4 h-4 text-amber-200" /> <span className="hidden sm:inline">Leaderboard</span>
+            </motion.button>
           </div>
+
+          <div className="flex flex-wrap gap-2 text-[11px] font-bold">
+            {["65 questions", "100 marks", "180 minutes, no pause", "One attempt"].map((c) => <span key={c} className="px-2.5 py-1 rounded-full bg-white/15 border border-white/20">{c}</span>)}
+          </div>
+
+          {live ? (() => {
+            const a = attemptFor(live.id);
+            return (
+              <div className="flex flex-col sm:flex-row sm:items-end gap-4 justify-between">
+                <div>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-400/25 text-emerald-50 text-[11px] font-black uppercase tracking-wider">
+                    <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }}><Radio className="w-3.5 h-3.5" /></motion.span> Live now
+                  </span>
+                  <h2 className="mt-2 text-xl sm:text-2xl font-extrabold">{live.title}</h2>
+                  <p className="text-sm text-white/85">{now < entryCloses(live) ? <>Entry closes in <span className="font-num font-bold">{fmtCountdown(entryCloses(live) - now)}</span></> : <>Entry closed · results {fmtWhen(live.results_at)}</>}</p>
+                </div>
+                {a ? (a.status === "submitted" ? (
+                  <span className="inline-flex items-center gap-2 px-4 h-12 rounded-xl bg-white/15 text-sm font-semibold"><CheckCircle2 className="w-4 h-4 text-emerald-300" /> Submitted — results {fmtWhen(live.results_at)}</span>
+                ) : (
+                  <Link href="/exam/session" className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-white text-violet-700 font-extrabold shadow-lg"><Play className="w-5 h-5 fill-current" /> Continue your mock</Link>
+                )) : now > entryCloses(live) ? (
+                  <span className="inline-flex items-center gap-2 px-4 h-12 rounded-xl bg-white/15 text-sm font-semibold"><Lock className="w-4 h-4" /> Entry closed</span>
+                ) : (
+                  <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }} onClick={() => start(live)} disabled={!!starting}
+                    className="relative overflow-hidden inline-flex items-center justify-center gap-2 h-12 px-7 rounded-xl bg-white text-violet-700 font-extrabold shadow-lg disabled:opacity-70 cursor-pointer">
+                    <motion.span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-transparent via-violet-200/60 to-transparent" animate={{ x: ["-120%", "120%"] }} transition={{ duration: 2.2, repeat: Infinity }} />
+                    <span className="relative inline-flex items-center gap-2">{starting === live.id ? <Loader2 className="w-5 h-5 animate-spin" /> : user ? <Play className="w-5 h-5 fill-current" /> : <Lock className="w-5 h-5" />}{user ? "Start the mock" : "Sign in to take part"}</span>
+                  </motion.button>
+                )}
+              </div>
+            );
+          })() : next ? (
+            <div className="flex flex-col sm:flex-row sm:items-end gap-4 justify-between">
+              <div className="min-w-0">
+                <p className="text-xs font-bold uppercase tracking-wider text-white/70">Next mock</p>
+                <h2 className="text-xl sm:text-2xl font-extrabold leading-tight">{next.title}</h2>
+                <p className="text-sm text-white/80 inline-flex items-center gap-1.5"><CalendarDays className="w-4 h-4" /> {fmtWhen(next.starts_at)}</p>
+              </div>
+              <CountdownTiles ms={Date.parse(next.starts_at) - now} />
+            </div>
+          ) : (
+            <p className="text-sm text-white/85">The next All-India Mock will be announced here soon.</p>
+          )}
         </div>
       </motion.header>
 
@@ -148,86 +201,54 @@ export default function MocksPage() {
         <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">All-India Mocks are being set up — check back soon.</div>
       )}
 
-      {/* Live now */}
-      {live && (() => {
-        const a = attemptFor(live.id);
-        return (
-          <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card-glass rounded-3xl p-6 border-2 border-emerald-500/40">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-              <div className="flex-1 min-w-0">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-[11px] font-black uppercase tracking-wider">
-                  <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }}><Radio className="w-3.5 h-3.5" /></motion.span> Live now
-                </span>
-                <h2 className="mt-2 text-xl font-extrabold text-[var(--text-primary)]">{live.title}</h2>
-                <p className="text-sm text-[var(--text-secondary)]">{live.question_count} questions · exactly {Math.round(live.duration_seconds / 60)} minutes · {now < entryCloses(live)
-                  ? <>entry closes in <span className="font-num font-bold text-[var(--text-primary)]">{fmtCountdown(entryCloses(live) - now)}</span></>
-                  : <>entry closed · results {fmtWhen(live.results_at)}</>}</p>
-                <p className="mt-2 flex items-start gap-1.5 text-[11px] text-[var(--text-muted)]"><ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500 mt-0.5" /> Like the real exam: 180 minutes that can&apos;t be paused. You can start until 30 minutes after the start time (in case of network or server trouble) and still get the full 180 minutes. Tab switches, leaving fullscreen and timing are recorded; flagged attempts aren&apos;t ranked.</p>
-              </div>
-              {a ? (
-                a.status === "submitted" ? (
-                  <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-secondary)]">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-500" /> Submitted — results at {fmtWhen(live.results_at)}
-                  </span>
-                ) : (
-                  <Link href="/exam/session" className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/30">
-                    <Play className="w-5 h-5 fill-current" /> Continue your mock
-                  </Link>
-                )
-              ) : now > entryCloses(live) ? (
-                <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-muted)]"><Lock className="w-4 h-4" /> Entry closed</span>
-              ) : (
-                <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={() => start(live)} disabled={!!starting}
-                  className="inline-flex items-center justify-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold shadow-lg shadow-emerald-500/30 disabled:opacity-60 cursor-pointer">
-                  {starting === live.id ? <Loader2 className="w-5 h-5 animate-spin" /> : user ? <Play className="w-5 h-5 fill-current" /> : <Lock className="w-5 h-5" />}
-                  {user ? "Start the mock" : "Sign in to take part"}
-                </motion.button>
-              )}
-            </div>
-          </motion.section>
-        );
-      })()}
+      {/* Your mock stats */}
+      {user && (
+        <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {([
+            [Target, "Mocks taken", String(submitted.length), "from-indigo-500/15 to-indigo-500/5 text-indigo-600 dark:text-indigo-300"],
+            [Trophy, "Best score", best !== null ? `${best}` : "—", "from-amber-500/15 to-amber-500/5 text-amber-600 dark:text-amber-300"],
+            [TrendingUp, "Average", avg !== null ? `${avg}` : "—", "from-emerald-500/15 to-emerald-500/5 text-emerald-600 dark:text-emerald-300"],
+            [Timer, "Next results", pendingResults ? fmtWhen(pendingResults.results_at) : "—", "from-fuchsia-500/15 to-fuchsia-500/5 text-fuchsia-600 dark:text-fuchsia-300"],
+          ] as const).map(([Icon, k, v, tint], i) => (
+            <motion.div key={k} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} whileHover={{ y: -3 }}
+              className={`rounded-2xl p-4 bg-gradient-to-br ${tint} border border-[var(--border)]`}>
+              <Icon className="w-5 h-5" />
+              <p className="mt-2 text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{k}</p>
+              <p className="text-lg sm:text-xl font-extrabold font-num text-[var(--text-primary)] truncate">{v}</p>
+            </motion.div>
+          ))}
+        </section>
+      )}
 
-      {/* Leaderboard — always visible; shows the latest released mock */}
-      <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card-glass rounded-3xl p-5 sm:p-6">
-        <div className="flex items-center justify-between gap-3 mb-3">
-          <div className="min-w-0">
-            <h2 className="text-lg font-extrabold text-[var(--text-primary)] inline-flex items-center gap-2"><Trophy className="w-5 h-5 text-amber-500" /> Leaderboard</h2>
-            <p className="text-xs text-[var(--text-muted)] truncate">{board ? `${board.mock.title} · ${(board.rows[0]?.total ?? 0).toLocaleString("en-IN")} ranked` : "Ranks appear here when the first results are released"}</p>
-          </div>
-          {board && (
-            <Link href={`/mocks/results?id=${board.mock.id}`} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50 transition-colors">
-              <BarChart3 className="w-4 h-4" /> Full list
-            </Link>
-          )}
-        </div>
-        {board && board.rows.length > 0 ? (
-          <ol className="divide-y divide-[var(--border-subtle)]">
-            {board.rows.map((r, i) => (
-              <li key={`${r.rank}-${i}`} className={`flex items-center gap-3 py-2 px-2 rounded-lg ${r.is_me ? "bg-violet-500/10" : ""}`}>
-                <span className="w-10 font-num font-bold text-[var(--text-primary)]">#{r.rank}</span>
-                <span className="flex-1 min-w-0 truncate text-sm text-[var(--text-primary)]">{r.display_name}{r.is_me && <span className="ml-2 text-[10px] font-bold text-violet-600 dark:text-violet-300">You</span>}</span>
-                <span className="font-num font-semibold text-sm">{r.score}</span>
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p className="text-sm text-[var(--text-muted)] py-3">{board ? "No ranked attempts in the latest mock." : upcoming[0] || live ? `Next results: ${fmtWhen((live ?? upcoming[0]).results_at)}` : "No mocks yet."}</p>
-        )}
-      </motion.section>
+      {/* Exam day, like the real GATE */}
+      <section className="card-glass rounded-3xl p-5 sm:p-6">
+        <h2 className="text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)] mb-4">Exam day</h2>
+        <DayTimeline mock={dayRef} now={now} />
+        <p className="mt-4 flex items-start gap-1.5 text-[11px] text-[var(--text-muted)]"><ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500 mt-0.5" /> Start any time in the first 30 minutes and still get the full 180 minutes. Tab switches, leaving full screen and timing are recorded; flagged attempts aren&apos;t ranked. Everyone&apos;s results are released together.</p>
+      </section>
 
       {/* Upcoming */}
-      {upcoming.length > 0 && (
+      {upcoming.length > (live ? 0 : 1) && (
         <section>
           <h2 className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Coming up</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {upcoming.slice(0, 4).map((m, i) => (
-              <motion.div key={m.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="card-glass rounded-2xl p-4">
-                <p className="font-bold text-[var(--text-primary)]">{m.title}</p>
-                <p className="mt-1 text-xs text-[var(--text-secondary)] inline-flex items-center gap-1.5"><CalendarDays className="w-3.5 h-3.5" /> {fmtWhen(m.starts_at)}</p>
-                <p className="mt-2 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-violet-500/10 text-violet-700 dark:text-violet-300 text-xs font-bold"><Clock className="w-3.5 h-3.5" /> Starts in <span className="font-num">{fmtCountdown(Date.parse(m.starts_at) - now)}</span></p>
-              </motion.div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {upcoming.slice(live ? 0 : 1, (live ? 0 : 1) + 3).map((m, i) => {
+              const d = new Date(m.starts_at);
+              return (
+                <motion.div key={m.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }} whileHover={{ y: -4 }}
+                  className="card-glass rounded-2xl p-4 flex items-center gap-4">
+                  <div className="w-14 h-16 shrink-0 rounded-2xl bg-gradient-to-b from-violet-600 to-indigo-600 text-white flex flex-col items-center justify-center shadow-lg shadow-violet-500/25">
+                    <span className="text-[10px] font-bold uppercase">{d.toLocaleDateString(undefined, { month: "short" })}</span>
+                    <span className="text-2xl font-extrabold leading-none font-num">{d.getDate()}</span>
+                  </div>
+                  <div className="min-w-0">
+                    <p className="font-bold text-sm text-[var(--text-primary)] truncate">{m.title.replace(/ — .*/, "")}</p>
+                    <p className="text-xs text-[var(--text-muted)]">{d.toLocaleString(undefined, { weekday: "long", hour: "2-digit", minute: "2-digit" })}</p>
+                    <p className="mt-1 inline-flex items-center gap-1 text-[11px] font-bold text-violet-600 dark:text-violet-300"><Clock className="w-3 h-3" /> in {fmtCountdown(Date.parse(m.starts_at) - now)}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </section>
       )}
@@ -236,33 +257,95 @@ export default function MocksPage() {
       {past.length > 0 && (
         <section>
           <h2 className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Past mocks</h2>
-          <div className="card-glass rounded-2xl divide-y divide-[var(--border-subtle)]">
-            {past.map((m) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {past.map((m, i) => {
               const a = attemptFor(m.id);
               const released = now >= Date.parse(m.results_at);
+              const pct = a?.server_score != null && released ? Math.max(0, Math.min(100, (Number(a.server_score) / Number(a.server_max ?? 100)) * 100)) : 0;
               return (
-                <div key={m.id} className="flex items-center gap-3 p-4">
-                  <div className="flex-1 min-w-0">
-                    <p className="font-semibold text-[var(--text-primary)] truncate">{m.title}</p>
-                    <p className="text-xs text-[var(--text-muted)]">{a?.status === "submitted" ? (released ? `You scored ${a.server_score ?? "—"} / ${a.server_max ?? 100}` : "Submitted — score released with the results") : "You didn't take this one"}</p>
+                <motion.div key={m.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: Math.min(i * 0.04, 0.3) }} className="card-glass rounded-2xl p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-[var(--text-primary)] truncate">{m.title}</p>
+                      <p className="text-xs text-[var(--text-muted)]">{a?.status === "submitted" ? (released ? `You scored ${a.server_score ?? "—"} / ${a.server_max ?? 100}` : "Submitted — score released with the results") : "You didn't take this one"}</p>
+                    </div>
+                    {released ? (
+                      <Link href={`/mocks/results?id=${m.id}`} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-semibold shadow-md shadow-violet-500/25">
+                        <BarChart3 className="w-4 h-4" /> Results
+                      </Link>
+                    ) : (
+                      <span className="shrink-0 text-xs font-semibold text-[var(--text-muted)]">Results {fmtWhen(m.results_at)}</span>
+                    )}
                   </div>
-                  {released ? (
-                    <Link href={`/mocks/results?id=${m.id}`} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50 transition-colors">
-                      <BarChart3 className="w-4 h-4" /> Leaderboard
-                    </Link>
-                  ) : (
-                    <span className="shrink-0 text-xs text-[var(--text-muted)]">Results {fmtWhen(m.results_at)}</span>
+                  {released && a?.status === "submitted" && (
+                    <div className="mt-3 h-2 rounded-full bg-[var(--surface-secondary)] overflow-hidden">
+                      <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.9, ease: "easeOut" }} className="h-full rounded-full bg-gradient-to-r from-emerald-400 via-cyan-400 to-violet-500" />
+                    </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </div>
         </section>
       )}
+    </div>
+  );
+}
 
-      {!unavailable && !live && upcoming.length === 0 && past.length === 0 && (
-        <p className="text-center text-sm text-[var(--text-muted)] py-10">The first All-India Mock will be announced here soon.</p>
-      )}
+/** d / h / m / s tiles; each digit rolls as it changes. */
+function CountdownTiles({ ms }: { ms: number }) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const parts: [string, number][] = [["days", Math.floor(s / 86400)], ["hrs", Math.floor((s % 86400) / 3600)], ["min", Math.floor((s % 3600) / 60)], ["sec", s % 60]];
+  return (
+    <div className="flex gap-2" aria-label="Time until the mock starts">
+      {parts.map(([label, v]) => (
+        <div key={label} className="w-14 sm:w-16 rounded-2xl bg-white/15 border border-white/25 backdrop-blur px-1 py-2 text-center">
+          <div className="relative h-8 overflow-hidden">
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.span key={v} initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -24, opacity: 0 }} transition={{ duration: 0.3 }}
+                className="absolute inset-0 text-2xl font-extrabold font-num">{String(v).padStart(2, "0")}</motion.span>
+            </AnimatePresence>
+          </div>
+          <span className="text-[10px] font-bold uppercase text-white/70">{label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** The mock day in four steps; on the day, the line fills as time passes. */
+function DayTimeline({ mock, now }: { mock: Mock | null; now: number }) {
+  const start = mock ? Date.parse(mock.starts_at) : null;
+  const steps = [
+    { icon: DoorOpen, label: "Paper opens", at: start },
+    { icon: DoorClosed, label: "Entry closes", at: mock ? entryCloses(mock) : null },
+    { icon: Send, label: "Last submissions", at: mock ? Date.parse(mock.ends_at) : null },
+    { icon: Trophy, label: "Results & ranks", at: mock ? Date.parse(mock.results_at) : null },
+  ];
+  const fallback = ["10:00", "10:30", "13:30", "13:45"];
+  const onDay = !!start && now >= start - 12 * 3600_000;
+  const done = onDay ? steps.filter((st) => st.at !== null && now >= st.at).length : 0;
+  const fill = done > 1 ? ((done - 1) / (steps.length - 1)) * 75 : 0;
+  return (
+    <div className="relative">
+      <div className="absolute left-[12.5%] right-[12.5%] top-5 h-1 rounded-full bg-[var(--surface-secondary)]" />
+      <motion.div className="absolute left-[12.5%] top-5 h-1 rounded-full bg-gradient-to-r from-emerald-400 to-violet-500" initial={{ width: 0 }} animate={{ width: `${fill}%` }} transition={{ duration: 1 }} />
+      <ol className="relative grid grid-cols-4 gap-2">
+        {steps.map((st, i) => {
+          const reached = onDay && st.at !== null && now >= st.at;
+          const Icon = st.icon;
+          return (
+            <li key={st.label} className="flex flex-col items-center text-center gap-1.5">
+              <motion.span initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.08 * i, type: "spring", stiffness: 300, damping: 18 }}
+                className={`w-10 h-10 rounded-full flex items-center justify-center border-2 ${reached ? "bg-gradient-to-br from-emerald-400 to-violet-500 text-white border-transparent shadow-lg shadow-violet-500/30" : "bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)]"}`}>
+                <Icon className="w-4 h-4" />
+              </motion.span>
+              <span className="text-xs sm:text-sm font-extrabold font-num text-[var(--text-primary)]">{st.at !== null ? new Date(st.at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) : fallback[i]}</span>
+              <span className="text-[10px] sm:text-xs text-[var(--text-muted)] leading-tight">{st.label}</span>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }

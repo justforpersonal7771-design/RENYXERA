@@ -968,3 +968,21 @@ html[data-motion="reduce"] *::after {
 [data-savebar="true"] :is(input, textarea, select, button, [role="combobox"]) {
   scroll-margin-bottom: 150px;
 }
+
+/* Full screen (native and the pinned fallback used where the API is missing, e.g. iPhone):
+   the element fills the screen with the app background and scrolls itself. */
+:fullscreen, .pseudo-fullscreen {
+  background: var(--background);
+  overflow-y: auto;
+  width: 100vw;
+  height: 100dvh;
+}
+.pseudo-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  max-width: none !important;
+  border-radius: 0 !important;
+}
+html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; }
+::backdrop { background: var(--background); }

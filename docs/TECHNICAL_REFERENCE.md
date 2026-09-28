@@ -242,6 +242,9 @@ what each object is for.
 | 0009 | `0009_all_india_mocks.sql` | Scheduled mocks, one-attempt-per-mock, leaderboard function |
 | 0010 | `0010_mock_timing_and_leaderboard_privacy.sql` | Late-start grace per mock; leaderboard display choice (anonymous / username / username + student ID) |
 | 0011 | `0011_gate_style_results.sql` | Private GATE category + PwD on profiles; `mock_my_result` (GATE qualifying marks, GATE score, category rank); tie-correct leaderboard percentile |
+| 0012 | `0012_gate_score_small_mocks.sql` | GATE score defined for small mocks (topper fallback) |
+| 0013 | `0013_mock_paper_embargo.sql` | Paper question ids hidden until start (`mock_paper()`, `question_count`) |
+| 0014 | `0014_leaderboards_with_movement.sql` | `practice_leaderboard` (weekly), `mock_leaderboard_moves` (with previous rank), `display_label` |
 
 **Procedure for schema changes:** add `supabase/migrations/NNNN_name.sql` (idempotent:
 `if not exists`, `drop … if exists` before `create`), run it in the Supabase SQL editor,

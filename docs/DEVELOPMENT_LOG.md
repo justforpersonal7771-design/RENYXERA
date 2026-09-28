@@ -78,6 +78,12 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Tested (dev server): answers locked for users and guests, practice-grading locked, submit stored + withheld, server score recorded, everything opens after release.
 - **Waiting:** user to run migration 0013, then push.
 
+### 28 Sep 2026 — Practice never locked, fullscreen everywhere, Leaderboard panel, Mocks redesign 🟡
+- **Bug (user):** an Exam Setup test showed "18 answers can't be scored — checking with the server". Cause: the answer lock from the mock work applied to anyone asking for questions that were also in the live test mock. **Fix (pushed at once):** only an All-India mock attempt's own result waits for its results time; every other test is graded immediately; `/api/answers` never locks. (Trade-off, accepted: mock papers are public past questions, so a determined mock-taker could look answers up elsewhere.)
+- **Fullscreen:** `lib/fullscreen.ts` — standard + webkit API, and a pinned "pseudo full screen" fallback where there's no API (iPhone Safari); one shared state/event. The exam now enlarges the whole exam screen (timer, grid, Save & next, Submit stay usable); viewers still enlarge just the question; themed background; tab-switch/fullscreen-exit tracking uses the shared event.
+- **Leaderboard (navbar, beside Focus Target):** animated trophy (glint on hover, wiggle + pulsing dot + one-time toast when new mock results are published). Panel with All-India Mock and weekly Practice boards; rows start in last period's order and slide into the new order, ▲/▼/New badges; your rank pinned on top. Migration 0014: `practice_leaderboard`, `mock_leaderboard_moves`, shared `display_label`.
+- **Mocks page redesign:** animated hero (live state or a rolling countdown), Leaderboard button, your mock stats, an exam-day timeline that fills on the day, date-badge upcoming cards, past mocks with score bars.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

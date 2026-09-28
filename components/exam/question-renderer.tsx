@@ -20,6 +20,9 @@ interface QuestionRendererProps {
   /** Rendered at the top of the scrolling question area (used for question details on
    *  phones, so the exam header can stay a single row). */
   topSlot?: React.ReactNode;
+  /** What the full-screen button enlarges. The exam passes its whole screen (timer, grid,
+   *  Save & next stay usable); viewers default to just the question. */
+  fullscreenTargetId?: string;
 }
 
 export const QuestionRenderer = memo(function QuestionRenderer({
@@ -31,6 +34,7 @@ export const QuestionRenderer = memo(function QuestionRenderer({
   isPrevDisabled,
   isNextDisabled,
   topSlot,
+  fullscreenTargetId = "exam-question-container",
 }: QuestionRendererProps) {
   const handleOptionSelect = useCallback((optionId: string) => {
     let newSelections = response?.selectedOptions
@@ -81,9 +85,9 @@ export const QuestionRenderer = memo(function QuestionRenderer({
     <div id="exam-question-container" className="flex flex-col h-full w-full bg-[var(--question-surface)] animate-in fade-in slide-in-from-bottom-2 duration-300 relative overflow-y-auto lg:overflow-visible custom-scrollbar">
 
       <div className="absolute top-4 right-4 z-50">
-        <FullscreenToggle targetId="exam-question-container" />
+        <FullscreenToggle targetId={fullscreenTargetId} />
       </div>
-      {onPrev && onNext && (
+      {onPrev && onNext && fullscreenTargetId === "exam-question-container" && (
         <FullscreenNavigation
           onPrev={onPrev}
           onNext={onNext}

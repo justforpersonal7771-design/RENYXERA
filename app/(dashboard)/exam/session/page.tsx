@@ -1,5 +1,6 @@
 "use client";
 
+import { FS_EVENT, isFullscreen, wireFullscreenEvents } from "@/lib/fullscreen";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -52,15 +53,16 @@ export default function ExamSessionPage() {
   const recordSignal = useExamRuntimeStore((state) => state.recordSignal);
   useEffect(() => {
     const onVis = () => { if (document.hidden) recordSignal("blur"); };
-    let wasFull = !!document.fullscreenElement;
+    wireFullscreenEvents();
+    let wasFull = isFullscreen();
     const onFs = () => {
-      const isFull = !!document.fullscreenElement;
+      const isFull = isFullscreen();
       if (wasFull && !isFull) recordSignal("fullscreen_exit");
       wasFull = isFull;
     };
     document.addEventListener("visibilitychange", onVis);
-    document.addEventListener("fullscreenchange", onFs);
-    return () => { document.removeEventListener("visibilitychange", onVis); document.removeEventListener("fullscreenchange", onFs); };
+    window.addEventListener(FS_EVENT, onFs);
+    return () => { document.removeEventListener("visibilitychange", onVis); window.removeEventListener(FS_EVENT, onFs); };
   }, [recordSignal]);
   const nextQuestion = useExamRuntimeStore((state) => state.nextQuestion);
   const previousQuestion = useExamRuntimeStore((state) => state.previousQuestion);
@@ -288,7 +290,7 @@ export default function ExamSessionPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-      <div className="flex flex-col h-dvh w-full overflow-hidden bg-[var(--background)] font-sans">
+      <div id="exam-root" className="flex flex-col h-dvh w-full overflow-hidden bg-[var(--background)] font-sans">
         
         {/* REDESIGNED COMMAND BAR — a compact always-visible row (logo, Q counter, timer,
             actions) that never wraps, plus a details row (type/marks/difficulty and
@@ -492,6 +494,7 @@ export default function ExamSessionPage() {
                             isPrevDisabled={currentQuestionIndex === 0}
                             isNextDisabled={currentQuestionIndex === totalQuestions - 1}
                             topSlot={<div className="md:hidden"><QuestionMetaChips q={currentQuestion as any} /></div>}
+                            fullscreenTargetId="exam-root"
                           />
                       ) : (
                         <div className="flex h-full items-center justify-center text-red-500 font-bold">
