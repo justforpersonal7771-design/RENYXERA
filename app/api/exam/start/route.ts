@@ -3,6 +3,7 @@ import { z } from "zod";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
+import { CHALLENGE_PREFIX, challengeQuestionIds, challengeWeekKey } from "@/lib/exam/weekly-challenge";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 
 export const runtime = "nodejs";
@@ -62,6 +63,16 @@ export async function POST(req: NextRequest) {
       // Everyone gets exactly the paper's time (180 min); the hard close only guards the edge.
       duration = Math.max(60, Math.min(mock.duration_seconds, Math.floor((Date.parse(mock.ends_at) - nowMs) / 1000)));
     } else {
+      // Weekly Challenge: only this week's exact 10 questions may carry its title (it has
+      // its own leaderboard), so a hand-picked easy test can't be passed off as it.
+      const title = parsed.data.title ?? "";
+      if (title.startsWith(CHALLENGE_PREFIX)) {
+        const key = title.slice(CHALLENGE_PREFIX.length);
+        if (key !== challengeWeekKey()) return NextResponse.json({ error: "This week's challenge has changed — open it again." }, { status: 400 });
+        const { data: all } = await db.from("questions").select("id").eq("branch_code", "CSE");
+        const want = new Set(challengeQuestionIds((all ?? []).map((q) => q.id as string), key));
+        if (ids.length !== want.size || ids.some((id) => !want.has(id))) return NextResponse.json({ error: "Question set doesn't match this week's challenge." }, { status: 400 });
+      }
       // Time limit from the official questions' marks (AI-generated ids aren't in the bank).
       const { data: qs } = await db.from("questions").select("id, marks").in("id", ids.filter((i) => /^GATE_/.test(i)));
       const markOf = new Map((qs ?? []).map((q) => [q.id, Number(q.marks) || 1]));

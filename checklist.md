@@ -95,7 +95,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Structured API logs + anomaly alerts | 🟨 *(route-level logging exists; no alerting)* |
 | Supabase idle-pause keep-alive (scheduled ping) | ✅ *(`keepalive.yml` → `/api/health` every 3 days)* |
 | Worker CPU budget: prerendered pages + static dataset served without the Worker (fixes Error 1102) | ✅ |
-| Database backups: scheduled `pg_dump` (GitHub Actions, free) kept as encrypted artifacts; restore tested | 🔶 *(workflow + restore steps ready; needs your two GitHub secrets, then a first run)* |
+| Database backups: scheduled `pg_dump` (GitHub Actions, free) kept as encrypted artifacts; restore tested | ✅ *(weekly + on demand; first run 28 Sep succeeded; restore steps in the runbook)* |
 | Developer diagnostics view (errors, failed AI calls, IndexedDB/dataset failures) without user PII | ⬜ *(4D; folds into the Admin Console, Release 10)* |
 | Performance pass: no hydration warnings or layout shift, code-split heavy AI/analytics modules, lazy images, long lists virtualised | 🟨 *(lazy images + dynamic imports in places; no measured budget yet — master prompt §12)* |
 | Accessibility pass: keyboard navigation, visible focus, contrast, reduced motion on every screen | 🟨 *(reduced-motion setting + focus rings ✅; no full keyboard/contrast audit — §13)* |
@@ -121,7 +121,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | GitHub Actions CI/CD (auto-deploy on push to `main`) | ✅ *(27 Sep: push to main → checks → deploy → live smoke test; every deploy since has gone through it)* |
 | R2 bucket provisioned; CDN base URL as a single env var | 🟡 **Backlog (paid)** — after income *(R2 card on file; the base-URL variable itself is free and can land with 8A)* |
 | DNS, Web Analytics and Turnstile in the same Cloudflare account | 🟨 *(Web Analytics + Turnstile ✅ in the Worker's account; DNS waits for a custom domain)* |
-| Rollback path documented and tested | 🟨 *(runbook: `wrangler rollback <version>` + fix-forward; deployment listing verified; a live rollback drill waits for your go-ahead)* |
+| Rollback path documented and tested | ✅ *(drill 28 Sep: `wrangler rollback` to the previous build and back, seconds each; runbook in TECHNICAL_REFERENCE)* |
 | Vercel decommissioned | 🔶 *(kept dormant by decision — 🔴#5)* |
 | Custom domain | 🟡 **Backlog (paid)** — after income |
 
@@ -284,7 +284,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Paginated/scoped delivery (no full-bank single request) | ⏸ *Deliberately deferred: the bank is public past GATE papers and must work offline as one file; the protected part — answer keys — is server-only, rate-limited and never in the bundle.* |
-| Per-account fetch-volume limits + anomaly alerts | ⬜ |
+| Per-account fetch-volume limits + anomaly alerts | ✅ *(800 answer keys / account / day, counted in Postgres; over the cap → refused till midnight IST and logged `answer_cap_reached` for review)* |
 | Full-bank offline download as a paid entitlement | ⬜ |
 | Hotlink protection on images | 🟡 **Backlog (paid)** — after income *(needs R2 or an own domain)* |
 | Invisible per-account watermarking | ⬜ |
@@ -294,8 +294,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Scheduled All-India mock tests; server-computed percentile/AIR | ✅ *(Sundays 10:00–13:00 IST, 30-min entry grace, exactly 180 min, results 13:45; same paper per person in a different order — GA first, then Maths + Core mixed; one attempt each)* |
-| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(navbar Leaderboard: All-India Mock + weekly Practice boards with animated rank movement and a results-published alert; display choice anonymous / username / username + student ID; subject/college/friends not built)* |
-| Streaks, weekly challenges, topic ladders | 🟨 *(streaks exist; challenges/ladders not built)* |
+| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(All-India Mock, weekly Practice, by subject, my college, Weekly Challenge ✅ — migration 0016; friends needs a friends feature → with 9C community)* |
+| Streaks, weekly challenges, topic ladders | 🟨 *(streaks ✅; Weekly Challenge ✅ — same 10 questions for everyone each week, server-verified set, own board; topic ladders not built)* |
 | Shareable result cards | ✅ *(28 Sep: mock scorecard + practice results → PNG card via share sheet / download; name follows the leaderboard display choice)* |
 
 ---

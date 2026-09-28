@@ -108,6 +108,13 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - `scripts/check-isolation.mjs`: two accounts on one browser — B sees nothing of A's (passes).
 - Rollback runbook (`wrangler rollback`), listing verified; live drill awaits the user's go-ahead.
 
+### 28 Sep 2026 — Backups live, rollback drilled, Release 5 leftovers 🟡
+- First backup run succeeded (21 s, encrypted artifact). **Rollback drill** (user OK'd): `wrangler rollback` to the previous build (live site served `fd502ce`, new health route gone) and back (`35cf9f4`, healthy) — seconds each.
+- **Leaderboards:** one `board()` function — Practice overall / by subject / my college, and a **Weekly Challenge** (10 past-GATE questions per IST week, same for everyone; the server rejects a challenge-titled test with any other set; only server-started attempts rank). Panel gets Mock · Practice · Challenge tabs with Overall / By subject / My college; Mocks page gets a Challenge card. Marks per question now stored (`exam_responses.awarded`).
+- **Per-account daily cap** on answer-key lookups (800/day, Postgres counter, logged when hit).
+- Verified: client and server compute the identical challenge set (975 = 975 ids).
+- **Waiting:** migration 0016 before pushing (the grader writes the new column).
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

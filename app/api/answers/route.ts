@@ -18,6 +18,8 @@ const bodySchema = z.object({
   question_ids: z.array(z.string().regex(/^[A-Za-z0-9_-]{1,120}$/)).min(1).max(100),
 });
 
+const DAILY_ANSWER_CAP = 800;
+
 const LIMITS = {
   user: { limit: 40, windowMs: 60_000 },
   guest: { limit: 12, windowMs: 60_000 },
@@ -50,7 +52,18 @@ export async function POST(req: NextRequest) {
   const ids = [...new Set(parsed.data.question_ids)].slice(0, userId ? 100 : 40);
 
   try {
-    const { data, error } = await createServiceRoleClient()
+    const db = createServiceRoleClient();
+    // Per-account daily cap (5D): far above real use (a paper is 65; keys already seen are
+    // cached on the device), low enough that scripting the whole key set is slow and
+    // visible. Over the cap: refused until tomorrow (IST) and logged for review.
+    if (userId) {
+      const { data: used, error: capErr } = await db.rpc("consume_answer_fetch", { p_user: userId, p_ids: ids.length, p_cap: DAILY_ANSWER_CAP });
+      if (!capErr && used === -1) {
+        console.warn(JSON.stringify({ event: "answer_cap_reached", user: userId, requested: ids.length, cap: DAILY_ANSWER_CAP }));
+        return NextResponse.json({ error: "Daily answer limit reached — it resets at midnight." }, { status: 429 });
+      }
+    }
+    const { data, error } = await db
       .from("question_answers")
       .select("question_id, correct_option_ids, nat_min, nat_max, nat_ranges")
       .in("question_id", ids);

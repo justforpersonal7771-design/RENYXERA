@@ -154,6 +154,7 @@ export async function POST(req: NextRequest) {
                   nat_value: src.nat_value ?? null,
                   time_spent_seconds: src.time_spent_seconds ?? null,
                   marked_for_review: !!src.marked_for_review,
+                  awarded: r.awarded,
                 };
               })
             );

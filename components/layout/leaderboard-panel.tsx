@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
+import { QuestionRepository } from "@/lib/repository/question-repository";
+import { challengeTitle } from "@/lib/exam/weekly-challenge";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, ChevronDown } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -10,7 +12,8 @@ import { useToastStore } from "@/store/use-toast-store";
 
 type Row = { rank: number; prev_rank: number | null; display_name: string; score: number; is_me: boolean; total: number; tests?: number; percentile?: number };
 type Mock = { id: string; title: string; results_at: string };
-type Tab = "practice" | "mock";
+type Tab = "practice" | "mock" | "challenge";
+type Scope = "all" | "subject" | "college";
 
 const SEEN_KEY = "renyxera_seen_results_at";
 const OPEN_EVENT = "renyxera:open-leaderboard";
@@ -148,6 +151,10 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
   const [mockId, setMockId] = useState<string | null>(mocks[0]?.id ?? null);
   const [rows, setRows] = useState<Row[] | null>(null);
   const [settled, setSettled] = useState(false);
+  const [scope, setScope] = useState<Scope>("all");
+  const subjects = useMemo(() => { try { return QuestionRepository.getAvailableSubjects(); } catch { return []; } }, []);
+  const [subject, setSubject] = useState<string>("");
+  useEffect(() => { if (!subject && subjects.length) setSubject(subjects[0]); }, [subjects, subject]);
 
   useEffect(() => {
     let cancelled = false;
@@ -155,16 +162,24 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
     (async () => {
       const { createClient } = await import("@/lib/supabase/client");
       const sb = createClient();
-      const { data } = tab === "practice"
-        ? await sb.rpc("practice_leaderboard", { p_days: 7, p_limit: 50 })
-        : mockId ? await sb.rpc("mock_leaderboard_moves", { p_mock: mockId, p_limit: 50 }) : { data: [] };
+      let data: unknown = [];
+      if (tab === "mock") {
+        data = mockId ? (await sb.rpc("mock_leaderboard_moves", { p_mock: mockId, p_limit: 50 })).data : [];
+      } else if (tab === "challenge") {
+        data = (await sb.rpc("board", { p_scope: "challenge", p_key: challengeTitle(), p_days: 7, p_limit: 50 })).data;
+      } else {
+        if (scope === "subject" && !subject) return;
+        const r = await sb.rpc("board", { p_scope: scope, p_key: scope === "subject" ? subject : null, p_days: 7, p_limit: 50 });
+        // Before migration 0016 only the overall board exists.
+        data = r.error && scope === "all" ? (await sb.rpc("practice_leaderboard", { p_days: 7, p_limit: 50 })).data : r.data;
+      }
       if (cancelled) return;
       setRows(((data as Row[]) ?? []).map((r) => ({ ...r, rank: Number(r.rank), prev_rank: r.prev_rank === null ? null : Number(r.prev_rank), total: Number(r.total) })));
       // Show last period's order first, then let everyone slide to where they are now.
       setTimeout(() => { if (!cancelled) setSettled(true); }, 650);
     })();
     return () => { cancelled = true; };
-  }, [tab, mockId]);
+  }, [tab, mockId, scope, subject]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -199,16 +214,16 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
               </motion.span>
               <div>
                 <h2 className="text-lg font-extrabold leading-tight">Leaderboard</h2>
-                <p className="text-xs text-white/80">{tab === "practice" ? "Marks scored in practice · last 7 days" : mock ? mock.title : "All-India Mock"}</p>
+                <p className="text-xs text-white/80">{tab === "practice" ? (scope === "subject" ? `${subject} · marks this week` : scope === "college" ? "Your college · marks this week" : "Marks scored in practice · last 7 days") : tab === "challenge" ? `${challengeTitle()} · best score` : mock ? mock.title : "All-India Mock"}</p>
               </div>
             </div>
             <button onClick={onClose} aria-label="Close leaderboard" className="p-1.5 rounded-lg hover:bg-white/15 cursor-pointer"><X className="w-4 h-4" /></button>
           </div>
-          <div role="tablist" className="relative mt-4 grid grid-cols-2 gap-1 p-1 rounded-xl bg-white/15">
-            {(["mock", "practice"] as Tab[]).map((t) => (
+          <div role="tablist" className="relative mt-4 grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/15">
+            {(["mock", "practice", "challenge"] as Tab[]).map((t) => (
               <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className="relative py-1.5 text-xs font-bold rounded-lg cursor-pointer">
                 {tab === t && <motion.span layoutId="lb-tab" className="absolute inset-0 rounded-lg bg-white shadow" transition={{ type: "spring", stiffness: 500, damping: 36 }} />}
-                <span className={`relative ${tab === t ? "text-violet-700" : "text-white"}`}>{t === "mock" ? "All-India Mock" : "Practice (week)"}</span>
+                <span className={`relative ${tab === t ? "text-violet-700" : "text-white"}`}>{t === "mock" ? "All-India Mock" : t === "practice" ? "Practice" : "Challenge"}</span>
               </button>
             ))}
           </div>
@@ -219,6 +234,27 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
             </motion.div>
           )}
         </div>
+
+        {tab === "practice" && (
+          <div className="px-4 pt-3 space-y-2">
+            <div className="grid grid-cols-3 gap-1 p-1 rounded-xl bg-[var(--surface-secondary)]">
+              {(["all", "subject", "college"] as Scope[]).map((sc) => (
+                <button key={sc} onClick={() => setScope(sc)} className={`py-1.5 rounded-lg text-xs font-bold cursor-pointer ${scope === sc ? "bg-[var(--surface)] shadow text-[var(--text-primary)]" : "text-[var(--text-muted)]"}`}>
+                  {sc === "all" ? "Overall" : sc === "subject" ? "By subject" : "My college"}
+                </button>
+              ))}
+            </div>
+            {scope === "subject" && subjects.length > 0 && (
+              <label className="relative block">
+                <span className="sr-only">Subject</span>
+                <select value={subject} onChange={(e) => setSubject(e.target.value)} className="w-full appearance-none rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-3 py-2 pr-8 text-sm font-semibold text-[var(--text-primary)] cursor-pointer">
+                  {subjects.map((sb) => <option key={sb} value={sb}>{sb}</option>)}
+                </select>
+                <ChevronDown className="pointer-events-none absolute right-2.5 top-2.5 w-4 h-4 text-[var(--text-muted)]" />
+              </label>
+            )}
+          </div>
+        )}
 
         {tab === "mock" && mocks.length > 1 && (
           <div className="px-4 pt-3">
@@ -237,7 +273,10 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
             <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-violet-500" /></div>
           ) : rows.length === 0 ? (
             <p className="py-10 text-center text-sm text-[var(--text-muted)]">
-              {tab === "mock" ? (mocks.length ? "No ranked attempts in this mock." : "Mock ranks appear here when the first results are published.") : signedIn ? "No practice scored this week yet — take a test to get on the board." : "Sign in and take a test to join the board."}
+              {tab === "mock" ? (mocks.length ? "No ranked attempts in this mock." : "Mock ranks appear here when the first results are published.")
+                : tab === "challenge" ? <>Nobody has taken this week&apos;s challenge yet. <Link href="/mocks#challenge" onClick={onClose} className="font-semibold text-violet-600 dark:text-violet-400">Take it</Link></>
+                : scope === "college" ? "Add your college in Profile → Personal info to see classmates here."
+                : signedIn ? "No practice scored this week yet — take a test to get on the board." : "Sign in and take a test to join the board."}
             </p>
           ) : (
             <LayoutGroup>

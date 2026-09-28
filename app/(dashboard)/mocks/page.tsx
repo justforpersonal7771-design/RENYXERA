@@ -4,8 +4,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
-import { Trophy, Clock, CalendarDays, Play, Loader2, ShieldCheck, CheckCircle2, BarChart3, Radio, Lock, DoorOpen, DoorClosed, Send, Medal, Target, TrendingUp, Timer } from "lucide-react";
+import { Trophy, Clock, CalendarDays, Play, Loader2, ShieldCheck, CheckCircle2, BarChart3, Radio, Lock, DoorOpen, DoorClosed, Send, Medal, Target, TrendingUp, Timer, Zap } from "lucide-react";
 import { openLeaderboard } from "@/components/layout/leaderboard-panel";
+import { challengeQuestionIds, challengeTitle } from "@/lib/exam/weekly-challenge";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useDataStore } from "@/store/use-data-store";
@@ -121,6 +122,23 @@ export default function MocksPage() {
     }
   };
 
+  const startChallenge = async () => {
+    if (!repoReady) return toast("Questions are still loading — try again in a moment.", "info");
+    setStarting("challenge");
+    try {
+      const ids = challengeQuestionIds(QuestionRepository.getAllQuestions().map((q) => q.question_id));
+      await startSession({
+        id: crypto.randomUUID(),
+        config: { examType: "CUSTOM_TEST", title: challengeTitle() },
+        questions: ids.map((questionId, i) => ({ questionId, sequence: i + 1 })),
+        createdAt: new Date().toISOString(),
+      } as Parameters<typeof startSession>[0]);
+      router.push("/exam/session");
+    } finally {
+      setStarting(null);
+    }
+  };
+
   if (mocks === null) return <div className="flex items-center justify-center py-24"><Loader2 className="w-6 h-6 animate-spin text-violet-500" /></div>;
 
   const next = upcoming[0] ?? null;
@@ -219,6 +237,25 @@ export default function MocksPage() {
           ))}
         </section>
       )}
+
+      {/* Weekly Challenge: same 10 questions for everyone this week, own leaderboard */}
+      <motion.section id="challenge" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden card-glass rounded-3xl p-5 sm:p-6 border-2 border-amber-500/30">
+        <div aria-hidden="true" className="absolute -top-12 -right-10 w-44 h-44 rounded-full bg-amber-400/15 blur-3xl" />
+        <div className="relative flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="flex-1 min-w-0">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-[11px] font-black uppercase tracking-wider"><Zap className="w-3.5 h-3.5" /> Weekly Challenge</span>
+            <h2 className="mt-2 text-lg font-extrabold text-[var(--text-primary)]">{challengeTitle()}</h2>
+            <p className="text-sm text-[var(--text-secondary)]">10 past-GATE questions, the same for everyone this week (Mon–Sun). Your best score counts{user ? "" : " — sign in to be ranked"}.</p>
+          </div>
+          <div className="flex gap-2 shrink-0">
+            <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={startChallenge} disabled={!!starting}
+              className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold shadow-lg shadow-amber-500/30 disabled:opacity-60 cursor-pointer">
+              {starting === "challenge" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />} Take the challenge
+            </motion.button>
+            <button onClick={() => openLeaderboard()} className="inline-flex items-center justify-center gap-1.5 h-11 px-4 rounded-xl border border-[var(--border)] text-sm font-bold text-[var(--text-primary)] cursor-pointer"><Medal className="w-4 h-4 text-amber-500" /> Ranks</button>
+          </div>
+        </div>
+      </motion.section>
 
       {/* Exam day, like the real GATE */}
       <section className="card-glass rounded-3xl p-5 sm:p-6">
