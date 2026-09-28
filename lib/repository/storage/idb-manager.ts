@@ -26,6 +26,9 @@ import {
 import { CustomTestTemplate } from "@/types/exam.types";
 
 export class IDBManager {
+  /** Cloud sync hook (4I): told about every bookmark / mistake / finished-test write. */
+  public static onChange: ((kind: "bookmark" | "mistake" | "session", key: string, data: unknown | null) => void) | null = null;
+
   private static dbPromise: Promise<IDBPDatabase<GatePrepDB>> | null = null;
 
   // Namespacing prep for per-user data isolation (master plan Module 4F-1, FINDING-4).
@@ -222,6 +225,7 @@ export class IDBManager {
     try {
       const db = await this.initializeDatabase();
       await db.put(STORE_EXAM_SESSIONS, session);
+      this.onChange?.("session", String(session.id), session);
     } catch {
       // Ignored
     }
@@ -242,6 +246,7 @@ export class IDBManager {
     try {
       const db = await this.initializeDatabase();
       await db.delete(STORE_EXAM_SESSIONS, id);
+      if (id !== "active_session") this.onChange?.("session", id, null);
     } catch {
       // Ignored
     }
@@ -305,6 +310,7 @@ export class IDBManager {
     try {
       const db = await this.initializeDatabase();
       await db.put(STORE_MISTAKES, mistake);
+      this.onChange?.("mistake", mistake.questionId, mistake);
     } catch {
       // Ignored
     }
@@ -314,6 +320,7 @@ export class IDBManager {
     try {
       const db = await this.initializeDatabase();
       await db.delete(STORE_MISTAKES, questionId);
+      this.onChange?.("mistake", questionId, null);
     } catch (e) {
       // Ignored
     }
@@ -332,6 +339,7 @@ export class IDBManager {
     try {
       const db = await this.initializeDatabase();
       await db.put(STORE_BOOKMARKS, bookmark);
+      this.onChange?.("bookmark", bookmark.questionId, bookmark);
     } catch {
       // Ignored
     }
@@ -341,6 +349,7 @@ export class IDBManager {
     try {
       const db = await this.initializeDatabase();
       await db.delete(STORE_BOOKMARKS, questionId);
+      this.onChange?.("bookmark", questionId, null);
     } catch (e) {
       // Ignored
     }

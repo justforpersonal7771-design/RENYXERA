@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { challengeTitle } from "@/lib/exam/weekly-challenge";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
-import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, ChevronDown } from "lucide-react";
+import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, ChevronDown, Lock } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 
@@ -269,7 +269,13 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
         )}
 
         <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar px-3 py-3">
-          {rows === null ? (
+          {!signedIn && tab === "practice" && scope !== "all" ? (
+            <div className="py-10 text-center">
+              <Lock className="w-7 h-7 mx-auto text-violet-400" />
+              <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">Sign in to see {scope === "subject" ? "subject" : "college"} boards</p>
+              <p className="text-xs text-[var(--text-muted)]">They rank you among students in the same subject or college.</p>
+            </div>
+          ) : rows === null ? (
             <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin text-violet-500" /></div>
           ) : rows.length === 0 ? (
             <p className="py-10 text-center text-sm text-[var(--text-muted)]">

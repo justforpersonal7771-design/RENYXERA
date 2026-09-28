@@ -3,7 +3,8 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { HardDrive, Download, Trash2, RotateCcw, Loader2, Database, WifiOff, ArrowRight } from "lucide-react";
+import { HardDrive, Download, Trash2, RotateCcw, Loader2, Database, WifiOff, ArrowRight, RefreshCw } from "lucide-react";
+import { syncNow, useSyncStatus, type SyncState } from "@/lib/sync/sync-engine";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
@@ -74,10 +75,12 @@ export function DataStorageCard() {
           </div>
           <div className="rounded-2xl bg-[var(--surface-secondary)]/50 p-4">
             <p className="flex items-center gap-2 text-xs font-bold text-[var(--text-secondary)]"><Database className="w-4 h-4 text-emerald-500" /> Where your data lives</p>
-            <p className="mt-2 text-[12px] leading-relaxed text-[var(--text-secondary)]">Account, goals and graded tests are saved to your account. History, bookmarks and mistakes are kept on this device and work offline.</p>
+            <p className="mt-2 text-[12px] leading-relaxed text-[var(--text-secondary)]">{user ? "Everything works offline on this device, and your bookmarks, mistakes and finished tests sync to your account so they follow you to other devices." : "As a guest, everything stays on this device only. Sign in to keep it safe and use it on other devices."}</p>
           </div>
         </div>
       </motion.div>
+
+      {user && <SyncPanel />}
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="card-glass rounded-3xl p-6 space-y-3">
         <div className="flex items-center gap-3 rounded-2xl border border-[var(--border)] p-4">
@@ -102,5 +105,39 @@ export function DataStorageCard() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+const SYNC_TEXT: Record<SyncState, { label: string; tone: string }> = {
+  off: { label: "Off", tone: "bg-slate-500/15 text-slate-600 dark:text-slate-300" },
+  idle: { label: "Starting…", tone: "bg-slate-500/15 text-slate-600 dark:text-slate-300" },
+  pending: { label: "Changes waiting", tone: "bg-amber-500/15 text-amber-700 dark:text-amber-300" },
+  syncing: { label: "Syncing…", tone: "bg-sky-500/15 text-sky-700 dark:text-sky-300" },
+  synced: { label: "Up to date", tone: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" },
+  offline: { label: "Offline — will sync when you're back", tone: "bg-slate-500/15 text-slate-600 dark:text-slate-300" },
+  failed: { label: "Couldn't sync — retrying", tone: "bg-rose-500/15 text-rose-700 dark:text-rose-300" },
+};
+
+/** 4I: cloud sync status for this account + "Sync now". */
+function SyncPanel() {
+  const { state, pending, lastSynced } = useSyncStatus();
+  const t = SYNC_TEXT[state];
+  return (
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 }} className="card-glass rounded-3xl p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <span className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0">
+            <RefreshCw className={`w-5 h-5 ${state === "syncing" ? "animate-spin" : ""}`} />
+          </span>
+          <div className="min-w-0">
+            <p className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2 flex-wrap">Cloud sync <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold ${t.tone}`}>{t.label}</span></p>
+            <p className="text-xs text-[var(--text-muted)]">{pending ? `${pending} change${pending > 1 ? "s" : ""} waiting to upload · ` : ""}{lastSynced ? `Last synced ${new Date(lastSynced).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}` : "Not synced yet on this device"}</p>
+          </div>
+        </div>
+        <button onClick={() => void syncNow()} disabled={state === "syncing"} className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] text-sm font-bold text-[var(--text-primary)] hover:border-sky-500/50 disabled:opacity-60 cursor-pointer">
+          <RefreshCw className="w-4 h-4" /> Sync now
+        </button>
+      </div>
+    </motion.div>
   );
 }

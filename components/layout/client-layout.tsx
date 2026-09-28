@@ -49,6 +49,20 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  // 4I: after a sync pulled other devices' changes, refresh what's on screen.
+  useEffect(() => {
+    const onSynced = async () => {
+      try {
+        const { useStudyStore } = await import("@/store/use-study-store");
+        await useStudyStore.getState().loadStudyData?.();
+        const { useAnalyticsStore } = await import("@/store/use-analytics-store");
+        useAnalyticsStore.getState().invalidate();
+      } catch { /* non-fatal */ }
+    };
+    window.addEventListener("renyxera:synced", onSynced);
+    return () => window.removeEventListener("renyxera:synced", onSynced);
+  }, []);
+
   // Step 9: error monitoring (no-op unless NEXT_PUBLIC_SENTRY_DSN is set).
   useEffect(() => {
     void import("@/lib/monitoring").then(({ initMonitoring, setMonitoringUser }) => {

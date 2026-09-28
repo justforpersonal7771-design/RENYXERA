@@ -115,6 +115,9 @@ export function AuthListener() {
 
         await IDBManager.setActiveNamespace(userId);
         resetAllStores();
+        // 4I: mirror this account's bookmarks / mistakes / finished tests across devices.
+        const { startSync, stopSync } = await import("@/lib/sync/sync-engine");
+        if (userId) void startSync(userId); else stopSync();
 
         if (isRealChange && !isFirstResolve) {
           // Signing out lands on the dashboard (not a reload of e.g. /profile,

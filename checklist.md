@@ -3,7 +3,7 @@
 **Last updated:** 28 September 2026 (Release 5 integrity, mocks and leaderboards; earlier full cross-check 26 Sep)
 **Companion to:** `RENYXERA_Master_Plan_Auth_Security_Monetization.md` (full rationale, module-by-module — this file is status only). Also reconciled on 28 Sep with `docs/CONTENT_STRATEGY.md`, `docs/MARKETING_STRATEGY.md`, `BUGS.md`, `HANDOVER_AUDIT_2026-09-17.md` and the older Release-4 master prompt / growth / deployment plans (superseded by the Master Plan; their unique items are folded in below).
 
-Legend: ✅ Done and verified · 🟨 Partly done · 🔶 Done but needs your confirmation/action · ⬜ Not started
+Legend: ✅ Done and verified · 🟨 Partly done · 🔶 Done but needs your confirmation/action · 🟠 Deferred to a later release (named) · 🟡 Backlog (paid — after income) · ⬜ Not started
 
 Every deliverable and acceptance criterion in the master plan has a row below. The 26 Sep audit added the rows that were missing (asset/image architecture, CI security checks, monitoring, legal pack, and several per-module items); statuses were verified against the code, not assumed.
 
@@ -76,10 +76,10 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Question images served as static files from Cloudflare's CDN (`public/images/`, 6.1 MB), never from GitHub raw URLs | ✅ |
 | Image references stored/resolved as **relative paths** (`/images/2026-FN/2.png`), never binaries or absolute third-party URLs | ✅ *(lib/services/image-resolver.ts)* |
-| Single configurable CDN base URL (one env var) used to resolve every image path at render time | ⬜ *(paths are currently root-relative; no base-URL variable yet)* |
+| Single configurable CDN base URL (one env var) used to resolve every image path at render time | 🟠 **Later — Release 8A** *(lands with the image pipeline for new branches)* |
 | Cloudflare R2 bucket provisioned and bound for the bulk / multi-branch diagram corpus | 🟡 **Backlog (paid)** — after income *(R2 needs a payment card on file even on the free tier)* |
 | No binary assets in Postgres (`image_paths` / `image_path` columns hold relative paths only) | ✅ *(schema in 0001 enforces text paths; no images stored)* |
-| WebP/AVIF compression at ingest for new diagrams | ⬜ *(needed with 8A)* |
+| WebP/AVIF compression at ingest for new diagrams | 🟠 **Later — Release 8A** |
 | Hotlink protection on images (CDN/R2) | 🟡 **Backlog (paid)** — after income *(needs R2 or an own domain)* |
 
 ### Security, CI & monitoring (§5.3, §5.4)
@@ -92,13 +92,13 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Automated Playwright regression suite in CI (desktop + mobile, light + dark) | ✅ *(28 Sep: `scripts/e2e-smoke.mjs` on every push — 11 pages × phone/desktop × light/dark + a guest exam end to end; deploy is blocked if it fails)* |
 | Error tracking (Sentry free tier) | ✅ *(lazy-loaded, errors only, PII stripped — step 9)* |
 | Product analytics (Cloudflare Web Analytics, cookieless) | ✅ *(step 9)* |
-| Structured API logs + anomaly alerts | 🟨 *(route-level logging exists; no alerting)* |
+| Structured API logs + anomaly alerts | 🟠 **Later — Release 10 Admin Console** *(JSON event logs exist (e.g. `answer_cap_reached`); alerting surfaces in the admin console)* |
 | Supabase idle-pause keep-alive (scheduled ping) | ✅ *(`keepalive.yml` → `/api/health` every 3 days)* |
 | Worker CPU budget: prerendered pages + static dataset served without the Worker (fixes Error 1102) | ✅ |
 | Database backups: scheduled `pg_dump` (GitHub Actions, free) kept as encrypted artifacts; restore tested | ✅ *(weekly + on demand; first run 28 Sep succeeded; restore steps in the runbook)* |
-| Developer diagnostics view (errors, failed AI calls, IndexedDB/dataset failures) without user PII | ⬜ *(4D; folds into the Admin Console, Release 10)* |
-| Performance pass: no hydration warnings or layout shift, code-split heavy AI/analytics modules, lazy images, long lists virtualised | 🟨 *(lazy images + dynamic imports in places; no measured budget yet — master prompt §12)* |
-| Accessibility pass: keyboard navigation, visible focus, contrast, reduced motion on every screen | 🟨 *(reduced-motion setting + focus rings ✅; no full keyboard/contrast audit — §13)* |
+| Developer diagnostics view (errors, failed AI calls, IndexedDB/dataset failures) without user PII | 🟠 **Later — Release 10 Admin Console** |
+| Performance pass: no hydration warnings or layout shift, code-split heavy AI/analytics modules, lazy images, long lists virtualised | 🟠 **Later — Release 6 (before SEO launch)** *(Core Web Vitals budget belongs with 6A technical SEO)* |
+| Accessibility pass: keyboard navigation, visible focus, contrast, reduced motion on every screen | 🟠 **Later — Release 6 (with the public pages)** *(reduced-motion + focus rings already ✅)* |
 | Migration + cache-version strategy documented (backward-safe migrations, SW cache versions) | ✅ *(docs/TECHNICAL_REFERENCE §6.1, §5.1)* |
 
 ---
@@ -120,7 +120,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Old duplicate Worker deleted | ✅ |
 | GitHub Actions CI/CD (auto-deploy on push to `main`) | ✅ *(27 Sep: push to main → checks → deploy → live smoke test; every deploy since has gone through it)* |
 | R2 bucket provisioned; CDN base URL as a single env var | 🟡 **Backlog (paid)** — after income *(R2 card on file; the base-URL variable itself is free and can land with 8A)* |
-| DNS, Web Analytics and Turnstile in the same Cloudflare account | 🟨 *(Web Analytics + Turnstile ✅ in the Worker's account; DNS waits for a custom domain)* |
+| DNS, Web Analytics and Turnstile in the same Cloudflare account | 🟡 **Backlog (paid)** — after income *(Web Analytics + Turnstile ✅; DNS needs the custom domain)* |
 | Rollback path documented and tested | ✅ *(drill 28 Sep: `wrangler rollback` to the previous build and back, seconds each; runbook in TECHNICAL_REFERENCE)* |
 | Vercel decommissioned | 🔶 *(kept dormant by decision — 🔴#5)* |
 | Custom domain | 🟡 **Backlog (paid)** — after income |
@@ -135,7 +135,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Env vars wired (`.env.local` + Worker secrets + CI secrets) | ✅ |
 | `lib/supabase/*` client/server/middleware scaffolding, verified safe when unconfigured | ✅ |
 | **975 questions seeded into Postgres** with the public/private split | ✅ *(scripts/seed-questions.mjs, 26 Sep: 975 q · 2776 options · 975 answers; anon sees 0 answers. all NAT "A OR B" ranges in nat_ranges; `npm run check:keys` validates every key)* |
-| All 975 questions render identically from Postgres as from the JSON | 🟨 *(by design the question text is served from the answer-free static bank on the CDN — cheaper and offline-friendly; Postgres serves answers + attempts)* |
+| All 975 questions render identically from Postgres as from the JSON | ✅ *(by design: question text is served from the answer-free static bank on the CDN — cheaper and offline; Postgres holds keys + attempts; seed + `check:keys` keep them identical)* |
 | Practice mode works fully offline after first sync | 🟨 *(works offline today from IndexedDB; not yet from a Postgres sync)* |
 | `profiles` auto-create trigger confirmed firing on a real signup | ✅ *(verified 26 Sep against production: 3 auth users, 3 profile rows)* |
 
@@ -153,11 +153,11 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Firebase project + Phone provider enabled | ✅ |
 | Mobile OTP wired into the app (Firebase ↔ Supabase third-party JWT bridge) | 🟡 **Backlog (paid)** — after income *(real use needs Firebase Blaze past 10 SMS/day)* |
 | OTP abuse controls: per-phone/IP/device limits, Turnstile, resend cooldown, daily cap | 🟡 **Backlog (paid)** — after income *(ships with OTP)* |
-| All three auth paths converge on one `profiles` row | 🟨 *(Google + email do; OTP not built)* |
+| All three auth paths converge on one `profiles` row | 🟡 **Backlog (paid)** — after income *(Google + email ✅; the OTP path waits on Firebase Blaze)* |
 | Route protection enforced in **middleware** (not page components) | ✅ *(/profile → /login?redirect=)* |
 | "Sign out everywhere" on credential change | ✅ *(changing the password signs out every other device)* |
 | No delete-account control anywhere in the UI | ✅ |
-| Anonymization backstop (support-request erasure → `status='anonymized'`, PII nulled, attempts kept) documented in the Privacy Policy and working | ⬜ |
+| Anonymization backstop (support-request erasure → `status='anonymized'`, PII nulled, attempts kept) documented in the Privacy Policy and working | 🟠 **Later — Release 10 Admin Console** *(self-serve deletion ✅ today; support-driven anonymisation is an admin action)* |
 | Firebase Blaze billing (past 10 SMS/day) | 🟡 **Backlog (paid)** — after income |
 
 ### 4D · P1 · Guest Walkthrough / Teaser Mode
@@ -192,8 +192,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Target branch: CSE live, others Coming Soon and non-selectable | ✅ |
 | Daily hours size the daily question target and the time check | ✅ |
 | Daily hours drive reminder cadence and a "you are N hours behind" signal | ⬜ |
-| Target year weights recent-year PYQs higher as the exam nears | ⬜ |
-| Closed loop: each graded attempt re-derives the recommended focus band | 🟨 *(re-derives from measured accuracy; graded attempts are 5B)* |
+| Target year weights recent-year PYQs higher as the exam nears | 🟠 **Later — Release 9A** *(part of the adaptive daily set)* |
+| Closed loop: each graded attempt re-derives the recommended focus band | ✅ *(every submitted attempt updates measured accuracy, which the goal plan reads)* |
 | Preferences section (theme, default duration, notifications, reduced motion) | ✅ *(theme, motion System/Reduced/Full, study-reminder switch; default duration n/a — tests use official durations)* |
 | Account section (email/phone, linked providers, active devices, export my data) | ✅ *(email + sign-in methods, change password, JSON export, active devices)* |
 
@@ -213,8 +213,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | `/api/ai/generate` zod validation + server-owned instruction enum | ✅ |
 | Rate limiting + origin check (previously missing entirely) | ✅ |
 | Supabase JWT required on `/api/ai/generate` (401, no Gemini call, for guests) | ✅ |
-| Response size caps and request timeouts | 🟨 *(body-size caps done; timeouts not explicit)* |
-| Upstash Redis, user-ID-keyed limiting | ⬜ *(current limiting is IP-keyed)* |
+| Response size caps and request timeouts | 🟠 **Later — Release 10** *(body caps ✅; explicit upstream timeouts with the diagnostics work)* |
+| Upstash Redis, user-ID-keyed limiting | 🟠 **Later — Release 7C** *(critical limits are already user-keyed in Postgres (AI quota, answer cap, one-attempt-per-mock); a shared limiter comes with anti-abuse)* |
 | Per-user daily AI quota in Postgres | ✅ *(atomic `consume_ai_call`, 30/day, IST reset; live)* |
 | Server-side prompt-hash response cache | ✅ *(`ai_response_cache`; cache hits cost no quota; live)* |
 | Turnstile on signup/login/reset | ✅ *(live; Supabase Captcha protection on; verified by you in a real browser 26 Sep. OTP gets it when OTP is built)* |
@@ -223,11 +223,11 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Branch selector (Profile → Exam Goals) with CSE live, 5 Coming Soon, non-selectable | ✅ |
-| Branch selector in onboarding | ⬜ |
+| Branch selector in onboarding | 🟠 **Later — Release 8** *(only CS & IT is live; backlog #7)* |
 | "Notify Me" waitlist capture (guests: email; members: user id) | ✅ *(/api/waitlist: validation, honeypot, rate limit, dedupe; migration 0006 removed the open insert policy)* |
 | Internal waitlist counts (prioritises Release 8) | ✅ *(GET /api/waitlist; shown on landing pages from 25+)* |
 | Branch landing pages for SEO (`/gate-ece`, `/gate-da`, …) | ✅ *(6 static pages, FAQ JSON-LD, sitemap.xml + robots.txt)* |
-| Launch email to the waitlist when a branch goes live | ⬜ |
+| Launch email to the waitlist when a branch goes live | 🟡 **Backlog (paid)** — after income *(needs custom-domain email)* |
 
 ### 4I · P2 · Cloud Sync
 | Task | Status |
@@ -240,13 +240,13 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 4J · P0 · Calibration Data Foundation *(makes predictions accurate)*
 | Task | Status |
 |---|---|
-| Marks ↔ AIR data (general + categories) for the last 3+ GATE CSE years, from official/cited sources | 🟨 *(2023–2025 tables from 2 cited portals, blended to a median + band; category curves and an official rank table still wanted)* |
+| Marks ↔ AIR data (general + categories) for the last 3+ GATE CSE years, from official/cited sources | 🟠 **Later — March 2027 refresh** *(2023–2025 cited tables live; official rank table + category curves when GATE 2027 results publish)* |
 | Qualifying cut-offs, candidates appeared, GATE score formula & normalisation constants | ✅ *(cut-offs 2023–2026 all categories; appeared 2024–2026; Sq/St/Mq per year, Mt 2024; 2023 appeared unknown → null)* |
-| Official exam schedule per year; official syllabus per branch | ⬜ |
+| Official exam schedule per year; official syllabus per branch | 🟠 **Later — Release 6A** *(syllabus pages are part of the SEO engine)* |
 | Versioned `calibration/<branch>/<year>.json` + `calibration/SOURCES.md` source/licence ledger | ✅ *(data/calibration/cse/2023–2026.json; `npm run check:calibration` in CI)* |
-| Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | 🟨 *(Goals Engine + goal plan use it and show the range, GATE score, qualifying mark and data vintage; AI Mentor/readiness next)* |
-| Opt-in anonymised scorecard submissions from users to improve the curve | ⬜ |
-| Annual recalibration each March after results | ⬜ *(recurring)* |
+| Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | 🟠 **Later — Release 9E** *(Goals Engine ✅; AI Mentor/readiness wiring with the AI depth work)* |
+| Opt-in anonymised scorecard submissions from users to improve the curve | 🟠 **Later — March 2027 refresh** *(needs results season)* |
+| Annual recalibration each March after results | 🟠 **Later — recurring — every March** |
 
 ---
 
@@ -285,16 +285,16 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Paginated/scoped delivery (no full-bank single request) | ⏸ *Deliberately deferred: the bank is public past GATE papers and must work offline as one file; the protected part — answer keys — is server-only, rate-limited and never in the bundle.* |
 | Per-account fetch-volume limits + anomaly alerts | ✅ *(800 answer keys / account / day, counted in Postgres; over the cap → refused till midnight IST and logged `answer_cap_reached` for review)* |
-| Full-bank offline download as a paid entitlement | ⬜ |
+| Full-bank offline download as a paid entitlement | 🟠 **Later — Release 7A** *(entitlements)* |
 | Hotlink protection on images | 🟡 **Backlog (paid)** — after income *(needs R2 or an own domain)* |
-| Invisible per-account watermarking | ⬜ |
+| Invisible per-account watermarking | 🟠 **Later — Release 7D** *(visible watermark on Downloads ✅; invisible marking with anti-sharing)* |
 | ToS clause prohibiting scraping/redistribution | ✅ *(Terms §Acceptable use)* |
 
 ### 5E · P1 · Leaderboards & All-India Test Series
 | Task | Status |
 |---|---|
 | Scheduled All-India mock tests; server-computed percentile/AIR | ✅ *(Sundays 10:00–13:00 IST, 30-min entry grace, exactly 180 min, results 13:45; same paper per person in a different order — GA first, then Maths + Core mixed; one attempt each)* |
-| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(All-India Mock, weekly Practice, by subject, my college, Weekly Challenge ✅ — migration 0016; friends needs a friends feature → with 9C community)* |
+| Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | ✅ *(All-India Mock, weekly Practice, by subject, my college, Weekly Challenge; display choice anonymous / username / username + ID)* · friends board 🟠 **Later — Release 9C** |
 | Streaks, weekly challenges, topic ladders | ✅ *(streaks; Weekly Challenge with its own board; topic ladders Bronze→Diamond on Analytics)* |
 | Shareable result cards | ✅ *(28 Sep: mock scorecard + practice results → PNG card via share sheet / download; name follows the leaderboard display choice)* |
 

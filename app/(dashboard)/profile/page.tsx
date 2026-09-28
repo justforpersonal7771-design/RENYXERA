@@ -515,7 +515,7 @@ export default function ProfilePage() {
               </Card>
             </div>
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 }} className="2xl:col-span-2">
-              <GoalPlan targetRank={Number(f.targetRank) > 0 ? Number(f.targetRank) : null} targetYear={Number(f.targetYear) || upcomingYear} dailyHours={Number(f.dailyHours) || 0} />
+              <GoalPlan targetRank={Number(f.targetRank) > 0 ? Number(f.targetRank) : null} targetYear={Number(f.targetYear) || upcomingYear} dailyHours={Number(f.dailyHours) || 0} studyDays={f.studyDays} />
             </motion.div>
           </div>
         );

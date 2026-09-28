@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Compass, CheckCircle2, AlertTriangle, Target, Clock, ListChecks, Crosshair, Sparkles } from "lucide-react";
 import { useGoalPlan } from "@/lib/goals/use-goal-plan";
@@ -15,7 +15,7 @@ import { CALIBRATION_LABEL, gateScore, marksBandForRank, qualifyingMarks } from 
  * Focus Target % is a recommendation with a manual override — applying it is one click,
  * and the Focus Target panel still lets them change it.
  */
-export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: number | null; targetYear: number; dailyHours: number }) {
+export function GoalPlan({ targetRank, targetYear, dailyHours, studyDays = 6 }: { targetRank: number | null; targetYear: number; dailyHours: number; studyDays?: number }) {
   const { plan } = useGoalPlan({ targetRank, targetYear, dailyHours });
   const { targetPercent, setTargetPercent, load } = useGoalSliderStore();
   useEffect(() => { load(); }, [load]);
@@ -34,6 +34,8 @@ export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: n
           <p className="text-xs text-[var(--text-secondary)]">Updates live as you change your exam goals.</p>
         </div>
       </div>
+
+      <WeeklyPace dailyHours={dailyHours} studyDays={studyDays} />
 
       {!plan ? (
         <div className="space-y-3" aria-busy="true">
@@ -173,6 +175,47 @@ export function GoalPlan({ targetRank, targetYear, dailyHours }: { targetRank: n
           </motion.button>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * "You are N hours behind" (4E): time actually spent in tests over the last 7 days vs the
+ * plan (daily hours × study days). Honest about what it measures — test time only.
+ */
+function WeeklyPace({ dailyHours, studyDays }: { dailyHours: number; studyDays: number }) {
+  const [done, setDone] = useState<number | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { IDBManager } = await import("@/lib/repository/storage/idb-manager");
+      const since = Date.now() - 7 * 86400_000;
+      const all = await IDBManager.getAllExamSessions();
+      const secs = all
+        .map((r) => r.sessionData as { startedAt?: string; elapsedSeconds?: number } | undefined)
+        .filter((s) => s?.startedAt && Date.parse(s.startedAt) >= since)
+        .reduce((sum, s) => sum + Math.max(0, s!.elapsedSeconds ?? 0), 0);
+      if (!cancelled) setDone(Math.round((secs / 3600) * 10) / 10);
+    })();
+    return () => { cancelled = true; };
+  }, []);
+  const planned = Math.round(Math.max(0, dailyHours) * Math.max(1, Math.min(7, studyDays)) * 10) / 10;
+  if (done === null || planned <= 0) return null;
+  const behind = Math.round((planned - done) * 10) / 10;
+  const pct = Math.min(100, (done / planned) * 100);
+  return (
+    <div className="mb-4 rounded-2xl border border-[var(--border)] p-3.5">
+      <div className="flex items-center justify-between gap-3 text-xs">
+        <span className="font-bold text-[var(--text-secondary)] inline-flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-violet-500" /> This week</span>
+        <span className="font-num text-[var(--text-primary)]"><b>{done} h</b> of {planned} h planned</span>
+      </div>
+      <div className="mt-2 h-2 rounded-full bg-[var(--surface-secondary)] overflow-hidden">
+        <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.8 }} className={`h-full rounded-full ${behind > 0 ? "bg-gradient-to-r from-amber-400 to-orange-500" : "bg-gradient-to-r from-emerald-400 to-teal-500"}`} />
+      </div>
+      <p className={`mt-1.5 text-[11px] font-semibold ${behind > 0 ? "text-amber-700 dark:text-amber-300" : "text-emerald-700 dark:text-emerald-300"}`}>
+        {behind > 0 ? `You are ${behind} h behind this week's plan — a ${Math.min(3, Math.ceil(behind / Math.max(1, 7 - new Date().getDay())))}-hour session today would help.` : "On track — you've met this week's plan."}
+      </p>
+      <p className="text-[10px] text-[var(--text-muted)]">Counts time spent in tests on this device.</p>
     </div>
   );
 }
