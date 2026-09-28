@@ -17,6 +17,7 @@ import {
 import { LearningEngine, PersonalizedIntelligence } from "@/lib/learning/LearningEngine";
 import { AnimatePresence, motion } from "motion/react";
 import { Reveal } from "@/components/ui/reveal";
+import { MockAnalytics } from "@/components/analytics/mock-analytics";
 import { GuestLock } from "@/components/auth/guest-lock";
 import { CountUp, RadialGauge, TiltCard, InfoTip, Segmented } from "@/components/ui/interactive";
 
@@ -213,6 +214,9 @@ export default function AnalyticsDashboardPage() {
             ))}
           </div>
         )}
+
+        {/* All-India Mock history (empty state when none) */}
+        <Reveal><MockAnalytics /></Reveal>
 
         {/* 2. Insights + adaptive path */}
         {!loadingIntel && intel && (

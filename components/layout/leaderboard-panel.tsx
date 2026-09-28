@@ -82,7 +82,7 @@ export function LeaderboardButton() {
         onClick={openPanel}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
-        className={`nav-act z-10 relative p-2 rounded-lg transition-colors cursor-pointer overflow-hidden group ${
+        className={`nav-act z-10 relative p-2 rounded-lg transition-colors cursor-pointer group ${
           open ? "text-white bg-indigo-600 shadow-sm" : fresh ? "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-1 ring-amber-500/40" : "text-[var(--text-secondary)] hover:text-amber-500"
         }`}
         aria-label={fresh ? "Leaderboard — new results published" : "Leaderboard"}
@@ -95,10 +95,12 @@ export function LeaderboardButton() {
         >
           <Trophy className="w-4 h-4 transition-transform duration-300 group-hover:-rotate-12" />
         </motion.span>
-        {/* Glint that sweeps across on hover */}
-        <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-amber-200/60 to-transparent group-hover:left-[150%] transition-all duration-700" />
+        {/* Glint that sweeps across on hover (clipped to the button; the dot is not) */}
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-lg overflow-hidden">
+          <span className="absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-amber-200/60 to-transparent group-hover:left-[150%] transition-all duration-700" />
+        </span>
         {fresh && (
-          <span className="absolute -top-0.5 -right-0.5 flex w-2.5 h-2.5">
+          <span className="absolute top-0.5 right-0.5 flex w-2.5 h-2.5">
             <span className="absolute inset-0 rounded-full bg-rose-500 animate-ping opacity-75" />
             <span className="relative w-2.5 h-2.5 rounded-full bg-rose-500 border border-[var(--surface)]" />
           </span>
@@ -116,7 +118,15 @@ export function LeaderboardButton() {
   );
 }
 
-function Movement({ rank, prev }: { rank: number; prev: number | null }) {
+function Movement({ rank, prev, onDark = false }: { rank: number; prev: number | null; onDark?: boolean }) {
+  if (onDark) {
+    const d = prev === null ? null : prev - rank;
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-[10px] font-black uppercase tracking-wide text-white">
+        {d === null ? <><Sparkles className="w-3 h-3" /> New entry</> : d > 0 ? <><ArrowUp className="w-3 h-3" /> {d}</> : d < 0 ? <><ArrowDown className="w-3 h-3" /> {-d}</> : "Same"}
+      </span>
+    );
+  }
   if (prev === null) return <span className="inline-flex items-center gap-0.5 text-[10px] font-black uppercase text-sky-600 dark:text-sky-400"><Sparkles className="w-3 h-3" />New</span>;
   const d = prev - rank;
   if (d === 0) return <span className="text-[11px] font-bold text-[var(--text-muted)]">–</span>;
@@ -205,7 +215,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
           {me && (
             <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="relative mt-3 flex items-center justify-between rounded-xl bg-white/15 px-3 py-2 text-sm">
               <span className="font-semibold">Your rank</span>
-              <span className="flex items-center gap-2 font-num font-extrabold">#{me.rank}<Movement rank={me.rank} prev={me.prev_rank} /></span>
+              <span className="flex items-center gap-2 font-num font-extrabold">#{me.rank}<Movement rank={me.rank} prev={me.prev_rank} onDark /></span>
             </motion.div>
           )}
         </div>

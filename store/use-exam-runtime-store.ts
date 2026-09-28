@@ -23,6 +23,8 @@ interface RuntimeState {
   clearResponse: (questionId: string) => Promise<void>;
   tickTimer: () => void;
   recordSignal: (kind: "blur" | "fullscreen_exit") => void;
+  /** Mock integrity limit reached: record why, then submit immediately. */
+  disqualifyAndSubmit: (reason: string) => Promise<string | null>;
   clearSession: () => Promise<void>;
   resumeArchivedSession: (session: ExamSession) => Promise<void>;
 }
@@ -104,6 +106,14 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
     const updated = { ...activeSession, integrity: i };
     set({ activeSession: updated });
     void SessionManager.serializeSession(updated);
+  },
+
+  disqualifyAndSubmit: async (reason) => {
+    const { activeSession } = get();
+    if (!activeSession || activeSession.status !== "IN_PROGRESS") return null;
+    const integrity = { tabBlurs: 0, fullscreenExits: 0, pausedSeconds: 0, ...activeSession.integrity, disqualifiedReason: reason };
+    set({ activeSession: { ...activeSession, integrity } });
+    return get().submitSession();
   },
 
   submitSession: async () => {

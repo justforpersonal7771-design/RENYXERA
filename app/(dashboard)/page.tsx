@@ -18,6 +18,7 @@ import { Footer } from "@/components/layout/footer";
 // stays mounted from the very first paint through data loading (it shows placeholder
 // values while loading), so there's no separate loading page that gets swapped out.
 import { HeroSection } from "@/components/dashboard/hero-section";
+import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 
 // Everything below the hero is client-only and code-split.
 
@@ -262,6 +263,10 @@ export default function Home() {
 
         {/* Right Side (Spans 4 columns) */}
         <div className="lg:col-span-4 flex flex-col gap-8">
+          <Reveal className="shrink-0">
+            <MockStatusCard />
+          </Reveal>
+
           <Reveal className="shrink-0">
             <ExamCountdownCard />
           </Reveal>

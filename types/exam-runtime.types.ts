@@ -31,5 +31,5 @@ export interface ExamSession {
   /** True once the attempt is saved to the account (signed-in users). */
   serverStored?: boolean;
   /** Step 11 (5C): signals sent with the submission as integrity flags (never scoring). */
-  integrity?: { tabBlurs: number; fullscreenExits: number; pausedSeconds: number; pausedAt?: string };
+  integrity?: { tabBlurs: number; fullscreenExits: number; pausedSeconds: number; pausedAt?: string; disqualifiedReason?: string };
 }

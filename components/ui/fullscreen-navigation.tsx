@@ -34,7 +34,7 @@ export function FullscreenNavigation({
             whileTap={{ scale: 0.9 }}
             onClick={onPrev}
             className="pointer-events-auto w-12 h-12 rounded-full backdrop-blur-md bg-black/45 hover:bg-black/65 text-white border border-white/20 shadow-lg flex items-center justify-center transition-colors active:scale-95 focus:outline-none cursor-pointer"
-            title="Previous Question (Fullscreen)"
+            title="Previous question" aria-label="Previous question"
           >
             <ChevronLeft className="w-6 h-6 stroke-[2.5]" />
           </motion.button>
@@ -53,7 +53,7 @@ export function FullscreenNavigation({
             whileTap={{ scale: 0.9 }}
             onClick={onNext}
             className="pointer-events-auto w-12 h-12 rounded-full backdrop-blur-md bg-black/45 hover:bg-black/65 text-white border border-white/20 shadow-lg flex items-center justify-center transition-colors active:scale-95 focus:outline-none cursor-pointer"
-            title="Next Question (Fullscreen)"
+            title="Next question" aria-label="Next question"
           >
             <ChevronRight className="w-6 h-6 stroke-[2.5]" />
           </motion.button>

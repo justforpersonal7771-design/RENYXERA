@@ -80,7 +80,7 @@ export default function ReviewPage() {
   const gate = useMockResultsGate(session);
   useEffect(() => { if (gate.released) setSession(gate.released); }, [gate.released]);
 
-  if (session && gate.locked) return <MockResultsLocked resultsAt={gate.resultsAt} now={gate.now} mockId={gate.mockId} />;
+  if (session && (gate.locked || gate.delayed)) return <MockResultsLocked resultsAt={gate.resultsAt} now={gate.now} mockId={gate.mockId} delayed={gate.delayed} />;
   if (session && !repoReady && repoError) return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-3 bg-[var(--background)] p-6 text-center">
       <p className="font-bold text-[var(--text-primary)]">Couldn't load the question bank.</p>

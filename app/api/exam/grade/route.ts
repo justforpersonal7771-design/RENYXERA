@@ -6,6 +6,7 @@ import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { isNatCorrect, isOptionsCorrect, marksFor } from "@/lib/grading";
 import { mockResultHold } from "@/lib/security/mock-embargo";
+import { MOCK_TAB_SWITCH_LIMIT } from "@/lib/exam/integrity-rules";
 
 export const runtime = "nodejs";
 
@@ -184,7 +185,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-type Flag = { code: string; value?: number };
+type Flag = { code: string; value?: number; reason?: string };
 
 /**
  * Step 11 (5C): integrity signals, recorded — never used to reject or re-score (shadow
@@ -192,7 +193,7 @@ type Flag = { code: string; value?: number };
  */
 function integrityFlags(input: {
   row: { server_started_at: string; duration_seconds: number; question_ids: string[]; mock_id?: string | null } | null;
-  attempt: { integrity?: { tab_blurs?: number; fullscreen_exits?: number; paused_seconds?: number } };
+  attempt: { integrity?: { tab_blurs?: number; fullscreen_exits?: number; paused_seconds?: number; disqualified_reason?: string } };
   responses: { question_id: string; time_spent_seconds?: number; selected_option_ids?: string[]; nat_value?: number }[];
   knownIds: string[];
   nowIso: string;
@@ -212,7 +213,9 @@ function integrityFlags(input: {
     const outside = input.knownIds.filter((id) => !allowed.has(id)).length;
     if (outside) flags.push({ code: "question_set_mismatch", value: outside });
   }
-  if ((sig.tab_blurs ?? 0) >= 5) flags.push({ code: "tab_switches", value: sig.tab_blurs });
+  // Only for mocks do these decide ranking (lib/exam/integrity-rules.ts); practice just records them.
+  if (sig.disqualified_reason) flags.push({ code: "disqualified", value: sig.tab_blurs, reason: sig.disqualified_reason.slice(0, 200) });
+  if ((sig.tab_blurs ?? 0) >= MOCK_TAB_SWITCH_LIMIT) flags.push({ code: "tab_switches", value: sig.tab_blurs });
   if ((sig.fullscreen_exits ?? 0) >= 3) flags.push({ code: "fullscreen_exits", value: sig.fullscreen_exits });
   const rapid = input.responses.filter((r) => (r.selected_option_ids?.length || typeof r.nat_value === "number") && typeof r.time_spent_seconds === "number" && r.time_spent_seconds < 5).length;
   if (rapid >= 10) flags.push({ code: "rapid_answers", value: rapid });

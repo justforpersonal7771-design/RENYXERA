@@ -20,8 +20,8 @@ interface QuestionRendererProps {
   /** Rendered at the top of the scrolling question area (used for question details on
    *  phones, so the exam header can stay a single row). */
   topSlot?: React.ReactNode;
-  /** What the full-screen button enlarges. The exam passes its whole screen (timer, grid,
-   *  Save & next stay usable); viewers default to just the question. */
+  /** What the full-screen button enlarges: an element that survives question changes
+   *  (the exam passes its stable question stage), so ‹ › keep full screen on. */
   fullscreenTargetId?: string;
 }
 
@@ -87,7 +87,7 @@ export const QuestionRenderer = memo(function QuestionRenderer({
       <div className="absolute top-4 right-4 z-50">
         <FullscreenToggle targetId={fullscreenTargetId} />
       </div>
-      {onPrev && onNext && fullscreenTargetId === "exam-question-container" && (
+      {onPrev && onNext && (
         <FullscreenNavigation
           onPrev={onPrev}
           onNext={onNext}

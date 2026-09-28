@@ -17,6 +17,8 @@ export const gradeRequestSchema = z.object({
         tab_blurs: z.number().int().min(0).max(100000).optional(),
         fullscreen_exits: z.number().int().min(0).max(100000).optional(),
         paused_seconds: z.number().int().min(0).max(30 * 24 * 3600).optional(),
+        /** Set when the exam screen auto-submitted a mock at the tab-switch limit. */
+        disqualified_reason: z.string().max(200).optional(),
       }).optional(),
     })
     .optional(),

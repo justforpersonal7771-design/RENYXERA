@@ -84,6 +84,13 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - **Leaderboard (navbar, beside Focus Target):** animated trophy (glint on hover, wiggle + pulsing dot + one-time toast when new mock results are published). Panel with All-India Mock and weekly Practice boards; rows start in last period's order and slide into the new order, ▲/▼/New badges; your rank pinned on top. Migration 0014: `practice_leaderboard`, `mock_leaderboard_moves`, shared `display_label`.
 - **Mocks page redesign:** animated hero (live state or a rolling countdown), Leaderboard button, your mock stats, an exam-day timeline that fills on the day, date-badge upcoming cards, past mocks with score bars.
 
+### 28 Sep 2026 — Fair integrity, fullscreen arrows, mock status everywhere 🟡
+- **Fullscreen (user):** the question fullscreen dropped out on ‹ › because each question is re-keyed for its slide animation and the fullscreen element left the page. Now a stable `exam-question-stage` is enlarged (question + options + arrows); tested on desktop and mobile (native and the iPhone fallback).
+- **Cheating (user):** every test (mock and practice): leaving the exam window shows *Warning n of 4*; the 5th time auto-submits and disqualifies with the reason shown; stored as a `disqualified` flag. Only disqualifying flags remove an attempt from ranking (`lib/exam/integrity-rules.ts` + `attempt_disqualified()` in migration 0015); answering fast / leaving full screen are informational, so honest users aren't dropped. Disqualified practice tests don't count on the practice board. A lone ranked candidate is now at the 100th percentile.
+- **Mock status:** dashboard card (continue / countdown to results / results late — retries every 30 s / AIR · percentile · marks · GATE score / next mock) and an Analytics section (history with bars; empty state). Results and review pages show *Results are on their way* if they're late.
+- Leaderboard: dot no longer clipped; readable *New entry / ▲▼* chip in the header.
+- Tested (production build): 25 checks pass on desktop light + mobile dark. **Waiting:** migration 0015.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

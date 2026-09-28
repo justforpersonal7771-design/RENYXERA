@@ -146,7 +146,7 @@ type SubmittableSession = {
   startedAt?: string;
   elapsedSeconds?: number;
   draftConfig?: { config?: { examType?: string; yearShift?: string; mockId?: string } };
-  integrity?: { tabBlurs?: number; fullscreenExits?: number; pausedSeconds?: number };
+  integrity?: { tabBlurs?: number; fullscreenExits?: number; pausedSeconds?: number; disqualifiedReason?: string };
   responses: Record<string, { questionId: string; status: string; selectedOptions?: string[]; natValue?: string; timeSpentSeconds?: number }>;
 };
 
@@ -223,6 +223,7 @@ async function gradeNow(
                   tab_blurs: Math.max(0, Math.round(session.integrity.tabBlurs ?? 0)),
                   fullscreen_exits: Math.max(0, Math.round(session.integrity.fullscreenExits ?? 0)),
                   paused_seconds: Math.max(0, Math.round(session.integrity.pausedSeconds ?? 0)),
+                  disqualified_reason: session.integrity.disqualifiedReason?.slice(0, 200),
                 } : undefined,
               }
             : undefined,

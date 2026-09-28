@@ -1,5 +1,6 @@
 "use client";
 
+import { MOCK_TAB_SWITCH_LIMIT } from "@/lib/exam/integrity-rules";
 import { FS_EVENT, isFullscreen, wireFullscreenEvents } from "@/lib/fullscreen";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
@@ -11,7 +12,7 @@ import { RenderableQuestion } from "@/types/question.types";
 import { QuestionRenderer } from "@/components/exam/question-renderer";
 import { MathJaxContext } from "better-react-mathjax";
 import { useStudyStore } from "@/store/use-study-store";
-import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser, ShieldAlert } from "lucide-react";
 import { useDataStore } from "@/store/use-data-store";
 import { ExamTimer } from "@/components/exam/exam-timer";
 import { QuestionPalette } from "@/components/exam/question-palette";
@@ -52,7 +53,21 @@ export default function ExamSessionPage() {
   // Step 11 (5C): integrity signals — counted, sent with the submission as flags only.
   const recordSignal = useExamRuntimeStore((state) => state.recordSignal);
   useEffect(() => {
-    const onVis = () => { if (document.hidden) recordSignal("blur"); };
+    // Every test (mock and practice): each time the candidate leaves the exam window it's
+    // counted and they see a warning when they come back; at the limit the paper is
+    // submitted and marked disqualified (lib/exam/integrity-rules.ts). Paused tests don't count.
+    const onVis = () => {
+      const st = useExamRuntimeStore.getState();
+      if (document.hidden) { recordSignal("blur"); return; }
+      const s = st.activeSession;
+      if (!s || s.status !== "IN_PROGRESS") return;
+      const n = s.integrity?.tabBlurs ?? 0;
+      if (n >= MOCK_TAB_SWITCH_LIMIT) {
+        void st.disqualifyAndSubmit(`Left the exam window ${n} times (limit ${MOCK_TAB_SWITCH_LIMIT}).`);
+      } else if (n > 0) {
+        setTabWarning(n);
+      }
+    };
     wireFullscreenEvents();
     let wasFull = isFullscreen();
     const onFs = () => {
@@ -85,6 +100,8 @@ export default function ExamSessionPage() {
   const [mounted, setMounted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<RenderableQuestion | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [tabWarning, setTabWarning] = useState<number | null>(null);
+  const disqualifiedReason = useExamRuntimeStore((state) => state.activeSession?.integrity?.disqualifiedReason);
   const [showMobilePalette, setShowMobilePalette] = useState(false);
 
   useEffect(() => {
@@ -175,6 +192,24 @@ export default function ExamSessionPage() {
              Go to Dashboard
           </button>
         </div>
+      </div>
+    );
+  }
+
+  if (sessionStatus === "SUBMITTED" && sessionId && disqualifiedReason) {
+    return (
+      <div className="h-full w-full flex items-center justify-center bg-[var(--background)] ambient-gradient px-4">
+        <motion.div initial={{ opacity: 0, y: 20, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 260, damping: 24 }}
+          className="relative overflow-hidden p-8 sm:p-10 text-center space-y-4 max-w-lg w-full mx-auto card-glass rounded-3xl border-2 border-rose-500/40">
+          <motion.div initial={{ scale: 0.5, rotate: -10 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: "spring", stiffness: 300, damping: 14 }}
+            className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-rose-500 to-red-600 flex items-center justify-center shadow-lg shadow-rose-500/40 text-white">
+            <ShieldAlert className="w-10 h-10" />
+          </motion.div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">{isMockSession ? "Disqualified from this mock" : "Test disqualified"}</h2>
+          <p className="text-sm text-[var(--text-secondary)]">{disqualifiedReason} Your paper was submitted automatically and won&apos;t count on the leaderboard. Your answers are saved and you can still review them{isMockSession ? " when results are released" : ""}.</p>
+          <p className="text-[11px] text-[var(--text-muted)]">Other candidates are not affected. Keep the exam window open during a test — you&apos;ll get a warning each time you leave.</p>
+          <button onClick={() => router.push(`/exam/results?id=${sessionId}`)} className="mt-2 h-12 w-full rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] font-semibold text-[var(--text-primary)] cursor-pointer">Continue</button>
+        </motion.div>
       </div>
     );
   }
@@ -471,7 +506,10 @@ export default function ExamSessionPage() {
                 </div>
              ) : (
                 <>
-                  {/* GPU Accelerated Smooth Transitions - Part 5 */}
+                  {/* Stable wrapper = the full-screen target: each question below is re-keyed
+                      (for the slide transition), and full screen would end the moment its
+                      element left the page, so ‹ › in full screen used to drop out of it. */}
+                  <div id="exam-question-stage" className="flex-1 min-h-0 flex flex-col relative overflow-hidden bg-[var(--surface)]">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={currentQId}
@@ -494,7 +532,7 @@ export default function ExamSessionPage() {
                             isPrevDisabled={currentQuestionIndex === 0}
                             isNextDisabled={currentQuestionIndex === totalQuestions - 1}
                             topSlot={<div className="md:hidden"><QuestionMetaChips q={currentQuestion as any} /></div>}
-                            fullscreenTargetId="exam-root"
+                            fullscreenTargetId="exam-question-stage"
                           />
                       ) : (
                         <div className="flex h-full items-center justify-center text-red-500 font-bold">
@@ -503,6 +541,7 @@ export default function ExamSessionPage() {
                       )}
                     </motion.div>
                   </AnimatePresence>
+                  </div>
 
                   {/* BOTTOM ACTION BAR (Sticky to bottom) */}
                   <div className="flex-none px-4 py-2 sm:px-6 flex flex-col sm:flex-row justify-between items-center border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur z-20 gap-2">
@@ -632,6 +671,28 @@ export default function ExamSessionPage() {
 
         </div>
       </div>
+
+      {/* Mock: warned every time the candidate comes back after leaving the exam window */}
+      <AnimatePresence>
+        {tabWarning !== null && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[500] flex items-center justify-center bg-black/55 backdrop-blur-sm px-4" role="alertdialog" aria-labelledby="tab-warn-title">
+            <motion.div initial={{ scale: 0.9, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 24 }}
+              className="w-full max-w-md rounded-3xl bg-[var(--surface)] border-2 border-amber-500/50 p-6 text-center shadow-2xl">
+              <motion.div animate={{ rotate: [0, -8, 8, -4, 0] }} transition={{ duration: 0.6 }} className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                <AlertTriangle className="w-7 h-7" />
+              </motion.div>
+              <h2 id="tab-warn-title" className="mt-3 text-xl font-extrabold text-[var(--text-primary)]">Warning {tabWarning} of {MOCK_TAB_SWITCH_LIMIT - 1}</h2>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">You left the exam window. That isn&apos;t allowed during a test — {MOCK_TAB_SWITCH_LIMIT - tabWarning === 1 ? "one more time and" : `after ${MOCK_TAB_SWITCH_LIMIT - tabWarning} more times`} your paper is submitted automatically and disqualified from ranking.</p>
+              <div className="mt-4 flex justify-center gap-1.5" aria-hidden="true">
+                {Array.from({ length: MOCK_TAB_SWITCH_LIMIT }).map((_, i) => (
+                  <span key={i} className={`h-2 w-8 rounded-full ${i < tabWarning ? "bg-amber-500" : "bg-[var(--surface-secondary)]"}`} />
+                ))}
+              </div>
+              <button onClick={() => setTabWarning(null)} className="mt-5 h-11 w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold cursor-pointer">Back to the paper</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <ExamSubmitDialog
         isOpen={showSubmitModal}

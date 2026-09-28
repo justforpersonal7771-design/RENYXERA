@@ -231,7 +231,7 @@ export default function ResultSummaryPage() {
     </div>
   );
   
-  if (session && gate.locked) return <MockResultsLocked resultsAt={gate.resultsAt} now={gate.now} mockId={gate.mockId} />;
+  if (session && (gate.locked || gate.delayed)) return <MockResultsLocked resultsAt={gate.resultsAt} now={gate.now} mockId={gate.mockId} delayed={gate.delayed} />;
   if (!session || !statsCalculations) return <div className="p-8 text-center text-rose-500 font-bold bg-[var(--background)] h-screen">Result not found.</div>;
 
   const {

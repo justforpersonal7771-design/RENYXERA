@@ -1,5 +1,6 @@
 "use client";
 
+import { DISQUALIFYING_FLAGS, FLAG_TEXT, isDisqualified } from "@/lib/exam/integrity-rules";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -19,15 +20,7 @@ interface MyResult {
 }
 const CAT_LABEL: Record<string, string> = { GEN: "General", EWS: "General-EWS", OBC_NCL: "OBC-NCL", SC: "SC", ST: "ST" };
 
-const FLAG_LABELS: Record<string, string> = {
-  no_start_token: "started without a server check-in",
-  over_time: "submitted after the time limit",
-  long_pause: "paused for a very long time",
-  question_set_mismatch: "answers outside the mock's paper",
-  tab_switches: "switched tabs many times",
-  fullscreen_exits: "left fullscreen several times",
-  rapid_answers: "many answers in under 5 seconds",
-};
+const FLAG_LABELS = FLAG_TEXT;
 
 function Results() {
   const id = useSearchParams()?.get("id") ?? "";
@@ -37,7 +30,7 @@ function Results() {
   const toast = useToastStore((s) => s.show);
   const [mock, setMock] = useState<Mock | null>(null);
   const [rows, setRows] = useState<Row[] | null>(null);
-  const [myFlags, setMyFlags] = useState<{ code: string }[] | null>(null);
+  const [myFlags, setMyFlags] = useState<{ code: string; reason?: string }[] | null>(null);
   const [mine, setMine] = useState<MyResult | null>(null);
   const [state, setState] = useState<"loading" | "ready" | "pending" | "missing">("loading");
 
@@ -108,10 +101,10 @@ function Results() {
                 <div key={k}><p className="text-[10px] font-black uppercase tracking-wider text-white/75">{k}</p><p className="text-2xl sm:text-3xl font-extrabold font-num">{v}</p></div>
               ))}
             </motion.div>
-          ) : myFlags && myFlags.length > 0 ? (
-            <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-800 dark:text-amber-200 flex gap-2">
+          ) : myFlags && isDisqualified(myFlags) ? (
+            <div className="rounded-2xl border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-800 dark:text-rose-200 flex gap-2">
               <ShieldAlert className="w-5 h-5 shrink-0" />
-              <p>Your attempt isn&apos;t ranked because it was flagged: {myFlags.map((f) => FLAG_LABELS[f.code] ?? f.code).join(", ")}. Your score still counts in your own analytics.</p>
+              <p><span className="font-bold">Disqualified — not ranked:</span> {myFlags.filter((f) => (DISQUALIFYING_FLAGS as readonly string[]).includes(f.code)).map((f) => (f as { reason?: string }).reason ?? FLAG_LABELS[f.code] ?? f.code).join("; ")}. Your score still counts in your own analytics.</p>
             </div>
           ) : user ? (
             <p className="text-sm text-[var(--text-muted)]">You didn&apos;t take part in this mock.</p>

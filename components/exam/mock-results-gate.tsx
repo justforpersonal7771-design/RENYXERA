@@ -39,9 +39,12 @@ export function useMockResultsGate(session: ExamSession | null) {
   // Unlocks on its own at the results time: fetch the now-released score + keys, then
   // record mistakes (deferred at submit so nothing leaked early).
   const [released, setReleased] = useState<ExamSession | null>(null);
+  const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     if (!mockId || locked || !session || released) return;
     let cancelled = false;
+    // Results late (server busy / offline)? Try again every 30 s until they arrive.
+    const retry = setTimeout(() => { if (!cancelled) setAttempt((n) => n + 1); }, 30_000);
     (async () => {
       const { submitForGrading } = await import("@/lib/repository/answer-keys");
       const graded = await submitForGrading(session).catch(() => null);
@@ -57,10 +60,12 @@ export function useMockResultsGate(session: ExamSession | null) {
       }
       if (!cancelled) setReleased(updated);
     })();
-    return () => { cancelled = true; };
-  }, [mockId, locked, session, released]);
+    return () => { cancelled = true; clearTimeout(retry); };
+  }, [mockId, locked, session, released, attempt]);
 
-  return { isMock: !!mockId, locked, resultsAt, now, mockId, released };
+  // Past the results time but this device hasn't received them yet.
+  const delayed = !!mockId && !locked && !released;
+  return { isMock: !!mockId, locked, delayed, resultsAt, now, mockId, released };
 }
 
 const fmt = (ms: number) => {
@@ -69,19 +74,21 @@ const fmt = (ms: number) => {
   return h ? `${h}h ${m}m ${sec}s` : `${m}m ${sec}s`;
 };
 
-export function MockResultsLocked({ resultsAt, now, mockId }: { resultsAt: string | null; now: number; mockId?: string }) {
+export function MockResultsLocked({ resultsAt, now, mockId, delayed = false }: { resultsAt: string | null; now: number; mockId?: string; delayed?: boolean }) {
   return (
     <div className="w-full min-h-[70vh] flex items-center justify-center px-4 py-10">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card-glass rounded-3xl p-8 sm:p-10 max-w-lg w-full text-center space-y-4">
         <div className="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-indigo-600 to-fuchsia-600 text-white flex items-center justify-center shadow-lg shadow-violet-500/30">
           <Lock className="w-7 h-7" />
         </div>
-        <h1 className="text-2xl font-extrabold text-[var(--text-primary)]">Your mock is submitted</h1>
+        <h1 className="text-2xl font-extrabold text-[var(--text-primary)]">{delayed ? "Results are on their way" : "Your mock is submitted"}</h1>
         <p className="text-sm text-[var(--text-secondary)]">
           Like GATE, everyone&apos;s results — score, answers, rank and percentile — are released together
           {resultsAt ? <> at <span className="font-semibold text-[var(--text-primary)]">{new Date(resultsAt).toLocaleString(undefined, { weekday: "short", hour: "2-digit", minute: "2-digit" })}</span></> : " after the paper closes"}.
         </p>
-        {resultsAt && (
+        {delayed ? (
+          <p className="text-sm text-amber-700 dark:text-amber-300" aria-live="polite">They&apos;re taking a little longer than expected (a busy server or a weak connection). This page keeps checking every 30 seconds and opens your results the moment they&apos;re ready.</p>
+        ) : resultsAt && (
           <p className="text-3xl font-extrabold font-num text-[var(--text-primary)]" aria-live="polite">{fmt(Date.parse(resultsAt) - now)}</p>
         )}
         <div className="flex flex-col sm:flex-row gap-2 justify-center pt-2">
