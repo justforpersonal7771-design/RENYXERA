@@ -306,13 +306,13 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Public, server-rendered `/about` landing page | ✅ |
-| Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | ⬜ |
+| Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | 🟨 *(29 Sep: /pyq index, 15 paper pages, 975 question pages, 18 subject hubs with year-wise weightage — all prerendered; syllabus page next)* |
 | Editorial content (strategy, cut-off analysis, study plans) | ⬜ |
-| Free tools (rank predictor, score / normalisation calculator, college predictor) | ⬜ |
+| Free tools (rank predictor, score / normalisation calculator, college predictor) | 🟨 *(score calculator + rank predictor ✅ `/tools/gate-score-calculator` with FAQ structured data; college predictor pending)* |
 | More free tools from the marketing plan: cutoff tracker, marks-vs-rank tables, days-left countdown, study-plan generator | ⬜ *(docs/MARKETING_STRATEGY §3.1)* |
 | Auto-generated articles from our tags ("Most repeated topics 2015–2026", "How to prepare for GATE CS in 150 days") | ⬜ *(§3.1)* |
-| Public PYQ page shape: `/pyq/cs/<year>/q<n>-<slug>` with a solution preview and "Practise this in the simulator" | ⬜ *(§3.1; answer/solution preview only, full keys stay server-side)* |
-| Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | 🟨 *(sitemap + robots + branch-page FAQ structured data ✅; canonicals, OG cards, CWV budget pending)* |
+| Public PYQ page shape: `/pyq/cs/<year>/q<n>-<slug>` with a solution preview and "Practise this in the simulator" | ✅ *(`/pyq/gate-cs-<year>-<shift>/q<n>`; official answer on demand via the rate-limited route — never in the HTML; practise CTA; related questions; breadcrumb structured data)* |
+| Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | 🟨 *(sitemap 1,023 URLs, robots, canonicals + OG meta on every public page, breadcrumb/FAQ structured data ✅; OG images + CWV budget pending)* |
 | Sitemap submitted; indexing confirmed in Search Console | ⬜ |
 
 ### 6B · P1 · Legal Pages & Ad Network Onboarding
@@ -333,11 +333,11 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 6C · P1 · Ad Placement Architecture
 | Task | Status |
 |---|---|
-| `<AdSlot>` component (tier-, route- and consent-aware; reserved height; lazy) | ⬜ |
-| Zero ads in exams, auth and checkout; zero for ad-free tiers | ⬜ |
-| Service worker excludes ad scripts from caching | ⬜ |
-| Consent management; non-personalised ads for under-18s | ⬜ |
-| A/B measurement of ad revenue vs paid conversion | ⬜ |
+| `<AdSlot>` component (tier-, route- and consent-aware; reserved height; lazy) | 🟨 *(route-aware — public content pages only; reserved height; script loads once, lazily; off until `NEXT_PUBLIC_ADSENSE_CLIENT` is set; tier-aware with Release 7)* |
+| Zero ads in exams, auth and checkout; zero for ad-free tiers | ✅ *(ads can only render on /pyq, /topics and /tools pages; ad-free tiers arrive with Release 7)* |
+| Service worker excludes ad scripts from caching | ✅ *(the service worker only handles same-origin requests; ad scripts are cross-origin)* |
+| Consent management; non-personalised ads for under-18s | 🟠 **Later — when ads switch on** *(needs the approved ad account)* |
+| A/B measurement of ad revenue vs paid conversion | 🟠 **Later — Release 7** *(needs payments)* |
 
 ### 6D · P1 · Practice Question Bank (beyond PYQs)
 | Task | Status |

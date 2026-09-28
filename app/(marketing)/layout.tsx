@@ -16,12 +16,15 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             <LogoMarkFx className="h-8 w-8" />
             <Wordmark size="sm" className="sm:text-lg" />
           </Link>
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <Link href="/pyq" className="text-xs sm:text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] whitespace-nowrap">Free PYQs</Link>
           <Link
             href="/"
             className="shrink-0 whitespace-nowrap px-3 sm:px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-indigo-500/25 transition-colors"
           >
             Open the app
           </Link>
+          </div>
         </div>
       </header>
       <main className="max-w-6xl mx-auto px-4 sm:px-6">{children}</main>

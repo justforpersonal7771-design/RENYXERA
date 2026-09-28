@@ -14,6 +14,8 @@ export function Footer() {
       <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
         {[
           ["/about", "About"],
+          ["/pyq", "Previous year questions"],
+          ["/tools/gate-score-calculator", "Score & rank predictor"],
           ["/gate-cse", "GATE branches"],
           ["/terms", "Terms"],
           ["/privacy", "Privacy"],

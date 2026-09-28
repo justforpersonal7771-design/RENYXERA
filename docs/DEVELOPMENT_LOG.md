@@ -122,6 +122,14 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Guest lock on subject/college boards; weekly "hours behind" signal in the goal plan.
 - **Checklist (user):** every open row in Platform, Release 4 and Release 5 is now ✅, 🟠 (named later release) or 🟡 (paid backlog); new 🟠 legend; build-order rows coloured. No white rows left before Release 6.
 
+### 29 Sep 2026 — Release 6 starts: SEO engine + ad slots 🟡
+- **Honest ad note to the user:** AdSense needs an owned domain (ads.txt at the domain root; workers.dev's root isn't ours); ads earn from search traffic, roughly ₹20–80 per 1,000 Indian education page views; this release builds the traffic.
+- **Public PYQ pages (6A):** `/pyq` index, 15 paper pages, 975 question pages (`/pyq/gate-cs-2024-fn/q30`), 18 subject hubs (`/topics/<subject>`) with marks-per-year weightage — prerendered at build from the answer-free bank; official answer only on demand via the rate-limited route (never in the HTML); related questions; breadcrumb structured data; canonical + OG meta.
+- **Free tool:** `/tools/gate-score-calculator` — marks → GATE score, likely AIR range, qualifying status by category (calibration data), FAQ structured data.
+- Sitemap 1,023 URLs; "Free PYQs" in the public header, footer links.
+- **Ads (6C):** `AdSlot` + `/ads.txt`, both off until `NEXT_PUBLIC_ADSENSE_CLIENT` is set; only on public content pages, never in the app/exams.
+- Smoke suite extended to 16 pages × 4 modes — all pass.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.
