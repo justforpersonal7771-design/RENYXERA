@@ -36,6 +36,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # Public values only (the browser gets them anyway) — lets the smoke test load data.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
 
       - name: Security checks (no service-role key in bundle; anon can't read answer keys)
         run: npm run check:security
@@ -54,6 +58,16 @@ jobs:
 
       - name: Mock question order (same paper, GA first, score order-independent)
         run: npm run check:mock-order
+
+      - name: End-to-end smoke (phone + desktop × light + dark, guest exam flow)
+        run: |
+          npx playwright install --with-deps chromium
+          npx next start -p 3000 &
+          for i in $(seq 1 30); do curl -s -o /dev/null http://localhost:3000/about && break; sleep 2; done
+          BASE=http://localhost:3000 node scripts/e2e-smoke.mjs
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
 
   # Auto-deploy: every push to main that passes ALL checks above goes live on Cloudflare.
   # Pull requests and failing builds never deploy. Needs repo secrets CLOUDFLARE_API_TOKEN

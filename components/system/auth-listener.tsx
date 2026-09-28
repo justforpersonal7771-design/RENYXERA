@@ -140,8 +140,28 @@ export function AuthListener() {
       // Step 7: Active Devices check-in — on load, every 5 minutes while visible, and
       // when the tab comes back. A device signed out from another device's settings
       // signs itself out here (wiping its protected downloads on the way).
+      // Idle expiry (4F): a device unused for 30 days signs itself out (the session isn't
+      // left open indefinitely on a shared or lost device). Any visit refreshes the clock.
+      const IDLE_KEY = "renyxera_last_active";
+      const IDLE_MS = 30 * 86400_000;
+      if (user) {
+        try {
+          const last = Number(localStorage.getItem(IDLE_KEY) ?? 0);
+          if (last && Date.now() - last > IDLE_MS) {
+            const { SIGNED_OUT_FLAG } = await import("@/lib/utils");
+            sessionStorage.setItem(SIGNED_OUT_FLAG, "idle");
+            localStorage.removeItem(IDLE_KEY);
+            await supabase.auth.signOut({ scope: "local" }).catch(() => {});
+            window.location.reload(); // start clean, signed out
+            return;
+          }
+          localStorage.setItem(IDLE_KEY, String(Date.now()));
+        } catch { /* storage blocked — skip */ }
+      }
+
       const checkIn = async () => {
         if (cancelled || document.hidden || !useAuthStore.getState().user) return;
+        try { localStorage.setItem(IDLE_KEY, String(Date.now())); } catch { /* ignore */ }
         const { deviceHeartbeat } = await import("@/lib/devices/device");
         const r = await deviceHeartbeat();
         if (r?.revoked && !cancelled) {

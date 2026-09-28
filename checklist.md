@@ -55,6 +55,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 
 ## 🟡 Backlog — deferred until there's a reason to spend money
 
+**Rule (28 Sep 2026):** anything that costs money — beyond a one-time total of ₹100 at most, never monthly — waits here until the app earns income. Rows marked *Backlog (paid)* in the releases below follow this rule.
+
 | # | Task | Why it's parked |
 |---|---|---|
 | 1 | **Custom-domain confirmation emails** (RENYXERA sender) | Needs an owned domain with DNS access (~$10-12/yr). Steps are ready (Resend → verify domain → API key → Supabase SMTP). |
@@ -75,10 +77,10 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Question images served as static files from Cloudflare's CDN (`public/images/`, 6.1 MB), never from GitHub raw URLs | ✅ |
 | Image references stored/resolved as **relative paths** (`/images/2026-FN/2.png`), never binaries or absolute third-party URLs | ✅ *(lib/services/image-resolver.ts)* |
 | Single configurable CDN base URL (one env var) used to resolve every image path at render time | ⬜ *(paths are currently root-relative; no base-URL variable yet)* |
-| Cloudflare R2 bucket provisioned and bound for the bulk / multi-branch diagram corpus | ⬜ |
+| Cloudflare R2 bucket provisioned and bound for the bulk / multi-branch diagram corpus | 🟡 **Backlog (paid)** — after income *(R2 needs a payment card on file even on the free tier)* |
 | No binary assets in Postgres (`image_paths` / `image_path` columns hold relative paths only) | ✅ *(schema in 0001 enforces text paths; no images stored)* |
 | WebP/AVIF compression at ingest for new diagrams | ⬜ *(needed with 8A)* |
-| Hotlink protection on images (CDN/R2) | ⬜ *(5D)* |
+| Hotlink protection on images (CDN/R2) | 🟡 **Backlog (paid)** — after income *(needs R2 or an own domain)* |
 
 ### Security, CI & monitoring (§5.3, §5.4)
 | Task | Status |
@@ -87,13 +89,13 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Service-role key can't reach client code (`import "server-only"` build-time guard) | ✅ |
 | CI grep over the **built output** proving no service-role key is in the client bundle | ✅ *(scripts/check-security.mjs in CI)* |
 | CI test proving the anon key reads **zero rows** from `question_answers` | ✅ *(automated in CI via check:security)* |
-| Automated Playwright regression suite in CI (desktop + mobile, light + dark) | ⬜ *(run manually on every change today; not in CI)* |
+| Automated Playwright regression suite in CI (desktop + mobile, light + dark) | ✅ *(28 Sep: `scripts/e2e-smoke.mjs` on every push — 11 pages × phone/desktop × light/dark + a guest exam end to end; deploy is blocked if it fails)* |
 | Error tracking (Sentry free tier) | ✅ *(lazy-loaded, errors only, PII stripped — step 9)* |
 | Product analytics (Cloudflare Web Analytics, cookieless) | ✅ *(step 9)* |
 | Structured API logs + anomaly alerts | 🟨 *(route-level logging exists; no alerting)* |
-| Supabase idle-pause keep-alive (scheduled ping) | ⬜ *(only matters pre-launch)* |
+| Supabase idle-pause keep-alive (scheduled ping) | ✅ *(`keepalive.yml` → `/api/health` every 3 days)* |
 | Worker CPU budget: prerendered pages + static dataset served without the Worker (fixes Error 1102) | ✅ |
-| Database backups: scheduled `pg_dump` (GitHub Actions, free) kept as encrypted artifacts; restore tested | ⬜ *(Release 4 master prompt, Module 4D — Supabase free has no point-in-time recovery)* |
+| Database backups: scheduled `pg_dump` (GitHub Actions, free) kept as encrypted artifacts; restore tested | 🔶 *(workflow + restore steps ready; needs your two GitHub secrets, then a first run)* |
 | Developer diagnostics view (errors, failed AI calls, IndexedDB/dataset failures) without user PII | ⬜ *(4D; folds into the Admin Console, Release 10)* |
 | Performance pass: no hydration warnings or layout shift, code-split heavy AI/analytics modules, lazy images, long lists virtualised | 🟨 *(lazy images + dynamic imports in places; no measured budget yet — master prompt §12)* |
 | Accessibility pass: keyboard navigation, visible focus, contrast, reduced motion on every screen | 🟨 *(reduced-motion setting + focus rings ✅; no full keyboard/contrast audit — §13)* |
@@ -117,11 +119,11 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Service worker + PWA install working on Cloudflare | ✅ |
 | Old duplicate Worker deleted | ✅ |
 | GitHub Actions CI/CD (auto-deploy on push to `main`) | ✅ *(27 Sep: push to main → checks → deploy → live smoke test; every deploy since has gone through it)* |
-| R2 bucket provisioned; CDN base URL as a single env var | ⬜ *(see Platform-wide → Images)* |
+| R2 bucket provisioned; CDN base URL as a single env var | 🟡 **Backlog (paid)** — after income *(R2 card on file; the base-URL variable itself is free and can land with 8A)* |
 | DNS, Web Analytics and Turnstile in the same Cloudflare account | 🟨 *(Web Analytics + Turnstile ✅ in the Worker's account; DNS waits for a custom domain)* |
-| Rollback path documented and tested | ⬜ |
+| Rollback path documented and tested | 🟨 *(runbook: `wrangler rollback <version>` + fix-forward; deployment listing verified; a live rollback drill waits for your go-ahead)* |
 | Vercel decommissioned | 🔶 *(kept dormant by decision — 🔴#5)* |
-| Custom domain | ⬜ *(declined for now — revisit once there's revenue)* |
+| Custom domain | 🟡 **Backlog (paid)** — after income |
 
 ### 4B · P0 · Data Layer Migration (Postgres + RLS)
 | Task | Status |
@@ -149,14 +151,14 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Auth UI in the app's own glass/gradient design (no vendor widget) | ✅ |
 | Session persistence across reloads; silent token refresh | ✅ |
 | Firebase project + Phone provider enabled | ✅ |
-| Mobile OTP wired into the app (Firebase ↔ Supabase third-party JWT bridge) | ⬜ |
-| OTP abuse controls: per-phone/IP/device limits, Turnstile, resend cooldown, daily cap | ⬜ |
+| Mobile OTP wired into the app (Firebase ↔ Supabase third-party JWT bridge) | 🟡 **Backlog (paid)** — after income *(real use needs Firebase Blaze past 10 SMS/day)* |
+| OTP abuse controls: per-phone/IP/device limits, Turnstile, resend cooldown, daily cap | 🟡 **Backlog (paid)** — after income *(ships with OTP)* |
 | All three auth paths converge on one `profiles` row | 🟨 *(Google + email do; OTP not built)* |
 | Route protection enforced in **middleware** (not page components) | ✅ *(/profile → /login?redirect=)* |
-| "Sign out everywhere" on credential change | ⬜ |
+| "Sign out everywhere" on credential change | ✅ *(changing the password signs out every other device)* |
 | No delete-account control anywhere in the UI | ✅ |
 | Anonymization backstop (support-request erasure → `status='anonymized'`, PII nulled, attempts kept) documented in the Privacy Policy and working | ⬜ |
-| Firebase Blaze billing (past 10 SMS/day) | ⬜ *(backlog #3)* |
+| Firebase Blaze billing (past 10 SMS/day) | 🟡 **Backlog (paid)** — after income |
 
 ### 4D · P1 · Guest Walkthrough / Teaser Mode
 | Task | Status |
@@ -181,7 +183,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Sign-out UX: redirect to dashboard with a "Signed out" toast | ✅ |
 | Username: lowercase, validated, live availability check (server-side), reserved names blocked | ✅ |
 | Username uniqueness enforced by a **database constraint** (case-insensitive) | ✅ *(migration 0002 live)* |
-| Username profanity list | ⬜ |
+| Username profanity list | ✅ *(English + Hindi/Hinglish blocklist in `lib/username.ts`, shared by the form and the server check)* |
 | Display name used for greetings across the app | ✅ |
 | Stats section (accuracy, attempted, streak, hours, tests, mistakes mastered) | ✅ |
 | Achievements section (15 badges from real progress, "New" chip) | ✅ |
@@ -200,10 +202,10 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Per-user IndexedDB namespace (`IDBManager.setActiveNamespace`) + `resetAllStores()` — verified live | ✅ |
 | Wired into real sign-in/sign-out (`AuthListener`) incl. a fixed guest-first-load regression | ✅ |
-| Explicit two-account test: account B sees zero data from account A, and all 10 stores reset | ⬜ *(behaviour implemented; the documented store-by-store test isn't written)* |
+| Explicit two-account test: account B sees zero data from account A, and all 10 stores reset | ✅ *(`scripts/check-isolation.mjs` — passes 28 Sep)* |
 | Device sessions table + Active Devices list | ✅ *(migration 0005; heartbeat on load/5 min/tab focus)* |
 | "Sign out this device" / "sign out everywhere" | ✅ *(per device, all others, everywhere — tested across 3 sessions; remote device signs itself out + wipes downloads)* |
-| Idle expiry; forced re-auth on credential change | ⬜ |
+| Idle expiry; forced re-auth on credential change | ✅ *(30 days unused → signed out on that device; password change revokes the other devices)* |
 
 ### 4G · P0 · API Hardening
 | Task | Status |
@@ -256,7 +258,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Public/private split logic | ✅ *(dataset-split.ts retired: answers stripped at build in copy-static-data.mjs; keys only in Postgres)* |
 | Answer-free public payload | ✅ *(public/data/questions.json has no answer fields; `/api/dataset` removed)* |
 | Live graded exam UI uses the public payload (no answer fields in network, IndexedDB or memory) | ✅ *(keys unlock only after submit via /api/exam/grade, or per question on practice screens via /api/answers)* |
-| Visible **Graded** vs **Practice** badge | ⬜ |
+| Visible **Graded** vs **Practice** badge | ✅ *(exam header, desktop widths)* |
 | Offline graded attempts queued and shown "Pending evaluation" | ✅ *(amber pending state + auto-retry on reconnect; never counted as wrong)* |
 | CI check that no answer field appears in a graded attempt | ✅ *(build fails if an answer field reaches the public bank)* |
 
@@ -284,7 +286,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Paginated/scoped delivery (no full-bank single request) | ⏸ *Deliberately deferred: the bank is public past GATE papers and must work offline as one file; the protected part — answer keys — is server-only, rate-limited and never in the bundle.* |
 | Per-account fetch-volume limits + anomaly alerts | ⬜ |
 | Full-bank offline download as a paid entitlement | ⬜ |
-| Hotlink protection on images | ⬜ |
+| Hotlink protection on images | 🟡 **Backlog (paid)** — after income *(needs R2 or an own domain)* |
 | Invisible per-account watermarking | ⬜ |
 | ToS clause prohibiting scraping/redistribution | ✅ *(Terms §Acceptable use)* |
 

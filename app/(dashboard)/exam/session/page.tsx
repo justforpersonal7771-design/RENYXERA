@@ -47,6 +47,8 @@ export default function ExamSessionPage() {
 
   const pauseSession = useExamRuntimeStore((state) => state.pauseSession);
   const isMockSession = useExamRuntimeStore((state) => !!state.activeSession?.draftConfig?.config?.mockId);
+  // Graded = counts as a real attempt (mock / official paper); everything else is practice.
+  const isGradedPaper = useExamRuntimeStore((state) => { const c = state.activeSession?.draftConfig?.config; return !!c?.mockId || c?.examType === "GRAND_MOCK" || c?.examType === "YEAR_PAPER"; });
   const resumeSession = useExamRuntimeStore((state) => state.resumeSession);
   const submitSession = useExamRuntimeStore((state) => state.submitSession);
 
@@ -358,6 +360,12 @@ export default function ExamSessionPage() {
                  {currentQuestion && (
                     <span className="text-[var(--text-primary)] bg-[var(--surface-secondary)] px-1.5 sm:px-2 py-1 rounded-md border border-[var(--border)] font-num text-[12px] sm:text-[13px] font-bold shrink-0 whitespace-nowrap">
                       {currentQuestionIndex + 1}<span className="text-[var(--text-muted)]">/{totalQuestions}</span>
+                    </span>
+                 )}
+                 {currentQuestion && (
+                    <span title={isGradedPaper ? "Graded: stored and ranked; integrity rules apply" : "Practice: for learning; integrity rules still apply"}
+                      className={`hidden lg:inline-flex shrink-0 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider border ${isGradedPaper ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/30" : "bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/30"}`}>
+                      {isGradedPaper ? "Graded" : "Practice"}
                     </span>
                  )}
                  {/* Meta trail shares row 1 rather than claiming a second row. Each label

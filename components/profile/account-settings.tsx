@@ -164,8 +164,11 @@ export function AccountSecurityCard() {
     setPw((p) => ({ ...p, saving: true, error: "" }));
     const { error } = await (await supabaseClient()).auth.updateUser({ password: pw.next });
     if (error) return setPw((p) => ({ ...p, saving: false, error: friendlyAuthError(error.message) }));
+    // A changed password should lock out any device that knew the old one (4F).
+    const res = await fetch("/api/devices", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "revoke_others", device_id: getDeviceId() }) }).catch(() => null);
+    const n = res?.ok ? ((await res.json().catch(() => ({}))) as { count?: number }).count ?? 0 : 0;
     setPw({ next: "", confirm: "", show: false, saving: false, error: "", done: true });
-    toast("Password updated", "success");
+    toast(n ? `Password updated — signed out ${n} other device${n > 1 ? "s" : ""}` : "Password updated", "success");
   };
 
   const exportData = async () => {

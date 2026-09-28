@@ -624,6 +624,11 @@ Secrets are never pasted into chat or committed. Worker secrets: `npx wrangler s
 | Schedule mocks | `node --env-file=.env.local scripts/schedule-mocks.mjs 4` (next 4 Sundays; skips already scheduled) |
 | One-off test mock | `node --env-file=.env.local scripts/schedule-mocks.mjs --at=2026-09-27T13:00:00+05:30 "--title=Test Mock"` (same paper rules, grace and 180 min; not numbered) |
 | Refresh calibration (each March) | Update `data/calibration/cse/<year>.json` + `SOURCES.md` → `npm run check:calibration` |
+| **Roll back a bad deploy** (fastest, ~30 s) | `npx wrangler deployments list` → copy the previous good version id → `npx wrangler rollback <version-id>` (asks for a reason; the live site switches immediately). Then fix forward: revert the bad commit on `main` and push — CI redeploys. Database migrations are not rolled back by this; every migration is additive and backward-safe, so older app versions keep working against the newer schema. |
+| **Restore the database from a backup** | GitHub → Actions → *Database backup* → latest run → download `renyxera-db-backup`. Then: `gpg --decrypt renyxera-db-<stamp>.sql.gz.gpg > dump.sql.gz` (passphrase = the `BACKUP_PASSPHRASE` secret) → `gunzip dump.sql.gz` → restore into a **new** Supabase project with `psql "<its connection string>" -f dump.sql`, verify, then point the app at it. The dump covers the `public` schema (profiles, attempts, mocks, questions, keys); sign-in accounts live in Supabase Auth and are not in it. |
+| Keep the free database awake | `.github/workflows/keepalive.yml` pings `/api/health` every 3 days (Supabase pauses after 7 idle days). Manual: Actions → Keep-alive → Run workflow. |
+| End-to-end smoke | Runs in CI on every push (`scripts/e2e-smoke.mjs`: 11 pages × phone/desktop × light/dark + a guest exam). Locally: `npm run build && npx next start` then `npm run test:e2e`. |
+| Account isolation check | `node --env-file=.env.local scripts/check-isolation.mjs [baseUrl]` — two throwaway accounts on one browser; B must see nothing of A's. |
 | Redeploy without a commit | GitHub → Actions → CI → Run workflow (main) |
 | Rotate a secret | Update Worker secret / GitHub secret → manual redeploy |
 | A user reports a stuck page | Profile → Data & storage → Clear offline cache (or hard reset this device) |

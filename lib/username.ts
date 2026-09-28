@@ -13,6 +13,13 @@ const RESERVED = new Set([
   "moderator", "mod", "staff", "official", "api", "null", "undefined", "me", "profile",
 ]);
 
+// Offensive words (English + common Hindi/Hinglish), matched anywhere in the name so
+// "xx_<word>_99" is caught too. Kept short and specific to avoid blocking real names.
+const BLOCKED_PARTS = [
+  "fuck", "shit", "bitch", "bastard", "cunt", "pussy", "slut", "whore", "nigg", "porn",
+  "chutiya", "chutia", "madarchod", "bhenchod", "behenchod", "bhosdi", "gandu", "randi", "lavda", "lauda", "harami", "kutta", "kamina",
+];
+
 /** Lowercases and strips anything outside [a-z0-9_] — used on every keystroke. */
 export function normalizeUsername(raw: string): string {
   return raw.toLowerCase().replace(/[^a-z0-9_]/g, "").slice(0, USERNAME_MAX);
@@ -24,5 +31,6 @@ export function usernameProblem(name: string): string | null {
   if (!/^[a-z]/.test(name)) return "Must start with a letter.";
   if (!USERNAME_RE.test(name)) return "Only lowercase letters, numbers and underscores.";
   if (RESERVED.has(name)) return "That username is reserved.";
+  if (BLOCKED_PARTS.some((w) => name.replace(/_/g, "").includes(w))) return "Please choose a different username.";
   return null;
 }

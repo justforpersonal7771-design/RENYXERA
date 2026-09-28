@@ -97,6 +97,17 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - **Bug (user):** Save Shortcut also marked the question Bookmarked (and could overwrite a real bookmark's notes). Shortcut-only records are no longer bookmarks anywhere (AI Tutor button, Bookmarks page, dashboard count); saving a shortcut adds to an existing bookmark; un-bookmarking keeps a saved shortcut.
 - **Bug (user):** Leaderboard icon and mock cards "disappeared" — the live build had them; the tab had fallen back to an older cached copy. New `VersionWatch` + `/api/version`: on focus, every 5 min and on navigation the tab compares builds and reloads quietly (never during a test; at most once a minute).
 
+### 28 Sep 2026 — Release 4 hardening batch ✅ (backups 🔶)
+- **Spending rule (user):** anything costing money beyond a one-time ₹100 total goes to the backlog until income. Moved: Cloudflare R2 (card on file), custom domain, phone OTP (Firebase Blaze), hotlink protection.
+- Password change signs out every other device; 30-day idle devices sign themselves out.
+- Username blocklist (English + Hindi/Hinglish, no false hits on names like "grapefruit").
+- Graded / Practice badge in the exam header.
+- `/api/health` + `keepalive.yml` (every 3 days) so the free Supabase project never pauses.
+- `backup.yml`: weekly encrypted `pg_dump` artifact (90 days); restore steps in the runbook. Needs 2 secrets.
+- **CI end-to-end smoke** on every push: 11 pages × phone/desktop × light/dark + a guest exam (44 + 1 checks, passing locally on a prod build).
+- `scripts/check-isolation.mjs`: two accounts on one browser — B sees nothing of A's (passes).
+- Rollback runbook (`wrangler rollback`), listing verified; live drill awaits the user's go-ahead.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

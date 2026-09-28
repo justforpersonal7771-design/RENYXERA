@@ -1,0 +1,35 @@
+name: Database backup
+
+# Weekly encrypted dump of the Supabase database (the free plan has no point-in-time
+# recovery). Kept as a private workflow artifact for 90 days. Free.
+# Needs two repository secrets:
+#   SUPABASE_DB_URL      — the Session pooler connection string (Supabase → Connect)
+#   BACKUP_PASSPHRASE    — any long random passphrase; needed to decrypt a backup
+# Restore: see docs/TECHNICAL_REFERENCE.md → Operations runbook.
+on:
+  schedule:
+    - cron: "41 20 * * 6" # Sunday 02:11 IST
+  workflow_dispatch:
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump (schema + data), compress, encrypt
+        env:
+          DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          if [ -z "$DB_URL" ] || [ -z "$PASS" ]; then echo "Secrets SUPABASE_DB_URL / BACKUP_PASSPHRASE not set"; exit 1; fi
+          stamp=$(date -u +%Y%m%d-%H%M)
+          docker run --rm postgres:17 pg_dump "$DB_URL" --no-owner --no-privileges --schema=public --format=plain \
+            | gzip -9 > dump.sql.gz
+          test -s dump.sql.gz
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$PASS" --symmetric --cipher-algo AES256 -o "renyxera-db-$stamp.sql.gz.gpg" dump.sql.gz
+          rm dump.sql.gz
+          ls -lh renyxera-db-*.gpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: renyxera-db-backup
+          path: renyxera-db-*.sql.gz.gpg
+          retention-days: 90

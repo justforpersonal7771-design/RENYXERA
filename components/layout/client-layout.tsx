@@ -43,8 +43,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     if (flag) {
       sessionStorage.removeItem(SIGNED_OUT_FLAG);
       useToastStore.getState().show(
-        flag === "remote" ? "This device was signed out from your account settings." : flag === "everywhere" ? "Signed out on all devices" : "Signed out",
-        flag === "remote" ? "info" : "success"
+        flag === "remote" ? "This device was signed out from your account settings." : flag === "idle" ? "Signed out after 30 days without use — sign in again to continue." : flag === "everywhere" ? "Signed out on all devices" : "Signed out",
+        flag === "remote" || flag === "idle" ? "info" : "success"
       );
     }
   }, []);
