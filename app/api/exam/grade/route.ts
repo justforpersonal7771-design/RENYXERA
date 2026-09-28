@@ -5,7 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { isNatCorrect, isOptionsCorrect, marksFor } from "@/lib/grading";
-import { mockEmbargo } from "@/lib/security/mock-embargo";
+import { mockResultHold } from "@/lib/security/mock-embargo";
 
 export const runtime = "nodejs";
 
@@ -103,6 +103,7 @@ export async function POST(req: NextRequest) {
     score = Math.round(score * 100) / 100;
 
     let stored = false;
+    let attemptMockId: string | null = null;
     const attempt = parsed.data.attempt;
     if (userId && attempt) {
       const known = results.filter((r) => r.known);
@@ -111,6 +112,7 @@ export async function POST(req: NextRequest) {
         const { data: row } = await db.from("exam_attempts")
           .select("id, user_id, status, server_started_at, duration_seconds, question_ids, mock_id")
           .eq("id", attempt.id).maybeSingle();
+        if (row && row.user_id === userId) attemptMockId = row.mock_id ?? null;
 
         if (row && row.user_id !== userId) {
           stored = false; // someone else's attempt id — never touch it
@@ -161,14 +163,13 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // A running All-India mock's questions: the attempt is graded and stored above, but the
-    // score, per-question results and keys stay hidden until the results time.
-    const embargo = await mockEmbargo(db);
-    const locked = ids.filter((id) => embargo.ids.has(id));
-    if (locked.length) {
-      const resultsAt = locked.map((id) => embargo.resultsAt.get(id)!).sort().at(-1);
+    // Only an All-India mock attempt is held: graded and stored above, but its score,
+    // per-question results and keys are released with everyone's at the results time.
+    // Every other test (Exam Setup, practice, revision) is always graded immediately.
+    const holdUntil = await mockResultHold(db, attemptMockId);
+    if (holdUntil) {
       return NextResponse.json(
-        { withheld: true, results_at: resultsAt, stored },
+        { withheld: true, results_at: holdUntil, stored },
         { headers: { "Cache-Control": "private, no-store" } }
       );
     }
