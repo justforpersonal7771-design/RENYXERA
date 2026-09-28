@@ -1,7 +1,7 @@
 # RENYXERA — Progress Checklist
 
 **Last updated:** 28 September 2026 (Release 5 integrity, mocks and leaderboards; earlier full cross-check 26 Sep)
-**Companion to:** `RENYXERA_Master_Plan_Auth_Security_Monetization.md` (full rationale, module-by-module — this file is status only)
+**Companion to:** `RENYXERA_Master_Plan_Auth_Security_Monetization.md` (full rationale, module-by-module — this file is status only). Also reconciled on 28 Sep with `docs/CONTENT_STRATEGY.md`, `docs/MARKETING_STRATEGY.md`, `BUGS.md`, `HANDOVER_AUDIT_2026-09-17.md` and the older Release-4 master prompt / growth / deployment plans (superseded by the Master Plan; their unique items are folded in below).
 
 Legend: ✅ Done and verified · 🟨 Partly done · 🔶 Done but needs your confirmation/action · ⬜ Not started
 
@@ -88,11 +88,16 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | CI grep over the **built output** proving no service-role key is in the client bundle | ✅ *(scripts/check-security.mjs in CI)* |
 | CI test proving the anon key reads **zero rows** from `question_answers` | ✅ *(automated in CI via check:security)* |
 | Automated Playwright regression suite in CI (desktop + mobile, light + dark) | ⬜ *(run manually on every change today; not in CI)* |
-| Error tracking (Sentry free tier) | ⬜ |
-| Product analytics (Cloudflare Web Analytics, cookieless) | ⬜ |
+| Error tracking (Sentry free tier) | ✅ *(lazy-loaded, errors only, PII stripped — step 9)* |
+| Product analytics (Cloudflare Web Analytics, cookieless) | ✅ *(step 9)* |
 | Structured API logs + anomaly alerts | 🟨 *(route-level logging exists; no alerting)* |
 | Supabase idle-pause keep-alive (scheduled ping) | ⬜ *(only matters pre-launch)* |
 | Worker CPU budget: prerendered pages + static dataset served without the Worker (fixes Error 1102) | ✅ |
+| Database backups: scheduled `pg_dump` (GitHub Actions, free) kept as encrypted artifacts; restore tested | ⬜ *(Release 4 master prompt, Module 4D — Supabase free has no point-in-time recovery)* |
+| Developer diagnostics view (errors, failed AI calls, IndexedDB/dataset failures) without user PII | ⬜ *(4D; folds into the Admin Console, Release 10)* |
+| Performance pass: no hydration warnings or layout shift, code-split heavy AI/analytics modules, lazy images, long lists virtualised | 🟨 *(lazy images + dynamic imports in places; no measured budget yet — master prompt §12)* |
+| Accessibility pass: keyboard navigation, visible focus, contrast, reduced motion on every screen | 🟨 *(reduced-motion setting + focus rings ✅; no full keyboard/contrast audit — §13)* |
+| Migration + cache-version strategy documented (backward-safe migrations, SW cache versions) | ✅ *(docs/TECHNICAL_REFERENCE §6.1, §5.1)* |
 
 ---
 
@@ -111,9 +116,9 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Full live verification (pages, dataset, grading, AI/Gemini, Supabase auth) on Cloudflare | ✅ |
 | Service worker + PWA install working on Cloudflare | ✅ |
 | Old duplicate Worker deleted | ✅ |
-| GitHub Actions CI/CD (auto-deploy on push to `main`) | 🟨 *(set up and verified earlier; recent deploys have been made locally with `npm run deploy:cf` because pushes weren't landing — check the Actions tab)* |
+| GitHub Actions CI/CD (auto-deploy on push to `main`) | ✅ *(27 Sep: push to main → checks → deploy → live smoke test; every deploy since has gone through it)* |
 | R2 bucket provisioned; CDN base URL as a single env var | ⬜ *(see Platform-wide → Images)* |
-| DNS, Web Analytics and Turnstile in the same Cloudflare account | ⬜ |
+| DNS, Web Analytics and Turnstile in the same Cloudflare account | 🟨 *(Web Analytics + Turnstile ✅ in the Worker's account; DNS waits for a custom domain)* |
 | Rollback path documented and tested | ⬜ |
 | Vercel decommissioned | 🔶 *(kept dormant by decision — 🔴#5)* |
 | Custom domain | ⬜ *(declined for now — revisit once there's revenue)* |
@@ -228,7 +233,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Sync status model (Offline/Pending/Syncing/Synced/Conflict/Failed) + indicator | ⬜ |
 | Conflict rules (LWW prefs, union bookmarks, max counters, server wins on scores) | ⬜ |
 | Durable sync queue with backoff; "Sync now" | ⬜ |
-| "Export my data (JSON)" | ⬜ |
+| "Export my data (JSON)" | ✅ *(Profile → Data & storage; /api/account/export + local data)* |
 
 ### 4J · P0 · Calibration Data Foundation *(makes predictions accurate)*
 | Task | Status |
@@ -289,7 +294,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Scheduled All-India mock tests; server-computed percentile/AIR | ✅ *(Sundays 10:00–13:00 IST, 30-min entry grace, exactly 180 min, results 13:45; same paper per person in a different order — GA first, then Maths + Core mixed; one attempt each)* |
 | Leaderboards (All-India/subject/college/friends), opt-in with privacy toggle | 🟨 *(navbar Leaderboard: All-India Mock + weekly Practice boards with animated rank movement and a results-published alert; display choice anonymous / username / username + student ID; subject/college/friends not built)* |
 | Streaks, weekly challenges, topic ladders | 🟨 *(streaks exist; challenges/ladders not built)* |
-| Shareable result cards | ⬜ |
+| Shareable result cards | ✅ *(28 Sep: mock scorecard + practice results → PNG card via share sheet / download; name follows the leaderboard display choice)* |
 
 ---
 
@@ -302,7 +307,10 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | ⬜ |
 | Editorial content (strategy, cut-off analysis, study plans) | ⬜ |
 | Free tools (rank predictor, score / normalisation calculator, college predictor) | ⬜ |
-| Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | ⬜ |
+| More free tools from the marketing plan: cutoff tracker, marks-vs-rank tables, days-left countdown, study-plan generator | ⬜ *(docs/MARKETING_STRATEGY §3.1)* |
+| Auto-generated articles from our tags ("Most repeated topics 2015–2026", "How to prepare for GATE CS in 150 days") | ⬜ *(§3.1)* |
+| Public PYQ page shape: `/pyq/cs/<year>/q<n>-<slug>` with a solution preview and "Practise this in the simulator" | ⬜ *(§3.1; answer/solution preview only, full keys stay server-side)* |
+| Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | 🟨 *(sitemap + robots + branch-page FAQ structured data ✅; canonicals, OG cards, CWV budget pending)* |
 | Sitemap submitted; indexing confirmed in Search Console | ⬜ |
 
 ### 6B · P1 · Legal Pages & Ad Network Onboarding
@@ -337,6 +345,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Same taxonomy tags as PYQs + difficulty; clearly labelled "Practice" vs "PYQ" | ⬜ |
 | Difficulty recalibrated from real learner response data | ⬜ |
 | Annual Trend Refresh each March: add new papers, recompute weights, rebalance, publish "What changed" | ⬜ *(recurring)* |
+| "Report an issue" on every question; 24-hour fix target for accepted reports | ⬜ *(docs/CONTENT_STRATEGY §3.9)* |
+| Yearly March refresh: new PYQs, ~10% new practice in trending topics, retire weak questions, recalibrate | ⬜ *(recurring; §4.6)* |
 
 ### 6E · P1 · Study Materials
 | Task | Status |
@@ -388,7 +398,12 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Referral credits (both sides) | ⬜ |
-| Shareable achievement / result / AIR cards | ⬜ |
+| Shareable achievement / result / AIR cards | 🟨 *(result + AIR cards ✅ 28 Sep; streak / topic-mastery / achievement cards pending)* |
+| "Your GATE year" recap (Wrapped-style, shareable) after the exam | ⬜ *(MARKETING §3.8)* |
+| "Study with me" focus-room link | ⬜ *(§3.8)* |
+| UTM capture + weekly metrics dashboard (acquisition by channel, D7/D30 retention, first-test-within-24h activation) | ⬜ *(§9; free: Web Analytics + Postgres)* |
+| Telegram channel + daily-question bot | ⬜ *(§3.3; free Bot API)* |
+| Welcome email series | ⬜ *(needs custom SMTP — backlog #1)* |
 | College ambassador programme | ⬜ |
 | Study-group invitations; testimonials for credits | ⬜ |
 

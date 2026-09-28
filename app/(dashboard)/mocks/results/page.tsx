@@ -1,5 +1,6 @@
 "use client";
 
+import { ShareResultButton } from "@/components/share/share-result-button";
 import { DISQUALIFYING_FLAGS, FLAG_TEXT, isDisqualified } from "@/lib/exam/integrity-rules";
 import { Suspense, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -112,7 +113,11 @@ function Results() {
 
           {mine && mine.status === "ranked" && (
             <div className="card-glass rounded-2xl p-5">
-              <p className="text-xs font-black uppercase tracking-wider text-[var(--text-muted)]">Your scorecard · computed the GATE way</p>
+              <div className="flex items-center justify-between gap-3 flex-wrap">
+                <p className="text-xs font-black uppercase tracking-wider text-[var(--text-muted)]">Your scorecard · computed the GATE way</p>
+                <ShareResultButton title={mock?.title ?? "All-India Mock"} subtitle={`${mine.candidates?.toLocaleString("en-IN") ?? ""} ranked aspirants`}
+                  stats={[{ label: "All-India Rank", value: `#${mine.air}` }, { label: "Percentile", value: String(mine.percentile) }, { label: "Marks", value: `${mine.marks}` }, { label: "GATE score", value: mine.gate_score != null ? String(mine.gate_score) : "—" }]} />
+              </div>
               <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {([
                   ["Marks", `${mine.marks} / ${mine.max_marks ?? 100}`],

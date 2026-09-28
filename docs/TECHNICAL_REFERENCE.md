@@ -482,6 +482,11 @@ Each module lists **purpose → main code → how it works → what it depends o
 - **Peak-load behaviour:** questions come from the CDN (no server load); start and submit retry with exponential backoff + jitter; start reuses one attempt id (retry = resume); grading is idempotent; auto-submit happens at each person's own deadline, spreading load.
 - **Leaderboard:** `mock_leaderboard()` returns top N + the caller, rank, percentile = share of ranked aspirants scored above; display per privacy choice.
 
+- **Integrity (mocks and practice):** `lib/exam/integrity-rules.ts` — every exit from the exam window shows *Warning n of 4*; the 5th auto-submits with a `disqualified` flag and the reason. Only disqualifying flags (disqualified, tab_switches, over_time, question_set_mismatch, no_start_token) remove an attempt from ranking (`attempt_disqualified()`, migration 0015); fast answers / leaving full screen are informational.
+- **Result hold:** only a mock attempt's own score/keys are held until `results_at` (`lib/security/mock-embargo.ts → mockResultHold`); practice is always graded immediately. Results/review pages count down, then open themselves; a *results on their way* state retries every 30 s.
+- **Leaderboards:** navbar Leaderboard (`components/layout/leaderboard-panel.tsx`) — All-India Mock (`mock_leaderboard_moves`) and weekly Practice (`practice_leaderboard`) with previous rank for animated movement; results-published dot + toast. Share cards: `components/share/share-result-button.tsx` (canvas PNG, share sheet / download; name follows the display choice).
+- **Status surfaces:** dashboard `MockStatusCard`, Analytics `MockAnalytics`.
+
 ### 9.8 Analytics and learning engines
 - **Code:** `lib/analytics/*` (analytics, mistake, snapshot, streak, goal-slider engines), `lib/learning/*` (Learning, Mastery, Focus, Adaptive, Recommendation engines), `store/use-analytics-store.ts`, `app/(dashboard)/analytics`, dashboard widgets, `lib/achievements.ts`.
 - **How:** engines compute metrics from local session history (correctness via `lib/grading.ts`), cache them, and invalidate after each submit. Mistake engine records wrong/unanswered questions (skips answers still locked). Streaks and 15 achievements come from real activity.
@@ -638,3 +643,13 @@ Secrets are never pasted into chat or committed. Worker secrets: `npx wrangler s
 cloud sync of study data (4I); per-day download cap; rasterised "flattened" downloads;
 payments and entitlements (Release 7); exam/branch picker for multi-branch (backlog #7);
 re-enable email confirmation with custom SMTP once there's revenue (backlog #5).
+
+---
+
+## Appendix — cross-cutting runtime pieces (added 28 Sep 2026)
+
+| Piece | Code | What it does |
+|---|---|---|
+| Full screen | `lib/fullscreen.ts`, `components/ui/fullscreen-toggle.tsx` | Standard + webkit API, pinned fallback where there's none (iPhone); one shared event. The exam enlarges a stable `exam-question-stage`, so ‹ › keep full screen. |
+| Version watch | `components/system/version-watch.tsx`, `/api/version` | Build id baked at build; a tab on an older copy reloads quietly (never mid-test; ≤ 1/min). |
+| Score regression | `npm run check:score` | 100 random attempts graded by the live server vs the client — must agree exactly. |

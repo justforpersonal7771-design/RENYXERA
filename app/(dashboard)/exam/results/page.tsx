@@ -1,5 +1,6 @@
 "use client";
 
+import { ShareResultButton } from "@/components/share/share-result-button";
 import { useEffect, useState, useMemo } from "react";
 import { TiltCard, CountUp as CountUpFx } from "@/components/ui/interactive";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -478,6 +479,10 @@ export default function ResultSummaryPage() {
               always reachable no matter how tall the scoreboard content gets. */}
           <div className="shrink-0 border-t border-[var(--border-subtle)] p-4 [@media(max-height:860px)]:p-3">
             <div className="flex flex-col sm:flex-row gap-2.5">
+              <ShareResultButton className="sm:flex-none h-auto py-3 [@media(max-height:860px)]:py-2.5"
+                title={String((session.draftConfig.config as { title?: string }).title ?? ((session.draftConfig.config as { yearShift?: string }).yearShift ? `GATE CS ${(session.draftConfig.config as { yearShift?: string }).yearShift} paper` : "Practice test"))}
+                subtitle="Practice test"
+                stats={[{ label: "Marks", value: `${Math.round(marks * 100) / 100} / ${maxPossibleMarks}` }, { label: "Accuracy", value: `${Math.round(accuracy)}%` }, { label: "Correct", value: String(correct) }, { label: "Attempted", value: `${totalAttempted}` }]} />
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push("/")}

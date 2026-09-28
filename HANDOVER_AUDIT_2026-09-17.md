@@ -41,3 +41,7 @@ The user has **no budget** — every dependency, hosting choice, and API must ru
 ## Process note
 
 This audit was done from a Claude Code session rooted in a different (stale) directory (`D:\Personal\Adil GATE\GATE_OS`) that turned out not to be the real project; all analysis above was done via background agents pointed at this repo's absolute path. A second interactive session (`r2ma-stable-77`) is already open rooted correctly in this directory — continue there for a clean working directory instead of fighting path friction.
+
+
+## Status — 28 Sep 2026
+All seven findings above are resolved: AI calls go through the server route (/api/ai/generate, no client key), AI practice correctness is parsed, no fabricated telemetry, readiness uses real inputs, conversation memory is persisted, the service worker parses and caches, and the unused design-system/ folder was removed (framer-motion also gone; motion/react only).
