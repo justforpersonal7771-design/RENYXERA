@@ -202,6 +202,9 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Consistent screen padding (no page-level max-width/padding) on Dashboard, Mocks, Mock results, Calendar, Downloads.
 - Removed unused scratch/ and root test-* files; ignore zz-* helpers and logs.
 
+### 30 Sep 2026 — AI model routing ✅
+- `AI_ROUTE` in `lib/ai/gemini.ts`: HINT/SHORTCUT → gemini-3.5-flash-lite (2.5-flash-lite is closed to new API users), EXPLAIN/FOLLOWUP/PRACTICE/REVISION → gemini-2.5-flash; per-type output caps; cache key includes the model. Both models verified live with the app key.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.
