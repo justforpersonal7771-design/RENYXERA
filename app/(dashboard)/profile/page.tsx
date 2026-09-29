@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   Loader2, Save, CheckCircle2, User as UserIcon, Palette, IdCard, Target, GraduationCap, CalendarDays,
   Trophy, Clock, XCircle, LayoutGrid, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, MapPin, BookOpen,
-  Building2, Copy, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles,
+  Building2, Copy, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles, Phone,
 } from "lucide-react";
 import { upcomingExamYear, effectiveTargetYear, targetYearRolledForward, examDateFor } from "@/lib/goals/exam-year";
 import { NumberStepper } from "@/components/ui/number-stepper";
@@ -82,7 +82,8 @@ const STUDY_TIMES = [
 
 const SECTIONS = [
   { id: "overview", label: "Overview", subtitle: "Your progress, streaks and achievements at a glance.", icon: LayoutGrid, tint: "bg-indigo-500/10 text-indigo-500" },
-  { id: "personal", label: "Personal info", subtitle: "Your avatar, identity and background.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
+  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Palette, tint: "bg-pink-500/10 text-pink-500" },
+  { id: "personal", label: "Personal info", subtitle: "Your identity and background.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
   { id: "goals", label: "Exam goals", subtitle: "Your target, schedule and the plan it builds.", icon: Target, tint: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
   { id: "preferences", label: "Preferences", subtitle: "Theme, motion and reminders on this device.", icon: SlidersHorizontal, tint: "bg-violet-500/10 text-violet-500" },
   { id: "security", label: "Account & security", subtitle: "Sign-in, password, your data and account.", icon: ShieldCheck, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
@@ -129,6 +130,7 @@ interface Form {
   aspirantStatus: string; attemptNumber: number | null; category: string; pwd: boolean;
   targetBranch: string; targetYear: string; examDate: string; targetRank: string; targetScore: number | null;
   dailyHours: string; studyDays: number; studyTime: string;
+  phone: string; contactOptIn: boolean;
 }
 
 function fromProfile(p: Profile | null): Form {
@@ -150,6 +152,8 @@ function fromProfile(p: Profile | null): Form {
     dailyHours: p?.daily_study_hours ? String(p.daily_study_hours) : "2",
     studyDays: p?.study_days_per_week ?? 6,
     studyTime: p?.preferred_study_time || "",
+    phone: (p?.phone || "").replace(/^\+91/, ""),
+    contactOptIn: !!p?.contact_opt_in,
   };
 }
 
@@ -232,6 +236,7 @@ export default function ProfilePage() {
   async function handleSave() {
     if (!user) return;
     if (usernameBlocksSave) return setError(nameStatus.reason || "Wait for the username check to finish.");
+    if (form.phone && !/^[6-9][0-9]{9}$/.test(form.phone)) return setError("Enter a valid 10-digit Indian mobile number, or leave it empty.");
     setSaving(true); setError(null); setSaved(false);
     try {
       const { createClient } = await import("@/lib/supabase/client");
@@ -251,6 +256,8 @@ export default function ProfilePage() {
         target_score: f.targetScore,
         daily_study_hours: f.dailyHours ? Number(f.dailyHours) : 2,
         study_days_per_week: f.studyDays, preferred_study_time: f.studyTime || null,
+        phone: f.phone ? `+91${f.phone}` : null,
+        contact_opt_in: !!f.phone && f.contactOptIn,
       };
       const { error } = await createClient().from("profiles").update(updates).eq("id", user.id);
       if (error) {
@@ -259,6 +266,10 @@ export default function ProfilePage() {
           setError("That username was just taken — try another.");
         } else if (/profiles_username_format/.test(error.message)) {
           setError("Usernames can only use lowercase letters, numbers and underscores.");
+        } else if (/premium_avatar_requires/.test(error.message)) {
+          setError(/requires_pro/.test(error.message) ? "That avatar style needs Pro — pick another or upgrade on the Plans page." : "That avatar style needs Plus — pick another or upgrade on the Plans page.");
+        } else if (/profiles_phone_format/.test(error.message)) {
+          setError("Enter a valid 10-digit Indian mobile number, or leave it empty.");
         } else if (/profiles_details_check/.test(error.message)) {
           setError("One of the details is too long or out of range — please check and try again.");
         } else {
@@ -320,13 +331,16 @@ export default function ProfilePage() {
 
   const tabBody = (() => {
     switch (tab) {
+      case "avatar":
+        return (
+          <Card icon={Palette} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations. Silver styles need Plus, Gold styles need Pro." tint="bg-pink-500/10 text-pink-500">
+            <AvatarPicker value={{ style: f.avatarStyle as any, seed: f.avatarSeed }} onChange={(v) => setForm((x) => ({ ...x, avatarStyle: v.style, avatarSeed: v.seed }))} />
+          </Card>
+        );
       case "personal":
         return (
           <div className="space-y-5">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-stretch">
-              <Card icon={Palette} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations." tint="bg-fuchsia-500/10 text-fuchsia-500" className="h-full">
-                <AvatarPicker value={{ style: f.avatarStyle as any, seed: f.avatarSeed }} onChange={(v) => setForm((x) => ({ ...x, avatarStyle: v.style, avatarSeed: v.seed }))} />
-              </Card>
+            <div>
               <Card icon={IdCard} title="Identity" subtitle="How you show up across RENYXERA." tint="bg-indigo-500/10 text-indigo-500" delay={0.04} className="h-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
@@ -380,7 +394,20 @@ export default function ProfilePage() {
                     </AnimatePresence>
                     <p className="mt-1 text-right text-[11px] text-[var(--text-muted)] font-num">{f.bio.length}/160</p>
                   </div>
-                  <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="sm:col-span-2">
+                    <label className={LABEL}><Phone className="w-3.5 h-3.5" /> Mobile number <span className="font-normal normal-case tracking-normal text-[var(--text-muted)]">— optional</span></label>
+                    <div className="relative max-w-sm">
+                      <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-[var(--text-muted)]">+91</span>
+                      <input type="tel" inputMode="numeric" autoComplete="tel-national" value={f.phone} onChange={(e) => set("phone", e.target.value.replace(/\D/g, "").slice(0, 10))} className={`${INPUT} pl-12`} placeholder="10-digit mobile number" />
+                    </div>
+                    {f.phone && (
+                      <label className="mt-2 flex items-start gap-2 text-[11px] text-[var(--text-secondary)] cursor-pointer">
+                        <input type="checkbox" checked={f.contactOptIn} onChange={(e) => set("contactOptIn", e.target.checked)} className="mt-0.5 accent-violet-600" />
+                        <span>RENYXERA may contact me on this number (WhatsApp/SMS) about mocks, results and updates.</span>
+                      </label>
+                    )}
+                  </div>
+                  <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3.5 py-2.5 min-w-0">
                       <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Student ID</p>
                       <div className="mt-0.5 flex items-center gap-2 min-w-0">
@@ -396,6 +423,11 @@ export default function ProfilePage() {
                       <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Email</p>
                       <p className="mt-0.5 text-sm font-semibold text-[var(--text-primary)] truncate">{user.email}</p>
                       <p className="text-[10px] text-[var(--text-muted)]">Sign-in email · manage in Account &amp; security</p>
+                    </div>
+                    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3.5 py-2.5 min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Mobile</p>
+                      <p className="mt-0.5 text-sm font-semibold text-[var(--text-primary)] truncate">{f.phone ? `+91 ${f.phone.slice(0, 5)} ${f.phone.slice(5)}` : "Not added"}</p>
+                      <p className="text-[10px] text-[var(--text-muted)]">{f.phone ? (f.contactOptIn ? "Updates allowed" : "No updates") : "Add it above (optional)"}</p>
                     </div>
                   </div>
                 </div>
@@ -536,7 +568,7 @@ export default function ProfilePage() {
     // Desktop: fixed header + fixed section menu; only the right-hand details scroll.
     <div data-fill-height data-savebar={dirty || saving || saved || !!error ? "true" : undefined} className="w-full max-w-[1500px] mx-auto flex flex-col gap-4 lg:h-full lg:min-h-0">
       <div className="shrink-0">
-        <ProfileHeader name={name} username={f.username} email={user.email} bio={f.bio} tier={profile?.tier || "free"} avatarUri={avatarUri}
+        <ProfileHeader name={name} username={f.username} email={user.email} phone={profile?.phone ?? null} bio={f.bio} tier={profile?.tier || "free"} avatarUri={avatarUri}
           targetYear={f.targetYear} branchLabel={branchLabel} targetRank={f.targetRank} dailyHours={f.dailyHours} location={location}
           daysLeft={daysLeft} completeness={Math.min(100, completeness)} signingOut={signingOut} onSignOut={handleSignOut} studentId={profile?.student_id} />
       </div>

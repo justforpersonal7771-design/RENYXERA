@@ -29,6 +29,8 @@ export interface Profile {
   study_days_per_week?: number | null;
   preferred_study_time?: string | null;
   student_id?: string | null;
+  phone?: string | null;
+  contact_opt_in?: boolean;
   onboarded_at?: string | null;
   leaderboard_opt_in?: boolean;
   leaderboard_display?: "anonymous" | "username" | "username_student_id";

@@ -195,6 +195,13 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Nav: tier colours without purple flash (entitlement memory), metallic icon highlights/scroll line; bottom dock more prominent. Rank-curve label halo.
 - Leaderboards show Plus/Pro crowns (migration 0023 `tiers_for_labels`).
 
+### 30 Sep 2026 — Profile, paywall layout, auth hardening, cleanup ✅
+- Profile: separate Avatar studio section; Personal info = Identity + Background; editable mobile number with consent, shown in the ID/email tiles and the profile card. Avatar button opens the menu only.
+- Analytics: Free sees a full-screen members-only card (no metrics); Plus sees Plus analytics with all Pro metrics grouped at the bottom behind one Pro upgrade.
+- Auth: Terms/Privacy agreement required for sign-in, sign-up and Google; new-password rule (8+, upper, lower, number, special) with live checklist. Terms of Service expanded to 18 sections (plans, payments, AI credits, referrals, devices, sponsors).
+- Consistent screen padding (no page-level max-width/padding) on Dashboard, Mocks, Mock results, Calendar, Downloads.
+- Removed unused scratch/ and root test-* files; ignore zz-* helpers and logs.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

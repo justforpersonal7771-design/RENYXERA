@@ -127,7 +127,7 @@ export default function Home() {
   const avgTimePerQuestion = overview?.avgTimePerQuestionMs ? Math.round(overview.avgTimePerQuestionMs / 1000) : 0;
 
   return (
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 space-y-8">
+    <div className="w-full space-y-8">
       
       {/* 1. Hero Section Banner */}
       <HeroSection

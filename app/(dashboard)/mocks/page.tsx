@@ -150,7 +150,7 @@ export default function MocksPage() {
   const dayRef = live ?? next;
 
   return (
-    <div className="w-full max-w-5xl mx-auto pb-10 space-y-6">
+    <div className="w-full pb-10 space-y-6">
       {/* Hero: live paper, or a ticking countdown to the next one */}
       <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl p-6 sm:p-8 bg-gradient-to-br from-indigo-700 via-violet-600 to-fuchsia-600 text-white shadow-[0_24px_60px_-20px_rgba(79,70,229,0.6)]">
         <motion.div aria-hidden="true" className="absolute -top-20 -right-16 w-72 h-72 rounded-full bg-cyan-300/25 blur-3xl" animate={{ x: [0, -20, 0], y: [0, 15, 0] }} transition={{ duration: 9, repeat: Infinity }} />

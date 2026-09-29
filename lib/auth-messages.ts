@@ -13,9 +13,21 @@ export function emailProblem(email: string): string | null {
 
 export function passwordProblem(password: string, forNewPassword = false): string | null {
   if (!password) return "Enter your password.";
-  if (forNewPassword && password.length < 8) return `Use at least 8 characters (${password.length} so far).`;
+  if (forNewPassword) {
+    const missing = PASSWORD_RULES.filter((r) => !r.test(password)).map((r) => r.label.toLowerCase());
+    if (missing.length) return `Password needs ${missing.join(", ")}.`;
+  }
   return null;
 }
+
+/** New-password rules (sign-up and password change). Shown as a live checklist. */
+export const PASSWORD_RULES = [
+  { label: "At least 8 characters", test: (p: string) => p.length >= 8 },
+  { label: "An uppercase letter", test: (p: string) => /[A-Z]/.test(p) },
+  { label: "A lowercase letter", test: (p: string) => /[a-z]/.test(p) },
+  { label: "A number", test: (p: string) => /[0-9]/.test(p) },
+  { label: "A special character", test: (p: string) => /[^A-Za-z0-9]/.test(p) },
+];
 
 export function friendlyAuthError(message: string): string {
   const m = message.toLowerCase();

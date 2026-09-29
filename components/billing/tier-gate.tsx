@@ -39,3 +39,43 @@ export function TierGate({ tier, feature, perk, children, className = "" }: { ti
     </div>
   );
 }
+
+/**
+ * Whole-screen lock for paid-only screens (7A). A Free account sees NO real metric: the
+ * page is not rendered at all behind the card (just a decorative skeleton), and the card
+ * compares Plus and Pro. Plus/Pro accounts see the screen normally.
+ */
+export function PaidScreen({ feature, perk, children }: { feature: string; perk: string; children: ReactNode }) {
+  const ent = useEntitlements();
+  if (ent.loading) return <div data-fill-height="always" className="w-full h-full grid place-items-center"><div className="w-6 h-6 rounded-full border-2 border-[var(--border)] border-t-violet-500 animate-spin" /></div>;
+  if (ent.paid) return <>{children}</>;
+  const plus = PLANS.find((p) => p.id === "plus_monthly"), pro = PLANS.find((p) => p.id === "pro_monthly");
+  return (
+    <div data-fill-height="always" className="relative w-full h-full overflow-hidden">
+      <div aria-hidden="true" className="absolute inset-0 grid grid-cols-2 lg:grid-cols-4 gap-4 opacity-40 blur-[3px]">
+        {Array.from({ length: 8 }, (_, i) => <div key={i} className={`rounded-2xl bg-gradient-to-br from-[var(--surface-secondary)] to-[var(--surface)] border border-[var(--border-subtle)] ${i % 3 === 0 ? "row-span-2" : ""}`} />)}
+      </div>
+      <div className="absolute inset-0 flex items-center justify-center p-4 bg-gradient-to-b from-transparent via-[var(--background)]/40 to-[var(--background)]/80">
+        <div className="w-full max-w-2xl rounded-3xl border border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md p-6 sm:p-8 shadow-2xl text-center">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 text-violet-700 dark:text-violet-300 text-[11px] font-black uppercase tracking-wider"><Lock className="w-3.5 h-3.5" /> Members only</span>
+          <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)]">{feature} is part of Plus &amp; Pro</h2>
+          <p className="mt-2 text-sm text-[var(--text-secondary)]">{perk}</p>
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+            {[{ t: "plus" as const, plan: plus, lines: ["Mastery, trends & subject explorer", "Smart insights & daily adaptive path", "75 AI requests a day"] },
+              { t: "pro" as const, plan: pro, lines: ["Everything in Plus", "Mock analytics, topic ladders, difficulty", "150 AI requests a day · offline downloads"] }].map(({ t, plan, lines }) => (
+              <div key={t} className={`rounded-2xl border p-4 ${t === "pro" ? "border-amber-400/60 bg-amber-500/5" : "border-slate-400/60 bg-slate-500/5"}`}>
+                <div className="flex items-center justify-between">
+                  <p className={`text-xs font-black uppercase tracking-wider ${t === "pro" ? "text-amber-700 dark:text-amber-300" : "text-slate-600 dark:text-slate-300"}`}>{t === "pro" ? "Pro · Gold" : "Plus · Silver"}</p>
+                  <ProCrown metal={t === "pro" ? "gold" : "silver"} className="is-inline !w-8 !h-6" />
+                </div>
+                <p className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">{plan?.pricePaise != null ? `${formatPrice(plan.pricePaise)}/month` : "Coming soon"}</p>
+                <ul className="mt-2 space-y-1 text-xs text-[var(--text-secondary)]">{lines.map((l) => <li key={l}>• {l}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+          <Link href="/pro" className="mt-6 inline-flex h-11 items-center justify-center rounded-xl px-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-violet-500/30">See plans</Link>
+        </div>
+      </div>
+    </div>
+  );
+}

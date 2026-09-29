@@ -131,7 +131,7 @@ export default function DownloadsPage() {
 
   return (
     <TierGate tier="pro" feature="Offline downloads" perk="Save whole papers to this device and practise without internet — on the train, in the library, anywhere.">
-    <div className="w-full max-w-5xl mx-auto flex flex-col gap-5 pb-8">
+    <div className="w-full flex flex-col gap-5 pb-8">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
         <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-violet-500/15 blur-3xl pointer-events-none" />

@@ -79,7 +79,7 @@ function Results() {
   const total = rows?.[0]?.total ?? 0;
 
   return (
-    <div className="w-full max-w-4xl mx-auto pb-10 space-y-5">
+    <div className="w-full pb-10 space-y-5">
       <Link href="/mocks" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><ArrowLeft className="w-4 h-4" /> All mocks</Link>
       <div>
         <h1 className="text-2xl font-extrabold text-[var(--text-primary)]">{mock?.title}</h1>

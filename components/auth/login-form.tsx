@@ -29,6 +29,7 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [agreed, setAgreed] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,6 +42,7 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
     const fe = { email: emailProblem(email), password: passwordProblem(password, false) };
     setFieldErrors(fe);
     if (fe.email || fe.password) return;
+    if (!agreed) { setError("Please agree to the Terms of Service and Privacy Policy to continue."); return; }
     setError(null);
     setLoading(true);
 
@@ -70,7 +72,13 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
       <h1 className="text-xl font-display font-bold text-[var(--text-primary)] mb-1">Welcome <span className="font-serif italic font-normal text-[1.15em] bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent pr-0.5">back</span></h1>
       <p className="text-sm text-[var(--text-secondary)] mb-6">Sign in to sync your progress across devices.</p>
 
-      <GoogleAuthButton onError={setError} />
+      <label className="flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">
+        <input type="checkbox" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setError(null); }} className="mt-0.5 accent-indigo-600" />
+        <span>I agree to the <a href="/terms" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Terms of Service</a> and <a href="/privacy" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Privacy Policy</a>.</span>
+      </label>
+      <div className={agreed ? "" : "opacity-50 pointer-events-none"} aria-disabled={!agreed} title={agreed ? undefined : "Agree to the terms first"}>
+        <GoogleAuthButton onError={setError} />
+      </div>
 
       <div className="flex items-center gap-3 my-5">
         <div className="h-px flex-1 bg-[var(--border)]" />
@@ -144,7 +152,7 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
 
         <button
           type="submit"
-          disabled={loading || !captchaToken}
+          disabled={loading || !captchaToken || !agreed}
           className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-sm px-4 py-2.5 transition-colors disabled:opacity-50 disabled:pointer-events-none mt-1"
         >
           {loading && <Loader2 className="w-4 h-4 animate-spin" />}

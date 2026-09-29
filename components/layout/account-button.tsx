@@ -105,7 +105,7 @@ export function AccountButton() {
     <>
       <Link ref={btnRef} href="/profile" aria-label={`${name}${pro ? " (Pro)" : plus ? " (Plus)" : ""} — profile and quick access`} aria-haspopup="menu" aria-expanded={open}
         onMouseEnter={show} onMouseLeave={hideSoon} onFocus={show} onBlur={hideSoon}
-        onClick={(e) => { if (window.matchMedia("(hover: none)").matches && !open) { e.preventDefault(); show(); } }}
+        onClick={(e) => { e.preventDefault(); if (open) setOpen(false); else show(); }}
         className={`avatar-fx group relative flex items-center rounded-xl outline-none shrink-0 ${pro ? "is-pro" : plus ? "is-plus" : ""}`}>
         <span className="relative block w-8 h-8">
           <span className="avatar-ring" aria-hidden="true" />

@@ -4,7 +4,7 @@ import { ProCrown } from "@/components/brand/pro-crown";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 import { motion, useReducedMotion } from "motion/react";
-import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin, AtSign, IdCard, Crown } from "lucide-react";
+import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin, AtSign, IdCard, Crown, Phone } from "lucide-react";
 
 /**
  * Compact, horizontal profile header: exactly as tall as the avatar, pinned above the
@@ -13,11 +13,11 @@ import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, Calendar
  */
 export function ProfileHeader({
   name, username, email, bio, tier, avatarUri, targetYear, branchLabel, targetRank, dailyHours, location,
-  daysLeft, completeness, signingOut, onSignOut, studentId,
+  daysLeft, completeness, signingOut, onSignOut, studentId, phone,
 }: {
   name: string; username: string; email: string | null | undefined; bio?: string; tier: string; avatarUri: string;
   targetYear: string; branchLabel: string; targetRank: string; dailyHours: string; location?: string;
-  daysLeft: number | null; completeness: number; signingOut: boolean; onSignOut: () => void; studentId?: string | null;
+  daysLeft: number | null; completeness: number; signingOut: boolean; onSignOut: () => void; studentId?: string | null; phone?: string | null;
 }) {
   const reduce = useReducedMotion();
   const chips = [
@@ -78,6 +78,7 @@ export function ProfileHeader({
             <p className="flex items-center gap-2 text-xs min-w-0"><AtSign className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="font-semibold truncate">{username}</span></p>
           )}
           <p className="flex items-center gap-2 text-xs min-w-0"><Mail className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="truncate text-white/90">{email}</span></p>
+          {phone && <p className="flex items-center gap-2 text-xs min-w-0"><Phone className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="truncate text-white/90 font-num">{phone.replace(/^\+91(\d{5})(\d{5})$/, "+91 $1 $2")}</span></p>}
           {studentId && (
             <p className="flex items-center gap-2 text-xs min-w-0" title="Your permanent student ID">
               <IdCard className="w-3.5 h-3.5 shrink-0 text-white/70" />

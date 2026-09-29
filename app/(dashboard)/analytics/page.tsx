@@ -20,7 +20,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { MockAnalytics } from "@/components/analytics/mock-analytics";
 import { TopicLadders } from "@/components/analytics/topic-ladders";
 import { GuestLock } from "@/components/auth/guest-lock";
-import { TierGate } from "@/components/billing/tier-gate";
+import { PaidScreen, TierGate } from "@/components/billing/tier-gate";
 import { CountUp, RadialGauge, TiltCard, InfoTip, Segmented } from "@/components/ui/interactive";
 
 type SubjectMetric = "accuracy" | "attempts" | "time";
@@ -179,7 +179,8 @@ export default function AnalyticsDashboardPage() {
       feature="Advanced Analytics"
       description="See your mastery score, readiness index, and weak-topic insights — sign in to track them across every attempt."
     >
-      <div className="w-full mx-auto p-4 md:p-6 space-y-8">
+      <PaidScreen feature="Analytics" perk="Your mastery, trends, insights and weak-topic analysis — computed from every attempt.">
+      <div className="w-full mx-auto space-y-8">
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
@@ -218,13 +219,11 @@ export default function AnalyticsDashboardPage() {
         )}
 
         {/* All-India Mock history (empty state when none) */}
-        <Reveal><TierGate tier="pro" feature="Detailed mock analytics" perk="Your All-India Mock history with percentile trend, section-wise marks and where you lost time."><MockAnalytics /></TierGate></Reveal>
-        <Reveal><TierGate tier="pro" feature="Topic ladders" perk="Every topic ranked from strongest to weakest, with the exact next step for each."><TopicLadders topics={dashboardMetrics.topicPerformance ?? []} /></TierGate></Reveal>
 
         {/* 2. Insights + adaptive path */}
         {!loadingIntel && intel && (
           <Reveal>
-          <TierGate tier="plus" feature="Smart insights & adaptive path" perk="Personal insights from your attempts and a daily focus topic chosen for you." className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-8 card-glass rounded-2xl p-6 shadow-sm">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
@@ -281,13 +280,12 @@ export default function AnalyticsDashboardPage() {
                 <p className="text-[11px] text-[var(--text-muted)] font-medium leading-relaxed">{intel.todaysTarget.reason}</p>
               </div>
             </div>
-          </TierGate>
+          </div>
           </Reveal>
         )}
 
         {/* 3. Trend + difficulty */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <TierGate tier="plus" feature="Trend across exams" perk="See how your accuracy and score move test after test.">
+        <div className="grid grid-cols-1 gap-6">
           <motion.div {...rise} className="card-glass p-6 rounded-2xl shadow-sm">
             <div className="flex items-center justify-between gap-3 mb-6">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
@@ -327,35 +325,8 @@ export default function AnalyticsDashboardPage() {
               )}
             </div>
           </motion.div>
-          </TierGate>
-
-          <TierGate tier="pro" feature="Difficulty analysis" perk="Accuracy on easy, medium and hard questions — find out where the marks really leak.">
-          <motion.div {...rise} transition={{ ...rise.transition, delay: 0.06 }} className="card-glass p-6 rounded-2xl shadow-sm">
-            <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-6 flex items-center gap-2">
-              <Target className="w-4 h-4 text-rose-500" />
-              Difficulty analysis
-            </h3>
-            <div className="h-[280px] w-full">
-              {diffData.length === 0 ? (
-                <ChartEmptyState label="Difficulty-wise performance will appear once you attempt questions across difficulty levels." />
-              ) : (
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={diffData}>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.1} vertical={false} />
-                    <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
-                    <YAxis yAxisId="left" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
-                    <YAxis yAxisId="right" orientation="right" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
-                    <RechartsTooltip cursor={{ fill: "var(--surface-secondary)" }} content={<ChartTooltip />} />
-                    <Legend iconType="circle" wrapperStyle={{ paddingTop: "16px", fontSize: "11px" }} />
-                    <Bar yAxisId="left" dataKey="Attempted" name="Questions solved" fill="#cbd5e1" radius={[6, 6, 0, 0]} maxBarSize={30} />
-                    <Bar yAxisId="right" dataKey="Accuracy" name="Accuracy" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={30} />
-                  </BarChart>
-                </ResponsiveContainer>
-              )}
-            </div>
-          </motion.div>
-          </TierGate>
         </div>
+
 
         {/* 4. Subject explorer — one chart, three metrics, bars act as a filter */}
         <motion.div {...rise} className="card-glass p-6 rounded-2xl shadow-sm">
@@ -525,7 +496,41 @@ export default function AnalyticsDashboardPage() {
             )}
           </div>
         </motion.div>
+
+        {/* Pro analytics — one combined upgrade for Plus members, at the end of the page */}
+        <section className="space-y-4">
+          <h2 className="text-xs font-black uppercase tracking-[0.16em] text-amber-700 dark:text-amber-300 flex items-center gap-2">Pro analytics</h2>
+          <TierGate tier="pro" feature="Pro analytics" perk="Detailed All-India Mock history, topic ladders from strongest to weakest, and difficulty-wise accuracy — all in one upgrade." className="space-y-6">
+            <MockAnalytics />
+            <TopicLadders topics={dashboardMetrics.topicPerformance ?? []} />
+          <motion.div {...rise} transition={{ ...rise.transition, delay: 0.06 }} className="card-glass p-6 rounded-2xl shadow-sm">
+            <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-6 flex items-center gap-2">
+              <Target className="w-4 h-4 text-rose-500" />
+              Difficulty analysis
+            </h3>
+            <div className="h-[280px] w-full">
+              {diffData.length === 0 ? (
+                <ChartEmptyState label="Difficulty-wise performance will appear once you attempt questions across difficulty levels." />
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={diffData}>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.1} vertical={false} />
+                    <XAxis dataKey="name" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
+                    <YAxis yAxisId="left" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
+                    <YAxis yAxisId="right" orientation="right" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
+                    <RechartsTooltip cursor={{ fill: "var(--surface-secondary)" }} content={<ChartTooltip />} />
+                    <Legend iconType="circle" wrapperStyle={{ paddingTop: "16px", fontSize: "11px" }} />
+                    <Bar yAxisId="left" dataKey="Attempted" name="Questions solved" fill="#cbd5e1" radius={[6, 6, 0, 0]} maxBarSize={30} />
+                    <Bar yAxisId="right" dataKey="Accuracy" name="Accuracy" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={30} />
+                  </BarChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          </motion.div>
+          </TierGate>
+        </section>
       </div>
+      </PaidScreen>
     </GuestLock>
   );
 }
