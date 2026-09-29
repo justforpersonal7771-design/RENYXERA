@@ -152,6 +152,11 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Tools out of the footer: header nav (PYQs · Syllabus · Tools), `/tools` hub, and an adaptive sub-menu dock (hides on scroll down, returns on scroll up, bouncy highlight) on every tool page; same dock for the legal pages, which now use full width with an "On this page" index.
 - App navbar: Mistakes + Bookmarks + Revision merged into one "Review" section with tabs (same URLs, remembers the last tab); Tools added; Mocks icon changed from trophy (leaderboard) to timer.
 
+### 29 Sep 2026 — Public pages inside the app shell ✅
+- Public (PYQs, syllabus, tools, articles, branches, about) and legal pages now render inside the app shell with the app navbar and the full width; still server components, so SEO content and tool links are in the HTML.
+- "Tools" opens the syllabus with weightage directly (`/tools` redirects); tools dock at the bottom of the screen (syllabus, PYQs, repeated topics, predictor, cutoffs, planner), hiding on scroll down; legal pages get the same dock, links stay in the footer.
+- Syllabus navigator: sticky outline with share bars, scroll-spy and progress (desktop); floating current-subject pill with a searchable sheet (phones). One official CS & IT syllabus PDF download.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

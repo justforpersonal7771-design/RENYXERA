@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ExternalLink, FileText } from "lucide-react";
+import { ArrowRight, Download, FileText } from "lucide-react";
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
-import { ToolsFrame } from "@/components/seo/tool-shell";
+import { SyllabusNavigator } from "@/components/seo/syllabus-navigator";
 import { SYLLABUS_SOURCE } from "@/lib/seo/syllabus";
 import { syllabusStats } from "@/lib/seo/weightage";
 import { Donut, ShareBar, Sparkline, StatTile, TrendBadge } from "@/components/seo/charts";
@@ -21,15 +21,14 @@ export default function SyllabusPage() {
   const span = `${years[0]}–${years[years.length - 1]}`;
 
   return (
-    <ToolsFrame>
+    <div className="space-y-6">
       {/* Hero */}
       <header className="max-w-3xl">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{SYLLABUS_SOURCE.exam} · official · {SYLLABUS_SOURCE.institute}</p>
         <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS 2027 syllabus <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">with weightage</span></h1>
         <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">The official syllabus, organised into sections, subjects and topics — and next to every one, how many marks it has really carried in GATE CS papers from {span}, and whether it is rising or cooling.</p>
         <div className="mt-4 flex flex-wrap gap-2 text-sm">
-          <a href={SYLLABUS_SOURCE.cs} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> CS syllabus PDF <ExternalLink className="w-3 h-3" /></a>
-          <a href={SYLLABUS_SOURCE.ga} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> GA syllabus PDF <ExternalLink className="w-3 h-3" /></a>
+          <a href={SYLLABUS_SOURCE.cs} target="_blank" rel="noopener noreferrer" download className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> Download official GATE 2027 CS &amp; IT syllabus (PDF) <Download className="w-3.5 h-3.5" /></a>
         </div>
       </header>
 
@@ -72,18 +71,11 @@ export default function SyllabusPage() {
         </div>
       </section>
 
-      {/* Jump bar */}
-      <nav aria-label="Subjects" className="sticky top-[88px] sm:top-16 z-10 -mx-4 sm:mx-0 px-4 sm:px-0 py-2 bg-[var(--background)]/85 backdrop-blur-xl">
-        <ul className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {sections.map((s) => (
-            <li key={s.title} className="shrink-0"><a href={`#${s.slug}`} className="block px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-xs font-semibold text-[var(--text-secondary)] hover:text-violet-600 hover:border-violet-500/50 whitespace-nowrap">{s.title} <span className="font-num text-[var(--text-muted)]">{s.share.toFixed(0)}%</span></a></li>
-          ))}
-        </ul>
-      </nav>
-
+      <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_270px] xl:gap-6 items-start">
+      <div className="min-w-0">
       {/* Sections → subjects → units */}
       {groups.map((g, gi) => (
-        <section key={g.name} id={g.slug} className="pt-4 scroll-mt-36">
+        <section key={g.name} id={g.slug} className="pt-4 first:pt-0 scroll-mt-4">
           <div className="flex items-end justify-between gap-4 border-b border-[var(--border-subtle)] pb-3 mb-4">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400">Section {gi + 1}</p>
@@ -96,7 +88,7 @@ export default function SyllabusPage() {
             {g.sections.map((s) => {
               const maxUnit = Math.max(1, ...s.units.map((u) => u.marks));
               return (
-                <article key={s.title} id={s.slug} className="scroll-mt-36 rounded-3xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden">
+                <article key={s.title} id={s.slug} className="scroll-mt-4 rounded-3xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden">
                   <header className="flex flex-wrap items-center justify-between gap-3 p-5 sm:p-6 bg-gradient-to-r from-violet-500/[0.07] to-transparent border-b border-[var(--border-subtle)]">
                     <div className="min-w-0">
                       <p className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{s.official}</p>
@@ -135,10 +127,14 @@ export default function SyllabusPage() {
         </section>
       ))}
 
+      </div>
+      <SyllabusNavigator entries={sections.map((s) => ({ id: s.slug, title: s.title, group: s.group, share: s.share }))} />
+      </div>
+
       <SponsorSlot context="algorithms data structures" seed={2} />
 
       <p className="text-[11px] text-[var(--text-muted)]">Syllabus: {SYLLABUS_SOURCE.exam} official syllabus, {SYLLABUS_SOURCE.institute} (<a href={SYLLABUS_SOURCE.page} target="_blank" rel="noopener noreferrer" className="underline">source</a>), organised into topic units by us. Weightage: computed from our tagged bank of every official GATE CS paper; a unit&apos;s % is its share of that subject&apos;s marks.</p>
 
-    </ToolsFrame>
+    </div>
   );
 }

@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...BRANCHES.map((b) => ({ url: `${SITE_URL}/${b.slug}`, lastModified: now, changeFrequency: "weekly" as const, priority: b.live ? 0.9 : 0.7 })),
     // 6A: previous-year questions — index, papers, every question, subject hubs.
     { url: `${SITE_URL}/pyq`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
-    { url: `${SITE_URL}/tools`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/tools/gate-score-calculator`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/tools/gate-cs-cutoff`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/gate-cs-syllabus`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },

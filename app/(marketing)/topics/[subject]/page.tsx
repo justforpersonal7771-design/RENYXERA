@@ -36,7 +36,7 @@ export default async function SubjectHub({ params }: { params: Promise<{ subject
   const shortTopic = (x: string) => x.replace(/\s*\(.*?\)\s*/g, " ").trim();
 
   return (
-    <div className="py-8 sm:py-12 space-y-6">
+    <div className="space-y-6">
       <nav aria-label="Breadcrumb" className="text-sm"><Link href="/pyq" className="inline-flex items-center gap-1 text-[var(--text-secondary)] hover:text-violet-600"><ArrowLeft className="w-4 h-4" /> All GATE CS PYQs</Link></nav>
       <header className="flex flex-col lg:flex-row lg:items-end gap-4 justify-between">
         <div className="max-w-2xl">

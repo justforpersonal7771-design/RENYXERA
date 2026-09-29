@@ -7,7 +7,7 @@ import { CALIBRATION_LABEL, calibratedRankForMarks, gateScore, qualifyingMarks, 
 import { Gauge, LineChart } from "@/components/seo/charts";
 
 const CATS: [Category, string][] = [["general", "General"], ["obc_ncl_ews", "OBC-NCL / EWS"], ["sc_st_pwd", "SC / ST / PwD"]];
-const CURVE_X = Array.from({ length: 31 }, (_, i) => 20 + i * 2.5);
+const CURVE_X = Array.from({ length: 27 }, (_, i) => 30 + i * 2.5);
 const PRESETS = [30, 45, 60, 75];
 
 /** Free tool (6A): GATE CS marks → GATE score gauge, AIR on the marks-vs-rank curve, qualifying status. */
@@ -66,8 +66,8 @@ export function ScorePredictor() {
           <p className="text-xs font-bold text-[var(--text-secondary)] mb-1">Where you land on the marks-vs-rank curve</p>
           <LineChart log invertY height={260}
             series={[{ name: "Median rank", color: "#8b5cf6", points: curve.mid }, { name: "Best case", color: "#10b981", points: curve.best, dashed: true }, { name: "Worst case", color: "#f43f5e", points: curve.worst, dashed: true }]}
-            xTicks={[20, 30, 40, 50, 60, 70, 80, 90, 95]} yTicks={[1, 10, 100, 1000, 10000, 50000]} fmtY={(v) => (v >= 1000 ? `${v / 1000}k` : String(v))}
-            marker={{ x: Math.max(20, Math.min(95, r.m)), y: r.rank, label: `${r.m} → AIR ~${fmt(r.rank)}` }} vLine={{ x: r.q, label: `cut-off ${r.q}` }} xLabel="Marks" yLabel="AIR (log)" />
+            xTicks={[30, 40, 50, 60, 70, 80, 90, 95]} yTicks={[10, 100, 1000, 10000, 50000]} fmtY={(v) => (v >= 1000 ? `${v / 1000}k` : String(v))}
+            marker={{ x: Math.max(30, Math.min(95, r.m)), y: r.rank, label: `${r.m} → AIR ~${fmt(r.rank)}` }} vLine={{ x: Math.max(30, r.q), label: `cut-off ${r.q}` }} xLabel="Marks" yLabel="AIR (log)" />
           <div className="mt-2 flex flex-wrap gap-4 text-[11px] text-[var(--text-muted)]"><span className="inline-flex items-center gap-1.5"><i className="w-3 h-0.5 bg-violet-500 inline-block" /> median</span><span className="inline-flex items-center gap-1.5"><i className="w-3 h-0.5 bg-emerald-500 inline-block" /> best case</span><span className="inline-flex items-center gap-1.5"><i className="w-3 h-0.5 bg-rose-500 inline-block" /> worst case</span></div>
         </div>
       </div>

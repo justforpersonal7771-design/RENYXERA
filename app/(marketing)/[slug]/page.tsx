@@ -51,12 +51,12 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
   };
 
   return (
-    <div className="py-6 sm:py-10 space-y-14">
+    <div className="space-y-14 pb-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Branch switcher */}
-      <nav aria-label="GATE branches" className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <ul className="flex gap-2 w-max">
+      <nav aria-label="GATE branches" className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="flex gap-2 w-max sm:w-auto sm:flex-wrap">
           {BRANCHES.map((o) => (
             <li key={o.slug}><Link href={`/${o.slug}`} aria-current={o.slug === b.slug ? "page" : undefined}
               className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border text-sm font-bold whitespace-nowrap transition-colors ${o.slug === b.slug ? "border-violet-500/50 bg-violet-500/10 text-violet-700 dark:text-violet-300" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>

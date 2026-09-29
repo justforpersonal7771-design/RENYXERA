@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { allPapers, allQuestions, subjectSlug } from "@/lib/seo/pyq";
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
-import { ToolsFrame } from "@/components/seo/tool-shell";
 import { Heatmap, Sparkline, StatTile, TrendBadge } from "@/components/seo/charts";
 
 export const metadata: Metadata = {
@@ -32,7 +31,7 @@ export default function MostRepeatedTopics() {
   const series = (t: (typeof ranked)[number]) => years.map((y) => t.byYear.get(y) ?? 0);
 
   return (
-    <ToolsFrame>
+    <div className="space-y-6">
       <header className="max-w-3xl">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Data article · {papers.length} official papers</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">Most repeated GATE CS topics ({years[0]}–{years[years.length - 1]})</h1>
@@ -86,6 +85,6 @@ export default function MostRepeatedTopics() {
         </ul>
         <p className="mt-4 text-[11px] text-[var(--text-muted)]">Computed automatically from our tagged bank of official GATE CS papers; papers with two shifts count both. Updated after every GATE.</p>
       </section>
-    </ToolsFrame>
+    </div>
   );
 }

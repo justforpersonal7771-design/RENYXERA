@@ -18,6 +18,7 @@ import { AccountButton } from "./account-button";
 import { BrandMark, Wordmark } from "@/components/brand/wordmark";
 import { useAuthStore } from "@/store/use-auth-store";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
+import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -27,7 +28,7 @@ const NAV_ITEMS = [
   // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
   { label: "Review", href: "/mistakes", icon: Library },
   { label: "Analytics", href: "/analytics", icon: PieChart },
-  { label: "Tools", href: "/tools", icon: Wrench },
+  { label: "Tools", href: TOOLS_HOME, icon: Wrench },
 ];
 
 export function Topbar() {
@@ -179,7 +180,7 @@ export function Topbar() {
             className="flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/45 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
           >
             {NAV_ITEMS.map((item) => {
-              const isActive = item.label === "Review" ? isReviewPath(pathname) : pathname === item.href || (item.href === "/tools" && !!pathname?.startsWith("/tools/"));
+              const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
               return (
                 <Link
                   key={item.href}
@@ -380,7 +381,7 @@ export function Topbar() {
           >
             <nav className="flex flex-col p-2 w-full">
               {NAV_ITEMS.map((item) => {
-                const isActive = item.label === "Review" ? isReviewPath(pathname) : pathname === item.href || (item.href === "/tools" && !!pathname?.startsWith("/tools/"));
+                const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
                 return (
                   <Link
                     key={item.href}

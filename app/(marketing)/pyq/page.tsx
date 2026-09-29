@@ -21,7 +21,7 @@ export default function PyqIndexPage() {
   const byYear = [...years].reverse().map((y) => ({ y, papers: papers.filter((p) => p.year === y) }));
 
   return (
-    <div className="py-8 sm:py-12 space-y-10">
+    <div className="space-y-10">
       <header className="max-w-3xl">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Free · no sign-up needed</p>
         <h1 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">previous year questions</span></h1>

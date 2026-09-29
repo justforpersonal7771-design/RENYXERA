@@ -70,7 +70,7 @@ const STEPS = [
  */
 export default function AboutPage() {
   return (
-    <div className="py-12 sm:py-20 space-y-20 sm:space-y-28">
+    <div className="pt-2 sm:pt-6 pb-6 space-y-20 sm:space-y-24">
       {/* Hero */}
       <section className="text-center max-w-6xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider mb-5">
