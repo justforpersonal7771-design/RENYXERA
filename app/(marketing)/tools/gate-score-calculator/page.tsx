@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ScorePredictor } from "@/components/seo/score-predictor";
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
+import { ToolHeader } from "@/components/seo/tool-shell";
 
 export const metadata: Metadata = {
   title: "GATE CS Score Calculator & Rank Predictor (Marks vs Rank) | RENYXERA",
@@ -19,23 +19,22 @@ const FAQ = [
 export default function ScoreCalculatorPage() {
   const jsonLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
   return (
-    <div className="py-10 sm:py-14 max-w-4xl">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Free tool</p>
-      <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS score calculator &amp; rank predictor</h1>
-      <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">Move the slider to your marks. You&apos;ll see your GATE score, the All-India Rank range students with those marks usually get, and whether you clear the qualifying mark for your category.</p>
-      <div className="mt-8"><ScorePredictor /></div>
+      <ToolHeader kicker="Predictor" title="GATE CS score & rank predictor" lead="Move the slider to your marks and pick your category. You'll see your GATE score, where you land on the real marks-vs-rank curve, and whether you clear the qualifying mark." />
+      <ScorePredictor />
       <SponsorSlot context="aptitude" seed={1} />
-      <section className="mt-4 space-y-4" aria-labelledby="faq">
+      <section className="space-y-3" aria-labelledby="faq">
         <h2 id="faq" className="text-xl font-extrabold text-[var(--text-primary)]">Frequently asked questions</h2>
-        {FAQ.map((f) => (
-          <details key={f.q} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-            <summary className="font-semibold text-[var(--text-primary)] cursor-pointer">{f.q}</summary>
-            <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{f.a}</p>
-          </details>
-        ))}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          {FAQ.map((f) => (
+            <details key={f.q} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 h-fit">
+              <summary className="font-semibold text-[var(--text-primary)] cursor-pointer">{f.q}</summary>
+              <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">{f.a}</p>
+            </details>
+          ))}
+        </div>
       </section>
-      <p className="mt-8 text-sm text-[var(--text-secondary)]">Practise with real papers: <Link href="/pyq" className="font-semibold text-violet-600 dark:text-violet-400">every GATE CS PYQ since 2017</Link>.</p>
-    </div>
+    </>
   );
 }

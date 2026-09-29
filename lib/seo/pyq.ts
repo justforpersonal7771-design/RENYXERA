@@ -56,16 +56,17 @@ export const allQuestions = () => [...load().byPaper.values()].flat();
 
 /** Subject hub data: topics with counts and marks per year (weightage). */
 export function subjects() {
-  const map = new Map<string, { name: string; slug: string; count: number; marks: number; topics: Map<string, number>; topicMarks: Map<string, number>; byYear: Map<string, number> }>();
+  const map = new Map<string, { name: string; slug: string; count: number; marks: number; topics: Map<string, number>; topicMarks: Map<string, number>; topicYear: Map<string, Map<string, number>>; byYear: Map<string, number> }>();
   for (const [slug, qs] of load().byPaper) {
     const year = paperBySlug(slug)!.year;
     for (const q of qs) {
       const s = q.subject || "General";
-      if (!map.has(s)) map.set(s, { name: s, slug: subjectSlug(s), count: 0, marks: 0, topics: new Map(), topicMarks: new Map(), byYear: new Map() });
+      if (!map.has(s)) map.set(s, { name: s, slug: subjectSlug(s), count: 0, marks: 0, topics: new Map(), topicMarks: new Map(), topicYear: new Map(), byYear: new Map() });
       const e = map.get(s)!;
       e.count++; e.marks += Number(q.marks || 0);
       e.topics.set(q.topic || "Other", (e.topics.get(q.topic || "Other") ?? 0) + 1);
       e.topicMarks.set(q.topic || "Other", (e.topicMarks.get(q.topic || "Other") ?? 0) + Number(q.marks || 0));
+      const ty = e.topicYear.get(q.topic || "Other") ?? new Map<string, number>(); ty.set(year, (ty.get(year) ?? 0) + Number(q.marks || 0)); e.topicYear.set(q.topic || "Other", ty);
       e.byYear.set(year, (e.byYear.get(year) ?? 0) + Number(q.marks || 0));
     }
   }

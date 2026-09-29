@@ -4,6 +4,9 @@ import { notFound } from "next/navigation";
 import { ArrowRight, BookOpen, BrainCircuit, CheckCircle2, ClipboardList, FileText, PieChart, Rocket, Users } from "lucide-react";
 import { BRANCHES, branchBySlug } from "@/lib/branches";
 import { NotifyForm } from "@/components/marketing/notify-form";
+import { syllabusStats } from "@/lib/seo/weightage";
+import { TOOLS } from "@/lib/seo/tools";
+import { Donut, ShareBar, TrendBadge } from "@/components/seo/charts";
 
 // Step 8 (4H): one static, crawlable landing page per GATE branch — /gate-cse, /gate-da, …
 export const dynamicParams = false;
@@ -33,7 +36,7 @@ const FEATURES = [
 export default async function BranchPage({ params }: { params: Promise<{ slug: string }> }) {
   const b = branchBySlug((await params).slug);
   if (!b) notFound();
-  const others = BRANCHES.filter((o) => o.slug !== b.slug);
+  const stats = b.live ? syllabusStats() : null;
   const faq = [
     { q: `What is the GATE ${b.paper} exam pattern?`, a: "GATE is a 3-hour computer-based test with 65 questions for 100 marks: General Aptitude carries 15 marks and your subject the remaining 85. Questions are multiple choice (MCQ), multiple select (MSQ) or numerical answer (NAT); only wrong MCQs carry negative marks." },
     { q: `How many students write GATE ${b.paper}?`, a: `${b.candidates[0].toUpperCase()}${b.candidates.slice(1)} (${b.paper} paper). ${b.trend}` },
@@ -48,8 +51,20 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
   };
 
   return (
-    <div className="py-10 sm:py-14 space-y-14">
+    <div className="py-6 sm:py-10 space-y-14">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      {/* Branch switcher */}
+      <nav aria-label="GATE branches" className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <ul className="flex gap-2 w-max">
+          {BRANCHES.map((o) => (
+            <li key={o.slug}><Link href={`/${o.slug}`} aria-current={o.slug === b.slug ? "page" : undefined}
+              className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border text-sm font-bold whitespace-nowrap transition-colors ${o.slug === b.slug ? "border-violet-500/50 bg-violet-500/10 text-violet-700 dark:text-violet-300" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+              <i className={`w-2 h-2 rounded-full ${o.live ? "bg-emerald-500" : "bg-amber-500"}`} />GATE {o.paper}<span className="hidden sm:inline font-medium text-[var(--text-muted)]">· {o.short}</span>
+            </Link></li>
+          ))}
+        </ul>
+      </nav>
 
       {/* Hero */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -93,20 +108,52 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
       </section>
 
       {/* Syllabus */}
+      {stats ? (
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+          <div className="lg:col-span-2 card-glass rounded-3xl p-6">
+            <h2 className="text-xl font-display font-extrabold text-[var(--text-primary)]">Where the marks come from</h2>
+            <p className="text-xs text-[var(--text-muted)] mb-5">GATE CS papers {stats.years[0]}–{stats.years[stats.years.length - 1]}</p>
+            <Donut slices={stats.groups.map((g) => ({ label: g.name, value: g.share }))} center="100" sub="marks" size={150} />
+          </div>
+          <div className="lg:col-span-3 card-glass rounded-3xl p-6">
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="text-xl font-display font-extrabold text-[var(--text-primary)]">Top subjects by weightage</h2>
+              <Link href="/gate-cs-syllabus" className="shrink-0 text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">Full syllabus →</Link>
+            </div>
+            <ol className="space-y-3">
+              {[...stats.sections].sort((x, y) => y.share - x.share).slice(0, 8).map((sec, i, arr) => (
+                <li key={sec.title} className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
+                  <ShareBar label={sec.title} value={sec.share} max={arr[0].share} right={`${sec.perPaper.toFixed(1)} m`} />
+                  <TrendBadge values={sec.byYear} className="hidden sm:inline-flex" />
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="lg:col-span-5 grid grid-cols-2 lg:grid-cols-5 gap-3">
+            {TOOLS.map((t) => (
+              <Link key={t.href} href={t.href} className="card-glass rounded-2xl p-4 hover:-translate-y-0.5 transition-transform">
+                <p className="font-bold text-[var(--text-primary)] text-sm">{t.title}</p>
+                <p className="mt-1 text-xs text-[var(--text-secondary)] line-clamp-2">{t.blurb}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : (
       <section className="card-glass rounded-3xl p-6 sm:p-8">
-        <div className="flex items-center gap-3">
-          <span className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-500 flex items-center justify-center"><BookOpen className="w-5 h-5" /></span>
-          <h2 className="text-xl sm:text-2xl font-display font-extrabold text-[var(--text-primary)]">GATE {b.paper} syllabus at a glance</h2>
-        </div>
-        <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-          {b.subjects.map((s) => (
-            <li key={s} className="flex items-center gap-2.5 rounded-xl bg-[var(--surface-secondary)]/60 border border-[var(--border-subtle)] px-3.5 py-2.5 text-sm font-medium text-[var(--text-primary)]">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> {s}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-4 text-xs text-[var(--text-muted)]">Summary for orientation — always check the official GATE {b.paper} syllabus from the organising IIT.</p>
-      </section>
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-500 flex items-center justify-center"><BookOpen className="w-5 h-5" /></span>
+            <h2 className="text-xl sm:text-2xl font-display font-extrabold text-[var(--text-primary)]">GATE {b.paper} syllabus at a glance</h2>
+          </div>
+          <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            {b.subjects.map((s) => (
+              <li key={s} className="flex items-center gap-2.5 rounded-xl bg-[var(--surface-secondary)]/60 border border-[var(--border-subtle)] px-3.5 py-2.5 text-sm font-medium text-[var(--text-primary)]">
+                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" /> {s}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-xs text-[var(--text-muted)]">Summary for orientation — always check the official GATE {b.paper} syllabus from the organising IIT.</p>
+        </section>
+      )}
 
       {/* FAQ */}
       <section className="max-w-3xl mx-auto">
@@ -123,19 +170,6 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
         </div>
       </section>
 
-      {/* Other branches */}
-      <section>
-        <h2 className="text-xl font-display font-extrabold text-[var(--text-primary)] text-center">Other GATE branches</h2>
-        <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {others.map((o) => (
-            <Link key={o.slug} href={`/${o.slug}`} className="card-glass rounded-2xl p-4 hover:-translate-y-0.5 transition-transform">
-              <p className="font-bold text-[var(--text-primary)]">GATE {o.paper}</p>
-              <p className="text-xs text-[var(--text-secondary)] truncate">{o.short}</p>
-              <p className={`mt-2 text-[10px] font-bold uppercase tracking-wide ${o.live ? "text-emerald-600 dark:text-emerald-400" : "text-amber-600 dark:text-amber-400"}`}>{o.live ? "Live" : "Coming soon"}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }

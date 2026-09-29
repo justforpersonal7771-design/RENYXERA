@@ -145,6 +145,13 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - `/articles/most-repeated-gate-cs-topics`: topics ranked by years asked and marks, computed from every paper.
 - Sitemap, footer, smoke suite (20 pages × 4 modes) — all pass.
 
+### 29 Sep 2026 — Official 2027 syllabus, public pages redesign, Review section ✅
+- Syllabus now the official GATE 2027 text (IIT Madras PDFs), structured section → subject → unit → items (`lib/seo/syllabus.ts`); every unit mapped to bank topic tags (all tags covered) and `lib/seo/weightage.ts` computes share, marks/paper, trend and years-asked per subject and unit.
+- Server-rendered chart kit (`components/seo/charts.tsx`): trend columns with average line + peak, donut, topic×year heatmap, sparklines, trend badges, line chart (log/inverted), gauge; CSS-only motion, reduced-motion safe.
+- Redesigned: syllabus, PYQ index (year rows, subjects grouped by section), subject hubs, score predictor (gauge + live marks-vs-rank curve), cutoffs (trend lines, candidates, tiered marks-vs-rank), study planner (phase bar), most-repeated article (heatmap, year pips), GATE branch pages (switcher + weightage), About (one-line hero, wider).
+- Tools out of the footer: header nav (PYQs · Syllabus · Tools), `/tools` hub, and an adaptive sub-menu dock (hides on scroll down, returns on scroll up, bouncy highlight) on every tool page; same dock for the legal pages, which now use full width with an "On this page" index.
+- App navbar: Mistakes + Bookmarks + Revision merged into one "Review" section with tabs (same URLs, remembers the last tab); Tools added; Mocks icon changed from trophy (leaderboard) to timer.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

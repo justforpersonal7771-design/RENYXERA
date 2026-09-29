@@ -72,17 +72,17 @@ export default function AboutPage() {
   return (
     <div className="py-12 sm:py-20 space-y-20 sm:space-y-28">
       {/* Hero */}
-      <section className="text-center max-w-3xl mx-auto">
+      <section className="text-center max-w-6xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider mb-5">
           <Sparkles className="w-3.5 h-3.5" /> GATE CSE preparation, free to start
         </span>
-        <h1 className="text-4xl sm:text-5xl font-display font-extrabold tracking-tight text-[var(--text-primary)] leading-tight">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-[var(--text-primary)] leading-tight lg:whitespace-nowrap">
           A new era of intelligent{" "}
           <span className="font-serif italic font-normal tracking-normal pr-1 bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent">
             GATE preparation
           </span>
         </h1>
-        <p className="mt-5 text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
+        <p className="mt-5 max-w-3xl mx-auto text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed">
           RENYXERA is an adaptive study workspace for GATE Computer Science &amp; Information
           Technology aspirants. Practice with official previous-year papers, learn from an AI
           Mentor that works from your own mistakes, and always know which topics to study next.

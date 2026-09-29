@@ -94,6 +94,11 @@ export function StudyPlanTool({ sections }: { sections: Section[] }) {
 
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
         <h2 className="font-extrabold text-[var(--text-primary)]">Your plan in three phases</h2>
+        <div className="mt-3 flex h-9 w-full overflow-hidden rounded-xl text-[11px] font-bold text-white" aria-hidden>
+          <span className="chart-grow-x flex items-center justify-center bg-gradient-to-r from-indigo-600 to-violet-600 min-w-0 truncate px-1" style={{ width: `${(plan.learnWeeks / plan.weeks) * 100}%` }}>Learn · {plan.learnWeeks}w</span>
+          <span className="chart-grow-x flex items-center justify-center bg-gradient-to-r from-amber-500 to-orange-500 min-w-0 truncate px-1" style={{ width: `${(plan.revWeeks / plan.weeks) * 100}%`, animationDelay: "120ms" }}>Revise · {plan.revWeeks}w</span>
+          <span className="chart-grow-x flex items-center justify-center bg-gradient-to-r from-fuchsia-600 to-rose-500 min-w-0 truncate px-1 flex-1" style={{ animationDelay: "240ms" }}>Mocks · {plan.mockWeeks}w</span>
+        </div>
         <ol className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
           <li className="rounded-xl bg-[var(--surface-secondary)]/60 p-3"><b className="text-[var(--text-primary)]">1 · Learn &amp; practise</b><br /><span className="text-[var(--text-secondary)]">Weeks 1–{plan.learnWeeks}: cover each section, then its PYQs.</span></li>
           <li className="rounded-xl bg-[var(--surface-secondary)]/60 p-3"><b className="text-[var(--text-primary)]">2 · Revise with PYQs</b><br /><span className="text-[var(--text-secondary)]">Next {plan.revWeeks} week{plan.revWeeks > 1 ? "s" : ""}: mistakes bank, weak topics, timed subject tests.</span></li>

@@ -1,115 +1,144 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, ExternalLink, FileText } from "lucide-react";
-import { allPapers, subjects } from "@/lib/seo/pyq";
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
-import { SYLLABUS, SYLLABUS_SOURCE } from "@/lib/seo/syllabus";
+import { ToolsFrame } from "@/components/seo/tool-shell";
+import { SYLLABUS_SOURCE } from "@/lib/seo/syllabus";
+import { syllabusStats } from "@/lib/seo/weightage";
+import { Donut, ShareBar, Sparkline, StatTile, TrendBadge } from "@/components/seo/charts";
 
 export const metadata: Metadata = {
   title: "GATE CS Syllabus 2027 (Official, IIT Madras) — Topic-wise Weightage | RENYXERA",
-  description: "The official GATE 2027 Computer Science & IT syllabus from IIT Madras, section by section, with the marks weightage of every subject and every topic in GATE CS papers since 2017, and links to all past questions.",
+  description: "The official GATE 2027 Computer Science & IT syllabus from IIT Madras, organised section → subject → topic, with the marks weightage and trend of every subject and topic in GATE CS papers since 2017.",
   alternates: { canonical: "/gate-cs-syllabus" },
-  openGraph: { title: "GATE CS 2027 Syllabus with Topic-wise Weightage", description: "Official GATE 2027 syllabus with the real marks weightage of every section and topic.", type: "article" },
+  openGraph: { title: "GATE CS 2027 Syllabus with Topic-wise Weightage", description: "Official GATE 2027 syllabus with the real weightage and trend of every subject and topic.", type: "article" },
 };
 
-const GROUPS = ["General Aptitude", "Engineering Mathematics", "Core CS"] as const;
-const anchor = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
 export default function SyllabusPage() {
-  const subs = subjects();
-  const bySubject = new Map(subs.map((s) => [s.name, s]));
-  const total = subs.reduce((n, s) => n + s.marks, 0);
-  const papers = allPapers().length || 1;
-  const years = [...new Set(allPapers().map((p) => p.year))].sort();
-  const rows = SYLLABUS.map((sec) => {
-    const found = sec.subjects.map((n) => bySubject.get(n)).filter((x): x is NonNullable<typeof x> => !!x);
-    const marks = found.reduce((n, s) => n + s.marks, 0);
-    const topicRows = found
-      .flatMap((s) => [...s.topicMarks.entries()].map(([topic, m]) => ({ topic, marks: m, count: s.topics.get(topic) ?? 0, subject: s.name })))
-      .sort((a, b) => b.marks - a.marks);
-    return { ...sec, found, marks, topicRows, share: total ? (marks / total) * 100 : 0, perPaper: marks / papers };
-  });
-  const maxShare = Math.max(...rows.map((r) => r.share), 1);
-  const groupShare = (g: string) => rows.filter((r) => r.group === g).reduce((n, r) => n + r.share, 0);
+  const { years, papers, sections, groups } = syllabusStats();
+  const ranked = [...sections].sort((a, b) => b.share - a.share);
+  const units = sections.reduce((n, s) => n + s.units.length, 0);
+  const span = `${years[0]}–${years[years.length - 1]}`;
 
   return (
-    <div className="py-10 sm:py-14">
-      <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{SYLLABUS_SOURCE.exam} · CS &amp; IT · official</p>
-      <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS 2027 syllabus, with topic-wise weightage</h1>
-      <p className="mt-3 max-w-3xl text-[var(--text-secondary)] leading-relaxed">The syllabus below is the official {SYLLABUS_SOURCE.exam} Computer Science &amp; IT and General Aptitude syllabus published by {SYLLABUS_SOURCE.institute}, the organising institute. For every section and every topic inside it, we show the marks it has actually carried in GATE CS papers from {years[0]} to {years[years.length - 1]}.</p>
-      <div className="mt-4 flex flex-wrap gap-2 text-sm">
-        <a href={SYLLABUS_SOURCE.cs} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> Official CS syllabus (PDF) <ExternalLink className="w-3 h-3" /></a>
-        <a href={SYLLABUS_SOURCE.ga} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> Official GA syllabus (PDF) <ExternalLink className="w-3 h-3" /></a>
+    <ToolsFrame>
+      {/* Hero */}
+      <header className="max-w-3xl">
+        <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{SYLLABUS_SOURCE.exam} · official · {SYLLABUS_SOURCE.institute}</p>
+        <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS 2027 syllabus <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">with weightage</span></h1>
+        <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">The official syllabus, organised into sections, subjects and topics — and next to every one, how many marks it has really carried in GATE CS papers from {span}, and whether it is rising or cooling.</p>
+        <div className="mt-4 flex flex-wrap gap-2 text-sm">
+          <a href={SYLLABUS_SOURCE.cs} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> CS syllabus PDF <ExternalLink className="w-3 h-3" /></a>
+          <a href={SYLLABUS_SOURCE.ga} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> GA syllabus PDF <ExternalLink className="w-3 h-3" /></a>
+        </div>
+      </header>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatTile label="Sections" value={groups.length} sub="Aptitude · Maths · Core" />
+        <StatTile label="Subjects" value={sections.length} sub={`${units} topic units`} accent="sky" />
+        <StatTile label="Papers analysed" value={papers} sub={span} accent="emerald" />
+        <StatTile label="Top subject" value={`${ranked[0].share.toFixed(0)}%`} sub={ranked[0].title} accent="amber" />
       </div>
 
-      <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3">
-        {GROUPS.map((g) => (
-          <a key={g} href={`#${anchor(g)}`} className="rounded-2xl border border-violet-500/20 bg-gradient-to-br from-violet-500/10 to-fuchsia-500/5 p-3 sm:p-4 hover:border-violet-500/50 transition-colors">
-            <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)] leading-tight">{g}</p>
-            <p className="text-xl sm:text-2xl font-extrabold font-num text-[var(--text-primary)]">{groupShare(g).toFixed(1)}%</p>
-            <p className="hidden sm:block text-xs text-[var(--text-secondary)]">≈ {Math.round((groupShare(g) / 100) * 100)} of 100 marks per paper</p>
-          </a>
-        ))}
-      </div>
+      {/* Overview */}
+      <section className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+        <div className="lg:col-span-2 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
+          <h2 className="font-extrabold text-[var(--text-primary)]">Where the 100 marks come from</h2>
+          <p className="text-xs text-[var(--text-muted)] mb-5">Average share per paper, {span}</p>
+          <Donut slices={groups.map((g) => ({ label: g.name, value: g.share }))} center="100" sub="marks" legend={false} />
+          <ul className="mt-5 space-y-2">
+            {groups.map((g) => (
+              <li key={g.name}><a href={`#${g.slug}`} className="flex items-center justify-between gap-3 rounded-xl px-3 py-2 bg-[var(--surface-secondary)]/60 hover:bg-violet-500/10 transition-colors">
+                <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{g.name}</span><span className="block text-[11px] text-[var(--text-muted)]">{g.blurb}</span></span>
+                <span className="font-num font-extrabold text-violet-600 dark:text-violet-400">{g.share.toFixed(1)}%</span>
+              </a></li>
+            ))}
+          </ul>
+        </div>
+        <div className="lg:col-span-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
+          <h2 className="font-extrabold text-[var(--text-primary)]">Subjects ranked by weightage</h2>
+          <p className="text-xs text-[var(--text-muted)] mb-4">Average marks per paper · trend = last 3 years vs earlier</p>
+          <ol className="space-y-3">
+            {ranked.map((s, i) => (
+              <li key={s.title}>
+                <a href={`#${s.slug}`} className="group grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-center gap-3">
+                  <span className="font-num text-xs font-bold text-[var(--text-muted)]">{i + 1}</span>
+                  <ShareBar label={s.title} value={s.share} max={ranked[0].share} right={`${s.perPaper.toFixed(1)} m`} />
+                  <TrendBadge values={s.byYear} className="hidden sm:inline-flex" />
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
 
-      <nav aria-label="Sections" className="sticky top-16 z-10 -mx-4 sm:mx-0 mt-6 px-4 sm:px-0 py-2 bg-[var(--background)]/85 backdrop-blur-xl">
+      {/* Jump bar */}
+      <nav aria-label="Subjects" className="sticky top-[88px] sm:top-16 z-10 -mx-4 sm:mx-0 px-4 sm:px-0 py-2 bg-[var(--background)]/85 backdrop-blur-xl">
         <ul className="flex gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {rows.map((r, i) => (
-            <li key={r.title} className="shrink-0"><a href={`#${anchor(r.title)}`} className="block px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-xs font-semibold text-[var(--text-secondary)] hover:text-violet-600 hover:border-violet-500/50 whitespace-nowrap">{i === 0 ? "GA" : i}. {r.title} <span className="font-num text-[var(--text-muted)]">{r.share.toFixed(0)}%</span></a></li>
+          {sections.map((s) => (
+            <li key={s.title} className="shrink-0"><a href={`#${s.slug}`} className="block px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-xs font-semibold text-[var(--text-secondary)] hover:text-violet-600 hover:border-violet-500/50 whitespace-nowrap">{s.title} <span className="font-num text-[var(--text-muted)]">{s.share.toFixed(0)}%</span></a></li>
           ))}
         </ul>
       </nav>
 
-      {GROUPS.map((g) => (
-        <section key={g} id={anchor(g)} className="mt-8 scroll-mt-32">
-          <h2 className="text-xs font-black uppercase tracking-[0.14em] text-[var(--text-muted)] mb-3">{g}</h2>
-          <ol className="space-y-4">
-            {rows.filter((r) => r.group === g).map((r) => {
-              const maxTopic = r.topicRows[0]?.marks || 1;
+      {/* Sections → subjects → units */}
+      {groups.map((g, gi) => (
+        <section key={g.name} id={g.slug} className="pt-4 scroll-mt-36">
+          <div className="flex items-end justify-between gap-4 border-b border-[var(--border-subtle)] pb-3 mb-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400">Section {gi + 1}</p>
+              <h2 className="text-2xl font-extrabold tracking-tight text-[var(--text-primary)]">{g.name}</h2>
+              <p className="text-xs text-[var(--text-muted)]">{g.blurb}</p>
+            </div>
+            <p className="text-right"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{g.share.toFixed(1)}%</span><span className="text-[11px] text-[var(--text-muted)]">of marks</span></p>
+          </div>
+          <div className="space-y-4">
+            {g.sections.map((s) => {
+              const maxUnit = Math.max(1, ...s.units.map((u) => u.marks));
               return (
-                <li key={r.title} id={anchor(r.title)} className="scroll-mt-32 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-lg font-extrabold text-[var(--text-primary)]">{r.title}</h3>
-                    <span className="shrink-0 text-right">
-                      <span className="block font-num font-extrabold text-violet-600 dark:text-violet-400">{r.share.toFixed(1)}%</span>
-                      <span className="block text-[10px] text-[var(--text-muted)]">≈ {r.perPaper.toFixed(1)} marks / paper</span>
-                    </span>
-                  </div>
-                  <div className="mt-2 h-1.5 rounded-full bg-[var(--surface-secondary)] overflow-hidden"><div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" style={{ width: `${(r.share / maxShare) * 100}%` }} /></div>
-                  <p className="mt-3 text-sm text-[var(--text-secondary)] leading-relaxed"><span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)] mr-1.5">Official syllabus</span>{r.topics}</p>
-
-                  {r.topicRows.length > 0 && (
-                    <div className="mt-4">
-                      <p className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)] mb-2">Topic weightage · marks since {years[0]}</p>
-                      <ol className="space-y-1.5">
-                        {r.topicRows.map((t) => (
-                          <li key={`${t.subject}-${t.topic}`} className="grid grid-cols-[minmax(0,1fr)_4.5rem] sm:grid-cols-[minmax(0,1fr)_10rem_4.5rem] items-center gap-3 text-sm">
-                            <span className="min-w-0 truncate text-[var(--text-primary)]" title={t.topic}>{t.topic}</span>
-                            <span className="hidden sm:block h-1.5 rounded-full bg-[var(--surface-secondary)] overflow-hidden"><span className="block h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-violet-500" style={{ width: `${(t.marks / maxTopic) * 100}%` }} /></span>
-                            <span className="text-right font-num text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">{r.marks ? Math.round((t.marks / r.marks) * 100) : 0}%</b> · {t.marks}m</span>
-                          </li>
-                        ))}
-                      </ol>
+                <article key={s.title} id={s.slug} className="scroll-mt-36 rounded-3xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden">
+                  <header className="flex flex-wrap items-center justify-between gap-3 p-5 sm:p-6 bg-gradient-to-r from-violet-500/[0.07] to-transparent border-b border-[var(--border-subtle)]">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{s.official}</p>
+                      <h3 className="text-lg sm:text-xl font-extrabold text-[var(--text-primary)]">{s.title}</h3>
+                      <p className="mt-0.5 text-xs text-[var(--text-secondary)]">{s.questions} past questions · {s.marks} marks · ≈ {s.perPaper.toFixed(1)} marks / paper</p>
                     </div>
+                    <div className="flex items-center gap-3">
+                      <div className="hidden sm:block"><Sparkline values={s.byYear} /></div>
+                      <div className="text-right"><p className="text-2xl font-extrabold font-num text-violet-600 dark:text-violet-400 leading-none">{s.share.toFixed(1)}%</p><TrendBadge values={s.byYear} className="mt-1" /></div>
+                    </div>
+                  </header>
+                  <ol className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--border-subtle)]">
+                    {s.units.map((u, ui) => (
+                      <li key={u.name} className="bg-[var(--surface)] p-4 sm:p-5">
+                        <div className="flex items-start justify-between gap-3">
+                          <p className="font-bold text-[var(--text-primary)]"><span className="font-num text-[var(--text-muted)] mr-1.5">{ui + 1}.</span>{u.name}</p>
+                          <p className="shrink-0 text-right font-num"><span className="font-extrabold text-[var(--text-primary)]">{s.marks ? Math.round((u.marks / s.marks) * 100) : 0}%</span><span className="block text-[10px] text-[var(--text-muted)]">{u.marks} marks</span></p>
+                        </div>
+                        <div className="mt-2 h-1.5 rounded-full bg-[var(--surface-secondary)] overflow-hidden"><div className="chart-grow-x h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500" style={{ width: `${Math.max(2, (u.marks / maxUnit) * 100)}%` }} /></div>
+                        <ul className="mt-3 flex flex-wrap gap-1.5">
+                          {u.items.map((it) => <li key={it} className="px-2 py-0.5 rounded-md bg-[var(--surface-secondary)] text-[12px] text-[var(--text-secondary)]">{it}</li>)}
+                        </ul>
+                        <p className="mt-2 text-[11px] text-[var(--text-muted)]">{u.questions ? `Asked in ${u.yearsAsked} of ${years.length} years · ${u.questions} question${u.questions > 1 ? "s" : ""}` : "Not asked directly yet"}</p>
+                      </li>
+                    ))}
+                  </ol>
+                  {s.links.length > 0 && (
+                    <footer className="flex flex-wrap gap-x-5 gap-y-2 px-5 sm:px-6 py-3 border-t border-[var(--border-subtle)]">
+                      {s.links.map((l) => <Link key={l.slug} href={`/topics/${l.slug}`} className="inline-flex items-center gap-1 text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline">{l.name} · {l.count} PYQs &amp; analysis <ArrowRight className="w-3 h-3" /></Link>)}
+                    </footer>
                   )}
-
-                  {r.found.length > 0 && (
-                    <p className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
-                      {r.found.map((s) => (
-                        <Link key={s.slug} href={`/topics/${s.slug}`} className="inline-flex items-center gap-1 text-xs font-semibold text-violet-600 dark:text-violet-400 hover:underline">{s.name} PYQs ({s.count}) <ArrowRight className="w-3 h-3" /></Link>
-                      ))}
-                    </p>
-                  )}
-                </li>
+                </article>
               );
             })}
-          </ol>
+          </div>
         </section>
       ))}
 
       <SponsorSlot context="algorithms data structures" seed={2} />
 
-      <p className="text-[11px] text-[var(--text-muted)]">Syllabus text: {SYLLABUS_SOURCE.exam} official syllabus, {SYLLABUS_SOURCE.institute} (<a href={SYLLABUS_SOURCE.page} target="_blank" rel="noopener noreferrer" className="underline">source</a>). Weightage: computed from our tagged bank of every official GATE CS paper; percentages within a section are shares of that section&apos;s marks.</p>
-    </div>
+      <p className="text-[11px] text-[var(--text-muted)]">Syllabus: {SYLLABUS_SOURCE.exam} official syllabus, {SYLLABUS_SOURCE.institute} (<a href={SYLLABUS_SOURCE.page} target="_blank" rel="noopener noreferrer" className="underline">source</a>), organised into topic units by us. Weightage: computed from our tagged bank of every official GATE CS paper; a unit&apos;s % is its share of that subject&apos;s marks.</p>
+
+    </ToolsFrame>
   );
 }
