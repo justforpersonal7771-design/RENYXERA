@@ -72,6 +72,17 @@ export default function DisclaimerPage() {
             or privacy practices.
           </p>
         </section>
+
+        <section>
+          <h2 className={H}>7. Sponsorship and affiliate links</h2>
+          <p>
+            Some public pages (previous-year questions, subject pages and free tools) show one clearly labelled sponsored
+            item. It is either a promotion of RENYXERA&apos;s own features, a single text ad from a privacy-first network that
+            does not track you, or a recommendation of a standard textbook. Book recommendations are affiliate links: as an
+            Amazon Associate we earn from qualifying purchases, at no extra cost to you. We only recommend books widely used
+            for GATE preparation, and sponsored items never appear inside the practice app or during a test.
+          </p>
+        </section>
       </div>
     </article>
   );

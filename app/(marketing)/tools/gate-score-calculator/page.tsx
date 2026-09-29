@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ScorePredictor } from "@/components/seo/score-predictor";
-import { AdSlot } from "@/components/ads/ad-slot";
+import { SponsorSlot } from "@/components/ads/sponsor-slot";
 
 export const metadata: Metadata = {
   title: "GATE CS Score Calculator & Rank Predictor (Marks vs Rank) | RENYXERA",
@@ -25,7 +25,7 @@ export default function ScoreCalculatorPage() {
       <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS score calculator &amp; rank predictor</h1>
       <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">Move the slider to your marks. You&apos;ll see your GATE score, the All-India Rank range students with those marks usually get, and whether you clear the qualifying mark for your category.</p>
       <div className="mt-8"><ScorePredictor /></div>
-      <AdSlot />
+      <SponsorSlot context="aptitude" seed={1} />
       <section className="mt-4 space-y-4" aria-labelledby="faq">
         <h2 id="faq" className="text-xl font-extrabold text-[var(--text-primary)]">Frequently asked questions</h2>
         {FAQ.map((f) => (

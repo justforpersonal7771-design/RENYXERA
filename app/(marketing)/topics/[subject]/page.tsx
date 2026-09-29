@@ -1,4 +1,4 @@
-import { AdSlot } from "@/components/ads/ad-slot";
+import { SponsorSlot } from "@/components/ads/sponsor-slot";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -58,7 +58,7 @@ export default async function SubjectHub({ params }: { params: Promise<{ subject
         <p className="mt-3 text-[11px] text-[var(--text-muted)]">Total marks from {s.name} questions in each year&apos;s GATE CS papers (both shifts counted where there were two).</p>
       </section>
 
-      <AdSlot />
+      <SponsorSlot context={s.name} seed={s.count} />
 
       <section aria-labelledby="topics">
         <h2 id="topics" className="font-extrabold text-[var(--text-primary)] mb-3">Topics</h2>

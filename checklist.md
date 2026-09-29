@@ -55,6 +55,17 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 
 ## 🟡 Backlog — deferred until there's a reason to spend money
 
+**Free alternatives checked (29 Sep 2026)** for items parked as paid:
+| Parked item | Free alternative | Status |
+|---|---|---|
+| Custom domain (ads, OAuth branding, email) | **eu.org** free domain (real domain on the Public Suffix List; one volunteer approves, can take weeks) | Your call — apply at nic.eu.org |
+| Branded confirmation / waitlist emails | **Brevo free SMTP** (300 emails/day, no card) plugged into Supabase custom SMTP; single verified sender address works without a domain, but may land in spam more often | Ready to set up with you |
+| Phone OTP (Firebase Blaze) | **Email one-time code** (Supabase email OTP — free) instead of SMS | 🟠 can replace OTP whenever wanted |
+| Cloudflare R2 for diagrams | Keep images as Worker static assets (free, 25 MB/file) or **GitHub + jsDelivr** CDN (free, no card) | 🟠 with 8A |
+| Hotlink protection | Worker-first routing for `/images/*` (`run_worker_first`) checking the Referer — free | 🟠 with 8A |
+| Play Store (₹2,100) | **Microsoft Store is free** for individual developers; publish the PWA with PWABuilder; Android users install the PWA from the browser | 🟠 Release 9D |
+
+
 **Rule (28 Sep 2026):** anything that costs money — beyond a one-time total of ₹100 at most, never monthly — waits here until the app earns income. Rows marked *Backlog (paid)* in the releases below follow this rule.
 
 | # | Task | Why it's parked |
@@ -65,6 +76,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 5 | **Turn "Confirm email" back ON** (Supabase → Authentication → Sign In / Providers → Email) | Switched off 26 Sep 2026 because Supabase's free built-in email sender only allows a few emails per hour, which blocked sign-ups ("email rate limit exceeded"). Re-enable once there's revenue for a domain + custom SMTP (#1), so unverified addresses can't be used. No code change needed — the sign-up screen already falls back to "check your inbox" when confirmation is required. |
 | 6 | **Cascading degree filter by exam** | When a second exam launches, the profile Degree picker should list only degrees eligible for the chosen exam. The data is already tagged (`lib/degrees.ts` → `exams`). |
 | 7 | **Exam + branch selection in onboarding and profile** | Once multiple exams and branches are live, let users choose the exam (GATE, …) and the branch they're appearing for (dropdowns; student-ID branch code follows it). Until then everyone defaults to GATE CS & IT. Pairs with #6. |
+| 8 | **Primary display ads: Google AdSense** (highest fill of relevant, education-category ads; ~₹20–80 per 1,000 Indian page views) — or Media.net / Ezoic as alternatives | All need an owned domain (ads.txt at the domain root). The `SponsorSlot` already reserves the space and handles adblock fallback, so switching on is one setting once approved. Free-domain route to try first: **eu.org** (free, but approval can take weeks). |
+| 9 | **EthicalAds** (privacy-first, one text ad, ~$2.50 CPM) | Free to join but asks for ~50k page views/month on developer-focused sites — apply once traffic grows; already wired (`NEXT_PUBLIC_ETHICALADS_PUBLISHER`). |
 | 4 | **Google Play developer account** (~₹2,100 one-time) | Optional; only for a Play Store listing (9D). The PWA already installs from the browser. |
 
 ---
@@ -333,7 +346,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 6C · P1 · Ad Placement Architecture
 | Task | Status |
 |---|---|
-| `<AdSlot>` component (tier-, route- and consent-aware; reserved height; lazy) | 🟨 *(route-aware — public content pages only; reserved height; script loads once, lazily; off until `NEXT_PUBLIC_ADSENSE_CLIENT` is set; tier-aware with Release 7)* |
+| `<AdSlot>` component (tier-, route- and consent-aware; reserved height; lazy) | ✅ *(29 Sep: `SponsorSlot` — vetted network first (EthicalAds, env-gated), instant adblock detection (bait element + script-load failure + 3 s no-fill check) swaps to a first-party, subject-matched house promo in the same reserved box; CLS 0.000; public pages only; tier-aware with Release 7)* |
 | Zero ads in exams, auth and checkout; zero for ad-free tiers | ✅ *(ads can only render on /pyq, /topics and /tools pages; ad-free tiers arrive with Release 7)* |
 | Service worker excludes ad scripts from caching | ✅ *(the service worker only handles same-origin requests; ad scripts are cross-origin)* |
 | Consent management; non-personalised ads for under-18s | 🟠 **Later — when ads switch on** *(needs the approved ad account)* |

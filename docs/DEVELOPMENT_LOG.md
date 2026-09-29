@@ -130,6 +130,12 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - **Ads (6C):** `AdSlot` + `/ads.txt`, both off until `NEXT_PUBLIC_ADSENSE_CLIENT` is set; only on public content pages, never in the app/exams.
 - Smoke suite extended to 16 pages × 4 modes — all pass.
 
+### 29 Sep 2026 — Adblock-proof sponsorship + free alternatives ✅
+- **User brief:** no AdSense/programmatic ads now; brand-safe only; survive ad blockers; subject-relevant. AdSense (or a better-paying relevant provider) kept in the backlog for when there's a domain.
+- **Verified facts:** EthicalAds wants ~50k page views/month, ~$2.50 CPM; "Acceptable Ads" does not bypass uBlock Origin by default; Amazon Associates needs real content + 3 sales in 180 days; Microsoft Store is now free for individuals; Brevo free = 300 emails/day; Cloudflare `run_worker_first` enables free hotlink checks.
+- **Built `SponsorSlot`:** network first (EthicalAds, env-gated) → instant switch to a first-party house promo when blocked (bait element, script failure, or no fill in 3 s); promos matched to the subject (our mocks / calculator / challenge, or a standard textbook via Amazon affiliate once `NEXT_PUBLIC_AMAZON_TAG` is set); reserved box, CLS 0.000; public pages only, never in exams. AdSense code + ads.txt removed. Disclaimer §7 discloses affiliate/sponsorship.
+- Checklist: AdSense/EthicalAds backlog rows; a "free alternatives" table for every paid item.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

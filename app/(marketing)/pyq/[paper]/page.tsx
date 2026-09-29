@@ -1,4 +1,4 @@
-import { AdSlot } from "@/components/ads/ad-slot";
+import { SponsorSlot } from "@/components/ads/sponsor-slot";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -33,7 +33,7 @@ export default async function PaperPage({ params }: { params: Promise<{ paper: s
         </div>
         <Link href="/setup" className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25"><Play className="w-4 h-4 fill-current" /> Take this paper as a timed test</Link>
       </header>
-      <AdSlot />
+      <SponsorSlot context={p.label} seed={Number(p.year)} />
       {sections.map((sec) => (
         <section key={sec} aria-label={sec}>
           <h2 className="text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)] mb-3">{sec}</h2>

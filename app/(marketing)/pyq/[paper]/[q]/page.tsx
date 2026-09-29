@@ -1,4 +1,4 @@
-import { AdSlot } from "@/components/ads/ad-slot";
+import { SponsorSlot } from "@/components/ads/sponsor-slot";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -70,7 +70,7 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
         <PyqBody id={question.question_id} type={question.question_type} question={question.contentAst} options={(question.options ?? []).map((o) => ({ option_id: o.option_id, contentAst: o.contentAst }))} paperYearShift={p.yearShift} />
       </article>
 
-      <AdSlot />
+      <SponsorSlot context={`${question.subject} ${question.topic}`} seed={Number(question.question_no)} />
 
       <nav aria-label="More questions" className="mt-6 grid grid-cols-2 gap-3">
         {prev ? <Link href={`/pyq/${p.slug}/q${prev.question_no}`} className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] p-3 text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><ArrowLeft className="w-4 h-4" /> Q{prev.question_no}</Link> : <span />}
