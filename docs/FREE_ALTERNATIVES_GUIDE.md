@@ -83,6 +83,19 @@ They only hold the name.
 
 ---
 
+### Other free domain options (checked 29 Sep 2026)
+| Option | Free for how long | Speed | Catches | Verdict |
+|---|---|---|---|---|
+| **eu.org** (e.g. `renyxera.eu.org`) | **Lifetime, no renewals** — running since 1996 | Slow (days to months, one volunteer) | No support; can be removed for abuse | **Best long-term free choice — apply now, it costs nothing** |
+| **pp.ua** (e.g. `renyxera.pp.ua`, via nic.ua) | Free, but **renew every year** (free) in a short window | Instant | Ukrainian SMS verification; **owner contact details are public**; miss the 28-day grace and restoring costs ~996 UAH | Good stop-gap if eu.org is slow; set a yearly reminder |
+| **DigitalPlat** (`.us.kg`, `.dpdns.org`, …) | Free while the operator keeps running | Fast | New free TLDs attract abuse, so spam filters and security tools may distrust them; depends on the operator's goodwill (Freenom precedent) | Only for experiments, not the product |
+| **is-a.dev / js.org** | Free | Pull-request review | Developer-portfolio subdomains; not meant for a product | Not suitable |
+
+None of these guarantees AdSense approval or great email reputation. The dependable route is a paid
+`.in`/`.com` from the first income; the free domain is a bridge.
+
+---
+
 ## 3. Brevo for emails (free, 300 per day)
 
 **What it gives:** sign-up confirmations, password resets and waitlist mails sent reliably by
