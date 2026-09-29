@@ -4,6 +4,10 @@ import { checkRateLimit } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { getEntitlement } from "@/lib/billing/server";
+
+const PRO_DEVICE_LIMIT = 2;
+const PRO_NEW_DEVICES_PER_30D = 4;
 
 export const runtime = "nodejs";
 
@@ -69,6 +73,21 @@ export async function POST(req: NextRequest) {
       // Revoked while this same session is still alive → tell the device to sign out.
       if (row?.revoked_at && row.session_id === c.sessionId) {
         return NextResponse.json({ revoked: true });
+      }
+      // 7D: Pro accounts may be active on PRO_DEVICE_LIMIT devices, and may add at most
+      // PRO_NEW_DEVICES_PER_30D new devices a month. Free accounts are never limited.
+      if (!row && (await getEntitlement(c.userId)).pro) {
+        const since = new Date(Date.now() - 30 * 86400_000).toISOString();
+        const { data: active } = await db.from("device_sessions").select("id, device_id, label, last_seen_at, created_at")
+          .eq("user_id", c.userId).is("revoked_at", null).gte("last_seen_at", since).order("last_seen_at", { ascending: false });
+        const { count: recentNew } = await db.from("device_sessions").select("id", { count: "exact", head: true })
+          .eq("user_id", c.userId).gte("created_at", since);
+        if ((recentNew ?? 0) >= PRO_NEW_DEVICES_PER_30D) {
+          return NextResponse.json({ revoked: false, deviceLimit: "cooldown", message: "Pro has been used on too many new devices this month. You can keep using the free plan here, or continue on your usual devices." });
+        }
+        if ((active ?? []).length >= PRO_DEVICE_LIMIT) {
+          return NextResponse.json({ revoked: false, deviceLimit: "full", limit: PRO_DEVICE_LIMIT, devices: (active ?? []).map(({ created_at, ...d }) => d) });
+        }
       }
       const { error } = await db.from("device_sessions").upsert(
         { user_id: c.userId, device_id, session_id: c.sessionId, label: label.trim() || "Unknown device", last_seen_at: now, revoked_at: null },

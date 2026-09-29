@@ -259,7 +259,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           className="w-full max-w-xl bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[50vh] font-sans"
         >
           {/* Search Input Bar */}
-          <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/50">
+          <div className="search-row-line flex items-center gap-3 px-4 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/50">
             <Search className="w-5 h-5 text-[var(--text-muted)] shrink-0" />
             <input
               ref={inputRef}
@@ -270,7 +270,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                 setQuery(e.target.value);
                 setSelectedIndex(0);
               }}
-              className="w-full bg-transparent text-sm text-[var(--text-primary)] focus:outline-none placeholder:text-[var(--text-muted)]"
+              className="search-bare w-full bg-transparent text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
             />
             <kbd className="hidden sm:inline-flex h-5 select-none items-center gap-0.5 rounded border border-[var(--border-subtle)] bg-[var(--surface-elevated)] px-1.5 font-mono text-[10px] font-bold text-[var(--text-muted)] shadow-sm">
               ESC

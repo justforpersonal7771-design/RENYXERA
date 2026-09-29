@@ -498,7 +498,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                     value={topicQuery}
                     onChange={(e) => setTopicQuery(e.target.value)}
                     placeholder="Search topics or subjects…"
-                    className="w-full pl-8 pr-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-medium text-[var(--text-primary)] placeholder:text-[var(--text-muted)]"
+                    className="w-full pl-8 pr-3 py-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-xs font-medium text-[var(--text-primary)] placeholder:text-[var(--text-muted)] search-input"
                   />
                 </div>
               </div>

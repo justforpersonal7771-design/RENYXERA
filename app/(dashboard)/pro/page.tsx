@@ -8,6 +8,7 @@ import { BILLING_MODE, FREE_FOREVER, PLANS, PRO_FEATURES, formatPrice, type Plan
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
+import { ReferralCard } from "@/components/profile/referral-card";
 
 declare global { interface Window { Razorpay?: new (opts: Record<string, unknown>) => { open: () => void } } }
 
@@ -94,6 +95,8 @@ export default function ProPage() {
           );
         })}
       </div>
+
+      <ReferralCard />
 
       {payments && (
         <label className="mx-auto max-w-2xl flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--text-secondary)] cursor-pointer">

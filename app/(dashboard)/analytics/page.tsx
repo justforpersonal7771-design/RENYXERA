@@ -435,12 +435,12 @@ export default function AnalyticsDashboardPage() {
               </AnimatePresence>
             </div>
             <div className="relative lg:w-64">
-              <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-[var(--text-muted)]" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--text-muted)]" />
               <input
                 value={topicQuery}
                 onChange={(e) => setTopicQuery(e.target.value)}
                 placeholder="Search topics or subjects…"
-                className="w-full pl-9 pr-3 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-lg text-xs font-medium text-[var(--text-primary)] outline-none focus:ring-2 focus:ring-indigo-500/40"
+                className="w-full pl-9 pr-3 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-lg text-xs font-medium text-[var(--text-primary)] search-input"
               />
             </div>
           </div>

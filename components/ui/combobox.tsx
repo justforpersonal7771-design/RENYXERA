@@ -122,7 +122,7 @@ export function Combobox({
                 <div className="relative">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
                   <input ref={input} value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder="Search degrees… e.g. btech cse, bsc, mca"
-                    className="w-full h-9 rounded-lg bg-[var(--surface-secondary)] pl-8 pr-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none" />
+                    className="w-full h-9 rounded-lg bg-[var(--surface-secondary)] pl-8 pr-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] border border-transparent search-input" />
                 </div>
                 <p className="mt-1.5 px-1 text-[10px] text-[var(--text-muted)]">{filtered.length} match{filtered.length === 1 ? "" : "es"}{onAddCustom ? " · not listed? type it and add it" : ""}</p>
               </div>

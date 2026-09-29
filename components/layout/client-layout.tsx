@@ -8,6 +8,7 @@ import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
 import { AuthModal } from "@/components/auth/auth-modal";
+import { DeviceLimitDialog } from "@/components/system/device-limit-dialog";
 import { ConfirmHost } from "@/components/ui/confirm-dialog";
 import { useToastStore } from "@/store/use-toast-store";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
@@ -71,6 +72,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       return useAuthStore.subscribe((st) => setMonitoringUser(st.user?.id ?? null));
     });
   }, []);
+
+  // 7E: remember where this visitor came from (first touch only).
+  useEffect(() => { void import("@/lib/growth/acquisition").then((m) => m.captureAcquisition()); }, []);
 
   useEffect(() => {
     loadRepository();
@@ -171,6 +175,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
       <AuthModal />
+      <DeviceLimitDialog />
       <ConfirmHost />
         <OnboardingGate />
     </div>

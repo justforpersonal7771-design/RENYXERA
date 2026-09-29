@@ -1,0 +1,22 @@
+name: Telegram daily question
+
+# 7E: posts one GATE CS PYQ to the Telegram channel every morning (08:00 IST).
+# Needs repo secrets TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL; skips quietly without them.
+on:
+  schedule:
+    - cron: "30 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/telegram-daily.mjs
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}

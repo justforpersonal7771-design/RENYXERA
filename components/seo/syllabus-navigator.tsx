@@ -84,7 +84,7 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
             <motion.div role="dialog" aria-label="Jump to subject" className="relative w-full max-h-[75vh] flex flex-col rounded-t-3xl border-t border-[var(--border)] bg-[var(--surface)] p-4 pb-6"
               initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", stiffness: 380, damping: 34 }}>
               <div className="flex items-center gap-2 mb-3">
-                <div className="flex-1 flex items-center gap-2 h-10 px-3 rounded-xl bg-[var(--surface-secondary)]"><Search className="w-4 h-4 text-[var(--text-muted)]" /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Find a subject" className="flex-1 bg-transparent text-sm outline-none text-[var(--text-primary)]" /></div>
+                <div className="search-row flex-1 flex items-center gap-2 h-10 px-3 rounded-xl border border-transparent bg-[var(--surface-secondary)]"><Search className="w-4 h-4 text-[var(--text-muted)]" /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Find a subject" className="search-bare flex-1 bg-transparent text-sm text-[var(--text-primary)]" /></div>
                 <button type="button" onClick={() => setOpen(false)} className="w-10 h-10 grid place-items-center rounded-xl bg-[var(--surface-secondary)] cursor-pointer" aria-label="Close"><X className="w-4 h-4" /></button>
               </div>
               <div className="overflow-y-auto">

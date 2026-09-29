@@ -162,6 +162,23 @@ export function AuthListener() {
         } catch { /* storage blocked — skip */ }
       }
 
+      // 7E: an invite link (/r/<code>) opened before signing up — claim it once, then forget it.
+      if (user) {
+        try {
+          const ref = localStorage.getItem("renyxera:ref");
+          if (ref) {
+            localStorage.removeItem("renyxera:ref");
+            const { data } = await supabase.rpc("claim_referral", { p_code: ref });
+            if (data === "ok") {
+              const { useToastStore } = await import("@/store/use-toast-store");
+              useToastStore.getState().show("Invite applied — finish your first test and you both get 7 days of Pro.", "success");
+            }
+          }
+          const { sendAcquisition } = await import("@/lib/growth/acquisition");
+          await sendAcquisition(supabase);
+        } catch { /* non-fatal */ }
+      }
+
       const checkIn = async () => {
         if (cancelled || document.hidden || !useAuthStore.getState().user) return;
         try { localStorage.setItem(IDLE_KEY, String(Date.now())); } catch { /* ignore */ }

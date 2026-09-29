@@ -41,7 +41,8 @@ export function isMobileLabel(label: string) {
 
 /** Tells the server this device is active. Returns true if the device was signed out
  *  remotely (the caller then signs out locally). Never throws. */
-export async function deviceHeartbeat(): Promise<{ revoked: boolean } | null> {
+export type DeviceLimit = { deviceLimit?: "full" | "cooldown"; limit?: number; message?: string; devices?: { id: string; device_id: string; label: string; last_seen_at: string }[] };
+export async function deviceHeartbeat(): Promise<({ revoked: boolean } & DeviceLimit) | null> {
   try {
     const res = await fetch("/api/devices", {
       method: "POST",
@@ -49,7 +50,10 @@ export async function deviceHeartbeat(): Promise<{ revoked: boolean } | null> {
       body: JSON.stringify({ action: "heartbeat", device_id: getDeviceId(), label: deviceLabel() }),
     });
     if (!res.ok) return null;
-    return (await res.json()) as { revoked: boolean };
+    const j = (await res.json()) as { revoked: boolean } & DeviceLimit;
+    // 7D: Pro device limit reached — the chooser dialog (DeviceLimitDialog) takes over.
+    if (j.deviceLimit) window.dispatchEvent(new CustomEvent("renyxera:device-limit", { detail: j }));
+    return j;
   } catch {
     return null;
   }

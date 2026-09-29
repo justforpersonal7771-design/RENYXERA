@@ -6,6 +6,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { LogIn, LayoutGrid, IdCard, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown } from "lucide-react";
+import { ProCrown } from "@/components/brand/pro-crown";
+import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { generateAvatarDataUri } from "@/lib/avatar/generate-avatar";
@@ -39,6 +41,7 @@ export function AccountButton() {
 
   const btnRef = useRef<HTMLAnchorElement>(null);
   const [open, setOpen] = useState(false);
+  const { pro } = useEntitlements();
   const [pos, setPos] = useState<{ top: number; right: number } | null>(null);
   const [hover, setHover] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -99,10 +102,10 @@ export function AccountButton() {
 
   return (
     <>
-      <Link ref={btnRef} href="/profile" aria-label={`${name} — profile and quick access`} aria-haspopup="menu" aria-expanded={open}
+      <Link ref={btnRef} href="/profile" aria-label={`${name}${pro ? " (Pro)" : ""} — profile and quick access`} aria-haspopup="menu" aria-expanded={open}
         onMouseEnter={show} onMouseLeave={hideSoon} onFocus={show} onBlur={hideSoon}
         onClick={(e) => { if (window.matchMedia("(hover: none)").matches && !open) { e.preventDefault(); show(); } }}
-        className="avatar-fx group relative flex items-center rounded-xl outline-none shrink-0">
+        className={`avatar-fx group relative flex items-center rounded-xl outline-none shrink-0 ${pro ? "is-pro" : ""}`}>
         <span className="relative block w-8 h-8">
           <span className="avatar-ring" aria-hidden="true" />
           <span className="relative block w-8 h-8 rounded-[9px] overflow-hidden border border-[var(--border)] bg-[var(--surface-secondary)] transition-[filter,transform] duration-300 group-hover:saturate-150 group-hover:brightness-110 group-hover:scale-105">
@@ -110,7 +113,7 @@ export function AccountButton() {
             <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={64} height={64} />
             <span className="avatar-sheen" aria-hidden="true" />
           </span>
-          <span className="avatar-dot absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[var(--surface)]" aria-hidden="true" />
+          {pro && <ProCrown />}
         </span>
       </Link>
 

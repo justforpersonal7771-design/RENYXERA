@@ -6,7 +6,8 @@ import { createPortal } from "react-dom";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { challengeTitle } from "@/lib/exam/weekly-challenge";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
-import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, ChevronDown, Lock } from "lucide-react";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, Lock } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 
@@ -245,26 +246,14 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
               ))}
             </div>
             {scope === "subject" && subjects.length > 0 && (
-              <label className="relative block">
-                <span className="sr-only">Subject</span>
-                <select value={subject} onChange={(e) => setSubject(e.target.value)} className="w-full appearance-none rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-3 py-2 pr-8 text-sm font-semibold text-[var(--text-primary)] cursor-pointer">
-                  {subjects.map((sb) => <option key={sb} value={sb}>{sb}</option>)}
-                </select>
-                <ChevronDown className="pointer-events-none absolute right-2.5 top-2.5 w-4 h-4 text-[var(--text-muted)]" />
-              </label>
+              <CustomDropdown value={subject} onChange={setSubject} options={subjects.map((sb) => ({ value: sb, label: sb }))} placeholder="Choose a subject" />
             )}
           </div>
         )}
 
         {tab === "mock" && mocks.length > 1 && (
           <div className="px-4 pt-3">
-            <label className="relative block">
-              <span className="sr-only">Choose a mock</span>
-              <select value={mockId ?? ""} onChange={(e) => setMockId(e.target.value)} className="w-full appearance-none rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-3 py-2 pr-8 text-sm font-semibold text-[var(--text-primary)] cursor-pointer">
-                {mocks.map((m) => <option key={m.id} value={m.id}>{m.title}</option>)}
-              </select>
-              <ChevronDown className="pointer-events-none absolute right-2.5 top-2.5 w-4 h-4 text-[var(--text-muted)]" />
-            </label>
+            <CustomDropdown value={mockId ?? ""} onChange={setMockId} options={mocks.map((m) => ({ value: m.id, label: m.title }))} placeholder="Choose a mock" />
           </div>
         )}
 

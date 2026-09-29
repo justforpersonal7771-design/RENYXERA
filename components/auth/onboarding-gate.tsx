@@ -39,6 +39,8 @@ export function OnboardingGate() {
   const needed = !!user && !!profile && "onboarded_at" in profile && !profile.onboarded_at;
 
   const [displayName, setDisplayName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [optIn, setOptIn] = useState(false);
   const [username, setUsername] = useState("");
   const [year, setYear] = useState(upcoming);
   const [status, setStatus] = useState("");
@@ -76,7 +78,8 @@ export function OnboardingGate() {
 
   if (!needed && !done) return null;
 
-  const canSave = displayName.trim().length >= 2 && name.state === "ok" && !!status && !saving;
+  const phoneOk = phone === "" || /^[6-9][0-9]{9}$/.test(phone);
+  const canSave = displayName.trim().length >= 2 && name.state === "ok" && !!status && phoneOk && !saving;
 
   const save = async () => {
     if (!user || !profile) return;
@@ -92,6 +95,8 @@ export function OnboardingGate() {
       target_branch: "CSE",
       aspirant_status: status,
       onboarded_at: new Date().toISOString(),
+      phone: phone ? `+91${phone}` : null,
+      contact_opt_in: !!phone && optIn,
     };
     const { data, error } = await supabase.from("profiles").update(updates).eq("id", user.id).select("*").single();
     setSaving(false);
@@ -170,6 +175,21 @@ export function OnboardingGate() {
                     <label className={LABEL}>I am a</label>
                     <CustomDropdown value={status} onChange={setStatus} options={STATUSES} className="w-full text-sm font-medium" />
                   </div>
+                </div>
+                <div>
+                  <label className={LABEL} htmlFor="onb-phone">Mobile number <span className="font-normal text-[var(--text-muted)]">— optional</span></label>
+                  <div className="relative">
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-[var(--text-muted)]">+91</span>
+                    <input id="onb-phone" type="tel" inputMode="numeric" autoComplete="tel-national" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                      className={`${INPUT} pl-12 ${phone && !phoneOk ? "border-rose-500/60" : ""}`} placeholder="10-digit mobile number" />
+                  </div>
+                  {phone && !phoneOk && <p className="mt-1.5 text-[11px] font-medium text-rose-500">Enter a valid 10-digit Indian mobile number, or leave it empty.</p>}
+                  {phone && phoneOk && (
+                    <label className="mt-2 flex items-start gap-2 text-[11px] text-[var(--text-secondary)] cursor-pointer">
+                      <input type="checkbox" checked={optIn} onChange={(e) => setOptIn(e.target.checked)} className="mt-0.5 accent-violet-600" />
+                      <span>RENYXERA may contact me on this number (WhatsApp/SMS) about mocks, results and updates. I can turn this off any time. See the <a href="/privacy" target="_blank" className="underline">Privacy Policy</a>.</span>
+                    </label>
+                  )}
                 </div>
                 <p className="text-[11px] text-[var(--text-muted)]">Branch: <strong className="text-[var(--text-secondary)]">Computer Science &amp; IT</strong> (more branches coming soon). You can add college, goals and more later in your profile.</p>
               </div>

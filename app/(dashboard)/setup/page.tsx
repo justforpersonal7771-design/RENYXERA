@@ -595,13 +595,13 @@ export default function ExamSetupPage() {
                   />
                   
                   <div className="relative flex-1 min-w-[200px]">
-                    <Search className="absolute left-3.5 top-3.5 w-4 h-4 text-[var(--text-muted)]" />
+                    <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search by keyword or topic..."
-                      className="pl-10 pr-4 py-3 w-full bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-indigo-500 text-[var(--text-primary)]"
+                      className="pl-10 pr-4 py-3 w-full bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl text-xs font-semibold text-[var(--text-primary)] search-input"
                     />
                     {searchQuery && (
                       <button

@@ -216,7 +216,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ text: cached.response, cached: true });
     }
 
-    const dailyLimit = (await getEntitlement(userId)).pro ? PRO_DAILY_LIMIT : AI_DAILY_LIMIT;
+    // 7D: Pro's allowance applies only on one of the account's registered devices.
+    let proHere = (await getEntitlement(userId)).pro;
+    if (proHere) {
+      const sid = typeof claims.session_id === "string" ? claims.session_id : null;
+      const { data: dev } = sid ? await db.from("device_sessions").select("id").eq("user_id", userId).eq("session_id", sid).is("revoked_at", null).maybeSingle() : { data: null };
+      proHere = !!dev;
+    }
+    const dailyLimit = proHere ? PRO_DAILY_LIMIT : AI_DAILY_LIMIT;
     const { data: quota, error: quotaErr } = await db.rpc("consume_ai_call", { p_user: userId, p_limit: dailyLimit });
     if (quotaErr) {
       // Migration 0003 not applied yet (or DB hiccup): don't take AI Mentor down — log loudly.
