@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getGoogleGenAIClient, GEMINI_MODEL } from "@/lib/ai/gemini";
+import { getGoogleGenAIClient, GEMINI_MODEL, AI_ROUTE } from "@/lib/ai/gemini";
 import { PromptBuilder } from "@/lib/ai/ai-prompts";
 import { aiRequestSchema, type AIGenerateRequest } from "@/lib/security/ai-request-schema";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
@@ -206,7 +206,8 @@ export async function POST(req: NextRequest) {
 
   // ---- Module 4G: server-side cache, then per-user daily quota (both in Postgres) ----
   const userId = String(claims.sub);
-  const promptHash = await sha256([GEMINI_MODEL, systemInstruction, prompt].join("\n"));
+  const route = AI_ROUTE[parsed.data.type] ?? { model: GEMINI_MODEL, maxOutputTokens: 3072 };
+  const promptHash = await sha256([route.model, systemInstruction, prompt].join("\n"));
   let db: ReturnType<typeof createServiceRoleClient> | null = null;
   try { db = createServiceRoleClient(); } catch { db = null; }
 
@@ -250,11 +251,12 @@ export async function POST(req: NextRequest) {
 
   try {
     const response = await getGoogleGenAIClient().models.generateContent({
-      model: GEMINI_MODEL,
+      model: route.model,
       contents: prompt,
       config: {
         systemInstruction,
         responseMimeType: "application/json",
+        maxOutputTokens: route.maxOutputTokens,
       },
     });
 

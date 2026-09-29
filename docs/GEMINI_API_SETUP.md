@@ -55,7 +55,7 @@ Without billing enabled, the key runs on the **free tier**. Limits are per Googl
 | Model | Requests/minute | Requests/day | Tokens/minute |
 |---|---|---|---|
 | gemini-2.5-flash (our current model) | ~10 **(verify)** | ~250 **(verify)** | ~250,000 |
-| gemini-2.5-flash-lite | ~15 **(verify)** | ~1,000 **(verify)** | ~250,000 |
+| gemini-3.5-flash-lite | ~15 **(verify)** | ~1,000 **(verify)** | ~250,000 |
 
 Check them at **https://ai.google.dev/gemini-api/docs/rate-limits**, and see your live usage in AI Studio → **Usage**.
 

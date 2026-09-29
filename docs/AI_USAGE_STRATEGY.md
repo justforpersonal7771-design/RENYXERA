@@ -33,7 +33,7 @@ A typical AI Mentor explanation is about 1,500 input tokens (instructions, the q
 | Model | Input $/1M | Output $/1M | Cost per request | In ₹ (~₹84/$) |
 |---|---|---|---|---|
 | gemini-2.5-flash (current) | ~0.30 | ~2.50 | ~$0.0017 | **~₹0.14** |
-| gemini-2.5-flash-lite | ~0.10 | ~0.40 | ~$0.00035 | **~₹0.03** |
+| gemini-3.5-flash-lite | ~0.10 | ~0.40 | ~$0.00035 | **~₹0.03** |
 
 ### Worst case vs realistic, per month
 

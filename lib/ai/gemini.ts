@@ -24,3 +24,18 @@ export function getGoogleGenAIClient(): GoogleGenAI {
 }
 
 export const GEMINI_MODEL = "gemini-2.5-flash";
+export const GEMINI_LITE_MODEL = "gemini-3.5-flash-lite"; // 2.5-flash-lite is closed to new API users (checked 30 Sep 2026)
+
+/**
+ * Model routing + output caps (docs/AI_USAGE_STRATEGY.md §3.2, §3.4): short, formulaic
+ * requests go to Flash-Lite (~5× cheaper, higher free quota); reasoning-heavy ones stay on
+ * Flash. Caps are generous so JSON answers never truncate, but stop runaway outputs.
+ */
+export const AI_ROUTE: Record<string, { model: string; maxOutputTokens: number }> = {
+  HINT: { model: GEMINI_LITE_MODEL, maxOutputTokens: 1024 },
+  SHORTCUT: { model: GEMINI_LITE_MODEL, maxOutputTokens: 1536 },
+  FOLLOWUP: { model: GEMINI_MODEL, maxOutputTokens: 2048 },
+  EXPLAIN: { model: GEMINI_MODEL, maxOutputTokens: 3072 },
+  PRACTICE: { model: GEMINI_MODEL, maxOutputTokens: 4096 },
+  REVISION: { model: GEMINI_MODEL, maxOutputTokens: 4096 },
+};
