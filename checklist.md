@@ -55,7 +55,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 
 ## 🟡 Backlog — deferred until there's a reason to spend money
 
-**Free alternatives checked (29 Sep 2026)** for items parked as paid:
+**Free alternatives checked (29 Sep 2026)** — all legitimate, **parked for the founder's review** (step-by-step guides: `docs/FREE_ALTERNATIVES_GUIDE.md`). Amazon Associates: apply once traffic is steady (~300+ visitors/day) because of the 3-sales-in-180-days rule.
 | Parked item | Free alternative | Status |
 |---|---|---|
 | Custom domain (ads, OAuth branding, email) | **eu.org** free domain (real domain on the Public Suffix List; one volunteer approves, can take weeks) | Your call — apply at nic.eu.org |
