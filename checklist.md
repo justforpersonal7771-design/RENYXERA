@@ -380,15 +380,15 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Entitlements stored server-side (`profiles.entitlements`), re-checked on every gated action | ✅ *(`entitlements` table + `is_pro()` (migration 0019); `getEntitlement()` fails closed to free; `/api/billing/me`; `useEntitlements()` is display-only)* |
-| Pricing tiers implemented (Free / ₹29 / ₹49 / ₹99 / ₹199) | 🟨 *(three tiers decided 29 Sep: Free · Plus (silver) · Pro (gold); `lib/billing/plans.ts` monthly/yearly for each; prices unset by owner → "coming soon")* |
+| Pricing tiers implemented (Free / ₹29 / ₹49 / ₹99 / ₹199) | ✅ *(Free · Plus ₹29/mo ₹249/yr · Pro ₹99/mo ₹799/yr in `lib/billing/plans.ts`; honest strike-throughs; prorated Plus→Pro upgrade (migration 0022); premium sections gated by tier)* |
 | Entitlement check inside the grading call | ✅ *(the only paid perk today — the AI daily quota — is re-checked server-side on every `/api/ai/generate` call: 30 free / 150 Pro)* |
-| Upgrade path on the results screen; warm upsell at quota limits; bundling nudge after 3 purchases | ✅ *(`/pro` page; results-screen nudge; account-menu entry; AI quota message points to Pro · bundling nudge 🟠 with go-live)* |
+| Upgrade path on the results screen; warm upsell at quota limits; bundling nudge after 3 purchases | ✅ *(Plans page, results nudge, account menu, AI-quota message, locked sections with upgrade cards, Plus→Pro upgrade box · bundling nudge 🟠 at go-live)* |
 
 ### 7B · P1 · Payments — Razorpay
 | Task | Status |
 |---|---|
 | Razorpay account created, KYC approved, activated | ✅ *(ahead of schedule)* |
-| Confirm the actually-applied UPI MDR on the account | ⬜ |
+| Confirm the actually-applied UPI MDR on the account | 🟠 **Later — at payments go-live** *(check Razorpay dashboard → Settings → Pricing)* |
 | UPI-first checkout wired into the app | 🟨 *(Razorpay Checkout (UPI first by default) + `/api/billing/order`; fake-door "interest" mode live — no money moves until `NEXT_PUBLIC_BILLING_MODE` = test/live and prices are set)* |
 | Webhook handling (signature-verified, idempotent; sole source of truth) | ✅ *(`/api/billing/webhook`: HMAC-SHA256 over raw body, event-id idempotency table, `apply_paid_order()` flips an order once; the only path that grants Pro)* |
 | Razorpay Subscriptions for the ₹99 add-on; invoicing/GST; dunning | 🟠 **Later — after go-live** *(plans are fixed-period, non-renewing for now; GST invoicing with a registered entity)* |
@@ -399,8 +399,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Velocity limits, card-testing detection, disposable-email blocking | ✅ *(per-IP 5/10 min + per-account 5/hour order limits, disposable-email block, amount always server-side)* |
 | Turnstile on checkout | ✅ *(server-side siteverify on order creation; mandatory in live mode — needs `TURNSTILE_SECRET_KEY`)* |
-| Purchase-then-scrape flagging | ⬜ |
-| Admin review dashboard | ⬜ |
+| Purchase-then-scrape flagging | 🟠 **Later — Release 10 admin console** *(answer-fetch caps already limit scraping)* |
+| Admin review dashboard | 🟠 **Later — Release 10 admin console** |
 
 ### 7D · P1 · Account-Sharing Prevention
 | Task | Status |
@@ -412,15 +412,15 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 7E · P2 · Referral & Growth Loops
 | Task | Status |
 |---|---|
-| Referral credits (both sides) | ✅ *(`/r/<code>`; new accounts ≤ 7 days; credited by DB trigger on the friend's first submitted test with confirmed email; 7 days Pro each, max 5 — migration 0020)* |
-| Shareable achievement / result / AIR cards | 🟨 *(result + AIR cards ✅ 28 Sep; streak / topic-mastery / achievement cards pending)* |
-| "Your GATE year" recap (Wrapped-style, shareable) after the exam | ⬜ *(MARKETING §3.8)* |
-| "Study with me" focus-room link | ⬜ *(§3.8)* |
+| Referral credits (both sides) | ✅ *(hardened, migration 0021: 1 day Plus + 15 AI credits / friend 10 credits; 2 active days, no shared device, 3/month, 10 total)* |
+| Shareable achievement / result / AIR cards | 🟨 *(result + AIR cards ✅; streak/topic-mastery cards 🟠 Release 9)* |
+| "Your GATE year" recap (Wrapped-style, shareable) after the exam | 🟠 **Later — after GATE 2027 (Feb 2027)** |
+| "Study with me" focus-room link | 🟠 **Later — Release 9 (community)** |
 | UTM capture + weekly metrics dashboard (acquisition by channel, D7/D30 retention, first-test-within-24h activation) | 🟨 *(first-touch UTM/referrer saved to the profile; `weekly_growth_metrics()` SQL (sign-ups by channel, 24 h activation, D7/D30) ✅; visual dashboard 🟠 Release 10 admin console)* |
 | Telegram channel + daily-question bot | 🟨 *(daily 08:00 IST GitHub Action + script ✅; needs the owner's bot token + channel secrets)* |
-| Welcome email series | ⬜ *(needs custom SMTP — backlog #1)* |
-| College ambassador programme | ⬜ |
-| Study-group invitations; testimonials for credits | ⬜ |
+| Welcome email series | 🟡 **Backlog** — needs custom SMTP (Brevo steps in FREE_ALTERNATIVES_GUIDE) |
+| College ambassador programme | 🟠 **Later — after 1,000 users** *(referral links are the mechanism)* |
+| Study-group invitations; testimonials for credits | 🟠 **Later — Release 9 (community)** |
 
 ---
 

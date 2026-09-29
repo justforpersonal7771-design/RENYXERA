@@ -189,6 +189,12 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Tier visuals: metallic outline on the nav dock + icon cluster (no flowing line); profile header shows the real tier with crown and ring.
 - Docs: `AI_USAGE_STRATEGY.md`, `GEMINI_API_SETUP.md`, `TELEGRAM_SETUP_AND_PROMOTION.md`.
 
+### 30 Sep 2026 — Tier gating, upgrade, leaderboard crowns ✅
+- Premium sections gated with blurred previews (`TierGate`): Plus — insights/adaptive path, exam trends, AI Insights revision; Pro — mock analytics, topic ladders, difficulty analysis, offline downloads.
+- Prorated Plus→Pro upgrade (migration 0022): credit = unused paid Plus days; Pro runs the full period from purchase.
+- Nav: tier colours without purple flash (entitlement memory), metallic icon highlights/scroll line; bottom dock more prominent. Rank-curve label halo.
+- Leaderboards show Plus/Pro crowns (migration 0023 `tiers_for_labels`).
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.
