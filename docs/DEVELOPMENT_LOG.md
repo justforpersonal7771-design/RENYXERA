@@ -181,6 +181,14 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Tier visuals: crisp faceted crown (silver/gold), metallic avatar ring, PLUS/PRO mark, metallic active tab and navbar line; green online dot removed.
 - Plans page (Free/Plus/Pro, monthly/yearly), referral card, results nudge; Telegram daily-question workflow; onboarding optional mobile number (privacy policy updated); app-wide search focus fix; leaderboard dropdowns use the app dropdown.
 
+### 30 Sep 2026 — Pricing, AI credits, referral hardening ✅ (deploy after migration 0021)
+- Prices set: Plus ₹29/mo · ₹249/yr, Pro ₹99/mo · ₹799/yr; honest strike-throughs only (yearly vs 12× monthly; optional genuine launch price) per the 2023 Dark Patterns Guidelines. Payments still off (interest mode).
+- Free AI: one-time teaser of 5 requests (`ensure_welcome_ai`), no daily allowance; Plus 75/day, Pro 150/day.
+- Migration 0021: `ai_bonus_credits` ledger (spent after the daily allowance), sponsor breaks (+5/+3/+2/+1, max 4/day, signed single-use 20 s tokens), referral hardening (2 active days with 10+ answered, unflagged tests; no shared device; 3/month, 10 total; reward = 1 day Plus + 15 credits, friend 10 credits).
+- Owner accounts: RNX-GATE-CSIT-100003 → Pro, RNX-GATE-CSIT-100027 → Plus (admin grant, to 29 Sep 2027).
+- Tier visuals: metallic outline on the nav dock + icon cluster (no flowing line); profile header shows the real tier with crown and ring.
+- Docs: `AI_USAGE_STRATEGY.md`, `GEMINI_API_SETUP.md`, `TELEGRAM_SETUP_AND_PROMOTION.md`.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

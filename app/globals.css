@@ -1019,12 +1019,7 @@ html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; 
 @keyframes pro-spark { 0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); } 45% { opacity: 1; transform: scale(1) rotate(45deg); } 70% { opacity: 0; transform: scale(0.6) rotate(90deg); } }
 
 /* Pro navbar: a flowing gold hairline under the bar and a shimmering PRO badge. */
-.pro-bar::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none;
-  background: linear-gradient(90deg, transparent, #f59e0b, #fde68a, #d946ef, #fde68a, #f59e0b, transparent);
-  background-size: 200% 100%; animation: pro-bar-flow 6s linear infinite; opacity: 0.9;
-}
-.pro-bar .nav-cluster { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.35), 0 8px 24px -12px rgba(245, 158, 11, 0.45); }
+.pro-bar .nav-cluster, .pro-bar .main-dock { border-color: transparent !important; box-shadow: 0 0 0 2px #f5b83d, 0 0 0 3px rgba(146, 64, 14, 0.18), 0 8px 22px -12px rgba(217, 119, 6, 0.55); }
 @keyframes pro-bar-flow { to { background-position: 200% 0; } }
 .pro-badge {
   position: relative; overflow: hidden; display: inline-flex; align-items: center; padding: 1px 6px 1px 7px; border-radius: 6px;
@@ -1048,15 +1043,13 @@ html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; 
   animation: ang-spin 3.6s linear infinite;
 }
 .pro-crown.is-inline { position: relative; top: auto; right: auto; width: 40px; height: 30px; transform: none; display: inline-block; }
+.pro-crown.is-hero { top: -20px; right: -16px; width: 36px; height: 27px; transform: rotate(16deg); }
+.hero-avatar.tier-pro > .hero-avatar-ring { background: conic-gradient(from var(--ang), #fde68a, #f59e0b, #fff7c2, #d97706, #fbbf24, #fde68a) !important; opacity: 1 !important; }
+.hero-avatar.tier-plus > .hero-avatar-ring { background: conic-gradient(from var(--ang), #f9fafb, #9ca3af, #ffffff, #6b7280, #d1d5db, #f9fafb) !important; opacity: 1 !important; }
 .pro-crown.is-silver .pro-crown-svg { filter: drop-shadow(0 1px 0.5px rgba(55, 65, 81, 0.55)); }
-.plus-bar::after {
-  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none;
-  background: linear-gradient(90deg, transparent, #9ca3af, #f9fafb, #818cf8, #f9fafb, #9ca3af, transparent);
-  background-size: 200% 100%; animation: pro-bar-flow 7s linear infinite; opacity: 0.85;
-}
-.plus-bar .nav-cluster { box-shadow: 0 0 0 1px rgba(156, 163, 175, 0.4), 0 8px 24px -12px rgba(107, 114, 128, 0.45); }
+.plus-bar .nav-cluster, .plus-bar .main-dock { border-color: transparent !important; box-shadow: 0 0 0 2px #b8bec8, 0 0 0 3px rgba(55, 65, 81, 0.16), 0 8px 22px -12px rgba(71, 85, 105, 0.5); }
 @media (prefers-reduced-motion: reduce) {
-  .avatar-fx.is-pro .avatar-ring, .pro-crown-glint, .pro-spark, .pro-bar::after, .plus-bar::after, .pro-badge::after, .avatar-fx.is-plus .avatar-ring { animation: none; }
+  .avatar-fx.is-pro .avatar-ring, .pro-crown-glint, .pro-spark,  .pro-badge::after, .avatar-fx.is-plus .avatar-ring { animation: none; }
 }
 
 /* ── Search fields: one consistent focus treatment app-wide ───────────────────────────── */

@@ -32,7 +32,7 @@ export function ReferralCard() {
   const link = stats?.code ? `${window.location.origin}/r/${stats.code}` : "";
   const copy = async () => { try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {} };
   const share = async () => {
-    const text = `I'm preparing for GATE CS on RENYXERA — every official paper, real weightage and free All-India mocks. Join with my link and we both get 7 days of Pro:`;
+    const text = `I'm preparing for GATE CS on RENYXERA — every official paper, real weightage and free All-India mocks. Join with my link and we both get bonus AI requests:`;
     if (navigator.share) { try { await navigator.share({ title: "RENYXERA", text, url: link }); return; } catch {} }
     window.open(`https://wa.me/?text=${encodeURIComponent(`${text} ${link}`)}`, "_blank", "noopener");
   };
@@ -43,11 +43,11 @@ export function ReferralCard() {
         <div className="flex items-start gap-3">
           <span className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white grid place-items-center shadow-md"><Gift className="w-5 h-5" /></span>
           <div>
-            <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Invite friends, both get 7 days of Pro</h2>
-            <p className="text-sm text-[var(--text-secondary)]">Your friend signs up with your link and finishes their first test. Up to 5 friends.</p>
+            <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Invite friends, earn Plus + AI credits</h2>
+            <p className="text-sm text-[var(--text-secondary)]">When a friend joins with your link and practises on 2 different days, you get 1 day of Plus + 15 AI requests and they get 10. Up to 3 a month.</p>
           </div>
         </div>
-        <p className="text-right text-sm"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{stats?.credited ?? 0}<span className="text-sm text-[var(--text-muted)]"> / 5</span></span><span className="text-[11px] text-[var(--text-muted)]">{stats?.joined ?? 0} joined</span></p>
+        <p className="text-right text-sm"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{stats?.credited ?? 0}<span className="text-sm text-[var(--text-muted)]"> / 10</span></span><span className="text-[11px] text-[var(--text-muted)]">{stats?.joined ?? 0} joined</span></p>
       </div>
       <div className="mt-4 flex flex-col sm:flex-row gap-2">
         <code className="flex-1 min-w-0 truncate rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text-primary)]">{link || "Creating your link…"}</code>

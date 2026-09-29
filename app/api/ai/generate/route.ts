@@ -22,7 +22,9 @@ export const runtime = "nodejs";
 const MAX_BODY_BYTES = 220_000;
 
 // Free-tier AI requests per user per day (IST). Configurable without a code change.
-const AI_DAILY_LIMIT = Math.max(1, Number(process.env.AI_DAILY_LIMIT) || FREE_AI_DAILY);
+// Free accounts have NO daily allowance (owner decision 30 Sep 2026): a one-time teaser of
+// 5 requests (ensure_welcome_ai) plus whatever they earn (sponsor breaks, referrals).
+const AI_DAILY_LIMIT = FREE_AI_DAILY;
 // Pro accounts (7A, server-side entitlement) get a larger daily allowance.
 const PRO_DAILY_LIMIT = Math.max(AI_DAILY_LIMIT, Number(process.env.PRO_AI_DAILY_LIMIT) || PRO_AI_DAILY);
 
@@ -223,16 +225,19 @@ export async function POST(req: NextRequest) {
       const { data: dev } = sid ? await db.from("device_sessions").select("id").eq("user_id", userId).eq("session_id", sid).is("revoked_at", null).maybeSingle() : { data: null };
       if (!dev) tierHere = "free";
     }
-    const dailyLimit = tierHere === "pro" ? PRO_DAILY_LIMIT : tierHere === "plus" ? Math.max(AI_DAILY_LIMIT, AI_DAILY.plus) : AI_DAILY_LIMIT;
+    const dailyLimit = tierHere === "pro" ? PRO_DAILY_LIMIT : tierHere === "plus" ? AI_DAILY.plus : AI_DAILY_LIMIT;
+    if (tierHere === "free") await db.rpc("ensure_welcome_ai", { p_user: userId });
     const { data: quota, error: quotaErr } = await db.rpc("consume_ai_call", { p_user: userId, p_limit: dailyLimit });
     if (quotaErr) {
       // Migration 0003 not applied yet (or DB hiccup): don't take AI Mentor down — log loudly.
       console.warn(`[ai/generate] quota check unavailable (${quotaErr.code}); allowing request`);
     } else {
       const row = Array.isArray(quota) ? quota[0] : quota;
-      if (row && !row.allowed) {
+      // 7E: out of daily requests → spend a bonus credit (referrals / sponsor breaks) if any.
+      const bonus = row && !row.allowed ? (await db.rpc("consume_ai_bonus", { p_user: userId })).data === true : false;
+      if (row && !row.allowed && !bonus) {
         return NextResponse.json(
-          { error: `You've used today's ${row.day_limit} AI requests. They reset at midnight (IST).${row.day_limit < PRO_DAILY_LIMIT ? ` Plus gives ${AI_DAILY.plus} and Pro ${PRO_DAILY_LIMIT} a day — see the plans in your account menu.` : ""}`, quotaExceeded: true, upgrade: row.day_limit < PRO_DAILY_LIMIT },
+          { error: row.day_limit === 0 ? "You've used your free AI tries. Take a short sponsor break on the Plans page for a few more today, invite a friend, or upgrade to Plus (75 a day) or Pro (150 a day)." : `You've used today's ${row.day_limit} AI requests. They reset at midnight (IST).${row.day_limit < PRO_DAILY_LIMIT ? ` Pro gives ${PRO_DAILY_LIMIT} a day — see the Plans page.` : ""} You can also earn a few extra today with a short sponsor break on the Plans page.`, quotaExceeded: true, upgrade: row.day_limit < PRO_DAILY_LIMIT },
           { status: 429, headers: { "X-AI-Quota-Remaining": "0" } }
         );
       }

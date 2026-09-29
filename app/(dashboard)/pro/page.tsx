@@ -4,11 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Check, Crown, Loader2, Sparkles } from "lucide-react";
-import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, formatPrice, type PlanId } from "@/lib/billing/plans";
+import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, type PlanId } from "@/lib/billing/plans";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { ReferralCard } from "@/components/profile/referral-card";
+import { SponsorBreakCard } from "@/components/profile/sponsor-break-card";
 import { ProCrown } from "@/components/brand/pro-crown";
 
 declare global { interface Window { Razorpay?: new (opts: Record<string, unknown>) => { open: () => void } } }
@@ -98,6 +99,7 @@ export default function PlansPage() {
           const look = LOOK[tier];
           const have = TIER_RANK[ent.tier] >= TIER_RANK[tier];
           const done = interested.includes(plan.id);
+          const cmp = comparePrice(plan);
           return (
             <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative flex flex-col rounded-3xl p-6 border ${look.ring}`}>
               {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950 text-[10px] font-black uppercase tracking-wider shadow">Most loved</span>}
@@ -105,7 +107,13 @@ export default function PlansPage() {
                 <p className={`text-sm font-black uppercase tracking-wider ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>
                 <ProCrown metal={look.metal} className="is-inline" />
               </div>
-              <p className="mt-2 text-3xl font-extrabold text-[var(--text-primary)]">{formatPrice(plan.pricePaise)}{plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]"> {plan.periodLabel}</span>}</p>
+              <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                {cmp && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-2 decoration-rose-500/70">{formatPrice(cmp.wasPaise)}</span>}
+                <span className="text-3xl font-extrabold text-[var(--text-primary)]">{formatPrice(plan.pricePaise)}</span>
+                {plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]">{plan.periodLabel}</span>}
+                {cmp && <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-[11px] font-black uppercase tracking-wide">Save {cmp.savePct}%</span>}
+              </div>
+              {cmp?.perMonthPaise && <p className="text-xs font-semibold text-[var(--text-secondary)]">Just ≈ {formatPrice(Math.round(cmp.perMonthPaise / 100) * 100)}/month, billed yearly · {cmp.reason}</p>}
               <p className="text-xs text-[var(--text-muted)]">{tier === "pro" ? "Everything in Plus, and:" : "Everything in Free, and:"}</p>
               <ul className="mt-4 mb-6 flex-1 space-y-2.5">{TIER_FEATURES[tier].map((f) => <li key={f.title} className="flex items-start gap-2 text-sm"><Sparkles className={`w-4 h-4 mt-0.5 shrink-0 ${look.kicker}`} /><span><b className="text-[var(--text-primary)]">{f.title}</b><span className="block text-[var(--text-secondary)] text-xs">{f.body}</span></span></li>)}</ul>
               <button type="button" onClick={() => upgrade(plan.id)} disabled={!!busy || done || have}
@@ -118,7 +126,10 @@ export default function PlansPage() {
         })}
       </div>
 
-      <ReferralCard />
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+        <SponsorBreakCard />
+        <ReferralCard />
+      </div>
 
       {payments && (
         <label className="mx-auto max-w-2xl flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--text-secondary)] cursor-pointer">

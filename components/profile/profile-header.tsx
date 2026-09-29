@@ -1,7 +1,10 @@
 "use client";
 
+import { ProCrown } from "@/components/brand/pro-crown";
+import { useEntitlements } from "@/lib/billing/use-entitlements";
+
 import { motion, useReducedMotion } from "motion/react";
-import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin, AtSign, IdCard } from "lucide-react";
+import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin, AtSign, IdCard, Crown } from "lucide-react";
 
 /**
  * Compact, horizontal profile header: exactly as tall as the avatar, pinned above the
@@ -24,6 +27,8 @@ export function ProfileHeader({
     { icon: Clock, text: `${dailyHours || 0}h a day` },
     ...(location ? [{ icon: MapPin, text: location }] : []),
   ];
+  const live = useEntitlements().tier;
+  const paidTier = live !== "free" ? live : null;
   const R = 22, C = 2 * Math.PI * R;
 
   return (
@@ -35,22 +40,22 @@ export function ProfileHeader({
         animate={reduce ? undefined : { x: [0, 40, 0] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} />
 
       <div className="relative flex items-center gap-4">
-        <div className="hero-avatar group/av relative w-16 h-16 sm:w-[72px] sm:h-[72px] shrink-0">
+        <div className={`hero-avatar group/av relative w-16 h-16 sm:w-[72px] sm:h-[72px] shrink-0 ${paidTier ? `tier-${paidTier}` : ""}`}>
           <span className="hero-avatar-ring" aria-hidden="true" />
           <div className="relative w-full h-full rounded-2xl overflow-hidden bg-white/15 backdrop-blur-md shadow-xl transition-transform duration-300 group-hover/av:scale-[1.05]">
             {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}
             <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={96} height={96} />
             <span className="avatar-sheen hero-avatar-sheen" aria-hidden="true" />
           </div>
-          <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 border-[3px] border-violet-600" aria-hidden="true" />
+          {paidTier && <ProCrown metal={paidTier === "pro" ? "gold" : "silver"} className="is-hero" />}
         </div>
 
         {/* Left: big name, bio, goal chips */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2.5 min-w-0">
             <h1 className="shine-text text-2xl sm:text-3xl xl:text-[2.1rem] font-extrabold tracking-tight leading-tight truncate">{name}</h1>
-            <span className="shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 backdrop-blur text-[10px] font-black uppercase tracking-wider">
-              <Sparkles className="w-3 h-3" /> {tier}
+            <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${paidTier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow" : paidTier === "plus" ? "bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900 shadow" : "bg-white/20 backdrop-blur"}`}>
+              {paidTier ? <Crown className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />} {paidTier ?? "free"}
             </span>
           </div>
           {/* On small screens the identity block below is hidden — keep the handle here. */}

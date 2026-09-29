@@ -171,7 +171,7 @@ export function AuthListener() {
             const { data } = await supabase.rpc("claim_referral", { p_code: ref });
             if (data === "ok") {
               const { useToastStore } = await import("@/store/use-toast-store");
-              useToastStore.getState().show("Invite applied — finish your first test and you both get 7 days of Pro.", "success");
+              useToastStore.getState().show("Invite applied — practise on 2 different days and you both earn bonus AI requests.", "success");
             }
           }
           const { sendAcquisition } = await import("@/lib/growth/acquisition");

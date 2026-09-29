@@ -182,7 +182,7 @@ export function Topbar() {
         <div className="hidden lg:flex flex-1 justify-center min-w-0">
           <nav
             onMouseLeave={() => setHovered(null)}
-            className="flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/45 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
+            className="main-dock flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/45 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
           >
             {NAV_ITEMS.map((item) => {
               const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
