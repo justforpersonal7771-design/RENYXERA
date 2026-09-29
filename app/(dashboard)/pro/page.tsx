@@ -99,7 +99,7 @@ export default function PlansPage() {
           const have = TIER_RANK[ent.tier] >= TIER_RANK[tier];
           const done = interested.includes(plan.id);
           return (
-            <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative rounded-3xl p-6 border ${look.ring}`}>
+            <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative flex flex-col rounded-3xl p-6 border ${look.ring}`}>
               {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950 text-[10px] font-black uppercase tracking-wider shadow">Most loved</span>}
               <div className="flex items-center justify-between">
                 <p className={`text-sm font-black uppercase tracking-wider ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>
@@ -107,9 +107,9 @@ export default function PlansPage() {
               </div>
               <p className="mt-2 text-3xl font-extrabold text-[var(--text-primary)]">{formatPrice(plan.pricePaise)}{plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]"> {plan.periodLabel}</span>}</p>
               <p className="text-xs text-[var(--text-muted)]">{tier === "pro" ? "Everything in Plus, and:" : "Everything in Free, and:"}</p>
-              <ul className="mt-4 space-y-2.5">{TIER_FEATURES[tier].map((f) => <li key={f.title} className="flex items-start gap-2 text-sm"><Sparkles className={`w-4 h-4 mt-0.5 shrink-0 ${look.kicker}`} /><span><b className="text-[var(--text-primary)]">{f.title}</b><span className="block text-[var(--text-secondary)] text-xs">{f.body}</span></span></li>)}</ul>
+              <ul className="mt-4 mb-6 flex-1 space-y-2.5">{TIER_FEATURES[tier].map((f) => <li key={f.title} className="flex items-start gap-2 text-sm"><Sparkles className={`w-4 h-4 mt-0.5 shrink-0 ${look.kicker}`} /><span><b className="text-[var(--text-primary)]">{f.title}</b><span className="block text-[var(--text-secondary)] text-xs">{f.body}</span></span></li>)}</ul>
               <button type="button" onClick={() => upgrade(plan.id)} disabled={!!busy || done || have}
-                className={`mt-6 w-full h-11 rounded-xl font-bold shadow-lg disabled:opacity-60 inline-flex items-center justify-center gap-2 cursor-pointer ${look.btn}`}>
+                className={`mt-auto w-full h-11 rounded-xl font-bold shadow-lg disabled:opacity-60 inline-flex items-center justify-center gap-2 cursor-pointer ${look.btn}`}>
                 {busy === plan.id && <Loader2 className="w-4 h-4 animate-spin" />}
                 {have ? "Your plan" : done ? "We'll notify you" : payments && plan.pricePaise != null ? `Get ${tier === "pro" ? "Pro" : "Plus"}` : `Notify me when ${tier === "pro" ? "Pro" : "Plus"} opens`}
               </button>
