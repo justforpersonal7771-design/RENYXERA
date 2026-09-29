@@ -5,7 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BILLING_MODE, PLANS, planById } from "@/lib/billing/plans";
-import { isDisposableEmail, razorpayKeys, verifyTurnstile } from "@/lib/billing/server";
+import { getEntitlement, isDisposableEmail, plusUpgradeCredit, razorpayKeys, verifyTurnstile } from "@/lib/billing/server";
 
 export const runtime = "nodejs";
 
@@ -49,11 +49,16 @@ export async function POST(req: NextRequest) {
 
   const plan = planById(parsed.data.planId);
   if (!plan || plan.pricePaise == null) return NextResponse.json({ error: "This plan isn't on sale yet." }, { status: 409 });
+  // Pro members can't buy Plus (it would do nothing); Plus → Pro is prorated.
+  const current = await getEntitlement(userId);
+  if (current.tier === "pro" && plan.tier === "plus") return NextResponse.json({ error: "You're already on Pro." }, { status: 409 });
+  const credit = current.tier === "plus" && plan.tier === "pro" ? await plusUpgradeCredit(userId) : 0;
+  const amount = Math.max(100, plan.pricePaise - credit);
 
   const r = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Basic ${btoa(`${keys.id}:${keys.secret}`)}` },
-    body: JSON.stringify({ amount: plan.pricePaise, currency: "INR", receipt: `u_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: plan.id } }),
+    body: JSON.stringify({ amount, currency: "INR", receipt: `u_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: plan.id } }),
   });
   if (!r.ok) {
     console.error("razorpay order failed", r.status, await r.text().catch(() => ""));
@@ -62,7 +67,7 @@ export async function POST(req: NextRequest) {
   const order = (await r.json()) as { id: string; amount: number; currency: string };
 
   const { error } = await createServiceRoleClient().from("billing_orders").insert({
-    user_id: userId, plan_id: plan.id, amount_paise: plan.pricePaise, period_days: plan.periodDays,
+    user_id: userId, plan_id: plan.id, amount_paise: amount, upgrade_credit_paise: credit, period_days: plan.periodDays,
     razorpay_order_id: order.id, mode: BILLING_MODE,
   });
   if (error) {

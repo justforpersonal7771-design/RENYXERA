@@ -100,6 +100,9 @@ export default function PlansPage() {
           const have = TIER_RANK[ent.tier] >= TIER_RANK[tier];
           const done = interested.includes(plan.id);
           const cmp = comparePrice(plan);
+          const upgrading = tier === "pro" && ent.tier === "plus" && plan.pricePaise != null;
+          const credit = upgrading ? Math.min(ent.upgradeCreditPaise, plan.pricePaise! - 100) : 0;
+          const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - Date.now()) / 86400_000)) : 0;
           return (
             <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative flex flex-col rounded-3xl p-6 border ${look.ring}`}>
               {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950 text-[10px] font-black uppercase tracking-wider shadow">Most loved</span>}
@@ -113,13 +116,19 @@ export default function PlansPage() {
                 {plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]">{plan.periodLabel}</span>}
                 {cmp && <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-[11px] font-black uppercase tracking-wide">Save {cmp.savePct}%</span>}
               </div>
+              {upgrading && (
+                <div className="mt-2 rounded-xl border border-amber-400/50 bg-amber-500/10 px-3 py-2 text-xs text-[var(--text-primary)]">
+                  <p className="font-extrabold">Upgrade from Plus: {credit > 0 ? <><span className="line-through text-[var(--text-muted)] mr-1">{formatPrice(plan.pricePaise)}</span>{formatPrice(plan.pricePaise! - credit)}</> : formatPrice(plan.pricePaise)}</p>
+                  <p className="text-[var(--text-secondary)]">{credit > 0 ? `Includes ${formatPrice(credit)} credit for the ${daysLeft} unused days of your Plus plan. Pro starts today for the full ${plan.periodLabel.replace("per ", "")}.` : "Pro starts today for the full period."}</p>
+                </div>
+              )}
               {cmp?.perMonthPaise && <p className="text-xs font-semibold text-[var(--text-secondary)]">Just ≈ {formatPrice(Math.round(cmp.perMonthPaise / 100) * 100)}/month, billed yearly · {cmp.reason}</p>}
               <p className="text-xs text-[var(--text-muted)]">{tier === "pro" ? "Everything in Plus, and:" : "Everything in Free, and:"}</p>
               <ul className="mt-4 mb-6 flex-1 space-y-2.5">{TIER_FEATURES[tier].map((f) => <li key={f.title} className="flex items-start gap-2 text-sm"><Sparkles className={`w-4 h-4 mt-0.5 shrink-0 ${look.kicker}`} /><span><b className="text-[var(--text-primary)]">{f.title}</b><span className="block text-[var(--text-secondary)] text-xs">{f.body}</span></span></li>)}</ul>
               <button type="button" onClick={() => upgrade(plan.id)} disabled={!!busy || done || have}
                 className={`mt-auto w-full h-11 rounded-xl font-bold shadow-lg disabled:opacity-60 inline-flex items-center justify-center gap-2 cursor-pointer ${look.btn}`}>
                 {busy === plan.id && <Loader2 className="w-4 h-4 animate-spin" />}
-                {have ? "Your plan" : done ? "We'll notify you" : payments && plan.pricePaise != null ? `Get ${tier === "pro" ? "Pro" : "Plus"}` : `Notify me when ${tier === "pro" ? "Pro" : "Plus"} opens`}
+                {have ? "Your plan" : done ? "We'll notify you" : upgrading && payments ? `Upgrade to Pro · ${formatPrice(plan.pricePaise! - credit)}` : payments && plan.pricePaise != null ? `Get ${tier === "pro" ? "Pro" : "Plus"}` : `Notify me when ${tier === "pro" ? "Pro" : "Plus"} opens`}
               </button>
             </motion.section>
           );

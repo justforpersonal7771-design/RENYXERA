@@ -154,7 +154,7 @@ export function Topbar() {
       <motion.div
         aria-hidden="true"
         style={{ scaleX: progress }}
-        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb]"
+        className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left ${isPro ? "bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300" : isPlus ? "bg-gradient-to-r from-slate-300 via-slate-500 to-slate-300" : "bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb]"}`}
       />
       <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between gap-4">
 
@@ -257,7 +257,7 @@ export function Topbar() {
                    onClick={() => setIsCalendarOpen(prev => !prev)}
                    className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isCalendarOpen
-                       ? "text-white bg-indigo-600 shadow-sm"
+                       ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm")
                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="Study Planner Quick Access"
@@ -280,7 +280,7 @@ export function Topbar() {
                    onClick={() => setIsTodoOpen(prev => !prev)}
                    className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isTodoOpen
-                       ? "text-white bg-indigo-600 shadow-sm"
+                       ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm")
                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="To-Do List Quick Access"
@@ -305,7 +305,7 @@ export function Topbar() {
                 onClick={() => setIsGoalSliderOpen(true)}
                 className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
-                    ? "text-white bg-indigo-600 shadow-sm"
+                    ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm")
                     : isFocusTargetActive
                       ? "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-1 ring-amber-500/40 hover:bg-amber-500/25"
                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -328,7 +328,7 @@ export function Topbar() {
                <Link
                   href="/downloads"
                   className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors ${
-                    pathname?.startsWith("/downloads") ? "text-white bg-indigo-600 shadow-sm" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    pathname?.startsWith("/downloads") ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm") : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                   aria-label="Downloads"
                   title="Downloads — study offline"

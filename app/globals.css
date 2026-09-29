@@ -1067,3 +1067,7 @@ input.search-bare, input.search-bare:focus, input.search-bare:focus-visible { ou
 .search-row-line { position: relative; }
 .search-row-line::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: linear-gradient(90deg, #6366f1, #8b5cf6, #d946ef); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
 .search-row-line:focus-within::after { transform: scaleX(1); }
+
+/* Bottom section dock: lifted off the page so it reads as a menu. */
+.sub-dock { box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset, 0 22px 50px -12px rgba(15,23,42,0.45), 0 8px 18px -8px rgba(76,29,149,0.35), 0 0 0 6px color-mix(in srgb, var(--background) 70%, transparent); }
+.dark .sub-dock { box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 22px 50px -12px rgba(0,0,0,0.8), 0 0 0 6px color-mix(in srgb, var(--background) 70%, transparent); }

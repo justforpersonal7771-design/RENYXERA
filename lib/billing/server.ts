@@ -44,3 +44,22 @@ export async function verifyTurnstile(token: string | undefined, ip: string | nu
     return !!j.success;
   } catch { return false; }
 }
+
+/**
+ * 7A prorated upgrade: the paise credit for the unused part of the account's current Plus
+ * plan, from its most recent PAID Plus order (admin/referral grants carry no credit). The
+ * credit never exceeds what was paid, and the new Pro order is charged `price − credit`
+ * (at least ₹1). Zero for anyone not on an active paid Plus plan.
+ */
+export async function plusUpgradeCredit(userId: string): Promise<number> {
+  const ent = await getEntitlement(userId);
+  if (ent.tier !== "plus" || !ent.validUntil) return 0;
+  const { data } = await createServiceRoleClient().from("billing_orders")
+    .select("amount_paise, period_days, paid_at").eq("user_id", userId).eq("status", "paid").like("plan_id", "plus%")
+    .order("paid_at", { ascending: false }).limit(1).maybeSingle();
+  if (!data?.paid_at) return 0;
+  const msLeft = Date.parse(ent.validUntil) - Date.now();
+  if (msLeft <= 0) return 0;
+  const daysLeft = Math.min(data.period_days, Math.floor(msLeft / 86400_000));
+  return Math.max(0, Math.floor((data.amount_paise * daysLeft) / data.period_days));
+}

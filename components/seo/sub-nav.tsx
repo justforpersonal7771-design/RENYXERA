@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
+import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 type Item = { href: string; label: string; short?: string; icon: LucideIcon; also?: string[] };
 
@@ -17,6 +18,7 @@ type Item = { href: string; label: string; short?: string; icon: LucideIcon; als
 export function SubNav({ items, label }: { items: Item[]; label: string }) {
   const path = usePathname() ?? "";
   const [hidden, setHidden] = useState(false);
+  const { tier } = useEntitlements();
   const [hover, setHover] = useState<string | null>(null);
   const last = useRef(0);
 
@@ -46,16 +48,17 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
       className="fixed inset-x-0 bottom-3 sm:bottom-5 z-40 flex justify-center px-3 pointer-events-none"
     >
       <nav aria-label={label} onMouseLeave={() => setHover(null)}
-        className="pointer-events-auto max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)]/85 backdrop-blur-xl shadow-[0_18px_40px_-14px_rgba(15,23,42,0.45)] p-1">
+        className={`sub-dock pointer-events-auto max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-2xl border-2 bg-[var(--surface)]/95 backdrop-blur-xl p-1.5 ${tier === "pro" ? "border-amber-400/70" : tier === "plus" ? "border-slate-400/70" : "border-violet-500/35"}`}>
         <ul className="flex items-center gap-0.5 w-max">
+          <li aria-hidden="true" className="hidden sm:flex items-center gap-1.5 pl-2.5 pr-3 mr-1 border-r border-[var(--border)] text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)]">{label}</li>
           {items.map((it) => {
             const on = it.href === active;
             return (
               <li key={it.href}>
                 <Link href={it.href} aria-current={on ? "page" : undefined} title={it.label}
                   onMouseEnter={() => setHover(it.href)} onFocus={() => setHover(it.href)} onBlur={() => setHover(null)}
-                  className={`relative flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-semibold whitespace-nowrap transition-colors ${on ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-                  {on && <span className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-md shadow-violet-500/30" />}
+                  className={`relative flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-semibold whitespace-nowrap transition-colors ${on ? (tier === "pro" ? "text-amber-950" : tier === "plus" ? "text-slate-900" : "text-white") : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+                  {on && <span className={`absolute inset-0 rounded-xl shadow-md ${tier === "pro" ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 shadow-amber-500/30" : tier === "plus" ? "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 shadow-slate-500/30" : "bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-violet-500/30"}`} />}
                   {pill === it.href && !on && (
                     <motion.span layoutId={`subnav-pill-${label}`} className="absolute inset-0 rounded-xl bg-[var(--surface-secondary)]"
                       transition={{ type: "spring", stiffness: 520, damping: 14, mass: 0.7 }} />
