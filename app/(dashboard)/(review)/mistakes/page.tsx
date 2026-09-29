@@ -1,6 +1,7 @@
 "use client";
 
 import { ReviewTabs } from "@/components/layout/review-tabs";
+import { ReportIssueButton } from "@/components/ui/report-issue-button";
 
 import { useEffect, useState, useMemo } from "react";
 import { GuestLocalNotice } from "@/components/auth/guest-local-notice";
@@ -430,6 +431,7 @@ export default function MistakesPage() {
                 </div>
 
                 <div className="flex items-center gap-2 flex-wrap">
+                  {activeMistake && <ReportIssueButton questionId={activeMistake} compact />}
                   {/* Bookmark Toggle */}
                   <button
                     onClick={handleToggleBookmark}

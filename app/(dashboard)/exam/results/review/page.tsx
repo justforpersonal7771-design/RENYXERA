@@ -1,5 +1,7 @@
 "use client";
 
+import { ReportIssueButton } from "@/components/ui/report-issue-button";
+
 import { useEffect, useState, useMemo, useRef } from "react";
 import { QuestionMetaChips, useKeepCurrentCellVisible } from "@/components/exam/question-meta";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -223,6 +225,7 @@ export default function ReviewPage() {
                 >
                   <LayoutGrid className="w-4 h-4" />
                 </button>
+                {q && <ReportIssueButton questionId={q.question_id} source="review" compact />}
                 <button
                   onClick={handleBookmarkToggle}
                   className="hidden sm:inline-flex items-center justify-center w-8 h-8 rounded-lg text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition"
@@ -495,6 +498,7 @@ export default function ReviewPage() {
                         <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-subtle)] shrink-0">
                           <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Question grid</span>
                           <div className="flex items-center gap-1">
+                            {q && <ReportIssueButton questionId={q.question_id} source="review" compact />}
                             <button onClick={handleBookmarkToggle} className="p-1.5 rounded-md text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition-colors" title="Bookmark Question">
                               {isCurrentBookmarked ? <BookmarkCheck className="w-4 h-4 text-indigo-500" /> : <Bookmark className="w-4 h-4" />}
                             </button>

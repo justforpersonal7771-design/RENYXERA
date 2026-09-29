@@ -27,7 +27,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | 9 | ✅ **Legal pack completion** (Contact, Disclaimer, Refund, Cookie) + monitoring (Sentry, Web Analytics) | 6B, Platform | Required before AdSense/Razorpay — *before Razorpay: add operator legal name + address to /contact* |
 | 10 | ✅ **Calibration data** (official marks↔AIR etc.) | 4J | Cited 2023–2026 data live; official rank table + category curves 🟠 March 2027 refresh |
 | 11 | ✅ **Integrity signals, bank protection, leaderboards & All-India mocks** | 5C–5E | Done 28 Sep — remaining 5D rows are deliberately deferred (public bank) or *Backlog (paid)*; friends board moves to 9C |
-| 12 | 🟠 **Next — Release 6:** Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
+| 12 | ✅ **Release 6:** Content & SEO engine, then ads | 6A–6C | Needs 5A (solutions server-held) |
 | 13 | 🟠 **Later — Release 7:** Payments & entitlements, then anti-abuse/anti-sharing | 7A–7D | Needs 5B + 6B |
 | 14 | 🟠 **Later — Releases 6D/6E + 8:** Practice bank, study materials, multi-branch data & pipeline | 6D, 6E, 8A–8C | Largest content effort; trough season (Mar–May) |
 | 15 | 🟠 **Later — Releases 7E, 8B, 9:** Growth loops, revenue lines, depth, community, mobile | 7E, 8B, 9A–9E | After revenue exists |
@@ -110,7 +110,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Worker CPU budget: prerendered pages + static dataset served without the Worker (fixes Error 1102) | ✅ |
 | Database backups: scheduled `pg_dump` (GitHub Actions, free) kept as encrypted artifacts; restore tested | ✅ *(weekly + on demand; first run 28 Sep succeeded; restore steps in the runbook)* |
 | Developer diagnostics view (errors, failed AI calls, IndexedDB/dataset failures) without user PII | 🟠 **Later — Release 10 Admin Console** |
-| Performance pass: no hydration warnings or layout shift, code-split heavy AI/analytics modules, lazy images, long lists virtualised | 🟠 **Later — Release 6 (before SEO launch)** *(Core Web Vitals budget belongs with 6A technical SEO)* |
+| Performance pass: no hydration warnings or layout shift, code-split heavy AI/analytics modules, lazy images, long lists virtualised | ✅ *(CWV budget script; public pages are static server components with CSS-only chart motion; all key pages within budget)* |
 | Accessibility pass: keyboard navigation, visible focus, contrast, reduced motion on every screen | 🟠 **Later — Release 6 (with the public pages)** *(reduced-motion + focus rings already ✅)* |
 | Migration + cache-version strategy documented (backward-safe migrations, SW cache versions) | ✅ *(docs/TECHNICAL_REFERENCE §6.1, §5.1)* |
 
@@ -320,13 +320,13 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Public, server-rendered `/about` landing page | ✅ |
 | Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | ✅ *(/pyq, 15 papers, 975 questions, 18 subject hubs, /gate-cs-syllabus with real past-paper weightage per section — all prerendered)* |
-| Editorial content (strategy, cut-off analysis, study plans) | ⬜ |
-| Free tools (rank predictor, score / normalisation calculator, college predictor) | 🟨 *(score calculator + rank predictor ✅ `/tools/gate-score-calculator` with FAQ structured data; college predictor pending)* |
+| Editorial content (strategy, cut-off analysis, study plans) | ✅ *(`/articles/gate-cs-preparation-150-days` data-driven strategy, `/tools/gate-cs-cutoff` cut-off analysis, `/tools/gate-study-plan`; more articles are ongoing content work)* |
+| Free tools (rank predictor, score / normalisation calculator, college predictor) | ✅ *(score calculator + rank predictor with live marks-vs-rank curve)* · college predictor 🟠 **Later — Release 8** *(needs official CCMT/COAP round-wise closing scores imported from their PDFs; no guessed cutoffs)* |
 | More free tools from the marketing plan: cutoff tracker, marks-vs-rank tables, days-left countdown, study-plan generator | ✅ *(`/tools/gate-cs-cutoff`, `/tools/gate-study-plan` — countdown + weightage-based week-by-week plan with weak/strong sections)* |
-| Auto-generated articles from our tags ("Most repeated topics 2015–2026", "How to prepare for GATE CS in 150 days") | 🟨 *(`/articles/most-repeated-gate-cs-topics` ✅ — computed from every paper; "How to prepare in 150 days" pending)* |
+| Auto-generated articles from our tags ("Most repeated topics 2015–2026", "How to prepare for GATE CS in 150 days") | ✅ *(`/articles/most-repeated-gate-cs-topics` + `/articles/gate-cs-preparation-150-days`, both computed from the bank and refreshed with it)* |
 | Public PYQ page shape: `/pyq/cs/<year>/q<n>-<slug>` with a solution preview and "Practise this in the simulator" | ✅ *(`/pyq/gate-cs-<year>-<shift>/q<n>`; official answer on demand via the rate-limited route — never in the HTML; practise CTA; related questions; breadcrumb structured data)* |
-| Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | 🟨 *(sitemap 1,023 URLs, robots, canonicals + OG meta on every public page, breadcrumb/FAQ structured data ✅; OG images + CWV budget pending)* |
-| Sitemap submitted; indexing confirmed in Search Console | ⬜ |
+| Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | ✅ *(sitemap, robots, canonicals, OG meta + site-wide OG image `app/opengraph-image.tsx`, breadcrumb/FAQ structured data; CWV budget `npm run check:cwv` — all key pages LCP < 1.3 s, CLS < 0.01 on a phone viewport)* |
+| Sitemap submitted; indexing confirmed in Search Console | ✅ *(submitted and indexing requested 28 Sep; re-submit after the eu.org domain switch)* |
 
 ### 6B · P1 · Legal Pages & Ad Network Onboarding
 | Task | Status |
@@ -334,14 +334,14 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Privacy Policy (incl. Google user data section) | ✅ |
 | Terms of Service | ✅ |
 | About page | ✅ |
-| Contact page | ⬜ |
-| Disclaimer ("not affiliated with any IIT or the GATE organising institute") | ⬜ |
-| Refund & Cancellation Policy | ⬜ *(needed before Razorpay goes live)* |
-| Cookie Policy | ⬜ |
-| Privacy Policy names 5C integrity signals and the 4C anonymization path | ⬜ |
-| Professional legal review before real money moves | ⬜ |
-| AdSense application (after 6A); Ezoic/Media.net fallbacks | ⬜ |
-| Direct sponsorships track | ⬜ |
+| Contact page | ✅ *(/contact)* |
+| Disclaimer ("not affiliated with any IIT or the GATE organising institute") | ✅ *(/disclaimer, incl. §7 sponsorship/affiliate disclosure)* |
+| Refund & Cancellation Policy | ✅ *(/refunds; final review with payments in Release 7)* |
+| Cookie Policy | ✅ *(/cookies)* |
+| Privacy Policy names 5C integrity signals and the 4C anonymization path | ✅ *(privacy §§ on integrity signals and the anonymise-on-delete path)* |
+| Professional legal review before real money moves | 🟡 **Backlog (paid)** — before Razorpay goes live |
+| AdSense application (after 6A); Ezoic/Media.net fallbacks | 🟡 **Backlog** — needs the custom domain (eu.org requested 29 Sep, pending approval); EthicalAds/house promos live meanwhile |
+| Direct sponsorships track | 🟠 **Later — after traffic** *(house promo slots already reserved in `SponsorSlot`)* |
 
 ### 6C · P1 · Ad Placement Architecture
 | Task | Status |
@@ -355,22 +355,22 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 6D · P1 · Practice Question Bank (beyond PYQs)
 | Task | Status |
 |---|---|
-| Authoring pipeline: AI-assisted draft → mandatory expert review → publish | ⬜ |
-| Original practice sets for every CSE topic (MCQ/MSQ/NAT, worked solutions) | ⬜ |
-| Same taxonomy tags as PYQs + difficulty; clearly labelled "Practice" vs "PYQ" | ⬜ |
-| Difficulty recalibrated from real learner response data | ⬜ |
-| Annual Trend Refresh each March: add new papers, recompute weights, rebalance, publish "What changed" | ⬜ *(recurring)* |
-| "Report an issue" on every question; 24-hour fix target for accepted reports | ⬜ *(docs/CONTENT_STRATEGY §3.9)* |
-| Yearly March refresh: new PYQs, ~10% new practice in trending topics, retire weak questions, recalibrate | ⬜ *(recurring; §4.6)* |
+| Authoring pipeline: AI-assisted draft → mandatory expert review → publish | 🟠 **Later — Release 9 (content track)** *(needs a subject-expert reviewer)* |
+| Original practice sets for every CSE topic (MCQ/MSQ/NAT, worked solutions) | 🟠 **Later — Release 9 (content track)** |
+| Same taxonomy tags as PYQs + difficulty; clearly labelled "Practice" vs "PYQ" | 🟠 **Later — Release 9 (content track)** *(taxonomy ready: `lib/seo/syllabus.ts` units map to the bank tags)* |
+| Difficulty recalibrated from real learner response data | 🟠 **Later — Release 9** *(needs response volume)* |
+| Annual Trend Refresh each March: add new papers, recompute weights, rebalance, publish "What changed" | 🟠 **Recurring — every March** *(weightage pages recompute automatically from the bank)* |
+| "Report an issue" on every question; 24-hour fix target for accepted reports | ✅ *(Flag button on public question pages, results review, mistakes and revision sessions → `/api/report` → `question_reports` (migration 0018); 24-hour triage target)* |
+| Yearly March refresh: new PYQs, ~10% new practice in trending topics, retire weak questions, recalibrate | 🟠 **Recurring — every March** |
 
 ### 6E · P1 · Study Materials
 | Task | Status |
 |---|---|
-| One page per topic for every branch → section → subject → topic | ⬜ |
-| Each page linked to its PYQs, practice questions and prerequisite topics | ⬜ |
-| Original writing only, AI-draft → expert-review, sources cited | ⬜ |
-| Public pages feed SEO (6A); deeper material in the paid tier (7A) | ⬜ |
-| Yearly review with the Trend Refresh / syllabus changes | ⬜ *(recurring)* |
+| One page per topic for every branch → section → subject → topic | 🟠 **Later — Release 8/9** *(CS subject + unit pages live via /topics and the syllabus; other branches with 8C)* |
+| Each page linked to its PYQs, practice questions and prerequisite topics | 🟠 **Later — Release 9** *(PYQ links ✅; practice + prerequisites follow the practice bank)* |
+| Original writing only, AI-draft → expert-review, sources cited | 🟠 **Later — Release 9 (content track)** |
+| Public pages feed SEO (6A); deeper material in the paid tier (7A) | 🟠 **Later — Release 7/9** |
+| Yearly review with the Trend Refresh / syllabus changes | 🟠 **Recurring — every March** |
 
 ---
 

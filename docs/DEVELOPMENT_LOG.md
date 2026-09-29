@@ -157,6 +157,15 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - "Tools" opens the syllabus with weightage directly (`/tools` redirects); tools dock at the bottom of the screen (syllabus, PYQs, repeated topics, predictor, cutoffs, planner), hiding on scroll down; legal pages get the same dock, links stay in the footer.
 - Syllabus navigator: sticky outline with share bars, scroll-spy and progress (desktop); floating current-subject pill with a searchable sheet (phones). One official CS & IT syllabus PDF download.
 
+### 29 Sep 2026 — Release 6 closed ✅
+- "Report an issue" (6D): flag button on public question pages, results review, mistakes and revision sessions; `/api/report` (origin check, IP + account rate limits, honeypot) → `question_reports` (migration 0018, service-role only, no browser policies).
+- Site-wide social card `app/opengraph-image.tsx` (static PNG at build).
+- `/articles/gate-cs-preparation-150-days`: day budget per subject from real weightage, three phases, rising subjects.
+- CWV budget `npm run check:cwv` (phone viewport, LCP ≤ 2.5 s, CLS ≤ 0.1): all 10 key pages pass (LCP < 1.3 s, CLS < 0.01).
+- Syllabus outline compacted to fit without an inner scrollbar, clear of the tools dock.
+- Checklist: every Release 6 row is ✅, 🟠 (named later release / recurring) or 🟡 (paid). College predictor 🟠 until official CCMT/COAP closing data is imported.
+- eu.org: renyxera.eu.org requested with Cloudflare name servers (request 20260929102502-arf-60982), pending volunteer approval.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

@@ -1,5 +1,7 @@
 "use client";
 
+import { ReportIssueButton } from "@/components/ui/report-issue-button";
+
 import { useEffect, useState, useMemo, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -120,6 +122,7 @@ function RevisionSessionContent() {
         <div className="flex-1 overflow-hidden relative flex flex-col w-full h-full bg-[var(--surface-secondary)] p-4 md:p-6">
           <div id="revision-question-container" className="flex-1 flex flex-col bg-[var(--surface)] border border-[var(--border)] rounded-xl shadow-sm relative overflow-hidden h-full">
             <div className="absolute top-4 right-4 z-50">
+              {currentQuestion && <ReportIssueButton questionId={currentQuestion.question_id} compact />}
               <FullscreenToggle targetId="revision-question-container" />
             </div>
             

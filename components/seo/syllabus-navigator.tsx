@@ -41,27 +41,27 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
   return (
     <>
       {/* Desktop outline */}
-      <nav aria-label="Syllabus outline" className="hidden xl:block sticky top-0 max-h-[calc(100vh-6rem)] overflow-y-auto custom-scrollbar rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4">
-        <div className="flex items-center justify-between mb-3">
+      <nav aria-label="Syllabus outline" className="hidden xl:block sticky top-0 max-h-[calc(100dvh-10.5rem)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3">
+        <div className="flex items-center justify-between mb-2 px-1">
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)]">Jump to subject</p>
           <span className="text-[11px] font-num font-bold text-violet-600 dark:text-violet-400">{idx + 1}/{entries.length}</span>
         </div>
-        <div className="h-1 rounded-full bg-[var(--surface-secondary)] overflow-hidden mb-4"><div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-all duration-500" style={{ width: `${((idx + 1) / entries.length) * 100}%` }} /></div>
+        <div className="h-1 rounded-full bg-[var(--surface-secondary)] overflow-hidden mb-3 mx-1"><div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-all duration-500" style={{ width: `${((idx + 1) / entries.length) * 100}%` }} /></div>
         {groups.map((g) => (
-          <div key={g} className="mb-3 last:mb-0">
-            <p className="px-2 mb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{g}</p>
+          <div key={g} className="mb-2 last:mb-0">
+            <p className="px-2 mb-0.5 text-[9.5px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{g}</p>
             <ul>
               {entries.filter((e) => e.group === g).map((e) => {
                 const on = e.id === active;
                 return (
                   <li key={e.id}>
-                    <button type="button" onClick={() => go(e.id)} className={`relative w-full text-left rounded-xl px-2 py-1.5 cursor-pointer transition-colors ${on ? "" : "hover:bg-[var(--surface-secondary)]"}`}>
-                      {on && <motion.span layoutId="syl-outline-pill" className="absolute inset-0 rounded-xl bg-violet-500/12 ring-1 ring-violet-500/40" transition={{ type: "spring", stiffness: 480, damping: 30 }} />}
+                    <button type="button" onClick={() => go(e.id)} className={`relative w-full text-left rounded-lg px-2 py-1 cursor-pointer transition-colors ${on ? "" : "hover:bg-[var(--surface-secondary)]"}`}>
+                      {on && <motion.span layoutId="syl-outline-pill" className="absolute inset-0 rounded-lg bg-violet-500/12 ring-1 ring-violet-500/40" transition={{ type: "spring", stiffness: 480, damping: 30 }} />}
                       <span className="relative flex items-center justify-between gap-2">
-                        <span className={`text-[13px] truncate ${on ? "font-bold text-violet-700 dark:text-violet-300" : "text-[var(--text-secondary)]"}`}>{e.title}</span>
+                        <span className={`text-[12.5px] leading-5 truncate ${on ? "font-bold text-violet-700 dark:text-violet-300" : "text-[var(--text-secondary)]"}`}>{e.title}</span>
                         <span className="shrink-0 text-[10px] font-num text-[var(--text-muted)]">{e.share.toFixed(0)}%</span>
                       </span>
-                      <span className="relative mt-1 block h-[3px] rounded-full bg-[var(--surface-secondary)] overflow-hidden"><span className="block h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" style={{ width: `${(e.share / max) * 100}%` }} /></span>
+                      <span className="relative mt-0.5 block h-[2px] rounded-full bg-[var(--surface-secondary)] overflow-hidden"><span className="block h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-500" style={{ width: `${(e.share / max) * 100}%` }} /></span>
                     </button>
                   </li>
                 );
