@@ -140,6 +140,11 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - `docs/FREE_ALTERNATIVES_GUIDE.md` (parked for review): Amazon Associates India (new Amazon.in account on the RENYXERA email + an active spare number; individual with personal PAN; apply once traffic is steady because of 3 sales / 180 days), eu.org (legit since 1996, on the Public Suffix List, lifetime; slow volunteer approval; AdSense not guaranteed), a comparison with pp.ua / DigitalPlat / is-a.dev, Brevo SMTP for Supabase, and a 10-step domain switch-over checklist (Search Console Domain property → OAuth branding, Brevo domain auth, Supabase URLs, Turnstile, 301s).
 - `/tools/gate-cs-cutoff` (qualifying marks 2023–2026 by category, organiser, candidates; marks-vs-rank with range + GATE score) and `/gate-cs-syllabus` (every section, topics, real past-paper weightage, links to subject hubs). Sitemap, footer and smoke suite updated (18 pages × 4 modes pass).
 
+### 29 Sep 2026 — Study planner + first data article ✅
+- `/tools/gate-study-plan`: countdown to GATE, hours per syllabus section from real past-paper weightage (weak ×1.5, strong ×0.6), learn → revise → mocks phases that compress as the exam nears, week-by-week schedule. Syllabus sections now shared (`lib/seo/syllabus.ts`).
+- `/articles/most-repeated-gate-cs-topics`: topics ranked by years asked and marks, computed from every paper.
+- Sitemap, footer, smoke suite (20 pages × 4 modes) — all pass.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

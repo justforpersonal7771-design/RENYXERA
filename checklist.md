@@ -322,8 +322,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | ✅ *(/pyq, 15 papers, 975 questions, 18 subject hubs, /gate-cs-syllabus with real past-paper weightage per section — all prerendered)* |
 | Editorial content (strategy, cut-off analysis, study plans) | ⬜ |
 | Free tools (rank predictor, score / normalisation calculator, college predictor) | 🟨 *(score calculator + rank predictor ✅ `/tools/gate-score-calculator` with FAQ structured data; college predictor pending)* |
-| More free tools from the marketing plan: cutoff tracker, marks-vs-rank tables, days-left countdown, study-plan generator | 🟨 *(cutoffs 2023–2026 by category + marks-vs-rank table ✅ `/tools/gate-cs-cutoff`; countdown + study-plan generator pending)* |
-| Auto-generated articles from our tags ("Most repeated topics 2015–2026", "How to prepare for GATE CS in 150 days") | ⬜ *(§3.1)* |
+| More free tools from the marketing plan: cutoff tracker, marks-vs-rank tables, days-left countdown, study-plan generator | ✅ *(`/tools/gate-cs-cutoff`, `/tools/gate-study-plan` — countdown + weightage-based week-by-week plan with weak/strong sections)* |
+| Auto-generated articles from our tags ("Most repeated topics 2015–2026", "How to prepare for GATE CS in 150 days") | 🟨 *(`/articles/most-repeated-gate-cs-topics` ✅ — computed from every paper; "How to prepare in 150 days" pending)* |
 | Public PYQ page shape: `/pyq/cs/<year>/q<n>-<slug>` with a solution preview and "Practise this in the simulator" | ✅ *(`/pyq/gate-cs-<year>-<shift>/q<n>`; official answer on demand via the rate-limited route — never in the HTML; practise CTA; related questions; breadcrumb structured data)* |
 | Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | 🟨 *(sitemap 1,023 URLs, robots, canonicals + OG meta on every public page, breadcrumb/FAQ structured data ✅; OG images + CWV budget pending)* |
 | Sitemap submitted; indexing confirmed in Search Console | ⬜ |
