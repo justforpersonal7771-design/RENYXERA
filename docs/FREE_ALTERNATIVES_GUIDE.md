@@ -123,3 +123,30 @@ improves.
 | Hotlink protection | Worker checks `Referer` on `/images/*` (`run_worker_first`) | Free; with multi-branch images |
 | EthicalAds | Apply at ~50k page views/month | Already wired; one setting |
 | Google AdSense | Needs an owned domain (eu.org may or may not be accepted) | Main earner later |
+
+---
+
+## 5. What an own domain (e.g. `renyxera.eu.org`) unlocks — and the switch-over checklist
+
+Because we'd control the domain's DNS (in Cloudflare), Google and others can verify ownership —
+which is impossible on `gate.renyxera.workers.dev`.
+
+**Unlocks**
+| Blocked today | With the domain |
+|---|---|
+| Google sign-in shows the Supabase address; OAuth branding can't be verified | Verify the domain in **Search Console (Domain property, DNS TXT record)** → add it as an **Authorised domain** on the OAuth consent screen with homepage + privacy links → submit branding verification → the Google sign-in screen shows **RENYXERA** and the logo |
+| Emails may land in spam | Authenticate the domain in **Brevo** (SPF, DKIM, DMARC records in Cloudflare) → mails from `noreply@renyxera.eu.org` |
+| AdSense impossible | `ads.txt` at the domain root → AdSense application (acceptance of eu.org names not guaranteed) |
+| Search Console only as a URL-prefix property | A full Domain property covering every subdomain |
+
+**Switch-over day checklist (engineering + you, in this order)**
+1. Cloudflare: add a **Custom Domain** to the Worker (`renyxera.eu.org` and `www`); wait for the certificate.
+2. Redirect `gate.renyxera.workers.dev/*` → `https://renyxera.eu.org/*` with **301** (keeps Google's indexed pages and their ranking).
+3. App config: `NEXT_PUBLIC_SITE_URL` (canonicals, sitemap, share cards) → redeploy.
+4. **Supabase → Authentication → URL Configuration:** Site URL = new domain; add `https://renyxera.eu.org/**` to Redirect URLs (keep the old one for a month).
+5. **Google Cloud → OAuth client:** add the new domain to Authorised JavaScript origins; the Supabase callback URL stays the same.
+6. **Turnstile:** add the new hostname to the widget's allowed hostnames.
+7. **Cloudflare Web Analytics / Sentry:** add the hostname (Sentry needs nothing if the DSN is unchanged).
+8. **Search Console:** add the Domain property (DNS TXT), submit the new sitemap, then use **Change of Address** from the old property.
+9. **Brevo:** authenticate the domain and switch the Supabase sender to `noreply@renyxera.eu.org`.
+10. **Amazon Associates / EthicalAds:** update the website URL in their dashboards.
