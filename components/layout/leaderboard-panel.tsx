@@ -7,6 +7,7 @@ import { QuestionRepository } from "@/lib/repository/question-repository";
 import { challengeTitle } from "@/lib/exam/weekly-challenge";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { ProCrown } from "@/components/brand/pro-crown";
 import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, Lock } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
@@ -151,6 +152,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
   const [tab, setTab] = useState<Tab>(mocks.length ? "mock" : "practice");
   const [mockId, setMockId] = useState<string | null>(mocks[0]?.id ?? null);
   const [rows, setRows] = useState<Row[] | null>(null);
+  const [tiers, setTiers] = useState<Record<string, "plus" | "pro">>({});
   const [settled, setSettled] = useState(false);
   const [scope, setScope] = useState<Scope>("all");
   const subjects = useMemo(() => { try { return QuestionRepository.getAvailableSubjects(); } catch { return []; } }, []);
@@ -175,7 +177,11 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
         data = r.error && scope === "all" ? (await sb.rpc("practice_leaderboard", { p_days: 7, p_limit: 50 })).data : r.data;
       }
       if (cancelled) return;
-      setRows(((data as Row[]) ?? []).map((r) => ({ ...r, rank: Number(r.rank), prev_rank: r.prev_rank === null ? null : Number(r.prev_rank), total: Number(r.total) })));
+      const list = (data as Row[]) ?? [];
+      if (list.length) void sb.rpc("tiers_for_labels", { p_labels: list.map((x) => x.display_name) }).then(({ data: t }) => {
+        if (!cancelled && Array.isArray(t)) setTiers(Object.fromEntries(t.map((x: { label: string; tier: "plus" | "pro" }) => [x.label, x.tier])));
+      });
+      setRows(list.map((r) => ({ ...r, rank: Number(r.rank), prev_rank: r.prev_rank === null ? null : Number(r.prev_rank), total: Number(r.total) })));
       // Show last period's order first, then let everyone slide to where they are now.
       setTimeout(() => { if (!cancelled) setSettled(true); }, 650);
     })();
@@ -289,7 +295,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
                       {r.rank}
                     </span>
                     <span className="flex-1 min-w-0 truncate text-sm text-[var(--text-primary)]">
-                      {r.display_name}{r.is_me && <span className="ml-1.5 text-[10px] font-bold text-violet-600 dark:text-violet-300">You</span>}
+                      {r.display_name}{tiers[r.display_name] && <span title={tiers[r.display_name] === "pro" ? "Pro member" : "Plus member"} className="relative inline-block align-middle ml-1 w-5 h-4"><ProCrown metal={tiers[r.display_name] === "pro" ? "gold" : "silver"} className="is-inline !w-5 !h-4" /></span>}{r.is_me && <span className="ml-1.5 text-[10px] font-bold text-violet-600 dark:text-violet-300">You</span>}
                     </span>
                     <span className="w-10 text-right">{settled && <Movement rank={r.rank} prev={r.prev_rank} />}</span>
                     <span className="w-12 text-right font-num font-bold text-sm text-[var(--text-primary)]">{r.score}</span>
