@@ -1,6 +1,8 @@
 "use client";
 
 import { ReviewTabs } from "@/components/layout/review-tabs";
+import { useEntitlements } from "@/lib/billing/use-entitlements";
+import { TIER_RANK } from "@/lib/billing/plans";
 
 import { useEffect, useState, useMemo } from "react";
 import { motion } from "motion/react";
@@ -10,7 +12,7 @@ import { useRouter } from "next/navigation";
 import {
   Loader2, RefreshCw, AlertCircle, Sparkles, Folder, Tag, Star,
   Play, BookOpen, Clock, AlertTriangle, ArrowRight, ShieldCheck, Target
-} from "lucide-react";
+, Lock} from "lucide-react";
 import { LearningEngine, PersonalizedIntelligence } from "@/lib/learning/LearningEngine";
 import { AdaptiveRevisionItem } from "@/lib/learning/AdaptiveEngine";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
@@ -32,6 +34,7 @@ export default function RevisionBuilderPage() {
   
   const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<"mistakes" | "bookmarks" | "weak_topics" | "ai_insights">("mistakes");
+  const insightsOk = TIER_RANK[useEntitlements().tier] >= TIER_RANK.plus;
   
   const [intel, setIntel] = useState<PersonalizedIntelligence | null>(null);
   const [loadingIntel, setLoadingIntel] = useState(true);
@@ -161,11 +164,12 @@ export default function RevisionBuilderPage() {
               whileHover={{ scale: 1.008 }}
               whileTap={{ scale: 0.99 }}
               className={`border border-[var(--border-subtle)] rounded-xl p-3.5 cursor-pointer transition-colors flex justify-between items-start gap-2 ${mode === "ai_insights" ? "border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/15" : "bg-[var(--surface-secondary)]/50 hover:bg-[var(--surface-secondary)]"}`}
-              onClick={() => setMode("ai_insights")}
+              onClick={() => (insightsOk ? setMode("ai_insights") : router.push("/pro"))}
             >
               <div>
                 <h4 className="font-bold text-sm text-[var(--text-primary)] flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-indigo-500" /> AI Insights
+                  {!insightsOk && <span className="ml-1 inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[9px] font-black tracking-wider bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900"><Lock className="w-2.5 h-2.5" /> PLUS</span>}
                 </h4>
                 <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Shortcuts &amp; sheets from AI.</p>
               </div>

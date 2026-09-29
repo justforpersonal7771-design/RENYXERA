@@ -61,13 +61,16 @@ export const AI_DAILY: Record<Tier, number> = { free: FREE_AI_DAILY, plus: PLUS_
 export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body: string }[]> = {
   plus: [
     { title: `${PLUS_AI_DAILY} AI requests every day`, body: "AI Mentor & Tutor for daily doubts and revision." },
+    { title: "Smart insights & daily adaptive path", body: "Personal insights and a focus topic chosen for you every day." },
+    { title: "Exam trends & AI Insights revision", body: "Accuracy and score trend across tests; AI shortcut sheets in Revision." },
     { title: "6 Silver avatar styles", body: "Avataaar, Big Smile, Open Peeps, Persona, Pixel Art, Fun Emoji." },
     { title: "Silver crown & navbar", body: "A silver ring and crown on your avatar." },
   ],
   pro: [
     { title: `${PRO_AI_DAILY} AI requests every day`, body: "Twice Plus — for students who lean on the AI Mentor." },
+    { title: "Deep analytics", body: "Detailed mock analytics, topic ladders and difficulty analysis." },
+    { title: "Offline downloads", body: "Save whole papers and practise without internet." },
     { title: "All 20 avatar styles", body: "Every Silver style plus 6 Gold-only ones: Toon, Voxel, Clay and more." },
-    { title: "AI Mentor exports & AI study planner", body: "Coming to Pro first." },
     { title: "Gold crown, gold navbar, priority fixes", body: "Your reported issues are looked at first." },
   ],
 };

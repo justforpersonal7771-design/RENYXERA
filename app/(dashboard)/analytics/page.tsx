@@ -20,6 +20,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { MockAnalytics } from "@/components/analytics/mock-analytics";
 import { TopicLadders } from "@/components/analytics/topic-ladders";
 import { GuestLock } from "@/components/auth/guest-lock";
+import { TierGate } from "@/components/billing/tier-gate";
 import { CountUp, RadialGauge, TiltCard, InfoTip, Segmented } from "@/components/ui/interactive";
 
 type SubjectMetric = "accuracy" | "attempts" | "time";
@@ -217,12 +218,13 @@ export default function AnalyticsDashboardPage() {
         )}
 
         {/* All-India Mock history (empty state when none) */}
-        <Reveal><MockAnalytics /></Reveal>
-        <Reveal><TopicLadders topics={dashboardMetrics.topicPerformance ?? []} /></Reveal>
+        <Reveal><TierGate tier="pro" feature="Detailed mock analytics" perk="Your All-India Mock history with percentile trend, section-wise marks and where you lost time."><MockAnalytics /></TierGate></Reveal>
+        <Reveal><TierGate tier="pro" feature="Topic ladders" perk="Every topic ranked from strongest to weakest, with the exact next step for each."><TopicLadders topics={dashboardMetrics.topicPerformance ?? []} /></TierGate></Reveal>
 
         {/* 2. Insights + adaptive path */}
         {!loadingIntel && intel && (
-          <Reveal className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <Reveal>
+          <TierGate tier="plus" feature="Smart insights & adaptive path" perk="Personal insights from your attempts and a daily focus topic chosen for you." className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div className="lg:col-span-8 card-glass rounded-2xl p-6 shadow-sm">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
@@ -279,11 +281,13 @@ export default function AnalyticsDashboardPage() {
                 <p className="text-[11px] text-[var(--text-muted)] font-medium leading-relaxed">{intel.todaysTarget.reason}</p>
               </div>
             </div>
+          </TierGate>
           </Reveal>
         )}
 
         {/* 3. Trend + difficulty */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <TierGate tier="plus" feature="Trend across exams" perk="See how your accuracy and score move test after test.">
           <motion.div {...rise} className="card-glass p-6 rounded-2xl shadow-sm">
             <div className="flex items-center justify-between gap-3 mb-6">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
@@ -323,7 +327,9 @@ export default function AnalyticsDashboardPage() {
               )}
             </div>
           </motion.div>
+          </TierGate>
 
+          <TierGate tier="pro" feature="Difficulty analysis" perk="Accuracy on easy, medium and hard questions — find out where the marks really leak.">
           <motion.div {...rise} transition={{ ...rise.transition, delay: 0.06 }} className="card-glass p-6 rounded-2xl shadow-sm">
             <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-6 flex items-center gap-2">
               <Target className="w-4 h-4 text-rose-500" />
@@ -348,6 +354,7 @@ export default function AnalyticsDashboardPage() {
               )}
             </div>
           </motion.div>
+          </TierGate>
         </div>
 
         {/* 4. Subject explorer — one chart, three metrics, bars act as a filter */}

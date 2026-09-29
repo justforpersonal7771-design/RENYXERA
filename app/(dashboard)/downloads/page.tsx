@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { Download, CheckCircle2, Trash2, Loader2, ShieldCheck, WifiOff, FileText, Layers, Eye, HardDrive, KeyRound, AlertTriangle } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
+import { TierGate } from "@/components/billing/tier-gate";
 import { useDataStore } from "@/store/use-data-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
@@ -129,6 +130,7 @@ export default function DownloadsPage() {
   const expiresIn = keyInfo?.expiresAt ? Math.max(0, Math.ceil((keyInfo.expiresAt - Date.now()) / 86_400_000)) : null;
 
   return (
+    <TierGate tier="pro" feature="Offline downloads" perk="Save whole papers to this device and practise without internet — on the train, in the library, anywhere.">
     <div className="w-full max-w-5xl mx-auto flex flex-col gap-5 pb-8">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
@@ -233,5 +235,6 @@ export default function DownloadsPage() {
         <p className="text-center text-sm text-[var(--text-muted)] py-10">No {tab === "paper" ? "papers" : "subjects"} available yet.</p>
       )}
     </div>
+    </TierGate>
   );
 }
