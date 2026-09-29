@@ -166,6 +166,14 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Checklist: every Release 6 row is ✅, 🟠 (named later release / recurring) or 🟡 (paid). College predictor 🟠 until official CCMT/COAP closing data is imported.
 - eu.org: renyxera.eu.org requested with Cloudflare name servers (request 20260929102502-arf-60982), pending volunteer approval.
 
+### 29 Sep 2026 — Release 7 (part 1): entitlements & fake-door Pro ✅
+- Owner decisions: fake-door first; prices decided later (one config: `lib/billing/plans.ts`, `NEXT_PUBLIC_BILLING_MODE` = interest | test | live, default interest).
+- Migration 0019: `entitlements` (+ `is_pro`), `billing_orders`, `billing_events` (webhook idempotency), `apply_paid_order()`, `pro_interest`.
+- APIs: `/api/billing/me`, `/interest` (fake door), `/order` (test/live only; server-side amount, velocity limits, disposable-email block, Turnstile, no-refund acknowledgement), `/webhook` (HMAC-verified, idempotent, sole grantor of Pro; excluded from middleware).
+- AI quota is Pro-aware server-side (30 free / 150 Pro); quota message points to Pro. `/pro` page, account-menu entry, results-screen nudge.
+- Go-live blockers: set prices; build AI exports + AI planner (listed Pro perks); Razorpay test keys + webhook secret; TURNSTILE_SECRET_KEY; legal review (🟡).
+- Stat tiles: stronger, accent-coloured labels (were barely visible). Amazon Associates tag `renyxera-21` added to the deploy build.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

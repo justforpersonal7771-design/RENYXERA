@@ -1,6 +1,7 @@
 "use client";
 
 import { ShareResultButton } from "@/components/share/share-result-button";
+import { UpgradeNudge } from "@/components/ui/upgrade-nudge";
 import { useEffect, useState, useMemo } from "react";
 import { TiltCard, CountUp as CountUpFx } from "@/components/ui/interactive";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -509,6 +510,7 @@ export default function ResultSummaryPage() {
                 <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-1" />
               </motion.button>
             </div>
+            <UpgradeNudge />
           </div>
         </motion.div>
 

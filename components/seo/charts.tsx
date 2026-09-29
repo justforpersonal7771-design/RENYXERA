@@ -29,11 +29,12 @@ export function TrendBadge({ values, className = "" }: { values: number[]; class
 
 export function StatTile({ label, value, sub, accent = "violet" }: { label: string; value: string | number; sub?: string; accent?: "violet" | "emerald" | "amber" | "sky" | "rose" }) {
   const ring = { violet: "from-violet-500/15 to-fuchsia-500/5 border-violet-500/25", emerald: "from-emerald-500/15 to-teal-500/5 border-emerald-500/25", amber: "from-amber-500/15 to-orange-500/5 border-amber-500/25", sky: "from-sky-500/15 to-indigo-500/5 border-sky-500/25", rose: "from-rose-500/15 to-pink-500/5 border-rose-500/25" }[accent];
+  const labelTone = { violet: "text-violet-700 dark:text-violet-300", emerald: "text-emerald-700 dark:text-emerald-300", amber: "text-amber-700 dark:text-amber-300", sky: "text-sky-700 dark:text-sky-300", rose: "text-rose-700 dark:text-rose-300" }[accent];
   return (
     <div className={`chart-rise rounded-2xl border bg-gradient-to-br ${ring} p-3.5 sm:p-4 min-w-0`}>
-      <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)] leading-tight">{label}</p>
+      <p className={`text-[11px] sm:text-xs font-black uppercase tracking-wider leading-tight ${labelTone}`}>{label}</p>
       <p className="mt-1 text-xl sm:text-2xl font-extrabold font-num text-[var(--text-primary)] truncate">{value}</p>
-      {sub && <p className="text-[11px] text-[var(--text-secondary)] leading-snug">{sub}</p>}
+      {sub && <p className="text-xs text-[var(--text-secondary)] leading-snug">{sub}</p>}
     </div>
   );
 }

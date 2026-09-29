@@ -379,26 +379,26 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 7A · P1 · Tier & Entitlement Model
 | Task | Status |
 |---|---|
-| Entitlements stored server-side (`profiles.entitlements`), re-checked on every gated action | ⬜ |
-| Pricing tiers implemented (Free / ₹29 / ₹49 / ₹99 / ₹199) | ⬜ |
-| Entitlement check inside the grading call | ⬜ |
-| Upgrade path on the results screen; warm upsell at quota limits; bundling nudge after 3 purchases | ⬜ |
+| Entitlements stored server-side (`profiles.entitlements`), re-checked on every gated action | ✅ *(`entitlements` table + `is_pro()` (migration 0019); `getEntitlement()` fails closed to free; `/api/billing/me`; `useEntitlements()` is display-only)* |
+| Pricing tiers implemented (Free / ₹29 / ₹49 / ₹99 / ₹199) | 🟨 *(one config `lib/billing/plans.ts` — Pro monthly/yearly; prices unset by owner decision 29 Sep → shown as "coming soon")* |
+| Entitlement check inside the grading call | ✅ *(the only paid perk today — the AI daily quota — is re-checked server-side on every `/api/ai/generate` call: 30 free / 150 Pro)* |
+| Upgrade path on the results screen; warm upsell at quota limits; bundling nudge after 3 purchases | ✅ *(`/pro` page; results-screen nudge; account-menu entry; AI quota message points to Pro · bundling nudge 🟠 with go-live)* |
 
 ### 7B · P1 · Payments — Razorpay
 | Task | Status |
 |---|---|
 | Razorpay account created, KYC approved, activated | ✅ *(ahead of schedule)* |
 | Confirm the actually-applied UPI MDR on the account | ⬜ |
-| UPI-first checkout wired into the app | ⬜ |
-| Webhook handling (signature-verified, idempotent; sole source of truth) | ⬜ |
-| Razorpay Subscriptions for the ₹99 add-on; invoicing/GST; dunning | ⬜ |
-| No-refund policy shown at checkout (acknowledgement), on Razorpay, and on the policy page — with the enforceable renewal wording | ⬜ |
+| UPI-first checkout wired into the app | 🟨 *(Razorpay Checkout (UPI first by default) + `/api/billing/order`; fake-door "interest" mode live — no money moves until `NEXT_PUBLIC_BILLING_MODE` = test/live and prices are set)* |
+| Webhook handling (signature-verified, idempotent; sole source of truth) | ✅ *(`/api/billing/webhook`: HMAC-SHA256 over raw body, event-id idempotency table, `apply_paid_order()` flips an order once; the only path that grants Pro)* |
+| Razorpay Subscriptions for the ₹99 add-on; invoicing/GST; dunning | 🟠 **Later — after go-live** *(plans are fixed-period, non-renewing for now; GST invoicing with a registered entity)* |
+| No-refund policy shown at checkout (acknowledgement), on Razorpay, and on the policy page — with the enforceable renewal wording | 🟨 *(checkout acknowledgement checkbox required server-side (`acceptedTerms`) + /refunds page ✅; Razorpay dashboard wording at go-live)* |
 
 ### 7C · P1 · Subscription & Purchase Abuse Prevention
 | Task | Status |
 |---|---|
-| Velocity limits, card-testing detection, disposable-email blocking | ⬜ |
-| Turnstile on checkout | ⬜ |
+| Velocity limits, card-testing detection, disposable-email blocking | ✅ *(per-IP 5/10 min + per-account 5/hour order limits, disposable-email block, amount always server-side)* |
+| Turnstile on checkout | ✅ *(server-side siteverify on order creation; mandatory in live mode — needs `TURNSTILE_SECRET_KEY`)* |
 | Purchase-then-scrape flagging | ⬜ |
 | Admin review dashboard | ⬜ |
 
