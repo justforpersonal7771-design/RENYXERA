@@ -5,7 +5,7 @@
 import { chromium, devices } from "playwright";
 
 const BASE = process.env.BASE ?? "http://localhost:3000";
-const PAGES = ["/", "/about", "/gate-cse", "/pyq", "/pyq/gate-cs-2024-fn", "/pyq/gate-cs-2024-fn/q30", "/topics/algorithms", "/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/gate-cs-syllabus", "/tools/gate-study-plan", "/articles/most-repeated-gate-cs-topics", "/mocks", "/setup", "/mistakes", "/bookmarks", "/revision", "/analytics", "/privacy", "/terms"];
+const PAGES = ["/", "/about", "/gate-cse", "/pyq", "/pyq/gate-cs-2024-fn", "/pyq/gate-cs-2024-fn/q30", "/topics/algorithms", "/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/gate-cs-syllabus", "/tools/gate-study-plan", "/tools", "/articles/most-repeated-gate-cs-topics", "/mocks", "/setup", "/mistakes", "/bookmarks", "/revision", "/analytics", "/privacy", "/terms"];
 let fails = 0;
 const ok = (c, m) => { console.log(`${c ? "PASS" : "FAIL"}  ${m}`); if (!c) fails++; };
 

@@ -1,5 +1,7 @@
 "use client";
 
+import { ReviewTabs } from "@/components/layout/review-tabs";
+
 import { useEffect, useState, useMemo } from "react";
 import { motion } from "motion/react";
 import { useStudyStore } from "@/store/use-study-store";
@@ -96,15 +98,9 @@ export default function RevisionBuilderPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col gap-4 font-sans h-full overflow-hidden" data-fill-height>
+    <div className="w-full mx-auto flex flex-col gap-4 font-sans h-full overflow-hidden" data-fill-height>
 
-      {/* Title */}
-      <div className="shrink-0 flex items-center gap-2">
-        <RefreshCw className="w-6 h-6 text-indigo-500" />
-        <h1 className="text-xl md:text-2xl font-extrabold tracking-tight text-[var(--text-primary)]">
-          Adaptive Revision Engine
-        </h1>
-      </div>
+      <ReviewTabs />
 
       {/* Main Revision Control desk */}
       <div className="shrink-0 grid grid-cols-1 lg:grid-cols-12 gap-4">

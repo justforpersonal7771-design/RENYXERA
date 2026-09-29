@@ -1,5 +1,7 @@
 "use client";
 
+import { ReviewTabs } from "@/components/layout/review-tabs";
+
 import { useEffect, useState, useMemo } from "react";
 import { GuestLocalNotice } from "@/components/auth/guest-local-notice";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
@@ -274,6 +276,7 @@ export default function MistakesPage() {
       },
     }}>
       <div className="w-full h-full flex flex-col" data-fill-height>
+      <ReviewTabs />
       <GuestLocalNotice what="mistakes" />
       <div className="flex-1 min-h-0 w-full flex flex-col md:flex-row gap-4 relative">
 

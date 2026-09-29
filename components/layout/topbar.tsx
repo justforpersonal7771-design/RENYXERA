@@ -3,7 +3,7 @@
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, BookOpen, PieChart, ClipboardList, Bookmark, RefreshCw, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download, Trophy } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download, Timer, Library, Wrench } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -17,16 +17,17 @@ import { isInsidePortalPopover } from "@/lib/utils";
 import { AccountButton } from "./account-button";
 import { BrandMark, Wordmark } from "@/components/brand/wordmark";
 import { useAuthStore } from "@/store/use-auth-store";
+import { isReviewPath, lastReviewHref } from "./review-tabs";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "Exam Setup", href: "/setup", icon: Settings },
-  { label: "Mocks", href: "/mocks", icon: Trophy },
+  { label: "Mocks", href: "/mocks", icon: Timer },
   { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit },
-  { label: "Mistakes", href: "/mistakes", icon: ClipboardList },
-  { label: "Bookmarks", href: "/bookmarks", icon: Bookmark },
-  { label: "Revision", href: "/revision", icon: RefreshCw },
+  // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
+  { label: "Review", href: "/mistakes", icon: Library },
   { label: "Analytics", href: "/analytics", icon: PieChart },
+  { label: "Tools", href: "/tools", icon: Wrench },
 ];
 
 export function Topbar() {
@@ -36,6 +37,9 @@ export function Topbar() {
   const pathname = usePathname();
   const signedIn = useAuthStore((st) => !!st.user);
   const [hovered, setHovered] = useState<string | null>(null);
+  // "Review" reopens the tab used last; read after mount so SSR and hydration agree.
+  const [reviewHref, setReviewHref] = useState("/mistakes");
+  useEffect(() => { setReviewHref(lastReviewHref()); }, [pathname]);
   const [scrolled, setScrolled] = useState(false);
   // Scroll progress of the page's own scroller (<main>'s inner div — html/body never
   // scroll in this app), shown as a thin brand-gradient line under the bar.
@@ -175,11 +179,11 @@ export function Topbar() {
             className="flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/45 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
           >
             {NAV_ITEMS.map((item) => {
-              const isActive = pathname === item.href;
+              const isActive = item.label === "Review" ? isReviewPath(pathname) : pathname === item.href || (item.href === "/tools" && !!pathname?.startsWith("/tools/"));
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={item.label === "Review" ? reviewHref : item.href}
                   aria-label={item.label}
                   aria-current={isActive ? "page" : undefined}
                   onMouseEnter={() => setHovered(item.href)}
@@ -376,11 +380,11 @@ export function Topbar() {
           >
             <nav className="flex flex-col p-2 w-full">
               {NAV_ITEMS.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive = item.label === "Review" ? isReviewPath(pathname) : pathname === item.href || (item.href === "/tools" && !!pathname?.startsWith("/tools/"));
                 return (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    href={item.label === "Review" ? reviewHref : item.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                       isActive

@@ -26,7 +26,8 @@ export default async function SubjectHub({ params }: { params: Promise<{ subject
   const papers = allPapers();
   const years = [...new Set(papers.map((p) => p.year))].sort();
   const maxYear = Math.max(1, ...years.map((y) => s.byYear.get(y) ?? 0));
-  const topics = [...s.topics.entries()].sort((a, b) => b[1] - a[1]);
+  const topics = [...s.topics.entries()].sort((a, b) => (s.topicMarks.get(b[0]) ?? 0) - (s.topicMarks.get(a[0]) ?? 0));
+  const maxTopic = Math.max(1, ...s.topicMarks.values());
   const qs = allQuestions().filter((q) => (q.subject || "General") === s.name);
   const paperOf = (id: string) => papers.find((p) => id.includes(`_${p.yearShift.replace("-", "_")}_`));
 
@@ -40,6 +41,23 @@ export default async function SubjectHub({ params }: { params: Promise<{ subject
         </div>
         <Link href="/setup" className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25"><Play className="w-4 h-4 fill-current" /> Practise {s.name}</Link>
       </header>
+
+      <section aria-labelledby="topics">
+        <h2 id="topics" className="font-extrabold text-[var(--text-primary)] mb-3">Topic weightage</h2>
+        <ol className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 space-y-2.5">
+          {topics.map(([t, n]) => {
+            const m = s.topicMarks.get(t) ?? 0;
+            return (
+              <li key={t} className="grid grid-cols-[minmax(0,1fr)_5.5rem] sm:grid-cols-[minmax(0,1fr)_12rem_6.5rem] items-center gap-3 text-sm">
+                <span className="min-w-0"><span className="block text-[var(--text-primary)]">{t}</span><span className="block text-[11px] text-[var(--text-muted)]">{n} question{n > 1 ? "s" : ""} · {m} marks</span></span>
+                <span className="hidden sm:block h-2 rounded-full bg-[var(--surface-secondary)] overflow-hidden"><span className="block h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-violet-500" style={{ width: `${(m / maxTopic) * 100}%` }} /></span>
+                <span className="text-right font-num font-extrabold text-violet-600 dark:text-violet-400">{s.marks ? ((m / s.marks) * 100).toFixed(1) : 0}%</span>
+              </li>
+            );
+          })}
+        </ol>
+        <p className="mt-2 text-[11px] text-[var(--text-muted)]">Share of this subject&apos;s {s.marks} marks carried by each topic in every GATE CS paper since {years[0]}.</p>
+      </section>
 
       <section aria-labelledby="weightage" className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
         <h2 id="weightage" className="font-extrabold text-[var(--text-primary)] mb-4">Marks per year</h2>
@@ -59,13 +77,6 @@ export default async function SubjectHub({ params }: { params: Promise<{ subject
       </section>
 
       <SponsorSlot context={s.name} seed={s.count} />
-
-      <section aria-labelledby="topics">
-        <h2 id="topics" className="font-extrabold text-[var(--text-primary)] mb-3">Topics</h2>
-        <ul className="flex flex-wrap gap-2">
-          {topics.map(([t, n]) => <li key={t} className="px-3 py-1.5 rounded-full border border-[var(--border)] text-sm text-[var(--text-primary)]">{t} <span className="text-[var(--text-muted)]">· {n}</span></li>)}
-        </ul>
-      </section>
 
       <section aria-labelledby="questions">
         <h2 id="questions" className="font-extrabold text-[var(--text-primary)] mb-3">All {s.name} questions</h2>
