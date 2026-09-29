@@ -12,6 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // 6A: previous-year questions — index, papers, every question, subject hubs.
     { url: `${SITE_URL}/pyq`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/tools/gate-score-calculator`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/tools/gate-cs-cutoff`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/gate-cs-syllabus`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     ...allPapers().map((p) => ({ url: `${SITE_URL}/pyq/${p.slug}`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.8 })),
     ...allPapers().flatMap((p) => paperQuestions(p.slug).map((q) => ({ url: `${SITE_URL}/pyq/${p.slug}/q${q.question_no}`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.6 }))),
     ...subjects().map((s) => ({ url: `${SITE_URL}/topics/${s.slug}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.7 })),

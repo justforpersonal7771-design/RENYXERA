@@ -136,6 +136,10 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - **Built `SponsorSlot`:** network first (EthicalAds, env-gated) → instant switch to a first-party house promo when blocked (bait element, script failure, or no fill in 3 s); promos matched to the subject (our mocks / calculator / challenge, or a standard textbook via Amazon affiliate once `NEXT_PUBLIC_AMAZON_TAG` is set); reserved box, CLS 0.000; public pages only, never in exams. AdSense code + ads.txt removed. Disclaimer §7 discloses affiliate/sponsorship.
 - Checklist: AdSense/EthicalAds backlog rows; a "free alternatives" table for every paid item.
 
+### 29 Sep 2026 — Free-alternatives guide, cutoff + syllabus pages ✅
+- `docs/FREE_ALTERNATIVES_GUIDE.md` (parked for review): Amazon Associates India (new Amazon.in account on the RENYXERA email + an active spare number; individual with personal PAN; apply once traffic is steady because of 3 sales / 180 days), eu.org (legit since 1996, on the Public Suffix List, lifetime; slow volunteer approval; AdSense not guaranteed), a comparison with pp.ua / DigitalPlat / is-a.dev, Brevo SMTP for Supabase, and a 10-step domain switch-over checklist (Search Console Domain property → OAuth branding, Brevo domain auth, Supabase URLs, Turnstile, 301s).
+- `/tools/gate-cs-cutoff` (qualifying marks 2023–2026 by category, organiser, candidates; marks-vs-rank with range + GATE score) and `/gate-cs-syllabus` (every section, topics, real past-paper weightage, links to subject hubs). Sitemap, footer and smoke suite updated (18 pages × 4 modes pass).
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

@@ -255,7 +255,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Marks ↔ AIR data (general + categories) for the last 3+ GATE CSE years, from official/cited sources | 🟠 **Later — March 2027 refresh** *(2023–2025 cited tables live; official rank table + category curves when GATE 2027 results publish)* |
 | Qualifying cut-offs, candidates appeared, GATE score formula & normalisation constants | ✅ *(cut-offs 2023–2026 all categories; appeared 2024–2026; Sq/St/Mq per year, Mt 2024; 2023 appeared unknown → null)* |
-| Official exam schedule per year; official syllabus per branch | 🟠 **Later — Release 6A** *(syllabus pages are part of the SEO engine)* |
+| Official exam schedule per year; official syllabus per branch | 🟨 *(CS syllabus page ✅; official schedule page pending the GATE 2027 brochure; other branches with Release 8)* |
 | Versioned `calibration/<branch>/<year>.json` + `calibration/SOURCES.md` source/licence ledger | ✅ *(data/calibration/cse/2023–2026.json; `npm run check:calibration` in CI)* |
 | Goals Engine, readiness predictor and AI Mentor read calibration data (show data vintage) | 🟠 **Later — Release 9E** *(Goals Engine ✅; AI Mentor/readiness wiring with the AI depth work)* |
 | Opt-in anonymised scorecard submissions from users to improve the curve | 🟠 **Later — March 2027 refresh** *(needs results season)* |
@@ -319,10 +319,10 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Public, server-rendered `/about` landing page | ✅ |
-| Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | 🟨 *(29 Sep: /pyq index, 15 paper pages, 975 question pages, 18 subject hubs with year-wise weightage — all prerendered; syllabus page next)* |
+| Per-question pages, subject hubs, topic pages, PYQ year pages, syllabus page | ✅ *(/pyq, 15 papers, 975 questions, 18 subject hubs, /gate-cs-syllabus with real past-paper weightage per section — all prerendered)* |
 | Editorial content (strategy, cut-off analysis, study plans) | ⬜ |
 | Free tools (rank predictor, score / normalisation calculator, college predictor) | 🟨 *(score calculator + rank predictor ✅ `/tools/gate-score-calculator` with FAQ structured data; college predictor pending)* |
-| More free tools from the marketing plan: cutoff tracker, marks-vs-rank tables, days-left countdown, study-plan generator | ⬜ *(docs/MARKETING_STRATEGY §3.1)* |
+| More free tools from the marketing plan: cutoff tracker, marks-vs-rank tables, days-left countdown, study-plan generator | 🟨 *(cutoffs 2023–2026 by category + marks-vs-rank table ✅ `/tools/gate-cs-cutoff`; countdown + study-plan generator pending)* |
 | Auto-generated articles from our tags ("Most repeated topics 2015–2026", "How to prepare for GATE CS in 150 days") | ⬜ *(§3.1)* |
 | Public PYQ page shape: `/pyq/cs/<year>/q<n>-<slug>` with a solution preview and "Practise this in the simulator" | ✅ *(`/pyq/gate-cs-<year>-<shift>/q<n>`; official answer on demand via the rate-limited route — never in the HTML; practise CTA; related questions; breadcrumb structured data)* |
 | Technical SEO (sitemap, robots, canonicals, OG cards, structured data, CWV budget) | 🟨 *(sitemap 1,023 URLs, robots, canonicals + OG meta on every public page, breadcrumb/FAQ structured data ✅; OG images + CWV budget pending)* |

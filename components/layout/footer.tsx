@@ -15,7 +15,9 @@ export function Footer() {
         {[
           ["/about", "About"],
           ["/pyq", "Previous year questions"],
+          ["/gate-cs-syllabus", "Syllabus"],
           ["/tools/gate-score-calculator", "Score & rank predictor"],
+          ["/tools/gate-cs-cutoff", "Cutoffs"],
           ["/gate-cse", "GATE branches"],
           ["/terms", "Terms"],
           ["/privacy", "Privacy"],

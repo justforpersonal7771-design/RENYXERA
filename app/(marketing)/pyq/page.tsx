@@ -22,6 +22,7 @@ export default function PyqIndexPage() {
         <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS previous year questions</h1>
         <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">{total} official questions from {papers.length} GATE Computer Science papers ({years[years.length - 1]}–{years[0]}). Open any question to read it and check the official answer, or practise a whole paper in our exam-like simulator.</p>
         <Link href="/tools/gate-score-calculator" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-violet-600 dark:text-violet-400">Estimate your GATE score &amp; rank <ArrowRight className="w-4 h-4" /></Link>
+        <span className="mx-2 text-[var(--text-muted)]">·</span><Link href="/gate-cs-syllabus" className="text-sm font-semibold text-violet-600 dark:text-violet-400">Syllabus with weightage</Link>
       </header>
 
       <section aria-labelledby="papers">
