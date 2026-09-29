@@ -1,21 +1,24 @@
 import "server-only";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import type { Tier } from "@/lib/billing/plans";
 
-export type Entitlement = { plan: "free" | "pro"; pro: boolean; validUntil: string | null };
+export type Entitlement = { tier: Tier; plan: Tier; pro: boolean; paid: boolean; validUntil: string | null };
 
 /**
  * Server-side entitlement check (7A) — the source of truth for every gated action. Never
- * trust a client flag. Fails closed to "free" (a DB hiccup never grants Pro).
+ * trust a client flag. Fails closed to "free" (a DB hiccup never grants a paid tier).
  */
 export async function getEntitlement(userId: string | null): Promise<Entitlement> {
-  if (!userId) return { plan: "free", pro: false, validUntil: null };
+  const free: Entitlement = { tier: "free", plan: "free", pro: false, paid: false, validUntil: null };
+  if (!userId) return free;
   try {
     const { data } = await createServiceRoleClient().from("entitlements").select("plan, valid_until").eq("user_id", userId).maybeSingle();
     const validUntil = data?.valid_until ?? null;
-    const pro = data?.plan === "pro" && !!validUntil && Date.parse(validUntil) > Date.now();
-    return { plan: pro ? "pro" : "free", pro, validUntil };
+    const active = !!validUntil && Date.parse(validUntil) > Date.now();
+    const tier: Tier = active && (data?.plan === "pro" || data?.plan === "plus") ? data.plan : "free";
+    return { tier, plan: tier, pro: tier === "pro", paid: tier !== "free", validUntil: tier === "free" ? null : validUntil };
   } catch {
-    return { plan: "free", pro: false, validUntil: null };
+    return free;
   }
 }
 

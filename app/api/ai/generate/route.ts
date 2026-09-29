@@ -7,7 +7,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { getEntitlement } from "@/lib/billing/server";
-import { FREE_AI_DAILY, PRO_AI_DAILY } from "@/lib/billing/plans";
+import { AI_DAILY, FREE_AI_DAILY, PRO_AI_DAILY } from "@/lib/billing/plans";
 
 export const runtime = "nodejs";
 
@@ -216,14 +216,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ text: cached.response, cached: true });
     }
 
-    // 7D: Pro's allowance applies only on one of the account's registered devices.
-    let proHere = (await getEntitlement(userId)).pro;
-    if (proHere) {
+    // 7D: a paid tier's allowance applies only on one of the account's registered devices.
+    let tierHere = (await getEntitlement(userId)).tier;
+    if (tierHere !== "free") {
       const sid = typeof claims.session_id === "string" ? claims.session_id : null;
       const { data: dev } = sid ? await db.from("device_sessions").select("id").eq("user_id", userId).eq("session_id", sid).is("revoked_at", null).maybeSingle() : { data: null };
-      proHere = !!dev;
+      if (!dev) tierHere = "free";
     }
-    const dailyLimit = proHere ? PRO_DAILY_LIMIT : AI_DAILY_LIMIT;
+    const dailyLimit = tierHere === "pro" ? PRO_DAILY_LIMIT : tierHere === "plus" ? Math.max(AI_DAILY_LIMIT, AI_DAILY.plus) : AI_DAILY_LIMIT;
     const { data: quota, error: quotaErr } = await db.rpc("consume_ai_call", { p_user: userId, p_limit: dailyLimit });
     if (quotaErr) {
       // Migration 0003 not applied yet (or DB hiccup): don't take AI Mentor down — log loudly.
@@ -232,7 +232,7 @@ export async function POST(req: NextRequest) {
       const row = Array.isArray(quota) ? quota[0] : quota;
       if (row && !row.allowed) {
         return NextResponse.json(
-          { error: `You've used today's ${row.day_limit} AI requests. They reset at midnight (IST).${row.day_limit < PRO_DAILY_LIMIT ? ` Pro gives ${PRO_DAILY_LIMIT} a day — see RENYXERA Pro in your account menu.` : ""}`, quotaExceeded: true, upgrade: row.day_limit < PRO_DAILY_LIMIT },
+          { error: `You've used today's ${row.day_limit} AI requests. They reset at midnight (IST).${row.day_limit < PRO_DAILY_LIMIT ? ` Plus gives ${AI_DAILY.plus} and Pro ${PRO_DAILY_LIMIT} a day — see the plans in your account menu.` : ""}`, quotaExceeded: true, upgrade: row.day_limit < PRO_DAILY_LIMIT },
           { status: 429, headers: { "X-AI-Quota-Remaining": "0" } }
         );
       }

@@ -174,6 +174,13 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 - Go-live blockers: set prices; build AI exports + AI planner (listed Pro perks); Razorpay test keys + webhook secret; TURNSTILE_SECRET_KEY; legal review (🟡).
 - Stat tiles: stronger, accent-coloured labels (were barely visible). Amazon Associates tag `renyxera-21` added to the deploy build.
 
+### 29 Sep 2026 — Release 7 (part 2): three tiers, devices, referrals, growth ✅
+- Owner decision: three tiers — Free · Plus (silver) · Pro (gold). Migration 0020: tier-aware entitlements (`account_tier()`, `apply_paid_order` by plan tier), referrals (+ trigger on first submitted test), acquisition + `weekly_growth_metrics()`, optional phone + contact consent, premium-avatar DB guard.
+- AI allowance 30 / 75 / 150 by tier, only on registered devices; paid accounts limited to 2 active devices (chooser dialog) and 4 new devices / 30 days.
+- 12 premium avatar styles (6 Silver, 6 Gold), visible to all, lockable with an upgrade offer; CC BY credits shown.
+- Tier visuals: crisp faceted crown (silver/gold), metallic avatar ring, PLUS/PRO mark, metallic active tab and navbar line; green online dot removed.
+- Plans page (Free/Plus/Pro, monthly/yearly), referral card, results nudge; Telegram daily-question workflow; onboarding optional mobile number (privacy policy updated); app-wide search focus fix; leaderboard dropdowns use the app dropdown.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.

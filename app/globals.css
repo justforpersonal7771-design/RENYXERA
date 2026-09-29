@@ -1027,22 +1027,36 @@ html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; 
 .pro-bar .nav-cluster { box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.35), 0 8px 24px -12px rgba(245, 158, 11, 0.45); }
 @keyframes pro-bar-flow { to { background-position: 200% 0; } }
 .pro-badge {
-  position: relative; display: inline-flex; align-items: center; padding: 1px 6px 1px 7px; border-radius: 6px;
+  position: relative; overflow: hidden; display: inline-flex; align-items: center; padding: 1px 6px 1px 7px; border-radius: 6px;
   font-size: 10px; font-weight: 800; letter-spacing: 0.22em; line-height: 16px;
-  border: 1px solid rgba(217, 119, 6, 0.55);
-  background: linear-gradient(135deg, rgba(253, 230, 138, 0.14), rgba(245, 158, 11, 0.06));
+  color: #92400e; border: 1px solid rgba(217, 119, 6, 0.6);
+  background: linear-gradient(135deg, rgba(253, 230, 138, 0.35), rgba(245, 158, 11, 0.12));
 }
-.pro-badge > span {
-  background: linear-gradient(100deg, #92400e 0%, #b45309 30%, #d97706 50%, #b45309 70%, #92400e 100%);
-  background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
-  animation: pro-badge-shine 5s ease-in-out infinite;
+.dark .pro-badge { color: #fcd34d; border-color: rgba(251, 191, 36, 0.55); background: linear-gradient(135deg, rgba(251, 191, 36, 0.16), rgba(245, 158, 11, 0.05)); }
+.pro-badge.is-silver { color: #374151; border-color: rgba(107, 114, 128, 0.55); background: linear-gradient(135deg, rgba(243, 244, 246, 0.9), rgba(209, 213, 219, 0.35)); }
+.dark .pro-badge.is-silver { color: #e5e7eb; border-color: rgba(209, 213, 219, 0.5); background: linear-gradient(135deg, rgba(229, 231, 235, 0.14), rgba(156, 163, 175, 0.05)); }
+.pro-badge::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-130%); pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  animation: pro-badge-shine 4.5s ease-in-out infinite;
 }
-.dark .pro-badge > span {
-  background-image: linear-gradient(100deg, #f59e0b 0%, #fde68a 30%, #fffbeb 50%, #fde68a 70%, #f59e0b 100%);
+@keyframes pro-badge-shine { 0%, 65% { transform: translateX(-130%); } 90%, 100% { transform: translateX(130%); } }
+/* Plus (silver) variants of the ring, crown shadow and navbar line */
+.avatar-fx.is-plus .avatar-ring {
+  opacity: 1; transform: scale(1); inset: -3.5px; padding: 2.5px;
+  background: conic-gradient(from var(--ang), #f9fafb, #9ca3af, #ffffff, #6b7280, #d1d5db, #f9fafb);
+  animation: ang-spin 3.6s linear infinite;
 }
-@keyframes pro-badge-shine { 0%, 55% { background-position: 100% 0; } 85%, 100% { background-position: -20% 0; } }
+.pro-crown.is-inline { position: relative; top: auto; right: auto; width: 40px; height: 30px; transform: none; display: inline-block; }
+.pro-crown.is-silver .pro-crown-svg { filter: drop-shadow(0 1px 0.5px rgba(55, 65, 81, 0.55)); }
+.plus-bar::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, #9ca3af, #f9fafb, #818cf8, #f9fafb, #9ca3af, transparent);
+  background-size: 200% 100%; animation: pro-bar-flow 7s linear infinite; opacity: 0.85;
+}
+.plus-bar .nav-cluster { box-shadow: 0 0 0 1px rgba(156, 163, 175, 0.4), 0 8px 24px -12px rgba(107, 114, 128, 0.45); }
 @media (prefers-reduced-motion: reduce) {
-  .avatar-fx.is-pro .avatar-ring, .pro-crown-glint, .pro-spark, .pro-bar::after, .pro-badge > span { animation: none; }
+  .avatar-fx.is-pro .avatar-ring, .pro-crown-glint, .pro-spark, .pro-bar::after, .plus-bar::after, .pro-badge::after, .avatar-fx.is-plus .avatar-ring { animation: none; }
 }
 
 /* ── Search fields: one consistent focus treatment app-wide ───────────────────────────── */

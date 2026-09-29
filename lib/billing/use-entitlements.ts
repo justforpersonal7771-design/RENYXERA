@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/use-auth-store";
-import type { BillingMode } from "@/lib/billing/plans";
+import type { BillingMode, Tier } from "@/lib/billing/plans";
 
-export type Entitlements = { plan: "free" | "pro"; pro: boolean; validUntil: string | null; mode: BillingMode; loading: boolean };
+export type Entitlements = { tier: Tier; plan: Tier; pro: boolean; paid: boolean; validUntil: string | null; mode: BillingMode; loading: boolean };
 
 // One request shared by every component (navbar, avatar, Pro page), refreshed per account
 // and at most once a minute.
@@ -13,8 +13,8 @@ function load(key: string, force = false) {
   if (!force && cache && cache.key === key && Date.now() - cache.at < 60_000) return cache.p;
   const p = fetch("/api/billing/me", { cache: "no-store" })
     .then((r) => r.json())
-    .then((j) => ({ plan: j.plan ?? "free", pro: !!j.pro, validUntil: j.validUntil ?? null, mode: j.mode ?? "interest" }))
-    .catch(() => ({ plan: "free" as const, pro: false, validUntil: null, mode: "interest" as const }));
+    .then((j) => { const tier: Tier = j.tier === "pro" || j.tier === "plus" ? j.tier : "free"; return { tier, plan: tier, pro: tier === "pro", paid: tier !== "free", validUntil: j.validUntil ?? null, mode: j.mode ?? "interest" }; })
+    .catch(() => ({ tier: "free" as Tier, plan: "free" as Tier, pro: false, paid: false, validUntil: null, mode: "interest" as BillingMode }));
   cache = { key, at: Date.now(), p };
   return p;
 }
@@ -25,7 +25,7 @@ function load(key: string, force = false) {
  */
 export function useEntitlements(): Entitlements & { refresh: () => void } {
   const userId = useAuthStore((s) => s.user?.id ?? null);
-  const [state, setState] = useState<Entitlements>({ plan: "free", pro: false, validUntil: null, mode: "interest", loading: true });
+  const [state, setState] = useState<Entitlements>({ tier: "free", plan: "free", pro: false, paid: false, validUntil: null, mode: "interest", loading: true });
   const [tick, setTick] = useState(0);
   useEffect(() => {
     let alive = true;

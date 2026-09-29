@@ -74,9 +74,9 @@ export async function POST(req: NextRequest) {
       if (row?.revoked_at && row.session_id === c.sessionId) {
         return NextResponse.json({ revoked: true });
       }
-      // 7D: Pro accounts may be active on PRO_DEVICE_LIMIT devices, and may add at most
+      // 7D: paid (Plus/Pro) accounts may be active on PRO_DEVICE_LIMIT devices, and may add at most
       // PRO_NEW_DEVICES_PER_30D new devices a month. Free accounts are never limited.
-      if (!row && (await getEntitlement(c.userId)).pro) {
+      if (!row && (await getEntitlement(c.userId)).paid) {
         const since = new Date(Date.now() - 30 * 86400_000).toISOString();
         const { data: active } = await db.from("device_sessions").select("id, device_id, label, last_seen_at, created_at")
           .eq("user_id", c.userId).is("revoked_at", null).gte("last_seen_at", since).order("last_seen_at", { ascending: false });

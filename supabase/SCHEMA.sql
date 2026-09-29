@@ -1943,3 +1943,59 @@ alter table public.profiles add column if not exists contact_opt_in boolean not 
 do $$ begin
   alter table public.profiles add constraint profiles_phone_format check (phone is null or phone ~ '^\+91[6-9][0-9]{9}$');
 exception when duplicate_object then null; end $$;
+
+-- ── Three tiers: free · plus (silver) · pro (gold) ─────────────────────────────────────
+alter table public.entitlements drop constraint if exists entitlements_plan_check;
+alter table public.entitlements add constraint entitlements_plan_check check (plan in ('free', 'plus', 'pro'));
+
+-- The account's active tier right now ('free' when nothing is active).
+create or replace function public.account_tier(p_user uuid)
+returns text language sql stable security definer set search_path = '' as $$
+  select coalesce((select e.plan from public.entitlements e
+                    where e.user_id = p_user and e.plan in ('plus', 'pro')
+                      and e.valid_until is not null and e.valid_until > now()), 'free');
+$$;
+revoke all on function public.account_tier(uuid) from public, anon;
+grant execute on function public.account_tier(uuid) to authenticated, service_role;
+
+-- Paid orders grant the tier named by the plan id (plus_* → plus, pro_* → pro). Buying the
+-- same tier extends it; buying Pro while on Plus upgrades; buying Plus never downgrades Pro.
+create or replace function public.apply_paid_order(p_order text, p_payment text)
+returns boolean language plpgsql security definer set search_path = '' as $$
+declare o public.billing_orders; t text;
+begin
+  update public.billing_orders
+     set status = 'paid', razorpay_payment_id = p_payment, paid_at = now()
+   where razorpay_order_id = p_order and status <> 'paid'
+  returning * into o;
+  if not found then return false; end if;
+  t := case when o.plan_id like 'plus%' then 'plus' else 'pro' end;
+  insert into public.entitlements as e (user_id, plan, valid_until, source, updated_at)
+  values (o.user_id, t, now() + make_interval(days => o.period_days), 'razorpay', now())
+  on conflict (user_id) do update
+    set plan = case when e.plan = 'pro' and e.valid_until > now() and t = 'plus' then 'pro' else t end,
+        valid_until = greatest(coalesce(e.valid_until, now()), now()) + make_interval(days => o.period_days),
+        source = 'razorpay', updated_at = now();
+  return true;
+end;
+$$;
+
+-- ── Premium avatars: only qualifying tiers can SET them (keep in sync with dicebear-styles.ts) ──
+create or replace function public.profiles_premium_avatar()
+returns trigger language plpgsql security definer set search_path = '' as $$
+declare need text; have text;
+begin
+  if tg_op = 'UPDATE' and new.avatar_style is not distinct from old.avatar_style then return new; end if;
+  need := case
+    when new.avatar_style in ('avataaars', 'big-smile', 'open-peeps', 'personas', 'pixel-art', 'fun-emoji') then 'plus'
+    when new.avatar_style in ('toon-head', 'voxel-art', 'clay', 'dylan', 'cameo', 'miniavs') then 'pro'
+    else 'free' end;
+  if need = 'free' then return new; end if;
+  have := public.account_tier(new.id);
+  if (need = 'plus' and have in ('plus', 'pro')) or (need = 'pro' and have = 'pro') then return new; end if;
+  raise exception 'premium_avatar_requires_%', need using errcode = 'P0001';
+end;
+$$;
+drop trigger if exists profiles_premium_avatar on public.profiles;
+create trigger profiles_premium_avatar before insert or update of avatar_style on public.profiles
+  for each row execute function public.profiles_premium_avatar();

@@ -41,7 +41,8 @@ export function AccountButton() {
 
   const btnRef = useRef<HTMLAnchorElement>(null);
   const [open, setOpen] = useState(false);
-  const { pro } = useEntitlements();
+  const { tier } = useEntitlements();
+  const pro = tier === "pro", plus = tier === "plus";
   const [pos, setPos] = useState<{ top: number; right: number } | null>(null);
   const [hover, setHover] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -102,10 +103,10 @@ export function AccountButton() {
 
   return (
     <>
-      <Link ref={btnRef} href="/profile" aria-label={`${name}${pro ? " (Pro)" : ""} — profile and quick access`} aria-haspopup="menu" aria-expanded={open}
+      <Link ref={btnRef} href="/profile" aria-label={`${name}${pro ? " (Pro)" : plus ? " (Plus)" : ""} — profile and quick access`} aria-haspopup="menu" aria-expanded={open}
         onMouseEnter={show} onMouseLeave={hideSoon} onFocus={show} onBlur={hideSoon}
         onClick={(e) => { if (window.matchMedia("(hover: none)").matches && !open) { e.preventDefault(); show(); } }}
-        className={`avatar-fx group relative flex items-center rounded-xl outline-none shrink-0 ${pro ? "is-pro" : ""}`}>
+        className={`avatar-fx group relative flex items-center rounded-xl outline-none shrink-0 ${pro ? "is-pro" : plus ? "is-plus" : ""}`}>
         <span className="relative block w-8 h-8">
           <span className="avatar-ring" aria-hidden="true" />
           <span className="relative block w-8 h-8 rounded-[9px] overflow-hidden border border-[var(--border)] bg-[var(--surface-secondary)] transition-[filter,transform] duration-300 group-hover:saturate-150 group-hover:brightness-110 group-hover:scale-105">
@@ -113,7 +114,7 @@ export function AccountButton() {
             <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={64} height={64} />
             <span className="avatar-sheen" aria-hidden="true" />
           </span>
-          {pro && <ProCrown />}
+          {(pro || plus) && <ProCrown metal={pro ? "gold" : "silver"} />}
         </span>
       </Link>
 
@@ -160,7 +161,7 @@ export function AccountButton() {
               <Link href="/pro" role="menuitem" onClick={() => setOpen(false)}
                 className="group relative mt-1 flex items-center gap-3 rounded-xl px-2.5 py-2 bg-gradient-to-r from-amber-500/10 via-violet-500/10 to-fuchsia-500/10 hover:from-amber-500/20 hover:to-fuchsia-500/20 transition-colors">
                 <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-fuchsia-600 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:-rotate-6"><Crown className="w-4 h-4" /></span>
-                <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">RENYXERA Pro</span>
+                <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">{pro ? "You're on Pro" : plus ? "You're on Plus" : "Plus & Pro plans"}</span>
                 <span className="text-[10px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-300">More AI</span>
               </Link>
 

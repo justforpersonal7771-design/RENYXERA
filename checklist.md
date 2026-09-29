@@ -380,7 +380,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Task | Status |
 |---|---|
 | Entitlements stored server-side (`profiles.entitlements`), re-checked on every gated action | ✅ *(`entitlements` table + `is_pro()` (migration 0019); `getEntitlement()` fails closed to free; `/api/billing/me`; `useEntitlements()` is display-only)* |
-| Pricing tiers implemented (Free / ₹29 / ₹49 / ₹99 / ₹199) | 🟨 *(one config `lib/billing/plans.ts` — Pro monthly/yearly; prices unset by owner decision 29 Sep → shown as "coming soon")* |
+| Pricing tiers implemented (Free / ₹29 / ₹49 / ₹99 / ₹199) | 🟨 *(three tiers decided 29 Sep: Free · Plus (silver) · Pro (gold); `lib/billing/plans.ts` monthly/yearly for each; prices unset by owner → "coming soon")* |
 | Entitlement check inside the grading call | ✅ *(the only paid perk today — the AI daily quota — is re-checked server-side on every `/api/ai/generate` call: 30 free / 150 Pro)* |
 | Upgrade path on the results screen; warm upsell at quota limits; bundling nudge after 3 purchases | ✅ *(`/pro` page; results-screen nudge; account-menu entry; AI quota message points to Pro · bundling nudge 🟠 with go-live)* |
 
@@ -405,19 +405,19 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 7D · P1 · Account-Sharing Prevention
 | Task | Status |
 |---|---|
-| Two-device limit on paid entitlements with a device chooser | ⬜ |
-| Concurrent-session detection; device-change cooldown | ⬜ |
-| Escalation ladder (warn → re-auth → temp lock → manual review) | ⬜ |
+| Two-device limit on paid entitlements with a device chooser | ✅ *(paid accounts: 2 active devices; new device gets a chooser to sign one out; paid AI allowance only on registered devices)* |
+| Concurrent-session detection; device-change cooldown | ✅ *(max 4 new devices / 30 days for paid accounts, then free-plan-only on new devices)* |
+| Escalation ladder (warn → re-auth → temp lock → manual review) | 🟨 *(warn (chooser) → sign-out of the old session → cooldown lock ✅; manual review 🟠 Release 10 admin console)* |
 
 ### 7E · P2 · Referral & Growth Loops
 | Task | Status |
 |---|---|
-| Referral credits (both sides) | ⬜ |
+| Referral credits (both sides) | ✅ *(`/r/<code>`; new accounts ≤ 7 days; credited by DB trigger on the friend's first submitted test with confirmed email; 7 days Pro each, max 5 — migration 0020)* |
 | Shareable achievement / result / AIR cards | 🟨 *(result + AIR cards ✅ 28 Sep; streak / topic-mastery / achievement cards pending)* |
 | "Your GATE year" recap (Wrapped-style, shareable) after the exam | ⬜ *(MARKETING §3.8)* |
 | "Study with me" focus-room link | ⬜ *(§3.8)* |
-| UTM capture + weekly metrics dashboard (acquisition by channel, D7/D30 retention, first-test-within-24h activation) | ⬜ *(§9; free: Web Analytics + Postgres)* |
-| Telegram channel + daily-question bot | ⬜ *(§3.3; free Bot API)* |
+| UTM capture + weekly metrics dashboard (acquisition by channel, D7/D30 retention, first-test-within-24h activation) | 🟨 *(first-touch UTM/referrer saved to the profile; `weekly_growth_metrics()` SQL (sign-ups by channel, 24 h activation, D7/D30) ✅; visual dashboard 🟠 Release 10 admin console)* |
+| Telegram channel + daily-question bot | 🟨 *(daily 08:00 IST GitHub Action + script ✅; needs the owner's bot token + channel secrets)* |
 | Welcome email series | ⬜ *(needs custom SMTP — backlog #1)* |
 | College ambassador programme | ⬜ |
 | Study-group invitations; testimonials for credits | ⬜ |

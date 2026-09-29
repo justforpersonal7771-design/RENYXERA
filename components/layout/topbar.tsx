@@ -38,7 +38,9 @@ export function Topbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const signedIn = useAuthStore((st) => !!st.user);
-  const isPro = useEntitlements().pro && signedIn;
+  const tier = useEntitlements().tier;
+  const isPro = signedIn && tier === "pro";
+  const isPlus = signedIn && tier === "plus";
   const [hovered, setHovered] = useState<string | null>(null);
   // "Review" reopens the tab used last; read after mount so SSR and hydration agree.
   const [reviewHref, setReviewHref] = useState("/mistakes");
@@ -141,7 +143,7 @@ export function Topbar() {
         labels readable at every scroll position. */}
     <header
       data-scrolled={scrolled ? "" : undefined}
-      className={`${isPro ? "pro-bar " : ""}h-16 fixed top-0 left-0 right-0 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-[background-color,box-shadow] duration-300 ${
+      className={`${isPro ? "pro-bar " : isPlus ? "plus-bar " : ""}h-16 fixed top-0 left-0 right-0 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-[background-color,box-shadow] duration-300 ${
         scrolled
           ? "bg-[var(--background)]/72 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.28)]"
           : "bg-[var(--background)]/55"
@@ -172,7 +174,7 @@ export function Topbar() {
             <Wordmark />
             <span className="logo-sweep" aria-hidden="true" />
           </span>
-          {isPro && <span className="pro-badge" title="RENYXERA Pro"><span>PRO</span></span>}
+          {(isPro || isPlus) && <span className={`pro-badge ${isPlus ? "is-silver" : ""}`} title={isPro ? "RENYXERA Pro" : "RENYXERA Plus"}>{isPro ? "PRO" : "PLUS"}</span>}
         </Link>
 
         {/* Desktop nav — a floating glass dock with a hover highlight that glides
@@ -193,7 +195,7 @@ export function Topbar() {
                   onMouseEnter={() => setHovered(item.href)}
                   onFocus={() => setHovered(item.href)}
                   className={`group relative flex items-center gap-2 px-2.5 xl:px-3 2xl:px-3.5 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
-                    isActive ? (isPro ? "text-amber-950" : "text-white") : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    isActive ? (isPro ? "text-amber-950" : isPlus ? "text-slate-900" : "text-white") : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
                   {hovered === item.href && !isActive && (
@@ -206,7 +208,7 @@ export function Topbar() {
                   {isActive && (
                     <motion.span
                       layoutId="topbar-active-pill"
-                      className={`absolute inset-0 rounded-xl -z-10 ${isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 shadow-[0_6px_16px_-6px_rgba(217,119,6,0.6),inset_0_1px_0_rgba(255,255,255,0.6)]" : "bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 shadow-[0_6px_18px_-4px_rgba(124,58,237,0.55)]"}`}
+                      className={`absolute inset-0 rounded-xl -z-10 ${isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 shadow-[0_6px_16px_-6px_rgba(217,119,6,0.6),inset_0_1px_0_rgba(255,255,255,0.6)]" : isPlus ? "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 shadow-[0_6px_16px_-6px_rgba(71,85,105,0.55),inset_0_1px_0_rgba(255,255,255,0.8)]" : "bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 shadow-[0_6px_18px_-4px_rgba(124,58,237,0.55)]"}`}
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -392,7 +394,7 @@ export function Topbar() {
                     onClick={() => setMobileMenuOpen(false)}
                     className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                       isActive
-                        ? (isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950 shadow-md shadow-amber-500/25" : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25")
+                        ? (isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950 shadow-md shadow-amber-500/25" : isPlus ? "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900 shadow-md shadow-slate-500/25" : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25")
                         : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
                     }`}
                   >
@@ -407,7 +409,7 @@ export function Topbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`sm:hidden flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
                     pathname?.startsWith("/downloads")
-                      ? (isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950 shadow-md shadow-amber-500/25" : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25")
+                      ? (isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950 shadow-md shadow-amber-500/25" : isPlus ? "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900 shadow-md shadow-slate-500/25" : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25")
                       : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
