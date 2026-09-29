@@ -177,7 +177,7 @@ export function LineChart({ series, xTicks, yTicks, log = false, invertY = false
       {marker && <g>
         <circle cx={px(marker.x)} cy={py(marker.y)} r={9} fill="#d946ef" opacity={0.2} className="animate-ping origin-center" style={{ transformBox: "fill-box" }} />
         <circle cx={px(marker.x)} cy={py(marker.y)} r={5.5} fill="#d946ef" stroke="white" strokeWidth={2} />
-        <text x={Math.min(px(marker.x) + 10, W - R - 4)} y={py(marker.y) - 10} textAnchor={px(marker.x) > W - 140 ? "end" : "start"} fontSize="11" fontWeight="800" fill="#d946ef">{marker.label}</text>
+        <text x={Math.min(px(marker.x) + 10, W - R - 4)} y={py(marker.y) - 14} textAnchor={px(marker.x) > W - 140 ? "end" : "start"} fontSize="11" fontWeight="800" fill="#d946ef" stroke="var(--surface)" strokeWidth={5} strokeLinejoin="round" paintOrder="stroke">{marker.label}</text>
       </g>}
     </svg>
   );
