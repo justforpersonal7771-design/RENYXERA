@@ -456,6 +456,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Rights check recorded in the source ledger before ingestion | ⬜ |
 | Extraction (8A) → answer-key match → tagging → human QA sample (≥98% first-pass accuracy) | ⬜ |
 | Launch gate: PYQs + keys + taxonomy + starter practice (6D) + topic pages (6E) before a branch leaves "Coming Soon" | ⬜ |
+| Branch scoping (after EC 2021–2026 is extracted and tagged): a user sees and can open only their own branch's content; other branches stay hidden | ⬜ *(implement with the branching strategy)* |
+| Branch switching: the user can switch branch at any time and switch back; all progress, attempts, analytics and settings are kept per branch, and switching resumes where they left off with zero data loss | ⬜ *(implement with the branching strategy)* |
 
 ---
 
