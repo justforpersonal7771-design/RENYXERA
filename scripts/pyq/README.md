@@ -32,6 +32,6 @@ python scripts/pyq/review.py EC --paper EC_2026     # review flagged questions a
 python scripts/pyq/build.py EC                      # → data/pyq/EC/gate_ec_pyqs.json
 ```
 
-- The extraction pauses when the free Gemini quota runs out. **Run the same command again to resume**; finished pages are never redone.
+- No AI API is used: Claude transcribes pages and scanned keys (see the handbook).
 - Re-run `validate.py` after any change, then `build.py`.
 - A question enters the bank only if it passed every check, or you approved it in review.

@@ -26,7 +26,7 @@ This is the single source of instructions for extracting official GATE previous-
 4. **Never guess.** If something is unreadable, add `"uncertain": "<reason>"` to the question. Do not invent text. Never write a question's text from memory; always print its text layer first.
 5. **Answers come only from the official key** (`keys.py`); the transcription contains no answers.
    - MTA ("marks to all") stays MTA.
-   - Keys read from a scan (the 2021 key is an image) must be read by Claude from the image and are flagged for user confirmation.
+   - A scanned key (image-only PDF, e.g. 2021) is transcribed by Claude from the key image into `data/pyq/<BR>/keys_manual/<pid>.tsv` (Q.No, Type, Section, Key/Range, Marks, tab-separated, exactly as printed; tracked). `keys.py` reads it; validation flags those papers for user confirmation.
 6. **One JSON per branch**: `data/pyq/<BR>/gate_<br>_pyqs.json`. Never an aggregated file.
 7. **The official PDFs stay in per-branch folders** at `data/pyq/official_pdfs/<BR>/<paper>/`. They are git-ignored and re-downloadable; `manifest.json` records each file's URL and SHA-256.
 8. **Two-shift years.** A two-shift year becomes two papers, `CE_2026_S1` and `CE_2026_S2`, with question IDs like `GATE_CE_2026_S1_Q7`.
@@ -64,15 +64,8 @@ Years: 2021–2026 from the download page, then 2017–2020 from the bulk archiv
 ```bash
 cd D:/0-UI/r2ma-stable
 python scripts/pyq/fetch.py EC                 # once per branch: download + manifest
-python scripts/pyq/keys.py EC                  # all keys of the branch -> _work/.../key.json
-# page renders + text layers (extract.py step 1 only; its Gemini passes are retired):
-python - <<'EOF'
-import fitz,sys; sys.path.insert(0,'scripts/pyq')
-from common import WORK,pdf_path; from extract import norm
-code,pid='EC','EC_2025'; d=fitz.open(pdf_path(code,pid,'qp')); w=WORK/code/pid/'pages'; w.mkdir(parents=True,exist_ok=True)
-for i,p in enumerate(d,1):
-    p.get_pixmap(dpi=300).save(str(w/f'p{i:03d}.png')); (w/f'p{i:03d}.txt').write_text(norm(p.get_text()),encoding='utf-8')
-EOF
+python scripts/pyq/keys.py EC                  # all keys -> _work/.../key.json (scanned keys: from keys_manual/<pid>.tsv)
+python scripts/pyq/render.py EC --paper EC_2025     # 300-dpi page PNGs + text layers; warns on numbering restarts (shifts)
 python scripts/pyq/regions.py EC --paper EC_2025   # figure regions from the PDF's drawings/images
 # ... Claude transcribes -> data/pyq/EC/transcriptions/EC_2025/b01.json ... (see §5)
 python scripts/pyq/crop.py EC --paper EC_2025      # merge batches + cut figures (300 dpi)
@@ -190,7 +183,7 @@ Compiling in MathJax is necessary but not sufficient. Before shipping a branch:
 
 | Branch | Papers fetched | Keys | Transcribed | Validated | In bank |
 |---|---|---|---|---|---|
-| EC | 2021–2026 | all pass (2021 read from a scan with Gemini → **re-read by Claude**; MTA at Q19 and Q36 to confirm) | **2026 done** | 2026: 65/65 | 2026 (untagged) |
+| EC | 2021–2026 | all pass (2021 scan transcribed by Claude → `keys_manual/EC_2021.tsv`; MTA at Q19, Q36) | **2026 done**, 2025 rendered + regions | 2026: 65/65 | 2026 (untagged) |
 | EE, ME, CE, DA | not yet | – | – | – | – |
 
 Done for EC_2026:
@@ -198,12 +191,11 @@ Done for EC_2026:
 - 27 figures, each eye-checked.
 - Commits `1ad479d` and `16ceee1` (not pushed yet: push with the next batch).
 
-Superseded: `extract.py` passes A and B (Gemini) and the files `_work/EC/EC_2026/pages/*.pass_a.json`. Ignore them.
+Removed: `extract.py` (Gemini). No script in the pipeline calls an AI API except `tag.py`, which is to be replaced (§8). Ignore any old `_work/**/*.pass_a.json` files.
 
 ## 10. Next steps, in order
 
 1. The §7 rendering check on EC_2026 in the app (Q7's table is now an image).
-2. Re-read the EC 2021 answer key from the scan yourself and replace the Gemini-read key. Confirm with the user.
 3. Tagging (§8) for EC_2026.
 4. EC 2025 → 2021, one paper at a time: render, regions, transcribe, crop, eye-check, validate, build, commit.
 5. EE, ME, CE (two shifts!), DA: fetch, then as above.

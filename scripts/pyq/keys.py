@@ -1,15 +1,15 @@
 """Step 4: official answer key -> exact keys per question (no AI when the PDF has text).
 
 Output: data/pyq/_work/<BRANCH>/<paper>/key.json
-    {"paper": "EC_2026", "source": "text"|"vision", "rows": [
+    {"paper": "EC_2026", "source": "text"|"manual", "rows": [
         {"qno": 1, "type": "MCQ", "section": "GA", "marks": 1,
          "answer": {"options": ["B"]} | {"options": ["B","D"]} | {"nat": [[2.5, 2.7]]} | {"mta": true},
          "raw": "B"} ...]}
 
 Every key is checked before it is written: question numbers 1..N with no gaps, total marks
 100, GA = Q1-10 worth 15, MCQ has exactly one option, MSQ one or more, NAT a numeric range.
-A scanned (image-only) key is read with Gemini vision and marked source="vision" so the
-reviewer checks it against the PDF.
+A scanned (image-only) key is transcribed by Claude into data/pyq/<BR>/keys_manual/<paper>.tsv
+(source="manual"); the reviewer confirms it against the PDF.
 
     python scripts/pyq/keys.py EC            # every paper in the EC manifest
     python scripts/pyq/keys.py EC --paper EC_2026
@@ -25,7 +25,7 @@ from pathlib import Path
 import fitz  # PyMuPDF
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import RAW, WORK, load_env, pdf_path, read_json, write_json  # noqa: E402
+from common import PYQ, RAW, WORK, pdf_path, read_json, write_json  # noqa: E402
 
 ROW = re.compile(
     r"(?<!\S)(\d{1,2})\s+(\d{1,2})\s+(MCQ|MSQ|NAT)\s+([A-Z]{2,4})\s+(.+?)\s+([12])(?=\s+\d{1,2}\s+\d{1,2}\s+(?:MCQ|MSQ|NAT)\b|\s*$)",
@@ -91,31 +91,20 @@ def renumber_sections(rows: list[dict]) -> list[dict]:
     return rows
 
 
-def rows_from_vision(doc: fitz.Document) -> list[dict]:
-    """Scanned key: ask Gemini to transcribe the table exactly (no solving)."""
-    import os
-    from google import genai
-    from google.genai import types
-
-    load_env()
-    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-    schema = {"type": "array", "items": {"type": "object", "properties": {
-        "qno": {"type": "integer"}, "type": {"type": "string", "enum": ["MCQ", "MSQ", "NAT"]},
-        "section": {"type": "string"}, "key": {"type": "string"}, "marks": {"type": "integer"}},
-        "required": ["qno", "type", "section", "key", "marks"]}}
+def rows_from_manual(code: str, pid: str) -> list[dict]:
+    """Scanned (image-only) key: Claude transcribes the key image row by row into
+    data/pyq/<BR>/keys_manual/<pid>.tsv (tracked in git): Q.No, Type, Section, Key/Range, Marks,
+    tab-separated, exactly as printed. No AI API is involved."""
+    f = PYQ / code / "keys_manual" / f"{pid}.tsv"
+    if not f.exists():
+        raise ValueError(f"scanned key: transcribe it into {f.relative_to(PYQ.parent.parent)} first")
     rows = []
-    for page in doc:
-        png = page.get_pixmap(dpi=200).tobytes("png")
-        res = client.models.generate_content(
-            model="gemini-3.5-flash",
-            contents=[types.Part.from_bytes(data=png, mime_type="image/png"),
-                      "Transcribe every row of this GATE answer-key table exactly as printed. Do not solve or "
-                      "correct anything. key = the Key/Range cell verbatim (e.g. 'B', 'A;C', '2.5 to 2.7', 'MTA')."],
-            config=types.GenerateContentConfig(response_mime_type="application/json", response_schema=schema, temperature=0),
-        )
-        for r in json.loads(res.text or "[]"):
-            rows.append({"qno": r["qno"], "type": r["type"], "section": r["section"].strip().upper(), "marks": r["marks"],
-                         "raw": r["key"], "answer": parse_answer(r["type"], r["key"])})
+    for line in f.read_text(encoding="utf-8").splitlines():
+        if not line.strip() or line.startswith("#"):
+            continue
+        qno, qtype, section, raw, marks = [c.strip() for c in line.split("\t")]
+        rows.append({"qno": int(qno), "type": qtype, "section": section.upper(), "marks": int(marks), "raw": raw,
+                     "answer": parse_answer(qtype, raw)})
     return rows
 
 
@@ -162,13 +151,13 @@ def main() -> int:
         doc = fitz.open(pdf_path(code, pid, "key"))
         has_text = sum(len(p.get_text().strip()) for p in doc) > 200
         try:
-            rows = renumber_sections(rows_from_text(doc) if has_text else rows_from_vision(doc))
+            rows = renumber_sections(rows_from_text(doc) if has_text else rows_from_manual(code, pid))
         except ValueError as e:
             print(f"FAIL {pid}: {e}")
             bad += 1
             continue
         errs = check(rows)
-        out = {"paper": pid, "source": "text" if has_text else "vision", "rows": sorted(rows, key=lambda r: r["qno"]), "errors": errs}
+        out = {"paper": pid, "source": "text" if has_text else "manual", "rows": sorted(rows, key=lambda r: r["qno"]), "errors": errs}
         write_json(WORK / code / pid / "key.json", out)
         mta = sum(1 for r in rows if "mta" in r["answer"])
         types_ = {t: sum(1 for r in rows if r["type"] == t) for t in ("MCQ", "MSQ", "NAT")}

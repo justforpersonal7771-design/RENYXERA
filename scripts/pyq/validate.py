@@ -195,7 +195,7 @@ def main() -> int:
             flags.append(f"model: uncertain — {q.get('uncertain_reason', '')}")
         if row.get("renumbered"):
             flags.append("key: question numbers renumbered from a GA/core split key — confirm")
-        if key.get("source") == "vision":
+        if key.get("source") in ("vision", "manual"):
             flags.append("key: answer key was read from a scanned image — confirm the answer")
         out.append({"qno": n, "flags": flags, "key": row, "pages": q.get("pages")})
 
