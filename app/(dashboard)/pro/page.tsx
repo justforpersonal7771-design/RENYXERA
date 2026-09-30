@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Check, Crown, Loader2, Sparkles } from "lucide-react";
@@ -40,6 +41,8 @@ export default function PlansPage() {
   const [period, setPeriod] = useState<"monthly" | "yearly">("yearly");
   const [busy, setBusy] = useState<PlanId | null>(null);
   const [agreed, setAgreed] = useState(false);
+  const [captcha, setCaptcha] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
   const [interested, setInterested] = useState<PlanId[]>([]);
   const payments = BILLING_MODE !== "interest";
 
@@ -56,7 +59,9 @@ export default function PlansPage() {
       }
       if (!signedIn) { useToastStore.getState().show("Sign in first to upgrade.", "info"); return; }
       if (!agreed) { useToastStore.getState().show("Please accept the no-refund terms first.", "info"); return; }
-      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, acceptedTerms: true }) });
+      if (!captcha) { useToastStore.getState().show("Please wait a moment for the security check below to finish.", "info"); return; }
+      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, acceptedTerms: true, turnstileToken: captcha ?? undefined }) });
+      turnstileRef.current?.reset(); setCaptcha(null);
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
       if (!(await loadCheckout()) || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your connection.");
@@ -140,6 +145,7 @@ export default function PlansPage() {
         <ReferralCard />
       </div>
 
+      {payments && signedIn && <div className="flex justify-center"><TurnstileWidget ref={turnstileRef} onToken={setCaptcha} /></div>}
       {payments && (
         <label className="mx-auto max-w-2xl flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--text-secondary)] cursor-pointer">
           <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
