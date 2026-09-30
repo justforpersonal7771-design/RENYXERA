@@ -39,6 +39,7 @@ export interface Profile {
 interface AuthUser {
   id: string;
   email: string | null;
+  created_at?: string | null;
 }
 
 interface AuthState {

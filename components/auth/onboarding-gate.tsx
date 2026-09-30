@@ -76,6 +76,16 @@ export function OnboardingGate() {
     return () => { clearTimeout(t); ctrl.abort(); };
   }, [username, profile?.username]);
 
+  // A brand-new account whose profile is still loading: hold the onboarding backdrop now,
+  // so the dashboard doesn't flash in between sign-up and this card.
+  const freshAccount = !!user && !profile && !!user.created_at && Date.now() - Date.parse(user.created_at) < 15 * 60_000;
+  if (freshAccount) {
+    return (
+      <div className="fixed inset-0 z-[250] grid place-items-center bg-slate-950/60 backdrop-blur-xl" aria-busy="true">
+        <Loader2 className="w-6 h-6 animate-spin text-white/80" />
+      </div>
+    );
+  }
   if (!needed && !done) return null;
 
   const phoneOk = phone === "" || /^[6-9][0-9]{9}$/.test(phone);
@@ -95,8 +105,8 @@ export function OnboardingGate() {
       target_branch: "CSE",
       aspirant_status: status,
       onboarded_at: new Date().toISOString(),
-      phone: phone ? `+91${phone}` : null,
-      contact_opt_in: !!phone && optIn,
+      // Only sent when entered, so onboarding never depends on the phone columns' grant.
+      ...(phone ? { phone: `+91${phone}`, contact_opt_in: optIn } : {}),
     };
     const { data, error } = await supabase.from("profiles").update(updates).eq("id", user.id).select("*").single();
     setSaving(false);

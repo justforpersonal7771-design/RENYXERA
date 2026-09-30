@@ -104,6 +104,7 @@ jobs:
           NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
           NEXT_PUBLIC_SENTRY_DSN: ${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
           NEXT_PUBLIC_CF_BEACON_TOKEN: ${{ secrets.NEXT_PUBLIC_CF_BEACON_TOKEN }}
+          NEXT_PUBLIC_BILLING_MODE: test  # Razorpay TEST mode (fake payments). Change to live only after going live.
           NEXT_PUBLIC_AMAZON_TAG: renyxera-21  # public Amazon Associates store ID (appears in every link)
 
       - name: Smoke-test the live site

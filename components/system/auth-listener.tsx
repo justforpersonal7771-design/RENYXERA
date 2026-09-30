@@ -135,7 +135,7 @@ export function AuthListener() {
       }
       if (cancelled) return;
 
-      const user = session?.user ? { id: session.user.id, email: session.user.email ?? null } : null;
+      const user = session?.user ? { id: session.user.id, email: session.user.email ?? null, created_at: session.user.created_at ?? null } : null;
       setSession(user);
       await applyUserChange(user?.id ?? null, true);
       IDBManager.markNamespaceResolved();
@@ -201,7 +201,7 @@ export function AuthListener() {
       const {
         data: { subscription },
       } = supabase.auth.onAuthStateChange(async (_event, session) => {
-        const user = session?.user ? { id: session.user.id, email: session.user.email ?? null } : null;
+        const user = session?.user ? { id: session.user.id, email: session.user.email ?? null, created_at: session.user.created_at ?? null } : null;
         setSession(user);
         await applyUserChange(user?.id ?? null, false);
         setProfile(user ? await fetchProfile(user.id) : null);

@@ -1,7 +1,7 @@
 -- ============================================================================
 -- RENYXERA — complete database schema (Supabase Postgres)
 -- ============================================================================
--- This file is the ordered migration history (supabase/migrations/0001…0023) as one
+-- This file is the ordered migration history (supabase/migrations/0001…0024) as one
 -- script. On a NEW Supabase project, run it top to bottom in the SQL Editor to recreate
 -- the full schema. Never edit it by hand: add a new numbered migration, then regenerate:
 --   npm run schema:build
@@ -2254,3 +2254,15 @@ language sql stable security definer set search_path = '' as $$
 $$;
 revoke all on function public.tiers_for_labels(text[]) from public;
 grant execute on function public.tiers_for_labels(text[]) to anon, authenticated;
+
+
+-- ############################################################################
+-- ##  0024_profile_phone_grant.sql
+-- ############################################################################
+
+-- RENYXERA — hotfix. Run once in the Supabase SQL Editor. Safe to re-run.
+--
+-- Migration 0020 added profiles.phone and profiles.contact_opt_in, but students may only
+-- update columns explicitly granted to them (see the column-level grants on profiles), so
+-- saving a mobile number failed with "permission denied". Allow these two.
+grant update (phone, contact_opt_in) on public.profiles to authenticated;
