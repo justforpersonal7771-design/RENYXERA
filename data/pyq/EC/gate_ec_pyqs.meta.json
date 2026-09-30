@@ -1,7 +1,7 @@
 {
   "branch": "EC",
   "branch_name": "Electronics and Communication Engineering",
-  "generated_at": "2026-09-30T17:19:11+00:00",
+  "generated_at": "2026-09-30T17:23:46+00:00",
   "papers": {
     "2026": {
       "paper": "EC_2026",
@@ -348,6 +348,194 @@
       "review": "auto"
     },
     "EC_2025:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:65": {
       "marks_to_all": false,
       "review": "auto"
     }

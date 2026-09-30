@@ -1,0 +1,270 @@
+[
+ {
+  "qno": 56,
+  "pages": [
+   48
+  ],
+  "question_text": "Consider a system represented by the block diagram shown below.\n[IMAGE_Q_56_1]\nWhich of the following signal flow graphs represent(s) this system? Choose the correct option(s).",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_56_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_56_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_56_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_56_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_56_1",
+    "page": 48,
+    "regions": [
+     "p048_r1"
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_56_A",
+    "page": 48,
+    "regions": [
+     "p048_r2"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_56_B",
+    "page": 48,
+    "regions": [
+     "p048_r3"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_56_C",
+    "page": 48,
+    "regions": [
+     "p048_r4"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_56_D",
+    "page": 48,
+    "regions": [
+     "p048_r5"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 57,
+  "pages": [
+   49
+  ],
+  "question_text": "All the diodes in the circuit given below are ideal.\n[IMAGE_Q_57_1]\nWhich of the following plots is/are correct when \\(V_I\\) (in Volts) is swept from \\(-M\\) to \\(M\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_57_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_57_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_57_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_57_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_57_1",
+    "page": 49,
+    "regions": [
+     "p049_r1"
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_57_A",
+    "page": 49,
+    "regions": [
+     "p049_r2"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_57_B",
+    "page": 49,
+    "regions": [
+     "p049_r3"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_57_C",
+    "page": 49,
+    "regions": [
+     "p049_r4"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_57_D",
+    "page": 49,
+    "regions": [
+     "p049_r5"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 58,
+  "pages": [
+   50
+  ],
+  "question_text": "Two fair dice (with faces labeled 1, 2, 3, 4, 5, and 6) are rolled. Let the random variable \\(X\\) denote the sum of the outcomes obtained.\nThe expectation of \\(X\\) is______ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 59,
+  "pages": [
+   50
+  ],
+  "question_text": "Consider the vectors\n$$ \\mathbf{a} = \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}, \\quad \\mathbf{b} = \\begin{bmatrix} 0 \\\\ 3\\sqrt{2} \\end{bmatrix}. $$\nFor real-valued scalar variable \\(x\\), the value of\n$$ \\min_x \\|\\mathbf{a}x - \\mathbf{b}\\|_2 $$\nis ____________ (rounded off to two decimal places).\n\\(\\|\\cdot\\|_2\\) denotes the Euclidean norm, i.e., for \\(\\mathbf{y} = \\begin{bmatrix} y_1 \\\\ y_2 \\end{bmatrix}\\), \\(\\|\\mathbf{y}\\|_2 = \\sqrt{y_1^2 + y_2^2}\\).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 60,
+  "pages": [
+   50
+  ],
+  "question_text": "\\(X\\) and \\(Y\\) are Bernoulli random variables taking values in \\(\\{0, 1\\}\\). The joint probability mass function of the random variables is given by:\n\\(P(X = 0, Y = 0) = 0.06\\)\n\\(P(X = 0, Y = 1) = 0.14\\)\n\\(P(X = 1, Y = 0) = 0.24\\)\n\\(P(X = 1, Y = 1) = 0.56\\)\nThe mutual information \\(I(X; Y)\\) is _________ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 61,
+  "pages": [
+   51
+  ],
+  "question_text": "The diode in the circuit shown below is ideal. The input voltage (in Volts) is given by \\(V_I = 10\\sin 100\\pi t\\), where time \\(t\\) is in seconds.\n[IMAGE_Q_61_1]\nThe time duration (in ms, rounded off to two decimal places) for which the diode is forward biased during one period of the input is ___________.",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_61_1",
+    "page": 51,
+    "regions": [
+     "p051_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 62,
+  "pages": [
+   51
+  ],
+  "question_text": "In the circuit shown below, the AND gate has a propagation delay of 1 ns. The edge-triggered flip-flops have a set-up time of 2 ns, a hold-time of 0 ns, and a clock-to-Q delay of 2 ns.\n[IMAGE_Q_62_1]\nThe maximum clock frequency (in MHz, rounded off to the nearest integer) such that there are no setup violations is ________.",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_62_1",
+    "page": 51,
+    "regions": [
+     "p051_r2"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 63,
+  "pages": [
+   52
+  ],
+  "question_text": "An ideal p-n junction germanium diode has a reverse saturation current of \\(10\\,\\mu\\text{A}\\) at 300 K. The voltage (in Volts, rounded off to two decimal places) to be applied across the junction to get a forward bias current of 100 mA at 300 K is _____.\n(Consider the Boltzmann constant \\(k_B = 1.38 \\times 10^{-23}\\) J/K and the charge of an electron \\(e = 1.6 \\times 10^{-19}\\) C.)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   52
+  ],
+  "question_text": "A \\(50\\,\\Omega\\) lossless transmission line is terminated with a load \\(Z_L\\) of \\((50 - j75)\\,\\Omega\\). If the average incident power on the line is 10 mW, then the average power delivered to the load (in mW, rounded off to one decimal place) is __________.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   52
+  ],
+  "question_text": "Two resistors are connected in a circuit loop of area \\(5\\ \\text{m}^2\\), as shown in the figure below. The circuit loop is placed on the x-y plane. When a time-varying magnetic flux, with flux-density \\(B(t) = 0.5t\\) (in Tesla), is applied along the positive z-axis, the magnitude of current \\(I\\) (in Amperes, rounded off to two decimal places) in the loop is ________.\n[IMAGE_Q_65_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_65_1",
+    "page": 52,
+    "regions": [
+     "p052_r1"
+    ]
+   }
+  ]
+ }
+]
