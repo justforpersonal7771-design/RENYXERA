@@ -36,7 +36,7 @@ PH = re.compile(r"\[IMAGE_Q_(\d{2})_([A-D]|\d+)\]")
 
 def fold(s: str) -> str:
     s = unicodedata.normalize("NFKC", s)
-    s = re.sub(r"\\(log|ln|det|sin|cos|tan|exp)(?![a-zA-Z])", r" \1", s)  # function names are printed words
+    s = re.sub(r"\\(log|ln|det|sin|cos|tan|exp|lim|max|min)(?![a-zA-Z])", r" \1", s)  # function names are printed words
     s = re.sub(r"\\[a-zA-Z]+", " ", s)          # drop LaTeX commands (\frac, \text ...)
     s = re.sub(r"[{}_^$\\()\[\]]", " ", s)
     return re.sub(r"\s+", " ", s).lower().strip()
@@ -72,7 +72,7 @@ def question_regions(work: Path, pages: int) -> dict[int, str]:
         end = spans[idx + 1][1] if idx + 1 < len(spans) else len(text)
         chunk = text[e:end]
         # drop repeated page furniture lines
-        chunk = re.sub(r"(?i)(electronics (and|&) communication engineering \(ec\)|page \d+ of \d+|organi[sz]ing institute:? iit \w+)", " ", chunk)
+        chunk = re.sub(r"(?i)(electronics (and|&) communication engineering \(ec\)|page \d+ of \d+|organi[sz]ing institute:? (iit \w+|iisc,? bengaluru|iisc,? bangalore))", " ", chunk)
         regions.setdefault(n, chunk)
     return regions
 
