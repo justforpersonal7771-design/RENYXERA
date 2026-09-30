@@ -487,6 +487,8 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 | 10I | **Communications** — announcements/banners, email campaigns to waitlists, mock reminders | ⬜ |
 | 10J | **Audit log & safety** — append-only log of every admin action (who, what, before/after); alerts on sensitive actions; data-access reports | ⬜ |
 | 10K | **Settings & feature flags** — rate limits, AI daily limit, maintenance mode, kill switches | ⬜ |
+| 10L | **AI pre-generation console** — start/stop the background run (`ai_pregen_control.enabled`), see cursor/pass/paused-until and last message; per-question status for HINT/SHORTCUT/EXPLAIN with date & time, model, attempts, errors (`ai_pregen_items`); what is cached vs pending; retry failed; view/regenerate a cached answer | ⬜ *(backend live 30 Sep: migration 0025 + `/api/ai/pregen` + 30-min Action)*|
+| 10M | **AI responses & chats per user** — every AI request/response and AI Mentor chat per student (type, question, tokens, cached or live, time); search by user; flag bad answers; usage vs allowance | ⬜ *(needs an ai_request_log table — design with DPDP retention limits)* |
 
 ---
 

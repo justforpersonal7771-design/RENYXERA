@@ -1,0 +1,28 @@
+name: AI pre-generation
+
+# Fills the shared AI cache (hints, shortcuts, standard explanations) for every official PYQ,
+# in a fixed order, resuming exactly where it stopped when Gemini's daily quota runs out.
+# The live app does the work (/api/ai/pregen); this just calls it every 30 minutes.
+# Stop: set ai_pregen_control.enabled = false in Supabase, or disable this workflow in the
+# Actions tab. Needs repo secret PREGEN_SECRET (same value as the Cloudflare secret).
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Process the next batch
+        env:
+          PREGEN_SECRET: ${{ secrets.PREGEN_SECRET }}
+        run: |
+          if [ -z "$PREGEN_SECRET" ]; then echo "PREGEN_SECRET not set — skipping"; exit 0; fi
+          for i in 1 2 3; do
+            out=$(curl -sS -m 280 -X POST https://gate.renyxera.workers.dev/api/ai/pregen \
+              -H "Content-Type: application/json" -H "x-pregen-secret: $PREGEN_SECRET" -d '{"batch":6}')
+            echo "$out"
+            echo "$out" | grep -q '"state":"running"' || break
+          done

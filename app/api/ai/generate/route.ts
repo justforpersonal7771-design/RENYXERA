@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getGoogleGenAIClient, GEMINI_MODEL, AI_ROUTE } from "@/lib/ai/gemini";
+import { sharedCacheKey } from "@/lib/ai/shared-cache";
 import { PromptBuilder } from "@/lib/ai/ai-prompts";
 import { aiRequestSchema, type AIGenerateRequest } from "@/lib/security/ai-request-schema";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
@@ -227,7 +228,12 @@ export async function POST(req: NextRequest) {
   // ---- Module 4G: server-side cache, then per-user daily quota (both in Postgres) ----
   const userId = String(claims.sub);
   const route = AI_ROUTE[parsed.data.type] ?? { model: GEMINI_MODEL, maxOutputTokens: 3072 };
-  const promptHash = await sha256([route.model, systemInstruction, prompt].join("\n"));
+  // Question-level requests share one cache entry per (type, question, mode, personality) —
+  // the same key the background pre-generator (/api/ai/pregen) fills.
+  const sp = parsed.data.params as Record<string, any>;
+  const promptHash = shared
+    ? await sharedCacheKey(parsed.data.type, sp.context.currentQuestion.question_id, sp.mode, sp.personality)
+    : await sha256([route.model, systemInstruction, prompt].join("\n"));
   let db: ReturnType<typeof createServiceRoleClient> | null = null;
   try { db = createServiceRoleClient(); } catch { db = null; }
 
