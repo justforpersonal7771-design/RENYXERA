@@ -21,3 +21,7 @@ cloudflare-env.d.ts
 # local throwaway helpers and logs
 zz-*.mjs
 *.log
+
+# PYQ pipeline: official source PDFs and intermediate work files (large, reproducible)
+data/pyq/official_pdfs/
+data/pyq/_work/
