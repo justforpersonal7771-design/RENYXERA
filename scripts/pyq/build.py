@@ -42,7 +42,7 @@ def main() -> int:
     for pid in sorted(manifest, key=lambda p: (manifest[p]["year"], manifest[p]["session"] or 0), reverse=True):
         m = manifest[pid]
         val = read_json(WORK / code / pid / "validated.json")
-        ext = read_json(WORK / code / pid / "questions.pass_a.json")
+        ext = read_json(WORK / code / pid / "questions.json") or read_json(WORK / code / pid / "questions.pass_a.json")
         tags = read_json(WORK / code / pid / "tags.json", {}) or {}
         reviews = read_json(PYQ / code / "reviews" / f"{pid}.json", {}) or {}
         if not val or not ext:

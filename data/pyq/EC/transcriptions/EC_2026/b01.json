@@ -1,0 +1,150 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "Among the following options, the antonym of the word ‘nocturnal’ is _________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "normal"
+   },
+   {
+    "option_id": "B",
+    "text": "diurnal"
+   },
+   {
+    "option_id": "C",
+    "text": "abnormal"
+   },
+   {
+    "option_id": "D",
+    "text": "exceptional"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "The statements (S1), (S2), and (S3) pertain to the scores obtained by students in an exam. The maximum possible marks in the exam is 150.\n(S1) The highest score is 100.\n(S2) The fourth highest score is 76.\n(S3) There are at least four students whose scores are within 25 of each other.\nWhich one of the following options is necessarily correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(S1) and (S2) together imply (S3)"
+   },
+   {
+    "option_id": "B",
+    "text": "(S1) and (S3) together imply (S2)"
+   },
+   {
+    "option_id": "C",
+    "text": "(S2) and (S3) together imply (S1)"
+   },
+   {
+    "option_id": "D",
+    "text": "(S1) implies (S3)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 3,
+  "pages": [
+   3
+  ],
+  "question_text": "The figure below has exactly three intersecting line segments with a rectangular portion WXYZ missing. Which one of the following options P, Q, R, and S is the missing portion WXYZ?\n[IMAGE_Q_03_1]\n[IMAGE_Q_03_2]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P"
+   },
+   {
+    "option_id": "B",
+    "text": "Q"
+   },
+   {
+    "option_id": "C",
+    "text": "R"
+   },
+   {
+    "option_id": "D",
+    "text": "S"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_03_1",
+    "page": 3,
+    "regions": [
+     "p003_r1"
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_03_2",
+    "page": 3,
+    "regions": [
+     "p003_r2",
+     "p003_r3",
+     "p003_r4",
+     "p003_r5"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 4,
+  "pages": [
+   4
+  ],
+  "question_text": "Real numbers \\(y\\), \\(p\\), and \\(n\\) (all greater than 1) satisfy\n\\[ \\left(\\log_{p^{1/n}} y\\right)\\left(\\log_{y^{1/n}} p\\right) = 16, \\]\nwhere the logarithms are taken to the bases \\(p^{1/n}\\) and \\(y^{1/n}\\).\nThe value of \\(n\\) is ________",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2"
+   },
+   {
+    "option_id": "B",
+    "text": "4"
+   },
+   {
+    "option_id": "C",
+    "text": "8"
+   },
+   {
+    "option_id": "D",
+    "text": "16"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   5
+  ],
+  "question_text": "The following observation is made about the scores obtained by 100 students in an exam:\n‘For each student, there exists another student in the class such that their scores are at most ten marks away.’\nIf the above statement is false, which one of the following statements is necessarily true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "For each student, the scores of all the other students are more than 10 marks away."
+   },
+   {
+    "option_id": "B",
+    "text": "There exists at least one student in the class for whom the scores of all the other students are more than 10 marks away."
+   },
+   {
+    "option_id": "C",
+    "text": "There is exactly one student in the class for whom the scores of some students are more than 10 marks away."
+   },
+   {
+    "option_id": "D",
+    "text": "For each student, the score of exactly one other student is more than 10 marks away."
+   }
+  ],
+  "figures": []
+ }
+]

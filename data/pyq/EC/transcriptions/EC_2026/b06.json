@@ -1,0 +1,323 @@
+[
+ {
+  "qno": 44,
+  "pages": [
+   41
+  ],
+  "question_text": "A QPSK modulated signal from an additive white Gaussian noise (AWGN) channel is received with an \\(E_b/N_o = 8.4\\) dB at the input of a coherent QPSK demodulator. A maximum-likelihood reception method is used in the demodulator.\nAssume the complimentary error function\n\\[ erfc(u) \\cong \\left[1/\\left(u\\sqrt{\\pi}\\right)\\right] exp(-u^2). \\]\nWhich is the nearest bit error rate (BER) at the output of the demodulator?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(10^{-3}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(10^{-4}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(10^{-5}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(10^{-6}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 45,
+  "pages": [
+   42
+  ],
+  "question_text": "What is the \\(10'\\)s complement of \\((47)_{10}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "52"
+   },
+   {
+    "option_id": "B",
+    "text": "53"
+   },
+   {
+    "option_id": "C",
+    "text": "54"
+   },
+   {
+    "option_id": "D",
+    "text": "55"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 46,
+  "pages": [
+   43
+  ],
+  "question_text": "Consider a real baseband signal \\(x(t) = e^{-2t}\\), for \\(t\\) (in seconds) \\(\\ge 0\\).\nIf 99% of energy of \\(x(t)\\) lies within \\(B\\) Hz, then which of the following options is TRUE for the value of \\(B\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "B > 1 kHz"
+   },
+   {
+    "option_id": "B",
+    "text": "63/π Hz < B < 64/π Hz"
+   },
+   {
+    "option_id": "C",
+    "text": "126/π Hz < B < 128/π Hz"
+   },
+   {
+    "option_id": "D",
+    "text": "B < 1 Hz"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 47,
+  "pages": [
+   44
+  ],
+  "question_text": "Consider the discrete time system (S) with input \\(x[n]\\) and output \\(y[n]\\) as shown in the Figure. The two sub-systems represented by their impulse responses \\(h_1[n]\\) and \\(h_2[n]\\) are linear and time invariant.\nWhich of the following statements is necessarily TRUE?\n[IMAGE_Q_47_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "S is causal."
+   },
+   {
+    "option_id": "B",
+    "text": "S is linear and time invariant."
+   },
+   {
+    "option_id": "C",
+    "text": "S is linear and time varying."
+   },
+   {
+    "option_id": "D",
+    "text": "S is non-linear."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_47_1",
+    "page": 44,
+    "regions": [
+     "p044_r1"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 48,
+  "pages": [
+   45
+  ],
+  "question_text": "A Boolean function, \\(f(x,y,z)\\) with \\(x\\) as MSB and \\(z\\) as LSB is realized by 4:1 multiplexer (MUX) with select lines, \\(S_1\\) and \\(S_0\\) (\\(S_1\\) is MSB, \\(S_0\\) is LSB) and inputs, \\(I_0, I_1, I_2, I_3\\) as shown in the Figure. Which of the following options is the correct expression of \\(f(x,y,z)\\)?\n[IMAGE_Q_48_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(xz + y\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x\\bar{y} + z\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(xy + \\bar{z}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\bar{x}y + \\bar{z}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_48_1",
+    "page": 45,
+    "regions": [
+     "p045_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 49,
+  "pages": [
+   46
+  ],
+  "question_text": "A shift-left Shift Register (SR) and a D flip-flop are connected to a synchronized clock as shown in the Figure. Assume that the SR and D flip-flops are initially cleared and the XOR gate has no propagation delay. Which of the following options gives the correct binary representation \\((b_7b_6b_5b_4b_3b_2b_1b_0)\\) of the content of the shift register immediately after the 5th clock transition (positive edge)?\n[IMAGE_Q_49_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "00011111"
+   },
+   {
+    "option_id": "B",
+    "text": "10111111"
+   },
+   {
+    "option_id": "C",
+    "text": "00111111"
+   },
+   {
+    "option_id": "D",
+    "text": "11000011"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_49_1",
+    "page": 46,
+    "regions": [
+     "p046_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 50,
+  "pages": [
+   47
+  ],
+  "question_text": "A small signal source, \\(V_i(t) = A\\cos(10^5 t) + B\\sin(10^7 t)\\) is applied to a BJT circuit as shown in the Figure.\nAssume zero source resistance, \\(V_{BE} = 0.7\\) V, \\(\\beta_{dc} = 99\\), Early voltage = 100 V and Thermal voltage = 25 mV. Effect of internal parasitic capacitances of the BJT may be neglected.\nWhich expression is the best approximation of the output voltage \\(V_o(t)\\)?\n[IMAGE_Q_50_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(-9.1[A\\cos(10^5 t) + B\\sin(10^7 t)]\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(9.1[A\\cos(10^5 t) - B\\sin(10^7 t)]\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(-190.4[A\\cos(10^5 t) + B\\sin(10^7 t)]\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(190.4[A\\cos(10^5 t) - B\\sin(10^7 t)]\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_50_1",
+    "page": 47,
+    "regions": [
+     "p047_r1"
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 51,
+  "pages": [
+   48
+  ],
+  "question_text": "Consider the two-port network as shown in the Figure. Which of the following options provides the correct set of values of A, B, C and D parameters?\n[IMAGE_Q_51_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "A = 1/2, B = \\(3\\times10^3\\) Ω, C = \\(10^{-3}\\) Ω\\(^{-1}\\), D = 1/2"
+   },
+   {
+    "option_id": "B",
+    "text": "A = 2, B = 3 Ω, C = 1 Ω\\(^{-1}\\), D = 2"
+   },
+   {
+    "option_id": "C",
+    "text": "A = 2, B = \\(6\\times10^3\\) Ω, C = \\(2\\times10^{-3}\\) Ω\\(^{-1}\\), D = 2"
+   },
+   {
+    "option_id": "D",
+    "text": "A = 2, B = \\(3\\times10^3\\) Ω, C = \\(10^{-3}\\) Ω\\(^{-1}\\), D = 2"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_51_1",
+    "page": 48,
+    "regions": [
+     "p048_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 52,
+  "pages": [
+   49
+  ],
+  "question_text": "A complex load (in Ω) is represented as \\(\\Gamma_L = 0.5\\angle 30^\\circ\\) on the Smith chart. A co-axial cable with a characteristic impedance of 50 Ω is connected to the load. The new input impedance of the load now moves to a diametrically opposite point on the same \\(\\Gamma\\) circle on the Smith chart. Which option is the nearest input impedance of the cable connected load (in Ω)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(20.7 - j5.1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(17.7 - j11.8\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(97.5 - j65.0\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(97.5 + j65.0\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   50
+  ],
+  "question_text": "A circuit using an ideal OP-AMP is shown in the Figure. Which of the following options gives the correct value of the current \\(I_X\\)?\n[IMAGE_Q_53_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2.0 mA"
+   },
+   {
+    "option_id": "B",
+    "text": "1.5 mA"
+   },
+   {
+    "option_id": "C",
+    "text": "3.0 mA"
+   },
+   {
+    "option_id": "D",
+    "text": "0 mA"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_53_1",
+    "page": 50,
+    "regions": [
+     "p050_r1"
+    ]
+   }
+  ]
+ }
+]

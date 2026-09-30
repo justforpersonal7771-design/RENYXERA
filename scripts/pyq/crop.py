@@ -1,6 +1,6 @@
 """Merge Claude's page-by-page transcription batches and cut the figures from the official PDF.
 
-Input  data/pyq/_work/<BRANCH>/<paper>/transcribed/b*.json   (list of questions, see README)
+Input  data/pyq/<BRANCH>/transcriptions/<paper>/b*.json   (list of questions, see README)
        data/pyq/_work/<BRANCH>/<paper>/regions.json          (from regions.py)
 Output data/pyq/_work/<BRANCH>/<paper>/questions.json        (merged, sorted by qno)
        data/pyq/<BRANCH>/images/<paper>/Q07_1.png ...        (300 dpi crops)
@@ -51,7 +51,7 @@ def main() -> int:
     work = WORK / code / pid
     regions = {r["id"]: r["rect"] for rs in (read_json(work / "regions.json", {}) or {}).values() for r in rs}
     qs: dict[int, dict] = {}
-    for f in sorted((work / "transcribed").glob("b*.json")):
+    for f in sorted((PYQ / code / "transcriptions" / pid).glob("b*.json")):
         for q in read_json(f):
             if q["qno"] in qs:
                 raise SystemExit(f"Q{q['qno']} appears twice ({f.name})")
@@ -74,7 +74,8 @@ def main() -> int:
                     if rid not in regions:
                         raise SystemExit(f"Q{q['qno']}: unknown region {rid}")
                     rect |= fitz.Rect(regions[rid])
-                rect = grow_labels(page, rect)
+                if fig.get("grow", True):  # off for raster figures whose labels are inside the image
+                    rect = grow_labels(page, rect)
             l, t, r, b = fig.get("pad", [4, 4, 4, 4])
             rect = fitz.Rect(rect.x0 - l, rect.y0 - t, rect.x1 + r, rect.y1 + b) & page.rect
             name = f"Q{q['qno']:02d}_{m.group(2)}.png"

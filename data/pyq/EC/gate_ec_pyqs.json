@@ -1,0 +1,2478 @@
+{
+  "branch": "EC",
+  "branch_name": "Electronics and Communication Engineering",
+  "generated_at": "2026-09-30T16:43:06+00:00",
+  "papers": [
+    {
+      "exam_metadata": {
+        "year-shift": "2026",
+        "branch": "EC",
+        "paper": "EC_2026",
+        "source": {
+          "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2026/QPs/EC.pdf",
+          "question_paper_sha256": "ba2ca8d147480695485cea9411020d5f7b6ff5766529bd8f95b6a0b850ca0773",
+          "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2026/Keys/EC_Keys.pdf",
+          "answer_key_sha256": "adffe8de60903b5a74c2c8e7344ee541eea855edacc313f81cb8bf02a4486bd4"
+        }
+      },
+      "questions": [
+        {
+          "question_no": 1,
+          "question_id": "GATE_EC_2026_Q1",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Among the following options, the antonym of the word ‘nocturnal’ is _________.",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "normal",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "diurnal",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "abnormal",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "exceptional",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 2,
+          "question_id": "GATE_EC_2026_Q2",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The statements (S1), (S2), and (S3) pertain to the scores obtained by students in an exam. The maximum possible marks in the exam is 150.\n(S1) The highest score is 100.\n(S2) The fourth highest score is 76.\n(S3) There are at least four students whose scores are within 25 of each other.\nWhich one of the following options is necessarily correct?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "(S1) and (S2) together imply (S3)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "(S1) and (S3) together imply (S2)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "(S2) and (S3) together imply (S1)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "(S1) implies (S3)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 3,
+          "question_id": "GATE_EC_2026_Q3",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The figure below has exactly three intersecting line segments with a rectangular portion WXYZ missing. Which one of the following options P, Q, R, and S is the missing portion WXYZ?\n[IMAGE_Q_03_1]\n[IMAGE_Q_03_2]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_03_1",
+            "IMAGE_Q_03_2"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "P",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "Q",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "R",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "S",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 4,
+          "question_id": "GATE_EC_2026_Q4",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Real numbers \\(y\\), \\(p\\), and \\(n\\) (all greater than 1) satisfy\n\\[ \\left(\\log_{p^{1/n}} y\\right)\\left(\\log_{y^{1/n}} p\\right) = 16, \\]\nwhere the logarithms are taken to the bases \\(p^{1/n}\\) and \\(y^{1/n}\\).\nThe value of \\(n\\) is ________",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "2",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "4",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "8",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "16",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 5,
+          "question_id": "GATE_EC_2026_Q5",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The following observation is made about the scores obtained by 100 students in an exam:\n‘For each student, there exists another student in the class such that their scores are at most ten marks away.’\nIf the above statement is false, which one of the following statements is necessarily true?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "For each student, the scores of all the other students are more than 10 marks away.",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "There exists at least one student in the class for whom the scores of all the other students are more than 10 marks away.",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "There is exactly one student in the class for whom the scores of some students are more than 10 marks away.",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "For each student, the score of exactly one other student is more than 10 marks away.",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 6,
+          "question_id": "GATE_EC_2026_Q6",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Each one of the following clues contains a keyword that is partially filled.\nClue 1: Synonym of recognize (8 letters): _ D _ NT_ FY\nClue 2: A story long enough to fill a book (5 letters): _ _ _ EL\nClue 3: Two of something (6 letters): _ _ _ PLE\nClue 4: A fraction of something, split equally into two parts (4 letters): _ _ _ F\nThe first letter of each of the keywords can be rearranged to form a four-letter word.\nWhich one of the options below is a possible choice for the four-letter word?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "CHIN",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "COIN",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "ITCH",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "NOSE",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 7,
+          "question_id": "GATE_EC_2026_Q7",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Three children P, Q, R and two grown-ups X, Y play a badminton doubles tournament. X and Y are parents to two of the children playing. The child of X is not the same as the child of Y. Exactly one of the children does not have a parent playing in the tournament.\nThe following rules are followed:\n(i) A parent and his/her child cannot be on the same team.\n(ii) A match can feature at most one parent and his/her child, that is, a maximum of one parent-child pair can play in a match.\nThe following matches were played:\n| | TEAM 1 | TEAM 2 |\n|---|---|---|\n| MATCH 1 | P and X | Q and R |\n| MATCH 2 | P and R | X and Y |\n| MATCH 3 | R and X | Q and Y |\nWhich one of the following options is correct?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "P does not have any parent playing",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "Q does not have any parent playing",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "R does not have any parent playing",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "X does not have a child playing",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 8,
+          "question_id": "GATE_EC_2026_Q8",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Let \\(P_k\\) represent the perimeter of a square with sides of length \\(k\\). The value of the expression \\(P_1 + P_2 + P_3 + \\cdots + P_{10}\\) is __________",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "55",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "110",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "220",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "440",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 9,
+          "question_id": "GATE_EC_2026_Q9",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The city of Atlantis was crafted by the God of the seas, Poseidon. It was made of alternating concentric circular rings of land (shaded) and water (not shaded) as represented in the figure (not to scale). The radius of Inner Island was 2.5 stades (a unit of length used in ancient Greece). The water surrounding Inner Island was one stade wide (length AB). This was surrounded by two pairs of alternating rings of land and water. The first pair of land and water was two stades wide each (lengths BC and CD), and the outer pair is three stades wide each (lengths DE and EF).\nThe ratio of the surface area of the land to that of the water in the city of Atlantis is _________ (round off to two decimal places).\n[IMAGE_Q_09_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_09_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "0.45",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "0.60",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "0.75",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "0.90",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 10,
+          "question_id": "GATE_EC_2026_Q10",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "GENERAL APTITUDE (GA)",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "If\n[IMAGE_Q_10_1]\nThen\n[IMAGE_Q_10_2]\n[IMAGE_Q_10_3]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_10_1",
+            "IMAGE_Q_10_2",
+            "IMAGE_Q_10_3"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "P",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "Q",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "R",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "S",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 11,
+          "question_id": "GATE_EC_2026_Q11",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the differential equation \\(\\dot{\\vec{w}} = A\\vec{w}\\), with \\(\\vec{w}(t=0) = \\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}\\).\nIf \\(\\vec{w}(t) = e^{t}\\vec{u}_x + e^{-2t}\\vec{u}_y\\) be the solution to the equation where \\(\\vec{u}_x\\) and \\(\\vec{u}_y\\) are unit vectors along the positive \\(x\\) and \\(y\\) axes respectively, then which of the following options is the correct matrix representing \\(A\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(\\begin{bmatrix} 1 & 0 \\\\ 0 & -2 \\end{bmatrix}\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(\\begin{bmatrix} -1 & 0 \\\\ 0 & 2 \\end{bmatrix}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\begin{bmatrix} 0 & -2 \\\\ 1 & 0 \\end{bmatrix}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\begin{bmatrix} 0 & 2 \\\\ -1 & 0 \\end{bmatrix}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 12,
+          "question_id": "GATE_EC_2026_Q12",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A surface is given by \\(z^2 = 2x^2 - y^2\\) and \\(\\vec{n}\\) and \\(-\\vec{n}\\) are unit normal vectors to the surface at the point \\(\\vec{P} = \\hat{\\imath} + \\sqrt{2}\\,\\hat{k}\\).\nWhich of the following vectors can be \\(\\vec{n}\\), where \\(\\hat{\\imath}, \\hat{\\jmath}\\) and \\(\\hat{k}\\) are the unit vectors along x, y and z axes, respectively?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(\\hat{\\imath} - \\sqrt{2}\\,\\hat{k}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(\\frac{2}{3}\\hat{\\imath} - \\frac{1}{3}\\hat{k}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\sqrt{2}\\hat{\\imath} - \\sqrt{3}\\,\\hat{k}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\dfrac{\\sqrt{2}\\hat{\\imath} - \\hat{k}}{\\sqrt{3}}\\)",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 13,
+          "question_id": "GATE_EC_2026_Q13",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The Laplace Transform of the signal \\(x(t) = u(t-2) * (t u(t))\\) is given by which of the following expressions?\n[“\\(*\\)” represents convolution operator]",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(\\dfrac{e^{-2s}}{s^2(s-2)}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(\\dfrac{e^{-2(s-2)}}{s^3}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\dfrac{s e^{-2s}}{(s-2)^2}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\dfrac{e^{-2s}}{s^3}\\)",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 14,
+          "question_id": "GATE_EC_2026_Q14",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider carrier transport in a Zener diode in the breakdown region. Which is the dominant transport mechanism for current flow in this case?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "Drift",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "Diffusion",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "Tunneling",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "Ballistic transport",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 15,
+          "question_id": "GATE_EC_2026_Q15",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Two analog signals \\(x_1(t)\\) and \\(x_2(t)\\) (\\(t\\) in second), are sampled at a rate \\(F_s = 40\\) Hz, where \\(x_1(t) = \\cos(20\\pi t),\\ t \\ge 0\\), and \\(x_2(t) = \\cos(100\\pi t),\\ t \\ge 0\\). The first ten samples (starting from \\(t = 0\\)) are considered for the analysis.\nWhich of the following statements is TRUE?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "All of the first three samples of \\(x_1(t)\\) are greater than the corresponding samples of \\(x_2(t)\\).",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "All of the last three samples of \\(x_1(t)\\) are greater than the corresponding samples of \\(x_2(t)\\).",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "All of the samples of \\(x_2(t)\\) are greater than the corresponding samples of \\(x_1(t)\\).",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "All of the fourth to seventh samples of \\(x_1(t)\\) are equal to the corresponding samples of \\(x_2(t)\\).",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 16,
+          "question_id": "GATE_EC_2026_Q16",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The response of a discrete time system \\(y[n]\\) obeys the following relation:\n\\[ y[n] = \\frac{5}{6}y[n-1] - \\frac{1}{6}y[n-2] + x[n]. \\]\nThe input to the system is \\(x[n] = \\delta[n] - \\frac{1}{3}\\delta[n-1]\\).\nWhich of the following options is TRUE for \\(y[n]\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "Stable and causal response",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "Stable and non-causal response",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "Unstable and causal response",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "Unstable and non-causal response",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 17,
+          "question_id": "GATE_EC_2026_Q17",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The ideal OP-AMP circuit shown in the Figure produces output voltage \\(V_o = x\\) when the Switch, S, is open. Which of the options represents the output voltage when S is closed?\n[IMAGE_Q_17_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_17_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(x\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(\\frac{2}{3}x\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\frac{3}{4}x\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\frac{1}{2}x\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 18,
+          "question_id": "GATE_EC_2026_Q18",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the circuit shown in the Figure with \\(V_i = 3\\) V and \\(V_{CC} = 12\\) V. Assume \\(V_{BE} = 0.7\\) V and \\(\\beta_{dc} = 99\\) for the BJT. Which of the following options is the correct value of the current \\(I_o\\)?\n[IMAGE_Q_18_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_18_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "60 μA",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "6 μA",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "3 μA",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "30 μA",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 19,
+          "question_id": "GATE_EC_2026_Q19",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A control system is shown in the Figure.\nWhich option represents the correct transfer function of the system?\n[IMAGE_Q_19_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_19_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(\\dfrac{1}{(s+4)^2}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(\\dfrac{1}{(s+4)}\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\dfrac{2}{(s+4)}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\dfrac{1}{(s^2+8s+17)}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 20,
+          "question_id": "GATE_EC_2026_Q20",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "In the circuit shown in the Figure, A and B are logic inputs and Y is the logic output. Which of the following logic operations is realized by the circuit?\n[IMAGE_Q_20_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_20_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "NOR",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "OR",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "XOR",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "AND",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 21,
+          "question_id": "GATE_EC_2026_Q21",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the Friis’ transmission equation \\(P_R = (P_T G_T G_R \\lambda^2)/(4\\pi D)^2\\), where \\(P_R\\) and \\(P_T\\) are the received and the transmitted powers, respectively.\n\\(G_T\\) and \\(G_R\\) are the gain of transmitting and receiving antennas, respectively, \\(D\\) is the distance between the transmitting and receiving antennas, and \\(\\lambda\\) is the wavelength in free space.\nGiven: \\(G_T = G_R = 1.0, \\lambda = 0.30\\) m and \\(P_T = +10\\) dBm.\nChoose the distance (\\(D\\)), in km, from the following options at which the received power, \\(P_R = -90\\) dBm?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(\\frac{15}{4\\pi}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(\\frac{15}{2\\pi}\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\frac{75}{2\\pi}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\frac{3}{4\\pi}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 22,
+          "question_id": "GATE_EC_2026_Q22",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider a discrete memoryless source with an alphabet of four source symbols. \\(s(t)\\) is a multi-level \\((-1, 0, +1, +2)\\) signal representing a long sequence of random symbols from the above source which is generating \\(10^4\\) symbols per second. Which of the following options is the correct value of equivalent Nyquist bandwidth of \\(s(t)\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "10 kHz",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "64 kHz",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "5 kHz",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "20 kHz",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 23,
+          "question_id": "GATE_EC_2026_Q23",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The relation between the input current (\\(I\\)) and the output voltage (\\(V\\)) of a circuit is governed by the equation: \\(C\\frac{dV}{dt} = I(t) - m(t)\\). The circuit is excited by \\(I(t) = q\\delta(t)\\), where \\(q\\) is a real valued constant. \\(V\\) at \\(t = 0^-\\) is \\(V_0\\).\nWhich of the following is an equivalent representation of the above case?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(C\\frac{dV}{dt} = -m(t)\\), with \\(V(t = 0^-) = V_0 + q/C\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(C\\frac{dV}{dt} = -m(t)\\), with \\(V(t = 0^-) = V_0 + q/C + m(t = 0^-)\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(C\\frac{dV}{dt} = -m(t)\\), with \\(V(t = 0^-) = V_0 - q/C + m(t = 0^-)\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(C\\frac{dV}{dt} = -m(t)\\), with \\(V(t = 0^-) = q/C\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 24,
+          "question_id": "GATE_EC_2026_Q24",
+          "question_type": "MCQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The electric field of a monochromatic plane wave travelling in a lossless isotropic and homogenous medium is given by \\(\\vec{E}(z, t) = E_0[\\hat{x}\\cos(\\omega t - kz) + \\hat{y}\\sin(\\omega t - kz)]\\) in a right-handed orthogonal co-ordinate system. Which of the following is the correct polarization of the electromagnetic wave?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "Right-handed circularly polarized",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "Left-handed circularly polarized",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "Linearly polarized",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "Linearly polarized with \\(-45^\\circ\\) angle to \\(\\hat{x}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 25,
+          "question_id": "GATE_EC_2026_Q25",
+          "question_type": "MSQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider a p-n junction diode when it is forward biased with 2 V. Which of the following is/are the correct magnitude(s) of the energy difference between quasi Fermi-levels, \\(E_{fn}\\) in the n-side and \\(E_{fp}\\) in the p-side?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "2 eV",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "1 eV",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "2 V",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "1 V",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 26,
+          "question_id": "GATE_EC_2026_Q26",
+          "question_type": "MSQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the matrix \\(M = \\begin{bmatrix} 2 & 1 & 1 \\\\ 1 & 3 & 0 \\\\ -1 & a & b \\end{bmatrix}\\).\nWhich of the following options is/ are TRUE if \\(\\det(M) \\neq 0\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(a = -\\frac{1}{2}\\) and \\(b = -\\frac{1}{2}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(a = \\frac{1}{2}\\) and \\(b = \\frac{1}{2}\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(a = -3\\) and \\(b = 0\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(a = \\frac{1}{2}\\) and \\(b = -3\\)",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 27,
+          "question_id": "GATE_EC_2026_Q27",
+          "question_type": "MSQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A binary ripple counter is designed to count \\((0)_{10}\\) to \\((64)_{10}\\). Which of the following is/are the number of flip-flops required to design the counter?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "6",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "7",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "4",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "5",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 28,
+          "question_id": "GATE_EC_2026_Q28",
+          "question_type": "MSQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Which option(s) represents/ represent the dielectric loss tangent of a substrate?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "Ratio of the real to imaginary parts of the total displacement current",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\((\\omega\\epsilon'' + \\sigma)/(\\omega\\epsilon')\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "Ratio of the electric susceptibility to permittivity",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "Ratio of the polarization vector \\(\\vec{P}\\) to the displacement vector \\(\\vec{D}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 29,
+          "question_id": "GATE_EC_2026_Q29",
+          "question_type": "MSQ",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Figure shows the output characteristics of two different Bipolar Junction Transistors (BJT), BJT 1 with magnitude of Early voltage \\(|V_{A1}|\\), and BJT 2 with magnitude of Early voltage \\(|V_{A2}|\\). Which of the following options is/are correct regarding the Early voltages?\n[IMAGE_Q_29_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_29_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(|V_{A1}| > |V_{A2}|\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(|V_{A1}|\\) is infinitely large",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(|V_{A1}| < |V_{A2}|\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(|V_{A2}|\\) is finite",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 30,
+          "question_id": "GATE_EC_2026_Q30",
+          "question_type": "NAT",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The output voltage \\(V_o\\) (in Volt) for the network given in the Figure is ________. (rounded off to two decimal places)\n[IMAGE_Q_30_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_30_1"
+          ],
+          "options": [],
+          "nat_answer_range": "0.95 to 1.05",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 31,
+          "question_id": "GATE_EC_2026_Q31",
+          "question_type": "NAT",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the circuit shown in the Figure, where the input \\(v_i(t)\\) is in Volt. The average power (in mW) dissipated in the load resistance of 1 kΩ at the resonant frequency is ________. (rounded off to two decimal places)\n[IMAGE_Q_31_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_31_1"
+          ],
+          "options": [],
+          "nat_answer_range": "71.5 to 72.5",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 32,
+          "question_id": "GATE_EC_2026_Q32",
+          "question_type": "NAT",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A wireless digital transmission scheme is using 16-QAM over an additive white Gaussian noise channel and a maximum-likelihood receiver. Consider the information bit rate from source to be \\(4 \\times 10^6\\) bits per second. The minimum transmission bandwidth (in MHz) of the modulated signal necessary for optimum recovery of information at the receiver is ________. (rounded off to two decimal places)",
+          "has_image": false,
+          "images_required": [],
+          "options": [],
+          "nat_answer_range": "0.95 to 1.05",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 33,
+          "question_id": "GATE_EC_2026_Q33",
+          "question_type": "NAT",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The cutoff frequency (in GHz) for the dominant \\(TE_{10}\\) mode of an air-filled rectangular waveguide of inner dimension 0.28 inch \\(\\times\\) 0.14 inch is ________. (rounded off to two decimal places).",
+          "has_image": false,
+          "images_required": [],
+          "options": [],
+          "nat_answer_range": "20.5 to 21.5",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 34,
+          "question_id": "GATE_EC_2026_Q34",
+          "question_type": "NAT",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "For a lossless passive two-port network, \\(|S_{11}|\\) and \\(|S_{21}|\\) intersect at \\(-3\\) dB. For a lossy passive two-port network, \\(|S_{11}|\\) and \\(|S_{21}|\\) intersect at \\(-4\\) dB. The percentage of power dissipated in the lossy network at the intersection frequency is ________. (rounded off to two decimal places)",
+          "has_image": false,
+          "images_required": [],
+          "options": [],
+          "nat_answer_range": "20 to 21",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 35,
+          "question_id": "GATE_EC_2026_Q35",
+          "question_type": "NAT",
+          "marks": 1,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The negative edge triggered JK flip-flop in the Figure has J and K inputs tied to Logic High and a square wave of 10 cycles/second is applied to its clock (C) input. The frequency of the output Q (in cycles/second) is ________. (rounded off to two decimal places)\n[IMAGE_Q_35_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_35_1"
+          ],
+          "options": [],
+          "nat_answer_range": "4.9 to 5.1",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 36,
+          "question_id": "GATE_EC_2026_Q36",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the two series, \\(S_A\\) and \\(S_B\\), where\n\\[ S_A = \\sum_{n=1}^{\\infty} \\frac{n^2}{2^n} \\]\n\\[ S_B = 1 + \\frac{1}{2} + \\frac{1}{8} + \\frac{1}{16} + \\frac{1}{64} + \\frac{1}{128} + \\frac{1}{512} + \\cdots \\]\nWhich of the following statements is correct for the two given series?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "Both \\(S_A\\) and \\(S_B\\) converge.",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "Neither \\(S_A\\) nor \\(S_B\\) converges.",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(S_A\\) converges but \\(S_B\\) does not converge.",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(S_B\\) converges but \\(S_A\\) does not converge.",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 37,
+          "question_id": "GATE_EC_2026_Q37",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The continuous time signal \\(x(t)\\) is real, periodic with period \\(T\\) and satisfies the Dirichlet conditions.\nThe Fourier series representation of \\(x(t) = \\sum_{-\\infty}^{\\infty} a_n e^{j\\left(\\frac{2\\pi n t}{T}\\right)}\\) and \\(x(t)\\) satisfies the following: \\(x\\left(t - \\frac{T}{2}\\right) = -x(t)\\).\nFor any integer \\(m\\), which of the following options is correct?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(a_{2m} = 0\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(a_{2m} = 1\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(a_{2m} = a_{2m+1}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(a_{2m} = -1\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 38,
+          "question_id": "GATE_EC_2026_Q38",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Let \\(X\\), \\(N\\), \\(Y\\) and \\(Z\\) be random variables. The variables \\(X\\) and \\(N\\) are independent of each other. \\(X\\) is uniformly distributed between \\(-1\\) and 1; \\(N\\) follows Normal distribution with zero mean and unity variance. \\(Y\\) and \\(Z\\) are defined as, \\(Y = X + N\\) and \\(Z = X^2 + N\\).\nWhich of the following pairs represents the values of correlation between \\(X\\) and \\(Y\\) and that between \\(X\\) and \\(Z\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "1/3 and 0",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "1/3 and 1/9",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "1/3 and 1/3",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "1 and 0",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 39,
+          "question_id": "GATE_EC_2026_Q39",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "In the given circuit, \\(L = 1\\) μH and \\(C = 1\\) μF. The phasor diagram for \\(I_C\\) and \\(I_L\\) is also shown. Assume that the phase \\((\\theta_1 + \\theta_2)\\) is \\(90^\\circ\\) at a frequency of 159.15 kHz.\nAmong the following options, what is the nearest integer value of \\(R_C \\times R_L\\)?\n[IMAGE_Q_39_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_39_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "0",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "1",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "2",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "10",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 40,
+          "question_id": "GATE_EC_2026_Q40",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "For the control system shown in the Figure, the transfer function of a plant, \\(G(s) = \\frac{1}{(s+1)(s+2)}\\) is connected in cascade with a compensator \\(C(s) = K(s + \\alpha)\\), where \\(K\\) and \\(\\alpha\\) are positive real valued constants. Which of the following pairs \\((K, \\alpha)\\) represent the correct values for the closed loop system to have poles at \\((-3 \\pm j\\sqrt{5})\\)?\n[IMAGE_Q_40_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_40_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "2, 3",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "3, 4",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "2, 4",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "3, 3",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 41,
+          "question_id": "GATE_EC_2026_Q41",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The state and output equations for a control system are:\n\\[ \\dot{x} = \\begin{bmatrix} -4 & -1.5 \\\\ 4 & 0 \\end{bmatrix} x + \\begin{bmatrix} 2 \\\\ 0 \\end{bmatrix} u \\]\n\\[ y = \\begin{bmatrix} 1.5 & 0.625 \\end{bmatrix} x \\]\nWhich of the following expressions correctly represents the transfer function \\(\\frac{Y(s)}{U(s)}\\) of the system with zero initial conditions?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(\\dfrac{3s}{s^2+4s-6}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(\\dfrac{3s+5}{s^2+4s-6}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\dfrac{3s+5}{s^2+4s+6}\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\dfrac{3s}{s^2+4s+6}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 42,
+          "question_id": "GATE_EC_2026_Q42",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The address of the first location of a 256 kilo byte (KB) memory is \\((2500)_H\\). Choose the correct address of the last location of the memory.",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\((2FFF)_H\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\((124FF)_H\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\((424FF)_H\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\((324FF)_H\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 43,
+          "question_id": "GATE_EC_2026_Q43",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider a real signal \\(x(t), -\\infty < t < \\infty\\), such that\n\\(x(t) = 0\\) for \\(t < 0\\), \\(x(t) = 2\\) for \\(0 \\le t < 1\\) and \\(x(t) = 0\\) for \\(t \\ge 1\\).\nLet \\(E[x(t)] = \\int_{-\\infty}^{\\infty} [x(t)]^2\\,dt\\).\nWhich of the following options correctly represents the ratio, \\(E[x(t)]/E[3\\,x(-3t+5)]\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "3",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "1",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "1/3",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "1/9",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 44,
+          "question_id": "GATE_EC_2026_Q44",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A QPSK modulated signal from an additive white Gaussian noise (AWGN) channel is received with an \\(E_b/N_o = 8.4\\) dB at the input of a coherent QPSK demodulator. A maximum-likelihood reception method is used in the demodulator.\nAssume the complimentary error function\n\\[ erfc(u) \\cong \\left[1/\\left(u\\sqrt{\\pi}\\right)\\right] exp(-u^2). \\]\nWhich is the nearest bit error rate (BER) at the output of the demodulator?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(10^{-3}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(10^{-4}\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(10^{-5}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(10^{-6}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 45,
+          "question_id": "GATE_EC_2026_Q45",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "What is the \\(10'\\)s complement of \\((47)_{10}\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "52",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "53",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "54",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "55",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 46,
+          "question_id": "GATE_EC_2026_Q46",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider a real baseband signal \\(x(t) = e^{-2t}\\), for \\(t\\) (in seconds) \\(\\ge 0\\).\nIf 99% of energy of \\(x(t)\\) lies within \\(B\\) Hz, then which of the following options is TRUE for the value of \\(B\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "B > 1 kHz",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "63/π Hz < B < 64/π Hz",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "126/π Hz < B < 128/π Hz",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "B < 1 Hz",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 47,
+          "question_id": "GATE_EC_2026_Q47",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the discrete time system (S) with input \\(x[n]\\) and output \\(y[n]\\) as shown in the Figure. The two sub-systems represented by their impulse responses \\(h_1[n]\\) and \\(h_2[n]\\) are linear and time invariant.\nWhich of the following statements is necessarily TRUE?\n[IMAGE_Q_47_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_47_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "S is causal.",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "S is linear and time invariant.",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "S is linear and time varying.",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "S is non-linear.",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 48,
+          "question_id": "GATE_EC_2026_Q48",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A Boolean function, \\(f(x,y,z)\\) with \\(x\\) as MSB and \\(z\\) as LSB is realized by 4:1 multiplexer (MUX) with select lines, \\(S_1\\) and \\(S_0\\) (\\(S_1\\) is MSB, \\(S_0\\) is LSB) and inputs, \\(I_0, I_1, I_2, I_3\\) as shown in the Figure. Which of the following options is the correct expression of \\(f(x,y,z)\\)?\n[IMAGE_Q_48_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_48_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(xz + y\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(x\\bar{y} + z\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(xy + \\bar{z}\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\bar{x}y + \\bar{z}\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 49,
+          "question_id": "GATE_EC_2026_Q49",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A shift-left Shift Register (SR) and a D flip-flop are connected to a synchronized clock as shown in the Figure. Assume that the SR and D flip-flops are initially cleared and the XOR gate has no propagation delay. Which of the following options gives the correct binary representation \\((b_7b_6b_5b_4b_3b_2b_1b_0)\\) of the content of the shift register immediately after the 5th clock transition (positive edge)?\n[IMAGE_Q_49_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_49_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "00011111",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "10111111",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "00111111",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "11000011",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 50,
+          "question_id": "GATE_EC_2026_Q50",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A small signal source, \\(V_i(t) = A\\cos(10^5 t) + B\\sin(10^7 t)\\) is applied to a BJT circuit as shown in the Figure.\nAssume zero source resistance, \\(V_{BE} = 0.7\\) V, \\(\\beta_{dc} = 99\\), Early voltage = 100 V and Thermal voltage = 25 mV. Effect of internal parasitic capacitances of the BJT may be neglected.\nWhich expression is the best approximation of the output voltage \\(V_o(t)\\)?\n[IMAGE_Q_50_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_50_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(-9.1[A\\cos(10^5 t) + B\\sin(10^7 t)]\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(9.1[A\\cos(10^5 t) - B\\sin(10^7 t)]\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(-190.4[A\\cos(10^5 t) + B\\sin(10^7 t)]\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(190.4[A\\cos(10^5 t) - B\\sin(10^7 t)]\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 51,
+          "question_id": "GATE_EC_2026_Q51",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the two-port network as shown in the Figure. Which of the following options provides the correct set of values of A, B, C and D parameters?\n[IMAGE_Q_51_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_51_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "A = 1/2, B = \\(3\\times10^3\\) Ω, C = \\(10^{-3}\\) Ω\\(^{-1}\\), D = 1/2",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "A = 2, B = 3 Ω, C = 1 Ω\\(^{-1}\\), D = 2",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "A = 2, B = \\(6\\times10^3\\) Ω, C = \\(2\\times10^{-3}\\) Ω\\(^{-1}\\), D = 2",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "A = 2, B = \\(3\\times10^3\\) Ω, C = \\(10^{-3}\\) Ω\\(^{-1}\\), D = 2",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 52,
+          "question_id": "GATE_EC_2026_Q52",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A complex load (in Ω) is represented as \\(\\Gamma_L = 0.5\\angle 30^\\circ\\) on the Smith chart. A co-axial cable with a characteristic impedance of 50 Ω is connected to the load. The new input impedance of the load now moves to a diametrically opposite point on the same \\(\\Gamma\\) circle on the Smith chart. Which option is the nearest input impedance of the cable connected load (in Ω)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(20.7 - j5.1\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(17.7 - j11.8\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(97.5 - j65.0\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(97.5 + j65.0\\)",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 53,
+          "question_id": "GATE_EC_2026_Q53",
+          "question_type": "MCQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "A circuit using an ideal OP-AMP is shown in the Figure. Which of the following options gives the correct value of the current \\(I_X\\)?\n[IMAGE_Q_53_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_53_1"
+          ],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "2.0 mA",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "1.5 mA",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "3.0 mA",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "0 mA",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 54,
+          "question_id": "GATE_EC_2026_Q54",
+          "question_type": "MSQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider an LED based on a direct bandgap semiconductor material with energy bandgap 1.3 eV. Given: Plank’s constant, \\(h = 6.63 \\times 10^{-34}\\) J s and speed of light in free space is \\(3 \\times 10^8\\) m s\\(^{-1}\\). In which of the following wavelength ranges the LED will NOT emit?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "1410 ± 20 nm",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "1090 ± 20 nm",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "950 ± 20 nm",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "510 ± 20 nm",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 55,
+          "question_id": "GATE_EC_2026_Q55",
+          "question_type": "MSQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Let the relevant bandwidth (\\(B\\)) of a digital communication system be 1 MHz and \\(kT = -174\\) dBm/Hz, where \\(k\\) is Boltzmann’s constant and ‘\\(T\\)’ is equivalent noise temperature of the receiver. The power (\\(S\\)) of signal received through an additive Gaussian channel is \\(-80\\) dBm. Which of the following options is/are TRUE about Shannon capacity (\\(C\\)) of the channel?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "C = B",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "C = 2B",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "C > 3B",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "C < B",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 56,
+          "question_id": "GATE_EC_2026_Q56",
+          "question_type": "MSQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the four-variable Boolean function,\n\\(f(w,x,y,z) = \\sum m(0,2,5,7,8,10,13,14,15)\\) with ‘\\(w\\)’ as MSB and ‘\\(z\\)’ as LSB.\nWhich of the following expressions is/are the valid form(s) of \\(f(w,x,y,z)\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(\\bar{x}\\bar{z} + xz + wxy\\)",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(xz + wxy + w\\bar{x}\\bar{z} + \\bar{w}xy\\bar{z}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(\\bar{x}\\bar{z} + wxy + w\\bar{x}\\bar{z} + \\bar{w}xy\\bar{z}\\)",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(\\bar{x}\\bar{z} + xz + wy\\bar{z}\\)",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 57,
+          "question_id": "GATE_EC_2026_Q57",
+          "question_type": "MSQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider a real, narrowband signal \\(x(t) = A(t)\\cos[2\\pi f_c t + \\theta(t)]\\) where the maximum frequency components of \\(A(t)\\) and \\(\\theta(t)\\) are \\(f_M\\) and \\(f_c\\) (\\(= 1000 f_M\\)), respectively. Which of the following statements is/are correct for \\(-\\infty < t < \\infty\\)?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(x(t)\\) represents a PSK modulated signal for suitable choices of \\(A(t)\\) and \\(\\theta(t)\\).",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(x(t)\\) represents an amplitude modulated signal for suitable choices of \\(A(t)\\) and \\(\\theta(t)\\).",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(x(t)\\) represents a band-limited Gaussian noise process.",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(x(t)\\) never represents a narrowband FM signal.",
+              "is_correct": false,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 58,
+          "question_id": "GATE_EC_2026_Q58",
+          "question_type": "MSQ",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Let \\(x_1(t) = \\cos(2\\pi n t)\\) and \\(x_2(t) = 2\\sin(4\\pi n t)\\) represent two sinusoids for a positive integer \\(n\\) and \\(-\\infty < t < \\infty\\). Which of the following statements about \\(x_1(t)\\) and \\(x_2(t)\\) is/are valid?",
+          "has_image": false,
+          "images_required": [],
+          "options": [
+            {
+              "option_id": "A",
+              "text": "\\(x_1(t)\\) and \\(x_2(t)\\) are orthogonal to each other over \\(0 \\le t < 1/n\\).",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "B",
+              "text": "\\(x_1(t)\\) and \\(x_2(t)\\) are orthonormal to each other over \\(0 \\le t < 1/n\\).",
+              "is_correct": false,
+              "has_image": false
+            },
+            {
+              "option_id": "C",
+              "text": "\\(x_2(t)\\) is a harmonic of \\(x_1(t)\\).",
+              "is_correct": true,
+              "has_image": false
+            },
+            {
+              "option_id": "D",
+              "text": "\\(x_1(t)\\) and \\(x_2(t)\\) are non-orthogonal to each other over \\(0 \\le t < 1/(2n)\\).",
+              "is_correct": true,
+              "has_image": false
+            }
+          ],
+          "nat_answer_range": null,
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 59,
+          "question_id": "GATE_EC_2026_Q59",
+          "question_type": "NAT",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the unity negative feedback control system shown in the Figure.\nThe value of gain \\(K\\) (>0) at which the given system will remain marginally stable is ________.\n(Answer in integer)\n[IMAGE_Q_59_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_59_1"
+          ],
+          "options": [],
+          "nat_answer_range": "1386 to 1386",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 60,
+          "question_id": "GATE_EC_2026_Q60",
+          "question_type": "NAT",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "An \\(n\\)-channel MOSFET is connected as shown in the Figure.\nAssume \\(V_{TH} = 1\\) V, \\(V_{DD} = 5\\) V, and \\(\\mu C_{ox}\\left(\\frac{W}{L}\\right) = 2\\) mA V\\(^{-2}\\) and neglect channel length modulation effects.\nThe gate voltage (\\(V_G\\)) of the \\(n\\)-channel MOSFET (in Volt) is ________.\n(rounded off to two decimal places)\n[IMAGE_Q_60_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_60_1"
+          ],
+          "options": [],
+          "nat_answer_range": "2.5 to 2.6",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 61,
+          "question_id": "GATE_EC_2026_Q61",
+          "question_type": "NAT",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the square region \\(R\\) in the X-Y plane as shown with the dark shading in the Figure. The value of \\(\\iint_R (x^2 + y^2 - 1)\\,dx\\,dy\\) is ________.\n(rounded off to two decimal places)\n[IMAGE_Q_61_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_61_1"
+          ],
+          "options": [],
+          "nat_answer_range": "0.6 to 0.7",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 62,
+          "question_id": "GATE_EC_2026_Q62",
+          "question_type": "NAT",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider an ideal OP-AMP circuit as shown in the Figure.\nThe resistances \\(R_1 = R_2 = R_3 = R_4 = 50\\) kΩ.\nThe magnitude of the closed loop gain is ________.\n(rounded off to two decimal places)\n[IMAGE_Q_62_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_62_1"
+          ],
+          "options": [],
+          "nat_answer_range": "2.9 to 3.1",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 63,
+          "question_id": "GATE_EC_2026_Q63",
+          "question_type": "NAT",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "The average bit error rate at the input of a (7, 4, 1) Hamming decoder is 0.10. The probability that the decoder will fail to decode a received word correctly is ________. (rounded off to two decimal places)",
+          "has_image": false,
+          "images_required": [],
+          "options": [],
+          "nat_answer_range": "0.1 to 0.2",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 64,
+          "question_id": "GATE_EC_2026_Q64",
+          "question_type": "NAT",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider that the concentration of electrons in a semiconductor bar varies linearly from \\(2 \\times 10^{17}\\) cm\\(^{-3}\\) at \\(x = 1\\) m to \\(1 \\times 10^{16}\\) cm\\(^{-3}\\) at \\(x = 4\\) m along the x-direction. Assume that the concentration of electrons is not varying along other directions (that is along y- and z-directions).\n[Given: the mobility of electron is 1400 cm\\(^2\\)V\\(^{-1}\\)s\\(^{-1}\\), thermal voltage is 25 mV and electronic charge is \\(1.6 \\times 10^{-19}\\) Coulomb.]\nThe density of electron diffusion current (in A/mm\\(^2\\)) is ________. (rounded off to two decimal places)",
+          "has_image": false,
+          "images_required": [],
+          "options": [],
+          "nat_answer_range": "-36.5 to -34.5 or 34.5 to 36.5",
+          "marks_to_all": false,
+          "review": "auto"
+        },
+        {
+          "question_no": 65,
+          "question_id": "GATE_EC_2026_Q65",
+          "question_type": "NAT",
+          "marks": 2,
+          "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+          "subject": "",
+          "topic": "",
+          "difficulty": "",
+          "question_text": "Consider the ideal diodes \\(D_1\\) and \\(D_2\\) as shown in the Figure with cut-in voltage \\(V_\\gamma = 0\\) Volt and \\(v_i(t)\\) is in Volt. The maximum voltage (Volt) of the output \\(v_o(t)\\) is ________. (rounded off to two decimal places)\n[IMAGE_Q_65_1]",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_65_1"
+          ],
+          "options": [],
+          "nat_answer_range": "3.7 to 4.3",
+          "marks_to_all": false,
+          "review": "auto"
+        }
+      ]
+    }
+  ]
+}

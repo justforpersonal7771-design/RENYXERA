@@ -1,0 +1,180 @@
+[
+ {
+  "qno": 6,
+  "pages": [
+   6
+  ],
+  "question_text": "Each one of the following clues contains a keyword that is partially filled.\nClue 1: Synonym of recognize (8 letters): _ D _ NT_ FY\nClue 2: A story long enough to fill a book (5 letters): _ _ _ EL\nClue 3: Two of something (6 letters): _ _ _ PLE\nClue 4: A fraction of something, split equally into two parts (4 letters): _ _ _ F\nThe first letter of each of the keywords can be rearranged to form a four-letter word.\nWhich one of the options below is a possible choice for the four-letter word?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "CHIN"
+   },
+   {
+    "option_id": "B",
+    "text": "COIN"
+   },
+   {
+    "option_id": "C",
+    "text": "ITCH"
+   },
+   {
+    "option_id": "D",
+    "text": "NOSE"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   7
+  ],
+  "question_text": "Three children P, Q, R and two grown-ups X, Y play a badminton doubles tournament. X and Y are parents to two of the children playing. The child of X is not the same as the child of Y. Exactly one of the children does not have a parent playing in the tournament.\nThe following rules are followed:\n(i) A parent and his/her child cannot be on the same team.\n(ii) A match can feature at most one parent and his/her child, that is, a maximum of one parent-child pair can play in a match.\nThe following matches were played:\n| | TEAM 1 | TEAM 2 |\n|---|---|---|\n| MATCH 1 | P and X | Q and R |\n| MATCH 2 | P and R | X and Y |\n| MATCH 3 | R and X | Q and Y |\nWhich one of the following options is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P does not have any parent playing"
+   },
+   {
+    "option_id": "B",
+    "text": "Q does not have any parent playing"
+   },
+   {
+    "option_id": "C",
+    "text": "R does not have any parent playing"
+   },
+   {
+    "option_id": "D",
+    "text": "X does not have a child playing"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 8,
+  "pages": [
+   8
+  ],
+  "question_text": "Let \\(P_k\\) represent the perimeter of a square with sides of length \\(k\\). The value of the expression \\(P_1 + P_2 + P_3 + \\cdots + P_{10}\\) is __________",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "55"
+   },
+   {
+    "option_id": "B",
+    "text": "110"
+   },
+   {
+    "option_id": "C",
+    "text": "220"
+   },
+   {
+    "option_id": "D",
+    "text": "440"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 9,
+  "pages": [
+   9
+  ],
+  "question_text": "The city of Atlantis was crafted by the God of the seas, Poseidon. It was made of alternating concentric circular rings of land (shaded) and water (not shaded) as represented in the figure (not to scale). The radius of Inner Island was 2.5 stades (a unit of length used in ancient Greece). The water surrounding Inner Island was one stade wide (length AB). This was surrounded by two pairs of alternating rings of land and water. The first pair of land and water was two stades wide each (lengths BC and CD), and the outer pair is three stades wide each (lengths DE and EF).\nThe ratio of the surface area of the land to that of the water in the city of Atlantis is _________ (round off to two decimal places).\n[IMAGE_Q_09_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.45"
+   },
+   {
+    "option_id": "B",
+    "text": "0.60"
+   },
+   {
+    "option_id": "C",
+    "text": "0.75"
+   },
+   {
+    "option_id": "D",
+    "text": "0.90"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_09_1",
+    "page": 9,
+    "regions": [
+     "p009_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 10,
+  "pages": [
+   10
+  ],
+  "question_text": "If\n[IMAGE_Q_10_1]\nThen\n[IMAGE_Q_10_2]\n[IMAGE_Q_10_3]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P"
+   },
+   {
+    "option_id": "B",
+    "text": "Q"
+   },
+   {
+    "option_id": "C",
+    "text": "R"
+   },
+   {
+    "option_id": "D",
+    "text": "S"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_10_1",
+    "page": 10,
+    "regions": [
+     "p010_r1"
+    ],
+    "grow": false,
+    "pad": [
+     -4,
+     4,
+     4,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_10_2",
+    "page": 10,
+    "regions": [
+     "p010_r2"
+    ],
+    "grow": false,
+    "pad": [
+     -4,
+     4,
+     30,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_10_3",
+    "page": 10,
+    "regions": [
+     "p010_r3",
+     "p010_r4",
+     "p010_r5",
+     "p010_r6"
+    ]
+   }
+  ]
+ }
+]

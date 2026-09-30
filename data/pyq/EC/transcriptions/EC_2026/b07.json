@@ -1,0 +1,236 @@
+[
+ {
+  "qno": 54,
+  "pages": [
+   51
+  ],
+  "question_text": "Consider an LED based on a direct bandgap semiconductor material with energy bandgap 1.3 eV. Given: Plank’s constant, \\(h = 6.63 \\times 10^{-34}\\) J s and speed of light in free space is \\(3 \\times 10^8\\) m s\\(^{-1}\\). In which of the following wavelength ranges the LED will NOT emit?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1410 ± 20 nm"
+   },
+   {
+    "option_id": "B",
+    "text": "1090 ± 20 nm"
+   },
+   {
+    "option_id": "C",
+    "text": "950 ± 20 nm"
+   },
+   {
+    "option_id": "D",
+    "text": "510 ± 20 nm"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   52
+  ],
+  "question_text": "Let the relevant bandwidth (\\(B\\)) of a digital communication system be 1 MHz and \\(kT = -174\\) dBm/Hz, where \\(k\\) is Boltzmann’s constant and ‘\\(T\\)’ is equivalent noise temperature of the receiver. The power (\\(S\\)) of signal received through an additive Gaussian channel is \\(-80\\) dBm. Which of the following options is/are TRUE about Shannon capacity (\\(C\\)) of the channel?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "C = B"
+   },
+   {
+    "option_id": "B",
+    "text": "C = 2B"
+   },
+   {
+    "option_id": "C",
+    "text": "C > 3B"
+   },
+   {
+    "option_id": "D",
+    "text": "C < B"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   53
+  ],
+  "question_text": "Consider the four-variable Boolean function,\n\\(f(w,x,y,z) = \\sum m(0,2,5,7,8,10,13,14,15)\\) with ‘\\(w\\)’ as MSB and ‘\\(z\\)’ as LSB.\nWhich of the following expressions is/are the valid form(s) of \\(f(w,x,y,z)\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\bar{x}\\bar{z} + xz + wxy\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(xz + wxy + w\\bar{x}\\bar{z} + \\bar{w}xy\\bar{z}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\bar{x}\\bar{z} + wxy + w\\bar{x}\\bar{z} + \\bar{w}xy\\bar{z}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\bar{x}\\bar{z} + xz + wy\\bar{z}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   54
+  ],
+  "question_text": "Consider a real, narrowband signal \\(x(t) = A(t)\\cos[2\\pi f_c t + \\theta(t)]\\) where the maximum frequency components of \\(A(t)\\) and \\(\\theta(t)\\) are \\(f_M\\) and \\(f_c\\) (\\(= 1000 f_M\\)), respectively. Which of the following statements is/are correct for \\(-\\infty < t < \\infty\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x(t)\\) represents a PSK modulated signal for suitable choices of \\(A(t)\\) and \\(\\theta(t)\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x(t)\\) represents an amplitude modulated signal for suitable choices of \\(A(t)\\) and \\(\\theta(t)\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(x(t)\\) represents a band-limited Gaussian noise process."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(x(t)\\) never represents a narrowband FM signal."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 58,
+  "pages": [
+   55
+  ],
+  "question_text": "Let \\(x_1(t) = \\cos(2\\pi n t)\\) and \\(x_2(t) = 2\\sin(4\\pi n t)\\) represent two sinusoids for a positive integer \\(n\\) and \\(-\\infty < t < \\infty\\). Which of the following statements about \\(x_1(t)\\) and \\(x_2(t)\\) is/are valid?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x_1(t)\\) and \\(x_2(t)\\) are orthogonal to each other over \\(0 \\le t < 1/n\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x_1(t)\\) and \\(x_2(t)\\) are orthonormal to each other over \\(0 \\le t < 1/n\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(x_2(t)\\) is a harmonic of \\(x_1(t)\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(x_1(t)\\) and \\(x_2(t)\\) are non-orthogonal to each other over \\(0 \\le t < 1/(2n)\\)."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 59,
+  "pages": [
+   56
+  ],
+  "question_text": "Consider the unity negative feedback control system shown in the Figure.\nThe value of gain \\(K\\) (>0) at which the given system will remain marginally stable is ________.\n(Answer in integer)\n[IMAGE_Q_59_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_59_1",
+    "page": 56,
+    "regions": [
+     "p056_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 60,
+  "pages": [
+   56
+  ],
+  "question_text": "An \\(n\\)-channel MOSFET is connected as shown in the Figure.\nAssume \\(V_{TH} = 1\\) V, \\(V_{DD} = 5\\) V, and \\(\\mu C_{ox}\\left(\\frac{W}{L}\\right) = 2\\) mA V\\(^{-2}\\) and neglect channel length modulation effects.\nThe gate voltage (\\(V_G\\)) of the \\(n\\)-channel MOSFET (in Volt) is ________.\n(rounded off to two decimal places)\n[IMAGE_Q_60_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_60_1",
+    "page": 56,
+    "regions": [
+     "p056_r2"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 61,
+  "pages": [
+   57
+  ],
+  "question_text": "Consider the square region \\(R\\) in the X-Y plane as shown with the dark shading in the Figure. The value of \\(\\iint_R (x^2 + y^2 - 1)\\,dx\\,dy\\) is ________.\n(rounded off to two decimal places)\n[IMAGE_Q_61_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_61_1",
+    "page": 57,
+    "regions": [
+     "p057_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 62,
+  "pages": [
+   57
+  ],
+  "question_text": "Consider an ideal OP-AMP circuit as shown in the Figure.\nThe resistances \\(R_1 = R_2 = R_3 = R_4 = 50\\) kΩ.\nThe magnitude of the closed loop gain is ________.\n(rounded off to two decimal places)\n[IMAGE_Q_62_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_62_1",
+    "page": 57,
+    "regions": [
+     "p057_r2"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 63,
+  "pages": [
+   58
+  ],
+  "question_text": "The average bit error rate at the input of a (7, 4, 1) Hamming decoder is 0.10. The probability that the decoder will fail to decode a received word correctly is ________. (rounded off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   58
+  ],
+  "question_text": "Consider that the concentration of electrons in a semiconductor bar varies linearly from \\(2 \\times 10^{17}\\) cm\\(^{-3}\\) at \\(x = 1\\) m to \\(1 \\times 10^{16}\\) cm\\(^{-3}\\) at \\(x = 4\\) m along the x-direction. Assume that the concentration of electrons is not varying along other directions (that is along y- and z-directions).\n[Given: the mobility of electron is 1400 cm\\(^2\\)V\\(^{-1}\\)s\\(^{-1}\\), thermal voltage is 25 mV and electronic charge is \\(1.6 \\times 10^{-19}\\) Coulomb.]\nThe density of electron diffusion current (in A/mm\\(^2\\)) is ________. (rounded off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   58
+  ],
+  "question_text": "Consider the ideal diodes \\(D_1\\) and \\(D_2\\) as shown in the Figure with cut-in voltage \\(V_\\gamma = 0\\) Volt and \\(v_i(t)\\) is in Volt. The maximum voltage (Volt) of the output \\(v_o(t)\\) is ________. (rounded off to two decimal places)\n[IMAGE_Q_65_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_65_1",
+    "page": 58,
+    "regions": [
+     "p058_r1"
+    ]
+   }
+  ]
+ }
+]

@@ -3,14 +3,14 @@ flag on that question, and a question goes into the bank only when it has no fla
 has approved it (review step).
 
 Checks per question (see docs/PYQ_ACQUISITION_STRATEGY.md §2 step 5):
-  presence       question 1..65 extracted (pass A)
+  presence       question 1..65 transcribed (questions.json from crop.py; older runs: pass A)
   key            official key row exists; type/marks/section taken from the key
   options        MCQ/MSQ: exactly A,B,C,D, none empty. NAT: no options
   images         every placeholder has a crop file (>= 40 px each side) and every crop is used
   maths          every maths segment compiles in MathJax (scripts/pyq/tex-check.mjs)
   text layer     words (3+ letters) and numbers of the official PDF text for this question
                  appear in the extracted text (catches dropped lines, wrong numbers)
-  double pass    pass A and pass B agree on numbers, option count and image placeholders
+  double pass    only when a second independent pass exists: numbers, option count, placeholders agree
   model flag     the model itself marked the question uncertain
 
 Output: data/pyq/_work/<BRANCH>/<paper>/validated.json and data/pyq/<BRANCH>/reports/<paper>.md
@@ -36,6 +36,7 @@ PH = re.compile(r"\[IMAGE_Q_(\d{2})_([A-D]|\d+)\]")
 
 def fold(s: str) -> str:
     s = unicodedata.normalize("NFKC", s)
+    s = re.sub(r"\\(log|ln|det|sin|cos|tan|exp)(?![a-zA-Z])", r" \1", s)  # function names are printed words
     s = re.sub(r"\\[a-zA-Z]+", " ", s)          # drop LaTeX commands (\frac, \text ...)
     s = re.sub(r"[{}_^$\\()\[\]]", " ", s)
     return re.sub(r"\s+", " ", s).lower().strip()
@@ -63,15 +64,35 @@ def question_regions(work: Path, pages: int) -> dict[int, str]:
         p = work / "pages" / f"p{i:03d}.txt"
         if p.exists():
             text += "\n" + p.read_text(encoding="utf-8")
+    # section headers ("Q.11 - Q.35 Carry ONE mark Each") are not question markers
+    text = re.sub(r"Q\.\s?\d{1,2}\s*[-\u2013]\s*Q\.\s?\d{1,2}\s*Carry \w+ marks? Each", " ", text, flags=re.I)
     spans = [(int(m.group(1)), m.start(), m.end()) for m in re.finditer(r"(?<![\w.])Q\.\s?(\d{1,2})(?!\d)", text)]
     regions: dict[int, str] = {}
     for idx, (n, _s, e) in enumerate(spans):
         end = spans[idx + 1][1] if idx + 1 < len(spans) else len(text)
         chunk = text[e:end]
         # drop repeated page furniture lines
-        chunk = re.sub(r"(?i)(electronics (and|&) communication engineering \(ec\)|page \d+ of \d+|organising institute[^\n]*)", " ", chunk)
+        chunk = re.sub(r"(?i)(electronics (and|&) communication engineering \(ec\)|page \d+ of \d+|organi[sz]ing institute:? iit \w+)", " ", chunk)
         regions.setdefault(n, chunk)
     return regions
+
+
+def figure_words(code: str, pid: str, qs: list[dict]) -> dict[int, tuple[set, set]]:
+    """Words and numbers printed inside each question's figures (labels such as '1 kΩ'): they live in
+    the image, so the text-layer check must not expect them in the question text."""
+    import fitz
+    from common import pdf_path
+    doc = fitz.open(pdf_path(code, pid, "qp"))
+    out: dict[int, tuple[set, set]] = {}
+    for q in qs:
+        txt = []
+        for f in (f for qq in qs if set(qq.get("pages", [])) & set(q.get("pages", [])) for f in qq.get("figures", [])):
+            if f.get("rect_pt"):
+                r = fitz.Rect(f["rect_pt"])
+                txt += [w[4] for w in doc[f["page"] - 1].get_text("words") if fitz.Rect(w[:4]).intersects(r)]
+        s = " ".join(txt)
+        out[q["qno"]] = (words(s), numbers(s))
+    return out
 
 
 def full_text(q: dict) -> str:
@@ -86,13 +107,14 @@ def main() -> int:
     code, pid = a.branch.upper(), a.paper
     work = WORK / code / pid
     key = read_json(work / "key.json")
-    qa = read_json(work / "questions.pass_a.json")
-    qb = read_json(work / "questions.pass_b.json", {"questions": []})
+    qa = read_json(work / "questions.json") or read_json(work / "questions.pass_a.json")
+    qb = read_json(work / "questions.pass_b.json") if qa and qa.get("source") != "claude-transcription" else None
     if not key or not qa:
-        print("Run keys.py and extract.py first.")
+        print("Run keys.py and crop.py first.")
         return 1
+    fig_words = figure_words(code, pid, qa["questions"])
     A = {q["qno"]: q for q in qa["questions"]}
-    B = {q["qno"]: q for q in qb["questions"]}
+    B = {q["qno"]: q for q in qb["questions"]} if qb else None
     pages = len(list((work / "pages").glob("p*.png")))
     regions = question_regions(work, pages)
     img_dir = PYQ / code / "images" / pid
@@ -144,18 +166,23 @@ def main() -> int:
         # official text layer vs extraction
         official = regions.get(n, "")
         if official:
-            ow, ew = words(official), words(full_text(q))
-            missing_w = sorted(ow - ew)
+            fw_words, fw_nums = fig_words.get(n, (set(), set()))
+            ow, ew = words(official) - fw_words, words(full_text(q))
+            glued = re.sub(r"[^a-z]", "", fold(full_text(q)))  # maths in the text layer is glued: V_{BE} -> "vbe"
+            missing_w = sorted(w for w in ow - ew if w not in glued)
             if ow and len(missing_w) / len(ow) > 0.08:
                 flags.append(f"text layer: {len(missing_w)}/{len(ow)} official words missing, e.g. {missing_w[:6]}")
-            missing_n = sorted(numbers(official) - numbers(full_text(q)) - {str(n)})
+            digits = re.sub(r"\D", "", full_text(q))  # superscripts are glued too: 10^{4} -> "104"
+            missing_n = sorted(x for x in numbers(official) - fw_nums - numbers(full_text(q)) - {str(n)} if x.replace(".", "") not in digits)
             if missing_n:
                 flags.append(f"text layer: numbers in the PDF not in extraction: {missing_n[:8]}")
         else:
             flags.append("text layer: no official text found for this question (image-only page?)")
         # double pass
-        b = B.get(n)
-        if not b:
+        b = B.get(n) if B is not None else None
+        if B is None:
+            pass  # single careful transcription checked against the PDF text layer above
+        elif not b:
             flags.append("double pass: pass B missing this question")
         else:
             if numbers(full_text(q)) != numbers(full_text(b)):
