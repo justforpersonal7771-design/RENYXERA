@@ -449,7 +449,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | 🟡 *(EC 2021–2026 fetched, keys parsed; EE/ME/CE/DA next. Rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`)* |
 | EC 2026 transcribed by Claude, 27 figures eye-checked, 65/65 validated → `data/pyq/EC/gate_ec_pyqs.json` | ✅ *(untagged; in-app render check pending — Q7 table)* |
-| EC 2025 transcription in progress | 🟡 *(Q1–18 done and validated, b01–b03; resume at Q19 = page 18)* |
+| EC 2025 transcribed by Claude, 42 figures, 65/65 validated, 130/130 EC render-clean | ✅ *(bank now in the exact CS `Aggregated_Output.json` format; provenance in `gate_ec_pyqs.meta.json`)* |
+| EC 2024 transcription | ⬜ *(next)* |
 | Official syllabus → topic taxonomy per branch | ⬜ |
 | Calibration data per branch (4J) | ⬜ |
 | Rights check recorded in the source ledger before ingestion | ⬜ |
