@@ -7,7 +7,8 @@ import { chromium, devices } from "playwright";
 const BASE = process.env.BASE ?? "http://localhost:3000";
 const PAGES = ["/", "/about", "/gate-cse", "/pyq", "/pyq/gate-cs-2024-fn", "/pyq/gate-cs-2024-fn/q30", "/topics/algorithms", "/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/gate-cs-syllabus", "/tools/gate-study-plan", "/articles/most-repeated-gate-cs-topics", "/articles/gate-cs-preparation-150-days", "/mocks", "/setup", "/mistakes", "/bookmarks", "/revision", "/analytics", "/pro", "/privacy", "/terms"];
 let fails = 0;
-const ok = (c, m) => { console.log(`${c ? "PASS" : "FAIL"}  ${m}`); if (!c) fails++; };
+const failed = [];
+const ok = (c, m) => { console.log(`${c ? "PASS" : "FAIL"}  ${m}`); if (!c) { fails++; failed.push(m); } };
 
 const b = await chromium.launch();
 try {
@@ -65,5 +66,5 @@ try {
 } finally {
   await b.close();
 }
-console.log(fails ? `\n${fails} check(s) failed` : "\nAll smoke checks passed");
+console.log(fails ? `\n${fails} check(s) failed:\n${failed.map((m) => `  - ${m}`).join("\n")}` : "\nAll smoke checks passed");
 process.exit(fails ? 1 : 0);
