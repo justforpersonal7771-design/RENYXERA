@@ -27,7 +27,7 @@ python scripts/pyq/regions.py EC --paper EC_2026    # figure regions (after rend
 # Claude transcribes -> data/pyq/EC/transcriptions/EC_2026/b*.json  (see docs/PYQ_EXTRACTION_HANDBOOK.md)
 python scripts/pyq/crop.py EC --paper EC_2026       # merge + crop figures
 python scripts/pyq/validate.py EC --paper EC_2026   # every check → reports/EC_2026.md
-python scripts/pyq/tag.py EC --paper EC_2026        # subject/topic from the official syllabus
+# tagging: Claude, from the official syllabus (tag.py still calls Gemini - to be replaced)
 python scripts/pyq/review.py EC --paper EC_2026     # review flagged questions at http://localhost:8765
 python scripts/pyq/build.py EC                      # → data/pyq/EC/gate_ec_pyqs.json
 ```
