@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # public/data/ is generated (git-ignored), same as before every build.
+      - run: node scripts/copy-static-data.mjs
       - run: node scripts/telegram-daily.mjs
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
