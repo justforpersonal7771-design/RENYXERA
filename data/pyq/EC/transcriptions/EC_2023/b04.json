@@ -1,0 +1,13 @@
+[
+ {"qno": 32, "pages": [22], "question_text": "In the circuit shown below, the current \\(i\\) flowing through \\(200\\,\\Omega\\) resistor is _______ mA (rounded off to two decimal places).\n[IMAGE_Q_32_1]",
+  "options": [], "figures": [{"placeholder": "IMAGE_Q_32_1", "page": 22, "rect": [196, 124, 440, 295], "grow": false, "pad": [0, 0, 0, 0]}]},
+ {"qno": 33, "pages": [22], "question_text": "For the two port network shown below, the [Y]-parameters is given as\n$$ [Y] = \\frac{1}{100}\\begin{bmatrix} 2 & -1 \\\\ -1 & 4/3 \\end{bmatrix} S $$\nThe value of load impedance \\(Z_L\\), in \\(\\Omega\\), for maximum power transfer will be _______ (rounded off to the nearest integer).\n[IMAGE_Q_33_1]",
+  "options": [], "figures": [{"placeholder": "IMAGE_Q_33_1", "page": 22, "rect": [215, 484, 450, 581], "grow": false, "pad": [0, 0, 0, 0]}]},
+ {"qno": 34, "pages": [23], "question_text": "For the circuit shown below, the propagation delay of each NAND gate is 1 ns. The critical path delay, in ns, is __________ (rounded off to the nearest integer).\n[IMAGE_Q_34_1]",
+  "options": [], "figures": [{"placeholder": "IMAGE_Q_34_1", "page": 23, "rect": [269, 139, 366, 229], "grow": false, "pad": [0, 0, 0, 0]}]},
+ {"qno": 35, "pages": [23], "question_text": "In the circuit shown below, switch S was closed for a long time. If the switch is opened at \\(t = 0\\), the maximum magnitude of the voltage \\(V_R\\), in volts, is _________ (rounded off to the nearest integer).\n[IMAGE_Q_35_1]",
+  "options": [], "figures": [{"placeholder": "IMAGE_Q_35_1", "page": 23, "rect": [234, 345, 406, 436], "grow": false, "pad": [0, 0, 0, 0]}]},
+ {"qno": 36, "pages": [24], "question_text": "A random variable X, distributed normally as \\(N(0, 1)\\), undergoes the transformation \\(Y = h(X)\\), given in the figure. The form of the probability density function of \\(Y\\) is\n(In the options given below, \\(a, b, c\\) are non-zero constants and \\(g(y)\\) is piece-wise continuous function)\n[IMAGE_Q_36_1]",
+  "options": [{"option_id": "A", "text": "\\(a\\delta(y - 1) + b\\delta(y + 1) + g(y)\\)"}, {"option_id": "B", "text": "\\(a\\delta(y + 1) + b\\delta(y) + c\\delta(y - 1) + g(y)\\)"}, {"option_id": "C", "text": "\\(a\\delta(y + 2) + b\\delta(y) + c\\delta(y - 2) + g(y)\\)"}, {"option_id": "D", "text": "\\(a\\delta(y + 2) + b\\delta(y - 2) + g(y)\\)"}],
+  "figures": [{"placeholder": "IMAGE_Q_36_1", "page": 24, "rect": [223, 202, 410, 326], "grow": false, "pad": [0, 0, 0, 0]}]}
+]

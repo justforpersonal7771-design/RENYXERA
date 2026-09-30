@@ -1,0 +1,16 @@
+[
+ {"qno": 37, "pages": [25], "question_text": "The value of the line integral \\(\\int_P^Q (z^2\\, dx + 3y^2\\, dy + 2xz\\, dz)\\) along the straight line joining the points \\(P\\,(1, 1, 2)\\) and \\(Q\\,(2, 3, 1)\\) is",
+  "options": [{"option_id": "A", "text": "20"}, {"option_id": "B", "text": "24"}, {"option_id": "C", "text": "29"}, {"option_id": "D", "text": "-5"}], "figures": []},
+ {"qno": 38, "pages": [25], "question_text": "Let \\(\\boldsymbol{x}\\) be an \\(n \\times 1\\) real column vector with length \\(l = \\sqrt{\\boldsymbol{x}^T\\boldsymbol{x}}\\). The trace of the matrix \\(P = \\boldsymbol{x}\\boldsymbol{x}^T\\) is",
+  "options": [{"option_id": "A", "text": "\\(l^2\\)"}, {"option_id": "B", "text": "\\(\\frac{l^2}{4}\\)"}, {"option_id": "C", "text": "\\(l\\)"}, {"option_id": "D", "text": "\\(\\frac{l^2}{2}\\)"}], "figures": []},
+ {"qno": 39, "pages": [26], "question_text": "The \\(\\frac{V_{OUT}}{V_{IN}}\\) of the circuit shown below is\n[IMAGE_Q_39_1]",
+  "options": [{"option_id": "A", "text": "\\(-\\frac{R_4}{R_3}\\)"}, {"option_id": "B", "text": "\\(\\frac{R_4}{R_3}\\)"}, {"option_id": "C", "text": "\\(1 + \\frac{R_4}{R_3}\\)"}, {"option_id": "D", "text": "\\(1 - \\frac{R_4}{R_3}\\)"}],
+  "figures": [{"placeholder": "IMAGE_Q_39_1", "page": 26, "rect": [204, 133, 427, 347], "grow": false, "pad": [0, 0, 0, 0]}]},
+ {"qno": 40, "pages": [27], "question_text": "In the circuit shown below, \\(D_1\\) and \\(D_2\\) are silicon diodes with cut-in voltage of 0.7 V. \\(V_{IN}\\) and \\(V_{OUT}\\) are input and output voltages in volts. The transfer characteristic is\n[IMAGE_Q_40_1]",
+  "options": [{"option_id": "A", "text": "[IMAGE_Q_40_A]"}, {"option_id": "B", "text": "[IMAGE_Q_40_B]"}, {"option_id": "C", "text": "[IMAGE_Q_40_C]"}, {"option_id": "D", "text": "[IMAGE_Q_40_D]"}],
+  "figures": [{"placeholder": "IMAGE_Q_40_1", "page": 27, "rect": [267, 139, 368, 236], "grow": false, "pad": [0, 0, 0, 0]},
+              {"placeholder": "IMAGE_Q_40_A", "page": 27, "rect": [118, 263, 225, 351], "grow": false, "pad": [0, 0, 0, 0]},
+              {"placeholder": "IMAGE_Q_40_B", "page": 27, "rect": [118, 383, 225, 469], "grow": false, "pad": [0, 0, 0, 0]},
+              {"placeholder": "IMAGE_Q_40_C", "page": 27, "rect": [118, 503, 225, 593], "grow": false, "pad": [0, 0, 0, 0]},
+              {"placeholder": "IMAGE_Q_40_D", "page": 27, "rect": [118, 627, 225, 720], "grow": false, "pad": [0, 0, 0, 0]}]}
+]
