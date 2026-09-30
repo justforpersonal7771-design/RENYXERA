@@ -68,6 +68,15 @@ def main() -> int:
             page = doc[fig["page"] - 1]
             if "rect" in fig:
                 rect = fitz.Rect(fig["rect"])
+            elif "table" in fig:  # [y_top, y_bottom] in points: the ruled table's lines inside that band
+                y0, y1 = fig["table"]
+                rect = fitz.Rect()
+                for d in page.get_drawings():
+                    r = fitz.Rect(d["rect"])
+                    if r.y0 >= y0 and r.y1 <= y1 and r.x0 > page.rect.width * 0.2:
+                        rect |= r
+                if rect.is_empty:
+                    raise SystemExit(f"Q{q['qno']}: no table lines between y={y0} and y={y1}")
             else:
                 rect = fitz.Rect()
                 for rid in fig["regions"]:
@@ -78,7 +87,7 @@ def main() -> int:
                     rect = grow_labels(page, rect)
             l, t, r, b = fig.get("pad", [4, 4, 4, 4])
             rect = fitz.Rect(rect.x0 - l, rect.y0 - t, rect.x1 + r, rect.y1 + b) & page.rect
-            name = f"Q{q['qno']:02d}_{m.group(2)}.png"
+            name = f"{q['qno']:02d}_{m.group(2)}.png"  # app convention: 07_1.png, 07_A.png
             page.get_pixmap(dpi=DPI, clip=rect).save(str(img_dir / name))
             fig["file"] = name
             fig["rect_pt"] = [round(v, 1) for v in rect]

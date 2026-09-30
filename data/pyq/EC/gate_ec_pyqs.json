@@ -1,7 +1,7 @@
 {
   "branch": "EC",
   "branch_name": "Electronics and Communication Engineering",
-  "generated_at": "2026-09-30T16:43:06+00:00",
+  "generated_at": "2026-09-30T16:51:50+00:00",
   "papers": [
     {
       "exam_metadata": {
@@ -280,9 +280,11 @@
           "subject": "",
           "topic": "",
           "difficulty": "",
-          "question_text": "Three children P, Q, R and two grown-ups X, Y play a badminton doubles tournament. X and Y are parents to two of the children playing. The child of X is not the same as the child of Y. Exactly one of the children does not have a parent playing in the tournament.\nThe following rules are followed:\n(i) A parent and his/her child cannot be on the same team.\n(ii) A match can feature at most one parent and his/her child, that is, a maximum of one parent-child pair can play in a match.\nThe following matches were played:\n| | TEAM 1 | TEAM 2 |\n|---|---|---|\n| MATCH 1 | P and X | Q and R |\n| MATCH 2 | P and R | X and Y |\n| MATCH 3 | R and X | Q and Y |\nWhich one of the following options is correct?",
-          "has_image": false,
-          "images_required": [],
+          "question_text": "Three children P, Q, R and two grown-ups X, Y play a badminton doubles tournament. X and Y are parents to two of the children playing. The child of X is not the same as the child of Y. Exactly one of the children does not have a parent playing in the tournament.\nThe following rules are followed:\n(i) A parent and his/her child cannot be on the same team.\n(ii) A match can feature at most one parent and his/her child, that is, a maximum of one parent-child pair can play in a match.\nThe following matches were played:\n[IMAGE_Q_07_1]\nWhich one of the following options is correct?",
+          "has_image": true,
+          "images_required": [
+            "IMAGE_Q_07_1"
+          ],
           "options": [
             {
               "option_id": "A",

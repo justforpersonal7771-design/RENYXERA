@@ -51,7 +51,7 @@ This is the single source of instructions for extracting official GATE previous-
 | `data/pyq/_work/<BR>/<pid>/key.json` | Parsed official key | ignored |
 | `data/pyq/_work/<BR>/<pid>/questions.json`, `validated.json` | Merged transcription and validation results | ignored |
 | **`data/pyq/<BR>/transcriptions/<pid>/b01.json …`** | **Claude's transcription (source of truth)** | **tracked** |
-| `data/pyq/<BR>/images/<pid>/Q07_1.png` | Figure crops | tracked |
+| `data/pyq/<BR>/images/<pid>/07_1.png` | Figure crops (app naming) | tracked |
 | `data/pyq/<BR>/reports/<pid>.md` | Validation report | tracked |
 | `data/pyq/<BR>/reviews/<pid>.json` | User's review decisions | tracked |
 | `data/pyq/<BR>/gate_<br>_pyqs.json` | The branch bank | tracked |
@@ -106,12 +106,13 @@ Work **5–10 questions per batch file** (`b01.json`, `b02.json` …). For each 
 - Inline maths goes in `\( … \)`. A displayed equation on its own line goes in `\[ … \]`. Never use `$`.
 - In JSON every backslash is doubled: `\\(`, `\\frac`.
 - Paragraph breaks are `\n`.
-- **Tables are Markdown tables** inside `question_text`:
-  ```
-  | | TEAM 1 | TEAM 2 |
-  |---|---|---|
-  | MATCH 1 | P and X | Q and R |
-  ```
+- **Tables are cropped as images, never typed** (user decision, 30 Sep 2026). Put a placeholder `[IMAGE_Q_07_1]` where the table sits and use the table shortcut:
+  `{"placeholder": "IMAGE_Q_07_1", "page": 7, "table": [y_top, y_bottom], "grow": false, "pad": [3, 3, 3, 3]}`.
+  `crop.py` unions the table's ruled lines inside that vertical band (in PDF points). To get the band, print word positions:
+  `page.get_text("words")` for the first and last cell text, then add a margin of about 15 pt. Eye-check the crop.
+- **The same applies to anything hard to type faithfully** (user decision): complex layouts, multi-line aligned derivations, truth tables or K-maps, timing diagrams, and graphics inside options. Crop them, don't rebuild them.
+  - Ordinary maths (fractions, matrices, vectors, integrals) stays LaTeX: it is searchable, and it is verified by MathJax plus the text-layer check.
+  - When a crop replaces text, the words and numbers inside it are excluded from the text-layer check automatically (figure-label exclusion). So the visual check of that crop is the accuracy check: look at it carefully.
 - NAT blanks are written `________`, and "(rounded off to two decimal places)" is kept verbatim.
 - Units stay as plain text outside maths: `\(V_{CC} = 12\) V`, `60 μA`, `1 kΩ`. Degrees: `\(90^\circ\)`.
 - Useful notation:
@@ -167,11 +168,13 @@ When a flag is checker noise (a new pattern of glued maths, say), fix the checke
 
 Compiling in MathJax is necessary but not sufficient. Before shipping a branch:
 
+0. **Automated first:** `npx tsx scripts/pyq/render-check.ts EC` runs every question through the app's own parser (`normalizeQuestion` → AST). Every placeholder must become an image node and every maths segment a LaTeX node, with no raw tokens left in text; NAT ranges must parse. It must print `65/65 render-clean` for each paper (EC_2026 does).
+   - Crops are named in the app's convention: `07_1.png`, `07_A.png`.
+   - **App integration gap:** `ImageResolver` and the image manifest are keyed by `year-shift` only (`public/images/2026-FN/`). Before EC goes live, the app needs branch-scoped keys such as `EC/2026`, or EC images will collide with CS. That is a Release 8 app change; do not rename the data for it.
 1. Load the built questions into the app's question renderer (the practice page, or a local test page) and eyeball a sample. Always include every question with a table, a matrix, `\dfrac`, an overbar or an image. Use desktop and mobile, each in light and dark mode (the standing test matrix).
 2. Known risks to verify:
-   - Markdown tables in `question_text`. There is an **open bug in the app's markdown-table parser**, noted in memory (`project_ui_ux_pass_state`); EC_2026 Q7 has a table.
+   - Markdown tables: none should exist any more, because tables are images. (The app's markdown-table parser has an open bug, noted in memory as `project_ui_ux_pass_state`.)
    - `________` blanks being read as a markdown rule or emphasis.
-   - `|` inside maths in a table row (absolute value `|V_{A1}|`) splitting table cells.
    - `_` and `*` in text outside maths.
 3. Images: `images_required` must resolve to files served by the app.
 4. Record anything broken in `checklist.md` and fix the renderer, not the data, unless the data is wrong.
@@ -199,7 +202,7 @@ Superseded: `extract.py` passes A and B (Gemini) and the files `_work/EC/EC_2026
 
 ## 10. Next steps, in order
 
-1. The §7 rendering check on EC_2026 in the app, including the Q7 table.
+1. The §7 rendering check on EC_2026 in the app (Q7's table is now an image).
 2. Re-read the EC 2021 answer key from the scan yourself and replace the Gemini-read key. Confirm with the user.
 3. Tagging (§8) for EC_2026.
 4. EC 2025 → 2021, one paper at a time: render, regions, transcribe, crop, eye-check, validate, build, commit.
