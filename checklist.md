@@ -417,7 +417,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | "Your GATE year" recap (Wrapped-style, shareable) after the exam | 🟠 **Later — after GATE 2027 (Feb 2027)** |
 | "Study with me" focus-room link | 🟠 **Later — Release 9 (community)** |
 | UTM capture + weekly metrics dashboard (acquisition by channel, D7/D30 retention, first-test-within-24h activation) | 🟨 *(first-touch UTM/referrer saved to the profile; `weekly_growth_metrics()` SQL (sign-ups by channel, 24 h activation, D7/D30) ✅; visual dashboard 🟠 Release 10 admin console)* |
-| Telegram channel + daily-question bot | 🟨 *(daily 08:00 IST GitHub Action + script ✅; needs the owner's bot token + channel secrets)* |
+| Telegram channel + daily-question bot | ✅ *(channel + bot live 30 Sep; daily 08:00 IST GitHub Action posts the question of the day)* |
 | Welcome email series | 🟡 **Backlog** — needs custom SMTP (Brevo steps in FREE_ALTERNATIVES_GUIDE) |
 | College ambassador programme | 🟠 **Later — after 1,000 users** *(referral links are the mechanism)* |
 | Study-group invitations; testimonials for credits | 🟠 **Later — Release 9 (community)** |
