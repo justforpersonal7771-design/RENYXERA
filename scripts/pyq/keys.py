@@ -107,7 +107,7 @@ def rows_from_vision(doc: fitz.Document) -> list[dict]:
     for page in doc:
         png = page.get_pixmap(dpi=200).tobytes("png")
         res = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-3.5-flash",
             contents=[types.Part.from_bytes(data=png, mime_type="image/png"),
                       "Transcribe every row of this GATE answer-key table exactly as printed. Do not solve or "
                       "correct anything. key = the Key/Range cell verbatim (e.g. 'B', 'A;C', '2.5 to 2.7', 'MTA')."],

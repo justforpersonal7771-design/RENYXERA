@@ -4,7 +4,7 @@ Per page (resumable; finished pages are never redone):
   1. render the page at 300 dpi and read the PDF text layer (ground truth for words/numbers)
      plus the "Q.<n>" markers on that page (ground truth for which questions it holds);
   2. vision extraction with a strict JSON schema, TWICE with different models:
-       pass A = gemini-2.5-flash, pass B = gemini-3.5-flash-lite
+       pass A = gemini-3.5-flash, pass B = gemini-3.5-flash-lite
      (page image + that page's text layer; verbatim copy, LaTeX for maths, never solve);
   3. figures: the model returns a box for every [IMAGE_Q_xx_n] / option image; the box is
      snapped to the real drawing/image edges on the page and cropped from the 300-dpi render.
@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import PYQ, RAW, WORK, load_env, pdf_path, read_json, write_json  # noqa: E402
 
 DPI = 300
-MODELS = {"a": "gemini-2.5-flash", "b": "gemini-3.5-flash-lite"}
+MODELS = {"a": "gemini-3.5-flash", "b": "gemini-3.5-flash-lite"}  # 2.5-flash free tier = 20 req/day (30 Sep 2026)
 PAUSE = {"a": 7.0, "b": 4.5}  # stay under free-tier requests-per-minute
 
 SCHEMA = {

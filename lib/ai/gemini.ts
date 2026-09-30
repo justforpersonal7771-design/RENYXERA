@@ -23,7 +23,7 @@ export function getGoogleGenAIClient(): GoogleGenAI {
   return aiInstance;
 }
 
-export const GEMINI_MODEL = "gemini-2.5-flash";
+export const GEMINI_MODEL = "gemini-3.5-flash"; // 2.5-flash free tier dropped to 20 requests/day (checked 30 Sep 2026)
 export const GEMINI_LITE_MODEL = "gemini-3.5-flash-lite"; // 2.5-flash-lite is closed to new API users (checked 30 Sep 2026)
 
 /**
