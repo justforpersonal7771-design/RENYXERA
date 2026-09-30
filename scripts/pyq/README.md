@@ -23,7 +23,8 @@ Question ids: `GATE_EC_2026_Q7`, `GATE_CE_2026_S1_Q7`.
 ```bash
 python scripts/pyq/fetch.py EC                      # official QPs + keys → official_pdfs/EC
 python scripts/pyq/keys.py EC                       # exact answer keys (all papers)
-python scripts/pyq/regions.py EC --paper EC_2026    # figure regions (after rendering pages)
+python scripts/pyq/render.py EC --paper EC_2026     # 300-dpi page PNGs + text layers
+python scripts/pyq/regions.py EC --paper EC_2026    # figure regions
 # Claude transcribes -> data/pyq/EC/transcriptions/EC_2026/b*.json  (see docs/PYQ_EXTRACTION_HANDBOOK.md)
 python scripts/pyq/crop.py EC --paper EC_2026       # merge + crop figures
 python scripts/pyq/validate.py EC --paper EC_2026   # every check → reports/EC_2026.md
