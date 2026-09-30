@@ -20,7 +20,7 @@ function walk(nodes: any[], f: (n: any) => void) {
 }
 
 let bad = 0, total = 0;
-for (const paper of bank.papers) {
+for (const paper of (Array.isArray(bank) ? bank : bank.papers)) {
   const [year, shift = "FN"] = String(paper.exam_metadata["year-shift"]).split("-");
   for (const raw of paper.questions) {
     total++;

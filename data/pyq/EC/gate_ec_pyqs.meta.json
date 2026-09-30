@@ -1,0 +1,355 @@
+{
+  "branch": "EC",
+  "branch_name": "Electronics and Communication Engineering",
+  "generated_at": "2026-09-30T17:19:11+00:00",
+  "papers": {
+    "2026": {
+      "paper": "EC_2026",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2026/QPs/EC.pdf",
+      "question_paper_sha256": "ba2ca8d147480695485cea9411020d5f7b6ff5766529bd8f95b6a0b850ca0773",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2026/Keys/EC_Keys.pdf",
+      "answer_key_sha256": "adffe8de60903b5a74c2c8e7344ee541eea855edacc313f81cb8bf02a4486bd4"
+    },
+    "2025": {
+      "paper": "EC_2025",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2025/EC2025.pdf",
+      "question_paper_sha256": "fe940ace98711b8cb21505fa265044b23b382e649f427d2aea933696a67932ef",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2025_Key/EC_Keys.pdf",
+      "answer_key_sha256": "f6e9dab5223ac39b40ea829a0b036dafe4d73d91b2020de8f617e3104203ef04"
+    }
+  },
+  "questions": {
+    "EC_2026:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2026:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:8": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "EC_2025:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EC_2025:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    }
+  }
+}

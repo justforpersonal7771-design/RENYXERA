@@ -6,8 +6,10 @@ A question is included only when it passed every validation check, or a reviewer
 it in data/pyq/<BRANCH>/reviews/<paper>.json (see review step). Anything else is listed as
 pending in the build summary — never shipped half-checked.
 
-Format = the CS bank's format (exam_metadata + questions[], same field names) plus
-provenance: the official source files with SHA-256, and per-question review status.
+Format = EXACTLY the CS bank's format (data/Aggregated_Output.json): a top-level list of
+{"exam_metadata": {"year-shift": ...}, "questions": [...]}, same question fields, nothing extra.
+Marks-to-all questions mark every option is_correct (as the CS bank does).
+Provenance (source URLs + SHA-256, MTA and review status) goes to gate_<branch>_pyqs.meta.json.
 
     python scripts/pyq/build.py EC
 """
@@ -38,6 +40,7 @@ def main() -> int:
     code = a.branch.upper()
     manifest = read_json(RAW / code / "manifest.json", {}) or {}
     papers, pending = [], []
+    meta_p, meta_q = {}, {}
     total = 0
     for pid in sorted(manifest, key=lambda p: (manifest[p]["year"], manifest[p]["session"] or 0), reverse=True):
         m = manifest[pid]
@@ -60,6 +63,8 @@ def main() -> int:
             k = v["key"]
             ans = k["answer"]
             correct = set(ans.get("options", []))
+            if ans.get("mta"):
+                correct = {o["option_id"] for o in q.get("options", [])}
             imgs = sorted({f["placeholder"].strip("[]") for f in q.get("figures", [])})
             t = tags.get(str(n), {})
             qs.append({
@@ -77,20 +82,18 @@ def main() -> int:
                 "options": [{"option_id": o["option_id"], "text": o["text"], "is_correct": o["option_id"] in correct,
                              "has_image": "[IMAGE_Q_" in o["text"]} for o in q.get("options", [])],
                 "nat_answer_range": nat_range(ans),
-                "marks_to_all": bool(ans.get("mta")),
-                "review": "approved" if v["flags"] else "auto",
             })
+            meta_q[f"{pid}:{n}"] = {"marks_to_all": bool(ans.get("mta")), "review": "approved" if v["flags"] else "auto"}
             total += 1
-        papers.append({
-            "exam_metadata": {"year-shift": f"{m['year']}" + (f"-{SHIFT[m['session']]}" if m["session"] else ""),
-                              "branch": code, "paper": pid,
-                              "source": {"question_paper": m["qp_url"], "question_paper_sha256": m["qp_sha256"],
-                                         "answer_key": m["key_url"], "answer_key_sha256": m["key_sha256"]}},
-            "questions": sorted(qs, key=lambda x: x["question_no"]),
-        })
+        ys = f"{m['year']}" + (f"-{SHIFT[m['session']]}" if m["session"] else "")
+        papers.append({"exam_metadata": {"year-shift": ys}, "questions": sorted(qs, key=lambda x: x["question_no"])})
+        meta_p[ys] = {"paper": pid, "question_paper": m["qp_url"], "question_paper_sha256": m["qp_sha256"],
+                      "answer_key": m["key_url"], "answer_key_sha256": m["key_sha256"]}
     out = PYQ / code / f"gate_{code.lower()}_pyqs.json"
-    write_json(out, {"branch": code, "branch_name": BRANCH_NAMES[code], "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                     "papers": papers})
+    write_json(out, papers)
+    write_json(PYQ / code / f"gate_{code.lower()}_pyqs.meta.json",
+               {"branch": code, "branch_name": BRANCH_NAMES[code], "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "papers": meta_p, "questions": meta_q})
     print(f"{out}: {total} questions in {len(papers)} papers; {len(pending)} pending review")
     for p in pending[:40]:
         print("  pending", p)
