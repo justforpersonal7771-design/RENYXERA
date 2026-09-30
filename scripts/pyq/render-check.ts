@@ -10,7 +10,7 @@ import { normalizeQuestion } from "@/lib/repository/transformers/question-normal
 const code = (process.argv[2] || "EC").toUpperCase();
 const bank = JSON.parse(readFileSync(`data/pyq/${code}/gate_${code.toLowerCase()}_pyqs.json`, "utf8"));
 const PH = /\[IMAGE_Q_\d{2}_(?:[A-D]|\d+)\]/g;
-const MATH = /\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/g;
+const MATH = /\$\$[\s\S]*?\$\$|\\\([\s\S]*?\\\)|\\\[[\s\S]*?\\\]/g;
 
 function walk(nodes: any[], f: (n: any) => void) {
   for (const n of nodes || []) {
