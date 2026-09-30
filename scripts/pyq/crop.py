@@ -73,7 +73,8 @@ def main() -> int:
                 rect = fitz.Rect()
                 for d in page.get_drawings():
                     r = fitz.Rect(d["rect"])
-                    if r.y0 >= y0 and r.y1 <= y1 and r.x0 > page.rect.width * 0.2:
+                    # skip the question box's own grid: its rules start at the Q.No column or reach the right border
+                    if r.y0 >= y0 and r.y1 <= y1 and r.x0 > page.rect.width * 0.2 and r.x1 < page.rect.width * 0.85:
                         rect |= r
                 if rect.is_empty:
                     raise SystemExit(f"Q{q['qno']}: no table lines between y={y0} and y={y1}")

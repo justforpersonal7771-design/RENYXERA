@@ -1,0 +1,170 @@
+[
+ {
+  "qno": 6,
+  "pages": [
+   5
+  ],
+  "question_text": "Identify the option that has the most appropriate sequence such that a coherent paragraph is formed:\nP. Over time, such adaptations lead to significant evolutionary changes with the potential to shape the development of new species.\nQ. In natural world, organisms constantly adapt to their environments in response to challenges and opportunities.\nR. This process of adaptation is driven by the principle of natural selection, where favorable traits increase an organism’s chances of survival and reproduction.\nS. As environments change, organisms that can adapt their behavior, structure and physiology to such changes are more likely to survive.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P → Q → R → S"
+   },
+   {
+    "option_id": "B",
+    "text": "Q → S → R → P"
+   },
+   {
+    "option_id": "C",
+    "text": "R → S → Q → P"
+   },
+   {
+    "option_id": "D",
+    "text": "S → P → R → Q"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   6
+  ],
+  "question_text": "A stick of length one meter is broken at two locations at distances of \\(b_1\\) and \\(b_2\\) from the origin (0), as shown in the figure. Note that \\(0 < b_1 < b_2 < 1\\). Which one of the following is NOT a necessary condition for forming a triangle using the three pieces?\nNote: All lengths are in meter. The figure shown is representative.\n[IMAGE_Q_07_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(b_1 < 0.5\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(b_2 > 0.5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(b_2 < b_1 + 0.5\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(b_1 + b_2 < 1\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_07_1",
+    "page": 6,
+    "regions": [
+     "p006_r1"
+    ],
+    "pad": [
+     -3,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 8,
+  "pages": [
+   7
+  ],
+  "question_text": "Eight students (P, Q, R, S, T, U, V, and W) are playing musical chairs. The figure indicates their order of position at the start of the game. They play the game by moving forward in a circle in the clockwise direction.\nAfter the 1st round, 4th student behind P leaves the game.\nAfter 2nd round, 5th student behind Q leaves the game.\nAfter 3rd round, 3rd student behind V leaves the game.\nAfter 4th round, 4th student behind U leaves the game.\nWho all are left in the game after the 4th round?\nNote: The figure shown is representative.\n[IMAGE_Q_08_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P; T; Q; S"
+   },
+   {
+    "option_id": "B",
+    "text": "V; P; T; Q"
+   },
+   {
+    "option_id": "C",
+    "text": "W; R; Q; V"
+   },
+   {
+    "option_id": "D",
+    "text": "Q; T; V; W"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 7,
+    "regions": [
+     "p007_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   8
+  ],
+  "question_text": "The table lists the top 5 nations according to the number of gold medals won in a tournament; also included are the number of silver and the bronze medals won by them. Based only on the data provided in the table, which one of the following statements is INCORRECT?\n[IMAGE_Q_09_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "France will occupy the third place if the list were made on the basis of the total number of medals won."
+   },
+   {
+    "option_id": "B",
+    "text": "The order of the top two nations will not change even if the list is made on the basis of the total number of medals won."
+   },
+   {
+    "option_id": "C",
+    "text": "USA and Canada together have less than 50% of the medals awarded to the nations in the above table."
+   },
+   {
+    "option_id": "D",
+    "text": "Canada has won twice as many total medals as Japan."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_09_1",
+    "page": 8,
+    "table": [
+     145,
+     330
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 10,
+  "pages": [
+   9
+  ],
+  "question_text": "An organization allows its employees to work independently on consultancy projects but charges an overhead on the consulting fee. The overhead is 20% of the consulting fee, if the fee is up to ₹ 5,00,000. For higher fees, the overhead is ₹ 1,00,000 plus 10% of the amount by which the fee exceeds ₹ 5,00,000.\nThe government charges a Goods and Services Tax of 18% on the total amount (the consulting fee plus the overhead). An employee of the organization charges this entire amount, i.e., the consulting fee, overhead, and tax, to the client.\nIf the client cannot pay more than ₹ 10,00,000, what is the maximum consulting fee that the employee can charge?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "₹ 7,01,438"
+   },
+   {
+    "option_id": "B",
+    "text": "₹ 7,24,961"
+   },
+   {
+    "option_id": "C",
+    "text": "₹ 7,51,232"
+   },
+   {
+    "option_id": "D",
+    "text": "₹ 7,75,784"
+   }
+  ],
+  "figures": []
+ }
+]

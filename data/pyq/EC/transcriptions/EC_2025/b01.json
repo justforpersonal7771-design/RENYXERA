@@ -1,0 +1,17 @@
+[
+ {"qno": 1, "pages": [1], "question_text": "Here are two analogous groups, Group-I and Group-II, that list words in their decreasing order of intensity. Identify the missing word in Group-II.\nGroup-I: Abuse → Insult → Ridicule\nGroup-II: ________ → Praise → Appreciate",
+  "options": [{"option_id": "A", "text": "Extol"}, {"option_id": "B", "text": "Prize"}, {"option_id": "C", "text": "Appropriate"}, {"option_id": "D", "text": "Espouse"}], "figures": []},
+ {"qno": 2, "pages": [1], "question_text": "Had I learnt acting as a child, I ________ a famous film star.\nSelect the most appropriate option to complete the above sentence.",
+  "options": [{"option_id": "A", "text": "will be"}, {"option_id": "B", "text": "can be"}, {"option_id": "C", "text": "am going to be"}, {"option_id": "D", "text": "could have been"}], "figures": []},
+ {"qno": 3, "pages": [2], "question_text": "The 12 musical notes are given as \\(C, C^{\\#}, D, D^{\\#}, E, F, F^{\\#}, G, G^{\\#}, A, A^{\\#},\\) and \\(B\\). Frequency of each note is \\(\\sqrt[12]{2}\\) times the frequency of the previous note. If the frequency of the note C is 130.8 Hz, then the ratio of frequencies of notes \\(F^{\\#}\\) and \\(C\\) is:",
+  "options": [{"option_id": "A", "text": "\\(\\sqrt[6]{2}\\)"}, {"option_id": "B", "text": "\\(\\sqrt{2}\\)"}, {"option_id": "C", "text": "\\(\\sqrt[4]{2}\\)"}, {"option_id": "D", "text": "\\(2\\)"}], "figures": []},
+ {"qno": 4, "pages": [3], "question_text": "The following figures show three curves generated using an iterative algorithm. The total length of the curve generated after ‘Iteration \\(n\\)’ is:\nNote: The figures shown are representative.\n[IMAGE_Q_04_1]",
+  "options": [{"option_id": "A", "text": "\\(\\left(\\frac{5}{3}\\right)^{\\frac{n}{2}}\\)"}, {"option_id": "B", "text": "\\(\\left(\\frac{5}{3}\\right)^{n}\\)"}, {"option_id": "C", "text": "\\(\\left(\\frac{5}{3}\\right)^{2n}\\)"}, {"option_id": "D", "text": "\\(\\left(\\frac{5}{3}\\right)^{n(2n-1)}\\)"}],
+  "figures": [{"placeholder": "IMAGE_Q_04_1", "page": 3, "rect": [117, 153, 518, 416], "grow": false, "pad": [0, 0, 0, 0]}]},
+ {"qno": 5, "pages": [4], "question_text": "Which one of the following plots represents \\(f(x) = -\\frac{|x|}{x}\\), where \\(x\\) is a non-zero real number?\nNote: The figures shown are representative.",
+  "options": [{"option_id": "A", "text": "[IMAGE_Q_05_A]"}, {"option_id": "B", "text": "[IMAGE_Q_05_B]"}, {"option_id": "C", "text": "[IMAGE_Q_05_C]"}, {"option_id": "D", "text": "[IMAGE_Q_05_D]"}],
+  "figures": [{"placeholder": "IMAGE_Q_05_A", "page": 4, "rect": [118, 167, 262, 288], "grow": false, "pad": [0, 0, 0, 0]},
+              {"placeholder": "IMAGE_Q_05_B", "page": 4, "rect": [118, 293, 262, 419], "grow": false, "pad": [0, 0, 0, 0]},
+              {"placeholder": "IMAGE_Q_05_C", "page": 4, "rect": [118, 424, 262, 540], "grow": false, "pad": [0, 0, 0, 0]},
+              {"placeholder": "IMAGE_Q_05_D", "page": 4, "rect": [118, 545, 262, 659], "grow": false, "pad": [0, 0, 0, 0]}]}
+]
