@@ -389,10 +389,10 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 |---|---|
 | Razorpay account created, KYC approved, activated | ✅ *(ahead of schedule)* |
 | Confirm the actually-applied UPI MDR on the account | 🟠 **Later — at payments go-live** *(check Razorpay dashboard → Settings → Pricing)* |
-| UPI-first checkout wired into the app | 🟨 *(Razorpay Checkout (UPI first by default) + `/api/billing/order`; fake-door "interest" mode live — no money moves until `NEXT_PUBLIC_BILLING_MODE` = test/live and prices are set)* |
+| UPI-first checkout wired into the app | ✅ *(Razorpay test mode live 30 Sep; Plus purchase + prorated Pro upgrade verified end-to-end by the owner — order → payment → signed webhook → tier; confirm step with Turnstile)* |
 | Webhook handling (signature-verified, idempotent; sole source of truth) | ✅ *(`/api/billing/webhook`: HMAC-SHA256 over raw body, event-id idempotency table, `apply_paid_order()` flips an order once; the only path that grants Pro)* |
 | Razorpay Subscriptions for the ₹99 add-on; invoicing/GST; dunning | 🟠 **Later — after go-live** *(plans are fixed-period, non-renewing for now; GST invoicing with a registered entity)* |
-| No-refund policy shown at checkout (acknowledgement), on Razorpay, and on the policy page — with the enforceable renewal wording | 🟨 *(checkout acknowledgement checkbox required server-side (`acceptedTerms`) + /refunds page ✅; Razorpay dashboard wording at go-live)* |
+| No-refund policy shown at checkout (acknowledgement), on Razorpay, and on the policy page — with the enforceable renewal wording | ✅ *(confirm window: price, credit, no auto-renew, no-refund lines + required agreement; server enforces `acceptedTerms`; /refunds + Terms §7)* |
 
 ### 7C · P1 · Subscription & Purchase Abuse Prevention
 | Task | Status |

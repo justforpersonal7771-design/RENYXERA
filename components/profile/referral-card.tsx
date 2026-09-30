@@ -41,13 +41,13 @@ export function ReferralCard() {
     <section className="rounded-3xl border border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 via-[var(--surface)] to-teal-500/5 p-5 sm:p-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex items-start gap-3">
-          <span className="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white grid place-items-center shadow-md"><Gift className="w-5 h-5" /></span>
+          <span className="shrink-0 w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white grid place-items-center shadow-md"><Gift className="w-5 h-5" /></span>
           <div>
             <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Invite friends, earn Plus + AI credits</h2>
             <p className="text-sm text-[var(--text-secondary)]">When a friend joins with your link and practises on 2 different days, you get 1 day of Plus + 15 AI requests and they get 10. Up to 3 a month.</p>
           </div>
         </div>
-        <p className="text-right text-sm"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{stats?.credited ?? 0}<span className="text-sm text-[var(--text-muted)]"> / 10</span></span><span className="text-[11px] text-[var(--text-muted)]">{stats?.joined ?? 0} joined</span></p>
+        <div className="shrink-0 flex gap-2"><p className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 px-4 py-2 text-center min-w-[92px]"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{stats?.credited ?? 0}<span className="text-sm text-[var(--text-muted)]">/10</span></span><span className="text-xs font-semibold text-[var(--text-secondary)]">rewarded</span></p><p className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 px-4 py-2 text-center min-w-[92px]"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{stats?.joined ?? 0}</span><span className="text-xs font-semibold text-[var(--text-secondary)]">joined</span></p></div>
       </div>
       <div className="mt-4 flex flex-col sm:flex-row gap-2">
         <code className="flex-1 min-w-0 truncate rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 text-sm text-[var(--text-primary)]">{link || "Creating your link…"}</code>

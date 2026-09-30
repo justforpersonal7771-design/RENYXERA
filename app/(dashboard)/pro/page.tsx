@@ -3,10 +3,10 @@
 import { useRef, useState } from "react";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, Crown, Loader2, Sparkles } from "lucide-react";
 import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, type PlanId } from "@/lib/billing/plans";
-import { useEntitlements } from "@/lib/billing/use-entitlements";
+import { useEntitlements, waitForTier } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { ReferralCard } from "@/components/profile/referral-card";
@@ -44,6 +44,7 @@ export default function PlansPage() {
   const [captcha, setCaptcha] = useState<string | null>(null);
   const turnstileRef = useRef<TurnstileHandle>(null);
   const [interested, setInterested] = useState<PlanId[]>([]);
+  const [confirm, setConfirm] = useState<PlanId | null>(null);
   const payments = BILLING_MODE !== "interest";
 
   const upgrade = async (planId: PlanId) => {
@@ -58,17 +59,24 @@ export default function PlansPage() {
         return;
       }
       if (!signedIn) { useToastStore.getState().show("Sign in first to upgrade.", "info"); return; }
-      if (!agreed) { useToastStore.getState().show("Please accept the no-refund terms first.", "info"); return; }
-      if (!captcha) { useToastStore.getState().show("Please wait a moment for the security check below to finish.", "info"); return; }
+      // First click opens the confirm window; its Pay button calls this again.
+      if (confirm !== planId) { setAgreed(false); setCaptcha(null); setConfirm(planId); return; }
+      if (!agreed || !captcha) return;
       const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, acceptedTerms: true, turnstileToken: captcha ?? undefined }) });
       turnstileRef.current?.reset(); setCaptcha(null);
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
       if (!(await loadCheckout()) || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your connection.");
+      setConfirm(null);
       new window.Razorpay({
         key: j.keyId, order_id: j.orderId, amount: j.amount, currency: j.currency, name: "RENYXERA", description: j.planName,
         prefill: { email: j.email ?? undefined }, theme: { color: plan.tier === "pro" ? "#d97706" : "#64748b" },
-        handler: () => { useToastStore.getState().show("Payment received — your plan unlocks in a few seconds.", "success"); setTimeout(ent.refresh, 4000); },
+        handler: async () => {
+          const toast = useToastStore.getState();
+          toast.show("Payment received — activating your plan…", "success");
+          const ok = await waitForTier(ent.accountKey, plan.tier);
+          toast.show(ok ? `You're on ${plan.tier === "pro" ? "Pro" : "Plus"} — enjoy!` : "Payment received. Your plan will appear within a minute — no need to pay again.", ok ? "success" : "info");
+        },
       }).open();
     } catch (e) {
       useToastStore.getState().show((e as Error).message, "error");
@@ -103,6 +111,7 @@ export default function PlansPage() {
           const plan = PLANS.find((p) => p.tier === tier && p.id.endsWith(period))!;
           const look = LOOK[tier];
           const have = TIER_RANK[ent.tier] >= TIER_RANK[tier];
+          const current = ent.tier === tier;
           const done = interested.includes(plan.id);
           const cmp = comparePrice(plan);
           const upgrading = tier === "pro" && ent.tier === "plus" && plan.pricePaise != null;
@@ -133,7 +142,7 @@ export default function PlansPage() {
               <button type="button" onClick={() => upgrade(plan.id)} disabled={!!busy || done || have}
                 className={`mt-auto w-full h-11 rounded-xl font-bold shadow-lg disabled:opacity-60 inline-flex items-center justify-center gap-2 cursor-pointer ${look.btn}`}>
                 {busy === plan.id && <Loader2 className="w-4 h-4 animate-spin" />}
-                {have ? "Your plan" : done ? "We'll notify you" : upgrading && payments ? `Upgrade to Pro · ${formatPrice(plan.pricePaise! - credit)}` : payments && plan.pricePaise != null ? `Get ${tier === "pro" ? "Pro" : "Plus"}` : `Notify me when ${tier === "pro" ? "Pro" : "Plus"} opens`}
+                {current ? "Your plan" : have ? "Included in Pro" : done ? "We'll notify you" : upgrading && payments ? `Upgrade to Pro · ${formatPrice(plan.pricePaise! - credit)}` : payments && plan.pricePaise != null ? `Get ${tier === "pro" ? "Pro" : "Plus"}` : `Notify me when ${tier === "pro" ? "Pro" : "Plus"} opens`}
               </button>
             </motion.section>
           );
@@ -145,13 +154,50 @@ export default function PlansPage() {
         <ReferralCard />
       </div>
 
-      {payments && signedIn && <div className="flex justify-center"><TurnstileWidget ref={turnstileRef} onToken={setCaptcha} /></div>}
-      {payments && (
-        <label className="mx-auto max-w-2xl flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--text-secondary)] cursor-pointer">
-          <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
-          <span>I understand my plan is delivered instantly and <b className="text-[var(--text-primary)]">purchases are final — no refunds</b>, as set out in the <Link href="/refunds" className="font-semibold text-violet-600 dark:text-violet-400 underline">Refund &amp; Cancellation Policy</Link> and <Link href="/terms" className="font-semibold text-violet-600 dark:text-violet-400 underline">Terms</Link>. A plan does not renew automatically.</span>
-        </label>
-      )}
+      {/* Confirm step: plan, price, the three terms that matter, agreement + security check, Pay. */}
+      <AnimatePresence>
+        {confirm && (() => {
+          const cp = PLANS.find((x) => x.id === confirm)!;
+          const up = cp.tier === "pro" && ent.tier === "plus";
+          const credit = up ? Math.min(ent.upgradeCreditPaise, (cp.pricePaise ?? 0) - 100) : 0;
+          const total = (cp.pricePaise ?? 0) - credit;
+          const gold = cp.tier === "pro";
+          return (
+            <motion.div className="fixed inset-0 z-[90] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <button type="button" aria-label="Close" className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirm(null)} />
+              <motion.div role="dialog" aria-modal="true" aria-label={`Confirm ${cp.name}`} initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }}
+                className={`relative w-full max-w-md rounded-3xl border bg-[var(--surface)] p-6 shadow-2xl ${gold ? "border-amber-400/60" : "border-slate-400/60"}`}>
+                <div className="flex items-center justify-between">
+                  <p className={`text-xs font-black uppercase tracking-wider ${LOOK[cp.tier].kicker}`}>{gold ? "Pro · Gold" : "Plus · Silver"}</p>
+                  <ProCrown metal={LOOK[cp.tier].metal} className="is-inline" />
+                </div>
+                <h2 className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">Confirm {cp.name}</h2>
+                <dl className="mt-4 space-y-2 rounded-2xl bg-[var(--surface-secondary)]/60 p-4 text-sm">
+                  <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">{cp.name}</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(cp.pricePaise)}</dd></div>
+                  {credit > 0 && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Credit for unused Plus days</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">−{formatPrice(credit)}</dd></div>}
+                  <div className="flex justify-between border-t border-[var(--border-subtle)] pt-2"><dt className="font-bold text-[var(--text-primary)]">You pay today</dt><dd className="font-num text-lg font-extrabold text-[var(--text-primary)]">{formatPrice(total)}</dd></div>
+                  <p className="text-[11px] text-[var(--text-muted)]">{cp.periodDays} days of {gold ? "Pro" : "Plus"} from today · taxes included</p>
+                </dl>
+                <ul className="mt-4 space-y-1.5 text-xs text-[var(--text-secondary)]">
+                  <li>• Starts instantly once the payment is confirmed.</li>
+                  <li>• Does <b className="text-[var(--text-primary)]">not</b> renew automatically — no surprise charges.</li>
+                  <li>• Purchases are final: <b className="text-[var(--text-primary)]">no refunds</b> (a failed or duplicate charge is always fixed).</li>
+                </ul>
+                <label className="mt-4 flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">
+                  <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
+                  <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Refund &amp; Cancellation Policy</Link>.</span>
+                </label>
+                <div className="mt-3 flex justify-center min-h-[24px]"><TurnstileWidget ref={turnstileRef} onToken={setCaptcha} /></div>
+                <button type="button" onClick={() => upgrade(cp.id)} disabled={!agreed || !captcha || !!busy}
+                  className={`mt-4 w-full h-12 rounded-xl font-bold shadow-lg disabled:opacity-50 inline-flex items-center justify-center gap-2 cursor-pointer ${LOOK[cp.tier].btn}`}>
+                  {busy === cp.id && <Loader2 className="w-4 h-4 animate-spin" />} Pay {formatPrice(total)} securely
+                </button>
+                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!agreed ? "Tick the box to continue." : !captcha ? "Running a quick security check…" : "You'll finish on Razorpay — UPI, cards or net banking."}</p>
+              </motion.div>
+            </motion.div>
+          );
+        })()}
+      </AnimatePresence>
       <p className="text-center text-[11px] text-[var(--text-muted)]">{payments ? "Payments are processed securely by Razorpay (UPI, cards, net banking). Your plan unlocks once Razorpay confirms the payment." : "Plans aren't on sale yet. Tapping a button only tells us you're interested — no payment is taken."}</p>
     </div>
   );

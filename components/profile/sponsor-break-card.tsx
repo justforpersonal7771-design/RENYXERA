@@ -72,14 +72,14 @@ export function SponsorBreakCard() {
     <section className="rounded-3xl border border-violet-500/30 bg-gradient-to-br from-violet-500/10 via-[var(--surface)] to-sky-500/5 p-5 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-start gap-3">
-          <span className="w-11 h-11 rounded-2xl bg-gradient-to-br from-violet-500 to-sky-500 text-white grid place-items-center shadow-md"><Sparkles className="w-5 h-5" /></span>
+          <span className="shrink-0 w-11 h-11 rounded-2xl bg-gradient-to-br from-violet-500 to-sky-500 text-white grid place-items-center shadow-md"><Sparkles className="w-5 h-5" /></span>
           <div>
             <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Out of AI requests? Take a sponsor break</h2>
             <p className="text-sm text-[var(--text-secondary)]">A {SECONDS}-second sponsor message adds bonus AI requests for today: +5, then +3, +2, +1 — up to 4 a day.</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <p className="text-right"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{bonus ?? "—"}</span><span className="text-[11px] text-[var(--text-muted)]">bonus requests</span></p>
+          <p className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 px-4 py-2 text-center min-w-[92px]"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{bonus ?? "—"}</span><span className="text-xs font-semibold text-[var(--text-secondary)]">bonus AI left</span></p>
           <button type="button" onClick={start} disabled={!next} className="h-11 px-5 rounded-xl bg-gradient-to-r from-violet-600 to-sky-600 text-white font-bold shadow-md shadow-violet-500/25 disabled:opacity-50 inline-flex items-center gap-2 cursor-pointer">
             <PlayCircle className="w-4 h-4" /> {next ? `Watch · +${next} AI` : "Done for today"}
           </button>
