@@ -52,9 +52,9 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
         <div className="flex flex-wrap gap-1.5 py-2">
           {heatmapDays.map((day, idx) => {
             let color = "bg-[var(--surface-elevated)]";
-            if (day.attempted > 0 && day.attempted < 10) color = "bg-emerald-500/20 text-emerald-300";
-            else if (day.attempted >= 10 && day.attempted < 25) color = "bg-emerald-500/50 text-emerald-100";
-            else if (day.attempted >= 25) color = "bg-emerald-500 text-white";
+            if (day.attempted > 0 && day.attempted < 10) color = "bg-violet-500/20 text-violet-300";
+            else if (day.attempted >= 10 && day.attempted < 25) color = "bg-violet-500/55 text-violet-100";
+            else if (day.attempted >= 25) color = "bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white";
 
             return (
               <motion.div
@@ -71,7 +71,7 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
                     <span>Solved: <strong className="text-white">{day.attempted} Questions</strong></span>
                     {day.attempted > 0 && (
                       <>
-                        <span>Accuracy: <strong className="text-emerald-400">{day.accuracy}%</strong></span>
+                        <span>Accuracy: <strong className="text-violet-300">{day.accuracy}%</strong></span>
                         <span>Duration: <strong className="text-indigo-400">{day.durationMin}m</strong></span>
                       </>
                     )}
@@ -89,9 +89,9 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
         <span>Less Solved</span>
         <div className="flex items-center gap-1.5">
           <span className="w-3.5 h-3.5 rounded-sm bg-[var(--surface-elevated)]"></span>
-          <span className="w-3.5 h-3.5 rounded-sm bg-emerald-500/20"></span>
-          <span className="w-3.5 h-3.5 rounded-sm bg-emerald-500/50"></span>
-          <span className="w-3.5 h-3.5 rounded-sm bg-emerald-500"></span>
+          <span className="w-3.5 h-3.5 rounded-sm bg-violet-500/20"></span>
+          <span className="w-3.5 h-3.5 rounded-sm bg-violet-500/55"></span>
+          <span className="w-3.5 h-3.5 rounded-sm bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600"></span>
         </div>
         <span>More Solved</span>
       </div>
