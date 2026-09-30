@@ -37,5 +37,11 @@
   ],
   "observability": {
     "enabled": true
+  },
+  // Public, non-secret runtime values. Plain vars set only in the Cloudflare dashboard are
+  // replaced on every deploy, so they live here. Secrets (RAZORPAY_KEY_SECRET,
+  // RAZORPAY_WEBHOOK_SECRET, ...) stay dashboard/`wrangler secret` only.
+  "vars": {
+    "RAZORPAY_KEY_ID": "rzp_test_TiFfGevDLQr8xN"
   }
 }
