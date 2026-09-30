@@ -99,6 +99,25 @@ function buildPrompt(req: AIGenerateRequest): { systemInstruction: string; promp
  * none), so explanations would be built blind. Fill the key in from Postgres for any
  * official question in the request. Fails open — the prompt is simply built without it.
  */
+/**
+ * AI cost cut 2 (docs/AI_USAGE_STRATEGY.md §3.1/§3.3): hints, shortcuts and standard
+ * explanations of an official PYQ depend on the question, not on the student. For those,
+ * drop the learner's personal context so every student sends the IDENTICAL prompt — the
+ * response cache then answers everyone after the first request for free (cache hits don't
+ * touch the daily allowance). An explanation of the student's own answer stays personal.
+ */
+const NEUTRAL_STATS = { masteryScore: 0, readinessScore: 0, confidenceScore: 0, studyMomentum: 0, consistencyScore: 0, weakestSubject: "", strongestSubject: "", mostImprovingTopic: "", mostDecliningTopic: "" };
+function shareAcrossStudents(req: AIGenerateRequest): boolean {
+  const params = req.params as Record<string, any>;
+  const ctx = params?.context;
+  const q = ctx?.currentQuestion;
+  if (!q || typeof q.question_id !== "string" || !/^GATE_/.test(q.question_id)) return false;
+  const shareable = req.type === "HINT" || req.type === "SHORTCUT" || (req.type === "EXPLAIN" && !ctx.currentResponse);
+  if (!shareable) return false;
+  params.context = { currentQuestion: q, studentStats: NEUTRAL_STATS, weakTopics: [], strongTopics: [], recentMistakes: [], bookmarks: [], activePlannerTasks: [], recentSessions: [], revisionQueue: [] };
+  return true;
+}
+
 async function attachServerAnswers(req: AIGenerateRequest) {
   const params = req.params as Record<string, any>;
   const targets = [params?.context?.currentQuestion, params?.currentQuestion].filter(
@@ -194,6 +213,7 @@ export async function POST(req: NextRequest) {
 
   const startedAt = Date.now();
   let remainingQuota: number | null = null;
+  const shared = shareAcrossStudents(parsed.data);
   await attachServerAnswers(parsed.data);
   let systemInstruction: string, prompt: string;
   try {
@@ -214,8 +234,8 @@ export async function POST(req: NextRequest) {
   if (db) {
     const { data: cached } = await db.from("ai_response_cache").select("response,hits").eq("prompt_hash", promptHash).maybeSingle();
     if (cached?.response) {
-      void db.from("ai_response_cache").update({ hits: (cached.hits ?? 0) + 1 }).eq("prompt_hash", promptHash);
-      console.log(`[ai/generate] type=${parsed.data.type} user=${userId} status=200 cache=hit`);
+      await db.from("ai_response_cache").update({ hits: (cached.hits ?? 0) + 1 }).eq("prompt_hash", promptHash);
+      console.log(`[ai/generate] type=${parsed.data.type} user=${userId} status=200 cache=hit shared=${shared}`);
       return NextResponse.json({ text: cached.response, cached: true });
     }
 
@@ -268,7 +288,8 @@ export async function POST(req: NextRequest) {
     console.log(
       `[ai/generate] type=${parsed.data.type} client=${clientKey} status=200 latencyMs=${Date.now() - startedAt}`
     );
-    if (db) void db.from("ai_response_cache").upsert({ prompt_hash: promptHash, response: text });
+    // Must be awaited: supabase-js builders are lazy and never send an un-awaited query.
+    if (db) await db.from("ai_response_cache").upsert({ prompt_hash: promptHash, response: text }).then(({ error }) => { if (error) console.warn("[ai/generate] cache write failed", error.code); });
     return NextResponse.json(
       { text },
       remainingQuota !== null ? { headers: { "X-AI-Quota-Remaining": String(remainingQuota) } } : undefined

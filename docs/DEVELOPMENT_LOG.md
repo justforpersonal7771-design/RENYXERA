@@ -205,6 +205,11 @@ Legend: ✅ done and verified · 🟡 done, waiting on something · ⏳ in progr
 ### 30 Sep 2026 — AI model routing ✅
 - `AI_ROUTE` in `lib/ai/gemini.ts`: HINT/SHORTCUT → gemini-3.5-flash-lite (2.5-flash-lite is closed to new API users), EXPLAIN/FOLLOWUP/PRACTICE/REVISION → gemini-2.5-flash; per-type output caps; cache key includes the model. Both models verified live with the app key.
 
+### 30 Sep 2026 — AI cache fixed + shared across students ✅
+- Bug: the AI response cache never stored anything (un-awaited supabase-js upsert is never sent) — every request paid for a Gemini call. Now awaited; hit counter too.
+- Hints, shortcuts and standard explanations of official PYQs drop personal context, so all students send the identical prompt and share one cached answer (cache hits don't use the daily allowance). Explanations of a student's own answer stay personal. Verified locally: 2nd request with different personal data → cached.
+- Payments: owner verified Plus purchase + prorated Pro upgrade in Razorpay test mode; checkout confirm window; live tier refresh after payment.
+
 ## Next up
 1. ✅ Batch pushed (11a + 11b + docs) → auto-deploy.
 2. Continue the checklist.
