@@ -447,7 +447,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 8C · P1 · Multi-Branch Data Acquisition
 | Task | Status |
 |---|---|
-| Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | ⬜ |
+| Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | 🟡 *(EC 2021–2026 fetched, keys parsed; EE/ME/CE/DA next. Rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`)* |
+| EC 2026 transcribed by Claude, 27 figures eye-checked, 65/65 validated → `data/pyq/EC/gate_ec_pyqs.json` | ✅ *(untagged; in-app render check pending — Q7 table)* |
 | Official syllabus → topic taxonomy per branch | ⬜ |
 | Calibration data per branch (4J) | ⬜ |
 | Rights check recorded in the source ledger before ingestion | ⬜ |
