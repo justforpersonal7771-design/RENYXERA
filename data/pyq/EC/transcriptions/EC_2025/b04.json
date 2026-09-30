@@ -1,0 +1,14 @@
+[
+ {"qno": 19, "pages": [18], "question_text": "Consider a part of an electrical network as shown below. Some node voltages, and the current flowing through the \\(3\\,\\Omega\\) resistor are as indicated.\nThe voltage (in Volts) at node \\(X\\) is ______.\n[IMAGE_Q_19_1]",
+  "options": [{"option_id": "A", "text": "\\(\\frac{20}{3}\\)"}, {"option_id": "B", "text": "\\(\\frac{32}{3}\\)"}, {"option_id": "C", "text": "\\(\\frac{22}{3}\\)"}, {"option_id": "D", "text": "\\(\\frac{2}{3}\\)"}],
+  "figures": [{"placeholder": "IMAGE_Q_19_1", "page": 18, "regions": ["p018_r1"]}]},
+ {"qno": 20, "pages": [19], "question_text": "Let \\(i_C\\), \\(i_L\\), and \\(i_R\\) be the currents flowing through the capacitor, inductor, and resistor, respectively, in the circuit given below. The AC admittances are given in Siemens (S).\nWhich one of the following is TRUE?\n[IMAGE_Q_20_1]",
+  "options": [{"option_id": "A", "text": "\\(i_C = 0.25\\angle 180^\\circ\\) A, \\(i_L = 0.1\\angle 0^\\circ\\) A, \\(i_R = 0.2\\angle 90^\\circ\\) A"},
+              {"option_id": "B", "text": "\\(i_C = 4\\angle 180^\\circ\\) A, \\(i_L = 10\\angle 0^\\circ\\) A, \\(i_R = 5\\angle 90^\\circ\\) A"},
+              {"option_id": "C", "text": "\\(i_C = 0.25\\angle 270^\\circ\\) A, \\(i_L = 0.1\\angle 90^\\circ\\) A, \\(i_R = 0.2\\angle 90^\\circ\\) A"},
+              {"option_id": "D", "text": "\\(i_C = 4\\angle 90^\\circ\\) A, \\(i_L = 10\\angle 270^\\circ\\) A, \\(i_R = 5\\angle 0^\\circ\\) A"}],
+  "figures": [{"placeholder": "IMAGE_Q_20_1", "page": 19, "regions": ["p019_r1"]}]},
+ {"qno": 21, "pages": [20], "question_text": "A simplified small-signal equivalent circuit of a BJT-based amplifier is given below.\nThe small-signal voltage gain \\(v_o/v_s\\) (in V/V) is ___________.\n[IMAGE_Q_21_1]",
+  "options": [{"option_id": "A", "text": "\\(\\frac{-\\beta R_L}{R_S + r_\\pi}\\)"}, {"option_id": "B", "text": "\\(\\frac{+\\beta R_L}{R_S}\\)"}, {"option_id": "C", "text": "\\(\\frac{-\\beta R_L}{R_S}\\)"}, {"option_id": "D", "text": "\\(\\frac{+\\beta R_L}{R_S + r_\\pi}\\)"}],
+  "figures": [{"placeholder": "IMAGE_Q_21_1", "page": 20, "regions": ["p020_r1"]}]}
+]
