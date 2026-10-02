@@ -1,0 +1,14 @@
+- [Real repo location](project_repo_location.md) — GATE OS lives at D:\0-UI\r2ma-stable, not the session's working dir
+- [Zero-budget constraint](project_zero_budget_constraint.md) — everything must run on free tiers for $0; custom domain deferred until the app earns revenue
+- [HMR already works](project_hmr_already_works.md) — Next.js Fast Refresh works fine; don't propose migrating to Vite
+- [UI/UX pass state](project_ui_ux_pass_state.md) — screens done/remaining in the animation pass; found real markdown-table parser bug, unresolved
+- [File corruption pattern](project_file_corruption_pattern.md) — recurring zero-byte file corruption in the repo dir; safe fix for a corrupted .git/HEAD
+- [Batch deploys](feedback_batch_deploys.md) — commit as you go; push to main once per batch — the push auto-deploys via GitHub Actions after checks
+- [Test matrix](feedback_test_matrix.md) — every UI check: desktop + mobile, each in light + dark
+- [Data & content foundation](project_data_content_foundation.md) — 4J calibration data, 6D practice bank, 6E study materials, 8C branch data, March refresh
+- [Backslash mangling](feedback_backslash_mangling.md) — Bash heredocs strip backslashes here; write TeX/regex content with Write/Edit only
+- [Detailed user steps](feedback_detailed_user_steps.md) — give click-by-click steps for any user action, then hold until they confirm
+- [Signed-in e2e tests](reference_signed_in_e2e.md) — bypass Turnstile in Playwright via admin magic link + @supabase/ssr cookies
+- [CRLF-aware edits](feedback_crlf_edits.md) — repo mixes CRLF/LF; scripted replaces must match newline style + assert
+- [PYQ: Claude extracts](feedback_pyq_claude_extracts.md) — no Gemini for PYQs; resume from docs/PYQ_EXTRACTION_HANDBOOK.md
+- [Turn-end next items](feedback_turn_end_next_items.md) — update checklist + list next items at the end of every turn
