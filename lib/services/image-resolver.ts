@@ -18,9 +18,12 @@ export interface ResolvableImage {
 export class ImageResolver {
   private static readonly FALLBACK_URL = "/images/fallbacks/missing-image.png";
   private static manifest: Record<string, string[]> | null = null;
+  // "/images" for CS; "/images/<BRANCH>" for other branches (lib/branches.ts branchImageBase).
+  private static base = "/images";
 
-  public static initialize(manifestData: Record<string, string[]>) {
+  public static initialize(manifestData: Record<string, string[]>, base = "/images") {
     this.manifest = manifestData;
+    this.base = base;
   }
 
   public static getManifest() {
@@ -101,7 +104,7 @@ export class ImageResolver {
           if (matchedFiles.length > 0) {
             // Sort to ensure sequence (e.g. 9_1.png, 9_2.png)
             matchedFiles.sort();
-            resolvedUrls = matchedFiles.map(f => `/images/${yearShift}/${f}`);
+            resolvedUrls = matchedFiles.map(f => `${this.base}/${yearShift}/${f}`);
             resolvedUrl = resolvedUrls[0];
           }
         } else {
@@ -112,7 +115,7 @@ export class ImageResolver {
             return parsed.fileQNum === qNum && (parsed.fileSuffix === "1" || parsed.fileSuffix === "");
           });
           if (exactFile) {
-            resolvedUrl = `/images/${yearShift}/${exactFile}`;
+            resolvedUrl = `${this.base}/${yearShift}/${exactFile}`;
             resolvedUrls = [resolvedUrl];
           }
         }
@@ -123,7 +126,7 @@ export class ImageResolver {
           return parsed.fileQNum === qNum && parsed.fileSuffix === targetSuffix;
         });
         if (exactFile) {
-          resolvedUrl = `/images/${yearShift}/${exactFile}`;
+          resolvedUrl = `${this.base}/${yearShift}/${exactFile}`;
           resolvedUrls = [resolvedUrl];
         }
       }
@@ -134,7 +137,7 @@ export class ImageResolver {
         // Fallback if not found in manifest
         const fallbackSuffix = (targetSuffix === "1" || targetSuffix === "") ? "" : `_${suffix}`;
         const fallbackName = `${qNumStr}${fallbackSuffix}.png`;
-        resolvedUrl = `/images/${yearShift}/${fallbackName}`;
+        resolvedUrl = `${this.base}/${yearShift}/${fallbackName}`;
         resolvedUrls = [resolvedUrl];
         hasError = true; // Not strictly known to exist, so flag as missing/error
       }

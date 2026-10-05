@@ -5,6 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { CHALLENGE_PREFIX, challengeQuestionIds, challengeWeekKey } from "@/lib/exam/weekly-challenge";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { branchMismatch, getUserBranch, questionsOutsideBranch } from "@/lib/server/branch";
 
 export const runtime = "nodejs";
 
@@ -47,6 +48,10 @@ export async function POST(req: NextRequest) {
       if (existing.user_id !== userId) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       return NextResponse.json({ started_at: existing.server_started_at, duration_seconds: existing.duration_seconds, status: existing.status });
     }
+    // Multi-branch: an attempt belongs to the account's branch; questions from any other
+    // branch are refused (docs/MULTI_BRANCH_DESIGN.md §6).
+    const branch = await getUserBranch(db, userId);
+    if (questionsOutsideBranch(ids, branch).length) return branchMismatch();
     const nowMs = Date.now();
     const now = new Date(nowMs).toISOString();
     let duration: number;
@@ -69,7 +74,7 @@ export async function POST(req: NextRequest) {
       if (title.startsWith(CHALLENGE_PREFIX)) {
         const key = title.slice(CHALLENGE_PREFIX.length);
         if (key !== challengeWeekKey()) return NextResponse.json({ error: "This week's challenge has changed — open it again." }, { status: 400 });
-        const { data: all } = await db.from("questions").select("id").eq("branch_code", "CSE");
+        const { data: all } = await db.from("questions").select("id").eq("branch_code", branch);
         const want = new Set(challengeQuestionIds((all ?? []).map((q) => q.id as string), key));
         if (ids.length !== want.size || ids.some((id) => !want.has(id))) return NextResponse.json({ error: "Question set doesn't match this week's challenge." }, { status: 400 });
       }
@@ -81,7 +86,7 @@ export async function POST(req: NextRequest) {
     const { error } = await db.from("exam_attempts").insert({
       id: parsed.data.attempt_id,
       user_id: userId,
-      branch_code: "CSE",
+      branch_code: branch,
       config: { title: parsed.data.title ?? null },
       question_ids: ids,
       mode: parsed.data.mode,

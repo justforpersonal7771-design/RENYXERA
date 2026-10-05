@@ -1,3 +1,5 @@
+import { branchImageBase, branchManifestUrl } from "@/lib/branches";
+import { getCurrentBranch } from "@/lib/branch/current";
 import { buildIndexes, IndexCollection } from "./index-builder";
 import {
   Question,
@@ -76,14 +78,14 @@ class QuestionRepositorySingleton {
           // Fetch dataset and manifest in parallel
           const [response, manifestResponse] = await Promise.all([
             fetch(dataUrl, { cache: "no-cache" }),
-            fetch("/data/image-manifest.json", { cache: "no-cache" })
+            fetch(branchManifestUrl(getCurrentBranch()), { cache: "no-cache" })
           ]);
           
           if (!response.ok) throw new Error("Failed to fetch dataset");
           if (manifestResponse.ok) {
             const manifestData = await manifestResponse.json();
             const ImageResolverModule = await import("@/lib/services/image-resolver");
-            ImageResolverModule.ImageResolver.initialize(manifestData);
+            ImageResolverModule.ImageResolver.initialize(manifestData, branchImageBase(getCurrentBranch()));
           } else {
              console.warn("Failed to fetch image-manifest.json, images might not resolve.");
           }

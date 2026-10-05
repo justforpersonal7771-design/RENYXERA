@@ -150,6 +150,12 @@ export function AccountSecurityCard() {
       const uid = user!.id;
       try { const { wipeVault } = await import("@/lib/vault/vault"); await wipeVault(uid); } catch {}
       try { indexedDB.deleteDatabase(`GatePrepOS_DB__${uid}`); } catch {}
+      // Multi-branch: every branch database of this account (GatePrepOS_DB__<uid>__br_<CODE>).
+      try {
+        for (const d of (await indexedDB.databases?.()) ?? []) {
+          if (d.name?.startsWith(`GatePrepOS_DB__${uid}__br_`)) indexedDB.deleteDatabase(d.name);
+        }
+      } catch {}
       try { await (await supabaseClient()).auth.signOut({ scope: "local" }); } catch {}
       window.location.replace("/");
     } catch {

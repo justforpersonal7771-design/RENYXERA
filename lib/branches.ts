@@ -60,3 +60,46 @@ export const BRANCHES: BranchInfo[] = [
 
 export const branchBySlug = (slug: string) => BRANCHES.find((b) => b.slug === slug);
 export const branchByCode = (code: string) => BRANCHES.find((b) => b.code === code);
+
+// ---------------------------------------------------------------------------------------
+// Multi-branch (docs/MULTI_BRANCH_DESIGN.md). This file is the ONLY place that maps the
+// app/DB branch code (CSE, ECE, …) to GATE's paper code (CS, EC, …).
+// ---------------------------------------------------------------------------------------
+
+export const DEFAULT_BRANCH: BranchCode = "CSE";
+
+/** Branches whose question bank scripts/copy-static-data.mjs builds. */
+export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE"];
+
+/** Branches open in the app: marketing `live`, plus any in NEXT_PUBLIC_PREVIEW_BRANCHES
+ *  (comma-separated) for testing before launch. Server checks use public.branches.status. */
+export function availableBranches(): BranchInfo[] {
+  const preview = (process.env.NEXT_PUBLIC_PREVIEW_BRANCHES ?? "").split(",").map((s) => s.trim().toUpperCase()).filter(Boolean);
+  return BRANCHES.filter((b) => BRANCHES_WITH_DATA.includes(b.code) && (b.live || preview.includes(b.code)));
+}
+
+export const isBranchCode = (code: unknown): code is BranchCode =>
+  typeof code === "string" && BRANCHES.some((b) => b.code === code);
+
+export const isAvailableBranch = (code: unknown): code is BranchCode =>
+  isBranchCode(code) && availableBranches().some((b) => b.code === code);
+
+/** "EC" -> "ECE" */
+export const branchOfPaper = (paper: string): BranchCode | undefined =>
+  BRANCHES.find((b) => b.paper === paper.toUpperCase())?.code;
+
+/** "GATE_EC_2024_Q7" -> "ECE"; "GATE_CS_2026_FN_Q1" -> "CSE"; anything else -> undefined. */
+export function branchOfQuestionId(qid: string): BranchCode | undefined {
+  const m = /^GATE_([A-Z]{2})_/.exec(qid);
+  return m ? branchOfPaper(m[1]) : undefined;
+}
+
+/** Public, answer-free bank (CS keeps its original path so old caches keep working). */
+export const branchDataUrl = (code: BranchCode) =>
+  code === "CSE" ? "/data/questions.json" : `/data/${code}/questions.json`;
+
+export const branchManifestUrl = (code: BranchCode) =>
+  code === "CSE" ? "/data/image-manifest.json" : `/data/${code}/image-manifest.json`;
+
+/** /images/<year-shift>/… for CS (unchanged); /images/<CODE>/<year-shift>/… otherwise. */
+export const branchImageBase = (code: BranchCode) => (code === "CSE" ? "/images" : `/images/${code}`);

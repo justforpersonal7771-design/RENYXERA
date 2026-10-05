@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { ExamBranchPanel } from "@/components/profile/exam-branch-panel";
+import { branchByCode } from "@/lib/branches";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Loader2, Save, CheckCircle2, User as UserIcon, Palette, IdCard, Target, GraduationCap, CalendarDays,
@@ -45,14 +47,6 @@ function Card({ icon: Icon, title, subtitle, tint, children, delay = 0, classNam
   );
 }
 
-const BRANCHES = [
-  { label: "Computer Science & IT", value: "CSE" },
-  { label: "Data Science & AI — Coming Soon", value: "DA", disabled: true },
-  { label: "Electronics & Comm. — Coming Soon", value: "ECE", disabled: true },
-  { label: "Electrical Engg. — Coming Soon", value: "EE", disabled: true },
-  { label: "Mechanical Engg. — Coming Soon", value: "ME", disabled: true },
-  { label: "Civil Engg. — Coming Soon", value: "CE", disabled: true },
-];
 const STATUSES = [
   { label: "Select…", value: "" },
   { label: "Student (pre-final year)", value: "student" },
@@ -144,7 +138,7 @@ function fromProfile(p: Profile | null): Form {
     aspirantStatus: p?.aspirant_status || "", attemptNumber: p?.attempt_number ?? null,
     category: p?.category || "", pwd: !!p?.pwd,
     // Only CSE is live; a "Coming Soon" branch saved before those were locked reads as CSE.
-    targetBranch: BRANCHES.find((b) => b.value === p?.target_branch && !b.disabled)?.value ?? "CSE",
+    targetBranch: p?.target_branch ?? "CSE", // display only: changed via ExamBranchPanel (RPC)
     targetYear: String(effectiveTargetYear(p?.target_year)),
     examDate: p?.exam_date || "",
     targetRank: p?.target_rank ? String(p.target_rank) : "",
@@ -249,7 +243,6 @@ export default function ProfilePage() {
         graduation_year: f.graduationYear, state: f.state || null, city: f.city.trim() || null,
         aspirant_status: f.aspirantStatus || null, attempt_number: f.attemptNumber,
         category: f.category || null, pwd: f.pwd,
-        target_branch: f.targetBranch,
         target_year: f.targetYear ? Number(f.targetYear) : null,
         exam_date: f.examDate || null,
         target_rank: f.targetRank ? Number(f.targetRank) : null,
@@ -321,7 +314,7 @@ export default function ProfilePage() {
 
   const f = form;
   const name = f.displayName.trim() || user.email?.split("@")[0] || "Aspirant";
-  const branchLabel = BRANCHES.find((b) => b.value === f.targetBranch)?.label.replace(" — Coming Soon", "") ?? f.targetBranch;
+  const branchLabel = branchByCode(profile?.target_branch ?? "CSE")?.short ?? profile?.target_branch ?? "CSE";
   const examDate = examDateFor(Number(f.targetYear) || upcomingYear, f.examDate || null);
   const daysLeft = Math.ceil((new Date(examDate + "T09:00:00").getTime() - Date.now()) / 86_400_000);
   const filled = [f.displayName, f.username, f.bio, f.college, f.degree, f.graduationYear, f.state, f.city, f.aspirantStatus, f.attemptNumber, f.targetRank, f.targetScore, f.studyTime].filter((v) => v !== "" && v !== null && v !== undefined).length;
@@ -491,11 +484,7 @@ export default function ProfilePage() {
             <div className="2xl:col-span-3 space-y-5">
               <Card icon={Target} title="Target" subtitle="What you're aiming for in this attempt." tint="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className={LABEL}><GraduationCap className="w-3.5 h-3.5" /> Target branch</label>
-                    <CustomDropdown value={f.targetBranch} onChange={(v) => set("targetBranch", v)} options={BRANCHES} className="w-full text-sm font-medium" />
-                    <p className="mt-1.5 text-[11px] text-[var(--text-muted)]">Another branch? <a href="/gate-da" className="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Get notified at launch</a></p>
-                  </div>
+                  <ExamBranchPanel />
                   <div>
                     <label className={LABEL}><CalendarDays className="w-3.5 h-3.5" /> Target year</label>
                     <NumberStepper ariaLabel="Target year" min={upcomingYear} max={upcomingYear + 5} value={Number(f.targetYear) || upcomingYear} onChange={(v) => set("targetYear", String(v))} />

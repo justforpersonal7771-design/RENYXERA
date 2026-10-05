@@ -7,6 +7,7 @@ import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { isNatCorrect, isOptionsCorrect, marksFor } from "@/lib/grading";
 import { mockResultHold } from "@/lib/security/mock-embargo";
 import { MOCK_TAB_SWITCH_LIMIT } from "@/lib/exam/integrity-rules";
+import { branchMismatch, getUserBranch, questionsOutsideBranch } from "@/lib/server/branch";
 
 export const runtime = "nodejs";
 
@@ -107,6 +108,9 @@ export async function POST(req: NextRequest) {
     let attemptMockId: string | null = null;
     const attempt = parsed.data.attempt;
     if (userId && attempt) {
+      // Multi-branch: stored under the account's branch; another branch's questions are refused.
+      const branch = await getUserBranch(db, userId);
+      if (questionsOutsideBranch(results.map((r) => r.question_id), branch).length) return branchMismatch();
       const known = results.filter((r) => r.known);
       if (known.length) {
         const nowIso = new Date().toISOString();
@@ -131,7 +135,7 @@ export async function POST(req: NextRequest) {
             if (error) console.error("updating attempt failed", error);
           } else {
             const { error } = await db.from("exam_attempts").insert({
-              id: attempt.id, user_id: userId, branch_code: "CSE",
+              id: attempt.id, user_id: userId, branch_code: branch,
               config: { title: attempt.title ?? null },
               question_ids: known.map((r) => r.question_id),
               mode: attempt.mode,

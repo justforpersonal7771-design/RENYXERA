@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { paperLabel } from "@/lib/branch/current";
 import { useRouter } from "next/navigation";
 import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { Sparkles, Flame, CheckCircle2, TrendingUp, Trophy, Compass, ArrowRight, BrainCircuit } from "lucide-react";
@@ -147,7 +148,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
             </h1>
 
             <p className="text-indigo-100/80 font-medium text-sm md:text-base leading-relaxed max-w-xl">
-              <BrandName onDark /> is your GATE CSE study engine: practise real previous-year questions, find your weak spots with
+              <BrandName onDark /> is your GATE {paperLabel()} study engine: practise real previous-year questions, find your weak spots with
               analytics, and get unstuck with an AI Mentor. Keep your streak going every day.
             </p>
           </div>

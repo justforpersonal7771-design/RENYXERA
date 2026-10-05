@@ -20,6 +20,7 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
+import { BranchChip } from "./branch-chip";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -222,6 +223,7 @@ export function Topbar() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
+          <BranchChip />
 
           {/* Action cluster: brand comet circling the border (.nav-cluster), a highlight
               that glides to whichever icon is hovered, and icons that re-draw their

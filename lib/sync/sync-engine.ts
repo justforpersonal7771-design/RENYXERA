@@ -1,6 +1,8 @@
 "use client";
 
 import { create } from "zustand";
+import { branchOfQuestionId } from "@/lib/branches";
+import { getCurrentBranch } from "@/lib/branch/current";
 
 /**
  * 4I Cloud Sync. IndexedDB stays the source the app reads (so everything works offline);
@@ -29,8 +31,20 @@ let pullTimer: ReturnType<typeof setInterval> | undefined;
 let backoff = 2000;
 let running: Promise<void> | null = null;
 
-const qKey = () => `renyxera_sync_queue__${userId}`;
-const pullKey = () => `renyxera_sync_pulled__${userId}`;
+// Multi-branch: each branch has its own local database, so the upload queue and the pull
+// cursor are per branch too (CSE keeps the original keys, so nothing pending is lost).
+const brSuffix = () => { const b = getCurrentBranch(); return b === "CSE" ? "" : `__br_${b}`; };
+const qKey = () => `renyxera_sync_queue__${userId}${brSuffix()}`;
+const pullKey = () => `renyxera_sync_pulled__${userId}${brSuffix()}`;
+
+/** Which branch a synced record belongs to: bookmarks/mistakes by their question id; a
+ *  finished test by the questions inside it. Unknown -> CSE (everything before Release 8). */
+function rowBranch(kind: SyncKind, key: string, data: any): string {
+  if (kind !== "session") return branchOfQuestionId(key) ?? "CSE";
+  const ids: string[] = [...Object.keys(data?.responses ?? {}), ...(data?.draftConfig?.questionIds ?? [])];
+  for (const id of ids) { const b = branchOfQuestionId(String(id)); if (b) return b; }
+  return "CSE";
+}
 const seedKey = () => `renyxera_sync_seeded__${userId}`;
 const readQ = (): Record<string, QueueItem> => { try { return JSON.parse(localStorage.getItem(qKey()) ?? "{}"); } catch { return {}; } };
 const writeQ = (q: Record<string, QueueItem>) => { try { localStorage.setItem(qKey(), JSON.stringify(q)); } catch { /* full/blocked */ } useSyncStatus.setState({ pending: Object.keys(q).length }); };
@@ -97,6 +111,7 @@ async function pull() {
     applying = true;
     try {
       for (const row of data as { kind: SyncKind; key: string; data: any; deleted: boolean; client_updated_at: string; updated_at: string }[]) {
+        if (!row.deleted && rowBranch(row.kind, row.key, row.data) !== getCurrentBranch()) continue; // another branch's record
         const mine = pending[`${row.kind}:${row.key}`];
         if (mine && mine.at > row.client_updated_at) continue; // my newer local edit wins; it'll upload
         if (row.kind === "bookmark") {

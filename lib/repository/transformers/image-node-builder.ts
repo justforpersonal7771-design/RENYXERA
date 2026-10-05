@@ -11,10 +11,10 @@ export function buildImageNode(
   token: string,
   context: ImageBuilderContext
 ): ImageNode {
-  const yearShift =
-    context.year && context.shift
-      ? `${context.year}-${context.shift}`
-      : "UNKNOWN_YEAR_SHIFT";
+  // Two-shift papers are "2026-FN"; single-shift papers (e.g. EC) are just "2024".
+  const yearShift = context.year
+    ? (context.shift ? `${context.year}-${context.shift}` : `${context.year}`)
+    : "UNKNOWN_YEAR_SHIFT";
 
   const resolved = ImageResolver.resolveToken(token, yearShift, context.imagesRequired);
 

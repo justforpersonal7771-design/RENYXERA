@@ -45,8 +45,19 @@ export class IDBManager {
   // each other's data.
   private static activeNamespace: string | null = null;
 
+  // Multi-branch (docs/MULTI_BRANCH_DESIGN.md §4): each branch is its own physical
+  // database. CSE keeps the original names (so no existing data moves); any other branch
+  // appends "__br_<CODE>". A branch change always reloads the page, so the name is fixed
+  // for the life of a page.
+  private static activeBranch = "CSE";
+
+  public static setActiveBranch(code: string): void {
+    this.activeBranch = code;
+  }
+
   private static getDatabaseName(): string {
-    return this.activeNamespace ? `${DATABASE_NAME}__${this.activeNamespace}` : DATABASE_NAME;
+    const base = this.activeNamespace ? `${DATABASE_NAME}__${this.activeNamespace}` : DATABASE_NAME;
+    return this.activeBranch === "CSE" ? base : `${base}__br_${this.activeBranch}`;
   }
 
   /** Switches which physical IndexedDB database subsequent calls read/write. Closes the

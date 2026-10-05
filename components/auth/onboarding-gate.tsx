@@ -10,6 +10,9 @@ import { NumberStepper } from "@/components/ui/number-stepper";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
+import { availableBranches, type BranchCode } from "@/lib/branches";
+import { applyAccountBranch, getCurrentBranch } from "@/lib/branch/current";
+import { setAccountBranch } from "@/lib/branch/account";
 
 const STATUSES = [
   { label: "Select…", value: "" },
@@ -45,6 +48,14 @@ export function OnboardingGate() {
   const [year, setYear] = useState(upcoming);
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
+  // Multi-branch: the account's one branch (one later change allowed, see Profile).
+  const branches = availableBranches();
+  const [branch, setBranch] = useState<BranchCode>(() => {
+    const g = getCurrentBranch();
+    return branches.some((b) => b.code === g) ? g : branches[0]?.code ?? "CSE";
+  });
+  const [branchOk, setBranchOk] = useState(false);
+  const multiBranch = branches.length > 1;
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<string | null>(null); // student id once finished
   const [name, setName] = useState<{ state: "idle" | "checking" | "ok" | "bad"; reason?: string }>({ state: "idle" });
@@ -89,7 +100,7 @@ export function OnboardingGate() {
   if (!needed && !done) return null;
 
   const phoneOk = phone === "" || /^[6-9][0-9]{9}$/.test(phone);
-  const canSave = displayName.trim().length >= 2 && name.state === "ok" && !!status && phoneOk && !saving;
+  const canSave = displayName.trim().length >= 2 && name.state === "ok" && !!status && phoneOk && (!multiBranch || branchOk) && !saving;
 
   const save = async () => {
     if (!user || !profile) return;
@@ -102,7 +113,6 @@ export function OnboardingGate() {
       display_name: displayName.trim(),
       username: normalizeUsername(username.trim()),
       target_year: year,
-      target_branch: "CSE",
       aspirant_status: status,
       onboarded_at: new Date().toISOString(),
       // Only sent when entered, so onboarding never depends on the phone columns' grant.
@@ -117,8 +127,12 @@ export function OnboardingGate() {
       }
       return setError("Couldn't save your details. Please try again.");
     }
+    // Branch: set through set_initial_branch (target_branch is not client-writable after 0026).
+    const br = await setAccountBranch(supabase, "initial", branch, user.id);
+    if (!br.ok) return setError(br.message);
     setDone((data as Profile)?.student_id || profile.student_id || "—");
-    setProfile({ ...profile, ...(data as Profile) });
+    setProfile({ ...profile, ...(data as Profile), target_branch: branch });
+    if (branch !== getCurrentBranch()) setTimeout(() => applyAccountBranch(user.id, branch), 2500); // after the welcome card
   };
 
   const signOut = async () => {
@@ -201,7 +215,26 @@ export function OnboardingGate() {
                     </label>
                   )}
                 </div>
-                <p className="text-[11px] text-[var(--text-muted)]">Branch: <strong className="text-[var(--text-secondary)]">Computer Science &amp; IT</strong> (more branches coming soon). You can add college, goals and more later in your profile.</p>
+                {multiBranch ? (
+                  <div>
+                    <p className="text-xs font-semibold text-[var(--text-secondary)] mb-2">Your GATE paper</p>
+                    <div role="radiogroup" aria-label="GATE paper" className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {branches.map((b) => (
+                        <button key={b.code} type="button" role="radio" aria-checked={branch === b.code} onClick={() => setBranch(b.code)}
+                          className={`text-left rounded-xl border px-3 py-2.5 transition-colors cursor-pointer ${branch === b.code ? "border-violet-500 bg-violet-500/10" : "border-[var(--border-subtle)] hover:border-violet-400/60"}`}>
+                          <span className="block text-sm font-bold text-[var(--text-primary)]">{b.short}</span>
+                          <span className="block text-[11px] text-[var(--text-muted)]">Paper {b.paper}</span>
+                        </button>
+                      ))}
+                    </div>
+                    <label className="mt-2 flex items-start gap-2 text-[11px] text-[var(--text-secondary)] cursor-pointer">
+                      <input type="checkbox" checked={branchOk} onChange={(e) => setBranchOk(e.target.checked)} className="mt-0.5 accent-violet-600" />
+                      <span>I understand my account is for <strong>GATE {branches.find((b) => b.code === branch)?.paper}</strong>. I can change it <strong>one time only</strong> later (Profile → Exam branch); after that it is permanent.</span>
+                    </label>
+                  </div>
+                ) : (
+                  <p className="text-[11px] text-[var(--text-muted)]">Branch: <strong className="text-[var(--text-secondary)]">Computer Science &amp; IT</strong> (more branches coming soon). You can add college, goals and more later in your profile.</p>
+                )}
               </div>
 
               {error && <p role="alert" className="mt-4 text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">{error}</p>}

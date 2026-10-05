@@ -6,6 +6,8 @@ import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BILLING_MODE, PLANS, planById } from "@/lib/billing/plans";
 import { getEntitlement, isDisposableEmail, plusUpgradeCredit, razorpayKeys, verifyTurnstile } from "@/lib/billing/server";
+import { getUserBranch } from "@/lib/server/branch";
+import { branchByCode } from "@/lib/branches";
 
 export const runtime = "nodejs";
 
@@ -13,6 +15,9 @@ const schema = z.object({
   planId: z.enum(PLANS.map((p) => p.id) as [string, ...string[]]),
   acceptedTerms: z.literal(true), // no-refund acknowledgement (7B)
   turnstileToken: z.string().max(4096).optional(),
+  // Multi-branch (design §9.2): the user typed their paper code to confirm the subscription is
+  // locked to their branch. Checked against the ACCOUNT's branch on the server.
+  branchConfirm: z.string().trim().toUpperCase().max(4),
 });
 
 /**
@@ -47,6 +52,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 403 });
   }
 
+  // The subscription is for the account's branch only; the typed paper code is the signal.
+  const db = createServiceRoleClient();
+  const branch = await getUserBranch(db, userId);
+  const paper = branchByCode(branch)?.paper ?? branch;
+  if (parsed.data.branchConfirm !== paper) {
+    return NextResponse.json({ error: `Type ${paper} to confirm this subscription is for GATE ${paper}.` }, { status: 400 });
+  }
+
   const plan = planById(parsed.data.planId);
   if (!plan || plan.pricePaise == null) return NextResponse.json({ error: "This plan isn't on sale yet." }, { status: 409 });
   // Pro members can't buy Plus (it would do nothing); Plus → Pro is prorated.
@@ -58,7 +71,7 @@ export async function POST(req: NextRequest) {
   const r = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Basic ${btoa(`${keys.id}:${keys.secret}`)}` },
-    body: JSON.stringify({ amount, currency: "INR", receipt: `u_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: plan.id } }),
+    body: JSON.stringify({ amount, currency: "INR", receipt: `u_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: plan.id, branch: branch } }),
   });
   if (!r.ok) {
     console.error("razorpay order failed", r.status, await r.text().catch(() => ""));
@@ -66,9 +79,20 @@ export async function POST(req: NextRequest) {
   }
   const order = (await r.json()) as { id: string; amount: number; currency: string };
 
-  const { error } = await createServiceRoleClient().from("billing_orders").insert({
+  // Immutable record of the branch-lock confirmation, then the order carrying its branch.
+  const enc = new TextEncoder();
+  const hash = async (s: string | null) => s ? Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", enc.encode(s)))).slice(0, 12).map((x) => x.toString(16).padStart(2, "0")).join("") : null;
+  const { data: lock, error: lockErr } = await db.from("branch_lock_confirmations").insert({
+    user_id: userId, branch_code: branch, plan_id: plan.id, typed_code: parsed.data.branchConfirm,
+    ip_hash: await hash(req.headers.get("cf-connecting-ip")), ua_hash: await hash(req.headers.get("user-agent")),
+  }).select("id").single();
+  if (lockErr) {
+    console.error("branch lock confirmation failed", lockErr);
+    return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 503 });
+  }
+  const { error } = await db.from("billing_orders").insert({
     user_id: userId, plan_id: plan.id, amount_paise: amount, upgrade_credit_paise: credit, period_days: plan.periodDays,
-    razorpay_order_id: order.id, mode: BILLING_MODE,
+    razorpay_order_id: order.id, mode: BILLING_MODE, branch_code: branch, lock_confirmation_id: lock.id,
   });
   if (error) {
     console.error("billing_orders insert failed", error);

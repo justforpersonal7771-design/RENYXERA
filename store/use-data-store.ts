@@ -4,6 +4,11 @@ import {
   RepositoryDiagnostics,
 } from "@/lib/repository/question-repository";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
+import { branchDataUrl } from "@/lib/branches";
+import { getCurrentBranch } from "@/lib/branch/current";
+
+// The question bank of the branch this page is in (a branch change reloads the page).
+const bankUrl = () => branchDataUrl(getCurrentBranch());
 
 interface DataState {
   isInitialized: boolean;
@@ -29,11 +34,11 @@ export const useDataStore = create<DataState>((set, get) => ({
   totalTopics: 0,
   diagnostics: null,
 
-  initializeData: async (url = "/data/questions.json") => {
+  initializeData: async (url = bankUrl()) => {
     return get().loadRepository(url);
   },
 
-  loadRepository: async (url = "/data/questions.json") => {
+  loadRepository: async (url = bankUrl()) => {
     // Avoid re-initialization if already loaded
     if (get().isInitialized || get().isLoading) return;
 
@@ -78,7 +83,7 @@ export const useDataStore = create<DataState>((set, get) => ({
     }
   },
 
-  refreshRepository: async (url = "/data/questions.json") => {
+  refreshRepository: async (url = bankUrl()) => {
     set({ isLoading: true, error: null });
     try {
       if (!QuestionRepository.isReady()) {

@@ -12,9 +12,16 @@ export async function getEntitlement(userId: string | null): Promise<Entitlement
   const free: Entitlement = { tier: "free", plan: "free", pro: false, paid: false, validUntil: null };
   if (!userId) return free;
   try {
-    const { data } = await createServiceRoleClient().from("entitlements").select("plan, valid_until").eq("user_id", userId).maybeSingle();
+    const db = createServiceRoleClient();
+    // "*" so this keeps working before and after migration 0026 adds branch_code.
+    const { data } = await db.from("entitlements").select("*").eq("user_id", userId).maybeSingle();
     const validUntil = data?.valid_until ?? null;
-    const active = !!validUntil && Date.parse(validUntil) > Date.now();
+    let active = !!validUntil && Date.parse(validUntil) > Date.now();
+    // Multi-branch: Plus/Pro applies only while it belongs to the account's current branch.
+    if (active && data?.branch_code) {
+      const { data: prof } = await db.from("profiles").select("target_branch").eq("id", userId).maybeSingle();
+      if (prof?.target_branch && prof.target_branch !== data.branch_code) active = false;
+    }
     const tier: Tier = active && (data?.plan === "pro" || data?.plan === "plus") ? data.plan : "free";
     return { tier, plan: tier, pro: tier === "pro", paid: tier !== "free", validUntil: tier === "free" ? null : validUntil };
   } catch {

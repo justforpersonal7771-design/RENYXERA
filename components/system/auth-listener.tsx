@@ -5,6 +5,7 @@ import { useAuthStore, type Profile } from "@/store/use-auth-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { resetAllStores } from "@/lib/store/reset-all-stores";
 import { migrateGuestDataToAccount } from "@/lib/repository/storage/guest-migration";
+import { listenForBranchChanges, resolveBranchForUser, syncAccountBranch } from "@/lib/branch/current";
 
 /**
  * Mounted once in the root layout (matching ScrollbarActivity's pattern) — subscribes
@@ -37,6 +38,7 @@ export function AuthListener() {
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
     let stopHeartbeat: (() => void) | undefined;
+    let stopBranchListener: (() => void) | undefined;
     let cancelled = false;
 
     (async () => {
@@ -46,6 +48,7 @@ export function AuthListener() {
         supabase = createClient();
       } catch {
         // Not configured — stay in guest mode.
+        IDBManager.setActiveBranch(resolveBranchForUser(null));
         IDBManager.markNamespaceResolved();
         if (!cancelled) setLoading(false);
         return;
@@ -104,6 +107,8 @@ export function AuthListener() {
           }
         }
 
+        // Multi-branch: the branch database to open (cached account branch, or the guest's).
+        IDBManager.setActiveBranch(resolveBranchForUser(userId));
         if (isNoOpGuestFirstResolve) return;
 
         // Must run before setActiveNamespace switches away from the guest database —
@@ -195,8 +200,18 @@ export function AuthListener() {
       const onVisible = () => { if (!document.hidden) void checkIn(); };
       document.addEventListener("visibilitychange", onVisible);
       stopHeartbeat = () => { clearInterval(beat); document.removeEventListener("visibilitychange", onVisible); };
-      if (user) setProfile(await fetchProfile(user.id));
+      if (user) {
+        const profile = await fetchProfile(user.id);
+        setProfile(profile);
+        // The account's branch is profiles.target_branch; if this device opened another
+        // branch's data (first visit, or changed on another device), reload into it.
+        if (profile && syncAccountBranch(user.id, profile.target_branch)) {
+          window.location.reload();
+          return;
+        }
+      }
       setLoading(false);
+      stopBranchListener = listenForBranchChanges();
 
       const {
         data: { subscription },
@@ -213,6 +228,7 @@ export function AuthListener() {
       cancelled = true;
       unsubscribe?.();
       stopHeartbeat?.();
+      stopBranchListener?.();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

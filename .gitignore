@@ -25,3 +25,10 @@ zz-*.mjs
 # PYQ pipeline: official source PDFs and intermediate work files (large, reproducible)
 data/pyq/official_pdfs/
 data/pyq/_work/
+
+# multi-branch: non-CS images are copied from data/pyq/<PAPER>/images at build time
+/public/images/ECE/
+/public/images/EE/
+/public/images/ME/
+/public/images/CE/
+/public/images/DA/

@@ -4,6 +4,9 @@ import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { branchMismatch, getUserBranch, questionsOutsideBranch } from "@/lib/server/branch";
+import { DEFAULT_BRANCH, isBranchCode } from "@/lib/branches";
+import { BRANCH_COOKIE } from "@/lib/branch/current";
 
 export const runtime = "nodejs";
 
@@ -53,6 +56,11 @@ export async function POST(req: NextRequest) {
 
   try {
     const db = createServiceRoleClient();
+    // Multi-branch (§6): accounts get keys for their own branch only; guests for the branch
+    // they are browsing (cookie, any branch open to guests).
+    const guestBranch = req.cookies.get(BRANCH_COOKIE)?.value;
+    const branch = userId ? await getUserBranch(db, userId) : (isBranchCode(guestBranch) ? guestBranch : DEFAULT_BRANCH);
+    if (questionsOutsideBranch(ids, branch).length) return branchMismatch();
     // Per-account daily cap (5D): far above real use (a paper is 65; keys already seen are
     // cached on the device), low enough that scripting the whole key set is slow and
     // visible. Over the cap: refused until tomorrow (IST) and logged for review.

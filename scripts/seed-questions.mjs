@@ -1,7 +1,8 @@
 // Module 4B: load data/Aggregated_Output.json into Postgres with the public/private split.
 // questions + question_options are public; correct answers go only to question_answers
 // (RLS on, zero policies). Needs SUPABASE_SERVICE_ROLE_KEY in .env.local. Idempotent (upsert).
-//   node scripts/seed-questions.mjs
+//   node scripts/seed-questions.mjs                 # CSE (data/Aggregated_Output.json)
+//   node scripts/seed-questions.mjs --branch ECE    # data/pyq/EC/gate_ec_pyqs.json (multi-branch)
 import { readFileSync } from "node:fs";
 import { createClient } from "@supabase/supabase-js";
 
@@ -14,7 +15,13 @@ const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!url || !key) throw new Error("NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY missing");
 const db = createClient(url, key, { auth: { persistSession: false } });
 
-const papers = JSON.parse(readFileSync("data/Aggregated_Output.json", "utf8"));
+const PAPERS = { CSE: "CS", ECE: "EC", EE: "EE", ME: "ME", CE: "CE", DA: "DA" }; // = lib/branches.ts
+const bi = process.argv.indexOf("--branch");
+const BRANCH = (bi > 0 ? process.argv[bi + 1] : "CSE").toUpperCase();
+if (!PAPERS[BRANCH]) throw new Error(`unknown branch ${BRANCH}`);
+const source = BRANCH === "CSE" ? "data/Aggregated_Output.json" : `data/pyq/${PAPERS[BRANCH]}/gate_${PAPERS[BRANCH].toLowerCase()}_pyqs.json`;
+const papers = JSON.parse(readFileSync(source, "utf8"));
+console.log(`seeding ${BRANCH} from ${source}`);
 const questions = [], options = [], answers = [];
 let multiRange = 0;
 
@@ -22,7 +29,7 @@ for (const paper of papers) {
   const [yearStr, session] = (paper.exam_metadata?.["year-shift"] ?? "").split("-");
   for (const q of paper.questions) {
     questions.push({
-      id: q.question_id, branch_code: "CSE", year: Number(yearStr) || null, session: session || null,
+      id: q.question_id, branch_code: BRANCH, year: Number(yearStr) || null, session: session || null,
       question_no: q.question_no, question_type: q.question_type, marks: q.marks,
       section: q.section, subject: q.subject, topic: q.topic, difficulty: q.difficulty,
       question_text: q.question_text, has_image: !!q.has_image,
@@ -59,5 +66,5 @@ async function upsert(table, rows, onConflict) {
 await upsert("questions", questions, "id");
 await upsert("question_options", options, "question_id,option_id");
 await upsert("question_answers", answers, "question_id");
-await db.from("branches").update({ question_count: questions.length }).eq("code", "CSE");
+await db.from("branches").update({ question_count: questions.length }).eq("code", BRANCH);
 console.log(`NAT questions with an "A OR B" answer (all ranges in nat_ranges): ${multiRange}`);

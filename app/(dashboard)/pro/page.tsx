@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { branchByCode } from "@/lib/branches";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
@@ -41,6 +42,10 @@ export default function PlansPage() {
   const [period, setPeriod] = useState<"monthly" | "yearly">("yearly");
   const [busy, setBusy] = useState<PlanId | null>(null);
   const [agreed, setAgreed] = useState(false);
+  // Multi-branch §9.2: the plan is locked to the account's branch; typing the paper code is the signal.
+  const branchPaper = useAuthStore((s) => branchByCode(s.profile?.target_branch ?? "CSE")?.paper ?? "CS");
+  const [typedPaper, setTypedPaper] = useState("");
+  const paperOk = typedPaper.trim().toUpperCase() === branchPaper;
   const [captcha, setCaptcha] = useState<string | null>(null);
   const turnstileRef = useRef<TurnstileHandle>(null);
   const [interested, setInterested] = useState<PlanId[]>([]);
@@ -60,9 +65,9 @@ export default function PlansPage() {
       }
       if (!signedIn) { useToastStore.getState().show("Sign in first to upgrade.", "info"); return; }
       // First click opens the confirm window; its Pay button calls this again.
-      if (confirm !== planId) { setAgreed(false); setCaptcha(null); setConfirm(planId); return; }
-      if (!agreed || !captcha) return;
-      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, acceptedTerms: true, turnstileToken: captcha ?? undefined }) });
+      if (confirm !== planId) { setAgreed(false); setTypedPaper(""); setCaptcha(null); setConfirm(planId); return; }
+      if (!agreed || !paperOk || !captcha) return;
+      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, acceptedTerms: true, turnstileToken: captcha ?? undefined, branchConfirm: typedPaper.trim().toUpperCase() }) });
       turnstileRef.current?.reset(); setCaptcha(null);
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
@@ -183,16 +188,23 @@ export default function PlansPage() {
                   <li>• Does <b className="text-[var(--text-primary)]">not</b> renew automatically — no surprise charges.</li>
                   <li>• Purchases are final: <b className="text-[var(--text-primary)]">no refunds</b> (a failed or duplicate charge is always fixed).</li>
                 </ul>
+                <div className="mt-4 rounded-xl border border-amber-500/40 bg-amber-500/5 p-3">
+                  <p className="text-xs text-[var(--text-secondary)]">This plan is for <b className="text-[var(--text-primary)]">GATE {branchPaper}</b> only and stays locked to your account&apos;s branch. If you use your one branch change later, the plan moves with it.</p>
+                  <label className="mt-2 block text-[11px] text-[var(--text-secondary)]">Type <b>{branchPaper}</b> to confirm
+                    <input value={typedPaper} onChange={(e) => setTypedPaper(e.target.value)} maxLength={4} autoComplete="off" spellCheck={false} aria-label={`Type ${branchPaper} to confirm`}
+                      className="mt-1 w-full h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold uppercase tracking-widest" />
+                  </label>
+                </div>
                 <label className="mt-4 flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">
                   <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
                   <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Refund &amp; Cancellation Policy</Link>.</span>
                 </label>
                 <div className="mt-3 flex justify-center min-h-[24px]"><TurnstileWidget ref={turnstileRef} onToken={setCaptcha} /></div>
-                <button type="button" onClick={() => upgrade(cp.id)} disabled={!agreed || !captcha || !!busy}
+                <button type="button" onClick={() => upgrade(cp.id)} disabled={!agreed || !paperOk || !captcha || !!busy}
                   className={`mt-4 w-full h-12 rounded-xl font-bold shadow-lg disabled:opacity-50 inline-flex items-center justify-center gap-2 cursor-pointer ${LOOK[cp.tier].btn}`}>
                   {busy === cp.id && <Loader2 className="w-4 h-4 animate-spin" />} Pay {formatPrice(total)} securely
                 </button>
-                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!agreed ? "Tick the box to continue." : !captcha ? "Running a quick security check…" : "You'll finish on Razorpay — UPI, cards or net banking."}</p>
+                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!paperOk ? `Type ${branchPaper} above to confirm your branch.` : !agreed ? "Tick the box to continue." : !captcha ? "Running a quick security check…" : "You'll finish on Razorpay — UPI, cards or net banking."}</p>
               </motion.div>
             </motion.div>
           );
