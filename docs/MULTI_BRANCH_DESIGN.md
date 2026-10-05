@@ -125,14 +125,14 @@ The one final change replaces the email process, and the subscription moves with
 - Readers filter by the account's (or guest's) branch.
 - Nothing is ever deleted by a pick, change or switch.
 
-### 4.2 IndexedDB
-- **Version bump.** Add a `branch` field and index to `ExamSessions`, `StudyMetrics`, `AnalyticsSnapshots`, `CustomTemplates`, `Mistakes`, `Bookmarks`, `AiMemory` and `UserMutations`.
-- **Upgrade backfill:**
-  - rows with a question id use its paper code (`GATE_EC_` → ECE);
-  - everything else becomes `CSE`.
-- **Reads** take the current branch. Keys do not change, so no row moves.
-- **`lib/hard-reset.ts`:** "reset progress" resets the current branch only.
-- **`scripts/check-isolation.mjs`:** add account and branch isolation tests.
+### 4.2 IndexedDB (as built)
+- **One physical database per branch.**
+  - CSE keeps the original names (`GatePrepOS_DB`, `GatePrepOS_DB__<uid>`), so no existing row moves and no upgrade migration is needed.
+  - Other branches append `__br_<CODE>`, for example `GatePrepOS_DB__<uid>__br_ECE`.
+- **`IDBManager.setActiveBranch`** is set by the auth listener before any database opens. A branch change always reloads the page.
+- **The sync queue and pull cursor are per branch.** Pulled rows from another branch are skipped, judged by question id, or for a test by the question ids it contains.
+- **Guest → account migration** copies within the active branch.
+- **Account delete** removes every `__br_*` database.
 
 ### 4.3 Postgres — migration `0026_multi_branch.sql`
 - **`profiles`:** add `branch_confirmed_at timestamptz`, `branch_changes_used smallint not null default 0 check (in 0,1)`, `branch_changed_at timestamptz`, `branch_previous text references branches`, and the trigger from §3.3.
