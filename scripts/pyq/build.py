@@ -30,7 +30,7 @@ def nat_range(ans: dict) -> str | None:
     r = ans.get("nat")
     if not r:
         return None
-    return " or ".join(f"{lo:g} to {hi:g}" for lo, hi in r)
+    return " or ".join(f"{lo:.10g} to {hi:.10g}" for lo, hi in r)
 
 
 def main() -> int:

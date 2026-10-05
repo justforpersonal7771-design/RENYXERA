@@ -183,7 +183,7 @@ Compiling in MathJax is necessary but not sufficient. Before shipping a branch:
 
 | Branch | Papers fetched | Keys | Transcribed | Validated | In bank |
 |---|---|---|---|---|---|
-| EC | 2021–2026 | all pass (2021 scan transcribed by Claude → `keys_manual/EC_2021.tsv`; MTA at Q19, Q36) | **2026–2022 done**; next EC 2021 (scanned) | 2026–2023: 65/65; 2022: 62/65 + 3 reviewed | 2026–2022 (untagged) |
+| EC | 2021–2026 | all pass (2021 scan transcribed by Claude → `keys_manual/EC_2021.tsv`; MTA at Q19, Q36) | **2026–2021 done** (390); next: tagging | 2026–2023: 65/65; 2022: 62 + 3 reviewed; 2021 (scan): 65 reviewed | 2026–2021 (untagged) |
 | EE, ME, CE, DA | not yet | – | – | – | – |
 
 Done for EC_2026:

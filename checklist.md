@@ -453,7 +453,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | EC 2024 transcribed by Claude, 32 figures (explicit crops: the 2024 PDF carries a full-page watermark), 65/65 validated, EC bank 195/195 render-clean | ✅ |
 | EC 2023 transcribed by Claude, 39 figures, 65/65 validated | ✅ |
 | EC 2022 transcribed by Claude, 33 figures eye-checked, 62/65 auto + 3 reviewed (text-layer glyph artefacts); EC bank 325/325 render-clean | ✅ |
-| EC 2021 (scanned PDF: OCR-style text transcription from page images, figures/tables cropped) | ⬜ *(next)* |
+| EC 2021 (scanned PDF) transcribed by Claude as text from the page images, 26 figures cropped, every question eye-checked and approved in review; EC bank 390/390 render-clean (2021–2026 complete) | ✅ |
+| EC subject/topic tagging (2021–2026) from the official syllabus, by Claude | ⬜ *(next)* |
 | Official syllabus → topic taxonomy per branch | ⬜ |
 | Calibration data per branch (4J) | ⬜ |
 | Rights check recorded in the source ledger before ingestion | ⬜ |

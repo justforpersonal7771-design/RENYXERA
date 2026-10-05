@@ -11420,5 +11420,1914 @@
         "nat_answer_range": "0.48 to 0.52"
       }
     ]
+  },
+  {
+    "exam_metadata": {
+      "year-shift": "2021"
+    },
+    "questions": [
+      {
+        "question_no": 1,
+        "question_id": "GATE_EC_2021_Q1",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The current population of a city is 11,02,500. If it has been increasing at the rate of 5% per annum, what was its population 2 years ago?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "9,92,500",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "9,95,006",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "10,00,000",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "12,51,506",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 2,
+        "question_id": "GATE_EC_2021_Q2",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "\\(p\\) and \\(q\\) are positive integers and \\(\\frac{p}{q} + \\frac{q}{p} = 3\\),\nthen, \\(\\frac{p^2}{q^2} + \\frac{q^2}{p^2} =\\)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "3",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "7",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "9",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "11",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 3,
+        "question_id": "GATE_EC_2021_Q3",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "[IMAGE_Q_03_1]\nThe least number of squares that must be added so that the line P-Q becomes the line of symmetry is ________",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_03_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "3",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "6",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "7",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 4,
+        "question_id": "GATE_EC_2021_Q4",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Nostalgia is to anticipation as _______ is to _______\nWhich one of the following options maintains a similar logical relation in the above sentence?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Present, past",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Future, past",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Past, future",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Future, present",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 5,
+        "question_id": "GATE_EC_2021_Q5",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the following sentences:\n(i) I woke up from sleep.\n(ii) I woked up from sleep.\n(iii) I was woken up from sleep.\n(iv) I was wokened up from sleep.\nWhich of the above sentences are grammatically CORRECT?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(i) and (ii)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(i) and (iii)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "(ii) and (iii)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "(i) and (iv)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 6,
+        "question_id": "GATE_EC_2021_Q6",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Given below are two statements and two conclusions.\nStatement 1: All purple are green.\nStatement 2: All black are green.\nConclusion I: Some black are purple.\nConclusion II: No black is purple.\nBased on the above statements and conclusions, which one of the following options is logically CORRECT?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Only conclusion I is correct.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Only conclusion II is correct.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Either conclusion I or II is correct.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Both conclusion I and II are correct.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 7,
+        "question_id": "GATE_EC_2021_Q7",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Computers are ubiquitous. They are used to improve efficiency in almost all fields from agriculture to space exploration. Artificial intelligence (AI) is currently a hot topic. AI enables computers to learn, given enough training data. For humans, sitting in front of a computer for long hours can lead to health issues.\nWhich of the following can be deduced from the above passage?\n(i) Nowadays, computers are present in almost all places.\n(ii) Computers cannot be used for solving problems in engineering.\n(iii) For humans, there are both positive and negative effects of using computers.\n(iv) Artificial intelligence can be done without data.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(ii) and (iii)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(ii) and (iv)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "(i), (iii) and (iv)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "(i) and (iii)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 8,
+        "question_id": "GATE_EC_2021_Q8",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider a square sheet of side 1 unit. In the first step, it is cut along the main diagonal to get two triangles. In the next step, one of the cut triangles is revolved about its short edge to form a solid cone. The volume of the resulting cone, in cubic units, is ________",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\frac{\\pi}{3}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{2\\pi}{3}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\frac{3\\pi}{2}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(3\\pi\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 9,
+        "question_id": "GATE_EC_2021_Q9",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "[IMAGE_Q_09_1]\nThe number of minutes spent by two students, X and Y, exercising every day in a given week are shown in the bar chart above.\nThe number of days in the given week in which one of the students spent a minimum of 10% more than the other student, on a given day, is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_09_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "6",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "7",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 10,
+        "question_id": "GATE_EC_2021_Q10",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "[IMAGE_Q_10_1]\nCorners are cut from an equilateral triangle to produce a regular convex hexagon as shown in the figure above.\nThe ratio of the area of the regular convex hexagon to the area of the original equilateral triangle is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_10_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "2 : 3",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "3 : 4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "4 : 5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "5 : 6",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 11,
+        "question_id": "GATE_EC_2021_Q11",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The vector function \\(\\mathbf{F}(\\mathbf{r}) = -x\\,\\hat{i} + y\\,\\hat{j}\\) is defined over a circular arc \\(C\\) shown in the figure.\n[IMAGE_Q_11_1]\nThe line integral of \\(\\int_C \\mathbf{F}(\\mathbf{r}) \\cdot d\\mathbf{r}\\) is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_11_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\frac{1}{2}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{1}{4}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\frac{1}{6}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\frac{1}{3}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 12,
+        "question_id": "GATE_EC_2021_Q12",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the differential equation given below.\n$$ \\frac{dy}{dx} + \\frac{x}{1 - x^2}y = x\\sqrt{y} $$\nThe integrating factor of the differential equation is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\((1 - x^2)^{-3/4}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\((1 - x^2)^{-1/4}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\((1 - x^2)^{-3/2}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\((1 - x^2)^{-1/2}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 13,
+        "question_id": "GATE_EC_2021_Q13",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Two continuous random variables \\(X\\) and \\(Y\\) are related as\n$$ Y = 2X + 3 $$\nLet \\(\\sigma_X^2\\) and \\(\\sigma_Y^2\\) denote the variances of \\(X\\) and \\(Y\\), respectively. The variances are related as",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\sigma_Y^2 = 2\\,\\sigma_X^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\sigma_Y^2 = 4\\,\\sigma_X^2\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\sigma_Y^2 = 5\\,\\sigma_X^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\sigma_Y^2 = 25\\,\\sigma_X^2\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 14,
+        "question_id": "GATE_EC_2021_Q14",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider a real-valued base-band signal \\(x(t)\\), band limited to 10 kHz. The Nyquist rate for the signal \\(y(t) = x(t)\\,x\\left(1 + \\frac{t}{2}\\right)\\) is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "15 kHz",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "30 kHz",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "60 kHz",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "20 kHz",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 15,
+        "question_id": "GATE_EC_2021_Q15",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider two 16-point sequences \\(x[n]\\) and \\(h[n]\\). Let the linear convolution of \\(x[n]\\) and \\(h[n]\\) be denoted by \\(y[n]\\), while \\(z[n]\\) denotes the 16-point inverse discrete Fourier transform (IDFT) of the product of the 16-point DFTs of \\(x[n]\\) and \\(h[n]\\). The value(s) of \\(k\\) for which \\(z[k] = y[k]\\) is/are",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(k = 0, 1, 2, \\ldots, 15\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(k = 0\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(k = 15\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(k = 0\\) and \\(k = 15\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 16,
+        "question_id": "GATE_EC_2021_Q16",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A bar of silicon is doped with boron concentration of \\(10^{16}\\ \\text{cm}^{-3}\\) and assumed to be fully ionized. It is exposed to light such that electron-hole pairs are generated throughout the volume of the bar at the rate of \\(10^{20}\\ \\text{cm}^{-3}\\text{s}^{-1}\\). If the recombination lifetime is \\(100\\ \\mu\\text{s}\\), intrinsic carrier concentration of silicon is \\(10^{10}\\ \\text{cm}^{-3}\\) and assuming 100% ionization of boron, then the approximate product of steady-state electron and hole concentrations due to this light exposure is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(10^{20}\\ \\text{cm}^{-6}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(2 \\times 10^{20}\\ \\text{cm}^{-6}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(10^{32}\\ \\text{cm}^{-6}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(2 \\times 10^{32}\\ \\text{cm}^{-6}\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 17,
+        "question_id": "GATE_EC_2021_Q17",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The energy band diagram of a p-type semiconductor bar of length L under equilibrium condition (i.e., the Fermi energy level \\(E_F\\) is constant) is shown in the figure. The valance band \\(E_V\\) is sloped since doping is non-uniform along the bar. The difference between the energy levels of the valence band at the two edges of the bar is \\(\\Delta\\).\n[IMAGE_Q_17_1]\nIf the charge of an electron is q, then the magnitude of the electric field developed inside this semiconductor bar is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_17_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\frac{\\Delta}{qL}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{2\\Delta}{qL}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\frac{\\Delta}{2qL}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\frac{3\\Delta}{2qL}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 18,
+        "question_id": "GATE_EC_2021_Q18",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "In the circuit shown in the figure, the transistors \\(M_1\\) and \\(M_2\\) are operating in saturation. The channel length modulation coefficients of both the transistors are non-zero. The transconductance of the MOSFETs \\(M_1\\) and \\(M_2\\) are \\(g_{m1}\\) and \\(g_{m2}\\), respectively, and the internal resistance of the MOSFETs \\(M_1\\) and \\(M_2\\) are \\(r_{01}\\) and \\(r_{02}\\), respectively.\n[IMAGE_Q_18_1]\nIgnoring the body effect, the ac small signal voltage gain \\((\\partial V_{out}/\\partial V_{in})\\) of the circuit is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_18_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(-g_{m2}\\,(r_{01} \\| r_{02})\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(-g_{m2}\\left(\\frac{1}{g_{m1}} \\| r_{02}\\right)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(-g_{m1}\\left(\\frac{1}{g_{m2}} \\| r_{01} \\| r_{02}\\right)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(-g_{m2}\\left(\\frac{1}{g_{m1}} \\| r_{01} \\| r_{02}\\right)\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 19,
+        "question_id": "GATE_EC_2021_Q19",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "For the circuit with an ideal OPAMP shown in the figure, \\(V_{REF}\\) is fixed.\n[IMAGE_Q_19_1]\nIf \\(V_{OUT} = 1\\) volt for \\(V_{IN} = 0.1\\) volt and \\(V_{OUT} = 6\\) volt for \\(V_{IN} = 1\\) volt, where \\(V_{OUT}\\) is measured across \\(R_L\\) connected at the output of this OPAMP, the value of \\(R_F/R_{IN}\\) is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_19_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "3.285",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "2.860",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "3.825",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "5.555",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 20,
+        "question_id": "GATE_EC_2021_Q20",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the circuit with an ideal OPAMP shown in the figure.\n[IMAGE_Q_20_1]\nAssuming \\(|V_{IN}| \\ll |V_{CC}|\\) and \\(|V_{REF}| \\ll |V_{CC}|\\), the condition at which \\(V_{OUT}\\) equals to zero is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_20_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(V_{IN} = V_{REF}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(V_{IN} = 0.5\\,V_{REF}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(V_{IN} = 2\\,V_{REF}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(V_{IN} = 2 + V_{REF}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 21,
+        "question_id": "GATE_EC_2021_Q21",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "If \\((1235)_x = (3033)_y\\), where \\(x\\) and \\(y\\) indicate the bases of the corresponding numbers, then",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(x = 7\\) and \\(y = 5\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(x = 8\\) and \\(y = 6\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(x = 6\\) and \\(y = 4\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(x = 9\\) and \\(y = 7\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 22,
+        "question_id": "GATE_EC_2021_Q22",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Addressing of a \\(32\\text{K} \\times 16\\) memory is realized using a single decoder. The minimum number of AND gates required for the decoder is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(2^{8}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(2^{32}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(2^{15}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(2^{19}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 23,
+        "question_id": "GATE_EC_2021_Q23",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The block diagram of a feedback control system is shown in the figure.\n[IMAGE_Q_23_1]\nThe transfer function \\(\\frac{Y(s)}{X(s)}\\) of the system is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_23_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\frac{G_1 + G_2 + G_1G_2H}{1 + G_1H}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{G_1 + G_2}{1 + G_1H + G_2H}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\frac{G_1 + G_2}{1 + G_1H}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\frac{G_1 + G_2 + G_1G_2H}{1 + G_1H + G_2H}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 24,
+        "question_id": "GATE_EC_2021_Q24",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The complete Nyquist plot of the open-loop transfer function \\(G(s)H(s)\\) of a feedback control system is shown in the figure.\n[IMAGE_Q_24_1]\nIf \\(G(s)H(s)\\) has one zero in the right-half of the \\(s\\)-plane, the number of poles that the closed-loop system will have in the right-half of the \\(s\\)-plane is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_24_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "3",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 25,
+        "question_id": "GATE_EC_2021_Q25",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider a rectangular coordinate system \\((x, y, z)\\) with unit vectors \\(\\mathbf{a}_x\\), \\(\\mathbf{a}_y\\), and \\(\\mathbf{a}_z\\). A plane wave traveling in the region \\(z \\ge 0\\) with electric field vector \\(\\mathbf{E} = 10\\cos(2 \\times 10^8 t + \\beta z)\\,\\mathbf{a}_y\\) is incident normally on the plane at \\(z = 0\\), where \\(\\beta\\) is the phase constant. The region \\(z \\ge 0\\) is in free space and the region \\(z < 0\\) is filled with a lossless medium (permittivity \\(\\varepsilon = \\varepsilon_0\\), permeability \\(\\mu = 4\\mu_0\\), where \\(\\varepsilon_0 = 8.85 \\times 10^{-12}\\) F/m and \\(\\mu_0 = 4\\pi \\times 10^{-7}\\) H/m). The value of the reflection coefficient is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\frac{1}{3}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{3}{5}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\frac{2}{5}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\frac{2}{3}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 26,
+        "question_id": "GATE_EC_2021_Q26",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "If the vectors \\((1.0, -1.0, 2.0)\\), \\((7.0, 3.0, x)\\) and \\((2.0, 3.0, 1.0)\\) in \\(\\mathbb{R}^3\\) are linearly dependent, the value of \\(x\\) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "8 to 8"
+      },
+      {
+        "question_no": 27,
+        "question_id": "GATE_EC_2021_Q27",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the vector field \\(\\mathbf{F} = \\mathbf{a}_x(4y - c_1 z) + \\mathbf{a}_y(4x + 2z) + \\mathbf{a}_z(2y + z)\\) in a rectangular coordinate system \\((x, y, z)\\) with unit vectors \\(\\mathbf{a}_x\\), \\(\\mathbf{a}_y\\), and \\(\\mathbf{a}_z\\). If the field \\(\\mathbf{F}\\) is irrotational (conservative), then the constant \\(c_1\\) (in integer) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0 to 0"
+      },
+      {
+        "question_no": 28,
+        "question_id": "GATE_EC_2021_Q28",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the circuit shown in the figure.\n[IMAGE_Q_28_1]\nThe current \\(I\\) flowing through the \\(7\\,\\Omega\\) resistor between P and Q (rounded off to one decimal place) is __________ A.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_28_1"
+        ],
+        "options": [],
+        "nat_answer_range": "0.5 to 0.5"
+      },
+      {
+        "question_no": 29,
+        "question_id": "GATE_EC_2021_Q29",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the circuit shown in the figure.\n[IMAGE_Q_29_1]\nThe value of \\(v_0\\) (rounded off to one decimal place) is __________ V.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_29_1"
+        ],
+        "options": [],
+        "nat_answer_range": "1 to 1"
+      },
+      {
+        "question_no": 30,
+        "question_id": "GATE_EC_2021_Q30",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "An 8-bit unipolar (all analog output values are positive) digital-to-analog converter (DAC) has a full-scale voltage range from 0 V to 7.68 V. If the digital input code is 10010110 (the leftmost bit is MSB), then the analog output voltage of the DAC (rounded off to one decimal place) is __________ V.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "4.5 to 4.5"
+      },
+      {
+        "question_no": 31,
+        "question_id": "GATE_EC_2021_Q31",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The autocorrelation function \\(R_X(\\tau)\\) of a wide-sense stationary random process \\(X(t)\\) is shown in the figure.\n[IMAGE_Q_31_1]\nThe average power of \\(X(t)\\) is __________",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_31_1"
+        ],
+        "options": [],
+        "nat_answer_range": "2 to 2"
+      },
+      {
+        "question_no": 32,
+        "question_id": "GATE_EC_2021_Q32",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider a carrier signal which is amplitude modulated by a single-tone sinusoidal message signal with a modulation index of 50%. If the carrier and one of the sidebands are suppressed in the modulated signal, the percentage of power saved (rounded off to one decimal place) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "94.2 to 94.6"
+      },
+      {
+        "question_no": 33,
+        "question_id": "GATE_EC_2021_Q33",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A speech signal, band limited to 4 kHz, is sampled at 1.25 times the Nyquist rate. The speech samples, assumed to be statistically independent and uniformly distributed in the range \\(-5\\) V to \\(+5\\) V, are subsequently quantized in an 8-bit uniform quantizer and then transmitted over a voice-grade AWGN telephone channel. If the ratio of transmitted signal power to channel noise power is 26 dB, the minimum channel bandwidth required to ensure reliable transmission of the signal with arbitrarily small probability of transmission error (rounded off to two decimal places) is __________ kHz.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "9.24 to 9.28"
+      },
+      {
+        "question_no": 34,
+        "question_id": "GATE_EC_2021_Q34",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A 4 kHz sinusoidal message signal having amplitude 4 V is fed to a delta modulator (DM) operating at a sampling rate of 32 kHz. The minimum step size required to avoid slope overload noise in the DM (rounded off to two decimal places) is __________ V.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "2.8 to 3.2"
+      },
+      {
+        "question_no": 35,
+        "question_id": "GATE_EC_2021_Q35",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The refractive indices of the core and cladding of an optical fiber are 1.50 and 1.48, respectively. The critical propagation angle, which is defined as the maximum angle that the light beam makes with the axis of the optical fiber to achieve the total internal reflection, (rounded off to two decimal places) is __________ degree.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "9.3 to 9.44"
+      },
+      {
+        "question_no": 36,
+        "question_id": "GATE_EC_2021_Q36",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the integral\n$$ \\oint_C \\frac{\\sin(x)}{x^2(x^2 + 4)}\\, dx $$\nwhere \\(C\\) is a counter-clockwise oriented circle defined as \\(|x - i| = 2\\). The value of the integral is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(-\\frac{\\pi}{8}\\sin(2i)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{\\pi}{8}\\sin(2i)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(-\\frac{\\pi}{4}\\sin(2i)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\frac{\\pi}{4}\\sin(2i)\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 37,
+        "question_id": "GATE_EC_2021_Q37",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A box contains the following three coins.\nI. A fair coin with head on one face and tail on the other face.\nII. A coin with heads on both the faces.\nIII. A coin with tails on both the faces.\nA coin is picked randomly from the box and tossed. Out of the two remaining coins in the box, one coin is then picked randomly and tossed. If the first toss results in a head, the probability of getting a head in the second toss is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\frac{2}{5}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{1}{3}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\frac{1}{2}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\frac{2}{3}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 38,
+        "question_id": "GATE_EC_2021_Q38",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The switch in the circuit in the figure is in position P for a long time and then moved to position Q at time \\(t = 0\\).\n[IMAGE_Q_38_1]\nThe value of \\(\\frac{dv(t)}{dt}\\) at \\(t = 0^+\\) is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_38_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0 V/s",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "3 V/s",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(-3\\) V/s",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(-5\\) V/s",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 39,
+        "question_id": "GATE_EC_2021_Q39",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the two-port network shown in the figure.\n[IMAGE_Q_39_1]\nThe admittance parameters, in siemens, are",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_39_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(y_{11} = 2,\\ y_{12} = -4,\\ y_{21} = -4,\\ y_{22} = 2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(y_{11} = 1,\\ y_{12} = -2,\\ y_{21} = -1,\\ y_{22} = 3\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(y_{11} = 2,\\ y_{12} = -4,\\ y_{21} = -1,\\ y_{22} = 2\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(y_{11} = 2,\\ y_{12} = -4,\\ y_{21} = -4,\\ y_{22} = 3\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 40,
+        "question_id": "GATE_EC_2021_Q40",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "For an n-channel silicon MOSFET with 10 nm gate oxide thickness, the substrate sensitivity \\((\\partial V_T/\\partial|V_{BS}|)\\) is found to be 50 mV/V at a substrate voltage \\(|V_{BS}| = 2\\) V, where \\(V_T\\) is the threshold voltage of the MOSFET. Assume that, \\(|V_{BS}| \\gg 2\\Phi_B\\), where \\(q\\Phi_B\\) is the separation between the Fermi energy level \\(E_F\\) and the intrinsic level \\(E_i\\) in the bulk. Parameters given are\nElectron charge \\((q) = 1.6 \\times 10^{-19}\\) C\nVacuum permittivity \\((\\varepsilon_0) = 8.85 \\times 10^{-12}\\) F/m\nRelative permittivity of silicon \\((\\varepsilon_{Si}) = 12\\)\nRelative permittivity of oxide \\((\\varepsilon_{ox}) = 4\\)\nThe doping concentration of the substrate is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(7.37 \\times 10^{15}\\ \\text{cm}^{-3}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(4.37 \\times 10^{15}\\ \\text{cm}^{-3}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(2.37 \\times 10^{15}\\ \\text{cm}^{-3}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(9.37 \\times 10^{15}\\ \\text{cm}^{-3}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 41,
+        "question_id": "GATE_EC_2021_Q41",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The propagation delays of the XOR gate, AND gate and multiplexer (MUX) in the circuit shown in the figure are 4 ns, 2 ns and 1 ns, respectively.\n[IMAGE_Q_41_1]\nIf all the inputs P, Q, R, S and T are applied simultaneously and held constant, the maximum propagation delay of the circuit is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_41_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "3 ns",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "5 ns",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "6 ns",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "7 ns",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 42,
+        "question_id": "GATE_EC_2021_Q42",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The content of the registers are \\(R_1 = 25\\text{H}\\), \\(R_2 = 30\\text{H}\\) and \\(R_3 = 40\\text{H}\\). The following machine instructions are executed.\nPUSH{R1}\nPUSH{R2}\nPUSH{R3}\nPOP{R1}\nPOP{R2}\nPOP{R3}\nAfter execution, the content of registers \\(R_1, R_2, R_3\\) are",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(R_1 = 40\\text{H},\\ R_2 = 30\\text{H},\\ R_3 = 25\\text{H}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(R_1 = 25\\text{H},\\ R_2 = 30\\text{H},\\ R_3 = 40\\text{H}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(R_1 = 30\\text{H},\\ R_2 = 40\\text{H},\\ R_3 = 25\\text{H}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(R_1 = 40\\text{H},\\ R_2 = 25\\text{H},\\ R_3 = 30\\text{H}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 43,
+        "question_id": "GATE_EC_2021_Q43",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The electrical system shown in the figure converts input source current \\(i_s(t)\\) to output voltage \\(v_o(t)\\).\n[IMAGE_Q_43_1]\nCurrent \\(i_L(t)\\) in the inductor and voltage \\(v_C(t)\\) across the capacitor are taken as the state variables, both assumed to be initially equal to zero, i.e., \\(i_L(0) = 0\\) and \\(v_C(0) = 0\\). The system is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_43_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "completely state controllable as well as completely observable",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "completely state controllable but not observable",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "completely observable but not state controllable",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "neither state controllable nor observable",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 44,
+        "question_id": "GATE_EC_2021_Q44",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A digital transmission system uses a (7, 4) systematic linear Hamming code for transmitting data over a noisy channel. If three of the message-codeword pairs in this code \\((m_i\\,;\\,c_i)\\), where \\(c_i\\) is the codeword corresponding to the \\(i^{th}\\) message \\(m_i\\), are known to be (1100 ; 0101100), (1110 ; 0011110) and (0110 ; 1000110), then which of the following is a valid codeword in this code?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1101001",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1011010",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "0001011",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0110100",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 45,
+        "question_id": "GATE_EC_2021_Q45",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The impedance matching network shown in the figure is to match a lossless line having characteristic impedance \\(Z_0 = 50\\,\\Omega\\) with a load impedance \\(Z_L\\). A quarter-wave line having a characteristic impedance \\(Z_1 = 75\\,\\Omega\\) is connected to \\(Z_L\\). Two stubs having characteristic impedance of \\(75\\,\\Omega\\) each are connected to this quarter-wave line. One is a short-circuited (S.C.) stub of length \\(0.25\\lambda\\) connected across PQ and the other one is an open-circuited (O.C.) stub of length \\(0.5\\lambda\\) connected across RS.\n[IMAGE_Q_45_1]\nThe impedance matching is achieved when the real part of \\(Z_L\\) is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_45_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(112.5\\,\\Omega\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(75.0\\,\\Omega\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(50.0\\,\\Omega\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(33.3\\,\\Omega\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 46,
+        "question_id": "GATE_EC_2021_Q46",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A real \\(2 \\times 2\\) non-singular matrix A with repeated eigenvalue is given as\n$$ A = \\begin{bmatrix} x & -3.0 \\\\ 3.0 & 4.0 \\end{bmatrix} $$\nwhere \\(x\\) is a real positive number. The value of \\(x\\) (rounded off to one decimal place) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "10 to 10"
+      },
+      {
+        "question_no": 47,
+        "question_id": "GATE_EC_2021_Q47",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "For a vector field \\(\\mathbf{D} = \\rho\\cos^2\\varphi\\,\\mathbf{a}_\\rho + z^2\\sin^2\\varphi\\,\\mathbf{a}_\\varphi\\) in a cylindrical coordinate system \\((\\rho, \\varphi, z)\\) with unit vectors \\(\\mathbf{a}_\\rho\\), \\(\\mathbf{a}_\\varphi\\) and \\(\\mathbf{a}_z\\), the net flux of \\(\\mathbf{D}\\) leaving the closed surface of the cylinder \\((\\rho = 3,\\ 0 \\le z \\le 2)\\) (rounded off to two decimal places) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "56.5 to 56.6"
+      },
+      {
+        "question_no": 48,
+        "question_id": "GATE_EC_2021_Q48",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "In the circuit shown in the figure, the switch is closed at time \\(t = 0\\), while the capacitor is initially charged to \\(-5\\) V (i.e., \\(v_c(0) = -5\\) V).\n[IMAGE_Q_48_1]\nThe time after which the voltage across the capacitor becomes zero (rounded off to three decimal places) is __________ ms.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_48_1"
+        ],
+        "options": [],
+        "nat_answer_range": "0.132 to 0.146"
+      },
+      {
+        "question_no": 49,
+        "question_id": "GATE_EC_2021_Q49",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The exponential Fourier series representation of a continuous-time periodic signal \\(x(t)\\) is defined as\n$$ x(t) = \\sum_{k=-\\infty}^{\\infty} a_k e^{jk\\omega_0 t} $$\nwhere \\(\\omega_0\\) is the fundamental angular frequency of \\(x(t)\\) and the coefficients of the series are \\(a_k\\). The following information is given about \\(x(t)\\) and \\(a_k\\).\nI. \\(x(t)\\) is real and even, having a fundamental period of 6\nII. The average value of \\(x(t)\\) is 2\nIII. \\(a_k = \\begin{cases} k, & 1 \\le k \\le 3 \\\\ 0, & k > 3 \\end{cases}\\)\nThe average power of the signal \\(x(t)\\) (rounded off to one decimal place) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "31.9 to 32.1"
+      },
+      {
+        "question_no": 50,
+        "question_id": "GATE_EC_2021_Q50",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "For a unit step input \\(u[n]\\), a discrete-time LTI system produces an output signal \\((2\\delta[n + 1] + \\delta[n] + \\delta[n - 1])\\). Let \\(y[n]\\) be the output of the system for an input \\(\\left(\\left(\\frac{1}{2}\\right)^n u[n]\\right)\\). The value of \\(y[0]\\) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0 to 0"
+      },
+      {
+        "question_no": 51,
+        "question_id": "GATE_EC_2021_Q51",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider the signals \\(x[n] = 2^{n-1}u[-n + 2]\\) and \\(y[n] = 2^{-n+2}u[n + 1]\\), where \\(u[n]\\) is the unit step sequence. Let \\(X(e^{j\\omega})\\) and \\(Y(e^{j\\omega})\\) be the discrete-time Fourier transform of \\(x[n]\\) and \\(y[n]\\), respectively. The value of the integral\n$$ \\frac{1}{2\\pi}\\int_0^{2\\pi} X(e^{j\\omega})\\, Y(e^{-j\\omega})\\, d\\omega $$\n(rounded off to one decimal place) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "7.9 to 8.1"
+      },
+      {
+        "question_no": 52,
+        "question_id": "GATE_EC_2021_Q52",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A silicon P-N junction is shown in the figure. The doping in the P region is \\(5 \\times 10^{16}\\ \\text{cm}^{-3}\\) and doping in the N region is \\(10 \\times 10^{16}\\ \\text{cm}^{-3}\\). The parameters given are\nBuilt-in voltage \\((\\Phi_{bi}) = 0.8\\) V\nElectron charge \\((q) = 1.6 \\times 10^{-19}\\) C\nVacuum permittivity \\((\\varepsilon_0) = 8.85 \\times 10^{-12}\\) F/m\nRelative permittivity of silicon \\((\\varepsilon_{Si}) = 12\\)\n[IMAGE_Q_52_1]\nThe magnitude of reverse bias voltage that would completely deplete one of the two regions (P or N) prior to the other (rounded off to one decimal place) is __________ V.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_52_1"
+        ],
+        "options": [],
+        "nat_answer_range": "8.1 to 8.4"
+      },
+      {
+        "question_no": 53,
+        "question_id": "GATE_EC_2021_Q53",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "An asymmetrical periodic pulse train \\(v_{in}\\) of 10 V amplitude with on-time \\(T_{ON} = 1\\) ms and off-time \\(T_{OFF} = 1\\ \\mu\\text{s}\\) is applied to the circuit shown in the figure. The diode \\(D_1\\) is ideal.\n[IMAGE_Q_53_1]\nThe difference between the maximum voltage and minimum voltage of the output waveform \\(v_o\\) (in integer) is __________ V.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_53_1"
+        ],
+        "options": [],
+        "nat_answer_range": "10 to 10"
+      },
+      {
+        "question_no": 54,
+        "question_id": "GATE_EC_2021_Q54",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "For the transistor \\(M_1\\) in the circuit shown in the figure, \\(\\mu_n C_{ox} = 100\\ \\mu\\text{A/V}^2\\) and \\((W/L) = 10\\), where \\(\\mu_n\\) is the mobility of electron, \\(C_{ox}\\) is the oxide capacitance per unit area, \\(W\\) is the width and \\(L\\) is the length.\n[IMAGE_Q_54_1]\nThe channel length modulation coefficient is ignored. If the gate-to-source voltage \\(V_{GS}\\) is 1 V to keep the transistor at the edge of saturation, then the threshold voltage of the transistor (rounded off to one decimal place) is __________ V.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_54_1"
+        ],
+        "options": [],
+        "nat_answer_range": "0.5 to 0.5"
+      },
+      {
+        "question_no": 55,
+        "question_id": "GATE_EC_2021_Q55",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A circuit with an ideal OPAMP is shown in the figure. A pulse \\(V_{IN}\\) of 20 ms duration is applied to the input. The capacitors are initially uncharged.\n[IMAGE_Q_55_1]\nThe output voltage \\(V_{OUT}\\) of this circuit at \\(t = 0^+\\) (in integer) is __________ V.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_55_1"
+        ],
+        "options": [],
+        "nat_answer_range": "-12 to -12"
+      },
+      {
+        "question_no": 56,
+        "question_id": "GATE_EC_2021_Q56",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The propagation delay of the exclusive-OR (XOR) gate in the circuit in the figure is 3 ns. The propagation delay of all the flip-flops is assumed to be zero. The clock (Clk) frequency provided to the circuit is 500 MHz.\n[IMAGE_Q_56_1]\nStarting from the initial value of the flip-flop outputs \\(Q_2Q_1Q_0 = 1\\,1\\,1\\) with \\(D_2 = 1\\), the minimum number of triggering clock edges after which the flip-flop outputs \\(Q_2Q_1Q_0\\) becomes \\(1\\,0\\,0\\) (in integer) is __________",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_56_1"
+        ],
+        "options": [],
+        "nat_answer_range": "5 to 5"
+      },
+      {
+        "question_no": 57,
+        "question_id": "GATE_EC_2021_Q57",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "The circuit in the figure contains a current source driving a load having an inductor and a resistor in series, with a shunt capacitor across the load. The ammeter is assumed to have zero resistance. The switch is closed at time \\(t = 0\\).\n[IMAGE_Q_57_1]\nInitially, when the switch is open, the capacitor is discharged and the ammeter reads zero ampere. After the switch is closed, the ammeter reading keeps fluctuating for some time till it settles to a final steady value. The maximum ammeter reading that one will observe after the switch is closed (rounded off to two decimal places) is __________ A.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_57_1"
+        ],
+        "options": [],
+        "nat_answer_range": "1.4 to 1.5"
+      },
+      {
+        "question_no": 58,
+        "question_id": "GATE_EC_2021_Q58",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A unity feedback system that uses proportional-integral (PI) control is shown in the figure.\n[IMAGE_Q_58_1]\nThe stability of the overall system is controlled by tuning the PI control parameters \\(K_P\\) and \\(K_I\\). The maximum value of \\(K_I\\) that can be chosen so as to keep the overall system stable or, in the worst case, marginally stable (rounded off to three decimal places) is __________",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_58_1"
+        ],
+        "options": [],
+        "nat_answer_range": "3.125 to 3.125"
+      },
+      {
+        "question_no": 59,
+        "question_id": "GATE_EC_2021_Q59",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A sinusoidal message signal having root mean square value of 4 V and frequency of 1 kHz is fed to a phase modulator with phase deviation constant 2 rad/volt. If the carrier signal is \\(c(t) = 2\\cos(2\\pi 10^6 t)\\), the maximum instantaneous frequency of the phase modulated signal (rounded off to one decimal place) is __________ Hz.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1011310 to 1011320"
+      },
+      {
+        "question_no": 60,
+        "question_id": "GATE_EC_2021_Q60",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider a superheterodyne receiver tuned to 600 kHz. If the local oscillator feeds a 1000 kHz signal to the mixer, the image frequency (in integer) is __________ kHz.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1400 to 1400"
+      },
+      {
+        "question_no": 61,
+        "question_id": "GATE_EC_2021_Q61",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "In a high school having equal number of boy students and girl students, 75% of the students study Science and the remaining 25% students study Commerce. Commerce students are two times more likely to be a boy than are Science students. The amount of information gained in knowing that a randomly selected girl student studies Commerce (rounded off to three decimal places) is __________ bits.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "3.32 to 3.325"
+      },
+      {
+        "question_no": 62,
+        "question_id": "GATE_EC_2021_Q62",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A message signal having peak-to-peak value of 2 V, root mean square value of 0.1 V and bandwidth of 5 kHz is sampled and fed to a pulse code modulation (PCM) system that uses a uniform quantizer. The PCM output is transmitted over a channel that can support a maximum transmission rate of 50 kbps. Assuming that the quantization error is uniformly distributed, the maximum signal to quantization noise ratio that can be obtained by the PCM system (rounded off to two decimal places) is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "30 to 34"
+      },
+      {
+        "question_no": 63,
+        "question_id": "GATE_EC_2021_Q63",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "Consider a polar non-return to zero (NRZ) waveform, using \\(+2\\) V and \\(-2\\) V for representing binary '1' and '0' respectively, is transmitted in the presence of additive zero-mean white Gaussian noise with variance \\(0.4\\ \\text{V}^2\\). If the a priori probability of transmission of a binary '1' is 0.4, the optimum threshold voltage for a maximum a posteriori (MAP) receiver (rounded off to two decimal places) is __________ V.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.03 to 0.05"
+      },
+      {
+        "question_no": 64,
+        "question_id": "GATE_EC_2021_Q64",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "A standard air-filled rectangular waveguide with dimensions \\(a = 8\\) cm, \\(b = 4\\) cm, operates at 3.4 GHz. For the dominant mode of wave propagation, the phase velocity of the signal is \\(v_p\\). The value (rounded off to two decimal places) of \\(v_p/c\\), where \\(c\\) denotes the velocity of light, is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1.15 to 1.25"
+      },
+      {
+        "question_no": 65,
+        "question_id": "GATE_EC_2021_Q65",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ELECTRONICS AND COMMUNICATION ENGINEERING",
+        "subject": "",
+        "topic": "",
+        "difficulty": "",
+        "question_text": "An antenna with a directive gain of 6 dB is radiating a total power of 16 kW. The amplitude of the electric field in free space at a distance of 8 km from the antenna in the direction of 6 dB gain (rounded off to three decimal places) is __________ V/m.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.224 to 0.264"
+      }
+    ]
   }
 ]
