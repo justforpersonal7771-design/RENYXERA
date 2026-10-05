@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { getCurrentBranch } from "@/lib/branch/current";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
@@ -50,7 +51,7 @@ export default function MocksPage() {
   const load = useCallback(async () => {
     const { createClient } = await import("@/lib/supabase/client");
     const sb = createClient();
-    const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_count,duration_seconds,start_grace_minutes").order("starts_at", { ascending: false }).limit(24);
+    const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_count,duration_seconds,start_grace_minutes").eq("branch_code", getCurrentBranch()).order("starts_at", { ascending: false }).limit(24);
     if (error) { setUnavailable(true); setMocks([]); return; }
     setMocks(data as Mock[]);
     if (user) {

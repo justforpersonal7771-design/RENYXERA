@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { getCurrentBranch } from "@/lib/branch/current";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { QuestionRepository } from "@/lib/repository/question-repository";
@@ -43,7 +44,7 @@ export function LeaderboardButton() {
   const loadMocks = useCallback(async () => {
     try {
       const { createClient } = await import("@/lib/supabase/client");
-      const { data } = await createClient().from("mock_events").select("id,title,results_at").order("results_at", { ascending: false }).limit(20);
+      const { data } = await createClient().from("mock_events").select("id,title,results_at").eq("branch_code", getCurrentBranch()).order("results_at", { ascending: false }).limit(20);
       const now = Date.now();
       const list = ((data as Mock[]) ?? []).filter((m) => Date.parse(m.results_at) <= now);
       setReleased(list);
@@ -169,12 +170,12 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
       if (tab === "mock") {
         data = mockId ? (await sb.rpc("mock_leaderboard_moves", { p_mock: mockId, p_limit: 50 })).data : [];
       } else if (tab === "challenge") {
-        data = (await sb.rpc("board", { p_scope: "challenge", p_key: challengeTitle(), p_days: 7, p_limit: 50 })).data;
+        data = (await sb.rpc("board", { p_scope: "challenge", p_key: challengeTitle(), p_days: 7, p_limit: 50, p_branch: getCurrentBranch() })).data;
       } else {
         if (scope === "subject" && !subject) return;
-        const r = await sb.rpc("board", { p_scope: scope, p_key: scope === "subject" ? subject : null, p_days: 7, p_limit: 50 });
+        const r = await sb.rpc("board", { p_scope: scope, p_key: scope === "subject" ? subject : null, p_days: 7, p_limit: 50, p_branch: getCurrentBranch() });
         // Before migration 0016 only the overall board exists.
-        data = r.error && scope === "all" ? (await sb.rpc("practice_leaderboard", { p_days: 7, p_limit: 50 })).data : r.data;
+        data = r.error && scope === "all" ? (await sb.rpc("practice_leaderboard", { p_days: 7, p_limit: 50, p_branch: getCurrentBranch() })).data : r.data;
       }
       if (cancelled) return;
       const list = (data as Row[]) ?? [];

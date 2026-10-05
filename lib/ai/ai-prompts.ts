@@ -1,6 +1,21 @@
 import { AIContext } from "@/types/ai.types";
+import { branchByCode, branchOfQuestionId } from "@/lib/branches";
+import { getCurrentBranch } from "@/lib/branch/current";
 
 export class PromptBuilder {
+  /** Multi-branch: the GATE paper this request is about — from the question id when there is
+   *  one (server pregen has no "current branch"), else the browser's current branch. */
+  public static paperName(context: AIContext): string {
+    const qid = (context as any)?.currentQuestion?.question_id as string | undefined;
+    const code = (qid && branchOfQuestionId(qid)) || getCurrentBranch();
+    const b = branchByCode(code);
+    return b ? `${b.paper} (${b.name})` : "CS";
+  }
+
+  public static paperLine(context: AIContext): string {
+    return `The learner is preparing for GATE ${PromptBuilder.paperName(context)}; use that paper's syllabus, notation and conventions.`;
+  }
+
   /**
    * Helper to format the learner's stats and history into a clear context prompt prefix.
    */
@@ -116,7 +131,7 @@ ${repeatedMistakesStr || "No repeated mistakes registered yet."}
     }
 
     const systemInstruction = `
-You are the advanced RENYXERA Personal Tutor AI. 
+You are the advanced RENYXERA Personal Tutor AI. ${PromptBuilder.paperLine(context)}
 Analyze the learner's profile, diagnostic weaknesses, and recent mistakes to deliver a highly personalized, targeted conceptual explanation.
 
 Tone Guidance: ${personalityGuidance}
@@ -164,7 +179,7 @@ Please explain this question, referencing the learner's weaknesses${context.curr
     }
 
     const systemInstruction = `
-You are the advanced RENYXERA personal tutor AI. Provide 3 progressive hints for the question without revealing the final correct option or direct value.
+You are the advanced RENYXERA personal tutor AI. Provide 3 progressive hints for the question without revealing the final correct option or direct value. ${PromptBuilder.paperLine(context)}
 Output a JSON response matching:
 {
   "hintLevel1": "Subtle clue pointing to the relevant topic formulas or standard theorem",
@@ -196,7 +211,7 @@ Generate progressive hints in the requested JSON structure.
     }
 
     const systemInstruction = `
-You are the advanced RENYXERA personalization engine. Provide a time-saving shortcut trick or math verification rule of thumb for this question.
+You are the advanced RENYXERA personalization engine. Provide a time-saving shortcut trick or math verification rule of thumb for this question. ${PromptBuilder.paperLine(context)}
 Output JSON:
 {
   "concept": "Shortcut Concept Name",
@@ -253,13 +268,13 @@ Provide the time-saving shortcut trick in JSON format.
     const varietyNonce = Math.random().toString(36).slice(2, 8);
 
     const systemInstruction = `
-You are the advanced RENYXERA Question Generator.
+You are the advanced RENYXERA Question Generator. ${PromptBuilder.paperLine(context)}
 Create ${count} custom practice questions STRICTLY on the subject "${subject}", topic "${topic}".
 The generated questions must:
 1. Stay entirely within "${topic}" (within "${subject}") — do not drift into other subjects or only-loosely-related topics. Every question must be unambiguously about this exact topic.
 2. Represent DIFFERENT question types across the set (mix of MCQ, MSQ, NAT) and different difficulty angles, so the set feels varied, not eight versions of the same question.
 3. Be precise, technically rigorous, and unique from any "standard textbook" phrasing of this topic — do not simply reformat a well-known canonical example; construct a genuinely new scenario, dataset, or parameter set each time (variety seed: ${varietyNonce}).
-4. Maintain the technical rigor, mathematical depth, and LaTeX formatting (using inline LaTeX \\\\( ... \\\\) where appropriate) typical of GATE CSE questions.
+4. Maintain the technical rigor, mathematical depth, and LaTeX formatting (using inline LaTeX \\\\( ... \\\\) where appropriate) typical of GATE ${PromptBuilder.paperName(context)} questions.
 
 Output JSON matching:
 {
@@ -306,7 +321,7 @@ ${samplesText}
     const profile = this.formatLearnerProfile(context);
 
     const systemInstruction = `
-You are the advanced RENYXERA study planner engine. 
+You are the advanced RENYXERA study planner engine. ${PromptBuilder.paperLine(context)}
 Generate a custom revision plan for the subject "${subject}" based on the learner's consistency, mistakes, and confidence levels.
 Output JSON matching:
 {
@@ -343,7 +358,7 @@ Generate a revision plan in JSON structure for the subject: ${subject}.
     const q = context.currentQuestion;
 
     const systemInstruction = `
-You are the advanced RENYXERA Personal Tutor AI.
+You are the advanced RENYXERA Personal Tutor AI. ${PromptBuilder.paperLine(context)}
 Answer the student's follow-up questions about the active question. Keep conversation memory in context.
 Output JSON matching this schema:
 {

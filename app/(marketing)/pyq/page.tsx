@@ -1,7 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { ArrowRight, FileText, Layers } from "lucide-react";
-import { allPapers, subjects } from "@/lib/seo/pyq";
+import { allPapers, publicBranches, subjects } from "@/lib/seo/pyq";
+import { branchByCode } from "@/lib/branches";
 import { SYLLABUS, SYLLABUS_GROUPS } from "@/lib/seo/syllabus";
 import { Sparkline, StatTile, TrendBadge } from "@/components/seo/charts";
 
@@ -13,7 +14,9 @@ export const metadata: Metadata = {
 };
 
 export default function PyqIndexPage() {
-  const papers = allPapers();
+  const papers = allPapers("CSE");
+  // Other live branches (multi-branch): their papers listed in their own section.
+  const others = publicBranches().filter((c) => c !== "CSE").map((c) => ({ info: branchByCode(c)!, papers: allPapers(c) })).filter((o) => o.papers.length);
   const subs = subjects();
   const total = papers.reduce((s, p) => s + p.count, 0);
   const years = [...new Set(papers.map((p) => p.year))].sort();
@@ -53,6 +56,22 @@ export default function PyqIndexPage() {
           ))}
         </ol>
       </section>
+
+      {others.map(({ info, papers: ops }) => (
+        <section key={info.code} aria-labelledby={`papers-${info.code}`}>
+          <h2 id={`papers-${info.code}`} className="text-xl font-extrabold text-[var(--text-primary)] mb-4 flex items-center gap-2"><FileText className="w-5 h-5 text-violet-500" /> GATE {info.paper} — {info.short}</h2>
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {ops.map((p) => (
+              <li key={p.slug}>
+                <Link href={`/pyq/${p.slug}`} className="group flex items-center justify-between gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2.5 hover:border-violet-500/50 transition">
+                  <span><span className="block text-sm font-bold font-num text-[var(--text-primary)]">{p.year}</span><span className="block text-[11px] text-[var(--text-muted)]">{p.count} Qs · {p.marks} marks</span></span>
+                  <ArrowRight className="w-4 h-4 text-[var(--text-muted)] group-hover:text-violet-500 transition" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
 
       <section aria-labelledby="subjects">
         <h2 id="subjects" className="text-xl font-extrabold text-[var(--text-primary)] mb-4 flex items-center gap-2"><Layers className="w-5 h-5 text-violet-500" /> Subject-wise</h2>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { branchOfQuestionId } from "@/lib/branches";
 import Link from "next/link";
 import { MathJaxContext } from "better-react-mathjax";
 import { CheckCircle2, Eye, Loader2, Play } from "lucide-react";
@@ -67,7 +68,7 @@ export function PyqBody({ id, type, question, options, paperYearShift }: { id: s
             <CheckCircle2 className="w-4 h-4" /> Official answer: {type === "NAT" ? nat : key.c.join(", ")}
           </p>
         )}
-        <Link href="/setup" className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25">
+        <Link href={`/setup?branch=${branchOfQuestionId(id) ?? "CSE"}`} className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25">
           <Play className="w-4 h-4 fill-current" /> Practise the full {paperYearShift} paper
         </Link>
       </div>

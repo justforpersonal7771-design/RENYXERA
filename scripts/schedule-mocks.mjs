@@ -11,18 +11,25 @@ import { createClient } from "@supabase/supabase-js";
 //   node --env-file=.env.local scripts/schedule-mocks.mjs --at=2026-09-27T13:00+05:30 --title="Test Mock"
 const arg = (k) => process.argv.find((a) => a.startsWith(`--${k}=`))?.slice(k.length + 3);
 const AT = arg("at");
+// Multi-branch: --branch=ECE schedules that branch's mocks (default CSE).
+const BRANCH = (arg("branch") ?? "CSE").toUpperCase();
 const TITLE = arg("title");
 if (AT && Number.isNaN(Date.parse(AT))) throw new Error(`--at is not a valid date: ${AT}`);
 const WEEKS = Math.max(1, Math.min(12, Number(process.argv[2]) || 4));
 const SECONDS_PER_MARK = 108;
 // GATE CS: GA 10 Q (5×1 + 5×2 = 15), technical 55 Q (25×1 + 30×2 = 85) ≈ 13 maths + 72 core.
+// Every paper has the same shape (GA 10 Q, ~13 maths marks, core the rest); only the section
+// names differ. `kind` groups sections: GA / MATH / CORE.
+const MATH_SECTION = { CSE: "MATHEMATICAL FOUNDATIONS", ECE: "SECTION 1: ENGINEERING MATHEMATICS" };
+if (!MATH_SECTION[BRANCH]) throw new Error(`no mock blueprint for ${BRANCH}`);
+const kindOf = (section) => section === "GENERAL APTITUDE (GA)" ? "GA" : section === MATH_SECTION[BRANCH] ? "MATH" : "CORE";
 const BLUEPRINT = [
-  { section: "GENERAL APTITUDE (GA)", marks: 1, count: 5 },
-  { section: "GENERAL APTITUDE (GA)", marks: 2, count: 5 },
-  { section: "MATHEMATICAL FOUNDATIONS", marks: 1, count: 5 },
-  { section: "MATHEMATICAL FOUNDATIONS", marks: 2, count: 4 },
-  { section: "CORE CS", marks: 1, count: 20 },
-  { section: "CORE CS", marks: 2, count: 26 },
+  { kind: "GA", marks: 1, count: 5 },
+  { kind: "GA", marks: 2, count: 5 },
+  { kind: "MATH", marks: 1, count: 5 },
+  { kind: "MATH", marks: 2, count: 4 },
+  { kind: "CORE", marks: 1, count: 20 },
+  { kind: "CORE", marks: 2, count: 26 },
 ];
 
 const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
@@ -30,7 +37,7 @@ const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABA
 async function allQuestions() {
   const out = [];
   for (let f = 0; ; f += 1000) {
-    const { data, error } = await db.from("questions").select("id, section, marks, subject").eq("branch_code", "CSE").range(f, f + 999);
+    const { data, error } = await db.from("questions").select("id, section, marks, subject").eq("branch_code", BRANCH).range(f, f + 999);
     if (error) throw error;
     out.push(...data);
     if (data.length < 1000) return out;
@@ -70,18 +77,18 @@ function nextSundays(n) {
 }
 
 const questions = await allQuestions();
-const { data: existing } = await db.from("mock_events").select("starts_at, question_ids").order("starts_at", { ascending: false }).limit(20);
+const { data: existing } = await db.from("mock_events").select("starts_at, question_ids").eq("branch_code", BRANCH).order("starts_at", { ascending: false }).limit(20);
 const scheduled = new Set((existing ?? []).map((m) => new Date(m.starts_at).toISOString()));
 const recentlyUsed = new Set((existing ?? []).slice(0, 8).flatMap((m) => m.question_ids));
-const { count: total } = await db.from("mock_events").select("id", { count: "exact", head: true });
+const { count: total } = await db.from("mock_events").select("id", { count: "exact", head: true }).eq("branch_code", BRANCH);
 let n = (total ?? 0);
 
 for (const start of AT ? [new Date(AT)] : nextSundays(WEEKS)) {
   if (scheduled.has(start.toISOString())) { console.log("already scheduled:", start.toISOString()); continue; }
   const paper = [];
   for (const b of BLUEPRINT) {
-    let pool = questions.filter((q) => q.section === b.section && Number(q.marks) === b.marks && !recentlyUsed.has(q.id));
-    if (pool.length < b.count) pool = questions.filter((q) => q.section === b.section && Number(q.marks) === b.marks); // bank exhausted → allow repeats
+    let pool = questions.filter((q) => kindOf(q.section) === b.kind && Number(q.marks) === b.marks && !recentlyUsed.has(q.id));
+    if (pool.length < b.count) pool = questions.filter((q) => kindOf(q.section) === b.kind && Number(q.marks) === b.marks); // bank exhausted → allow repeats
     const picked = pickSpread(pool, b.count);
     picked.forEach((q) => recentlyUsed.add(q.id));
     paper.push(...picked);
@@ -95,7 +102,7 @@ for (const start of AT ? [new Date(AT)] : nextSundays(WEEKS)) {
   const label = start.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" });
   const { error } = await db.from("mock_events").insert({
     title: TITLE ?? `All-India Mock #${n} — ${label}`,
-    branch_code: "CSE",
+    branch_code: BRANCH,
     starts_at: start.toISOString(),
     ends_at: ends.toISOString(),
     results_at: results.toISOString(),

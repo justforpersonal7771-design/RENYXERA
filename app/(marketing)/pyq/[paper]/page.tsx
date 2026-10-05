@@ -25,13 +25,13 @@ export default async function PaperPage({ params }: { params: Promise<{ paper: s
   const sections = [...new Set(qs.map((q) => q.section || "Questions"))];
   return (
     <div className="py-10 sm:py-14 space-y-8">
-      <nav aria-label="Breadcrumb" className="text-sm"><Link href="/pyq" className="inline-flex items-center gap-1 text-[var(--text-secondary)] hover:text-violet-600"><ArrowLeft className="w-4 h-4" /> All GATE CS papers</Link></nav>
+      <nav aria-label="Breadcrumb" className="text-sm"><Link href="/pyq" className="inline-flex items-center gap-1 text-[var(--text-secondary)] hover:text-violet-600"><ArrowLeft className="w-4 h-4" /> All GATE {p.paperCode} papers</Link></nav>
       <header className="flex flex-col sm:flex-row sm:items-end gap-4 justify-between">
         <div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">{p.label}</h1>
           <p className="mt-2 text-[var(--text-secondary)]">{p.count} questions · {p.marks} marks · 180 minutes</p>
         </div>
-        <Link href="/setup" className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25"><Play className="w-4 h-4 fill-current" /> Take this paper as a timed test</Link>
+        <Link href={`/setup?branch=${p.branch}`} className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25"><Play className="w-4 h-4 fill-current" /> Take this paper as a timed test</Link>
       </header>
       <SponsorSlot context={p.label} seed={Number(p.year)} />
       {sections.map((sec) => (

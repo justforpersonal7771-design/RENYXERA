@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { getCurrentBranch } from "@/lib/branch/current";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
 import { Trophy, Play, Hourglass, CloudOff, Medal, ShieldAlert, CalendarDays, ChevronRight, Loader2 } from "lucide-react";
@@ -40,7 +41,7 @@ export function MockStatusCard() {
     try {
       const { createClient } = await import("@/lib/supabase/client");
       const sb = createClient();
-      const { data: mocks } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at").order("starts_at", { ascending: false }).limit(12);
+      const { data: mocks } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at").eq("branch_code", getCurrentBranch()).order("starts_at", { ascending: false }).limit(12);
       const list = (mocks as Mock[]) ?? [];
       const t = Date.now();
       let mine: Attempt[] = [];

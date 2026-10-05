@@ -33,10 +33,10 @@ export const BRANCHES: BranchInfo[] = [
     blurb: "Built on our Computer Science engine — the maths, programming and algorithms overlap means DA is next in line.",
   },
   {
-    code: "ECE", slug: "gate-ece", paper: "EC", name: "Electronics & Communication Engineering", short: "Electronics & Communication", live: false,
-    candidates: "about 96,000 candidates sat GATE 2026", trend: "The second-largest paper, up sharply in 2026.", plannedLaunch: "2027",
+    code: "ECE", slug: "gate-ece", paper: "EC", name: "Electronics & Communication Engineering", short: "Electronics & Communication", live: true,
+    candidates: "about 96,000 candidates sat GATE 2026", trend: "The second-largest paper, up sharply in 2026.", plannedLaunch: null,
     subjects: ["Engineering Mathematics", "Networks", "Signals & Systems", "Electronic Devices", "Analog Circuits", "Digital Circuits", "Control Systems", "Communications", "Electromagnetics", "General Aptitude"],
-    blurb: "Past papers with step-by-step solutions, topic-wise practice and full mocks for EC.",
+    blurb: "Every official GATE EC paper from 2021 to 2026 (390 questions, tagged to the official syllabus), a real exam-interface simulator, mistake analytics and an AI mentor.",
   },
   {
     code: "EE", slug: "gate-ee", paper: "EE", name: "Electrical Engineering", short: "Electrical", live: false,

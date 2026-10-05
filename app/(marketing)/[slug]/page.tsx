@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ? `GATE ${b.paper} Preparation — Free PYQs, Mocks & AI Mentor | RENYXERA`
     : `GATE ${b.paper} (${b.short}) Preparation — Coming to RENYXERA`;
   const description = b.live
-    ? `Prepare for GATE ${b.name} with every official paper since 2017, an exam-like test simulator, mistake analytics and an AI mentor. Free to start.`
+    ? `Prepare for GATE ${b.name} with every official paper ${b.code === "CSE" ? "since 2017" : "from 2021 to 2026"}, an exam-like test simulator, mistake analytics and an AI mentor. Free to start.`
     : `GATE ${b.name} preparation is coming to RENYXERA: past papers with solutions, topic-wise practice and full mocks. Join the waitlist to be notified at launch.`;
   return { title, description, alternates: { canonical: `/${b.slug}` }, openGraph: { title, description, type: "website" } };
 }
@@ -36,7 +36,7 @@ const FEATURES = [
 export default async function BranchPage({ params }: { params: Promise<{ slug: string }> }) {
   const b = branchBySlug((await params).slug);
   if (!b) notFound();
-  const stats = b.live ? syllabusStats() : null;
+  const stats = b.live && b.code === "CSE" ? syllabusStats() : null; // weightage charts: CS data only for now
   const faq = [
     { q: `What is the GATE ${b.paper} exam pattern?`, a: "GATE is a 3-hour computer-based test with 65 questions for 100 marks: General Aptitude carries 15 marks and your subject the remaining 85. Questions are multiple choice (MCQ), multiple select (MSQ) or numerical answer (NAT); only wrong MCQs carry negative marks." },
     { q: `How many students write GATE ${b.paper}?`, a: `${b.candidates[0].toUpperCase()}${b.candidates.slice(1)} (${b.paper} paper). ${b.trend}` },
@@ -84,7 +84,7 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
           <div className="card-glass rounded-3xl p-6 sm:p-8">
             <p className="text-lg font-bold text-[var(--text-primary)]">Start practising today</p>
             <p className="text-sm text-[var(--text-secondary)] mt-1">No sign-up needed to try it. Create a free account to save your progress on every device.</p>
-            <Link href="/setup" className="mt-5 inline-flex w-full h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30">
+            <Link href={`/setup?branch=${b.code}`} className="mt-5 inline-flex w-full h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30">
               Start a free practice test <ArrowRight className="w-4 h-4" />
             </Link>
           </div>

@@ -4,7 +4,7 @@ import { ReportIssueButton } from "@/components/ui/report-issue-button";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { allPapers, allQuestions, paperBySlug, paperQuestions, plainText, subjectSlug } from "@/lib/seo/pyq";
+import { allPapers, allQuestions, paperBySlug, paperOfQuestion, paperQuestions, plainText, subjectSlug } from "@/lib/seo/pyq";
 import { SITE_URL } from "@/lib/site";
 import { PyqBody } from "@/components/seo/pyq-body";
 
@@ -37,13 +37,13 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
   if (!f) notFound();
   const { p, qs, i, question } = f;
   const prev = qs[i - 1], next = qs[i + 1];
-  const related = allQuestions().filter((x) => x.topic === question.topic && x.question_id !== question.question_id).slice(0, 6);
+  const related = allQuestions(p.branch).filter((x) => x.topic === question.topic && x.question_id !== question.question_id).slice(0, 6);
   const url = `${SITE_URL}/pyq/${p.slug}/q${question.question_no}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "GATE CS PYQs", item: `${SITE_URL}/pyq` },
+      { "@type": "ListItem", position: 1, name: `GATE ${p.paperCode} PYQs`, item: `${SITE_URL}/pyq` },
       { "@type": "ListItem", position: 2, name: p.label, item: `${SITE_URL}/pyq/${p.slug}` },
       { "@type": "ListItem", position: 3, name: `Question ${question.question_no}`, item: url },
     ],
@@ -53,7 +53,7 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
     <div className="py-8 sm:py-12 max-w-3xl">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <nav aria-label="Breadcrumb" className="text-sm flex flex-wrap items-center gap-1 text-[var(--text-secondary)]">
-        <Link href="/pyq" className="hover:text-violet-600">GATE CS PYQs</Link><span aria-hidden="true">/</span>
+        <Link href="/pyq" className="hover:text-violet-600">GATE {p.paperCode} PYQs</Link><span aria-hidden="true">/</span>
         <Link href={`/pyq/${p.slug}`} className="hover:text-violet-600">{p.label}</Link><span aria-hidden="true">/</span>
         <span className="text-[var(--text-primary)] font-semibold">Q{question.question_no}</span>
       </nav>
@@ -84,7 +84,7 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
           <h2 id="related" className="text-lg font-extrabold text-[var(--text-primary)] mb-3">More on {question.topic}</h2>
           <ul className="space-y-2">
             {related.map((r) => {
-              const rp = allPapers().find((x) => r.question_id.includes(`_${x.yearShift.replace("-", "_")}_`));
+              const rp = paperOfQuestion(r.question_id);
               return rp ? (
                 <li key={r.question_id}>
                   <Link href={`/pyq/${rp.slug}/q${r.question_no}`} className="block rounded-xl border border-[var(--border)] p-3 hover:border-violet-500/50">
