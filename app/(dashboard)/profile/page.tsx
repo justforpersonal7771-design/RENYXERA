@@ -210,7 +210,12 @@ export default function ProfilePage() {
   const usernameBlocksSave = nameStatus.state === "checking" || nameStatus.state === "unavailable";
 
   // Sections, synced to the URL hash so /profile#devices opens that section directly.
-  const [tab, setTab] = useState<SectionId>("overview");
+  // ?tab=goals etc. deep-links a section (e.g. the header branch badge).
+  const [tab, setTab] = useState<SectionId>(() => {
+    if (typeof window === "undefined") return "overview";
+    const t = new URLSearchParams(window.location.search).get("tab");
+    return (SECTIONS.some((s) => s.id === t) ? t : "overview") as SectionId;
+  });
   useEffect(() => {
     const read = () => {
       const h = window.location.hash.slice(1);

@@ -87,6 +87,12 @@ export class IDBManager {
     return this.namespaceGate;
   }
 
+  /** Resolves once the auth listener knows who is signed in (and so which branch database
+   *  and question bank apply). Safe to await anywhere; never hangs (NAMESPACE_WAIT_MS). */
+  public static whenResolved(): Promise<void> {
+    return this.waitForNamespace();
+  }
+
   /** Called by the auth listener once the first sign-in state is known (also for guests). */
   public static markNamespaceResolved(): void {
     if (this.namespaceResolved) return;

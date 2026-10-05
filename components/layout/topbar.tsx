@@ -175,7 +175,7 @@ export function Topbar() {
             <Wordmark />
             <span className="logo-sweep" aria-hidden="true" />
           </span>
-          {(isPro || isPlus) && <span className={`pro-badge ${isPlus ? "is-silver" : ""}`} title={isPro ? "RENYXERA Pro" : "RENYXERA Plus"}>{isPro ? "PRO" : "PLUS"}</span>}
+          {(isPro || isPlus) && <span className={`pro-badge ${isPlus ? "is-silver" : ""}`}>{isPro ? "PRO" : "PLUS"}</span>}
         </Link>
 
         {/* Desktop nav — a floating glass dock with a hover highlight that glides

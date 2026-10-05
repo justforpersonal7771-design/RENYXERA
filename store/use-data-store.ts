@@ -34,18 +34,21 @@ export const useDataStore = create<DataState>((set, get) => ({
   totalTopics: 0,
   diagnostics: null,
 
-  initializeData: async (url = bankUrl()) => {
+  initializeData: async (url?: string) => {
     return get().loadRepository(url);
   },
 
-  loadRepository: async (url = bankUrl()) => {
+  loadRepository: async (url?: string) => {
     // Avoid re-initialization if already loaded
     if (get().isInitialized || get().isLoading) return;
 
     set({ isLoading: true, error: null });
 
     try {
-      await QuestionRepository.initialize(url);
+      // Wait until auth has resolved: a signed-in account's branch (and so its bank) is only
+      // known then. Without this a page load would fetch the guest/default bank first.
+      await IDBManager.whenResolved();
+      await QuestionRepository.initialize(url ?? bankUrl());
 
       // Load AI Generated Questions from IndexedDB and register them
       try {
@@ -83,11 +86,12 @@ export const useDataStore = create<DataState>((set, get) => ({
     }
   },
 
-  refreshRepository: async (url = bankUrl()) => {
+  refreshRepository: async (url?: string) => {
     set({ isLoading: true, error: null });
     try {
       if (!QuestionRepository.isReady()) {
-        await QuestionRepository.initialize(url);
+        await IDBManager.whenResolved();
+        await QuestionRepository.initialize(url ?? bankUrl());
       }
 
       const diagnostics = QuestionRepository.generateDiagnostics();
