@@ -460,8 +460,8 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | Rights check recorded in the source ledger before ingestion | ⬜ |
 | Extraction (8A) → answer-key match → tagging → human QA sample (≥98% first-pass accuracy) | ⬜ |
 | Launch gate: PYQs + keys + taxonomy + starter practice (6D) + topic pages (6E) before a branch leaves "Coming Soon" | ⬜ |
-| Branch scoping (after EC 2021–2026 is extracted and tagged): a user sees and can open only their own branch's content; other branches stay hidden | 🟨 *(designed: `docs/MULTI_BRANCH_DESIGN.md` — 10-step build plan + 10 acceptance tests; development next)* |
-| Branch switching: the user can switch branch at any time and switch back; all progress, attempts, analytics and settings are kept per branch, and switching resumes where they left off with zero data loss | 🟨 *(designed: `docs/MULTI_BRANCH_DESIGN.md` — 10-step build plan + 10 acceptance tests; development next)* |
+| Branch scoping (after EC 2021–2026 is extracted and tagged): a user sees and can open only their own branch's content; other branches stay hidden | 🟨 *(designed: `docs/MULTI_BRANCH_DESIGN.md` — branch-locked Plus/Pro with irreversible confirmation + once-per-account email change, 25 edge cases, 17 acceptance tests; development next)* |
+| Branch switching: the user can switch branch at any time and switch back; all progress, attempts, analytics and settings are kept per branch, and switching resumes where they left off with zero data loss | 🟨 *(designed: `docs/MULTI_BRANCH_DESIGN.md` — branch-locked Plus/Pro with irreversible confirmation + once-per-account email change, 25 edge cases, 17 acceptance tests; development next)* |
 
 ---
 

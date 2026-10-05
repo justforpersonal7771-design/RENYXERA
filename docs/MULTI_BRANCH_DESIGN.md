@@ -15,11 +15,14 @@
 | R3 | Users may switch to another branch | Profile → "Exam branch" switcher, with confirmation (§8) |
 | R4 | Switch back and forth, no data loss | No data is ever deleted or rewritten on a switch. All progress is stored per branch, and switching only changes which partition is shown (§4) |
 | R5 | Continue from where they left off | Per-branch "last state" (last route, last practice filters, in-progress exam) is restored on switch-back (§4.4) |
+| R6 | Plus and Pro are **bought for one branch** and only unlock that branch | Entitlements are keyed by `(user_id, branch_code)` (§9) |
+| R7 | Before paying, the user **confirms the branch with an explicit signal**, and that confirmation **cannot be reversed** | Branch-lock confirmation step at checkout, stored as an immutable record (§9.2) |
+| R8 | A paid branch can be changed only by **email request to support**, **at most once** per account | `subscription_branch_changes` table with a one-per-account constraint, applied only by an admin function (§9.4) |
 
 Non-goals for this release:
 - Taking two branches at once in one view.
 - Combined cross-branch analytics.
-- Per-branch pricing. Pro stays account-level (§9).
+- Self-service change of a paid branch (by design, R8).
 
 ---
 
@@ -115,7 +118,7 @@ New migration `0026_multi_branch.sql`:
 
 ### 4.5 What is account-level (shared across branches)
 - Identity, username, avatar, college, phone and preferences such as theme.
-- Pro entitlement and AI credits (§9).
+- Free-tier AI daily quota and purchased AI credit packs (§9.6). **Plus and Pro are NOT account-level**: they belong to one branch (§9).
 - Referrals.
 - Device sessions.
 - The protected-downloads vault key. Packs inside the vault are tagged with a branch and listed per branch.
@@ -184,7 +187,10 @@ New migration `0026_multi_branch.sql`:
 | **Mocks + leaderboards** (`mocks`) | Mock events listed by branch. Every leaderboard tab is per branch |
 | **AI tutor / mentor** (`ai-tutor`, `ai-mentor`) | Knowledge graph and memory per branch. Prompts carry branch and subject names |
 | **Downloads** (`downloads`) | Packs listed and created per branch |
-| **Pro page** (`pro`) | Copy: "Pro covers every branch". No per-branch price |
+| **Pro page / checkout** (`pro`) | Plan cards for the active branch. Branch-lock confirmation card: typed paper code + tick box, then Pay (§9.2). "You already have Pro on CSE" notice when relevant |
+| **Profile → Subscription** (new section) | Per-branch list (tier, expiry, "Locked"), branch-change status (1 available / used), `mailto:` request link |
+| **Header badge / switcher** | Tier badge only on the subscribed branch; switcher rows show "Pro" / "Free" per branch |
+| **Receipts / emails** | Branch printed and marked "locked" |
 | **Search / command palette** | Searches the active branch only. Recent searches keyed per branch (`gateos_recent_searches:<code>`) |
 | **Marketing landing** (`app/(marketing)/[slug]`) | `live` flag drives "Start practising" vs "Notify me". The ECE page goes live with real counts |
 | **About stats, sitemap, SEO PYQ pages** (`lib/seo/pyq.ts`, `app/sitemap.ts`) | Generated per live branch (`/pyq/gate-ece/2024/q7` style) |
@@ -209,11 +215,84 @@ New migration `0026_multi_branch.sql`:
 
 ---
 
-## 9. Monetisation, quotas, AI
+## 9. Branch-specific Plus / Pro (user decision, 5 Oct 2026)
 
-- **Pro (`entitlements`) is account-level** and covers all branches.
-- **AI daily quota and credits** are account-level, so switching does not reset them.
-- **The AI pregen cache** is keyed by question id, so the nightly pregen loops over live branches in a fixed order.
+### 9.1 Rule
+- A Plus or Pro subscription is bought **for exactly one branch** (the "subscribed branch").
+- It unlocks paid features **only while that branch is active**.
+- Switching to another branch shows that branch as **Free**. The subscription is not lost, paused or shortened: switching back restores the paid features immediately, and the expiry date keeps running.
+- A user may hold separate subscriptions for different branches (for example Pro for ECE and Plus for CSE). Each is bought, confirmed and locked on its own.
+
+### 9.2 Branch confirmation at checkout (the irreversible signal)
+Checkout (`/pro`) gets a mandatory step before the Razorpay order is created:
+
+1. **Default branch:** the currently active branch. A branch that is not `live` cannot be bought.
+2. **Confirmation card**, which states:
+   - the branch's full name and paper code ("GATE Electronics & Communication Engineering — paper EC");
+   - its question count;
+   - this text: **"This subscription will be locked to ECE. It cannot be moved to another branch later. One branch change is possible only by emailing support, once per account."**
+3. **The signal.** The user must do both before the Pay button enables:
+   - type the paper code (`EC`) into a box;
+   - tick "I confirm ECE is my GATE paper".
+4. **On Pay:**
+   - `/api/billing/order` receives `{plan_id, branch_code, confirm_token}`.
+   - The server re-checks that the branch is `live` and that `confirm_token` matches the typed code.
+   - It writes an immutable `branch_lock_confirmations` row before creating the order: `user_id`, `branch_code`, `plan_id`, `typed_code`, `confirmed_at`, `ip_hash`, `user_agent_hash`, `order_id`.
+   - It puts `branch_code` into the Razorpay order `notes`, so the payment provider's own record also carries the branch.
+5. **Webhook / verify** (`0019`/`0022` functions) reads `branch_code` from the **order row**, never from the client. It grants the entitlement for that branch only.
+6. **No reversal:** there is no UI or API to change `branch_code` on an order or entitlement. RLS denies update and delete on `branch_lock_confirmations` and on the entitlement's `branch_code`, and a trigger raises an error if `branch_code` changes, except through `admin_change_subscription_branch` (§9.4).
+7. **Receipt / invoice and confirmation email:** these show "Branch: ECE (EC) — locked".
+
+### 9.3 Data model (migration `0026_multi_branch.sql`)
+- **`entitlements`:**
+  - Add `branch_code text not null references branches(code)`.
+  - Backfill existing rows with `'CSE'`, since every subscription so far was bought while only CSE existed. Users are notified in-app (§12, edge case E14).
+  - Change the primary key from `(user_id)` to `(user_id, branch_code)`.
+- **`billing_orders`:** add `branch_code` (not null for new orders) and `lock_confirmation_id`.
+- **`is_pro(p_user)`** becomes `is_pro(p_user, p_branch)`. Add `has_plan(p_user, p_branch, p_tier)`. Every server check passes the **active** branch.
+- **Prorated upgrade (0022)**, from Plus to Pro: allowed **only within the same branch**. Buying for a different branch is a new subscription, not an upgrade.
+- **`branch_lock_confirmations`:** append-only.
+- **`subscription_branch_changes`:**
+  - Columns: `id`, `user_id`, `entitlement_branch_from`, `branch_to`, `request_email_id`, `requested_at`, `approved_by`, `applied_at`, `reason`.
+  - Unique `(user_id)`, so it is physically impossible to apply a second change.
+  - No client access: service role and admin only.
+
+### 9.4 The once-per-account branch change (by email)
+1. **The user emails support** from the account's email address, with subject "Branch change request". They can use the `mailto:` link from Profile → Subscription, which pre-fills the user id, current branch and wanted branch.
+2. **Profile → Subscription** shows the status: "Branch change: **1 available**" or "**Used** on 12 Nov 2026 (CSE → ECE)". The button is hidden once it is used.
+3. **The admin checks:**
+   - the sender's email matches the account;
+   - no previous change exists;
+   - the target branch is `live`;
+   - the subscription is active.
+4. **The admin runs `select admin_change_subscription_branch(user_id, from, to, ticket_ref)`.** This security-definer function, owner-only and never exposed to clients:
+   - inserts into `subscription_branch_changes` (the unique key blocks a second time);
+   - moves the entitlement row to `branch_to`, keeping `valid_until` and tier unchanged;
+   - writes an audit row.
+5. **Merge rule:** if the user already has a subscription on the target branch, the two merge. The result keeps the higher tier, and the remaining days of both are added together.
+6. **A confirmation email** is sent by the admin, from the template in `docs/` (to write). The in-app banner shows the new lock.
+7. **Progress data is never moved.** Only the paid entitlement changes branch.
+
+### 9.5 Feature gating
+- **Plus/Pro features** are gated by `has_plan(user, activeBranch, tier)` on the server and by `useEntitlements(activeBranch)` on the client. They are:
+  - solutions and explanations beyond the free limit;
+  - full mocks and analytics depth;
+  - protected downloads;
+  - higher AI quota;
+  - leaderboard tiers;
+  - and similar.
+- **A Pro badge** shows in the header only on the subscribed branch. On other branches it shows "Free on ECE · Pro on CSE" in the switcher, as an upsell.
+- **The ad-free flag** follows the active branch's entitlement.
+
+### 9.6 Quotas and AI
+- The **free AI daily quota** is account-level, so switching branches cannot multiply it.
+- The **Plus/Pro AI quota uplift** applies only while the subscribed branch is active.
+- **Purchased AI credit packs** are account-level, as a consumable.
+- **The AI pregen cache** is keyed by question id. The nightly pregen loops over live branches in a fixed order.
+
+### 9.7 Referrals and promos
+- **Referral reward days** are added to the referrer's subscription on its **subscribed branch**. If they have none, the days are held as account credit, applied at the next purchase to the branch they confirm.
+- **Promo codes** may be branch-restricted (`promo.branch_codes`).
 
 ---
 
@@ -244,13 +323,21 @@ Each step is a commit. The batch is pushed when the whole block passes build + P
    - Applied by the user in the Supabase SQL editor (steps given then).
 5. **APIs:** exam start/grade, answers, AI, downloads, leaderboards and sync use the active branch, with branch-mismatch tests.
 6. **Screens:** §7, one group per commit (onboarding + profile switcher, then dashboard and practice, then review, analytics and calendar, then mocks and leaderboards, then AI, downloads and search).
-7. **ECE content:**
+7. **Branch-specific billing (§9):**
+   - entitlements re-keyed; `has_plan(user, branch, tier)`;
+   - checkout lock card and order `branch_code`;
+   - `branch_lock_confirmations`;
+   - `admin_change_subscription_branch`;
+   - Profile → Subscription;
+   - every gated feature re-pointed to the active branch;
+   - in-app notice to existing subscribers (E14).
+8. **ECE content:**
    - `seed-questions --branch ECE`;
    - generated `lib/syllabus/ECE.ts`;
    - ECE landing page live;
    - pregen enabled for ECE;
    - SEO pages.
-8. **Launch gate (checklist 8C):**
+9. **Launch gate (checklist 8C):**
    - ECE flips to `live` in `branches`, via SQL by the user.
    - Before that it runs as `beta_branches` for the owner's account only.
 
@@ -277,10 +364,67 @@ Each step is a commit. The batch is pushed when the whole block passes build + P
 8. **Upgrade path:** an existing CS-only user's IndexedDB and cloud records are backfilled as CSE, and every pre-release count is identical after the upgrade.
 9. **Images:** every EC figure, including option images, renders; CS images still render from the old URLs.
 10. **Visual:** every screen in §7 at 390px and 1440px, in light and dark.
+11. **Branch-locked purchase:**
+    - Buy Pro on ECE with the confirmation (Pay stays disabled until the typed code matches and the box is ticked).
+    - ECE shows Pro; switching to CSE shows Free; switching back shows Pro with the same expiry.
+12. **Lock cannot be reversed:**
+    - Any client or API attempt to change `branch_code` on the order or entitlement fails: RLS denial, then trigger error.
+    - The confirmation row cannot be updated or deleted.
+13. **Webhook trust:** a tampered client `branch_code` on verify is ignored; the grant follows the order row.
+14. **One-time change:**
+    - `admin_change_subscription_branch` succeeds once and preserves expiry and tier.
+    - A second call fails on the unique key.
+    - The profile shows "Used".
+15. **Merge:** a change into a branch with an existing subscription keeps the higher tier and adds the remaining days.
+16. **Gating everywhere:** every Plus/Pro feature returns 402/upsell on a non-subscribed branch, both server-side and client-side.
+17. **Existing subscribers:** pre-release Pro rows become `CSE`, with the expiry unchanged, and the one-time notice shows once.
 
 ---
 
-## 12. Open decisions (defaults chosen; change if you disagree)
+## 12. Edge cases (each needs a test or an explicit decision)
+
+| # | Situation | Behaviour |
+|---|---|---|
+| E1 | User switches branch **mid practice exam** | The session is saved and paused under the old branch; switching back offers resume (§4.4) |
+| E2 | User switches during a **live All-India mock** | Switch blocked with a message and the mock's end time |
+| E3 | **Two tabs** open, branch switched in one | `BroadcastChannel('renyxera-branch')` tells the other tab to reload into the new branch. An exam tab shows a "branch changed in another tab" banner and does not auto-switch until the exam ends |
+| E4 | **Two devices**, different active branches | The server `target_branch` is the truth. On focus or next sync, a device whose local branch differs shows "You switched to ECE on another device — follow / stay here (this device only)". A device-local override is allowed for browsing; server checks always use the profile value |
+| E5 | Switch while **offline** | Local switch works and the profile update is queued. If the queued update is later rejected (branch no longer live), revert with a notice |
+| E6 | A branch is **pulled back** to `coming_soon` after launch | Users on it are moved to their previous branch (or CSE) with a notice. Their data stays untouched and reappears if it relaunches. Its paid subscriptions are paused, and their expiry is extended by the downtime |
+| E7 | **Guest** practises in ECE, then signs up | Local ECE progress is merged into the new account under ECE, and onboarding pre-selects ECE |
+| E8 | Guest signs into an account whose branch differs from the guest's local branch | Account branch wins. Guest data is merged under its own branch, so nothing is lost and the user can switch to see it |
+| E9 | User **deletes progress** for one branch | Only that branch's partition is deleted (local + cloud), after typing the branch code to confirm. Other branches are untouched |
+| E10 | **Account export** | One file with a section per branch, plus subscriptions, lock confirmations and change history |
+| E11 | **Same question id** appears in two branches | Impossible by construction: ids carry the paper code (`GATE_EC_…` vs `GATE_CS_…`). A common GA question is stored once per paper, as GATE does |
+| E12 | **Cross-branch bookmark link** shared (`/q/GATE_EC_2024_Q7`) opened by a CSE user | Page shows "This question is from GATE ECE. Switch branch to open it" with a Switch button, and does not reveal the content in-app. SEO public pages stay public |
+| E13 | Payment succeeds but the **webhook is delayed** | Entitlement shows "Activating…" for the order's branch only; reconcile job as today |
+| E14 | **Existing Pro users** at launch (bought before branches) | Locked to CSE automatically. A one-time in-app notice explains the lock and the one-time email change (the free change remains available) |
+| E15 | User buys Pro for **a branch they are not active on** | Not allowed: checkout always targets the active branch, so the user must switch first. This avoids buying for the wrong branch |
+| E16 | **Refund** within the refund window | Refund removes that branch's entitlement only and keeps the lock record (audit). The once-per-account change is not consumed |
+| E17 | Branch-change email from a **different address** than the account | Rejected; the user must write from the account email or verify by OTP from Profile |
+| E18 | Second branch-change request | Politely refused (unique constraint); the user may buy a separate subscription for the other branch |
+| E19 | **Coming-soon branch selected via crafted request** | Rejected by the profile trigger and by every API |
+| E20 | **Calibration data missing** for a branch | Rank/score predictor shows "not yet available for ECE"; marks-based analytics still work |
+| E21 | **Service worker** holds an old single-branch `questions.json` | Cache name versioned (`data-v2-<code>`); the old cache is deleted on activate |
+| E22 | **Leaderboard** for a branch with very few users | Hide the board below N=20 active users, showing "Leaderboard opens when 20 ECE aspirants join" |
+| E23 | **Streak** across a switch | Per-branch streaks (§14). Studying in any branch also counts toward an account-level "days active" stat shown on the profile |
+| E24 | **Notifications/reminders** | Sent for the active branch only (daily question, mock reminders). The Telegram channel stays per branch |
+| E25 | Admin/support **impersonation** | Never; support works from DB rows and the user's export only |
+
+## 13. Additional features in this release
+
+1. **Branch switcher with previews:** each live branch shows question count, the user's progress in it (attempted / accuracy), subscription tier, and "last studied".
+2. **Per-branch home "continue" card:** resumes the last route, filters or exam for that branch (§4.4).
+3. **Branch-aware search and command palette** (`Ctrl+K`): searches only the active branch, and offers "Switch to ECE" as a command.
+4. **Per-branch goals and planner:** target rank and score per branch; the calendar plan is regenerated from that branch's syllabus weightage.
+5. **Common subjects shortcut:** Engineering Mathematics and General Aptitude progress is shown per branch. A "practise common topics" mode can pull the same syllabus topic from the active branch only, never mixing papers.
+6. **Syllabus map per branch:** a topic tree from `syllabus.json` with question counts and the user's accuracy per topic, which the tagging now enables.
+7. **Branch-specific landing → app deep link:** "Start practising ECE" signs up with ECE pre-selected.
+8. **Admin dashboard counters:** users per branch, switches per day, subscriptions per branch, and change requests.
+9. **Waitlist conversion:** when a branch flips to `live`, its waitlist gets an email inviting them to start on that branch, with the branch pre-selected.
+10. **Subscription status widget:** "Pro · ECE · 214 days left · Locked" in Profile and the switcher.
+
+## 14. Open decisions (defaults chosen; change if you disagree)
 
 - **Streak:** **per branch** (default), so each branch has its own study rhythm. The alternative is account-level.
 - **Guests:** can pick any live branch (cookie). Their local progress is partitioned the same way and merges into the account on sign-up.
