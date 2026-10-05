@@ -1,0 +1,14 @@
+{
+ "32": {
+  "status": "approved",
+  "note": "Text-layer glyph artefact (page number / private-use digits); verified by Claude against page image."
+ },
+ "55": {
+  "status": "approved",
+  "note": "Text-layer glyph artefact (page number / private-use digits); verified by Claude against page image."
+ },
+ "63": {
+  "status": "approved",
+  "note": "Text-layer glyph artefact (page number / private-use digits); verified by Claude against page image."
+ }
+}

@@ -451,7 +451,9 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 | EC 2026 transcribed by Claude, 27 figures eye-checked, 65/65 validated → `data/pyq/EC/gate_ec_pyqs.json` | ✅ *(untagged; in-app render check pending — Q7 table)* |
 | EC 2025 transcribed by Claude, 42 figures, 65/65 validated, 130/130 EC render-clean | ✅ *(bank now in the exact CS `Aggregated_Output.json` format; provenance in `gate_ec_pyqs.meta.json`)* |
 | EC 2024 transcribed by Claude, 32 figures (explicit crops: the 2024 PDF carries a full-page watermark), 65/65 validated, EC bank 195/195 render-clean | ✅ |
-| EC 2023 transcription | ⬜ *(next)* |
+| EC 2023 transcribed by Claude, 39 figures, 65/65 validated | ✅ |
+| EC 2022 transcribed by Claude, 33 figures eye-checked, 62/65 auto + 3 reviewed (text-layer glyph artefacts); EC bank 325/325 render-clean | ✅ |
+| EC 2021 (scanned PDF: OCR-style text transcription from page images, figures/tables cropped) | ⬜ *(next)* |
 | Official syllabus → topic taxonomy per branch | ⬜ |
 | Calibration data per branch (4J) | ⬜ |
 | Rights check recorded in the source ledger before ingestion | ⬜ |

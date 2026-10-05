@@ -224,7 +224,7 @@ The branch JSON is `data/pyq/<BRANCH>/gate_<branch>_pyqs.json`. It uses the same
 |---|---|
 | EC 2026, 2025, 2024 | ✅ 195/195 in the bank, render-clean, pushed |
 | EC 2023 | ✅ 65/65 validated, 39 figures. Committed. **Not yet in the bank, docs or checklist status** (run build.py and update the docs) |
-| EC 2022 | 🟨 Q1–35 transcribed (`b01`–`b03`, Q21–35 not yet validated). **Next: Q36–65, pages p030–p054.** Q36 and Q37 were read (p030), along with Q39 (p032) and Q41 (p034). Q38, Q40 and Q42 onward still need reading. |
+| EC 2022 | ✅ 65/65 in bank (325 total). Old note: 🟨 Q1–35 transcribed (`b01`–`b03`, Q21–35 not yet validated). **Next: Q36–65, pages p030–p054.** Q36 and Q37 were read (p030), along with Q39 (p032) and Q41 (p034). Q38, Q40 and Q42 onward still need reading. |
 | EC 2021 | ⬜ The PDF is **scanned, with no text layer** (39 pages). Transcribe from images only, and expect validator flags because the text-layer check is missing. Key: `data/pyq/EC/keys_manual/EC_2021.tsv`. Q19 and Q36 are marks-to-all. |
 | EC tagging | ⬜ Claude tags subject and topic from `EC_GATE2027_syllabus.pdf` (`tag.py` still calls Gemini and must be replaced) |
 | EE, ME, CE, DA | ⬜ Same pipeline after EC |
