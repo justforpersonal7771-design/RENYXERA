@@ -22,6 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import BRANCH_NAMES, PYQ, RAW, WORK, question_id, read_json, write_json  # noqa: E402
+from tagcodes import load_tags  # noqa: E402
 
 SHIFT = {None: "", 1: "S1", 2: "S2"}
 
@@ -46,7 +47,10 @@ def main() -> int:
         m = manifest[pid]
         val = read_json(WORK / code / pid / "validated.json")
         ext = read_json(WORK / code / pid / "questions.json") or read_json(WORK / code / pid / "questions.pass_a.json")
-        tags = read_json(WORK / code / pid / "tags.json", {}) or {}
+        tags, tag_errs = load_tags(code, pid)  # Claude's tags (data/pyq/<BRANCH>/tags), expanded from the closed syllabus list
+        if tag_errs:
+            raise SystemExit("; ".join(tag_errs))
+        tags = tags or read_json(WORK / code / pid / "tags.json", {}) or {}
         reviews = read_json(PYQ / code / "reviews" / f"{pid}.json", {}) or {}
         if not val or not ext:
             pending.append(f"{pid}: not extracted/validated yet")

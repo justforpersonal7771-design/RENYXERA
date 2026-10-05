@@ -172,35 +172,26 @@ Compiling in MathJax is necessary but not sufficient. Before shipping a branch:
 3. Images: `images_required` must resolve to files served by the app.
 4. Record anything broken in `checklist.md` and fix the renderer, not the data, unless the data is wrong.
 
-## 8. Tagging (not yet implemented; do after transcription)
+## 8. Tagging (done by Claude DURING transcription)
 
-- Parse the official syllabus with `tag.py`'s `parse_syllabus` into `data/pyq/<BR>/syllabus.json`. GA uses the fixed taxonomy.
-- Claude assigns section, subject, topic and difficulty per question **from the closed syllabus list only**, and writes `_work/<BR>/<pid>/tags.json` as `{"12": {"section": …, "subject": …, "topic": …, "difficulty": "easy|medium|hard"}}`.
-  - Better: keep a tracked copy at `data/pyq/<BR>/tags/<pid>.json` and point `build.py` at it.
-- Remove the Gemini call from `tag.py`.
+- **Syllabus first, by hand.** `parse_syllabus` mangles the PDF (split phrases, lost labels, broken apostrophes), so curate `data/pyq/<BR>/syllabus.json` by hand from the official text: topics verbatim, split only at the syllabus's own commas; unlabelled paragraphs get a subject name recorded in `_editorial`. Then add the branch's subject codes to `CODES` in `scripts/pyq/tagcodes.py` (it refuses to run if any syllabus subject lacks a code).
+- **Tag while transcribing** (user rule, 5 Oct 2026): with each `bNN.json` batch, append its lines to `data/pyq/<BR>/tags/<pid>.tsv` -> `qno<TAB>CODE.i<TAB>E|M|H` (i = topic index; `tagcodes.py <BR> --codes` prints the table). GA uses VA/QA/AA/SA.
+- `python scripts/pyq/tagcodes.py <BR>` checks every paper: all questions tagged, no stray qno, GA/core matches the key. `build.py` expands the codes into the exact syllabus section/subject/topic text and stops on any bad line.
+- `tag.py` is kept only for `GA` and `parse_syllabus`; do not run its Gemini path.
 
-## 9. Status (30 Sep 2026)
+## 9. Status (5 Oct 2026)
 
-| Branch | Papers fetched | Keys | Transcribed | Validated | In bank |
-|---|---|---|---|---|---|
-| EC | 2021–2026 | all pass (2021 scan transcribed by Claude → `keys_manual/EC_2021.tsv`; MTA at Q19, Q36) | **2026–2021 done** (390); next: tagging | 2026–2023: 65/65; 2022: 62 + 3 reviewed; 2021 (scan): 65 reviewed | 2026–2021 (untagged) |
-| EE, ME, CE, DA | not yet | – | – | – | – |
-
-Done for EC_2026:
-- 7 batches.
-- 27 figures, each eye-checked.
-- Commits `1ad479d` and `16ceee1` (not pushed yet: push with the next batch).
-
-Removed: `extract.py` (Gemini). No script in the pipeline calls an AI API except `tag.py`, which is to be replaced (§8). Ignore any old `_work/**/*.pass_a.json` files.
+| Branch | Papers | Transcribed + validated | Tagged | In bank |
+|---|---|---|---|---|
+| EC | 2021-2026 | all 390 (2021 scan as text, 65 reviewed; 2022: 3 reviewed) | all 390 (EC syllabus curated; 36 subjects) | 390, render-clean |
+| EE, ME, CE, DA | not yet | - | - | - |
 
 ## 10. Next steps, in order
 
-1. The §7 rendering check on EC_2026 in the app (Q7's table is now an image).
-3. Tagging (§8) for EC_2026.
-4. EC 2025 → 2021, one paper at a time: render, regions, transcribe, crop, eye-check, validate, build, commit.
-5. EE, ME, CE (two shifts!), DA: fetch, then as above.
-6. 2017–2020 from the bulk archive (check the link naming and shifts per year).
-7. After each branch: push, update `checklist.md`, tell the user what is next.
+1. Multi-branch feature in the app (design doc, then build) - next turn.
+2. EE, ME, CE (two shifts!), DA: fetch, curate syllabus + codes, then per paper: render, regions, transcribe **and tag**, crop, eye-check, validate, tagcodes, build, render-check, commit.
+3. 2017-2020 from the bulk archive (check link naming and shifts per year).
+4. After each branch: push, update `checklist.md`, tell the user what is next.
 
 ## 11. Quality bar, in one line
 
