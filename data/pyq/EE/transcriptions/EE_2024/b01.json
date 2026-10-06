@@ -1,0 +1,385 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "If ‘→’ denotes increasing order of intensity, then the meaning of the words [talk → shout → scream] is analogous to [please → ________ → pander].\nWhich one of the given options is appropriate to fill the blank?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "flatter"
+   },
+   {
+    "option_id": "B",
+    "text": "flutter"
+   },
+   {
+    "option_id": "C",
+    "text": "fritter"
+   },
+   {
+    "option_id": "D",
+    "text": "frizzle"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "P and Q have been allotted a hostel room with two beds, a study table, and an almirah. P is an avid bird-watcher and wants to sit at the table and watch birds outside the window. Q does not mind that as long as his bed is close to the ceiling fan.\nWhich one of the following arrangements suits them the most?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_02_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_02_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_02_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_02_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_02_A",
+    "page": 2,
+    "rect": [
+     118,
+     228,
+     250,
+     323
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_02_B",
+    "page": 2,
+    "rect": [
+     118,
+     345,
+     250,
+     442
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_02_C",
+    "page": 2,
+    "rect": [
+     118,
+     467,
+     250,
+     562
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_02_D",
+    "page": 2,
+    "rect": [
+     118,
+     592,
+     250,
+     683
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 3,
+  "pages": [
+   3
+  ],
+  "question_text": "The decimal number system uses the characters 0, 1, 2, ..., 8, 9, and the octal number system uses the characters 0, 1, 2, ..., 6, 7. For example, the decimal number 12 ( = \\(1 \\times 10^1 + 2 \\times 10^0\\) ) is expressed as 14 ( = \\(1 \\times 8^1 + 4 \\times 8^0\\) ) in the octal number system.\nThe decimal number 108 in the octal number system is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "168"
+   },
+   {
+    "option_id": "B",
+    "text": "108"
+   },
+   {
+    "option_id": "C",
+    "text": "150"
+   },
+   {
+    "option_id": "D",
+    "text": "154"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 4,
+  "pages": [
+   3
+  ],
+  "question_text": "A shopkeeper buys shirts from a producer and sells them at 20% profit. A customer has to pay ₹3,186.00 including 18% taxes, per shirt. At what price did the shopkeeper buy each shirt from the producer?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "₹2,500.00"
+   },
+   {
+    "option_id": "B",
+    "text": "₹1,975.40"
+   },
+   {
+    "option_id": "C",
+    "text": "₹2,250.00"
+   },
+   {
+    "option_id": "D",
+    "text": "₹2,548.80"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   4
+  ],
+  "question_text": "If, for non-zero real variables \\(x\\), \\(y\\), and real parameter \\(a > 1\\), \\(x : y = (a + 1) : (a - 1)\\), then, the ratio \\((x^2 - y^2) : (x^2 + y^2)\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2a : (a^2 + 1)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(a : (a^2 + 1)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2a : (a^2 - 1)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(a : (a^2 - 1)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 6,
+  "pages": [
+   5
+  ],
+  "question_text": "In the given text, the blanks are numbered (i)−(iv). Select the best match for all the blanks.\nFollowing a row (i) the shopkeeper (ii) the price of a frying pan, the cook stood (iii) a row to withdraw cash (iv) the ATM booth.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(i) with (ii) over (iii) at (iv) with"
+   },
+   {
+    "option_id": "B",
+    "text": "(i) at (ii) over (iii) over (iv) in"
+   },
+   {
+    "option_id": "C",
+    "text": "(i) with (ii) over (iii) in (iv) at"
+   },
+   {
+    "option_id": "D",
+    "text": "(i) over (ii) with (iii) over (iv) at"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   6
+  ],
+  "question_text": "In the following figure,\nCD = 5 cm, BE = 10 cm, AE = 12 cm,\n\\(\\angle DAB = \\angle DCB\\), and \\(\\angle DAE = \\angle DBC = 90^\\circ\\)\nPoints AFCD create a rhombus.\n[IMAGE_Q_07_1]\nThe length of BF (in cm) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "3"
+   },
+   {
+    "option_id": "B",
+    "text": "2"
+   },
+   {
+    "option_id": "C",
+    "text": "4"
+   },
+   {
+    "option_id": "D",
+    "text": "6"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_07_1",
+    "page": 6,
+    "rect": [
+     244,
+     186,
+     392,
+     344
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 8,
+  "pages": [
+   7
+  ],
+  "question_text": "The chart below shows the data of the number of cars bought by Millennials and Gen X people in a country from the year 2010 to 2020 as well as the yearly fuel consumption of the country (in Million liters).\n[IMAGE_Q_08_1]\nConsidering the data presented in the chart, which one of the following options is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The percentage increase in fuel consumption from 2010 to 2015 is more than the percentage increase in fuel consumption from 2015 to 2020."
+   },
+   {
+    "option_id": "B",
+    "text": "The increase in the number of Millennial car buyers from 2015 to 2020 is less than the decrease in the number of Gen X car buyers from 2010 to 2015."
+   },
+   {
+    "option_id": "C",
+    "text": "The increase in the number of Millennial car buyers from 2010 to 2015 is more than the decrease in the number of Gen X car buyers from 2010 to 2015."
+   },
+   {
+    "option_id": "D",
+    "text": "The decrease in the number of Gen X car buyers from 2015 to 2020 is more than the increase in the number of Millennial car buyers from 2010 to 2015."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 7,
+    "rect": [
+     132,
+     148,
+     506,
+     348
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   8
+  ],
+  "question_text": "The assembly shown below has three teethed circular objects (Pinions) and two teethed flat objects (Racks), which are perfectly mating with each other. Pinions can only rotate clockwise or anti-clockwise staying at its own center. Racks can translate towards the left (←) or the right (→) direction.\n[IMAGE_Q_09_1]\nIf the object A (Rack) is translating towards the right (→) direction, the correct statement among the following is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Object B translates towards the right direction."
+   },
+   {
+    "option_id": "B",
+    "text": "Object B translates towards the left direction."
+   },
+   {
+    "option_id": "C",
+    "text": "Object R rotates in the anticlockwise direction."
+   },
+   {
+    "option_id": "D",
+    "text": "Object Q rotates in the clockwise direction."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_09_1",
+    "page": 8,
+    "rect": [
+     200,
+     153,
+     438,
+     358
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 10,
+  "pages": [
+   9
+  ],
+  "question_text": "A surveyor has to measure the horizontal distance from her position to a distant reference point C. Using her position as the center, a 200 m horizontal line segment is drawn with the two endpoints A and B. Points A, B, and C are not collinear. Each of the angles \\(\\angle CAB\\) and \\(\\angle CBA\\) are measured as 87.8°.\nThe distance (in m) of the reference point C from her position is nearest to",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2603"
+   },
+   {
+    "option_id": "B",
+    "text": "2606"
+   },
+   {
+    "option_id": "C",
+    "text": "2306"
+   },
+   {
+    "option_id": "D",
+    "text": "2063"
+   }
+  ],
+  "figures": []
+ }
+]
