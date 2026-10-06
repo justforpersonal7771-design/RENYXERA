@@ -1,0 +1,366 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "As you grow older, an injury to your _________ may take longer to _________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "heel / heel"
+   },
+   {
+    "option_id": "B",
+    "text": "heal / heel"
+   },
+   {
+    "option_id": "C",
+    "text": "heal / heal"
+   },
+   {
+    "option_id": "D",
+    "text": "heel / heal"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "In a 500 m race, P and Q have speeds in the ratio of 3 : 4. Q starts the race when P has already covered 140 m.\nWhat is the distance between P and Q (in m) when P wins the race?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "20"
+   },
+   {
+    "option_id": "B",
+    "text": "40"
+   },
+   {
+    "option_id": "C",
+    "text": "60"
+   },
+   {
+    "option_id": "D",
+    "text": "140"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 3,
+  "pages": [
+   3
+  ],
+  "question_text": "Three bells P, Q, and R are rung periodically in a school. P is rung every 20 minutes; Q is rung every 30 minutes and R is rung every 50 minutes.\nIf all the three bells are rung at 12:00 PM, when will the three bells ring together again the next time?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "5:00 PM"
+   },
+   {
+    "option_id": "B",
+    "text": "5:30 PM"
+   },
+   {
+    "option_id": "C",
+    "text": "6:00 PM"
+   },
+   {
+    "option_id": "D",
+    "text": "6:30 PM"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 4,
+  "pages": [
+   4
+  ],
+  "question_text": "Given below are two statements and four conclusions drawn based on the statements.\nStatement 1: Some bottles are cups.\nStatement 2: All cups are knives.\nConclusion I: Some bottles are knives.\nConclusion II: Some knives are cups.\nConclusion III: All cups are bottles.\nConclusion IV: All knives are cups.\nWhich one of the following options can be logically inferred?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Only conclusion I and conclusion II are correct"
+   },
+   {
+    "option_id": "B",
+    "text": "Only conclusion II and conclusion III are correct"
+   },
+   {
+    "option_id": "C",
+    "text": "Only conclusion II and conclusion IV are correct"
+   },
+   {
+    "option_id": "D",
+    "text": "Only conclusion III and conclusion IV are correct"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   5
+  ],
+  "question_text": "The figure below shows the front and rear view of a disc, which is shaded with identical patterns. The disc is flipped once with respect to any one of the fixed axes 1-1, 2-2 or 3-3 chosen uniformly at random.\nWhat is the probability that the disc DOES NOT retain the same front and rear views after the flipping operation?\n[IMAGE_Q_05_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{1}{3}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{2}{3}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "1"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_05_1",
+    "page": 5,
+    "rect": [
+     200,
+     186,
+     450,
+     362
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 6,
+  "pages": [
+   6
+  ],
+  "question_text": "Altruism is the human concern for the wellbeing of others. Altruism has been shown to be motivated more by social bonding, familiarity and identification of belongingness to a group. The notion that altruism may be attributed to empathy or guilt has now been rejected.\nWhich one of the following is the CORRECT logical inference based on the information in the above passage?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Humans engage in altruism due to guilt but not empathy"
+   },
+   {
+    "option_id": "B",
+    "text": "Humans engage in altruism due to empathy but not guilt"
+   },
+   {
+    "option_id": "C",
+    "text": "Humans engage in altruism due to group identification but not empathy"
+   },
+   {
+    "option_id": "D",
+    "text": "Humans engage in altruism due to empathy but not familiarity"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   7
+  ],
+  "question_text": "There are two identical dice with a single letter on each of the faces. The following six letters: Q, R, S, T, U, and V, one on each of the faces. Any of the six outcomes are equally likely.\nThe two dice are thrown once independently at random.\nWhat is the probability that the outcomes on the dice were composed only of any combination of the following possible outcomes: Q, U and V?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{1}{4}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{3}{4}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{1}{6}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{5}{36}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 8,
+  "pages": [
+   8
+  ],
+  "question_text": "The price of an item is 10% cheaper in an online store S compared to the price at another online store M. Store S charges ₹ 150 for delivery. There are no delivery charges for orders from the store M. A person bought the item from the store S and saved ₹ 100.\nWhat is the price of the item at the online store S (in ₹) if there are no other charges than what is described above?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2500"
+   },
+   {
+    "option_id": "B",
+    "text": "2250"
+   },
+   {
+    "option_id": "C",
+    "text": "1750"
+   },
+   {
+    "option_id": "D",
+    "text": "1500"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 9,
+  "pages": [
+   9
+  ],
+  "question_text": "The letters P, Q, R, S, T and U are to be placed one per vertex on a regular convex hexagon, but not necessarily in the same order.\nConsider the following statements:\n• The line segment joining R and S is longer than the line segment joining P and Q.\n• The line segment joining R and S is perpendicular to the line segment joining P and Q.\n• The line segment joining R and U is parallel to the line segment joining T and Q.\nBased on the above statements, which one of the following options is CORRECT?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The line segment joining R and T is parallel to the line segment joining Q and S"
+   },
+   {
+    "option_id": "B",
+    "text": "The line segment joining T and Q is parallel to the line joining P and U"
+   },
+   {
+    "option_id": "C",
+    "text": "The line segment joining R and P is perpendicular to the line segment joining U and Q"
+   },
+   {
+    "option_id": "D",
+    "text": "The line segment joining Q and S is perpendicular to the line segment joining R and P"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 10,
+  "pages": [
+   10
+  ],
+  "question_text": "[IMAGE_Q_10_1]\nAn ant is at the bottom-left corner of a grid (point P) as shown above. It aims to move to the top-right corner of the grid. The ant moves only along the lines marked in the grid such that the current distance to the top-right corner strictly decreases.\nWhich one of the following is a part of a possible trajectory of the ant during the movement?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_10_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_10_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_10_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_10_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_10_1",
+    "page": 10,
+    "rect": [
+     274,
+     72,
+     394,
+     177
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_10_A",
+    "page": 10,
+    "rect": [
+     148,
+     333,
+     212,
+     387
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_10_B",
+    "page": 10,
+    "rect": [
+     148,
+     410,
+     214,
+     464
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_10_C",
+    "page": 10,
+    "rect": [
+     148,
+     486,
+     212,
+     541
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_10_D",
+    "page": 10,
+    "rect": [
+     148,
+     563,
+     212,
+     601
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ }
+]
