@@ -73,7 +73,7 @@ def question_regions(work: Path, pages: int) -> dict[int, str]:
         chunk = text[e:end]
         # drop repeated page furniture lines
         chunk = re.split(r"Q\. No\. Session Question Type", chunk)[0]  # answer-key table appended to the paper (2022)
-        chunk = re.sub(r"(?i)((gate 20\d\d )?(electronics (and|&) communications? engineering \(ec\)|electrical engineering \(ee\)|mechanical engineering \(me\)|civil engineering \(ce[12]?\)|data science (and|&) artificial intelligence \(da\))|page \d+( of \d+)?|organi[sz]ing institute:? (iit \w+|iisc,? bengaluru|iisc,? bangalore))", " ", chunk)
+        chunk = re.sub(r"(?i)((gate 20\d\d )?(electronics (and|&) communications? engineering \(ec\)|electrical engineering \(ee\)|mechanical engineering \(me\)|civil engineering \(ce[12]?\)|data science (and|&) artificial intelligence( \(da\)| - da))|page \d+( of \d+)?|organi[sz]ing institute:? (iit \w+|iisc,? bengaluru|iisc,? bangalore))", " ", chunk)
         regions.setdefault(n, chunk)
     return regions
 

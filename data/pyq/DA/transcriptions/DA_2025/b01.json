@@ -1,0 +1,1686 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "Courage : Bravery :: Yearning : __________\nSelect the most appropriate option to complete the analogy.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Longing"
+   },
+   {
+    "option_id": "B",
+    "text": "Yelling"
+   },
+   {
+    "option_id": "C",
+    "text": "Yawning"
+   },
+   {
+    "option_id": "D",
+    "text": "Glaring"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   1
+  ],
+  "question_text": "We __________ tennis in the lawn when it suddenly started to rain.\nSelect the most appropriate option to complete the above sentence.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "have been playing"
+   },
+   {
+    "option_id": "B",
+    "text": "had been playing"
+   },
+   {
+    "option_id": "C",
+    "text": "would have been playing"
+   },
+   {
+    "option_id": "D",
+    "text": "could be playing"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 3,
+  "pages": [
+   2
+  ],
+  "question_text": "A 4 × 4 digital image has pixel intensities (\\(U\\)) as shown in the figure. The number of pixels with \\(U \\le 4\\) is:\n[IMAGE_Q_03_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "3"
+   },
+   {
+    "option_id": "B",
+    "text": "8"
+   },
+   {
+    "option_id": "C",
+    "text": "11"
+   },
+   {
+    "option_id": "D",
+    "text": "9"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_03_1",
+    "page": 2,
+    "rect": [
+     262,
+     130,
+     362,
+     231
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 4,
+  "pages": [
+   3
+  ],
+  "question_text": "In the given figure, the numbers associated with the rectangle, triangle, and ellipse are 1, 2, and 3, respectively. Which one among the given options is the most appropriate combination of P, Q, and R ?\n[IMAGE_Q_04_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P = 6; Q = 5; R = 3"
+   },
+   {
+    "option_id": "B",
+    "text": "P = 5; Q = 6; R = 3"
+   },
+   {
+    "option_id": "C",
+    "text": "P = 3; Q = 6; R = 6"
+   },
+   {
+    "option_id": "D",
+    "text": "P = 5; Q = 3; R = 6"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_04_1",
+    "page": 3,
+    "rect": [
+     140,
+     157,
+     460,
+     387
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 5,
+  "pages": [
+   4
+  ],
+  "question_text": "A rectangle has a length \\(L\\) and a width \\(W\\), where \\(L > W\\). If the width, \\(W\\), is increased by 10%, which one of the following statements is correct for all values of \\(L\\) and \\(W\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Perimeter increases by 10%."
+   },
+   {
+    "option_id": "B",
+    "text": "Length of the diagonals increases by 10%."
+   },
+   {
+    "option_id": "C",
+    "text": "Area increases by 10%."
+   },
+   {
+    "option_id": "D",
+    "text": "The rectangle becomes a square."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 6,
+  "pages": [
+   5
+  ],
+  "question_text": "Column-I has statements made by Shanthala; and, Column-II has responses given by Kanishk.\n[IMAGE_Q_06_1]\nIdentify the option that has the correct match between Column-I and Column-II.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P – 2; Q – 3; R – 1; S – 4"
+   },
+   {
+    "option_id": "B",
+    "text": "P – 3; Q – 4; R – 1; S – 2"
+   },
+   {
+    "option_id": "C",
+    "text": "P – 4; Q – 1; R – 2; S – 3"
+   },
+   {
+    "option_id": "D",
+    "text": "P – 1; Q – 2; R – 4; S – 3"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_06_1",
+    "page": 5,
+    "rect": [
+     117,
+     155,
+     521,
+     388
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 7,
+  "pages": [
+   6
+  ],
+  "question_text": "Weight of a person can be expressed as a function of their age. The function usually varies from person to person. Suppose this function is identical for two brothers, and it monotonically increases till the age of 50 years and then it monotonically decreases. Let \\(a_1\\) and \\(a_2\\) (in years) denote the ages of the brothers and \\(a_1 < a_2\\).\nWhich one of the following statements is correct about their age on the day when they attain the same weight?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(a_1 < a_2 < 50\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(a_1 < 50 < a_2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(50 < a_1 < a_2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "Either \\(a_1 = 50\\) or \\(a_2 = 50\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 8,
+  "pages": [
+   7
+  ],
+  "question_text": "A regular dodecagon (12-sided regular polygon) is inscribed in a circle of radius \\(r\\) cm as shown in the figure. The side of the dodecagon is \\(d\\) cm. All the triangles (numbered 1 to 12) in the figure are used to form squares of side \\(r\\) cm and each numbered triangle is used only once to form a square.\nThe number of squares that can be formed and the number of triangles required to form each square, respectively, are:\nNote: The figure shown is representative.\n[IMAGE_Q_08_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "3; 4"
+   },
+   {
+    "option_id": "B",
+    "text": "4; 3"
+   },
+   {
+    "option_id": "C",
+    "text": "3; 3"
+   },
+   {
+    "option_id": "D",
+    "text": "3; 2"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 7,
+    "rect": [
+     240,
+     222,
+     397,
+     380
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   8
+  ],
+  "question_text": "If a real variable \\(x\\) satisfies \\(3^{x^2} = 27 \\times 9^x\\), then the value of \\(\\dfrac{2^{x^2}}{(2^x)^2}\\) is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2^{-1}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2^0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2^3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2^{15}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 10,
+  "pages": [
+   9
+  ],
+  "question_text": "The number of patients per shift (\\(X\\)) consulting Dr. Gita in her past 100 shifts is shown in the figure. If the amount she earns is ₹ \\(1000(X - 0.2)\\), what is the average amount (in ₹) she has earned per shift in the past 100 shifts?\nNote: The figure shown is representative.\n[IMAGE_Q_10_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "6,100"
+   },
+   {
+    "option_id": "B",
+    "text": "6,300"
+   },
+   {
+    "option_id": "C",
+    "text": "6,000"
+   },
+   {
+    "option_id": "D",
+    "text": "6,500"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_10_1",
+    "page": 9,
+    "rect": [
+     140,
+     176,
+     478,
+     394
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 11,
+  "pages": [
+   10
+  ],
+  "question_text": "Suppose \\(X\\) and \\(Y\\) are random variables. The conditional expectation of \\(X\\) given \\(Y\\) is denoted by \\(E[X|Y]\\). Then \\(E[E[X|Y]]\\) equals",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(E[X|Y]\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{E[X]}{E[Y]}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(E[X]\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(E[Y]\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   10
+  ],
+  "question_text": "The number of additions and multiplications involved in performing Gaussian elimination on any \\(n \\times n\\) upper triangular matrix is of the order",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(O(n)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(O(n^2)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(O(n^3)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(O(n^4)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   10
+  ],
+  "question_text": "The sum of the elements in each row of \\(A \\in \\mathbb{R}^{n\\times n}\\) is 1. If \\(B = A^3 - 2A^2 + A\\), which one of the following statements is correct (for \\(x \\in \\mathbb{R}^n\\))?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The equation \\(Bx = 0\\) has no solution"
+   },
+   {
+    "option_id": "B",
+    "text": "The equation \\(Bx = 0\\) has exactly two solutions"
+   },
+   {
+    "option_id": "C",
+    "text": "The equation \\(Bx = 0\\) has infinitely many solutions"
+   },
+   {
+    "option_id": "D",
+    "text": "The equation \\(Bx = 0\\) has a unique solution"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   11
+  ],
+  "question_text": "Let \\(f(x) = \\dfrac{e^x - e^{-x}}{2}, x \\in \\mathbb{R}\\). Let \\(f^{(k)}(a)\\) denote the \\(k^{th}\\) derivative of \\(f\\) evaluated at \\(a\\). What is the value of \\(f^{(10)}(0)\\)? (Note: ! denotes factorial)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0"
+   },
+   {
+    "option_id": "B",
+    "text": "1"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{1}{10!}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{2}{10!}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   11
+  ],
+  "question_text": "Let \\(p\\) and \\(q\\) be any two propositions. Consider the following propositional statements.\n\\(S_1 : p \\to q, \\quad S_2 : \\neg p \\wedge q, \\quad S_3 : \\neg p \\vee q, \\quad S_4 : \\neg p \\vee \\neg q,\\)\nwhere \\(\\wedge\\) denotes conjunction (AND operation), \\(\\vee\\) denotes disjunction (OR operation), and \\(\\neg\\) denotes negation (NOT operation). Which one of the following options is correct? (Note: \\(\\equiv\\) denotes logical equivalence)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(S_1 \\equiv S_3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(S_2 \\equiv S_3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(S_2 \\equiv S_4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(S_1 \\equiv S_4\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   11
+  ],
+  "question_text": "If a relational decomposition is not dependency-preserving, which one of the following relational operators will be executed more frequently in order to maintain the dependencies?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Selection"
+   },
+   {
+    "option_id": "B",
+    "text": "Projection"
+   },
+   {
+    "option_id": "C",
+    "text": "Join"
+   },
+   {
+    "option_id": "D",
+    "text": "Set union"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   12
+  ],
+  "question_text": "Consider the following three relations:\nCar (model, year, \\(\\underline{\\text{serial}}\\), color)\nMake (maker, \\(\\underline{\\text{model}}\\))\nOwn (\\(\\underline{\\text{owner}}\\), \\(\\underline{\\text{serial}}\\))\nA tuple in Car represents a specific car of a given model, made in a given year, with a serial number and a color. A tuple in Make specifies that a maker company makes cars of a certain model. A tuple in Own specifies that an owner owns the car with a given serial number. Keys are underlined; (\\(\\underline{\\text{owner}}\\), \\(\\underline{\\text{serial}}\\)) together form key for Own. (\\(\\bowtie\\) denotes natural join)\n\\[\\pi_{\\text{owner}}(\\text{Own} \\bowtie (\\sigma_{\\text{color}=\\text{“red”}}(\\text{Car} \\bowtie (\\sigma_{\\text{maker}=\\text{“ABC”}}\\text{Make}))))\\]\nWhich one of the following options describes what the above expression computes?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "All owners of a red car, a car made by ABC, or a red car made by ABC"
+   },
+   {
+    "option_id": "B",
+    "text": "All owners of more than one car, where at least one car is red and made by ABC"
+   },
+   {
+    "option_id": "C",
+    "text": "All owners of a red car made by ABC"
+   },
+   {
+    "option_id": "D",
+    "text": "All red cars made by ABC"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   12
+  ],
+  "question_text": "Consider a hash table of size 10 with indices \\(\\{0, 1, \\ldots, 9\\}\\), with the hash function\n\\[h(x) = 3x \\pmod{10},\\]\nwhere linear probing is used to handle collisions. The hash table is initially empty and then the following sequence of keys is inserted into the hash table: 1, 4, 5, 6, 14, 15. The indices where the keys 14 and 15 are stored are, respectively",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2 and 5"
+   },
+   {
+    "option_id": "B",
+    "text": "2 and 6"
+   },
+   {
+    "option_id": "C",
+    "text": "4 and 5"
+   },
+   {
+    "option_id": "D",
+    "text": "4 and 6"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 19,
+  "pages": [
+   13
+  ],
+  "question_text": "Let \\(X\\) be a continuous random variable whose cumulative distribution function (CDF) \\(F_X(x)\\), for some \\(t\\), is given as follows:\n\\[F_X(x) = \\begin{cases} 0 & x \\le t \\\\ \\dfrac{x - t}{4 - t} & t \\le x \\le 4 \\\\ 1 & x \\ge 4 \\end{cases}\\]\nIf the median of \\(X\\) is 3, then what is the value of \\(t\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2"
+   },
+   {
+    "option_id": "B",
+    "text": "1"
+   },
+   {
+    "option_id": "C",
+    "text": "−1"
+   },
+   {
+    "option_id": "D",
+    "text": "0"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   13
+  ],
+  "question_text": "Let \\(X = aZ + b\\), where \\(Z\\) is a standard normal random variable, and \\(a\\), \\(b\\) are two unknown constants. It is given that\n\\[E[X] = 1, \\quad E[(X - E[X])Z] = -2, \\quad E[(X - E[X])^2] = 4,\\]\nwhere \\(E[X]\\) denotes the expectation of random variable \\(X\\). The values of \\(a, b\\) are:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(a = -2, b = 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(a = 2, b = -1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(a = -2, b = -1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(a = 1, b = 1\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   14
+  ],
+  "question_text": "It is given that \\(P(X \\ge 2) = 0.25\\) for an exponentially distributed random variable \\(X\\) with \\(E[X] = \\dfrac{1}{\\lambda}\\), where \\(E[X]\\) denotes the expectation of \\(X\\). What is the value of \\(\\lambda\\)? (ln denotes natural logarithm)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "ln 2"
+   },
+   {
+    "option_id": "B",
+    "text": "ln 4"
+   },
+   {
+    "option_id": "C",
+    "text": "ln 3"
+   },
+   {
+    "option_id": "D",
+    "text": "ln 0.25"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   14
+  ],
+  "question_text": "Consider designing a linear classifier\n\\[y = \\text{sign}(f(x; w, b)), \\quad f(x; w, b) = w^\\top x + b\\]\non a dataset \\(D = \\{(x_1, y_1), (x_2, y_2), \\ldots, (x_N, y_N)\\}\\), \\(x_i \\in \\mathbb{R}^d, y_i \\in \\{+1, -1\\}\\), \\(i = 1, 2, \\ldots, N\\). Recall that the sign function outputs +1 if the argument is positive, and −1 if the argument is non-positive. The parameters \\(w\\) and \\(b\\) are updated as per the following training algorithm:\n\\[w_{new} = w_{old} + y_nx_n, \\quad b_{new} = b_{old} + y_n\\]\nwhenever \\(\\text{sign}(f(x_n; w_{old}, b_{old})) \\ne y_n\\). In other words, whenever the classifier wrongly predicts a sample \\((x_n, y_n)\\) from the dataset, \\(w_{old}\\) gets updated to \\(w_{new}\\), and likewise \\(b_{old}\\) gets updated to \\(b_{new}\\). Consider the case \\((x_n, +1)\\), \\(f(x_n; w_{old}, b_{old}) < 0\\). Then",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(f(x_n; w_{new}, b_{new}) > f(x_n; w_{old}, b_{old})\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(f(x_n; w_{new}, b_{new}) < f(x_n; w_{old}, b_{old})\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(f(x_n; w_{new}, b_{new}) = f(x_n; w_{old}, b_{old})\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(y_nf(x_n; w_{old}, b_{old}) > 1\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 23,
+  "pages": [
+   15
+  ],
+  "question_text": "Consider the following Python declarations of two lists.\n```python\nA=[1,2,3]\nB=[4,5,6]\n```\nWhich one of the following statements results in A= [1, 2, 3, 4, 5, 6]?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "A.extend(B)"
+   },
+   {
+    "option_id": "B",
+    "text": "A.append(B)"
+   },
+   {
+    "option_id": "C",
+    "text": "A.update(B)"
+   },
+   {
+    "option_id": "D",
+    "text": "A.insert(B)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 24,
+  "pages": [
+   15
+  ],
+  "question_text": "Consider two functions \\(f : \\mathbb{R} \\to \\mathbb{R}\\) and \\(g : \\mathbb{R} \\to (1, \\infty)\\). Both functions are differentiable at a point \\(c\\). Which of the following functions is/are ALWAYS differentiable at \\(c\\)? The symbol \\(\\cdot\\) denotes product and the symbol \\(\\circ\\) denotes composition of functions.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(f \\pm g\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(f \\cdot g\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{f}{g}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(f \\circ g + g \\circ f\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   15
+  ],
+  "question_text": "Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\mathbb{R}^n\\) has a unique set of orthonormal basis vectors"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\mathbb{R}^n\\) does not have a unique set of orthonormal basis vectors"
+   },
+   {
+    "option_id": "C",
+    "text": "Linearly independent vectors in \\(\\mathbb{R}^n\\) are orthonormal"
+   },
+   {
+    "option_id": "D",
+    "text": "Orthonormal vectors \\(\\mathbb{R}^n\\) are linearly independent"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   16
+  ],
+  "question_text": "Which of the following statements is/are correct in a Bayesian network?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Variable elimination is an approximate inference algorithm"
+   },
+   {
+    "option_id": "B",
+    "text": "Gibbs sampling is an exact inference algorithm"
+   },
+   {
+    "option_id": "C",
+    "text": "Variable elimination is used to determine conditional probabilities"
+   },
+   {
+    "option_id": "D",
+    "text": "Rejection sampling is an approximate inference algorithm"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 27,
+  "pages": [
+   16
+  ],
+  "question_text": "For which of the following inputs does binary search take time \\(O(\\log n)\\) in the worst case?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "An array of \\(n\\) integers in any order"
+   },
+   {
+    "option_id": "B",
+    "text": "A linked list of \\(n\\) integers in any order"
+   },
+   {
+    "option_id": "C",
+    "text": "An array of \\(n\\) integers in increasing order"
+   },
+   {
+    "option_id": "D",
+    "text": "A linked list of \\(n\\) integers in increasing order"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   16
+  ],
+  "question_text": "Let \\(A = I_n + xx^\\top\\), where \\(I_n\\) is the \\(n \\times n\\) identity matrix and \\(x \\in \\mathbb{R}^n, x^\\top x = 1\\). Which of the following options is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Rank of \\(A\\) is \\(n\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(A\\) is invertible"
+   },
+   {
+    "option_id": "C",
+    "text": "0 is an eigenvalue of \\(A\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(A^{-1}\\) has a negative eigenvalue"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   16
+  ],
+  "question_text": "Suppose that insertion sort is applied to the array [1, 3, 5, 7, 9, 11, \\(x\\), 15, 13] and it takes exactly two swaps to sort the array. Select all possible values of \\(x\\).",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "10"
+   },
+   {
+    "option_id": "B",
+    "text": "12"
+   },
+   {
+    "option_id": "C",
+    "text": "14"
+   },
+   {
+    "option_id": "D",
+    "text": "16"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   17
+  ],
+  "question_text": "Let \\(C_1\\) and \\(C_2\\) be two sets of objects. Let \\(D(x, y)\\) be a measure of dissimilarity between two objects \\(x\\) and \\(y\\). Consider the following definitions of dissimilarity between \\(C_1\\) and \\(C_2\\).\n\\[\\textbf{DIS-1}(C_1, C_2) = \\max_{x\\in C_1,\\, y\\in C_2} D(x, y)\\]\n\\[\\textbf{DIS-2}(C_1, C_2) = \\min_{x\\in C_1,\\, y\\in C_2} D(x, y)\\]\nWhich of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Single Linkage Clustering uses DIS-1"
+   },
+   {
+    "option_id": "B",
+    "text": "Single Linkage Clustering uses DIS-2"
+   },
+   {
+    "option_id": "C",
+    "text": "Complete Linkage Clustering uses DIS-2"
+   },
+   {
+    "option_id": "D",
+    "text": "Complete Linkage Clustering uses DIS-1"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   17
+  ],
+  "question_text": "There are three boxes containing white balls and black balls.\nBox-1 contains 2 black and 1 white balls.\nBox-2 contains 1 black and 2 white balls.\nBox-3 contains 3 black and 3 white balls.\nIn a random experiment, one of these boxes is selected, where the probability of choosing Box-1 is \\(\\frac{1}{2}\\), Box-2 is \\(\\frac{1}{6}\\), and Box-3 is \\(\\frac{1}{3}\\). A ball is drawn at random from the selected box. Given that the ball drawn is white, the probability that it is drawn from Box-2 is ____________(Round off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 32,
+  "pages": [
+   17
+  ],
+  "question_text": "\\(\\displaystyle\\lim_{t\\to+\\infty} \\sqrt{t^2 + t} - t =\\) ____________\n(Round off to one decimal place)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   18
+  ],
+  "question_text": "On a relation named Loan of a bank:\n[IMAGE_Q_33_1]\nthe following SQL query is executed.\n```sql\nSELECT L1.loan_number\nFROM Loan L1\nWHERE L1.amount > (SELECT MAX (L2.amount)\n                   FROM Loan L2\n                   WHERE L2.branch_name = 'SR Nagar');\n```\nThe number of rows returned by the query is ____________(Answer in integer)",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_33_1",
+    "page": 18,
+    "rect": [
+     208,
+     113,
+     431,
+     326
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 34,
+  "pages": [
+   18
+  ],
+  "question_text": "Given data \\(\\{(-1, 1), (2, -5), (3, 5)\\}\\) of the form \\((x, y)\\), we fit a model \\(y = wx\\) using linear least-squares regression. The optimal value of \\(w\\) is ____________\n(Round off to three decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 35,
+  "pages": [
+   18
+  ],
+  "question_text": "The naive Bayes classifier is used to solve a two-class classification problem with class-labels \\(y_1, y_2\\). Suppose the prior probabilities are \\(P(y_1) = \\frac{1}{3}\\) and \\(P(y_2) = \\frac{2}{3}\\). Assuming a discrete feature space with\n\\[P(x|y_1) = \\frac{3}{4} \\quad \\text{and} \\quad P(x|y_2) = \\frac{1}{4}\\]\nfor a specific feature vector \\(x\\). The probability of misclassifying \\(x\\) is ____________\n(Round off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 36,
+  "pages": [
+   19
+  ],
+  "question_text": "Let \\(Y = Z^2\\), \\(Z = \\dfrac{X - \\mu}{\\sigma}\\), where \\(X\\) is a normal random variable with mean \\(\\mu\\) and variance \\(\\sigma^2\\). The variance of \\(Y\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1"
+   },
+   {
+    "option_id": "B",
+    "text": "2"
+   },
+   {
+    "option_id": "C",
+    "text": "3"
+   },
+   {
+    "option_id": "D",
+    "text": "4"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 37,
+  "pages": [
+   19
+  ],
+  "question_text": "Let \\(A \\in \\mathbb{R}^{n\\times n}\\) be such that \\(A^3 = A\\). Which one of the following statements is ALWAYS correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(A\\) is invertible"
+   },
+   {
+    "option_id": "B",
+    "text": "Determinant of \\(A\\) is 0"
+   },
+   {
+    "option_id": "C",
+    "text": "The sum of the diagonal elements of \\(A\\) is 1"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(A\\) and \\(A^2\\) have the same rank"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 38,
+  "pages": [
+   19
+  ],
+  "question_text": "Let \\(\\{x_1, x_2, \\ldots, x_n\\}\\) be a set of linearly independent vectors in \\(\\mathbb{R}^n\\). Let the \\((i, j)\\)-th element of matrix \\(A \\in \\mathbb{R}^{n\\times n}\\) be given by \\(A_{ij} = x_i^\\top x_j\\), \\(1 \\le i, j \\le n\\). Which one of the following statements is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(A\\) is invertible"
+   },
+   {
+    "option_id": "B",
+    "text": "0 is a singular value of \\(A\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "Determinant of \\(A\\) is 0"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(z^\\top Az = 0\\) for some non-zero \\(z \\in \\mathbb{R}^n\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 39,
+  "pages": [
+   20
+  ],
+  "question_text": "Consider the cumulative distribution function (CDF) of a random variable \\(X\\):\n\\[F_X(x) = \\begin{cases} 0 & x \\le -1 \\\\ \\frac{1}{4}(x + 1)^2 & -1 \\le x \\le 1 \\\\ 1 & x \\ge 1 \\end{cases}\\]\nThe value of \\(P(X^2 \\le 0.25)\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.625"
+   },
+   {
+    "option_id": "B",
+    "text": "0.25"
+   },
+   {
+    "option_id": "C",
+    "text": "0.5"
+   },
+   {
+    "option_id": "D",
+    "text": "0.5625"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 40,
+  "pages": [
+   20
+  ],
+  "question_text": "A random variable \\(X\\) is said to be distributed as \\(Bernoulli(\\theta)\\), denoted by \\(X \\sim Bernoulli(\\theta)\\), if\n\\[P(X = 1) = \\theta, \\quad P(X = 0) = 1 - \\theta\\]\nfor \\(0 < \\theta < 1\\). Let \\(Y = \\sum_{i=1}^{300} X_i\\), where \\(X_i \\sim Bernoulli(\\theta)\\), \\(i = 1, 2, \\ldots, 300\\) be independent and identically distributed random variables with \\(\\theta = 0.25\\). The value of \\(P(60 \\le Y \\le 90)\\), after approximation through Central Limit Theorem, is given by\n\\(\\left(\\text{Recall that } \\phi(x) = \\frac{1}{\\sqrt{2\\pi}}\\int_{-\\infty}^{x} e^{-\\frac{t^2}{2}}\\, dt\\right)\\)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\phi(2) - \\phi(-2)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\phi(1) - \\phi(-1)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\phi(3) - \\phi(-3)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\phi(90) - \\phi(60)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 41,
+  "pages": [
+   21
+  ],
+  "question_text": "For \\(x \\in \\mathbb{R}\\), the floor function is denoted by \\(f(x) = \\lfloor x \\rfloor\\) and defined as follows\n\\[\\lfloor x \\rfloor = k, \\quad k \\le x < k + 1,\\]\nwhere \\(k\\) is an integer. Let \\(Y = \\lfloor X \\rfloor\\), where \\(X\\) is an exponentially distributed random variable with mean \\(\\dfrac{1}{\\ln 10}\\), where ln denotes natural logarithm. For any positive integer \\(\\ell\\), one can write the probability of the event \\(Y = \\ell\\) as follows\n\\[P(Y = \\ell) = q^\\ell(1 - q)\\]\nThe value of \\(q\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.1"
+   },
+   {
+    "option_id": "B",
+    "text": "0.01"
+   },
+   {
+    "option_id": "C",
+    "text": "0.5"
+   },
+   {
+    "option_id": "D",
+    "text": "0.434"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 42,
+  "pages": [
+   22
+  ],
+  "question_text": "Consider the neural network shown in the figure with\ninputs: \\(u, v\\)\nweights: \\(a, b, c, d, e, f\\)\noutput: \\(y\\)\n\\(R\\) denotes the ReLU function, \\(R(x) = \\max(0, x)\\).\n[IMAGE_Q_42_1]\nGiven \\(u = 2, v = 3\\),\n\\(a = 1, b = 1, c = 1, d = -1, e = 4, f = -1\\),\nwhich one of the following is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{\\partial y}{\\partial a} = 8, \\dfrac{\\partial y}{\\partial f} = 0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{\\partial y}{\\partial a} = 1, \\dfrac{\\partial y}{\\partial f} = 0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{\\partial y}{\\partial a} = 1, \\dfrac{\\partial y}{\\partial f} = -1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{\\partial y}{\\partial a} = 2, \\dfrac{\\partial y}{\\partial f} = -1\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_42_1",
+    "page": 22,
+    "rect": [
+     186,
+     203,
+     450,
+     301
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 43,
+  "pages": [
+   23
+  ],
+  "question_text": "Consider game trees Tree-1 and Tree-2 as shown. The first level is a MAX agent and the second level is a MIN agent. The value in the square node is the output of the utility function.\n[IMAGE_Q_43_1]\nFor what ranges of \\(x\\) and \\(y\\), the right child of node \\(B\\) and the right child of node \\(E\\) will be pruned by alpha-beta pruning algorithm?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x \\in [1, \\infty)\\) and \\(y \\in (-\\infty, 2]\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x \\in (-\\infty, 2]\\) and \\(y \\in (-\\infty, 5]\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(x \\in (-\\infty, 2]\\) and \\(y \\in [2, \\infty)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(x \\in [1, \\infty)\\) and \\(y \\in (-\\infty, 5]\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_43_1",
+    "page": 23,
+    "rect": [
+     162,
+     152,
+     482,
+     298
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 44,
+  "pages": [
+   24
+  ],
+  "question_text": "The state graph shows the action cost along the edges and the heuristic function h associated with each state.\n[IMAGE_Q_44_1]\nSuppose \\(A^*\\) algorithm is applied on this state graph using priority queue to store the frontier. In what sequence are the nodes expanded?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "S,A,E,C,B,D,G"
+   },
+   {
+    "option_id": "B",
+    "text": "S,E,A,C,B,D,G"
+   },
+   {
+    "option_id": "C",
+    "text": "S,A,E,B,C,D,G"
+   },
+   {
+    "option_id": "D",
+    "text": "S,A,B,E,C,D,G"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_44_1",
+    "page": 24,
+    "rect": [
+     140,
+     134,
+     500,
+     287
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 45,
+  "pages": [
+   24
+  ],
+  "question_text": "A random experiment consists of throwing 100 fair dice, each die having six faces numbered 1 to 6. An event \\(A\\) represents the set of all outcomes where at least one of the dice shows a 1. Then, \\(P(A) =\\)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0"
+   },
+   {
+    "option_id": "B",
+    "text": "1"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1 - \\left(\\frac{5}{6}\\right)^{100}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\left(\\frac{5}{6}\\right)^{100}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 46,
+  "pages": [
+   25
+  ],
+  "question_text": "Consider a fact table in an OLAP application: Facts(D1, D2, val), where D1 and D2 are its dimension attributes and val is a dependent attribute. Suppose attribute D1 takes 3 values and D2 takes 2 values, and all combinations of these values are present in the table Facts. How many tuples are there in the result of the following query?\n```sql\nSELECT D1, D2, sum(val)\nFROM Facts\nGROUP BY CUBE (D1, D2);\n```",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1"
+   },
+   {
+    "option_id": "B",
+    "text": "6"
+   },
+   {
+    "option_id": "C",
+    "text": "9"
+   },
+   {
+    "option_id": "D",
+    "text": "12"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 47,
+  "pages": [
+   26
+  ],
+  "question_text": "Consider the following Python code snippet.\n```python\nA={\"this\",\"that\"}\nB={\"that\",\"other\"}\nC={\"other\",\"this\"}\nwhile \"other\" in C:\n    if \"this\" in A:\n        A,B,C=A-B,B-C,C-A\n    if \"that\" in B:\n        A,B,C=C|A,A|B,B|C\n```\nWhen the above program is executed, at the end, which of the following sets contains \"this\"?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Only A"
+   },
+   {
+    "option_id": "B",
+    "text": "Only B"
+   },
+   {
+    "option_id": "C",
+    "text": "Only C"
+   },
+   {
+    "option_id": "D",
+    "text": "A, C"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 48,
+  "pages": [
+   26
+  ],
+  "question_text": "Which of the following statements is/are correct about the rectified linear unit (ReLU) activation function defined as \\(\\text{ReLU}(x) = \\max(x, 0)\\), where \\(x \\in \\mathbb{R}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "ReLU is continuous everywhere"
+   },
+   {
+    "option_id": "B",
+    "text": "ReLU is differentiable everywhere"
+   },
+   {
+    "option_id": "C",
+    "text": "ReLU is not differentiable at \\(x = 0\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\text{ReLU}(x) = \\text{ReLU}(ax)\\), for all \\(a \\in \\mathbb{R}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 49,
+  "pages": [
+   27
+  ],
+  "question_text": "Consider the function \\(f(x) = \\dfrac{x^3}{3} + \\dfrac{7}{2}x^2 + 10x + \\dfrac{133}{2}\\), \\(x \\in [-8, 0]\\). Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The maximum value of \\(f\\) is attained at \\(x = -5\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "The minimum value of \\(f\\) is attained at \\(x = -2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "The maximum value of \\(f\\) is \\(\\dfrac{133}{2}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "The minimum value of the derivative of \\(f\\) is attained at \\(x = -\\dfrac{7}{2}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 50,
+  "pages": [
+   27
+  ],
+  "question_text": "Let \\(x_1, x_2, x_3, x_4, x_5\\) be a system of orthonormal vectors in \\(\\mathbb{R}^{10}\\). Consider the matrix \\(A = x_1x_1^\\top + \\ldots + x_5x_5^\\top\\). Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Singular values of \\(A\\) are also its eigenvalues"
+   },
+   {
+    "option_id": "B",
+    "text": "Singular values of \\(A\\) are either 0 or 1"
+   },
+   {
+    "option_id": "C",
+    "text": "Determinant of \\(A\\) is 1"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(A\\) is invertible"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 51,
+  "pages": [
+   27
+  ],
+  "question_text": "Let \\(f : \\mathbb{R} \\to \\mathbb{R}\\) be a twice-differentiable function and suppose its second derivative satisfies \\(f''(x) > 0\\) for all \\(x \\in \\mathbb{R}\\). Which of the following statements is/are ALWAYS correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(f\\) has a local minima"
+   },
+   {
+    "option_id": "B",
+    "text": "There does not exist \\(x\\) and \\(y\\), \\(x \\ne y\\), such that \\(f'(x) = f'(y) = 0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(f\\) has at most one global minimum"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(f\\) has at most one local minimum"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 52,
+  "pages": [
+   28
+  ],
+  "question_text": "An \\(n \\times n\\) matrix \\(A\\) with real entries satisfies the property: \\(\\|Ax\\|^2 = \\|x\\|^2\\), for all \\(x \\in \\mathbb{R}^n\\), where \\(\\|\\cdot\\|\\) denotes the Euclidean norm. Which of the following statements is/are ALWAYS correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(A\\) must be orthogonal"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(A = I\\), where \\(I\\) denotes the identity matrix, is the only solution"
+   },
+   {
+    "option_id": "C",
+    "text": "The eigenvalues of \\(A\\) are either +1 or −1"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(A\\) has full rank"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   28
+  ],
+  "question_text": "Consider designing a linear binary classifier \\(f(x) = \\text{sign}(w^\\top x + b)\\), \\(x \\in \\mathbb{R}^2\\) on the following training data:\n\\[\\text{Class-1}: \\left\\{\\begin{pmatrix} 2 \\\\ 0 \\end{pmatrix}, \\begin{pmatrix} 0 \\\\ 2 \\end{pmatrix}, \\begin{pmatrix} 2 \\\\ 2 \\end{pmatrix}\\right\\}, \\quad \\text{Class-2}: \\left\\{\\begin{pmatrix} 0 \\\\ 0 \\end{pmatrix}\\right\\}\\]\nHard-margin support vector machine (SVM) formulation is solved to obtain \\(w\\) and \\(b\\). Which of the following options is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(w = \\begin{pmatrix} 4 \\\\ 4 \\end{pmatrix}\\) and \\(b = 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "The number of support vectors is 3"
+   },
+   {
+    "option_id": "C",
+    "text": "The margin is \\(\\sqrt{2}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "Training accuracy is 98%"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 54,
+  "pages": [
+   29
+  ],
+  "question_text": "Consider a coin-toss experiment where the probability of head showing up is \\(p\\). In the \\(i^{th}\\) coin toss, let \\(X_i = 1\\) if head appears, and \\(X_i = 0\\) if tail appears. Consider\n\\[\\hat{p} = \\frac{1}{n}\\sum_{i=1}^{n} X_i\\]\nwhere \\(n\\) is the total number of independent coin tosses. Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(E[\\hat{p}] = p\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(E[\\hat{p}] = \\dfrac{p}{n}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "As \\(n\\) increases, variance of \\(\\hat{p}\\) decreases"
+   },
+   {
+    "option_id": "D",
+    "text": "Variance of \\(\\hat{p}\\) does not depend on \\(n\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   29
+  ],
+  "question_text": "Consider a two-class problem in \\(\\mathbb{R}^d\\) with class labels red and green. Let \\(\\mu_{red}\\) and \\(\\mu_{green}\\) be the means of the two classes. Given test sample \\(x \\in \\mathbb{R}^d\\), a classifier calculates the squared Euclidean distance (denoted by \\(\\|\\cdot\\|^2\\)) between \\(x\\) and the means of the two classes and assigns the class label that the sample \\(x\\) is closest to. That is, the classifier computes\n\\[f(x) = \\|\\mu_{red} - x\\|^2 - \\|\\mu_{green} - x\\|^2\\]\nand assigns the label red to \\(x\\) if \\(f(x) < 0\\), and green otherwise. Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The sample \\(x = 0\\) is assigned the label green if \\(\\|\\mu_{red}\\| < \\|\\mu_{green}\\|\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(f\\) is a linear function of \\(x\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(f(x) = w^\\top x + b\\), where \\(w\\) and \\(b\\) are functions of \\(\\mu_{red}\\) and \\(\\mu_{green}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(f\\) is a quadratic polynomial in \\(x\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   30
+  ],
+  "question_text": "Consider the following two relations, named Customer and Person, in a database:\n```sql\nPerson (\n    aadhaar CHAR(12) PRIMARY KEY,\n    name VARCHAR(32));\nCustomer (\n    name VARCHAR(32),\n    email VARCHAR(32) PRIMARY KEY,\n    phone CHAR(10),\n    aadhaar CHAR(12),\n      FOREIGN KEY (aadhaar) REFERENCES Person(aadhaar));\n```\nWhich of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "aadhaar is a candidate key in the Customer relation"
+   },
+   {
+    "option_id": "B",
+    "text": "phone can be NULL in the Customer relation"
+   },
+   {
+    "option_id": "C",
+    "text": "aadhaar is a candidate key in the Person relation"
+   },
+   {
+    "option_id": "D",
+    "text": "aadhaar can be NULL in the Person relation"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   31
+  ],
+  "question_text": "Consider a database relation R with attributes ABCDEFG, and having the following functional dependencies:\nA → BCEF \\(\\qquad\\) E → DG \\(\\qquad\\) BC → A\nWhich of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "A is the only candidate key of R"
+   },
+   {
+    "option_id": "B",
+    "text": "A, BC are the candidate keys of R"
+   },
+   {
+    "option_id": "C",
+    "text": "A, BC, E are the candidate keys of R"
+   },
+   {
+    "option_id": "D",
+    "text": "Relation R is not in Boyce-Codd Normal Form (BCNF)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 58,
+  "pages": [
+   31
+  ],
+  "question_text": "Let \\(G\\) be a simple, unweighted, and undirected graph. A subset of the vertices and edges of \\(G\\) are shown below.\n[IMAGE_Q_58_1]\nIt is given that \\(a - b - c - d\\) is a shortest path between \\(a\\) and \\(d\\); \\(e - f - g - h\\) is a shortest path between \\(e\\) and \\(h\\); \\(a - f - c - h\\) is a shortest path between \\(a\\) and \\(h\\). Which of the following is/are NOT the edges of \\(G\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\((b, d)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\((b, g)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\((b, h)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\((e, g)\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_58_1",
+    "page": 31,
+    "rect": [
+     220,
+     358,
+     420,
+     449
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 59,
+  "pages": [
+   31
+  ],
+  "question_text": "Let \\(f : \\mathbb{R} \\to \\mathbb{R}\\) be such that \\(|f(x) - f(y)| \\le (x - y)^2\\) for all \\(x, y \\in \\mathbb{R}\\). Then \\(f(1) - f(0) =\\) ____________(Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 60,
+  "pages": [
+   32
+  ],
+  "question_text": "Let \\(D = \\{x^{(1)}, \\ldots, x^{(n)}\\}\\) be a dataset of \\(n\\) observations where each \\(x^{(i)} \\in \\mathbb{R}^{100}\\). It is given that \\(\\sum_{i=1}^{n} x^{(i)} = 0\\). The covariance matrix computed from \\(D\\) has eigenvalues \\(\\lambda_i = 100^{2-i}\\), \\(1 \\le i \\le 100\\). Let \\(u \\in \\mathbb{R}^{100}\\) be the direction of maximum variance with \\(u^\\top u = 1\\).\nThe value of\n\\[\\frac{1}{n}\\sum_{i=1}^{n}\\left(u^\\top x^{(i)}\\right)^2 = \\]\n____________ (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 61,
+  "pages": [
+   32
+  ],
+  "question_text": "A bag contains 5 white balls and 10 black balls. In a random experiment, \\(n\\) balls are drawn from the bag one at a time with replacement. Let \\(S_n\\) denote the total number of black balls drawn in the experiment.\nThe expectation of \\(S_{100}\\) denoted by \\(E[S_{100}] =\\) ____________\n(Round off to one decimal place)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 62,
+  "pages": [
+   32
+  ],
+  "question_text": "Consider the following tables, Loan and Borrower, of a bank.\n[IMAGE_Q_62_1]\nQuery: \\(\\pi_{\\text{branch\\_name, customer\\_name}}(\\textbf{Loan} \\bowtie \\textbf{Borrower}) \\div \\pi_{\\text{branch\\_name}}(\\textbf{Loan})\\)\nwhere \\(\\bowtie\\) denotes natural join.\nThe number of tuples returned by the above relational algebra query is ____________ (Answer in integer)",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_62_1",
+    "page": 32,
+    "rect": [
+     132,
+     410,
+     508,
+     669
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 63,
+  "pages": [
+   33
+  ],
+  "question_text": "Consider the following Python code snippet.\n```python\ndef f(a,b):\n    if (a==0):\n        return b\n    if (a%2==1):\n        return 2*f((a-1)/2,b)\n    return b+f(a-1,b)\nprint(f(15,10))\n```\nThe value printed by the code snippet is ____________(Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   34
+  ],
+  "question_text": "Consider the following pseudocode.\n```\nCreate empty stack S\nSet x=0, flag=0, sum=0\nPush x onto S\nwhile (S is not empty){\n  if (flag equals 0){\n    Set x = x+1\n    Push x onto S}\n  if (x equals 8):\n    Set flag=1\n  if (flag equals 1){\n    x = Pop(S)\n    if (x is odd):\n      Pop(S)\n    Set sum = sum + x}\n}\nOutput sum\n```\nThe value of sum output by a program executing the above pseudocode is ____________ (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   34
+  ],
+  "question_text": "Consider a directed graph \\(G = (V, E)\\), where \\(V = \\{0, 1, 2, \\ldots, 100\\}\\) and \\(E = \\{(i, j) : 0 < j - i \\le 2, \\text{ for all } i, j \\in V\\}\\). Suppose the adjacency list of each vertex is in decreasing order of vertex number, and depth-first search (DFS) is performed at vertex 0. The number of vertices that will be discovered after vertex 50 is ____________(Answer in integer)",
+  "options": [],
+  "figures": []
+ }
+]

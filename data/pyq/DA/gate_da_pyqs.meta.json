@@ -1,7 +1,7 @@
 {
   "branch": "DA",
   "branch_name": "Data Science and Artificial Intelligence",
-  "generated_at": "2026-10-06T17:24:34+00:00",
+  "generated_at": "2026-10-06T17:28:33+00:00",
   "papers": {
     "2026": {
       "paper": "DA_2026",
@@ -9,6 +9,13 @@
       "question_paper_sha256": "4adb2f713433ec93748ff96bc04891dc10d877e8e4fb5fe7797e36ba87f298f3",
       "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2026/Keys/DA_Keys.pdf",
       "answer_key_sha256": "f94cf2caf46e84cd06cc1591f375403b04466f8fa71e64ca87b49804d1e8dceb"
+    },
+    "2025": {
+      "paper": "DA_2025",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2025/DA2025.pdf",
+      "question_paper_sha256": "69ba28fc60e64338113d99c90533025049b7c6e0c99c4f03d76d5ce9d70478c6",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2025_Key/DA_Keys.pdf",
+      "answer_key_sha256": "081f108d4a2d617895b6859a9e715504391c87f9a6f13593548869d71b33dc40"
     }
   },
   "questions": {
@@ -269,6 +276,266 @@
       "review": "auto"
     },
     "DA_2026:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2025:65": {
       "marks_to_all": false,
       "review": "auto"
     }
