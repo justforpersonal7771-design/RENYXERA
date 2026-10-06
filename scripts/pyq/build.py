@@ -27,7 +27,13 @@ from tagcodes import load_tags  # noqa: E402
 SHIFT = {None: "", 1: "S1", 2: "S2"}
 
 
+# A marks-to-all NAT accepts any number (the app shows it as "Any value (marks to all)").
+MTA_NAT_RANGE = "-1000000000 to 1000000000"
+
+
 def nat_range(ans: dict) -> str | None:
+    if ans.get("mta"):
+        return MTA_NAT_RANGE
     r = ans.get("nat")
     if not r:
         return None

@@ -1,0 +1,422 @@
+[
+ {
+  "qno": 48,
+  "pages": [
+   44
+  ],
+  "question_text": "Consider the boost converter circuit shown. Assume that the semiconductor devices are ideal. In steady state, the inductor current rises linearly from 0 A to 6 A in the first 10 μs and then falls linearly from 6 A to 0 A in the next 10 μs of every switching cycle as shown. The load resistance \\(R\\) is 10 Ω and the capacitance \\(C\\) is 500 μF.\n[IMAGE_Q_48_1]\nNeglect the ripple in the output voltage. What is the input voltage \\(V_{dc}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "10.0 V"
+   },
+   {
+    "option_id": "B",
+    "text": "15.0 V"
+   },
+   {
+    "option_id": "C",
+    "text": "7.5 V"
+   },
+   {
+    "option_id": "D",
+    "text": "12.5 V"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_48_1",
+    "page": 44,
+    "regions": [
+     "p044_r1"
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     4,
+     6,
+     5
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 49,
+  "pages": [
+   45
+  ],
+  "question_text": "Which one of the following statements is ALWAYS correct about a collection of \\(p\\) column vectors, each having \\(n\\) real-valued entries?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "If \\(p > n\\), then the column vectors must be linearly dependent"
+   },
+   {
+    "option_id": "B",
+    "text": "If \\(p > n\\), then the column vectors must be linearly independent"
+   },
+   {
+    "option_id": "C",
+    "text": "If \\(p = n\\), then the column vectors must be orthogonal"
+   },
+   {
+    "option_id": "D",
+    "text": "If \\(p < n\\), then the column vectors must be linearly independent"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 50,
+  "pages": [
+   46
+  ],
+  "question_text": "Consider the second-order differential equation\n\\[\\frac{d^2y}{dx^2} + \\frac{dy}{dx} + y = 0\\]\nwith initial conditions\n\\[y(0) = 1, \\qquad \\left.\\frac{dy}{dx}\\right|_{x=0} = 1\\]\nThe solution is given by",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(y(x) = \\exp(-x/2)\\left(\\cos\\left(\\dfrac{\\sqrt{3}x}{2}\\right) + \\sqrt{3}\\sin\\left(\\dfrac{\\sqrt{3}x}{2}\\right)\\right)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(y(x) = \\exp(-x/2)\\left(\\cos\\left(\\dfrac{\\sqrt{3}x}{2}\\right) + \\dfrac{1}{\\sqrt{3}}\\sin\\left(\\dfrac{\\sqrt{3}x}{2}\\right)\\right)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(y(x) = \\exp(-x/2)\\left(\\cos\\left(\\dfrac{\\sqrt{3}x}{2}\\right) - \\dfrac{1}{\\sqrt{3}}\\sin\\left(\\dfrac{\\sqrt{3}x}{2}\\right)\\right)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(y(x) = \\exp(-x/2)\\left(\\cos\\left(\\dfrac{\\sqrt{3}x}{2}\\right) - \\sqrt{3}\\sin\\left(\\dfrac{\\sqrt{3}x}{2}\\right)\\right)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 51,
+  "pages": [
+   47
+  ],
+  "question_text": "The figure shows an arbitrarily shaped planar conducting loop A in the XY plane. Two nonintersecting regions with areas \\(a_1\\) and \\(a_2\\) within the loop are subjected to magnetic fields \\(\\vec{B}_1 = \\frac{m}{\\sqrt{2}}\\sin(\\omega t)\\,(1\\,\\hat{x} + 0\\,\\hat{y} + 1\\,\\hat{z})\\), and \\(\\vec{B}_2 = -\\frac{n}{\\sqrt{2}}\\cos(2\\omega t + \\pi/4)\\,(0\\,\\hat{x} + 1\\,\\hat{y} + 1\\,\\hat{z})\\), respectively.\n[IMAGE_Q_51_1]\nWhat is the expression for the induced rms voltage in loop A?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\sqrt{\\dfrac{a_1^2\\omega^2 m^2 + 4a_2^2\\omega^2 n^2}{4}}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\sqrt{\\dfrac{a_1^2\\omega^2 m^2 + 4a_2^2\\omega^2 n^2}{2}}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\sqrt{\\dfrac{a_1^2\\omega^2 m^2 - 2a_2^2\\omega^2 n^2}{2}}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\sqrt{a_1^2\\omega^2 m^2 + 2a_2^2\\omega^2 n^2}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_51_1",
+    "page": 47,
+    "regions": [
+     "p047_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     4,
+     6,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 52,
+  "pages": [
+   48
+  ],
+  "question_text": "A system is characterized by the following state equation and output equation (\\(u\\): input, \\(\\mathbf{x}\\): state vector, \\(y\\): output)\n\\[\\dot{\\mathbf{x}} = \\begin{bmatrix} a & b \\\\ -a & 0 \\end{bmatrix}\\mathbf{x} + \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}u\\]\n\\[y = \\begin{bmatrix} 1 & 2 \\end{bmatrix}\\mathbf{x}\\]\nWhat are the values of \\(a\\) and \\(b\\) for which the poles of the transfer function are at \\(-2 + j3\\) and \\(-2 - j3\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(a = 4,\\ b = 3.25\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(a = -4,\\ b = 3.25\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(a = 4,\\ b = -3.25\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(a = -4,\\ b = -3.25\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   49
+  ],
+  "question_text": "A system is represented in state-space form as follows:\n(\\(u\\): input, \\(\\mathbf{x}\\): state vector, \\(y\\): output)\n\\[\\dot{\\mathbf{x}} = \\begin{bmatrix} 1 & 2 \\\\ -3 & 0 \\end{bmatrix}\\mathbf{x} + \\begin{bmatrix} 1 \\\\ 2 \\end{bmatrix}u\\]\n\\[y = \\begin{bmatrix} 1 & 2 \\end{bmatrix}\\mathbf{x}\\]\nConsider the new state vector \\(\\mathbf{z} = \\begin{bmatrix} 2 & 1 \\\\ -1 & 0 \\end{bmatrix}\\mathbf{x}\\)\nWhat is the state-space representation of the system in terms of the new state vector \\(\\mathbf{z}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dot{\\mathbf{z}} = \\begin{bmatrix} -1 & 4 \\\\ -1 & -2 \\end{bmatrix}\\mathbf{z} + \\begin{bmatrix} 4 \\\\ -1 \\end{bmatrix}u\\)\n\\(y = \\begin{bmatrix} 2 & 3 \\end{bmatrix}\\mathbf{z}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dot{\\mathbf{z}} = \\begin{bmatrix} 2 & 3 \\\\ 0 & 3 \\end{bmatrix}\\mathbf{z} + \\begin{bmatrix} 3 \\\\ 5 \\end{bmatrix}u\\)\n\\(y = \\begin{bmatrix} 2 & 3 \\end{bmatrix}\\mathbf{z}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dot{\\mathbf{z}} = \\begin{bmatrix} 4 & 9 \\\\ -2 & -3 \\end{bmatrix}\\mathbf{z} + \\begin{bmatrix} 4 \\\\ -1 \\end{bmatrix}u\\)\n\\(y = \\begin{bmatrix} 2 & 3 \\end{bmatrix}\\mathbf{z}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dot{\\mathbf{z}} = \\begin{bmatrix} 2 & 1 \\\\ -4 & 1 \\end{bmatrix}\\mathbf{z} + \\begin{bmatrix} 4 \\\\ -1 \\end{bmatrix}u\\)\n\\(y = \\begin{bmatrix} 4 & -1 \\end{bmatrix}\\mathbf{z}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 54,
+  "pages": [
+   50
+  ],
+  "question_text": "For the balanced 3-phase transmission line shown, consider the following cases:\n[IMAGE_Q_54_1]\nCase-1: \\(|V_1| = 1.1\\) p.u., \\(|V_2| = 0.9\\) p.u., \\(Z = 0.75\\angle 0^\\circ\\) p.u. and \\(\\theta_{12} = \\theta_1 - \\theta_2 = 0^\\circ\\)\nCase-2: \\(|V_1| = 1.1\\) p.u., \\(|V_2| = 0.9\\) p.u., \\(Z = 0.75\\angle 90^\\circ\\) p.u. and \\(\\theta_{12} = \\theta_1 - \\theta_2 = 90^\\circ\\)\nWhich of the following statements is/are correct about real power loss and reactive power loss in the line?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Real power loss in Case-1 is more than that in Case-2"
+   },
+   {
+    "option_id": "B",
+    "text": "Real power loss in Case-2 is more than that in Case-1"
+   },
+   {
+    "option_id": "C",
+    "text": "Reactive power loss in Case-1 is more than that in Case-2"
+   },
+   {
+    "option_id": "D",
+    "text": "Reactive power loss in Case-2 is more than that in Case-1"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_54_1",
+    "page": 50,
+    "regions": [
+     "p050_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     4,
+     6,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 55,
+  "pages": [
+   51
+  ],
+  "question_text": "Consider an \\(n \\times n\\) orthogonal matrix \\(A\\) with real entries and each column having unit Euclidean norm.\nWhich of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The value of the determinant of \\(A\\) is either +1 or –1"
+   },
+   {
+    "option_id": "B",
+    "text": "The eigenvalues of \\(A\\) have modulus 1"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\|A\\boldsymbol{x}\\| = \\|\\boldsymbol{x}\\|\\), for all \\(\\boldsymbol{x} \\in R^n\\), where \\(\\|\\boldsymbol{x}\\|\\) denotes the Euclidean norm of \\(\\boldsymbol{x}\\), and \\((A\\boldsymbol{x})^T(A\\boldsymbol{y}) \\ne \\boldsymbol{x}^T\\boldsymbol{y}\\), for all distinct \\(\\boldsymbol{x}, \\boldsymbol{y} \\in R^n\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\|A\\boldsymbol{x}\\| = \\|\\boldsymbol{x}\\|\\), for all \\(\\boldsymbol{x} \\in R^n\\), where \\(\\|\\boldsymbol{x}\\|\\) denotes the Euclidean norm of \\(\\boldsymbol{x}\\), and \\((A\\boldsymbol{x})^T(A\\boldsymbol{y}) = \\boldsymbol{x}^T\\boldsymbol{y}\\), for all \\(\\boldsymbol{x}, \\boldsymbol{y} \\in R^n\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   52
+  ],
+  "question_text": "Consider the system of linear equations: \\(Ax = b\\), where \\(A\\) is an \\(n \\times n\\) matrix, and \\(x\\) and \\(b\\) are \\(n\\)-dimensional column vectors. Suppose this system of equations has a unique solution. Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(A^{-1}\\) exists"
+   },
+   {
+    "option_id": "B",
+    "text": "The system of equations \\(A^m x = b\\) also has a unique solution for \\(m = 1, 2, 3, \\ldots\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\text{rank}(A) = \\text{rank}(A^m)\\), for \\(m = 1, 2, 3, \\ldots\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\text{rank}(A) < \\text{rank}([A \\mid b])\\), where \\([A \\mid b]\\) denotes the augmented matrix."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   53
+  ],
+  "question_text": "The resistance values of the Wheatstone bridge shown are: \\(P = 2000\\ \\Omega\\), \\(Q = 500\\ \\Omega\\), \\(R = 3000\\ \\Omega\\). The battery voltage \\(E = 50\\) V. The battery has an internal resistance of 1 Ω and the Galvanometer (G) has a resistance of 50 Ω.\n[IMAGE_Q_57_1]\nThe value of the resistance S for balanced condition is _____________ Ω\n(Answer in integer)",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_57_1",
+    "page": 53,
+    "regions": [
+     "p053_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     4,
+     6,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 58,
+  "pages": [
+   53
+  ],
+  "question_text": "A system with two generators G1 and G2 (without generator limits) is shown.\n[IMAGE_Q_58_1]\nThe total load on the system is 1184 MW. The expressions for the cost of generation (\\(C_1\\) and \\(C_2\\)) and real power loss (\\(P_{Loss}\\)) are as follows:\n\\(C_1(P_{G1}) = 1000 + 50P_{G1} + 0.01(P_{G1})^2\\) Rs/MWh\n\\(C_2(P_{G2}) = 2000 + 50P_{G2} + 0.001(P_{G2})^2\\) Rs/MWh\n\\(P_{Loss} = 0.001(P_{G2} - 50)^2\\) MW\nWhen the generators are operating at their optimal generation, meeting the total load requirement, the real power loss in the system is ________ MW (Round off to one decimal place)\nConsider the Lagrange multiplier \\(\\lambda = 70.25\\) for optimal generation.",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_58_1",
+    "page": 53,
+    "regions": [
+     "p053_r2"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     4,
+     6,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 59,
+  "pages": [
+   54
+  ],
+  "question_text": "A balanced three-phase supply is given to a 30 kW, 4-pole, 400 V, 50 Hz, wound rotor induction motor with Y-connected stator and rotor windings. The motor is driving a constant torque load. With shorted sliprings, the machine runs at 1476 rpm.\nWhen an external non-inductive resistance of 0.27 Ω per phase is connected in series in the rotor circuit, the steady-state speed drops to 1404 rpm.\nNeglecting rotational losses, the actual per phase rotor winding resistance is ____ Ω\n(Round off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 60,
+  "pages": [
+   54
+  ],
+  "question_text": "Consider the two-port network shown. For maximum power transfer to the resistive load (\\(R_L\\)), the value of \\(R_L\\) should be__________ Ω\n(Round off to two decimal places)\n[IMAGE_Q_60_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_60_1",
+    "page": 54,
+    "regions": [
+     "p054_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     4,
+     6,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 61,
+  "pages": [
+   54
+  ],
+  "question_text": "Consider the circuit shown. Assume that the diode (\\(D\\)) is ideal.\n[IMAGE_Q_61_1]\nGiven \\(v_s = 100\\sin(2\\pi 50t)\\) V, \\(V_{dc} = 50\\) V, and \\(R = 10\\ \\Omega\\), the average value of the current through the diode is ___________ A\n(Round off to two decimal places)",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_61_1",
+    "page": 54,
+    "regions": [
+     "p054_r2"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     4,
+     6,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 62,
+  "pages": [
+   55
+  ],
+  "question_text": "The magnitude of the contour integral\n\\[\\oint_C \\left(\\frac{(z+1)^2}{(z-i)(z-2)}\\right) dz\\]\nover the contour \\(C: |z - 2 - i| = 3/2\\) is ______\n(Round off to two decimal places)\nNote: \\(z\\) is a complex variable and \\(i = \\sqrt{-1}\\)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 63,
+  "pages": [
+   55
+  ],
+  "question_text": "A uniform spherical volume charge distribution of radius 2 m, centered at the origin, has a strength of \\(\\frac{3}{\\pi} \\times 10^{-6}\\) C/m\\(^3\\). A point charge of strength \\(\\pi \\times 8.854 \\times 10^{-12}\\) C is moved from (– 3, 0, – 4) to (0, 0, 4) in Cartesian coordinate system. The relative permittivity of the medium is 1 and the coordinate values are in meters.\nThe work done during the process is ______ μJ\n(Round off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   55
+  ],
+  "question_text": "Let X and Y be two real-valued random variables with \\(E(X) = 1\\), \\(E(Y) = 2\\), \\(E(X^2) = 4\\), \\(E(Y^2) = 9\\), and \\(E(XY) = 0.9\\), where E denotes the expectation operator.\nThe value of \\(\\alpha\\) that minimizes \\(E((X - \\alpha Y)^2)\\) is __________\n(Round off to one decimal place)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   55
+  ],
+  "question_text": "The integral\n\\[\\frac{1}{\\pi}\\int_0^{\\infty} \\frac{x^{2026}}{(1 + x^{2026})(1 + x^2)}\\,dx\\]\nevaluates to _________\n(Round off to two decimal places)",
+  "options": [],
+  "figures": []
+ }
+]

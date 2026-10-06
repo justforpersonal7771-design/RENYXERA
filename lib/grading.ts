@@ -36,6 +36,8 @@ export function natRangesOf(r: NatAnswerRange | undefined | null): Range[] {
 export function formatNatAnswer(r: NatAnswerRange | undefined | null): string {
   const ranges = natRangesOf(r);
   if (!ranges.length) return "N/A";
+  // Official "marks to all" on a NAT is stored as an accept-anything range (scripts/pyq/build.py).
+  if (ranges.length === 1 && ranges[0].min <= -1e9 && ranges[0].max >= 1e9) return "Any value (marks to all)";
   return ranges.map(({ min, max }) => (min === max ? `${min}` : `${min} to ${max}`)).join(" or ");
 }
 

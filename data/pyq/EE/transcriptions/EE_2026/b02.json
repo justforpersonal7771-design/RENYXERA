@@ -1,0 +1,344 @@
+[
+ {
+  "qno": 11,
+  "pages": [
+   11
+  ],
+  "question_text": "Consider the infinite-length, discrete-time sequence \\(x[n] = 0.9^{|n|}\\), where \\(n\\) is an integer. The region of convergence of its Z-transform \\(X(z)\\) is given by:\n(Note: \\(z\\) is a complex variable)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(|z| > 0.9\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(|z| < 0.9\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(0.9 < |z| < 1/0.9\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\{z \\text{ such that } |z| < 0.9\\} \\cup \\{z \\text{ such that } |z| > 1/0.9\\}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   12
+  ],
+  "question_text": "Let \\(x_c(t)\\) be any continuous-time periodic signal with period \\(T\\). It is sampled uniformly with a sampling period \\(T_s\\) where \\(T_s \\neq T\\), resulting in the discrete sequence \\(x[n] = x_c(nT_s)\\), where \\(n\\) is an integer. Which one of the following statements is correct about \\(x[n]\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x[n]\\) will always be periodic with period \\(T/T_s\\) for all values of \\(T/T_s\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x[n]\\) will always be periodic with period 1 for all values of \\(T/T_s\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(x[n]\\) will never be periodic"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(x[n]\\) will be periodic if and only if \\(T/T_s\\) is a rational number"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   13
+  ],
+  "question_text": "The Laplace transform of the step response of a system is given by\n\\[Y(s) = \\frac{100}{s(s + 100)}\\]\nThe rise time is defined as the time taken for the response to go from 0.1 to 0.9 of its final value. The settling time is defined as the time taken for the response to reach 0.98 of its final value. For this system, the rise time \\((T_r)\\), settling time \\((T_s)\\), and time constant \\((T_c)\\), all expressed in seconds, are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(T_r = 0.022,\\ T_s = 0.04,\\ T_c = 0.01\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(T_r = 0.22,\\ T_s = 0.404,\\ T_c = 0.01\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(T_r = 2.2,\\ T_s = 4.04,\\ T_c = 1.01\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(T_r = 22,\\ T_s = 40.4,\\ T_c = 10.1\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   14
+  ],
+  "question_text": "Consider the following differential equation:\n\\[t^2 \\frac{d^2y}{dt^2} + 7t\\frac{dy}{dt} + 8ty = 10\\sin(t)\\]\nWhich one of the following options is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "It is a linear differential equation"
+   },
+   {
+    "option_id": "B",
+    "text": "It is a nonlinear differential equation"
+   },
+   {
+    "option_id": "C",
+    "text": "It is a time-invariant differential equation"
+   },
+   {
+    "option_id": "D",
+    "text": "It is a second-order partial differential equation"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   15
+  ],
+  "question_text": "A uniform ring charge of radius \\(R\\) carries a total charge \\(Q\\). Which one of the following options correctly quantifies the magnitude of the force on a point charge of strength \\(q\\) kept at the center of the ring?\n(\\(\\epsilon\\) is the permittivity of the medium)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{Qq}{4\\pi\\epsilon R}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{Qq}{4\\pi\\epsilon R^2}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "0"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{q}{4\\pi\\epsilon R} \\times \\dfrac{Q}{2\\pi R}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   16
+  ],
+  "question_text": "A positive point charge with velocity \\(\\vec{v} = 5\\,\\hat{x}\\) enters a region having electric field \\(\\vec{E} = 4\\,\\hat{y}\\) and magnetic field \\(\\vec{B} = -6\\,\\hat{z}\\). Which one of the following statements is correct for the force on the charge as it enters the region?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The force will be along the magnetic field but perpendicular to the electric field"
+   },
+   {
+    "option_id": "B",
+    "text": "The force will be along the electric field but perpendicular to the magnetic field"
+   },
+   {
+    "option_id": "C",
+    "text": "The force will be perpendicular to both electric and magnetic field"
+   },
+   {
+    "option_id": "D",
+    "text": "The magnetic field does not exert any force on the charge"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   16
+  ],
+  "question_text": "A 15 kVA, 1100 V/220 V, single-phase two-winding transformer is configured as a 1.32 kV/1.1 kV autotransformer. What will be the rating of the autotransformer?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "60 kVA"
+   },
+   {
+    "option_id": "B",
+    "text": "75 kVA"
+   },
+   {
+    "option_id": "C",
+    "text": "90 kVA"
+   },
+   {
+    "option_id": "D",
+    "text": "100 kVA"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   17
+  ],
+  "question_text": "Consider a power system with \\(N\\) buses, of which \\(P\\) are generator buses and the remaining \\(Q\\) are load buses (where there is no generation). Assume that there are no reactive power-limit violations at the generator buses. What is the size of the Jacobian matrix in the Newton-Raphson load flow method?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2N \\times 2N\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\((2N - 1 - P) \\times (2N - 1 - P)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\((2N - Q) \\times (2N - Q)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\((P + Q) \\times (P + Q)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 19,
+  "pages": [
+   18
+  ],
+  "question_text": "The initial three-phase voltage phasors (\\(\\bar{V}_A\\), \\(\\bar{V}_B\\), and \\(\\bar{V}_C\\)) at a bus of a power network are as shown in Case-1. Due to a disturbance, the bus voltage phasors changed in phase by a small angle \\(\\Delta\\theta\\), and the magnitudes remained the same as depicted in Case-2.\n[IMAGE_Q_19_1]\nWhich one of the following statements is correct about the zero sequence components?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The zero sequence components in Case-1 and Case-2 have the same phase angle and magnitude"
+   },
+   {
+    "option_id": "B",
+    "text": "The magnitude of the zero sequence component in Case-1 is greater than that in Case-2"
+   },
+   {
+    "option_id": "C",
+    "text": "The magnitude of the zero sequence component in Case-2 is greater than that in Case-1"
+   },
+   {
+    "option_id": "D",
+    "text": "The zero sequence components in Case-1 and Case-2 have the same magnitude but different phase angles"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_19_1",
+    "page": 18,
+    "regions": [
+     "p018_r1"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 20,
+  "pages": [
+   19
+  ],
+  "question_text": "A certain application requires power at a frequency of 16.67 Hz, while the available grid frequency is 50 Hz. A 3-phase synchronous motor connected to the 50 Hz, 3-phase grid, driving a synchronous generator, is used for this application. Which one of the following combinations is a suitable choice for the number of poles in the motor and generator, respectively?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2, 6"
+   },
+   {
+    "option_id": "B",
+    "text": "6, 2"
+   },
+   {
+    "option_id": "C",
+    "text": "4, 6"
+   },
+   {
+    "option_id": "D",
+    "text": "6, 4"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   19
+  ],
+  "question_text": "Which one of the following options is correct regarding the typical double-squirrel-cage structure used in induction motors?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "At starting, a larger portion of the rotor current flows in the outer cage"
+   },
+   {
+    "option_id": "B",
+    "text": "At starting, a larger portion of the rotor current flows in the inner cage"
+   },
+   {
+    "option_id": "C",
+    "text": "At rated speed, most of the rotor current flows in the outer cage"
+   },
+   {
+    "option_id": "D",
+    "text": "The purpose of the double-squirrel-cage structure is to lower the effective rotor resistance at starting"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   20
+  ],
+  "question_text": "The figure shows the single-line diagram of a synchronous generator delivering \\(P = 50\\) MW of power at unity power factor to an infinite bus.\n[IMAGE_Q_22_1]\n\\(I_s\\) denotes the stator current phasor. If the field excitation is increased, which one of the following options correctly describes its effect on the stator current, power factor, and load angle of the machine?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Stator current increases, power factor becomes lagging, load angle remains the same"
+   },
+   {
+    "option_id": "B",
+    "text": "Stator current decreases, power factor becomes leading, load angle remains the same"
+   },
+   {
+    "option_id": "C",
+    "text": "Stator current increases, power factor becomes lagging, load angle decreases"
+   },
+   {
+    "option_id": "D",
+    "text": "Stator current increases, power factor becomes leading, load angle increases"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_22_1",
+    "page": 20,
+    "regions": [
+     "p020_r1"
+    ],
+    "grow": false,
+    "pad": [
+     30,
+     2,
+     30,
+     11
+    ]
+   }
+  ]
+ }
+]
