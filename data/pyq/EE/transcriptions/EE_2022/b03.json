@@ -1,0 +1,855 @@
+[
+ {
+  "qno": 36,
+  "pages": [
+   21,
+   22
+  ],
+  "question_text": "The output impedance of a non-ideal operational amplifier is denoted by \\(Z_{out}\\). The variation in the magnitude of \\(Z_{out}\\) with increasing frequency, f, in the circuit shown below, is best represented by\n[IMAGE_Q_36_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_36_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_36_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_36_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_36_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_36_1",
+    "page": 21,
+    "regions": [
+     "p021_r1"
+    ],
+    "grow": false,
+    "pad": [
+     8,
+     4,
+     44,
+     4
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_36_A",
+    "page": 21,
+    "rect": [
+     137,
+     351,
+     274,
+     436
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_36_B",
+    "page": 21,
+    "rect": [
+     137,
+     453,
+     268,
+     533
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_36_C",
+    "page": 21,
+    "rect": [
+     137,
+     546,
+     281,
+     631
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_36_D",
+    "page": 22,
+    "rect": [
+     137,
+     80,
+     268,
+     160
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 37,
+  "pages": [
+   22
+  ],
+  "question_text": "An LTI system is shown in the figure where\n\\[G(s) = \\frac{100}{s^2 + 0.1s + 10}.\\]\nThe steady state output of the system, to the input \\(r(t)\\), is given as\n\\(y(t) = a + b\\sin(10t + \\theta)\\). The values of ‘\\(a\\)’ and ‘\\(b\\)’ will be\n[IMAGE_Q_37_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(a = 1, b = 10\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(a = 10, b = 1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(a = 1, b = 100\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(a = 100, b = 1\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_37_1",
+    "page": 22,
+    "rect": [
+     206,
+     286,
+     436,
+     331
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 38,
+  "pages": [
+   23
+  ],
+  "question_text": "The open loop transfer function of a unity gain negative feedback system is given as\n\\[G(s) = \\frac{1}{s(s+1)}.\\]\nThe Nyquist contour in the \\(s\\)-plane encloses the entire right half plane and a small neighbourhood around the origin in the left half plane, as shown in the figure below. The number of encirclements of the point \\((-1 + j0)\\) by the Nyquist plot of \\(G(s)\\), corresponding to the Nyquist contour, is denoted as \\(N\\). Then \\(N\\) equals to\n[IMAGE_Q_38_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0"
+   },
+   {
+    "option_id": "B",
+    "text": "1"
+   },
+   {
+    "option_id": "C",
+    "text": "2"
+   },
+   {
+    "option_id": "D",
+    "text": "3"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_38_1",
+    "page": 23,
+    "regions": [
+     "p023_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     6,
+     60,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 39,
+  "pages": [
+   24
+  ],
+  "question_text": "The damping ratio and undamped natural frequency of a closed loop system as shown in the figure, are denoted as \\(\\zeta\\) and \\(\\omega_n\\), respectively. The values of \\(\\zeta\\) and \\(\\omega_n\\) are\n[IMAGE_Q_39_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\zeta = 0.5\\) and \\(\\omega_n = 10\\) rad/s"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\zeta = 0.1\\) and \\(\\omega_n = 10\\) rad/s"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\zeta = 0.707\\) and \\(\\omega_n = 10\\) rad/s"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\zeta = 0.707\\) and \\(\\omega_n = 100\\) rad/s"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_39_1",
+    "page": 24,
+    "rect": [
+     180,
+     132,
+     462,
+     240
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 40,
+  "pages": [
+   24
+  ],
+  "question_text": "\\(e^A\\) denotes the exponential of a square matrix A. Suppose \\(\\lambda\\) is an eigenvalue and \\(v\\) is the corresponding eigen-vector of matrix A.\nConsider the following two statements:\nStatement 1: \\(e^\\lambda\\) is an eigenvalue of \\(e^A\\).\nStatement 2: \\(v\\) is an eigen-vector of \\(e^A\\).\nWhich one of the following options is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Statement 1 is true and statement 2 is false."
+   },
+   {
+    "option_id": "B",
+    "text": "Statement 1 is false and statement 2 is true."
+   },
+   {
+    "option_id": "C",
+    "text": "Both the statements are correct."
+   },
+   {
+    "option_id": "D",
+    "text": "Both the statements are false."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 41,
+  "pages": [
+   25
+  ],
+  "question_text": "Let \\(f(x) = \\int_0^x e^t(t-1)(t-2)dt\\). Then \\(f(x)\\) decreases in the interval",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x \\in (1,2)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x \\in (2,3)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(x \\in (0,1)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(x \\in (0.5,1)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 42,
+  "pages": [
+   25
+  ],
+  "question_text": "Consider a matrix \\(A = \\begin{bmatrix} 1 & 0 & 0 \\\\ 0 & 4 & -2 \\\\ 0 & 1 & 1 \\end{bmatrix}\\).\nThe matrix \\(A\\) satisfies the equation \\(6A^{-1} = A^2 + cA + dI\\), where \\(c\\) and \\(d\\) are scalars and \\(I\\) is the identity matrix.\nThen \\((c + d)\\) is equal to",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "5"
+   },
+   {
+    "option_id": "B",
+    "text": "17"
+   },
+   {
+    "option_id": "C",
+    "text": "−6"
+   },
+   {
+    "option_id": "D",
+    "text": "11"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 43,
+  "pages": [
+   26
+  ],
+  "question_text": "The fuel cost functions in rupees/hour for two 600 MW thermal power plants are given by\nPlant 1: \\(C_1 = 350 + 6P_1 + 0.004P_1^2\\)\nPlant 2: \\(C_2 = 450 + aP_2 + 0.003P_2^2\\)\nwhere \\(P_1\\) and \\(P_2\\) are power generated by plant 1 and plant 2, respectively, in MW and \\(a\\) is constant. The incremental cost of power (λ) is 8 rupees per MWh. The two thermal power plants together meet a total power demand of 550 MW. The optimal generation of plant 1 and plant 2 in MW, respectively, are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "200, 350"
+   },
+   {
+    "option_id": "B",
+    "text": "250, 300"
+   },
+   {
+    "option_id": "C",
+    "text": "325, 225"
+   },
+   {
+    "option_id": "D",
+    "text": "350, 200"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 44,
+  "pages": [
+   27
+  ],
+  "question_text": "The current gain \\((I_{out}/I_{in})\\) in the circuit with an ideal current amplifier given below is\n[IMAGE_Q_44_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{C_f}{C_c}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{-C_f}{C_c}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{C_c}{C_f}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{-C_c}{C_f}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_44_1",
+    "page": 27,
+    "regions": [
+     "p027_r1"
+    ],
+    "grow": false,
+    "pad": [
+     8,
+     6,
+     70,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 45,
+  "pages": [
+   27
+  ],
+  "question_text": "If the magnetic field intensity (\\(\\mathbf{H}\\)) in a conducting region is given by the expression, \\(\\mathbf{H} = x^2\\,\\hat{\\imath} + x^2y^2\\,\\hat{\\jmath} + x^2y^2z^2\\,\\hat{k}\\) A/m. The magnitude of the current density, in A/m\\(^2\\), at \\(x = 1\\) m, \\(y = 2\\) m, and \\(z = 1\\) m, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "8"
+   },
+   {
+    "option_id": "B",
+    "text": "12"
+   },
+   {
+    "option_id": "C",
+    "text": "16"
+   },
+   {
+    "option_id": "D",
+    "text": "20"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 46,
+  "pages": [
+   28
+  ],
+  "question_text": "Let a causal LTI system be governed by the following differential equation \\(y(t) + \\frac{1}{4}\\frac{dy}{dt} = 2x(t)\\), where \\(x(t)\\) and \\(y(t)\\) are the input and output respectively. Its impulse response is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2e^{-\\frac{1}{4}t}u(t)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2e^{-4t}u(t)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(8e^{-\\frac{1}{4}t}u(t)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(8e^{-4t}u(t)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 47,
+  "pages": [
+   28
+  ],
+  "question_text": "Let an input \\(x(t) = 2\\sin(10\\pi t) + 5\\cos(15\\pi t) + 7\\sin(42\\pi t) + 4\\cos(45\\pi t)\\) is passed through an LTI system having an impulse response,\n\\[h(t) = 2\\left(\\frac{\\sin(10\\pi t)}{\\pi t}\\right)\\cos(40\\pi t).\\]\nThe output of the system is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2\\sin(10\\pi t) + 5\\cos(15\\pi t)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\cos(15\\pi t) + 7\\sin(42\\pi t)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(7\\sin(42\\pi t) + 4\\cos(45\\pi t)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2\\sin(10\\pi t) + 4\\cos(45\\pi t)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 48,
+  "pages": [
+   29
+  ],
+  "question_text": "Consider the system as shown below\n[IMAGE_Q_48_1]\nwhere \\(y(t) = x(e^t)\\). The system is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "linear and causal."
+   },
+   {
+    "option_id": "B",
+    "text": "linear and non-causal."
+   },
+   {
+    "option_id": "C",
+    "text": "non-linear and causal."
+   },
+   {
+    "option_id": "D",
+    "text": "non-linear and non-causal."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_48_1",
+    "page": 29,
+    "regions": [
+     "p029_r1",
+     "p029_r2"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     6,
+     6,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 49,
+  "pages": [
+   29
+  ],
+  "question_text": "The discrete time Fourier series representation of a signal \\(x[n]\\) with period \\(N\\) is written as \\(x[n] = \\sum_{k=0}^{N-1} a_k e^{j(2kn\\pi/N)}\\). A discrete time periodic signal with period \\(N = 3\\), has the non-zero Fourier series coefficients: \\(a_{-3} = 2\\) and \\(a_4 = 1\\). The signal is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2 + 2e^{-\\left(j\\frac{2\\pi}{6}n\\right)}\\cos\\left(\\frac{2\\pi}{6}n\\right)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(1 + 2e^{\\left(j\\frac{2\\pi}{6}n\\right)}\\cos\\left(\\frac{2\\pi}{6}n\\right)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1 + 2e^{\\left(j\\frac{2\\pi}{3}n\\right)}\\cos\\left(\\frac{2\\pi}{6}n\\right)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2 + 2e^{\\left(j\\frac{2\\pi}{6}n\\right)}\\cos\\left(\\frac{2\\pi}{6}n\\right)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 50,
+  "pages": [
+   30
+  ],
+  "question_text": "Let, \\(f(x, y, z) = 4x^2 + 7xy + 3xz^2\\). The direction in which the function \\(f(x, y, z)\\) increases most rapidly at point \\(P = (1,0,2)\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(20\\hat{\\imath} + 7\\hat{\\jmath}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(20\\hat{\\imath} + 7\\hat{\\jmath} + 12\\hat{k}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(20\\hat{\\imath} + 12\\hat{k}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(20\\hat{\\imath}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 51,
+  "pages": [
+   30
+  ],
+  "question_text": "Let \\(R\\) be a region in the first quadrant of the \\(xy\\) plane enclosed by a closed curve \\(C\\) considered in counter-clockwise direction. Which of the following expressions does not represent the area of the region \\(R\\)?\n[IMAGE_Q_51_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\iint_R dxdy\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\oint_C xdy\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\oint_C ydx\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\frac{1}{2}\\oint_C (xdy - ydx)\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_51_1",
+    "page": 30,
+    "regions": [
+     "p030_r1"
+    ],
+    "grow": false,
+    "pad": [
+     8,
+     6,
+     8,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 52,
+  "pages": [
+   31
+  ],
+  "question_text": "Let \\(\\vec{E}(x, y, z) = 2x^2\\hat{\\imath} + 5y\\hat{\\jmath} + 3z\\hat{k}\\). The value of \\(\\iiint_V (\\vec{\\nabla} \\cdot \\vec{E})dV\\), where \\(V\\) is the volume enclosed by the unit cube defined by \\(0 \\le x \\le 1, 0 \\le y \\le 1\\), and \\(0 \\le z \\le 1\\), is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "3"
+   },
+   {
+    "option_id": "B",
+    "text": "8"
+   },
+   {
+    "option_id": "C",
+    "text": "10"
+   },
+   {
+    "option_id": "D",
+    "text": "5"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   32
+  ],
+  "question_text": "As shown in the figure below, two concentric conducting spherical shells, centered at r = 0 and having radii r = c and r = d are maintained at potentials such that the potential V(r) at r = c is \\(V_1\\) and V(r) at r = d is \\(V_2\\). Assume that V(r) depends only on r, where r is the radial distance. The expression for V(r) in the region between r = c and r = d is\n[IMAGE_Q_53_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(V(r) = \\dfrac{c\\,d\\,(V_2 - V_1)}{(d - c)\\,r} - \\dfrac{V_1 c + V_2 d - 2V_1 d}{d - c}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(V(r) = \\dfrac{c\\,d\\,(V_1 - V_2)}{(d - c)\\,r} + \\dfrac{V_2 d - V_1 c}{d - c}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(V(r) = \\dfrac{c\\,d\\,(V_1 - V_2)}{(d - c)\\,r} - \\dfrac{V_1 c - V_2 c}{d - c}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(V(r) = \\dfrac{c\\,d\\,(V_2 - V_1)}{(d - c)\\,r} - \\dfrac{V_2 c - V_1 c}{d - c}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_53_1",
+    "page": 32,
+    "regions": [
+     "p032_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     6,
+     6,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 54,
+  "pages": [
+   33
+  ],
+  "question_text": "Let the probability density function of a random variable \\(x\\) be given as\n\\[f(x) = ae^{-2|x|}\\]\nThe value of ‘\\(a\\)’ is __________.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   33
+  ],
+  "question_text": "In the circuit shown below, the magnitude of the voltage \\(V_1\\) in volts, across the 8 kΩ resistor is ______________. (round off to nearest integer)\n[IMAGE_Q_55_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_55_1",
+    "page": 33,
+    "regions": [
+     "p033_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     14,
+     14,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 56,
+  "pages": [
+   33
+  ],
+  "question_text": "Two generating units rated for 250 MW and 400 MW have governor speed regulations of 6% and 6.4%, respectively, from no load to full load. Both the generating units are operating in parallel to share a load of 500 MW. Assuming free governor action, the load shared in MW, by the 250 MW generating unit is _________. (round off to nearest integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   33
+  ],
+  "question_text": "A 20 MVA, 11.2 kV, 4-pole, 50 Hz alternator has an inertia constant of 15 MJ/MVA. If the input and output powers of the alternator are 15 MW and 10 MW, respectively, the angular acceleration in mechanical degree/s\\(^2\\) is __________. (round off to nearest integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 58,
+  "pages": [
+   34
+  ],
+  "question_text": "Consider an ideal full-bridge single-phase DC-AC inverter with a DC bus voltage magnitude of 1000 V. The inverter output voltage \\(v(t)\\) shown below, is obtained when diagonal switches of the inverter are switched with 50 % duty cycle. The inverter feeds a load with a sinusoidal current given by, \\(i(t) = 10\\sin(\\omega t - \\frac{\\pi}{3})\\) A, where \\(\\omega = \\frac{2\\pi}{T}\\). The active power, in watts, delivered to the load is _________. (round off to nearest integer)\n[IMAGE_Q_58_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_58_1",
+    "page": 34,
+    "rect": [
+     188,
+     178,
+     446,
+     294
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 59,
+  "pages": [
+   34
+  ],
+  "question_text": "For the ideal AC-DC rectifier circuit shown in the figure below, the load current magnitude is \\(I_{dc}\\) = 15 A and is ripple free. The thyristors are fired with a delay angle of 45°. The amplitude of the fundamental component of the source current, in amperes, is __________. (round off to two decimal places)\n[IMAGE_Q_59_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_59_1",
+    "page": 34,
+    "rect": [
+     218,
+     446,
+     440,
+     582
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 60,
+  "pages": [
+   34
+  ],
+  "question_text": "A 3-phase grid-connected voltage source converter with DC link voltage of 1000 V is switched using sinusoidal Pulse Width Modulation (PWM) technique. If the grid phase current is 10 A and the 3-phase complex power supplied by the converter is given by \\((-4000 - j3000)\\) VA, then the modulation index used in sinusoidal PWM is ___________. (round off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 61,
+  "pages": [
+   35
+  ],
+  "question_text": "The steady state current flowing through the inductor of a DC-DC buck boost converter is given in the figure below. If the peak-to-peak ripple in the output voltage of the converter is 1 V, then the value of the output capacitor, in μF, is _______________. (round off to nearest integer)\n[IMAGE_Q_61_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_61_1",
+    "page": 35,
+    "regions": [
+     "p035_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     6,
+     6,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 62,
+  "pages": [
+   35
+  ],
+  "question_text": "A 280 V, separately excited DC motor with armature resistance of 1 Ω and constant field excitation drives a load. The load torque is proportional to the speed. The motor draws a current of 30 A when running at a speed of 1000 rpm. Neglect frictional losses in the motor. The speed, in rpm, at which the motor will run, if an additional resistance of value 10 Ω is connected in series with the armature, is __________. (round off to nearest integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 63,
+  "pages": [
+   36
+  ],
+  "question_text": "A 4-pole induction motor with inertia of 0.1 kg-m\\(^2\\) drives a constant load torque of 2 Nm. The speed of the motor is increased linearly from 1000 rpm to 1500 rpm in 4 seconds as shown in the figure below. Neglect losses in the motor. The energy, in joules, consumed by the motor during the speed change is ____________. (round off to nearest integer)\n[IMAGE_Q_63_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_63_1",
+    "page": 36,
+    "regions": [
+     "p036_r1"
+    ],
+    "grow": false,
+    "pad": [
+     6,
+     6,
+     6,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 64,
+  "pages": [
+   36
+  ],
+  "question_text": "A star-connected 3-phase, 400 V, 50 kVA, 50 Hz synchronous motor has a synchronous reactance of 1 ohm per phase with negligible armature resistance. The shaft load on the motor is 10 kW while the power factor is 0.8 leading. The loss in the motor is 2 kW. The magnitude of the per phase excitation emf of the motor, in volts, is __________. (round off to nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   36
+  ],
+  "question_text": "A 3-phase, 415 V, 4-pole, 50 Hz induction motor draws 5 times the rated current at rated voltage at starting. It is required to bring down the starting current from the supply to 2 times of the rated current using a 3-phase autotransformer. If the magnetizing impedance of the induction motor and no load current of the autotransformer is neglected, then the transformation ratio of the autotransformer is given by ____________. (round off to two decimal places).",
+  "options": [],
+  "figures": []
+ }
+]
