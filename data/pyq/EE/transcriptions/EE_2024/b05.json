@@ -1,0 +1,362 @@
+[
+ {
+  "qno": 48,
+  "pages": [
+   39
+  ],
+  "question_text": "Two passive two-port networks P and Q are connected as shown in the figure. The impedance matrix of network P is \\(Z_\\mathbf{P} = \\begin{bmatrix} 40\\ \\Omega & 60\\ \\Omega \\\\ 80\\ \\Omega & 100\\ \\Omega \\end{bmatrix}\\). The admittance matrix of network Q is \\(Y_\\mathbf{Q} = \\begin{bmatrix} 5\\text{ S} & -2.5\\text{ S} \\\\ -2.5\\text{ S} & 1\\text{ S} \\end{bmatrix}\\). Let the ABCD matrix of the two-port network R in the figure be \\(\\begin{bmatrix} \\alpha & \\beta \\\\ \\gamma & \\delta \\end{bmatrix}\\). The value of \\(\\beta\\) in Ω is _____________ (rounded off to 2 decimal places).\n[IMAGE_Q_48_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_48_1",
+    "page": 39,
+    "rect": [
+     140,
+     210,
+     498,
+     330
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 49,
+  "pages": [
+   39
+  ],
+  "question_text": "For the circuit shown in the figure, the source frequency is 5000 rad/sec. The mutual inductance between the magnetically coupled inductors is 5 mH with their self inductances being 125 mH and 1 mH. The Thevenin’s impedance, \\(Z_{th}\\), between the terminals \\(P\\) and \\(Q\\) in Ω is _________ (rounded off to 2 decimal places).\n[IMAGE_Q_49_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_49_1",
+    "page": 39,
+    "rect": [
+     129,
+     492,
+     507,
+     638
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 50,
+  "pages": [
+   40
+  ],
+  "question_text": "In the circuit shown, \\(Z_1 = 50\\angle -90^\\circ\\ \\Omega\\) and \\(Z_2 = 200\\angle -30^\\circ\\ \\Omega\\). It is supplied by a three phase 400 V source with the phase sequence being R-Y-B. Assume the watt meters \\(W_1\\) and \\(W_2\\) to be ideal. The magnitude of the difference between the readings of \\(W_1\\) and \\(W_2\\) in watts is ___________ (rounded off to 2 decimal places).\n[IMAGE_Q_50_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_50_1",
+    "page": 40,
+    "rect": [
+     183,
+     167,
+     438,
+     347
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 51,
+  "pages": [
+   40
+  ],
+  "question_text": "In the \\((x, y, z)\\) coordinate system, three point-charges \\(Q\\), \\(Q\\), and \\(\\alpha Q\\) are located in free space at \\((-1, 0, 0)\\), \\((1, 0, 0)\\), and \\((0, -1, 0)\\), respectively. The value of \\(\\alpha\\) for the electric field to be zero at (0, 0.5, 0) is ______________ (rounded off to 1 decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 52,
+  "pages": [
+   40
+  ],
+  "question_text": "The given equation represents a magnetic field strength \\(\\bar{H}(r, \\theta, \\phi)\\) in the spherical coordinate system, in free space. Here, \\(\\hat{r}\\) and \\(\\hat{\\theta}\\) represent the unit vectors along \\(r\\) and \\(\\theta\\), respectively. The value of \\(P\\) in the equation should be ____________ (rounded off to the nearest integer).\n\\[\\bar{H}(r, \\theta, \\phi) = \\frac{1}{r^3}\\left(\\hat{r}P\\cos\\theta + \\hat{\\theta}\\sin\\theta\\right)\\]",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   40
+  ],
+  "question_text": "If the energy of a continuous-time signal \\(x(t)\\) is \\(E\\) and the energy of the signal \\(2x(2t - 1)\\) is \\(cE\\), then \\(c\\) is _____ (rounded off to 1 decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 54,
+  "pages": [
+   41
+  ],
+  "question_text": "A 3-phase star connected slip ring induction motor has the following parameters referred to the stator:\n\\(R_s = 3\\ \\Omega,\\ X_s = 2\\ \\Omega,\\ X_r' = 2\\ \\Omega,\\ R_r' = 2.5\\ \\Omega\\)\nThe per phase stator to rotor effective turns ratio is 3:1. The rotor winding is also star connected. The magnetizing reactance and core loss of the motor can be neglected. To have maximum torque at starting, the value of the extra resistance in ohms (referred to the rotor side) to be connected in series with each phase of the rotor winding is _________ (rounded off to 2 decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   41
+  ],
+  "question_text": "A 5 kW, 220 V DC shunt motor has 0.5 Ω armature resistance including brushes. The motor draws a no-load current of 3 A. The field current is constant at 1 A. Assuming that the core and rotational losses are constant and independent of the load, the current (in amperes) drawn by the motor while delivering the rated load, for the best possible efficiency, is ________ (rounded off to 2 decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   41
+  ],
+  "question_text": "The single line diagram of a lossless system is shown in the figure. The system is operating in steady-state at a stable equilibrium point with the power output of the generator being \\(P_{max}\\sin\\delta\\), where \\(\\delta\\) is the load angle and the mechanical power input is \\(0.5P_{max}\\). A fault occurs on line 2 such that the power output of the generator is less than \\(0.5P_{max}\\) during the fault. After the fault is cleared by opening line 2, the power output of the generator is \\(\\{P_{max}/\\sqrt{2}\\}\\sin\\delta\\). If the critical fault clearing angle is \\(\\pi/2\\) radians, the accelerating area on the power angle curve is ______ times \\(P_{max}\\) (rounded off to 2 decimal places).\n[IMAGE_Q_56_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_56_1",
+    "page": 41,
+    "rect": [
+     172,
+     582,
+     450,
+     690
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 57,
+  "pages": [
+   42
+  ],
+  "question_text": "Consider the closed-loop system shown in the figure with\n\\[G(s) = \\frac{K(s^2 - 2s + 2)}{(s^2 + 2s + 5)}.\\]\nThe root locus for the closed-loop system is to be drawn for \\(0 \\le K < \\infty\\). The angle of departure (between 0° and 360°) of the root locus branch drawn from the pole \\((-1 + j2)\\), in degrees, is _________________ (rounded off to the nearest integer).\n[IMAGE_Q_57_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_57_1",
+    "page": 42,
+    "rect": [
+     163,
+     260,
+     446,
+     358
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 58,
+  "pages": [
+   42
+  ],
+  "question_text": "Consider the stable closed-loop system shown in the figure. The asymptotic Bode magnitude plot of \\(G(s)\\) has a constant slope of −20 dB/decade at least till 100 rad/sec with the gain crossover frequency being 10 rad/sec. The asymptotic Bode phase plot remains constant at −90° at least till \\(\\omega = 10\\) rad/sec. The steady-state error of the closed-loop system for a unit ramp input is ______________ (rounded off to 2 decimal places).\n[IMAGE_Q_58_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_58_1",
+    "page": 42,
+    "rect": [
+     169,
+     536,
+     452,
+     634
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 59,
+  "pages": [
+   43
+  ],
+  "question_text": "Consider the stable closed-loop system shown in the figure. The magnitude and phase values of the frequency response of \\(G(s)\\) are given in the table. The value of the gain \\(K_I\\) (> 0) for a 50° phase margin is _______ (rounded off to 2 decimal places).\n[IMAGE_Q_59_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_59_1",
+    "page": 43,
+    "rect": [
+     139,
+     192,
+     486,
+     388
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 60,
+  "pages": [
+   44
+  ],
+  "question_text": "In the given circuit, the diodes are ideal. The current \\(I\\) through the diode \\(D1\\) in milliamperes is ___________ (rounded off to two decimal places).\n[IMAGE_Q_60_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_60_1",
+    "page": 44,
+    "rect": [
+     186,
+     399,
+     433,
+     660
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 61,
+  "pages": [
+   45
+  ],
+  "question_text": "A difference amplifier is shown in the figure. Assume the op-amp to be ideal. The CMRR (in dB) of the difference amplifier is _________ (rounded off to 2 decimal places).\n[IMAGE_Q_61_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_61_1",
+    "page": 45,
+    "rect": [
+     139,
+     172,
+     499,
+     376
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 62,
+  "pages": [
+   45
+  ],
+  "question_text": "A single-phase half-controlled bridge converter supplies an inductive load with ripple free load current. The triggering angle of the converter is 60°. The ratio of the rms value of the fundamental component of the input current to the rms value of the total input current of the bridge is _________ (rounded off to 3 decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 63,
+  "pages": [
+   45
+  ],
+  "question_text": "A single-phase full bridge voltage source inverter (VSI) feeds a purely inductive load. The inverter output voltage is a square wave in 180° conduction mode. The fundamental frequency of the output voltage is 50 Hz. If the DC input voltage of the inverter is 100 V and the value of the load inductance is 20 mH, the peak-to-peak load current in amperes is _________ (rounded off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   46
+  ],
+  "question_text": "In the DC-DC converter shown in the figure, the current through the inductor is continuous. The switching frequency is 500 Hz. The voltage \\((V_o)\\) across the load is assumed to be constant and ripple free. The peak inductor current in amperes is _________ (rounded off to the nearest integer).\n[IMAGE_Q_64_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_64_1",
+    "page": 46,
+    "rect": [
+     135,
+     172,
+     497,
+     323
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 65,
+  "pages": [
+   46
+  ],
+  "question_text": "A single-phase full-controlled thyristor converter bridge is used for regenerative braking of a separately excited DC motor with the following specifications:\n[IMAGE_Q_65_1]\nAssume that the motor is running at 600 rpm and the armature terminals of the motor are suitably reversed for regenerative braking. If the armature current of the motor is to be maintained at the rated value, the triggering angle of the converter bridge in degrees should be ____________ (rounded off to 2 decimal places).",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_65_1",
+    "page": 46,
+    "rect": [
+     193,
+     434,
+     444,
+     586
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ }
+]

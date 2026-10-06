@@ -1,0 +1,345 @@
+[
+ {
+  "qno": 23,
+  "pages": [
+   21
+  ],
+  "question_text": "The table lists two instrument transformers and their features:\n[IMAGE_Q_23_1]\nThe correct matching of the two columns is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "X matches with P and Q; Y matches with R and S."
+   },
+   {
+    "option_id": "B",
+    "text": "X matches with P and R; Y matches with Q and S."
+   },
+   {
+    "option_id": "C",
+    "text": "X matches with Q and R; Y matches with P and S."
+   },
+   {
+    "option_id": "D",
+    "text": "X matches with Q and S; Y matches with P and R."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_23_1",
+    "page": 21,
+    "rect": [
+     115,
+     110,
+     520,
+     246
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 24,
+  "pages": [
+   22
+  ],
+  "question_text": "Simplified form of the Boolean function\n\\[F(P, Q, R, S) = \\bar{P}\\bar{Q} + \\bar{P}QS + P\\bar{Q}\\bar{R}\\bar{S} + P\\bar{Q}R\\bar{S}\\]\nis",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\bar{P}S + \\bar{Q}\\bar{S}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\bar{P}\\bar{Q} + \\bar{Q}\\bar{S}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\bar{P}Q + R\\bar{S}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(P\\bar{S} + Q\\bar{R}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   23
+  ],
+  "question_text": "In the circuit, the present value of \\(Z\\) is 1. Neglecting the delay in the combinatorial circuit, the values of \\(S\\) and \\(Z\\), respectively, after the application of the clock will be\n[IMAGE_Q_25_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(S = 0,\\ Z = 0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(S = 0,\\ Z = 1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(S = 1,\\ Z = 0\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(S = 1,\\ Z = 1\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_25_1",
+    "page": 23,
+    "rect": [
+     130,
+     152,
+     489,
+     297
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 26,
+  "pages": [
+   24
+  ],
+  "question_text": "To obtain the Boolean function \\(F(X, Y) = X\\bar{Y} + \\bar{X}\\), the inputs \\(PQRS\\) in the figure should be\n[IMAGE_Q_26_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1010"
+   },
+   {
+    "option_id": "B",
+    "text": "1110"
+   },
+   {
+    "option_id": "C",
+    "text": "0110"
+   },
+   {
+    "option_id": "D",
+    "text": "0001"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_26_1",
+    "page": 24,
+    "rect": [
+     196,
+     150,
+     499,
+     353
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 27,
+  "pages": [
+   25
+  ],
+  "question_text": "If the following switching devices have similar power ratings, which one of them is the fastest?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "SCR"
+   },
+   {
+    "option_id": "B",
+    "text": "GTO"
+   },
+   {
+    "option_id": "C",
+    "text": "IGBT"
+   },
+   {
+    "option_id": "D",
+    "text": "Power MOSFET"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   25
+  ],
+  "question_text": "A single-phase triac based AC voltage controller feeds a series RL load. The input AC supply is 230 V, 50 Hz. The values of R and L are 10 Ω and 18.37 mH, respectively. The minimum triggering angle of the triac to obtain controllable output voltage is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "15°"
+   },
+   {
+    "option_id": "B",
+    "text": "30°"
+   },
+   {
+    "option_id": "C",
+    "text": "45°"
+   },
+   {
+    "option_id": "D",
+    "text": "60°"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   26
+  ],
+  "question_text": "Let \\(X\\) be a discrete random variable that is uniformly distributed over the set \\(\\{-10, -9, \\cdots, 0, \\cdots, 9, 10\\}\\). Which of the following random variables is/are uniformly distributed?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(X^2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(X^3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\((X - 5)^2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\((X + 10)^2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   26
+  ],
+  "question_text": "Which of the following complex functions is/are analytic on the complex plane?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(f(z) = j\\text{Re}(z)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(f(z) = \\text{Im}(z)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(f(z) = e^{|z|}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(f(z) = z^2 - z\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   27
+  ],
+  "question_text": "Consider the complex function \\(f(z) = \\cos z + e^{z^2}\\). The coefficient of \\(z^5\\) in the Taylor series expansion of \\(f(z)\\) about the origin is ______ (rounded off to 1 decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 32,
+  "pages": [
+   27
+  ],
+  "question_text": "The sum of the eigenvalues of the matrix \\(A = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}^2\\) is ______ (rounded off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   27
+  ],
+  "question_text": "Let \\(X(\\omega)\\) be the Fourier transform of the signal\n\\[x(t) = e^{-t^4}\\cos t, \\qquad -\\infty < t < \\infty.\\]\nThe value of the derivative of \\(X(\\omega)\\) at \\(\\omega = 0\\) is _______ (rounded off to 1 decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   28
+  ],
+  "question_text": "The incremental cost curves of two generators (Gen A and Gen B) in a plant supplying a common load are shown in the figure. If the incremental cost of supplying the common load is Rs. 7400 per MWh, then the common load in MW is _______ (rounded off to the nearest integer).\n[IMAGE_Q_34_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_34_1",
+    "page": 28,
+    "rect": [
+     132,
+     378,
+     496,
+     666
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 35,
+  "pages": [
+   29
+  ],
+  "question_text": "A forced commutated thyristorized step-down chopper is shown in the figure. Neglect the ON-state drop across the power devices. Assume that the capacitor is initially charged to 50 V with the polarity shown in the figure. The load current \\((I_L)\\) can be assumed to be constant at 10 A. Initially, Th\\(_M\\) is ON and Th\\(_A\\) is OFF. The turn-off time available to Th\\(_M\\) in microseconds, when Th\\(_A\\) is triggered, is_________ (rounded off to the nearest integer).\n[IMAGE_Q_35_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_35_1",
+    "page": 29,
+    "rect": [
+     116,
+     202,
+     505,
+     371
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ }
+]
