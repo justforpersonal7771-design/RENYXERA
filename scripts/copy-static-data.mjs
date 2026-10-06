@@ -17,7 +17,7 @@
 import { cpSync, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 
 // App branch code -> GATE paper code. Keep in step with lib/branches.ts (BRANCHES_WITH_DATA).
-const PYQ_BRANCHES = { ECE: "EC", EE: "EE" };
+const PYQ_BRANCHES = { ECE: "EC", EE: "EE", DA: "DA" };
 
 function stripAnswers(papers) {
   return papers.map((paper) => ({

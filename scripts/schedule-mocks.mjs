@@ -20,7 +20,7 @@ const SECONDS_PER_MARK = 108;
 // GATE CS: GA 10 Q (5×1 + 5×2 = 15), technical 55 Q (25×1 + 30×2 = 85) ≈ 13 maths + 72 core.
 // Every paper has the same shape (GA 10 Q, ~13 maths marks, core the rest); only the section
 // names differ. `kind` groups sections: GA / MATH / CORE.
-const MATH_SECTION = { CSE: "MATHEMATICAL FOUNDATIONS", ECE: "SECTION 1: ENGINEERING MATHEMATICS", EE: "SECTION 1: ENGINEERING MATHEMATICS" };
+const MATH_SECTION = { CSE: "MATHEMATICAL FOUNDATIONS", ECE: "SECTION 1: ENGINEERING MATHEMATICS", EE: "SECTION 1: ENGINEERING MATHEMATICS", DA: "SECTION 2: LINEAR ALGEBRA" };
 if (!MATH_SECTION[BRANCH]) throw new Error(`no mock blueprint for ${BRANCH}`);
 const kindOf = (section) => section === "GENERAL APTITUDE (GA)" ? "GA" : section === MATH_SECTION[BRANCH] ? "MATH" : "CORE";
 const BLUEPRINT = [

@@ -1,0 +1,1772 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "If ‘→’ denotes increasing order of intensity, then the meaning of the words [sick → infirm → moribund] is analogous to [silly → _______ → daft].\nWhich one of the given options is appropriate to fill the blank?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "frown"
+   },
+   {
+    "option_id": "B",
+    "text": "fawn"
+   },
+   {
+    "option_id": "C",
+    "text": "vein"
+   },
+   {
+    "option_id": "D",
+    "text": "vain"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "The 15 parts of the given figure are to be painted such that no two adjacent parts with shared boundaries (excluding corners) have the same color. The minimum number of colors required is\n[IMAGE_Q_02_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "4"
+   },
+   {
+    "option_id": "B",
+    "text": "3"
+   },
+   {
+    "option_id": "C",
+    "text": "5"
+   },
+   {
+    "option_id": "D",
+    "text": "6"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_02_1",
+    "page": 2,
+    "rect": [
+     220,
+     140,
+     414,
+     292
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 3,
+  "pages": [
+   3
+  ],
+  "question_text": "How many 4-digit positive integers divisible by 3 can be formed using only the digits \\(\\{1, 3, 4, 6, 7\\}\\), such that no digit appears more than once in a number?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "24"
+   },
+   {
+    "option_id": "B",
+    "text": "48"
+   },
+   {
+    "option_id": "C",
+    "text": "72"
+   },
+   {
+    "option_id": "D",
+    "text": "12"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 4,
+  "pages": [
+   3
+  ],
+  "question_text": "The sum of the following infinite series is\n\\[2 + \\frac{1}{2} + \\frac{1}{3} + \\frac{1}{4} + \\frac{1}{8} + \\frac{1}{9} + \\frac{1}{16} + \\frac{1}{27} + \\cdots\\]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "11/3"
+   },
+   {
+    "option_id": "B",
+    "text": "7/2"
+   },
+   {
+    "option_id": "C",
+    "text": "13/4"
+   },
+   {
+    "option_id": "D",
+    "text": "9/2"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   4
+  ],
+  "question_text": "In an election, the share of valid votes received by the four candidates A, B, C, and D is represented by the pie chart shown. The total number of votes cast in the election were 1,15,000, out of which 5,000 were invalid.\n[IMAGE_Q_05_1]\nBased on the data provided, the total number of valid votes received by the candidates B and C is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "45,000"
+   },
+   {
+    "option_id": "B",
+    "text": "49,500"
+   },
+   {
+    "option_id": "C",
+    "text": "51,750"
+   },
+   {
+    "option_id": "D",
+    "text": "54,000"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_05_1",
+    "page": 4,
+    "rect": [
+     208,
+     141,
+     391,
+     351
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 6,
+  "pages": [
+   5
+  ],
+  "question_text": "Thousands of years ago, some people began dairy farming. This coincided with a number of mutations in a particular gene that resulted in these people developing the ability to digest dairy milk.\nBased on the given passage, which of the following can be inferred?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "All human beings can digest dairy milk."
+   },
+   {
+    "option_id": "B",
+    "text": "No human being can digest dairy milk."
+   },
+   {
+    "option_id": "C",
+    "text": "Digestion of dairy milk is essential for human beings."
+   },
+   {
+    "option_id": "D",
+    "text": "In human beings, digestion of dairy milk resulted from a mutated gene."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   5
+  ],
+  "question_text": "The probability of a boy or a girl being born is 1/2. For a family having only three children, what is the probability of having two girls and one boy?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "3/8"
+   },
+   {
+    "option_id": "B",
+    "text": "1/8"
+   },
+   {
+    "option_id": "C",
+    "text": "1/4"
+   },
+   {
+    "option_id": "D",
+    "text": "1/2"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 8,
+  "pages": [
+   6
+  ],
+  "question_text": "Person 1 and Person 2 invest in three mutual funds A, B, and C. The amounts they invest in each of these mutual funds are given in the table.\n[IMAGE_Q_08_1]\nAt the end of one year, the total amount that Person 1 gets is ₹500 more than Person 2. The annual rate of return for the mutual funds B and C is 15% each. What is the annual rate of return for the mutual fund A?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "7.5%"
+   },
+   {
+    "option_id": "B",
+    "text": "10%"
+   },
+   {
+    "option_id": "C",
+    "text": "15%"
+   },
+   {
+    "option_id": "D",
+    "text": "20%"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 6,
+    "rect": [
+     150,
+     132,
+     495,
+     246
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   7
+  ],
+  "question_text": "Three different views of a dice are shown in the figure below.\n[IMAGE_Q_09_1]\nThe piece of paper that can be folded to make this dice is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_09_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_09_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_09_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_09_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_09_1",
+    "page": 7,
+    "rect": [
+     232,
+     110,
+     402,
+     165
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_09_A",
+    "page": 7,
+    "rect": [
+     122,
+     251,
+     187,
+     340
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_09_B",
+    "page": 7,
+    "rect": [
+     122,
+     357,
+     187,
+     448
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_09_C",
+    "page": 7,
+    "rect": [
+     122,
+     466,
+     189,
+     555
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_09_D",
+    "page": 7,
+    "rect": [
+     122,
+     573,
+     189,
+     662
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 10,
+  "pages": [
+   8
+  ],
+  "question_text": "Visualize two identical right circular cones such that one is inverted over the other and they share a common circular base. If a cutting plane passes through the vertices of the assembled cones, what shape does the outer boundary of the resulting cross-section make?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "A rhombus"
+   },
+   {
+    "option_id": "B",
+    "text": "A triangle"
+   },
+   {
+    "option_id": "C",
+    "text": "An ellipse"
+   },
+   {
+    "option_id": "D",
+    "text": "A hexagon"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 11,
+  "pages": [
+   9
+  ],
+  "question_text": "Consider the following statements:\n(i) The mean and variance of a Poisson random variable are equal.\n(ii) For a standard normal random variable, the mean is zero and the variance is one.\nWhich ONE of the following options is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Both (i) and (ii) are true"
+   },
+   {
+    "option_id": "B",
+    "text": "(i) is true and (ii) is false"
+   },
+   {
+    "option_id": "C",
+    "text": "(ii) is true and (i) is false"
+   },
+   {
+    "option_id": "D",
+    "text": "Both (i) and (ii) are false"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   9
+  ],
+  "question_text": "Three fair coins are tossed independently. \\(T\\) is the event that two or more tosses result in heads. \\(S\\) is the event that two or more tosses result in tails.\nWhat is the probability of the event \\(T \\cap S\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0"
+   },
+   {
+    "option_id": "B",
+    "text": "0.5"
+   },
+   {
+    "option_id": "C",
+    "text": "0.25"
+   },
+   {
+    "option_id": "D",
+    "text": "1"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   10
+  ],
+  "question_text": "Consider the matrix \\(\\boldsymbol{M} = \\begin{bmatrix} 2 & -1 \\\\ 3 & 1 \\end{bmatrix}\\).\nWhich ONE of the following statements is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The eigenvalues of \\(\\boldsymbol{M}\\) are non-negative and real."
+   },
+   {
+    "option_id": "B",
+    "text": "The eigenvalues of \\(\\boldsymbol{M}\\) are complex conjugate pairs."
+   },
+   {
+    "option_id": "C",
+    "text": "One eigenvalue of \\(\\boldsymbol{M}\\) is positive and real, and another eigenvalue of \\(\\boldsymbol{M}\\) is zero."
+   },
+   {
+    "option_id": "D",
+    "text": "One eigenvalue of \\(\\boldsymbol{M}\\) is non-negative and real, and another eigenvalue of \\(\\boldsymbol{M}\\) is negative and real."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   10
+  ],
+  "question_text": "Consider performing depth-first search (DFS) on an undirected and unweighted graph \\(G\\) starting at vertex \\(s\\). For any vertex \\(u\\) in \\(G\\), \\(d[u]\\) is the length of the shortest path from \\(s\\) to \\(u\\). Let \\((u, v)\\) be an edge in \\(G\\) such that \\(d[u] < d[v]\\). If the edge \\((u, v)\\) is explored first in the direction from \\(u\\) to \\(v\\) during the above DFS, then \\((u, v)\\) becomes a ______ edge.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "tree"
+   },
+   {
+    "option_id": "B",
+    "text": "cross"
+   },
+   {
+    "option_id": "C",
+    "text": "back"
+   },
+   {
+    "option_id": "D",
+    "text": "gray"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   11
+  ],
+  "question_text": "For any twice differentiable function \\(f: \\mathbb{R} \\to \\mathbb{R}\\), if at some \\(x^* \\in \\mathbb{R}\\), \\(f'(x^*) = 0\\) and \\(f''(x^*) > 0\\), then the function \\(f\\) necessarily has a ______ at \\(x = x^*\\).\nNote: \\(\\mathbb{R}\\) denotes the set of real numbers.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "local minimum"
+   },
+   {
+    "option_id": "B",
+    "text": "global minimum"
+   },
+   {
+    "option_id": "C",
+    "text": "local maximum"
+   },
+   {
+    "option_id": "D",
+    "text": "global maximum"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   11
+  ],
+  "question_text": "Match the items in Column 1 with the items in Column 2 in the following table:\nColumn 1: (p) First In First Out; (q) Lookup Operation; (r) Last In First Out\nColumn 2: (i) Stacks; (ii) Queues; (iii) Hash Tables",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(p) − (ii), (q) − (iii), (r) − (i)"
+   },
+   {
+    "option_id": "B",
+    "text": "(p) − (ii), (q) − (i), (r) − (iii)"
+   },
+   {
+    "option_id": "C",
+    "text": "(p) − (i), (q) − (ii), (r) − (iii)"
+   },
+   {
+    "option_id": "D",
+    "text": "(p) − (i), (q) − (iii), (r) − (ii)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   12
+  ],
+  "question_text": "Consider the dataset with six datapoints: \\(\\{(\\boldsymbol{x}_1, y_1), (\\boldsymbol{x}_2, y_2), \\ldots, (\\boldsymbol{x}_6, y_6)\\}\\), where \\(\\boldsymbol{x}_1 = \\begin{bmatrix} 1 \\\\ 0 \\end{bmatrix}\\), \\(\\boldsymbol{x}_2 = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}\\), \\(\\boldsymbol{x}_3 = \\begin{bmatrix} 0 \\\\ -1 \\end{bmatrix}\\), \\(\\boldsymbol{x}_4 = \\begin{bmatrix} -1 \\\\ 0 \\end{bmatrix}\\), \\(\\boldsymbol{x}_5 = \\begin{bmatrix} 2 \\\\ 2 \\end{bmatrix}\\), \\(\\boldsymbol{x}_6 = \\begin{bmatrix} -2 \\\\ -2 \\end{bmatrix}\\) and the labels are given by \\(y_1 = y_2 = y_5 = 1\\), and \\(y_3 = y_4 = y_6 = -1\\). A hard margin linear support vector machine is trained on the above dataset.\nWhich ONE of the following sets is a possible set of support vectors?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\{\\boldsymbol{x}_1, \\boldsymbol{x}_2, \\boldsymbol{x}_5\\}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\{\\boldsymbol{x}_3, \\boldsymbol{x}_4, \\boldsymbol{x}_5\\}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\{\\boldsymbol{x}_4, \\boldsymbol{x}_5\\}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\{\\boldsymbol{x}_1, \\boldsymbol{x}_2, \\boldsymbol{x}_3, \\boldsymbol{x}_4\\}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   12
+  ],
+  "question_text": "Match the items in Column 1 with the items in Column 2 in the following table:\nColumn 1: (p) Principal Component Analysis; (q) Naïve Bayes Classification; (r) Logistic Regression\nColumn 2: (i) Discriminative Model; (ii) Dimensionality Reduction; (iii) Generative Model",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(p) − (iii), (q) − (i), (r) − (ii)"
+   },
+   {
+    "option_id": "B",
+    "text": "(p) − (ii), (q) − (i), (r) − (iii)"
+   },
+   {
+    "option_id": "C",
+    "text": "(p) − (ii), (q) − (iii), (r) − (i)"
+   },
+   {
+    "option_id": "D",
+    "text": "(p) − (iii), (q) − (ii), (r) − (i)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 19,
+  "pages": [
+   13
+  ],
+  "question_text": "Euclidean distance based \\(k\\)-means clustering algorithm was run on a dataset of 100 points with \\(k = 3\\). If the points \\(\\begin{bmatrix} 1 \\\\ 1 \\end{bmatrix}\\) and \\(\\begin{bmatrix} -1 \\\\ 1 \\end{bmatrix}\\) are both part of cluster 3, then which ONE of the following points is necessarily also part of cluster 3?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\begin{bmatrix} 0 \\\\ 2 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\begin{bmatrix} 2 \\\\ 0 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   13
+  ],
+  "question_text": "Given a dataset with \\(K\\) binary-valued attributes (where \\(K > 2\\)) for a two-class classification task, the number of parameters to be estimated for learning a naïve Bayes classifier is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2^K + 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2K + 1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2^{K+1} + 1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(K^2 + 1\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   14
+  ],
+  "question_text": "Consider performing uniform hashing on an open address hash table with load factor \\(\\alpha = \\frac{n}{m} < 1\\), where \\(n\\) elements are stored in the table with \\(m\\) slots. The expected number of probes in an unsuccessful search is at most \\(\\frac{1}{1-\\alpha}\\).\nInserting an element in this hash table requires at most ______ probes, on average.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\ln\\left(\\dfrac{1}{1-\\alpha}\\right)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{1}{1-\\alpha}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1 + \\dfrac{\\alpha}{2}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{1}{1+\\alpha}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   14
+  ],
+  "question_text": "For any binary classification dataset, let \\(S_B \\in \\mathbb{R}^{d\\times d}\\) and \\(S_W \\in \\mathbb{R}^{d\\times d}\\) be the between-class and within-class scatter (covariance) matrices, respectively. The Fisher linear discriminant is defined by \\(u^* \\in \\mathbb{R}^d\\), that maximizes\n\\[J(u) = \\frac{u^TS_Bu}{u^TS_Wu}\\]\nIf \\(\\lambda = J(u^*)\\), \\(S_W\\) is non-singular and \\(S_B \\ne 0\\), then \\((u^*, \\lambda)\\) must satisfy which ONE of the following equations?\nNote: \\(\\mathbb{R}\\) denotes the set of real numbers.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(S_W^{-1}S_Bu^* = \\lambda u^*\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(S_Wu^* = \\lambda S_Bu^*\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(S_BS_Wu^* = \\lambda u^*\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(u^{*T}u^* = \\lambda^2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 23,
+  "pages": [
+   15
+  ],
+  "question_text": "Let \\(h_1\\) and \\(h_2\\) be two admissible heuristics used in \\(A^*\\) search.\nWhich ONE of the following expressions is always an admissible heuristic?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(h_1 + h_2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(h_1 \\times h_2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(h_1/h_2, (h_2 \\ne 0)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(|h_1 - h_2|\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 24,
+  "pages": [
+   15
+  ],
+  "question_text": "Consider five random variables \\(U, V, W, X\\), and \\(Y\\) whose joint distribution satisfies:\n\\[P(U, V, W, X, Y) = P(U)P(V)P(W|U, V)P(X|W)P(Y|W)\\]\nWhich ONE of the following statements is FALSE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(Y\\) is conditionally independent of \\(V\\) given \\(W\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(X\\) is conditionally independent of \\(U\\) given \\(W\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(U\\) and \\(V\\) are conditionally independent given \\(W\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(Y\\) and \\(X\\) are conditionally independent given \\(W\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   16
+  ],
+  "question_text": "Consider the following statement:\nIn adversarial search, \\(\\alpha - \\beta\\) pruning can be applied to game trees of any depth where \\(\\alpha\\) is the __(m)__ value choice we have formed so far at any choice point along the path for the MAX player and \\(\\beta\\) is the __(n)__ value choice we have formed so far at any choice point along the path for the MIN player.\nWhich ONE of the following choices of (m) and (n) makes the above statement valid?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(m) = highest, (n) = highest"
+   },
+   {
+    "option_id": "B",
+    "text": "(m) = lowest, (n) = highest"
+   },
+   {
+    "option_id": "C",
+    "text": "(m) = highest, (n) = lowest"
+   },
+   {
+    "option_id": "D",
+    "text": "(m) = lowest, (n) = lowest"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   16
+  ],
+  "question_text": "Consider a database that includes the following relations:\nDefender(name, rating, side, goals)\nForward(name, rating, assists, goals)\nTeam(name, club, price)\nWhich ONE of the following relational algebra expressions checks that every name occurring in Team appears in either Defender or Forward, where \\(\\phi\\) denotes the empty set?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\Pi_{name}(\\text{Team}) \\setminus (\\Pi_{name}(\\text{Defender}) \\cap \\Pi_{name}(\\text{Forward})) = \\phi\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\((\\Pi_{name}(\\text{Defender}) \\cap \\Pi_{name}(\\text{Forward})) \\setminus \\Pi_{name}(\\text{Team}) = \\phi\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\Pi_{name}(\\text{Team}) \\setminus (\\Pi_{name}(\\text{Defender}) \\cup \\Pi_{name}(\\text{Forward})) = \\phi\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\((\\Pi_{name}(\\text{Defender}) \\cup \\Pi_{name}(\\text{Forward})) \\setminus \\Pi_{name}(\\text{Team}) = \\phi\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 27,
+  "pages": [
+   17
+  ],
+  "question_text": "Let the minimum, maximum, mean and standard deviation values for the attribute income of data scientists be ₹46000, ₹170000, ₹96000, and ₹21000, respectively. The z-score normalized income value of ₹106000 is closest to which ONE of the following options?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.217"
+   },
+   {
+    "option_id": "B",
+    "text": "0.476"
+   },
+   {
+    "option_id": "C",
+    "text": "0.623"
+   },
+   {
+    "option_id": "D",
+    "text": "2.304"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   17
+  ],
+  "question_text": "Consider the following tree traversals on a full binary tree:\n(i) Preorder\n(ii) Inorder\n(iii) Postorder\nWhich of the following traversal options is/are sufficient to uniquely reconstruct the full binary tree?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(i) and (ii)"
+   },
+   {
+    "option_id": "B",
+    "text": "(ii) and (iii)"
+   },
+   {
+    "option_id": "C",
+    "text": "(i) and (iii)"
+   },
+   {
+    "option_id": "D",
+    "text": "(ii) only"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   18
+  ],
+  "question_text": "Let \\(x\\) and \\(y\\) be two propositions. Which of the following statements is a tautology /are tautologies?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\((\\neg x \\wedge y) \\Longrightarrow (y \\Longrightarrow x)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\((x \\wedge \\neg y) \\Longrightarrow (\\neg x \\Longrightarrow y)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\((\\neg x \\wedge y) \\Longrightarrow (\\neg x \\Longrightarrow y)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\((x \\wedge \\neg y) \\Longrightarrow (y \\Longrightarrow x)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   18
+  ],
+  "question_text": "Consider sorting the following array of integers in ascending order using an in-place Quicksort algorithm that uses the last element as the pivot.\n60 70 80 90 100\nThe minimum number of swaps performed during this Quicksort is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   19
+  ],
+  "question_text": "Consider the following two tables named Raider and Team in a relational database maintained by a Kabaddi league. The attribute ID in table Team references the primary key of the Raider table, ID.\n[IMAGE_Q_31_1]\nThe SQL query described below is executed on this database:\n```sql\nSELECT *\nFROM Raider, Team\nWHERE Raider.ID=Team.ID AND City=\"Jaipur\" AND\nRaidPoints > 200;\n```\nThe number of rows returned by this query is ______.",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_31_1",
+    "page": 19,
+    "rect": [
+     223,
+     131,
+     415,
+     386
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 32,
+  "pages": [
+   20
+  ],
+  "question_text": "The fundamental operations in a double-ended queue D are:\ninsertFirst(e) - Insert a new element e at the beginning of D.\ninsertLast(e) - Insert a new element e at the end of D.\nremoveFirst() - Remove and return the first element of D.\nremoveLast() - Remove and return the last element of D.\nIn an empty double-ended queue, the following operations are performed:\n```\ninsertFirst(10)\ninsertLast(32)\na ← removeFirst()\ninsertLast(28)\ninsertLast(17)\na ← removeFirst()\na ← removeLast()\n```\nThe value of a is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   20
+  ],
+  "question_text": "Let \\(f: \\mathbb{R} \\to \\mathbb{R}\\) be the function \\(f(x) = \\dfrac{1}{1 + e^{-x}}\\).\nThe value of the derivative of \\(f\\) at \\(x\\) where \\(f(x) = 0.4\\) is ______ (rounded off to two decimal places).\nNote: \\(\\mathbb{R}\\) denotes the set of real numbers.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   21
+  ],
+  "question_text": "The sample average of 50 data points is 40. The updated sample average after including a new data point taking the value of 142 is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 35,
+  "pages": [
+   21
+  ],
+  "question_text": "Consider the \\(3 \\times 3\\) matrix \\(\\boldsymbol{M} = \\begin{bmatrix} 1 & 2 & 3 \\\\ 3 & 1 & 3 \\\\ 4 & 3 & 6 \\end{bmatrix}\\).\nThe determinant of \\((\\boldsymbol{M}^2 + 12\\boldsymbol{M})\\) is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 36,
+  "pages": [
+   21
+  ],
+  "question_text": "A fair six-sided die (with faces numbered 1, 2, 3, 4, 5, 6) is repeatedly thrown independently.\nWhat is the expected number of times the die is thrown until two consecutive throws of even numbers are seen?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2"
+   },
+   {
+    "option_id": "B",
+    "text": "4"
+   },
+   {
+    "option_id": "C",
+    "text": "6"
+   },
+   {
+    "option_id": "D",
+    "text": "8"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 37,
+  "pages": [
+   22
+  ],
+  "question_text": "Let \\(f: \\mathbb{R} \\to \\mathbb{R}\\) be a function. Note: \\(\\mathbb{R}\\) denotes the set of real numbers.\n\\[f(x) = \\begin{cases} -x, & \\text{if } x < -2 \\\\ ax^2 + bx + c, & \\text{if } x \\in [-2, 2] \\\\ x, & \\text{if } x > 2 \\end{cases}\\]\nWhich ONE of the following choices gives the values of \\(a, b, c\\) that make the function \\(f\\) continuous and differentiable?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(a = \\frac{1}{4}, b = 0, c = 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(a = \\frac{1}{2}, b = 0, c = 0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(a = 0, b = 0, c = 0\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(a = 1, b = 1, c = -4\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 38,
+  "pages": [
+   23
+  ],
+  "question_text": "Consider the following Python code:\n```python\ndef count(child_dict, i):\n    if i not in child_dict.keys():\n        return 1\n    ans = 1\n    for j in child_dict[i]:\n        ans += count(child_dict, j)\n    return ans\n\nchild_dict = dict()\nchild_dict[0] = [1,2]\nchild_dict[1] = [3,4,5]\nchild_dict[2] = [6,7,8]\nprint(count(child_dict,0))\n```\nWhich ONE of the following is the output of this code?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "6"
+   },
+   {
+    "option_id": "B",
+    "text": "1"
+   },
+   {
+    "option_id": "C",
+    "text": "8"
+   },
+   {
+    "option_id": "D",
+    "text": "9"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 39,
+  "pages": [
+   24
+  ],
+  "question_text": "Consider the function computeS(\\(X\\)) whose pseudocode is given below:\n```\ncomputeS(X)\n  S[1] ← 1\n  for i ← 2 to length(X)\n    S[i] ← 1\n    if X[i − 1] ≤ X[i]\n      S[i] ← S[i] + S[i − 1]\n    end if\n  end for\n  return S\n```\nWhich ONE of the following values is returned by the function computeS(\\(X\\)) for \\(X\\) = [6, 3, 5, 4, 10]?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[1, 1, 2, 3, 4]"
+   },
+   {
+    "option_id": "B",
+    "text": "[1, 1, 2, 3, 3]"
+   },
+   {
+    "option_id": "C",
+    "text": "[1, 1, 2, 1, 2]"
+   },
+   {
+    "option_id": "D",
+    "text": "[1, 1, 2, 1, 5]"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 40,
+  "pages": [
+   25
+  ],
+  "question_text": "Let \\(F(n)\\) denote the maximum number of comparisons made while searching for an entry in a sorted array of size \\(n\\) using binary search.\nWhich ONE of the following options is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(F(n) = F(\\lfloor n/2 \\rfloor) + 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(F(n) = F(\\lfloor n/2 \\rfloor) + F(\\lceil n/2 \\rceil)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(F(n) = F(\\lfloor n/2 \\rfloor)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(F(n) = F(n - 1) + 1\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 41,
+  "pages": [
+   25
+  ],
+  "question_text": "Consider the following Python function:\n```python\ndef fun(D, s1, s2):\n    if s1 < s2:\n        D[s1], D[s2] = D[s2], D[s1]\n        fun(D, s1+1, s2-1)\n```\nWhat does this Python function fun() do? Select the ONE appropriate option below.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "It finds the smallest element in D from index s1 to s2, both inclusive."
+   },
+   {
+    "option_id": "B",
+    "text": "It performs a merge sort in-place on this list D between indices s1 and s2, both inclusive."
+   },
+   {
+    "option_id": "C",
+    "text": "It reverses the list D between indices s1 and s2, both inclusive."
+   },
+   {
+    "option_id": "D",
+    "text": "It swaps the elements in D at indices s1 and s2, and leaves the remaining elements unchanged."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 42,
+  "pages": [
+   26
+  ],
+  "question_text": "Consider the table below, where the \\((i, j)^{th}\\) element of the table is the distance between points \\(x_i\\) and \\(x_j\\). Single linkage clustering is performed on data points, \\(x_1, x_2, x_3, x_4, x_5\\).\n[IMAGE_Q_42_1]\nWhich ONE of the following is the correct representation of the clusters produced?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_42_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_42_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_42_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_42_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_42_1",
+    "page": 26,
+    "rect": [
+     197,
+     168,
+     374,
+     310
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_42_A",
+    "page": 26,
+    "rect": [
+     122,
+     411,
+     232,
+     486
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_42_B",
+    "page": 26,
+    "rect": [
+     122,
+     497,
+     232,
+     571
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_42_C",
+    "page": 26,
+    "rect": [
+     122,
+     583,
+     232,
+     658
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_42_D",
+    "page": 26,
+    "rect": [
+     122,
+     669,
+     232,
+     742
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 43,
+  "pages": [
+   27
+  ],
+  "question_text": "Consider the two neural networks (NNs) shown in Figures 1 and 2, with \\(ReLU\\) activation (\\(ReLU(z) = \\max\\{0, z\\}, \\forall z \\in \\mathbb{R}\\)). \\(\\mathbb{R}\\) denotes the set of real numbers. The connections and their corresponding weights are shown in the Figures. The biases at every neuron are set to 0. For what values of \\(p, q, r\\) in Figure 2 are the two NNs equivalent, when \\(x_1, x_2, x_3\\) are positive?\n[IMAGE_Q_43_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(p = 36, q = 24, r = 24\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(p = 24, q = 24, r = 36\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(p = 18, q = 36, r = 24\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(p = 36, q = 36, r = 36\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_43_1",
+    "page": 27,
+    "rect": [
+     119,
+     160,
+     430,
+     448
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 44,
+  "pages": [
+   28
+  ],
+  "question_text": "Consider a state space where the start state is number 1. The successor function for the state numbered n returns two states numbered n+1 and n+2. Assume that the states in the unexpanded state list are expanded in the ascending order of numbers and the previously expanded states are not added to the unexpanded state list.\nWhich ONE of the following statements about breadth-first search (BFS) and depth-first search (DFS) is true, when reaching the goal state number 6?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "BFS expands more states than DFS."
+   },
+   {
+    "option_id": "B",
+    "text": "DFS expands more states than BFS."
+   },
+   {
+    "option_id": "C",
+    "text": "Both BFS and DFS expand equal number of states."
+   },
+   {
+    "option_id": "D",
+    "text": "Both BFS and DFS do not reach the goal state number 6."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 45,
+  "pages": [
+   28
+  ],
+  "question_text": "Consider the following sorting algorithms:\n(i) Bubble sort\n(ii) Insertion sort\n(iii) Selection sort\nWhich ONE among the following choices of sorting algorithms sorts the numbers in the array [4, 3, 2, 1, 5] in increasing order after exactly two passes over the array?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(i) only"
+   },
+   {
+    "option_id": "B",
+    "text": "(iii) only"
+   },
+   {
+    "option_id": "C",
+    "text": "(i) and (iii) only"
+   },
+   {
+    "option_id": "D",
+    "text": "(ii) and (iii) only"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 46,
+  "pages": [
+   29
+  ],
+  "question_text": "Given the relational schema \\(R = (U, V, W, X, Y, Z)\\) and the set of functional dependencies:\n\\(\\{U \\to V, U \\to W, WX \\to Y, WX \\to Z, V \\to X\\}\\)\nWhich of the following functional dependencies can be derived from the above set?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(VW \\to YZ\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(WX \\to YZ\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(VW \\to U\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(VW \\to Y\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 47,
+  "pages": [
+   30
+  ],
+  "question_text": "Select all choices that are subspaces of \\(\\mathbb{R}^3\\).\nNote: \\(\\mathbb{R}\\) denotes the set of real numbers.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\left\\{\\mathbf{x} = \\begin{bmatrix} x_1 \\\\ x_2 \\\\ x_3 \\end{bmatrix} \\in \\mathbb{R}^3 : \\mathbf{x} = \\alpha\\begin{bmatrix} 1 \\\\ 1 \\\\ 0 \\end{bmatrix} + \\beta\\begin{bmatrix} 1 \\\\ 0 \\\\ 0 \\end{bmatrix}, \\alpha, \\beta \\in \\mathbb{R}\\right\\}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\left\\{\\mathbf{x} = \\begin{bmatrix} x_1 \\\\ x_2 \\\\ x_3 \\end{bmatrix} \\in \\mathbb{R}^3 : \\mathbf{x} = \\alpha^2\\begin{bmatrix} 1 \\\\ 2 \\\\ 0 \\end{bmatrix} + \\beta^2\\begin{bmatrix} 1 \\\\ 0 \\\\ 1 \\end{bmatrix}, \\alpha, \\beta \\in \\mathbb{R}\\right\\}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\left\\{\\mathbf{x} = \\begin{bmatrix} x_1 \\\\ x_2 \\\\ x_3 \\end{bmatrix} \\in \\mathbb{R}^3 : 5x_1 + 2x_3 = 0, 4x_1 - 2x_2 + 3x_3 = 0\\right\\}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\left\\{\\mathbf{x} = \\begin{bmatrix} x_1 \\\\ x_2 \\\\ x_3 \\end{bmatrix} \\in \\mathbb{R}^3 : 5x_1 + 2x_3 + 4 = 0\\right\\}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 48,
+  "pages": [
+   31
+  ],
+  "question_text": "Which of the following statements is/are TRUE?\nNote: \\(\\mathbb{R}\\) denotes the set of real numbers.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "There exist \\(\\boldsymbol{M} \\in \\mathbb{R}^{3\\times3}, \\boldsymbol{p} \\in \\mathbb{R}^3\\), and \\(\\boldsymbol{q} \\in \\mathbb{R}^3\\) such that \\(\\boldsymbol{Mx} = \\boldsymbol{p}\\) has a unique solution and \\(\\boldsymbol{Mx} = \\boldsymbol{q}\\) has infinite solutions."
+   },
+   {
+    "option_id": "B",
+    "text": "There exist \\(\\boldsymbol{M} \\in \\mathbb{R}^{3\\times3}, \\boldsymbol{p} \\in \\mathbb{R}^3\\), and \\(\\boldsymbol{q} \\in \\mathbb{R}^3\\) such that \\(\\boldsymbol{Mx} = \\boldsymbol{p}\\) has no solutions and \\(\\boldsymbol{Mx} = \\boldsymbol{q}\\) has infinite solutions."
+   },
+   {
+    "option_id": "C",
+    "text": "There exist \\(\\boldsymbol{M} \\in \\mathbb{R}^{2\\times3}, \\boldsymbol{p} \\in \\mathbb{R}^2\\), and \\(\\boldsymbol{q} \\in \\mathbb{R}^2\\) such that \\(\\boldsymbol{Mx} = \\boldsymbol{p}\\) has a unique solution and \\(\\boldsymbol{Mx} = \\boldsymbol{q}\\) has infinite solutions."
+   },
+   {
+    "option_id": "D",
+    "text": "There exist \\(\\boldsymbol{M} \\in \\mathbb{R}^{3\\times2}, \\boldsymbol{p} \\in \\mathbb{R}^3\\), and \\(\\boldsymbol{q} \\in \\mathbb{R}^3\\) such that \\(\\boldsymbol{Mx} = \\boldsymbol{p}\\) has a unique solution and \\(\\boldsymbol{Mx} = \\boldsymbol{q}\\) has no solutions."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 49,
+  "pages": [
+   32
+  ],
+  "question_text": "Let \\(\\mathbb{R}\\) be the set of real numbers, \\(U\\) be a subspace of \\(\\mathbb{R}^3\\) and \\(\\boldsymbol{M} \\in \\mathbb{R}^{3\\times3}\\) be the matrix corresponding to the projection on to the subspace \\(U\\).\nWhich of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "If \\(U\\) is a 1-dimensional subspace of \\(\\mathbb{R}^3\\), then the null space of \\(\\boldsymbol{M}\\) is a 1-dimensional subspace."
+   },
+   {
+    "option_id": "B",
+    "text": "If \\(U\\) is a 2-dimensional subspace of \\(\\mathbb{R}^3\\), then the null space of \\(\\boldsymbol{M}\\) is a 1-dimensional subspace."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\boldsymbol{M}^2 = \\boldsymbol{M}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\boldsymbol{M}^3 = \\boldsymbol{M}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 50,
+  "pages": [
+   32
+  ],
+  "question_text": "Consider the function \\(f: \\mathbb{R} \\to \\mathbb{R}\\) where \\(\\mathbb{R}\\) is the set of all real numbers.\n\\[f(x) = \\frac{x^4}{4} - \\frac{2x^3}{3} - \\frac{3x^2}{2} + 1\\]\nWhich of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x = 0\\) is a local maximum of \\(f\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x = 3\\) is a local minimum of \\(f\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(x = -1\\) is a local maximum of \\(f\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(x = 0\\) is a local minimum of \\(f\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 51,
+  "pages": [
+   33
+  ],
+  "question_text": "Consider the directed acyclic graph (DAG) below:\n[IMAGE_Q_51_1]\nWhich of the following is/are valid vertex orderings that can be obtained from a topological sort of the DAG?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P Q R S T U V"
+   },
+   {
+    "option_id": "B",
+    "text": "P R Q V S U T"
+   },
+   {
+    "option_id": "C",
+    "text": "P Q R S V U T"
+   },
+   {
+    "option_id": "D",
+    "text": "P R Q S V T U"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_51_1",
+    "page": 33,
+    "rect": [
+     261,
+     153,
+     375,
+     361
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 52,
+  "pages": [
+   34
+  ],
+  "question_text": "Let \\(H\\), \\(I\\), \\(L\\), and \\(N\\) represent height, number of internal nodes, number of leaf nodes, and the total number of nodes respectively in a rooted binary tree.\nWhich of the following statements is/are always TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(L \\le I + 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(H + 1 \\le N \\le 2^{H+1} - 1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(H \\le I \\le 2^H - 1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(H \\le L \\le 2^{H-1}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   35
+  ],
+  "question_text": "Consider the following figures representing datasets consisting of two-dimensional features with two classes denoted by circles and squares.\n[IMAGE_Q_53_1]\nWhich of the following is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(i) is linearly separable."
+   },
+   {
+    "option_id": "B",
+    "text": "(ii) is linearly separable."
+   },
+   {
+    "option_id": "C",
+    "text": "(iii) is linearly separable."
+   },
+   {
+    "option_id": "D",
+    "text": "(iv) is linearly separable."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_53_1",
+    "page": 35,
+    "rect": [
+     130,
+     114,
+     482,
+     405
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 54,
+  "pages": [
+   36
+  ],
+  "question_text": "Let game(ball, rugby) be true if the ball is used in rugby and false otherwise.\nLet shape(ball, round) be true if the ball is round and false otherwise.\nConsider the following logical sentences:\n\\(s_1: \\forall\\, ball\\ \\neg\\ game(ball, rugby) \\Longrightarrow shape(ball, round)\\)\n\\(s_2: \\forall\\, ball\\ \\neg\\ shape(ball, round) \\Longrightarrow game(ball, rugby)\\)\n\\(s_3: \\forall\\, ball\\ game(ball, rugby) \\Longrightarrow \\neg\\ shape(ball, round)\\)\n\\(s_4: \\forall\\, ball\\ shape(ball, round) \\Longrightarrow \\neg\\ game(ball, rugby)\\)\nWhich of the following choices is/are logical representations of the assertion, “All balls are round except balls used in rugby”?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(s_1 \\wedge s_3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(s_1 \\wedge s_2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(s_2 \\wedge s_3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(s_3 \\wedge s_4\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   37
+  ],
+  "question_text": "An OTT company is maintaining a large disk-based relational database of different movies with the following schema:\nMovie(ID, CustomerRating)\nGenre(ID, Name)\nMovie_Genre(MovieID, GenreID)\nConsider the following SQL query on the relation database above:\n```sql\nSELECT *\nFROM Movie, Genre, Movie_Genre\nWHERE\n  Movie.CustomerRating > 3.4 AND\n  Genre.Name = \"Comedy\" AND\n  Movie_Genre.MovieID = Movie.ID AND\n  Movie_Genre.GenreID = Genre.ID;\n```\nThis SQL query can be sped up using which of the following indexing options?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "B+ tree on all the attributes."
+   },
+   {
+    "option_id": "B",
+    "text": "Hash index on Genre.Name and B+ tree on the remaining attributes."
+   },
+   {
+    "option_id": "C",
+    "text": "Hash index on Movie.CustomerRating and B+ tree on the remaining attributes."
+   },
+   {
+    "option_id": "D",
+    "text": "Hash index on all the attributes."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   37
+  ],
+  "question_text": "Let \\(X\\) be a random variable uniformly distributed in the interval [1, 3] and \\(Y\\) be a random variable uniformly distributed in the interval [2, 4]. If \\(X\\) and \\(Y\\) are independent of each other, the probability \\(P(X \\ge Y)\\) is ______ (rounded off to three decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   38
+  ],
+  "question_text": "Let \\(X\\) be a random variable exponentially distributed with parameter \\(\\lambda > 0\\). The probability density function of \\(X\\) is given by:\n\\[f_X(x) = \\begin{cases} \\lambda e^{-\\lambda x}, & x \\ge 0 \\\\ 0, & \\text{otherwise} \\end{cases}\\]\nIf \\(5E(X) = Var(X)\\), where \\(E(X)\\) and \\(Var(X)\\) indicate the expectation and variance of \\(X\\), respectively, the value of \\(\\lambda\\) is ______ (rounded off to one decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 58,
+  "pages": [
+   38
+  ],
+  "question_text": "Consider two events \\(T\\) and \\(S\\). Let \\(\\bar{T}\\) denote the complement of the event \\(T\\). The probability associated with different events are given as follows:\n\\[P(\\bar{T}) = 0.6, \\quad P(S|T) = 0.3, \\quad P(S|\\bar{T}) = 0.6\\]\nThen, \\(P(T|S)\\) is ______ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 59,
+  "pages": [
+   38
+  ],
+  "question_text": "Consider a joint probability density function of two random variables \\(X\\) and \\(Y\\)\n\\[f_{X,Y}(x, y) = \\begin{cases} 2xy, & 0 < x < 2,\\ 0 < y < x \\\\ 0, & \\text{otherwise} \\end{cases}\\]\nThen, \\(E[Y|X = 1.5]\\) is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 60,
+  "pages": [
+   38
+  ],
+  "question_text": "Evaluate the following limit:\n\\[\\lim_{x\\to0} \\frac{\\ln((x^2 + 1)\\cos x)}{x^2} = \\]\n______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 61,
+  "pages": [
+   39
+  ],
+  "question_text": "Let \\(\\boldsymbol{u} = \\begin{bmatrix} 1 \\\\ 2 \\\\ 3 \\\\ 4 \\\\ 5 \\end{bmatrix}\\), and let \\(\\sigma_1, \\sigma_2, \\sigma_3, \\sigma_4, \\sigma_5\\) be the singular values of the matrix \\(\\boldsymbol{M} = \\boldsymbol{uu}^T\\) (where \\(\\boldsymbol{u}^T\\) is the transpose of \\(\\boldsymbol{u}\\)). The value of \\(\\sum_{i=1}^{5} \\sigma_i\\) is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 62,
+  "pages": [
+   39
+  ],
+  "question_text": "Details of ten international cricket games between two teams “Green” and “Blue” are given in Table C. This table consists of matches played on different pitches, across formats along with their winners. The attribute Pitch can take one of two values: spin-friendly (represented as S) or pace-friendly (represented as F). The attribute Format can take one of two values: one-day match (represented as O) or test match (represented as T).\nA cricket organization would like to use the information given in Table C to develop a decision-tree model to predict outcomes of future games between these two teams.\nTo develop such a model, the computed InformationGain(C, Pitch) with respect to the Target is ______ (rounded off to two decimal places).\n[IMAGE_Q_62_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_62_1",
+    "page": 39,
+    "rect": [
+     186,
+     494,
+     445,
+     698
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 63,
+  "pages": [
+   40
+  ],
+  "question_text": "Given the two-dimensional dataset consisting of 5 data points from two classes (circles and squares) and assume that the Euclidean distance is used to measure the distance between two points. The minimum odd value of \\(k\\) in \\(k\\)-nearest neighbor algorithm for which the diamond (◇) shaped data point is assigned the label square is ______.\n[IMAGE_Q_63_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_63_1",
+    "page": 40,
+    "rect": [
+     250,
+     168,
+     425,
+     340
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 64,
+  "pages": [
+   41
+  ],
+  "question_text": "Given the following Bayesian Network consisting of four Bernoulli random variables and the associated conditional probability tables:\n[IMAGE_Q_64_1]\nThe value of \\(P(U = 1, V = 1, W = 1, Z = 1) =\\) ______ (rounded off to three decimal places).",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_64_1",
+    "page": 41,
+    "rect": [
+     186,
+     128,
+     450,
+     500
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 65,
+  "pages": [
+   41
+  ],
+  "question_text": "Two fair coins are tossed independently. \\(X\\) is a random variable that takes a value of 1 if both tosses are heads and 0 otherwise. \\(Y\\) is a random variable that takes a value of 1 if at least one of the tosses is heads and 0 otherwise.\nThe value of the covariance of \\(X\\) and \\(Y\\) is ______ (rounded off to three decimal places).",
+  "options": [],
+  "figures": []
+ }
+]

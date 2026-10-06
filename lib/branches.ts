@@ -27,10 +27,10 @@ export const BRANCHES: BranchInfo[] = [
     blurb: "Every official GATE CS paper since 2017, a real exam-interface simulator, mistake analytics and an AI mentor.",
   },
   {
-    code: "DA", slug: "gate-da", paper: "DA", name: "Data Science & Artificial Intelligence", short: "Data Science & AI", live: false,
-    candidates: "about 57,000 candidates sat GATE 2025", trend: "The newest GATE paper and one of the fastest growing.", plannedLaunch: "early 2027",
+    code: "DA", slug: "gate-da", paper: "DA", name: "Data Science & Artificial Intelligence", short: "Data Science & AI", live: true,
+    candidates: "about 57,000 candidates sat GATE 2025", trend: "The newest GATE paper and one of the fastest growing.", plannedLaunch: null,
     subjects: ["Probability & Statistics", "Linear Algebra", "Calculus & Optimization", "Programming, Data Structures & Algorithms", "Database Management & Warehousing", "Machine Learning", "Artificial Intelligence", "General Aptitude"],
-    blurb: "Built on our Computer Science engine — the maths, programming and algorithms overlap means DA is next in line.",
+    blurb: "Every official GATE DA paper since the paper began in 2024 (195 questions, tagged to the official syllabus), a real exam-interface simulator, mistake analytics and an AI mentor.",
   },
   {
     code: "ECE", slug: "gate-ece", paper: "EC", name: "Electronics & Communication Engineering", short: "Electronics & Communication", live: true,
@@ -73,10 +73,11 @@ export const BANK_SUMMARY: Partial<Record<BranchCode, { questions: number; years
   CSE: { questions: 975, years: "2017–2026" },
   ECE: { questions: 390, years: "2021–2026" },
   EE: { questions: 390, years: "2021–2026" },
+  DA: { questions: 195, years: "2024–2026" },
 };
 
 /** Branches whose question bank scripts/copy-static-data.mjs builds. */
-export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE", "EE"];
+export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE", "EE", "DA"];
 
 /** Branches open in the app: marketing `live`, plus any in NEXT_PUBLIC_PREVIEW_BRANCHES
  *  (comma-separated) for testing before launch. Server checks use public.branches.status. */
