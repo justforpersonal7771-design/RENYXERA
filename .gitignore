@@ -32,3 +32,6 @@ data/pyq/_work/
 /public/images/ME/
 /public/images/CE/
 /public/images/DA/
+
+# throwaway local test scripts
+/scripts/zz-*
