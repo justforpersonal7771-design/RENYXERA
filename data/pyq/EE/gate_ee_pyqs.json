@@ -6641,5 +6641,1982 @@
         "nat_answer_range": "113 to 116"
       }
     ]
+  },
+  {
+    "exam_metadata": {
+      "year-shift": "2023"
+    },
+    "questions": [
+      {
+        "question_no": 1,
+        "question_id": "GATE_EE_2023_Q1",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic English grammar",
+        "difficulty": "Easy",
+        "question_text": "Rafi told Mary, “I am thinking of watching a film this weekend.”\nThe following reports the above statement in indirect speech:\nRafi told Mary that he _______ of watching a film that weekend.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "thought",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "is thinking",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "am thinking",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "was thinking",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 2,
+        "question_id": "GATE_EE_2023_Q2",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic vocabulary",
+        "difficulty": "Easy",
+        "question_text": "Permit : _______ : : Enforce : Relax\n(By word meaning)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Allow",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Forbid",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "License",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Reinforce",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 3,
+        "question_id": "GATE_EE_2023_Q3",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Elementary statistics and probability",
+        "difficulty": "Easy",
+        "question_text": "Given a fair six-faced dice where the faces are labelled ‘1’, ‘2’, ‘3’, ‘4’, ‘5’, and ‘6’, what is the probability of getting a ‘1’ on the first roll of the dice and a ‘4’ on the second roll?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\dfrac{1}{36}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{1}{6}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\dfrac{5}{6}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\dfrac{1}{3}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 4,
+        "question_id": "GATE_EE_2023_Q4",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Medium",
+        "question_text": "A recent survey shows that 65% of tobacco users were advised to stop consuming tobacco. The survey also shows that 3 out of 10 tobacco users attempted to stop using tobacco.\nBased only on the information in the above passage, which one of the following options can be logically inferred with certainty?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "A majority of tobacco users who were advised to stop consuming tobacco made an attempt to do so.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "A majority of tobacco users who were advised to stop consuming tobacco did not attempt to do so.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Approximately 30% of tobacco users successfully stopped consuming tobacco.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Approximately 65% of tobacco users successfully stopped consuming tobacco.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 5,
+        "question_id": "GATE_EE_2023_Q5",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Transformation of shapes",
+        "difficulty": "Medium",
+        "question_text": "How many triangles are present in the given figure?\n[IMAGE_Q_05_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_05_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "12",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "16",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "20",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "24",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 6,
+        "question_id": "GATE_EE_2023_Q6",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Medium",
+        "question_text": "Students of all the departments of a college who have successfully completed the registration process are eligible to vote in the upcoming college elections. However, by the time the due date for registration was over, it was found that suprisingly none of the students from the Department of Human Sciences had completed the registration process.\nBased only on the information provided above, which one of the following sets of statement(s) can be logically inferred with certainty?\n(i) All those students who would not be eligible to vote in the college elections would certainly belong to the Department of Human Sciences.\n(ii) None of the students from departments other than Human Sciences failed to complete the registration process within the due time.\n(iii) All the eligible voters would certainly be students who are not from the Department of Human Sciences.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(i) and (ii)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(i) and (iii)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "only (i)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "only (iii)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 7,
+        "question_id": "GATE_EE_2023_Q7",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Data interpretation",
+        "difficulty": "Medium",
+        "question_text": "Which one of the following options represents the given graph?\n[IMAGE_Q_07_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_07_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(f(x) = x^2 2^{-|x|}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(f(x) = x\\,2^{-|x|}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(f(x) = |x|\\,2^{-x}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(f(x) = x\\,2^{-x}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 8,
+        "question_id": "GATE_EE_2023_Q8",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Reading and comprehension",
+        "difficulty": "Easy",
+        "question_text": "Which one of the options does NOT describe the passage below or follow from it?\nWe tend to think of cancer as a ‘modern’ illness because its metaphors are so modern. It is a disease of overproduction, of sudden growth, a growth that is unstoppable, tipped into the abyss of no control. Modern cell biology encourages us to imagine the cell as a molecular machine. Cancer is that machine unable to quench its intial command (to grow) and thus transform into an indestructible, self-propelled automaton.\n[Adapted from The Emperor of All Maladies by Siddhartha Mukherjee]",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "It is a reflection of why cancer seems so modern to most of us.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "It tells us that modern cell biology uses and promotes metaphors of machinery.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Modern cell biology encourages metaphors of machinery, and cancer is often imagined as a machine.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Modern cell biology never uses figurative language, such as metaphors, to describe or explain anything.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 9,
+        "question_id": "GATE_EE_2023_Q9",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Medium",
+        "question_text": "The digit in the unit’s place of the product \\(3^{999} \\times 7^{1000}\\) is _______.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "7",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "3",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "9",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 10,
+        "question_id": "GATE_EE_2023_Q10",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Medium",
+        "question_text": "A square with sides of length 6 cm is given. The boundary of the shaded region is defined by two semi-circles whose diameters are the sides of the square, as shown.\nThe area of the shaded region is _______ cm\\(^2\\).\n[IMAGE_Q_10_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_10_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "6π",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "18",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "20",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "9π",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 11,
+        "question_id": "GATE_EE_2023_Q11",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Directional derivatives",
+        "difficulty": "Easy",
+        "question_text": "For a given vector \\(\\mathbf{w} = [1\\ 2\\ 3]^T\\), the vector normal to the plane defined by \\(\\mathbf{w}^T\\mathbf{x} = 1\\) is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\([-2\\ \\ -2\\ \\ 2]^T\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\([3\\ \\ 0\\ \\ -1]^T\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\([3\\ \\ 2\\ \\ 1]^T\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\([1\\ \\ 2\\ \\ 3]^T\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 12,
+        "question_id": "GATE_EE_2023_Q12",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 7: CONTROL SYSTEMS",
+        "subject": "Control Systems",
+        "topic": "Block diagrams and Signal flow graphs",
+        "difficulty": "Easy",
+        "question_text": "For the block diagram shown in the figure, the transfer function \\(\\dfrac{Y(s)}{R(s)}\\) is\n[IMAGE_Q_12_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_12_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\dfrac{2s + 3}{s + 1}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{3s + 2}{s - 1}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\dfrac{s + 1}{3s + 2}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\dfrac{3s + 2}{s + 1}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 13,
+        "question_id": "GATE_EE_2023_Q13",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 7: CONTROL SYSTEMS",
+        "subject": "Control Systems",
+        "topic": "Stability analysis using Routh-Hurwitz and Nyquist criteria",
+        "difficulty": "Easy",
+        "question_text": "In the Nyquist plot of the open-loop transfer function\n\\[G(s)H(s) = \\frac{3s + 5}{s - 1}\\]\ncorresponding to the feedback loop shown in the figure, the infinite semi-circular arc of the Nyquist contour in \\(s\\)-plane is mapped into a point at\n[IMAGE_Q_13_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_13_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(G(s)H(s) = \\infty\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(G(s)H(s) = 0\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(G(s)H(s) = 3\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(G(s)H(s) = -5\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 14,
+        "question_id": "GATE_EE_2023_Q14",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 7: CONTROL SYSTEMS",
+        "subject": "Control Systems",
+        "topic": "P, PI and PID controllers",
+        "difficulty": "Medium",
+        "question_text": "Consider a unity-gain negative feedback system consisting of the plant \\(G(s)\\) (given below) and a proportional-integral controller. Let the proportional gain and integral gain be 3 and 1, respectively. For a unit step reference input, the final values of the controller output and the plant output, respectively, are\n\\[G(s) = \\frac{1}{s - 1}\\]",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "∞, ∞",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1, 0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1, -1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "-1, 1",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 15,
+        "question_id": "GATE_EE_2023_Q15",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 5: ELECTRICAL MACHINES",
+        "subject": "Electrical Machines",
+        "topic": "Three-phase induction machines: principle of operation, types, performance, torque-speed characteristics, no-load and blocked-rotor tests, equivalent circuit, starting and speed control",
+        "difficulty": "Easy",
+        "question_text": "The following columns present various modes of induction machine operation and the ranges of slip\n[IMAGE_Q_15_1]\nThe correct matching between the elements in column A with those of column B is",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_15_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "a-r, b-p, and c-q",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "a-r, b-q, and c-p",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "a-p, b-r, and c-q",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "a-q, b-p, and c-r",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 16,
+        "question_id": "GATE_EE_2023_Q16",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 5: ELECTRICAL MACHINES",
+        "subject": "Electrical Machines",
+        "topic": "Operating principle of single-phase induction motors",
+        "difficulty": "Medium",
+        "question_text": "A 10-pole, 50 Hz, 240 V, single phase induction motor runs at 540 RPM while driving rated load. The frequency of induced rotor currents due to backward field is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "100 Hz",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "95 Hz",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "10 Hz",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "5 Hz",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 17,
+        "question_id": "GATE_EE_2023_Q17",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "Laplace Transform and Z transform",
+        "difficulty": "Easy",
+        "question_text": "A continuous-time system that is initially at rest is described by\n\\[\\frac{dy(t)}{dt} + 3y(t) = 2x(t),\\]\nwhere \\(x(t)\\) is the input voltage and \\(y(t)\\) is the output voltage. The impulse response of the system is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(3e^{-2t}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\frac{1}{3}e^{-2t}u(t)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(2e^{-3t}u(t)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(2e^{-3t}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 18,
+        "question_id": "GATE_EE_2023_Q18",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "Applications of Fourier Transform for continuous and discrete time signals",
+        "difficulty": "Medium",
+        "question_text": "The Fourier transform \\(X(\\omega)\\) of the signal \\(x(t)\\) is given by\n\\(X(\\omega) = 1\\), for \\(|\\omega| < W_o\\)\n\\(= 0\\), for \\(|\\omega| > W_0\\)\nWhich one of the following statements is true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(x(t)\\) tends to be an impulse as \\(W_0 \\to \\infty\\).",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(x(0)\\) decreases as \\(W_0\\) increases.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "At \\(t = \\frac{\\pi}{2W_0}\\), \\(x(t) = -\\frac{1}{\\pi}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "At \\(t = \\frac{\\pi}{2W_0}\\), \\(x(t) = \\frac{1}{\\pi}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 19,
+        "question_id": "GATE_EE_2023_Q19",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "Laplace Transform and Z transform",
+        "difficulty": "Medium",
+        "question_text": "The \\(Z\\)-transform of a discrete signal \\(x[n]\\) is\n\\[X(z) = \\frac{4z}{(z - \\frac{1}{5})(z - \\frac{2}{3})(z - 3)} \\text{ with } ROC = R.\\]\nWhich one of the following statements is true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is \\(|z| > 3\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is \\(\\frac{2}{3} < |z| < 3\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is such that x[n] is a left-sided sequence",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is such that x[n] is a right-sided sequence",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 20,
+        "question_id": "GATE_EE_2023_Q20",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 6: POWER SYSTEMS",
+        "subject": "Power Systems",
+        "topic": "Circuit breakers",
+        "difficulty": "Medium",
+        "question_text": "For the three-bus power system shown in the figure, the trip signals to the circuit breakers B\\(_1\\) to B\\(_9\\) are provided by overcurrent relays R\\(_1\\) to R\\(_9\\), respectively, some of which have directional properties also. The necessary condition for the system to be protected for short circuit fault at any part of the system between bus 1 and the R-L loads with isolation of minimum portion of the network using minimum number of directional relays is\n[IMAGE_Q_20_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_20_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards bus 2",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards bus 2 and R\\(_7\\) is directional overcurrent relay blocking faults towards bus 3",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards Line 1 and Line 2, respectively, R\\(_7\\) is directional overcurrent relay blocking faults towards Line 3 and R\\(_5\\) is directional overcurrent relay blocking faults towards bus 2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards Line 1 and Line 2, respectively.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 21,
+        "question_id": "GATE_EE_2023_Q21",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 6: POWER SYSTEMS",
+        "subject": "Power Systems",
+        "topic": "Economic Load Dispatch (with and without considering transmission losses)",
+        "difficulty": "Medium",
+        "question_text": "The expressions of fuel cost of two thermal generating units as a function of the respective power generation \\(P_{G1}\\) and \\(P_{G2}\\) are given as\n\\(F_1(P_{G1}) = 0.1aP_{G1}^2 + 40\\,P_{G1} + 120\\ Rs/hour \\qquad 0\\ MW \\le P_{G1} \\le 350\\ MW\\)\n\\(F_2(P_{G2}) = 0.2P_{G2}^2 + 30\\,P_{G2} + 100\\ Rs/hour \\qquad 0\\ MW \\le P_{G2} \\le 300\\ MW\\)\nwhere \\(a\\) is a constant. For a given value of \\(a\\), optimal dispatch requires the total load of 290 MW to be shared as \\(P_{G1} = 175\\ MW\\) and \\(P_{G2} = 115\\ MW\\). With the load remaining unchanged, the value of \\(a\\) is increased by 10% and optimal dispatch is carried out. The changes in \\(P_{G1}\\) and the total cost of generation, \\(F\\) (= \\(F_1 + F_2\\)) in Rs/hour will be as follows",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(P_{G1}\\) will decrease and \\(F\\) will increase",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Both \\(P_{G1}\\) and \\(F\\) will increase",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(P_{G1}\\) will increase and \\(F\\) will decrease",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Both \\(P_{G1}\\) and \\(F\\) will decrease",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 22,
+        "question_id": "GATE_EE_2023_Q22",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 5: ELECTRICAL MACHINES",
+        "subject": "Electrical Machines",
+        "topic": "Electromechanical energy conversion principles",
+        "difficulty": "Hard",
+        "question_text": "The four stator conductors (A, A′, B and B′) of a rotating machine are carrying DC currents of the same value, the directions of which are shown in the figure (i). The rotor coils \\(a\\)-\\(a'\\) and \\(b\\)-\\(b'\\) are formed by connecting the back ends of conductors ‘\\(a\\)’ and ‘\\(a'\\)’ and ‘\\(b\\)’ and ‘\\(b'\\)’, respectively, as shown in figure (ii). The e.m.f. induced in coil \\(a\\)-\\(a'\\) and coil \\(b\\)-\\(b'\\) are denoted by \\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\), respectively. If the rotor is rotated at uniform angular speed ω rad/s in the clockwise direction then which of the following correctly describes the \\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\)?\n[IMAGE_Q_22_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_22_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\) have finite magnitudes and are in the same phase",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\) have finite magnitudes with \\(E_{b\\text{-}b'}\\) leading \\(E_{a\\text{-}a'}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\) have finite magnitudes with \\(E_{a\\text{-}a'}\\) leading \\(E_{b\\text{-}b'}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(E_{a\\text{-}a'} = E_{b\\text{-}b'} = 0\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 23,
+        "question_id": "GATE_EE_2023_Q23",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 10: POWER ELECTRONICS",
+        "subject": "Power Electronics",
+        "topic": "DC to DC conversion: Buck, Boost and Buck-Boost Converters",
+        "difficulty": "Medium",
+        "question_text": "The chopper circuit shown in figure (i) feeds power to a 5 A DC constant current source. The switching frequency of the chopper is 100 kHz. All the components can be assumed to be ideal. The gate signals of switches \\(S_1\\) and \\(S_2\\) are shown in figure (ii). Average voltage across the 5 A current source is\n[IMAGE_Q_23_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_23_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "10 V",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "6 V",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "12 V",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "20 V",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 24,
+        "question_id": "GATE_EE_2023_Q24",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "Matrix Algebra",
+        "difficulty": "Easy",
+        "question_text": "In the figure, the vectors \\(\\mathbf{u}\\) and \\(\\mathbf{v}\\) are related as: \\(\\mathbf{Au} = \\mathbf{v}\\) by a transformation matrix \\(\\mathbf{A}\\). The correct choice of \\(\\mathbf{A}\\) is\n[IMAGE_Q_24_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_24_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\begin{bmatrix} \\frac{4}{5} & \\frac{3}{5} \\\\ -\\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\begin{bmatrix} \\frac{4}{5} & -\\frac{3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\begin{bmatrix} \\frac{4}{5} & \\frac{3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\begin{bmatrix} \\frac{4}{5} & -\\frac{3}{5} \\\\ \\frac{3}{5} & -\\frac{4}{5} \\end{bmatrix}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 25,
+        "question_id": "GATE_EE_2023_Q25",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Probability and Statistics",
+        "topic": "Mode",
+        "difficulty": "Medium",
+        "question_text": "One million random numbers are generated from a statistically stationary process with a Gaussian distribution with mean zero and standard deviation \\(\\sigma_o\\).\nThe \\(\\sigma_o\\) is estimated by randomly drawing out 10,000 numbers of samples \\((x_n)\\). The estimates \\(\\hat{\\sigma}_1, \\hat{\\sigma}_2\\) are computed in the following two ways.\n\\[\\hat{\\sigma}_1^2 = \\frac{1}{10000}\\sum_{n=1}^{10000} x_n^2 \\qquad \\hat{\\sigma}_2^2 = \\frac{1}{9999}\\sum_{n=1}^{10000} x_n^2\\]\nWhich of the following statements is true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(E(\\hat{\\sigma}_2^2) = \\sigma_o^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(E(\\hat{\\sigma}_2) = \\sigma_o\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(E(\\hat{\\sigma}_1^2) = \\sigma_o^2\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(E(\\hat{\\sigma}_1) = E(\\hat{\\sigma}_2)\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 26,
+        "question_id": "GATE_EE_2023_Q26",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 10: POWER ELECTRONICS",
+        "subject": "Power Electronics",
+        "topic": "Static V-I characteristics and firing/gating circuits for Thyristor, MOSFET, IGBT",
+        "difficulty": "Medium",
+        "question_text": "A semiconductor switch needs to block voltage \\(V\\) of only one polarity (\\(V > 0\\)) during OFF state as shown in figure (i) and carry current in both directions during ON state as shown in figure (ii). Which of the following switch combination(s) will realize the same?\n[IMAGE_Q_26_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_26_1",
+          "IMAGE_Q_26_A",
+          "IMAGE_Q_26_B",
+          "IMAGE_Q_26_C",
+          "IMAGE_Q_26_D"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "[IMAGE_Q_26_A]",
+            "is_correct": true,
+            "has_image": true
+          },
+          {
+            "option_id": "B",
+            "text": "[IMAGE_Q_26_B]",
+            "is_correct": false,
+            "has_image": true
+          },
+          {
+            "option_id": "C",
+            "text": "[IMAGE_Q_26_C]",
+            "is_correct": false,
+            "has_image": true
+          },
+          {
+            "option_id": "D",
+            "text": "[IMAGE_Q_26_D]",
+            "is_correct": true,
+            "has_image": true
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 27,
+        "question_id": "GATE_EE_2023_Q27",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "linear time invariant and causal systems",
+        "difficulty": "Medium",
+        "question_text": "Which of the following statement(s) is/are true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "If an LTI system is causal, it is stable",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "A discrete time LTI system is causal if and only if its response to a step input \\(u[n]\\) is 0 for \\(n < 0\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "If a discrete time LTI system has an impulse response \\(h[n]\\) of finite duration the system is stable",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "If the impulse response \\(0 < |h[n]| < 1\\) for all \\(n\\), then the LTI system is stable.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 28,
+        "question_id": "GATE_EE_2023_Q28",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 6: POWER SYSTEMS",
+        "subject": "Power Systems",
+        "topic": "Bus admittance matrix",
+        "difficulty": "Medium",
+        "question_text": "The bus admittance \\((Y_{bus})\\) matrix of a 3-bus power system is given below.\n\\[\\begin{array}{c} \\\\ 1 \\\\ 2 \\\\ 3 \\end{array}\\begin{array}{c} \\quad 1 \\qquad\\quad 2 \\qquad\\quad 3 \\\\ \\begin{bmatrix} -j15 & j10 & j5 \\\\ j10 & -j13.5 & j4 \\\\ j5 & j4 & -j8 \\end{bmatrix} \\end{array}\\]\nConsidering that there is no shunt inductor connected to any of the buses, which of the following can NOT be true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Line charging capacitor of finite value is present in all three lines",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Line charging capacitor of finite value is present in line 2-3 only",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Line charging capacitor of finite value is present in line 2-3 only and shunt capacitor of finite value is present in bus 1 only",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Line charging capacitor of finite value is present in line 2-3 only and shunt capacitor of finite value is present in bus 3 only",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 29,
+        "question_id": "GATE_EE_2023_Q29",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 2: ELECTRIC CIRCUITS",
+        "subject": "Electric Circuits",
+        "topic": "Transient response of DC and AC networks",
+        "difficulty": "Medium",
+        "question_text": "The value of parameters of the circuit shown in the figure are\n\\(R_1 = 2\\ \\Omega\\), \\(R_2 = 2\\ \\Omega\\), \\(R_3 = 3\\ \\Omega\\), \\(L = 10\\) mH, \\(C = 100\\) μF\nFor time \\(t < 0\\), the circuit is at steady state with the switch ‘K’ in closed condition. If the switch is opened at \\(t = 0\\), the value of the voltage across the inductor \\((V_L)\\) at \\(t = 0^+\\) in Volts is ____________ (Round off to 1 decimal place).\n[IMAGE_Q_29_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_29_1"
+        ],
+        "options": [],
+        "nat_answer_range": "7.9 to 8.1"
+      },
+      {
+        "question_no": 30,
+        "question_id": "GATE_EE_2023_Q30",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 5: ELECTRICAL MACHINES",
+        "subject": "Electrical Machines",
+        "topic": "DC machines: separately excited, series and shunt, motoring and generating mode of operation and their characteristics, speed control of dc motors",
+        "difficulty": "Easy",
+        "question_text": "A separately excited DC motor rated 400 V, 15 A, 1500 RPM drives a constant torque load at rated speed operating from 400 V DC supply drawing rated current. The armature resistance is 1.2 Ω. If the supply voltage drops by 10% with field current unaltered then the resultant speed of the motor in RPM is ____________ (Round off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1340 to 1345"
+      },
+      {
+        "question_no": 31,
+        "question_id": "GATE_EE_2023_Q31",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "linear time invariant and causal systems",
+        "difficulty": "Medium",
+        "question_text": "For the signals \\(x(t)\\) and \\(y(t)\\) shown in the figure, \\(z(t) = x(t) * y(t)\\) is maximum at \\(t = T_1\\). Then \\(T_1\\) in seconds is ___________ (Round off to the nearest integer).\n[IMAGE_Q_31_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_31_1"
+        ],
+        "options": [],
+        "nat_answer_range": "4 to 4"
+      },
+      {
+        "question_no": 32,
+        "question_id": "GATE_EE_2023_Q32",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 2: ELECTRIC CIRCUITS",
+        "subject": "Electric Circuits",
+        "topic": "dependent sources",
+        "difficulty": "Medium",
+        "question_text": "For the circuit shown in the figure, \\(V_1 = 8\\) V, DC and \\(I_1 = 8\\) A, DC. The voltage \\(V_{ab}\\) in Volts is _________ (Round off to 1 decimal place).\n[IMAGE_Q_32_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_32_1"
+        ],
+        "options": [],
+        "nat_answer_range": "5.9 to 6.1"
+      },
+      {
+        "question_no": 33,
+        "question_id": "GATE_EE_2023_Q33",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 6: POWER SYSTEMS",
+        "subject": "Power Systems",
+        "topic": "Models and performance of transmission lines and cables",
+        "difficulty": "Hard",
+        "question_text": "A 50 Hz, 275 kV line of length 400 km has the following parameters:\nResistance, \\(R = 0.035\\) Ω/km;\nInductance, \\(L = 1\\) mH/km;\nCapacitance, \\(C = 0.01\\) μF/km;\nThe line is represented by the nominal-π model. With the magnitudes of the sending end and the receiving end voltages of the line (denoted by \\(V_S\\) and \\(V_R\\), respectively) maintained at 275 kV, the phase angle difference (θ) between \\(V_S\\) and \\(V_R\\) required for maximum possible active power to be delivered to the receiving end, in degree is _____________ (Round off to 2 decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "83 to 84"
+      },
+      {
+        "question_no": 34,
+        "question_id": "GATE_EE_2023_Q34",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Differential Equations",
+        "topic": "First order equations (linear and nonlinear)",
+        "difficulty": "Medium",
+        "question_text": "In the following differential equation, the numerically obtained value of \\(y(t)\\), at \\(t = 1\\), is _______________ (Round off to 2 decimal places).\n\\[\\frac{dy}{dt} = \\frac{e^{-\\alpha t}}{2 + \\alpha t}, \\qquad \\alpha = 0.01 \\text{ and } y(0) = 0\\]",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.48 to 0.52"
+      },
+      {
+        "question_no": 35,
+        "question_id": "GATE_EE_2023_Q35",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Probability and Statistics",
+        "topic": "Regression analysis",
+        "difficulty": "Easy",
+        "question_text": "Three points in the \\(x\\)-\\(y\\) plane are \\((-1, 0.8)\\), \\((0, 2.2)\\) and \\((1, 2.8)\\). The value of the slope of the best fit straight line in the least square sense is ____________ (Round off to 2 decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.9 to 1.1"
+      },
+      {
+        "question_no": 36,
+        "question_id": "GATE_EE_2023_Q36",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 7: CONTROL SYSTEMS",
+        "subject": "Control Systems",
+        "topic": "Bode plots",
+        "difficulty": "Medium",
+        "question_text": "The magnitude and phase plots of an LTI system are shown in the figure. The transfer function of the system is\n[IMAGE_Q_36_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_36_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(2.51e^{-0.032s}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{e^{-2.514s}}{s + 1}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(1.04e^{-2.514s}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(2.51e^{-1.047s}\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 37,
+        "question_id": "GATE_EE_2023_Q37",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 9: ANALOG AND DIGITAL ELECTRONICS",
+        "subject": "Analog Electronics",
+        "topic": "operational amplifiers: characteristics and applications",
+        "difficulty": "Medium",
+        "question_text": "Consider the OP AMP based circuit shown in the figure. Ignore the conduction drops of diodes \\(D_1\\) and \\(D_2\\). All the components are ideal and the breakdown voltage of the Zener is 5 V. Which of the following statements is true?\n[IMAGE_Q_37_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_37_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The maximum and minimum values of the output voltage \\(V_O\\) are +15 V and -10 V, respectively.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "The maximum and minimum values of the output voltage \\(V_O\\) are +5 V and -15 V, respectively.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The maximum and minimum values of the output voltage \\(V_O\\) are +10 V and -5 V, respectively.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The maximum and minimum values of the output voltage \\(V_O\\) are +5 V and -10 V, respectively.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 38,
+        "question_id": "GATE_EE_2023_Q38",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 7: CONTROL SYSTEMS",
+        "subject": "Control Systems",
+        "topic": "Lag, Lead and Lead‐Lag compensators",
+        "difficulty": "Medium",
+        "question_text": "Consider a lead compensator of the form\n\\[K(s) = \\frac{1 + \\frac{s}{a}}{1 + \\frac{s}{\\beta a}}, \\quad \\beta > 1, a > 0\\]\nThe frequency at which this compensator produces maximum phase lead is 4 rad/s. At this frequency, the gain amplification provided by the controller, assuming asymptotic Bode-magnitude plot of \\(K(s)\\), is 6 dB. The values of \\(a\\), \\(\\beta\\), respectively, are",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1, 16",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "2, 4",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "3, 5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "2.66, 2.25",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 39,
+        "question_id": "GATE_EE_2023_Q39",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 8: ELECTRICAL AND ELECTRONIC MEASUREMENTS",
+        "subject": "Electrical and Electronic Measurements",
+        "topic": "Measurement of voltage, current, power, energy and power factor",
+        "difficulty": "Medium",
+        "question_text": "A 3-phase, star-connected, balanced load is supplied from a 3-phase, 400 V (rms), balanced voltage source with phase sequence R-Y-B, as shown in the figure. If the wattmeter reading is −400 W and the line current is \\(I_R = 2\\) A (rms), then the power factor of the load per phase is\n[IMAGE_Q_39_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_39_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Unity",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "0.5 leading",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "0.866 leading",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0.707 lagging",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 40,
+        "question_id": "GATE_EE_2023_Q40",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 9: ANALOG AND DIGITAL ELECTRONICS",
+        "subject": "Digital Electronics",
+        "topic": "A/D and D/A converters",
+        "difficulty": "Easy",
+        "question_text": "An 8 bit ADC converts analog voltage in the range of 0 to +5 V to the corresponding digital code as per the conversion characteristics shown in figure. For \\(V_{in} = 1.9922\\ V\\), which of the following digital output, given in hex, is true ?\n[IMAGE_Q_40_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_40_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "64H",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "65H",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "66H",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "67H",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 41,
+        "question_id": "GATE_EE_2023_Q41",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 6: POWER SYSTEMS",
+        "subject": "Power Systems",
+        "topic": "Gauss- Seidel and Newton-Raphson load flow methods",
+        "difficulty": "Medium",
+        "question_text": "The three-bus power system shown in the figure has one alternator connected to bus 2 which supplies 200 MW and 40 MVAr power. Bus 3 is infinite bus having a voltage of magnitude \\(|V_3|\\) = 1.0 p.u. and angle of −15°. A variable current source, \\(|I|\\angle\\phi\\) is connected at bus 1 and controlled such that the magnitude of the bus 1 voltage is maintained at 1.05 p.u. and the phase angle of the source current, \\(\\phi = \\theta_1 \\pm \\frac{\\pi}{2}\\), where \\(\\theta_1\\) is the phase angle of the bus 1 voltage. The three buses can be categorized for load flow analysis as\n[IMAGE_Q_41_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_41_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Bus 1: Slack bus; Bus 2: P−|V| bus; Bus 3: P−Q bus",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Bus 1: P−|V| bus; Bus 2: P−|V| bus; Bus 3: Slack bus",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Bus 1: P−Q bus; Bus 2: P−Q bus; Bus 3: Slack bus",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Bus 1: P−|V| bus; Bus 2: P−Q bus; Bus 3: Slack bus",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 42,
+        "question_id": "GATE_EE_2023_Q42",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Multiple integrals",
+        "difficulty": "Medium",
+        "question_text": "Consider the following equation in a 2-D real-space.\n\\[|x_1|^p + |x_2|^p = 1 \\text{ for } p > 0\\]\nWhich of the following statement(s) is/are true.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "When \\(p = 2\\), the area enclosed by the curve is π.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "When \\(p\\) tends to ∞, the area enclosed by the curve tends to 4.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "When \\(p\\) tends to 0, the area enclosed by the curve is 1.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "When \\(p = 1\\), the area enclosed by the curve is 2.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 43,
+        "question_id": "GATE_EE_2023_Q43",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 3: ELECTROMAGNETIC FIELDS",
+        "subject": "Electromagnetic Fields",
+        "topic": "Lorentz force",
+        "difficulty": "Medium",
+        "question_text": "In the figure, the electric field \\(\\boldsymbol{E}\\) and the magnetic field \\(\\boldsymbol{B}\\) point to x and z directions, respectively, and have constant magnitudes. A positive charge ‘\\(q\\)’ is released from rest at the origin. Which of the following statement(s) is/are true.\n[IMAGE_Q_43_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_43_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The charge will move in the direction of \\(\\mathbf{z}\\) with constant velocity.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "The charge will always move on the \\(\\mathbf{y}\\)-\\(\\mathbf{z}\\) plane only.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The trajectory of the charge will be a circle.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The charge will progress in the direction of \\(\\mathbf{y}\\).",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": "-1000000000 to 1000000000"
+      },
+      {
+        "question_no": 44,
+        "question_id": "GATE_EE_2023_Q44",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 9: ANALOG AND DIGITAL ELECTRONICS",
+        "subject": "Analog Electronics",
+        "topic": "Simple diode circuits: clipping, clamping, rectifiers",
+        "difficulty": "Medium",
+        "question_text": "All the elements in the circuit shown in the following figure are ideal. Which of the following statements is/are true?\n[IMAGE_Q_44_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_44_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "When switch \\(S\\) is ON, both \\(D_1\\) and \\(D_2\\) conducts and \\(D_3\\) is reverse biased",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "When switch \\(S\\) is ON, \\(D_1\\) conducts and both \\(D_2\\) and \\(D_3\\) are reverse biased",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "When switch \\(S\\) is OFF, \\(D_1\\) is reverse biased and both \\(D_2\\) and \\(D_3\\) conduct",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "When switch \\(S\\) is OFF, \\(D_1\\) conducts, \\(D_2\\) is reverse biased and \\(D_3\\) conducts",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 45,
+        "question_id": "GATE_EE_2023_Q45",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Probability and Statistics",
+        "topic": "Random variables",
+        "difficulty": "Easy",
+        "question_text": "The expected number of trials for first occurrence of a “head” in a biased coin is known to be 4. The probability of first occurrence of a “head” in the second trial is _____________ (Round off to 3 decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.187 to 0.188"
+      },
+      {
+        "question_no": 46,
+        "question_id": "GATE_EE_2023_Q46",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 7: CONTROL SYSTEMS",
+        "subject": "Control Systems",
+        "topic": "Solution of state equations of LTI systems",
+        "difficulty": "Medium",
+        "question_text": "Consider the state-space description of an LTI system with matrices\n\\[A = \\begin{bmatrix} 0 & 1 \\\\ -1 & -2 \\end{bmatrix}, B = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}, C = [3\\ \\ -2], D = 1\\]\nFor the input, \\(\\sin(\\omega t)\\), \\(\\omega > 0\\), the value of \\(\\omega\\) for which the steady-state output of the system will be zero, is ___________ (Round off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "2 to 2"
+      },
+      {
+        "question_no": 47,
+        "question_id": "GATE_EE_2023_Q47",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 5: ELECTRICAL MACHINES",
+        "subject": "Electrical Machines",
+        "topic": "Synchronous machines: cylindrical and salient pole machines, performance and characteristics, regulation and parallel operation of generators, starting of synchronous motors",
+        "difficulty": "Medium",
+        "question_text": "A three-phase synchronous motor with synchronous impedance of 0.1+j0.3 per unit per phase has a static stability limit of 2.5 per unit. The corresponding excitation voltage in per unit is ___________ (Round off to 2 decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1.58 to 1.59"
+      },
+      {
+        "question_no": 48,
+        "question_id": "GATE_EE_2023_Q48",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 5: ELECTRICAL MACHINES",
+        "subject": "Electrical Machines",
+        "topic": "Three-phase induction machines: principle of operation, types, performance, torque-speed characteristics, no-load and blocked-rotor tests, equivalent circuit, starting and speed control",
+        "difficulty": "Medium",
+        "question_text": "A three phase 415 V, 50 Hz, 6-pole, 960 RPM, 4 HP squirrel cage induction motor drives a constant torque load at rated speed operating from rated supply and delivering rated output. If the supply voltage and frequency are reduced by 20%, the resultant speed of the motor in RPM (neglecting the stator leakage impedance and rotational losses) is __________ (Round off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "760 to 760"
+      },
+      {
+        "question_no": 49,
+        "question_id": "GATE_EE_2023_Q49",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "Representation of continuous and discrete time signals",
+        "difficulty": "Medium",
+        "question_text": "The period of the discrete-time signal \\(x[n]\\) described by the equation below is \\(N =\\) ___________________ (Round off to the nearest integer).\n\\[x[n] = 1 + 3\\sin\\left(\\frac{15\\pi}{8}n + \\frac{3\\pi}{4}\\right) - 5\\sin\\left(\\frac{\\pi}{3}n - \\frac{\\pi}{4}\\right)\\]",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "48 to 48"
+      },
+      {
+        "question_no": 50,
+        "question_id": "GATE_EE_2023_Q50",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "Fourier series representation of continuous and discrete time periodic signals",
+        "difficulty": "Hard",
+        "question_text": "The discrete-time Fourier transform of a signal \\(x[n]\\) is \\(X(\\Omega) = (1 + \\cos\\Omega)e^{-j\\Omega}\\).\nConsider that \\(x_p[n]\\) is a periodic signal of period N = 5 such that\n\\(x_p[n] = x[n]\\), for \\(n = 0, 1, 2\\)\n\\(= 0\\), for \\(n = 3, 4\\)\nNote that \\(x_p[n] = \\sum_{k=0}^{N-1} a_k e^{j\\frac{2\\pi}{N}kn}\\). The magnitude of the Fourier series coefficient \\(a_3\\) is _______________ (Round off to 3 decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.037 to 0.039"
+      },
+      {
+        "question_no": 51,
+        "question_id": "GATE_EE_2023_Q51",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 2: ELECTRIC CIRCUITS",
+        "subject": "Electric Circuits",
+        "topic": "Network Theorems: Thevenin’s, Norton’s, Superposition and Maximum Power Transfer theorem",
+        "difficulty": "Medium",
+        "question_text": "For the circuit shown, if \\(i = \\sin 1000t\\), the instantaneous value of the Thevenin’s equivalent voltage (in Volts) across the terminals a-b at time \\(t\\) = 5 ms is __________ (Round off to 2 decimal places).\n[IMAGE_Q_51_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_51_1"
+        ],
+        "options": [],
+        "nat_answer_range": "-12.1 to -11.9"
+      },
+      {
+        "question_no": 52,
+        "question_id": "GATE_EE_2023_Q52",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 2: ELECTRIC CIRCUITS",
+        "subject": "Electric Circuits",
+        "topic": "two port networks",
+        "difficulty": "Medium",
+        "question_text": "The admittance parameters of the passive resistive two-port network shown in the figure are\n\\(y_{11} = 5\\ S,\\ y_{22} = 1\\ S,\\ y_{12} = y_{21} = -2.5\\ S\\)\nThe power delivered to the load resistor \\(R_L\\) in Watt is __________ (Round off to 2 decimal places).\n[IMAGE_Q_52_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_52_1"
+        ],
+        "options": [],
+        "nat_answer_range": "237 to 239"
+      },
+      {
+        "question_no": 53,
+        "question_id": "GATE_EE_2023_Q53",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 5: ELECTRICAL MACHINES",
+        "subject": "Electrical Machines",
+        "topic": "Single phase transformer: equivalent circuit, phasor diagram, open circuit and short circuit tests, regulation and efficiency",
+        "difficulty": "Hard",
+        "question_text": "When the winding c-d of the single-phase, 50 Hz, two winding transformer is supplied from an AC current source of frequency 50 Hz, the rated voltage of 200 V (rms), 50 Hz is obtained at the open-circuited terminals a-b. The cross sectional area of the core is 5000 mm\\(^2\\) and the average core length traversed by the mutual flux is 500 mm. The maximum allowable flux density in the core is \\(B_{max}\\) = 1 Wb/m\\(^2\\) and the relative permeability of the core material is 5000. The leakage impedance of the winding a-b and winding c-d at 50 Hz are \\((5 + j100\\pi\\times0.16)\\) Ω and \\((11.25 + j100\\pi\\times0.36)\\) Ω, respectively. Considering the magnetizing characteristics to be linear and neglecting core loss, the self-inductance of the winding a-b in millihenry is ___________ (Round off to 1 decimal place).\n[IMAGE_Q_53_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_53_1"
+        ],
+        "options": [],
+        "nat_answer_range": "2150 to 2250"
+      },
+      {
+        "question_no": 54,
+        "question_id": "GATE_EE_2023_Q54",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 2: ELECTRIC CIRCUITS",
+        "subject": "Electric Circuits",
+        "topic": "Transient response of DC and AC networks",
+        "difficulty": "Hard",
+        "question_text": "The circuit shown in the figure is initially in the steady state with the switch \\(K\\) in open condition and \\(\\overline{K}\\) in closed condition. The switch \\(K\\) is closed and \\(\\overline{K}\\) is opened simultaneously at the instant \\(t = t_1\\), where \\(t_1 > 0\\). The minimum value of \\(t_1\\) in milliseconds, such that there is no transient in the voltage across the 100 μF capacitor, is ____________ (Round off to 2 decimal places).\n[IMAGE_Q_54_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_54_1"
+        ],
+        "options": [],
+        "nat_answer_range": "1.56 to 1.58"
+      },
+      {
+        "question_no": 55,
+        "question_id": "GATE_EE_2023_Q55",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 10: POWER ELECTRONICS",
+        "subject": "Power Electronics",
+        "topic": "Bidirectional ac to dc voltage source converters",
+        "difficulty": "Medium",
+        "question_text": "The circuit shown in the figure has reached steady state with thyristor ‘\\(T\\)’ in OFF condition. Assume that the latching and holding currents of the thyristor are zero. The thyristor is turned ON at \\(t\\) = 0 sec. The duration in microseconds for which the thyristor would conduct, before it turns off, is _____ (Round off to 2 decimal places).\n[IMAGE_Q_55_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_55_1"
+        ],
+        "options": [],
+        "nat_answer_range": "7.1 to 7.5"
+      },
+      {
+        "question_no": 56,
+        "question_id": "GATE_EE_2023_Q56",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 9: ANALOG AND DIGITAL ELECTRONICS",
+        "subject": "Digital Electronics",
+        "topic": "combinatorial and sequential logic circuits",
+        "difficulty": "Medium",
+        "question_text": "Neglecting the delays due to the logic gates in the circuit shown in figure, the decimal equivalent of the binary sequence [ABCD] of initial logic states, which will not change with clock, is ____________.\n[IMAGE_Q_56_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_56_1"
+        ],
+        "options": [],
+        "nat_answer_range": "8 to 8"
+      },
+      {
+        "question_no": 57,
+        "question_id": "GATE_EE_2023_Q57",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 9: ANALOG AND DIGITAL ELECTRONICS",
+        "subject": "Digital Electronics",
+        "topic": "combinatorial and sequential logic circuits",
+        "difficulty": "Medium",
+        "question_text": "In a given 8-bit general purpose micro-controller there are following flags.\nC-Carry, A-Auxiliary Carry, O-Overflow flag, P-Parity (0 for even, 1 for odd)\nR0 and R1 are the two general purpose registers of the micro-controller.\nAfter execution of the following instructions, the decimal equivalent of the binary sequence of the flag pattern [CAOP] will be __________.\nMOV R0, +0x60\nMOV R1, +0x46\nADD R0, R1",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "2 to 2"
+      },
+      {
+        "question_no": 58,
+        "question_id": "GATE_EE_2023_Q58",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 10: POWER ELECTRONICS",
+        "subject": "Power Electronics",
+        "topic": "Voltage and Current commutated Thyristor based converters",
+        "difficulty": "Medium",
+        "question_text": "The single phase rectifier consisting of three thyristors \\(T_1\\), \\(T_2\\), \\(T_3\\) and a diode \\(D_1\\) feed power to a 10 A constant current load. \\(T_1\\) and \\(T_3\\) are fired at α = 60° and \\(T_2\\) is fired at α = 240°. The reference for α is the positive zero crossing of \\(V_{in}\\). The average voltage \\(V_O\\) across the load in volts is _____ (Round off to 2 decimal places).\n[IMAGE_Q_58_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_58_1"
+        ],
+        "options": [],
+        "nat_answer_range": "39 to 40.5"
+      },
+      {
+        "question_no": 59,
+        "question_id": "GATE_EE_2023_Q59",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 9: ANALOG AND DIGITAL ELECTRONICS",
+        "subject": "Analog Electronics",
+        "topic": "Amplifiers: biasing, equivalent circuit and frequency response",
+        "difficulty": "Medium",
+        "question_text": "The Zener diode in circuit has a breakdown voltage of 5 V. The current gain β of the transistor in the active region in 99. Ignore base-emitter voltage drop \\(V_{BE}\\). The current through the 20 Ω resistance in milliamperes is ________(Round off to 2 decimal places).\n[IMAGE_Q_59_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_59_1"
+        ],
+        "options": [],
+        "nat_answer_range": "245 to 255"
+      },
+      {
+        "question_no": 60,
+        "question_id": "GATE_EE_2023_Q60",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 6: POWER SYSTEMS",
+        "subject": "Power Systems",
+        "topic": "Symmetrical and unsymmetrical fault analysis",
+        "difficulty": "Medium",
+        "question_text": "The two-bus power system shown in figure (i) has one alternator supplying a synchronous motor load through a Y-Δ transformer. The positive, negative and zero-sequence diagrams of the system are shown in figures (ii), (iii) and (iv), respectively. All reactances in the sequence diagrams are in p.u. For a bolted line-to-line fault (fault impedance = zero) between phases ‘b’ and ‘c’ at bus 1, neglecting all pre-fault currents, the magnitude of the fault current (from phase ‘b’ to ‘c’) in p.u. is _____________ (Round off to 2 decimal places).\n[IMAGE_Q_60_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_60_1"
+        ],
+        "options": [],
+        "nat_answer_range": "7.1 to 7.3"
+      },
+      {
+        "question_no": 61,
+        "question_id": "GATE_EE_2023_Q61",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 3: ELECTROMAGNETIC FIELDS",
+        "subject": "Electromagnetic Fields",
+        "topic": "Curl",
+        "difficulty": "Easy",
+        "question_text": "An infinite surface of linear current density \\(\\mathbf{K} = 5\\hat{\\mathbf{a}}_x\\) A/m exists on the x-y plane, as shown in the figure. The magnitude of the magnetic field intensity (\\(\\mathbf{H}\\)) at a point (1,1,1) due to the surface current in Ampere/meter is _______ (Round off to 2 decimal places).\n[IMAGE_Q_61_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_61_1"
+        ],
+        "options": [],
+        "nat_answer_range": "2.49 to 2.51"
+      },
+      {
+        "question_no": 62,
+        "question_id": "GATE_EE_2023_Q62",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Green’s theorem",
+        "difficulty": "Medium",
+        "question_text": "The closed curve shown in the figure is described by\n\\(r = 1 + \\cos\\theta\\), where \\(r = \\sqrt{x^2 + y^2}\\); \\(x = r\\cos\\theta, y = r\\sin\\theta\\)\nThe magnitude of the line integral of the vector field \\(F = -y\\hat{\\imath} + x\\hat{\\jmath}\\) around the closed curve is ____________ (Round off to 2 decimal places).\n[IMAGE_Q_62_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_62_1"
+        ],
+        "options": [],
+        "nat_answer_range": "9 to 10"
+      },
+      {
+        "question_no": 63,
+        "question_id": "GATE_EE_2023_Q63",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 4: SIGNALS AND SYSTEMS",
+        "subject": "Signals and Systems",
+        "topic": "sampling theorem",
+        "difficulty": "Medium",
+        "question_text": "A signal \\(x(t) = 2\\cos(180\\pi t)\\cos(60\\pi t)\\) is sampled at 200 Hz and then passed through an ideal low pass filter having cut-off frequency of 100 Hz.\nThe maximum frequency present in the filtered signal in Hz is _____________ (Round off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "80 to 80"
+      },
+      {
+        "question_no": 64,
+        "question_id": "GATE_EE_2023_Q64",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 2: ELECTRIC CIRCUITS",
+        "subject": "Electric Circuits",
+        "topic": "star-delta transformation",
+        "difficulty": "Medium",
+        "question_text": "A balanced delta connected load consisting of the series connection of one resistor (R = 15 Ω) and a capacitor (C = 212.21 μF) in each phase is connected to three-phase, 50 Hz, 415 V supply terminals through a line having an inductance of L = 31.83 mH per phase, as shown in the figure. Considering the change in the supply terminal voltage with loading to be negligible, the magnitude of the voltage across the terminals \\(V_{AB}\\) in Volts is _____________ (Round off to the nearest integer).\n[IMAGE_Q_64_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_64_1"
+        ],
+        "options": [],
+        "nat_answer_range": "414 to 416"
+      },
+      {
+        "question_no": 65,
+        "question_id": "GATE_EE_2023_Q65",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 1: ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Directional derivatives",
+        "difficulty": "Easy",
+        "question_text": "A quadratic function of two variables is given as\n\\[f(x_1, x_2) = x_1^2 + 2x_2^2 + 3x_1 + 3x_2 + x_1x_2 + 1\\]\nThe magnitude of the maximum rate of change of the function at the point (1,1) is _________ (Round off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "10 to 10"
+      }
+    ]
   }
 ]
