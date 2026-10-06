@@ -1,0 +1,384 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "The people _________ were at the demonstration were from all sections of society.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "whose"
+   },
+   {
+    "option_id": "B",
+    "text": "which"
+   },
+   {
+    "option_id": "C",
+    "text": "who"
+   },
+   {
+    "option_id": "D",
+    "text": "whom"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "[IMAGE_Q_02_1]\nA transparent square sheet shown above is folded along the dotted line. The folded sheet will look like ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_02_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_02_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_02_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_02_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_02_1",
+    "page": 2,
+    "rect": [
+     240,
+     120,
+     352,
+     214
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_02_A",
+    "page": 2,
+    "rect": [
+     146,
+     254,
+     242,
+     350
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_02_B",
+    "page": 2,
+    "rect": [
+     146,
+     354,
+     242,
+     446
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_02_C",
+    "page": 2,
+    "rect": [
+     146,
+     452,
+     242,
+     545
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_02_D",
+    "page": 2,
+    "rect": [
+     146,
+     550,
+     242,
+     644
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 3,
+  "pages": [
+   3
+  ],
+  "question_text": "For a regular polygon having 10 sides, the interior angle between the sides of the polygon, in degrees, is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "396"
+   },
+   {
+    "option_id": "B",
+    "text": "324"
+   },
+   {
+    "option_id": "C",
+    "text": "216"
+   },
+   {
+    "option_id": "D",
+    "text": "144"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 4,
+  "pages": [
+   3
+  ],
+  "question_text": "Which one of the following numbers is exactly divisible by \\((11^{13} + 1)\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(11^{26} + 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(11^{33} + 1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(11^{39} - 1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(11^{52} - 1\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   3
+  ],
+  "question_text": "Oasis is to sand as island is to _______\nWhich one of the following options maintains a similar logical relation in the above sentence?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Stone"
+   },
+   {
+    "option_id": "B",
+    "text": "Land"
+   },
+   {
+    "option_id": "C",
+    "text": "Water"
+   },
+   {
+    "option_id": "D",
+    "text": "Mountain"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 6,
+  "pages": [
+   4
+  ],
+  "question_text": "The importance of sleep is often overlooked by students when they are preparing for exams. Research has consistently shown that sleep deprivation greatly reduces the ability to recall the material learnt. Hence, cutting down on sleep to study longer hours can be counterproductive.\nWhich one of the following statements is the CORRECT inference from the above passage?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Sleeping well alone is enough to prepare for an exam. Studying has lesser benefit."
+   },
+   {
+    "option_id": "B",
+    "text": "Students are efficient and are not wrong in thinking that sleep is a waste of time."
+   },
+   {
+    "option_id": "C",
+    "text": "If a student is extremely well prepared for an exam, he needs little or no sleep."
+   },
+   {
+    "option_id": "D",
+    "text": "To do well in an exam, adequate sleep must be part of the preparation."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   4
+  ],
+  "question_text": "[IMAGE_Q_07_1]\nIn the figure shown above, each inside square is formed by joining the midpoints of the sides of the next larger square. The area of the smallest square (shaded) as shown, in cm\\(^2\\) is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "12.50"
+   },
+   {
+    "option_id": "B",
+    "text": "6.25"
+   },
+   {
+    "option_id": "C",
+    "text": "3.125"
+   },
+   {
+    "option_id": "D",
+    "text": "1.5625"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_07_1",
+    "page": 4,
+    "rect": [
+     250,
+     396,
+     412,
+     550
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 8,
+  "pages": [
+   5
+  ],
+  "question_text": "Let \\(X\\) be a continuous random variable denoting the temperature measured. The range of temperature is [0, 100] degree Celsius and let the probability density function of \\(X\\) be \\(f(x) = 0.01\\) for \\(0 \\le X \\le 100\\).\nThe mean of \\(X\\) is _____",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2.5"
+   },
+   {
+    "option_id": "B",
+    "text": "5.0"
+   },
+   {
+    "option_id": "C",
+    "text": "25.0"
+   },
+   {
+    "option_id": "D",
+    "text": "50.0"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 9,
+  "pages": [
+   6
+  ],
+  "question_text": "[IMAGE_Q_09_1]\nThe number of students passing or failing in an exam for a particular subject are presented in the bar chart above. Students who pass the exam cannot appear for the exam again. Students who fail the exam in the first attempt must appear for the exam in the following year. Students always pass the exam in their second attempt.\nThe number of students who took the exam for the first time in the year 2 and the year 3 respectively, are __________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "65 and 53"
+   },
+   {
+    "option_id": "B",
+    "text": "60 and 50"
+   },
+   {
+    "option_id": "C",
+    "text": "55 and 53"
+   },
+   {
+    "option_id": "D",
+    "text": "55 and 48"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_09_1",
+    "page": 6,
+    "rect": [
+     148,
+     112,
+     492,
+     316
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 10,
+  "pages": [
+   7
+  ],
+  "question_text": "Seven cars P, Q, R, S, T, U and V are parked in a row not necessarily in that order. The cars T and U should be parked next to each other. The cars S and V also should be parked next to each other, whereas P and Q cannot be parked next to each other. Q and S must be parked next to each other. R is parked to the immediate right of V. T is parked to the left of U.\nBased on the above statements, the only INCORRECT option given below is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "There are two cars parked in between Q and V."
+   },
+   {
+    "option_id": "B",
+    "text": "Q and R are not parked together."
+   },
+   {
+    "option_id": "C",
+    "text": "V is the only car parked in between S and R."
+   },
+   {
+    "option_id": "D",
+    "text": "Car P is parked at the extreme end."
+   }
+  ],
+  "figures": []
+ }
+]
