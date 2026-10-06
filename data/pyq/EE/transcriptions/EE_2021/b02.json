@@ -1,0 +1,368 @@
+[
+ {
+  "qno": 11,
+  "pages": [
+   8
+  ],
+  "question_text": "Let \\(p\\) and \\(q\\) be real numbers such that \\(p^2 + q^2 = 1\\). The eigenvalues of the matrix \\(\\begin{bmatrix} p & q \\\\ q & -p \\end{bmatrix}\\) are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1 and 1"
+   },
+   {
+    "option_id": "B",
+    "text": "1 and -1"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(j\\) and \\(-j\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(pq\\) and \\(-pq\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   8
+  ],
+  "question_text": "Let \\(p(z) = z^3 + (1 + j)z^2 + (2 + j)z + 3\\), where \\(z\\) is a complex number.\nWhich one of the following is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\text{conjugate}\\{p(z)\\} = p(\\text{conjugate}\\{z\\})\\) for all \\(z\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "The sum of the roots of \\(p(z) = 0\\) is a real number"
+   },
+   {
+    "option_id": "C",
+    "text": "The complex roots of the equation \\(p(z) = 0\\) come in conjugate pairs"
+   },
+   {
+    "option_id": "D",
+    "text": "All the roots cannot be real"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   9
+  ],
+  "question_text": "Let \\(f(x)\\) be a real-valued function such that \\(f'(x_0) = 0\\) for some \\(x_0 \\in (0, 1)\\), and \\(f''(x) > 0\\) for all \\(x \\in (0, 1)\\). Then \\(f(x)\\) has",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "no local minimum in (0, 1)"
+   },
+   {
+    "option_id": "B",
+    "text": "one local maximum in (0, 1)"
+   },
+   {
+    "option_id": "C",
+    "text": "exactly one local minimum in (0, 1)"
+   },
+   {
+    "option_id": "D",
+    "text": "two distinct local minima in (0, 1)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   9
+  ],
+  "question_text": "For the network shown, the equivalent Thevenin voltage and Thevenin impedance as seen across terminals ‘ab’ is\n[IMAGE_Q_14_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "10 V in series with 12 Ω"
+   },
+   {
+    "option_id": "B",
+    "text": "65 V in series with 15 Ω"
+   },
+   {
+    "option_id": "C",
+    "text": "50 V in series with 2 Ω"
+   },
+   {
+    "option_id": "D",
+    "text": "35 V in series with 2 Ω"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_14_1",
+    "page": 9,
+    "rect": [
+     180,
+     304,
+     482,
+     412
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 15,
+  "pages": [
+   9
+  ],
+  "question_text": "Which one of the following vector functions represents a magnetic field \\(\\vec{B}\\)? (\\(\\hat{x}\\), \\(\\hat{y}\\), and \\(\\hat{z}\\) are unit vectors along x-axis, y-axis, and z-axis, respectively)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(10x\\hat{x} + 20y\\hat{y} - 30z\\hat{z}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(10y\\hat{x} + 20x\\hat{y} - 10z\\hat{z}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(10z\\hat{x} + 20y\\hat{y} - 30x\\hat{z}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(10x\\hat{x} - 30z\\hat{y} + 20y\\hat{z}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   10
+  ],
+  "question_text": "If the input \\(x(t)\\) and output \\(y(t)\\) of a system are related as \\(y(t) = \\max(0, x(t))\\), then the system is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "linear and time-variant"
+   },
+   {
+    "option_id": "B",
+    "text": "linear and time-invariant"
+   },
+   {
+    "option_id": "C",
+    "text": "non-linear and time-variant"
+   },
+   {
+    "option_id": "D",
+    "text": "non-linear and time-invariant"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   10
+  ],
+  "question_text": "Two discrete-time linear time-invariant systems with impulse responses \\(h_1[n] = \\delta[n-1] + \\delta[n+1]\\) and \\(h_2[n] = \\delta[n] + \\delta[n-1]\\) are connected in cascade, where \\(\\delta[n]\\) is the Kronecker delta. The impulse response of the cascaded system is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\delta[n-2] + \\delta[n+1]\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\delta[n-1]\\delta[n] + \\delta[n+1]\\delta[n-1]\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\delta[n-2] + \\delta[n-1] + \\delta[n] + \\delta[n+1]\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\delta[n]\\delta[n-1] + \\delta[n-2]\\delta[n+1]\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   11
+  ],
+  "question_text": "Consider the table given:\n[IMAGE_Q_18_1]\nThe correct combination that relates the constructional feature, machine type and mitigation is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P-V-X, Q-U-Z, R-T-Y"
+   },
+   {
+    "option_id": "B",
+    "text": "P-U-X, Q-S-Y, R-V-Z"
+   },
+   {
+    "option_id": "C",
+    "text": "P-T-Y, Q-V-Z, R-S-X"
+   },
+   {
+    "option_id": "D",
+    "text": "P-U-X, Q-V-Y, R-T-Z"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_18_1",
+    "page": 11,
+    "rect": [
+     146,
+     130,
+     514,
+     274
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 19,
+  "pages": [
+   11
+  ],
+  "question_text": "Consider a power system consisting of \\(N\\) number of buses. Buses in this power system are categorized into slack bus, PV buses and PQ buses for load flow study. The number of PQ buses is \\(N_L\\). The balanced Newton-Raphson method is used to carry out load flow study in polar form. \\(H\\), \\(S\\), \\(M\\), and \\(R\\) are sub-matrices of the Jacobian matrix \\(J\\) as shown below:\n\\[\\begin{bmatrix} \\Delta P \\\\ \\Delta Q \\end{bmatrix} = J\\begin{bmatrix} \\Delta\\delta \\\\ \\Delta V \\end{bmatrix}, \\quad \\text{where } J = \\begin{bmatrix} H & S \\\\ M & R \\end{bmatrix}\\]\nThe dimension of the sub-matrix \\(M\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(N_L \\times (N - 1)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\((N - 1) \\times (N - 1 - N_L)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(N_L \\times (N - 1 + N_L)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\((N - 1) \\times (N - 1 + N_L)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   12
+  ],
+  "question_text": "Two generators have cost functions \\(F_1\\) and \\(F_2\\). Their incremental-cost characteristics are\n\\[\\frac{dF_1}{dP_1} = 40 + 0.2P_1\\]\n\\[\\frac{dF_2}{dP_2} = 32 + 0.4P_2\\]\nThey need to deliver a combined load of 260 MW. Ignoring the network losses, for economic operation, the generations \\(P_1\\) and \\(P_2\\) (in MW) are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(P_1 = P_2 = 130\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(P_1 = 160,\\ P_2 = 100\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(P_1 = 140,\\ P_2 = 120\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(P_1 = 120,\\ P_2 = 140\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   12
+  ],
+  "question_text": "For the closed-loop system shown, the transfer function \\(\\dfrac{E(s)}{R(s)}\\) is\n[IMAGE_Q_21_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{G}{1 + GH}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{GH}{1 + GH}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{1}{1 + GH}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{1}{1 + G}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_21_1",
+    "page": 12,
+    "rect": [
+     228,
+     430,
+     432,
+     560
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 22,
+  "pages": [
+   13
+  ],
+  "question_text": "Inductance is measured by",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Schering bridge"
+   },
+   {
+    "option_id": "B",
+    "text": "Maxwell bridge"
+   },
+   {
+    "option_id": "C",
+    "text": "Kelvin bridge"
+   },
+   {
+    "option_id": "D",
+    "text": "Wien bridge"
+   }
+  ],
+  "figures": []
+ }
+]

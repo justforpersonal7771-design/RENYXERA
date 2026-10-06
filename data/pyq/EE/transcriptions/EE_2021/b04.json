@@ -1,0 +1,388 @@
+[
+ {
+  "qno": 47,
+  "pages": [
+   23
+  ],
+  "question_text": "A counter is constructed with three D flip-flops. The input-output pairs are named (D\\(_0\\), Q\\(_0\\)), (D\\(_1\\), Q\\(_1\\)), and (D\\(_2\\), Q\\(_2\\)), where the subscript 0 denotes the least significant bit. The output sequence is desired to be the Gray-code sequence 000, 001, 011, 010, 110, 111, 101, and 100, repeating periodically. Note that the bits are listed in the Q\\(_2\\) Q\\(_1\\) Q\\(_0\\) format. The combinational logic expression for D\\(_1\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(Q_2Q_1Q_0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(Q_2Q_0 + Q_1\\overline{Q}_0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\overline{Q}_2Q_0 + Q_1\\overline{Q}_0\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(Q_2Q_1 + \\overline{Q}_2\\overline{Q}_1\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 48,
+  "pages": [
+   24
+  ],
+  "question_text": "Let A be a \\(10 \\times 10\\) matrix such that \\(A^5\\) is a null matrix, and let I be the \\(10 \\times 10\\) identity matrix. The determinant of A + I is _____________.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 49,
+  "pages": [
+   24
+  ],
+  "question_text": "A three-phase balanced voltage is applied to the load shown. The phase sequence is RYB. The ratio \\(\\dfrac{|I_B|}{|I_R|}\\) is ______.\n[IMAGE_Q_49_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_49_1",
+    "page": 24,
+    "rect": [
+     240,
+     300,
+     432,
+     496
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 50,
+  "pages": [
+   24
+  ],
+  "question_text": "In the given circuit, for maximum power to be delivered to R\\(_L\\), its value should be ________ Ω.\n(Round off to 2 decimal places.)\n[IMAGE_Q_50_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_50_1",
+    "page": 24,
+    "rect": [
+     185,
+     578,
+     490,
+     712
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 51,
+  "pages": [
+   25
+  ],
+  "question_text": "One coulomb of point charge moving with a uniform velocity \\(10\\hat{x}\\) m/s enters the region \\(x \\ge 0\\) having a magnetic flux density \\(\\vec{B} = (10y\\hat{x} + 10x\\hat{y} + 10\\hat{z})\\) T. The magnitude of force on the charge at \\(x = 0^+\\) is ________ N.\n(\\(\\hat{x}\\), \\(\\hat{y}\\), and \\(\\hat{z}\\) are unit vectors along x-axis, y-axis, and z-axis, respectively.)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 52,
+  "pages": [
+   25
+  ],
+  "question_text": "Consider a large parallel plate capacitor. The gap \\(d\\) between the two plates is filled entirely with a dielectric slab of relative permittivity 5. The plates are initially charged to a potential difference of \\(V\\) volts and then disconnected from the source. If the dielectric slab is pulled out completely, then the ratio of the new electric field \\(E_2\\) in the gap to the original electric field \\(E_1\\) is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   25
+  ],
+  "question_text": "Consider a continuous-time signal \\(x(t)\\) defined by \\(x(t) = 0\\) for \\(|t| > 1\\), and \\(x(t) = 1 - |t|\\) for \\(|t| \\le 1\\). Let the Fourier transform of \\(x(t)\\) be defined as \\(X(\\omega) = \\int_{-\\infty}^{\\infty} x(t)e^{-j\\omega t}dt\\). The maximum magnitude of \\(X(\\omega)\\) is ______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 54,
+  "pages": [
+   25
+  ],
+  "question_text": "A belt-driven DC shunt generator running at 300 RPM delivers 100 kW to a 200 V DC grid. It continues to run as a motor when the belt breaks, taking 10 kW from the DC grid. The armature resistance is 0.025 Ω, field resistance is 50 Ω, and brush drop is 2 V. Ignoring armature reaction, the speed of the motor is __________ RPM. (Round off to 2 decimal places.)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   26
+  ],
+  "question_text": "An 8-pole, 50 Hz, three-phase, slip-ring induction motor has an effective rotor resistance of 0.08 Ω per phase. Its speed at maximum torque is 650 RPM. The additional resistance per phase that must be inserted in the rotor to achieve maximum torque at start is _________ Ω. (Round off to 2 decimal places.) Neglect magnetizing current and stator leakage impedance. Consider equivalent circuit parameters referred to stator.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   26
+  ],
+  "question_text": "Consider a closed-loop system as shown. \\(G_p(s) = \\dfrac{14.4}{s(1 + 0.1s)}\\) is the plant transfer function and \\(G_c(s) = 1\\) is the compensator. For a unit-step input, the output response has damped oscillations. The damped natural frequency is _____________ rad/s. (Round off to 2 decimal places.)\n[IMAGE_Q_56_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_56_1",
+    "page": 26,
+    "rect": [
+     180,
+     396,
+     484,
+     494
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 57,
+  "pages": [
+   27
+  ],
+  "question_text": "In the given figure, plant \\(G_p(s) = \\dfrac{2.2}{(1 + 0.1s)(1 + 0.4s)(1 + 1.2s)}\\) and compensator \\(G_c(s) = K\\left(\\dfrac{1 + T_1 s}{1 + T_2 s}\\right)\\). The external disturbance input is \\(D(s)\\). It is desired that when the disturbance is a unit step, the steady-state error should not exceed 0.1 unit. The minimum value of K is _______. (Round off to 2 decimal places.)\n[IMAGE_Q_57_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_57_1",
+    "page": 27,
+    "rect": [
+     190,
+     226,
+     472,
+     320
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 58,
+  "pages": [
+   27
+  ],
+  "question_text": "The waveform shown in solid line is obtained by clipping a full-wave rectified sinusoid (shown dashed). The ratio of the RMS value of the full-wave rectified waveform to the RMS value of the clipped waveform is _____. (Round off to 2 decimal places.)\n[IMAGE_Q_58_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_58_1",
+    "page": 27,
+    "rect": [
+     150,
+     428,
+     516,
+     564
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 59,
+  "pages": [
+   28
+  ],
+  "question_text": "The state space representation of a first-order system is given as\n\\(\\dot{x} = -x + u\\)\n\\(y = x\\)\nwhere, \\(x\\) is the state variable, \\(u\\) is the control input and \\(y\\) is the controlled output. Let \\(u = -Kx\\) be the control law, where K is the controller gain. To place a closed-loop pole at \\(-2\\), the value of K is ________.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 60,
+  "pages": [
+   28
+  ],
+  "question_text": "An air-core radio-frequency transformer as shown has a primary winding and a secondary winding. The mutual inductance M between the windings of the transformer is _____ μH. (Round off to 2 decimal places.)\n[IMAGE_Q_60_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_60_1",
+    "page": 28,
+    "rect": [
+     222,
+     318,
+     442,
+     508
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 61,
+  "pages": [
+   28
+  ],
+  "question_text": "A 100 Hz square wave, switching between 0 V and 5 V, is applied to a CR high-pass filter circuit as shown. The output voltage waveform across the resistor is 6.2 V peak-to-peak. If the resistance R is 820 Ω, then the value C is _____ μF. (Round off to 2 decimal places.)\n[IMAGE_Q_61_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_61_1",
+    "page": 28,
+    "rect": [
+     262,
+     634,
+     404,
+     694
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 62,
+  "pages": [
+   29
+  ],
+  "question_text": "A CMOS Schmitt-trigger inverter has a low output level of 0 V and a high output level of 5 V. It has input thresholds of 1.6 V and 2.4 V. The input capacitance and output resistance of the Schmitt-trigger are negligible. The frequency of the oscillator shown is _______ Hz. (Round off to 2 decimal places.)\n[IMAGE_Q_62_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_62_1",
+    "page": 29,
+    "rect": [
+     235,
+     190,
+     425,
+     334
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 63,
+  "pages": [
+   29
+  ],
+  "question_text": "Consider the boost converter shown. Switch Q is operating at 25 kHz with a duty cycle of 0.6. Assume the diode and switch to be ideal. Under steady-state condition, the average resistance \\(R_{in}\\) as seen by the source is _____ Ω. (Round off to 2 decimal places.)\n[IMAGE_Q_63_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_63_1",
+    "page": 29,
+    "rect": [
+     165,
+     442,
+     494,
+     570
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 64,
+  "pages": [
+   30
+  ],
+  "question_text": "Consider the buck-boost converter shown. Switch Q is operating at 25 kHz and 0.75 duty-cycle. Assume diode and switch to be ideal. Under steady-state condition, the average current flowing through the inductor is ______ A.\n[IMAGE_Q_64_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_64_1",
+    "page": 30,
+    "rect": [
+     156,
+     176,
+     516,
+     266
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 65,
+  "pages": [
+   30
+  ],
+  "question_text": "A single-phase full-bridge inverter fed by a 325 V DC produces a symmetric quasi-square waveform across ‘ab’ as shown. To achieve a modulation index of 0.8, the angle θ expressed in degrees should be _________. (Round off to 2 decimal places.)\n(Modulation index is defined as the ratio of the peak of the fundamental component of \\(v_{ab}\\) to the applied DC value.)\n[IMAGE_Q_65_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_65_1",
+    "page": 30,
+    "rect": [
+     148,
+     403,
+     516,
+     548
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ }
+]

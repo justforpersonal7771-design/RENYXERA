@@ -447,7 +447,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 8C · P1 · Multi-Branch Data Acquisition
 | Task | Status |
 |---|---|
-| Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | 🟡 *(EC 2021–2026 done (390, tagged). EE 2021–2026 fetched, keys parsed (2021 scanned key to transcribe), syllabus curated; EE 2026 Q1–10 transcribed + tagged. ME/CE/DA next. Rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`)* |
+| Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | 🟡 *(EC 2021–2026 done (390, tagged). EE 2021–2026 done (390, tagged, live in app). DA next, then ME/CE. Rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`)* |
 | EC 2026 transcribed by Claude, 27 figures eye-checked, 65/65 validated → `data/pyq/EC/gate_ec_pyqs.json` | ✅ *(untagged; in-app render check pending — Q7 table)* |
 | EC 2025 transcribed by Claude, 42 figures, 65/65 validated, 130/130 EC render-clean | ✅ *(bank now in the exact CS `Aggregated_Output.json` format; provenance in `gate_ec_pyqs.meta.json`)* |
 | EC 2024 transcribed by Claude, 32 figures (explicit crops: the 2024 PDF carries a full-page watermark), 65/65 validated, EC bank 195/195 render-clean | ✅ |

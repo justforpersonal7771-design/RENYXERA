@@ -1,0 +1,585 @@
+[
+ {
+  "qno": 23,
+  "pages": [
+   14
+  ],
+  "question_text": "Suppose the circles \\(x^2 + y^2 = 1\\) and \\((x - 1)^2 + (y - 1)^2 = r^2\\) intersect each other orthogonally at the point \\((u, v)\\). Then \\(u + v =\\) _______.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 24,
+  "pages": [
+   14
+  ],
+  "question_text": "In the given circuit, the value of capacitor C that makes current I = 0 is _________ μF.\n[IMAGE_Q_24_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_24_1",
+    "page": 14,
+    "rect": [
+     148,
+     300,
+     486,
+     400
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 25,
+  "pages": [
+   14
+  ],
+  "question_text": "Two single-core power cables have total conductor resistances of 0.7 Ω and 0.5 Ω, respectively, and their insulation resistances (between core and sheath) are 600 MΩ and 900 MΩ, respectively. When the two cables are joined in series, the ratio of insulation resistance to conductor resistance is _____ \\(\\times 10^6\\).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   14
+  ],
+  "question_text": "In the given circuit, for voltage \\(V_y\\) to be zero, the value of β should be _____. (Round off to 2 decimal places).\n[IMAGE_Q_26_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_26_1",
+    "page": 14,
+    "rect": [
+     148,
+     598,
+     512,
+     702
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 27,
+  "pages": [
+   15
+  ],
+  "question_text": "A 1 μC point charge is held at the origin of a cartesian coordinate system. If a second point charge of 10 μC is moved from (0, 10, 0) to (5, 5, 5) and subsequently to (5, 0, 0), then the total work done is ____ mJ. (Round off to 2 decimal places).\nTake \\(\\dfrac{1}{4\\pi\\varepsilon_o} = 9 \\times 10^9\\) in SI units. All coordinates are in meters.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   15
+  ],
+  "question_text": "The power input to a 500 V, 50 Hz, 6-pole, 3-phase induction motor running at 975 RPM is 40 kW. The total stator losses are 1 kW. If the total friction and windage losses are 2.025 kW, then the efficiency is _________%.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   15
+  ],
+  "question_text": "An alternator with internal voltage of \\(1\\angle\\delta_1\\) p.u and synchronous reactance of 0.4 p.u is connected by a transmission line of reactance 0.1 p.u to a synchronous motor having synchronous reactance 0.35 p.u and internal voltage of \\(0.85\\angle\\delta_2\\) p.u. If the real power supplied by the alternator is 0.866 p.u, then \\((\\delta_1 - \\delta_2)\\) is ____ degrees. (Round off to 2 decimal places).\n(Machines are of non-salient type. Neglect resistances.)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   15
+  ],
+  "question_text": "The Bode magnitude plot for the transfer function \\(\\dfrac{V_o(s)}{V_i(s)}\\) of the circuit is as shown. The value of R is _______ Ω. (Round off to 2 decimal places).\n[IMAGE_Q_30_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_30_1",
+    "page": 15,
+    "rect": [
+     146,
+     566,
+     512,
+     690
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 31,
+  "pages": [
+   16
+  ],
+  "question_text": "A signal generator having a source resistance of 50 Ω is set to generate a 1 kHz sinewave. Open circuit terminal voltage is 10 V peak-to-peak. Connecting a capacitor across the terminals reduces the voltage to 8 V peak-to-peak. The value of this capacitor is ______ μF. (Round off to 2 decimal places.)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 32,
+  "pages": [
+   16
+  ],
+  "question_text": "A 16-bit synchronous binary up-counter is clocked with a frequency \\(f_{CLK}\\). The two most significant bits are OR-ed together to form an output Y. Measurements show that Y is periodic, and the duration for which Y remains high in each period is 24 ms. The clock frequency \\(f_{CLK}\\) is __________ MHz. (Round off to 2 decimal places.)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   16
+  ],
+  "question_text": "In the BJT circuit shown, beta of the PNP transistor is 100. Assume \\(V_{BE} = -0.7\\) V. The voltage across \\(R_C\\) will be 5 V when \\(R_2\\) is ____ kΩ. (Round off to 2 decimal places.)\n[IMAGE_Q_33_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_33_1",
+    "page": 16,
+    "rect": [
+     196,
+     402,
+     482,
+     580
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 34,
+  "pages": [
+   17
+  ],
+  "question_text": "In the circuit shown, the input \\(V_i\\) is a sinusoidal AC voltage having an RMS value of 230 V ± 20%. The worst-case peak-inverse voltage seen across any diode is _______ V. (Round off to 2 decimal places.)\n[IMAGE_Q_34_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_34_1",
+    "page": 17,
+    "rect": [
+     146,
+     155,
+     412,
+     336
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 35,
+  "pages": [
+   17
+  ],
+  "question_text": "In the circuit shown, a 5 V Zener diode is used to regulate the voltage across load \\(R_0\\). The input is an unregulated DC voltage with a minimum value of 6 V and a maximum value of 8 V. The value of \\(R_s\\) is 6 Ω. The Zener diode has a maximum rated power dissipation of 2.5 W. Assuming the Zener diode to be ideal, the minimum value of \\(R_0\\) is _________ Ω.\n[IMAGE_Q_35_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_35_1",
+    "page": 17,
+    "rect": [
+     146,
+     492,
+     508,
+     616
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 36,
+  "pages": [
+   18
+  ],
+  "question_text": "In the open interval (0, 1), the polynomial \\(p(x) = x^4 - 4x^3 + 2\\) has",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "two real roots"
+   },
+   {
+    "option_id": "B",
+    "text": "one real root"
+   },
+   {
+    "option_id": "C",
+    "text": "three real roots"
+   },
+   {
+    "option_id": "D",
+    "text": "no real roots"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 37,
+  "pages": [
+   18
+  ],
+  "question_text": "Suppose the probability that a coin toss shows “head” is \\(p\\), where \\(0 < p < 1\\). The coin is tossed repeatedly until the first “head” appears. The expected number of tosses required is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(p/(1 - p)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\((1 - p)/p\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1/p\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(1/p^2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 38,
+  "pages": [
+   18
+  ],
+  "question_text": "Let \\((-1 - j)\\), \\((3 - j)\\), \\((3 + j)\\) and \\((-1 + j)\\) be the vertices of a rectangle \\(C\\) in the complex plane. Assuming that \\(C\\) is traversed in counter-clockwise direction, the value of the contour integral \\(\\oint_C \\dfrac{dz}{z^2(z - 4)}\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(j\\pi/2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "0"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(-j\\pi/8\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(j\\pi/16\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 39,
+  "pages": [
+   19
+  ],
+  "question_text": "In the circuit, switch ‘S’ is in the closed position for a very long time. If the switch is opened at time \\(t = 0\\), then \\(i_L(t)\\) in amperes, for \\(t \\ge 0\\) is\n[IMAGE_Q_39_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(8e^{-10t}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "10"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(8 + 2e^{-10t}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(10(1 - e^{-2t})\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_39_1",
+    "page": 19,
+    "rect": [
+     178,
+     136,
+     480,
+     246
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 40,
+  "pages": [
+   19
+  ],
+  "question_text": "The input impedance, \\(Z_{in}(s)\\), for the network shown is\n[IMAGE_Q_40_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{23s^2 + 46s + 20}{4s + 5}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(6s + 4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(7s + 4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{25s^2 + 46s + 20}{4s + 5}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_40_1",
+    "page": 19,
+    "rect": [
+     190,
+     420,
+     478,
+     534
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 41,
+  "pages": [
+   20
+  ],
+  "question_text": "The causal signal with z-transform \\(z^2(z - a)^{-2}\\) is\n(\\(u[n]\\) is the unit step signal)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(a^{2n}u[n]\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\((n + 1)a^n u[n]\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(n^{-1}a^n u[n]\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(n^2 a^n u[n]\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 42,
+  "pages": [
+   20
+  ],
+  "question_text": "Let \\(f(t)\\) be an even function, i.e. \\(f(-t) = f(t)\\) for all \\(t\\). Let the Fourier transform of \\(f(t)\\) be defined as \\(F(\\omega) = \\int_{-\\infty}^{\\infty} f(t)e^{-j\\omega t}dt\\). Suppose \\(\\dfrac{dF(\\omega)}{d\\omega} = -\\omega F(\\omega)\\) for all \\(\\omega\\), and \\(F(0) = 1\\). Then",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(f(0) < 1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(f(0) > 1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(f(0) = 1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(f(0) = 0\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 43,
+  "pages": [
+   20
+  ],
+  "question_text": "In a single-phase transformer, the total iron loss is 2500 W at nominal voltage of 440 V and frequency 50 Hz. The total iron loss is 850 W at 220 V and 25 Hz. Then, at nominal voltage and frequency, the hysteresis loss and eddy current loss respectively are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1600 W and 900 W"
+   },
+   {
+    "option_id": "B",
+    "text": "900 W and 1600 W"
+   },
+   {
+    "option_id": "C",
+    "text": "250 W and 600 W"
+   },
+   {
+    "option_id": "D",
+    "text": "600 W and 250 W"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 44,
+  "pages": [
+   21
+  ],
+  "question_text": "In the figure shown, self-impedances of the two transmission lines are 1.5j p.u each, and \\(Z_m = 0.5j\\) p.u is the mutual impedance. Bus voltages shown in the figure are in p.u. Given that \\(\\delta > 0\\), the maximum steady-state real power that can be transferred in p.u from Bus-1 to Bus-2 is\n[IMAGE_Q_44_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(|E||V|\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{|E||V|}{2}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2|E||V|\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{3|E||V|}{2}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_44_1",
+    "page": 21,
+    "rect": [
+     190,
+     160,
+     486,
+     258
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 45,
+  "pages": [
+   22
+  ],
+  "question_text": "A 3-Bus network is shown. Consider generators as ideal voltage sources. If rows 1, 2 and 3 of the \\(Y_{Bus}\\) matrix correspond to Bus 1, 2 and 3, respectively, then \\(Y_{Bus}\\) of the network is\n[IMAGE_Q_45_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\begin{bmatrix} -4j & j & j \\\\ j & -4j & j \\\\ j & j & -4j \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\begin{bmatrix} -4j & 2j & 2j \\\\ 2j & -4j & 2j \\\\ 2j & 2j & -4j \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\begin{bmatrix} -\\frac{3}{4}j & \\frac{1}{4}j & \\frac{1}{4}j \\\\ \\frac{1}{4}j & -\\frac{3}{4}j & \\frac{1}{4}j \\\\ \\frac{1}{4}j & \\frac{1}{4}j & -\\frac{3}{4}j \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\begin{bmatrix} -\\frac{1}{2}j & \\frac{1}{4}j & \\frac{1}{4}j \\\\ \\frac{1}{4}j & -\\frac{1}{2}j & \\frac{1}{4}j \\\\ \\frac{1}{4}j & \\frac{1}{4}j & -\\frac{1}{2}j \\end{bmatrix}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_45_1",
+    "page": 22,
+    "rect": [
+     232,
+     162,
+     440,
+     278
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 46,
+  "pages": [
+   22
+  ],
+  "question_text": "Suppose \\(I_A\\), \\(I_B\\) and \\(I_C\\) are a set of unbalanced current phasors in a three-phase system. The phase-B zero-sequence current \\(I_{B0} = 0.1\\angle 0^\\circ\\) p.u. If phase-A current \\(I_A = 1.1\\angle 0^\\circ\\) p.u and phase-C current \\(I_C = (1\\angle 120^\\circ + 0.1)\\) p.u, then \\(I_B\\) in p.u is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\angle 240^\\circ - 0.1\\angle 0^\\circ\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(1.1\\angle 240^\\circ - 0.1\\angle 0^\\circ\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1.1\\angle -120^\\circ + 0.1\\angle 0^\\circ\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(1\\angle -120^\\circ + 0.1\\angle 0^\\circ\\)"
+   }
+  ],
+  "figures": []
+ }
+]
