@@ -1,7 +1,7 @@
 {
   "branch": "EE",
   "branch_name": "Electrical Engineering",
-  "generated_at": "2026-10-06T15:32:17+00:00",
+  "generated_at": "2026-10-06T15:40:21+00:00",
   "papers": {
     "2026": {
       "paper": "EE_2026",
@@ -9,6 +9,13 @@
       "question_paper_sha256": "4b6702632024b9e7fdd35f5eff68315b4c41bea3ea90132654cfce87bf58412f",
       "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2026/Keys/EE_Keys.pdf",
       "answer_key_sha256": "355c6a0e07c59f99f181775c8efcc2d0604f420f41d1056a77170c49061d224c"
+    },
+    "2025": {
+      "paper": "EE_2025",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2025/EE2025.pdf",
+      "question_paper_sha256": "65d25e29697cd43628fa16f8da0f165bb708e49a2dfa48f8ba58804045fd7989",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2025_Key/EE_Keys.pdf",
+      "answer_key_sha256": "c1c1e0e1cff77344827809b3838893095116e3b120f0df17faa679ac89a2aedc"
     }
   },
   "questions": {
@@ -271,6 +278,266 @@
     "EE_2026:65": {
       "marks_to_all": false,
       "review": "auto"
+    },
+    "EE_2025:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "EE_2025:65": {
+      "marks_to_all": false,
+      "review": "approved"
     }
   }
 }

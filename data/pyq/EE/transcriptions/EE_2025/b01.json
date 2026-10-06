@@ -1,0 +1,337 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "Kavya _________ go to work yesterday as she __________ feeling well.\nSelect the most appropriate option to complete the above sentence.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "didn’t; isn’t"
+   },
+   {
+    "option_id": "B",
+    "text": "wouldn’t; wasn’t"
+   },
+   {
+    "option_id": "C",
+    "text": "wasn’t; wasn’t"
+   },
+   {
+    "option_id": "D",
+    "text": "couldn’t; wasn’t"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "Good : Evil :: Genuine : _______\nSelect the most appropriate option to complete the analogy.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Counterfeit"
+   },
+   {
+    "option_id": "B",
+    "text": "Contraband"
+   },
+   {
+    "option_id": "C",
+    "text": "Counterfoil"
+   },
+   {
+    "option_id": "D",
+    "text": "Counterpart"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 3,
+  "pages": [
+   3
+  ],
+  "question_text": "The relationship between two variables \\(x\\) and \\(y\\) is given by \\(x + py + q = 0\\) and is shown in the figure. Find the values of \\(p\\) and \\(q\\).\nNote: The figure shown is representative.\n[IMAGE_Q_03_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(p = -\\dfrac{1}{2};\\ q = 2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(p = 2;\\ q = -2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(p = \\dfrac{1}{2};\\ q = 4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(p = 2;\\ q = 4\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_03_1",
+    "page": 3,
+    "regions": [
+     "p003_r1"
+    ],
+    "grow": false,
+    "pad": [
+     22,
+     6,
+     8,
+     36
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 4,
+  "pages": [
+   4
+  ],
+  "question_text": "Each row of Column-I has three items and each item is represented by a circle in Column-II. The arrangement of circles in Column-II represents the relationship among the items in Column-I. Identify the option that has the most appropriate match between Column-I and Column-II.\nNote: The figures shown are representative.\n[IMAGE_Q_04_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(1) - (Q); (2) - (P); (3) - (S); (4) - (R)"
+   },
+   {
+    "option_id": "B",
+    "text": "(1) - (Q); (2) - (R); (3) - (S); (4) - (P)"
+   },
+   {
+    "option_id": "C",
+    "text": "(1) - (S); (2) - (P); (3) - (R); (4) - (Q)"
+   },
+   {
+    "option_id": "D",
+    "text": "(1) - (R); (2) - (S); (3) - (Q); (4) - (P)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_04_1",
+    "page": 4,
+    "regions": [
+     "p004_r1"
+    ],
+    "grow": false,
+    "pad": [
+     -6,
+     -5,
+     -4,
+     -4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 5,
+  "pages": [
+   5
+  ],
+  "question_text": "What is the value of \\(\\left(\\dfrac{3^{81}}{27^4}\\right)^{\\frac{1}{3}}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3^{13}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(3^{96}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(3^{23}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3^{69}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 6,
+  "pages": [
+   6
+  ],
+  "question_text": "Identify the option that has the most appropriate sequence such that a coherent paragraph is formed:\nP. It is because deer, like most of the animals that tigers normally prey on, run much faster! It simply means, another day of empty stomach for the big cats.\nQ. Tigers spend most of their life searching for food.\nR. If they trace the scent of deer, tigers follow the trail, chase the deer for a mile or two in the dark, and yet may not catch them.\nS. For several nights, they relentlessly prowl through the forest, hunting for a trail that may lead to their prey.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "S → P → R → Q"
+   },
+   {
+    "option_id": "B",
+    "text": "R → P → S → Q"
+   },
+   {
+    "option_id": "C",
+    "text": "Q → S → R → P"
+   },
+   {
+    "option_id": "D",
+    "text": "P → Q → S → R"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   7
+  ],
+  "question_text": "In the given figure, EF and HJ are coded as 30 and 80, respectively. Which one among the given options is most appropriate for the entries marked (i) and (ii)?\n[IMAGE_Q_07_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(i) EH; (ii) 40"
+   },
+   {
+    "option_id": "B",
+    "text": "(i) JK; (ii) 36"
+   },
+   {
+    "option_id": "C",
+    "text": "(i) EG; (ii) 42"
+   },
+   {
+    "option_id": "D",
+    "text": "(i) PS; (ii) 14"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_07_1",
+    "page": 7,
+    "regions": [
+     "p007_r1"
+    ],
+    "grow": false,
+    "pad": [
+     -3,
+     2,
+     4,
+     2
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 8,
+  "pages": [
+   8
+  ],
+  "question_text": "Scores obtained by two students P and Q in seven courses are given in the table below.\n[IMAGE_Q_08_1]\nBased on the information given in the table, which one of the following statements is INCORRECT?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Average score of P is less than the average score of Q."
+   },
+   {
+    "option_id": "B",
+    "text": "Median score of P is same as the median score of Q."
+   },
+   {
+    "option_id": "C",
+    "text": "Difference between the maximum and minimum scores of P is greater than the difference between the maximum and minimum scores of Q."
+   },
+   {
+    "option_id": "D",
+    "text": "Median score and the average score of Q are same."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 8,
+    "regions": [
+     "p008_r1"
+    ],
+    "grow": false,
+    "pad": [
+     -4,
+     -3,
+     -4,
+     -3
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   9
+  ],
+  "question_text": "Spheres of unit diameter are centered at \\((l, m, n)\\) where \\(l\\), \\(m\\), and \\(n\\) take every possible integer values.\nThe distance between two spheres is computed from the center of one sphere to the center of the other sphere. For a given sphere, \\(x\\) is the distance to its nearest sphere and \\(y\\) is the distance to its next nearest sphere. The value of \\(\\frac{y}{x}\\) is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2\\sqrt{2}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{1}{\\sqrt{2}}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\sqrt{2}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "2"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 10,
+  "pages": [
+   10
+  ],
+  "question_text": "In the triangle PQR, the lengths of PT and TR are in the ratio of 3:2.\nST is parallel to QR. Two semicircles are drawn with PS and PQ as diameters, as shown in the figure.\nWhich one of the following statements is true about the shaded area PQS?\nNote: The figure shown is representative.\n[IMAGE_Q_10_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The shaded area is \\(\\dfrac{16}{9}\\) times the area of the semicircle with the diameter PS."
+   },
+   {
+    "option_id": "B",
+    "text": "The shaded area is equal to the area of the semicircle with the diameter PS."
+   },
+   {
+    "option_id": "C",
+    "text": "The shaded area is \\(\\dfrac{14}{9}\\) times the area of the semicircle with the diameter PS."
+   },
+   {
+    "option_id": "D",
+    "text": "The shaded area is \\(\\dfrac{14}{25}\\) times the area of the semicircle with the diameter PQ."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_10_1",
+    "page": 10,
+    "regions": [
+     "p010_r1"
+    ],
+    "grow": false,
+    "pad": [
+     1,
+     2,
+     4,
+     2
+    ]
+   }
+  ]
+ }
+]

@@ -1,0 +1,394 @@
+[
+ {
+  "qno": 48,
+  "pages": [
+   36
+  ],
+  "question_text": "In the following circuit, the average voltage\n\\[V_o = 400\\left(1 + \\frac{\\cos\\alpha}{3}\\right) \\text{V},\\]\nwhere \\(\\alpha\\) is the firing angle. If the power dissipated in the resistor is 64 W, then the closest value of \\(\\alpha\\) in degrees is\n[IMAGE_Q_48_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "35.9"
+   },
+   {
+    "option_id": "B",
+    "text": "46.4"
+   },
+   {
+    "option_id": "C",
+    "text": "41.4"
+   },
+   {
+    "option_id": "D",
+    "text": "0"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_48_1",
+    "page": 36,
+    "regions": [
+     "p036_r1"
+    ],
+    "grow": false,
+    "pad": [
+     12,
+     6,
+     30,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 49,
+  "pages": [
+   37
+  ],
+  "question_text": "In the system shown below, the generator was initially supplying power to the grid. A temporary LLLG bolted fault occurs at F very close to circuit breaker 1. The circuit breakers open to isolate the line. The fault self-clears. The circuit breakers reclose and restore the line. Which one of the following diagrams best indicates the rotor accelerating and decelerating areas?\n[IMAGE_Q_49_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Fig. (i)"
+   },
+   {
+    "option_id": "B",
+    "text": "Fig. (ii)"
+   },
+   {
+    "option_id": "C",
+    "text": "Fig. (iii)"
+   },
+   {
+    "option_id": "D",
+    "text": "Fig. (iv)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_49_1",
+    "page": 37,
+    "rect": [
+     140,
+     195,
+     494,
+     603
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 50,
+  "pages": [
+   38
+  ],
+  "question_text": "An air filled cylindrical capacitor (capacitance \\(C_0\\)) of length \\(L\\), with \\(a\\) and \\(b\\) as its inner and outer radii, respectively, consists of two coaxial conducting surfaces. Its cross-sectional view is shown in Fig. (i). In order to increase the capacitance, a dielectric material of relative permittivity \\(\\varepsilon_r\\) is inserted inside 50% of the annular region as shown in Fig. (ii). The value of \\(\\varepsilon_r\\) for which the capacitance of the capacitor in Fig. (ii), becomes \\(5C_0\\) is\n[IMAGE_Q_50_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "4"
+   },
+   {
+    "option_id": "B",
+    "text": "5"
+   },
+   {
+    "option_id": "C",
+    "text": "9"
+   },
+   {
+    "option_id": "D",
+    "text": "10"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_50_1",
+    "page": 38,
+    "rect": [
+     196,
+     212,
+     436,
+     342
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 51,
+  "pages": [
+   39
+  ],
+  "question_text": "Let \\(\\boldsymbol{a_R}\\) be the unit radial vector in the spherical co-ordinate system. For which of the following value(s) of \\(n\\), the divergence of the radial vector field \\(\\boldsymbol{f(R)} = \\boldsymbol{a_R}\\dfrac{1}{R^n}\\) is independent of \\(R\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(-2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(-1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "1"
+   },
+   {
+    "option_id": "D",
+    "text": "2"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 52,
+  "pages": [
+   39
+  ],
+  "question_text": "Consider two coupled circuits, having self-inductances \\(L_1\\) and \\(L_2\\), that carry non-zero currents \\(I_1\\) and \\(I_2\\), respectively. The mutual inductance between the circuits is \\(M\\) with unity coupling coefficient. The stored magnetic energy of the coupled circuits is minimum at which of the following value(s) of \\(\\dfrac{I_1}{I_2}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(-\\dfrac{M}{L_1}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(-\\dfrac{M}{L_2}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(-\\dfrac{L_1}{M}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(-\\dfrac{L_2}{M}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   40
+  ],
+  "question_text": "Let \\((x, y) \\in \\mathbb{R}^2\\). The rate of change of the real valued function,\n\\[V(x, y) = x^2 + x + y^2 + 1\\]\nat the origin in the direction of the point (1,2) is ___________ (round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 54,
+  "pages": [
+   40
+  ],
+  "question_text": "Consider ordinary differential equations given by\n\\(\\dot{x}_1(t) = 2x_2(t)\\)\n\\(\\dot{x}_2(t) = r(t)\\)\nwith initial conditions \\(x_1(0) = 1\\) and \\(x_2(0) = 0\\). If\n\\[r(t) = \\begin{cases} 1, & t \\ge 0 \\\\ 0, & t < 0 \\end{cases},\\]\nthen at \\(t = 1\\), \\(x_1(t) =\\)__________ (round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   40
+  ],
+  "question_text": "Let \\(C\\) be a clockwise oriented closed curve in the complex plane defined by \\(|z| = 1\\). Further, let \\(f(z) = jz\\) be a complex function, where \\(j = \\sqrt{-1}\\). Then,\n\\[\\oint_C f(z)dz = \\]\n_______ (round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   41
+  ],
+  "question_text": "The op-amps in the following circuit are ideal. The voltage gain of the circuit is _____ (round off to the nearest integer).\n[IMAGE_Q_56_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_56_1",
+    "page": 41,
+    "regions": [
+     "p041_r1"
+    ],
+    "grow": false,
+    "pad": [
+     8,
+     2,
+     14,
+     1
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 57,
+  "pages": [
+   41
+  ],
+  "question_text": "The switch (S) closes at \\(t = 0\\) sec. The time, in sec, the capacitor takes to charge to 50 V is _____ (round off to one decimal place).\n[IMAGE_Q_57_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_57_1",
+    "page": 41,
+    "regions": [
+     "p041_r2",
+     "p041_r3"
+    ],
+    "grow": false,
+    "pad": [
+     30,
+     16,
+     22,
+     18
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 58,
+  "pages": [
+   42
+  ],
+  "question_text": "In an experiment to measure the active power drawn by a single-phase RL Load connected to an AC source through a 2 Ω resistor, three voltmeters are connected as shown in the figure below. The voltmeter readings are as follows: \\(V_{Source} = 200\\) V, \\(V_R = 9\\) V, \\(V_{Load} = 199\\) V. Assuming perfect resistors and ideal voltmeters, the Load-active power measured in this experiment, in W, is ________ (round off to one decimal place).\n[IMAGE_Q_58_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_58_1",
+    "page": 42,
+    "regions": [
+     "p042_r1"
+    ],
+    "grow": false,
+    "pad": [
+     10,
+     10,
+     10,
+     10
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 59,
+  "pages": [
+   42
+  ],
+  "question_text": "In the Wheatstone bridge shown below, the sensitivity of the bridge in terms of change in balancing voltage \\(E\\) for unit change in the resistance \\(R\\), in mV/Ω, is ______________ (round off to two decimal places).\n[IMAGE_Q_59_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_59_1",
+    "page": 42,
+    "regions": [
+     "p042_r2"
+    ],
+    "grow": false,
+    "pad": [
+     30,
+     10,
+     30,
+     10
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 60,
+  "pages": [
+   43
+  ],
+  "question_text": "The steady state capacitor current of a conventional DC-DC buck converter, working in CCM, is shown in one switching cycle. If the input voltage is 30 V, the value of the inductor used, in mH, is _____________ (round off to one decimal place).\n[IMAGE_Q_60_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_60_1",
+    "page": 43,
+    "regions": [
+     "p043_r1"
+    ],
+    "grow": false,
+    "pad": [
+     12,
+     3,
+     16,
+     3
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 61,
+  "pages": [
+   43
+  ],
+  "question_text": "An ideal low pass filter has frequency response given by\n\\[H(j\\omega) = \\begin{cases} 1, & |\\omega| \\le 200\\pi \\\\ 0, & otherwise \\end{cases}\\]\nLet \\(h(t)\\) be its time domain representation. Then \\(h(0) =\\) ________ (round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 62,
+  "pages": [
+   44
+  ],
+  "question_text": "Consider the state-space model\n\\[\\dot{x}(t) = Ax(t) + Br(t), \\quad y(t) = Cx(t)\\]\nwhere \\(x(t)\\), \\(r(t)\\), \\(y(t)\\) are the state, input and output, respectively. The matrices \\(A\\), \\(B\\), \\(C\\) are given below\n\\[A = \\begin{bmatrix} 0 & 1 \\\\ -2 & -3 \\end{bmatrix}, \\quad B = \\begin{bmatrix} 0 \\\\ 1 \\end{bmatrix}, \\quad C = \\begin{bmatrix} 1 & 0 \\end{bmatrix}\\]\nThe sum of the magnitudes of the poles is _______________ (round off to nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 63,
+  "pages": [
+   44
+  ],
+  "question_text": "Using shunt capacitors, the power factor of a 3-phase, 4 kV induction motor (drawing 390 kVA at 0.77 pf lag) is to be corrected to 0.85 pf lag. The line current of the capacitor bank, in A, is ____________ (round off to one decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   44
+  ],
+  "question_text": "Two units, rated at 100 MW and 150 MW, are enabled for economic load dispatch. When the overall incremental cost is 10,000 Rs./MWh, the units are dispatched to 50 MW and 80 MW respectively. At an overall incremental cost of 10,600 Rs./MWh, the power output of the units are 80 MW and 92 MW, respectively. The total plant MW-output (without overloading any unit) at an overall incremental cost of 11,800 Rs./MWh is ________ (round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   45
+  ],
+  "question_text": "A controller \\(D(s)\\) of the form \\((1 + K_D s)\\) is to be designed for the plant \\(G(s) = \\dfrac{1000\\sqrt{2}}{s(s+10)^2}\\) as shown in the figure. The value of \\(K_D\\) that yields a phase margin of 45° at the gain cross-over frequency of 10 rad/sec is ________________ (round off to one decimal place).\n[IMAGE_Q_65_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_65_1",
+    "page": 45,
+    "rect": [
+     172,
+     206,
+     466,
+     272
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ }
+]

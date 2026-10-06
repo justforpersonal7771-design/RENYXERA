@@ -1,0 +1,510 @@
+[
+ {
+  "qno": 36,
+  "pages": [
+   26
+  ],
+  "question_text": "Let \\(X\\) and \\(Y\\) be continuous random variables with probability density functions \\(P_X(x)\\) and \\(P_Y(y)\\), respectively. Further, let \\(Y = X^2\\) and\n\\[P_X(x) = \\begin{cases} 1, & x \\in (0,1] \\\\ 0, & otherwise \\end{cases}\\]\nWhich one of the following options is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(P_Y(y) = \\begin{cases} \\dfrac{1}{2\\sqrt{y}}, & y \\in (0,1] \\\\ 0, & otherwise \\end{cases}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(P_Y(y) = \\begin{cases} 1, & y \\in (0,1] \\\\ 0, & otherwise \\end{cases}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(P_Y(y) = \\begin{cases} 1.5\\sqrt{y}, & y \\in (0,1] \\\\ 0, & otherwise \\end{cases}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(P_Y(y) = \\begin{cases} 2y, & y \\in (0,1] \\\\ 0, & otherwise \\end{cases}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 37,
+  "pages": [
+   27
+  ],
+  "question_text": "A Boolean function is given as\n\\[f = (\\bar{u} + \\bar{v} + \\bar{w} + \\bar{x}).(\\bar{u} + \\bar{v} + \\bar{w} + x).(\\bar{u} + v + \\bar{w} + \\bar{x}).(\\bar{u} + v + \\bar{w} + x)\\]\nThe simplified form of this function is represented by",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_37_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_37_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_37_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_37_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_37_A",
+    "page": 27,
+    "regions": [
+     "p027_r1"
+    ],
+    "grow": false,
+    "pad": [
+     7,
+     6,
+     26,
+     6
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_37_B",
+    "page": 27,
+    "regions": [
+     "p027_r2"
+    ],
+    "grow": false,
+    "pad": [
+     7,
+     6,
+     26,
+     6
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_37_C",
+    "page": 27,
+    "regions": [
+     "p027_r3"
+    ],
+    "grow": false,
+    "pad": [
+     7,
+     6,
+     26,
+     6
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_37_D",
+    "page": 27,
+    "regions": [
+     "p027_r4"
+    ],
+    "grow": false,
+    "pad": [
+     7,
+     6,
+     26,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 38,
+  "pages": [
+   28
+  ],
+  "question_text": "In the circuit, \\(I_{DC}\\) is an ideal current source. The transistors \\(M_1\\) and \\(M_2\\) are assumed to be biased in saturation, wherein \\(V_{in}\\) is the input signal and \\(V_{DC}\\) is fixed DC voltage. Both transistors have a small signal resistance of \\(r_{ds}\\) and trans-conductance of \\(g_m\\). The small signal output impedance of this circuit is\n[IMAGE_Q_38_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2r_{ds}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{1}{g_m} + r_{ds}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(g_m r_{ds}^2 + 2r_{ds}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "infinity"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_38_1",
+    "page": 28,
+    "regions": [
+     "p028_r1",
+     "p028_r2"
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "rect": [
+     250,
+     198,
+     392,
+     428
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 39,
+  "pages": [
+   29
+  ],
+  "question_text": "In the circuit, shown below, if the values of R and C are very large, the form of the output voltage for a very high frequency square wave input, is best represented by\n[IMAGE_Q_39_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_39_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_39_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_39_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_39_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_39_1",
+    "page": 29,
+    "regions": [
+     "p029_r1"
+    ],
+    "grow": false,
+    "pad": [
+     10,
+     8,
+     18,
+     6
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_39_A",
+    "page": 29,
+    "regions": [
+     "p029_r2"
+    ],
+    "grow": false,
+    "pad": [
+     18,
+     8,
+     12,
+     6
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_39_B",
+    "page": 29,
+    "regions": [
+     "p029_r3"
+    ],
+    "grow": false,
+    "pad": [
+     18,
+     8,
+     12,
+     6
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_39_C",
+    "page": 29,
+    "regions": [
+     "p029_r4"
+    ],
+    "grow": false,
+    "pad": [
+     22,
+     8,
+     12,
+     6
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_39_D",
+    "page": 29,
+    "regions": [
+     "p029_r5"
+    ],
+    "grow": false,
+    "pad": [
+     18,
+     8,
+     12,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 40,
+  "pages": [
+   30
+  ],
+  "question_text": "Let continuous-time signals \\(x_1(t)\\) and \\(x_2(t)\\) be\n\\[x_1(t) = \\begin{cases} 1, & t \\in [0,1] \\\\ 2 - t, & t \\in [1,2] \\\\ 0, & otherwise \\end{cases} \\quad \\text{and} \\quad x_2(t) = \\begin{cases} t, & t \\in [0,1] \\\\ 2 - t, & t \\in [1,2] \\\\ 0, & otherwise \\end{cases}\\]\nConsider the convolution \\(y(t) = x_1(t) * x_2(t)\\). Then \\(\\int_{-\\infty}^{\\infty} y(t)dt\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1.5"
+   },
+   {
+    "option_id": "B",
+    "text": "2.5"
+   },
+   {
+    "option_id": "C",
+    "text": "3.5"
+   },
+   {
+    "option_id": "D",
+    "text": "4"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 41,
+  "pages": [
+   30
+  ],
+  "question_text": "Let \\(G(s) = \\dfrac{1}{(s+1)(s+2)}\\). Then the closed-loop system shown in the figure below, is\n[IMAGE_Q_41_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "stable for all \\(K > 2\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "unstable for all \\(K > 2\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "unstable for all \\(K > 1\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "stable for all \\(K > 1\\)."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_41_1",
+    "page": 30,
+    "regions": [
+     "p030_r1"
+    ],
+    "grow": false,
+    "pad": [
+     32,
+     10,
+     30,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 42,
+  "pages": [
+   31
+  ],
+  "question_text": "The continuous-time unit impulse signal is applied as an input to a continuous-time linear time-invariant system S. The output is observed to be the continuous-time unit step signal \\(u(t)\\). Which one of the following statements is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Every bounded input signal applied to S results in a bounded output signal."
+   },
+   {
+    "option_id": "B",
+    "text": "It is possible to find a bounded input signal which when applied to S results in an unbounded output signal."
+   },
+   {
+    "option_id": "C",
+    "text": "On applying any input signal to S, the output signal is always bounded."
+   },
+   {
+    "option_id": "D",
+    "text": "On applying any input signal to S the output signal is always unbounded."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 43,
+  "pages": [
+   32
+  ],
+  "question_text": "The transformer connection given in the figure is part of a balanced 3-phase circuit where the phase sequence is “\\(abc\\)”. The primary to secondary turns ratio is 2:1. If \\((I_a + I_b + I_c = 0)\\), then the relationship between \\(I_A\\) and \\(I_{ad}\\) will be\n[IMAGE_Q_43_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{|I_A|}{|I_{ad}|} = \\dfrac{1}{2\\sqrt{3}}\\) and \\(I_{ad}\\) lags \\(I_A\\) by 30°."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{|I_A|}{|I_{ad}|} = \\dfrac{1}{2\\sqrt{3}}\\) and \\(I_{ad}\\) leads \\(I_A\\) by 30°."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{|I_A|}{|I_{ad}|} = 2\\sqrt{3}\\) and \\(I_{ad}\\) lags \\(I_A\\) by 30°."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{|I_A|}{|I_{ad}|} = 2\\sqrt{3}\\) and \\(I_{ad}\\) leads \\(I_A\\) by 30°."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_43_1",
+    "page": 32,
+    "regions": [
+     "p032_r1",
+     "p032_r2"
+    ],
+    "grow": false,
+    "pad": [
+     16,
+     16,
+     16,
+     24
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 44,
+  "pages": [
+   33
+  ],
+  "question_text": "A DC series motor with negligible series resistance is running at a certain speed driving a load, where the load torque varies as cube of the speed. The motor is fed from a 400 V DC source and draws 40 A armature current. Assume linear magnetic circuit. The external resistance, in Ω, that must be connected in series with the armature to reduce the speed of the motor by half, is closest to",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "23.28"
+   },
+   {
+    "option_id": "B",
+    "text": "4.82"
+   },
+   {
+    "option_id": "C",
+    "text": "46.7"
+   },
+   {
+    "option_id": "D",
+    "text": "0"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 45,
+  "pages": [
+   33
+  ],
+  "question_text": "A 3-phase, 400 V, 4 pole, 50 Hz star connected induction motor has the following parameters referred to the stator:\n\\(R_r' = 1\\ \\Omega\\), \\(X_s = X_r' = 2\\ \\Omega\\)\nStator resistance, magnetizing reactance and core loss of the motor are neglected. The motor is run with constant V/f control from a drive. For maximum starting torque, the voltage and frequency output, respectively, from the drive, is closest to,",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "400 V and 50 Hz"
+   },
+   {
+    "option_id": "B",
+    "text": "200 V and 25 Hz"
+   },
+   {
+    "option_id": "C",
+    "text": "100 V and 12.5 Hz"
+   },
+   {
+    "option_id": "D",
+    "text": "300 V and 37.5 Hz"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 46,
+  "pages": [
+   34
+  ],
+  "question_text": "The 3-phase modulating waveforms (\\(v_a(t)\\), \\(v_b(t)\\) and \\(v_c(t)\\)), used in sinusoidal PWM in a Voltage Source Inverter (VSI) are\n\\(v_a(t) = 0.8\\sin(\\omega t)\\) V\n\\(v_b(t) = 0.8\\sin\\left(\\omega t - \\dfrac{2\\pi}{3}\\right)\\) V\n\\(v_c(t) = 0.8\\sin\\left(\\omega t + \\dfrac{2\\pi}{3}\\right)\\) V\nwhere \\(\\omega = 2\\pi \\times 40\\) rad/s is the fundamental frequency. The modulating waveforms are compared with a 10 kHz triangular carrier whose magnitude varies between +1 and −1. The VSI has a DC link voltage of 600 V and feeds a star connected motor. The per phase fundamental RMS motor voltage, in volts, is closest to",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "169.71"
+   },
+   {
+    "option_id": "B",
+    "text": "300.00"
+   },
+   {
+    "option_id": "C",
+    "text": "424.26"
+   },
+   {
+    "option_id": "D",
+    "text": "212.13"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 47,
+  "pages": [
+   35
+  ],
+  "question_text": "An ideal sinusoidal voltage source \\(v(t) = 230\\sqrt{2}\\sin(2\\pi \\times 50t)\\) V feeds an ideal inductor \\(L\\) through an ideal SCR with firing angle \\(\\alpha = 0^\\circ\\). If \\(L = 100\\) mH, then the peak of the inductor current, in ampere, is closest to\n[IMAGE_Q_47_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "20.71"
+   },
+   {
+    "option_id": "B",
+    "text": "0"
+   },
+   {
+    "option_id": "C",
+    "text": "10.35"
+   },
+   {
+    "option_id": "D",
+    "text": "7.32"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_47_1",
+    "page": 35,
+    "regions": [
+     "p035_r1"
+    ],
+    "grow": false,
+    "pad": [
+     8,
+     6,
+     8,
+     6
+    ]
+   }
+  ]
+ }
+]

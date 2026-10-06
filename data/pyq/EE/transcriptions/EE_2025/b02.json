@@ -1,0 +1,755 @@
+[
+ {
+  "qno": 11,
+  "pages": [
+   11
+  ],
+  "question_text": "Consider the set \\(S\\) of points \\((x, y) \\in \\mathbb{R}^2\\) which minimize the real valued function\n\\[f(x, y) = (x + y - 1)^2 + (x + y)^2\\]\nWhich of the following statements is true about the set \\(S\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The number of elements in the set \\(S\\) is finite and more than one."
+   },
+   {
+    "option_id": "B",
+    "text": "The number of elements in the set \\(S\\) is infinite."
+   },
+   {
+    "option_id": "C",
+    "text": "The set \\(S\\) is empty."
+   },
+   {
+    "option_id": "D",
+    "text": "The number of elements in the set \\(S\\) is exactly one."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   11
+  ],
+  "question_text": "Let \\(v_1\\) and \\(v_2\\) be the two eigenvectors corresponding to distinct eigenvalues of a \\(3 \\times 3\\) real symmetric matrix. Which one of the following statements is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(v_1^T v_2 \\ne 0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(v_1^T v_2 = 0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(v_1 + v_2 = 0\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(v_1 - v_2 = 0\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   12
+  ],
+  "question_text": "Let \\(\\boldsymbol{A} = \\begin{bmatrix} 1 & 1 & 1 \\\\ -1 & -1 & -1 \\\\ 0 & 1 & -1 \\end{bmatrix}\\), and \\(\\boldsymbol{b} = \\begin{bmatrix} 1/3 \\\\ -1/3 \\\\ 0 \\end{bmatrix}\\). Then, the system of linear equations \\(\\boldsymbol{Ax} = \\boldsymbol{b}\\) has",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "a unique solution."
+   },
+   {
+    "option_id": "B",
+    "text": "infinitely many solutions."
+   },
+   {
+    "option_id": "C",
+    "text": "a finite number of solutions."
+   },
+   {
+    "option_id": "D",
+    "text": "no solution."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   12
+  ],
+  "question_text": "Let \\(P = \\begin{bmatrix} 2 & 1 & 0 \\\\ -1 & 0 & 0 \\\\ 0 & 0 & 1 \\end{bmatrix}\\) and let \\(I\\) be the identity matrix. Then \\(P^2\\) is equal to",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2P - I\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(P\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(I\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(P + I\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   13
+  ],
+  "question_text": "Consider discrete random variables \\(X\\) and \\(Y\\) with probabilities as follows:\n\\(P(X = 0 \\text{ and } Y = 0) = \\dfrac{1}{4}\\)\n\\(P(X = 1 \\text{ and } Y = 0) = \\dfrac{1}{8}\\)\n\\(P(X = 0 \\text{ and } Y = 1) = \\dfrac{1}{2}\\)\n\\(P(X = 1 \\text{ and } Y = 1) = \\dfrac{1}{8}\\)\nGiven \\(X = 1\\), the expected value of \\(Y\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{1}{4}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{1}{2}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{1}{8}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{1}{3}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   14
+  ],
+  "question_text": "Which one of the following statements is true about the small signal voltage gain of a MOSFET based single stage amplifier?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Common source and common gate amplifiers are both inverting amplifiers"
+   },
+   {
+    "option_id": "B",
+    "text": "Common source and common gate amplifiers are both non-inverting amplifiers"
+   },
+   {
+    "option_id": "C",
+    "text": "Common source amplifier is inverting and common gate amplifier is non-inverting amplifier"
+   },
+   {
+    "option_id": "D",
+    "text": "Common source amplifier is non-inverting and common gate amplifier is inverting amplifier"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   15
+  ],
+  "question_text": "Assuming ideal op-amps, the circuit represents a\n[IMAGE_Q_17_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "summing amplifier."
+   },
+   {
+    "option_id": "B",
+    "text": "difference amplifier."
+   },
+   {
+    "option_id": "C",
+    "text": "logarithmic amplifier."
+   },
+   {
+    "option_id": "D",
+    "text": "buffer."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_17_1",
+    "page": 15,
+    "regions": [
+     "p015_r1"
+    ],
+    "grow": false,
+    "pad": [
+     8,
+     6,
+     8,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 18,
+  "pages": [
+   16
+  ],
+  "question_text": "The I-V characteristics of the element between the nodes X and Y is best depicted by\n[IMAGE_Q_18_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_18_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_18_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_18_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_18_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_18_1",
+    "page": 16,
+    "regions": [
+     "p016_r1"
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "rect": [
+     262,
+     168,
+     385,
+     284
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_18_A",
+    "page": 16,
+    "regions": [
+     "p016_r2"
+    ],
+    "grow": false,
+    "pad": [
+     19,
+     10,
+     22,
+     12
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_18_B",
+    "page": 16,
+    "regions": [
+     "p016_r3"
+    ],
+    "grow": false,
+    "pad": [
+     19,
+     10,
+     22,
+     12
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_18_C",
+    "page": 16,
+    "regions": [
+     "p016_r4"
+    ],
+    "grow": false,
+    "pad": [
+     19,
+     10,
+     22,
+     12
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_18_D",
+    "page": 16,
+    "regions": [
+     "p016_r5"
+    ],
+    "grow": false,
+    "pad": [
+     14,
+     10,
+     22,
+     12
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 19,
+  "pages": [
+   17
+  ],
+  "question_text": "A nullator is defined as a circuit element where the voltage across the device and the current through the device are both zero. A series combination of a nullator and a resistor of value, \\(R\\), will behave as a",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "resistor of value \\(R\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "nullator."
+   },
+   {
+    "option_id": "C",
+    "text": "open circuit."
+   },
+   {
+    "option_id": "D",
+    "text": "short circuit."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   17
+  ],
+  "question_text": "Consider a discrete-time linear time-invariant (LTI) system \\(S\\), where \\(y[n] = S\\{x[n]\\}\\)\nLet\n\\[S\\{\\delta[n]\\} = \\begin{cases} 1, & n \\in \\{0, 1, 2\\} \\\\ 0, & \\text{otherwise} \\end{cases}\\]\nwhere \\(\\delta[n]\\) is the discrete-time unit impulse function. For an input signal \\(x[n]\\), the output \\(y[n]\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x[n] + x[n-1] + x[n-2]\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x[n-1] + x[n] + x[n+1]\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(x[n] + x[n+1] + x[n+2]\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(x[n+1] + x[n+2] + x[n+3]\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   18
+  ],
+  "question_text": "Consider a continuous-time signal\n\\[x(t) = -t^2\\{u(t + 4) - u(t - 4)\\}\\]\nwhere \\(u(t)\\) is the continuous-time unit step function. Let \\(\\delta(t)\\) be the continuous-time unit impulse function. The value of\n\\[\\int_{-\\infty}^{\\infty} x(t)\\delta(t + 3)dt\\]\nis",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(-9\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "9"
+   },
+   {
+    "option_id": "C",
+    "text": "3"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(-3\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   18
+  ],
+  "question_text": "Selected data points of the step response of a stable first-order linear time-invariant (LTI) system are given below. The closest value of the time-constant, in sec, of the system is\n[IMAGE_Q_22_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1"
+   },
+   {
+    "option_id": "B",
+    "text": "2"
+   },
+   {
+    "option_id": "C",
+    "text": "3"
+   },
+   {
+    "option_id": "D",
+    "text": "4"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_22_1",
+    "page": 18,
+    "regions": [
+     "p018_r1"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     -3,
+     1,
+     -3
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 23,
+  "pages": [
+   19
+  ],
+  "question_text": "The Nyquist plot of a strictly stable \\(G(s)\\) having the numerator polynomial as \\((s - 3)\\) encircles the critical point \\(-1\\) once in the anti-clockwise direction. Which one of the following statements on the closed-loop system shown in figure, is correct?\n[IMAGE_Q_23_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The system stability cannot be ascertained."
+   },
+   {
+    "option_id": "B",
+    "text": "The system is marginally stable."
+   },
+   {
+    "option_id": "C",
+    "text": "The system is stable."
+   },
+   {
+    "option_id": "D",
+    "text": "The system is unstable."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_23_1",
+    "page": 19,
+    "regions": [
+     "p019_r1"
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "rect": [
+     182,
+     196,
+     460,
+     274
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 24,
+  "pages": [
+   19
+  ],
+  "question_text": "During a power failure, a domestic household uninterruptible power supply (UPS) supplies AC power to a limited number of lights and fans in various rooms. As per a Newton-Raphson load-flow formulation, the UPS would be represented as a",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Slack bus"
+   },
+   {
+    "option_id": "B",
+    "text": "PV bus"
+   },
+   {
+    "option_id": "C",
+    "text": "PQ bus"
+   },
+   {
+    "option_id": "D",
+    "text": "PQV bus"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   20
+  ],
+  "question_text": "Which one of the following figures represents the radial electric field distribution \\(E_R\\) caused by a spherical cloud of electrons with a volume charge density, \\(\\rho = -3\\rho_0\\) for \\(0 \\le R \\le a\\) (both \\(\\rho_0\\), \\(a\\) are positive and \\(R\\) is the radial distance) and \\(\\rho = 0\\) for \\(R > a\\)?\n[IMAGE_Q_25_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Fig. (i)"
+   },
+   {
+    "option_id": "B",
+    "text": "Fig. (ii)"
+   },
+   {
+    "option_id": "C",
+    "text": "Fig. (iii)"
+   },
+   {
+    "option_id": "D",
+    "text": "Fig. (iv)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_25_1",
+    "page": 20,
+    "rect": [
+     126,
+     192,
+     496,
+     527
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 26,
+  "pages": [
+   21
+  ],
+  "question_text": "The operating region of the developed torque \\((T_{em})\\) and speed \\((\\omega)\\) of an induction motor drive is given by the shaded region OQRE in the figure. The load torque \\((T_L)\\) characteristic is also shown. The motor drive moves from the initial operating point O to the final operating point S. Which one of the following trajectories will take the shortest time?\n[IMAGE_Q_26_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "O-Q-R-S"
+   },
+   {
+    "option_id": "B",
+    "text": "O-P-S"
+   },
+   {
+    "option_id": "C",
+    "text": "O-E-S"
+   },
+   {
+    "option_id": "D",
+    "text": "O-F-S"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_26_1",
+    "page": 21,
+    "regions": [
+     "p021_r1",
+     "p021_r2"
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "rect": [
+     205,
+     203,
+     428,
+     384
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 27,
+  "pages": [
+   22
+  ],
+  "question_text": "The input voltage \\(v(t)\\) and current \\(i(t)\\) of a converter are given by,\n\\(v(t) = 300\\sin(\\omega t)\\ V\\)\n\\(i(t) = 10\\sin\\left(\\omega t - \\dfrac{\\pi}{6}\\right) + 2\\sin\\left(3\\omega t + \\dfrac{\\pi}{6}\\right) + \\sin\\left(5\\omega t + \\dfrac{\\pi}{2}\\right)\\ A\\)\nwhere, \\(\\omega = 2\\pi \\times 50\\) rad/s. The input power factor of the converter is closest to",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.845"
+   },
+   {
+    "option_id": "B",
+    "text": "0.867"
+   },
+   {
+    "option_id": "C",
+    "text": "0.887"
+   },
+   {
+    "option_id": "D",
+    "text": "1.0"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   22
+  ],
+  "question_text": "Instrument(s) required to synchronize an alternator to the grid is/are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Voltmeter"
+   },
+   {
+    "option_id": "B",
+    "text": "Wattmeter"
+   },
+   {
+    "option_id": "C",
+    "text": "Synchroscope"
+   },
+   {
+    "option_id": "D",
+    "text": "Stroboscope"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   23
+  ],
+  "question_text": "The open-loop transfer function of the system shown in the figure, is\n\\[G(s) = \\frac{Ks(s + 2)}{(s + 5)(s + 7)}\\]\nFor \\(K \\ge 0\\), which of the following real axis point(s) is/are on the root locus?\n[IMAGE_Q_29_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(-1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(-4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(-6\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(-10\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_29_1",
+    "page": 23,
+    "regions": [
+     "p023_r1",
+     "p023_r2"
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "rect": [
+     182,
+     220,
+     460,
+     292
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 30,
+  "pages": [
+   23
+  ],
+  "question_text": "A continuous time periodic signal \\(x(t)\\) is\n\\(x(t) = 1 + 2\\cos 2\\pi t + 2\\cos 4\\pi t + 2\\cos 6\\pi t\\).\nIf \\(T\\) is the period of \\(x(t)\\), then \\(\\frac{1}{T}\\int_0^T |x(t)|^2 dt =\\)____________ (round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   24
+  ],
+  "question_text": "The maximum percentage error in the equivalent resistance of two parallel-connected resistors of 100 Ω and 900 Ω with each having a maximum 5% error is ____________ % (round off to nearest integer value).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 32,
+  "pages": [
+   24
+  ],
+  "question_text": "Consider a distribution feeder, with \\(R/X\\) ratio of 5. At the receiving end, a 350 kVA load is connected. The maximum voltage drop will occur from the sending end to the receiving end, when the power factor of the load is ___________(round off to three decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   24
+  ],
+  "question_text": "The bus impedance matrix of a 3-bus system (in pu) is\n\\[Z_{bus} = \\begin{bmatrix} j0.059 & j0.061 & j0.038 \\\\ j0.061 & j0.093 & j0.066 \\\\ j0.038 & j0.066 & j0.110 \\end{bmatrix}\\]\nA symmetrical fault (through a fault impedance of j0.007 pu) occurs at bus 2. Neglecting pre-fault loading conditions, the voltage at bus 1, during the fault is ________ pu (round off to three decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   25
+  ],
+  "question_text": "In the circuit with ideal devices, the power MOSFET is operated with a duty cycle of 0.4 in a switching cycle with \\(I = 10\\) A and \\(V = 15\\) V. The power delivered by the current source, in W, is ____________ (round off to the nearest integer).\n[IMAGE_Q_34_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_34_1",
+    "page": 25,
+    "regions": [
+     "p025_r1"
+    ],
+    "grow": false,
+    "pad": [
+     8,
+     6,
+     8,
+     6
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 35,
+  "pages": [
+   25
+  ],
+  "question_text": "The induced emf in a 3.3 kV, 4 pole, 3-phase star connected synchronous motor is considered to be equal and in phase with the terminal voltage under no load condition. On application of a mechanical load, the induced emf phasor is deflected by an angle of 2° mechanical with respect to the terminal voltage phasor. If the synchronous reactance is 2 Ω, and stator resistance is negligible, then the motor armature current magnitude, in ampere, during loaded condition is closest to, ____________ (round off to two decimal places).",
+  "options": [],
+  "figures": []
+ }
+]
