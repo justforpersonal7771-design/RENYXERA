@@ -34,6 +34,13 @@ export function QuestionPalette() {
     try { localStorage.setItem("renyxera_grid_mode", m); } catch {}
   };
 
+  // Section/topic tests have a single section: no "By section / All" toggle, show everything.
+  const multiSection = useMemo(() => {
+    if (!currentDraft) return false;
+    const s = new Set(currentDraft.questions.map((q) => QuestionRepository.getQuestionById(q.questionId)?.section || "Unknown"));
+    return s.size > 1;
+  }, [currentDraft]);
+
   const sectionQuestions = useMemo(() => {
     if (!currentDraft) return [];
     return currentDraft.questions
@@ -42,8 +49,8 @@ export function QuestionPalette() {
         idx,
         qData: QuestionRepository.getQuestionById(q.questionId),
       }))
-      .filter((item) => gridMode === "all" || (item.qData?.section || "Unknown") === currentSection);
-  }, [currentDraft, currentSection, gridMode]);
+      .filter((item) => !multiSection || gridMode === "all" || (item.qData?.section || "Unknown") === currentSection);
+  }, [currentDraft, currentSection, gridMode, multiSection]);
 
   const responsesList = useMemo(() => {
     if (!responses) return [];
@@ -123,8 +130,8 @@ export function QuestionPalette() {
         </div>
       </div>
 
-      {/* Grid view toggle */}
-      <div className="flex-none px-4 sm:px-5 pt-3">
+      {/* Grid view toggle (only when the test has more than one section) */}
+      {multiSection && <div className="flex-none px-4 sm:px-5 pt-3">
         <div role="tablist" aria-label="Question grid view" className="relative grid grid-cols-2 p-1 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)]">
           {([["section", "By section"], ["all", `All ${currentDraft.questions.length}`]] as const).map(([m, label]) => (
             <button key={m} role="tab" aria-selected={gridMode === m} onClick={() => changeGridMode(m)}
@@ -134,10 +141,10 @@ export function QuestionPalette() {
             </button>
           ))}
         </div>
-      </div>
+      </div>}
 
       {/* 3. Center Aligned Questions Palette Grid */}
-      <div ref={gridRef} className="grid-snap flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-5 custom-scrollbar">
+      <div ref={gridRef} className="grid-snap flex-1 overflow-y-auto overflow-x-hidden px-4 pb-4 pt-5 sm:px-5 sm:pb-5 sm:pt-6 custom-scrollbar">
         <div className="grid grid-cols-5 gap-2.5 max-w-[300px] mx-auto justify-items-center">
           {sectionQuestions.map(({ q, idx }) => {
             const localQId = q.questionId;
