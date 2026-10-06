@@ -1,0 +1,785 @@
+[
+ {
+  "qno": 11,
+  "pages": [
+   10
+  ],
+  "question_text": "For a given vector \\(\\mathbf{w} = [1\\ 2\\ 3]^T\\), the vector normal to the plane defined by \\(\\mathbf{w}^T\\mathbf{x} = 1\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\([-2\\ \\ -2\\ \\ 2]^T\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\([3\\ \\ 0\\ \\ -1]^T\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\([3\\ \\ 2\\ \\ 1]^T\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\([1\\ \\ 2\\ \\ 3]^T\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   11
+  ],
+  "question_text": "For the block diagram shown in the figure, the transfer function \\(\\dfrac{Y(s)}{R(s)}\\) is\n[IMAGE_Q_12_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{2s + 3}{s + 1}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{3s + 2}{s - 1}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{s + 1}{3s + 2}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{3s + 2}{s + 1}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_12_1",
+    "page": 11,
+    "regions": [
+     "p011_r1"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 13,
+  "pages": [
+   12
+  ],
+  "question_text": "In the Nyquist plot of the open-loop transfer function\n\\[G(s)H(s) = \\frac{3s + 5}{s - 1}\\]\ncorresponding to the feedback loop shown in the figure, the infinite semi-circular arc of the Nyquist contour in \\(s\\)-plane is mapped into a point at\n[IMAGE_Q_13_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(G(s)H(s) = \\infty\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(G(s)H(s) = 0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(G(s)H(s) = 3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(G(s)H(s) = -5\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_13_1",
+    "page": 12,
+    "regions": [
+     "p012_r1",
+     "p012_r2"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 14,
+  "pages": [
+   13
+  ],
+  "question_text": "Consider a unity-gain negative feedback system consisting of the plant \\(G(s)\\) (given below) and a proportional-integral controller. Let the proportional gain and integral gain be 3 and 1, respectively. For a unit step reference input, the final values of the controller output and the plant output, respectively, are\n\\[G(s) = \\frac{1}{s - 1}\\]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "∞, ∞"
+   },
+   {
+    "option_id": "B",
+    "text": "1, 0"
+   },
+   {
+    "option_id": "C",
+    "text": "1, -1"
+   },
+   {
+    "option_id": "D",
+    "text": "-1, 1"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   13
+  ],
+  "question_text": "The following columns present various modes of induction machine operation and the ranges of slip\n[IMAGE_Q_15_1]\nThe correct matching between the elements in column A with those of column B is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "a-r, b-p, and c-q"
+   },
+   {
+    "option_id": "B",
+    "text": "a-r, b-q, and c-p"
+   },
+   {
+    "option_id": "C",
+    "text": "a-p, b-r, and c-q"
+   },
+   {
+    "option_id": "D",
+    "text": "a-q, b-p, and c-r"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_15_1",
+    "page": 13,
+    "rect": [
+     163,
+     446,
+     442,
+     520
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 16,
+  "pages": [
+   14
+  ],
+  "question_text": "A 10-pole, 50 Hz, 240 V, single phase induction motor runs at 540 RPM while driving rated load. The frequency of induced rotor currents due to backward field is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "100 Hz"
+   },
+   {
+    "option_id": "B",
+    "text": "95 Hz"
+   },
+   {
+    "option_id": "C",
+    "text": "10 Hz"
+   },
+   {
+    "option_id": "D",
+    "text": "5 Hz"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   14
+  ],
+  "question_text": "A continuous-time system that is initially at rest is described by\n\\[\\frac{dy(t)}{dt} + 3y(t) = 2x(t),\\]\nwhere \\(x(t)\\) is the input voltage and \\(y(t)\\) is the output voltage. The impulse response of the system is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3e^{-2t}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\frac{1}{3}e^{-2t}u(t)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2e^{-3t}u(t)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2e^{-3t}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   15
+  ],
+  "question_text": "The Fourier transform \\(X(\\omega)\\) of the signal \\(x(t)\\) is given by\n\\(X(\\omega) = 1\\), for \\(|\\omega| < W_o\\)\n\\(= 0\\), for \\(|\\omega| > W_0\\)\nWhich one of the following statements is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(x(t)\\) tends to be an impulse as \\(W_0 \\to \\infty\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(x(0)\\) decreases as \\(W_0\\) increases."
+   },
+   {
+    "option_id": "C",
+    "text": "At \\(t = \\frac{\\pi}{2W_0}\\), \\(x(t) = -\\frac{1}{\\pi}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "At \\(t = \\frac{\\pi}{2W_0}\\), \\(x(t) = \\frac{1}{\\pi}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 19,
+  "pages": [
+   15
+  ],
+  "question_text": "The \\(Z\\)-transform of a discrete signal \\(x[n]\\) is\n\\[X(z) = \\frac{4z}{(z - \\frac{1}{5})(z - \\frac{2}{3})(z - 3)} \\text{ with } ROC = R.\\]\nWhich one of the following statements is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is \\(|z| > 3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is \\(\\frac{2}{3} < |z| < 3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is such that x[n] is a left-sided sequence"
+   },
+   {
+    "option_id": "D",
+    "text": "Discrete-time Fourier transform of x[n] converges if \\(R\\) is such that x[n] is a right-sided sequence"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   16
+  ],
+  "question_text": "For the three-bus power system shown in the figure, the trip signals to the circuit breakers B\\(_1\\) to B\\(_9\\) are provided by overcurrent relays R\\(_1\\) to R\\(_9\\), respectively, some of which have directional properties also. The necessary condition for the system to be protected for short circuit fault at any part of the system between bus 1 and the R-L loads with isolation of minimum portion of the network using minimum number of directional relays is\n[IMAGE_Q_20_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards bus 2"
+   },
+   {
+    "option_id": "B",
+    "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards bus 2 and R\\(_7\\) is directional overcurrent relay blocking faults towards bus 3"
+   },
+   {
+    "option_id": "C",
+    "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards Line 1 and Line 2, respectively, R\\(_7\\) is directional overcurrent relay blocking faults towards Line 3 and R\\(_5\\) is directional overcurrent relay blocking faults towards bus 2"
+   },
+   {
+    "option_id": "D",
+    "text": "R\\(_3\\) and R\\(_4\\) are directional overcurrent relays blocking faults towards Line 1 and Line 2, respectively."
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_20_1",
+    "page": 16,
+    "regions": [
+     "p016_r1"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 21,
+  "pages": [
+   17
+  ],
+  "question_text": "The expressions of fuel cost of two thermal generating units as a function of the respective power generation \\(P_{G1}\\) and \\(P_{G2}\\) are given as\n\\(F_1(P_{G1}) = 0.1aP_{G1}^2 + 40\\,P_{G1} + 120\\ Rs/hour \\qquad 0\\ MW \\le P_{G1} \\le 350\\ MW\\)\n\\(F_2(P_{G2}) = 0.2P_{G2}^2 + 30\\,P_{G2} + 100\\ Rs/hour \\qquad 0\\ MW \\le P_{G2} \\le 300\\ MW\\)\nwhere \\(a\\) is a constant. For a given value of \\(a\\), optimal dispatch requires the total load of 290 MW to be shared as \\(P_{G1} = 175\\ MW\\) and \\(P_{G2} = 115\\ MW\\). With the load remaining unchanged, the value of \\(a\\) is increased by 10% and optimal dispatch is carried out. The changes in \\(P_{G1}\\) and the total cost of generation, \\(F\\) (= \\(F_1 + F_2\\)) in Rs/hour will be as follows",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(P_{G1}\\) will decrease and \\(F\\) will increase"
+   },
+   {
+    "option_id": "B",
+    "text": "Both \\(P_{G1}\\) and \\(F\\) will increase"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(P_{G1}\\) will increase and \\(F\\) will decrease"
+   },
+   {
+    "option_id": "D",
+    "text": "Both \\(P_{G1}\\) and \\(F\\) will decrease"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   18
+  ],
+  "question_text": "The four stator conductors (A, A′, B and B′) of a rotating machine are carrying DC currents of the same value, the directions of which are shown in the figure (i). The rotor coils \\(a\\)-\\(a'\\) and \\(b\\)-\\(b'\\) are formed by connecting the back ends of conductors ‘\\(a\\)’ and ‘\\(a'\\)’ and ‘\\(b\\)’ and ‘\\(b'\\)’, respectively, as shown in figure (ii). The e.m.f. induced in coil \\(a\\)-\\(a'\\) and coil \\(b\\)-\\(b'\\) are denoted by \\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\), respectively. If the rotor is rotated at uniform angular speed ω rad/s in the clockwise direction then which of the following correctly describes the \\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\)?\n[IMAGE_Q_22_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\) have finite magnitudes and are in the same phase"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\) have finite magnitudes with \\(E_{b\\text{-}b'}\\) leading \\(E_{a\\text{-}a'}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(E_{a\\text{-}a'}\\) and \\(E_{b\\text{-}b'}\\) have finite magnitudes with \\(E_{a\\text{-}a'}\\) leading \\(E_{b\\text{-}b'}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(E_{a\\text{-}a'} = E_{b\\text{-}b'} = 0\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_22_1",
+    "page": 18,
+    "regions": [
+     "p018_r1"
+    ],
+    "grow": false,
+    "pad": [
+     -2,
+     2,
+     2,
+     16
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 23,
+  "pages": [
+   19
+  ],
+  "question_text": "The chopper circuit shown in figure (i) feeds power to a 5 A DC constant current source. The switching frequency of the chopper is 100 kHz. All the components can be assumed to be ideal. The gate signals of switches \\(S_1\\) and \\(S_2\\) are shown in figure (ii). Average voltage across the 5 A current source is\n[IMAGE_Q_23_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "10 V"
+   },
+   {
+    "option_id": "B",
+    "text": "6 V"
+   },
+   {
+    "option_id": "C",
+    "text": "12 V"
+   },
+   {
+    "option_id": "D",
+    "text": "20 V"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_23_1",
+    "page": 19,
+    "regions": [
+     "p019_r1",
+     "p019_r2"
+    ],
+    "grow": false,
+    "pad": [
+     26,
+     4,
+     14,
+     18
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 24,
+  "pages": [
+   20
+  ],
+  "question_text": "In the figure, the vectors \\(\\mathbf{u}\\) and \\(\\mathbf{v}\\) are related as: \\(\\mathbf{Au} = \\mathbf{v}\\) by a transformation matrix \\(\\mathbf{A}\\). The correct choice of \\(\\mathbf{A}\\) is\n[IMAGE_Q_24_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\begin{bmatrix} \\frac{4}{5} & \\frac{3}{5} \\\\ -\\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\begin{bmatrix} \\frac{4}{5} & -\\frac{3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\begin{bmatrix} \\frac{4}{5} & \\frac{3}{5} \\\\ \\frac{3}{5} & \\frac{4}{5} \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\begin{bmatrix} \\frac{4}{5} & -\\frac{3}{5} \\\\ \\frac{3}{5} & -\\frac{4}{5} \\end{bmatrix}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_24_1",
+    "page": 20,
+    "regions": [
+     "p020_r1"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 25,
+  "pages": [
+   21
+  ],
+  "question_text": "One million random numbers are generated from a statistically stationary process with a Gaussian distribution with mean zero and standard deviation \\(\\sigma_o\\).\nThe \\(\\sigma_o\\) is estimated by randomly drawing out 10,000 numbers of samples \\((x_n)\\). The estimates \\(\\hat{\\sigma}_1, \\hat{\\sigma}_2\\) are computed in the following two ways.\n\\[\\hat{\\sigma}_1^2 = \\frac{1}{10000}\\sum_{n=1}^{10000} x_n^2 \\qquad \\hat{\\sigma}_2^2 = \\frac{1}{9999}\\sum_{n=1}^{10000} x_n^2\\]\nWhich of the following statements is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(E(\\hat{\\sigma}_2^2) = \\sigma_o^2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(E(\\hat{\\sigma}_2) = \\sigma_o\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(E(\\hat{\\sigma}_1^2) = \\sigma_o^2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(E(\\hat{\\sigma}_1) = E(\\hat{\\sigma}_2)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   22
+  ],
+  "question_text": "A semiconductor switch needs to block voltage \\(V\\) of only one polarity (\\(V > 0\\)) during OFF state as shown in figure (i) and carry current in both directions during ON state as shown in figure (ii). Which of the following switch combination(s) will realize the same?\n[IMAGE_Q_26_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_26_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_26_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_26_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_26_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_26_1",
+    "page": 22,
+    "rect": [
+     124,
+     167,
+     347,
+     230
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_26_A",
+    "page": 22,
+    "rect": [
+     118,
+     254,
+     210,
+     308
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_26_B",
+    "page": 22,
+    "rect": [
+     118,
+     326,
+     249,
+     377
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_26_C",
+    "page": 22,
+    "rect": [
+     118,
+     395,
+     234,
+     436
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   },
+   {
+    "placeholder": "IMAGE_Q_26_D",
+    "page": 22,
+    "rect": [
+     118,
+     462,
+     262,
+     534
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 27,
+  "pages": [
+   23
+  ],
+  "question_text": "Which of the following statement(s) is/are true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "If an LTI system is causal, it is stable"
+   },
+   {
+    "option_id": "B",
+    "text": "A discrete time LTI system is causal if and only if its response to a step input \\(u[n]\\) is 0 for \\(n < 0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "If a discrete time LTI system has an impulse response \\(h[n]\\) of finite duration the system is stable"
+   },
+   {
+    "option_id": "D",
+    "text": "If the impulse response \\(0 < |h[n]| < 1\\) for all \\(n\\), then the LTI system is stable."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   23
+  ],
+  "question_text": "The bus admittance \\((Y_{bus})\\) matrix of a 3-bus power system is given below.\n\\[\\begin{array}{c} \\\\ 1 \\\\ 2 \\\\ 3 \\end{array}\\begin{array}{c} \\quad 1 \\qquad\\quad 2 \\qquad\\quad 3 \\\\ \\begin{bmatrix} -j15 & j10 & j5 \\\\ j10 & -j13.5 & j4 \\\\ j5 & j4 & -j8 \\end{bmatrix} \\end{array}\\]\nConsidering that there is no shunt inductor connected to any of the buses, which of the following can NOT be true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Line charging capacitor of finite value is present in all three lines"
+   },
+   {
+    "option_id": "B",
+    "text": "Line charging capacitor of finite value is present in line 2-3 only"
+   },
+   {
+    "option_id": "C",
+    "text": "Line charging capacitor of finite value is present in line 2-3 only and shunt capacitor of finite value is present in bus 1 only"
+   },
+   {
+    "option_id": "D",
+    "text": "Line charging capacitor of finite value is present in line 2-3 only and shunt capacitor of finite value is present in bus 3 only"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   24
+  ],
+  "question_text": "The value of parameters of the circuit shown in the figure are\n\\(R_1 = 2\\ \\Omega\\), \\(R_2 = 2\\ \\Omega\\), \\(R_3 = 3\\ \\Omega\\), \\(L = 10\\) mH, \\(C = 100\\) μF\nFor time \\(t < 0\\), the circuit is at steady state with the switch ‘K’ in closed condition. If the switch is opened at \\(t = 0\\), the value of the voltage across the inductor \\((V_L)\\) at \\(t = 0^+\\) in Volts is ____________ (Round off to 1 decimal place).\n[IMAGE_Q_29_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_29_1",
+    "page": 24,
+    "regions": [
+     "p024_r1",
+     "p024_r2",
+     "p024_r3",
+     "p024_r4",
+     "p024_r5"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 30,
+  "pages": [
+   24
+  ],
+  "question_text": "A separately excited DC motor rated 400 V, 15 A, 1500 RPM drives a constant torque load at rated speed operating from 400 V DC supply drawing rated current. The armature resistance is 1.2 Ω. If the supply voltage drops by 10% with field current unaltered then the resultant speed of the motor in RPM is ____________ (Round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   25
+  ],
+  "question_text": "For the signals \\(x(t)\\) and \\(y(t)\\) shown in the figure, \\(z(t) = x(t) * y(t)\\) is maximum at \\(t = T_1\\). Then \\(T_1\\) in seconds is ___________ (Round off to the nearest integer).\n[IMAGE_Q_31_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_31_1",
+    "page": 25,
+    "regions": [
+     "p025_r1"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ],
+    "rect": [
+     120,
+     155,
+     460,
+     410
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 32,
+  "pages": [
+   25
+  ],
+  "question_text": "For the circuit shown in the figure, \\(V_1 = 8\\) V, DC and \\(I_1 = 8\\) A, DC. The voltage \\(V_{ab}\\) in Volts is _________ (Round off to 1 decimal place).\n[IMAGE_Q_32_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_32_1",
+    "page": 25,
+    "regions": [
+     "p025_r2",
+     "p025_r3"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 33,
+  "pages": [
+   26
+  ],
+  "question_text": "A 50 Hz, 275 kV line of length 400 km has the following parameters:\nResistance, \\(R = 0.035\\) Ω/km;\nInductance, \\(L = 1\\) mH/km;\nCapacitance, \\(C = 0.01\\) μF/km;\nThe line is represented by the nominal-π model. With the magnitudes of the sending end and the receiving end voltages of the line (denoted by \\(V_S\\) and \\(V_R\\), respectively) maintained at 275 kV, the phase angle difference (θ) between \\(V_S\\) and \\(V_R\\) required for maximum possible active power to be delivered to the receiving end, in degree is _____________ (Round off to 2 decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   26
+  ],
+  "question_text": "In the following differential equation, the numerically obtained value of \\(y(t)\\), at \\(t = 1\\), is _______________ (Round off to 2 decimal places).\n\\[\\frac{dy}{dt} = \\frac{e^{-\\alpha t}}{2 + \\alpha t}, \\qquad \\alpha = 0.01 \\text{ and } y(0) = 0\\]",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 35,
+  "pages": [
+   26
+  ],
+  "question_text": "Three points in the \\(x\\)-\\(y\\) plane are \\((-1, 0.8)\\), \\((0, 2.2)\\) and \\((1, 2.8)\\). The value of the slope of the best fit straight line in the least square sense is ____________ (Round off to 2 decimal places).",
+  "options": [],
+  "figures": []
+ }
+]
