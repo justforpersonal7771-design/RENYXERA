@@ -184,17 +184,17 @@ blueprint → brief → draft → blind re-solve → compute → review → dedu
 
 - **Authoring:** Claude in work sessions, about 60 verified items per batch. There is no paid API.
 - **Targets per branch before Forge launches there:** 300 practice items, 30 days of Daily Forge (300 items), and 3 mocks (195 items), about **800 items**. After launch, roughly 70 items a week keep Daily Forge plus one weekly mock running.
-- **Order:** EC first, since its PYQs are done. Then each branch as its PYQs are finished; CS can start in parallel because its PYQs exist.
+- **Order (user decision, 6 Oct 2026):** **CS first**, then **EC**, then each branch once its PYQs are done. CS has the largest audience and the largest PYQ bank (975 questions). Its existing subject/topic labels are mapped onto syllabus codes (`data/pyq/CS/syllabus.json` + tags) before the profile step.
 
 ---
 
 ## 12. Rollout
 
 1. `profile.py`, `plan.py`, `forge_validate.py`, the schema and the migration.
-2. First EC batch of 60. Hand-check the whole batch, and tune the review checklist from what slips through.
+2. First CS batch of 60. Hand-check the whole batch, and tune the review checklist from what slips through.
 3. Seed. Add Forge practice and the Daily Forge card, private to the owner only (beta flag).
-4. Build up a 30-day buffer plus 3 mocks. Launch Daily Forge, then weekly Forge Mocks for EC.
-5. CS next, then each new branch once its PYQs are tagged.
+4. Build up a 30-day buffer plus 3 mocks. Launch Daily Forge, then weekly Forge Mocks for CS.
+5. EC next, then each new branch once its PYQs are tagged.
 
 ---
 
