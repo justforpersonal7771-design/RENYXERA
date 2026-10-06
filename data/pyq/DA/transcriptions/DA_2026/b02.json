@@ -1,0 +1,563 @@
+[
+ {
+  "qno": 11,
+  "pages": [
+   8
+  ],
+  "question_text": "For a classification problem, Principal Component Analysis (PCA) has been used to reduce the dimensionality of a feature space from 100 to 10. Which of the following options is true about the angle θ between the first and the tenth principal components?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "θ = 0°"
+   },
+   {
+    "option_id": "B",
+    "text": "θ = 90°"
+   },
+   {
+    "option_id": "C",
+    "text": "90° < θ ≤ 180°"
+   },
+   {
+    "option_id": "D",
+    "text": "0 < θ < 90°"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   8
+  ],
+  "question_text": "Consider that you are training a classifier for a 10-class classification problem. Each input is represented as a 512-dimensional vector. There are 1000 samples, out of which first 100 will be used for testing. Let Leave-One-Out-Cross-Validation (LOOCV) be used for selection of the classifier model before testing. Which of the following options is the correct number of validation splits that will be generated?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "10"
+   },
+   {
+    "option_id": "B",
+    "text": "512"
+   },
+   {
+    "option_id": "C",
+    "text": "900"
+   },
+   {
+    "option_id": "D",
+    "text": "1000"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   9
+  ],
+  "question_text": "Which of the following algorithms is NOT an example of uninformed search?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Breadth First Search"
+   },
+   {
+    "option_id": "B",
+    "text": "Depth First Search"
+   },
+   {
+    "option_id": "C",
+    "text": "A* Search"
+   },
+   {
+    "option_id": "D",
+    "text": "Depth-limited Search"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   9
+  ],
+  "question_text": "Which of the following statements is NOT true? (The names of the predicates are intuitive.)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\forall x\\, \\forall y\\ Classmate(x, y) \\Rightarrow Classmate(y, x)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\forall x\\ Likes(x, Icecream) \\Rightarrow \\neg\\exists x\\ \\neg Likes(x, Icecream)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "“Each king is a person” is equivalent to \\(\\forall x\\ IsKing(x) \\wedge IsPerson(x)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "“All humans are mortal” is equivalent to \\(\\forall x\\ IsHuman(x) \\Rightarrow IsMortal(x)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   10
+  ],
+  "question_text": "Consider that the quick sort algorithm is used to sort an array of \\(n\\) distinct randomly ordered elements. In every call, the pivot is chosen as the first element of the current subarray.\nLet \\(T(n)\\) denote the expected time to sort the array. Assume that the time to partition is linear in the size of the current subarray.\nWhich of the following recurrence relations correctly represents \\(T(n)\\) in this scenario?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(T(n) = T(1) + T(n - 1) + O(n)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(T(n) = T\\left(\\frac{n}{4}\\right) + T\\left(\\frac{3n}{4}\\right) + O(n)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(T(n) = 2T\\left(\\frac{n}{2}\\right) + O(n)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(T(n) = \\frac{1}{n}\\sum_{k=0}^{n-1}[T(k) + T(n - k - 1)] + O(n)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   11
+  ],
+  "question_text": "Consider the given Python program.\n```python\ndef append_to_lst(val, lst=[]):\n    lst.append(val)\n    return lst\nprint(append_to_lst(1))\nprint(append_to_lst(2))\nprint(append_to_lst(3, []))\n```\nWhich of the following is the correct output of this program?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "```\n[1]\n[2]\n[3]\n```"
+   },
+   {
+    "option_id": "B",
+    "text": "```\n[1]\n[1, 2]\n[3]\n```"
+   },
+   {
+    "option_id": "C",
+    "text": "```\n[1]\n[2]\n[1, 2, 3]\n```"
+   },
+   {
+    "option_id": "D",
+    "text": "```\n[1]\n[1, 2]\n[1, 3]\n```"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   12
+  ],
+  "question_text": "Let R(A,B,C,D,E) be a relational schema with functional dependency set F={A→BC, CD→E, E→A}.\nWhich of the following statements is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "AD, ED and CD are the only candidate keys of R."
+   },
+   {
+    "option_id": "B",
+    "text": "AD and ED are the only candidate keys of R."
+   },
+   {
+    "option_id": "C",
+    "text": "A, E and CD are the only candidate keys of R."
+   },
+   {
+    "option_id": "D",
+    "text": "A and CD are the only candidate keys of R."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   12
+  ],
+  "question_text": "Consider that the visualization of a 3-dimensional data cube is showing Sales Quantity for each combination of the attributes Product Type, Month and Country.\nFrom this, if we want to further visualize the Sales Quantity for each combination of Product Type, Month and State, which of the following OLAP operations should be performed?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Slicing"
+   },
+   {
+    "option_id": "B",
+    "text": "Dicing"
+   },
+   {
+    "option_id": "C",
+    "text": "Roll-up"
+   },
+   {
+    "option_id": "D",
+    "text": "Drill-down"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 19,
+  "pages": [
+   13
+  ],
+  "question_text": "Let \\(M\\) be a randomly chosen non-empty subset of \\(S = \\{1,2,3, \\ldots ,2026\\}\\).\nWhich of the following is the probability that the product of all the elements of \\(M\\) is even?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2^{1013}(2^{1013} - 1)/2^{2026}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2^{1013}/2^{2026}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2^{1013}(2^{1013} - 1)/(2^{2026} - 1)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(1/(2^{2026} - 1)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   13
+  ],
+  "question_text": "Suppose that a computer program provides a non-negative and integer-valued random solution to the equation \\(n_1 + n_2 + n_3 + n_4 = 20\\).\nWhich of the following is the probability that all of \\(n_1, n_2, n_3, n_4\\) in the provided solution are positive?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\binom{19}{3}/\\binom{23}{3}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\binom{20}{4}/\\binom{24}{4}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\binom{20}{3}/\\binom{23}{3}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\binom{19}{4}/\\binom{24}{4}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   14
+  ],
+  "question_text": "Let \\(M = \\begin{pmatrix} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{pmatrix}\\) be a \\(2 \\times 2\\) matrix, where \\(\\theta = \\frac{2\\pi}{5}\\), and \\(I_2 = \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}\\).\nWhich of the following options is equal to \\(M^{2026}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(M^2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(M\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(M^{-1}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(I_2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   14
+  ],
+  "question_text": "Consider a set \\(S_1 = \\{x = (x_1, x_2, x_3)^T \\in \\mathbb{R}^3 \\mid x^Tx \\le 16\\}\\). Let \\(S_2\\) be another set which is a subspace of \\(\\mathbb{R}^3\\) with dimension two.\nWhich of the following gives the area of \\(S_1 \\cap S_2\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(16\\pi\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4\\pi\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\pi^2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(16\\pi^2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 23,
+  "pages": [
+   15
+  ],
+  "question_text": "In the following table, the Task column lists a few tasks related to machine learning. The Algorithm column lists a few algorithms. Each entry “t” from the Task column is to be matched with an appropriate entry “a” from the Algorithm column such that the task “t” can be solved using the algorithm “a”. Denote such a match as t:a\n[IMAGE_Q_23_1]\nWhich of the following options is/are the correct matching(s)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "T1:A4, T2:A3, T3:A1, T4:A2"
+   },
+   {
+    "option_id": "B",
+    "text": "T1:A2, T2:A4, T3:A1, T4:A3"
+   },
+   {
+    "option_id": "C",
+    "text": "T1:A3, T2:A4, T3:A1, T4:A2"
+   },
+   {
+    "option_id": "D",
+    "text": "T1:A4, T2:A2, T3:A1, T4:A3"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_23_1",
+    "page": 15,
+    "regions": [
+     "p015_r1"
+    ],
+    "grow": false,
+    "pad": [
+     2,
+     2,
+     2,
+     2
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 24,
+  "pages": [
+   16
+  ],
+  "question_text": "Sentence X is said to entail Sentence Y if whenever X is TRUE, Y also must hold TRUE. Which of the following statements is/are correct if X entails Y?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(X \\Rightarrow Y\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(X \\wedge \\neg Y\\) is FALSE"
+   },
+   {
+    "option_id": "C",
+    "text": "if X then Y"
+   },
+   {
+    "option_id": "D",
+    "text": "if Y then X"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   17
+  ],
+  "question_text": "You are given the following Pre-order and In-order traversals of a Binary Tree T with nodes E, F, G, P, Q, R, S.\nPre-order: P Q S E R F G\nIn-order: S Q E P F R G\nWhich of the following statements is/are true about the Binary Tree T?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Node P is the root of T"
+   },
+   {
+    "option_id": "B",
+    "text": "The Post-order traversal of T is: S E Q F G R P"
+   },
+   {
+    "option_id": "C",
+    "text": "Node Q has only one child"
+   },
+   {
+    "option_id": "D",
+    "text": "The left subtree of node R contains the node G"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   18
+  ],
+  "question_text": "Consider two relations r and s defined on the relational schemas R(A,B) and S(E,C), respectively. A is the primary key of R and E is a foreign key of S referencing A in R. Which of the following operations will NEVER violate the foreign key constraint?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Inserting records into relation r"
+   },
+   {
+    "option_id": "B",
+    "text": "Deleting records from relation s"
+   },
+   {
+    "option_id": "C",
+    "text": "Deleting records from relation r"
+   },
+   {
+    "option_id": "D",
+    "text": "Inserting records into relation s"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 27,
+  "pages": [
+   18
+  ],
+  "question_text": "Let \\(f(x) = x^3 - 3x^2 + 2\\) be a function defined on \\((-1, 3]\\). Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(f(x)\\) has exactly two roots in \\([-0.9, 0]\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(f(x)\\) has a minimum at 2 only."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(f(x)\\) has maximum at 0 only."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(f(x)\\) has a root at 1."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   19
+  ],
+  "question_text": "Suppose a random variable \\(Z\\) follows Normal(\\(\\mu = 0, \\sigma^2 = 1\\)) distribution with probability density function \\(g(z)\\) and cumulative distribution function \\(G(z)\\). Another random variable \\(Y\\) follows \\(t_1\\) distribution with probability density function \\(h(y)\\) and cumulative distribution function \\(H(y)\\). Let \\(c\\) be the positive real number for which \\(g(c) = h(c)\\). Which of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(G(0) = H(0)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(G(c) < H(c)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(G(-c) < H(-c)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(g(0) = h(0)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   20
+  ],
+  "question_text": "Consider that for a supervised learning task, the objective function being minimized is \\(f_w(x) = wx\\), where \\(x \\in \\mathbb{R}\\) is the input and \\(w \\in \\mathbb{R}\\) is the parameter. Stochastic Gradient Descent with learning rate of 0.10 is used for parameter updates. Suppose that at the end of iteration \\(i\\), the value of \\(w\\) becomes 10.00. Let \\(x = 10.00\\) be the input for iteration \\((i + 1)\\).\nThe value of \\(w\\) at the end of iteration \\((i + 1)\\) is __________ . (Rounded off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   20
+  ],
+  "question_text": "Consider the game tree for a two-player turn-taking minimax game as shown in the figure. The value of a terminal node represents the utility of the game state if the game ends there. The numbers written next to the edges denote the strategies. There are two players MAX and MIN. At any particular state of the game, MAX prefers to move to a state of maximum value. On the other hand, MIN prefers to move to a state of minimum value. Suppose MAX starts the game at the root and has three strategies: 1, 2 and 3. Next, MIN plays and also has three strategies: 1, 2 and 3. The game ends there. Both players always take optimal strategies throughout the game.\n[IMAGE_Q_30_1]\nAt the root, the best strategy for MAX is ___________ . (Answer in integer)",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_30_1",
+    "page": 20,
+    "regions": [
+     "p020_r1"
+    ],
+    "grow": false,
+    "pad": [
+     4,
+     4,
+     4,
+     4
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 31,
+  "pages": [
+   20
+  ],
+  "question_text": "Let A be a sorted array containing 1000 distinct integers. You perform a recursive binary search on A to find an element \\(y\\). Suppose each comparison checks whether the middle element computed during the current recursive step is equal to, less than, or greater than \\(y\\). The maximum number of comparisons that may have to be performed if \\(y\\) is not an element of A is _______ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 32,
+  "pages": [
+   21
+  ],
+  "question_text": "In a relational database, a B+ Tree Index is to be constructed for a relation on a key field. In a B+ Tree, a Node Pointer points to a sub-tree and a Data Record Pointer points to a block of database records.\nLet, Node size = 4096 bytes, Node Pointer size = 10 bytes, Search Key Field size = 11 bytes and Data Record Pointer size = 12 bytes.\nThe maximum number of Node Pointers that can be present in a non-leaf node of the B+ Tree is ________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   21
+  ],
+  "question_text": "The number of bijections \\(f(\\cdot)\\) from the set \\(S = \\{1, 2, 3, 4\\}\\) to itself such that \\(f(f(n)) = n\\), for all \\(n \\in S\\), is __________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   21
+  ],
+  "question_text": "Let \\(X\\) be an exponentially distributed random variable with mean \\(\\lambda (> 0)\\). If \\(P(X > 5) = 0.35\\), then the conditional probability \\(P(X > 10 | X > 5)\\) is ___________ . (Rounded off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 35,
+  "pages": [
+   21
+  ],
+  "question_text": "The value of \\(\\sum_{i=0}^{\\infty}\\sum_{j=1}^{\\infty} 2^{-i}3^{-j}\\) is ______________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ }
+]

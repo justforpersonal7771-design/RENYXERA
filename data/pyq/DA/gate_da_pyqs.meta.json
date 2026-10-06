@@ -1,0 +1,276 @@
+{
+  "branch": "DA",
+  "branch_name": "Data Science and Artificial Intelligence",
+  "generated_at": "2026-10-06T17:24:34+00:00",
+  "papers": {
+    "2026": {
+      "paper": "DA_2026",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2026/QPs/DA.pdf",
+      "question_paper_sha256": "4adb2f713433ec93748ff96bc04891dc10d877e8e4fb5fe7797e36ba87f298f3",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2026/Keys/DA_Keys.pdf",
+      "answer_key_sha256": "f94cf2caf46e84cd06cc1591f375403b04466f8fa71e64ca87b49804d1e8dceb"
+    }
+  },
+  "questions": {
+    "DA_2026:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "DA_2026:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    }
+  }
+}

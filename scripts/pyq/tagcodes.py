@@ -47,6 +47,11 @@ CODES = {
         "MS": "Electrical and Electronic Measurements",
         "AE": "Analog Electronics", "DL": "Digital Electronics", "PE": "Power Electronics",
     },
+    "DA": {
+        "PS": "Probability and Statistics", "LA": "Linear Algebra", "CO": "Calculus and Optimization",
+        "PD": "Programming, Data Structures and Algorithms", "DB": "Database Management and Warehousing",
+        "SL": "Supervised Learning", "UL": "Unsupervised Learning", "AI": "AI",
+    },
 }
 
 

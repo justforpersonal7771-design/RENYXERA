@@ -1,0 +1,703 @@
+[
+ {
+  "qno": 36,
+  "pages": [
+   22
+  ],
+  "question_text": "Let four points in three-dimensional space be: P1: [2, 3, −1], P2: [3, 1, 1], P3: [5, −2, 3] and P4: [3, 3, 3]. Hierarchical Agglomerative Clustering is used to cluster the above points. If Manhattan Distance is used as the distance metric during clustering, which of the following options indicates the two points that will be merged first?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P1, P2"
+   },
+   {
+    "option_id": "B",
+    "text": "P2, P3"
+   },
+   {
+    "option_id": "C",
+    "text": "P3, P4"
+   },
+   {
+    "option_id": "D",
+    "text": "P2, P4"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 37,
+  "pages": [
+   23
+  ],
+  "question_text": "Which of the following statements is true for Ridge Regression?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The regularizer in the objective function of Ridge Regression is used to guard against scenarios where the model works well for the test data, but poorly for the training data."
+   },
+   {
+    "option_id": "B",
+    "text": "The regularizer of Ridge Regression uses \\(L_1\\) norm."
+   },
+   {
+    "option_id": "C",
+    "text": "Ridge Regression aims to reduce the number of parameters that have negative values."
+   },
+   {
+    "option_id": "D",
+    "text": "The regularizer of Ridge Regression may increase the bias of the model, but it helps in reducing the variance in predictions."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 38,
+  "pages": [
+   23
+  ],
+  "question_text": "Assume that a Creative (\\(C\\)) person will Succeed (\\(S\\)) if the person is also Disciplined (\\(D\\)), but will not succeed otherwise. Now, consider the following statements:\n(i) \\(C \\wedge S \\Leftrightarrow D\\)\n(ii) \\(C \\Rightarrow (S \\Leftrightarrow D)\\)\n(iii) \\(C \\Leftrightarrow ((D \\Rightarrow S) \\vee \\neg S)\\)\nWhich of the following options is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Both (i) and (ii) are TRUE"
+   },
+   {
+    "option_id": "B",
+    "text": "Only (ii) is TRUE"
+   },
+   {
+    "option_id": "C",
+    "text": "Both (ii) and (iii) are TRUE"
+   },
+   {
+    "option_id": "D",
+    "text": "Only (iii) is TRUE"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 39,
+  "pages": [
+   24
+  ],
+  "question_text": "A recursive function in Python is given.\n```python\ndef mystery(n):\n    if n <= 0:\n        return 1\n    else:\n        return mystery(n-1) + mystery(n-2)\n```\nNow, consider the following function call: mystery(4)\nAssume that a typical runtime stack is used to manage function calls. Each function call is pushed onto the stack and removed only after it finishes execution.\nWhich of the following options denotes the total number of function calls (i.e., the total number of stack activations), including the initial call, to compute mystery(4)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "5"
+   },
+   {
+    "option_id": "B",
+    "text": "9"
+   },
+   {
+    "option_id": "C",
+    "text": "15"
+   },
+   {
+    "option_id": "D",
+    "text": "17"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 40,
+  "pages": [
+   25
+  ],
+  "question_text": "Consider a directed graph \\(G = (V, E)\\), where \\(V\\) is the finite set of vertices and \\(E\\) is the set of directed edges between the vertices. \\(G\\) may contain cycles but there is no self-loop. Further, \\(G\\) may not be strongly connected. Let \\(G^R\\) be the graph obtained by reversing the directions of all the edges in \\(G\\) without changing the set of vertices. Assume that Breadth First Search (BFS) or Depth First Search (DFS) from any given vertex \\(v\\) of a graph visits only the reachable vertices from \\(v\\) in that graph.\nWhich of the following statements must always be true, regardless of the structure of \\(G\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "If \\(u\\) is a reachable vertex in the BFS of \\(G^R\\) from \\(v\\), then \\(u\\) is also a reachable vertex in the DFS of \\(G\\) from \\(v\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "In \\(G^R\\), the BFS traversal from \\(v\\) will visit exactly the same set of vertices as the DFS from \\(v\\) in \\(G\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "The order of vertices visited in the BFS of \\(G^R\\) from \\(v\\) is the reverse of the order of vertices visited in the DFS of \\(G\\) from \\(v\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "If \\(u\\) is a reachable vertex in the DFS of \\(G\\) from \\(v\\), then \\(v\\) is also a reachable vertex in the BFS of \\(G^R\\) from \\(u\\)."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 41,
+  "pages": [
+   26
+  ],
+  "question_text": "Consider a B+ Tree where the maximum number of key values in each leaf node is 2 and the maximum number of pointers in each non-leaf node is 3. Let the content of the B+ Tree be as shown in the figure.\nWhich of the following options denotes the key value(s) stored in the root node after inserting a key value 3 in the given B+ Tree?\n[IMAGE_Q_41_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "5"
+   },
+   {
+    "option_id": "B",
+    "text": "8"
+   },
+   {
+    "option_id": "C",
+    "text": "3 and 5"
+   },
+   {
+    "option_id": "D",
+    "text": "3, 5 and 8"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_41_1",
+    "page": 26,
+    "rect": [
+     118,
+     192,
+     514,
+     322
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 42,
+  "pages": [
+   27
+  ],
+  "question_text": "Consider the given relations \\(X\\), \\(Y\\) and \\(Z\\). The relation \\(X\\) has three columns \\(P\\), \\(Q\\) and \\(R\\). The relation \\(Y\\) has three columns \\(P\\), \\(Q\\) and \\(S\\). The relation \\(Z\\) has two columns \\(P\\) and \\(T\\).\n[IMAGE_Q_42_1]\nConsider the relational algebra expression\n\\[\\prod_{PRS}\\left[\\left(\\sigma_{(Q = Q3 \\vee R = R2)}[X \\bowtie Y]\\right) \\bowtie \\left(\\sigma_{(S > 1)}[Y \\bowtie Z]\\right)\\right]\\]\nwhere \\(\\bowtie\\) denotes natural join operation.\nWhich of the following options is the correct output for the given expression?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Two rows (P1, R1, 2) and (P1, R1, 5)"
+   },
+   {
+    "option_id": "B",
+    "text": "Three rows (P1, R1, 2), (P1, R1, 5) and (P2, R2, 6)"
+   },
+   {
+    "option_id": "C",
+    "text": "One row (P1, R1, 2)"
+   },
+   {
+    "option_id": "D",
+    "text": "Zero rows"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_42_1",
+    "page": 27,
+    "rect": [
+     115,
+     156,
+     531,
+     282
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 43,
+  "pages": [
+   28
+  ],
+  "question_text": "Consider the concept hierarchies as shown in the figure.\nWhich of the following options denotes the total number of possible data cuboids from these concept hierarchies?\n[IMAGE_Q_43_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(4^3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2^3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "2!"
+   },
+   {
+    "option_id": "D",
+    "text": "4!"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_43_1",
+    "page": 28,
+    "rect": [
+     208,
+     172,
+     432,
+     264
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 44,
+  "pages": [
+   29
+  ],
+  "question_text": "Let \\(X\\) and \\(Y\\) be two independent random variables. \\(X\\) follows \\(Bernoulli(p = 0.3)\\) distribution and \\(Y\\) follows \\(Normal(\\mu = 0, \\sigma^2 = 100)\\) distribution.\nWhich of the following options is the variance of \\((2X - 1)Y\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "100"
+   },
+   {
+    "option_id": "B",
+    "text": "90"
+   },
+   {
+    "option_id": "C",
+    "text": "49"
+   },
+   {
+    "option_id": "D",
+    "text": "21"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 45,
+  "pages": [
+   29
+  ],
+  "question_text": "Let\n\\[L = \\lim_{n\\to\\infty}\\sum_{k=0}^{n}\\frac{e^{-n}n^k}{k!}\\]\nWhich of the following is the value of \\(L\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.5"
+   },
+   {
+    "option_id": "B",
+    "text": "1.0"
+   },
+   {
+    "option_id": "C",
+    "text": "0"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(e^{-1}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 46,
+  "pages": [
+   30
+  ],
+  "question_text": "Let \\(\\gamma_1, \\gamma_2, \\gamma_3\\) be the eigenvalues of the matrix \\(\\begin{bmatrix} 1 & 0 & 0 \\\\ 0 & \\cos t & \\sin t \\\\ 0 & -\\sin t & \\cos t \\end{bmatrix}\\), where \\(t \\in [-\\pi, \\pi]\\) is in radians.\nWhich one of the following options lists all the possible values of \\(t\\) satisfying \\(\\gamma_1 + \\gamma_2 + \\gamma_3 = 1 + \\sqrt{2}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\left\\{\\frac{\\pi}{3}, -\\frac{\\pi}{4}\\right\\}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\left\\{\\frac{\\pi}{4}, -\\frac{\\pi}{3}\\right\\}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\left\\{\\frac{\\pi}{4}, -\\frac{\\pi}{4}\\right\\}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\left\\{\\frac{\\pi}{3}, -\\frac{\\pi}{3}\\right\\}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 47,
+  "pages": [
+   31
+  ],
+  "question_text": "Consider that 20 stories of Author X and 10 stories of Author Y were kept together without mentioning the names of the authors. A classifier was then asked to predict the author (X or Y) of each of these stories. Let, out of X’s stories, 6 were classified as that of Y. On the other hand, out of Y’s stories, 2 were classified as that of X.\nConsidering X and Y as two classes, which of the following statements is/are true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Accuracy of the classifier is 11/15."
+   },
+   {
+    "option_id": "B",
+    "text": "Precision of Class X is higher than the Precision of Class Y."
+   },
+   {
+    "option_id": "C",
+    "text": "Recall of Class X is higher than the Recall of Class Y."
+   },
+   {
+    "option_id": "D",
+    "text": "Accuracy of the classifier is 14/15."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 48,
+  "pages": [
+   31
+  ],
+  "question_text": "Let \\(P(x)\\) be a predicate. Which of the following statements is/are NOT valid in first-order logic?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\forall x\\, P(x) \\Rightarrow \\exists x\\, P(x)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\exists x\\, P(x) \\Rightarrow \\forall x\\, P(x)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\exists x\\, P(x) \\Leftrightarrow \\forall x\\, P(x)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\forall x\\, P(x) \\Rightarrow \\exists x\\, \\neg P(x)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 49,
+  "pages": [
+   32
+  ],
+  "question_text": "Consider the problem of sorting the given array in ascending order:\nP = [1, 2, 3, 5, 4]\nConsider two sorting algorithms Bubble Sort (BS) and Insertion Sort (IS). Let \\(N_1\\) be the total number of comparisons done by BS on the elements of P and \\(N_2\\) be the total number of comparisons done by IS on the elements of P.\nWhich of the following options is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(N_1 = 10,\\ N_2 = 4\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(N_1 > N_2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "IS on P will perform only one swap"
+   },
+   {
+    "option_id": "D",
+    "text": "Both BS and IS on P will make at least one unnecessary comparison (i.e., comparing elements that are already in correct order)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 50,
+  "pages": [
+   33
+  ],
+  "question_text": "Consider the given Python program.\n```python\ndef outer():\n    x = []\n    def inner(val):\n        x.append(val)\n        return x\n    return inner\nf1 = outer()\nf2 = outer()\nprint(f1(10)) # Line P\nprint(f1(20)) # Line Q\nprint(f2(30)) # Line R\nprint(f1(40)) # Line S\n```\nWhich of the following options is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "f1 and f2 share the same list x"
+   },
+   {
+    "option_id": "B",
+    "text": "Output of Line Q is [10, 20]"
+   },
+   {
+    "option_id": "C",
+    "text": "Output of Line R is [10, 20, 30]"
+   },
+   {
+    "option_id": "D",
+    "text": "Output of Line S is [10, 20, 40]"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 51,
+  "pages": [
+   34
+  ],
+  "question_text": "Consider a table Employee(EmpID, TeamID), where the column EmpID (ID of an employee) is the primary key. The column TeamID denotes the team ID of the team of which the employee is a member. TeamID is a NOT NULL column.\nWe want to display the size of the team (denoted as TeamSize) in which each employee is a member by using SQL. As an example, the desired output for the given Employee table is also shown in tabular form.\nWhich of the following is/are correct?\n[IMAGE_Q_51_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "```sql\nSELECT E.EmpID, B.TeamSize\nFROM Employee AS E, (SELECT TeamID, COUNT(TeamID) AS\nTeamSize FROM Employee GROUP BY TeamID) AS B\nWHERE E.TeamID = B.TeamID\n```"
+   },
+   {
+    "option_id": "B",
+    "text": "```sql\nSELECT A.EmpID, COUNT(B.TeamID) AS TeamSize\nFROM Employee AS A, Employee AS B\nWHERE A.TeamID = B.TeamID AND A.EmpID = B.EmpID\nGROUP BY A.EmpID\n```"
+   },
+   {
+    "option_id": "C",
+    "text": "```sql\nSELECT B.EmpID, B.TeamSize\nFROM (SELECT EmpID, COUNT(TeamID) AS TeamSize\nFROM Employee GROUP BY EmpID) AS B\n```"
+   },
+   {
+    "option_id": "D",
+    "text": "```sql\nSELECT A.EmpID, B.TeamSize\nFROM Employee AS A, (SELECT COUNT(TeamID) AS TeamSize FROM\nEmployee GROUP BY TeamID) AS B\nWHERE A.TeamID = B.TeamID\n```"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_51_1",
+    "page": 34,
+    "rect": [
+     118,
+     240,
+     416,
+     374
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 52,
+  "pages": [
+   35
+  ],
+  "question_text": "Let \\(M = \\left(I_n - \\frac{1}{n}\\mathbf{1}\\mathbf{1}^T\\right)\\) be a matrix, where \\(\\mathbf{1} = (1,1,1, \\ldots ,1)^T \\in \\mathbb{R}^n\\) and \\(I_n\\) is the identity matrix of order \\(n\\).\nWhich of the following options is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(M^T = M\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(M^2 = I_n\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(Trace(M) = n\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(M\\) is a projection matrix"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   35
+  ],
+  "question_text": "Let \\(X_1, X_2, \\ldots, X_n\\) be \\(n\\) independent random variables. Each of the random variables follows \\(Normal(\\mu = 0, \\sigma^2 = 1)\\) distribution. Define \\(\\bar{X} = \\frac{1}{n}\\sum_{i=1}^{n} X_i\\).\nWhich of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\sum_{i=1}^{n} X_i^2\\) follows Chi-square distribution with \\(n\\) degrees of freedom."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\sum_{i=1}^{n}(X_i - \\bar{X})^2\\) follows Chi-square distribution with \\((n - 1)\\) degrees of freedom."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(X_1^2 + X_n^2\\) follows exponential distribution with mean 2."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\left(\\sqrt{n}\\,\\bar{X}\\right)^2\\) follows Chi-square distribution with 2 degrees of freedom."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 54,
+  "pages": [
+   36
+  ],
+  "question_text": "Let \\(X\\) be a discrete valued random variable with cumulative distribution function \\(F(x)\\).\nWhich of the following statements is/are correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(F(x)\\) is always a positive function."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(F(x)\\) is a non-decreasing function."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(F(x)\\) has jump discontinuity."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(F(x)\\) is a left continuous function."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   36
+  ],
+  "question_text": "Consider that Linear Ridge Regression is being used to learn a prediction function \\(y_{pred} = w^Tx\\), where \\(w, x \\in \\mathbb{R}^2\\) and Mean Absolute Error (MAE) is used to measure the prediction error. A weight of 0.20 is associated with the regularizer.\nAt an intermediate step of the training process, assume that the parameter \\(w = [-3.00,\\ 4.00]^T\\). In the next step, for the input \\(x = [1.00,\\ 2.00]^T\\), the predicted value of \\(y\\) is noted. Let the relation between \\(x = [x_1,\\ x_2]^T\\) and the true value of \\(y\\) be \\(y_{true} = x_1 + x_2\\).\nThe value of the overall regularized loss function for this instance is _______ . (Rounded off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   37
+  ],
+  "question_text": "Consider a fully-connected feed-forward multi-layer perceptron. It has 30 neurons in the input layer, followed by two hidden layers and an output layer. The first hidden layer has 4 neurons and the second hidden layer has 3 neurons. The output layer has only one neuron. Assume that no bias parameters are used.\nThe number of learnable parameters in the multi-layer perceptron is __________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   37
+  ],
+  "question_text": "A clinic specializes in testing for a disease D. The result of the test can be either positive or negative.\nA study revealed that if a person suffers from the disease D, the test result in that clinic comes out positive 80% of the time, and negative 20% of the time. If a person is not suffering from the disease D, the test comes out positive 10% of the time and negative 90% of the time. It is also known that among the general population, the disease D occurs in 30% of the individuals.\nIf a person tests positive for D in that clinic, the probability that he/she actually suffers from the disease D is __________ . (Rounded off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 58,
+  "pages": [
+   37
+  ],
+  "question_text": "Consider the given Python program.\n```python\ndef fun(L, i=0):\n    if i >= len(L)-1:\n        return 0\n    if L[i] > L[i+1]:\n        L[i+1], L[i] = L[i], L[i+1]\n        return 1+fun(L, i+1)\n    else:\n        return fun(L, i+1)\ndata = [5, 3, 4, 1, 2]\ncount = 0\nfor _ in range(len(data)):\n    count += fun(data)\nprint(count)\n```\nThe output of the program is __________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 59,
+  "pages": [
+   38
+  ],
+  "question_text": "Let there be two relations \\(X\\) and \\(Y\\) as shown. \\(X\\) has three columns \\(P\\), \\(Q\\) and \\(R\\). \\(Y\\) has two columns \\(P\\) and \\(S\\).\n[IMAGE_Q_59_1]\nConsider that the following tuple relational calculus expression is evaluated.\n\\[\\{t \\mid t \\in X \\wedge \\exists z \\in X(t[P] = z[P]) \\wedge \\exists m \\in Y\\,(m[P] = t[P] \\wedge m[S] > 1)\\}\\]\nThe number of tuples that will be returned is __________ . (Answer in integer)",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_59_1",
+    "page": 38,
+    "rect": [
+     186,
+     144,
+     450,
+     268
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 60,
+  "pages": [
+   38
+  ],
+  "question_text": "Let Account be a relation as shown.\n[IMAGE_Q_60_1]\nConsider the given SQL query.\n```sql\nSELECT AccNo FROM Account AS A\nWHERE (SELECT COUNT(*) FROM Account AS B\nWHERE A.Balance < B.Balance) >= (SELECT COUNT(*)\nFROM Account AS C WHERE A.Balance > C.Balance)\n```\nThe number of rows returned by the SQL query is __________ . (Answer in integer)",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_60_1",
+    "page": 38,
+    "rect": [
+     250,
+     391,
+     388,
+     508
+    ],
+    "grow": false,
+    "pad": [
+     0,
+     0,
+     0,
+     0
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 61,
+  "pages": [
+   39
+  ],
+  "question_text": "Consider an ER model with the entities E1(A\\(_{11}\\),A\\(_{12}\\),A\\(_{13}\\)) and E2(A\\(_{21}\\),A\\(_{22}\\),A\\(_{23}\\)), where, A\\(_{11}\\), A\\(_{12}\\), A\\(_{13}\\) are the attributes of E1, and A\\(_{21}\\), A\\(_{22}\\), A\\(_{23}\\) are the attributes of E2. Let A\\(_{22}\\) be a multi-valued attribute. A\\(_{11}\\) and A\\(_{21}\\) are the primary keys of E1 and E2, respectively.\nLet R12 be a many-to-many relationship between E1 and E2. Participation of both E1 and E2 in R12 is total.\nThe minimum number of relations required to convert the ER model into relational model (assuming there is no other functional dependency) where each relation is in third normal form (3NF) is __________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 62,
+  "pages": [
+   39
+  ],
+  "question_text": "For a given data set \\(\\{x_1,\\ x_2, \\ldots, x_n\\}\\), where \\(n = 100\\), it is known that\n\\[\\frac{1}{2000}\\sum_{i=1}^{n}\\sum_{j=1}^{n}(x_i - x_j)^2 = 99\\]\nLet us denote \\(\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\\)\nThe value of \\(\\frac{1}{99}\\sum_{i=1}^{n}(x_i - \\bar{x})^2\\) is __________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 63,
+  "pages": [
+   39
+  ],
+  "question_text": "Let \\(X\\) be a random variable that follows \\(Uniform(-1,1)\\) distribution. The conditional distribution of the random variable \\(Y\\) given \\(X = x\\) is the \\(Uniform(x^2 - 0.1, x^2 + 0.1)\\) distribution.\nThe value of \\(correlation(X, Y)\\) is __________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   39
+  ],
+  "question_text": "Let \\(A_{5\\times5}\\) be a matrix such that each of its elements follows \\(Bernoulli(p = 0.50)\\) distribution independently.\nThe probability that the row-sum of the second row and the column-sum of the third column are both equal to 3 is ________ . (Rounded off to two decimal places)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   39
+  ],
+  "question_text": "Let \\(A = \\left(I_n - \\frac{1}{n}\\mathbf{1}\\mathbf{1}^T\\right)\\) be a matrix, where \\(\\mathbf{1} = (1,1,1, \\ldots ,1)^T \\in \\mathbb{R}^n\\) and \\(I_n\\) is the identity matrix of order \\(n\\).\nThe value of \\(\\max_S x^TAx\\), where \\(S = \\{x \\in \\mathbb{R}^n \\mid x^Tx = 1\\}\\), is __________ . (Answer in integer)",
+  "options": [],
+  "figures": []
+ }
+]

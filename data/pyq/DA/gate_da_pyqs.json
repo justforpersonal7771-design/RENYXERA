@@ -1,0 +1,2180 @@
+[
+  {
+    "exam_metadata": {
+      "year-shift": "2026"
+    },
+    "questions": [
+      {
+        "question_no": 1,
+        "question_id": "GATE_DA_2026_Q1",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic vocabulary",
+        "difficulty": "Easy",
+        "question_text": "Verbosity : Brevity :: Insolence :___________\nChoose the word that best fills the blank.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Innocence",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Respect",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Solace",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Wealth",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 2,
+        "question_id": "GATE_DA_2026_Q2",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Easy",
+        "question_text": "The product of the digits of a three-digit number is 70. The sum of the digits of this three-digit number is _____",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "12",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "14",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "16",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "18",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 3,
+        "question_id": "GATE_DA_2026_Q3",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Paper folding, cutting, and patterns in 2 and 3 dimensions",
+        "difficulty": "Medium",
+        "question_text": "The four pieces of a puzzle are shown in the figure below.\n[IMAGE_Q_03_1]\nWhich one of the figures labelled as P, Q, R, and S can be constructed by using each of the four pieces only once without overlaps?\n[IMAGE_Q_03_2]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_03_1",
+          "IMAGE_Q_03_2"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "P",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Q",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "R",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "S",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 4,
+        "question_id": "GATE_DA_2026_Q4",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Medium",
+        "question_text": "Consider two distinct positive real numbers \\(m, n\\), with \\(m > n\\). Let \\(x = n^{\\log_{10}(m)}\\) and \\(y = m^{\\log_{10}(n)}\\). The relation between \\(x\\) and \\(y\\) is _______.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(x > y\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(x < y\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(x = y\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(x = \\log_{10}(y)\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 5,
+        "question_id": "GATE_DA_2026_Q5",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Easy",
+        "question_text": "‘If his latest movie had been a commercial success, the actor would have made enough money to sponsor his next movie.’\nBased only on the above sentence, which one of the following statements is true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The actor will certainly sponsor his next movie.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "His latest movie was a commercial success.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The actor made enough money from his latest movie.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "His latest movie was not commercially successful.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 6,
+        "question_id": "GATE_DA_2026_Q6",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic English grammar",
+        "difficulty": "Easy",
+        "question_text": "‘My friend and I parted __ the door __ the cabin that I had rented __ the night.’\nChoose the option with the correct sequence of words to fill the blanks.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "at; of; for",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "for; at; of",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "of; for; in",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "in; of; for",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 7,
+        "question_id": "GATE_DA_2026_Q7",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Elementary statistics and probability",
+        "difficulty": "Medium",
+        "question_text": "Five integers are picked from 0 to 20, with possible repetitions, such that their mean is 12, median is 18, and they have a single mode of 20.\nIgnoring permutations, the number of ways to pick these five integers is _____",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "3",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 8,
+        "question_id": "GATE_DA_2026_Q8",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Medium",
+        "question_text": "Rishi and Swathi are students of Class 5. Pavan and Tanvi are students of Class 4. Rishi and Pavan are boys. Swathi and Tanvi are girls. The four students played a total of three games of chess. The games were played one after another. A player who lost a game did not participate in any more games. It was observed that:\n(i) the first game was the only game where two students of the same class played against each other,\n(ii) the students of Class 5 won more games than the students of Class 4, and\n(iii) the boys won two games and the girls won one game.\nThe student who did not lose any game is __________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Pavan",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Rishi",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Swathi",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Tanvi",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 9,
+        "question_id": "GATE_DA_2026_Q9",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Numerical relations and reasoning",
+        "difficulty": "Medium",
+        "question_text": "P, Q, R, S, X, and Y are distinct single-digit whole numbers taking values from 0 to 9. PQ is a two-digit number with Q being in the units place and P in the tens place. Similarly, RS is a two-digit number. It is known that PQ and RS are consecutive numbers and \\((PQ)^2 + (RS)^2 = XYP\\), with XYP being a three-digit number.\nThe value of Y is __________",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "6",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "7",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 10,
+        "question_id": "GATE_DA_2026_Q10",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Medium",
+        "question_text": "In the given figure, \\(P\\), \\(Q\\), and \\(R\\) are three points on a circle of radius 10 cm with \\(O\\) as its center, \\(\\overline{PQ} = \\overline{RQ}\\), and \\(\\angle PQR = 45^\\circ\\). The figure is representative.\nThe area of the shaded region \\(PQRO\\) is ______________ cm\\(^2\\).\n[IMAGE_Q_10_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_10_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "50",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(25\\sqrt{2}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(50\\sqrt{2}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "100",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 11,
+        "question_id": "GATE_DA_2026_Q11",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Unsupervised Learning",
+        "topic": "dimensionality reduction, principal component analysis",
+        "difficulty": "Easy",
+        "question_text": "For a classification problem, Principal Component Analysis (PCA) has been used to reduce the dimensionality of a feature space from 100 to 10. Which of the following options is true about the angle θ between the first and the tenth principal components?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "θ = 0°",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "θ = 90°",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "90° < θ ≤ 180°",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0 < θ < 90°",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 12,
+        "question_id": "GATE_DA_2026_Q12",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Supervised Learning",
+        "topic": "cross-validation methods such as leave-one-out (LOO) cross-validation, k-folds cross-validation",
+        "difficulty": "Easy",
+        "question_text": "Consider that you are training a classifier for a 10-class classification problem. Each input is represented as a 512-dimensional vector. There are 1000 samples, out of which first 100 will be used for testing. Let Leave-One-Out-Cross-Validation (LOOCV) be used for selection of the classifier model before testing. Which of the following options is the correct number of validation splits that will be generated?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "10",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "512",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "900",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "1000",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 13,
+        "question_id": "GATE_DA_2026_Q13",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 7: AI",
+        "subject": "AI",
+        "topic": "Search: informed, uninformed, adversarial",
+        "difficulty": "Easy",
+        "question_text": "Which of the following algorithms is NOT an example of uninformed search?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Breadth First Search",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Depth First Search",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "A* Search",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Depth-limited Search",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 14,
+        "question_id": "GATE_DA_2026_Q14",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 7: AI",
+        "subject": "AI",
+        "topic": "logic, propositional, predicate",
+        "difficulty": "Medium",
+        "question_text": "Which of the following statements is NOT true? (The names of the predicates are intuitive.)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\forall x\\, \\forall y\\ Classmate(x, y) \\Rightarrow Classmate(y, x)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\forall x\\ Likes(x, Icecream) \\Rightarrow \\neg\\exists x\\ \\neg Likes(x, Icecream)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "“Each king is a person” is equivalent to \\(\\forall x\\ IsKing(x) \\wedge IsPerson(x)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "“All humans are mortal” is equivalent to \\(\\forall x\\ IsHuman(x) \\Rightarrow IsMortal(x)\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 15,
+        "question_id": "GATE_DA_2026_Q15",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "divide and conquer: mergesort, quicksort",
+        "difficulty": "Medium",
+        "question_text": "Consider that the quick sort algorithm is used to sort an array of \\(n\\) distinct randomly ordered elements. In every call, the pivot is chosen as the first element of the current subarray.\nLet \\(T(n)\\) denote the expected time to sort the array. Assume that the time to partition is linear in the size of the current subarray.\nWhich of the following recurrence relations correctly represents \\(T(n)\\) in this scenario?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(T(n) = T(1) + T(n - 1) + O(n)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(T(n) = T\\left(\\frac{n}{4}\\right) + T\\left(\\frac{3n}{4}\\right) + O(n)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(T(n) = 2T\\left(\\frac{n}{2}\\right) + O(n)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(T(n) = \\frac{1}{n}\\sum_{k=0}^{n-1}[T(k) + T(n - k - 1)] + O(n)\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 16,
+        "question_id": "GATE_DA_2026_Q16",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "Programming in Python",
+        "difficulty": "Medium",
+        "question_text": "Consider the given Python program.\n```python\ndef append_to_lst(val, lst=[]):\n    lst.append(val)\n    return lst\nprint(append_to_lst(1))\nprint(append_to_lst(2))\nprint(append_to_lst(3, []))\n```\nWhich of the following is the correct output of this program?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "```\n[1]\n[2]\n[3]\n```",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "```\n[1]\n[1, 2]\n[3]\n```",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "```\n[1]\n[2]\n[1, 2, 3]\n```",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "```\n[1]\n[1, 2]\n[1, 3]\n```",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 17,
+        "question_id": "GATE_DA_2026_Q17",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "integrity constraints, normal form",
+        "difficulty": "Medium",
+        "question_text": "Let R(A,B,C,D,E) be a relational schema with functional dependency set F={A→BC, CD→E, E→A}.\nWhich of the following statements is correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "AD, ED and CD are the only candidate keys of R.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "AD and ED are the only candidate keys of R.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "A, E and CD are the only candidate keys of R.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "A and CD are the only candidate keys of R.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 18,
+        "question_id": "GATE_DA_2026_Q18",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "data warehouse modelling: schema for multidimensional data models, concept hierarchies, measures: categorization and computations",
+        "difficulty": "Easy",
+        "question_text": "Consider that the visualization of a 3-dimensional data cube is showing Sales Quantity for each combination of the attributes Product Type, Month and Country.\nFrom this, if we want to further visualize the Sales Quantity for each combination of Product Type, Month and State, which of the following OLAP operations should be performed?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Slicing",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Dicing",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Roll-up",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Drill-down",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 19,
+        "question_id": "GATE_DA_2026_Q19",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "probability axioms",
+        "difficulty": "Medium",
+        "question_text": "Let \\(M\\) be a randomly chosen non-empty subset of \\(S = \\{1,2,3, \\ldots ,2026\\}\\).\nWhich of the following is the probability that the product of all the elements of \\(M\\) is even?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(2^{1013}(2^{1013} - 1)/2^{2026}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(2^{1013}/2^{2026}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(2^{1013}(2^{1013} - 1)/(2^{2026} - 1)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(1/(2^{2026} - 1)\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 20,
+        "question_id": "GATE_DA_2026_Q20",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "Counting (permutation and combinations)",
+        "difficulty": "Medium",
+        "question_text": "Suppose that a computer program provides a non-negative and integer-valued random solution to the equation \\(n_1 + n_2 + n_3 + n_4 = 20\\).\nWhich of the following is the probability that all of \\(n_1, n_2, n_3, n_4\\) in the provided solution are positive?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\binom{19}{3}/\\binom{23}{3}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\binom{20}{4}/\\binom{24}{4}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\binom{20}{3}/\\binom{23}{3}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\binom{19}{4}/\\binom{24}{4}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 21,
+        "question_id": "GATE_DA_2026_Q21",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 2: LINEAR ALGEBRA",
+        "subject": "Linear Algebra",
+        "topic": "matrices, projection matrix, orthogonal matrix, idempotent matrix, partition matrix and their properties",
+        "difficulty": "Medium",
+        "question_text": "Let \\(M = \\begin{pmatrix} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{pmatrix}\\) be a \\(2 \\times 2\\) matrix, where \\(\\theta = \\frac{2\\pi}{5}\\), and \\(I_2 = \\begin{pmatrix} 1 & 0 \\\\ 0 & 1 \\end{pmatrix}\\).\nWhich of the following options is equal to \\(M^{2026}\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(M^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(M\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(M^{-1}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(I_2\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 22,
+        "question_id": "GATE_DA_2026_Q22",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "SECTION 2: LINEAR ALGEBRA",
+        "subject": "Linear Algebra",
+        "topic": "Vector space, subspaces",
+        "difficulty": "Easy",
+        "question_text": "Consider a set \\(S_1 = \\{x = (x_1, x_2, x_3)^T \\in \\mathbb{R}^3 \\mid x^Tx \\le 16\\}\\). Let \\(S_2\\) be another set which is a subspace of \\(\\mathbb{R}^3\\) with dimension two.\nWhich of the following gives the area of \\(S_1 \\cap S_2\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(16\\pi\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(4\\pi\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(4\\pi^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(16\\pi^2\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 23,
+        "question_id": "GATE_DA_2026_Q23",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Supervised Learning",
+        "topic": "regression and classification problems",
+        "difficulty": "Easy",
+        "question_text": "In the following table, the Task column lists a few tasks related to machine learning. The Algorithm column lists a few algorithms. Each entry “t” from the Task column is to be matched with an appropriate entry “a” from the Algorithm column such that the task “t” can be solved using the algorithm “a”. Denote such a match as t:a\n[IMAGE_Q_23_1]\nWhich of the following options is/are the correct matching(s)?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_23_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "T1:A4, T2:A3, T3:A1, T4:A2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "T1:A2, T2:A4, T3:A1, T4:A3",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "T1:A3, T2:A4, T3:A1, T4:A2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "T1:A4, T2:A2, T3:A1, T4:A3",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 24,
+        "question_id": "GATE_DA_2026_Q24",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 7: AI",
+        "subject": "AI",
+        "topic": "logic, propositional, predicate",
+        "difficulty": "Easy",
+        "question_text": "Sentence X is said to entail Sentence Y if whenever X is TRUE, Y also must hold TRUE. Which of the following statements is/are correct if X entails Y?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(X \\Rightarrow Y\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(X \\wedge \\neg Y\\) is FALSE",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "if X then Y",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "if Y then X",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 25,
+        "question_id": "GATE_DA_2026_Q25",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "basic data structures: stacks, queues, linked lists, trees, hash tables",
+        "difficulty": "Medium",
+        "question_text": "You are given the following Pre-order and In-order traversals of a Binary Tree T with nodes E, F, G, P, Q, R, S.\nPre-order: P Q S E R F G\nIn-order: S Q E P F R G\nWhich of the following statements is/are true about the Binary Tree T?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Node P is the root of T",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "The Post-order traversal of T is: S E Q F G R P",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Node Q has only one child",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The left subtree of node R contains the node G",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 26,
+        "question_id": "GATE_DA_2026_Q26",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "integrity constraints, normal form",
+        "difficulty": "Easy",
+        "question_text": "Consider two relations r and s defined on the relational schemas R(A,B) and S(E,C), respectively. A is the primary key of R and E is a foreign key of S referencing A in R. Which of the following operations will NEVER violate the foreign key constraint?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Inserting records into relation r",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Deleting records from relation s",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Deleting records from relation r",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Inserting records into relation s",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 27,
+        "question_id": "GATE_DA_2026_Q27",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 3: CALCULUS AND OPTIMIZATION",
+        "subject": "Calculus and Optimization",
+        "topic": "maxima and minima",
+        "difficulty": "Medium",
+        "question_text": "Let \\(f(x) = x^3 - 3x^2 + 2\\) be a function defined on \\((-1, 3]\\). Which of the following statements is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(f(x)\\) has exactly two roots in \\([-0.9, 0]\\).",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(f(x)\\) has a minimum at 2 only.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(f(x)\\) has maximum at 0 only.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(f(x)\\) has a root at 1.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 28,
+        "question_id": "GATE_DA_2026_Q28",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "uniform, exponential, Poisson, normal, standard normal, t-distribution, chi-squared distributions",
+        "difficulty": "Hard",
+        "question_text": "Suppose a random variable \\(Z\\) follows Normal(\\(\\mu = 0, \\sigma^2 = 1\\)) distribution with probability density function \\(g(z)\\) and cumulative distribution function \\(G(z)\\). Another random variable \\(Y\\) follows \\(t_1\\) distribution with probability density function \\(h(y)\\) and cumulative distribution function \\(H(y)\\). Let \\(c\\) be the positive real number for which \\(g(c) = h(c)\\). Which of the following statements is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(G(0) = H(0)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(G(c) < H(c)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(G(-c) < H(-c)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(g(0) = h(0)\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 29,
+        "question_id": "GATE_DA_2026_Q29",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Supervised Learning",
+        "topic": "simple linear regression, multiple linear regression, ridge regression",
+        "difficulty": "Easy",
+        "question_text": "Consider that for a supervised learning task, the objective function being minimized is \\(f_w(x) = wx\\), where \\(x \\in \\mathbb{R}\\) is the input and \\(w \\in \\mathbb{R}\\) is the parameter. Stochastic Gradient Descent with learning rate of 0.10 is used for parameter updates. Suppose that at the end of iteration \\(i\\), the value of \\(w\\) becomes 10.00. Let \\(x = 10.00\\) be the input for iteration \\((i + 1)\\).\nThe value of \\(w\\) at the end of iteration \\((i + 1)\\) is __________ . (Rounded off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "8.9 to 9.1"
+      },
+      {
+        "question_no": 30,
+        "question_id": "GATE_DA_2026_Q30",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 7: AI",
+        "subject": "AI",
+        "topic": "Search: informed, uninformed, adversarial",
+        "difficulty": "Easy",
+        "question_text": "Consider the game tree for a two-player turn-taking minimax game as shown in the figure. The value of a terminal node represents the utility of the game state if the game ends there. The numbers written next to the edges denote the strategies. There are two players MAX and MIN. At any particular state of the game, MAX prefers to move to a state of maximum value. On the other hand, MIN prefers to move to a state of minimum value. Suppose MAX starts the game at the root and has three strategies: 1, 2 and 3. Next, MIN plays and also has three strategies: 1, 2 and 3. The game ends there. Both players always take optimal strategies throughout the game.\n[IMAGE_Q_30_1]\nAt the root, the best strategy for MAX is ___________ . (Answer in integer)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_30_1"
+        ],
+        "options": [],
+        "nat_answer_range": "2 to 2"
+      },
+      {
+        "question_no": 31,
+        "question_id": "GATE_DA_2026_Q31",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "Search algorithms: linear search and binary search",
+        "difficulty": "Medium",
+        "question_text": "Let A be a sorted array containing 1000 distinct integers. You perform a recursive binary search on A to find an element \\(y\\). Suppose each comparison checks whether the middle element computed during the current recursive step is equal to, less than, or greater than \\(y\\). The maximum number of comparisons that may have to be performed if \\(y\\) is not an element of A is _______ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "10 to 10"
+      },
+      {
+        "question_no": 32,
+        "question_id": "GATE_DA_2026_Q32",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "file organization, indexing",
+        "difficulty": "Medium",
+        "question_text": "In a relational database, a B+ Tree Index is to be constructed for a relation on a key field. In a B+ Tree, a Node Pointer points to a sub-tree and a Data Record Pointer points to a block of database records.\nLet, Node size = 4096 bytes, Node Pointer size = 10 bytes, Search Key Field size = 11 bytes and Data Record Pointer size = 12 bytes.\nThe maximum number of Node Pointers that can be present in a non-leaf node of the B+ Tree is ________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "195 to 195"
+      },
+      {
+        "question_no": 33,
+        "question_id": "GATE_DA_2026_Q33",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "Counting (permutation and combinations)",
+        "difficulty": "Medium",
+        "question_text": "The number of bijections \\(f(\\cdot)\\) from the set \\(S = \\{1, 2, 3, 4\\}\\) to itself such that \\(f(f(n)) = n\\), for all \\(n \\in S\\), is __________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "10 to 10"
+      },
+      {
+        "question_no": 34,
+        "question_id": "GATE_DA_2026_Q34",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "uniform, exponential, Poisson, normal, standard normal, t-distribution, chi-squared distributions",
+        "difficulty": "Easy",
+        "question_text": "Let \\(X\\) be an exponentially distributed random variable with mean \\(\\lambda (> 0)\\). If \\(P(X > 5) = 0.35\\), then the conditional probability \\(P(X > 10 | X > 5)\\) is ___________ . (Rounded off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.34 to 0.36"
+      },
+      {
+        "question_no": 35,
+        "question_id": "GATE_DA_2026_Q35",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "SECTION 3: CALCULUS AND OPTIMIZATION",
+        "subject": "Calculus and Optimization",
+        "topic": "Taylor series",
+        "difficulty": "Easy",
+        "question_text": "The value of \\(\\sum_{i=0}^{\\infty}\\sum_{j=1}^{\\infty} 2^{-i}3^{-j}\\) is ______________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1 to 1"
+      },
+      {
+        "question_no": 36,
+        "question_id": "GATE_DA_2026_Q36",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Unsupervised Learning",
+        "topic": "hierarchical clustering, top-down, bottom-up: single-linkage, multiple-linkage",
+        "difficulty": "Easy",
+        "question_text": "Let four points in three-dimensional space be: P1: [2, 3, −1], P2: [3, 1, 1], P3: [5, −2, 3] and P4: [3, 3, 3]. Hierarchical Agglomerative Clustering is used to cluster the above points. If Manhattan Distance is used as the distance metric during clustering, which of the following options indicates the two points that will be merged first?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "P1, P2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "P2, P3",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "P3, P4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "P2, P4",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 37,
+        "question_id": "GATE_DA_2026_Q37",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Supervised Learning",
+        "topic": "logistic regression",
+        "difficulty": "Easy",
+        "question_text": "Which of the following statements is true for Ridge Regression?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The regularizer in the objective function of Ridge Regression is used to guard against scenarios where the model works well for the test data, but poorly for the training data.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "The regularizer of Ridge Regression uses \\(L_1\\) norm.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Ridge Regression aims to reduce the number of parameters that have negative values.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The regularizer of Ridge Regression may increase the bias of the model, but it helps in reducing the variance in predictions.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 38,
+        "question_id": "GATE_DA_2026_Q38",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 7: AI",
+        "subject": "AI",
+        "topic": "logic, propositional, predicate",
+        "difficulty": "Medium",
+        "question_text": "Assume that a Creative (\\(C\\)) person will Succeed (\\(S\\)) if the person is also Disciplined (\\(D\\)), but will not succeed otherwise. Now, consider the following statements:\n(i) \\(C \\wedge S \\Leftrightarrow D\\)\n(ii) \\(C \\Rightarrow (S \\Leftrightarrow D)\\)\n(iii) \\(C \\Leftrightarrow ((D \\Rightarrow S) \\vee \\neg S)\\)\nWhich of the following options is correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Both (i) and (ii) are TRUE",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Only (ii) is TRUE",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Both (ii) and (iii) are TRUE",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Only (iii) is TRUE",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 39,
+        "question_id": "GATE_DA_2026_Q39",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "Programming in Python",
+        "difficulty": "Medium",
+        "question_text": "A recursive function in Python is given.\n```python\ndef mystery(n):\n    if n <= 0:\n        return 1\n    else:\n        return mystery(n-1) + mystery(n-2)\n```\nNow, consider the following function call: mystery(4)\nAssume that a typical runtime stack is used to manage function calls. Each function call is pushed onto the stack and removed only after it finishes execution.\nWhich of the following options denotes the total number of function calls (i.e., the total number of stack activations), including the initial call, to compute mystery(4)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "9",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "15",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "17",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 40,
+        "question_id": "GATE_DA_2026_Q40",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "basic graph algorithms: traversals and shortest path",
+        "difficulty": "Medium",
+        "question_text": "Consider a directed graph \\(G = (V, E)\\), where \\(V\\) is the finite set of vertices and \\(E\\) is the set of directed edges between the vertices. \\(G\\) may contain cycles but there is no self-loop. Further, \\(G\\) may not be strongly connected. Let \\(G^R\\) be the graph obtained by reversing the directions of all the edges in \\(G\\) without changing the set of vertices. Assume that Breadth First Search (BFS) or Depth First Search (DFS) from any given vertex \\(v\\) of a graph visits only the reachable vertices from \\(v\\) in that graph.\nWhich of the following statements must always be true, regardless of the structure of \\(G\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "If \\(u\\) is a reachable vertex in the BFS of \\(G^R\\) from \\(v\\), then \\(u\\) is also a reachable vertex in the DFS of \\(G\\) from \\(v\\).",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "In \\(G^R\\), the BFS traversal from \\(v\\) will visit exactly the same set of vertices as the DFS from \\(v\\) in \\(G\\).",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The order of vertices visited in the BFS of \\(G^R\\) from \\(v\\) is the reverse of the order of vertices visited in the DFS of \\(G\\) from \\(v\\).",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "If \\(u\\) is a reachable vertex in the DFS of \\(G\\) from \\(v\\), then \\(v\\) is also a reachable vertex in the BFS of \\(G^R\\) from \\(u\\).",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 41,
+        "question_id": "GATE_DA_2026_Q41",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "file organization, indexing",
+        "difficulty": "Medium",
+        "question_text": "Consider a B+ Tree where the maximum number of key values in each leaf node is 2 and the maximum number of pointers in each non-leaf node is 3. Let the content of the B+ Tree be as shown in the figure.\nWhich of the following options denotes the key value(s) stored in the root node after inserting a key value 3 in the given B+ Tree?\n[IMAGE_Q_41_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_41_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "5",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "8",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "3 and 5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "3, 5 and 8",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 42,
+        "question_id": "GATE_DA_2026_Q42",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "relational model: relational algebra, tuple calculus, SQL",
+        "difficulty": "Medium",
+        "question_text": "Consider the given relations \\(X\\), \\(Y\\) and \\(Z\\). The relation \\(X\\) has three columns \\(P\\), \\(Q\\) and \\(R\\). The relation \\(Y\\) has three columns \\(P\\), \\(Q\\) and \\(S\\). The relation \\(Z\\) has two columns \\(P\\) and \\(T\\).\n[IMAGE_Q_42_1]\nConsider the relational algebra expression\n\\[\\prod_{PRS}\\left[\\left(\\sigma_{(Q = Q3 \\vee R = R2)}[X \\bowtie Y]\\right) \\bowtie \\left(\\sigma_{(S > 1)}[Y \\bowtie Z]\\right)\\right]\\]\nwhere \\(\\bowtie\\) denotes natural join operation.\nWhich of the following options is the correct output for the given expression?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_42_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Two rows (P1, R1, 2) and (P1, R1, 5)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Three rows (P1, R1, 2), (P1, R1, 5) and (P2, R2, 6)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "One row (P1, R1, 2)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Zero rows",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 43,
+        "question_id": "GATE_DA_2026_Q43",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "data warehouse modelling: schema for multidimensional data models, concept hierarchies, measures: categorization and computations",
+        "difficulty": "Medium",
+        "question_text": "Consider the concept hierarchies as shown in the figure.\nWhich of the following options denotes the total number of possible data cuboids from these concept hierarchies?\n[IMAGE_Q_43_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_43_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(4^3\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(2^3\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "2!",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "4!",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 44,
+        "question_id": "GATE_DA_2026_Q44",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "conditional expectation and variance",
+        "difficulty": "Medium",
+        "question_text": "Let \\(X\\) and \\(Y\\) be two independent random variables. \\(X\\) follows \\(Bernoulli(p = 0.3)\\) distribution and \\(Y\\) follows \\(Normal(\\mu = 0, \\sigma^2 = 100)\\) distribution.\nWhich of the following options is the variance of \\((2X - 1)Y\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "100",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "90",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "49",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "21",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 45,
+        "question_id": "GATE_DA_2026_Q45",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "Central limit theorem",
+        "difficulty": "Hard",
+        "question_text": "Let\n\\[L = \\lim_{n\\to\\infty}\\sum_{k=0}^{n}\\frac{e^{-n}n^k}{k!}\\]\nWhich of the following is the value of \\(L\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0.5",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(e^{-1}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 46,
+        "question_id": "GATE_DA_2026_Q46",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "SECTION 2: LINEAR ALGEBRA",
+        "subject": "Linear Algebra",
+        "topic": "eigenvalues and eigenvectors",
+        "difficulty": "Medium",
+        "question_text": "Let \\(\\gamma_1, \\gamma_2, \\gamma_3\\) be the eigenvalues of the matrix \\(\\begin{bmatrix} 1 & 0 & 0 \\\\ 0 & \\cos t & \\sin t \\\\ 0 & -\\sin t & \\cos t \\end{bmatrix}\\), where \\(t \\in [-\\pi, \\pi]\\) is in radians.\nWhich one of the following options lists all the possible values of \\(t\\) satisfying \\(\\gamma_1 + \\gamma_2 + \\gamma_3 = 1 + \\sqrt{2}\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\left\\{\\frac{\\pi}{3}, -\\frac{\\pi}{4}\\right\\}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\left\\{\\frac{\\pi}{4}, -\\frac{\\pi}{3}\\right\\}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\left\\{\\frac{\\pi}{4}, -\\frac{\\pi}{4}\\right\\}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\left\\{\\frac{\\pi}{3}, -\\frac{\\pi}{3}\\right\\}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 47,
+        "question_id": "GATE_DA_2026_Q47",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Supervised Learning",
+        "topic": "regression and classification problems",
+        "difficulty": "Medium",
+        "question_text": "Consider that 20 stories of Author X and 10 stories of Author Y were kept together without mentioning the names of the authors. A classifier was then asked to predict the author (X or Y) of each of these stories. Let, out of X’s stories, 6 were classified as that of Y. On the other hand, out of Y’s stories, 2 were classified as that of X.\nConsidering X and Y as two classes, which of the following statements is/are true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Accuracy of the classifier is 11/15.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Precision of Class X is higher than the Precision of Class Y.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Recall of Class X is higher than the Recall of Class Y.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Accuracy of the classifier is 14/15.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 48,
+        "question_id": "GATE_DA_2026_Q48",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 7: AI",
+        "subject": "AI",
+        "topic": "logic, propositional, predicate",
+        "difficulty": "Medium",
+        "question_text": "Let \\(P(x)\\) be a predicate. Which of the following statements is/are NOT valid in first-order logic?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\forall x\\, P(x) \\Rightarrow \\exists x\\, P(x)\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\exists x\\, P(x) \\Rightarrow \\forall x\\, P(x)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\exists x\\, P(x) \\Leftrightarrow \\forall x\\, P(x)\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\forall x\\, P(x) \\Rightarrow \\exists x\\, \\neg P(x)\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 49,
+        "question_id": "GATE_DA_2026_Q49",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "basic sorting algorithms: selection sort, bubble sort and insertion sort",
+        "difficulty": "Medium",
+        "question_text": "Consider the problem of sorting the given array in ascending order:\nP = [1, 2, 3, 5, 4]\nConsider two sorting algorithms Bubble Sort (BS) and Insertion Sort (IS). Let \\(N_1\\) be the total number of comparisons done by BS on the elements of P and \\(N_2\\) be the total number of comparisons done by IS on the elements of P.\nWhich of the following options is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(N_1 = 10,\\ N_2 = 4\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(N_1 > N_2\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "IS on P will perform only one swap",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Both BS and IS on P will make at least one unnecessary comparison (i.e., comparing elements that are already in correct order)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 50,
+        "question_id": "GATE_DA_2026_Q50",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "Programming in Python",
+        "difficulty": "Medium",
+        "question_text": "Consider the given Python program.\n```python\ndef outer():\n    x = []\n    def inner(val):\n        x.append(val)\n        return x\n    return inner\nf1 = outer()\nf2 = outer()\nprint(f1(10)) # Line P\nprint(f1(20)) # Line Q\nprint(f2(30)) # Line R\nprint(f1(40)) # Line S\n```\nWhich of the following options is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "f1 and f2 share the same list x",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Output of Line Q is [10, 20]",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Output of Line R is [10, 20, 30]",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Output of Line S is [10, 20, 40]",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 51,
+        "question_id": "GATE_DA_2026_Q51",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "relational model: relational algebra, tuple calculus, SQL",
+        "difficulty": "Medium",
+        "question_text": "Consider a table Employee(EmpID, TeamID), where the column EmpID (ID of an employee) is the primary key. The column TeamID denotes the team ID of the team of which the employee is a member. TeamID is a NOT NULL column.\nWe want to display the size of the team (denoted as TeamSize) in which each employee is a member by using SQL. As an example, the desired output for the given Employee table is also shown in tabular form.\nWhich of the following is/are correct?\n[IMAGE_Q_51_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_51_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "```sql\nSELECT E.EmpID, B.TeamSize\nFROM Employee AS E, (SELECT TeamID, COUNT(TeamID) AS\nTeamSize FROM Employee GROUP BY TeamID) AS B\nWHERE E.TeamID = B.TeamID\n```",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "```sql\nSELECT A.EmpID, COUNT(B.TeamID) AS TeamSize\nFROM Employee AS A, Employee AS B\nWHERE A.TeamID = B.TeamID AND A.EmpID = B.EmpID\nGROUP BY A.EmpID\n```",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "```sql\nSELECT B.EmpID, B.TeamSize\nFROM (SELECT EmpID, COUNT(TeamID) AS TeamSize\nFROM Employee GROUP BY EmpID) AS B\n```",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "```sql\nSELECT A.EmpID, B.TeamSize\nFROM Employee AS A, (SELECT COUNT(TeamID) AS TeamSize FROM\nEmployee GROUP BY TeamID) AS B\nWHERE A.TeamID = B.TeamID\n```",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 52,
+        "question_id": "GATE_DA_2026_Q52",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 2: LINEAR ALGEBRA",
+        "subject": "Linear Algebra",
+        "topic": "matrices, projection matrix, orthogonal matrix, idempotent matrix, partition matrix and their properties",
+        "difficulty": "Medium",
+        "question_text": "Let \\(M = \\left(I_n - \\frac{1}{n}\\mathbf{1}\\mathbf{1}^T\\right)\\) be a matrix, where \\(\\mathbf{1} = (1,1,1, \\ldots ,1)^T \\in \\mathbb{R}^n\\) and \\(I_n\\) is the identity matrix of order \\(n\\).\nWhich of the following options is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(M^T = M\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(M^2 = I_n\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(Trace(M) = n\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(M\\) is a projection matrix",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 53,
+        "question_id": "GATE_DA_2026_Q53",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "uniform, exponential, Poisson, normal, standard normal, t-distribution, chi-squared distributions",
+        "difficulty": "Hard",
+        "question_text": "Let \\(X_1, X_2, \\ldots, X_n\\) be \\(n\\) independent random variables. Each of the random variables follows \\(Normal(\\mu = 0, \\sigma^2 = 1)\\) distribution. Define \\(\\bar{X} = \\frac{1}{n}\\sum_{i=1}^{n} X_i\\).\nWhich of the following statements is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\sum_{i=1}^{n} X_i^2\\) follows Chi-square distribution with \\(n\\) degrees of freedom.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\sum_{i=1}^{n}(X_i - \\bar{X})^2\\) follows Chi-square distribution with \\((n - 1)\\) degrees of freedom.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(X_1^2 + X_n^2\\) follows exponential distribution with mean 2.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\left(\\sqrt{n}\\,\\bar{X}\\right)^2\\) follows Chi-square distribution with 2 degrees of freedom.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 54,
+        "question_id": "GATE_DA_2026_Q54",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "cumulative distribution function",
+        "difficulty": "Easy",
+        "question_text": "Let \\(X\\) be a discrete valued random variable with cumulative distribution function \\(F(x)\\).\nWhich of the following statements is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(F(x)\\) is always a positive function.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(F(x)\\) is a non-decreasing function.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(F(x)\\) has jump discontinuity.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(F(x)\\) is a left continuous function.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 55,
+        "question_id": "GATE_DA_2026_Q55",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Supervised Learning",
+        "topic": "logistic regression",
+        "difficulty": "Medium",
+        "question_text": "Consider that Linear Ridge Regression is being used to learn a prediction function \\(y_{pred} = w^Tx\\), where \\(w, x \\in \\mathbb{R}^2\\) and Mean Absolute Error (MAE) is used to measure the prediction error. A weight of 0.20 is associated with the regularizer.\nAt an intermediate step of the training process, assume that the parameter \\(w = [-3.00,\\ 4.00]^T\\). In the next step, for the input \\(x = [1.00,\\ 2.00]^T\\), the predicted value of \\(y\\) is noted. Let the relation between \\(x = [x_1,\\ x_2]^T\\) and the true value of \\(y\\) be \\(y_{true} = x_1 + x_2\\).\nThe value of the overall regularized loss function for this instance is _______ . (Rounded off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "6.9 to 7.1"
+      },
+      {
+        "question_no": 56,
+        "question_id": "GATE_DA_2026_Q56",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 6: MACHINE LEARNING",
+        "subject": "Supervised Learning",
+        "topic": "multi-layer perceptron, feed-forward neural network",
+        "difficulty": "Easy",
+        "question_text": "Consider a fully-connected feed-forward multi-layer perceptron. It has 30 neurons in the input layer, followed by two hidden layers and an output layer. The first hidden layer has 4 neurons and the second hidden layer has 3 neurons. The output layer has only one neuron. Assume that no bias parameters are used.\nThe number of learnable parameters in the multi-layer perceptron is __________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "135 to 135"
+      },
+      {
+        "question_no": 57,
+        "question_id": "GATE_DA_2026_Q57",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "Bayes Theorem",
+        "difficulty": "Easy",
+        "question_text": "A clinic specializes in testing for a disease D. The result of the test can be either positive or negative.\nA study revealed that if a person suffers from the disease D, the test result in that clinic comes out positive 80% of the time, and negative 20% of the time. If a person is not suffering from the disease D, the test comes out positive 10% of the time and negative 90% of the time. It is also known that among the general population, the disease D occurs in 30% of the individuals.\nIf a person tests positive for D in that clinic, the probability that he/she actually suffers from the disease D is __________ . (Rounded off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.76 to 0.78"
+      },
+      {
+        "question_no": 58,
+        "question_id": "GATE_DA_2026_Q58",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 4: PROGRAMMING, DATA STRUCTURES AND ALGORITHMS",
+        "subject": "Programming, Data Structures and Algorithms",
+        "topic": "basic sorting algorithms: selection sort, bubble sort and insertion sort",
+        "difficulty": "Medium",
+        "question_text": "Consider the given Python program.\n```python\ndef fun(L, i=0):\n    if i >= len(L)-1:\n        return 0\n    if L[i] > L[i+1]:\n        L[i+1], L[i] = L[i], L[i+1]\n        return 1+fun(L, i+1)\n    else:\n        return fun(L, i+1)\ndata = [5, 3, 4, 1, 2]\ncount = 0\nfor _ in range(len(data)):\n    count += fun(data)\nprint(count)\n```\nThe output of the program is __________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "8 to 8"
+      },
+      {
+        "question_no": 59,
+        "question_id": "GATE_DA_2026_Q59",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "relational model: relational algebra, tuple calculus, SQL",
+        "difficulty": "Medium",
+        "question_text": "Let there be two relations \\(X\\) and \\(Y\\) as shown. \\(X\\) has three columns \\(P\\), \\(Q\\) and \\(R\\). \\(Y\\) has two columns \\(P\\) and \\(S\\).\n[IMAGE_Q_59_1]\nConsider that the following tuple relational calculus expression is evaluated.\n\\[\\{t \\mid t \\in X \\wedge \\exists z \\in X(t[P] = z[P]) \\wedge \\exists m \\in Y\\,(m[P] = t[P] \\wedge m[S] > 1)\\}\\]\nThe number of tuples that will be returned is __________ . (Answer in integer)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_59_1"
+        ],
+        "options": [],
+        "nat_answer_range": "2 to 3"
+      },
+      {
+        "question_no": 60,
+        "question_id": "GATE_DA_2026_Q60",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "relational model: relational algebra, tuple calculus, SQL",
+        "difficulty": "Medium",
+        "question_text": "Let Account be a relation as shown.\n[IMAGE_Q_60_1]\nConsider the given SQL query.\n```sql\nSELECT AccNo FROM Account AS A\nWHERE (SELECT COUNT(*) FROM Account AS B\nWHERE A.Balance < B.Balance) >= (SELECT COUNT(*)\nFROM Account AS C WHERE A.Balance > C.Balance)\n```\nThe number of rows returned by the SQL query is __________ . (Answer in integer)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_60_1"
+        ],
+        "options": [],
+        "nat_answer_range": "3 to 3"
+      },
+      {
+        "question_no": 61,
+        "question_id": "GATE_DA_2026_Q61",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 5: DATABASE MANAGEMENT AND WAREHOUSING",
+        "subject": "Database Management and Warehousing",
+        "topic": "ER-model",
+        "difficulty": "Medium",
+        "question_text": "Consider an ER model with the entities E1(A\\(_{11}\\),A\\(_{12}\\),A\\(_{13}\\)) and E2(A\\(_{21}\\),A\\(_{22}\\),A\\(_{23}\\)), where, A\\(_{11}\\), A\\(_{12}\\), A\\(_{13}\\) are the attributes of E1, and A\\(_{21}\\), A\\(_{22}\\), A\\(_{23}\\) are the attributes of E2. Let A\\(_{22}\\) be a multi-valued attribute. A\\(_{11}\\) and A\\(_{21}\\) are the primary keys of E1 and E2, respectively.\nLet R12 be a many-to-many relationship between E1 and E2. Participation of both E1 and E2 in R12 is total.\nThe minimum number of relations required to convert the ER model into relational model (assuming there is no other functional dependency) where each relation is in third normal form (3NF) is __________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "4 to 4"
+      },
+      {
+        "question_no": 62,
+        "question_id": "GATE_DA_2026_Q62",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "mean, median, mode and standard deviation",
+        "difficulty": "Medium",
+        "question_text": "For a given data set \\(\\{x_1,\\ x_2, \\ldots, x_n\\}\\), where \\(n = 100\\), it is known that\n\\[\\frac{1}{2000}\\sum_{i=1}^{n}\\sum_{j=1}^{n}(x_i - x_j)^2 = 99\\]\nLet us denote \\(\\bar{x} = \\frac{1}{n}\\sum_{i=1}^{n} x_i\\)\nThe value of \\(\\frac{1}{99}\\sum_{i=1}^{n}(x_i - \\bar{x})^2\\) is __________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "10 to 10"
+      },
+      {
+        "question_no": 63,
+        "question_id": "GATE_DA_2026_Q63",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "correlation, and covariance",
+        "difficulty": "Medium",
+        "question_text": "Let \\(X\\) be a random variable that follows \\(Uniform(-1,1)\\) distribution. The conditional distribution of the random variable \\(Y\\) given \\(X = x\\) is the \\(Uniform(x^2 - 0.1, x^2 + 0.1)\\) distribution.\nThe value of \\(correlation(X, Y)\\) is __________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0 to 0"
+      },
+      {
+        "question_no": 64,
+        "question_id": "GATE_DA_2026_Q64",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 1: PROBABILITY AND STATISTICS",
+        "subject": "Probability and Statistics",
+        "topic": "Continuous random variables and probability distribution function",
+        "difficulty": "Medium",
+        "question_text": "Let \\(A_{5\\times5}\\) be a matrix such that each of its elements follows \\(Bernoulli(p = 0.50)\\) distribution independently.\nThe probability that the row-sum of the second row and the column-sum of the third column are both equal to 3 is ________ . (Rounded off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.08 to 0.12"
+      },
+      {
+        "question_no": 65,
+        "question_id": "GATE_DA_2026_Q65",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "SECTION 2: LINEAR ALGEBRA",
+        "subject": "Linear Algebra",
+        "topic": "matrices, projection matrix, orthogonal matrix, idempotent matrix, partition matrix and their properties",
+        "difficulty": "Medium",
+        "question_text": "Let \\(A = \\left(I_n - \\frac{1}{n}\\mathbf{1}\\mathbf{1}^T\\right)\\) be a matrix, where \\(\\mathbf{1} = (1,1,1, \\ldots ,1)^T \\in \\mathbb{R}^n\\) and \\(I_n\\) is the identity matrix of order \\(n\\).\nThe value of \\(\\max_S x^TAx\\), where \\(S = \\{x \\in \\mathbb{R}^n \\mid x^Tx = 1\\}\\), is __________ . (Answer in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1 to 1"
+      }
+    ]
+  }
+]
