@@ -39,6 +39,14 @@ CODES = {
         "MX": "Maxwell's Equations", "PW": "Plane Waves and Properties", "TL": "Transmission Lines",
         "WG": "Waveguides, Optical Fibers and Antennas",
     },
+    "EE": {
+        "LA": "Linear Algebra", "CA": "Calculus", "DE": "Differential Equations", "CV": "Complex Variables",
+        "PR": "Probability and Statistics",
+        "CI": "Electric Circuits", "EF": "Electromagnetic Fields", "SS": "Signals and Systems",
+        "MA": "Electrical Machines", "PW": "Power Systems", "CS": "Control Systems",
+        "MS": "Electrical and Electronic Measurements",
+        "AE": "Analog Electronics", "DL": "Digital Electronics", "PE": "Power Electronics",
+    },
 }
 
 

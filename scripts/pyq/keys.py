@@ -128,7 +128,8 @@ def check(rows: list[dict]) -> list[str]:
         a = r["answer"]
         if "mta" in a:
             continue
-        if r["type"] == "MCQ" and len(a.get("options", [])) != 1:
+        # An MCQ key may accept alternatives ("B OR D": either is correct), never "B AND D".
+        if r["type"] == "MCQ" and (not a.get("options") or (len(a["options"]) > 1 and not re.search(r"\bOR\b", r["raw"], re.I))):
             errs.append(f"Q{r['qno']}: MCQ must have exactly one key, got '{r['raw']}'")
         if r["type"] == "MSQ" and not a.get("options"):
             errs.append(f"Q{r['qno']}: MSQ has no keys")

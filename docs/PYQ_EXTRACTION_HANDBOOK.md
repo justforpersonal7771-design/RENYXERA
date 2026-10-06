@@ -184,7 +184,8 @@ Compiling in MathJax is necessary but not sufficient. Before shipping a branch:
 | Branch | Papers | Transcribed + validated | Tagged | In bank |
 |---|---|---|---|---|
 | EC | 2021-2026 | all 390 (2021 scan as text, 65 reviewed; 2022: 3 reviewed) | all 390 (EC syllabus curated; 36 subjects) | 390, render-clean |
-| EE, ME, CE, DA | not yet | - | - | - |
+| EE | 2021-2026 fetched; keys OK except 2021 (scanned: needs keys_manual/EE_2021.tsv); syllabus + codes done | EE_2026 Q1-10 (b01, tags written) | in progress | - |
+| ME, CE, DA | not yet | - | - | - |
 
 ## 10. Next steps, in order
 
