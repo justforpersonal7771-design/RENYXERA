@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { paperLabel } from "@/lib/branch/current";
+import { usePaperLabel } from "@/lib/branch/use-paper-label";
 import { AlertCircle, Target, Sparkles, BookOpen, Clock, Zap, ScrollText, BrainCircuit, ArrowRight } from "lucide-react";
 import { TiltCard } from "@/components/ui/interactive";
 import { useRouter } from "next/navigation";
@@ -27,6 +27,7 @@ export function FocusCenter({
   onContinueSession
 }: FocusCenterProps) {
   const router = useRouter();
+  const paper = usePaperLabel();
 
   // Find weakest subject (worst accuracy with at least 2 attempts)
   const weakestSubject = useMemo(() => {
@@ -97,7 +98,7 @@ export function FocusCenter({
     // with no history otherwise saw one lonely card and a wide empty gap beside it.
     {
       title: "Sit a Full Official Paper",
-      desc: `Take a real past GATE ${paperLabel()} paper under exam timing to see where you stand.`,
+      desc: `Take a real past GATE ${paper} paper under exam timing to see where you stand.`,
       actionLabel: "Pick a Paper",
       icon: ScrollText,
       tint: "bg-sky-500/10 text-sky-500", btn: "from-sky-500 to-blue-600 shadow-sky-500/30", glow: "bg-sky-500",

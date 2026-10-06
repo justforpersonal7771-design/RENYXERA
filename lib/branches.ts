@@ -68,6 +68,12 @@ export const branchByCode = (code: string) => BRANCHES.find((b) => b.code === co
 
 export const DEFAULT_BRANCH: BranchCode = "CSE";
 
+/** What each bank holds, for the branch picker. Keep in step with the banks. */
+export const BANK_SUMMARY: Partial<Record<BranchCode, { questions: number; years: string }>> = {
+  CSE: { questions: 975, years: "2017–2026" },
+  ECE: { questions: 390, years: "2021–2026" },
+};
+
 /** Branches whose question bank scripts/copy-static-data.mjs builds. */
 export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE"];
 

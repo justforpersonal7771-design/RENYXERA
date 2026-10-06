@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { BranchModalHost } from "@/components/branch/branch-modal";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Topbar } from "./topbar";
@@ -130,6 +131,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
         <ToastContainer />
         <ConfirmHost />
+        <BranchModalHost />
         <OnboardingGate />
       </div>
       </MathJaxContext></MotionPrefs>
@@ -177,6 +179,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <AuthModal />
       <DeviceLimitDialog />
       <ConfirmHost />
+        <BranchModalHost />
         <OnboardingGate />
     </div>
     </MathJaxContext></MotionPrefs>
