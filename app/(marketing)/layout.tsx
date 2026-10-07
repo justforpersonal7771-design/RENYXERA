@@ -9,8 +9,13 @@ import { ToolsFrame } from "@/components/seo/tool-shell";
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <ClientLayout>
-      <ToolsFrame>{children}</ToolsFrame>
-      <Footer />
+      {/* Fill the viewport (minus navbar and page padding) so the footer sits at the bottom on short pages. */}
+      <div className="flex flex-col min-h-[calc(100dvh-6rem)] sm:min-h-[calc(100dvh-7rem)] md:min-h-[calc(100dvh-8rem)]">
+        <div className="flex-1">
+          <ToolsFrame>{children}</ToolsFrame>
+        </div>
+        <Footer />
+      </div>
     </ClientLayout>
   );
 }
