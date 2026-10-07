@@ -519,3 +519,6 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 - [ ] Migration 0029_da_live.sql — confirm run
 - [ ] Future: phone verification + reports via Telegram bot first, then WhatsApp
 - [ ] Future: proper Share (copy link to a public result card, share to installed apps); rename "Download result" back to "Share result" then
+
+## Growth (8 Oct 2026)
+Plan: docs/GROWTH_MASTER_PLAN.md · Tasks: docs/GROWTH_TASKS.md · Drafts: docs/GROWTH_ASSETS.md. PYQs (CE) on hold by request.
