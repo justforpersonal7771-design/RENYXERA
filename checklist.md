@@ -507,3 +507,14 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 - The 🔴 section at the top is the "go click this right now" list — keep it current above everything else.
 - Full rationale and the complete plan live in `RENYXERA_Master_Plan_Auth_Security_Monetization.md`; this file is status only, no explanation.
 - Every new module or deliverable added to the master plan gets a row here in the same commit.
+
+## UI fix batch (2026-10-07) — c70d780
+- [x] Exam fullscreen arrows hidden until edge hover/tap, swipe left/right navigates
+- [x] Palette: top spacing; no By-section toggle for single-section tests
+- [x] Focus Target header compact; Pro modal close X; profile + hamburger menus close on outside click
+- [x] Results: one full-width flip card (scoreboard / grid + breakdown), fits one screen, 2x2 actions on mobile
+- [x] /tools lists every tool; tools dock scrolls the open tool into view
+- [x] Branch chip moved next to profile, no arrow, hover effects; dimmer theme-aware scrollbar; stopwatch timer icon
+- [ ] Migration 0030_phone_lock.sql (verified phone permanently locked) — run in Supabase
+- [ ] Migration 0029_da_live.sql — confirm run
+- [ ] Future: phone verification + reports via Telegram bot first, then WhatsApp
