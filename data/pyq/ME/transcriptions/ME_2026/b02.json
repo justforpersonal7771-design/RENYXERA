@@ -1,0 +1,905 @@
+[
+{
+"qno": 27,
+"pages": [
+21
+],
+"question_text": "A quiescent fluid at temperature \\(T_3\\) is confined between two vertical parallel plates. While plate 1 is kept at temperature \\(T_1\\) and plate 2 is maintained at temperature \\(T_2\\), a velocity profile between the plates, as shown in the figure below, is generated due to heat transfer.\n[IMAGE_Q_27_1]\nWhich one of the following options shows the correct relations among \\(T_1\\), \\(T_2\\), and \\(T_3\\)?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(T_1 > T_3\\) and \\(T_3 > T_2\\)"
+},
+{
+"option_id": "B",
+"text": "\\(T_1 > T_3\\) and \\(T_3 < T_2\\)"
+},
+{
+"option_id": "C",
+"text": "\\(T_1 < T_3\\) and \\(T_3 < T_2\\)"
+},
+{
+"option_id": "D",
+"text": "\\(T_1 < T_3\\) and \\(T_3 > T_2\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_27_1",
+"page": 21,
+"regions": [
+"p021_r1"
+]
+}
+]
+},
+{
+"qno": 28,
+"pages": [
+22
+],
+"question_text": "For the isothermal expansion of an ideal gas in a piston cylinder system, the net heat supplied during the process is equal to the net work.\nWhich one of the following statements is correct for the given process?",
+"options": [
+{
+"option_id": "A",
+"text": "The process is possible."
+},
+{
+"option_id": "B",
+"text": "The process is not possible as it violates the second law of thermodynamics."
+},
+{
+"option_id": "C",
+"text": "The process is not possible as it violates the first law of thermodynamics."
+},
+{
+"option_id": "D",
+"text": "The process is possible, however, it violates the second law of thermodynamics."
+}
+],
+"figures": []
+},
+{
+"qno": 29,
+"pages": [
+23
+],
+"question_text": "A hydraulic crane supports a mass of 500 kg with its piston-cylinder actuator, inclined at \\(60^\\circ\\) with horizontal, as shown in the figure below. The diameter of the piston is 30 cm and gravitational acceleration is 10 m/s\\(^2\\).\n[IMAGE_Q_29_1]\nNeglecting mass of the piston, the reading of the pressure gage in kPa (gage) is",
+"options": [
+{
+"option_id": "A",
+"text": "61.26"
+},
+{
+"option_id": "B",
+"text": "6.13"
+},
+{
+"option_id": "C",
+"text": "35.35"
+},
+{
+"option_id": "D",
+"text": "70.71"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_29_1",
+"page": 23,
+"regions": [
+"p023_r1"
+]
+}
+]
+},
+{
+"qno": 30,
+"pages": [
+24
+],
+"question_text": "In relation to metal casting defects, match the following\n[IMAGE_Q_30_1]",
+"options": [
+{
+"option_id": "A",
+"text": "P-II, Q-III, R-I"
+},
+{
+"option_id": "B",
+"text": "P-II, Q-I, R-III"
+},
+{
+"option_id": "C",
+"text": "P-III, Q-I, R-II"
+},
+{
+"option_id": "D",
+"text": "P-III, Q-II, R-I"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_30_1",
+"page": 24,
+"regions": [
+"p024_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 31,
+"pages": [
+25
+],
+"question_text": "Which one of the following options is NOT an error associated with STereoLithography (STL) file in additive manufacturing?",
+"options": [
+{
+"option_id": "A",
+"text": "Staircase effect"
+},
+{
+"option_id": "B",
+"text": "Missing facet"
+},
+{
+"option_id": "C",
+"text": "Non-manifold topology conditions"
+},
+{
+"option_id": "D",
+"text": "Degenerate facets"
+}
+],
+"figures": []
+},
+{
+"qno": 32,
+"pages": [
+26
+],
+"question_text": "A work piece is to be firmly held in a fixture. It is to be machined by using a plain slab milling cutter as shown in the figure below.\n[IMAGE_Q_32_1]\nWhich one of the following options is the most suitable value of height \\(H\\) of the fixture in mm?",
+"options": [
+{
+"option_id": "A",
+"text": "200"
+},
+{
+"option_id": "B",
+"text": "210"
+},
+{
+"option_id": "C",
+"text": "150"
+},
+{
+"option_id": "D",
+"text": "70"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_32_1",
+"page": 26,
+"regions": [
+"p026_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 33,
+"pages": [
+27
+],
+"question_text": "A two-dimensional surface profile is obtained over a sampling length by using a contact type stylus profilometer as shown in the figure below. A line AA parallel to the general lay of the trace is considered. The true heights from AA to the peaks and valleys (in μm) in the trace are also shown in the figure (not to scale).\n[IMAGE_Q_33_1]\nThe ten-point height average in μm is",
+"options": [
+{
+"option_id": "A",
+"text": "4.57"
+},
+{
+"option_id": "B",
+"text": "5.99"
+},
+{
+"option_id": "C",
+"text": "3.09"
+},
+{
+"option_id": "D",
+"text": "2.90"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_33_1",
+"page": 27,
+"regions": [
+"p027_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 34,
+"pages": [
+28
+],
+"question_text": "A steel plate having yield strength of 550 MPa, is subjected to biaxial state of stress as \\(\\sigma_x = \\sigma\\) and \\(\\sigma_y = -2\\sigma\\). Using distortion energy theory and considering the factor of safety as 2, the permissible value of \\(\\sigma\\) that can be applied to the plate is ________ MPa (rounded off to 1 decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 35,
+"pages": [
+28
+],
+"question_text": "A sphere of radius 5 mm is initially in equilibrium at 400 °C in a furnace. It is suddenly removed from the furnace and dipped in a well-stirred water bath at 20 °C, with a convection heat transfer coefficient of 500 W/(m\\(^2\\)K). For the given range of temperatures, the thermophysical properties of the material of the sphere are: density \\(\\rho = 3000\\) kg/m\\(^3\\), thermal conductivity \\(k = 10\\) W/(m K), and specific heat \\(c = 1000\\) J/(kg K). Neglecting radiation heat transfer, the time required for the centre of the sphere to cool from 400 °C to 50 °C is ________ seconds (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 36,
+"pages": [
+29
+],
+"question_text": "If \\(w = \\log_e z = \\log_e(x + iy)\\), where \\(i = \\sqrt{-1}\\), then which one of the following statements is correct?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(w\\) is analytic everywhere except at \\(z = 0\\)"
+},
+{
+"option_id": "B",
+"text": "\\(w\\) is non-analytic everywhere"
+},
+{
+"option_id": "C",
+"text": "The conjugate functions of \\(w\\) are \\(\\log_e(x^2 + y^2)\\) and \\(\\log_e(x^2 - y^2)\\)"
+},
+{
+"option_id": "D",
+"text": "The conjugate functions of \\(w\\) are \\(tan^{-1}(^x/_y)\\) and \\(tan^{-1}(^y/_x)\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 37,
+"pages": [
+29
+],
+"question_text": "Consider the following differential equation\n\\[\\frac{\\partial y}{\\partial x} = 3\\frac{\\partial y}{\\partial t} + y\\]\nIf \\(y(x, 0) = 10e^{-2x}\\), then the solution of the differential equation is",
+"options": [
+{
+"option_id": "A",
+"text": "\\(y(x, t) = 10e^{-2x-t}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(y(x, t) = 10e^{-2x+t}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(y(x, t) = 10e^{-2x-2t}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(y(x, t) = 10e^{-2x+2t}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 38,
+"pages": [
+30
+],
+"question_text": "Let \\(f(t)\\) be a function of \\(t\\) defined for all positive values of \\(t\\). The Laplace transform of \\(f(t)\\) denoted by \\(L\\{f(t)\\} = \\int_0^\\infty e^{-st}f(t)dt\\), provided that the integral exists where \\(s\\) is a parameter which may be a real or complex number.\nThe Laplace transform of \\(f(t) = \\sin 2t \\sin 4t\\) is",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\dfrac{16s}{(s^2+4)(s^2+36)}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\dfrac{32s}{(s^2+4)(s^2+36)}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\dfrac{16}{(s^2+4)(s^2+36)}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\dfrac{32}{(s^2+4)(s^2+36)}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 39,
+"pages": [
+31
+],
+"question_text": "A student council of 10 members consists of two students from engineering school, three students from science school and five students from arts school. The university administration selects three students from the council at random. What is the chance that out of the selected students, two belong to the same school and the third belongs to different school?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(^{79}/_{120}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(^{2}/_{120}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(^{89}/_{120}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(^{69}/_{120}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 40,
+"pages": [
+32
+],
+"question_text": "A cantilever beam of length \\(L\\) is subjected to a concentrated load \\(P\\) and a moment \\(M\\) as shown in the figure below.\n[IMAGE_Q_40_1]\nNeglecting the mass of the beam, which one of the following options is the correct representation of shear force diagram (SFD) and bending moment diagram (BMD)?",
+"options": [
+{
+"option_id": "A",
+"text": "[IMAGE_Q_40_A]"
+},
+{
+"option_id": "B",
+"text": "[IMAGE_Q_40_B]"
+},
+{
+"option_id": "C",
+"text": "[IMAGE_Q_40_C]"
+},
+{
+"option_id": "D",
+"text": "[IMAGE_Q_40_D]"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_40_1",
+"page": 32,
+"regions": [
+"p032_r1"
+]
+},
+{
+"placeholder": "IMAGE_Q_40_A",
+"page": 32,
+"regions": [
+"p032_r2"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_40_B",
+"page": 32,
+"regions": [
+"p032_r3"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_40_C",
+"page": 32,
+"regions": [
+"p032_r4"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_40_D",
+"page": 32,
+"regions": [
+"p032_r5"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 41,
+"pages": [
+33
+],
+"question_text": "Two structural members are connected by a hinge and they are externally loaded as shown in the figure below. A and B are roller supports, and C is a pin support.\n[IMAGE_Q_41_1]\nNeglecting the mass of the members, the magnitude of the vertical reaction force at C in kN is",
+"options": [
+{
+"option_id": "A",
+"text": "5"
+},
+{
+"option_id": "B",
+"text": "10"
+},
+{
+"option_id": "C",
+"text": "20"
+},
+{
+"option_id": "D",
+"text": "15"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_41_1",
+"page": 33,
+"regions": [
+"p033_r1"
+]
+}
+]
+},
+{
+"qno": 42,
+"pages": [
+34
+],
+"question_text": "A 5 kg mass is suspended at the free end of an overhanging massless beam, having a pin support and a roller support, as shown in the figure below. Young’s modulus of the material of the beam is 200 GPa and area moment of inertia of the beam is \\(10^{-8}\\) m\\(^4\\). The natural frequency of the beam in rad/s is\n[IMAGE_Q_42_1]",
+"options": [
+{
+"option_id": "A",
+"text": "10"
+},
+{
+"option_id": "B",
+"text": "\\(^{10}/_{3}\\)"
+},
+{
+"option_id": "C",
+"text": "5"
+},
+{
+"option_id": "D",
+"text": "\\(^{20}/_{3}\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_42_1",
+"page": 34,
+"regions": [
+"p034_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 43,
+"pages": [
+35
+],
+"question_text": "A very long fin of a uniform square cross-section is replaced by another very long fin of a uniform circular cross-section of the same material. Assume uniform and identical heat transfer coefficient for both the fins. If the diameter of the circular fin is equal to the side length of the square fin, then the ratio of heat transfer rates before and after the replacement is",
+"options": [
+{
+"option_id": "A",
+"text": "\\(^{4}/_{\\pi}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(^{16}/_{\\pi^2}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(^{1}/_{\\pi}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(^{1}/_{\\pi^2}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 44,
+"pages": [
+36
+],
+"question_text": "For an ideal regenerative Rankine cycle, as shown in the figure below, which one of the following options is the correct representation of temperature-entropy (T-s) diagram?\n[IMAGE_Q_44_1]",
+"options": [
+{
+"option_id": "A",
+"text": "[IMAGE_Q_44_A]"
+},
+{
+"option_id": "B",
+"text": "[IMAGE_Q_44_B]"
+},
+{
+"option_id": "C",
+"text": "[IMAGE_Q_44_C]"
+},
+{
+"option_id": "D",
+"text": "[IMAGE_Q_44_D]"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_44_1",
+"page": 36,
+"regions": [
+"p036_r1"
+]
+},
+{
+"placeholder": "IMAGE_Q_44_A",
+"page": 36,
+"rect": [
+115,
+335,
+230,
+430
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_44_B",
+"page": 36,
+"rect": [
+115,
+433,
+230,
+527
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_44_C",
+"page": 36,
+"rect": [
+115,
+530,
+230,
+624
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_44_D",
+"page": 36,
+"rect": [
+115,
+627,
+230,
+722
+],
+"grow": false
+}
+]
+},
+{
+"qno": 45,
+"pages": [
+37
+],
+"question_text": "Consider the Euler variables of polyhedral objects namely, P1, P2, P3, and P4 as given in the table below. Which one of the following options is NOT a topologically valid closed polyhedral object as per Euler’s law?\n[IMAGE_Q_45_1]",
+"options": [
+{
+"option_id": "A",
+"text": "P3"
+},
+{
+"option_id": "B",
+"text": "P1"
+},
+{
+"option_id": "C",
+"text": "P4"
+},
+{
+"option_id": "D",
+"text": "P2"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_45_1",
+"page": 37,
+"regions": [
+"p037_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 46,
+"pages": [
+38
+],
+"question_text": "An objective function \\(Z\\) of primal variables (\\(x_1\\) and \\(x_2\\)) is described below:\nMinimize \\(Z = 0.07\\,x_1 + 0.05\\,x_2\\)\nsubject to \\[\\begin{aligned} &0.1\\,x_1 \\ge 0.4\\\\ &0.1\\,x_2 \\ge 0.6\\\\ &0.1\\,x_1 + 0.2\\,x_2 \\ge 2.0\\\\ &0.2\\,x_1 + 0.1\\,x_2 \\ge 1.8\\\\ &x_1, x_2 \\ge 0 \\end{aligned}\\]\n\\(W\\) is the objective function of the dual of \\(Z\\).\n\\(k_1, k_2, k_3\\), and \\(k_4\\) represent the corresponding dual variables.\nWhich one of the following options represents the correct form of \\(W\\)?",
+"options": [
+{
+"option_id": "A",
+"text": "Maximize \\(W = 0.4\\,k_1 + 0.6\\,k_2 + 2.0\\,k_3 + 1.8\\,k_4\\)\nsubject to \\(0.1\\,k_1 + 0.1\\,k_3 + 0.2\\,k_4 \\le 0.07\\)\n\\(0.1\\,k_2 + 0.2\\,k_3 + 0.1\\,k_4 \\le 0.05\\)\n\\(k_1, k_2, k_3, k_4 \\ge 0\\)"
+},
+{
+"option_id": "B",
+"text": "Maximize \\(W = 0.4\\,k_1 + 0.6\\,k_2 + 2.0\\,k_3 + 1.8\\,k_4\\)\nsubject to \\(0.1\\,k_1 + 0.1\\,k_2 + 0.2\\,k_4 \\le 0.07\\)\n\\(0.1\\,k_2 + 0.2\\,k_3 + 0.1\\,k_4 \\le 0.05\\)\n\\(k_1, k_2, k_3, k_4 \\ge 0\\)"
+},
+{
+"option_id": "C",
+"text": "Maximize \\(W = 0.4\\,k_1 + 0.6\\,k_2 + 2.0\\,k_3 + 1.8\\,k_4\\)\nsubject to \\(0.1\\,k_1 + 0.1\\,k_2 + 0.2\\,k_4 \\le 0.05\\)\n\\(0.1\\,k_1 + 0.2\\,k_3 + 0.1\\,k_4 \\le 0.07\\)\n\\(k_1, k_2, k_3, k_4 \\ge 0\\)"
+},
+{
+"option_id": "D",
+"text": "Maximize \\(W = 0.4\\,k_1 + 0.6\\,k_2 + 2.0\\,k_3 + 1.8\\,k_4\\)\nsubject to \\(0.1\\,k_1 + 0.1\\,k_3 + 0.2\\,k_4 \\le 0.05\\)\n\\(0.1\\,k_2 + 0.2\\,k_3 + 0.1\\,k_4 \\le 0.07\\)\n\\(k_1, k_2, k_3, k_4 \\ge 0\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 47,
+"pages": [
+39
+],
+"question_text": "Four jobs are on order in a factory. As on day 20 of the production calendar, the corresponding due date and work remaining to complete these jobs (in days) are given in the table below.\n[IMAGE_Q_47_1]\nWhich job(s) has/have critical ratio less than unity?",
+"options": [
+{
+"option_id": "A",
+"text": "Job N and Job O"
+},
+{
+"option_id": "B",
+"text": "Job M and Job N"
+},
+{
+"option_id": "C",
+"text": "Job P"
+},
+{
+"option_id": "D",
+"text": "Job O and Job P"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_47_1",
+"page": 39,
+"regions": [
+"p039_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 48,
+"pages": [
+40
+],
+"question_text": "A block of 50 kg mass is on an inclined plane. The block is connected to another hanging mass \\(M\\) by an inextensible massless string through two massless pulleys as shown in the figure below. The coefficient of static friction between the block and the inclined plane is 0.3.\n[IMAGE_Q_48_1]\nNeglecting pulley friction, the minimum value of \\(M\\) required to start the upward motion of the block is ________ kg (rounded off to 1 decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_48_1",
+"page": 40,
+"regions": [
+"p040_r1"
+]
+}
+]
+},
+{
+"qno": 49,
+"pages": [
+40
+],
+"question_text": "A simply supported beam is subjected to an external point load \\(P\\) as shown in the figure below. The beam has a rectangular cross-section of 20 mm × 45 mm. A is a pin support and B is a roller support. The shear stress developed at point C, lying on the neutral axis of the beam, is 3 MPa.\n[IMAGE_Q_49_1]\nNeglecting the mass of the beam, the magnitude of the applied load is _______ kN (rounded off to 1 decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_49_1",
+"page": 40,
+"regions": [
+"p040_r2"
+]
+}
+]
+},
+{
+"qno": 50,
+"pages": [
+41
+],
+"question_text": "A rigid slender bar, AB, is sliding against two mutually perpendicular frictionless walls, as shown in the figure below. The velocity of A in the downward direction at a given instant is 6 m/s.\n[IMAGE_Q_50_1]\nAt that instant, the magnitude of absolute velocity of the midpoint G is ________ m/s (rounded off to 2 decimal places).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_50_1",
+"page": 41,
+"regions": [
+"p041_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 51,
+"pages": [
+41
+],
+"question_text": "A cylindrical pressure vessel made of steel has diameter of 3 m and wall thickness of 15 mm. For steel, Young’s modulus and Poisson’s ratio are 210 GPa and 0.3, respectively. The cylinder is designed such that the allowable normal strain at the outer cylindrical surface is equal to 0.00034. The permissible pressure in the tank is ________ kPa (rounded off to 1 decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 52,
+"pages": [
+41
+],
+"question_text": "A welded square plate of 1 m × 1 m is subjected to biaxial stress of magnitude 6.5 MPa and 25 MPa, as shown in the figure below.\n[IMAGE_Q_52_1]\nThe ratio of the normal stress acting in the perpendicular direction of the weld to the shear stress of the weld is ________ (rounded off to 2 decimal places).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_52_1",
+"page": 41,
+"regions": [
+"p041_r2"
+]
+}
+]
+},
+{
+"qno": 53,
+"pages": [
+42
+],
+"question_text": "Water with a density of 1000 kg/m\\(^3\\) comes out of an industrial condenser through a horizontal pipe of 15 cm radius at the flow rate of 4.5 m\\(^3\\)/min. The outlet of the pipe is connected to a coaxial diffuser of 0.5 m length using a flange to raise the pressure of water to atmospheric condition without any backflow. The inner radius (\\(r\\), in m) of the diffuser cross-section is expressed as \\(r = 0.15 + 0.4\\,x^2\\) where, \\(x\\) represents the axial distance of the diffuser in m, from its inlet. Considering frictionless flow, the magnitude of the force exerted by the diffuser on the flange is ________ N (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 54,
+"pages": [
+42
+],
+"question_text": "Two rectangular surfaces both having 1 m\\(^2\\) area are placed perpendicular to each other with a common edge. One surface is hot, having a temperature of 1000 K and emissivity of 0.4, while the other is insulated and in radiant balance with a large surrounding room at 300 K. If the fraction of radiation leaving the hot surface which reaches the cold surface is 0.2, then the equivalent overall resistance for the radiation heat loss from the hot surface is _______ m\\(^{-2}\\) (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 55,
+"pages": [
+42
+],
+"question_text": "Convective heat transfer coefficients for Fluid 1 and Fluid 2 in a heat exchanger, as shown in the figure below, are 50 W/(m\\(^2\\)K) and 80 W/(m\\(^2\\)K), respectively. The inner tube is made of a material which has a thermal conductivity 386 W/(m K) for the given range of temperatures in the heat exchanger. The length of the heat exchanging surface, the inside radius of the inner tube, and thickness of the inner tube are 1 m, 10 mm, and 1 mm, respectively.\n[IMAGE_Q_55_1]\nConsidering no heat exchange between the outer tube and the surrounding, the heat transfer rate for the heat exchanger is ________ W (rounded off to 1 decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_55_1",
+"page": 42,
+"regions": [
+"p042_r1"
+]
+}
+]
+},
+{
+"qno": 56,
+"pages": [
+43
+],
+"question_text": "A liquid comes out of the reactor of a chemical plant at 250 °C temperature with a flow rate of 100 LPM. The ambient temperature is 25 °C. Density and specific heat of the liquid remain constant at 1000 kg/m\\(^3\\) and 4.18 kJ/kg K, respectively, for the given range of temperature. The rate of exergy associated with the hot liquid stream at the exit of the plant is ________ kW (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 57,
+"pages": [
+43
+],
+"question_text": "A rigid closed vertical cylindrical vessel of 15 cm diameter contains 5 kg water at 80 °C with 10% quality. The water is heated till its temperature reaches 130 °C. Considering only a horizontal separated interface between liquid and vapor, the dip in the liquid level after the heating process is ________ cm (rounded off to 2 decimal places).\nProperties of water at various saturation temperatures are given in the table below.\n[IMAGE_Q_57_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_57_1",
+"page": 43,
+"regions": [
+"p043_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 58,
+"pages": [
+43
+],
+"question_text": "An inward flow reaction turbine, having an outer diameter of 1 m, runs at 600 RPM. The normal component of absolute velocity at the inlet is 10 m/s. If the guide blade angle is \\(15^\\circ\\), then the inlet vane angle of the runner is ________ degree (rounded off to 1 decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 59,
+"pages": [
+43
+],
+"question_text": "In a deep drawing operation of a rectangular sheet metal, 30% stretching in length results in 15% reduction in thickness. Assuming volume constancy, the normal anisotropy of the sheet metal is ________ (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 60,
+"pages": [
+43
+],
+"question_text": "The actual demand for castings in a factory is 500 units and 635 units for the months of January 2026 and February 2026, respectively. The forecasted demand for January 2026 is 250 units and smoothing constant is 0.7. Using the exponential smoothing method, the forecast of the demand for castings in March 2026 is________ units (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 61,
+"pages": [
+44
+],
+"question_text": "The inventory holding cost of an item is ₹ 0.50 per unit per month and the ordering cost per order is ₹ 550. A stockist needs to supply 10000 units of the item per year to the customers. Assume demand is fixed and shortage cost is infinite. Using classical economic order quantity (EOQ) model, the optimal lot size is ________ units per order (rounded off to nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 62,
+"pages": [
+44
+],
+"question_text": "A metal has FCC crystal structure with 2.71 g/cm\\(^3\\) of density and 26.98 g/mol of atomic weight. The Avogadro’s number is \\(6.023 \\times 10^{23}\\). The atomic radius of the metal is ________ nm (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 63,
+"pages": [
+44
+],
+"question_text": "During orthogonal turning by using a single point cutting tool, feed rate is 0.24 mm/rev. The uncut chip thickness is 0.23 mm. The shear angle, tangential force component, and radial force component are \\(20^\\circ\\), 800 N, and 150 N, respectively. The value of shear force is ________ N (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 64,
+"pages": [
+44
+],
+"question_text": "A drill bit during its lifetime can produce 150 through holes in a plate at a drill-speed of 200 RPM. If the drill-speed increases to 300 RPM, then it can produce 60 through holes in the same plate before the drill bit fails. Assume all other parameters remain constant. The value of the exponent in Taylor’s tool life equation is ________ (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 65,
+"pages": [
+44
+],
+"question_text": "The activities of a PERT network and their corresponding activity time estimates (in weeks) i.e., optimistic (\\(t_o\\)), most likely (\\(t_m\\)), and pessimistic (\\(t_p\\)) are given in the table below.\n[IMAGE_Q_65_1]\nThe expected project length is ________ weeks (in integer).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_65_1",
+"page": 44,
+"regions": [
+"p044_r1"
+],
+"grow": false
+}
+]
+}
+]

@@ -47,6 +47,17 @@ CODES = {
         "MS": "Electrical and Electronic Measurements",
         "AE": "Analog Electronics", "DL": "Digital Electronics", "PE": "Power Electronics",
     },
+    "ME": {
+        "LA": "Linear Algebra", "CA": "Calculus", "DE": "Differential Equations", "CV": "Complex Variables",
+        "PR": "Probability and Statistics", "NM": "Numerical Methods",
+        "EM": "Engineering Mechanics", "SM": "Mechanics of Materials", "TM": "Theory of Machines",
+        "VB": "Vibrations", "MD": "Machine Design",
+        "FM": "Fluid Mechanics", "HT": "Heat Transfer", "TD": "Thermodynamics", "AP": "Applications",
+        "MT": "Engineering Materials", "CF": "Casting, Forming and Joining Processes",
+        "MC": "Machining and Machine Tool Operations", "AM": "Additive Manufacturing",
+        "MI": "Metrology and Inspection", "CM": "Computer Aided Manufacturing and Automation",
+        "PP": "Production Planning and Control", "OR": "Operations Research",
+    },
     "DA": {
         "PS": "Probability and Statistics", "LA": "Linear Algebra", "CO": "Calculus and Optimization",
         "PD": "Programming, Data Structures and Algorithms", "DB": "Database Management and Warehousing",

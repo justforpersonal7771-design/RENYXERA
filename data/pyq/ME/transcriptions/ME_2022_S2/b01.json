@@ -1,0 +1,1007 @@
+[
+{
+"qno": 1,
+"pages": [
+1
+],
+"question_text": "Writing too many things on the ________ while teaching could make the students get _________.",
+"options": [
+{
+"option_id": "A",
+"text": "bored / board"
+},
+{
+"option_id": "B",
+"text": "board / bored"
+},
+{
+"option_id": "C",
+"text": "board / board"
+},
+{
+"option_id": "D",
+"text": "bored / bored"
+}
+],
+"figures": []
+},
+{
+"qno": 2,
+"pages": [
+2
+],
+"question_text": "Which one of the following is a representation (not to scale and in bold) of all values of \\(x\\) satisfying the inequality \\(2 - 5x \\le -\\dfrac{6x-5}{3}\\) on the real number line?",
+"options": [
+{
+"option_id": "A",
+"text": "[IMAGE_Q_02_A]"
+},
+{
+"option_id": "B",
+"text": "[IMAGE_Q_02_B]"
+},
+{
+"option_id": "C",
+"text": "[IMAGE_Q_02_C]"
+},
+{
+"option_id": "D",
+"text": "[IMAGE_Q_02_D]"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_02_A",
+"page": 2,
+"regions": [
+"p002_r1"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_02_B",
+"page": 2,
+"regions": [
+"p002_r2"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_02_C",
+"page": 2,
+"regions": [
+"p002_r3"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_02_D",
+"page": 2,
+"regions": [
+"p002_r4"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 3,
+"pages": [
+3
+],
+"question_text": "If \\(f(x) = 2\\ln(\\sqrt{e^x})\\), what is the area bounded by \\(f(x)\\) for the interval [0, 2] on the \\(x\\)-axis?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\dfrac{1}{2}\\)"
+},
+{
+"option_id": "B",
+"text": "1"
+},
+{
+"option_id": "C",
+"text": "2"
+},
+{
+"option_id": "D",
+"text": "4"
+}
+],
+"figures": []
+},
+{
+"qno": 4,
+"pages": [
+4
+],
+"question_text": "A person was born on the fifth Monday of February in a particular year.\nWhich one of the following statements is correct based on the above information?",
+"options": [
+{
+"option_id": "A",
+"text": "The 2nd February of that year is a Tuesday"
+},
+{
+"option_id": "B",
+"text": "There will be five Sundays in the month of February in that year"
+},
+{
+"option_id": "C",
+"text": "The 1st February of that year is a Sunday"
+},
+{
+"option_id": "D",
+"text": "All Mondays of February in that year have even dates"
+}
+],
+"figures": []
+},
+{
+"qno": 5,
+"pages": [
+5
+],
+"question_text": "[IMAGE_Q_05_1]\nWhich one of the groups given below can be assembled to get the shape that is shown above using each piece only once without overlapping with each other? (rotation and translation operations may be used).",
+"options": [
+{
+"option_id": "A",
+"text": "[IMAGE_Q_05_A]"
+},
+{
+"option_id": "B",
+"text": "[IMAGE_Q_05_B]"
+},
+{
+"option_id": "C",
+"text": "[IMAGE_Q_05_C]"
+},
+{
+"option_id": "D",
+"text": "[IMAGE_Q_05_D]"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_05_1",
+"page": 5,
+"regions": [
+"p005_r1"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_A",
+"page": 5,
+"regions": [
+"p005_r2"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_B",
+"page": 5,
+"regions": [
+"p005_r3"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_C",
+"page": 5,
+"regions": [
+"p005_r4"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_D",
+"page": 5,
+"regions": [
+"p005_r5"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 6,
+"pages": [
+6
+],
+"question_text": "Fish belonging to species S in the deep sea have skins that are extremely black (ultra-black skin). This helps them not only to avoid predators but also sneakily attack their prey. However, having this extra layer of black pigment results in lower collagen on their skin, making their skin more fragile.\nWhich one of the following is the CORRECT logical inference based on the information in the above passage?",
+"options": [
+{
+"option_id": "A",
+"text": "Having ultra-black skin is only advantageous to species S"
+},
+{
+"option_id": "B",
+"text": "Species S with lower collagen in their skin are at an advantage because it helps them avoid predators"
+},
+{
+"option_id": "C",
+"text": "Having ultra-black skin has both advantages and disadvantages to species S"
+},
+{
+"option_id": "D",
+"text": "Having ultra-black skin is only disadvantageous to species S but advantageous only to their predators"
+}
+],
+"figures": []
+},
+{
+"qno": 7,
+"pages": [
+7
+],
+"question_text": "For the past \\(m\\) days, the average daily production at a company was 100 units per day.\nIf today’s production of 180 units changes the average to 110 units per day, what is the value of \\(m\\)?",
+"options": [
+{
+"option_id": "A",
+"text": "18"
+},
+{
+"option_id": "B",
+"text": "10"
+},
+{
+"option_id": "C",
+"text": "7"
+},
+{
+"option_id": "D",
+"text": "5"
+}
+],
+"figures": []
+},
+{
+"qno": 8,
+"pages": [
+8
+],
+"question_text": "Consider the following functions for non-zero positive integers, \\(p\\) and \\(q\\).\n\\[f(p, q) = \\underbrace{p \\times p \\times p \\times \\ldots\\ldots\\ldots \\times p}_{q\\text{ terms}} = p^q; \\quad f(p, 1) = p\\]\n\\[g(p, q) = p^{p^{p^{p^{p^{\\cdot^{\\cdot^{\\cdot}}}}}}}\\ \\text{(up to } q\\text{ terms)}; \\quad g(p, 1) = p\\]\nWhich one of the following options is correct based on the above?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(f(2,2) = g(2,2)\\)"
+},
+{
+"option_id": "B",
+"text": "\\(f(g(2,2), 2) < f(2, g(2,2))\\)"
+},
+{
+"option_id": "C",
+"text": "\\(g(2,1) \\ne f(2,1)\\)"
+},
+{
+"option_id": "D",
+"text": "\\(f(3,2) > g(3,2)\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 9,
+"pages": [
+9
+],
+"question_text": "Four cities P, Q, R and S are connected through one-way routes as shown in the figure. The travel time between any two connected cities is one hour. The boxes beside each city name describe the starting time of first train of the day and their frequency of operation. For example, from city P, the first trains of the day start at 8 AM with a frequency of 90 minutes to each of R and S. A person does not spend additional time at any city other than the waiting time for the next connecting train.\nIf the person starts from R at 7 AM and is required to visit S and return to R, what is the minimum time required?\n[IMAGE_Q_09_1]",
+"options": [
+{
+"option_id": "A",
+"text": "6 hours 30 minutes"
+},
+{
+"option_id": "B",
+"text": "3 hours 45 minutes"
+},
+{
+"option_id": "C",
+"text": "4 hours 30 minutes"
+},
+{
+"option_id": "D",
+"text": "5 hours 15 minutes"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_09_1",
+"page": 9,
+"regions": [
+"p009_r1"
+]
+}
+]
+},
+{
+"qno": 10,
+"pages": [
+10
+],
+"question_text": "Equal sized circular regions are shaded in a square sheet of paper of 1 cm side length. Two cases, case M and case N, are considered as shown in the figures below. In the case M, four circles are shaded in the square sheet and in the case N, nine circles are shaded in the square sheet as shown.\n[IMAGE_Q_10_1]\nWhat is the ratio of the areas of unshaded regions of case M to that of case N?",
+"options": [
+{
+"option_id": "A",
+"text": "2 : 3"
+},
+{
+"option_id": "B",
+"text": "1 : 1"
+},
+{
+"option_id": "C",
+"text": "3 : 2"
+},
+{
+"option_id": "D",
+"text": "2 : 1"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_10_1",
+"page": 10,
+"regions": [
+"p010_r1",
+"p010_r2"
+],
+"pad": [
+4,
+4,
+4,
+18
+]
+}
+]
+},
+{
+"qno": 11,
+"pages": [
+11
+],
+"question_text": "\\(F(t)\\) is a periodic square wave function as shown. It takes only two values, 4 and 0, and stays at each of these values for 1 second before changing. What is the constant term in the Fourier series expansion of \\(F(t)\\)?\n[IMAGE_Q_11_1]",
+"options": [
+{
+"option_id": "A",
+"text": "1"
+},
+{
+"option_id": "B",
+"text": "2"
+},
+{
+"option_id": "C",
+"text": "3"
+},
+{
+"option_id": "D",
+"text": "4"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_11_1",
+"page": 11,
+"regions": [
+"p011_r1"
+]
+}
+]
+},
+{
+"qno": 12,
+"pages": [
+12
+],
+"question_text": "Consider a cube of unit edge length and sides parallel to co-ordinate axes, with its centroid at the point (1, 2, 3). The surface integral \\(\\int_A \\vec{\\boldsymbol{F}} \\cdot d\\vec{\\boldsymbol{A}}\\) of a vector field \\(\\vec{\\boldsymbol{F}} = 3x\\hat{\\boldsymbol{\\imath}} + 5y\\hat{\\boldsymbol{\\jmath}} + 6z\\hat{\\boldsymbol{k}}\\) over the entire surface \\(A\\) of the cube is ______.",
+"options": [
+{
+"option_id": "A",
+"text": "14"
+},
+{
+"option_id": "B",
+"text": "27"
+},
+{
+"option_id": "C",
+"text": "28"
+},
+{
+"option_id": "D",
+"text": "31"
+}
+],
+"figures": []
+},
+{
+"qno": 13,
+"pages": [
+12
+],
+"question_text": "Consider the definite integral\n\\[\\int_1^2 (4x^2 + 2x + 6)dx.\\]\nLet \\(I_e\\) be the exact value of the integral. If the same integral is estimated using Simpson’s rule with 10 equal subintervals, the value is \\(I_s\\). The percentage error is defined as \\(e = 100 \\times (I_e - I_s)/I_e\\). The value of \\(e\\) is",
+"options": [
+{
+"option_id": "A",
+"text": "2.5"
+},
+{
+"option_id": "B",
+"text": "3.5"
+},
+{
+"option_id": "C",
+"text": "1.2"
+},
+{
+"option_id": "D",
+"text": "0"
+}
+],
+"figures": []
+},
+{
+"qno": 14,
+"pages": [
+13
+],
+"question_text": "Given \\(\\int_{-\\infty}^{\\infty} e^{-x^2}dx = \\sqrt{\\pi}\\).\nIf \\(a\\) and \\(b\\) are positive integers, the value of \\(\\int_{-\\infty}^{\\infty} e^{-a(x+b)^2}dx\\) is ________.",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\sqrt{\\pi a}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\sqrt{\\dfrac{\\pi}{a}}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(b\\sqrt{\\pi a}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(b\\sqrt{\\dfrac{\\pi}{a}}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 15,
+"pages": [
+13
+],
+"question_text": "A polynomial \\(\\varphi(s) = a_n s^n + a_{n-1}s^{n-1} + \\cdots + a_1 s + a_0\\) of degree \\(n > 3\\) with constant real coefficients \\(a_n, a_{n-1}, \\ldots a_0\\) has triple roots at \\(s = -\\sigma\\). Which one of the following conditions must be satisfied?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\varphi(s) = 0\\) at all the three values of \\(s\\) satisfying \\(s^3 + \\sigma^3 = 0\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\varphi(s) = 0\\), \\(\\frac{d\\varphi(s)}{ds} = 0\\), and \\(\\frac{d^2\\varphi(s)}{ds^2} = 0\\) at \\(s = -\\sigma\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\varphi(s) = 0\\), \\(\\frac{d^2\\varphi(s)}{ds^2} = 0\\), and \\(\\frac{d^4\\varphi(s)}{ds^4} = 0\\) at \\(s = -\\sigma\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\varphi(s) = 0\\), and \\(\\frac{d^3\\varphi(s)}{ds^3} = 0\\) at \\(s = -\\sigma\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 16,
+"pages": [
+14
+],
+"question_text": "Which one of the following is the definition of ultimate tensile strength (UTS) obtained from a stress-strain test on a metal specimen?",
+"options": [
+{
+"option_id": "A",
+"text": "Stress value where the stress-strain curve transitions from elastic to plastic behavior"
+},
+{
+"option_id": "B",
+"text": "The maximum load attained divided by the original cross-sectional area"
+},
+{
+"option_id": "C",
+"text": "The maximum load attained divided by the corresponding instantaneous cross-sectional area"
+},
+{
+"option_id": "D",
+"text": "Stress where the specimen fractures"
+}
+],
+"figures": []
+},
+{
+"qno": 17,
+"pages": [
+15
+],
+"question_text": "A massive uniform rigid circular disc is mounted on a frictionless bearing at the end E of a massive uniform rigid shaft AE which is suspended horizontally in a uniform gravitational field by two identical light inextensible strings AB and CD as shown, where G is the center of mass of the shaft-disc assembly and \\(g\\) is the acceleration due to gravity. The disc is then given a rapid spin \\(\\omega\\) about its axis in the positive x-axis direction as shown, while the shaft remains at rest. The direction of rotation is defined by using the right-hand thumb rule. If the string AB is suddenly cut, assuming negligible energy dissipation, the shaft AE will\n[IMAGE_Q_17_1]",
+"options": [
+{
+"option_id": "A",
+"text": "rotate slowly (compared to \\(\\omega\\)) about the negative z-axis direction"
+},
+{
+"option_id": "B",
+"text": "rotate slowly (compared to \\(\\omega\\)) about the positive z-axis direction"
+},
+{
+"option_id": "C",
+"text": "rotate slowly (compared to \\(\\omega\\)) about the positive y-axis direction"
+},
+{
+"option_id": "D",
+"text": "rotate slowly (compared to \\(\\omega\\)) about the negative y-axis direction"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_17_1",
+"page": 15,
+"rect": [
+172,
+259,
+465,
+435
+],
+"grow": false
+}
+]
+},
+{
+"qno": 18,
+"pages": [
+16
+],
+"question_text": "A structural member under loading has a uniform state of plane stress which in usual notations is given by \\(\\sigma_x = 3P\\), \\(\\sigma_y = -2P\\) and \\(\\tau_{xy} = \\sqrt{2}\\,P\\), where \\(P > 0\\). The yield strength of the material is 350 MPa. If the member is designed using the maximum distortion energy theory, then the value of \\(P\\) at which yielding starts (according to the maximum distortion energy theory) is",
+"options": [
+{
+"option_id": "A",
+"text": "70 MPa"
+},
+{
+"option_id": "B",
+"text": "90 MPa"
+},
+{
+"option_id": "C",
+"text": "120 MPa"
+},
+{
+"option_id": "D",
+"text": "75 MPa"
+}
+],
+"figures": []
+},
+{
+"qno": 19,
+"pages": [
+17
+],
+"question_text": "Fluidity of a molten alloy during sand casting depends on its solidification range. The phase diagram of a hypothetical binary alloy of components A and B is shown in the figure with its eutectic composition and temperature. All the lines in this phase diagram, including the solidus and liquidus lines, are straight lines. If this binary alloy with 15 weight % of B is poured into a mould at a pouring temperature of 800 \\(^o\\)C, then the solidification range is\n[IMAGE_Q_19_1]",
+"options": [
+{
+"option_id": "A",
+"text": "400 \\(^o\\)C"
+},
+{
+"option_id": "B",
+"text": "250 \\(^o\\)C"
+},
+{
+"option_id": "C",
+"text": "800 \\(^o\\)C"
+},
+{
+"option_id": "D",
+"text": "150 \\(^o\\)C"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_19_1",
+"page": 17,
+"rect": [
+118,
+215,
+482,
+543
+],
+"grow": false
+}
+]
+},
+{
+"qno": 20,
+"pages": [
+18
+],
+"question_text": "A shaft of diameter \\(25^{-0.04}_{-0.07}\\) mm is assembled in a hole of diameter \\(25^{+0.02}_{-0.00}\\) mm. Match the allowance and limit parameter in Column I with its corresponding quantitative value in Column II for this shaft-hole assembly.\n[IMAGE_Q_20_1]",
+"options": [
+{
+"option_id": "A",
+"text": "P-3, Q-1, R-4"
+},
+{
+"option_id": "B",
+"text": "P-1, Q-3, R-2"
+},
+{
+"option_id": "C",
+"text": "P-1, Q-3, R-4"
+},
+{
+"option_id": "D",
+"text": "P-3, Q-1, R-2"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_20_1",
+"page": 18,
+"regions": [
+"p018_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 21,
+"pages": [
+19
+],
+"question_text": "Match the additive manufacturing technique in Column I with its corresponding input material in Column II.\n[IMAGE_Q_21_1]",
+"options": [
+{
+"option_id": "A",
+"text": "P-3, Q-4, R-2"
+},
+{
+"option_id": "B",
+"text": "P-1, Q-2, R-4"
+},
+{
+"option_id": "C",
+"text": "P-2, Q-3, R-1"
+},
+{
+"option_id": "D",
+"text": "P-4, Q-1, R-4"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_21_1",
+"page": 19,
+"regions": [
+"p019_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 22,
+"pages": [
+20
+],
+"question_text": "Which one of the following CANNOT impart linear motion in a CNC machine?",
+"options": [
+{
+"option_id": "A",
+"text": "Linear motor"
+},
+{
+"option_id": "B",
+"text": "Ball screw"
+},
+{
+"option_id": "C",
+"text": "Lead screw"
+},
+{
+"option_id": "D",
+"text": "Chain and sprocket"
+}
+],
+"figures": []
+},
+{
+"qno": 23,
+"pages": [
+20
+],
+"question_text": "Which one of the following is an intensive property of a thermodynamic system?",
+"options": [
+{
+"option_id": "A",
+"text": "Mass"
+},
+{
+"option_id": "B",
+"text": "Density"
+},
+{
+"option_id": "C",
+"text": "Energy"
+},
+{
+"option_id": "D",
+"text": "Volume"
+}
+],
+"figures": []
+},
+{
+"qno": 24,
+"pages": [
+21
+],
+"question_text": "Consider a steady flow through a horizontal divergent channel, as shown in the figure, with supersonic flow at the inlet. The direction of flow is from left to right. Pressure at location B is observed to be higher than that at an upstream location A. Which among the following options can be the reason?\n[IMAGE_Q_24_1]",
+"options": [
+{
+"option_id": "A",
+"text": "Since volume flow rate is constant, velocity at B is lower than velocity at A"
+},
+{
+"option_id": "B",
+"text": "Normal shock"
+},
+{
+"option_id": "C",
+"text": "Viscous effect"
+},
+{
+"option_id": "D",
+"text": "Boundary layer separation"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_24_1",
+"page": 21,
+"regions": [
+"p021_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 25,
+"pages": [
+22
+],
+"question_text": "Which of the following non-dimensional terms is an estimate of Nusselt number?",
+"options": [
+{
+"option_id": "A",
+"text": "Ratio of internal thermal resistance of a solid to the boundary layer thermal resistance"
+},
+{
+"option_id": "B",
+"text": "Ratio of the rate at which internal energy is advected to the rate of conduction heat transfer"
+},
+{
+"option_id": "C",
+"text": "Non-dimensional temperature gradient"
+},
+{
+"option_id": "D",
+"text": "Non-dimensional velocity gradient multiplied by Prandtl number"
+}
+],
+"figures": []
+},
+{
+"qno": 26,
+"pages": [
+23
+],
+"question_text": "A square plate is supported in four different ways (configurations (P) to (S) as shown in the figure). A couple moment C is applied on the plate. Assume all the members to be rigid and mass-less, and all joints to be frictionless. All support links of the plate are identical. The square plate can remain in equilibrium in its initial state for which one or more of the following support configurations?\n[IMAGE_Q_26_1]",
+"options": [
+{
+"option_id": "A",
+"text": "Configuration (P)"
+},
+{
+"option_id": "B",
+"text": "Configuration (Q)"
+},
+{
+"option_id": "C",
+"text": "Configuration (R)"
+},
+{
+"option_id": "D",
+"text": "Configuration (S)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_26_1",
+"page": 23,
+"regions": [
+"p023_r1",
+"p023_r2",
+"p023_r3",
+"p023_r4"
+],
+"pad": [
+4,
+4,
+4,
+16
+]
+}
+]
+},
+{
+"qno": 27,
+"pages": [
+24
+],
+"question_text": "Consider sand casting of a cube of edge length \\(a\\). A cylindrical riser is placed at the top of the casting. Assume solidification time, \\(t_s \\propto V/A\\), where \\(V\\) is the volume and \\(A\\) is the total surface area dissipating heat. If the top of the riser is insulated, which of the following radius/radii of riser is/are acceptable?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\dfrac{a}{3}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\dfrac{a}{2}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\dfrac{a}{4}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\dfrac{a}{6}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 28,
+"pages": [
+24
+],
+"question_text": "Which of these processes involve(s) melting in metallic workpieces?",
+"options": [
+{
+"option_id": "A",
+"text": "Electrochemical machining"
+},
+{
+"option_id": "B",
+"text": "Electric discharge machining"
+},
+{
+"option_id": "C",
+"text": "Laser beam machining"
+},
+{
+"option_id": "D",
+"text": "Electron beam machining"
+}
+],
+"figures": []
+},
+{
+"qno": 29,
+"pages": [
+25
+],
+"question_text": "The velocity field in a fluid is given to be \\(\\vec{\\boldsymbol{V}} = (4xy)\\hat{\\boldsymbol{\\imath}} + 2(x^2 - y^2)\\hat{\\boldsymbol{\\jmath}}\\). Which of the following statement(s) is/are correct?",
+"options": [
+{
+"option_id": "A",
+"text": "The velocity field is one-dimensional."
+},
+{
+"option_id": "B",
+"text": "The flow is incompressible."
+},
+{
+"option_id": "C",
+"text": "The flow is irrotational."
+},
+{
+"option_id": "D",
+"text": "The acceleration experienced by a fluid particle is zero at \\((x = 0, y = 0)\\)."
+}
+],
+"figures": []
+},
+{
+"qno": 30,
+"pages": [
+26
+],
+"question_text": "A rope with two mass-less platforms at its two ends passes over a fixed pulley as shown in the figure. Discs with narrow slots and having equal weight of 20 N each can be placed on the platforms. The number of discs placed on the left side platform is \\(n\\) and that on the right side platform is \\(m\\).\nIt is found that for \\(n = 5\\) and \\(m = 0\\), a force \\(F\\) = 200 N (refer to part (i) of the figure) is just sufficient to initiate upward motion of the left side platform. If the force \\(F\\) is removed then the minimum value of \\(m\\) (refer to part (ii) of the figure) required to prevent downward motion of the left side platform is______ (in integer).\n[IMAGE_Q_30_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_30_1",
+"page": 26,
+"rect": [
+139,
+276,
+497,
+471
+],
+"grow": false
+}
+]
+},
+{
+"qno": 31,
+"pages": [
+26
+],
+"question_text": "For a dynamical system governed by the equation,\n\\[\\ddot{x}(t) + 2\\zeta\\omega_n\\dot{x}(t) + \\omega_n^2 x(t) = 0,\\]\nthe damping ratio \\(\\zeta\\) is equal to \\(\\frac{1}{2\\pi}\\log_e 2\\). The displacement \\(x\\) of this system is measured during a hammer test. A displacement peak in the positive displacement direction is measured to be 4 mm. Neglecting higher powers (>1) of the damping ratio, the displacement at the next peak in the positive direction will be ___________ mm (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 32,
+"pages": [
+27
+],
+"question_text": "An electric car manufacturer underestimated the January sales of car by 20 units, while the actual sales was 120 units. If the manufacturer uses exponential smoothing method with a smoothing constant of α = 0.2, then the sales forecast for the month of February of the same year is ___________units (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 33,
+"pages": [
+27
+],
+"question_text": "The demand of a certain part is 1000 parts/year and its cost is ₹1000/part. The orders are placed based on the economic order quantity (EOQ). The cost of ordering is ₹100/order and the lead time for receiving the orders is 5 days. If the holding cost is ₹20/part/year, the inventory level for placing the orders is _________ parts (round off to the nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 34,
+"pages": [
+27
+],
+"question_text": "Consider 1 kg of an ideal gas at 1 bar and 300 K contained in a rigid and perfectly insulated container. The specific heat of the gas at constant volume \\(c_v\\) is equal to 750 J∙kg\\(^{-1}\\)∙K\\(^{-1}\\). A stirrer performs 225 kJ of work on the gas. Assume that the container does not participate in the thermodynamic interaction. The final pressure of the gas will be ___________ bar (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 35,
+"pages": [
+28
+],
+"question_text": "Wien’s law is stated as follows: \\(\\lambda_m T = C\\), where \\(C\\) is 2898 μm∙K and \\(\\lambda_m\\) is the wavelength at which the emissive power of a black body is maximum for a given temperature \\(T\\). The spectral hemispherical emissivity (\\(\\varepsilon_\\lambda\\)) of a surface is shown in the figure below (1Å = 10\\(^{-10}\\)m). The temperature at which the total hemispherical emissivity will be highest is __________ K (round off to the nearest integer).\n[IMAGE_Q_35_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_35_1",
+"page": 28,
+"rect": [
+231,
+297,
+410,
+418
+],
+"grow": false
+}
+]
+}
+]

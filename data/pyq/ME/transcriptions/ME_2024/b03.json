@@ -1,0 +1,338 @@
+[
+{
+"qno": 36,
+"pages": [
+22
+],
+"question_text": "The matrix \\(\\begin{bmatrix} 1 & a \\\\ 8 & 3 \\end{bmatrix}\\) (where \\(a > 0\\)) has a negative eigenvalue if \\(a\\) is greater than",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\dfrac{3}{8}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\dfrac{1}{8}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\dfrac{1}{4}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\dfrac{1}{5}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 37,
+"pages": [
+23
+],
+"question_text": "In the pipe network shown in the figure, all pipes have the same cross-section and can be assumed to have the same friction factor. The pipes connecting points \\(W\\), \\(N\\), and \\(S\\) with point \\(J\\) have an equal length \\(L\\). The pipe connecting points \\(J\\) and \\(E\\) has a length \\(10L\\). The pressures at the ends \\(N\\), \\(E\\), and \\(S\\) are equal. The flow rate in the pipe connecting \\(W\\) and \\(J\\) is \\(Q\\). Assume that the fluid flow is steady, incompressible, and the pressure losses at the pipe entrance and junction are negligible. Consider the following statements:\nI : The flow rate in pipe connecting \\(J\\) and \\(E\\) is \\(Q/21\\).\nII: The pressure difference between \\(J\\) and \\(N\\) is equal to the pressure difference between \\(J\\) and \\(E\\).\nWhich one of the following options is CORRECT?\n[IMAGE_Q_37_1]",
+"options": [
+{
+"option_id": "A",
+"text": "I is True and II is False"
+},
+{
+"option_id": "B",
+"text": "I is False and II is True"
+},
+{
+"option_id": "C",
+"text": "Both I and II are True"
+},
+{
+"option_id": "D",
+"text": "Both I and II are False"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_37_1",
+"page": 23,
+"rect": [
+126,
+297,
+512,
+497
+],
+"grow": false
+}
+]
+},
+{
+"qno": 38,
+"pages": [
+24
+],
+"question_text": "A company orders gears in conditions identical to those considered in the economic order quantity (EOQ) model in inventory control. The annual demand is 8000 gears, the cost per order is 300 rupees, and the holding cost is 12 rupees per month per gear. The company uses an order size that is 25% more than the optimal order quantity determined by the EOQ model. The percentage change in the total cost of ordering and holding inventory from that associated with the optimal order quantity is",
+"options": [
+{
+"option_id": "A",
+"text": "2.5"
+},
+{
+"option_id": "B",
+"text": "5"
+},
+{
+"option_id": "C",
+"text": "0"
+},
+{
+"option_id": "D",
+"text": "12.5"
+}
+],
+"figures": []
+},
+{
+"qno": 39,
+"pages": [
+24
+],
+"question_text": "At the current basic feasible solution (bfs) \\(\\boldsymbol{v_0}\\) (\\(\\boldsymbol{v_0} \\in \\mathbb{R}^5\\)), the simplex method yields the following form of a linear programming problem in standard form.\n\\[\\begin{aligned} &\\textit{minimize}\\ z = -x_1 - 2x_2\\\\ &\\textit{s.t.}\\quad x_3 = 2 + 2x_1 - x_2\\\\ &\\qquad\\ \\ x_4 = 7 + x_1 - 2x_2\\\\ &\\qquad\\ \\ x_5 = 3 - x_1\\\\ &\\qquad\\ \\ x_1, x_2, x_3, x_4, x_5 \\ge 0 \\end{aligned}\\]\nHere the objective function is written as a function of the non-basic variables. If the simplex method moves to the adjacent bfs \\(\\boldsymbol{v_1}\\) (\\(\\boldsymbol{v_1} \\in \\mathbb{R}^5\\)) that best improves the objective function, which of the following represents the objective function at \\(\\boldsymbol{v_1}\\), assuming that the objective function is written in the same manner as above?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(z = -4 - 5x_1 + 2x_3\\)"
+},
+{
+"option_id": "B",
+"text": "\\(z = -3 + x_5 - 2x_2\\)"
+},
+{
+"option_id": "C",
+"text": "\\(z = -4 - 5x_1 + 2x_4\\)"
+},
+{
+"option_id": "D",
+"text": "\\(z = -6 - 5x_1 + 2x_3\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 40,
+"pages": [
+25
+],
+"question_text": "Steady, compressible flow of air takes place through an adiabatic converging-diverging nozzle, as shown in the figure. For a particular value of pressure difference across the nozzle, a stationary normal shock wave forms in the diverging section of the nozzle. If \\(E\\) and \\(F\\) denote the flow conditions just upstream and downstream of the normal shock, respectively, which of the following statement(s) is/are TRUE?\n[IMAGE_Q_40_1]",
+"options": [
+{
+"option_id": "A",
+"text": "Static pressure at \\(E\\) is lower than the static pressure at \\(F\\)"
+},
+{
+"option_id": "B",
+"text": "Density at \\(E\\) is lower than the density at \\(F\\)"
+},
+{
+"option_id": "C",
+"text": "Mach number at \\(E\\) is lower than the Mach number at \\(F\\)"
+},
+{
+"option_id": "D",
+"text": "Specific entropy at \\(E\\) is lower than the specific entropy at \\(F\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_40_1",
+"page": 25,
+"rect": [
+176,
+177,
+452,
+322
+],
+"grow": false
+}
+]
+},
+{
+"qno": 41,
+"pages": [
+26
+],
+"question_text": "Which of the following beam(s) is/are statically indeterminate?",
+"options": [
+{
+"option_id": "A",
+"text": "[IMAGE_Q_41_A]"
+},
+{
+"option_id": "B",
+"text": "[IMAGE_Q_41_B]"
+},
+{
+"option_id": "C",
+"text": "[IMAGE_Q_41_C]"
+},
+{
+"option_id": "D",
+"text": "[IMAGE_Q_41_D]"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_41_A",
+"page": 26,
+"rect": [
+112,
+164,
+392,
+215
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_41_B",
+"page": 26,
+"rect": [
+112,
+236,
+404,
+276
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_41_C",
+"page": 26,
+"rect": [
+112,
+303,
+392,
+356
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_41_D",
+"page": 26,
+"rect": [
+112,
+383,
+392,
+436
+],
+"grow": false
+}
+]
+},
+{
+"qno": 42,
+"pages": [
+26
+],
+"question_text": "If the value of the double integral\n\\[\\int_{x=3}^{4}\\int_{y=1}^{2}\\frac{dydx}{(x+y)^2}\\]\nis \\(\\log_e(a/24)\\), then \\(a\\) is ___________ (answer in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 43,
+"pages": [
+26
+],
+"question_text": "If \\(x(t)\\) satisfies the differential equation\n\\[t\\frac{dx}{dt} + (t - x) = 0\\]\nsubject to the condition \\(x(1) = 0\\), then the value of \\(x(2)\\) is ________ (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 44,
+"pages": [
+27
+],
+"question_text": "Let \\(X\\) be a continuous random variable defined on [0,1] such that its probability density function \\(f(x) = 1\\) for \\(0 \\le x \\le 1\\) and 0 otherwise. Let \\(Y = \\log_e(X + 1)\\). Then the expected value of \\(Y\\) is_____. (rounded off to 2 decimal places)",
+"options": [],
+"figures": []
+},
+{
+"qno": 45,
+"pages": [
+27
+],
+"question_text": "Consider an air-standard Brayton cycle with adiabatic compressor and turbine, and a regenerator, as shown in the figure. Air enters the compressor at 100 kPa and 300 K and exits the compressor at 600 kPa and 550 K. The air exits the combustion chamber at 1250 K and exits the adiabatic turbine at 100 kPa and 800 K. The exhaust air from the turbine is used to preheat the air in the regenerator. The exhaust air exits the regenerator (state 6) at 600 K. There is no pressure drop across the regenerator and the combustion chamber. Also, there is no heat loss from the regenerator to the surroundings. The ratio of specific heats at constant pressure and volume is \\(c_p/c_v = 1.4\\). The thermal efficiency of the cycle is _________ % (answer in integer).\n[IMAGE_Q_45_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_45_1",
+"page": 27,
+"rect": [
+112,
+299,
+511,
+444
+],
+"grow": false
+}
+]
+},
+{
+"qno": 46,
+"pages": [
+27
+],
+"question_text": "A piston-cylinder arrangement shown in the figure has a stop located 2 m above the base. The cylinder initially contains air at 140 kPa and 350 °C and the piston is resting in equilibrium at a position which is 1 m above the stops. The system is now cooled to the ambient temperature of 25 °C. Consider air to be an ideal gas with a value of gas constant \\(R\\) = 0.287 kJ/(kg.K).\nThe absolute value of specific work done during the process is________kJ/kg (rounded off to 1 decimal place)\n[IMAGE_Q_46_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_46_1",
+"page": 27,
+"rect": [
+242,
+598,
+379,
+751
+],
+"grow": false
+}
+]
+},
+{
+"qno": 47,
+"pages": [
+28
+],
+"question_text": "A heat pump (H.P.) is driven by the work output of a heat engine (H.E.) as shown in the figure. The heat engine extracts 150 kJ of heat from the source at 1000 K. The heat pump absorbs heat from the ambient at 280 K and delivers heat to the room which is maintained at 300 K. Considering the combined system to be ideal, the total amount of heat delivered to the room together by the heat engine and heat pump is _______kJ (answer in integer).\n[IMAGE_Q_47_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_47_1",
+"page": 28,
+"rect": [
+112,
+189,
+284,
+345
+],
+"grow": false
+}
+]
+},
+{
+"qno": 48,
+"pages": [
+28
+],
+"question_text": "Consider a slab of 20 mm thickness. There is a uniform heat generation of \\(\\dot{q} = 100\\) MW/m\\(^3\\) inside the slab. The left and right faces of the slab are maintained at 150 °C and 110 °C, respectively. The plate has a constant thermal conductivity of 200 W/(m.K). Considering a 1-D steady state heat conduction, the location of the maximum temperature from the left face will be at _____mm (answer in integer).\n[IMAGE_Q_48_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_48_1",
+"page": 28,
+"rect": [
+116,
+516,
+330,
+659
+],
+"grow": false
+}
+]
+}
+]

@@ -1,0 +1,629 @@
+[
+{
+"qno": 31,
+"pages": [
+23
+],
+"question_text": "The values of a function \\(f\\) obtained for different values of \\(x\\) are shown in the table below.\n[IMAGE_Q_31_1]\nUsing Simpson’s one-third rule,\n\\(\\int_0^1 f(x)\\, dx \\approx\\) ______ (rounded off to 2 decimal places).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_31_1",
+"page": 23,
+"regions": [
+"p023_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 32,
+"pages": [
+23
+],
+"question_text": "The thermal efficiency of an ideal air-standard Otto cycle is 0.5. The value of specific heat ratio of air is 1.4. The compression ratio of the cycle is ______________ (rounded off to 1 decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 33,
+"pages": [
+23
+],
+"question_text": "During a welding operation, thermal power of 2500 W is incident normally on a metallic surface. As shown in the figure below (figure is NOT to scale), the heated area is circular. Out of the incident power, 85% of the power is absorbed within a circle of radius 5 mm while 65% is absorbed within an inner concentric circle of radius 3 mm. The power density in the shaded area is _________ W mm\\(^{-2}\\) (rounded off to 2 decimal places).\n[IMAGE_Q_33_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_33_1",
+"page": 23,
+"regions": [
+"p023_r2"
+],
+"grow": false,
+"pad": [
+4,
+10,
+4,
+4
+]
+}
+]
+},
+{
+"qno": 34,
+"pages": [
+24
+],
+"question_text": "A liquid metal is poured in a mold cavity of size 200 mm × 200 mm × 200 mm. The cooling is uniform in all directions with NO additional compensation for shrinkage. Considering the volumetric shrinkage during solidification and solid contraction as 7% and 8%, respectively, the length of the cube edge after cooling down to the room temperature is _______ mm (rounded off to 1 decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 35,
+"pages": [
+24
+],
+"question_text": "A block of mass 1 kg connected to a spring of stiffness 10 N m\\(^{-1}\\) is operating in a viscous medium such that the damping ratio (or damping factor) is equal to the ratio of the damped frequency to the natural frequency. The magnitude of the damping ratio for this system is ________ (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 36,
+"pages": [
+25
+],
+"question_text": "In the closed interval [0, 3], the minimum value of the function \\(f\\) given below is\n\\[f(x) = 2x^3 - 9x^2 + 12x\\]",
+"options": [
+{
+"option_id": "A",
+"text": "0"
+},
+{
+"option_id": "B",
+"text": "4"
+},
+{
+"option_id": "C",
+"text": "5"
+},
+{
+"option_id": "D",
+"text": "9"
+}
+],
+"figures": []
+},
+{
+"qno": 37,
+"pages": [
+25
+],
+"question_text": "Considering the actual demand and the forecast for a product given in the table below, the mean forecast error and the mean absolute deviation, respectively, are\n[IMAGE_Q_37_1]",
+"options": [
+{
+"option_id": "A",
+"text": "0.8 and 42.0"
+},
+{
+"option_id": "B",
+"text": "0.8 and 4.2"
+},
+{
+"option_id": "C",
+"text": "8.0 and 42.0"
+},
+{
+"option_id": "D",
+"text": "8.0 and 4.2"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_37_1",
+"page": 25,
+"regions": [
+"p025_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 38,
+"pages": [
+26
+],
+"question_text": "Match the mold elements in the casting process with the most suitable function\n[IMAGE_Q_38_1]",
+"options": [
+{
+"option_id": "A",
+"text": "P-II, Q-IV, R-V, S-I, T-VI, U-III"
+},
+{
+"option_id": "B",
+"text": "P-II, Q-V, R-VI, S-I, T-III, U-IV"
+},
+{
+"option_id": "C",
+"text": "P-V, Q-I, R-VI, S-III, T-II, U-IV"
+},
+{
+"option_id": "D",
+"text": "P-II, Q-IV, R-I, S-V, T-VI, U-III"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_38_1",
+"page": 26,
+"regions": [
+"p026_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 39,
+"pages": [
+27
+],
+"question_text": "Wire drawing operation is performed on a perfectly plastic metal without any strain hardening. Assuming no friction and no redundant work, the maximum possible percentage reduction in area in a single pass is closest to",
+"options": [
+{
+"option_id": "A",
+"text": "51.2"
+},
+{
+"option_id": "B",
+"text": "63.2"
+},
+{
+"option_id": "C",
+"text": "75.0"
+},
+{
+"option_id": "D",
+"text": "93.2"
+}
+],
+"figures": []
+},
+{
+"qno": 40,
+"pages": [
+28
+],
+"question_text": "In relation to additive manufacturing, match the following\n[IMAGE_Q_40_1]",
+"options": [
+{
+"option_id": "A",
+"text": "P-3-III, Q-1-IV, R-4-I, S-2-II"
+},
+{
+"option_id": "B",
+"text": "P-3-II, Q-2-IV, R-4-I, S-1-III"
+},
+{
+"option_id": "C",
+"text": "P-4-III, Q-2-IV, R-1-II, S-3-I"
+},
+{
+"option_id": "D",
+"text": "P-3-II, Q-2-IV, R-1-I, S-4-III"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_40_1",
+"page": 28,
+"regions": [
+"p028_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 41,
+"pages": [
+29
+],
+"question_text": "A plate of 30 mm thickness is fed through a rolling mill with two powered rolls. Each roll has a diameter of 500 mm. The plate thickness is to be reduced to 27 mm in a single pass. Assume no change in width. The process feasibility and the maximum draft (in mm) can be represented, respectively, as\nUse the coefficient of friction as 0.12",
+"options": [
+{
+"option_id": "A",
+"text": "feasible and 3.6"
+},
+{
+"option_id": "B",
+"text": "NOT feasible and 2.6"
+},
+{
+"option_id": "C",
+"text": "feasible and 3.0"
+},
+{
+"option_id": "D",
+"text": "NOT feasible and 6.0"
+}
+],
+"figures": []
+},
+{
+"qno": 42,
+"pages": [
+30
+],
+"question_text": "The system shown in the figure below consists of a cantilever beam (with flexural rigidity \\(EI\\) and negligible mass), a spring (with spring constant \\(K\\) and negligible mass) and a block of mass \\(m\\). Assuming a lumped parameter model for the system, the fundamental natural frequency (\\(\\omega_n\\)) of the system is\n[IMAGE_Q_42_1]",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\sqrt{\\dfrac{\\frac{3EI}{L^3} + K}{m}}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\sqrt{\\dfrac{\\frac{EI}{L^3} + K}{m}}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\sqrt{\\dfrac{\\frac{3EI}{L^3} + K}{2m}}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\sqrt{\\dfrac{\\frac{EI}{L^3} + K}{2m}}\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_42_1",
+"page": 30,
+"regions": [
+"p030_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 43,
+"pages": [
+31
+],
+"question_text": "The endurance limit of a specific grade of steel is same as its yield strength. The ultimate strength of this grade of steel is twice of its yield strength. A component made of this steel is loaded in tension and unloaded periodically. It is required that the component does NOT fail for at least \\(10^6\\) loading cycles, as per the Soderberg law. Considering a factor of safety of 2, the maximum applied tensile principal stress is",
+"options": [
+{
+"option_id": "A",
+"text": "one-fourth of the endurance limit"
+},
+{
+"option_id": "B",
+"text": "half of the endurance limit"
+},
+{
+"option_id": "C",
+"text": "the endurance limit"
+},
+{
+"option_id": "D",
+"text": "twice the endurance limit"
+}
+],
+"figures": []
+},
+{
+"qno": 44,
+"pages": [
+31
+],
+"question_text": "For a fully-developed pipe flow, which of the following options is/are correct?",
+"options": [
+{
+"option_id": "A",
+"text": "For the same maximum velocity, the average velocity is higher in the turbulent regime than that of the laminar regime"
+},
+{
+"option_id": "B",
+"text": "Compressibility effects are important if Mach number is less than 0.3"
+},
+{
+"option_id": "C",
+"text": "For laminar flow, the friction factor is independent of surface roughness"
+},
+{
+"option_id": "D",
+"text": "For laminar flow, friction factor decreases with decrease in Reynolds number"
+}
+],
+"figures": []
+},
+{
+"qno": 45,
+"pages": [
+32
+],
+"question_text": "If \\(C\\) is the unit circle in the complex plane with its center at the origin, then the value of \\(n\\) in the equation given below is __________ (rounded off to 1 decimal place).\n\\[\\oint_C \\frac{z^3}{(z^2+4)\\,(z^2-4)}\\,dz = 2\\,\\pi\\,i\\,n\\]",
+"options": [],
+"figures": []
+},
+{
+"qno": 46,
+"pages": [
+32
+],
+"question_text": "The directional derivative of the function \\(f\\) given below at the point (1, 0) in the direction of \\(\\frac{1}{2}(\\hat{\\imath} + \\sqrt{3}\\,\\hat{\\jmath})\\) is ____________ (rounded off to 1 decimal place).\n\\[f(x, y) = x^2 + xy^2\\]",
+"options": [],
+"figures": []
+},
+{
+"qno": 47,
+"pages": [
+32
+],
+"question_text": "Let \\(y\\) be the solution of the differential equation with the initial conditions given below. If \\(y(x = 2) = A \\ln 2\\), then the value of \\(A\\) is ____________ (rounded off to 2 decimal places).\n\\[x^2\\frac{d^2y}{dx^2} + 3x\\frac{dy}{dx} + y = 0 \\qquad y(x = 1) = 0 \\qquad \\frac{dy}{dx}(x = 1) = 1\\]",
+"options": [],
+"figures": []
+},
+{
+"qno": 48,
+"pages": [
+33
+],
+"question_text": "Consider a cylindrical furnace of 5 m diameter and 5 m length with bottom, top and curved surfaces maintained at uniform temperatures of 800 K, 1500 K and 500 K, respectively. The view factor between the bottom and top surfaces, \\(F_{12}\\) is 0.2. The magnitude of net radiation heat transfer rate between the bottom surface and the curved surface is _____________ kW (rounded off to 1 decimal place).\n[IMAGE_Q_48_1]\nAll surfaces of the furnace can be assumed as black. The Stefan-Boltzmann constant, \\(\\sigma = 5.67 \\times 10^{-8}\\) W m\\(^{-2}\\) K\\(^{-4}\\).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_48_1",
+"page": 33,
+"regions": [
+"p033_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 49,
+"pages": [
+34
+],
+"question_text": "A pitot tube connected to a U-tube mercury manometer measures the speed of air flowing in the wind tunnel as shown in the figure below. The density of air is 1.23 kg m\\(^{-3}\\) while the density of water is 1000 kg m\\(^{-3}\\). For the manometer reading of \\(h = 30\\) mm of mercury, the speed of air in the wind tunnel is _____________ m s\\(^{-1}\\) (rounded off to 1 decimal place).\n[IMAGE_Q_49_1]\nAssume:\nSpecific gravity of mercury =13.6\nAcceleration due to gravity = 10 m s\\(^{-2}\\)",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_49_1",
+"page": 34,
+"regions": [
+"p034_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 50,
+"pages": [
+34
+],
+"question_text": "Consider a velocity field \\(\\vec{V} = 3z\\,\\hat{\\imath} + 0\\,\\hat{\\jmath} + Cx\\,\\hat{k}\\), where \\(C\\) is a constant. If the flow is irrotational, the value of \\(C\\) is _________ (rounded off to 1 decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 51,
+"pages": [
+35
+],
+"question_text": "Water enters a tube of diameter, \\(D = 60\\) mm with mass flow rate of 0.01 kg s\\(^{-1}\\) as shown in the figure below. The inlet mean temperature is \\(T_{m,i} = 293\\) K and the uniform heat flux at the surface of the tube is 2000 W m\\(^{-2}\\). For the exit mean temperature of \\(T_{m,o} = 353\\) K, the length of the tube, \\(L\\) is ________m (rounded off to 1 decimal place).\n[IMAGE_Q_51_1]\nUse the specific heat of water as 4181 J kg\\(^{-1}\\) K\\(^{-1}\\).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_51_1",
+"page": 35,
+"regions": [
+"p035_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 52,
+"pages": [
+35
+],
+"question_text": "A thermal power plant is running with no reheat or regeneration. The specific enthalpy and specific entropy of steam at the turbine inlet are 3344 kJ kg\\(^{-1}\\) and 6.5 kJ kg\\(^{-1}\\) K\\(^{-1}\\), respectively. The turbine isentropic efficiency is 0.9, and the mass flow rate of steam at the turbine inlet is 102 kg s\\(^{-1}\\). The turbine power output is _____________ MW (rounded off to 1 decimal place).\n[IMAGE_Q_52_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_52_1",
+"page": 35,
+"regions": [
+"p035_r2"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 53,
+"pages": [
+36
+],
+"question_text": "Consider a Pelton wheel of 1 m diameter. The magnitude of relative velocity of water at the bucket inlet is same as the magnitude of relative velocity of water at the bucket exit. The absolute speed of water at the bucket inlet is 125.66 m s\\(^{-1}\\). For maximum power output from the Pelton wheel, the rpm of the Pelton wheel is __________________ (rounded off to 1 decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 54,
+"pages": [
+36
+],
+"question_text": "A thermodynamically closed system contains 1 kg of hydrogen. The system undergoes a reversible polytropic process with polytropic index 1.3. The work output during the process is 400 kJ. During the process, hydrogen behaves as an ideal gas with constant specific heats. The absolute value of heat transfer during the process is ____________ kJ (rounded off to 1 decimal place).\nSpecific heat of hydrogen at constant pressure = 14.56 kJ kg\\(^{-1}\\) K\\(^{-1}\\)\nSpecific heat of hydrogen at constant volume = 10.4 kJ kg\\(^{-1}\\) K\\(^{-1}\\)",
+"options": [],
+"figures": []
+},
+{
+"qno": 55,
+"pages": [
+36
+],
+"question_text": "A heat pump, operating in reversed Carnot cycle, maintains a steady air temperature of 300 K inside an auditorium. The heat pump receives heat from the ambient air. The ambient air temperature is 280 K. Heat loss from the auditorium is 15 kW. The power consumption of the heat pump is ____ kW (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 56,
+"pages": [
+37
+],
+"question_text": "The state of stress at a point is shown in the figure given below. Under plane stress assumption, the normal strain along the thickness direction (\\(\\varepsilon_{zz}\\)) is ____________ (rounded off to 2 decimal places).\nUse the Young’s Modulus E = 200 GPa and Poisson’s ratio ν = 0.27.\n[IMAGE_Q_56_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_56_1",
+"page": 37,
+"regions": [
+"p037_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 57,
+"pages": [
+37
+],
+"question_text": "A simply supported beam of length 1 m is subjected to a uniformly distributed bending moment of 1 N m per m throughout the length as shown in the figure given below. The bending moment at the mid-point of the beam is_____N m (rounded off to the nearest integer).\n[IMAGE_Q_57_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_57_1",
+"page": 37,
+"regions": [
+"p037_r2"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 58,
+"pages": [
+38
+],
+"question_text": "An isotropic brittle material is tested in the universal testing machine. The stress-strain diagram for the material shows a bi-linear elastic behavior as shown in the figure given below. The strain energy density is ________ MJ m\\(^{-3}\\) (rounded off to 2 decimal places).\n[IMAGE_Q_58_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_58_1",
+"page": 38,
+"regions": [
+"p038_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 59,
+"pages": [
+38
+],
+"question_text": "A pair of spur gears is required to maintain a velocity ratio of 1:2. The module of the gears is 10 mm and the addendum is 10 mm. If the operating pressure angle is \\(15^\\circ\\), the minimum number of teeth required on the pinion to ensure NO interference/undercutting is ____ (answer in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 60,
+"pages": [
+39
+],
+"question_text": "An offset slider-crank mechanism is shown in the figure below. The length of the stroke of the slider is ______ mm (rounded off to nearest integer).\n[IMAGE_Q_60_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_60_1",
+"page": 39,
+"regions": [
+"p039_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 61,
+"pages": [
+39
+],
+"question_text": "Two plates of thickness 10 mm each are to be joined by a transverse fillet weld on one side and the resulting structure is loaded as shown in the figure below. If the ultimate tensile strength of the weld material is 150 MPa and the factor of safety to be used is 3, the minimum length of the weld required to ensure that the weld does NOT fail is ______ mm (rounded off to 2 decimal places).\n[IMAGE_Q_61_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_61_1",
+"page": 39,
+"regions": [
+"p039_r2"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 62,
+"pages": [
+40
+],
+"question_text": "Two metal parts (a cylinder and a cube) of same volume are cast under identical conditions. The diameter of the cylinder is equal to its height. The ratio of the solidification time of the cube to that of the cylinder is________ (rounded off to 2 decimal places).\nAssume that solidification time follows Chvorinov’s rule with an exponent of 2.",
+"options": [],
+"figures": []
+},
+{
+"qno": 63,
+"pages": [
+40
+],
+"question_text": "Cylindrical workpieces of diameter 60 mm and length 400 mm are machined on a lathe at a cutting speed of 25 m min\\(^{-1}\\) and a feed of 0.2 mm rev\\(^{-1}\\). The Taylor’s tool life parameters \\(C\\) and \\(n\\) for this setup are 75 and 0.25, respectively. The tool changing time is 3 minutes. With a labor and overhead cost of ₹ 5 per minute, the tool changing cost per piece is ₹ _______ (rounded off to 2 decimal places).",
+"options": [],
+"figures": []
+},
+{
+"qno": 64,
+"pages": [
+40
+],
+"question_text": "A company uses 3000 units of a part annually. The units are priced as given in the table below. It costs ₹ 150 to place an order. Carrying costs are 40 percent of the purchase price per unit on an annual basis. The minimum total annual cost is ₹ _______ (rounded off to 1 decimal place).\n[IMAGE_Q_64_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_64_1",
+"page": 40,
+"regions": [
+"p040_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 65,
+"pages": [
+41
+],
+"question_text": "A project involves eight activities with the precedence relationship and duration as shown in the table below. The slack for the activity D is _____ hours (answer in integer).\n[IMAGE_Q_65_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_65_1",
+"page": 41,
+"regions": [
+"p041_r1"
+],
+"grow": false
+}
+]
+}
+]

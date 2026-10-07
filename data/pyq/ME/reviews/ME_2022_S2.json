@@ -1,0 +1,9 @@
+{
+ "8": {"status":"approved","note":"Garbled glyphs from the stacked-exponent font; checked against page 8 image."},
+ "11": {"status":"approved","note":"Section header omitted by rule."},
+ "14": {"status":"approved","note":"Garbled glyph; checked against page 13 image."},
+ "36": {"status":"approved","note":"Section header omitted by rule."},
+ "38": {"status":"approved","note":"Garbled glyph; checked against page 31 image."},
+ "42": {"status":"approved","note":"Table cropped as image; checked against page 35 image."},
+ "49": {"status":"approved","note":"Garbled glyph; checked against page 40 image."}
+}

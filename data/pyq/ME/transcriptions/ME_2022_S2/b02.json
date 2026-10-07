@@ -1,0 +1,665 @@
+[
+{
+"qno": 36,
+"pages": [
+29
+],
+"question_text": "For the exact differential equation,\n\\[\\frac{du}{dx} = \\frac{-xu^2}{2 + x^2u},\\]\nwhich one of the following is the solution?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(u^2 + 2x^2 =\\) constant"
+},
+{
+"option_id": "B",
+"text": "\\(xu^2 + u =\\) constant"
+},
+{
+"option_id": "C",
+"text": "\\(\\frac{1}{2}x^2u^2 + 2u =\\) constant"
+},
+{
+"option_id": "D",
+"text": "\\(\\frac{1}{2}ux^2 + 2x =\\) constant"
+}
+],
+"figures": []
+},
+{
+"qno": 37,
+"pages": [
+30
+],
+"question_text": "A rigid homogeneous uniform block of mass 1 kg, height \\(h\\) = 0.4 m and width \\(b\\) = 0.3 m is pinned at one corner and placed upright in a uniform gravitational field (\\(g\\) = 9.81 m/s\\(^2\\)), supported by a roller in the configuration shown in the figure. A short duration (impulsive) force \\(F\\), producing an impulse \\(I_F\\), is applied at a height of \\(d\\) = 0.3 m from the bottom as shown. Assume all joints to be frictionless. The minimum value of \\(I_F\\) required to topple the block is\n[IMAGE_Q_37_1]",
+"options": [
+{
+"option_id": "A",
+"text": "0.953 Ns"
+},
+{
+"option_id": "B",
+"text": "1.403 Ns"
+},
+{
+"option_id": "C",
+"text": "0.814 Ns"
+},
+{
+"option_id": "D",
+"text": "1.172 Ns"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_37_1",
+"page": 30,
+"regions": [
+"p030_r1"
+]
+}
+]
+},
+{
+"qno": 38,
+"pages": [
+31
+],
+"question_text": "A linear elastic structure under plane stress condition is subjected to two sets of loading, I and II. The resulting states of stress at a point corresponding to these two loadings are as shown in the figure below. If these two sets of loading are applied simultaneously, then the net normal component of stress \\(\\sigma_{xx}\\) is ________.\n[IMAGE_Q_38_1]",
+"options": [
+{
+"option_id": "A",
+"text": "\\(3\\sigma/2\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\sigma(1 + 1/\\sqrt{2})\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\sigma/2\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\sigma(1 - 1/\\sqrt{2})\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_38_1",
+"page": 31,
+"regions": [
+"p031_r1"
+]
+}
+]
+},
+{
+"qno": 39,
+"pages": [
+32
+],
+"question_text": "A rigid body in the X-Y plane consists of two point masses (1 kg each) attached to the ends of two massless rods, each of 1 cm length, as shown in the figure. It rotates at 30 RPM counter-clockwise about the Z-axis passing through point O. A point mass of \\(\\sqrt{2}\\) kg, attached to one end of a third massless rod, is used for balancing the body by attaching the free end of the rod to point O. The length of the third rod is ________ cm.\n[IMAGE_Q_39_1]",
+"options": [
+{
+"option_id": "A",
+"text": "1"
+},
+{
+"option_id": "B",
+"text": "\\(\\sqrt{2}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(1/\\sqrt{2}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(1/2\\sqrt{2}\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_39_1",
+"page": 32,
+"regions": [
+"p032_r1"
+]
+}
+]
+},
+{
+"qno": 40,
+"pages": [
+33
+],
+"question_text": "A spring mass damper system (mass \\(m\\), stiffness \\(k\\), and damping coefficient \\(c\\)) excited by a force \\(F(t) = B\\sin\\omega t\\), where \\(B\\), \\(\\omega\\) and \\(t\\) are the amplitude, frequency and time, respectively, is shown in the figure. Four different responses of the system (marked as (i) to (iv)) are shown just to the right of the system figure. In the figures of the responses, \\(A\\) is the amplitude of response shown in red color and the dashed lines indicate its envelope. The responses represent only the qualitative trend and those are not drawn to any specific scale.\n[IMAGE_Q_40_1]\nFour different parameter and forcing conditions are mentioned below.\n(P) \\(c > 0\\) and \\(\\omega = \\sqrt{k/m}\\) \\quad (Q) \\(c < 0\\) and \\(\\omega \\ne 0\\)\n(R) \\(c = 0\\) and \\(\\omega = \\sqrt{k/m}\\) \\quad (S) \\(c = 0\\) and \\(\\omega \\cong \\sqrt{k/m}\\)\nWhich one of the following options gives correct match (indicated by arrow →) of the parameter and forcing conditions to the responses?",
+"options": [
+{
+"option_id": "A",
+"text": "(P) → (i), (Q) → (iii), (R) → (iv), (S) → (ii)"
+},
+{
+"option_id": "B",
+"text": "(P) → (ii), (Q) → (iii), (R) → (iv), (S) → (i)"
+},
+{
+"option_id": "C",
+"text": "(P) → (i), (Q) → (iv), (R) → (ii), (S) → (iii)"
+},
+{
+"option_id": "D",
+"text": "(P) → (iii), (Q) → (iv), (R) → (ii), (S) → (i)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_40_1",
+"page": 33,
+"rect": [
+119,
+234,
+515,
+447
+],
+"grow": false
+}
+]
+},
+{
+"qno": 41,
+"pages": [
+34
+],
+"question_text": "Parts P1-P7 are machined first on a milling machine and then polished at a separate machine. Using the information in the following table, the minimum total completion time required for carrying out both the operations for all 7 parts is __________ hours.\n[IMAGE_Q_41_1]",
+"options": [
+{
+"option_id": "A",
+"text": "31"
+},
+{
+"option_id": "B",
+"text": "33"
+},
+{
+"option_id": "C",
+"text": "30"
+},
+{
+"option_id": "D",
+"text": "32"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_41_1",
+"page": 34,
+"regions": [
+"p034_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 42,
+"pages": [
+35
+],
+"question_text": "A manufacturing unit produces two products P1 and P2. For each piece of P1 and P2, the table below provides quantities of materials M1, M2, and M3 required, and also the profit earned. The maximum quantity available per day for M1, M2 and M3 is also provided. The maximum possible profit per day is ₹__________.\n[IMAGE_Q_42_1]",
+"options": [
+{
+"option_id": "A",
+"text": "5000"
+},
+{
+"option_id": "B",
+"text": "4000"
+},
+{
+"option_id": "C",
+"text": "3000"
+},
+{
+"option_id": "D",
+"text": "6000"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_42_1",
+"page": 35,
+"grow": false,
+"pad": [
+3,
+3,
+3,
+3
+],
+"rect": [
+115,
+205,
+520,
+392
+]
+}
+]
+},
+{
+"qno": 43,
+"pages": [
+36
+],
+"question_text": "A tube of uniform diameter \\(D\\) is immersed in a steady flowing inviscid liquid stream of velocity \\(V\\), as shown in the figure. Gravitational acceleration is represented by \\(g\\). The volume flow rate through the tube is ______.\n[IMAGE_Q_43_1]",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\frac{\\pi}{4}D^2V\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\frac{\\pi}{4}D^2\\sqrt{2gh_2}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\frac{\\pi}{4}D^2\\sqrt{2g(h_1 + h_2)}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\frac{\\pi}{4}D^2\\sqrt{V^2 - 2gh_2}\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_43_1",
+"page": 36,
+"rect": [
+180,
+222,
+435,
+358
+],
+"grow": false
+}
+]
+},
+{
+"qno": 44,
+"pages": [
+37
+],
+"question_text": "The steady velocity field in an inviscid fluid of density 1.5 is given to be \\(\\vec{\\boldsymbol{V}} = (y^2 - x^2)\\hat{\\boldsymbol{\\imath}} + (2xy)\\hat{\\boldsymbol{\\jmath}}\\). Neglecting body forces, the pressure gradient at \\((x = 1, y = 1)\\) is __________ .",
+"options": [
+{
+"option_id": "A",
+"text": "\\(10\\hat{\\boldsymbol{\\jmath}}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(20\\hat{\\boldsymbol{\\imath}}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(-6\\hat{\\boldsymbol{\\imath}} - 6\\hat{\\boldsymbol{\\jmath}}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(-4\\hat{\\boldsymbol{\\imath}} - 4\\hat{\\boldsymbol{\\jmath}}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 45,
+"pages": [
+37
+],
+"question_text": "In a vapour compression refrigeration cycle, the refrigerant enters the compressor in saturated vapour state at evaporator pressure, with specific enthalpy equal to 250 kJ/kg. The exit of the compressor is superheated at condenser pressure with specific enthalpy equal to 300 kJ/kg. At the condenser exit, the refrigerant is throttled to the evaporator pressure. The coefficient of performance (COP) of the cycle is 3. If the specific enthalpy of the saturated liquid at evaporator pressure is 50 kJ/kg, then the dryness fraction of the refrigerant at entry to evaporator is _________.",
+"options": [
+{
+"option_id": "A",
+"text": "0.2"
+},
+{
+"option_id": "B",
+"text": "0.25"
+},
+{
+"option_id": "C",
+"text": "0.3"
+},
+{
+"option_id": "D",
+"text": "0.35"
+}
+],
+"figures": []
+},
+{
+"qno": 46,
+"pages": [
+38
+],
+"question_text": "\\(\\mathbf{A}\\) is a 3×5 real matrix of rank 2. For the set of homogeneous equations \\(\\mathbf{Ax} = \\mathbf{0}\\), where \\(\\mathbf{0}\\) is a zero vector and \\(\\mathbf{x}\\) is a vector of unknown variables, which of the following is/are true?",
+"options": [
+{
+"option_id": "A",
+"text": "The given set of equations will have a unique solution."
+},
+{
+"option_id": "B",
+"text": "The given set of equations will be satisfied by a zero vector of appropriate size."
+},
+{
+"option_id": "C",
+"text": "The given set of equations will have infinitely many solutions."
+},
+{
+"option_id": "D",
+"text": "The given set of equations will have many but a finite number of solutions."
+}
+],
+"figures": []
+},
+{
+"qno": 47,
+"pages": [
+39
+],
+"question_text": "The lengths of members BC and CE in the frame shown in the figure are equal. All the members are rigid and lightweight, and the friction at the joints is negligible. Two forces of magnitude \\(Q > 0\\) are applied as shown, each at the mid-length of the respective member on which it acts. Which one or more of the following members do not carry any load (force)?\n[IMAGE_Q_47_1]",
+"options": [
+{
+"option_id": "A",
+"text": "AB"
+},
+{
+"option_id": "B",
+"text": "CD"
+},
+{
+"option_id": "C",
+"text": "EF"
+},
+{
+"option_id": "D",
+"text": "GH"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_47_1",
+"page": 39,
+"regions": [
+"p039_r1"
+]
+}
+]
+},
+{
+"qno": 48,
+"pages": [
+40
+],
+"question_text": "If the sum and product of eigenvalues of a 2 × 2 real matrix \\(\\begin{bmatrix} 3 & p \\\\ p & q \\end{bmatrix}\\) are 4 and −1 respectively, then \\(|p|\\) is ______ (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 49,
+"pages": [
+40
+],
+"question_text": "Given \\(z = x + iy\\), \\(i = \\sqrt{-1}\\). \\(C\\) is a circle of radius 2 with the centre at the origin. If the contour \\(C\\) is traversed anticlockwise, then the value of the integral \\(\\frac{1}{2\\pi}\\int_C \\frac{1}{(z - i)(z + 4i)}dz\\) is _______ (round off to one decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 50,
+"pages": [
+40
+],
+"question_text": "A shaft of length \\(L\\) is made of two materials, one in the inner core and the other in the outer rim, and the two are perfectly joined together (no slip at the interface) along the entire length of the shaft. The diameter of the inner core is \\(d_i\\) and the external diameter of the rim is \\(d_o\\), as shown in the figure. The modulus of rigidity of the core and rim materials are \\(G_i\\) and \\(G_o\\), respectively. It is given that \\(d_o = 2d_i\\) and \\(G_i = 3G_o\\). When the shaft is twisted by application of a torque along the shaft axis, the maximum shear stress developed in the outer rim and the inner core turn out to be \\(\\tau_o\\) and \\(\\tau_i\\), respectively. All the deformations are in the elastic range and stress-strain relations are linear. Then the ratio \\(\\tau_i/\\tau_o\\) is ______ (round off to 2 decimal places).\n[IMAGE_Q_50_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_50_1",
+"page": 40,
+"regions": [
+"p040_r1"
+],
+"pad": [
+4,
+4,
+4,
+20
+]
+}
+]
+},
+{
+"qno": 51,
+"pages": [
+41
+],
+"question_text": "A rigid beam AD of length \\(3a\\) = 6 m is hinged at frictionless pin joint A and supported by two strings as shown in the figure. String BC passes over two small frictionless pulleys of negligible radius. All the strings are made of the same material and have equal cross-sectional area. A force \\(F\\) = 9 kN is applied at C and the resulting stresses in the strings are within linear elastic limit. The self-weight of the beam is negligible with respect to the applied load. Assuming small deflections, the tension developed in the string at C is _________ kN (round off to 2 decimal places).\n[IMAGE_Q_51_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_51_1",
+"page": 41,
+"rect": [
+185,
+246,
+448,
+385
+],
+"grow": false
+}
+]
+},
+{
+"qno": 52,
+"pages": [
+41
+],
+"question_text": "In the configuration of the planar four-bar mechanism at a certain instant as shown in the figure, the angular velocity of the 2 cm long link is \\(\\omega_2\\) = 5 rad/s. Given the dimensions as shown, the magnitude of the angular velocity \\(\\omega_4\\) of the 4 cm long link is given by _____ rad/s (round off to 2 decimal places).\n[IMAGE_Q_52_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_52_1",
+"page": 41,
+"rect": [
+185,
+572,
+446,
+692
+],
+"grow": false
+}
+]
+},
+{
+"qno": 53,
+"pages": [
+42
+],
+"question_text": "A shaft AC rotating at a constant speed carries a thin pulley of radius \\(r\\) = 0.4 m at the end C which drives a belt. A motor is coupled at the end A of the shaft such that it applies a torque \\(M_z\\) about the shaft axis without causing any bending moment. The shaft is mounted on narrow frictionless bearings at A and B where AB = BC = \\(L\\) = 0.5 m. The taut and slack side tensions of the belt are \\(T_1\\) = 300 N and \\(T_2\\) = 100 N, respectively. The allowable shear stress for the shaft material is 80 MPa. The self-weights of the pulley and the shaft are negligible. Use the value of π available in the on-screen virtual calculator.\nNeglecting shock and fatigue loading and assuming maximum shear stress theory, the minimum required shaft diameter is _______ mm (round off to 2 decimal places).\n[IMAGE_Q_53_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_53_1",
+"page": 42,
+"regions": [
+"p042_r1"
+]
+}
+]
+},
+{
+"qno": 54,
+"pages": [
+43
+],
+"question_text": "A straight-teeth horizontal slab milling cutter is shown in the figure. It has 4 teeth and diameter (\\(D\\)) of 200 mm. The rotational speed of the cutter is 100 rpm and the linear feed given to the workpiece is 1000 mm/minute. The width of the workpiece (\\(w\\)) is 100 mm, and the entire width is milled in a single pass of the cutter. The cutting force/tooth is given by \\(F = Kt_c w\\), where specific cutting force \\(K\\) = 10 N/mm\\(^2\\), \\(w\\) is the width of cut, and \\(t_c\\) is the uncut chip thickness. The depth of cut (\\(d\\)) is \\(D/2\\), and hence the assumption of \\(\\frac{d}{D} \\ll 1\\) is invalid. The maximum cutting force required is ________ kN (round off to one decimal place).\n[IMAGE_Q_54_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_54_1",
+"page": 43,
+"regions": [
+"p043_r1"
+]
+}
+]
+},
+{
+"qno": 55,
+"pages": [
+43
+],
+"question_text": "In an orthogonal machining operation, the cutting and thrust forces are equal in magnitude. The uncut chip thickness is 0.5 mm and the shear angle is 15°. The orthogonal rake angle of the tool is 0° and the width of cut is 2 mm. The workpiece material is perfectly plastic and its yield shear strength is 500 MPa. The cutting force is _________ N (round off to the nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 56,
+"pages": [
+44
+],
+"question_text": "The best size wire is fitted in a groove of a metric screw such that the wire touches the flanks of the thread on the pitch line as shown in the figure. The pitch (\\(p\\)) and included angle of the thread are 4 mm and 60\\(^o\\), respectively. The diameter of the best size wire is ___________ mm (round off to 2 decimal places).\n[IMAGE_Q_56_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_56_1",
+"page": 44,
+"regions": [
+"p044_r1"
+]
+}
+]
+},
+{
+"qno": 57,
+"pages": [
+44
+],
+"question_text": "In a direct current arc welding process, the power source has an open circuit voltage of 100 V and short circuit current of 1000 A. Assume a linear relationship between voltage and current. The arc voltage (V) varies with the arc length (\\(l\\)) as V = 10 + 5\\(l\\), where V is in volts and \\(l\\) is in mm. The maximum available arc power during the process is _________ kVA (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 58,
+"pages": [
+45
+],
+"question_text": "A cylindrical billet of 100 mm diameter and 100 mm length is extruded by a direct extrusion process to produce a bar of L-section. The cross sectional dimensions of this L-section bar are shown in the figure. The total extrusion pressure (\\(p\\)) in MPa for the above process is related to extrusion ratio (\\(r\\)) as\n\\[p = K_s\\,\\sigma_m\\left[0.8 + 1.5\\ln(r) + \\frac{2l}{d_0}\\right],\\]\nwhere \\(\\sigma_m\\) is the mean flow strength of the billet material in MPa, \\(l\\) is the portion of the billet length remaining to be extruded in mm, \\(d_0\\) is the initial diameter of the billet in mm, and \\(K_s\\) is the die shape factor.\nIf the mean flow strength of the billet material is 50 MPa and the die shape factor is 1.05, then the maximum force required at the start of extrusion is ________ kN (round off to one decimal place).\n[IMAGE_Q_58_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_58_1",
+"page": 45,
+"regions": [
+"p045_r1"
+]
+}
+]
+},
+{
+"qno": 59,
+"pages": [
+46
+],
+"question_text": "A project consists of five activities (A, B, C, D and E). The duration of each activity follows beta distribution. The three time estimates (in weeks) of each activity and immediate predecessor(s) are listed in the table. The expected time of the project completion is __________ weeks (in integer).\n[IMAGE_Q_59_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_59_1",
+"page": 46,
+"rect": [
+119,
+191,
+519,
+392
+],
+"grow": false
+}
+]
+},
+{
+"qno": 60,
+"pages": [
+46
+],
+"question_text": "A rigid tank of volume of 8 m\\(^3\\) is being filled up with air from a pipeline connected through a valve. Initially the valve is closed and the tank is assumed to be completely evacuated. The air pressure and temperature inside the pipeline are maintained at 600 kPa and 306 K, respectively. The filling of the tank begins by opening the valve and the process ends when the tank pressure is equal to the pipeline pressure. During the filling process, heat loss to the surrounding is 1000 kJ. The specific heats of air at constant pressure and at constant volume are 1.005 kJ/kg.K and 0.718 kJ/kg.K, respectively. Neglect changes in kinetic energy and potential energy.\nThe final temperature of the tank after the completion of the filling process is _________ K (round off to the nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 61,
+"pages": [
+47
+],
+"question_text": "At steady state, 500 kg/s of steam enters a turbine with specific enthalpy equal to 3500 kJ/kg and specific entropy equal to 6.5 kJ∙kg\\(^{-1}\\)∙K\\(^{-1}\\). It expands reversibly in the turbine to the condenser pressure. Heat loss occurs reversibly in the turbine at a temperature of 500 K. If the exit specific enthalpy and specific entropy are 2500 kJ/kg and 6.3 kJ∙kg\\(^{-1}\\)∙K\\(^{-1}\\), respectively, the work output from the turbine is ________ MW (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 62,
+"pages": [
+47
+],
+"question_text": "A uniform wooden rod (specific gravity = 0.6, diameter = 4 cm and length = 8 m) is immersed in the water and is hinged without friction at point A on the waterline as shown in the figure. A solid spherical ball made of lead (specific gravity = 11.4) is attached to the free end of the rod to keep the assembly in static equilibrium inside the water. For simplicity, assume that the radius of the ball is much smaller than the length of the rod.\nAssume density of water = 10\\(^3\\) kg/m\\(^3\\) and π = 3.14.\nRadius of the ball is _______ cm (round off to 2 decimal places).\n[IMAGE_Q_62_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_62_1",
+"page": 47,
+"rect": [
+202,
+524,
+436,
+648
+],
+"grow": false
+}
+]
+},
+{
+"qno": 63,
+"pages": [
+48
+],
+"question_text": "Consider steady state, one-dimensional heat conduction in an infinite slab of thickness \\(2L\\) (\\(L\\) = 1 m) as shown in the figure. The conductivity (\\(k\\)) of the material varies with temperature as \\(k = CT\\), where \\(T\\) is the temperature in K, and \\(C\\) is a constant equal to 2 W∙m\\(^{-1}\\)∙K\\(^{-2}\\). There is a uniform heat generation of 1280 kW/m\\(^3\\) in the slab. If both faces of the slab are maintained at 600 K, then the temperature at \\(x = 0\\) is ________ K (in integer).\n[IMAGE_Q_63_1]",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_63_1",
+"page": 48,
+"rect": [
+236,
+246,
+402,
+377
+],
+"grow": false
+}
+]
+},
+{
+"qno": 64,
+"pages": [
+48
+],
+"question_text": "Saturated vapor at 200 \\(^o\\)C condenses to saturated liquid at the rate of 150 kg/s on the shell side of a heat exchanger (enthalpy of condensation \\(h_{fg}\\) = 2400 kJ/kg). A fluid with \\(c_p\\) = 4 kJ∙kg\\(^{-1}\\)∙K\\(^{-1}\\) enters at 100 \\(^o\\)C on the tube side. If the effectiveness of the heat exchanger is 0.9, then the mass flow rate of the fluid in the tube side is ________ kg/s (in integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 65,
+"pages": [
+49
+],
+"question_text": "Consider a hydrodynamically and thermally fully-developed, steady fluid flow of 1 kg/s in a uniformly heated pipe with diameter of 0.1 m and length of 40 m. A constant heat flux of magnitude 15000 W/m\\(^2\\) is imposed on the outer surface of the pipe. The bulk-mean temperature of the fluid at the entrance to the pipe is 200 \\(^o\\)C. The Reynolds number (Re) of the flow is 85000, and the Prandtl number (Pr) of the fluid is 5. The thermal conductivity and the specific heat of the fluid are 0.08 W∙m\\(^{-1}\\)∙K\\(^{-1}\\) and 2600 J∙kg\\(^{-1}\\)∙K\\(^{-1}\\), respectively. The correlation Nu = 0.023 Re\\(^{0.8}\\) Pr\\(^{0.4}\\) is applicable, where the Nusselt Number (Nu) is defined on the basis of the pipe diameter. The pipe surface temperature at the exit is ________ \\(^o\\)C (round off to the nearest integer).",
+"options": [],
+"figures": []
+}
+]

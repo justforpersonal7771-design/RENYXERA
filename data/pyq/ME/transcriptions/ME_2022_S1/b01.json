@@ -1,0 +1,865 @@
+[
+{
+"qno": 1,
+"pages": [
+1
+],
+"question_text": "After playing _________ hours of tennis, I am feeling _________ tired to walk back.",
+"options": [
+{
+"option_id": "A",
+"text": "too / too"
+},
+{
+"option_id": "B",
+"text": "too / two"
+},
+{
+"option_id": "C",
+"text": "two / two"
+},
+{
+"option_id": "D",
+"text": "two / too"
+}
+],
+"figures": []
+},
+{
+"qno": 2,
+"pages": [
+1
+],
+"question_text": "The average of the monthly salaries of M, N and S is ₹ 4000. The average of the monthly salaries of N, S and P is ₹ 5000. The monthly salary of P is ₹ 6000.\nWhat is the monthly salary of M as a percentage of the monthly salary of P?",
+"options": [
+{
+"option_id": "A",
+"text": "50%"
+},
+{
+"option_id": "B",
+"text": "75%"
+},
+{
+"option_id": "C",
+"text": "100%"
+},
+{
+"option_id": "D",
+"text": "125%"
+}
+],
+"figures": []
+},
+{
+"qno": 3,
+"pages": [
+2
+],
+"question_text": "A person travelled 80 km in 6 hours. If the person travelled the first part with a uniform speed of 10 kmph and the remaining part with a uniform speed of 18 kmph.\nWhat percentage of the total distance is travelled at a uniform speed of 10 kmph?",
+"options": [
+{
+"option_id": "A",
+"text": "28.25"
+},
+{
+"option_id": "B",
+"text": "37.25"
+},
+{
+"option_id": "C",
+"text": "43.75"
+},
+{
+"option_id": "D",
+"text": "50.00"
+}
+],
+"figures": []
+},
+{
+"qno": 4,
+"pages": [
+3
+],
+"question_text": "Four girls P, Q, R and S are studying languages in a University. P is learning French and Dutch. Q is learning Chinese and Japanese. R is learning Spanish and French. S is learning Dutch and Japanese.\nGiven that: French is easier than Dutch; Chinese is harder than Japanese; Dutch is easier than Japanese, and Spanish is easier than French.\nBased on the above information, which girl is learning the most difficult pair of languages?",
+"options": [
+{
+"option_id": "A",
+"text": "P"
+},
+{
+"option_id": "B",
+"text": "Q"
+},
+{
+"option_id": "C",
+"text": "R"
+},
+{
+"option_id": "D",
+"text": "S"
+}
+],
+"figures": []
+},
+{
+"qno": 5,
+"pages": [
+4
+],
+"question_text": "[IMAGE_Q_05_1]\nA block with a trapezoidal cross-section is placed over a block with rectangular cross section as shown above.\nWhich one of the following is the correct drawing of the view of the 3D object as viewed in the direction indicated by an arrow in the above figure?",
+"options": [
+{
+"option_id": "A",
+"text": "[IMAGE_Q_05_A]"
+},
+{
+"option_id": "B",
+"text": "[IMAGE_Q_05_B]"
+},
+{
+"option_id": "C",
+"text": "[IMAGE_Q_05_C]"
+},
+{
+"option_id": "D",
+"text": "[IMAGE_Q_05_D]"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_05_1",
+"page": 4,
+"rect": [
+244,
+108,
+404,
+218
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_A",
+"page": 4,
+"rect": [
+129,
+350,
+203,
+410
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_B",
+"page": 4,
+"rect": [
+129,
+437,
+199,
+494
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_C",
+"page": 4,
+"rect": [
+129,
+521,
+208,
+585
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_05_D",
+"page": 4,
+"rect": [
+129,
+612,
+208,
+647
+],
+"grow": false
+}
+]
+},
+{
+"qno": 6,
+"pages": [
+5
+],
+"question_text": "Humans are naturally compassionate and honest. In a study using strategically placed wallets that appear “lost”, it was found that wallets with money are more likely to be returned than wallets without money. Similarly, wallets that had a key and money are more likely to be returned than wallets with the same amount of money alone. This suggests that the primary reason for this behavior is compassion and empathy.\nWhich one of the following is the CORRECT logical inference based on the information in the above passage?",
+"options": [
+{
+"option_id": "A",
+"text": "Wallets with a key are more likely to be returned because people do not care about money"
+},
+{
+"option_id": "B",
+"text": "Wallets with a key are more likely to be returned because people relate to suffering of others"
+},
+{
+"option_id": "C",
+"text": "Wallets used in experiments are more likely to be returned than wallets that are really lost"
+},
+{
+"option_id": "D",
+"text": "Money is always more important than keys"
+}
+],
+"figures": []
+},
+{
+"qno": 7,
+"pages": [
+6
+],
+"question_text": "A rhombus is formed by joining the midpoints of the sides of a unit square.\nWhat is the diameter of the largest circle that can be inscribed within the rhombus?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\dfrac{1}{\\sqrt{2}}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\dfrac{1}{2\\sqrt{2}}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\sqrt{2}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(2\\sqrt{2}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 8,
+"pages": [
+7
+],
+"question_text": "An equilateral triangle, a square and a circle have equal areas.\nWhat is the ratio of the perimeters of the equilateral triangle to square to circle?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(3\\sqrt{3} : 2 : \\sqrt{\\pi}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\sqrt{(3\\sqrt{3})} : 2 : \\sqrt{\\pi}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\sqrt{(3\\sqrt{3})} : 4 : 2\\sqrt{\\pi}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\sqrt{(3\\sqrt{3})} : 2 : 2\\sqrt{\\pi}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 9,
+"pages": [
+8
+],
+"question_text": "Given below are three conclusions drawn based on the following three statements.\nStatement 1: All teachers are professors.\nStatement 2: No professor is a male.\nStatement 3: Some males are engineers.\nConclusion I: No engineer is a professor.\nConclusion II: Some engineers are professors.\nConclusion III: No male is a teacher.\nWhich one of the following options can be logically inferred?",
+"options": [
+{
+"option_id": "A",
+"text": "Only conclusion III is correct"
+},
+{
+"option_id": "B",
+"text": "Only conclusion I and conclusion II are correct"
+},
+{
+"option_id": "C",
+"text": "Only conclusion II and conclusion III are correct"
+},
+{
+"option_id": "D",
+"text": "Only conclusion I and conclusion III are correct"
+}
+],
+"figures": []
+},
+{
+"qno": 10,
+"pages": [
+9
+],
+"question_text": "In a 12-hour clock that runs correctly, how many times do the second, minute, and hour hands of the clock coincide, in a 12-hour duration from 3 PM in a day to 3 AM the next day?",
+"options": [
+{
+"option_id": "A",
+"text": "11"
+},
+{
+"option_id": "B",
+"text": "12"
+},
+{
+"option_id": "C",
+"text": "144"
+},
+{
+"option_id": "D",
+"text": "2"
+}
+],
+"figures": []
+},
+{
+"qno": 11,
+"pages": [
+10
+],
+"question_text": "The limit\n\\[p = \\lim_{x\\to\\pi}\\left(\\frac{x^2 + \\alpha x + 2\\pi^2}{x - \\pi + 2\\sin x}\\right)\\]\nhas a finite value for a real \\(\\alpha\\). The value of \\(\\alpha\\) and the corresponding limit \\(p\\) are",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\alpha = -3\\pi\\), and \\(p = \\pi\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\alpha = -2\\pi\\), and \\(p = 2\\pi\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\alpha = \\pi\\), and \\(p = \\pi\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\alpha = 2\\pi\\), and \\(p = 3\\pi\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 12,
+"pages": [
+10,
+11
+],
+"question_text": "Solution of \\(\\nabla^2 T = 0\\) in a square domain (\\(0 < x < 1\\) and \\(0 < y < 1\\)) with boundary conditions:\n\\(T(x, 0) = x\\); \\(T(0, y) = y\\); \\(T(x, 1) = 1 + x\\); \\(T(1, y) = 1 + y\\)\nis",
+"options": [
+{
+"option_id": "A",
+"text": "\\(T(x, y) = x - xy + y\\)"
+},
+{
+"option_id": "B",
+"text": "\\(T(x, y) = x + y\\)"
+},
+{
+"option_id": "C",
+"text": "\\(T(x, y) = -x + y\\)"
+},
+{
+"option_id": "D",
+"text": "\\(T(x, y) = x + xy + y\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 13,
+"pages": [
+11
+],
+"question_text": "Given a function \\(\\varphi = \\frac{1}{2}(x^2 + y^2 + z^2)\\) in three-dimensional Cartesian space, the value of the surface integral\n\\[\\oiint_S \\hat{\\mathbf{n}} \\cdot \\nabla\\varphi\\, dS,\\]\nwhere \\(S\\) is the surface of a sphere of unit radius and \\(\\hat{\\mathbf{n}}\\) is the outward unit normal vector on \\(S\\), is",
+"options": [
+{
+"option_id": "A",
+"text": "\\(4\\pi\\)"
+},
+{
+"option_id": "B",
+"text": "\\(3\\pi\\)"
+},
+{
+"option_id": "C",
+"text": "\\(4\\pi/3\\)"
+},
+{
+"option_id": "D",
+"text": "0"
+}
+],
+"figures": []
+},
+{
+"qno": 14,
+"pages": [
+11
+],
+"question_text": "The Fourier series expansion of \\(x^3\\) in the interval \\(-1 \\le x < 1\\) with periodic continuation has",
+"options": [
+{
+"option_id": "A",
+"text": "only sine terms"
+},
+{
+"option_id": "B",
+"text": "only cosine terms"
+},
+{
+"option_id": "C",
+"text": "both sine and cosine terms"
+},
+{
+"option_id": "D",
+"text": "only sine terms and a non-zero constant"
+}
+],
+"figures": []
+},
+{
+"qno": 15,
+"pages": [
+13
+],
+"question_text": "If \\(\\mathbf{A} = \\begin{bmatrix} 10 & 2k+5 \\\\ 3k-3 & k+5 \\end{bmatrix}\\) is a symmetric matrix, the value of \\(k\\) is ___________.",
+"options": [
+{
+"option_id": "A",
+"text": "8"
+},
+{
+"option_id": "B",
+"text": "5"
+},
+{
+"option_id": "C",
+"text": "−0.4"
+},
+{
+"option_id": "D",
+"text": "\\(\\dfrac{1 + \\sqrt{1561}}{12}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 16,
+"pages": [
+14
+],
+"question_text": "A uniform light slender beam AB of section modulus \\(EI\\) is pinned by a frictionless joint A to the ground and supported by a light inextensible cable CB to hang a weight \\(W\\) as shown. If the maximum value of \\(W\\) to avoid buckling of the beam AB is obtained as \\(\\beta\\pi^2 EI\\), where \\(\\pi\\) is the ratio of circumference to diameter of a circle, then the value of \\(\\beta\\) is\n[IMAGE_Q_16_1]",
+"options": [
+{
+"option_id": "A",
+"text": "0.0924 m\\(^{-2}\\)"
+},
+{
+"option_id": "B",
+"text": "0.0713 m\\(^{-2}\\)"
+},
+{
+"option_id": "C",
+"text": "0.1261 m\\(^{-2}\\)"
+},
+{
+"option_id": "D",
+"text": "0.1417 m\\(^{-2}\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_16_1",
+"page": 14,
+"regions": [
+"p014_r1"
+]
+}
+]
+},
+{
+"qno": 17,
+"pages": [
+15
+],
+"question_text": "The figure shows a schematic of a simple Watt governor mechanism with the spindle O\\(_1\\)O\\(_2\\) rotating at an angular velocity \\(\\omega\\) about a vertical axis. The balls at P and S have equal mass. Assume that there is no friction anywhere and all other components are massless and rigid. The vertical distance between the horizontal plane of rotation of the balls and the pivot O\\(_1\\) is denoted by \\(h\\). The value of \\(h\\) = 400 mm at a certain \\(\\omega\\). If \\(\\omega\\) is doubled, the value of \\(h\\) will be _________ mm.\n[IMAGE_Q_17_1]",
+"options": [
+{
+"option_id": "A",
+"text": "50"
+},
+{
+"option_id": "B",
+"text": "100"
+},
+{
+"option_id": "C",
+"text": "150"
+},
+{
+"option_id": "D",
+"text": "200"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_17_1",
+"page": 15,
+"regions": [
+"p015_r1"
+]
+}
+]
+},
+{
+"qno": 18,
+"pages": [
+16
+],
+"question_text": "A square threaded screw is used to lift a load \\(W\\) by applying a force \\(F\\). Efficiency of square threaded screw is expressed as",
+"options": [
+{
+"option_id": "A",
+"text": "The ratio of work done by \\(W\\) per revolution to work done by \\(F\\) per revolution"
+},
+{
+"option_id": "B",
+"text": "\\(W/F\\)"
+},
+{
+"option_id": "C",
+"text": "\\(F/W\\)"
+},
+{
+"option_id": "D",
+"text": "The ratio of work done by \\(F\\) per revolution to work done by \\(W\\) per revolution"
+}
+],
+"figures": []
+},
+{
+"qno": 19,
+"pages": [
+16
+],
+"question_text": "A CNC worktable is driven in a linear direction by a lead screw connected directly to a stepper motor. The pitch of the lead screw is 5 mm. The stepper motor completes one full revolution upon receiving 600 pulses. If the worktable speed is 5 m/minute and there is no missed pulse, then the pulse rate being received by the stepper motor is",
+"options": [
+{
+"option_id": "A",
+"text": "20 kHz"
+},
+{
+"option_id": "B",
+"text": "10 kHz"
+},
+{
+"option_id": "C",
+"text": "3 kHz"
+},
+{
+"option_id": "D",
+"text": "15 kHz"
+}
+],
+"figures": []
+},
+{
+"qno": 20,
+"pages": [
+17
+],
+"question_text": "The type of fit between a mating shaft of diameter \\(25.0^{+0.010}_{-0.010}\\) mm and a hole of diameter \\(25.015^{+0.015}_{-0.015}\\) mm is __________.",
+"options": [
+{
+"option_id": "A",
+"text": "Clearance"
+},
+{
+"option_id": "B",
+"text": "Transition"
+},
+{
+"option_id": "C",
+"text": "Interference"
+},
+{
+"option_id": "D",
+"text": "Linear"
+}
+],
+"figures": []
+},
+{
+"qno": 21,
+"pages": [
+17
+],
+"question_text": "In a linear programming problem, if a resource is not fully utilized, the shadow price of that resource is",
+"options": [
+{
+"option_id": "A",
+"text": "positive"
+},
+{
+"option_id": "B",
+"text": "negative"
+},
+{
+"option_id": "C",
+"text": "zero"
+},
+{
+"option_id": "D",
+"text": "infinity"
+}
+],
+"figures": []
+},
+{
+"qno": 22,
+"pages": [
+18
+],
+"question_text": "Which one of the following is NOT a form of inventory?",
+"options": [
+{
+"option_id": "A",
+"text": "Raw materials"
+},
+{
+"option_id": "B",
+"text": "Work-in-process materials"
+},
+{
+"option_id": "C",
+"text": "Finished goods"
+},
+{
+"option_id": "D",
+"text": "CNC Milling Machines"
+}
+],
+"figures": []
+},
+{
+"qno": 23,
+"pages": [
+18
+],
+"question_text": "The Clausius inequality holds good for",
+"options": [
+{
+"option_id": "A",
+"text": "any process"
+},
+{
+"option_id": "B",
+"text": "any cycle"
+},
+{
+"option_id": "C",
+"text": "only reversible process"
+},
+{
+"option_id": "D",
+"text": "only reversible cycle"
+}
+],
+"figures": []
+},
+{
+"qno": 24,
+"pages": [
+19
+],
+"question_text": "A tiny temperature probe is fully immersed in a flowing fluid and is moving with zero relative velocity with respect to the fluid. The velocity field in the fluid is \\(\\vec{\\boldsymbol{V}} = (2x)\\hat{\\boldsymbol{\\imath}} + (y + 3t)\\hat{\\boldsymbol{\\jmath}}\\), and the temperature field in the fluid is \\(T = 2x^2 + xy + 4t\\), where \\(x\\) and \\(y\\) are the spatial coordinates, and \\(t\\) is the time. The time rate of change of temperature recorded by the probe at \\((x = 1, y = 1, t = 1)\\) is _______.",
+"options": [
+{
+"option_id": "A",
+"text": "4"
+},
+{
+"option_id": "B",
+"text": "0"
+},
+{
+"option_id": "C",
+"text": "18"
+},
+{
+"option_id": "D",
+"text": "14"
+}
+],
+"figures": []
+},
+{
+"qno": 25,
+"pages": [
+19,
+20
+],
+"question_text": "In the following two-dimensional momentum equation for natural convection over a surface immersed in a quiescent fluid at temperature \\(T_\\infty\\) (\\(g\\) is the gravitational acceleration, \\(\\beta\\) is the volumetric thermal expansion coefficient, \\(\\boldsymbol{\\nu}\\) is the kinematic viscosity, \\(u\\) and \\(v\\) are the velocities in \\(x\\) and \\(y\\) directions, respectively, and \\(T\\) is the temperature)\n\\[u\\frac{\\partial u}{\\partial x} + v\\frac{\\partial u}{\\partial y} = g\\beta(T - T_\\infty) + \\boldsymbol{\\nu}\\frac{\\partial^2 u}{\\partial y^2},\\]\nthe term \\(g\\beta(T - T_\\infty)\\) represents",
+"options": [
+{
+"option_id": "A",
+"text": "Ratio of inertial force to viscous force."
+},
+{
+"option_id": "B",
+"text": "Ratio of buoyancy force to viscous force."
+},
+{
+"option_id": "C",
+"text": "Viscous force per unit mass."
+},
+{
+"option_id": "D",
+"text": "Buoyancy force per unit mass."
+}
+],
+"figures": []
+},
+{
+"qno": 26,
+"pages": [
+20
+],
+"question_text": "Assuming the material considered in each statement is homogeneous, isotropic, linear elastic, and the deformations are in the elastic range, which one or more of the following statement(s) is/are TRUE?",
+"options": [
+{
+"option_id": "A",
+"text": "A body subjected to hydrostatic pressure has no shear stress."
+},
+{
+"option_id": "B",
+"text": "If a long solid steel rod is subjected to tensile load, then its volume increases."
+},
+{
+"option_id": "C",
+"text": "Maximum shear stress theory is suitable for failure analysis of brittle materials."
+},
+{
+"option_id": "D",
+"text": "If a portion of a beam has zero shear force, then the corresponding portion of the elastic curve of the beam is always straight."
+}
+],
+"figures": []
+},
+{
+"qno": 27,
+"pages": [
+20
+],
+"question_text": "Which of the following heat treatment processes is/are used for surface hardening of steels?",
+"options": [
+{
+"option_id": "A",
+"text": "Carburizing"
+},
+{
+"option_id": "B",
+"text": "Cyaniding"
+},
+{
+"option_id": "C",
+"text": "Annealing"
+},
+{
+"option_id": "D",
+"text": "Carbonitriding"
+}
+],
+"figures": []
+},
+{
+"qno": 28,
+"pages": [
+21
+],
+"question_text": "Which of the following additive manufacturing technique(s) can use a wire as a feedstock material?",
+"options": [
+{
+"option_id": "A",
+"text": "Stereolithography"
+},
+{
+"option_id": "B",
+"text": "Fused deposition modeling"
+},
+{
+"option_id": "C",
+"text": "Selective laser sintering"
+},
+{
+"option_id": "D",
+"text": "Directed energy deposition processes"
+}
+],
+"figures": []
+},
+{
+"qno": 29,
+"pages": [
+21
+],
+"question_text": "Which of the following methods can improve the fatigue strength of a circular mild steel (MS) shaft?",
+"options": [
+{
+"option_id": "A",
+"text": "Enhancing surface finish"
+},
+{
+"option_id": "B",
+"text": "Shot peening of the shaft"
+},
+{
+"option_id": "C",
+"text": "Increasing relative humidity"
+},
+{
+"option_id": "D",
+"text": "Reducing relative humidity"
+}
+],
+"figures": []
+},
+{
+"qno": 30,
+"pages": [
+23
+],
+"question_text": "The figure shows a purely convergent nozzle with a steady, inviscid compressible flow of an ideal gas with constant thermophysical properties operating under choked condition. The exit plane shown in the figure is located within the nozzle. If the inlet pressure (\\(P_0\\)) is increased while keeping the back pressure (\\(P_{back}\\)) unchanged, which of the following statements is/are true?\n[IMAGE_Q_30_1]",
+"options": [
+{
+"option_id": "A",
+"text": "Mass flow rate through the nozzle will remain unchanged."
+},
+{
+"option_id": "B",
+"text": "Mach number at the exit plane of the nozzle will remain unchanged at unity."
+},
+{
+"option_id": "C",
+"text": "Mass flow rate through the nozzle will increase."
+},
+{
+"option_id": "D",
+"text": "Mach number at the exit plane of the nozzle will become more than unity."
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_30_1",
+"page": 23,
+"regions": [
+"p023_r1"
+],
+"grow": false
+}
+]
+}
+]

@@ -1,0 +1,781 @@
+[
+{
+"qno": 1,
+"pages": [
+1
+],
+"question_text": "‘The team ______ more than 300 runs in 20 overs ___________ rains. However, some players needed to improve their batting skills.’\nChoose the option with the correct sequence of words to fill the blanks.",
+"options": [
+{
+"option_id": "A",
+"text": "score; despite"
+},
+{
+"option_id": "B",
+"text": "scoring; instead of"
+},
+{
+"option_id": "C",
+"text": "scored; despite"
+},
+{
+"option_id": "D",
+"text": "scoring; in spite of"
+}
+],
+"figures": []
+},
+{
+"qno": 2,
+"pages": [
+2
+],
+"question_text": "If a positive real \\(x\\) satisfies the following equation\n\\[\\log_2 x + \\log_{\\sqrt{2}} x = 48,\\]\nthen the value of \\(x\\) is _________________",
+"options": [
+{
+"option_id": "A",
+"text": "\\(2^{16}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(4^{16}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(2^{14}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(4^{14}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 3,
+"pages": [
+3
+],
+"question_text": "The next figure (indicated by ‘?’) in the sequence is\n[IMAGE_Q_03_1]",
+"options": [
+{
+"option_id": "A",
+"text": "[IMAGE_Q_03_A]"
+},
+{
+"option_id": "B",
+"text": "[IMAGE_Q_03_B]"
+},
+{
+"option_id": "C",
+"text": "[IMAGE_Q_03_C]"
+},
+{
+"option_id": "D",
+"text": "[IMAGE_Q_03_D]"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_03_1",
+"page": 3,
+"regions": [
+"p003_r1"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_03_A",
+"page": 3,
+"regions": [
+"p003_r2"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_03_B",
+"page": 3,
+"regions": [
+"p003_r3"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_03_C",
+"page": 3,
+"regions": [
+"p003_r4"
+],
+"grow": false
+},
+{
+"placeholder": "IMAGE_Q_03_D",
+"page": 3,
+"regions": [
+"p003_r5"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 4,
+"pages": [
+4
+],
+"question_text": "‘All the mangoes in the basket are good.’\nIf the above statement is false, then which one of the following statements is necessarily true?",
+"options": [
+{
+"option_id": "A",
+"text": "All the mangoes in the basket are not good."
+},
+{
+"option_id": "B",
+"text": "No mango in the basket is good."
+},
+{
+"option_id": "C",
+"text": "In the basket, some of the mangoes are good and some are not good."
+},
+{
+"option_id": "D",
+"text": "There exists at least one mango in the basket that is not good."
+}
+],
+"figures": []
+},
+{
+"qno": 5,
+"pages": [
+5
+],
+"question_text": "Consider the following statements about four numbers:\n(S1) The average of the four numbers is 25\n(S2) Each number is at most 40\n(S3) Each number is at least 20\nChoose the option that is necessarily correct.",
+"options": [
+{
+"option_id": "A",
+"text": "(S1) and (S2) together imply (S3)"
+},
+{
+"option_id": "B",
+"text": "(S2) and (S3) together imply (S1)"
+},
+{
+"option_id": "C",
+"text": "(S1) and (S3) together imply (S2)"
+},
+{
+"option_id": "D",
+"text": "(S1) implies (S3)"
+}
+],
+"figures": []
+},
+{
+"qno": 6,
+"pages": [
+6
+],
+"question_text": "‘People are crowding around ___ pit into which ___ elephant has fallen. I have never seen an elephant looking more bewildered ___ miserable. Here it is in a most undignified position, thrust into a pit and made to look up ___ a vast, curiosity-stricken crowd.’\nChoose the option with the correct sequence of words to fill the blanks.",
+"options": [
+{
+"option_id": "A",
+"text": "an; a; at; and"
+},
+{
+"option_id": "B",
+"text": "a; an; and; at"
+},
+{
+"option_id": "C",
+"text": "and; a; an; at"
+},
+{
+"option_id": "D",
+"text": "at; a; an; and"
+}
+],
+"figures": []
+},
+{
+"qno": 7,
+"pages": [
+7
+],
+"question_text": "The table lists the unit selling price of five products P, Q, R, S, and T. On a particular day, 250 items were sold with the average selling price of Rs. 60. The following observations were made:\n(i) The quantity of S sold was twice that of T.\n(ii) The quantity of R sold was thrice that of T.\n(iii) The quantity of Q sold was four times that of T.\nWhat is the quantity of product P sold on that day?\n[IMAGE_Q_07_1]",
+"options": [
+{
+"option_id": "A",
+"text": "40"
+},
+{
+"option_id": "B",
+"text": "50"
+},
+{
+"option_id": "C",
+"text": "60"
+},
+{
+"option_id": "D",
+"text": "70"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_07_1",
+"page": 7,
+"regions": [
+"p007_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 8,
+"pages": [
+8
+],
+"question_text": "Consider a string P of length \\(l\\) that is laid out as a straight-line segment. Another string K is laid out as a semicircular arc with string P as its diameter, as represented in Figure (i). When both the strings are shortened by a length \\(x\\) they can be re-arranged such that the shortened string K forms a full circle with the shortened string P as its diameter, as represented in Figure (ii). The value of \\(x/l\\) is __________\n[IMAGE_Q_08_1]",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\pi\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\dfrac{\\pi-1}{2\\pi}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\dfrac{\\pi}{2(\\pi-1)}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\dfrac{\\pi}{\\pi-1}\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_08_1",
+"page": 8,
+"regions": [
+"p008_r1"
+]
+}
+]
+},
+{
+"qno": 9,
+"pages": [
+9
+],
+"question_text": "The Roman senator Meritorius, his brother, his son, and his daughter have varying oratory skill levels. They are seated in rows and columns as shown in the figure with exactly one person sitting in each box. It is known that\n(i) Meritorius’ daughter and his brother are seated in the same column.\n(ii) His son is seated diagonally across the sibling of the worst orator.\n(iii) The best and worst orators are seated in the same row.\nWho is the best orator?\n[IMAGE_Q_09_1]",
+"options": [
+{
+"option_id": "A",
+"text": "Meritorius"
+},
+{
+"option_id": "B",
+"text": "Meritorius’ brother"
+},
+{
+"option_id": "C",
+"text": "Meritorius’ son"
+},
+{
+"option_id": "D",
+"text": "Meritorius’ daughter"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_09_1",
+"page": 9,
+"regions": [
+"p009_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 10,
+"pages": [
+10
+],
+"question_text": "Which one of the patterns labelled P, Q, R, and S is used to generate the following figure?\n[IMAGE_Q_10_1]",
+"options": [
+{
+"option_id": "A",
+"text": "P"
+},
+{
+"option_id": "B",
+"text": "Q"
+},
+{
+"option_id": "C",
+"text": "R"
+},
+{
+"option_id": "D",
+"text": "S"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_10_1",
+"page": 10,
+"regions": [
+"p010_r1",
+"p010_r2",
+"p010_r3",
+"p010_r4",
+"p010_r5"
+],
+"pad": [
+4,
+4,
+4,
+22
+]
+}
+]
+},
+{
+"qno": 11,
+"pages": [
+11
+],
+"question_text": "Domain \\(A\\) is bounded by curve \\(x^2 = 4y\\), ordinate \\(x = 2\\), and \\(x\\) axis.\nThe value of \\(\\iint_A y\\, dxdy\\) is",
+"options": [
+{
+"option_id": "A",
+"text": "1/5"
+},
+{
+"option_id": "B",
+"text": "1/3"
+},
+{
+"option_id": "C",
+"text": "5/12"
+},
+{
+"option_id": "D",
+"text": "1/2"
+}
+],
+"figures": []
+},
+{
+"qno": 12,
+"pages": [
+11
+],
+"question_text": "Let \\(\\varphi\\) be a scalar function. Then, \\(\\nabla\\varphi\\) is",
+"options": [
+{
+"option_id": "A",
+"text": "always perpendicular to the surface of constant \\(\\varphi\\)"
+},
+{
+"option_id": "B",
+"text": "always parallel to the surface of constant \\(\\varphi\\)"
+},
+{
+"option_id": "C",
+"text": "the minimum rate of change of scalar \\(\\varphi\\)"
+},
+{
+"option_id": "D",
+"text": "always zero"
+}
+],
+"figures": []
+},
+{
+"qno": 13,
+"pages": [
+12
+],
+"question_text": "The order and degree of the following differential equation are \\(m\\) and \\(n\\), respectively.\n\\[\\frac{\\partial^3\\varphi}{\\partial x^3} + \\frac{\\partial^2\\varphi}{\\partial y^2}\\frac{\\partial\\varphi}{\\partial x} + \\left(\\frac{\\partial^2\\varphi}{\\partial x^2}\\right)^2 + \\frac{\\partial\\varphi}{\\partial y} = 0\\]\nThe value of \\((m - n)\\) is",
+"options": [
+{
+"option_id": "A",
+"text": "2"
+},
+{
+"option_id": "B",
+"text": "3"
+},
+{
+"option_id": "C",
+"text": "1"
+},
+{
+"option_id": "D",
+"text": "0"
+}
+],
+"figures": []
+},
+{
+"qno": 14,
+"pages": [
+12
+],
+"question_text": "Newton-Raphson method for solving algebraic equations is based on",
+"options": [
+{
+"option_id": "A",
+"text": "Taylor series"
+},
+{
+"option_id": "B",
+"text": "Fourier series"
+},
+{
+"option_id": "C",
+"text": "Laurent series"
+},
+{
+"option_id": "D",
+"text": "Power series"
+}
+],
+"figures": []
+},
+{
+"qno": 15,
+"pages": [
+13
+],
+"question_text": "The exact solution of \\(\\int_0^4 \\dfrac{dx}{1+x}\\) is represented as \\(n\\).\nIf \\(m\\) represents numerically evaluated value of the above integral using Trapezoidal rule by considering four equal subintervals in the range of \\(x\\), then \\((m - n)\\) is",
+"options": [
+{
+"option_id": "A",
+"text": "0.074"
+},
+{
+"option_id": "B",
+"text": "− 0.074"
+},
+{
+"option_id": "C",
+"text": "− 0.003"
+},
+{
+"option_id": "D",
+"text": "0.003"
+}
+],
+"figures": []
+},
+{
+"qno": 16,
+"pages": [
+13
+],
+"question_text": "A horizontal disk has a radial frictionless slot in which a small block is confined to slide. The disk turns anticlockwise about its centre with a constant angular velocity of 3 rad/s. If the block slides along the slot with a constant speed of 0.2 m/s relative to the slot, then the magnitude of Coriolis acceleration in m/s\\(^2\\) is",
+"options": [
+{
+"option_id": "A",
+"text": "1.2"
+},
+{
+"option_id": "B",
+"text": "0.6"
+},
+{
+"option_id": "C",
+"text": "2.4"
+},
+{
+"option_id": "D",
+"text": "0.3"
+}
+],
+"figures": []
+},
+{
+"qno": 17,
+"pages": [
+14
+],
+"question_text": "A gear train with five gears is shown in the figure below. The number of teeth on each gear is \\(N_1\\), \\(N_2\\), \\(N_3\\), \\(N_4\\), and \\(N_5\\).\n[IMAGE_Q_17_1]\nThe idler gear in this gear train is",
+"options": [
+{
+"option_id": "A",
+"text": "gear 4"
+},
+{
+"option_id": "B",
+"text": "gear 2"
+},
+{
+"option_id": "C",
+"text": "gear 3"
+},
+{
+"option_id": "D",
+"text": "gear 1"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_17_1",
+"page": 14,
+"regions": [
+"p014_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 18,
+"pages": [
+15
+],
+"question_text": "In a single degree of freedom vibrating system with only viscous damping, the critical damping coefficient is 350 N s/m and the damping coefficient is 35 N s/m.\nThe logarithmic decrement of the vibrating system is",
+"options": [
+{
+"option_id": "A",
+"text": "0.63"
+},
+{
+"option_id": "B",
+"text": "1.26"
+},
+{
+"option_id": "C",
+"text": "0.32"
+},
+{
+"option_id": "D",
+"text": "1.89"
+}
+],
+"figures": []
+},
+{
+"qno": 19,
+"pages": [
+15
+],
+"question_text": "A closely coiled helical compression spring of mean coil diameter \\(D\\) and wire diameter \\(d\\), is loaded by an axial force \\(F\\).\nThe maximum shear stress developed in the wire is",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\dfrac{8FD}{\\pi d^3} + \\dfrac{4F}{\\pi d^2}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(\\dfrac{8FD}{\\pi d^3} + \\dfrac{2F}{\\pi d^2}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(\\dfrac{16FD}{\\pi d^3} + \\dfrac{4F}{\\pi d^2}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(\\dfrac{32FD}{\\pi d^3} + \\dfrac{4F}{\\pi d^2}\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 20,
+"pages": [
+16
+],
+"question_text": "The rotor of an aeroplane engine has a mass moment of inertia 1.0 kg m\\(^2\\). The engine rotates at a speed of 500 RPM in the clockwise direction if viewed from the front of the aeroplane. If the aeroplane while flying at 1200 km/hr turns with a radius of 2 km at same elevation, then the magnitude of the gyroscopic moment exerted by the rotor on the aeroplane structure in N m is",
+"options": [
+{
+"option_id": "A",
+"text": "8.73"
+},
+{
+"option_id": "B",
+"text": "17.46"
+},
+{
+"option_id": "C",
+"text": "4.37"
+},
+{
+"option_id": "D",
+"text": "26.19"
+}
+],
+"figures": []
+},
+{
+"qno": 21,
+"pages": [
+17
+],
+"question_text": "A rectangular plate is perfectly welded to a gusset plate with parallel fillet weld joints as shown in the figure below. The length of the weld is \\(l\\) and the fillet weld leg size is \\(h\\). The allowable shear strength of the weldment is \\(\\tau_{all}\\). A tensile force \\(P\\) is applied on the plate in a direction parallel to the length of the weld.\n[IMAGE_Q_21_1]\nAssuming the throat of the weld as the weakest section, the critical load is",
+"options": [
+{
+"option_id": "A",
+"text": "\\(\\sqrt{2}hl\\tau_{all}\\)"
+},
+{
+"option_id": "B",
+"text": "\\(hl\\tau_{all}\\)"
+},
+{
+"option_id": "C",
+"text": "\\(hl\\tau_{all}/\\sqrt{2}\\)"
+},
+{
+"option_id": "D",
+"text": "\\(hl\\tau_{all}/2\\)"
+}
+],
+"figures": [
+{
+"placeholder": "IMAGE_Q_21_1",
+"page": 17,
+"regions": [
+"p017_r1"
+],
+"grow": false
+}
+]
+},
+{
+"qno": 22,
+"pages": [
+18
+],
+"question_text": "Worm gearsets are used for transmitting rotary motion between",
+"options": [
+{
+"option_id": "A",
+"text": "non-parallel and non-intersecting shafts"
+},
+{
+"option_id": "B",
+"text": "intersecting shafts"
+},
+{
+"option_id": "C",
+"text": "parallel shafts"
+},
+{
+"option_id": "D",
+"text": "non-parallel and intersecting shafts"
+}
+],
+"figures": []
+},
+{
+"qno": 23,
+"pages": [
+18
+],
+"question_text": "For an ideal gas, starting from state point 1, two different processes take place. The corresponding final states in these two processes are 2 and 3, lying on same isotherm. If \\(P\\) and \\(h\\) represent pressure and enthalpy, respectively, then which one of the following options is correct?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(h_2 = h_3\\)"
+},
+{
+"option_id": "B",
+"text": "\\(h_2 > h_3\\)"
+},
+{
+"option_id": "C",
+"text": "\\(P_2h_3 = P_3h_2\\)"
+},
+{
+"option_id": "D",
+"text": "\\(P_3h_3 = P_2h_2\\)"
+}
+],
+"figures": []
+},
+{
+"qno": 24,
+"pages": [
+19
+],
+"question_text": "A steady incompressible laminar flow passes through a \\(90^\\circ\\) tube bend placed on a horizontal surface. In horizontal diametric plane, two pressure taps \\(P_i\\) and \\(P_o\\) are provided across the cross-section at inner and outer walls of the bend, respectively. Which one of the following options is correct?",
+"options": [
+{
+"option_id": "A",
+"text": "\\(P_o > P_i\\)"
+},
+{
+"option_id": "B",
+"text": "\\(P_o < P_i\\)"
+},
+{
+"option_id": "C",
+"text": "\\((P_o - P_i)\\) is directly proportional to the bend radius."
+},
+{
+"option_id": "D",
+"text": "\\((P_i - P_o)\\) is inversely proportional to the average flow velocity."
+}
+],
+"figures": []
+},
+{
+"qno": 25,
+"pages": [
+19
+],
+"question_text": "An ideal gas passes isothermally through a long horizontal uniform cross-section pipe under steady flow. Consider that the pressure gradient in the pipe is sufficient for a finite change in the density of the gas. If the flow of the gas is purely pressure driven and subsonic throughout, then the average flow velocity",
+"options": [
+{
+"option_id": "A",
+"text": "increases along the flow"
+},
+{
+"option_id": "B",
+"text": "decreases along the flow"
+},
+{
+"option_id": "C",
+"text": "does not change throughout the pipe"
+},
+{
+"option_id": "D",
+"text": "increases in the hydrodynamic entrance region and then decreases thereafter"
+}
+],
+"figures": []
+},
+{
+"qno": 26,
+"pages": [
+20
+],
+"question_text": "Bernoulli’s equation CANNOT be applied between",
+"options": [
+{
+"option_id": "A",
+"text": "any two arbitrary points in the flow field for steady incompressible rotational flow"
+},
+{
+"option_id": "B",
+"text": "any two arbitrary points in the flow field for steady incompressible irrotational flow"
+},
+{
+"option_id": "C",
+"text": "any two points along a streamline for steady incompressible flow"
+},
+{
+"option_id": "D",
+"text": "any two points along a streamline for steady incompressible rotational flow"
+}
+],
+"figures": []
+}
+]
