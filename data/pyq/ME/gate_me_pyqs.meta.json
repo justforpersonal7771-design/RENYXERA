@@ -1,0 +1,2145 @@
+{
+  "branch": "ME",
+  "branch_name": "Mechanical Engineering",
+  "generated_at": "2026-10-07T08:26:13+00:00",
+  "papers": {
+    "2026": {
+      "paper": "ME_2026",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2026/QPs/ME.pdf",
+      "question_paper_sha256": "54a1f58a5f7a50c6ece61bac0c6897d23f5bbbfe5d95655ad67272f41fb8a3af",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2026/Keys/ME_Keys.pdf",
+      "answer_key_sha256": "e6eb2cb84fec93c3b90dedda247aedd6ce7db91cddb87b881ed9433f1bd13c32"
+    },
+    "2025": {
+      "paper": "ME_2025",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2025/ME2025.pdf",
+      "question_paper_sha256": "8ebeee660dfd0d312e30a1b91cfc9052cbdbb89ff474d329425e77b2e13e200f",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2025_Key/ME_Keys.pdf",
+      "answer_key_sha256": "b434d7c27aef0c6e40f89973ed22cd4e299fab26b5a48f7eaa1fc35df075d3bc"
+    },
+    "2024": {
+      "paper": "ME_2024",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2024/ME24S2.pdf",
+      "question_paper_sha256": "6e0c5afa1868ba57f1e6f350df48eee12a6c3073a84a78ea982c0d97b747527c",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2024/MEFinalAnswerKey.pdf",
+      "answer_key_sha256": "82963c09a53785d7f5462a22a69f7263e79d4c5b19bc2a0f455bba5378265ede"
+    },
+    "2023": {
+      "paper": "ME_2023",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2023/me_2023.pdf",
+      "question_paper_sha256": "716664c73cc7fb6f3c8a82386fa17778c12c9887d69e4aacc415a9396d13323a",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2023/ME_ANS_GATE2023.pdf",
+      "answer_key_sha256": "cf8c5ea657ba42dc23f4574e1aa895c5b17009ec1adfc66ca56702cdc6b8044b"
+    },
+    "2022-S2": {
+      "paper": "ME_2022_S2",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2022/me_2022.pdf",
+      "question_paper_sha256": "aed189412698b1978d395121637a1d3736e843553747b362f4f489afe9ace308",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2022/me-merged_2022.pdf",
+      "answer_key_sha256": "3e717a7ff1ac9874542a82b86d0f32b3a29dab7ec4f8981a791bf4ee93fbc491"
+    },
+    "2022-S1": {
+      "paper": "ME_2022_S1",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2022/me_2022.pdf",
+      "question_paper_sha256": "ee7b0c7d14123ed7e64db3256a626929ad0798823aaf9f7b7da2969c016aee28",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2022/me-merged_2022.pdf",
+      "answer_key_sha256": "85f1289784aa7056b918594267701c37e78c92c7293b8af56ea192e6c3863d71"
+    },
+    "2021-S2": {
+      "paper": "ME_2021_S2",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2021/me_2021.pdf",
+      "question_paper_sha256": "1b04000fd05dffc1fea6e353fb26dd9b541e80444b0f24964db896ff32916d10",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2021/me_merged_2021.pdf",
+      "answer_key_sha256": "d7749a0a31c420ac377709e49c5127532dd7d4b33b5786eb26c80d2b92522db1"
+    },
+    "2021-S1": {
+      "paper": "ME_2021_S1",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2021/me_2021.pdf",
+      "question_paper_sha256": "a710cd7ad42deca7b7a6cb2b7ae0cc81a19f96692e7f921be5fad44dd133bd68",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2021/me_merged_2021.pdf",
+      "answer_key_sha256": "ccb8a527b2457cf846d6640c1e6233042ca10524adeae6922b359744018c80fd"
+    }
+  },
+  "questions": {
+    "ME_2026:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2026:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2025:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:7": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "ME_2024:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:10": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "ME_2024:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:16": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2024:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:19": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "ME_2024:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:34": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "ME_2024:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:63": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "ME_2024:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2024:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:8": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:11": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:55": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "ME_2023:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2023:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:8": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S2:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:10": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:11": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S2:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:14": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S2:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:36": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S2:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:38": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S2:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:45": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:49": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S2:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S2:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:1": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:2": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:3": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:4": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:5": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:6": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:7": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:8": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S1:9": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:10": {
+      "marks_to_all": true,
+      "review": "auto"
+    },
+    "ME_2022_S1:11": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S1:12": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:13": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:14": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:15": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:16": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:17": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:18": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:19": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:20": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:21": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:22": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:23": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:24": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:25": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:26": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:27": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:28": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:29": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:30": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:31": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:32": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:33": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:34": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:35": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:36": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:37": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:38": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:39": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:40": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:41": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:42": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:43": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:44": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:45": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2022_S1:46": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:47": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:48": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:49": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:50": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:51": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:52": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:53": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:54": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:55": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:56": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:57": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:58": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:59": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:60": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:61": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:62": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:63": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:64": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2022_S1:65": {
+      "marks_to_all": false,
+      "review": "auto"
+    },
+    "ME_2021_S2:1": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:2": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:3": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:4": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:5": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:6": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:7": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:8": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:9": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:10": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:11": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:12": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:13": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:14": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:15": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:16": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:17": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:18": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:19": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:20": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:21": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:22": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:23": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:24": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:25": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:26": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:27": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:28": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:29": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:30": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:31": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:32": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:33": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:34": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:35": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:36": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:37": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:38": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:39": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:40": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:41": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:42": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:43": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:44": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:45": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:46": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:47": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:48": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:49": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:50": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:51": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:52": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:53": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:54": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:55": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:56": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:57": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:58": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:59": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:60": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:61": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:62": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:63": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:64": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S2:65": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:1": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:2": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:3": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:4": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:5": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:6": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:7": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:8": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:9": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:10": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:11": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:12": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:13": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:14": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:15": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:16": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:17": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:18": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:19": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:20": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:21": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:22": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:23": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:24": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:25": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:26": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:27": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:28": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:29": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:30": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:31": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:32": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:33": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:34": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:35": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:36": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:37": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:38": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:39": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:40": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:41": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:42": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:43": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:44": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:45": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:46": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:47": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:48": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:49": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:50": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:51": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:52": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:53": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:54": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:55": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:56": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:57": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:58": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:59": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:60": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:61": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:62": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:63": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:64": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "ME_2021_S1:65": {
+      "marks_to_all": false,
+      "review": "approved"
+    }
+  }
+}

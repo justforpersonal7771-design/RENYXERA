@@ -1,0 +1,155 @@
+[
+{
+"qno": 53,
+"pages": [
+25
+],
+"question_text": "The demand and forecast of an item for five months are given in the table.\n[IMAGE_Q_53_1]\nThe Mean Absolute Percent Error (MAPE) in the forecast is ___________ % (round off to two decimal places)",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_53_1",
+"page": 25,
+"rect": [
+134,
+128,
+500,
+281
+],
+"grow": false
+}
+]
+},
+{
+"qno": 54,
+"pages": [
+25
+],
+"question_text": "A shell and tube heat exchanger is used as a steam condenser. Coolant water enters the tube at 300 K at a rate of 100 kg/s. The overall heat transfer coefficient is 1500 W/m\\(^2\\).K, and total heat transfer area is 400 m\\(^2\\). Steam condenses at a saturation temperature of 350 K. Assume that the specific heat of coolant water is 4000 J/kg.K. The temperature of the coolant water coming out of the condenser is _____________ K (round off to the nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 55,
+"pages": [
+25
+],
+"question_text": "Ambient air flows over a heated slab having flat, top surface at \\(y = 0\\). The local temperature (in Kelvin) profile within the thermal boundary layer is given by \\(T(y) = 300 + 200\\exp(-5y)\\), where \\(y\\) is the distance measured from the slab surface in meter. If the thermal conductivity of air is 1.0 W/m.K and that of the slab is 100 W/m.K, then the magnitude of temperature gradient \\(|dT/dy|\\) within the slab at \\(y = 0\\) is ______________ K/m (round off to the nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 56,
+"pages": [
+26
+],
+"question_text": "Water flows out from a large tank of cross-sectional area \\(A_t\\) = 1 m\\(^2\\) through a small rounded orifice of cross-sectional area \\(A_o\\) = 1 cm\\(^2\\), located at \\(y = 0\\). Initially the water level, measured from \\(y = 0\\), is \\(H\\) = 1 m. The acceleration due to gravity is 9.8 m/s\\(^2\\).\n[IMAGE_Q_56_1]\nNeglecting any losses, the time taken by water in the tank to reach a level of \\(y = H/4\\) is ______________ seconds (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_56_1",
+"page": 26,
+"rect": [
+200,
+164,
+451,
+289
+],
+"grow": false
+}
+]
+},
+{
+"qno": 57,
+"pages": [
+26
+],
+"question_text": "Consider the open feed water heater (FWH) shown in the figure given below:\n[IMAGE_Q_57_1]\nSpecific enthalpy of steam at location 2 is 2624 kJ/kg, specific enthalpy of water at location 5 is 226.7 kJ/kg and specific enthalpy of saturated water at location 6 is 708.6 kJ/kg. If the mass flow rate of water entering the open feed water heater (at location 5) is 100 kg/s then the mass flow rate of steam at location 2 will be ___________ kg/s (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_57_1",
+"page": 26,
+"rect": [
+188,
+395,
+463,
+569
+],
+"grow": false
+}
+]
+},
+{
+"qno": 58,
+"pages": [
+27
+],
+"question_text": "A high velocity water jet of cross section area = 0.01 m\\(^2\\) and velocity = 35 m/s enters a pipe filled with stagnant water. The diameter of the pipe is 0.32 m. This high velocity water jet entrains additional water from the pipe and the total water leaves the pipe with a velocity 6m/s as shown in the figure.\n[IMAGE_Q_58_1]\nThe flow rate of entrained water is ____________ litres/s (round off to two decimal places).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_58_1",
+"page": 27,
+"rect": [
+142,
+164,
+512,
+285
+],
+"grow": false
+}
+]
+},
+{
+"qno": 59,
+"pages": [
+27
+],
+"question_text": "A vertical shaft Francis turbine rotates at 300 rpm. The available head at the inlet to the turbine is 200 m. The tip speed of the rotor is 40 m/s. Water leaves the runner of the turbine without whirl. Velocity at the exit of the draft tube is 3.5 m/s. The head losses in different components of the turbine are: (i) stator and guide vanes: 5.0 m, (ii) rotor: 10 m, and (iii) draft tube: 2 m. Flow rate through the turbine is 20 m\\(^3\\)/s. Take \\(g\\) = 9.8 m/s\\(^2\\). The hydraulic efficiency of the turbine is _____________ % (round off to one decimal place).",
+"options": [],
+"figures": []
+},
+{
+"qno": 60,
+"pages": [
+28
+],
+"question_text": "An adiabatic vortex tube, shown in the figure given below is supplied with 5 kg/s of air (inlet 1) at 500 kPa and 300 K. Two separate streams of air are leaving the device from outlets 2 and 3. Hot air leaves the device at a rate of 3 kg/s from outlet 2 at 100 kPa and 340 K, and 2 kg/s of cold air stream is leaving the device from outlet 3 at 100 kPa and 240 K.\n[IMAGE_Q_60_1]\nAssume constant specific heat of air is 1005 J/kg.K and gas constant is 287 J/kg.K. There is no work transfer across the boundary of this device. The rate of entropy generation is _____________kW/K (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_60_1",
+"page": 28,
+"rect": [
+144,
+176,
+502,
+287
+],
+"grow": false
+}
+]
+},
+{
+"qno": 61,
+"pages": [
+28
+],
+"question_text": "A block of negligible mass rests on a surface that is inclined at 30° to the horizontal plane as shown in the figure. When a vertical force of 900 N and a horizontal force of 750 N are applied, the block is just about to slide.\n[IMAGE_Q_61_1]\nThe coefficient of static friction between the block and surface is _______ (round off to two decimal places).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_61_1",
+"page": 28,
+"rect": [
+239,
+441,
+407,
+587
+],
+"grow": false
+}
+]
+}
+]

@@ -1,0 +1,149 @@
+[
+{
+"qno": 59,
+"pages": [
+29
+],
+"question_text": "An air-conditioning system provides a continuous flow of air to a room using an intake duct and an exit duct, as shown in the figure. To maintain the quality of the indoor air, the intake duct supplies a mixture of fresh air with a cold air stream. The two streams are mixed in an insulated mixing chamber located upstream of the intake duct. Cold air enters the mixing chamber at 5 °C, 105 kPa with a volume flow rate of 1.25 m\\(^3\\)/s during steady state operation. Fresh air enters the mixing chamber at 34 °C and 105 kPa. The mass flow rate of the fresh air is 1.6 times of the cold air stream. Air leaves the room through the exit duct at 24 °C.\n[IMAGE_Q_59_1]\nAssuming the air behaves as an ideal gas with \\(c_p\\) = 1.005 kJ/kg.K and \\(R\\) = 0.287 kJ/kg.K, the rate of heat gain by the air from the room is ___________ kW (round off to two decimal places).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_59_1",
+"page": 29,
+"rect": [
+225,
+224,
+440,
+318
+],
+"grow": false
+}
+]
+},
+{
+"qno": 60,
+"pages": [
+29
+],
+"question_text": "Two smooth identical spheres each of radius 125 mm and weight 100 N rest in a horizontal channel having vertical walls. The distance between vertical walls of the channel is 400 mm.\n[IMAGE_Q_60_1]\nThe reaction at the point of contact between two spheres is _________ N (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_60_1",
+"page": 29,
+"rect": [
+270,
+486,
+375,
+632
+],
+"grow": false
+}
+]
+},
+{
+"qno": 61,
+"pages": [
+30
+],
+"question_text": "An overhanging beam \\(PQR\\) is subjected to uniformly distributed load 20 kN/m as shown in the figure.\n[IMAGE_Q_61_1]\nThe maximum bending stress developed in the beam is __________ MPa (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_61_1",
+"page": 30,
+"rect": [
+150,
+136,
+510,
+242
+],
+"grow": false
+}
+]
+},
+{
+"qno": 62,
+"pages": [
+30
+],
+"question_text": "The Whitworth quick return mechanism is shown in the figure with link lengths as follows: OP = 300 mm, OA = 150 mm, AR = 160 mm, RS = 450 mm.\n[IMAGE_Q_62_1]\nThe quick return ratio for the mechanism is _________ (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_62_1",
+"page": 30,
+"rect": [
+160,
+408,
+505,
+605
+],
+"grow": false
+}
+]
+},
+{
+"qno": 63,
+"pages": [
+31
+],
+"question_text": "A short shoe drum (radius 260 mm) brake is shown in the figure. A force of 1 kN is applied to the lever. The coefficient of friction is 0.4.\n[IMAGE_Q_63_1]\nThe magnitude of the torque applied by the brake is ___________ N.m (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_63_1",
+"page": 31,
+"rect": [
+205,
+132,
+455,
+312
+],
+"grow": false
+}
+]
+},
+{
+"qno": 64,
+"pages": [
+31
+],
+"question_text": "A machine part in the form of cantilever beam is subjected to fluctuating load as shown in the figure. The load varies from 800 N to 1600 N. The modified endurance, yield and ultimate strengths of the material are 200 MPa, 500 MPa and 600 MPa, respectively.\n[IMAGE_Q_64_1]\nThe factor of safety of the beam using modified Goodman criterion is __________ (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_64_1",
+"page": 31,
+"rect": [
+180,
+482,
+480,
+590
+],
+"grow": false
+}
+]
+},
+{
+"qno": 65,
+"pages": [
+32
+],
+"question_text": "A cantilever beam of rectangular cross-section is welded to a support by means of two fillet welds as shown in figure. A vertical load of 2 kN acts at free end of the beam.\n[IMAGE_Q_65_1]\nConsidering that the allowable shear stress in weld is 60 N/mm\\(^2\\), the minimum size (leg) of the weld required is __________ mm (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_65_1",
+"page": 32,
+"rect": [
+150,
+148,
+505,
+256
+],
+"grow": false
+}
+]
+}
+]

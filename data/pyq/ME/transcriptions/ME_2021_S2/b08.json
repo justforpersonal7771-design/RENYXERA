@@ -1,0 +1,62 @@
+[
+{
+"qno": 62,
+"pages": [
+29
+],
+"question_text": "The wheels and axle system lying on a rough surface is shown in the figure.\n[IMAGE_Q_62_1]\nEach wheel has diameter 0.8 m and mass 1 kg. Assume that the mass of the wheel is concentrated at rim and neglect the mass of the spokes. The diameter of axle is 0.2 m and its mass is 1.5 kg. Neglect the moment of inertia of the axle and assume \\(g\\) = 9.8 m/s\\(^2\\). An effort of 10 N is applied on the axle in the horizontal direction shown at mid span of the axle. Assume that the wheels move on a horizontal surface without slip. The acceleration of the wheel axle system in horizontal direction is _____________m/s\\(^2\\) (round off to one decimal place).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_62_1",
+"page": 29,
+"rect": [
+164,
+117,
+486,
+312
+],
+"grow": false
+}
+]
+},
+{
+"qno": 63,
+"pages": [
+29
+],
+"question_text": "A cantilever beam with a uniform flexural rigidity (\\(EI\\) = \\(200 \\times 10^6\\) N.m\\(^2\\)) is loaded with a concentrated force at its free end. The area of the bending moment diagram corresponding to the full length of the beam is 10000 N.m\\(^2\\). The magnitude of the slope of the beam at its free end is __________ micro radian (round off to the nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 64,
+"pages": [
+29
+],
+"question_text": "The torque provided by an engine is given by \\(T(\\theta) = 12000 + 2500\\sin(2\\theta)\\) N.m, where \\(\\theta\\) is the angle turned by the crank from inner dead center. The mean speed of the engine is 200 rpm and it drives a machine that provides a constant resisting torque. If variation of the speed from the mean speed is not to exceed ±0.5%, the minimum mass moment of inertia of the flywheel should be __________ kg.m\\(^2\\) (round off to the nearest integer).",
+"options": [],
+"figures": []
+},
+{
+"qno": 65,
+"pages": [
+30
+],
+"question_text": "The figure shows the relationship between fatigue strength (\\(S\\)) and fatigue life (\\(N\\)) of a material. The fatigue strength of the material for a life of 1000 cycles is 450 MPa, while its fatigue strength for a life of \\(10^6\\) cycles is 150 MPa.\n[IMAGE_Q_65_1]\nThe life of a cylindrical shaft made of this material subjected to an alternating stress of 200 MPa will then be ____________ cycles (round off to the nearest integer).",
+"options": [],
+"figures": [
+{
+"placeholder": "IMAGE_Q_65_1",
+"page": 30,
+"rect": [
+200,
+150,
+441,
+297
+],
+"grow": false
+}
+]
+}
+]

@@ -179,19 +179,22 @@ Compiling in MathJax is necessary but not sufficient. Before shipping a branch:
 - `python scripts/pyq/tagcodes.py <BR>` checks every paper: all questions tagged, no stray qno, GA/core matches the key. `build.py` expands the codes into the exact syllabus section/subject/topic text and stops on any bad line.
 - `tag.py` is kept only for `GA` and `parse_syllabus`; do not run its Gemini path.
 
-## 9. Status (5 Oct 2026)
+## 9. Status (8 Oct 2026)
 
 | Branch | Papers | Transcribed + validated | Tagged | In bank |
 |---|---|---|---|---|
 | EC | 2021-2026 | all 390 (2021 scan as text, 65 reviewed; 2022: 3 reviewed) | all 390 (EC syllabus curated; 36 subjects) | 390, render-clean |
 | EE | 2021-2026 | all 390 (2021 scan + scanned key typed by Claude) | all 390 | 390, render-clean, live |
-| ME, CE, DA | not yet | - | - | - |
+| DA | 2024-2026 | all 195 | all 195 | 195, render-clean, live |
+| ME | 2021-2026 (2021, 2022 split into S1/S2) | all 520 (2021 scans transcribed from images, keys typed) | all 520 (23 subjects) | 520, render-clean, live |
+| CE | not yet (two shifts from 2023!) | - | - | - |
 
 ## 10. Next steps, in order
 
 1. Multi-branch feature in the app (design doc, then build) - next turn.
 2. EE, ME, CE (two shifts!), DA: fetch, curate syllabus + codes, then per paper: render, regions, transcribe **and tag**, crop, eye-check, validate, tagcodes, build, render-check, commit.
 3. 2017-2020 from the bulk archive (check link naming and shifts per year).
+Merged two-shift PDFs: split with a page-range script into <pid>_S1/_S2 (PDF + key + manifest entry), then run keys/render per shift (done for ME 2021, 2022).
 4. After each branch: push, update `checklist.md`, tell the user what is next.
 
 ## 11. Quality bar, in one line

@@ -51,10 +51,10 @@ export const BRANCHES: BranchInfo[] = [
     blurb: "Past papers, solutions and mocks tuned to the Civil syllabus and its weightage.",
   },
   {
-    code: "ME", slug: "gate-me", paper: "ME", name: "Mechanical Engineering", short: "Mechanical", live: false,
-    candidates: "about 60,000 candidates sat GATE 2026 (estimate)", trend: "A long-standing paper with a big PSU audience.", plannedLaunch: "2027",
+    code: "ME", slug: "gate-me", paper: "ME", name: "Mechanical Engineering", short: "Mechanical", live: true,
+    candidates: "about 60,000 candidates sat GATE 2026 (estimate)", trend: "A long-standing paper with a big PSU audience.", plannedLaunch: null,
     subjects: ["Engineering Mathematics", "Engineering Mechanics", "Mechanics of Materials", "Theory of Machines & Vibrations", "Machine Design", "Fluid Mechanics", "Heat Transfer", "Thermodynamics", "Manufacturing & Production", "Industrial Engineering", "General Aptitude"],
-    blurb: "Topic-wise past papers and practice across the whole Mechanical syllabus.",
+    blurb: "Every official GATE ME paper from 2021 to 2026, both shifts of 2021 and 2022 (520 questions, tagged to the official syllabus), a real exam-interface simulator, mistake analytics and an AI mentor.",
   },
 ];
 
@@ -74,10 +74,11 @@ export const BANK_SUMMARY: Partial<Record<BranchCode, { questions: number; years
   ECE: { questions: 390, years: "2021–2026" },
   EE: { questions: 390, years: "2021–2026" },
   DA: { questions: 195, years: "2024–2026" },
+  ME: { questions: 520, years: "2021–2026" },
 };
 
 /** Branches whose question bank scripts/copy-static-data.mjs builds. */
-export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE", "EE", "DA"];
+export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE", "EE", "DA", "ME"];
 
 /** Branches open in the app: marketing `live`, plus any in NEXT_PUBLIC_PREVIEW_BRANCHES
  *  (comma-separated) for testing before launch. Server checks use public.branches.status. */
