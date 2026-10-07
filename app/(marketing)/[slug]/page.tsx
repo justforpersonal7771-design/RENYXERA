@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowRight, BookOpen, BrainCircuit, CheckCircle2, ClipboardList, FileText, PieChart, Rocket, Users } from "lucide-react";
-import { BRANCHES, branchBySlug } from "@/lib/branches";
+import { BANK_SUMMARY, BRANCHES, branchBySlug } from "@/lib/branches";
 import { NotifyForm } from "@/components/marketing/notify-form";
 import { syllabusStats } from "@/lib/seo/weightage";
 import { TOOLS } from "@/lib/seo/tools";
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     ? `GATE ${b.paper} Preparation — Free PYQs, Mocks & AI Mentor | RENYXERA`
     : `GATE ${b.paper} (${b.short}) Preparation — Coming to RENYXERA`;
   const description = b.live
-    ? `Prepare for GATE ${b.name} with every official paper ${b.code === "CSE" ? "since 2017" : "from 2021 to 2026"}, an exam-like test simulator, mistake analytics and an AI mentor. Free to start.`
+    ? `Prepare for GATE ${b.name} with every official paper ${BANK_SUMMARY[b.code] ? `from ${BANK_SUMMARY[b.code]!.years.replace("–", " to ")}` : "available"}, an exam-like test simulator, mistake analytics and an AI mentor. Free to start.`
     : `GATE ${b.name} preparation is coming to RENYXERA: past papers with solutions, topic-wise practice and full mocks. Join the waitlist to be notified at launch.`;
   return { title, description, alternates: { canonical: `/${b.slug}` }, openGraph: { title, description, type: "website" } };
 }

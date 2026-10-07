@@ -20,7 +20,7 @@ export default function OgImage() {
           <div style={{ fontSize: 72, fontWeight: 800, lineHeight: 1.05, background: "linear-gradient(90deg, #22d3ee, #a78bfa, #f0abfc)", backgroundClip: "text", color: "transparent" }}>Real weightage. Live mocks.</div>
         </div>
         <div style={{ display: "flex", gap: 16 }}>
-          {["975 PYQs since 2017", "Official 2027 syllabus", "Score & rank predictor", "All-India mocks"].map((t) => (
+          {["2,470 official PYQs · 5 papers", "Official 2027 syllabus", "Score & rank predictor", "All-India mocks"].map((t) => (
             <div key={t} style={{ display: "flex", padding: "10px 18px", borderRadius: 14, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.18)", fontSize: 24 }}>{t}</div>
           ))}
         </div>

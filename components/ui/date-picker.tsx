@@ -112,7 +112,7 @@ export function DatePicker({
   const todayISO = toISO(new Date());
 
   const label = selected
-    ? selected.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })
+    ? selected.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" })
     : placeholder;
 
   return (

@@ -75,4 +75,4 @@ export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body:
   ],
 };
 
-export const FREE_FOREVER = ["Every official PYQ since 2017", "Exam-like simulator & custom tests", "All-India mocks & leaderboards", "Analytics, mistakes bank & revision", "Cloud sync across devices", `${FREE_AI_TEASER} AI requests to try — earn more with sponsor breaks & referrals`];
+export const FREE_FOREVER = ["Every official PYQ in the bank for your paper (CS since 2017)", "Exam-like simulator & custom tests", "All-India mocks & leaderboards", "Analytics, mistakes bank & revision", "Cloud sync across devices", `${FREE_AI_TEASER} AI requests to try — earn more with sponsor breaks & referrals`];

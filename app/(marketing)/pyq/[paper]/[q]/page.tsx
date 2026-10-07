@@ -1,6 +1,7 @@
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
 import Link from "next/link";
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
+import { ShareQuestion } from "@/components/seo/share-question";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -70,7 +71,7 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
       <article className="mt-6 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-8">
         <PyqBody id={question.question_id} type={question.question_type} question={question.contentAst} options={(question.options ?? []).map((o) => ({ option_id: o.option_id, contentAst: o.contentAst }))} paperYearShift={p.yearShift} />
       </article>
-      <div className="mt-2 flex justify-end"><ReportIssueButton questionId={question.question_id} source="public" /></div>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-2"><ShareQuestion url={url} label={`${p.label}, Q${question.question_no}`} /><ReportIssueButton questionId={question.question_id} source="public" /></div>
 
       <SponsorSlot context={`${question.subject} ${question.topic}`} seed={Number(question.question_no)} />
 

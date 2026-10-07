@@ -1,4 +1,6 @@
 # RENYXERA — Growth, Marketing & Revenue Plan
+
+> **Acquisition plan superseded on 8 Oct 2026 by `docs/GROWTH_MASTER_PLAN.md`** (tasks: `docs/GROWTH_TASKS.md`). Pricing and revenue sections below still apply.
 *Zero-budget growth that attracts serious aspirants who are willing to pay. Written 26 Sep 2026.*
 
 **North star:** paying users who stay until their exam. Every tactic here is judged on one question: does it bring serious GATE aspirants who will practise weekly and would pay ₹100–₹300 a month?
