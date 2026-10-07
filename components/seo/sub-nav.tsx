@@ -39,6 +39,11 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
 
   const active = items.find((i) => path === i.href || (i.also ?? []).some((a) => path.startsWith(a)))?.href;
   const pill = hover ?? active;
+  const navRef = useRef<HTMLElement>(null);
+  // The dock scrolls sideways on phones: bring the open tool into view, not the first one.
+  useEffect(() => {
+    navRef.current?.querySelector<HTMLElement>('[aria-current="page"]')?.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [active]);
 
   return (
     <motion.div
@@ -47,7 +52,7 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
       transition={{ type: "spring", stiffness: 380, damping: 30 }}
       className="fixed inset-x-0 bottom-3 sm:bottom-5 z-40 flex justify-center px-3 pointer-events-none"
     >
-      <nav aria-label={label} onMouseLeave={() => setHover(null)}
+      <nav ref={navRef} aria-label={label} onMouseLeave={() => setHover(null)}
         className={`sub-dock pointer-events-auto max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-2xl border-2 bg-[var(--surface)]/95 backdrop-blur-xl p-1.5 ${tier === "pro" ? "border-amber-400/70" : tier === "plus" ? "border-slate-400/70" : "border-violet-500/35"}`}>
         <ul className="flex items-center gap-0.5 w-max">
           <li aria-hidden="true" className="hidden sm:flex items-center gap-1.5 pl-2.5 pr-3 mr-1 border-r border-[var(--border)] text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)]">{label}</li>

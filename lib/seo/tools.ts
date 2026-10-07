@@ -12,5 +12,5 @@ export const TOOLS: ToolEntry[] = [
   { href: "/tools/gate-study-plan", title: "Study plan & countdown", short: "Study planner", blurb: "A week-by-week plan weighted by real past-paper weightage, with a live countdown.", kind: "tool", icon: "calendar" },
 ];
 
-export const TOOLS_HOME = TOOLS[0].href;
-export const isToolPath = (p: string | null | undefined) => !!p && TOOLS.some((t) => p === t.href || (t.also ?? []).some((a) => p.startsWith(a)));
+export const TOOLS_HOME = "/tools";
+export const isToolPath = (p: string | null | undefined) => !!p && (p === "/tools" || TOOLS.some((t) => p === t.href || (t.also ?? []).some((a) => p.startsWith(a))));

@@ -116,10 +116,16 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
           {paused ? (
             <Pause className="relative w-2.5 h-2.5 text-[var(--text-muted)]" />
           ) : (
-            <span className="relative flex w-2 h-2">
-              <span className={`absolute inset-0 rounded-full ${tone.dot} opacity-60 animate-ping`} style={{ animationDuration: critical ? "1s" : "2s" }} />
-              <span className={`relative w-2 h-2 rounded-full ${tone.dot}`} />
-            </span>
+            <svg viewBox="0 0 12 12" aria-hidden="true" className={`relative w-3.5 h-3.5 ${tone.text}`} fill="none" stroke="currentColor" strokeLinecap="round">
+              <motion.rect x="5" y="0.4" width="2" height="1.3" rx="0.4" fill="currentColor" stroke="none"
+                animate={{ opacity: [1, 0.35, 1] }} transition={{ duration: critical ? 0.6 : 1, repeat: Infinity }} />
+              <circle cx="6" cy="7" r="4.2" strokeWidth="1.1" />
+              <motion.line x1="6" y1="7" x2="6" y2="3.9" strokeWidth="1.2"
+                style={{ originX: "6px", originY: "7px" }}
+                animate={{ rotate: elapsed * 6 }}
+                transition={{ type: "spring", stiffness: 300, damping: 14 }} />
+              <circle cx="6" cy="7" r="0.7" fill="currentColor" stroke="none" />
+            </svg>
           )}
         </span>
 

@@ -5,7 +5,7 @@
 import { chromium, devices } from "playwright";
 
 const BASE = process.env.BASE ?? "http://localhost:3000";
-const PAGES = ["/", "/about", "/gate-cse", "/pyq", "/pyq/gate-cs-2024-fn", "/pyq/gate-cs-2024-fn/q30", "/topics/algorithms", "/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/gate-cs-syllabus", "/tools/gate-study-plan", "/articles/most-repeated-gate-cs-topics", "/articles/gate-cs-preparation-150-days", "/mocks", "/setup", "/mistakes", "/bookmarks", "/revision", "/analytics", "/pro", "/privacy", "/terms"];
+const PAGES = ["/", "/about", "/gate-cse", "/pyq", "/pyq/gate-cs-2024-fn", "/pyq/gate-cs-2024-fn/q30", "/topics/algorithms", "/tools", "/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/gate-cs-syllabus", "/tools/gate-study-plan", "/articles/most-repeated-gate-cs-topics", "/articles/gate-cs-preparation-150-days", "/mocks", "/setup", "/mistakes", "/bookmarks", "/revision", "/analytics", "/pro", "/privacy", "/terms"];
 let fails = 0;
 const failed = [];
 const ok = (c, m) => { console.log(`${c ? "PASS" : "FAIL"}  ${m}`); if (!c) { fails++; failed.push(m); } };
@@ -60,6 +60,22 @@ try {
   await p.waitForTimeout(3000);
   const body = await p.evaluate(() => document.body.innerText);
   ok(/accuracy|marks/i.test(body) && !errors.length, `guest exam flow reaches results${errors.length ? ` errors: ${errors.join(" | ")}` : ""}`);
+  // Results fit one screen (no page scroll) and the scoreboard flips to the question grid.
+  for (const [w, h, scheme] of [[390, 664, "light"], [390, 664, "dark"], [1440, 900, "light"], [1440, 900, "dark"]]) {
+    await p.setViewportSize({ width: w, height: h });
+    await p.emulateMedia({ colorScheme: scheme });
+    await p.evaluate((t) => { localStorage.setItem("theme", t); document.documentElement.classList.toggle("dark", t === "dark"); }, scheme);
+    await p.waitForTimeout(500);
+    const pageScroll = await p.evaluate(() => [...document.querySelectorAll("main, html")].some((el) => el.scrollHeight > el.clientHeight + 2));
+    ok(!pageScroll, `results ${w}px/${scheme} fits one screen`);
+    if (process.env.SHOTS) await p.screenshot({ path: `${process.env.SHOTS}/results-${w}-${scheme}.png` });
+    await p.getByRole("button", { name: /show question grid/i }).click();
+    await p.waitForTimeout(600);
+    ok(await p.getByRole("button", { name: /show scoreboard/i }).isVisible(), `results ${w}px/${scheme} flips to the grid`);
+    if (process.env.SHOTS) await p.screenshot({ path: `${process.env.SHOTS}/results-${w}-${scheme}-grid.png` });
+    await p.getByRole("button", { name: /show scoreboard/i }).click();
+    await p.waitForTimeout(500);
+  }
   await ctx.close();
 } catch (e) {
   ok(false, `smoke run crashed: ${e.message.split("\n")[0]}`);

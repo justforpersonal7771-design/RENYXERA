@@ -114,6 +114,18 @@ export function Topbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isCalendarOpen]);
 
+  // Mobile menu: tapping anywhere outside it (or its toggle) closes it.
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const onDown = (e: PointerEvent) => {
+      const t = e.target as Element | null;
+      if (t?.closest("[data-mobile-menu], [data-mobile-menu-toggle]")) return;
+      setMobileMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [mobileMenuOpen]);
+
   useEffect(() => {
     if (!isTodoOpen) return;
     const handleClickOutside = (event: MouseEvent) => {
@@ -223,8 +235,6 @@ export function Topbar() {
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-          <BranchChip />
-
           {/* Action cluster: brand comet circling the border (.nav-cluster), a highlight
               that glides to whichever icon is hovered, and icons that re-draw their
               strokes on hover (.nav-act). */}
@@ -361,11 +371,14 @@ export function Topbar() {
                 </AnimatePresence>
              </button>
 
+             <div className="relative z-10 flex items-center"><BranchChip /></div>
+
              <div className="relative z-10 w-px h-5 bg-[var(--border)] mx-0.5" />
 
              <div className="relative z-10 flex items-center"><AccountButton /></div>
 
              <button
+                data-mobile-menu-toggle aria-label={mobileMenuOpen ? "Close menu" : "Open menu"} aria-expanded={mobileMenuOpen}
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="nav-act relative z-10 lg:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer"
              >
@@ -384,6 +397,7 @@ export function Topbar() {
              animate={{ opacity: 1, y: 0, scale: 1 }}
              exit={{ opacity: 0, y: -8, scale: 0.98 }}
              transition={{ duration: 0.15 }}
+             data-mobile-menu
              className="lg:hidden fixed left-4 right-4 top-16 mt-2 w-auto max-w-[280px] ml-auto bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden z-50"
           >
             <nav className="flex flex-col p-2 w-full">

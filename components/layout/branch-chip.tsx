@@ -1,7 +1,6 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { ChevronDown } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { availableBranches, branchByCode } from "@/lib/branches";
 import { getCurrentBranch } from "@/lib/branch/current";
@@ -17,9 +16,9 @@ export function BranchChip() {
   if (loading || !code || availableBranches().length < 2) return null;
   const info = branchByCode(code);
   return (
-    <button type="button" onClick={openBranchModal} aria-haspopup="dialog" title={`Your GATE paper: ${info?.name ?? code}`}
-      className="inline-flex items-center gap-1 h-8 px-2.5 whitespace-nowrap rounded-lg border border-[var(--border-subtle)] text-[11px] font-bold text-[var(--text-secondary)] hover:border-violet-400/60 hover:text-[var(--text-primary)] cursor-pointer">
-      GATE {info?.paper ?? code} <ChevronDown className="w-3 h-3" />
+    <button type="button" onClick={openBranchModal} aria-haspopup="dialog" title={`Your GATE paper: ${info?.name ?? code} (click to change)`}
+      className="group relative inline-flex items-center h-7 px-2.5 ml-0.5 whitespace-nowrap rounded-lg text-[11px] font-black tracking-wide text-violet-700 dark:text-violet-300 bg-gradient-to-br from-indigo-500/10 to-fuchsia-500/10 ring-1 ring-violet-500/25 transition-all duration-200 hover:ring-violet-500/60 hover:from-indigo-500/20 hover:to-fuchsia-500/20 hover:-translate-y-px hover:shadow-[0_4px_12px_-4px_rgba(124,58,237,0.5)] active:translate-y-0 active:scale-95 cursor-pointer">
+      GATE {info?.paper ?? code}
     </button>
   );
 }

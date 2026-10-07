@@ -5,7 +5,7 @@ import { branchByCode } from "@/lib/branches";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, Crown, Loader2, Sparkles } from "lucide-react";
+import { Check, Crown, Loader2, Sparkles, X } from "lucide-react";
 import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, type PlanId } from "@/lib/billing/plans";
 import { useEntitlements, waitForTier } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -168,13 +168,16 @@ export default function PlansPage() {
           const total = (cp.pricePaise ?? 0) - credit;
           const gold = cp.tier === "pro";
           return (
-            <motion.div className="fixed inset-0 z-[90] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div className="fixed inset-0 z-[300] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <button type="button" aria-label="Close" className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirm(null)} />
               <motion.div role="dialog" aria-modal="true" aria-label={`Confirm ${cp.name}`} initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }}
-                className={`relative w-full max-w-md rounded-3xl border bg-[var(--surface)] p-6 shadow-2xl ${gold ? "border-amber-400/60" : "border-slate-400/60"}`}>
+                className={`relative w-full max-w-md max-h-[90dvh] overflow-y-auto rounded-3xl border bg-[var(--surface)] p-6 shadow-2xl ${gold ? "border-amber-400/60" : "border-slate-400/60"}`}>
                 <div className="flex items-center justify-between">
                   <p className={`text-xs font-black uppercase tracking-wider ${LOOK[cp.tier].kicker}`}>{gold ? "Pro · Gold" : "Plus · Silver"}</p>
-                  <ProCrown metal={LOOK[cp.tier].metal} className="is-inline" />
+                  <div className="flex items-center gap-1">
+                    <ProCrown metal={LOOK[cp.tier].metal} className="is-inline" />
+                    <button type="button" onClick={() => setConfirm(null)} aria-label="Close" className="group w-8 h-8 -mr-2 rounded-lg grid place-items-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] cursor-pointer"><X className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90" /></button>
+                  </div>
                 </div>
                 <h2 className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">Confirm {cp.name}</h2>
                 <dl className="mt-4 space-y-2 rounded-2xl bg-[var(--surface-secondary)]/60 p-4 text-sm">

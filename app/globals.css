@@ -640,10 +640,10 @@
     --scrollbar-thumb: color-mix(in srgb, var(--brand-blue) 40%, #71717a);
     /* Brand ribbon (cyan -> blue -> violet -> magenta) as bare RGB triplets so
        the thumb can fade them in/out via --sb-alpha. */
-    --sb-c1: 6 194 251;
-    --sb-c2: 10 95 242;
-    --sb-c3: 91 33 224;
-    --sb-c4: 221 66 251;
+    --sb-c1: 186 230 253;
+    --sb-c2: 165 180 252;
+    --sb-c3: 196 181 253;
+    --sb-c4: 240 171 252;
     --scrollbar-thumb-gradient: linear-gradient(180deg, rgb(var(--sb-c1)), rgb(var(--sb-c2)) 35%, rgb(var(--sb-c3)) 70%, rgb(var(--sb-c4)));
     --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-violet) 55%, transparent);
     --scrollbar-track: transparent;
@@ -709,10 +709,10 @@
 
     --scrollbar-thumb: color-mix(in srgb, var(--brand-blue) 45%, #a1a1aa);
     /* Brightened ribbon so the thumb stays legible on dark surfaces. */
-    --sb-c1: 94 220 255;
-    --sb-c2: 77 141 255;
-    --sb-c3: 139 92 246;
-    --sb-c4: 232 121 249;
+    --sb-c1: 30 64 120;
+    --sb-c2: 55 48 140;
+    --sb-c3: 76 45 140;
+    --sb-c4: 112 40 120;
     --scrollbar-thumb-gradient: linear-gradient(180deg, rgb(var(--sb-c1)), rgb(var(--sb-c2)) 35%, rgb(var(--sb-c3)) 70%, rgb(var(--sb-c4)));
     --scrollbar-thumb-glow: color-mix(in srgb, var(--brand-violet) 65%, transparent);
     --scrollbar-track: transparent;
@@ -887,7 +887,7 @@
   }
 
   .custom-scrollbar[data-scrollbar-reveal="true"] {
-    --sb-alpha: 1;
+    --sb-alpha: 0.8;
   }
 
   /* The "bump": the thumb thickens from 4px to 8px (thinner transparent

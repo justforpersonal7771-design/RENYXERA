@@ -313,35 +313,35 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
           </div>
 
           {isInitialized && ranked.length > 0 && (
-            <div className="relative mt-4 flex flex-col md:flex-row md:items-end justify-between gap-3">
-              <div className="flex items-end gap-3 flex-wrap">
+            <div className="relative mt-3 flex flex-col md:flex-row md:items-end justify-between gap-2.5">
+              <div className="flex items-end gap-x-5 gap-y-1 flex-wrap">
                 <div>
                   <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">Study</span>
-                  <CountUp value={Math.round(syllabusShown)} suffix="%" duration={0.5} className="text-3xl sm:text-5xl font-bold leading-none" />
-                  <span className="ml-1.5 text-sm font-medium text-white/80">of the syllabus</span>
+                  <CountUp value={Math.round(syllabusShown)} suffix="%" duration={0.5} className="text-2xl sm:text-4xl font-bold leading-none" />
+                  <span className="ml-1 text-xs sm:text-sm font-medium text-white/80">of syllabus</span>
                 </div>
                 <ArrowRight className="hidden sm:block w-5 h-5 text-white/60 mb-2" />
                 <div>
                   <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">Covers</span>
-                  <CountUp value={effectiveMarksCaptured} decimals={1} suffix="%" duration={0.5} className="text-3xl sm:text-5xl font-bold leading-none text-amber-200" />
-                  <span className="ml-1.5 text-sm font-medium text-white/80">of past-paper marks</span>
+                  <CountUp value={effectiveMarksCaptured} decimals={1} suffix="%" duration={0.5} className="text-2xl sm:text-4xl font-bold leading-none text-amber-200" />
+                  <span className="ml-1 text-xs sm:text-sm font-medium text-white/80">of past-paper marks</span>
                 </div>
               </div>
               {/* Reset + presets, side by side */}
-              <div className="flex items-center gap-2 self-start md:self-auto">
+              <div className="flex items-center gap-2 w-full md:w-auto">
               <button
                 onClick={handleReset}
                 title="Reset to the full syllabus"
-                className="group flex items-center gap-1.5 h-[38px] px-3 rounded-xl text-[11px] font-semibold bg-black/15 hover:bg-white/15 border border-white/15 transition-colors cursor-pointer"
+                className="group shrink-0 flex items-center gap-1.5 h-[38px] px-2.5 sm:px-3 rounded-xl text-[11px] font-semibold bg-black/15 hover:bg-white/15 border border-white/15 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5 transition-transform duration-500 group-hover:-rotate-[360deg]" /> Reset
               </button>
-              <div className="flex items-center gap-1 p-1 rounded-xl bg-black/15 border border-white/15">
+              <div className="flex-1 md:flex-none min-w-0 flex items-center justify-between gap-0.5 p-1 rounded-xl bg-black/15 border border-white/15">
                 {presets.map((p) => (
                   <button
                     key={p}
                     onClick={() => applyPercent(p)}
-                    className={`relative px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${draftPercent === p ? "text-indigo-700" : "text-white/85 hover:text-white"}`}
+                    className={`relative px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${draftPercent === p ? "text-indigo-700" : "text-white/85 hover:text-white"}`}
                   >
                     {draftPercent === p && (
                       <motion.span layoutId="focus-preset" className="absolute inset-0 rounded-lg bg-white shadow" transition={{ type: "spring", stiffness: 450, damping: 32 }} />
@@ -353,13 +353,13 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   <button
                     onClick={() => applyPercent(goalPlan.recommendedPercent)}
                     title={`Recommended for AIR ${goalRank.toLocaleString()}`}
-                    className={`relative flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${draftPercent === goalPlan.recommendedPercent ? "text-indigo-700" : "text-white/85 hover:text-white"}`}
+                    className={`relative shrink-0 flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap cursor-pointer transition-colors ${draftPercent === goalPlan.recommendedPercent ? "text-indigo-700" : "text-white/85 hover:text-white"}`}
                   >
                     {draftPercent === goalPlan.recommendedPercent && (
                       <motion.span layoutId="focus-preset" className="absolute inset-0 rounded-lg bg-white shadow" transition={{ type: "spring", stiffness: 450, damping: 32 }} />
                     )}
                     <Sparkles className="relative w-3 h-3" />
-                    <span className="relative">My goal</span>
+                    <span className="relative">Goal</span>
                   </button>
                 )}
               </div>

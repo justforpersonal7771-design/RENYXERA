@@ -12,7 +12,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "motion/react";
 import {
   Award, Clock, Target, AlertCircle, CheckCircle,
-  XCircle, ArrowRight, Home, RefreshCw, BarChart2, ListFilter, HelpCircle, Sparkles, TrendingUp, LayoutGrid, Flag
+  XCircle, ArrowRight, Home, RefreshCw, BarChart2, ListFilter, HelpCircle, Sparkles, TrendingUp, LayoutGrid, Flag, FlipHorizontal2
 } from "lucide-react";
 import { GoalTagBadge } from "@/components/ui/goal-tag-badge";
 
@@ -48,6 +48,7 @@ export default function ResultSummaryPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"subject" | "section" | "difficulty" | "type">("subject");
   const [rightPanelView, setRightPanelView] = useState<"grid" | "breakdown">("grid");
+  const [flipped, setFlipped] = useState(false);
   const answersVersion = useAnswerKeysVersion((s) => s.version);
   // Direct loads / refreshes: the question bank loads asynchronously — never read it early.
   const repoReady = useDataStore((s) => s.isInitialized);
@@ -277,11 +278,92 @@ export default function ResultSummaryPage() {
       ? { label: "Room to Grow", message: "You're making progress. Focus revision time on the weakest topics below." }
       : { label: "Keep Practicing", message: "Every attempt builds understanding. Review the breakdown and revisit the fundamentals." };
 
+  const renderActions = (cls: string) => (
+            <div className={cls}>
+              <ShareResultButton className="h-auto py-3 [@media(max-height:860px)]:py-2.5"
+                title={String((session.draftConfig.config as { title?: string }).title ?? ((session.draftConfig.config as { yearShift?: string }).yearShift ? `GATE CS ${(session.draftConfig.config as { yearShift?: string }).yearShift} paper` : "Practice test"))}
+                subtitle="Practice test"
+                stats={[{ label: "Marks", value: `${Math.round(marks * 100) / 100} / ${maxPossibleMarks}` }, { label: "Accuracy", value: `${Math.round(accuracy)}%` }, { label: "Correct", value: String(correct) }, { label: "Attempted", value: `${totalAttempted}` }]} />
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => router.push("/")}
+                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] font-semibold rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Home className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
+                <span>Dashboard</span>
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={handleRetry}
+                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-md shadow-amber-500/30 hover:brightness-110 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
+              >
+                <RefreshCw className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180" />
+                <span className="whitespace-nowrap">Retry test</span>
+              </motion.button>
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={() => router.push(`/exam/results/review?id=${id}`)}
+                className="group relative overflow-hidden flex-[1.5] px-3 sm:px-6 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
+              >
+                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
+                <span className="relative whitespace-nowrap">Review answers</span>
+                <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </motion.button>
+            </div>
+  );
+
+  const gridView = (
+            <div className="flex-1 flex flex-col min-h-0">
+              <div className="grid-snap flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
+                <div className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] gap-2.5 p-1.5">
+                  {questionGrid.map((item, idx) => {
+                    let cellClass = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]";
+                    if (item.isPending) {
+                      cellClass = "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-dashed border-amber-500/50";
+                    } else if (item.isAttempted) {
+                      cellClass = item.isCorrect
+                        ? "bg-gradient-to-br from-emerald-400 to-green-600 text-white border border-transparent shadow-md shadow-emerald-500/25"
+                        : "bg-gradient-to-br from-rose-400 to-red-600 text-white border border-transparent shadow-md shadow-rose-500/25";
+                    }
+                    return (
+                      <motion.button
+                        key={item.questionId + idx}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: Math.min(idx * 0.008, 0.3) }}
+                        whileHover={{ y: -2 }}
+                        whileTap={{ scale: 0.92 }}
+                        onClick={() => router.push(`/exam/results/review?id=${id}&q=${idx}`)}
+                        className={`relative h-12 rounded-xl flex items-center justify-center font-num font-bold text-sm cursor-pointer ${cellClass}`}
+                        title={`Question ${idx + 1}${item.isMarked ? " (Marked for review)" : ""}`}
+                      >
+                        {idx + 1}
+                        {item.isMarked && (
+                          <Flag className="absolute top-1 right-1 w-3 h-3 text-amber-300 fill-amber-300" />
+                        )}
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="flex-none pt-4 mt-4 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold text-[var(--text-secondary)]">
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Correct</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Wrong</span>
+                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[var(--surface-secondary)] border border-[var(--border)]" /> Skipped</span>
+                <span className="flex items-center gap-1.5"><Flag className="w-2.5 h-2.5 text-amber-500 fill-amber-500" /> Marked</span>
+                {questionGrid.some((g) => g.isPending) && (
+                  <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-dashed border-amber-500" /> Pending</span>
+                )}
+              </div>
+            </div>
+  );
+
   return (
-    <div className="w-full mx-auto font-sans flex flex-col lg:h-full lg:min-h-0 lg:overflow-hidden pb-2" data-fill-height>
+    <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 overflow-hidden pb-2" data-fill-height="always">
       <AnswersPendingBanner session={session} onGraded={setSession} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:flex-1 lg:min-h-0 lg:overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 min-h-0 overflow-hidden">
 
         {/* Left Side: single non-scrolling card — verdict + score breakdown + actions
             all live together instead of two stacked cards inside a scrolling column. */}
@@ -289,12 +371,143 @@ export default function ResultSummaryPage() {
           initial={{ opacity: 0, y: -12, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="lg:col-span-5 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm lg:h-full lg:min-h-0"
+          className="lg:col-span-12 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm h-full min-h-0"
         >
+          <button
+            type="button"
+            onClick={() => setFlipped((f) => !f)}
+            className="group absolute top-3 right-3 z-20 flex items-center gap-1.5 rounded-full p-2.5 sm:px-3.5 sm:py-2 text-[11px] font-bold backdrop-blur-md transition-all duration-300 cursor-pointer bg-[var(--surface)]/85 text-violet-700 dark:text-violet-300 ring-1 ring-violet-500/30 shadow-sm hover:ring-violet-500/70 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_-8px_rgba(124,58,237,0.7)] active:scale-95 [perspective:300px]"
+            data-flipped={flipped}
+            aria-label={flipped ? "Show scoreboard" : "Show question grid"}
+          >
+            <motion.span key={String(flipped)} initial={{ rotateY: 0 }} animate={{ rotateY: 180 }} transition={{ duration: 0.5 }} className="inline-flex"><FlipHorizontal2 className="w-4 h-4 transition-transform duration-500 group-hover:[transform:rotateY(180deg)]" /></motion.span> <span className="hidden sm:inline">{flipped ? "Scoreboard" : "Question grid & breakdown"}</span>
+          </button>
+          <AnimatePresence mode="wait" initial={false}>
+          {flipped ? (
+            <motion.div key="back" initial={{ rotateY: -90, opacity: 0 }} animate={{ rotateY: 0, opacity: 1 }} exit={{ rotateY: 90, opacity: 0 }} transition={{ duration: 0.25 }}
+              className="flex-1 min-h-0 flex flex-col px-4 sm:px-6 pb-3 pt-14">
+          {/* Header */}
+          <div className="flex-none border-b border-[var(--border-subtle)] pb-4 mb-4 flex items-center justify-between gap-4 flex-wrap">
+            <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
+              {rightPanelView === "grid" ? <LayoutGrid className="w-4 h-4 text-indigo-500" /> : <BarChart2 className="w-4 h-4 text-indigo-500" />}
+              <span>{rightPanelView === "grid" ? "Question Grid" : "Diagnostics Breakdown"}</span>
+            </h3>
+
+            <div className="flex bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl p-1 text-xs font-semibold">
+              {(["grid", "breakdown"] as const).map(view => (
+                <button
+                  key={view}
+                  onClick={() => setRightPanelView(view)}
+                  className={`relative px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${rightPanelView === view ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
+                >
+                  {rightPanelView === view && (
+                    <motion.div
+                      layoutId="results-view-pill"
+                      className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30 rounded-lg"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative">{view === "grid" ? "Question grid" : "Breakdown"}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {rightPanelView === "breakdown" && (
+            <div className="flex-none mb-4 flex bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl p-1 text-xs font-semibold capitalize w-fit max-w-full overflow-x-auto">
+              {(["subject", "section", "difficulty", "type"] as const).map(tab => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`relative px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${activeTab === tab ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
+                >
+                  {activeTab === tab && (
+                    <motion.div
+                      layoutId="results-tab-pill"
+                      className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30 rounded-lg"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative">{tab[0].toUpperCase() + tab.slice(1)}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {rightPanelView === "grid" ? (
+            gridView
+          ) : (
+          /* Matrix items list */
+          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pr-1 -mr-1 custom-scrollbar space-y-4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, x: 8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                transition={{ duration: 0.15 }}
+                className="space-y-4"
+              >
+                {activeBreakdown().map((item, idx) => {
+                  const itemAccuracy = item.attempted > 0 ? ((item.correct / item.attempted) * 100) : 0;
+                  return (
+                    <motion.div
+                      key={item.label + idx}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: Math.min(idx * 0.04, 0.3) }}
+                      className="p-4 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-2xl shadow-sm hover-lift"
+                    >
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="font-bold text-sm text-[var(--text-primary)] truncate flex-1">{item.label}</div>
+                        <div className="w-24 h-1.5 shrink-0 rounded-full bg-[var(--surface)] overflow-hidden">
+                          <motion.div
+                            initial={{ width: 0 }}
+                            animate={{ width: `${itemAccuracy}%` }}
+                            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 + Math.min(idx * 0.04, 0.3) }}
+                            className={`h-full rounded-full bg-gradient-to-r ${itemAccuracy >= 75 ? "from-emerald-400 to-teal-500" : itemAccuracy >= 50 ? "from-amber-400 to-orange-500" : "from-rose-400 to-red-500"}`}
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
+                        <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
+                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Score</div>
+                          <div className="font-num text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                            {item.marks.toFixed(1)} <span className="text-[9px] text-[var(--text-muted)] font-normal">/ {item.max}</span>
+                          </div>
+                        </div>
+                        <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
+                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Accuracy</div>
+                          <div className="font-num text-sm font-bold text-[var(--text-secondary)]">
+                            {itemAccuracy.toFixed(0)}%
+                          </div>
+                        </div>
+                        <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
+                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Attempts</div>
+                          <div className="font-num text-sm font-bold text-[var(--text-secondary)] flex justify-center gap-1">
+                            <span className="text-emerald-500">{item.correct}</span>
+                            <span className="text-[var(--text-muted)]">/</span>
+                            <span className="text-rose-500">{item.wrong}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+          )}
+            </motion.div>
+          ) : (
+            <motion.div key="front" initial={{ rotateY: 90, opacity: 0 }} animate={{ rotateY: 0, opacity: 1 }} exit={{ rotateY: -90, opacity: 0 }} transition={{ duration: 0.25 }}
+              className="flex-1 min-h-0 flex flex-col lg:flex-row">
           {/* Verdict hero band */}
-          <div className="shrink-0 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-5 [@media(max-height:860px)]:p-4">
-            <div className="absolute top-0 right-0 w-56 h-56 bg-cyan-300/20 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-40 h-40 bg-fuchsia-400/20 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />
+          <div className="shrink-0 lg:w-[40%] lg:flex lg:items-center lg:justify-center lg:p-10 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-5 [@media(max-height:860px)]:p-4">
+            <motion.div aria-hidden="true" animate={{ x: [0, -40, 0], y: [0, 30, 0], scale: [1, 1.15, 1] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} className="absolute top-0 right-0 w-56 h-56 lg:w-80 lg:h-80 bg-cyan-300/25 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+            <motion.div aria-hidden="true" animate={{ x: [0, 50, 0], y: [0, -20, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="absolute top-1/2 left-1/4 w-40 h-40 bg-indigo-300/20 rounded-full blur-3xl pointer-events-none" />
+            <div aria-hidden="true" className="absolute inset-0 opacity-[0.07] pointer-events-none [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:18px_18px]" />
+            <motion.div aria-hidden="true" animate={{ x: [0, 30, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-0 left-0 w-40 h-40 lg:w-72 lg:h-72 bg-fuchsia-400/25 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />
 
             <div className="relative z-10 flex flex-col items-center text-center gap-3 [@media(max-height:860px)]:gap-2">
               <div className="flex items-center gap-2 flex-wrap justify-center">
@@ -311,7 +524,7 @@ export default function ResultSummaryPage() {
                   a slow flowing gradient around the arc, a counter-rotating halo, a
                   breathing glow and a tracer dot riding the arc's leading edge. */}
               <motion.div
-                className="relative w-44 h-44 sm:w-48 sm:h-48 [@media(max-height:860px)]:w-32 [@media(max-height:860px)]:h-32 shrink-0 cursor-default"
+                className="relative w-44 h-44 sm:w-48 sm:h-48 lg:w-56 lg:h-56 [@media(max-height:860px)]:w-32 [@media(max-height:860px)]:h-32 shrink-0 cursor-default"
                 initial={{ scale: 0.86, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -397,8 +610,8 @@ export default function ResultSummaryPage() {
               </motion.div>
 
               <div>
-                <h1 className="text-lg md:text-xl font-black tracking-tight">{verdict.label}</h1>
-                <p className="text-indigo-100 text-xs font-semibold max-w-sm mt-1">{verdict.message}</p>
+                <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="inline-flex items-center gap-2 text-lg md:text-xl lg:text-2xl font-black tracking-tight"><Award className="w-5 h-5 text-amber-200 drop-shadow" />{verdict.label}</motion.h1>
+                <p className="hidden sm:block text-indigo-100 text-xs font-semibold max-w-sm mt-1">{verdict.message}</p>
               </div>
 
               <div className="flex gap-8 pt-2 border-t border-white/15 w-full justify-center">
@@ -419,17 +632,22 @@ export default function ResultSummaryPage() {
           {/* Scoreboard content — same card, continues below the hero band. Deliberately
               not scrollable: this card now sizes to its content rather than clipping it. */}
           {/* Never scrolls: sized to fit one screen (the hero shrinks on short screens). */}
-          <div className="flex-1 min-h-0 overflow-hidden px-5 py-4 [@media(max-height:860px)]:py-3 flex flex-col justify-evenly gap-4 [@media(max-height:860px)]:gap-3">
+          <div className="flex-1 min-h-0 overflow-hidden px-5 py-4 lg:px-12 lg:py-10 [@media(max-height:860px)]:py-3 flex flex-col justify-center">
+          <div className="w-full max-w-2xl mx-auto flex flex-col justify-evenly lg:justify-center gap-4 lg:gap-7 [@media(max-height:860px)]:gap-3 lg:[@media(max-height:860px)]:gap-5 h-full lg:h-auto">
+            <div className="hidden lg:block">
+              <p className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400"><BarChart2 className="w-3.5 h-3.5" />Score summary</p>
+              <h2 className="mt-1 text-2xl font-black tracking-tight text-[var(--text-primary)] font-num">{Math.round(marks * 100) / 100} <span className="text-base font-bold text-[var(--text-muted)]">of {maxPossibleMarks} marks · {correct} correct of {session.totalQuestions}</span></h2>
+            </div>
             <div>
               <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 [@media(max-height:760px)]:hidden">
                 <div>
-                  <span className="text-2xl font-black text-[var(--text-primary)] font-num">{totalAttempted}</span>
+                  <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{totalAttempted}</span>
                   <span className="text-sm font-bold text-[var(--text-muted)] font-num"> / {session.totalQuestions}</span>
                   <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Attempted</p>
                 </div>
                 <div>
-                  <span className="text-2xl font-black text-[var(--text-primary)] font-num">{session.totalQuestions - totalAttempted}</span>
+                  <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{session.totalQuestions - totalAttempted}</span>
                   <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Skipped</p>
                 </div>
               </div>
@@ -449,6 +667,11 @@ export default function ResultSummaryPage() {
                   />
                 ))}
               </div>
+              <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-bold text-[var(--text-muted)]">
+                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_6px] shadow-emerald-500/60" />{correct} correct</span>
+                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_6px] shadow-rose-500/60" />{wrong} wrong</span>
+                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-slate-400" />{session.totalQuestions - totalAttempted} skipped</span>
+              </div>
             </div>
 
             {/* Metric Cards — colorful, semantic per stat instead of a flat gray tile */}
@@ -465,217 +688,32 @@ export default function ResultSummaryPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + idx * 0.05 }}
                 >
-                  <TiltCard max={8} className={`group border p-2.5 rounded-xl flex flex-col items-center justify-center text-center ${stat.bg}`}>
-                    <stat.icon className={`w-4 h-4 mb-1 transition-transform duration-300 group-hover:scale-125 group-hover:-rotate-6 ${stat.color}`} />
+                  <TiltCard max={8} className={`group border p-2.5 lg:p-4 rounded-xl lg:rounded-2xl transition-shadow duration-300 hover:shadow-lg flex flex-col items-center justify-center text-center ${stat.bg}`}>
+                    <span className="hidden [@media(min-height:761px)]:grid sm:grid mb-1.5 lg:mb-2 place-items-center w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-[var(--surface)] shadow-sm ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md"><stat.icon className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:-rotate-12 ${stat.color}`} /></span>
                     <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
-                    <CountUpFx value={stat.value} decimals={stat.decimals} prefix={stat.prefix} className="text-base font-black text-[var(--text-primary)]" />
+                    <CountUpFx value={stat.value} decimals={stat.decimals} prefix={stat.prefix} className="text-base lg:text-2xl font-black text-[var(--text-primary)]" />
                   </TiltCard>
                 </motion.div>
               ))}
             </div>
 
+            <div className="hidden lg:block pt-6 border-t border-[var(--border-subtle)]">
+              {renderActions("grid grid-cols-2 gap-3")}
+              <UpgradeNudge />
+            </div>
           </div>
+          </div>
+
+            </motion.div>
+          )}
+          </AnimatePresence>
 
           {/* Actions Desk — outside the scrolling body so Dashboard / Retry / Review are
               always reachable no matter how tall the scoreboard content gets. */}
-          <div className="shrink-0 border-t border-[var(--border-subtle)] p-4 [@media(max-height:860px)]:p-3">
-            <div className="flex flex-col sm:flex-row gap-2.5">
-              <ShareResultButton className="sm:flex-none h-auto py-3 [@media(max-height:860px)]:py-2.5"
-                title={String((session.draftConfig.config as { title?: string }).title ?? ((session.draftConfig.config as { yearShift?: string }).yearShift ? `GATE CS ${(session.draftConfig.config as { yearShift?: string }).yearShift} paper` : "Practice test"))}
-                subtitle="Practice test"
-                stats={[{ label: "Marks", value: `${Math.round(marks * 100) / 100} / ${maxPossibleMarks}` }, { label: "Accuracy", value: `${Math.round(accuracy)}%` }, { label: "Correct", value: String(correct) }, { label: "Attempted", value: `${totalAttempted}` }]} />
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={() => router.push("/")}
-                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] font-semibold rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Home className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
-                <span>Dashboard</span>
-              </motion.button>
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={handleRetry}
-                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-md shadow-amber-500/30 hover:brightness-110 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
-              >
-                <RefreshCw className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180" />
-                <span>Retry test</span>
-              </motion.button>
-              <motion.button
-                whileTap={{ scale: 0.97 }}
-                onClick={() => router.push(`/exam/results/review?id=${id}`)}
-                className="group relative overflow-hidden flex-[1.5] px-6 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
-              >
-                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
-                <span className="relative">Review answers</span>
-                <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </motion.button>
-            </div>
+          <div className={`shrink-0 border-t border-[var(--border-subtle)] p-4 [@media(max-height:860px)]:p-3 ${flipped ? "" : "lg:hidden"}`}>
+            {renderActions("grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:max-w-3xl sm:mx-auto")}
             <UpgradeNudge />
           </div>
-        </motion.div>
-
-        {/* Right Side: Question Grid / Diagnostics Breakdown (Spans 7) */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.18 }}
-          className="lg:col-span-7 card-glass rounded-3xl shadow-sm p-6 flex flex-col min-h-[420px] lg:h-full lg:min-h-0"
-        >
-          {/* Header */}
-          <div className="flex-none border-b border-[var(--border-subtle)] pb-4 mb-4 flex items-center justify-between gap-4 flex-wrap">
-            <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
-              {rightPanelView === "grid" ? <LayoutGrid className="w-4 h-4 text-indigo-500" /> : <BarChart2 className="w-4 h-4 text-indigo-500" />}
-              <span>{rightPanelView === "grid" ? "Question Grid" : "Diagnostics Breakdown"}</span>
-            </h3>
-
-            <div className="flex bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl p-1 text-xs font-semibold">
-              {(["grid", "breakdown"] as const).map(view => (
-                <button
-                  key={view}
-                  onClick={() => setRightPanelView(view)}
-                  className={`relative px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${rightPanelView === view ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
-                >
-                  {rightPanelView === view && (
-                    <motion.div
-                      layoutId="results-view-pill"
-                      className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30 rounded-lg"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative">{view === "grid" ? "Question grid" : "Breakdown"}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {rightPanelView === "breakdown" && (
-            <div className="flex-none mb-4 flex bg-[var(--surface-secondary)] border border-[var(--border)] rounded-xl p-1 text-xs font-semibold capitalize w-fit max-w-full overflow-x-auto">
-              {(["subject", "section", "difficulty", "type"] as const).map(tab => (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`relative px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer ${activeTab === tab ? 'text-white' : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'}`}
-                >
-                  {activeTab === tab && (
-                    <motion.div
-                      layoutId="results-tab-pill"
-                      className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30 rounded-lg"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative">{tab[0].toUpperCase() + tab.slice(1)}</span>
-                </button>
-              ))}
-            </div>
-          )}
-
-          {rightPanelView === "grid" ? (
-            <div className="flex-1 flex flex-col min-h-0">
-              <div className="grid-snap flex-1 min-h-0 overflow-y-auto overflow-x-hidden custom-scrollbar">
-                <div className="grid grid-cols-[repeat(auto-fill,minmax(52px,1fr))] gap-2.5 p-1.5">
-                  {questionGrid.map((item, idx) => {
-                    let cellClass = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)]";
-                    if (item.isPending) {
-                      cellClass = "bg-amber-500/15 text-amber-700 dark:text-amber-300 border border-dashed border-amber-500/50";
-                    } else if (item.isAttempted) {
-                      cellClass = item.isCorrect
-                        ? "bg-gradient-to-br from-emerald-400 to-green-600 text-white border border-transparent shadow-md shadow-emerald-500/25"
-                        : "bg-gradient-to-br from-rose-400 to-red-600 text-white border border-transparent shadow-md shadow-rose-500/25";
-                    }
-                    return (
-                      <motion.button
-                        key={item.questionId + idx}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: Math.min(idx * 0.008, 0.3) }}
-                        whileHover={{ y: -2 }}
-                        whileTap={{ scale: 0.92 }}
-                        onClick={() => router.push(`/exam/results/review?id=${id}&q=${idx}`)}
-                        className={`relative h-12 rounded-xl flex items-center justify-center font-num font-bold text-sm cursor-pointer ${cellClass}`}
-                        title={`Question ${idx + 1}${item.isMarked ? " (Marked for review)" : ""}`}
-                      >
-                        {idx + 1}
-                        {item.isMarked && (
-                          <Flag className="absolute top-1 right-1 w-3 h-3 text-amber-300 fill-amber-300" />
-                        )}
-                      </motion.button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="flex-none pt-4 mt-4 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold text-[var(--text-secondary)]">
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Correct</span>
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Wrong</span>
-                <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[var(--surface-secondary)] border border-[var(--border)]" /> Skipped</span>
-                <span className="flex items-center gap-1.5"><Flag className="w-2.5 h-2.5 text-amber-500 fill-amber-500" /> Marked</span>
-                {questionGrid.some((g) => g.isPending) && (
-                  <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-amber-500/20 border border-dashed border-amber-500" /> Pending</span>
-                )}
-              </div>
-            </div>
-          ) : (
-          /* Matrix items list */
-          <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden pr-1 -mr-1 custom-scrollbar space-y-4">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.15 }}
-                className="space-y-4"
-              >
-                {activeBreakdown().map((item, idx) => {
-                  const itemAccuracy = item.attempted > 0 ? ((item.correct / item.attempted) * 100) : 0;
-                  return (
-                    <motion.div
-                      key={item.label + idx}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: Math.min(idx * 0.04, 0.3) }}
-                      className="p-4 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-2xl shadow-sm hover-lift"
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="font-bold text-sm text-[var(--text-primary)] truncate flex-1">{item.label}</div>
-                        <div className="w-24 h-1.5 shrink-0 rounded-full bg-[var(--surface)] overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${itemAccuracy}%` }}
-                            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.1 + Math.min(idx * 0.04, 0.3) }}
-                            className={`h-full rounded-full bg-gradient-to-r ${itemAccuracy >= 75 ? "from-emerald-400 to-teal-500" : itemAccuracy >= 50 ? "from-amber-400 to-orange-500" : "from-rose-400 to-red-500"}`}
-                          />
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
-                        <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Score</div>
-                          <div className="font-num text-sm font-bold text-indigo-600 dark:text-indigo-400">
-                            {item.marks.toFixed(1)} <span className="text-[9px] text-[var(--text-muted)] font-normal">/ {item.max}</span>
-                          </div>
-                        </div>
-                        <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Accuracy</div>
-                          <div className="font-num text-sm font-bold text-[var(--text-secondary)]">
-                            {itemAccuracy.toFixed(0)}%
-                          </div>
-                        </div>
-                        <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Attempts</div>
-                          <div className="font-num text-sm font-bold text-[var(--text-secondary)] flex justify-center gap-1">
-                            <span className="text-emerald-500">{item.correct}</span>
-                            <span className="text-[var(--text-muted)]">/</span>
-                            <span className="text-rose-500">{item.wrong}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            </AnimatePresence>
-          </div>
-          )}
         </motion.div>
 
       </div>

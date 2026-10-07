@@ -70,6 +70,17 @@ export function AccountButton() {
     return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("resize", onResize); };
   }, [open, place]);
   useEffect(() => setOpen(false), [pathname]);
+  // Tapping anywhere outside the avatar or its menu closes the menu (touch has no mouseleave).
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: PointerEvent) => {
+      const t = e.target as Node | null;
+      if (btnRef.current?.contains(t) || (t instanceof Element && t.closest("[data-account-menu]"))) return;
+      setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [open]);
 
   if (loading) return <div className="w-8 h-8 rounded-lg bg-[var(--surface-secondary)] animate-pulse" aria-hidden="true" />;
 
@@ -121,7 +132,7 @@ export function AccountButton() {
       {typeof document !== "undefined" && createPortal(
         <AnimatePresence>
           {open && pos && (
-            <motion.div role="menu" aria-label="Profile quick access" onMouseEnter={show} onMouseLeave={hideSoon}
+            <motion.div data-account-menu role="menu" aria-label="Profile quick access" onMouseEnter={show} onMouseLeave={hideSoon}
               initial={{ opacity: 0, y: -8, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }}
               transition={{ type: "spring", stiffness: 460, damping: 32 }}
               style={{ position: "fixed", top: pos.top, right: pos.right, transformOrigin: "top right" }}

@@ -266,6 +266,8 @@ export default function ProfilePage() {
           setError("Usernames can only use lowercase letters, numbers and underscores.");
         } else if (/premium_avatar_requires/.test(error.message)) {
           setError(/requires_pro/.test(error.message) ? "That avatar style needs Pro — pick another or upgrade on the Plans page." : "That avatar style needs Plus — pick another or upgrade on the Plans page.");
+        } else if (/phone_locked/.test(error.message)) {
+          setError("Your verified mobile number is permanently linked to this account and can't be changed.");
         } else if (/profiles_phone_format/.test(error.message)) {
           setError("Enter a valid 10-digit Indian mobile number, or leave it empty.");
         } else if (/profiles_details_check/.test(error.message)) {
@@ -318,6 +320,7 @@ export default function ProfilePage() {
   }
 
   const f = form;
+  const phoneLocked = !!(profile as { phone_verified?: boolean } | null)?.phone_verified;
   const name = f.displayName.trim() || user.email?.split("@")[0] || "Aspirant";
   const branchLabel = branchByCode(profile?.target_branch ?? "CSE")?.short ?? profile?.target_branch ?? "CSE";
   const examDate = examDateFor(Number(f.targetYear) || upcomingYear, f.examDate || null);
@@ -396,8 +399,9 @@ export default function ProfilePage() {
                     <label className={LABEL}><Phone className="w-3.5 h-3.5" /> Mobile number <span className="font-normal normal-case tracking-normal text-[var(--text-muted)]">— optional</span></label>
                     <div className="relative max-w-sm">
                       <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-[var(--text-muted)]">+91</span>
-                      <input type="tel" inputMode="numeric" autoComplete="tel-national" value={f.phone} onChange={(e) => set("phone", e.target.value.replace(/\D/g, "").slice(0, 10))} className={`${INPUT} pl-12`} placeholder="10-digit mobile number" />
+                      <input type="tel" inputMode="numeric" autoComplete="tel-national" value={f.phone} onChange={(e) => set("phone", e.target.value.replace(/\D/g, "").slice(0, 10))} readOnly={phoneLocked} aria-readonly={phoneLocked} className={`${INPUT} pl-12 ${phoneLocked ? "opacity-70 cursor-not-allowed" : ""}`} placeholder="10-digit mobile number" />
                     </div>
+                    {phoneLocked && <p className="mt-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">Verified and permanently linked to this account. It can't be changed.</p>}
                     {f.phone && (
                       <label className="mt-2 flex items-start gap-2 text-[11px] text-[var(--text-secondary)] cursor-pointer">
                         <input type="checkbox" checked={f.contactOptIn} onChange={(e) => set("contactOptIn", e.target.checked)} className="mt-0.5 accent-violet-600" />
