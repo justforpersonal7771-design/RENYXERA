@@ -1,4 +1,5 @@
 import { RateLimiter } from "./rate-limiter";
+import { track } from "@/lib/growth/track";
 import { TokenEstimator } from "./token-estimator";
 import { IDBManager } from "../repository/storage/idb-manager";
 import { AIResponse, AITokenUsage } from "@/types/ai.types";
@@ -123,6 +124,7 @@ export class AIClient {
       // 2. Rate Limited Request execution — proxied through the server so the
       // Gemini API key never reaches the browser (see app/api/ai/generate/route.ts).
       const responseText = await RateLimiter.enqueue(requestId, async (signal) => {
+        track("ai_used");
         const res = await fetch("/api/ai/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },

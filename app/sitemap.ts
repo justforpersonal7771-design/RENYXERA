@@ -1,4 +1,6 @@
 import type { MetadataRoute } from "next";
+import { SYLLABUS_PAGE_BRANCHES, syllabusSlugOf } from "@/lib/seo/branch-syllabus";
+import { branchByCode } from "@/lib/branches";
 import { BRANCHES } from "@/lib/branches";
 import { SITE_URL } from "@/lib/site";
 import { allPapers, paperQuestions, subjects } from "@/lib/seo/pyq";
@@ -14,6 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/tools/gate-score-calculator`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/tools/gate-cs-cutoff`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/gate-cs-syllabus`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
+    ...SYLLABUS_PAGE_BRANCHES.filter((c) => branchByCode(c)?.live).map((c) => ({ url: `${SITE_URL}/${syllabusSlugOf(c)}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 })),
     { url: `${SITE_URL}/tools/gate-study-plan`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/articles/gate-cs-preparation-150-days`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.8 },
     { url: `${SITE_URL}/articles/most-repeated-gate-cs-topics`, lastModified: now, changeFrequency: "yearly" as const, priority: 0.8 },

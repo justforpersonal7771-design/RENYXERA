@@ -1,5 +1,6 @@
 "use client";
 
+import { InviteNudge } from "@/components/growth/invite-nudge";
 import { ShareResultButton } from "@/components/share/share-result-button";
 import { UpgradeNudge } from "@/components/ui/upgrade-nudge";
 import { useEffect, useState, useMemo } from "react";
@@ -705,7 +706,7 @@ export default function ResultSummaryPage() {
           {/* Actions — same place on both faces */}
           <div className="relative shrink-0 px-4 pb-4 pt-2 sm:px-8 [@media(max-height:760px)]:pb-3">
             {renderActions("grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:max-w-4xl sm:mx-auto")}
-            <UpgradeNudge />
+            <InviteNudge accuracy={accuracy} fallback={<UpgradeNudge />} />
           </div>
         </div>
       </motion.div>

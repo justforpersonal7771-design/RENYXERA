@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/growth/track";
 import { useEffect, useState } from "react";
 import { Check, Copy, Gift, Share2 } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -30,9 +31,10 @@ export function ReferralCard() {
 
   if (!signedIn) return null;
   const link = stats?.code ? `${window.location.origin}/r/${stats.code}` : "";
-  const copy = async () => { try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {} };
+  const copy = async () => { track("invite_shared"); try { await navigator.clipboard.writeText(link); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch {} };
   const share = async () => {
     const text = `I'm preparing for GATE CS on RENYXERA — every official paper, real weightage and free All-India mocks. Join with my link and we both get bonus AI requests:`;
+    track("invite_shared");
     if (navigator.share) { try { await navigator.share({ title: "RENYXERA", text, url: link }); return; } catch {} }
     window.open(`https://wa.me/?text=${encodeURIComponent(`${text} ${link}`)}`, "_blank", "noopener");
   };

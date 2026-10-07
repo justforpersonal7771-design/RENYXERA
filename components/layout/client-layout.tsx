@@ -75,7 +75,10 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   // 7E: remember where this visitor came from (first touch only).
-  useEffect(() => { void import("@/lib/growth/acquisition").then((m) => m.captureAcquisition()); }, []);
+  useEffect(() => {
+    void import("@/lib/growth/acquisition").then((m) => m.captureAcquisition());
+    void import("@/lib/growth/track").then((m) => m.track("visit"));
+  }, []);
 
   useEffect(() => {
     loadRepository();

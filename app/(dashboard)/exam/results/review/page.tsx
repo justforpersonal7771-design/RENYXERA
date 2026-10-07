@@ -50,6 +50,7 @@ export default function ReviewPage() {
   useEffect(() => {
     loadStudyData();
   }, [loadStudyData]);
+  useEffect(() => { void import("@/lib/growth/track").then((m) => m.track("review_opened")); }, []);
 
   // Clamp the deep-linked ?q= index once the session's real question count is known.
   useEffect(() => {

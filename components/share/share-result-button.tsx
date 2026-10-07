@@ -1,5 +1,6 @@
 "use client";
 
+import { track } from "@/lib/growth/track";
 import { useState } from "react";
 import { Download, Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -27,6 +28,7 @@ export function ShareResultButton({ title, subtitle, stats, className = "" }: { 
   })();
 
   const share = async () => {
+    track("share_clicked");
     setBusy(true);
     try {
       const blob = await drawCard({ title, subtitle, stats, who });

@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { BranchSyllabusPage } from "@/components/seo/branch-syllabus-page";
+import { SYLLABUS_PAGE_BRANCHES, branchOfSyllabusSlug, syllabusSlugOf } from "@/lib/seo/branch-syllabus";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArrowRight, BookOpen, BrainCircuit, CheckCircle2, ClipboardList, FileText, PieChart, Rocket, Users } from "lucide-react";
-import { BANK_SUMMARY, BRANCHES, branchBySlug } from "@/lib/branches";
+import { BANK_SUMMARY, BRANCHES, branchByCode, branchBySlug } from "@/lib/branches";
 import { NotifyForm } from "@/components/marketing/notify-form";
 import { syllabusStats } from "@/lib/seo/weightage";
 import { TOOLS } from "@/lib/seo/tools";
@@ -11,11 +13,19 @@ import { Donut, ShareBar, TrendBadge } from "@/components/seo/charts";
 // Step 8 (4H): one static, crawlable landing page per GATE branch — /gate-cse, /gate-da, …
 export const dynamicParams = false;
 export function generateStaticParams() {
-  return BRANCHES.map((b) => ({ slug: b.slug }));
+  return [...BRANCHES.map((b) => ({ slug: b.slug })), ...SYLLABUS_PAGE_BRANCHES.filter((c) => branchByCode(c)?.live).map((c) => ({ slug: syllabusSlugOf(c)! }))];
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const b = branchBySlug((await params).slug);
+  const slug = (await params).slug;
+  const sc = branchOfSyllabusSlug(slug);
+  if (sc) {
+    const sb = branchByCode(sc)!;
+    const title = `GATE ${sb.paper} Syllabus 2027 (Official) — Topic-wise Weightage | RENYXERA`;
+    const description = `The official GATE 2027 ${sb.name} syllabus with the marks weightage of every subject and topic in GATE ${sb.paper} papers ${BANK_SUMMARY[sc]?.years ?? ""}, and the most repeated topics.`;
+    return { title, description, alternates: { canonical: `/${slug}` }, openGraph: { title, description, type: "article" } };
+  }
+  const b = branchBySlug(slug);
   if (!b) return {};
   const title = b.live
     ? `GATE ${b.paper} Preparation — Free PYQs, Mocks & AI Mentor | RENYXERA`
@@ -34,7 +44,10 @@ const FEATURES = [
 ];
 
 export default async function BranchPage({ params }: { params: Promise<{ slug: string }> }) {
-  const b = branchBySlug((await params).slug);
+  const slug = (await params).slug;
+  const sc = branchOfSyllabusSlug(slug);
+  if (sc) return <BranchSyllabusPage code={sc} />;
+  const b = branchBySlug(slug);
   if (!b) notFound();
   const stats = b.live && b.code === "CSE" ? syllabusStats() : null; // weightage charts: CS data only for now
   const faq = [
@@ -87,6 +100,9 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
             <Link href={`/setup?branch=${b.code}`} className="mt-5 inline-flex w-full h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30">
               Start a free practice test <ArrowRight className="w-4 h-4" />
             </Link>
+            {syllabusSlugOf(b.code) && (
+              <Link href={`/${syllabusSlugOf(b.code)}`} className="mt-3 block text-center text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">GATE {b.paper} syllabus with topic weightage →</Link>
+            )}
           </div>
         ) : (
           <NotifyForm branch={b.code} branchName={b.paper} />

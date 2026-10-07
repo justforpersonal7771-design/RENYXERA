@@ -1,4 +1,6 @@
 import { create } from "zustand";
+import { track } from "@/lib/growth/track";
+import { getCurrentBranch } from "@/lib/branch/current";
 import { ExamSessionDraft } from "@/types/exam.types";
 import { ExamSession, QuestionResponse } from "@/types/exam-runtime.types";
 import { SessionManager } from "@/lib/exam/session-manager";
@@ -44,6 +46,7 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
   },
 
   startSession: async (draft: ExamSessionDraft) => {
+    track("test_started", getCurrentBranch());
     // Don't silently lose whatever test was already in progress — archive it under its
     // own id (findable later on the Dashboard as an incomplete/pending test) before this
     // new session claims the single "active_session" slot.
@@ -119,6 +122,7 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
   submitSession: async () => {
     const { activeSession } = get();
     if (!activeSession) return null;
+    track("test_submitted", getCurrentBranch());
     const updated: ExamSession = { ...activeSession, status: "SUBMITTED" as const, updatedAt: new Date().toISOString() };
 
     // Save and show "Test submitted" straight away — the confirmation must never wait on
