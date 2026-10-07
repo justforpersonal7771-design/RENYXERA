@@ -17,6 +17,8 @@ Order inside each phase = priority (Reach × Relevance × Conversion × Compound
 
 - [ ] **X-1 (C)** GATE virtual scientific calculator inside the exam interface, matching the official GATE on-screen calculator (layout, functions, keyboard behaviour). Required before marketing "real exam interface".
 
+- [ ] **X-2 (C)** "Join our Telegram" entry points in the app: channel (t.me/renyxera, daily PYQ) and discussion group (t.me/renyxera_chat) — dashboard card, results screen, footer and public PYQ pages; track clicks.
+
 ## P0 — Measurement
 
 - [x] **G-1 (U)** *Done by you: sitemap submitted, Success.* Turn on Google Search Console for the site; submit `/sitemap.xml`. *(needs your Google login — steps in the hand-over message.)*

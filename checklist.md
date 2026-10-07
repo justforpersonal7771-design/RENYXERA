@@ -523,3 +523,4 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 ## Growth (8 Oct 2026)
 Plan: docs/GROWTH_MASTER_PLAN.md · Tasks: docs/GROWTH_TASKS.md · Drafts: docs/GROWTH_ASSETS.md. PYQs (CE) on hold by request.
 - [ ] X-1: GATE virtual calculator in the exam interface (first item when development resumes; see docs/GROWTH_TASKS.md)
+- [ ] X-2: "Join our Telegram" links in the app (t.me/renyxera channel + t.me/renyxera_chat group)
