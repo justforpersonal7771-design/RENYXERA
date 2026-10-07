@@ -20,6 +20,7 @@ import { isResponseCorrect } from "@/lib/grading";
 import { hasAnswer, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
 import { useDataStore } from "@/store/use-data-store";
 import { AnswersPendingBanner } from "@/components/exam/answers-pending-banner";
+import { paperLabel } from "@/lib/branch/current";
 import { useMockResultsGate, MockResultsLocked } from "@/components/exam/mock-results-gate";
 /** Animated count-up for a numeric value, e.g. marks or accuracy percentage. */
 function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
@@ -281,7 +282,7 @@ export default function ResultSummaryPage() {
   const renderActions = (cls: string) => (
             <div className={cls}>
               <ShareResultButton className="h-auto py-3 [@media(max-height:860px)]:py-2.5"
-                title={String((session.draftConfig.config as { title?: string }).title ?? ((session.draftConfig.config as { yearShift?: string }).yearShift ? `GATE CS ${(session.draftConfig.config as { yearShift?: string }).yearShift} paper` : "Practice test"))}
+                title={String((session.draftConfig.config as { title?: string }).title ?? ((session.draftConfig.config as { yearShift?: string }).yearShift ? `GATE ${paperLabel()} ${(session.draftConfig.config as { yearShift?: string }).yearShift} paper` : "Practice test"))}
                 subtitle="Practice test"
                 stats={[{ label: "Marks", value: `${Math.round(marks * 100) / 100} / ${maxPossibleMarks}` }, { label: "Accuracy", value: `${Math.round(accuracy)}%` }, { label: "Correct", value: String(correct) }, { label: "Attempted", value: `${totalAttempted}` }]} />
               <motion.button
@@ -363,29 +364,228 @@ export default function ResultSummaryPage() {
     <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 overflow-hidden pb-2" data-fill-height="always">
       <AnswersPendingBanner session={session} onGraded={setSession} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 flex-1 min-h-0 overflow-hidden">
-
-        {/* Left Side: single non-scrolling card — verdict + score breakdown + actions
-            all live together instead of two stacked cards inside a scrolling column. */}
-        <motion.div
-          initial={{ opacity: 0, y: -12, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="lg:col-span-12 flex flex-col relative overflow-hidden rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-sm h-full min-h-0"
+      {/* One card, one surface. Front: ring + score summary. Back: question grid + breakdown.
+          The faces stay mounted and the card turns in CSS 3D, so flipping is smooth both ways. */}
+      <motion.div
+        initial={{ opacity: 0, y: 14, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        className="relative flex-1 min-h-0 mt-5"
+      >
+        <button
+          type="button"
+          onClick={() => setFlipped((f) => !f)}
+          aria-label={flipped ? "Show scoreboard" : "Show question grid and breakdown"}
+          className="group absolute -top-[18px] right-6 sm:right-10 z-30 flex items-center gap-2 h-9 rounded-full pl-2.5 pr-2.5 sm:pr-4 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_100%] bg-left hover:bg-right ring-4 ring-[var(--background)] shadow-lg shadow-violet-500/40 transition-all duration-500 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-violet-500/50 active:scale-95 cursor-pointer [perspective:200px]"
         >
-          <button
-            type="button"
-            onClick={() => setFlipped((f) => !f)}
-            className="group absolute top-3 right-3 z-20 flex items-center gap-1.5 rounded-full p-2.5 sm:px-3.5 sm:py-2 text-[11px] font-bold backdrop-blur-md transition-all duration-300 cursor-pointer bg-[var(--surface)]/85 text-violet-700 dark:text-violet-300 ring-1 ring-violet-500/30 shadow-sm hover:ring-violet-500/70 hover:-translate-y-0.5 hover:shadow-[0_8px_22px_-8px_rgba(124,58,237,0.7)] active:scale-95 [perspective:300px]"
-            data-flipped={flipped}
-            aria-label={flipped ? "Show scoreboard" : "Show question grid"}
-          >
-            <motion.span key={String(flipped)} initial={{ rotateY: 0 }} animate={{ rotateY: 180 }} transition={{ duration: 0.5 }} className="inline-flex"><FlipHorizontal2 className="w-4 h-4 transition-transform duration-500 group-hover:[transform:rotateY(180deg)]" /></motion.span> <span className="hidden sm:inline">{flipped ? "Scoreboard" : "Question grid & breakdown"}</span>
-          </button>
-          <AnimatePresence mode="wait" initial={false}>
-          {flipped ? (
-            <motion.div key="back" initial={{ rotateY: -90, opacity: 0 }} animate={{ rotateY: 0, opacity: 1 }} exit={{ rotateY: 90, opacity: 0 }} transition={{ duration: 0.25 }}
-              className="flex-1 min-h-0 flex flex-col px-4 sm:px-6 pb-3 pt-14">
+          <span className="grid place-items-center w-6 h-6 rounded-full bg-white/20">
+            <FlipHorizontal2 className={`w-3.5 h-3.5 transition-transform duration-700 ${flipped ? "[transform:rotateY(180deg)]" : ""} group-hover:scale-110`} />
+          </span>
+          <span className="hidden sm:inline">{flipped ? "Scoreboard" : "Question grid & breakdown"}</span>
+        </button>
+
+        <div className="relative h-full flex flex-col overflow-hidden rounded-3xl border border-[var(--border)] shadow-[0_20px_60px_-30px_rgba(91,33,182,0.45)] bg-gradient-to-br from-indigo-50 via-[var(--surface)] to-fuchsia-50 dark:from-indigo-950/50 dark:via-[var(--surface)] dark:to-fuchsia-950/40">
+          {/* living background shared by both faces */}
+          <motion.div aria-hidden="true" animate={{ x: [0, 60, 0], y: [0, 40, 0], scale: [1, 1.15, 1] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -top-40 -left-40 w-[36rem] h-[36rem] rounded-full bg-[radial-gradient(circle,rgb(99_102_241/0.16),transparent_65%)] pointer-events-none" />
+          <motion.div aria-hidden="true" animate={{ x: [0, -50, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute -bottom-48 -right-24 w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgb(217_70_239/0.13),transparent_65%)] pointer-events-none" />
+          <div aria-hidden="true" className="absolute inset-0 opacity-[0.35] dark:opacity-[0.12] pointer-events-none [background-image:radial-gradient(rgb(139_92_246/0.25)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
+
+          <div className="relative flex-1 min-h-0 [perspective:2200px]">
+            <div
+              className="relative h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] will-change-transform"
+              style={{ transform: `rotateY(${flipped ? 180 : 0}deg)` }}
+            >
+              {/* FRONT — scoreboard */}
+              <div aria-hidden={flipped} className={`absolute inset-0 overflow-hidden [backface-visibility:hidden] ${flipped ? "pointer-events-none" : ""}`}>
+                <div className="h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-7 pb-2 lg:py-8">
+                  {/* ring side */}
+                  <div className="flex flex-col items-center text-center gap-2.5 lg:gap-4">
+                    <div className="flex items-center gap-2 flex-wrap justify-center">
+                      <motion.span initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+                        className="relative overflow-hidden inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-violet-700 dark:text-violet-300 bg-violet-500/10 ring-1 ring-violet-500/20 px-3 py-1 rounded-full">
+                        <Sparkles className="w-3 h-3" /> Evaluation complete
+                        <span aria-hidden="true" className="absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite]" />
+                      </motion.span>
+                      {session.draftConfig.config.goalTag && <GoalTagBadge tag={session.draftConfig.config.goalTag} />}
+                    </div>
+              <motion.div
+                className="relative w-36 h-36 sm:w-48 sm:h-48 lg:w-[min(46vh,24rem)] lg:h-[min(46vh,24rem)] [@media(max-height:760px)]:w-32 [@media(max-height:760px)]:h-32 shrink-0 cursor-default"
+                initial={{ scale: 0.86, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                whileHover={{ scale: 1.04 }}
+              >
+                {/* breathing glow */}
+                <motion.div
+                  className="absolute inset-2 rounded-full bg-[radial-gradient(circle,rgb(139_92_246/0.28),transparent_70%)] pointer-events-none"
+                  animate={{ opacity: [0.35, 0.7, 0.35], scale: [0.92, 1.06, 0.92] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                />
+                {/* counter-rotating dashed halo */}
+                <motion.div
+                  className="absolute inset-0 rounded-full border border-dashed border-violet-400/40 pointer-events-none"
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
+                />
+
+                <svg className="w-full h-full -rotate-90 relative" viewBox="0 0 128 128">
+                  <defs>
+                    <linearGradient id="accArc" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stopColor="#6366f1" />
+                      <stop offset="50%" stopColor="#8b5cf6" />
+                      <stop offset="100%" stopColor="#d946ef" />
+                      <animateTransform
+                        attributeName="gradientTransform"
+                        type="rotate"
+                        from="0 0.5 0.5"
+                        to="360 0.5 0.5"
+                        dur="6s"
+                        repeatCount="indefinite"
+                      />
+                    </linearGradient>
+                    <filter id="accGlow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="2.5" result="b" />
+                      <feMerge>
+                        <feMergeNode in="b" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+
+                  <circle cx="64" cy="64" r={radius} strokeWidth="9" className="stroke-violet-500/15 fill-none" />
+                  <motion.circle
+                    cx="64"
+                    cy="64"
+                    r={radius}
+                    strokeWidth="9"
+                    stroke="url(#accArc)"
+                    filter="url(#accGlow)"
+                    className="fill-none"
+                    strokeDasharray={circumference}
+                    strokeLinecap="round"
+                    initial={{ strokeDashoffset: circumference }}
+                    animate={{ strokeDashoffset }}
+                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+                  />
+
+                  {/* tracer dot parked at the arc's leading edge */}
+                  <motion.g
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: accuracyRatio * 360 }}
+                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
+                    style={{ originX: "64px", originY: "64px" }}
+                  >
+                    <motion.circle
+                      cx={64 + radius}
+                      cy="64"
+                      r="5"
+                      className="fill-violet-600 dark:fill-violet-300"
+                      animate={{ opacity: [1, 0.45, 1], r: [5, 6.5, 5] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  </motion.g>
+                </svg>
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-4xl sm:text-5xl lg:text-7xl [@media(max-height:760px)]:text-3xl font-black font-num leading-none bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-indigo-300 dark:via-violet-300 dark:to-fuchsia-300 bg-clip-text text-transparent">
+                    <CountUp value={accuracy} decimals={0} />%
+                  </span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-violet-600 dark:text-violet-300 mt-1.5 lg:mt-3 lg:text-xs">Accuracy</span>
+                </div>
+              </motion.div>
+                    <div>
+                      <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+                        className="inline-flex items-center gap-2 text-lg sm:text-xl lg:text-3xl font-black tracking-tight text-[var(--text-primary)]">
+                        <Award className="w-5 h-5 lg:w-7 lg:h-7 text-amber-500" />{verdict.label}
+                      </motion.h1>
+                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-sm mx-auto mt-1">{verdict.message}</p>
+                    </div>
+                  </div>
+
+                  {/* summary side */}
+                  <div className="w-full max-w-2xl mx-auto self-stretch lg:self-center flex flex-col justify-evenly lg:justify-center gap-3 lg:gap-7 min-h-0">
+                    <div className="grid grid-cols-2 gap-3">
+                      {[
+                        { icon: Target, label: `of ${maxPossibleMarks} marks`, node: <CountUp value={marks} decimals={2} />, tint: "from-indigo-500 to-violet-600" },
+                        { icon: Clock, label: "time taken", node: <>{m}m {s}s</>, tint: "from-fuchsia-500 to-pink-600" },
+                      ].map((t, i) => (
+                        <motion.div key={t.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}
+                          className="group flex items-center gap-3 rounded-2xl bg-[var(--surface)]/70 ring-1 ring-[var(--border)] px-3 py-2.5 lg:px-5 lg:py-4 transition-all duration-300 hover:ring-violet-500/40 hover:shadow-lg hover:shadow-violet-500/10 hover:-translate-y-0.5">
+                          <span className={`grid place-items-center w-9 h-9 lg:w-11 lg:h-11 shrink-0 rounded-xl bg-gradient-to-br ${t.tint} text-white shadow-md transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110`}><t.icon className="w-4 h-4 lg:w-5 lg:h-5" /></span>
+                          <span className="min-w-0">
+                            <span className="block text-xl lg:text-3xl font-black font-num leading-none text-[var(--text-primary)]">{t.node}</span>
+                            <span className="block mt-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">{t.label}</span>
+                          </span>
+                        </motion.div>
+                      ))}
+                    </div>
+            <div className="hidden sm:block [@media(min-height:800px)]:block">
+              <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
+              <div className="grid grid-cols-2 gap-4 [@media(max-height:760px)]:hidden">
+                <div>
+                  <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{totalAttempted}</span>
+                  <span className="text-sm font-bold text-[var(--text-muted)] font-num"> / {session.totalQuestions}</span>
+                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Attempted</p>
+                </div>
+                <div>
+                  <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{session.totalQuestions - totalAttempted}</span>
+                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Skipped</p>
+                </div>
+              </div>
+              {/* correct / wrong / skipped as one split bar */}
+              <div className="mt-3 flex h-2.5 w-full overflow-hidden rounded-full bg-violet-500/10">
+                {[
+                  { v: correct, c: "from-emerald-400 to-green-500" },
+                  { v: wrong, c: "from-rose-400 to-red-500" },
+                  { v: session.totalQuestions - totalAttempted, c: "from-slate-300 to-slate-400 dark:from-slate-600 dark:to-slate-500" },
+                ].map((seg, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${session.totalQuestions ? (seg.v / session.totalQuestions) * 100 : 0}%` }}
+                    transition={{ duration: 1, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                    className={`h-full bg-gradient-to-r ${seg.c}`}
+                  />
+                ))}
+              </div>
+              <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-bold text-[var(--text-muted)]">
+                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_6px] shadow-emerald-500/60" />{correct} correct</span>
+                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_6px] shadow-rose-500/60" />{wrong} wrong</span>
+                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-slate-400" />{session.totalQuestions - totalAttempted} skipped</span>
+              </div>
+            </div>
+
+            {/* Metric Cards — colorful, semantic per stat instead of a flat gray tile */}
+            <div className="grid grid-cols-4 gap-2.5">
+              {[
+                { icon: CheckCircle, label: "Correct", value: correct, decimals: 0, prefix: "", color: "text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
+                { icon: XCircle, label: "Wrong", value: wrong, decimals: 0, prefix: "", color: "text-rose-500", bg: "bg-gradient-to-br from-rose-500/10 to-rose-500/5 border-rose-500/20" },
+                { icon: TrendingUp, label: "Marks", value: totalPositiveMarks, decimals: 1, prefix: "+", color: "text-emerald-600 dark:text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
+                { icon: AlertCircle, label: "Penalty", value: totalNegativeMarks, decimals: 1, prefix: "-", color: "text-red-500 dark:text-red-400", bg: "bg-gradient-to-br from-red-500/10 to-red-500/5 border-red-500/20" },
+              ].map((stat, idx) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.15 + idx * 0.05 }}
+                >
+                  <TiltCard max={8} className={`group border p-2.5 lg:p-4 rounded-xl lg:rounded-2xl transition-shadow duration-300 hover:shadow-lg flex flex-col items-center justify-center text-center ${stat.bg}`}>
+                    <span className="hidden [@media(min-height:761px)]:grid sm:grid mb-1.5 lg:mb-2 place-items-center w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-[var(--surface)] shadow-sm ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md"><stat.icon className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:-rotate-12 ${stat.color}`} /></span>
+                    <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
+                    <CountUpFx value={stat.value} decimals={stat.decimals} prefix={stat.prefix} className="text-base lg:text-2xl font-black text-[var(--text-primary)]" />
+                  </TiltCard>
+                </motion.div>
+              ))}
+            </div>
+
+                  </div>
+                </div>
+              </div>
+
+              {/* BACK — question grid + breakdown */}
+              <div aria-hidden={!flipped} className={`absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col px-4 sm:px-8 pt-8 pb-2 ${flipped ? "" : "pointer-events-none"}`}>
           {/* Header */}
           <div className="flex-none border-b border-[var(--border-subtle)] pb-4 mb-4 flex items-center justify-between gap-4 flex-wrap">
             <h3 className="text-sm font-bold text-[var(--text-primary)] flex items-center gap-2">
@@ -498,225 +698,17 @@ export default function ResultSummaryPage() {
             </AnimatePresence>
           </div>
           )}
-            </motion.div>
-          ) : (
-            <motion.div key="front" initial={{ rotateY: 90, opacity: 0 }} animate={{ rotateY: 0, opacity: 1 }} exit={{ rotateY: -90, opacity: 0 }} transition={{ duration: 0.25 }}
-              className="flex-1 min-h-0 flex flex-col lg:flex-row">
-          {/* Verdict hero band */}
-          <div className="shrink-0 lg:w-[40%] lg:flex lg:items-center lg:justify-center lg:p-10 relative overflow-hidden bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-5 [@media(max-height:860px)]:p-4">
-            <motion.div aria-hidden="true" animate={{ x: [0, -40, 0], y: [0, 30, 0], scale: [1, 1.15, 1] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} className="absolute top-0 right-0 w-56 h-56 lg:w-80 lg:h-80 bg-cyan-300/25 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
-            <motion.div aria-hidden="true" animate={{ x: [0, 50, 0], y: [0, -20, 0] }} transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }} className="absolute top-1/2 left-1/4 w-40 h-40 bg-indigo-300/20 rounded-full blur-3xl pointer-events-none" />
-            <div aria-hidden="true" className="absolute inset-0 opacity-[0.07] pointer-events-none [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:18px_18px]" />
-            <motion.div aria-hidden="true" animate={{ x: [0, 30, 0], y: [0, -30, 0], scale: [1, 1.2, 1] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} className="absolute bottom-0 left-0 w-40 h-40 lg:w-72 lg:h-72 bg-fuchsia-400/25 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col items-center text-center gap-3 [@media(max-height:860px)]:gap-2">
-              <div className="flex items-center gap-2 flex-wrap justify-center">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest bg-white/15 px-3 py-1 rounded-full">
-                  <Sparkles className="w-3 h-3" />
-                  Evaluation Complete
-                </span>
-                {session.draftConfig.config.goalTag && (
-                  <GoalTagBadge tag={session.draftConfig.config.goalTag} className="bg-white/15 !text-white !border-white/20" />
-                )}
-              </div>
-
-              {/* Accuracy ring — the focal point of the card, so it carries the motion:
-                  a slow flowing gradient around the arc, a counter-rotating halo, a
-                  breathing glow and a tracer dot riding the arc's leading edge. */}
-              <motion.div
-                className="relative w-44 h-44 sm:w-48 sm:h-48 lg:w-56 lg:h-56 [@media(max-height:860px)]:w-32 [@media(max-height:860px)]:h-32 shrink-0 cursor-default"
-                initial={{ scale: 0.86, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                whileHover={{ scale: 1.04 }}
-              >
-                {/* breathing glow */}
-                <motion.div
-                  className="absolute inset-2 rounded-full bg-white/25 blur-2xl pointer-events-none"
-                  animate={{ opacity: [0.35, 0.7, 0.35], scale: [0.92, 1.06, 0.92] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                />
-                {/* counter-rotating dashed halo */}
-                <motion.div
-                  className="absolute inset-0 rounded-full border border-dashed border-white/25 pointer-events-none"
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 28, repeat: Infinity, ease: "linear" }}
-                />
-
-                <svg className="w-full h-full -rotate-90 relative" viewBox="0 0 128 128">
-                  <defs>
-                    <linearGradient id="accArc" x1="0" y1="0" x2="1" y2="1">
-                      <stop offset="0%" stopColor="#ffffff" />
-                      <stop offset="50%" stopColor="#c7d2fe" />
-                      <stop offset="100%" stopColor="#f5d0fe" />
-                      <animateTransform
-                        attributeName="gradientTransform"
-                        type="rotate"
-                        from="0 0.5 0.5"
-                        to="360 0.5 0.5"
-                        dur="6s"
-                        repeatCount="indefinite"
-                      />
-                    </linearGradient>
-                    <filter id="accGlow" x="-50%" y="-50%" width="200%" height="200%">
-                      <feGaussianBlur stdDeviation="2.5" result="b" />
-                      <feMerge>
-                        <feMergeNode in="b" />
-                        <feMergeNode in="SourceGraphic" />
-                      </feMerge>
-                    </filter>
-                  </defs>
-
-                  <circle cx="64" cy="64" r={radius} strokeWidth="9" className="stroke-white/20 fill-none" />
-                  <motion.circle
-                    cx="64"
-                    cy="64"
-                    r={radius}
-                    strokeWidth="9"
-                    stroke="url(#accArc)"
-                    filter="url(#accGlow)"
-                    className="fill-none"
-                    strokeDasharray={circumference}
-                    strokeLinecap="round"
-                    initial={{ strokeDashoffset: circumference }}
-                    animate={{ strokeDashoffset }}
-                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-                  />
-
-                  {/* tracer dot parked at the arc's leading edge */}
-                  <motion.g
-                    initial={{ rotate: 0 }}
-                    animate={{ rotate: accuracyRatio * 360 }}
-                    transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-                    style={{ originX: "64px", originY: "64px" }}
-                  >
-                    <motion.circle
-                      cx={64 + radius}
-                      cy="64"
-                      r="5"
-                      className="fill-white"
-                      animate={{ opacity: [1, 0.45, 1], r: [5, 6.5, 5] }}
-                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                  </motion.g>
-                </svg>
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-5xl sm:text-[3.25rem] [@media(max-height:860px)]:text-4xl font-black font-num leading-none drop-shadow-sm">
-                    <CountUp value={accuracy} decimals={0} />%
-                  </span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-100 mt-1.5">Accuracy</span>
-                </div>
-              </motion.div>
-
-              <div>
-                <motion.h1 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="inline-flex items-center gap-2 text-lg md:text-xl lg:text-2xl font-black tracking-tight"><Award className="w-5 h-5 text-amber-200 drop-shadow" />{verdict.label}</motion.h1>
-                <p className="hidden sm:block text-indigo-100 text-xs font-semibold max-w-sm mt-1">{verdict.message}</p>
-              </div>
-
-              <div className="flex gap-8 pt-2 border-t border-white/15 w-full justify-center">
-                <div className="text-center">
-                  <div className="text-xl font-black font-num"><CountUp value={marks} decimals={2} /></div>
-                  <div className="text-[8px] font-black uppercase tracking-widest text-indigo-200">/ {maxPossibleMarks} Marks</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-xl font-black font-num">{m}m {s}s</div>
-                  <div className="text-[8px] font-black uppercase tracking-widest text-indigo-200 flex items-center gap-1 justify-center">
-                    <Clock className="w-3 h-3" /> Time
-                  </div>
-                </div>
               </div>
             </div>
           </div>
 
-          {/* Scoreboard content — same card, continues below the hero band. Deliberately
-              not scrollable: this card now sizes to its content rather than clipping it. */}
-          {/* Never scrolls: sized to fit one screen (the hero shrinks on short screens). */}
-          <div className="flex-1 min-h-0 overflow-hidden px-5 py-4 lg:px-12 lg:py-10 [@media(max-height:860px)]:py-3 flex flex-col justify-center">
-          <div className="w-full max-w-2xl mx-auto flex flex-col justify-evenly lg:justify-center gap-4 lg:gap-7 [@media(max-height:860px)]:gap-3 lg:[@media(max-height:860px)]:gap-5 h-full lg:h-auto">
-            <div className="hidden lg:block">
-              <p className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-violet-600 dark:text-violet-400"><BarChart2 className="w-3.5 h-3.5" />Score summary</p>
-              <h2 className="mt-1 text-2xl font-black tracking-tight text-[var(--text-primary)] font-num">{Math.round(marks * 100) / 100} <span className="text-base font-bold text-[var(--text-muted)]">of {maxPossibleMarks} marks · {correct} correct of {session.totalQuestions}</span></h2>
-            </div>
-            <div>
-              <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
-              <div className="grid grid-cols-2 gap-4 [@media(max-height:760px)]:hidden">
-                <div>
-                  <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{totalAttempted}</span>
-                  <span className="text-sm font-bold text-[var(--text-muted)] font-num"> / {session.totalQuestions}</span>
-                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Attempted</p>
-                </div>
-                <div>
-                  <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{session.totalQuestions - totalAttempted}</span>
-                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Skipped</p>
-                </div>
-              </div>
-              {/* correct / wrong / skipped as one split bar */}
-              <div className="mt-3 flex h-2.5 w-full overflow-hidden rounded-full bg-[var(--surface-secondary)]">
-                {[
-                  { v: correct, c: "from-emerald-400 to-green-500" },
-                  { v: wrong, c: "from-rose-400 to-red-500" },
-                  { v: session.totalQuestions - totalAttempted, c: "from-slate-300 to-slate-400 dark:from-slate-600 dark:to-slate-500" },
-                ].map((seg, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${session.totalQuestions ? (seg.v / session.totalQuestions) * 100 : 0}%` }}
-                    transition={{ duration: 1, delay: 0.3 + i * 0.12, ease: [0.16, 1, 0.3, 1] }}
-                    className={`h-full bg-gradient-to-r ${seg.c}`}
-                  />
-                ))}
-              </div>
-              <div className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-bold text-[var(--text-muted)]">
-                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_6px] shadow-emerald-500/60" />{correct} correct</span>
-                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_6px] shadow-rose-500/60" />{wrong} wrong</span>
-                <span className="inline-flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-slate-400" />{session.totalQuestions - totalAttempted} skipped</span>
-              </div>
-            </div>
-
-            {/* Metric Cards — colorful, semantic per stat instead of a flat gray tile */}
-            <div className="grid grid-cols-4 gap-2.5">
-              {[
-                { icon: CheckCircle, label: "Correct", value: correct, decimals: 0, prefix: "", color: "text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
-                { icon: XCircle, label: "Wrong", value: wrong, decimals: 0, prefix: "", color: "text-rose-500", bg: "bg-gradient-to-br from-rose-500/10 to-rose-500/5 border-rose-500/20" },
-                { icon: TrendingUp, label: "Marks", value: totalPositiveMarks, decimals: 1, prefix: "+", color: "text-emerald-600 dark:text-emerald-500", bg: "bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 border-emerald-500/20" },
-                { icon: AlertCircle, label: "Penalty", value: totalNegativeMarks, decimals: 1, prefix: "-", color: "text-red-500 dark:text-red-400", bg: "bg-gradient-to-br from-red-500/10 to-red-500/5 border-red-500/20" },
-              ].map((stat, idx) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 + idx * 0.05 }}
-                >
-                  <TiltCard max={8} className={`group border p-2.5 lg:p-4 rounded-xl lg:rounded-2xl transition-shadow duration-300 hover:shadow-lg flex flex-col items-center justify-center text-center ${stat.bg}`}>
-                    <span className="hidden [@media(min-height:761px)]:grid sm:grid mb-1.5 lg:mb-2 place-items-center w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-[var(--surface)] shadow-sm ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md"><stat.icon className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:-rotate-12 ${stat.color}`} /></span>
-                    <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
-                    <CountUpFx value={stat.value} decimals={stat.decimals} prefix={stat.prefix} className="text-base lg:text-2xl font-black text-[var(--text-primary)]" />
-                  </TiltCard>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="hidden lg:block pt-6 border-t border-[var(--border-subtle)]">
-              {renderActions("grid grid-cols-2 gap-3")}
-              <UpgradeNudge />
-            </div>
-          </div>
-          </div>
-
-            </motion.div>
-          )}
-          </AnimatePresence>
-
-          {/* Actions Desk — outside the scrolling body so Dashboard / Retry / Review are
-              always reachable no matter how tall the scoreboard content gets. */}
-          <div className={`shrink-0 border-t border-[var(--border-subtle)] p-4 [@media(max-height:860px)]:p-3 ${flipped ? "" : "lg:hidden"}`}>
-            {renderActions("grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:max-w-3xl sm:mx-auto")}
+          {/* Actions — same place on both faces */}
+          <div className="relative shrink-0 px-4 pb-4 pt-2 sm:px-8 [@media(max-height:760px)]:pb-3">
+            {renderActions("grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:max-w-4xl sm:mx-auto")}
             <UpgradeNudge />
           </div>
-        </motion.div>
-
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 }

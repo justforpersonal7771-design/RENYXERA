@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { BookOpen, Calculator, CalendarDays, FileText, Flame, LineChart } from "lucide-react";
 import { TOOLS, isToolPath, type ToolEntry } from "@/lib/seo/tools";
@@ -11,7 +12,15 @@ const TOOL_ITEMS = TOOLS.map((t) => ({ href: t.href, label: t.title, short: t.sh
 /** Tool pages get the adaptive tools dock at the bottom of the screen; other public pages don't. */
 export function ToolsFrame({ children }: { children: React.ReactNode }) {
   const path = usePathname() ?? "";
+  // The app scrolls inside <main>, not the window, so a new tool would otherwise open
+  // at the previous tool's scroll position.
+  useEffect(() => {
+    document.querySelector("main")?.scrollTo({ top: 0 });
+    window.scrollTo({ top: 0 });
+  }, [path]);
   if (!isToolPath(path)) return <>{children}</>;
+  // The /tools landing already lists every tool; the dock is only for moving between tools.
+  if (path === "/tools") return <div className="min-w-0 space-y-6">{children}</div>;
   return (
     <>
       <div className="min-w-0 pb-24 space-y-6">{children}</div>

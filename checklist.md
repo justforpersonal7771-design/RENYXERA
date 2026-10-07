@@ -518,3 +518,4 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 - [ ] Migration 0030_phone_lock.sql (verified phone permanently locked) — run in Supabase
 - [ ] Migration 0029_da_live.sql — confirm run
 - [ ] Future: phone verification + reports via Telegram bot first, then WhatsApp
+- [ ] Future: proper Share (copy link to a public result card, share to installed apps); rename "Download result" back to "Share result" then

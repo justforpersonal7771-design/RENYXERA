@@ -92,7 +92,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
         : warning
           ? { box: "bg-amber-500/10 border-amber-500/40", text: "text-amber-600 dark:text-amber-400", ring: "#f59e0b", dot: "bg-amber-500", glow: "" }
           : { box: "bg-[var(--surface-secondary)]/70 border-[var(--border)]", text: "text-[var(--text-primary)]", ring: "#10b981", dot: "bg-emerald-500", glow: "" };
-    const R = 9;
+    const R = 7.6;
     const C = 2 * Math.PI * R;
 
     return (
@@ -101,32 +101,27 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
         aria-label={`Time remaining ${formatTime(remaining)}${paused ? ", paused" : ""}`}
         className={`group relative h-9 flex items-center gap-2 pl-1.5 pr-3 rounded-xl border backdrop-blur-md shadow-sm select-none shrink-0 transition-colors duration-500 outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 ${tone.box} ${tone.glow}`}
       >
-        {/* Ring + heartbeat dot */}
-        <span className="relative w-6 h-6 flex items-center justify-center shrink-0">
-          <svg viewBox="0 0 24 24" className="absolute inset-0 -rotate-90">
-            <circle cx="12" cy="12" r={R} fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[var(--border)]" />
-            <motion.circle
-              cx="12" cy="12" r={R} fill="none" stroke={tone.ring} strokeWidth="2.5" strokeLinecap="round"
-              strokeDasharray={C}
-              initial={false}
-              animate={{ strokeDashoffset: C * (1 - remainingRatio) }}
-              transition={{ duration: 0.9, ease: "linear" }}
-            />
+        {/* Stopwatch: the face is the time-left ring, the hand ticks every second, the crown blinks. */}
+        <span className="relative w-6 h-6 shrink-0">
+          <svg viewBox="0 0 24 24" aria-hidden="true" className={`absolute inset-0 ${tone.text}`} fill="none" strokeLinecap="round">
+            <motion.g animate={critical && !paused ? { y: [0, -0.8, 0] } : { y: 0 }} transition={{ duration: 0.5, repeat: critical && !paused ? Infinity : 0 }}>
+              <rect x="10" y="0.6" width="4" height="2.2" rx="0.8" fill="currentColor" />
+              <line x1="12" y1="2.8" x2="12" y2="4.2" stroke="currentColor" strokeWidth="1.6" />
+            </motion.g>
+            <line x1="18.6" y1="5.6" x2="19.9" y2="4.3" stroke="currentColor" strokeWidth="1.6" />
+            <circle cx="12" cy="14" r={R} stroke="currentColor" strokeOpacity="0.18" strokeWidth="2.2" />
+            <motion.circle cx="12" cy="14" r={R} stroke={tone.ring} strokeWidth="2.2" strokeDasharray={C}
+              transform="rotate(-90 12 14)" initial={false}
+              animate={{ strokeDashoffset: C * (1 - remainingRatio) }} transition={{ duration: 0.9, ease: "linear" }} />
+            {paused ? (
+              <g fill="currentColor"><rect x="9.6" y="10.6" width="1.6" height="6.8" rx="0.6" /><rect x="12.8" y="10.6" width="1.6" height="6.8" rx="0.6" /></g>
+            ) : (
+              <motion.line x1="12" y1="14" x2="12" y2="8.6" stroke="currentColor" strokeWidth="1.6"
+                style={{ originX: "12px", originY: "14px" }} animate={{ rotate: elapsed * 6 }}
+                transition={{ type: "spring", stiffness: 260, damping: 13 }} />
+            )}
+            <circle cx="12" cy="14" r="1.2" fill="currentColor" />
           </svg>
-          {paused ? (
-            <Pause className="relative w-2.5 h-2.5 text-[var(--text-muted)]" />
-          ) : (
-            <svg viewBox="0 0 12 12" aria-hidden="true" className={`relative w-3.5 h-3.5 ${tone.text}`} fill="none" stroke="currentColor" strokeLinecap="round">
-              <motion.rect x="5" y="0.4" width="2" height="1.3" rx="0.4" fill="currentColor" stroke="none"
-                animate={{ opacity: [1, 0.35, 1] }} transition={{ duration: critical ? 0.6 : 1, repeat: Infinity }} />
-              <circle cx="6" cy="7" r="4.2" strokeWidth="1.1" />
-              <motion.line x1="6" y1="7" x2="6" y2="3.9" strokeWidth="1.2"
-                style={{ originX: "6px", originY: "7px" }}
-                animate={{ rotate: elapsed * 6 }}
-                transition={{ type: "spring", stiffness: 300, damping: 14 }} />
-              <circle cx="6" cy="7" r="0.7" fill="currentColor" stroke="none" />
-            </svg>
-          )}
         </span>
 
         <motion.span

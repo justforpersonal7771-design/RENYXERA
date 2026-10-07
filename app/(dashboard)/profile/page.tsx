@@ -1,5 +1,6 @@
 "use client";
 
+import { DatePicker } from "@/components/ui/date-picker";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ExamBranchPanel } from "@/components/profile/exam-branch-panel";
 import { branchByCode } from "@/lib/branches";
@@ -509,7 +510,7 @@ export default function ProfilePage() {
                   </div>
                   <div className="sm:col-span-2">
                     <label className={LABEL}><CalendarDays className="w-3.5 h-3.5" /> Your exam date (optional)</label>
-                    <input type="date" value={f.examDate} min={`${f.targetYear}-01-01`} max={`${f.targetYear}-03-31`} onChange={(e) => set("examDate", e.target.value)} className={`${INPUT} sm:max-w-xs`} />
+                    <DatePicker value={f.examDate} min={`${f.targetYear}-01-01`} max={`${f.targetYear}-03-31`} onChange={(v) => set("examDate", v)} className="sm:max-w-xs" />
                     <p className="mt-1.5 text-[11px] text-[var(--text-muted)]">Once your admit card is out, set your exact paper date — the countdown and plan use it. Until then we use GATE&apos;s usual slot ({new Date(examDateFor(Number(f.targetYear) || upcomingYear, null) + "T00:00:00").toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}).</p>
                   </div>
                 </div>

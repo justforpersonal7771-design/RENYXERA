@@ -1,5 +1,6 @@
 "use client";
 
+import { TimePicker } from "@/components/ui/time-picker";
 import { useEffect, useState, useMemo } from "react";
 import { NumberStepper } from "@/components/ui/number-stepper";
 import { createPortal } from "react-dom";
@@ -785,22 +786,12 @@ export function StudyPlanner() {
                   <div className="grid grid-cols-3 gap-4">
                     <div className="space-y-1">
                       <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Start Time</label>
-                      <input 
-                        type="time" 
-                        value={newEvent.startTime}
-                        onChange={e => setNewEvent({ ...newEvent, startTime: e.target.value })}
-                        className="w-full p-2.5 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-xs rounded-xl outline-none"
-                      />
+                      <TimePicker value={newEvent.startTime ?? ""} onChange={v => setNewEvent({ ...newEvent, startTime: v })} />
                     </div>
                     {newEvent.timeRangeType === "start_end" && (
                       <div className="space-y-1">
                         <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">End Time</label>
-                        <input 
-                          type="time" 
-                          value={newEvent.endTime}
-                          onChange={e => setNewEvent({ ...newEvent, endTime: e.target.value })}
-                          className="w-full p-2.5 bg-[var(--background)] border border-[var(--border)] text-[var(--text-primary)] text-xs rounded-xl outline-none"
-                        />
+                        <TimePicker value={newEvent.endTime ?? ""} onChange={v => setNewEvent({ ...newEvent, endTime: v })} />
                       </div>
                     )}
                     {(newEvent.timeRangeType === "duration" || newEvent.timeRangeType === "start_end") && (

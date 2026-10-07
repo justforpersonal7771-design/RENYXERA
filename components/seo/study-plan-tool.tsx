@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { DatePicker } from "@/components/ui/date-picker";
 import { motion } from "motion/react";
 import { CalendarDays, Clock, Play, Target } from "lucide-react";
 import { examDateFor, upcomingExamYear } from "@/lib/goals/exam-year";
@@ -60,7 +61,7 @@ export function StudyPlanTool({ sections }: { sections: Section[] }) {
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-8 space-y-5">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <label className="block"><span className="text-sm font-bold text-[var(--text-secondary)]">Exam date</span>
-            <input type="date" value={examDate} onChange={(e) => setExamDate(e.target.value)} className="mt-2 w-full rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-3 py-2 text-[var(--text-primary)]" /></label>
+            <div className="mt-2"><DatePicker value={examDate} onChange={setExamDate} /></div></label>
           <label className="block"><span className="text-sm font-bold text-[var(--text-secondary)]">Hours a day: <b className="font-num">{hours}</b></span>
             <input type="range" min={1} max={12} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="mt-4 w-full accent-violet-600" /></label>
           <label className="block"><span className="text-sm font-bold text-[var(--text-secondary)]">Study days a week: <b className="font-num">{days}</b></span>

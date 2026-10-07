@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Share2, Loader2 } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
+import { paperLabel } from "@/lib/branch/current";
 
 export type ShareStat = { label: string; value: string };
 
@@ -31,15 +32,28 @@ export function ShareResultButton({ title, subtitle, stats, className = "" }: { 
       const blob = await drawCard({ title, subtitle, stats, who });
       const file = new File([blob], "renyxera-result.png", { type: "image/png" });
       const text = `${title} — ${stats.map((s) => `${s.label} ${s.value}`).join(" · ")} on RENYXERA`;
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share({ files: [file], text, url: "https://gate.renyxera.workers.dev/mocks" });
-      } else {
+      const download = () => {
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
         a.download = "renyxera-result.png";
+        document.body.appendChild(a);
         a.click();
-        setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
         toast("Result card downloaded", "success");
+      };
+      // Share sheet on phones only: desktop share sheets (Windows/macOS) often fail silently
+      // with files, so desktop always gets the PNG.
+      const phone = matchMedia("(pointer: coarse)").matches;
+      if (phone && navigator.canShare?.({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], text, url: "https://gate.renyxera.workers.dev/mocks" });
+        } catch (e) {
+          if ((e as Error)?.name === "AbortError") return;
+          download();
+        }
+      } else {
+        download();
       }
     } catch (e) {
       if ((e as Error)?.name !== "AbortError") toast("Couldn't create the card — try again.", "error");
@@ -50,8 +64,8 @@ export function ShareResultButton({ title, subtitle, stats, className = "" }: { 
 
   return (
     <button onClick={share} disabled={busy}
-      className={`inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-[var(--text-primary)] hover:border-violet-500/50 disabled:opacity-60 cursor-pointer ${className}`}>
-      {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4 text-violet-500" />} Share result
+      className={`group inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-[var(--text-primary)] hover:border-violet-500/50 disabled:opacity-60 cursor-pointer ${className}`}>
+      {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-violet-500 transition-transform group-hover:translate-y-0.5" />} <span className="whitespace-nowrap">Download<span className="hidden sm:inline"> result</span></span>
     </button>
   );
 }
@@ -75,7 +89,7 @@ async function drawCard({ title, subtitle, stats, who }: { title: string; subtit
 
   g.fillStyle = "#fff";
   g.font = `800 56px ${font}`; g.fillText("RENYXERA", 80, 130);
-  g.font = `500 30px ${font}`; g.globalAlpha = 0.8; g.fillText("GATE CS · All-India practice platform", 80, 180); g.globalAlpha = 1;
+  g.font = `500 30px ${font}`; g.globalAlpha = 0.8; g.fillText(`GATE ${paperLabel()} · All-India practice platform`, 80, 180); g.globalAlpha = 1;
 
   g.font = `800 64px ${font}`; wrap(g, title, 80, 330, W - 160, 76);
   g.font = `500 34px ${font}`; g.globalAlpha = 0.85; g.fillText(subtitle, 80, 500); g.globalAlpha = 1;

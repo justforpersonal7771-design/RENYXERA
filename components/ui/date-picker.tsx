@@ -15,6 +15,9 @@ interface DatePickerProps {
   compact?: boolean;
   autoOpen?: boolean;
   onClose?: () => void;
+  /** Inclusive ISO bounds (YYYY-MM-DD); days outside are disabled. */
+  min?: string;
+  max?: string;
 }
 
 const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
@@ -38,7 +41,7 @@ function parseISO(s: string): Date | null {
  *  can't be themed to match the rest of the app. Portal-rendered so it can't be clipped
  *  by an ancestor's overflow or trapped under a different stacking context. */
 export function DatePicker({
-  value, onChange, placeholder = "Select date", className = "", compact = false, autoOpen = false, onClose,
+  value, onChange, placeholder = "Select date", className = "", compact = false, autoOpen = false, onClose, min, max,
 }: DatePickerProps) {
   const selected = useMemo(() => parseISO(value), [value]);
   const [isOpen, setIsOpen] = useState(autoOpen);
@@ -191,12 +194,14 @@ export function DatePicker({
                   const iso = toISO(date);
                   const isSelected = iso === value;
                   const isToday = iso === todayISO;
+                  const blocked = (!!min && iso < min) || (!!max && iso > max);
                   return (
                     <button
                       key={i}
                       type="button"
+                      disabled={blocked}
                       onClick={() => { onChange(iso); close(); }}
-                      className={`h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
+                      className={`h-8 rounded-lg text-xs font-bold transition-colors cursor-pointer disabled:opacity-25 disabled:cursor-not-allowed disabled:hover:bg-transparent ${
                         isSelected
                           ? "bg-indigo-600 text-white shadow-sm"
                           : outside

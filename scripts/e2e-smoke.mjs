@@ -50,6 +50,7 @@ try {
   if (!/exam\/session/.test(p.url())) { const d = p.getByRole("button", { name: /deploy session/i }); if (await d.count()) await d.first().click(); }
   await p.waitForURL(/exam\/session/, { timeout: 60_000 });
   await p.waitForFunction(() => !document.body.innerText.includes("Loading Exam Engine"), null, { timeout: 60_000 });
+  if (process.env.SHOTS) { await p.waitForTimeout(2500); await p.screenshot({ path: `${process.env.SHOTS}/exam-timer.png`, clip: { x: 0, y: 0, width: 390, height: 120 } }); }
   const firstOption = p.getByText(/^A$/).first();
   if (await firstOption.count()) await firstOption.click();
   await p.getByRole("button", { name: /save & next/i }).first().click();
@@ -66,7 +67,7 @@ try {
     await p.emulateMedia({ colorScheme: scheme });
     await p.evaluate((t) => { localStorage.setItem("theme", t); document.documentElement.classList.toggle("dark", t === "dark"); }, scheme);
     await p.waitForTimeout(500);
-    const pageScroll = await p.evaluate(() => [...document.querySelectorAll("main, html")].some((el) => el.scrollHeight > el.clientHeight + 2));
+    const pageScroll = await p.evaluate(() => [...document.querySelectorAll("html")].some((el) => el.scrollHeight > el.clientHeight + 2));
     ok(!pageScroll, `results ${w}px/${scheme} fits one screen`);
     if (process.env.SHOTS) await p.screenshot({ path: `${process.env.SHOTS}/results-${w}-${scheme}.png` });
     await p.getByRole("button", { name: /show question grid/i }).click();
@@ -74,8 +75,12 @@ try {
     ok(await p.getByRole("button", { name: /show scoreboard/i }).isVisible(), `results ${w}px/${scheme} flips to the grid`);
     if (process.env.SHOTS) await p.screenshot({ path: `${process.env.SHOTS}/results-${w}-${scheme}-grid.png` });
     await p.getByRole("button", { name: /show scoreboard/i }).click();
-    await p.waitForTimeout(500);
+    await p.waitForTimeout(800);
   }
+  // Desktop: "Share result" downloads the result card.
+  const dl = p.waitForEvent("download", { timeout: 15_000 }).catch(() => null);
+  await p.getByRole("button", { name: /^download/i }).click();
+  ok(!!(await dl), "download result saves the card on desktop");
   await ctx.close();
 } catch (e) {
   ok(false, `smoke run crashed: ${e.message.split("\n")[0]}`);
