@@ -13,6 +13,10 @@ Order inside each phase = priority (Reach × Relevance × Conversion × Compound
 - [ ] **R-4 (C)** Time the guest flow: branch page → 10-question test → review. Target < 5 min, ≤ 4 taps to start.
 - [x] **R-5 (C)** Truthful claims. *8 Oct: fixed DA meta (said 2021–26), plan list "every PYQ since 2017", PYQ tool blurb (said CS only), share image (said 975 PYQs → 2,470 · 5 papers). Mocks claim kept (feature exists) — your decision 8 Oct.*
 
+## P0 — Exam interface (do first when development resumes)
+
+- [ ] **X-1 (C)** GATE virtual scientific calculator inside the exam interface, matching the official GATE on-screen calculator (layout, functions, keyboard behaviour). Required before marketing "real exam interface".
+
 ## P0 — Measurement
 
 - [x] **G-1 (U)** *Done by you: sitemap submitted, Success.* Turn on Google Search Console for the site; submit `/sitemap.xml`. *(needs your Google login — steps in the hand-over message.)*
