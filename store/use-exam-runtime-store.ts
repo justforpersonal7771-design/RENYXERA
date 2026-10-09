@@ -123,6 +123,7 @@ export const useExamRuntimeStore = create<RuntimeState>((set, get) => ({
     const { activeSession } = get();
     if (!activeSession) return null;
     track("test_submitted", getCurrentBranch());
+    void import("@/lib/growth/upsell").then((m) => m.noteTestCompleted());
     const updated: ExamSession = { ...activeSession, status: "SUBMITTED" as const, updatedAt: new Date().toISOString() };
 
     // Save and show "Test submitted" straight away — the confirmation must never wait on

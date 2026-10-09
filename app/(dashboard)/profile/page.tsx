@@ -565,7 +565,7 @@ export default function ProfilePage() {
 
   return (
     // Desktop: fixed header + fixed section menu; only the right-hand details scroll.
-    <div data-fill-height data-savebar={dirty || saving || saved || !!error ? "true" : undefined} className="w-full max-w-[1500px] mx-auto flex flex-col gap-4 lg:h-full lg:min-h-0">
+    <div data-fill-height data-savebar={dirty || saving || saved || !!error ? "true" : undefined} className="w-full flex flex-col gap-4 lg:h-full lg:min-h-0">
       <div className="shrink-0">
         <ProfileHeader name={name} username={f.username} email={user.email} phone={profile?.phone ?? null} bio={f.bio} tier={profile?.tier || "free"} avatarUri={avatarUri}
           targetYear={f.targetYear} branchLabel={branchLabel} targetRank={f.targetRank} dailyHours={f.dailyHours} location={location}

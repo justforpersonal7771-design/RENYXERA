@@ -1,4 +1,5 @@
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
+import { TelegramJoinLink } from "@/components/growth/telegram-join";
 import Link from "next/link";
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
 import { ShareQuestion } from "@/components/seo/share-question";
@@ -79,6 +80,12 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
         {prev ? <Link href={`/pyq/${p.slug}/q${prev.question_no}`} className="inline-flex items-center gap-2 rounded-xl border border-[var(--border)] p-3 text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><ArrowLeft className="w-4 h-4" /> Q{prev.question_no}</Link> : <span />}
         {next ? <Link href={`/pyq/${p.slug}/q${next.question_no}`} className="inline-flex items-center justify-end gap-2 rounded-xl border border-[var(--border)] p-3 text-sm font-semibold text-[var(--text-primary)] hover:border-violet-500/50">Q{next.question_no} <ArrowRight className="w-4 h-4" /></Link> : <span />}
       </nav>
+
+      <Link href={`/setup?branch=${p.branch}&subject=${encodeURIComponent(question.subject || "")}&topic=${encodeURIComponent(question.topic || "")}&utm_source=seo&utm_medium=question&utm_campaign=practise_topic`} className="mt-6 flex items-center justify-between gap-3 rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 p-4 text-white shadow-md shadow-violet-500/25 transition hover:-translate-y-0.5">
+        <span><span className="block text-sm font-extrabold">Practise more on {question.topic}</span><span className="block text-xs text-white/80">Timed, in the real exam interface · free to start</span></span>
+        <ArrowRight className="h-5 w-5 shrink-0" />
+      </Link>
+      <TelegramJoinLink where="question" className="mt-4" />
 
       {related.length > 0 && (
         <section className="mt-10" aria-labelledby="related">

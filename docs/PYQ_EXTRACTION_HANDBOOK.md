@@ -200,3 +200,17 @@ Merged two-shift PDFs: split with a page-range script into <pid>_S1/_S2 (PDF + k
 ## 11. Quality bar, in one line
 
 Every character matches the official PDF. Every figure is clean and complete. Every answer comes from the official key. Every question is validated, and rendered correctly in the app.
+
+## Section rule (10 Oct 2026): three sections everywhere
+
+Every question in every branch bank, PYQ or generated ("forged"), has exactly one of three
+`section` values, then a `subject`, then a `topic`:
+
+| Section | CS value | Other branches |
+|---|---|---|
+| General Aptitude | `GENERAL APTITUDE (GA)` | `GENERAL APTITUDE (GA)` |
+| Maths | `MATHEMATICAL FOUNDATIONS` | `ENGINEERING MATHEMATICS` (DA: Probability & Statistics, Linear Algebra, Calculus & Optimization) |
+| Core | `CORE CS` | `CORE <paper>` (`CORE EC`, `CORE EE`, `CORE ME`, `CORE DA`) |
+
+The official syllabus sections stay in `data/pyq/<BR>/syllabus.json` and the tag files;
+`scripts/pyq/build.py` (`group_section`) groups them. Generators must use these exact strings.

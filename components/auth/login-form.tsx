@@ -30,6 +30,7 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [nudge, setNudge] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -72,11 +73,7 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
       <h1 className="text-xl font-display font-bold text-[var(--text-primary)] mb-1">Welcome <span className="font-serif italic font-normal text-[1.15em] bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent pr-0.5">back</span></h1>
       <p className="text-sm text-[var(--text-secondary)] mb-6">Sign in to sync your progress across devices.</p>
 
-      <label className="flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">
-        <input type="checkbox" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setError(null); }} className="mt-0.5 accent-indigo-600" />
-        <span>I agree to the <a href="/terms" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Terms of Service</a> and <a href="/privacy" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Privacy Policy</a>.</span>
-      </label>
-      <div className={agreed ? "" : "opacity-50 pointer-events-none"} aria-disabled={!agreed} title={agreed ? undefined : "Agree to the terms first"}>
+      <div onClickCapture={(e) => { if (!agreed) { e.preventDefault(); e.stopPropagation(); setError("Please tick the box to agree to the Terms of Service and Privacy Policy first."); setNudge(true); window.setTimeout(() => setNudge(false), 1400); } }}>
         <GoogleAuthButton onError={setError} />
       </div>
 
@@ -150,6 +147,10 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
           </p>
         )}
 
+          <label className={`flex items-start gap-2 rounded-lg text-xs text-[var(--text-secondary)] cursor-pointer transition-shadow ${nudge ? "ring-2 ring-rose-400/70 p-1.5 -m-1.5" : ""}`}>
+            <input type="checkbox" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setError(null); }} className="mt-0.5 accent-indigo-600" />
+            <span>I agree to the <a href="/terms" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Terms of Service</a> and <a href="/privacy" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Privacy Policy</a>.</span>
+          </label>
         <button
           type="submit"
           disabled={loading || !captchaToken || !agreed}

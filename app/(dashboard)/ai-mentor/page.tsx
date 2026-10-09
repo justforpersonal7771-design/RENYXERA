@@ -360,7 +360,7 @@ export default function AIMentorPage() {
       description="Get personalized explanations, hints, and a revision plan built from your own mistakes — sign in to start."
     >
     <MathJaxContext config={mathJaxConfig}>
-      <div className="p-4 md:p-8 space-y-6 pb-16">
+      <div className="w-full space-y-6 pb-8">
 
         {loading ? (
           <div className="py-24 flex flex-col items-center justify-center gap-3">

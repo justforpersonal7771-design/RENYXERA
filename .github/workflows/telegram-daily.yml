@@ -1,7 +1,8 @@
 name: Telegram daily question
 
-# 7E: posts one GATE CS PYQ to the Telegram channel every morning (08:00 IST).
-# Needs repo secrets TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL; skips quietly without them.
+# Posts one official PYQ (CS, EC, EE, ME or DA in rotation) to the Telegram channel every morning (08:00 IST),
+# with yesterday's official answer. Needs repo secrets TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL; skips quietly
+# without them. PREGEN_SECRET (already set for the AI job) enables the answer line.
 on:
   schedule:
     - cron: "30 2 * * *"
@@ -22,3 +23,4 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          PREGEN_SECRET: ${{ secrets.PREGEN_SECRET }}

@@ -1,8 +1,9 @@
 "use client";
 
+import { TelegramJoinCard, TelegramJoinLink } from "@/components/growth/telegram-join";
 import { InviteNudge } from "@/components/growth/invite-nudge";
 import { ShareResultButton } from "@/components/share/share-result-button";
-import { UpgradeNudge } from "@/components/ui/upgrade-nudge";
+import { SmartUpgrade } from "@/components/growth/smart-upgrade";
 import { useEffect, useState, useMemo } from "react";
 import { TiltCard, CountUp as CountUpFx } from "@/components/ui/interactive";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -706,7 +707,7 @@ export default function ResultSummaryPage() {
           {/* Actions — same place on both faces */}
           <div className="relative shrink-0 px-4 pb-4 pt-2 sm:px-8 [@media(max-height:760px)]:pb-3">
             {renderActions("grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:max-w-4xl sm:mx-auto")}
-            <InviteNudge accuracy={accuracy} fallback={<UpgradeNudge />} />
+            <SmartUpgrade context="results" fallback={<InviteNudge accuracy={accuracy} fallback={<TelegramJoinLink where="results" compact className="mt-2" />} />} />
           </div>
         </div>
       </motion.div>

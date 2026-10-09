@@ -22,6 +22,18 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import BRANCH_NAMES, PYQ, RAW, WORK, question_id, read_json, write_json  # noqa: E402
+
+
+# Every branch bank has exactly three sections, like CS: General Aptitude, Maths, Core.
+# The official syllabus sections stay in data/pyq/<BR>/syllabus.json and the tag files; the bank
+# groups them here. Generated ("forged") questions must use the same three names.
+DA_MATHS = {"SECTION 1: PROBABILITY AND STATISTICS", "SECTION 2: LINEAR ALGEBRA", "SECTION 3: CALCULUS AND OPTIMIZATION"}
+
+
+def group_section(code, official):
+    if "ENGINEERING MATHEMATICS" in official or (code == "DA" and official in DA_MATHS):
+        return "ENGINEERING MATHEMATICS"
+    return f"CORE {code}"
 from tagcodes import load_tags  # noqa: E402
 
 SHIFT = {None: "", 1: "S1", 2: "S2"}
@@ -82,7 +94,7 @@ def main() -> int:
                 "question_id": question_id(code, m["year"], m["session"], n),
                 "question_type": k["type"],
                 "marks": k["marks"],
-                "section": "GENERAL APTITUDE (GA)" if k["section"] == "GA" else t.get("section", BRANCH_NAMES[code].upper()),
+                "section": "GENERAL APTITUDE (GA)" if k["section"] == "GA" else group_section(code, t.get("section", "")),
                 "subject": t.get("subject", ""),
                 "topic": t.get("topic", ""),
                 "difficulty": t.get("difficulty", ""),

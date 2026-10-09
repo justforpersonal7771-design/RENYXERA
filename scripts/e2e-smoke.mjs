@@ -5,7 +5,7 @@
 import { chromium, devices } from "playwright";
 
 const BASE = process.env.BASE ?? "http://localhost:3000";
-const PAGES = ["/", "/about", "/gate-cse", "/pyq", "/pyq/gate-cs-2024-fn", "/pyq/gate-cs-2024-fn/q30", "/topics/algorithms", "/tools", "/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/gate-cs-syllabus", "/gate-ec-syllabus", "/gate-da-syllabus", "/tools/gate-study-plan", "/articles/most-repeated-gate-cs-topics", "/articles/gate-cs-preparation-150-days", "/mocks", "/setup", "/mistakes", "/bookmarks", "/revision", "/analytics", "/pro", "/privacy", "/terms"];
+const PAGES = ["/", "/about", "/gate-cse", "/pyq", "/pyq/gate-cs-2024-fn", "/pyq/gate-cs-2024-fn/q30", "/topics/algorithms", "/tools", "/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/gate-cs-syllabus", "/gate-ec-syllabus", "/gate-ee-syllabus", "/gate-me-syllabus", "/gate-da-syllabus", "/tools/gate-study-plan", "/articles/most-repeated-gate-cs-topics", "/articles/gate-cs-preparation-150-days", "/mocks", "/setup", "/mistakes", "/bookmarks", "/revision", "/analytics", "/pro", "/privacy", "/terms"];
 let fails = 0;
 const failed = [];
 const ok = (c, m) => { console.log(`${c ? "PASS" : "FAIL"}  ${m}`); if (!c) { fails++; failed.push(m); } };
@@ -51,6 +51,20 @@ try {
   await p.waitForURL(/exam\/session/, { timeout: 60_000 });
   await p.waitForFunction(() => !document.body.innerText.includes("Loading Exam Engine"), null, { timeout: 60_000 });
   if (process.env.SHOTS) { await p.waitForTimeout(2500); await p.screenshot({ path: `${process.env.SHOTS}/exam-timer.png`, clip: { x: 0, y: 0, width: 390, height: 120 } }); }
+  // Calculator: opens from the header, 30 then cos = 0.866 in degrees, closes again.
+  await p.getByRole("button", { name: "Calculator", exact: true }).click();
+  const calc = p.getByRole("dialog", { name: "Calculator" });
+  for (const k of ["3", "0", "cos"]) await calc.getByRole("button", { name: k, exact: true }).click();
+  ok((await calc.getByRole("status").innerText()).includes("0.866025"), "calculator: 30 cos = 0.866025 (deg)");
+  if (process.env.SHOTS) await p.screenshot({ path: `${process.env.SHOTS}/calc-phone.png` });
+  // Hold outside = hidden while held, back on release; a quick tap outside closes it.
+  const opacity = () => calc.evaluate((e) => getComputedStyle(e).opacity);
+  await p.mouse.move(195, 150); await p.mouse.down(); await p.waitForTimeout(500);
+  ok((await opacity()) === "0", "calculator hides while holding outside it");
+  await p.mouse.up(); await p.waitForTimeout(300);
+  ok((await opacity()) === "1", "calculator returns when released");
+  await p.mouse.click(195, 150); await p.waitForTimeout(300);
+  ok(await calc.isHidden(), "calculator closes on a quick tap outside");
   const firstOption = p.getByText(/^A$/).first();
   if (await firstOption.count()) await firstOption.click();
   await p.getByRole("button", { name: /save & next/i }).first().click();

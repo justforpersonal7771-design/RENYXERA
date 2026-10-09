@@ -1,5 +1,6 @@
 "use client";
 
+import { TelegramJoinCard, TelegramJoinLink } from "@/components/growth/telegram-join";
 import { useEffect, useState } from "react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { useRouter } from "next/navigation";
@@ -269,6 +270,10 @@ export default function Home() {
 
           <Reveal className="shrink-0">
             <ExamCountdownCard />
+          </Reveal>
+
+          <Reveal className="shrink-0">
+            <TelegramJoinCard />
           </Reveal>
 
           <Reveal className="shrink-0">

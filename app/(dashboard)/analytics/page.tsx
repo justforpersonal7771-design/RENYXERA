@@ -1,5 +1,6 @@
 "use client";
 
+import { SmartUpgrade } from "@/components/growth/smart-upgrade";
 import { useEffect, useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
@@ -84,6 +85,7 @@ export default function AnalyticsDashboardPage() {
 
   useEffect(() => {
     setMounted(true);
+    void import("@/lib/growth/upsell").then((m) => m.noteVisit("analytics"));
     loadAnalytics();
     loadStudyData();
     setLoadingIntel(true);
@@ -181,6 +183,7 @@ export default function AnalyticsDashboardPage() {
     >
       <PaidScreen feature="Analytics" perk="Your mastery, trends, insights and weak-topic analysis — computed from every attempt.">
       <div className="w-full mx-auto space-y-8">
+        <SmartUpgrade context="analytics" />
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">

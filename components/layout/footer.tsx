@@ -27,6 +27,7 @@ export function Footer() {
             {label}
           </Link>
         ))}
+        <a href="https://t.me/renyxera" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--text-secondary)] transition-colors">Telegram</a>
       </nav>
     </footer>
   );

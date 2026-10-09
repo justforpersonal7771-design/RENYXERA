@@ -1,5 +1,6 @@
 "use client";
 
+import { SmartUpgrade } from "@/components/growth/smart-upgrade";
 import { ReviewTabs } from "@/components/layout/review-tabs";
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
 
@@ -279,6 +280,7 @@ export default function MistakesPage() {
       <div className="w-full h-full flex flex-col" data-fill-height>
       <ReviewTabs />
       <GuestLocalNotice what="mistakes" />
+      <SmartUpgrade context="mistakes" pendingMistakes={mistakes.filter((m) => !m.mastered).length} />
       <div className="flex-1 min-h-0 w-full flex flex-col md:flex-row gap-4 relative">
 
         {/* Sidebar merged into a single card */}

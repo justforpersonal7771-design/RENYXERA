@@ -18,9 +18,10 @@ export const syllabusSlugOf = (code: BranchCode) => (SOURCES[code] ? `gate-${SOU
 export const branchOfSyllabusSlug = (slug: string) => SYLLABUS_PAGE_BRANCHES.find((c) => syllabusSlugOf(c) === slug);
 export const officialSyllabusPdf = (paper: string) => `https://gate2027.iitm.ac.in/static/doc/GATE2027_Syllabus/${paper}_GATE2027_Syllabus.pdf`;
 
+const DA_MATHS = new Set(["SECTION 1: PROBABILITY AND STATISTICS", "SECTION 2: LINEAR ALGEBRA", "SECTION 3: CALCULUS AND OPTIMIZATION"]);
 export type TopicStat = { name: string; questions: number; marks: number; yearsAsked: number };
 export type SubjectStat = { name: string; marks: number; questions: number; share: number; byYear: number[]; topics: TopicStat[] };
-export type SectionStat = { title: string; marks: number; share: number; subjects: SubjectStat[] };
+export type SectionStat = { title: string; group: "Engineering Mathematics" | "Core"; marks: number; share: number; subjects: SubjectStat[] };
 
 export function branchSyllabusStats(code: BranchCode) {
   const src = SOURCES[code];
@@ -28,7 +29,8 @@ export function branchSyllabusStats(code: BranchCode) {
   const papers = allPapers(code);
   const years = [...new Set(papers.map((p) => p.year))].sort();
   const yi = new Map(years.map((y, i) => [y, i]));
-  // section → subject → topic → { q, marks, years:Set }
+  // subject → topic → { q, marks, years:Set }. The bank has three sections (GA / Maths / Core); the
+  // official syllabus section of a subject is looked up from syllabus.json.
   const acc = new Map<string, { q: number; m: number; ys: Set<string>; by: number[] }>();
   const key = (...k: string[]) => k.join("\u0000");
   const bump = (k: string, marks: number, year: string) => {
@@ -39,22 +41,23 @@ export function branchSyllabusStats(code: BranchCode) {
   for (const p of papers) for (const q of paperQuestions(p.slug)) {
     if (!q.section || /GENERAL APTITUDE/i.test(q.section)) continue;
     coreMarks += q.marks;
-    bump(key(q.section, q.subject), q.marks, p.year);
-    if (q.topic) bump(key(q.section, q.subject, q.topic), q.marks, p.year);
+    bump(key(q.subject), q.marks, p.year);
+    if (q.topic) bump(key(q.subject, q.topic), q.marks, p.year);
   }
   const total = coreMarks || 1;
   const sections: SectionStat[] = Object.entries(src.syl)
     .filter(([k, v]) => !k.startsWith("_") && typeof v === "object")
     .map(([title, subs]) => {
       const subjects: SubjectStat[] = Object.entries(subs as Record<string, string[]>).map(([name, topics]) => {
-        const s = acc.get(key(title, name));
+        const s = acc.get(key(name));
         return {
           name, marks: s?.m ?? 0, questions: s?.q ?? 0, share: ((s?.m ?? 0) / total) * 100, byYear: s?.by ?? years.map(() => 0),
-          topics: topics.map((t) => { const a = acc.get(key(title, name, t)); return { name: t, questions: a?.q ?? 0, marks: a?.m ?? 0, yearsAsked: a?.ys.size ?? 0 }; }),
+          topics: topics.map((t) => { const a = acc.get(key(name, t)); return { name: t, questions: a?.q ?? 0, marks: a?.m ?? 0, yearsAsked: a?.ys.size ?? 0 }; }),
         };
       });
       const marks = subjects.reduce((n, s) => n + s.marks, 0);
-      return { title, marks, share: (marks / total) * 100, subjects };
+      const group = /ENGINEERING MATHEMATICS/.test(title) || (code === "DA" && DA_MATHS.has(title)) ? "Engineering Mathematics" as const : "Core" as const;
+      return { title, group, marks, share: (marks / total) * 100, subjects };
     });
   const topTopics = sections.flatMap((s) => s.subjects.flatMap((sub) => sub.topics.map((t) => ({ ...t, subject: sub.name }))))
     .filter((t) => t.questions > 0)

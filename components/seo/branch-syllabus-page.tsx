@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { TelegramJoinLink } from "@/components/growth/telegram-join";
 import { ArrowRight, FileText } from "lucide-react";
 import { branchByCode, type BranchCode } from "@/lib/branches";
 import { branchSyllabusStats, officialSyllabusPdf } from "@/lib/seo/branch-syllabus";
@@ -15,7 +16,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
   const practise = `/setup?branch=${code}&utm_source=seo&utm_medium=syllabus&utm_campaign=${s.paper.toLowerCase()}`;
 
   return (
-    <article className="max-w-6xl space-y-8">
+    <article className="w-full space-y-8">
       <header className="max-w-4xl">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Official syllabus · GATE 2027</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE {s.paper} syllabus 2027 with topic-wise weightage</h1>
@@ -31,16 +32,17 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
             <FileText className="w-4 h-4" /> Official syllabus PDF
           </a>
         </div>
+        <TelegramJoinLink where="syllabus" className="mt-4" />
       </header>
 
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <section className="grid grid-cols-2 xl:grid-cols-4 gap-3 xl:gap-4">
         <StatTile label="Sections" value={s.sections.length} sub="core syllabus" />
         <StatTile label="Subjects" value={subjects.length} sub={`${topicCount} topics`} accent="sky" />
         <StatTile label="Papers analysed" value={s.papers} sub={span} accent="emerald" />
         <StatTile label="Top subject" value={`${subjects[0].share.toFixed(0)}%`} sub={subjects[0].name} accent="amber" />
       </section>
 
-      <section className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.3fr)] gap-6 items-start">
+      <section className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] gap-6 items-start">
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
           <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Marks by section</h2>
           <div className="mt-4"><Donut slices={s.sections.map((x) => ({ label: x.title.replace(/^SECTION \d+:\s*/i, ""), value: Math.round(x.marks) }))} center={`${s.coreMarks}`} sub="core marks" /></div>
@@ -62,7 +64,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
       <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
         <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Most repeated topics</h2>
         <p className="text-xs text-[var(--text-muted)] mt-1">Ranked by how many years they were asked, then by marks ({span})</p>
-        <ol className="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-2">
+        <ol className="mt-4 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-3">
           {s.topTopics.map((t, i) => (
             <li key={t.subject + t.name} className="flex gap-3 text-sm">
               <span className="w-6 shrink-0 font-num font-bold text-violet-600 dark:text-violet-400">{i + 1}</span>
@@ -75,7 +77,10 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
 
       <section className="space-y-4">
         <h2 className="text-xl font-extrabold text-[var(--text-primary)]">Full syllabus, topic by topic</h2>
-        {s.sections.map((sec) => (
+        {(["Engineering Mathematics", "Core"] as const).map((grp) => (
+          <div key={grp} className="space-y-3">
+            <h3 className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{grp === "Core" ? `Core ${s.paper}` : grp} · {s.sections.filter((x) => x.group === grp).reduce((n, x) => n + x.share, 0).toFixed(0)}% of core marks</h3>
+        {s.sections.filter((x) => x.group === grp).map((sec) => (
           <details key={sec.title} className="group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 open:shadow-sm" open={s.sections.length <= 4}>
             <summary className="cursor-pointer list-none flex items-center justify-between gap-3">
               <span className="font-extrabold text-[var(--text-primary)]">{sec.title}</span>
@@ -85,7 +90,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
               {sec.subjects.map((sub) => (
                 <div key={sub.name}>
                   <h3 className="text-sm font-bold text-[var(--text-primary)]">{sub.name} <span className="font-normal text-[var(--text-muted)]">· {sub.questions} Qs, {sub.marks} marks</span></h3>
-                  <ul className="mt-2 grid sm:grid-cols-2 gap-x-6 gap-y-1">
+                  <ul className="mt-2 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-1">
                     {sub.topics.map((t) => (
                       <li key={t.name} className="flex justify-between gap-3 text-sm text-[var(--text-secondary)] border-b border-[var(--border-subtle)] py-1">
                         <span className="min-w-0">{t.name}</span>
@@ -97,6 +102,8 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
               ))}
             </div>
           </details>
+        ))}
+          </div>
         ))}
       </section>
 

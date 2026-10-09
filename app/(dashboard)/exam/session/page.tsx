@@ -1,5 +1,6 @@
 "use client";
 
+import { VirtualCalculator } from "@/components/exam/virtual-calculator";
 import { MOCK_TAB_SWITCH_LIMIT } from "@/lib/exam/integrity-rules";
 import { FS_EVENT, isFullscreen, wireFullscreenEvents } from "@/lib/fullscreen";
 import { useEffect, useState, useCallback, useMemo } from "react";
@@ -12,7 +13,7 @@ import { RenderableQuestion } from "@/types/question.types";
 import { QuestionRenderer } from "@/components/exam/question-renderer";
 import { MathJaxContext } from "better-react-mathjax";
 import { useStudyStore } from "@/store/use-study-store";
-import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser, ShieldAlert } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser, ShieldAlert, Calculator } from "lucide-react";
 import { useDataStore } from "@/store/use-data-store";
 import { ExamTimer } from "@/components/exam/exam-timer";
 import { QuestionPalette } from "@/components/exam/question-palette";
@@ -105,6 +106,7 @@ export default function ExamSessionPage() {
   const [tabWarning, setTabWarning] = useState<number | null>(null);
   const disqualifiedReason = useExamRuntimeStore((state) => state.activeSession?.integrity?.disqualifiedReason);
   const [showMobilePalette, setShowMobilePalette] = useState(false);
+  const [showCalc, setShowCalc] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -409,6 +411,17 @@ export default function ExamSessionPage() {
                    </button>
 
                    <button
+                     data-calc-toggle
+                     onClick={() => setShowCalc((v) => !v)}
+                     className={`inline-flex items-center justify-center w-9 h-9 rounded-lg transition ${showCalc ? "bg-violet-500/15 text-violet-600 dark:text-violet-300" : "text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                     title="Calculator"
+                     aria-label="Calculator"
+                     aria-pressed={showCalc}
+                   >
+                     <Calculator className="w-4 h-4" />
+                   </button>
+
+                   <button
                      onClick={handleBookmarkToggle}
                      className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                      title="Bookmark Question"
@@ -463,6 +476,8 @@ export default function ExamSessionPage() {
             />
           </div>
         </header>
+
+        <VirtualCalculator open={showCalc} onClose={() => setShowCalc(false)} />
 
         {/* SECTION TABS ROW */}
         <div className="md:hidden flex-none bg-[var(--surface)] border-b border-[var(--border)] z-20 w-full overflow-x-auto shadow-sm">
