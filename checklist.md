@@ -547,8 +547,9 @@ Product rule: never advertise "no login"; show what an account adds and guide vi
 ### Next up (priority order, from docs/COMPETITOR_GAPS.md)
 - [x] #2 Diagnostic onboarding — "Start here" card for signed-in learners with no attempts: weekly days, optional target AIR, 20-question mixed diagnostic (10 Oct). Follow-up: store goals in the profile (needs a migration) instead of this device only
 - [x] #5 Personal progress per topic on EC/EE/ME/DA syllabus pages (Not started / Started / Solid / Cleared) (10 Oct). Follow-up: show/hide toggle, and the CS syllabus page (separate file) still lacks it
-- [ ] Daily missions with done-ticks on the Today card — needs: per-day activity counters
-- [ ] #6 Topic Checkpoint quiz · #7 GATE 2027 pass + short trial (config in plans) · #8 weekly benchmark + share card (needs L-3) · #9 study timer · #10 friend challenge (L-4) · #11 weekly league · #12 fresh randomised mock · #13 GA lessons · #14 "GATE 2027 changes" page
+- [x] Daily missions with done-ticks on the Today card (solve 10 · a 60%+ test · keep streak) — built from the last 10 sessions (10 Oct)
+- [x] #6 Topic Checkpoint: `/checkpoint?topic=…` 8-question easy→hard set, linked from every topic on EC/EE/ME/DA syllabus pages when signed in (10 Oct); follow-up: "what you missed" notes after the result
+- [ ] #7 GATE 2027 pass + short trial (config in plans) · #8 weekly benchmark + share card (needs L-3) · #9 study timer · #10 friend challenge (L-4) · #11 weekly league · #12 fresh randomised mock · #13 GA lessons · #14 "GATE 2027 changes" page
 - [ ] P2: #15 PWA install + reminders · #16 flashcards · #17 predictor for EC/EE/ME/DA (needs S-5 data) · #18 topic browser · #19 time-split tips + demo video
 - [ ] P3: #20 older papers + CE · #21 PDF notes · #22 study rooms
 

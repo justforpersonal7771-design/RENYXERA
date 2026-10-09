@@ -207,7 +207,7 @@ export default function Home() {
       </AnimatePresence>
 
       <DiagnosticCard solved={solvedCount} />
-      <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} />
+      <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} />
 
       <IncompleteTests />
 

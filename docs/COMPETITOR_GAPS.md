@@ -38,7 +38,7 @@ Tick items as they ship. Sorted by priority, then usefulness to a GATE student, 
 
 ### P1
 
-- [ ] **#6** Topic Checkpoint (short ladder quiz + notes on what you missed) — Grind; Cheap to build from the tagged bank; closes the learn-then-test loop; effort M
+- [x] **#6** Topic Checkpoint (short ladder quiz + notes on what you missed) — Grind; Cheap to build from the tagged bank; closes the learn-then-test loop; effort M
 - [ ] **#7** One-time "GATE 2027 pass" (valid to March 2027) next to monthly plans, plus a 7–15 day trial — Forge; Their lifetime offer undercuts our monthly price for exam-season buyers; effort S (config)
 - [ ] **#8** Weekly benchmark vs peers in your branch and a shareable weekly card — PadhaiShuru; Motivation and free sharing (links to our on-hold Share result); effort M
 - [ ] **#9** Study timer with daily goal (verified study minutes, week/month totals) — PadhaiShuru; Habit tracking; we show study hours but have no live timer (verify); effort M

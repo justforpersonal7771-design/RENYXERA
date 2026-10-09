@@ -32,12 +32,13 @@ export function TopicProgressBadge({ topic }: { topic: string }) {
   const stats = useTopicStats();
   if (!stats) return null;
   const s = stats.get(norm(topic));
+  const cp = <Link href={`/checkpoint?topic=${encodeURIComponent(topic)}`} className="ml-2 text-[10px] font-bold text-violet-600 dark:text-violet-400 hover:underline">Checkpoint →</Link>;
   const pct = s && s.attempted ? (s.correct / s.attempted) * 100 : 0;
   const [label, tone] = !s || s.attempted === 0 ? ["Not started", "text-[var(--text-muted)] bg-[var(--surface-secondary)]"]
     : s.attempted >= 5 && pct >= 75 ? ["Cleared", "text-emerald-700 dark:text-emerald-300 bg-emerald-500/15"]
     : s.attempted >= 3 && pct >= 40 ? ["Solid", "text-sky-700 dark:text-sky-300 bg-sky-500/15"]
     : ["Started", "text-amber-700 dark:text-amber-300 bg-amber-500/15"];
-  return <span className={`ml-2 inline-block rounded-full px-2 py-px align-middle text-[10px] font-bold ${tone}`} title={s ? `${s.correct}/${s.attempted} correct` : undefined}>{label}</span>;
+  return <><span className={`ml-2 inline-block rounded-full px-2 py-px align-middle text-[10px] font-bold ${tone}`} title={s ? `${s.correct}/${s.attempted} correct` : undefined}>{label}</span>{cp}</>;
 }
 
 /** Banner above the topic lists: shows what signing in adds, or a practice link once signed in. */

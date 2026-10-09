@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Flame, RefreshCw, Target } from "lucide-react";
+import { ArrowRight, Check, Flame, RefreshCw, Target } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 
 const MIN_PER_QUESTION = 2;
@@ -10,10 +10,18 @@ const MIN_PER_QUESTION = 2;
  * "Today" — one clear next step. Built only from data the dashboard already has:
  * unmastered mistakes (revision queue) and the current streak.
  */
-export function TodayCard({ pendingMistakes, streak }: { pendingMistakes: number; streak: number }) {
+export function TodayCard({ pendingMistakes, streak, sessions = [] }: { pendingMistakes: number; streak: number; sessions?: { updatedAt: string; attempted: number; accuracy: number }[] }) {
   const user = useAuthStore((s) => s.user);
   if (!user) return null;
   const n = Math.min(pendingMistakes, 10);
+  const today = new Date().toDateString();
+  const todays = sessions.filter((s) => new Date(s.updatedAt).toDateString() === today);
+  const solvedToday = todays.reduce((a, s) => a + s.attempted, 0);
+  const missions = [
+    { label: "Solve 10 questions", done: solvedToday >= 10, note: `${Math.min(solvedToday, 10)}/10` },
+    { label: "Finish a test at 60%+ accuracy", done: todays.some((s) => s.attempted >= 5 && s.accuracy >= 60), note: "" },
+    { label: "Keep your streak going", done: todays.length > 0, note: "" },
+  ];
   return (
     <section aria-label="Today" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -29,6 +37,14 @@ export function TodayCard({ pendingMistakes, streak }: { pendingMistakes: number
           </span>
         )}
       </div>
+      <ul className="mt-3 flex flex-wrap gap-2" aria-label="Daily missions">
+        {missions.map((m) => (
+          <li key={m.label} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${m.done ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "border-[var(--border)] text-[var(--text-secondary)]"}`}>
+            <span className={`flex h-4 w-4 items-center justify-center rounded border ${m.done ? "border-emerald-500 bg-emerald-500 text-white" : "border-[var(--border)]"}`} aria-hidden>{m.done && <Check className="h-3 w-3" />}</span>
+            {m.label}{!m.done && m.note ? ` · ${m.note}` : ""}
+          </li>
+        ))}
+      </ul>
       <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
         {n > 0 && (
           <Link href="/revision" className="group flex items-center justify-between rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-3 text-sm font-bold text-white shadow-md shadow-violet-500/25">
