@@ -3,6 +3,7 @@ import { TelegramJoinLink } from "@/components/growth/telegram-join";
 import { ArrowRight, FileText } from "lucide-react";
 import { branchByCode, type BranchCode } from "@/lib/branches";
 import { branchSyllabusStats, officialSyllabusPdf } from "@/lib/seo/branch-syllabus";
+import { TopicProgressBadge, TopicProgressNote } from "@/components/seo/topic-progress";
 import { Donut, ShareBar, Sparkline, StatTile, TrendBadge } from "@/components/seo/charts";
 
 /** /gate-<ec|ee|me|da>-syllabus — official syllabus + weightage from our tagged official papers. */
@@ -77,6 +78,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
 
       <section className="space-y-4">
         <h2 className="text-xl font-extrabold text-[var(--text-primary)]">Full syllabus, topic by topic</h2>
+        <TopicProgressNote practiseHref={practise} />
         {(["Engineering Mathematics", "Core"] as const).map((grp) => (
           <div key={grp} className="space-y-3">
             <h3 className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{grp === "Core" ? `Core ${s.paper}` : grp} · {s.sections.filter((x) => x.group === grp).reduce((n, x) => n + x.share, 0).toFixed(0)}% of core marks</h3>
@@ -93,7 +95,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
                   <ul className="mt-2 grid sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-1">
                     {sub.topics.map((t) => (
                       <li key={t.name} className="flex justify-between gap-3 text-sm text-[var(--text-secondary)] border-b border-[var(--border-subtle)] py-1">
-                        <span className="min-w-0">{t.name}</span>
+                        <span className="min-w-0">{t.name}<TopicProgressBadge topic={t.name} /></span>
                         <span className={`shrink-0 font-num text-xs ${t.questions ? "text-[var(--text-primary)] font-semibold" : "text-[var(--text-muted)]"}`}>{t.questions ? `${t.questions} Qs · ${t.yearsAsked}y` : "not yet asked"}</span>
                       </li>
                     ))}

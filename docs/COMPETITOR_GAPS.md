@@ -31,10 +31,10 @@ Tick items as they ship. Sorted by priority, then usefulness to a GATE student, 
 ### P0
 
 - [x] **#1** Bottom tab bar on phones (Home · Practice · Review · AI · More). Ours is a top header of small icons plus a hamburger. *(shipped 10 Oct: Home · Practice · Review · AI Mentor · More; "More" opens the existing menu)* — Forge; Thumb reach; the app-like feel students expect; effort S–M
-- [ ] **#2** Diagnostic onboarding: target year, weekly goal, target AIR, then a 20-question diagnostic that fills the dashboard (weak topics, plan) from minute five — Forge; Biggest lever for activation and day-1 return; effort M–L
+- [x] **#2** Diagnostic onboarding: target year, weekly goal, target AIR, then a 20-question diagnostic that fills the dashboard (weak topics, plan) from minute five — Forge; Biggest lever for activation and day-1 return; effort M–L *(shipped 10 Oct as a dashboard "Start here" card; goals saved on this device until a profile column exists)*
 - [x] **#3** Landing for signed-out visitors with a proof line (2,470 PYQs · 5 papers · 2017–2026) and what signing in unlocks *(shipped 10 Oct as a sign-in-led welcome on the dashboard; guests keep today's limits, nothing is advertised as "no login")* — Grind; Our signed-out home is a dashboard of zeros; effort S
 - [x] **#4** "Today" card: today's N questions (spaced repetition from mistakes) plus 3 small daily missions *(shipped 10 Oct: built from the revision queue and streak; daily missions with done-ticks still to do)* — Forge; A daily reason to open the app; we already have Mistakes/Revision and streaks; effort M
-- [ ] **#5** Personal progress on syllabus pages per topic (Not started / Solid / Cleared) with a show/hide toggle — Grind; Turns our weightage pages into the study map; effort M
+- [x] **#5** Personal progress on syllabus pages per topic (Not started / Solid / Cleared) with a show/hide toggle — Grind; Turns our weightage pages into the study map; effort M
 
 ### P1
 

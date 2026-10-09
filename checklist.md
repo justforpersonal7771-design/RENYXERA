@@ -545,8 +545,8 @@ Product rule: never advertise "no login"; show what an account adds and guide vi
 - [ ] G-5 growth tracking sheet; C-3 value posts in top 5 communities; V-1 record 3 Shorts; P-1 first 3 partner offers
 
 ### Next up (priority order, from docs/COMPETITOR_GAPS.md)
-- [ ] #2 Diagnostic onboarding (target year, weekly goal, target AIR, 20-question diagnostic) — needs: branch bank per branch, analytics store fill; effort M–L
-- [ ] #5 Personal progress per topic on syllabus pages — needs: topic-name mapping between attempt tags and syllabus slugs; signed-in analytics
+- [x] #2 Diagnostic onboarding — "Start here" card for signed-in learners with no attempts: weekly days, optional target AIR, 20-question mixed diagnostic (10 Oct). Follow-up: store goals in the profile (needs a migration) instead of this device only
+- [x] #5 Personal progress per topic on EC/EE/ME/DA syllabus pages (Not started / Started / Solid / Cleared) (10 Oct). Follow-up: show/hide toggle, and the CS syllabus page (separate file) still lacks it
 - [ ] Daily missions with done-ticks on the Today card — needs: per-day activity counters
 - [ ] #6 Topic Checkpoint quiz · #7 GATE 2027 pass + short trial (config in plans) · #8 weekly benchmark + share card (needs L-3) · #9 study timer · #10 friend challenge (L-4) · #11 weekly league · #12 fresh randomised mock · #13 GA lessons · #14 "GATE 2027 changes" page
 - [ ] P2: #15 PWA install + reminders · #16 flashcards · #17 predictor for EC/EE/ME/DA (needs S-5 data) · #18 topic browser · #19 time-split tips + demo video

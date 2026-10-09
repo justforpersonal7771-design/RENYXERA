@@ -20,6 +20,7 @@ import { Footer } from "@/components/layout/footer";
 // values while loading), so there's no separate loading page that gets swapped out.
 import { HeroSection } from "@/components/dashboard/hero-section";
 import { SignedOutWelcome } from "@/components/dashboard/signed-out-welcome";
+import { DiagnosticCard } from "@/components/dashboard/diagnostic-card";
 import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 
@@ -205,6 +206,7 @@ export default function Home() {
       )}
       </AnimatePresence>
 
+      <DiagnosticCard solved={solvedCount} />
       <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} />
 
       <IncompleteTests />
