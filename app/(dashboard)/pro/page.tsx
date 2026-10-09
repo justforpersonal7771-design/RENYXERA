@@ -14,7 +14,7 @@ import { ReferralCard } from "@/components/profile/referral-card";
 import { SponsorBreakCard } from "@/components/profile/sponsor-break-card";
 import { ProCrown } from "@/components/brand/pro-crown";
 
-declare global { interface Window { Razorpay?: new (opts: Record<string, unknown>) => { open: () => void } } }
+declare global { interface Window { Razorpay?: new (opts: Record<string, unknown>) => { open: () => void; on: (event: string, cb: (r: { error?: { description?: string } }) => void) => void } } }
 
 function loadCheckout() {
   return new Promise<boolean>((resolve) => {
@@ -73,16 +73,21 @@ export default function PlansPage() {
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
       if (!(await loadCheckout()) || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your connection.");
       setConfirm(null);
-      new window.Razorpay({
+      const rz = new window.Razorpay({
         key: j.keyId, order_id: j.orderId, amount: j.amount, currency: j.currency, name: "RENYXERA", description: j.planName,
         prefill: { email: j.email ?? undefined }, theme: { color: plan.tier === "pro" ? "#d97706" : "#64748b" },
-        handler: async () => {
+        modal: { ondismiss: () => useToastStore.getState().show("Checkout closed. If you already paid, your plan appears within a minute.", "info") },
+        handler: async (resp: { razorpay_order_id?: string; razorpay_payment_id?: string; razorpay_signature?: string }) => {
           const toast = useToastStore.getState();
           toast.show("Payment received — activating your plan…", "success");
+          // Verify the payment signature on the server for instant activation (the webhook is the backup).
+          try { await fetch("/api/billing/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId: resp?.razorpay_order_id, paymentId: resp?.razorpay_payment_id, signature: resp?.razorpay_signature }) }); } catch { /* the webhook still activates it */ }
           const ok = await waitForTier(ent.accountKey, plan.tier);
           toast.show(ok ? `You're on ${plan.tier === "pro" ? "Pro" : "Plus"} — enjoy!` : "Payment received. Your plan will appear within a minute — no need to pay again.", ok ? "success" : "info");
         },
-      }).open();
+      });
+      rz.on("payment.failed", (r) => useToastStore.getState().show(r?.error?.description || "Payment failed. Please try again or use another method.", "error"));
+      rz.open();
     } catch (e) {
       useToastStore.getState().show((e as Error).message, "error");
     } finally { setBusy(null); }

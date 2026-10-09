@@ -32,7 +32,7 @@ export default function MostRepeatedTopics() {
 
   return (
     <div className="space-y-6">
-      <header className="max-w-3xl">
+      <header className="w-full">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Data article · {papers.length} official papers</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">Most repeated GATE CS topics ({years[0]}–{years[years.length - 1]})</h1>
         <p className="mt-2 text-[var(--text-secondary)] leading-relaxed">We tagged every question of every GATE CS paper by subject and topic. These are the topics that come back year after year — the most predictable marks in the paper.</p>

@@ -42,7 +42,10 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
   const navRef = useRef<HTMLElement>(null);
   // The dock scrolls sideways on phones: bring the open tool into view, not the first one.
   useEffect(() => {
-    navRef.current?.querySelector<HTMLElement>('[aria-current="page"]')?.scrollIntoView({ inline: "center", block: "nearest" });
+    // Sideways only: scrollIntoView can also scroll the page itself, which jumped users to the bottom.
+    const el = navRef.current?.querySelector<HTMLElement>('[aria-current="page"]');
+    const box = el?.closest<HTMLElement>(".overflow-x-auto");
+    if (el && box) box.scrollLeft = el.offsetLeft - (box.clientWidth - el.offsetWidth) / 2;
   }, [active]);
 
   return (

@@ -17,7 +17,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
 
   return (
     <article className="w-full space-y-8">
-      <header className="max-w-4xl">
+      <header className="w-full">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Official syllabus · GATE 2027</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE {s.paper} syllabus 2027 with topic-wise weightage</h1>
         <p className="mt-2 text-[var(--text-secondary)] leading-relaxed">

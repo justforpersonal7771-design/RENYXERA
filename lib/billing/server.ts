@@ -1,6 +1,6 @@
 import "server-only";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
-import type { Tier } from "@/lib/billing/plans";
+import { BILLING_MODE, type Tier } from "@/lib/billing/plans";
 
 export type Entitlement = { tier: Tier; plan: Tier; pro: boolean; paid: boolean; validUntil: string | null };
 
@@ -32,7 +32,11 @@ export async function getEntitlement(userId: string | null): Promise<Entitlement
 /** Razorpay credentials for the current mode, or null when checkout isn't configured. */
 export function razorpayKeys() {
   const id = process.env.RAZORPAY_KEY_ID, secret = process.env.RAZORPAY_KEY_SECRET;
-  return id && secret ? { id, secret } : null;
+  if (!id || !secret) return null;
+  // A live site must never run on a test key (and a test site never on a live one).
+  if (BILLING_MODE === "live" && !id.startsWith("rzp_live_")) return null;
+  if (BILLING_MODE === "test" && !id.startsWith("rzp_test_")) return null;
+  return { id, secret };
 }
 
 // Disposable / throwaway email domains commonly used for card-testing and trial abuse (7C).

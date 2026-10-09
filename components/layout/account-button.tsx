@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { LogIn, LayoutGrid, IdCard, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown } from "lucide-react";
+import { LogIn, LayoutGrid, IdCard, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown, Send } from "lucide-react";
 import { ProCrown } from "@/components/brand/pro-crown";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -175,6 +175,14 @@ export function AccountButton() {
                 <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">{pro ? "You're on Pro" : plus ? "You're on Plus" : "Plus & Pro plans"}</span>
                 <span className="text-[10px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-300">More AI</span>
               </Link>
+
+              <a href="https://t.me/renyxera" target="_blank" rel="noopener noreferrer" role="menuitem"
+                onClick={() => { void import("@/lib/growth/track").then((m) => m.track("telegram_join", null, "profile_menu")); setOpen(false); }}
+                className="group mt-1 flex items-center gap-3 rounded-xl px-2.5 py-2 bg-sky-500/[0.08] hover:bg-sky-500/15 transition-colors">
+                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-sky-600 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:-rotate-6"><Send className="w-4 h-4 -translate-x-px translate-y-px" /></span>
+                <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">Join Telegram</span>
+                <span className="text-[10px] font-black uppercase tracking-wider text-sky-600 dark:text-sky-300">Daily PYQ</span>
+              </a>
 
               <div className="mt-1 pt-1 border-t border-[var(--border-subtle)]">
                 <button type="button" onClick={signOut}

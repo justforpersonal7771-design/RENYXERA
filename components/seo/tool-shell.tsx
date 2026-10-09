@@ -15,8 +15,11 @@ export function ToolsFrame({ children }: { children: React.ReactNode }) {
   // The app scrolls inside <main>, not the window, so a new tool would otherwise open
   // at the previous tool's scroll position.
   useEffect(() => {
-    document.querySelector("main")?.scrollTo({ top: 0 });
-    window.scrollTo({ top: 0 });
+    const top = () => { document.querySelector("main")?.scrollTo({ top: 0 }); window.scrollTo({ top: 0 }); };
+    top();
+    const r = requestAnimationFrame(top);
+    const t = setTimeout(top, 120);
+    return () => { cancelAnimationFrame(r); clearTimeout(t); };
   }, [path]);
   if (!isToolPath(path)) return <>{children}</>;
   // The /tools landing already lists every tool; the dock is only for moving between tools.
@@ -31,10 +34,10 @@ export function ToolsFrame({ children }: { children: React.ReactNode }) {
 
 export function ToolHeader({ kicker, title, lead }: { kicker: string; title: string; lead: string }) {
   return (
-    <header className="max-w-4xl">
+    <header className="w-full">
       <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Free tool · {kicker}</p>
       <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">{title}</h1>
-      <p className="mt-2 text-[var(--text-secondary)] leading-relaxed">{lead}</p>
+      <p className="mt-2 max-w-6xl text-[var(--text-secondary)] leading-relaxed">{lead}</p>
     </header>
   );
 }

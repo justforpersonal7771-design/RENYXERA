@@ -5,7 +5,7 @@ create table if not exists public.events (
   id bigserial primary key,
   anon_id text not null check (char_length(anon_id) between 8 and 40),
   user_id uuid references auth.users(id) on delete set null,
-  event text not null check (event in ('visit','test_started','test_submitted','review_opened','ai_used','invite_shared','share_clicked')),
+  event text not null check (event in ('visit','test_started','test_submitted','review_opened','ai_used','invite_shared','share_clicked','telegram_join')),
   branch text,
   source text,
   created_at timestamptz not null default now()

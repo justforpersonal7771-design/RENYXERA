@@ -26,7 +26,7 @@ export default function Plan150() {
 
   return (
     <div className="space-y-6">
-      <header className="max-w-4xl">
+      <header className="w-full">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Study guide · built from {years.length} years of papers</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">How to prepare for GATE CS in 150 days</h1>
         <p className="mt-2 text-[var(--text-secondary)] leading-relaxed">150 days is enough to cover the whole syllabus once, revise it with past papers, and sit a month of full mocks — if every day goes where the marks are. This plan gives each subject a number of days proportional to the marks it has actually carried in GATE CS papers from {years[0]} to {years[years.length - 1]}.</p>

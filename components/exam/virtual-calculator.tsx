@@ -32,7 +32,7 @@ const STYLE: Record<string, string> = {
   clear: "bg-rose-500/12 text-rose-600 dark:text-rose-300 hover:bg-rose-500/25",
   mem: "bg-sky-500/12 text-sky-700 dark:text-sky-300 hover:bg-sky-500/25",
 };
-const W = 372;
+const W = 500;
 const HOLD_MS = 220;
 const MODES: [AngleMode, string][] = [["deg", "Deg"], ["rad", "Rad"], ["grad", "Grad"]];
 
@@ -116,7 +116,7 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
       aria-label="Calculator"
       hidden={!open}
       style={style}
-      className={`fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[400px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
+      className={`fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[460px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
     >
       <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
         className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 py-1 ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
@@ -132,20 +132,20 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
 
       <div className="px-2 pt-1.5">
         <div className="rounded-lg bg-[var(--surface-secondary)] px-2 py-1 text-right" role="status" aria-live="polite">
-          <div className="h-3 truncate text-[10px] leading-3 text-[var(--text-muted)] font-num" title={expr}>{expr || " "}</div>
+          <div className="h-4 truncate text-xs leading-4 text-[var(--text-muted)] font-num" title={expr}>{expr || " "}</div>
           <div className="flex items-baseline justify-between gap-2">
             <span className="text-[9px] font-black text-sky-500">{st.mem !== 0 ? "M" : ""}</span>
-            <span className={`truncate text-lg font-extrabold leading-6 font-num ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{st.entry}</span>
+            <span className={`truncate text-2xl font-extrabold leading-8 font-num ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{st.entry}</span>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-1.5 p-2">
         {[SCI, BASIC].map((rows, i) => (
-          <div key={i} className="grid grid-cols-4 gap-0.5">
+          <div key={i} className="grid grid-cols-4 gap-1">
             {rows.flat().map((b) => (
               <button key={b.k} type="button" onClick={() => key(b.k)} aria-label={b.l}
-                className={`h-6 min-w-0 rounded-md px-0 text-[10px] font-semibold transition active:scale-95 cursor-pointer sm:h-[26px] ${STYLE[b.kind ?? "fn"]}`}>{b.l}</button>
+                className={`h-8 min-w-0 rounded-md px-0 text-[11px] font-semibold transition active:scale-95 cursor-pointer sm:h-9 sm:text-xs ${STYLE[b.kind ?? "fn"]}`}>{b.l}</button>
             ))}
           </div>
         ))}

@@ -169,7 +169,7 @@ export function Topbar() {
         style={{ scaleX: progress }}
         className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left ${isPro ? "bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300" : isPlus ? "bg-gradient-to-r from-slate-300 via-slate-500 to-slate-300" : "bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb]"}`}
       />
-      <div className="w-full h-full px-4 sm:px-6 md:px-8 flex items-center justify-between gap-4">
+      <div className="w-full h-full px-2.5 sm:px-6 md:px-8 flex items-center justify-between gap-1.5 sm:gap-4">
 
         {/* Logo */}
         {/* Logo hover (.logo-fx): the mark spins once in 3D inside a glowing halo with an

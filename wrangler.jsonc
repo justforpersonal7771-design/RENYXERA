@@ -42,6 +42,6 @@
   // replaced on every deploy, so they live here. Secrets (RAZORPAY_KEY_SECRET,
   // RAZORPAY_WEBHOOK_SECRET, ...) stay dashboard/`wrangler secret` only.
   "vars": {
-    "RAZORPAY_KEY_ID": "rzp_test_TiFfGevDLQr8xN"
+    "RAZORPAY_KEY_ID": "rzp_live_TlwbSoqeN7fzxR"
   }
 }

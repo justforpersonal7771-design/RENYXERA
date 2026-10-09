@@ -9,7 +9,7 @@ import { motion } from "motion/react";
 /** "GENERAL APTITUDE (GA)" → "General Aptitude"; keeps short codes like "CS" upper. */
 function shortName(name: string) {
   return name.replace(/\s*\(.*?\)\s*/g, " ").trim().toLowerCase()
-    .replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\bCs\b/g, "CS").replace(/\bGa\b/g, "GA")
+    .replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\b(Cs|Ec|Ee|Me|Da|Ce)\b/g, (m) => m.toUpperCase()).replace(/\bGa\b/g, "GA")
     .replace("Mathematical Foundations", "Maths");
 }
 
