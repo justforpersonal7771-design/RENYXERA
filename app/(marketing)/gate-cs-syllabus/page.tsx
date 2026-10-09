@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Download, FileText } from "lucide-react";
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
+import { WhereToStart } from "@/components/seo/where-to-start";
 import { SyllabusNavigator } from "@/components/seo/syllabus-navigator";
 import { SYLLABUS_SOURCE } from "@/lib/seo/syllabus";
 import { syllabusStats } from "@/lib/seo/weightage";
@@ -23,7 +24,7 @@ export default function SyllabusPage() {
   return (
     <div className="space-y-6">
       {/* Hero */}
-      <header className="max-w-3xl">
+      <header className="w-full">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{SYLLABUS_SOURCE.exam} · official · {SYLLABUS_SOURCE.institute}</p>
         <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS 2027 syllabus <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">with weightage</span></h1>
         <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">The official syllabus, organised into sections, subjects and topics — and next to every one, how many marks it has really carried in GATE CS papers from {span}, and whether it is rising or cooling.</p>
@@ -53,6 +54,7 @@ export default function SyllabusPage() {
               </a></li>
             ))}
           </ul>
+          <WhereToStart paper="CS" items={ranked.map((r) => ({ name: r.title, perPaper: r.perPaper, share: r.share, href: `#${r.slug}` }))} />
         </div>
         <div className="lg:col-span-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
           <h2 className="font-extrabold text-[var(--text-primary)]">Subjects ranked by weightage</h2>

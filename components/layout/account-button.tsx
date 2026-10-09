@@ -46,6 +46,8 @@ export function AccountButton() {
   const [pos, setPos] = useState<{ top: number; right: number } | null>(null);
   const [hover, setHover] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // A click pins the menu open: hover-leave no longer closes it (outside click, Esc or another click does).
+  const pinned = useRef(false);
 
   const place = useCallback(() => {
     const r = btnRef.current?.getBoundingClientRect();
@@ -57,25 +59,28 @@ export function AccountButton() {
     setOpen(true);
   }, [place]);
   const hideSoon = useCallback(() => {
+    if (pinned.current) return;
     if (closeTimer.current) clearTimeout(closeTimer.current);
     closeTimer.current = setTimeout(() => { setOpen(false); setHover(null); }, 180);
   }, []);
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") { pinned.current = false; setOpen(false); } };
     const onResize = () => place();
     window.addEventListener("keydown", onKey);
     window.addEventListener("resize", onResize);
     return () => { window.removeEventListener("keydown", onKey); window.removeEventListener("resize", onResize); };
   }, [open, place]);
-  useEffect(() => setOpen(false), [pathname]);
+  useEffect(() => { pinned.current = false; setOpen(false); }, [pathname]);
+  useEffect(() => { if (!open) pinned.current = false; }, [open]);
   // Tapping anywhere outside the avatar or its menu closes the menu (touch has no mouseleave).
   useEffect(() => {
     if (!open) return;
     const onDown = (e: PointerEvent) => {
       const t = e.target as Node | null;
       if (btnRef.current?.contains(t) || (t instanceof Element && t.closest("[data-account-menu]"))) return;
+      pinned.current = false;
       setOpen(false);
     };
     document.addEventListener("pointerdown", onDown);
@@ -116,7 +121,7 @@ export function AccountButton() {
     <>
       <Link ref={btnRef} href="/profile" aria-label={`${name}${pro ? " (Pro)" : plus ? " (Plus)" : ""} — profile and quick access`} aria-haspopup="menu" aria-expanded={open}
         onMouseEnter={show} onMouseLeave={hideSoon} onFocus={show} onBlur={hideSoon}
-        onClick={(e) => { e.preventDefault(); if (open) setOpen(false); else show(); }}
+        onClick={(e) => { e.preventDefault(); if (open && pinned.current) { pinned.current = false; setOpen(false); } else { pinned.current = true; show(); } }}
         className={`avatar-fx group relative flex items-center rounded-xl outline-none shrink-0 ${pro ? "is-pro" : plus ? "is-plus" : ""}`}>
         <span className="relative block w-8 h-8">
           <span className="avatar-ring" aria-hidden="true" />

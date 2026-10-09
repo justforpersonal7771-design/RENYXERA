@@ -272,14 +272,18 @@ export default function ResultSummaryPage() {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - circumference * accuracyRatio;
 
-  const verdict =
-    accuracy >= 80
-      ? { label: "Outstanding Performance!", message: "You're demonstrating strong command over this material. Keep this momentum going." }
-      : accuracy >= 60
-      ? { label: "Solid Effort", message: "A good foundation is showing. Review your mistakes to close the gap to excellent." }
-      : accuracy >= 40
-      ? { label: "Room to Grow", message: "You're making progress. Focus revision time on the weakest topics below." }
-      : { label: "Keep Practicing", message: "Every attempt builds understanding. Review the breakdown and revisit the fundamentals." };
+  // The headline and message follow what actually happened in this attempt, not just the accuracy band.
+  const totalQs = session.totalQuestions;
+  const skipped = Math.max(0, totalQs - totalAttempted);
+  const attemptShare = totalQs ? totalAttempted / totalQs : 0;
+  const verdict = ((): { label: string; message: string } => {
+    if (totalAttempted === 0) return { label: "Nothing attempted", message: `All ${totalQs} questions were left blank. Even a guess on the ones you half-know is better practice than a skip.` };
+    if (attemptShare < 0.4) return { label: "Only a start", message: `You attempted ${totalAttempted} of ${totalQs} (${skipped} skipped). Finish more of each paper to see where you really stand.` };
+    if (accuracy >= 80) return { label: "Outstanding Performance!", message: `${correct} of ${totalAttempted} attempted were right${skipped ? `, with ${skipped} left blank` : ""}. Keep this momentum going.` };
+    if (accuracy >= 60) return { label: "Solid Effort", message: `${correct} correct and ${wrong} wrong. Review those ${wrong} to close the gap to excellent.` };
+    if (accuracy >= 40) return { label: "Room to Grow", message: `${wrong} wrong answers cost ${Math.round(totalNegativeMarks * 100) / 100} marks in penalties. Revise the weakest topics in the breakdown.` };
+    return { label: "Keep Practicing", message: wrong > correct * 2 ? `${wrong} of ${totalAttempted} attempts were wrong. Slow down on questions you aren't sure about and revisit the fundamentals.` : "Every attempt builds understanding. Review the breakdown and revisit the fundamentals." };
+  })();
 
   const renderActions = (cls: string) => (
             <div className={cls}>
@@ -363,7 +367,7 @@ export default function ResultSummaryPage() {
   );
 
   return (
-    <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 overflow-hidden pb-2" data-fill-height="always">
+    <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 pb-4" data-fill-height="always">
       <AnswersPendingBanner session={session} onGraded={setSession} />
 
       {/* One card, one surface. Front: ring + score summary. Back: question grid + breakdown.
@@ -372,7 +376,7 @@ export default function ResultSummaryPage() {
         initial={{ opacity: 0, y: 14, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="relative flex-1 min-h-0 mt-5"
+        className="relative flex-1 min-h-0 mt-7"
       >
         <button
           type="button"

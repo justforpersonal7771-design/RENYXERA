@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Play, Target } from "lucide-react";
+import { BarChart3, Loader2, Play, RefreshCw, Target } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useExamStore } from "@/store/use-exam-store";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
@@ -13,6 +13,11 @@ import type { ExamSessionDraft } from "@/types/exam.types";
 const KEY = "renyxera.goals";
 const COUNT = 20;
 const DAYS = [3, 5, 7];
+const NEXT = [
+  { icon: Play, title: "Sit the 20-question set", body: "Real GATE questions mixed across subjects — about 30 minutes." },
+  { icon: BarChart3, title: "See where you stand", body: "Accuracy and weak topics appear on your dashboard straight away." },
+  { icon: RefreshCw, title: "Get a daily plan", body: "Wrong answers turn into a revision queue and daily missions." },
+];
 
 /** Round-robin across subjects so 20 questions touch as many subjects as possible. */
 function pickDiagnostic(): string[] {
@@ -75,7 +80,8 @@ export function DiagnosticCard({ solved }: { solved: number }) {
   };
 
   return (
-    <section aria-label="Start here" className="rounded-2xl border border-violet-500/25 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-4 sm:p-6">
+    <section aria-label="Start here" className="grid gap-6 rounded-2xl border border-violet-500/25 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-4 sm:p-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center">
+<div>
       <p className="text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Start here · 2 minutes to set up</p>
       <h2 className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">Find your starting point</h2>
       <p className="mt-1 text-sm text-[var(--text-secondary)] max-w-2xl">Set a weekly goal, then take a {COUNT}-question mixed set. Your dashboard fills with your weak topics and accuracy as soon as you finish.</p>
@@ -102,6 +108,15 @@ export function DiagnosticCard({ solved }: { solved: number }) {
         className="mt-5 inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-5 text-sm font-bold text-white shadow-md shadow-violet-500/30 disabled:opacity-80 cursor-pointer">
         {busy ? <>Starting… <Loader2 className="h-4 w-4 animate-spin" /></> : <>Start the {COUNT}-question diagnostic <Play className="h-4 w-4 fill-current" /></>}
       </button>
+</div>
+      <ol className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1" aria-label="What happens next">
+        {NEXT.map((s, i) => (
+          <li key={s.title} className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 p-4">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400"><s.icon className="h-4 w-4" aria-hidden /></span>
+            <span className="min-w-0"><span className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Step {i + 1}</span><span className="block text-sm font-bold text-[var(--text-primary)]">{s.title}</span><span className="block text-xs text-[var(--text-secondary)] leading-relaxed">{s.body}</span></span>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 }

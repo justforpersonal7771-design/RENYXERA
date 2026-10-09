@@ -21,6 +21,8 @@ import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/dashboard/hero-section";
 import { SignedOutWelcome } from "@/components/dashboard/signed-out-welcome";
 import { DiagnosticCard } from "@/components/dashboard/diagnostic-card";
+import { StudyTimer } from "@/components/dashboard/study-timer";
+import { InstallPrompt } from "@/components/growth/install-prompt";
 import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 
@@ -208,6 +210,8 @@ export default function Home() {
 
       <DiagnosticCard solved={solvedCount} />
       <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} />
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2"><StudyTimer /><InstallPrompt /></div>
 
       <IncompleteTests />
 

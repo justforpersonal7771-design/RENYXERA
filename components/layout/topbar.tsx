@@ -361,19 +361,10 @@ export function Topbar() {
                 aria-label="Toggle Theme"
                 suppressHydrationWarning
              >
-                {/* Sun and moon swap with a spin-and-drop rather than an instant cut. */}
-                <AnimatePresence mode="wait" initial={false}>
-                   <motion.span
-                      key={mounted && resolvedTheme === "dark" ? "sun" : "moon"}
-                      initial={{ rotate: -90, y: -10, opacity: 0 }}
-                      animate={{ rotate: 0, y: 0, opacity: 1 }}
-                      exit={{ rotate: 90, y: 10, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
-                      className="block"
-                   >
-                      {mounted && resolvedTheme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                   </motion.span>
-                </AnimatePresence>
+                {/* Pure-CSS swap keyed off the <html> dark class: the right icon is correct from the
+                    first paint, so navigating between layouts never replays a sun/moon animation. */}
+                <Sun className="hidden dark:block w-4 h-4" />
+                <Moon className="block dark:hidden w-4 h-4" />
              </button>
 
              <div className="relative z-10 flex items-center"><BranchChip /></div>

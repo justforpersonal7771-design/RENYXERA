@@ -531,16 +531,20 @@ Product rule: never advertise "no login"; show what an account adds and guide vi
 - [x] Smart Plus/Pro prompts; consent checkbox above sign-in; same content width on every page
 - [x] Virtual calculator in exam (larger: 500px wide); section tab shows "EC" not "Ec"
 - [x] Competitor review (Forge, Grind, PadhaiShuru) logged out + logged in → docs/COMPETITOR_GAPS.md
+- [x] Dashboard: study timer with daily goal (#9), install-app prompt (#15), fresh full-length 65-question mock at /fresh-mock (#12), "Start here" panel filled, "Where to start" card on every syllabus page (CS + EC/EE/ME/DA)
+- [x] Fixes 10 Oct: results card clipping + dynamic verdict message, AI Mentor/Setup/Review card animation calmed, theme icon no longer animates on navigation, profile menu stays open after click
 - [x] Mobile bottom tab bar (Home, Practice, Review, AI Mentor, More) — gap #1
 - [x] Sign-in-led welcome on the signed-out dashboard; "no sign-up needed" copy removed — gap #3
 - [x] "Today" card (revision queue + streak) — gap #4 (daily missions with done-ticks still open)
 - [x] Fixes: tools dock no longer scrolls page to bottom; page headers use full width; mobile topbar fits 360px
 
 ### Needs you
-- [ ] Confirm `TURNSTILE_SECRET_KEY` exists in Cloudflare (live checkout needs it)
-- [ ] Make one real ₹29 Plus payment after deploy, check the plan appears instantly, then refund it in Razorpay
-- [ ] Regenerate the exposed Razorpay TEST key secret
-- [ ] Add repo secret `PREGEN_SECRET` so the Telegram post can include yesterday's answer
+- [x] `TURNSTILE_SECRET_KEY` confirmed in Cloudflare (you, 10 Oct)
+- [ ] Make one real ₹29 Plus payment, check the plan appears instantly, then refund it (steps given 10 Oct; you will do it later). Check Razorpay → Settlements for the bank credit
+- [x] Exposed Razorpay TEST secret regenerated (you, 10 Oct)
+- [ ] Add `PREGEN_SECRET` (same value) to GitHub repo secrets AND Cloudflare worker secrets so the Telegram post can include yesterday's answer (steps given 10 Oct)
+- [ ] Decide season-pass pricing (proposal given 10 Oct; no lifetime offer) — then I add it to lib/billing/plans.ts
+- [ ] Approve plan for #14 "GATE 2027 changes" (all-branch, sourced) and for one shared syllabus template across all branches
 - [ ] Run migrations 0029 (DA live) and 0030 (phone lock) if not yet run
 - [ ] G-5 growth tracking sheet; C-3 value posts in top 5 communities; V-1 record 3 Shorts; P-1 first 3 partner offers
 
@@ -549,7 +553,7 @@ Product rule: never advertise "no login"; show what an account adds and guide vi
 - [x] #5 Personal progress per topic on EC/EE/ME/DA syllabus pages (Not started / Started / Solid / Cleared) (10 Oct). Follow-up: show/hide toggle, and the CS syllabus page (separate file) still lacks it
 - [x] Daily missions with done-ticks on the Today card (solve 10 · a 60%+ test · keep streak) — built from the last 10 sessions (10 Oct)
 - [x] #6 Topic Checkpoint: `/checkpoint?topic=…` 8-question easy→hard set, linked from every topic on EC/EE/ME/DA syllabus pages when signed in (10 Oct); follow-up: "what you missed" notes after the result
-- [ ] #7 GATE 2027 pass + short trial (config in plans) · #8 weekly benchmark + share card (needs L-3) · #9 study timer · #10 friend challenge (L-4) · #11 weekly league · #12 fresh randomised mock · #13 GA lessons · #14 "GATE 2027 changes" page
+- [ ] #7 GATE 2027 season pass (no lifetime) + short trial — price proposal pending your decision; #7 GATE 2027 pass + short trial (config in plans) · #8 weekly benchmark + share card (needs L-3) · #9 study timer (DONE 10 Oct, on this device) · #10 friend challenge (L-4) · #11 weekly league · #12 fresh randomised mock · #13 GA lessons · #14 "GATE 2027 changes" page
 - [ ] P2: #15 PWA install + reminders · #16 flashcards · #17 predictor for EC/EE/ME/DA (needs S-5 data) · #18 topic browser · #19 time-split tips + demo video
 - [ ] P3: #20 older papers + CE · #21 PDF notes · #22 study rooms
 

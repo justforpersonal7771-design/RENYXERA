@@ -3,6 +3,7 @@ import { TelegramJoinLink } from "@/components/growth/telegram-join";
 import { ArrowRight, FileText } from "lucide-react";
 import { branchByCode, type BranchCode } from "@/lib/branches";
 import { branchSyllabusStats, officialSyllabusPdf } from "@/lib/seo/branch-syllabus";
+import { WhereToStart } from "@/components/seo/where-to-start";
 import { TopicProgressBadge, TopicProgressNote } from "@/components/seo/topic-progress";
 import { Donut, ShareBar, Sparkline, StatTile, TrendBadge } from "@/components/seo/charts";
 
@@ -47,6 +48,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
           <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Marks by section</h2>
           <div className="mt-4"><Donut slices={s.sections.map((x) => ({ label: x.title.replace(/^SECTION \d+:\s*/i, ""), value: Math.round(x.marks) }))} center={`${s.coreMarks}`} sub="core marks" /></div>
+          <WhereToStart paper={s.paper} items={subjects.map((x) => ({ name: x.name, perPaper: s.papers ? x.marks / s.papers : 0, share: x.share }))} />
         </div>
         <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
           <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Subject weightage ({span})</h2>

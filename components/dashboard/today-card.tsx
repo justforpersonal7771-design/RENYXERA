@@ -45,13 +45,17 @@ export function TodayCard({ pendingMistakes, streak, sessions = [] }: { pendingM
           </li>
         ))}
       </ul>
-      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
         {n > 0 && (
           <Link href="/revision" className="group flex items-center justify-between rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-3 text-sm font-bold text-white shadow-md shadow-violet-500/25">
             <span className="inline-flex items-center gap-2"><RefreshCw className="h-4 w-4" aria-hidden /> Start revision</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
         )}
+        <Link href="/fresh-mock" className="group flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-4 py-3 text-sm font-bold text-[var(--text-primary)]">
+          <span>Fresh full-length mock (65 Q)</span>
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        </Link>
         <Link href="/setup" className="group flex items-center justify-between rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-4 py-3 text-sm font-bold text-[var(--text-primary)]">
           <span className="inline-flex items-center gap-2"><Target className="h-4 w-4 text-violet-500" aria-hidden /> 10-question practice</span>
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
