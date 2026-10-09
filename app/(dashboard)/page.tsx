@@ -19,6 +19,8 @@ import { Footer } from "@/components/layout/footer";
 // stays mounted from the very first paint through data loading (it shows placeholder
 // values while loading), so there's no separate loading page that gets swapped out.
 import { HeroSection } from "@/components/dashboard/hero-section";
+import { SignedOutWelcome } from "@/components/dashboard/signed-out-welcome";
+import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 
 // Everything below the hero is client-only and code-split.
@@ -130,6 +132,8 @@ export default function Home() {
   return (
     <div className="w-full space-y-8">
       
+      <SignedOutWelcome />
+
       {/* 1. Hero Section Banner */}
       <HeroSection
         streak={streakDays}
@@ -200,6 +204,8 @@ export default function Home() {
         </motion.div>
       )}
       </AnimatePresence>
+
+      <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} />
 
       <IncompleteTests />
 

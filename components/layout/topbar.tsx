@@ -116,6 +116,11 @@ export function Topbar() {
 
   // Mobile menu: tapping anywhere outside it (or its toggle) closes it.
   useEffect(() => {
+    const toggle = () => setMobileMenuOpen((o) => !o);
+    window.addEventListener("renyxera:open-more-menu", toggle);
+    return () => window.removeEventListener("renyxera:open-more-menu", toggle);
+  }, []);
+  useEffect(() => {
     if (!mobileMenuOpen) return;
     const onDown = (e: PointerEvent) => {
       const t = e.target as Element | null;

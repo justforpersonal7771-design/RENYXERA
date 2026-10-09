@@ -57,9 +57,9 @@ const FEATURES = [
 ];
 
 const STEPS = [
-  { n: "1", title: "Start without an account", body: "Open the app and practice immediately — no sign-up needed to explore every screen or attempt section, subject and topic tests." },
+  { n: "1", title: "Sign in and set your branch", body: "One tap with Google puts your branch, targets and every test you take in one place — so the dashboard knows what to practise next." },
   { n: "2", title: "Practice and review", body: "Take tests, then review every question against its answer key — signed in, the AI Mentor can explain any of them step by step. Mistakes and bookmarks are collected for you as you go." },
-  { n: "3", title: "Sign in to go further", body: "Create a free account to sync progress across devices and unlock full mock exams, the AI Mentor and advanced analytics." },
+  { n: "3", title: "Go further with your account", body: "Your progress syncs across devices, and full mock exams, the AI Mentor and advanced analytics build on everything you have practised." },
 ];
 
 /**
@@ -154,10 +154,10 @@ export default function AboutPage() {
           <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-indigo-500/10 text-indigo-500">
             <UserRound className="w-5 h-5" />
           </div>
-          <h2 className="mt-4 text-xl font-extrabold text-[var(--text-primary)]">Guest or account — your choice</h2>
+          <h2 className="mt-4 text-xl font-extrabold text-[var(--text-primary)]">Your progress stays yours</h2>
           <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
-            You can use RENYXERA without signing up. As a guest, your practice history, mistakes
-            and bookmarks are stored only in your browser on this device. Creating a free account
+            Signed in, your progress is saved and synced. Before you sign in, your practice history, mistakes
+            and bookmarks are stored only in your browser on this device. Signing in
             syncs them across devices and unlocks full-length mock exams, the AI Mentor and
             advanced analytics. Your guest mistakes, bookmarks, saved test templates, to-dos and
             planner events are carried into your account when you sign in.
@@ -186,7 +186,7 @@ export default function AboutPage() {
       <section className="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-[0_24px_60px_-20px_rgba(79,70,229,0.6)]">
         <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-20 w-72 h-72 rounded-full bg-cyan-300/30 blur-3xl" />
         <h2 className="relative text-2xl sm:text-3xl font-display font-extrabold">Ready to start preparing?</h2>
-        <p className="relative mt-2 text-white/80">No sign-up needed to begin. Your first test is a click away.</p>
+        <p className="relative mt-2 text-white/80">Sign in and your first test is a click away.</p>
         <Link
           href="/"
           className="relative mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-indigo-700 font-bold hover:bg-white/90 transition-colors"

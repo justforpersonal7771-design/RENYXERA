@@ -5,6 +5,7 @@ import { BranchModalHost } from "@/components/branch/branch-modal";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Topbar } from "./topbar";
+import { BottomTabBar } from "./bottom-tab-bar";
 import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
@@ -165,7 +166,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           topbar is the only way to keep the scrollbar from ever reaching that
           region. */}
       <main className="relative z-10 w-full h-full overflow-hidden">
-        <div className="absolute inset-x-0 bottom-0 top-16 overflow-y-auto custom-scrollbar px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 pb-4 sm:pb-6 md:pb-8">
+        <div className="absolute inset-x-0 bottom-0 top-16 overflow-y-auto custom-scrollbar px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 pb-20 lg:pb-8">
           <motion.div
             key={pathname}
             initial={{ opacity: 0, y: 8 }}
@@ -177,6 +178,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           </motion.div>
         </div>
       </main>
+      <BottomTabBar />
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
       <AuthModal />

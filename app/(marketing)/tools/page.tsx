@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function ToolsIndex() {
   return (
     <>
-      <ToolHeader kicker="All tools" title="Free GATE tools" lead="Pick a tool to open it. Every one is free and works without an account." />
+      <ToolHeader kicker="All tools" title="Free GATE tools" lead="Pick a tool to open it. Every one is free — sign in to save your results and carry them across devices." />
       <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {TOOLS.map((t) => {
           const Icon = TOOL_ICONS[t.icon];

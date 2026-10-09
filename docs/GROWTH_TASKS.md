@@ -77,5 +77,6 @@ Metrics → channel leaderboard (time per activated user) → close/scale experi
 - [x] **Z-2** Smart Plus/Pro prompts (after 2/5/10 tests, 10+ pending mistakes, 3rd analytics visit; max 1 per 3 days, 6 total, snooze after 2 dismissals).
 - [x] **Z-3** Same content width and top spacing on Profile, AI Mentor and every other page.
 - [x] **Z-4** Sign-in/sign-up: consent checkbox now sits above the button; tapping Google unticked explains why.
-- [ ] **Z-5** Competitor gaps: see docs/COMPETITOR_GAPS.md (mobile bottom tab bar is the top item).
-- [ ] **Z-6** Payments: move from test to live Razorpay (next task; needs live keys, see message).
+- [~] **Z-5** Competitor gaps (docs/COMPETITOR_GAPS.md): #1 tab bar, #3 welcome, #4 Today card shipped 10 Oct; #2, #5 next.
+- [x] **Z-6** Payments are live (key id in wrangler.jsonc, billing mode live, instant verify). Still to do by you: one real ₹29 test + refund, Turnstile secret check, regenerate test secret.
+- [x] **Z-7** Removed "no login" copy; sign-in-led messaging (rule: never advertise no-login).

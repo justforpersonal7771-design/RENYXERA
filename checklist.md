@@ -1,6 +1,6 @@
 # RENYXERA — Progress Checklist
 
-**Last updated:** 28 September 2026 (Release 5 integrity, mocks and leaderboards; earlier full cross-check 26 Sep)
+**Last updated:** 10 October 2026 (live payments, growth system, competitor gaps; the "Synced task list" at the bottom is the live one)
 **Companion to:** `RENYXERA_Master_Plan_Auth_Security_Monetization.md` (full rationale, module-by-module — this file is status only). Also reconciled on 28 Sep with `docs/CONTENT_STRATEGY.md`, `docs/MARKETING_STRATEGY.md`, `BUGS.md`, `HANDOVER_AUDIT_2026-09-17.md` and the older Release-4 master prompt / growth / deployment plans (superseded by the Master Plan; their unique items are folded in below).
 
 Legend: ✅ Done and verified · 🟨 Partly done · 🔶 Done but needs your confirmation/action · 🟠 Deferred to a later release (named) · 🟡 Backlog (paid — after income) · ⬜ Not started
@@ -520,8 +520,41 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 - [ ] Future: phone verification + reports via Telegram bot first, then WhatsApp
 - [ ] Future: proper Share (copy link to a public result card, share to installed apps); rename "Download result" back to "Share result" then
 
-## Growth (8 Oct 2026)
-Plan: docs/GROWTH_MASTER_PLAN.md · Tasks: docs/GROWTH_TASKS.md · Drafts: docs/GROWTH_ASSETS.md. PYQs (CE) on hold by request.
-- [ ] X-1: GATE virtual calculator in the exam interface (first item when development resumes; see docs/GROWTH_TASKS.md)
-- [ ] X-2: "Join our Telegram" links in the app (t.me/renyxera channel + t.me/renyxera_chat group)
-- [x] X-1 virtual calculator, X-2 Telegram join, S-3, T-3 done 10 Oct; competitor gaps in docs/COMPETITOR_GAPS.md; NEXT: live Razorpay payments, migration 0033
+## Synced task list (10 Oct 2026) — single source for pending / done / future
+Detail lives in docs/GROWTH_TASKS.md and docs/COMPETITOR_GAPS.md; this section is kept in step with both every turn.
+Product rule: never advertise "no login"; show what an account adds and guide visitors to sign in; do not widen signed-out free access.
+
+### Done
+- [x] Live Razorpay payments: key `rzp_live_TlwbSoqeN7fzxR`, `NEXT_PUBLIC_BILLING_MODE=live`, instant `/api/billing/verify` (HMAC) + signed webhook, key-mode guard
+- [x] Events table (migration 0032 run) + weekly metrics script; Telegram join (dashboard, footer, results, public pages, profile menu)
+- [x] Telegram daily post (rotating branches, yesterday's answer, countdown); 3-section rule for all banks; syllabus-with-weightage pages for CS/EC/EE/ME/DA
+- [x] Smart Plus/Pro prompts; consent checkbox above sign-in; same content width on every page
+- [x] Virtual calculator in exam (larger: 500px wide); section tab shows "EC" not "Ec"
+- [x] Competitor review (Forge, Grind, PadhaiShuru) logged out + logged in → docs/COMPETITOR_GAPS.md
+- [x] Mobile bottom tab bar (Home, Practice, Review, AI Mentor, More) — gap #1
+- [x] Sign-in-led welcome on the signed-out dashboard; "no sign-up needed" copy removed — gap #3
+- [x] "Today" card (revision queue + streak) — gap #4 (daily missions with done-ticks still open)
+- [x] Fixes: tools dock no longer scrolls page to bottom; page headers use full width; mobile topbar fits 360px
+
+### Needs you
+- [ ] Confirm `TURNSTILE_SECRET_KEY` exists in Cloudflare (live checkout needs it)
+- [ ] Make one real ₹29 Plus payment after deploy, check the plan appears instantly, then refund it in Razorpay
+- [ ] Regenerate the exposed Razorpay TEST key secret
+- [ ] Add repo secret `PREGEN_SECRET` so the Telegram post can include yesterday's answer
+- [ ] Run migrations 0029 (DA live) and 0030 (phone lock) if not yet run
+- [ ] G-5 growth tracking sheet; C-3 value posts in top 5 communities; V-1 record 3 Shorts; P-1 first 3 partner offers
+
+### Next up (priority order, from docs/COMPETITOR_GAPS.md)
+- [ ] #2 Diagnostic onboarding (target year, weekly goal, target AIR, 20-question diagnostic) — needs: branch bank per branch, analytics store fill; effort M–L
+- [ ] #5 Personal progress per topic on syllabus pages — needs: topic-name mapping between attempt tags and syllabus slugs; signed-in analytics
+- [ ] Daily missions with done-ticks on the Today card — needs: per-day activity counters
+- [ ] #6 Topic Checkpoint quiz · #7 GATE 2027 pass + short trial (config in plans) · #8 weekly benchmark + share card (needs L-3) · #9 study timer · #10 friend challenge (L-4) · #11 weekly league · #12 fresh randomised mock · #13 GA lessons · #14 "GATE 2027 changes" page
+- [ ] P2: #15 PWA install + reminders · #16 flashcards · #17 predictor for EC/EE/ME/DA (needs S-5 data) · #18 topic browser · #19 time-split tips + demo video
+- [ ] P3: #20 older papers + CE · #21 PDF notes · #22 study rooms
+
+### On hold (by you)
+- [ ] L-3 Share result · PYQ extraction for CE and remaining branches (resume from docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after PYQs · custom domain until revenue
+
+### Open UI/ops items carried over
+- [ ] Migration 0030_phone_lock.sql · migration 0029_da_live.sql — confirm run
+- [ ] Phone verification + reports via Telegram bot first, then WhatsApp

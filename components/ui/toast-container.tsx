@@ -20,7 +20,7 @@ export function ToastContainer() {
   const { toasts, dismiss } = useToastStore();
 
   return (
-    <div className="fixed bottom-5 right-5 z-[200] flex flex-col gap-2 pointer-events-none max-w-[360px]">
+    <div className="fixed bottom-20 lg:bottom-5 right-5 z-[200] flex flex-col gap-2 pointer-events-none max-w-[360px]">
       <AnimatePresence>
         {toasts.map((toast) => {
           const Icon = ICONS[toast.type];
