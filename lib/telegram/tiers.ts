@@ -18,12 +18,13 @@ export type TgLimits = {
   weeklyReview: boolean;   // Sunday summary of planned vs done
   replan: boolean;         // "re-plan the rest" shortcut offered with the roll-forward prompt
   askMentor: boolean;      // /ask a doubt and get a short AI answer (uses the daily AI allowance)
+  weakNudge: boolean;      // a weekly message naming your weakest topics, with a practise link
 };
 
 export const TG_LIMITS: Record<Tier, TgLimits> = {
-  free: { timers: 1, alarms: 0, blockReminders: false, digest: false, mockReminders: false, streakNudge: false, quietHours: false, rollPrompt: false, weeklyReview: false, replan: false, askMentor: false },
-  plus: { timers: 5, alarms: 3, blockReminders: true, digest: true, mockReminders: true, streakNudge: true, quietHours: true, rollPrompt: false, weeklyReview: false, replan: false, askMentor: false },
-  pro:  { timers: 10, alarms: 10, blockReminders: true, digest: true, mockReminders: true, streakNudge: true, quietHours: true, rollPrompt: true, weeklyReview: true, replan: true, askMentor: true },
+  free: { timers: 1, alarms: 0, blockReminders: false, digest: false, mockReminders: false, streakNudge: false, quietHours: false, rollPrompt: false, weeklyReview: false, replan: false, askMentor: false, weakNudge: false },
+  plus: { timers: 5, alarms: 3, blockReminders: true, digest: true, mockReminders: true, streakNudge: true, quietHours: true, rollPrompt: false, weeklyReview: false, replan: false, askMentor: false, weakNudge: false },
+  pro:  { timers: 10, alarms: 10, blockReminders: true, digest: true, mockReminders: true, streakNudge: true, quietHours: true, rollPrompt: true, weeklyReview: true, replan: true, askMentor: true, weakNudge: true },
 };
 
 /** The same matrix as readable rows for the Profile screen and the Plans page. `info` explains each one in plain words. */
@@ -42,6 +43,7 @@ export const TG_MATRIX: { label: string; info: string; free: string; plus: strin
   { label: "Evening check on unfinished tasks", info: "Each night the bot asks about tasks you didn't finish. Move them to tomorrow, or leave them. It never moves anything without your tap.", free: "—", plus: "—", pro: "Yes" },
   { label: "Verify your mobile number", info: "Share your number once through Telegram. This proves the number is yours, then it is locked to your account so nobody else can use it.", free: "Yes", plus: "Yes", pro: "Yes" },
   { label: "Ask the AI Mentor in Telegram", info: "Send /ask followed by your doubt and get a short answer in the chat. It uses the same daily AI requests as the app, so nothing extra is charged.", free: "—", plus: "—", pro: "Yes" },
+  { label: "Weekly nudge on your weakest topics", info: "Every Wednesday evening the bot names the 3 topics you get wrong most often, with a button to practise them.", free: "—", plus: "—", pro: "Yes" },
   { label: "Weekly report", info: "On Sunday evening: how many tasks you finished this week, and one tip for next week.", free: "—", plus: "—", pro: "Yes" },
 ];
 

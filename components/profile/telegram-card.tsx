@@ -13,7 +13,7 @@ import { TELEGRAM_CHANGED } from "@/components/growth/use-telegram-state";
 
 type Status = {
   configured: boolean; tier: Tier; bot: string | null; channelUrl: string; groupUrl: string; linked: boolean;
-  limits: { timers: number; alarms: number; blockReminders: boolean; digest: boolean; mockReminders: boolean; streakNudge: boolean; quietHours: boolean; rollPrompt: boolean; weeklyReview: boolean };
+  limits: { timers: number; alarms: number; blockReminders: boolean; digest: boolean; mockReminders: boolean; weakNudge: boolean; streakNudge: boolean; quietHours: boolean; rollPrompt: boolean; weeklyReview: boolean };
   account: null | { username: string | null; firstName: string | null; inChannel: boolean | null; inGroup: boolean | null; prefs: Record<string, unknown>; digestTime: string; blocked: boolean };
   usage: { timers: number; alarms: number };
   phone: null | { verified: boolean; masked: string | null };
@@ -194,6 +194,7 @@ export function TelegramCard() {
               {pref("streak", "Streak reminder", "If you practised yesterday but not yet today, the bot nudges you at 8 pm so your streak doesn't break.", s.limits.streakNudge, "Plus")}
               {pref("billing", "Warning before my plan ends", "3 days and 1 day before your Plus or Pro ends, so it never runs out by surprise.", true, "")}
               {pref("roll", "Evening check on unfinished tasks", "Each night the bot asks about tasks you didn't finish. Move them to tomorrow, or leave them. It never moves anything without your tap.", s.limits.rollPrompt, "Pro")}
+              {pref("weak", "Weekly nudge on my weakest topics", "Every Wednesday evening the bot names the 3 topics you get wrong most often, with a button to practise them.", s.limits.weakNudge, "Pro")}
               {pref("weekly", "Weekly report", "On Sunday evening: how many tasks you finished this week, and one tip for next week.", s.limits.weeklyReview, "Pro")}
             </div>
             {s.limits.quietHours && (() => {

@@ -548,20 +548,19 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [x] Calculator with the official GATE keys and layout, live result row; bottom tab bar with More sheet; Today card + missions; diagnostic onboarding; fresh 65-question mock; install prompt; avatar picker in onboarding
 - [x] Server-time clock in the UI; fixes: purchase modal, results card, AI Mentor reveal, theme icon, profile menu, mobile topbar
 
-### Needs you
-- [ ] **Run migration `0036_coupons_and_goals.sql`** (coupons, goals on the profile). To make a coupon, see the comment at the top of that file
-- [ ] Growth tasks (yours to check): G-5 tracking sheet, C-3 value posts in the top 5 communities, V-1 record 3 Shorts, P-1 first partner offers
-- [ ] Optional: rename the bot with BotFather (suggested RENYXERA Study Buddy); set `NEXT_PUBLIC_SELLER_NAME` / `NEXT_PUBLIC_SELLER_ADDRESS` for receipts; ask an accountant about GST
-- [x] Done by you (10 Oct): Telegram setup, PREGEN_SECRET, migrations 0029 / 0030 / 0033 / 0034 / 0035, the real ₹29 payment
+### Done in this batch
+- [x] Fullscreen Exit button fixed (edge arrows no longer cover the corner buttons); Share result menu (link or card, L-3); weekly benchmark card; Pro weak-topic Telegram nudge; General Aptitude lessons (/ga-lessons); official GATE 2026 cut-offs and score calculator for CS, EC, EE, ME, CE, DA (/tools/gate-branch-cutoffs)
 
-### Next up — not built, and why
-- [ ] Weak-topic nudges on Telegram (Pro) — needs analytics on the server (today it lives on the learner's device)
-- [ ] #8 weekly benchmark vs peers + share card — needs server-side aggregates and the on-hold Share result (L-3)
-- [ ] #11 weekly league · #13 General Aptitude lessons · #16 flashcards — big content or database builds
-- [ ] #17 predictor and cut-offs for EC/EE/ME/DA (and the CS-only cut-off tool and /topics pages) — needs verified official data per paper (S-5)
-- [ ] P3: #20 older papers + CE · #21 PDF notes · #22 study rooms
-- [ ] Payments: gift passes · email receipts (needs an email provider account) · Razorpay Subscriptions / UPI Autopay (after demand) · Cashfree as second gateway (after their answers)
-- [ ] Planner: PDF export · Pomodoro focus mode · study-buddy group reminders · "what you missed" notes after a Checkpoint
+### Needs you
+- [ ] **Run migration `0037_weekly_benchmark.sql`** (weekly benchmark and weak-topic columns)
+- [ ] Growth tasks (yours to check): G-5 tracking sheet, C-3 value posts in the top 5 communities, V-1 record 3 Shorts, P-1 first partner offers
+- [x] Done by you: Telegram setup, PREGEN_SECRET, migrations 0029 / 0030 / 0033–0036, bot rename, the real Rs 29 payment
+
+### Waiting (your call)
+- [ ] Subscriptions · gift passes (coupons are built but unused; refund script not needed) · Razorpay is the only gateway, Cashfree dropped
+- [ ] Not planned: #11 weekly league (duplicates leaderboards) · #16 flashcards (content) · #21 PDF notes (cost and abuse) · #22 study rooms (moderation)
+- [ ] Planner extras: PDF export · Pomodoro focus mode · "what you missed" notes after a Checkpoint
+- [ ] Rank estimate for non-CS papers (needs marks-vs-rank tables nobody publishes) · earlier-year history for other branches
 
 ### On hold (by you)
 - [ ] L-3 Share result · PYQ extraction for CE and remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs · custom domain until revenue

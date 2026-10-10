@@ -66,14 +66,14 @@ export function FullscreenNavigation({
   return (
     <div className="absolute inset-0 pointer-events-none z-50">
       {!isPrevDisabled && onPrev && (
-        <div className="pointer-events-auto absolute inset-y-0 left-0 w-10" onMouseEnter={showBriefly} onTouchStart={showBriefly}>
+        <div className="pointer-events-auto absolute top-20 bottom-28 left-0 w-10" onMouseEnter={showBriefly} onTouchStart={showBriefly}>
           <button type="button" onClick={onPrev} className={btn("l")} title="Previous question" aria-label="Previous question">
             <ChevronLeft className="w-5 h-5" />
           </button>
         </div>
       )}
       {!isNextDisabled && onNext && (
-        <div className="pointer-events-auto absolute inset-y-0 right-0 w-10" onMouseEnter={showBriefly} onTouchStart={showBriefly}>
+        <div className="pointer-events-auto absolute top-20 bottom-28 right-0 w-10" onMouseEnter={showBriefly} onTouchStart={showBriefly}>
           <button type="button" onClick={onNext} className={btn("r")} title="Next question" aria-label="Next question">
             <ChevronRight className="w-5 h-5" />
           </button>

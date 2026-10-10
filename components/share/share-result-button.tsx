@@ -1,8 +1,8 @@
 "use client";
 
 import { track } from "@/lib/growth/track";
-import { useState } from "react";
-import { Download, Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Download, Link2, Loader2, Share2 } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { paperLabel } from "@/lib/branch/current";
@@ -15,10 +15,31 @@ export type ShareStat = { label: string; value: string };
  * name on it follows the person's leaderboard display choice (anonymous by default);
  * never an email.
  */
-export function ShareResultButton({ title, subtitle, stats, className = "" }: { title: string; subtitle: string; stats: ShareStat[]; className?: string }) {
+export function ShareResultButton({ title, subtitle, stats, getLink, className = "" }: { title: string; subtitle: string; stats: ShareStat[]; getLink?: () => string; className?: string }) {
   const profile = useAuthStore((s) => s.profile);
   const toast = useToastStore((s) => s.show);
   const [busy, setBusy] = useState(false);
+  const [menu, setMenu] = useState(false);
+  const box = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (!menu) return;
+    const out = (e: PointerEvent) => { if (!box.current?.contains(e.target as Node)) setMenu(false); };
+    const key = (e: KeyboardEvent) => { if (e.key === "Escape") setMenu(false); };
+    document.addEventListener("pointerdown", out); document.addEventListener("keydown", key);
+    return () => { document.removeEventListener("pointerdown", out); document.removeEventListener("keydown", key); };
+  }, [menu]);
+
+  // A link anyone can open: it shows the score and lets them take the same questions (the "Beat my score" page).
+  const shareLink = async () => {
+    setMenu(false);
+    track("share_clicked", null, "result_link");
+    const url = getLink?.() ?? "https://gate.renyxera.workers.dev/";
+    const text = `${title}: ${stats.map((s) => `${s.label} ${s.value}`).join(", ")} on RENYXERA. Can you beat it?`;
+    try {
+      if (navigator.share) await navigator.share({ title: "My RENYXERA result", text, url });
+      else { await navigator.clipboard.writeText(`${text} ${url}`); toast("Link copied. Paste it anywhere to share.", "success"); }
+    } catch (e) { if ((e as Error)?.name !== "AbortError") toast("Couldn't share the link. Try again.", "error"); }
+  };
 
   const who = (() => {
     const d = profile?.leaderboard_display ?? "anonymous";
@@ -28,6 +49,7 @@ export function ShareResultButton({ title, subtitle, stats, className = "" }: { 
   })();
 
   const share = async () => {
+    setMenu(false);
     track("share_clicked");
     setBusy(true);
     try {
@@ -65,10 +87,18 @@ export function ShareResultButton({ title, subtitle, stats, className = "" }: { 
   };
 
   return (
-    <button onClick={share} disabled={busy}
-      className={`group inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-[var(--text-primary)] hover:border-violet-500/50 disabled:opacity-60 cursor-pointer ${className}`}>
-      {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4 text-violet-500 transition-transform group-hover:translate-y-0.5" />} <span className="whitespace-nowrap">Download<span className="hidden sm:inline"> result</span></span>
-    </button>
+    <span ref={box} className="relative flex">
+      <button type="button" onClick={() => setMenu((o) => !o)} disabled={busy} aria-haspopup="menu" aria-expanded={menu}
+        className={`group inline-flex flex-1 items-center justify-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-[var(--text-primary)] hover:border-violet-500/50 disabled:opacity-60 cursor-pointer ${className}`}>
+        {busy ? <Loader2 className="w-4 h-4 animate-spin" /> : <Share2 className="w-4 h-4 text-violet-500 transition-transform group-hover:scale-110" />} <span className="whitespace-nowrap">Share<span className="hidden sm:inline"> result</span></span>
+      </button>
+      {menu && (
+        <div role="menu" aria-label="Share your result" className="absolute bottom-full left-0 z-30 mb-2 w-60 overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1.5 shadow-2xl">
+          <button type="button" role="menuitem" onClick={shareLink} className="flex w-full cursor-pointer items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-[var(--surface-secondary)]"><Link2 className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" aria-hidden /><span><span className="block text-sm font-bold text-[var(--text-primary)]">Share a link</span><span className="block text-xs text-[var(--text-muted)]">Friends see your score and can take the same questions</span></span></button>
+          <button type="button" role="menuitem" onClick={share} className="flex w-full cursor-pointer items-start gap-3 rounded-xl px-3 py-2.5 text-left hover:bg-[var(--surface-secondary)]"><Download className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" aria-hidden /><span><span className="block text-sm font-bold text-[var(--text-primary)]">Download card</span><span className="block text-xs text-[var(--text-muted)]">A picture of your result to post</span></span></button>
+        </div>
+      )}
+    </span>
   );
 }
 

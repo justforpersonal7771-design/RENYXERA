@@ -1,4 +1,4 @@
-# Payments: Cashfree vs Razorpay, and the complete payments checklist (10 Oct 2026)
+# Payments (decision: Razorpay only, Cashfree ignored): Cashfree vs Razorpay, and the complete payments checklist (10 Oct 2026)
 
 Researched on 10 Oct 2026 from Cashfree's own pricing pages and FAQ, Razorpay's blog and terms, and news coverage.
 Anything I could not confirm on an official page is marked **(unverified)**. Rates and offers change — re-check before acting.

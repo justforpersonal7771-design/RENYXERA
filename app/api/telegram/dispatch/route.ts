@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
   const db = createServiceRoleClient();
   const now = Date.now();
-  const out = { reminders: 0, skipped: 0, digests: 0, rolls: 0, weekly: 0, streaks: 0, mocks: 0, ending: 0, rechecked: 0 };
+  const out = { weak: 0, reminders: 0, skipped: 0, digests: 0, rolls: 0, weekly: 0, streaks: 0, mocks: 0, ending: 0, rechecked: 0 };
 
   const accounts = new Map<string, Account>();
   const loadAccounts = async (ids: string[]) => {
@@ -139,6 +139,20 @@ export async function POST(req: NextRequest) {
         if (error) continue;
         if (await deliver(a, "🔥 You practised yesterday. A quick 10-question set today keeps your streak going.", [[{ text: "Practise now", url: appLink("/setup") }]])) out.streaks++;
       }
+    }
+  }
+
+  // weak-topic nudge (Pro) on Wednesday evenings, from the summary the learner's device last sent
+  if (t.weekday === 3 && t.hhmm >= "19:00" && t.hhmm < "21:30") {
+    for (const a of linked) {
+      const w = (a as Account & { weak_topics?: { topic: string; pct: number }[] | null; weak_updated_at?: string | null });
+      if (a.prefs.weak === false || quietNow(a) || !w.weak_topics?.length || !w.weak_updated_at || now - Date.parse(w.weak_updated_at) > 14 * 86400_000) continue;
+      if (!TG_LIMITS[await tierOf(a.user_id)].weakNudge) continue;
+      const { error } = await db.from("telegram_sent").insert({ key: `weak:${a.user_id}:${t.date}` });
+      if (error) continue;
+      const top = w.weak_topics.slice(0, 3);
+      const text = ["🎯 <b>Your weakest topics right now</b>", ...top.map((x) => `• ${html(x.topic)} — ${x.pct}% correct`), "", "A short set on the first one is the quickest win."].join("\n");
+      if (await deliver(a, text, [[{ text: `Practise ${top[0].topic.slice(0, 28)}`, url: appLink(`/setup?topic=${encodeURIComponent(top[0].topic)}`) }]])) out.weak++;
     }
   }
 

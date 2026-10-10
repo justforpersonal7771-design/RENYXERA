@@ -93,7 +93,8 @@ try {
   }
   // Desktop: "Share result" downloads the result card.
   const dl = p.waitForEvent("download", { timeout: 15_000 }).catch(() => null);
-  await p.getByRole("button", { name: /^download/i }).click();
+  await p.getByRole("button", { name: /^share/i }).click();
+  await p.getByRole("menuitem", { name: /download card/i }).click();
   ok(!!(await dl), "download result saves the card on desktop");
   await ctx.close();
 } catch (e) {

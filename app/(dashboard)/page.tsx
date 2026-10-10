@@ -21,6 +21,8 @@ import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/dashboard/hero-section";
 import { SignedOutWelcome } from "@/components/dashboard/signed-out-welcome";
 import { DiagnosticCard } from "@/components/dashboard/diagnostic-card";
+import { WeakTopicsSync } from "@/components/planner/weak-topics-sync";
+import { WeeklyBenchmarkCard } from "@/components/dashboard/weekly-benchmark-card";
 import { TodayBlocksCard } from "@/components/planner/today-blocks-card";
 import { MissedBlocksCard } from "@/components/planner/missed-blocks-card";
 import { StudyTimer } from "@/components/dashboard/study-timer";
@@ -212,6 +214,8 @@ export default function Home() {
 
       <MissedBlocksCard />
       <TodayBlocksCard />
+      <WeeklyBenchmarkCard />
+      <WeakTopicsSync topics={dashboardMetrics?.topicPerformance ?? []} />
       <DiagnosticCard solved={solvedCount} />
       <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} />
 
