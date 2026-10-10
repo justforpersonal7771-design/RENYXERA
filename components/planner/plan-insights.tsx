@@ -67,6 +67,17 @@ export function PlanInsights() {
     toast(`${mine.length} entries exported. Open the file to add them to Google or Apple Calendar.`);
   };
 
+  const printPlan = () => {
+    const mine = events.filter((e) => e.date >= today).sort((a, b) => (a.date + (a.startTime ?? "")).localeCompare(b.date + (b.startTime ?? ""))).slice(0, 400);
+    if (!mine.length) return toast("Nothing in your planner to print yet.", "info");
+    const esc = (t: string) => t.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string);
+    const rows = mine.map((e) => `<tr><td>${esc(e.date)}</td><td>${esc(e.startTime ?? "")}${e.endTime ? " to " + esc(e.endTime) : ""}</td><td>${esc(e.title)}</td><td>${esc(e.category ?? "")}</td></tr>`).join("");
+    const w = window.open("", "_blank");
+    if (!w) return toast("Allow pop-ups to print your plan.", "info");
+    w.document.write(`<!doctype html><title>My study plan | RENYXERA</title><style>body{font:14px system-ui;margin:24px}table{border-collapse:collapse;width:100%}td,th{border-bottom:1px solid #ccc;padding:6px;text-align:left}th{font-size:12px;text-transform:uppercase}</style><h1>My study plan</h1><table><tr><th>Date</th><th>Time</th><th>Task</th><th>Type</th></tr>${rows}</table>`);
+    w.document.close(); w.focus(); w.print();
+  };
+
   const addMocks = async () => {
     setBusy("mocks");
     try {
@@ -156,6 +167,7 @@ export function PlanInsights() {
         <h2 className="inline-flex items-center gap-2 font-extrabold text-[var(--text-primary)]"><CalendarDays className="h-4 w-4 text-violet-500" aria-hidden /> Tools</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" onClick={exportIcs} className={btn}><Download className="h-4 w-4" /> Add to Google / Apple Calendar</button>
+          <button type="button" onClick={printPlan} className={btn}><Download className="h-4 w-4" /> Print plan</button>
           <button type="button" onClick={addMocks} disabled={busy === "mocks"} className={btn}>{busy === "mocks" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Timer className="h-4 w-4" />} Add upcoming mocks</button>
           {pro ? <button type="button" onClick={replanWeak} disabled={busy === "weak"} className={btn}>{busy === "weak" ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4 text-amber-500" />} Re-plan around my weak topics</button>
             : <button type="button" onClick={() => lock("Re-planning around your weak topics")} className={btn}><Lock className="h-4 w-4 text-amber-500" /> Re-plan around weak topics · Pro</button>}

@@ -78,6 +78,10 @@ export function StudyTimer() {
           {running ? <><Pause className="h-4 w-4" /> Pause</> : <><Play className="h-4 w-4 fill-current" /> Start</>}
         </button>
       </div>
+      {running && (() => {
+        const pos = live % 1800, onBreak = pos >= 1500, left = (onBreak ? 1800 : 1500) - pos;
+        return <p className={`mt-3 rounded-xl px-3 py-2 text-xs font-semibold ${onBreak ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "bg-violet-500/10 text-violet-700 dark:text-violet-300"}`} aria-live="off">{onBreak ? "Short break, stretch and drink water" : "Focus round"}: <span className="font-num font-bold">{Math.floor(left / 60)}:{String(left % 60).padStart(2, "0")}</span> left (25 minutes focus, 5 minutes break)</p>;
+      })()}
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--surface-secondary)]" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Daily goal progress">
         <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-[width] duration-500" style={{ width: `${pct}%` }} />
       </div>
