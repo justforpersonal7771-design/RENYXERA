@@ -1,0 +1,168 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { getEntitlement } from "@/lib/billing/server";
+import { answerCallback, clearButtons, html, send } from "@/lib/telegram/bot";
+import { accountOf, refreshMembership, type Account } from "@/lib/telegram/server";
+import { appLink, helpMessage, statusMessage, todayMessage } from "@/lib/telegram/messages";
+import { IST_OFFSET_MIN, TG_LIMITS, istParts, istToMs } from "@/lib/telegram/tiers";
+
+export const runtime = "nodejs";
+
+type TgUser = { id: number; username?: string; first_name?: string };
+type Update = {
+  message?: { chat: { id: number; type: string }; from?: TgUser; text?: string };
+  callback_query?: { id: string; from: TgUser; data?: string; message?: { chat: { id: number }; message_id: number } };
+};
+
+const safeEqual = (a: string, b: string) => { if (a.length !== b.length) return false; let d = 0; for (let i = 0; i < a.length; i++) d |= a.charCodeAt(i) ^ b.charCodeAt(i); return d === 0; };
+
+/** Telegram → us. Set once with `node scripts/telegram-set-webhook.mjs`; every request carries our secret header. */
+export async function POST(req: NextRequest) {
+  const secret = process.env.TELEGRAM_WEBHOOK_SECRET || "";
+  if (!secret || !safeEqual(req.headers.get("x-telegram-bot-api-secret-token") ?? "", secret)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const update = (await req.json().catch(() => null)) as Update | null;
+  if (!update) return NextResponse.json({ ok: true });
+  try {
+    if (update.message) await onMessage(update.message);
+    else if (update.callback_query) await onCallback(update.callback_query);
+  } catch (e) { console.error("telegram webhook failed", e); }
+  return NextResponse.json({ ok: true }); // always 200 so Telegram doesn't retry a broken update forever
+}
+
+async function onMessage(m: NonNullable<Update["message"]>) {
+  if (m.chat.type !== "private" || !m.from || !m.text) return;
+  const db = createServiceRoleClient();
+  const chatId = m.chat.id;
+  const [cmdRaw, ...rest] = m.text.trim().split(/\s+/);
+  const cmd = cmdRaw.toLowerCase().replace(/@\w+$/, "");
+
+  if (cmd === "/start" && rest[0]) return link(db, chatId, m.from, rest[0]);
+
+  const acct = await db.from("telegram_accounts").select("*").eq("chat_id", chatId).maybeSingle().then((r) => (r.data as Account | null));
+  if (!acct) {
+    await send(chatId, ["👋 <b>Welcome to RENYXERA.</b>", "Link your account to get Study Planner reminders, timers and alarms here.", "", "Open <b>Profile → Telegram</b> in the app and tap <b>Link Telegram</b>."].join("\n"), [[{ text: "Open Profile → Telegram", url: appLink("/profile#telegram") }]]);
+    return;
+  }
+  if (acct.blocked) await db.from("telegram_accounts").update({ blocked: false }).eq("user_id", acct.user_id);
+  const ent = await getEntitlement(acct.user_id);
+  const limits = TG_LIMITS[ent.tier];
+
+  switch (cmd) {
+    case "/start": case "/help": await send(chatId, helpMessage(ent.tier, limits)); return;
+    case "/status": { const s = statusMessage(acct, ent.tier); await send(chatId, s.text, s.buttons); return; }
+    case "/today": { const t = await todayMessage(db, acct.user_id, ent.tier, limits); await send(chatId, t.text, t.buttons); return; }
+    case "/timer": return timer(db, acct, ent.tier, limits.timers, rest);
+    case "/alarm": return alarm(db, acct, ent.tier, limits.alarms, rest);
+    case "/alarms": return listAlarms(db, acct);
+    case "/cancel": return cancel(db, acct, rest[0]);
+    case "/digest": return digest(db, acct, limits.digest, rest[0]);
+    case "/unlink":
+      await db.from("telegram_reminders").delete().eq("user_id", acct.user_id).is("sent_at", null);
+      await db.from("telegram_accounts").delete().eq("user_id", acct.user_id);
+      await send(chatId, "Unlinked. You won't get reminders here any more. Link again from Profile → Telegram.");
+      return;
+    default: await send(chatId, "I didn't recognise that. Send /help to see what I can do.");
+  }
+}
+
+async function link(db: ReturnType<typeof createServiceRoleClient>, chatId: number, from: TgUser, code: string) {
+  const { data: row } = await db.from("telegram_link_codes").select("user_id, expires_at").eq("code", code).maybeSingle();
+  if (!row || Date.parse(row.expires_at) < Date.now()) { await send(chatId, "That link has expired. Open Profile → Telegram in the app and tap Link Telegram again."); return; }
+  const { data: existing } = await db.from("telegram_accounts").select("user_id").eq("chat_id", chatId).maybeSingle();
+  if (existing && existing.user_id !== row.user_id) { await send(chatId, "This Telegram chat is already linked to another RENYXERA account. Unlink it there first (send /unlink from that chat)."); return; }
+  const { error } = await db.from("telegram_accounts").upsert({ user_id: row.user_id, chat_id: chatId, tg_username: from.username ?? null, tg_first_name: from.first_name ?? null, linked_at: new Date().toISOString(), blocked: false }, { onConflict: "user_id" });
+  if (error) { console.error("telegram link failed", error); await send(chatId, "Couldn't link right now. Please try again in a minute."); return; }
+  await db.from("telegram_link_codes").delete().eq("code", code);
+  const [ent, mem] = await Promise.all([getEntitlement(row.user_id), refreshMembership(db, { user_id: row.user_id, chat_id: chatId })]);
+  const a = { tg_first_name: from.first_name ?? null, tg_username: from.username ?? null, in_channel: mem.inChannel, in_group: mem.inGroup } as Account;
+  const s = statusMessage(a, ent.tier);
+  await send(chatId, ["✅ <b>Your RENYXERA account is linked.</b>", "", s.text, "", "Send /help to see timers, alarms and reminders."].join("\n"), s.buttons);
+}
+
+async function timer(db: ReturnType<typeof createServiceRoleClient>, a: Account, tier: string, cap: number, args: string[]) {
+  const mins = Number(args[0]);
+  if (!Number.isFinite(mins) || mins < 1 || mins > 240) { await send(a.chat_id, "Use <code>/timer 25</code> (1 to 240 minutes). Add a label if you like: <code>/timer 50 DBMS revision</code>."); return; }
+  const { count } = await db.from("telegram_reminders").select("id", { count: "exact", head: true }).eq("user_id", a.user_id).eq("kind", "timer").is("sent_at", null);
+  if ((count ?? 0) >= cap) { await send(a.chat_id, `You already have ${count} timer${count === 1 ? "" : "s"} running (your ${tier} plan allows ${cap}). Send <code>/cancel timers</code> to clear them${tier === "pro" ? "." : ", or upgrade for more."}`); return; }
+  const label = args.slice(1).join(" ").slice(0, 80);
+  await db.from("telegram_reminders").insert({ user_id: a.user_id, kind: "timer", remind_at: new Date(Date.now() + mins * 60_000).toISOString(), title: "Timer finished", body: label || `${mins} minutes are up` });
+  await send(a.chat_id, `⏱ Timer set for <b>${mins} min</b>${label ? ` — ${html(label)}` : ""}. I'll message you when it's done.`);
+}
+
+async function alarm(db: ReturnType<typeof createServiceRoleClient>, a: Account, tier: string, cap: number, args: string[]) {
+  if (cap === 0) { await send(a.chat_id, "Daily alarms are a <b>Plus</b> and <b>Pro</b> feature.", [[{ text: "See plans", url: appLink("/pro") }]]); return; }
+  const m = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(args[0] ?? "");
+  if (!m) { await send(a.chat_id, "Use <code>/alarm 06:00</code> (24-hour, India time). Add a label: <code>/alarm 05:30 Wake up and revise</code>."); return; }
+  const { count } = await db.from("telegram_reminders").select("id", { count: "exact", head: true }).eq("user_id", a.user_id).eq("kind", "alarm").is("sent_at", null);
+  if ((count ?? 0) >= cap) { await send(a.chat_id, `You already have ${count} alarms (your ${tier} plan allows ${cap}). Send <code>/cancel alarms</code> to clear them${tier === "pro" ? "." : ", or upgrade for more."}`); return; }
+  const hhmm = `${m[1].padStart(2, "0")}:${m[2]}`;
+  const now = Date.now();
+  let at = istToMs(istParts(now).date, hhmm);
+  if (at <= now) at += 86400_000;
+  const label = args.slice(1).join(" ").slice(0, 80);
+  await db.from("telegram_reminders").insert({ user_id: a.user_id, kind: "alarm", remind_at: new Date(at).toISOString(), title: "Alarm", body: label || hhmm, repeat: "daily" });
+  await send(a.chat_id, `⏰ Daily alarm set for <b>${hhmm} IST</b>${label ? ` — ${html(label)}` : ""}.`);
+}
+
+async function listAlarms(db: ReturnType<typeof createServiceRoleClient>, a: Account) {
+  const { data } = await db.from("telegram_reminders").select("remind_at, body, kind").eq("user_id", a.user_id).in("kind", ["alarm", "timer"]).is("sent_at", null).order("remind_at");
+  if (!data?.length) { await send(a.chat_id, "No timers or alarms waiting."); return; }
+  const lines = data.map((r) => (r.kind === "alarm" ? `⏰ ${istParts(Date.parse(r.remind_at)).hhmm} IST daily — ${html(r.body ?? "")}` : `⏱ in ${Math.max(1, Math.ceil((Date.parse(r.remind_at) - Date.now()) / 60000))} min — ${html(r.body ?? "")}`));
+  await send(a.chat_id, lines.join("\n"));
+}
+
+async function cancel(db: ReturnType<typeof createServiceRoleClient>, a: Account, what?: string) {
+  const kinds = what === "timers" ? ["timer"] : what === "alarms" ? ["alarm"] : what === "all" ? ["timer", "alarm"] : null;
+  if (!kinds) { await send(a.chat_id, "Use <code>/cancel timers</code>, <code>/cancel alarms</code> or <code>/cancel all</code>."); return; }
+  await db.from("telegram_reminders").delete().eq("user_id", a.user_id).in("kind", kinds).is("sent_at", null);
+  await send(a.chat_id, `Cancelled your ${kinds.map((k) => k + "s").join(" and ")}.`);
+}
+
+async function digest(db: ReturnType<typeof createServiceRoleClient>, a: Account, allowed: boolean, arg?: string) {
+  if (!allowed) { await send(a.chat_id, "The morning digest is a <b>Plus</b> and <b>Pro</b> feature.", [[{ text: "See plans", url: appLink("/pro") }]]); return; }
+  const m = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(arg ?? "");
+  if (!m) { await send(a.chat_id, `Use <code>/digest 07:30</code> (India time). Right now it's ${a.digest_time}.`); return; }
+  const hhmm = `${m[1].padStart(2, "0")}:${m[2]}`;
+  await db.from("telegram_accounts").update({ digest_time: hhmm }).eq("user_id", a.user_id);
+  await send(a.chat_id, `Your morning digest will arrive at <b>${hhmm} IST</b>.`);
+}
+
+async function onCallback(cb: NonNullable<Update["callback_query"]>) {
+  const db = createServiceRoleClient();
+  const chatId = cb.message?.chat.id;
+  if (!chatId || !cb.data) { await answerCallback(cb.id); return; }
+  const acct = await accountOf(db, (await db.from("telegram_accounts").select("user_id").eq("chat_id", chatId).maybeSingle()).data?.user_id ?? "");
+  if (!acct) { await answerCallback(cb.id, "Link your account first."); return; }
+  const ent = await getEntitlement(acct.user_id);
+  const limits = TG_LIMITS[ent.tier];
+  const [kind, arg] = cb.data.split(":");
+  const done = () => cb.message && clearButtons(chatId, cb.message.message_id);
+
+  if (kind === "done") {
+    const { data: r } = await db.from("telegram_reminders").select("id, event_id").eq("id", Number(arg)).eq("user_id", acct.user_id).maybeSingle();
+    if (r) {
+      await db.from("telegram_reminders").update({ done_at: new Date().toISOString() }).eq("id", r.id);
+      if (r.event_id) await db.from("telegram_actions").insert({ user_id: acct.user_id, kind: "done", event_id: r.event_id });
+    }
+    await answerCallback(cb.id, "Marked done ✅"); await done(); return;
+  }
+  if (kind === "snz") {
+    if (!limits.blockReminders) { await answerCallback(cb.id, "Snooze is a Plus feature."); return; }
+    const { data: r } = await db.from("telegram_reminders").select("title, body, event_id, event_date").eq("id", Number(arg)).eq("user_id", acct.user_id).maybeSingle();
+    if (r) await db.from("telegram_reminders").insert({ user_id: acct.user_id, kind: "block", remind_at: new Date(Date.now() + 15 * 60_000).toISOString(), title: r.title, body: r.body, event_id: r.event_id, event_date: r.event_date });
+    await answerCallback(cb.id, "I'll remind you again in 15 minutes ⏰"); await done(); return;
+  }
+  if (kind === "roll") {
+    if (!limits.rollPrompt) { await answerCallback(cb.id, "Rolling forward from Telegram is a Pro feature."); return; }
+    if (arg === "yes") {
+      const today = istParts(Date.now()).date;
+      const { data: open } = await db.from("telegram_reminders").select("id, event_id").eq("user_id", acct.user_id).eq("kind", "block").eq("event_date", today).is("done_at", null).not("event_id", "is", null);
+      const ids = [...new Set((open ?? []).map((r) => r.event_id as string))];
+      if (ids.length) await db.from("telegram_actions").insert(ids.map((event_id) => ({ user_id: acct.user_id, kind: "roll", event_id })));
+      await answerCallback(cb.id, `${ids.length} block${ids.length === 1 ? "" : "s"} will move to tomorrow`);
+      await send(chatId, `Done — ${ids.length} unfinished block${ids.length === 1 ? "" : "s"} will move to tomorrow when you next open the app.`, [[{ text: "Open Study Planner", url: appLink("/calendar") }]]);
+    } else await answerCallback(cb.id, "Okay, leaving them as they are.");
+    await done(); return;
+  }
+  await answerCallback(cb.id);
+}

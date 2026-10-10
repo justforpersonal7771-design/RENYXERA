@@ -96,6 +96,8 @@ export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body:
     { title: "Smart insights & daily adaptive path", body: "Personal insights and a focus topic chosen for you every day." },
     { title: "Exam trends & AI Insights revision", body: "Accuracy and score trend across tests; AI shortcut sheets in Revision." },
     { title: "6 Silver avatar styles", body: "Avataaar, Big Smile, Open Peeps, Persona, Pixel Art, Fun Emoji." },
+    { title: "Study Planner automation", body: "Your plan placed in the calendar for you, with a daily ask about missed blocks and roll-forward." },
+    { title: "Telegram reminders", body: "A message before every block, a morning digest, 3 daily alarms, 5 timers and mock alerts." },
     { title: "Silver crown & navbar", body: "A silver ring and crown on your avatar." },
   ],
   pro: [
@@ -103,8 +105,10 @@ export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body:
     { title: "Deep analytics", body: "Detailed mock analytics, topic ladders and difficulty analysis." },
     { title: "Offline downloads", body: "Save whole papers and practise without internet." },
     { title: "All 20 avatar styles", body: "Every Silver style plus 6 Gold-only ones: Toon, Voxel, Clay and more." },
+    { title: "AI re-plan", body: "Fell behind? Re-plan everything left from today in one tap, with your own settings." },
+    { title: "Smart Telegram", body: "Evening roll-forward prompt, weekly review, 10 alarms and 10 timers." },
     { title: "Gold crown, gold navbar, priority fixes", body: "Your reported issues are looked at first." },
   ],
 };
 
-export const FREE_FOREVER = ["Every official PYQ in the bank for your paper (CS since 2017)", "Exam-like simulator & custom tests", "All-India mocks & leaderboards", "Analytics, mistakes bank & revision", "Cloud sync across devices", `${FREE_AI_TEASER} AI requests to try — earn more with sponsor breaks & referrals`];
+export const FREE_FOREVER = ["Every official PYQ in the bank for your paper (CS since 2017)", "Exam-like simulator & custom tests", "All-India mocks & leaderboards", "Analytics, mistakes bank & revision", "Cloud sync across devices", "Telegram: daily question, exam countdown, mock result alerts and a timer", `${FREE_AI_TEASER} AI requests to try — earn more with sponsor breaks & referrals`];

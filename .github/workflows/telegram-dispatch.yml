@@ -1,0 +1,22 @@
+name: Telegram dispatch (backup)
+
+# The primary schedule is Supabase pg_cron, every minute (see docs/TELEGRAM_INTEGRATION.md). This runs every 5 minutes
+# as a backup: it sends whatever is due, and sending is idempotent, so running both is safe. Needs the repo secret
+# PREGEN_SECRET (same value as the Cloudflare secret); skips quietly without it.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Send due Telegram messages
+        env:
+          PREGEN_SECRET: ${{ secrets.PREGEN_SECRET }}
+          SITE_URL: https://gate.renyxera.workers.dev
+        run: |
+          if [ -z "$PREGEN_SECRET" ]; then echo "PREGEN_SECRET not set — skipping"; exit 0; fi
+          curl -sS -m 60 -X POST "$SITE_URL/api/telegram/dispatch" -H "x-pregen-secret: $PREGEN_SECRET" -H "Content-Type: application/json" -d '{}' || true

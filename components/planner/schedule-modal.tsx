@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { CalendarPlus, Check, Crown, Loader2, X } from "lucide-react";
@@ -12,12 +12,10 @@ import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useToastStore } from "@/store/use-toast-store";
 import { serverDate } from "@/lib/time/server-time";
 import { toLocalDateStr } from "@/lib/utils";
-import { buildSchedule, type Mark, type PlanEvent, type PlanSection } from "@/lib/planner/generate";
-import type { CalendarEvent } from "@/types/calendar.types";
+import { buildSchedule, type Mark, type PlanSection } from "@/lib/planner/generate";
+import { PLAN_EVENT_PREFIX, savePlanOptions, scheduleTelegramBlocks, toCalendarEvents } from "@/lib/planner/apply";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-export const PLAN_EVENT_PREFIX = "plan-";
-const COLOR: Record<PlanEvent["phase"], string> = { learn: "#6366f1", revise: "#f59e0b", mock: "#e11d48" };
 
 const defaultDays = (perWeek: number) => (perWeek >= 7 ? [0, 1, 2, 3, 4, 5, 6] : perWeek === 6 ? [1, 2, 3, 4, 5, 6] : perWeek === 5 ? [1, 2, 3, 4, 5] : perWeek === 4 ? [1, 2, 4, 5] : [1, 3, 5]);
 
@@ -29,7 +27,7 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
   open: boolean; onClose: () => void; sections: PlanSection[]; marks: Record<string, Mark>; examDate: string; hoursPerDay: number; daysPerWeek: number; branchLabel: string;
 }) {
   const ent = useEntitlements();
-  const { events, addEvent, deleteEvent, loadEvents } = useCalendarStore();
+  const { events, addEvents, deleteEvent, loadEvents } = useCalendarStore();
   const [start, setStart] = useState(() => toLocalDateStr(serverDate()));
   const [weekdays, setWeekdays] = useState<number[]>(() => defaultDays(daysPerWeek));
   const [hours, setHours] = useState(hoursPerDay);
@@ -40,6 +38,13 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
   const [replace, setReplace] = useState(true);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState<number | null>(null);
+  const [tgLinked, setTgLinked] = useState<boolean | null>(null);
+  const [tgRemind, setTgRemind] = useState(true);
+  const [tgNote, setTgNote] = useState<string | null>(null);
+  useEffect(() => {
+    if (!open || !ent.paid) return;
+    void fetch("/api/telegram/status", { cache: "no-store" }).then((r) => r.json()).then((j) => setTgLinked(!!j.linked)).catch(() => setTgLinked(false));
+  }, [open, ent.paid]);
 
   const result = useMemo(
     () => buildSchedule({ start, examDate, weekdays, hoursPerDay: hours, startTime: time, sections, marks, includeRevision: revision, includeMocks: mocks, includeMistakes: mistakes }),
@@ -52,17 +57,15 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
     setBusy(true);
     try {
       if (replace) for (const e of events) if (e.id.startsWith(PLAN_EVENT_PREFIX) && !e.completed) await deleteEvent(e.id);
-      const stamp = Date.now().toString(36);
-      let n = 0;
-      for (const p of result.events) {
-        const ev: CalendarEvent = {
-          id: `${PLAN_EVENT_PREFIX}${stamp}-${n++}`, title: p.title, description: p.description, category: p.category, date: p.date, color: COLOR[p.phase],
-          priority: p.priority, completed: false, subject: p.subject, studyType: p.studyType, timeRangeType: "start_end", startTime: p.startTime, endTime: p.endTime,
-          estimatedDurationMin: p.durationMin, revisionCycle: "One Time", status: "Pending",
-        };
-        await addEvent(ev);
-      }
+      const made = toCalendarEvents(result.events, Date.now().toString(36));
+      await addEvents(made);
       await loadEvents();
+      savePlanOptions({ start, examDate, weekdays, hoursPerDay: hours, startTime: time, sections, marks, includeRevision: revision, includeMocks: mocks, includeMistakes: mistakes });
+      setTgNote(null);
+      if (tgRemind && tgLinked) {
+        const r = await scheduleTelegramBlocks(made);
+        setTgNote(r.ok ? `Telegram will remind you 10 minutes before each of the next ${r.scheduled} blocks.` : r.error ?? "Telegram reminders couldn't be set.");
+      }
       setDone(result.events.length);
       useToastStore.getState().show(`${result.events.length} study blocks added to your Study Planner`, "success");
     } catch {
@@ -86,6 +89,7 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
             <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-emerald-500/15"><Check className="h-6 w-6 text-emerald-500" /></span>
             <h2 className="mt-3 text-xl font-extrabold text-[var(--text-primary)]">Your plan is in the calendar</h2>
             <p className="mt-1 text-sm text-[var(--text-secondary)]">{done} study blocks for {branchLabel} until {examDate}. Tick them off as you go, and move any block you need to.</p>
+            {tgNote && <p className="mt-2 text-sm font-semibold text-sky-600 dark:text-sky-400">{tgNote}</p>}
             <div className="mt-5 flex justify-center gap-2">
               <Link href="/calendar" className="inline-flex h-10 items-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 text-sm font-bold text-white">Open Study Planner</Link>
               <button type="button" onClick={onClose} className="h-10 rounded-xl border border-[var(--border)] px-5 text-sm font-semibold text-[var(--text-primary)] cursor-pointer">Done</button>
@@ -115,6 +119,14 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
               {tick("Weekly mistakes review", mistakes, setMistakes)}
               {tick(earlier > 0 ? `Replace my earlier plan (${earlier} blocks)` : "Replace any earlier plan", replace, setReplace)}
             </div>
+
+            {paid && (
+              <div className="mt-4 rounded-2xl border border-sky-500/30 bg-sky-500/5 p-3 text-sm">
+                {tgLinked ? tick("Also remind me on Telegram, 10 minutes before each block", tgRemind, setTgRemind) : (
+                  <p className="text-[var(--text-secondary)]"><Link href="/profile#telegram" className="font-bold text-sky-600 dark:text-sky-400 hover:underline">Link Telegram</Link> to get a message before every block, with Done and +15 min buttons.</p>
+                )}
+              </div>
+            )}
 
             <div className="mt-5 rounded-2xl bg-[var(--surface-secondary)]/60 p-4 text-sm" aria-live="polite">
               {weekdays.length === 0 ? <p className="font-semibold text-rose-500">Pick at least one study day.</p> : result.events.length === 0 ? <p className="font-semibold text-rose-500">There is no time left before the exam from that start date.</p> : (

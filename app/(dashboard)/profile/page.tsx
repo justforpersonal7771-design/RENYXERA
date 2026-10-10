@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "motion/react";
 import {
   Loader2, Save, CheckCircle2, User as UserIcon, Palette, IdCard, Target, GraduationCap, CalendarDays,
   Trophy, Clock, XCircle, LayoutGrid, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, MapPin, BookOpen,
-  Building2, Copy, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles, Phone, Crown,
+  Building2, Copy, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles, Phone, Crown, Send,
 } from "lucide-react";
 import { upcomingExamYear, effectiveTargetYear, targetYearRolledForward, examDateFor } from "@/lib/goals/exam-year";
 import { NumberStepper } from "@/components/ui/number-stepper";
@@ -21,6 +21,7 @@ import { GoalPlan } from "@/components/profile/goal-plan";
 import { ProfileHeader } from "@/components/profile/profile-header";
 import { PreferencesCard, AccountSecurityCard, DevicesCard } from "@/components/profile/account-settings";
 import { BillingHistoryCard } from "@/components/profile/billing-history";
+import { TelegramCard } from "@/components/profile/telegram-card";
 import { DataStorageCard } from "@/components/profile/data-storage-card";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
@@ -84,6 +85,7 @@ const SECTIONS = [
   { id: "preferences", label: "Preferences", subtitle: "Theme, motion and reminders on this device.", icon: SlidersHorizontal, tint: "bg-violet-500/10 text-violet-500" },
   { id: "security", label: "Account & security", subtitle: "Sign-in, password, your data and account.", icon: ShieldCheck, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
   { id: "billing", label: "Plan & payments", subtitle: "Your plan, payments and receipts.", icon: Crown, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+  { id: "telegram", label: "Telegram", subtitle: "Reminders, timers and alerts in Telegram.", icon: Send, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "devices", label: "Devices", subtitle: "Where you're signed in.", icon: Laptop, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "data", label: "Data & storage", subtitle: "What this device holds, and tools to clean it up.", icon: HardDrive, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
 ] as const;
@@ -555,6 +557,7 @@ export default function ProfilePage() {
       case "preferences": return <PreferencesCard />;
       case "security": return <AccountSecurityCard />;
       case "billing": return <BillingHistoryCard />;
+      case "telegram": return <TelegramCard />;
       case "devices": return <DevicesCard />;
       case "data": return <DataStorageCard />;
       default:

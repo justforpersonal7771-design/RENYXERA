@@ -1,6 +1,14 @@
 import { create } from "zustand";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { CalendarEvent } from "@/types/calendar.types";
+import { useAuthStore } from "@/store/use-auth-store";
+
+// Planner blocks (ids start with "plan-") may have a Telegram reminder; keep it in step with the calendar.
+const isPlanBlock = (id: string) => id.startsWith("plan-");
+const tgSync = (url: string, method: string, body: unknown) => {
+  if (!useAuthStore.getState().user) return;
+  void fetch(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), keepalive: true }).catch(() => null);
+};
 
 interface CalendarState {
   events: CalendarEvent[];
@@ -8,6 +16,7 @@ interface CalendarState {
   loaded: boolean;
   loadEvents: () => Promise<void>;
   addEvent: (event: CalendarEvent) => Promise<void>;
+  addEvents: (events: CalendarEvent[]) => Promise<void>;
   updateEvent: (id: string, patch: Partial<CalendarEvent>) => Promise<void>;
   deleteEvent: (id: string) => Promise<void>;
   reorderEvents: (draggedId: string, targetId: string) => Promise<void>;
@@ -49,16 +58,24 @@ export const useCalendarStore = create<CalendarState>((set, get) => ({
     await IDBManager.saveCalendarEvents(updated);
   },
 
+  addEvents: async (events) => {
+    const updated = [...get().events, ...events];
+    set({ events: updated });
+    await IDBManager.saveCalendarEvents(updated);
+  },
+
   updateEvent: async (id, patch) => {
     const updated = get().events.map(e => (e.id === id ? { ...e, ...patch } : e));
     set({ events: updated });
     await IDBManager.saveCalendarEvents(updated);
+    if (isPlanBlock(id) && patch.completed !== undefined) tgSync("/api/telegram/event-done", "POST", { eventId: id, done: patch.completed });
   },
 
   deleteEvent: async (id) => {
     const updated = get().events.filter(e => e.id !== id);
     set({ events: updated });
     await IDBManager.saveCalendarEvents(updated);
+    if (isPlanBlock(id)) tgSync("/api/telegram/reminders", "DELETE", { eventIds: [id] });
   },
 
   reorderEvents: async (draggedId, targetId) => {

@@ -30,7 +30,15 @@ Free users get the plan; Plus and Pro get it placed, tracked and adjusted for th
 
 Legend: **F** free · **+** Plus · **P** Pro. Status: [x] built · [ ] to do.
 
-### Now: core (the loop that makes it useful)
+### Now: Telegram (priority, owner request 10 Oct) — details in docs/TELEGRAM_INTEGRATION.md
+- [x] **F** Link the account to Telegram (one-time code), verify channel + group membership, re-check on demand and daily
+- [x] **F** Bot commands: /today, /timer, /status, /help, /unlink; mock-results alert
+- [x] **+** Reminder before every block with Done / +15 min buttons; morning digest at your time; /alarm (3); mock-starting alert; plan-ending alerts
+- [x] **P** Evening "roll unfinished blocks forward?" (ask once a day), weekly review, 10 alarms / 10 timers
+- [x] Two-way sync: Done and Roll forward in Telegram apply to the calendar; ticking in the app stops the reminder
+- [ ] **P** Ask the AI Mentor from Telegram · weak-topic nudges · streak-at-risk nudge · quiet hours
+
+### Core (the loop that makes it useful)
 - [x] **F** Exam date auto-set from target year, editable with a date picker; live countdown
 - [x] **F** Branch-aware plan: hours per section from real weightage, weak/strong marking, three phases, week-by-week view
 - [x] **+** Confirm-and-customise step, then one-click scheduling into the calendar (start date, study days, daily hours, start time, revision, mocks, mistakes review, replace old plan)
@@ -38,7 +46,8 @@ Legend: **F** free · **+** Plus · **P** Pro. Status: [x] built · [ ] to do.
 - [x] **F** Navbar calendar panel links to the full Study Planner
 - [x] **F** Reminder before a paid plan ends (7 days out, daily at the end, 30 days after)
 - [ ] **+** Today view on the dashboard from the planner: "Today's blocks" with start / done (replaces the generic Today card when a plan exists)
-- [ ] **+** Missed-block handling: unfinished blocks roll forward automatically; "I fell behind" button re-plans the remaining days (the adaptive step competitors lack)
+- [x] **+** Missed-block handling: **asked once a day, never silent** — Roll forward / Skip / Ask me tomorrow
+- [x] **P** "Re-plan the rest": rebuilds everything left from today with the saved settings
 - [ ] **+** Per-section priority (High / Normal / Low) and hours override, not only weak / strong
 - [ ] **+** Different hours per weekday (for example 2 h on weekdays, 6 h on Sunday) and "rest days"
 - [ ] **+** Weekly review card each Sunday: planned vs done hours, blocks missed, what moves next week
@@ -68,6 +77,6 @@ Legend: **F** free · **+** Plus · **P** Pro. Status: [x] built · [ ] to do.
 - Pro: what-if, plan health, templates, exports, AI re-plan.
 - The planner is a strong renewal driver: it is daily, personal and gets more valuable the longer you use it. Surface it in the Today card, the Plans page and the expiry reminder.
 
-## 5. Open questions for the owner
-- Should unfinished blocks roll forward silently, or ask once a day?
-- Plus gets scheduling; is "what-if" and "plan health" enough to justify Pro, or should AI re-plan move down to Plus?
+## 5. Decisions made (10 Oct)
+- Unfinished blocks: **ask once a day** (never move silently).
+- AI-assisted features (re-plan, what-if, plan health, AI Mentor re-plan) sit in **Pro**; Plus gets scheduling, reminders and roll-forward.

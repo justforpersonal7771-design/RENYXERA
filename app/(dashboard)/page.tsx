@@ -21,6 +21,7 @@ import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/dashboard/hero-section";
 import { SignedOutWelcome } from "@/components/dashboard/signed-out-welcome";
 import { DiagnosticCard } from "@/components/dashboard/diagnostic-card";
+import { MissedBlocksCard } from "@/components/planner/missed-blocks-card";
 import { StudyTimer } from "@/components/dashboard/study-timer";
 import { InstallPrompt } from "@/components/growth/install-prompt";
 import { TodayCard } from "@/components/dashboard/today-card";
@@ -208,6 +209,7 @@ export default function Home() {
       )}
       </AnimatePresence>
 
+      <MissedBlocksCard />
       <DiagnosticCard solved={solvedCount} />
       <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} />
 

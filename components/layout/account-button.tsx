@@ -22,6 +22,7 @@ const ITEMS = [
   { id: "preferences", label: "Preferences", icon: SlidersHorizontal, tint: "from-violet-500 to-purple-600" },
   { id: "security", label: "Account & security", icon: ShieldCheck, tint: "from-emerald-500 to-teal-600" },
   { id: "billing", label: "Plan & payments", icon: Crown, tint: "from-amber-400 to-yellow-600" },
+  { id: "telegram", label: "Telegram", icon: Send, tint: "from-sky-400 to-sky-600" },
   { id: "devices", label: "Devices", icon: Laptop, tint: "from-sky-500 to-blue-600" },
   { id: "data", label: "Data & storage", icon: HardDrive, tint: "from-amber-500 to-orange-600" },
 ];
