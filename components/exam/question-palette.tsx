@@ -131,7 +131,7 @@ export function QuestionPalette() {
       </div>
 
       {/* Grid view toggle (only when the test has more than one section) */}
-      {multiSection && <div className="flex-none px-4 sm:px-5 pt-3">
+      {multiSection && <div className="flex-none px-4 sm:px-5 pt-4 pb-2">
         <div role="tablist" aria-label="Question grid view" className="relative grid grid-cols-2 p-1 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)]">
           {([["section", "By section"], ["all", `All ${currentDraft.questions.length}`]] as const).map(([m, label]) => (
             <button key={m} role="tab" aria-selected={gridMode === m} onClick={() => changeGridMode(m)}
@@ -144,7 +144,7 @@ export function QuestionPalette() {
       </div>}
 
       {/* 3. Center Aligned Questions Palette Grid */}
-      <div ref={gridRef} className="grid-snap flex-1 overflow-y-auto overflow-x-hidden px-4 pb-4 pt-5 sm:px-5 sm:pb-5 sm:pt-6 custom-scrollbar">
+      <div ref={gridRef} className="grid-snap flex-1 overflow-y-auto overflow-x-hidden px-4 pb-4 pt-6 sm:px-5 sm:pb-5 sm:pt-7 custom-scrollbar">
         <div className="grid grid-cols-5 gap-2.5 max-w-[300px] mx-auto justify-items-center">
           {sectionQuestions.map(({ q, idx }) => {
             const localQId = q.questionId;

@@ -108,8 +108,8 @@ export default function PlansPage() {
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold uppercase tracking-wider"><Crown className="w-3.5 h-3.5" /> Plans</span>
         <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">Everything you need is <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">free</span>.</h1>
         <p className="mt-3 text-[var(--text-secondary)]">Papers, mocks, analytics and sync stay free for everyone. Plus and Pro add more AI and premium looks.</p>
-        {ent.paid && <p className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="w-4 h-4" /> You&apos;re on {ent.tier === "pro" ? "Pro" : "Plus"}{ent.validUntil ? ` until ${new Date(ent.validUntil).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}</p>}
-        <div className="mt-6 inline-flex p-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)]" role="radiogroup" aria-label="Billing period">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <div className="inline-flex p-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)]" role="radiogroup" aria-label="Billing period">
           {(["monthly", "yearly", "season"] as const).map((p) => (
             <button key={p} type="button" role="radio" aria-checked={period === p} onClick={() => setPeriod(p)}
               className={`relative px-5 h-9 rounded-xl text-sm font-bold cursor-pointer ${period === p ? "text-white" : "text-[var(--text-secondary)]"}`}>
@@ -118,13 +118,13 @@ export default function PlansPage() {
             </button>
           ))}
         </div>
-        {period === "season" && (
-          <div className="mt-4 mx-auto flex max-w-md flex-col items-center gap-2">
-            <label className="text-xs font-bold text-[var(--text-secondary)]">Which GATE are you preparing for?</label>
-            <CustomDropdown value={String(seasonYear)} onChange={(v) => setPickedYear(Number(v))} options={years.map((y) => ({ label: `GATE ${y}${y === upcomingSeasonYear(serverNow()) ? " (next exam)" : ""}`, value: String(y) }))} className="w-56 text-sm font-semibold" />
-            <p className="text-xs text-[var(--text-muted)]">One payment covers you until 31 March {seasonYear}, after results. It doesn&apos;t renew. The longer the runway, the lower the monthly cost.</p>
-          </div>
-        )}
+          {period === "season" && (
+            <div className="flex items-center gap-2">
+              <label className="text-xs font-bold text-[var(--text-secondary)]">Preparing for</label>
+              <CustomDropdown value={String(seasonYear)} onChange={(v) => setPickedYear(Number(v))} options={years.map((y) => ({ label: `GATE ${y}${y === upcomingSeasonYear(serverNow()) ? " (next exam)" : ""}`, value: String(y) }))} className="w-52 text-sm font-semibold" />
+            </div>
+          )}
+        </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
@@ -174,6 +174,9 @@ export default function PlansPage() {
           );
         })}
       </div>
+
+      {period === "season" && <p className="text-center text-xs text-[var(--text-muted)]">One payment covers you until 31 March {seasonYear}, after results. It doesn&apos;t renew. The longer the runway, the lower the monthly cost.</p>}
+        {ent.paid && <p className="mx-auto flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="w-4 h-4" /> You&apos;re on {ent.tier === "pro" ? "Pro" : "Plus"}{ent.validUntil ? ` until ${new Date(ent.validUntil).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}</p>}
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <SponsorBreakCard />

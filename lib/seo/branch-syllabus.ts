@@ -14,7 +14,8 @@ const SOURCES: Partial<Record<BranchCode, { paper: string; syl: Syl }>> = {
   ME: { paper: "ME", syl: meSyl as Syl }, DA: { paper: "DA", syl: daSyl as Syl },
 };
 export const SYLLABUS_PAGE_BRANCHES = Object.keys(SOURCES) as BranchCode[];
-export const syllabusSlugOf = (code: BranchCode) => (SOURCES[code] ? `gate-${SOURCES[code]!.paper.toLowerCase()}-syllabus` : null);
+// CS has its own (older) page model at /gate-cs-syllabus; every branch has a syllabus page, so every branch page can link to it.
+export const syllabusSlugOf = (code: BranchCode) => (SOURCES[code] ? `gate-${SOURCES[code]!.paper.toLowerCase()}-syllabus` : code === "CSE" ? "gate-cs-syllabus" : null);
 export const branchOfSyllabusSlug = (slug: string) => SYLLABUS_PAGE_BRANCHES.find((c) => syllabusSlugOf(c) === slug);
 export const officialSyllabusPdf = (paper: string) => `https://gate2027.iitm.ac.in/static/doc/GATE2027_Syllabus/${paper}_GATE2027_Syllabus.pdf`;
 
