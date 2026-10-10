@@ -5,6 +5,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { Clock, Pause } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { serverNow } from "@/lib/time/server-time";
 
 export function ExamTimer({ compact = false }: { compact?: boolean }) {
   const status = useExamRuntimeStore((state) => state.activeSession?.status);
@@ -48,7 +49,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
 
   // Mocks count down to a fixed deadline (wall clock); other tests count time on screen.
   const remaining = deadlineAt
-    ? Math.max(0, Math.floor((Date.parse(deadlineAt) - Date.now()) / 1000))
+    ? Math.max(0, Math.floor((Date.parse(deadlineAt) - serverNow()) / 1000))
     : Math.max(0, TOTAL_TIME - elapsed);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
   };
 
   const estFinishTime = useMemo(() => {
-    const end = new Date(Date.now() + remaining * 1000);
+    const end = new Date(serverNow() + remaining * 1000);
     return end.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit", hour12: true });
   }, [remaining]);
 

@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Topbar } from "./topbar";
 import { BottomTabBar } from "./bottom-tab-bar";
+import { startTimeSync } from "@/lib/time/server-time";
 import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
@@ -74,6 +75,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       return useAuthStore.subscribe((st) => setMonitoringUser(st.user?.id ?? null));
     });
   }, []);
+
+  // The device clock is user-controlled: keep an offset to the server clock for every time-based UI.
+  useEffect(() => startTimeSync(), []);
 
   // 7E: remember where this visitor came from (first touch only).
   useEffect(() => {

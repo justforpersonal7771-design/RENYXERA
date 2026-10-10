@@ -12,6 +12,7 @@ import { ProCrown } from "@/components/brand/pro-crown";
 import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, Lock } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
+import { serverNow } from "@/lib/time/server-time";
 
 type Row = { rank: number; prev_rank: number | null; display_name: string; score: number; is_me: boolean; total: number; tests?: number; percentile?: number };
 type Mock = { id: string; title: string; results_at: string };
@@ -45,7 +46,7 @@ export function LeaderboardButton() {
     try {
       const { createClient } = await import("@/lib/supabase/client");
       const { data } = await createClient().from("mock_events").select("id,title,results_at").eq("branch_code", getCurrentBranch()).order("results_at", { ascending: false }).limit(20);
-      const now = Date.now();
+      const now = serverNow();
       const list = ((data as Mock[]) ?? []).filter((m) => Date.parse(m.results_at) <= now);
       setReleased(list);
       const latest = list[0];

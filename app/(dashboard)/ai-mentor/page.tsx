@@ -39,6 +39,14 @@ export default function AIMentorPage() {
 
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
+  // The insight cards are computed asynchronously (mastery → readiness → study plan, patterns, timeline).
+  // Showing the page piecemeal pushed later cards down as each one landed, so the page is revealed once,
+  // when all of it is ready (with a short safety timeout so a slow computation can never block it).
+  const [patternsDone, setPatternsDone] = useState(false);
+  const [timelineDone, setTimelineDone] = useState(false);
+  const [planDone, setPlanDone] = useState(false);
+  const [forceReady, setForceReady] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setForceReady(true), 3500); return () => clearTimeout(t); }, []);
   const [selectedTopic, setSelectedTopic] = useState<string>("");
   
   // Dynamic AI Mentor Metrics
@@ -155,6 +163,7 @@ export default function AIMentorPage() {
       existingEvents: calendarEvents,
     });
     setStudyPlanSuggestions(suggestions);
+    setPlanDone(true);
   }, [mounted, loading, readiness, topicMasteryMap, mistakes, calendarEvents]);
 
   const handleAddSuggestionToCalendar = async (s: StudyPlanSuggestion, date: string, priority: "Low" | "Medium" | "High") => {
@@ -216,6 +225,7 @@ export default function AIMentorPage() {
       await QuestionRepository.initialize();
       const pats = await InsightMemory.scanMistakePatterns(mistakes, QuestionRepository);
       setMistakePatterns(pats);
+      setPatternsDone(true);
     };
     runMistakesScan();
   }, [mounted, loading, mistakes]);
@@ -227,6 +237,7 @@ export default function AIMentorPage() {
     const buildTimeline = async () => {
       const logs = await MemoryEngine.getLearnerTimeline(bookmarks, mistakes);
       setTimeline(logs);
+      setTimelineDone(true);
     };
     buildTimeline();
   }, [mounted, loading, bookmarks, mistakes]);
@@ -362,7 +373,7 @@ export default function AIMentorPage() {
     <MathJaxContext config={mathJaxConfig}>
       <div className="w-full space-y-6 pb-8">
 
-        {loading ? (
+        {loading || !(forceReady || (readiness && plannerCompletion !== null && patternsDone && timelineDone && (planDone || Object.keys(topicMasteryMap).length === 0))) ? (
           <div className="py-24 flex flex-col items-center justify-center gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
             <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Syncing complete learning memory logs...</span>
@@ -486,10 +497,10 @@ export default function AIMentorPage() {
                   return (
                     <motion.div
                       key={s.id}
-                      initial={{ opacity: 0, y: 10 }}
+                      initial={{ opacity: 0, y: 72 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                       className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] rounded-xl p-4 space-y-2.5 flex flex-col justify-between"
                     >
                       <div className="space-y-1.5">
@@ -785,10 +796,10 @@ export default function AIMentorPage() {
                     {filteredShortcuts.map((b, idx) => (
                       <motion.div
                         key={b.questionId}
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 72 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                         className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
                       >
                         <div className="flex justify-between items-center">
@@ -850,10 +861,10 @@ export default function AIMentorPage() {
                     {filteredNotes.map((b, idx) => (
                       <motion.div
                         key={b.questionId}
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 72 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                         className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
                       >
                         <span className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{b.subject}</span>
@@ -871,10 +882,10 @@ export default function AIMentorPage() {
 
             {/* RIGHT SIDE PANEL: Predictor Dashboard & Timeline */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 72 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-6"
             >
 
@@ -894,10 +905,10 @@ export default function AIMentorPage() {
                     {mistakePatterns.map((p, idx) => (
                       <motion.div
                         key={p.id}
-                        initial={{ opacity: 0, y: 10 }}
+                        initial={{ opacity: 0, y: 72 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                         className="p-3 bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] rounded-xl space-y-1.5"
                       >
                         <button

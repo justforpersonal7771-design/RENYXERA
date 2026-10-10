@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { Pause, Play, Timer } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
+import { serverDate, serverNow } from "@/lib/time/server-time";
 
 const KEY = "renyxera.study-timer";
 const GOAL_MIN = 120;
 type Saved = { days: Record<string, number>; since: number | null };
 
-const dayKey = (d = new Date()) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+const dayKey = (d = serverDate()) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 const load = (): Saved => { try { return JSON.parse(localStorage.getItem(KEY) || "") as Saved; } catch { return { days: {}, since: null }; } };
 const save = (s: Saved) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* storage unavailable */ } };
 const fmt = (sec: number) => `${Math.floor(sec / 3600)}h ${String(Math.floor((sec % 3600) / 60)).padStart(2, "0")}m`;
@@ -17,12 +18,12 @@ const fmt = (sec: number) => `${Math.floor(sec / 3600)}h ${String(Math.floor((se
 export function StudyTimer() {
   const user = useAuthStore((s) => s.user);
   const [state, setState] = useState<Saved>({ days: {}, since: null });
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState(() => serverNow());
 
   useEffect(() => { setState(load()); }, []);
   useEffect(() => {
     if (state.since == null) return;
-    const t = setInterval(() => setNow(Date.now()), 1000);
+    const t = setInterval(() => setNow(serverNow()), 1000);
     return () => clearInterval(t);
   }, [state.since]);
 
@@ -31,12 +32,12 @@ export function StudyTimer() {
   const live = running ? Math.max(0, Math.floor((now - (state.since as number)) / 1000)) : 0;
   const today = (state.days[dayKey()] ?? 0) + live;
   let week = 0;
-  for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() - i); week += state.days[dayKey(d)] ?? 0; }
+  for (let i = 0; i < 7; i++) { const d = serverDate(); d.setDate(d.getDate() - i); week += state.days[dayKey(d)] ?? 0; }
   week += live;
   const pct = Math.min(100, Math.round((today / (GOAL_MIN * 60)) * 100));
 
   const toggle = () => {
-    const t = Date.now();
+    const t = serverNow();
     const next: Saved = running
       ? { days: { ...state.days, [dayKey()]: (state.days[dayKey()] ?? 0) + Math.floor((t - (state.since as number)) / 1000) }, since: null }
       : { ...state, since: t };

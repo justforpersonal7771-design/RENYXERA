@@ -12,6 +12,7 @@ import { QuestionRepository } from "@/lib/repository/question-repository";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import type { AnswerKey } from "@/lib/repository/answer-keys";
 import { getVaultKey, listPacks, removePack, savePack, type PackMeta } from "@/lib/vault/vault";
+import { serverNow } from "@/lib/time/server-time";
 
 interface PackDef { id: string; title: string; kind: "paper" | "subject"; questionIds: string[] }
 
@@ -127,7 +128,7 @@ export default function DownloadsPage() {
   }
 
   const visible = packs.filter((p) => p.kind === tab);
-  const expiresIn = keyInfo?.expiresAt ? Math.max(0, Math.ceil((keyInfo.expiresAt - Date.now()) / 86_400_000)) : null;
+  const expiresIn = keyInfo?.expiresAt ? Math.max(0, Math.ceil((keyInfo.expiresAt - serverNow()) / 86_400_000)) : null;
 
   return (
     <TierGate tier="pro" feature="Offline downloads" perk="Save whole papers to this device and practise without internet — on the train, in the library, anywhere.">

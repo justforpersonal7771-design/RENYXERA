@@ -1,7 +1,7 @@
 import { allPapers, subjects } from "@/lib/seo/pyq";
 import { SYLLABUS, SYLLABUS_GROUPS, type SyllabusSection } from "@/lib/seo/syllabus";
 
-export type UnitStat = { name: string; items: string[]; marks: number; questions: number; byYear: number[]; yearsAsked: number };
+export type UnitStat = { name: string; items: string[]; bank: string[]; marks: number; questions: number; byYear: number[]; yearsAsked: number };
 export type SectionStat = Omit<SyllabusSection, "units"> & { slug: string; marks: number; questions: number; share: number; perPaper: number; byYear: number[]; units: UnitStat[]; links: { name: string; slug: string; count: number }[] };
 
 export const sectionSlug = (t: string) => t.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -23,7 +23,7 @@ export function syllabusStats() {
     const units: UnitStat[] = sec.units.map((u) => {
       const uy = years.map((y) => found.reduce((n, s) => n + u.bank.reduce((m, t) => m + (s.topicYear.get(t)?.get(y) ?? 0), 0), 0));
       return {
-        name: u.name, items: u.items,
+        name: u.name, items: u.items, bank: u.bank,
         marks: found.reduce((n, s) => n + u.bank.reduce((m, t) => m + (s.topicMarks.get(t) ?? 0), 0), 0),
         questions: found.reduce((n, s) => n + u.bank.reduce((m, t) => m + (s.topics.get(t) ?? 0), 0), 0),
         byYear: uy, yearsAsked: uy.filter((v) => v > 0).length,

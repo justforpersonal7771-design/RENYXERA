@@ -14,6 +14,7 @@
  */
 import { openDB, deleteDB, type IDBPDatabase } from "idb";
 import type { AnswerKey } from "@/lib/repository/answer-keys";
+import { serverNow } from "@/lib/time/server-time";
 
 const DB_PREFIX = "RenyxeraVault__";
 const STORE = "packs";
@@ -72,7 +73,7 @@ export async function getVaultKey(userId: string): Promise<KeyState> {
     }
   }
   if (!stored) return { error: online ? "failed" : "offline-none" };
-  if (stored.expiresAt < Date.now()) return { error: "offline-expired" };
+  if (stored.expiresAt < serverNow()) return { error: "offline-expired" };
   return { key: stored.key, expiresAt: stored.expiresAt };
 }
 

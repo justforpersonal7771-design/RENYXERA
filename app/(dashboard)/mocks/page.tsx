@@ -15,6 +15,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { mockOrder } from "@/lib/exam/mock-order";
+import { serverNow } from "@/lib/time/server-time";
 
 interface Mock { id: string; title: string; starts_at: string; ends_at: string; results_at: string; question_count: number; duration_seconds: number; start_grace_minutes?: number }
 
@@ -23,8 +24,8 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 interface MyAttempt { id: string; mock_id: string; status: string; server_score: number | null; server_max: number | null; integrity_flags: unknown[] }
 
 function useNow(ms = 1000) {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => { const t = setInterval(() => setNow(Date.now()), ms); return () => clearInterval(t); }, [ms]);
+  const [now, setNow] = useState(() => serverNow());
+  useEffect(() => { const t = setInterval(() => setNow(serverNow()), ms); return () => clearInterval(t); }, [ms]);
   return now;
 }
 const fmtCountdown = (ms: number) => {
@@ -62,9 +63,9 @@ export default function MocksPage() {
   useEffect(() => { void load(); }, [load]);
   // Refresh the moment the next results are released (leaderboard + scores update live).
   useEffect(() => {
-    const next = (mocks ?? []).map((m) => Date.parse(m.results_at)).filter((t) => t > Date.now()).sort((a, b) => a - b)[0];
-    if (!next || next - Date.now() > 24 * 3600_000) return;
-    const t = setTimeout(() => void load(), next - Date.now() + 1500);
+    const next = (mocks ?? []).map((m) => Date.parse(m.results_at)).filter((t) => t > serverNow()).sort((a, b) => a - b)[0];
+    if (!next || next - serverNow() > 24 * 3600_000) return;
+    const t = setTimeout(() => void load(), next - serverNow() + 1500);
     return () => clearTimeout(t);
   }, [mocks, load]);
 

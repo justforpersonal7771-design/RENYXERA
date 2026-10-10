@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { branchByCode } from "@/lib/branches";
 import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
@@ -13,6 +14,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { ReferralCard } from "@/components/profile/referral-card";
 import { SponsorBreakCard } from "@/components/profile/sponsor-break-card";
 import { ProCrown } from "@/components/brand/pro-crown";
+import { serverNow } from "@/lib/time/server-time";
 
 declare global { interface Window { Razorpay?: new (opts: Record<string, unknown>) => { open: () => void; on: (event: string, cb: (r: { error?: { description?: string } }) => void) => void } } }
 
@@ -126,7 +128,7 @@ export default function PlansPage() {
           const cmp = comparePrice(plan);
           const upgrading = tier === "pro" && ent.tier === "plus" && plan.pricePaise != null;
           const credit = upgrading ? Math.min(ent.upgradeCreditPaise, plan.pricePaise! - 100) : 0;
-          const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - Date.now()) / 86400_000)) : 0;
+          const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - serverNow()) / 86400_000)) : 0;
           return (
             <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative flex flex-col rounded-3xl p-6 border ${look.ring}`}>
               {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950 text-[10px] font-black uppercase tracking-wider shadow">Most loved</span>}
@@ -165,6 +167,7 @@ export default function PlansPage() {
       </div>
 
       {/* Confirm step: plan, price, the three terms that matter, agreement + security check, Pay. */}
+      {typeof document !== "undefined" && createPortal(
       <AnimatePresence>
         {confirm && (() => {
           const cp = PLANS.find((x) => x.id === confirm)!;
@@ -217,7 +220,8 @@ export default function PlansPage() {
             </motion.div>
           );
         })()}
-      </AnimatePresence>
+      </AnimatePresence>,
+        document.body)}
       <p className="text-center text-[11px] text-[var(--text-muted)]">{payments ? "Payments are processed securely by Razorpay (UPI, cards, net banking). Your plan unlocks once Razorpay confirms the payment." : "Plans aren't on sale yet. Tapping a button only tells us you're interested — no payment is taken."}</p>
     </div>
   );

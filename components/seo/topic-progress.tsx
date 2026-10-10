@@ -41,6 +41,26 @@ export function TopicProgressBadge({ topic }: { topic: string }) {
   return <><span className={`ml-2 inline-block rounded-full px-2 py-px align-middle text-[10px] font-bold ${tone}`} title={s ? `${s.correct}/${s.attempted} correct` : undefined}>{label}</span>{cp}</>;
 }
 
+/** Progress for a unit made of several bank topics (the CS syllabus groups topics into units). */
+export function UnitProgressBadge({ topics }: { topics: string[] }) {
+  const stats = useTopicStats();
+  if (!stats) return null;
+  let attempted = 0, correct = 0;
+  for (const t of topics) { const s = stats.get(norm(t)); if (s) { attempted += s.attempted; correct += s.correct; } }
+  const pct = attempted ? (correct / attempted) * 100 : 0;
+  const [label, tone] = attempted === 0 ? ["Not started", "text-[var(--text-muted)] bg-[var(--surface-secondary)]"]
+    : attempted >= 5 && pct >= 75 ? ["Cleared", "text-emerald-700 dark:text-emerald-300 bg-emerald-500/15"]
+    : attempted >= 3 && pct >= 40 ? ["Solid", "text-sky-700 dark:text-sky-300 bg-sky-500/15"]
+    : ["Started", "text-amber-700 dark:text-amber-300 bg-amber-500/15"];
+  const first = topics[0];
+  return (
+    <span className="inline-flex items-center gap-2">
+      <span className={`inline-block rounded-full px-2 py-px text-[10px] font-bold ${tone}`} title={attempted ? `${correct}/${attempted} correct` : undefined}>{label}</span>
+      {first && <Link href={`/checkpoint?topic=${encodeURIComponent(first)}`} className="text-[10px] font-bold text-violet-600 dark:text-violet-400 hover:underline">Checkpoint →</Link>}
+    </span>
+  );
+}
+
 /** Banner above the topic lists: shows what signing in adds, or a practice link once signed in. */
 export function TopicProgressNote({ practiseHref }: { practiseHref: string }) {
   const user = useAuthStore((s) => s.user);

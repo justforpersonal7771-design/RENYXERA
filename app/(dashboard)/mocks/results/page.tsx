@@ -9,6 +9,7 @@ import { motion } from "motion/react";
 import { ArrowLeft, Crown, Loader2, Medal, ShieldAlert, Trophy, Users } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
+import { serverNow } from "@/lib/time/server-time";
 
 interface Row { rank: number; display_name: string; score: number; percentile: number; is_me: boolean; total: number }
 interface Mock { id: string; title: string; results_at: string; ends_at: string }
@@ -41,7 +42,7 @@ function Results() {
     const { data: m } = await sb.from("mock_events").select("id,title,results_at,ends_at").eq("id", id).maybeSingle();
     if (!m) return setState("missing");
     setMock(m as Mock);
-    if (Date.now() < Date.parse(m.results_at)) return setState("pending");
+    if (serverNow() < Date.parse(m.results_at)) return setState("pending");
     const { data } = await sb.rpc("mock_leaderboard", { p_mock: id, p_limit: 50 });
     setRows((data as Row[]) ?? []);
     if (user) {
@@ -56,7 +57,7 @@ function Results() {
   // Pending → opens by itself at the results time.
   useEffect(() => {
     if (state !== "pending" || !mock) return;
-    const wait = Date.parse(mock.results_at) - Date.now();
+    const wait = Date.parse(mock.results_at) - serverNow();
     if (wait > 24 * 3600_000) return;
     const t = setTimeout(() => void load(), Math.max(0, wait) + 1500);
     return () => clearTimeout(t);

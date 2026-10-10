@@ -13,6 +13,9 @@ import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { availableBranches, type BranchCode } from "@/lib/branches";
 import { applyAccountBranch, getCurrentBranch } from "@/lib/branch/current";
 import { setAccountBranch } from "@/lib/branch/account";
+import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
+import { randomAvatarSeed } from "@/lib/avatar/generate-avatar";
+import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 
 const STATUSES = [
   { label: "Select…", value: "" },
@@ -48,6 +51,7 @@ export function OnboardingGate() {
   const [year, setYear] = useState(upcoming);
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
+  const [avatar, setAvatar] = useState<AvatarValue>(() => ({ style: "adventurer", seed: randomAvatarSeed() }));
   // Multi-branch: the account's one branch (one later change allowed, see Profile).
   const branches = availableBranches();
   const [branch, setBranch] = useState<BranchCode>(() => {
@@ -65,6 +69,7 @@ export function OnboardingGate() {
     setDisplayName((d) => d || profile.display_name || user?.email?.split("@")[0]?.replace(/[._\d]+/g, " ").trim() || "");
     setUsername((u) => u || (profile.username ?? ""));
     if (profile.target_year && profile.target_year >= upcoming) setYear(profile.target_year);
+    if (isAvatarStyleId(profile.avatar_style) && profile.avatar_seed) setAvatar({ style: profile.avatar_style, seed: profile.avatar_seed });
   }, [needed, profile, user, upcoming]);
 
   useEffect(() => {
@@ -114,6 +119,8 @@ export function OnboardingGate() {
       username: normalizeUsername(username.trim()),
       target_year: year,
       aspirant_status: status,
+      avatar_style: avatar.style,
+      avatar_seed: avatar.seed,
       onboarded_at: new Date().toISOString(),
       // Only sent when entered, so onboarding never depends on the phone columns' grant.
       ...(phone ? { phone: `+91${phone}`, contact_opt_in: optIn } : {}),
@@ -189,6 +196,10 @@ export function OnboardingGate() {
                   <p aria-live="polite" className={`mt-1.5 text-[11px] font-medium ${name.state === "ok" ? "text-emerald-600 dark:text-emerald-400" : name.state === "bad" ? "text-rose-500" : "text-[var(--text-muted)]"}`}>
                     {name.state === "ok" ? `@${username} is yours` : name.state === "bad" ? name.reason : name.state === "checking" ? "Checking…" : "Lowercase letters, numbers and _ · 3–20 characters"}
                   </p>
+                </div>
+                <div>
+                  <label className={LABEL}>Pick your avatar</label>
+                  <AvatarPicker value={avatar} onChange={setAvatar} />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>

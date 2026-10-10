@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Lock, Trophy } from "lucide-react";
 import type { ExamSession } from "@/types/exam-runtime.types";
+import { serverNow } from "@/lib/time/server-time";
 
 /**
  * All-India mock results are released together at the mock's results time (like GATE):
@@ -14,7 +15,7 @@ import type { ExamSession } from "@/types/exam-runtime.types";
 export function useMockResultsGate(session: ExamSession | null) {
   const mockId = session?.draftConfig?.config?.mockId;
   const [resultsAt, setResultsAt] = useState<string | null>(session?.resultsAt ?? null);
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState(() => serverNow());
 
   useEffect(() => {
     if (!mockId) return;
@@ -32,7 +33,7 @@ export function useMockResultsGate(session: ExamSession | null) {
   const locked = !!mockId && (!resultsAt || now < Date.parse(resultsAt));
   useEffect(() => {
     if (!locked) return;
-    const t = setInterval(() => setNow(Date.now()), 1000);
+    const t = setInterval(() => setNow(serverNow()), 1000);
     return () => clearInterval(t);
   }, [locked]);
 

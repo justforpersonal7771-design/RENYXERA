@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Download, FileText } from "lucide-react";
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
+import { TelegramJoinLink } from "@/components/growth/telegram-join";
+import { TopicProgressNote, UnitProgressBadge } from "@/components/seo/topic-progress";
 import { WhereToStart } from "@/components/seo/where-to-start";
 import { SyllabusNavigator } from "@/components/seo/syllabus-navigator";
 import { SYLLABUS_SOURCE } from "@/lib/seo/syllabus";
@@ -24,13 +26,16 @@ export default function SyllabusPage() {
   return (
     <div className="space-y-6">
       {/* Hero */}
-      <header className="w-full">
+      <header className="w-full lg:flex lg:items-end lg:justify-between lg:gap-8">
+        <div className="min-w-0 flex-1">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{SYLLABUS_SOURCE.exam} · official · {SYLLABUS_SOURCE.institute}</p>
         <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS 2027 syllabus <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">with weightage</span></h1>
         <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">The official syllabus, organised into sections, subjects and topics — and next to every one, how many marks it has really carried in GATE CS papers from {span}, and whether it is rising or cooling.</p>
         <div className="mt-4 flex flex-wrap gap-2 text-sm">
           <a href={SYLLABUS_SOURCE.cs} target="_blank" rel="noopener noreferrer" download className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> Download official GATE 2027 CS &amp; IT syllabus (PDF) <Download className="w-3.5 h-3.5" /></a>
         </div>
+        </div>
+        <TelegramJoinLink where="syllabus" className="mt-5 lg:mt-0 lg:w-[26rem] lg:shrink-0" />
       </header>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -76,6 +81,7 @@ export default function SyllabusPage() {
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_270px] xl:gap-6 items-start">
       <div className="min-w-0">
       {/* Sections → subjects → units */}
+      <TopicProgressNote practiseHref="/setup?branch=CSE" />
       {groups.map((g, gi) => (
         <section key={g.name} id={g.slug} className="pt-4 first:pt-0 scroll-mt-4">
           <div className="flex items-end justify-between gap-4 border-b border-[var(--border-subtle)] pb-3 mb-4">
@@ -113,6 +119,7 @@ export default function SyllabusPage() {
                         <ul className="mt-3 flex flex-wrap gap-1.5">
                           {u.items.map((it) => <li key={it} className="px-2 py-0.5 rounded-md bg-[var(--surface-secondary)] text-[12px] text-[var(--text-secondary)]">{it}</li>)}
                         </ul>
+                        <p className="mt-2"><UnitProgressBadge topics={u.bank} /></p>
                         <p className="mt-2 text-[11px] text-[var(--text-muted)]">{u.questions ? `Asked in ${u.yearsAsked} of ${years.length} years · ${u.questions} question${u.questions > 1 ? "s" : ""}` : "Not asked directly yet"}</p>
                       </li>
                     ))}

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Trophy, Play, Hourglass, CloudOff, Medal, ShieldAlert, CalendarDays, ChevronRight, Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { openLeaderboard } from "@/components/layout/leaderboard-panel";
+import { serverNow } from "@/lib/time/server-time";
 
 type Mock = { id: string; title: string; starts_at: string; ends_at: string; results_at: string };
 type Attempt = { mock_id: string; status: string; submitted_at: string | null };
@@ -35,7 +36,7 @@ const fmt = (ms: number) => {
 export function MockStatusCard() {
   const user = useAuthStore((s) => s.user);
   const [view, setView] = useState<View>({ kind: "loading" });
-  const [now, setNow] = useState(() => Date.now());
+  const [now, setNow] = useState(() => serverNow());
 
   const load = useCallback(async () => {
     try {
@@ -43,7 +44,7 @@ export function MockStatusCard() {
       const sb = createClient();
       const { data: mocks } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at").eq("branch_code", getCurrentBranch()).order("starts_at", { ascending: false }).limit(12);
       const list = (mocks as Mock[]) ?? [];
-      const t = Date.now();
+      const t = serverNow();
       let mine: Attempt[] = [];
       if (user) {
         const { data } = await sb.from("exam_attempts").select("mock_id,status,submitted_at").not("mock_id", "is", null).order("server_started_at", { ascending: false }).limit(5);
@@ -70,11 +71,11 @@ export function MockStatusCard() {
   }, [user]);
 
   useEffect(() => { void load(); }, [load]);
-  useEffect(() => { const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, []);
+  useEffect(() => { const t = setInterval(() => setNow(serverNow()), 1000); return () => clearInterval(t); }, []);
   // Re-check when the results are due, and every 30 s while they're late.
   useEffect(() => {
     if (view.kind === "waiting") {
-      const wait = Date.parse(view.mock.results_at) - Date.now();
+      const wait = Date.parse(view.mock.results_at) - serverNow();
       if (wait < 24 * 3600_000) { const t = setTimeout(() => void load(), Math.max(0, wait) + 1500); return () => clearTimeout(t); }
     }
     if (view.kind === "delayed") { const t = setInterval(() => void load(), 30_000); return () => clearInterval(t); }

@@ -19,7 +19,8 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
 
   return (
     <article className="w-full space-y-8">
-      <header className="w-full">
+      <header className="w-full lg:flex lg:items-end lg:justify-between lg:gap-8">
+        <div className="min-w-0 flex-1">
         <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Official syllabus · GATE 2027</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE {s.paper} syllabus 2027 with topic-wise weightage</h1>
         <p className="mt-2 text-[var(--text-secondary)] leading-relaxed">
@@ -34,7 +35,8 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
             <FileText className="w-4 h-4" /> Official syllabus PDF
           </a>
         </div>
-        <TelegramJoinLink where="syllabus" className="mt-4" />
+        </div>
+        <TelegramJoinLink where="syllabus" className="mt-5 lg:mt-0 lg:w-[26rem] lg:shrink-0" />
       </header>
 
       <section className="grid grid-cols-2 xl:grid-cols-4 gap-3 xl:gap-4">

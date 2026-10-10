@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, Flame, RefreshCw, Target } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
+import { serverDate } from "@/lib/time/server-time";
 
 const MIN_PER_QUESTION = 2;
 
@@ -14,7 +15,7 @@ export function TodayCard({ pendingMistakes, streak, sessions = [] }: { pendingM
   const user = useAuthStore((s) => s.user);
   if (!user) return null;
   const n = Math.min(pendingMistakes, 10);
-  const today = new Date().toDateString();
+  const today = serverDate().toDateString();
   const todays = sessions.filter((s) => new Date(s.updatedAt).toDateString() === today);
   const solvedToday = todays.reduce((a, s) => a + s.attempted, 0);
   const missions = [

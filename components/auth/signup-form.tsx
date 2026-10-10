@@ -173,7 +173,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
           </p>
         )}
 
-          <label className={`flex items-start gap-2 rounded-lg text-xs text-[var(--text-secondary)] cursor-pointer transition-shadow ${nudge ? "ring-2 ring-rose-400/70 p-1.5 -m-1.5" : ""}`}>
+          <label className={`flex items-start gap-2 rounded-lg text-xs text-[var(--text-secondary)] cursor-pointer transition-shadow ${nudge ? "bg-violet-500/15 p-1.5 -m-1.5 animate-[pulse_0.8s_ease-in-out_3]" : ""}`}>
             <input type="checkbox" checked={agreed} onChange={(e) => { setAgreed(e.target.checked); setError(null); }} className="mt-0.5 accent-indigo-600" />
             <span>I agree to the <a href="/terms" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Terms of Service</a> and <a href="/privacy" target="_blank" className="font-semibold text-indigo-600 dark:text-indigo-400 underline">Privacy Policy</a>.</span>
           </label>
