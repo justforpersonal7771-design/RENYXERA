@@ -30,12 +30,17 @@ The single source for these numbers is `lib/telegram/tiers.ts`; the bot, the API
 - **Times** in the bot are India time (IST).
 
 ## One-time setup (owner)
-1. **Bot:** you already have the bot and token. Note its @username.
-2. **Channel and group access:** open the channel → Administrators → add the bot (it needs no special rights). Add the bot to the discussion group and make it an administrator.
-3. **Cloudflare secrets** (Workers → your Worker → Settings → Variables and Secrets → Secret): `TELEGRAM_BOT_TOKEN`, `TELEGRAM_WEBHOOK_SECRET` (a new long random string you make up), and optionally `TELEGRAM_BOT_USERNAME`. `PREGEN_SECRET` is already set.
-4. **Run migration** `supabase/migrations/0035_telegram.sql` in the Supabase SQL editor.
-5. **Register the webhook** (once): put the same token and webhook secret in `.env.local` and run `node --env-file=.env.local scripts/telegram-set-webhook.mjs`. It also sets the command menu.
-6. **Schedule the dispatcher** every minute with Supabase `pg_cron` + `pg_net` (free): enable both under Database → Extensions, then run in the SQL editor (replace `<SECRET>` with your `PREGEN_SECRET`):
+Your bot is **RENYXERA Daily** (created with BotFather, see TELEGRAM_SETUP_AND_PROMOTION.md). Its token is already a GitHub secret, but GitHub never shows a secret again, so you will fetch it from BotFather once more.
+
+1. **Make the bot an admin** of the channel (@renyxera) and of the discussion group (@renyxera_chat). Needed so the app can check who has joined.
+2. **Invent one secret word** (this is `TELEGRAM_WEBHOOK_SECRET`), 40 letters and numbers. In PowerShell: `-join ((48..57)+(65..90)+(97..122) | Get-Random -Count 40 | % {[char]$_})`. Copy it.
+3. **Add it in two places** (the same value):
+   - GitHub repo → Settings → Secrets and variables → Actions → New repository secret → name `TELEGRAM_WEBHOOK_SECRET`.
+   - Cloudflare → Workers & Pages → your Worker → Settings → Variables and Secrets → Add → type Secret → name `TELEGRAM_WEBHOOK_SECRET`.
+4. **Add the bot token to Cloudflare** (name `TELEGRAM_BOT_TOKEN`, type Secret). Get it from BotFather: send `/mybots`, pick RENYXERA Daily, tap **API Token**.
+5. **Run migration** `supabase/migrations/0035_telegram.sql` in the Supabase SQL editor.
+6. **Connect the bot to the site:** GitHub repo → Actions → "Telegram setup (run once)" → Run workflow. In the log you should see `setWebhook ok`, `setMyCommands ok` and `bot: @<your bot>`.
+7. **Minute-level timing (recommended):** the GitHub backup runs every 5 minutes, which is fine for reminders but rough for a 25-minute timer. For every-minute timing enable `pg_cron` and `pg_net` in Supabase (Database → Extensions) and run this in the SQL editor, replacing `<SECRET>` with your `PREGEN_SECRET`:
    ```sql
    select cron.schedule('telegram-dispatch', '* * * * *', $$
      select net.http_post(
@@ -43,7 +48,6 @@ The single source for these numbers is `lib/telegram/tiers.ts`; the bot, the API
        headers := '{"Content-Type":"application/json","x-pregen-secret":"<SECRET>"}'::jsonb,
        body := '{}'::jsonb) $$);
    ```
-   A GitHub Action (`telegram-dispatch.yml`) also runs every 5 minutes as a backup; running both is safe.
 
 ## Not built yet (by priority)
 - [ ] Ask the AI Mentor from Telegram (Pro, uses the daily AI quota)

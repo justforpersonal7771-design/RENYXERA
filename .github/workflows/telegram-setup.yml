@@ -1,0 +1,22 @@
+name: Telegram setup (run once)
+
+# Connects the bot to the site: registers the webhook and the command menu. Run it from the Actions tab
+# (Run workflow) after adding the repo secrets TELEGRAM_BOT_TOKEN (already there) and TELEGRAM_WEBHOOK_SECRET.
+# Safe to run again any time. The log shows the bot's @username and any error Telegram reports.
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/telegram-set-webhook.mjs
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_WEBHOOK_SECRET: ${{ secrets.TELEGRAM_WEBHOOK_SECRET }}
+          SITE_URL: https://gate.renyxera.workers.dev
