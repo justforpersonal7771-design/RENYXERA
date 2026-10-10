@@ -43,6 +43,10 @@ Legend: **F** free · **+** Plus · **P** Pro. Status: [x] built · [ ] to do.
 - [x] **F** Branch-aware plan: hours per section from real weightage, weak/strong marking, three phases, week-by-week view
 - [x] **+** Confirm-and-customise step, then one-click scheduling into the calendar (start date, study days, daily hours, start time, revision, mocks, mistakes review, replace old plan)
 - [x] **+** Generated blocks are normal calendar events: tick done, move, edit, delete
+- [x] **+** Free times, not one start time: any number of windows per weekday (08:00–09:00, 14:00–17:00, 21:00–22:00), rest days, and changes for single dates; tasks are split across the windows
+- [x] **+** "My plans" on the Study Planner page: every added plan is a named set with progress; remove unfinished blocks or the whole plan (Telegram reminders go with it)
+- [x] **+** "Change a day": set today, tomorrow or any date to different times (or off) and the rest of the plan is re-fitted
+- [x] **F** Telegram status (Active / paused / Not linked) on the Study Planner page
 - [x] **F** Navbar calendar panel links to the full Study Planner
 - [x] **F** Reminder before a paid plan ends (7 days out, daily at the end, 30 days after)
 - [ ] **+** Today view on the dashboard from the planner: "Today's blocks" with start / done (replaces the generic Today card when a plan exists)

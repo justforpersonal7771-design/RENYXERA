@@ -39,14 +39,14 @@ Tick items as they ship. Sorted by priority, then usefulness to a GATE student, 
 ### P1
 
 - [x] **#6** Topic Checkpoint (short ladder quiz + notes on what you missed) — Grind; Cheap to build from the tagged bank; closes the learn-then-test loop; effort M
-- [ ] **#7** One-time "GATE 2027 pass" (valid to March 2027) next to monthly plans, plus a 7–15 day trial — Forge; Their lifetime offer undercuts our monthly price for exam-season buyers; effort S (config)
+- [x] **#7** One-time "GATE 2027 pass" (valid to March 2027) next to monthly plans, plus a 7–15 day trial — Forge; Their lifetime offer undercuts our monthly price for exam-season buyers; effort S (config)
 - [ ] **#8** Weekly benchmark vs peers in your branch and a shareable weekly card — PadhaiShuru; Motivation and free sharing (links to our on-hold Share result); effort M
 - [x] **#9** Study timer with daily goal (verified study minutes, week/month totals) — PadhaiShuru; Habit tracking; we show study hours but have no live timer (verify); effort M
 - [ ] **#10** "Beat my score" friend challenge, then ELO 1v1 — Forge; Viral loop plus retention; effort M–L
 - [ ] **#11** Weekly league with promotion (top 10 move up) — Forge; Turns the leaderboard into a weekly goal; effort M
 - [x] **#12** Fresh randomised full mock each attempt with difficulty control — Forge; Unlimited practice; verify what our custom/AI test already covers; effort S–M
 - [ ] **#13** General Aptitude lessons + daily 6-question test — Grind; GA is 15 marks for every branch; effort L
-- [ ] **#14** "GATE 2027 changes" page — PadhaiShuru; Cheap, search-friendly, builds trust; effort S
+- [x] **#14** "GATE 2027 changes" page — PadhaiShuru; Cheap, search-friendly, builds trust; effort S
 
 ### P2
 

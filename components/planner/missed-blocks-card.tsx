@@ -9,7 +9,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { serverDate, serverDayKey } from "@/lib/time/server-time";
 import { toLocalDateStr } from "@/lib/utils";
 import { buildSchedule } from "@/lib/planner/generate";
-import { PLAN_EVENT_PREFIX, loadPlanOptions, savePlanOptions, scheduleTelegramBlocks, toCalendarEvents } from "@/lib/planner/apply";
+import { PLAN_EVENT_PREFIX, loadPlanOptions, rememberPlanSet, savePlanOptions, scheduleTelegramBlocks, toCalendarEvents } from "@/lib/planner/apply";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 const DISMISS = "renyxera.missed-dismissed";
@@ -40,7 +40,9 @@ export function MissedBlocksCard() {
     if (!o) throw new Error("no saved plan");
     const fresh = buildSchedule({ ...o, start: addDay(today, 0) });
     for (const e of events) if (e.id.startsWith(PLAN_EVENT_PREFIX) && !e.completed) await deleteEvent(e.id);
-    const made = toCalendarEvents(fresh.events, Date.now().toString(36));
+    const stamp = Date.now().toString(36);
+    const made = toCalendarEvents(fresh.events, stamp);
+    rememberPlanSet(stamp, { name: `Re-planned on ${today}`, createdAt: new Date().toISOString(), branchLabel: "", examDate: o.examDate });
     await addEvents(made);
     savePlanOptions({ ...o, start: today });
     void scheduleTelegramBlocks(made); // quietly refreshes Telegram reminders if linked

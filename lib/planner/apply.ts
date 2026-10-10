@@ -1,5 +1,5 @@
 import type { CalendarEvent } from "@/types/calendar.types";
-import type { PlanEvent, PlanOptions } from "@/lib/planner/generate";
+import { simpleAvailability, type PlanEvent, type PlanOptions } from "@/lib/planner/generate";
 
 export const PLAN_EVENT_PREFIX = "plan-";
 export const OPTIONS_KEY = "renyxera.plan-options";
@@ -14,9 +14,26 @@ export function toCalendarEvents(events: PlanEvent[], stamp: string): CalendarEv
   }));
 }
 
-/** Remember the plan settings so "re-plan the rest" can rebuild from today with the same choices. */
+/** Remember the plan settings so "re-plan the rest" and "change a day" can rebuild with the same choices. */
 export function savePlanOptions(o: PlanOptions) { try { localStorage.setItem(OPTIONS_KEY, JSON.stringify(o)); } catch { /* storage unavailable */ } }
-export function loadPlanOptions(): PlanOptions | null { try { return JSON.parse(localStorage.getItem(OPTIONS_KEY) || "null") as PlanOptions | null; } catch { return null; } }
+/** Saved settings, including plans saved before availability windows existed (a weekday list, hours and start time). */
+export function loadPlanOptions(): PlanOptions | null {
+  try {
+    const r = JSON.parse(localStorage.getItem(OPTIONS_KEY) || "null") as (PlanOptions & { weekdays?: number[]; hoursPerDay?: number; startTime?: string }) | null;
+    if (!r) return null;
+    if (r.availability) return r;
+    return { ...r, availability: simpleAvailability(r.weekdays ?? [1, 2, 3, 4, 5, 6], r.hoursPerDay ?? 3, r.startTime ?? "06:00") };
+  } catch { return null; }
+}
+
+// Each plan the learner adds is a named "set" (its events share an id stamp), so it can be listed and removed later.
+const SETS_KEY = "renyxera.plan-sets";
+export type PlanSetMeta = { name: string; createdAt: string; branchLabel: string; examDate: string };
+export function loadPlanSets(): Record<string, PlanSetMeta> { try { return JSON.parse(localStorage.getItem(SETS_KEY) || "{}") as Record<string, PlanSetMeta>; } catch { return {}; } }
+export function rememberPlanSet(stamp: string, meta: PlanSetMeta) { try { localStorage.setItem(SETS_KEY, JSON.stringify({ ...loadPlanSets(), [stamp]: meta })); } catch { /* ignore */ } }
+export function forgetPlanSet(stamp: string) { try { const s = loadPlanSets(); delete s[stamp]; localStorage.setItem(SETS_KEY, JSON.stringify(s)); } catch { /* ignore */ } }
+/** "plan-<stamp>-<n>" → stamp */
+export const planStampOf = (id: string) => /^plan-([a-z0-9]+)-\d+$/.exec(id)?.[1] ?? null;
 
 const IST = "+05:30";
 /** Ask the server to send a Telegram message `leadMin` minutes before each block (Plus and Pro; the server enforces it). */

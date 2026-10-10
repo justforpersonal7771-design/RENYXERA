@@ -4,7 +4,7 @@ export type ToolEntry = { href: string; title: string; short: string; blurb: str
 
 export const TOOLS: ToolEntry[] = [
   { href: "/syllabus", title: "Syllabus with weightage", short: "Syllabus", blurb: "The official GATE 2027 syllabus with the weightage of every section and topic, for your branch.", kind: "tool", icon: "book", also: ["/gate-cs-syllabus", "/gate-ec-syllabus", "/gate-ee-syllabus", "/gate-me-syllabus", "/gate-da-syllabus"] },
-  { href: "/gate-2027-changes", title: "GATE 2027 changes", short: "2027 changes", blurb: "What changed for GATE 2027 and the dates that matter, with the official source for each.", kind: "article", icon: "file" },
+  { href: "/gate-updates", title: "GATE updates", short: "GATE updates", blurb: "What changed in GATE and the dates that matter, with the official source for each.", kind: "article", icon: "file", also: ["/gate-2027-changes"] },
   { href: "/pyq", title: "Previous year questions", short: "PYQs", blurb: "Official GATE papers for CS, DA, EC, EE and ME, paper-wise and topic-wise.", kind: "tool", icon: "file", also: ["/pyq/", "/topics/"] },
   { href: "/articles/most-repeated-topics", title: "Most repeated topics", short: "Repeated topics", blurb: "Topics ranked by how many years they were asked and the marks they carried, for your paper.", kind: "article", icon: "flame", also: ["/articles/most-repeated-gate-cs-topics", "/articles/most-repeated-topics/"] },
   { href: "/tools/gate-score-calculator", title: "Score & rank predictor", short: "Rank predictor", blurb: "Turn your raw marks into an estimated GATE score, rank band and category cut-off check.", kind: "tool", icon: "calculator" },
