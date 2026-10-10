@@ -14,6 +14,7 @@ import { serverDate } from "@/lib/time/server-time";
 import { toLocalDateStr } from "@/lib/utils";
 import { buildSchedule, type Mark, type PlanSection } from "@/lib/planner/generate";
 import { PLAN_EVENT_PREFIX, savePlanOptions, scheduleTelegramBlocks, toCalendarEvents } from "@/lib/planner/apply";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -150,7 +151,7 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
                   {busy ? <><Loader2 className="h-4 w-4 animate-spin" /> Adding…</> : <>Add {result.events.length} blocks to my calendar</>}
                 </button>
               ) : (
-                <Link href="/pro" className="inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-b from-amber-200 to-amber-500 px-5 text-sm font-bold text-amber-950">See Plus &amp; Pro</Link>
+                <button type="button" onClick={() => openUpgrade("Automatic scheduling is a Plus and Pro feature")} className="cursor-pointer inline-flex h-10 items-center gap-2 rounded-xl bg-gradient-to-b from-amber-200 to-amber-500 px-5 text-sm font-bold text-amber-950">See Plus &amp; Pro</button>
               )}
             </div>
           </>

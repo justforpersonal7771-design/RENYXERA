@@ -18,6 +18,7 @@ import { AdaptiveRevisionItem } from "@/lib/learning/AdaptiveEngine";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { AIResponseParser } from "@/lib/ai/ai-response-parser";
 import { MathJaxContext } from "better-react-mathjax";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 const mathJaxConfig = {
   loader: { load: ["input/tex", "output/chtml"] },
@@ -164,7 +165,7 @@ export default function RevisionBuilderPage() {
               whileHover={{ scale: 1.008 }}
               whileTap={{ scale: 0.99 }}
               className={`border border-[var(--border-subtle)] rounded-xl p-3.5 cursor-pointer transition-colors flex justify-between items-start gap-2 ${mode === "ai_insights" ? "border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/15" : "bg-[var(--surface-secondary)]/50 hover:bg-[var(--surface-secondary)]"}`}
-              onClick={() => (insightsOk ? setMode("ai_insights") : router.push("/pro"))}
+              onClick={() => (insightsOk ? setMode("ai_insights") : openUpgrade("AI Insights revision is a Plus feature"))}
             >
               <div>
                 <h4 className="font-bold text-sm text-[var(--text-primary)] flex items-center gap-1">

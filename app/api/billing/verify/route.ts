@@ -6,6 +6,7 @@ import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { razorpayKeys } from "@/lib/billing/server";
 import { isValidPaymentSignature } from "@/lib/billing/verify";
+import { notifyPayment } from "@/lib/telegram/notify";
 
 export const runtime = "nodejs";
 
@@ -50,5 +51,6 @@ export async function POST(req: NextRequest) {
     console.error("apply_paid_order (verify) failed", error);
     return NextResponse.json({ error: "Couldn't activate yet — it will appear shortly." }, { status: 500 });
   }
+  if (data === true) await notifyPayment(db, userId, orderId);
   return NextResponse.json({ ok: true, activated: data === true });
 }

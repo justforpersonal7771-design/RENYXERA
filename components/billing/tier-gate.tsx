@@ -6,6 +6,7 @@ import { Lock } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { PLANS, TIER_RANK, formatPrice } from "@/lib/billing/plans";
 import { ProCrown } from "@/components/brand/pro-crown";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 /**
  * Premium section lock (7A). Same idea as GuestLock (Module 4D): the section is rendered
@@ -31,9 +32,9 @@ export function TierGate({ tier, feature, perk, children, className = "" }: { ti
           <p className={`text-[10px] font-black uppercase tracking-[0.16em] ${gold ? "text-amber-700 dark:text-amber-300" : "text-slate-600 dark:text-slate-300"}`}>{gold ? "Pro · Gold" : "Plus · Silver"}</p>
           <h3 className="mt-1 text-base font-extrabold text-[var(--text-primary)] inline-flex items-center gap-1.5"><Lock className="w-4 h-4" /> {feature}</h3>
           <p className="mt-1 text-xs text-[var(--text-secondary)] leading-relaxed">{perk}</p>
-          <Link href="/pro" className={`mt-4 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-sm font-bold shadow-md ${gold ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950" : "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900"}`}>
+          <button type="button" onClick={() => openUpgrade(`${feature} is a ${gold ? "Pro" : "Plus"} feature`)} className={`mt-4 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-sm font-bold shadow-md ${gold ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950" : "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900"}`}>
             Unlock with {gold ? "Pro" : "Plus"}{price ? ` — ${price}/month` : ""}
-          </Link>
+          </button>
         </div>
       </div>
     </div>
@@ -73,7 +74,7 @@ export function PaidScreen({ feature, perk, children }: { feature: string; perk:
               </div>
             ))}
           </div>
-          <Link href="/pro" className="mt-6 inline-flex h-11 items-center justify-center rounded-xl px-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-violet-500/30">See plans</Link>
+          <button type="button" onClick={() => openUpgrade("Choose your plan")} className="cursor-pointer mt-6 inline-flex h-11 items-center justify-center rounded-xl px-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-bold shadow-lg shadow-violet-500/30">See plans</button>
         </div>
       </div>
     </div>

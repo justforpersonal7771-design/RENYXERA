@@ -6,6 +6,7 @@ import { Hourglass, X } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { serverDayKey, serverNow } from "@/lib/time/server-time";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 const UNTIL_KEY = "renyxera.plan-until";   // last paid plan: { tier, until }
 const DISMISS_KEY = "renyxera.expiry-dismissed"; // day key the notice was dismissed on
@@ -49,7 +50,7 @@ export function PlanExpiryNotice() {
     <div role="status" className={`mb-4 flex items-center gap-3 rounded-2xl border px-4 py-2.5 text-sm ${urgent ? "border-amber-500/50 bg-amber-500/10" : "border-violet-500/30 bg-violet-500/5"}`}>
       <Hourglass className={`h-4 w-4 shrink-0 ${urgent ? "text-amber-600 dark:text-amber-400" : "text-violet-500"}`} aria-hidden />
       <p className="min-w-0 flex-1 text-[var(--text-primary)]">{text}</p>
-      <Link href="/pro" className="shrink-0 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-3 py-1.5 text-xs font-bold text-white">Renew</Link>
+      <button type="button" onClick={() => openUpgrade("Renew your plan")} className="cursor-pointer shrink-0 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-3 py-1.5 text-xs font-bold text-white">Renew</button>
       <button type="button" aria-label="Dismiss for today" onClick={() => { write(DISMISS_KEY, serverDayKey()); setDismissed(true); }} className="shrink-0 rounded p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"><X className="h-4 w-4" /></button>
     </div>
   );

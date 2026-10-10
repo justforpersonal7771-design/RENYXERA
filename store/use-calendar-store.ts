@@ -69,6 +69,12 @@ export const useCalendarStore = create<CalendarState>((set, get) => ({
     set({ events: updated });
     await IDBManager.saveCalendarEvents(updated);
     if (isPlanBlock(id) && patch.completed !== undefined) tgSync("/api/telegram/event-done", "POST", { eventId: id, done: patch.completed });
+    // A block that moved gets a fresh reminder at its new time (and the old one is dropped).
+    const moved = updated.find((e) => e.id === id);
+    if (moved && isPlanBlock(id) && !moved.completed && (patch.date !== undefined || patch.startTime !== undefined) && useAuthStore.getState().user) {
+      void fetch("/api/telegram/reminders", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ eventIds: [id] }), keepalive: true })
+        .then(() => import("@/lib/planner/apply").then((m) => m.scheduleTelegramBlocks([moved], 10, false))).catch(() => null);
+    }
   },
 
   deleteEvent: async (id) => {

@@ -28,6 +28,12 @@ export async function send(chatId: number, text: string, buttons?: Button[][]): 
   return r.code === 403 ? "blocked" : "error";
 }
 
+/** Ask the user to share their own phone number: Telegram shows a one-tap "Share my number" button. */
+export async function askForContact(chatId: number, text: string) {
+  return tg("sendMessage", { chat_id: chatId, text, parse_mode: "HTML", reply_markup: { keyboard: [[{ text: "📱 Share my number", request_contact: true }]], resize_keyboard: true, one_time_keyboard: true } });
+}
+export const removeKeyboard = (chatId: number, text: string) => tg("sendMessage", { chat_id: chatId, text, parse_mode: "HTML", reply_markup: { remove_keyboard: true } });
+
 export const answerCallback = (id: string, text?: string) => tg("answerCallbackQuery", { callback_query_id: id, ...(text ? { text } : {}) });
 export const clearButtons = (chatId: number, messageId: number) => tg("editMessageReplyMarkup", { chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: [] } });
 

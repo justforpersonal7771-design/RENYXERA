@@ -8,6 +8,7 @@ import { AVATAR_CREDITS, AVATAR_STYLES, type AvatarStyleId, type AvatarTier } fr
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { TIER_RANK } from "@/lib/billing/plans";
 import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-avatar";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 export interface AvatarValue {
   style: AvatarStyleId;
@@ -109,7 +110,7 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
             <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
               className={`flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-3 ${offer.tier === "pro" ? "border-amber-400/50 bg-amber-500/10" : "border-slate-400/50 bg-slate-500/10"}`}>
               <p className="text-sm text-[var(--text-primary)]"><b>{offer.label}</b> is a {offer.tier === "pro" ? "Gold · Pro" : "Silver · Plus"} avatar. Unlock it{offer.tier === "plus" ? " with Plus or Pro" : " with Pro"}.</p>
-              <Link href="/pro" className={`h-9 px-4 rounded-xl text-sm font-bold inline-flex items-center gap-1.5 shadow ${offer.tier === "pro" ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950" : "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900"}`}><Crown className="w-4 h-4" /> See plans</Link>
+              <button type="button" onClick={() => openUpgrade(`${offer.label} is a ${offer.tier === "pro" ? "Pro" : "Plus"} style`)} className={`h-9 px-4 rounded-xl text-sm font-bold inline-flex items-center gap-1.5 shadow ${offer.tier === "pro" ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950" : "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900"}`}><Crown className="w-4 h-4" /> See plans</button>
             </motion.div>
           )}
         </AnimatePresence>

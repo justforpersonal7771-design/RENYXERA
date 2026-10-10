@@ -16,7 +16,7 @@ check("limits only grow with the plan", TG_LIMITS.free.timers < TG_LIMITS.plus.t
 check("free has one timer, no alarms", TG_LIMITS.free.timers === 1 && TG_LIMITS.free.alarms === 0);
 check("the displayed matrix agrees with the limits", (() => {
   const row = (s: string) => TG_MATRIX.find((r) => r.label.startsWith(s))!;
-  return row("Timers").free === "1 at a time" && row("Timers").plus === String(TG_LIMITS.plus.timers) && row("Timers").pro === String(TG_LIMITS.pro.timers)
+  return row("Study timers").free === String(TG_LIMITS.free.timers) && row("Study timers").plus === String(TG_LIMITS.plus.timers) && row("Study timers").pro === String(TG_LIMITS.pro.timers)
     && row("Daily alarms").plus === String(TG_LIMITS.plus.alarms) && row("Daily alarms").pro === String(TG_LIMITS.pro.alarms);
 })());
 console.log(failed ? `\n${failed} check(s) failed` : "\nAll telegram checks passed");

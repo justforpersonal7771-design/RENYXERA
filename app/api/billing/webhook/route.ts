@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { notifyPayment } from "@/lib/telegram/notify";
 
 export const runtime = "nodejs";
 
@@ -42,8 +43,9 @@ export async function POST(req: NextRequest) {
     const payment = evt.payload?.payment?.entity;
     const orderId = payment?.order_id ?? evt.payload?.order?.entity?.id;
     if (orderId && payment?.id) {
-      const { error } = await db.rpc("apply_paid_order", { p_order: orderId, p_payment: payment.id });
+      const { data: applied, error } = await db.rpc("apply_paid_order", { p_order: orderId, p_payment: payment.id });
       if (error) { console.error("apply_paid_order failed", error); return NextResponse.json({ error: "Retry" }, { status: 500 }); }
+      if (applied === true) { const { data: ord } = await db.from("billing_orders").select("user_id").eq("razorpay_order_id", orderId).maybeSingle(); if (ord?.user_id) await notifyPayment(db, ord.user_id, orderId); }
     }
   } else if (evt.event === "payment.failed") {
     const orderId = evt.payload?.payment?.entity?.order_id;

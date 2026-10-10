@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { getEntitlement } from "@/lib/billing/server";
-import { answerCallback, clearButtons, html, send } from "@/lib/telegram/bot";
+import { answerCallback, askForContact, clearButtons, html, removeKeyboard, send } from "@/lib/telegram/bot";
 import { TG_LIMITS, istParts, istToMs } from "@/lib/telegram/tiers";
 import { refreshMembership, type Account, type Db } from "@/lib/telegram/server";
 import { appLink, helpMessage, statusMessage, todayMessage } from "@/lib/telegram/messages";
@@ -11,7 +11,8 @@ export const runtime = "nodejs";
 
 type TgUser = { id: number; username?: string; first_name?: string };
 type Update = {
-  message?: { chat: { id: number; type: string }; from?: TgUser; text?: string };
+  message?: { chat: { id: number; type: string }; from?: TgUser; text?: string; contact?: { phone_number: string; user_id?: number } };
+  my_chat_member?: { chat: { id: number; type: string }; new_chat_member: { status: string } };
   callback_query?: { id: string; from: TgUser; data?: string; message?: { chat: { id: number }; message_id: number } };
 };
 
@@ -29,6 +30,10 @@ export async function POST(req: NextRequest) {
   const db = createServiceRoleClient();
   try {
     if (u.callback_query) await onCallback(db, u.callback_query);
+    else if (u.my_chat_member?.chat.type === "private") {
+      // The user blocked or unblocked the bot: stop sending, or start again.
+      await db.from("telegram_accounts").update({ blocked: ["kicked", "left"].includes(u.my_chat_member.new_chat_member.status) }).eq("chat_id", u.my_chat_member.chat.id);
+    } else if (u.message?.contact && u.message.chat.type === "private" && u.message.from) await onContact(db, u.message.chat.id, u.message.from, u.message.contact);
     else if (u.message?.text && u.message.chat.type === "private" && u.message.from) await onMessage(db, u.message.chat.id, u.message.from, u.message.text.trim());
   } catch (e) {
     console.error("telegram webhook failed", e);
@@ -65,6 +70,7 @@ async function onMessage(db: Db, chatId: number, from: TgUser, text: string) {
     case "/alarms": return listAlarms(db, acct, chatId);
     case "/cancel": return cancel(db, acct, chatId, arg);
     case "/digest": return digest(db, acct, chatId, arg, limits.digest);
+    case "/verify": return void (await askVerify(db, acct, chatId));
     case "/unlink":
       await db.from("telegram_reminders").delete().eq("user_id", acct.user_id).is("sent_at", null);
       await db.from("telegram_accounts").delete().eq("user_id", acct.user_id);
@@ -75,6 +81,7 @@ async function onMessage(db: Db, chatId: number, from: TgUser, text: string) {
 
 async function start(db: Db, chatId: number, from: TgUser, code?: string) {
   const existing = await accountByChat(db, chatId);
+  if (code === "verify" && existing) return askVerify(db, existing, chatId);
   if (!code) {
     if (existing) { const ent = await getEntitlement(existing.user_id); return void (await send(chatId, `You're linked. ${helpMessage(ent.tier, TG_LIMITS[ent.tier])}`)); }
     return void (await send(chatId, `Welcome to RENYXERA. Open <b>Profile → Telegram</b> on the site and press <b>Link Telegram</b> to connect this chat.`, [[{ text: "Open RENYXERA", url: appLink("/profile#telegram") }]]));
@@ -92,6 +99,35 @@ async function start(db: Db, chatId: number, from: TgUser, code?: string) {
   const ent = await getEntitlement(row.user_id);
   const s = statusMessage(fresh, ent.tier);
   await send(chatId, `✅ <b>Linked to your RENYXERA account.</b>\n\n${s.text}\n\nSend /help to see what I can do on your plan.`, s.buttons);
+}
+
+/** Step 1 of mobile verification: ask for the number with a one-tap button, or say it is already done. */
+async function askVerify(db: Db, acct: Account, chatId: number) {
+  const { data: p } = await db.from("profiles").select("phone, phone_verified").eq("id", acct.user_id).maybeSingle();
+  if (p?.phone_verified) return void (await send(chatId, `✅ Your mobile number ${html(maskPhone(p.phone))} is already verified and locked to your account.`));
+  await askForContact(chatId, "To verify your mobile number, tap <b>Share my number</b> below. Telegram sends me only your own number. Once verified it is locked to your RENYXERA account.");
+}
+
+const maskPhone = (p: string | null) => (p ? `${p.slice(0, 3)}******${p.slice(-2)}` : "");
+
+/**
+ * Step 2: Telegram sends the contact. It only counts if it is the sender's OWN contact (contact.user_id equals the
+ * sender), the number is an Indian mobile, and no other account already holds it. Then it is saved as verified.
+ */
+async function onContact(db: Db, chatId: number, from: TgUser, c: { phone_number: string; user_id?: number }) {
+  const acct = await accountByChat(db, chatId);
+  if (!acct) return void (await removeKeyboard(chatId, "Link your account first: Profile → Telegram on the site."));
+  if (c.user_id !== from.id) return void (await removeKeyboard(chatId, "That isn't your own number. Tap <b>Share my number</b> to share yours."));
+  const digits = c.phone_number.replace(/\D/g, "");
+  const phone = /^91[6-9]\d{9}$/.test(digits) ? `+${digits}` : null;
+  if (!phone) return void (await removeKeyboard(chatId, "Only Indian mobile numbers (+91) can be verified right now."));
+  const { data: p } = await db.from("profiles").select("phone, phone_verified").eq("id", acct.user_id).maybeSingle();
+  if (p?.phone_verified) return void (await removeKeyboard(chatId, `✅ Your number ${html(maskPhone(p.phone))} is already verified and locked.`));
+  const { data: taken } = await db.from("profiles").select("id").eq("phone", phone).neq("id", acct.user_id).maybeSingle();
+  if (taken) return void (await removeKeyboard(chatId, "This number is already verified on another RENYXERA account, so it can't be used here."));
+  const { error } = await db.from("profiles").update({ phone, phone_verified: true }).eq("id", acct.user_id);
+  if (error) return void (await removeKeyboard(chatId, "Couldn't save that just now. Please try again in a minute."));
+  await removeKeyboard(chatId, `✅ <b>Mobile number verified</b>: ${html(maskPhone(phone))}. It's now locked to your account.`);
 }
 
 async function timer(db: Db, acct: Account, chatId: number, arg: string, cap: number, tier: string) {

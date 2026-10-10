@@ -51,6 +51,7 @@ export function helpMessage(tier: Tier, limits: TgLimits): string {
     limits.alarms ? `/alarm 06:00 [label] — a daily alarm, IST (${limits.alarms} max) · /alarms to list` : "/alarm — daily alarms (Plus and Pro)",
     limits.digest ? "/digest 07:30 — when the morning digest arrives (IST)" : "/digest — morning digest (Plus and Pro)",
     "/cancel timers | alarms — cancel what's waiting",
+    "/verify — verify your mobile number",
     "/status — your link and channel membership",
     "/unlink — disconnect this chat",
   ];

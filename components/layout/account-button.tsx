@@ -14,6 +14,8 @@ import { generateAvatarDataUri } from "@/lib/avatar/generate-avatar";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
+import { hasJoinedChannel, useTelegramState } from "@/components/growth/use-telegram-state";
 
 const ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutGrid, tint: "from-indigo-500 to-violet-600" },
@@ -47,6 +49,7 @@ export function AccountButton() {
   const pro = tier === "pro", plus = tier === "plus";
   const [pos, setPos] = useState<{ top: number; right: number } | null>(null);
   const [hover, setHover] = useState<string | null>(null);
+  const tg = useTelegramState();
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // A click pins the menu open: hover-leave no longer closes it (outside click, Esc or another click does).
   const pinned = useRef(false);
@@ -176,20 +179,20 @@ export function AccountButton() {
                 ))}
               </div>
 
-              <Link href="/pro" role="menuitem" onClick={() => setOpen(false)}
-                className="group relative mt-1 flex items-center gap-3 rounded-xl px-2.5 py-2 bg-gradient-to-r from-amber-500/10 via-violet-500/10 to-fuchsia-500/10 hover:from-amber-500/20 hover:to-fuchsia-500/20 transition-colors">
+              <button type="button" role="menuitem" onClick={() => { setOpen(false); openUpgrade(); }}
+                className="group relative mt-1 flex w-full cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2 text-left bg-gradient-to-r from-amber-500/10 via-violet-500/10 to-fuchsia-500/10 hover:from-amber-500/20 hover:to-fuchsia-500/20 transition-colors">
                 <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-fuchsia-600 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:-rotate-6"><Crown className="w-4 h-4" /></span>
                 <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">{pro ? "You're on Pro" : plus ? "You're on Plus" : "Plus & Pro plans"}</span>
                 <span className="text-[10px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-300">More AI</span>
-              </Link>
+              </button>
 
-              <a href="https://t.me/renyxera" target="_blank" rel="noopener noreferrer" role="menuitem"
+              {!hasJoinedChannel(tg) && <a href="https://t.me/renyxera" target="_blank" rel="noopener noreferrer" role="menuitem"
                 onClick={() => { void import("@/lib/growth/track").then((m) => m.track("telegram_join", null, "profile_menu")); setOpen(false); }}
                 className="group mt-1 flex items-center gap-3 rounded-xl px-2.5 py-2 bg-sky-500/[0.08] hover:bg-sky-500/15 transition-colors">
                 <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-sky-600 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:-rotate-6"><Send className="w-4 h-4 -translate-x-px translate-y-px" /></span>
                 <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">Join Telegram</span>
                 <span className="text-[10px] font-black uppercase tracking-wider text-sky-600 dark:text-sky-300">Daily PYQ</span>
-              </a>
+              </a>}
 
               <div className="mt-1 pt-1 border-t border-[var(--border-subtle)]">
                 <button type="button" onClick={signOut}

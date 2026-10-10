@@ -10,6 +10,7 @@ import { serverDate, serverDayKey } from "@/lib/time/server-time";
 import { toLocalDateStr } from "@/lib/utils";
 import { buildSchedule } from "@/lib/planner/generate";
 import { PLAN_EVENT_PREFIX, loadPlanOptions, savePlanOptions, scheduleTelegramBlocks, toCalendarEvents } from "@/lib/planner/apply";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 const DISMISS = "renyxera.missed-dismissed";
 const addDay = (d: string, n: number) => { const t = new Date(`${d}T00:00:00Z`); t.setUTCDate(t.getUTCDate() + n); return t.toISOString().slice(0, 10); };
@@ -59,7 +60,7 @@ export function MissedBlocksCard() {
           {ent.tier === "pro" ? (
             <button type="button" onClick={replan} disabled={!!busy} className="inline-flex h-9 items-center gap-1.5 rounded-lg bg-gradient-to-b from-amber-200 to-amber-500 px-4 text-xs font-bold text-amber-950 disabled:opacity-60 cursor-pointer">{busy === "replan" ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Sparkles className="h-3.5 w-3.5" />} Re-plan the rest</button>
           ) : (
-            <Link href="/pro" className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-amber-500/50 px-4 text-xs font-bold text-amber-700 dark:text-amber-300"><Sparkles className="h-3.5 w-3.5" /> Re-plan the rest · Pro</Link>
+            <button type="button" onClick={() => openUpgrade("Re-plan the rest is a Pro feature")} className="cursor-pointer inline-flex h-9 items-center gap-1.5 rounded-lg border border-amber-500/50 px-4 text-xs font-bold text-amber-700 dark:text-amber-300"><Sparkles className="h-3.5 w-3.5" /> Re-plan the rest · Pro</button>
           )}
           <button type="button" onClick={skip} disabled={!!busy} className="h-9 rounded-lg border border-[var(--border)] px-4 text-xs font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] cursor-pointer">Skip them</button>
           <button type="button" onClick={dismiss} className="h-9 rounded-lg px-3 text-xs font-bold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer">Ask me tomorrow</button>

@@ -13,7 +13,7 @@ const call = async (method, body) => {
   return j;
 };
 
-await call("setWebhook", { url: `${SITE}/api/telegram/webhook`, secret_token: secret, allowed_updates: ["message", "callback_query"], drop_pending_updates: true });
+await call("setWebhook", { url: `${SITE}/api/telegram/webhook`, secret_token: secret, allowed_updates: ["message", "callback_query", "my_chat_member"], drop_pending_updates: true });
 await call("setMyCommands", {
   commands: [
     { command: "today", description: "Countdown and today's plan" },
@@ -22,6 +22,7 @@ await call("setMyCommands", {
     { command: "alarms", description: "List timers and alarms" },
     { command: "cancel", description: "Cancel timers or alarms" },
     { command: "digest", description: "Morning digest time (Plus, Pro)" },
+    { command: "verify", description: "Verify your mobile number" },
     { command: "status", description: "Link and channel status" },
     { command: "help", description: "What I can do" },
     { command: "unlink", description: "Disconnect this chat" },

@@ -23,19 +23,20 @@ export const TG_LIMITS: Record<Tier, TgLimits> = {
   pro:  { timers: 10, alarms: 10, blockReminders: true, digest: true, mockReminders: true, rollPrompt: true, weeklyReview: true, replan: true },
 };
 
-/** The same matrix as readable rows for the Profile screen and the Plans page. */
-export const TG_MATRIX: { label: string; free: string; plus: string; pro: string }[] = [
-  { label: "Daily question channel + discussion group", free: "Yes", plus: "Yes", pro: "Yes" },
-  { label: "Exam countdown and /today summary", free: "Yes", plus: "Yes", pro: "Yes" },
-  { label: "Mock results published alert", free: "Yes", plus: "Yes", pro: "Yes" },
-  { label: "Timers (/timer 25)", free: "1 at a time", plus: "5", pro: "10" },
-  { label: "Daily alarms (/alarm 06:00)", free: "—", plus: "3", pro: "10" },
-  { label: "Reminder before every Study Planner block, with Done and +15 min", free: "—", plus: "Yes", pro: "Yes" },
-  { label: "Morning digest of today's blocks, at your time", free: "—", plus: "Yes", pro: "Yes" },
-  { label: "Mock starting soon alerts", free: "—", plus: "Yes", pro: "Yes" },
-  { label: "Plan-ending and payment alerts", free: "—", plus: "Yes", pro: "Yes" },
-  { label: "Evening \"roll unfinished blocks forward?\" and re-plan", free: "—", plus: "—", pro: "Yes" },
-  { label: "Weekly review (planned vs done)", free: "—", plus: "—", pro: "Yes" },
+/** The same matrix as readable rows for the Profile screen and the Plans page. `info` explains each one in plain words. */
+export const TG_MATRIX: { label: string; info: string; free: string; plus: string; pro: string }[] = [
+  { label: "Join our channel and group", info: "Every morning we post one real GATE question in the channel. The group is where students talk and help each other.", free: "Yes", plus: "Yes", pro: "Yes" },
+  { label: "See how many days are left", info: "Send /today to the bot. It tells you how many days are left for GATE and, on paid plans, what is planned for today.", free: "Yes", plus: "Yes", pro: "Yes" },
+  { label: "Told when mock results are out", info: "When the results of an All-India mock are published, the bot messages you, so you don't keep checking.", free: "Yes", plus: "Yes", pro: "Yes" },
+  { label: "Study timers", info: "Send /timer 25 and the bot messages you after 25 minutes. Good for focused study. The number is how many timers can run at once.", free: "1", plus: "5", pro: "10" },
+  { label: "Daily alarms", info: "Send /alarm 06:00 and the bot messages you at that time every day, like an alarm clock. The number is how many alarms you can keep.", free: "—", plus: "3", pro: "10" },
+  { label: "A nudge before each study task", info: "Your study plan puts tasks in the calendar. The bot messages you 10 minutes before each one, with buttons: Done, or remind me again in 15 minutes.", free: "—", plus: "Yes", pro: "Yes" },
+  { label: "Morning list of today's tasks", info: "At the time you choose, the bot sends everything planned for today in one message.", free: "—", plus: "Yes", pro: "Yes" },
+  { label: "Warning before a mock starts", info: "About 30 minutes before an All-India mock begins, so you don't miss the entry time.", free: "—", plus: "Yes", pro: "Yes" },
+  { label: "Warning before your plan ends", info: "3 days and 1 day before your Plus or Pro ends, so it never runs out by surprise.", free: "—", plus: "Yes", pro: "Yes" },
+  { label: "Evening check on unfinished tasks", info: "Each night the bot asks about tasks you didn't finish. Move them to tomorrow, or leave them. It never moves anything without your tap.", free: "—", plus: "—", pro: "Yes" },
+  { label: "Verify your mobile number", info: "Share your number once through Telegram. This proves the number is yours, then it is locked to your account so nobody else can use it.", free: "Yes", plus: "Yes", pro: "Yes" },
+  { label: "Weekly report", info: "On Sunday evening: how many tasks you finished this week, and one tip for next week.", free: "—", plus: "—", pro: "Yes" },
 ];
 
 export const IST_OFFSET_MIN = 330;

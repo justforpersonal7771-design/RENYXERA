@@ -1,5 +1,5 @@
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
-import { TelegramJoinLink } from "@/components/growth/telegram-join";
+import { TelegramDiscussLink, TelegramJoinLink } from "@/components/growth/telegram-join";
 import Link from "next/link";
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
 import { ShareQuestion } from "@/components/seo/share-question";
@@ -86,6 +86,7 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
         <ArrowRight className="h-5 w-5 shrink-0" />
       </Link>
       <TelegramJoinLink where="question" className="mt-4" />
+      <TelegramDiscussLink where="question" label="Stuck? Ask in the student group" className="mt-3" />
 
       {related.length > 0 && (
         <section className="mt-10" aria-labelledby="related">

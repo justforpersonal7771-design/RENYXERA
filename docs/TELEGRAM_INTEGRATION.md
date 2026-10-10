@@ -16,6 +16,8 @@ Telegram is now the "tap on the shoulder" for the app: reminders, timers, alarms
 | Morning digest of today's blocks, at your time (`/digest 07:30`) | — | yes | yes |
 | Mock starting in 30 minutes | — | yes | yes |
 | Plan-ending alerts (3 days and 1 day before) | — | yes | yes |
+| Mobile number verification (`/verify`, one tap "Share my number"; locked after) | yes | yes | yes |
+| Payment received message with receipt link | yes | yes | yes |
 | Evening "N blocks unfinished — roll forward?" with buttons; re-plan shortcut | — | — | yes |
 | Weekly review (planned vs done), Sunday evening | — | — | yes |
 

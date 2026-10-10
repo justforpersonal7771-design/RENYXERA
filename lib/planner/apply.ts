@@ -20,7 +20,7 @@ export function loadPlanOptions(): PlanOptions | null { try { return JSON.parse(
 
 const IST = "+05:30";
 /** Ask the server to send a Telegram message `leadMin` minutes before each block (Plus and Pro; the server enforces it). */
-export async function scheduleTelegramBlocks(evs: CalendarEvent[], leadMin = 10): Promise<{ ok: boolean; scheduled?: number; error?: string; needsLink?: boolean; upgrade?: boolean }> {
+export async function scheduleTelegramBlocks(evs: CalendarEvent[], leadMin = 10, replace = true): Promise<{ ok: boolean; scheduled?: number; error?: string; needsLink?: boolean; upgrade?: boolean }> {
   const items = evs.filter((e) => e.startTime).map((e) => ({
     remindAt: new Date(Date.parse(`${e.date}T${e.startTime}:00${IST}`) - leadMin * 60_000).toISOString(),
     title: e.title, body: `${e.startTime}–${e.endTime ?? ""}${e.estimatedDurationMin ? ` · ${Math.round((e.estimatedDurationMin / 60) * 10) / 10} h` : ""}`,
@@ -30,7 +30,7 @@ export async function scheduleTelegramBlocks(evs: CalendarEvent[], leadMin = 10)
   let scheduled = 0;
   try {
     for (let i = 0; i < items.length; i += 500) {
-      const r = await fetch("/api/telegram/reminders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "block", items: items.slice(i, i + 500), replace: i === 0 }) });
+      const r = await fetch("/api/telegram/reminders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kind: "block", items: items.slice(i, i + 500), replace: replace && i === 0 }) });
       const j = await r.json();
       if (!r.ok) return { ok: false, error: j.error, needsLink: !!j.needsLink, upgrade: !!j.upgrade };
       scheduled += j.scheduled ?? 0;

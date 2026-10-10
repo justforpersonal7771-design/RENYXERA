@@ -12,6 +12,7 @@ export async function GET(req: NextRequest) {
   const [acct, { tier, limits }] = await Promise.all([accountOf(m.db, m.userId), tierOf(m.userId)]);
   const configured = botConfigured();
   let timers = 0, alarms = 0;
+  const { data: prof } = acct ? await m.db.from("profiles").select("phone, phone_verified").eq("id", m.userId).maybeSingle() : { data: null };
   if (acct) {
     const [t, a] = await Promise.all([
       m.db.from("telegram_reminders").select("id", { count: "exact", head: true }).eq("user_id", m.userId).eq("kind", "timer").is("sent_at", null),
@@ -24,5 +25,6 @@ export async function GET(req: NextRequest) {
     linked: !!acct,
     account: acct ? { username: acct.tg_username, firstName: acct.tg_first_name, linkedAt: acct.linked_at, inChannel: acct.in_channel, inGroup: acct.in_group, checkedAt: acct.checked_at, prefs: acct.prefs, digestTime: acct.digest_time, blocked: acct.blocked } : null,
     usage: { timers, alarms },
+    phone: acct ? { verified: !!prof?.phone_verified, masked: prof?.phone ? `${String(prof.phone).slice(0, 3)}******${String(prof.phone).slice(-2)}` : null } : null,
   }, { headers: { "Cache-Control": "no-store" } });
 }

@@ -320,7 +320,7 @@ export function Topbar() {
                  instead needs no extra plumbing. */}
              <button
                 onClick={() => setIsGoalSliderOpen(true)}
-                className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors cursor-pointer ${
+                className={`nav-act z-10 flex relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
                     ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm")
                     : isFocusTargetActive
@@ -373,85 +373,10 @@ export function Topbar() {
 
              <div className="relative z-10 flex items-center"><AccountButton /></div>
 
-             <button
-                data-mobile-menu-toggle aria-label={mobileMenuOpen ? "Close menu" : "Open menu"} aria-expanded={mobileMenuOpen}
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="nav-act relative z-10 lg:hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer"
-             >
-                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
-             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu — compact anchored panel, matching the Calendar/To-Do quick panels
-          instead of a full-width banner across the whole screen. */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-             initial={{ opacity: 0, y: -8, scale: 0.98 }}
-             animate={{ opacity: 1, y: 0, scale: 1 }}
-             exit={{ opacity: 0, y: -8, scale: 0.98 }}
-             transition={{ duration: 0.15 }}
-             data-mobile-menu
-             className="lg:hidden fixed left-4 right-4 top-16 mt-2 w-auto max-w-[280px] ml-auto bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden z-50"
-          >
-            <nav className="flex flex-col p-2 w-full">
-              {NAV_ITEMS.map((item) => {
-                const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.label === "Review" ? reviewHref : item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                      isActive
-                        ? (isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950 shadow-md shadow-amber-500/25" : isPlus ? "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900 shadow-md shadow-slate-500/25" : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25")
-                        : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
-                    }`}
-                  >
-                    <item.icon className="w-4 h-4 shrink-0" />
-                    {item.label}
-                  </Link>
-                );
-              })}
-              {signedIn && (
-                <Link
-                  href="/downloads"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`sm:hidden flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
-                    pathname?.startsWith("/downloads")
-                      ? (isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950 shadow-md shadow-amber-500/25" : isPlus ? "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900 shadow-md shadow-slate-500/25" : "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/25")
-                      : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
-                >
-                  <Download className="w-4 h-4 shrink-0" />
-                  Downloads
-                </Link>
-              )}
-              {/* Focus Target's own trigger button is hidden below sm: (see the Right
-                  Actions row above) — mirrored here so it stays reachable on a phone. */}
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setIsGoalSliderOpen(true);
-                }}
-                className={`sm:hidden flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-bold transition-colors ${
-                  isFocusTargetActive
-                    ? "text-amber-600 dark:text-amber-400 bg-amber-500/10"
-                    : "text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
-                }`}
-              >
-                <Target className="w-4 h-4 shrink-0" />
-                Focus Target
-                {isFocusTargetActive && (
-                  <span className="ml-auto w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-                )}
-              </button>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
 
     <AnimatePresence>

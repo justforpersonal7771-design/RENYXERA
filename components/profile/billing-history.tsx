@@ -7,6 +7,7 @@ import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useToastStore } from "@/store/use-toast-store";
 import { formatPrice } from "@/lib/billing/plans";
 import { serverNow } from "@/lib/time/server-time";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 export type PaymentRow = {
   id: number; receiptNo: string; plan: string; planId: string; status: "created" | "paid" | "failed"; mode: string;
@@ -61,7 +62,7 @@ export function BillingHistoryCard() {
         <p className="text-sm text-[var(--text-secondary)]">
           {ent.paid && ent.validUntil ? `Active until ${fmtDate(ent.validUntil)} (${Math.max(0, Math.ceil((Date.parse(ent.validUntil) - serverNow()) / 86400_000))} days left). It doesn't renew automatically.` : "Papers, mocks, analytics and sync are free. Plus and Pro add more AI and premium looks."}
         </p>
-        <Link href="/pro" className="mt-3 inline-flex h-9 items-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 text-xs font-bold text-white">{ent.paid ? "Extend or change plan" : "See plans"}</Link>
+        <button type="button" onClick={() => openUpgrade("Choose your plan")} className="cursor-pointer mt-3 inline-flex h-9 items-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-4 text-xs font-bold text-white">{ent.paid ? "Extend or change plan" : "See plans"}</button>
       </section>
 
       <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
