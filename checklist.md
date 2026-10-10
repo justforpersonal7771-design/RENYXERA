@@ -557,11 +557,11 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [x] Done by you: Telegram setup, PREGEN_SECRET, migrations 0029 / 0030 / 0033–0036, bot rename, the real Rs 29 payment
 
 ### Waiting (your call)
-- [ ] Subscriptions · gift passes (coupons are built but unused; refund script not needed) · Razorpay is the only gateway, Cashfree dropped
+- [x] Subscriptions and gift passes: not needed (decided 10 Oct). Coupons stay built but unused; refund script not needed; Razorpay is the only gateway
 - [ ] Not planned: #11 weekly league (duplicates leaderboards) · #16 flashcards (content) · #21 PDF notes (cost and abuse) · #22 study rooms (moderation)
 - [x] Planner: Print plan button and 25/5 focus rounds on the study timer (done)
 - [x] "What you missed" note after a Checkpoint (done). No planner extras left open
-- [ ] Rank estimate for non-CS papers (needs marks-vs-rank tables nobody publishes) · earlier-year history for other branches
+- [ ] Blocked on data (searched 10 Oct, nothing official): no marks-vs-rank tables for EC/EE/ME/CE/DA exist (IIT Guwahati publishes score vs rank only in the report; web tables are pre-result guesses that disagree). Earlier-year per-branch stats: gate2025.iitr.ac.in failed to load (certificate error); only third-party 2025 qualifying marks found (CE 29.2, ME 35.8, EE 25, EC 25, DA 29), not added because we show official numbers only. Revisit if the official 2025 report PDF can be fetched
 
 ### On hold (by you)
 - [ ] L-3 Share result · PYQ extraction for CE and remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs · custom domain until revenue
