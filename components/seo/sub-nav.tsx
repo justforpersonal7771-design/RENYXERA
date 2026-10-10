@@ -73,8 +73,7 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
                   )}
                   <motion.span className="relative flex items-center gap-1.5" whileHover={{ y: -3, scale: 1.06 }} whileTap={{ scale: 0.94 }} transition={{ type: "spring", stiffness: 600, damping: 11 }}>
                     <it.icon className="w-4 h-4 shrink-0" />
-                    <span className="sm:hidden">{it.short ?? it.label}</span>
-                    <span className="hidden sm:inline">{it.label}</span>
+                    <span>{it.short ?? it.label}</span>
                   </motion.span>
                 </Link>
               </li>
