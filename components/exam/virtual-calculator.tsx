@@ -110,6 +110,9 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
   };
 
   const expr = expressionText(st);
+  const exprBox = useRef<HTMLDivElement>(null);
+  // A long calculation wraps over up to three lines and stays scrolled to the newest part; scroll up to see the start.
+  useEffect(() => { const el = exprBox.current; if (el) el.scrollTop = el.scrollHeight; }, [st]);
   const result = liveResult(st);
   const style = phone ? undefined : { left: pos?.x ?? 16, top: pos?.y ?? 68, width: W };
   return (
@@ -130,7 +133,7 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
       <div className="px-2 pt-1.5">
         <div className="rounded-lg bg-[var(--surface-secondary)] px-3 py-1.5" role="status" aria-live="polite">
           {/* Row 1: the expression as typed. Row 2: the running answer, updated after every key. */}
-          <div className="flex h-5 justify-end overflow-hidden" title={expr}><span className="whitespace-nowrap text-sm leading-5 text-[var(--text-muted)] font-num">{expr || " "}</span></div>
+          <div ref={exprBox} className="max-h-[3.75rem] min-h-[1.5rem] overflow-y-auto text-right" title={expr}><span className="break-words text-base font-semibold leading-6 text-[var(--text-secondary)] font-num">{expr || " "}</span></div>
           <div className="flex items-baseline justify-between gap-2 border-t border-[var(--border)]/60 pt-0.5">
             <span className="text-[9px] font-black text-sky-500">{st.mem !== 0 ? "M" : ""}</span>
             <span className={`truncate text-2xl font-extrabold leading-8 font-num ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{result}</span>

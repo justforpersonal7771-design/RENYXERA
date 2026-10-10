@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useStudyStore } from "@/store/use-study-store";
-import { useDisplayName } from "@/store/use-auth-store";
+import { useDisplayName, useTargetYear } from "@/store/use-auth-store";
+import { examDateFor } from "@/lib/goals/exam-year";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { MemoryEngine, KnowledgeGraph, InsightMemory, MistakePattern, LearnerTimelineMilestone, ReadinessScorecard } from "@/lib/ai/memory/MemoryEngine";
 import { StudyPlanEngine, StudyPlanSuggestion } from "@/lib/ai/memory/StudyPlanEngine";
@@ -60,7 +61,10 @@ export default function AIMentorPage() {
   // Real computed inputs for readiness prediction — never fabricated.
   const [topicMasteryMap, setTopicMasteryMap] = useState<Record<string, TopicMastery>>({});
   const [plannerCompletion, setPlannerCompletion] = useState<number | null>(null);
-  const [examDate, setExamDate] = useState<string | null>(null);
+  // Set automatically from the target GATE year; a date the learner picked in the Study Planner overrides it.
+  const targetYear = useTargetYear();
+  const [savedExamDate, setSavedExamDate] = useState<string | null>(null);
+  const examDate = examDateFor(targetYear, savedExamDate);
 
   // AI Study Planner — rule-based recommendations (see StudyPlanEngine),
   // never auto-added to the calendar; the student must click to add each one.
@@ -77,7 +81,7 @@ export default function AIMentorPage() {
       await MemoryEngine.initialize();
       await loadCalendarEvents();
       const rec = await IDBManager.getMetadata("target_exam_date");
-      if (rec?.value) setExamDate(String(rec.value));
+      setSavedExamDate(rec?.value ? String(rec.value) : null);
       setLoading(false);
     };
     loadMentorData();
@@ -570,7 +574,7 @@ export default function AIMentorPage() {
                     info: "Mistakes you have not mastered yet. Clearing these is usually the fastest way to gain marks. Click to review them." },
                   { label: "Burnout Risk", val: readiness?.burnoutRisk ?? "Low", desc: "Planner & solves density", icon: Flame, badge: "bg-rose-500/10", color: "text-rose-500", glow: "bg-rose-500", href: "/calendar",
                     info: "Based on how packed your planner is and how intensely you have been solving. If it is high, plan a lighter day." },
-                  { label: "Days to Target Exam", val: daysToExam !== null ? (daysToExam >= 0 ? `${daysToExam}d` : "Passed") : "Not Set", desc: daysToExam !== null ? "Countdown active" : "Set date in Calendar", icon: Calendar, badge: "bg-emerald-500/10", color: "text-emerald-500", glow: "bg-emerald-500", href: "/calendar",
+                  { label: "Days to Target Exam", val: daysToExam !== null ? (daysToExam >= 0 ? `${daysToExam}d` : "Passed") : "Not Set", desc: "Auto from your target year · change in Study Planner", icon: Calendar, badge: "bg-emerald-500/10", color: "text-emerald-500", glow: "bg-emerald-500", href: "/calendar",
                     info: "Counts down to the exam date you set in the Calendar. Click to change it." }
                 ].map((item, idx) => (
                   <motion.div

@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import { Topbar } from "./topbar";
 import { BottomTabBar } from "./bottom-tab-bar";
 import { startTimeSync } from "@/lib/time/server-time";
+import { PlanExpiryNotice } from "@/components/billing/plan-expiry-notice";
 import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
 import { checkDueReminders } from "@/lib/notifications/reminder-scheduler";
@@ -178,6 +179,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="page-shell"
           >
+            <PlanExpiryNotice />
             {children}
           </motion.div>
         </div>

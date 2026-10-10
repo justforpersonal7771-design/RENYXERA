@@ -6,4 +6,3 @@ const paper = (code: BranchCode) => branchByCode(code)!.paper.toLowerCase();
 
 export const syllabusHref = (code: BranchCode) => `/gate-${paper(code)}-syllabus`;
 export const mostRepeatedHref = (code: BranchCode) => (code === "CSE" ? "/articles/most-repeated-gate-cs-topics" : `/articles/most-repeated-topics/${paper(code)}`);
-export const plan150Href = (code: BranchCode) => (code === "CSE" ? "/articles/gate-cs-preparation-150-days" : `/articles/preparation-150-days/${paper(code)}`);

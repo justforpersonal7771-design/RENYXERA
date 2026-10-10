@@ -166,6 +166,14 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
             )}
           </div>
         </div>
+        {isExpanded && (
+          <button
+            onClick={() => { onClose(); router.push("/calendar"); }}
+            className="group relative flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 border border-white/20 text-[11px] font-semibold text-white transition-colors cursor-pointer"
+          >
+            Open Study Planner <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+          </button>
+        )}
         {!isExpanded && (
           <div className="relative flex items-center gap-2.5">
             {todayEvents.length > 0 && (
@@ -177,7 +185,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
               onClick={() => setIsExpanded(true)}
               className="group flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 border border-white/20 text-[11px] font-semibold text-white transition-colors cursor-pointer"
             >
-              Full planner <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+              Expand <ChevronRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
             </button>
           </div>
         )}

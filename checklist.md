@@ -549,6 +549,8 @@ Product rule: never advertise "no login"; show what an account adds and guide vi
 - [ ] Run migration `0034_payment_receipts.sql` (stores payment method for receipts); optionally set NEXT_PUBLIC_SELLER_NAME / NEXT_PUBLIC_SELLER_ADDRESS
 - [ ] Future: Razorpay Subscriptions / fixed plans (UPI Autopay), coupon codes, gift passes, email receipts, refund tooling, settlement report — see docs/PAYMENTS_RESEARCH.md §6
 - [x] Branch-aware pages (same template for every paper): syllabus, most-repeated topics (also fixed: it was mixing all papers), 150-day plan, each with a paper switcher; Tools dock opens your own branch; /gate-cse now links to its syllabus like the other branches
+- [x] Study Planner (10 Oct): 150-day plan removed; the free planner is branch-aware with the exam date set automatically (date picker to change); "Add to my Study Planner" asks first, then schedules events (Plus/Pro); navbar calendar panel now has "Open Study Planner"; AI Mentor exam countdown is automatic; subscription-ending reminder (7 days, daily, 30 days after)
+- [ ] Study Planner roadmap, in priority order: docs/STUDY_PLANNER_FEATURES.md (today view, roll-forward / re-plan, priorities, weekday hours, weekly review, topic coverage, spaced revision, mock calendar, ...)
 - [ ] Still CS-only: cut-offs & marks-vs-rank tool and the score & rank predictor (need verified official data per paper, task S-5); topic pages under /topics are CS-only
 - [ ] Razorpay QR/UPI shows account holder name instead of RENYXERA; own-card payment fails — you are checking with Razorpay (steps given 10 Oct)
 

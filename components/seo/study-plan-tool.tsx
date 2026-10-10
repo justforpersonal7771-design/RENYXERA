@@ -5,7 +5,14 @@ import Link from "next/link";
 import { DatePicker } from "@/components/ui/date-picker";
 import { motion } from "motion/react";
 import { CalendarDays, Clock, Play, Target } from "lucide-react";
-import { examDateFor, upcomingExamYear } from "@/lib/goals/exam-year";
+import { examDateFor } from "@/lib/goals/exam-year";
+import { useTargetYear } from "@/store/use-auth-store";
+import { IDBManager } from "@/lib/repository/storage/idb-manager";
+import { getCurrentBranch } from "@/lib/branch/current";
+import { BRANCHES, type BranchCode } from "@/lib/branches";
+import { syllabusHref } from "@/lib/seo/branch-links";
+import { serverNow } from "@/lib/time/server-time";
+import { ScheduleModal } from "@/components/planner/schedule-modal";
 
 type Section = { title: string; share: number };
 type Mark = "weak" | "normal" | "strong";
@@ -15,14 +22,25 @@ type Mark = "weak" | "normal" | "strong";
  * weightage, adjusted for the student's weak/strong sections; the calendar runs
  * learn & practise → revision with PYQs → full mocks, compressing when the exam is close.
  */
-export function StudyPlanTool({ sections }: { sections: Section[] }) {
-  const year = upcomingExamYear();
-  const [examDate, setExamDate] = useState(examDateFor(year, null));
+export function StudyPlanTool({ byBranch }: { byBranch: Partial<Record<BranchCode, Section[]>> }) {
+  const targetYear = useTargetYear();
+  // Branch: the learner's own paper by default, switchable. Exam date: set automatically from the target year
+  // (or the date picked in the Study Planner), and editable here.
+  const [code, setCode] = useState<BranchCode>("CSE");
+  useEffect(() => { const c = getCurrentBranch(); if (byBranch[c]) setCode(c); }, [byBranch]);
+  const sections = byBranch[code] ?? byBranch.CSE ?? [];
+  const [savedExam, setSavedExam] = useState<string | null>(null);
+  const [pickedExam, setPickedExam] = useState<string | null>(null);
+  useEffect(() => { void IDBManager.getMetadata("target_exam_date").then((r) => { if (r?.value) setSavedExam(String(r.value)); }).catch(() => null); }, []);
+  const examDate = pickedExam ?? examDateFor(targetYear, savedExam);
+  const setExamDate = (v: string) => { setPickedExam(v); if (v.startsWith(String(targetYear))) void IDBManager.setMetadata("target_exam_date", v); };
+  const [scheduling, setScheduling] = useState(false);
   const [hours, setHours] = useState(3);
   const [days, setDays] = useState(6);
   const [marks, setMarks] = useState<Record<string, Mark>>({});
+  useEffect(() => setMarks({}), [code]);
   const [now, setNow] = useState<number | null>(null);
-  useEffect(() => { setNow(Date.now()); const t = setInterval(() => setNow(Date.now()), 60_000); return () => clearInterval(t); }, []);
+  useEffect(() => { setNow(serverNow()); const t = setInterval(() => setNow(serverNow()), 60_000); return () => clearInterval(t); }, []);
 
   const plan = useMemo(() => {
     const start = now ?? Date.parse(`${examDate}T00:00:00+05:30`) - 120 * 86400_000;
@@ -59,8 +77,14 @@ export function StudyPlanTool({ sections }: { sections: Section[] }) {
   return (
     <div className="space-y-6">
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-8 space-y-5">
+        <div className="flex flex-wrap gap-2" role="radiogroup" aria-label="Your paper">
+          {BRANCHES.filter((x) => byBranch[x.code]).map((x) => (
+            <button key={x.code} type="button" role="radio" aria-checked={x.code === code} onClick={() => setCode(x.code)}
+              className={`h-9 rounded-full border px-4 text-sm font-bold cursor-pointer ${x.code === code ? "border-violet-600 bg-violet-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"}`}>GATE {x.paper}</button>
+          ))}
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <label className="block"><span className="text-sm font-bold text-[var(--text-secondary)]">Exam date</span>
+          <label className="block"><span className="text-sm font-bold text-[var(--text-secondary)]">Exam date <span className="font-normal text-[var(--text-muted)]">(set from your target year)</span></span>
             <div className="mt-2"><DatePicker value={examDate} onChange={setExamDate} /></div></label>
           <label className="block"><span className="text-sm font-bold text-[var(--text-secondary)]">Hours a day: <b className="font-num">{hours}</b></span>
             <input type="range" min={1} max={12} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="mt-4 w-full accent-violet-600" /></label>
@@ -134,9 +158,19 @@ export function StudyPlanTool({ sections }: { sections: Section[] }) {
         </div>
       </div>
 
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-violet-500/30 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-5 sm:p-6">
+        <div className="min-w-0">
+          <p className="text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Plus &amp; Pro</p>
+          <h2 className="mt-1 font-extrabold text-[var(--text-primary)]">Put this plan in your calendar automatically</h2>
+          <p className="mt-1 max-w-xl text-sm text-[var(--text-secondary)]">We&apos;ll ask how you want it first: start date, study days, daily hours and start time. Then every block goes into your Study Planner so you can tick it off and track it.</p>
+        </div>
+        <button type="button" onClick={() => setScheduling(true)} className="inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 cursor-pointer">Add to my Study Planner</button>
+      </div>
+      <ScheduleModal open={scheduling} onClose={() => setScheduling(false)} sections={sections} marks={marks} examDate={examDate} hoursPerDay={hours} daysPerWeek={days} branchLabel={`GATE ${BRANCHES.find((x) => x.code === code)?.paper ?? ""}`} />
+
       <div className="flex flex-col sm:flex-row gap-3">
         <Link href="/" className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25">Track this plan in RENYXERA — free</Link>
-        <Link href="/gate-cs-syllabus" className="inline-flex items-center justify-center h-11 px-5 rounded-xl border border-[var(--border)] font-semibold text-[var(--text-primary)]">See the syllabus with weightage</Link>
+        <Link href={syllabusHref(code)} className="inline-flex items-center justify-center h-11 px-5 rounded-xl border border-[var(--border)] font-semibold text-[var(--text-primary)]">See the syllabus with weightage</Link>
       </div>
     </div>
   );
