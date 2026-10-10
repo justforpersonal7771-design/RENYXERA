@@ -11,6 +11,7 @@ export type CalcState = {
   mem: number;
   mode: AngleMode;
   error: boolean;
+  last?: string;       // the finished expression shown after "=", e.g. "2 + 3 ="
 };
 
 export const initialCalc = (mode: AngleMode = "deg"): CalcState => ({ entry: "0", tokens: [], fresh: true, afterOp: false, mem: 0, mode, error: false });
@@ -103,10 +104,30 @@ const fail = (s: CalcState): CalcState => ({ ...s, entry: ERR, tokens: [], fresh
 
 /** Human-readable pending expression for the small top display. */
 export function expressionText(s: CalcState): string {
-  return s.tokens.map((t) => SYMBOL[t] ?? t).join(" ");
+  const closing = s.tokens[s.tokens.length - 1] === ")" && s.fresh;
+  const operand = !s.afterOp && !closing && (s.tokens.length > 0 || !s.fresh);
+  if (!s.tokens.length && !operand) return s.last ?? "";
+  return [...s.tokens.map((t) => SYMBOL[t] ?? t), ...(operand ? [s.entry] : [])].join(" ");
+}
+
+/** The running answer shown on the lower row while an expression is being built (the value "=" would give right now). */
+export function liveResult(s: CalcState): string {
+  if (s.error || !s.tokens.length) return s.entry;
+  const closing = s.tokens[s.tokens.length - 1] === ")" && s.fresh && !s.afterOp;
+  let list = [...s.tokens];
+  if (s.afterOp) { while (list.length && (list[list.length - 1] in PREC || list[list.length - 1] === "(")) list.pop(); }
+  else if (!closing) list = [...list, s.entry];
+  if (!list.length) return s.entry;
+  try { const r = evaluate(list); return Number.isFinite(r) ? fmt(r) : s.entry; } catch { return s.entry; }
 }
 
 export function press(s: CalcState, key: string): CalcState {
+  const r = pressKey(s, key);
+  // The finished expression stays on the top row only until the next thing is typed or computed.
+  return key !== "=" && r.last && (r.entry !== s.entry || r.tokens.length) ? { ...r, last: undefined } : r;
+}
+
+function pressKey(s: CalcState, key: string): CalcState {
   if (s.error && key !== "C" && key !== "CE") return s;
   const num = () => Number(s.entry);
 
@@ -135,7 +156,8 @@ export function press(s: CalcState, key: string): CalcState {
       if (!s.tokens.length) return s;
       try {
         const r = evaluate([...s.tokens, s.entry]);
-        return Number.isFinite(r) ? { ...s, entry: fmt(r), tokens: [], fresh: true, afterOp: false } : fail(s);
+        const finished = `${expressionText(s)} =`;
+        return Number.isFinite(r) ? { ...s, entry: fmt(r), tokens: [], fresh: true, afterOp: false, last: finished } : fail(s);
       } catch { return fail(s); }
     }
   }

@@ -1,4 +1,4 @@
-import { initialCalc, press, type CalcState } from "../lib/exam/calculator";
+import { liveResult, expressionText, initialCalc, press, type CalcState } from "../lib/exam/calculator";
 
 const run = (keys: string[], mode: "deg" | "rad" | "grad" = "deg"): CalcState => keys.reduce((s, k) => press(s, k), initialCalc(mode));
 let fails = 0;
@@ -45,5 +45,13 @@ eq("log_y x: 100 logy 10", run(["1", "0", "0", "logy", "1", "0", "="]).entry, "2
 eq("log base 1 is an error", run(["5", "logy", "1", "="]).error ? "err" : "ok", "err");
 eq("cube root", run(["2", "7", "cbrt"]).entry, "3");
 eq("log_y binds like ^", run(["2", "+", "8", "logy", "2", "="]).entry, "5");
+const live = (keys: string[]) => liveResult(run(keys));
+eq("live result while typing", live(["2", "+", "3"]), "5");
+eq("live result after operator keeps last value", live(["2", "+", "3", "*"]), "5");
+eq("live result with precedence", live(["2", "+", "3", "*", "4"]), "14");
+eq("live result with open paren", live(["(", "2", "+", "3"]), "5");
+eq("expression row while typing", expressionText(run(["2", "+", "3"])), "2 + 3");
+eq("expression row after =", expressionText(run(["2", "+", "3", "="])), "2 + 3 =");
+eq("expression row cleared after next key", expressionText(run(["2", "+", "3", "=", "sqrt"])), "");
 console.log(fails ? `${fails} FAILED` : "all passed");
 process.exit(fails ? 1 : 0);

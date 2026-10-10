@@ -1,29 +1,31 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { GripHorizontal, X } from "lucide-react";
-import { expressionText, initialCalc, press, type AngleMode } from "@/lib/exam/calculator";
+import { ArrowLeft, GripHorizontal, X } from "lucide-react";
+import { expressionText, initialCalc, liveResult, press, type AngleMode } from "@/lib/exam/calculator";
 
-type K = { k: string; l: string; kind?: "fn" | "op" | "num" | "eq" | "clear" | "mem"; span?: number };
+type Kind = "fn" | "op" | "num" | "eq" | "clear" | "mem";
+/** One key placed on the grid: row/column are 1-based; the grid is 11 columns (6 function keys, 5 number keys) like the GATE calculator. */
+type K = { k: string; l: string; kind?: Kind; r: number; c: number; cs?: number; rs?: number };
 
-const SCI: K[][] = [
-  [{ k: "sinh", l: "sinh" }, { k: "cosh", l: "cosh" }, { k: "tanh", l: "tanh" }, { k: "abs", l: "|x|" }],
-  [{ k: "asinh", l: "sinh⁻¹" }, { k: "acosh", l: "cosh⁻¹" }, { k: "atanh", l: "tanh⁻¹" }, { k: "fact", l: "n!" }],
-  [{ k: "sin", l: "sin" }, { k: "cos", l: "cos" }, { k: "tan", l: "tan" }, { k: "inv", l: "1/x" }],
-  [{ k: "asin", l: "sin⁻¹" }, { k: "acos", l: "cos⁻¹" }, { k: "atan", l: "tan⁻¹" }, { k: "sq", l: "x²" }],
-  [{ k: "log", l: "log" }, { k: "ln", l: "ln" }, { k: "cube", l: "x³" }, { k: "pow", l: "xʸ", kind: "op" }],
-  [{ k: "pow10", l: "10ˣ" }, { k: "exp", l: "eˣ" }, { k: "sqrt", l: "√x" }, { k: "yroot", l: "ʸ√x", kind: "op" }],
-  [{ k: "pi", l: "π" }, { k: "e", l: "e" }, { k: "EXP", l: "EXP" }, { k: "pct", l: "%" }],
-  [{ k: "log2", l: "log₂x" }, { k: "logy", l: "log_yx", kind: "op" }, { k: "cbrt", l: "∛x" }, { k: "mod", l: "mod", kind: "op" }],
+const fn = (k: string, l: string, r: number, c: number, kind: Kind = "fn"): K => ({ k, l, kind, r, c });
+const SCI_ROWS: [string, string][][] = [
+  [["sinh", "sinh"], ["cosh", "cosh"], ["tanh", "tanh"], ["EXP", "Exp"], ["(", "("], [")", ")"]],
+  [["asinh", "sinh⁻¹"], ["acosh", "cosh⁻¹"], ["atanh", "tanh⁻¹"], ["log2", "log₂x"], ["ln", "ln"], ["log", "log"]],
+  [["pi", "π"], ["e", "e"], ["fact", "n!"], ["logy", "log_yx"], ["exp", "eˣ"], ["pow10", "10ˣ"]],
+  [["sin", "sin"], ["cos", "cos"], ["tan", "tan"], ["pow", "xʸ"], ["cube", "x³"], ["sq", "x²"]],
+  [["asin", "sin⁻¹"], ["acos", "cos⁻¹"], ["atan", "tan⁻¹"], ["yroot", "ʸ√x"], ["cbrt", "∛x"], ["abs", "|x|"]],
 ];
-const BASIC: K[][] = [
-  [{ k: "MC", l: "MC", kind: "mem" }, { k: "MR", l: "MR", kind: "mem" }, { k: "MS", l: "MS", kind: "mem" }, { k: "M+", l: "M+", kind: "mem" }],
-  [{ k: "M-", l: "M−", kind: "mem" }, { k: "C", l: "C", kind: "clear" }, { k: "⌫", l: "⌫", kind: "clear" }, { k: "/", l: "÷", kind: "op" }],
-  [{ k: "7", l: "7", kind: "num" }, { k: "8", l: "8", kind: "num" }, { k: "9", l: "9", kind: "num" }, { k: "*", l: "×", kind: "op" }],
-  [{ k: "4", l: "4", kind: "num" }, { k: "5", l: "5", kind: "num" }, { k: "6", l: "6", kind: "num" }, { k: "-", l: "−", kind: "op" }],
-  [{ k: "1", l: "1", kind: "num" }, { k: "2", l: "2", kind: "num" }, { k: "3", l: "3", kind: "num" }, { k: "+", l: "+", kind: "op" }],
-  [{ k: "0", l: "0", kind: "num" }, { k: ".", l: ".", kind: "num" }, { k: "±", l: "±", kind: "num" }, { k: "(", l: "(", kind: "op" }],
-  [{ k: ")", l: ")", kind: "op" }, { k: "=", l: "=", kind: "eq", span: 2 }],
+const OPS = new Set(["(", ")", "pow", "logy", "yroot", "mod"]);
+const KEYS: K[] = [
+  fn("mod", "mod", 1, 1, "op"),
+  ...(["MC", "MR", "MS", "M+", "M-"] as const).map((m, i) => fn(m, m === "M-" ? "M−" : m, 1, 7 + i, "mem")),
+  ...SCI_ROWS.flatMap((row, ri) => row.map(([k, l], ci) => fn(k, l, ri + 2, ci + 1, OPS.has(k) ? "op" : "fn"))),
+  { k: "⌫", l: "⌫", kind: "clear", r: 2, c: 7, cs: 2 }, fn("C", "C", 2, 9, "clear"), fn("±", "±", 2, 10, "num"), fn("sqrt", "√x", 2, 11),
+  ...["7", "8", "9"].map((d, i) => fn(d, d, 3, 7 + i, "num")), fn("/", "÷", 3, 10, "op"), fn("pct", "%", 3, 11),
+  ...["4", "5", "6"].map((d, i) => fn(d, d, 4, 7 + i, "num")), fn("*", "×", 4, 10, "op"), fn("inv", "1/x", 4, 11),
+  ...["1", "2", "3"].map((d, i) => fn(d, d, 5, 7 + i, "num")), fn("-", "−", 5, 10, "op"), { k: "=", l: "=", kind: "eq", r: 5, c: 11, rs: 2 },
+  { k: "0", l: "0", kind: "num", r: 6, c: 7, cs: 2 }, fn(".", ".", 6, 9, "num"), fn("+", "+", 6, 10, "op"),
 ];
 const STYLE: Record<string, string> = {
   fn: "bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:bg-violet-500/15",
@@ -33,10 +35,8 @@ const STYLE: Record<string, string> = {
   clear: "bg-rose-500/12 text-rose-600 dark:text-rose-300 hover:bg-rose-500/25",
   mem: "bg-sky-500/12 text-sky-700 dark:text-sky-300 hover:bg-sky-500/25",
 };
-const W = 500;
+const W = 560;
 const HOLD_MS = 220;
-// The official GATE calculator has Deg and Rad only.
-const MODES: [AngleMode, string][] = [["deg", "Deg"], ["rad", "Rad"]];
 
 /** The on-screen GATE scientific calculator, kept small so the question stays visible.
  *  Press and HOLD anywhere outside it to hide it while you look at the question (it returns on
@@ -110,6 +110,7 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
   };
 
   const expr = expressionText(st);
+  const result = liveResult(st);
   const style = phone ? undefined : { left: pos?.x ?? 16, top: pos?.y ?? 68, width: W };
   return (
     <div
@@ -118,38 +119,39 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
       aria-label="Calculator"
       hidden={!open}
       style={style}
-      className={`fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[460px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
+      className={`fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[520px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
     >
       <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
         className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 py-1 ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
         {!phone && <GripHorizontal className="h-3.5 w-3.5 text-[var(--text-muted)]" aria-hidden />}
-        <div className="flex items-center gap-0.5" role="radiogroup" aria-label="Angle mode" onPointerDown={(e) => e.stopPropagation()}>
-          {MODES.map(([m, label]) => (
-            <button key={m} type="button" role="radio" aria-checked={st.mode === m} onClick={() => key(m)}
-              className={`rounded px-1.5 py-px text-[10px] font-bold transition cursor-pointer ${st.mode === m ? "bg-violet-600 text-white" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{label}</button>
-          ))}
-        </div>
         <button type="button" aria-label="Close calculator" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="ml-auto rounded p-0.5 text-[var(--text-muted)] transition hover:text-[var(--text-primary)] cursor-pointer"><X className="h-3.5 w-3.5" /></button>
       </div>
 
       <div className="px-2 pt-1.5">
-        <div className="rounded-lg bg-[var(--surface-secondary)] px-2 py-1 text-right" role="status" aria-live="polite">
-          <div className="h-4 truncate text-xs leading-4 text-[var(--text-muted)] font-num" title={expr}>{expr || " "}</div>
-          <div className="flex items-baseline justify-between gap-2">
+        <div className="rounded-lg bg-[var(--surface-secondary)] px-3 py-1.5" role="status" aria-live="polite">
+          {/* Row 1: the expression as typed. Row 2: the running answer, updated after every key. */}
+          <div className="flex h-5 justify-end overflow-hidden" title={expr}><span className="whitespace-nowrap text-sm leading-5 text-[var(--text-muted)] font-num">{expr || " "}</span></div>
+          <div className="flex items-baseline justify-between gap-2 border-t border-[var(--border)]/60 pt-0.5">
             <span className="text-[9px] font-black text-sky-500">{st.mem !== 0 ? "M" : ""}</span>
-            <span className={`truncate text-2xl font-extrabold leading-8 font-num ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{st.entry}</span>
+            <span className={`truncate text-2xl font-extrabold leading-8 font-num ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{result}</span>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-1.5 p-2">
-        {[SCI, BASIC].map((rows, i) => (
-          <div key={i} className="grid grid-cols-4 auto-rows-fr gap-1">
-            {rows.flat().map((b) => (
-              <button key={b.k} type="button" onClick={() => key(b.k)} aria-label={b.l}
-                style={b.span ? { gridColumn: `span ${b.span}` } : undefined} className={`min-h-8 min-w-0 rounded-md px-0 text-[11px] font-semibold transition active:scale-95 cursor-pointer sm:min-h-9 sm:text-xs ${STYLE[b.kind ?? "fn"]}`}>{b.l}</button>
-            ))}
-          </div>
+      <div className="grid gap-1 p-2" style={{ gridTemplateColumns: "repeat(11, minmax(0, 1fr))", gridAutoRows: "minmax(2rem, 1fr)" }}>
+        {/* Deg / Rad: one switch instead of two radio buttons */}
+        <div role="radiogroup" aria-label="Angle mode" style={{ gridRow: 1, gridColumn: "2 / span 3" }} className="grid grid-cols-2 rounded-md border border-[var(--border)] bg-[var(--surface-secondary)] p-0.5">
+          {(["deg", "rad"] as const).map((m) => (
+            <button key={m} type="button" role="radio" aria-checked={st.mode === m} onClick={() => key(m)}
+              className={`rounded text-[11px] font-bold transition cursor-pointer ${st.mode === m ? "bg-violet-600 text-white shadow-sm" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{m === "deg" ? "Deg" : "Rad"}</button>
+          ))}
+        </div>
+        {KEYS.map((b) => (
+          <button key={b.k} type="button" onClick={() => key(b.k)} aria-label={b.k === "⌫" ? "Backspace" : b.l}
+            style={{ gridRow: `${b.r} / span ${b.rs ?? 1}`, gridColumn: `${b.c} / span ${b.cs ?? 1}` }}
+            className={`min-h-8 min-w-0 rounded-md px-0 font-semibold tracking-tight transition active:scale-95 cursor-pointer sm:min-h-9 sm:text-xs ${b.l.length >= 5 ? "text-[9px]" : "text-[11px]"} ${STYLE[b.kind ?? "fn"]}`}>
+            {b.k === "⌫" ? <ArrowLeft className="mx-auto h-4 w-4" strokeWidth={2.5} aria-hidden /> : b.l}
+          </button>
         ))}
       </div>
     </div>
