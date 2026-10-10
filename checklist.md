@@ -544,8 +544,10 @@ Product rule: never advertise "no login"; show what an account adds and guide vi
 - [x] `/gate-2027-changes` (all branches, official sources, checked 10 Oct) and `/syllabus` hub (opens your branch from the Tools dock); CS syllabus now has progress badges, Where-to-start and the Telegram card like the other branches
 - [x] Purchase modal no longer clipped (portal); avatar picker in onboarding; AI Mentor page reveals once instead of cards shifting
 - [x] Calculator now has the official GATE key set: added log₂x, log_yx, ∛x; removed Grad and CE (GATE has Deg/Rad and C/←)
-- [ ] Future: Razorpay Subscriptions / fixed plans (UPI Autopay) — see docs/PAYMENTS_RESEARCH.md
-- [ ] Payment receipts + billing history in Profile — see docs/PAYMENTS_RESEARCH.md
+- [x] Billing history + printable receipts in Profile → Plan & payments, "I paid — check" button, hourly reconcile job (`.github/workflows/billing-reconcile.yml`, needs PREGEN_SECRET) — docs/PAYMENTS_RESEARCH.md
+- [x] Cashfree vs Razorpay research done: recommendation = keep Razorpay for now, open a Cashfree account in parallel and ask 4 questions, revisit 1 Jan 2027
+- [ ] Run migration `0034_payment_receipts.sql` (stores payment method for receipts); optionally set NEXT_PUBLIC_SELLER_NAME / NEXT_PUBLIC_SELLER_ADDRESS
+- [ ] Future: Razorpay Subscriptions / fixed plans (UPI Autopay), coupon codes, gift passes, email receipts, refund tooling, settlement report — see docs/PAYMENTS_RESEARCH.md §6
 - [ ] Other CS-only pages needing a branch picker: 150-day plan article, most-repeated-topics article, cut-off tool
 - [ ] Razorpay QR/UPI shows account holder name instead of RENYXERA; own-card payment fails — you are checking with Razorpay (steps given 10 Oct)
 

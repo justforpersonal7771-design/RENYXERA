@@ -36,7 +36,7 @@ const fmt = (ms: number) => {
 export function MockStatusCard() {
   const user = useAuthStore((s) => s.user);
   const [view, setView] = useState<View>({ kind: "loading" });
-  const [now, setNow] = useState(() => serverNow());
+  const [now, setNow] = useState(0); // set on mount so server and first client render match
 
   const load = useCallback(async () => {
     try {
@@ -71,7 +71,7 @@ export function MockStatusCard() {
   }, [user]);
 
   useEffect(() => { void load(); }, [load]);
-  useEffect(() => { const t = setInterval(() => setNow(serverNow()), 1000); return () => clearInterval(t); }, []);
+  useEffect(() => { setNow(serverNow()); const t = setInterval(() => setNow(serverNow()), 1000); return () => clearInterval(t); }, []);
   // Re-check when the results are due, and every 30 s while they're late.
   useEffect(() => {
     if (view.kind === "waiting") {

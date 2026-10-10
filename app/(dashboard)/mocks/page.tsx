@@ -24,8 +24,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 interface MyAttempt { id: string; mock_id: string; status: string; server_score: number | null; server_max: number | null; integrity_flags: unknown[] }
 
 function useNow(ms = 1000) {
-  const [now, setNow] = useState(() => serverNow());
-  useEffect(() => { const t = setInterval(() => setNow(serverNow()), ms); return () => clearInterval(t); }, [ms]);
+  // 0 until mounted, so the server render and the first client render are identical (no hydration mismatch).
+  const [now, setNow] = useState(0);
+  useEffect(() => { setNow(serverNow()); const t = setInterval(() => setNow(serverNow()), ms); return () => clearInterval(t); }, [ms]);
   return now;
 }
 const fmtCountdown = (ms: number) => {

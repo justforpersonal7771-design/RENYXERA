@@ -1,0 +1,22 @@
+name: Billing reconcile
+
+# Safety net for payments: every hour, orders that were started but not confirmed are checked with Razorpay
+# and applied if they were actually paid (covers a closed tab or a missed webhook). Idempotent.
+# Needs the repo secret PREGEN_SECRET (same value as the Cloudflare secret); skips quietly without it.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Reconcile pending orders
+        env:
+          PREGEN_SECRET: ${{ secrets.PREGEN_SECRET }}
+          SITE_URL: https://gate.renyxera.workers.dev
+        run: |
+          if [ -z "$PREGEN_SECRET" ]; then echo "PREGEN_SECRET not set — skipping"; exit 0; fi
+          curl -fsS -X POST "$SITE_URL/api/billing/reconcile" -H "x-pregen-secret: $PREGEN_SECRET" -H "Content-Type: application/json" -d '{}'
