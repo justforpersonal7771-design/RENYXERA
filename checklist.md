@@ -561,7 +561,7 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [ ] Not planned: #11 weekly league (duplicates leaderboards) · #16 flashcards (content) · #21 PDF notes (cost and abuse) · #22 study rooms (moderation)
 - [x] Planner: Print plan button and 25/5 focus rounds on the study timer (done)
 - [x] "What you missed" note after a Checkpoint (done). No planner extras left open
-- [ ] Blocked on data (searched 10 Oct, nothing official): no marks-vs-rank tables for EC/EE/ME/CE/DA exist (IIT Guwahati publishes score vs rank only in the report; web tables are pre-result guesses that disagree). Earlier-year per-branch stats: gate2025.iitr.ac.in failed to load (certificate error); only third-party 2025 qualifying marks found (CE 29.2, ME 35.8, EE 25, EC 25, DA 29), not added because we show official numbers only. Revisit if the official 2025 report PDF can be fetched
+- [ ] Blocked on data (searched 10 Oct, nothing official): no marks-vs-rank tables for EC/EE/ME/CE/DA exist (IIT Guwahati publishes score vs rank only in the report; web tables are pre-result guesses that disagree). Earlier-year per-branch stats: gate2025.iitr.ac.in failed to load (certificate error); only third-party 2025 qualifying marks found (CE 29.2, ME 35.8, EE 25, EC 25, DA 29), not added because we show official numbers only. Retried once (10 Oct), same certificate error. DECISION: keep official-only, hide the unofficial numbers; revisit only if the official 2025 report PDF becomes reachable
 
 ### On hold (by you)
 - [ ] L-3 Share result · PYQ extraction for CE and remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs · custom domain until revenue
