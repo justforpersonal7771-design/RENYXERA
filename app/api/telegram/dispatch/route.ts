@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { getEntitlement } from "@/lib/billing/server";
 import { html, send, type Button } from "@/lib/telegram/bot";
-import { TG_LIMITS, istParts } from "@/lib/telegram/tiers";
+import { TG_LIMITS, isQuiet, istParts, istToMs, quietEndMs } from "@/lib/telegram/tiers";
 import { refreshMembership, type Account, type Db } from "@/lib/telegram/server";
 import { appLink, blockLine, blocksOn, countdownLine } from "@/lib/telegram/messages";
 import type { Tier } from "@/lib/billing/plans";
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
   const db = createServiceRoleClient();
   const now = Date.now();
-  const out = { reminders: 0, skipped: 0, digests: 0, rolls: 0, weekly: 0, mocks: 0, ending: 0, rechecked: 0 };
+  const out = { reminders: 0, skipped: 0, digests: 0, rolls: 0, weekly: 0, streaks: 0, mocks: 0, ending: 0, rechecked: 0 };
 
   const accounts = new Map<string, Account>();
   const loadAccounts = async (ids: string[]) => {
@@ -35,6 +35,8 @@ export async function POST(req: NextRequest) {
   };
   const tiers = new Map<string, Tier>();
   const tierOf = async (id: string) => { if (!tiers.has(id)) tiers.set(id, (await getEntitlement(id)).tier); return tiers.get(id)!; };
+  const tNow = istParts(now);
+  const quietNow = (a: Account) => { const q = a.prefs.quiet as { from?: string; to?: string } | null | undefined; return isQuiet(tNow.hhmm, q?.from, q?.to); };
   const deliver = async (a: Account, text: string, buttons?: Button[][]) => {
     const r = await send(a.chat_id, text, buttons);
     if (r === "blocked") { await db.from("telegram_accounts").update({ blocked: true }).eq("user_id", a.user_id); a.blocked = true; }
@@ -58,6 +60,11 @@ export async function POST(req: NextRequest) {
       const limits = TG_LIMITS[await tierOf(r.user_id)];
       const off = (r.kind === "block" && (!limits.blockReminders || a.prefs.blocks === false)) || (r.kind === "alarm" && (limits.alarms === 0 || a.prefs.alarms === false));
       if (off) { out.skipped++; continue; }
+      if (r.kind === "block" && quietNow(a)) { // quiet hours: the nudge waits until they end
+        const q = a.prefs.quiet as { to: string };
+        await db.from("telegram_reminders").insert({ user_id: r.user_id, kind: r.kind, remind_at: new Date(quietEndMs(now, q.to)).toISOString(), title: r.title, body: r.body, event_id: r.event_id, event_date: r.event_date });
+        out.skipped++; continue;
+      }
       if (r.kind === "block") {
         const { data: still } = await db.from("telegram_reminders").select("done_at").eq("id", r.id).maybeSingle();
         if (still?.done_at) { out.skipped++; continue; }
@@ -78,7 +85,7 @@ export async function POST(req: NextRequest) {
 
   // morning digest (Plus, Pro) at the member's chosen IST time
   for (const a of linked) {
-    if (a.prefs.digest === false || a.last_digest === t.date || t.hhmm < a.digest_time) continue;
+    if (a.prefs.digest === false || a.last_digest === t.date || t.hhmm < a.digest_time || quietNow(a)) continue;
     const limits = TG_LIMITS[await tierOf(a.user_id)];
     if (!limits.digest) continue;
     await db.from("telegram_accounts").update({ last_digest: t.date }).eq("user_id", a.user_id);
@@ -90,7 +97,7 @@ export async function POST(req: NextRequest) {
   // evening roll-forward prompt (Pro): "ask once a day"
   if (t.hhmm >= "20:30") {
     for (const a of linked) {
-      if (a.prefs.roll === false || a.last_roll_prompt === t.date) continue;
+      if (a.prefs.roll === false || a.last_roll_prompt === t.date || quietNow(a)) continue;
       const tier = await tierOf(a.user_id);
       if (!TG_LIMITS[tier].rollPrompt) continue;
       const open = (await blocksOn(db, a.user_id, t.date)).filter((b) => !b.done_at);
@@ -105,7 +112,7 @@ export async function POST(req: NextRequest) {
   if (t.weekday === 0 && t.hhmm >= "20:00") {
     const from = istParts(now - 6 * 86400_000).date;
     for (const a of linked) {
-      if (a.prefs.weekly === false || a.last_weekly === t.date) continue;
+      if (a.prefs.weekly === false || a.last_weekly === t.date || quietNow(a)) continue;
       if (!TG_LIMITS[await tierOf(a.user_id)].weeklyReview) continue;
       await db.from("telegram_accounts").update({ last_weekly: t.date }).eq("user_id", a.user_id);
       const { data } = await db.from("telegram_reminders").select("done_at").eq("user_id", a.user_id).eq("kind", "block").gte("event_date", from).lte("event_date", t.date);
@@ -114,6 +121,24 @@ export async function POST(req: NextRequest) {
       const done = data!.filter((d) => d.done_at).length, pct = Math.round((done / total) * 100);
       const advice = pct >= 80 ? "Strong week. Keep the same load." : pct >= 50 ? "Decent. Roll the missed blocks into next week's lighter days." : "A tough week. Consider fewer hours per day so the plan is one you can keep, and re-plan from today.";
       if (await deliver(a, `📊 <b>Your week</b>\n${done} of ${total} blocks done (${pct}%).\n${advice}`, [[{ text: "Open Study Planner", url: appLink("/calendar") }]])) out.weekly++;
+    }
+  }
+
+  // streak nudge (Plus, Pro) at 8 pm IST: practised yesterday, nothing yet today
+  if (t.hhmm >= "20:00" && t.hhmm < "22:30") {
+    const dayStart = istToMs(t.date, "00:00");
+    const candidates = linked.filter((a) => a.prefs.streak !== false && !quietNow(a));
+    if (candidates.length) {
+      const { data: tries } = await db.from("exam_attempts").select("user_id, server_started_at").in("user_id", candidates.map((a) => a.user_id)).gte("server_started_at", new Date(dayStart - 86400_000).toISOString());
+      const yesterday = new Set<string>(), todayDone = new Set<string>();
+      for (const x of tries ?? []) (Date.parse(x.server_started_at) >= dayStart ? todayDone : yesterday).add(x.user_id);
+      for (const a of candidates) {
+        if (!yesterday.has(a.user_id) || todayDone.has(a.user_id)) continue;
+        if (!TG_LIMITS[await tierOf(a.user_id)].streakNudge) continue;
+        const { error } = await db.from("telegram_sent").insert({ key: `streak:${a.user_id}:${t.date}` });
+        if (error) continue;
+        if (await deliver(a, "🔥 You practised yesterday. A quick 10-question set today keeps your streak going.", [[{ text: "Practise now", url: appLink("/setup") }]])) out.streaks++;
+      }
     }
   }
 
@@ -126,7 +151,7 @@ export async function POST(req: NextRequest) {
       const starting = Date.parse(mk.starts_at) > now;
       for (const a of linked) {
         if (branchOf.get(a.user_id) !== mk.branch_code || a.blocked) continue;
-        if (starting) { if (a.prefs.mocks === false || !TG_LIMITS[await tierOf(a.user_id)].mockReminders) continue; }
+        if (starting) { if (a.prefs.mocks === false || quietNow(a) || !TG_LIMITS[await tierOf(a.user_id)].mockReminders) continue; }
         const key = `mock-${starting ? "start" : "results"}:${mk.id}:${a.user_id}`;
         const { error } = await db.from("telegram_sent").insert({ key });
         if (error) continue; // already sent

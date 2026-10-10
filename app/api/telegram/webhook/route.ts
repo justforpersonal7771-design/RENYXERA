@@ -6,6 +6,7 @@ import { TG_LIMITS, istParts, istToMs } from "@/lib/telegram/tiers";
 import { refreshMembership, type Account, type Db } from "@/lib/telegram/server";
 import { appLink, helpMessage, statusMessage, todayMessage } from "@/lib/telegram/messages";
 import { checkRateLimit } from "@/lib/security/rate-limiter";
+import { askMentor } from "@/lib/telegram/ask";
 
 export const runtime = "nodejs";
 
@@ -71,6 +72,7 @@ async function onMessage(db: Db, chatId: number, from: TgUser, text: string) {
     case "/cancel": return cancel(db, acct, chatId, arg);
     case "/digest": return digest(db, acct, chatId, arg, limits.digest);
     case "/verify": return void (await askVerify(db, acct, chatId));
+    case "/ask": return ask(db, acct, chatId, arg, limits.askMentor);
     case "/unlink":
       await db.from("telegram_reminders").delete().eq("user_id", acct.user_id).is("sent_at", null);
       await db.from("telegram_accounts").delete().eq("user_id", acct.user_id);
@@ -128,6 +130,17 @@ async function onContact(db: Db, chatId: number, from: TgUser, c: { phone_number
   const { error } = await db.from("profiles").update({ phone, phone_verified: true }).eq("id", acct.user_id);
   if (error) return void (await removeKeyboard(chatId, "Couldn't save that just now. Please try again in a minute."));
   await removeKeyboard(chatId, `✅ <b>Mobile number verified</b>: ${html(maskPhone(phone))}. It's now locked to your account.`);
+}
+
+/** Pro: a doubt answered by the AI Mentor, from Telegram. */
+async function ask(db: Db, acct: Account, chatId: number, question: string, allowed: boolean) {
+  if (!allowed) return void (await send(chatId, "Asking the AI Mentor from Telegram is a <b>Pro</b> feature.", [[{ text: "See plans", url: appLink("/pro") }]]));
+  if (question.length < 8) return void (await send(chatId, "Send your doubt after the command, for example:\n<code>/ask Why is the time complexity of building a heap O(n)?</code>"));
+  if (!checkRateLimit(`tgask:${acct.user_id}`, { limit: 4, windowMs: 60_000 }).allowed) return void (await send(chatId, "One moment, you're asking quickly. Try again in a minute."));
+  await send(chatId, "🤔 Thinking…");
+  const r = await askMentor(db, acct.user_id, question);
+  if (r.ok) return void (await send(chatId, html(r.text), [[{ text: "Go deeper in the app", url: appLink("/ai-mentor") }]]));
+  await send(chatId, r.reason === "quota" ? "You've used today's AI requests. They reset at midnight (IST). You can also earn a few extra with a sponsor break in the app." : "I couldn't get an answer just now. Please try again in a minute.");
 }
 
 async function timer(db: Db, acct: Account, chatId: number, arg: string, cap: number, tier: string) {

@@ -50,6 +50,7 @@ function ReceiptInner() {
             {p.branch && <Row k="Branch" v={p.branch} />}
             <Row k="Valid from" v={fmtDate(p.validFrom)} />
             <Row k="Valid until" v={fmtDate(p.validUntil)} />
+            {(p.discountPaise ?? 0) > 0 && <Row k={`Coupon ${p.couponCode ?? ""}`} v={`− ${formatPrice(p.discountPaise ?? 0)}`} />}
             {p.creditPaise > 0 && <Row k="Credit for unused Plus days" v={`− ${formatPrice(p.creditPaise)}`} />}
             <Row k="Payment method" v={p.method ? `${p.method}${p.methodDetail ? ` ${p.methodDetail}` : ""}` : "Online (Razorpay)"} />
             <Row k="Payment ID" v={p.paymentId ?? "—"} />

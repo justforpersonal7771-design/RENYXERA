@@ -68,13 +68,13 @@ Fee on ₹1,00,000 of sales: Razorpay standard ≈ ₹2,360; Cashfree (offer) �
 - [x] **"I paid — check" button** and an **hourly reconcile job** that asks Razorpay about unconfirmed orders and applies paid ones (this change)
 
 ### Next (recommended order)
-- [ ] Run migration `0034_payment_receipts.sql` (stores the payment method on the order)
+- [x] Run migration `0034_payment_receipts.sql` (stores the payment method on the order)
 - [ ] Set `NEXT_PUBLIC_SELLER_NAME` / `NEXT_PUBLIC_SELLER_ADDRESS` so receipts show the legal seller; confirm with an accountant whether GST registration or tax invoices are required before sales grow
 - [ ] Email receipt after payment (Resend or Brevo free tier; needs a verified sender)
-- [ ] Admin report: payments, refunds and settlement reconciliation (`scripts/billing-report.mjs`): match Razorpay settlements to orders
-- [ ] Refund tooling: a script that refunds in Razorpay and revokes the entitlement in one step; refund policy page already says purchases are final, failed/duplicate charges are always fixed
+- [x] Admin report from the database: `node --env-file=.env.local scripts/billing-report.mjs` (by month, plan and coupon; compare with Razorpay Settlements)
+- [x] Refund tooling: `scripts/refund.mjs pay_XXXX --do --revoke` refunds in Razorpay and ends the plan in one step (dry run by default)
 - [ ] Failed-payment follow-up: nudge when an order stays "created" for 24 h
-- [ ] Coupon / promo codes (server-validated, single use, expiry); student-group codes for clubs
+- [x] Coupon / promo codes: server-validated, once per member, optional use limit, expiry and plan list; "Coupon code" box in the confirm window; shown on the receipt (migration 0036). Create codes in the SQL editor, see the comment in `0036_coupons_and_goals.sql`
 - [ ] Gift passes (pay for someone else's season pass)
 - [ ] Chargeback / dispute runbook (who responds, what evidence: receipt, entitlement log, device log)
 - [ ] Keep financial records for the period an accountant advises (receipts and orders are already immutable in `billing_orders`)

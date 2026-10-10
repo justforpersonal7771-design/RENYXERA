@@ -35,7 +35,7 @@ export async function GET() {
       const from = o.paid_at ? new Date(o.paid_at) : null;
       return {
         id: o.id, receiptNo: receiptNo(o), plan: planLabel(o.plan_id), planId: o.plan_id, status: o.status, mode: o.mode,
-        amountPaise: o.amount_paise, creditPaise: o.upgrade_credit_paise ?? 0, createdAt: o.created_at, paidAt: o.paid_at,
+        amountPaise: o.amount_paise, creditPaise: o.upgrade_credit_paise ?? 0, couponCode: o.coupon_code ?? null, discountPaise: o.discount_paise ?? 0, createdAt: o.created_at, paidAt: o.paid_at,
         validFrom: from?.toISOString() ?? null, periodDays: o.period_days,
         validUntil: from ? new Date(from.getTime() + o.period_days * 86400_000).toISOString() : null,
         orderId: o.razorpay_order_id, paymentId: o.razorpay_payment_id, method: o.payment_method ?? null, methodDetail: o.payment_detail ?? null, branch: o.branch_code ?? null,

@@ -22,6 +22,7 @@ await call("setMyCommands", {
     { command: "alarms", description: "List timers and alarms" },
     { command: "cancel", description: "Cancel timers or alarms" },
     { command: "digest", description: "Morning digest time (Plus, Pro)" },
+    { command: "ask", description: "Ask the AI Mentor a doubt (Pro)" },
     { command: "verify", description: "Verify your mobile number" },
     { command: "status", description: "Link and channel status" },
     { command: "help", description: "What I can do" },

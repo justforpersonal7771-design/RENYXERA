@@ -59,6 +59,20 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
   const turnstileRef = useRef<TurnstileHandle>(null);
   const [interested, setInterested] = useState<PlanId[]>([]);
   const [confirm, setConfirm] = useState<PlanId | null>(null);
+  // Coupon box in the confirm window: the server decides what the code is worth; the order checks it again.
+  const [couponText, setCouponText] = useState("");
+  const [coupon, setCoupon] = useState<{ code: string; label: string; discountPaise: number } | null>(null);
+  const [couponMsg, setCouponMsg] = useState<string | null>(null);
+  const [couponBusy, setCouponBusy] = useState(false);
+  const applyCoupon = async (planId: string) => {
+    if (couponText.trim().length < 3) return;
+    setCouponBusy(true); setCouponMsg(null);
+    try {
+      const r = await fetch("/api/billing/coupon", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, code: couponText }) });
+      const j = await r.json();
+      if (j.valid) { setCoupon({ code: j.code, label: j.label, discountPaise: j.discountPaise }); setCouponMsg(null); } else { setCoupon(null); setCouponMsg(j.reason || j.error || "That code isn't valid."); }
+    } catch { setCouponMsg("Couldn't check the code. Try again."); } finally { setCouponBusy(false); }
+  };
   const payments = BILLING_MODE !== "interest";
 
   const upgrade = async (planId: PlanId) => {
@@ -74,9 +88,9 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
       }
       if (!signedIn) { useToastStore.getState().show("Sign in first to upgrade.", "info"); return; }
       // First click opens the confirm window; its Pay button calls this again.
-      if (confirm !== planId) { setAgreed(false); setTypedPaper(""); setCaptcha(null); setConfirm(planId); return; }
+      if (confirm !== planId) { setAgreed(false); setTypedPaper(""); setCaptcha(null); setCoupon(null); setCouponText(""); setCouponMsg(null); setConfirm(planId); return; }
       if (!agreed || !paperOk || !captcha) return;
-      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, acceptedTerms: true, turnstileToken: captcha ?? undefined, branchConfirm: typedPaper.trim().toUpperCase() }) });
+      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, coupon: coupon?.code, acceptedTerms: true, turnstileToken: captcha ?? undefined, branchConfirm: typedPaper.trim().toUpperCase() }) });
       turnstileRef.current?.reset(); setCaptcha(null);
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
@@ -191,7 +205,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           const cp = planById(confirm, serverNow())!;
           const up = cp.tier === "pro" && ent.tier === "plus";
           const credit = up ? Math.min(ent.upgradeCreditPaise, (cp.pricePaise ?? 0) - 100) : 0;
-          const total = (cp.pricePaise ?? 0) - credit;
+          const total = Math.max(100, (cp.pricePaise ?? 0) - credit - (coupon?.discountPaise ?? 0));
           const gold = cp.tier === "pro";
           return (
             <motion.div className="fixed inset-0 z-[300] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -208,6 +222,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                 <h2 className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">Confirm {cp.name}</h2>
                 <dl className="mt-4 space-y-2 rounded-2xl bg-[var(--surface-secondary)]/60 p-4 text-sm">
                   <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">{cp.name}</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(cp.pricePaise)}</dd></div>
+                  {coupon && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Coupon {coupon.code} ({coupon.label})</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">− {formatPrice(coupon.discountPaise)}</dd></div>}
                   {credit > 0 && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Credit for unused Plus days</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">−{formatPrice(credit)}</dd></div>}
                   <div className="flex justify-between border-t border-[var(--border-subtle)] pt-2"><dt className="font-bold text-[var(--text-primary)]">You pay today</dt><dd className="font-num text-lg font-extrabold text-[var(--text-primary)]">{formatPrice(total)}</dd></div>
                   <p className="text-[11px] text-[var(--text-muted)]">{cp.periodDays} days of {gold ? "Pro" : "Plus"} from today · taxes included</p>
@@ -217,6 +232,15 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                   <li>• Does <b className="text-[var(--text-primary)]">not</b> renew automatically — no surprise charges.</li>
                   <li>• Purchases are final: <b className="text-[var(--text-primary)]">no refunds</b> (a failed or duplicate charge is always fixed).</li>
                 </ul>
+                <div className="mt-4">
+                  <div className="flex gap-2">
+                    <input value={couponText} onChange={(e) => { setCouponText(e.target.value.toUpperCase()); setCoupon(null); setCouponMsg(null); }} placeholder="Coupon code (optional)" maxLength={32} autoComplete="off" spellCheck={false} aria-label="Coupon code"
+                      className="h-10 min-w-0 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold uppercase tracking-wider placeholder:font-normal placeholder:normal-case placeholder:tracking-normal" />
+                    <button type="button" onClick={() => applyCoupon(cp.id)} disabled={couponBusy || couponText.trim().length < 3} className="h-10 shrink-0 rounded-xl border border-[var(--border)] px-4 text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] disabled:opacity-50 cursor-pointer">{couponBusy ? "Checking…" : "Apply"}</button>
+                  </div>
+                  {coupon && <p className="mt-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">Code applied: {coupon.label}.</p>}
+                  {couponMsg && <p className="mt-1.5 text-xs font-semibold text-rose-500">{couponMsg}</p>}
+                </div>
                 <div className="mt-4 rounded-xl border border-amber-500/40 bg-amber-500/5 p-3">
                   <p className="text-xs text-[var(--text-secondary)]">This plan is for <b className="text-[var(--text-primary)]">GATE {branchPaper}</b> only and stays locked to your account&apos;s branch. If you use your one branch change later, the plan moves with it.</p>
                   <label className="mt-2 block text-[11px] text-[var(--text-secondary)]">Type <b>{branchPaper}</b> to confirm

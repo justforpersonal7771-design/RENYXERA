@@ -48,7 +48,11 @@ export function DiagnosticCard({ solved }: { solved: number }) {
   const [air, setAir] = useState("");
   const [busy, setBusy] = useState(false);
 
+  const profile = useAuthStore((s) => s.profile) as ({ weekly_study_days?: number | null; target_air?: number | null } | null);
   useEffect(() => {
+    // Saved on the account (migration 0036) wins over this device's copy.
+    if (profile?.weekly_study_days) setDays(profile.weekly_study_days);
+    if (profile?.target_air) setAir(String(profile.target_air));
     try {
       const g = JSON.parse(localStorage.getItem(KEY) || "null");
       if (g?.days) setDays(g.days);
@@ -64,6 +68,8 @@ export function DiagnosticCard({ solved }: { solved: number }) {
     setBusy(true);
     try {
       try { localStorage.setItem(KEY, JSON.stringify({ days, air: air ? Number(air) : null })); } catch { /* ignore */ }
+      // Also save to the account so the goals follow the learner to other devices (a no-op until migration 0036 is run).
+      if (user) void import("@/lib/supabase/client").then(({ createClient }) => createClient().from("profiles").update({ weekly_study_days: days, target_air: air ? Number(air) : null }).eq("id", user.id)).catch(() => null);
       const draft: ExamSessionDraft = {
         id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
         config: { examType: "CUSTOM_TEST", questionCount: ids.length },

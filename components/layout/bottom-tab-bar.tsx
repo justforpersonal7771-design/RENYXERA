@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrainCircuit, Download, LayoutDashboard, Library, Menu, PieChart, Settings, Timer, Wrench, X } from "lucide-react";
+import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Timer, Wrench, X } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -40,6 +40,7 @@ export function BottomTabBar() {
   const rest = [
     { label: "Mocks", href: "/mocks", icon: Timer, active: pathname.startsWith("/mocks") },
     { label: "Analytics", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },
+    { label: "Browse topics", href: "/browse", icon: ListTree, active: pathname.startsWith("/browse") },
     { label: "Tools", href: TOOLS_HOME, icon: Wrench, active: isToolPath(pathname) },
     ...(signedIn ? [{ label: "Downloads", href: "/downloads", icon: Download, active: pathname.startsWith("/downloads") }] : []),
   ];

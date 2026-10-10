@@ -524,61 +524,44 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 Detail lives in docs/GROWTH_TASKS.md, docs/COMPETITOR_GAPS.md, docs/PAYMENTS_RESEARCH.md, docs/STUDY_PLANNER_FEATURES.md and docs/TELEGRAM_INTEGRATION.md. This section is kept in step with all of them every turn.
 Product rules: never advertise "no login", guide visitors to sign in; no lifetime offer and no free trial; AI-assisted features sit in Pro; unfinished study blocks are asked about once a day, never moved silently; server time, not the device clock, for anything time-based.
 
-### Done (shipped and live unless noted)
+### Done (shipped; live unless noted)
 **Money**
-- [x] Live Razorpay payments (instant verify + signed webhook + hourly reconcile job), season pass with exam-year picker priced from the server clock (no lifetime, no trial), prorated Plus→Pro, key-mode guard
-- [x] Billing history and printable receipts in Profile → Plan & payments, "I paid — check", payment-received message on Telegram
-- [x] Plan-ending reminder in the app (7 days, daily, 30 days after) and on Telegram (3 days and 1 day); upgrade prompts open the Plans window in place
-- [x] Cashfree vs Razorpay research: keep Razorpay, revisit 1 Jan 2027 (docs/PAYMENTS_RESEARCH.md)
+- [x] Live Razorpay payments (instant verify + signed webhook + hourly reconcile), season pass with exam-year picker priced from the server clock, prorated Plus→Pro, billing history + printable receipts, "I paid — check", payment-received message on Telegram
+- [x] Coupons: server-validated codes (percent or flat, once per member, use limit, expiry, plan list), coupon box in the confirm window, discount on the receipt (needs migration 0036)
+- [x] Money scripts: `scripts/refund.mjs` (refund + end plan), `scripts/billing-report.mjs` (by month, plan, coupon)
+- [x] Plan-ending reminders (app and Telegram); upgrade prompts open the Plans window in place; Cashfree vs Razorpay research (keep Razorpay, revisit 1 Jan 2027)
 
-**Study Planner**
-- [x] Free planner for every branch, exam date set automatically from the target year (date picker to change), 150-day article removed
-- [x] Plus/Pro "Add to my Study Planner": asks first, free times in any number of windows per weekday, rest days, changes for single dates, phases, replace old plan, optional Telegram reminders
-- [x] "My plans" on the Study Planner page: each plan is a set with progress, remove unfinished or the whole plan; "Change a day" re-fits the plan; Telegram status shown (Active / paused / Not linked)
-- [x] Missed blocks asked once a day (roll forward / skip / ask tomorrow); Pro "Re-plan the rest"
-- [x] Navbar calendar panel → "Open Study Planner"; AI Mentor exam countdown automatic
+**Study Planner** (docs/STUDY_PLANNER_FEATURES.md)
+- [x] Free planner for every branch, exam date automatic, exact hours per section (Plus/Pro)
+- [x] Add to Study Planner: free-time windows per weekday, rest days, single-date changes, templates (Pro), phases, replace old plan, optional Telegram reminders
+- [x] My plans: named sets with progress, remove unfinished or whole plan; Change a day; Telegram status; missed blocks asked once a day; Pro re-plan, re-plan around weak topics, what-if
+- [x] How your plan is going (this week, so far, whole plan; Pro on-track/at-risk), today's blocks on the dashboard with Start timer, study timer labelled by subject, spaced reviews at 1/3/7/14 days, add upcoming mocks, calendar export (.ics)
 
-**Telegram** (code live; needs your setup below)
-- [x] Link account, verify channel + group membership, mobile number verification (one tap, locked after), commands (/today /timer /alarm /alarms /cancel /digest /verify /status /help /unlink)
-- [x] Tiered: Free (countdown, mock results, 1 timer) · Plus (block reminders with Done/+15, morning digest, 3 alarms, mock-starting, plan-ending) · Pro (evening roll-forward, weekly report, 10 alarms/timers)
-- [x] Two-way sync with the calendar, simple-English plan comparison with ticks, animated plane, join cards hide once joined, privacy policy updated
+**Telegram** (docs/TELEGRAM_INTEGRATION.md)
+- [x] Link, channel + group check, mobile verification, commands (/today /timer /alarm /alarms /cancel /digest /verify /ask /status /help /unlink)
+- [x] Free: countdown, mock results, 1 timer · Plus: block reminders (Done/+15), digest, 3 alarms, mock-starting, streak reminder, quiet hours, plan-ending · Pro: evening roll-forward, weekly report, 10 alarms/timers, /ask the AI Mentor
+- [x] Two-way calendar sync, simple-English plan comparison with ticks, animated plane, join cards hide when joined, privacy policy updated
 
 **Product and content**
-- [x] Syllabus with weightage for every branch (CS now on the same features), Where-to-start card, topic progress badges, Checkpoint quizzes, GATE updates page (official sources), syllabus hub
-- [x] Branch-aware most-repeated topics (also fixed it mixing all papers), Tools dock opens your own branch
-- [x] Calculator with the official GATE key set, GATE layout, live result row, readable long expressions
-- [x] Bottom tab bar (Home, Practice, Review, AI Mentor, More sheet), Focus Target on phones, top hamburger removed
-- [x] Today card + daily missions, diagnostic onboarding, study timer, fresh 65-question mock, install prompt, sign-in-led welcome, avatar picker in onboarding
-- [x] Server-time clock everywhere in the UI; fixes: purchase modal clipping, results card clipping, AI Mentor single reveal, nav theme icon, profile menu stays open, mobile topbar fit
+- [x] Syllabus for every branch (progress badges with show/hide, Where-to-start), Checkpoint quizzes, GATE updates, syllabus hub, branch-aware most-repeated topics
+- [x] Topic browser (/browse, search), time-split tips on Mocks, Beat my score (challenge link, `/challenge`, comparison on results), diagnostic goals saved to the profile (needs migration 0036)
+- [x] Calculator with the official GATE keys and layout, live result row; bottom tab bar with More sheet; Today card + missions; diagnostic onboarding; fresh 65-question mock; install prompt; avatar picker in onboarding
+- [x] Server-time clock in the UI; fixes: purchase modal, results card, AI Mentor reveal, theme icon, profile menu, mobile topbar
 
-### Needs you (I cannot do these)
-- [ ] **Telegram setup** (steps in docs/TELEGRAM_INTEGRATION.md): bot admin of channel + group · secret word in GitHub and Cloudflare (`TELEGRAM_WEBHOOK_SECRET`) · `TELEGRAM_BOT_TOKEN` in Cloudflare · run migration `0035_telegram.sql` · run the "Telegram setup" workflow · optional pg_cron every-minute job
-- [ ] **New `PREGEN_SECRET`**: same value in GitHub and Cloudflare (and in the pg_cron job once created); then run "Billing reconcile" once to confirm
-- [ ] Confirm migrations run: `0033_season_pass` (long season passes) · `0029_da_live` · `0030_phone_lock` (0034 receipts: done)
-- [ ] Real ₹29 payment: check the bank credit on 13 Oct (Razorpay → Settlements); report the QR display-name and own-card issues to Razorpay (steps given)
-- [ ] Optional: set `NEXT_PUBLIC_SELLER_NAME` / `NEXT_PUBLIC_SELLER_ADDRESS` for receipts; ask an accountant about GST
-- [ ] Optional: rename the bot (suggestion: RENYXERA Study Buddy) with BotFather `/setname`
-- [ ] Growth tasks: G-5 tracking sheet, C-3 community posts, V-1 record 3 Shorts, P-1 first partner offers
+### Needs you
+- [ ] **Run migration `0036_coupons_and_goals.sql`** (coupons, goals on the profile). To make a coupon, see the comment at the top of that file
+- [ ] Growth tasks (yours to check): G-5 tracking sheet, C-3 value posts in the top 5 communities, V-1 record 3 Shorts, P-1 first partner offers
+- [ ] Optional: rename the bot with BotFather (suggested RENYXERA Study Buddy); set `NEXT_PUBLIC_SELLER_NAME` / `NEXT_PUBLIC_SELLER_ADDRESS` for receipts; ask an accountant about GST
+- [x] Done by you (10 Oct): Telegram setup, PREGEN_SECRET, migrations 0029 / 0030 / 0033 / 0034 / 0035, the real ₹29 payment
 
-### Next up — I can build these (priority order)
-**Study Planner** (docs/STUDY_PLANNER_FEATURES.md)
-- [ ] Today view from the planner on the dashboard · per-section priority and hours override · weekly review card in the app
-- [ ] Topic-level coverage · spaced revision (reviews at 1, 3, 7, 14 days) · study-timer sessions linked to blocks · mock calendar · progress score
-- [ ] Pro: what-if plans, plan health, AI Mentor re-plan, templates, PDF/ICS export · Pomodoro / focus mode
-**Telegram**
-- [ ] Ask the AI Mentor from Telegram (Pro) · weak-topic nudges (Pro) · streak-at-risk nudge (Plus) · quiet hours · study-buddy group reminders
-**Payments** (docs/PAYMENTS_RESEARCH.md §6)
-- [ ] Coupons and gift passes · email receipts · refund tooling · settlement report · Razorpay Subscriptions / UPI Autopay (after demand shows) · Cashfree as second gateway (after their answers)
-**Competitor gaps** (docs/COMPETITOR_GAPS.md)
-- [ ] #8 weekly benchmark + share card (needs L-3) · #10 "Beat my score" · #11 weekly league · #13 General Aptitude lessons · #16 flashcards · #18 topic browser · #19 time-split tips
-- [ ] #17 predictor and cut-offs for EC/EE/ME/DA (needs verified official data, S-5) — the cut-off tool, rank predictor and /topics pages are still CS-only
+### Next up — not built, and why
+- [ ] Weak-topic nudges on Telegram (Pro) — needs analytics on the server (today it lives on the learner's device)
+- [ ] #8 weekly benchmark vs peers + share card — needs server-side aggregates and the on-hold Share result (L-3)
+- [ ] #11 weekly league · #13 General Aptitude lessons · #16 flashcards — big content or database builds
+- [ ] #17 predictor and cut-offs for EC/EE/ME/DA (and the CS-only cut-off tool and /topics pages) — needs verified official data per paper (S-5)
 - [ ] P3: #20 older papers + CE · #21 PDF notes · #22 study rooms
-**Follow-ups**
-- [ ] Save diagnostic goals (weekly days, target rank) to the profile instead of this device · show/hide toggle for syllabus progress · "what you missed" notes after a Checkpoint
-
-### Decided / dropped
-- [x] #7 GATE season pass done; the free trial was dropped on purpose · #14 GATE updates done · #2/#3/#4/#5/#6/#9/#12/#15 done
-- [x] 150-day plan removed (replaced by the flexible planner)
+- [ ] Payments: gift passes · email receipts (needs an email provider account) · Razorpay Subscriptions / UPI Autopay (after demand) · Cashfree as second gateway (after their answers)
+- [ ] Planner: PDF export · Pomodoro focus mode · study-buddy group reminders · "what you missed" notes after a Checkpoint
 
 ### On hold (by you)
 - [ ] L-3 Share result · PYQ extraction for CE and remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs · custom domain until revenue

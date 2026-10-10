@@ -9,6 +9,7 @@ export type OrderRow = {
   id: number; plan_id: string; amount_paise: number; upgrade_credit_paise?: number | null; period_days: number;
   razorpay_order_id: string | null; razorpay_payment_id: string | null; status: string; mode: string;
   created_at: string; paid_at: string | null; branch_code?: string | null; payment_method?: string | null; payment_detail?: string | null;
+  coupon_code?: string | null; discount_paise?: number | null;
 };
 
 /** Human plan name for any plan id, including season passes (which no longer need a live price lookup). */

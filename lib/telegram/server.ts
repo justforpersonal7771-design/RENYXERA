@@ -12,7 +12,7 @@ import { TELEGRAM_CHANNEL, TELEGRAM_GROUP, TG_LIMITS, type TgLimits } from "@/li
 export type Db = ReturnType<typeof createServiceRoleClient>;
 export type Account = {
   user_id: string; chat_id: number; tg_username: string | null; tg_first_name: string | null; linked_at: string;
-  in_channel: boolean | null; in_group: boolean | null; checked_at: string | null; prefs: Record<string, boolean>; digest_time: string; blocked: boolean;
+  in_channel: boolean | null; in_group: boolean | null; checked_at: string | null; prefs: Record<string, unknown>; digest_time: string; blocked: boolean;
   last_digest: string | null; last_roll_prompt: string | null; last_weekly: string | null;
 };
 

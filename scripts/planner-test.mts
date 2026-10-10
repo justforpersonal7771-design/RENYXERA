@@ -48,6 +48,11 @@ check("a full mock gets a 3-hour block when a window is long enough", longMock.e
 const shortWin = buildSchedule({ ...base, start: "2027-01-10", availability: simpleAvailability([1, 2, 3, 4, 5, 6], 2, "18:00") });
 check("short windows never get a fake 3-hour mock", !shortWin.events.some((e) => e.title.startsWith("Full mock")));
 
+const fixed = buildSchedule({ ...base, fixedHours: { DBMS: 20 } });
+const dbmsMin = fixed.events.filter((e) => e.phase === "learn" && e.subject === "DBMS").reduce((n, e) => n + e.durationMin, 0);
+check("a section with exact hours gets about those hours", Math.abs(dbmsMin - 20 * 60) <= 60, `${dbmsMin / 60} h`);
+check("exact hours do not break the rest of the plan", fixed.events.some((e) => e.subject === "Algorithms") && fixed.events.every((e) => e.date < base.examDate));
+
 check("a short runway still produces a plan", buildSchedule({ ...base, start: "2027-01-28" }).events.length > 0);
 check("nothing is scheduled when the start is past the exam", buildSchedule({ ...base, start: "2027-03-01" }).events.length === 0);
 console.log(failed ? `\n${failed} check(s) failed` : "\nAll planner checks passed");

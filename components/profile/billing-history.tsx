@@ -11,7 +11,7 @@ import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 export type PaymentRow = {
   id: number; receiptNo: string; plan: string; planId: string; status: "created" | "paid" | "failed"; mode: string;
-  amountPaise: number; creditPaise: number; createdAt: string; paidAt: string | null; validFrom: string | null; validUntil: string | null;
+  amountPaise: number; creditPaise: number; couponCode?: string | null; discountPaise?: number; createdAt: string; paidAt: string | null; validFrom: string | null; validUntil: string | null;
   periodDays: number; orderId: string | null; paymentId: string | null; method: string | null; methodDetail: string | null; branch: string | null;
 };
 export type HistoryResponse = { buyer: { name: string | null; username: string | null; email: string | null }; payments: PaymentRow[] };

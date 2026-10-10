@@ -42,7 +42,7 @@ Tick items as they ship. Sorted by priority, then usefulness to a GATE student, 
 - [x] **#7** One-time "GATE 2027 pass" (valid to March 2027) next to monthly plans, plus a 7–15 day trial — Forge; Their lifetime offer undercuts our monthly price for exam-season buyers; effort S (config)
 - [ ] **#8** Weekly benchmark vs peers in your branch and a shareable weekly card — PadhaiShuru; Motivation and free sharing (links to our on-hold Share result); effort M
 - [x] **#9** Study timer with daily goal (verified study minutes, week/month totals) — PadhaiShuru; Habit tracking; we show study hours but have no live timer (verify); effort M
-- [ ] **#10** "Beat my score" friend challenge, then ELO 1v1 — Forge; Viral loop plus retention; effort M–L
+- [x] **#10** "Beat my score" friend challenge, then ELO 1v1 — Forge; Viral loop plus retention; effort M–L
 - [ ] **#11** Weekly league with promotion (top 10 move up) — Forge; Turns the leaderboard into a weekly goal; effort M
 - [x] **#12** Fresh randomised full mock each attempt with difficulty control — Forge; Unlimited practice; verify what our custom/AI test already covers; effort S–M
 - [ ] **#13** General Aptitude lessons + daily 6-question test — Grind; GA is 15 marks for every branch; effort L
@@ -53,8 +53,8 @@ Tick items as they ship. Sorted by priority, then usefulness to a GATE student, 
 - [x] **#15** Install as app + push reminders (PWA) — Forge; Better than waiting for the Telegram bot; effort M
 - [ ] **#16** Flashcard decks (formulas, definitions) — Forge; Fast revision; needs content; effort L
 - [ ] **#17** Predictor and cut-offs for EC/EE/ME/DA (we have CS only) — PadhaiShuru; Search traffic; needs verified official data (task S-5); effort M
-- [ ] **#18** Subject/topic browser with counts and search — Grind; Discovery on public pages (verify our header search); effort M
-- [ ] **#19** Mock time-split tips; 90-second demo video — Grind; Small trust builders; effort S
+- [x] **#18** Subject/topic browser with counts and search — Grind; Discovery on public pages (verify our header search); effort M
+- [x] **#19** Mock time-split tips; 90-second demo video — Grind; Small trust builders; effort S
 
 ### P3
 

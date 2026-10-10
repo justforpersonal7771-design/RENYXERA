@@ -14,7 +14,8 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { motion, AnimatePresence, useMotionValue, useTransform, animate } from "motion/react";
 import {
   Award, Clock, Target, AlertCircle, CheckCircle,
-  XCircle, ArrowRight, Home, RefreshCw, BarChart2, ListFilter, HelpCircle, Sparkles, TrendingUp, LayoutGrid, Flag, FlipHorizontal2
+  XCircle, ArrowRight, Home, RefreshCw, BarChart2, ListFilter, HelpCircle, Sparkles, TrendingUp, LayoutGrid, Flag, FlipHorizontal2,
+  Swords,
 } from "lucide-react";
 import { GoalTagBadge } from "@/components/ui/goal-tag-badge";
 
@@ -24,6 +25,10 @@ import { useDataStore } from "@/store/use-data-store";
 import { AnswersPendingBanner } from "@/components/exam/answers-pending-banner";
 import { paperLabel } from "@/lib/branch/current";
 import { useMockResultsGate, MockResultsLocked } from "@/components/exam/mock-results-gate";
+import { challengeUrl } from "@/lib/growth/challenge";
+import { useAuthStore } from "@/store/use-auth-store";
+import { useToastStore } from "@/store/use-toast-store";
+import { track } from "@/lib/growth/track";
 /** Animated count-up for a numeric value, e.g. marks or accuracy percentage. */
 function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
   const motionValue = useMotionValue(0);
@@ -285,6 +290,19 @@ export default function ResultSummaryPage() {
     return { label: "Keep Practicing", message: wrong > correct * 2 ? `${wrong} of ${totalAttempted} attempts were wrong. Slow down on questions you aren't sure about and revisit the fundamentals.` : "Every attempt builds understanding. Review the breakdown and revisit the fundamentals." };
   })();
 
+  // "Beat my score": if this attempt came from a friend's challenge, say how it compares; otherwise offer to challenge a friend.
+  const ch = (session.draftConfig.config as { challenge?: { score: number; max: number; by: string } }).challenge;
+  const myMarks = Math.round(marks * 100) / 100;
+  const challengeLine = ch ? (myMarks > ch.score ? `You beat ${ch.by}'s ${ch.score}/${ch.max} with ${myMarks}.` : myMarks === ch.score ? `You matched ${ch.by}'s ${ch.score}/${ch.max}.` : `${ch.by} scored ${ch.score}/${ch.max}. You got ${myMarks}. Try again?`) : null;
+  const shareChallenge = async () => {
+    const url = challengeUrl(window.location.origin, { ids: session.draftConfig.questions.map((q) => q.questionId), score: marks, max: maxPossibleMarks, by: useAuthStore.getState().profile?.display_name || "A friend", title: String((session.draftConfig.config as { title?: string }).title ?? "Practice set") });
+    const text = `I scored ${myMarks}/${maxPossibleMarks} on this set. Can you beat it?`;
+    try {
+      if (navigator.share) await navigator.share({ title: "Beat my score", text, url });
+      else { await navigator.clipboard.writeText(`${text} ${url}`); useToastStore.getState().show("Challenge link copied. Paste it to your friend.", "success"); }
+      track("invite_shared", null, "challenge");
+    } catch { /* cancelled */ }
+  };
   const renderActions = (cls: string) => (
             <div className={cls}>
               <ShareResultButton className="h-auto py-3 [@media(max-height:860px)]:py-2.5"
@@ -506,7 +524,7 @@ export default function ResultSummaryPage() {
                         className="inline-flex items-center gap-2 text-lg sm:text-xl lg:text-3xl font-black tracking-tight text-[var(--text-primary)]">
                         <Award className="w-5 h-5 lg:w-7 lg:h-7 text-amber-500" />{verdict.label}
                       </motion.h1>
-                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-sm mx-auto mt-1">{verdict.message}</p>
+                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-sm mx-auto mt-1">{challengeLine ?? verdict.message}</p>
                     </div>
                   </div>
 
@@ -585,6 +603,9 @@ export default function ResultSummaryPage() {
                 </motion.div>
               ))}
             </div>
+            {!ch && (
+              <button type="button" onClick={shareChallenge} className="mt-2 inline-flex w-fit items-center gap-1.5 rounded-full border border-violet-500/30 px-3 py-1 text-[11px] font-bold text-violet-700 dark:text-violet-300 hover:bg-violet-500/10 cursor-pointer"><Swords className="h-3 w-3" aria-hidden /> Challenge a friend to beat {myMarks}/{maxPossibleMarks}</button>
+            )}
 
                   </div>
                 </div>

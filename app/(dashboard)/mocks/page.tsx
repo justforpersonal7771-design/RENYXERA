@@ -16,6 +16,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { mockOrder } from "@/lib/exam/mock-order";
 import { serverNow } from "@/lib/time/server-time";
+import { TimeSplitTips } from "@/components/exam/time-split-tips";
 
 interface Mock { id: string; title: string; starts_at: string; ends_at: string; results_at: string; question_count: number; duration_seconds: number; start_grace_minutes?: number }
 
@@ -264,6 +265,7 @@ export default function MocksPage() {
       <section className="card-glass rounded-3xl p-5 sm:p-6">
         <h2 className="text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)] mb-4">Exam day</h2>
         <DayTimeline mock={dayRef} now={now} />
+        <div className="mt-5"><TimeSplitTips /></div>
         <p className="mt-4 flex items-start gap-1.5 text-[11px] text-[var(--text-muted)]"><ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500 mt-0.5" /> Start any time in the first 30 minutes and still get the full 180 minutes. Tab switches, leaving full screen and timing are recorded; flagged attempts aren&apos;t ranked. Everyone&apos;s results are released together.</p>
       </section>
 

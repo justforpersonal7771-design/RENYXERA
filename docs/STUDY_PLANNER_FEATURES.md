@@ -36,7 +36,8 @@ Legend: **F** free · **+** Plus · **P** Pro. Status: [x] built · [ ] to do.
 - [x] **+** Reminder before every block with Done / +15 min buttons; morning digest at your time; /alarm (3); mock-starting alert; plan-ending alerts
 - [x] **P** Evening "roll unfinished blocks forward?" (ask once a day), weekly review, 10 alarms / 10 timers
 - [x] Two-way sync: Done and Roll forward in Telegram apply to the calendar; ticking in the app stops the reminder
-- [ ] **P** Ask the AI Mentor from Telegram · weak-topic nudges · streak-at-risk nudge · quiet hours
+- [x] **P** Ask the AI Mentor from Telegram (/ask) · **+** streak-at-risk nudge · **+** quiet hours
+- [ ] **P** Weak-topic nudges on Telegram (needs analytics on the server)
 
 ### Core (the loop that makes it useful)
 - [x] **F** Exam date auto-set from target year, editable with a date picker; live countdown
@@ -49,29 +50,29 @@ Legend: **F** free · **+** Plus · **P** Pro. Status: [x] built · [ ] to do.
 - [x] **F** Telegram status (Active / paused / Not linked) on the Study Planner page
 - [x] **F** Navbar calendar panel links to the full Study Planner
 - [x] **F** Reminder before a paid plan ends (7 days out, daily at the end, 30 days after)
-- [ ] **+** Today view on the dashboard from the planner: "Today's blocks" with start / done (replaces the generic Today card when a plan exists)
+- [x] **+** Today view on the dashboard from the planner: "Today's blocks" with start / done (replaces the generic Today card when a plan exists)
 - [x] **+** Missed-block handling: **asked once a day, never silent** — Roll forward / Skip / Ask me tomorrow
 - [x] **P** "Re-plan the rest": rebuilds everything left from today with the saved settings
-- [ ] **+** Per-section priority (High / Normal / Low) and hours override, not only weak / strong
-- [ ] **+** Different hours per weekday (for example 2 h on weekdays, 6 h on Sunday) and "rest days"
-- [ ] **+** Weekly review card each Sunday: planned vs done hours, blocks missed, what moves next week
+- [x] **+** Per-section priority (High / Normal / Low) and hours override, not only weak / strong
+- [x] **+** Different hours per weekday (for example 2 h on weekdays, 6 h on Sunday) and "rest days"
+- [x] **+** Weekly review card each Sunday: planned vs done hours, blocks missed, what moves next week
 
 ### Next: track and adapt
-- [ ] **+** Syllabus coverage by **topic** (not just section): mark covered, link to the topic checkpoint and syllabus page
-- [ ] **+** Weak topics fed automatically from analytics and mistakes (suggest "weak" instead of the user marking it)
-- [ ] **+** Spaced revision scheduler: after a topic is covered, auto-add reviews at 1, 3, 7 and 14 days (and tie to the mistakes bank)
-- [ ] **+** Study timer sessions linked to a block; time per subject, weekly totals, streak
-- [ ] **+** Mock calendar: schedule full mocks (and the All-India mock) and book the analysis day after each
-- [ ] **+** Progress score: coverage %, hours done vs planned, accuracy trend, projected readiness at exam date
-- [ ] **P** "What if" planning: change hours or exam date and compare two plans side by side
-- [ ] **P** Plan health: an on-track / at-risk indicator with the one change that fixes it
+- [x] **+** Syllabus coverage by **topic** (not just section): mark covered, link to the topic checkpoint and syllabus page
+- [x] **+** Weak topics fed automatically from analytics and mistakes (suggest "weak" instead of the user marking it)
+- [x] **+** Spaced revision scheduler: after a topic is covered, auto-add reviews at 1, 3, 7 and 14 days (and tie to the mistakes bank)
+- [x] **+** Study timer sessions linked to a block; time per subject, weekly totals, streak
+- [x] **+** Mock calendar: schedule full mocks (and the All-India mock) and book the analysis day after each
+- [x] **+** Progress score: coverage %, hours done vs planned, accuracy trend, projected readiness at exam date
+- [x] **P** "What if" planning: change hours or exam date and compare two plans side by side
+- [x] **P** Plan health: an on-track / at-risk indicator with the one change that fixes it
 
 ### Later: polish and reach
 - [ ] **+** Reminders: push (PWA) and Telegram for today's blocks
-- [ ] **+** Google / Apple calendar export (ICS file), then two-way sync
+- [x] **+** Google / Apple calendar export (ICS file), then two-way sync
 - [ ] **+** Pomodoro and focus mode inside a block
-- [ ] **P** Plan templates: 100 / 60 / 30-day crash, working-professional, dropper; share a plan with a friend
-- [ ] **P** AI Mentor re-plan: "my exam is in 6 weeks, I'm weak in X" → proposed changes you approve
+- [x] **P** Plan templates: 100 / 60 / 30-day crash, working-professional, dropper; share a plan with a friend
+- [x] **P** AI Mentor re-plan: "my exam is in 6 weeks, I'm weak in X" → proposed changes you approve
 - [ ] **P** Exports: PDF plan and weekly report
 - [ ] **F** Public share card of a week's progress (links to the on-hold Share result)
 

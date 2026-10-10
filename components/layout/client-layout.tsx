@@ -9,6 +9,7 @@ import { BottomTabBar } from "./bottom-tab-bar";
 import { startTimeSync } from "@/lib/time/server-time";
 import { PlanExpiryNotice } from "@/components/billing/plan-expiry-notice";
 import { UpgradeModalHost } from "@/components/billing/upgrade-modal";
+import { SpacedRevisionSync } from "@/components/planner/spaced-revision-sync";
 import { TelegramActionsSync } from "@/components/planner/telegram-actions-sync";
 import { LaunchIntro } from "./launch-intro";
 import { useDataStore } from "@/store/use-data-store";
@@ -187,6 +188,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
       <TelegramActionsSync />
+      <SpacedRevisionSync />
       <UpgradeModalHost />
       <BottomTabBar />
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />

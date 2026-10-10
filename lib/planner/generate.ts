@@ -16,6 +16,7 @@ export type PlanOptions = {
   availability: Availability;
   sections: PlanSection[];
   marks: Record<string, Mark>;
+  fixedHours?: Record<string, number>;   // exact hours for a section in the learning phase (overrides its weight)
   includeRevision: boolean;
   includeMocks: boolean;
   includeMistakes: boolean;      // a short mistakes-review slot each week of the revision phase
@@ -95,7 +96,13 @@ export function buildSchedule(o: PlanOptions): { events: PlanEvent[]; days: numb
 
   // 1 · Learn: minutes per section follow its weight; fill each window in turn, moving on to the next section when one is done.
   const learnMinutes = learnDays.reduce((n, d) => n + d.minutes, 0);
-  let si = 0, left = weighted.length ? (weighted[0].w / sumW) * learnMinutes : 0;
+  // Sections with exact hours get exactly that (capped to the time there is); the rest share what is left by weight.
+  const fixedMin = (t: string) => (o.fixedHours && o.fixedHours[t] != null ? Math.max(0, Math.round(o.fixedHours[t] * 60)) : null);
+  const fixedTotal = Math.min(learnMinutes, weighted.reduce((n, s) => n + (fixedMin(s.title) ?? 0), 0));
+  const freeW = weighted.reduce((n, s) => n + (fixedMin(s.title) == null ? s.w : 0), 0) || 1;
+  const fixedScale = fixedTotal > 0 && weighted.reduce((n, s) => n + (fixedMin(s.title) ?? 0), 0) > learnMinutes ? learnMinutes / weighted.reduce((n, s) => n + (fixedMin(s.title) ?? 0), 0) : 1;
+  const targetOf = (i: number) => { const f = fixedMin(weighted[i].title); return f != null ? f * fixedScale : (weighted[i].w / freeW) * Math.max(0, learnMinutes - fixedTotal); };
+  let si = 0, left = weighted.length ? targetOf(0) : 0;
   for (const d of learnDays) {
     for (const w of d.wins) {
       let cursor = mins(w.start);
@@ -106,7 +113,7 @@ export function buildSchedule(o: PlanOptions): { events: PlanEvent[]; days: numb
           add({ date: d.date, phase: "learn", title: `Learn & practise: ${weighted[si].title}`, description: `Concepts and topic PYQs, ${take} min.`, studyType: "Study", category: "Study", priority: o.marks[weighted[si].title] === "weak" ? "High" : "Medium", subject: weighted[si].title }, cursor, cursor + take);
           cursor += take; left -= take;
         } else left = 0; // a leftover too small for a block is dropped, not turned into a tiny task
-        if (left < 1) { si++; left = si < weighted.length ? (weighted[si].w / sumW) * learnMinutes : 0; }
+        if (left < 1) { si++; left = si < weighted.length ? targetOf(si) : 0; }
       }
     }
   }

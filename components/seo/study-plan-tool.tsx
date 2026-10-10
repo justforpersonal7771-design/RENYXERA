@@ -35,6 +35,8 @@ export function StudyPlanTool({ byBranch }: { byBranch: Partial<Record<BranchCod
   const examDate = pickedExam ?? examDateFor(targetYear, savedExam);
   const setExamDate = (v: string) => { setPickedExam(v); if (v.startsWith(String(targetYear))) void IDBManager.setMetadata("target_exam_date", v); };
   const [scheduling, setScheduling] = useState(false);
+  const [fixed, setFixed] = useState<Record<string, number>>({});
+  useEffect(() => setFixed({}), [code]);
   const [hours, setHours] = useState(3);
   const [days, setDays] = useState(6);
   const [marks, setMarks] = useState<Record<string, Mark>>({});
@@ -107,6 +109,22 @@ export function StudyPlanTool({ byBranch }: { byBranch: Partial<Record<BranchCod
         </div>
       </div>
 
+      <details className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
+        <summary className="cursor-pointer text-sm font-extrabold text-[var(--text-primary)]">Set exact hours for a section <span className="ml-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-black uppercase text-amber-700 dark:text-amber-300">Plus &amp; Pro</span></summary>
+        <p className="mt-2 text-xs text-[var(--text-muted)]">Leave a box empty to let the weightage decide. Hours are for the learning phase when the plan goes into your Study Planner; the other sections share what is left.</p>
+        <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+          {sections.map((s) => (
+            <li key={s.title} className="flex items-center gap-3 rounded-xl bg-[var(--surface-secondary)]/60 px-3 py-2">
+              <span className="min-w-0 flex-1 truncate text-sm text-[var(--text-primary)]" title={s.title}>{s.title}</span>
+              <input type="number" min={0} max={400} inputMode="numeric" aria-label={`Hours for ${s.title}`} value={fixed[s.title] ?? ""} placeholder="auto"
+                onChange={(e) => setFixed((f) => { const n = { ...f }; if (e.target.value === "") delete n[s.title]; else n[s.title] = Math.max(0, Math.min(400, Number(e.target.value))); return n; })}
+                className="h-9 w-20 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 text-right text-sm font-num text-[var(--text-primary)] outline-none focus:border-violet-500" />
+              <span className="text-xs text-[var(--text-muted)]">h</span>
+            </li>
+          ))}
+        </ul>
+      </details>
+
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {([[CalendarDays, "Days left", plan.daysLeft], [Target, "Weeks", plan.weeks], [Clock, "Study hours", plan.total], [Play, "Mock weeks", plan.mockWeeks]] as const).map(([Icon, k, v], i) => (
           <motion.div key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="rounded-2xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/5 border border-violet-500/20 p-4">
@@ -166,7 +184,7 @@ export function StudyPlanTool({ byBranch }: { byBranch: Partial<Record<BranchCod
         </div>
         <button type="button" onClick={() => setScheduling(true)} className="inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 cursor-pointer">Add to my Study Planner</button>
       </div>
-      <ScheduleModal open={scheduling} onClose={() => setScheduling(false)} sections={sections} marks={marks} examDate={examDate} hoursPerDay={hours} daysPerWeek={days} branchLabel={`GATE ${BRANCHES.find((x) => x.code === code)?.paper ?? ""}`} />
+      <ScheduleModal open={scheduling} onClose={() => setScheduling(false)} sections={sections} marks={marks} fixedHours={fixed} examDate={examDate} hoursPerDay={hours} daysPerWeek={days} branchLabel={`GATE ${BRANCHES.find((x) => x.code === code)?.paper ?? ""}`} />
 
       <div className="flex flex-col sm:flex-row gap-3">
         <Link href="/" className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-bold shadow-lg shadow-violet-500/25">Track this plan in RENYXERA — free</Link>

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { CalendarPlus, Check, Crown, Loader2, X } from "lucide-react";
+import { CalendarPlus, Check, Crown, Loader2, Lock, X } from "lucide-react";
 import { DatePicker } from "@/components/ui/date-picker";
 import { AvailabilityEditor, DayOverridesEditor } from "@/components/planner/availability-editor";
 import { useCalendarStore } from "@/store/use-calendar-store";
@@ -15,6 +15,15 @@ import { buildSchedule, simpleAvailability, type Availability, type Mark, type P
 import { PLAN_EVENT_PREFIX, rememberPlanSet, savePlanOptions, scheduleTelegramBlocks, toCalendarEvents } from "@/lib/planner/apply";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
+const W = (...ws: [string, string][]) => ws.map(([start, end]) => ({ start, end }));
+const EVERY = (ws: { start: string; end: string }[]) => Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((d) => [d, ws]));
+/** Pro templates: a starting point you can still edit. */
+const TEMPLATES: { label: string; apply: (examDate: string) => { weekly: Availability["weekly"]; start?: string } }[] = [
+  { label: "Working professional", apply: () => ({ weekly: Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((d) => [d, d === 0 || d === 6 ? W(["08:00", "12:00"], ["14:00", "18:00"]) : W(["06:00", "07:30"], ["21:00", "22:30"])])) }) },
+  { label: "Full-time aspirant", apply: () => ({ weekly: EVERY(W(["07:00", "12:00"], ["14:00", "18:00"], ["20:00", "22:00"])) }) },
+  { label: "College student", apply: () => ({ weekly: Object.fromEntries([0, 1, 2, 3, 4, 5, 6].map((d) => [d, d === 0 || d === 6 ? W(["09:00", "13:00"], ["14:00", "18:00"]) : W(["18:00", "22:00"])])) }) },
+  { label: "Last 30 days", apply: (exam) => ({ weekly: EVERY(W(["07:00", "12:00"], ["15:00", "19:00"])), start: new Date(Math.max(Date.now(), Date.parse(`${exam}T00:00:00Z`) - 30 * 86400_000)).toISOString().slice(0, 10) }) },
+];
 const defaultDays = (perWeek: number) => (perWeek >= 7 ? [0, 1, 2, 3, 4, 5, 6] : perWeek === 6 ? [1, 2, 3, 4, 5, 6] : perWeek === 5 ? [1, 2, 3, 4, 5] : perWeek === 4 ? [1, 2, 4, 5] : [1, 3, 5]);
 
 /**
@@ -22,8 +31,8 @@ const defaultDays = (perWeek: number) => (perWeek >= 7 ? [0, 1, 2, 3, 4, 5, 6] :
  * weekday, with changes for single dates), choose the phases, see exactly what will be created, then confirm.
  * Every plan you add is kept as a named set you can remove later under Study Planner → My plans. Plus and Pro only.
  */
-export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursPerDay, daysPerWeek, branchLabel }: {
-  open: boolean; onClose: () => void; sections: PlanSection[]; marks: Record<string, Mark>; examDate: string; hoursPerDay: number; daysPerWeek: number; branchLabel: string;
+export function ScheduleModal({ open, onClose, sections, marks, fixedHours, examDate, hoursPerDay, daysPerWeek, branchLabel }: {
+  open: boolean; onClose: () => void; sections: PlanSection[]; marks: Record<string, Mark>; fixedHours?: Record<string, number>; examDate: string; hoursPerDay: number; daysPerWeek: number; branchLabel: string;
 }) {
   const ent = useEntitlements();
   const { events, addEvents, deleteEvent, loadEvents } = useCalendarStore();
@@ -43,7 +52,7 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
     void fetch("/api/telegram/status", { cache: "no-store" }).then((r) => r.json()).then((j) => setTgLinked(!!j.linked)).catch(() => setTgLinked(false));
   }, [open, ent.paid]);
 
-  const opts = useMemo(() => ({ start, examDate, availability, sections, marks, includeRevision: revision, includeMocks: mocks, includeMistakes: mistakes }), [start, examDate, availability, sections, marks, revision, mocks, mistakes]);
+  const opts = useMemo(() => ({ start, examDate, availability, sections, marks, fixedHours, includeRevision: revision, includeMocks: mocks, includeMistakes: mistakes }), [start, examDate, availability, sections, marks, fixedHours, revision, mocks, mistakes]);
   const result = useMemo(() => buildSchedule(opts), [opts]);
   const earlier = events.filter((e) => e.id.startsWith(PLAN_EVENT_PREFIX) && !e.completed).length;
   const paid = ent.paid;
@@ -103,6 +112,15 @@ export function ScheduleModal({ open, onClose, sections, marks, examDate, hoursP
               <div><p className="mb-1.5 text-xs font-bold text-[var(--text-secondary)]">Exam date (from your target year)</p><p className="flex h-10 items-center rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-3 text-sm font-semibold font-num text-[var(--text-primary)]">{examDate}</p></div>
             </div>
 
+            <div className="mt-4">
+              <p className="mb-1.5 flex items-center gap-1.5 text-xs font-bold text-[var(--text-secondary)]">Start from a template <span className="rounded-full bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-black uppercase text-amber-700 dark:text-amber-300">Pro</span></p>
+              <div className="flex flex-wrap gap-2">
+                {TEMPLATES.map((t) => (
+                  <button key={t.label} type="button" onClick={() => { if (ent.tier !== "pro") return openUpgrade("Plan templates are a Pro feature"); const r = t.apply(examDate); setAvailability({ weekly: r.weekly, overrides: {} }); if (r.start) setStart(r.start); }}
+                    className="inline-flex h-8 items-center gap-1 rounded-full border border-[var(--border)] px-3 text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] cursor-pointer">{ent.tier !== "pro" && <Lock className="h-3 w-3 text-amber-500" aria-hidden />}{t.label}</button>
+                ))}
+              </div>
+            </div>
             <div className="mt-4"><p className="mb-1.5 text-xs font-bold text-[var(--text-secondary)]">Your usual week</p><AvailabilityEditor value={availability} onChange={setAvailability} /></div>
             <div className="mt-4"><p className="mb-1.5 text-xs font-bold text-[var(--text-secondary)]">Different on a specific day?</p><DayOverridesEditor value={availability.overrides} onChange={(overrides) => setAvailability((a) => ({ ...a, overrides }))} min={start} /></div>
 

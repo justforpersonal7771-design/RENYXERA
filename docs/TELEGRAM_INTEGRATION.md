@@ -18,6 +18,8 @@ Telegram is now the "tap on the shoulder" for the app: reminders, timers, alarms
 | Plan-ending alerts (3 days and 1 day before) | — | yes | yes |
 | Mobile number verification (`/verify`, one tap "Share my number"; locked after) | yes | yes | yes |
 | Payment received message with receipt link | yes | yes | yes |
+| Streak reminder at 8 pm, quiet hours | no | yes | yes |
+| Ask the AI Mentor with `/ask` (same daily AI allowance) | no | no | yes |
 | Evening "N blocks unfinished — roll forward?" with buttons; re-plan shortcut | — | — | yes |
 | Weekly review (planned vs done), Sunday evening | — | — | yes |
 
@@ -52,9 +54,6 @@ Your bot is **RENYXERA Daily** (created with BotFather, see TELEGRAM_SETUP_AND_P
    ```
 
 ## Not built yet (by priority)
-- [ ] Ask the AI Mentor from Telegram (Pro, uses the daily AI quota)
 - [ ] Weak-topic nudges from analytics (Pro)
-- [ ] Streak-at-risk evening nudge (Plus)
-- [ ] Quiet hours and per-day opt-outs
 - [ ] Group reminders for study buddies and club challenges
 - [ ] WhatsApp as a second channel after revenue

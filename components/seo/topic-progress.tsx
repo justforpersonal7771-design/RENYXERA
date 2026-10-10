@@ -1,11 +1,25 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { useDataStore } from "@/store/use-data-store";
+
+const HIDE_KEY = "renyxera.syllabus-progress-hidden";
+const HIDE_EVENT = "renyxera:syllabus-progress";
+/** The learner can hide their own progress badges (for example to screenshot or share the page). */
+function useProgressHidden() {
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    const read = () => { try { setHidden(localStorage.getItem(HIDE_KEY) === "1"); } catch { /* shown */ } };
+    read();
+    window.addEventListener(HIDE_EVENT, read);
+    return () => window.removeEventListener(HIDE_EVENT, read);
+  }, []);
+  return [hidden, (v: boolean) => { try { localStorage.setItem(HIDE_KEY, v ? "1" : "0"); } catch { /* ignore */ } window.dispatchEvent(new Event(HIDE_EVENT)); }] as const;
+}
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
@@ -14,6 +28,7 @@ function useTopicStats() {
   const user = useAuthStore((s) => s.user);
   const isInitialized = useDataStore((s) => s.isInitialized);
   const metrics = useAnalyticsStore((s) => s.dashboardMetrics);
+  const [hidden] = useProgressHidden();
   useEffect(() => {
     if (!user) return;
     useDataStore.getState().loadRepository();
@@ -21,7 +36,7 @@ function useTopicStats() {
   useEffect(() => {
     if (user && isInitialized) void useAnalyticsStore.getState().loadAnalytics();
   }, [user, isInitialized]);
-  if (!user || !metrics) return null;
+  if (!user || !metrics || hidden) return null;
   const map = new Map<string, { attempted: number; correct: number }>();
   for (const t of metrics.topicPerformance) map.set(norm(t.topic), { attempted: t.attempted, correct: t.correct });
   return map;
@@ -66,11 +81,12 @@ export function TopicProgressNote({ practiseHref }: { practiseHref: string }) {
   const user = useAuthStore((s) => s.user);
   const loading = useAuthStore((s) => s.loading);
   const openAuth = useAuthModalStore((s) => s.open);
+  const [hidden, setHidden] = useProgressHidden();
   if (loading) return null;
   return (
     <p className="rounded-xl border border-violet-500/20 bg-violet-500/5 px-4 py-2.5 text-sm text-[var(--text-secondary)]">
       {user ? (
-        <>Your own progress shows beside each topic. <Link href={practiseHref} className="font-bold text-violet-600 dark:text-violet-400 hover:underline">Practise the topics you haven&apos;t started →</Link></>
+        <>{hidden ? "Your progress is hidden." : "Your own progress shows beside each topic."} <button type="button" onClick={() => setHidden(!hidden)} className="font-bold text-violet-600 dark:text-violet-400 hover:underline cursor-pointer">{hidden ? "Show it" : "Hide it"}</button> · <Link href={practiseHref} className="font-bold text-violet-600 dark:text-violet-400 hover:underline">Practise the topics you haven&apos;t started →</Link></>
       ) : (
         <><button type="button" onClick={() => openAuth("login")} className="font-bold text-violet-600 dark:text-violet-400 hover:underline cursor-pointer">Sign in</button> to see each topic marked Not started, Solid or Cleared from your own attempts.</>
       )}

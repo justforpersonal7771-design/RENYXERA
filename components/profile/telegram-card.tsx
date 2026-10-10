@@ -13,8 +13,8 @@ import { TELEGRAM_CHANGED } from "@/components/growth/use-telegram-state";
 
 type Status = {
   configured: boolean; tier: Tier; bot: string | null; channelUrl: string; groupUrl: string; linked: boolean;
-  limits: { timers: number; alarms: number; blockReminders: boolean; digest: boolean; mockReminders: boolean; rollPrompt: boolean; weeklyReview: boolean };
-  account: null | { username: string | null; firstName: string | null; inChannel: boolean | null; inGroup: boolean | null; prefs: Record<string, boolean>; digestTime: string; blocked: boolean };
+  limits: { timers: number; alarms: number; blockReminders: boolean; digest: boolean; mockReminders: boolean; streakNudge: boolean; quietHours: boolean; rollPrompt: boolean; weeklyReview: boolean };
+  account: null | { username: string | null; firstName: string | null; inChannel: boolean | null; inGroup: boolean | null; prefs: Record<string, unknown>; digestTime: string; blocked: boolean };
   usage: { timers: number; alarms: number };
   phone: null | { verified: boolean; masked: string | null };
 };
@@ -191,10 +191,21 @@ export function TelegramCard() {
               {pref("digest", "Morning list of today's tasks", "At the time you choose below, the bot sends everything planned for today in one message.", s.limits.digest, "Plus")}
               {pref("alarms", "My daily alarms", "Alarms you set with /alarm 06:00. They message you at that time every day.", s.limits.alarms > 0, "Plus")}
               {pref("mocks", "Warning before a mock starts", "About 30 minutes before an All-India mock begins, so you don't miss the entry time.", s.limits.mockReminders, "Plus")}
+              {pref("streak", "Streak reminder", "If you practised yesterday but not yet today, the bot nudges you at 8 pm so your streak doesn't break.", s.limits.streakNudge, "Plus")}
               {pref("billing", "Warning before my plan ends", "3 days and 1 day before your Plus or Pro ends, so it never runs out by surprise.", true, "")}
               {pref("roll", "Evening check on unfinished tasks", "Each night the bot asks about tasks you didn't finish. Move them to tomorrow, or leave them. It never moves anything without your tap.", s.limits.rollPrompt, "Pro")}
               {pref("weekly", "Weekly report", "On Sunday evening: how many tasks you finished this week, and one tip for next week.", s.limits.weeklyReview, "Pro")}
             </div>
+            {s.limits.quietHours && (() => {
+              const q = a.prefs.quiet as { from: string; to: string } | null | undefined;
+              return (
+                <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 px-3 text-sm">
+                  <label className="flex cursor-pointer items-center gap-2 text-[var(--text-primary)]"><input type="checkbox" checked={!!q} onChange={(e) => void act("quiet", () => post("/api/telegram/prefs", { quiet: e.target.checked ? { from: "22:30", to: "06:30" } : null }))} className="h-4 w-4 accent-violet-600" /> Quiet hours</label>
+                  <InfoTip text="No nudges between these times. Reminders wait until the quiet time ends. Alarms and timers you set yourself still ring." />
+                  {q && <><TimePicker value={q.from} onChange={(v) => void act("quiet", () => post("/api/telegram/prefs", { quiet: { from: v, to: q.to } }))} step={15} className="w-28" /><span className="text-xs text-[var(--text-muted)]">to</span><TimePicker value={q.to} onChange={(v) => void act("quiet", () => post("/api/telegram/prefs", { quiet: { from: q.from, to: v } }))} step={15} className="w-28" /></>}
+                </div>
+              );
+            })()}
             {s.limits.digest && (
               <div className="mt-3 flex items-center gap-3 px-3 text-sm"><span className="text-[var(--text-secondary)]">Morning list arrives at (India time)</span>
                 <TimePicker value={a.digestTime} onChange={(v) => void act("digestTime", () => post("/api/telegram/prefs", { digestTime: v }), "Time saved")} step={15} className="w-32" /></div>

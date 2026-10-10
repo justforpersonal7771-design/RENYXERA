@@ -7,6 +7,7 @@ import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BILLING_MODE, planById } from "@/lib/billing/plans";
 import { getEntitlement, isDisposableEmail, plusUpgradeCredit, razorpayKeys, verifyTurnstile } from "@/lib/billing/server";
 import { getUserBranch } from "@/lib/server/branch";
+import { evaluateCoupon } from "@/lib/billing/coupons";
 import { branchByCode } from "@/lib/branches";
 
 export const runtime = "nodejs";
@@ -18,6 +19,7 @@ const schema = z.object({
   // Multi-branch (design §9.2): the user typed their paper code to confirm the subscription is
   // locked to their branch. Checked against the ACCOUNT's branch on the server.
   branchConfirm: z.string().trim().toUpperCase().max(4),
+  coupon: z.string().trim().max(32).optional(),
 });
 
 /**
@@ -67,7 +69,15 @@ export async function POST(req: NextRequest) {
   const current = await getEntitlement(userId);
   if (current.tier === "pro" && plan.tier === "plus") return NextResponse.json({ error: "You're already on Pro." }, { status: 409 });
   const credit = current.tier === "plus" && plan.tier === "pro" ? await plusUpgradeCredit(userId) : 0;
-  const amount = Math.max(100, plan.pricePaise - credit);
+  let amount = Math.max(100, plan.pricePaise - credit);
+  // A coupon is checked again here, on the server, with the same rules as the "Apply" box.
+  let couponUsed: { code: string; discountPaise: number } | null = null;
+  if (parsed.data.coupon) {
+    const cr = await evaluateCoupon(db, userId, parsed.data.coupon, plan.id, amount);
+    if (!cr.ok) return NextResponse.json({ error: cr.reason }, { status: 400 });
+    couponUsed = { code: cr.code, discountPaise: cr.discountPaise };
+    amount = Math.max(100, amount - cr.discountPaise);
+  }
 
   const r = await fetch("https://api.razorpay.com/v1/orders", {
     method: "POST",
@@ -94,10 +104,12 @@ export async function POST(req: NextRequest) {
   const { error } = await db.from("billing_orders").insert({
     user_id: userId, plan_id: plan.id, amount_paise: amount, upgrade_credit_paise: credit, period_days: plan.periodDays,
     razorpay_order_id: order.id, mode: BILLING_MODE, branch_code: branch, lock_confirmation_id: lock.id,
+    ...(couponUsed ? { coupon_code: couponUsed.code, discount_paise: couponUsed.discountPaise } : {}),
   });
   if (error) {
     console.error("billing_orders insert failed", error);
     return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 503 });
   }
+  if (couponUsed) await db.from("coupon_redemptions").insert({ code: couponUsed.code, user_id: userId, razorpay_order_id: order.id });
   return NextResponse.json({ orderId: order.id, amount: order.amount, currency: order.currency, keyId: keys.id, planName: plan.name, email });
 }

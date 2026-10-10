@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { Calendar } from "lucide-react";
 import { PlanManager, TelegramStatusChip } from "@/components/planner/plan-manager";
+import { PlanInsights } from "@/components/planner/plan-insights";
 
 const StudyPlanner = dynamic(() => import("@/components/dashboard/study-planner").then(m => m.StudyPlanner), {
   ssr: false,
@@ -26,6 +27,7 @@ export default function CalendarPage() {
       </div>
 
       <PlanManager />
+      <PlanInsights />
       <StudyPlanner />
     </div>
   );
