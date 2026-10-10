@@ -552,7 +552,7 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [x] Fullscreen Exit button fixed (edge arrows no longer cover the corner buttons); Share result menu (link or card, L-3); weekly benchmark card; Pro weak-topic Telegram nudge; General Aptitude lessons (/ga-lessons); official GATE 2026 cut-offs and score calculator for CS, EC, EE, ME, CE, DA (/tools/gate-branch-cutoffs)
 
 ### Needs you
-- [ ] **Run migration `0037_weekly_benchmark.sql`** (weekly benchmark and weak-topic columns)
+- [x] **Run migration `0037_weekly_benchmark.sql`** (done) (weekly benchmark and weak-topic columns)
 - [ ] Growth tasks (yours to check): G-5 tracking sheet, C-3 value posts in the top 5 communities, V-1 record 3 Shorts, P-1 first partner offers
 - [x] Done by you: Telegram setup, PREGEN_SECRET, migrations 0029 / 0030 / 0033–0036, bot rename, the real Rs 29 payment
 
