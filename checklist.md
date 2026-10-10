@@ -560,7 +560,7 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [ ] Subscriptions · gift passes (coupons are built but unused; refund script not needed) · Razorpay is the only gateway, Cashfree dropped
 - [ ] Not planned: #11 weekly league (duplicates leaderboards) · #16 flashcards (content) · #21 PDF notes (cost and abuse) · #22 study rooms (moderation)
 - [x] Planner: Print plan button and 25/5 focus rounds on the study timer (done)
-- [ ] Planner extras still open: "what you missed" notes after a Checkpoint
+- [x] "What you missed" note after a Checkpoint (done). No planner extras left open
 - [ ] Rank estimate for non-CS papers (needs marks-vs-rank tables nobody publishes) · earlier-year history for other branches
 
 ### On hold (by you)

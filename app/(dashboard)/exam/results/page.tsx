@@ -294,6 +294,8 @@ export default function ResultSummaryPage() {
   const ch = (session.draftConfig.config as { challenge?: { score: number; max: number; by: string } }).challenge;
   const myMarks = Math.round(marks * 100) / 100;
   const challengeLine = ch ? (myMarks > ch.score ? `You beat ${ch.by}'s ${ch.score}/${ch.max} with ${myMarks}.` : myMarks === ch.score ? `You matched ${ch.by}'s ${ch.score}/${ch.max}.` : `${ch.by} scored ${ch.score}/${ch.max}. You got ${myMarks}. Try again?`) : null;
+  const cpCfg = session.draftConfig.config as { examType?: string; topics?: string[] };
+  const cpLine = cpCfg.examType === "TOPIC_TEST" && cpCfg.topics?.length === 1 && wrong > 0 ? `You missed ${wrong} on ${cpCfg.topics[0]}. Read those solutions in Review, then retry this checkpoint.` : null;
   const shareChallenge = async () => {
     const url = challengeUrl(window.location.origin, { ids: session.draftConfig.questions.map((q) => q.questionId), score: marks, max: maxPossibleMarks, by: useAuthStore.getState().profile?.display_name || "A friend", title: String((session.draftConfig.config as { title?: string }).title ?? "Practice set") });
     const text = `I scored ${myMarks}/${maxPossibleMarks} on this set. Can you beat it?`;
@@ -524,7 +526,7 @@ export default function ResultSummaryPage() {
                         className="inline-flex items-center gap-2 text-lg sm:text-xl lg:text-3xl font-black tracking-tight text-[var(--text-primary)]">
                         <Award className="w-5 h-5 lg:w-7 lg:h-7 text-amber-500" />{verdict.label}
                       </motion.h1>
-                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-sm mx-auto mt-1">{challengeLine ?? verdict.message}</p>
+                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-sm mx-auto mt-1">{challengeLine ?? cpLine ?? verdict.message}</p>
                     </div>
                   </div>
 
