@@ -15,10 +15,10 @@ export type CalcState = {
 
 export const initialCalc = (mode: AngleMode = "deg"): CalcState => ({ entry: "0", tokens: [], fresh: true, afterOp: false, mem: 0, mode, error: false });
 
-export const BINARY = ["+", "-", "*", "/", "pow", "yroot", "mod"] as const;
-export const UNARY = ["sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "log", "ln", "pow10", "exp", "sq", "cube", "sqrt", "cbrt", "inv", "abs", "fact", "pct"] as const;
-const SYMBOL: Record<string, string> = { "+": "+", "-": "−", "*": "×", "/": "÷", pow: "^", yroot: "ʸ√", mod: "mod" };
-const PREC: Record<string, number> = { "+": 1, "-": 1, "*": 2, "/": 2, mod: 2, pow: 3, yroot: 3 };
+export const BINARY = ["+", "-", "*", "/", "pow", "yroot", "mod", "logy"] as const;
+export const UNARY = ["sin", "cos", "tan", "asin", "acos", "atan", "sinh", "cosh", "tanh", "asinh", "acosh", "atanh", "log", "log2", "ln", "pow10", "exp", "sq", "cube", "sqrt", "cbrt", "inv", "abs", "fact", "pct"] as const;
+const SYMBOL: Record<string, string> = { "+": "+", "-": "−", "*": "×", "/": "÷", pow: "^", yroot: "ʸ√", mod: "mod", logy: "log_y" };
+const PREC: Record<string, number> = { "+": 1, "-": 1, "*": 2, "/": 2, mod: 2, pow: 3, yroot: 3, logy: 3 };
 
 const clean = (n: number) => Number(n.toPrecision(14));
 const ERR = "Error";
@@ -51,6 +51,7 @@ export function applyUnary(fn: (typeof UNARY)[number], x: number, mode: AngleMod
     case "acosh": return x >= 1 ? Math.acosh(x) : NaN;
     case "atanh": return Math.abs(x) < 1 ? Math.atanh(x) : NaN;
     case "log": return x > 0 ? Math.log10(x) : NaN;
+    case "log2": return x > 0 ? Math.log2(x) : NaN;
     case "ln": return x > 0 ? Math.log(x) : NaN;
     case "pow10": return Math.pow(10, x);
     case "exp": return Math.exp(x);
@@ -73,6 +74,8 @@ function applyBinary(op: string, a: number, b: number): number {
     case "/": return b !== 0 ? a / b : NaN;
     case "mod": return b !== 0 ? a - b * Math.floor(a / b) : NaN;
     case "pow": return Math.pow(a, b);
+    // x log_y y: enter x, press the key, enter the base y — log of x to base y.
+    case "logy": return a > 0 && b > 0 && b !== 1 ? Math.log(a) / Math.log(b) : NaN;
     case "yroot": return a < 0 && b % 2 !== 0 && Number.isInteger(b) ? -Math.pow(-a, 1 / b) : Math.pow(a, 1 / b);
   }
   return NaN;

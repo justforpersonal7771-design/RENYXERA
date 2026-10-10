@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { GripHorizontal, X } from "lucide-react";
 import { expressionText, initialCalc, press, type AngleMode } from "@/lib/exam/calculator";
 
-type K = { k: string; l: string; kind?: "fn" | "op" | "num" | "eq" | "clear" | "mem" };
+type K = { k: string; l: string; kind?: "fn" | "op" | "num" | "eq" | "clear" | "mem"; span?: number };
 
 const SCI: K[][] = [
   [{ k: "sinh", l: "sinh" }, { k: "cosh", l: "cosh" }, { k: "tanh", l: "tanh" }, { k: "abs", l: "|x|" }],
@@ -14,15 +14,16 @@ const SCI: K[][] = [
   [{ k: "log", l: "log" }, { k: "ln", l: "ln" }, { k: "cube", l: "x³" }, { k: "pow", l: "xʸ", kind: "op" }],
   [{ k: "pow10", l: "10ˣ" }, { k: "exp", l: "eˣ" }, { k: "sqrt", l: "√x" }, { k: "yroot", l: "ʸ√x", kind: "op" }],
   [{ k: "pi", l: "π" }, { k: "e", l: "e" }, { k: "EXP", l: "EXP" }, { k: "pct", l: "%" }],
+  [{ k: "log2", l: "log₂x" }, { k: "logy", l: "log_yx", kind: "op" }, { k: "cbrt", l: "∛x" }, { k: "mod", l: "mod", kind: "op" }],
 ];
 const BASIC: K[][] = [
   [{ k: "MC", l: "MC", kind: "mem" }, { k: "MR", l: "MR", kind: "mem" }, { k: "MS", l: "MS", kind: "mem" }, { k: "M+", l: "M+", kind: "mem" }],
-  [{ k: "M-", l: "M−", kind: "mem" }, { k: "C", l: "C", kind: "clear" }, { k: "CE", l: "CE", kind: "clear" }, { k: "⌫", l: "⌫", kind: "clear" }],
-  [{ k: "7", l: "7", kind: "num" }, { k: "8", l: "8", kind: "num" }, { k: "9", l: "9", kind: "num" }, { k: "/", l: "÷", kind: "op" }],
-  [{ k: "4", l: "4", kind: "num" }, { k: "5", l: "5", kind: "num" }, { k: "6", l: "6", kind: "num" }, { k: "*", l: "×", kind: "op" }],
-  [{ k: "1", l: "1", kind: "num" }, { k: "2", l: "2", kind: "num" }, { k: "3", l: "3", kind: "num" }, { k: "-", l: "−", kind: "op" }],
-  [{ k: "0", l: "0", kind: "num" }, { k: ".", l: ".", kind: "num" }, { k: "±", l: "±", kind: "num" }, { k: "+", l: "+", kind: "op" }],
-  [{ k: "(", l: "(", kind: "op" }, { k: ")", l: ")", kind: "op" }, { k: "mod", l: "mod", kind: "op" }, { k: "=", l: "=", kind: "eq" }],
+  [{ k: "M-", l: "M−", kind: "mem" }, { k: "C", l: "C", kind: "clear" }, { k: "⌫", l: "⌫", kind: "clear" }, { k: "/", l: "÷", kind: "op" }],
+  [{ k: "7", l: "7", kind: "num" }, { k: "8", l: "8", kind: "num" }, { k: "9", l: "9", kind: "num" }, { k: "*", l: "×", kind: "op" }],
+  [{ k: "4", l: "4", kind: "num" }, { k: "5", l: "5", kind: "num" }, { k: "6", l: "6", kind: "num" }, { k: "-", l: "−", kind: "op" }],
+  [{ k: "1", l: "1", kind: "num" }, { k: "2", l: "2", kind: "num" }, { k: "3", l: "3", kind: "num" }, { k: "+", l: "+", kind: "op" }],
+  [{ k: "0", l: "0", kind: "num" }, { k: ".", l: ".", kind: "num" }, { k: "±", l: "±", kind: "num" }, { k: "(", l: "(", kind: "op" }],
+  [{ k: ")", l: ")", kind: "op" }, { k: "=", l: "=", kind: "eq", span: 2 }],
 ];
 const STYLE: Record<string, string> = {
   fn: "bg-[var(--surface-secondary)] text-[var(--text-primary)] hover:bg-violet-500/15",
@@ -34,7 +35,8 @@ const STYLE: Record<string, string> = {
 };
 const W = 500;
 const HOLD_MS = 220;
-const MODES: [AngleMode, string][] = [["deg", "Deg"], ["rad", "Rad"], ["grad", "Grad"]];
+// The official GATE calculator has Deg and Rad only.
+const MODES: [AngleMode, string][] = [["deg", "Deg"], ["rad", "Rad"]];
 
 /** The on-screen GATE scientific calculator, kept small so the question stays visible.
  *  Press and HOLD anywhere outside it to hide it while you look at the question (it returns on
@@ -142,10 +144,10 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
 
       <div className="grid grid-cols-2 gap-1.5 p-2">
         {[SCI, BASIC].map((rows, i) => (
-          <div key={i} className="grid grid-cols-4 gap-1">
+          <div key={i} className="grid grid-cols-4 auto-rows-fr gap-1">
             {rows.flat().map((b) => (
               <button key={b.k} type="button" onClick={() => key(b.k)} aria-label={b.l}
-                className={`h-8 min-w-0 rounded-md px-0 text-[11px] font-semibold transition active:scale-95 cursor-pointer sm:h-9 sm:text-xs ${STYLE[b.kind ?? "fn"]}`}>{b.l}</button>
+                style={b.span ? { gridColumn: `span ${b.span}` } : undefined} className={`min-h-8 min-w-0 rounded-md px-0 text-[11px] font-semibold transition active:scale-95 cursor-pointer sm:min-h-9 sm:text-xs ${STYLE[b.kind ?? "fn"]}`}>{b.l}</button>
             ))}
           </div>
         ))}

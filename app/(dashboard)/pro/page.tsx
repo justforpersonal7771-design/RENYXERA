@@ -7,7 +7,8 @@ import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnsti
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Crown, Loader2, Sparkles, X } from "lucide-react";
-import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, type PlanId } from "@/lib/billing/plans";
+import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, planById, seasonPlan, seasonYears, upcomingSeasonYear, type PlanId } from "@/lib/billing/plans";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { useEntitlements, waitForTier } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
@@ -41,7 +42,13 @@ const LOOK = {
 export default function PlansPage() {
   const ent = useEntitlements();
   const signedIn = useAuthStore((s) => !!s.user);
-  const [period, setPeriod] = useState<"monthly" | "yearly">("yearly");
+  const [period, setPeriod] = useState<"monthly" | "yearly" | "season">("yearly");
+  // GATE season pass: the exam year defaults to the account's target year, and can be any of the next five.
+  const targetYear = useAuthStore((s) => s.profile?.target_year ?? null);
+  const years = seasonYears(serverNow());
+  const [pickedYear, setPickedYear] = useState<number | null>(null);
+  const seasonYear = pickedYear ?? (targetYear && years.includes(targetYear) ? targetYear : upcomingSeasonYear(serverNow()));
+  const pickPlan = (tier: "plus" | "pro") => (period === "season" ? seasonPlan(tier, seasonYear, serverNow()) : PLANS.find((p) => p.tier === tier && p.id.endsWith(period)))!;
   const [busy, setBusy] = useState<PlanId | null>(null);
   const [agreed, setAgreed] = useState(false);
   // Multi-branch §9.2: the plan is locked to the account's branch; typing the paper code is the signal.
@@ -57,7 +64,7 @@ export default function PlansPage() {
   const upgrade = async (planId: PlanId) => {
     setBusy(planId);
     try {
-      const plan = PLANS.find((p) => p.id === planId)!;
+      const plan = planById(planId, serverNow())!;
       if (!payments || plan.pricePaise == null) {
         const r = await fetch("/api/billing/interest", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, source: "plans_page" }) });
         if (!r.ok) throw new Error("Couldn't save that right now.");
@@ -103,14 +110,21 @@ export default function PlansPage() {
         <p className="mt-3 text-[var(--text-secondary)]">Papers, mocks, analytics and sync stay free for everyone. Plus and Pro add more AI and premium looks.</p>
         {ent.paid && <p className="mt-4 inline-flex items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="w-4 h-4" /> You&apos;re on {ent.tier === "pro" ? "Pro" : "Plus"}{ent.validUntil ? ` until ${new Date(ent.validUntil).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}</p>}
         <div className="mt-6 inline-flex p-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)]" role="radiogroup" aria-label="Billing period">
-          {(["monthly", "yearly"] as const).map((p) => (
+          {(["monthly", "yearly", "season"] as const).map((p) => (
             <button key={p} type="button" role="radio" aria-checked={period === p} onClick={() => setPeriod(p)}
               className={`relative px-5 h-9 rounded-xl text-sm font-bold cursor-pointer ${period === p ? "text-white" : "text-[var(--text-secondary)]"}`}>
               {period === p && <motion.span layoutId="period-pill" className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600" transition={{ type: "spring", stiffness: 420, damping: 32 }} />}
-              <span className="relative">{p === "monthly" ? "Monthly" : "Yearly"}</span>
+              <span className="relative">{p === "monthly" ? "Monthly" : p === "yearly" ? "Yearly" : "GATE season pass"}</span>
             </button>
           ))}
         </div>
+        {period === "season" && (
+          <div className="mt-4 mx-auto flex max-w-md flex-col items-center gap-2">
+            <label className="text-xs font-bold text-[var(--text-secondary)]">Which GATE are you preparing for?</label>
+            <CustomDropdown value={String(seasonYear)} onChange={(v) => setPickedYear(Number(v))} options={years.map((y) => ({ label: `GATE ${y}${y === upcomingSeasonYear(serverNow()) ? " (next exam)" : ""}`, value: String(y) }))} className="w-56 text-sm font-semibold" />
+            <p className="text-xs text-[var(--text-muted)]">One payment covers you until 31 March {seasonYear}, after results. It doesn&apos;t renew. The longer the runway, the lower the monthly cost.</p>
+          </div>
+        )}
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
@@ -120,7 +134,7 @@ export default function PlansPage() {
           <ul className="mt-5 space-y-2.5">{FREE_FOREVER.map((f) => <li key={f} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"><Check className="w-4 h-4 mt-0.5 text-emerald-500 shrink-0" />{f}</li>)}</ul>
         </section>
         {(["plus", "pro"] as const).map((tier, i) => {
-          const plan = PLANS.find((p) => p.tier === tier && p.id.endsWith(period))!;
+          const plan = pickPlan(tier);
           const look = LOOK[tier];
           const have = TIER_RANK[ent.tier] >= TIER_RANK[tier];
           const current = ent.tier === tier;
@@ -170,7 +184,7 @@ export default function PlansPage() {
       {typeof document !== "undefined" && createPortal(
       <AnimatePresence>
         {confirm && (() => {
-          const cp = PLANS.find((x) => x.id === confirm)!;
+          const cp = planById(confirm, serverNow())!;
           const up = cp.tier === "pro" && ent.tier === "plus";
           const credit = up ? Math.min(ent.upgradeCreditPaise, (cp.pricePaise ?? 0) - 100) : 0;
           const total = (cp.pricePaise ?? 0) - credit;

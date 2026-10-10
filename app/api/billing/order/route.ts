@@ -4,7 +4,7 @@ import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
-import { BILLING_MODE, PLANS, planById } from "@/lib/billing/plans";
+import { BILLING_MODE, planById } from "@/lib/billing/plans";
 import { getEntitlement, isDisposableEmail, plusUpgradeCredit, razorpayKeys, verifyTurnstile } from "@/lib/billing/server";
 import { getUserBranch } from "@/lib/server/branch";
 import { branchByCode } from "@/lib/branches";
@@ -12,7 +12,7 @@ import { branchByCode } from "@/lib/branches";
 export const runtime = "nodejs";
 
 const schema = z.object({
-  planId: z.enum(PLANS.map((p) => p.id) as [string, ...string[]]),
+  planId: z.string().regex(/^(plus|pro)_(monthly|yearly|season_\d{4})$/),
   acceptedTerms: z.literal(true), // no-refund acknowledgement (7B)
   turnstileToken: z.string().max(4096).optional(),
   // Multi-branch (design §9.2): the user typed their paper code to confirm the subscription is
@@ -60,7 +60,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: `Type ${paper} to confirm this subscription is for GATE ${paper}.` }, { status: 400 });
   }
 
-  const plan = planById(parsed.data.planId);
+  // Season passes are priced from the server clock at this moment; the client never supplies a price.
+  const plan = planById(parsed.data.planId, Date.now());
   if (!plan || plan.pricePaise == null) return NextResponse.json({ error: "This plan isn't on sale yet." }, { status: 409 });
   // Pro members can't buy Plus (it would do nothing); Plus → Pro is prorated.
   const current = await getEntitlement(userId);

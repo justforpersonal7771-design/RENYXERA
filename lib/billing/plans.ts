@@ -22,7 +22,8 @@ export const TIERS: { id: Tier; name: string; metal: string }[] = [
   { id: "pro", name: "Pro", metal: "Gold" },
 ];
 
-export type PlanId = "plus_monthly" | "plus_yearly" | "pro_monthly" | "pro_yearly";
+export type SeasonPlanId = `${"plus" | "pro"}_season_${number}`;
+export type PlanId = "plus_monthly" | "plus_yearly" | "pro_monthly" | "pro_yearly" | SeasonPlanId;
 // listPricePaise: an optional *genuine* regular price shown struck through (e.g. a launch
 // offer before a real, planned increase). Leave null unless it's true — India's 2023 Dark
 // Patterns Guidelines treat never-charged "was" prices as misleading. Yearly plans instead
@@ -37,16 +38,47 @@ export const PLANS: Plan[] = [
   { id: "pro_yearly", tier: "pro", name: "Pro · Yearly", periodDays: 365, periodLabel: "per year", pricePaise: 79900 },
 ];
 
-export const planById = (id: string) => PLANS.find((p) => p.id === id) ?? null;
+// ── GATE season pass ─────────────────────────────────────────────────────────────────────────
+// One payment that lasts until the end of the chosen exam season (31 March of that year, IST, after
+// results). The price is computed from the TRUE time remaining (server clock), never sent by the client:
+//   up to 12 months: ₹25 (Plus) / ₹83 (Pro) per month, capped at the yearly plan's price;
+//   beyond 12 months: the yearly plan's per-month rate (₹20.75 / ₹66.58), and 10% off beyond 24 months.
+// Prices end in 9. Existing monthly/yearly plans are unchanged. No lifetime offer, no free trial.
+const SEASON_RATE = { plus: 2500, pro: 8300 } as const; // paise per month, short passes
+export const seasonEndMs = (year: number) => Date.UTC(year, 2, 31, 18, 29, 59); // 23:59:59 IST on 31 March
+export const upcomingSeasonYear = (nowMs: number) => { const y = new Date(nowMs).getUTCFullYear(); return nowMs > seasonEndMs(y) ? y + 1 : y; };
+export const SEASON_MAX_YEARS_AHEAD = 4;
+export const seasonYears = (nowMs: number) => Array.from({ length: SEASON_MAX_YEARS_AHEAD + 1 }, (_, i) => upcomingSeasonYear(nowMs) + i);
+const endIn9 = (paise: number) => Math.max(9, Math.round((paise / 100 + 1) / 10) * 10 - 1) * 100;
+
+export function seasonPlan(tier: "plus" | "pro", year: number, nowMs: number): Plan | null {
+  const first = upcomingSeasonYear(nowMs);
+  if (!Number.isInteger(year) || year < first || year > first + SEASON_MAX_YEARS_AHEAD) return null;
+  const periodDays = Math.ceil((seasonEndMs(year) - nowMs) / 86400_000);
+  if (periodDays < 1 || periodDays > 2200) return null;
+  const months = Math.max(1, Math.ceil(periodDays / 30.4375));
+  const yearly = PLANS.find((p) => p.id === `${tier}_yearly`)!.pricePaise!;
+  const raw = months <= 12 ? Math.min(months * SEASON_RATE[tier], yearly) : (months * yearly / 12) * (months > 24 ? 0.9 : 1);
+  return { id: `${tier}_season_${year}`, tier, name: `${tier === "pro" ? "Pro" : "Plus"} · GATE ${year} Pass`, periodDays, periodLabel: `until 31 Mar ${year}`, pricePaise: endIn9(raw) };
+}
+
+/** Looks up a fixed plan, or builds a season pass (price and length depend on `nowMs`, so pass the server clock). */
+export function planById(id: string, nowMs: number = Date.now()): Plan | null {
+  const fixed = PLANS.find((p) => p.id === id);
+  if (fixed) return fixed;
+  const m = /^(plus|pro)_season_(\d{4})$/.exec(id);
+  return m ? seasonPlan(m[1] as "plus" | "pro", Number(m[2]), nowMs) : null;
+}
 
 /** Honest comparison price for a plan: a yearly plan vs 12 × its monthly price, else its
  *  genuine list price (if any). Returns the struck-through amount and the % saved. */
 export function comparePrice(plan: Plan) {
   if (plan.pricePaise == null) return null;
   const monthly = PLANS.find((p) => p.tier === plan.tier && p.id.endsWith("monthly"));
-  const ref = plan.periodDays >= 365 && monthly?.pricePaise != null ? monthly.pricePaise * 12 : plan.listPricePaise ?? null;
+  const season = plan.id.includes("_season_");
+  const ref = season && monthly?.pricePaise != null ? monthly.pricePaise * Math.max(1, Math.ceil(plan.periodDays / 30.4375)) : plan.periodDays >= 365 && monthly?.pricePaise != null ? monthly.pricePaise * 12 : plan.listPricePaise ?? null;
   if (!ref || ref <= plan.pricePaise) return null;
-  return { wasPaise: ref, savePct: Math.round((1 - plan.pricePaise / ref) * 100), perMonthPaise: plan.periodDays >= 365 ? Math.round(plan.pricePaise / 12) : null, reason: plan.periodDays >= 365 ? "vs paying monthly" : "launch price" };
+  return { wasPaise: ref, savePct: Math.round((1 - plan.pricePaise / ref) * 100), perMonthPaise: plan.periodDays >= 365 ? Math.round(plan.pricePaise / 12) : null, reason: plan.periodDays >= 365 || season ? "vs paying monthly" : "launch price" };
 }
 export const formatPrice = (paise: number | null) => (paise == null ? "Price coming soon" : `₹${(paise / 100).toLocaleString("en-IN")}`);
 

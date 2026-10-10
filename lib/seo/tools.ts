@@ -3,7 +3,8 @@
 export type ToolEntry = { href: string; title: string; short: string; blurb: string; kind: "tool" | "article"; icon: "calculator" | "chart" | "calendar" | "flame" | "book" | "file"; also?: string[] };
 
 export const TOOLS: ToolEntry[] = [
-  { href: "/gate-cs-syllabus", title: "Syllabus with weightage", short: "Syllabus", blurb: "The official GATE 2027 syllabus with the weightage of every section and topic.", kind: "tool", icon: "book" },
+  { href: "/syllabus", title: "Syllabus with weightage", short: "Syllabus", blurb: "The official GATE 2027 syllabus with the weightage of every section and topic, for your branch.", kind: "tool", icon: "book", also: ["/gate-cs-syllabus", "/gate-ec-syllabus", "/gate-ee-syllabus", "/gate-me-syllabus", "/gate-da-syllabus"] },
+  { href: "/gate-2027-changes", title: "GATE 2027 changes", short: "2027 changes", blurb: "What changed for GATE 2027 and the dates that matter, with the official source for each.", kind: "article", icon: "file" },
   { href: "/pyq", title: "Previous year questions", short: "PYQs", blurb: "Official GATE papers for CS, DA, EC, EE and ME, paper-wise and topic-wise.", kind: "tool", icon: "file", also: ["/pyq/", "/topics/"] },
   { href: "/articles/most-repeated-gate-cs-topics", title: "Most repeated topics", short: "Repeated topics", blurb: "Topics ranked by how many years they were asked and the marks they carried.", kind: "article", icon: "flame" },
   { href: "/articles/gate-cs-preparation-150-days", title: "150-day plan", short: "150-day plan", blurb: "A data-driven 150-day GATE CS plan with a day budget per subject.", kind: "article", icon: "calendar" },

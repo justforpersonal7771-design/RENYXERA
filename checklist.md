@@ -538,6 +538,17 @@ Product rule: never advertise "no login"; show what an account adds and guide vi
 - [x] "Today" card (revision queue + streak) — gap #4 (daily missions with done-ticks still open)
 - [x] Fixes: tools dock no longer scrolls page to bottom; page headers use full width; mobile topbar fits 360px
 
+### Added 10 Oct (late)
+- [x] Season pass (no lifetime, no trial): pick any exam year up to 4 ahead (default = your target year), priced from the SERVER clock; tests in `scripts/season-pass-test.mts`. **Needs you: run migration `0033_season_pass.sql`** (raises the order period cap to 2200 days) before selling passes beyond ~2028
+- [x] Server time used for every time-based UI (`/api/time`, `lib/time/server-time.ts`, never-backwards floor); entitlements, exam start/finish, embargo and leaderboards were already server-side
+- [x] `/gate-2027-changes` (all branches, official sources, checked 10 Oct) and `/syllabus` hub (opens your branch from the Tools dock); CS syllabus now has progress badges, Where-to-start and the Telegram card like the other branches
+- [x] Purchase modal no longer clipped (portal); avatar picker in onboarding; AI Mentor page reveals once instead of cards shifting
+- [x] Calculator now has the official GATE key set: added log₂x, log_yx, ∛x; removed Grad and CE (GATE has Deg/Rad and C/←)
+- [ ] Future: Razorpay Subscriptions / fixed plans (UPI Autopay) — see docs/PAYMENTS_RESEARCH.md
+- [ ] Payment receipts + billing history in Profile — see docs/PAYMENTS_RESEARCH.md
+- [ ] Other CS-only pages needing a branch picker: 150-day plan article, most-repeated-topics article, cut-off tool
+- [ ] Razorpay QR/UPI shows account holder name instead of RENYXERA; own-card payment fails — you are checking with Razorpay (steps given 10 Oct)
+
 ### Needs you
 - [x] `TURNSTILE_SECRET_KEY` confirmed in Cloudflare (you, 10 Oct)
 - [ ] Make one real ₹29 Plus payment, check the plan appears instantly, then refund it (steps given 10 Oct; you will do it later). Check Razorpay → Settlements for the bank credit

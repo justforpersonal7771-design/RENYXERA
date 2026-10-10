@@ -34,6 +34,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
           <a href={officialSyllabusPdf(s.paper)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
             <FileText className="w-4 h-4" /> Official syllabus PDF
           </a>
+          <Link href="/gate-2027-changes" className="inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">What changed in GATE 2027</Link>
         </div>
         </div>
         <TelegramJoinLink where="syllabus" className="mt-5 lg:mt-0 lg:w-[26rem] lg:shrink-0" />

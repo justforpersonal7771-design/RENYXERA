@@ -15,6 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/pyq`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/tools/gate-score-calculator`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     { url: `${SITE_URL}/tools/gate-cs-cutoff`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/gate-2027-changes`, lastModified: now, changeFrequency: "weekly" as const, priority: 0.9 },
+    { url: `${SITE_URL}/syllabus`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.8 },
     { url: `${SITE_URL}/gate-cs-syllabus`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },
     ...SYLLABUS_PAGE_BRANCHES.filter((c) => branchByCode(c)?.live).map((c) => ({ url: `${SITE_URL}/${syllabusSlugOf(c)}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 })),
     { url: `${SITE_URL}/tools/gate-study-plan`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.9 },

@@ -33,6 +33,7 @@ export default function SyllabusPage() {
         <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">The official syllabus, organised into sections, subjects and topics — and next to every one, how many marks it has really carried in GATE CS papers from {span}, and whether it is rising or cooling.</p>
         <div className="mt-4 flex flex-wrap gap-2 text-sm">
           <a href={SYLLABUS_SOURCE.cs} target="_blank" rel="noopener noreferrer" download className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[var(--border)] bg-[var(--surface)] font-semibold text-[var(--text-primary)] hover:border-violet-500/50"><FileText className="w-4 h-4 text-violet-500" /> Download official GATE 2027 CS &amp; IT syllabus (PDF) <Download className="w-3.5 h-3.5" /></a>
+          <Link href="/gate-2027-changes" className="inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-[var(--border)] text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">What changed in GATE 2027</Link>
         </div>
         </div>
         <TelegramJoinLink where="syllabus" className="mt-5 lg:mt-0 lg:w-[26rem] lg:shrink-0" />
