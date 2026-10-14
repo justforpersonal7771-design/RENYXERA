@@ -41,6 +41,15 @@ export default function ExamSetupPage() {
   const [customTotal, setCustomTotal] = useState(0);
   const { isInitialized, totalQuestions } = useDataStore();
   const { createDraft, currentDraft } = useExamStore();
+  // After the person taps Generate, glide to the blueprint card (it sits below the form on phones).
+  const blueprintRef = useRef<HTMLDivElement>(null);
+  const scrollToBlueprint = useRef(false);
+  useEffect(() => {
+    if (!scrollToBlueprint.current || !currentDraft) return;
+    scrollToBlueprint.current = false;
+    const t = setTimeout(() => blueprintRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 150);
+    return () => clearTimeout(t);
+  }, [currentDraft]);
   const { targetPercent: goalTargetPercent, load: loadGoalSlider } = useGoalSliderStore();
   const guestUser = useAuthStore((s) => s.user);
   const openAuthModal = useAuthModalStore((s) => s.open);
@@ -51,6 +60,8 @@ export default function ExamSetupPage() {
   const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
   const [availableTopics, setAvailableTopics] = useState<string[]>([]);
   const [availableSections, setAvailableSections] = useState<string[]>([]);
+  // Which subjects belong to each section, so the Subject picker only lists subjects from the chosen Section.
+  const [sectionSubjects, setSectionSubjects] = useState<Record<string, string[]>>({});
 
   const [selectedPaper, setSelectedPaper] = useState<string>("");
   const [selectedSubject, setSelectedSubject] = useState<string>("");
@@ -277,7 +288,7 @@ export default function ExamSetupPage() {
         allQs = allQs.filter(q => goalRecommendedTopics.has(q.topic));
       }
 
-      const papers = Array.from(new Set(allQs.map(q => q.year_shift).filter(Boolean)));
+      const papers = Array.from(new Set(allQs.filter(q => !q.origin_branch).map(q => q.year_shift).filter(Boolean)));
       const subjects = Array.from(new Set(allQs.map(q => q.subject).filter(Boolean)));
       const topics = Array.from(new Set(allQs.map(q => q.topic).filter(Boolean)));
       const sections = Array.from(new Set(allQs.map(q => q.section).filter(Boolean)));
@@ -292,6 +303,9 @@ export default function ExamSetupPage() {
       setAvailableSubjects(subjects.sort());
       setAvailableTopics(topics.sort());
       setAvailableSections(sections.sort());
+      const bySection: Record<string, Set<string>> = {};
+      for (const q of allQs) if (q.section && q.subject) (bySection[q.section] ??= new Set()).add(q.subject);
+      setSectionSubjects(Object.fromEntries(Object.entries(bySection).map(([k, v]) => [k, [...v].sort()])));
 
       // Deep-link from Dashboard's Today's Focus cards (?subject=X or ?topic=Y) — applied
       // once, so it pre-selects the right dropdown instead of silently landing on a blank
@@ -336,6 +350,14 @@ export default function ExamSetupPage() {
       if (filteredTopics.length > 0 && !filteredTopics.includes(selectedTopic)) setSelectedTopic(filteredTopics[0]);
     }
   }, [selectedSubject, isInitialized, examType, selectedTopic, sourceType, isGoalSliderActive, goalRecommendedTopics]);
+
+  // If the chosen subject isn't in the chosen section (for example after a deep link), move the Section to the subject's own.
+  useEffect(() => {
+    if (examType !== "SUBJECT_TEST" && examType !== "TOPIC_TEST") return;
+    if (!selectedSubject || (sectionSubjects[selectedSection] ?? []).includes(selectedSubject)) return;
+    const owner = Object.keys(sectionSubjects).find((sec) => sectionSubjects[sec].includes(selectedSubject));
+    if (owner) setSelectedSection(owner);
+  }, [examType, selectedSubject, selectedSection, sectionSubjects]);
 
   useEffect(() => {
     if (isInitialized) {
@@ -582,7 +604,7 @@ export default function ExamSetupPage() {
         </motion.div>
 
         {sourceType === "ai_generated" ? (
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-6 pr-1">
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-6 -mx-4 px-4 pt-1 pb-12">
             <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -1000,7 +1022,7 @@ export default function ExamSetupPage() {
                     <motion.button
                       whileTap={{ scale: 0.97 }}
                       whileHover={{ y: -1 }}
-                      onClick={() => examType === "CUSTOM_TEST" ? customBuilderRef.current?.generate() : handleGenerate()}
+                      onClick={() => { scrollToBlueprint.current = true; if (examType === "CUSTOM_TEST") customBuilderRef.current?.generate(); else handleGenerate(); }}
                       className="group relative overflow-hidden w-full sm:w-auto h-[46px] pl-5 pr-4 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold text-sm shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45 transition-shadow flex items-center justify-center gap-2.5 cursor-pointer border-0 whitespace-nowrap"
                     >
                       {/* light sweep on hover */}
@@ -1069,16 +1091,28 @@ export default function ExamSetupPage() {
                   )}
 
                   {(examType === "SUBJECT_TEST" || examType === "TOPIC_TEST") && (
-                    <div>
-                      <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target Subject</label>
-                      <div className="relative">
-                        <CustomDropdown
-                          value={selectedSubject}
-                          onChange={(v) => setSelectedSubject(v)}
-                          options={availableSubjects.map((s) => ({ label: s, value: s }))}
-                        />
+                    <>
+                      <div>
+                        <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Section</label>
+                        <div className="relative">
+                          <CustomDropdown
+                            value={selectedSection}
+                            onChange={(v) => { setSelectedSection(v); const first = sectionSubjects[v]?.[0]; if (first) setSelectedSubject(first); }}
+                            options={availableSections.map((s) => ({ label: s, value: s }))}
+                          />
+                        </div>
                       </div>
-                    </div>
+                      <div>
+                        <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target Subject</label>
+                        <div className="relative">
+                          <CustomDropdown
+                            value={selectedSubject}
+                            onChange={(v) => setSelectedSubject(v)}
+                            options={(sectionSubjects[selectedSection] ?? availableSubjects).map((s) => ({ label: s, value: s }))}
+                          />
+                        </div>
+                      </div>
+                    </>
                   )}
 
                   {examType === "TOPIC_TEST" && (
@@ -1165,7 +1199,7 @@ export default function ExamSetupPage() {
               </div>
             </div>
 
-            <div className="w-full lg:w-[420px] shrink-0 lg:h-full lg:min-h-0">
+            <div ref={blueprintRef} className="w-full lg:w-[420px] shrink-0 lg:h-full lg:min-h-0 scroll-mt-4">
                <motion.div
                  layout
                  className={`card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col lg:h-full`}

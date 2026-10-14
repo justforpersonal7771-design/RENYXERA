@@ -9,6 +9,17 @@ interface Meta {
   section?: string;
   subject?: string;
   topic?: string;
+  year?: string;
+  year_shift?: string;
+  /** Paper code (CS, EC…) when the question comes from another branch's paper (shared aptitude and maths). */
+  origin_branch?: string;
+  asked_in?: string[];
+}
+
+/** "GATE 2024 · FN" for the branch's own papers, "GATE 2024 · EC" for a shared question from another paper. */
+function pyqTag(q: Meta): string | null {
+  if (q.origin_branch) return `GATE ${q.year ?? ""} · ${q.origin_branch}`.replace("  ", " ");
+  return q.year_shift && /^\d{4}/.test(q.year_shift) ? `GATE ${q.year_shift.replace("-", " · ")}` : null;
 }
 
 /** Type · marks · difficulty, then section › subject › topic — one line, truncating. */
@@ -25,6 +36,7 @@ export function QuestionMetaChips({ q, compact = false, showSection = true }: { 
           <span className="bg-amber-500/10 text-amber-700 dark:text-amber-300 px-2 py-1">{q.difficulty}</span>
         )}
       </div>
+      {pyqTag(q) && <span className={`${chip} shrink-0 text-violet-700 dark:text-violet-300`} title={q.asked_in && q.asked_in.length > 1 ? `Asked in GATE ${q.asked_in.join(", ")}` : "Official GATE past-year question"}>{pyqTag(q)}</span>}
       {showSection && q.section && <span className={`${chip} shrink-0 max-w-[140px] hidden 2xl:inline-block`} title={q.section}>{q.section}</span>}
       {q.subject && <span className={`${chip} shrink-0 max-w-[160px]`} title={q.subject}>{q.subject}</span>}
       {q.topic && <span className={`${chip} min-w-0 max-w-[260px]`} title={q.topic}>{q.topic}</span>}

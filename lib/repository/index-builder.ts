@@ -34,19 +34,22 @@ export function buildIndexes(questions: RenderableQuestion[]): IndexCollection {
       indexes.questionsById.set(q.question_id, q);
     }
 
-    if (q.year) {
+    // Shared aptitude/maths questions from other papers are practice material, not part of this branch's papers.
+    const ownPaper = !q.origin_branch;
+
+    if (q.year && ownPaper) {
       if (!indexes.questionsByYear.has(q.year))
         indexes.questionsByYear.set(q.year, []);
       indexes.questionsByYear.get(q.year)!.push(q);
     }
 
-    if (q.shift) {
+    if (q.shift && ownPaper) {
       if (!indexes.questionsByShift.has(q.shift))
         indexes.questionsByShift.set(q.shift, []);
       indexes.questionsByShift.get(q.shift)!.push(q);
     }
 
-    if (q.year_shift) {
+    if (q.year_shift && ownPaper) {
       if (!indexes.questionsByYearShift.has(q.year_shift))
         indexes.questionsByYearShift.set(q.year_shift, []);
       indexes.questionsByYearShift.get(q.year_shift)!.push(q);

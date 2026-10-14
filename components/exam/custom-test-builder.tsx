@@ -293,7 +293,7 @@ export const CustomTestBuilder = forwardRef<CustomTestBuilderHandle, CustomTestB
           const poolForYear = focusSet
             ? repo.getAllQuestions().filter(q => focusSet.has(q.topic))
             : repo.getAllQuestions();
-          const availableYears = Array.from(new Set(poolForYear.map(q => q.year_shift))).filter(Boolean).sort();
+          const availableYears = Array.from(new Set(poolForYear.filter(q => !q.origin_branch).map(q => q.year_shift))).filter(Boolean).sort();
           
           let poolForSection = poolForYear;
           if (block.yearShift) poolForSection = poolForSection.filter(q => q.year_shift === block.yearShift);

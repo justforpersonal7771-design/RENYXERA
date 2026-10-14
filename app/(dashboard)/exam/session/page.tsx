@@ -395,13 +395,13 @@ export default function ExamSessionPage() {
                 <SectionTabs variant="bar" />
               </div>
 
-              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              <div className="flex items-center gap-0.5 sm:gap-2 shrink-0">
                  <ExamTimer compact />
 
-                 <div className="flex items-center gap-1 border-l border-[var(--border)] pl-2 sm:pl-3 h-9 shrink-0">
+                 <div className="flex items-center gap-1 border-l border-[var(--border)] pl-1 sm:pl-3 h-9 shrink-0">
                    <button
                      onClick={() => setShowMobilePalette(true)}
-                     className="lg:hidden inline-flex items-center justify-center w-9 h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition relative"
+                     className="lg:hidden inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition relative"
                      title="Question Grid"
                    >
                      <LayoutGrid className="w-4 h-4" />
@@ -413,7 +413,7 @@ export default function ExamSessionPage() {
                    <button
                      data-calc-toggle
                      onClick={() => setShowCalc((v) => !v)}
-                     className={`inline-flex items-center justify-center w-9 h-9 rounded-lg transition ${showCalc ? "bg-violet-500/15 text-violet-600 dark:text-violet-300" : "text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                     className={`inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition ${showCalc ? "bg-violet-500/15 text-violet-600 dark:text-violet-300" : "text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800"}`}
                      title="Calculator"
                      aria-label="Calculator"
                      aria-pressed={showCalc}
@@ -423,7 +423,7 @@ export default function ExamSessionPage() {
 
                    <button
                      onClick={handleBookmarkToggle}
-                     className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                     className="hidden sm:inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                      title="Bookmark Question"
                    >
                      {isCurrentBookmarked ? <BookmarkCheck className="w-4 h-4 text-indigo-500" /> : <Bookmark className="w-4 h-4" />}
@@ -431,7 +431,7 @@ export default function ExamSessionPage() {
 
                    <button
                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                     className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                     className="hidden sm:inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
                      title="Toggle Dark Mode"
                    >
                      {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -440,7 +440,7 @@ export default function ExamSessionPage() {
                    {isMockSession ? null : sessionStatus === "IN_PROGRESS" ? (
                      <button
                        onClick={() => pauseSession()}
-                       className="inline-flex items-center justify-center w-9 h-9 text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 rounded-lg transition-colors cursor-pointer shrink-0"
+                       className="inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 rounded-lg transition-colors cursor-pointer shrink-0"
                        title="Pause Exam"
                      >
                        <Pause className="w-4 h-4" />
@@ -448,7 +448,7 @@ export default function ExamSessionPage() {
                    ) : (
                      <button
                        onClick={() => resumeSession()}
-                       className="inline-flex items-center justify-center w-9 h-9 text-emerald-700 bg-emerald-100 hover:bg-emerald-200 dark:text-emerald-400 dark:bg-emerald-900/40 rounded-lg transition-colors cursor-pointer shrink-0"
+                       className="inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 text-emerald-700 bg-emerald-100 hover:bg-emerald-200 dark:text-emerald-400 dark:bg-emerald-900/40 rounded-lg transition-colors cursor-pointer shrink-0"
                        title="Resume Exam"
                      >
                        <Play className="w-4 h-4" />
@@ -457,11 +457,11 @@ export default function ExamSessionPage() {
                    <motion.button
                      whileTap={{ scale: 0.95 }}
                      onClick={() => setShowSubmitModal(true)}
-                     className="group relative overflow-hidden h-9 px-3 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
+                     className="group relative overflow-hidden h-8 sm:h-9 px-2.5 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
                    >
                      <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                      <Send className="relative w-3.5 h-3.5" />
-                     <span className="relative max-[400px]:sr-only">Submit</span>
+                     <span className="relative ">Submit</span>
                    </motion.button>
                  </div>
               </div>

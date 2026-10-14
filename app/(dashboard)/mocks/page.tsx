@@ -130,7 +130,7 @@ export default function MocksPage() {
     if (!repoReady) return toast("Questions are still loading — try again in a moment.", "info");
     setStarting("challenge");
     try {
-      const ids = challengeQuestionIds(QuestionRepository.getAllQuestions().map((q) => q.question_id));
+      const ids = challengeQuestionIds(QuestionRepository.getAllQuestions().filter((q) => !q.origin_branch).map((q) => q.question_id));
       await startSession({
         id: crypto.randomUUID(),
         config: { examType: "CUSTOM_TEST", title: challengeTitle() },

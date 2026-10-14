@@ -2,6 +2,10 @@
 
 import { create } from "zustand";
 import { branchOfQuestionId } from "@/lib/branches";
+import sharedIds from "@/data/shared-question-ids.json";
+
+// Shared aptitude/maths questions are practised from every branch, so they belong to whichever branch the learner is in.
+const SHARED = new Set<string>(sharedIds as string[]);
 import { getCurrentBranch } from "@/lib/branch/current";
 
 /**
@@ -40,9 +44,9 @@ const pullKey = () => `renyxera_sync_pulled__${userId}${brSuffix()}`;
 /** Which branch a synced record belongs to: bookmarks/mistakes by their question id; a
  *  finished test by the questions inside it. Unknown -> CSE (everything before Release 8). */
 function rowBranch(kind: SyncKind, key: string, data: any): string {
-  if (kind !== "session") return branchOfQuestionId(key) ?? "CSE";
+  if (kind !== "session") return SHARED.has(key) ? getCurrentBranch() : branchOfQuestionId(key) ?? "CSE";
   const ids: string[] = [...Object.keys(data?.responses ?? {}), ...(data?.draftConfig?.questionIds ?? [])];
-  for (const id of ids) { const b = branchOfQuestionId(String(id)); if (b) return b; }
+  for (const id of ids) { if (SHARED.has(String(id))) continue; const b = branchOfQuestionId(String(id)); if (b) return b; }
   return "CSE";
 }
 const seedKey = () => `renyxera_sync_seeded__${userId}`;

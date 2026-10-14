@@ -22,7 +22,7 @@ export type TgLimits = {
 };
 
 export const TG_LIMITS: Record<Tier, TgLimits> = {
-  free: { timers: 1, alarms: 0, blockReminders: false, digest: false, mockReminders: false, streakNudge: false, quietHours: false, rollPrompt: false, weeklyReview: false, replan: false, askMentor: false, weakNudge: false },
+  free: { timers: 1, alarms: 0, blockReminders: false, digest: false, mockReminders: true, streakNudge: false, quietHours: false, rollPrompt: false, weeklyReview: false, replan: false, askMentor: false, weakNudge: false },
   plus: { timers: 5, alarms: 3, blockReminders: true, digest: true, mockReminders: true, streakNudge: true, quietHours: true, rollPrompt: false, weeklyReview: false, replan: false, askMentor: false, weakNudge: false },
   pro:  { timers: 10, alarms: 10, blockReminders: true, digest: true, mockReminders: true, streakNudge: true, quietHours: true, rollPrompt: true, weeklyReview: true, replan: true, askMentor: true, weakNudge: true },
 };
@@ -36,7 +36,7 @@ export const TG_MATRIX: { label: string; info: string; free: string; plus: strin
   { label: "Daily alarms", info: "Send /alarm 06:00 and the bot messages you at that time every day, like an alarm clock. The number is how many alarms you can keep.", free: "—", plus: "3", pro: "10" },
   { label: "A nudge before each study task", info: "Your study plan puts tasks in the calendar. The bot messages you 10 minutes before each one, with buttons: Done, or remind me again in 15 minutes.", free: "—", plus: "Yes", pro: "Yes" },
   { label: "Morning list of today's tasks", info: "At the time you choose, the bot sends everything planned for today in one message.", free: "—", plus: "Yes", pro: "Yes" },
-  { label: "Warning before a mock starts", info: "About 30 minutes before an All-India mock begins, so you don't miss the entry time.", free: "—", plus: "Yes", pro: "Yes" },
+  { label: "Reminders before a mock", info: "A day before, at 5 PM the evening before (to revise), and about 30 minutes before an All-India mock, so you don't miss it.", free: "Yes", plus: "Yes", pro: "Yes" },
   { label: "Streak reminder", info: "If you practised yesterday but not yet today, the bot nudges you at 8 pm so your streak doesn't break.", free: "—", plus: "Yes", pro: "Yes" },
   { label: "Quiet hours", info: "Pick the hours when you don't want nudges, for example 10:30 pm to 6:30 am. Reminders wait until the quiet time ends. Alarms and timers you set yourself still ring.", free: "—", plus: "Yes", pro: "Yes" },
   { label: "Warning before your plan ends", info: "3 days and 1 day before your Plus or Pro ends, so it never runs out by surprise.", free: "—", plus: "Yes", pro: "Yes" },

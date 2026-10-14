@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Timer, Wrench, X } from "lucide-react";
@@ -70,10 +71,10 @@ export function BottomTabBar() {
       </nav>
 
       {more && typeof document !== "undefined" && createPortal(
-        <div className="lg:hidden fixed inset-0 z-[45]">
+        <div className="lg:hidden fixed inset-x-0 top-0 bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-[45]">
           <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setMore(false)} />
-          <div role="dialog" aria-label="More pages" className="absolute inset-x-0 bottom-14 mx-auto max-w-xl rounded-t-3xl border border-b-0 border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
-            <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-[var(--border)]" aria-hidden />
+          <motion.div role="dialog" aria-label="More pages" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-x-0 bottom-0 touch-none mx-auto max-w-xl rounded-t-3xl border border-b-0 border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
+            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[var(--text-muted)]/40" aria-hidden />
             <ul className="grid gap-1">
               {rest.map((r) => (
                 <li key={r.label}>
@@ -84,7 +85,7 @@ export function BottomTabBar() {
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         </div>,
         document.body,
       )}

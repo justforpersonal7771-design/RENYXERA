@@ -515,10 +515,10 @@ A separate admin site (its own route group / subdomain, its own layout) — not 
 - [x] Results: one full-width flip card (scoreboard / grid + breakdown), fits one screen, 2x2 actions on mobile
 - [x] /tools lists every tool; tools dock scrolls the open tool into view
 - [x] Branch chip moved next to profile, no arrow, hover effects; dimmer theme-aware scrollbar; stopwatch timer icon
-- [ ] Migration 0030_phone_lock.sql (verified phone permanently locked) — run in Supabase
-- [ ] Migration 0029_da_live.sql — confirm run
+- [x] Migration 0030_phone_lock.sql (done by you)
+- [x] Migration 0029_da_live.sql (done by you)
 - [ ] Future: phone verification + reports via Telegram bot first, then WhatsApp
-- [ ] Future: proper Share (copy link to a public result card, share to installed apps); rename "Download result" back to "Share result" then
+- [x] Share result (link or card): built 10 Oct
 
 ## Synced task list (10 Oct 2026, end of day) — single source for pending / done / future
 Detail lives in docs/GROWTH_TASKS.md, docs/COMPETITOR_GAPS.md, docs/PAYMENTS_RESEARCH.md, docs/STUDY_PLANNER_FEATURES.md and docs/TELEGRAM_INTEGRATION.md. This section is kept in step with all of them every turn.
@@ -551,6 +551,25 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 ### Done in this batch
 - [x] Fullscreen Exit button fixed (edge arrows no longer cover the corner buttons); Share result menu (link or card, L-3); weekly benchmark card; Pro weak-topic Telegram nudge; General Aptitude lessons (/ga-lessons); official GATE 2026 cut-offs and score calculator for CS, EC, EE, ME, CE, DA (/tools/gate-branch-cutoffs)
 
+### Done 14 Oct
+- [x] Payment check no longer spins for ever (widget rebuilds, "Try again" after 12 s)
+- [x] Clipped card shadows fixed on Practice; Generate blueprint glides to the blueprint card
+- [x] Practice: Section then Subject, and Section then Subject then Topic drop-downs
+- [x] Phone exam header: no timer icon, Submit fully visible
+- [x] More sheet: draggable down, bottom tab bar no longer blurred; profile save bar sits above the tab bar
+- [x] Mock reminders for everyone, every plan: 1 day before, 5 PM the evening before, 30 minutes before, results out
+- [x] Onboarding finishes with Telegram link, channel and group join, and mobile verification
+- [x] Shared aptitude and overlapping maths (Linear Algebra, Calculus, Probability) for every branch, tagged with year and origin paper; official papers and the weekly challenge unchanged
+- [x] CS-IT question audit: scripts/validate-question-bank.mjs (structure) and scripts/compare-keys-to-bank.mjs (694 MCQ/MSQ keys in the database equal the source, 0 differences)
+- [x] Docs: INFLUENCER_OUTREACH_MESSAGES, PROMO_VIDEO_MASTER_PROMPT, SOCIAL_AUTOMATION_PLAYBOOK, BUSINESS_EMAIL_STRATEGY
+
+### Next up (14 Oct)
+- [ ] Verify GATE_CS_2020_FN_Q35 against the official paper: options A and C both read "I only" (answer D is unaffected)
+- [ ] Flashcards for questions (replaces the timer idea), later
+- [ ] Remotion video folder, record-promo script, social publish script (docs/SOCIAL_AUTOMATION_PLAYBOOK.md §11)
+- [ ] Buy the domain, then email setup (docs/BUSINESS_EMAIL_STRATEGY.md)
+- [ ] Check on a real signed-in phone: payment, More sheet drag, onboarding Telegram step, shared aptitude questions with images
+
 ### Needs you
 - [x] **Run migration `0037_weekly_benchmark.sql`** (done) (weekly benchmark and weak-topic columns)
 - [ ] Growth tasks (yours to check): G-5 tracking sheet, C-3 value posts in the top 5 communities, V-1 record 3 Shorts, P-1 first partner offers
@@ -564,4 +583,5 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [ ] Blocked on data (searched 10 Oct, nothing official): no marks-vs-rank tables for EC/EE/ME/CE/DA exist (IIT Guwahati publishes score vs rank only in the report; web tables are pre-result guesses that disagree). Earlier-year per-branch stats: gate2025.iitr.ac.in failed to load (certificate error); only third-party 2025 qualifying marks found (CE 29.2, ME 35.8, EE 25, EC 25, DA 29), not added because we show official numbers only. Retried once (10 Oct), same certificate error. DECISION: keep official-only, hide the unofficial numbers; revisit only if the official 2025 report PDF becomes reachable
 
 ### On hold (by you)
-- [ ] L-3 Share result · PYQ extraction for CE and remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs · custom domain until revenue
+- [ ] On hold (by you): PYQ extraction for CE and remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs
+- [ ] Custom domain: now needed for business email (docs/BUSINESS_EMAIL_STRATEGY.md); first real payment has arrived

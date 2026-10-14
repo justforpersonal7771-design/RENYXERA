@@ -15,6 +15,7 @@
 //        data/pyq/<PAPER>/images/<paper_id>/*    -> public/images/<CODE>/<year-shift>/*
 //        manifest built from those files          -> public/data/<CODE>/image-manifest.json
 import { cpSync, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { buildSharedBanks } from "./lib/shared-bank.mjs";
 
 // App branch code -> GATE paper code. Keep in step with lib/branches.ts (BRANCHES_WITH_DATA).
 const PYQ_BRANCHES = { ECE: "EC", EE: "EE", DA: "DA", ME: "ME" };
@@ -42,7 +43,10 @@ function writeBank(file, papers, label) {
 mkdirSync("public/data", { recursive: true });
 
 // CSE (unchanged paths)
-const csCount = writeBank("public/data/questions.json", JSON.parse(readFileSync("data/Aggregated_Output.json", "utf8")), "CSE");
+const csPapers = JSON.parse(readFileSync("data/Aggregated_Output.json", "utf8"));
+const csCount = writeBank("public/data/questions.json", csPapers, "CSE");
+// Full (answer-carrying) papers, kept only to build the shared aptitude and maths pool below.
+const banks = { CSE: { paper: "CS", papers: csPapers, manifest: JSON.parse(readFileSync("data/image-manifest.json", "utf8")), base: "/images" } };
 copyFileSync("data/image-manifest.json", "public/data/image-manifest.json");
 console.log(`copy-static-data: CSE public/data/questions.json (${csCount} questions, no answers) + image-manifest.json`);
 
@@ -83,5 +87,11 @@ for (const [code, paper] of Object.entries(PYQ_BRANCHES)) {
     }
   }
   writeFileSync(`public/data/${code}/image-manifest.json`, JSON.stringify(manifest));
+  banks[code] = { paper, papers, manifest, base: `/images/${code}` };
   console.log(`copy-static-data: ${code} public/data/${code}/questions.json (${count} questions, no answers) + ${images} images`);
 }
+
+// Shared General Aptitude + overlapping maths pool (see scripts/lib/shared-bank.mjs).
+const shared = buildSharedBanks(banks, stripAnswers);
+writeFileSync("data/shared-question-ids.json", JSON.stringify(shared.ids));
+console.log(`copy-static-data: shared pool ${Object.entries(shared.summary).map(([k, v]) => `${k} +${v}`).join(", ")} (${shared.ids.length} ids)`);

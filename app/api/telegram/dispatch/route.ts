@@ -156,21 +156,28 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // 3 · Mock alerts: results published (everyone), starting soon (Plus, Pro)
-  const { data: mocks } = await db.from("mock_events").select("id, title, starts_at, results_at, branch_code").or(`and(starts_at.gt.${new Date(now + 20 * 60_000).toISOString()},starts_at.lt.${new Date(now + 40 * 60_000).toISOString()}),and(results_at.lte.${new Date(now).toISOString()},results_at.gt.${new Date(now - 6 * 3600_000).toISOString()})`);
+  // 3 · Mock alerts for everyone, on every plan: 1 day before, 5 PM the evening before (revise), 30 minutes before, and results published
+  const { data: mocks } = await db.from("mock_events").select("id, title, starts_at, results_at, branch_code").or(`and(starts_at.gt.${new Date(now).toISOString()},starts_at.lt.${new Date(now + 25 * 3600_000).toISOString()}),and(results_at.lte.${new Date(now).toISOString()},results_at.gt.${new Date(now - 6 * 3600_000).toISOString()})`);
   if (mocks?.length && linked.length) {
     const { data: profs } = await db.from("profiles").select("id, target_branch").in("id", linked.map((a) => a.user_id));
     const branchOf = new Map((profs ?? []).map((p) => [p.id as string, (p.target_branch as string | null) ?? "CSE"]));
+    const MIN = 60_000;
     for (const mk of mocks) {
-      const starting = Date.parse(mk.starts_at) > now;
-      for (const a of linked) {
-        if (branchOf.get(a.user_id) !== mk.branch_code || a.blocked) continue;
-        if (starting) { if (a.prefs.mocks === false || quietNow(a) || !TG_LIMITS[await tierOf(a.user_id)].mockReminders) continue; }
-        const key = `mock-${starting ? "start" : "results"}:${mk.id}:${a.user_id}`;
-        const { error } = await db.from("telegram_sent").insert({ key });
-        if (error) continue; // already sent
-        const ok = await deliver(a, starting ? `📝 <b>${html(mk.title)}</b> starts in about 30 minutes. Entry closes 30 minutes after the start.` : `🏆 Results for <b>${html(mk.title)}</b> are out. See your score, rank and the leaderboard.`, [[{ text: starting ? "Open Mocks" : "See results", url: appLink("/mocks") }]]);
-        if (ok) out.mocks++;
+      const startMs = Date.parse(mk.starts_at), diff = startMs - now, at = istParts(startMs).hhmm;
+      const eveMs = istToMs(istParts(startMs - 86400_000).date, "17:00");
+      const kinds: { kind: string; text: string; button: [string, string] }[] = [];
+      if (diff > 0 && diff >= 24 * 60 * MIN - 20 * MIN && diff <= 24 * 60 * MIN + 10 * MIN) kinds.push({ kind: "day", text: `📅 <b>${html(mk.title)}</b> is tomorrow at ${at} IST. Keep the day light: revise your notes and mistakes, and sleep well.`, button: ["Open Mocks", "/mocks"] });
+      if (diff > 0 && now >= eveMs && now < eveMs + 25 * MIN) kinds.push({ kind: "eve", text: `🌆 <b>${html(mk.title)}</b> is tomorrow at ${at} IST. Tonight, revise formulas and your wrong answers instead of starting new topics.`, button: ["Revise mistakes", "/mistakes"] });
+      if (diff >= 20 * MIN && diff <= 40 * MIN) kinds.push({ kind: "start", text: `📝 <b>${html(mk.title)}</b> starts in about 30 minutes. Entry closes 30 minutes after the start.`, button: ["Open Mocks", "/mocks"] });
+      if (mk.results_at && Date.parse(mk.results_at) <= now) kinds.push({ kind: "results", text: `🏆 Results for <b>${html(mk.title)}</b> are out. See your score, rank and the leaderboard.`, button: ["See results", "/mocks"] });
+      for (const k of kinds) {
+        for (const a of linked) {
+          if (branchOf.get(a.user_id) !== mk.branch_code || a.blocked) continue;
+          if (k.kind !== "results" && (a.prefs.mocks === false || quietNow(a))) continue;
+          const { error } = await db.from("telegram_sent").insert({ key: `mock-${k.kind}:${mk.id}:${a.user_id}` });
+          if (error) continue; // already sent
+          if (await deliver(a, k.text, [[{ text: k.button[0], url: appLink(k.button[1]) }]])) out.mocks++;
+        }
       }
     }
   }

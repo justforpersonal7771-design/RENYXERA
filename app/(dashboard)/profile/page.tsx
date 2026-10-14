@@ -618,7 +618,7 @@ export default function ProfilePage() {
       <AnimatePresence>
         {(dirty || saving || saved || error) && (
           <motion.div initial={{ opacity: 0, y: 40, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 40, scale: 0.96 }} transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="fixed bottom-4 inset-x-0 mx-auto z-40 w-[calc(100%-2rem)] max-w-xl">
+            className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] lg:bottom-4 inset-x-0 mx-auto z-40 w-[calc(100%-2rem)] max-w-xl">
             <div className="nav-cluster rounded-2xl px-4 py-3 flex items-center gap-3 shadow-[0_20px_50px_-15px_rgba(76,29,149,0.45)]">
               {error ? (
                 <p role="alert" className="flex-1 min-w-0 text-xs font-semibold text-rose-500">{error}</p>

@@ -92,6 +92,19 @@ class QuestionRepositorySingleton {
 
           const rawData: YearShiftData[] = await response.json();
 
+          // Shared General Aptitude and overlapping maths from the other branches (see scripts/lib/shared-bank.mjs).
+          // Optional: if it can't be fetched, the branch's own bank still works.
+          let shared: { papers: YearShiftData[]; manifest: Record<string, { dir: string; files: string[] }>; tags: Record<string, string[]> } | null = null;
+          try {
+            const sr = await fetch(`/data/shared/${getCurrentBranch()}.json`, { cache: "no-cache" });
+            if (sr.ok) shared = await sr.json();
+          } catch { /* shared pool unavailable, carry on */ }
+          if (shared) {
+            const ImageResolverModule = await import("@/lib/services/image-resolver");
+            ImageResolverModule.ImageResolver.addExtra(shared.manifest);
+            rawData.push(...shared.papers);
+          }
+
           const rawQuestions: Question[] = [];
           for (const paper of rawData) {
             const yearShiftStr = paper.exam_metadata?.["year-shift"] || "";
@@ -101,6 +114,7 @@ class QuestionRepositorySingleton {
             }
           }
 
+          if (shared) for (const q of rawQuestions) { const t = shared.tags[q.question_id]; if (t && !q.asked_in) q.asked_in = t; }
           const compiler = new CompilerFacade();
           let compiledQuestions = await compiler.compile(rawQuestions);
 

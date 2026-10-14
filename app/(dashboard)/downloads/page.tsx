@@ -76,7 +76,7 @@ export default function DownloadsPage() {
       }
       return [...m.entries()].map(([k, ids]) => ({ id: `${kind}:${k}`, title: title(k), kind, questionIds: ids }));
     };
-    const papers = group("paper", (q) => q.year_shift, (k) => `GATE CS ${k.replace("-", " · ")}`)
+    const papers = group("paper", (q) => (q.origin_branch ? "" : q.year_shift), (k) => `GATE CS ${k.replace("-", " · ")}`)
       .sort((a, b) => b.title.localeCompare(a.title));
     const subjects = group("subject", (q) => q.subject, (k) => k).sort((a, b) => a.title.localeCompare(b.title));
     return [...papers, ...subjects];

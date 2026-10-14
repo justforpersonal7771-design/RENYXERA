@@ -51,6 +51,9 @@ export const TurnstileWidget = forwardRef<TurnstileHandle, { onToken: (token: st
     const box = useRef<HTMLDivElement>(null);
     const widgetId = useRef<string | null>(null);
     const [state, setState] = useState<"loading" | "ready" | "verified" | "error">("loading");
+    // Bumping this tears the widget down and builds a fresh one. A plain turnstile.reset() after a used token can leave the
+    // check spinning for ever, so reset() and "Try again" both rebuild.
+    const [nonce, setNonce] = useState(0);
     const { resolvedTheme } = useTheme();
     const onTokenRef = useRef(onToken);
     onTokenRef.current = onToken;
@@ -58,8 +61,8 @@ export const TurnstileWidget = forwardRef<TurnstileHandle, { onToken: (token: st
     useImperativeHandle(ref, () => ({
       reset: () => {
         onTokenRef.current(null);
-        setState("ready");
-        if (widgetId.current && window.turnstile) window.turnstile.reset(widgetId.current);
+        setState("loading");
+        setNonce((n) => n + 1);
       },
     }));
 
@@ -80,13 +83,16 @@ export const TurnstileWidget = forwardRef<TurnstileHandle, { onToken: (token: st
           setState("ready");
         })
         .catch(() => !cancelled && setState("error"));
+      // If no token arrives in 12 s, stop spinning and let the person retry.
+      const giveUp = setTimeout(() => { if (!cancelled) setState((st) => (st === "verified" ? st : "error")); }, 12000);
       return () => {
         cancelled = true;
+        clearTimeout(giveUp);
         if (widgetId.current && window.turnstile) window.turnstile.remove(widgetId.current);
         widgetId.current = null;
       };
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [resolvedTheme]);
+    }, [resolvedTheme, nonce]);
 
     return (
       <div className="flex flex-col items-center gap-1.5">
@@ -95,7 +101,8 @@ export const TurnstileWidget = forwardRef<TurnstileHandle, { onToken: (token: st
           state === "verified" ? "text-emerald-600 dark:text-emerald-400" : state === "error" ? "text-rose-500" : "text-[var(--text-muted)]"
         }`}>
           {state === "verified" ? <ShieldCheck className="w-3.5 h-3.5" /> : state === "error" ? null : <Loader2 className="w-3 h-3 animate-spin" />}
-          {state === "verified" ? "Verified you're human" : state === "error" ? "Security check couldn't load. Refresh the page and try again." : "Running a quick security check…"}
+          {state === "verified" ? "Verified you're human" : state === "error" ? "Security check didn't finish." : "Running a quick security check…"}
+          {state === "error" && SITE_KEY && <button type="button" onClick={() => { onTokenRef.current(null); setState("loading"); setNonce((n) => n + 1); }} className="underline font-semibold cursor-pointer">Try again</button>}
         </p>
       </div>
     );

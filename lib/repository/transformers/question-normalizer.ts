@@ -70,6 +70,8 @@ export function normalizeQuestion(
     year: context.year,
     shift: context.shift,
     year_shift: yearShift,
+    origin_branch: rawQuestion.origin_branch,
+    asked_in: rawQuestion.asked_in,
     questionTextRaw: rawQuestion.question_text || "",
     contentAst: questionAst,
     options: options,

@@ -23,7 +23,24 @@ export class ImageResolver {
 
   public static initialize(manifestData: Record<string, string[]>, base = "/images") {
     this.manifest = manifestData;
+    this.extraDirs = {};
     this.base = base;
+  }
+
+  // Shared-pool papers (for example "2026-EC" inside the CS bank) live in another branch's image folder.
+  private static extraDirs: Record<string, string> = {};
+
+  /** Registers the image folders of shared-pool papers: { "2026-EC": { dir: "/images/ECE/2026", files: [...] } }. */
+  public static addExtra(extra: Record<string, { dir: string; files: string[] }>) {
+    if (!this.manifest) this.manifest = {};
+    for (const [key, v] of Object.entries(extra)) {
+      this.manifest[key] = v.files;
+      this.extraDirs[key] = v.dir;
+    }
+  }
+
+  private static dirOf(yearShift: string) {
+    return this.extraDirs[yearShift] ?? `${this.base}/${yearShift}`;
   }
 
   public static getManifest() {
@@ -104,7 +121,7 @@ export class ImageResolver {
           if (matchedFiles.length > 0) {
             // Sort to ensure sequence (e.g. 9_1.png, 9_2.png)
             matchedFiles.sort();
-            resolvedUrls = matchedFiles.map(f => `${this.base}/${yearShift}/${f}`);
+            resolvedUrls = matchedFiles.map(f => `${this.dirOf(yearShift)}/${f}`);
             resolvedUrl = resolvedUrls[0];
           }
         } else {
@@ -115,7 +132,7 @@ export class ImageResolver {
             return parsed.fileQNum === qNum && (parsed.fileSuffix === "1" || parsed.fileSuffix === "");
           });
           if (exactFile) {
-            resolvedUrl = `${this.base}/${yearShift}/${exactFile}`;
+            resolvedUrl = `${this.dirOf(yearShift)}/${exactFile}`;
             resolvedUrls = [resolvedUrl];
           }
         }
@@ -126,7 +143,7 @@ export class ImageResolver {
           return parsed.fileQNum === qNum && parsed.fileSuffix === targetSuffix;
         });
         if (exactFile) {
-          resolvedUrl = `${this.base}/${yearShift}/${exactFile}`;
+          resolvedUrl = `${this.dirOf(yearShift)}/${exactFile}`;
           resolvedUrls = [resolvedUrl];
         }
       }
@@ -137,7 +154,7 @@ export class ImageResolver {
         // Fallback if not found in manifest
         const fallbackSuffix = (targetSuffix === "1" || targetSuffix === "") ? "" : `_${suffix}`;
         const fallbackName = `${qNumStr}${fallbackSuffix}.png`;
-        resolvedUrl = `${this.base}/${yearShift}/${fallbackName}`;
+        resolvedUrl = `${this.dirOf(yearShift)}/${fallbackName}`;
         resolvedUrls = [resolvedUrl];
         hasError = true; // Not strictly known to exist, so flag as missing/error
       }

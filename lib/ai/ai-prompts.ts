@@ -1,13 +1,17 @@
 import { AIContext } from "@/types/ai.types";
 import { branchByCode, branchOfQuestionId } from "@/lib/branches";
+import sharedIds from "@/data/shared-question-ids.json";
+
 import { getCurrentBranch } from "@/lib/branch/current";
+
+const SHARED = new Set<string>(sharedIds as string[]);
 
 export class PromptBuilder {
   /** Multi-branch: the GATE paper this request is about — from the question id when there is
    *  one (server pregen has no "current branch"), else the browser's current branch. */
   public static paperName(context: AIContext): string {
     const qid = (context as any)?.currentQuestion?.question_id as string | undefined;
-    const code = (qid && branchOfQuestionId(qid)) || getCurrentBranch();
+    const code = (qid && !SHARED.has(qid) && branchOfQuestionId(qid)) || getCurrentBranch();
     const b = branchByCode(code);
     return b ? `${b.paper} (${b.name})` : "CS";
   }

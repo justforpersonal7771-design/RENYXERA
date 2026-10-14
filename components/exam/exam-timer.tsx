@@ -100,10 +100,10 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
       <div
         tabIndex={0}
         aria-label={`Time remaining ${formatTime(remaining)}${paused ? ", paused" : ""}`}
-        className={`group relative h-9 flex items-center gap-2 pl-1.5 pr-3 rounded-xl border backdrop-blur-md shadow-sm select-none shrink-0 transition-colors duration-500 outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 ${tone.box} ${tone.glow}`}
+        className={`group relative h-8 sm:h-9 flex items-center gap-2 pl-2.5 sm:pl-1.5 pr-2.5 sm:pr-3 rounded-xl border backdrop-blur-md shadow-sm select-none shrink-0 transition-colors duration-500 outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 ${tone.box} ${tone.glow}`}
       >
         {/* Ring + heartbeat dot */}
-        <span className="relative w-6 h-6 flex items-center justify-center shrink-0">
+        <span className="relative hidden sm:flex w-6 h-6 items-center justify-center shrink-0">
           <svg viewBox="0 0 24 24" className="absolute inset-0 -rotate-90">
             <circle cx="12" cy="12" r={R} fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[var(--border)]" />
             <motion.circle
@@ -129,7 +129,7 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
           initial={lastMinute ? { scale: 1.12 } : false}
           animate={{ scale: 1 }}
           transition={{ duration: 0.35, ease: "easeOut" }}
-          className={`flex font-num font-bold tabular-nums text-[15px] sm:text-base leading-none tracking-tight ${tone.text}`}
+          className={`flex font-num font-bold tabular-nums text-sm sm:text-base leading-none tracking-tight ${tone.text}`}
         >
           <RollingTime value={formatTime(remaining)} />
         </motion.span>

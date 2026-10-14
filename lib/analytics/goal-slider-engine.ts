@@ -39,7 +39,7 @@ export interface GoalSliderResult {
 
 /** AI-generated practice questions shouldn't skew what's meant to be a real historical PYQ frequency signal. */
 export function filterOfficialQuestions(questions: RenderableQuestion[]): RenderableQuestion[] {
-  return questions.filter((q) => q.year !== "AI" && !q.question_id.startsWith("ai_"));
+  return questions.filter((q) => q.year !== "AI" && !q.question_id.startsWith("ai_") && !q.origin_branch);
 }
 
 /** Ranks every (subject, topic) pair by historical marks-weighted PYQ frequency, most important first. */

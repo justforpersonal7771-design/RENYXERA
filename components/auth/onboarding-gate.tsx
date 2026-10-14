@@ -16,6 +16,7 @@ import { setAccountBranch } from "@/lib/branch/account";
 import { AvatarPicker, type AvatarValue } from "@/components/profile/avatar-picker";
 import { randomAvatarSeed } from "@/lib/avatar/generate-avatar";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
+import { TelegramCard } from "@/components/profile/telegram-card";
 
 const STATUSES = [
   { label: "Select…", value: "" },
@@ -164,7 +165,12 @@ export function OnboardingGate() {
               <p className="mt-1 text-sm text-[var(--text-secondary)]">Your student ID</p>
               <p className="mt-1 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-violet-500/10 text-violet-700 dark:text-violet-300 text-lg font-extrabold font-num tracking-wider"><IdCard className="w-5 h-5" /> {done}</p>
               <p className="mt-2 text-xs text-[var(--text-muted)]">It&apos;s permanent and unique to your account — you&apos;ll find it on your profile.</p>
-              <button onClick={() => setDone(null)} className="mt-6 w-full h-11 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30 cursor-pointer">Start preparing</button>
+              <div className="mt-5 text-left rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 p-3 sm:p-4">
+                <h3 className="text-sm font-extrabold text-[var(--text-primary)]">Connect Telegram (takes a minute)</h3>
+                <p className="mt-0.5 text-xs text-[var(--text-secondary)]">Link the bot for reminders and mock alerts, join our channel and group, and verify your mobile number.</p>
+                <div className="mt-3 max-h-[42vh] overflow-y-auto pr-1"><TelegramCard /></div>
+              </div>
+              <button onClick={() => setDone(null)} className="mt-6 w-full h-11 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30 cursor-pointer">Continue to my dashboard</button>
             </motion.div>
           ) : (
             <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>

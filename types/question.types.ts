@@ -41,6 +41,10 @@ export interface Question {
   // Included the year and shift from parent for easier flattened access
   year?: string;
   shift?: string;
+  /** Shared aptitude/maths pool: the paper code (CS, EC…) this question was asked in, when it is not this branch's own. */
+  origin_branch?: string;
+  /** Every paper code that asked this question. */
+  asked_in?: string[];
 }
 
 export interface RenderableQuestion {
@@ -55,6 +59,8 @@ export interface RenderableQuestion {
   year: string;
   shift: string;
   year_shift: string;
+  origin_branch?: string;
+  asked_in?: string[];
 
   questionTextRaw: string;
   contentAst: RenderNode[];

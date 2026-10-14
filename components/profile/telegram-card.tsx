@@ -190,7 +190,7 @@ export function TelegramCard() {
               {pref("blocks", "A nudge before each study task", "Your study plan puts tasks in the calendar. The bot messages you 10 minutes before each one, with buttons: Done, or remind me again in 15 minutes.", s.limits.blockReminders, "Plus")}
               {pref("digest", "Morning list of today's tasks", "At the time you choose below, the bot sends everything planned for today in one message.", s.limits.digest, "Plus")}
               {pref("alarms", "My daily alarms", "Alarms you set with /alarm 06:00. They message you at that time every day.", s.limits.alarms > 0, "Plus")}
-              {pref("mocks", "Warning before a mock starts", "About 30 minutes before an All-India mock begins, so you don't miss the entry time.", s.limits.mockReminders, "Plus")}
+              {pref("mocks", "Reminders before a mock", "A day before, 5 PM the evening before, and 30 minutes before an All-India mock, so you don't miss the entry time.", s.limits.mockReminders, "Plus")}
               {pref("streak", "Streak reminder", "If you practised yesterday but not yet today, the bot nudges you at 8 pm so your streak doesn't break.", s.limits.streakNudge, "Plus")}
               {pref("billing", "Warning before my plan ends", "3 days and 1 day before your Plus or Pro ends, so it never runs out by surprise.", true, "")}
               {pref("roll", "Evening check on unfinished tasks", "Each night the bot asks about tasks you didn't finish. Move them to tomorrow, or leave them. It never moves anything without your tap.", s.limits.rollPrompt, "Pro")}
