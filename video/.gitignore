@@ -4,3 +4,9 @@ out
 public/clips
 captures
 public/audio
+models
+public/ui
+public/launch
+public/takes
+.profile
+.bundle

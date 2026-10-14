@@ -1,4 +1,77 @@
-# RENYXERA promo film: the single master brief (strategy, prompt, scripts, capture and production)
+# RENYXERA promo film: the single master brief
+
+> **Version 3 (15 Oct 2026) supersedes the earlier versions below.** Sections 0 to 17 further down are kept as history and for their prompts and checklists; where they disagree with this part, this part wins.
+
+## V3.1 What changed and why (owner feedback)
+
+| Feedback | Decision |
+|---|---|
+| v1 and v2 felt slow, not premium; screens did not look like the app | Show the **real app, live**: every product shot is the actual RENYXERA app driven by a script, captured frame by frame |
+| "Simulate the process like a real one, as in the reference video, not screenshots" | Frame-accurate simulation: the app's clock is frozen and advanced exactly one frame (1/30 s) at a time; the cursor moves, clicks and types on precise frames, and the app's own animations play out naturally between them. Nothing is a static image |
+| Must be 4K, every capture 4K | Captured at 3840x2160 (1600x900 layout at 2.4x device pixels); film rendered at 3840x2160 |
+| Not slow, but not just sped up | Paced by a 120 BPM grid: a beat every 0.5 s, cuts and clicks land on beats; scenes are short and each makes one point |
+| Voice sounded Indian / unnatural | Kokoro open model (Apache-2.0 weights, commercial use allowed), voice `af_heart`. ElevenLabs sounds better still, but its free plan is non-commercial and needs attribution; a paid plan ($6+ a month) is the upgrade path |
+| Problem statement weak | Rewritten from official data (V3.3) |
+| Highlight Plus and Pro, not "Start free" | Pricing scene puts Plus and Pro side by side with their real prices and benefits; free is a small line |
+| Highlight upcoming features | A "Coming next" beat near the end (V3.6) |
+
+## V3.2 Research (what premium product films do)
+
+- Launch films that feel premium (Figma Config 2025, Stripe, Linear, Raycast, Framer) let the **product carry the video**: real UI, calm confident motion, little decoration, fast but readable pacing, typography as a second voice. Most strong launch films run 30 to 60 seconds. Sources: [Superside](https://www.superside.com/blog/saas-video-examples), [Vidico](https://vidico.com/news/top-12-outstanding-saas-product-demo-videos/), [Komet Media](https://www.kometmedia.com/blogs/8-best-saas-product-launch-video-examples-for-2026), [advids](https://advids.co/blog/saas-feature-launch).
+- Techniques: UI presented in depth rather than flat, a camera that pushes in to isolate one control, focus pulls, cropped fragments, kinetic type, cuts planned on the music grid.
+- Edtech install ads state one specific pain in the first 3 seconds, then move straight into the app ([Koro, India edtech](https://getkoro.app/blog/ai-hook-demo-video-for-edtech-apps-india-app-marketing-guide-2026)).
+- **The reference video you sent** (uxpeak, "This UI/UX Redesign Will Teach You More Than 100 Tutorials Combined", 13.5 min, 476k views): the interface sits large and centred on a soft lavender gradient; a purple cursor performs real actions; **numbered callouts with leader lines** point at elements; a **magnifier loupe** enlarges one detail; side panels slide out to explain; the camera glides in to the area being discussed; edits happen live and smoothly. We adopt this language: soft brand gradient stage, the real app large and centred, cursor-driven live actions, numbered callouts, loupe, slide-out panels, camera glides.
+- Common reasons GATE aspirants underperform (coaching blogs, opinion not survey data): too many scattered resources, previous-year questions not used well, mocks taken but not analysed, Maths and Aptitude neglected, weak revision ([PW](https://www.pw.live/gate/exams/common-mistakes-students-made-in-gate-2026), [theiesgate](https://theiesgate.in/common-gate-preparation-mistakes/), [Zeal](https://gateatzeal.com/blogs/mistakes-students-make-in-gate-preparation/)).
+- Voices: [ElevenLabs vs Kokoro](https://www.evidique.com/comparisons/elevenlabs-vs-kokoro/), [free alternatives](https://oakgen.ai/blog/free-elevenlabs-alternatives-2026).
+
+## V3.3 Problem statement (proposed)
+
+Built only on official numbers (IIT Guwahati GATE 2026 report) and the common themes above:
+
+> **2,11,020 students sat GATE CS 2026. Only 40,661 qualified.**
+> Most of them did not lack effort. They lacked direction: scattered PDFs, previous-year questions solved but never reviewed, mocks taken but never analysed.
+> **RENYXERA turns practice into progress.**
+
+On screen: the two numbers count up, then "Effort was never the problem." / "Direction was." Then the brand.
+
+## V3.4 Story (as built, 58 s, 4K 16:9, 120 BPM; 1 bar = 2 s)
+
+| Bars | Scene | On screen (real app, live, signed-in demo account with Pro) | Voice |
+|---|---|---|---|
+| 3 | Hook | 2,11,020 counts up; then 40,661, "Fewer than 1 in 5"; source line | "Over two lakh students sat GATE CS in 2026. Fewer than one in five qualified." |
+| 2 | Turn | "Effort was never the problem. / Direction was." | same |
+| 1 | Logo | Mark and wordmark hit on the drop | "Meet Renyxera." |
+| 4 | 01 Pick | Exam setup: deployment, section, subject, topic menus open and close; Generate; real blueprint; callouts 1-2-3 | "Pick a section, a subject, a topic..." |
+| 3 | 02 Solve | Real question answered correctly; calculator 30, cos = 0.866...; Save & next; loupe on the timer | "Real previous year questions, in a real exam screen." |
+| 2 | 03 Know | Real results page; callouts on the score cards and Review answers | "Then see exactly where you stand." |
+| 2 | 04 Improve | Pro analytics: smart insights, adaptive path, trend chart | "Your weak topics, found for you." |
+| 3 | 05 Plan | Study plan tool: hours slider dragged, two sections marked weak, hours update | "And a plan that fits your hours." |
+| 2 | Free tools | Official cut-offs table; marks slider dragged; GATE score updates | "Official cut-offs and a score calculator. Free." |
+| 2 | Plus & Pro | Live plans page: Plus ₹29 and Pro ₹99 called out | "Go further with Plus. Or go all in with Pro." |
+| 2 | New, and next | NEW: Civil Engineering, GATE-level practice questions. COMING SOON: Flashcards, College predictor | "New papers and practice. And more on the way." |
+| 3 | End | Logo, tagline, URL | "Renyxera. A new era of intelligent learning." |
+
+## V3.5 Production pipeline (built)
+
+1. `scripts/simulate-app.mjs` (run with `node --env-file=.env.local`): drives the real app with a frozen clock, one frame per 1/30 s, at 3840x2160, with Chrome's GPU rasteriser (about 0.5 s a frame instead of 4.5 s). Signed in as the demo account `justforpersonal7774@gmail.com` (admin magic link, no password; a 30-day admin Pro grant was added on 15 Oct so Pro screens show). `SEED=1` gives the account real history by taking topic tests at about 70 percent accuracy; `PEEK=/route` checks a page. A persistent browser profile (`video/.profile`) keeps the local history between runs.
+2. `video/src/Film4k.tsx`: stage, window, camera, callouts, loupe, type; each take is time-warped so its clicks land on beats.
+3. `video/scripts/make_launch_audio.py`: 120 BPM track on the edit's bar grid, effects, Kokoro voice `af_heart`.
+4. `npx remotion bundle src/index.ts --out-dir=.bundle` then `npx remotion render .bundle Film4k out/renyxera-film-4k.mp4 --crf=16`.
+
+## V3.6 New and upcoming features shown
+
+NEW (owner, 15 Oct: "we will be implementing them right away"): Civil Engineering paper, GATE-level generated practice questions. **Do not publish the film until both are live**, or the claim is false. COMING SOON: flashcards, college predictor.
+
+## V3.7 Open items
+
+- Real answers on screen vary per take (the results take records whatever the simulated attempt scored). Re-run `simulate-app.mjs results` if a stronger score is wanted.
+- AI Mentor and Telegram are not filmed yet (the AI Mentor answer costs AI quota; Telegram needs a test chat). Add them as takes when approved.
+- Cut-downs (30 s, 15 s) and 9:16 not built for v3 yet.
+- ElevenLabs (paid, $6+) would sound more natural than Kokoro if budget allows.
+
+---
+
+## History: version 2 brief
 
 This is the **only** promo-video document. It merges the original brief, the three enhanced prompts (the ENHANCED file, the V2 upgrade and the "Premium interactive-feeling product film" version) and the Claude production instructions that came with them. Where they disagreed, the rule that protects truthfulness won.
 

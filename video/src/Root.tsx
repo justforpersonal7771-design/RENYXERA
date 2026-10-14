@@ -1,15 +1,6 @@
 import React from "react";
 import { Composition } from "remotion";
-import { Film } from "./Film";
-import { FPS, VARIANTS, VariantId, totalFrames } from "./script";
+import { Film4k, FPS, TOTAL } from "./Film4k";
 
-// 16:9 (1920x1080) is the master format. Each cut is its own composition so it can be rendered on its own.
-const IDS: Record<VariantId, string> = { master: "Master", cut45: "Cut45", cut30: "Cut30", cut15: "Cut15" };
-
-export const Root: React.FC = () => (
-  <>
-    {(Object.keys(VARIANTS) as VariantId[]).map((v) => (
-      <Composition key={v} id={IDS[v]} component={Film} durationInFrames={totalFrames(v)} fps={FPS} width={1920} height={1080} defaultProps={{ variant: v }} />
-    ))}
-  </>
-);
+// v3 launch film: 4K 16:9. Earlier versions are in git history.
+export const Root: React.FC = () => <Composition id="Film4k" component={Film4k} durationInFrames={TOTAL} fps={FPS} width={3840} height={2160} />;

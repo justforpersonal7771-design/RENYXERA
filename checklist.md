@@ -570,7 +570,13 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [ ] Buy the domain, then email setup (docs/BUSINESS_EMAIL_STRATEGY.md)
 - [ ] Check on a real signed-in phone: payment, More sheet drag, onboarding Telegram step, shared aptitude questions with images
 
-### Promo film (15 Oct)
+### Promo film v3 (15 Oct, 4K)
+- [x] Research (premium launch films, edtech hooks, the reference video), new problem statement from official numbers, natural voice (Kokoro), brief updated (V3)
+- [x] Frame-accurate 4K simulation of the real app, signed in (demo account with Pro), beat-synced edit with callouts and loupe; Plus/Pro highlighted; New and Coming next beat
+- [ ] Before posting: Civil Engineering and GATE-level practice must be live (the film calls them NEW)
+- [ ] AI Mentor and Telegram takes; 30 s, 15 s and 9:16 cuts
+
+### Promo film (15 Oct, v1, superseded)
 - [x] One merged brief: docs/PROMO_VIDEO_MASTER_PROMPT.md (the three enhanced prompts folded in; the only promo doc)
 - [x] Remotion project video/: animated re-creations of the real screens (not screenshots or raw video), 16:9 master plus 45, 30 and 15 second cuts, voiceover, generated music and effects, captions, CTA
 - [x] Stills of every scene and the audio level checked; camera framing and loudness fixed after review
