@@ -570,6 +570,16 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [ ] Buy the domain, then email setup (docs/BUSINESS_EMAIL_STRATEGY.md)
 - [ ] Check on a real signed-in phone: payment, More sheet drag, onboarding Telegram step, shared aptitude questions with images
 
+### Promo film (15 Oct)
+- [x] One merged brief: docs/PROMO_VIDEO_MASTER_PROMPT.md (the three enhanced prompts folded in; the only promo doc)
+- [x] Remotion project video/: animated re-creations of the real screens (not screenshots or raw video), 16:9 master plus 45, 30 and 15 second cuts, voiceover, generated music and effects, captions, CTA
+- [x] Stills of every scene and the audio level checked; camera framing and loudness fixed after review
+- [ ] Watch the renders once on a phone and a laptop (video/out/*.mp4, not in git) and approve or send notes
+- [ ] Owner captures or approval for planner, analytics, AI Mentor, Telegram and mock scenes (not faked)
+- [ ] Confirm how "RENYXERA" is pronounced (the draft voice says "Renixera"), or record your own voice
+- [ ] 9:16 and 4:5 versions, and the clickable companion demo (/tour), if you want them
+- [ ] Next turn (asked): verify all 975 CS questions against the official papers
+
 ### Needs you
 - [x] **Run migration `0037_weekly_benchmark.sql`** (done) (weekly benchmark and weak-topic columns)
 - [ ] Growth tasks (yours to check): G-5 tracking sheet, C-3 value posts in the top 5 communities, V-1 record 3 Shorts, P-1 first partner offers
