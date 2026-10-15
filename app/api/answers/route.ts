@@ -21,7 +21,7 @@ const bodySchema = z.object({
   question_ids: z.array(z.string().regex(/^[A-Za-z0-9_-]{1,120}$/)).min(1).max(100),
 });
 
-const DAILY_ANSWER_CAP = 800;
+const DAILY_ANSWER_CAP = 4000;
 
 const LIMITS = {
   user: { limit: 40, windowMs: 60_000 },

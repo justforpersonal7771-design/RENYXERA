@@ -100,13 +100,17 @@ export function hasAnswer(id: string, q?: MutableQuestion): boolean {
  * Makes sure answers for these ids are available. Returns true when every requested
  * answer is now known, false if any couldn't be fetched (offline / error).
  */
+/** Why the last answer fetch failed: "limit" (daily cap / rate limit), "branch", "server", or "offline". */
+export let lastAnswerError: "limit" | "branch" | "server" | "offline" | null = null;
+
 export async function ensureAnswers(ids: Iterable<string>, opts: { timeoutMs?: number } = {}): Promise<boolean> {
   await hydrateAnswerKeys();
   const missing = [...new Set(ids)].filter((id) => id && !hasAnswer(id));
   if (!missing.length) return true;
-  if (typeof navigator !== "undefined" && navigator.onLine === false) return false;
+  if (typeof navigator !== "undefined" && navigator.onLine === false) { lastAnswerError = "offline"; return false; }
 
   let ok = true;
+  lastAnswerError = null;
   for (let i = 0; i < missing.length; i += CHUNK) {
     const batch = missing.slice(i, i + CHUNK);
     try {
@@ -118,7 +122,7 @@ export async function ensureAnswers(ids: Iterable<string>, opts: { timeoutMs?: n
         body: JSON.stringify({ question_ids: batch }),
         signal: ctrl.signal,
       }).finally(() => clearTimeout(timer));
-      if (!res.ok) { ok = false; continue; }
+      if (!res.ok) { ok = false; lastAnswerError = res.status === 429 ? "limit" : res.status === 403 ? "branch" : "server"; continue; }
       const data = (await res.json()) as { answers?: Record<string, AnswerKey>; embargoed?: string[] };
       const got = data.answers ?? {};
       // Questions of a running All-India mock: locked until its results time, not "no key".
@@ -132,6 +136,7 @@ export async function ensureAnswers(ids: Iterable<string>, opts: { timeoutMs?: n
       }
     } catch {
       ok = false;
+      lastAnswerError = "offline";
     }
   }
   bump();

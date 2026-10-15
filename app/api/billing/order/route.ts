@@ -98,7 +98,7 @@ export async function POST(req: NextRequest) {
   }).select("id").single();
   if (lockErr) {
     console.error("branch lock confirmation failed", lockErr);
-    return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 503 });
+    return NextResponse.json({ error: "Couldn't start checkout. Please try again.", code: `lock:${lockErr.code ?? ""}:${(lockErr.message ?? "").slice(0, 120)}` }, { status: 503 });
   }
   const { error } = await db.from("billing_orders").insert({
     user_id: userId, plan_id: plan.id, amount_paise: amount, upgrade_credit_paise: credit, period_days: plan.periodDays,
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
   });
   if (error) {
     console.error("billing_orders insert failed", error);
-    return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 503 });
+    return NextResponse.json({ error: "Couldn't start checkout. Please try again.", code: `order:${error.code ?? ""}:${(error.message ?? "").slice(0, 120)}` }, { status: 503 });
   }
   if (couponUsed) await db.from("coupon_redemptions").insert({ code: couponUsed.code, user_id: userId, razorpay_order_id: order.id });
   return NextResponse.json({ orderId: order.id, amount: order.amount, currency: order.currency, keyId: keys.id, planName: plan.name, email });

@@ -224,13 +224,17 @@ export default function ProfilePage() {
   });
   useEffect(() => {
     const read = () => {
-      const h = window.location.hash.slice(1);
+      // A section picked from the account menu on another page arrives in sessionStorage (client navigation
+      // doesn't fire hashchange, and the hash may be applied after this page mounts).
+      let h = window.location.hash.slice(1);
+      try { const want = sessionStorage.getItem("profile:section"); if (want) { h = want; sessionStorage.removeItem("profile:section"); history.replaceState(null, "", `#${want}`); } } catch { /* ignore */ }
       const id = (h === "profile" ? "personal" : h) as SectionId; // old links
       if (SECTIONS.some((x) => x.id === id)) setTab(id);
     };
     read();
+    const late = setTimeout(read, 120);
     window.addEventListener("hashchange", read);
-    return () => window.removeEventListener("hashchange", read);
+    return () => { clearTimeout(late); window.removeEventListener("hashchange", read); };
   }, []);
   const selectTab = (id: SectionId) => {
     setTab(id);

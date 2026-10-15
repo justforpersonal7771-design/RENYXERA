@@ -113,6 +113,7 @@ export function AccountButton() {
     setOpen(false);
     // Already on /profile: a hash change switches the section (the page listens for it).
     if (pathname === "/profile") { e.preventDefault(); window.location.hash = id; }
+    else { try { sessionStorage.setItem("profile:section", id); } catch { /* ignore */ } }
   };
   const signOut = async () => {
     setOpen(false);

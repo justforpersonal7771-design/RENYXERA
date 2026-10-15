@@ -387,7 +387,7 @@ export default function ResultSummaryPage() {
   );
 
   return (
-    <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 pb-4" data-fill-height="always">
+    <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 pb-4" data-fill-height>
       <AnswersPendingBanner session={session} onGraded={setSession} className="fixed z-50 inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-xl backdrop-blur-xl lg:static lg:inset-auto lg:mb-4 lg:shadow-none" />
 
       {/* One card, one surface. Front: ring + score summary. Back: question grid + breakdown.

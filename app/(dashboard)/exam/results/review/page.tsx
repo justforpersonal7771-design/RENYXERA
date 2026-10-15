@@ -293,7 +293,7 @@ export default function ReviewPage() {
 
                     {/* Question Content (Scrollable) */}
                     <div className="flex-1 overflow-y-auto px-6 py-8 sm:px-12 custom-scrollbar pt-12 sm:pt-14">
-                      <div className="md:hidden mb-4 -mt-6 pr-12"><QuestionMetaChips q={q as any} /></div>
+                      <div className="md:hidden mb-4 -mt-6 pr-12"><QuestionMetaChips q={q as any} showTaxonomy={false} /></div>
                       <div className="text-lg md:text-xl font-medium leading-relaxed text-[var(--text-primary)] mb-8">
                         <AstNodeRenderer nodes={q.contentAst} />
                       </div>
@@ -509,6 +509,13 @@ export default function ReviewPage() {
                           </div>
                         </div>
                         <div className="p-4 pb-2 shrink-0">
+              {q && (
+                <div className="mb-3 space-y-1.5 rounded-xl bg-[var(--surface-secondary)]/60 px-3 py-2.5">
+                  {[["Section", q.section], ["Subject", q.subject], ["Topic", q.topic]].filter(([, v]) => v).map(([k, v]) => (
+                    <div key={k}><span className="block text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">{k}</span><span className="text-xs font-semibold text-[var(--text-primary)]">{v}</span></div>
+                  ))}
+                </div>
+              )}
               <div className="grid grid-cols-3 gap-2 mb-3">
                 {[
                   { label: "Correct", v: reviewSummary.correct, cls: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },

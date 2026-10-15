@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { WifiOff, RefreshCw, Loader2 } from "lucide-react";
+import { WifiOff, RefreshCw, Loader2, X } from "lucide-react";
 import type { ExamSession } from "@/types/exam-runtime.types";
-import { ensureAnswers, hasAnswer, mockLocked, submitForGrading, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
+import { ensureAnswers, lastAnswerError, hasAnswer, mockLocked, submitForGrading, useAnswerKeysVersion } from "@/lib/repository/answer-keys";
 import { useToastStore } from "@/store/use-toast-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 
@@ -31,6 +31,7 @@ export function AnswersPendingBanner({ session, onGraded, className = "mb-4" }: 
   const { all: pending, answered: pendingAnswered } = usePendingAnswers(session);
   const [busy, setBusy] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [closed, setClosed] = useState(false);
 
   const retry = useCallback(async () => {
     if (!session || busy) return;
@@ -57,7 +58,11 @@ export function AnswersPendingBanner({ session, onGraded, className = "mb-4" }: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pending > 0]);
 
-  if (!pending) return null;
+  if (!pending || closed) return null;
+  const why = lastAnswerError === "limit" ? "You have reached today's answer limit. It resets at midnight."
+    : lastAnswerError === "branch" ? "These questions belong to a different GATE paper than your account."
+    : lastAnswerError === "server" ? "The server didn't respond. Try again in a moment."
+    : "You seem to be offline. They'll unlock when you're back online.";
   return (
     <div role="status" className={`${className} flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-200`}>
       <WifiOff className="w-4 h-4 shrink-0" />
@@ -67,7 +72,7 @@ export function AnswersPendingBanner({ session, onGraded, className = "mb-4" }: 
             ? `${pendingAnswered} of your answers can't be scored yet.`
             : "The correct answers for this test are still locked."}
         </span>{" "}
-        {failed ? "We couldn't reach the server — they'll unlock when you're back online." : "Checking with the server…"}
+        {failed ? why : "Checking with the server…"}
       </p>
       <button
         onClick={retry}
@@ -77,6 +82,7 @@ export function AnswersPendingBanner({ session, onGraded, className = "mb-4" }: 
         {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RefreshCw className="w-3.5 h-3.5" />}
         Retry
       </button>
+      <button onClick={() => setClosed(true)} aria-label="Dismiss" className="shrink-0 -mr-1 p-1 rounded-lg hover:bg-amber-500/20 cursor-pointer"><X className="w-4 h-4" /></button>
     </div>
   );
 }
