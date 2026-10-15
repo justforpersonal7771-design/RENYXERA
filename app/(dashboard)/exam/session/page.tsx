@@ -49,6 +49,7 @@ export default function ExamSessionPage() {
   const pauseSession = useExamRuntimeStore((state) => state.pauseSession);
   const isMockSession = useExamRuntimeStore((state) => !!state.activeSession?.draftConfig?.config?.mockId);
   // Graded = counts as a real attempt (mock / official paper); everything else is practice.
+  const isYearPaper = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.examType === "YEAR_PAPER");
   const isGradedPaper = useExamRuntimeStore((state) => { const c = state.activeSession?.draftConfig?.config; return !!c?.mockId || c?.examType === "GRAND_MOCK" || c?.examType === "YEAR_PAPER"; });
   const resumeSession = useExamRuntimeStore((state) => state.resumeSession);
   const submitSession = useExamRuntimeStore((state) => state.submitSession);
@@ -405,9 +406,6 @@ export default function ExamSessionPage() {
                      title="Question Grid"
                    >
                      <LayoutGrid className="w-4 h-4" />
-                     {stats.notAnswered > 0 && (
-                       <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-rose-500 border border-[var(--surface)]" />
-                     )}
                    </button>
 
                    <button
@@ -554,7 +552,7 @@ export default function ExamSessionPage() {
                             onNext={nextQuestion}
                             isPrevDisabled={currentQuestionIndex === 0}
                             isNextDisabled={currentQuestionIndex === totalQuestions - 1}
-                            topSlot={<div className="md:hidden"><QuestionMetaChips q={currentQuestion as any} /></div>}
+                            topSlot={<div className="md:hidden"><QuestionMetaChips q={currentQuestion as any} showTaxonomy={false} showYear={!isYearPaper} /></div>}
                             fullscreenTargetId="exam-question-stage"
                           />
                       ) : (

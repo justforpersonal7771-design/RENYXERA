@@ -23,7 +23,7 @@ function pyqTag(q: Meta): string | null {
 }
 
 /** Type · marks · difficulty, then section › subject › topic — one line, truncating. */
-export function QuestionMetaChips({ q, compact = false, showSection = true }: { q: Meta; compact?: boolean; showSection?: boolean }) {
+export function QuestionMetaChips({ q, compact = false, showSection = true, showTaxonomy = true, showYear = true }: { q: Meta; compact?: boolean; showSection?: boolean; showTaxonomy?: boolean; showYear?: boolean }) {
   const chip = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)] px-2 py-1 rounded-md truncate";
   return (
     <div className={`flex items-center gap-1.5 min-w-0 text-[10px] font-bold uppercase tracking-wider ${compact ? "" : "flex-wrap"}`}>
@@ -36,10 +36,10 @@ export function QuestionMetaChips({ q, compact = false, showSection = true }: { 
           <span className="bg-amber-500/10 text-amber-700 dark:text-amber-300 px-2 py-1">{q.difficulty}</span>
         )}
       </div>
-      {pyqTag(q) && <span className={`${chip} shrink-0 text-violet-700 dark:text-violet-300`} title={q.asked_in && q.asked_in.length > 1 ? `Asked in GATE ${q.asked_in.join(", ")}` : "Official GATE past-year question"}>{pyqTag(q)}</span>}
+      {showYear && pyqTag(q) && <span className={`${chip} shrink-0 text-violet-700 dark:text-violet-300`} title={q.asked_in && q.asked_in.length > 1 ? `Asked in GATE ${q.asked_in.join(", ")}` : "Official GATE past-year question"}>{pyqTag(q)}</span>}
       {showSection && q.section && <span className={`${chip} shrink-0 max-w-[140px] hidden 2xl:inline-block`} title={q.section}>{q.section}</span>}
-      {q.subject && <span className={`${chip} shrink-0 max-w-[160px]`} title={q.subject}>{q.subject}</span>}
-      {q.topic && <span className={`${chip} min-w-0 max-w-[260px]`} title={q.topic}>{q.topic}</span>}
+      {showTaxonomy && q.subject && <span className={`${chip} shrink-0 max-w-[160px]`} title={q.subject}>{q.subject}</span>}
+      {showTaxonomy && q.topic && <span className={`${chip} min-w-0 max-w-[260px]`} title={q.topic}>{q.topic}</span>}
     </div>
   );
 }

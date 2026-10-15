@@ -190,7 +190,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <TelegramActionsSync />
       <SpacedRevisionSync />
       <UpgradeModalHost />
-      <BottomTabBar />
+      {!pathname?.startsWith("/exam/results") && <BottomTabBar />}
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
       <AuthModal />

@@ -374,7 +374,7 @@ export default function ResultSummaryPage() {
                 </div>
               </div>
 
-              <div className="flex-none pt-4 mt-4 border-t border-[var(--border-subtle)] flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-semibold text-[var(--text-secondary)]">
+              <div className="flex-none pt-4 mt-4 border-t border-[var(--border-subtle)] flex flex-nowrap items-center justify-center gap-x-2.5 sm:gap-x-5 whitespace-nowrap text-[10px] sm:text-xs font-semibold text-[var(--text-secondary)]">
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Correct</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-rose-500" /> Wrong</span>
                 <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-[var(--surface-secondary)] border border-[var(--border)]" /> Skipped</span>
@@ -388,7 +388,7 @@ export default function ResultSummaryPage() {
 
   return (
     <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 pb-4" data-fill-height="always">
-      <AnswersPendingBanner session={session} onGraded={setSession} />
+      <AnswersPendingBanner session={session} onGraded={setSession} className="fixed z-50 inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-xl backdrop-blur-xl lg:static lg:inset-auto lg:mb-4 lg:shadow-none" />
 
       {/* One card, one surface. Front: ring + score summary. Back: question grid + breakdown.
           The faces stay mounted and the card turns in CSS 3D, so flipping is smooth both ways. */}
