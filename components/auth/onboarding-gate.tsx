@@ -63,6 +63,9 @@ export function OnboardingGate() {
   const multiBranch = branches.length > 1;
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<string | null>(null); // student id once finished
+  // The "profile is loading" hold never lasts more than 6 s, so a slow or failed profile load can't trap a new account.
+  const [holdExpired, setHoldExpired] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setHoldExpired(true), 6000); return () => clearTimeout(t); }, []);
   const [name, setName] = useState<{ state: "idle" | "checking" | "ok" | "bad"; reason?: string }>({ state: "idle" });
 
   useEffect(() => {
@@ -95,7 +98,7 @@ export function OnboardingGate() {
 
   // A brand-new account whose profile is still loading: hold the onboarding backdrop now,
   // so the dashboard doesn't flash in between sign-up and this card.
-  const freshAccount = !!user && !profile && !!user.created_at && Date.now() - Date.parse(user.created_at) < 15 * 60_000;
+  const freshAccount = !holdExpired && !!user && !profile && !!user.created_at && Date.now() - Date.parse(user.created_at) < 15 * 60_000;
   if (freshAccount) {
     return (
       <div className="fixed inset-0 z-[250] grid place-items-center bg-slate-950/60 backdrop-blur-xl" aria-busy="true">
