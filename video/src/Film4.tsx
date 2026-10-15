@@ -133,7 +133,8 @@ const Window: React.FC<WinProps> = ({ take, segs, cam, callouts = [], spots = []
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   if (!data) return null;
-  const tf = seqMap(segs ?? [[0, data.frames - 1]], dur)(f);
+  const last = data.frames - 1;
+  const tf = Math.min(last, seqMap((segs ?? [[0, last]]).map(([x, y]) => [Math.min(x, last), Math.min(y, last)] as [number, number]), dur)(f));
   const H = (box.width * 9) / 16;
   const c = camAt(cam, tf);
   const k = (box.width / 1600) * c.s;
@@ -452,7 +453,7 @@ const S_Practice: React.FC = () => {
       <Chip t="PRACTICE · REAL EXAM SCREEN" top={90} />
       <Words id="a6" size={108} top={220} width={3300} grad={["2,400", "official", "real"]} />
       <Sequence durationInFrames={half}>
-        <Window take="setup" segs={[[60, 206]]} url="gate.renyxera.workers.dev/setup" dur={half}
+        <Window take="setup" segs={[[60, 205]]} url="gate.renyxera.workers.dev/setup" dur={half}
           cam={[{ t: 60, s: 1.3, x: 0.3, y: 0.42 }, { t: 130, s: 1.3, x: 0.45, y: 0.42 }, { t: 168, s: 1.1, x: 0.7, y: 0.45 }]}
           callouts={[{ from: 86, to: 130, x: 200, y: 356, n: 1, label: "Section", side: "right" }, { from: 130, to: 170, x: 760, y: 356, n: 2, label: "Subject", side: "right" }]} />
       </Sequence>
