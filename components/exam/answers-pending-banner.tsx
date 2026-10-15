@@ -50,10 +50,10 @@ export function AnswersPendingBanner({ session, onGraded, className = "mb-4" }: 
 
   useEffect(() => {
     if (!pending) return;
-    void retry();
+    const first = setTimeout(() => void retry(), 0);
     const onOnline = () => void retry();
     window.addEventListener("online", onOnline);
-    return () => window.removeEventListener("online", onOnline);
+    return () => { clearTimeout(first); window.removeEventListener("online", onOnline); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pending > 0]);
 
