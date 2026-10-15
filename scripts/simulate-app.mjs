@@ -140,7 +140,8 @@ async function newPage(browser, signedIn = process.env.GUEST !== "1", host = "lo
   }
   await ctx.addInitScript(() => { try { sessionStorage.setItem("renyxera_intro_seen", "1"); } catch {} });
   const page = ctx.pages()[0] ?? (await ctx.newPage());
-  await page.clock.install();
+  // CLOCK_AT (ISO time) sets the app's clock, e.g. 2026-10-15T01:12:00+05:30 for the midnight dashboard greeting
+  await page.clock.install(process.env.CLOCK_AT ? { time: new Date(process.env.CLOCK_AT) } : undefined);
   return page;
 }
 async function go(page, url, ready) { page.goto(url).catch(() => {}); await settle(page, ready, 60000); }
@@ -314,6 +315,128 @@ if (want("setup") || want("exam") || want("results")) {
   await r.move(page.getByRole("button", { name: /review answers/i }).first(), 24); r.mark("review");
   await r.frame(40);
   r.save();
+  await page.context().close();
+}
+
+// ---------- dashboard: hover over the live stats ----------
+if (want("dash")) {
+  const page = await newPage(browser);
+  await go(page, BASE + "/", has(page, "Conquer your"));
+  for (let i = 0; i < 40; i++) { await page.clock.runFor(100); await sleep(50); }
+  const t = new Take(page, "dash");
+  t.pos = { x: 700, y: 760 };
+  await t.frame(10);
+  await t.move({ x: 1050, y: 210 }, 22); t.mark("streak");
+  await t.frame(8);
+  await t.move({ x: 1250, y: 210 }, 14); t.mark("solved");
+  await t.frame(8);
+  await t.move({ x: 1440, y: 430 }, 18); t.mark("readiness");
+  await t.frame(14);
+  await t.move(page.getByText("Ask AI Mentor").first(), 20); t.mark("ask");
+  await t.frame(16);
+  t.save();
+  await page.context().close();
+}
+
+// ---------- AI Tutor: the explanation, the coach list, then a typed follow-up ----------
+if (want("tutor")) {
+  const page = await newPage(browser);
+  await go(page, BASE + "/ai-tutor?qid=" + (process.env.TUTOR_QID ?? "GATE_CS_2017_AN_Q20"), has(page, "STEP-BY-STEP"), 120000);
+  for (let i = 0; i < 20; i++) { await page.clock.runFor(100); await sleep(50); }
+  const t = new Take(page, "tutor");
+  t.pos = { x: 1000, y: 700 };
+  await t.frame(12); t.mark("answer");
+  await t.move({ x: 860, y: 470 }, 26);
+  await t.frame(14);
+  await t.click(page.getByText(/^Coach:/).first(), 18, 30); t.mark("coaches");
+  await page.keyboard.press("Escape"); await t.frame(6);
+  const input = page.getByPlaceholder(/Ask follow-up/);
+  await t.click(input, 18, 6); t.mark("typing");
+  for (const ch of "Why is option A wrong?") { await page.keyboard.type(ch); await t.frame(2); }
+  await t.frame(6);
+  await t.click(page.locator("button:has(svg.lucide-send), button[aria-label*='Send' i]").last(), 12, 4); t.mark("sent");
+  // keep filming while the real answer arrives (network time is real; frames are captured as it comes in)
+  const before = (await page.evaluate(() => document.body.innerText)).length;
+  for (let i = 0; i < 260; i++) {
+    await t.frame();
+    const now = (await page.evaluate(() => document.body.innerText)).length;
+    if (i > 40 && now > before + 400 && !(await page.getByText(/compiling|thinking/i).count())) break;
+  }
+  t.mark("followup");
+  await t.scroll(500, 40);
+  await t.frame(30);
+  t.save();
+  await page.context().close();
+}
+
+// ---------- AI Mentor ----------
+if (want("mentor")) {
+  const page = await newPage(browser);
+  await go(page, BASE + "/ai-mentor", has(page, "READINESS PREDICTOR"), 60000);
+  for (let i = 0; i < 30; i++) { await page.clock.runFor(100); await sleep(50); }
+  const t = new Take(page, "mentor");
+  t.pos = { x: 700, y: 700 };
+  await t.frame(10);
+  await t.move({ x: 380, y: 240 }, 24); t.mark("message");
+  await t.frame(16);
+  await t.move({ x: 1260, y: 215 }, 22); t.mark("readiness");
+  await t.frame(10);
+  await t.move({ x: 1360, y: 215 }, 12); t.mark("rank");
+  await t.frame(14);
+  await t.move(page.getByText("Review mistakes").first(), 18); t.mark("fix");
+  await t.frame(12);
+  await t.scroll(380, 36); t.mark("plan");
+  await t.move({ x: 300, y: 300 }, 18);
+  await t.frame(14);
+  t.save();
+  await page.context().close();
+}
+
+// ---------- mistakes bank, then the revision queue ----------
+if (want("mistakes")) {
+  const page = await newPage(browser);
+  await go(page, BASE + "/mistakes", has(page, "Mistakes Bank"), 60000);
+  for (let i = 0; i < 20; i++) { await page.clock.runFor(100); await sleep(50); }
+  const t = new Take(page, "mistakes");
+  t.pos = { x: 900, y: 750 };
+  await t.frame(10);
+  await t.move({ x: 700, y: 655 }, 22); t.mark("prevWrong");
+  await t.frame(12);
+  await t.click(page.getByText("Revision", { exact: true }).last(), 22, 6); t.mark("revision");
+  await settle(page, has(page, "REVISION DUE TODAY"), 30000);
+  await t.frame(16);
+  t.save();
+  await page.context().close();
+}
+
+// ---------- weekly challenge (the All-India mock has no live event yet) ----------
+if (want("challenge")) {
+  const page = await newPage(browser);
+  await go(page, BASE + "/mocks", has(page, "WEEKLY CHALLENGE"), 60000);
+  const t = new Take(page, "challenge");
+  t.pos = { x: 1200, y: 700 };
+  await t.frame(10);
+  await t.scroll(420, 36);
+  await t.move(page.getByText("Take the challenge").first(), 22); t.mark("challenge");
+  await t.frame(20);
+  t.save();
+  await page.context().close();
+}
+
+// ---------- profile: stats and achievements ----------
+if (want("profile")) {
+  const page = await newPage(browser);
+  await go(page, BASE + "/profile", has(page, "Achievements"), 60000);
+  for (let i = 0; i < 20; i++) { await page.clock.runFor(100); await sleep(50); }
+  const t = new Take(page, "profile");
+  t.pos = { x: 1200, y: 760 };
+  await t.frame(10);
+  await t.move({ x: 380, y: 480 }, 20); t.mark("stats");
+  await t.frame(8);
+  await t.scroll(330, 34); t.mark("achievements");
+  await t.move({ x: 500, y: 390 }, 18);
+  await t.frame(16);
+  t.save();
   await page.context().close();
 }
 

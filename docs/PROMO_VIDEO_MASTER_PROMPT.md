@@ -1,5 +1,8 @@
 # RENYXERA promo film: the single master brief
 
+> **Version 4 (15 Oct 2026) is current.** Picks: `docs/PROMO_FILM_V4_PICKS.md`. Source: `video/src/Film4.tsx`, timeline `video/src/v4-timeline.ts`, audio `video/scripts/make_v4_audio.py`, takes `scripts/simulate-app.mjs` (dash, tutor, mentor, mistakes, setup, exam, analytics, challenge, planner, profile, plans). Story: 1:12 AM, studying alone -> no one to ask why -> same mistake in the mock -> 2,11,020 wrote, 40,661 qualified -> "What if you had a mentor who never sleeps?" -> RENYXERA -> each feature answers a pain (AI Tutor centrepiece with a real follow-up answer) -> Plus/Pro -> investor pitch (5,01,427 students across five papers; practises, explains, remembers, plans) -> "Effort, now with direction." Every line is revealed word by word on the frame it is spoken (Kokoro voice, whisper word timings). Pronounced "Renixera". About 104 s, 4K. The Telegram phone is an illustration built from the bot's real message format (labelled as such here). All-India mock replaced by the Weekly Challenge, because no live mock exists yet.
+
+
 > **Version 3 (15 Oct 2026) supersedes the earlier versions below.** Sections 0 to 17 further down are kept as history and for their prompts and checklists; where they disagree with this part, this part wins.
 
 ## V3.1 What changed and why (owner feedback)

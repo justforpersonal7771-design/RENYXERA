@@ -1,0 +1,727 @@
+{
+ "p1": {
+  "text": "It's past midnight. You're still solving.",
+  "dur": 2.029,
+  "words": [
+   "It's",
+   "past",
+   "midnight.",
+   "You're",
+   "still",
+   "solving."
+  ],
+  "t": [
+   0.0,
+   0.2,
+   0.38,
+   1.16,
+   1.32,
+   1.44
+  ],
+  "heard": "It's past midnight, you're still solving."
+ },
+ "p2": {
+  "text": "Every day starts with the same question. What do I study today?",
+  "dur": 3.284,
+  "words": [
+   "Every",
+   "day",
+   "starts",
+   "with",
+   "the",
+   "same",
+   "question.",
+   "What",
+   "do",
+   "I",
+   "study",
+   "today?"
+  ],
+  "t": [
+   0.0,
+   0.22,
+   0.44,
+   0.74,
+   0.98,
+   1.14,
+   1.36,
+   2.24,
+   2.38,
+   2.48,
+   2.6,
+   2.82
+  ],
+  "heard": "Every day starts with the same question, what do I study today?"
+ },
+ "p3": {
+  "text": "You get one wrong. And there's no one to ask why.",
+  "dur": 2.427,
+  "words": [
+   "You",
+   "get",
+   "one",
+   "wrong.",
+   "And",
+   "there's",
+   "no",
+   "one",
+   "to",
+   "ask",
+   "why."
+  ],
+  "t": [
+   0.0,
+   0.1,
+   0.22,
+   0.44,
+   1.04,
+   1.18,
+   1.36,
+   1.52,
+   1.66,
+   1.78,
+   2.02
+  ],
+  "heard": "You get one wrong, and there's no one to ask why."
+ },
+ "p4": {
+  "text": "So it happens again. In the next mock test.",
+  "dur": 2.419,
+  "words": [
+   "So",
+   "it",
+   "happens",
+   "again.",
+   "In",
+   "the",
+   "next",
+   "mock",
+   "test."
+  ],
+  "t": [
+   0.0,
+   0.14,
+   0.24,
+   0.52,
+   1.22,
+   1.32,
+   1.42,
+   1.68,
+   1.9
+  ],
+  "heard": "So it happens again, in the next mock test."
+ },
+ "p5": {
+  "text": "Over two lakh students wrote GATE CS this year.",
+  "dur": 2.597,
+  "words": [
+   "Over",
+   "two",
+   "lakh",
+   "students",
+   "wrote",
+   "GATE",
+   "CS",
+   "this",
+   "year."
+  ],
+  "t": [
+   0.0,
+   0.2,
+   0.44,
+   0.66,
+   1.06,
+   1.36,
+   1.64,
+   2.0,
+   2.24
+  ],
+  "heard": "Over two LAC students wrote Gate CS this year."
+ },
+ "p6": {
+  "text": "Fewer than one in five qualified.",
+  "dur": 1.846,
+  "words": [
+   "Fewer",
+   "than",
+   "one",
+   "in",
+   "five",
+   "qualified."
+  ],
+  "t": [
+   0.0,
+   0.18,
+   0.38,
+   0.6,
+   0.78,
+   1.06
+  ],
+  "heard": "fewer than one in five qualified."
+ },
+ "p7": {
+  "text": "Effort was never the problem. Direction was.",
+  "dur": 2.438,
+  "words": [
+   "Effort",
+   "was",
+   "never",
+   "the",
+   "problem.",
+   "Direction",
+   "was."
+  ],
+  "t": [
+   0.0,
+   0.28,
+   0.4,
+   0.64,
+   0.84,
+   1.76,
+   1.84
+  ],
+  "heard": "Effort was never the problem. Direction was."
+ },
+ "b1": {
+  "text": "What if you had a mentor who never sleeps?",
+  "dur": 2.011,
+  "words": [
+   "What",
+   "if",
+   "you",
+   "had",
+   "a",
+   "mentor",
+   "who",
+   "never",
+   "sleeps?"
+  ],
+  "t": [
+   0.0,
+   0.1,
+   0.2,
+   0.3,
+   0.44,
+   0.52,
+   0.86,
+   1.24,
+   1.46
+  ],
+  "heard": "What if you had a mentor who never sleeps?"
+ },
+ "b2": {
+  "text": "What if your preparation could think with you?",
+  "dur": 1.782,
+  "words": [
+   "What",
+   "if",
+   "your",
+   "preparation",
+   "could",
+   "think",
+   "with",
+   "you?"
+  ],
+  "t": [
+   0.0,
+   0.12,
+   0.26,
+   0.38,
+   0.86,
+   1.22,
+   1.38,
+   1.52
+  ],
+  "heard": "What if your preparation could think with you?"
+ },
+ "r1": {
+  "text": "Meet RENYXERA.",
+  "dur": 0.944,
+  "words": [
+   "Meet",
+   "RENYXERA."
+  ],
+  "t": [
+   0.0,
+   0.22
+  ],
+  "heard": "Meet Renixera."
+ },
+ "r2": {
+  "text": "Your AI mentor for GATE. Practise. Understand. Improve.",
+  "dur": 3.824,
+  "words": [
+   "Your",
+   "AI",
+   "mentor",
+   "for",
+   "GATE.",
+   "Practise.",
+   "Understand.",
+   "Improve."
+  ],
+  "t": [
+   0.0,
+   0.14,
+   0.52,
+   0.82,
+   1.1,
+   2.16,
+   2.54,
+   3.22
+  ],
+  "heard": "Your AI mentor for GATE. Practice, understand, improve."
+ },
+ "a1": {
+  "text": "It knows where you are, every single day.",
+  "dur": 1.969,
+  "words": [
+   "It",
+   "knows",
+   "where",
+   "you",
+   "are,",
+   "every",
+   "single",
+   "day."
+  ],
+  "t": [
+   0.0,
+   0.1,
+   0.28,
+   0.5,
+   0.62,
+   1.02,
+   1.28,
+   1.56
+  ],
+  "heard": "It knows where you are, every single day."
+ },
+ "a2": {
+  "text": "Remember that question? Now you can ask why.",
+  "dur": 2.391,
+  "words": [
+   "Remember",
+   "that",
+   "question?",
+   "Now",
+   "you",
+   "can",
+   "ask",
+   "why."
+  ],
+  "t": [
+   0.0,
+   0.24,
+   0.52,
+   1.4,
+   1.48,
+   1.64,
+   1.76,
+   1.98
+  ],
+  "heard": "Remember that question, now you can ask why."
+ },
+ "a3": {
+  "text": "It explains your exact mistake, step by step. Eight expert coaches, awake at 1 AM.",
+  "dur": 5.266,
+  "words": [
+   "It",
+   "explains",
+   "your",
+   "exact",
+   "mistake,",
+   "step",
+   "by",
+   "step.",
+   "Eight",
+   "expert",
+   "coaches,",
+   "awake",
+   "at",
+   "1",
+   "AM."
+  ],
+  "t": [
+   0.0,
+   0.1,
+   0.5,
+   0.72,
+   1.02,
+   1.7,
+   1.94,
+   2.14,
+   2.98,
+   3.12,
+   3.56,
+   4.04,
+   4.5,
+   4.68,
+   4.84
+  ],
+  "heard": "It explains your exact mistake, step by step. Eight expert coaches awake at 1 a.m."
+ },
+ "a4": {
+  "text": "It reads every attempt, finds your weak spots, and tells you exactly what to do next.",
+  "dur": 4.786,
+  "words": [
+   "It",
+   "reads",
+   "every",
+   "attempt,",
+   "finds",
+   "your",
+   "weak",
+   "spots,",
+   "and",
+   "tells",
+   "you",
+   "exactly",
+   "what",
+   "to",
+   "do",
+   "next."
+  ],
+  "t": [
+   0.0,
+   0.1,
+   0.36,
+   0.7,
+   1.42,
+   1.78,
+   1.94,
+   2.12,
+   2.82,
+   2.94,
+   3.14,
+   3.32,
+   3.68,
+   4.06,
+   4.2,
+   4.34
+  ],
+  "heard": "It reads every attempt, finds your weak spots, and tells you exactly what to do next."
+ },
+ "a5": {
+  "text": "Every mistake is saved, and comes back right before you'd forget it.",
+  "dur": 3.482,
+  "words": [
+   "Every",
+   "mistake",
+   "is",
+   "saved,",
+   "and",
+   "comes",
+   "back",
+   "right",
+   "before",
+   "you'd",
+   "forget",
+   "it."
+  ],
+  "t": [
+   0.0,
+   0.24,
+   0.6,
+   0.84,
+   1.24,
+   1.7,
+   1.94,
+   2.26,
+   2.48,
+   2.76,
+   2.96,
+   3.16
+  ],
+  "heard": "Every mistake is saved and comes back right before you'd forget it."
+ },
+ "a6": {
+  "text": "2,400 official GATE questions, in a real exam screen.",
+  "dur": 4.057,
+  "words": [
+   "2,400",
+   "official",
+   "GATE",
+   "questions,",
+   "in",
+   "a",
+   "real",
+   "exam",
+   "screen."
+  ],
+  "t": [
+   0.0,
+   0.96,
+   1.34,
+   1.58,
+   2.1,
+   2.68,
+   2.82,
+   3.1,
+   3.54
+  ],
+  "heard": "2,400 official gate questions in a real exam screen."
+ },
+ "a7": {
+  "text": "See exactly where your marks are leaking.",
+  "dur": 1.795,
+  "words": [
+   "See",
+   "exactly",
+   "where",
+   "your",
+   "marks",
+   "are",
+   "leaking."
+  ],
+  "t": [
+   0.0,
+   0.18,
+   0.56,
+   0.86,
+   0.98,
+   1.2,
+   1.38
+  ],
+  "heard": "See exactly where your marks are leaking."
+ },
+ "a8": {
+  "text": "Every week, one challenge for everyone. See where you rank.",
+  "dur": 3.014,
+  "words": [
+   "Every",
+   "week,",
+   "one",
+   "challenge",
+   "for",
+   "everyone.",
+   "See",
+   "where",
+   "you",
+   "rank."
+  ],
+  "t": [
+   0.0,
+   0.24,
+   0.56,
+   0.74,
+   1.1,
+   1.38,
+   2.24,
+   2.36,
+   2.5,
+   2.62
+  ],
+  "heard": "Every week, one challenge for everyone. See where you rank."
+ },
+ "a9": {
+  "text": "A plan that fits your day. And a nudge on Telegram when you slip.",
+  "dur": 3.337,
+  "words": [
+   "A",
+   "plan",
+   "that",
+   "fits",
+   "your",
+   "day.",
+   "And",
+   "a",
+   "nudge",
+   "on",
+   "Telegram",
+   "when",
+   "you",
+   "slip."
+  ],
+  "t": [
+   0.0,
+   0.12,
+   0.38,
+   0.58,
+   0.78,
+   0.96,
+   1.54,
+   1.68,
+   1.8,
+   2.04,
+   2.2,
+   2.66,
+   2.84,
+   2.96
+  ],
+  "heard": "a plan that fits your day, and a nudge on telegram when you slip."
+ },
+ "a10": {
+  "text": "Watch yourself level up.",
+  "dur": 1.252,
+  "words": [
+   "Watch",
+   "yourself",
+   "level",
+   "up."
+  ],
+  "t": [
+   0.0,
+   0.24,
+   0.6,
+   0.88
+  ],
+  "heard": "Watch yourself level up."
+ },
+ "m1": {
+  "text": "Go further with Plus. Go all in with Pro.",
+  "dur": 2.172,
+  "words": [
+   "Go",
+   "further",
+   "with",
+   "Plus.",
+   "Go",
+   "all",
+   "in",
+   "with",
+   "Pro."
+  ],
+  "t": [
+   0.0,
+   0.16,
+   0.4,
+   0.62,
+   1.2,
+   1.3,
+   1.48,
+   1.6,
+   1.76
+  ],
+  "heard": "Go further with Plus, go all in with Pro."
+ },
+ "m2": {
+  "text": "Your AI mentor, from less than a cup of chai a week.",
+  "dur": 2.916,
+  "words": [
+   "Your",
+   "AI",
+   "mentor,",
+   "from",
+   "less",
+   "than",
+   "a",
+   "cup",
+   "of",
+   "chai",
+   "a",
+   "week."
+  ],
+  "t": [
+   0.0,
+   0.14,
+   0.52,
+   0.9,
+   1.38,
+   1.58,
+   1.8,
+   1.84,
+   1.98,
+   2.14,
+   2.44,
+   2.58
+  ],
+  "heard": "your AI mentor from less than a cup of chai a week."
+ },
+ "c1": {
+  "text": "Over five lakh students sit these five GATE papers every year.",
+  "dur": 3.562,
+  "words": [
+   "Over",
+   "five",
+   "lakh",
+   "students",
+   "sit",
+   "these",
+   "five",
+   "GATE",
+   "papers",
+   "every",
+   "year."
+  ],
+  "t": [
+   0.0,
+   0.2,
+   0.5,
+   0.72,
+   1.12,
+   1.6,
+   1.84,
+   2.22,
+   2.42,
+   2.9,
+   3.22
+  ],
+  "heard": "Over five LAC students sit these five gate papers every year."
+ },
+ "c2": {
+  "text": "RENYXERA practises with them, explains, remembers, and plans.",
+  "dur": 3.692,
+  "words": [
+   "RENYXERA",
+   "practises",
+   "with",
+   "them,",
+   "explains,",
+   "remembers,",
+   "and",
+   "plans."
+  ],
+  "t": [
+   0.0,
+   0.48,
+   0.86,
+   1.18,
+   1.72,
+   2.56,
+   3.12,
+   3.16
+  ],
+  "heard": "Renixera practices with them, explains, remembers, and plans."
+ },
+ "c3": {
+  "text": "Effort, now with direction.",
+  "dur": 1.345,
+  "words": [
+   "Effort,",
+   "now",
+   "with",
+   "direction."
+  ],
+  "t": [
+   0.0,
+   0.38,
+   0.58,
+   0.76
+  ],
+  "heard": "Effort now with direction."
+ },
+ "c4": {
+  "text": "RENYXERA. A new era of intelligent learning.",
+  "dur": 2.483,
+  "words": [
+   "RENYXERA.",
+   "A",
+   "new",
+   "era",
+   "of",
+   "intelligent",
+   "learning."
+  ],
+  "t": [
+   0.0,
+   0.88,
+   0.9,
+   1.08,
+   1.4,
+   1.56,
+   1.92
+  ],
+  "heard": "Renixera, a new era of intelligent learning."
+ }
+}
