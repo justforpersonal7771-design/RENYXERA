@@ -5,7 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BILLING_MODE, planById } from "@/lib/billing/plans";
-import { getEntitlement, isDisposableEmail, plusUpgradeCredit, razorpayKeys, verifyTurnstile } from "@/lib/billing/server";
+import { getEntitlement, isDisposableEmail, plusUpgradeCredit, razorpayKeys } from "@/lib/billing/server";
 import { getUserBranch } from "@/lib/server/branch";
 import { evaluateCoupon } from "@/lib/billing/coupons";
 import { branchByCode } from "@/lib/branches";
@@ -50,9 +50,8 @@ export async function POST(req: NextRequest) {
   try { body = await req.json(); } catch { return NextResponse.json({ error: "Invalid request." }, { status: 400 }); }
   const parsed = schema.safeParse(body);
   if (!parsed.success) return NextResponse.json({ error: "Please accept the terms to continue." }, { status: 400 });
-  if (!(await verifyTurnstile(parsed.data.turnstileToken, req.headers.get("cf-connecting-ip")))) {
-    return NextResponse.json({ error: "Verification failed. Please try again." }, { status: 403 });
-  }
+  // No captcha at checkout (15 Oct 2026): it left buyers stuck on "verifying". Sign-in, rate limits, the branch check
+  // and Razorpay's own fraud checks protect this route.
 
   // The subscription is for the account's branch only; the typed paper code is the signal.
   const db = createServiceRoleClient();

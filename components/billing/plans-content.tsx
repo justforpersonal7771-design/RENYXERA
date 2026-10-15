@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { branchByCode } from "@/lib/branches";
-import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Crown, Loader2, Sparkles, X } from "lucide-react";
@@ -55,8 +54,6 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
   const branchPaper = useAuthStore((s) => branchByCode(s.profile?.target_branch ?? "CSE")?.paper ?? "CS");
   const [typedPaper, setTypedPaper] = useState("");
   const paperOk = typedPaper.trim().toUpperCase() === branchPaper;
-  const [captcha, setCaptcha] = useState<string | null>(null);
-  const turnstileRef = useRef<TurnstileHandle>(null);
   const [interested, setInterested] = useState<PlanId[]>([]);
   const [confirm, setConfirm] = useState<PlanId | null>(null);
   // Coupon box in the confirm window: the server decides what the code is worth; the order checks it again.
@@ -88,10 +85,10 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
       }
       if (!signedIn) { useToastStore.getState().show("Sign in first to upgrade.", "info"); return; }
       // First click opens the confirm window; its Pay button calls this again.
-      if (confirm !== planId) { setAgreed(false); setTypedPaper(""); setCaptcha(null); setCoupon(null); setCouponText(""); setCouponMsg(null); setConfirm(planId); return; }
-      if (!agreed || !paperOk || !captcha) return;
-      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, coupon: coupon?.code, acceptedTerms: true, turnstileToken: captcha ?? undefined, branchConfirm: typedPaper.trim().toUpperCase() }) });
-      turnstileRef.current?.reset(); setCaptcha(null);
+      if (confirm !== planId) { setAgreed(false); setTypedPaper(""); setCoupon(null); setCouponText(""); setCouponMsg(null); setConfirm(planId); return; }
+      if (!agreed || !paperOk) return;
+      const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, coupon: coupon?.code, acceptedTerms: true, branchConfirm: typedPaper.trim().toUpperCase() }) });
+      
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
       if (!(await loadCheckout()) || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your connection.");
@@ -252,12 +249,11 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                   <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
                   <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Refund &amp; Cancellation Policy</Link>.</span>
                 </label>
-                <div className="mt-3 flex justify-center min-h-[24px]"><TurnstileWidget ref={turnstileRef} onToken={setCaptcha} /></div>
-                <button type="button" onClick={() => upgrade(cp.id)} disabled={!agreed || !paperOk || !captcha || !!busy}
+                <button type="button" onClick={() => upgrade(cp.id)} disabled={!agreed || !paperOk || !!busy}
                   className={`mt-4 w-full h-12 rounded-xl font-bold shadow-lg disabled:opacity-50 inline-flex items-center justify-center gap-2 cursor-pointer ${LOOK[cp.tier].btn}`}>
                   {busy === cp.id && <Loader2 className="w-4 h-4 animate-spin" />} Pay {formatPrice(total)} securely
                 </button>
-                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!paperOk ? `Type ${branchPaper} above to confirm your branch.` : !agreed ? "Tick the box to continue." : !captcha ? "Running a quick security check…" : "You'll finish on Razorpay — UPI, cards or net banking."}</p>
+                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!paperOk ? `Type ${branchPaper} above to confirm your branch.` : !agreed ? "Tick the box to continue." : "You'll finish on Razorpay — UPI, cards or net banking."}</p>
               </motion.div>
             </motion.div>
           );
