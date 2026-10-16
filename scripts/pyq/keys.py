@@ -35,6 +35,8 @@ ROW = re.compile(
 
 def parse_answer(qtype: str, raw: str) -> dict:
     s = raw.strip().replace("–", "-").replace("—", "-")
+    # "– 0.152 to – 0.149": a detached sign before a number ("- 0.152") is a minus
+    s = re.sub(r"(^|\bto\s+)-\s+(?=\d)", r"\1-", s, flags=re.I)
     if re.fullmatch(r"MTA\*?", s, re.I) or "marks to all" in s.lower():
         return {"mta": True}
     if qtype in ("MCQ", "MSQ"):

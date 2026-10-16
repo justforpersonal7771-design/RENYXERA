@@ -12328,5 +12328,2135 @@
         "nat_answer_range": "10 to 10"
       }
     ]
+  },
+  {
+    "exam_metadata": {
+      "year-shift": "2023-S1"
+    },
+    "questions": [
+      {
+        "question_no": 1,
+        "question_id": "GATE_CE_2023_S1_Q1",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic English grammar",
+        "difficulty": "Easy",
+        "question_text": "“I have not yet decided what I will do this evening; I ______ visit a friend.”",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "mite",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "would",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "might",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "didn’t",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 2,
+        "question_id": "GATE_CE_2023_S1_Q2",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic English grammar",
+        "difficulty": "Easy",
+        "question_text": "Eject : Insert : : Advance : _______\n(By word meaning)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Advent",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Progress",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Retreat",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Loan",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 3,
+        "question_id": "GATE_CE_2023_S1_Q3",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Medium",
+        "question_text": "In the given figure, PQRSTV is a regular hexagon with each side of length 5 cm. A circle is drawn with its centre at V such that it passes through P. What is the area (in cm\\(^2\\)) of the shaded region? (The diagram is representative)\n[IMAGE_Q_03_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_03_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\dfrac{25\\pi}{3}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{20\\pi}{3}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(6\\pi\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(7\\pi\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 4,
+        "question_id": "GATE_CE_2023_S1_Q4",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Easy",
+        "question_text": "A duck named Donald Duck says “All ducks always lie.”\nBased only on the information above, which one of the following statements can be logically inferred with certainty?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Donald Duck always lies.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Donald Duck always tells the truth.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Donald Duck’s statement is true.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Donald Duck’s statement is false.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 5,
+        "question_id": "GATE_CE_2023_S1_Q5",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Transformation of shapes",
+        "difficulty": "Medium",
+        "question_text": "A line of symmetry is defined as a line that divides a figure into two parts in a way such that each part is a mirror image of the other part about that line.\nThe figure below consists of 20 unit squares arranged as shown. In addition to the given black squares, upto 5 more may be coloured black. Which one among the following options depicts the minimum number of boxes that must be coloured black to achieve two lines of symmetry? (The figure is representative)\n[IMAGE_Q_05_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_05_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "d",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "c, d, i",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "c, i",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "c, d, i, f, g",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 6,
+        "question_id": "GATE_CE_2023_S1_Q6",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Easy",
+        "question_text": "Based only on the truth of the statement ‘Some humans are intelligent’, which one of the following options can be logically inferred with certainty?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "No human is intelligent.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "All humans are intelligent.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Some non-humans are intelligent.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Some intelligent beings are humans.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 7,
+        "question_id": "GATE_CE_2023_S1_Q7",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Easy",
+        "question_text": "Which one of the options can be inferred about the mean, median, and mode for the given probability distribution (i.e. probability mass function), \\(P(x)\\), of a variable \\(x\\)?\n[IMAGE_Q_07_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_07_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "mean = median ≠ mode",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "mean = median = mode",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "mean ≠ median = mode",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "mean ≠ mode = median",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 8,
+        "question_id": "GATE_CE_2023_S1_Q8",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic vocabulary",
+        "difficulty": "Medium",
+        "question_text": "The James Webb telescope, recently launched in space, is giving humankind unprecedented access to the depths of time by imaging very old stars formed almost 13 billion years ago. Astrophysicists and cosmologists believe that this odyssey in space may even shed light on the existence of dark matter. Dark matter is supposed to interact only via the gravitational interaction and not through the electromagnetic-, the weak- or the strong-interaction. This may justify the epithet “dark” in dark matter.\nBased on the above paragraph, which one of the following statements is FALSE?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "No other telescope has captured images of stars older than those captured by the James Webb telescope.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "People other than astrophysicists and cosmologists may also believe in the existence of dark matter.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The James Webb telescope could be of use in the research on dark matter.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "If dark matter was known to interact via the strong-interaction, then the epithet “dark” would be justified.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 9,
+        "question_id": "GATE_CE_2023_S1_Q9",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Medium",
+        "question_text": "Let \\(a = 30!\\), \\(b = 50!\\), and \\(c = 100!\\). Consider the following numbers:\n\\[\\log_a c,\\ \\log_c a,\\ \\log_b a,\\ \\log_a b\\]\nWhich one of the following inequalities is CORRECT?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\log_c a < \\log_b a < \\log_a b < \\log_a c\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\log_c a < \\log_a b < \\log_b a < \\log_b c\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\log_c a < \\log_b a < \\log_a c < \\log_a b\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\log_b a < \\log_c a < \\log_a b < \\log_a c\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 10,
+        "question_id": "GATE_CE_2023_S1_Q10",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Easy",
+        "question_text": "A square of side length 4 cm is given. The boundary of the shaded region is defined by one semi-circle on the top and two circular arcs at the bottom, each of radius 2 cm, as shown.\nThe area of the shaded region is _______ cm\\(^2\\).\n[IMAGE_Q_10_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_10_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "8",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "12",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "10",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 11,
+        "question_id": "GATE_CE_2023_S1_Q11",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Taylor series",
+        "difficulty": "Medium",
+        "question_text": "For the integral\n\\[I = \\int_{-1}^{1} \\frac{1}{x^2}\\,dx\\]\nwhich of the following statements is TRUE?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(I = 0\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(I = 2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(I = -2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The integral does not converge",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 12,
+        "question_id": "GATE_CE_2023_S1_Q12",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Transformation of stress (Mohr’s circle)",
+        "difficulty": "Easy",
+        "question_text": "A hanger is made of two bars of different sizes. Each bar has a square cross-section. The hanger is loaded by three-point loads in the mid vertical plane as shown in the figure. Ignore the self-weight of the hanger. What is the maximum tensile stress in N/mm\\(^2\\) anywhere in the hanger without considering stress concentration effects?\n[IMAGE_Q_12_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_12_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "15.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "25.0",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "35.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "45.0",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 13,
+        "question_id": "GATE_CE_2023_S1_Q13",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Construction Materials",
+        "topic": "Steel – Composition, material properties and behaviour",
+        "difficulty": "Easy",
+        "question_text": "Creep of concrete under compression is defined as the ________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "increase in the magnitude of strain under constant stress",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "increase in the magnitude of stress under constant strain",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "decrease in the magnitude of strain under constant stress",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "decrease in the magnitude of stress under constant strain",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 14,
+        "question_id": "GATE_CE_2023_S1_Q14",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Concrete Structures",
+        "topic": "Design and detailing of beams, slabs, columns, and isolated footings",
+        "difficulty": "Medium",
+        "question_text": "A singly reinforced concrete beam of balanced section is made of M20 grade concrete and Fe415 grade steel bars. The magnitudes of the maximum compressive strain in concrete and the tensile strain in the bars at ultimate state under flexure, as per IS 456: 2000 are ________, respectively. (round off to four decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0.0035 and 0.0038",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "0.0020 and 0.0018",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "0.0035 and 0.0041",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0.0020 and 0.0031",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 15,
+        "question_id": "GATE_CE_2023_S1_Q15",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Construction Materials",
+        "topic": "Steel – Composition, material properties and behaviour",
+        "difficulty": "Easy",
+        "question_text": "In cement concrete mix design, with the increase in water-cement ratio, which one of the following statements is TRUE?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Compressive strength decreases but workability increases",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Compressive strength increases but workability decreases",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Both compressive strength and workability decrease",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Both compressive strength and workability increase",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 16,
+        "question_id": "GATE_CE_2023_S1_Q16",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Three-phase system and phase relationships, index properties",
+        "difficulty": "Easy",
+        "question_text": "The specific gravity of a soil is 2.60. The soil is at 50% degree of saturation with a water content of 15%. The void ratio of the soil is ________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0.35",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "0.78",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "0.87",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "1.28",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 17,
+        "question_id": "GATE_CE_2023_S1_Q17",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Deep foundations – static formulae, axial load capacity of piles in sands and clays, pile load test, pile under lateral loading, pile group efficiency, negative skin friction",
+        "difficulty": "Medium",
+        "question_text": "A group of 9 friction piles are arranged in a square grid maintaining equal spacing in all directions. Each pile is of diameter 300 mm and length 7 m. Assume that the soil is cohesionless with effective friction angle \\(\\phi' = 32^\\circ\\). What is the center-to-center spacing of the piles (in m) for the pile group efficiency of 60%?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0.582",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "0.486",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "0.391",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0.677",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": "-1000000000 to 1000000000"
+      },
+      {
+        "question_no": 18,
+        "question_id": "GATE_CE_2023_S1_Q18",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "One-dimensional consolidation, time rate of consolidation",
+        "difficulty": "Medium",
+        "question_text": "A possible slope failure is shown in the figure. Three soil samples are taken from different locations (I, II and III) of the potential failure plane. Which is the most appropriate shear strength test for each of the sample to identify the failure mechanism? Identify the correct combination from the following options:\nP: Triaxial compression test\nQ: Triaxial extension test\nR: Direct shear or shear box test\nS: Vane shear test\n[IMAGE_Q_18_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_18_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "I-Q, II-R, III-P",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "I-R, II-P, III-Q",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "I-S, II-Q, III-R",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "I-P, II-R, III-Q",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 19,
+        "question_id": "GATE_CE_2023_S1_Q19",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Easy",
+        "question_text": "When a supercritical stream enters a mild-sloped (M) channel section, the type of flow profile would become ________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "M\\(_1\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "M\\(_2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "M\\(_3\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "M\\(_1\\) and M\\(_2\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 20,
+        "question_id": "GATE_CE_2023_S1_Q20",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Air Pollution",
+        "topic": "Types of pollutants, their sources and impacts",
+        "difficulty": "Easy",
+        "question_text": "Which one of the following statements is TRUE for Greenhouse Gas (GHG) in the atmosphere?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "GHG absorbs the incoming short wavelength solar radiation to the earth surface, and allows the long wavelength radiation coming from the earth surface to pass through",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "GHG allows the incoming long wavelength solar radiation to pass through to the earth surface, and absorbs the short wavelength radiation coming from the earth surface",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "GHG allows the incoming long wavelength solar radiation to pass through to the earth surface, and allows the short wavelength radiation coming from the earth surface to pass through",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "GHG allows the incoming short wavelength solar radiation to pass through to the earth surface, and absorbs the long wavelength radiation coming from the earth surface",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 21,
+        "question_id": "GATE_CE_2023_S1_Q21",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Traffic studies on flow and speed, peak hour factor, accident study, statistical analysis of traffic data",
+        "difficulty": "Medium",
+        "question_text": "\\(G_1\\) and \\(G_2\\) are the slopes of the approach and departure grades of a vertical curve, respectively.\nGiven \\(|G_1| < |G_2|\\) and \\(|G_1| \\ne |G_2| \\ne 0\\)\nStatement 1: \\(+G_1\\) followed by \\(+G_2\\) results in a sag vertical curve.\nStatement 2: \\(-G_1\\) followed by \\(-G_2\\) results in a sag vertical curve.\nStatement 3: \\(+G_1\\) followed by \\(-G_2\\) results in a crest vertical curve.\nWhich option amongst the following is true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Statement 1 and Statement 3 are correct; Statement 2 is wrong",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Statement 1 and Statement 2 are correct; Statement 3 is wrong",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Statement 1 is correct; Statement 2 and Statement 3 are wrong",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Statement 2 is correct; Statement 1 and Statement 3 are wrong",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 22,
+        "question_id": "GATE_CE_2023_S1_Q22",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Maps – Scale, coordinate system",
+        "difficulty": "Easy",
+        "question_text": "The direct and reversed zenith angles observed by a theodolite are 56\\(^\\circ\\) 00' 00\" and 303\\(^\\circ\\) 00' 00\", respectively. What is the vertical collimation correction?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "+1\\(^\\circ\\) 00' 00\"",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "−1\\(^\\circ\\) 00' 00\"",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "−0\\(^\\circ\\) 30' 00\"",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "+0\\(^\\circ\\) 30' 00\"",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 23,
+        "question_id": "GATE_CE_2023_S1_Q23",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Total station",
+        "difficulty": "Easy",
+        "question_text": "A student is scanning his 10 inch × 10 inch certificate at 600 dots per inch (dpi) to convert it to raster. What is the percentage reduction in number of pixels if the same certificate is scanned at 300 dpi?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "62",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "88",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "75",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "50",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 24,
+        "question_id": "GATE_CE_2023_S1_Q24",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "eigenvalues and eigenvectors",
+        "difficulty": "Medium",
+        "question_text": "If M is an arbitrary real \\(n \\times n\\) matrix, then which of the following matrices will have non-negative eigenvalues?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(M^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(MM^T\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(M^TM\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\((M^T)^2\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 25,
+        "question_id": "GATE_CE_2023_S1_Q25",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Evaluation of definite and indefinite integrals, application of definite integral to obtain area and volume",
+        "difficulty": "Medium",
+        "question_text": "The following function is defined over the interval \\([-L, L]\\):\n\\[f(x) = px^4 + qx^5.\\]\nIf it is expressed as a Fourier series,\n\\[f(x) = a_0 + \\sum_{n=1}^{\\infty}\\left\\{a_n \\sin\\left(\\frac{\\pi x}{L}\\right) + b_n \\cos\\left(\\frac{\\pi x}{L}\\right)\\right\\},\\]\nwhich options amongst the following are true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(a_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(p\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(a_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(q\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(b_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(p\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(b_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(q\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 26,
+        "question_id": "GATE_CE_2023_S1_Q26",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Structural Analysis",
+        "topic": "Principle of superposition",
+        "difficulty": "Medium",
+        "question_text": "Consider the following three structures:\n[IMAGE_Q_26_1]\nWhich of the following statements is/are TRUE?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_26_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Structure I is unstable",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Structure II is unstable",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Structure III is unstable",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "All three structures are stable",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 27,
+        "question_id": "GATE_CE_2023_S1_Q27",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Basics of water quality standards – Physical, chemical and biological parameters",
+        "difficulty": "Easy",
+        "question_text": "Identify the waterborne diseases caused by viral pathogens:",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Acute anterior poliomyelitis",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Cholera",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Infectious hepatitis",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Typhoid fever",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 28,
+        "question_id": "GATE_CE_2023_S1_Q28",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Municipal Solid Wastes",
+        "topic": "Characteristics, generation, collection and transportation of solid wastes",
+        "difficulty": "Medium",
+        "question_text": "Which of the following statements is/are TRUE for the Refuse-Derived Fuel (RDF) in the context of Municipal Solid Waste (MSW) management?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Higher Heating Value (HHV) of the unprocessed MSW is higher than the HHV of RDF processed from the same MSW",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "RDF can be made in the powdered form",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Inorganic fraction of MSW is mostly converted to RDF",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "RDF cannot be used in conjunction with oil",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 29,
+        "question_id": "GATE_CE_2023_S1_Q29",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Probability and Statistics",
+        "topic": "Conditional probability",
+        "difficulty": "Easy",
+        "question_text": "The probabilities of occurrences of two independent events A and B are 0.5 and 0.8, respectively. What is the probability of occurrence of at least A or B (rounded off to one decimal place)? ______________________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.9 to 0.9"
+      },
+      {
+        "question_no": 30,
+        "question_id": "GATE_CE_2023_S1_Q30",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Ordinary Differential Equation (ODE)",
+        "topic": "higher order linear equations with constant coefficients",
+        "difficulty": "Easy",
+        "question_text": "In the differential equation \\(\\dfrac{dy}{dx} + \\alpha\\,x\\,y = 0\\), \\(\\alpha\\) is a positive constant. If \\(y = 1.0\\) at \\(x = 0.0\\), and \\(y = 0.8\\) at \\(x = 1.0\\), the value of \\(\\alpha\\) is _______________(rounded off to three decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.445 to 0.447"
+      },
+      {
+        "question_no": 31,
+        "question_id": "GATE_CE_2023_S1_Q31",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Steel Structures",
+        "topic": "Design of tension and compression members, beams and beam-columns, column bases",
+        "difficulty": "Easy",
+        "question_text": "Consider the fillet-welded lap joint shown in the figure (not to scale). The length of the weld shown is the effective length. The welded surfaces meet at right angle. The weld size is 8 mm, and the permissible stress in the weld is 120 MPa. What is the safe load P (in kN, rounded off to one decimal place) that can be transmitted by this welded joint? ____________________\n[IMAGE_Q_31_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_31_1"
+        ],
+        "options": [],
+        "nat_answer_range": "134 to 136"
+      },
+      {
+        "question_no": 32,
+        "question_id": "GATE_CE_2023_S1_Q32",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "One-dimensional consolidation, time rate of consolidation",
+        "difficulty": "Easy",
+        "question_text": "A drained direct shear test was carried out on a sandy soil. Under a normal stress of 50 kPa, the test specimen failed at a shear stress of 35 kPa. The angle of internal friction of the sample is ______________ degree (round off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "35 to 35"
+      },
+      {
+        "question_no": 33,
+        "question_id": "GATE_CE_2023_S1_Q33",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Irrigation",
+        "topic": "Crop water requirements – Duty, delta, evapo-transpiration",
+        "difficulty": "Medium",
+        "question_text": "A canal supplies water to an area growing wheat over 100 hectares. The duration between the first and last watering is 120 days, and the total depth of water required by the crop is 35 cm. The most intense watering is required over a period of 30 days and requires a total depth of water equal to 12 cm. Assuming precipitation to be negligible and neglecting all losses, the minimum discharge (in m\\(^3\\)/s, rounded off to three decimal places) in the canal to satisfy the crop requirement is __________________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.045 to 0.047"
+      },
+      {
+        "question_no": 34,
+        "question_id": "GATE_CE_2023_S1_Q34",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Hydrology",
+        "topic": "Hydrologic cycle, precipitation, evaporation, evapo-transpiration, watershed, infiltration",
+        "difficulty": "Medium",
+        "question_text": "The ordinates of a one-hour unit hydrograph for a catchment are given below:\n[IMAGE_Q_34_1]\nUsing the principle of superposition, a D-hour unit hydrograph for the catchment was derived from this one-hour unit hydrograph. The ordinates of the D-hour unit hydrograph were obtained as 3 m\\(^3\\)/s at t = 1 hour and 10 m\\(^3\\)/s at t = 2 hour. The value of D (in integer) is ________________________.",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_34_1"
+        ],
+        "options": [],
+        "nat_answer_range": "3 to 3"
+      },
+      {
+        "question_no": 35,
+        "question_id": "GATE_CE_2023_S1_Q35",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Traffic studies on flow and speed, peak hour factor, accident study, statistical analysis of traffic data",
+        "difficulty": "Easy",
+        "question_text": "For a horizontal curve, the radius of a circular curve is obtained as 300 m with the design speed as 15 m/s. If the allowable jerk is 0.75 m/s\\(^3\\), what is the minimum length (in m, in integer) of the transition curve?___________________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "15 to 15 or 26 to 27"
+      },
+      {
+        "question_no": 36,
+        "question_id": "GATE_CE_2023_S1_Q36",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Numerical Methods",
+        "topic": "numerical differentiation",
+        "difficulty": "Medium",
+        "question_text": "A function \\(f(x)\\), that is smooth and convex-shaped between interval \\((x_l, x_u)\\) is shown in the figure. This function is observed at odd number of regularly spaced points. If the area under the function is computed numerically, then ________.\n[IMAGE_Q_36_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_36_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "the numerical value of the area obtained using the trapezoidal rule will be less than the actual",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "the numerical value of the area obtained using the trapezoidal rule will be more than the actual",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "the numerical value of the area obtained using the trapezoidal rule will be exactly equal to the actual",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "with the given details, the numerical value of area cannot be obtained using trapezoidal rule",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 37,
+        "question_id": "GATE_CE_2023_S1_Q37",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Concrete Structures",
+        "topic": "Design and detailing of beams, slabs, columns, and isolated footings",
+        "difficulty": "Medium",
+        "question_text": "Consider a doubly reinforced RCC beam with the option of using either Fe250 plain bars or Fe500 deformed bars in the compression zone. The modulus of elasticity of steel is 2 × 10\\(^5\\) N/mm\\(^2\\). As per IS456:2000, in which type(s) of the bars, the stress in the compression steel (\\(f_{sc}\\)) can reach the design strength (\\(0.87f_y\\)) at the limit state of collapse?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Fe250 plain bars only",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Fe500 deformed bars only",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Both Fe250 plain bars and Fe500 deformed bars",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Neither Fe250 plain bars nor Fe500 deformed bars",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 38,
+        "question_id": "GATE_CE_2023_S1_Q38",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Steel Structures",
+        "topic": "Concept of plastic analysis – beams and portal frames",
+        "difficulty": "Medium",
+        "question_text": "Consider the horizontal axis passing through the centroid of the steel beam cross-section shown in the figure. What is the shape factor (rounded off to one decimal place) for the cross-section?\n[IMAGE_Q_38_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_38_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1.5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1.7",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1.3",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "2.0",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 39,
+        "question_id": "GATE_CE_2023_S1_Q39",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Structural Analysis",
+        "topic": "Influence lines and moving loads",
+        "difficulty": "Hard",
+        "question_text": "Consider the pin-jointed truss shown in the figure (not to scale). All members have the same axial rigidity, \\(AE\\). Members QR, RS, and ST have the same length \\(L\\). Angles QBT, RCT, SDT are all 90°. Angles BQT, CRT, DST are all 30°. The joint T carries a vertical load \\(P\\). The vertical deflection of joint T is \\(k\\dfrac{PL}{AE}\\). What is the value of \\(k\\)?\n[IMAGE_Q_39_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_39_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1.5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "4.5",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "3.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "9.0",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 40,
+        "question_id": "GATE_CE_2023_S1_Q40",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Principle of effective stress and quicksand condition",
+        "difficulty": "Easy",
+        "question_text": "With reference to the compaction test conducted on soils, which of the following is INCORRECT?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Peak point of the compaction curve gives the maximum dry unit weight and optimum moisture content",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "With increase in the compaction effort, the maximum dry unit weight increases",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "With increase in the compaction effort, the optimum moisture content decreases",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Compaction curve crosses the zero-air-voids curve",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 41,
+        "question_id": "GATE_CE_2023_S1_Q41",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Compaction of soils",
+        "difficulty": "Medium",
+        "question_text": "Consider that a force \\(P\\) is acting on the surface of a half-space (Boussinesq’s problem). The expression for the vertical stress (\\(\\sigma_z\\)) at any point \\((r, z)\\), within the half-space is given as,\n\\[\\sigma_z = \\frac{3P}{2\\pi}\\frac{z^3}{(r^2 + z^2)^{\\frac{5}{2}}}\\]\nwhere, \\(r\\) is the radial distance, and \\(z\\) is the depth with downward direction taken as positive. At any given \\(r\\), there is a variation of \\(\\sigma_z\\) along \\(z\\), and at a specific \\(z\\), the value of \\(\\sigma_z\\) will be maximum. What is the locus of the maximum \\(\\sigma_z\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(z^2 = \\dfrac{3}{2}r^2\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(z^3 = \\dfrac{3}{2}r^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(z^2 = \\dfrac{5}{2}r^2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(z^3 = \\dfrac{5}{2}r^2\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 42,
+        "question_id": "GATE_CE_2023_S1_Q42",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Shallow foundations – Terzaghi’s and Meyerhof’s bearing capacity theories, effect of water table",
+        "difficulty": "Hard",
+        "question_text": "A square footing of size 2.5 m × 2.5 m is placed 1.0 m below the ground surface on a cohesionless homogeneous soil stratum. Considering that the groundwater table is located at the base of the footing, the unit weights of soil above and below the groundwater table are 18 kN/m\\(^3\\) and 20 kN/m\\(^3\\), respectively, and the bearing capacity factor \\(N_q\\) is 58, the net ultimate bearing capacity of the soil is estimated as 1706 kPa (unit weight of water = 10 kN/m\\(^3\\)).\nEarlier, a plate load test was carried out with a circular plate of 30 cm diameter in the same foundation pit during a dry season, when the water table was located beyond the plate influence zone. Using Terzaghi’s bearing capacity formulation, what is the ultimate bearing capacity (in kPa) of the plate?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "110.16",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "61.20",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "204.00",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "163.20",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 43,
+        "question_id": "GATE_CE_2023_S1_Q43",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Medium",
+        "question_text": "A very wide rectangular channel carries a discharge (Q) of 70 m\\(^3\\)/s per meter width. Its bed slope changes from 0.0001 to 0.0009 at a point P, as shown in the figure (not to scale). The Manning’s roughness coefficient of the channel is 0.01. What water surface profile(s) exist(s) near the point P?\n[IMAGE_Q_43_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_43_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "M\\(_2\\) and S\\(_2\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "M\\(_2\\) only",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "S\\(_2\\) only",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "S\\(_2\\) and hydraulic jump",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 44,
+        "question_id": "GATE_CE_2023_S1_Q44",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Fluid Mechanics",
+        "topic": "Potential flow, Laminar and turbulent flow",
+        "difficulty": "Medium",
+        "question_text": "A jet of water having a velocity of 20 m/s strikes a series of plates fixed radially on a wheel revolving in the same direction as the jet at 15 m/s. What is the percentage efficiency of the plates? (round off to one decimal place)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "37.5",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "66.7",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "50.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "88.9",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 45,
+        "question_id": "GATE_CE_2023_S1_Q45",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Medium",
+        "question_text": "In the following table, identify the correct set of associations between the entries in Column-1 and Column-2.\n[IMAGE_Q_45_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_45_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "P-II, Q-I, S-III",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Q-III, R-II, S-IV",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "P-IV, R-I, S-II",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "P-III, Q-I, R-IV",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 46,
+        "question_id": "GATE_CE_2023_S1_Q46",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Signal design by Webster’s method",
+        "difficulty": "Medium",
+        "question_text": "A plot of speed-density relationship (linear) of two roads (Road A and Road B) is shown in the figure.\n[IMAGE_Q_46_1]\nIf the capacity of Road A is \\(C_A\\) and the capacity of Road B is \\(C_B\\), what is \\(\\dfrac{C_A}{C_B}\\)?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_46_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\dfrac{k_A}{k_B}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{u_A}{u_B}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\dfrac{k_A u_A}{k_B u_B}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\dfrac{k_A u_B}{k_B u_A}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 47,
+        "question_id": "GATE_CE_2023_S1_Q47",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "eigenvalues and eigenvectors",
+        "difficulty": "Medium",
+        "question_text": "For the matrix\n\\[[A] = \\begin{bmatrix} 1 & 2 & 3 \\\\ 3 & 2 & 1 \\\\ 3 & 1 & 2 \\end{bmatrix}\\]\nwhich of the following statements is/are TRUE?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The eigenvalues of \\([A]^T\\) are same as the eigenvalues of \\([A]\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "The eigenvalues of \\([A]^{-1}\\) are the reciprocals of the eigenvalues of \\([A]\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The eigenvectors of \\([A]^T\\) are same as the eigenvectors of \\([A]\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The eigenvectors of \\([A]^{-1}\\) are same as the eigenvectors of \\([A]\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 48,
+        "question_id": "GATE_CE_2023_S1_Q48",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Functions of single variable",
+        "difficulty": "Medium",
+        "question_text": "For the function \\(f(x) = e^x|\\sin x|;\\ x \\in \\mathbb{R}\\), which of the following statements is/are TRUE?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The function is continuous at all \\(x\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "The function is differentiable at all \\(x\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The function is periodic",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The function is bounded",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 49,
+        "question_id": "GATE_CE_2023_S1_Q49",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple stress and strain relationships",
+        "difficulty": "Medium",
+        "question_text": "Consider the beam shown in the figure (not to scale), on a hinge support at end A and a roller support at end B. The beam has a constant flexural rigidity, and is subjected to the external moments of magnitude \\(M\\) at one-third spans, as shown in the figure. Which of the following statements is/are TRUE?\n[IMAGE_Q_49_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_49_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Support reactions are zero",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Shear force is zero everywhere",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Bending moment is zero everywhere",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Deflection is zero everywhere",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 50,
+        "question_id": "GATE_CE_2023_S1_Q50",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Air Pollution",
+        "topic": "air pollution control",
+        "difficulty": "Medium",
+        "question_text": "Which of the following statements is/are TRUE in relation to the Maximum Mixing Depth (or Height) ‘D\\(_{max}\\)’ in the atmosphere?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "D\\(_{max}\\) is always equal to the height of the layer of unstable air",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Ventilation coefficient depends on D\\(_{max}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "A smaller D\\(_{max}\\) will have a smaller air pollution potential if other meteorological conditions remain same",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Vertical dispersion of pollutants occurs up to D\\(_{max}\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 51,
+        "question_id": "GATE_CE_2023_S1_Q51",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Microscopic and macroscopic parameters of traffic flow, fundamental relationships",
+        "difficulty": "Medium",
+        "question_text": "Which of the following options match the test reporting conventions with the given material tests in the table?\n[IMAGE_Q_51_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_51_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(P) - (VI); (Q) - (I); (R) - (II); (S) - (VII)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(P) - (VI); (Q) - (III); (R) - (IV); (S) - (V)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "(P) - (VI); (Q) - (I); (R) - (II); (S) - (V)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "(P) - (VI); (Q) - (III); (R) - (IV); (S) - (VII)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 52,
+        "question_id": "GATE_CE_2023_S1_Q52",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Numerical Methods",
+        "topic": "Newton’s and Lagrange polynomials",
+        "difficulty": "Medium",
+        "question_text": "The differential equation,\n\\[\\frac{du}{dt} + 2tu^2 = 1,\\]\nis solved by employing a backward difference scheme within the finite difference framework. The value of \\(u\\) at the \\((n-1)^{th}\\) time-step, for some \\(n\\), is 1.75. The corresponding time \\((t)\\) is 3.14 s. Each time step is 0.01 s long. Then, the value of \\((u_n - u_{n-1})\\) is __________________(round off to three decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "-0.152 to -0.149"
+      },
+      {
+        "question_no": 53,
+        "question_id": "GATE_CE_2023_S1_Q53",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple bending theory, flexural and shear stresses, shear centre",
+        "difficulty": "Medium",
+        "question_text": "The infinitesimal element shown in the figure (not to scale) represents the state of stress at a point in a body. What is the magnitude of the maximum principal stress (in N/mm\\(^2\\), in integer) at the point? ____________________________\n[IMAGE_Q_53_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_53_1"
+        ],
+        "options": [],
+        "nat_answer_range": "7 to 7"
+      },
+      {
+        "question_no": 54,
+        "question_id": "GATE_CE_2023_S1_Q54",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Structural Analysis",
+        "topic": "Principle of superposition",
+        "difficulty": "Medium",
+        "question_text": "An idealised bridge truss is shown in the figure. The force in Member U\\(_2\\)L\\(_3\\) is __________________________ kN (round off to one decimal place).\n[IMAGE_Q_54_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_54_1"
+        ],
+        "options": [],
+        "nat_answer_range": "13.5 to 14.5"
+      },
+      {
+        "question_no": 55,
+        "question_id": "GATE_CE_2023_S1_Q55",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple stress and strain relationships",
+        "difficulty": "Easy",
+        "question_text": "The cross-section of a girder is shown in the figure (not to scale). The section is symmetric about a vertical axis (Y-Y). The moment of inertia of the section about the horizontal axis (X-X) passing through the centroid is ________________ cm\\(^4\\) (round off to nearest integer).\n[IMAGE_Q_55_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_55_1"
+        ],
+        "options": [],
+        "nat_answer_range": "464000 to 472000"
+      },
+      {
+        "question_no": 56,
+        "question_id": "GATE_CE_2023_S1_Q56",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Pressure bulbs",
+        "difficulty": "Medium",
+        "question_text": "A soil having the average properties, bulk unit weight = 19 kN/m\\(^3\\); angle of internal friction = 25° and cohesion = 15 kPa, is being formed on a rock slope existing at an inclination of 35° with the horizontal. The critical height (in m) of the soil formation up to which it would be stable without any failure is ___________________ (round off to one decimal place).\n[Assume the soil is being formed parallel to the rock bedding plane and there is no ground water effect.]",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "4.8 to 5.2"
+      },
+      {
+        "question_no": 57,
+        "question_id": "GATE_CE_2023_S1_Q57",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Stress distribution in soils – Boussinesq’s theory",
+        "difficulty": "Medium",
+        "question_text": "A smooth vertical retaining wall supporting layered soils is shown in figure. According to Rankine’s earth pressure theory, the lateral active earth pressure acting at the base of the wall is ______________kPa (round off to one decimal place).\n[IMAGE_Q_57_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_57_1"
+        ],
+        "options": [],
+        "nat_answer_range": "34 to 37"
+      },
+      {
+        "question_no": 58,
+        "question_id": "GATE_CE_2023_S1_Q58",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Stress distribution in soils – Boussinesq’s theory",
+        "difficulty": "Hard",
+        "question_text": "A vertical trench is excavated in a clayey soil deposit having a surcharge load of 30 kPa. A fluid of unit weight 12 kN/m\\(^3\\) is poured in the trench to prevent collapse as the excavation proceeds. Assume that the fluid is not seeping through the soil deposit. If the undrained cohesion of the clay deposit is 20 kPa and saturated unit weight is 18 kN/m\\(^3\\), what is the maximum depth of unsupported excavation (in m, rounded off to two decimal places)? ______________________________",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "3.3 to 3.35"
+      },
+      {
+        "question_no": 59,
+        "question_id": "GATE_CE_2023_S1_Q59",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydrology",
+        "topic": "Hydrologic cycle, precipitation, evaporation, evapo-transpiration, watershed, infiltration",
+        "difficulty": "Medium",
+        "question_text": "A 12-hour storm occurs over a catchment and results in a direct runoff depth of 100 mm. The time-distribution of the rainfall intensity is shown in the figure (not to scale). The \\(\\phi\\)-index of the storm is (in mm, rounded off to two decimal places) ____________________________.\n[IMAGE_Q_59_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_59_1"
+        ],
+        "options": [],
+        "nat_answer_range": "-1000000000 to 1000000000"
+      },
+      {
+        "question_no": 60,
+        "question_id": "GATE_CE_2023_S1_Q60",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Medium",
+        "question_text": "A hydraulic jump occurs in a 1.0 m wide horizontal, frictionless, rectangular channel, with a pre-jump depth of 0.2 m and a post-jump depth of 1.0 m. The value of \\(g\\) may be taken as 10 m/s\\(^2\\). The values of the specific force at the pre-jump and post-jump sections are same and are equal to (in m\\(^3\\), rounded off to two decimal places) _____________ .",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.6 to 0.64"
+      },
+      {
+        "question_no": 61,
+        "question_id": "GATE_CE_2023_S1_Q61",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydrology",
+        "topic": "Hydrologic cycle, precipitation, evaporation, evapo-transpiration, watershed, infiltration",
+        "difficulty": "Medium",
+        "question_text": "In Horton’s equation fitted to the infiltration data for a soil, the initial infiltration capacity is 10 mm/h; final infiltration capacity is 5 mm/h; and the exponential decay constant is 0.5 /h. Assuming that the infiltration takes place at capacity rates, the total infiltration depth (in mm) from a uniform storm of duration 12 h is _______________________. (round off to one decimal place)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "69.7 to 70.1"
+      },
+      {
+        "question_no": 62,
+        "question_id": "GATE_CE_2023_S1_Q62",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Municipal Solid Wastes",
+        "topic": "Characteristics, generation, collection and transportation of solid wastes",
+        "difficulty": "Medium",
+        "question_text": "The composition and energy content of a representative solid waste sample are given in the table. If the moisture content of the waste is 26%, the energy content of the solid waste on dry-weight basis is ______________________MJ/kg (round off to one decimal place).\n[IMAGE_Q_62_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_62_1"
+        ],
+        "options": [],
+        "nat_answer_range": "18 to 19"
+      },
+      {
+        "question_no": 63,
+        "question_id": "GATE_CE_2023_S1_Q63",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Medium",
+        "question_text": "A flocculator tank has a volume of 2800 m\\(^3\\). The temperature of water in the tank is 15°C, and the average velocity gradient maintained in the tank is 100/s. The temperature of water is reduced to 5°C, but all other operating conditions including the power input are maintained as the same. The decrease in the average velocity gradient (in %) due to the reduction in water temperature is ____________ (round off to nearest integer).\n[Consider dynamic viscosity of water at 15°C and 5°C as 1.139×10\\(^{-3}\\) N-s/m\\(^2\\) and 1.518×10\\(^{-3}\\) N-s/m\\(^2\\), respectively]",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "12 to 15"
+      },
+      {
+        "question_no": 64,
+        "question_id": "GATE_CE_2023_S1_Q64",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Drinking water treatment",
+        "difficulty": "Easy",
+        "question_text": "The wastewater inflow to an activated sludge plant is 0.5 m\\(^3\\)/s, and the plant is to be operated with a food to microorganism ratio of 0.2 mg/mg-d. The concentration of influent biodegradable organic matter of the wastewater to the plant (after primary settling) is 150 mg/L, and the mixed liquor volatile suspended solids concentration to be maintained in the plant is 2000 mg/L. Assuming that complete removal of biodegradable organic matter in the tank, the volume of aeration tank (in m\\(^3\\), in integer) required for the plant is ______________________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "16200 to 16200"
+      },
+      {
+        "question_no": 65,
+        "question_id": "GATE_CE_2023_S1_Q65",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Distance and angle measurement – Levelling and trigonometric levelling",
+        "difficulty": "Medium",
+        "question_text": "Trigonometric levelling was carried out from two stations P and Q to find the reduced level (R. L.) of the top of hillock, as shown in the table. The distance between Stations P and Q is 55 m. Assume Stations P and Q, and the hillock are in the same vertical plane. The R. L. of the top of the hillock (in m) is _______________________ (round off to three decimal places).\n[IMAGE_Q_65_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_65_1"
+        ],
+        "options": [],
+        "nat_answer_range": "137.5 to 137.73"
+      }
+    ]
   }
 ]

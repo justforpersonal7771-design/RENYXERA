@@ -1,0 +1,883 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "“I have not yet decided what I will do this evening; I ______ visit a friend.”",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "mite"
+   },
+   {
+    "option_id": "B",
+    "text": "would"
+   },
+   {
+    "option_id": "C",
+    "text": "might"
+   },
+   {
+    "option_id": "D",
+    "text": "didn’t"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   1
+  ],
+  "question_text": "Eject : Insert : : Advance : _______\n(By word meaning)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Advent"
+   },
+   {
+    "option_id": "B",
+    "text": "Progress"
+   },
+   {
+    "option_id": "C",
+    "text": "Retreat"
+   },
+   {
+    "option_id": "D",
+    "text": "Loan"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 3,
+  "pages": [
+   2
+  ],
+  "question_text": "In the given figure, PQRSTV is a regular hexagon with each side of length 5 cm. A circle is drawn with its centre at V such that it passes through P. What is the area (in cm\\(^2\\)) of the shaded region? (The diagram is representative)\n[IMAGE_Q_03_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{25\\pi}{3}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{20\\pi}{3}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(6\\pi\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(7\\pi\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_03_1",
+    "page": 2,
+    "regions": [
+     "p002_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 4,
+  "pages": [
+   3
+  ],
+  "question_text": "A duck named Donald Duck says “All ducks always lie.”\nBased only on the information above, which one of the following statements can be logically inferred with certainty?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Donald Duck always lies."
+   },
+   {
+    "option_id": "B",
+    "text": "Donald Duck always tells the truth."
+   },
+   {
+    "option_id": "C",
+    "text": "Donald Duck’s statement is true."
+   },
+   {
+    "option_id": "D",
+    "text": "Donald Duck’s statement is false."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   4
+  ],
+  "question_text": "A line of symmetry is defined as a line that divides a figure into two parts in a way such that each part is a mirror image of the other part about that line.\nThe figure below consists of 20 unit squares arranged as shown. In addition to the given black squares, upto 5 more may be coloured black. Which one among the following options depicts the minimum number of boxes that must be coloured black to achieve two lines of symmetry? (The figure is representative)\n[IMAGE_Q_05_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "d"
+   },
+   {
+    "option_id": "B",
+    "text": "c, d, i"
+   },
+   {
+    "option_id": "C",
+    "text": "c, i"
+   },
+   {
+    "option_id": "D",
+    "text": "c, d, i, f, g"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_05_1",
+    "page": 4,
+    "regions": [
+     "p004_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 6,
+  "pages": [
+   5
+  ],
+  "question_text": "Based only on the truth of the statement ‘Some humans are intelligent’, which one of the following options can be logically inferred with certainty?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "No human is intelligent."
+   },
+   {
+    "option_id": "B",
+    "text": "All humans are intelligent."
+   },
+   {
+    "option_id": "C",
+    "text": "Some non-humans are intelligent."
+   },
+   {
+    "option_id": "D",
+    "text": "Some intelligent beings are humans."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   6
+  ],
+  "question_text": "Which one of the options can be inferred about the mean, median, and mode for the given probability distribution (i.e. probability mass function), \\(P(x)\\), of a variable \\(x\\)?\n[IMAGE_Q_07_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "mean = median ≠ mode"
+   },
+   {
+    "option_id": "B",
+    "text": "mean = median = mode"
+   },
+   {
+    "option_id": "C",
+    "text": "mean ≠ median = mode"
+   },
+   {
+    "option_id": "D",
+    "text": "mean ≠ mode = median"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_07_1",
+    "page": 6,
+    "regions": [
+     "p006_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 8,
+  "pages": [
+   7
+  ],
+  "question_text": "The James Webb telescope, recently launched in space, is giving humankind unprecedented access to the depths of time by imaging very old stars formed almost 13 billion years ago. Astrophysicists and cosmologists believe that this odyssey in space may even shed light on the existence of dark matter. Dark matter is supposed to interact only via the gravitational interaction and not through the electromagnetic-, the weak- or the strong-interaction. This may justify the epithet “dark” in dark matter.\nBased on the above paragraph, which one of the following statements is FALSE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "No other telescope has captured images of stars older than those captured by the James Webb telescope."
+   },
+   {
+    "option_id": "B",
+    "text": "People other than astrophysicists and cosmologists may also believe in the existence of dark matter."
+   },
+   {
+    "option_id": "C",
+    "text": "The James Webb telescope could be of use in the research on dark matter."
+   },
+   {
+    "option_id": "D",
+    "text": "If dark matter was known to interact via the strong-interaction, then the epithet “dark” would be justified."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 9,
+  "pages": [
+   8
+  ],
+  "question_text": "Let \\(a = 30!\\), \\(b = 50!\\), and \\(c = 100!\\). Consider the following numbers:\n\\[\\log_a c,\\ \\log_c a,\\ \\log_b a,\\ \\log_a b\\]\nWhich one of the following inequalities is CORRECT?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\log_c a < \\log_b a < \\log_a b < \\log_a c\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\log_c a < \\log_a b < \\log_b a < \\log_b c\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\log_c a < \\log_b a < \\log_a c < \\log_a b\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\log_b a < \\log_c a < \\log_a b < \\log_a c\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 10,
+  "pages": [
+   9
+  ],
+  "question_text": "A square of side length 4 cm is given. The boundary of the shaded region is defined by one semi-circle on the top and two circular arcs at the bottom, each of radius 2 cm, as shown.\nThe area of the shaded region is _______ cm\\(^2\\).\n[IMAGE_Q_10_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "8"
+   },
+   {
+    "option_id": "B",
+    "text": "4"
+   },
+   {
+    "option_id": "C",
+    "text": "12"
+   },
+   {
+    "option_id": "D",
+    "text": "10"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_10_1",
+    "page": 9,
+    "regions": [
+     "p009_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 11,
+  "pages": [
+   10
+  ],
+  "question_text": "For the integral\n\\[I = \\int_{-1}^{1} \\frac{1}{x^2}\\,dx\\]\nwhich of the following statements is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(I = 0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(I = 2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(I = -2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "The integral does not converge"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   11
+  ],
+  "question_text": "A hanger is made of two bars of different sizes. Each bar has a square cross-section. The hanger is loaded by three-point loads in the mid vertical plane as shown in the figure. Ignore the self-weight of the hanger. What is the maximum tensile stress in N/mm\\(^2\\) anywhere in the hanger without considering stress concentration effects?\n[IMAGE_Q_12_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "15.0"
+   },
+   {
+    "option_id": "B",
+    "text": "25.0"
+   },
+   {
+    "option_id": "C",
+    "text": "35.0"
+   },
+   {
+    "option_id": "D",
+    "text": "45.0"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_12_1",
+    "page": 11,
+    "grow": false,
+    "rect": [
+     252,
+     158,
+     402,
+     372
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 13,
+  "pages": [
+   12
+  ],
+  "question_text": "Creep of concrete under compression is defined as the ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "increase in the magnitude of strain under constant stress"
+   },
+   {
+    "option_id": "B",
+    "text": "increase in the magnitude of stress under constant strain"
+   },
+   {
+    "option_id": "C",
+    "text": "decrease in the magnitude of strain under constant stress"
+   },
+   {
+    "option_id": "D",
+    "text": "decrease in the magnitude of stress under constant strain"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   12
+  ],
+  "question_text": "A singly reinforced concrete beam of balanced section is made of M20 grade concrete and Fe415 grade steel bars. The magnitudes of the maximum compressive strain in concrete and the tensile strain in the bars at ultimate state under flexure, as per IS 456: 2000 are ________, respectively. (round off to four decimal places)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.0035 and 0.0038"
+   },
+   {
+    "option_id": "B",
+    "text": "0.0020 and 0.0018"
+   },
+   {
+    "option_id": "C",
+    "text": "0.0035 and 0.0041"
+   },
+   {
+    "option_id": "D",
+    "text": "0.0020 and 0.0031"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   13
+  ],
+  "question_text": "In cement concrete mix design, with the increase in water-cement ratio, which one of the following statements is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Compressive strength decreases but workability increases"
+   },
+   {
+    "option_id": "B",
+    "text": "Compressive strength increases but workability decreases"
+   },
+   {
+    "option_id": "C",
+    "text": "Both compressive strength and workability decrease"
+   },
+   {
+    "option_id": "D",
+    "text": "Both compressive strength and workability increase"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   13
+  ],
+  "question_text": "The specific gravity of a soil is 2.60. The soil is at 50% degree of saturation with a water content of 15%. The void ratio of the soil is ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.35"
+   },
+   {
+    "option_id": "B",
+    "text": "0.78"
+   },
+   {
+    "option_id": "C",
+    "text": "0.87"
+   },
+   {
+    "option_id": "D",
+    "text": "1.28"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   14
+  ],
+  "question_text": "A group of 9 friction piles are arranged in a square grid maintaining equal spacing in all directions. Each pile is of diameter 300 mm and length 7 m. Assume that the soil is cohesionless with effective friction angle \\(\\phi' = 32^\\circ\\). What is the center-to-center spacing of the piles (in m) for the pile group efficiency of 60%?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.582"
+   },
+   {
+    "option_id": "B",
+    "text": "0.486"
+   },
+   {
+    "option_id": "C",
+    "text": "0.391"
+   },
+   {
+    "option_id": "D",
+    "text": "0.677"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   15
+  ],
+  "question_text": "A possible slope failure is shown in the figure. Three soil samples are taken from different locations (I, II and III) of the potential failure plane. Which is the most appropriate shear strength test for each of the sample to identify the failure mechanism? Identify the correct combination from the following options:\nP: Triaxial compression test\nQ: Triaxial extension test\nR: Direct shear or shear box test\nS: Vane shear test\n[IMAGE_Q_18_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "I-Q, II-R, III-P"
+   },
+   {
+    "option_id": "B",
+    "text": "I-R, II-P, III-Q"
+   },
+   {
+    "option_id": "C",
+    "text": "I-S, II-Q, III-R"
+   },
+   {
+    "option_id": "D",
+    "text": "I-P, II-R, III-Q"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_18_1",
+    "page": 15,
+    "grow": false,
+    "rect": [
+     185,
+     226,
+     452,
+     346
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 19,
+  "pages": [
+   15
+  ],
+  "question_text": "When a supercritical stream enters a mild-sloped (M) channel section, the type of flow profile would become ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "M\\(_1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "M\\(_2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "M\\(_3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "M\\(_1\\) and M\\(_2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   16
+  ],
+  "question_text": "Which one of the following statements is TRUE for Greenhouse Gas (GHG) in the atmosphere?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "GHG absorbs the incoming short wavelength solar radiation to the earth surface, and allows the long wavelength radiation coming from the earth surface to pass through"
+   },
+   {
+    "option_id": "B",
+    "text": "GHG allows the incoming long wavelength solar radiation to pass through to the earth surface, and absorbs the short wavelength radiation coming from the earth surface"
+   },
+   {
+    "option_id": "C",
+    "text": "GHG allows the incoming long wavelength solar radiation to pass through to the earth surface, and allows the short wavelength radiation coming from the earth surface to pass through"
+   },
+   {
+    "option_id": "D",
+    "text": "GHG allows the incoming short wavelength solar radiation to pass through to the earth surface, and absorbs the long wavelength radiation coming from the earth surface"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   16
+  ],
+  "question_text": "\\(G_1\\) and \\(G_2\\) are the slopes of the approach and departure grades of a vertical curve, respectively.\nGiven \\(|G_1| < |G_2|\\) and \\(|G_1| \\ne |G_2| \\ne 0\\)\nStatement 1: \\(+G_1\\) followed by \\(+G_2\\) results in a sag vertical curve.\nStatement 2: \\(-G_1\\) followed by \\(-G_2\\) results in a sag vertical curve.\nStatement 3: \\(+G_1\\) followed by \\(-G_2\\) results in a crest vertical curve.\nWhich option amongst the following is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Statement 1 and Statement 3 are correct; Statement 2 is wrong"
+   },
+   {
+    "option_id": "B",
+    "text": "Statement 1 and Statement 2 are correct; Statement 3 is wrong"
+   },
+   {
+    "option_id": "C",
+    "text": "Statement 1 is correct; Statement 2 and Statement 3 are wrong"
+   },
+   {
+    "option_id": "D",
+    "text": "Statement 2 is correct; Statement 1 and Statement 3 are wrong"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   17
+  ],
+  "question_text": "The direct and reversed zenith angles observed by a theodolite are 56\\(^\\circ\\) 00' 00\" and 303\\(^\\circ\\) 00' 00\", respectively. What is the vertical collimation correction?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "+1\\(^\\circ\\) 00' 00\""
+   },
+   {
+    "option_id": "B",
+    "text": "−1\\(^\\circ\\) 00' 00\""
+   },
+   {
+    "option_id": "C",
+    "text": "−0\\(^\\circ\\) 30' 00\""
+   },
+   {
+    "option_id": "D",
+    "text": "+0\\(^\\circ\\) 30' 00\""
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 23,
+  "pages": [
+   17
+  ],
+  "question_text": "A student is scanning his 10 inch × 10 inch certificate at 600 dots per inch (dpi) to convert it to raster. What is the percentage reduction in number of pixels if the same certificate is scanned at 300 dpi?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "62"
+   },
+   {
+    "option_id": "B",
+    "text": "88"
+   },
+   {
+    "option_id": "C",
+    "text": "75"
+   },
+   {
+    "option_id": "D",
+    "text": "50"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 24,
+  "pages": [
+   18
+  ],
+  "question_text": "If M is an arbitrary real \\(n \\times n\\) matrix, then which of the following matrices will have non-negative eigenvalues?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(M^2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(MM^T\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(M^TM\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\((M^T)^2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   18
+  ],
+  "question_text": "The following function is defined over the interval \\([-L, L]\\):\n\\[f(x) = px^4 + qx^5.\\]\nIf it is expressed as a Fourier series,\n\\[f(x) = a_0 + \\sum_{n=1}^{\\infty}\\left\\{a_n \\sin\\left(\\frac{\\pi x}{L}\\right) + b_n \\cos\\left(\\frac{\\pi x}{L}\\right)\\right\\},\\]\nwhich options amongst the following are true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(a_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(p\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(a_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(q\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(b_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(p\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(b_n,\\ n = 1, 2, \\cdots, \\infty\\) depend on \\(q\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   19
+  ],
+  "question_text": "Consider the following three structures:\n[IMAGE_Q_26_1]\nWhich of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Structure I is unstable"
+   },
+   {
+    "option_id": "B",
+    "text": "Structure II is unstable"
+   },
+   {
+    "option_id": "C",
+    "text": "Structure III is unstable"
+   },
+   {
+    "option_id": "D",
+    "text": "All three structures are stable"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_26_1",
+    "page": 19,
+    "grow": false,
+    "rect": [
+     118,
+     120,
+     482,
+     556
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 27,
+  "pages": [
+   20
+  ],
+  "question_text": "Identify the waterborne diseases caused by viral pathogens:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Acute anterior poliomyelitis"
+   },
+   {
+    "option_id": "B",
+    "text": "Cholera"
+   },
+   {
+    "option_id": "C",
+    "text": "Infectious hepatitis"
+   },
+   {
+    "option_id": "D",
+    "text": "Typhoid fever"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   20
+  ],
+  "question_text": "Which of the following statements is/are TRUE for the Refuse-Derived Fuel (RDF) in the context of Municipal Solid Waste (MSW) management?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Higher Heating Value (HHV) of the unprocessed MSW is higher than the HHV of RDF processed from the same MSW"
+   },
+   {
+    "option_id": "B",
+    "text": "RDF can be made in the powdered form"
+   },
+   {
+    "option_id": "C",
+    "text": "Inorganic fraction of MSW is mostly converted to RDF"
+   },
+   {
+    "option_id": "D",
+    "text": "RDF cannot be used in conjunction with oil"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   20
+  ],
+  "question_text": "The probabilities of occurrences of two independent events A and B are 0.5 and 0.8, respectively. What is the probability of occurrence of at least A or B (rounded off to one decimal place)? ______________________",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   21
+  ],
+  "question_text": "In the differential equation \\(\\dfrac{dy}{dx} + \\alpha\\,x\\,y = 0\\), \\(\\alpha\\) is a positive constant. If \\(y = 1.0\\) at \\(x = 0.0\\), and \\(y = 0.8\\) at \\(x = 1.0\\), the value of \\(\\alpha\\) is _______________(rounded off to three decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   21
+  ],
+  "question_text": "Consider the fillet-welded lap joint shown in the figure (not to scale). The length of the weld shown is the effective length. The welded surfaces meet at right angle. The weld size is 8 mm, and the permissible stress in the weld is 120 MPa. What is the safe load P (in kN, rounded off to one decimal place) that can be transmitted by this welded joint? ____________________\n[IMAGE_Q_31_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_31_1",
+    "page": 21,
+    "regions": [
+     "p021_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 32,
+  "pages": [
+   21
+  ],
+  "question_text": "A drained direct shear test was carried out on a sandy soil. Under a normal stress of 50 kPa, the test specimen failed at a shear stress of 35 kPa. The angle of internal friction of the sample is ______________ degree (round off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   22
+  ],
+  "question_text": "A canal supplies water to an area growing wheat over 100 hectares. The duration between the first and last watering is 120 days, and the total depth of water required by the crop is 35 cm. The most intense watering is required over a period of 30 days and requires a total depth of water equal to 12 cm. Assuming precipitation to be negligible and neglecting all losses, the minimum discharge (in m\\(^3\\)/s, rounded off to three decimal places) in the canal to satisfy the crop requirement is __________________.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   22
+  ],
+  "question_text": "The ordinates of a one-hour unit hydrograph for a catchment are given below:\n[IMAGE_Q_34_1]\nUsing the principle of superposition, a D-hour unit hydrograph for the catchment was derived from this one-hour unit hydrograph. The ordinates of the D-hour unit hydrograph were obtained as 3 m\\(^3\\)/s at t = 1 hour and 10 m\\(^3\\)/s at t = 2 hour. The value of D (in integer) is ________________________.",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_34_1",
+    "page": 22,
+    "regions": [
+     "p022_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 35,
+  "pages": [
+   22
+  ],
+  "question_text": "For a horizontal curve, the radius of a circular curve is obtained as 300 m with the design speed as 15 m/s. If the allowable jerk is 0.75 m/s\\(^3\\), what is the minimum length (in m, in integer) of the transition curve?___________________",
+  "options": [],
+  "figures": []
+ }
+]

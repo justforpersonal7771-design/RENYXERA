@@ -1,0 +1,688 @@
+[
+ {
+  "qno": 36,
+  "pages": [
+   23
+  ],
+  "question_text": "A function \\(f(x)\\), that is smooth and convex-shaped between interval \\((x_l, x_u)\\) is shown in the figure. This function is observed at odd number of regularly spaced points. If the area under the function is computed numerically, then ________.\n[IMAGE_Q_36_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "the numerical value of the area obtained using the trapezoidal rule will be less than the actual"
+   },
+   {
+    "option_id": "B",
+    "text": "the numerical value of the area obtained using the trapezoidal rule will be more than the actual"
+   },
+   {
+    "option_id": "C",
+    "text": "the numerical value of the area obtained using the trapezoidal rule will be exactly equal to the actual"
+   },
+   {
+    "option_id": "D",
+    "text": "with the given details, the numerical value of area cannot be obtained using trapezoidal rule"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_36_1",
+    "page": 23,
+    "regions": [
+     "p023_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 37,
+  "pages": [
+   24
+  ],
+  "question_text": "Consider a doubly reinforced RCC beam with the option of using either Fe250 plain bars or Fe500 deformed bars in the compression zone. The modulus of elasticity of steel is 2 × 10\\(^5\\) N/mm\\(^2\\). As per IS456:2000, in which type(s) of the bars, the stress in the compression steel (\\(f_{sc}\\)) can reach the design strength (\\(0.87f_y\\)) at the limit state of collapse?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Fe250 plain bars only"
+   },
+   {
+    "option_id": "B",
+    "text": "Fe500 deformed bars only"
+   },
+   {
+    "option_id": "C",
+    "text": "Both Fe250 plain bars and Fe500 deformed bars"
+   },
+   {
+    "option_id": "D",
+    "text": "Neither Fe250 plain bars nor Fe500 deformed bars"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 38,
+  "pages": [
+   24
+  ],
+  "question_text": "Consider the horizontal axis passing through the centroid of the steel beam cross-section shown in the figure. What is the shape factor (rounded off to one decimal place) for the cross-section?\n[IMAGE_Q_38_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1.5"
+   },
+   {
+    "option_id": "B",
+    "text": "1.7"
+   },
+   {
+    "option_id": "C",
+    "text": "1.3"
+   },
+   {
+    "option_id": "D",
+    "text": "2.0"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_38_1",
+    "page": 24,
+    "regions": [
+     "p024_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 39,
+  "pages": [
+   25
+  ],
+  "question_text": "Consider the pin-jointed truss shown in the figure (not to scale). All members have the same axial rigidity, \\(AE\\). Members QR, RS, and ST have the same length \\(L\\). Angles QBT, RCT, SDT are all 90°. Angles BQT, CRT, DST are all 30°. The joint T carries a vertical load \\(P\\). The vertical deflection of joint T is \\(k\\dfrac{PL}{AE}\\). What is the value of \\(k\\)?\n[IMAGE_Q_39_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1.5"
+   },
+   {
+    "option_id": "B",
+    "text": "4.5"
+   },
+   {
+    "option_id": "C",
+    "text": "3.0"
+   },
+   {
+    "option_id": "D",
+    "text": "9.0"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_39_1",
+    "page": 25,
+    "regions": [
+     "p025_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 40,
+  "pages": [
+   26
+  ],
+  "question_text": "With reference to the compaction test conducted on soils, which of the following is INCORRECT?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Peak point of the compaction curve gives the maximum dry unit weight and optimum moisture content"
+   },
+   {
+    "option_id": "B",
+    "text": "With increase in the compaction effort, the maximum dry unit weight increases"
+   },
+   {
+    "option_id": "C",
+    "text": "With increase in the compaction effort, the optimum moisture content decreases"
+   },
+   {
+    "option_id": "D",
+    "text": "Compaction curve crosses the zero-air-voids curve"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 41,
+  "pages": [
+   26
+  ],
+  "question_text": "Consider that a force \\(P\\) is acting on the surface of a half-space (Boussinesq’s problem). The expression for the vertical stress (\\(\\sigma_z\\)) at any point \\((r, z)\\), within the half-space is given as,\n\\[\\sigma_z = \\frac{3P}{2\\pi}\\frac{z^3}{(r^2 + z^2)^{\\frac{5}{2}}}\\]\nwhere, \\(r\\) is the radial distance, and \\(z\\) is the depth with downward direction taken as positive. At any given \\(r\\), there is a variation of \\(\\sigma_z\\) along \\(z\\), and at a specific \\(z\\), the value of \\(\\sigma_z\\) will be maximum. What is the locus of the maximum \\(\\sigma_z\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(z^2 = \\dfrac{3}{2}r^2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(z^3 = \\dfrac{3}{2}r^2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(z^2 = \\dfrac{5}{2}r^2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(z^3 = \\dfrac{5}{2}r^2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 42,
+  "pages": [
+   27
+  ],
+  "question_text": "A square footing of size 2.5 m × 2.5 m is placed 1.0 m below the ground surface on a cohesionless homogeneous soil stratum. Considering that the groundwater table is located at the base of the footing, the unit weights of soil above and below the groundwater table are 18 kN/m\\(^3\\) and 20 kN/m\\(^3\\), respectively, and the bearing capacity factor \\(N_q\\) is 58, the net ultimate bearing capacity of the soil is estimated as 1706 kPa (unit weight of water = 10 kN/m\\(^3\\)).\nEarlier, a plate load test was carried out with a circular plate of 30 cm diameter in the same foundation pit during a dry season, when the water table was located beyond the plate influence zone. Using Terzaghi’s bearing capacity formulation, what is the ultimate bearing capacity (in kPa) of the plate?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "110.16"
+   },
+   {
+    "option_id": "B",
+    "text": "61.20"
+   },
+   {
+    "option_id": "C",
+    "text": "204.00"
+   },
+   {
+    "option_id": "D",
+    "text": "163.20"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 43,
+  "pages": [
+   28
+  ],
+  "question_text": "A very wide rectangular channel carries a discharge (Q) of 70 m\\(^3\\)/s per meter width. Its bed slope changes from 0.0001 to 0.0009 at a point P, as shown in the figure (not to scale). The Manning’s roughness coefficient of the channel is 0.01. What water surface profile(s) exist(s) near the point P?\n[IMAGE_Q_43_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "M\\(_2\\) and S\\(_2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "M\\(_2\\) only"
+   },
+   {
+    "option_id": "C",
+    "text": "S\\(_2\\) only"
+   },
+   {
+    "option_id": "D",
+    "text": "S\\(_2\\) and hydraulic jump"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_43_1",
+    "page": 28,
+    "grow": false,
+    "rect": [
+     136,
+     165,
+     510,
+     288
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 44,
+  "pages": [
+   28
+  ],
+  "question_text": "A jet of water having a velocity of 20 m/s strikes a series of plates fixed radially on a wheel revolving in the same direction as the jet at 15 m/s. What is the percentage efficiency of the plates? (round off to one decimal place)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "37.5"
+   },
+   {
+    "option_id": "B",
+    "text": "66.7"
+   },
+   {
+    "option_id": "C",
+    "text": "50.0"
+   },
+   {
+    "option_id": "D",
+    "text": "88.9"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 45,
+  "pages": [
+   29
+  ],
+  "question_text": "In the following table, identify the correct set of associations between the entries in Column-1 and Column-2.\n[IMAGE_Q_45_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P-II, Q-I, S-III"
+   },
+   {
+    "option_id": "B",
+    "text": "Q-III, R-II, S-IV"
+   },
+   {
+    "option_id": "C",
+    "text": "P-IV, R-I, S-II"
+   },
+   {
+    "option_id": "D",
+    "text": "P-III, Q-I, R-IV"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_45_1",
+    "page": 29,
+    "regions": [
+     "p029_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 46,
+  "pages": [
+   30
+  ],
+  "question_text": "A plot of speed-density relationship (linear) of two roads (Road A and Road B) is shown in the figure.\n[IMAGE_Q_46_1]\nIf the capacity of Road A is \\(C_A\\) and the capacity of Road B is \\(C_B\\), what is \\(\\dfrac{C_A}{C_B}\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{k_A}{k_B}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{u_A}{u_B}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{k_A u_A}{k_B u_B}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{k_A u_B}{k_B u_A}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_46_1",
+    "page": 30,
+    "grow": false,
+    "rect": [
+     195,
+     135,
+     445,
+     290
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 47,
+  "pages": [
+   31
+  ],
+  "question_text": "For the matrix\n\\[[A] = \\begin{bmatrix} 1 & 2 & 3 \\\\ 3 & 2 & 1 \\\\ 3 & 1 & 2 \\end{bmatrix}\\]\nwhich of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The eigenvalues of \\([A]^T\\) are same as the eigenvalues of \\([A]\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "The eigenvalues of \\([A]^{-1}\\) are the reciprocals of the eigenvalues of \\([A]\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "The eigenvectors of \\([A]^T\\) are same as the eigenvectors of \\([A]\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "The eigenvectors of \\([A]^{-1}\\) are same as the eigenvectors of \\([A]\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 48,
+  "pages": [
+   31
+  ],
+  "question_text": "For the function \\(f(x) = e^x|\\sin x|;\\ x \\in \\mathbb{R}\\), which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The function is continuous at all \\(x\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "The function is differentiable at all \\(x\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "The function is periodic"
+   },
+   {
+    "option_id": "D",
+    "text": "The function is bounded"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 49,
+  "pages": [
+   32
+  ],
+  "question_text": "Consider the beam shown in the figure (not to scale), on a hinge support at end A and a roller support at end B. The beam has a constant flexural rigidity, and is subjected to the external moments of magnitude \\(M\\) at one-third spans, as shown in the figure. Which of the following statements is/are TRUE?\n[IMAGE_Q_49_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Support reactions are zero"
+   },
+   {
+    "option_id": "B",
+    "text": "Shear force is zero everywhere"
+   },
+   {
+    "option_id": "C",
+    "text": "Bending moment is zero everywhere"
+   },
+   {
+    "option_id": "D",
+    "text": "Deflection is zero everywhere"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_49_1",
+    "page": 32,
+    "regions": [
+     "p032_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 50,
+  "pages": [
+   32
+  ],
+  "question_text": "Which of the following statements is/are TRUE in relation to the Maximum Mixing Depth (or Height) ‘D\\(_{max}\\)’ in the atmosphere?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "D\\(_{max}\\) is always equal to the height of the layer of unstable air"
+   },
+   {
+    "option_id": "B",
+    "text": "Ventilation coefficient depends on D\\(_{max}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "A smaller D\\(_{max}\\) will have a smaller air pollution potential if other meteorological conditions remain same"
+   },
+   {
+    "option_id": "D",
+    "text": "Vertical dispersion of pollutants occurs up to D\\(_{max}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 51,
+  "pages": [
+   33
+  ],
+  "question_text": "Which of the following options match the test reporting conventions with the given material tests in the table?\n[IMAGE_Q_51_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(P) - (VI); (Q) - (I); (R) - (II); (S) - (VII)"
+   },
+   {
+    "option_id": "B",
+    "text": "(P) - (VI); (Q) - (III); (R) - (IV); (S) - (V)"
+   },
+   {
+    "option_id": "C",
+    "text": "(P) - (VI); (Q) - (I); (R) - (II); (S) - (V)"
+   },
+   {
+    "option_id": "D",
+    "text": "(P) - (VI); (Q) - (III); (R) - (IV); (S) - (VII)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_51_1",
+    "page": 33,
+    "regions": [
+     "p033_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 52,
+  "pages": [
+   34
+  ],
+  "question_text": "The differential equation,\n\\[\\frac{du}{dt} + 2tu^2 = 1,\\]\nis solved by employing a backward difference scheme within the finite difference framework. The value of \\(u\\) at the \\((n-1)^{th}\\) time-step, for some \\(n\\), is 1.75. The corresponding time \\((t)\\) is 3.14 s. Each time step is 0.01 s long. Then, the value of \\((u_n - u_{n-1})\\) is __________________(round off to three decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 53,
+  "pages": [
+   34
+  ],
+  "question_text": "The infinitesimal element shown in the figure (not to scale) represents the state of stress at a point in a body. What is the magnitude of the maximum principal stress (in N/mm\\(^2\\), in integer) at the point? ____________________________\n[IMAGE_Q_53_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_53_1",
+    "page": 34,
+    "regions": [
+     "p034_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 54,
+  "pages": [
+   35
+  ],
+  "question_text": "An idealised bridge truss is shown in the figure. The force in Member U\\(_2\\)L\\(_3\\) is __________________________ kN (round off to one decimal place).\n[IMAGE_Q_54_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_54_1",
+    "page": 35,
+    "regions": [
+     "p035_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 55,
+  "pages": [
+   35
+  ],
+  "question_text": "The cross-section of a girder is shown in the figure (not to scale). The section is symmetric about a vertical axis (Y-Y). The moment of inertia of the section about the horizontal axis (X-X) passing through the centroid is ________________ cm\\(^4\\) (round off to nearest integer).\n[IMAGE_Q_55_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_55_1",
+    "page": 35,
+    "regions": [
+     "p035_r2"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 56,
+  "pages": [
+   36
+  ],
+  "question_text": "A soil having the average properties, bulk unit weight = 19 kN/m\\(^3\\); angle of internal friction = 25° and cohesion = 15 kPa, is being formed on a rock slope existing at an inclination of 35° with the horizontal. The critical height (in m) of the soil formation up to which it would be stable without any failure is ___________________ (round off to one decimal place).\n[Assume the soil is being formed parallel to the rock bedding plane and there is no ground water effect.]",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   36
+  ],
+  "question_text": "A smooth vertical retaining wall supporting layered soils is shown in figure. According to Rankine’s earth pressure theory, the lateral active earth pressure acting at the base of the wall is ______________kPa (round off to one decimal place).\n[IMAGE_Q_57_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_57_1",
+    "page": 36,
+    "regions": [
+     "p036_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 58,
+  "pages": [
+   36
+  ],
+  "question_text": "A vertical trench is excavated in a clayey soil deposit having a surcharge load of 30 kPa. A fluid of unit weight 12 kN/m\\(^3\\) is poured in the trench to prevent collapse as the excavation proceeds. Assume that the fluid is not seeping through the soil deposit. If the undrained cohesion of the clay deposit is 20 kPa and saturated unit weight is 18 kN/m\\(^3\\), what is the maximum depth of unsupported excavation (in m, rounded off to two decimal places)? ______________________________",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 59,
+  "pages": [
+   37
+  ],
+  "question_text": "A 12-hour storm occurs over a catchment and results in a direct runoff depth of 100 mm. The time-distribution of the rainfall intensity is shown in the figure (not to scale). The \\(\\phi\\)-index of the storm is (in mm, rounded off to two decimal places) ____________________________.\n[IMAGE_Q_59_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_59_1",
+    "page": 37,
+    "grow": false,
+    "rect": [
+     198,
+     178,
+     452,
+     345
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 60,
+  "pages": [
+   37
+  ],
+  "question_text": "A hydraulic jump occurs in a 1.0 m wide horizontal, frictionless, rectangular channel, with a pre-jump depth of 0.2 m and a post-jump depth of 1.0 m. The value of \\(g\\) may be taken as 10 m/s\\(^2\\). The values of the specific force at the pre-jump and post-jump sections are same and are equal to (in m\\(^3\\), rounded off to two decimal places) _____________ .",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 61,
+  "pages": [
+   37
+  ],
+  "question_text": "In Horton’s equation fitted to the infiltration data for a soil, the initial infiltration capacity is 10 mm/h; final infiltration capacity is 5 mm/h; and the exponential decay constant is 0.5 /h. Assuming that the infiltration takes place at capacity rates, the total infiltration depth (in mm) from a uniform storm of duration 12 h is _______________________. (round off to one decimal place)",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 62,
+  "pages": [
+   38
+  ],
+  "question_text": "The composition and energy content of a representative solid waste sample are given in the table. If the moisture content of the waste is 26%, the energy content of the solid waste on dry-weight basis is ______________________MJ/kg (round off to one decimal place).\n[IMAGE_Q_62_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_62_1",
+    "page": 38,
+    "regions": [
+     "p038_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 63,
+  "pages": [
+   38
+  ],
+  "question_text": "A flocculator tank has a volume of 2800 m\\(^3\\). The temperature of water in the tank is 15°C, and the average velocity gradient maintained in the tank is 100/s. The temperature of water is reduced to 5°C, but all other operating conditions including the power input are maintained as the same. The decrease in the average velocity gradient (in %) due to the reduction in water temperature is ____________ (round off to nearest integer).\n[Consider dynamic viscosity of water at 15°C and 5°C as 1.139×10\\(^{-3}\\) N-s/m\\(^2\\) and 1.518×10\\(^{-3}\\) N-s/m\\(^2\\), respectively]",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   39
+  ],
+  "question_text": "The wastewater inflow to an activated sludge plant is 0.5 m\\(^3\\)/s, and the plant is to be operated with a food to microorganism ratio of 0.2 mg/mg-d. The concentration of influent biodegradable organic matter of the wastewater to the plant (after primary settling) is 150 mg/L, and the mixed liquor volatile suspended solids concentration to be maintained in the plant is 2000 mg/L. Assuming that complete removal of biodegradable organic matter in the tank, the volume of aeration tank (in m\\(^3\\), in integer) required for the plant is ______________________.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   39
+  ],
+  "question_text": "Trigonometric levelling was carried out from two stations P and Q to find the reduced level (R. L.) of the top of hillock, as shown in the table. The distance between Stations P and Q is 55 m. Assume Stations P and Q, and the hillock are in the same vertical plane. The R. L. of the top of the hillock (in m) is _______________________ (round off to three decimal places).\n[IMAGE_Q_65_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_65_1",
+    "page": 39,
+    "regions": [
+     "p039_r1"
+    ],
+    "grow": false
+   }
+  ]
+ }
+]
