@@ -1,0 +1,28 @@
+[
+{"qno": 11, "pages": [11],
+ "question_text": "Matrix A has the eigenvalues 1, 2, and 3. The Trace of \\(A^2\\) is",
+ "options": [{"option_id": "A", "text": "6"}, {"option_id": "B", "text": "14"}, {"option_id": "C", "text": "20"}, {"option_id": "D", "text": "8"}], "figures": []},
+{"qno": 12, "pages": [12],
+ "question_text": "A fifth-degree polynomial in \\(x\\) is defined for \\(x > 0\\). All coefficients of the polynomial are positive. The first derivative of the polynomial is obtained numerically at a point by using the first-order forward as well as the first-order backward difference methods. Identical step lengths are used for both the methods. Following statements are made.\n(I) Forward difference method underestimates the true derivative.\n(II) Backward difference method overestimates the true derivative.\nWhich one of the following options is CORRECT?",
+ "options": [{"option_id": "A", "text": "Both statements (I) and (II) are FALSE."}, {"option_id": "B", "text": "Both statements (I) and (II) are TRUE."}, {"option_id": "C", "text": "Statement (I) is TRUE and statement (II) is FALSE."}, {"option_id": "D", "text": "Statement (I) is FALSE and statement (II) is TRUE."}], "figures": []},
+{"qno": 13, "pages": [13],
+ "question_text": "Periodic function \\(f(x)\\) is given below.\n\\[f(x) = \\begin{Bmatrix} -1, & \\text{when} & -\\pi < x < 0 \\\\ 1, & \\text{when} & 0 < x < \\pi \\end{Bmatrix};\\ f(x + 2\\pi) = f(x)\\]\nThe CORRECT option representing the Fourier series expansion of \\(f(x)\\) is:",
+ "options": [{"option_id": "A", "text": "\\(f(x) = \\dfrac{4}{\\pi}\\left[\\sin x + \\dfrac{\\sin 3x}{3} + \\dfrac{\\sin 5x}{5} + \\cdots\\right]\\)"}, {"option_id": "B", "text": "\\(f(x) = -\\dfrac{4}{\\pi}\\left[\\sin x + \\dfrac{\\sin 3x}{3} + \\dfrac{\\sin 5x}{5} + \\cdots\\right]\\)"}, {"option_id": "C", "text": "\\(f(x) = 1 + \\dfrac{4}{\\pi}\\left[\\sin x + \\dfrac{\\sin 3x}{3} + \\dfrac{\\sin 5x}{5} + \\cdots\\right]\\)"}, {"option_id": "D", "text": "\\(f(x) = 1 - \\dfrac{4}{\\pi}\\left[\\sin x + \\dfrac{\\sin 3x}{3} + \\dfrac{\\sin 5x}{5} + \\cdots\\right]\\)"}], "figures": []},
+{"qno": 14, "pages": [14],
+ "question_text": "A rectangular singly reinforced concrete beam has a width of 300 mm and an effective depth of 550 mm. The grades of steel and concrete are Fe500 and M25, respectively. The area of steel in tension is 1963 mm\\(^2\\). The depth of neutral axis is 302 mm. The ratio of the limiting depth of the neutral axis (\\(x_{u,max}\\)) to the effective depth (\\(d\\)) of the beam is 0.456. The most probable mode of failure of the beam is",
+ "options": [{"option_id": "A", "text": "compression failure"}, {"option_id": "B", "text": "bond failure"}, {"option_id": "C", "text": "shear failure"}, {"option_id": "D", "text": "ductile failure"}], "figures": []},
+{"qno": 15, "pages": [15],
+ "question_text": "As per IS:800-2007, design of a cantilever steel beam section for its moment capacity requires fulfilment of an upper bound, expressed as:\n\\[M_d \\le 1.5 Z_e \\frac{f_y}{\\gamma_{m0}}\\]\nThe reason for such upper bound is to",
+ "options": [{"option_id": "A", "text": "control deflection"}, {"option_id": "B", "text": "restrain lateral-torsional buckling"}, {"option_id": "C", "text": "avoid plastic deformation under working load"}, {"option_id": "D", "text": "avoid yielding at ultimate load"}], "figures": []},
+{"qno": 16, "pages": [15],
+ "question_text": "A plane strain problem (in X-Y plane) must satisfy the condition:",
+ "options": [{"option_id": "A", "text": "\\(\\sigma_{zz} = 0\\)"}, {"option_id": "B", "text": "\\(\\epsilon_{zz} = \\epsilon_{xz} = \\epsilon_{yz} = 0\\)"}, {"option_id": "C", "text": "\\(\\sigma_{xx} \\ne \\sigma_{xy} \\ne \\sigma_{xz} \\ne 0\\)"}, {"option_id": "D", "text": "\\(\\epsilon_{xx} \\ne \\varepsilon_{yy} \\ne \\epsilon_{xy} \\ne 0\\)"}], "figures": []},
+{"qno": 17, "pages": [16],
+ "question_text": "Which one of the following stress conditions represents the state of pure shear stress?",
+ "options": [{"option_id": "A", "text": "[IMAGE_Q_17_A]"}, {"option_id": "B", "text": "[IMAGE_Q_17_B]"}, {"option_id": "C", "text": "[IMAGE_Q_17_C]"}, {"option_id": "D", "text": "[IMAGE_Q_17_D]"}],
+ "figures": [
+  {"placeholder": "IMAGE_Q_17_A", "page": 16, "rect": [120, 186, 256, 300], "grow": false},
+  {"placeholder": "IMAGE_Q_17_B", "page": 16, "rect": [120, 323, 256, 437], "grow": false},
+  {"placeholder": "IMAGE_Q_17_C", "page": 16, "rect": [120, 451, 256, 565], "grow": false},
+  {"placeholder": "IMAGE_Q_17_D", "page": 16, "rect": [120, 579, 256, 693], "grow": false}]}
+]

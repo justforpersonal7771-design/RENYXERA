@@ -1,0 +1,347 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "‘The team ______ more than 300 runs in 20 overs ___________ rains. However, some players needed to improve their batting skills.’\nChoose the option with the correct sequence of words to fill the blanks.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "score; despite"
+   },
+   {
+    "option_id": "B",
+    "text": "scoring; instead of"
+   },
+   {
+    "option_id": "C",
+    "text": "scored; despite"
+   },
+   {
+    "option_id": "D",
+    "text": "scoring; in spite of"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "If a positive real \\(x\\) satisfies the following equation\n\\[\\log_2 x + \\log_{\\sqrt{2}} x = 48,\\]\nthen the value of \\(x\\) is _________________",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2^{16}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4^{16}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2^{14}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4^{14}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 3,
+  "pages": [
+   3
+  ],
+  "question_text": "The next figure (indicated by ‘?’) in the sequence is\n[IMAGE_Q_03_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_03_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_03_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_03_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_03_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_03_1",
+    "page": 3,
+    "regions": [
+     "p003_r1"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_03_A",
+    "page": 3,
+    "regions": [
+     "p003_r2"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_03_B",
+    "page": 3,
+    "regions": [
+     "p003_r3"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_03_C",
+    "page": 3,
+    "regions": [
+     "p003_r4"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_03_D",
+    "page": 3,
+    "regions": [
+     "p003_r5"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 4,
+  "pages": [
+   4
+  ],
+  "question_text": "‘All the mangoes in the basket are good.’\nIf the above statement is false, then which one of the following statements is necessarily true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "All the mangoes in the basket are not good."
+   },
+   {
+    "option_id": "B",
+    "text": "No mango in the basket is good."
+   },
+   {
+    "option_id": "C",
+    "text": "In the basket, some of the mangoes are good and some are not good."
+   },
+   {
+    "option_id": "D",
+    "text": "There exists at least one mango in the basket that is not good."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   5
+  ],
+  "question_text": "Consider the following statements about four numbers:\n(S1) The average of the four numbers is 25\n(S2) Each number is at most 40\n(S3) Each number is at least 20\nChoose the option that is necessarily correct.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(S1) and (S2) together imply (S3)"
+   },
+   {
+    "option_id": "B",
+    "text": "(S2) and (S3) together imply (S1)"
+   },
+   {
+    "option_id": "C",
+    "text": "(S1) and (S3) together imply (S2)"
+   },
+   {
+    "option_id": "D",
+    "text": "(S1) implies (S3)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 6,
+  "pages": [
+   6
+  ],
+  "question_text": "‘People are crowding around ___ pit into which ___ elephant has fallen. I have never seen an elephant looking more bewildered ___ miserable. Here it is in a most undignified position, thrust into a pit and made to look up ___ a vast, curiosity-stricken crowd.’\nChoose the option with the correct sequence of words to fill the blanks.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "an; a; at; and"
+   },
+   {
+    "option_id": "B",
+    "text": "a; an; and; at"
+   },
+   {
+    "option_id": "C",
+    "text": "and; a; an; at"
+   },
+   {
+    "option_id": "D",
+    "text": "at; a; an; and"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   7
+  ],
+  "question_text": "The table lists the unit selling price of five products P, Q, R, S, and T. On a particular day, 250 items were sold with the average selling price of Rs. 60. The following observations were made:\n(i) The quantity of S sold was twice that of T.\n(ii) The quantity of R sold was thrice that of T.\n(iii) The quantity of Q sold was four times that of T.\nWhat is the quantity of product P sold on that day?\n[IMAGE_Q_07_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "40"
+   },
+   {
+    "option_id": "B",
+    "text": "50"
+   },
+   {
+    "option_id": "C",
+    "text": "60"
+   },
+   {
+    "option_id": "D",
+    "text": "70"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_07_1",
+    "page": 7,
+    "regions": [
+     "p007_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 8,
+  "pages": [
+   8
+  ],
+  "question_text": "Consider a string P of length \\(l\\) that is laid out as a straight-line segment. Another string K is laid out as a semicircular arc with string P as its diameter, as represented in Figure (i). When both the strings are shortened by a length \\(x\\) they can be re-arranged such that the shortened string K forms a full circle with the shortened string P as its diameter, as represented in Figure (ii). The value of \\(x/l\\) is __________\n[IMAGE_Q_08_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\pi\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{\\pi-1}{2\\pi}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{\\pi}{2(\\pi-1)}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{\\pi}{\\pi-1}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 8,
+    "regions": [
+     "p008_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   9
+  ],
+  "question_text": "The Roman senator Meritorius, his brother, his son, and his daughter have varying oratory skill levels. They are seated in rows and columns as shown in the figure with exactly one person sitting in each box. It is known that\n(i) Meritorius’ daughter and his brother are seated in the same column.\n(ii) His son is seated diagonally across the sibling of the worst orator.\n(iii) The best and worst orators are seated in the same row.\nWho is the best orator?\n[IMAGE_Q_09_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Meritorius"
+   },
+   {
+    "option_id": "B",
+    "text": "Meritorius’ brother"
+   },
+   {
+    "option_id": "C",
+    "text": "Meritorius’ son"
+   },
+   {
+    "option_id": "D",
+    "text": "Meritorius’ daughter"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_09_1",
+    "page": 9,
+    "regions": [
+     "p009_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 10,
+  "pages": [
+   10
+  ],
+  "question_text": "Which one of the patterns labelled P, Q, R, and S is used to generate the following figure?\n[IMAGE_Q_10_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P"
+   },
+   {
+    "option_id": "B",
+    "text": "Q"
+   },
+   {
+    "option_id": "C",
+    "text": "R"
+   },
+   {
+    "option_id": "D",
+    "text": "S"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_10_1",
+    "page": 10,
+    "regions": [
+     "p010_r1",
+     "p010_r2",
+     "p010_r3",
+     "p010_r4",
+     "p010_r5"
+    ],
+    "pad": [
+     4,
+     4,
+     4,
+     22
+    ]
+   }
+  ]
+ }
+]
