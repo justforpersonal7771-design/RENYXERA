@@ -1,0 +1,53 @@
+{
+ "_source": "Official GATE 2027 CE syllabus (data/pyq/official_pdfs/CE/CE_GATE2027_syllabus.pdf), curated by hand: topics copied verbatim and split at the syllabus's own semicolons (commas where a paragraph uses no semicolons); a labelled group such as 'Sewerage system design, ...' is kept as one topic. Subject names are the syllabus's own labels, except where marked in _editorial.",
+ "_editorial": {
+  "Geotechnical Engineering": "Section 3 has no subject labels; its two paragraphs become two subjects: 'Soil Mechanics' (first paragraph) and 'Foundation Engineering' (second paragraph, sub-surface investigations onwards).",
+  "Geomatics Engineering": "Section 7 has no subject labels; its two paragraphs become 'Surveying' and 'Photogrammetry'.",
+  "Water and Waste Water Quality and Treatment": "The unlabelled 'Sewerage system design ...' paragraph that follows is kept in this subject as further topics.",
+  "Transportation Infrastructure": "The unlabelled railway and airport paragraphs that follow are kept in this subject as further topics."
+ },
+ "SECTION 1: ENGINEERING MATHEMATICS": {
+  "Linear Algebra": ["Matrix algebra", "Systems of linear equations", "eigenvalues and eigenvectors"],
+  "Calculus": ["Functions of single variable", "Limit, continuity and differentiability", "Mean value theorems, local maxima and minima", "Taylor series", "Evaluation of definite and indefinite integrals, application of definite integral to obtain area and volume", "Partial derivatives", "Total derivative", "Gradient, Divergence and Curl, Vector identities", "Directional derivatives", "Line, Surface and Volume integrals"],
+  "Ordinary Differential Equation (ODE)": ["First order (linear and non-linear) equations", "higher order linear equations with constant coefficients", "Euler-Cauchy equations", "initial and boundary value problems"],
+  "Partial Differential Equation (PDE)": ["Fourier series", "Separation of variables", "solutions of one-dimensional diffusion equation", "first and second order one-dimensional wave equation and two-dimensional Laplace equation"],
+  "Probability and Statistics": ["Basic concepts of probability – axioms and theorems, statistical independence", "Conditional probability", "Descriptive statistics – Mean, median, mode and standard deviation", "Random Variables – Probability mass function, probability density function, cumulative distribution function", "Poisson and Normal Distribution", "Linear regression"],
+  "Numerical Methods": ["Error analysis", "Numerical solutions of linear and nonlinear algebraic equations", "Newton’s and Lagrange polynomials", "numerical differentiation", "Integration by trapezoidal and Simpson’s rule", "Single and multi-step methods for first order differential equations"]
+ },
+ "SECTION 2: STRUCTURAL ENGINEERING": {
+  "Engineering Mechanics": ["System of forces, free-body diagrams, equilibrium equations", "Internal forces in structures", "Frictions and its applications", "Centre of mass"],
+  "Solid Mechanics": ["Bending moment and shear force in statically determinate beams", "Transformation of stress (Mohr’s circle)", "Simple stress and strain relationships", "Simple bending theory, flexural and shear stresses, shear centre", "Uniform torsion", "Combined stresses", "Column buckling"],
+  "Structural Analysis": ["Principle of superposition", "Work and energy methods: Principle of virtual work, Castigliano's second theorem", "Deflections of statically determinate beams, frames, and trusses", "Analysis of statically indeterminate structures by force and displacement methods (method of consistent deformations, slope-deflection method, moment distribution method)", "Influence lines and moving loads", "Stiffness matrix method", "Analysis of determinate arches and cables"],
+  "Concrete Structures": ["Working stress and limit state design concepts", "Design and detailing of beams, slabs, columns, and isolated footings", "Bond and development length"],
+  "Steel Structures": ["Working stress and limit state design concepts", "Design of tension and compression members, beams and beam-columns, column bases", "Connections – simple and eccentric, beam-column connections", "Concept of plastic analysis – beams and portal frames"]
+ },
+ "SECTION 3: GEOTECHNICAL ENGINEERING": {
+  "Soil Mechanics": ["Three-phase system and phase relationships, index properties", "Unified and Indian standard soil classification system", "Permeability – one dimensional flow, Seepage through soils – two-dimensional flow, flow nets, uplift pressure, piping, capillarity, seepage force", "Principle of effective stress and quicksand condition", "Compaction of soils", "One-dimensional consolidation, time rate of consolidation", "Shear Strength, Mohr’s circle, effective and total shear strength parameters", "Stress-strain characteristics of clays and sand", "Stress paths"],
+  "Foundation Engineering": ["Sub-surface investigations – Drilling bore holes, sampling, plate load test, standard penetration and cone penetration tests", "Earth pressure theories – Rankine and Coulomb", "Stability of slopes – Finite and infinite slopes, Bishop’s method", "Sheet Piles", "Stress distribution in soils – Boussinesq’s theory", "Pressure bulbs", "Shallow foundations – Terzaghi’s and Meyerhof’s bearing capacity theories, effect of water table", "Combined footing and raft foundation", "Contact pressure", "Settlement analysis in sands and clays", "Deep foundations – static formulae, axial load capacity of piles in sands and clays, pile load test, pile under lateral loading, pile group efficiency, negative skin friction", "Ground improvement techniques"]
+ },
+ "SECTION 4: WATER RESOURCES ENGINEERING": {
+  "Fluid Mechanics": ["Properties of fluids, fluid statics", "Continuity, momentum and energy equations and their applications", "Potential flow, Laminar and turbulent flow", "Flow in pipes, pipe networks", "Concept of boundary layer and its growth", "Concept of lift and drag"],
+  "Hydraulics": ["Forces on immersed bodies", "Flow measurement in channels and pipes", "Dimensional analysis and hydraulic similitude", "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles", "Prismatic and mobile channels, steady and unsteady flows, rapidly varied flow and hydraulic jump", "Flow past sharp crested weirs"],
+  "Hydrology": ["Hydrologic cycle, precipitation, evaporation, evapo-transpiration, watershed, infiltration", "Streamflow measurements, unit hydrographs, hydrograph analysis, reservoir capacity, flood estimation and routing, surface runoff models, ground water hydrology – steady state well hydraulics and aquifers", "Application of Darcy’s Law"],
+  "Irrigation": ["Types of irrigation systems and methods", "Crop water requirements – Duty, delta, evapo-transpiration", "Gravity dams and spillways", "Lined and unlined canals, Design of weirs on permeable foundation", "cross drainage structures", "River training structures", "Earthen dams", "Seepage through dams", "Well irrigation"]
+ },
+ "SECTION 5: ENVIRONMENTAL ENGINEERING": {
+  "Water and Waste Water Quality and Treatment": ["Basics of water quality standards – Physical, chemical and biological parameters", "Water quality index", "Unit processes and operations", "Water requirement", "Water distribution system", "Drinking water treatment", "Sewerage system design, quantity of domestic wastewater, primary, secondary and tertiary treatment", "Effluent discharge standards", "Sludge treatment and disposal", "Reuse of treated sewage for different applications"],
+  "Air Pollution": ["Types of pollutants, their sources and impacts", "air pollution control", "air quality standards, Air quality index and limits"],
+  "Municipal Solid Wastes": ["Characteristics, generation, collection and transportation of solid wastes", "engineered systems for solid waste management (reuse/recycle, energy recovery, treatment and disposal)", "Basics of landfill design and operation"]
+ },
+ "SECTION 6: TRANSPORTATION ENGINEERING": {
+  "Transportation Infrastructure": ["Geometric design of roadways using IRC codes – cross-sectional elements, sight distances, classifications of roadways, design vehicle, horizontal and vertical alignments", "Geometric design of railway Track – Speed and cant", "Concept of airport runway length, calculations and corrections; taxiway and exit taxiway design"],
+  "Highway Pavements": ["Highway materials – desirable properties and tests", "Desirable properties of bituminous paving mixes", "Design factors for flexible and rigid pavements", "Design of flexible and rigid pavement using IRC codes"],
+  "Traffic Engineering": ["Traffic studies on flow and speed, peak hour factor, accident study, statistical analysis of traffic data", "Microscopic and macroscopic parameters of traffic flow, fundamental relationships", "Traffic signs", "Signal design by Webster’s method", "Types of intersections and interchanges", "Highway capacity and level of service"],
+  "Transportation Planning": ["Four step travel demand modelling – trip generation, trip distribution, mode choice, traffic assignment and its applications"]
+ },
+ "SECTION 7: GEOMATICS ENGINEERING": {
+  "Surveying": ["Principles of surveying", "Plane and geodetic surveying, GNSS surveying, errors and their adjustment", "Maps – Scale, coordinate system", "Distance and angle measurement – Levelling and trigonometric levelling", "Traversing and triangulation survey", "Total station", "Principles of topographic, cadastral, engineering", "Introduction to cartography, map projections"],
+  "Photogrammetry": ["Introduction to photogrammetry, digital photogrammetry, photographic scale, flying height", "Space resection, parallax equations, elevations by parallax differences, camera calibration"]
+ },
+ "SECTION 8: CONSTRUCTION MATERIALS AND MANAGEMENT": {
+  "Construction Materials": ["Steel – Composition, material properties and behaviour", "Cement – composition, hydration and microstructure, chemical and mineral admixtures", "Concrete – Constituents, mix design, short-term and long-term properties"],
+  "Construction Management": ["Types of construction projects", "Estimation and costing – Quantity estimation using long wall and short wall method, center line method, analysis of rates", "Project planning and scheduling: AOA and AON network analysis – PERT and CPM", "Project updating and monitoring", "Construction equipment – Equipment for earthwork, concreting, hoisting and transportation of materials", "Types of contracts"]
+ }
+}

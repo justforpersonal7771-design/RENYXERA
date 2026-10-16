@@ -1,0 +1,281 @@
+[
+ {
+  "qno": 39,
+  "pages": [
+   26
+  ],
+  "question_text": "The plane frame has a hinge and a roller support, and is loaded as shown in the figure. Both the columns have same height.\n[IMAGE_Q_39_1]\n(Figure not to scale)\nWhat is the absolute value of the maximum bending moment (in kN-m) in the frame?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "165"
+   },
+   {
+    "option_id": "B",
+    "text": "150"
+   },
+   {
+    "option_id": "C",
+    "text": "240"
+   },
+   {
+    "option_id": "D",
+    "text": "195"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_39_1",
+    "page": 26,
+    "regions": [
+     "p026_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 40,
+  "pages": [
+   27
+  ],
+  "question_text": "For a hydraulic jump formed in a rectangular horizontal channel, the sequent depth ratio is 2. The Froude number of supercritical stream is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\sqrt{3}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\sqrt{5}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\sqrt{6}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\sqrt{8}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 41,
+  "pages": [
+   27
+  ],
+  "question_text": "In a laminar flow of a Newtonian fluid through a circular pipe of radius 5 cm, the maximum velocity is found to be 2 m/s. The velocity (in m/s) at a radial distance of 2.50 cm from the axis of the pipe is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1.00"
+   },
+   {
+    "option_id": "B",
+    "text": "1.25"
+   },
+   {
+    "option_id": "C",
+    "text": "1.50"
+   },
+   {
+    "option_id": "D",
+    "text": "1.75"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 42,
+  "pages": [
+   28
+  ],
+  "question_text": "A road is divided into four sections having varying widths as shown in the figure. Section-2 (S2) represents a capacity constrained condition with respect to the traffic flow passing through Section-1 (S1). Section-3 (S3) and Section-4 (S4) do not face any such capacity constraint with respect to the flow. A flow-density relationship for unconstrained and constrained flow conditions is shown in the figure.\n[IMAGE_Q_42_1]\nIf Section-1 observes density D2, the option representing the correct state of density in Sections 2, 3 and 4 is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "S2 – D4 ; S3 – D3 ; S4 – D2"
+   },
+   {
+    "option_id": "B",
+    "text": "S2 – D3 ; S3 – D2 ; S4 – D1"
+   },
+   {
+    "option_id": "C",
+    "text": "S2 – D3 ; S3 – D4 ; S4 – D2"
+   },
+   {
+    "option_id": "D",
+    "text": "S2 – D4 ; S3 – D3 ; S4 – D1"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_42_1",
+    "page": 28,
+    "regions": [
+     "p028_r1",
+     "p028_r2"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 43,
+  "pages": [
+   29
+  ],
+  "question_text": "Locations P and Q are separated by a wide valley. The difference in levels of locations P and Q measured by a levelling instrument stationed near P is 3.0 m. The same instrument stationed near Q measures the difference in levels of locations P and Q as −1.0 m. Assume that the atmospheric refraction is same during the measurements. The true difference in levels (in m) of locations P and Q is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1.0"
+   },
+   {
+    "option_id": "B",
+    "text": "1.5"
+   },
+   {
+    "option_id": "C",
+    "text": "2.0"
+   },
+   {
+    "option_id": "D",
+    "text": "4.0"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 44,
+  "pages": [
+   29
+  ],
+  "question_text": "The average sewage from a city is 90 million litres per day and the average 5-day Biochemical Oxygen Demand (BOD\\(_5\\)) is 300 mg/l. Average standard BOD\\(_5\\) of the domestic sewage is 0.08 kg/day/person. The population equivalent of the city is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "337500"
+   },
+   {
+    "option_id": "B",
+    "text": "216000"
+   },
+   {
+    "option_id": "C",
+    "text": "270000"
+   },
+   {
+    "option_id": "D",
+    "text": "168750"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 45,
+  "pages": [
+   30
+  ],
+  "question_text": "Select ALL CORRECT option(s) which can be considered to check whether the flexural stresses in a prestressed concrete beam are within the allowable stresses at the transfer and the service stages.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Limiting zone for prestressing"
+   },
+   {
+    "option_id": "B",
+    "text": "Magnel’s graph"
+   },
+   {
+    "option_id": "C",
+    "text": "Hoyer effect"
+   },
+   {
+    "option_id": "D",
+    "text": "Load balancing method"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 46,
+  "pages": [
+   30
+  ],
+  "question_text": "As per the Rankine’s earth pressure theory, which of the following statements is/are FALSE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "For the active earth pressure, the inclination of failure plane is \\((45^\\circ + \\phi/2)\\) with respect to the major principal plane."
+   },
+   {
+    "option_id": "B",
+    "text": "For the active earth pressure, the inclination of failure plane is \\((45^\\circ - \\phi/2)\\) with respect to the major principal plane."
+   },
+   {
+    "option_id": "C",
+    "text": "For the passive earth pressure, the inclination of failure plane is \\((45^\\circ + \\phi/2)\\) with respect to the major principal plane."
+   },
+   {
+    "option_id": "D",
+    "text": "For the passive earth pressure, the inclination of failure plane is \\((45^\\circ - \\phi/2)\\) with respect to the major principal plane."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 47,
+  "pages": [
+   31
+  ],
+  "question_text": "Which of the following statements is/are TRUE in the context of the geometric design of highways?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The coefficient of friction used for the design of horizontal curves is lower than the coefficient of friction used in the computation of the sight distances."
+   },
+   {
+    "option_id": "B",
+    "text": "Centrifugal force at horizontal curve is counteracted by raising the middle of the pavement with respect to the edges."
+   },
+   {
+    "option_id": "C",
+    "text": "Grade compensation is achieved by increasing the gradient of the horizontal curve."
+   },
+   {
+    "option_id": "D",
+    "text": "Under identical conditions, the design length of the summit curve of a road having unidirectional flow will be greater than that of the same road having bidirectional flow."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 48,
+  "pages": [
+   31
+  ],
+  "question_text": "Starting with the first approximation as \\(x = 0.5\\), the second approximation for the root of the following function by the Newton-Raphson method is ______ (rounded off to two decimal places).\n\\[f(x) = e^{-x} - x\\]",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 49,
+  "pages": [
+   31
+  ],
+  "question_text": "Values of \\(y\\) for different values of \\(x\\) are tabulated below.\n[IMAGE_Q_49_1]\nIf a second-degree interpolating polynomial \\(P_2(x)\\) is used to represent \\(y\\), the value of \\(P_2(0)\\) is ___________ (rounded off to the nearest integer).",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_49_1",
+    "page": 31,
+    "regions": [
+     "p031_r1"
+    ],
+    "grow": false
+   }
+  ]
+ }
+]

@@ -1,0 +1,266 @@
+[
+ {
+  "qno": 23,
+  "pages": [
+   19
+  ],
+  "question_text": "Gradually Varied Flow (GVF) profiles in open channels given in Column 1 are to be matched with the water surface slopes in Column 2 in the table below.\n[IMAGE_Q_23_1]\nWhich of the following options is/are NOT correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(P) - (I) ; (Q) - (II) ; (R) - (I)"
+   },
+   {
+    "option_id": "B",
+    "text": "(P) - (I) ; (Q) - (II) ; (R) - (III)"
+   },
+   {
+    "option_id": "C",
+    "text": "(P) - (II) ; (Q) - (I) ; (R) - (I)"
+   },
+   {
+    "option_id": "D",
+    "text": "(P) - (I) ; (Q) - (III) ; (R) - (II)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_23_1",
+    "page": 19,
+    "regions": [
+     "p019_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 24,
+  "pages": [
+   20
+  ],
+  "question_text": "Cant \\(C\\) on a Broad Gauge railway track is calculated for an equilibrium speed \\(V\\) (in km/h), dynamic gauge \\(G\\) (in mm) and radius of curve \\(R\\) (in m) using formula/formulae:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(C = \\dfrac{GV^2}{127\\,R}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(C = \\dfrac{13.76\\,V^2}{R}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(C = \\dfrac{13.20\\,V^2}{R}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(C = \\dfrac{8.33\\,V^2}{R}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   20
+  ],
+  "question_text": "Which of the following components is/are NOT removed in the secondary treatment of sewage?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Suspended settleable organic solids"
+   },
+   {
+    "option_id": "B",
+    "text": "Colloids including dissolved organic matter"
+   },
+   {
+    "option_id": "C",
+    "text": "Pathogens"
+   },
+   {
+    "option_id": "D",
+    "text": "Fat and grease"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   21
+  ],
+  "question_text": "Bag I contains 4 white and 6 black balls.\nBag II contains 4 white and 3 black balls.\nOne ball is drawn at random from any one of the two bags and it is found to be a black ball. The probability that the black ball was drawn from Bag I is ______ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 27,
+  "pages": [
+   21
+  ],
+  "question_text": "A matrix is given as:\n\\[\\begin{bmatrix} 9 & 15 \\\\ 15 & 50 \\end{bmatrix}\\]\nBy performing Cholesky decomposition, \\(|l_{22}|\\) of the lower triangular matrix is ______ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   21
+  ],
+  "question_text": "It is given that \\(x\\) and \\(y\\) are integers in the following equation:\n\\[(x + y - 7)^2 + (y + 3x - 13)^2 = 0\\]\nThe value of \\((x^3 + y^3)\\) is ________ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   21
+  ],
+  "question_text": "The required centre-to-centre spacing of 10 mm diameter bars is 150 mm to resist the design moment in a concrete slab. Instead of 10 mm diameter bars, if 12 mm diameter bars of the same grade are used, the required centre-to-centre spacing (in mm) to resist the same design moment becomes ________ (rounded off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   21
+  ],
+  "question_text": "Two steel plates are to be connected together by a 5 mm fillet weld of length 150 mm to transfer a design load. If the size of the fillet weld used to connect the same two plates is changed to 6 mm, the weld length (in mm) needed for transferring the same design load is ________ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   21
+  ],
+  "question_text": "For a liquid, the permeability of a sandy soil having a void ratio of 0.60 was determined as 0.14 cm/s. Considering the same liquid and by using Taylor’s equation, the permeability (in cm/s) of this soil corresponding to the void ratio of 0.80 is _____ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 32,
+  "pages": [
+   21
+  ],
+  "question_text": "To obtain undisturbed clay soil sample, an Area Ratio of 10 % needs to be achieved for a thin walled sampling tube. If the outer diameter of the tube is 50.8 mm, the inner diameter (in mm) is __________________ (rounded off to one decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   22
+  ],
+  "question_text": "The travel times of three vehicles on a 2 km stretch of road are 4, 5, and 8 minutes. Assuming the speed of each vehicle to be constant in this stretch, the Space Mean Speed (in km/h) of the vehicles is ___________ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   22
+  ],
+  "question_text": "A 30 m long tape is standardized at \\(25^\\circ\\)C. It was used to measure the length of a line which came out to be 200 m. The temperature during the measurement was \\(35^\\circ\\)C. The coefficient of expansion of the tape was \\(11 \\times 10^{-6}\\) per \\(^\\circ\\)C. The correction in the measured length (in mm) due to change in temperature is ______ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 35,
+  "pages": [
+   22
+  ],
+  "question_text": "The height of the plane of collimation of a levelling instrument is 100.000 m from a datum. The levelling instrument measures a Back Sight of 1.500 m on a vertically held staff at a ground point P. The reduced level (in m) of the ground point P with respect to the datum is ________________ (rounded off to three decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 36,
+  "pages": [
+   23
+  ],
+  "question_text": "Let \\(f(x)\\) be a continuous function defined in \\([0,2] \\rightarrow \\mathbb{R}\\) and satisfying the equation \\(\\int_0^2 f(x)[x - f(x)]\\,dx = \\dfrac{2}{3}\\).\nThe value of \\(f(1)\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1"
+   },
+   {
+    "option_id": "B",
+    "text": "2"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{1}{2}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "0"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 37,
+  "pages": [
+   24
+  ],
+  "question_text": "An ordinary differential equation is given below.\n\\[x^2 \\frac{d^2y}{dx^2} = 6y\\]\nConsidering \\(a\\) and \\(b\\) as arbitrary constants, the general solution of the equation is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(y(x) = ax^3 + \\dfrac{b}{x^2}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(y(x) = ax^2 + \\dfrac{b}{x^3}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(y(x) = ax^2 + b \\ln x\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(y(x) = ax^3 + b \\ln x\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 38,
+  "pages": [
+   25
+  ],
+  "question_text": "A plane truss consists of two linearly elastic, homogeneous, identical members, namely PQ and QR. Both members have length (\\(L\\)), cross-sectional area (\\(A\\)), and modulus of elasticity (\\(E\\)). The members are inclined at \\(45^\\circ\\) as shown in the figure. The truss has hinge supports at P and R. The translational degrees-of-freedom (\\(u\\) and \\(v\\)) are shown at joint Q.\n[IMAGE_Q_38_1]\n(Figure not to scale)\nAfter application of the boundary conditions, the stiffness matrix of the truss becomes:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & 0.5 \\\\ 0.5 & 1 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & -1 \\\\ -1 & 1 \\end{bmatrix}\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_38_1",
+    "page": 25,
+    "regions": [
+     "p025_r1"
+    ],
+    "grow": false
+   }
+  ]
+ }
+]

@@ -1,0 +1,368 @@
+[
+ {
+  "qno": 11,
+  "pages": [
+   11
+  ],
+  "question_text": "Matrix P is given as\n\\[P = \\begin{bmatrix} 1 & 0 & 1 \\\\ 0 & 1 & 0 \\\\ 1 & 0 & 1 \\end{bmatrix}\\]\nThe TRUE option is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Trace of P is equal to the sum of the Eigen values of P."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(P^{T}P\\) is an identity matrix."
+   },
+   {
+    "option_id": "C",
+    "text": "P is a skew-symmetric matrix."
+   },
+   {
+    "option_id": "D",
+    "text": "Absolute magnitude of each Eigen value is 1."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   12
+  ],
+  "question_text": "Given:\n\\[\\begin{bmatrix} 1 & 1 & 1 \\\\ 1 & 0 & 2 \\end{bmatrix} \\begin{Bmatrix} x_1 \\\\ x_2 \\\\ x_3 \\end{Bmatrix} = \\begin{Bmatrix} 0 \\\\ 0 \\end{Bmatrix}\\]\nThe above system of equations represents a",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "plane"
+   },
+   {
+    "option_id": "B",
+    "text": "line"
+   },
+   {
+    "option_id": "C",
+    "text": "volume"
+   },
+   {
+    "option_id": "D",
+    "text": "point"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   12
+  ],
+  "question_text": "A thin-walled spherical gas balloon of radius \\(R\\) and wall thickness \\(t\\) (\\(t << R\\)) is subjected to an internal (gauge) pressure \\(p\\). The maximum tensile and shear stresses in the balloon wall are, respectively:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Zero and \\(pR/2t\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(pR/2t\\) and Zero"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(pR/2t\\) and \\(pR/4t\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(pR/4t\\) and Zero"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   13
+  ],
+  "question_text": "Black dot shown in the figure qualitatively represents the shear centre of the angle section. The option which represents the position of the shear centre is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_14_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_14_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_14_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_14_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_14_A",
+    "page": 13,
+    "rect": [
+     121,
+     193,
+     226,
+     280
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_14_B",
+    "page": 13,
+    "rect": [
+     122,
+     318,
+     200,
+     402
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_14_C",
+    "page": 13,
+    "rect": [
+     122,
+     431,
+     200,
+     516
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_14_D",
+    "page": 13,
+    "rect": [
+     122,
+     544,
+     200,
+     629
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 15,
+  "pages": [
+   14
+  ],
+  "question_text": "Which one of the following is utilized to determine the long-term deformation of concrete under sustained loading?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Creep"
+   },
+   {
+    "option_id": "B",
+    "text": "Shrinkage"
+   },
+   {
+    "option_id": "C",
+    "text": "Modulus of rupture"
+   },
+   {
+    "option_id": "D",
+    "text": "Split tensile strength"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   14
+  ],
+  "question_text": "Two reservoirs having different water levels are connected by two long parallel pipelines of same length and same material but having diameters of 600 mm and 400 mm. Using Darcy-Weisbach equation, the ratio of flowrate of water in the bigger diameter pipe to that in the smaller diameter pipe is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.54"
+   },
+   {
+    "option_id": "B",
+    "text": "1.22"
+   },
+   {
+    "option_id": "C",
+    "text": "1.84"
+   },
+   {
+    "option_id": "D",
+    "text": "2.76"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   15
+  ],
+  "question_text": "An irrigation canal is to be designed to deliver 10 cumec to meet the peak demand of 7500 hectare of cropped area. The estimated canal losses are 50 % of the head discharge. The duty (in hectare/cumec) on capacity of this canal is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "375"
+   },
+   {
+    "option_id": "B",
+    "text": "1125"
+   },
+   {
+    "option_id": "C",
+    "text": "1500"
+   },
+   {
+    "option_id": "D",
+    "text": "1875"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   16
+  ],
+  "question_text": "The name of a person in Column 1 is to be matched with the test mentioned in Column 2.\n[IMAGE_Q_18_1]\nOption giving the CORRECT match between Column 1 and Column 2 is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(I) - (Q) ; (II) - (P) ; (III) - (S) ; (IV) - (R)"
+   },
+   {
+    "option_id": "B",
+    "text": "(I) - (R) ; (II) - (S) ; (III) - (Q) ; (IV) - (P)"
+   },
+   {
+    "option_id": "C",
+    "text": "(I) - (P) ; (II) - (Q) ; (III) - (S) ; (IV) - (R)"
+   },
+   {
+    "option_id": "D",
+    "text": "(I) - (R) ; (II) - (S) ; (III) - (P) ; (IV) - (Q)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_18_1",
+    "page": 16,
+    "regions": [
+     "p016_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 19,
+  "pages": [
+   17
+  ],
+  "question_text": "Corrections are applied to the basic length of the runway strip considering:\n(i) The elevation H (in m) of the airport above Mean Sea Level (MSL)\n(ii) Corrected air temperature T (in \\(^\\circ\\)C) with respect to the standard temperature at elevation H\n(iii) The effective gradient G (in %) along the length of the runway\nRespective correction applied to the basic length of the runway is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0.07 \\times \\dfrac{H}{300}\\); \\(0.01 \\times T\\); \\(0.10 \\times G\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(0.01 \\times \\dfrac{H}{300}\\); \\(0.07 \\times T\\); \\(0.10 \\times G\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(0.07 \\times \\dfrac{H}{300}\\); \\(0.10 \\times T\\); \\(0.01 \\times G\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(0.10 \\times \\dfrac{H}{300}\\); \\(0.07 \\times T\\); \\(0.01 \\times G\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   17
+  ],
+  "question_text": "The Whole Circle Bearing (WCB) of line AB is \\(150^\\circ\\). The length of AB is 100 m. The latitude and departure values, respectively, for this line are:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "+86.60 ; +50.00"
+   },
+   {
+    "option_id": "B",
+    "text": "+86.60 ; −50.00"
+   },
+   {
+    "option_id": "C",
+    "text": "−86.60 ; +50.00"
+   },
+   {
+    "option_id": "D",
+    "text": "−86.60 ; −50.00"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   18
+  ],
+  "question_text": "A rapid sand filter bed of depth 0.8 m has 40 % porosity during service cycle. It is recommended that during backwash operation, the expanded filter bed should have 70 % porosity. The uniform expanded depth (in m) of the filter bed during backwash is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1.0"
+   },
+   {
+    "option_id": "B",
+    "text": "1.2"
+   },
+   {
+    "option_id": "C",
+    "text": "1.4"
+   },
+   {
+    "option_id": "D",
+    "text": "1.6"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   18
+  ],
+  "question_text": "The settling velocity of inorganic particles in the sedimentation tank of a water treatment plant is governed by",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Darcy’s law"
+   },
+   {
+    "option_id": "B",
+    "text": "Stokes’ law"
+   },
+   {
+    "option_id": "C",
+    "text": "Dupuit’s law"
+   },
+   {
+    "option_id": "D",
+    "text": "Bernoulli’s law"
+   }
+  ],
+  "figures": []
+ }
+]

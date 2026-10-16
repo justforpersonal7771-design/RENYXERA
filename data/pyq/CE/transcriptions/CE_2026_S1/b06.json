@@ -1,0 +1,173 @@
+[
+ {
+  "qno": 50,
+  "pages": [
+   32
+  ],
+  "question_text": "Two identical blocks A and B are connected by a rigid rod. The blocks rest against vertical and horizontal planes, as shown in the figure. The coefficient of static friction at the vertical and horizontal planes is the same. If the sliding impends when \\(\\theta = 45^\\circ\\), the value of the coefficient of static friction is ______ (rounded off to two decimal places).\n[IMAGE_Q_50_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_50_1",
+    "page": 32,
+    "regions": [
+     "p032_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 51,
+  "pages": [
+   32
+  ],
+  "question_text": "A homogenous, linearly elastic rod AB is connected to a linearly elastic spring BC in between the fixed supports at A and C, as shown in the figure. The cross-sectional area, modulus of elasticity, and the coefficient of thermal expansion of the rod AB are 500 mm\\(^2\\), \\(60 \\times 10^3\\) MPa, and \\(12 \\times 10^{-6}\\) per \\(^\\circ\\)C, respectively. The stiffness (k) of spring BC is 2500 N/mm.\n[IMAGE_Q_51_1]\n(Figure not to scale)\nThe internal force (in kN) that will develop in the spring BC when the temperature of rod AB is increased by 100 \\(^\\circ\\)C is _________ (rounded off to one decimal place).",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_51_1",
+    "page": 32,
+    "regions": [
+     "p032_r2"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 52,
+  "pages": [
+   33
+  ],
+  "question_text": "The cross-section of a steel T-beam is shown in the figure where all dimensions are in mm.\n[IMAGE_Q_52_1]\n(Figure not to scale)\nThe plastic section modulus of the given cross-section is _________ \\(\\times 10^4\\) mm\\(^3\\) (in integer).",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_52_1",
+    "page": 33,
+    "regions": [
+     "p033_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 53,
+  "pages": [
+   33
+  ],
+  "question_text": "A fully-penetrating well of 20 cm diameter is provided in an unconfined aquifer. The height of the ground water table is 30 m from the bottom of the aquifer. After a long period of pumping at a rate of 63 m\\(^3\\)/s, the drawdown in the observation wells at 10 m and 100 m from the pumped well is 12 m and 11 m, respectively. The transmissibility (in m\\(^2\\)/s) of the aquifer is ______ (rounded off to one decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 54,
+  "pages": [
+   33
+  ],
+  "question_text": "A wide unlined channel carries sediment-free water. The depth of water is 1 m. The specific weight of water is 10 kN/m\\(^3\\). To prevent scouring, the maximum permissible tractive stress on bed is 10 N/m\\(^2\\). The maximum slope of the channel bed to prevent scouring is 1 in \\(n\\). The value of \\(n\\) is ______ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 55,
+  "pages": [
+   33
+  ],
+  "question_text": "A bridge with an expected life of 50 years is designed for a flood of 10000 m\\(^3\\)/s corresponding to the return period of 100 years. The risk associated with this design is _____________ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 56,
+  "pages": [
+   34
+  ],
+  "question_text": "An infinite slope with slope angle \\(\\beta = 22^\\circ\\) consists of soil with the following properties:\nUnit weight \\(\\gamma = 15.72\\) kN/m\\(^3\\)\nCohesion \\(c' = 12\\) kPa\nAngle of internal friction \\(\\phi' = 15^\\circ\\)\nThe critical height of the slope (in m) is ______ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 57,
+  "pages": [
+   34
+  ],
+  "question_text": "A circular pile of 600 mm diameter and 6 m length is embedded in a saturated clayey soil. Undrained cohesion of the soil is 80 kPa. Unit weight of the soil is 19.20 kN/m\\(^3\\). The adhesion factor is 0.54. If the diameter of the pile is doubled to 1200 mm (keeping the length constant), the ratio of pile capacity of 1200 mm diameter pile to that of 600 mm diameter pile is ______ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 58,
+  "pages": [
+   34
+  ],
+  "question_text": "A group of 25 circular piles is arranged in \\(5 \\times 5\\) uniform pattern in a soft clay soil with equal spacing in both the directions. These are friction piles with negligible end bearing.\nConsider the following details:\nDiameter of each pile = 1 m\nLength of each pile = 15 m\nCohesion of the soil = 20 kN/m\\(^2\\)\nUnit weight of the soil = 16 kN/m\\(^3\\)\nAdhesion factor = 0.75\nConsidering the efficiency of the pile group as unity, the optimum value of the ratio of the pile spacing to pile diameter is __________________ (rounded off to one decimal place).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 59,
+  "pages": [
+   34
+  ],
+  "question_text": "A shallow strip footing of width 2 m is embedded at a depth of 1.5 m below the ground surface in a homogeneous pure clay with an angle of internal friction zero. Consider unit weight of soil as 20 kN/m\\(^3\\) and undrained cohesion of soil as 20 kN/m\\(^2\\).\nDue to rise of ground water table from far below the founding depth to the ground surface in monsoon season, the magnitude of percentage change in the net ultimate bearing capacity as per Terzaghi’s theory is __________________ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 60,
+  "pages": [
+   35
+  ],
+  "question_text": "Traffic is moving on a 6-lane dual carriageway road. Traffic volume per direction during peak hour (08:00 am to 09:00 am) is 6000 veh/h. It is assumed that the traffic is distributed uniformly across the lanes in each direction. Just at 08:00 am, a truck goes out of order on the middle lane of one side, thus disrupting the traffic on that lane in one direction. The lane capacity under normal conditions is 2000 veh/h/ln and under queue formation it is 1600 veh/h/ln. The traffic resumes at 08:30 am on removing the truck from the middle lane. Hourly traffic volume after 09:00 am reduces to 5000 veh/h/dir.\nThe number of vehicles in the queue at 10:00 am is ______ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 61,
+  "pages": [
+   35
+  ],
+  "question_text": "In a bituminous mix, the percentage by weight of coarse aggregate, fine aggregate, filler, and bituminous binder is 58, 25, 12, and 5, respectively. The corresponding specific gravity of these materials is 2.68, 2.45, 2.42, and 1.15. The bulk specific gravity of the mix is 2.2.\nThe Voids Filled with Bitumen (VFB, in percentage) is __________ (rounded off to the nearest integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 62,
+  "pages": [
+   35
+  ],
+  "question_text": "The following consecutive readings (in m) were taken with a dumpy level and a levelling staff at a common interval of 20 m:\n0.385; 1.030; 1.925; 2.825; 3.730; 4.850; 1.045; 2.005; 3.330; 4.580\nThe dumpy level was shifted after taking the sixth reading.\nThe gradient (in %) of the ground between the first and the last location of the reading is ______ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 63,
+  "pages": [
+   35
+  ],
+  "question_text": "An Activated Sludge Process (ASP) has an inlet wastewater flowrate of 20000 m\\(^3\\)/day with a Biochemical Oxygen Demand (BOD) concentration of 250 mg/l. It produces treated wastewater containing 20 mg/l BOD. The aeration tank has a working volume of 6000 m\\(^3\\) and a biomass concentration of 3000 mg/l. Biological Sludge Residence Time (BSRT) of the system is 6 days. The influent wastewater and the treated effluent from the system have negligible concentrations of biomass. The sludge recycle line from the bottom of the Secondary Sedimentation Tank (SST) to the inlet of the aeration tank has a flowrate of 6000 m\\(^3\\)/day.\nTo maintain equilibrium, the flowrate (in m\\(^3\\)/day) of sludge that is to be wasted from the system is ______ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 64,
+  "pages": [
+   36
+  ],
+  "question_text": "The intensity-duration relationship for a rainfall on a rectangular plot ABCD of area 7 ha (1 ha = \\(10^4\\) m\\(^2\\)) can be modelled by the following equation:\n\\[I = \\frac{25}{(t + 10)}\\]\nwhere \\(I\\) is rainfall intensity (in cm/h), and \\(t\\) is the duration (in minutes) of rainfall. The average runoff coefficient over the area is 0.60. The time of entry (in minutes) to the outfall from the corners A, B, C, and D is 10, 20, 15 and 25, respectively.\nThe design flowrate (in m\\(^3\\)/h) of the storm-sewer at the outfall is _____ (in integer).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 65,
+  "pages": [
+   36
+  ],
+  "question_text": "The maximum demand at a water purification plant has been estimated as 12 million litres per day. For the raw supplies, a rectangular sedimentation tank is to be designed with mechanical sludge removal arrangement. Consider depth of the tank as 4 m, detention period as 6 hours, and velocity of flow as 0.003 m/s.\nThe width (in m) of the detention tank is _________ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ }
+]

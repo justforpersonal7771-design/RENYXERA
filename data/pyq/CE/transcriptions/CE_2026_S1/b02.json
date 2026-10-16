@@ -1,0 +1,165 @@
+[
+ {
+  "qno": 6,
+  "pages": [
+   6
+  ],
+  "question_text": "Match the words in Column I with their synonyms in Column II.\n[IMAGE_Q_06_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(i)-(q); (ii)-(p); (iii)-(s); (iv)-(r)"
+   },
+   {
+    "option_id": "B",
+    "text": "(i)-(q); (ii)-(s); (iii)-(r); (iv)-(p)"
+   },
+   {
+    "option_id": "C",
+    "text": "(i)-(s); (ii)-(p); (iii)-(q); (iv)-(r)"
+   },
+   {
+    "option_id": "D",
+    "text": "(i)-(r); (ii)-(s); (iii)-(p); (iv)-(q)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_06_1",
+    "page": 6,
+    "regions": [
+     "p006_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 7,
+  "pages": [
+   7
+  ],
+  "question_text": "In the given figure, \\(\\overline{PQ}\\) is the diameter of a circle with center O. Two points R and S are chosen on the circle such that \\(\\angle ROS = 80^\\circ\\). When \\(\\overline{PR}\\) and \\(\\overline{QS}\\) are extended, they meet at T. The value of \\(\\angle RTS\\) is _________________\n[IMAGE_Q_07_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(40^\\circ\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(50^\\circ\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(60^\\circ\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(80^\\circ\\)"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_07_1",
+    "page": 7,
+    "regions": [
+     "p007_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 8,
+  "pages": [
+   8
+  ],
+  "question_text": "Based on the relationship between each polygon and the number inside it, the value of ‘X’ is ______\n[IMAGE_Q_08_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "720"
+   },
+   {
+    "option_id": "B",
+    "text": "596"
+   },
+   {
+    "option_id": "C",
+    "text": "24"
+   },
+   {
+    "option_id": "D",
+    "text": "240"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 8,
+    "regions": [
+     "p008_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   9
+  ],
+  "question_text": "Consider a linear arrangement of seven bulbs, each of which can be in the ON or OFF states. The initial configuration of the bulbs is shown in the figure. In every Step, the states of the bulbs are changed based on the following rules:\n• Any OFF bulb with exactly one ON neighbor at the end of the previous Step is turned ON.\n• Any ON bulb with both neighbors ON at the end of the previous Step is turned OFF.\n• The state of any bulb not meeting the conditions above is left unchanged.\nThe state of bulbs at the end of Step 1 and Step 2 are also shown in the figure.\nThe number of bulbs which are ON at the end of Step 8 is ______\n[IMAGE_Q_09_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "5"
+   },
+   {
+    "option_id": "B",
+    "text": "4"
+   },
+   {
+    "option_id": "C",
+    "text": "3"
+   },
+   {
+    "option_id": "D",
+    "text": "0"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_09_1",
+    "page": 9,
+    "regions": [
+     "p009_r1"
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 10,
+  "pages": [
+   10
+  ],
+  "question_text": "P and Q are two positive integers such that \\(P^2 = Q^2 + 13\\). The product of the numbers P and Q is _________",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "13"
+   },
+   {
+    "option_id": "B",
+    "text": "26"
+   },
+   {
+    "option_id": "C",
+    "text": "39"
+   },
+   {
+    "option_id": "D",
+    "text": "42"
+   }
+  ],
+  "figures": []
+ }
+]

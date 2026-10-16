@@ -1,0 +1,1944 @@
+[
+  {
+    "exam_metadata": {
+      "year-shift": "2026-S1"
+    },
+    "questions": [
+      {
+        "question_no": 1,
+        "question_id": "GATE_CE_2026_S1_Q1",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic English grammar",
+        "difficulty": "Easy",
+        "question_text": "‘The shopkeeper sells lemons.’\nIn this sentence, the word ‘lemons’ is the ________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "object",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "subject",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "predicate",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "verb",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 2,
+        "question_id": "GATE_CE_2026_S1_Q2",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Transformation of shapes",
+        "difficulty": "Medium",
+        "question_text": "The figure below is supposed to show three non-overlapping shapes – one oval and two triangles. Which one of the following figures P, Q, R, or S fits the missing portion indicated by ‘?’ and completes the oval and the two triangles?\n[IMAGE_Q_02_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_02_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "P",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Q",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "R",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "S",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 3,
+        "question_id": "GATE_CE_2026_S1_Q3",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Easy",
+        "question_text": "At how many points will the curves \\(y = x^2\\) and \\(y = -x^2 - 2x - 1\\) intersect in the real \\((x, y)\\) plane?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "3",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 4,
+        "question_id": "GATE_CE_2026_S1_Q4",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Reading and comprehension",
+        "difficulty": "Easy",
+        "question_text": "‘If Anish had scored hundred runs in today’s match, he would have been made the captain of his team. He would have then become the youngest captain in his team’s history. Unfortunately, he got out without scoring any runs. Hence, there won’t be any change in the captaincy for now.’\nBased on the paragraph above, which one of the following statements is true?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Anish made hundred runs but was denied captaincy.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Anish was the captain of his team before the game today.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "The current captain is older than Anish.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Anish is the youngest player in his team.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 5,
+        "question_id": "GATE_CE_2026_S1_Q5",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Transformation of shapes",
+        "difficulty": "Easy",
+        "question_text": "Which one of the following figures P, Q, R, or S, correctly shows the \\(45^\\circ\\) clockwise-rotated version of figure (I)?\n[IMAGE_Q_05_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_05_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "P",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Q",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "R",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "S",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 6,
+        "question_id": "GATE_CE_2026_S1_Q6",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic vocabulary",
+        "difficulty": "Easy",
+        "question_text": "Match the words in Column I with their synonyms in Column II.\n[IMAGE_Q_06_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_06_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(i)-(q); (ii)-(p); (iii)-(s); (iv)-(r)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(i)-(q); (ii)-(s); (iii)-(r); (iv)-(p)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "(i)-(s); (ii)-(p); (iii)-(q); (iv)-(r)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "(i)-(r); (ii)-(s); (iii)-(p); (iv)-(q)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 7,
+        "question_id": "GATE_CE_2026_S1_Q7",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Medium",
+        "question_text": "In the given figure, \\(\\overline{PQ}\\) is the diameter of a circle with center O. Two points R and S are chosen on the circle such that \\(\\angle ROS = 80^\\circ\\). When \\(\\overline{PR}\\) and \\(\\overline{QS}\\) are extended, they meet at T. The value of \\(\\angle RTS\\) is _________________\n[IMAGE_Q_07_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_07_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(40^\\circ\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(50^\\circ\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(60^\\circ\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(80^\\circ\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 8,
+        "question_id": "GATE_CE_2026_S1_Q8",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Analogy",
+        "difficulty": "Medium",
+        "question_text": "Based on the relationship between each polygon and the number inside it, the value of ‘X’ is ______\n[IMAGE_Q_08_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_08_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "720",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "596",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "24",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "240",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 9,
+        "question_id": "GATE_CE_2026_S1_Q9",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Medium",
+        "question_text": "Consider a linear arrangement of seven bulbs, each of which can be in the ON or OFF states. The initial configuration of the bulbs is shown in the figure. In every Step, the states of the bulbs are changed based on the following rules:\n• Any OFF bulb with exactly one ON neighbor at the end of the previous Step is turned ON.\n• Any ON bulb with both neighbors ON at the end of the previous Step is turned OFF.\n• The state of any bulb not meeting the conditions above is left unchanged.\nThe state of bulbs at the end of Step 1 and Step 2 are also shown in the figure.\nThe number of bulbs which are ON at the end of Step 8 is ______\n[IMAGE_Q_09_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_09_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "4",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "3",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 10,
+        "question_id": "GATE_CE_2026_S1_Q10",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Easy",
+        "question_text": "P and Q are two positive integers such that \\(P^2 = Q^2 + 13\\). The product of the numbers P and Q is _________",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "13",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "26",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "39",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "42",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 11,
+        "question_id": "GATE_CE_2026_S1_Q11",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "eigenvalues and eigenvectors",
+        "difficulty": "Easy",
+        "question_text": "Matrix P is given as\n\\[P = \\begin{bmatrix} 1 & 0 & 1 \\\\ 0 & 1 & 0 \\\\ 1 & 0 & 1 \\end{bmatrix}\\]\nThe TRUE option is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Trace of P is equal to the sum of the Eigen values of P.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(P^{T}P\\) is an identity matrix.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "P is a skew-symmetric matrix.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Absolute magnitude of each Eigen value is 1.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 12,
+        "question_id": "GATE_CE_2026_S1_Q12",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "Systems of linear equations",
+        "difficulty": "Medium",
+        "question_text": "Given:\n\\[\\begin{bmatrix} 1 & 1 & 1 \\\\ 1 & 0 & 2 \\end{bmatrix} \\begin{Bmatrix} x_1 \\\\ x_2 \\\\ x_3 \\end{Bmatrix} = \\begin{Bmatrix} 0 \\\\ 0 \\end{Bmatrix}\\]\nThe above system of equations represents a",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "plane",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "line",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "volume",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "point",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 13,
+        "question_id": "GATE_CE_2026_S1_Q13",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple stress and strain relationships",
+        "difficulty": "Easy",
+        "question_text": "A thin-walled spherical gas balloon of radius \\(R\\) and wall thickness \\(t\\) (\\(t << R\\)) is subjected to an internal (gauge) pressure \\(p\\). The maximum tensile and shear stresses in the balloon wall are, respectively:",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Zero and \\(pR/2t\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(pR/2t\\) and Zero",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(pR/2t\\) and \\(pR/4t\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(pR/4t\\) and Zero",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 14,
+        "question_id": "GATE_CE_2026_S1_Q14",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple bending theory, flexural and shear stresses, shear centre",
+        "difficulty": "Easy",
+        "question_text": "Black dot shown in the figure qualitatively represents the shear centre of the angle section. The option which represents the position of the shear centre is:",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_14_A",
+          "IMAGE_Q_14_B",
+          "IMAGE_Q_14_C",
+          "IMAGE_Q_14_D"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "[IMAGE_Q_14_A]",
+            "is_correct": false,
+            "has_image": true
+          },
+          {
+            "option_id": "B",
+            "text": "[IMAGE_Q_14_B]",
+            "is_correct": false,
+            "has_image": true
+          },
+          {
+            "option_id": "C",
+            "text": "[IMAGE_Q_14_C]",
+            "is_correct": false,
+            "has_image": true
+          },
+          {
+            "option_id": "D",
+            "text": "[IMAGE_Q_14_D]",
+            "is_correct": true,
+            "has_image": true
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 15,
+        "question_id": "GATE_CE_2026_S1_Q15",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Construction Materials",
+        "topic": "Concrete – Constituents, mix design, short-term and long-term properties",
+        "difficulty": "Easy",
+        "question_text": "Which one of the following is utilized to determine the long-term deformation of concrete under sustained loading?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Creep",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Shrinkage",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Modulus of rupture",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Split tensile strength",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 16,
+        "question_id": "GATE_CE_2026_S1_Q16",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Fluid Mechanics",
+        "topic": "Flow in pipes, pipe networks",
+        "difficulty": "Medium",
+        "question_text": "Two reservoirs having different water levels are connected by two long parallel pipelines of same length and same material but having diameters of 600 mm and 400 mm. Using Darcy-Weisbach equation, the ratio of flowrate of water in the bigger diameter pipe to that in the smaller diameter pipe is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0.54",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1.22",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1.84",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "2.76",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 17,
+        "question_id": "GATE_CE_2026_S1_Q17",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Irrigation",
+        "topic": "Crop water requirements – Duty, delta, evapo-transpiration",
+        "difficulty": "Medium",
+        "question_text": "An irrigation canal is to be designed to deliver 10 cumec to meet the peak demand of 7500 hectare of cropped area. The estimated canal losses are 50 % of the head discharge. The duty (in hectare/cumec) on capacity of this canal is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "375",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1125",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1500",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "1875",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 18,
+        "question_id": "GATE_CE_2026_S1_Q18",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Unified and Indian standard soil classification system",
+        "difficulty": "Medium",
+        "question_text": "The name of a person in Column 1 is to be matched with the test mentioned in Column 2.\n[IMAGE_Q_18_1]\nOption giving the CORRECT match between Column 1 and Column 2 is:",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_18_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(I) - (Q) ; (II) - (P) ; (III) - (S) ; (IV) - (R)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(I) - (R) ; (II) - (S) ; (III) - (Q) ; (IV) - (P)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "(I) - (P) ; (II) - (Q) ; (III) - (S) ; (IV) - (R)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "(I) - (R) ; (II) - (S) ; (III) - (P) ; (IV) - (Q)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 19,
+        "question_id": "GATE_CE_2026_S1_Q19",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Transportation Infrastructure",
+        "topic": "Concept of airport runway length, calculations and corrections; taxiway and exit taxiway design",
+        "difficulty": "Medium",
+        "question_text": "Corrections are applied to the basic length of the runway strip considering:\n(i) The elevation H (in m) of the airport above Mean Sea Level (MSL)\n(ii) Corrected air temperature T (in \\(^\\circ\\)C) with respect to the standard temperature at elevation H\n(iii) The effective gradient G (in %) along the length of the runway\nRespective correction applied to the basic length of the runway is:",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(0.07 \\times \\dfrac{H}{300}\\); \\(0.01 \\times T\\); \\(0.10 \\times G\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(0.01 \\times \\dfrac{H}{300}\\); \\(0.07 \\times T\\); \\(0.10 \\times G\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(0.07 \\times \\dfrac{H}{300}\\); \\(0.10 \\times T\\); \\(0.01 \\times G\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(0.10 \\times \\dfrac{H}{300}\\); \\(0.07 \\times T\\); \\(0.01 \\times G\\)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": "-1000000000 to 1000000000"
+      },
+      {
+        "question_no": 20,
+        "question_id": "GATE_CE_2026_S1_Q20",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Principles of topographic, cadastral, engineering",
+        "difficulty": "Easy",
+        "question_text": "The Whole Circle Bearing (WCB) of line AB is \\(150^\\circ\\). The length of AB is 100 m. The latitude and departure values, respectively, for this line are:",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "+86.60 ; +50.00",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "+86.60 ; −50.00",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "−86.60 ; +50.00",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "−86.60 ; −50.00",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 21,
+        "question_id": "GATE_CE_2026_S1_Q21",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Drinking water treatment",
+        "difficulty": "Medium",
+        "question_text": "A rapid sand filter bed of depth 0.8 m has 40 % porosity during service cycle. It is recommended that during backwash operation, the expanded filter bed should have 70 % porosity. The uniform expanded depth (in m) of the filter bed during backwash is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1.2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1.4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "1.6",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 22,
+        "question_id": "GATE_CE_2026_S1_Q22",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Easy",
+        "question_text": "The settling velocity of inorganic particles in the sedimentation tank of a water treatment plant is governed by",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Darcy’s law",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Stokes’ law",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Dupuit’s law",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Bernoulli’s law",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 23,
+        "question_id": "GATE_CE_2026_S1_Q23",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Medium",
+        "question_text": "Gradually Varied Flow (GVF) profiles in open channels given in Column 1 are to be matched with the water surface slopes in Column 2 in the table below.\n[IMAGE_Q_23_1]\nWhich of the following options is/are NOT correct?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_23_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(P) - (I) ; (Q) - (II) ; (R) - (I)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(P) - (I) ; (Q) - (II) ; (R) - (III)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "(P) - (II) ; (Q) - (I) ; (R) - (I)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "(P) - (I) ; (Q) - (III) ; (R) - (II)",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 24,
+        "question_id": "GATE_CE_2026_S1_Q24",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Transportation Infrastructure",
+        "topic": "Geometric design of railway Track – Speed and cant",
+        "difficulty": "Medium",
+        "question_text": "Cant \\(C\\) on a Broad Gauge railway track is calculated for an equilibrium speed \\(V\\) (in km/h), dynamic gauge \\(G\\) (in mm) and radius of curve \\(R\\) (in m) using formula/formulae:",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(C = \\dfrac{GV^2}{127\\,R}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(C = \\dfrac{13.76\\,V^2}{R}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(C = \\dfrac{13.20\\,V^2}{R}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(C = \\dfrac{8.33\\,V^2}{R}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 25,
+        "question_id": "GATE_CE_2026_S1_Q25",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Sewerage system design, quantity of domestic wastewater, primary, secondary and tertiary treatment",
+        "difficulty": "Medium",
+        "question_text": "Which of the following components is/are NOT removed in the secondary treatment of sewage?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Suspended settleable organic solids",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Colloids including dissolved organic matter",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Pathogens",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Fat and grease",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 26,
+        "question_id": "GATE_CE_2026_S1_Q26",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Probability and Statistics",
+        "topic": "Conditional probability",
+        "difficulty": "Medium",
+        "question_text": "Bag I contains 4 white and 6 black balls.\nBag II contains 4 white and 3 black balls.\nOne ball is drawn at random from any one of the two bags and it is found to be a black ball. The probability that the black ball was drawn from Bag I is ______ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.5 to 0.66"
+      },
+      {
+        "question_no": 27,
+        "question_id": "GATE_CE_2026_S1_Q27",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "Matrix algebra",
+        "difficulty": "Medium",
+        "question_text": "A matrix is given as:\n\\[\\begin{bmatrix} 9 & 15 \\\\ 15 & 50 \\end{bmatrix}\\]\nBy performing Cholesky decomposition, \\(|l_{22}|\\) of the lower triangular matrix is ______ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "5 to 5"
+      },
+      {
+        "question_no": 28,
+        "question_id": "GATE_CE_2026_S1_Q28",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "Systems of linear equations",
+        "difficulty": "Easy",
+        "question_text": "It is given that \\(x\\) and \\(y\\) are integers in the following equation:\n\\[(x + y - 7)^2 + (y + 3x - 13)^2 = 0\\]\nThe value of \\((x^3 + y^3)\\) is ________ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "91 to 91"
+      },
+      {
+        "question_no": 29,
+        "question_id": "GATE_CE_2026_S1_Q29",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Concrete Structures",
+        "topic": "Design and detailing of beams, slabs, columns, and isolated footings",
+        "difficulty": "Medium",
+        "question_text": "The required centre-to-centre spacing of 10 mm diameter bars is 150 mm to resist the design moment in a concrete slab. Instead of 10 mm diameter bars, if 12 mm diameter bars of the same grade are used, the required centre-to-centre spacing (in mm) to resist the same design moment becomes ________ (rounded off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "214 to 218"
+      },
+      {
+        "question_no": 30,
+        "question_id": "GATE_CE_2026_S1_Q30",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Steel Structures",
+        "topic": "Connections – simple and eccentric, beam-column connections",
+        "difficulty": "Easy",
+        "question_text": "Two steel plates are to be connected together by a 5 mm fillet weld of length 150 mm to transfer a design load. If the size of the fillet weld used to connect the same two plates is changed to 6 mm, the weld length (in mm) needed for transferring the same design load is ________ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "120 to 130"
+      },
+      {
+        "question_no": 31,
+        "question_id": "GATE_CE_2026_S1_Q31",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Permeability – one dimensional flow, Seepage through soils – two-dimensional flow, flow nets, uplift pressure, piping, capillarity, seepage force",
+        "difficulty": "Medium",
+        "question_text": "For a liquid, the permeability of a sandy soil having a void ratio of 0.60 was determined as 0.14 cm/s. Considering the same liquid and by using Taylor’s equation, the permeability (in cm/s) of this soil corresponding to the void ratio of 0.80 is _____ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.28 to 0.32"
+      },
+      {
+        "question_no": 32,
+        "question_id": "GATE_CE_2026_S1_Q32",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Sub-surface investigations – Drilling bore holes, sampling, plate load test, standard penetration and cone penetration tests",
+        "difficulty": "Medium",
+        "question_text": "To obtain undisturbed clay soil sample, an Area Ratio of 10 % needs to be achieved for a thin walled sampling tube. If the outer diameter of the tube is 50.8 mm, the inner diameter (in mm) is __________________ (rounded off to one decimal place).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "48.2 to 48.6"
+      },
+      {
+        "question_no": 33,
+        "question_id": "GATE_CE_2026_S1_Q33",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Traffic studies on flow and speed, peak hour factor, accident study, statistical analysis of traffic data",
+        "difficulty": "Medium",
+        "question_text": "The travel times of three vehicles on a 2 km stretch of road are 4, 5, and 8 minutes. Assuming the speed of each vehicle to be constant in this stretch, the Space Mean Speed (in km/h) of the vehicles is ___________ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "20 to 21.9"
+      },
+      {
+        "question_no": 34,
+        "question_id": "GATE_CE_2026_S1_Q34",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Distance and angle measurement – Levelling and trigonometric levelling",
+        "difficulty": "Medium",
+        "question_text": "A 30 m long tape is standardized at \\(25^\\circ\\)C. It was used to measure the length of a line which came out to be 200 m. The temperature during the measurement was \\(35^\\circ\\)C. The coefficient of expansion of the tape was \\(11 \\times 10^{-6}\\) per \\(^\\circ\\)C. The correction in the measured length (in mm) due to change in temperature is ______ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "22 to 22"
+      },
+      {
+        "question_no": 35,
+        "question_id": "GATE_CE_2026_S1_Q35",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Distance and angle measurement – Levelling and trigonometric levelling",
+        "difficulty": "Easy",
+        "question_text": "The height of the plane of collimation of a levelling instrument is 100.000 m from a datum. The levelling instrument measures a Back Sight of 1.500 m on a vertically held staff at a ground point P. The reduced level (in m) of the ground point P with respect to the datum is ________________ (rounded off to three decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "98.5 to 98.5"
+      },
+      {
+        "question_no": 36,
+        "question_id": "GATE_CE_2026_S1_Q36",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Evaluation of definite and indefinite integrals, application of definite integral to obtain area and volume",
+        "difficulty": "Hard",
+        "question_text": "Let \\(f(x)\\) be a continuous function defined in \\([0,2] \\rightarrow \\mathbb{R}\\) and satisfying the equation \\(\\int_0^2 f(x)[x - f(x)]\\,dx = \\dfrac{2}{3}\\).\nThe value of \\(f(1)\\) is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\dfrac{1}{2}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 37,
+        "question_id": "GATE_CE_2026_S1_Q37",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Ordinary Differential Equation (ODE)",
+        "topic": "Euler-Cauchy equations",
+        "difficulty": "Medium",
+        "question_text": "An ordinary differential equation is given below.\n\\[x^2 \\frac{d^2y}{dx^2} = 6y\\]\nConsidering \\(a\\) and \\(b\\) as arbitrary constants, the general solution of the equation is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(y(x) = ax^3 + \\dfrac{b}{x^2}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(y(x) = ax^2 + \\dfrac{b}{x^3}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(y(x) = ax^2 + b \\ln x\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(y(x) = ax^3 + b \\ln x\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 38,
+        "question_id": "GATE_CE_2026_S1_Q38",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Structural Analysis",
+        "topic": "Stiffness matrix method",
+        "difficulty": "Medium",
+        "question_text": "A plane truss consists of two linearly elastic, homogeneous, identical members, namely PQ and QR. Both members have length (\\(L\\)), cross-sectional area (\\(A\\)), and modulus of elasticity (\\(E\\)). The members are inclined at \\(45^\\circ\\) as shown in the figure. The truss has hinge supports at P and R. The translational degrees-of-freedom (\\(u\\) and \\(v\\)) are shown at joint Q.\n[IMAGE_Q_38_1]\n(Figure not to scale)\nAfter application of the boundary conditions, the stiffness matrix of the truss becomes:",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_38_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & 1 \\\\ 1 & 1 \\end{bmatrix}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & 0.5 \\\\ 0.5 & 1 \\end{bmatrix}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & 0 \\\\ 0 & 1 \\end{bmatrix}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\dfrac{AE}{L}\\begin{bmatrix} 1 & -1 \\\\ -1 & 1 \\end{bmatrix}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 39,
+        "question_id": "GATE_CE_2026_S1_Q39",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Bending moment and shear force in statically determinate beams",
+        "difficulty": "Medium",
+        "question_text": "The plane frame has a hinge and a roller support, and is loaded as shown in the figure. Both the columns have same height.\n[IMAGE_Q_39_1]\n(Figure not to scale)\nWhat is the absolute value of the maximum bending moment (in kN-m) in the frame?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_39_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "165",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "150",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "240",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "195",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 40,
+        "question_id": "GATE_CE_2026_S1_Q40",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Medium",
+        "question_text": "For a hydraulic jump formed in a rectangular horizontal channel, the sequent depth ratio is 2. The Froude number of supercritical stream is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\sqrt{3}\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\sqrt{5}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\sqrt{6}\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\sqrt{8}\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 41,
+        "question_id": "GATE_CE_2026_S1_Q41",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Fluid Mechanics",
+        "topic": "Potential flow, Laminar and turbulent flow",
+        "difficulty": "Medium",
+        "question_text": "In a laminar flow of a Newtonian fluid through a circular pipe of radius 5 cm, the maximum velocity is found to be 2 m/s. The velocity (in m/s) at a radial distance of 2.50 cm from the axis of the pipe is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1.00",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1.25",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1.50",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "1.75",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 42,
+        "question_id": "GATE_CE_2026_S1_Q42",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Microscopic and macroscopic parameters of traffic flow, fundamental relationships",
+        "difficulty": "Hard",
+        "question_text": "A road is divided into four sections having varying widths as shown in the figure. Section-2 (S2) represents a capacity constrained condition with respect to the traffic flow passing through Section-1 (S1). Section-3 (S3) and Section-4 (S4) do not face any such capacity constraint with respect to the flow. A flow-density relationship for unconstrained and constrained flow conditions is shown in the figure.\n[IMAGE_Q_42_1]\nIf Section-1 observes density D2, the option representing the correct state of density in Sections 2, 3 and 4 is:",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_42_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "S2 – D4 ; S3 – D3 ; S4 – D2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "S2 – D3 ; S3 – D2 ; S4 – D1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "S2 – D3 ; S3 – D4 ; S4 – D2",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "S2 – D4 ; S3 – D3 ; S4 – D1",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 43,
+        "question_id": "GATE_CE_2026_S1_Q43",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Distance and angle measurement – Levelling and trigonometric levelling",
+        "difficulty": "Medium",
+        "question_text": "Locations P and Q are separated by a wide valley. The difference in levels of locations P and Q measured by a levelling instrument stationed near P is 3.0 m. The same instrument stationed near Q measures the difference in levels of locations P and Q as −1.0 m. Assume that the atmospheric refraction is same during the measurements. The true difference in levels (in m) of locations P and Q is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1.0",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1.5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "2.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "4.0",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 44,
+        "question_id": "GATE_CE_2026_S1_Q44",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Sewerage system design, quantity of domestic wastewater, primary, secondary and tertiary treatment",
+        "difficulty": "Medium",
+        "question_text": "The average sewage from a city is 90 million litres per day and the average 5-day Biochemical Oxygen Demand (BOD\\(_5\\)) is 300 mg/l. Average standard BOD\\(_5\\) of the domestic sewage is 0.08 kg/day/person. The population equivalent of the city is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "337500",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "216000",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "270000",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "168750",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 45,
+        "question_id": "GATE_CE_2026_S1_Q45",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Concrete Structures",
+        "topic": "Working stress and limit state design concepts",
+        "difficulty": "Medium",
+        "question_text": "Select ALL CORRECT option(s) which can be considered to check whether the flexural stresses in a prestressed concrete beam are within the allowable stresses at the transfer and the service stages.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Limiting zone for prestressing",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Magnel’s graph",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Hoyer effect",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Load balancing method",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 46,
+        "question_id": "GATE_CE_2026_S1_Q46",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Earth pressure theories – Rankine and Coulomb",
+        "difficulty": "Medium",
+        "question_text": "As per the Rankine’s earth pressure theory, which of the following statements is/are FALSE?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "For the active earth pressure, the inclination of failure plane is \\((45^\\circ + \\phi/2)\\) with respect to the major principal plane.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "For the active earth pressure, the inclination of failure plane is \\((45^\\circ - \\phi/2)\\) with respect to the major principal plane.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "For the passive earth pressure, the inclination of failure plane is \\((45^\\circ + \\phi/2)\\) with respect to the major principal plane.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "For the passive earth pressure, the inclination of failure plane is \\((45^\\circ - \\phi/2)\\) with respect to the major principal plane.",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 47,
+        "question_id": "GATE_CE_2026_S1_Q47",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Transportation Infrastructure",
+        "topic": "Geometric design of roadways using IRC codes – cross-sectional elements, sight distances, classifications of roadways, design vehicle, horizontal and vertical alignments",
+        "difficulty": "Medium",
+        "question_text": "Which of the following statements is/are TRUE in the context of the geometric design of highways?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The coefficient of friction used for the design of horizontal curves is lower than the coefficient of friction used in the computation of the sight distances.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Centrifugal force at horizontal curve is counteracted by raising the middle of the pavement with respect to the edges.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Grade compensation is achieved by increasing the gradient of the horizontal curve.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Under identical conditions, the design length of the summit curve of a road having unidirectional flow will be greater than that of the same road having bidirectional flow.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 48,
+        "question_id": "GATE_CE_2026_S1_Q48",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Numerical Methods",
+        "topic": "Numerical solutions of linear and nonlinear algebraic equations",
+        "difficulty": "Easy",
+        "question_text": "Starting with the first approximation as \\(x = 0.5\\), the second approximation for the root of the following function by the Newton-Raphson method is ______ (rounded off to two decimal places).\n\\[f(x) = e^{-x} - x\\]",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.55 to 0.58"
+      },
+      {
+        "question_no": 49,
+        "question_id": "GATE_CE_2026_S1_Q49",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Numerical Methods",
+        "topic": "Newton’s and Lagrange polynomials",
+        "difficulty": "Medium",
+        "question_text": "Values of \\(y\\) for different values of \\(x\\) are tabulated below.\n[IMAGE_Q_49_1]\nIf a second-degree interpolating polynomial \\(P_2(x)\\) is used to represent \\(y\\), the value of \\(P_2(0)\\) is ___________ (rounded off to the nearest integer).",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_49_1"
+        ],
+        "options": [],
+        "nat_answer_range": "2 to 2"
+      },
+      {
+        "question_no": 50,
+        "question_id": "GATE_CE_2026_S1_Q50",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Engineering Mechanics",
+        "topic": "System of forces, free-body diagrams, equilibrium equations",
+        "difficulty": "Medium",
+        "question_text": "Two identical blocks A and B are connected by a rigid rod. The blocks rest against vertical and horizontal planes, as shown in the figure. The coefficient of static friction at the vertical and horizontal planes is the same. If the sliding impends when \\(\\theta = 45^\\circ\\), the value of the coefficient of static friction is ______ (rounded off to two decimal places).\n[IMAGE_Q_50_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_50_1"
+        ],
+        "options": [],
+        "nat_answer_range": "0.39 to 0.44"
+      },
+      {
+        "question_no": 51,
+        "question_id": "GATE_CE_2026_S1_Q51",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple stress and strain relationships",
+        "difficulty": "Medium",
+        "question_text": "A homogenous, linearly elastic rod AB is connected to a linearly elastic spring BC in between the fixed supports at A and C, as shown in the figure. The cross-sectional area, modulus of elasticity, and the coefficient of thermal expansion of the rod AB are 500 mm\\(^2\\), \\(60 \\times 10^3\\) MPa, and \\(12 \\times 10^{-6}\\) per \\(^\\circ\\)C, respectively. The stiffness (k) of spring BC is 2500 N/mm.\n[IMAGE_Q_51_1]\n(Figure not to scale)\nThe internal force (in kN) that will develop in the spring BC when the temperature of rod AB is increased by 100 \\(^\\circ\\)C is _________ (rounded off to one decimal place).",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_51_1"
+        ],
+        "options": [],
+        "nat_answer_range": "7 to 7.4"
+      },
+      {
+        "question_no": 52,
+        "question_id": "GATE_CE_2026_S1_Q52",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Steel Structures",
+        "topic": "Concept of plastic analysis – beams and portal frames",
+        "difficulty": "Medium",
+        "question_text": "The cross-section of a steel T-beam is shown in the figure where all dimensions are in mm.\n[IMAGE_Q_52_1]\n(Figure not to scale)\nThe plastic section modulus of the given cross-section is _________ \\(\\times 10^4\\) mm\\(^3\\) (in integer).",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_52_1"
+        ],
+        "options": [],
+        "nat_answer_range": "12 to 12"
+      },
+      {
+        "question_no": 53,
+        "question_id": "GATE_CE_2026_S1_Q53",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydrology",
+        "topic": "Streamflow measurements, unit hydrographs, hydrograph analysis, reservoir capacity, flood estimation and routing, surface runoff models, ground water hydrology – steady state well hydraulics and aquifers",
+        "difficulty": "Medium",
+        "question_text": "A fully-penetrating well of 20 cm diameter is provided in an unconfined aquifer. The height of the ground water table is 30 m from the bottom of the aquifer. After a long period of pumping at a rate of 63 m\\(^3\\)/s, the drawdown in the observation wells at 10 m and 100 m from the pumped well is 12 m and 11 m, respectively. The transmissibility (in m\\(^2\\)/s) of the aquifer is ______ (rounded off to one decimal place).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "35 to 40"
+      },
+      {
+        "question_no": 54,
+        "question_id": "GATE_CE_2026_S1_Q54",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Easy",
+        "question_text": "A wide unlined channel carries sediment-free water. The depth of water is 1 m. The specific weight of water is 10 kN/m\\(^3\\). To prevent scouring, the maximum permissible tractive stress on bed is 10 N/m\\(^2\\). The maximum slope of the channel bed to prevent scouring is 1 in \\(n\\). The value of \\(n\\) is ______ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1000 to 1000"
+      },
+      {
+        "question_no": 55,
+        "question_id": "GATE_CE_2026_S1_Q55",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydrology",
+        "topic": "Streamflow measurements, unit hydrographs, hydrograph analysis, reservoir capacity, flood estimation and routing, surface runoff models, ground water hydrology – steady state well hydraulics and aquifers",
+        "difficulty": "Easy",
+        "question_text": "A bridge with an expected life of 50 years is designed for a flood of 10000 m\\(^3\\)/s corresponding to the return period of 100 years. The risk associated with this design is _____________ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.38 to 0.41"
+      },
+      {
+        "question_no": 56,
+        "question_id": "GATE_CE_2026_S1_Q56",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Stability of slopes – Finite and infinite slopes, Bishop’s method",
+        "difficulty": "Medium",
+        "question_text": "An infinite slope with slope angle \\(\\beta = 22^\\circ\\) consists of soil with the following properties:\nUnit weight \\(\\gamma = 15.72\\) kN/m\\(^3\\)\nCohesion \\(c' = 12\\) kPa\nAngle of internal friction \\(\\phi' = 15^\\circ\\)\nThe critical height of the slope (in m) is ______ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "6.4 to 6.8"
+      },
+      {
+        "question_no": 57,
+        "question_id": "GATE_CE_2026_S1_Q57",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Deep foundations – static formulae, axial load capacity of piles in sands and clays, pile load test, pile under lateral loading, pile group efficiency, negative skin friction",
+        "difficulty": "Medium",
+        "question_text": "A circular pile of 600 mm diameter and 6 m length is embedded in a saturated clayey soil. Undrained cohesion of the soil is 80 kPa. Unit weight of the soil is 19.20 kN/m\\(^3\\). The adhesion factor is 0.54. If the diameter of the pile is doubled to 1200 mm (keeping the length constant), the ratio of pile capacity of 1200 mm diameter pile to that of 600 mm diameter pile is ______ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "2.5 to 2.65"
+      },
+      {
+        "question_no": 58,
+        "question_id": "GATE_CE_2026_S1_Q58",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Deep foundations – static formulae, axial load capacity of piles in sands and clays, pile load test, pile under lateral loading, pile group efficiency, negative skin friction",
+        "difficulty": "Medium",
+        "question_text": "A group of 25 circular piles is arranged in \\(5 \\times 5\\) uniform pattern in a soft clay soil with equal spacing in both the directions. These are friction piles with negligible end bearing.\nConsider the following details:\nDiameter of each pile = 1 m\nLength of each pile = 15 m\nCohesion of the soil = 20 kN/m\\(^2\\)\nUnit weight of the soil = 16 kN/m\\(^3\\)\nAdhesion factor = 0.75\nConsidering the efficiency of the pile group as unity, the optimum value of the ratio of the pile spacing to pile diameter is __________________ (rounded off to one decimal place).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "3.2 to 3.6"
+      },
+      {
+        "question_no": 59,
+        "question_id": "GATE_CE_2026_S1_Q59",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Shallow foundations – Terzaghi’s and Meyerhof’s bearing capacity theories, effect of water table",
+        "difficulty": "Hard",
+        "question_text": "A shallow strip footing of width 2 m is embedded at a depth of 1.5 m below the ground surface in a homogeneous pure clay with an angle of internal friction zero. Consider unit weight of soil as 20 kN/m\\(^3\\) and undrained cohesion of soil as 20 kN/m\\(^2\\).\nDue to rise of ground water table from far below the founding depth to the ground surface in monsoon season, the magnitude of percentage change in the net ultimate bearing capacity as per Terzaghi’s theory is __________________ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0 to 0"
+      },
+      {
+        "question_no": 60,
+        "question_id": "GATE_CE_2026_S1_Q60",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Traffic studies on flow and speed, peak hour factor, accident study, statistical analysis of traffic data",
+        "difficulty": "Hard",
+        "question_text": "Traffic is moving on a 6-lane dual carriageway road. Traffic volume per direction during peak hour (08:00 am to 09:00 am) is 6000 veh/h. It is assumed that the traffic is distributed uniformly across the lanes in each direction. Just at 08:00 am, a truck goes out of order on the middle lane of one side, thus disrupting the traffic on that lane in one direction. The lane capacity under normal conditions is 2000 veh/h/ln and under queue formation it is 1600 veh/h/ln. The traffic resumes at 08:30 am on removing the truck from the middle lane. Hourly traffic volume after 09:00 am reduces to 5000 veh/h/dir.\nThe number of vehicles in the queue at 10:00 am is ______ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "2200 to 2200"
+      },
+      {
+        "question_no": 61,
+        "question_id": "GATE_CE_2026_S1_Q61",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Highway Pavements",
+        "topic": "Desirable properties of bituminous paving mixes",
+        "difficulty": "Medium",
+        "question_text": "In a bituminous mix, the percentage by weight of coarse aggregate, fine aggregate, filler, and bituminous binder is 58, 25, 12, and 5, respectively. The corresponding specific gravity of these materials is 2.68, 2.45, 2.42, and 1.15. The bulk specific gravity of the mix is 2.2.\nThe Voids Filled with Bitumen (VFB, in percentage) is __________ (rounded off to the nearest integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "48 to 52"
+      },
+      {
+        "question_no": 62,
+        "question_id": "GATE_CE_2026_S1_Q62",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Distance and angle measurement – Levelling and trigonometric levelling",
+        "difficulty": "Medium",
+        "question_text": "The following consecutive readings (in m) were taken with a dumpy level and a levelling staff at a common interval of 20 m:\n0.385; 1.030; 1.925; 2.825; 3.730; 4.850; 1.045; 2.005; 3.330; 4.580\nThe dumpy level was shifted after taking the sixth reading.\nThe gradient (in %) of the ground between the first and the last location of the reading is ______ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "-5 to -5 or 5 to 5"
+      },
+      {
+        "question_no": 63,
+        "question_id": "GATE_CE_2026_S1_Q63",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Sludge treatment and disposal",
+        "difficulty": "Medium",
+        "question_text": "An Activated Sludge Process (ASP) has an inlet wastewater flowrate of 20000 m\\(^3\\)/day with a Biochemical Oxygen Demand (BOD) concentration of 250 mg/l. It produces treated wastewater containing 20 mg/l BOD. The aeration tank has a working volume of 6000 m\\(^3\\) and a biomass concentration of 3000 mg/l. Biological Sludge Residence Time (BSRT) of the system is 6 days. The influent wastewater and the treated effluent from the system have negligible concentrations of biomass. The sludge recycle line from the bottom of the Secondary Sedimentation Tank (SST) to the inlet of the aeration tank has a flowrate of 6000 m\\(^3\\)/day.\nTo maintain equilibrium, the flowrate (in m\\(^3\\)/day) of sludge that is to be wasted from the system is ______ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "230 to 250"
+      },
+      {
+        "question_no": 64,
+        "question_id": "GATE_CE_2026_S1_Q64",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydrology",
+        "topic": "Streamflow measurements, unit hydrographs, hydrograph analysis, reservoir capacity, flood estimation and routing, surface runoff models, ground water hydrology – steady state well hydraulics and aquifers",
+        "difficulty": "Medium",
+        "question_text": "The intensity-duration relationship for a rainfall on a rectangular plot ABCD of area 7 ha (1 ha = \\(10^4\\) m\\(^2\\)) can be modelled by the following equation:\n\\[I = \\frac{25}{(t + 10)}\\]\nwhere \\(I\\) is rainfall intensity (in cm/h), and \\(t\\) is the duration (in minutes) of rainfall. The average runoff coefficient over the area is 0.60. The time of entry (in minutes) to the outfall from the corners A, B, C, and D is 10, 20, 15 and 25, respectively.\nThe design flowrate (in m\\(^3\\)/h) of the storm-sewer at the outfall is _____ (in integer).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "300 to 300"
+      },
+      {
+        "question_no": 65,
+        "question_id": "GATE_CE_2026_S1_Q65",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Medium",
+        "question_text": "The maximum demand at a water purification plant has been estimated as 12 million litres per day. For the raw supplies, a rectangular sedimentation tank is to be designed with mechanical sludge removal arrangement. Consider depth of the tank as 4 m, detention period as 6 hours, and velocity of flow as 0.003 m/s.\nThe width (in m) of the detention tank is _________ (rounded off to two decimal places).",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "11 to 12"
+      }
+    ]
+  }
+]

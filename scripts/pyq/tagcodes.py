@@ -47,6 +47,17 @@ CODES = {
         "MS": "Electrical and Electronic Measurements",
         "AE": "Analog Electronics", "DL": "Digital Electronics", "PE": "Power Electronics",
     },
+    "CE": {
+        "LA": "Linear Algebra", "CA": "Calculus", "OD": "Ordinary Differential Equation (ODE)", "PD": "Partial Differential Equation (PDE)",
+        "PR": "Probability and Statistics", "NM": "Numerical Methods",
+        "EM": "Engineering Mechanics", "SM": "Solid Mechanics", "AN": "Structural Analysis", "RC": "Concrete Structures", "ST": "Steel Structures",
+        "SO": "Soil Mechanics", "FE": "Foundation Engineering",
+        "FM": "Fluid Mechanics", "HY": "Hydraulics", "HD": "Hydrology", "IR": "Irrigation",
+        "WW": "Water and Waste Water Quality and Treatment", "AP": "Air Pollution", "SW": "Municipal Solid Wastes",
+        "TI": "Transportation Infrastructure", "HP": "Highway Pavements", "TE": "Traffic Engineering", "TP": "Transportation Planning",
+        "SU": "Surveying", "PG": "Photogrammetry",
+        "CM": "Construction Materials", "MG": "Construction Management",
+    },
     "ME": {
         "LA": "Linear Algebra", "CA": "Calculus", "DE": "Differential Equations", "CV": "Complex Variables",
         "PR": "Probability and Statistics", "NM": "Numerical Methods",
