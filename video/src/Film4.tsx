@@ -4,6 +4,10 @@
 import React, { useEffect, useState } from "react";
 import { AbsoluteFill, Audio, Easing, Img, Sequence, continueRender, delayRender, interpolate, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { brandFont, uiFont } from "./theme";
+import { loadFont as loadDisplay } from "@remotion/google-fonts/BricolageGrotesque";
+import { loadFont as loadSerif } from "@remotion/google-fonts/InstrumentSerif";
+import { loadFont as loadMono } from "@remotion/google-fonts/JetBrainsMono";
+import { loadFont as loadBody } from "@remotion/google-fonts/InterTight";
 import vo from "./v4-vo.json";
 import { BEAT, FPS, timeline, VoId, Placed } from "./v4-timeline";
 
@@ -21,8 +25,15 @@ const SceneCtx = React.createContext<Placed | null>(null);
 const useScene = () => React.useContext(SceneCtx)!;
 const voAt = (s: Placed, id: VoId) => s.voice.find((v) => v.id === id)!.at;
 
-/** Line of the script, revealed word by word on the frame each word is spoken: blur-in, rise, current word in the ribbon. */
-const Words: React.FC<{ id: VoId; size: number; top: number; left?: number; width?: number; align?: "center" | "left"; dark?: boolean; grad?: string[]; weight?: number; out?: number }> = ({ id, size, top, left, width, align = "center", dark, grad = [], weight = 800, out }) => {
+// Type system: Bricolage Grotesque (display), Instrument Serif italic (accent words), JetBrains Mono (labels), Inter Tight (UI text).
+const DISPLAY = loadDisplay("normal", { weights: ["600", "700", "800"] }).fontFamily;
+const SERIF = loadSerif("italic").fontFamily;
+const MONO = loadMono("normal", { weights: ["500", "700"] }).fontFamily;
+const BODY = loadBody("normal", { weights: ["500", "600", "700"] }).fontFamily;
+
+/** Line of the script, revealed word by word on the frame each word is spoken: blur-to-sharp rise with a soft
+ *  overshoot; accent words switch to an italic serif filled with a moving gradient shimmer; the word being spoken glows. */
+const Words: React.FC<{ id: VoId; size: number; top: number; left?: number; width?: number; align?: "center" | "left"; dark?: boolean; grad?: string[]; weight?: number; out?: number }> = ({ id, size, top, left, width, align = "center", dark, grad = [], weight = 700, out }) => {
   const f = useCurrentFrame();
   const s = useScene();
   const start = voAt(s, id);
@@ -30,17 +41,19 @@ const Words: React.FC<{ id: VoId; size: number; top: number; left?: number; widt
   const fadeOut = out != null ? 1 - c01((f - out) / 8) : 1;
   return (
     <div style={{ position: "absolute", top, left: left ?? (width ? (3840 - width) / 2 : 0), right: left == null && !width ? 0 : undefined, width, textAlign: align, opacity: fadeOut,
-      fontFamily: uiFont, fontWeight: weight, fontSize: size, lineHeight: 1.12, letterSpacing: -size * 0.03 }}>
+      fontFamily: DISPLAY, fontWeight: weight, fontSize: size, lineHeight: 1.1, letterSpacing: -size * 0.035 }}>
       {line.words.map((w, i) => {
         const wt = start + line.t[i] * FPS;
         const next = i + 1 < line.words.length ? start + line.t[i + 1] * FPS : start + line.dur * FPS;
-        const a = ease(c01((f - wt + 2) / 9));
+        const a = ease(c01((f - wt + 2) / 10));
+        const pop = 1 + 0.06 * Math.sin(Math.PI * c01((f - wt + 2) / 10));
         const speaking = f >= wt && f < next + 2;
         const isGrad = grad.some((g) => w.toLowerCase().replace(/[^a-z0-9₹,]/g, "").startsWith(g.toLowerCase()));
-        const color = dark ? "#ffffff" : INK;
+        const shimmer = { backgroundImage: "linear-gradient(100deg,#22d3ee,#6366f1 25%,#a855f7 45%,#f472b6 60%,#a855f7 75%,#22d3ee)", backgroundSize: "300% 100%", backgroundPosition: `${(f * 1.2) % 300}% 50%`, WebkitBackgroundClip: "text", color: "transparent" };
         return (
-          <span key={i} style={{ display: "inline-block", marginRight: size * 0.26, opacity: a, filter: `blur(${(1 - a) * 18}px)`, transform: `translateY(${(1 - a) * size * 0.35}px)`,
-            ...(isGrad || speaking ? RIBBON_TXT : { color: dark && !speaking ? color : color }), ...(speaking && !isGrad ? { filter: `blur(${(1 - a) * 18}px) brightness(1.15)` } : {}) }}>
+          <span key={i} style={{ display: "inline-block", marginRight: size * 0.24, opacity: a, transform: `translateY(${(1 - a) * size * 0.45}px) scale(${pop})`, transformOrigin: "50% 80%",
+            filter: `blur(${(1 - a) * 22}px)${speaking ? ` drop-shadow(0 0 ${size * 0.25}px ${dark ? "rgba(167,139,250,.55)" : "rgba(124,58,237,.35)"})` : ""}`,
+            ...(isGrad ? { ...shimmer, fontFamily: SERIF, fontStyle: "italic", fontWeight: 400, fontSize: size * 1.12, letterSpacing: 0, paddingRight: size * 0.06 } : { color: dark ? "#ffffff" : INK }) }}>
             {w}
           </span>
         );
@@ -49,15 +62,18 @@ const Words: React.FC<{ id: VoId; size: number; top: number; left?: number; widt
   );
 };
 
+/** Liquid-glass chapter pill: frosted fill, specular top edge, animated conic rim, mono label. */
 const Chip: React.FC<{ t: string; top?: number; left?: number; dark?: boolean; at?: number }> = ({ t, top = 96, left, dark, at = 0 }) => {
   const f = useCurrentFrame();
   const a = ease(c01((f - at) / 12));
   return (
-    <div style={{ position: "absolute", top, left: left ?? 0, right: left != null ? undefined : 0, textAlign: "center", opacity: a, transform: `translateY(${(1 - a) * 16}px)` }}>
-      <span style={{ display: "inline-flex", alignItems: "center", gap: 18, padding: "14px 34px", borderRadius: 999, fontFamily: uiFont, fontWeight: 800, fontSize: 34, letterSpacing: 8,
-        background: dark ? "rgba(255,255,255,.08)" : "rgba(255,255,255,.65)", border: dark ? "2px solid rgba(255,255,255,.16)" : "2px solid rgba(124,58,237,.18)",
-        backdropFilter: "blur(24px)", color: dark ? "#c4b5fd" : VIOLET, boxShadow: dark ? "none" : "0 20px 60px -30px rgba(76,29,149,.5)" }}>
-        <span style={{ width: 14, height: 14, borderRadius: 7, background: RIBBON }} />{t}
+    <div style={{ position: "absolute", top, left: left ?? 0, right: left != null ? undefined : 0, textAlign: "center", opacity: a, transform: `translateY(${(1 - a) * 20}px) scale(${0.92 + 0.08 * a})`, filter: `blur(${(1 - a) * 8}px)` }}>
+      <span style={{ display: "inline-block", padding: 3, borderRadius: 999, background: `conic-gradient(from ${f * 4}deg, #22d3ee, #a855f7, #f472b6, #6366f1, #22d3ee)` }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 18, padding: "16px 38px", borderRadius: 999, fontFamily: MONO, fontWeight: 700, fontSize: 32, letterSpacing: 6,
+          background: dark ? "linear-gradient(180deg, rgba(40,30,90,.92), rgba(20,14,50,.92))" : "linear-gradient(180deg, rgba(255,255,255,.96), rgba(246,242,255,.92))",
+          boxShadow: dark ? "inset 0 2px 0 rgba(255,255,255,.18)" : "inset 0 2px 0 #fff, 0 24px 60px -30px rgba(76,29,149,.6)", color: dark ? "#ddd6fe" : VIOLET }}>
+          <span style={{ width: 14, height: 14, borderRadius: 7, background: RIBBON, boxShadow: "0 0 18px rgba(168,85,247,.9)", opacity: 0.6 + 0.4 * Math.sin(f / 6) }} />{t}
+        </span>
       </span>
     </div>
   );
@@ -68,13 +84,23 @@ const Grain: React.FC = () => {
   return <AbsoluteFill style={{ pointerEvents: "none", opacity: 0.05, mixBlendMode: "overlay", backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='${f % 8}'/></filter><rect width='400' height='400' filter='url(%23n)'/></svg>")` }} />;
 };
 
+/** Slowly turning aurora: blurred conic gradient behind everything. */
+const Aurora: React.FC<{ dark?: boolean; strength?: number }> = ({ dark, strength = 1 }) => {
+  const f = useCurrentFrame();
+  return (
+    <div style={{ position: "absolute", left: -800, top: -1200, width: 5440, height: 4560, opacity: (dark ? 0.3 : 0.28) * strength, filter: "blur(220px)",
+      background: `conic-gradient(from ${f * 0.6}deg at 55% 45%, #22d3ee, #6366f1, #a855f7, #f472b6, #fbbf24, #22d3ee)`, transform: `rotate(${Math.sin(f / 160) * 8}deg)` }} />
+  );
+};
+
 const Night: React.FC<{ lamp?: number; orb?: number }> = ({ lamp = 1, orb = 0 }) => {
   const f = useCurrentFrame();
   return (
-    <AbsoluteFill style={{ background: "radial-gradient(130% 100% at 50% 0%, #15103a 0%, #090719 55%, #04030d 100%)" }}>
+    <AbsoluteFill style={{ background: "radial-gradient(130% 100% at 50% 0%, #15103a 0%, #090719 55%, #04030d 100%)", overflow: "hidden" }}>
+      <Aurora dark strength={0.35 + orb} />
       <div style={{ position: "absolute", width: 2600, height: 2600, left: -900, top: -1500, borderRadius: "50%", background: `radial-gradient(circle, rgba(251,191,36,${0.16 * lamp}), transparent 60%)` }} />
       <div style={{ position: "absolute", width: 3000, height: 3000, right: -1300, bottom: -1800, borderRadius: "50%", background: `radial-gradient(circle, rgba(124,58,237,${0.22 + 0.2 * orb}), transparent 62%)`, transform: `translate(${Math.sin(f / 90) * 60}px, ${Math.cos(f / 110) * 40}px)` }} />
-      <AbsoluteFill style={{ backgroundImage: "radial-gradient(rgba(255,255,255,.06) 2px, transparent 2px)", backgroundSize: "80px 80px", maskImage: "radial-gradient(60% 55% at 50% 50%, #000, transparent)", opacity: 0.7 }} />
+      <AbsoluteFill style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.035) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,.035) 2px, transparent 2px)", backgroundSize: "120px 120px", backgroundPosition: `0 ${f * 0.6}px`, maskImage: "radial-gradient(60% 55% at 50% 50%, #000, transparent)", opacity: 0.8 }} />
     </AbsoluteFill>
   );
 };
@@ -82,10 +108,25 @@ const Night: React.FC<{ lamp?: number; orb?: number }> = ({ lamp = 1, orb = 0 })
 const Day: React.FC = () => {
   const f = useCurrentFrame();
   return (
-    <AbsoluteFill style={{ background: "linear-gradient(140deg, #f1ecff 0%, #f8f5ff 45%, #fdf0fa 100%)" }}>
+    <AbsoluteFill style={{ background: "linear-gradient(140deg, #f1ecff 0%, #f8f5ff 45%, #fdf0fa 100%)", overflow: "hidden" }}>
+      <Aurora />
       <div style={{ position: "absolute", width: 2600, height: 2600, borderRadius: "50%", left: -900 + Math.sin(f / 90) * 140, top: -1400 + Math.cos(f / 110) * 100, background: "radial-gradient(circle, #a78bfa38, transparent 62%)" }} />
       <div style={{ position: "absolute", width: 2800, height: 2800, borderRadius: "50%", right: -1100 + Math.cos(f / 80) * 140, bottom: -1600 + Math.sin(f / 95) * 100, background: "radial-gradient(circle, #f0abfc38, transparent 62%)" }} />
-      <div style={{ position: "absolute", width: 1600, height: 1600, borderRadius: "50%", left: 1300 + Math.sin(f / 70) * 200, top: 700, background: "radial-gradient(circle, #67e8f924, transparent 62%)" }} />
+      <AbsoluteFill style={{ backgroundImage: "radial-gradient(rgba(91,33,224,.10) 2.5px, transparent 2.5px)", backgroundSize: "64px 64px", maskImage: "radial-gradient(70% 60% at 50% 55%, #000, transparent)" }} />
+    </AbsoluteFill>
+  );
+};
+
+/** Scene entrance: an iris that opens from the centre with a soft light leak on its rim. */
+const Iris: React.FC<{ children: React.ReactNode; frames?: number }> = ({ children, frames = 14 }) => {
+  const f = useCurrentFrame();
+  const u = Easing.bezier(0.65, 0, 0.35, 1)(c01(f / frames));
+  if (u >= 1) return <>{children}</>;
+  const r = 4500 * u;
+  return (
+    <AbsoluteFill style={{ clipPath: `circle(${r}px at 50% 50%)` }}>
+      {children}
+      <AbsoluteFill style={{ pointerEvents: "none", background: `radial-gradient(circle at 50% 50%, transparent ${Math.max(0, r - 260)}px, rgba(255,255,255,.75) ${r - 40}px, rgba(196,181,253,.0) ${r}px)` }} />
     </AbsoluteFill>
   );
 };
@@ -152,10 +193,10 @@ const Window: React.FC<WinProps> = ({ take, segs, cam, callouts = [], spots = []
       opacity: c01(enter * 1.5) * (1 - exit), filter: `blur(${(1 - c01(enter * 1.3)) * 24 + exit * 18}px)` }}>
       <div style={{ width: "100%", height: "100%", borderRadius: 40, overflow: "hidden", background: "#fff",
         transform: `translateY(${(1 - enter) * 160}px) rotateX(${(1 - enter) * 16 * tilt}deg) scale(${0.92 + 0.08 * enter - exit * 0.04})`,
-        boxShadow: "0 140px 240px -90px rgba(60,20,140,.55), 0 0 0 2px rgba(255,255,255,.6), 0 0 0 4px rgba(124,58,237,.10)" }}>
+        boxShadow: `0 140px 240px -90px rgba(60,20,140,.55), 0 0 0 3px rgba(255,255,255,.9), 0 0 0 6px hsla(${(f * 2) % 360}, 85%, 70%, .55), 0 0 90px -10px hsla(${(f * 2 + 120) % 360}, 90%, 65%, .35)` }}>
         <div style={{ height: 64, display: "flex", alignItems: "center", gap: 14, padding: "0 28px", background: "linear-gradient(#fdfcff,#f3f0fb)", borderBottom: "2px solid #ece8f7" }}>
           {["#ff5f57", "#febc2e", "#28c840"].map((col) => <span key={col} style={{ width: 20, height: 20, borderRadius: 10, background: col }} />)}
-          <div style={{ marginLeft: 30, width: 900, height: 40, borderRadius: 12, background: "#fff", border: "2px solid #ebe7f6", display: "flex", alignItems: "center", gap: 12, padding: "0 22px", fontFamily: uiFont, fontWeight: 600, fontSize: 24, color: MUTED }}>
+          <div style={{ marginLeft: 30, width: 900, height: 40, borderRadius: 12, background: "#fff", border: "2px solid #ebe7f6", display: "flex", alignItems: "center", gap: 12, padding: "0 22px", fontFamily: BODY, fontWeight: 600, fontSize: 24, color: MUTED }}>
             <span style={{ fontSize: 20 }}>🔒</span>{url}
           </div>
         </div>
@@ -186,7 +227,7 @@ const Window: React.FC<WinProps> = ({ take, segs, cam, callouts = [], spots = []
                   </svg>
                   <div style={{ position: "absolute", left: o.x + dx * a + (left ? -8 : 8), top: o.y - 54 - 24, transform: `translateX(${left ? "-100%" : "0"}) scale(${0.7 + 0.3 * a})`, transformOrigin: left ? "right center" : "left center",
                     display: "flex", alignItems: "center", gap: 10, padding: "8px 16px 8px 8px", borderRadius: 14, background: "rgba(255,255,255,.86)", backdropFilter: "blur(14px)",
-                    border: "1.5px solid rgba(168,85,247,.35)", boxShadow: "0 14px 34px -10px rgba(76,29,149,.45)", whiteSpace: "nowrap", fontFamily: uiFont, fontWeight: 800, fontSize: 20, color: INK }}>
+                    border: "1.5px solid rgba(168,85,247,.35)", boxShadow: "0 14px 34px -10px rgba(76,29,149,.45)", whiteSpace: "nowrap", fontFamily: BODY, fontWeight: 800, fontSize: 20, color: INK }}>
                     {o.n != null && <span style={{ width: 30, height: 30, borderRadius: 9, background: RIBBON, color: "#fff", display: "grid", placeItems: "center", fontSize: 16 }}>{o.n}</span>}
                     {o.label}
                   </div>
@@ -240,8 +281,8 @@ const S_Night: React.FC = () => {
     <AbsoluteFill>
       <Night />
       <div style={{ position: "absolute", left: 0, right: 0, top: 540 - 300 * shrink, textAlign: "center", transform: `scale(${1 - 0.45 * shrink})`, opacity: ease(c01(f / 16)) }}>
-        <span style={{ fontFamily: uiFont, fontWeight: 300, fontSize: 420, letterSpacing: -10, color: "#fff", textShadow: "0 0 80px rgba(167,139,250,.45)" }}>1<span style={{ opacity: colon }}>:</span>12</span>
-        <span style={{ fontFamily: uiFont, fontWeight: 600, fontSize: 120, color: "rgba(255,255,255,.55)", marginLeft: 30 }}>AM</span>
+        <span style={{ fontFamily: DISPLAY, fontWeight: 300, fontSize: 420, letterSpacing: -10, color: "#fff", textShadow: "0 0 80px rgba(167,139,250,.45)" }}>1<span style={{ opacity: colon }}>:</span>12</span>
+        <span style={{ fontFamily: BODY, fontWeight: 600, fontSize: 120, color: "rgba(255,255,255,.55)", marginLeft: 30 }}>AM</span>
       </div>
       <Words id="p1" size={170} top={1150} dark out={p2 - 8} />
       {f >= p2 - 10 && subjects.map((t, i) => {
@@ -250,7 +291,7 @@ const S_Night: React.FC = () => {
         const r = 1250 + (i % 3) * 180;
         const sy = Math.sin(ang);
         return <div key={t} style={{ position: "absolute", left: 1920 + Math.cos(ang) * r * 1.2 - 200, top: 1130 + Math.sign(sy || 1) * (430 + Math.abs(sy) * 380) - 40, opacity: a * 0.85, filter: `blur(${(i % 4) * 1.5}px)`,
-          padding: "18px 36px", borderRadius: 999, border: "2px solid rgba(255,255,255,.14)", background: "rgba(255,255,255,.06)", fontFamily: uiFont, fontWeight: 700, fontSize: 44, color: "rgba(255,255,255,.75)", whiteSpace: "nowrap" }}>{t}</div>;
+          padding: "18px 36px", borderRadius: 999, border: "2px solid rgba(255,255,255,.14)", background: "rgba(255,255,255,.06)", fontFamily: BODY, fontWeight: 700, fontSize: 44, color: "rgba(255,255,255,.75)", whiteSpace: "nowrap" }}>{t}</div>;
       })}
       <Words id="p2" size={150} top={1040} dark width={3500} grad={["today"]} />
       <Grain />
@@ -262,7 +303,7 @@ const QCard: React.FC<{ stamp?: number; shake?: number; picked: number; label: s
   const opts = ["I only", "II only", "Both I and II", "Neither I nor II"];
   return (
     <div style={{ width: 2100, padding: 80, borderRadius: 56, background: "rgba(255,255,255,.07)", border: "2px solid rgba(255,255,255,.16)", backdropFilter: "blur(30px)",
-      boxShadow: "0 80px 160px -60px rgba(0,0,0,.7)", transform: `translateX(${Math.sin(shake * 40) * 26 * (1 - shake)}px)`, position: "relative", fontFamily: uiFont }}>
+      boxShadow: "0 80px 160px -60px rgba(0,0,0,.7)", transform: `translateX(${Math.sin(shake * 40) * 26 * (1 - shake)}px)`, position: "relative", fontFamily: BODY }}>
       <div style={{ fontWeight: 800, fontSize: 34, letterSpacing: 6, color: "#a5b4fc" }}>{label}</div>
       <div style={{ marginTop: 30, fontWeight: 500, fontSize: 52, lineHeight: 1.35, color: "rgba(255,255,255,.92)" }}>A circular queue is implemented with a singly linked list. Which pointer link keeps insert and delete at O(1)?</div>
       <div style={{ marginTop: 50, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 26 }}>
@@ -325,7 +366,7 @@ const S_Cost: React.FC = () => {
     <AbsoluteFill>
       <Night lamp={0.3} />
       <div style={{ opacity: 1 - away, filter: `blur(${away * 16}px)`, transform: `scale(${1 - 0.06 * away})` }}>
-        <div style={{ position: "absolute", left: 300, top: 470, fontFamily: uiFont }}>
+        <div style={{ position: "absolute", left: 300, top: 470, fontFamily: BODY }}>
           <div style={{ fontWeight: 800, fontSize: 300, letterSpacing: -12, color: "#fff", lineHeight: 1 }}>{count.toLocaleString("en-IN")}</div>
           <div style={{ marginTop: 30, fontWeight: 600, fontSize: 70, color: "rgba(255,255,255,.7)" }}>wrote GATE CS 2026</div>
           <div style={{ marginTop: 120, fontWeight: 800, fontSize: 200, letterSpacing: -8, lineHeight: 1, ...RIBBON_TXT, opacity: c01((f - p6) / 10) }}>{Math.round(40661 * c01((f - p6) / 30)).toLocaleString("en-IN")}</div>
@@ -338,8 +379,8 @@ const S_Cost: React.FC = () => {
             return <div key={i} style={{ width: 96, height: 96, borderRadius: 48, opacity: a, transform: `scale(${on ? 1.08 : 0.7})`, background: on ? RIBBON : "rgba(255,255,255,.14)", boxShadow: on ? "0 0 30px rgba(168,85,247,.7)" : "none" }} />;
           })}
         </div>
-        <div style={{ position: "absolute", left: 2300, top: 1830, fontFamily: uiFont, fontWeight: 700, fontSize: 52, color: "rgba(255,255,255,.75)", opacity: c01((f - p6 - 20) / 10) }}>Fewer than 1 in 5</div>
-        <div style={{ position: "absolute", left: 300, bottom: 110, fontFamily: uiFont, fontWeight: 600, fontSize: 36, color: "rgba(255,255,255,.4)" }}>Source: GATE 2026 statistical report, IIT Guwahati</div>
+        <div style={{ position: "absolute", left: 2300, top: 1830, fontFamily: BODY, fontWeight: 700, fontSize: 52, color: "rgba(255,255,255,.75)", opacity: c01((f - p6 - 20) / 10) }}>Fewer than 1 in 5</div>
+        <div style={{ position: "absolute", left: 300, bottom: 110, fontFamily: BODY, fontWeight: 600, fontSize: 36, color: "rgba(255,255,255,.4)" }}>Source: GATE 2026 statistical report, IIT Guwahati</div>
       </div>
       {f >= p7 - 4 && <Words id="p7" size={190} top={820} dark width={3300} grad={["direction"]} />}
       <Grain />
@@ -491,7 +532,7 @@ const Phone: React.FC<{ at: number }> = ({ at }) => {
   return (
     <div style={{ position: "absolute", right: 260, top: 560, width: 760, height: 1440, borderRadius: 110, background: "#0b0b12", padding: 26, boxSizing: "border-box",
       transform: `translateX(${(1 - a) * 1200}px) rotate(${(1 - a) * 12 - 4}deg)`, boxShadow: "0 120px 200px -60px rgba(30,10,80,.6)" }}>
-      <div style={{ width: "100%", height: "100%", borderRadius: 86, overflow: "hidden", background: "linear-gradient(#e7eef7,#dbe6f2)", position: "relative", fontFamily: uiFont }}>
+      <div style={{ width: "100%", height: "100%", borderRadius: 86, overflow: "hidden", background: "linear-gradient(#e7eef7,#dbe6f2)", position: "relative", fontFamily: BODY }}>
         <div style={{ height: 150, background: "#fff", display: "flex", alignItems: "center", gap: 22, padding: "40px 40px 0" }}>
           <Img src={staticFile("mark-dark.png")} style={{ width: 76, height: 76, borderRadius: 38, background: "#1b1450", padding: 10, boxSizing: "border-box" }} />
           <div><div style={{ fontWeight: 800, fontSize: 36, color: "#111" }}>RENYXERA</div><div style={{ fontSize: 26, color: "#3b82f6" }}>bot</div></div>
@@ -543,7 +584,7 @@ const S_Plans: React.FC = () => {
         cam: [{ t: 0, s: 1, x: 0.5, y: 0.4 }, { t: 30, s: 1.25, x: 0.62, y: 0.6 }, { t: 102, s: 1.25, x: 0.62, y: 0.62 }],
         callouts: [{ from: 34, to: 102, x: 640, y: 424, n: 1, label: "Plus · ₹29 a month", side: "left" }, { from: 52, to: 102, x: 1160, y: 424, n: 2, label: "Pro · ₹99 a month", side: "left" }, { from: 70, to: 102, x: 1180, y: 485, n: 3, label: "150 AI requests a day", side: "left" }] }}>
       <div style={{ position: "absolute", left: 300, bottom: 120, opacity: chip, transform: `translateY(${(1 - chip) * 40}px)`, padding: "28px 48px", borderRadius: 32,
-        background: "rgba(255,255,255,.75)", backdropFilter: "blur(20px)", border: "2px solid rgba(168,85,247,.3)", fontFamily: uiFont, fontWeight: 800, fontSize: 56, color: INK, boxShadow: "0 40px 90px -40px rgba(76,29,149,.5)" }}>
+        background: "rgba(255,255,255,.75)", backdropFilter: "blur(20px)", border: "2px solid rgba(168,85,247,.3)", fontFamily: BODY, fontWeight: 800, fontSize: 56, color: INK, boxShadow: "0 40px 90px -40px rgba(76,29,149,.5)" }}>
         Plus ₹29/month <span style={{ color: MUTED, fontWeight: 600 }}>≈</span> <span style={RIBBON_TXT}>₹7 a week</span>
       </div>
     </Feature>
@@ -576,15 +617,15 @@ const S_Pitch: React.FC = () => {
       <Night lamp={0} orb={0.4} />
       <div style={{ opacity: 1 - toGrid, filter: `blur(${toGrid * 16}px)` }}>
         <Words id="c1" size={140} top={280} dark width={3500} grad={["five", "lakh"]} />
-        <div style={{ position: "absolute", left: 0, right: 0, top: 720, textAlign: "center", fontFamily: uiFont, fontWeight: 800, fontSize: 340, letterSpacing: -14, ...RIBBON_TXT }}>{shown.toLocaleString("en-IN")}</div>
+        <div style={{ position: "absolute", left: 0, right: 0, top: 720, textAlign: "center", fontFamily: DISPLAY, fontWeight: 800, fontSize: 340, letterSpacing: -14, ...RIBBON_TXT }}>{shown.toLocaleString("en-IN")}</div>
         <div style={{ position: "absolute", left: 0, right: 0, top: 1180, display: "flex", justifyContent: "center", gap: 40 }}>
           {PAPERS.map(([p, n], i) => {
             const a = spring({ frame: f - c1 - 20 - i * 5, fps, config: { damping: 16, stiffness: 120 } });
-            return <div key={p} style={{ opacity: a, transform: `translateY(${(1 - a) * 60}px)`, padding: "30px 46px", borderRadius: 36, background: "rgba(255,255,255,.07)", border: "2px solid rgba(255,255,255,.14)", fontFamily: uiFont, color: "#fff", textAlign: "center" }}>
+            return <div key={p} style={{ opacity: a, transform: `translateY(${(1 - a) * 60}px)`, padding: "30px 46px", borderRadius: 36, background: "rgba(255,255,255,.07)", border: "2px solid rgba(255,255,255,.14)", fontFamily: BODY, color: "#fff", textAlign: "center" }}>
               <div style={{ fontWeight: 800, fontSize: 64 }}>{p}</div><div style={{ fontWeight: 600, fontSize: 40, color: "rgba(255,255,255,.65)" }}>{n.toLocaleString("en-IN")}</div></div>;
           })}
         </div>
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 120, textAlign: "center", fontFamily: uiFont, fontWeight: 600, fontSize: 34, color: "rgba(255,255,255,.4)" }}>Candidates who sat each paper, GATE 2026 (IIT Guwahati report)</div>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: 120, textAlign: "center", fontFamily: BODY, fontWeight: 600, fontSize: 34, color: "rgba(255,255,255,.4)" }}>Candidates who sat each paper, GATE 2026 (IIT Guwahati report)</div>
       </div>
       {f >= c2 - 16 && (
         <>
@@ -601,7 +642,7 @@ const S_Pitch: React.FC = () => {
                 transform: `translateY(${(1 - a) * 140}px) scale(${0.9 + 0.1 * a + 0.03 * lit})`, background: "#fff",
                 boxShadow: `0 60px 120px -50px rgba(0,0,0,.7), 0 0 0 ${3 + 4 * lit}px rgba(168,85,247,${0.25 + 0.7 * lit}), 0 0 ${90 * lit}px rgba(168,85,247,.6)` }}>
                 <Img src={frameSrc(t.take, t.frame)} style={{ position: "absolute", width: 1600 * k, height: 900 * k, left: -x * k, top: -y * k, maxWidth: "none" }} />
-                <div style={{ position: "absolute", left: 28, bottom: 28, padding: "12px 26px", borderRadius: 999, background: "rgba(13,10,36,.78)", backdropFilter: "blur(10px)", color: "#fff", fontFamily: uiFont, fontWeight: 800, fontSize: 38 }}>{t.label}</div>
+                <div style={{ position: "absolute", left: 28, bottom: 28, padding: "12px 26px", borderRadius: 999, background: "rgba(13,10,36,.78)", backdropFilter: "blur(10px)", color: "#fff", fontFamily: BODY, fontWeight: 800, fontSize: 38 }}>{t.label}</div>
               </div>
             );
           })}
@@ -620,15 +661,28 @@ const S_End: React.FC = () => {
   return (
     <AbsoluteFill>
       <Night lamp={0.5} orb={0.5} />
-      <div style={{ position: "absolute", left: 0, right: 0, top: 300, textAlign: "center", opacity: 0.55 * (1 - away), fontFamily: uiFont, fontWeight: 300, fontSize: 180, color: "#fff" }}>1:12 <span style={{ fontSize: 70 }}>AM</span></div>
+      <div style={{ position: "absolute", left: 0, right: 0, top: 300, textAlign: "center", opacity: 0.55 * (1 - away), fontFamily: DISPLAY, fontWeight: 300, fontSize: 180, color: "#fff" }}>1:12 <span style={{ fontSize: 70 }}>AM</span></div>
       <div style={{ opacity: 1 - away, filter: `blur(${away * 14}px)` }}><Words id="c3" size={200} top={820} dark grad={["direction"]} /></div>
-      {f >= c4 - 16 && (
-        <>
-          <Logo at={c4 - 4} size={240} top={720} />
-          <div style={{ position: "absolute", left: 0, right: 0, top: 1130, textAlign: "center", fontFamily: uiFont, fontWeight: 800, fontSize: 56, letterSpacing: 18, color: "#c4b5fd", opacity: c01((f - c4 - 30) / 12) }}>A NEW ERA OF INTELLIGENT LEARNING</div>
-          <div style={{ position: "absolute", left: 0, right: 0, top: 1380, textAlign: "center", fontFamily: uiFont, fontWeight: 700, fontSize: 80, color: "#fff", opacity: c01((f - c4 - 54) / 12) }}>gate.renyxera.workers.dev</div>
-        </>
-      )}
+      {f >= c4 - 16 && (() => {
+        const cta = spring({ frame: f - c4 - Math.round(vo.c4.dur * FPS) + 6, fps: FPS, config: { damping: 14, stiffness: 120 } });
+        const breathe = 1 + 0.02 * Math.sin((f - c4) / 7) * c01((f - c4 - vo.c4.dur * FPS - 20) / 10);
+        return (
+          <>
+            <Logo at={c4 - 6} size={210} top={430} />
+            <Words id="c4" size={104} top={800} dark width={3300} grad={["now", "real", "progress"]} />
+            <div style={{ position: "absolute", left: 0, right: 0, top: 1290, textAlign: "center", opacity: cta, transform: `translateY(${(1 - cta) * 80}px) scale(${(0.85 + 0.15 * cta) * breathe})` }}>
+              <span style={{ display: "inline-block", padding: 6, borderRadius: 999, background: `conic-gradient(from ${f * 5}deg, #22d3ee, #a855f7, #f472b6, #6366f1, #22d3ee)`, boxShadow: "0 40px 120px -20px rgba(168,85,247,.75)" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 30, padding: "40px 90px", borderRadius: 999, background: "linear-gradient(180deg,#1d1450,#0d0a24)", fontFamily: DISPLAY, fontWeight: 700, fontSize: 82, color: "#fff", position: "relative", overflow: "hidden" }}>
+                  Start now, it&apos;s free <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 96 }}>→</span>
+                  <span style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%)", transform: `translateX(${((f - c4) * 3) % 260 - 130}%)` }} />
+                </span>
+              </span>
+              <div style={{ marginTop: 60, fontFamily: MONO, fontWeight: 500, fontSize: 56, letterSpacing: 4, color: "#c4b5fd" }}>gate.renyxera.workers.dev</div>
+              <div style={{ marginTop: 26, fontFamily: BODY, fontWeight: 600, fontSize: 40, letterSpacing: 14, color: "rgba(255,255,255,.55)" }}>A NEW ERA OF INTELLIGENT LEARNING</div>
+            </div>
+          </>
+        );
+      })()}
       <Grain />
     </AbsoluteFill>
   );
@@ -648,7 +702,7 @@ export const Film4: React.FC = () => {
         const C = SCENES[s.id];
         return (
           <Sequence key={s.id} from={s.at} durationInFrames={s.dur}>
-            <SceneCtx.Provider value={s}><C /></SceneCtx.Provider>
+            <SceneCtx.Provider value={s}><Iris><C /></Iris></SceneCtx.Provider>
           </Sequence>
         );
       })}

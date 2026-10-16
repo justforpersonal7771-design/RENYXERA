@@ -702,26 +702,34 @@
   "heard": "Effort now with direction."
  },
  "c4": {
-  "text": "RENYXERA. A new era of intelligent learning.",
-  "dur": 2.483,
+  "text": "Start using RENYXERA now, and turn every hour into real progress.",
+  "dur": 3.905,
   "words": [
-   "RENYXERA.",
-   "A",
-   "new",
-   "era",
-   "of",
-   "intelligent",
-   "learning."
+   "Start",
+   "using",
+   "RENYXERA",
+   "now,",
+   "and",
+   "turn",
+   "every",
+   "hour",
+   "into",
+   "real",
+   "progress."
   ],
   "t": [
    0.0,
-   0.88,
-   0.9,
+   0.24,
+   0.58,
    1.08,
-   1.4,
-   1.56,
-   1.92
+   1.38,
+   1.88,
+   2.08,
+   2.44,
+   2.7,
+   2.98,
+   3.24
   ],
-  "heard": "Renixera, a new era of intelligent learning."
+  "heard": "Start using Renixra now and turn every hour into real progress."
  }
 }

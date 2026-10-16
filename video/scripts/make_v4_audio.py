@@ -52,7 +52,7 @@ LINES = {
     "c1": ("Over five lakh students sit these five GATE papers every year.", None),
     "c2": ("RENYXERA practises with them, explains, remembers, and plans.", "Renixera practises with them, explains, remembers, and plans."),
     "c3": ("Effort, now with direction.", None),
-    "c4": ("RENYXERA. A new era of intelligent learning.", "Renixera. A new era of intelligent learning."),
+    "c4": ("Start using RENYXERA now, and turn every hour into real progress.", "Start using Renixera now, and turn every hour into real progress."),
 }
 
 

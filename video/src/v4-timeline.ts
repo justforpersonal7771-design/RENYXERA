@@ -24,7 +24,7 @@ export const SPECS: Spec[] = [
   { id: "profile", voices: ["a10"], head: 8, tail: 24, min: 75 },
   { id: "plans", voices: ["m1", "m2"], head: 10, gap: 10, tail: 22, min: 180 },
   { id: "pitch", voices: ["c1", "c2"], head: 10, gap: 14, tail: 30, min: 255 },
-  { id: "end", voices: ["c3", "c4"], head: 14, gap: 24, tail: 54, min: 195 },
+  { id: "end", voices: ["c3", "c4"], head: 14, gap: 24, tail: 120, min: 240 },
 ];
 
 export type Placed = { id: string; at: number; dur: number; voice: { id: VoId; at: number; len: number }[] };
