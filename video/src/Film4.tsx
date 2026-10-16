@@ -86,10 +86,19 @@ const Grain: React.FC = () => {
 
 /** Slowly turning aurora: blurred conic gradient behind everything. */
 const Aurora: React.FC<{ dark?: boolean; strength?: number }> = ({ dark, strength = 1 }) => {
+  // Soft radial colour fields (cheap to render; a blurred conic gradient at 4K took ~25 s a frame).
   const f = useCurrentFrame();
+  const o = (dark ? 0.3 : 0.28) * strength;
+  const blob = (cx: number, cy: number, r: number, col: string, ph: number) => (
+    <div style={{ position: "absolute", left: cx - r + Math.sin(f / 70 + ph) * 160, top: cy - r + Math.cos(f / 90 + ph) * 120, width: 2 * r, height: 2 * r, borderRadius: "50%", background: `radial-gradient(circle, ${col}, transparent 65%)`, opacity: o }} />
+  );
   return (
-    <div style={{ position: "absolute", left: -800, top: -1200, width: 5440, height: 4560, opacity: (dark ? 0.3 : 0.28) * strength, filter: "blur(220px)",
-      background: `conic-gradient(from ${f * 0.6}deg at 55% 45%, #22d3ee, #6366f1, #a855f7, #f472b6, #fbbf24, #22d3ee)`, transform: `rotate(${Math.sin(f / 160) * 8}deg)` }} />
+    <>
+      {blob(800, 500, 1400, "#22d3ee", 0)}
+      {blob(2900, 600, 1500, "#a855f7", 2)}
+      {blob(2000, 1900, 1600, "#f472b6", 4)}
+      {blob(600, 1800, 1200, "#6366f1", 1)}
+    </>
   );
 };
 
