@@ -1,116 +1,88 @@
 # Telegram for every branch, and SEO for Telegram and the website
 
-*Owner guide, 17 Oct 2026. Replaces the single-channel setup in `TELEGRAM_SETUP_AND_PROMOTION.md` Parts 1, 2 and 4 (that file's Parts 3, 5, 6, 7 still apply). Everything here is free.*
+*Owner guide, 17 Oct 2026. Everything is free. It assumes you have finished `TELEGRAM_SETUP_AND_PROMOTION.md` **up to Part 6**: you already have the main channel, the discussion group, the bot (admin of the main channel), the two GitHub secrets `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHANNEL`, and a successful test post.*
 
-## 1. The structure (and why)
+## 0. The plan in one picture
 
-A GATE student cares about **their own branch**. A CS student does not want a Civil question at 8 am, and a small mixed group feels dead. But 6 branches × (channel + group) = 12 half-empty rooms. So:
-
-| Room | Count | Purpose |
+| Room | Link | What it is |
 |---|---|---|
-| **Hub channel** `@renyxera` | 1 | Brand voice: announcements, new features, mock reminders, plan offers, the rotating "question of the day". Every student joins this one. |
-| **Branch channels** `@renyxera_cs`, `_ec`, `_ee`, `_me`, `_ce`, `_da` | 6 | Each posts **its own** official PYQ every day at 08:00 IST plus branch-specific topics, cutoffs, syllabus updates. |
-| **One discussion supergroup** `@renyxera_chat` with **Topics** switched on | 1 | One topic (sub-room) per branch, plus *General*, *Doubts*, *Mocks & Ranks*, *Study Plan*. One busy group beats six empty ones. |
-| **Shared folder link** | 1 | A Telegram "chat folder" that holds all channels. One tap adds them all. This is your main invite link. |
+| **Main channel** (the one you already have) | your current `t.me/...` | Becomes the **hub**: brand news, mocks, offers, the rotating question of the day. Everyone joins this. |
+| **6 branch channels** | `t.me/renyxera_gate_cs`, `_ece`, `_ee`, `_me`, `_ce`, `_da` | Each posts its **own** branch's official PYQ every morning at 08:00 IST. |
+| **Discussion group** (the one you already have) | your current `t.me/renyxera_chat` | One group, switched to **Topics** so each branch has its own sub-room. |
+| **Folder link** | `t.me/addlist/...` | One tap adds all rooms. This is the link you put in Instagram, YouTube and the website. |
 
-Add a new branch later by creating one channel, one topic, one secret.
+Why not six groups: six half-empty groups feel dead; one busy group with topics feels alive.
 
-Branch codes used below match the app: CS (`CSE`), EC, EE, ME, CE, DA.
+If a username is taken, add a letter or digit (`renyxera_gate_cs1`) and write down the final one. Use the same names everywhere below.
 
-## 1b. You already have a channel: upgrade it, do not recreate it
+## 1. Do this once, in this order (about 40 minutes)
 
-Keep your existing channel and its subscribers. It **becomes the hub**. Do this instead of 3.1, then continue with 3.2 onward:
+Steps A to C are on your **phone** (Telegram). Step D is on a **laptop** (GitHub). They do not depend on each other after step A, so you can do C and D at the same time.
 
-1. Open your channel → tap its name → **✏️ Edit**.
-2. **Name:** change to `RENYXERA · GATE 2027` (section 2). Subscribers keep following; nothing breaks.
-3. **Description:** paste the hub description from section 2.
-4. **Username:** leave it as it is. Changing a public username breaks old links and the `TELEGRAM_CHANNEL` secret. If you must change it, update the secret in the same minute.
-5. **Discussion:** if it already has a linked group, open that group → **Edit → Topics: ON** (it converts the group to a forum and keeps the history). Rename it `RENYXERA · GATE Discussion` and create the topics from 3.3 step 4. If it has no group, do 3.3.
-6. Pin the welcome post (section 5) and unpin older ones.
-7. Do not delete old posts. Post once: "Branch channels are here: CS, EC, EE, ME, CE, DA. One tap to join all: <folder link>".
-8. Then create only the **six branch channels** (3.2), the folder (3.4) and the secrets (3.6). The existing `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHANNEL` secrets stay as they are.
+### Step A. Upgrade the existing main channel into the hub (3 min)
+1. Open your main channel, tap its name at the top, tap the **pencil ✏️ (Edit)**.
+2. **Name:** `RENYXERA · GATE 2027`.
+3. **Description:** `Daily GATE PYQ, free All-India mocks and an AI mentor for CS, ECE, EE, ME, Civil, DA. Practise free: https://gate.renyxera.workers.dev`
+4. Do **not** change its username (the `TELEGRAM_CHANNEL` secret depends on it). Tap the tick ✔ to save.
 
-## 2. Names, usernames, descriptions (SEO-ready)
+### Step B. Turn the existing discussion group into a topics group (5 min)
+1. Open the discussion group, tap its name, tap **✏️ Edit**.
+2. **Topics:** switch **on**. Layout: **List**. (It becomes a forum and keeps old messages.)
+3. Rename it `RENYXERA · GATE Discussion`.
+4. Tap **Permissions**: switch **Send links** off for members. Set **Slow mode** to 10 s.
+5. Go back to the topic list and tap **+ New topic** for each of these, in this order, with a different icon colour each: `📣 Start here`, `💬 General`, `❓ Doubts`, `🏆 Mocks & Ranks`, `📅 Study Plan`, `CS`, `ECE`, `EE`, `ME`, `Civil`, `DA`.
+6. In **📣 Start here**, send the rules message (section 4) and pin it: long-press the message, **Pin**.
 
-Telegram search matches the **name**, **username** and **description**. Put the exam and branch words people actually type in them.
+### Step C. Create the six branch channels (about 3 min each, 18 min total)
+Repeat for **each row** of this table. Telegram: tap the pencil/compose icon, **New Channel**.
 
-| Room | Name | Username (public link) |
+| Name | Public link | Description (paste) |
 |---|---|---|
-| Hub | `RENYXERA · GATE 2027` | `t.me/renyxera` |
-| CS | `GATE CS 2027 · Daily PYQ · RENYXERA` | `t.me/renyxera_cs` |
-| EC | `GATE ECE 2027 · Daily PYQ · RENYXERA` | `t.me/renyxera_ec` |
-| EE | `GATE EE 2027 · Daily PYQ · RENYXERA` | `t.me/renyxera_ee` |
-| ME | `GATE Mechanical 2027 · Daily PYQ · RENYXERA` | `t.me/renyxera_me` |
-| CE | `GATE Civil 2027 · Daily PYQ · RENYXERA` | `t.me/renyxera_ce` |
-| DA | `GATE Data Science & AI 2027 · Daily PYQ · RENYXERA` | `t.me/renyxera_da` |
-| Discussion | `RENYXERA · GATE Discussion` | `t.me/renyxera_chat` |
+| `GATE CS 2027 · Daily PYQ · RENYXERA` | `renyxera_gate_cs` | `GATE CS & IT 2027: one official PYQ every morning with the answer, topic tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-cse` |
+| `GATE ECE 2027 · Daily PYQ · RENYXERA` | `renyxera_gate_ece` | `GATE ECE 2027: one official PYQ every morning with the answer, topic tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-ece` |
+| `GATE EE 2027 · Daily PYQ · RENYXERA` | `renyxera_gate_ee` | `GATE EE 2027: one official PYQ every morning with the answer, topic tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-ee` |
+| `GATE Mechanical 2027 · Daily PYQ · RENYXERA` | `renyxera_gate_me` | `GATE ME 2027: one official PYQ every morning with the answer, topic tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-me` |
+| `GATE Civil 2027 · Daily PYQ · RENYXERA` | `renyxera_gate_ce` | `GATE Civil 2027: one official PYQ every morning with the answer, topic tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-ce` |
+| `GATE Data Science & AI 2027 · Daily PYQ · RENYXERA` | `renyxera_gate_da` | `GATE DA 2027: one official PYQ every morning with the answer, topic tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-da` |
 
-If a username is taken, add `gate`: `renyxera_gate_cs`. Write down the final ones.
+For each channel, exactly like Part 1 of the old guide:
+1. **Name** and **Description** from the table, upload the RENYXERA logo as the photo, tap **→**.
+2. Choose **Public channel**, type the link from the table (without `t.me/`), tap **→**. Skip adding members.
+3. Open the channel → tap its name → **Administrators** → **Add Admin** → search your bot → leave **only Post messages** on → **Save**.
+4. Post one welcome message (section 4) and pin it.
 
-**Descriptions** (limit 255 characters; first line shows in search results):
+### Step D. Add the GitHub secrets (laptop, 5 min; can be done while you do C)
+GitHub → your repository → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**. Add these six (name exactly, value with the `@`):
 
-```
-Hub:  Daily GATE PYQ, free All-India mocks and an AI mentor for CS, EC, EE, ME, CE, DA. Practise free: https://gate.renyxera.workers.dev
-CS:   GATE CS & IT 2027: one official PYQ every morning with the answer, topic-wise tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-cse
-EC:   GATE ECE 2027: one official PYQ every morning with the answer, topic-wise tips, syllabus and cutoff updates. https://gate.renyxera.workers.dev/gate-ece
-(same pattern for EE, ME, CE, DA, using the branch page link /gate-ee, /gate-me, /gate-ce, /gate-da)
-```
-
-Channel photo: the RENYXERA mark on the dark background. Use the **same** photo on all, with the branch code (CS, EC…) as a corner badge so they are recognisable in a list.
-
-## 3. Create everything: click by click (phone app)
-
-Do the hub first, then repeat for each branch channel.
-
-### 3.1 Hub channel
-1. Telegram → pencil/compose icon → **New Channel**.
-2. Name and description from section 2 → **Next**.
-3. **Public channel**, link `t.me/renyxera` → **Next**. Skip adding members.
-4. Open the channel → tap its name → **✏️ Edit** → **Sign Messages: off**, **Restrict Saving Content: off** (let students forward and share).
-
-### 3.2 Six branch channels
-Repeat 3.1 for each row (name, username, description from section 2). For each one, also:
-1. Tap the name → **Administrators** → **Add Admin** → pick your bot → leave **only Post messages** on → **Save**.
-2. Pin the welcome post (section 5).
-
-### 3.3 The discussion supergroup with topics
-1. **New Group** → name `RENYXERA · GATE Discussion` → add any one friend (Telegram needs one member) → **Create**.
-2. Tap group name → **✏️ Edit** → **Group Type: Public**, link `t.me/renyxera_chat`.
-3. **Edit → Topics: ON** (this turns the group into a forum). Layout: **List**.
-4. Create topics (**+** in the topic list): `📣 Start here`, `💬 General`, `❓ Doubts`, `🏆 Mocks & Ranks`, `📅 Study Plan`, then one per branch: `CS`, `EC`, `EE`, `ME`, `CE`, `DA`. Give each its own icon colour.
-5. **Edit → Permissions:** turn **Send links** off for members, **Slow mode: 10 s**, chat history for new members **Visible**.
-6. Link it to the **hub** channel: hub channel → Edit → **Discussion** → pick this group. Now every hub post gets a **Comments** button.
-7. In **📣 Start here** post and pin the rules (section 5).
-
-Branch channels do not need their own comment group: their posts end with a *Discuss* link that goes to the branch topic.
-
-### 3.4 One folder to join everything
-1. Telegram → **Settings → Folders → Create New Folder**, name `GATE 2027`.
-2. Add the hub, all 6 branch channels and the discussion group.
-3. Tap the folder → **Share** → **Create invite link**. Copy it. This is the link you put in Instagram bio, YouTube description, website and the app.
-
-### 3.5 The bot (if you do not have one yet)
-Follow Part 3 of `TELEGRAM_SETUP_AND_PROMOTION.md` (BotFather, `/newbot`). Then make it **admin with only Post messages** in the hub and the six branch channels.
-
-### 3.6 Connect it to the automation (GitHub secrets)
-On a laptop: GitHub → repository → **Settings → Secrets and variables → Actions → New repository secret**. Add, one by one (value = the channel's `@username`, with the @):
-
-| Secret | Value |
+| Secret name | Value |
 |---|---|
-| `TELEGRAM_CHANNEL` | `@renyxera` (already set if you did the old setup) |
-| `TELEGRAM_CHANNEL_CS` | `@renyxera_cs` |
-| `TELEGRAM_CHANNEL_EC` | `@renyxera_ec` |
-| `TELEGRAM_CHANNEL_EE` | `@renyxera_ee` |
-| `TELEGRAM_CHANNEL_ME` | `@renyxera_me` |
-| `TELEGRAM_CHANNEL_CE` | `@renyxera_ce` |
-| `TELEGRAM_CHANNEL_DA` | `@renyxera_da` |
-| `TELEGRAM_DISCUSS` | `t.me/renyxera_chat` |
+| `TELEGRAM_CHANNEL_CS` | `@renyxera_gate_cs` |
+| `TELEGRAM_CHANNEL_EC` | `@renyxera_gate_ece` |
+| `TELEGRAM_CHANNEL_EE` | `@renyxera_gate_ee` |
+| `TELEGRAM_CHANNEL_ME` | `@renyxera_gate_me` |
+| `TELEGRAM_CHANNEL_CE` | `@renyxera_gate_ce` |
+| `TELEGRAM_CHANNEL_DA` | `@renyxera_gate_da` |
+| `TELEGRAM_DISCUSS` | your discussion group link, e.g. `t.me/renyxera_chat` |
 
-Test: **Actions → Telegram daily question → Run workflow.** Seven jobs run (hub plus six branches); a branch without its secret skips quietly and stays green. Every morning at 08:00 IST: the hub gets the rotating question, each branch channel gets its own branch's official question with yesterday's answer.
+(Note the secret name for Electronics is `_EC` and Civil is `_CE`; those are the paper codes the script uses. The usernames can differ.) `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHANNEL` stay as they are.
 
-*(The code for this is already in the repo: `scripts/telegram-daily.mjs` with `POST_BRANCH`, and `.github/workflows/telegram-daily.yml`.)*
+### Step E. Make the one-tap folder link (3 min)
+1. Telegram → **Settings → Folders → Create New Folder**, name it `GATE 2027`.
+2. Add chats: the hub, the six branch channels, the discussion group.
+3. Open the folder → **Share** → **Create invite link**. Copy it. Send it to me and I will put it on the website and in the posts.
 
-## 4. Daily and weekly rhythm
+### Step F. Test (2 min)
+GitHub → **Actions** → **Telegram daily question** → **Run workflow**. Seven jobs run. Open each channel: the hub shows the rotating question; each branch channel shows its own branch's question. A branch whose secret is missing skips quietly (green).
+If a job is red, open it: `chat not found` means the secret value is wrong or the channel is not public; `bot is not a member` means redo step C3 for that channel.
+
+From then on everything posts by itself at 08:00 IST.
+
+---
+
+## 2. Naming and SEO wording (already used above)
+Telegram search matches the **name**, **username** and **description**, so each contains the exam, year and branch words people type: `GATE`, `2027`, `PYQ`, `CS/ECE/EE/Mechanical/Civil/DA`. Keep the first line of every description meaningful; it shows in search results.
+
+## 3. Daily and weekly rhythm
 
 | When | Hub | Branch channels |
 |---|---|---|
@@ -123,7 +95,7 @@ Test: **Actions → Telegram daily question → Run workflow.** Seven jobs run (
 
 Paid plans appear naturally, not as ads: in the hub, one post a week showing a real feature (AI mentor explaining a wrong answer, the weekly plan, Telegram nudges), with the Plans link and `utm_campaign=hub_feature`. Always tag links `utm_source=telegram&utm_medium=<channel>&utm_campaign=<post>`.
 
-## 5. Pinned messages (copy and paste)
+## 4. Pinned messages (copy and paste)
 
 **Hub / each branch channel (pin):**
 ```
@@ -142,13 +114,13 @@ Paid plans appear naturally, not as ads: in the hub, one post a week showing a r
 Pick your branch topic below. Questions go in ❓ Doubts with the paper, year and question number.
 ```
 
-## 6. Moderation and safety
+## 5. Moderation and safety
 - Ban anyone who shares pirated books or paid-course PDFs; delete the post, do not argue.
 - Add one trusted moderator per two topics when a topic passes about 200 members (Administrators → add, give *Delete messages* and *Ban users* only).
 - Never DM links to students first; the bot never asks for passwords or payments.
 - Do not buy members. It destroys reach and the channel rating.
 
-## 7. SEO for Telegram
+## 6. SEO for Telegram
 
 Telegram has its own discovery layers; Google also indexes public channels.
 
@@ -157,14 +129,14 @@ Telegram has its own discovery layers; Google also indexes public channels.
    - Start each daily post with the keyword form: `GATE CS 2023 (Forenoon) · Q34 · Data Structures`. The script already does this.
    - Use 2 or 3 hashtags at the end: `#GATE2027 #GATECS #GATEPYQ` (branch-specific: `#GATEECE`, `#GATEME`…). Do not pile on more.
    - Each post links to the matching question page on the website, so Google sees a trusted link from Telegram to a real page.
-3. **Link back from the website:** the website footer, the branch pages and the About page should link to the channels (`rel="noopener"`), and the site's structured data should list them under `sameAs` (see section 8).
+3. **Link back from the website:** the website footer, the branch pages and the About page should link to the channels (`rel="noopener"`), and the site's structured data should list them under `sameAs` (see section 7).
 4. **Description and pinned post** carry the website link with UTM tags, so you can see in `weekly_growth_metrics()` which channel brings sign-ups.
 5. **Directories (free, one time):** submit each channel to tgstat.com (also gives analytics), telemetr.io, and the Telegram channel directories listed in the old playbook. Use the same name and description.
 6. **Verified look:** keep the name, photo and description identical in style across all channels. Consistent branding makes forwards recognisable.
 7. **Shareability:** keep *Restrict Saving Content* off, and end every post with the short channel link so forwarded copies still point home.
 8. **Cross-promotion:** Instagram bio and YouTube description carry the folder link; the channel description carries the website link.
 
-## 8. SEO for the website
+## 7. SEO for the website
 
 Existing: `app/sitemap.ts` (branch pages, every PYQ paper and question, syllabus, tools, topics), `app/robots.ts`, branch landing pages `/gate-cse` … `/gate-da`. What to improve, in order of payoff:
 
@@ -183,9 +155,7 @@ Existing: `app/sitemap.ts` (branch pages, every PYQ paper and question, syllabus
 
 Keywords to target by page (students type these): *GATE CS previous year questions with solutions*, *GATE 2027 syllabus <branch>*, *GATE <branch> cutoff 2026*, *GATE <branch> most repeated topics*, *GATE score calculator*, *GATE study plan 90 days*.
 
-## 9. Order of work (30 minutes of your time, then it runs)
-1. Create the hub, six branch channels and the discussion group (sections 3.1–3.3), 20 minutes.
-2. Make the folder link (3.4) and add the bot as admin (3.5), 5 minutes.
-3. Add the 8 secrets (3.6) and run the workflow once, 5 minutes.
-4. Put the folder link in the Instagram bio, YouTube description and, later, on the website.
-5. I do the website SEO items 1–6 and 8 in code after you confirm the channel usernames.
+## 8. After setup
+1. Put the folder link in the Instagram bio, the YouTube channel description and the website footer.
+2. Send me the final usernames and the folder link: I add them to the website footer, branch pages and structured data (SEO items 1 to 6 and 8 above).
+3. Weekly, check subscribers and views per channel, and sign-ups by `utm_source=telegram` (`select * from weekly_growth_metrics(4);`).
