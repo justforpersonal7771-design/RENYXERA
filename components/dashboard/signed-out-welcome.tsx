@@ -5,6 +5,7 @@ import { ArrowRight, BarChart3, BrainCircuit, CloudUpload, RefreshCw } from "luc
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { BANK_SUMMARY } from "@/lib/branches";
+import { PromoVideo } from "@/components/marketing/promo-video";
 
 const TOTAL_QUESTIONS = Object.values(BANK_SUMMARY).reduce((n, b) => n + (b?.questions ?? 0), 0);
 const PAPERS = Object.keys(BANK_SUMMARY).length;
@@ -40,6 +41,7 @@ export function SignedOutWelcome() {
         </button>
         <Link href="/pyq" className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">Browse the official papers →</Link>
       </div>
+      <PromoVideo className="mt-6 max-w-3xl" />
       <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {PERKS.map((p) => (
           <li key={p.title} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 p-3.5">
