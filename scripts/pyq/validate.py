@@ -48,6 +48,8 @@ def words(s: str) -> set[str]:
 
 def numbers(s: str) -> set[str]:
     out = set()
+    # some 2022 papers draw brackets with Malayalam-digit glyphs (U+0D66-0D6F); NFKC would turn them into digits
+    s = re.sub("[\u0d66-\u0d6f]", " ", s)
     for n in NUM.findall(unicodedata.normalize("NFKC", s)):
         try:
             v = float(n)
@@ -65,7 +67,7 @@ def question_regions(work: Path, pages: int) -> dict[int, str]:
         if p.exists():
             text += "\n" + p.read_text(encoding="utf-8")
     # section headers ("Q.11 - Q.35 Carry ONE mark Each") are not question markers
-    text = re.sub(r"Q\.\s?\d{1,2}\s*[-\u2013]\s*Q\.\s?\d{1,2}\s*Carry \w+ marks? Each", " ", text, flags=re.I)
+    text = re.sub(r"Q\.\s?\d{1,2}\s*[-\u2013]\s*(Q\.\s?)?\d{1,2}\s*Carry \w+ marks? Each", " ", text, flags=re.I)
     spans = [(int(m.group(1)), m.start(), m.end()) for m in re.finditer(r"(?<![\w.])Q\.\s?(\d{1,2})(?!\d)", text)]
     regions: dict[int, str] = {}
     for idx, (n, _s, e) in enumerate(spans):
@@ -73,7 +75,7 @@ def question_regions(work: Path, pages: int) -> dict[int, str]:
         chunk = text[e:end]
         # drop repeated page furniture lines
         chunk = re.split(r"Q\. No\. Session Question Type", chunk)[0]  # answer-key table appended to the paper (2022)
-        chunk = re.sub(r"(?i)((gate 20\d\d )?(electronics (and|&) communications? engineering \(ec\)|electrical engineering \(ee\)|mechanical engineering \(me\)|civil engineering( set \d)? \(ce[12]?\)( set \d)?|data science (and|&) artificial intelligence( \(da\)| - da))|gate 20\d\d \(me set-\d\) mechanical engineering|\bme-\d\b|q\.? ?\d+ ?[-–] ?(q\.? ?)?\d+ carry (one|two) marks? each\.?|page \d+( of \d+)?|end of (the )?question paper|organi[sz]ing institute:? (iit \w+|iisc,? bengaluru|iisc,? bangalore))", " ", chunk)
+        chunk = re.sub(r"(?i)((gate 20\d\d )?(electronics (and|&) communications? engineering \(ec\)|electrical engineering \(ee\)|mechanical engineering \(me\)|civil engineering( set \d)? \(ce[12]?\)( set \d)?|data science (and|&) artificial intelligence( \(da\)| - da))|gate 20\d\d \(me set-\d\) mechanical engineering|gate 20\d\d \(ce set-\d\) civil engineering|\b(me|ce)-\d\b|q\.? ?\d+ ?[-–] ?(q\.? ?)?\d+ carry (one|two) marks? each\.?|page \d+( of \d+)?|end of (the )?question paper|organi[sz]ing institute:? (iit \w+|iisc,? bengaluru|iisc,? bangalore))", " ", chunk)
         regions.setdefault(n, chunk)
     return regions
 

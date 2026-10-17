@@ -16647,5 +16647,2031 @@
         "nat_answer_range": "137.5 to 137.73"
       }
     ]
+  },
+  {
+    "exam_metadata": {
+      "year-shift": "2022"
+    },
+    "questions": [
+      {
+        "question_no": 1,
+        "question_id": "GATE_CE_2022_Q1",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic English grammar",
+        "difficulty": "Easy",
+        "question_text": "You should _________ when to say _________.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "no / no",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "no / know",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "know / know",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "know / no",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 2,
+        "question_id": "GATE_CE_2022_Q2",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Easy",
+        "question_text": "Two straight lines pass through the origin \\((x_0, y_0) = (0,0)\\). One of them passes through the point \\((x_1, y_1) = (1,3)\\) and the other passes through the point \\((x_2, y_2) = (1,2)\\).\nWhat is the area enclosed between the straight lines in the interval \\([0, 1]\\) on the \\(x\\)-axis?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "0.5",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1.0",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1.5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "2.0",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 3,
+        "question_id": "GATE_CE_2022_Q3",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Easy",
+        "question_text": "If\n\\(p : q = 1 : 2\\)\n\\(q : r = 4 : 3\\)\n\\(r : s = 4 : 5\\)\nand \\(u\\) is 50% more than \\(s\\), what is the ratio \\(p : u\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "2 : 15",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "16 : 15",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1 : 5",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "16 : 45",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 4,
+        "question_id": "GATE_CE_2022_Q4",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Analytical Aptitude",
+        "topic": "Logic: deduction and induction",
+        "difficulty": "Easy",
+        "question_text": "Given the statements:\n• P is the sister of Q.\n• Q is the husband of R.\n• R is the mother of S.\n• T is the husband of P.\nBased on the above information, T is ______ of S.",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "the grandfather",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "an uncle",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "the father",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "a brother",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 5,
+        "question_id": "GATE_CE_2022_Q5",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Transformation of shapes",
+        "difficulty": "Medium",
+        "question_text": "In the following diagram, the point R is the center of the circle. The lines PQ and ZV are tangential to the circle. The relation among the areas of the squares, PXWR, RUVZ and SPQT is\n[IMAGE_Q_05_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_05_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Area of SPQT = Area of RUVZ = Area of PXWR",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Area of SPQT = Area of PXWR − Area of RUVZ",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Area of PXWR = Area of SPQT − Area of RUVZ",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Area of PXWR = Area of RUVZ − Area of SPQT",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 6,
+        "question_id": "GATE_CE_2022_Q6",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Verbal Aptitude",
+        "topic": "Basic vocabulary",
+        "difficulty": "Easy",
+        "question_text": "Healthy eating is a critical component of healthy aging. When should one start eating healthy? It turns out that it is never too early. For example, babies who start eating healthy in the first year are more likely to have better overall health as they get older.\nWhich one of the following is the CORRECT logical inference based on the information in the above passage?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Healthy eating is important for those with good health conditions, but not for others",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Eating healthy can be started at any age, earlier the better",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Eating healthy and better overall health are more correlated at a young age, but not older age",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Healthy eating is more important for adults than kids",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 7,
+        "question_id": "GATE_CE_2022_Q7",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Numerical computation and estimation",
+        "difficulty": "Medium",
+        "question_text": "P invested ₹ 5000 per month for 6 months of a year and Q invested ₹ \\(x\\) per month for 8 months of the year in a partnership business. The profit is shared in proportion to the total investment made in that year.\nIf at the end of that investment year, Q receives \\(\\frac{4}{9}\\) of the total profit, what is the value of \\(x\\) (in ₹)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "2500",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "3000",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "4687",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "8437",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 8,
+        "question_id": "GATE_CE_2022_Q8",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Quantitative Aptitude",
+        "topic": "Mensuration and geometry",
+        "difficulty": "Medium",
+        "question_text": "[IMAGE_Q_08_1]\nThe above frequency chart shows the frequency distribution of marks obtained by a set of students in an exam.\nFrom the data presented above, which one of the following is CORRECT?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_08_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "mean > mode > median",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "mode > median > mean",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "mode > mean > median",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "median > mode > mean",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 9,
+        "question_id": "GATE_CE_2022_Q9",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Transformation of shapes",
+        "difficulty": "Medium",
+        "question_text": "In the square grid shown on the left, a person standing at P2 position is required to move to P5 position.\nThe only movement allowed for a step involves, “two moves along one direction followed by one move in a perpendicular direction”. The permissible directions for movement are shown as dotted arrows in the right.\nFor example, a person at a given position Y can move only to the positions marked X on the right.\nWithout occupying any of the shaded squares at the end of each step, the minimum number of steps required to go from P2 to P5 is\n[IMAGE_Q_09_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_09_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "4",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "5",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "6",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "7",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 10,
+        "question_id": "GATE_CE_2022_Q10",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "GENERAL APTITUDE (GA)",
+        "subject": "Spatial Aptitude",
+        "topic": "Transformation of shapes",
+        "difficulty": "Medium",
+        "question_text": "[IMAGE_Q_10_1]\nConsider a cube made by folding a single sheet of paper of appropriate shape. The interior faces of the cube are all blank. However, the exterior faces that are not visible in the above view may not be blank.\nWhich one of the following represents a possible unfolding of the cube?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_10_1",
+          "IMAGE_Q_10_A",
+          "IMAGE_Q_10_B",
+          "IMAGE_Q_10_C",
+          "IMAGE_Q_10_D"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "[IMAGE_Q_10_A]",
+            "is_correct": true,
+            "has_image": true
+          },
+          {
+            "option_id": "B",
+            "text": "[IMAGE_Q_10_B]",
+            "is_correct": true,
+            "has_image": true
+          },
+          {
+            "option_id": "C",
+            "text": "[IMAGE_Q_10_C]",
+            "is_correct": true,
+            "has_image": true
+          },
+          {
+            "option_id": "D",
+            "text": "[IMAGE_Q_10_D]",
+            "is_correct": true,
+            "has_image": true
+          }
+        ],
+        "nat_answer_range": "-1000000000 to 1000000000"
+      },
+      {
+        "question_no": 11,
+        "question_id": "GATE_CE_2022_Q11",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Ordinary Differential Equation (ODE)",
+        "topic": "initial and boundary value problems",
+        "difficulty": "Medium",
+        "question_text": "Consider the following expression:\n\\[z = \\sin(y + it) + \\cos(y - it)\\]\nwhere \\(z\\), \\(y\\), and \\(t\\) are variables, and \\(i = \\sqrt{-1}\\) is a complex number. The partial differential equation derived from the above expression is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\dfrac{\\partial^2 z}{\\partial t^2} + \\dfrac{\\partial^2 z}{\\partial y^2} = 0\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{\\partial^2 z}{\\partial t^2} - \\dfrac{\\partial^2 z}{\\partial y^2} = 0\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\dfrac{\\partial z}{\\partial t} - i\\dfrac{\\partial z}{\\partial y} = 0\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\dfrac{\\partial z}{\\partial t} + i\\dfrac{\\partial z}{\\partial y} = 0\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 12,
+        "question_id": "GATE_CE_2022_Q12",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Ordinary Differential Equation (ODE)",
+        "topic": "First order (linear and non-linear) equations",
+        "difficulty": "Easy",
+        "question_text": "For the equation\n\\[\\frac{d^3y}{dx^3} + x\\left(\\frac{dy}{dx}\\right)^{3/2} + x^2y = 0\\]\nthe correct description is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "an ordinary differential equation of order 3 and degree 2.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "an ordinary differential equation of order 3 and degree 3.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "an ordinary differential equation of order 2 and degree 3.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "an ordinary differential equation of order 3 and degree 3/2.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 13,
+        "question_id": "GATE_CE_2022_Q13",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple bending theory, flexural and shear stresses, shear centre",
+        "difficulty": "Easy",
+        "question_text": "The hoop stress at a point on the surface of a thin cylindrical pressure vessel is computed to be 30.0 MPa. The value of maximum shear stress at this point is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "7.5 MPa",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "15.0 MPa",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "30.0 MPa",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "22.5 MPa",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 14,
+        "question_id": "GATE_CE_2022_Q14",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Concrete Structures",
+        "topic": "Working stress and limit state design concepts",
+        "difficulty": "Easy",
+        "question_text": "In the context of elastic theory of reinforced concrete, the modular ratio is defined as the ratio of",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Young’s modulus of elasticity of reinforcement material to Young’s modulus of elasticity of concrete.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Young’s modulus of elasticity of concrete to Young’s modulus of elasticity of reinforcement material.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "shear modulus of reinforcement material to the shear modulus of concrete.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Young’s modulus of elasticity of reinforcement material to the shear modulus of concrete.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 15,
+        "question_id": "GATE_CE_2022_Q15",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Construction Materials",
+        "topic": "Steel – Composition, material properties and behaviour",
+        "difficulty": "Easy",
+        "question_text": "Which of the following equations is correct for the Pozzolanic reaction?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Ca(OH)\\(_2\\) + Reactive Superplasticiser + H\\(_2\\)O → C-S-H",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Ca(OH)\\(_2\\) + Reactive Silicon dioxide + H\\(_2\\)O → C-S-H",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Ca(OH)\\(_2\\) + Reactive Sulphates + H\\(_2\\)O → C-S-H",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Ca(OH)\\(_2\\) + Reactive Sulphur + H\\(_2\\)O → C-S-H",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 16,
+        "question_id": "GATE_CE_2022_Q16",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple stress and strain relationships",
+        "difficulty": "Medium",
+        "question_text": "Consider the cross-section of a beam made up of thin uniform elements having thickness \\(t\\ (t \\ll a)\\) shown in the figure. The \\((x, y)\\) coordinates of the points along the center-line of the cross-section are given in the figure.\n[IMAGE_Q_16_1]\nThe coordinates of the shear center of this cross-section are:",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_16_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(x = 0,\\ y = 3a\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(x = 2a,\\ y = 2a\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(x = -a,\\ y = 2a\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(x = -2a,\\ y = a\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 17,
+        "question_id": "GATE_CE_2022_Q17",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Permeability – one dimensional flow, Seepage through soils – two-dimensional flow, flow nets, uplift pressure, piping, capillarity, seepage force",
+        "difficulty": "Easy",
+        "question_text": "Four different soils are classified as CH, ML, SP, and SW, as per the Unified Soil Classification System. Which one of the following options correctly represents their arrangement in the decreasing order of hydraulic conductivity?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "SW, SP, ML, CH",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "CH, ML, SP, SW",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "SP, SW, CH, ML",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "ML, SP, CH, SW",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 18,
+        "question_id": "GATE_CE_2022_Q18",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Stress distribution in soils – Boussinesq’s theory",
+        "difficulty": "Easy",
+        "question_text": "Let \\(\\sigma_v'\\) and \\(\\sigma_h'\\) denote the effective vertical stress and effective horizontal stress, respectively. Which one of the following conditions must be satisfied for a soil element to reach the failure state under Rankine’s passive earth pressure condition?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\sigma_v' < \\sigma_h'\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\sigma_v' > \\sigma_h'\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(\\sigma_v' = \\sigma_h'\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\sigma_v' + \\sigma_h' = 0\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 19,
+        "question_id": "GATE_CE_2022_Q19",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Fluid Mechanics",
+        "topic": "Flow in pipes, pipe networks",
+        "difficulty": "Easy",
+        "question_text": "With respect to fluid flow, match the following in Column X with Column Y:\n[IMAGE_Q_19_1]\nWhich one of the following combinations is correct?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_19_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "(P) – (II), (Q) – (IV), (R) – (I), (S) – (III)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "(P) – (III), (Q) – (IV), (R) – (I), (S) – (II)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "(P) – (IV), (Q) – (II), (R) – (I), (S) – (III)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "(P) – (II), (Q) – (IV), (R) – (III), (S) – (I)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 20,
+        "question_id": "GATE_CE_2022_Q20",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Permeability – one dimensional flow, Seepage through soils – two-dimensional flow, flow nets, uplift pressure, piping, capillarity, seepage force",
+        "difficulty": "Easy",
+        "question_text": "Let \\(\\psi\\) represent soil suction head and \\(K\\) represent hydraulic conductivity of the soil. If the soil moisture content \\(\\theta\\) increases, which one of the following statements is TRUE?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\psi\\) decreases and \\(K\\) increases.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\psi\\) increases and \\(K\\) decreases.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Both \\(\\psi\\) and \\(K\\) decrease.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Both \\(\\psi\\) and \\(K\\) increase.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 21,
+        "question_id": "GATE_CE_2022_Q21",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Easy",
+        "question_text": "A rectangular channel with Gradually Varied Flow (GVF) has a changing bed slope. If the change is from a steeper slope to a steep slope, the resulting GVF profile is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "S\\(_3\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "S\\(_1\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "S\\(_2\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "either S\\(_1\\) or S\\(_2\\), depending on the magnitude of the slopes",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 22,
+        "question_id": "GATE_CE_2022_Q22",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Easy",
+        "question_text": "The total hardness in raw water is 500 milligram per liter as CaCO\\(_3\\). The total hardness of this raw water, expressed in milligram equivalent per liter, is\n(Consider the atomic weights of Ca, C, and O as 40 g/mol, 12 g/mol, and 16 g/mol, respectively.)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "10",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "100",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "5",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 23,
+        "question_id": "GATE_CE_2022_Q23",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Total station",
+        "difficulty": "Easy",
+        "question_text": "An aerial photograph is taken from a flight at a height of 3.5 km above mean sea level, using a camera of focal length 152 mm. If the average ground elevation is 460 m above mean sea level, then the scale of the photograph is",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1 : 20000",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1 : 20",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1 : 100000",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "1 : 2800",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 24,
+        "question_id": "GATE_CE_2022_Q24",
+        "question_type": "MCQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Plane and geodetic surveying, GNSS surveying, errors and their adjustment",
+        "difficulty": "Easy",
+        "question_text": "A line between stations P and Q laid on a slope of 1 in 5 was measured as 350 m using a 50 m tape. The tape is known to be short by 0.1 m.\nThe corrected horizontal length (in m) of the line PQ will be",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "342.52",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "349.30",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "356.20",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "350.70",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 25,
+        "question_id": "GATE_CE_2022_Q25",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "eigenvalues and eigenvectors",
+        "difficulty": "Medium",
+        "question_text": "The matrix \\(\\mathbf{M}\\) is defined as\n\\[\\mathbf{M} = \\begin{bmatrix} 1 & 3 \\\\ 4 & 2 \\end{bmatrix}\\]\nand has eigenvalues 5 and −2. The matrix \\(\\mathbf{Q}\\) is formed as\n\\[\\mathbf{Q} = \\mathbf{M}^3 - 4\\mathbf{M}^2 - 2\\mathbf{M}\\]\nWhich of the following is/are the eigenvalue(s) of matrix \\(\\mathbf{Q}\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "15",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "25",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "−20",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "−30",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 26,
+        "question_id": "GATE_CE_2022_Q26",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Drinking water treatment",
+        "difficulty": "Easy",
+        "question_text": "For wastewater coming from a wood pulping industry, Chemical Oxygen Demand (COD) and 5-day Biochemical Oxygen Demand (BOD\\(_5\\)) were determined. For this wastewater, which of the following statement(s) is/are correct?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "COD > BOD\\(_5\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "COD ≠ BOD\\(_5\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "COD < BOD\\(_5\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "COD = BOD\\(_5\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 27,
+        "question_id": "GATE_CE_2022_Q27",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Easy",
+        "question_text": "Which of the following process(es) can be used for conversion of salt water into fresh water?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Microfiltration",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Electrodialysis",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Ultrafiltration",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Reverse osmosis",
+            "is_correct": true,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 28,
+        "question_id": "GATE_CE_2022_Q28",
+        "question_type": "MSQ",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Traffic studies on flow and speed, peak hour factor, accident study, statistical analysis of traffic data",
+        "difficulty": "Easy",
+        "question_text": "A horizontal curve is to be designed in a region with limited space. Which of the following measure(s) can be used to decrease the radius of curvature?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Decrease the design speed.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Increase the superelevation.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Increase the design speed.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Restrict vehicles with higher weight from using the facility.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 29,
+        "question_id": "GATE_CE_2022_Q29",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Numerical Methods",
+        "topic": "Numerical solutions of linear and nonlinear algebraic equations",
+        "difficulty": "Medium",
+        "question_text": "Consider the following recursive iteration scheme for different values of variable \\(P\\) with the initial guess \\(x_1 = 1\\):\n\\[x_{n+1} = \\frac{1}{2}\\left(x_n + \\frac{P}{x_n}\\right),\\quad n = 1, 2, 3, 4, 5\\]\nFor \\(P = 2\\), \\(x_5\\) is obtained to be 1.414, rounded-off to three decimal places. For \\(P = 3\\), \\(x_5\\) is obtained to be 1.732, rounded-off to three decimal places.\nIf \\(P = 10\\), the numerical value of \\(x_5\\) is _________ . (round off to three decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "3.1 to 3.2"
+      },
+      {
+        "question_no": 30,
+        "question_id": "GATE_CE_2022_Q30",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Evaluation of definite and indefinite integrals, application of definite integral to obtain area and volume",
+        "difficulty": "Medium",
+        "question_text": "The Fourier cosine series of a function is given by:\n\\[f(x) = \\sum_{n=0}^{\\infty} f_n \\cos nx\\]\nFor \\(f(x) = \\cos^4 x\\), the numerical value of \\((f_4 + f_5)\\) is ______ . (round off to three decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.12 to 0.13"
+      },
+      {
+        "question_no": 31,
+        "question_id": "GATE_CE_2022_Q31",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Three-phase system and phase relationships, index properties",
+        "difficulty": "Easy",
+        "question_text": "An uncompacted heap of soil has a volume of 10000 m\\(^3\\) and void ratio of 1. If the soil is compacted to a volume of 7500 m\\(^3\\), then the corresponding void ratio of the compacted soil is __________. (round off to one decimal place)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.5 to 0.5"
+      },
+      {
+        "question_no": 32,
+        "question_id": "GATE_CE_2022_Q32",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Compaction of soils",
+        "difficulty": "Easy",
+        "question_text": "A concentrated vertical load of 3000 kN is applied on a horizontal ground surface. Points P and Q are at depths 1 m and 2 m below the ground, respectively, along the line of application of the load. Considering the ground to be a linearly elastic, isotropic, semi-infinite medium, the ratio of the increase in vertical stress at P to the increase in vertical stress at Q is ________. (in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "4 to 4"
+      },
+      {
+        "question_no": 33,
+        "question_id": "GATE_CE_2022_Q33",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Ground improvement techniques",
+        "difficulty": "Easy",
+        "question_text": "At a site, Static Cone Penetration Test was carried out. The measured point (tip) resistance \\(q_c\\) was 1000 kPa at a certain depth. The friction ratio (\\(f_r\\)) was estimated as 1 % at the same depth.\nThe value of sleeve (side) friction (in kPa) at that depth was ___________________ . (in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "10 to 10"
+      },
+      {
+        "question_no": 34,
+        "question_id": "GATE_CE_2022_Q34",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Irrigation",
+        "topic": "Types of irrigation systems and methods",
+        "difficulty": "Medium",
+        "question_text": "During a particular stage of the growth of a crop, the consumptive use of water is 2.8 mm/day. The amount of water available in the soil is 50 % of the maximum depth of available water in the root zone. Consider the maximum root zone depth of the crop as 80 mm and the irrigation efficiency as 70 %.\nThe interval between irrigation (in days) will be _________. (round off to the nearest integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "-1000000000 to 1000000000"
+      },
+      {
+        "question_no": 35,
+        "question_id": "GATE_CE_2022_Q35",
+        "question_type": "NAT",
+        "marks": 1,
+        "section": "CORE CE",
+        "subject": "Surveying",
+        "topic": "Maps – Scale, coordinate system",
+        "difficulty": "Easy",
+        "question_text": "The bearing of a survey line is N31°17′W. Its azimuth observed from north is ______ deg. (round off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "328.6 to 328.8"
+      },
+      {
+        "question_no": 36,
+        "question_id": "GATE_CE_2022_Q36",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Linear Algebra",
+        "topic": "Matrix algebra",
+        "difficulty": "Medium",
+        "question_text": "The Cartesian coordinates of a point P in a right-handed coordinate system are (1, 1, 1). The transformed coordinates of P due to a 45° clockwise rotation of the coordinate system about the positive \\(x\\)-axis are",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\((1, 0, \\sqrt{2})\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\((1, 0, -\\sqrt{2})\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\((-1, 0, \\sqrt{2})\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\((-1, 0, -\\sqrt{2})\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 37,
+        "question_id": "GATE_CE_2022_Q37",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Solid Mechanics",
+        "topic": "Simple stress and strain relationships",
+        "difficulty": "Medium",
+        "question_text": "A semi-circular bar of radius \\(R\\) m, in a vertical plane, is fixed at the end G, as shown in the figure. A horizontal load of magnitude \\(P\\) kN is applied at the end H. The magnitude of the axial force, shear force, and bending moment at point Q for \\(\\theta = 45°\\), respectively, are\n[IMAGE_Q_37_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_37_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(\\dfrac{P}{\\sqrt{2}}\\) kN, \\(\\dfrac{P}{\\sqrt{2}}\\) kN, and \\(\\dfrac{PR}{\\sqrt{2}}\\) kNm",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(\\dfrac{P}{\\sqrt{2}}\\) kN, \\(\\dfrac{P}{\\sqrt{2}}\\) kN, and 0 kNm",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "0 kN, \\(\\dfrac{P}{\\sqrt{2}}\\) kN, and \\(\\dfrac{PR}{\\sqrt{2}}\\) kNm",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(\\dfrac{P}{\\sqrt{2}}\\) kN, 0 kN, and \\(\\dfrac{PR}{\\sqrt{2}}\\) kNm",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 38,
+        "question_id": "GATE_CE_2022_Q38",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Steel Structures",
+        "topic": "Design of tension and compression members, beams and beam-columns, column bases",
+        "difficulty": "Medium",
+        "question_text": "A weld is used for joining an angle section ISA 100 mm × 100 mm × 10 mm to a gusset plate of thickness 15 mm to transmit a tensile load. The permissible stress in the angle is 150 MPa and the permissible shear stress on the section through the throat of the fillet weld is 108 MPa. The location of the centroid of the angle is represented by \\(C_{yy}\\) in the figure, where \\(C_{yy}\\) = 28.4 mm. The area of cross-section of the angle is 1903 mm\\(^2\\). Assuming the effective throat thickness of the weld to be 0.7 times the given weld size, the lengths \\(L_1\\) and \\(L_2\\) (rounded-off to the nearest integer) of the weld required to transmit a load equal to the full strength of the tension member are, respectively\n[IMAGE_Q_38_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_38_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "541 mm and 214 mm",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "214 mm and 541 mm",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "380 mm and 151 mm",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "151 mm and 380 mm",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 39,
+        "question_id": "GATE_CE_2022_Q39",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Construction Materials",
+        "topic": "Concrete – Constituents, mix design, short-term and long-term properties",
+        "difficulty": "Easy",
+        "question_text": "The project activities are given in the following table along with the duration and dependency.\n[IMAGE_Q_39_1]\nWhich one of the following combinations is correct?",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_39_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Total duration of the project = 22 days, Critical path is Q → S",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Total duration of the project = 20 days, Critical path is Q → T",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Total duration of the project = 22 days, Critical path is P → T",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Total duration of the project = 20 days, Critical path is P → R",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 40,
+        "question_id": "GATE_CE_2022_Q40",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Unified and Indian standard soil classification system",
+        "difficulty": "Medium",
+        "question_text": "The correct match between the physical states of the soils given in Group I and the governing conditions given in Group II is\n[IMAGE_Q_40_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_40_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "1-S, 2-P, 3-Q, 4-R",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "1-Q, 2-S, 3-P, 4-R",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "1-Q, 2-P, 3-R, 4-S",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "1-S, 2-Q, 3-P, 4-R",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 41,
+        "question_id": "GATE_CE_2022_Q41",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Stress distribution in soils – Boussinesq’s theory",
+        "difficulty": "Medium",
+        "question_text": "As per Rankine’s theory of earth pressure, the inclination of failure planes is \\(\\left(45 + \\frac{\\phi}{2}\\right)°\\) with respect to the direction of the minor principal stress.\nThe above statement is correct for which one of the following options?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "Only the active state and not the passive state",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Only the passive state and not the active state",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "Both active as well as passive states",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "Neither active nor passive state",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 42,
+        "question_id": "GATE_CE_2022_Q42",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Basics of water quality standards – Physical, chemical and biological parameters",
+        "difficulty": "Medium",
+        "question_text": "Henry’s law constant for transferring O\\(_2\\) from air into water, at room temperature, is 1.3 \\(\\dfrac{\\text{mmol}}{\\text{liter-atm}}\\). Given that the partial pressure of O\\(_2\\) in the atmosphere is 0.21 atm, the concentration of dissolved oxygen (mg/liter) in water in equilibrium with the atmosphere at room temperature is\n(Consider the molecular weight of O\\(_2\\) as 32 g/mol)",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "8.7",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "0.8",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "198.1",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "0.2",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 43,
+        "question_id": "GATE_CE_2022_Q43",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Medium",
+        "question_text": "In a water sample, the concentrations of Ca\\(^{2+}\\), Mg\\(^{2+}\\) and HCO\\(_3^-\\) are 100 mg/L, 36 mg/L and 122 mg/L, respectively. The atomic masses of various elements are: Ca = 40, Mg = 24, H = 1, C = 12, O = 16.\nThe total hardness and the temporary hardness in the water sample (in mg/L as CaCO\\(_3\\)) will be",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "400 and 100, respectively.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "400 and 300, respectively.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "500 and 100, respectively.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "800 and 200, respectively.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 44,
+        "question_id": "GATE_CE_2022_Q44",
+        "question_type": "MCQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Signal design by Webster’s method",
+        "difficulty": "Medium",
+        "question_text": "Consider the four points P, Q, R, and S shown in the Greenshields fundamental speed-flow diagram. Denote their corresponding traffic densities by \\(k_P\\), \\(k_Q\\), \\(k_R\\), and \\(k_S\\), respectively. The correct order of these densities is\n[IMAGE_Q_44_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_44_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "\\(k_P > k_Q > k_R > k_S\\)",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "\\(k_S > k_R > k_Q > k_P\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "\\(k_Q > k_R > k_S > k_P\\)",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "\\(k_Q > k_R > k_P > k_S\\)",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 45,
+        "question_id": "GATE_CE_2022_Q45",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Calculus",
+        "topic": "Mean value theorems, local maxima and minima",
+        "difficulty": "Medium",
+        "question_text": "Let max {a, b} denote the maximum of two real numbers a and b. Which of the following statement(s) is/are TRUE about the function \\(f(x) = \\max\\{3 - x,\\ x - 1\\}\\)?",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "It is continuous on its domain.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "It has a local minimum at \\(x = 2\\).",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "It has a local maximum at \\(x = 2\\).",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "It is differentiable on its domain.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 46,
+        "question_id": "GATE_CE_2022_Q46",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Engineering Mechanics",
+        "topic": "System of forces, free-body diagrams, equilibrium equations",
+        "difficulty": "Medium",
+        "question_text": "A horizontal force of \\(P\\) kN is applied to a homogeneous body of weight 25 kN, as shown in the figure. The coefficient of friction between the body and the floor is 0.3. Which of the following statement(s) is/are correct?\n[IMAGE_Q_46_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_46_1"
+        ],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "The motion of the body will occur by overturning.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "Sliding of the body never occurs.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "No motion occurs for \\(P \\le 6\\) kN.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "The motion of the body will occur by sliding only.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 47,
+        "question_id": "GATE_CE_2022_Q47",
+        "question_type": "MSQ",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Irrigation",
+        "topic": "Crop water requirements – Duty, delta, evapo-transpiration",
+        "difficulty": "Easy",
+        "question_text": "In the context of cross-drainage structures, the correct statement(s) regarding the relative positions of a natural drain (stream/river) and an irrigation canal, is/are",
+        "has_image": false,
+        "images_required": [],
+        "options": [
+          {
+            "option_id": "A",
+            "text": "In an aqueduct, natural drain water goes under the irrigation canal, whereas in a super-passage, natural drain water goes over the irrigation canal.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "B",
+            "text": "In a level crossing, natural drain water goes through the irrigation canal.",
+            "is_correct": true,
+            "has_image": false
+          },
+          {
+            "option_id": "C",
+            "text": "In an aqueduct, natural drain water goes over the irrigation canal, whereas in a super-passage, natural drain water goes under the irrigation canal.",
+            "is_correct": false,
+            "has_image": false
+          },
+          {
+            "option_id": "D",
+            "text": "In a canal syphon, natural drain water goes through the irrigation canal.",
+            "is_correct": false,
+            "has_image": false
+          }
+        ],
+        "nat_answer_range": null
+      },
+      {
+        "question_no": 48,
+        "question_id": "GATE_CE_2022_Q48",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Numerical Methods",
+        "topic": "Newton’s and Lagrange polynomials",
+        "difficulty": "Easy",
+        "question_text": "Consider the differential equation\n\\[\\frac{dy}{dx} = 4(x + 2) - y\\]\nFor the initial condition \\(y = 3\\) at \\(x = 1\\), the value of \\(y\\) at \\(x = 1.4\\) obtained using Euler’s method with a step-size of 0.2 is _________. (round off to one decimal place)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "6.3 to 6.5"
+      },
+      {
+        "question_no": 49,
+        "question_id": "GATE_CE_2022_Q49",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Probability and Statistics",
+        "topic": "Random Variables – Probability mass function, probability density function, cumulative distribution function",
+        "difficulty": "Medium",
+        "question_text": "A set of observations of independent variable (\\(x\\)) and the corresponding dependent variable (\\(y\\)) is given below.\n[IMAGE_Q_49_1]\nBased on the data, the coefficient \\(a\\) of the linear regression model\n\\[y = a + bx\\]\nis estimated as 6.1.\nThe coefficient \\(b\\) is ______________ . (round off to one decimal place)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_49_1"
+        ],
+        "options": [],
+        "nat_answer_range": "1.9 to 1.9"
+      },
+      {
+        "question_no": 50,
+        "question_id": "GATE_CE_2022_Q50",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Structural Analysis",
+        "topic": "Principle of superposition",
+        "difficulty": "Medium",
+        "question_text": "The plane truss shown in the figure is subjected to an external force \\(P\\). It is given that \\(P\\) = 70 kN, \\(a\\) = 2 m, and \\(b\\) = 3 m.\n[IMAGE_Q_50_1]\nThe magnitude (absolute value) of force (in kN) in member EF is _______. (round off to the nearest integer)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_50_1"
+        ],
+        "options": [],
+        "nat_answer_range": "28 to 32"
+      },
+      {
+        "question_no": 51,
+        "question_id": "GATE_CE_2022_Q51",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Structural Analysis",
+        "topic": "Stiffness matrix method",
+        "difficulty": "Medium",
+        "question_text": "Consider the linearly elastic plane frame shown in the figure. Members HF, FK and FG are welded together at joint F. Joints K, G and H are fixed supports. A counter-clockwise moment \\(M\\) is applied at joint F. Consider flexural rigidity EI = 10\\(^5\\) kN-m\\(^2\\) for each member and neglect axial deformations.\n[IMAGE_Q_51_1]\nIf the magnitude (absolute value) of the support moment at H is 10 kN-m, the magnitude (absolute value) of the applied moment \\(M\\) (in kN-m) to maintain static equilibrium is ___________. (round off to the nearest integer)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_51_1"
+        ],
+        "options": [],
+        "nat_answer_range": "57 to 63"
+      },
+      {
+        "question_no": 52,
+        "question_id": "GATE_CE_2022_Q52",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Structural Analysis",
+        "topic": "Analysis of statically indeterminate structures by force and displacement methods (method of consistent deformations, slope-deflection method, moment distribution method)",
+        "difficulty": "Medium",
+        "question_text": "Consider a simply supported beam PQ as shown in the figure. A truck having 100 kN on the front axle and 200 kN on the rear axle, moves from left to right. The spacing between the axles is 3 m. The maximum bending moment at point R is _________ kNm. (in integer)\n[IMAGE_Q_52_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_52_1"
+        ],
+        "options": [],
+        "nat_answer_range": "180 to 180"
+      },
+      {
+        "question_no": 53,
+        "question_id": "GATE_CE_2022_Q53",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Concrete Structures",
+        "topic": "Design and detailing of beams, slabs, columns, and isolated footings",
+        "difficulty": "Medium",
+        "question_text": "A reinforced concrete beam with rectangular cross section (width = 300 mm, effective depth = 580 mm) is made of M30 grade concrete. It has 1% longitudinal tension reinforcement of Fe 415 grade steel. The design shear strength for this beam is 0.66 N/mm\\(^2\\). The beam has to resist a factored shear force of 440 kN. The spacing of two-legged, 10 mm diameter vertical stirrups of Fe 415 grade steel is __________mm. (round off to the nearest integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "100 to 102"
+      },
+      {
+        "question_no": 54,
+        "question_id": "GATE_CE_2022_Q54",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Foundation Engineering",
+        "topic": "Deep foundations – static formulae, axial load capacity of piles in sands and clays, pile load test, pile under lateral loading, pile group efficiency, negative skin friction",
+        "difficulty": "Medium",
+        "question_text": "A square concrete pile of 10 m length is driven into a deep layer of uniform homogeneous clay. Average unconfined compressive strength of the clay, determined through laboratory tests on undisturbed samples extracted from the clay layer, is 100 kPa. If the ultimate compressive load capacity of the driven pile is 632 kN, the required width of the pile is _______ mm. (in integer)\n(Bearing capacity factor \\(N_c\\) = 9; adhesion factor \\(\\alpha\\) = 0.7)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "400 to 400"
+      },
+      {
+        "question_no": 55,
+        "question_id": "GATE_CE_2022_Q55",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Soil Mechanics",
+        "topic": "Compaction of soils",
+        "difficulty": "Hard",
+        "question_text": "A raft foundation of 30 m × 25 m is proposed to be constructed at a depth of 8 m in a sand layer. A 25 m thick saturated clay layer exists 2 m below the base of the raft foundation. Below the clay layer, a dense sand layer exists at the site. A 25 mm thick undisturbed sample was collected from the mid-depth of the clay layer and tested in a laboratory oedometer under double drainage condition. It was found that the soil sample had undergone 50 % consolidation settlement in 10 minutes.\nThe time (in days) required for 25 % consolidation settlement of the raft foundation will be ____________________. (round off to the nearest integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1730 to 1740"
+      },
+      {
+        "question_no": 56,
+        "question_id": "GATE_CE_2022_Q56",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydrology",
+        "topic": "Hydrologic cycle, precipitation, evaporation, evapo-transpiration, watershed, infiltration",
+        "difficulty": "Medium",
+        "question_text": "A two-hour duration storm event with uniform excess rainfall of 3 cm occurred on a watershed. The ordinates of streamflow hydrograph resulting from this event are given in the table.\n[IMAGE_Q_56_1]\nConsidering a constant baseflow of 10 m\\(^3\\)/s, the peak flow ordinate (in m\\(^3\\)/s) of one-hour unit hydrograph for the watershed is ________ . (in integer)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_56_1"
+        ],
+        "options": [],
+        "nat_answer_range": "12 to 12"
+      },
+      {
+        "question_no": 57,
+        "question_id": "GATE_CE_2022_Q57",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Fluid Mechanics",
+        "topic": "Potential flow, Laminar and turbulent flow",
+        "difficulty": "Medium",
+        "question_text": "Two reservoirs are connected by two parallel pipes of equal length and of diameters 20 cm and 10 cm, as shown in the figure (not drawn to scale). When the difference in the water levels of the reservoirs is 5 m, the ratio of discharge in the larger diameter pipe to the discharge in the smaller diameter pipe is ____________. (round off to two decimal places)\n(Consider only loss due to friction and neglect all other losses. Assume the friction factor to be the same for both the pipes)\n[IMAGE_Q_57_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_57_1"
+        ],
+        "options": [],
+        "nat_answer_range": "5.6 to 5.7"
+      },
+      {
+        "question_no": 58,
+        "question_id": "GATE_CE_2022_Q58",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Hydraulics",
+        "topic": "Channel Hydraulics – Energy-depth relationships, specific energy, critical flow, hydraulic jump, uniform flow, gradually varied flow and water surface profiles",
+        "difficulty": "Medium",
+        "question_text": "Depth of water flowing in a 3 m wide rectangular channel is 2 m. The channel carries a discharge of 12 m\\(^3\\)/s. Take g = 9.8 m/s\\(^2\\).\nThe bed width (in m) at contraction, which just causes the critical flow, is _________ without changing the upstream water level. (round off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "2.05 to 2.35"
+      },
+      {
+        "question_no": 59,
+        "question_id": "GATE_CE_2022_Q59",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Easy",
+        "question_text": "A wastewater sample contains two nitrogen species, namely ammonia and nitrate. Consider the atomic weight of N, H, and O as 14 g/mol, 1 g/mol, and 16 g/mol, respectively. In this wastewater, the concentration of ammonia is 34 mg NH\\(_3\\)/liter and that of nitrate is 6.2 mg NO\\(_3^-\\)/liter. The total nitrogen concentration in this wastewater is _______ milligram nitrogen per liter. (round off to one decimal place)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "29 to 30"
+      },
+      {
+        "question_no": 60,
+        "question_id": "GATE_CE_2022_Q60",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Drinking water treatment",
+        "difficulty": "Medium",
+        "question_text": "A 2 % sewage sample (in distilled water) was incubated for 3 days at 27 °C temperature. After incubation, a dissolved oxygen depletion of 10 mg/L was recorded. The biochemical oxygen demand (BOD) rate constant at 27 °C was found to be 0.23 day\\(^{-1}\\) (at base e). The ultimate BOD (in mg/L) of the sewage will be_____________. (round off to the nearest integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "1000 to 1005"
+      },
+      {
+        "question_no": 61,
+        "question_id": "GATE_CE_2022_Q61",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Water and Waste Water Quality and Treatment",
+        "topic": "Water distribution system",
+        "difficulty": "Medium",
+        "question_text": "A water treatment plant has a sedimentation basin of depth 3 m, width 5 m, and length 40 m. The water inflow rate is 500 m\\(^3\\)/h. The removal fraction of particles having a settling velocity of 1.0 m/h is_______. (round off to one decimal place)\n(Consider the particle density as 2650 kg/m\\(^3\\) and liquid density as 991 kg/m\\(^3\\))",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.38 to 0.42"
+      },
+      {
+        "question_no": 62,
+        "question_id": "GATE_CE_2022_Q62",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Signal design by Webster’s method",
+        "difficulty": "Easy",
+        "question_text": "A two-phase signalized intersection is designed with a cycle time of 100 s. The amber and red times for each phase are 4 s and 50 s, respectively. If the total lost time per phase due to start-up and clearance is 2 s, the effective green time of each phase is ______s. (in integer)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "48 to 48"
+      },
+      {
+        "question_no": 63,
+        "question_id": "GATE_CE_2022_Q63",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "ENGINEERING MATHEMATICS",
+        "subject": "Probability and Statistics",
+        "topic": "Descriptive statistics – Mean, median, mode and standard deviation",
+        "difficulty": "Medium",
+        "question_text": "At a traffic intersection, cars and buses arrive randomly according to independent Poisson processes at an average rate of 4 vehicles per hour and 2 vehicles per hour, respectively. The probability of observing at least 2 vehicles in 30 minutes is ______. (round off to two decimal places)",
+        "has_image": false,
+        "images_required": [],
+        "options": [],
+        "nat_answer_range": "0.78 to 0.82"
+      },
+      {
+        "question_no": 64,
+        "question_id": "GATE_CE_2022_Q64",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Signal design by Webster’s method",
+        "difficulty": "Easy",
+        "question_text": "The vehicle count obtained in every 10 minute interval of a traffic volume survey done in peak one hour is given below.\n[IMAGE_Q_64_1]\nThe peak hour factor (PHF) for 10 minute sub-interval is __________. (round off to one decimal place)",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_64_1"
+        ],
+        "options": [],
+        "nat_answer_range": "0.8 to 0.8"
+      },
+      {
+        "question_no": 65,
+        "question_id": "GATE_CE_2022_Q65",
+        "question_type": "NAT",
+        "marks": 2,
+        "section": "CORE CE",
+        "subject": "Traffic Engineering",
+        "topic": "Microscopic and macroscopic parameters of traffic flow, fundamental relationships",
+        "difficulty": "Hard",
+        "question_text": "For the dual-wheel carrying assembly shown in the figure, P is the load on each wheel, \\(a\\) is the radius of the contact area of the wheel, \\(s\\) is the spacing between the wheels, and \\(d\\) is the clear distance between the wheels. Assuming that the ground is an elastic, homogeneous, and isotropic half space, the ratio of Equivalent Single Wheel Load (ESWL) at depth \\(z = d/2\\) to the ESWL at depth \\(z = 2s\\) is ___________. (round off to one decimal place)\n(Consider the influence angle to be 45° for the linear dispersion of stress with depth)\n[IMAGE_Q_65_1]",
+        "has_image": true,
+        "images_required": [
+          "IMAGE_Q_65_1"
+        ],
+        "options": [],
+        "nat_answer_range": "0.5 to 0.5"
+      }
+    ]
   }
 ]
