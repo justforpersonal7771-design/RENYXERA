@@ -48,8 +48,8 @@ def words(s: str) -> set[str]:
 
 def numbers(s: str) -> set[str]:
     out = set()
-    # some 2022 papers draw brackets with Malayalam-digit glyphs (U+0D66-0D6F); NFKC would turn them into digits
-    s = re.sub("[\u0d66-\u0d6f]", " ", s)
+    # some 2022 papers draw brackets with Tamil/Malayalam-digit glyphs (U+0BE6-0BEF, U+0D66-0D6F); NFKC would turn them into digits
+    s = re.sub("[\u0be6-\u0bef\u0d66-\u0d6f]", " ", s)
     for n in NUM.findall(unicodedata.normalize("NFKC", s)):
         try:
             v = float(n)
