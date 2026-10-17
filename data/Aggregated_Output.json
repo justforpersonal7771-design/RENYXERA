@@ -23719,7 +23719,7 @@
           {
             "option_id": "A",
             "text": "[IMAGE_Q_45_A]",
-            "is_correct": false,
+            "is_correct": true,
             "has_image": true
           },
           {
@@ -23731,7 +23731,7 @@
           {
             "option_id": "C",
             "text": "[IMAGE_Q_45_C]",
-            "is_correct": true,
+            "is_correct": false,
             "has_image": true
           },
           {
