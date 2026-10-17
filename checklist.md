@@ -21,10 +21,11 @@ Legend: 🟠 later (named release) · 🟡 paid backlog (after income) · 🟨 p
 
 ## 2. Open work for me (in order)
 
-- [ ] **Landscape film**: finish the 1080p render (`video/out/renyxera-film-v6-landscape-1080p.mp4`), check it, hand it over. A 4K version can follow if you want it.
-- [ ] **CS bank verification, remaining part**: 2022–2026 (520 questions) and the 2017–2021 answer keys are verified against the official papers. Still open: wording check of the scanned papers 2017 (both shifts), 2019, 2020, 2021 (both shifts); the official 2017 Set 1 key (not in the official archive, find another official source); `GATE_CS_2020_FN_Q35` (options A and C both read "I only").
-- [ ] **Study Materials programme** (separate paid product, not part of Plus/Pro): plan is in `docs/study-materials/`. Starts with Phase 0 (decisions and sample chapter) once you approve the plan.
+- [ ] **Film v7 (re-cut after your feedback)**: 4 plain transitions (slide, push-up, wipe, drop-in), CTA now "Upgrade to Pro →", story line before the stats ("You're not the only one…"), new full-width vertical cut with a slow pan. Renders queued: vertical, 1080p landscape, then 4K (`video/out/renyxera-film-v7-*.mp4`). I check frames and hand over.
+- [ ] **CS bank verification, remaining part**: 2019 and 2020 wording fixed and live. Still open: wording check of the scanned papers 2017 (both shifts) and 2021 (both shifts), the official 2017 Set 1 key, and the 2018 figure check.
+- [ ] **Study Materials programme** (separate paid product, not part of Plus/Pro): plan is in `docs/study-materials/`. Starts with Phase 0 (decisions and sample chapter) once you approve the plan. Reference notes and textbooks reviewed: `docs/study-materials/12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md` (the `notes/` folder is git-ignored).
 - [ ] **Instagram walk-through** (see §1).
+- [ ] **Telegram multi-branch setup**: you create the hub, six branch channels and the topics group (`docs/TELEGRAM_MULTI_BRANCH_AND_SEO.md`, click by click), then add 8 GitHub secrets. Code and workflow are already pushed. Then website SEO items 1–6 and 8 in that doc, after you confirm the usernames.
 - [ ] **Film extras (optional)**: AI Mentor and Telegram takes; 30 s and 15 s cuts; 4:5 version; the clickable `/tour` demo.
 - [ ] Flashcards for questions (later).
 - [ ] Future: phone verification + reports via the Telegram bot first, then WhatsApp.

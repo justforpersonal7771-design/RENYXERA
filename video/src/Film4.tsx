@@ -133,71 +133,24 @@ const Day: React.FC = () => {
 /** Scene transitions. Scenes overlap by OV frames: the incoming scene is drawn on top of the
  *  outgoing one and enters with one of these. A different one at every cut (no repeats in a row). */
 const OV = 18;
-type TKind = "zoomBlur" | "whip" | "glassWipe" | "zoomThrough" | "slices" | "lightLeak" | "pushUp" | "typeMask";
-const TRANS: TKind[] = ["lightLeak", "whip", "pushUp", "zoomThrough", "glassWipe", "zoomBlur", "slices", "whip", "typeMask", "zoomThrough", "glassWipe", "pushUp", "slices", "zoomBlur", "lightLeak", "typeMask"];
+type TKind = "slide" | "pushUp" | "wipe" | "dropIn";
+/** Four plain, opaque cover transitions (no blur, skew or masks) so text never overlaps text. */
+const TRANS: TKind[] = ["slide", "pushUp", "wipe", "dropIn"];
 const Trans: React.FC<{ kind: TKind | null; children: React.ReactNode }> = ({ kind, children }) => {
   const f = useCurrentFrame();
   if (!kind || f >= OV) return <AbsoluteFill>{children}</AbsoluteFill>;
   const t = c01(f / OV);
-  const u = Easing.bezier(0.7, 0, 0.2, 1)(t);           // expo-ish in-out
-  const bell = Math.sin(Math.PI * t);                     // 0 -> 1 -> 0, peak at the middle
+  const u = Easing.bezier(0.65, 0, 0.25, 1)(t);
+  const edge = { boxShadow: `0 0 120px rgba(0,0,0,${0.35 * (1 - u)})` };
   switch (kind) {
-    case "zoomBlur": // camera rushes through: incoming scales down from 1.6 with heavy blur
-      return <AbsoluteFill style={{ opacity: c01(t * 2.2), transform: `scale(${1.6 - 0.6 * u})`, filter: `blur(${(1 - u) * 40}px) saturate(${1 + bell})` }}>{children}</AbsoluteFill>;
-    case "whip": // fast horizontal whip pan with motion smear
-      return (
-        <AbsoluteFill style={{ transform: `translateX(${(1 - u) * 100}%) skewX(${-(1 - u) * 8}deg)`, filter: `blur(${bell * 28}px)` }}>
-          {children}
-          <AbsoluteFill style={{ background: "linear-gradient(90deg, rgba(168,85,247,.55), transparent 30%)", opacity: bell }} />
-        </AbsoluteFill>
-      );
-    case "pushUp": // vertical scroll-push, like swiping to the next screen
-      return <AbsoluteFill style={{ transform: `translateY(${(1 - u) * 100}%)`, borderRadius: (1 - u) * 120, overflow: "hidden", boxShadow: `0 -60px 160px rgba(0,0,0,${0.5 * (1 - u)})` }}>{children}</AbsoluteFill>;
-    case "zoomThrough": { // UI match-cut: the new scene grows out of a rounded app card in the centre
-      const w = 30 + 70 * u, h = 22 + 78 * u, rad = 80 * (1 - u);
-      return (
-        <AbsoluteFill style={{ clipPath: `inset(${(100 - h) / 2}% ${(100 - w) / 2}% round ${rad}px)`, transform: `scale(${1.15 - 0.15 * u})` }}>
-          {children}
-          <AbsoluteFill style={{ boxShadow: `inset 0 0 0 ${8 * (1 - u)}px rgba(196,181,253,.9)`, borderRadius: rad }} />
-        </AbsoluteFill>
-      );
-    }
-    case "glassWipe": { // diagonal liquid-glass band sweeps across; the new scene is behind it
-      const x = -30 + 160 * u;
-      return (
-        <AbsoluteFill>
-          <AbsoluteFill style={{ clipPath: `polygon(0 0, ${x}% 0, ${x - 25}% 100%, 0 100%)` }}>{children}</AbsoluteFill>
-          <AbsoluteFill style={{ clipPath: `polygon(${x}% 0, ${x + 9}% 0, ${x - 16}% 100%, ${x - 25}% 100%)`, backdropFilter: "blur(30px) saturate(1.8)", background: "linear-gradient(100deg, rgba(255,255,255,.35), rgba(168,85,247,.25) 50%, rgba(34,211,238,.3))" }} />
-        </AbsoluteFill>
-      );
-    }
-    case "slices": // six panels slide in, staggered
-      return (
-        <AbsoluteFill>
-          {Array.from({ length: 6 }).map((_, k) => {
-            const v = Easing.bezier(0.7, 0, 0.2, 1)(c01((f - k * 1.6) / (OV - 8)));
-            return <AbsoluteFill key={k} style={{ clipPath: `inset(0 ${100 - (k + 1) * 16.67}% 0 ${k * 16.67}%)`, transform: `translateY(${(1 - v) * (k % 2 ? -100 : 100)}%)` }}>{children}</AbsoluteFill>;
-          })}
-        </AbsoluteFill>
-      );
-    case "lightLeak": // warm film light leak + exposure flash, then settle
-      return (
-        <AbsoluteFill style={{ opacity: c01(t * 1.8), filter: `brightness(${1 + bell * 0.9}) blur(${(1 - u) * 10}px)` }}>
-          {children}
-          <AbsoluteFill style={{ mixBlendMode: "screen", opacity: bell, background: `radial-gradient(ellipse at ${20 + 60 * t}% 30%, rgba(251,146,60,.9), rgba(236,72,153,.5) 30%, transparent 60%)` }} />
-        </AbsoluteFill>
-      );
-    case "typeMask": { // the new scene shows through a giant word that scales up until it fills the frame
-      const k = 0.6 + Math.pow(u, 3) * 60;
-      return (
-        <AbsoluteFill>
-          <AbsoluteFill style={{ display: "grid", placeItems: "center", opacity: 1 - c01((u - 0.85) / 0.15) }}>
-            <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 900, letterSpacing: -20, backgroundImage: RIBBON, WebkitBackgroundClip: "text", color: "transparent", transform: `scale(${k})` }}>R</div>
-          </AbsoluteFill>
-          <AbsoluteFill style={{ opacity: c01((u - 0.55) / 0.3) }}>{children}</AbsoluteFill>
-        </AbsoluteFill>
-      );
-    }
+    case "slide": // new scene slides in from the right
+      return <AbsoluteFill style={{ transform: `translateX(${(1 - u) * 100}%)`, ...edge }}>{children}</AbsoluteFill>;
+    case "pushUp": // new scene rises from the bottom
+      return <AbsoluteFill style={{ transform: `translateY(${(1 - u) * 100}%)`, ...edge }}>{children}</AbsoluteFill>;
+    case "dropIn": // new scene comes down from the top
+      return <AbsoluteFill style={{ transform: `translateY(${-(1 - u) * 100}%)`, ...edge }}>{children}</AbsoluteFill>;
+    case "wipe": // clean left-to-right reveal
+      return <AbsoluteFill style={{ clipPath: `inset(0 ${(1 - u) * 100}% 0 0)` }}>{children}</AbsoluteFill>;
   }
 };
 
@@ -748,7 +701,7 @@ const S_End: React.FC = () => {
             <div style={{ position: "absolute", left: 0, right: 0, top: 1290, textAlign: "center", opacity: cta, transform: `translateY(${(1 - cta) * 80}px) scale(${(0.85 + 0.15 * cta) * breathe})` }}>
               <span style={{ display: "inline-block", padding: 6, borderRadius: 999, background: `conic-gradient(from ${f * 5}deg, #22d3ee, #a855f7, #f472b6, #6366f1, #22d3ee)`, boxShadow: "0 40px 120px -20px rgba(168,85,247,.75)" }}>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 30, padding: "40px 90px", borderRadius: 999, background: "linear-gradient(180deg,#1d1450,#0d0a24)", fontFamily: DISPLAY, fontWeight: 700, fontSize: 82, color: "#fff", position: "relative", overflow: "hidden" }}>
-                  Start now, it&apos;s free <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 96 }}>→</span>
+                  Upgrade to Pro <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 96 }}>→</span>
                   <span style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%)", transform: `translateX(${((f - c4) * 3) % 260 - 130}%)` }} />
                 </span>
               </span>
@@ -810,7 +763,7 @@ const Caption: React.FC = () => {
   const line = vo[cur.id as VoId];
   const out = 1 - c01((f - Math.min(nextAt - 6, cur.at + line.dur * FPS + 40)) / 8);
   return (
-    <div style={{ position: "absolute", left: 60, right: 60, top: 230, height: 470, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", opacity: out,
+    <div style={{ position: "absolute", left: 60, right: 60, top: 170, height: 440, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", opacity: out,
       fontFamily: DISPLAY, fontWeight: 800, fontSize: line.text.length > 60 ? 70 : 84, lineHeight: 1.12, letterSpacing: -2, color: "#fff" }}>
       <div>
         {line.words.map((w, i) => {
@@ -827,23 +780,28 @@ const Caption: React.FC = () => {
   );
 };
 
-/** 9:16 cut for Reels / Shorts: caption band, the scene in a rounded frame, brand footer. */
+/** 9:16 cut for Reels / Shorts: caption on top, the scene full-width and zoomed in below, brand footer. */
 export const FilmVertical: React.FC = () => {
   const f = useCurrentFrame();
-  const K = 0.46; // 3840x2160 -> 1766x994, centre-cropped to the frame width
+  const K = 0.52; // 3840x2160 -> 1997x1123; centre-cropped to the 1080 frame width
+  const H = 1180;
+  // slow pan across each scene so wide UI is shown in full over its duration
+  const sc = TL.scenes.find((x) => f >= x.at && f < x.at + x.dur) ?? TL.scenes[0];
+  const frac = 0.22 + 0.56 * ease(c01((f - sc.at) / sc.dur));
+  const panX = -(3840 * K - 1080) * frac;
   return (
     <AbsoluteFill style={{ background: "#07051a" }}>
       <AbsoluteFill style={{ background: `radial-gradient(circle at ${30 + 10 * Math.sin(f / 60)}% 15%, rgba(168,85,247,.45), transparent 50%), radial-gradient(circle at 80% 90%, rgba(34,211,238,.3), transparent 50%)` }} />
-      <div style={{ position: "absolute", top: 110, left: 0, right: 0, textAlign: "center", fontFamily: MONO, fontWeight: 700, fontSize: 30, letterSpacing: 10, color: "#c4b5fd" }}>RENYXERA · GATE</div>
+      <div style={{ position: "absolute", top: 90, left: 0, right: 0, textAlign: "center", fontFamily: MONO, fontWeight: 700, fontSize: 30, letterSpacing: 10, color: "#c4b5fd" }}>RENYXERA · GATE</div>
       <Caption />
-      <div style={{ position: "absolute", left: 30, top: 760, width: 1020, height: 994 * 0.9, borderRadius: 48, overflow: "hidden", boxShadow: "0 40px 120px rgba(124,58,237,.45), 0 0 0 3px rgba(255,255,255,.12)" }}>
-        <div style={{ position: "absolute", width: 3840, height: 2160, left: (1020 - 3840 * K) / 2, top: -994 * 0.05, transform: `scale(${K})`, transformOrigin: "0 0" }}>
+      <div style={{ position: "absolute", left: 0, top: 640, width: 1080, height: H, overflow: "hidden", boxShadow: "0 -30px 100px rgba(124,58,237,.35)" }}>
+        <div style={{ position: "absolute", width: 3840, height: 2160, left: panX, top: (H - 2160 * K) / 2, transform: `scale(${K})`, transformOrigin: "0 0" }}>
           <VerticalCtx.Provider value={true}><AbsoluteFill style={{ background: "#04030d" }}><Scenes /></AbsoluteFill></VerticalCtx.Provider>
         </div>
       </div>
-      <div style={{ position: "absolute", bottom: 120, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 18 }}>
-        <Img src={staticFile("mark-dark.png")} style={{ width: 96, height: 96, objectFit: "contain" }} />
-        <div style={{ fontFamily: MONO, fontWeight: 500, fontSize: 34, color: "#e9e5ff", letterSpacing: 2 }}>gate.renyxera.workers.dev</div>
+      <div style={{ position: "absolute", bottom: 60, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
+        <Img src={staticFile("mark-dark.png")} style={{ width: 80, height: 80, objectFit: "contain" }} />
+        <div style={{ fontFamily: MONO, fontWeight: 500, fontSize: 32, color: "#e9e5ff", letterSpacing: 2 }}>gate.renyxera.workers.dev</div>
       </div>
       <Sound />
     </AbsoluteFill>

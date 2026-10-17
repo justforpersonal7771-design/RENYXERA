@@ -40,7 +40,7 @@ The expert reviewer is the biggest quality lever. Recommendation: you review the
 3. Figures are redrawn from scratch as data (SVG/flow definitions). We never trace or screenshot a textbook figure.
 4. Definitions and theorems are facts and may be stated precisely, but with our wording where there is freedom; where an exact standard wording is the point (for example a protocol field name or an IS-code clause), we quote briefly and cite.
 5. An automated **overlap check** compares each chapter's text against the source texts we hold notes for and against the web for long shared runs of words; any run over a small threshold is rewritten.
-6. No content is taken from coaching-institute notes or paid course material, ever.
+6. Coaching-institute notes and paid course material (the `notes/` reference folder, see `12`) may be opened to judge layout and topic coverage only. No text, figure, example or question wording is ever taken from them, and the folder is never committed to git.
 
 This protects us legally and, more importantly, produces a better explanation: the point of the product is to *redefine* the material for understanding.
 

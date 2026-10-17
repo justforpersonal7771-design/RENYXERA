@@ -9,7 +9,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  post:
+  # Hub channel: the rotating question of the day (all branches).
+  hub:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -17,10 +18,36 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      # public/data/ is generated (git-ignored), same as before every build.
       - run: node scripts/copy-static-data.mjs
       - run: node scripts/telegram-daily.mjs
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          PREGEN_SECRET: ${{ secrets.PREGEN_SECRET }}
+  # Branch channels: each branch's own question, every day. A branch is skipped quietly until its
+  # TELEGRAM_CHANNEL_<CODE> secret exists (see docs/TELEGRAM_MULTI_BRANCH_AND_SEO.md).
+  branches:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        code: [CS, EC, EE, ME, CE, DA]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/copy-static-data.mjs
+      - run: node scripts/telegram-daily.mjs
+        env:
+          POST_BRANCH: ${{ matrix.code }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_CS: ${{ secrets.TELEGRAM_CHANNEL_CS }}
+          TELEGRAM_CHANNEL_EC: ${{ secrets.TELEGRAM_CHANNEL_EC }}
+          TELEGRAM_CHANNEL_EE: ${{ secrets.TELEGRAM_CHANNEL_EE }}
+          TELEGRAM_CHANNEL_ME: ${{ secrets.TELEGRAM_CHANNEL_ME }}
+          TELEGRAM_CHANNEL_CE: ${{ secrets.TELEGRAM_CHANNEL_CE }}
+          TELEGRAM_CHANNEL_DA: ${{ secrets.TELEGRAM_CHANNEL_DA }}
+          TELEGRAM_DISCUSS: ${{ secrets.TELEGRAM_DISCUSS }}
           PREGEN_SECRET: ${{ secrets.PREGEN_SECRET }}

@@ -35,3 +35,7 @@ data/pyq/_work/
 
 # throwaway local test scripts
 /scripts/zz-*
+
+# Reference-only third-party books and notes (copyrighted, never commit)
+docs/study-materials/notes/
+docs/study-materials/NOTES/

@@ -112,9 +112,14 @@
   "heard": "So it happens again, in the next mock test."
  },
  "p5": {
-  "text": "Over two lakh students wrote GATE CS this year.",
-  "dur": 2.597,
+  "text": "You're not the only one. Over two lakh students wrote GATE CS this year.",
+  "dur": 3.805,
   "words": [
+   "You're",
+   "not",
+   "the",
+   "only",
+   "one.",
    "Over",
    "two",
    "lakh",
@@ -127,16 +132,21 @@
   ],
   "t": [
    0.0,
-   0.2,
-   0.44,
-   0.66,
-   1.06,
-   1.36,
-   1.64,
-   2.0,
-   2.24
+   0.14,
+   0.28,
+   0.4,
+   0.62,
+   1.34,
+   1.5,
+   1.7,
+   1.9,
+   2.32,
+   2.56,
+   2.84,
+   3.18,
+   3.46
   ],
-  "heard": "Over two LAC students wrote Gate CS this year."
+  "heard": "You're not the only one. Over two lakh students wrote Gate CS this year."
  },
  "p6": {
   "text": "Fewer than one in five qualified.",

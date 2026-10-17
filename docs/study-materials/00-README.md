@@ -20,13 +20,14 @@ This is a separate product. It is **not** part of Free, Plus or Pro. Plans and p
 | `09-ROADMAP-AND-PHASES.md` | Phases with exit gates, effort estimates, the CS pilot, branch order, March refresh cycle |
 | `10-EDGE-CASES-AND-RISKS.md` | Every edge case and risk we could think of, with the planned handling |
 | `11-QA-CHECKLISTS.md` | The per-topic, per-chapter and per-release checklists used as hard gates |
+| `12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md` | Review of the reference notes and textbooks in `notes/`, what we adopt from them, suggested textbooks per subject, and the hard rules for using them |
 | `templates/chapter-template.md` | The exact skeleton every chapter starts from |
 
 ## Decisions I need from you (before Phase 0 starts)
 
 1. **Pricing model**: one-time pass per branch, subscription, or per-subject packs? (recommendation: one-time per-branch pass, see 08)
 2. **Launch order after CS**: recommended EC → EE → ME → CE → DA (follows our bank sizes and audience); confirm or reorder.
-3. **Sources rule**: confirm the originality rule in `03` (we learn from textbooks, we do not copy their wording, figures or examples).
+3. **Sources rule**: confirm the originality rule in `03` and `12` (we learn from textbooks and may look at coaching notes for design and coverage only; we never copy wording, figures or examples; the `notes/` folder stays out of git).
 4. **Human expert review**: confirm who reviews technical accuracy (you, a friend, a paid tutor per subject). This is the single biggest quality lever.
 5. **Language**: English only at launch (recommended), Hindi later?
 6. **Phase 0 sample**: approve building one complete reference chapter (CS: "Deadlock") end to end before committing to the whole programme.

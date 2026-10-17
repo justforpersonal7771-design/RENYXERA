@@ -30,7 +30,7 @@ LINES = {
     "p2": ("Every day starts with the same question. What do I study today?", None),
     "p3": ("You get one wrong. And there's no one to ask why.", None),
     "p4": ("So it happens again. In the next mock test.", None),
-    "p5": ("Over two lakh students wrote GATE CS this year.", "Over two lakh students wrote GATE C S this year."),
+    "p5": ("You're not the only one. Over two lakh students wrote GATE CS this year.", "You're not the only one. Over two lakh students wrote GATE C S this year."),
     "p6": ("Fewer than one in five qualified.", None),
     "p7": ("Effort was never the problem. Direction was.", None),
     "b1": ("What if you had a mentor who never sleeps?", None),

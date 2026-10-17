@@ -19,9 +19,13 @@ const BRANCHES = {
   EE: { file: "public/data/EE/questions.json", img: "/images/EE" },
   ME: { file: "public/data/ME/questions.json", img: "/images/ME" },
   DA: { file: "public/data/DA/questions.json", img: "/images/DA" },
+  CE: { file: "public/data/CE/questions.json", img: "/images/CE" },
 };
 // Sun..Sat. CS appears three times a week (largest bank), the others once or twice.
-const WEEK = ["CS", "EC", "EE", "CS", "ME", "DA", "CS"];
+const WEEK = ["CS", "EC", "EE", "CS", "ME", "DA", "CE"];
+// POST_BRANCH=CS posts that branch's own question every day, to TELEGRAM_CHANNEL_CS (branch channels).
+// Without it, the rotating question goes to the hub channel TELEGRAM_CHANNEL.
+const FORCE = process.env.POST_BRANCH && BRANCHES[process.env.POST_BRANCH] ? process.env.POST_BRANCH : null;
 
 const pools = {};
 for (const [code, b] of Object.entries(BRANCHES)) {
@@ -40,7 +44,7 @@ for (const [code, b] of Object.entries(BRANCHES)) {
   pools[code] = pool;
 }
 
-const branchOn = (day) => WEEK[(day + 4) % 7]; // IST day 0 (1 Jan 1970) was a Thursday
+const branchOn = (day) => FORCE ?? WEEK[(day + 4) % 7]; // IST day 0 (1 Jan 1970) was a Thursday
 function pickFor(day) {
   const code = branchOn(day);
   let used = 0;
@@ -125,12 +129,12 @@ const header = [
 const footer = [
   `👉 <a href="${link(q, "solve")}">Solve it in the exam interface and check the official answer</a>`,
   prevLine,
-  `💬 Discuss: t.me/renyxera_chat`,
+  `💬 Discuss: ${process.env.TELEGRAM_DISCUSS || "t.me/renyxera_chat"}`,
 ].filter(Boolean).join("\n\n");
 const text = [header, body.join("\n\n"), footer].join("\n\n");
 
 if (DRY) { console.log(`${photoUrl ? `[photo: ${photoUrl}]\n` : ""}${text}\n\n[branch ${q.code}, ${q.question_id}${prev ? `, yesterday ${prev.question_id}` : ""}]`); process.exit(0); }
-const token = process.env.TELEGRAM_BOT_TOKEN, chat = process.env.TELEGRAM_CHANNEL;
+const token = process.env.TELEGRAM_BOT_TOKEN, chat = FORCE ? process.env[`TELEGRAM_CHANNEL_${FORCE}`] : process.env.TELEGRAM_CHANNEL;
 if (!token || !chat) { console.log("TELEGRAM_BOT_TOKEN / TELEGRAM_CHANNEL not set — skipping (dry run below)\n\n" + text); process.exit(0); }
 const api = (m, payload) => fetch(`https://api.telegram.org/bot${token}/${m}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ chat_id: chat, ...payload }) }).then((r) => r.json());
 
