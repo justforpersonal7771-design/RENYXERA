@@ -23,6 +23,8 @@ const RIBBON_TXT = { backgroundImage: RIBBON, WebkitBackgroundClip: "text", colo
 // ============ shared ============
 const SceneCtx = React.createContext<Placed | null>(null);
 const useScene = () => React.useContext(SceneCtx)!;
+/** Vertical cut: scene headlines move to a caption band above the scene. */
+const VerticalCtx = React.createContext(false);
 const voAt = (s: Placed, id: VoId) => s.voice.find((v) => v.id === id)!.at;
 
 // Type system: Bricolage Grotesque (display), Instrument Serif italic (accent words), JetBrains Mono (labels), Inter Tight (UI text).
@@ -36,6 +38,8 @@ const BODY = loadBody("normal", { weights: ["500", "600", "700"] }).fontFamily;
 const Words: React.FC<{ id: VoId; size: number; top: number; left?: number; width?: number; align?: "center" | "left"; dark?: boolean; grad?: string[]; weight?: number; out?: number }> = ({ id, size, top, left, width, align = "center", dark, grad = [], weight = 700, out }) => {
   const f = useCurrentFrame();
   const s = useScene();
+  const vertical = React.useContext(VerticalCtx);
+  if (vertical) return null;
   const start = voAt(s, id);
   const line = vo[id];
   const fadeOut = out != null ? 1 - c01((f - out) / 8) : 1;
@@ -126,18 +130,75 @@ const Day: React.FC = () => {
   );
 };
 
-/** Scene entrance: an iris that opens from the centre with a soft light leak on its rim. */
-const Iris: React.FC<{ children: React.ReactNode; frames?: number }> = ({ children, frames = 14 }) => {
+/** Scene transitions. Scenes overlap by OV frames: the incoming scene is drawn on top of the
+ *  outgoing one and enters with one of these. A different one at every cut (no repeats in a row). */
+const OV = 18;
+type TKind = "zoomBlur" | "whip" | "glassWipe" | "zoomThrough" | "slices" | "lightLeak" | "pushUp" | "typeMask";
+const TRANS: TKind[] = ["lightLeak", "whip", "pushUp", "zoomThrough", "glassWipe", "zoomBlur", "slices", "whip", "typeMask", "zoomThrough", "glassWipe", "pushUp", "slices", "zoomBlur", "lightLeak", "typeMask"];
+const Trans: React.FC<{ kind: TKind | null; children: React.ReactNode }> = ({ kind, children }) => {
   const f = useCurrentFrame();
-  const u = Easing.bezier(0.65, 0, 0.35, 1)(c01(f / frames));
-  if (u >= 1) return <>{children}</>;
-  const r = 4500 * u;
-  return (
-    <AbsoluteFill style={{ clipPath: `circle(${r}px at 50% 50%)` }}>
-      {children}
-      <AbsoluteFill style={{ pointerEvents: "none", background: `radial-gradient(circle at 50% 50%, transparent ${Math.max(0, r - 260)}px, rgba(255,255,255,.75) ${r - 40}px, rgba(196,181,253,.0) ${r}px)` }} />
-    </AbsoluteFill>
-  );
+  if (!kind || f >= OV) return <AbsoluteFill>{children}</AbsoluteFill>;
+  const t = c01(f / OV);
+  const u = Easing.bezier(0.7, 0, 0.2, 1)(t);           // expo-ish in-out
+  const bell = Math.sin(Math.PI * t);                     // 0 -> 1 -> 0, peak at the middle
+  switch (kind) {
+    case "zoomBlur": // camera rushes through: incoming scales down from 1.6 with heavy blur
+      return <AbsoluteFill style={{ opacity: c01(t * 2.2), transform: `scale(${1.6 - 0.6 * u})`, filter: `blur(${(1 - u) * 40}px) saturate(${1 + bell})` }}>{children}</AbsoluteFill>;
+    case "whip": // fast horizontal whip pan with motion smear
+      return (
+        <AbsoluteFill style={{ transform: `translateX(${(1 - u) * 100}%) skewX(${-(1 - u) * 8}deg)`, filter: `blur(${bell * 28}px)` }}>
+          {children}
+          <AbsoluteFill style={{ background: "linear-gradient(90deg, rgba(168,85,247,.55), transparent 30%)", opacity: bell }} />
+        </AbsoluteFill>
+      );
+    case "pushUp": // vertical scroll-push, like swiping to the next screen
+      return <AbsoluteFill style={{ transform: `translateY(${(1 - u) * 100}%)`, borderRadius: (1 - u) * 120, overflow: "hidden", boxShadow: `0 -60px 160px rgba(0,0,0,${0.5 * (1 - u)})` }}>{children}</AbsoluteFill>;
+    case "zoomThrough": { // UI match-cut: the new scene grows out of a rounded app card in the centre
+      const w = 30 + 70 * u, h = 22 + 78 * u, rad = 80 * (1 - u);
+      return (
+        <AbsoluteFill style={{ clipPath: `inset(${(100 - h) / 2}% ${(100 - w) / 2}% round ${rad}px)`, transform: `scale(${1.15 - 0.15 * u})` }}>
+          {children}
+          <AbsoluteFill style={{ boxShadow: `inset 0 0 0 ${8 * (1 - u)}px rgba(196,181,253,.9)`, borderRadius: rad }} />
+        </AbsoluteFill>
+      );
+    }
+    case "glassWipe": { // diagonal liquid-glass band sweeps across; the new scene is behind it
+      const x = -30 + 160 * u;
+      return (
+        <AbsoluteFill>
+          <AbsoluteFill style={{ clipPath: `polygon(0 0, ${x}% 0, ${x - 25}% 100%, 0 100%)` }}>{children}</AbsoluteFill>
+          <AbsoluteFill style={{ clipPath: `polygon(${x}% 0, ${x + 9}% 0, ${x - 16}% 100%, ${x - 25}% 100%)`, backdropFilter: "blur(30px) saturate(1.8)", background: "linear-gradient(100deg, rgba(255,255,255,.35), rgba(168,85,247,.25) 50%, rgba(34,211,238,.3))" }} />
+        </AbsoluteFill>
+      );
+    }
+    case "slices": // six panels slide in, staggered
+      return (
+        <AbsoluteFill>
+          {Array.from({ length: 6 }).map((_, k) => {
+            const v = Easing.bezier(0.7, 0, 0.2, 1)(c01((f - k * 1.6) / (OV - 8)));
+            return <AbsoluteFill key={k} style={{ clipPath: `inset(0 ${100 - (k + 1) * 16.67}% 0 ${k * 16.67}%)`, transform: `translateY(${(1 - v) * (k % 2 ? -100 : 100)}%)` }}>{children}</AbsoluteFill>;
+          })}
+        </AbsoluteFill>
+      );
+    case "lightLeak": // warm film light leak + exposure flash, then settle
+      return (
+        <AbsoluteFill style={{ opacity: c01(t * 1.8), filter: `brightness(${1 + bell * 0.9}) blur(${(1 - u) * 10}px)` }}>
+          {children}
+          <AbsoluteFill style={{ mixBlendMode: "screen", opacity: bell, background: `radial-gradient(ellipse at ${20 + 60 * t}% 30%, rgba(251,146,60,.9), rgba(236,72,153,.5) 30%, transparent 60%)` }} />
+        </AbsoluteFill>
+      );
+    case "typeMask": { // the new scene shows through a giant word that scales up until it fills the frame
+      const k = 0.6 + Math.pow(u, 3) * 60;
+      return (
+        <AbsoluteFill>
+          <AbsoluteFill style={{ display: "grid", placeItems: "center", opacity: 1 - c01((u - 0.85) / 0.15) }}>
+            <div style={{ fontFamily: DISPLAY, fontWeight: 800, fontSize: 900, letterSpacing: -20, backgroundImage: RIBBON, WebkitBackgroundClip: "text", color: "transparent", transform: `scale(${k})` }}>R</div>
+          </AbsoluteFill>
+          <AbsoluteFill style={{ opacity: c01((u - 0.55) / 0.3) }}>{children}</AbsoluteFill>
+        </AbsoluteFill>
+      );
+    }
+  }
 };
 
 // ============ takes ============
@@ -178,20 +239,20 @@ type Callout = { from: number; to: number; x: number; y: number; n?: number; lab
 type Spot = { from: number; to: number; x: number; y: number; w: number; h: number };
 type WinProps = { take: string; segs?: [number, number][]; cam: Cam[]; callouts?: Callout[]; spots?: Spot[]; url: string; dur: number; box?: { left: number; top: number; width: number }; tilt?: number };
 
-const Window: React.FC<WinProps> = ({ take, segs, cam, callouts = [], spots = [], url, dur, box = { left: 570, top: 520, width: 2700 }, tilt = 1 }) => {
+const Window: React.FC<WinProps> = ({ take, segs, cam, callouts = [], spots = [], url, dur, box = { left: 200, top: 540, width: 3440 }, tilt = 1 }) => {
   const data = useTake(take);
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   if (!data) return null;
   const last = data.frames - 1;
   const tf = Math.min(last, seqMap((segs ?? [[0, last]]).map(([x, y]) => [Math.min(x, last), Math.min(y, last)] as [number, number]), dur)(f));
-  const H = (box.width * 9) / 16;
+  const H = Math.min((box.width * 9) / 16, 2160 - box.top - 50);
   const c = camAt(cam, tf);
   const k = (box.width / 1600) * c.s;
   const clampPan = (boxSize: number, size: number, focus: number) => Math.min(0, Math.max(boxSize - size * k, boxSize / 2 - focus * size * k));
   const tx = clampPan(box.width, 1600, c.x), ty = clampPan(H, 900, c.y);
   const enter = spring({ frame: f, fps, config: { damping: 22, stiffness: 95, mass: 1.1 } });
-  const exit = c01((f - (dur - 10)) / 10);
+  const exit = c01((f - (dur + OV - 4)) / 4);
   const [cx, cy] = data.cursor[Math.min(tf, data.cursor.length - 1)] ?? [800, 450];
   const pressed = data.clicks.some((q) => tf >= q && tf < q + 3);
   const sweep = interpolate(f, [6, 34], [-120, 140], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
@@ -411,7 +472,12 @@ const S_Bridge: React.FC = () => {
         const r = r0 * (1 - conv);
         return <div key={i} style={{ position: "absolute", left: 1920 + Math.cos(ang + f / 200) * r * 1.4, top: 1080 + Math.sin(ang + f / 200) * r * 0.75, width: 8 + (i % 4) * 4, height: 8 + (i % 4) * 4, borderRadius: 10, background: i % 3 ? "#a78bfa" : "#22d3ee", opacity: 0.25 + 0.6 * conv, filter: "blur(1px)" }} />;
       })}
-      <div style={{ position: "absolute", left: 1920 - 220, top: 1080 - 220, width: 440, height: 440, borderRadius: 220, background: "radial-gradient(circle, #fff, #a78bfa 40%, transparent 70%)", opacity: conv, transform: `scale(${0.3 + conv})` }} />
+      <div style={{ position: "absolute", left: 1920 - 230, top: 1080 - 230, width: 460, height: 460, borderRadius: 230, padding: 8, boxSizing: "border-box", opacity: conv, transform: `scale(${0.4 + 0.6 * conv}) rotate(${(1 - conv) * -90}deg)`,
+        background: `conic-gradient(from ${f * 4}deg, #22d3ee, #a855f7, #f472b6, #6366f1, #22d3ee)`, boxShadow: "0 0 140px rgba(168,85,247,.55)" }}>
+        <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,.22), rgba(29,20,80,.92) 60%)", backdropFilter: "blur(20px)", display: "grid", placeItems: "center" }}>
+          <Img src={staticFile("mark-dark.png")} style={{ width: 250, height: 250, objectFit: "contain" }} />
+        </div>
+      </div>
       <Words id="b1" size={180} top={740} dark width={3500} out={b2 - 8} grad={["never", "sleeps"]} />
       <Words id="b2" size={180} top={740} dark width={3500} grad={["think"]} out={s.dur - 30} />
       <Grain />
@@ -702,22 +768,84 @@ const SCENES: Record<string, React.FC> = {
   practice: S_Practice, analytics: S_Analytics, challenge: S_Challenge, plan: S_Plan, profile: S_Profile, plans: S_Plans, pitch: S_Pitch, end: S_End,
 };
 
-export const Film4: React.FC = () => {
-  const allVoice = TL.scenes.flatMap((s) => s.voice.map((v) => ({ ...v, at: s.at + v.at })));
+const allVoice = TL.scenes.flatMap((s) => s.voice.map((v) => ({ ...v, at: s.at + v.at })));
+
+const Scenes: React.FC = () => (
+  <>
+    {TL.scenes.map((s, k) => {
+      const C = SCENES[s.id];
+      return (
+        <Sequence key={s.id} from={s.at} durationInFrames={s.dur + (k < TL.scenes.length - 1 ? OV : 0)}>
+          <SceneCtx.Provider value={s}><Trans kind={k === 0 ? null : TRANS[(k - 1) % TRANS.length]}><C /></Trans></SceneCtx.Provider>
+        </Sequence>
+      );
+    })}
+  </>
+);
+
+const Sound: React.FC = () => {
   const duck = (x: number) => (allVoice.some((v) => x >= v.at - 4 && x <= v.at + v.len + 6) ? 0.38 : 0.62);
   return (
-    <AbsoluteFill style={{ background: "#04030d" }}>
-      {TL.scenes.map((s) => {
-        const C = SCENES[s.id];
-        return (
-          <Sequence key={s.id} from={s.at} durationInFrames={s.dur}>
-            <SceneCtx.Provider value={s}><Iris><C /></Iris></SceneCtx.Provider>
-          </Sequence>
-        );
-      })}
+    <>
       <Audio src={staticFile("v4/music.wav")} volume={(x) => duck(x) * interpolate(x, [TOTAL4 - 50, TOTAL4], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })} />
       {allVoice.map((v, i) => <Sequence key={i} from={v.at}><Audio src={staticFile(`v4/vo_${v.id}.wav`)} /></Sequence>)}
       {TL.scenes.slice(1).map((s, i) => <Sequence key={`g${i}`} from={Math.max(0, s.at - 4)}><Audio src={staticFile("v4/glass.wav")} volume={0.45} /></Sequence>)}
+    </>
+  );
+};
+
+export const Film4: React.FC = () => (
+  <AbsoluteFill style={{ background: "#04030d" }}>
+    <Scenes />
+    <Sound />
+  </AbsoluteFill>
+);
+
+/** Word-by-word caption of whichever voice line is playing (vertical cut). */
+const Caption: React.FC = () => {
+  const f = useCurrentFrame();
+  const cur = [...allVoice].reverse().find((v) => f >= v.at - 4);
+  if (!cur) return null;
+  const nextAt = allVoice.find((v) => v.at > cur.at)?.at ?? 1e9;
+  const line = vo[cur.id as VoId];
+  const out = 1 - c01((f - Math.min(nextAt - 6, cur.at + line.dur * FPS + 40)) / 8);
+  return (
+    <div style={{ position: "absolute", left: 60, right: 60, top: 230, height: 470, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", opacity: out,
+      fontFamily: DISPLAY, fontWeight: 800, fontSize: line.text.length > 60 ? 70 : 84, lineHeight: 1.12, letterSpacing: -2, color: "#fff" }}>
+      <div>
+        {line.words.map((w, i) => {
+          const wt = cur.at + line.t[i] * FPS;
+          const a = ease(c01((f - wt + 2) / 8));
+          const speaking = f >= wt && f < (i + 1 < line.words.length ? cur.at + line.t[i + 1] * FPS : cur.at + line.dur * FPS) + 2;
+          return (
+            <span key={i} style={{ display: "inline-block", marginRight: 20, opacity: 0.15 + 0.85 * a, transform: `translateY(${(1 - a) * 30}px) scale(${speaking ? 1.06 : 1})`,
+              ...(speaking ? { backgroundImage: RIBBON, WebkitBackgroundClip: "text", color: "transparent" } : {}) }}>{w}</span>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+/** 9:16 cut for Reels / Shorts: caption band, the scene in a rounded frame, brand footer. */
+export const FilmVertical: React.FC = () => {
+  const f = useCurrentFrame();
+  const K = 0.46; // 3840x2160 -> 1766x994, centre-cropped to the frame width
+  return (
+    <AbsoluteFill style={{ background: "#07051a" }}>
+      <AbsoluteFill style={{ background: `radial-gradient(circle at ${30 + 10 * Math.sin(f / 60)}% 15%, rgba(168,85,247,.45), transparent 50%), radial-gradient(circle at 80% 90%, rgba(34,211,238,.3), transparent 50%)` }} />
+      <div style={{ position: "absolute", top: 110, left: 0, right: 0, textAlign: "center", fontFamily: MONO, fontWeight: 700, fontSize: 30, letterSpacing: 10, color: "#c4b5fd" }}>RENYXERA · GATE</div>
+      <Caption />
+      <div style={{ position: "absolute", left: 30, top: 760, width: 1020, height: 994 * 0.9, borderRadius: 48, overflow: "hidden", boxShadow: "0 40px 120px rgba(124,58,237,.45), 0 0 0 3px rgba(255,255,255,.12)" }}>
+        <div style={{ position: "absolute", width: 3840, height: 2160, left: (1020 - 3840 * K) / 2, top: -994 * 0.05, transform: `scale(${K})`, transformOrigin: "0 0" }}>
+          <VerticalCtx.Provider value={true}><AbsoluteFill style={{ background: "#04030d" }}><Scenes /></AbsoluteFill></VerticalCtx.Provider>
+        </div>
+      </div>
+      <div style={{ position: "absolute", bottom: 120, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 18 }}>
+        <Img src={staticFile("mark-dark.png")} style={{ width: 96, height: 96, objectFit: "contain" }} />
+        <div style={{ fontFamily: MONO, fontWeight: 500, fontSize: 34, color: "#e9e5ff", letterSpacing: 2 }}>gate.renyxera.workers.dev</div>
+      </div>
+      <Sound />
     </AbsoluteFill>
   );
 };
