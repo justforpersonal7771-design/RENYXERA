@@ -1,0 +1,28 @@
+name: social-publish
+# Posts due entries from content/calendar.json to Instagram + the Telegram channel, then commits the
+# updated statuses back. Free on GitHub Actions. See docs/SOCIAL_AUTOMATION_PLAYBOOK.md.
+on:
+  schedule: [{ cron: "*/30 * * * *" }]
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: { group: social-publish, cancel-in-progress: false }
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node scripts/social-publish.mjs
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+      - name: Save statuses
+        run: |
+          git config user.name "social-bot"
+          git config user.email "social-bot@users.noreply.github.com"
+          git add content/calendar.json
+          git diff --cached --quiet || (git commit -m "social: mark posted [skip ci]" && git push)

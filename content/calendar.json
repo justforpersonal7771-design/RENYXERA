@@ -1,0 +1,15 @@
+[
+  {
+    "id": "launch-film-reel",
+    "date": "2026-10-20",
+    "time": "19:00",
+    "pillar": "product",
+    "title": "RENYXERA launch film (vertical)",
+    "caption": "It's past midnight. You're still solving. RENYXERA is your AI mentor for GATE: every official past paper, an exam-like simulator, and a mentor that knows your weak spots.\n\nStart free: gate.renyxera.workers.dev",
+    "hashtags": ["#GATE2027", "#GATEprep", "#GATECSE", "#GATECivil", "#EngineeringStudents", "#StudyWithMe"],
+    "media_url": "PASTE_URL_FROM_social-upload",
+    "link": "https://gate.renyxera.workers.dev/?utm_source=instagram&utm_campaign=launch-film",
+    "channels": ["instagram", "telegram"],
+    "status": "draft"
+  }
+]
