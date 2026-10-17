@@ -152,7 +152,8 @@ def main() -> int:
         if a.paper and pid != a.paper:
             continue
         doc = fitz.open(pdf_path(code, pid, "key"))
-        has_text = sum(len(p.get_text().strip()) for p in doc) > 200
+        # a hand-typed key wins: some scanned keys (CE 2021) carry a scrambled text layer
+        has_text = sum(len(p.get_text().strip()) for p in doc) > 200 and not (PYQ / code / "keys_manual" / f"{pid}.tsv").exists()
         try:
             rows = renumber_sections(rows_from_text(doc) if has_text else rows_from_manual(code, pid))
         except ValueError as e:

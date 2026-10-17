@@ -1,0 +1,948 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "Getting to the top is _____________ than staying on top.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "more easy"
+   },
+   {
+    "option_id": "B",
+    "text": "much easy"
+   },
+   {
+    "option_id": "C",
+    "text": "easiest"
+   },
+   {
+    "option_id": "D",
+    "text": "easier"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   2
+  ],
+  "question_text": "[IMAGE_Q_02_1]\nThe mirror image of the above text about the X-axis is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_02_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_02_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_02_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_02_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_02_1",
+    "page": 2,
+    "rect": [
+     150,
+     98,
+     350,
+     270
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_02_A",
+    "page": 2,
+    "rect": [
+     150,
+     308,
+     300,
+     358
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_02_B",
+    "page": 2,
+    "rect": [
+     150,
+     370,
+     300,
+     422
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_02_C",
+    "page": 2,
+    "rect": [
+     150,
+     434,
+     300,
+     486
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_02_D",
+    "page": 2,
+    "rect": [
+     150,
+     497,
+     300,
+     548
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 3,
+  "pages": [
+   2
+  ],
+  "question_text": "In a company, 35% of the employees drink coffee, 40% of the employees drink tea and 10% of the employees drink both tea and coffee. What % of employees drink neither tea nor coffee?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "15"
+   },
+   {
+    "option_id": "B",
+    "text": "25"
+   },
+   {
+    "option_id": "C",
+    "text": "35"
+   },
+   {
+    "option_id": "D",
+    "text": "40"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 4,
+  "pages": [
+   3
+  ],
+  "question_text": "\\(\\oplus\\) and \\(\\odot\\) are two operators on numbers \\(p\\) and \\(q\\) such that\n\\[p \\oplus q = \\frac{p^2 + q^2}{pq} \\quad\\text{and}\\quad p \\odot q = \\frac{p^2}{q};\\]\nIf \\(x \\oplus y = 2 \\odot 2\\), then \\(x =\\)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{y}{2}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(y\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{3y}{2}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2y\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   3
+  ],
+  "question_text": "Four persons P, Q, R and S are to be seated in a row, all facing the same direction, but not necessarily in the same order. P and R cannot sit adjacent to each other. S should be seated to the right of Q. The number of distinct seating arrangements possible is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2"
+   },
+   {
+    "option_id": "B",
+    "text": "4"
+   },
+   {
+    "option_id": "C",
+    "text": "6"
+   },
+   {
+    "option_id": "D",
+    "text": "8"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 6,
+  "pages": [
+   4
+  ],
+  "question_text": "Statement: Either P marries Q or X marries Y\nAmong the options below, the logical NEGATION of the above statement is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P does not marry Q and X marries Y."
+   },
+   {
+    "option_id": "B",
+    "text": "Neither P marries Q nor X marries Y."
+   },
+   {
+    "option_id": "C",
+    "text": "X does not marry Y and P marries Q."
+   },
+   {
+    "option_id": "D",
+    "text": "P marries Q and X marries Y."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   4
+  ],
+  "question_text": "Consider two rectangular sheets, Sheet M and Sheet N of dimensions 6 cm x 4 cm each.\nFolding operation 1: The sheet is folded into half by joining the short edges of the current shape.\nFolding operation 2: The sheet is folded into half by joining the long edges of the current shape.\nFolding operation 1 is carried out on Sheet M three times.\nFolding operation 2 is carried out on Sheet N three times.\nThe ratio of perimeters of the final folded shape of Sheet N to the final folded shape of Sheet M is ______.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "13 : 7"
+   },
+   {
+    "option_id": "B",
+    "text": "3 : 2"
+   },
+   {
+    "option_id": "C",
+    "text": "7 : 5"
+   },
+   {
+    "option_id": "D",
+    "text": "5 : 13"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 8,
+  "pages": [
+   5
+  ],
+  "question_text": "[IMAGE_Q_08_1]\nFive line segments of equal lengths, PR, PS, QS, QT and RT are used to form a star as shown in the figure above.\nThe value of \\(\\theta\\), in degrees, is ______",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "36"
+   },
+   {
+    "option_id": "B",
+    "text": "45"
+   },
+   {
+    "option_id": "C",
+    "text": "72"
+   },
+   {
+    "option_id": "D",
+    "text": "108"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_08_1",
+    "page": 5,
+    "rect": [
+     245,
+     117,
+     420,
+     283
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 9,
+  "pages": [
+   5
+  ],
+  "question_text": "A function, \\(\\lambda\\), is defined by\n\\[\\lambda(p, q) = \\begin{cases} (p - q)^2, & \\text{if } p \\ge q, \\\\ p + q, & \\text{if } p < q. \\end{cases}\\]\nThe value of the expression \\(\\dfrac{\\lambda\\left(-(-3+2), (-2+3)\\right)}{\\left(-(-2+1)\\right)}\\) is:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "−1"
+   },
+   {
+    "option_id": "B",
+    "text": "0"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{16}{3}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "16"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 10,
+  "pages": [
+   6
+  ],
+  "question_text": "Humans have the ability to construct worlds entirely in their minds, which don’t exist in the physical world. So far as we know, no other species possesses this ability. This skill is so important that we have different words to refer to its different flavors, such as imagination, invention and innovation.\nBased on the above passage, which one of the following is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "No species possess the ability to construct worlds in their minds."
+   },
+   {
+    "option_id": "B",
+    "text": "The terms imagination, invention and innovation refer to unrelated skills."
+   },
+   {
+    "option_id": "C",
+    "text": "We do not know of any species other than humans who possess the ability to construct mental worlds."
+   },
+   {
+    "option_id": "D",
+    "text": "Imagination, invention and innovation are unrelated to the ability to construct mental worlds."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 11,
+  "pages": [
+   7
+  ],
+  "question_text": "The rank of matrix \\(\\begin{bmatrix} 1 & 2 & 2 & 3 \\\\ 3 & 4 & 2 & 5 \\\\ 5 & 6 & 2 & 7 \\\\ 7 & 8 & 2 & 9 \\end{bmatrix}\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1"
+   },
+   {
+    "option_id": "B",
+    "text": "2"
+   },
+   {
+    "option_id": "C",
+    "text": "3"
+   },
+   {
+    "option_id": "D",
+    "text": "4"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   7
+  ],
+  "question_text": "If \\(P = \\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}\\) and \\(Q = \\begin{bmatrix} 0 & 1 \\\\ 1 & 0 \\end{bmatrix}\\) then \\(Q^TP^T\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\begin{bmatrix} 1 & 2 \\\\ 3 & 4 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\begin{bmatrix} 1 & 3 \\\\ 2 & 4 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\begin{bmatrix} 2 & 1 \\\\ 4 & 3 \\end{bmatrix}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\begin{bmatrix} 2 & 4 \\\\ 1 & 3 \\end{bmatrix}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 13,
+  "pages": [
+   7
+  ],
+  "question_text": "The shape of the cumulative distribution function of Gaussian distribution is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Horizontal line"
+   },
+   {
+    "option_id": "B",
+    "text": "Straight line at 45 degree angle"
+   },
+   {
+    "option_id": "C",
+    "text": "Bell-shaped"
+   },
+   {
+    "option_id": "D",
+    "text": "S-shaped"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   8
+  ],
+  "question_text": "A propped cantilever beam EF is subjected to a unit moving load as shown in the figure (not to scale). The sign convention for positive shear force at the left and right sides of any section is also shown.\n[IMAGE_Q_14_1]\nThe CORRECT qualitative nature of the influence line diagram for shear force at G is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_14_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_14_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_14_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_14_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_14_1",
+    "page": 8,
+    "rect": [
+     192,
+     189,
+     393,
+     331
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_14_A",
+    "page": 8,
+    "rect": [
+     135,
+     409,
+     330,
+     467
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_14_B",
+    "page": 8,
+    "rect": [
+     135,
+     476,
+     330,
+     539
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_14_C",
+    "page": 8,
+    "rect": [
+     135,
+     555,
+     330,
+     612
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_14_D",
+    "page": 8,
+    "rect": [
+     135,
+     631,
+     330,
+     700
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 15,
+  "pages": [
+   9
+  ],
+  "question_text": "Gypsum is typically added in cement to",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "prevent quick setting"
+   },
+   {
+    "option_id": "B",
+    "text": "enhance hardening"
+   },
+   {
+    "option_id": "C",
+    "text": "increase workability"
+   },
+   {
+    "option_id": "D",
+    "text": "decrease heat of hydration"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   9
+  ],
+  "question_text": "The direct and indirect costs estimated by a contractor for bidding a project is ₹160000 and ₹20000 respectively. If the mark up applied is 10% of the bid price, the quoted price (in ₹) of the contractor is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "200000"
+   },
+   {
+    "option_id": "B",
+    "text": "198000"
+   },
+   {
+    "option_id": "C",
+    "text": "196000"
+   },
+   {
+    "option_id": "D",
+    "text": "182000"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   9
+  ],
+  "question_text": "In an Oedometer apparatus, a specimen of fully saturated clay has been consolidated under a vertical pressure of 50 kN/m\\(^2\\) and is presently at equilibrium. The effective stress and pore water pressure immediately on increasing the vertical stress to 150 kN/m\\(^2\\), respectively are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "150 kN/m\\(^2\\) and 0"
+   },
+   {
+    "option_id": "B",
+    "text": "100 kN/m\\(^2\\) and 50 kN/m\\(^2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "50 kN/m\\(^2\\) and 100 kN/m\\(^2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "0 and 150 kN/m\\(^2\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   10
+  ],
+  "question_text": "A partially-saturated soil sample has natural moisture content of 25% and bulk unit weight of 18.5 kN/m\\(^3\\). The specific gravity of soil solids is 2.65 and unit weight of water is 9.81 kN/m\\(^3\\). The unit weight of the soil sample on full saturation is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "21.12 kN/m\\(^3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "19.03 kN/m\\(^3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "20.12 kN/m\\(^3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "18.50 kN/m\\(^3\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 19,
+  "pages": [
+   10
+  ],
+  "question_text": "If water is flowing at the same depth in most hydraulically efficient triangular and rectangular channel sections then the ratio of hydraulic radius of triangular section to that of rectangular section is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{1}{\\sqrt{2}}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\sqrt{2}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "1"
+   },
+   {
+    "option_id": "D",
+    "text": "2"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   10
+  ],
+  "question_text": "‘Kinematic viscosity’ is dimensionally represented as",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{M}{LT}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\dfrac{M}{L^2T}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{T^2}{L}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{L^2}{T}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 21,
+  "pages": [
+   11
+  ],
+  "question_text": "Which one of the following statements is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Pyrolysis is an endothermic process, which takes place in the absence of oxygen."
+   },
+   {
+    "option_id": "B",
+    "text": "Pyrolysis is an exothermic process, which takes place in the absence of oxygen."
+   },
+   {
+    "option_id": "C",
+    "text": "Combustion is an endothermic process, which takes place in the abundance of oxygen."
+   },
+   {
+    "option_id": "D",
+    "text": "Combustion is an exothermic process, which takes place in the absence of oxygen."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 22,
+  "pages": [
+   11
+  ],
+  "question_text": "Which one of the following is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The partially treated effluent from a food processing industry, containing high concentration of biodegradable organics, is being discharged into a flowing river at a point P. If the rate of degradation of the organics is higher than the rate of aeration, then dissolved oxygen of the river water will be lowest at point P."
+   },
+   {
+    "option_id": "B",
+    "text": "The most important type of species involved in the degradation of organic matter in the case of activated sludge process based wastewater treatment is \\(\\textit{chemoheterotrophs}\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "For an effluent sample of a sewage treatment plant, the ratio BOD\\(_{5\\text{-day},20^\\circ\\text{C}}\\) upon ultimate BOD is more than 1."
+   },
+   {
+    "option_id": "D",
+    "text": "A young lake characterized by low nutrient content and low plant productivity is called \\(\\textit{eutrophic}\\) lake."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 23,
+  "pages": [
+   11
+  ],
+  "question_text": "The liquid forms of particulate air pollutants are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "dust and mist"
+   },
+   {
+    "option_id": "B",
+    "text": "mist and spray"
+   },
+   {
+    "option_id": "C",
+    "text": "smoke and spray"
+   },
+   {
+    "option_id": "D",
+    "text": "fly ash and fumes"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 24,
+  "pages": [
+   12
+  ],
+  "question_text": "The shape of the most commonly designed highway vertical curve is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "circular (single radius)"
+   },
+   {
+    "option_id": "B",
+    "text": "circular (multiple radii)"
+   },
+   {
+    "option_id": "C",
+    "text": "parabolic"
+   },
+   {
+    "option_id": "D",
+    "text": "spiral"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   12
+  ],
+  "question_text": "A highway designed for 80 km/h speed has a horizontal curve section with radius 250 m. If the design lateral friction is assumed to develop fully, the required super elevation is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0.02"
+   },
+   {
+    "option_id": "B",
+    "text": "0.05"
+   },
+   {
+    "option_id": "C",
+    "text": "0.07"
+   },
+   {
+    "option_id": "D",
+    "text": "0.09"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   12
+  ],
+  "question_text": "Which of the following is NOT a correct statement?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The first reading from a level station is a ‘Fore Sight’."
+   },
+   {
+    "option_id": "B",
+    "text": "Basic principle of surveying is to work from whole to parts."
+   },
+   {
+    "option_id": "C",
+    "text": "Contours of different elevations may intersect each other in case of an overhanging cliff."
+   },
+   {
+    "option_id": "D",
+    "text": "Planimeter is used for measuring ‘area’."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 27,
+  "pages": [
+   13
+  ],
+  "question_text": "Which of the following is/are correct statement(s)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Back Bearing of a line is equal to Fore Bearing ± 180°."
+   },
+   {
+    "option_id": "B",
+    "text": "If the whole circle bearing of a line is 270°, its reduced bearing is 90° NW."
+   },
+   {
+    "option_id": "C",
+    "text": "The boundary of water of a calm water pond will represent contour line."
+   },
+   {
+    "option_id": "D",
+    "text": "In the case of fixed hair stadia tachometry, the staff intercept will be larger, when the staff is held nearer to the observation point."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   14
+  ],
+  "question_text": "Consider the limit:\n\\[\\lim_{x \\to 1}\\left(\\frac{1}{\\ln x} - \\frac{1}{x - 1}\\right)\\]\nThe limit (correct up to one decimal place) is ___________",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   14
+  ],
+  "question_text": "The volume determined from \\(\\iiint_V 8\\,xyz\\,dV\\) for \\(V = [2, 3] \\times [1, 2] \\times [0, 1]\\) will be (in integer) _________",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   14
+  ],
+  "question_text": "The state of stress in a deformable body is shown in the figure. Consider transformation of the stress from the x-y coordinate system to the X-Y coordinate system. The angle \\(\\theta\\), locating the X-axis, is assumed to be positive when measured from the x-axis in counter-clockwise direction.\n[IMAGE_Q_30_1]\nThe absolute magnitude of the shear stress component \\(\\sigma_{xy}\\) (in MPa, round off to one decimal place) in x-y coordinate system is __________________",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_30_1",
+    "page": 14,
+    "rect": [
+     170,
+     401,
+     433,
+     607
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 31,
+  "pages": [
+   15
+  ],
+  "question_text": "The equation of deformation is derived to be \\(y = x^2 - xL\\) for a beam shown in the figure.\n[IMAGE_Q_31_1]\nThe curvature of the beam at the mid-span (in units, in integer) will be _______",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_31_1",
+    "page": 15,
+    "rect": [
+     131,
+     137,
+     498,
+     267
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 32,
+  "pages": [
+   15
+  ],
+  "question_text": "A truss EFGH is shown in the figure, in which all the members have the same axial rigidity \\(R\\). In the figure, \\(P\\) is the magnitude of external horizontal forces acting at joints F and G.\n[IMAGE_Q_32_1]\nIf \\(R\\) = 500×10\\(^3\\) kN, \\(P\\) = 150 kN and \\(L\\) = 3 m, the magnitude of the horizontal displacement of joint G (in mm, round off to one decimal place) is _____________",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_32_1",
+    "page": 15,
+    "rect": [
+     197,
+     409,
+     428,
+     563
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 33,
+  "pages": [
+   15
+  ],
+  "question_text": "The cohesion (\\(c\\)), angle of internal friction (\\(\\phi\\)) and unit weight (\\(\\gamma\\)) of a soil are 15 kPa, 20° and 17.5 kN/m\\(^3\\), respectively. The maximum depth of unsupported excavation in the soil (in m, round off to two decimal places) is ____________",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 34,
+  "pages": [
+   16
+  ],
+  "question_text": "Two reservoirs are connected through a homogeneous and isotropic aquifer having hydraulic conductivity (\\(K\\)) of 25 m/day and effective porosity (\\(\\eta\\)) of 0.3 as shown in the figure (not to scale). Ground water is flowing in the aquifer at the steady state.\n[IMAGE_Q_34_1]\nIf water in Reservoir 1 is contaminated then the time (in days, round off to one decimal place) taken by the contaminated water to reach to Reservoir 2 will be _________",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_34_1",
+    "page": 16,
+    "rect": [
+     140,
+     165,
+     490,
+     387
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 35,
+  "pages": [
+   16
+  ],
+  "question_text": "A signalized intersection operates in two phases. The lost time is 3 seconds per phase. The maximum ratios of approach flow to saturation flow for the two phases are 0.37 and 0.40. The optimum cycle length using the Webster’s method (in seconds, round off to one decimal place) is ________",
+  "options": [],
+  "figures": []
+ }
+]

@@ -1,7 +1,7 @@
 {
   "branch": "CE",
   "branch_name": "Civil Engineering",
-  "generated_at": "2026-10-17T12:46:04+00:00",
+  "generated_at": "2026-10-17T12:56:29+00:00",
   "papers": {
     "2026-S2": {
       "paper": "CE_2026_S2",
@@ -66,12 +66,26 @@
       "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/2022/ce_2022.pdf",
       "answer_key_sha256": "d59e924093f5742069f3323e904607f9a8d0bb483ac57e53d1c546e8af622cf2"
     },
-    "2022": {
-      "paper": "CE_2022",
+    "2022-S1": {
+      "paper": "CE_2022_S1",
       "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2022/ce_2022.pdf",
-      "question_paper_sha256": "e05028402f84652bf039b52995ae13217d835870da1c816fea927e8404bdfccd",
+      "question_paper_sha256": "8d19f281fb3b2c6605da76d6b86c730e51f86a895ec4f571415439299d6410c4",
       "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2022/ce_2022.pdf",
       "answer_key_sha256": "47ed84afae316bcbfa4a2a8f79c8d40cb9725187f479ab68ef6d9e116cef754a"
+    },
+    "2021-S2": {
+      "paper": "CE_2021_S2",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2021/ce_2021.pdf",
+      "question_paper_sha256": "d8e276f0cbaba55baa1ee74e21a2d86ca00450e079e29238245307aa331b6ca9",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2021/ce_merged_2021.pdf",
+      "answer_key_sha256": "10a8ebc7ce5b1aa12e4d92e8b92142385f83a00ffdd357b2ed040e6f9faee4bd"
+    },
+    "2021-S1": {
+      "paper": "CE_2021_S1",
+      "question_paper": "https://gate2027.iitm.ac.in/static/doc/download/2021/ce_2021.pdf",
+      "question_paper_sha256": "dc90f256611d3e086a334801ff9ab8bce7c32382f0ecea36c31ee5f30f73615b",
+      "answer_key": "https://gate2027.iitm.ac.in/static/doc/download/Answer_keys2021/ce_merged_2021.pdf",
+      "answer_key_sha256": "9cd700d1bc4b2654195536725aa488856f62c7130f47571e5f88752f3e9d7662"
     }
   },
   "questions": {
@@ -2415,265 +2429,785 @@
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:1": {
+    "CE_2022_S1:1": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:2": {
+    "CE_2022_S1:2": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:3": {
+    "CE_2022_S1:3": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:4": {
+    "CE_2022_S1:4": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:5": {
+    "CE_2022_S1:5": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:6": {
+    "CE_2022_S1:6": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:7": {
+    "CE_2022_S1:7": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:8": {
+    "CE_2022_S1:8": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:9": {
+    "CE_2022_S1:9": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:10": {
+    "CE_2022_S1:10": {
       "marks_to_all": true,
       "review": "auto"
     },
-    "CE_2022:11": {
+    "CE_2022_S1:11": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:12": {
+    "CE_2022_S1:12": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:13": {
+    "CE_2022_S1:13": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:14": {
+    "CE_2022_S1:14": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:15": {
+    "CE_2022_S1:15": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:16": {
+    "CE_2022_S1:16": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:17": {
+    "CE_2022_S1:17": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:18": {
+    "CE_2022_S1:18": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:19": {
+    "CE_2022_S1:19": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:20": {
+    "CE_2022_S1:20": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:21": {
+    "CE_2022_S1:21": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:22": {
+    "CE_2022_S1:22": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:23": {
+    "CE_2022_S1:23": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:24": {
+    "CE_2022_S1:24": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:25": {
+    "CE_2022_S1:25": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:26": {
+    "CE_2022_S1:26": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:27": {
+    "CE_2022_S1:27": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:28": {
+    "CE_2022_S1:28": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:29": {
+    "CE_2022_S1:29": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:30": {
+    "CE_2022_S1:30": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:31": {
+    "CE_2022_S1:31": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:32": {
+    "CE_2022_S1:32": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:33": {
+    "CE_2022_S1:33": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:34": {
+    "CE_2022_S1:34": {
       "marks_to_all": true,
       "review": "auto"
     },
-    "CE_2022:35": {
+    "CE_2022_S1:35": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:36": {
+    "CE_2022_S1:36": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:37": {
+    "CE_2022_S1:37": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:38": {
+    "CE_2022_S1:38": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:39": {
+    "CE_2022_S1:39": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:40": {
+    "CE_2022_S1:40": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:41": {
+    "CE_2022_S1:41": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:42": {
+    "CE_2022_S1:42": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:43": {
+    "CE_2022_S1:43": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:44": {
+    "CE_2022_S1:44": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:45": {
+    "CE_2022_S1:45": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:46": {
+    "CE_2022_S1:46": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:47": {
+    "CE_2022_S1:47": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:48": {
+    "CE_2022_S1:48": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:49": {
+    "CE_2022_S1:49": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:50": {
+    "CE_2022_S1:50": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:51": {
+    "CE_2022_S1:51": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:52": {
+    "CE_2022_S1:52": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:53": {
+    "CE_2022_S1:53": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:54": {
+    "CE_2022_S1:54": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:55": {
+    "CE_2022_S1:55": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:56": {
+    "CE_2022_S1:56": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:57": {
+    "CE_2022_S1:57": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:58": {
+    "CE_2022_S1:58": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:59": {
+    "CE_2022_S1:59": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:60": {
+    "CE_2022_S1:60": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:61": {
+    "CE_2022_S1:61": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:62": {
+    "CE_2022_S1:62": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:63": {
+    "CE_2022_S1:63": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:64": {
+    "CE_2022_S1:64": {
       "marks_to_all": false,
       "review": "auto"
     },
-    "CE_2022:65": {
+    "CE_2022_S1:65": {
       "marks_to_all": false,
       "review": "auto"
+    },
+    "CE_2021_S2:1": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:2": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:3": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:4": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:5": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:6": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:7": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:8": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:9": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:10": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:11": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:12": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:13": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:14": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:15": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:16": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:17": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:18": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:19": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:20": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:21": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:22": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:23": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:24": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:25": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:26": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:27": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:28": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:29": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:30": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:31": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:32": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:33": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:34": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:35": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:36": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:37": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:38": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:39": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:40": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:41": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:42": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:43": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:44": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:45": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:46": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:47": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:48": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:49": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:50": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:51": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:52": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:53": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:54": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:55": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:56": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:57": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:58": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:59": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:60": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:61": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:62": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:63": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:64": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S2:65": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:1": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:2": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:3": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:4": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:5": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:6": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:7": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:8": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:9": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:10": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:11": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:12": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:13": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:14": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:15": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:16": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:17": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:18": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:19": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:20": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:21": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:22": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:23": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:24": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:25": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:26": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:27": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:28": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:29": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:30": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:31": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:32": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:33": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:34": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:35": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:36": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:37": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:38": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:39": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:40": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:41": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:42": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:43": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:44": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:45": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:46": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:47": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:48": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:49": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:50": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:51": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:52": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:53": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:54": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:55": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:56": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:57": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:58": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:59": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:60": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:61": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:62": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:63": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:64": {
+      "marks_to_all": false,
+      "review": "approved"
+    },
+    "CE_2021_S1:65": {
+      "marks_to_all": false,
+      "review": "approved"
     }
   }
 }
