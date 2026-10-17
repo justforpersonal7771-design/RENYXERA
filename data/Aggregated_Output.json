@@ -17763,7 +17763,7 @@
         "subject": "Quantitative Aptitude",
         "topic": "Mensuration and Geometry",
         "difficulty": "Easy",
-        "question_text": "A polygon is convex if, for every pair of points. P and Q belonging to the polygon, the line segment PQ lies completely inside or on the polygon.\nWhich one of the following is NOT a convex polygon?",
+        "question_text": "A polygon is convex if, for every pair of points P and Q belonging to the polygon, the line segment PQ lies completely inside or on the polygon.\nWhich one of the following is NOT a convex polygon?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -17803,7 +17803,7 @@
         "subject": "Verbal Aptitude",
         "topic": "Grammar Rules (Prepositions, Conjunctions, Verb-Noun Agreement, Other Parts of Speech)",
         "difficulty": "Easy",
-        "question_text": "Consider the following sentences:\n(i) Everybody in the class is prepared for the exam.\n(ii) Babu invited Danish to his home because he enjoys playing chess,\nWhich of the following is the CORRECT observation about the above two sentences?",
+        "question_text": "Consider the following sentences:\n(i) Everybody in the class is prepared for the exam.\n(ii) Babu invited Danish to his home because he enjoys playing chess.\nWhich of the following is the CORRECT observation about the above two sentences?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -17843,7 +17843,7 @@
         "subject": "Spatial Aptitude",
         "topic": "Paper Folding and Cutting Diagnostics",
         "difficulty": "Medium",
-        "question_text": "[IMAGE_Q_03_1]\nA circular sheet of paper is folded along the lines in the directions shown. The paper, after being punched in the filial folded state as shown and unfolded in the reverse order of folding, will look like _________.",
+        "question_text": "[IMAGE_Q_03_1]\nA circular sheet of paper is folded along the lines in the directions shown. The paper, after being punched in the final folded state as shown and unfolded in the reverse order of folding, will look like _________.",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_03_1"
@@ -18047,7 +18047,7 @@
         "subject": "Analytical Aptitude",
         "topic": "Logic Deduction and Induction Frameworks",
         "difficulty": "Medium",
-        "question_text": "Given below are two statements I and II and two conclusions I and II:\nStatement:\nI. All bacteria are microorganisms.\nII. All pathogens are microorganisms.\nConclusions:\nI. Some pathogens are bacteria.\nII. All pathogens are not bacteria.\nBased on the above statements and conclusions, which one of the following options is logically CORRECT?",
+        "question_text": "Given below are two statements 1 and 2, and two conclusions I and II.\nStatement 1: All bacteria are microorganisms.\nStatement 2: All pathogens are microorganisms.\nConclusion I: Some pathogens are bacteria.\nConclusion II: All pathogens are not bacteria.\nBased on the above statements and conclusions, which one of the following options is logically CORRECT?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -18093,7 +18093,7 @@
         "options": [
           {
             "option_id": "A",
-            "text": "The proposed AOM addresses the care problems that cause obesity.",
+            "text": "The proposed AOM addresses the core problems that cause obesity.",
             "is_correct": false,
             "has_image": false
           },
@@ -18253,7 +18253,7 @@
         "options": [
           {
             "option_id": "A",
-            "text": "\\(S_2\\) is true and \\(S_2\\) is false",
+            "text": "\\(S_1\\) is true and \\(S_2\\) is false",
             "is_correct": false,
             "has_image": false
           },
@@ -18367,7 +18367,7 @@
         "subject": "Discrete Mathematics",
         "topic": "Propositional and First-Order Quantifier Logic",
         "difficulty": "Medium",
-        "question_text": "Let \\(p\\) and \\(q\\) be two propositions. Consider the following two formulae in prepositional logic.\n\\(S_1 : (\\neg p \\land (p \\lor q)) \\rightarrow p\\)\n\\(S_2 : q \\rightarrow (\\neg p \\land (p \\lor q))\\)\nWhich one of the following choices is correct?",
+        "question_text": "Let \\(p\\) and \\(q\\) be two propositions. Consider the following two formulae in propositional logic.\n\\(S_1 : (\\neg p \\land (p \\lor q)) \\rightarrow p\\)\n\\(S_2 : q \\rightarrow (\\neg p \\land (p \\lor q))\\)\nWhich one of the following choices is correct?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -19247,7 +19247,7 @@
         "subject": "Probability & Statistics",
         "topic": "Random Variables & Sampling Rules",
         "difficulty": "Medium",
-        "question_text": "Consider the two statements:\n\\(S_1\\) : There exist random variables X and Y such that\n\\((E[X - E(X)] (Y - E(Y)))^2 > \\text{Var}[X] \\text{Var}[Y]\\)\n\\(S_2\\) : For all random variables X and Y\n\\(\\text{Cov}[X, Y] = E[|X - E[X]| |Y - E[Y]|]\\)\nWhich one of the following choices is correct?",
+        "question_text": "Consider the two statements:\n\\(S_1\\) : There exist random variables X and Y such that\n\\((E[(X - E(X))(Y - E(Y))])^2 > \\text{Var}[X]\\,\\text{Var}[Y]\\)\n\\(S_2\\) : For all random variables X and Y\n\\(\\text{Cov}[X, Y] = E[|X - E[X]| |Y - E[Y]|]\\)\nWhich one of the following choices is correct?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -20227,7 +20227,7 @@
         "subject": "Quantitative Aptitude",
         "topic": "Data Interpretation (Bar Graphs, Pie Charts, Histograms)",
         "difficulty": "Medium",
-        "question_text": "The number of units of a product sold in three different years and the respective net profits are presented in the figure above. The cost/unit in year 3 was Rs. 1, which was half the cost/unit in year 2. The cost/unit in year 3 was one-third of the cost/unit in year 1. Taxes were paid on the selling price at 10%, 13% and 15% respectively for the three years. Net profit is calculated as the difference between the selling price and the sum of cost and taxes paid in that year.\n\n[IMAGE_Q_09_1]\n\nThe ratio of the selling price in Year 2 to the selling price in Year 3 is _________.",
+        "question_text": "The number of units of a product sold in three different years and the respective net profits are presented in the figure above. The cost/unit in Year 3 was Rs. 1, which was half the cost/unit in year 2. The cost/unit in year 3 was one-third of the cost/unit in year 1. Taxes were paid on the selling price at 10%, 13% and 15% respectively for the three years. Net profit is calculated as the difference between the selling price and the sum of cost and taxes paid in that year.\n\n[IMAGE_Q_09_1]\n\nThe ratio of the selling price in Year 2 to the selling price in Year 3 is _________.",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_09_1"
@@ -20676,7 +20676,7 @@
         "subject": "Programming in C",
         "topic": "Pointers, Multi-Dimensional Arrays, Structures",
         "difficulty": "Medium",
-        "question_text": "Consider the following ANSI C program:\n```c\n#include <stdio.h>\nint main( ) {\n    int arr[4] [5] ;\n    int i, j;\n    for (i = 0; i < 4; i++) {\n        for (j = 0; j < 5; j++) {\n            arr[i] [j] = 10 * i + j;\n        }\n    }\n    printf(\"%d\", * (arr[i] + 9));\n    return 0;\n}\n```\nWhat is the output of the above program?",
+        "question_text": "Consider the following ANSI C program:\n```c\n#include <stdio.h>\nint main( ) {\n    int arr[4] [5] ;\n    int i, j;\n    for (i = 0; i < 4; i++) {\n        for (j = 0; j < 5; j++) {\n            arr[i] [j] = 10 * i + j;\n        }\n    }\n    printf(\"%d\", *(arr[1] + 9));\n    return 0;\n}\n```\nWhat is the output of the above program?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -28302,7 +28302,7 @@
         "subject": "Algorithms",
         "topic": "Asymptotic Analysis (O, Omega, Theta Complexities)",
         "difficulty": "Medium",
-        "question_text": "Consider the following functions from positive integers to real numbers:\n\\(10, \\sqrt{n}, n, \\log_2 n, \\frac{100}{n}\\)\nTire CORRECT arrangement of the above functions in increasing order of asymptotic complexity is:",
+        "question_text": "Consider the following functions from positive integers to real numbers:\n\\(10, \\sqrt{n}, n, \\log_2 n, \\frac{100}{n}\\)\nThe CORRECT arrangement of the above functions in increasing order of asymptotic complexity is:",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -28504,7 +28504,7 @@
         "subject": "Digital Logic",
         "topic": "Number Representations & Fixed/Floating Point Math",
         "difficulty": "Medium",
-        "question_text": "Who two 8-bit numbers \\(A_7 \\dots A_0\\) and \\(B_7 \\dots B_0\\) in 2's complement representation (with \\(A_0\\) and \\(B_0\\) as the least significant bits) are added using a ripple-carry adder, the sum bits obtained are \\(S_7 \\dots S_0\\) and the carry bits are \\(C_7 \\dots C_0\\). An overflow is said to have occured if",
+        "question_text": "When two 8-bit numbers \\(A_7 \\dots A_0\\) and \\(B_7 \\dots B_0\\) in 2's complement representation (with \\(A_0\\) and \\(B_0\\) as the least significant bits) are added using a ripple-carry adder, the sum bits obtained are \\(S_7 \\dots S_0\\) and the carry bits are \\(C_7 \\dots C_0\\). An overflow is said to have occurred if",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -28584,31 +28584,31 @@
         "subject": "Computer Organization and Architecture (COA)",
         "topic": "Machine Instructions & Addressing Modes",
         "difficulty": "Medium",
-        "question_text": "Consider the C struct defined below:\n```c\nstruct data {\n    int marks [100];\n    char grade;\n    int cnumber;\n};\nstruct data student;\n```\nThe base address of student is available in register R1. The field student, grade can be accessed efficiently using",
+        "question_text": "Consider the C struct defined below:\n```c\nstruct data {\n    int marks [100];\n    char grade;\n    int cnumber;\n};\nstruct data student;\n```\nThe base address of student is available in register R1. The field student.grade can be accessed efficiently using",
         "has_image": false,
         "images_required": [],
         "options": [
           {
             "option_id": "A",
-            "text": "Post-increment addressing mode. (R1) –",
+            "text": "Post-increment addressing mode, (R1)+",
             "is_correct": false,
             "has_image": false
           },
           {
             "option_id": "B",
-            "text": "Pre-decrement addressing mode. – (R1)",
+            "text": "Pre-decrement addressing mode, –(R1)",
             "is_correct": false,
             "has_image": false
           },
           {
             "option_id": "C",
-            "text": "Register direct addressing mode. R1",
+            "text": "Register direct addressing mode, R1",
             "is_correct": false,
             "has_image": false
           },
           {
             "option_id": "D",
-            "text": "Index addressing mode. X(R1). where X is an offset represented in 2's complement 16-bit representation.",
+            "text": "Index addressing mode, X(R1), where X is an offset represented in 2's complement 16-bit representation.",
             "is_correct": true,
             "has_image": false
           }
@@ -28664,7 +28664,7 @@
         "subject": "Programming in C",
         "topic": "Dynamic Memory Allocation & File Handling",
         "difficulty": "Medium",
-        "question_text": "Consider the following C code:\n```c\n#include <stdio.h>\nint *assignval (int *x, int val) {\n    *x = val;\n    return x;\n}\nvoid main ( ) {\n    int *x = malloc (size of (int));\n    if (NULL == x) return;\n    x = assignval(x, 0);\n    if(x) {\n        x = (int *) malloc (size of (int));\n        if (NULL == x) return;\n        x = assignval (x, 10);\n    }\n    printf (\"%d\\n\", *x);\n    free (x);\n}\n```\nThe code suffers from which one of the following problems:",
+        "question_text": "Consider the following C code:\n```c\n#include <stdio.h>\nint *assignval (int *x, int val) {\n    *x = val;\n    return x;\n}\nvoid main ( ) {\n    int *x = malloc (sizeof(int));\n    if (NULL == x) return;\n    x = assignval(x, 0);\n    if(x) {\n        x = (int *) malloc (sizeof(int));\n        if (NULL == x) return;\n        x = assignval (x, 10);\n    }\n    printf (\"%d\\n\", *x);\n    free (x);\n}\n```\nThe code suffers from which one of the following problems:",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -28704,7 +28704,7 @@
         "subject": "Computer Networks (CN)",
         "topic": "Transport Layer (Flow Control and Congestion Control, TCP, UDP, Sockets)",
         "difficulty": "Medium",
-        "question_text": "Consider a TCP client and a TCP server running on two different machines. After completing data transfer, the TCP client calls close to terminate the connection and a FIN segment is sent to the TCP server. Server-side TCP responds by sending an ACK. which is received by the client-side TCP. As per the TCP connection state diagram (RFC 793). In which state does the client-side TCP connection wait for the FIN from the server-side TCP?",
+        "question_text": "Consider a TCP client and a TCP server running on two different machines. After completing data transfer, the TCP client calls close to terminate the connection and a FIN segment is sent to the TCP server. Server-side TCP responds by sending an ACK, which is received by the client-side TCP. As per the TCP connection state diagram (RFC 793), in which state does the client-side TCP connection wait for the FIN from the server-side TCP?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -28744,7 +28744,7 @@
         "subject": "Computer Networks (CN)",
         "topic": "Application Layer (DNS, SMTP, HTTP, FTP, Email) & Security",
         "difficulty": "Hard",
-        "question_text": "A sender S sends a message \\(m\\) to receiver R. which is digitally signed by S with its private key. In this scenario, one or more of the following security violations can take place.\nI. S can launch a birthday attack to replace \\(m\\) with a fraudulent message.\nII. A third party attacker can launch a birthday attack to replace \\(m\\) with a fraudulent message.\nIII. R can launch a birthday attack to replace \\(m\\) with a fraudulent message.\nWhich of the following are possible security violations?",
+        "question_text": "A sender S sends a message \\(m\\) to receiver R, which is digitally signed by S with its private key. In this scenario, one or more of the following security violations can take place.\nI. S can launch a birthday attack to replace \\(m\\) with a fraudulent message.\nII. A third party attacker can launch a birthday attack to replace \\(m\\) with a fraudulent message.\nIII. R can launch a birthday attack to replace \\(m\\) with a fraudulent message.\nWhich of the following are possible security violations?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -28951,7 +28951,7 @@
         "subject": "Theory of Computation (TOC)",
         "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
         "difficulty": "Medium",
-        "question_text": "Consider the language \\(L\\) given by the regular expression \\((a + b)^* b (a + b)\\) over the alphabet \\(\\{a, b\\}\\). The smallest number of states needed in a determmistic finite-state automaton (DFA) accepting \\(L\\) is________.",
+        "question_text": "Consider the language \\(L\\) given by the regular expression \\((a + b)^* b (a + b)\\) over the alphabet \\(\\{a, b\\}\\). The smallest number of states needed in a deterministic finite-state automaton (DFA) accepting \\(L\\) is________.",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -28966,7 +28966,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "SQL Queries (DDL/DML, Joins, Aggregations)",
         "difficulty": "Medium",
-        "question_text": "Consider a database that has the relation schema EMP (EmpId. EmpName. and DeptName). An instance of the schema EMP and a SQL query on it are given below:\n\nEMP\n[IMAGE_Q_31]\n\n```sql\nSELECT AVG(EC.Num)\nFROM EC\nWHERE (DeptName, Num) IN\n    (SELECT DeptName, COUNT(EmpId) AS\n                EC( DeptName, Num)\n    FROM EMP\n    GROUP BY DeptName)\n```\nThe output of executing the SQL query is",
+        "question_text": "Consider a database that has the relation schema EMP (EmpId, EmpName, and DeptName). An instance of the schema EMP and a SQL query on it are given below:\n\nEMP\n[IMAGE_Q_31]\n\n```sql\nSELECT AVG(EC.Num)\nFROM EC\nWHERE (DeptName, Num) IN\n    (SELECT DeptName, COUNT(EmpId) AS\n                EC( DeptName, Num)\n    FROM EMP\n    GROUP BY DeptName)\n```\nThe output of executing the SQL query is",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_31"
@@ -29055,7 +29055,7 @@
         "subject": "Operating Systems (OS)",
         "topic": "Concurrency & Synchronization (Semaphores, Mutex, Monitors, Locks)",
         "difficulty": "Easy",
-        "question_text": "A multithreaded program P executes with \\(x\\) number of threads and uses \\(y\\) number of locks for ensuring mutual exclusion while operating on shared memory locations. All locks in the program are non-reentrant. i.e. if a thread holds a lock \\(l\\). then it cannot re-acquire lock \\(l\\) without releasing it, If a thread is unable to acquire a lock, it blocks until the lock becomes available. The minimum value of \\(x\\) and the minimum value of \\(y\\) together for which execution of P can result in a deadlock are:",
+        "question_text": "A multithreaded program P executes with \\(x\\) number of threads and uses \\(y\\) number of locks for ensuring mutual exclusion while operating on shared memory locations. All locks in the program are non-reentrant, i.e., if a thread holds a lock \\(l\\), then it cannot re-acquire lock \\(l\\) without releasing it. If a thread is unable to acquire a lock, it blocks until the lock becomes available. The minimum value of \\(x\\) and the minimum value of \\(y\\) together for which execution of P can result in a deadlock are:",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -29657,7 +29657,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "Transactions, Concurrency Control, Conflict Serializability",
         "difficulty": "Medium",
-        "question_text": "In a database system, unique timestamps are assigned to each transaction using Lamport's logical clock. Let \\(TS(T_1)\\) and \\(TS(T_2)\\) be the timestamps of transactions \\(T_1\\) and \\(T_2\\) respectively. Besides, \\(T_1\\) holds a lock on the resource \\(R\\) and \\(T_1\\) has requested a conflicting lock on the same resource \\(R\\). The following algorithm is used to prevent deadlocks in the database system assuming that a killed transaction is restarted with the same timestamp.\n```\nif TS(T_2) < TS(T_1) then\n    T_1 is killed\nelse T_2 waits\n```\nAssume any transaction that is not killed terminates eventually. Which of the following is TRUE about the database system that uses the above algorithm to prevent deadlocks?",
+        "question_text": "In a database system, unique timestamps are assigned to each transaction using Lamport's logical clock. Let \\(TS(T_1)\\) and \\(TS(T_2)\\) be the timestamps of transactions \\(T_1\\) and \\(T_2\\) respectively. Besides, \\(T_1\\) holds a lock on the resource \\(R\\), and \\(T_2\\) has requested a conflicting lock on the same resource \\(R\\). The following algorithm is used to prevent deadlocks in the database system assuming that a killed transaction is restarted with the same timestamp.\n```\nif TS(T_2) < TS(T_1) then\n    T_1 is killed\nelse T_2 waits\n```\nAssume any transaction that is not killed terminates eventually. Which of the following is TRUE about the database system that uses the above algorithm to prevent deadlocks?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -29936,7 +29936,7 @@
         "subject": "Verbal Aptitude",
         "topic": "Grammar Rules (Prepositions, Conjunctions, Verb-Noun Agreement, Other Parts of Speech)",
         "difficulty": "Easy",
-        "question_text": "Research in the workplace reveal that people work for many reasons _________.",
+        "question_text": "Research in the workplace reveals that people work for many reasons _________.",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -30625,7 +30625,7 @@
         "subject": "Computer Networks (CN)",
         "topic": "Routing Protocols (Shortest Path, Flooding, Distance Vector, Link State Routing)",
         "difficulty": "Easy",
-        "question_text": "Consider tlie following statements about the routing protocols, Routing Information Protocol (RIP) and Open Shortest Path First (OSPF) in an IPv4 network.\nI: RIP uses distance vector routing\nII: RIP packets are sent using UDP\nIII: OSPF packets are sent using TCP\nIV: OSPF operation is based on link-state routing\nWhich of the statements above are CORRECT?",
+        "question_text": "Consider the following statements about the routing protocols, Routing Information Protocol (RIP) and Open Shortest Path First (OSPF) in an IPv4 network.\nI: RIP uses distance vector routing\nII: RIP packets are sent using UDP\nIII: OSPF packets are sent using TCP\nIV: OSPF operation is based on link-state routing\nWhich of the statements above are CORRECT?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -30825,7 +30825,7 @@
         "subject": "Programming in C",
         "topic": "Pointers, Multi-Dimensional Arrays, Structures",
         "difficulty": "Medium",
-        "question_text": "Consider tiie following function implemented in C:\n```c\nvoid printxy (int x, int y)\n{\n    int *ptr;\n    x = 0;\n    ptr = &x;\n    y = *ptr;\n    *ptr = 1;\n    printf (\"%d, %d\", x, y);\n}\n```\nThe output of invoking printxy (1, 1) is",
+        "question_text": "Consider the following function implemented in C:\n```c\nvoid printxy (int x, int y)\n{\n    int *ptr;\n    x = 0;\n    ptr = &x;\n    y = *ptr;\n    *ptr = 1;\n    printf (\"%d, %d\", x, y);\n}\n```\nThe output of invoking printxy (1, 1) is",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -31059,7 +31059,7 @@
         "subject": "Discrete Mathematics",
         "topic": "Sets, Relations, Functions, Partial Orders, Lattices",
         "difficulty": "Medium",
-        "question_text": "Consider the set X = {a, b, c, d, e} under the partial ordering\nR = {(a, a), (a, b), (a, c), (a, d), (a, e), (b, b), (b, c), (b, e), (c, c), (c, e), (d, d), (d, e), (e, e)}.\nThe Hase diagram of the partial order (X, R) is shown below:\n[IMAGE_Q_28]\nThe minimum number of ordered pairs that need to be added to R to make (X, R) a lattice is ________.",
+        "question_text": "Consider the set X = {a, b, c, d, e} under the partial ordering\nR = {(a, a), (a, b), (a, c), (a, d), (a, e), (b, b), (b, c), (b, e), (c, c), (c, e), (d, d), (d, e), (e, e)}.\nThe Hasse diagram of the partial order (X, R) is shown below:\n[IMAGE_Q_28]\nThe minimum number of ordered pairs that need to be added to R to make (X, R) a lattice is ________.",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_28"
@@ -31498,7 +31498,7 @@
         "subject": "Computer Networks (CN)",
         "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
         "difficulty": "Medium",
-        "question_text": "Consider two hosts X and Y. connected by a single direct link of rate \\(10^6\\) bits/sec. The distance between the two hosts is 10,000 km and the propagation speed along the link is \\(2 \\times 10^8\\) m/sec. Host X sends a file of 50,000 bytes as one large message to host Y continuously. Let the transmission and propagation delays be p milliseconds and q milliseconds, respectively. Then the values of p and q are",
+        "question_text": "Consider two hosts X and Y, connected by a single direct link of rate \\(10^6\\) bits/sec. The distance between the two hosts is 10,000 km and the propagation speed along the link is \\(2 \\times 10^8\\) m/sec. Host X sends a file of 50,000 bytes as one large message to host Y continuously. Let the transmission and propagation delays be p milliseconds and q milliseconds, respectively. Then the values of p and q are",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -31822,7 +31822,7 @@
         "subject": "Programming in C",
         "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
         "difficulty": "Medium",
-        "question_text": "Consider the following snippet of a C program. Assume that swap (&x, &y) exchanges the contents of x and y.\n```c\nint main( )\n{\n    int array[] = {3, 5, 1, 4, 6, 2};\n    int done = 0;\n    int i;\n    while (done == 0)\n    {\n        done = 1;\n        for (i = 0; i <= 4; i++)\n        {\n            if (array[i] < array[i + 1])\n                swap(&array[i], Sarray[i + 1]);\n                done = 0;\n        }\n    }\n    for (i = 5; i >= 1; i --)\n    {\n        if (array[i] > array[i - 1])\n        {\n            swap(&array[i], Sarray[i - 1]);\n            done = 0;\n        }\n    }\n    printf(\"%d\", array[3]);\n}\n```\nThe output of the program is ________.",
+        "question_text": "Consider the following snippet of a C program. Assume that swap (&x, &y) exchanges the contents of x and y.\n```c\nint main() {\n    int array[] = {3, 5, 1, 4, 6, 2};\n    int done = 0;\n    int i;\n    while (done == 0) {\n        done = 1;\n        for (i = 0; i <= 4; i++) {\n            if (array[i] < array[i + 1]) {\n                swap(&array[i], &array[i + 1]);\n                done = 0;\n            }\n        }\n        for (i = 5; i >= 1; i--) {\n            if (array[i] > array[i - 1]) {\n                swap(&array[i], &array[i - 1]);\n                done = 0;\n            }\n        }\n    }\n    printf(\"%d\", array[3]);\n}\n```\nThe output of the program is ________.",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -31965,7 +31965,7 @@
         "subject": "Linear Algebra",
         "topic": "Eigenvalues and Eigenvectors",
         "difficulty": "Medium",
-        "question_text": "If the characteristic polynomial of a \\(3 \\times 3\\) matrix M over \\(\\mathbb{R}\\) (the set of real numbers) is \\(\\lambda^3 - 4\\lambda^2 + a\\lambda + 30\\). \\(a \\in \\mathbb{R}\\) and one eigenvalue of M is 2. then the largest among the absolute values of the eigenvalues of M is ________.",
+        "question_text": "If the characteristic polynomial of a \\(3 \\times 3\\) matrix M over \\(\\mathbb{R}\\) (the set of real numbers) is \\(\\lambda^3 - 4\\lambda^2 + a\\lambda + 30\\), \\(a \\in \\mathbb{R}\\), and one eigenvalue of M is 2, then the largest among the absolute values of the eigenvalues of M is ________.",
         "has_image": false,
         "images_required": [],
         "options": [],

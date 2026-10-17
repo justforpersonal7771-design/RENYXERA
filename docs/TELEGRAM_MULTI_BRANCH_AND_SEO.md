@@ -17,6 +17,19 @@ Add a new branch later by creating one channel, one topic, one secret.
 
 Branch codes used below match the app: CS (`CSE`), EC, EE, ME, CE, DA.
 
+## 1b. You already have a channel: upgrade it, do not recreate it
+
+Keep your existing channel and its subscribers. It **becomes the hub**. Do this instead of 3.1, then continue with 3.2 onward:
+
+1. Open your channel → tap its name → **✏️ Edit**.
+2. **Name:** change to `RENYXERA · GATE 2027` (section 2). Subscribers keep following; nothing breaks.
+3. **Description:** paste the hub description from section 2.
+4. **Username:** leave it as it is. Changing a public username breaks old links and the `TELEGRAM_CHANNEL` secret. If you must change it, update the secret in the same minute.
+5. **Discussion:** if it already has a linked group, open that group → **Edit → Topics: ON** (it converts the group to a forum and keeps the history). Rename it `RENYXERA · GATE Discussion` and create the topics from 3.3 step 4. If it has no group, do 3.3.
+6. Pin the welcome post (section 5) and unpin older ones.
+7. Do not delete old posts. Post once: "Branch channels are here: CS, EC, EE, ME, CE, DA. One tap to join all: <folder link>".
+8. Then create only the **six branch channels** (3.2), the folder (3.4) and the secrets (3.6). The existing `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHANNEL` secrets stay as they are.
+
 ## 2. Names, usernames, descriptions (SEO-ready)
 
 Telegram search matches the **name**, **username** and **description**. Put the exam and branch words people actually type in them.
