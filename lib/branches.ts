@@ -45,10 +45,10 @@ export const BRANCHES: BranchInfo[] = [
     blurb: "Every official GATE EE paper from 2021 to 2026 (390 questions, tagged to the official syllabus), a real exam-interface simulator, mistake analytics and an AI mentor.",
   },
   {
-    code: "CE", slug: "gate-ce", paper: "CE", name: "Civil Engineering", short: "Civil", live: false,
-    candidates: "about 76,000 candidates sat GATE 2026", trend: "A large paper with strong PSU and state-job demand.", plannedLaunch: "2027",
+    code: "CE", slug: "gate-ce", paper: "CE", name: "Civil Engineering", short: "Civil", live: true,
+    candidates: "about 76,000 candidates sat GATE 2026", trend: "A large paper with strong PSU and state-job demand.", plannedLaunch: null,
     subjects: ["Engineering Mathematics", "Structural Engineering", "Geotechnical Engineering", "Water Resources Engineering", "Environmental Engineering", "Transportation Engineering", "Geomatics Engineering", "General Aptitude"],
-    blurb: "Past papers, solutions and mocks tuned to the Civil syllabus and its weightage.",
+    blurb: "Every official GATE CE paper from 2021 to 2026, both shifts of every year (780 questions, tagged to the official syllabus), a real exam-interface simulator, mistake analytics and an AI mentor.",
   },
   {
     code: "ME", slug: "gate-me", paper: "ME", name: "Mechanical Engineering", short: "Mechanical", live: true,
@@ -75,10 +75,11 @@ export const BANK_SUMMARY: Partial<Record<BranchCode, { questions: number; years
   EE: { questions: 390, years: "2021–2026" },
   DA: { questions: 195, years: "2024–2026" },
   ME: { questions: 520, years: "2021–2026" },
+  CE: { questions: 780, years: "2021–2026" },
 };
 
 /** Branches whose question bank scripts/copy-static-data.mjs builds. */
-export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE", "EE", "DA", "ME"];
+export const BRANCHES_WITH_DATA: BranchCode[] = ["CSE", "ECE", "EE", "DA", "ME", "CE"];
 
 /** Branches open in the app: marketing `live`, plus any in NEXT_PUBLIC_PREVIEW_BRANCHES
  *  (comma-separated) for testing before launch. Server checks use public.branches.status. */

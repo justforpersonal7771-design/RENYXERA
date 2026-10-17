@@ -187,6 +187,7 @@ Compiling in MathJax is necessary but not sufficient. Before shipping a branch:
 | EE | 2021-2026 | all 390 (2021 scan + scanned key typed by Claude) | all 390 | 390, render-clean, live |
 | DA | 2024-2026 | all 195 | all 195 | 195, render-clean, live |
 | ME | 2021-2026 (2021, 2022 split into S1/S2) | all 520 (2021 scans transcribed from images, keys typed) | all 520 (23 subjects) | 520, render-clean, live |
+| CE | 2021-2026 (2021, 2022 split into S1/S2; 2022 Set-2 key is printed at the end of the paper) | all 780 (2021 scans transcribed from images, keys typed) | all 780 (28 subjects) | 780, render-clean, live (migration 0038) |
 | CE | not yet (two shifts from 2023!) | - | - | - |
 
 ## 10. Next steps, in order

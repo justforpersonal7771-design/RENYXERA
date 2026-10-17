@@ -18,7 +18,7 @@ import { cpSync, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync,
 import { buildSharedBanks } from "./lib/shared-bank.mjs";
 
 // App branch code -> GATE paper code. Keep in step with lib/branches.ts (BRANCHES_WITH_DATA).
-const PYQ_BRANCHES = { ECE: "EC", EE: "EE", DA: "DA", ME: "ME" };
+const PYQ_BRANCHES = { ECE: "EC", EE: "EE", DA: "DA", ME: "ME", CE: "CE" };
 
 function stripAnswers(papers) {
   return papers.map((paper) => ({

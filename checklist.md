@@ -447,7 +447,7 @@ Ordered by the plan's rule — security & integrity first, then retention, then 
 ### 8C · P1 · Multi-Branch Data Acquisition
 | Task | Status |
 |---|---|
-| Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | 🟡 *(EC 2021–2026 done (390, tagged). EE 2021–2026 done (390, tagged, live in app). DA 2024–2026 done (195, tagged, live in app). ME 2021–2026 done (520 incl. both shifts of 2021/2022, tagged, live in app; migration 0031). CE next. Rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`)* |
+| Official papers (all years/sessions) + official final answer keys for DA, ECE, EE, ME, CE | 🟡 *(EC 2021–2026 done (390, tagged). EE 2021–2026 done (390, tagged, live in app). DA 2024–2026 done (195, tagged, live in app). ME 2021–2026 done (520 incl. both shifts of 2021/2022, tagged, live in app; migration 0031). CE 2021–2026 done (780, all 12 shifts, tagged, live in app; DB seeded, migration 0038). Rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`)* |
 | EC 2026 transcribed by Claude, 27 figures eye-checked, 65/65 validated → `data/pyq/EC/gate_ec_pyqs.json` | ✅ *(untagged; in-app render check pending — Q7 table)* |
 | EC 2025 transcribed by Claude, 42 figures, 65/65 validated, 130/130 EC render-clean | ✅ *(bank now in the exact CS `Aggregated_Output.json` format; provenance in `gate_ec_pyqs.meta.json`)* |
 | EC 2024 transcribed by Claude, 32 figures (explicit crops: the 2024 PDF carries a full-page watermark), 65/65 validated, EC bank 195/195 render-clean | ✅ |
@@ -599,5 +599,6 @@ Product rules: never advertise "no login", guide visitors to sign in; no lifetim
 - [ ] Blocked on data (searched 10 Oct, nothing official): no marks-vs-rank tables for EC/EE/ME/CE/DA exist (IIT Guwahati publishes score vs rank only in the report; web tables are pre-result guesses that disagree). Earlier-year per-branch stats: gate2025.iitr.ac.in failed to load (certificate error); only third-party 2025 qualifying marks found (CE 29.2, ME 35.8, EE 25, EC 25, DA 29), not added because we show official numbers only. Retried once (10 Oct), same certificate error. DECISION: keep official-only, hide the unofficial numbers; revisit only if the official 2025 report PDF becomes reachable
 
 ### On hold (by you)
-- [ ] On hold (by you): PYQ extraction for CE and remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs
+- [x] PYQ extraction for CE (17 Oct: 780 questions, live)
+- [ ] On hold (by you): PYQ extraction for remaining branches (docs/PYQ_EXTRACTION_HANDBOOK.md) · generated GATE-level questions after the PYQs
 - [ ] Custom domain: now needed for business email (docs/BUSINESS_EMAIL_STRATEGY.md); first real payment has arrived
