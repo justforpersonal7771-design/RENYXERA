@@ -1,0 +1,940 @@
+[
+ {
+  "qno": 1,
+  "pages": [
+   1
+  ],
+  "question_text": "The line ran _______ the page, right through the centre, and divided the page into two.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "across"
+   },
+   {
+    "option_id": "B",
+    "text": "of"
+   },
+   {
+    "option_id": "C",
+    "text": "between"
+   },
+   {
+    "option_id": "D",
+    "text": "about"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 2,
+  "pages": [
+   1
+  ],
+  "question_text": "Kind : ________ : : Often : Seldom\n(By word meaning)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Cruel"
+   },
+   {
+    "option_id": "B",
+    "text": "Variety"
+   },
+   {
+    "option_id": "C",
+    "text": "Type"
+   },
+   {
+    "option_id": "D",
+    "text": "Kindred"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 3,
+  "pages": [
+   2
+  ],
+  "question_text": "In how many ways can cells in a 3 × 3 grid be shaded, such that each row and each column have exactly one shaded cell? An example of one valid shading is shown.\n[IMAGE_Q_03_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "2"
+   },
+   {
+    "option_id": "B",
+    "text": "9"
+   },
+   {
+    "option_id": "C",
+    "text": "3"
+   },
+   {
+    "option_id": "D",
+    "text": "6"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_03_1",
+    "page": 2,
+    "regions": [
+     "p002_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 4,
+  "pages": [
+   3
+  ],
+  "question_text": "There are 4 red, 5 green, and 6 blue balls inside a box. If N number of balls are picked simultaneously, what is the smallest value of N that guarantees there will be at least two balls of the same colour?\nOne cannot see the colour of the balls until they are picked.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "4"
+   },
+   {
+    "option_id": "B",
+    "text": "15"
+   },
+   {
+    "option_id": "C",
+    "text": "5"
+   },
+   {
+    "option_id": "D",
+    "text": "2"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 5,
+  "pages": [
+   4
+  ],
+  "question_text": "Consider a circle with its centre at the origin (O), as shown. Two operations are allowed on the circle.\nOperation 1: Scale independently along the x and y axes.\nOperation 2: Rotation in any direction about the origin.\nWhich figure among the options can be achieved through a combination of these two operations on the given circle?\n[IMAGE_Q_05_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[IMAGE_Q_05_A]"
+   },
+   {
+    "option_id": "B",
+    "text": "[IMAGE_Q_05_B]"
+   },
+   {
+    "option_id": "C",
+    "text": "[IMAGE_Q_05_C]"
+   },
+   {
+    "option_id": "D",
+    "text": "[IMAGE_Q_05_D]"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_05_1",
+    "page": 4,
+    "regions": [
+     "p004_r1"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_05_A",
+    "page": 4,
+    "regions": [
+     "p004_r2"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_05_B",
+    "page": 4,
+    "regions": [
+     "p004_r3"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_05_C",
+    "page": 4,
+    "regions": [
+     "p004_r4"
+    ],
+    "grow": false
+   },
+   {
+    "placeholder": "IMAGE_Q_05_D",
+    "page": 4,
+    "regions": [
+     "p004_r5"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 6,
+  "pages": [
+   5
+  ],
+  "question_text": "Elvesland is a country that has peculiar beliefs and practices. They express almost all their emotions by gifting flowers. For instance, if anyone gifts a white flower to someone, then it is always taken to be a declaration of one’s love for that person. In a similar manner, the gifting of a yellow flower to someone often means that one is angry with that person.\nBased only on the information provided above, which one of the following sets of statement(s) can be logically inferred with certainty?\n(i) In Elvesland, one always declares one’s love by gifting a white flower.\n(ii) In Elvesland, all emotions are declared by gifting flowers.\n(iii) In Elvesland, sometimes one expresses one’s anger by gifting a flower that is not yellow.\n(iv) In Elvesland, sometimes one expresses one’s love by gifting a white flower.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "only (ii)"
+   },
+   {
+    "option_id": "B",
+    "text": "(i), (ii) and (iii)"
+   },
+   {
+    "option_id": "C",
+    "text": "(i), (iii) and (iv)"
+   },
+   {
+    "option_id": "D",
+    "text": "only (iv)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 7,
+  "pages": [
+   6
+  ],
+  "question_text": "Three husband-wife pairs are to be seated at a circular table that has six identical chairs. Seating arrangements are defined only by the relative position of the people. How many seating arrangements are possible such that every husband sits next to his wife?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "16"
+   },
+   {
+    "option_id": "B",
+    "text": "4"
+   },
+   {
+    "option_id": "C",
+    "text": "120"
+   },
+   {
+    "option_id": "D",
+    "text": "720"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 8,
+  "pages": [
+   7
+  ],
+  "question_text": "Based only on the following passage, which one of the options can be inferred with certainty?\nWhen the congregation sang together, Apenyo would also join, though her little screams were not quite audible because of the group singing. But whenever there was a special number, trouble would begin; Apenyo would try singing along, much to the embarrassment of her mother. After two or three such mortifying Sunday evenings, the mother stopped going to church altogether until Apenyo became older and learnt to behave.\nAt home too, Apenyo never kept quiet; she hummed or made up silly songs to sing by herself, which annoyed her mother at times but most often made her become pensive. She was by now convinced that her daughter had inherited her love of singing from her father who had died unexpectedly away from home.\n[Excerpt from These Hills Called Home by Temsula Ao]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The mother was embarrassed about her daughter’s singing at home."
+   },
+   {
+    "option_id": "B",
+    "text": "The mother’s feelings about her daughter’s singing at home were only of annoyance."
+   },
+   {
+    "option_id": "C",
+    "text": "The mother was not sure if Apenyo had inherited her love of singing from her father."
+   },
+   {
+    "option_id": "D",
+    "text": "When Apenyo hummed at home, her mother tended to become thoughtful."
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 9,
+  "pages": [
+   8
+  ],
+  "question_text": "If \\(x\\) satisfies the equation \\(4^{8^x} = 256\\), then \\(x\\) is equal to ______.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\dfrac{1}{2}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\log_{16} 8\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\dfrac{2}{3}\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\log_4 8\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 10,
+  "pages": [
+   8
+  ],
+  "question_text": "Consider a spherical globe rotating about an axis passing through its poles. There are three points \\(P, Q\\), and \\(R\\) situated respectively on the equator, the north pole, and midway between the equator and the north pole in the northern hemisphere. Let \\(P, Q\\), and \\(R\\) move with speeds \\(v_P, v_Q\\), and \\(v_R\\), respectively.\nWhich one of the following options is CORRECT?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(v_P < v_R < v_Q\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(v_P < v_Q < v_R\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(v_P > v_R > v_Q\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(v_P = v_R \\ne v_Q\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 11,
+  "pages": [
+   9
+  ],
+  "question_text": "Let \\(\\phi\\) be a scalar field, and \\(\\mathbf{u}\\) be a vector field. Which of the following identities is true for \\(\\text{div}(\\phi\\mathbf{u})\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\text{div}(\\phi\\mathbf{u}) = \\phi\\,\\text{div}(\\mathbf{u}) + \\mathbf{u} \\cdot \\text{grad}(\\phi)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\text{div}(\\phi\\mathbf{u}) = \\phi\\,\\text{div}(\\mathbf{u}) + \\mathbf{u} \\times \\text{grad}(\\phi)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\text{div}(\\phi\\mathbf{u}) = \\phi\\,\\text{grad}(\\mathbf{u}) + \\mathbf{u} \\cdot \\text{grad}(\\phi)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\text{div}(\\phi\\mathbf{u}) = \\phi\\,\\text{grad}(\\mathbf{u}) + \\mathbf{u} \\times \\text{grad}(\\phi)\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 12,
+  "pages": [
+   10
+  ],
+  "question_text": "Which of the following probability distribution functions (PDFs) has the mean greater than the median?\n[IMAGE_Q_12_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Function 1"
+   },
+   {
+    "option_id": "B",
+    "text": "Function 2"
+   },
+   {
+    "option_id": "C",
+    "text": "Function 3"
+   },
+   {
+    "option_id": "D",
+    "text": "Function 4"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_12_1",
+    "page": 10,
+    "rect": [
+     136,
+     130,
+     488,
+     342
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 13,
+  "pages": [
+   11
+  ],
+  "question_text": "A remote village has exactly 1000 vehicles with sequential registration numbers starting from 1000. Out of the total vehicles, 30% are without pollution clearance certificate. Further, even- and odd-numbered vehicles are operated on even- and odd-numbered dates, respectively.\nIf 100 vehicles are chosen at random on an even-numbered date, the number of vehicles expected without pollution clearance certificate is ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "15"
+   },
+   {
+    "option_id": "B",
+    "text": "30"
+   },
+   {
+    "option_id": "C",
+    "text": "50"
+   },
+   {
+    "option_id": "D",
+    "text": "70"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 14,
+  "pages": [
+   11
+  ],
+  "question_text": "A circular solid shaft of span L = 5 m is fixed at one end and free at the other end. A torque T = 100 kN.m is applied at the free end. The shear modulus and polar moment of inertia of the section are denoted as G and J, respectively. The torsional rigidity GJ is 50,000 kN.m\\(^2\\)/rad. The following are reported for this shaft:\nStatement i) The rotation at the free end is 0.01 rad\nStatement ii) The torsional strain energy is 1.0 kN.m\nWith reference to the above statements, which of the following is true?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Both the statements are correct"
+   },
+   {
+    "option_id": "B",
+    "text": "Statement i) is correct, but Statement ii) is wrong"
+   },
+   {
+    "option_id": "C",
+    "text": "Statement i) is wrong, but Statement ii) is correct"
+   },
+   {
+    "option_id": "D",
+    "text": "Both the statements are wrong"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 15,
+  "pages": [
+   12
+  ],
+  "question_text": "M20 concrete as per IS 456: 2000 refers to concrete with a design mix having _________________",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "an average cube strength of 20 MPa"
+   },
+   {
+    "option_id": "B",
+    "text": "an average cylinder strength of 20 MPa"
+   },
+   {
+    "option_id": "C",
+    "text": "a 5-percentile cube strength of 20 MPa"
+   },
+   {
+    "option_id": "D",
+    "text": "a 5-percentile cylinder strength of 20 MPa"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 16,
+  "pages": [
+   12
+  ],
+  "question_text": "When a simply-supported elastic beam of span \\(L\\) and flexural rigidity \\(EI\\) (\\(E\\) is the modulus of elasticity and \\(I\\) is the moment of inertia of the section) is loaded with a uniformly distributed load \\(w\\) per unit length, the deflection at the mid-span is\n\\[\\Delta_0 = \\frac{5}{384}\\frac{wL^4}{EI}.\\]\nIf the load on one half of the span is now removed, the mid-span deflection ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "reduces to \\(\\Delta_0/2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "reduces to a value less than \\(\\Delta_0/2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "reduces to a value greater than \\(\\Delta_0/2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "remains unchanged at \\(\\Delta_0\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 17,
+  "pages": [
+   13
+  ],
+  "question_text": "Muller-Breslau principle is used in analysis of structures for _______________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "drawing an influence line diagram for any force response in the structure"
+   },
+   {
+    "option_id": "B",
+    "text": "writing the virtual work expression to get the equilibrium equation"
+   },
+   {
+    "option_id": "C",
+    "text": "superposing the load effects to get the total force response in the structure"
+   },
+   {
+    "option_id": "D",
+    "text": "relating the deflection between two points in a member with the curvature diagram in-between"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 18,
+  "pages": [
+   13
+  ],
+  "question_text": "A standard penetration test (SPT) was carried out at a location by using a manually operated hammer dropping system with 50% efficiency. The recorded SPT value at a particular depth is 28. If an automatic hammer dropping system with 70% efficiency is used at the same location, the recorded SPT value will be ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "28"
+   },
+   {
+    "option_id": "B",
+    "text": "20"
+   },
+   {
+    "option_id": "C",
+    "text": "40"
+   },
+   {
+    "option_id": "D",
+    "text": "25"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 19,
+  "pages": [
+   14
+  ],
+  "question_text": "A vertical sheet pile wall is installed in an anisotropic soil having coefficient of horizontal permeability, \\(k_H\\) and coefficient of vertical permeability, \\(k_V\\). In order to draw the flow net for the isotropic condition, the embedment depth of the wall should be scaled by a factor of ______, without changing the horizontal scale.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\sqrt{\\dfrac{k_H}{k_V}}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\sqrt{\\dfrac{k_V}{k_H}}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "1.0"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\dfrac{k_H}{k_V}\\)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 20,
+  "pages": [
+   15
+  ],
+  "question_text": "Identify the cross-drainage work in the figure.\n[IMAGE_Q_20_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Super passage"
+   },
+   {
+    "option_id": "B",
+    "text": "Aqueduct"
+   },
+   {
+    "option_id": "C",
+    "text": "Siphon aqueduct"
+   },
+   {
+    "option_id": "D",
+    "text": "Level crossing"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_20_1",
+    "page": 15,
+    "rect": [
+     155,
+     122,
+     478,
+     295
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 21,
+  "pages": [
+   16
+  ],
+  "question_text": "Which one of the following options provides the correct match of the terms listed in Column-1 and Column-2?\n[IMAGE_Q_21_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "P-IV, Q-V, R-III"
+   },
+   {
+    "option_id": "B",
+    "text": "P-III, Q-IV, R-I"
+   },
+   {
+    "option_id": "C",
+    "text": "P-IV, Q-III, R-II"
+   },
+   {
+    "option_id": "D",
+    "text": "P-III, Q-I, R-IV"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_21_1",
+    "page": 16,
+    "regions": [
+     "p016_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 22,
+  "pages": [
+   16
+  ],
+  "question_text": "In the context of Municipal Solid Waste Management, ‘Haul’ in ‘Hauled Container System operated in conventional mode’ includes the _________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "time spent by the transport truck at the disposal site"
+   },
+   {
+    "option_id": "B",
+    "text": "time spent by the transport truck in traveling between a pickup point and the disposal site with a loaded container"
+   },
+   {
+    "option_id": "C",
+    "text": "time spent by the transport truck in picking up a loaded container at a pickup point"
+   },
+   {
+    "option_id": "D",
+    "text": "time spent by the transport truck in driving from the depot to the first pickup point"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 23,
+  "pages": [
+   17
+  ],
+  "question_text": "Which of the following is equal to the stopping sight distance?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "(braking distance required to come to stop) + (distance travelled during the perception-reaction time)"
+   },
+   {
+    "option_id": "B",
+    "text": "(braking distance required to come to stop) − (distance travelled during the perception-reaction time)"
+   },
+   {
+    "option_id": "C",
+    "text": "(braking distance required to come to stop)"
+   },
+   {
+    "option_id": "D",
+    "text": "(distance travelled during the perception-reaction time)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 24,
+  "pages": [
+   17
+  ],
+  "question_text": "The magnetic bearing of the sun for a location at noon is 183° 30′. If the sun is exactly on the geographic meridian at noon, the magnetic declination of the location is ________.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "3° 30′ W"
+   },
+   {
+    "option_id": "B",
+    "text": "3° 30′ E"
+   },
+   {
+    "option_id": "C",
+    "text": "93° 30′ W"
+   },
+   {
+    "option_id": "D",
+    "text": "93° 30′ E"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 25,
+  "pages": [
+   18
+  ],
+  "question_text": "For the matrix\n\\[[A] = \\begin{bmatrix} 1 & -1 & 0 \\\\ -1 & 2 & -1 \\\\ 0 & -1 & 1 \\end{bmatrix}\\]\nwhich of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\([A]\\{x\\} = \\{b\\}\\) has a unique solution"
+   },
+   {
+    "option_id": "B",
+    "text": "\\([A]\\{x\\} = \\{b\\}\\) does not have a unique solution"
+   },
+   {
+    "option_id": "C",
+    "text": "\\([A]\\) has three linearly independent eigenvectors"
+   },
+   {
+    "option_id": "D",
+    "text": "\\([A]\\) is a positive definite matrix"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 26,
+  "pages": [
+   19
+  ],
+  "question_text": "In the frame shown in the figure (not to scale), all four members (AB, BC, CD, and AD) have the same length and same constant flexural rigidity. All the joints A, B, C, and D are rigid joints. The midpoints of AB, BC, CD, and AD, are denoted by E, F, G, and H, respectively. The frame is in unstable equilibrium under the shown forces of magnitude \\(P\\) acting at E and G. Which of the following statements is/are TRUE?\n[IMAGE_Q_26_1]",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Shear forces at H and F are zero"
+   },
+   {
+    "option_id": "B",
+    "text": "Horizontal displacements at H and F are zero"
+   },
+   {
+    "option_id": "C",
+    "text": "Vertical displacements at H and F are zero"
+   },
+   {
+    "option_id": "D",
+    "text": "Slopes at E, F, G, and H are zero"
+   }
+  ],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_26_1",
+    "page": 19,
+    "regions": [
+     "p019_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 27,
+  "pages": [
+   20
+  ],
+  "question_text": "With regard to the shear design of RCC beams, which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Excessive shear reinforcement can lead to compression failure in concrete"
+   },
+   {
+    "option_id": "B",
+    "text": "Beams without shear reinforcement, even if adequately designed for flexure, can have brittle failure"
+   },
+   {
+    "option_id": "C",
+    "text": "The main (longitudinal) reinforcement plays no role in the shear resistance of beam"
+   },
+   {
+    "option_id": "D",
+    "text": "As per IS456:2000, the nominal shear stress in the beams of varying depth depends on both the design shear force as well as the design bending moment"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 28,
+  "pages": [
+   20
+  ],
+  "question_text": "The reason(s) of the nonuniform elastic settlement profile below a flexible footing, resting on a cohesionless soil while subjected to uniform loading, is/are:",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Variation of friction angle along the width of the footing"
+   },
+   {
+    "option_id": "B",
+    "text": "Variation of soil stiffness along the width of the footing"
+   },
+   {
+    "option_id": "C",
+    "text": "Variation of friction angle along the depth of the footing"
+   },
+   {
+    "option_id": "D",
+    "text": "Variation of soil stiffness along the depth of the footing"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 29,
+  "pages": [
+   21
+  ],
+  "question_text": "Which of the following is/are NOT active disinfectant(s) in water treatment?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "•OH (hydroxyl radical)"
+   },
+   {
+    "option_id": "B",
+    "text": "O\\(_3\\) (ozone)"
+   },
+   {
+    "option_id": "C",
+    "text": "OCl\\(^-\\) (hypochlorite ion)"
+   },
+   {
+    "option_id": "D",
+    "text": "Cl\\(^-\\) (chloride ion)"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 30,
+  "pages": [
+   21
+  ],
+  "question_text": "As per the Indian Roads Congress guidelines (IRC 86: 2018), extra widening depends on which of the following parameters?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "Horizontal curve radius"
+   },
+   {
+    "option_id": "B",
+    "text": "Superelevation"
+   },
+   {
+    "option_id": "C",
+    "text": "Number of lanes"
+   },
+   {
+    "option_id": "D",
+    "text": "Longitudinal gradient"
+   }
+  ],
+  "figures": []
+ },
+ {
+  "qno": 31,
+  "pages": [
+   21
+  ],
+  "question_text": "The steady-state temperature distribution in a square plate ABCD is governed by the 2-dimensional Laplace equation. The side AB is kept at a temperature of 100 °C and the other three sides are kept at a temperature of 0 °C. Ignoring the effect of discontinuities in the boundary conditions at the corners, the steady-state temperature at the center of the plate is obtained as \\(T_0\\) °C. Due to symmetry, the steady-state temperature at the center will be same (\\(T_0\\) °C), when any one side of the square is kept at a temperature of 100 °C and the remaining three sides are kept at a temperature of 0 °C. Using the principle of superposition, the value of \\(T_0\\) is _________________________ (rounded off to two decimal places).",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 32,
+  "pages": [
+   22
+  ],
+  "question_text": "An unconfined compression strength test was conducted on a cohesive soil. The test specimen failed at an axial stress of 76 kPa. The undrained cohesion (in kPa, in integer) of the soil is ________________.",
+  "options": [],
+  "figures": []
+ },
+ {
+  "qno": 33,
+  "pages": [
+   22
+  ],
+  "question_text": "The pressure in a pipe at X is to be measured by an open manometer as shown in figure. Fluid A is oil with a specific gravity of 0.8 and Fluid B is mercury with a specific gravity of 13.6. The absolute pressure at X is _______________kN/m\\(^2\\) (round off to one decimal place).\n[Assume density of water as 1000 kg/m\\(^3\\) and acceleration due to gravity as 9.81 m/s\\(^2\\) and atmospheric pressure as 101.3 kN/m\\(^2\\)]\n[IMAGE_Q_33_1]\n[Note: Figure is not to scale]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_33_1",
+    "page": 22,
+    "grow": false,
+    "rect": [
+     196,
+     306,
+     436,
+     476
+    ]
+   }
+  ]
+ },
+ {
+  "qno": 34,
+  "pages": [
+   23
+  ],
+  "question_text": "For the elevation and temperature data given in the table, the existing lapse rate in the environment is _____________°C/100 m (round off to two decimal places).\n[IMAGE_Q_34_1]",
+  "options": [],
+  "figures": [
+   {
+    "placeholder": "IMAGE_Q_34_1",
+    "page": 23,
+    "regions": [
+     "p023_r1"
+    ],
+    "grow": false
+   }
+  ]
+ },
+ {
+  "qno": 35,
+  "pages": [
+   23
+  ],
+  "question_text": "If the size of the ground area is 6 km × 3 km and the corresponding photo size in the aerial photograph is 30 cm × 15 cm, then the scale of the photograph is 1 : ____________________ (in integer).",
+  "options": [],
+  "figures": []
+ }
+]
