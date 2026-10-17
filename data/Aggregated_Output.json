@@ -7360,7 +7360,7 @@
         "subject": "Compiler Design",
         "topic": "Intermediate Code Generation & Local Code Optimization",
         "difficulty": "Medium",
-        "question_text": "Consider the following statements about the use of backpatching in a compiler for\n(I) Backpatching can be used to generate code for Boolean expression in one pass.\n(II) Backpatching can be used to generate code for flow-of-control statements in one pass.\nWhich ONE of the following options is CORRECT?",
+        "question_text": "Consider the following statements about the use of backpatching in a compiler for intermediate code generation:\n(I) Backpatching can be used to generate code for Boolean expression in one pass.\n(II) Backpatching can be used to generate code for flow-of-control statements in one pass.\nWhich ONE of the following options is CORRECT?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -8659,7 +8659,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "File Organization & Indexing (e.g., B and B+ Trees)",
         "difficulty": "Hard",
-        "question_text": "In a B+ - tree where each node can hold at most four key values, a root to leaf path consists of the following nodes:\nA = (49, 77, 83, –), B = (7, 19, 33, 44), C = (20*, 22*, 25*, 26*)\nThe *-marked keys signify that these are data entries in a leaf.\nAssume that a pointer between keys \\( k_1 \\) and \\( k_2 \\) points to a subtree containing keys in \\( [k_1, k_2) \\), and that when a leaf is created, the smallest key in it is copied up into A record with key value 23 is inserted into the B+ - tree.\nThe smallest key value in the parent of the leaf that contains 25* is ________.\n(Answer in integer)",
+        "question_text": "In a B+ - tree where each node can hold at most four key values, a root to leaf path consists of the following nodes:\nA = (49, 77, 83, –), B = (7, 19, 33, 44), C = (20*, 22*, 25*, 26*)\nThe *-marked keys signify that these are data entries in a leaf.\nAssume that a pointer between keys \\( k_1 \\) and \\( k_2 \\) points to a subtree containing keys in \\( [k_1, k_2) \\), and that when a leaf is created, the smallest key in it is copied up into its parent.\nA record with key value 23 is inserted into the B+ - tree.\nThe smallest key value in the parent of the leaf that contains 25* is ________.\n(Answer in integer)",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -10561,7 +10561,7 @@
         "subject": "Digital Logic",
         "topic": "Boolean Algebra, Minimization, K-Maps",
         "difficulty": "Medium",
-        "question_text": "Consider a Boolean expression given by \\( F(X, Y, Z) = \\Sigma(3, 5, 6, 7) \\)\nWhich of the following statement is/are CORRECT?",
+        "question_text": "Consider a Boolean expression given by \\( F(X, Y, Z) = \\Sigma(3, 5, 6, 7) \\)\nWhich of the following statements is/are CORRECT?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -11605,7 +11605,7 @@
         "subject": "Discrete Mathematics",
         "topic": "Recurrence Relations and Generating Functions",
         "difficulty": "Medium",
-        "question_text": "Let \\( T(n) \\) be the recurrence relation defined as follows:\n\\( T(0) = 1 \\),\n\\( T(1) = 2 \\) and\n\\( T(n) = 5T(n - 1) - 6T(n - 2) \\) for \\( n \\ge 2 \\)\nWhich one of the following statement is TRUE?",
+        "question_text": "Let \\( T(n) \\) be the recurrence relation defined as follows:\n\\( T(0) = 1 \\),\n\\( T(1) = 2 \\) and\n\\( T(n) = 5T(n - 1) - 6T(n - 2) \\) for \\( n \\ge 2 \\)\nWhich one of the following statements is TRUE?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -12477,7 +12477,7 @@
         "subject": "Computer Networks (CN)",
         "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
         "difficulty": "Easy",
-        "question_text": "Which one of the following CIDR prefixes exactly represents the range of IP address 10.12.2.0 to 10.12.3.255?",
+        "question_text": "Which one of the following CIDR prefixes exactly represents the range of IP addresses 10.12.2.0 to 10.12.3.255?",
         "has_image": false,
         "images_required": [],
         "options": [
