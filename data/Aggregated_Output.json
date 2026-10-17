@@ -1813,25 +1813,25 @@
         "options": [
           {
             "option_id": "A",
-            "text": "\\( P\\overline{S} + Q\\overline{R} + \\overline{P}\\overline{Q}R + \\overline{Q}R\\overline{S} \\)",
+            "text": "\\( \\overline{P}S + Q\\overline{R} + \\overline{P}\\overline{Q}R + \\overline{Q}R\\overline{S} \\)",
             "is_correct": false,
             "has_image": false
           },
           {
             "option_id": "B",
-            "text": "\\( \\overline{P}S + Q\\overline{R} + P\\overline{Q}R + P\\overline{R}\\overline{S} \\)",
+            "text": "\\( \\overline{P}S + Q\\overline{R} + \\overline{P}\\overline{Q}R + PR\\overline{S} \\)",
             "is_correct": true,
             "has_image": false
           },
           {
             "option_id": "C",
-            "text": "\\( P\\overline{S} + Q\\overline{R} + PQ\\overline{S} + P\\overline{R}\\overline{S} \\)",
+            "text": "\\( \\overline{P}S + Q\\overline{R} + PQ\\overline{S} + PR\\overline{S} \\)",
             "is_correct": false,
             "has_image": false
           },
           {
             "option_id": "D",
-            "text": "\\( \\overline{P}S + Q\\overline{R} + P\\overline{Q}\\overline{S} + \\overline{Q}R\\overline{S} \\)",
+            "text": "\\( \\overline{P}S + Q\\overline{R} + PQ\\overline{S} + \\overline{Q}R\\overline{S} \\)",
             "is_correct": true,
             "has_image": false
           }
@@ -15056,7 +15056,7 @@
         "subject": "Discrete Mathematics",
         "topic": "Combinatorics (Counting Rules, Summation Formulas)",
         "difficulty": "Hard",
-        "question_text": "Let \\( U = \\{1, 2, \\dots, n\\} \\), where \\( n \\) is a large positive integer greater than 1000. Let \\( k \\) be a positive integer less than \\( n \\). Let \\( A, B \\) be subsets of \\( U \\) with \\( |A| = |B| = k \\) and \\( A \\cap B = \\phi \\). We say that a permutation of \\( U \\) separates \\( A \\) from \\( B \\) if one of the following is true.",
+        "question_text": "Let \\( U = \\{1, 2, \\dots, n\\} \\), where \\( n \\) is a large positive integer greater than 1000. Let \\( k \\) be a positive integer less than \\( n \\). Let \\( A, B \\) be subsets of \\( U \\) with \\( |A| = |B| = k \\) and \\( A \\cap B = \\phi \\). We say that a permutation of \\( U \\) separates \\( A \\) from \\( B \\) if one of the following is true.\n- All members of \\( A \\) appear in the permutation before any of the members of \\( B \\).\n- All members of \\( B \\) appear in the permutation before any of the members of \\( A \\).\nHow many permutations of \\( U \\) separate \\( A \\) from \\( B \\)?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -16870,7 +16870,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "Transactions, Concurrency Control, Conflict Serializability",
         "difficulty": "Medium",
-        "question_text": "Let \\(R_i(z)\\) and \\(W_i(z)\\) denote read and write operations on a data element \\(z\\) by a transaction \\(T_i\\), respectively. Consider the schedule \\(S\\) with four transactions.\n$$ S : R_4(x), R_2(x), R_3(x), R_1(y), W_1(y), W_2(x), W_3(y), R_4(x) $$\nWhich one of the following serial schedules is conflict equivalent to \\(S\\)?",
+        "question_text": "Let \\(R_i(z)\\) and \\(W_i(z)\\) denote read and write operations on a data element \\(z\\) by a transaction \\(T_i\\), respectively. Consider the schedule \\(S\\) with four transactions.\n$$ S : R_4(x), R_2(x), R_3(x), R_1(y), W_1(y), W_2(x), W_3(y), R_4(y) $$\nWhich one of the following serial schedules is conflict equivalent to \\(S\\)?",
         "has_image": false,
         "images_required": [],
         "options": [
