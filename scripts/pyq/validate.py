@@ -2,7 +2,7 @@
 flag on that question, and a question goes into the bank only when it has no flags or a human
 has approved it (review step).
 
-Checks per question (see docs/PYQ_ACQUISITION_STRATEGY.md §2 step 5):
+Checks per question (see archive/docs/PYQ_ACQUISITION_STRATEGY.md §2 step 5):
   presence       question 1..65 transcribed (questions.json from crop.py; older runs: pass A)
   key            official key row exists; type/marks/section taken from the key
   options        MCQ/MSQ: exactly A,B,C,D, none empty. NAT: no options

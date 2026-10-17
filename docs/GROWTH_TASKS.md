@@ -32,8 +32,8 @@ Order inside each phase = priority (Reach × Relevance × Conversion × Compound
 - [x] **T-1 (U)** *Done: channel `renyxera` + group `renyxera_chat` + bot; daily auto-post live since 30 Sep.* Create the RENYXERA Telegram channel + discussion group; add bot + 2 GitHub secrets (follow `docs/TELEGRAM_SETUP_AND_PROMOTION.md`).
 - [~] **T-2 (C)** GATE Daily week 1 (7 posts, answers verified from DB). *Drafted in ASSETS §2.*
 - [x] **T-3 (C)** *Done 10 Oct: rotation CS/EC/EE/ME/DA, readable maths, options, figure photo, yesterday's answer via /api/daily/answer, countdown. Takes effect from the 11 Oct post.*  Make the daily workflow post PYQs across live branches with UTM links + next-day answer.
-- [~] **C-1 (C+U)** *Telegram + Reddit verified list in `docs/GROWTH_RESEARCH.md`.* Research 20 GATE communities (Telegram, Reddit, Discord, Quora Spaces): rules, size as shown, activity. C researches public pages; U joins with your own accounts.
-- [~] **C-2 (C+U)** *2 of 20 verified; method for the rest in GROWTH_RESEARCH.md (needs a browser).* Research 20 micro-creators (GATE YouTube/Instagram, 1k–100k) per ASSETS §5 columns.
+- [~] **C-1 (C+U)** *Telegram + Reddit verified list in `archive/docs/GROWTH_RESEARCH.md`.* Research 20 GATE communities (Telegram, Reddit, Discord, Quora Spaces): rules, size as shown, activity. C researches public pages; U joins with your own accounts.
+- [~] **C-2 (C+U)** *2 of 20 verified; method for the rest in archive/docs/GROWTH_RESEARCH.md (needs a browser).* Research 20 micro-creators (GATE YouTube/Instagram, 1k–100k) per ASSETS §5 columns.
 - [ ] **C-3 (U)** Contribute value in the top 5 communities for a week before any link (log in sheet).
 - [ ] **Q-1 (C drafts / U posts)** 5 Quora/Reddit answers to high-intent threads (skeleton ASSETS §3).
 
@@ -77,6 +77,6 @@ Metrics → channel leaderboard (time per activated user) → close/scale experi
 - [x] **Z-2** Smart Plus/Pro prompts (after 2/5/10 tests, 10+ pending mistakes, 3rd analytics visit; max 1 per 3 days, 6 total, snooze after 2 dismissals).
 - [x] **Z-3** Same content width and top spacing on Profile, AI Mentor and every other page.
 - [x] **Z-4** Sign-in/sign-up: consent checkbox now sits above the button; tapping Google unticked explains why.
-- [~] **Z-5** Competitor gaps (docs/COMPETITOR_GAPS.md): #1 tab bar, #3 welcome, #4 Today card shipped 10 Oct; #2, #5 next.
+- [~] **Z-5** Competitor gaps (archive/docs/COMPETITOR_GAPS.md): #1 tab bar, #3 welcome, #4 Today card shipped 10 Oct; #2, #5 next.
 - [x] **Z-6** Payments are live (key id in wrangler.jsonc, billing mode live, instant verify). Still to do by you: one real ₹29 test + refund, Turnstile secret check, regenerate test secret.
 - [x] **Z-7** Removed "no login" copy; sign-in-led messaging (rule: never advertise no-login).

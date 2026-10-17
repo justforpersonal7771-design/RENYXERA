@@ -69,7 +69,7 @@ Cost: $0 when you do this in your normal Claude chat. Do not wire the paid API i
 
 ## 4. Step 2: make the videos automatically
 
-Use the same stack as `docs/PROMO_VIDEO_MASTER_PROMPT.md`:
+Use the same stack as `archive/docs/PROMO_VIDEO_MASTER_PROMPT.md`:
 
 1. **Templates in Remotion**: one template per pillar (tool demo, tip, data card, practice question, update). A template takes `title`, `bullets`, `clipPath`, `voiceover` as props.
 2. **Screen clips**: a Playwright script records the real pages (`scripts/record-promo.mjs`). Run it in the Action, so the footage always shows the current design.
@@ -162,7 +162,7 @@ Note on schedule drift: GitHub cron can run a few minutes late. Fine for social 
 ## 9. Setup checklist (one time, in this order)
 
 - [ ] Telegram: add the bot to the channel as admin, test one `sendMessage` from a script.
-- [ ] Record the first promo video by hand using `docs/PROMO_VIDEO_MASTER_PROMPT.md`, post it manually on both platforms.
+- [ ] Record the first promo video by hand using `archive/docs/PROMO_VIDEO_MASTER_PROMPT.md`, post it manually on both platforms.
 - [ ] Create `content/calendar.json` and the weekly prompt. Make 7 posts by hand with the pipeline's templates.
 - [ ] YouTube: Google Cloud project, API enabled, OAuth consent, refresh token in GitHub Secrets. Upload one test video as private.
 - [ ] Instagram: switch to a Professional account, link a Facebook Page, create a Meta app, get a long-lived token (refresh every 60 days; put a reminder in your calendar), upload one test Reel.

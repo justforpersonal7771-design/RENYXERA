@@ -2,7 +2,7 @@
 //   1. npm run build && npx next start -p 3000     (or point BASE at the deployed site)
 //   2. BASE=http://localhost:3000 node scripts/record-promo.mjs
 // Output: video/captures/<scene>.webm and <scene>.marks.json (the second each beat happens).
-// Guest session only: the sign-in only parts (planner, analytics, Telegram) are listed in docs/PROMO_VIDEO_MASTER_PROMPT.md
+// Guest session only: the sign-in only parts (planner, analytics, Telegram) are listed in archive/docs/PROMO_VIDEO_MASTER_PROMPT.md
 // as "capture required" and are not faked here.
 import { chromium } from "playwright";
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from "node:fs";

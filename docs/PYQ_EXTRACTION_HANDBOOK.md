@@ -2,7 +2,7 @@
 
 This is the single source of instructions for extracting official GATE previous-year questions
 (PYQs) into GATE OS. A new Claude session should read this whole file, then
-`scripts/pyq/README.md` and `docs/PYQ_ACQUISITION_STRATEGY.md`, then continue from **§9 Status**.
+`scripts/pyq/README.md` and `archive/docs/PYQ_ACQUISITION_STRATEGY.md`, then continue from **§9 Status**.
 
 **Opening prompt for a new chat:**
 > Read `D:\0-UI\r2ma-stable\docs\PYQ_EXTRACTION_HANDBOOK.md` fully and continue the PYQ extraction from its Status section. Follow every rule in it.

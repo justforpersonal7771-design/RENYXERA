@@ -1,6 +1,6 @@
 # PYQ pipeline: official GATE papers → one verified JSON per branch
 
-Strategy: `docs/PYQ_ACQUISITION_STRATEGY.md`. **Working rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`** (extraction is done by Claude, not Gemini).
+Strategy: `archive/docs/PYQ_ACQUISITION_STRATEGY.md`. **Working rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`** (extraction is done by Claude, not Gemini).
 
 ## Folders
 

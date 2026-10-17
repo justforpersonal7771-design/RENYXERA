@@ -11,11 +11,11 @@ operated.*
 | **Repository** | `justforpersonal7771-design/RENYXERA` (branch `main`) |
 | **Document owner** | Engineering |
 | **Last updated** | 27 September 2026 |
-| **Companion documents** | `docs/DEVELOPMENT_LOG.md` (running log of what was built and why) · `supabase/SCHEMA.sql` (complete schema) · `checklist.md` (roadmap/status) · `docs/CONTENT_STRATEGY.md` · `docs/MARKETING_STRATEGY.md` · `data/calibration/SOURCES.md` |
+| **Companion documents** | `archive/docs/DEVELOPMENT_LOG.md` (running log of what was built and why) · `supabase/SCHEMA.sql` (complete schema) · `checklist.md` (roadmap/status) · `docs/CONTENT_STRATEGY.md` · `docs/MARKETING_STRATEGY.md` · `data/calibration/SOURCES.md` |
 
 **How to keep this current:** every change that adds a table, route, module or external
 service updates the relevant section here in the same commit, and adds an entry to
-`docs/DEVELOPMENT_LOG.md`.
+`archive/docs/DEVELOPMENT_LOG.md`.
 
 ---
 

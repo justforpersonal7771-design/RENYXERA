@@ -1,4 +1,4 @@
-"""Shared paths and helpers for the PYQ pipeline (docs/PYQ_ACQUISITION_STRATEGY.md).
+"""Shared paths and helpers for the PYQ pipeline (archive/docs/PYQ_ACQUISITION_STRATEGY.md).
 
 Layout (one folder per branch; the finished bank is ONE json per branch):
 

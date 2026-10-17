@@ -1,6 +1,6 @@
 {
   // Cloudflare Workers config for the Module 4A migration (see
-  // RENYXERA_Master_Plan_Auth_Security_Monetization.md §2.1/§6.1). This is scaffolding
+  // docs/reference/RENYXERA_Master_Plan_Auth_Security_Monetization.md §2.1/§6.1). This is scaffolding
   // only — nothing here is deployed yet. `npm run build`/`start` (Vercel's path) are
   // completely untouched; this is exercised only via the separate `build:cf`/`preview:cf`
   // /`deploy:cf` scripts added in package.json, and `deploy:cf` additionally needs a
