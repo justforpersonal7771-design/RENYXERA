@@ -22083,7 +22083,7 @@
         "subject": "Verbal Aptitude",
         "topic": "Grammar Rules (Prepositions, Conjunctions, Verb-Noun Agreement, Other Parts of Speech)",
         "difficulty": "Easy",
-        "question_text": "Raman is confident of speaking English ________ six months as he has been practising regularly the last three weeks.",
+        "question_text": "Raman is confident of speaking English ________ six months as he has been practising regularly ________ the last three weeks.",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -22203,7 +22203,7 @@
         "subject": "Verbal Aptitude",
         "topic": "Reading Comprehension",
         "difficulty": "Medium",
-        "question_text": "The dawn of the 21st century witnessed the melting glaciers oscillating between giving too much and too little to billions of people who depend on their for fresh water. The UN climate report estimates that without deep cuts to man-made emissions, at least 30% of the northern hemisphere's surface permafrost could melt by the end of the century. Given this situation of imminent global exodus of billions of people displaced by rising seas, nation-states need to rethink their carbon footprint for political concerns, if not for environmental ones.\nWhich one of the following statements can be inferred from the given passage?",
+        "question_text": "The dawn of the 21st century witnessed the melting glaciers oscillating between giving too much and too little to billions of people who depend on them for fresh water. The UN climate report estimates that without deep cuts to man-made emissions, at least 30% of the northern hemisphere's surface permafrost could melt by the end of the century. Given this situation of imminent global exodus of billions of people displaced by rising seas, nation-states need to rethink their carbon footprint for political concerns, if not for environmental ones.\nWhich one of the following statements can be inferred from the given passage?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -22243,7 +22243,7 @@
         "subject": "Analytical Aptitude",
         "topic": "Operational Puzzles and Systemic Reasoning",
         "difficulty": "Medium",
-        "question_text": "There are multiple routes to reach from node 1 to node 2, as shown in the network.\n[IMAGE_Q_06]\nThe cost of travel on an edge between two nodes is given in rupees. Nodes 'a', 'b', 'c', 'd', 'e' and 'f' are toll booths. The toll price at toll booths marked 'a' and 'c' is Rs. 200. and is Rs. 100 for the other toll booths. Which is the cheapest route from node 1 to node 2?",
+        "question_text": "There are multiple routes to reach from node 1 to node 2, as shown in the network.\n[IMAGE_Q_06]\nThe cost of travel on an edge between two nodes is given in rupees. Nodes 'a', 'b', 'c', 'd', 'e' and 'f' are toll booths. The toll price at toll booths marked 'a' and 'e' is Rs. 200, and is Rs. 100 for the other toll booths. Which is the cheapest route from node 1 to node 2?",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_06"
@@ -22251,7 +22251,7 @@
         "options": [
           {
             "option_id": "A",
-            "text": "1-a-C-2",
+            "text": "1-a-c-2",
             "is_correct": false,
             "has_image": false
           },
@@ -22373,7 +22373,7 @@
         "options": [
           {
             "option_id": "A",
-            "text": "\\( \\pi\\left[(b^2 - a^2) - \\frac{\\pi}{4}(b - a)^2\\right] \\)",
+            "text": "\\( \\pi\\left[(b^2 - a^2) - \\frac{n}{4}(b - a)^2\\right] \\)",
             "is_correct": true,
             "has_image": false
           },
@@ -22385,7 +22385,7 @@
           },
           {
             "option_id": "C",
-            "text": "\\( \\pi\\left[(b^2 - a^2) + \\frac{\\pi}{4}(b - a)^2\\right] \\)",
+            "text": "\\( \\pi\\left[(b^2 - a^2) + \\frac{n}{4}(b - a)^2\\right] \\)",
             "is_correct": false,
             "has_image": false
           },
@@ -22447,7 +22447,7 @@
         "subject": "Quantitative Aptitude",
         "topic": "Data Interpretation (Bar Graphs, Pie Charts, Histograms)",
         "difficulty": "Medium",
-        "question_text": "The total revenue of a company during 2014-2018 is shown in the bar graph. If the total expenditure of the company in each year is 500 million rupees, then the aggregate profit loss (in percentage) on the total expenditure of the company during 2014-2018 is ________.\n[IMAGE_Q_10]",
+        "question_text": "The total revenue of a company during 2014-2018 is shown in the bar graph. If the total expenditure of the company in each year is 500 million rupees, then the aggregate profit or loss (in percentage) on the total expenditure of the company during 2014-2018 is ________.\n[IMAGE_Q_10]",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_10"
@@ -22835,7 +22835,7 @@
           },
           {
             "option_id": "D",
-            "text": "None of I, II and III",
+            "text": "None of I, II, and III",
             "is_correct": true,
             "has_image": false
           }
@@ -22851,7 +22851,7 @@
         "subject": "Theory of Computation (TOC)",
         "topic": "Regular and Context-Free Languages & Pumping Lemma",
         "difficulty": "Medium",
-        "question_text": "Consider the language \\( L = \\{a^n \\mid n > 0\\} \\cup \\{a^nb^n \\mid n \\ge 0\\} \\) and the following statements.\nI. \\( L \\) is deterministic context-free.\nII. \\( L \\) is context-free but not deterministic context-free.\nIII. \\( L \\) is not LL(\\( k \\)) for any \\( k \\).\nWhich of the above statements is/are TRUE?",
+        "question_text": "Consider the language \\( L = \\{a^n \\mid n \\ge 0\\} \\cup \\{a^nb^n \\mid n \\ge 0\\} \\) and the following statements.\nI. \\( L \\) is deterministic context-free.\nII. \\( L \\) is context-free but not deterministic context-free.\nIII. \\( L \\) is not LL(\\( k \\)) for any \\( k \\).\nWhich of the above statements is/are TRUE?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -22971,7 +22971,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "SQL Queries (DDL/DML, Joins, Aggregations)",
         "difficulty": "Medium",
-        "question_text": "Consider a relational database containing the following schemas.\n[IMAGE_Q_12]\nThe primary key of each table is indicated by underlining the constituent fields.\n```sql\nSELECT s.sno, s.name\nFROM Suppliers s, Catalogue c\nWHERE s.no = c.sno AND\n      cost > (SELECT AVG (cost)\n              FROM Catalogue\n              WHERE pno = 'P4'\n              GROUP BY pno);\n```\nThe number of rows returned by the above SQL query is",
+        "question_text": "Consider a relational database containing the following schemas.\n[IMAGE_Q_12]\nThe primary key of each table is indicated by underlining the constituent fields.\n```sql\nSELECT s.sno, s.sname\nFROM Suppliers s, Catalogue c\nWHERE s.sno = c.sno AND\n      cost > (SELECT AVG (cost)\n              FROM Catalogue\n              WHERE pno = 'P4'\n              GROUP BY pno);\n```\nThe number of rows returned by the above SQL query is",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_12"
@@ -23208,7 +23208,7 @@
         "subject": "Programming in C",
         "topic": "Pointers, Multi-Dimensional Arrays, Structures",
         "difficulty": "Medium",
-        "question_text": "Consider the following C program:\n```c\n#include <stdio.h>\nint main( ) {\n    int a[4][5] = {{1, 2, 3, 4, 5},\n                   {6, 7, 8, 9, 10},\n                   {11, 12, 13, 14, 15},\n                   {16, 17, 18, 19, 20});\n    printf(\"%d\\n\",*(*(a+**a+2)+3));\n    return(0);\n}\n```\nThe output of the program is ________.",
+        "question_text": "Consider the following C program:\n```c\n#include <stdio.h>\nint main( ) {\n    int a[4][5] = {{1, 2, 3, 4, 5},\n                   {6, 7, 8, 9, 10},\n                   {11, 12, 13, 14, 15},\n                   {16, 17, 18, 19, 20}};\n    printf(\"%d\\n\",*(*(a+**a+2)+3));\n    return(0);\n}\n```\nThe output of the program is ________.",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -23510,7 +23510,7 @@
         "subject": "Theory of Computation (TOC)",
         "topic": "Regular and Context-Free Languages & Pumping Lemma",
         "difficulty": "Medium",
-        "question_text": "Consider the following languages.\n\\( L_1 = \\{wxyz \\mid w, x, y \\in (0 + 1)^+\\} \\)\n\\( L_2 = \\{xy \\mid x, y \\in (a + b)^*, |x| = |y|, x \\neq y\\} \\)\nWhich one of the following is TRUE?",
+        "question_text": "Consider the following languages.\n\\( L_1 = \\{wxyx \\mid w, x, y \\in (0 + 1)^+\\} \\)\n\\( L_2 = \\{xy \\mid x, y \\in (a + b)^*, |x| = |y|, x \\neq y\\} \\)\nWhich one of the following is TRUE?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -23522,7 +23522,7 @@
           },
           {
             "option_id": "B",
-            "text": "\\( L_1 \\) is context-free but not regular and \\( L_1 \\) is context-free.",
+            "text": "\\( L_1 \\) is context-free but not regular and \\( L_2 \\) is context-free.",
             "is_correct": false,
             "has_image": false
           },
@@ -23832,7 +23832,7 @@
         "subject": "Algorithms",
         "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
         "difficulty": "Medium",
-        "question_text": "Let \\( G = (V, E) \\) be a directed, weighted graph with weight function \\( w : E \\rightarrow \\mathbb{R} \\). For some function \\( f : V \\rightarrow \\mathbb{R} \\), for each edge \\( (u, v) \\in E \\), define \\( w'(u, v) \\) as \\( w(u, v) + f(v) \\).\nWhich one of the options completes the following sentence so that it is TRUE?\n\"The shortest paths in G under w are shortest paths under w' too, ________\".",
+        "question_text": "Let \\( G = (V, E) \\) be a directed, weighted graph with weight function \\( w : E \\rightarrow \\mathbb{R} \\). For some function \\( f : V \\rightarrow \\mathbb{R} \\), for each edge \\( (u, v) \\in E \\), define \\( w'(u, v) \\) as \\( w(u, v) + f(u) - f(v) \\).\nWhich one of the options completes the following sentence so that it is TRUE?\n\"The shortest paths in G under w are shortest paths under w' too, ________\".",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -23987,7 +23987,7 @@
         "subject": "Data Structures",
         "topic": "Binary Search Trees (BSTs) & Binary Heaps",
         "difficulty": "Medium",
-        "question_text": "Consider the array representation of a binary min-heap containing 1023 elements. The minimum number of comparisons required to find the maximum in the heap ________.",
+        "question_text": "Consider the array representation of a binary min-heap containing 1023 elements. The minimum number of comparisons required to find the maximum in the heap is ________.",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -24002,7 +24002,7 @@
         "subject": "Programming in C",
         "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
         "difficulty": "Hard",
-        "question_text": "Consider the following C functions:\n```c\nint tob(int b, int* arr) {\n    int i;\n    for(i=0, b>0; i++) {\n        if(b%2) arr[i]=1;\n        else arr[i]=0;\n        b=b/2;\n    }\n    return(i);\n}\nint pp(int a, int b) {\n    int arr[20];\n    int i, tot=1, ex, len;\n    ex=a;\n    len=tob(b,arr);\n    for(i=0; i<len; i++) {\n        if(arr[i]==1)\n            tot=tot * ex;\n        ex = ex * ex;\n    }\n    return(tot);\n}\n```\nThe value returned by `pp(3,4)` is ________.",
+        "question_text": "Consider the following C functions:\n```c\nint tob(int b, int* arr) {\n    int i;\n    for(i=0; b>0; i++) {\n        if(b%2) arr[i]=1;\n        else arr[i]=0;\n        b=b/2;\n    }\n    return(i);\n}\nint pp(int a, int b) {\n    int arr[20];\n    int i, tot=1, ex, len;\n    ex=a;\n    len=tob(b,arr);\n    for(i=0; i<len; i++) {\n        if(arr[i]==1)\n            tot=tot * ex;\n        ex = ex * ex;\n    }\n    return(tot);\n}\n```\nThe value returned by `pp(3,4)` is ________.",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -24786,7 +24786,7 @@
         "options": [
           {
             "option_id": "A",
-            "text": "\\( L \\cdot L^R \\{xy \\mid x \\in L, y^R \\in L\\} \\)",
+            "text": "\\( L \\cdot L^R = \\{xy \\mid x \\in L, y^R \\in L\\} \\)",
             "is_correct": false,
             "has_image": false
           },
@@ -24940,7 +24940,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "Transactions, Concurrency Control, Conflict Serializability",
         "difficulty": "Medium",
-        "question_text": "Consider the following two statements about database transaction schedules:\nI. Strict two-phase locking protocol generates conflict serializable schedules that are also recoverable.\nII Timestamp-ordering concurrency control protocol with Thomas’ Write Rule can generate view serializable schedules that are not conflict serializable.\nWhich of the above statements is/are TRUE?",
+        "question_text": "Consider the following two statements about database transaction schedules:\nI. Strict two-phase locking protocol generates conflict serializable schedules that are also recoverable.\nII. Timestamp-ordering concurrency control protocol with Thomas’ Write Rule can generate view serializable schedules that are not conflict serializable.\nWhich of the above statements is/are TRUE?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -24980,7 +24980,7 @@
         "subject": "Discrete Mathematics",
         "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
         "difficulty": "Medium",
-        "question_text": "Let \\( G \\) be an undirected complete graph, on \\( n \\) vertices, where \\( n > 2 \\). Then, the number of different Hamiltonian cycles in \\( G \\) is equal to",
+        "question_text": "Let \\( G \\) be an undirected complete graph on \\( n \\) vertices, where \\( n > 2 \\). Then, the number of different Hamiltonian cycles in \\( G \\) is equal to",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -25044,7 +25044,7 @@
           },
           {
             "option_id": "D",
-            "text": "Limit does not exists",
+            "text": "Limit does not exist",
             "is_correct": false,
             "has_image": false
           }
@@ -25803,7 +25803,7 @@
         "subject": "Algorithms",
         "topic": "Minimum Spanning Trees (Prim/Kruskal Algorithms)",
         "difficulty": "Medium",
-        "question_text": "Let G be any connected, weighted, undirected graph:\nI. G has a unique minimum spanning tree, if no two edges of G have the same weight.\nII. G has a unique minimum spanning tree, if for every cut G, there is a unique minimum weight edge crossing the cut.\nWhich of the above two statements is/are TRUE?",
+        "question_text": "Let G be any connected, weighted, undirected graph:\nI. G has a unique minimum spanning tree, if no two edges of G have the same weight.\nII. G has a unique minimum spanning tree, if, for every cut of G, there is a unique minimum-weight edge crossing the cut.\nWhich of the above two statements is/are TRUE?",
         "has_image": false,
         "images_required": [],
         "options": [
@@ -25955,7 +25955,7 @@
         "subject": "Compiler Design",
         "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
         "difficulty": "Hard",
-        "question_text": "Consider the augmented grammar given below:\nS' \\(\\rightarrow\\) S\nS \\(\\rightarrow\\) <L> | id\nL \\(\\rightarrow\\) L, S | S\nLet \\( I_0 = \\text{CLOSURE} (\\{[S' \\rightarrow S]\\}) \\). The number of items in the set GOTO (\\( I_0 \\), < ) is ________.",
+        "question_text": "Consider the augmented grammar given below:\nS' \\(\\rightarrow\\) S\nS \\(\\rightarrow\\) (L) | id\nL \\(\\rightarrow\\) L, S | S\nLet \\( I_0 = \\text{CLOSURE} (\\{[S' \\rightarrow S]\\}) \\). The number of items in the set GOTO (\\( I_0 \\), ( ) is ________.",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -26060,7 +26060,7 @@
         "subject": "Digital Logic",
         "topic": "Boolean Algebra, Minimization, K-Maps",
         "difficulty": "Hard",
-        "question_text": "What is the minimum number of 2-input NOR gates required to implement 4-variable function expressed in sum-of-minterms from as \\( f = \\Sigma(0, 2, 5, 7, 8, 10, 13, 15) \\)? Assume that all the inputs and their complements are available ________.",
+        "question_text": "What is the minimum number of 2-input NOR gates required to implement 4-variable function expressed in sum-of-minterms form as \\( f = \\Sigma(0, 2, 5, 7, 8, 10, 13, 15) \\)? Assume that all the inputs and their complements are available ________.",
         "has_image": false,
         "images_required": [],
         "options": [],
@@ -26075,7 +26075,7 @@
         "subject": "Database Management Systems (DBMS)",
         "topic": "SQL Queries (DDL/DML, Joins, Aggregations)",
         "difficulty": "Medium",
-        "question_text": "A relational database contains two tables Student and Performance as shown below:\n[IMAGE_Q_41]\nThe primary key of the Student table is Roll_no. For the Performance table, the columns Roll_no. and Subject_code together from the primary key. Consider the SQL query given below:\n```sql\nSELECT S.Student_name, sum(P.Marks)\nFROM Student S, Performance P\nWHERE P.Marks > 84\nGROUP BY S.Student_name;\n```\nThe number of rows returned by the above SQL query is ________.",
+        "question_text": "A relational database contains two tables Student and Performance as shown below:\n[IMAGE_Q_41]\nThe primary key of the Student table is Roll_no. For the Performance table, the columns Roll_no. and Subject_code together form the primary key. Consider the SQL query given below:\n```sql\nSELECT S.Student_name, sum(P.Marks)\nFROM Student S, Performance P\nWHERE P.Marks > 84\nGROUP BY S.Student_name;\n```\nThe number of rows returned by the above SQL query is ________.",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_41"
@@ -26092,7 +26092,7 @@
         "subject": "Programming in C",
         "topic": "Data Types, Syntax, Control Structures, Loops",
         "difficulty": "Medium",
-        "question_text": "Consider the following C programs:\n```c\n#include <stdio.h>\nint main ( ) {\n    float sum = 0.0, j = 1.0, i = 2.0;\n    while (i / j > 0.0625) {\n        j = j + j;\n        sum = sum + i / j;\n        printf(\"%f \\n\", sum);\n    }\n    return 0;\n}\n```\nThe number of times the variable sum will be printed, when the above program is executed, is ________.",
+        "question_text": "Consider the following C program:\n```c\n#include <stdio.h>\nint main ( ) {\n    float sum = 0.0, j = 1.0, i = 2.0;\n    while (i / j > 0.0625) {\n        j = j + j;\n        sum = sum + i / j;\n        printf(\"%f\\n\", sum);\n    }\n    return 0;\n}\n```\nThe number of times the variable sum will be printed, when the above program is executed, is ________.",
         "has_image": false,
         "images_required": [],
         "options": [],
