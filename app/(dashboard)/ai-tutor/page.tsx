@@ -20,6 +20,7 @@ import { AIPracticeQuestion, AIExplanation } from "@/types/ai.types";
 import { AIResponseParser } from "@/lib/ai/ai-response-parser";
 import { ConversationMemory } from "@/lib/ai/memory/ConversationMemory";
 import { useToastStore } from "@/store/use-toast-store";
+import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 import { formatNatAnswer } from "@/lib/grading";
 const EXPLAIN_MODES = [
@@ -84,6 +85,7 @@ export default function AITutorWorkspace() {
   // Right panel custom assets
   const [practiceQuestions, setPracticeQuestions] = useState<AIPracticeQuestion[]>([]);
   const [generatingPractice, setGeneratingPractice] = useState(false);
+  const ent = useEntitlements();
   const [personalNotes, setPersonalNotes] = useState("");
   const [notesPreviewMode, setNotesPreviewMode] = useState(false);
   const [generatingNotes, setGeneratingNotes] = useState(false);
@@ -426,6 +428,12 @@ export default function AITutorWorkspace() {
   // Generate 8 diverse practice questions via Gemini and save them to separate category
   const handleGeneratePractice = async () => {
     if (!question) return;
+    // GATE-level practice sets are Plus (daily limit) and Pro (full); the server enforces it too.
+    if (!ent.loading && ent.tier === "free") {
+      useToastStore.getState().show("GATE-level practice sets come with Plus and Pro. See the Plans page.", "info");
+      router.push("/pro");
+      return;
+    }
     setGeneratingPractice(true);
     try {
       // bypassCache: true — this is an explicit user click asking for a fresh set, not a

@@ -87,12 +87,15 @@ export const FREE_AI_DAILY = 0;
 export const FREE_AI_TEASER = 5;
 export const PLUS_AI_DAILY = 75;
 export const PRO_AI_DAILY = 150;
+/** AI-generated GATE-level practice sets (8 questions each) per day. Free: none; Pro: no extra cap (uses its AI allowance). */
+export const PLUS_PRACTICE_SETS_DAILY = 5;
 export const AI_DAILY: Record<Tier, number> = { free: FREE_AI_DAILY, plus: PLUS_AI_DAILY, pro: PRO_AI_DAILY };
 
 /** What each paid tier adds. Everything not listed stays free for everyone. */
 export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body: string }[]> = {
   plus: [
     { title: `${PLUS_AI_DAILY} AI requests every day`, body: "AI Mentor & Tutor for daily doubts and revision." },
+    { title: `GATE-level practice: ${PLUS_PRACTICE_SETS_DAILY} new sets a day`, body: `Fresh AI-made questions on any topic, ${PLUS_PRACTICE_SETS_DAILY * 8} a day. Pro has no set limit.` },
     { title: "Smart insights & daily adaptive path", body: "Personal insights and a focus topic chosen for you every day." },
     { title: "Exam trends & AI Insights revision", body: "Accuracy and score trend across tests; AI shortcut sheets in Revision." },
     { title: "6 Silver avatar styles", body: "Avataaar, Big Smile, Open Peeps, Persona, Pixel Art, Fun Emoji." },
@@ -102,6 +105,7 @@ export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body:
   ],
   pro: [
     { title: `${PRO_AI_DAILY} AI requests every day`, body: "Twice Plus — for students who lean on the AI Mentor." },
+    { title: "Unlimited GATE-level practice", body: "New AI-made practice sets on any topic, as many as your daily AI requests allow." },
     { title: "Deep analytics", body: "Detailed mock analytics, topic ladders and difficulty analysis." },
     { title: "Offline downloads", body: "Save whole papers and practise without internet." },
     { title: "All 20 avatar styles", body: "Every Silver style plus 6 Gold-only ones: Toon, Voxel, Clay and more." },

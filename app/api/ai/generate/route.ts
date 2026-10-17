@@ -8,7 +8,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { getEntitlement } from "@/lib/billing/server";
-import { AI_DAILY, FREE_AI_DAILY, PRO_AI_DAILY } from "@/lib/billing/plans";
+import { AI_DAILY, FREE_AI_DAILY, PRO_AI_DAILY, PLUS_PRACTICE_SETS_DAILY } from "@/lib/billing/plans";
 
 export const runtime = "nodejs";
 
@@ -236,6 +236,23 @@ export async function POST(req: NextRequest) {
     : await sha256([route.model, systemInstruction, prompt].join("\n"));
   let db: ReturnType<typeof createServiceRoleClient> | null = null;
   try { db = createServiceRoleClient(); } catch { db = null; }
+
+  // GATE-level practice (AI-generated question sets): Plus = limited, Pro = full, Free = none.
+  // Checked before the cache so a cached set can't reach a free account.
+  if (parsed.data.type === "PRACTICE") {
+    const tier = (await getEntitlement(userId)).tier;
+    if (tier === "free") {
+      return NextResponse.json({ error: "GATE-level practice sets are part of Plus and Pro. See the Plans page.", upgrade: true, quotaExceeded: true }, { status: 403 });
+    }
+    if (tier === "plus" && db) {
+      const { data: pq, error: pqErr } = await db.rpc("consume_practice_set", { p_user: userId, p_limit: PLUS_PRACTICE_SETS_DAILY });
+      const prow = Array.isArray(pq) ? pq[0] : pq;
+      if (!pqErr && prow && !prow.allowed) {
+        return NextResponse.json({ error: `You've made today's ${PLUS_PRACTICE_SETS_DAILY} practice sets. They reset at midnight (IST). Pro has no set limit.`, upgrade: true, quotaExceeded: true }, { status: 429 });
+      }
+      if (pqErr) console.warn(`[ai/generate] practice quota unavailable (${pqErr.code}); allowing`);
+    }
+  }
 
   if (db) {
     const { data: cached } = await db.from("ai_response_cache").select("response,hits").eq("prompt_hash", promptHash).maybeSingle();
