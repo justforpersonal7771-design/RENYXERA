@@ -10,6 +10,7 @@ Legend: 🟠 later (named release) · 🟡 paid backlog (after income) · 🟨 p
 
 ## 1. Needs YOU
 
+- [ ] **Answer the decisions** in `docs/OPEN_DECISIONS_FOR_YOU.md` (Forge F1-F6, study materials S1-S7). F1, S1 and S4 block work.
 - [ ] **Upload the launch film to YouTube**: landscape `video/out/renyxera-film-v6-landscape-1080p.mp4` (when the render finishes) as a normal video, and `video/out/renyxera-film-v6-vertical.mp4` as a Short. Send me the YouTube video id; I set `NEXT_PUBLIC_PROMO_YT_ID` and the click-to-play film appears on the signed-out welcome and the Plans page.
 - [ ] **Watch both film versions once** (laptop + phone) and send notes.
 - [ ] **Instagram setup** (you): follow `docs/instagram/01-SETUP.md` (professional account, Meta app, tester, token, two GitHub secrets, run the `social-check` workflow). Code is built.
