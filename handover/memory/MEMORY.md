@@ -1,0 +1,20 @@
+- [Real repo location](project_repo_location.md) — GATE OS lives at D:\0-UI\r2ma-stable, not the session's working dir
+- [Zero-budget constraint](project_zero_budget_constraint.md) — everything must run on free tiers for $0; custom domain deferred until the app earns revenue
+- [HMR already works](project_hmr_already_works.md) — Next.js Fast Refresh works fine; don't propose migrating to Vite
+- [UI/UX pass state](project_ui_ux_pass_state.md) — screens done/remaining in the animation pass; found real markdown-table parser bug, unresolved
+- [File corruption pattern](project_file_corruption_pattern.md) — recurring zero-byte file corruption in the repo dir; safe fix for a corrupted .git/HEAD
+- [Batch deploys](feedback_batch_deploys.md) — commit as you go; push to main once per batch — the push auto-deploys via GitHub Actions after checks
+- [Test matrix](feedback_test_matrix.md) — every UI check: desktop + mobile, each in light + dark
+- [Data & content foundation](project_data_content_foundation.md) — 4J calibration data, 6D practice bank, 6E study materials, 8C branch data, March refresh
+- [Backslash mangling](feedback_backslash_mangling.md) — Bash heredocs strip backslashes here; write TeX/regex content with Write/Edit only
+- [Detailed user steps](feedback_detailed_user_steps.md) — give click-by-click steps for any user action, then hold until they confirm
+- [Signed-in e2e tests](reference_signed_in_e2e.md) — bypass Turnstile in Playwright via admin magic link + @supabase/ssr cookies
+- [CRLF-aware edits](feedback_crlf_edits.md) — repo mixes CRLF/LF; scripted replaces must match newline style + assert
+- [PYQ: Claude extracts](feedback_pyq_claude_extracts.md) — no Gemini for PYQs; resume from docs/PYQ_EXTRACTION_HANDBOOK.md
+- [Turn-end next items](feedback_turn_end_next_items.md) — update checklist + list next items at the end of every turn
+- [Tag during transcription](feedback_tag_during_transcription.md) — write tags/<paper>.tsv in the same pass as each transcription batch
+- [Generated questions plan](project_generated_questions_strategy.md) — mocks on hold; PYQs for all branches first, then GATE-level question generation
+- [No native pickers](feedback_no_native_pickers.md) — use DatePicker/TimePicker; eslint bans type=date/time
+- [Sync checklist + login stance](feedback_sync_checklist_and_login_stance.md) — sync checklist.md every turn with real checkboxes; never advertise no-login, nudge sign-in indirectly
+- [Project state 18 Oct 2026](project_state_2026_10_18.md) — branches, Telegram/Instagram/film/cards state, open items
+- [Design and content taste](feedback_design_and_content_taste.md) — fonts, cards, film, hub rules, consent for personalised shares
