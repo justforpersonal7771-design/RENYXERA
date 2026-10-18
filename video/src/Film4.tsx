@@ -770,7 +770,7 @@ const Caption: React.FC = () => {
   const line = vo[cur.id as VoId];
   const out = 1 - c01((f - Math.min(nextAt - 6, cur.at + line.dur * FPS + 40)) / 8);
   return (
-    <div style={{ position: "absolute", left: 60, right: 60, top: 170, height: 440, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", opacity: out,
+    <div style={{ position: "absolute", left: 60, right: 60, top: 240, height: 470, display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", opacity: out,
       fontFamily: DISPLAY, fontWeight: 800, fontSize: line.text.length > 60 ? 70 : 84, lineHeight: 1.12, letterSpacing: -2, color: "#fff" }}>
       <div>
         {line.words.map((w, i) => {
@@ -787,28 +787,45 @@ const Caption: React.FC = () => {
   );
 };
 
-/** 9:16 cut for Reels / Shorts: caption on top, the scene full-width and zoomed in below, brand footer. */
+/** 9:16 cut for Reels / Shorts. Layout (1080x1920): brand lockup, spoken caption, the scene framed per scene so nothing is
+ *  cropped or empty, then a call-to-action block. Framing: [scale, focus x, focus y] in 4K film pixels. */
+const V_FRAME: Record<string, [number, number, number]> = {
+  night: [0.42, 1250, 1080], wrong: [0.4, 1900, 1100], cost: [0.3, 1920, 1100], bridge: [0.42, 1920, 1400], reveal: [0.34, 1920, 1080],
+  dash: [0.36, 1920, 1214], tutor: [0.36, 1920, 1214], mentor: [0.36, 1920, 1214], mistakes: [0.36, 1920, 1214], practice: [0.36, 1920, 1214],
+  analytics: [0.36, 1920, 1214], challenge: [0.36, 1920, 1214], plan: [0.36, 1920, 1214], profile: [0.36, 1920, 1214], plans: [0.36, 1920, 1214],
+  pitch: [0.3, 1920, 1080], end: [0.3, 1920, 1000],
+};
 export const FilmVertical: React.FC = () => {
   const f = useCurrentFrame();
-  const K = 0.52; // 3840x2160 -> 1997x1123; centre-cropped to the 1080 frame width
-  const H = 1180;
-  // slow pan across each scene so wide UI is shown in full over its duration
+  const SW = 1080, SH = 760, STOP = 770;
   const sc = TL.scenes.find((x) => f >= x.at && f < x.at + x.dur) ?? TL.scenes[0];
-  const frac = 0.22 + 0.56 * ease(c01((f - sc.at) / sc.dur));
-  const panX = -(3840 * K - 1080) * frac;
+  const nx = TL.scenes[TL.scenes.indexOf(sc) + 1];
+  const [k0, fx0, fy0] = V_FRAME[sc.id] ?? [0.36, 1920, 1080];
+  const [k1, fx1, fy1] = nx ? V_FRAME[nx.id] ?? [k0, fx0, fy0] : [k0, fx0, fy0];
+  const m = nx ? ease(c01((f - (nx.at - 10)) / 10)) : 0; // glide the framing into the next scene during the overlap
+  const K = k0 + (k1 - k0) * m, fx = fx0 + (fx1 - fx0) * m, fy = fy0 + (fy1 - fy0) * m;
+  const last = sc.id === "end";
   return (
     <AbsoluteFill style={{ background: "#07051a" }}>
-      <AbsoluteFill style={{ background: `radial-gradient(circle at ${30 + 10 * Math.sin(f / 60)}% 15%, rgba(168,85,247,.45), transparent 50%), radial-gradient(circle at 80% 90%, rgba(34,211,238,.3), transparent 50%)` }} />
-      <div style={{ position: "absolute", top: 90, left: 0, right: 0, textAlign: "center", fontFamily: MONO, fontWeight: 700, fontSize: 30, letterSpacing: 10, color: "#c4b5fd" }}>RENYXERA · GATE</div>
+      <AbsoluteFill style={{ background: `radial-gradient(circle at ${30 + 10 * Math.sin(f / 60)}% 12%, rgba(168,85,247,.45), transparent 50%), radial-gradient(circle at 80% 92%, rgba(34,211,238,.28), transparent 50%)` }} />
+      <div style={{ position: "absolute", top: 64, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 26 }}>
+          <Img src={staticFile("mark-dark.png")} style={{ width: 84, height: 112, objectFit: "contain" }} />
+          <div style={{ fontFamily: brandFont, fontSize: 82, letterSpacing: 4, color: "#fff", lineHeight: 1 }}>
+            RENYX<span style={{ backgroundImage: "linear-gradient(90deg,#5edcff,#8b5cf6 55%,#e879f9)", WebkitBackgroundClip: "text", color: "transparent" }}>ERA</span>
+          </div>
+        </div>
+        <div style={{ fontFamily: BODY, fontWeight: 600, fontSize: 24, letterSpacing: 9, color: "rgba(255,255,255,.6)" }}>A NEW ERA OF INTELLIGENT LEARNING</div>
+      </div>
       <Caption />
-      <div style={{ position: "absolute", left: 0, top: 640, width: 1080, height: H, overflow: "hidden", boxShadow: "0 -30px 100px rgba(124,58,237,.35)" }}>
-        <div style={{ position: "absolute", width: 3840, height: 2160, left: panX, top: (H - 2160 * K) / 2, transform: `scale(${K})`, transformOrigin: "0 0" }}>
+      <div style={{ position: "absolute", left: 0, top: STOP, width: SW, height: SH, overflow: "hidden", boxShadow: "0 0 90px rgba(124,58,237,.4)", borderTop: "2px solid rgba(255,255,255,.12)", borderBottom: "2px solid rgba(255,255,255,.12)" }}>
+        <div style={{ position: "absolute", width: 3840, height: 2160, left: SW / 2 - fx * K, top: SH / 2 - fy * K, transform: `scale(${K})`, transformOrigin: "0 0" }}>
           <VerticalCtx.Provider value={true}><AbsoluteFill style={{ background: "#04030d" }}><Scenes /></AbsoluteFill></VerticalCtx.Provider>
         </div>
       </div>
-      <div style={{ position: "absolute", bottom: 60, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-        <Img src={staticFile("mark-dark.png")} style={{ width: 80, height: 80, objectFit: "contain" }} />
-        <div style={{ fontFamily: MONO, fontWeight: 500, fontSize: 32, color: "#e9e5ff", letterSpacing: 2 }}>gate.renyxera.workers.dev</div>
+      <div style={{ position: "absolute", top: STOP + SH + 70, left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", gap: 26 }}>
+        <div style={{ padding: "26px 64px", borderRadius: 999, background: "linear-gradient(90deg,#4f46e5,#a855f7,#ec4899)", fontFamily: DISPLAY, fontWeight: 800, fontSize: 54, color: "#fff", boxShadow: "0 24px 70px -18px rgba(168,85,247,.8)", transform: `scale(${last ? 1 + 0.03 * Math.sin(f / 6) : 1})` }}>Start now · link in bio</div>
+        <div style={{ fontFamily: MONO, fontWeight: 500, fontSize: 34, color: "#e9e5ff", letterSpacing: 2 }}>gate.renyxera.workers.dev</div>
       </div>
       <Sound />
     </AbsoluteFill>

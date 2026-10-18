@@ -91,6 +91,8 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
             {b.live ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Rocket className="w-3.5 h-3.5" />}
             {b.live ? "Live now" : `Coming ${b.plannedLaunch}`}
           </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={`/brand/branch/${b.slug}.png`} alt={`GATE ${b.paper} logo`} width={88} height={88} className="mt-4 h-[88px] w-[88px] rounded-full shadow-lg shadow-violet-500/20" />
           <h1 className="mt-4 text-4xl sm:text-5xl font-display font-extrabold tracking-tight text-[var(--text-primary)] leading-tight">
             GATE {b.paper} <span className="bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">{b.short}</span>
           </h1>
