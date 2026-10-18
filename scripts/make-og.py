@@ -13,6 +13,10 @@ def syne(sz, w=800):
     f = ImageFont.truetype(FD + "Syne.ttf", sz); f.set_variation_by_axes([w]); return f
 def grotesk(sz, w=600):
     f = ImageFont.truetype(FD + "SpaceGrotesk.ttf", sz); f.set_variation_by_axes([w]); return f
+def sora(sz, w=600):
+    f = ImageFont.truetype(FD + "Sora.ttf", sz); f.set_variation_by_axes([w]); return f
+def playfair_i(sz, w=600):
+    f = ImageFont.truetype(FD + "PlayfairItalic.ttf", sz); f.set_variation_by_axes([w]); return f
 def mono(sz, w=500):
     f = ImageFont.truetype(FD + "JetBrainsMono.ttf", sz); f.set_variation_by_axes([w]); return f
 serif_i = lambda sz: ImageFont.truetype(FD + "InstrumentSerif-Italic.ttf", sz)
@@ -68,27 +72,25 @@ def background(accent):
     return Image.fromarray(np.clip(img, 0, 255).astype("uint8"))
 
 def pill(im, accent, a, b):
-    """Glass pill: soft shadow, accent-gradient hairline, serif-italic lead + small-caps chip."""
-    a1 = hexrgb(accent)
-    sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((64, 478, 664, 544), 33, fill=a1 + (70,))
-    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(16)))
-    ring = Image.new("RGBA", im.size, (0, 0, 0, 0)); rd = ImageDraw.Draw(ring)
-    rd.rounded_rectangle((64, 470, 664, 538), 34, fill=a1 + (255,)); rd.rounded_rectangle((67, 473, 661, 535), 31, fill=(255, 255, 255, 240))
-    im.alpha_composite(ring)
-    d = ImageDraw.Draw(im)
-    d.text((96, 487), a, font=grotesk(32, 600), fill=(22, 18, 58))
-    w = d.textlength(a, font=grotesk(32, 600))
-    cx = int(96 + w + 18)
-    d.rounded_rectangle((cx, 487, cx + 150, 521), 17, fill=a1)
-    d.text((cx + 75, 504), "+ " + b.upper(), font=grotesk(16, 700), fill="white", anchor="mm")
+    """Two chips (outlined + solid) with soft shadows, in Sora."""
+    ac = hexrgb(accent); f = sora(22, 600); x = 64; y = 480
+    for text, solid in ((a, False), (b, True)):
+        d = ImageDraw.Draw(im); w = int(d.textlength(text, font=f)) + 44
+        sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((x, y + 6, x + w, y + 58), 26, fill=ac + (60,))
+        im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(10)))
+        ov = Image.new("RGBA", im.size, (0, 0, 0, 0)); od = ImageDraw.Draw(ov)
+        if solid: od.rounded_rectangle((x, y, x + w, y + 52), 26, fill=ac + (255,))
+        else: od.rounded_rectangle((x, y, x + w, y + 52), 26, fill=(255, 255, 255, 235), outline=ac + (255,), width=2)
+        im.alpha_composite(ov); d = ImageDraw.Draw(im)
+        d.text((x + w // 2, y + 27), text, font=f, fill="white" if solid else (22, 18, 58), anchor="mm"); x += w + 12
 
 def card(slug, title, sub, logo, accent):
     im = background(accent).convert("RGBA")
     d = ImageDraw.Draw(im)
     im.alpha_composite(lock, (64, 56))
-    d.text((60, 250), title, font=syne(70, 700), fill=(22, 18, 58))
-    d.text((66, 372), sub, font=serif_i(64), fill=hexrgb(accent))
-    pill(im, accent, "Previous-year questions", "AI mentor")
+    d.text((60, 250), title, font=brico(92, 800), fill=(22, 18, 58))
+    d.text((66, 366), sub, font=ImageFont.truetype(FD + "DMSerif.ttf", 60), fill=hexrgb(accent))
+    pill(im, accent, "2,400+ official PYQs", "AI mentor")
     d = ImageDraw.Draw(im)
     d.text((66, 572), "gate.renyxera.workers.dev", font=mono(21, 500), fill=(88, 80, 140))
     if logo:
@@ -102,16 +104,21 @@ for slug, (t, s, lg, ac) in BR.items():
     except OSError as e:
         print("skipped (file open elsewhere?):", slug, e)
     circle(f"logo/{lg}.jpeg", 512).save(f"public/brand/branch/{slug}.png", optimize=True)
-# default card: the brand mark large instead of a branch logo
-im = background("#6366f1").convert("RGBA"); d = ImageDraw.Draw(im)
-im.alpha_composite(lock, (64, 70))
-d.text((60, 215), "GATE 2027", font=syne(84, 700), fill=(22, 18, 58))
-d.text((66, 362), "PYQs, mocks and an AI mentor", font=serif_i(60), fill=(99, 102, 241))
-pill(im, "#6366f1", "Practise free", "Pro when ready")
-d = ImageDraw.Draw(im)
-d.text((66, 572), "gate.renyxera.workers.dev", font=mono(21, 500), fill=(88, 80, 140))
-x = 840
-for k, (_, (t, s, lg, ac)) in enumerate(BR.items()):
-    c = circle(f"logo/{lg}.jpeg", 150); im.alpha_composite(c, (x + (k % 2) * 170, 120 + (k // 2) * 170))
-im.convert("RGB").save("public/og/default.png", optimize=True)
+def default_card(out, custom=False):
+    im = background("#6366f1").convert("RGBA"); d = ImageDraw.Draw(im)
+    im.alpha_composite(lock, (64, 70))
+    d.text((60, 215), "GATE 2027", font=brico(110, 800), fill=(22, 18, 58))
+    d.text((66, 362), "PYQs, mocks and an AI mentor", font=(playfair_i(52) if custom else ImageFont.truetype(FD + "DMSerif.ttf", 56)), fill=(99, 102, 241))
+    if not custom:
+        pill(im, "#6366f1", "Practise free", "Upgrade when ready")
+    d = ImageDraw.Draw(im)
+    d.text((66, 572), "gate.renyxera.workers.dev", font=mono(21, 500), fill=(88, 80, 140))
+    x = 840
+    for k, (_, (t, s, lg, ac)) in enumerate(BR.items()):
+        c = circle(f"logo/{lg}.jpeg", 150); im.alpha_composite(c, (x + (k % 2) * 170, 120 + (k // 2) * 170))
+    im.convert("RGB").save(out, optimize=True)
+default_card("public/og/default.png")
+default_card("public/og/custom-base.png", custom=True)
+
 print("done")
+

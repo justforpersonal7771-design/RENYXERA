@@ -17,26 +17,30 @@ export function ShareCard({ link, text }: { link: string; text: string }) {
   const [avatar, setAvatar] = useState<string | null>(null);
 
   const draw = async (): Promise<Blob | null> => {
+    const parts = [on.name && f.name.trim(), on.username && f.username.trim() && `@${f.username.trim().replace(/^@/, "")}`, on.sid && f.sid.trim() && `ID ${f.sid.trim()}`].filter(Boolean) as string[];
+    const custom = parts.length > 0 || !!avatar;
     const img = new Image();
-    img.src = "/og/default.png";
+    img.src = custom ? "/og/custom-base.png" : "/og/default.png";
     await img.decode();
     const c = document.createElement("canvas");
     c.width = 1200; c.height = 630;
     const g = c.getContext("2d")!;
     g.drawImage(img, 0, 0, 1200, 630);
-    const parts = [on.name && f.name.trim(), on.username && f.username.trim() && `@${f.username.trim().replace(/^@/, "")}`, on.sid && f.sid.trim() && `ID ${f.sid.trim()}`].filter(Boolean) as string[];
-    if (avatar) {
-      const av = new Image(); av.src = avatar; await av.decode();
-      g.save(); g.beginPath(); g.arc(1040, 140, 80, 0, Math.PI * 2); g.clip();
-      const m = Math.min(av.width, av.height); g.drawImage(av, (av.width - m) / 2, (av.height - m) / 2, m, m, 960, 60, 160, 160); g.restore();
-      g.lineWidth = 6; g.strokeStyle = "#6366f1"; g.beginPath(); g.arc(1040, 140, 80, 0, Math.PI * 2); g.stroke();
-    }
-    if (parts.length) {
-      // replace the call-to-action pill with the sender line
-      g.fillStyle = "#faf8ff"; g.fillRect(40, 456, 640, 96);
-      g.fillStyle = "#6366f1"; g.beginPath(); g.roundRect(64, 470, 640, 68, 34); g.fill();
-      g.fillStyle = "#fff"; g.font = "700 27px Manrope, system-ui, sans-serif";
-      g.fillText(`Shared by ${parts.join(" · ")}`.slice(0, 54), 96, 513);
+    if (custom) {
+      // glass sender bar: avatar, name, then username and ID
+      g.save(); g.shadowColor = "rgba(99,102,241,.35)"; g.shadowBlur = 24; g.shadowOffsetY = 8;
+      g.fillStyle = "rgba(255,255,255,.95)"; g.beginPath(); g.roundRect(64, 462, 660, 96, 48); g.fill(); g.restore();
+      g.lineWidth = 3; g.strokeStyle = "#6366f1"; g.beginPath(); g.roundRect(64, 462, 660, 96, 48); g.stroke();
+      if (avatar) {
+        const av = new Image(); av.src = avatar; await av.decode();
+        g.save(); g.beginPath(); g.arc(112, 510, 34, 0, Math.PI * 2); g.clip();
+        const m = Math.min(av.width, av.height); g.drawImage(av, (av.width - m) / 2, (av.height - m) / 2, m, m, 78, 476, 68, 68); g.restore();
+      }
+      const x = avatar ? 164 : 96;
+      g.fillStyle = "#16123a"; g.font = "700 28px Sora, Manrope, system-ui, sans-serif";
+      g.fillText((on.name && f.name.trim()) || "Shared on RENYXERA", x, 506);
+      g.fillStyle = "#58508c"; g.font = "500 21px Sora, Manrope, system-ui, sans-serif";
+      g.fillText(parts.filter((p) => p !== (on.name && f.name.trim())).join("  ·  ").slice(0, 46), x, 538);
     }
     return new Promise((r) => c.toBlob((b) => r(b), "image/png"));
   };
