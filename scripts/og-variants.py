@@ -21,17 +21,18 @@ def chips(im, items, x, y, accent, font, style):
         d.text((x + w // 2, y + 27), text, font=font, fill="white" if solid else (22, 18, 58), anchor="mm"); x += w + 12
 # title is always Bricolage Grotesque; branch name serif, chips font, url font vary
 def TT(file, ax, sz): return lambda: vf(file, ax, sz)
-STY = [  # (label, title font, branch-name font, chip font, url font, chip shape)
- ("1 Bricolage / DM Serif / Sora", TT("Bricolage.ttf", [46, 800, 100], 92), lambda: ImageFont.truetype(FD + "DMSerif.ttf", 60), lambda: vf("Sora.ttf", [600], 22), lambda: vf("SpaceGrotesk.ttf", [500], 22), "pill"),
- ("2 Unbounded / Instrument / Manrope", TT("Unbounded.ttf", [600], 58), lambda: serif_i(66), lambda: vf("Manrope.ttf", [800], 22), lambda: vf("JetBrainsMono.ttf", [500], 21), "pill"),
- ("3 Playfair / Jakarta / Outfit", TT("Playfair.ttf", [800], 88), lambda: vf("CormorantItalic.ttf", [600], 70), lambda: vf("Jakarta.ttf", [700], 22), lambda: vf("DMMono.ttf", [], 21), "sq"),
- ("4 Syne / Fraunces / Epilogue", TT("Syne.ttf", [700], 72), lambda: vf("Fraunces-Italic.ttf", [0, 0, 72, 500], 58), lambda: vf("Epilogue.ttf", [700], 22), lambda: vf("Epilogue.ttf", [500], 21), "pill"),
- ("5 Fraunces / Sora / Red Hat", TT("Fraunces.ttf", [0, 0, 96, 700], 90), lambda: vf("Jakarta.ttf", [600], 50), lambda: vf("RedHat.ttf", [700], 23), lambda: vf("JetBrainsMono.ttf", [500], 21), "sq"),
- ("6 Sora / Gloock / Figtree", TT("Sora.ttf", [800], 76), lambda: ImageFont.truetype(FD + "Gloock.ttf", 56), lambda: vf("Figtree.ttf", [700], 24), lambda: vf("Figtree.ttf", [500], 22), "pill"),
- ("7 Outfit / Bodoni / Space Grotesk", TT("Outfit.ttf", [700], 92), lambda: vf("BodoniItalic.ttf", [600, 28], 62), lambda: vf("SpaceGrotesk.ttf", [700], 23), lambda: vf("SpaceGrotesk.ttf", [500], 22), "sq"),
- ("8 Instrument Serif / Manrope", TT("InstrumentSerif-Regular.ttf", None, 104) if False else (lambda: ImageFont.truetype(FD + "InstrumentSerif-Regular.ttf", 108)), lambda: vf("Manrope.ttf", [600], 46), lambda: vf("Manrope.ttf", [800], 22), lambda: vf("DMMono.ttf", [], 21), "pill"),
- ("9 Epilogue / Young Serif / Unbounded", TT("Epilogue.ttf", [800], 82), lambda: ImageFont.truetype(FD + "YoungSerif.ttf", 54), lambda: vf("Unbounded.ttf", [600], 18), lambda: vf("SpaceGrotesk.ttf", [500], 22), "sq"),
- ("10 Red Hat / Italiana / Syne", TT("RedHat.ttf", [800], 88), lambda: ImageFont.truetype(FD + "Italiana.ttf", 64), lambda: vf("Syne.ttf", [700], 22), lambda: vf("JetBrainsMono.ttf", [500], 21), "pill"),
+def ST(file, sz): return lambda: ImageFont.truetype(FD + file, sz)
+STY = [  # (label, title (bold), branch name (cursive/serif), chip font, url font, chip shape)
+ ("1 Archivo Black / Pacifico / Space Grotesk", ST("ArchivoBlack.ttf", 80), ST("Pacifico.ttf", 54), TT("SpaceGrotesk.ttf", [700], 23), TT("SpaceMono.ttf", [], 20), "pill"),
+ ("2 Syne ExtraBold / Playball / Hanken", TT("Syne.ttf", [800], 54), ST("Playball.ttf", 66), TT("Hanken.ttf", [700], 23), TT("IBMMono.ttf", [], 21), "pill"),
+ ("3 Dela Gothic / Great Vibes / DM Sans", ST("DelaGothic.ttf", 66), ST("GreatVibes.ttf", 84), TT("DMSans.ttf", [14, 700], 23), TT("SpaceMono.ttf", [], 20), "sq"),
+ ("4 Fraunces Black / Kaushan / Epilogue", TT("Fraunces.ttf", [96, 900, 0, 0], 90), ST("Kaushan.ttf", 58), TT("Epilogue.ttf", [700], 22), TT("IBMMono.ttf", [], 21), "pill"),
+ ("5 Anton / Sacramento / Space Grotesk", ST("Anton.ttf", 96), ST("Sacramento.ttf", 80), TT("SpaceGrotesk.ttf", [700], 23), TT("SpaceGrotesk.ttf", [500], 22), "sq"),
+ ("6 Space Grotesk Bold / Dancing / Jakarta", TT("SpaceGrotesk.ttf", [700], 86), TT("Dancing.ttf", [700], 70), TT("Jakarta.ttf", [700], 22), TT("JetBrainsMono.ttf", [500], 21), "pill"),
+ ("7 Unbounded Black / Pacifico / Sora", TT("Unbounded.ttf", [800], 58), ST("Pacifico.ttf", 54), TT("Sora.ttf", [700], 21), TT("SpaceMono.ttf", [], 20), "sq"),
+ ("8 Bricolage XBold / Great Vibes / Manrope", TT("Bricolage.ttf", [46, 800, 100], 92), ST("GreatVibes.ttf", 84), TT("Manrope.ttf", [800], 22), TT("IBMMono.ttf", [], 21), "pill"),
+ ("9 Archivo Black / Fraunces italic / Hanken", ST("ArchivoBlack.ttf", 80), TT("Fraunces-Italic.ttf", [0, 0, 72, 600], 62), TT("Hanken.ttf", [800], 23), TT("SpaceMono.ttf", [], 20), "sq"),
+ ("10 Syne ExtraBold / Caveat / Outfit", TT("Syne.ttf", [800], 54), TT("Caveat.ttf", [700], 78), TT("Outfit.ttf", [700], 23), TT("JetBrainsMono.ttf", [500], 21), "pill"),
 ]
 t, s, lg, ac = BR["gate-ee"]
 def base(fs, name, ft=None):
@@ -47,7 +48,7 @@ for k, (name, ft, fs, fc, fu, style) in enumerate(STY):
     chips(im, [("2,400+ official PYQs", False), ("AI mentor", True)], 64, 480, ac, fc(), style)
     d = ImageDraw.Draw(im); d.text((66, 570), "gate.renyxera.workers.dev", font=fu(), fill=(88, 80, 140))
     sheet.paste(im.convert("RGB"), ((k % 2) * W, (k // 2) * (H + 30)))
-sheet.resize((W * 3 // 2, (H + 30) * 5 * 3 // 4)).save("D:/tmp/og_variants10b.png")
+sheet.resize((W * 3 // 2, (H + 30) * 5 * 3 // 4)).save("D:/tmp/og_variants10c.png")
 # personalised ("custom") card: sender block replaces the chips; sample data
 av = Image.new("RGB", (400, 400), (99, 102, 241)); ImageDraw.Draw(av).ellipse((120, 70, 280, 230), fill=(255, 255, 255)); ImageDraw.Draw(av).ellipse((60, 250, 340, 520), fill=(255, 255, 255))
 def custom(k, layout):
@@ -75,6 +76,6 @@ def circle_img(img, size):
     im = img.convert("RGB").resize((size, size)); m = Image.new("L", (size * 4, size * 4), 0); ImageDraw.Draw(m).ellipse((0, 0, size * 4 - 1, size * 4 - 1), fill=255)
     o = im.convert("RGBA"); o.putalpha(m.resize((size, size), Image.LANCZOS)); return o
 cs = Image.new("RGB", (W * 2, (H + 30) * 2), "white")
-for i, k in enumerate((0, 2, 4, 7)):
-    cs.paste(custom(k, i).convert("RGB"), ((i % 2) * W, (i // 2) * (H + 30)))
-cs.resize((W * 3 // 2, (H + 30) * 3 // 2)).save("D:/tmp/og_custom_b.png"); print("ok")
+for i, k in enumerate((0, 1, 3, 8)):
+    cs.paste(custom(k, 0).convert("RGB"), ((i % 2) * W, (i // 2) * (H + 30)))
+cs.resize((W * 3 // 2, (H + 30) * 3 // 2)).save("D:/tmp/og_custom_c.png"); print("ok")
