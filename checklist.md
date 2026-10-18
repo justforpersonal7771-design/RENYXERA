@@ -22,10 +22,11 @@ Legend: 🟠 later (named release) · 🟡 paid backlog (after income) · 🟨 p
 ## 2. Open work for me (in order)
 
 - [ ] **Film v7 (re-cut after your feedback)**: 4 plain transitions (slide, push-up, wipe, drop-in), CTA now "Upgrade to Pro →", story line before the stats ("You're not the only one…"), new full-width vertical cut with a slow pan. Renders queued: vertical, 1080p landscape, then 4K (`video/out/renyxera-film-v7-*.mp4`). I check frames and hand over.
-- [ ] **CS bank verification, last items**: wording of every CS paper 2017-2026 now checked against the official papers and fixed. 2017 Set 1 and 2018 keys re-verified against your uploaded PDFs (all 130 match). Still open: the 2018 figure check.
+- [x] **CS bank verification**: wording of every CS paper 2017-2026 now checked against the official papers and fixed. 2017 Set 1 and 2018 keys re-verified against your uploaded PDFs (all 130 match). All checked, 2018 figures too. CS verification is complete.
 - [ ] **Study Materials programme** (separate paid product, not part of Plus/Pro): plan is in `docs/study-materials/`. Starts with Phase 0 (decisions and sample chapter) once you approve the plan. Reference notes and textbooks reviewed: `docs/study-materials/12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md` (the `notes/` folder is git-ignored).
 - [ ] **Instagram walk-through** (see §1).
 - [ ] **Film extras (optional)**: AI Mentor and Telegram takes; 30 s and 15 s cuts; 4:5 version; the clickable `/tour` demo.
+- [ ] **Telegram Premium steps** (`docs/telegram-premium/`): boosts, stories, per-branch folders, BotFather menu button; then I build deep links and the story-image generator.
 - [ ] **Forge questions to Telegram**: when Forge questions are generated, post them to the matching branch channels (and groups). Not built yet.
 - [ ] Flashcards for questions (later).
 - [ ] Future: phone verification + reports via the Telegram bot first, then WhatsApp.
