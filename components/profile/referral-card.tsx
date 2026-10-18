@@ -1,5 +1,6 @@
 "use client";
 
+import { ShareCard } from "@/components/growth/share-card";
 import { track } from "@/lib/growth/track";
 import { useEffect, useState } from "react";
 import { Check, Copy, Gift, Share2 } from "lucide-react";
@@ -58,6 +59,7 @@ export function ReferralCard() {
           <button type="button" onClick={share} disabled={!link} className="h-10 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-sm font-bold inline-flex items-center gap-1.5 shadow-md shadow-emerald-500/25 disabled:opacity-60 cursor-pointer"><Share2 className="w-4 h-4" /> Share</button>
         </div>
       </div>
+      {link && <ShareCard link={link} text="I'm preparing for GATE on RENYXERA. Join with my link and we both get bonus AI requests:" />}
     </section>
   );
 }

@@ -9,6 +9,12 @@ def brico(sz, wght=800):
     f = ImageFont.truetype(FD + "Bricolage.ttf", sz); f.set_variation_by_axes([min(96, max(12, sz // 2)), wght, 100]); return f  # opsz, wdth, wght
 def manrope(sz, wght=600):
     f = ImageFont.truetype(FD + "Manrope.ttf", sz); f.set_variation_by_axes([wght]); return f
+def syne(sz, w=800):
+    f = ImageFont.truetype(FD + "Syne.ttf", sz); f.set_variation_by_axes([w]); return f
+def grotesk(sz, w=600):
+    f = ImageFont.truetype(FD + "SpaceGrotesk.ttf", sz); f.set_variation_by_axes([w]); return f
+def mono(sz, w=500):
+    f = ImageFont.truetype(FD + "JetBrainsMono.ttf", sz); f.set_variation_by_axes([w]); return f
 serif_i = lambda sz: ImageFont.truetype(FD + "InstrumentSerif-Italic.ttf", sz)
 bold = lambda s: brico(s)
 reg = lambda s: manrope(s, 500)
@@ -60,15 +66,31 @@ def background(accent):
     img = base * (1 - 0.22 * g) + a * 0.22 * g
     img[..., 2] = np.minimum(img[..., 2] + 4 * g[..., 0], 255)
     return Image.fromarray(np.clip(img, 0, 255).astype("uint8"))
+
+def pill(im, accent, a, b):
+    """Glass pill: soft shadow, accent-gradient hairline, serif-italic lead + small-caps chip."""
+    a1 = hexrgb(accent)
+    sh = Image.new("RGBA", im.size, (0, 0, 0, 0)); ImageDraw.Draw(sh).rounded_rectangle((64, 478, 664, 544), 33, fill=a1 + (70,))
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(16)))
+    ring = Image.new("RGBA", im.size, (0, 0, 0, 0)); rd = ImageDraw.Draw(ring)
+    rd.rounded_rectangle((64, 470, 664, 538), 34, fill=a1 + (255,)); rd.rounded_rectangle((67, 473, 661, 535), 31, fill=(255, 255, 255, 240))
+    im.alpha_composite(ring)
+    d = ImageDraw.Draw(im)
+    d.text((96, 487), a, font=grotesk(32, 600), fill=(22, 18, 58))
+    w = d.textlength(a, font=grotesk(32, 600))
+    cx = int(96 + w + 18)
+    d.rounded_rectangle((cx, 487, cx + 150, 521), 17, fill=a1)
+    d.text((cx + 75, 504), "+ " + b.upper(), font=grotesk(16, 700), fill="white", anchor="mm")
+
 def card(slug, title, sub, logo, accent):
     im = background(accent).convert("RGBA")
     d = ImageDraw.Draw(im)
     im.alpha_composite(lock, (64, 56))
-    d.text((60, 232), title, font=brico(96, 800), fill=(22, 18, 58))
+    d.text((60, 250), title, font=syne(70, 700), fill=(22, 18, 58))
     d.text((66, 372), sub, font=serif_i(64), fill=hexrgb(accent))
-    d.rounded_rectangle((64, 470, 640, 538), radius=34, fill=hexrgb(accent))
-    d.text((96, 485), "Previous-year questions + AI mentor", font=manrope(27, 700), fill="white")
-    d.text((66, 568), "gate.renyxera.workers.dev", font=manrope(24, 600), fill=(88, 80, 140))
+    pill(im, accent, "Previous-year questions", "AI mentor")
+    d = ImageDraw.Draw(im)
+    d.text((66, 572), "gate.renyxera.workers.dev", font=mono(21, 500), fill=(88, 80, 140))
     if logo:
         c = circle(f"logo/{logo}.jpeg", 380)
         sh = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(sh).ellipse((770, 120, 1150, 500), fill=hexrgb(accent) + (90,))
@@ -83,10 +105,11 @@ for slug, (t, s, lg, ac) in BR.items():
 # default card: the brand mark large instead of a branch logo
 im = background("#6366f1").convert("RGBA"); d = ImageDraw.Draw(im)
 im.alpha_composite(lock, (64, 70))
-d.text((60, 215), "GATE 2027", font=brico(124, 800), fill=(22, 18, 58))
+d.text((60, 215), "GATE 2027", font=syne(84, 700), fill=(22, 18, 58))
 d.text((66, 362), "PYQs, mocks and an AI mentor", font=serif_i(60), fill=(99, 102, 241))
-d.rounded_rectangle((64, 470, 560, 538), radius=34, fill=hexrgb("#6366f1")); d.text((96, 483), "Practise free. Upgrade when ready.", font=bold(28), fill="white")
-d.text((66, 568), "gate.renyxera.workers.dev", font=manrope(24, 600), fill=(88, 80, 140))
+pill(im, "#6366f1", "Practise free", "Pro when ready")
+d = ImageDraw.Draw(im)
+d.text((66, 572), "gate.renyxera.workers.dev", font=mono(21, 500), fill=(88, 80, 140))
 x = 840
 for k, (_, (t, s, lg, ac)) in enumerate(BR.items()):
     c = circle(f"logo/{lg}.jpeg", 150); im.alpha_composite(c, (x + (k % 2) * 170, 120 + (k // 2) * 170))
