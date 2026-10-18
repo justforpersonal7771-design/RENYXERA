@@ -21,6 +21,17 @@ async function ig(path, params = {}, method = "POST") {
   return j;
 }
 
+if (process.argv.includes("--check")) {
+  // Verifies the Instagram token and account without posting anything.
+  if (!process.env.IG_ACCESS_TOKEN) { console.error("IG_ACCESS_TOKEN is not set"); process.exit(1); }
+  const me = await ig("me", { fields: "user_id,username,account_type,media_count" }, "GET");
+  console.log(`Instagram OK: @${me.username} (${me.account_type}), id ${me.user_id}, ${me.media_count} posts`);
+  if (process.env.IG_USER_ID && process.env.IG_USER_ID !== String(me.user_id)) console.warn(`WARNING: IG_USER_ID (${process.env.IG_USER_ID}) differs from the token's account id (${me.user_id}); use ${me.user_id}`);
+  const tg = process.env.TELEGRAM_BOT_TOKEN ? await (await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/getMe`)).json() : null;
+  if (tg) console.log(tg.ok ? `Telegram OK: @${tg.result.username}` : `Telegram error: ${tg.description}`);
+  process.exit(0);
+}
+
 if (process.argv.includes("--refresh")) {
   const r = await fetch(`https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=${process.env.IG_ACCESS_TOKEN}`);
   const j = await r.json();

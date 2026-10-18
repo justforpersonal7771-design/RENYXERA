@@ -11,6 +11,7 @@ Live work is tracked in **one place**: `../checklist.md` (open items only). Fini
 | `MULTI_BRANCH_DESIGN.md` | Branch scoping and switching design |
 | `PYQ_EXTRACTION_HANDBOOK.md` | Rules and pipeline for past-paper extraction (reference for any new branch) |
 | `AI_USAGE_STRATEGY.md`, `FORGE_DESIGN.md` | AI quota policy and the GATE-level practice (Forge) design |
+| `instagram/` | Instagram automation: one-time setup (click by click) and daily use |
 | `telegram-premium/` | What your Telegram Premium unlocks (boosts, stories, folders, Business, Mini App) and the steps |
 | `SOCIAL_AUTOMATION_PLAYBOOK.md` | Instagram, YouTube and Telegram posting automation (the publisher is built; setup steps pending) |
 | `GROWTH_MASTER_PLAN.md`, `GROWTH_TASKS.md`, `GROWTH_ASSETS.md`, `MARKETING_STRATEGY.md`, `CONTENT_STRATEGY.md`, `INFLUENCER_OUTREACH_MESSAGES.md` | Growth and marketing (the open tasks are in `../checklist.md`) |

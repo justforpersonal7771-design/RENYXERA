@@ -12,7 +12,7 @@ Legend: 🟠 later (named release) · 🟡 paid backlog (after income) · 🟨 p
 
 - [ ] **Upload the launch film to YouTube**: landscape `video/out/renyxera-film-v6-landscape-1080p.mp4` (when the render finishes) as a normal video, and `video/out/renyxera-film-v6-vertical.mp4` as a Short. Send me the YouTube video id; I set `NEXT_PUBLIC_PROMO_YT_ID` and the click-to-play film appears on the signed-out welcome and the Plans page.
 - [ ] **Watch both film versions once** (laptop + phone) and send notes.
-- [ ] **Instagram automation setup** (Professional account, Facebook Page, Meta developer app, long-lived token, GitHub secrets `IG_USER_ID` / `IG_ACCESS_TOKEN`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHANNEL`). The publisher, scheduler and `content/calendar.json` are built; I give click-by-click steps and wait for each confirmation. See `docs/SOCIAL_AUTOMATION_PLAYBOOK.md`.
+- [ ] **Instagram setup** (you): follow `docs/instagram/01-SETUP.md` (professional account, Meta app, tester, token, two GitHub secrets, run the `social-check` workflow). Code is built.
 - [ ] **Check Forge (GATE-level practice) with real accounts**: Free sees the upgrade prompt, Plus can make 5 sets a day, Pro has no set limit (migration 0039 is done).
 - [ ] **Growth tasks** (yours): G-5 tracking sheet, C-3 value posts in the top 5 communities, V-1 record 3 Shorts, P-1 first partner offers (`docs/GROWTH_TASKS.md`).
 - [ ] **Custom domain** (eu.org free route or a paid one) then business email (`docs/BUSINESS_EMAIL_STRATEGY.md`); first real payment has already arrived.
@@ -24,7 +24,6 @@ Legend: 🟠 later (named release) · 🟡 paid backlog (after income) · 🟨 p
 - [ ] **Film v7 (re-cut after your feedback)**: 4 plain transitions (slide, push-up, wipe, drop-in), CTA now "Upgrade to Pro →", story line before the stats ("You're not the only one…"), new full-width vertical cut with a slow pan. Renders queued: vertical, 1080p landscape, then 4K (`video/out/renyxera-film-v7-*.mp4`). I check frames and hand over.
 - [x] **CS bank verification**: wording of every CS paper 2017-2026 now checked against the official papers and fixed. 2017 Set 1 and 2018 keys re-verified against your uploaded PDFs (all 130 match). All checked, 2018 figures too. CS verification is complete.
 - [ ] **Study Materials programme** (separate paid product, not part of Plus/Pro): plan is in `docs/study-materials/`. Starts with Phase 0 (decisions and sample chapter) once you approve the plan. Reference notes and textbooks reviewed: `docs/study-materials/12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md` (the `notes/` folder is git-ignored).
-- [ ] **Instagram walk-through** (see §1).
 - [ ] **Film extras (optional)**: AI Mentor and Telegram takes; 30 s and 15 s cuts; 4:5 version; the clickable `/tour` demo.
 - [ ] **Telegram Premium steps** (`docs/telegram-premium/`): boosts, stories, per-branch folders, BotFather menu button; then I build deep links and the story-image generator.
 - [ ] **Forge questions to Telegram**: when Forge questions are generated, post them to the matching branch channels (and groups). Not built yet.

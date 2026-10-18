@@ -430,16 +430,16 @@ const S_Bridge: React.FC = () => {
       {Array.from({ length: 70 }).map((_, i) => {
         const ang = i * 2.399, r0 = 600 + (i * 53) % 1300;
         const r = r0 * (1 - conv);
-        return <div key={i} style={{ position: "absolute", left: 1920 + Math.cos(ang + f / 200) * r * 1.4, top: 1080 + Math.sin(ang + f / 200) * r * 0.75, width: 8 + (i % 4) * 4, height: 8 + (i % 4) * 4, borderRadius: 10, background: i % 3 ? "#a78bfa" : "#22d3ee", opacity: 0.25 + 0.6 * conv, filter: "blur(1px)" }} />;
+        return <div key={i} style={{ position: "absolute", left: 1920 + Math.cos(ang + f / 200) * r * 1.4, top: 1400 + Math.sin(ang + f / 200) * r * 0.75, width: 8 + (i % 4) * 4, height: 8 + (i % 4) * 4, borderRadius: 10, background: i % 3 ? "#a78bfa" : "#22d3ee", opacity: 0.25 + 0.6 * conv, filter: "blur(1px)" }} />;
       })}
-      <div style={{ position: "absolute", left: 1920 - 230, top: 1080 - 230, width: 460, height: 460, borderRadius: 230, padding: 8, boxSizing: "border-box", opacity: conv, transform: `scale(${0.4 + 0.6 * conv}) rotate(${(1 - conv) * -90}deg)`,
+      <div style={{ position: "absolute", left: 1920 - 230, top: 1400 - 230, width: 460, height: 460, borderRadius: 230, padding: 8, boxSizing: "border-box", opacity: conv, transform: `scale(${0.4 + 0.6 * conv}) rotate(${(1 - conv) * -90}deg)`,
         background: `conic-gradient(from ${f * 4}deg, #22d3ee, #a855f7, #f472b6, #6366f1, #22d3ee)`, boxShadow: "0 0 140px rgba(168,85,247,.55)" }}>
         <div style={{ width: "100%", height: "100%", borderRadius: "50%", background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,.22), rgba(29,20,80,.92) 60%)", backdropFilter: "blur(20px)", display: "grid", placeItems: "center" }}>
           <Img src={staticFile("mark-dark.png")} style={{ width: 250, height: 250, objectFit: "contain" }} />
         </div>
       </div>
-      <Words id="b1" size={180} top={740} dark width={3500} out={b2 - 8} grad={["never", "sleeps"]} />
-      <Words id="b2" size={180} top={740} dark width={3500} grad={["think"]} out={s.dur - 30} />
+      <Words id="b1" size={180} top={500} dark width={3500} out={b2 - 8} grad={["never", "sleeps"]} />
+      <Words id="b2" size={180} top={500} dark width={3500} grad={["think"]} out={s.dur - 30} />
       <Grain />
     </AbsoluteFill>
   );
