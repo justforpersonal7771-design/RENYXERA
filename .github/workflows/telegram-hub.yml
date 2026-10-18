@@ -1,0 +1,29 @@
+name: Telegram hub updates
+
+# Hub channel only: GATE 2027 updates, Monday countdown, Saturday mock reminder. No questions here.
+# Questions go to the branch channels (telegram-daily.yml). Brand news/offers: content/calendar.json.
+on:
+  schedule:
+    - cron: "0 3 * * *"   # 08:30 IST
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: { group: telegram-hub, cancel-in-progress: false }
+jobs:
+  hub:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node scripts/telegram-hub.mjs
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+      - name: Save state
+        run: |
+          git config user.name "social-bot"
+          git config user.email "social-bot@users.noreply.github.com"
+          git add content/hub-state.json
+          git diff --cached --quiet || (git commit -m "hub: update state [skip ci]" && git push)

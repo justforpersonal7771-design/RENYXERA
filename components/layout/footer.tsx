@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { INSTAGRAM_URL, TELEGRAM_FOLDER, YOUTUBE_URL } from "@/lib/social";
 
 /**
  * Shown only at the bottom of the dashboard home page (app/(dashboard)/page.tsx) and
@@ -27,7 +28,9 @@ export function Footer() {
             {label}
           </Link>
         ))}
-        <a href="https://t.me/renyxera" target="_blank" rel="noopener noreferrer" className="hover:text-[var(--text-secondary)] transition-colors">Telegram</a>
+        <a href={TELEGRAM_FOLDER} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--text-secondary)] transition-colors">Telegram</a>
+        <a href={YOUTUBE_URL} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--text-secondary)] transition-colors">YouTube</a>
+        <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--text-secondary)] transition-colors">Instagram</a>
       </nav>
     </footer>
   );

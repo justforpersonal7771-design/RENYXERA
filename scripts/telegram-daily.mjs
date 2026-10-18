@@ -103,9 +103,9 @@ const daysLeft = Math.max(0, Math.ceil(EXAM_START - istDay));
 
 let prev = null;
 async function yesterdayLine() {
-  const day = istDay - 1;
-  if (day < NEW_SCHEME_FROM || !process.env.PREGEN_SECRET) return "";
-  const y = pickFor(day);
+  // Today's answer, hidden behind a Telegram spoiler: tap to reveal (no next-day post).
+  if (!process.env.PREGEN_SECRET) return "";
+  const y = q;
   try {
     const r = await fetch(`${SITE}/api/daily/answer`, { method: "POST", headers: { "Content-Type": "application/json", "x-pregen-secret": process.env.PREGEN_SECRET }, body: JSON.stringify({ ids: [y.question_id] }) });
     const a = (await r.json())?.answers?.[y.question_id];
@@ -114,7 +114,7 @@ async function yesterdayLine() {
     const ans = a.ranges?.length ? a.ranges.map(([lo, hi]) => (lo === hi ? fmt(lo) : `${fmt(lo)} to ${fmt(hi)}`)).join(" or ") : a.nat ? (a.nat[0] === a.nat[1] ? fmt(a.nat[0]) : `${fmt(a.nat[0])} to ${fmt(a.nat[1])}`) : a.options.length ? a.options.join(", ") : "";
     if (!ans) return "";
     prev = y;
-    return `✅ <b>Yesterday's answer</b> · ${esc(label(y))}: <b>${esc(ans)}</b> (<a href="${link(y, "answer")}">see it solved</a>)`;
+    return `🔒 <b>Answer</b> (tap to reveal): <tg-spoiler>${esc(ans)}</tg-spoiler>`;
   } catch { return ""; }
 }
 

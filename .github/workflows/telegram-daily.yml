@@ -1,6 +1,6 @@
 name: Telegram daily question
 
-# Posts one official PYQ (CS, EC, EE, ME or DA in rotation) to the Telegram channel every morning (08:00 IST),
+# Posts one official PYQ to each BRANCH channel every morning (08:00 IST); the hub gets updates only (telegram-hub.yml),
 # with yesterday's official answer. Needs repo secrets TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL; skips quietly
 # without them. PREGEN_SECRET (already set for the AI job) enables the answer line.
 on:
@@ -9,21 +9,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  # Hub channel: the rotating question of the day (all branches).
-  hub:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: node scripts/copy-static-data.mjs
-      - run: node scripts/telegram-daily.mjs
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
-          PREGEN_SECRET: ${{ secrets.PREGEN_SECRET }}
   # Branch channels: each branch's own question, every day. A branch is skipped quietly until its
   # TELEGRAM_CHANNEL_<CODE> secret exists (see docs/TELEGRAM_MULTI_BRANCH_AND_SEO.md).
   branches:

@@ -23,7 +23,9 @@ export function PyqBody({ id, type, question, options, paperYearShift }: { id: s
   const reveal = async () => {
     setState("loading");
     try {
-      const res = await fetch("/api/answers", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question_ids: [id] }) });
+      const call = () => fetch("/api/answers", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question_ids: [id], public_pyq: true }) });
+      let res = await call();
+      if (res.status >= 500) res = await call(); // one quiet retry for a cold start
       if (res.status === 429) return setState("limited");
       const j = (await res.json()) as { answers?: Record<string, { c: string[]; n: [number, number][] | null }> };
       const k = j.answers?.[id];

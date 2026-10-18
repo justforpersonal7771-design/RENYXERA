@@ -9,6 +9,7 @@ import { NotifyForm } from "@/components/marketing/notify-form";
 import { syllabusStats } from "@/lib/seo/weightage";
 import { TOOLS } from "@/lib/seo/tools";
 import { Donut, ShareBar, TrendBadge } from "@/components/seo/charts";
+import { TELEGRAM_BRANCH, TELEGRAM_CHAT, TELEGRAM_FOLDER } from "@/lib/social";
 
 // Step 8 (4H): one static, crawlable landing page per GATE branch — /gate-cse, /gate-da, …
 export const dynamicParams = false;
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const b = branchBySlug(slug);
   if (!b) return {};
   const title = b.live
-    ? `GATE ${b.paper} Preparation — Free PYQs, Mocks & AI Mentor | RENYXERA`
+    ? `GATE ${b.paper} 2027: Previous Year Questions, Syllabus & AI Mentor | RENYXERA`
     : `GATE ${b.paper} (${b.short}) Preparation — Coming to RENYXERA`;
   const description = b.live
     ? `Prepare for GATE ${b.name} with every official paper ${BANK_SUMMARY[b.code] ? `from ${BANK_SUMMARY[b.code]!.years.replace("–", " to ")}` : "available"}, an exam-like test simulator, mistake analytics and an AI mentor. Free to start.`
@@ -53,10 +54,13 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
   const faq = [
     { q: `What is the GATE ${b.paper} exam pattern?`, a: "GATE is a 3-hour computer-based test with 65 questions for 100 marks: General Aptitude carries 15 marks and your subject the remaining 85. Questions are multiple choice (MCQ), multiple select (MSQ) or numerical answer (NAT); only wrong MCQs carry negative marks." },
     { q: `How many students write GATE ${b.paper}?`, a: `${b.candidates[0].toUpperCase()}${b.candidates.slice(1)} (${b.paper} paper). ${b.trend}` },
+    b.live && TELEGRAM_BRANCH[b.paper]
+      ? { q: `Is there a GATE ${b.paper} Telegram channel?`, a: `Yes. The GATE ${b.paper} channel posts one official previous-year question every morning with yesterday's answer, and the discussion group at ${TELEGRAM_CHAT.replace("https://", "")} has a topic for ${b.paper}. One link joins every channel: ${TELEGRAM_FOLDER.replace("https://", "")}.` }
+      : null,
     b.live
       ? { q: "Is RENYXERA free?", a: "Yes — you can practise official papers, build custom tests and track your progress for free, as a guest or with an account." }
       : { q: `When will GATE ${b.paper} be available on RENYXERA?`, a: `We're planning to open ${b.short} in ${b.plannedLaunch}. Join the waitlist and we'll email you once — the day it goes live.` },
-  ];
+  ].filter((f): f is { q: string; a: string } => f !== null);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -100,6 +104,9 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
             <Link href={`/setup?branch=${b.code}`} className="mt-5 inline-flex w-full h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30">
               Start a free practice test <ArrowRight className="w-4 h-4" />
             </Link>
+            {TELEGRAM_BRANCH[b.paper] && (
+              <a href={TELEGRAM_BRANCH[b.paper]} target="_blank" rel="noopener noreferrer" className="mt-3 block text-center text-sm font-bold text-sky-600 dark:text-sky-400 hover:underline">Join the GATE {b.paper} Telegram channel: a PYQ every morning →</a>
+            )}
             {syllabusSlugOf(b.code) && (
               <Link href={`/${syllabusSlugOf(b.code)}`} className="mt-3 block text-center text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">GATE {b.paper} syllabus with topic weightage →</Link>
             )}

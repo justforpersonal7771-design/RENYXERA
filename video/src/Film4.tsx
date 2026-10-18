@@ -239,18 +239,25 @@ const Window: React.FC<WinProps> = ({ take, segs, cam, callouts = [], spots = []
             {callouts.map((o, i) => {
               const a = ease(c01((tf - o.from) / 8)) * (1 - c01((tf - o.to) / 6));
               if (a <= 0) return null;
-              const left = o.side === "left";
-              const dx = left ? -130 : 130;
+              // keep the whole tooltip inside the 1600x900 window: estimate its width, flip or shorten the leader
+              const w = 76 + o.label.length * 13 + (o.n != null ? 40 : 0);
+              const roomL = o.x - 30, roomR = 1570 - o.x;
+              let left = o.side === "left";
+              if (left && roomL < w + 60 && roomR > roomL) left = false;
+              else if (!left && roomR < w + 60 && roomL > roomR) left = true;
+              const room = (left ? roomL : roomR) - w - 12;
+              const dx = (left ? -1 : 1) * Math.max(40, Math.min(130, room));
+              const ty = Math.max(20, Math.min(860, o.y - 54 - 24));
               return (
                 <div key={i} style={{ position: "absolute", left: 0, top: 0, opacity: a }}>
                   <svg style={{ position: "absolute", overflow: "visible" }} width={1} height={1}>
-                    <path d={`M ${o.x} ${o.y} C ${o.x + dx * 0.5} ${o.y}, ${o.x + dx * 0.6} ${o.y - 54}, ${o.x + dx * a} ${o.y - 54}`} fill="none" stroke="#a855f7" strokeWidth={2.4} />
+                    <path d={`M ${o.x} ${o.y} C ${o.x + dx * 0.5} ${o.y}, ${o.x + dx * 0.6} ${ty + 24}, ${o.x + dx * a} ${ty + 24}`} fill="none" stroke="#a855f7" strokeWidth={2.4} />
                     <circle cx={o.x} cy={o.y} r={6 + 3 * Math.sin(f / 4)} fill="#a855f7" opacity={0.35} />
                     <circle cx={o.x} cy={o.y} r={5} fill="#7c3aed" />
                   </svg>
-                  <div style={{ position: "absolute", left: o.x + dx * a + (left ? -8 : 8), top: o.y - 54 - 24, transform: `translateX(${left ? "-100%" : "0"}) scale(${0.7 + 0.3 * a})`, transformOrigin: left ? "right center" : "left center",
-                    display: "flex", alignItems: "center", gap: 10, padding: "8px 16px 8px 8px", borderRadius: 14, background: "rgba(255,255,255,.86)", backdropFilter: "blur(14px)",
-                    border: "1.5px solid rgba(168,85,247,.35)", boxShadow: "0 14px 34px -10px rgba(76,29,149,.45)", whiteSpace: "nowrap", fontFamily: BODY, fontWeight: 800, fontSize: 20, color: INK }}>
+                  <div style={{ position: "absolute", left: o.x + dx * a + (left ? -8 : 8), top: ty, transform: `translateX(${left ? "-100%" : "0"})`,
+                    display: "flex", alignItems: "center", gap: 10, padding: "8px 16px 8px 8px", borderRadius: 14, background: "#ffffff",
+                    border: "1.5px solid rgba(168,85,247,.35)", boxShadow: "0 14px 34px -10px rgba(76,29,149,.45)", whiteSpace: "nowrap", fontFamily: DISPLAY, fontWeight: 700, fontSize: 22, letterSpacing: -0.3, color: INK }}>
                     {o.n != null && <span style={{ width: 30, height: 30, borderRadius: 9, background: RIBBON, color: "#fff", display: "grid", placeItems: "center", fontSize: 16 }}>{o.n}</span>}
                     {o.label}
                   </div>
@@ -697,16 +704,16 @@ const S_End: React.FC = () => {
         return (
           <>
             <Logo at={c4 - 6} size={210} top={430} />
-            <Words id="c4" size={104} top={800} dark width={3300} grad={["now", "real", "progress"]} />
+            <div style={{ position: "absolute", left: 0, right: 0, top: 690, textAlign: "center", fontFamily: BODY, fontWeight: 600, fontSize: 46, letterSpacing: 16, color: "rgba(255,255,255,.6)", opacity: c01((f - c4) / 12) }}>A NEW ERA OF INTELLIGENT LEARNING</div>
+            <Words id="c4" size={104} top={850} dark width={3300} grad={["now", "real", "progress"]} />
             <div style={{ position: "absolute", left: 0, right: 0, top: 1290, textAlign: "center", opacity: cta, transform: `translateY(${(1 - cta) * 80}px) scale(${(0.85 + 0.15 * cta) * breathe})` }}>
               <span style={{ display: "inline-block", padding: 6, borderRadius: 999, background: `conic-gradient(from ${f * 5}deg, #22d3ee, #a855f7, #f472b6, #6366f1, #22d3ee)`, boxShadow: "0 40px 120px -20px rgba(168,85,247,.75)" }}>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 30, padding: "40px 90px", borderRadius: 999, background: "linear-gradient(180deg,#1d1450,#0d0a24)", fontFamily: DISPLAY, fontWeight: 700, fontSize: 82, color: "#fff", position: "relative", overflow: "hidden" }}>
-                  Upgrade to Pro <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 96 }}>→</span>
+                  Start now <span style={{ fontFamily: SERIF, fontStyle: "italic", fontSize: 96 }}>→</span>
                   <span style={{ position: "absolute", inset: 0, background: "linear-gradient(105deg, transparent 35%, rgba(255,255,255,.28) 50%, transparent 65%)", transform: `translateX(${((f - c4) * 3) % 260 - 130}%)` }} />
                 </span>
               </span>
               <div style={{ marginTop: 60, fontFamily: MONO, fontWeight: 500, fontSize: 56, letterSpacing: 4, color: "#c4b5fd" }}>gate.renyxera.workers.dev</div>
-              <div style={{ marginTop: 26, fontFamily: BODY, fontWeight: 600, fontSize: 40, letterSpacing: 14, color: "rgba(255,255,255,.55)" }}>A NEW ERA OF INTELLIGENT LEARNING</div>
             </div>
           </>
         );

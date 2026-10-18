@@ -19,6 +19,9 @@ export const runtime = "nodejs";
  */
 const bodySchema = z.object({
   question_ids: z.array(z.string().regex(/^[A-Za-z0-9_-]{1,120}$/)).min(1).max(100),
+  // The public PYQ page (/pyq/...) shows the official answer of ONE question of any branch, whatever branch the
+  // visitor's account is on (a CS student opening a DA link from Telegram). Single id only; same rate limits.
+  public_pyq: z.boolean().optional(),
 });
 
 const DAILY_ANSWER_CAP = 4000;
@@ -60,7 +63,8 @@ export async function POST(req: NextRequest) {
     // they are browsing (cookie, any branch open to guests).
     const guestBranch = req.cookies.get(BRANCH_COOKIE)?.value;
     const branch = userId ? await getUserBranch(db, userId) : (isBranchCode(guestBranch) ? guestBranch : DEFAULT_BRANCH);
-    if (questionsOutsideBranch(ids, branch).length) return branchMismatch();
+    const publicPyq = parsed.data.public_pyq === true && ids.length === 1;
+    if (!publicPyq && questionsOutsideBranch(ids, branch).length) return branchMismatch();
     // Per-account daily cap (5D): far above real use (a paper is 65; keys already seen are
     // cached on the device), low enough that scripting the whole key set is slow and
     // visible. Over the cap: refused until tomorrow (IST) and logged for review.

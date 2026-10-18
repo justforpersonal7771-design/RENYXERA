@@ -6,6 +6,7 @@ import { AuthListener } from '@/components/system/auth-listener';
 import { CardSpotlight } from '@/components/system/card-spotlight';
 import { ThemeProvider } from '@/components/theme-provider';
 import { SITE_URL } from "@/lib/site";
+import { SAME_AS } from "@/lib/social";
 import { TooltipLayer } from "@/components/ui/tooltip-layer";
 import { VersionWatch } from "@/components/system/version-watch";
 
@@ -27,8 +28,12 @@ const brand = Bruno_Ace_SC({ subsets: ['latin'], weight: '400', variable: '--fon
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: 'RENYXERA — A New ERA of Intelligent Learning',
-  description: 'RENYXERA is a premium, adaptive GATE CSE preparation workspace — analyze weaknesses, drill weak topics, and track mastery with an AI mentor built in.',
+  title: 'RENYXERA · GATE 2027 PYQs, AI Mentor & Mocks for CS, ECE, EE, ME, Civil, DA',
+  description: 'Practise every official GATE previous-year paper in an exam-like screen, find your weak topics, and get an AI mentor that explains your exact mistake. CS, ECE, EE, ME, Civil and DA.',
+  applicationName: 'RENYXERA',
+  keywords: ['GATE 2027', 'GATE previous year questions', 'GATE PYQ with solutions', 'GATE CS', 'GATE ECE', 'GATE mock test', 'GATE AI mentor'],
+  openGraph: { type: 'website', siteName: 'RENYXERA', title: 'RENYXERA · GATE 2027 PYQs, AI Mentor & Mocks', description: 'Every official GATE paper, an exam-like simulator and an AI mentor that knows your weak spots.' },
+  twitter: { card: 'summary_large_image' },
   manifest: '/manifest.json',
   icons: {
     icon: [
@@ -44,6 +49,14 @@ export const metadata: Metadata = {
     google: 'c3t_O6hCIMk3dM6oOGOQ9w1RgweDyttKmyhMNj9tjQM',
   },
 };
+
+const ORG_JSON_LD = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': `${SITE_URL}/#org`, name: 'RENYXERA', url: SITE_URL, logo: `${SITE_URL}/brand/apple-touch-icon.png`, sameAs: SAME_AS },
+    { '@type': 'WebSite', '@id': `${SITE_URL}/#site`, url: SITE_URL, name: 'RENYXERA', publisher: { '@id': `${SITE_URL}/#org` } },
+  ],
+});
 
 export const viewport = {
   themeColor: '#4f46e5',
@@ -72,6 +85,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: STALE_GUARD }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ORG_JSON_LD }} />
         {/* MathJax (formulas) comes from this CDN; warming the connection early shaves
             the DNS/TLS round-trips off the first question with maths. */}
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />

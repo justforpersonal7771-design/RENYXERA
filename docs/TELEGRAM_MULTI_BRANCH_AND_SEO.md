@@ -6,10 +6,10 @@
 
 | Room | Link | What it is |
 |---|---|---|
-| **Main channel** (the one you already have) | your current `t.me/...` | Becomes the **hub**: brand news, mocks, offers, the rotating question of the day. Everyone joins this. |
+| **Main channel** (the one you already have) | your current `t.me/...` | Becomes the **hub**: GATE 2027 updates, brand news, mocks, offers. **No questions here.** Everyone joins this. |
 | **6 branch channels** | `t.me/renyxera_gate_cs`, `_ece`, `_ee`, `_me`, `_ce`, `_da` | Each posts its **own** branch's official PYQ every morning at 08:00 IST. |
 | **Discussion group** (the one you already have) | your current `t.me/renyxera_chat` | One group, switched to **Topics** so each branch has its own sub-room. |
-| **Folder link** | `t.me/addlist/...` | One tap adds all rooms. This is the link you put in Instagram, YouTube and the website. |
+| **Folder link** | `https://t.me/addlist/fY_dvTl36FA3ZTQ1` (done) | One tap adds all rooms. This is the link you put in Instagram, YouTube and the website. |
 
 Why not six groups: six half-empty groups feel dead; one busy group with topics feels alive.
 
@@ -72,7 +72,7 @@ GitHub → your repository → **Settings** → **Secrets and variables** → **
 3. Open the folder → **Share** → **Create invite link**. Copy it. Send it to me and I will put it on the website and in the posts.
 
 ### Step F. Test (2 min)
-GitHub → **Actions** → **Telegram daily question** → **Run workflow**. Seven jobs run. Open each channel: the hub shows the rotating question; each branch channel shows its own branch's question. A branch whose secret is missing skips quietly (green).
+GitHub → **Actions** → **Telegram daily question** → **Run workflow**. Six jobs run (one per branch). Each branch channel shows its own branch's question; the hub shows nothing new. Then run **Telegram hub updates** once: the hub gets the GATE 2027 update post. A branch whose secret is missing skips quietly (green).
 If a job is red, open it: `chat not found` means the secret value is wrong or the channel is not public; `bot is not a member` means redo step C3 for that channel.
 
 From then on everything posts by itself at 08:00 IST.
@@ -82,25 +82,24 @@ From then on everything posts by itself at 08:00 IST.
 ## 2. Naming and SEO wording (already used above)
 Telegram search matches the **name**, **username** and **description**, so each contains the exam, year and branch words people type: `GATE`, `2027`, `PYQ`, `CS/ECE/EE/Mechanical/Civil/DA`. Keep the first line of every description meaningful; it shows in search results.
 
-## 3. Daily and weekly rhythm
+## 3. What posts where (automatic unless marked)
 
-| When | Hub | Branch channels |
+| Room | Content | How |
 |---|---|---|
-| 08:00 daily | Rotating question (automatic) | Own question with yesterday's answer (automatic) |
-| 20:00 daily | Hub highlight: new feature or tip (manual, 2 min) | Answer trick for the morning question (manual, optional) |
-| Mon | Weekly mock announcement | "Most repeated topics" post for that branch (`/articles/most-repeated-topics/<paper>`) |
-| Wed | Poll: "Which subject scares you most?" | Same poll with the branch's subjects |
-| Sat | Mock reminder with link | – |
-| Sun | Leaderboard shout-out | Branch toppers (with permission) |
+| **Hub** | GATE 2027 updates (dates, what changed; posted whenever our official-facts file changes), Monday countdown, Saturday mock reminder | `telegram-hub.yml`, 08:30 IST |
+| **Hub** | Brand news, features, offers, launch film | `content/calendar.json` (`social-publish.yml`), you approve entries |
+| **Each branch channel** | That branch's official PYQ at 08:00 IST with the answer hidden behind a tap-to-reveal spoiler | `telegram-daily.yml` |
+| **Each branch channel** | Forge (GATE-level) questions, once they exist: same post format, branch-specific | planned with Forge generation, not built yet |
+| **Discussion group** | Doubts, ranks, plans, per-branch topics | students; you moderate |
 
-Paid plans appear naturally, not as ads: in the hub, one post a week showing a real feature (AI mentor explaining a wrong answer, the weekly plan, Telegram nudges), with the Plans link and `utm_campaign=hub_feature`. Always tag links `utm_source=telegram&utm_medium=<channel>&utm_campaign=<post>`.
+To add a GATE 2027 update: edit `lib/seo/gate2027.ts` (official facts only, update `CHECKED_ON`), deploy; the next hub run posts it once.
 
 ## 4. Pinned messages (copy and paste)
 
 **Hub / each branch channel (pin):**
 ```
 👋 Welcome to RENYXERA · GATE 2027
-✅ A real GATE question every morning, with yesterday's answer
+✅ A real GATE question every morning, with the answer hidden behind a tap-to-reveal spoiler
 ✅ Free All-India mock every Sunday
 ✅ AI mentor that explains your exact mistake
 👉 Start: https://gate.renyxera.workers.dev/?utm_source=telegram&utm_medium=pin&utm_campaign=welcome
