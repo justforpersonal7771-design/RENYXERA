@@ -32,8 +32,8 @@ export const metadata: Metadata = {
   description: 'Practise every official GATE previous-year paper in an exam-like screen, find your weak topics, and get an AI mentor that explains your exact mistake. CS, ECE, EE, ME, Civil and DA.',
   applicationName: 'RENYXERA',
   keywords: ['GATE 2027', 'GATE previous year questions', 'GATE PYQ with solutions', 'GATE CS', 'GATE ECE', 'GATE mock test', 'GATE AI mentor'],
-  openGraph: { type: 'website', siteName: 'RENYXERA', title: 'RENYXERA · GATE 2027 PYQs, AI Mentor & Mocks', description: 'Every official GATE paper, an exam-like simulator and an AI mentor that knows your weak spots.' },
-  twitter: { card: 'summary_large_image' },
+  openGraph: { type: 'website', siteName: 'RENYXERA', images: [{ url: '/og/default.png', width: 1200, height: 630, alt: 'RENYXERA, GATE 2027 preparation' }], title: 'RENYXERA · GATE 2027 PYQs, AI Mentor & Mocks', description: 'Every official GATE paper, an exam-like simulator and an AI mentor that knows your weak spots.' },
+  twitter: { card: 'summary_large_image', images: ['/og/default.png'] },
   manifest: '/manifest.json',
   icons: {
     icon: [

@@ -34,7 +34,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const description = b.live
     ? `Prepare for GATE ${b.name} with every official paper ${BANK_SUMMARY[b.code] ? `from ${BANK_SUMMARY[b.code]!.years.replace("–", " to ")}` : "available"}, an exam-like test simulator, mistake analytics and an AI mentor. Free to start.`
     : `GATE ${b.name} preparation is coming to RENYXERA: past papers with solutions, topic-wise practice and full mocks. Join the waitlist to be notified at launch.`;
-  return { title, description, alternates: { canonical: `/${b.slug}` }, openGraph: { title, description, type: "website" } };
+  const og = [{ url: `/og/${b.slug}.png`, width: 1200, height: 630, alt: title }];
+  return { title, description, alternates: { canonical: `/${b.slug}` }, openGraph: { title, description, type: "website", images: og }, twitter: { card: "summary_large_image", images: [og[0].url] } };
 }
 
 const FEATURES = [
