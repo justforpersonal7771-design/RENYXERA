@@ -14,3 +14,5 @@ Social cards: scripts/make-og.py generates public/og/* and public/brand/branch/*
 Study materials: planning docs in docs/study-materials (00-12); waiting for user decisions (pricing, order, sources, reviewer, language, Phase 0 sample).
 **Why:** the next session (new PC) must know the state without the old transcript.
 **How to apply:** read checklist.md for open items; handover/HANDOVER.md for setup and state.
+
+22 Oct 2026: handoff pack written (HANDOFF.md, CLAUDE.md, handover/MASTER_PROMPT.md); checklist.md rebuilt by release/module with decisions log and feature ideas. Priorities: Forge, study materials, monetisation, marketing.

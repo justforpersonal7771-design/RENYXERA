@@ -1,12 +1,12 @@
 # RENYXERA (GATE OS): handover to the new PC
 
-**Updated:** 18 October 2026. Start here. This folder contains everything the next session needs.
+**Updated:** 22 October 2026. Start with `../HANDOFF.md` (full context) and `../CLAUDE.md`; this file covers setup and memory. This folder contains everything the next session needs.
 
 | File | What it is |
 |---|---|
 | `HANDOVER.md` | this file: state of the project, what to do first, how things run |
 | `01-NEW-PC-SETUP.md` | step-by-step Windows setup (Git, Node 24, Python, GitHub CLI, clone, `.env.local`, Claude Code). Written 2 Oct; still correct. Skip its old "master prompt" part: use the one below |
-| `MASTER_PROMPT_Release4_and_future.md` | the long master prompt (Release 4 and future releases): product vision, plans, security, growth. Reference for big-picture decisions |
+| `MASTER_PROMPT.md` | the current master prompt (kick-off message + full brief, 22 Oct 2026). The old Release-4 prompt is in `archive/handover/` |
 | `memory/` | Claude's standing notes (rules and project state). Copy every `.md` into the new Claude memory folder (see "Memory" below) |
 
 ## 1. First message to paste into Claude Code on the new PC
