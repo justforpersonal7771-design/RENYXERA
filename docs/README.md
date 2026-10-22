@@ -12,6 +12,7 @@ Live work is tracked in **one place**: `../checklist.md` (open items only). Fini
 | `PYQ_EXTRACTION_HANDBOOK.md` | Rules and pipeline for past-paper extraction (reference for any new branch) |
 | `AI_USAGE_STRATEGY.md`, `FORGE_DESIGN.md` | AI quota policy and the GATE-level practice (Forge) design |
 | `instagram/` | Instagram automation: one-time setup (click by click) and daily use |
+| `roadmap/` | **Release-wise detailed plan**: R11 Forge, R12 Study materials, R13 Monetisation, R14 Marketing, R15 Performance, R16 Security, R17 Microsoft Store, R9–R10, feature catalogue (56 ideas) |
 | `OPEN_DECISIONS_FOR_YOU.md` | Every decision and task that depends on you, with context and my default |
 | `FORGE_ENTITLEMENTS_AND_SETUP.md` | Forge access rules (questions: Plus/Pro; mocks: all) and the build plan; addendum to `FORGE_DESIGN.md` |
 | `telegram-premium/` | What your Telegram Premium unlocks (boosts, stories, folders, Business, Mini App) and the steps |

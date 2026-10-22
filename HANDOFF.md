@@ -211,7 +211,7 @@ GitHub Actions secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, the `NE
 
 ## 6. Open tasks (prioritised)
 
-Highest priority (owner, 22 Oct): **Forge question generation, study materials, monetisation, marketing.** Full list with checkboxes: `checklist.md`.
+Highest priority (owner, 22 Oct): **Forge question generation, study materials, monetisation, marketing**, plus new layers **R15 performance**, **R16 security** (audit found no security headers and 1 critical + 5 high dependency vulnerabilities) and **R17 Microsoft Store app**. Full list: `checklist.md`; full detail per release: `docs/roadmap/`.
 
 1. **Owner decisions** in `docs/OPEN_DECISIONS_FOR_YOU.md` — F1 (Plus Forge limit), S1 (study-materials pricing), S4 (reviewer) block work.
 2. **Forge build (CS first):** migration (`forge_items`, `forge_answers`, `forge_item_stats`), `canUseForgeQuestions(tier)`, `/api/forge/items`, locked UI for Free, authoring scripts (`scripts/forge/*` profile → plan → draft → code-verify → seed), first 60 hand-checked CS items, 30-day buffer + 3 mocks, owner-only beta, then launch; resume Sunday Forge Mocks; Daily Forge teaser to branch channels.

@@ -73,6 +73,9 @@ Plan: `docs/study-materials/00-README.md` … `12-REFERENCE-LIBRARY-AND-DESIGN-R
 - SEO: Search Console follow-ups, titles from real impressions, more programmatic pages per branch, backlinks via communities.
 - Growth tasks in `docs/GROWTH_TASKS.md`; influencer outreach `docs/INFLUENCER_OUTREACH_MESSAGES.md`; content strategy `docs/CONTENT_STRATEGY.md`.
 
+### P5 — Performance, security, Windows app
+R15 performance (`docs/roadmap/R15-PERFORMANCE.md`), R16 security (`R16-SECURITY.md`, do A1–A3 first), R17 Microsoft Store (`R17-MICROSOFT-STORE.md`).
+
 ### Later releases
 Release 9: spaced repetition (FSRS), gamification depth, moderated community, app-store listing (PWA via Microsoft Store free), AI depth (AI mocks from weakness, NL search, voice revision). Release 10: admin console (strict admin login, roles, mocks, integrity queue, content editing, users, dashboards, money, comms, audit log, flags, AI pre-gen and AI logs). Recurring: March refresh (new papers, calibration, trend weights).
 
@@ -95,6 +98,7 @@ Release 9: spaced repetition (FSRS), gamification depth, moderated community, ap
 | `docs/FORGE_DESIGN.md`, `docs/FORGE_ENTITLEMENTS_AND_SETUP.md` | Forge |
 | `docs/study-materials/` | study-materials programme |
 | `docs/OPEN_DECISIONS_FOR_YOU.md` | owner decisions with defaults |
+| `docs/roadmap/` | release-wise detailed tasks (R11–R17, R9–R10) and the feature catalogue |
 | `docs/GROWTH_*`, `MARKETING_STRATEGY.md`, `CONTENT_STRATEGY.md`, `SOCIAL_AUTOMATION_PLAYBOOK.md` | growth |
 | `docs/TELEGRAM_MULTI_BRANCH_AND_SEO.md`, `docs/telegram-premium/`, `docs/instagram/` | channels |
 | `docs/PYQ_EXTRACTION_HANDBOOK.md` | PYQ pipeline rules |
