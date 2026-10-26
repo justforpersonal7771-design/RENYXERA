@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "GATE 2026 Cut-off for CS, EC, EE, ME, CE, DA (All Categories) & Score Calculator | RENYXERA",
   description: "Official GATE 2026 qualifying marks for General, OBC-NCL/EWS and SC/ST/PwD in six papers, with candidates appeared and qualified, and a marks to GATE score calculator.",
   alternates: { canonical: "/tools/gate-branch-cutoffs" },
-  openGraph: { title: "GATE 2026 cut-offs by branch", description: "Official qualifying marks and a GATE score calculator for CS, EC, EE, ME, CE and DA.", type: "website" },
+  openGraph: { title: "GATE 2026 cut-offs by branch", description: "Official qualifying marks and a GATE score calculator for CS, EC, EE, ME, CE and DA.", type: "website", images: ["/og/default.png"] },
 };
 
 export default function BranchCutoffsPage() {

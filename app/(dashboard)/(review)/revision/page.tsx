@@ -80,7 +80,7 @@ export default function RevisionBuilderPage() {
 
   if (!mounted) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[var(--background)]">
+      <div className="flex h-dvh items-center justify-center bg-[var(--background)]">
         <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
       </div>
     );
@@ -318,8 +318,8 @@ export default function RevisionBuilderPage() {
                           <span className="text-[10px] text-[var(--text-muted)] font-semibold block truncate mt-0.5">{item.question.subject}</span>
                         </td>
                         <td className="px-5 py-3.5 text-center">
-                          <span className={`px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider ${priorityColor(item.priority)}`}>
-                            {item.priority}
+                          <span className={`inline-flex whitespace-nowrap px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider ${priorityColor(item.priority)}`}>
+                            {item.priority.replace(" Priority", "")}
                           </span>
                         </td>
                         <td className="px-5 py-3.5">

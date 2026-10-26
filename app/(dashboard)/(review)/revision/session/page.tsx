@@ -96,7 +96,7 @@ function RevisionSessionContent() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-      <div className="w-full mx-auto flex flex-col h-screen overflow-hidden">
+      <div className="w-full mx-auto flex flex-col h-dvh overflow-hidden">
         <div className="bg-[var(--surface)] px-6 py-4 border-b border-[var(--border)] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-4">
              <button onClick={() => router.push("/revision")} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition">

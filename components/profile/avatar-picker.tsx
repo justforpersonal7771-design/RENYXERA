@@ -7,7 +7,7 @@ import { Shuffle, Check, RefreshCw, Sparkles, Lock, Crown } from "lucide-react";
 import { AVATAR_CREDITS, AVATAR_STYLES, type AvatarStyleId, type AvatarTier } from "@/lib/avatar/dicebear-styles";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { TIER_RANK } from "@/lib/billing/plans";
-import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-avatar";
+import { generateAvatarDataUri, randomAvatarSeed, useAvatarStyles } from "@/lib/avatar/generate-avatar";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 
 export interface AvatarValue {
@@ -21,22 +21,26 @@ export interface AvatarValue {
  * Big animated preview on the left; on the right, the eight styles (compare side by
  * side) and six fresh variations of the current style to pick from.
  */
+const ALL_STYLE_IDS = AVATAR_STYLES.map((s) => s.id);
+
 export function AvatarPicker({ value, onChange, className = "" }: { value: AvatarValue; onChange: (value: AvatarValue) => void; className?: string }) {
   const [spin, setSpin] = useState(0);
   const { tier } = useEntitlements();
   const [offer, setOffer] = useState<{ label: string; tier: AvatarTier } | null>(null);
   const [variationSeeds, setVariationSeeds] = useState<string[]>(() => Array.from({ length: 8 }, randomAvatarSeed));
 
+  const loaded = useAvatarStyles(ALL_STYLE_IDS);
   const styles = useMemo(
     () => AVATAR_STYLES.map((s) => ({ ...s, dataUri: generateAvatarDataUri(s.id, value.seed, { size: 96 }) })),
-    [value.seed]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [value.seed, loaded]
   );
   const variations = useMemo(
     () => variationSeeds.map((seed) => ({ seed, dataUri: generateAvatarDataUri(value.style, seed, { size: 96 }) })),
-    [variationSeeds, value.style]
+    [variationSeeds, value.style, loaded]
   );
   const current = styles.find((p) => p.id === value.style) ?? styles[0];
-  const big = useMemo(() => generateAvatarDataUri(value.style, value.seed, { size: 192 }), [value.style, value.seed]);
+  const big = useMemo(() => generateAvatarDataUri(value.style, value.seed, { size: 192 }), [value.style, value.seed, loaded]);
 
   const shuffle = () => {
     setSpin((n) => n + 1);

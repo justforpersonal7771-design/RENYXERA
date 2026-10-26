@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: "GATE CS Score Calculator & Rank Predictor (Marks vs Rank) | RENYXERA",
   description: "Enter your GATE CS marks to see your GATE score, likely All-India Rank range and whether you qualify for your category — based on published GATE CS results.",
   alternates: { canonical: "/tools/gate-score-calculator" },
-  openGraph: { title: "GATE CS Score Calculator & Rank Predictor", description: "Marks → GATE score, likely AIR and qualifying status.", type: "website" },
+  openGraph: { title: "GATE CS Score Calculator & Rank Predictor", description: "Marks → GATE score, likely AIR and qualifying status.", type: "website", images: ["/og/default.png"] },
 };
 
 const FAQ = [

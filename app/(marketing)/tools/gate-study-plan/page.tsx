@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "GATE Study Plan Generator & Countdown (Free, Weightage-based, All Branches) | RENYXERA",
   description: "Make a week-by-week GATE study plan for your paper from your hours per day and weak subjects. Time per section follows real past-paper weightage, with revision and full-mock phases and a live countdown to your exam date.",
   alternates: { canonical: "/tools/gate-study-plan" },
-  openGraph: { title: "GATE Study Plan Generator", description: "A week-by-week plan weighted by real GATE weightage, for every paper.", type: "website" },
+  openGraph: { title: "GATE Study Plan Generator", description: "A week-by-week plan weighted by real GATE weightage, for every paper.", type: "website", images: ["/og/default.png"] },
 };
 
 export default function StudyPlanPage() {

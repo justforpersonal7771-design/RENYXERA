@@ -10,7 +10,7 @@ import { ProCrown } from "@/components/brand/pro-crown";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
-import { generateAvatarDataUri } from "@/lib/avatar/generate-avatar";
+import { generateAvatarDataUri, useAvatarStyles } from "@/lib/avatar/generate-avatar";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
@@ -37,6 +37,8 @@ const ITEMS = [
  * Sign out. Portaled so the navbar's rounded cluster can't clip it.
  */
 export function AccountButton() {
+  const styleProfile = useAuthStore((st) => st.profile);
+  useAvatarStyles([styleProfile && isAvatarStyleId(styleProfile.avatar_style) ? styleProfile.avatar_style : "adventurer"]);
   const user = useAuthStore((s) => s.user);
   const profile = useAuthStore((s) => s.profile);
   const loading = useAuthStore((s) => s.loading);

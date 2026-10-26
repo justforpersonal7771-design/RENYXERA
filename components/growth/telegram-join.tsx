@@ -30,7 +30,7 @@ export function TelegramJoinCard() {
         <TelegramBadge />
         <div className="min-w-0">
           <p className="text-sm font-extrabold text-[var(--text-primary)]">{t.linked ? "Finish joining on Telegram" : "Join RENYXERA on Telegram"}</p>
-          <p className="text-xs text-[var(--text-muted)]">One real GATE question every morning, with yesterday&apos;s answer.</p>
+          <p className="text-xs text-[var(--text-muted)]">One real GATE question every morning for your branch, answer hidden until you tap.</p>
         </div>
       </div>
       <div className={`mt-4 grid gap-2 ${needChannel && needGroup ? "grid-cols-2" : "grid-cols-1"}`}>
@@ -61,7 +61,7 @@ export function TelegramJoinLink({ where, className = "", compact = false }: { w
       <TelegramBadge />
       <div className="min-w-0 flex-1 basis-48">
         <p className="text-sm font-extrabold leading-tight text-[var(--text-primary)]">A GATE question every morning</p>
-        <p className="mt-0.5 text-xs text-[var(--text-secondary)]">One real past-paper question plus yesterday&apos;s answer, free on Telegram.</p>
+        <p className="mt-0.5 text-xs text-[var(--text-secondary)]">One real past-paper question every morning for your branch, answer hidden until you tap. Free on Telegram.</p>
       </div>
       <a href={TELEGRAM_CHANNEL_URL} onClick={open(`${where}_channel`)} target="_blank" rel="noopener noreferrer" className={`${BTN_MAIN} shrink-0`}>Join <ArrowRight className="h-3.5 w-3.5" /></a>
     </div>

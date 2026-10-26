@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ subject: 
   if (!s) return {};
   const title = `GATE CS ${s.name} PYQs — Topic-wise Questions & Weightage | RENYXERA`;
   const description = `${s.count} previous-year GATE CS questions on ${s.name} across ${s.topics.size} topics, with year-wise and topic-wise weightage, trends and official answers. Practise free.`;
-  return { title, description, alternates: { canonical: `/topics/${s.slug}` }, openGraph: { title, description, type: "article" } };
+  return { title, description, alternates: { canonical: `/topics/${s.slug}` }, openGraph: { title, description, type: "article", images: ["/og/default.png"] } };
 }
 
 export default async function SubjectHub({ params }: { params: Promise<{ subject: string }> }) {

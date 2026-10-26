@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const sb = branchByCode(sc)!;
     const title = `GATE ${sb.paper} Syllabus 2027 (Official) — Topic-wise Weightage | RENYXERA`;
     const description = `The official GATE 2027 ${sb.name} syllabus with the marks weightage of every subject and topic in GATE ${sb.paper} papers ${BANK_SUMMARY[sc]?.years ?? ""}, and the most repeated topics.`;
-    return { title, description, alternates: { canonical: `/${slug}` }, openGraph: { title, description, type: "article" } };
+    return { title, description, alternates: { canonical: `/${slug}` }, openGraph: { title, description, type: "article", images: [`/og/${sb.slug}.png`] } };
   }
   const b = branchBySlug(slug);
   if (!b) return {};
@@ -56,7 +56,7 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
     { q: `What is the GATE ${b.paper} exam pattern?`, a: "GATE is a 3-hour computer-based test with 65 questions for 100 marks: General Aptitude carries 15 marks and your subject the remaining 85. Questions are multiple choice (MCQ), multiple select (MSQ) or numerical answer (NAT); only wrong MCQs carry negative marks." },
     { q: `How many students write GATE ${b.paper}?`, a: `${b.candidates[0].toUpperCase()}${b.candidates.slice(1)} (${b.paper} paper). ${b.trend}` },
     b.live && TELEGRAM_BRANCH[b.paper]
-      ? { q: `Is there a GATE ${b.paper} Telegram channel?`, a: `Yes. The GATE ${b.paper} channel posts one official previous-year question every morning with yesterday's answer, and the discussion group at ${TELEGRAM_CHAT.replace("https://", "")} has a topic for ${b.paper}. One link joins every channel: ${TELEGRAM_FOLDER.replace("https://", "")}.` }
+      ? { q: `Is there a GATE ${b.paper} Telegram channel?`, a: `Yes. The GATE ${b.paper} channel posts one official previous-year question every morning, with the answer hidden in the same post until you tap it, and the discussion group at ${TELEGRAM_CHAT.replace("https://", "")} has a topic for ${b.paper}. One link joins every channel: ${TELEGRAM_FOLDER.replace("https://", "")}.` }
       : null,
     b.live
       ? { q: "Is RENYXERA free?", a: "Yes — you can practise official papers, build custom tests and track your progress for free, as a guest or with an account." }

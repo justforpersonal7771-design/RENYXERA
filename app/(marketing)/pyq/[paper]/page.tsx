@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ paper: st
   if (!p) return {};
   const title = `${p.label} Question Paper with Official Answers — All ${p.count} Questions | RENYXERA`;
   const description = `All ${p.count} questions of the ${p.label} paper (${p.marks} marks), each with the official answer. Practise the full paper in a timed, exam-like simulator — free.`;
-  return { title, description, alternates: { canonical: `/pyq/${p.slug}` }, openGraph: { title, description, type: "article" } };
+  return { title, description, alternates: { canonical: `/pyq/${p.slug}` }, openGraph: { title, description, type: "article", images: ["/og/default.png"] } };
 }
 
 export default async function PaperPage({ params }: { params: Promise<{ paper: string }> }) {

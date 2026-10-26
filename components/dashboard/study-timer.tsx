@@ -66,7 +66,7 @@ export function StudyTimer() {
   };
 
   return (
-    <section aria-label="Study timer" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
+    <section aria-label="Study timer" className="card-glass rounded-2xl p-4 sm:p-5">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400"><Timer className="h-3.5 w-3.5" aria-hidden /> Study timer{running && state.label ? ` · ${state.label}` : ""}</p>

@@ -38,7 +38,7 @@ export function FullscreenNavigation({
     if (!isFullscreen) return;
     let sx = 0, sy = 0, t0 = 0, ok = false;
     const skip = (el: EventTarget | null) =>
-      el instanceof Element && !!el.closest("pre, code, input, textarea, [data-no-swipe], .overflow-x-auto, [role=dialog]");
+      el instanceof Element && !!el.closest("pre, code, input, textarea, mjx-container, table, [data-no-swipe], .overflow-x-auto, [role=dialog]");
     const start = (e: TouchEvent) => {
       if (e.touches.length !== 1 || skip(e.target)) { ok = false; return; }
       ok = true; sx = e.touches[0].clientX; sy = e.touches[0].clientY; t0 = Date.now();

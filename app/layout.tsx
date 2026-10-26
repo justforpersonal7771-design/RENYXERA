@@ -20,10 +20,10 @@ import { VersionWatch } from "@/components/system/version-watch";
 //  - Bruno Ace SC — the RENYXERA wordmark only (.font-brand), so the product name stands apart
 const bodySans = Manrope({ subsets: ['latin'], variable: '--font-sans', display: 'swap' });
 const displaySans = Sora({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
-const accentSerif = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['SOFT', 'opsz'], variable: '--font-serif', display: 'swap' });
-const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap' });
-const script = Playball({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap' });
-const luxe = Cinzel({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-luxe', display: 'swap' });
+const accentSerif = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], axes: ['SOFT', 'opsz'], variable: '--font-serif', display: 'swap', preload: false });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap', preload: false });
+const script = Playball({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap', preload: false });
+const luxe = Cinzel({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-luxe', display: 'swap', preload: false });
 const brand = Bruno_Ace_SC({ subsets: ['latin'], weight: '400', variable: '--font-brand', display: 'swap' });
 
 export const metadata: Metadata = {

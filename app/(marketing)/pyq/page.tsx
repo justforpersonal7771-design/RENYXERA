@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "GATE CS Previous Year Questions (2017–2026) — Free, Paper-wise & Topic-wise | RENYXERA",
   description: "Every official GATE Computer Science paper from 2017 to 2026, question by question, with the official answers and an exam-like practice simulator. Browse paper-wise or subject-wise with weightage trends.",
   alternates: { canonical: "/pyq" },
-  openGraph: { title: "GATE CS Previous Year Questions (2017–2026)", description: "Every official GATE CS paper, question by question, with official answers.", type: "website" },
+  openGraph: { title: "GATE CS Previous Year Questions (2017–2026)", description: "Every official GATE CS paper, question by question, with official answers.", type: "website", images: ["/og/default.png"] },
 };
 
 export default function PyqIndexPage() {

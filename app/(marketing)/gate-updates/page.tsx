@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "GATE Updates: What Changed and Key Dates (All Branches) | RENYXERA",
   description: "What's new in GATE 2027 — the new Robotics and Automation paper, revised syllabi, mandatory DigiLocker — plus the exam, admit card and result dates, with the official source for every fact.",
   alternates: { canonical: "/gate-updates" },
-  openGraph: { title: "GATE 2027: what changed and key dates", description: "Only what the official GATE 2027 site states, with the source and the date we checked it.", type: "article" },
+  openGraph: { title: "GATE 2027: what changed and key dates", description: "Only what the official GATE 2027 site states, with the source and the date we checked it.", type: "article", images: ["/og/default.png"] },
 };
 
 const when = new Date(CHECKED_ON).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });

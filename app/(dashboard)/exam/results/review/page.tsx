@@ -85,18 +85,18 @@ export default function ReviewPage() {
 
   if (session && (gate.locked || gate.delayed)) return <MockResultsLocked resultsAt={gate.resultsAt} now={gate.now} mockId={gate.mockId} delayed={gate.delayed} />;
   if (session && !repoReady && repoError) return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 bg-[var(--background)] p-6 text-center">
+    <div className="flex h-dvh w-full flex-col items-center justify-center gap-3 bg-[var(--background)] p-6 text-center">
       <p className="font-bold text-[var(--text-primary)]">Couldn't load the question bank.</p>
       <p className="text-sm text-[var(--text-secondary)]">Your test is saved. Check your connection and try again.</p>
       <button onClick={() => window.location.reload()} className="mt-1 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white cursor-pointer">Try again</button>
     </div>
   );
   if (loading || (session && !repoReady)) return (
-    <div className="flex h-screen w-full items-center justify-center bg-[var(--background)]">
+    <div className="flex h-dvh w-full items-center justify-center bg-[var(--background)]">
       <div className="font-bold tracking-widest uppercase animate-pulse text-indigo-600 dark:text-indigo-400">Loading Review Engine...</div>
     </div>
   );
-  if (!session) return <div className="p-8 text-center text-rose-500 font-bold bg-[var(--background)] h-screen">Result not found.</div>;
+  if (!session) return <div className="p-8 text-center text-rose-500 font-bold bg-[var(--background)] h-dvh">Result not found.</div>;
 
   const draftQuestions = session.draftConfig.questions;
   const currentQRef = draftQuestions[currentIndex] || draftQuestions[0];
@@ -164,7 +164,7 @@ export default function ReviewPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-      <div className="flex flex-col h-screen w-full overflow-hidden bg-[var(--background)] font-sans">
+      <div className="flex flex-col h-dvh w-full overflow-hidden bg-[var(--background)] font-sans">
         <AnswersPendingBanner session={session} onGraded={setSession} className="mx-3 mt-3 shrink-0" />
 
         {/* COMMAND BAR — matches the exam session Topbar's structure: a compact

@@ -24,8 +24,9 @@ export function TierGate({ tier, feature, perk, children, className = "" }: { ti
   const monthly = PLANS.find((p) => p.tier === tier && p.id.endsWith("monthly"));
   const price = monthly?.pricePaise != null ? formatPrice(monthly.pricePaise) : null;
   return (
-    <div className="relative overflow-hidden rounded-2xl">
-      <div aria-hidden="true" inert className={`select-none pointer-events-none blur-[6px] opacity-45 saturate-50 ${className}`}>{children}</div>
+    <div className="relative overflow-hidden rounded-2xl max-h-[420px]">
+      {/* Show only a short preview of what is locked, not the whole section (it can be several screens long). */}
+      <div aria-hidden="true" inert className={`max-h-[420px] overflow-hidden [mask-image:linear-gradient(to_bottom,#000_55%,transparent)] select-none pointer-events-none blur-[6px] opacity-45 saturate-50 ${className}`}>{children}</div>
       <div className={`absolute inset-0 flex items-start justify-center p-4 pt-8 bg-gradient-to-b from-transparent ${gold ? "via-amber-50/30 to-amber-100/50 dark:via-amber-950/20 dark:to-amber-950/40" : "via-slate-50/30 to-slate-200/50 dark:via-slate-900/20 dark:to-slate-900/40"}`}>
         <div className={`sticky top-4 w-full max-w-sm rounded-2xl border p-5 text-center shadow-xl backdrop-blur-md bg-[var(--surface)]/90 ${gold ? "border-amber-400/60" : "border-slate-400/60"}`}>
           <div className="mx-auto mb-2 flex items-center justify-center"><ProCrown metal={gold ? "gold" : "silver"} className="is-inline" /></div>

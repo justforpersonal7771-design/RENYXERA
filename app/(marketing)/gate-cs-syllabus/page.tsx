@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "GATE CS Syllabus 2027 (Official, IIT Madras) — Topic-wise Weightage | RENYXERA",
   description: "The official GATE 2027 Computer Science & IT syllabus from IIT Madras, organised section → subject → topic, with the marks weightage and trend of every subject and topic in GATE CS papers since 2017.",
   alternates: { canonical: "/gate-cs-syllabus" },
-  openGraph: { title: "GATE CS 2027 Syllabus with Topic-wise Weightage", description: "Official GATE 2027 syllabus with the real weightage and trend of every subject and topic.", type: "article" },
+  openGraph: { title: "GATE CS 2027 Syllabus with Topic-wise Weightage", description: "Official GATE 2027 syllabus with the real weightage and trend of every subject and topic.", type: "article", images: ["/og/default.png"] },
 };
 
 export default function SyllabusPage() {
@@ -118,9 +118,20 @@ export default function SyllabusPage() {
                         </div>
                         <div className="mt-2 h-1.5 rounded-full bg-[var(--surface-secondary)] overflow-hidden"><div className="chart-grow-x h-full rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500" style={{ width: `${Math.max(2, (u.marks / maxUnit) * 100)}%` }} /></div>
                         <ul className="mt-3 flex flex-wrap gap-1.5">
-                          {u.items.map((it) => <li key={it} className="px-2 py-0.5 rounded-md bg-[var(--surface-secondary)] text-[12px] text-[var(--text-secondary)]">{it}</li>)}
+                          {u.itemStats.map((it) => {
+                            const pct = u.marks ? Math.round((it.marks / u.marks) * 100) : 0;
+                            const tip = it.tag ? `${it.questions} question${it.questions === 1 ? "" : "s"} · ${it.marks} marks in past papers${it.shared > 1 ? ` — counted together with ${it.shared - 1} other item${it.shared > 2 ? "s" : ""} of this unit (tag: ${it.tag})` : ""}` : "Not asked directly yet";
+                            return (
+                              <li key={it.name} title={tip} className="relative overflow-hidden inline-flex items-center gap-1.5 pl-2 pr-1.5 py-0.5 rounded-md border border-[var(--border-subtle)] bg-[var(--surface-secondary)] text-[12px] text-[var(--text-secondary)]">
+                                <span aria-hidden className="absolute inset-y-0 left-0 bg-violet-500/10" style={{ width: `${pct}%` }} />
+                                <span className="relative">{it.name}</span>
+                                <span className={`relative font-num text-[10px] font-bold ${it.marks ? "text-violet-700 dark:text-violet-300" : "text-[var(--text-muted)]"}`}>{it.marks ? `${pct}%${it.shared > 1 ? "*" : ""}` : "—"}</span>
+                              </li>
+                            );
+                          })}
                         </ul>
                         <p className="mt-2"><UnitProgressBadge topics={u.bank} /></p>
+                        {u.itemStats.some((x) => x.shared > 1) && <p className="mt-1.5 text-[10px] text-[var(--text-muted)]">* Past papers tag these items together, so they share one figure. Tap or hover an item for the details.</p>}
                         <p className="mt-2 text-[11px] text-[var(--text-muted)]">{u.questions ? `Asked in ${u.yearsAsked} of ${years.length} years · ${u.questions} question${u.questions > 1 ? "s" : ""}` : "Not asked directly yet"}</p>
                       </li>
                     ))}

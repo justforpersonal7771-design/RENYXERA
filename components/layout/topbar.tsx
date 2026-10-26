@@ -10,7 +10,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CalendarQuickPanel } from "./calendar-quick-panel";
 import { TodoQuickPanel } from "./todo-quick-panel";
-import { GoalSliderPanel } from "./goal-slider-panel";
+import dynamic from "next/dynamic";
+// Loaded only when opened: it pulls in the chart library, which no other top-bar control needs.
+const GoalSliderPanel = dynamic(() => import("./goal-slider-panel").then((m) => m.GoalSliderPanel), { ssr: false });
 import { useToastStore } from "@/store/use-toast-store";
 import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goal-slider-store";
 import { isInsidePortalPopover } from "@/lib/utils";

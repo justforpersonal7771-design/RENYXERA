@@ -132,7 +132,7 @@ export default function AnalyticsDashboardPage() {
 
   if (!isInitialized || !mounted || !dashboardMetrics) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[var(--background)]">
+      <div className="flex h-dvh items-center justify-center bg-[var(--background)]">
         <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
       </div>
     );

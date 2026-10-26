@@ -104,6 +104,9 @@ export default function ExamSessionPage() {
   const [mounted, setMounted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState<RenderableQuestion | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  // Last question reached with Save & next / Mark & next: ask "submit now or keep going?"
+  const [lastPrompt, setLastPrompt] = useState(false);
+  const goToQuestion = useExamRuntimeStore((st) => st.goToQuestion);
   const [tabWarning, setTabWarning] = useState<number | null>(null);
   const disqualifiedReason = useExamRuntimeStore((state) => state.activeSession?.integrity?.disqualifiedReason);
   const [showMobilePalette, setShowMobilePalette] = useState(false);
@@ -572,6 +575,7 @@ export default function ExamSessionPage() {
                           if (!currentQId) return;
                           saveResponse(currentQId, { status: (currentResponse?.selectedOptions?.length || currentResponse?.natValue) ? "MARKED_AND_ANSWERED" : "MARKED" }).then(() => {
                             if (currentQuestionIndex < totalQuestions - 1) nextQuestion();
+                            else setLastPrompt(true);
                           });
                         }}
                         title={(currentResponse?.selectedOptions?.length || currentResponse?.natValue) ? "Mark for review — your answer will be counted" : "Mark for review"}
@@ -623,6 +627,8 @@ export default function ExamSessionPage() {
                           saveResponse(currentQId, { status: (currentResponse?.selectedOptions?.length || currentResponse?.natValue) ? "ANSWERED" : "VISITED" }).then(() => {
                             if (currentQuestionIndex < totalQuestions - 1) {
                               nextQuestion();
+                            } else {
+                              setLastPrompt(true);
                             }
                           });
                         }}
@@ -710,6 +716,30 @@ export default function ExamSessionPage() {
                 ))}
               </div>
               <button onClick={() => setTabWarning(null)} className="mt-5 h-11 w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold cursor-pointer">Back to the paper</button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {lastPrompt && (
+          <motion.div key="last-q" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[90] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-4" onClick={() => setLastPrompt(false)}>
+            <motion.div initial={{ y: 24, scale: 0.97 }} animate={{ y: 0, scale: 1 }} exit={{ y: 24, scale: 0.97 }} transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="last-q-title"
+              className="w-full max-w-sm rounded-3xl border border-[var(--border)] bg-[var(--surface-elevated)] p-6 shadow-2xl">
+              <p id="last-q-title" className="text-lg font-extrabold text-[var(--text-primary)]">That was the last question</p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">
+                <span className="font-num font-bold text-[var(--text-primary)]">{stats.answered + stats.markedAndAnswered}/{stats.total}</span> answered
+                {stats.marked + stats.markedAndAnswered > 0 && <> · <span className="font-num font-bold">{stats.marked + stats.markedAndAnswered}</span> marked for review</>}.
+                Submit now, or keep going to check your answers?
+              </p>
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                <button onClick={() => { setLastPrompt(false); void goToQuestion(0); }}
+                  className="h-11 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-primary)] cursor-pointer">Keep going</button>
+                <button onClick={() => { setLastPrompt(false); setShowSubmitModal(true); }}
+                  className="h-11 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-sm font-bold text-white cursor-pointer">Submit test</button>
+              </div>
             </motion.div>
           </motion.div>
         )}

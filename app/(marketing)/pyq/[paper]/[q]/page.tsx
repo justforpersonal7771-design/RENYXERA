@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ paper: st
   if (!f) return {};
   const title = `${f.p.label} Q${f.question.question_no}: ${plainText(f.question, 70)} | RENYXERA`;
   const description = `${plainText(f.question, 120)} — ${f.question.subject}, ${f.question.topic}. Check the official answer and practise the full paper free.`;
-  return { title, description, alternates: { canonical: `/pyq/${f.p.slug}/q${f.question.question_no}` }, openGraph: { title, description, type: "article" } };
+  return { title, description, alternates: { canonical: `/pyq/${f.p.slug}/q${f.question.question_no}` }, openGraph: { title, description, type: "article", images: ["/og/default.png"] } };
 }
 
 export default async function QuestionPage({ params }: { params: Promise<{ paper: string; q: string }> }) {

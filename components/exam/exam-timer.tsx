@@ -95,6 +95,8 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
           : { box: "bg-[var(--surface-secondary)]/70 border-[var(--border)]", text: "text-[var(--text-primary)]", ring: "#10b981", dot: "bg-emerald-500", glow: "" };
     const R = 9;
     const C = 2 * Math.PI * R;
+    // One gentle attention pulse when crossing 10 min, 5 min and 1 min left (no sound, no shaking).
+    const milestone = !paused && (remaining === 600 || remaining === 300 || remaining === 60);
 
     return (
       <div
@@ -102,6 +104,31 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
         aria-label={`Time remaining ${formatTime(remaining)}${paused ? ", paused" : ""}`}
         className={`group relative h-8 sm:h-9 flex items-center gap-2 pl-2.5 sm:pl-1.5 pr-2.5 sm:pr-3 rounded-xl border backdrop-blur-md shadow-sm select-none shrink-0 transition-colors duration-500 outline-none focus-visible:ring-2 focus-visible:ring-violet-500/60 ${tone.box} ${tone.glow}`}
       >
+        {/* Time left drawn as a line flowing round the pill: drains clockwise, colour follows the tone. */}
+        <svg aria-hidden className="pointer-events-none absolute -inset-px w-[calc(100%+2px)] h-[calc(100%+2px)] overflow-visible">
+          <rect x="1" y="1" style={{ width: "calc(100% - 2px)", height: "calc(100% - 2px)" }} rx="12" ry="12" fill="none" stroke={tone.ring} strokeOpacity="0.18" strokeWidth="2" pathLength={100} />
+          <motion.rect
+            x="1" y="1" style={{ width: "calc(100% - 2px)", height: "calc(100% - 2px)" }} rx="12" ry="12" fill="none" stroke={tone.ring} strokeWidth="2" strokeLinecap="round"
+            pathLength={100} strokeDasharray="100 100"
+            initial={false}
+            animate={{ strokeDashoffset: 100 * (1 - remainingRatio) }}
+            transition={{ duration: 0.9, ease: "linear" }}
+          />
+        </svg>
+        <AnimatePresence>
+          {milestone && (
+            <motion.span
+              key={remaining}
+              aria-hidden
+              initial={{ opacity: 0.55, scale: 1 }}
+              animate={{ opacity: 0, scale: 1.18 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="pointer-events-none absolute inset-0 rounded-xl"
+              style={{ boxShadow: `0 0 0 3px ${tone.ring}` }}
+            />
+          )}
+        </AnimatePresence>
         {/* Ring + heartbeat dot */}
         <span className="relative hidden sm:flex w-6 h-6 items-center justify-center shrink-0">
           <svg viewBox="0 0 24 24" className="absolute inset-0 -rotate-90">

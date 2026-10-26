@@ -26,7 +26,7 @@ import { TelegramCard } from "@/components/profile/telegram-card";
 import { DataStorageCard } from "@/components/profile/data-storage-card";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
-import { generateAvatarDataUri, randomAvatarSeed } from "@/lib/avatar/generate-avatar";
+import { generateAvatarDataUri, randomAvatarSeed, useAvatarStyles } from "@/lib/avatar/generate-avatar";
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { Combobox, type ComboOption } from "@/components/ui/combobox";
 import { DEGREES, customDegrees, rememberCustomDegree } from "@/lib/degrees";
@@ -311,7 +311,8 @@ export default function ProfilePage() {
     }
   }
 
-  const avatarUri = useMemo(() => generateAvatarDataUri(form.avatarStyle as any, form.avatarSeed, { size: 160 }), [form.avatarStyle, form.avatarSeed]);
+  const avatarLoaded = useAvatarStyles([form.avatarStyle as any]);
+  const avatarUri = useMemo(() => generateAvatarDataUri(form.avatarStyle as any, form.avatarSeed, { size: 160 }), [form.avatarStyle, form.avatarSeed, avatarLoaded]);
 
   if (authLoading || signingOut) {
     return <div className="w-full h-full flex items-center justify-center" data-fill-height><Loader2 className="w-6 h-6 animate-spin text-[var(--text-muted)]" /></div>;
@@ -577,6 +578,12 @@ export default function ProfilePage() {
   return (
     // Desktop: fixed header + fixed section menu; only the right-hand details scroll.
     <div data-fill-height data-savebar={dirty || saving || saved || !!error ? "true" : undefined} className="w-full flex flex-col gap-4 lg:h-full lg:min-h-0">
+      {!profile && (
+        <div role="alert" className="shrink-0 flex flex-wrap items-center gap-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-800 dark:text-amber-200">
+          <span className="flex-1 min-w-0">We couldn&apos;t load your saved profile, so changes can&apos;t be saved right now. Your data is safe.</span>
+          <button type="button" onClick={() => window.location.reload()} className="h-9 rounded-xl bg-amber-500 px-4 text-sm font-bold text-white cursor-pointer">Try again</button>
+        </div>
+      )}
       <div className="shrink-0">
         <ProfileHeader name={name} username={f.username} email={user.email} phone={profile?.phone ?? null} bio={f.bio} tier={profile?.tier || "free"} avatarUri={avatarUri}
           targetYear={f.targetYear} branchLabel={branchLabel} targetRank={f.targetRank} dailyHours={f.dailyHours} location={location}

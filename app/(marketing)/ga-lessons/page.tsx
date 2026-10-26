@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "GATE General Aptitude Lessons: Verbal, Quantitative, Analytical, Spatial | RENYXERA",
   description: "General Aptitude is 15 marks in every GATE paper. Short lessons with the rules that matter, worked examples and common traps for verbal, quantitative, analytical and spatial aptitude, with practice questions.",
   alternates: { canonical: "/ga-lessons" },
-  openGraph: { title: "GATE General Aptitude lessons", description: "Rules, worked examples and traps for the 15 General Aptitude marks.", type: "article" },
+  openGraph: { title: "GATE General Aptitude lessons", description: "Rules, worked examples and traps for the 15 General Aptitude marks.", type: "article", images: ["/og/default.png"] },
 };
 
 const TONE: Record<string, string> = { Verbal: "bg-sky-500/10 text-sky-700 dark:text-sky-300", Quantitative: "bg-violet-500/10 text-violet-700 dark:text-violet-300", Analytical: "bg-amber-500/10 text-amber-700 dark:text-amber-300", Spatial: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" };

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "GATE CS Cutoff 2023–2026 (All Categories) & Marks vs Rank Table | RENYXERA",
   description: "GATE Computer Science qualifying marks for General, OBC-NCL/EWS and SC/ST/PwD from 2023 to 2026 with trend charts, candidates per year, and a marks-vs-rank table with GATE score for each mark range.",
   alternates: { canonical: "/tools/gate-cs-cutoff" },
-  openGraph: { title: "GATE CS Cutoff 2023–2026 & Marks vs Rank", description: "Qualifying marks by category and year, and the rank each mark range gets.", type: "article" },
+  openGraph: { title: "GATE CS Cutoff 2023–2026 & Marks vs Rank", description: "Qualifying marks by category and year, and the rank each mark range gets.", type: "article", images: ["/og/default.png"] },
 };
 
 const MARK_POINTS = [90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30];

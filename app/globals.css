@@ -1085,3 +1085,14 @@ input.search-bare, input.search-bare:focus, input.search-bare:focus-visible { ou
 @media (prefers-reduced-motion: reduce) { .tg-fly { animation: none; } }
 
 @keyframes sheet-up { from { transform: translateY(24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Long display equations scroll sideways inside the question instead of being cut off (phones). */
+mjx-container[display="true"] {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  padding-bottom: 4px;
+}

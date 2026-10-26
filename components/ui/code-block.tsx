@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+// Light build with only the languages that appear in questions and AI answers (the full Prism build
+// ships every language and was part of every question page).
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import c from "react-syntax-highlighter/dist/esm/languages/prism/c";
+import cpp from "react-syntax-highlighter/dist/esm/languages/prism/cpp";
+import java from "react-syntax-highlighter/dist/esm/languages/prism/java";
+import python from "react-syntax-highlighter/dist/esm/languages/prism/python";
+import sql from "react-syntax-highlighter/dist/esm/languages/prism/sql";
+import javascript from "react-syntax-highlighter/dist/esm/languages/prism/javascript";
+import bash from "react-syntax-highlighter/dist/esm/languages/prism/bash";
+for (const [n, l] of Object.entries({ c, cpp, java, python, sql, javascript, bash })) SyntaxHighlighter.registerLanguage(n, l);
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Check, Copy } from "lucide-react";
 

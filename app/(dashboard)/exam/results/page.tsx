@@ -230,20 +230,20 @@ export default function ResultSummaryPage() {
   };
 
   if (session && !repoReady && repoError) return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-3 bg-[var(--background)] p-6 text-center">
+    <div className="flex h-dvh w-full flex-col items-center justify-center gap-3 bg-[var(--background)] p-6 text-center">
       <p className="font-bold text-[var(--text-primary)]">Couldn't load the question bank.</p>
       <p className="text-sm text-[var(--text-secondary)]">Your test is saved. Check your connection and try again.</p>
       <button onClick={() => window.location.reload()} className="mt-1 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white cursor-pointer">Try again</button>
     </div>
   );
   if (loading || (session && !repoReady)) return (
-    <div className="flex h-screen w-full items-center justify-center bg-[var(--background)]">
+    <div className="flex h-dvh w-full items-center justify-center bg-[var(--background)]">
        <div className="font-bold tracking-widest uppercase animate-pulse text-indigo-600 dark:text-indigo-400">Loading Result Summary...</div>
     </div>
   );
   
   if (session && (gate.locked || gate.delayed)) return <MockResultsLocked resultsAt={gate.resultsAt} now={gate.now} mockId={gate.mockId} delayed={gate.delayed} />;
-  if (!session || !statsCalculations) return <div className="p-8 text-center text-rose-500 font-bold bg-[var(--background)] h-screen">Result not found.</div>;
+  if (!session || !statsCalculations) return <div className="p-8 text-center text-rose-500 font-bold bg-[var(--background)] h-dvh">Result not found.</div>;
 
   const {
     marks,
@@ -418,13 +418,13 @@ export default function ResultSummaryPage() {
             className="absolute -bottom-48 -right-24 w-[38rem] h-[38rem] rounded-full bg-[radial-gradient(circle,rgb(217_70_239/0.13),transparent_65%)] pointer-events-none" />
           <div aria-hidden="true" className="absolute inset-0 opacity-[0.35] dark:opacity-[0.12] pointer-events-none [background-image:radial-gradient(rgb(139_92_246/0.25)_1px,transparent_1px)] [background-size:22px_22px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
 
-          <div className="relative flex-1 min-h-0 [perspective:2200px]">
+          <div className="relative flex-none h-[max(520px,calc(100dvh-14rem))] lg:flex-1 lg:min-h-0 lg:h-auto [perspective:2200px]">
             <div
               className="relative h-full transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] [transform-style:preserve-3d] will-change-transform"
               style={{ transform: `rotateY(${flipped ? 180 : 0}deg)` }}
             >
               {/* FRONT — scoreboard */}
-              <div aria-hidden={flipped} className={`absolute inset-0 overflow-hidden [backface-visibility:hidden] ${flipped ? "pointer-events-none" : ""}`}>
+              <div aria-hidden={flipped} className={`absolute inset-0 overflow-y-auto overflow-x-hidden lg:overflow-hidden custom-scrollbar [backface-visibility:hidden] ${flipped ? "pointer-events-none" : ""}`}>
                 <div className="h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-7 pb-2 lg:py-8">
                   {/* ring side */}
                   <div className="flex flex-col items-center text-center gap-2.5 lg:gap-4">
