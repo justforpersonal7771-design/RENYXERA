@@ -19,6 +19,10 @@
 | **15** | **Performance optimisation** (no quality loss) | Audited 22 Oct | **P1 (quick wins) / P3 (rest)** | `R15-PERFORMANCE.md` |
 | **16** | **Security hardening** | Audited 22 Oct | **P1 (critical fixes) / P3 (rest)** | `R16-SECURITY.md` |
 | **17** | **Microsoft Store app** (Windows, via PWA) | Planned | P4 | `R17-MICROSOFT-STORE.md` |
+| **18** | **UI refresh** (dashboard first) | Planned 26 Oct | **P0** | `R18-UI-REFRESH.md` |
+| 19 | Battles (live Beat my score) | Planned | P1 | `R19-BATTLES.md` |
+| 20 | Solutions for every question | Planned; AI pre-gen status inside | P2 (after Forge) | `R20-SOLUTIONS.md` |
+| — | Competitors (Swaseekh, Hatchable) | 26 Oct | — | `../competitors/COMPETITORS_2026-10.md` |
 | — | Feature catalogue (proposals) | Ideas | owner picks | `FEATURES.md` |
 
 ## Task format used in every file

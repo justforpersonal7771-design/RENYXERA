@@ -1,6 +1,6 @@
 # RENYXERA — Master checklist (the only tracker)
 
-**Last updated:** 22 October 2026 · **Live:** https://gate.renyxera.workers.dev · **Repo:** `D:\0-UI\r2ma-stable` (push to `main` = deploy)
+**Last updated:** 26 October 2026 · **Live:** https://gate.renyxera.workers.dev · **Repo:** `D:\0-UI\r2ma-stable` (push to `main` = deploy)
 Every open task below has its key steps, a "done when" check and a reference. Full detail per release: `docs/roadmap/` (index `docs/roadmap/00-README.md`). Shipped history: `archive/COMPLETED.md`. New-session context: `HANDOFF.md`, `CLAUDE.md`, `handover/MASTER_PROMPT.md`.
 
 **Legend:** `- [x]` done · `- [ ]` open · **(you)** owner action · **(me)** Claude builds · 🔒 blocked by a decision · 🟡 costs money, waits for revenue · ⏸ on hold by decision · 💡 idea awaiting approval.
@@ -8,24 +8,35 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ---
 
-## 0. Now — next 10 steps in order
+## 0. Now — next steps in order (26 Oct)
 
-- [ ] **(me) R16-A1 Fix vulnerable dependencies** — 1 critical + 5 high + 3 moderate in production deps (audit 22 Oct).
-  - How: `npm audit fix` (no force), Next 15.x latest patch, `sharp` ≥ 0.35.5; full CI + E2E.
-  - Done when: `npm audit --omit=dev` shows 0 critical/high; site unchanged. Ref: `docs/roadmap/R16-SECURITY.md` A1.
-- [ ] **(me) R15-A Performance quick wins** — lazy goal panel (recharts off every page), light code highlighter, font preloads, config hygiene, bundle budget.
-  - Done when: per-route JS report in CI, recharts and full Prism gone from shared chunks, ≤ 3 font files on public pages. Ref: `R15-PERFORMANCE.md` A1–A5.
-- [ ] **(me) R16-A2/A3 Security headers + HTML sanitising** — CSP report-only first, then enforce; sanitise `html` nodes.
-  - Done when: securityheaders.com grade A; OAuth, Turnstile, Razorpay, MathJax, YouTube, Sentry all work. Ref: `R16-SECURITY.md` A2–A3.
-- [ ] **(you)** Answer **F1**, **S1**, **S4** in `docs/OPEN_DECISIONS_FOR_YOU.md` (others have defaults).
-- [ ] **(me) R11-A Forge foundation** — migration, entitlement, APIs, locked UI, beta flag. Ref: `R11-FORGE.md` A1–A5.
-- [ ] **(me) R11-B Forge authoring + first 60 CS items** — you spot-check 10. Ref: `R11-FORGE.md` B1–B6.
-- [ ] **(you)** Review v8 films → upload to YouTube/Shorts/Reels → send the video id. **(me)** frame-check first and set `NEXT_PUBLIC_PROMO_YT_ID`. Ref: `R14-MARKETING-GROWTH.md` A.
-- [ ] **(you)** Instagram setup (`docs/instagram/01-SETUP.md`) → run `social-check`.
-- [ ] **(me) R12-A Study materials Phase 0** after S1/S4. Ref: `R12-STUDY-MATERIALS.md`.
-- [ ] **(me)** Browser checks: share card, markdown tables, Forge practice-set gate (Free/Plus/Pro).
+- [ ] **(you) URGENT: Supabase rejects every signed-in database call from browsers** ("JWT issued at future", PGRST303, measured for 12+ minutes on 26 Oct). This breaks the referral link ("Creating your link…"), the sponsor break, profile loading/saving and anything else read directly from the browser. Steps: Supabase dashboard → your project → **Project Settings → General → Restart project**; if it persists, **Project Settings → JWT Keys**: check the current signing key, and open a ticket with Supabase support quoting PGRST303. Tell me when done; I re-test.
+- [x] **Bug batch of 26 Oct fixed, verified, deployed** — see §0a.
+- [ ] **(me) R19 Battles** — live "Beat my score" (opened/started/progress/submitted/winner, Telegram ping). Needs migration `0041_battles.sql` (you run it). Ref: `docs/roadmap/R19-BATTLES.md`. Waits for the Supabase fix to test.
+- [ ] **(me) R18 UI refresh** — dashboard first, then analytics, AI Mentor, other screens; contact sheet of layouts for you to pick. Ref: `docs/roadmap/R18-UI-REFRESH.md`.
+- [ ] **(me) R11 Forge**, then **R20 Solutions** for every question, with **R12 Study materials** possibly in parallel. Refs: `R11-FORGE.md`, `R20-SOLUTIONS.md`, `R12-STUDY-MATERIALS.md`.
+- [ ] **(you)** Swaseekh signed-in review: sign in with Google and send screenshots of dashboard, question bank, a textbook page, analytics with institute filter, mock test, pricing (I can't sign in with a Google account). Analysis so far: `docs/competitors/COMPETITORS_2026-10.md`.
+- [ ] **(you)** Telegram: edit the pinned welcome post (it still says "with yesterday's answer"; now the answer is a spoiler in the same post). To refresh old link previews in Telegram, send the site link to **@WebpageBot**.
+- [ ] **(me) R16-A1 dependency patch** (1 critical + 5 high) and **R16-A2/A3 headers + sanitising**.
+- [ ] **(you)** Decisions F1, S1, S4 (`docs/OPEN_DECISIONS_FOR_YOU.md`).
 
----
+### 0a. Bug batch 26 Oct (verified on a local production build, phone 390 + desktop 1440, light)
+- [x] 3 Link previews used an old built-in image (`app/opengraph-image.tsx` overrode the cards) → removed; every page now uses the approved cards (branch pages their own)
+- [x] 4 Timer: a line flows round the timer pill showing time left (green → amber → red) and one soft pulse at 10, 5 and 1 minute left
+- [x] 5 "Save & next" / "Mark & next" on the last question asks: Submit test, or Keep going
+- [x] 6 Results scoreboard was empty on phones (card had no height) → fixed, both faces checked phone + desktop
+- [x] 7 Review Previous/Next hidden on phones (100vh behind the browser bar) → dynamic viewport height on all full-screen pages; verified
+- [x] 8 Long equations were cut off → they scroll sideways; swipe-to-navigate ignores equations and tables
+- [ ] 9 Profile save button missing → **cause is the Supabase outage above** (profile never loads); the page now says so with a Try again button. Re-test after the Supabase fix.
+- [x] 10 Telegram section lists your branch channel, hub, discussion group and the all-in-one folder link (shows when Telegram is enabled; check on the live site)
+- [x] 11 "Very high priority" badge no longer wraps (single line, shorter label)
+- [x] 12 Locked Pro sections show a short faded preview (max 420 px), not a page-long blur
+- [x] 13 Today, study planner and study timer cards now have the same card effect as the rest
+- [x] 14 Syllabus: every sub-topic chip shows its share of the unit's marks with a fill bar and details on hover/tap (shared tags marked *) — CS page; other branches next
+- [ ] 15 Referral link / sponsor break → **same Supabase outage**; re-test after the fix
+- [x] 2 Speed: first-load JS cut — exam session 443→241 KB, setup 421→219 KB, AI Mentor 435→233 KB, profile 768→279 KB; the 1.8 MB avatar library no longer loads on every page (styles load one at a time); chart library only when the goal panel opens; decorative fonts not preloaded
+- [ ] 1 Live battles → R19 (planned above)
+- [x] AI pre-generation: fixed the 1,000-row cap (Civil and older papers were never processed) and LaTeX-backslash JSON failures; status table in `docs/roadmap/R20-SOLUTIONS.md`
 
 ## 1. Needs YOU
 
@@ -203,6 +214,28 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **C1 Shared rate limits** (Postgres counters or Cloudflare free rule) · **C2 Turnstile on waitlist/report/contact** · **C3 WAF/Bot Fight Mode after domain** · **C4 webhook replay protection**.
 - [ ] **D1 Supabase Security Advisor clean** · **D2 automated RLS probe of every private table** · **D3 DPDP retention + consent records** · **D4 privacy policy update** (Forge, study materials, shares, channels).
 - [ ] **E1 Sentry alerts** · **E2 user-visible security events** · **E3 `/.well-known/security.txt`** · **E4 quarterly restore drill + incident checklist**.
+
+### 3H · Release 18 — UI refresh (priority) · `docs/roadmap/R18-UI-REFRESH.md`
+- [ ] 18A Dashboard (bento: next action, today strip with daily target, progress trio, where marks leak, revision due, mocks, heatmap, battles, one upgrade moment) — contact sheet first
+- [ ] 18B Analytics (KPIs, mastery heatmap + institute filter, topic table, time coach, Mistake DNA)
+- [ ] 18C AI Mentor (conversation-first, coach chips, data-driven prompts, message actions, quota meter)
+- [ ] 18D Other screens (setup, results, review, profile, mocks, planner, lists, syllabus, public pages)
+- [ ] 18E Competitor-inspired: institute filter (C1), daily target (C5), 70+ blueprint (C9), progress report (C10), guided tour (C11), focus mode (C13), topic checklist (C14)
+
+### 3I · Release 19 — Battles · `docs/roadmap/R19-BATTLES.md`
+- [ ] Migration `0041_battles.sql` + RPCs (server-graded scores only)
+- [ ] `/challenge/<id>` links, live status card (15 s polling), result screen with winner and topic comparison, rematch
+- [ ] Telegram pings to the sender; limits (Free 3 active); expiry 7 days
+
+### 3J · Release 20 — Solutions for every question · `docs/roadmap/R20-SOLUTIONS.md`
+- [x] AI pre-generation status measured (26 Oct): CS 11 %, DA 26 %, EC 12 %, EE 12 %, ME 10 %, CE 0 %; 360 failed (≈225 Gemini overload, retried; ≈130 JSON, now repaired); 1,000-row cap fixed
+- [ ] Solution format + validator (answer must equal official key; control-character scan)
+- [ ] `question_solutions` table + review panel + flag-an-error
+- [ ] CS → EC → EE → ME → CE → DA; GA once
+
+### 3K · Competitors · `docs/competitors/COMPETITORS_2026-10.md`
+- [x] Swaseekh (public pages) and GATE CS Preparation Hub (Hatchable) analysed on desktop + phone; 16 ideas ranked (C1–C16)
+- [ ] Signed-in Swaseekh review (needs your screenshots)
 
 ### 3G · Release 17 — Microsoft Store app (Windows) · `docs/roadmap/R17-MICROSOFT-STORE.md`
 - [ ] **M1 Manifest upgrade** — id, name/description for all branches, categories, separate any/maskable icons, screenshots (wide + narrow), shortcuts (Practice, Mocks, AI Mentor, Planner, Mistakes), `display_override` window-controls-overlay, `launch_handler`, optional `share_target`.
