@@ -18,7 +18,6 @@ import { Footer } from "@/components/layout/footer";
 // The hero is a normal (server-rendered) import: it's the first thing on screen, and it
 // stays mounted from the very first paint through data loading (it shows placeholder
 // values while loading), so there's no separate loading page that gets swapped out.
-import { HeroSection } from "@/components/dashboard/hero-section";
 import { SignedOutWelcome } from "@/components/dashboard/signed-out-welcome";
 import { DiagnosticCard } from "@/components/dashboard/diagnostic-card";
 import { WeakTopicsSync } from "@/components/planner/weak-topics-sync";
@@ -29,18 +28,11 @@ import { StudyTimer } from "@/components/dashboard/study-timer";
 import { InstallPrompt } from "@/components/growth/install-prompt";
 import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
+import { NextActionHero, MarksLeakCard, RevisionDueCard, SubjectTilesCard, YearDotsCard, useSolvedIds } from "@/components/dashboard/bento";
 
 // Everything below the hero is client-only and code-split.
 
-const ProgressVisualizer = dynamic(() => import("@/components/dashboard/progress-visualizer").then(m => m.ProgressVisualizer), {
-  ssr: false,
-  loading: () => <div className="skeleton-shimmer h-64 rounded-2xl" />
-});
 
-const FocusCenter = dynamic(() => import("@/components/dashboard/focus-center").then(m => m.FocusCenter), {
-  ssr: false,
-  loading: () => <div className="skeleton-shimmer h-48 rounded-2xl" />
-});
 
 const GithubHeatmap = dynamic(() => import("@/components/dashboard/github-heatmap").then(m => m.GithubHeatmap), {
   ssr: false,
@@ -57,10 +49,6 @@ const RecentExams = dynamic(() => import("@/components/dashboard/recent-exams").
   loading: () => <div className="skeleton-shimmer h-[380px] rounded-2xl" />
 });
 
-const MetricsStrip = dynamic(() => import("@/components/dashboard/metrics-strip").then(m => m.MetricsStrip), {
-  ssr: false,
-  loading: () => <div className="skeleton-shimmer h-[170px] rounded-2xl" />
-});
 
 const IncompleteTests = dynamic(() => import("@/components/dashboard/incomplete-tests").then(m => m.IncompleteTests), {
   ssr: false,
@@ -134,19 +122,21 @@ export default function Home() {
   const strongTopicsCount = (dashboardMetrics?.topicPerformance || [])
     .filter(t => t.attempted >= 1 && (t.correct / t.attempted) * 100 >= 75).length;
   const bestStreak = overview?.longestStreak || 0;
-  const avgTimePerQuestion = overview?.avgTimePerQuestionMs ? Math.round(overview.avgTimePerQuestionMs / 1000) : 0;
+  const weakest = (dashboardMetrics?.topicPerformance || [])
+    .filter((t) => t.attempted >= 2)
+    .sort((a, b) => a.correct / a.attempted - b.correct / b.attempted)[0] ?? null;
+  const solvedIds = useSolvedIds(isInitialized);
+  void studyHours; void bookmarksCount; void bestStreak; void weakTopicsCount; void strongTopicsCount;
 
   return (
     <div className="w-full space-y-8">
       
       <SignedOutWelcome />
 
-      {/* 1. Hero Section Banner */}
-      <HeroSection
-        streak={streakDays}
-        solved={solvedCount}
-        accuracy={accuracyValue}
-        onNewExam={handleNewExam}
+      {/* R18: compact "next step" hero with the student's own rings (replaces the large banner). */}
+      <NextActionHero
+        solved={solvedCount} accuracy={accuracyValue} streak={streakDays} pendingMistakes={pendingMistakesCount}
+        weakest={weakest} hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"} onResume={handleResume}
         loading={isLoading}
       />
 
@@ -214,101 +204,38 @@ export default function Home() {
 
       <MissedBlocksCard />
       <TodayBlocksCard />
-      <WeeklyBenchmarkCard />
       <WeakTopicsSync topics={dashboardMetrics?.topicPerformance ?? []} />
-      <DiagnosticCard solved={solvedCount} />
-      <TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} />
+      <div id="diagnostic" className="scroll-mt-24"><DiagnosticCard solved={solvedCount} /></div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2"><StudyTimer /><InstallPrompt /></div>
+      {/* Today strip: missions + study timer side by side. */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2"><TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} /></div>
+        <div className="flex flex-col gap-4"><StudyTimer /><InstallPrompt /></div>
+      </div>
 
       <IncompleteTests />
 
-      {/* 3. Grouped metrics — Study Momentum vs Performance Signals, deliberately
-          distinct from the hero's Streak/Solved/Accuracy/Mastery/Readiness cards
-          above. Every value here is real and uncapped. */}
-      <Reveal>
-        <MetricsStrip
-          studyHours={studyHours}
-          bookmarksCount={bookmarksCount}
-          bestStreak={bestStreak}
-          avgTimePerQuestion={avgTimePerQuestion}
-          weakTopicsCount={weakTopicsCount}
-          strongTopicsCount={strongTopicsCount}
-          pendingMistakesCount={pendingMistakesCount}
-          masteredMistakesCount={masteredMistakesCount}
-        />
-      </Reveal>
+      {/* Bento: one pastel card per question a student asks themselves. */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+        <MarksLeakCard topics={dashboardMetrics?.topicPerformance ?? []} />
+        <RevisionDueCard pending={pendingMistakesCount} mastered={masteredMistakesCount} />
+        {weakest ? <YearDotsCard topic={weakest} solvedIds={solvedIds} /> : <Reveal className="h-full"><MockStatusCard /></Reveal>}
+        <div className="md:col-span-2"><SubjectTilesCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></div>
+        {weakest ? <Reveal className="h-full"><MockStatusCard /></Reveal> : <Reveal className="h-full"><ExamCountdownCard /></Reveal>}
+      </div>
 
-      {/* 4. Main Two-Column Content Grid — items-start (not stretch): the two columns
-          hold very different amounts of content, and stretching the shorter one to
-          match forces its stacked cards to flex-shrink below their natural height,
-          which combined with overflow-hidden silently clipped the Countdown card's
-          "Scheduled Ahead" section instead of showing it. */}
-      {/* Balanced two-column grid. Each column is a flex stack whose LAST card grows
-          (flex-1) to meet the other column's bottom edge, so the columns always end on
-          the same line whatever their content — no empty gap under the shorter side.
-          Only the last card grows; the rest keep their natural height (shrink-0),
-          which is what previously clipped the Countdown card's "Scheduled Ahead" list
-          when the whole column was stretched. Activity Timeline sits on the left to
-          even out the two columns' natural heights. */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+      <WeeklyBenchmarkCard />
 
-        {/* Left Side (Spans 8 columns) */}
-        <div className="lg:col-span-8 flex flex-col gap-8">
-          <Reveal className="shrink-0">
-            <ProgressVisualizer
-              subjectPerformance={dashboardMetrics?.subjectPerformance || []}
-              totalSolved={solvedCount}
-            />
-          </Reveal>
-
-          <Reveal className="shrink-0">
-            <FocusCenter
-              subjectPerformance={dashboardMetrics?.subjectPerformance || []}
-              topicPerformance={dashboardMetrics?.topicPerformance || []}
-              mistakesCount={mistakesCount}
-              bookmarksCount={bookmarksCount}
-              hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"}
-              onContinueSession={handleResume}
-            />
-          </Reveal>
-
-          <Reveal className="flex-1 flex flex-col min-h-[260px] [&>*]:flex-1">
-            <ActivityTimeline
-              recentSessions={dashboardMetrics?.recentSessions || []}
-              bookmarks={bookmarks}
-              mistakes={mistakes}
-            />
-          </Reveal>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+        <div className="lg:col-span-8 flex flex-col gap-4">
+          <Reveal><RecentExams recentSessions={dashboardMetrics?.recentSessions || []} /></Reveal>
+          <Reveal><ActivityTimeline recentSessions={dashboardMetrics?.recentSessions || []} bookmarks={bookmarks} mistakes={mistakes} /></Reveal>
         </div>
-
-        {/* Right Side (Spans 4 columns) */}
-        <div className="lg:col-span-4 flex flex-col gap-8">
-          <Reveal className="shrink-0">
-            <MockStatusCard />
-          </Reveal>
-
-          <Reveal className="shrink-0">
-            <ExamCountdownCard />
-          </Reveal>
-
-          <Reveal className="shrink-0">
-            <TelegramJoinCard />
-          </Reveal>
-
-          <Reveal className="shrink-0">
-            <GithubHeatmap
-              snapshots={snapshots}
-            />
-          </Reveal>
-
-          <Reveal className="flex-1 flex flex-col min-h-[260px] [&>*]:flex-1">
-            <RecentExams
-              recentSessions={dashboardMetrics?.recentSessions || []}
-            />
-          </Reveal>
+        <div className="lg:col-span-4 flex flex-col gap-4">
+          {weakest && <Reveal><ExamCountdownCard /></Reveal>}
+          <Reveal><GithubHeatmap snapshots={snapshots} /></Reveal>
+          <Reveal><TelegramJoinCard /></Reveal>
         </div>
-
       </div>
 
       <Footer />

@@ -8,10 +8,9 @@ import { useToastStore } from "@/store/use-toast-store";
 import { TG_MATRIX } from "@/lib/telegram/tiers";
 import type { Tier } from "@/lib/billing/plans";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
-import { TelegramBadge } from "@/components/growth/telegram-join";
+import { TelegramBadge, TelegramRooms } from "@/components/growth/telegram-join";
 import { TELEGRAM_CHANGED } from "@/components/growth/use-telegram-state";
-import { usePaperLabel } from "@/lib/branch/use-paper-label";
-import { TELEGRAM_BRANCH, TELEGRAM_CHAT, TELEGRAM_FOLDER, TELEGRAM_HUB } from "@/lib/social";
+
 
 type Status = {
   configured: boolean; tier: Tier; bot: string | null; channelUrl: string; groupUrl: string; linked: boolean;
@@ -164,9 +163,8 @@ export function TelegramCard() {
         ) : (
           <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
             <h3 className="text-base font-extrabold text-[var(--text-primary)]">Our channel and group</h3>
-            <ul className="mt-3 space-y-2"><Membership v={a?.inChannel ?? null} label="Daily question channel" href={s.channelUrl} /><Membership v={a?.inGroup ?? null} label="Student discussion group" href={s.groupUrl} /></ul>
             {a?.inChannel === true && a?.inGroup === true && <p className="mt-3 text-xs text-[var(--text-muted)]">You&apos;re in both, so we won&apos;t ask you to join again.</p>}
-            <TelegramRooms />
+            <div className="mt-4"><TelegramRooms where="profile" joined={{ hub: a?.inChannel ?? null, group: a?.inGroup ?? null }} showFolder /></div>
           </section>
         )}
       </div>
@@ -270,30 +268,3 @@ export function TelegramCard() {
   );
 }
 
-/** Every RENYXERA room on Telegram, with the student's own branch channel first. */
-function TelegramRooms() {
-  const paper = usePaperLabel();
-  const branchUrl = TELEGRAM_BRANCH[paper];
-  const rooms = [
-    ...(branchUrl ? [{ href: branchUrl, label: `GATE ${paper} channel`, note: "Your branch: one official question every morning" }] : []),
-    { href: TELEGRAM_HUB, label: "RENYXERA hub", note: "GATE 2027 updates, mocks and offers" },
-    { href: TELEGRAM_CHAT, label: "Discussion group", note: "Doubts, with a topic for every branch" },
-    { href: TELEGRAM_FOLDER, label: "All rooms in one tap", note: "Adds every channel and the group as a folder" },
-  ];
-  return (
-    <ul className="mt-4 grid gap-2">
-      {rooms.map((r) => (
-        <li key={r.href}>
-          <a href={r.href} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/60 px-3 py-2.5 transition hover:border-sky-400/60">
-            <Send className="h-4 w-4 shrink-0 text-sky-500" aria-hidden />
-            <span className="min-w-0 flex-1">
-              <span className="block text-sm font-semibold text-[var(--text-primary)]">{r.label}</span>
-              <span className="block truncate text-xs text-[var(--text-muted)]">{r.note}</span>
-            </span>
-            <span className="text-xs font-bold text-sky-600 dark:text-sky-400 group-hover:translate-x-0.5 transition-transform">Open</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  );
-}

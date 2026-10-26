@@ -7,6 +7,8 @@ import { useDataStore } from "@/store/use-data-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 
 /** Topic browser: every subject and topic in your paper with how many questions there are, searchable. Tap a topic to practise it. */
+const TINTS = ["peri", "mint", "peach", "lilac", "sky", "rose", "butter"] as const;
+
 export default function BrowseTopicsPage() {
   const isInitialized = useDataStore((s) => s.isInitialized);
   const [q, setQ] = useState("");
@@ -27,9 +29,10 @@ export default function BrowseTopicsPage() {
   const needle = q.trim().toLowerCase();
   const shown = subjects.map((s) => ({ ...s, topics: needle && !s.subject.toLowerCase().includes(needle) ? s.topics.filter(([t]) => t.toLowerCase().includes(needle)) : s.topics })).filter((s) => s.topics.length > 0);
   const count = shown.reduce((n, s) => n + s.topics.length, 0);
+  const grand = Math.max(1, subjects.reduce((n, s) => n + s.total, 0));
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full min-w-0 space-y-6 overflow-x-hidden">
       <header>
         <h1 className="text-xl font-black tracking-tight text-[var(--text-primary)]">Browse topics</h1>
         <p className="text-xs font-semibold text-[var(--text-secondary)]">Every subject and topic in your paper, with the number of questions. Tap a topic to practise it.</p>
@@ -41,17 +44,38 @@ export default function BrowseTopicsPage() {
       {!isInitialized ? <div className="skeleton-shimmer h-64 rounded-3xl" /> : shown.length === 0 ? <p className="text-sm text-[var(--text-secondary)]">No topic matches “{q}”.</p> : (
         <>
           <p className="text-xs text-[var(--text-muted)]">{count} topic{count === 1 ? "" : "s"}</p>
-          <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-            {shown.map((s) => (
-              <section key={s.subject} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-                <h2 className="flex items-baseline justify-between gap-3 text-sm font-extrabold text-[var(--text-primary)]"><span className="min-w-0 truncate">{s.subject}</span><span className="shrink-0 text-xs font-bold font-num text-[var(--text-muted)]">{s.total} Qs</span></h2>
-                <ul className="mt-2 divide-y divide-[var(--border-subtle)]">
-                  {s.topics.map(([topic, n]) => (
-                    <li key={topic}><Link href={`/setup?subject=${encodeURIComponent(s.subject)}&topic=${encodeURIComponent(topic)}`} className="flex items-center justify-between gap-3 py-2 text-sm text-[var(--text-secondary)] hover:text-violet-600 dark:hover:text-violet-400"><span className="min-w-0 flex-1 truncate" title={topic}>{topic}</span><span className="shrink-0 text-xs font-num text-[var(--text-muted)]">{n}</span></Link></li>
-                  ))}
-                </ul>
-              </section>
-            ))}
+          {/* Bento of pastel subject cards: share of the paper, then topics as tappable chips sized by question count. */}
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {shown.map((s, i) => {
+              const tint = TINTS[i % TINTS.length];
+              const max = Math.max(1, ...s.topics.map(([, n]) => n));
+              const share = Math.round((s.total / grand) * 100);
+              return (
+                <section key={s.subject} className="card-pastel min-w-0 overflow-hidden p-4 sm:p-5" data-tint={tint}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <span className="section-label">{share}% of questions</span>
+                      <h2 className="mt-2 text-base font-extrabold leading-snug text-[var(--text-primary)] break-words">{s.subject}</h2>
+                    </div>
+                    <Link href={`/setup?subject=${encodeURIComponent(s.subject)}`} className="pill-soft shrink-0 !h-8 !px-3 !text-xs">Subject test</Link>
+                  </div>
+                  <div className="mt-3 h-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-ink)_14%,transparent)]"><div className="h-full rounded-full bg-[var(--tint-ink)]" style={{ width: `${Math.max(4, share * 3)}%` }} /></div>
+                  <p className="mt-1.5 text-[11px] font-semibold text-[var(--text-muted)]">{s.total} questions · {s.topics.length} topics</p>
+                  <ul className="mt-3 flex flex-wrap gap-1.5">
+                    {s.topics.map(([topic, n]) => (
+                      <li key={topic} className="max-w-full">
+                        <Link href={`/setup?subject=${encodeURIComponent(s.subject)}&topic=${encodeURIComponent(topic)}`} title={`${n} questions — practise this topic`}
+                          className="card-inset group relative inline-flex max-w-full items-center gap-2 overflow-hidden !rounded-full py-1.5 pl-3 pr-1.5 text-[12.5px] font-medium text-[var(--text-primary)] transition hover:-translate-y-px">
+                          <span aria-hidden className="absolute inset-y-0 left-0 bg-[color-mix(in_srgb,var(--tint-ink)_12%,transparent)]" style={{ width: `${(n / max) * 100}%` }} />
+                          <span className="relative min-w-0 truncate">{topic}</span>
+                          <span className="relative shrink-0 rounded-full bg-[var(--tint-ink)] px-1.5 font-num text-[10px] font-bold text-white">{n}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              );
+            })}
           </div>
         </>
       )}

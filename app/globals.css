@@ -604,7 +604,7 @@
 
 @layer base {
   :root {
-    --background: #fcfcfc;
+    --background: #faf8f5; /* warm canvas (R18 A1) */
     --surface: #ffffff;
     --surface-secondary: #f4f4f5;
     --surface-elevated: #ffffff;
@@ -1096,3 +1096,90 @@ mjx-container[display="true"] {
   overscroll-behavior-x: contain;
   padding-bottom: 4px;
 }
+
+/* ============ R18 design foundation (27 Oct 2026) ============
+   A1: one soft pastel per module (cards, chips, previews); brand violet stays for primary actions.
+   A2: one card shell (radius, layered soft shadow, inner highlight, hover lift + spotlight).
+   A3: small uppercase section labels; A4: ink pill buttons. */
+:root {
+  --tint-mint: #dcf5e5;   --tint-mint-ink: #047857;
+  --tint-rose: #ffe0e3;   --tint-rose-ink: #be123c;
+  --tint-peach: #ffe7cf;  --tint-peach-ink: #c2410c;
+  --tint-peri: #e1e7ff;   --tint-peri-ink: #4338ca;
+  --tint-lilac: #eee2ff;  --tint-lilac-ink: #7e22ce;
+  --tint-butter: #fff3c4; --tint-butter-ink: #a16207;
+  --tint-sky: #dbefff;    --tint-sky-ink: #0369a1;
+  --ink: #17151f;
+  --card-radius: 28px;
+}
+.dark {
+  --tint-mint: color-mix(in srgb, #10b981 16%, #141418);   --tint-mint-ink: #6ee7b7;
+  --tint-rose: color-mix(in srgb, #f43f5e 16%, #141418);   --tint-rose-ink: #fda4af;
+  --tint-peach: color-mix(in srgb, #f97316 16%, #141418);  --tint-peach-ink: #fdba74;
+  --tint-peri: color-mix(in srgb, #6366f1 18%, #141418);   --tint-peri-ink: #a5b4fc;
+  --tint-lilac: color-mix(in srgb, #a855f7 17%, #141418);  --tint-lilac-ink: #d8b4fe;
+  --tint-butter: color-mix(in srgb, #eab308 14%, #141418); --tint-butter-ink: #fde68a;
+  --tint-sky: color-mix(in srgb, #0ea5e9 16%, #141418);    --tint-sky-ink: #7dd3fc;
+  --ink: #f4f3f8;
+}
+@media (max-width: 640px) { :root { --card-radius: 22px; } }
+
+.card-pastel {
+  --tint: var(--surface); --tint-ink: var(--text-primary);
+  position: relative; isolation: isolate;
+  background: var(--tint);
+  border-radius: var(--card-radius);
+  border: 1px solid color-mix(in srgb, var(--tint-ink) 12%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 55%, transparent),
+    0 1px 2px color-mix(in srgb, black 5%, transparent),
+    0 18px 40px -22px color-mix(in srgb, var(--tint-ink) 45%, transparent);
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease;
+}
+.dark .card-pastel { box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent), 0 18px 40px -22px black; }
+@media (hover: hover) { .card-pastel:hover { transform: translateY(-2px); } }
+.card-pastel[data-tint="mint"]   { --tint: var(--tint-mint);   --tint-ink: var(--tint-mint-ink); }
+.card-pastel[data-tint="rose"]   { --tint: var(--tint-rose);   --tint-ink: var(--tint-rose-ink); }
+.card-pastel[data-tint="peach"]  { --tint: var(--tint-peach);  --tint-ink: var(--tint-peach-ink); }
+.card-pastel[data-tint="peri"]   { --tint: var(--tint-peri);   --tint-ink: var(--tint-peri-ink); }
+.card-pastel[data-tint="lilac"]  { --tint: var(--tint-lilac);  --tint-ink: var(--tint-lilac-ink); }
+.card-pastel[data-tint="butter"] { --tint: var(--tint-butter); --tint-ink: var(--tint-butter-ink); }
+.card-pastel[data-tint="sky"]    { --tint: var(--tint-sky);    --tint-ink: var(--tint-sky-ink); }
+.card-pastel[data-tint="plain"]  { --tint: var(--surface);     --tint-ink: var(--brand-violet, #7c3aed); }
+/* white "preview" inset that sits on a pastel card (live mini widgets) */
+.card-inset {
+  background: color-mix(in srgb, var(--surface) 82%, transparent);
+  border-radius: calc(var(--card-radius) - 10px);
+  border: 1px solid color-mix(in srgb, var(--tint-ink, #000) 10%, transparent);
+  box-shadow: 0 10px 24px -18px color-mix(in srgb, black 35%, transparent);
+}
+.dark .card-inset { background: color-mix(in srgb, black 25%, transparent); }
+.section-label {
+  display: inline-flex; align-items: center; gap: .35rem; width: fit-content; align-self: flex-start;
+  padding: .2rem .55rem; border-radius: 999px;
+  background: var(--ink); color: var(--background);
+  font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; line-height: 1.4;
+}
+.pill-ink {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  height: 2.5rem; padding: 0 1.1rem; border-radius: 999px;
+  background: var(--ink); color: var(--background);
+  font-size: .875rem; font-weight: 700; cursor: pointer;
+  transition: transform .15s ease, opacity .15s ease;
+}
+.pill-ink:hover { opacity: .9; } .pill-ink:active { transform: scale(.97); }
+.pill-soft {
+  display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+  height: 2.5rem; padding: 0 1rem; border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tint-ink, #000) 15%, transparent);
+  color: var(--text-primary); font-size: .875rem; font-weight: 600; cursor: pointer;
+}
+/* A5: brand watermark behind footers / empty states */
+.brand-watermark { position: relative; overflow: hidden; }
+.brand-watermark::after {
+  content: "RENYXERA"; position: absolute; left: 50%; bottom: -0.18em; transform: translateX(-50%);
+  font-family: var(--font-brand), sans-serif; font-size: clamp(4rem, 16vw, 13rem); line-height: 1;
+  color: color-mix(in srgb, var(--text-primary) 4%, transparent); pointer-events: none; white-space: nowrap; z-index: 0;
+}
+@media (prefers-reduced-motion: reduce) { .card-pastel, .card-pastel:hover { transition: none; transform: none; } }

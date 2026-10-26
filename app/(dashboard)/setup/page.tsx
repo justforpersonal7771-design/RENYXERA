@@ -122,6 +122,8 @@ export default function ExamSetupPage() {
   // Topics currently prioritized by the app-wide Goal Slider (Topbar), so the Topic
   // Spotlight picker below can surface the same recommendation instead of a flat list.
   const isGoalSliderActive = goalTargetPercent < GOAL_SLIDER_DEFAULT_PERCENT;
+  // Topic opened from a link (browse, dashboard): kept even if the Focus Target would hide it.
+  const deepTopicRef = useRef<string | null>(null);
   const goalSliderResult = useMemo(() => {
     if (!isInitialized || !isGoalSliderActive) return null;
     const officialQuestions = filterOfficialQuestions(QuestionRepository.getAllQuestions());
@@ -316,9 +318,15 @@ export default function ExamSetupPage() {
 
       const topicOwnerSubject = topicParam ? allQs.find(q => q.topic === topicParam)?.subject : undefined;
 
-      if (topicParam && topics.includes(topicParam)) {
+      // A topic link must open THAT topic, even when the Focus Target filter would hide it or the
+      // topic only exists in the shared pool.
+      const topicExists = !!topicParam && (topics.includes(topicParam) || QuestionRepository.getQuestionsByTopic(topicParam).length > 0);
+      if (topicParam && topicExists) {
+        deepTopicRef.current = topicParam;
+        const owner = topicOwnerSubject ?? QuestionRepository.getQuestionsByTopic(topicParam)[0]?.subject ?? subjectParam ?? "";
+        if (owner && !subjects.includes(owner)) { subjects.push(owner); setAvailableSubjects([...subjects].sort()); }
         setExamType("TOPIC_TEST");
-        setSelectedSubject(topicOwnerSubject && subjects.includes(topicOwnerSubject) ? topicOwnerSubject : (subjects[0] || ""));
+        setSelectedSubject(owner || (subjects[0] || ""));
         setSelectedTopic(topicParam);
       } else if (subjectParam && subjects.includes(subjectParam)) {
         setExamType("SUBJECT_TEST");
@@ -347,7 +355,8 @@ export default function ExamSetupPage() {
       const filteredTopics = Array.from(new Set(allQs.map(q => q.topic).filter(Boolean)));
 
       setAvailableTopics(filteredTopics.sort());
-      if (filteredTopics.length > 0 && !filteredTopics.includes(selectedTopic)) setSelectedTopic(filteredTopics[0]);
+      if (selectedTopic && selectedTopic === deepTopicRef.current) { if (!filteredTopics.includes(selectedTopic)) setAvailableTopics([...filteredTopics, selectedTopic].sort()); }
+      else if (filteredTopics.length > 0 && !filteredTopics.includes(selectedTopic)) setSelectedTopic(filteredTopics[0]);
     }
   }, [selectedSubject, isInitialized, examType, selectedTopic, sourceType, isGoalSliderActive, goalRecommendedTopics]);
 
@@ -364,7 +373,7 @@ export default function ExamSetupPage() {
       const repo = QuestionRepository;
       let count = 0;
       const focusFilterActive = isGoalSliderActive && sourceType === "standard" &&
-        (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST" || examType === "TOPIC_TEST");
+        (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST" || (examType === "TOPIC_TEST" && selectedTopic !== deepTopicRef.current));
       const applyFocusFilter = (qs: any[]) =>
         focusFilterActive ? qs.filter((q: any) => goalRecommendedTopics.has(q.topic)) : qs;
 
@@ -432,7 +441,7 @@ export default function ExamSetupPage() {
     // the old worry (a hand-picked out-of-goal topic filtering down to an empty pool) can no
     // longer happen.
     const applyFocusTarget = isGoalSliderActive && sourceType === "standard" &&
-      (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST" || examType === "TOPIC_TEST");
+      (examType === "SUBJECT_TEST" || examType === "SECTION_TEST" || examType === "CUSTOM_TEST" || (examType === "TOPIC_TEST" && selectedTopic !== deepTopicRef.current));
 
     if (applyFocusTarget) {
       let pool = examType === "SUBJECT_TEST"

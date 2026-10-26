@@ -1,11 +1,19 @@
 "use client";
 
-import { ArrowRight, MessageCircle, Send } from "lucide-react";
+import { ArrowRight, Check, Megaphone, MessageCircle, Send } from "lucide-react";
+import { usePaperLabel } from "@/lib/branch/use-paper-label";
+import { TELEGRAM_BRANCH, TELEGRAM_CHAT, TELEGRAM_FOLDER, TELEGRAM_HUB } from "@/lib/social";
 import { track } from "@/lib/growth/track";
 import { hasJoinedChannel, hasJoinedGroup, useTelegramState } from "@/components/growth/use-telegram-state";
 
-export const TELEGRAM_CHANNEL_URL = "https://t.me/renyxera";
-export const TELEGRAM_GROUP_URL = "https://t.me/renyxera_chat";
+export const TELEGRAM_CHANNEL_URL = TELEGRAM_HUB;
+export const TELEGRAM_GROUP_URL = TELEGRAM_CHAT;
+
+/** The student's own branch channel (the branch chosen at onboarding). */
+export function useBranchChannel() {
+  const paper = usePaperLabel();
+  return { paper, url: TELEGRAM_BRANCH[paper] ?? TELEGRAM_BRANCH.CS };
+}
 
 const open = (where: string) => () => track("telegram_join", null, where);
 
@@ -19,7 +27,38 @@ export const TelegramBadge = ({ size = "md" }: { size?: "md" | "lg" }) => (
 const BTN_MAIN = "inline-flex h-9 items-center justify-center gap-1.5 rounded-xl bg-sky-500 px-4 text-xs font-bold text-white shadow-sm shadow-sky-500/30 transition hover:-translate-y-0.5 hover:bg-sky-600";
 const BTN_SIDE = "inline-flex h-9 items-center justify-center rounded-xl border border-sky-500/30 px-4 text-xs font-bold text-sky-700 transition hover:-translate-y-0.5 hover:bg-sky-500/10 dark:text-sky-300";
 
-/** Dashboard card: the daily-question channel and the discussion group. Hidden once you have joined both. */
+/** The three RENYXERA rooms, shown the same way everywhere: hub, the student's branch channel, discussion group. */
+export function TelegramRooms({ where, joined = {}, showFolder = false }: { where: string; joined?: { hub?: boolean | null; group?: boolean | null }; showFolder?: boolean }) {
+  const { paper, url } = useBranchChannel();
+  const rooms = [
+    { key: "branch", href: url, title: `GATE ${paper} channel`, note: "Your branch · one official question every morning, answer hidden until you tap", icon: <Send className="h-4 w-4" />, done: null as boolean | null },
+    { key: "hub", href: TELEGRAM_HUB, title: "RENYXERA hub", note: "GATE 2027 updates, mock reminders and offers", icon: <Megaphone className="h-4 w-4" />, done: joined.hub ?? null },
+    { key: "group", href: TELEGRAM_CHAT, title: "Discussion group", note: "Doubts and ranks, with a topic for every branch", icon: <MessageCircle className="h-4 w-4" />, done: joined.group ?? null },
+  ];
+  return (
+    <div>
+      <ul className="grid gap-2 sm:grid-cols-3">
+        {rooms.map((r) => (
+          <li key={r.key} className="min-w-0">
+            <a href={r.href} onClick={open(`${where}_${r.key}`)} target="_blank" rel="noopener noreferrer"
+              className="group flex h-full flex-col gap-2 rounded-2xl border border-sky-500/20 bg-[var(--surface)]/70 p-3 transition hover:-translate-y-0.5 hover:border-sky-500/50">
+              <span className="flex items-center justify-between">
+                <span className="grid h-8 w-8 place-items-center rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-300">{r.icon}</span>
+                {r.done ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-300"><Check className="h-3 w-3" />Joined</span>
+                  : <span className="text-[11px] font-bold text-sky-600 dark:text-sky-300 group-hover:translate-x-0.5 transition-transform">Join →</span>}
+              </span>
+              <span className="text-sm font-extrabold text-[var(--text-primary)]">{r.title}</span>
+              <span className="text-[11px] leading-snug text-[var(--text-muted)]">{r.note}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      {showFolder && <a href={TELEGRAM_FOLDER} onClick={open(`${where}_folder`)} target="_blank" rel="noopener noreferrer" className="mt-2 inline-flex text-xs font-semibold text-sky-700 hover:underline dark:text-sky-300">Or add all RENYXERA rooms in one tap →</a>}
+    </div>
+  );
+}
+
+/** Dashboard card: the three rooms. Hidden once the student has joined the hub and the group (branch membership can't be checked). */
 export function TelegramJoinCard() {
   const t = useTelegramState();
   const needChannel = !hasJoinedChannel(t), needGroup = !hasJoinedGroup(t);
@@ -30,13 +69,10 @@ export function TelegramJoinCard() {
         <TelegramBadge />
         <div className="min-w-0">
           <p className="text-sm font-extrabold text-[var(--text-primary)]">{t.linked ? "Finish joining on Telegram" : "Join RENYXERA on Telegram"}</p>
-          <p className="text-xs text-[var(--text-muted)]">One real GATE question every morning for your branch, answer hidden until you tap.</p>
+          <p className="text-xs text-[var(--text-muted)]">Three rooms: your branch, the hub and the discussion group.</p>
         </div>
       </div>
-      <div className={`mt-4 grid gap-2 ${needChannel && needGroup ? "grid-cols-2" : "grid-cols-1"}`}>
-        {needChannel && <a href={TELEGRAM_CHANNEL_URL} onClick={open("dashboard_channel")} target="_blank" rel="noopener noreferrer" className={BTN_MAIN}>Daily question</a>}
-        {needGroup && <a href={TELEGRAM_GROUP_URL} onClick={open("dashboard_group")} target="_blank" rel="noopener noreferrer" className={needChannel ? BTN_SIDE : BTN_MAIN}>Discussion</a>}
-      </div>
+      <div className="mt-4"><TelegramRooms where="dashboard" joined={{ hub: !needChannel, group: !needGroup }} /></div>
     </div>
   );
 }
@@ -45,10 +81,11 @@ export function TelegramJoinCard() {
  *  Hidden for learners who have already joined the channel. */
 export function TelegramJoinLink({ where, className = "", compact = false }: { where: string; className?: string; compact?: boolean }) {
   const t = useTelegramState();
+  const { url: branchUrl } = useBranchChannel();
   if (hasJoinedChannel(t)) return null;
   if (compact) {
     return (
-      <a href={TELEGRAM_CHANNEL_URL} onClick={open(`${where}_channel`)} target="_blank" rel="noopener noreferrer"
+      <a href={branchUrl} onClick={open(`${where}_channel`)} target="_blank" rel="noopener noreferrer"
         className={`group mx-auto flex w-fit items-center gap-2 rounded-full bg-sky-500/10 px-3.5 py-1.5 text-xs font-semibold text-sky-700 ring-1 ring-sky-500/25 transition hover:-translate-y-px hover:ring-sky-500/50 dark:text-sky-300 ${className}`}>
         <Send className="h-3.5 w-3.5" />
         Get a free GATE question every morning on Telegram
@@ -63,7 +100,7 @@ export function TelegramJoinLink({ where, className = "", compact = false }: { w
         <p className="text-sm font-extrabold leading-tight text-[var(--text-primary)]">A GATE question every morning</p>
         <p className="mt-0.5 text-xs text-[var(--text-secondary)]">One real past-paper question every morning for your branch, answer hidden until you tap. Free on Telegram.</p>
       </div>
-      <a href={TELEGRAM_CHANNEL_URL} onClick={open(`${where}_channel`)} target="_blank" rel="noopener noreferrer" className={`${BTN_MAIN} shrink-0`}>Join <ArrowRight className="h-3.5 w-3.5" /></a>
+      <a href={branchUrl} onClick={open(`${where}_channel`)} target="_blank" rel="noopener noreferrer" className={`${BTN_MAIN} shrink-0`}>Join <ArrowRight className="h-3.5 w-3.5" /></a>
     </div>
   );
 }
