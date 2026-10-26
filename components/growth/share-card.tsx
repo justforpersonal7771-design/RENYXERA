@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "@/store/use-auth-store";
+import { usePaperLabel } from "@/lib/branch/use-paper-label";
 import { generateAvatarDataUri, useAvatarStyles } from "@/lib/avatar/generate-avatar";
 import { isAvatarStyleId } from "@/lib/avatar/dicebear-styles";
 import { Download, ImagePlus, RotateCcw, Share2, UserRound } from "lucide-react";
@@ -12,8 +13,15 @@ import { track } from "@/lib/growth/track";
  * are added only if the student ticks the box for that field and types it; nothing is read from the account or sent
  * anywhere. The image is drawn in the browser, then shared as a file (or downloaded).
  */
+const BRANCH_SLUGS = [
+  { paper: "CS", slug: "gate-cse" }, { paper: "EC", slug: "gate-ece" }, { paper: "EE", slug: "gate-ee" },
+  { paper: "ME", slug: "gate-me" }, { paper: "CE", slug: "gate-ce" }, { paper: "DA", slug: "gate-da" },
+];
+
 export function ShareCard({ link, text }: { link: string; text: string }) {
   const [open, setOpen] = useState(false);
+  const paper = usePaperLabel();
+  const mySlug = BRANCH_SLUGS.find((b) => b.paper === paper)?.slug ?? "gate-cse";
   // null = not edited yet: show the value from the profile.
   const [edits, setF] = useState<{ name: string | null; username: string | null; sid: string | null }>({ name: null, username: null, sid: null });
   const [on, setOn] = useState({ name: false, username: false, sid: false });
@@ -39,8 +47,9 @@ export function ShareCard({ link, text }: { link: string; text: string }) {
   const draw = async (): Promise<Blob | null> => {
     const parts = [on.name && f.name.trim(), on.username && f.username.trim() && `@${f.username.trim().replace(/^@/, "")}`, on.sid && f.sid.trim() && `ID ${f.sid.trim()}`].filter(Boolean) as string[];
     const custom = parts.length > 0 || (!!avatar && onAvatar);
+    // The card is the student's own branch card; the other branches are shown as small badges.
     const img = new Image();
-    img.src = custom ? "/og/custom-base.png" : "/og/default.png";
+    img.src = `/og/${mySlug}.png`;
     await img.decode();
     const c = document.createElement("canvas");
     c.width = 1200; c.height = 630;
@@ -62,6 +71,20 @@ export function ShareCard({ link, text }: { link: string; text: string }) {
       g.fillStyle = "#58508c"; g.font = "500 21px Sora, Manrope, system-ui, sans-serif";
       g.fillText(parts.filter((p) => p !== (on.name && f.name.trim())).join("  ·  ").slice(0, 46), x, 538);
     }
+    // Other branches strip (bottom right, under the big branch logo).
+    const others = BRANCH_SLUGS.filter((b) => b.slug !== mySlug);
+    g.fillStyle = "rgba(255,255,255,.88)"; g.beginPath(); g.roundRect(760, 532, 412, 82, 41); g.fill();
+    g.fillStyle = "#58508c"; g.font = "700 14px Sora, Manrope, system-ui, sans-serif"; g.fillText("ALSO ON RENYXERA", 784, 556);
+    for (let i = 0; i < others.length; i++) {
+      const im = new Image(); im.src = `/brand/branch/${others[i].slug}.png`;
+      try { await im.decode(); g.drawImage(im, 784 + i * 74, 562, 44, 44); } catch { /* skip */ }
+    }
+    // Referral line replaces the plain URL: the friend sees what they get.
+    g.fillStyle = "#faf8ff"; g.fillRect(56, 560, 690, 50);
+    g.fillStyle = "#6d28d9"; g.font = "700 20px Sora, Manrope, system-ui, sans-serif";
+    g.fillText(`Join free with my link — bonus AI help for both of us`, 66, 584);
+    g.fillStyle = "#58508c"; g.font = "500 17px 'JetBrains Mono', ui-monospace, monospace";
+    g.fillText(link.replace(/^https?:\/\//, "").slice(0, 52), 66, 606);
     return new Promise((r) => c.toBlob((b) => r(b), "image/png"));
   };
 
@@ -76,7 +99,7 @@ export function ShareCard({ link, text }: { link: string; text: string }) {
     }, 250);
     return () => { alive = false; clearTimeout(t); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, f, on, onAvatar, avatar]);
+  }, [open, f.name, f.username, f.sid, on, onAvatar, avatar, mySlug, link]);
 
   const go = async (mode: "share" | "download") => {
     setBusy(true);

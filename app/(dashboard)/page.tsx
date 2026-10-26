@@ -28,6 +28,9 @@ import { StudyTimer } from "@/components/dashboard/study-timer";
 import { InstallPrompt } from "@/components/growth/install-prompt";
 import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
+import { FeatureDeck } from "@/components/dashboard/feature-deck";
+import { QuestionRepository } from "@/lib/repository/question-repository";
+import { usePaperLabel } from "@/lib/branch/use-paper-label";
 import { NextActionHero, MarksLeakCard, RevisionDueCard, SubjectTilesCard, YearDotsCard, useSolvedIds } from "@/components/dashboard/bento";
 
 // Everything below the hero is client-only and code-split.
@@ -126,7 +129,11 @@ export default function Home() {
     .filter((t) => t.attempted >= 2)
     .sort((a, b) => a.correct / a.attempted - b.correct / b.attempted)[0] ?? null;
   const solvedIds = useSolvedIds(isInitialized);
-  void studyHours; void bookmarksCount; void bestStreak; void weakTopicsCount; void strongTopicsCount;
+  const paper = usePaperLabel();
+  const totalBank = isInitialized ? QuestionRepository.getAllQuestions().filter((q) => !(q as { isAiGenerated?: boolean }).isAiGenerated && !q.origin_branch).length : 0;
+  const [daysToGate, setDaysToGate] = useState<number | null>(null);
+  useEffect(() => { const t = setTimeout(() => setDaysToGate(Math.max(0, Math.ceil((Date.UTC(2027, 1, 6) - 5.5 * 3600_000 - Date.now()) / 86_400_000))), 0); return () => clearTimeout(t); }, []);
+  void bookmarksCount; void bestStreak; void weakTopicsCount; void strongTopicsCount;
 
   return (
     <div className="w-full space-y-8">
@@ -225,6 +232,11 @@ export default function Home() {
       </div>
 
       <WeeklyBenchmarkCard />
+
+      {/* R18 B1: Swaseekh-style sticky stacking deck, with the student's own numbers. */}
+      <FeatureDeck solved={solvedCount} totalBank={totalBank} paper={paper} accuracy={accuracyValue} pendingMistakes={pendingMistakesCount}
+        subjects={dashboardMetrics?.subjectPerformance ?? []} topics={dashboardMetrics?.topicPerformance ?? []}
+        studyHours={studyHours} streak={streakDays} daysToGate={daysToGate} />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         <div className="lg:col-span-8 flex flex-col gap-4">

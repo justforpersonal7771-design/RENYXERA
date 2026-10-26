@@ -1135,6 +1135,12 @@ export default function ExamSetupPage() {
                         )}
                       </label>
                       <div className="relative">
+                        {isGoalSliderActive && selectedTopic && !goalRecommendedTopics.has(selectedTopic) && (
+                          <p role="status" className="mb-2 flex flex-wrap items-center gap-2 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 text-xs font-semibold text-amber-800 dark:text-amber-200">
+                            <Target className="w-3.5 h-3.5 shrink-0" />
+                            <span className="min-w-0 flex-1">&ldquo;{selectedTopic}&rdquo; is outside your {goalTargetPercent}% Focus Target. You can still practise it, but it isn&apos;t one of your priority topics.</span>
+                          </p>
+                        )}
                         <CustomDropdown
                           value={selectedTopic}
                           onChange={(v) => setSelectedTopic(v)}

@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { useDataStore } from "@/store/use-data-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
+import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goal-slider-store";
+import { computeGoalSliderResult, filterOfficialQuestions } from "@/lib/analytics/goal-slider-engine";
 
 /** Topic browser: every subject and topic in your paper with how many questions there are, searchable. Tap a topic to practise it. */
 const TINTS = ["peri", "mint", "peach", "lilac", "sky", "rose", "butter"] as const;
@@ -26,6 +28,14 @@ export default function BrowseTopicsPage() {
     return [...by.entries()].map(([subject, topics]) => ({ subject, total: [...topics.values()].reduce((a, b) => a + b, 0), topics: [...topics.entries()].sort((a, b) => b[1] - a[1]) })).sort((a, b) => b.total - a.total);
   }, [isInitialized]);
 
+  // Focus Target (goal slider): topics inside it are starred, the rest dimmed and labelled.
+  const { targetPercent, load } = useGoalSliderStore();
+  useEffect(() => { void load(); }, [load]);
+  const focusOn = targetPercent < GOAL_SLIDER_DEFAULT_PERCENT;
+  const inFocus = useMemo(() => {
+    if (!isInitialized || !focusOn) return null;
+    return new Set(computeGoalSliderResult(filterOfficialQuestions(QuestionRepository.getAllQuestions()), targetPercent).includedTopics.map((t) => t.topic));
+  }, [isInitialized, focusOn, targetPercent]);
   const needle = q.trim().toLowerCase();
   const shown = subjects.map((s) => ({ ...s, topics: needle && !s.subject.toLowerCase().includes(needle) ? s.topics.filter(([t]) => t.toLowerCase().includes(needle)) : s.topics })).filter((s) => s.topics.length > 0);
   const count = shown.reduce((n, s) => n + s.topics.length, 0);
@@ -43,7 +53,8 @@ export default function BrowseTopicsPage() {
       </label>
       {!isInitialized ? <div className="skeleton-shimmer h-64 rounded-3xl" /> : shown.length === 0 ? <p className="text-sm text-[var(--text-secondary)]">No topic matches “{q}”.</p> : (
         <>
-          <p className="text-xs text-[var(--text-muted)]">{count} topic{count === 1 ? "" : "s"}</p>
+          <p className="flex flex-wrap items-center gap-3 text-xs text-[var(--text-muted)]">{count} topic{count === 1 ? "" : "s"}
+            {inFocus && <span className="rounded-full bg-amber-500/10 px-2.5 py-1 font-semibold text-amber-800 dark:text-amber-200">Focus Target {targetPercent}%: ★ priority topics · dimmed ones are outside it</span>}</p>
           {/* Bento of pastel subject cards: share of the paper, then topics as tappable chips sized by question count. */}
           <div className="grid min-w-0 gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {shown.map((s, i) => {
@@ -64,10 +75,10 @@ export default function BrowseTopicsPage() {
                   <ul className="mt-3 flex flex-wrap gap-1.5">
                     {s.topics.map(([topic, n]) => (
                       <li key={topic} className="max-w-full">
-                        <Link href={`/setup?subject=${encodeURIComponent(s.subject)}&topic=${encodeURIComponent(topic)}`} title={`${n} questions — practise this topic`}
+                        <Link href={`/setup?subject=${encodeURIComponent(s.subject)}&topic=${encodeURIComponent(topic)}`} title={`${n} questions — practise this topic${inFocus && !inFocus.has(topic) ? " (outside your Focus Target)" : ""}`}
                           className="card-inset group relative inline-flex max-w-full items-center gap-2 overflow-hidden !rounded-full py-1.5 pl-3 pr-1.5 text-[12.5px] font-medium text-[var(--text-primary)] transition hover:-translate-y-px">
                           <span aria-hidden className="absolute inset-y-0 left-0 bg-[color-mix(in_srgb,var(--tint-ink)_12%,transparent)]" style={{ width: `${(n / max) * 100}%` }} />
-                          <span className="relative min-w-0 truncate">{topic}</span>
+                          <span className={`relative min-w-0 truncate ${inFocus && !inFocus.has(topic) ? "opacity-50" : ""}`}>{inFocus?.has(topic) ? "★ " : ""}{topic}</span>
                           <span className="relative shrink-0 rounded-full bg-[var(--tint-ink)] px-1.5 font-num text-[10px] font-bold text-white">{n}</span>
                         </Link>
                       </li>
