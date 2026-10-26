@@ -391,7 +391,7 @@ export default function AIMentorPage() {
             initial={{ opacity: 0, y: -8, scale: 0.99 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
-            className="bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-6 md:p-7 rounded-3xl shadow-lg shadow-violet-600/20 relative overflow-hidden"
+            className="bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-6 md:p-7 rounded-[var(--card-radius)] shadow-lg shadow-violet-600/20 relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-300/20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-40 h-40 bg-fuchsia-400/20 rounded-full blur-3xl -ml-8 -mb-8 pointer-events-none" />
@@ -482,7 +482,7 @@ export default function AIMentorPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: 0.1 }}
-              className="card-glass rounded-2xl p-5 shadow-sm space-y-4"
+              className="card-pastel p-5 space-y-4" data-tint="lilac"
             >
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
                 <div>
@@ -584,7 +584,7 @@ export default function AIMentorPage() {
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ delay: 0.1 + idx * 0.05 }}
                   >
-                    <TiltCard as="button" onClick={() => router.push(item.href)} className="card-glass p-4 rounded-2xl flex flex-col justify-between shadow-sm overflow-hidden group">
+                    <TiltCard as="button" onClick={() => router.push(item.href)} className="card-pastel p-4 flex flex-col justify-between shadow-sm overflow-hidden group">
                       <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-[0.15] ${item.glow} pointer-events-none group-hover:opacity-30 transition-opacity`} />
                       <div className="relative flex items-start justify-between w-full mb-3">
                         <div className={`w-9 h-9 rounded-xl ${item.badge} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:-rotate-6`}>
@@ -603,7 +603,7 @@ export default function AIMentorPage() {
               </div>
 
               {/* AI Prerequisite Knowledge Graph */}
-              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-pastel p-5 space-y-4" data-tint="sky">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
                   <div>
                     <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
@@ -765,7 +765,7 @@ export default function AIMentorPage() {
 
               {/* Saved Shortcuts Library (Part 4) — AI-generated tricks/shortcuts only;
                   plain personal notes live in the separate Saved Notes card below. */}
-              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-pastel p-5 space-y-4" data-tint="peach">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
                   <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
                     <Zap className="w-4 h-4 text-amber-500" />
@@ -830,7 +830,7 @@ export default function AIMentorPage() {
 
               {/* Saved Notes — plain personal notes/observations, kept separate from the
                   AI-generated Shortcut Library above. */}
-              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-pastel p-5 space-y-4" data-tint="mint">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
                   <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
                     <StickyNote className="w-4 h-4 text-indigo-500" />
@@ -894,7 +894,7 @@ export default function AIMentorPage() {
             >
 
               {/* Mistake Cognitive Patterns (Part 5) */}
-              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-pastel p-5 space-y-4" data-tint="rose">
                 <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
                   <AlertTriangle className="w-4 h-4 text-rose-500 animate-pulse" />
                   Mistake Cognitive Patterns
@@ -963,7 +963,7 @@ export default function AIMentorPage() {
               </div>
 
               {/* Learning Timeline Journey Map (Part 12) */}
-              <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="card-pastel p-5 space-y-4" data-tint="butter">
                 <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
                   <Activity className="w-4 h-4 text-indigo-500" />
                   Your Learning Timeline

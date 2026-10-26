@@ -2,6 +2,7 @@
 
 import { SmartUpgrade } from "@/components/growth/smart-upgrade";
 import { useEffect, useState, useMemo } from "react";
+import { QuestionRepository } from "@/lib/repository/question-repository";
 import { useRouter } from "next/navigation";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { useDataStore } from "@/store/use-data-store";
@@ -203,7 +204,7 @@ export default function AnalyticsDashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {hud.map((stat, idx) => (
               <motion.div key={stat.label} {...rise} transition={{ ...rise.transition, delay: idx * 0.06 }}>
-                <TiltCard className="card-glass rounded-2xl p-5 shadow-sm flex items-center gap-4">
+                <TiltCard className="card-pastel p-5 flex items-center gap-4" data-tint={(["lilac", "sky", "mint", "peach"] as const)[idx % 4]}>
                   <RadialGauge value={stat.value} size={84} stroke={8} from={stat.from} to={stat.to} className="text-[var(--text-primary)] shrink-0">
                     <CountUp value={stat.value} suffix="%" className="text-lg font-bold text-[var(--text-primary)]" />
                   </RadialGauge>
@@ -221,13 +222,16 @@ export default function AnalyticsDashboardPage() {
           </div>
         )}
 
+        {/* Where GATE's marks come from vs how you do there (expand a row for its most-asked topics). */}
+        {!loadingIntel && <SubjectShareList subjects={dashboardMetrics?.subjectPerformance ?? []} onPractise={practice} />}
+
         {/* All-India Mock history (empty state when none) */}
 
         {/* 2. Insights + adaptive path */}
         {!loadingIntel && intel && (
           <Reveal>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8 card-glass rounded-2xl p-6 shadow-sm">
+            <div className="lg:col-span-8 card-pastel p-6" data-tint="butter">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
                 Smart insights
@@ -257,12 +261,12 @@ export default function AnalyticsDashboardPage() {
               </div>
             </div>
 
-            <div className="lg:col-span-4 card-glass rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="lg:col-span-4 card-pastel p-6 space-y-4" data-tint="mint">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
                 <Compass className="w-4 h-4 text-emerald-500" />
                 Today&apos;s adaptive path
               </h3>
-              <div className="p-4 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl space-y-2">
+              <div className="card-inset p-4 space-y-2">
                 <span className="block text-[10px] font-bold uppercase tracking-[0.12em] text-indigo-500">Focus topic</span>
                 <span className="block text-sm font-bold text-[var(--text-primary)]">{intel.todaysFocus.topic}</span>
                 <p className="text-[11px] text-[var(--text-muted)] font-medium leading-relaxed">{intel.todaysFocus.reason}</p>
@@ -275,7 +279,7 @@ export default function AnalyticsDashboardPage() {
                   Practise this topic <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
                 </motion.button>
               </div>
-              <div className="p-4 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl">
+              <div className="card-inset p-4">
                 <span className="block text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-500 mb-1">Practice target</span>
                 <span className="block text-sm font-bold text-[var(--text-primary)] mb-1">
                   {intel.todaysTarget.title} · <span className="font-num">{intel.todaysTarget.count}</span> Qs
@@ -289,7 +293,7 @@ export default function AnalyticsDashboardPage() {
 
         {/* 3. Trend + difficulty */}
         <div className="grid grid-cols-1 gap-6">
-          <motion.div {...rise} className="card-glass p-6 rounded-2xl shadow-sm">
+          <motion.div {...rise} className="card-pastel p-6" data-tint="plain">
             <div className="flex items-center justify-between gap-3 mb-6">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-indigo-500" />
@@ -332,7 +336,7 @@ export default function AnalyticsDashboardPage() {
 
 
         {/* 4. Subject explorer — one chart, three metrics, bars act as a filter */}
-        <motion.div {...rise} className="card-glass p-6 rounded-2xl shadow-sm">
+        <motion.div {...rise} className="card-pastel p-6" data-tint="plain">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
             <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-indigo-500" />
@@ -387,7 +391,7 @@ export default function AnalyticsDashboardPage() {
         </motion.div>
 
         {/* 5. Topic explorer — tabs, search, sortable columns, one-click practice */}
-        <motion.div {...rise} className="card-glass rounded-2xl shadow-sm overflow-hidden">
+        <motion.div {...rise} className="card-pastel overflow-hidden" data-tint="plain">
           <div className="p-5 border-b border-[var(--border-subtle)] flex flex-col lg:flex-row lg:items-center gap-3 justify-between">
             <div className="flex flex-wrap items-center gap-3">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)]">Topic explorer</h3>
@@ -506,7 +510,7 @@ export default function AnalyticsDashboardPage() {
           <TierGate tier="pro" feature="Pro analytics" perk="Detailed All-India Mock history, topic ladders from strongest to weakest, and difficulty-wise accuracy — all in one upgrade." className="space-y-6">
             <MockAnalytics />
             <TopicLadders topics={dashboardMetrics.topicPerformance ?? []} />
-          <motion.div {...rise} transition={{ ...rise.transition, delay: 0.06 }} className="card-glass p-6 rounded-2xl shadow-sm">
+          <motion.div {...rise} transition={{ ...rise.transition, delay: 0.06 }} className="card-pastel p-6" data-tint="plain">
             <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-6 flex items-center gap-2">
               <Target className="w-4 h-4 text-rose-500" />
               Difficulty analysis
@@ -535,5 +539,65 @@ export default function AnalyticsDashboardPage() {
       </div>
       </PaidScreen>
     </GuestLock>
+  );
+}
+
+/** Marks share of each subject in the official bank, your accuracy beside it, and the most-asked topics on tap. */
+function SubjectShareList({ subjects, onPractise }: { subjects: { subject: string; attempted: number; correct: number }[]; onPractise: (topic: string) => void }) {
+  const [open, setOpen] = useState<string | null>(null);
+  const rows = useMemo(() => {
+    const all = QuestionRepository.getAllQuestions().filter((q) => !(q as { isAiGenerated?: boolean }).isAiGenerated && !q.origin_branch);
+    const total = all.reduce((n, q) => n + (Number(q.marks) || 0), 0) || 1;
+    const by = new Map<string, { marks: number; topics: Map<string, number> }>();
+    for (const q of all) {
+      const e = by.get(q.subject) ?? { marks: 0, topics: new Map() };
+      e.marks += Number(q.marks) || 0;
+      e.topics.set(q.topic, (e.topics.get(q.topic) ?? 0) + 1);
+      by.set(q.subject, e);
+    }
+    return [...by.entries()].map(([subject, e]) => {
+      const mine = subjects.find((s) => s.subject === subject);
+      return { subject, share: (e.marks / total) * 100, top: [...e.topics.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4), acc: mine?.attempted ? Math.round((mine.correct / mine.attempted) * 100) : null };
+    }).sort((a, b) => b.share - a.share);
+  }, [subjects]);
+  const max = Math.max(1, ...rows.map((r) => r.share));
+  return (
+    <Reveal>
+      <section className="card-pastel p-5 sm:p-6" data-tint="peri">
+        <div className="flex flex-wrap items-end justify-between gap-2">
+          <div><span className="section-label">Where the marks are</span><h3 className="mt-2 text-lg font-extrabold text-[var(--text-primary)]">Share of marks by subject, and how you do there</h3></div>
+          <p className="text-[11px] text-[var(--text-muted)]">From every official paper in your bank · tap a subject</p>
+        </div>
+        <ul className="card-inset mt-4 divide-y divide-[var(--border-subtle)] p-1.5">
+          {rows.map((r) => (
+            <li key={r.subject}>
+              <button type="button" onClick={() => setOpen(open === r.subject ? null : r.subject)} aria-expanded={open === r.subject}
+                className={`grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 rounded-xl px-3 py-2.5 text-left sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)_auto_auto] ${open === r.subject ? "bg-[var(--tint-peri)]" : "hover:bg-[var(--tint-peri)]/60"}`}>
+                <span className="truncate text-sm font-semibold text-[var(--text-primary)]">{r.subject}</span>
+                <span className="order-3 col-span-2 h-2 rounded-full bg-[color-mix(in_srgb,var(--tint-peri-ink)_12%,transparent)] sm:order-none sm:col-span-1">
+                  <span className="block h-full rounded-full bg-[var(--tint-peri-ink)]" style={{ width: `${(r.share / max) * 100}%` }} />
+                </span>
+                <span className="font-num text-sm font-extrabold text-[var(--text-primary)]">{r.share.toFixed(1)}%</span>
+                <span className={`hidden w-20 text-right font-num text-xs font-bold sm:block ${r.acc == null ? "text-[var(--text-muted)]" : r.acc < 40 ? "text-rose-600" : r.acc < 65 ? "text-amber-600" : "text-emerald-600"}`}>{r.acc == null ? "not tried" : `you ${r.acc}%`}</span>
+              </button>
+              <AnimatePresence initial={false}>
+                {open === r.subject && (
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+                    <div className="flex flex-wrap items-center gap-1.5 px-3 pb-3">
+                      <span className="text-[11px] text-[var(--text-muted)]">Most asked:</span>
+                      {r.top.map(([t, n]) => (
+                        <button key={t} type="button" onClick={() => onPractise(t)} className="rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-[11px] font-semibold text-[var(--text-primary)] hover:border-[var(--tint-peri-ink)]">
+                          {t} <span className="font-num text-[var(--tint-peri-ink)]">×{n}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </Reveal>
   );
 }
