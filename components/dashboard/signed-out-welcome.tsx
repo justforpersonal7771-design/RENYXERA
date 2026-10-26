@@ -6,6 +6,7 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { BANK_SUMMARY } from "@/lib/branches";
 import { PromoVideo } from "@/components/marketing/promo-video";
+import { CompareAndFaq } from "@/components/marketing/compare-faq";
 
 const TOTAL_QUESTIONS = Object.values(BANK_SUMMARY).reduce((n, b) => n + (b?.questions ?? 0), 0);
 const PAPERS = Object.keys(BANK_SUMMARY).length;
@@ -24,7 +25,8 @@ export function SignedOutWelcome() {
   const openAuth = useAuthModalStore((s) => s.open);
   if (loading || user) return null;
   return (
-    <section aria-label="Welcome" className="relative overflow-hidden rounded-3xl border border-violet-500/20 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-5 sm:p-8">
+    <>
+    <section aria-label="Welcome" className="card-pastel relative overflow-hidden p-5 sm:p-8" data-tint="lilac">
       <p className="text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">
         {TOTAL_QUESTIONS.toLocaleString("en-IN")} official GATE questions · {PAPERS} papers · 2017–2026
       </p>
@@ -44,7 +46,7 @@ export function SignedOutWelcome() {
       <PromoVideo className="mt-6 max-w-3xl" />
       <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {PERKS.map((p) => (
-          <li key={p.title} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 p-3.5">
+          <li key={p.title} className="card-inset p-3.5">
             <p.icon className="h-4 w-4 text-violet-500" aria-hidden />
             <p className="mt-2 text-sm font-bold text-[var(--text-primary)]">{p.title}</p>
             <p className="mt-0.5 text-xs text-[var(--text-secondary)] leading-relaxed">{p.body}</p>
@@ -52,5 +54,7 @@ export function SignedOutWelcome() {
         ))}
       </ul>
     </section>
+    <CompareAndFaq />
+    </>
   );
 }
