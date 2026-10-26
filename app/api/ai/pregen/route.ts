@@ -51,9 +51,19 @@ export async function POST(req: NextRequest) {
   if (ctl.paused_until && Date.parse(ctl.paused_until) > Date.now()) return NextResponse.json({ ok: true, state: "paused", until: ctl.paused_until, cursor: ctl.cursor });
 
   // The fixed sequence: newest papers first, question order, then HINT → SHORTCUT → EXPLAIN.
-  const { data: qs, error: qErr } = await db.from("questions").select("id").like("id", "GATE_%")
-    .order("year", { ascending: false }).order("session", { ascending: true }).order("question_no", { ascending: true }).range(0, 9999);
-  if (qErr || !qs?.length) return NextResponse.json({ error: "Couldn't load questions." }, { status: 503 });
+  // Paged: the API returns at most 1,000 rows per request, so one request silently saw only the
+  // first 1,000 questions (the job reported "of 3000" and never reached Civil or older papers).
+  const qs: { id: string }[] = [];
+  let qErr: unknown = null;
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await db.from("questions").select("id").like("id", "GATE_%")
+      .order("year", { ascending: false }).order("session", { ascending: true }).order("question_no", { ascending: true }).order("id", { ascending: true })
+      .range(from, from + 999);
+    if (error) { qErr = error; break; }
+    qs.push(...(data ?? []));
+    if (!data || data.length < 1000) break;
+  }
+  if (qErr || !qs.length) return NextResponse.json({ error: "Couldn't load questions." }, { status: 503 });
   const total = qs.length * PREGEN_KINDS.length;
 
   let cursor: number = ctl.cursor;
@@ -100,8 +110,15 @@ export async function POST(req: NextRequest) {
         model: route.model, contents: prompt,
         config: { systemInstruction, responseMimeType: "application/json", maxOutputTokens: route.maxOutputTokens },
       });
-      const text = res.text ?? "";
-      JSON.parse(text); // must be complete JSON, or it's recorded as failed and retried later
+      let text = res.text ?? "";
+      // Must be complete JSON, or it's recorded as failed and retried later. The commonest
+      // breakage is LaTeX inside strings ("\frac", "\(") with unescaped backslashes: escape any
+      // backslash that doesn't start a valid JSON escape, then parse again.
+      try { JSON.parse(text); } catch {
+        const repaired = text.replace(/\\(?!["\\/bfnrtu])/g, "\\\\");
+        JSON.parse(repaired);
+        text = repaired;
+      }
       await db.from("ai_response_cache").upsert({ prompt_hash: key, response: text });
       await db.from("ai_pregen_items").upsert({ question_id: qid, kind, status: "done", model: route.model, cache_key: key, error: null, attempts: (prev?.attempts ?? 0) + 1, updated_at: new Date().toISOString() });
       done.push(`${qid}:${kind}`);
