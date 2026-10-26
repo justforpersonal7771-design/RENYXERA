@@ -110,9 +110,9 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] AI practice sets gated by plan (migration 0039)
 
 **A · Foundation**
-- [ ] **A1 Migration `0040_forge.sql`** — `forge_items` (public half, `release_at`, `status`, `mock_only`), `forge_answers` (private, no policies), `forge_item_stats`; RLS hides unreleased/mock items.
+- [x] **A1 Migration `0040_forge.sql`** written (27 Oct) — **(you) run it in Supabase SQL editor** — `forge_items` (public half, `release_at`, `status`, `mock_only`), `forge_answers` (private, no policies), `forge_item_stats`; RLS hides unreleased/mock items.
   - Done when: security check proves anon/auth can't read answers or unreleased items. Depends on: you run it.
-- [ ] **A2 Entitlement** — Forge block + `canUseForgeQuestions(tier)` in `lib/billing/plans.ts`; Plus limit 🔒F1.
+- [x] **A2 Entitlement** (`FORGE` + `canUseForgeQuestions` in plans.ts; Plus default 10/day until F1) — Forge block + `canUseForgeQuestions(tier)` in `lib/billing/plans.ts`; Plus limit 🔒F1.
 - [ ] **A3 APIs** — `/api/forge/items` (tier/branch/rate-limit), Forge branch in `/api/answers` and `/api/exam/grade`, `/api/forge/report`.
   - Done when: scripted tests for guest/Free/Plus/Pro pass; no answer before submit.
 - [ ] **A4 UI** — Daily Forge card (blurred + upgrade for Free), setup source switch Past papers / Forge / Mixed, Forge badge, solutions, report button, analytics split.
@@ -120,11 +120,11 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **A5 Beta flag** — owner-only until launch.
 
 **B · Authoring pipeline (₹0, Claude sessions)**
-- [ ] **B1 `scripts/forge/profile.py`** — per-topic weight, type mix, difficulty, 3-year trend.
+- [x] **B1 `scripts/forge/profile.py`** (CS: 91 topics weighted) — per-topic weight, type mix, difficulty, 3-year trend.
 - [ ] **B2 `scripts/forge/plan.py`** — batch blueprint (topics × archetypes × difficulty).
 - [ ] **B3 Batch format** — item schema + `verify` code per item.
-- [ ] **B4 `scripts/forge/validate.py`** — schema, code-recomputed keys, distractor logic, PYQ-overlap check, MathJax render.
-- [ ] **B5 `scripts/forge/seed.mjs`** + answer-free `public/data/<CODE>/forge.json`.
+- [x] **B4 `scripts/forge/validate.py`** — schema, code-recomputed keys, distractor logic, PYQ-overlap check, MathJax render.
+- [x] **B5 `scripts/forge/seed.mjs`** (static forge.json still to do) + answer-free `public/data/<CODE>/forge.json`.
 - [ ] **B6 First CS batch of 60** — you spot-check 10; 0 wrong keys required.
 - [ ] **B7 CS buffer** — 300 practice + 30 days Daily Forge + 3 mocks (~800 items, ~14 batches).
 

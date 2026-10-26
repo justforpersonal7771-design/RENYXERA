@@ -1,0 +1,1707 @@
+{
+ "branch": "CS",
+ "papers": 15,
+ "years": [
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025,
+  2026
+ ],
+ "recent": [
+  2024,
+  2025,
+  2026
+ ],
+ "topics": [
+  {
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "questions": 30,
+   "marks": 43,
+   "marks_per_paper": 2.867,
+   "recent_marks_per_paper": 3.167,
+   "weight": 3.0667,
+   "years_asked": 10,
+   "types": {
+    "MSQ": 5,
+    "NAT": 7,
+    "MCQ": 18
+   },
+   "difficulty": {
+    "Medium": 15,
+    "Hard": 6,
+    "Easy": 9
+   }
+  },
+  {
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
+   "questions": 27,
+   "marks": 47,
+   "marks_per_paper": 3.133,
+   "recent_marks_per_paper": 3.0,
+   "weight": 3.0444,
+   "years_asked": 10,
+   "types": {
+    "MCQ": 8,
+    "MSQ": 4,
+    "NAT": 15
+   },
+   "difficulty": {
+    "Medium": 23,
+    "Hard": 4
+   }
+  },
+  {
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
+   "questions": 26,
+   "marks": 40,
+   "marks_per_paper": 2.667,
+   "recent_marks_per_paper": 2.833,
+   "weight": 2.7778,
+   "years_asked": 10,
+   "types": {
+    "MSQ": 6,
+    "NAT": 10,
+    "MCQ": 10
+   },
+   "difficulty": {
+    "Medium": 20,
+    "Hard": 5,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Operating Systems (OS)",
+   "topic": "Memory Management and Virtual Memory",
+   "questions": 21,
+   "marks": 37,
+   "marks_per_paper": 2.467,
+   "recent_marks_per_paper": 2.667,
+   "weight": 2.6,
+   "years_asked": 10,
+   "types": {
+    "NAT": 11,
+    "MCQ": 7,
+    "MSQ": 3
+   },
+   "difficulty": {
+    "Hard": 6,
+    "Medium": 13,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "questions": 20,
+   "marks": 33,
+   "marks_per_paper": 2.2,
+   "recent_marks_per_paper": 2.667,
+   "weight": 2.5111,
+   "years_asked": 8,
+   "types": {
+    "MSQ": 8,
+    "MCQ": 8,
+    "NAT": 4
+   },
+   "difficulty": {
+    "Medium": 15,
+    "Easy": 3,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Programming in C",
+   "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
+   "questions": 26,
+   "marks": 43,
+   "marks_per_paper": 2.867,
+   "recent_marks_per_paper": 2.333,
+   "weight": 2.5111,
+   "years_asked": 9,
+   "types": {
+    "NAT": 15,
+    "MCQ": 10,
+    "MSQ": 1
+   },
+   "difficulty": {
+    "Medium": 20,
+    "Hard": 5,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Computer Networks (CN)",
+   "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
+   "questions": 21,
+   "marks": 31,
+   "marks_per_paper": 2.067,
+   "recent_marks_per_paper": 2.5,
+   "weight": 2.3556,
+   "years_asked": 9,
+   "types": {
+    "MSQ": 6,
+    "MCQ": 10,
+    "NAT": 5
+   },
+   "difficulty": {
+    "Medium": 13,
+    "Easy": 7,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Instruction Pipelining, Performance, Hazard Management",
+   "questions": 16,
+   "marks": 28,
+   "marks_per_paper": 1.867,
+   "recent_marks_per_paper": 2.5,
+   "weight": 2.2889,
+   "years_asked": 9,
+   "types": {
+    "MCQ": 1,
+    "NAT": 13,
+    "MSQ": 2
+   },
+   "difficulty": {
+    "Easy": 1,
+    "Medium": 11,
+    "Hard": 4
+   }
+  },
+  {
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular and Context-Free Languages & Pumping Lemma",
+   "questions": 25,
+   "marks": 40,
+   "marks_per_paper": 2.667,
+   "recent_marks_per_paper": 2.0,
+   "weight": 2.2222,
+   "years_asked": 10,
+   "types": {
+    "MSQ": 10,
+    "MCQ": 15
+   },
+   "difficulty": {
+    "Easy": 2,
+    "Hard": 1,
+    "Medium": 22
+   }
+  },
+  {
+   "subject": "Data Structures",
+   "topic": "Binary Search Trees (BSTs) & Binary Heaps",
+   "questions": 21,
+   "marks": 32,
+   "marks_per_paper": 2.133,
+   "recent_marks_per_paper": 2.167,
+   "weight": 2.1556,
+   "years_asked": 10,
+   "types": {
+    "MSQ": 2,
+    "NAT": 5,
+    "MCQ": 14
+   },
+   "difficulty": {
+    "Hard": 2,
+    "Easy": 9,
+    "Medium": 10
+   }
+  },
+  {
+   "subject": "Digital Logic",
+   "topic": "Number Representations & Fixed/Floating Point Math",
+   "questions": 26,
+   "marks": 33,
+   "marks_per_paper": 2.2,
+   "recent_marks_per_paper": 2.0,
+   "weight": 2.0667,
+   "years_asked": 10,
+   "types": {
+    "MSQ": 5,
+    "MCQ": 16,
+    "NAT": 5
+   },
+   "difficulty": {
+    "Medium": 13,
+    "Hard": 5,
+    "Easy": 8
+   }
+  },
+  {
+   "subject": "Algorithms",
+   "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
+   "questions": 14,
+   "marks": 25,
+   "marks_per_paper": 1.667,
+   "recent_marks_per_paper": 2.167,
+   "weight": 2.0,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 5,
+    "MSQ": 5,
+    "NAT": 4
+   },
+   "difficulty": {
+    "Hard": 2,
+    "Medium": 11,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Computer Networks (CN)",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "questions": 18,
+   "marks": 34,
+   "marks_per_paper": 2.267,
+   "recent_marks_per_paper": 1.833,
+   "weight": 1.9778,
+   "years_asked": 9,
+   "types": {
+    "MCQ": 9,
+    "NAT": 8,
+    "MSQ": 1
+   },
+   "difficulty": {
+    "Medium": 17,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Machine Instructions & Addressing Modes",
+   "questions": 14,
+   "marks": 24,
+   "marks_per_paper": 1.6,
+   "recent_marks_per_paper": 1.833,
+   "weight": 1.7556,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 6,
+    "MSQ": 2,
+    "NAT": 6
+   },
+   "difficulty": {
+    "Easy": 2,
+    "Medium": 10,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Discrete Mathematics",
+   "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
+   "questions": 17,
+   "marks": 27,
+   "marks_per_paper": 1.8,
+   "recent_marks_per_paper": 1.667,
+   "weight": 1.7111,
+   "years_asked": 9,
+   "types": {
+    "MSQ": 3,
+    "MCQ": 6,
+    "NAT": 8
+   },
+   "difficulty": {
+    "Medium": 6,
+    "Hard": 8,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Linear Algebra",
+   "topic": "Matrices, Determinants, & Linear Equation Systems",
+   "questions": 16,
+   "marks": 21,
+   "marks_per_paper": 1.4,
+   "recent_marks_per_paper": 1.833,
+   "weight": 1.6889,
+   "years_asked": 9,
+   "types": {
+    "MSQ": 4,
+    "NAT": 4,
+    "MCQ": 8
+   },
+   "difficulty": {
+    "Medium": 9,
+    "Hard": 2,
+    "Easy": 5
+   }
+  },
+  {
+   "subject": "Algorithms",
+   "topic": "Searching, Sorting, Hashing Mechanisms",
+   "questions": 17,
+   "marks": 23,
+   "marks_per_paper": 1.533,
+   "recent_marks_per_paper": 1.667,
+   "weight": 1.6222,
+   "years_asked": 8,
+   "types": {
+    "MSQ": 2,
+    "NAT": 6,
+    "MCQ": 9
+   },
+   "difficulty": {
+    "Medium": 11,
+    "Hard": 3,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Context-Free Grammars & Push-Down Automata",
+   "questions": 14,
+   "marks": 22,
+   "marks_per_paper": 1.467,
+   "recent_marks_per_paper": 1.667,
+   "weight": 1.6,
+   "years_asked": 6,
+   "types": {
+    "MSQ": 4,
+    "MCQ": 7,
+    "NAT": 3
+   },
+   "difficulty": {
+    "Hard": 4,
+    "Medium": 9,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Operational Puzzles and Systemic Reasoning",
+   "questions": 12,
+   "marks": 20,
+   "marks_per_paper": 1.333,
+   "recent_marks_per_paper": 1.667,
+   "weight": 1.5556,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 12
+   },
+   "difficulty": {
+    "Hard": 3,
+    "Medium": 7,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Operating Systems (OS)",
+   "topic": "File Systems Operations & Disk Scheduling Optimization",
+   "questions": 11,
+   "marks": 20,
+   "marks_per_paper": 1.333,
+   "recent_marks_per_paper": 1.667,
+   "weight": 1.5556,
+   "years_asked": 9,
+   "types": {
+    "NAT": 8,
+    "MSQ": 1,
+    "MCQ": 2
+   },
+   "difficulty": {
+    "Medium": 8,
+    "Hard": 1,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Programming in C",
+   "topic": "Pointers, Multi-Dimensional Arrays, Structures",
+   "questions": 17,
+   "marks": 25,
+   "marks_per_paper": 1.667,
+   "recent_marks_per_paper": 1.5,
+   "weight": 1.5556,
+   "years_asked": 9,
+   "types": {
+    "NAT": 7,
+    "MCQ": 9,
+    "MSQ": 1
+   },
+   "difficulty": {
+    "Medium": 15,
+    "Easy": 1,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Algorithms",
+   "topic": "Minimum Spanning Trees (Prim/Kruskal Algorithms)",
+   "questions": 13,
+   "marks": 23,
+   "marks_per_paper": 1.533,
+   "recent_marks_per_paper": 1.5,
+   "weight": 1.5111,
+   "years_asked": 9,
+   "types": {
+    "MSQ": 2,
+    "MCQ": 6,
+    "NAT": 5
+   },
+   "difficulty": {
+    "Medium": 12,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Transactions, Concurrency Control, Conflict Serializability",
+   "questions": 15,
+   "marks": 23,
+   "marks_per_paper": 1.533,
+   "recent_marks_per_paper": 1.5,
+   "weight": 1.5111,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 9,
+    "MSQ": 5,
+    "NAT": 1
+   },
+   "difficulty": {
+    "Easy": 2,
+    "Medium": 12,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Computer Networks (CN)",
+   "topic": "Transport Layer (Flow Control and Congestion Control, TCP, UDP, Sockets)",
+   "questions": 15,
+   "marks": 22,
+   "marks_per_paper": 1.467,
+   "recent_marks_per_paper": 1.5,
+   "weight": 1.4889,
+   "years_asked": 9,
+   "types": {
+    "MCQ": 6,
+    "NAT": 5,
+    "MSQ": 4
+   },
+   "difficulty": {
+    "Easy": 3,
+    "Medium": 11,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Operating Systems (OS)",
+   "topic": "CPU and I/O Scheduling",
+   "questions": 14,
+   "marks": 21,
+   "marks_per_paper": 1.4,
+   "recent_marks_per_paper": 1.5,
+   "weight": 1.4667,
+   "years_asked": 9,
+   "types": {
+    "NAT": 7,
+    "MCQ": 5,
+    "MSQ": 2
+   },
+   "difficulty": {
+    "Medium": 8,
+    "Easy": 3,
+    "Hard": 3
+   }
+  },
+  {
+   "subject": "Algorithms",
+   "topic": "Asymptotic Analysis (O, Omega, Theta Complexities)",
+   "questions": 19,
+   "marks": 27,
+   "marks_per_paper": 1.8,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.3778,
+   "years_asked": 9,
+   "types": {
+    "MCQ": 15,
+    "MSQ": 3,
+    "NAT": 1
+   },
+   "difficulty": {
+    "Medium": 11,
+    "Hard": 6,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Relational Models, Relational Algebra, Tuple Calculus",
+   "questions": 13,
+   "marks": 21,
+   "marks_per_paper": 1.4,
+   "recent_marks_per_paper": 1.333,
+   "weight": 1.3556,
+   "years_asked": 9,
+   "types": {
+    "MCQ": 8,
+    "NAT": 4,
+    "MSQ": 1
+   },
+   "difficulty": {
+    "Medium": 11,
+    "Easy": 1,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Integrity Constraints & Functional Dependencies",
+   "questions": 10,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 1.5,
+   "weight": 1.3333,
+   "years_asked": 5,
+   "types": {
+    "MSQ": 3,
+    "NAT": 4,
+    "MCQ": 3
+   },
+   "difficulty": {
+    "Medium": 8,
+    "Hard": 1,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Probability & Statistics",
+   "topic": "Random Variables & Sampling Rules",
+   "questions": 11,
+   "marks": 19,
+   "marks_per_paper": 1.267,
+   "recent_marks_per_paper": 1.333,
+   "weight": 1.3111,
+   "years_asked": 7,
+   "types": {
+    "NAT": 5,
+    "MCQ": 6
+   },
+   "difficulty": {
+    "Easy": 1,
+    "Hard": 6,
+    "Medium": 4
+   }
+  },
+  {
+   "subject": "Digital Logic",
+   "topic": "Combinational Logic (Multiplexers, Decoders, Adders)",
+   "questions": 12,
+   "marks": 18,
+   "marks_per_paper": 1.2,
+   "recent_marks_per_paper": 1.333,
+   "weight": 1.2889,
+   "years_asked": 8,
+   "types": {
+    "NAT": 4,
+    "MSQ": 3,
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Medium": 10,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Elementary Statistics and Probability",
+   "questions": 10,
+   "marks": 16,
+   "marks_per_paper": 1.067,
+   "recent_marks_per_paper": 1.333,
+   "weight": 1.2444,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 10
+   },
+   "difficulty": {
+    "Medium": 9,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Digital Logic",
+   "topic": "Sequential Circuits (Flip-Flops, Registers, Counters)",
+   "questions": 11,
+   "marks": 19,
+   "marks_per_paper": 1.267,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.2,
+   "years_asked": 6,
+   "types": {
+    "MCQ": 7,
+    "NAT": 4
+   },
+   "difficulty": {
+    "Medium": 9,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Programming in C",
+   "topic": "Data Types, Syntax, Control Structures, Loops",
+   "questions": 11,
+   "marks": 19,
+   "marks_per_paper": 1.267,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.2,
+   "years_asked": 6,
+   "types": {
+    "NAT": 6,
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Medium": 9,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Numerical Relations & Arithmetic Logic",
+   "questions": 15,
+   "marks": 18,
+   "marks_per_paper": 1.2,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.1778,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 15
+   },
+   "difficulty": {
+    "Easy": 7,
+    "Medium": 8
+   }
+  },
+  {
+   "subject": "Probability & Statistics",
+   "topic": "Conditional Probability & Bayes Theorem",
+   "questions": 11,
+   "marks": 18,
+   "marks_per_paper": 1.2,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.1778,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 3,
+    "NAT": 6,
+    "MSQ": 2
+   },
+   "difficulty": {
+    "Medium": 10,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Compiler Design",
+   "topic": "Syntax-Directed Translation & Runtime Environments",
+   "questions": 11,
+   "marks": 18,
+   "marks_per_paper": 1.2,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.1778,
+   "years_asked": 8,
+   "types": {
+    "MSQ": 2,
+    "MCQ": 7,
+    "NAT": 2
+   },
+   "difficulty": {
+    "Medium": 7,
+    "Easy": 1,
+    "Hard": 3
+   }
+  },
+  {
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "File Organization & Indexing (e.g., B and B+ Trees)",
+   "questions": 10,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.1111,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 3,
+    "MSQ": 2,
+    "NAT": 5
+   },
+   "difficulty": {
+    "Medium": 4,
+    "Hard": 3,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Operating Systems (OS)",
+   "topic": "Concurrency & Synchronization (Semaphores, Mutex, Monitors, Locks)",
+   "questions": 11,
+   "marks": 20,
+   "marks_per_paper": 1.333,
+   "recent_marks_per_paper": 1.0,
+   "weight": 1.1111,
+   "years_asked": 9,
+   "types": {
+    "MSQ": 4,
+    "MCQ": 6,
+    "NAT": 1
+   },
+   "difficulty": {
+    "Hard": 2,
+    "Medium": 8,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Compiler Design",
+   "topic": "Intermediate Code Generation & Local Code Optimization",
+   "questions": 9,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.1111,
+   "years_asked": 4,
+   "types": {
+    "NAT": 3,
+    "MCQ": 5,
+    "MSQ": 1
+   },
+   "difficulty": {
+    "Medium": 7,
+    "Easy": 1,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Operating Systems (OS)",
+   "topic": "System Calls, Processes, Threads, InterProcess Communication",
+   "questions": 12,
+   "marks": 14,
+   "marks_per_paper": 0.933,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.0889,
+   "years_asked": 7,
+   "types": {
+    "NAT": 3,
+    "MSQ": 6,
+    "MCQ": 3
+   },
+   "difficulty": {
+    "Medium": 4,
+    "Easy": 7,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Calculus",
+   "topic": "Limits, Continuity, and Differentiability",
+   "questions": 9,
+   "marks": 12,
+   "marks_per_paper": 0.8,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.0444,
+   "years_asked": 7,
+   "types": {
+    "NAT": 5,
+    "MSQ": 1,
+    "MCQ": 3
+   },
+   "difficulty": {
+    "Medium": 7,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Data Structures",
+   "topic": "Linked Lists & Binary Trees",
+   "questions": 10,
+   "marks": 12,
+   "marks_per_paper": 0.8,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.0444,
+   "years_asked": 7,
+   "types": {
+    "NAT": 3,
+    "MCQ": 7
+   },
+   "difficulty": {
+    "Easy": 6,
+    "Hard": 1,
+    "Medium": 3
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Analogy and Relationship Matching",
+   "questions": 10,
+   "marks": 12,
+   "marks_per_paper": 0.8,
+   "recent_marks_per_paper": 1.167,
+   "weight": 1.0444,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 10
+   },
+   "difficulty": {
+    "Easy": 8,
+    "Medium": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Mensuration and Geometry",
+   "questions": 10,
+   "marks": 17,
+   "marks_per_paper": 1.133,
+   "recent_marks_per_paper": 1.0,
+   "weight": 1.0444,
+   "years_asked": 5,
+   "types": {
+    "MCQ": 10
+   },
+   "difficulty": {
+    "Medium": 6,
+    "Hard": 1,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Normalization Schemes (1NF, 2NF, 3NF, BCNF Boundaries)",
+   "questions": 9,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 1.0,
+   "weight": 1.0,
+   "years_asked": 8,
+   "types": {
+    "MSQ": 4,
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Medium": 6,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Discrete Mathematics",
+   "topic": "Sets, Relations, Functions, Partial Orders, Lattices",
+   "questions": 11,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 1.0,
+   "weight": 1.0,
+   "years_asked": 8,
+   "types": {
+    "MSQ": 5,
+    "MCQ": 2,
+    "NAT": 4
+   },
+   "difficulty": {
+    "Hard": 6,
+    "Medium": 5
+   }
+  },
+  {
+   "subject": "Discrete Mathematics",
+   "topic": "Algebraic Structures (Monoids, Groups)",
+   "questions": 10,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 1.0,
+   "weight": 1.0,
+   "years_asked": 8,
+   "types": {
+    "MSQ": 4,
+    "NAT": 4,
+    "MCQ": 2
+   },
+   "difficulty": {
+    "Medium": 6,
+    "Hard": 2,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Structural Morphing (Mirroring, Assembling, Grouping)",
+   "questions": 6,
+   "marks": 9,
+   "marks_per_paper": 0.6,
+   "recent_marks_per_paper": 1.167,
+   "weight": 0.9778,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 6
+   },
+   "difficulty": {
+    "Medium": 3,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Discrete Mathematics",
+   "topic": "Propositional and First-Order Quantifier Logic",
+   "questions": 14,
+   "marks": 19,
+   "marks_per_paper": 1.267,
+   "recent_marks_per_paper": 0.833,
+   "weight": 0.9778,
+   "years_asked": 9,
+   "types": {
+    "MCQ": 11,
+    "MSQ": 3
+   },
+   "difficulty": {
+    "Medium": 6,
+    "Hard": 6,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Discrete Mathematics",
+   "topic": "Advanced Graph Bounds (Matching, Coloring Theorems)",
+   "questions": 7,
+   "marks": 13,
+   "marks_per_paper": 0.867,
+   "recent_marks_per_paper": 1.0,
+   "weight": 0.9556,
+   "years_asked": 6,
+   "types": {
+    "MSQ": 4,
+    "NAT": 3
+   },
+   "difficulty": {
+    "Hard": 2,
+    "Medium": 4,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Data Structures",
+   "topic": "Abstract Data Types (ADTs), Stacks, Queues",
+   "questions": 8,
+   "marks": 13,
+   "marks_per_paper": 0.867,
+   "recent_marks_per_paper": 1.0,
+   "weight": 0.9556,
+   "years_asked": 8,
+   "types": {
+    "MSQ": 3,
+    "NAT": 3,
+    "MCQ": 2
+   },
+   "difficulty": {
+    "Medium": 7,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Logic Deduction and Induction Frameworks",
+   "questions": 12,
+   "marks": 20,
+   "marks_per_paper": 1.333,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.8889,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 12
+   },
+   "difficulty": {
+    "Easy": 3,
+    "Medium": 9
+   }
+  },
+  {
+   "subject": "Linear Algebra",
+   "topic": "Eigenvalues and Eigenvectors",
+   "questions": 12,
+   "marks": 20,
+   "marks_per_paper": 1.333,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.8889,
+   "years_asked": 9,
+   "types": {
+    "MCQ": 6,
+    "NAT": 5,
+    "MSQ": 1
+   },
+   "difficulty": {
+    "Easy": 2,
+    "Medium": 8,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Reading Comprehension",
+   "questions": 10,
+   "marks": 19,
+   "marks_per_paper": 1.267,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.8667,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 10
+   },
+   "difficulty": {
+    "Medium": 10
+   }
+  },
+  {
+   "subject": "Computer Networks (CN)",
+   "topic": "Routing Protocols (Shortest Path, Flooding, Distance Vector, Link State Routing)",
+   "questions": 8,
+   "marks": 13,
+   "marks_per_paper": 0.867,
+   "recent_marks_per_paper": 0.833,
+   "weight": 0.8444,
+   "years_asked": 6,
+   "types": {
+    "MCQ": 3,
+    "NAT": 3,
+    "MSQ": 2
+   },
+   "difficulty": {
+    "Medium": 6,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "SQL Queries (DDL/DML, Joins, Aggregations)",
+   "questions": 10,
+   "marks": 17,
+   "marks_per_paper": 1.133,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.8222,
+   "years_asked": 8,
+   "types": {
+    "NAT": 6,
+    "MSQ": 1,
+    "MCQ": 3
+   },
+   "difficulty": {
+    "Medium": 8,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Discrete Mathematics",
+   "topic": "Combinatorics (Counting Rules, Summation Formulas)",
+   "questions": 10,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.7778,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 3,
+    "NAT": 7
+   },
+   "difficulty": {
+    "Hard": 5,
+    "Medium": 5
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Numerical Computation (Percentages, Ratios)",
+   "questions": 9,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.7778,
+   "years_asked": 5,
+   "types": {
+    "MCQ": 9
+   },
+   "difficulty": {
+    "Medium": 8,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Operating Systems (OS)",
+   "topic": "Deadlock Prevention, Avoidance, Detection, Recovery",
+   "questions": 9,
+   "marks": 14,
+   "marks_per_paper": 0.933,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.7556,
+   "years_asked": 7,
+   "types": {
+    "MSQ": 4,
+    "NAT": 2,
+    "MCQ": 3
+   },
+   "difficulty": {
+    "Medium": 8,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "Compiler Design",
+   "topic": "Data Flow Analysis: Constant Propagation, Liveliness Analysis, Common Subexpression Elimination",
+   "questions": 5,
+   "marks": 9,
+   "marks_per_paper": 0.6,
+   "recent_marks_per_paper": 0.833,
+   "weight": 0.7556,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Medium": 1,
+    "Hard": 2,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Probability & Statistics",
+   "topic": "Continuous/Discrete Distributions (Uniform, Normal, Exponential)",
+   "questions": 6,
+   "marks": 9,
+   "marks_per_paper": 0.6,
+   "recent_marks_per_paper": 0.833,
+   "weight": 0.7556,
+   "years_asked": 5,
+   "types": {
+    "MCQ": 1,
+    "NAT": 5
+   },
+   "difficulty": {
+    "Easy": 1,
+    "Medium": 3,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Computer Networks (CN)",
+   "topic": "OSI & TCP/IP Protocol Layers",
+   "questions": 5,
+   "marks": 6,
+   "marks_per_paper": 0.4,
+   "recent_marks_per_paper": 0.833,
+   "weight": 0.6889,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Medium": 2,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Data Structures",
+   "topic": "BSTs & Binary Heaps",
+   "questions": 3,
+   "marks": 5,
+   "marks_per_paper": 0.333,
+   "recent_marks_per_paper": 0.833,
+   "weight": 0.6667,
+   "years_asked": 1,
+   "types": {
+    "MSQ": 1,
+    "MCQ": 1,
+    "NAT": 1
+   },
+   "difficulty": {
+    "Medium": 2,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Basic Vocabulary (Words, Idioms, Phrases in Context)",
+   "questions": 9,
+   "marks": 10,
+   "marks_per_paper": 0.667,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.6667,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 9
+   },
+   "difficulty": {
+    "Easy": 9
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Mathematical Operations (Powers, Exponents, Logarithms)",
+   "questions": 10,
+   "marks": 15,
+   "marks_per_paper": 1.0,
+   "recent_marks_per_paper": 0.5,
+   "weight": 0.6667,
+   "years_asked": 7,
+   "types": {
+    "MCQ": 10
+   },
+   "difficulty": {
+    "Medium": 8,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Turing Machines & Undecidability",
+   "questions": 12,
+   "marks": 19,
+   "marks_per_paper": 1.267,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.6444,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 9,
+    "MSQ": 3
+   },
+   "difficulty": {
+    "Medium": 12
+   }
+  },
+  {
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "I/O Interfaces (Interrupts & DMA Control Modes)",
+   "questions": 9,
+   "marks": 9,
+   "marks_per_paper": 0.6,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.6444,
+   "years_asked": 8,
+   "types": {
+    "MCQ": 7,
+    "NAT": 2
+   },
+   "difficulty": {
+    "Medium": 5,
+    "Easy": 3,
+    "Hard": 1
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Data Interpretation (Bar Graphs, Pie Charts, Histograms)",
+   "questions": 4,
+   "marks": 8,
+   "marks_per_paper": 0.533,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.6222,
+   "years_asked": 3,
+   "types": {
+    "MCQ": 4
+   },
+   "difficulty": {
+    "Medium": 4
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Pattern Identification in 2D and 3D Spaces",
+   "questions": 4,
+   "marks": 7,
+   "marks_per_paper": 0.467,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.6,
+   "years_asked": 3,
+   "types": {
+    "MCQ": 4
+   },
+   "difficulty": {
+    "Medium": 4
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Combinatorics Core (Permutations, Combinations, Series)",
+   "questions": 4,
+   "marks": 6,
+   "marks_per_paper": 0.4,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.5778,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 4
+   },
+   "difficulty": {
+    "Easy": 2,
+    "Medium": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Paper Folding and Cutting Diagnostics",
+   "questions": 4,
+   "marks": 6,
+   "marks_per_paper": 0.4,
+   "recent_marks_per_paper": 0.667,
+   "weight": 0.5778,
+   "years_asked": 3,
+   "types": {
+    "MCQ": 4
+   },
+   "difficulty": {
+    "Medium": 3,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Graphical Representations (2D and 3D Plots, Maps, Tables)",
+   "questions": 5,
+   "marks": 8,
+   "marks_per_paper": 0.533,
+   "recent_marks_per_paper": 0.5,
+   "weight": 0.5111,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Medium": 3,
+    "Easy": 2
+   }
+  },
+  {
+   "subject": "Computer Networks (CN)",
+   "topic": "Application Layer (DNS, SMTP, HTTP, FTP, Email) & Security",
+   "questions": 9,
+   "marks": 12,
+   "marks_per_paper": 0.8,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.4889,
+   "years_asked": 7,
+   "types": {
+    "MSQ": 2,
+    "MCQ": 3,
+    "NAT": 4
+   },
+   "difficulty": {
+    "Medium": 5,
+    "Easy": 2,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Calculus",
+   "topic": "Mean Value Theorems & Definite Integration",
+   "questions": 7,
+   "marks": 7,
+   "marks_per_paper": 0.467,
+   "recent_marks_per_paper": 0.5,
+   "weight": 0.4889,
+   "years_asked": 7,
+   "types": {
+    "MSQ": 1,
+    "MCQ": 3,
+    "NAT": 3
+   },
+   "difficulty": {
+    "Medium": 5,
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Algorithms",
+   "topic": "Dynamic Programming Infrastructure",
+   "questions": 4,
+   "marks": 7,
+   "marks_per_paper": 0.467,
+   "recent_marks_per_paper": 0.5,
+   "weight": 0.4889,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 2,
+    "NAT": 1,
+    "MSQ": 1
+   },
+   "difficulty": {
+    "Hard": 2,
+    "Medium": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Vocabulary Mechanics (Antonyms, Synonyms)",
+   "questions": 4,
+   "marks": 4,
+   "marks_per_paper": 0.267,
+   "recent_marks_per_paper": 0.5,
+   "weight": 0.4222,
+   "years_asked": 3,
+   "types": {
+    "MCQ": 4
+   },
+   "difficulty": {
+    "Easy": 4
+   }
+  },
+  {
+   "subject": "Probability & Statistics",
+   "topic": "Standard Distributions (Poisson, Binomial)",
+   "questions": 3,
+   "marks": 5,
+   "marks_per_paper": 0.333,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.3333,
+   "years_asked": 3,
+   "types": {
+    "NAT": 3
+   },
+   "difficulty": {
+    "Easy": 2,
+    "Medium": 1
+   }
+  },
+  {
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "ER-Model",
+   "questions": 5,
+   "marks": 5,
+   "marks_per_paper": 0.333,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.3333,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Medium": 2,
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "ALU, Control Unit Design, Data-Path Operations",
+   "questions": 4,
+   "marks": 4,
+   "marks_per_paper": 0.267,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.3111,
+   "years_asked": 3,
+   "types": {
+    "MSQ": 1,
+    "NAT": 1,
+    "MCQ": 2
+   },
+   "difficulty": {
+    "Medium": 2,
+    "Hard": 1,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "Linear Algebra",
+   "topic": "Matrix Factorization & LU Decomposition",
+   "questions": 2,
+   "marks": 4,
+   "marks_per_paper": 0.267,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.3111,
+   "years_asked": 2,
+   "types": {
+    "MSQ": 1,
+    "MCQ": 1
+   },
+   "difficulty": {
+    "Medium": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Narrative Sequencing",
+   "questions": 2,
+   "marks": 4,
+   "marks_per_paper": 0.267,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.3111,
+   "years_asked": 2,
+   "types": {
+    "MCQ": 2
+   },
+   "difficulty": {
+    "Medium": 2
+   }
+  },
+  {
+   "subject": "Discrete Mathematics",
+   "topic": "Recurrence Relations and Generating Functions",
+   "questions": 6,
+   "marks": 9,
+   "marks_per_paper": 0.6,
+   "recent_marks_per_paper": 0.167,
+   "weight": 0.3111,
+   "years_asked": 5,
+   "types": {
+    "MCQ": 4,
+    "MSQ": 1,
+    "NAT": 1
+   },
+   "difficulty": {
+    "Medium": 2,
+    "Hard": 4
+   }
+  },
+  {
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Main Memory & Virtual Memory Mechanics",
+   "questions": 2,
+   "marks": 3,
+   "marks_per_paper": 0.2,
+   "recent_marks_per_paper": 0.333,
+   "weight": 0.2889,
+   "years_asked": 2,
+   "types": {
+    "MSQ": 1,
+    "NAT": 1
+   },
+   "difficulty": {
+    "Medium": 2
+   }
+  },
+  {
+   "subject": "Programming in C",
+   "topic": "Dynamic Memory Allocation & File Handling",
+   "questions": 3,
+   "marks": 3,
+   "marks_per_paper": 0.2,
+   "recent_marks_per_paper": 0.167,
+   "weight": 0.1778,
+   "years_asked": 2,
+   "types": {
+    "MCQ": 3
+   },
+   "difficulty": {
+    "Easy": 1,
+    "Medium": 2
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Basic English Grammar (Tenses, Articles, Adjectives)",
+   "questions": 3,
+   "marks": 3,
+   "marks_per_paper": 0.2,
+   "recent_marks_per_paper": 0.167,
+   "weight": 0.1778,
+   "years_asked": 2,
+   "types": {
+    "MCQ": 3
+   },
+   "difficulty": {
+    "Easy": 3
+   }
+  },
+  {
+   "subject": "Algorithms",
+   "topic": "Divide-and-Conquer Designs",
+   "questions": 2,
+   "marks": 2,
+   "marks_per_paper": 0.133,
+   "recent_marks_per_paper": 0.167,
+   "weight": 0.1556,
+   "years_asked": 2,
+   "types": {
+    "NAT": 2
+   },
+   "difficulty": {
+    "Hard": 2
+   }
+  },
+  {
+   "subject": "Algorithms",
+   "topic": "Greedy Approach & Divide-and-Conquer Designs",
+   "questions": 4,
+   "marks": 7,
+   "marks_per_paper": 0.467,
+   "recent_marks_per_paper": 0.0,
+   "weight": 0.1556,
+   "years_asked": 3,
+   "types": {
+    "MCQ": 2,
+    "NAT": 2
+   },
+   "difficulty": {
+    "Medium": 3,
+    "Easy": 1
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Averages, Mixtures, and Alligations",
+   "questions": 1,
+   "marks": 1,
+   "marks_per_paper": 0.067,
+   "recent_marks_per_paper": 0.167,
+   "weight": 0.1333,
+   "years_asked": 1,
+   "types": {
+    "MCQ": 1
+   },
+   "difficulty": {
+    "Medium": 1
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Grammar Rules (Prepositions, Conjunctions, Verb-Noun Agreement, Other Parts of Speech)",
+   "questions": 5,
+   "marks": 5,
+   "marks_per_paper": 0.333,
+   "recent_marks_per_paper": 0.0,
+   "weight": 0.1111,
+   "years_asked": 4,
+   "types": {
+    "MCQ": 5
+   },
+   "difficulty": {
+    "Easy": 5
+   }
+  },
+  {
+   "subject": "General Aptitude",
+   "topic": "Shape Transformation (Translation, Rotation, Scaling)",
+   "questions": 1,
+   "marks": 2,
+   "marks_per_paper": 0.133,
+   "recent_marks_per_paper": 0.0,
+   "weight": 0.0444,
+   "years_asked": 1,
+   "types": {
+    "MCQ": 1
+   },
+   "difficulty": {
+    "Medium": 1
+   }
+  },
+  {
+   "subject": "Calculus",
+   "topic": "Maxima and Minima Optimization Bounds",
+   "questions": 2,
+   "marks": 2,
+   "marks_per_paper": 0.133,
+   "recent_marks_per_paper": 0.0,
+   "weight": 0.0444,
+   "years_asked": 2,
+   "types": {
+    "MSQ": 1,
+    "MCQ": 1
+   },
+   "difficulty": {
+    "Medium": 2
+   }
+  }
+ ]
+}

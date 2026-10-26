@@ -1,0 +1,161 @@
+{
+  "branch": "CS",
+  "batch": "b000-pilot",
+  "note": "Pilot batch: 6 items to prove the pipeline end to end (profile -> draft -> verify -> seed). Owner spot-check before the first 60.",
+  "items": [
+    {
+      "id": "FORGE_CS_000001",
+      "subject": "Computer Organization and Architecture (COA)",
+      "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
+      "kind": "multi_concept",
+      "difficulty": "H",
+      "question_type": "NAT",
+      "marks": 2,
+      "question_text": "A byte-addressable machine has 34-bit physical addresses and a 128 KB, 8-way set-associative cache with 32-byte blocks. Besides its tag, every cache line stores one valid bit and one dirty bit. The total size of the tag directory (tags plus valid and dirty bits for all lines), in bits, is ________.",
+      "options": [],
+      "answer": { "range": [90112, 90112] },
+      "solution": {
+        "given": "34-bit address, 128 KB cache, 8-way, 32 B blocks, 2 extra bits per line",
+        "find": "total tag-directory bits",
+        "steps": [
+          "Lines = 128 KB / 32 B = 4096. Sets = 4096 / 8 = 512, so the set index needs 9 bits.",
+          "Block offset = log2(32) = 5 bits.",
+          "Tag = 34 - 9 - 5 = 20 bits. Each line keeps 20 + 1 + 1 = 22 bits.",
+          "Directory = 4096 x 22 = 90112 bits."
+        ],
+        "shortcut": "Lines x (tag + extra bits); the associativity only changes how the index/tag split is made.",
+        "trap": "Using the number of sets instead of the number of lines for the total."
+      },
+      "verify": { "lang": "python", "code": "lines = 128*1024//32\nsets = lines//8\nidx = int(math.log2(sets)); off = int(math.log2(32))\ntag = 34 - idx - off\nanswer = lines*(tag+2)" }
+    },
+    {
+      "id": "FORGE_CS_000002",
+      "subject": "Computer Organization and Architecture (COA)",
+      "topic": "Instruction Pipelining, Performance, Hazard Management",
+      "kind": "numeric_chain",
+      "difficulty": "H",
+      "question_type": "NAT",
+      "marks": 2,
+      "question_text": "A 5-stage pipeline has stage delays of 200, 150, 250, 200 and 150 ps, and each pipeline register adds 10 ps. A program of 1000 instructions runs on it; 20% of the instructions are branches, and each branch causes a 2-cycle stall. Assuming no other hazards, the total execution time in nanoseconds (rounded to two decimal places) is ________.",
+      "options": [],
+      "answer": { "range": [365.0, 365.1] },
+      "solution": {
+        "given": "stage delays 200/150/250/200/150 ps, latch 10 ps, 1000 instructions, 200 branches x 2 stalls",
+        "find": "execution time in ns",
+        "steps": [
+          "Clock period = slowest stage + latch = 250 + 10 = 260 ps.",
+          "Cycles = (k + n - 1) + stalls = (5 + 999) + 200 x 2 = 1404.",
+          "Time = 1404 x 260 ps = 365040 ps = 365.04 ns."
+        ],
+        "shortcut": "First instruction takes k cycles, every other one adds 1, every stall adds 1.",
+        "trap": "Adding all stage delays (non-pipelined time) or forgetting the latch delay."
+      },
+      "verify": { "lang": "python", "code": "cycle = max(200,150,250,200,150) + 10\ncycles = 5 + 999 + int(0.2*1000)*2\nanswer = round(cycles*cycle/1000, 2)" }
+    },
+    {
+      "id": "FORGE_CS_000003",
+      "subject": "Theory of Computation (TOC)",
+      "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
+      "kind": "conceptual",
+      "difficulty": "M",
+      "question_type": "MCQ",
+      "marks": 1,
+      "question_text": "Consider the language of all binary strings (read most significant bit first) whose value is divisible by 6; the empty string is taken to have value 0. The number of states in the minimal DFA for this language is",
+      "options": [
+        { "option_id": "A", "text": "3" },
+        { "option_id": "B", "text": "4" },
+        { "option_id": "C", "text": "5" },
+        { "option_id": "D", "text": "6" }
+      ],
+      "answer": { "options": ["B"] },
+      "solution": {
+        "given": "remainders mod 6 give a 6-state DFA",
+        "find": "minimal number of states",
+        "steps": [
+          "Start from the remainder DFA: state r goes to (2r + bit) mod 6; only remainder 0 accepts.",
+          "Remainders 1 and 4 have identical moves (bit 0 goes to 2, bit 1 goes to 3), so they are equivalent; likewise 2 and 5 (bit 0 to 4, bit 1 to 5).",
+          "Merging them leaves {0}, {1,4}, {2,5}, {3}: 4 states."
+        ],
+        "shortcut": "For divisibility by 2^k x m (m odd) the remainder DFA is not always minimal: check equivalent remainders.",
+        "trap": "Answering 6 because 'mod 6 needs 6 states'."
+      },
+      "verify": { "lang": "python", "code": "st = list(range(6)); acc = {0}\nd = lambda s, c: (2*s + c) % 6\nP = [set(acc), set(st) - acc]\nchanged = True\nwhile changed:\n    changed = False; NP = []\n    for g in P:\n        sig = {}\n        for s in g:\n            k = tuple(next(i for i, h in enumerate(P) if d(s, c) in h) for c in (0, 1))\n            sig.setdefault(k, set()).add(s)\n        NP += list(sig.values()); changed = changed or len(sig) > 1\n    P = NP\nanswer = 'ABCD'[len(P) - 3]" }
+    },
+    {
+      "id": "FORGE_CS_000004",
+      "subject": "Digital Logic",
+      "topic": "Number Representations & Fixed/Floating Point Math",
+      "kind": "trap_aware",
+      "difficulty": "M",
+      "question_type": "MCQ",
+      "marks": 1,
+      "question_text": "Two 8-bit two's complement numbers A = B4 (hex) and B = 6E (hex) are added in an 8-bit adder. Which one of the following is correct about the 8-bit result?",
+      "options": [
+        { "option_id": "A", "text": "It is 34 in decimal, and there is no overflow." },
+        { "option_id": "B", "text": "It is 34 in decimal, and overflow occurs because there is a carry out of the MSB." },
+        { "option_id": "C", "text": "It is \\(-222\\) in decimal, and overflow occurs." },
+        { "option_id": "D", "text": "It is \\(-34\\) in decimal, and there is no overflow." }
+      ],
+      "answer": { "options": ["A"] },
+      "solution": {
+        "given": "A = B4h, B = 6Eh, 8-bit two's complement",
+        "find": "signed result and overflow",
+        "steps": [
+          "A = 1011 0100 = -76; B = 0110 1110 = +110.",
+          "-76 + 110 = 34, which fits in [-128, 127].",
+          "Operands have opposite signs, so overflow is impossible; the carry out of the MSB is ignored."
+        ],
+        "shortcut": "Overflow only when both operands have the same sign and the result's sign differs.",
+        "trap": "Treating the carry out of the MSB as overflow."
+      },
+      "verify": { "lang": "python", "code": "a = 0xB4 - 256; b = 0x6E\ns = (a + b) % 256\ns = s - 256 if s > 127 else s\novf = not (-128 <= a + b <= 127)\nanswer = 'A' if (s == 34 and not ovf) else 'X'" }
+    },
+    {
+      "id": "FORGE_CS_000005",
+      "subject": "Operating Systems (OS)",
+      "topic": "Memory Management and Virtual Memory",
+      "kind": "numeric_chain",
+      "difficulty": "H",
+      "question_type": "NAT",
+      "marks": 2,
+      "question_text": "A system uses a TLB and a two-level page table. A TLB lookup takes 10 ns and a memory access takes 100 ns. The TLB hit ratio is 0.9. On a TLB miss, both page-table levels are read from memory. The page-fault rate is \\(10^{-6}\\) per memory reference and servicing a page fault takes 8 ms. Ignoring the time to update the TLB, the effective memory access time in nanoseconds is ________.",
+      "options": [],
+      "answer": { "range": [138, 138] },
+      "solution": {
+        "given": "TLB 10 ns, memory 100 ns, hit 0.9, two levels, fault rate 1e-6, fault service 8 ms",
+        "find": "effective access time",
+        "steps": [
+          "Hit: 10 + 100 = 110 ns. Miss: 10 + 2 x 100 + 100 = 310 ns.",
+          "Without faults: 0.9 x 110 + 0.1 x 310 = 99 + 31 = 130 ns.",
+          "Faults add 1e-6 x 8,000,000 ns = 8 ns. EMAT = 138 ns."
+        ],
+        "shortcut": "Write the miss path as TLB + (levels x memory) + memory, then add fault rate x service time.",
+        "trap": "Using 8 ms as 8,000 ns, or forgetting the final data access on a miss."
+      },
+      "verify": { "lang": "python", "code": "answer = 0.9*(10+100) + 0.1*(10+2*100+100) + 1e-6*8e6" }
+    },
+    {
+      "id": "FORGE_CS_000006",
+      "subject": "Programming in C",
+      "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
+      "kind": "trace",
+      "difficulty": "M",
+      "question_type": "NAT",
+      "marks": 1,
+      "question_text": "Consider the following C function.\n```c\nint f(int n) {\n    if (n <= 1) return 1;\n    return f(n - 1) + 2 * f(n - 2);\n}\n```\nThe value returned by `f(8)` is ________.",
+      "options": [],
+      "answer": { "range": [171, 171] },
+      "solution": {
+        "given": "f(0) = f(1) = 1, f(n) = f(n-1) + 2 f(n-2)",
+        "find": "f(8)",
+        "steps": [
+          "Build the table bottom-up: f(0)=1, f(1)=1, f(2)=3, f(3)=5, f(4)=11.",
+          "f(5)=21, f(6)=43, f(7)=85, f(8)=171."
+        ],
+        "shortcut": "Tabulate small values instead of expanding the recursion tree.",
+        "trap": "Starting f(1) at 2 or mixing up n-1 and n-2."
+      },
+      "verify": { "lang": "python", "code": "v = [1, 1]\nfor n in range(2, 9):\n    v.append(v[n-1] + 2*v[n-2])\nanswer = v[8]" }
+    }
+  ]
+}
