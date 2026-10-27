@@ -109,9 +109,11 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
           <rect x="1" y="1" style={{ width: "calc(100% - 2px)", height: "calc(100% - 2px)" }} rx="12" ry="12" fill="none" stroke={tone.ring} strokeOpacity="0.18" strokeWidth="2" pathLength={100} />
           <motion.rect
             x="1" y="1" style={{ width: "calc(100% - 2px)", height: "calc(100% - 2px)" }} rx="12" ry="12" fill="none" stroke={tone.ring} strokeWidth="2" strokeLinecap="round"
-            pathLength={100} strokeDasharray="100 100"
+            // The rect path starts at the top-left corner; shifting the dash by ~17.5% of the
+            // perimeter makes the line start (and drain back to) the top middle of the pill.
+            pathLength={100} strokeDashoffset={-17.5}
             initial={false}
-            animate={{ strokeDashoffset: 100 * (1 - remainingRatio) }}
+            animate={{ strokeDasharray: `${100 * remainingRatio} 100` }}
             transition={{ duration: 0.9, ease: "linear" }}
           />
         </svg>

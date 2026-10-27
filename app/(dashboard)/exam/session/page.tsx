@@ -13,7 +13,7 @@ import { RenderableQuestion } from "@/types/question.types";
 import { QuestionRenderer } from "@/components/exam/question-renderer";
 import { MathJaxContext } from "better-react-mathjax";
 import { useStudyStore } from "@/store/use-study-store";
-import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser, ShieldAlert, Calculator, PanelRightClose, PanelRightOpen } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser, ShieldAlert, Calculator, PanelRightClose, PanelRightOpen, CirclePause } from "lucide-react";
 import { useDataStore } from "@/store/use-data-store";
 import { ExamTimer } from "@/components/exam/exam-timer";
 import { QuestionPalette } from "@/components/exam/question-palette";
@@ -441,10 +441,10 @@ export default function ExamSessionPage() {
                    {isMockSession ? null : sessionStatus === "IN_PROGRESS" ? (
                      <button
                        onClick={() => pauseSession()}
-                       className="inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 text-amber-700 bg-amber-100 hover:bg-amber-200 dark:text-amber-400 dark:bg-amber-900/30 rounded-lg transition-colors cursor-pointer shrink-0"
-                       title="Pause Exam"
+                       className="inline-flex items-center justify-center gap-1.5 h-8 sm:h-9 px-2.5 sm:px-3 rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--tint-butter)] transition-colors cursor-pointer shrink-0"
+                       title="Pause the test" aria-label="Pause the test"
                      >
-                       <Pause className="w-4 h-4" />
+                       <CirclePause className="w-4 h-4 text-[var(--tint-butter-ink)]" /><span className="hidden sm:inline">Pause</span>
                      </button>
                    ) : (
                      <button

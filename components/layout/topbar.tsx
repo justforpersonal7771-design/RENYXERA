@@ -171,6 +171,7 @@ export function Topbar() {
     <header
       data-scrolled={scrolled ? "" : undefined}
       // R18: a floating island (8px from the top, 56px tall, so content still starts at 64px).
+      style={{ ["--nav-sec" as string]: `var(--tint-${NAV_TINTS[NAV_ITEMS.find((n) => n.href !== "/" ? pathname?.startsWith(n.href) : pathname === "/")?.label ?? ""] ?? "sky"})` }}
       className={`topbar-island h-14 fixed top-2 left-2 right-2 sm:left-4 sm:right-4 z-40 rounded-[20px] transition-shadow duration-300 ${
         scrolled ? "shadow-[0_14px_36px_-18px_rgba(12,34,75,0.35)]" : "shadow-[0_4px_16px_-10px_rgba(12,34,75,0.18)]"
       }`}

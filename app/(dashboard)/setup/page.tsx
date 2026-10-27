@@ -590,6 +590,16 @@ export default function ExamSetupPage() {
                <h1 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight">Configuration Engine</h1>
                <p className="text-sm font-medium text-[var(--text-secondary)]">Design your perfect test environment.</p>
             </div>
+            {/* View: Build a test (all sources) / Forge or Spark questions / Flashcards (all sources). */}
+            <div className="ml-2 hidden sm:block">
+              <Segmented label="View" value={canBrowse ? setupView : setupView === "questions" ? "build" : setupView}
+            onChange={setSetupView}
+            options={[
+              { id: "build", label: "Build a test" },
+              ...(canBrowse ? [{ id: "questions" as const, label: sourceType === "ai_generated" ? "Spark questions" : "Forge questions" }] : []),
+              { id: "flash", label: "Flashcards" },
+            ]} />
+            </div>
           </div>
 
           {/* Source toggle: comet border, a gradient pill that springs between the
@@ -650,17 +660,6 @@ export default function ExamSetupPage() {
           </div>
         </motion.div>
 
-        {/* Every source shares the base screen ("Build a test": deployment type, options, blueprint).
-            Forge and Spark also offer their question view; Flashcards work for all four sources. */}
-        <div className="mb-4 flex flex-wrap items-center gap-3">
-          <Segmented label="View" value={canBrowse ? setupView : setupView === "questions" ? "build" : setupView}
-            onChange={setSetupView}
-            options={[
-              { id: "build", label: "Build a test" },
-              ...(canBrowse ? [{ id: "questions" as const, label: sourceType === "ai_generated" ? "Spark questions" : "Forge questions" }] : []),
-              { id: "flash", label: "Flashcards" },
-            ]} />
-        </div>
 
         {setupView === "flash" ? (
           <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-12">
@@ -1038,7 +1037,7 @@ export default function ExamSetupPage() {
           </div>
         ) : sourceType === "standard" && sourceMix.mode === "forge" && setupView === "questions" ? (
           // Forge source: the Forge hub (Daily Forge, Practice, Forge Mocks, Bookmarks) lives here.
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-12"><ForgeHub /></div>
+          <div className="forge-fill flex-1 min-h-0"><ForgeHub /></div>
         ) : (
           <div className="w-full flex-1 min-h-0 flex flex-col lg:flex-row gap-5">
             <div className="flex-1 min-h-0 flex flex-col card-glass rounded-2xl shadow-sm relative overflow-hidden">
@@ -1306,11 +1305,11 @@ export default function ExamSetupPage() {
 
                       <div className="grid grid-cols-2 gap-3">
                          <div className="p-4 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-2xl border border-indigo-500/20">
-                            <span className="text-xs font-bold text-indigo-500 tracking-normal mb-1 block">Questions</span>
+                            <span className="blueprint-stat-label text-indigo-500 tracking-normal mb-1 block">Questions</span>
                             <div className="text-3xl font-extrabold text-[var(--text-primary)]">{currentDraft.questions.length}</div>
                          </div>
                          <div className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-2xl border border-purple-500/20">
-                            <span className="text-xs font-bold text-purple-500 tracking-normal mb-1 block">Marks</span>
+                            <span className="blueprint-stat-label text-purple-500 tracking-normal mb-1 block">Marks</span>
                             <div className="text-3xl font-extrabold text-[var(--text-primary)]">{draftStats.totalMarks}</div>
                          </div>
                       </div>
@@ -1323,19 +1322,19 @@ export default function ExamSetupPage() {
                           before. */}
                       <div className="grid grid-cols-4 gap-2">
                          <div className="p-2.5 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-xl border border-blue-500/20">
-                            <span className="text-[8px] font-bold text-blue-500 tracking-normal mb-0.5 block truncate">Sections</span>
+                            <span className="blueprint-stat-label text-blue-500 tracking-normal mb-1 block truncate">Sections</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.sections}</div>
                          </div>
                          <div className="p-2.5 bg-gradient-to-br from-fuchsia-500/10 to-fuchsia-500/5 rounded-xl border border-fuchsia-500/20">
-                            <span className="text-[8px] font-bold text-fuchsia-500 tracking-normal mb-0.5 block truncate">Subjects</span>
+                            <span className="blueprint-stat-label text-fuchsia-500 tracking-normal mb-1 block truncate">Subjects</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.subjects}</div>
                          </div>
                          <div className="p-2.5 bg-gradient-to-br from-amber-500/10 to-amber-500/5 rounded-xl border border-amber-500/20">
-                            <span className="text-[8px] font-bold text-amber-500 tracking-normal mb-0.5 block truncate">Topics</span>
+                            <span className="blueprint-stat-label text-amber-500 tracking-normal mb-1 block truncate">Topics</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.topics}</div>
                          </div>
                          <div className="p-2.5 bg-gradient-to-br from-teal-500/10 to-teal-500/5 rounded-xl border border-teal-500/20">
-                            <span className="text-[8px] font-bold text-teal-500 tracking-normal mb-0.5 block truncate">Duration</span>
+                            <span className="blueprint-stat-label text-teal-500 tracking-normal mb-1 block truncate">Duration</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight truncate">{draftStats.estimatedMinutes}<span className="text-[10px] font-bold text-[var(--text-muted)] ml-0.5">min</span></div>
                          </div>
                       </div>

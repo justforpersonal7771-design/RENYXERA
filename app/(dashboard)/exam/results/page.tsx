@@ -424,7 +424,7 @@ export default function ResultSummaryPage() {
             >
               {/* FRONT — scoreboard */}
               <div aria-hidden={flipped} className={`absolute inset-0 overflow-y-auto overflow-x-hidden lg:overflow-hidden custom-scrollbar [backface-visibility:hidden] ${flipped ? "pointer-events-none" : ""}`}>
-                <div className="h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-7 pb-2 lg:py-8">
+                <div className="h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-9 pb-2 lg:pt-14 lg:pb-8">
                   {/* ring side */}
                   <div className="flex flex-col items-center text-center gap-2.5 lg:gap-4">
                     <div className="flex items-center gap-2 flex-wrap justify-center">

@@ -39,6 +39,15 @@ const ToastContainer = dynamic(
   { ssr: false }
 );
 
+// The pastel of the section the student is in: drives the page layer and the navbar wash.
+function sectionTint(p: string | null): string {
+  const path = p ?? "/";
+  if (path === "/") return "lilac";
+  const map: [string, string][] = [["/setup", "mint"], ["/exam", "mint"], ["/mocks", "peri"], ["/study", "butter"], ["/ai-mentor", "sky"], ["/ai-tutor", "sky"],
+    ["/mistakes", "rose"], ["/bookmarks", "rose"], ["/revision", "rose"], ["/analytics", "mint"], ["/profile", "peri"], ["/pro", "butter"]];
+  return map.find(([k]) => path.startsWith(k))?.[1] ?? "sky";
+}
+
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const loadRepository = useDataStore((state) => state.loadRepository);
@@ -183,6 +192,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="page-shell"
+            data-section={sectionTint(pathname)}
           >
             <PlanExpiryNotice />
             {children}

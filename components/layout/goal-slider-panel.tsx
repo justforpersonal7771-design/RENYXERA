@@ -251,7 +251,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
         className="nav-cluster relative w-full max-w-6xl h-[90vh] flex flex-col overflow-hidden rounded-3xl shadow-[0_40px_120px_-30px_rgba(76,29,149,0.55)]"
       >
         {/* Header: drifting glows, animated icon, big live readout */}
-        <div className="relative shrink-0 overflow-hidden bg-gradient-to-br from-indigo-700 via-violet-700 to-fuchsia-700 px-5 py-4 text-white">
+        <div className="relative shrink-0 overflow-hidden bg-[var(--tint-lilac)] px-5 py-4 text-[var(--text-primary)] focus-head">
           <motion.div aria-hidden="true" className="absolute -top-20 -left-16 w-64 h-64 rounded-full bg-cyan-400/25 blur-3xl" animate={{ x: [0, 40, 0], y: [0, 20, 0] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} />
           <motion.div aria-hidden="true" className="absolute -bottom-24 right-10 w-72 h-72 rounded-full bg-pink-400/25 blur-3xl" animate={{ x: [0, -30, 0], y: [0, -20, 0] }} transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }} />
 
@@ -399,7 +399,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   ) : (
                     <button
                       onClick={() => applyPercent(goalPlan.recommendedPercent)}
-                      className="shrink-0 px-3 py-1.5 rounded-lg bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-[11px] font-semibold shadow-md shadow-violet-500/25 cursor-pointer"
+                      className="shrink-0 px-3 py-1.5 rounded-lg btn-main text-[11px] font-semibold shadow-md shadow-violet-500/25 cursor-pointer"
                     >
                       Apply
                     </button>

@@ -31,8 +31,26 @@ export default function ToolsIndex() {
       <ToolHeader kicker="All tools" title="Free GATE tools" lead="Pick a tool to open it. Every one is free — sign in to save your results and carry them across devices." />
       <div className="grid gap-4 lg:grid-cols-3">
         {/* Featured: the most used tool gets the largest box. */}
-        <Link href={feat.href} data-tint="lilac" className="card-pastel group flex flex-col justify-between gap-6 p-6 sm:p-8 lg:row-span-2">
+        <Link href={feat.href} data-tint="lilac" className="card-pastel group flex flex-col gap-6 p-6 sm:p-8 lg:row-span-2">
           <span className="grid h-14 w-14 place-items-center rounded-2xl bg-[var(--surface)] text-[var(--tint-ink)]"><FeatIcon className="h-7 w-7" /></span>
+          {/* What the predictor gives you, at a glance (illustrative example, labelled as such). */}
+          <span className="block flex-1 rounded-3xl bg-[var(--surface)] p-5" aria-label="Example result">
+            <span className="text-xs font-semibold text-[var(--text-secondary)]">Example: 45 marks, General</span>
+            <span className="mt-3 grid grid-cols-3 gap-2">
+              {[["GATE score", "525", "lilac"], ["Likely AIR", "~7,000", "mint"], ["Cut-off", "Cleared", "peach"]].map(([l, v, t]) => (
+                <span key={l} className="rounded-2xl p-3" style={{ background: `var(--tint-${t})` }}>
+                  <span className="block text-xs font-semibold text-[var(--text-secondary)]">{l}</span>
+                  <span className="block font-display text-xl font-extrabold text-[var(--text-primary)]">{v}</span>
+                </span>
+              ))}
+            </span>
+            <svg viewBox="0 0 300 90" className="mt-4 h-24 w-full" aria-hidden>
+              <path d="M5 85 C 70 80, 120 60, 170 45 S 260 10, 295 5" fill="none" stroke="var(--tint-lilac-ink)" strokeWidth="3" strokeLinecap="round" />
+              <path d="M5 85 C 70 82, 130 70, 180 58 S 260 25, 295 12" fill="none" stroke="var(--tint-mint-ink)" strokeWidth="2" strokeDasharray="5 5" />
+              <circle cx="140" cy="54" r="6" fill="var(--tint-peach-ink)" />
+            </svg>
+            <span className="text-xs text-[var(--text-secondary)]">Where you land on the real marks-vs-rank curve</span>
+          </span>
           <span>
             <span className="section-label">Most used</span>
             <span className="mt-3 block font-display text-3xl font-extrabold leading-tight text-[var(--text-primary)]">{feat.title}</span>

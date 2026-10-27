@@ -1179,7 +1179,7 @@ mjx-container[display="true"] {
   transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease;
 }
 .dark .card-pastel { box-shadow: inset 0 1px 0 color-mix(in srgb, white 6%, transparent), 0 18px 40px -22px black; }
-@media (hover: hover) { .card-pastel:hover { transform: translateY(-2px); } }
+@media (hover: hover) { .card-pastel:hover { box-shadow: 0 0 0 2px color-mix(in srgb, var(--tint-ink, #16123a) 22%, transparent), 0 22px 44px -30px rgba(12,34,75,.35); } }
 .card-pastel[data-tint="mint"]   { --tint: var(--tint-mint);   --tint-ink: var(--tint-mint-ink); }
 .card-pastel[data-tint="rose"]   { --tint: var(--tint-rose);   --tint-ink: var(--tint-rose-ink); }
 .card-pastel[data-tint="peach"]  { --tint: var(--tint-peach);  --tint-ink: var(--tint-peach-ink); }
@@ -1430,14 +1430,6 @@ main :is([class*="bg-gradient-to-"][class*="text-white"][class*=" p-"], [class*=
 .topbar-island .main-dock [data-tint="sky"] { --item-ink: var(--tint-sky-ink); --item-tint: var(--tint-sky); }
 .topbar-island .main-dock [data-tint="rose"] { --item-ink: var(--tint-rose-ink); --item-tint: var(--tint-rose); }
 
-/* Scrollbars: one quiet pastel style everywhere (thin, rounded, logo-blue tint), matching the theme. */
-* { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--tint-lilac-ink) 35%, transparent) transparent; }
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-thumb, .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-image: none !important; background-color: color-mix(in srgb, var(--tint-lilac-ink) 30%, transparent) !important;
-  border: 3px solid transparent; background-clip: padding-box; border-radius: 999px; box-shadow: none !important; }
-::-webkit-scrollbar-thumb:hover, .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--tint-lilac-ink) 60%, transparent) !important; }
-
 /* 4. Readability: no text below 12px, and muted text one step darker everywhere. */
 main :is(.text-\[8px\], .text-\[9px\], .text-\[10px\]) { font-size: 12px !important; line-height: 1.4; }
 main .text-\[11px\] { font-size: 12.5px !important; }
@@ -1537,3 +1529,67 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .deck-frame { padding: 16px clamp(12px, 4vw, 56px) 0 !important; border-radius: 36px; overflow: clip !important;
   background: color-mix(in srgb, var(--tint-peach) 65%, var(--background)) !important; }
 @media (max-width: 767px) { .deck-frame { padding: 14px 10px !important; border-radius: 26px; } }
+
+/* ===== Owner review 28 Oct ===== */
+/* Scrollbars: the original auto-hide scrollbar, recoloured to the theme; no glow. */
+:root { --sb-c1: 165 196 250; --sb-c2: 120 160 245; --sb-c3: 160 175 240; --sb-c4: 190 170 245; --scrollbar-thumb-glow: transparent; }
+.dark { --sb-c1: 70 90 140; --sb-c2: 80 100 160; --sb-c3: 95 95 160; --sb-c4: 110 90 160; }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover, .custom-scrollbar::-webkit-scrollbar-thumb:active, textarea::-webkit-scrollbar-thumb:hover { box-shadow: none !important; }
+::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+
+/* Buttons: back to the bold ink style (ink border + offset shadow), filled with the card colour. */
+.btn-main, .pill-ink, main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [class*="bg-blue-600"], [class*="bg-emerald-600"], .grad-brand, [class*="from-indigo-6"][class*="text-white"], [class*="from-violet-6"][class*="text-white"]):not([role="tab"]):not([role="radio"]) {
+  border: 2px solid #16123a !important; box-shadow: 3px 3px 0 #16123a !important; }
+.btn-main:hover, .pill-ink:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 #16123a !important; }
+.btn-main:active, .pill-ink:active { transform: translate(3px,3px); box-shadow: 0 0 0 #16123a !important; }
+.dark :is(.btn-main, .pill-ink) { border-color: #e9e7f5 !important; box-shadow: 3px 3px 0 #e9e7f5 !important; }
+
+/* Selected state reads clearly: segmented + source tabs use a solid ink chip with white text. */
+.segmented button[aria-checked="true"] { color: #fff !important; }
+.segmented .thumb { background: #16123a !important; }
+.dark .segmented button[aria-checked="true"] { color: #16123a !important; } .dark .segmented .thumb { background: #e9e7f5 !important; }
+
+/* Folder panels and tabs: a stitched (dashed) inner line, like a sewn folder; tabs keep padding inside the section. */
+.folder-panel { position: relative; }
+.folder-panel::before { content: ""; position: absolute; inset: 7px; border-radius: calc(var(--card-radius) - 6px); border: 1.5px dashed color-mix(in srgb, var(--tab-ink, var(--tint-lilac-ink)) 30%, transparent); pointer-events: none; }
+.folder-tab[aria-selected="true"] { outline: 1.5px dashed color-mix(in srgb, var(--text-primary) 22%, transparent); outline-offset: -5px; }
+.folder-panel[data-tint] { --tab-ink: var(--tint-lilac-ink); }
+.folder-panel[data-tint="mint"] { --tab-ink: var(--tint-mint-ink); } .folder-panel[data-tint="peach"] { --tab-ink: var(--tint-peach-ink); } .folder-panel[data-tint="peri"] { --tab-ink: var(--tint-peri-ink); }
+.folder-panel[data-tint="rose"] { --tab-ink: var(--tint-rose-ink); } .folder-panel[data-tint="butter"] { --tab-ink: var(--tint-butter-ink); } .folder-panel[data-tint="sky"] { --tab-ink: var(--tint-sky-ink); }
+
+/* Page layer follows the current section's colour (set by client-layout as data-section). */
+.page-shell[data-section] { --sec: var(--tint-lilac); }
+.page-shell[data-section="mint"] { --sec: var(--tint-mint); } .page-shell[data-section="peri"] { --sec: var(--tint-peri); } .page-shell[data-section="peach"] { --sec: var(--tint-peach); }
+.page-shell[data-section="butter"] { --sec: var(--tint-butter); } .page-shell[data-section="sky"] { --sec: var(--tint-sky); } .page-shell[data-section="rose"] { --sec: var(--tint-rose); }
+.page-shell[data-section] { background: linear-gradient(165deg, color-mix(in srgb, var(--sec) 92%, var(--surface)) 0%, color-mix(in srgb, var(--sec) 55%, var(--surface)) 60%, color-mix(in srgb, var(--sec) 75%, var(--tint-lilac)) 100%) !important; }
+
+/* Navbar: floating pill on a soft gradient of the current section, with a stitched inner line. */
+.topbar-island { background: linear-gradient(100deg, color-mix(in srgb, var(--nav-sec, var(--tint-lilac)) 80%, var(--surface)) 0%, var(--surface) 45%, color-mix(in srgb, var(--tint-peach) 45%, var(--surface)) 100%) !important;
+  border: 0 !important; box-shadow: 0 18px 40px -22px rgba(12,34,75,.45), inset 0 1px 0 rgba(255,255,255,.8) !important; }
+.topbar-island::after { content: ""; position: absolute; inset: 4px; border-radius: 16px; border: 1.5px dashed color-mix(in srgb, var(--text-primary) 12%, transparent); pointer-events: none; }
+.topbar-island .main-dock, .topbar-island .main-dock + * , .topbar-island [class*="rounded-2xl"][class*="border"] { background: color-mix(in srgb, var(--surface) 75%, transparent) !important; }
+
+/* Blueprint stat labels larger. */
+.blueprint-stat-label { font-size: 14px !important; font-weight: 700; }
+
+/* Dark mode: calm, low-saturation tints on a deep neutral; brighter inks. */
+.dark { --background: #0f1117; --surface: #181b24; --surface-secondary: #20242f;
+  --tint-mint: #16251f; --tint-mint-ink: #7ee2b2; --tint-rose: #2a1b22; --tint-rose-ink: #f5a3b8; --tint-peach: #2a2019; --tint-peach-ink: #f7bb8a;
+  --tint-peri: #1c1f33; --tint-peri-ink: #aab6ff; --tint-lilac: #182236; --tint-lilac-ink: #8fb8ff; --tint-butter: #28241a; --tint-butter-ink: #f3d77a;
+  --tint-sky: #172530; --tint-sky-ink: #86cff5; }
+.dark .page-shell[data-section] { background: linear-gradient(165deg, color-mix(in srgb, var(--sec) 70%, var(--background)) 0%, var(--background) 70%) !important; border-color: rgba(255,255,255,.06); }
+.dark .topbar-island { background: linear-gradient(100deg, color-mix(in srgb, var(--nav-sec, var(--tint-lilac)) 90%, var(--surface)) 0%, var(--surface) 55%) !important; }
+/* Focus Target header on pastel: white-on-gradient leftovers read as ink. */
+.focus-head :is([class*="text-white"], [class*="text-indigo-1"], [class*="text-violet-1"], [class*="text-violet-2"]) { color: var(--text-secondary) !important; }
+.focus-head :is(h2, h3, [class*="font-black"], [class*="font-extrabold"]) { color: var(--text-primary) !important; }
+.focus-head [class*="bg-white/"] { background-color: var(--surface) !important; border-color: var(--border) !important; }
+.focus-head [class*="text-amber-2"], .focus-head [class*="text-yellow-2"] { color: var(--tint-peach-ink) !important; }
+/* One-screen pages (Exam Setup etc.): no outer scroll on desktop; panels scroll inside. */
+@media (min-width: 1024px) { #app-scroll:has(.page-shell > [data-fill-height]) { overflow: hidden; } }
+/* Forge inside Exam Setup: one screen. Hero and plan table hidden here (they live on the Forge landing),
+   the folder tabs stay fixed and only the panel's content scrolls. */
+.forge-fill { display: flex; flex-direction: column; }
+.forge-fill > div, .forge-fill > div > div:has(> .min-w-0 > .folder-tabs) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.forge-fill section[aria-label="Forge"], .forge-fill section[aria-label="What each plan gets"] { display: none; }
+.forge-fill .min-w-0:has(> .folder-tabs) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.forge-fill .folder-panel { flex: 1; min-height: 0; max-height: none !important; overflow-y: auto; }

@@ -5,14 +5,14 @@
  * - Spaced repetition (Leitner boxes 1-5, saved per device): "Again" sends a card to box 1, "Got it" moves it up;
  *   each box comes back after 0/1/3/7/14 days. "Due first" decks show what needs revising now.
  * - Filters: subject, difficulty, deck size; modes: due first, new only, all.
- * - Flip to see the answer (official keys unlocked per card through ensureAnswers), Forge worked steps.
+ * - Answer each card like a question (options / NAT), check it (green / red), then see the answer and Forge steps.
  * - Keyboard: Space/Enter flip, 1 = Again, 2 = Got it, arrows move. Progress bar, end-of-deck summary,
  *   "revise the missed cards" and a new shuffled deck.
  */
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { Check, ChevronLeft, ChevronRight, Keyboard, Loader2, RotateCcw, Shuffle, Trophy } from "lucide-react";
+import { Check, X, ChevronLeft, ChevronRight, Keyboard, Loader2, RotateCcw, Shuffle, Trophy } from "lucide-react";
 import type { RenderableQuestion } from "@/types/question.types";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { ensureAnswers } from "@/lib/repository/answer-keys";
@@ -64,22 +64,37 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
   const dueCount = useMemo(() => all.filter((c) => sr[c.id] && sr[c.id].due <= now).length, [all, sr, now]);
 
   const [i, setI] = useState(0);
-  const [flipped, setFlipped] = useState(false);
+  const [picked, setPicked] = useState<string[]>([]);
+  const [nat, setNat] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Record<string, boolean>>({});
   const done = Object.keys(results).length >= deck.length && deck.length > 0;
   const card = deck[Math.min(i, deck.length - 1)];
+  const resetCard = () => { setPicked([]); setNat(""); setChecked(false); setRevealed(false); };
 
-  const restart = (ids: string[] | null = null) => { setOnlyIds(ids); setI(0); setFlipped(false); setResults({}); if (!ids) setSeed((s) => s + 1); };
-  const flip = useCallback(async () => {
-    if (!card) return;
+  // Options and type for the current card (bank questions render their own AST; Forge has plain text).
+  const qType = card?.kind === "forge" ? card.forge!.type : (card?.q?.question_type ?? "MCQ");
+  const opts: { id: string; correct: boolean; node: React.ReactNode }[] = !card ? [] : card.kind === "forge"
+    ? (card.forge!.options ?? []).map((o, k) => ({ id: "ABCD"[k], correct: card.forge!.answer === "ABCD"[k], node: o }))
+    : ((card.q!.options ?? []) as Opt[]).map((o) => ({ id: o.option_id, correct: !!o.is_correct, node: o.contentAst ? <AstNodeRenderer nodes={o.contentAst} /> : null }));
+  const natOk = (() => {
+    const v = Number(nat); if (!nat.trim() || Number.isNaN(v)) return false;
+    if (card?.kind === "forge") { const k = Number(card.forge!.answer); return Math.abs(v - k) <= Math.abs(k) * 0.005 + 1e-9; }
+    const r = card?.q?.nat_answer_range as { min: number; max: number; ranges?: { min: number; max: number }[] } | undefined;
+    return !!r && (r.ranges ?? [r]).some((x) => v >= x.min && v <= x.max);
+  })();
+  const isRight = !revealed && (qType === "NAT" ? natOk : opts.length > 0 && opts.every((o) => o.correct === picked.includes(o.id)));
+
+  const unlock = useCallback(async () => {
     // AI questions carry their own answers; official ones are unlocked per card from the server.
-    if (!flipped && card.kind === "bank" && card.q && !card.id.startsWith("ai_")) {
-      setLoading(true); await ensureAnswers([card.id]).catch(() => false); setLoading(false);
-    }
-    setFlipped((f) => !f);
-  }, [card, flipped]);
-  const go = useCallback((d: number) => { setFlipped(false); setI((x) => Math.max(0, Math.min(deck.length - 1, x + d))); }, [deck.length]);
+    if (card?.kind === "bank" && !card.id.startsWith("ai_")) { setLoading(true); await ensureAnswers([card.id]).catch(() => false); setLoading(false); }
+  }, [card]);
+  const check = useCallback(async () => { await unlock(); setChecked(true); }, [unlock]);
+  const reveal = useCallback(async () => { await unlock(); setRevealed(true); setChecked(true); }, [unlock]);
+  const restart = (ids: string[] | null = null) => { setOnlyIds(ids); setI(0); resetCard(); setResults({}); if (!ids) setSeed((s) => s + 1); };
+  const go = useCallback((d: number) => { resetCard(); setI((x) => Math.max(0, Math.min(deck.length - 1, x + d))); }, [deck.length]);
   const mark = useCallback((ok: boolean) => {
     if (!card) return;
     const cur = sr[card.id]?.box ?? 1;
@@ -95,7 +110,7 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
       if (t.closest("input, textarea, [role='listbox']")) return;
-      if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(); }
+      if (e.key === "Enter") { e.preventDefault(); if (!checked) check(); }
       else if (e.key === "1") mark(false);
       else if (e.key === "2") mark(true);
       else if (e.key === "ArrowRight") go(1);
@@ -103,7 +118,7 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [flip, mark, go]);
+  }, [check, checked, mark, go]);
 
   const filters = (
     <div className="flex flex-wrap items-center gap-3">
@@ -153,36 +168,60 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl [perspective:1600px]">
-        <motion.div key={card.id} initial={reduce ? false : { opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-          className="relative min-h-[360px] transition-transform duration-500 motion-reduce:transition-none [transform-style:preserve-3d]" style={{ transform: flipped ? "rotateY(180deg)" : "none" }}>
-          <button type="button" onClick={flip} aria-label="Show the answer" aria-hidden={flipped} tabIndex={flipped ? -1 : 0} className="card-pastel absolute inset-0 flex flex-col p-6 text-left [backface-visibility:hidden]" data-tint="sky">
-            <span className="text-xs font-semibold text-[var(--text-secondary)]">{card.subject} · {card.topic} · {{ E: "Easy", M: "Medium", H: "Hard" }[card.diff]}</span>
-            <div className="mt-3 flex-1 overflow-auto text-[var(--text-primary)]">
-              {card.kind === "forge" ? <p className="leading-relaxed">{card.forge!.text}</p> : <AstNodeRenderer nodes={card.q!.contentAst} />}
-              {card.kind === "bank" && card.q!.options?.length ? (
-                <ul className="mt-3 grid gap-2 sm:grid-cols-2">{(card.q!.options as Opt[]).map((o) => <li key={o.option_id} className="flex gap-2 rounded-xl bg-[var(--surface)] p-2.5 text-sm"><b>{o.option_id}</b><div className="min-w-0">{o.contentAst ? <AstNodeRenderer nodes={o.contentAst} /> : null}</div></li>)}</ul>
-              ) : null}
-              {card.kind === "forge" && card.forge!.options ? <ul className="mt-3 grid gap-2 sm:grid-cols-2">{card.forge!.options.map((o, k) => <li key={k} className="rounded-xl bg-[var(--surface)] p-2.5 text-sm"><b>{"ABCD"[k]}</b> {o}</li>)}</ul> : null}
-            </div>
-            <span className="mt-3 inline-flex items-center gap-2 self-center rounded-full bg-[var(--surface)] px-4 py-2 text-sm font-semibold text-[var(--text-primary)]">{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />} Tap or press Space to flip</span>
-          </button>
-          <button type="button" onClick={flip} aria-label="Show the question" aria-hidden={!flipped} tabIndex={flipped ? 0 : -1} className="card-pastel absolute inset-0 flex flex-col p-6 text-left [backface-visibility:hidden] [transform:rotateY(180deg)]" data-tint="mint">
-            <span className="text-xs font-semibold text-[var(--text-secondary)]">Answer</span>
-            <div className="mt-3 flex-1 overflow-auto text-[var(--text-primary)]">
-              {card.kind === "forge" ? (
-                <>
-                  <p className="font-display text-3xl font-extrabold">{card.forge!.answer}</p>
-                  <ol className="mt-3 space-y-1.5 text-sm text-[var(--text-secondary)]">{card.forge!.solution.steps.map((s, k) => <li key={k}><b className="text-[var(--text-primary)]">{k + 1}.</b> {s}</li>)}</ol>
-                  <p className="mt-3 text-sm"><b>Shortcut:</b> {card.forge!.solution.shortcut}</p>
-                  <p className="mt-1 text-sm"><b>Trap:</b> {card.forge!.solution.trap}</p>
-                </>
-              ) : <BankAnswer q={card.q!} />}
-            </div>
-            <span className="mt-3 text-center text-sm text-[var(--text-secondary)]">Did you know it? Press 1 for Again, 2 for Got it</span>
-          </button>
-        </motion.div>
-      </div>
+      {/* Full-width card: answer it like a question (pick options / type the value), check, then see the answer. */}
+      <motion.article key={card.id} initial={reduce ? false : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+        className="card-pastel w-full p-5 sm:p-7" data-tint={checked ? (isRight ? "mint" : "rose") : "sky"}>
+        <p className="text-xs font-semibold text-[var(--text-secondary)]">{card.subject} · {card.topic} · {{ E: "Easy", M: "Medium", H: "Hard" }[card.diff]} · {qType}</p>
+        <div className="mt-3 text-[var(--text-primary)] leading-relaxed">
+          {card.kind === "forge" ? <p>{card.forge!.text}</p> : <AstNodeRenderer nodes={card.q!.contentAst} />}
+        </div>
+        {opts.length > 0 && (
+          <div className="mt-4 grid gap-2.5 md:grid-cols-2" role={qType === "MSQ" ? "group" : "radiogroup"} aria-label="Options">
+            {opts.map((o) => {
+              const sel = picked.includes(o.id);
+              const state = checked ? (o.correct ? "right" : sel ? "wrong" : "idle") : sel ? "picked" : "idle";
+              const look = { right: "border-emerald-500 bg-[var(--tint-mint)]", wrong: "border-rose-500 bg-[var(--tint-rose)]", picked: "border-[var(--tint-lilac-ink)] bg-[var(--tint-lilac)]", idle: "border-[var(--border)] bg-[var(--surface)] hover:border-[var(--text-secondary)]" }[state];
+              return (
+                <button key={o.id} type="button" disabled={checked} role={qType === "MSQ" ? "checkbox" : "radio"} aria-checked={sel}
+                  onClick={() => setPicked((p) => qType === "MSQ" ? (p.includes(o.id) ? p.filter((x) => x !== o.id) : [...p, o.id]) : [o.id])}
+                  className={`flex items-start gap-3 rounded-2xl border-2 p-3 text-left text-sm text-[var(--text-primary)] transition-colors disabled:cursor-default ${look}`}>
+                  <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg font-num text-xs font-bold ${state === "right" ? "bg-emerald-500 text-white" : state === "wrong" ? "bg-rose-500 text-white" : state === "picked" ? "bg-[var(--tint-lilac-ink)] text-white" : "border border-[var(--border)]"}`}>
+                    {state === "right" ? <Check className="h-3.5 w-3.5" /> : state === "wrong" ? <X className="h-3.5 w-3.5" /> : o.id}</span>
+                  <span className="min-w-0 flex-1">{o.node}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+        {qType === "NAT" && (
+          <input inputMode="decimal" value={nat} disabled={checked} onChange={(e) => setNat(e.target.value.replace(/[^0-9.eE+-]/g, ""))} placeholder="Type your answer"
+            aria-label="Your answer" className={`mt-4 h-12 w-full max-w-sm rounded-2xl border-2 bg-[var(--surface)] px-4 font-num text-[var(--text-primary)] outline-none ${checked ? (isRight ? "border-emerald-500" : "border-rose-500") : "border-[var(--border)] focus:border-[var(--tint-lilac-ink)]"}`} />
+        )}
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          {!checked ? (
+            <>
+              <button type="button" onClick={check} disabled={loading || (qType === "NAT" ? !nat.trim() : !picked.length)} className="btn-main disabled:opacity-50">{loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />} Check answer</button>
+              <button type="button" onClick={reveal} className="pill-soft">Just show the answer</button>
+            </>
+          ) : (
+            <p role="status" className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold ${isRight ? "bg-[var(--surface)] text-[var(--tint-mint-ink)]" : "bg-[var(--surface)] text-[var(--tint-rose-ink)]"}`}>
+              {revealed ? "Answer shown" : isRight ? <><Check className="h-4 w-4" /> Correct</> : <><X className="h-4 w-4" /> Not quite</>}</p>
+          )}
+        </div>
+        {checked && (
+          <div className="mt-4 rounded-2xl bg-[var(--surface)] p-4 text-sm text-[var(--text-primary)]">
+            <p className="font-bold">Answer</p>
+            {card.kind === "forge" ? (
+              <>
+                <p className="mt-1 font-display text-2xl font-extrabold">{card.forge!.answer}</p>
+                <ol className="mt-2 space-y-1 text-[var(--text-secondary)]">{card.forge!.solution.steps.map((st, k) => <li key={k}><b className="text-[var(--text-primary)]">{k + 1}.</b> {st}</li>)}</ol>
+                <p className="mt-2"><b>Shortcut:</b> {card.forge!.solution.shortcut}</p>
+                <p className="mt-1"><b>Trap:</b> {card.forge!.solution.trap}</p>
+              </>
+            ) : <div className="mt-1"><BankAnswer q={card.q!} /></div>}
+          </div>
+        )}
+      </motion.article>
 
       <div className="flex flex-wrap items-center justify-center gap-3">
         <button type="button" onClick={() => go(-1)} disabled={i === 0} className="pill-soft disabled:opacity-40"><ChevronLeft className="h-4 w-4" /> Back</button>
@@ -190,7 +229,7 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
         <button type="button" onClick={() => mark(true)} className="inline-flex items-center gap-1.5 rounded-full bg-[var(--tint-mint)] px-4 py-2 text-sm font-bold text-[var(--tint-mint-ink)]"><Check className="h-4 w-4" /> Got it <kbd className="rounded bg-[var(--surface)] px-1.5 text-xs">2</kbd></button>
         <button type="button" onClick={() => go(1)} disabled={i >= deck.length - 1} className="pill-soft disabled:opacity-40">Skip <ChevronRight className="h-4 w-4" /></button>
       </div>
-      <p className="flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--text-secondary)]"><Keyboard className="h-3.5 w-3.5" /> Space flip · 1 Again · 2 Got it · ← → move
+      <p className="flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--text-secondary)]"><Keyboard className="h-3.5 w-3.5" /> Enter check · 1 Again · 2 Got it · ← → move
         {card.kind === "bank" && card.topic && <> · <Link href={`/setup?topic=${encodeURIComponent(card.topic)}&subject=${encodeURIComponent(card.subject)}`} className="font-semibold underline underline-offset-4">Practise {card.topic} as a test</Link></>}</p>
     </div>
   );
