@@ -90,7 +90,7 @@ export function LeaderboardButton() {
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
         className={`nav-act z-10 relative p-2 rounded-lg transition-colors cursor-pointer group ${
-          open ? "text-white bg-indigo-600 shadow-sm" : fresh ? "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-1 ring-amber-500/40" : "text-[var(--text-secondary)] hover:text-amber-500"
+          open ? "nav-active-pill text-[var(--text-primary)]" : fresh ? "text-[var(--tint-rose-ink)] bg-[var(--tint-rose)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
         }`}
         aria-label={fresh ? "Leaderboard — new results published" : "Leaderboard"}
         title={fresh ? "New results published" : "Leaderboard"}
@@ -104,7 +104,6 @@ export function LeaderboardButton() {
         </motion.span>
         {/* Glint that sweeps across on hover (clipped to the button; the dot is not) */}
         <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-lg overflow-hidden">
-          <span className="absolute inset-y-0 -left-full w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-amber-200/60 to-transparent group-hover:left-[150%] transition-all duration-700" />
         </span>
         {fresh && (
           <span className="absolute top-0.5 right-0.5 flex w-2.5 h-2.5">

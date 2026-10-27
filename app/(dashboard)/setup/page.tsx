@@ -1,6 +1,10 @@
 "use client";
 
 import { SourceMixer, useSourceMix } from "@/components/exam/source-mixer";
+import { SparkGenerator } from "@/components/exam/spark-generator";
+import { ForgeHub } from "@/components/forge/forge-hub";
+import { Flashcards } from "@/components/exam/flashcards";
+import { Segmented } from "@/components/ui/folder-tabs";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -56,7 +60,9 @@ export default function ExamSetupPage() {
   const openAuthModal = useAuthModalStore((s) => s.open);
 
   const [examType, setExamType] = useState<ExamType>("YEAR_PAPER");
-  const [sourceMix, setSourceMix] = useSourceMix();
+  const [sourceMix, setSourceMix] = useSourceMix(searchParams.get("source"));
+  // Build a test (all sources) / Questions (Forge, Spark) / Flashcards (all sources). /forge opens Forge questions.
+  const [setupView, setSetupView] = useState<"build" | "questions" | "flash">(() => (searchParams.get("source") === "forge" ? "questions" : "build"));
 
   const [availablePapers, setAvailablePapers] = useState<string[]>([]);
   const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
@@ -101,10 +107,18 @@ export default function ExamSetupPage() {
   useEffect(() => { setMounted(true); }, []);
 
   // Compute AI metrics dynamically
+  const [sparkMade, setSparkMade] = useState(0); // bumps after Spark saves a set, to refresh the AI list
   const aiQuestionsList = useMemo(() => {
     if (!isInitialized) return [];
     return QuestionRepository.getAllQuestions().filter(q => (q as any).isAiGenerated === true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isInitialized, totalQuestions, sparkMade]);
+  // Official PYQs for flashcards; the Questions view exists only for Forge and Spark.
+  const pyqList = useMemo(() => {
+    if (!isInitialized) return [];
+    return QuestionRepository.getAllQuestions().filter(q => !(q as any).isAiGenerated);
   }, [isInitialized, totalQuestions]);
+  const canBrowse = sourceType === "ai_generated" || sourceMix.mode === "forge";
 
   const aiSubjects = useMemo(() => {
     return Array.from(new Set(aiQuestionsList.map(q => q.subject).filter(Boolean))).sort();
@@ -487,6 +501,24 @@ export default function ExamSetupPage() {
       createDraft(config);
     }
 
+    // Blend: swap the Spark share of the PYQ draft for saved AI questions (same subject/topic first).
+    // The Forge share stays PYQs until Forge items are live and graded server-side.
+    if (sourceType === "standard" && sourceMix.mode === "mix" && examType !== "YEAR_PAPER" && sourceMix.aiPct > 0) {
+      const d = useExamStore.getState().currentDraft;
+      if (d && d.questions.length) {
+        const want = Math.round((d.questions.length * sourceMix.aiPct) / 100);
+        const scope = (q: { subject?: string; topic?: string }) =>
+          (examType === "TOPIC_TEST" ? q.topic === selectedTopic : examType === "SUBJECT_TEST" ? q.subject === selectedSubject : true) ? 0 : 1;
+        const ai = [...aiQuestionsList].sort((a, b) => scope(a) - scope(b)).slice(0, want);
+        if (ai.length) {
+          const kept = d.questions.slice(0, d.questions.length - ai.length).map((q) => q.questionId);
+          const ids = [...kept, ...ai.map((q) => q.question_id)];
+          const blended: ExamSessionDraft = { ...d, questions: ids.map((questionId, i) => ({ questionId, sequence: i + 1 })) };
+          useExamStore.getState().loadDraft(blended.id, blended);
+        }
+      }
+    }
+
     setGenerationTimeMs(performance.now() - start);
   };
 
@@ -563,13 +595,13 @@ export default function ExamSetupPage() {
           {/* Source toggle: comet border, a gradient pill that springs between the
               options with a recurring light sweep, a ripple on click, and icons that
               pop when their option becomes active. */}
-          <div role="tablist" aria-label="Question source" className="folder-tabs !mb-0 relative flex">
-            {/* Four ways to fill a test: official PYQs, Forge only, a PYQ/Forge mix (share set below), or AI-made. */}
+          <div role="tablist" aria-label="Question source" className="relative flex flex-wrap gap-1 rounded-2xl border border-[var(--border)] bg-[var(--tint-lilac)] p-1">
+            {/* Four ways to fill a test, in this order: official PYQs, Forge, Spark (AI-made, generate here), Blend (all three by share). */}
             {([
               { value: "standard", mode: "pyq", key: "pyq", label: "GATE PYQs", icon: GraduationCap, tint: "sky" },
               { value: "standard", mode: "forge", key: "forge", label: "Forge", icon: Anvil, tint: "peach" },
-              { value: "standard", mode: "mix", key: "mix", label: "Mix", icon: Shuffle, tint: "mint" },
-              { value: "ai_generated", mode: null, key: "ai", label: "AI generated", icon: Sparkles, tint: "butter" },
+              { value: "ai_generated", mode: null, key: "ai", label: "Spark", icon: Sparkles, tint: "butter" },
+              { value: "standard", mode: "mix", key: "mix", label: "Blend", icon: Shuffle, tint: "mint" },
             ] as const).map((opt) => {
               const active = opt.value === "ai_generated" ? sourceType === "ai_generated" : sourceType === "standard" && sourceMix.mode === opt.mode;
               return (
@@ -618,8 +650,25 @@ export default function ExamSetupPage() {
           </div>
         </motion.div>
 
-        {sourceType === "ai_generated" ? (
+        {/* Every source shares the base screen ("Build a test": deployment type, options, blueprint).
+            Forge and Spark also offer their question view; Flashcards work for all four sources. */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <Segmented label="View" value={canBrowse ? setupView : setupView === "questions" ? "build" : setupView}
+            onChange={setSetupView}
+            options={[
+              { id: "build", label: "Build a test" },
+              ...(canBrowse ? [{ id: "questions" as const, label: sourceType === "ai_generated" ? "Spark questions" : "Forge questions" }] : []),
+              { id: "flash", label: "Flashcards" },
+            ]} />
+        </div>
+
+        {setupView === "flash" ? (
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-12">
+            <Flashcards source={sourceType === "ai_generated" ? "ai" : sourceMix.mode} pyq={pyqList} ai={aiQuestionsList} />
+          </div>
+        ) : sourceType === "ai_generated" && setupView === "questions" ? (
           <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-6 -mx-4 px-4 pt-1 pb-12">
+            <SparkGenerator onMade={(n) => setSparkMade((x) => x + n)} />
             <div className="card-glass rounded-2xl p-5 shadow-sm space-y-4">
               <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex-1 flex flex-col sm:flex-row gap-3">
@@ -987,6 +1036,9 @@ export default function ExamSetupPage() {
               document.body
             )}
           </div>
+        ) : sourceType === "standard" && sourceMix.mode === "forge" && setupView === "questions" ? (
+          // Forge source: the Forge hub (Daily Forge, Practice, Forge Mocks, Bookmarks) lives here.
+          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-12"><ForgeHub /></div>
         ) : (
           <div className="w-full flex-1 min-h-0 flex flex-col lg:flex-row gap-5">
             <div className="flex-1 min-h-0 flex flex-col card-glass rounded-2xl shadow-sm relative overflow-hidden">
@@ -1055,7 +1107,13 @@ export default function ExamSetupPage() {
               </div>
 
               <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
-              {sourceType === "standard" && sourceMix.mode !== "pyq" && <div className="px-5 md:px-6 pt-4"><SourceMixer mix={sourceMix} onChange={setSourceMix} yearPaper={examType === "YEAR_PAPER"} /></div>}
+              {sourceType === "standard" && sourceMix.mode === "forge" && (
+                <p className="mx-5 md:mx-6 mt-4 rounded-2xl bg-[var(--surface)] px-4 py-3 text-sm text-[var(--text-secondary)]">
+                  Forge is in preview: tests built here use official PYQs until the first Forge set is released. See the Forge questions under <b className="text-[var(--text-primary)]">Forge questions</b> above.
+                </p>
+              )}
+              {sourceType === "standard" && sourceMix.mode === "mix" && <div className="px-5 md:px-6 pt-4"><SourceMixer mix={sourceMix} onChange={setSourceMix} yearPaper={examType === "YEAR_PAPER"}
+                available={{ pyq: totalQuestions, forge: 0, ai: aiQuestionsList.length }} /></div>}
               {examType === "CUSTOM_TEST" ? (
                 <div className="px-5 md:px-6 pb-5 md:pb-6 pt-4">
                    <CustomTestBuilder

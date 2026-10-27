@@ -3,7 +3,7 @@
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download, Timer, Library, Wrench, Anvil, BookOpenText } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Timer, Library, Wrench, BookOpenText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -28,13 +28,12 @@ const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "Exam Setup", href: "/setup", icon: Settings },
   { label: "Mocks", href: "/mocks", icon: Timer },
-  { label: "Forge", href: "/forge", icon: Anvil },
+  // Forge lives inside Exam Setup (question source); Tools moved to the icon group.
   { label: "Study", href: "/study", icon: BookOpenText },
   { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit },
   // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
   { label: "Review", href: "/mistakes", icon: Library },
   { label: "Analytics", href: "/analytics", icon: PieChart },
-  { label: "Tools", href: TOOLS_HOME, icon: Wrench },
 ];
 
 // Each section keeps its own pastel when it is the current page (navbar highlight).
@@ -222,7 +221,7 @@ export function Topbar() {
                   onFocus={() => setHovered(item.href)}
                   data-tint={NAV_TINTS[item.label]}
                   title={item.label}
-                  className={`group relative flex items-center gap-2 px-2.5 min-[1720px]:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
+                  className={`group relative flex items-center gap-2 px-2.5 xl:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
                     isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
@@ -241,8 +240,8 @@ export function Topbar() {
                     />
                   )}
                   <item.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
-                  {/* Ten items: labels only where they all fit beside the logo and the icon row. */}
-                  <span className="hidden min-[1720px]:inline">{item.label}</span>
+                  {/* Seven items: names shown from 1280px; below that icons (name on hover). */}
+                  <span className="hidden xl:inline">{item.label}</span>
                 </Link>
               );
             })}
@@ -258,7 +257,7 @@ export function Topbar() {
             ref={clusterRef}
             onMouseOver={onClusterOver}
             onMouseLeave={() => setActPill(null)}
-            className="relative flex items-center gap-0.5 rounded-xl p-1"
+            className="relative flex items-center gap-0.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_2px_8px_-4px_rgba(12,34,75,0.15)]"
           >
              <AnimatePresence>
                 {actPill && (
@@ -352,18 +351,17 @@ export function Topbar() {
              </button>
 
              <LeaderboardButton />
-             {signedIn && (
-               <Link
-                  href="/downloads"
-                  className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors ${
-                    pathname?.startsWith("/downloads") ? "nav-active-pill text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
-                  }`}
-                  aria-label="Downloads"
-                  title="Downloads — study offline"
-               >
-                  <Download className="w-4 h-4" />
-               </Link>
-             )}
+             {/* Tools (Downloads is one of the tools on the Tools page). */}
+             <Link
+                href={TOOLS_HOME}
+                className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors ${
+                  isToolPath(pathname ?? "") || pathname === TOOLS_HOME || pathname?.startsWith("/downloads") ? "nav-active-pill text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                }`}
+                aria-label="Tools"
+                title="Tools"
+             >
+                <Wrench className="w-4 h-4" />
+             </Link>
 
              <div className="relative z-10 hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
              <button

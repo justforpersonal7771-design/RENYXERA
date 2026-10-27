@@ -94,7 +94,7 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
                       {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}
                       <img src={p.dataUri} alt="" aria-hidden="true" className={`w-full h-full ${locked ? "opacity-80" : ""}`} width={96} height={96} />
                       {locked && (
-                        <span className={`absolute bottom-1 right-1 w-5 h-5 rounded-full grid place-items-center shadow ${p.tier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950" : "bg-gradient-to-b from-slate-100 to-slate-400 text-slate-900"}`}><Lock className="w-3 h-3" strokeWidth={2.5} /></span>
+                        <span className={`absolute bottom-1 right-1 w-5 h-5 rounded-full grid place-items-center shadow ${p.tier === "pro" ? "bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)]" : "bg-[var(--tint-sky)] text-[var(--tint-sky-ink)] border border-[color-mix(in_srgb,var(--tint-sky-ink)_25%,transparent)]"}`}><Lock className="w-3 h-3" strokeWidth={2.5} /></span>
                       )}
                       {selected && (
                         <motion.span layoutId="avatar-style-check" className="absolute top-1 right-1 w-5 h-5 rounded-full nav-active-pill">
@@ -112,9 +112,9 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
         <AnimatePresence>
           {offer && (
             <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-              className={`flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-3 ${offer.tier === "pro" ? "border-amber-400/50 bg-amber-500/10" : "border-slate-400/50 bg-slate-500/10"}`}>
+              className={`flex flex-wrap items-center justify-between gap-3 rounded-2xl border p-3 ${offer.tier === "pro" ? "border-transparent bg-[var(--tint-butter)]" : "border-transparent bg-[var(--tint-sky)]"}`}>
               <p className="text-sm text-[var(--text-primary)]"><b>{offer.label}</b> is a {offer.tier === "pro" ? "Gold · Pro" : "Silver · Plus"} avatar. Unlock it{offer.tier === "plus" ? " with Plus or Pro" : " with Pro"}.</p>
-              <button type="button" onClick={() => openUpgrade(`${offer.label} is a ${offer.tier === "pro" ? "Pro" : "Plus"} style`)} className={`h-9 px-4 rounded-xl text-sm font-bold inline-flex items-center gap-1.5 shadow ${offer.tier === "pro" ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950" : "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900"}`}><Crown className="w-4 h-4" /> See plans</button>
+              <button type="button" onClick={() => openUpgrade(`${offer.label} is a ${offer.tier === "pro" ? "Pro" : "Plus"} style`)} className={`h-9 px-4 rounded-xl text-sm font-bold inline-flex items-center gap-1.5 shadow ${offer.tier === "pro" ? "bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)]" : "bg-[var(--tint-sky)] text-[var(--tint-sky-ink)] border border-[color-mix(in_srgb,var(--tint-sky-ink)_25%,transparent)]"}`}><Crown className="w-4 h-4" /> See plans</button>
             </motion.div>
           )}
         </AnimatePresence>

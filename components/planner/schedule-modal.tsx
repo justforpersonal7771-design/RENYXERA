@@ -161,7 +161,7 @@ export function ScheduleModal({ open, onClose, sections, marks, fixedHours, exam
                   {busy ? <><Loader2 className="h-4 w-4 animate-spin" /> Adding…</> : <>Add {result.events.length} blocks to my calendar</>}
                 </button>
               ) : (
-                <button type="button" onClick={() => openUpgrade("Automatic scheduling is a Plus and Pro feature")} className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-b from-amber-200 to-amber-500 px-5 text-sm font-bold text-amber-950">See Plus &amp; Pro</button>
+                <button type="button" onClick={() => openUpgrade("Automatic scheduling is a Plus and Pro feature")} className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl bg-[var(--tint-butter)] px-5 text-sm font-bold text-[var(--tint-butter-ink)]">See Plus &amp; Pro</button>
               )}
             </div>
           </>

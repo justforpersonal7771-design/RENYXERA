@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Timer, Wrench, X, Anvil, BookOpenText, Swords } from "lucide-react";
+import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Timer, Wrench, X, BookOpenText, Swords } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
@@ -37,7 +37,6 @@ export function BottomTabBar() {
   ];
   const rest = [
     { label: "Mocks", href: "/mocks", icon: Timer, active: pathname.startsWith("/mocks") },
-    { label: "Forge", href: "/forge", icon: Anvil, active: pathname.startsWith("/forge") },
     { label: "Study materials", href: "/study", icon: BookOpenText, active: pathname.startsWith("/study") },
     { label: "Battles", href: "/battles", icon: Swords, active: pathname.startsWith("/battles") },
     { label: "Analytics", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },

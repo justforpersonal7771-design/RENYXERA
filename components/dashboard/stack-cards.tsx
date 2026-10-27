@@ -13,6 +13,7 @@ import { useReducedMotion } from "motion/react";
 const BAR = 64;          // the navbar sits above the app's scroll box (which starts at 64px)
 const GAP = 8;           // pinned this far below the top of the scroll box
 const NAV = BAR + GAP;   // where the deck pins, in viewport coordinates
+const STAGE = 720;       // pinned block height cap: heading + pile lips + a ~520px card + bottom room
 const LIP = 16;          // how much of each earlier card shows above the next
 const SHRINK = 0.035;    // width lost per step back
 const MAX_BACK = 5;      // older cards beyond this hide under the pile
@@ -47,7 +48,9 @@ export function StackCards({ items, header, aside }: { items: ReactNode[]; heade
       raf = 0;
       const el = wrap.current;
       if (!el) return;
-      const travel = el.offsetHeight - (window.innerHeight - BAR - 2 * GAP);
+      // distance the pinned block travels = wrapper height minus the pinned block's own height
+      const pinned = (el.firstElementChild as HTMLElement | null)?.offsetHeight ?? 0;
+      const travel = el.offsetHeight - pinned;
       const done = Math.min(1, Math.max(0, (NAV - el.getBoundingClientRect().top) / Math.max(1, travel)));
       setPos(done * (items.length - 1));
     };
@@ -61,12 +64,13 @@ export function StackCards({ items, header, aside }: { items: ReactNode[]; heade
   if (reduce || !wide) return <div>{header}<div className="space-y-4">{items}</div></div>;
 
   return (
-    <div ref={wrap} className="relative" style={{ height: `calc(${(items.length - 1) * PER_CARD * 100}vh + 100vh - ${BAR + 2 * GAP}px)` }}>
-      <div className="sticky flex flex-col justify-start" style={{ top: GAP, height: `calc(100vh - ${BAR + 2 * GAP}px)` }}>
+    // The pinned block is only as tall as heading + pile + a card (max STAGE), with room below the card,
+    // so the tinted frame hugs the deck instead of stretching to the screen.
+    <div ref={wrap} className="relative" style={{ height: `calc(${(items.length - 1) * PER_CARD * 100}vh + ${STAGE}px)` }}>
+      <div className="sticky flex flex-col justify-start pb-6" style={{ top: GAP, height: `min(calc(100vh - ${BAR + 2 * GAP}px), ${STAGE}px)` }}>
         {aside}
         {header}
-        {/* Card area sits right under the heading and never grows past a comfortable card height. */}
-        <div className="relative min-h-0 flex-1" style={{ paddingTop: MAX_BACK * LIP, maxHeight: 520 }}>
+        <div className="relative min-h-0 flex-1" style={{ paddingTop: MAX_BACK * LIP }}>
           <div className="relative h-full">
             {items.map((it, i) => {
               // d > 0: card i is d steps behind the front; d in (-1, 0): it is sliding in from below.

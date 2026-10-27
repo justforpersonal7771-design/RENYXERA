@@ -183,7 +183,7 @@ export function PlanInsights() {
         <h2 className="inline-flex items-center gap-2 font-extrabold text-[var(--text-primary)]"><Sparkles className="h-4 w-4 text-amber-500" aria-hidden /> What if? <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-black uppercase text-amber-700 dark:text-amber-300">Pro</span></h2>
         {!pro ? (
           <div className="mt-2"><p className="text-sm text-[var(--text-secondary)]">Try studying more or less each day, or a different exam date, and see how your plan changes before you commit.</p>
-            <button type="button" onClick={() => lock("What-if planning")} className="mt-3 inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-b from-amber-200 to-amber-500 px-5 text-sm font-bold text-amber-950">Unlock with Pro</button></div>
+            <button type="button" onClick={() => lock("What-if planning")} className="mt-3 inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl bg-[var(--tint-butter)] px-5 text-sm font-bold text-[var(--tint-butter-ink)]">Unlock with Pro</button></div>
         ) : !opts ? <p className="mt-2 text-sm text-[var(--text-secondary)]">Make a plan first, then compare changes here.</p> : (
           <>
             <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

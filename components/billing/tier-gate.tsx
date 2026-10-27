@@ -33,7 +33,7 @@ export function TierGate({ tier, feature, perk, children, className = "" }: { ti
           <p className={`text-xs font-black tracking-normal ${gold ? "text-amber-700 dark:text-amber-300" : "text-slate-600 dark:text-slate-300"}`}>{gold ? "Pro · Gold" : "Plus · Silver"}</p>
           <h3 className="mt-1 text-base font-extrabold text-[var(--text-primary)] inline-flex items-center gap-1.5"><Lock className="w-4 h-4" /> {feature}</h3>
           <p className="mt-1 text-xs text-[var(--text-secondary)] leading-relaxed">{perk}</p>
-          <button type="button" onClick={() => openUpgrade(`${feature} is a ${gold ? "Pro" : "Plus"} feature`)} className={`mt-4 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-sm font-bold shadow-md ${gold ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950" : "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900"}`}>
+          <button type="button" onClick={() => openUpgrade(`${feature} is a ${gold ? "Pro" : "Plus"} feature`)} className={`mt-4 inline-flex h-10 items-center justify-center gap-1.5 rounded-xl px-5 text-sm font-bold shadow-md ${gold ? "bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)]" : "bg-[var(--tint-sky)] text-[var(--tint-sky-ink)] border border-[color-mix(in_srgb,var(--tint-sky-ink)_25%,transparent)]"}`}>
             Unlock with {gold ? "Pro" : "Plus"}{price ? ` — ${price}/month` : ""}
           </button>
         </div>

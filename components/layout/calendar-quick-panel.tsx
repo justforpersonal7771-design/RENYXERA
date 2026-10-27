@@ -308,7 +308,8 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="space-y-2 overflow-hidden"
+              // the height animation needs overflow clipping; the 3px inner padding keeps focus outlines visible
+              className="space-y-2 overflow-hidden p-[3px] -m-[3px]"
             >
               <input
                 ref={inputRef}

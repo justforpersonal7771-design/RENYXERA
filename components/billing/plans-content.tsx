@@ -30,8 +30,8 @@ function loadCheckout() {
 }
 
 const LOOK = {
-  plus: { ring: "border-slate-400/60 bg-gradient-to-br from-slate-200/40 via-[var(--surface)] to-slate-400/10", kicker: "text-slate-600 dark:text-slate-300", btn: "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 text-slate-900 shadow-slate-500/30", metal: "silver" as const, label: "Silver" },
-  pro: { ring: "border-amber-400/70 bg-gradient-to-br from-amber-200/30 via-[var(--surface)] to-amber-500/10 shadow-[0_20px_50px_-24px_rgba(217,119,6,0.55)]", kicker: "text-amber-700 dark:text-amber-300", btn: "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 text-amber-950 shadow-amber-500/30", metal: "gold" as const, label: "Gold" },
+  plus: { ring: "border-transparent bg-[var(--tint-sky)]", kicker: "text-slate-600 dark:text-slate-300", btn: "bg-[var(--tint-sky)] text-[var(--tint-sky-ink)] border border-[color-mix(in_srgb,var(--tint-sky-ink)_25%,transparent)] shadow-slate-500/30", metal: "silver" as const, label: "Silver" },
+  pro: { ring: "border-transparent bg-[var(--tint-butter)] shadow-[0_20px_50px_-28px_rgba(12,34,75,0.35)]", kicker: "text-amber-700 dark:text-amber-300", btn: "bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)]", metal: "gold" as const, label: "Gold" },
 };
 
 /**
@@ -160,7 +160,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - serverNow()) / 86400_000)) : 0;
           return (
             <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative flex flex-col rounded-3xl p-6 border ${look.ring}`}>
-              {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950 text-xs font-black tracking-normal shadow">Most loved</span>}
+              {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] text-xs font-black tracking-normal shadow">Most loved</span>}
               <div className="flex items-center justify-between">
                 <p className={`text-sm font-black tracking-normal ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>
                 <ProCrown metal={look.metal} className="is-inline" />
