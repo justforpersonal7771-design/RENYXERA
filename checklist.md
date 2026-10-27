@@ -217,14 +217,14 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ### 3H · Release 18 — UI refresh (priority) · `docs/roadmap/R18-UI-REFRESH.md`
 - [x] U1 (27 Oct): share card (clean share base, branch names, no overlaps), stack deck clipped to tidy lips, navbar gold/silver rings removed, dot-grid texture. Plan: `docs/roadmap/R18-UI-UPGRADE-PLAN.md`
-- [ ] U2 shared UI kit: every components/ui file + FolderTabs / Segmented / HardButton; sentence-case labels
+- [ ] U2 shared UI kit — partly done 27 Oct: FolderTabs, Segmented, btn-main, grad-brand built; 291 labels in 84 files moved to sentence case; old purple gradient replaced in 34 places. Left: restyle each components/ui file
 - [ ] U3 app shell: topbar, bottom tabs, to-do panel, calendar panel, goal slider, leaderboard, account menu, Ctrl+K
-- [ ] U4 dashboard + planner (all components) incl. first experience
+- [ ] U4 dashboard + planner — partly done: first-run hero (no empty rings, one start ask), to-do + calendar panel headers. Left: remaining dashboard/planner components
 - [ ] U5 practice/exam chrome, results, review, analytics
 - [ ] U6 AI mentor/tutor, mocks, calendar page, downloads, profile, billing
 - [ ] U7 auth, onboarding, growth + system dialogs
 - [ ] U8 public pages + final WCAG AA audit
-- [ ] Bug: hero says 102 days to GATE, countdown card says 109
+- [x] Bug: days to GATE now from one source (lib/goals/use-days-to-gate.ts)
 - [ ] 18A Dashboard (bento: next action, today strip with daily target, progress trio, where marks leak, revision due, mocks, heatmap, battles, one upgrade moment) — contact sheet first
 - [ ] 18B Analytics (KPIs, mastery heatmap + institute filter, topic table, time coach, Mistake DNA)
 - [ ] 18C AI Mentor (conversation-first, coach chips, data-driven prompts, message actions, quota meter)
