@@ -204,7 +204,7 @@ export default function AnalyticsDashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {hud.map((stat, idx) => (
               <motion.div key={stat.label} {...rise} transition={{ ...rise.transition, delay: idx * 0.06 }}>
-                <TiltCard className="card-pastel p-5 flex items-center gap-4" data-tint={(["lilac", "sky", "mint", "peach"] as const)[idx % 4]}>
+                <TiltCard className="card-stat card-pastel p-5 flex items-center gap-4" data-tint={(["lilac", "sky", "mint", "peach"] as const)[idx % 4]}>
                   <RadialGauge value={stat.value} size={84} stroke={8} from={stat.from} to={stat.to} className="text-[var(--text-primary)] shrink-0">
                     <CountUp value={stat.value} suffix="%" className="text-lg font-bold text-[var(--text-primary)]" />
                   </RadialGauge>
@@ -293,7 +293,7 @@ export default function AnalyticsDashboardPage() {
 
         {/* 3. Trend + difficulty */}
         <div className="grid grid-cols-1 gap-6">
-          <motion.div {...rise} className="card-pastel p-6" data-tint="plain">
+          <motion.div {...rise} className="card-band p-6 pt-7" data-tint="sky">
             <div className="flex items-center justify-between gap-3 mb-6">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-indigo-500" />
@@ -336,7 +336,7 @@ export default function AnalyticsDashboardPage() {
 
 
         {/* 4. Subject explorer — one chart, three metrics, bars act as a filter */}
-        <motion.div {...rise} className="card-pastel p-6" data-tint="plain">
+        <motion.div {...rise} className="card-band p-6 pt-7" data-tint="peach">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
             <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-indigo-500" />
@@ -391,7 +391,7 @@ export default function AnalyticsDashboardPage() {
         </motion.div>
 
         {/* 5. Topic explorer — tabs, search, sortable columns, one-click practice */}
-        <motion.div {...rise} className="card-pastel overflow-hidden" data-tint="plain">
+        <motion.div {...rise} className="card-band pt-1.5" data-tint="lilac">
           <div className="p-5 border-b border-[var(--border-subtle)] flex flex-col lg:flex-row lg:items-center gap-3 justify-between">
             <div className="flex flex-wrap items-center gap-3">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)]">Topic explorer</h3>
@@ -510,7 +510,7 @@ export default function AnalyticsDashboardPage() {
           <TierGate tier="pro" feature="Pro analytics" perk="Detailed All-India Mock history, topic ladders from strongest to weakest, and difficulty-wise accuracy — all in one upgrade." className="space-y-6">
             <MockAnalytics />
             <TopicLadders topics={dashboardMetrics.topicPerformance ?? []} />
-          <motion.div {...rise} transition={{ ...rise.transition, delay: 0.06 }} className="card-pastel p-6" data-tint="plain">
+          <motion.div {...rise} transition={{ ...rise.transition, delay: 0.06 }} className="card-band p-6 pt-7" data-tint="mint">
             <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-6 flex items-center gap-2">
               <Target className="w-4 h-4 text-rose-500" />
               Difficulty analysis
@@ -563,7 +563,7 @@ function SubjectShareList({ subjects, onPractise }: { subjects: { subject: strin
   const max = Math.max(1, ...rows.map((r) => r.share));
   return (
     <Reveal>
-      <section className="card-pastel p-5 sm:p-6" data-tint="peri">
+      <section className="card-well p-5 sm:p-6" data-tint="sky">
         <div className="flex flex-wrap items-end justify-between gap-2">
           <div><span className="section-label">Where the marks are</span><h3 className="mt-2 text-lg font-extrabold text-[var(--text-primary)]">Share of marks by subject, and how you do there</h3></div>
           <p className="text-[11px] text-[var(--text-muted)]">From every official paper in your bank · tap a subject</p>

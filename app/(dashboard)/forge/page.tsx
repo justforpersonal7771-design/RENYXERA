@@ -7,7 +7,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Anvil, CalendarDays, Check, ChevronDown, Flame, Lock, Lightbulb, Trophy, TriangleAlert, Users } from "lucide-react";
+import { Anvil, CalendarDays, Check, X, ChevronDown, Flame, Lock, Lightbulb, Trophy, TriangleAlert, Users } from "lucide-react";
 import { PreviewFrame } from "@/components/preview/preview-frame";
 import { FolderTabs, Segmented } from "@/components/ui/folder-tabs";
 import { UPCOMING } from "@/lib/preview/features";
@@ -19,7 +19,7 @@ type Tab = "daily" | "practice" | "mocks" | "archive";
 
 export default function ForgePage() {
   return (
-    <div className="mx-auto max-w-6xl space-y-6 px-4 pb-24 pt-4 sm:px-6">
+    <div className="space-y-6 pb-8">
       <PreviewFrame state={UPCOMING.forge} name="Forge" when="Original GATE-level questions, a Daily Forge and Forge Mocks. CS first, then every branch.">
         {(tier) => <Forge tier={tier} />}
       </PreviewFrame>
@@ -115,7 +115,12 @@ function Daily({ tier }: { tier: Tier }) {
 function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolean }) {
   const [open, setOpen] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
+  const [nat, setNat] = useState("");
+  const [checked, setChecked] = useState(false);
   const reduce = useReducedMotion();
+  // NAT: right if within 0.5% of the key (GATE gives a range; the real items carry their own range).
+  const right = q.type === "NAT" ? Math.abs(Number(nat) - Number(q.answer)) <= Math.abs(Number(q.answer)) * 0.005 + 1e-9 : pick === q.answer;
+  const canCheck = q.type === "NAT" ? nat.trim() !== "" && !Number.isNaN(Number(nat)) : !!pick;
   const d = DIFF[q.difficulty];
   return (
     <article className="rounded-[22px] border border-[var(--border)] bg-[var(--surface)] p-5">
@@ -135,15 +140,38 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
           {q.options.map((o, i) => {
             const id = "ABCD"[i];
             const sel = pick === id;
+            // After checking: the key turns green, a wrong pick turns red. Before: the pick is a light-blue chip.
+            const state = checked ? (id === q.answer ? "right" : sel ? "wrong" : "idle") : sel ? "picked" : "idle";
+            const look = {
+              right: "border-emerald-400 bg-[var(--tint-mint)] text-[var(--text-primary)]",
+              wrong: "border-rose-400 bg-[var(--tint-rose)] text-[var(--text-primary)]",
+              picked: "border-[var(--tint-lilac-ink)] bg-[var(--tint-lilac)] text-[var(--text-primary)]",
+              idle: "border-[var(--border)] hover:border-[var(--text-secondary)]",
+            }[state];
             return (
-              <button key={id} type="button" role="radio" aria-checked={sel} onClick={() => setPick(id)}
-                className={`flex items-center gap-3 rounded-2xl border p-3 text-left text-sm transition-colors ${sel ? "border-[var(--ink)] bg-[var(--ink)] text-[var(--background)]" : "border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
-                <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg border font-num text-xs font-bold ${sel ? "border-white/30" : "border-[var(--border)]"}`}>{id}</span>{o}
+              <button key={id} type="button" role="radio" aria-checked={sel} disabled={checked} onClick={() => setPick(id)}
+                className={`flex items-center gap-3 rounded-2xl border-2 p-3 text-left text-sm transition-colors disabled:cursor-default ${look}`}>
+                <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg font-num text-xs font-bold ${state === "right" ? "bg-emerald-500 text-white" : state === "wrong" ? "bg-rose-500 text-white" : state === "picked" ? "bg-[var(--tint-lilac-ink)] text-white" : "border border-[var(--border)]"}`}>
+                  {state === "right" ? <Check className="h-3.5 w-3.5" /> : state === "wrong" ? <X className="h-3.5 w-3.5" /> : id}</span>{o}
               </button>
             );
           })}
         </div>
       )}
+      {q.type === "NAT" && (
+        <label className="mt-3 flex max-w-sm items-center gap-2">
+          <span className="sr-only">Your answer</span>
+          <input inputMode="decimal" value={nat} disabled={checked} onChange={(e) => setNat(e.target.value.replace(/[^0-9.\-]/g, ""))} placeholder="Type your answer"
+            className={`h-11 w-full rounded-2xl border-2 bg-[var(--surface)] px-4 font-num text-[var(--text-primary)] outline-none transition-colors ${checked ? (right ? "border-emerald-400 bg-[var(--tint-mint)]" : "border-rose-400 bg-[var(--tint-rose)]") : "border-[var(--border)] focus:border-[var(--tint-lilac-ink)]"}`} />
+        </label>
+      )}
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        {!checked
+          ? <button type="button" disabled={!canCheck} onClick={() => { setChecked(true); setOpen(true); }} className="pill-ink disabled:opacity-40">Check answer</button>
+          : <p role="status" className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold ${right ? "bg-[var(--tint-mint)] text-[var(--tint-mint-ink)]" : "bg-[var(--tint-rose)] text-[var(--tint-rose-ink)]"}`}>
+              {right ? <><Check className="h-4 w-4" /> Correct</> : <><X className="h-4 w-4" /> Not quite: the answer is {q.answer}</>}</p>}
+        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
+      </div>
       <footer className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--text-muted)]">
         <span>{q.solvedBy} solved · {q.accuracy}% right</span>
         <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} className="ml-auto inline-flex items-center gap-1 rounded-full bg-[var(--surface-secondary)] px-3 py-1.5 text-sm font-semibold text-[var(--text-primary)]">

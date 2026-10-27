@@ -135,7 +135,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
           The outer panel itself must NOT clip (overflow-hidden), or the quick-add
           CustomDropdown's popover list — absolutely positioned within this panel —
           gets cut off and never appears. */}
-      <div className="relative overflow-hidden rounded-t-2xl p-4 flex items-center justify-between gap-2 grad-brand">
+      <div className="relative overflow-hidden rounded-t-[20px] p-4 flex items-center justify-between gap-2 grad-brand">
         <div className="relative flex items-center gap-2.5">
           {isExpanded && (
             <button
@@ -300,7 +300,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Quick add */}
-      <div className="p-3 border-t border-[var(--border-subtle)] bg-[var(--surface)]">
+      <div className="p-3 border-t border-[var(--border-subtle)] bg-[var(--surface)] rounded-b-[20px]">
         <AnimatePresence mode="wait">
           {isAdding ? (
             <motion.div

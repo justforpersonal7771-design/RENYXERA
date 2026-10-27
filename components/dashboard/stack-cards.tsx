@@ -60,10 +60,10 @@ export function StackCards({ items, header, aside }: { items: ReactNode[]; heade
 
   return (
     <div ref={wrap} className="relative" style={{ height: `calc(${(items.length - 1) * PER_CARD * 100}vh + 100vh - ${NAV}px)` }}>
-      <div className="sticky flex flex-col" style={{ top: NAV, height: `calc(100vh - ${NAV + 16}px)` }}>
+      <div className="sticky flex flex-col justify-center" style={{ top: NAV, height: `calc(100vh - ${NAV + 16}px)` }}>
         {aside}
         {header}
-        <div className="relative min-h-0 flex-1" style={{ paddingTop: MAX_BACK * LIP }}>
+        <div className="relative min-h-0 flex-1" style={{ paddingTop: MAX_BACK * LIP, maxHeight: 560 }}>
           <div className="relative h-full">
             {items.map((it, i) => {
               // d > 0: card i is d steps behind the front; d in (-1, 0): it is sliding in from below.

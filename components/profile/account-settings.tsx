@@ -35,7 +35,7 @@ function Segmented<T extends string>({ value, onChange, options, label }: { valu
         return (
           <button key={o.value} role="radio" aria-checked={active} onClick={() => onChange(o.value)}
             className={`relative inline-flex items-center justify-center gap-1.5 h-9 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${active ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-            {active && <motion.span layoutId={`seg-${label}`} className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/25" />}
+            {active && <motion.span layoutId={`seg-${label}`} className="absolute inset-0 rounded-lg nav-active-pill" />}
             <o.icon className="relative w-3.5 h-3.5" /><span className="relative">{o.label}</span>
           </button>
         );

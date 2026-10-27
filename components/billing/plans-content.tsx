@@ -128,7 +128,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           {(["monthly", "yearly", "season"] as const).map((p) => (
             <button key={p} type="button" role="radio" aria-checked={period === p} onClick={() => setPeriod(p)}
               className={`relative px-5 h-9 rounded-xl text-sm font-bold cursor-pointer ${period === p ? "text-white" : "text-[var(--text-secondary)]"}`}>
-              {period === p && <motion.span layoutId="period-pill" className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600" transition={{ type: "spring", stiffness: 420, damping: 32 }} />}
+              {period === p && <motion.span layoutId="period-pill" className="absolute inset-0 rounded-xl nav-active-pill" transition={{ type: "spring", stiffness: 420, damping: 32 }} />}
               <span className="relative">{p === "monthly" ? "Monthly" : p === "yearly" ? "Yearly" : "GATE season pass"}</span>
             </button>
           ))}

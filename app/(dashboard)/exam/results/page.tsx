@@ -332,7 +332,6 @@ export default function ResultSummaryPage() {
                 onClick={() => router.push(`/exam/results/review?id=${id}`)}
                 className="group relative overflow-hidden flex-[1.5] px-3 sm:px-6 py-3 [@media(max-height:860px)]:py-2.5 grad-brand text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
               >
-                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                 <span className="relative whitespace-nowrap">Review answers</span>
                 <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-1" />
               </motion.button>
@@ -432,7 +431,6 @@ export default function ResultSummaryPage() {
                       <motion.span initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
                         className="relative overflow-hidden inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-700 dark:text-violet-300 bg-violet-500/10 ring-1 ring-violet-500/20 px-3 py-1 rounded-full">
                         <Sparkles className="w-3 h-3" /> Evaluation complete
-                        <span aria-hidden="true" className="absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite]" />
                       </motion.span>
                       {session.draftConfig.config.goalTag && <GoalTagBadge tag={session.draftConfig.config.goalTag} />}
                     </div>

@@ -584,7 +584,6 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   disabled={launchPool.length === 0 || isLaunching}
                   className="group relative overflow-hidden w-full flex items-center justify-center gap-2 h-11 grad-brand disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-lg shadow-violet-500/30 cursor-pointer"
                 >
-                  <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                   {isLaunching ? (
                     <motion.span animate={{ rotate: 360 }} transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }} className="relative">
                       <RotateCcw className="w-4 h-4" />

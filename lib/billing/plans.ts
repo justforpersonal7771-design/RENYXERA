@@ -119,7 +119,7 @@ export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body:
     { title: "All 20 avatar styles", body: "Every Silver style plus 6 Gold-only ones: Toon, Voxel, Clay and more." },
     { title: "AI re-plan", body: "Fell behind? Re-plan everything left from today in one tap, with your own settings." },
     { title: "Smart Telegram", body: "Evening roll-forward prompt, weekly review, 10 alarms and 10 timers." },
-    { title: "Gold crown, gold navbar, priority fixes", body: "Your reported issues are looked at first." },
+    { title: "Gold crown and PRO badge, priority fixes", body: "Your reported issues are looked at first." },
   ],
 };
 

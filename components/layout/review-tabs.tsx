@@ -39,7 +39,7 @@ export function ReviewTabs() {
           return (
             <Link key={t.href} href={t.href} aria-current={on ? "page" : undefined}
               className={`relative flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3 sm:px-4 h-9 rounded-xl text-sm font-bold transition-colors ${on ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-              {on && <motion.span layoutId="review-tab-pill" className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/25" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+              {on && <motion.span layoutId="review-tab-pill" className="absolute inset-0 rounded-xl nav-active-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
               <t.icon className="relative w-4 h-4" />
               <span className="relative">{t.label}</span>
             </Link>

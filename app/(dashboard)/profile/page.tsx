@@ -600,7 +600,7 @@ export default function ProfilePage() {
                 <motion.button key={sct.id} onClick={() => selectTab(sct.id)} aria-current={active ? "page" : undefined}
                   initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.08 + i * 0.03 }}
                   className={`group relative shrink-0 flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-semibold text-left transition-colors cursor-pointer ${active ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]/70"}`}>
-                  {active && <motion.span layoutId="profile-tab" transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30" />}
+                  {active && <motion.span layoutId="profile-tab" transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-0 rounded-xl nav-active-pill" />}
                   <sct.icon className="relative w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
                   <span className="relative whitespace-nowrap">{sct.label}</span>
                   {dirty && (sct.id === "personal" || sct.id === "goals") && <span className="relative ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" title="Unsaved changes" />}

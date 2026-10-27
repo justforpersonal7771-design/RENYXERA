@@ -132,5 +132,25 @@ def default_card(out, custom=False):
 default_card("public/og/default.png")
 default_card("public/og/custom-base.png", custom=True)
 
+
+def result_base(slug, logo, accent):
+    """Portrait 1080x1350 base for the share-result image, in the social-card style: same tinted background,
+    lockup, glowing branch logo top right and mono URL. Scores are drawn on top in the app (share-result-button)."""
+    RW, RH = 1080, 1350
+    y, x = np.mgrid[0:RH, 0:RW]
+    a = np.array(hexrgb(accent), float); base = np.array([250, 248, 255], float)
+    g = np.exp(-(((x - 860) / 460) ** 2 + ((y - 240) / 420) ** 2))[..., None]
+    g2 = np.exp(-(((x - 120) / 520) ** 2 + ((y - 1300) / 380) ** 2))[..., None]
+    img = base * (1 - 0.24 * g - 0.12 * g2) + a * (0.24 * g + 0.12 * g2)
+    im = Image.fromarray(np.clip(img, 0, 255).astype("uint8")).convert("RGBA")
+    lk = brand_lockup(84); im.alpha_composite(lk, (72, 72))
+    c = circle(f"logo/{logo}.jpeg", 230)
+    sh = Image.new("RGBA", (RW, RH), (0, 0, 0, 0)); ImageDraw.Draw(sh).ellipse((790, 190, 1030, 430), fill=hexrgb(accent) + (95,))
+    im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(26))); im.alpha_composite(c, (795, 195))
+    ImageDraw.Draw(im).text((72, 1268), "gate.renyxera.workers.dev", font=mono(28, 500), fill=(88, 80, 140))
+    os.makedirs("public/og/result", exist_ok=True)
+    im.convert("RGB").save(f"public/og/result/{slug}.png", optimize=True)
+for slug, (t, s_, lg, ac) in BR.items():
+    result_base(slug, lg, ac)
 print("done")
 

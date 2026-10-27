@@ -149,7 +149,6 @@ export function FocusCenter({
                   onClick={card.onClick}
                   className={`group/btn relative overflow-hidden w-full inline-flex items-center justify-center gap-2 h-10 rounded-xl bg-gradient-to-r ${card.btn} text-white text-xs font-semibold shadow-lg cursor-pointer`}
                 >
-                  <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover/btn:translate-x-[300%] transition-transform duration-700" />
                   <span className="relative">{card.actionLabel}</span>
                   <ArrowRight className="relative w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
                 </motion.button>

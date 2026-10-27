@@ -279,7 +279,6 @@ export default function ExamSessionPage() {
             }}
             className="group relative overflow-hidden mt-4 h-13 py-3.5 w-full grad-brand text-white rounded-xl font-semibold text-base shadow-lg shadow-violet-500/30 cursor-pointer inline-flex items-center justify-center gap-2"
           >
-            <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
             <span className="relative">See my results</span>
             <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-1" />
           </button>
@@ -339,7 +338,7 @@ export default function ExamSessionPage() {
             actions) that never wraps, plus a details row (type/marks/difficulty and
             section/subject/topic) that's always shown on sm:+ but collapses behind a
             toggle on mobile instead of forcing three stacked rows. */}
-        <header className="flex-none bg-[var(--surface)] border-b border-[var(--border)] shadow-sm shrink-0 z-30">
+        <header className="exam-head flex-none border-b border-[var(--border)] shrink-0 z-30">
            {/* Row 1: essentials — always visible, never wraps. Both sides are shrink-0 so
                they can never squash/overlap each other on narrow screens; if content still
                can't fit, the row scrolls horizontally instead of breaking (graceful
@@ -460,7 +459,6 @@ export default function ExamSessionPage() {
                      onClick={() => setShowSubmitModal(true)}
                      className="group relative overflow-hidden h-8 sm:h-9 px-2.5 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold grad-brand text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
                    >
-                     <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                      <Send className="relative w-3.5 h-3.5" />
                      <span className="relative ">Submit</span>
                    </motion.button>
@@ -489,7 +487,7 @@ export default function ExamSessionPage() {
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
           
           {/* Question Workspace Component */}
-          <div id="exam-workspace-container" className="flex-1 flex flex-col min-w-0 bg-[var(--surface)] h-full relative z-10 w-full lg:w-auto">
+          <div id="exam-workspace-container" className="exam-stage flex-1 flex flex-col min-w-0 h-full relative z-10 w-full lg:w-auto">
              {sessionStatus === "PAUSED" ? (
                 <div className="h-full flex flex-col items-center justify-center p-8 bg-[var(--surface-secondary)]/55 backdrop-blur-sm relative z-50">
                   <motion.div
@@ -568,7 +566,7 @@ export default function ExamSessionPage() {
                   </div>
 
                   {/* BOTTOM ACTION BAR (Sticky to bottom) */}
-                  <div className="flex-none px-4 py-2 sm:px-6 flex flex-col sm:flex-row justify-between items-center border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur z-20 gap-2">
+                  <div className="flex-none px-4 py-2 sm:px-6 flex flex-col sm:flex-row justify-between items-center border-t border-[var(--border)] exam-foot z-20 gap-2">
                     <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">
                       <button
                         onClick={() => {
@@ -634,7 +632,6 @@ export default function ExamSessionPage() {
                         }}
                         className="group relative overflow-hidden flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-7 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold text-sm rounded-xl shadow-md shadow-emerald-500/30 transition hover:brightness-110 active:scale-[0.97] cursor-pointer"
                       >
-                        <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                         <span className="relative">Save &amp; next</span>
                         <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                       </button>
@@ -648,7 +645,7 @@ export default function ExamSessionPage() {
               permanently squeezed into 45vh below the question (cramped, forced scrolling,
               broke question rendering); now it's hidden by default and opened on demand via
               the grid button in the command bar, as a full bottom-sheet overlay instead. */}
-          <div className="hidden lg:flex w-full lg:w-[340px] flex-none lg:border-l border-[var(--border)] bg-[var(--surface)] z-20 flex-col h-full overflow-hidden">
+          <div className="exam-side hidden lg:flex w-full lg:w-[340px] flex-none z-20 flex-col h-full overflow-hidden">
             <QuestionPalette />
           </div>
 

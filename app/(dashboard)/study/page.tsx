@@ -15,7 +15,7 @@ import { SAMPLE_LESSON, STUDY_SUBJECTS, type StudyChapter } from "@/lib/preview/
 export default function StudyPage() {
   const [reading, setReading] = useState(false);
   return (
-    <div className="mx-auto max-w-6xl space-y-6 px-4 pb-24 pt-4 sm:px-6">
+    <div className="space-y-6 pb-8">
       <PreviewFrame state={UPCOMING.study} name="Study materials" when="Lessons for every GATE CS topic, written by us and checked against official papers. Other branches follow.">
         {(tier) => reading ? <Lesson onBack={() => setReading(false)} /> : <Library owned={tier === "pro"} onRead={() => setReading(true)} />}
       </PreviewFrame>
@@ -61,7 +61,7 @@ function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
 function ChapterRow({ c, n, tint, locked, onRead }: { c: StudyChapter; n: number; tint: string; locked: boolean; onRead: () => void }) {
   const pct = Math.round((c.done / c.topics) * 100);
   return (
-    <li>
+    <li className="min-w-0">
       <button type="button" disabled={locked} onClick={onRead}
         className="group flex w-full items-center gap-4 rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-4 text-left transition-colors hover:border-[var(--text-secondary)] disabled:cursor-not-allowed disabled:opacity-70">
         <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl font-num text-lg font-extrabold" style={{ background: `var(--tint-${tint})`, color: `var(--tint-${tint}-ink)` }}>{n}</span>

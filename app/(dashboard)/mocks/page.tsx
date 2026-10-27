@@ -253,7 +253,7 @@ export default function MocksPage() {
           </div>
           <div className="flex gap-2 shrink-0">
             <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} onClick={startChallenge} disabled={!!starting}
-              className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold shadow-lg shadow-amber-500/30 disabled:opacity-60 cursor-pointer">
+              className="btn-main disabled:opacity-60">
               {starting === "challenge" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />} Take the challenge
             </motion.button>
             <button onClick={() => openLeaderboard()} className="inline-flex items-center justify-center gap-1.5 h-11 px-4 rounded-xl border border-[var(--border)] text-sm font-bold text-[var(--text-primary)] cursor-pointer"><Medal className="w-4 h-4 text-amber-500" /> Ranks</button>

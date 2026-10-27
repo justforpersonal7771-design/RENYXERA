@@ -176,7 +176,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           topbar is the only way to keep the scrollbar from ever reaching that
           region. */}
       <main className="relative z-10 w-full h-full overflow-hidden">
-        <div id="app-scroll" className={`absolute inset-x-0 bottom-0 top-16 overflow-y-auto custom-scrollbar px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-20"} lg:pb-8`}>
+        <div id="app-scroll" className={`absolute inset-x-0 bottom-0 top-16 overflow-y-auto custom-scrollbar px-2 sm:px-4 pt-3 sm:pt-4 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-20"} lg:pb-8`}>
           <motion.div
             key={pathname}
             initial={{ opacity: 0, y: 8 }}

@@ -136,7 +136,7 @@ export function QuestionPalette() {
           {([["section", "By section"], ["all", `All ${currentDraft.questions.length}`]] as const).map(([m, label]) => (
             <button key={m} role="tab" aria-selected={gridMode === m} onClick={() => changeGridMode(m)}
               className={`relative py-1.5 rounded-lg text-[11px] font-bold transition-colors cursor-pointer ${gridMode === m ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-              {gridMode === m && <motion.span layoutId="palette-grid-mode" transition={{ type: "spring", stiffness: 420, damping: 32 }} className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30" />}
+              {gridMode === m && <motion.span layoutId="palette-grid-mode" transition={{ type: "spring", stiffness: 420, damping: 32 }} className="absolute inset-0 rounded-lg nav-active-pill" />}
               <span className="relative">{label}</span>
             </button>
           ))}

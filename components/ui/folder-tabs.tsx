@@ -18,7 +18,7 @@ export function FolderTabs<T extends string>({ tabs, value, onChange, children, 
     document.getElementById(`${id}-${next.id}`)?.focus();
   };
   return (
-    <div>
+    <div className="min-w-0">
       <div role="tablist" aria-label={label} className="folder-tabs"
         onKeyDown={(e) => { if (e.key === "ArrowRight") move(1); if (e.key === "ArrowLeft") move(-1); }}>
         {tabs.map((t) => (

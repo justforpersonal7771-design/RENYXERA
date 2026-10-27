@@ -14,7 +14,7 @@ const STATUS: Record<BattlePlayer["status"], { label: string; tint: string }> = 
 
 export default function BattlesPage() {
   return (
-    <div className="mx-auto max-w-5xl space-y-6 px-4 pb-24 pt-4 sm:px-6">
+    <div className="space-y-6 pb-8">
       <PreviewFrame state={UPCOMING.battles} name="Battles" when="Challenge friends to the same questions and watch them play live.">
         {(tier) => <Battles limit={tier === "free" ? 3 : null} />}
       </PreviewFrame>

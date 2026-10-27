@@ -110,34 +110,36 @@ async function drawCard({ title, subtitle, stats, who }: { title: string; subtit
   const font = getComputedStyle(document.body).fontFamily || "system-ui, sans-serif";
   await document.fonts?.ready;
 
-  const bg = g.createLinearGradient(0, 0, W, H);
-  bg.addColorStop(0, "#3730a3"); bg.addColorStop(0.5, "#7c3aed"); bg.addColorStop(1, "#c026d3");
-  g.fillStyle = bg; g.fillRect(0, 0, W, H);
-  const glow = (x: number, y: number, r: number, col: string) => {
-    const rg = g.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, col); rg.addColorStop(1, "transparent");
-    g.fillStyle = rg; g.fillRect(0, 0, W, H);
+  // Social-card style (scripts/make-og.py result_base): branch-tinted background, RENYXERA lockup, glowing
+  // branch logo and URL come from the base image; title, branch line and scores are drawn here in the app fonts.
+  const fam = (v: string) => { const el = document.createElement("span"); el.style.fontFamily = `var(${v})`; document.body.appendChild(el); const f = getComputedStyle(el).fontFamily; el.remove(); return f || font; };
+  const display = fam("--font-display"), serif = fam("--font-serif");
+  const INK = "#16123a", MUTED = "#58508c";
+  const BR: Record<string, [string, string, string]> = {
+    CS: ["gate-cse", "Computer Science & IT", "#4f46e5"], EC: ["gate-ece", "Electronics & Communication", "#0891b2"], EE: ["gate-ee", "Electrical Engineering", "#d97706"],
+    ME: ["gate-me", "Mechanical Engineering", "#dc2626"], CE: ["gate-ce", "Civil Engineering", "#059669"], DA: ["gate-da", "Data Science & AI", "#7c3aed"],
   };
-  glow(900, 150, 420, "rgba(103,232,249,0.35)"); glow(150, 1250, 480, "rgba(252,211,77,0.25)");
+  const [slug, branchName, accent] = BR[paperLabel()] ?? BR.CS;
+  const base = new Image(); base.src = `/og/result/${slug}.png`;
+  try { await base.decode(); g.drawImage(base, 0, 0, W, H); } catch { g.fillStyle = "#faf8ff"; g.fillRect(0, 0, W, H); }
 
-  g.fillStyle = "#fff";
-  g.font = `800 56px ${font}`; g.fillText("RENYXERA", 80, 130);
-  g.font = `500 30px ${font}`; g.globalAlpha = 0.8; g.fillText(`GATE ${paperLabel()} · All-India practice platform`, 80, 180); g.globalAlpha = 1;
+  g.fillStyle = accent; g.font = `italic 600 44px ${serif}`; g.fillText(branchName, 72, 520);
+  g.fillStyle = INK; g.font = `800 72px ${display}`; wrap(g, title, 72, 330, 700, 82);
+  g.fillStyle = MUTED; g.font = `600 30px ${font}`; g.fillText(subtitle, 72, 580);
 
-  g.font = `800 64px ${font}`; wrap(g, title, 80, 330, W - 160, 76);
-  g.font = `500 34px ${font}`; g.globalAlpha = 0.85; g.fillText(subtitle, 80, 500); g.globalAlpha = 1;
-
-  // Stat tiles, two per row
-  const tw = (W - 160 - 40) / 2, th = 210;
-  stats.slice(0, 4).forEach((s, i) => {
-    const x = 80 + (i % 2) * (tw + 40), y = 580 + Math.floor(i / 2) * (th + 40);
-    g.fillStyle = "rgba(255,255,255,0.14)"; round(g, x, y, tw, th, 36); g.fill();
-    g.strokeStyle = "rgba(255,255,255,0.3)"; g.lineWidth = 2; g.stroke();
-    g.fillStyle = "rgba(255,255,255,0.75)"; g.font = `700 28px ${font}`; g.fillText(s.label.toUpperCase(), x + 36, y + 64);
-    g.fillStyle = "#fff"; g.font = `800 84px ${font}`; g.fillText(s.value, x + 36, y + 160);
+  // Score tiles: white plates with soft accent shadow, like the social-card chips.
+  const tw = (W - 144 - 28) / 2, th = 210;
+  stats.slice(0, 4).forEach((st, i) => {
+    const x = 72 + (i % 2) * (tw + 28), y = 640 + Math.floor(i / 2) * (th + 28);
+    g.save(); g.shadowColor = accent + "40"; g.shadowBlur = 30; g.shadowOffsetY = 10;
+    g.fillStyle = "rgba(255,255,255,0.94)"; round(g, x, y, tw, th, 40); g.fill(); g.restore();
+    g.strokeStyle = accent + "55"; g.lineWidth = 2; round(g, x, y, tw, th, 40); g.stroke();
+    g.fillStyle = MUTED; g.font = `600 28px ${font}`; g.fillText(st.label.charAt(0).toUpperCase() + st.label.slice(1).toLowerCase(), x + 36, y + 64);
+    g.fillStyle = i === 0 ? accent : INK; g.font = `800 84px ${display}`; g.fillText(st.value, x + 36, y + 162);
   });
 
-  g.fillStyle = "#fff"; g.font = `700 38px ${font}`; g.fillText(who, 80, 1170);
-  g.globalAlpha = 0.8; g.font = `500 30px ${font}`; g.fillText("Free weekly All-India Mock · gate.renyxera.workers.dev", 80, 1230); g.globalAlpha = 1;
+  g.fillStyle = INK; g.font = `700 38px ${display}`; g.fillText(who, 72, 1180);
+  g.fillStyle = MUTED; g.font = `500 28px ${font}`; g.fillText("Practise free with every official GATE question", 72, 1222);
 
   return new Promise((res, rej) => c.toBlob((b) => (b ? res(b) : rej(new Error("toBlob"))), "image/png"));
 }

@@ -121,7 +121,6 @@ export function ExamSubmitDialog({ isOpen, onConfirm, onCancel, stats }: ExamSub
               onClick={onConfirm}
               className="group relative overflow-hidden flex-1 h-11 rounded-xl grad-brand text-white text-sm font-semibold shadow-lg shadow-violet-500/30 inline-flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
               <Send className="relative w-4 h-4" />
               <span className="relative">Confirm Submit</span>
             </motion.button>

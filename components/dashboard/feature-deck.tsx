@@ -20,7 +20,7 @@ function Card({ tint, label, title, body, stats, cta, href, preview }: {
   tint: string; label: string; title: string; body: string; stats: { v: string; l: string }[]; cta: string; href: string; preview: React.ReactNode;
 }) {
   return (
-    <section className="card-pastel grid gap-5 overflow-hidden p-5 sm:p-7 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-center" data-tint={tint}>
+    <section className="card-pastel grid content-center gap-5 overflow-hidden p-5 sm:p-7 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-center" data-tint={tint}>
       <div className="min-w-0">
         <span className="section-label">{label}</span>
         <h3 className="mt-3 font-display text-2xl sm:text-[1.7rem] font-extrabold leading-tight tracking-tight text-[var(--text-primary)]">{title}</h3>

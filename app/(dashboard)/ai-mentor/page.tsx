@@ -482,7 +482,7 @@ export default function AIMentorPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: 0.1 }}
-              className="card-pastel p-5 space-y-4" data-tint="lilac"
+              className="card-well p-5 space-y-4" data-tint="lilac"
             >
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
                 <div>
@@ -505,19 +505,19 @@ export default function AIMentorPage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.2 }}
                       transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-                      className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] rounded-xl p-4 space-y-2.5 flex flex-col justify-between"
+                      data-tint={s.priority === "High" ? "rose" : s.priority === "Medium" ? "butter" : "sky"} className="card-band p-4 pt-5 space-y-3 flex flex-col justify-between"
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between gap-2">
-                          <span className={`text-[8px] font-black tracking-normal px-2 py-0.5 rounded ${
+                          <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
                             s.priority === "High" ? "bg-rose-500/10 text-rose-500" :
                             s.priority === "Medium" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400" :
                             "bg-indigo-500/10 text-indigo-500"
                           }`}>Suggested: {s.priority}</span>
-                          <span className="text-[9px] font-bold text-[var(--text-muted)] font-num">Was: {s.suggestedDate}</span>
+                          <span className="text-xs text-[var(--text-muted)] font-num">{s.suggestedDate}</span>
                         </div>
-                        <h4 className="font-extrabold text-xs text-[var(--text-primary)] leading-snug">{s.title}</h4>
-                        <p className="text-[10px] text-[var(--text-secondary)] font-semibold leading-relaxed">{s.reason}</p>
+                        <h4 className="font-display font-extrabold text-base text-[var(--text-primary)] leading-snug">{s.title}</h4>
+                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{s.reason}</p>
                       </div>
 
                       {!isAdded && (
@@ -545,10 +545,10 @@ export default function AIMentorPage() {
                         whileTap={{ scale: 0.96 }}
                         disabled={isAdded}
                         onClick={() => handleAddSuggestionToCalendar(s, override.date, override.priority)}
-                        className={`w-full flex items-center justify-center gap-1.5 py-2 text-xs font-black tracking-normal rounded-lg transition cursor-pointer ${
+                        className={`self-start inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition cursor-pointer ${
                           isAdded
                             ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 cursor-default"
-                            : "bg-indigo-600 hover:bg-indigo-700 text-white"
+                            : "pill-ink"
                         }`}
                       >
                         {isAdded ? <><Check className="w-3.5 h-3.5" /> Added to Calendar</> : <><CalendarPlus className="w-3.5 h-3.5" /> Add to Calendar</>}

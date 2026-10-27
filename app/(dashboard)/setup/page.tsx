@@ -1,5 +1,6 @@
 "use client";
 
+import { SourceMixer, useSourceMix } from "@/components/exam/source-mixer";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -55,6 +56,7 @@ export default function ExamSetupPage() {
   const openAuthModal = useAuthModalStore((s) => s.open);
 
   const [examType, setExamType] = useState<ExamType>("YEAR_PAPER");
+  const [sourceMix, setSourceMix] = useSourceMix();
 
   const [availablePapers, setAvailablePapers] = useState<string[]>([]);
   const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
@@ -561,7 +563,7 @@ export default function ExamSetupPage() {
           {/* Source toggle: comet border, a gradient pill that springs between the
               options with a recurring light sweep, a ripple on click, and icons that
               pop when their option becomes active. */}
-          <div role="tablist" aria-label="Question source" className="nav-cluster relative flex p-1 rounded-2xl shadow-sm">
+          <div role="tablist" aria-label="Question source" className="folder-tabs !mb-0 relative flex">
             {([
               { value: "standard", label: "Standard GATE", icon: GraduationCap },
               { value: "ai_generated", label: "AI Generated", icon: Sparkles },
@@ -575,13 +577,13 @@ export default function ExamSetupPage() {
                   whileTap={{ scale: 0.95 }}
                   onClick={() => { setSourceType(opt.value); setToggleRipple((r) => ({ key: r.key + 1, value: opt.value })); }}
                   className={`group relative z-10 flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold rounded-xl transition-colors duration-300 cursor-pointer overflow-hidden ${
-                    active ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]/70"
+                    active ? "text-[var(--text-primary)] font-bold" : "text-[var(--text-secondary)] hover:bg-[var(--surface)]/50"
                   }`}
                 >
                   {active && (
                     <motion.span
                       layoutId="setup-source-pill"
-                      className="toggle-shine absolute inset-0 rounded-xl -z-10 grad-brand shadow-[0_6px_20px_-4px_rgba(124,58,237,0.6)] overflow-hidden"
+                      className="absolute inset-0 rounded-[13px] -z-10 bg-[var(--surface)] shadow-[0_1px_2px_rgba(12,34,75,.08),0_6px_14px_-8px_rgba(12,34,75,.25)] overflow-hidden"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -1032,10 +1034,10 @@ export default function ExamSetupPage() {
                       whileTap={{ scale: 0.97 }}
                       whileHover={{ y: -1 }}
                       onClick={() => { scrollToBlueprint.current = true; if (examType === "CUSTOM_TEST") customBuilderRef.current?.generate(); else handleGenerate(); }}
-                      className="group relative overflow-hidden w-full sm:w-auto h-[46px] pl-5 pr-4 grad-brand text-white rounded-xl font-semibold text-sm shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45 transition-shadow flex items-center justify-center gap-2.5 cursor-pointer border-0 whitespace-nowrap"
+                      className="btn-main w-full sm:w-auto justify-center flex items-center justify-center gap-2.5 cursor-pointer border-0 whitespace-nowrap"
                     >
                       {/* light sweep on hover */}
-                      <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-0 group-hover:translate-x-[300%] transition-transform duration-700" />
+                      
                       <Sparkles className="relative w-4 h-4" />
                       <span className="relative">
                         {examType === "CUSTOM_TEST" ? <>Generate custom draft <span className="font-num opacity-80">· {customTotal} Qs</span></> : "Generate blueprint"}
@@ -1049,6 +1051,7 @@ export default function ExamSetupPage() {
               </div>
 
               <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
+              {examType !== "YEAR_PAPER" && <div className="px-5 md:px-6 pt-4"><SourceMixer mix={sourceMix} onChange={setSourceMix} /></div>}
               {examType === "CUSTOM_TEST" ? (
                 <div className="px-5 md:px-6 pb-5 md:pb-6 pt-4">
                    <CustomTestBuilder
@@ -1217,7 +1220,7 @@ export default function ExamSetupPage() {
             <div ref={blueprintRef} className="w-full lg:w-[420px] shrink-0 lg:h-full lg:min-h-0 scroll-mt-4">
                <motion.div
                  layout
-                 className={`card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col lg:h-full`}
+                 data-tint="mint" className={`card-glass ${currentDraft ? '!border-emerald-200 dark:!border-emerald-900/50' : ''} rounded-3xl shadow-sm overflow-hidden transition-colors flex flex-col lg:h-full`}
                >
                   <div className="flex items-center gap-3 p-4 pb-2.5 shrink-0">
                     <div className={`p-2 rounded-lg ${currentDraft ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-[var(--surface-secondary)] text-[var(--text-muted)]'}`}>
@@ -1333,7 +1336,7 @@ export default function ExamSetupPage() {
                             setDeploying(false);
                           }
                         }}
-                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-80 disabled:cursor-wait text-white rounded-xl font-black tracking-normal shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer border-0"
+                        className="btn-main w-full justify-center disabled:opacity-80 disabled:cursor-wait cursor-pointer border-0"
                       >
                         {deploying ? <>Starting… <Loader2 className="w-5 h-5 animate-spin" /></> : <>Deploy Session <Play className="w-5 h-5 fill-current" /></>}
                       </motion.button>

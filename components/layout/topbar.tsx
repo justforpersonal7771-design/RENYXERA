@@ -174,7 +174,7 @@ export function Topbar() {
       <motion.div
         aria-hidden="true"
         style={{ scaleX: progress }}
-        className="absolute bottom-0 left-5 right-5 h-[2px] rounded-full origin-left bg-gradient-to-r from-[#06c2fb] via-[#0a5ff2] to-[#dd42fb]"
+        className="hidden"
       />
       <div className="w-full h-full px-2.5 sm:px-4 md:px-5 flex items-center justify-between gap-1.5 sm:gap-4">
 
@@ -228,7 +228,7 @@ export function Topbar() {
                   {isActive && (
                     <motion.span
                       layoutId="topbar-active-pill"
-                      className="absolute left-2.5 right-2.5 -bottom-[7px] h-[3px] rounded-full bg-gradient-to-r from-[#06c2fb] via-[#0a5ff2] to-[#dd42fb]"
+                      className="absolute inset-0 rounded-xl -z-10 nav-active-pill"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -276,7 +276,7 @@ export function Topbar() {
                    onClick={() => setIsCalendarOpen(prev => !prev)}
                    className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isCalendarOpen
-                       ? "text-white bg-indigo-600 shadow-sm"
+                       ? "nav-active-pill text-[var(--text-primary)]"
                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="Study Planner Quick Access"
@@ -299,7 +299,7 @@ export function Topbar() {
                    onClick={() => setIsTodoOpen(prev => !prev)}
                    className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isTodoOpen
-                       ? "text-white bg-indigo-600 shadow-sm"
+                       ? "nav-active-pill text-[var(--text-primary)]"
                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="To-Do List Quick Access"
@@ -324,7 +324,7 @@ export function Topbar() {
                 onClick={() => setIsGoalSliderOpen(true)}
                 className={`nav-act z-10 flex relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
-                    ? "text-white bg-indigo-600 shadow-sm"
+                    ? "nav-active-pill text-[var(--text-primary)]"
                     : isFocusTargetActive
                       ? "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-1 ring-amber-500/40 hover:bg-amber-500/25"
                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -347,7 +347,7 @@ export function Topbar() {
                <Link
                   href="/downloads"
                   className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors ${
-                    pathname?.startsWith("/downloads") ? "text-white bg-indigo-600 shadow-sm" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    pathname?.startsWith("/downloads") ? "nav-active-pill text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                   aria-label="Downloads"
                   title="Downloads — study offline"

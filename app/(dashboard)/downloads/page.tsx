@@ -174,7 +174,7 @@ export default function DownloadsPage() {
       <div className="flex gap-1 p-1 rounded-xl bg-[var(--surface-secondary)] border border-[var(--border)] self-start">
         {([["paper", "Papers", FileText], ["subject", "Subjects", Layers]] as const).map(([k, label, Icon]) => (
           <button key={k} onClick={() => setTab(k)} className={`relative inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors ${tab === k ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-            {tab === k && <motion.span layoutId="dl-tab" className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md shadow-violet-500/30" />}
+            {tab === k && <motion.span layoutId="dl-tab" className="absolute inset-0 rounded-lg nav-active-pill" />}
             <Icon className="relative w-4 h-4" /><span className="relative">{label}</span>
           </button>
         ))}

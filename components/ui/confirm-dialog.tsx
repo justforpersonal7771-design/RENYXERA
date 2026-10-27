@@ -108,7 +108,6 @@ export function ConfirmHost() {
                 onClick={() => close(true)}
                 className={`group relative overflow-hidden flex-1 h-11 rounded-xl bg-gradient-to-r ${tone.btn} text-white text-sm font-semibold shadow-lg cursor-pointer`}
               >
-                <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                 <span className="relative">{open.confirmLabel ?? "Confirm"}</span>
               </motion.button>
             </div>
