@@ -57,7 +57,7 @@ check("no target keeps the full syllabus", plan(null).recommendedPercent === 100
 
 // 5. Helpers.
 check("rank→marks→rank round-trips within 5%", [100, 500, 2000, 8000].every((r) => Math.abs(rankForMarks(marksForRank(r)) - r) / r < 0.05));
-check("default exam date is the second Saturday of February", defaultExamDate(2027) === "2027-02-13" && new Date("2027-02-13T00:00:00Z").getUTCDay() === 6, defaultExamDate(2027));
+check("default exam date is the first Saturday of February (GATE 2027 starts 6 Feb, IIT Madras)", defaultExamDate(2027) === "2027-02-06" && defaultExamDate(2026) === "2026-02-07", defaultExamDate(2027));
 
 console.log(failed ? `\n${failed} check(s) failed` : "\nAll checks passed");
 process.exit(failed ? 1 : 0);
