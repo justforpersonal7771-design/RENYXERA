@@ -230,6 +230,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] Owner: test /forge, /study, /battles and the new dashboard; say "make them coming soon" when done
 - [x] 27 Oct: design system researched + written (docs/design/DESIGN-SYSTEM.md); WCAG fixes (muted text + peach/butter ink on pastel); paper-grain texture; solid controls; legacy glass cards = pastel; card family (band/well/stat) on Analytics + AI Mentor; pastel active chips in 9 tab components; exam screen pastel; Forge answers green/red + NAT box; question-source mixer (PYQ/Forge/Mix %) in Exam Setup; share-result image in social-card style
 - [x] Audit script scripts/zz-audit.mjs: 20 routes x 3 modes, axe contrast + off-theme + overflow + deck geometry: all clean
+- [x] 27 Oct owner review (13 points) + collapsible exam palette: done and audited (20 routes x 1440 light/dark, 390 mobile, 1536, 1920)
 - [ ] Forge in the exam engine for real: mixer is saved but tests stay PYQ-only until Forge items are seeded and graded server-side
 - [x] 27 Oct: navbar = floating island, text links with logo-gradient underline on the active page, loose icons; one popover surface for all dropdowns, pickers, dialogs and panels (20 files); ink tooltips
 - [x] Bug: days to GATE now from one source (lib/goals/use-days-to-gate.ts)
