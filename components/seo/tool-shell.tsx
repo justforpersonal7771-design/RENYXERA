@@ -26,7 +26,7 @@ export function ToolsFrame({ children }: { children: React.ReactNode }) {
   if (path === "/tools") return <div className="min-w-0 space-y-6">{children}</div>;
   return (
     <>
-      <div className="min-w-0 pb-24 space-y-6">{children}</div>
+      <div className="tool-pastel min-w-0 pb-24 space-y-6">{children}</div>
       <SubNav items={TOOL_ITEMS} label="Tools" />
     </>
   );

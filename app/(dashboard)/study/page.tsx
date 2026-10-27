@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BookOpenText, Check, Clock, Lightbulb, Lock, TriangleAlert } from "lucide-react";
 import { PreviewFrame } from "@/components/preview/preview-frame";
+import { PlanCompare } from "@/components/preview/plan-compare";
 import { FolderTabs } from "@/components/ui/folder-tabs";
 import { UPCOMING } from "@/lib/preview/features";
 import { SAMPLE_LESSON, STUDY_SUBJECTS, type StudyChapter } from "@/lib/preview/sample-data";
@@ -29,7 +30,7 @@ function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
   const total = STUDY_SUBJECTS.reduce((a, x) => a + x.chapters.length, 0);
   return (
     <>
-      <section className="card-pastel metal overflow-hidden p-6 sm:p-8" data-tint="mint" aria-label="Study materials">
+      <section className="card-pastel overflow-hidden p-6 sm:p-8" data-tint="mint" aria-label="Study materials">
         <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr] lg:items-end">
           <div>
             <span className="section-label"><BookOpenText className="h-3.5 w-3.5" /> Study materials</span>
@@ -45,7 +46,7 @@ function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
         </div>
       </section>
 
-      <FolderTabs label="Subjects" value={sub} onChange={setSub} tabs={STUDY_SUBJECTS.map((x) => ({ id: x.id, label: x.name }))}>
+      <FolderTabs label="Subjects" value={sub} onChange={setSub} tabs={STUDY_SUBJECTS.map((x) => ({ id: x.id, label: x.name, tint: x.tint }))}>
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{s.name}</h2>
           <p className="text-sm text-[var(--text-muted)]">About <span className="font-num font-bold text-[var(--text-secondary)]">{s.marks}</span> marks a paper</p>
@@ -54,6 +55,14 @@ function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
           {s.chapters.map((c, i) => <ChapterRow key={c.id} c={c} n={i + 1} tint={s.tint} locked={!owned && !c.free} onRead={onRead} />)}
         </ul>
       </FolderTabs>
+      <PlanCompare title="Study materials by plan" rows={[
+        ["Free sample chapter (Deadlock)", "✓", "✓", "✓"],
+        ["Every chapter of your branch", "Study pass", "Study pass", "Study pass"],
+        ["Check-yourself questions and linked PYQs", "Sample only", "✓", "✓"],
+        ["Ask the AI Mentor about any lesson", "Free daily AI", "Plus daily AI", "Pro daily AI"],
+        ["Read offline", "—", "—", "✓"],
+      ]} />
+      <p className="text-sm text-[var(--text-muted)]">The study pass is a separate one-time purchase per branch; its price is announced at launch.</p>
     </>
   );
 }
@@ -81,7 +90,7 @@ function Lesson({ onBack }: { onBack: () => void }) {
   const [shown, setShown] = useState(false);
   const toc = ["Why it matters", "The idea", "Definition", "Worked example", "Trap", "Check yourself", "Try the real PYQs"];
   return (
-    <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)]">
+    <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_300px]">
       <ReadingProgress />
       <nav aria-label="In this lesson" className="lg:sticky lg:top-24 lg:self-start">
         <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><ArrowLeft className="h-4 w-4" /> All chapters</button>
@@ -120,6 +129,28 @@ function Lesson({ onBack }: { onBack: () => void }) {
           <div className="flex flex-wrap gap-2">{L.pyqs.map((p) => <Link key={p} href="/setup" className="pill-soft">{p}</Link>)}</div>
         </section>
       </article>
+      {/* Side rail: progress, the PYQs, what's next and a quick AI ask, so the reading column has company. */}
+      <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start" aria-label="Lesson tools">
+        <div className="card-pastel p-5" data-tint="mint">
+          <p className="text-sm font-semibold text-[var(--text-secondary)]">This chapter</p>
+          <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">3 of 7 topics</p>
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full w-[43%] rounded-full bg-[var(--tint-mint-ink)]" /></div>
+        </div>
+        <div className="card-pastel p-5" data-tint="peri">
+          <p className="font-bold text-[var(--text-primary)]">GATE asks this</p>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">{L.pyqs.length} recent PYQs on the Banker&apos;s algorithm, mostly 2 marks.</p>
+          <Link href="/setup" className="pill-ink mt-3 inline-flex">Practise them</Link>
+        </div>
+        <div className="card-pastel p-5" data-tint="butter">
+          <p className="text-sm font-semibold text-[var(--text-secondary)]">Next lesson</p>
+          <p className="mt-1 font-bold text-[var(--text-primary)]">Deadlock detection and recovery</p>
+        </div>
+        <div className="card-pastel p-5" data-tint="sky">
+          <p className="font-bold text-[var(--text-primary)]">Stuck on a step?</p>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">Ask the AI Mentor about this lesson.</p>
+          <Link href="/ai-mentor" className="pill-soft mt-3 inline-flex">Ask the AI Mentor</Link>
+        </div>
+      </aside>
     </div>
   );
 }

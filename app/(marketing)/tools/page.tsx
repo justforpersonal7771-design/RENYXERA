@@ -18,12 +18,13 @@ export default function ToolsIndex() {
     <>
       <ToolHeader kicker="All tools" title="Free GATE tools" lead="Pick a tool to open it. Every one is free — sign in to save your results and carry them across devices." />
       <ul className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {TOOLS.map((t) => {
+        {TOOLS.map((t, i) => {
           const Icon = TOOL_ICONS[t.icon];
+          const tint = ["lilac", "mint", "peach", "sky", "rose", "butter", "peri"][i % 7];
           return (
             <li key={t.href}>
-              <Link href={t.href} className="group flex h-full items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 transition hover:-translate-y-0.5 hover:border-violet-500/50 hover:shadow-lg hover:shadow-violet-500/10">
-                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-indigo-500/15 to-fuchsia-500/15 text-violet-600 dark:text-violet-400">
+              <Link href={t.href} data-tint={tint} className="card-pastel group flex h-full items-start gap-3 p-5 transition hover:-translate-y-0.5">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[var(--surface)] text-[var(--tint-ink)]">
                   <Icon className="h-5 w-5 transition-transform group-hover:scale-110 group-hover:-rotate-6" />
                 </span>
                 <span className="min-w-0 flex-1">

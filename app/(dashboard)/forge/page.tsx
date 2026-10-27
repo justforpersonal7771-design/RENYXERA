@@ -1,21 +1,39 @@
 "use client";
 
 /**
- * Forge (R11): original GATE-level questions. Free: Forge Mocks only. Plus: 10 a day, no archive, no X.
+ * Forge (R11): original GATE-level questions. Free: Forge Mocks only. Plus: 10 a day + bookmarks, no X.
  * Pro: everything. Runs on sample data until the CS batches are seeded (lib/preview/features.ts).
  */
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { Anvil, CalendarDays, Check, X, ChevronDown, Flame, Lock, Lightbulb, Trophy, TriangleAlert, Users } from "lucide-react";
+import { Anvil, Bookmark, BookmarkCheck, CalendarDays, Check, X, ChevronDown, Flame, Lock, Lightbulb, Trophy, TriangleAlert, Users } from "lucide-react";
 import { PreviewFrame } from "@/components/preview/preview-frame";
+import { PlanCompare } from "@/components/preview/plan-compare";
 import { FolderTabs, Segmented } from "@/components/ui/folder-tabs";
 import { UPCOMING } from "@/lib/preview/features";
 import { FORGE, type Tier } from "@/lib/billing/plans";
 import { FORGE_DAILY, FORGE_ITEMS, FORGE_MOCKS, KIND_LABEL, type SampleForgeItem } from "@/lib/preview/sample-data";
 
 const DIFF: Record<string, { label: string; tint: string }> = { E: { label: "Easy", tint: "mint" }, M: { label: "Medium", tint: "butter" }, H: { label: "Hard", tint: "rose" } };
-type Tab = "daily" | "practice" | "mocks" | "archive";
+type Tab = "daily" | "practice" | "mocks" | "bookmarks";
+
+// Bookmarked Forge question ids, per device (preview); one store so every card and the tab agree.
+const BM_KEY = "renyxera_forge_bookmarks";
+const bmListeners = new Set<() => void>();
+const readBm = (): string[] => { try { return JSON.parse(localStorage.getItem(BM_KEY) ?? "[]"); } catch { return []; } };
+let bmCache: string[] | null = null;
+const getBm = () => (bmCache ??= typeof window === "undefined" ? [] : readBm());
+const EMPTY: string[] = [];
+function toggleBm(id: string) {
+  const cur = getBm();
+  bmCache = cur.includes(id) ? cur.filter((x) => x !== id) : [...cur, id];
+  try { localStorage.setItem(BM_KEY, JSON.stringify(bmCache)); } catch { /* private mode */ }
+  bmListeners.forEach((f) => f());
+}
+function useBookmarks() {
+  return useSyncExternalStore((f) => { bmListeners.add(f); return () => bmListeners.delete(f); }, getBm, () => EMPTY);
+}
 
 export default function ForgePage() {
   return (
@@ -34,14 +52,22 @@ function Forge({ tier }: { tier: Tier }) {
     <>
       <Hero tier={tier} />
       <FolderTabs label="Forge sections" value={tab} onChange={setTab} tabs={[
-        { id: "daily", label: "Daily Forge" }, { id: "practice", label: "Practice" },
-        { id: "mocks", label: "Forge Mocks" }, { id: "archive", label: <span className="inline-flex items-center gap-1.5">Archive {!rules.archive && <Lock className="h-3.5 w-3.5" />}</span> },
+        { id: "daily", label: "Daily Forge", tint: "peach" }, { id: "practice", label: "Practice", tint: "mint" },
+        { id: "mocks", label: "Forge Mocks", tint: "peri" }, { id: "bookmarks", label: <span className="inline-flex items-center gap-1.5"><Bookmark className="h-3.5 w-3.5" /> Bookmarks</span>, tint: "rose" },
       ]}>
         {tab === "daily" && (rules.questions ? <Daily tier={tier} /> : <Locked plan="Plus" what="The Daily Forge and Forge practice questions come with Plus and Pro. Forge Mocks stay free for everyone." />)}
         {tab === "practice" && (rules.questions ? <Practice tier={tier} /> : <Locked plan="Plus" what="Practise Forge questions by subject, topic and difficulty with Plus or Pro." />)}
         {tab === "mocks" && <Mocks />}
-        {tab === "archive" && (rules.archive ? <Practice tier={tier} archive /> : <Locked plan="Pro" what="Every past Daily Forge, plus the hardest X questions, is in the archive with Pro." />)}
+        {tab === "bookmarks" && (rules.questions ? <Bookmarks /> : <Locked plan="Plus" what="Bookmark Forge questions to revise later with Plus or Pro." />)}
       </FolderTabs>
+      <PlanCompare rows={[
+        ["Forge Mocks (full papers, ranked)", "✓", "✓", "✓"],
+        ["Daily Forge", "—", "10 a day", "Unlimited"],
+        ["Practice by subject, topic, difficulty", "—", "Within 10 a day", "Unlimited"],
+        ["Bookmarks", "—", "✓", "✓"],
+        ["X questions (hardest set)", "—", "—", "✓"],
+        ["Every past Daily Forge", "—", "—", "✓"],
+      ]} />
     </>
   );
 }
@@ -50,7 +76,7 @@ function Hero({ tier }: { tier: Tier }) {
   const d = FORGE_DAILY;
   const pct = Math.round((d.doneToday / d.total) * 100);
   return (
-    <section className="card-pastel metal overflow-hidden p-6 sm:p-8" data-tint="peach" aria-label="Forge">
+    <section className="card-pastel overflow-hidden p-6 sm:p-8" data-tint="peach" aria-label="Forge">
       <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-center">
         <div>
           <span className="section-label"><Anvil className="h-3.5 w-3.5" /> Forge</span>
@@ -96,7 +122,7 @@ function Daily({ tier }: { tier: Tier }) {
       <aside className="space-y-3">
         <div className="card-pastel p-5" data-tint="butter">
           <p className="font-bold text-[var(--text-primary)]">Your plan</p>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">{limit === null ? "Unlimited Forge questions, the archive and X questions." : `${limit} Forge questions a day. The archive and X questions come with Pro.`}</p>
+          <p className="mt-1 text-sm text-[var(--text-secondary)]">{limit === null ? "Unlimited Forge questions, every past Daily Forge and the X questions." : `${limit} Forge questions a day. Past Daily Forges and X questions come with Pro.`}</p>
           {limit !== null && <Link href="/pro" className="mt-3 inline-flex text-sm font-bold text-[var(--tint-butter-ink)] underline underline-offset-4">See Pro</Link>}
         </div>
         <div className="card-pastel p-5" data-tint="mint">
@@ -122,6 +148,7 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
   const right = q.type === "NAT" ? Math.abs(Number(nat) - Number(q.answer)) <= Math.abs(Number(q.answer)) * 0.005 + 1e-9 : pick === q.answer;
   const canCheck = q.type === "NAT" ? nat.trim() !== "" && !Number.isNaN(Number(nat)) : !!pick;
   const d = DIFF[q.difficulty];
+  const saved = useBookmarks().includes(q.id);
   return (
     <article className="rounded-[22px] border border-[var(--border)] bg-[var(--surface)] p-5">
       <header className="flex flex-wrap items-center gap-2">
@@ -132,6 +159,10 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
           <Chip tint="peach">{KIND_LABEL[q.kind]}</Chip>
           <Chip tint={d.tint}>{d.label}</Chip>
           <Chip tint="sky">{q.type} · {q.marks} {q.marks === 1 ? "mark" : "marks"}</Chip>
+          <button type="button" onClick={() => toggleBm(q.id)} aria-pressed={saved} aria-label={saved ? "Remove bookmark" : "Bookmark this question"}
+            className={`grid h-7 w-7 place-items-center rounded-full transition-colors ${saved ? "bg-[var(--tint-rose)] text-[var(--tint-rose-ink)]" : "text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"}`}>
+            {saved ? <BookmarkCheck className="h-4 w-4" /> : <Bookmark className="h-4 w-4" />}
+          </button>
         </span>
       </header>
       <p className="mt-3 leading-relaxed text-[var(--text-primary)]">{q.text}</p>
@@ -170,7 +201,7 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
           ? <button type="button" disabled={!canCheck} onClick={() => { setChecked(true); setOpen(true); }} className="pill-ink disabled:opacity-40">Check answer</button>
           : <p role="status" className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold ${right ? "bg-[var(--tint-mint)] text-[var(--tint-mint-ink)]" : "bg-[var(--tint-rose)] text-[var(--tint-rose-ink)]"}`}>
               {right ? <><Check className="h-4 w-4" /> Correct</> : <><X className="h-4 w-4" /> Not quite: the answer is {q.answer}</>}</p>}
-        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
+        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); setOpen(false); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
       </div>
       <footer className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--text-muted)]">
         <span>{q.solvedBy} solved · {q.accuracy}% right</span>
@@ -197,6 +228,19 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
 
 function Chip({ tint, children }: { tint: string; children: React.ReactNode }) {
   return <span className="rounded-full px-2.5 py-1 text-xs font-semibold" style={{ background: `var(--tint-${tint})`, color: `var(--tint-${tint}-ink)` }}>{children}</span>;
+}
+
+function Bookmarks() {
+  const ids = useBookmarks();
+  const list = FORGE_ITEMS.filter((q) => ids.includes(q.id));
+  if (!list.length) return (
+    <div className="rounded-[22px] bg-[var(--surface)] p-8 text-center">
+      <Bookmark className="mx-auto h-6 w-6 text-[var(--tint-rose-ink)]" />
+      <p className="mt-2 font-bold text-[var(--text-primary)]">No bookmarks yet</p>
+      <p className="mt-1 text-sm text-[var(--text-secondary)]">Tap the bookmark on any Forge question to keep it here for revision.</p>
+    </div>
+  );
+  return <div className="space-y-3">{list.map((q, i) => <ItemCard key={q.id} q={q} n={i + 1} />)}</div>;
 }
 
 function Practice({ tier, archive }: { tier: Tier; archive?: boolean }) {

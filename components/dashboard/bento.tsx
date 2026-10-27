@@ -109,7 +109,7 @@ export function NextActionHero({ solved, accuracy, streak, pendingMistakes, weak
   const readiness = Math.round(Math.min(solved / 4, 25) + accuracy * 0.75);
 
   return (
-    <section aria-label="Your next step" className="card-pastel metal overflow-hidden p-5 sm:p-7" data-tint="lilac">
+    <section aria-label="Your next step" className="card-pastel overflow-hidden p-5 sm:p-7" data-tint="lilac">
       <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--tint-lilac-ink)_25%,transparent),transparent_65%)]" />
       <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-center">
         <div className="min-w-0">
@@ -213,7 +213,7 @@ export function MarksLeakCard({ topics }: { topics: TopicAnalytics[] }) {
     .slice(0, 4), [topics]);
   return (
     <Rise className="h-full">
-      <section className="card-pastel h-full p-5 sm:p-6" data-tint="rose" aria-label="Where you lose marks">
+      <section className="card-metal metal h-full p-5 sm:p-6" aria-label="Where you lose marks">
         <span className="section-label">Where marks leak</span>
         <h2 className="mt-2 text-lg font-extrabold text-[var(--text-primary)]">Fix these first</h2>
         <p className="text-xs text-[var(--text-secondary)]">Topics ranked by how much GATE asks them × how often you miss them.</p>
@@ -247,7 +247,7 @@ export function RevisionDueCard({ pending, mastered }: { pending: number; master
   const total = pending + mastered;
   return (
     <Rise className="h-full" delay={0.05}>
-      <section className="card-pastel flex h-full flex-col p-5 sm:p-6" data-tint="peach" aria-label="Revision due">
+      <section className="card-metal metal flex h-full flex-col p-5 sm:p-6" aria-label="Revision due">
         <span className="section-label">Revision</span>
         <div className="mt-3 flex items-end gap-2">
           <span className="font-num text-5xl font-extrabold leading-none text-[var(--text-primary)]"><CountUp value={pending} /></span>
@@ -271,7 +271,7 @@ export function SubjectTilesCard({ subjects }: { subjects: SubjectAnalytics[] })
   const rows = useMemo(() => [...subjects].filter((s) => s.attempted > 0).sort((a, b) => b.attempted - a.attempted).slice(0, 8), [subjects]);
   return (
     <Rise className="h-full" delay={0.08}>
-      <section className="card-pastel h-full p-5 sm:p-6" data-tint="sky" aria-label="Subjects">
+      <section className="card-metal metal h-full p-5 sm:p-6" aria-label="Subjects">
         <div className="flex items-center justify-between gap-2">
           <span className="section-label">Subjects</span>
           <Link href="/analytics" className="text-xs font-bold text-[var(--tint-sky-ink)] hover:underline">Analytics →</Link>
@@ -315,7 +315,7 @@ export function YearDotsCard({ topic, solvedIds }: { topic: TopicAnalytics | nul
   if (!topic || !data) return null;
   return (
     <Rise className="h-full" delay={0.1}>
-      <section className="card-pastel h-full p-5 sm:p-6" data-tint="mint" aria-label="How often GATE asks your weakest topic">
+      <section className="card-metal metal h-full p-5 sm:p-6" aria-label="How often GATE asks your weakest topic">
         <span className="section-label">Every GATE year</span>
         <h2 className="mt-2 text-lg font-extrabold text-[var(--text-primary)] truncate" title={topic.topic}>{topic.topic}</h2>
         <div className="card-inset mt-4 p-4">

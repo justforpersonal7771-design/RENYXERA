@@ -19,7 +19,7 @@ export function ComingUp() {
       <h2 className="mb-3 font-display text-xl font-extrabold text-[var(--text-primary)]">Coming to RENYXERA</h2>
       <div className="snap-row md:grid md:grid-cols-3 md:gap-4">
         {items.map((i) => (
-          <Link key={i.key} href={i.href} className="card-pastel metal group flex flex-col p-5 transition-transform hover:-translate-y-0.5" data-tint={i.tint}>
+          <Link key={i.key} href={i.href} className="card-pastel group flex flex-col p-5 transition-transform hover:-translate-y-0.5" data-tint={i.tint}>
             <span className="flex items-center justify-between">
               <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[var(--surface)] text-[var(--tint-ink)]"><i.icon className="h-5 w-5" /></span>
               <span className="rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-semibold text-[var(--text-secondary)]">{UPCOMING[i.key] === "preview" ? "Preview" : "Soon"}</span>

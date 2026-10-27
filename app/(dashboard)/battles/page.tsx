@@ -5,6 +5,7 @@
  */
 import { Swords, Hourglass, Trophy, RotateCcw, Share2 } from "lucide-react";
 import { PreviewFrame } from "@/components/preview/preview-frame";
+import { PlanCompare } from "@/components/preview/plan-compare";
 import { UPCOMING } from "@/lib/preview/features";
 import { BATTLE, type BattlePlayer } from "@/lib/preview/sample-data";
 
@@ -26,7 +27,7 @@ function Battles({ limit }: { limit: number | null }) {
   const b = BATTLE;
   return (
     <>
-      <section className="card-pastel metal p-6 sm:p-8" data-tint="rose" aria-label="Battles">
+      <section className="card-pastel p-6 sm:p-8" data-tint="rose" aria-label="Battles">
         <span className="section-label"><Swords className="h-3.5 w-3.5" /> Battles</span>
         <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.08] text-[var(--text-primary)] sm:text-5xl">Same questions.<br />Who scores more?</h1>
         <p className="mt-3 max-w-xl text-[var(--text-secondary)]">Finish any test, send it to friends, and see when they open it, how far they are and who won. Scores come from the server, never the browser.</p>
@@ -36,7 +37,14 @@ function Battles({ limit }: { limit: number | null }) {
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6" aria-label="Live battle">
+      <PlanCompare title="Battles by plan" rows={[
+        ["Challenge friends with any finished test", "✓", "✓", "✓"],
+        ["Active battles at a time", "3", "Unlimited", "Unlimited"],
+        ["Live progress and topic-by-topic result", "✓", "✓", "✓"],
+        ["Telegram alert when a friend starts and finishes", "✓", "✓", "✓"],
+      ]} />
+
+      <section className="card-metal metal p-5 sm:p-6" aria-label="Live battle">
         <div className="flex flex-wrap items-center gap-3">
           <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{b.title}</h2>
           <span className="text-sm text-[var(--text-muted)]">{b.questions} questions · {b.maxMarks} marks</span>

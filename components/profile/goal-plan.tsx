@@ -24,7 +24,7 @@ export function GoalPlan({ targetRank, targetYear, dailyHours, studyDays = 6 }: 
   const hoursPct = plan ? Math.min(100, (plan.hoursAvailable / Math.max(1, plan.hoursNeeded)) * 100) : 0;
 
   return (
-    <div className="card-glass rounded-3xl p-6 h-full flex flex-col">
+    <div data-tint="peach" className="card-glass rounded-3xl p-6 h-full flex flex-col">
       <div className="flex items-center gap-3 mb-5">
         <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-violet-500/10 text-violet-500">
           <Compass className="w-5 h-5" />

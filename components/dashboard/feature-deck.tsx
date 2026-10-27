@@ -97,27 +97,29 @@ export function FeatureDeck(p: Props) {
         <li key={t} className="flex items-center gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 border border-[var(--border)]"><span className={`h-4 w-4 rounded-md ${i === 0 ? "bg-[var(--tint-ink)]" : "border-2 border-[var(--tint-ink)]"}`} /><span className="flex-1 text-[var(--text-primary)]">{t}</span><span className="text-[var(--text-muted)]">{["30m", "1h", "3h"][i]}</span></li>))}</ul>} />,
   ];
   return (
-    // Framed like Swaseekh's feature stack: one tinted panel, cards centred, characters in the margins.
+    // Swaseekh-style pinned stack: heading at the top of the pinned area, cards filling the screen below it,
+    // symbols in the heading row where cards can never cover them.
     <section aria-label="Your toolkit" className="deck-frame">
-      <StackCards items={items} aside={<DeckCharacters />} header={
-        <div className="mb-3 shrink-0 text-center"><span className="section-label mx-auto">Your toolkit</span><h2 className="mt-2 font-display text-2xl font-extrabold text-[var(--text-primary)] sm:text-3xl">Everything you need, in one place</h2></div>
+      <StackCards items={items} header={
+        <div className="mb-2 flex shrink-0 items-center justify-center gap-4">
+          <DeckCharacters side="left" />
+          <div className="text-center"><span className="section-label mx-auto">Your toolkit</span><h2 className="mt-1.5 font-display text-2xl font-extrabold text-[var(--text-primary)] sm:text-3xl">Everything you need, in one place</h2></div>
+          <DeckCharacters side="right" />
+        </div>
       } />
     </section>
   );
 }
 
-/** Margin characters: GATE symbols as soft highlighter shapes (decorative, hidden below xl). */
-function DeckCharacters() {
-  const C = [
-    { g: "Σ", tint: "butter", cls: "left-[-2%] top-[18%] rotate-[-12deg] rounded-[38%]" },
-    { g: "π", tint: "peri", cls: "left-[3%] top-[55%] rotate-[8deg] rounded-full" },
-    { g: "∫", tint: "mint", cls: "right-[-1%] top-[12%] rotate-[10deg] rounded-[30%_70%_60%_40%]" },
-    { g: "λ", tint: "rose", cls: "right-[4%] top-[58%] rotate-[-8deg] rounded-[45%]" },
-  ];
+/** GATE symbols as soft highlighter shapes beside the heading (decorative, hidden on phones). */
+function DeckCharacters({ side }: { side: "left" | "right" }) {
+  const C = side === "left"
+    ? [{ g: "Σ", tint: "butter", cls: "rotate-[-12deg] rounded-[38%]" }, { g: "π", tint: "peri", cls: "rotate-[8deg] rounded-full" }]
+    : [{ g: "∫", tint: "mint", cls: "rotate-[10deg] rounded-[30%_70%_60%_40%]" }, { g: "λ", tint: "rose", cls: "rotate-[-8deg] rounded-[45%]" }];
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 hidden xl:block">
+    <div aria-hidden className="pointer-events-none hidden gap-3 sm:flex">
       {C.map((c) => (
-        <span key={c.g} className={`absolute grid h-28 w-28 place-items-center font-display text-6xl font-extrabold shadow-[0_18px_40px_-20px_rgba(22,18,58,.35)] ${c.cls}`}
+        <span key={c.g} className={`grid h-14 w-14 place-items-center font-display text-3xl font-extrabold shadow-[0_12px_28px_-16px_rgba(22,18,58,.4)] ${c.cls}`}
           style={{ background: `var(--tint-${c.tint})`, color: `var(--tint-${c.tint}-ink)` }}>{c.g}</span>
       ))}
     </div>

@@ -364,7 +364,7 @@ export function DevicesCard() {
 
   if (!user) return null;
   return (
-      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="card-glass rounded-3xl p-6">
+      <motion.section initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} data-tint="peri" className="card-glass rounded-3xl p-6">
         <Header icon={Laptop} title="Active devices" subtitle="Where your account is signed in. Sign out anything you don't recognise." tint="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" />
         {devicesError ? (
           <div className="flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2.5 text-xs text-amber-800 dark:text-amber-200">

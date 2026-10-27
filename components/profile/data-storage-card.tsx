@@ -57,7 +57,7 @@ export function DataStorageCard() {
 
   return (
     <div className="space-y-5">
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="card-glass rounded-3xl p-6">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} data-tint="sky" className="card-glass rounded-3xl p-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div className="rounded-2xl bg-[var(--surface-secondary)]/50 p-4">
             <p className="flex items-center gap-2 text-xs font-bold text-[var(--text-secondary)]"><HardDrive className="w-4 h-4 text-violet-500" /> Used on this device</p>
@@ -82,7 +82,7 @@ export function DataStorageCard() {
 
       {user && <SyncPanel />}
 
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="card-glass rounded-3xl p-6 space-y-3">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} data-tint="rose" className="card-glass rounded-3xl p-6 space-y-3">
         <div className="flex items-center gap-3 rounded-2xl border border-[var(--border)] p-4">
           <WifiOff className="w-5 h-5 text-sky-500 shrink-0" />
           <div className="flex-1 min-w-0">
@@ -123,7 +123,7 @@ function SyncPanel() {
   const { state, pending, lastSynced } = useSyncStatus();
   const t = SYNC_TEXT[state];
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 }} className="card-glass rounded-3xl p-6">
+    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 }} data-tint="mint" className="card-glass rounded-3xl p-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <span className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center shrink-0">

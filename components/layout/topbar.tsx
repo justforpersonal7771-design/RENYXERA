@@ -37,6 +37,12 @@ const NAV_ITEMS = [
   { label: "Tools", href: TOOLS_HOME, icon: Wrench },
 ];
 
+// Each section keeps its own pastel when it is the current page (navbar highlight).
+const NAV_TINTS: Record<string, string> = {
+  Dashboard: "lilac", "Exam Setup": "mint", Mocks: "peri", Forge: "peach", Study: "butter",
+  "AI Mentor": "sky", Review: "rose", Analytics: "mint", Tools: "peach",
+};
+
 export function Topbar() {
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -214,7 +220,9 @@ export function Topbar() {
                   aria-current={isActive ? "page" : undefined}
                   onMouseEnter={() => setHovered(item.href)}
                   onFocus={() => setHovered(item.href)}
-                  className={`group relative flex items-center gap-2 px-2.5 xl:px-3 2xl:px-3.5 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
+                  data-tint={NAV_TINTS[item.label]}
+                  title={item.label}
+                  className={`group relative flex items-center gap-2 px-2.5 min-[1720px]:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
                     isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
@@ -232,8 +240,9 @@ export function Topbar() {
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <item.icon className="w-4 h-4 shrink-0 xl:hidden 2xl:block transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
-                  <span className="hidden xl:inline">{item.label}</span>
+                  <item.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
+                  {/* Ten items: labels only where they all fit beside the logo and the icon row. */}
+                  <span className="hidden min-[1720px]:inline">{item.label}</span>
                 </Link>
               );
             })}

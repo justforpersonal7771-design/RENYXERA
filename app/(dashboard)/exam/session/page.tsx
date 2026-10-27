@@ -13,7 +13,7 @@ import { RenderableQuestion } from "@/types/question.types";
 import { QuestionRenderer } from "@/components/exam/question-renderer";
 import { MathJaxContext } from "better-react-mathjax";
 import { useStudyStore } from "@/store/use-study-store";
-import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser, ShieldAlert, Calculator } from "lucide-react";
+import { Bookmark, BookmarkCheck, Sun, Moon, Play, Pause, AlertTriangle, ClipboardList, HelpCircle, CheckSquare, BookOpen, LayoutGrid, X, ArrowRight, ArrowLeft, Send, Flag, Eraser, ShieldAlert, Calculator, PanelRightClose, PanelRightOpen } from "lucide-react";
 import { useDataStore } from "@/store/use-data-store";
 import { ExamTimer } from "@/components/exam/exam-timer";
 import { QuestionPalette } from "@/components/exam/question-palette";
@@ -110,6 +110,7 @@ export default function ExamSessionPage() {
   const [tabWarning, setTabWarning] = useState<number | null>(null);
   const disqualifiedReason = useExamRuntimeStore((state) => state.activeSession?.integrity?.disqualifiedReason);
   const [showMobilePalette, setShowMobilePalette] = useState(false);
+  const [paletteOpen, setPaletteOpen] = useState(true);
   const [showCalc, setShowCalc] = useState(false);
 
   useEffect(() => {
@@ -645,9 +646,24 @@ export default function ExamSessionPage() {
               permanently squeezed into 45vh below the question (cramped, forced scrolling,
               broke question rendering); now it's hidden by default and opened on demand via
               the grid button in the command bar, as a full bottom-sheet overlay instead. */}
-          <div className="exam-side hidden lg:flex w-full lg:w-[340px] flex-none z-20 flex-col h-full overflow-hidden">
-            <QuestionPalette />
-          </div>
+          {/* Collapsible on desktop: hiding it gives the question the full width; a slim rail brings it back. */}
+          {paletteOpen ? (
+            <div className="exam-side relative hidden lg:flex w-full lg:w-[340px] flex-none z-20 flex-col h-full overflow-hidden">
+              <button type="button" onClick={() => setPaletteOpen(false)} aria-label="Hide question palette" title="Hide palette (full-width question)"
+                className="absolute right-3 top-3 z-30 grid h-8 w-8 place-items-center rounded-lg bg-[var(--surface)] text-[var(--text-secondary)] shadow-sm hover:text-[var(--text-primary)] cursor-pointer">
+                <PanelRightClose className="h-4 w-4" />
+              </button>
+              <QuestionPalette />
+            </div>
+          ) : (
+            <div className="exam-side hidden lg:flex w-14 flex-none z-20 flex-col items-center gap-3 py-4">
+              <button type="button" onClick={() => setPaletteOpen(true)} aria-label="Show question palette" title="Show palette"
+                className="grid h-10 w-10 place-items-center rounded-xl bg-[var(--surface)] text-[var(--text-primary)] shadow-sm cursor-pointer">
+                <PanelRightOpen className="h-5 w-5" />
+              </button>
+              <span className="text-xs font-bold text-[var(--text-secondary)] [writing-mode:vertical-rl]">Question palette</span>
+            </div>
+          )}
 
           <AnimatePresence>
             {showMobilePalette && (

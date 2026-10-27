@@ -115,9 +115,10 @@ export function TelegramCard() {
   );
 
   return (
-    <div className="space-y-5">
-      {/* Top: link / status on the left, how it works or channel status on the right, using the full width */}
-      <div className="grid gap-5 lg:grid-cols-2">
+    <div className="@container space-y-5">
+      {/* Top: link / status on the left, how it works or channel status on the right, using the full width.
+          Columns follow the card's own width (container query), so it stays one column inside dialogs. */}
+      <div className="grid gap-5 @3xl:grid-cols-2">
         <section className="rounded-2xl border border-sky-500/25 bg-gradient-to-br from-sky-500/10 to-transparent p-5 sm:p-6">
           <div className="flex items-start gap-4">
             <TelegramBadge size="lg" />
@@ -183,7 +184,7 @@ export function TelegramCard() {
       )}
 
       {s.linked && a && (
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid gap-5 @3xl:grid-cols-2">
           <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
             <h3 className="text-base font-extrabold text-[var(--text-primary)]">Which messages do you want?</h3>
             <p className="mt-0.5 text-xs text-[var(--text-muted)]">Tap the <Info className="inline h-3 w-3 align-[-1px]" aria-hidden /> to see what each one does.</p>

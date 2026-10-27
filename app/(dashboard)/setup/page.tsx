@@ -11,7 +11,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { ExamType, TestConfig, ExamSessionDraft } from "@/types/exam.types";
 import { CustomTestBuilder, CustomTestBuilderHandle } from "@/components/exam/custom-test-builder";
-import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, GraduationCap, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight , ShieldCheck, Loader2 } from "lucide-react";
+import { Settings, Play, ServerCog, Target, FileText, CheckCircle2, Sparkles, GraduationCap, Anvil, Shuffle, ChevronDown, ChevronUp, ChevronRight, Search, X, ArrowRight , ShieldCheck, Loader2 } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { motion, AnimatePresence } from "motion/react";
@@ -564,18 +564,22 @@ export default function ExamSetupPage() {
               options with a recurring light sweep, a ripple on click, and icons that
               pop when their option becomes active. */}
           <div role="tablist" aria-label="Question source" className="folder-tabs !mb-0 relative flex">
+            {/* Four ways to fill a test: official PYQs, Forge only, a PYQ/Forge mix (share set below), or AI-made. */}
             {([
-              { value: "standard", label: "Standard GATE", icon: GraduationCap },
-              { value: "ai_generated", label: "AI Generated", icon: Sparkles },
+              { value: "standard", mode: "pyq", key: "pyq", label: "GATE PYQs", icon: GraduationCap, tint: "sky" },
+              { value: "standard", mode: "forge", key: "forge", label: "Forge", icon: Anvil, tint: "peach" },
+              { value: "standard", mode: "mix", key: "mix", label: "Mix", icon: Shuffle, tint: "mint" },
+              { value: "ai_generated", mode: null, key: "ai", label: "AI generated", icon: Sparkles, tint: "butter" },
             ] as const).map((opt) => {
-              const active = sourceType === opt.value;
+              const active = opt.value === "ai_generated" ? sourceType === "ai_generated" : sourceType === "standard" && sourceMix.mode === opt.mode;
               return (
                 <motion.button
-                  key={opt.value}
+                  key={opt.key}
                   role="tab"
                   aria-selected={active}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => { setSourceType(opt.value); setToggleRipple((r) => ({ key: r.key + 1, value: opt.value })); }}
+                  style={{ color: active ? `var(--tint-${opt.tint}-ink)` : undefined }}
+                  onClick={() => { setSourceType(opt.value); if (opt.mode) setSourceMix({ ...sourceMix, mode: opt.mode }); setToggleRipple((r) => ({ key: r.key + 1, value: opt.value })); }}
                   className={`group relative z-10 flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold rounded-xl transition-colors duration-300 cursor-pointer overflow-hidden ${
                     active ? "text-[var(--text-primary)] font-bold" : "text-[var(--text-secondary)] hover:bg-[var(--surface)]/50"
                   }`}
@@ -588,7 +592,7 @@ export default function ExamSetupPage() {
                     />
                   )}
                   <AnimatePresence>
-                    {toggleRipple.value === opt.value && toggleRipple.key > 0 && (
+                    {active && toggleRipple.value === opt.value && toggleRipple.key > 0 && (
                       <motion.span
                         key={toggleRipple.key}
                         aria-hidden="true"
@@ -1051,7 +1055,7 @@ export default function ExamSetupPage() {
               </div>
 
               <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
-              {examType !== "YEAR_PAPER" && <div className="px-5 md:px-6 pt-4"><SourceMixer mix={sourceMix} onChange={setSourceMix} /></div>}
+              {sourceType === "standard" && sourceMix.mode !== "pyq" && <div className="px-5 md:px-6 pt-4"><SourceMixer mix={sourceMix} onChange={setSourceMix} yearPaper={examType === "YEAR_PAPER"} /></div>}
               {examType === "CUSTOM_TEST" ? (
                 <div className="px-5 md:px-6 pb-5 md:pb-6 pt-4">
                    <CustomTestBuilder

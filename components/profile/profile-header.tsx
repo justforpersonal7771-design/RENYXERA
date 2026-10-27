@@ -73,15 +73,15 @@ export function ProfileHeader({
 
         {/* Right: identity block — username, email, student ID */}
         <motion.div initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }}
-          className="hidden lg:flex flex-col gap-1.5 shrink-0 min-w-0 max-w-[300px] rounded-2xl bg-black/10 border border-white/15 backdrop-blur px-3.5 py-2.5">
+          className="hidden lg:flex flex-col gap-1.5 shrink-0 min-w-0 max-w-[340px] rounded-2xl bg-[var(--surface)] px-4 py-3 text-[var(--text-primary)] shadow-sm">
           {username && (
-            <p className="flex items-center gap-2 text-xs min-w-0"><AtSign className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="font-semibold truncate">{username}</span></p>
+            <p className="flex items-center gap-2 text-sm min-w-0"><AtSign className="w-4 h-4 shrink-0 text-[var(--tint-lilac-ink)]" /><span className="font-semibold truncate">{username}</span></p>
           )}
-          <p className="flex items-center gap-2 text-xs min-w-0"><Mail className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="truncate text-white/90">{email}</span></p>
-          {phone && <p className="flex items-center gap-2 text-xs min-w-0"><Phone className="w-3.5 h-3.5 shrink-0 text-white/70" /><span className="truncate text-white/90 font-num">{phone.replace(/^\+91(\d{5})(\d{5})$/, "+91 $1 $2")}</span></p>}
+          <p className="flex items-center gap-2 text-sm min-w-0"><Mail className="w-4 h-4 shrink-0 text-[var(--tint-lilac-ink)]" /><span className="truncate">{email}</span></p>
+          {phone && <p className="flex items-center gap-2 text-sm min-w-0"><Phone className="w-4 h-4 shrink-0 text-[var(--tint-lilac-ink)]" /><span className="truncate font-num">{phone.replace(/^\+91(\d{5})(\d{5})$/, "+91 $1 $2")}</span></p>}
           {studentId && (
-            <p className="flex items-center gap-2 text-xs min-w-0" title="Your permanent student ID">
-              <IdCard className="w-3.5 h-3.5 shrink-0 text-white/70" />
+            <p className="flex items-center gap-2 text-sm min-w-0" title="Your permanent student ID">
+              <IdCard className="w-4 h-4 shrink-0 text-[var(--tint-lilac-ink)]" />
               <span className="font-mono font-semibold tracking-wide truncate select-all">{studentId}</span>
             </p>
           )}
@@ -90,13 +90,13 @@ export function ProfileHeader({
         {/* Profile completeness */}
         <div className="hidden md:flex items-center gap-2.5 shrink-0" title="Fill in your details to personalise your plan">
           <svg width="56" height="56" viewBox="0 0 56 56" className="-rotate-90" aria-hidden="true">
-            <circle cx="28" cy="28" r={R} fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="5" />
-            <motion.circle cx="28" cy="28" r={R} fill="none" stroke="white" strokeWidth="5" strokeLinecap="round" strokeDasharray={C}
+            <circle cx="28" cy="28" r={R} fill="none" stroke="var(--surface)" strokeWidth="5" />
+            <motion.circle cx="28" cy="28" r={R} fill="none" stroke="var(--tint-lilac-ink)" strokeWidth="5" strokeLinecap="round" strokeDasharray={C}
               initial={{ strokeDashoffset: C }} animate={{ strokeDashoffset: C * (1 - completeness / 100) }} transition={{ duration: 1, ease: "easeOut" }} />
           </svg>
           <div className="leading-tight">
             <p className="text-lg font-extrabold font-num">{completeness}%</p>
-            <p className="text-xs font-bold tracking-normal text-white/75">Profile</p>
+            <p className="text-xs font-bold tracking-normal text-[var(--text-secondary)]">Profile complete</p>
           </div>
         </div>
 

@@ -53,6 +53,7 @@ export function OnboardingGate() {
   const [status, setStatus] = useState("");
   const [saving, setSaving] = useState(false);
   const [avatar, setAvatar] = useState<AvatarValue>(() => ({ style: "adventurer", seed: randomAvatarSeed() }));
+  const [avatarOpen, setAvatarOpen] = useState(false);
   // Multi-branch: the account's one branch (one later change allowed, see Profile).
   const branches = availableBranches();
   const [branch, setBranch] = useState<BranchCode>(() => {
@@ -206,10 +207,6 @@ export function OnboardingGate() {
                     {name.state === "ok" ? `@${username} is yours` : name.state === "bad" ? name.reason : name.state === "checking" ? "Checking…" : "Lowercase letters, numbers and _ · 3–20 characters"}
                   </p>
                 </div>
-                <div>
-                  <label className={LABEL}>Pick your avatar</label>
-                  <AvatarPicker value={avatar} onChange={setAvatar} />
-                </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className={LABEL}>Target GATE year</label>
@@ -255,6 +252,16 @@ export function OnboardingGate() {
                 ) : (
                   <p className="text-[11px] text-[var(--text-muted)]">Branch: <strong className="text-[var(--text-secondary)]">Computer Science &amp; IT</strong> (more branches coming soon). You can add college, goals and more later in your profile.</p>
                 )}
+                {/* Extras last: the avatar is pre-picked; the full picker opens only on request. */}
+                <div>
+                  <label className={LABEL}>Your avatar</label>
+                  {avatarOpen ? <AvatarPicker value={avatar} onChange={setAvatar} /> : (
+                    <div className="flex items-center gap-3 rounded-xl border border-[var(--border)] p-2.5">
+                      <span className="text-sm text-[var(--text-secondary)] flex-1">A friendly avatar is already picked for you.</span>
+                      <button type="button" onClick={() => setAvatarOpen(true)} className="pill-soft">Change avatar</button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {error && <p role="alert" className="mt-4 text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">{error}</p>}
