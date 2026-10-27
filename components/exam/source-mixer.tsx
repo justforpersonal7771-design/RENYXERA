@@ -5,7 +5,7 @@
  * Saved per device. While Forge is in preview (lib/preview/features.ts) the choice is kept but tests are
  * still built from PYQs, and the card says so. Official year papers are always 100% PYQ.
  */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { Anvil, ScrollText } from "lucide-react";
 import { Segmented } from "@/components/ui/folder-tabs";
@@ -17,10 +17,11 @@ export type SourceMix = { mode: "pyq" | "forge" | "mix"; forgePct: number };
 const KEY = "renyxera_source_mix";
 
 export function useSourceMix(): [SourceMix, (m: SourceMix) => void] {
-  const [mix, setMix] = useState<SourceMix>({ mode: "pyq", forgePct: 30 });
-  useEffect(() => {
-    try { const v = JSON.parse(localStorage.getItem(KEY) ?? "null"); if (v?.mode) setMix(v); } catch { /* private mode */ }
-  }, []);
+  // Read once on first render (client component; the setup screen renders after mount).
+  const [mix, setMix] = useState<SourceMix>(() => {
+    try { const v = typeof window !== "undefined" ? JSON.parse(localStorage.getItem(KEY) ?? "null") : null; if (v?.mode) return v; } catch { /* private mode */ }
+    return { mode: "pyq", forgePct: 30 };
+  });
   const save = (m: SourceMix) => { setMix(m); try { localStorage.setItem(KEY, JSON.stringify(m)); } catch { /* ignore */ } };
   return [mix, save];
 }
