@@ -216,6 +216,12 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **E1 Sentry alerts** · **E2 user-visible security events** · **E3 `/.well-known/security.txt`** · **E4 quarterly restore drill + incident checklist**.
 
 ### 3H · Release 18 — UI refresh (priority) · `docs/roadmap/R18-UI-REFRESH.md`
+- [x] U1 (27 Oct): share card (clean share base, branch names, no overlaps), stack deck clipped to tidy lips, navbar gold/silver rings removed, dot-grid texture. Plan: `docs/roadmap/R18-UI-UPGRADE-PLAN.md`
+- [ ] U2 tokens + FolderTabs / Segmented / HardButton; sentence-case labels
+- [ ] U3 dashboard first experience (one start-test ask, no empty rings)
+- [ ] U4 navbar folder tabs + Ctrl+K palette + profile tabs
+- [ ] U5 Analytics, Mocks, Browse, AI Mentor;  U6 exam chrome, results, landing, a11y audit
+- [ ] Bug: hero says 102 days to GATE, countdown card says 109
 - [ ] 18A Dashboard (bento: next action, today strip with daily target, progress trio, where marks leak, revision due, mocks, heatmap, battles, one upgrade moment) — contact sheet first
 - [ ] 18B Analytics (KPIs, mastery heatmap + institute filter, topic table, time coach, Mistake DNA)
 - [ ] 18C AI Mentor (conversation-first, coach chips, data-driven prompts, message actions, quota meter)
