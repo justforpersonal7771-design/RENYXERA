@@ -165,20 +165,18 @@ export function Topbar() {
         labels readable at every scroll position. */}
     <header
       data-scrolled={scrolled ? "" : undefined}
-      className={`h-16 fixed top-0 left-0 right-0 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-[background-color,box-shadow] duration-300 ${
-        scrolled
-          ? "bg-[var(--background)]/72 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.28)]"
-          : "bg-[var(--background)]/55"
+      // R18: a floating island (8px from the top, 56px tall, so content still starts at 64px).
+      className={`topbar-island h-14 fixed top-2 left-2 right-2 sm:left-4 sm:right-4 z-40 rounded-[20px] transition-shadow duration-300 ${
+        scrolled ? "shadow-[0_14px_36px_-18px_rgba(12,34,75,0.35)]" : "shadow-[0_4px_16px_-10px_rgba(12,34,75,0.18)]"
       }`}
     >
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--border)] to-transparent" />
       {/* Scroll progress */}
       <motion.div
         aria-hidden="true"
         style={{ scaleX: progress }}
-        className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left ${"bg-gradient-to-r from-[#06c2fb] via-[#0a5ff2] to-[#dd42fb]"}`}
+        className="absolute bottom-0 left-5 right-5 h-[2px] rounded-full origin-left bg-gradient-to-r from-[#06c2fb] via-[#0a5ff2] to-[#dd42fb]"
       />
-      <div className="w-full h-full px-2.5 sm:px-6 md:px-8 flex items-center justify-between gap-1.5 sm:gap-4">
+      <div className="w-full h-full px-2.5 sm:px-4 md:px-5 flex items-center justify-between gap-1.5 sm:gap-4">
 
         {/* Logo */}
         {/* Logo hover (.logo-fx): the mark spins once in 3D inside a glowing halo with an
@@ -204,7 +202,7 @@ export function Topbar() {
         <div className="hidden lg:flex flex-1 justify-center min-w-0">
           <nav
             onMouseLeave={() => setHovered(null)}
-            className="main-dock flex items-center gap-0.5 p-1 rounded-2xl bg-[var(--surface)]/45 border border-[var(--border)]/80 shadow-[0_4px_20px_-8px_rgba(15,23,42,0.18)] backdrop-blur-md"
+            className="main-dock flex items-center gap-0.5"
           >
             {NAV_ITEMS.map((item) => {
               const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
@@ -217,7 +215,7 @@ export function Topbar() {
                   onMouseEnter={() => setHovered(item.href)}
                   onFocus={() => setHovered(item.href)}
                   className={`group relative flex items-center gap-2 px-2.5 xl:px-3 2xl:px-3.5 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
-                    isActive ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
                   {hovered === item.href && !isActive && (
@@ -230,7 +228,7 @@ export function Topbar() {
                   {isActive && (
                     <motion.span
                       layoutId="topbar-active-pill"
-                      className={`absolute inset-0 rounded-xl -z-10 ${"grad-brand shadow-[0_6px_18px_-4px_rgba(124,58,237,0.55)]"}`}
+                      className="absolute left-2.5 right-2.5 -bottom-[7px] h-[3px] rounded-full bg-gradient-to-r from-[#06c2fb] via-[#0a5ff2] to-[#dd42fb]"
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -251,7 +249,7 @@ export function Topbar() {
             ref={clusterRef}
             onMouseOver={onClusterOver}
             onMouseLeave={() => setActPill(null)}
-            className="nav-cluster relative flex items-center gap-0.5 rounded-xl p-1 shadow-sm"
+            className="relative flex items-center gap-0.5 rounded-xl p-1"
           >
              <AnimatePresence>
                 {actPill && (

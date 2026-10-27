@@ -88,7 +88,7 @@ export function ScheduleModal({ open, onClose, sections, marks, fixedHours, exam
   return createPortal(
     <div className="fixed inset-0 z-[300] grid place-items-center p-4">
       <button type="button" aria-label="Close" className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div role="dialog" aria-modal="true" aria-label="Add this plan to your Study Planner" className="relative w-full max-w-2xl max-h-[92dvh] overflow-y-auto rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 shadow-2xl">
+      <div role="dialog" aria-modal="true" aria-label="Add this plan to your Study Planner" className="relative w-full max-w-2xl max-h-[92dvh] overflow-y-auto rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 popover-surface">
         <button type="button" aria-label="Close" onClick={onClose} className="absolute right-4 top-4 rounded p-1 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"><X className="h-4 w-4" /></button>
         {done != null ? (
           <div className="py-6 text-center">

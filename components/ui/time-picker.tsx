@@ -51,7 +51,7 @@ export function TimePicker({ value, onChange, className = "", step = 5 }: { valu
             <motion.div ref={pop} role="dialog" aria-label="Choose time"
               initial={{ opacity: 0, y: -4, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -4, scale: 0.97 }} transition={{ duration: 0.15 }}
               style={{ position: "fixed", top: rect.top, left: rect.left, minWidth: Math.max(180, rect.width) }}
-              className="z-[400] grid grid-cols-2 gap-1.5 p-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl">
+              className="z-[400] grid grid-cols-2 gap-1.5 p-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] popover-surface">
               {col(hours, h, (v) => onChange(`${v}:${m}`))}
               {col(mins, m, (v) => { onChange(`${h}:${v}`); setOpen(false); })}
             </motion.div>

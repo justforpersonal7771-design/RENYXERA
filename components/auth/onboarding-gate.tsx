@@ -156,7 +156,7 @@ export function OnboardingGate() {
   return (
     <div className="fixed inset-0 z-[250] flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xl overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="onb-title">
       <motion.div initial={{ opacity: 0, y: 24, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 28 }}
-        className="nav-cluster w-full max-w-lg rounded-3xl p-6 sm:p-8 my-auto shadow-[0_40px_100px_-30px_rgba(76,29,149,0.6)]">
+        className="nav-cluster w-full max-w-lg rounded-3xl p-6 sm:p-8 my-auto popover-surface">
         <AnimatePresence mode="wait">
           {done ? (
             <motion.div key="done" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-2">

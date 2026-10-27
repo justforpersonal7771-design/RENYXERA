@@ -58,7 +58,7 @@ export function PaidScreen({ feature, perk, children }: { feature: string; perk:
         {Array.from({ length: 8 }, (_, i) => <div key={i} className={`rounded-2xl bg-gradient-to-br from-[var(--surface-secondary)] to-[var(--surface)] border border-[var(--border-subtle)] ${i % 3 === 0 ? "row-span-2" : ""}`} />)}
       </div>
       <div className="absolute inset-0 flex items-center justify-center p-4 bg-gradient-to-b from-transparent via-[var(--background)]/40 to-[var(--background)]/80">
-        <div className="w-full max-w-2xl rounded-3xl border border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md p-6 sm:p-8 shadow-2xl text-center">
+        <div className="w-full max-w-2xl rounded-3xl border border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-md p-6 sm:p-8 popover-surface text-center">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 text-violet-700 dark:text-violet-300 text-xs font-black tracking-normal"><Lock className="w-3.5 h-3.5" /> Members only</span>
           <h2 className="mt-3 text-2xl sm:text-3xl font-extrabold text-[var(--text-primary)]">{feature} is part of Plus &amp; Pro</h2>
           <p className="mt-2 text-sm text-[var(--text-secondary)]">{perk}</p>

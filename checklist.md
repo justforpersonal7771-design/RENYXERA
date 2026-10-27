@@ -228,6 +228,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] Preview screens with sample data: /forge (Daily, Practice, Mocks, Archive; Free/Plus/Pro switch), /study (library + Deadlock lesson reader), /battles (live battle). Switch to "Coming soon" in lib/preview/features.ts after owner testing
 - [x] GATE 2027 date fixed to 6 Feb (official IIT Madras schedule 6-21 Feb); all countdowns share lib/goals/use-days-to-gate.ts
 - [ ] Owner: test /forge, /study, /battles and the new dashboard; say "make them coming soon" when done
+- [x] 27 Oct: navbar = floating island, text links with logo-gradient underline on the active page, loose icons; one popover surface for all dropdowns, pickers, dialogs and panels (20 files); ink tooltips
 - [x] Bug: days to GATE now from one source (lib/goals/use-days-to-gate.ts)
 - [ ] 18A Dashboard (bento: next action, today strip with daily target, progress trio, where marks leak, revision due, mocks, heatmap, battles, one upgrade moment) — contact sheet first
 - [ ] 18B Analytics (KPIs, mastery heatmap + institute filter, topic table, time coach, Mistake DNA)

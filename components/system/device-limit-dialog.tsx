@@ -47,7 +47,7 @@ export function DeviceLimitDialog() {
       {info && (
         <motion.div className="fixed inset-0 z-[90] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-          <motion.div role="dialog" aria-modal="true" aria-label="Device limit" className="relative w-full max-w-md rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl"
+          <motion.div role="dialog" aria-modal="true" aria-label="Device limit" className="relative w-full max-w-md rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 popover-surface"
             initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }}>
             <span className="w-11 h-11 rounded-2xl bg-amber-500/15 text-amber-600 grid place-items-center"><ShieldAlert className="w-5 h-5" /></span>
             {info.deviceLimit === "cooldown" ? (

@@ -212,7 +212,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
         role="dialog" aria-label="Leaderboard"
         initial={{ opacity: 0, y: 30, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.97 }}
         transition={{ type: "spring", stiffness: 380, damping: 32 }}
-        className="relative w-full sm:w-[420px] max-h-[85dvh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl overflow-hidden"
+        className="relative w-full sm:w-[420px] max-h-[85dvh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-[var(--surface)] border border-[var(--border)] popover-surface overflow-hidden"
       >
         <div className="relative px-5 pt-5 pb-4 grad-brand text-white overflow-hidden">
           <motion.div aria-hidden="true" className="absolute -top-10 -right-8 w-40 h-40 rounded-full bg-amber-300/30 blur-2xl" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 4, repeat: Infinity }} />

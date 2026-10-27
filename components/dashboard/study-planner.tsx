@@ -628,7 +628,7 @@ export function StudyPlanner() {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="relative w-full max-w-xl bg-[var(--surface)] border border-[var(--border)] rounded-3xl shadow-2xl p-6 overflow-hidden z-10 max-h-[90vh] overflow-y-auto custom-scrollbar"
+              className="relative w-full max-w-xl bg-[var(--surface)] border border-[var(--border)] rounded-3xl popover-surface p-6 overflow-hidden z-10 max-h-[90vh] overflow-y-auto custom-scrollbar"
             >
               <h4 className="font-extrabold text-base text-[var(--text-primary)] mb-5">Create Planned Study Event</h4>
               

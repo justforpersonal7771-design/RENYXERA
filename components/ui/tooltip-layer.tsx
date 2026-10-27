@@ -97,7 +97,7 @@ export function TooltipLayer() {
           transition={{ type: "spring", stiffness: 500, damping: 32 }}
           ref={box}
           style={{ position: "fixed", left: ready ? place!.left : tip.x, top: tip.y, maxWidth: maxW, translateY: tip.below ? "0%" : "-100%", visibility: ready ? "visible" : "hidden" }}
-          className="pointer-events-none z-[500] w-max rounded-xl px-3 py-2 text-[12px] font-medium leading-snug text-white bg-slate-900/90 dark:bg-slate-800/95 backdrop-blur-md border border-white/10 shadow-[0_12px_32px_-8px_rgba(15,23,42,0.55)]"
+          className="pointer-events-none z-[500] w-max rounded-xl px-3 py-2 text-[12px] font-medium leading-snug tooltip-ink border border-white/10 shadow-[0_12px_32px_-8px_rgba(15,23,42,0.55)]"
         >
           <span aria-hidden="true" className="absolute -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-inherit border-white/10"
             style={{ left: ready ? place!.arrow : "50%", ...(tip.below ? { top: -5, borderLeftWidth: 1, borderTopWidth: 1 } : { bottom: -5, borderRightWidth: 1, borderBottomWidth: 1 }) }} />

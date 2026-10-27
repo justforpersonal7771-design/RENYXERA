@@ -157,7 +157,7 @@ export function DatePicker({
                 left: rect.left,
                 width: 288,
               }}
-              className="z-[220] bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl p-3"
+              className="z-[220] bg-[var(--surface)] border border-[var(--border)] rounded-2xl popover-surface p-3"
             >
               <div className="flex items-center justify-between mb-2">
                 <button

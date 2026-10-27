@@ -90,7 +90,7 @@ export function SponsorBreakCard() {
           {open && (
             <motion.div className="fixed inset-0 z-[90] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <div className="absolute inset-0 bg-black/55 backdrop-blur-sm" />
-              <motion.div role="dialog" aria-modal="true" aria-label="Sponsor break" className="relative w-full max-w-lg rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl"
+              <motion.div role="dialog" aria-modal="true" aria-label="Sponsor break" className="relative w-full max-w-lg rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 popover-surface"
                 initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }}>
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-bold text-[var(--text-primary)]">Sponsor break · +{next} AI requests</p>

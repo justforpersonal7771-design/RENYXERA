@@ -61,7 +61,7 @@ export function ExamSubmitDialog({ isOpen, onConfirm, onCancel, stats }: ExamSub
         initial={{ opacity: 0, y: 24, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
-        className="nav-cluster w-full max-w-md overflow-hidden rounded-3xl shadow-[0_40px_100px_-30px_rgba(76,29,149,0.6)]"
+        className="nav-cluster w-full max-w-md overflow-hidden rounded-3xl popover-surface"
       >
         <div className="relative overflow-hidden grad-brand p-6 text-white">
           <motion.div aria-hidden="true" className="absolute -top-16 -right-10 w-48 h-48 rounded-full bg-cyan-300/25 blur-3xl" animate={{ x: [0, -20, 0] }} transition={{ duration: 8, repeat: Infinity }} />

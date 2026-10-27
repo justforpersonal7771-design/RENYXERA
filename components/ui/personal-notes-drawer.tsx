@@ -37,7 +37,7 @@ export function PersonalNotesDrawer({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 220 }}
-            className="absolute top-0 right-0 bottom-0 w-80 sm:w-96 bg-[var(--surface)] border-l border-[var(--border)] shadow-2xl z-50 flex flex-col h-full overflow-hidden"
+            className="absolute top-0 right-0 bottom-0 w-80 sm:w-96 bg-[var(--surface)] border-l border-[var(--border)] popover-surface z-50 flex flex-col h-full overflow-hidden"
           >
             {/* Header */}
             <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">

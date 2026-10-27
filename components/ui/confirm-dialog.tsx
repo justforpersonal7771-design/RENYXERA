@@ -85,7 +85,7 @@ export function ConfirmHost() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 380, damping: 28 }}
-            className="nav-cluster w-full max-w-sm rounded-3xl p-6 text-center shadow-[0_40px_100px_-30px_rgba(76,29,149,0.6)]"
+            className="nav-cluster w-full max-w-sm rounded-3xl p-6 text-center popover-surface"
           >
             <div className="relative mx-auto mb-4 w-14 h-14">
               <motion.span aria-hidden="true" className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${tone.badge} opacity-40`} animate={{ scale: [1, 1.35], opacity: [0.4, 0] }} transition={{ duration: 1.6, repeat: Infinity }} />

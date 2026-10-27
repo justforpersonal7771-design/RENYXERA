@@ -52,7 +52,7 @@ export function ReportIssueButton({ questionId, source = "app", compact = false 
           {open && (
             <motion.div className="fixed inset-0 z-[80] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <button aria-label="Close" className="absolute inset-0 bg-black/45 backdrop-blur-sm" onClick={() => setOpen(false)} />
-              <motion.div role="dialog" aria-modal="true" aria-label="Report an issue" className="relative w-full max-w-md rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 shadow-2xl"
+              <motion.div role="dialog" aria-modal="true" aria-label="Report an issue" className="relative w-full max-w-md rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 popover-surface"
                 initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }} transition={{ type: "spring", stiffness: 420, damping: 30 }}>
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="font-extrabold text-[var(--text-primary)] flex items-center gap-2"><Flag className="w-4 h-4 text-rose-500" /> Report an issue</h2>

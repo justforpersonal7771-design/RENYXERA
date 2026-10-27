@@ -63,7 +63,7 @@ export function TodoQuickPanel() {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -8, scale: 0.97 }}
       transition={{ type: "spring", stiffness: 380, damping: 28 }}
-      className="nav-cluster fixed sm:absolute left-4 right-4 sm:left-auto top-16 sm:top-full sm:right-0 mt-0 sm:mt-2 sm:w-[340px] rounded-2xl shadow-[0_30px_80px_-24px_rgba(76,29,149,0.45)] overflow-hidden z-50"
+      className="nav-cluster fixed sm:absolute left-4 right-4 sm:left-auto top-16 sm:top-full sm:right-0 mt-0 sm:mt-2 sm:w-[340px] rounded-2xl popover-surface overflow-hidden z-50"
     >
       {/* Header */}
       <div className="relative overflow-hidden p-4 flex items-center justify-between gap-3 grad-brand text-white">

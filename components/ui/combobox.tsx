@@ -117,7 +117,7 @@ export function Combobox({
           {open && rect && (
             <motion.div ref={list} initial={{ opacity: 0, y: rect.up ? 6 : -6, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.98 }} transition={{ duration: 0.14 }}
               style={{ position: "fixed", left: rect.left, width: rect.width, ...(rect.up ? { bottom: window.innerHeight - rect.top } : { top: rect.top }) }}
-              className="z-[400] rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-2xl overflow-hidden" data-portal-popover="true">
+              className="z-[400] rounded-2xl border border-[var(--border)] bg-[var(--surface)] popover-surface overflow-hidden" data-portal-popover="true">
               <div className="p-2 border-b border-[var(--border-subtle)]">
                 <div className="relative">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />

@@ -256,7 +256,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           exit={{ opacity: 0, scale: 0.95, y: -20 }}
           transition={{ duration: 0.15, ease: "easeOut" }}
           ref={containerRef}
-          className="w-full max-w-xl bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[50vh] font-sans"
+          className="w-full max-w-xl bg-[var(--surface)] border border-[var(--border)] rounded-2xl popover-surface overflow-hidden flex flex-col max-h-[50vh] font-sans"
         >
           {/* Search Input Bar */}
           <div className="search-row-line flex items-center gap-3 px-4 py-3.5 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/50">
