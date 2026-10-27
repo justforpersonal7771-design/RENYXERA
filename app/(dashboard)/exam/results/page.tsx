@@ -238,7 +238,7 @@ export default function ResultSummaryPage() {
   );
   if (loading || (session && !repoReady)) return (
     <div className="flex h-dvh w-full items-center justify-center bg-[var(--background)]">
-       <div className="font-bold tracking-widest uppercase animate-pulse text-indigo-600 dark:text-indigo-400">Loading Result Summary...</div>
+       <div className="font-bold tracking-normal animate-pulse text-indigo-600 dark:text-indigo-400">Loading Result Summary...</div>
     </div>
   );
   
@@ -430,7 +430,7 @@ export default function ResultSummaryPage() {
                   <div className="flex flex-col items-center text-center gap-2.5 lg:gap-4">
                     <div className="flex items-center gap-2 flex-wrap justify-center">
                       <motion.span initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
-                        className="relative overflow-hidden inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest text-violet-700 dark:text-violet-300 bg-violet-500/10 ring-1 ring-violet-500/20 px-3 py-1 rounded-full">
+                        className="relative overflow-hidden inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-700 dark:text-violet-300 bg-violet-500/10 ring-1 ring-violet-500/20 px-3 py-1 rounded-full">
                         <Sparkles className="w-3 h-3" /> Evaluation complete
                         <span aria-hidden="true" className="absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/50 to-transparent animate-[shimmer_3s_ease-in-out_infinite]" />
                       </motion.span>
@@ -518,7 +518,7 @@ export default function ResultSummaryPage() {
                   <span className="text-4xl sm:text-5xl lg:text-7xl [@media(max-height:760px)]:text-3xl font-black font-num leading-none grad-brand dark:from-indigo-300 dark:via-violet-300 dark:to-fuchsia-300 bg-clip-text text-transparent">
                     <CountUp value={accuracy} decimals={0} />%
                   </span>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-violet-600 dark:text-violet-300 mt-1.5 lg:mt-3 lg:text-xs">Accuracy</span>
+                  <span className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-300 mt-1.5 lg:mt-3 lg:text-xs">Accuracy</span>
                 </div>
               </motion.div>
                     <div>
@@ -542,22 +542,22 @@ export default function ResultSummaryPage() {
                           <span className={`grid place-items-center w-9 h-9 lg:w-11 lg:h-11 shrink-0 rounded-xl bg-gradient-to-br ${t.tint} text-white shadow-md transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110`}><t.icon className="w-4 h-4 lg:w-5 lg:h-5" /></span>
                           <span className="min-w-0">
                             <span className="block text-xl lg:text-3xl font-black font-num leading-none text-[var(--text-primary)]">{t.node}</span>
-                            <span className="block mt-1 text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">{t.label}</span>
+                            <span className="block mt-1 text-xs font-black tracking-normal text-[var(--text-muted)]">{t.label}</span>
                           </span>
                         </motion.div>
                       ))}
                     </div>
             <div className="hidden sm:block [@media(min-height:800px)]:block">
-              <span className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest block mb-1">Attempted vs Skipped</span>
+              <span className="text-xs font-black text-[var(--text-muted)] tracking-normal block mb-1">Attempted vs Skipped</span>
               <div className="grid grid-cols-2 gap-4 [@media(max-height:760px)]:hidden">
                 <div>
                   <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{totalAttempted}</span>
                   <span className="text-sm font-bold text-[var(--text-muted)] font-num"> / {session.totalQuestions}</span>
-                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Attempted</p>
+                  <p className="text-xs font-black text-[var(--text-muted)] tracking-normal mt-0.5">Attempted</p>
                 </div>
                 <div>
                   <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{session.totalQuestions - totalAttempted}</span>
-                  <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-widest mt-0.5">Skipped</p>
+                  <p className="text-xs font-black text-[var(--text-muted)] tracking-normal mt-0.5">Skipped</p>
                 </div>
               </div>
               {/* correct / wrong / skipped as one split bar */}
@@ -599,7 +599,7 @@ export default function ResultSummaryPage() {
                 >
                   <TiltCard max={8} className={`group border p-2.5 lg:p-4 rounded-xl lg:rounded-2xl transition-shadow duration-300 hover:shadow-lg flex flex-col items-center justify-center text-center ${stat.bg}`}>
                     <span className="hidden [@media(min-height:761px)]:grid sm:grid mb-1.5 lg:mb-2 place-items-center w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-[var(--surface)] shadow-sm ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md"><stat.icon className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:-rotate-12 ${stat.color}`} /></span>
-                    <span className={`text-[9px] font-black uppercase tracking-widest mb-0.5 ${stat.color}`}>{stat.label}</span>
+                    <span className={`text-xs font-black tracking-normal mb-0.5 ${stat.color}`}>{stat.label}</span>
                     <CountUpFx value={stat.value} decimals={stat.decimals} prefix={stat.prefix} className="text-base lg:text-2xl font-black text-[var(--text-primary)]" />
                   </TiltCard>
                 </motion.div>
@@ -697,19 +697,19 @@ export default function ResultSummaryPage() {
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-center text-[10px] font-bold">
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Score</div>
+                          <div className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-0.5">Score</div>
                           <div className="font-num text-sm font-bold text-indigo-600 dark:text-indigo-400">
                             {item.marks.toFixed(1)} <span className="text-[9px] text-[var(--text-muted)] font-normal">/ {item.max}</span>
                           </div>
                         </div>
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Accuracy</div>
+                          <div className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-0.5">Accuracy</div>
                           <div className="font-num text-sm font-bold text-[var(--text-secondary)]">
                             {itemAccuracy.toFixed(0)}%
                           </div>
                         </div>
                         <div className="bg-[var(--surface)] p-2 rounded-xl border border-[var(--border-subtle)]">
-                          <div className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-0.5">Attempts</div>
+                          <div className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-0.5">Attempts</div>
                           <div className="font-num text-sm font-bold text-[var(--text-secondary)] flex justify-center gap-1">
                             <span className="text-emerald-500">{item.correct}</span>
                             <span className="text-[var(--text-muted)]">/</span>

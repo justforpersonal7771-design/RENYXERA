@@ -9,6 +9,7 @@
  *   YearDotsCard    — how often does GATE ask my weakest topic, and have I solved those years?
  * Every number is real (the student's own attempts + the official question bank); nothing is invented.
  */
+import { useDaysToGate } from "@/lib/goals/use-days-to-gate";
 import Link from "next/link";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { motion, useReducedMotion } from "motion/react";
@@ -76,14 +77,7 @@ function Fill({ value, color }: { value: number; color: string }) {
 
 function useCountdown() {
   const targetYear = useTargetYear();
-  const [days, setDays] = useState<number | null>(null);
-  useEffect(() => {
-    const exam = Date.UTC(targetYear, 1, 6) - 5.5 * 3600_000; // first GATE day, 00:00 IST
-    const tick = () => setDays(Math.max(0, Math.ceil((exam - Date.now()) / 86_400_000)));
-    tick();
-    const t = setInterval(tick, 60_000);
-    return () => clearInterval(t);
-  }, [targetYear]);
+  const days = useDaysToGate();
   return { days, targetYear };
 }
 
@@ -115,7 +109,7 @@ export function NextActionHero({ solved, accuracy, streak, pendingMistakes, weak
   const readiness = Math.round(Math.min(solved / 4, 25) + accuracy * 0.75);
 
   return (
-    <section aria-label="Your next step" className="card-pastel overflow-hidden p-5 sm:p-7" data-tint="lilac">
+    <section aria-label="Your next step" className="card-pastel metal overflow-hidden p-5 sm:p-7" data-tint="lilac">
       <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--tint-lilac-ink)_25%,transparent),transparent_65%)]" />
       <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-center">
         <div className="min-w-0">

@@ -224,6 +224,10 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] U6 AI mentor/tutor, mocks, calendar page, downloads, profile, billing
 - [ ] U7 auth, onboarding, growth + system dialogs
 - [ ] U8 public pages + final WCAG AA audit
+- [x] 27 Oct: theme from the logo (blue/cyan/magenta replaces purple app-wide via Tailwind scales), solid cards (no dots through), all dashboard cards pastel, Swaseekh-style pinned deck in a framed panel, Lenis smooth scroll + mobile swipe rows + lesson reading bar, metallic tilt on hero cards only (.metal)
+- [x] Preview screens with sample data: /forge (Daily, Practice, Mocks, Archive; Free/Plus/Pro switch), /study (library + Deadlock lesson reader), /battles (live battle). Switch to "Coming soon" in lib/preview/features.ts after owner testing
+- [x] GATE 2027 date fixed to 6 Feb (official IIT Madras schedule 6-21 Feb); all countdowns share lib/goals/use-days-to-gate.ts
+- [ ] Owner: test /forge, /study, /battles and the new dashboard; say "make them coming soon" when done
 - [x] Bug: days to GATE now from one source (lib/goals/use-days-to-gate.ts)
 - [ ] 18A Dashboard (bento: next action, today strip with daily target, progress trio, where marks leak, revision due, mocks, heatmap, battles, one upgrade moment) — contact sheet first
 - [ ] 18B Analytics (KPIs, mastery heatmap + institute filter, topic table, time coach, Mistake DNA)

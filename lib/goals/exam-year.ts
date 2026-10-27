@@ -11,7 +11,7 @@ import { toLocalDateStr } from "@/lib/utils";
  * screen moves on to GATE 2028 automatically — a saved 2027 target rolls forward.
  */
 
-const EXAM_WINDOW_DAYS = 8; // second Saturday + the following weekend
+const EXAM_WINDOW_DAYS = 15; // three weekends from the first Saturday (2027: 6 Feb to 21 Feb)
 
 function addDays(date: string, days: number): string {
   const d = new Date(date + "T00:00:00Z");
@@ -37,7 +37,7 @@ export function targetYearRolledForward(saved: number | null | undefined, today:
 }
 
 /** Exam date for a target year: an exact date the learner set (in that year, still
- *  ahead) wins; otherwise GATE's usual slot, the second Saturday of February. */
+ *  ahead) wins; otherwise GATE's usual start, the first Saturday of February. */
 export function examDateFor(year: number, savedExamDate: string | null | undefined, today: string = toLocalDateStr()): string {
   if (savedExamDate && savedExamDate.startsWith(String(year)) && savedExamDate >= today) return savedExamDate;
   return defaultExamDate(year);

@@ -26,7 +26,7 @@ function pyqTag(q: Meta): string | null {
 export function QuestionMetaChips({ q, compact = false, showSection = true, showTaxonomy = true, showYear = true }: { q: Meta; compact?: boolean; showSection?: boolean; showTaxonomy?: boolean; showYear?: boolean }) {
   const chip = "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border border-[var(--border)] px-2 py-1 rounded-md truncate";
   return (
-    <div className={`flex items-center gap-1.5 min-w-0 text-[10px] font-bold uppercase tracking-wider ${compact ? "" : "flex-wrap"}`}>
+    <div className={`flex items-center gap-1.5 min-w-0 text-xs font-bold tracking-normal ${compact ? "" : "flex-wrap"}`}>
       <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)]">
         <span className="bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 px-2 py-1">{q.question_type}</span>
         <span className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 px-2 py-1 font-num normal-case">

@@ -1,5 +1,6 @@
 "use client";
 
+import { SmoothScroll } from "@/components/system/smooth-scroll";
 import { useEffect } from "react";
 import { BranchModalHost } from "@/components/branch/branch-modal";
 import { usePathname } from "next/navigation";
@@ -161,6 +162,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           shows through its glass/blur regardless of how the content below is
           structured. */}
       <Topbar />
+      <SmoothScroll />
       {/* <main> itself no longer owns the scroll — it's a full-height,
           non-scrolling passthrough. The actual scrolling element is the inner
           div below, explicitly positioned to start exactly at the topbar's
@@ -174,7 +176,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           topbar is the only way to keep the scrollbar from ever reaching that
           region. */}
       <main className="relative z-10 w-full h-full overflow-hidden">
-        <div className={`absolute inset-x-0 bottom-0 top-16 overflow-y-auto custom-scrollbar px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-20"} lg:pb-8`}>
+        <div id="app-scroll" className={`absolute inset-x-0 bottom-0 top-16 overflow-y-auto custom-scrollbar px-4 sm:px-6 md:px-8 pt-4 sm:pt-6 md:pt-8 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-20"} lg:pb-8`}>
           <motion.div
             key={pathname}
             initial={{ opacity: 0, y: 8 }}

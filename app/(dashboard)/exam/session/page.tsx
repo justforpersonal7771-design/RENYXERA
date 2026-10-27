@@ -277,7 +277,7 @@ export default function ExamSessionPage() {
                // initializeStore() call since IDB has nothing to restore.
                router.push(`/exam/results?id=${sessionId}`);
             }}
-            className="group relative overflow-hidden mt-4 h-13 py-3.5 w-full bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold text-base shadow-lg shadow-violet-500/30 cursor-pointer inline-flex items-center justify-center gap-2"
+            className="group relative overflow-hidden mt-4 h-13 py-3.5 w-full grad-brand text-white rounded-xl font-semibold text-base shadow-lg shadow-violet-500/30 cursor-pointer inline-flex items-center justify-center gap-2"
           >
             <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
             <span className="relative">See my results</span>
@@ -370,7 +370,7 @@ export default function ExamSessionPage() {
                  )}
                  {currentQuestion && (
                     <span title={isGradedPaper ? "Graded: stored and ranked; integrity rules apply" : "Practice: for learning; integrity rules still apply"}
-                      className={`hidden lg:inline-flex shrink-0 px-2 py-1 rounded-md text-[10px] font-black uppercase tracking-wider border ${isGradedPaper ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/30" : "bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/30"}`}>
+                      className={`hidden lg:inline-flex shrink-0 px-2 py-1 rounded-md text-xs font-black tracking-normal border ${isGradedPaper ? "bg-violet-500/10 text-violet-700 dark:text-violet-300 border-violet-500/30" : "bg-sky-500/10 text-sky-700 dark:text-sky-300 border-sky-500/30"}`}>
                       {isGradedPaper ? "Graded" : "Practice"}
                     </span>
                  )}
@@ -378,7 +378,7 @@ export default function ExamSessionPage() {
                      is capped and truncates with an ellipsis; the full value is always
                      available via its tooltip on hover. */}
                  {currentQuestion && (
-                    <div className="hidden md:flex items-center gap-1.5 min-w-0 text-[10px] font-black uppercase tracking-wider">
+                    <div className="hidden md:flex items-center gap-1.5 min-w-0 text-xs font-black tracking-normal">
                       <div className="flex items-center rounded-md border border-[var(--border)] overflow-hidden shrink-0 divide-x divide-[var(--border)] shadow-sm">
                         <span className="bg-indigo-50 text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-400 px-2 py-1">
                           {currentQuestion.question_type}
@@ -458,7 +458,7 @@ export default function ExamSessionPage() {
                    <motion.button
                      whileTap={{ scale: 0.95 }}
                      onClick={() => setShowSubmitModal(true)}
-                     className="group relative overflow-hidden h-8 sm:h-9 px-2.5 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
+                     className="group relative overflow-hidden h-8 sm:h-9 px-2.5 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold grad-brand text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
                    >
                      <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                      <Send className="relative w-3.5 h-3.5" />
@@ -670,7 +670,7 @@ export default function ExamSessionPage() {
                   className="relative bg-[var(--surface)] border-t border-[var(--border)] rounded-t-2xl shadow-2xl z-10 flex flex-col max-h-[75vh] overflow-hidden"
                 >
                   <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-subtle)] shrink-0">
-                    <span className="text-xs font-black uppercase tracking-wider text-[var(--text-secondary)]">Question Grid</span>
+                    <span className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Question Grid</span>
                     <div className="flex items-center gap-1">
                       {/* Bookmark is hidden from the cramped row 1 on mobile — reachable here instead. */}
                       <button

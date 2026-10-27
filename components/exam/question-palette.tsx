@@ -87,15 +87,15 @@ export function QuestionPalette() {
         {currentQData ? (
           <div className="space-y-3">
             <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block mb-0.5">Current Section</span>
+              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current Section</span>
               <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.section || "N/A"} />
             </div>
             <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block mb-0.5">Current Subject</span>
+              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current Subject</span>
               <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.subject || "N/A"} />
             </div>
             <div>
-              <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block mb-0.5">Current Topic</span>
+              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current Topic</span>
               <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.topic || "N/A"} />
             </div>
           </div>

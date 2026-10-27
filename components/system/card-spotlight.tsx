@@ -28,7 +28,7 @@ export function CardSpotlight() {
     const paint = () => {
       raf = 0;
       const hit = document.elementFromPoint(lastX, lastY);
-      const card = hit instanceof Element ? (hit.closest(".card-glass, .spotlight") as HTMLElement | null) : null;
+      const card = hit instanceof Element ? (hit.closest(".metal, .card-glass, .spotlight") as HTMLElement | null) : null;
       if (card !== active) {
         clear();
         active = card;
@@ -37,6 +37,9 @@ export function CardSpotlight() {
       const r = card.getBoundingClientRect();
       card.style.setProperty("--mx", `${lastX - r.left}px`);
       card.style.setProperty("--my", `${lastY - r.top}px`);
+      // 3D tilt for the large cards: at most 3 degrees, towards the pointer.
+      card.style.setProperty("--ry", `${(((lastX - r.left) / r.width) - 0.5) * 6}deg`);
+      card.style.setProperty("--rx", `${(0.5 - ((lastY - r.top) / r.height)) * 6}deg`);
       card.setAttribute("data-spot", "");
     };
 

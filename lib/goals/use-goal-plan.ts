@@ -38,7 +38,7 @@ export function useGoalPlan(goals: { targetRank: number | null; targetYear: numb
   }, [loadAnalytics]);
 
   // An exact date set in the Calendar wins when it's in the target year; otherwise GATE's
-  // usual slot (second Saturday of February) of the target year.
+  // usual start (first Saturday of February) of the target year.
   const examDate = savedExamDate === undefined ? null : examDateFor(goals.targetYear, savedExamDate);
 
   const plan = useMemo(() => {

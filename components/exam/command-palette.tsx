@@ -281,7 +281,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           <div className="flex-1 overflow-y-auto p-2 custom-scrollbar">
             {recentSearches.length > 0 && !query && (
               <div className="mb-2">
-                <div className="px-3 py-1 flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
+                <div className="px-3 py-1 flex justify-between items-center text-xs font-black tracking-normal text-[var(--text-muted)]">
                   <span>Recent Searches</span>
                   <button onClick={clearRecentSearches} className="hover:text-[var(--danger)] transition">Clear</button>
                 </div>
@@ -300,7 +300,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
               </div>
             )}
 
-            <div className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] px-3 py-1">
+            <div className="text-xs font-black tracking-normal text-[var(--text-muted)] px-3 py-1">
               {query ? "Matching Results" : "Suggested Actions"}
             </div>
 
@@ -325,11 +325,11 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                       <Icon className={`w-4 h-4 ${isSelected ? "text-white" : "text-indigo-500"}`} />
                       <div className="flex flex-col">
                         <span className="text-xs font-bold leading-tight">{item.title}</span>
-                        <span className={`text-[9px] uppercase tracking-wider font-extrabold ${isSelected ? "text-indigo-200" : "text-[var(--text-muted)]"}`}>{item.category}</span>
+                        <span className={`text-xs tracking-normal font-extrabold ${isSelected ? "text-indigo-200" : "text-[var(--text-muted)]"}`}>{item.category}</span>
                       </div>
                     </div>
                     {isSelected && (
-                      <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-indigo-100 font-mono">
+                      <div className="flex items-center gap-1 text-xs font-black tracking-normal text-indigo-100 font-mono">
                         <span>Select</span>
                         <CornerDownLeft className="w-3.5 h-3.5" />
                       </div>

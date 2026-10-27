@@ -3,7 +3,7 @@
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download, Timer, Library, Wrench } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Download, Timer, Library, Wrench, Anvil, BookOpenText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -28,6 +28,8 @@ const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
   { label: "Exam Setup", href: "/setup", icon: Settings },
   { label: "Mocks", href: "/mocks", icon: Timer },
+  { label: "Forge", href: "/forge", icon: Anvil },
+  { label: "Study", href: "/study", icon: BookOpenText },
   { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit },
   // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
   { label: "Review", href: "/mistakes", icon: Library },
@@ -174,7 +176,7 @@ export function Topbar() {
       <motion.div
         aria-hidden="true"
         style={{ scaleX: progress }}
-        className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left ${"bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb]"}`}
+        className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left ${"bg-gradient-to-r from-[#06c2fb] via-[#0a5ff2] to-[#dd42fb]"}`}
       />
       <div className="w-full h-full px-2.5 sm:px-6 md:px-8 flex items-center justify-between gap-1.5 sm:gap-4">
 

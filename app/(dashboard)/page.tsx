@@ -10,6 +10,7 @@ import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { useStudyStore } from "@/store/use-study-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { useDaysToGate } from "@/lib/goals/use-days-to-gate";
+import { ComingUp } from "@/components/dashboard/coming-up";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
 import { Loader2 } from "lucide-react";
@@ -234,6 +235,7 @@ export default function Home() {
       <WeeklyBenchmarkCard />
 
       {/* R18 B1: Swaseekh-style sticky stacking deck, with the student's own numbers. */}
+      <ComingUp />
       <FeatureDeck solved={solvedCount} totalBank={totalBank} paper={paper} accuracy={accuracyValue} pendingMistakes={pendingMistakesCount}
         subjects={dashboardMetrics?.subjectPerformance ?? []} topics={dashboardMetrics?.topicPerformance ?? []}
         studyHours={studyHours} streak={streakDays} daysToGate={daysToGate} />

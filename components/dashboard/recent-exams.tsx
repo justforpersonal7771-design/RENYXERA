@@ -50,7 +50,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
   };
 
   return (
-    <div className="@container card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
+    <div data-tint="sky" className="@container card-pastel overflow-hidden flex flex-col h-full">
       <div className="px-6 py-5 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
         <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5">
           <Award className="w-4 h-4 text-indigo-500" />

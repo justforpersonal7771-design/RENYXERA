@@ -81,7 +81,7 @@ export function MockStatusCard() {
     if (view.kind === "delayed") { const t = setInterval(() => void load(), 30_000); return () => clearInterval(t); }
   }, [view, load]);
 
-  const shell = "card-glass rounded-3xl p-5 shadow-sm relative overflow-hidden";
+  const shell = "card-pastel p-5 shadow-sm relative overflow-hidden";
   const title = (
     <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5 mb-3">
       <Trophy className="w-3.5 h-3.5 text-amber-500" /> All-India Mock
@@ -89,7 +89,7 @@ export function MockStatusCard() {
   );
 
   return (
-    <div className={shell}>
+    <div data-tint="peri" className={shell}>
       <div className="absolute -top-10 -right-10 w-36 h-36 bg-violet-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="relative">
         {title}

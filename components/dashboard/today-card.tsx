@@ -24,7 +24,7 @@ export function TodayCard({ pendingMistakes, streak, sessions = [] }: { pendingM
     { label: "Keep your streak going", done: todays.length > 0, note: "" },
   ];
   return (
-    <section aria-label="Today" className="card-glass rounded-2xl p-4 sm:p-5">
+    <section aria-label="Today" data-tint="mint" className="card-pastel p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Today</p>

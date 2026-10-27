@@ -37,10 +37,10 @@ export function WeeklyBenchmarkCard() {
       else { await navigator.clipboard.writeText(`${text} ${url}`); useToastStore.getState().show("Copied. Paste it to share your week.", "success"); }
     } catch { /* cancelled */ }
   };
-  const stat = (k: string, v: string, s?: string) => <div className="rounded-xl bg-[var(--surface-secondary)]/60 p-3"><dt className="text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</dt><dd className="mt-0.5 text-lg font-extrabold font-num text-[var(--text-primary)]">{v}</dd>{s && <dd className="text-xs text-[var(--text-muted)]">{s}</dd>}</div>;
+  const stat = (k: string, v: string, s?: string) => <div className="rounded-xl bg-[var(--surface)] p-3"><dt className="text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</dt><dd className="mt-0.5 text-lg font-extrabold font-num text-[var(--text-primary)]">{v}</dd>{s && <dd className="text-xs text-[var(--text-muted)]">{s}</dd>}</div>;
 
   return (
-    <section aria-label="This week compared with other learners" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">
+    <section aria-label="This week compared with other learners" data-tint="sky" className="card-pastel p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="inline-flex items-center gap-2 text-sm font-extrabold text-[var(--text-primary)]"><BarChart3 className="h-4 w-4 text-violet-500" aria-hidden /> This week vs other GATE {paper} learners</h2>
         {row.tests > 0 && <button type="button" onClick={share} className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 text-xs font-bold text-violet-600 dark:text-violet-400 hover:bg-violet-500/10"><Share2 className="h-3.5 w-3.5" /> Share my week</button>}

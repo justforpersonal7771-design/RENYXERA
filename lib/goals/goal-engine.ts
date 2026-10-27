@@ -68,7 +68,8 @@ export function friendlyRank(rank: number): number {
 export function defaultExamDate(year: number): string {
   const d = new Date(Date.UTC(year, 1, 1));
   const firstSat = (6 - d.getUTCDay() + 7) % 7 + 1;
-  return `${year}-02-${String(firstSat + 7).padStart(2, "0")}`;
+  // GATE starts on the first Saturday of February (2026: 7 Feb; 2027: 6 Feb, IIT Madras press release 20 Jul 2026).
+  return `${year}-02-${String(firstSat).padStart(2, "0")}`;
 }
 
 export interface GoalInputs {

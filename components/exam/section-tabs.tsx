@@ -78,7 +78,7 @@ export function SectionTabs({ variant = "row" }: { variant?: "row" | "bar" }) {
           return (
             <button key={sec.name} role="tab" aria-selected={isActive} title={sec.name} onClick={() => goToQuestion(sec.startIdx)}
               data-active={isActive} className={`group relative shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold whitespace-nowrap transition-colors cursor-pointer ${isActive ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-              {isActive && <motion.span layoutId="sectionBarPill" transition={{ type: "spring", stiffness: 420, damping: 32 }} className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-md shadow-violet-500/30" />}
+              {isActive && <motion.span layoutId="sectionBarPill" transition={{ type: "spring", stiffness: 420, damping: 32 }} className="absolute inset-0 rounded-lg grad-brand shadow-md shadow-violet-500/30" />}
               <span className={`relative transition-transform duration-200 group-hover:scale-[1.04] ${isActive ? "" : "max-w-[7.5rem] xl:max-w-[11rem] truncate"}`}>{shortName(sec.name)}</span>
               <span className={`relative font-num text-[10px] px-1.5 py-0.5 rounded-md ${isActive ? "bg-white/20" : "bg-[var(--surface)] text-[var(--text-muted)]"}`}>{answered}/{sec.count}</span>
             </button>
@@ -105,7 +105,7 @@ export function SectionTabs({ variant = "row" }: { variant?: "row" | "bar" }) {
           <button
             key={sec.name}
             onClick={() => goToQuestion(sec.startIdx)}
-            className={`relative flex-1 px-4 py-4 text-xs font-black uppercase tracking-wider transition-colors whitespace-nowrap focus:outline-none ${
+            className={`relative flex-1 px-4 py-4 text-xs font-black tracking-normal transition-colors whitespace-nowrap focus:outline-none ${
               isActive
                 ? "text-indigo-600 dark:text-indigo-400"
                 : "text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-gray-50/50 dark:hover:bg-gray-800/30"

@@ -208,17 +208,17 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
       <div className="flex flex-col font-num">
         <div className="flex items-baseline gap-1.5">
           <span className={`font-black text-[var(--text-primary)] leading-none ${compact ? "text-xs" : "text-sm"}`}>{formatTime(remaining)}</span>
-          <span className="text-[8px] text-[var(--text-muted)] font-black uppercase tracking-wider leading-none">rem</span>
+          <span className="text-[8px] text-[var(--text-muted)] font-black tracking-normal leading-none">rem</span>
         </div>
         {!compact && (
-          <div className="flex gap-2 text-[9px] text-[var(--text-muted)] uppercase tracking-wider mt-1 font-semibold whitespace-nowrap">
+          <div className="flex gap-2 text-xs text-[var(--text-muted)] tracking-normal mt-1 font-semibold whitespace-nowrap">
             <span>Elapsed: {formatTime(elapsed)}</span>
             <span>•</span>
             <span>Est. End: {estFinishTime}</span>
           </div>
         )}
         {compact && (
-          <span className="hidden sm:inline text-[8px] text-[var(--text-muted)] font-semibold uppercase tracking-wider mt-0.5 whitespace-nowrap">
+          <span className="hidden sm:inline text-[8px] text-[var(--text-muted)] font-semibold tracking-normal mt-0.5 whitespace-nowrap">
             End {estFinishTime}
           </span>
         )}

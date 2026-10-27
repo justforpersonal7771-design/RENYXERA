@@ -42,7 +42,7 @@ export function NatInput({ value, onChange }: NatInputProps) {
       <div className="space-y-1">
         <label
           htmlFor="nat-input"
-          className="text-xs font-black text-[var(--text-secondary)] uppercase tracking-widest block"
+          className="text-xs font-black text-[var(--text-secondary)] tracking-normal block"
         >
           Enter Numerical Answer
         </label>

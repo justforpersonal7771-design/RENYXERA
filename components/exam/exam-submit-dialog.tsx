@@ -63,7 +63,7 @@ export function ExamSubmitDialog({ isOpen, onConfirm, onCancel, stats }: ExamSub
         transition={{ type: "spring", stiffness: 320, damping: 26 }}
         className="nav-cluster w-full max-w-md overflow-hidden rounded-3xl shadow-[0_40px_100px_-30px_rgba(76,29,149,0.6)]"
       >
-        <div className="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 p-6 text-white">
+        <div className="relative overflow-hidden grad-brand p-6 text-white">
           <motion.div aria-hidden="true" className="absolute -top-16 -right-10 w-48 h-48 rounded-full bg-cyan-300/25 blur-3xl" animate={{ x: [0, -20, 0] }} transition={{ duration: 8, repeat: Infinity }} />
           <div className="relative flex items-center gap-4">
             <RadialGauge value={pct} size={72} stroke={7} from="#a7f3d0" to="#fde68a" track="#fff" trackOpacity={0.2}>
@@ -119,7 +119,7 @@ export function ExamSubmitDialog({ isOpen, onConfirm, onCancel, stats }: ExamSub
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={onConfirm}
-              className="group relative overflow-hidden flex-1 h-11 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white text-sm font-semibold shadow-lg shadow-violet-500/30 inline-flex items-center justify-center gap-2 cursor-pointer"
+              className="group relative overflow-hidden flex-1 h-11 rounded-xl grad-brand text-white text-sm font-semibold shadow-lg shadow-violet-500/30 inline-flex items-center justify-center gap-2 cursor-pointer"
             >
               <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
               <Send className="relative w-4 h-4" />

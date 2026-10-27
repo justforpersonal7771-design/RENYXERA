@@ -17,6 +17,51 @@
 }
 
 @theme {
+  /* R18 theme (27 Oct): from the logo. Logo blue replaces purple; logo magenta is the highlight; cyan accents. */
+  --color-violet-50: #eef5ff;
+  --color-violet-100: #d9e8ff;
+  --color-violet-200: #b8d4ff;
+  --color-violet-300: #86b6ff;
+  --color-violet-400: #4d8ffb;
+  --color-violet-500: #1f6ff6;
+  --color-violet-600: #0a5ff2;
+  --color-violet-700: #084bc4;
+  --color-violet-800: #0c3f9c;
+  --color-violet-900: #10377b;
+  --color-violet-950: #0c224b;
+  --color-indigo-50: #eef5ff;
+  --color-indigo-100: #d9e8ff;
+  --color-indigo-200: #b8d4ff;
+  --color-indigo-300: #86b6ff;
+  --color-indigo-400: #4d8ffb;
+  --color-indigo-500: #1f6ff6;
+  --color-indigo-600: #0a5ff2;
+  --color-indigo-700: #084bc4;
+  --color-indigo-800: #0c3f9c;
+  --color-indigo-900: #10377b;
+  --color-indigo-950: #0c224b;
+  --color-purple-50: #eef5ff;
+  --color-purple-100: #d9e8ff;
+  --color-purple-200: #b8d4ff;
+  --color-purple-300: #86b6ff;
+  --color-purple-400: #4d8ffb;
+  --color-purple-500: #1f6ff6;
+  --color-purple-600: #0a5ff2;
+  --color-purple-700: #084bc4;
+  --color-purple-800: #0c3f9c;
+  --color-purple-900: #10377b;
+  --color-purple-950: #0c224b;
+  --color-fuchsia-50: #fdf2ff;
+  --color-fuchsia-100: #fae3ff;
+  --color-fuchsia-200: #f5c6ff;
+  --color-fuchsia-300: #ee9bff;
+  --color-fuchsia-400: #e66afd;
+  --color-fuchsia-500: #dd42fb;
+  --color-fuchsia-600: #c524e0;
+  --color-fuchsia-700: #a619ba;
+  --color-fuchsia-800: #891898;
+  --color-fuchsia-900: #71197c;
+  --color-fuchsia-950: #4b0354;
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-secondary: var(--surface-secondary);
@@ -125,8 +170,7 @@
     border: 1px solid transparent;
     background:
       linear-gradient(var(--surface), var(--surface)) padding-box,
-      conic-gradient(from var(--ang), var(--border) 0deg, var(--border) 250deg, #06c2fb 290deg, #5b21e0 320deg, #dd42fb 345deg, var(--border) 360deg) border-box;
-    animation: ang-spin 7s linear infinite;
+      linear-gradient(var(--border), var(--border)) border-box;
     transition: box-shadow 0.3s ease;
   }
   .nav-cluster:hover {
@@ -564,7 +608,7 @@
   .card-glass {
     background:
       linear-gradient(135deg, color-mix(in srgb, var(--brand-blue) 6%, transparent), transparent 60%),
-      color-mix(in srgb, var(--surface) 42%, transparent);
+      color-mix(in srgb, var(--surface) 96%, transparent);
     backdrop-filter: blur(24px) saturate(1.4);
     -webkit-backdrop-filter: blur(24px) saturate(1.4);
     box-shadow:
@@ -669,8 +713,8 @@
 
     --bg-gradient-accent-1: rgba(6, 194, 251, 0.09);
     --bg-gradient-accent-2: rgba(10, 95, 242, 0.07);
-    --bg-gradient-accent-3: rgba(91, 33, 224, 0.06);
-    --bg-gradient-accent-4: rgba(221, 66, 251, 0.06);
+    --bg-gradient-accent-3: rgba(91, 33, 224, 0.05);
+    --bg-gradient-accent-4: rgba(221, 66, 251, 0.05);
   }
 
   .dark {
@@ -724,8 +768,8 @@
 
     --bg-gradient-accent-1: rgba(6, 194, 251, 0.045);
     --bg-gradient-accent-2: rgba(10, 95, 242, 0.06);
-    --bg-gradient-accent-3: rgba(91, 33, 224, 0.05);
-    --bg-gradient-accent-4: rgba(221, 66, 251, 0.04);
+    --bg-gradient-accent-3: rgba(91, 33, 224, 0.04);
+    --bg-gradient-accent-4: rgba(221, 66, 251, 0.03);
   }
 
   * {
@@ -1104,7 +1148,7 @@ mjx-container[display="true"] {
   --tint-rose: #ffe0e3;   --tint-rose-ink: #be123c;
   --tint-peach: #ffe7cf;  --tint-peach-ink: #c2410c;
   --tint-peri: #e1e7ff;   --tint-peri-ink: #4338ca;
-  --tint-lilac: #eee2ff;  --tint-lilac-ink: #7e22ce;
+  --tint-lilac: #e3eeff;  --tint-lilac-ink: #0a4fd0;
   --tint-butter: #fff3c4; --tint-butter-ink: #a16207;
   --tint-sky: #dbefff;    --tint-sky-ink: #0369a1;
   --ink: #17151f;
@@ -1115,7 +1159,7 @@ mjx-container[display="true"] {
   --tint-rose: color-mix(in srgb, #f43f5e 16%, #141418);   --tint-rose-ink: #fda4af;
   --tint-peach: color-mix(in srgb, #f97316 16%, #141418);  --tint-peach-ink: #fdba74;
   --tint-peri: color-mix(in srgb, #6366f1 18%, #141418);   --tint-peri-ink: #a5b4fc;
-  --tint-lilac: color-mix(in srgb, #a855f7 17%, #141418);  --tint-lilac-ink: #d8b4fe;
+  --tint-lilac: color-mix(in srgb, #0a5ff2 20%, #141418);  --tint-lilac-ink: #86b6ff;
   --tint-butter: color-mix(in srgb, #eab308 14%, #141418); --tint-butter-ink: #fde68a;
   --tint-sky: color-mix(in srgb, #0ea5e9 16%, #141418);    --tint-sky-ink: #7dd3fc;
   --ink: #f4f3f8;
@@ -1188,12 +1232,12 @@ mjx-container[display="true"] {
 /* App-wide texture: a faint dot grid laid over the shell's gradient, fading towards the bottom. */
 .ambient-gradient::before {
   content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-  background-image: radial-gradient(color-mix(in srgb, var(--text-primary) 13%, transparent) 1px, transparent 1.4px);
+  background-image: radial-gradient(color-mix(in srgb, var(--text-primary) 8%, transparent) 1px, transparent 1.4px);
   background-size: 24px 24px;
   mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.55) 55%, transparent 100%);
   -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.55) 55%, transparent 100%);
 }
-.dark .ambient-gradient::before { background-image: radial-gradient(color-mix(in srgb, white 9%, transparent) 1px, transparent 1.4px); }
+.dark .ambient-gradient::before { background-image: radial-gradient(color-mix(in srgb, white 6%, transparent) 1px, transparent 1.4px); }
 /* isolate makes the shell its own stacking context, so z-index -1 sits above its background but under all content */
 .ambient-gradient { isolation: isolate; }
 
@@ -1224,3 +1268,45 @@ mjx-container[display="true"] {
 .grad-brand { background-color: #3b0a8c; background-image: radial-gradient(rgba(255,255,255,.10) 1px, transparent 1.4px), linear-gradient(135deg, #4c1d95 0%, #3b0a8c 55%, #2e1065 100%);
   background-size: 18px 18px, 100% 100%; }
 button.grad-brand:hover, a.grad-brand:hover { background-color: #4c1d95; filter: brightness(1.12); }
+/* Study lesson reader: long-form reading measure and rhythm. */
+.lesson-h { font-family: var(--font-display, inherit); font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin-bottom: .6rem; }
+.lesson-p { font-size: 1.0625rem; line-height: 1.75; color: var(--text-primary); }
+/* Toolkit deck frame (Swaseekh-style): a big tinted panel holding the pinned stack; overflow clip keeps sticky working. */
+.deck-frame { position: relative; border-radius: 40px; padding: 24px clamp(16px, 9vw, 160px) 8px; overflow: clip;
+  background: color-mix(in srgb, var(--tint-peach) 70%, var(--background)); }
+@media (max-width: 767px) { .deck-frame { padding: 20px 12px; border-radius: 28px; } }
+/* Cards never let the dot texture through: any tinted see-through gradient panel gets a solid surface under it. */
+.ambient-gradient main :where([class*="bg-gradient-to-"][class*="from-"][class*="/"]) { background-color: var(--surface); }
+.ambient-gradient main :where([class*="bg-[var(--surface)]/"]):not(.grad-brand *) { background-color: var(--surface); }
+
+/* R18 theme: one card language everywhere. Old glass cards become solid rounded cards like the pastel ones. */
+.card-glass { background: var(--surface) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  border-radius: var(--card-radius) !important; border: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--text-primary) 4%, transparent), 0 18px 40px -28px rgba(22,18,58,.28) !important; }
+.grad-brand { background-color: #0a4fd0 !important; background-image: radial-gradient(rgba(255,255,255,.10) 1px, transparent 1.4px), linear-gradient(135deg, #0a5ff2 0%, #0c3f9c 70%, #0c224b 100%) !important; background-size: 18px 18px, 100% 100% !important; }
+.btn-main { background: #0a5ff2; color: #fff; }
+.dark .btn-main { color: #fff; }
+/* Swipe row: on phones a horizontal, snapping carousel that bleeds to the screen edge; a grid from md up. */
+@media (max-width: 767px) {
+  .snap-row { display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+    margin-inline: -16px; padding: 4px 16px 8px; scroll-padding-inline: 16px; overscroll-behavior-x: contain; }
+  .snap-row::-webkit-scrollbar { display: none; }
+  .snap-row > * { flex: 0 0 82%; scroll-snap-align: start; }
+}
+/* Metallic 3D cards (owner, 27 Oct): pointer-led tilt + a brushed-metal sheen and a light edge, only on cards marked .metal (one hero per screen + feature tiles).
+   Values come from components/system/card-spotlight.tsx; off for touch and reduced motion. */
+.card-pastel { transition: transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75), inset 0 -1px 0 rgba(22,18,58,.05), 0 1px 2px rgba(22,18,58,.06), 0 22px 44px -30px rgba(22,18,58,.35); }
+.metal::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,.55), transparent 60%),
+    linear-gradient(115deg, transparent 30%, rgba(255,255,255,.28) 45%, transparent 60%);
+  opacity: 0; transition: opacity .3s; mix-blend-mode: soft-light; }
+@layer components { .metal > * { position: relative; z-index: 1; } }
+.metal[data-spot]::after { opacity: 1; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .metal[data-spot] { transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.85), 0 30px 60px -32px rgba(10,95,242,.35); }
+}
+.dark .card-pastel { box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 22px 44px -30px rgba(0,0,0,.6); }
+.dark .metal::after { mix-blend-mode: overlay; }

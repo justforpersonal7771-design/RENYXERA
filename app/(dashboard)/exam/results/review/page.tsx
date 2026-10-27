@@ -93,7 +93,7 @@ export default function ReviewPage() {
   );
   if (loading || (session && !repoReady)) return (
     <div className="flex h-dvh w-full items-center justify-center bg-[var(--background)]">
-      <div className="font-bold tracking-widest uppercase animate-pulse text-indigo-600 dark:text-indigo-400">Loading Review Engine...</div>
+      <div className="font-bold tracking-normal animate-pulse text-indigo-600 dark:text-indigo-400">Loading Review Engine...</div>
     </div>
   );
   if (!session) return <div className="p-8 text-center text-rose-500 font-bold bg-[var(--background)] h-dvh">Result not found.</div>;
@@ -345,7 +345,7 @@ export default function ReviewPage() {
                         {q.question_type === "NAT" && (
                           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl w-full">
                             <div className="flex-1 flex justify-between items-center bg-[var(--surface-secondary)] p-3 border border-[var(--border-subtle)] rounded-xl">
-                              <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
+                              <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct Answer Range</span>
                               <span className="font-num font-bold text-green-600 dark:text-green-400">
                                 {formatNatAnswer(q.nat_answer_range)}
                               </span>
@@ -356,7 +356,7 @@ export default function ReviewPage() {
                                   : 'border-red-500 text-red-700 dark:text-red-500')
                                 : 'border-[var(--border-subtle)] text-[var(--text-secondary)]'
                               }`}>
-                              <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Your Answer</span>
+                              <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your Answer</span>
                               <span className="font-num font-bold">{currentResponse?.natValue || "None"}</span>
                             </div>
                           </motion.div>
@@ -454,7 +454,7 @@ export default function ReviewPage() {
               <>
                 <div className="hidden lg:flex w-[340px] flex-none border-l border-[var(--border)] bg-[var(--surface)] z-20 flex-col h-full overflow-hidden">
                   <div className="flex-[3] min-h-0 flex flex-col p-4 pb-3 overflow-hidden">
-                    <div className="font-bold text-xs uppercase tracking-[0.12em] text-[var(--text-muted)] mb-3 px-1">Review navigator</div>
+                    <div className="font-bold text-xs tracking-normal text-[var(--text-muted)] mb-3 px-1">Review navigator</div>
               <div className="grid grid-cols-3 gap-2 mb-3">
                 {[
                   { label: "Correct", v: reviewSummary.correct, cls: "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10" },
@@ -472,7 +472,7 @@ export default function ReviewPage() {
                     </div>
                   </div>
                   <div className="flex-1 min-h-[150px] max-h-[220px] flex flex-col p-4 pt-3 border-t border-[var(--border)]">
-              <div className="font-bold text-xs uppercase tracking-[0.12em] mb-2 px-1 flex items-center gap-1.5 text-amber-500">
+              <div className="font-bold text-xs tracking-normal mb-2 px-1 flex items-center gap-1.5 text-amber-500">
                 <StickyNote className="w-3.5 h-3.5" />
                 <span>Personal notes</span>
               </div>
@@ -497,7 +497,7 @@ export default function ReviewPage() {
                         className="relative bg-[var(--surface)] border-t border-[var(--border)] rounded-t-2xl shadow-2xl z-10 flex flex-col max-h-[80vh] overflow-hidden"
                       >
                         <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-subtle)] shrink-0">
-                          <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-secondary)]">Question grid</span>
+                          <span className="text-xs font-bold tracking-normal text-[var(--text-secondary)]">Question grid</span>
                           <div className="flex items-center gap-1">
                             {q && <ReportIssueButton questionId={q.question_id} source="review" compact />}
                             <button onClick={handleBookmarkToggle} className="p-1.5 rounded-md text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] transition-colors" title="Bookmark Question">
@@ -512,7 +512,7 @@ export default function ReviewPage() {
               {q && (
                 <div className="mb-3 space-y-1.5 rounded-xl bg-[var(--surface-secondary)]/60 px-3 py-2.5">
                   {[["Section", q.section], ["Subject", q.subject], ["Topic", q.topic]].filter(([, v]) => v).map(([k, v]) => (
-                    <div key={k}><span className="block text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">{k}</span><span className="text-xs font-semibold text-[var(--text-primary)]">{v}</span></div>
+                    <div key={k}><span className="block text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</span><span className="text-xs font-semibold text-[var(--text-primary)]">{v}</span></div>
                   ))}
                 </div>
               )}
@@ -533,7 +533,7 @@ export default function ReviewPage() {
                           {renderGrid("review-current-sheet")}
                         </div>
                         <div className="p-4 flex flex-col h-[170px] border-t border-[var(--border-subtle)] mt-3">
-              <div className="font-bold text-xs uppercase tracking-[0.12em] mb-2 px-1 flex items-center gap-1.5 text-amber-500">
+              <div className="font-bold text-xs tracking-normal mb-2 px-1 flex items-center gap-1.5 text-amber-500">
                 <StickyNote className="w-3.5 h-3.5" />
                 <span>Personal notes</span>
               </div>
