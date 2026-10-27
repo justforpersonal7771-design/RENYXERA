@@ -84,23 +84,35 @@ def pill(im, accent, a, b):
         im.alpha_composite(ov); d = ImageDraw.Draw(im)
         d.text((x + w // 2, y + 27), text, font=f, fill="white" if solid else (22, 18, 58), anchor="mm"); x += w + 12
 
-def card(slug, title, sub, logo, accent):
+def fit_serif(d, text, size, max_w):
+    # shrink the branch name until it ends before the round branch logo
+    while size > 30:
+        f = ImageFont.truetype(FD + "DMSerif.ttf", size)
+        if d.textlength(text, font=f) <= max_w: return f
+        size -= 2
+    return ImageFont.truetype(FD + "DMSerif.ttf", size)
+
+def card(slug, title, sub, logo, accent, share=False):
     im = background(accent).convert("RGBA")
     d = ImageDraw.Draw(im)
     im.alpha_composite(lock, (64, 56))
     d.text((60, 250), title, font=brico(92, 800), fill=(22, 18, 58))
-    d.text((66, 366), sub, font=ImageFont.truetype(FD + "DMSerif.ttf", 60), fill=hexrgb(accent))
-    pill(im, accent, "2,400+ official PYQs", "AI mentor")
-    d = ImageDraw.Draw(im)
-    d.text((66, 572), "gate.renyxera.workers.dev", font=mono(21, 500), fill=(88, 80, 140))
+    d.text((66, 366), sub, font=fit_serif(d, sub, 60, 680), fill=hexrgb(accent))
+    if not share:
+        # the share variant leaves the bottom free for the sender bar and referral line
+        pill(im, accent, "2,400+ official PYQs", "AI mentor")
+        d = ImageDraw.Draw(im)
+        d.text((66, 572), "gate.renyxera.workers.dev", font=mono(21, 500), fill=(88, 80, 140))
     if logo:
         c = circle(f"logo/{logo}.jpeg", 380)
         sh = Image.new("RGBA", (W, H), (0, 0, 0, 0)); ImageDraw.Draw(sh).ellipse((770, 120, 1150, 500), fill=hexrgb(accent) + (90,))
         im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(28))); im.alpha_composite(c, (770, 125))
-    im.convert("RGB").save(f"public/og/{slug}.png", optimize=True)
+    os.makedirs("public/og/share", exist_ok=True)
+    im.convert("RGB").save(f"public/og/share/{slug}.png" if share else f"public/og/{slug}.png", optimize=True)
 for slug, (t, s, lg, ac) in BR.items():
     try:
         card(slug, t, s, lg, ac)
+        card(slug, t, s, lg, ac, share=True)
     except OSError as e:
         print("skipped (file open elsewhere?):", slug, e)
     circle(f"logo/{lg}.jpeg", 512).save(f"public/brand/branch/{slug}.png", optimize=True)

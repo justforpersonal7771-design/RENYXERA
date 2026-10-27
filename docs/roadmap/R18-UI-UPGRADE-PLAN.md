@@ -1,0 +1,81 @@
+# R18 · Full UI/UX upgrade plan (27 Oct 2026)
+
+Owner brief: the UI looks ugly; fix stacking, share card, dashboard first experience; texture background with the gradient;
+no gold/silver navbar effects (crown + PRO badge only); new styles (tab windows, stacks and more) across every screen.
+
+## Research summary
+
+Sources checked: Awwwards/Godly/Dribbble trend round-ups for 2026, EdTech dashboard work on Dribbble/Contra.
+Mobbin and Refero need a login to browse, so they were not used directly.
+
+- Bento grids are now the default for dashboards and feature sections, with 6 to 9 tiles as a sensible ceiling
+  ([b12](https://www.b12.io/resource-center/website-design/web-design-guide-bento-grids-and-kinetic-typography/), [line25](https://line25.com/articles/web-design-trends-2026/)).
+- Texture is back (grain, dot grids) as a quiet layer behind key sections, not a full-page effect ([theplusaddons](https://theplusaddons.com/blog/web-design-trends-2026/)).
+- Neo-brutalism survives only as an accent, for example one hard-shadow call to action ([bubble](https://bubble.io/blog/web-design-trends/)).
+- EdTech dashboards that work put weekly progress first and tasks below, and fight clutter with hierarchy, not more cards
+  ([Contra](https://contra.com/p/2qBqQgWv-intuitive-e-learning-dashboard-design-for-enhanced-engagement)).
+- Competitor Swaseekh: the stacked feature deck is its strongest moment; everything else is a plain list.
+
+## Design direction: "exam desk"
+
+The subject is a student's desk the night before an exam: graph paper, highlighter tints, index-card tabs.
+That gives a distinct look that isn't the generic SaaS card kit.
+
+| Token | Value | Role |
+|---|---|---|
+| Canvas | `#faf8f5` / dark `#0e0d14` | page, with a faint 24 px dot grid (graph paper) |
+| Ink | `#16123a` | text, solid pills |
+| Violet | `#6d28d9` | the one brand accent: primary actions, active tab |
+| Highlighters | mint, rose, peach, peri, lilac, butter, sky | subject and feature tints only, never for chrome |
+| Radius | 28 / 18 / 999 | big surfaces / inner panels / pills: three steps, chosen by hierarchy |
+
+Type: Bricolage Grotesque for display numbers and headings, Manrope for body, no monospace for labels.
+Labels in sentence case, no tracked all-caps eyebrows (replace the current `section-label` style).
+
+## Components to add
+
+1. **Folder tabs (the "tab window")**: index-card tabs that join the panel below them; the active tab
+   takes the panel colour. Use on Analytics (Overview / Subjects / Mistakes), Profile (Account / Plan / Telegram),
+   Mocks (Upcoming / Past), Browse subjects.
+2. **Segmented control**: pill track with a sliding thumb (motion `layoutId`) for short switches: 3/5/7 days, light/dark, PYQ year range.
+3. **Stack deck** (done, now clipped to tidy lips): only on the dashboard toolkit and the landing page.
+4. **Bento grid v2**: one 2x2 hero tile + up to 6 tiles; each tile shows a live number, not a paragraph.
+5. **Hard-shadow CTA**: one per screen, the main action (ink border, 4 px offset shadow, presses down on click).
+6. **Command bar**: the navbar search becomes a ⌘K palette (jump to topic, mock, AI mentor).
+7. **Toasts and confirmations** with the same verb as the button.
+
+## Navbar and profile
+
+- Navbar: logo left; centre becomes folder tabs for the 4 main areas (Practise, Mocks, Mentor, Progress);
+  right side keeps search, branch chip and avatar; the 6 small icons move into the avatar menu and the ⌘K palette.
+- No gold/silver rings (done); Pro shows the crown and PRO badge only.
+- Profile: a header card (avatar, name, branch, plan) and folder tabs below instead of one long scroll.
+
+## Dashboard first experience
+
+Problem today: the hero and the "Find your starting point" card both ask for the same 20-question test,
+and a new user sees empty rings (0%, 0%, 0d) before anything.
+
+New order for a new user:
+1. Hero: greeting, days to GATE, one hard-shadow button "Take the 20-question start test", and the goal picker inline.
+   No empty rings; instead a preview of what the dashboard will show after the test.
+2. Toolkit stack deck.
+3. Telegram rooms.
+
+For a returning user: hero with next action and real rings → Today strip (tasks + timer as one card) → bento → deck.
+
+## Motion
+
+One orchestrated moment per screen (the hero numbers count up once). Everything else answers an action:
+tab switch slides the indicator, cards press down on tap, deck clips on scroll. Reduced motion: none of it.
+
+## Rollout (each step: desktop + mobile, light + dark checked, then pushed)
+
+| Step | Scope |
+|---|---|
+| U1 | Done 27 Oct: share card, stack deck, navbar rings, dot-grid texture |
+| U2 | Tokens + `FolderTabs`, `Segmented`, `HardButton` components; replace all-caps labels |
+| U3 | Dashboard first experience (above) |
+| U4 | Navbar + ⌘K palette + profile tabs |
+| U5 | Analytics, Mocks, Browse, AI Mentor on the new components |
+| U6 | Exam engine chrome, results, landing page, accessibility audit (WCAG AA contrast, focus rings) |

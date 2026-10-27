@@ -1019,7 +1019,6 @@ html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; 
 @keyframes pro-spark { 0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); } 45% { opacity: 1; transform: scale(1) rotate(45deg); } 70% { opacity: 0; transform: scale(0.6) rotate(90deg); } }
 
 /* Pro navbar: a flowing gold hairline under the bar and a shimmering PRO badge. */
-.pro-bar .nav-cluster, .pro-bar .main-dock { border-color: transparent !important; box-shadow: 0 0 0 2px #f5b83d, 0 0 0 3px rgba(146, 64, 14, 0.18), 0 8px 22px -12px rgba(217, 119, 6, 0.55); }
 @keyframes pro-bar-flow { to { background-position: 200% 0; } }
 .pro-badge {
   position: relative; overflow: hidden; display: inline-flex; align-items: center; padding: 1px 6px 1px 7px; border-radius: 6px;
@@ -1047,7 +1046,6 @@ html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; 
 .hero-avatar.tier-pro > .hero-avatar-ring { background: conic-gradient(from var(--ang), #fde68a, #f59e0b, #fff7c2, #d97706, #fbbf24, #fde68a) !important; opacity: 1 !important; }
 .hero-avatar.tier-plus > .hero-avatar-ring { background: conic-gradient(from var(--ang), #f9fafb, #9ca3af, #ffffff, #6b7280, #d1d5db, #f9fafb) !important; opacity: 1 !important; }
 .pro-crown.is-silver .pro-crown-svg { filter: drop-shadow(0 1px 0.5px rgba(55, 65, 81, 0.55)); }
-.plus-bar .nav-cluster, .plus-bar .main-dock { border-color: transparent !important; box-shadow: 0 0 0 2px #b8bec8, 0 0 0 3px rgba(55, 65, 81, 0.16), 0 8px 22px -12px rgba(71, 85, 105, 0.5); }
 @media (prefers-reduced-motion: reduce) {
   .avatar-fx.is-pro .avatar-ring, .pro-crown-glint, .pro-spark,  .pro-badge::after, .avatar-fx.is-plus .avatar-ring { animation: none; }
 }
@@ -1183,3 +1181,18 @@ mjx-container[display="true"] {
   color: color-mix(in srgb, var(--text-primary) 4%, transparent); pointer-events: none; white-space: nowrap; z-index: 0;
 }
 @media (prefers-reduced-motion: reduce) { .card-pastel, .card-pastel:hover { transition: none; transform: none; } }
+
+/* R18 owner feedback (27 Oct): no gold/silver rings on the navbar or avatar; the crown and the PRO/PLUS badge stay. */
+.avatar-fx.is-pro .avatar-ring, .avatar-fx.is-plus .avatar-ring { opacity: 0 !important; animation: none !important; }
+
+/* App-wide texture: a faint dot grid laid over the shell's gradient, fading towards the bottom. */
+.ambient-gradient::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(color-mix(in srgb, var(--text-primary) 13%, transparent) 1px, transparent 1.4px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.55) 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,.55) 55%, transparent 100%);
+}
+.dark .ambient-gradient::before { background-image: radial-gradient(color-mix(in srgb, white 9%, transparent) 1px, transparent 1.4px); }
+/* isolate makes the shell its own stacking context, so z-index -1 sits above its background but under all content */
+.ambient-gradient { isolation: isolate; }

@@ -14,8 +14,8 @@ import { track } from "@/lib/growth/track";
  * anywhere. The image is drawn in the browser, then shared as a file (or downloaded).
  */
 const BRANCH_SLUGS = [
-  { paper: "CS", slug: "gate-cse" }, { paper: "EC", slug: "gate-ece" }, { paper: "EE", slug: "gate-ee" },
-  { paper: "ME", slug: "gate-me" }, { paper: "CE", slug: "gate-ce" }, { paper: "DA", slug: "gate-da" },
+  { paper: "CS", slug: "gate-cse", short: "CSE" }, { paper: "EC", slug: "gate-ece", short: "ECE" }, { paper: "EE", slug: "gate-ee", short: "EE" },
+  { paper: "ME", slug: "gate-me", short: "ME" }, { paper: "CE", slug: "gate-ce", short: "Civil" }, { paper: "DA", slug: "gate-da", short: "DA" },
 ];
 
 export function ShareCard({ link, text }: { link: string; text: string }) {
@@ -49,42 +49,42 @@ export function ShareCard({ link, text }: { link: string; text: string }) {
     const custom = parts.length > 0 || (!!avatar && onAvatar);
     // The card is the student's own branch card; the other branches are shown as small badges.
     const img = new Image();
-    img.src = `/og/${mySlug}.png`;
+    img.src = `/og/share/${mySlug}.png`;
     await img.decode();
     const c = document.createElement("canvas");
     c.width = 1200; c.height = 630;
     const g = c.getContext("2d")!;
     g.drawImage(img, 0, 0, 1200, 630);
+    const fit = (s: string, max: number) => { let t = s; while (t.length > 1 && g.measureText(t).width > max) t = t.slice(0, -2) + "…"; return t; };
+    // The share base has an empty band from y=440 down: sender bar, then one footer band.
     if (custom) {
-      // glass sender bar: avatar, name, then username and ID
-      g.save(); g.shadowColor = "rgba(99,102,241,.35)"; g.shadowBlur = 24; g.shadowOffsetY = 8;
-      g.fillStyle = "rgba(255,255,255,.95)"; g.beginPath(); g.roundRect(64, 462, 660, 96, 48); g.fill(); g.restore();
-      g.lineWidth = 3; g.strokeStyle = "#6366f1"; g.beginPath(); g.roundRect(64, 462, 660, 96, 48); g.stroke();
+      g.save(); g.shadowColor = "rgba(22,18,58,.14)"; g.shadowBlur = 22; g.shadowOffsetY = 6;
+      g.fillStyle = "#ffffff"; g.beginPath(); g.roundRect(60, 448, 660, 84, 42); g.fill(); g.restore();
+      let x = 92;
       if (avatar && onAvatar) {
         const av = new Image(); av.src = avatar; await av.decode();
-        g.save(); g.beginPath(); g.arc(112, 510, 34, 0, Math.PI * 2); g.clip();
-        const m = Math.min(av.width, av.height); g.drawImage(av, (av.width - m) / 2, (av.height - m) / 2, m, m, 78, 476, 68, 68); g.restore();
+        g.save(); g.beginPath(); g.arc(102, 490, 30, 0, Math.PI * 2); g.clip();
+        const m = Math.min(av.width, av.height); g.drawImage(av, (av.width - m) / 2, (av.height - m) / 2, m, m, 72, 460, 60, 60); g.restore();
+        x = 148;
       }
-      const x = avatar ? 164 : 96;
-      g.fillStyle = "#16123a"; g.font = "700 28px Sora, Manrope, system-ui, sans-serif";
-      g.fillText((on.name && f.name.trim()) || "Shared on RENYXERA", x, 506);
-      g.fillStyle = "#58508c"; g.font = "500 21px Sora, Manrope, system-ui, sans-serif";
-      g.fillText(parts.filter((p) => p !== (on.name && f.name.trim())).join("  ·  ").slice(0, 46), x, 538);
+      const name = (on.name && f.name.trim()) || "";
+      const rest = parts.filter((p) => p !== name).join("   ");
+      g.fillStyle = "#16123a"; g.font = "700 26px Sora, Manrope, system-ui, sans-serif";
+      g.fillText(fit(name || rest || "Preparing on RENYXERA", 690 - x), x, rest && name ? 484 : 499);
+      if (rest && name) { g.fillStyle = "#58508c"; g.font = "500 19px Sora, Manrope, system-ui, sans-serif"; g.fillText(fit(rest, 690 - x), x, 512); }
     }
-    // Other branches strip (bottom right, under the big branch logo).
-    const others = BRANCH_SLUGS.filter((b) => b.slug !== mySlug);
-    g.fillStyle = "rgba(255,255,255,.88)"; g.beginPath(); g.roundRect(760, 532, 412, 82, 41); g.fill();
-    g.fillStyle = "#58508c"; g.font = "700 14px Sora, Manrope, system-ui, sans-serif"; g.fillText("ALSO ON RENYXERA", 784, 556);
-    for (let i = 0; i < others.length; i++) {
-      const im = new Image(); im.src = `/brand/branch/${others[i].slug}.png`;
-      try { await im.decode(); g.drawImage(im, 784 + i * 74, 562, 44, 44); } catch { /* skip */ }
-    }
-    // Referral line replaces the plain URL: the friend sees what they get.
-    g.fillStyle = "#faf8ff"; g.fillRect(56, 560, 690, 50);
-    g.fillStyle = "#6d28d9"; g.font = "700 20px Sora, Manrope, system-ui, sans-serif";
-    g.fillText(`Join free with my link — bonus AI help for both of us`, 66, 584);
-    g.fillStyle = "#58508c"; g.font = "500 17px 'JetBrains Mono', ui-monospace, monospace";
-    g.fillText(link.replace(/^https?:\/\//, "").slice(0, 52), 66, 606);
+    // Footer band: referral on the left, other branches as plain names on the right.
+    g.fillStyle = "rgba(255,255,255,.82)"; g.fillRect(0, 556, 1200, 74);
+    g.fillStyle = "rgba(22,18,58,.08)"; g.fillRect(0, 556, 1200, 1);
+    g.fillStyle = "#4c1d95"; g.font = "700 20px Sora, Manrope, system-ui, sans-serif";
+    g.fillText("Join free with my link: bonus AI help for both of us", 60, 586);
+    g.fillStyle = "#58508c"; g.font = "500 16px 'JetBrains Mono', ui-monospace, monospace";
+    g.fillText(fit(link.replace(/^https?:\/\//, ""), 600), 60, 611);
+    const others = BRANCH_SLUGS.filter((b) => b.slug !== mySlug).map((b) => b.short);
+    g.textAlign = "right";
+    g.fillStyle = "#58508c"; g.font = "600 15px Sora, Manrope, system-ui, sans-serif"; g.fillText("Also on RENYXERA", 1140, 586);
+    g.fillStyle = "#16123a"; g.font = "700 19px Sora, Manrope, system-ui, sans-serif"; g.fillText(others.join("  ·  "), 1140, 611);
+    g.textAlign = "left";
     return new Promise((r) => c.toBlob((b) => r(b), "image/png"));
   };
 
