@@ -33,7 +33,7 @@ export function ProfileHeader({
 
   return (
     <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
-      className="relative overflow-hidden rounded-3xl p-4 sm:p-5 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-[0_18px_50px_-20px_rgba(79,70,229,0.6)]">
+      className="relative overflow-hidden rounded-3xl p-4 sm:p-5 grad-brand text-white shadow-[0_18px_50px_-20px_rgba(79,70,229,0.6)]">
       <motion.div aria-hidden="true" className="pointer-events-none absolute -top-20 right-24 w-56 h-56 rounded-full bg-cyan-300/25 blur-3xl"
         animate={reduce ? undefined : { x: [0, -40, 0], y: [0, 16, 0] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} />
       <motion.div aria-hidden="true" className="pointer-events-none absolute -bottom-24 left-1/3 w-64 h-64 rounded-full bg-fuchsia-300/20 blur-3xl"
@@ -54,7 +54,7 @@ export function ProfileHeader({
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2.5 min-w-0">
             <h1 className="shine-text text-2xl sm:text-3xl xl:text-[2.1rem] font-extrabold tracking-tight leading-tight truncate">{name}</h1>
-            <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider ${paidTier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow" : paidTier === "plus" ? "bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900 shadow" : "bg-white/20 backdrop-blur"}`}>
+            <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-black tracking-normal ${paidTier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow" : paidTier === "plus" ? "bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900 shadow" : "bg-white/20 backdrop-blur"}`}>
               {paidTier ? <Crown className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />} {paidTier ?? "free"}
             </span>
           </div>
@@ -96,7 +96,7 @@ export function ProfileHeader({
           </svg>
           <div className="leading-tight">
             <p className="text-lg font-extrabold font-num">{completeness}%</p>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-white/75">Profile</p>
+            <p className="text-xs font-bold tracking-normal text-white/75">Profile</p>
           </div>
         </div>
 

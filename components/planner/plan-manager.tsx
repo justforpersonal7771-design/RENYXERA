@@ -93,7 +93,7 @@ export function PlanManager() {
   if (!ent.paid) {
     return (
       <section className="rounded-3xl border border-violet-500/30 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-5 sm:p-6">
-        <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400"><CalendarClock className="h-3.5 w-3.5" aria-hidden /> My plans · Plus &amp; Pro</p>
+        <p className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-600 dark:text-violet-400"><CalendarClock className="h-3.5 w-3.5" aria-hidden /> My plans · Plus &amp; Pro</p>
         <h2 className="mt-1 font-extrabold text-[var(--text-primary)]">Let the planner fill your calendar and keep it up to date</h2>
         <p className="mt-1 max-w-2xl text-sm text-[var(--text-secondary)]">Tell us when you&apos;re free (as many times a day as you like), and we place every study block for you. Change any day later, and remove a whole plan in one tap.</p>
         <div className="mt-4 flex flex-wrap gap-2">

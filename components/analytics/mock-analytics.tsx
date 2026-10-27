@@ -70,7 +70,7 @@ export function MockAnalytics() {
             ] as const).map(([Icon, k, v], i) => (
               <motion.div key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="rounded-xl bg-[var(--surface-secondary)]/60 p-3">
                 <Icon className="w-4 h-4 text-violet-500" />
-                <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{k}</p>
+                <p className="mt-1 text-xs font-bold tracking-normal text-[var(--text-muted)]">{k}</p>
                 <p className="text-lg font-extrabold font-num text-[var(--text-primary)]">{v}</p>
               </motion.div>
             ))}

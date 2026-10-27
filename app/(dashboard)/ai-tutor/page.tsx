@@ -563,7 +563,7 @@ export default function AITutorWorkspace() {
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div className="flex items-center gap-2">
-              <span className="text-xs px-2.5 py-1 bg-indigo-500/10 text-indigo-500 font-extrabold rounded-lg uppercase tracking-wider">
+              <span className="text-xs px-2.5 py-1 bg-indigo-500/10 text-indigo-500 font-extrabold rounded-lg tracking-normal">
                 AI Tutor
               </span>
               {question && (
@@ -594,7 +594,7 @@ export default function AITutorWorkspace() {
             {/* Bookmark button */}
             <button
               onClick={handleToggleBookmark}
-              className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black uppercase tracking-wider ${isRealBookmark
+              className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black tracking-normal ${isRealBookmark
                 ? "bg-amber-500/10 border-amber-500/30 text-amber-500"
                 : "bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-amber-500"
                 }`}
@@ -607,7 +607,7 @@ export default function AITutorWorkspace() {
             {explanation?.shortcut && (
               <button
                 onClick={handleSaveShortcut}
-                className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black uppercase tracking-wider ${isShortcutBookmarked
+                className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black tracking-normal ${isShortcutBookmarked
                   ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
                   : "bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-emerald-500"
                   }`}
@@ -620,7 +620,7 @@ export default function AITutorWorkspace() {
             {/* Export Menu */}
             <button
               onClick={() => handleExportText("MD")}
-              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black uppercase tracking-wider flex items-center gap-1.5"
+              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black tracking-normal flex items-center gap-1.5"
               title="Export Markdown Sheet"
             >
               <Download className="w-4 h-4" /> Export
@@ -628,14 +628,14 @@ export default function AITutorWorkspace() {
 
             <button
               onClick={() => window.print()}
-              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black uppercase tracking-wider flex items-center gap-1.5"
+              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black tracking-normal flex items-center gap-1.5"
               title="Print Session"
             >
               <Printer className="w-4 h-4" /></button>
 
             <button
               onClick={() => setIsRightPanelCollapsed(!isRightPanelCollapsed)}
-              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black uppercase tracking-wider flex items-center gap-1.5"
+              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black tracking-normal flex items-center gap-1.5"
               title="Toggle Sidebar"
             >
               <span>{isRightPanelCollapsed ? "Show" : "Hide"}</span>
@@ -655,7 +655,7 @@ export default function AITutorWorkspace() {
                 {/* Meta details */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Question details</span>
+                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Question details</span>
                     <span className={`text-[10px] px-2 py-0.5 font-bold uppercase rounded-md ${question.difficulty === "Hard"
                       ? "bg-rose-500/10 text-rose-500"
                       : question.difficulty === "Medium"
@@ -680,7 +680,7 @@ export default function AITutorWorkspace() {
 
                 {/* Options List */}
                 <div className="space-y-2.5">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] block">Options</span>
+                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Options</span>
                   {(question.question_type === "MCQ" || question.question_type === "MSQ") && question.options && (
                     <div className="space-y-2">
                       {question.options.map((o: any) => {
@@ -712,7 +712,7 @@ export default function AITutorWorkspace() {
 
                 {/* Historical Attempt summary metrics */}
                 <div className="p-4 bg-[var(--surface-secondary)]/30 border border-[var(--border-subtle)] rounded-xl space-y-2.5">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] block">Tutor Diagnostic logs</span>
+                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Tutor Diagnostic logs</span>
                   <div className="grid grid-cols-2 gap-2 text-center">
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] p-2 rounded-lg">
                       <span className="block text-[8px] font-black uppercase text-[var(--text-muted)]">Attempts</span>
@@ -742,7 +742,7 @@ export default function AITutorWorkspace() {
               {loading ? (
                 <div className="py-20 flex flex-col items-center justify-center gap-3">
                   <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-                  <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Compiling contextual AI response...</span>
+                  <span className="text-xs font-bold text-[var(--text-secondary)] tracking-normal">Compiling contextual AI response...</span>
                 </div>
               ) : error ? (
                 <div className="p-4 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs flex items-center gap-2">
@@ -945,7 +945,7 @@ export default function AITutorWorkspace() {
                           <div className="bg-rose-50/30 dark:bg-rose-950/5 border border-rose-500/20 rounded-2xl p-4 flex gap-3 items-start shadow-sm">
                             <HelpCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5 animate-pulse" />
                             <div className="flex-1 overflow-hidden">
-                              <span className="block text-[10px] font-black uppercase tracking-widest text-rose-500 mb-0.5">Why YOU Made This Mistake (Diagnostic Insight)</span>
+                              <span className="block text-xs font-black tracking-normal text-rose-500 mb-0.5">Why YOU Made This Mistake (Diagnostic Insight)</span>
                               <div className="text-xs leading-relaxed text-[var(--text-secondary)] font-medium">
                                 <AstNodeRenderer nodes={AIResponseParser.parse(data.personalizedContextNotes)} />
                               </div>
@@ -1039,7 +1039,7 @@ export default function AITutorWorkspace() {
                     onClick={() => setIsOutlineCollapsed(!isOutlineCollapsed)}
                     className="w-full flex justify-between items-center text-left focus:outline-none cursor-pointer group"
                   >
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition">Tutor Outline Navigator</span>
+                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition">Tutor Outline Navigator</span>
                     {isOutlineCollapsed ? (
                       <ChevronDown className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition" />
                     ) : (
@@ -1083,7 +1083,7 @@ export default function AITutorWorkspace() {
                 {/* Personal notes attachments editor */}
                 <div className="space-y-2 border-t border-[var(--border-subtle)] pt-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Workspace Notes</span>
+                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Workspace Notes</span>
                     <div className="flex gap-1.5">
                       <button
                         onClick={() => setNotesPreviewMode(prev => !prev)}
@@ -1131,9 +1131,9 @@ export default function AITutorWorkspace() {
                 <div className="space-y-3 border-t border-[var(--border-subtle)] pt-4">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Dynamic Practice Set</span>
+                      <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Dynamic Practice Set</span>
                       {practiceQuestions.length > 0 && (
-                        <span className="flex items-center gap-1 text-[8px] font-black uppercase tracking-wider bg-amber-500/10 text-amber-600 dark:text-amber-400 px-1.5 py-0.5 rounded" title="AI-generated practice — not official GATE questions">
+                        <span className="flex items-center gap-1 text-[8px] font-black tracking-normal bg-amber-500/10 text-amber-600 dark:text-amber-400 px-1.5 py-0.5 rounded" title="AI-generated practice — not official GATE questions">
                           <Sparkles className="w-2.5 h-2.5" />
                           AI Generated
                         </span>
@@ -1172,7 +1172,7 @@ export default function AITutorWorkspace() {
                               className="w-full flex items-center justify-between p-3 text-left focus:outline-none cursor-pointer bg-[var(--surface-secondary)]/30 border-b border-[var(--border-subtle)]/40 hover:bg-[var(--surface-secondary)] transition-colors"
                             >
                               <div className="flex-1 min-w-0">
-                                <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">
+                                <div className="flex items-center gap-2 text-xs font-black tracking-normal text-[var(--text-muted)]">
                                   <span className="text-emerald-600 dark:text-emerald-400">Question {idx + 1}</span>
                                   <span>•</span>
                                   <span>{q.questionType || "MCQ"}</span>
@@ -1197,7 +1197,7 @@ export default function AITutorWorkspace() {
                             {isExpanded && (
                               <div className="p-3.5 space-y-3.5 text-xs">
                                 <div>
-                                  <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block mb-1">Question Text</span>
+                                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-1">Question Text</span>
                                   <div className="font-bold text-[var(--text-primary)] leading-relaxed bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl whitespace-pre-wrap">
                                     <AstNodeRenderer nodes={AIResponseParser.parse(q.questionText)} />
                                   </div>
@@ -1205,7 +1205,7 @@ export default function AITutorWorkspace() {
 
                                 {q.options && q.options.length > 0 && (
                                   <div className="space-y-1.5">
-                                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block">Options</span>
+                                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Options</span>
                                     <div className="grid grid-cols-1 gap-1.5">
                                       {q.options.map(opt => {
                                         const isCorrect = (q.correctOptionIds || []).includes(opt.option_id);
@@ -1238,7 +1238,7 @@ export default function AITutorWorkspace() {
 
                                 {q.explanation && (
                                   <div className="border-t border-[var(--border-subtle)] pt-3 space-y-1">
-                                    <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block">Proof & Explanation</span>
+                                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Proof & Explanation</span>
                                     <div className="p-3 bg-[var(--surface)] border border-[var(--border-subtle)] rounded-xl text-[11px] leading-relaxed text-[var(--text-secondary)] font-medium whitespace-pre-wrap">
                                       <AstNodeRenderer nodes={AIResponseParser.parse(q.explanation)} />
                                     </div>

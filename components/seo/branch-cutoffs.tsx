@@ -22,7 +22,7 @@ export function BranchCutoffs() {
     <div className="space-y-4">
       <div className="overflow-x-auto rounded-3xl border border-[var(--border)] bg-[var(--surface)]">
         <table className="w-full min-w-[640px] text-sm">
-          <thead><tr className="text-left text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">
+          <thead><tr className="text-left text-xs font-black tracking-normal text-[var(--text-muted)]">
             <th className="p-3">Paper</th><th className="p-3">General</th><th className="p-3">OBC-NCL / EWS</th><th className="p-3">SC / ST / PwD</th><th className="p-3">Appeared</th><th className="p-3">Qualified</th>
           </tr></thead>
           <tbody>
@@ -59,7 +59,7 @@ export function BranchCutoffs() {
           </label>
         </div>
         <div className="flex flex-col justify-center gap-3">
-          <p className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">GATE score (out of 1000)</p>
+          <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">GATE score (out of 1000)</p>
           <p className="font-num text-5xl font-extrabold text-[var(--text-primary)]">{r.ok ? r.score : "—"}</p>
           <p className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold ${r.ok ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" : "bg-rose-500/10 text-rose-700 dark:text-rose-300"}`}>
             {r.ok ? <CheckCircle2 className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}

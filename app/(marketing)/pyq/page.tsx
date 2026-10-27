@@ -26,8 +26,8 @@ export default function PyqIndexPage() {
   return (
     <div className="space-y-10">
       <header className="max-w-3xl">
-        <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Official papers · 2017–2026</p>
-        <h1 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">previous year questions</span></h1>
+        <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Official papers · 2017–2026</p>
+        <h1 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE CS <span className="grad-brand bg-clip-text text-transparent">previous year questions</span></h1>
         <p className="mt-3 text-[var(--text-secondary)] leading-relaxed">Every official question from {papers.length} GATE Computer Science papers ({years[0]}–{years[years.length - 1]}), with the official answers. Open a paper to read it question by question, or a subject to see its weightage and trend.</p>
       </header>
 
@@ -81,7 +81,7 @@ export default function PyqIndexPage() {
             if (!list.length) return null;
             return (
               <div key={g.name}>
-                <p className="mb-2 text-[10px] font-black uppercase tracking-[0.16em] text-[var(--text-muted)]">{g.name} <span className="normal-case tracking-normal font-semibold">· {g.blurb}</span></p>
+                <p className="mb-2 text-xs font-black tracking-normal text-[var(--text-muted)]">{g.name} <span className="normal-case tracking-normal font-semibold">· {g.blurb}</span></p>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                   {list.map((s) => {
                     const series = years.map((y) => s.byYear.get(y) ?? 0);

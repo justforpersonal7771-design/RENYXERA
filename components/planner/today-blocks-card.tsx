@@ -27,7 +27,7 @@ export function TodayBlocksCard() {
   return (
     <section aria-label="Today's study blocks" className="spotlight rounded-2xl border border-violet-500/25 bg-gradient-to-br from-indigo-500/5 via-violet-500/5 to-transparent p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400"><CalendarCheck className="h-3.5 w-3.5" aria-hidden /> Today in your Study Planner</p>
+        <p className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-600 dark:text-violet-400"><CalendarCheck className="h-3.5 w-3.5" aria-hidden /> Today in your Study Planner</p>
         <span className="text-xs font-bold text-[var(--text-secondary)]">{done} of {blocks.length} done</span>
       </div>
       <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--surface-secondary)]"><div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-[width] duration-500" style={{ width: `${(done / blocks.length) * 100}%` }} /></div>

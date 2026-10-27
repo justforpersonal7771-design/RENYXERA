@@ -83,7 +83,7 @@ export function MockStatusCard() {
 
   const shell = "card-glass rounded-3xl p-5 shadow-sm relative overflow-hidden";
   const title = (
-    <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1.5 mb-3">
+    <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5 mb-3">
       <Trophy className="w-3.5 h-3.5 text-amber-500" /> All-India Mock
     </h3>
   );
@@ -132,7 +132,7 @@ export function MockStatusCard() {
                   <div className="grid grid-cols-3 gap-2 text-center">
                     {([["AIR", `#${view.r.air}`], ["Percentile", `${view.r.percentile}`], ["Marks", `${view.r.marks}`]] as const).map(([k, v], i) => (
                       <motion.div key={k} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.08 * i }} className="rounded-xl bg-[var(--surface-secondary)]/70 py-2">
-                        <p className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{k}</p>
+                        <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</p>
                         <p className="text-lg font-extrabold font-num text-[var(--text-primary)]">{v}</p>
                       </motion.div>
                     ))}

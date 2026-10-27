@@ -330,7 +330,7 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push(`/exam/results/review?id=${id}`)}
-                className="group relative overflow-hidden flex-[1.5] px-3 sm:px-6 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
+                className="group relative overflow-hidden flex-[1.5] px-3 sm:px-6 py-3 [@media(max-height:860px)]:py-2.5 grad-brand text-white font-semibold rounded-xl shadow-lg shadow-violet-500/30 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
               >
                 <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                 <span className="relative whitespace-nowrap">Review answers</span>
@@ -402,7 +402,7 @@ export default function ResultSummaryPage() {
           type="button"
           onClick={() => setFlipped((f) => !f)}
           aria-label={flipped ? "Show scoreboard" : "Show question grid and breakdown"}
-          className="group absolute -top-[18px] right-6 sm:right-10 z-30 flex items-center gap-2 h-9 rounded-full pl-2.5 pr-2.5 sm:pr-4 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-[length:200%_100%] bg-left hover:bg-right ring-4 ring-[var(--background)] shadow-lg shadow-violet-500/40 transition-all duration-500 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-violet-500/50 active:scale-95 cursor-pointer [perspective:200px]"
+          className="group absolute -top-[18px] right-6 sm:right-10 z-30 flex items-center gap-2 h-9 rounded-full pl-2.5 pr-2.5 sm:pr-4 text-xs font-bold text-white grad-brand bg-[length:200%_100%] bg-left hover:bg-right ring-4 ring-[var(--background)] shadow-lg shadow-violet-500/40 transition-all duration-500 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-violet-500/50 active:scale-95 cursor-pointer [perspective:200px]"
         >
           <span className="grid place-items-center w-6 h-6 rounded-full bg-white/20">
             <FlipHorizontal2 className={`w-3.5 h-3.5 transition-transform duration-700 ${flipped ? "[transform:rotateY(180deg)]" : ""} group-hover:scale-110`} />
@@ -515,7 +515,7 @@ export default function ResultSummaryPage() {
                 </svg>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl sm:text-5xl lg:text-7xl [@media(max-height:760px)]:text-3xl font-black font-num leading-none bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 dark:from-indigo-300 dark:via-violet-300 dark:to-fuchsia-300 bg-clip-text text-transparent">
+                  <span className="text-4xl sm:text-5xl lg:text-7xl [@media(max-height:760px)]:text-3xl font-black font-num leading-none grad-brand dark:from-indigo-300 dark:via-violet-300 dark:to-fuchsia-300 bg-clip-text text-transparent">
                     <CountUp value={accuracy} decimals={0} />%
                   </span>
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-violet-600 dark:text-violet-300 mt-1.5 lg:mt-3 lg:text-xs">Accuracy</span>

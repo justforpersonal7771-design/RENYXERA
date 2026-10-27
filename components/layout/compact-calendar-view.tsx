@@ -140,7 +140,7 @@ export function CompactCalendarView({ onClose }: { onClose: () => void }) {
       {/* Right: selected day's tasks */}
       <div className="flex-1 flex flex-col min-w-0 sm:w-[260px]">
         <div className="px-4 py-3 flex items-center justify-between border-b border-[var(--border-subtle)]">
-          <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">
+          <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">
             {new Date(selectedDateStr + "T00:00:00").toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}
           </span>
           <button

@@ -61,7 +61,7 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
       </nav>
 
       <h1 className="mt-4 text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">{p.label} — Question {question.question_no}</h1>
-      <p className="mt-2 flex flex-wrap gap-2 text-[11px] font-bold uppercase tracking-wide">
+      <p className="mt-2 flex flex-wrap gap-2 text-xs font-bold tracking-normal">
         <Link href={`/topics/${subjectSlug(question.subject || "")}`} className="px-2 py-1 rounded-md bg-violet-500/10 text-violet-700 dark:text-violet-300 hover:bg-violet-500/20">{question.subject}</Link>
         <span className="px-2 py-1 rounded-md bg-[var(--surface-secondary)] text-[var(--text-secondary)] normal-case">{question.topic}</span>
         <span className="px-2 py-1 rounded-md bg-[var(--surface-secondary)] text-[var(--text-secondary)]">{question.question_type}</span>

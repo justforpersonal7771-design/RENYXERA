@@ -132,7 +132,7 @@ export function BranchModalHost() {
                 </ul>
                 {soon.length > 0 && (
                   <div className="mt-4">
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)] mb-2">Coming soon</p>
+                    <p className="text-xs font-black tracking-normal text-[var(--text-muted)] mb-2">Coming soon</p>
                     <div className="flex flex-wrap gap-2">
                       {soon.map((b) => (
                         <Link key={b.code} href={`/${b.slug}`} onClick={close} className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1.5 text-[11px] font-semibold text-[var(--text-secondary)] hover:border-violet-400/60">
@@ -168,7 +168,7 @@ export function BranchModalHost() {
                   Type <b className="text-[var(--text-primary)]">{target.paper}</b> to confirm
                   <input ref={inputRef} value={typed} onChange={(e) => setTyped(e.target.value)} maxLength={4} autoComplete="off" spellCheck={false}
                     aria-label={`Type ${target.paper} to confirm`}
-                    className="mt-1.5 w-full h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-base font-bold uppercase tracking-[0.3em] text-[var(--text-primary)] focus:outline-none focus:border-violet-500" />
+                    className="mt-1.5 w-full h-11 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-base font-bold tracking-normal text-[var(--text-primary)] focus:outline-none focus:border-violet-500" />
                 </label>
                 <label className="mt-3 flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">
                   <input type="checkbox" checked={final} onChange={(e) => setFinal(e.target.checked)} className="mt-0.5 accent-violet-600" />
@@ -202,7 +202,7 @@ function getCurrentBranchSafe(): BranchCode {
 function BranchTile({ b, label, highlight }: { b?: BranchInfo; label: string; highlight?: boolean }) {
   return (
     <div className={`rounded-2xl border px-3 py-3 text-center ${highlight ? "border-violet-500 bg-violet-500/10" : "border-[var(--border)] bg-[var(--surface-secondary)]/60"}`}>
-      <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)]">{label}</p>
+      <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">{label}</p>
       <p className="mt-1 text-xl font-black text-[var(--text-primary)]">{b?.paper}</p>
       <p className="text-[11px] text-[var(--text-secondary)] leading-tight">{b?.short}</p>
     </div>

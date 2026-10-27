@@ -9,6 +9,7 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { useStudyStore } from "@/store/use-study-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
+import { useDaysToGate } from "@/lib/goals/use-days-to-gate";
 import dynamic from "next/dynamic";
 import { motion, AnimatePresence } from "motion/react";
 import { Loader2 } from "lucide-react";
@@ -131,8 +132,7 @@ export default function Home() {
   const solvedIds = useSolvedIds(isInitialized);
   const paper = usePaperLabel();
   const totalBank = isInitialized ? QuestionRepository.getAllQuestions().filter((q) => !(q as { isAiGenerated?: boolean }).isAiGenerated && !q.origin_branch).length : 0;
-  const [daysToGate, setDaysToGate] = useState<number | null>(null);
-  useEffect(() => { const t = setTimeout(() => setDaysToGate(Math.max(0, Math.ceil((Date.UTC(2027, 1, 6) - 5.5 * 3600_000 - Date.now()) / 86_400_000))), 0); return () => clearTimeout(t); }, []);
+  const daysToGate = useDaysToGate();
   void bookmarksCount; void bestStreak; void weakTopicsCount; void strongTopicsCount;
 
   return (

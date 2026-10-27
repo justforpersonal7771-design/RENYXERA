@@ -112,7 +112,7 @@ export function StatsAchievements() {
                 </span>
               ) : null}
               {/* Two lines reserved so every tile's number sits on the same baseline. */}
-              <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)] leading-snug min-h-[2.6em]">{t.label}</span>
+              <span className="text-xs font-bold tracking-normal text-[var(--text-muted)] leading-snug min-h-[2.6em]">{t.label}</span>
               {loading ? (
                 <span className="h-7 w-16 rounded-md bg-[var(--border)] animate-pulse" />
               ) : (
@@ -198,12 +198,12 @@ export function StatsAchievements() {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring", stiffness: 500, damping: 18, delay: 0.5 }}
-                        className="px-1.5 py-0.5 rounded-md bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-[9px] font-bold uppercase tracking-wider"
+                        className="px-1.5 py-0.5 rounded-md bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-xs font-bold tracking-normal"
                       >
                         New
                       </motion.span>
                     )}
-                    <span className={`ml-auto text-[9px] font-bold uppercase tracking-wider ${a.unlocked ? tier.text : "text-[var(--text-muted)]"}`}>{tier.label}</span>
+                    <span className={`ml-auto text-xs font-bold tracking-normal ${a.unlocked ? tier.text : "text-[var(--text-muted)]"}`}>{tier.label}</span>
                   </div>
                   <p className="text-[11px] text-[var(--text-muted)] font-medium leading-snug mt-0.5">{a.description}</p>
                   {!a.unlocked && (

@@ -27,7 +27,7 @@ export function TodayCard({ pendingMistakes, streak, sessions = [] }: { pendingM
     <section aria-label="Today" className="card-glass rounded-2xl p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Today</p>
+          <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Today</p>
           <p className="mt-1 text-lg font-extrabold text-[var(--text-primary)]">
             {n > 0 ? `Revise ${n} question${n === 1 ? "" : "s"} you got wrong · about ${n * MIN_PER_QUESTION} min` : "Your revision queue is clear — take a fresh practice set"}
           </p>

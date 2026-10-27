@@ -129,7 +129,7 @@ function Movement({ rank, prev, onDark = false }: { rank: number; prev: number |
   if (onDark) {
     const d = prev === null ? null : prev - rank;
     return (
-      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-[10px] font-black uppercase tracking-wide text-white">
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-xs font-black tracking-normal text-white">
         {d === null ? <><Sparkles className="w-3 h-3" /> New entry</> : d > 0 ? <><ArrowUp className="w-3 h-3" /> {d}</> : d < 0 ? <><ArrowDown className="w-3 h-3" /> {-d}</> : "Same"}
       </span>
     );
@@ -214,7 +214,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
         transition={{ type: "spring", stiffness: 380, damping: 32 }}
         className="relative w-full sm:w-[420px] max-h-[85dvh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-[var(--surface)] border border-[var(--border)] shadow-2xl overflow-hidden"
       >
-        <div className="relative px-5 pt-5 pb-4 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white overflow-hidden">
+        <div className="relative px-5 pt-5 pb-4 grad-brand text-white overflow-hidden">
           <motion.div aria-hidden="true" className="absolute -top-10 -right-8 w-40 h-40 rounded-full bg-amber-300/30 blur-2xl" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 4, repeat: Infinity }} />
           <div className="relative flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">

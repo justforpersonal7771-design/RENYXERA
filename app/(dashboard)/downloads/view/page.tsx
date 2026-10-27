@@ -248,7 +248,7 @@ function Viewer() {
 
         <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-4 flex-1 min-h-0 flex flex-col">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">Questions</p>
+            <p className="text-xs font-bold tracking-normal text-[var(--text-muted)]">Questions</p>
             <p className="text-[11px] font-semibold text-[var(--text-secondary)]">{index + 1} of {questions.length}</p>
           </div>
           <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar -mr-1 pr-1">

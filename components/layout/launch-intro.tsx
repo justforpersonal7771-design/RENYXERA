@@ -38,7 +38,7 @@ export function LaunchIntro() {
       </div>
       <div className="intro-text relative flex flex-col items-center gap-3">
         <Wordmark size="xl" />
-        <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-[var(--text-secondary)]">
+        <span className="text-xs sm:text-xs font-semibold tracking-normal text-[var(--text-secondary)]">
           A new era of intelligent learning
         </span>
       </div>

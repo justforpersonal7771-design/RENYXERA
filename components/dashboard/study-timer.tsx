@@ -69,7 +69,7 @@ export function StudyTimer() {
     <section aria-label="Study timer" className="card-glass rounded-2xl p-4 sm:p-5">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400"><Timer className="h-3.5 w-3.5" aria-hidden /> Study timer{running && state.label ? ` · ${state.label}` : ""}</p>
+          <p className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-600 dark:text-violet-400"><Timer className="h-3.5 w-3.5" aria-hidden /> Study timer{running && state.label ? ` · ${state.label}` : ""}</p>
           <p className="mt-1 text-2xl font-extrabold font-num text-[var(--text-primary)]">{fmt(today)} <span className="text-sm font-semibold text-[var(--text-muted)]">of {GOAL_MIN / 60}h goal</span></p>
           <p className="text-xs text-[var(--text-muted)]">This week: {fmt(week)}</p>
         </div>

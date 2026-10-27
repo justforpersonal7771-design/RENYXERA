@@ -144,7 +144,7 @@ export function PlanInsights() {
       <section className={card}>
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h2 className="inline-flex items-center gap-2 font-extrabold text-[var(--text-primary)]"><Gauge className="h-4 w-4 text-violet-500" aria-hidden /> How your plan is going</h2>
-          {pro ? <span className={`rounded-full px-2.5 py-1 text-[11px] font-black uppercase tracking-wide ${h.cls}`}>{h.label}</span> : (
+          {pro ? <span className={`rounded-full px-2.5 py-1 text-xs font-black tracking-normal ${h.cls}`}>{h.label}</span> : (
             <button type="button" onClick={() => lock("The on-track check")} className="inline-flex cursor-pointer items-center gap-1 rounded-full bg-amber-500/15 px-2.5 py-1 text-[10px] font-black uppercase text-amber-700 dark:text-amber-300"><Lock className="h-3 w-3" aria-hidden /> Pro: on-track check</button>
           )}
         </div>
@@ -156,7 +156,7 @@ export function PlanInsights() {
                 ["So far", `${progress.doneToDate} of ${progress.dueToDate} due blocks`, `${progress.hoursDoneToDate} of ${progress.hoursPlannedToDate} h`],
                 ["Whole plan", `${progress.done} of ${progress.total} blocks`, `${Math.round((progress.done / progress.total) * 100)}% done`],
                 ["Spaced reviews", reviewsOn ? "On" : "Off", "1, 3, 7, 14 days"],
-              ].map(([k, v, s]) => <div key={k} className="rounded-xl bg-[var(--surface-secondary)]/60 p-3"><dt className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{k}</dt><dd className="mt-0.5 text-sm font-extrabold text-[var(--text-primary)]">{v}</dd><dd className="text-xs text-[var(--text-muted)]">{s}</dd></div>)}
+              ].map(([k, v, s]) => <div key={k} className="rounded-xl bg-[var(--surface-secondary)]/60 p-3"><dt className="text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</dt><dd className="mt-0.5 text-sm font-extrabold text-[var(--text-primary)]">{v}</dd><dd className="text-xs text-[var(--text-muted)]">{s}</dd></div>)}
             </dl>
             {pro && <p className="mt-3 text-sm text-[var(--text-secondary)]">{progress.advice}</p>}
           </>
@@ -192,7 +192,7 @@ export function PlanInsights() {
             </div>
             {whatIf && (
               <div className="mt-4 overflow-x-auto"><table className="w-full min-w-[420px] text-sm">
-                <thead><tr className="text-left text-[11px] font-black uppercase tracking-wider text-[var(--text-muted)]"><th className="py-1.5 pr-3">From today</th><th className="px-2">Now</th><th className="px-2">With your change</th><th className="px-2">Difference</th></tr></thead>
+                <thead><tr className="text-left text-xs font-black tracking-normal text-[var(--text-muted)]"><th className="py-1.5 pr-3">From today</th><th className="px-2">Now</th><th className="px-2">With your change</th><th className="px-2">Difference</th></tr></thead>
                 <tbody className="divide-y divide-[var(--border-subtle)] text-[var(--text-primary)]">
                   {[["Study time", hrs(whatIf.current.minutes), hrs(whatIf.changed.minutes), (whatIf.changed.minutes - whatIf.current.minutes) / 60], ["Study days", whatIf.current.days, whatIf.changed.days, whatIf.changed.days - whatIf.current.days], ["Learning days", whatIf.current.phases.learn, whatIf.changed.phases.learn, whatIf.changed.phases.learn - whatIf.current.phases.learn], ["Revision days", whatIf.current.phases.revise, whatIf.changed.phases.revise, whatIf.changed.phases.revise - whatIf.current.phases.revise], ["Mock days", whatIf.current.phases.mock, whatIf.changed.phases.mock, whatIf.changed.phases.mock - whatIf.current.phases.mock]].map(([k, a, b2, d]) => (
                     <tr key={String(k)}><td className="py-2 pr-3 font-semibold">{k}</td><td className="px-2 font-num">{a}</td><td className="px-2 font-num font-bold">{b2}</td><td className="px-2 font-num text-[var(--text-secondary)]">{typeof d === "number" ? (Math.round(d * 10) / 10 === 0 ? "same" : diff(0, Math.round(d * 10) / 10)) : d}</td></tr>

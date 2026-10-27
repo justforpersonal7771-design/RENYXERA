@@ -380,7 +380,7 @@ export default function AIMentorPage() {
         {loading || !(forceReady || (readiness && plannerCompletion !== null && patternsDone && timelineDone && (planDone || Object.keys(topicMasteryMap).length === 0))) ? (
           <div className="py-24 flex flex-col items-center justify-center gap-3">
             <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-            <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wider">Syncing complete learning memory logs...</span>
+            <span className="text-xs font-bold text-[var(--text-secondary)] tracking-normal">Syncing complete learning memory logs...</span>
           </div>
         ) : (
           <>
@@ -400,14 +400,14 @@ export default function AIMentorPage() {
               {/* Identity + coach message */}
               <div className="flex-1 space-y-3 min-w-0">
                 <div className="flex items-center justify-between gap-3">
-                  <span className="inline-flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest bg-white/15 px-3 py-1 rounded-full">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal bg-white/15 px-3 py-1 rounded-full">
                     <BrainCircuit className="w-3 h-3" />
                     AI Mentor
                   </span>
                   <div className="flex items-center gap-2 shrink-0">
                     <button
                       onClick={handleExportMarkdown}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg transition text-[10px] font-bold uppercase tracking-wider cursor-pointer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg transition text-xs font-bold tracking-normal cursor-pointer"
                       title="Compile a full study report from your real progress, mistakes, readiness, and mentor data"
                     >
                       <Download className="w-3 h-3" />
@@ -440,10 +440,10 @@ export default function AIMentorPage() {
               {readiness && (
                 <div className="lg:w-[340px] shrink-0 bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur-sm space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-[9px] font-black uppercase tracking-widest text-indigo-100 flex items-center gap-1">
+                    <span className="text-xs font-black tracking-normal text-indigo-100 flex items-center gap-1">
                       <Award className="w-3.5 h-3.5" /> Readiness Predictor
                     </span>
-                    <span className="px-2 py-0.5 bg-white text-indigo-700 rounded text-[9px] font-black uppercase tracking-wider">{readiness.readinessRating}</span>
+                    <span className="px-2 py-0.5 bg-white text-indigo-700 rounded text-xs font-black tracking-normal">{readiness.readinessRating}</span>
                   </div>
                   <div className="flex items-center gap-4 py-1">
                     <RadialGauge value={readiness.expectedMarks} size={86} stroke={8} from="#67e8f9" to="#f0abfc" track="#fff" trackOpacity={0.15}>
@@ -453,18 +453,18 @@ export default function AIMentorPage() {
                       </div>
                     </RadialGauge>
                     <div className="min-w-0">
-                      <span className="block text-[9px] font-bold text-indigo-200 uppercase tracking-wider">Expected rank</span>
+                      <span className="block text-xs font-bold text-indigo-200 tracking-normal">Expected rank</span>
                       <span className="block text-2xl font-bold">#<CountUp value={readiness.expectedRank} /></span>
                       <span className="block text-[10px] font-medium text-indigo-100/80">Likely range {readiness.confidenceInterval[0]}–{readiness.confidenceInterval[1]} marks</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-[10px] font-bold pt-1 border-t border-white/15">
                     <div className="flex flex-col">
-                      <span className="text-indigo-200 text-[9px] uppercase tracking-wider">Suggested Mock</span>
+                      <span className="text-indigo-200 text-xs tracking-normal">Suggested Mock</span>
                       <span className="text-white">{readiness.suggestedMockDate}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-indigo-200 text-[9px] uppercase tracking-wider">Revision Target</span>
+                      <span className="text-indigo-200 text-xs tracking-normal">Revision Target</span>
                       <span className="text-white">{readiness.revisionCompletionDate}</span>
                     </div>
                   </div>
@@ -486,7 +486,7 @@ export default function AIMentorPage() {
             >
               <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
                 <div>
-                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
+                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
                     <CalendarPlus className="w-4 h-4 text-indigo-500" />
                     AI Study Plan Suggestions
                   </h3>
@@ -509,7 +509,7 @@ export default function AIMentorPage() {
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between gap-2">
-                          <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${
+                          <span className={`text-[8px] font-black tracking-normal px-2 py-0.5 rounded ${
                             s.priority === "High" ? "bg-rose-500/10 text-rose-500" :
                             s.priority === "Medium" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400" :
                             "bg-indigo-500/10 text-indigo-500"
@@ -545,7 +545,7 @@ export default function AIMentorPage() {
                         whileTap={{ scale: 0.96 }}
                         disabled={isAdded}
                         onClick={() => handleAddSuggestionToCalendar(s, override.date, override.priority)}
-                        className={`w-full flex items-center justify-center gap-1.5 py-2 text-[10px] font-black uppercase tracking-wider rounded-lg transition cursor-pointer ${
+                        className={`w-full flex items-center justify-center gap-1.5 py-2 text-xs font-black tracking-normal rounded-lg transition cursor-pointer ${
                           isAdded
                             ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 cursor-default"
                             : "bg-indigo-600 hover:bg-indigo-700 text-white"
@@ -592,7 +592,7 @@ export default function AIMentorPage() {
                         </div>
                         <span onClick={(e) => e.stopPropagation()} className="text-[var(--text-muted)]"><InfoTip align="right">{item.info}</InfoTip></span>
                       </div>
-                      <span className="relative text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">{item.label}</span>
+                      <span className="relative text-xs font-bold tracking-normal text-[var(--text-muted)]">{item.label}</span>
                       <div className="relative mt-1.5">
                         <span className="block text-2xl font-bold text-[var(--text-primary)] font-num">{item.val}</span>
                         <span className="text-[10px] font-semibold text-[var(--text-muted)] inline-flex items-center gap-1">{item.desc}<ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
@@ -606,7 +606,7 @@ export default function AIMentorPage() {
               <div className="card-pastel p-5 space-y-4" data-tint="sky">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
                   <div>
-                    <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
+                    <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
                       <Layers className="w-4 h-4 text-indigo-500" />
                       Concept Prerequisite Knowledge Graph
                     </h3>
@@ -627,7 +627,7 @@ export default function AIMentorPage() {
                     />
                     {graphQuickPicks.length > 0 && (
                       <div className="pt-2 space-y-1.5">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] block">Your weakest, one click</span>
+                        <span className="text-xs font-bold tracking-normal text-[var(--text-muted)] block">Your weakest, one click</span>
                         <div className="flex flex-wrap gap-1.5">
                           {graphQuickPicks.map((q) => (
                             <motion.button
@@ -692,7 +692,7 @@ export default function AIMentorPage() {
                           {(KnowledgeGraph.getNode(selectedTopic)?.prerequisites.length ?? 0) > 0 ? (
                             <>
                               <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} className="w-px h-4 bg-[var(--border)] origin-top" />
-                              <span className="text-[9px] font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1.5">Builds on · click to explore</span>
+                              <span className="text-xs font-bold tracking-normal text-[var(--text-muted)] mb-1.5">Builds on · click to explore</span>
                               <div className="flex flex-wrap justify-center gap-2">
                                 {KnowledgeGraph.getNode(selectedTopic)!.prerequisites.map((p, i) => {
                                   const m = masteryOf(p);
@@ -767,7 +767,7 @@ export default function AIMentorPage() {
                   plain personal notes live in the separate Saved Notes card below. */}
               <div className="card-pastel p-5 space-y-4" data-tint="peach">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
-                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
+                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
                     <Zap className="w-4 h-4 text-amber-500" />
                     Shortcut & Exam Trick Library
                   </h3>
@@ -807,7 +807,7 @@ export default function AIMentorPage() {
                         className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
                       >
                         <div className="flex justify-between items-center">
-                          <span className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{b.subject}</span>
+                          <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{b.subject}</span>
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(b.aiShortcut || "");
@@ -832,7 +832,7 @@ export default function AIMentorPage() {
                   AI-generated Shortcut Library above. */}
               <div className="card-pastel p-5 space-y-4" data-tint="mint">
                 <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
-                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5">
+                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
                     <StickyNote className="w-4 h-4 text-indigo-500" />
                     Saved Notes
                   </h3>
@@ -871,7 +871,7 @@ export default function AIMentorPage() {
                         transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
                         className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
                       >
-                        <span className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{b.subject}</span>
+                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{b.subject}</span>
                         <h4 className="font-extrabold text-xs text-[var(--text-primary)]">{b.topic}</h4>
                         <p className="p-3 bg-[var(--surface)] border border-[var(--border-subtle)] rounded-lg text-xs leading-relaxed text-[var(--text-secondary)] font-medium whitespace-pre-wrap">
                           {b.notes || b.personalObservations}
@@ -895,7 +895,7 @@ export default function AIMentorPage() {
 
               {/* Mistake Cognitive Patterns (Part 5) */}
               <div className="card-pastel p-5 space-y-4" data-tint="rose">
-                <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
+                <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
                   <AlertTriangle className="w-4 h-4 text-rose-500 animate-pulse" />
                   Mistake Cognitive Patterns
                 </h3>
@@ -950,7 +950,7 @@ export default function AIMentorPage() {
                               className="overflow-hidden"
                             >
                               <div className="mt-1 p-2.5 bg-indigo-500/5 border border-indigo-500/20 rounded-lg text-[11px] text-[var(--text-secondary)] font-medium leading-relaxed">
-                                <span className="block text-[10px] font-bold uppercase tracking-wider text-indigo-500 mb-1">How to fix it</span>
+                                <span className="block text-xs font-bold tracking-normal text-indigo-500 mb-1">How to fix it</span>
                                 {p.suggestedFix}
                               </div>
                             </motion.div>
@@ -964,7 +964,7 @@ export default function AIMentorPage() {
 
               {/* Learning Timeline Journey Map (Part 12) */}
               <div className="card-pastel p-5 space-y-4" data-tint="butter">
-                <h3 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
+                <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
                   <Activity className="w-4 h-4 text-indigo-500" />
                   Your Learning Timeline
                 </h3>

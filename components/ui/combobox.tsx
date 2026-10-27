@@ -133,7 +133,7 @@ export function Combobox({
                   const selected = r.kind === "opt" && r.o.value === value;
                   return (
                     <div key={r.kind + r.o.value}>
-                      {header && <p className="px-2.5 pt-2.5 pb-1 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">{header}</p>}
+                      {header && <p className="px-2.5 pt-2.5 pb-1 text-xs font-black tracking-normal text-[var(--text-muted)]">{header}</p>}
                       <button type="button" role="option" aria-selected={selected} data-row={i} onMouseEnter={() => setActive(i)} onClick={() => choose(i)}
                         className={`w-full flex items-center gap-2 rounded-lg px-2.5 py-2 text-left text-sm transition-all cursor-pointer ${active === i ? "bg-violet-500/10 text-[var(--text-primary)] translate-x-0.5" : "text-[var(--text-secondary)]"}`}>
                         {r.kind === "add" ? (

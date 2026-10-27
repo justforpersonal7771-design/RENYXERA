@@ -67,7 +67,7 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
           <p className="text-base font-extrabold text-[var(--text-primary)]">{current.label}</p>
           <p className="text-[11px] text-[var(--text-muted)] mt-0.5">Generated just for you — never an uploaded photo.</p>
           <motion.button type="button" onClick={shuffle} whileTap={{ scale: 0.95 }}
-            className="mt-3 inline-flex items-center gap-2 h-9 px-4 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white text-sm font-semibold shadow-md shadow-violet-500/30 cursor-pointer">
+            className="mt-3 inline-flex items-center gap-2 h-9 px-4 rounded-xl grad-brand text-white text-sm font-semibold shadow-md shadow-violet-500/30 cursor-pointer">
             <motion.span animate={{ rotate: spin * 360 }} transition={{ duration: 0.5, ease: "easeOut" }} className="inline-flex"><Shuffle className="w-4 h-4" /></motion.span>
             Shuffle
           </motion.button>
@@ -79,7 +79,7 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
             a qualifying account (the database enforces this too). */}
         {([["free", "Styles", ""], ["plus", "Silver · Plus", "text-slate-500 dark:text-slate-300"], ["pro", "Gold · Pro", "text-amber-600 dark:text-amber-300"]] as const).map(([t, title, tone]) => (
           <div key={t}>
-            <p className={`text-[11px] font-black uppercase tracking-[0.12em] mb-2.5 inline-flex items-center gap-1.5 ${tone || "text-[var(--text-muted)]"}`}>{t !== "free" && <Crown className="w-3.5 h-3.5" />}{title}</p>
+            <p className={`text-xs font-black tracking-normal mb-2.5 inline-flex items-center gap-1.5 ${tone || "text-[var(--text-muted)]"}`}>{t !== "free" && <Crown className="w-3.5 h-3.5" />}{title}</p>
             <div role="radiogroup" aria-label={`${title} avatar styles`} className="grid grid-cols-4 @md:grid-cols-8 gap-2 @md:gap-2.5">
               {styles.filter((p) => p.tier === t).map((p, i) => {
                 const selected = p.id === value.style;
@@ -122,7 +122,7 @@ export function AvatarPicker({ value, onChange, className = "" }: { value: Avata
         {/* Variations of the current style */}
         <div>
           <div className="flex items-center justify-between mb-2.5">
-            <p className="text-[11px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)] inline-flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5 text-violet-500" /> More {current.label} looks</p>
+            <p className="text-xs font-black tracking-normal text-[var(--text-muted)] inline-flex items-center gap-1.5"><Sparkles className="w-3.5 h-3.5 text-violet-500" /> More {current.label} looks</p>
             <button type="button" onClick={() => setVariationSeeds(Array.from({ length: 8 }, randomAvatarSeed))}
               className="group inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 cursor-pointer">
               <RefreshCw className="w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-180" /> More

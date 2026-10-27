@@ -35,7 +35,7 @@ export function LegalToc() {
   if (items.length < 3) return null;
   return (
     <nav aria-label="On this page" className="hidden xl:block sticky top-0 max-h-[calc(100vh-7rem)] overflow-y-auto custom-scrollbar">
-      <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)] mb-2">On this page</p>
+      <p className="text-xs font-black tracking-normal text-[var(--text-muted)] mb-2">On this page</p>
       <ul className="space-y-1 border-l border-[var(--border)]">
         {items.map((it) => <li key={it.id}><a href={`#${it.id}`} className={`block -ml-px pl-3 py-0.5 border-l-2 text-[13px] leading-snug transition-colors ${active === it.id ? "border-violet-500 text-violet-700 dark:text-violet-300 font-semibold" : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{it.text}</a></li>)}
       </ul>

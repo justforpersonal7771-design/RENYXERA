@@ -66,7 +66,7 @@ export function QuickActions({ hasActiveSession, onResume }: QuickActionsProps) 
 
   return (
     <div className="space-y-4">
-      <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] px-1">Quick Action Controls</h3>
+      <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] px-1">Quick Action Controls</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {actions.map((act, index) => {
           const Icon = act.icon;

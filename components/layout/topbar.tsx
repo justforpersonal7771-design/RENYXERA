@@ -163,7 +163,7 @@ export function Topbar() {
         labels readable at every scroll position. */}
     <header
       data-scrolled={scrolled ? "" : undefined}
-      className={`${isPro ? "pro-bar " : isPlus ? "plus-bar " : ""}h-16 fixed top-0 left-0 right-0 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-[background-color,box-shadow] duration-300 ${
+      className={`h-16 fixed top-0 left-0 right-0 backdrop-blur-2xl backdrop-saturate-150 z-40 transition-[background-color,box-shadow] duration-300 ${
         scrolled
           ? "bg-[var(--background)]/72 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.28)]"
           : "bg-[var(--background)]/55"
@@ -174,7 +174,7 @@ export function Topbar() {
       <motion.div
         aria-hidden="true"
         style={{ scaleX: progress }}
-        className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left ${isPro ? "bg-gradient-to-r from-amber-300 via-amber-500 to-amber-300" : isPlus ? "bg-gradient-to-r from-slate-300 via-slate-500 to-slate-300" : "bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb]"}`}
+        className={`absolute bottom-0 left-0 right-0 h-[2px] origin-left ${"bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb]"}`}
       />
       <div className="w-full h-full px-2.5 sm:px-6 md:px-8 flex items-center justify-between gap-1.5 sm:gap-4">
 
@@ -215,7 +215,7 @@ export function Topbar() {
                   onMouseEnter={() => setHovered(item.href)}
                   onFocus={() => setHovered(item.href)}
                   className={`group relative flex items-center gap-2 px-2.5 xl:px-3 2xl:px-3.5 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
-                    isActive ? (isPro ? "text-amber-950" : isPlus ? "text-slate-900" : "text-white") : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    isActive ? "text-white" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
                   {hovered === item.href && !isActive && (
@@ -228,7 +228,7 @@ export function Topbar() {
                   {isActive && (
                     <motion.span
                       layoutId="topbar-active-pill"
-                      className={`absolute inset-0 rounded-xl -z-10 ${isPro ? "bg-gradient-to-b from-amber-200 via-amber-300 to-amber-500 shadow-[0_6px_16px_-6px_rgba(217,119,6,0.6),inset_0_1px_0_rgba(255,255,255,0.6)]" : isPlus ? "bg-gradient-to-b from-slate-100 via-slate-200 to-slate-400 shadow-[0_6px_16px_-6px_rgba(71,85,105,0.55),inset_0_1px_0_rgba(255,255,255,0.8)]" : "bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 shadow-[0_6px_18px_-4px_rgba(124,58,237,0.55)]"}`}
+                      className={`absolute inset-0 rounded-xl -z-10 ${"grad-brand shadow-[0_6px_18px_-4px_rgba(124,58,237,0.55)]"}`}
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
@@ -276,7 +276,7 @@ export function Topbar() {
                    onClick={() => setIsCalendarOpen(prev => !prev)}
                    className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isCalendarOpen
-                       ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm")
+                       ? "text-white bg-indigo-600 shadow-sm"
                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="Study Planner Quick Access"
@@ -299,7 +299,7 @@ export function Topbar() {
                    onClick={() => setIsTodoOpen(prev => !prev)}
                    className={`nav-act relative z-10 p-2 rounded-lg transition-colors cursor-pointer ${
                      isTodoOpen
-                       ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm")
+                       ? "text-white bg-indigo-600 shadow-sm"
                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                    }`}
                    aria-label="To-Do List Quick Access"
@@ -324,7 +324,7 @@ export function Topbar() {
                 onClick={() => setIsGoalSliderOpen(true)}
                 className={`nav-act z-10 flex relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
-                    ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm")
+                    ? "text-white bg-indigo-600 shadow-sm"
                     : isFocusTargetActive
                       ? "text-amber-600 dark:text-amber-400 bg-amber-500/15 ring-1 ring-amber-500/40 hover:bg-amber-500/25"
                       : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -347,7 +347,7 @@ export function Topbar() {
                <Link
                   href="/downloads"
                   className={`nav-act z-10 hidden sm:flex relative p-2 rounded-lg transition-colors ${
-                    pathname?.startsWith("/downloads") ? (isPro ? "text-amber-950 bg-gradient-to-b from-amber-200 to-amber-400 shadow-sm" : isPlus ? "text-slate-900 bg-gradient-to-b from-slate-100 to-slate-300 shadow-sm" : "text-white bg-indigo-600 shadow-sm") : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    pathname?.startsWith("/downloads") ? "text-white bg-indigo-600 shadow-sm" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                   aria-label="Downloads"
                   title="Downloads — study offline"

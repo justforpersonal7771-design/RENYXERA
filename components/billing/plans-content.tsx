@@ -118,8 +118,8 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
   return (
     <div className={inModal ? "space-y-6 pb-2" : "space-y-8 pb-10"}>
       <header className="text-center max-w-3xl mx-auto">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold uppercase tracking-wider"><Crown className="w-3.5 h-3.5" /> Plans</span>
-        <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">Prepare smarter with <span className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent">Plus &amp; Pro</span></h1>
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold tracking-normal"><Crown className="w-3.5 h-3.5" /> Plans</span>
+        <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">Prepare smarter with <span className="grad-brand bg-clip-text text-transparent">Plus &amp; Pro</span></h1>
         <p className="mt-3 text-[var(--text-secondary)]">More AI help every day, deeper analytics, offline papers and a premium look — one payment, no auto-renewal. Pick a plan and get more out of every study hour.</p>
         <PromoVideo className="mx-auto mt-6 max-w-2xl" />
         {ent.paid && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="w-4 h-4" /> You&apos;re on {ent.tier === "pro" ? "Pro" : "Plus"}{ent.validUntil ? ` until ${new Date(ent.validUntil).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}</p>}
@@ -144,7 +144,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
         <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <p className="text-sm font-black uppercase tracking-wider text-[var(--text-muted)]">Free · forever</p>
+          <p className="text-sm font-black tracking-normal text-[var(--text-muted)]">Free · forever</p>
           <p className="mt-2 text-3xl font-extrabold text-[var(--text-primary)]">₹0</p>
           <ul className="mt-5 space-y-2.5">{FREE_FOREVER.map((f) => <li key={f} className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"><Check className="w-4 h-4 mt-0.5 text-emerald-500 shrink-0" />{f}</li>)}</ul>
         </section>
@@ -160,16 +160,16 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - serverNow()) / 86400_000)) : 0;
           return (
             <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative flex flex-col rounded-3xl p-6 border ${look.ring}`}>
-              {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950 text-[10px] font-black uppercase tracking-wider shadow">Most loved</span>}
+              {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-gradient-to-b from-amber-200 to-amber-500 text-amber-950 text-xs font-black tracking-normal shadow">Most loved</span>}
               <div className="flex items-center justify-between">
-                <p className={`text-sm font-black uppercase tracking-wider ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>
+                <p className={`text-sm font-black tracking-normal ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>
                 <ProCrown metal={look.metal} className="is-inline" />
               </div>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 {cmp && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-2 decoration-rose-500/70">{formatPrice(cmp.wasPaise)}</span>}
                 <span className="text-3xl font-extrabold text-[var(--text-primary)]">{formatPrice(plan.pricePaise)}</span>
                 {plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]">{plan.periodLabel}</span>}
-                {cmp && <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-[11px] font-black uppercase tracking-wide">Save {cmp.savePct}%</span>}
+                {cmp && <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-xs font-black tracking-normal">Save {cmp.savePct}%</span>}
               </div>
               {upgrading && (
                 <div className="mt-2 rounded-xl border border-amber-400/50 bg-amber-500/10 px-3 py-2 text-xs text-[var(--text-primary)]">
@@ -212,7 +212,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
               <motion.div role="dialog" aria-modal="true" aria-label={`Confirm ${cp.name}`} initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }}
                 className={`relative w-full max-w-md max-h-[90dvh] overflow-y-auto rounded-3xl border bg-[var(--surface)] p-6 shadow-2xl ${gold ? "border-amber-400/60" : "border-slate-400/60"}`}>
                 <div className="flex items-center justify-between">
-                  <p className={`text-xs font-black uppercase tracking-wider ${LOOK[cp.tier].kicker}`}>{gold ? "Pro · Gold" : "Plus · Silver"}</p>
+                  <p className={`text-xs font-black tracking-normal ${LOOK[cp.tier].kicker}`}>{gold ? "Pro · Gold" : "Plus · Silver"}</p>
                   <div className="flex items-center gap-1">
                     <ProCrown metal={LOOK[cp.tier].metal} className="is-inline" />
                     <button type="button" onClick={() => setConfirm(null)} aria-label="Close" className="group w-8 h-8 -mr-2 rounded-lg grid place-items-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] cursor-pointer"><X className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90" /></button>
@@ -234,7 +234,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                 <div className="mt-4">
                   <div className="flex gap-2">
                     <input value={couponText} onChange={(e) => { setCouponText(e.target.value.toUpperCase()); setCoupon(null); setCouponMsg(null); }} placeholder="Coupon code (optional)" maxLength={32} autoComplete="off" spellCheck={false} aria-label="Coupon code"
-                      className="h-10 min-w-0 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold uppercase tracking-wider placeholder:font-normal placeholder:normal-case placeholder:tracking-normal" />
+                      className="h-10 min-w-0 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold tracking-normal placeholder:font-normal placeholder:normal-case placeholder:tracking-normal" />
                     <button type="button" onClick={() => applyCoupon(cp.id)} disabled={couponBusy || couponText.trim().length < 3} className="h-10 shrink-0 rounded-xl border border-[var(--border)] px-4 text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] disabled:opacity-50 cursor-pointer">{couponBusy ? "Checking…" : "Apply"}</button>
                   </div>
                   {coupon && <p className="mt-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">Code applied: {coupon.label}.</p>}
@@ -244,7 +244,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                   <p className="text-xs text-[var(--text-secondary)]">This plan is for <b className="text-[var(--text-primary)]">GATE {branchPaper}</b> only and stays locked to your account&apos;s branch. If you use your one branch change later, the plan moves with it.</p>
                   <label className="mt-2 block text-[11px] text-[var(--text-secondary)]">Type <b>{branchPaper}</b> to confirm
                     <input value={typedPaper} onChange={(e) => setTypedPaper(e.target.value)} maxLength={4} autoComplete="off" spellCheck={false} aria-label={`Type ${branchPaper} to confirm`}
-                      className="mt-1 w-full h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold uppercase tracking-widest" />
+                      className="mt-1 w-full h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold tracking-normal" />
                   </label>
                 </div>
                 <label className="mt-4 flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">

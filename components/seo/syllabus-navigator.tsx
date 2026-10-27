@@ -43,13 +43,13 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
       {/* Desktop outline */}
       <nav aria-label="Syllabus outline" className="hidden xl:block sticky top-0 max-h-[calc(100dvh-10.5rem)] overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3">
         <div className="flex items-center justify-between mb-2 px-1">
-          <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[var(--text-muted)]">Jump to subject</p>
+          <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Jump to subject</p>
           <span className="text-[11px] font-num font-bold text-violet-600 dark:text-violet-400">{idx + 1}/{entries.length}</span>
         </div>
         <div className="h-1 rounded-full bg-[var(--surface-secondary)] overflow-hidden mb-3 mx-1"><div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-all duration-500" style={{ width: `${((idx + 1) / entries.length) * 100}%` }} /></div>
         {groups.map((g) => (
           <div key={g} className="mb-2 last:mb-0">
-            <p className="px-2 mb-0.5 text-[9.5px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{g}</p>
+            <p className="px-2 mb-0.5 text-[9.5px] font-bold tracking-normal text-[var(--text-muted)]">{g}</p>
             <ul>
               {entries.filter((e) => e.group === g).map((e) => {
                 const on = e.id === active;
@@ -73,7 +73,7 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
 
       {/* Phone / tablet: floating current-subject pill + searchable sheet */}
       <div className="xl:hidden fixed right-3 bottom-20 z-40">
-        <button type="button" onClick={() => setOpen(true)} className="flex items-center gap-2 max-w-[70vw] pl-3 pr-3.5 h-11 rounded-2xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white text-sm font-bold shadow-lg shadow-violet-500/40 cursor-pointer">
+        <button type="button" onClick={() => setOpen(true)} className="flex items-center gap-2 max-w-[70vw] pl-3 pr-3.5 h-11 rounded-2xl grad-brand text-white text-sm font-bold shadow-lg shadow-violet-500/40 cursor-pointer">
           <ListTree className="w-4 h-4 shrink-0" /><span className="truncate">{current?.title}</span><span className="shrink-0 text-[11px] font-num opacity-80">{idx + 1}/{entries.length}</span>
         </button>
       </div>
@@ -93,7 +93,7 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
                   if (!list.length) return null;
                   return (
                     <div key={g} className="mb-3">
-                      <p className="px-1 mb-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{g}</p>
+                      <p className="px-1 mb-1 text-xs font-bold tracking-normal text-[var(--text-muted)]">{g}</p>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
                         {list.map((e) => (
                           <li key={e.id}><button type="button" onClick={() => { setOpen(false); setQ(""); setTimeout(() => go(e.id), 180); }}

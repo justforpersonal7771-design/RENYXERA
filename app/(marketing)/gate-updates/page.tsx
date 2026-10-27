@@ -19,7 +19,7 @@ export default function Gate2027Changes() {
   return (
     <article className="w-full space-y-8">
       <header className="w-full">
-        <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">GATE 2027 · all branches</p>
+        <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">GATE 2027 · all branches</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">What changed in GATE 2027, and the dates that matter</h1>
         <p className="mt-2 max-w-4xl text-[var(--text-secondary)] leading-relaxed">
           Everything below comes from the official GATE 2027 website and applies to every paper unless a branch is named. We checked it on {when} and list only what the site states —
@@ -36,7 +36,7 @@ export default function Gate2027Changes() {
           <dl className="mt-3 divide-y divide-[var(--border-subtle)]">
             {KEY_DATES.map((d) => (
               <div key={d.label} className="py-3">
-                <dt className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)]">{d.label}</dt>
+                <dt className="text-xs font-bold tracking-normal text-[var(--text-muted)]">{d.label}</dt>
                 <dd className="mt-0.5 font-extrabold text-[var(--text-primary)]">{d.value}</dd>
                 {d.note && <dd className="text-xs text-[var(--text-muted)]">{d.note}</dd>}
               </div>

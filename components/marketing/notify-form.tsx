@@ -67,14 +67,14 @@ export function NotifyForm({ branch, branchName }: { branch: string; branchName:
             {authLoading ? (
               <div className="h-11 flex items-center justify-center"><Loader2 className="w-5 h-5 animate-spin text-[var(--text-muted)]" /></div>
             ) : user ? (
-              <button type="submit" disabled={state === "saving"} className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30 disabled:opacity-60 cursor-pointer">
+              <button type="submit" disabled={state === "saving"} className="w-full h-11 inline-flex items-center justify-center gap-2 rounded-xl grad-brand text-white font-semibold shadow-md shadow-violet-500/30 disabled:opacity-60 cursor-pointer">
                 {state === "saving" && <Loader2 className="w-4 h-4 animate-spin" />} Notify me as {user.email}
               </button>
             ) : (
               <div className="flex flex-col sm:flex-row gap-2.5">
                 <input type="email" inputMode="email" autoComplete="email" value={email} onChange={(e) => { setEmail(e.target.value); setError(null); }} placeholder="you@example.com" aria-label="Email address" aria-invalid={!!error}
                   className={`flex-1 h-11 rounded-xl border bg-[var(--surface)] px-3.5 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${error ? "border-rose-500/60" : "border-[var(--border)]"}`} />
-                <button type="submit" disabled={state === "saving"} className="h-11 px-5 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30 disabled:opacity-60 cursor-pointer">
+                <button type="submit" disabled={state === "saving"} className="h-11 px-5 inline-flex items-center justify-center gap-2 rounded-xl grad-brand text-white font-semibold shadow-md shadow-violet-500/30 disabled:opacity-60 cursor-pointer">
                   {state === "saving" && <Loader2 className="w-4 h-4 animate-spin" />} Notify me
                 </button>
               </div>

@@ -316,13 +316,13 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
             <div className="relative mt-3 flex flex-col md:flex-row md:items-end justify-between gap-2.5">
               <div className="flex items-end gap-x-5 gap-y-1 flex-wrap">
                 <div>
-                  <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">Study</span>
+                  <span className="block text-xs font-bold tracking-normal text-white/70">Study</span>
                   <CountUp value={Math.round(syllabusShown)} suffix="%" duration={0.5} className="text-2xl sm:text-4xl font-bold leading-none" />
                   <span className="ml-1 text-xs sm:text-sm font-medium text-white/80">of syllabus</span>
                 </div>
                 <ArrowRight className="hidden sm:block w-5 h-5 text-white/60 mb-2" />
                 <div>
-                  <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-white/70">Covers</span>
+                  <span className="block text-xs font-bold tracking-normal text-white/70">Covers</span>
                   <CountUp value={effectiveMarksCaptured} decimals={1} suffix="%" duration={0.5} className="text-2xl sm:text-4xl font-bold leading-none text-amber-200" />
                   <span className="ml-1 text-xs sm:text-sm font-medium text-white/80">of past-paper marks</span>
                 </div>
@@ -515,7 +515,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                       {!q && i === result.includedCount && i > 0 && (
                         <div className="flex items-center gap-2 py-1.5 px-1" aria-hidden="true">
                           <span className="h-px flex-1 bg-gradient-to-r from-transparent via-violet-500/60 to-transparent" />
-                          <span className="text-[9px] font-bold uppercase tracking-[0.14em] text-violet-500">Focus cutoff</span>
+                          <span className="text-xs font-bold tracking-normal text-violet-500">Focus cutoff</span>
                           <span className="h-px flex-1 bg-gradient-to-r from-transparent via-violet-500/60 to-transparent" />
                         </div>
                       )}
@@ -582,7 +582,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   whileTap={{ scale: 0.97 }}
                   onClick={handleLaunchTest}
                   disabled={launchPool.length === 0 || isLaunching}
-                  className="group relative overflow-hidden w-full flex items-center justify-center gap-2 h-11 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-lg shadow-violet-500/30 cursor-pointer"
+                  className="group relative overflow-hidden w-full flex items-center justify-center gap-2 h-11 grad-brand disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-lg shadow-violet-500/30 cursor-pointer"
                 >
                   <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent group-hover:translate-x-[300%] transition-transform duration-700" />
                   {isLaunching ? (

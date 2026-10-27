@@ -52,7 +52,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
   return (
     <div className="@container card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col h-full">
       <div className="px-6 py-5 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
-        <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1.5">
+        <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5">
           <Award className="w-4 h-4 text-indigo-500" />
           <span>Recent Mock Exams</span>
         </h3>
@@ -114,7 +114,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
                   <div className="grid grid-cols-2 @lg:flex items-center gap-2.5 shrink-0 pl-6 @lg:pl-0">
                     <button
                       onClick={() => handleReview(session.id)}
-                      className="flex items-center justify-center gap-1.5 px-4 py-2 bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-primary)] text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer"
+                      className="flex items-center justify-center gap-1.5 px-4 py-2 bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-primary)] text-xs font-bold tracking-normal rounded-lg transition-colors cursor-pointer"
                     >
                       <Eye className="w-3.5 h-3.5" />
                       <span>Review</span>
@@ -122,7 +122,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
                     <button
                       onClick={() => handlePracticeAgain(session)}
                       disabled={!testConfig || relaunchingId === session.id}
-                      className="flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/20 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-900/40 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/20 dark:hover:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-900/40 text-xs font-bold tracking-normal rounded-lg transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {relaunchingId === session.id
                         ? <Loader2 className="w-3.5 h-3.5 animate-spin" />

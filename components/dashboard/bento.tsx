@@ -87,7 +87,7 @@ function useCountdown() {
   return { days, targetYear };
 }
 
-const MAIN_BTN = "group inline-flex h-11 items-center gap-2 rounded-full bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 cursor-pointer";
+const MAIN_BTN = "group btn-main";
 
 type Action = { label: string; why: string; href?: string; onClick?: () => void; icon: React.ReactNode };
 
@@ -105,7 +105,7 @@ export function NextActionHero({ solved, accuracy, streak, pendingMistakes, weak
   const main: Action = hasActiveSession
     ? { label: "Resume your test", why: "You have a test in progress.", onClick: onResume, icon: <RotateCcw className="w-4 h-4" /> }
     : solved === 0
-      ? { label: "Take the 20-question start test", why: "Find your starting point in about 30 minutes.", href: "#diagnostic", icon: <Target className="w-4 h-4" /> }
+      ? { label: "Set your goal and start", why: "A 20-question start test shows where you stand. About 30 minutes.", href: "#diagnostic", icon: <Target className="w-4 h-4" /> }
       : pendingMistakes >= 10
         ? { label: `Revise ${Math.min(pendingMistakes, 15)} mistakes`, why: `${pendingMistakes} questions you got wrong are waiting.`, href: "/revision", icon: <RotateCcw className="w-4 h-4" /> }
         : weakest
@@ -143,7 +143,21 @@ export function NextActionHero({ solved, accuracy, streak, pendingMistakes, weak
           </div>
         </div>
 
-        {/* Live mini-preview: three rings with the student's own numbers (B2). */}
+        {/* New student: no empty 0% rings; show what the dashboard will hold after the first test. */}
+        {!loading && solved === 0 && !hasActiveSession ? (
+          <ul className="card-inset grid gap-2 p-4" aria-label="After your start test">
+            <li className="text-sm font-semibold text-[var(--text-secondary)]">After your start test you get</li>
+            {[
+              { icon: <Target className="w-4 h-4" />, t: "Your accuracy and readiness", tint: "peri" },
+              { icon: <Flame className="w-4 h-4" />, t: "Your weakest high-value topics", tint: "rose" },
+              { icon: <CalendarClock className="w-4 h-4" />, t: "A daily plan up to GATE " + targetYear, tint: "mint" },
+            ].map((x) => (
+              <li key={x.t} className="flex items-center gap-3 rounded-2xl bg-[var(--surface)] p-3 text-sm font-semibold text-[var(--text-primary)]">
+                <span className="grid h-8 w-8 place-items-center rounded-xl" style={{ background: `var(--tint-${x.tint})`, color: `var(--tint-${x.tint}-ink)` }}>{x.icon}</span>{x.t}
+              </li>
+            ))}
+          </ul>
+        ) : (
         <div className="card-inset grid grid-cols-3 gap-2 p-4">
           {[
             { label: "Accuracy", value: Math.round(accuracy), unit: "%", color: "#7c3aed" },
@@ -155,12 +169,13 @@ export function NextActionHero({ solved, accuracy, streak, pendingMistakes, weak
                 {r.flame ? <Flame className="w-4 h-4" style={{ color: r.color }} /> : null}
                 <span className="font-num text-lg font-extrabold text-[var(--text-primary)]">{loading ? "–" : <CountUp value={r.value} />}<span className="text-xs">{r.unit}</span></span>
               </Ring>
-              <span className="mt-1.5 text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{r.label}</span>
+              <span className="mt-1.5 text-xs font-bold tracking-normal text-[var(--text-muted)]">{r.label}</span>
               {r.note && <span className="text-[10px] text-[var(--text-muted)]">{r.note}</span>}
             </div>
           ))}
-          <p className="col-span-3 mt-1 text-center text-[11px] text-[var(--text-muted)]"><span className="font-num font-bold text-[var(--text-secondary)]">{solved}</span> GATE {paper} questions solved</p>
+          <p className="col-span-3 mt-1 text-center text-xs text-[var(--text-muted)]"><span className="font-num font-bold text-[var(--text-secondary)]">{solved}</span> GATE {paper} questions solved</p>
         </div>
+        )}
       </div>
     </section>
   );

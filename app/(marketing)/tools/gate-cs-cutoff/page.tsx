@@ -63,7 +63,7 @@ export default function CutoffPage() {
         <h2 id="table" className="sr-only">Cut-offs table</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="text-left text-[11px] uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/40">
+            <thead><tr className="text-left text-xs tracking-normal text-[var(--text-muted)] border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/40">
               <th className="px-4 py-3">Year</th><th className="px-4 py-3">General</th><th className="px-4 py-3">OBC-NCL / EWS</th><th className="px-4 py-3">SC / ST / PwD</th><th className="px-4 py-3 hidden sm:table-cell">Organised by</th><th className="px-4 py-3 hidden sm:table-cell">Candidates</th>
             </tr></thead>
             <tbody>

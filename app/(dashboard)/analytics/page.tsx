@@ -211,7 +211,7 @@ export default function AnalyticsDashboardPage() {
                   <div className="min-w-0">
                     <div className="flex items-center gap-1 text-[var(--text-muted)]">
                       <stat.icon className={`w-3.5 h-3.5 shrink-0 ${stat.color}`} />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.12em] truncate">{stat.label}</span>
+                      <span className="text-xs font-bold tracking-normal truncate">{stat.label}</span>
                       <InfoTip align="right">{stat.info}</InfoTip>
                     </div>
                     <span className={`mt-1 block text-xs font-semibold ${stat.color}`}>{stat.tag}</span>
@@ -267,7 +267,7 @@ export default function AnalyticsDashboardPage() {
                 Today&apos;s adaptive path
               </h3>
               <div className="card-inset p-4 space-y-2">
-                <span className="block text-[10px] font-bold uppercase tracking-[0.12em] text-indigo-500">Focus topic</span>
+                <span className="block text-xs font-bold tracking-normal text-indigo-500">Focus topic</span>
                 <span className="block text-sm font-bold text-[var(--text-primary)]">{intel.todaysFocus.topic}</span>
                 <p className="text-[11px] text-[var(--text-muted)] font-medium leading-relaxed">{intel.todaysFocus.reason}</p>
                 <motion.button
@@ -280,7 +280,7 @@ export default function AnalyticsDashboardPage() {
                 </motion.button>
               </div>
               <div className="card-inset p-4">
-                <span className="block text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-500 mb-1">Practice target</span>
+                <span className="block text-xs font-bold tracking-normal text-emerald-500 mb-1">Practice target</span>
                 <span className="block text-sm font-bold text-[var(--text-primary)] mb-1">
                   {intel.todaysTarget.title} · <span className="font-num">{intel.todaysTarget.count}</span> Qs
                 </span>
@@ -439,7 +439,7 @@ export default function AnalyticsDashboardPage() {
               </div>
             ) : (
               <table className="w-full text-xs text-left">
-                <thead className="text-[10px] font-bold uppercase tracking-wider bg-[var(--surface-secondary)] text-[var(--text-muted)] sticky top-0 z-10">
+                <thead className="text-xs font-bold tracking-normal bg-[var(--surface-secondary)] text-[var(--text-muted)] sticky top-0 z-10">
                   <tr>
                     {([["topic", "Topic"], ["attempted", "Attempts"], ["acc", "Accuracy"]] as [SortKey, string][]).map(([k, l]) => (
                       <th key={k} className={`px-4 py-3 ${k === "topic" ? "" : "text-right"}`}>
@@ -506,7 +506,7 @@ export default function AnalyticsDashboardPage() {
 
         {/* Pro analytics — one combined upgrade for Plus members, at the end of the page */}
         <section className="space-y-4">
-          <h2 className="text-xs font-black uppercase tracking-[0.16em] text-amber-700 dark:text-amber-300 flex items-center gap-2">Pro analytics</h2>
+          <h2 className="text-xs font-black tracking-normal text-amber-700 dark:text-amber-300 flex items-center gap-2">Pro analytics</h2>
           <TierGate tier="pro" feature="Pro analytics" perk="Detailed All-India Mock history, topic ladders from strongest to weakest, and difficulty-wise accuracy — all in one upgrade." className="space-y-6">
             <MockAnalytics />
             <TopicLadders topics={dashboardMetrics.topicPerformance ?? []} />

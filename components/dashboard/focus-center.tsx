@@ -118,7 +118,7 @@ export function FocusCenter({
     <div className="space-y-4">
       <div className="flex items-center gap-2 px-1">
         <Sparkles className="w-4 h-4 text-indigo-500 animate-pulse" />
-        <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)]">Today's Focus Desk</h3>
+        <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)]">Today's Focus Desk</h3>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">

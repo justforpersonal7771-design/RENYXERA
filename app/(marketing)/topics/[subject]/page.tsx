@@ -40,7 +40,7 @@ export default async function SubjectHub({ params }: { params: Promise<{ subject
       <nav aria-label="Breadcrumb" className="text-sm"><Link href="/pyq" className="inline-flex items-center gap-1 text-[var(--text-secondary)] hover:text-violet-600"><ArrowLeft className="w-4 h-4" /> All GATE CS PYQs</Link></nav>
       <header className="flex flex-col lg:flex-row lg:items-end gap-4 justify-between">
         <div className="max-w-2xl">
-          <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Subject analysis · {years[0]}–{years[years.length - 1]}</p>
+          <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Subject analysis · {years[0]}–{years[years.length - 1]}</p>
           <h1 className="mt-1 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">{s.name}</h1>
           <p className="mt-2 text-[var(--text-secondary)]">Every GATE CS question on {s.name}, with how the marks are spread across years and topics.</p>
         </div>

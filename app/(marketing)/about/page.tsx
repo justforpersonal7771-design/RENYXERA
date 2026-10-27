@@ -73,7 +73,7 @@ export default function AboutPage() {
     <div className="pt-2 sm:pt-6 pb-6 space-y-20 sm:space-y-24">
       {/* Hero */}
       <section className="text-center max-w-6xl mx-auto">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold uppercase tracking-wider mb-5">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-xs font-bold tracking-normal mb-5">
           <Sparkles className="w-3.5 h-3.5" /> GATE CSE preparation, free to start
         </span>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight text-[var(--text-primary)] leading-tight lg:whitespace-nowrap">
@@ -183,7 +183,7 @@ export default function AboutPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-[0_24px_60px_-20px_rgba(79,70,229,0.6)]">
+      <section className="relative overflow-hidden rounded-3xl p-8 sm:p-12 text-center grad-brand text-white shadow-[0_24px_60px_-20px_rgba(79,70,229,0.6)]">
         <div aria-hidden="true" className="pointer-events-none absolute -top-24 -right-20 w-72 h-72 rounded-full bg-cyan-300/30 blur-3xl" />
         <h2 className="relative text-2xl sm:text-3xl font-display font-extrabold">Ready to start preparing?</h2>
         <p className="relative mt-2 text-white/80">Sign in and your first test is a click away.</p>

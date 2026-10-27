@@ -103,7 +103,7 @@ export function ScheduleModal({ open, onClose, sections, marks, fixedHours, exam
           </div>
         ) : (
           <>
-            <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400"><CalendarPlus className="h-3.5 w-3.5" /> Before we add it</p>
+            <p className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-600 dark:text-violet-400"><CalendarPlus className="h-3.5 w-3.5" /> Before we add it</p>
             <h2 className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">When can you study?</h2>
             <p className="mt-1 text-sm text-[var(--text-secondary)]">Tell us your free times, as many a day as you like. Nothing is added until you confirm, and the summary updates as you go.</p>
 

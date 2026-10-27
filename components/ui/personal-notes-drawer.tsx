@@ -41,7 +41,7 @@ export function PersonalNotesDrawer({
           >
             {/* Header */}
             <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
-              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold uppercase tracking-wider text-xs">
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold tracking-normal text-xs">
                 <StickyNote className="w-4 h-4" />
                 <span>{title}</span>
               </div>
@@ -69,7 +69,7 @@ export function PersonalNotesDrawer({
             {/* Footer */}
             <button
               onClick={onClose}
-              className="p-4 border-t border-[var(--border-subtle)] text-center bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] transition-colors text-[10px] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-bold uppercase tracking-wider cursor-pointer w-full"
+              className="p-4 border-t border-[var(--border-subtle)] text-center bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] transition-colors text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] font-bold tracking-normal cursor-pointer w-full"
             >
               Save & Close Note
             </button>

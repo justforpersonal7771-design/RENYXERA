@@ -186,7 +186,7 @@ export function AccountButton() {
                 className="group relative mt-1 flex w-full cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2 text-left bg-gradient-to-r from-amber-500/10 via-violet-500/10 to-fuchsia-500/10 hover:from-amber-500/20 hover:to-fuchsia-500/20 transition-colors">
                 <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-fuchsia-600 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:-rotate-6"><Crown className="w-4 h-4" /></span>
                 <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">{pro ? "You're on Pro" : plus ? "You're on Plus" : "Plus & Pro plans"}</span>
-                <span className="text-[10px] font-black uppercase tracking-wider text-violet-600 dark:text-violet-300">More AI</span>
+                <span className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-300">More AI</span>
               </button>
 
               {!hasJoinedChannel(tg) && <a href="https://t.me/renyxera" target="_blank" rel="noopener noreferrer" role="menuitem"
@@ -194,7 +194,7 @@ export function AccountButton() {
                 className="group mt-1 flex items-center gap-3 rounded-xl px-2.5 py-2 bg-sky-500/[0.08] hover:bg-sky-500/15 transition-colors">
                 <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-sky-600 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:-rotate-6"><Send className="w-4 h-4 -translate-x-px translate-y-px" /></span>
                 <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">Join Telegram</span>
-                <span className="text-[10px] font-black uppercase tracking-wider text-sky-600 dark:text-sky-300">Daily PYQ</span>
+                <span className="text-xs font-black tracking-normal text-sky-600 dark:text-sky-300">Daily PYQ</span>
               </a>}
 
               <div className="mt-1 pt-1 border-t border-[var(--border-subtle)]">

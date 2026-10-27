@@ -178,7 +178,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
         {/* Interactive stat tiles */}
         <div className="flex-1 max-w-xl grid grid-cols-2 md:grid-cols-3 gap-3.5">
           <TiltCard as="button" onClick={() => router.push("/calendar")} ariaLabel="Open your study calendar" className={tile}>
-            <div className="text-[10px] font-bold text-rose-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
+            <div className="text-xs font-bold text-rose-300 tracking-normal flex items-center gap-1.5">
               <Flame className="w-3.5 h-3.5 fill-rose-500 stroke-none" />
               <span>Streak</span>
             </div>
@@ -188,7 +188,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
           </TiltCard>
 
           <TiltCard as="button" onClick={() => router.push("/analytics")} ariaLabel="See your analytics" className={tile}>
-            <div className="text-[10px] font-bold text-sky-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
+            <div className="text-xs font-bold text-sky-300 tracking-normal flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>Solved</span>
             </div>
@@ -198,7 +198,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
           </TiltCard>
 
           <TiltCard as="button" onClick={() => router.push("/analytics")} ariaLabel="See accuracy by subject" wrapperClassName="col-span-2 md:col-span-1" className={tile}>
-            <div className="text-[10px] font-bold text-emerald-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
+            <div className="text-xs font-bold text-emerald-300 tracking-normal flex items-center gap-1.5">
               <TrendingUp className="w-3.5 h-3.5" />
               <span>Accuracy</span>
             </div>
@@ -216,7 +216,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
           </TiltCard>
 
           <TiltCard as="button" onClick={() => router.push("/analytics")} ariaLabel="Your rank ladder" wrapperClassName="col-span-2" className={tile}>
-            <div className="text-[10px] font-bold text-amber-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
+            <div className="text-xs font-bold text-amber-300 tracking-normal flex items-center gap-1.5">
               <Trophy className="w-3.5 h-3.5" />
               <span>Mastery rank</span>
             </div>
@@ -237,7 +237,7 @@ export function HeroSection({ streak, solved, accuracy, onNewExam, loading = fal
           </TiltCard>
 
           <TiltCard as="button" onClick={() => router.push("/ai-mentor")} ariaLabel="Open your readiness report in AI Mentor" className={`${tile} items-center`}>
-            <div className="w-full text-[10px] font-bold text-violet-300 uppercase tracking-[0.14em] flex items-center gap-1.5">
+            <div className="w-full text-xs font-bold text-violet-300 tracking-normal flex items-center gap-1.5">
               <Compass className="w-3.5 h-3.5" />
               <span>Readiness</span>
               <span className="ml-auto" onClick={(e) => e.stopPropagation()}>

@@ -106,7 +106,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
 
       <div className="flex items-center gap-3 my-5">
         <div className="h-px flex-1 bg-[var(--border)]" />
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">or</span>
+        <span className="text-xs font-bold tracking-normal text-[var(--text-muted)]">or</span>
         <div className="h-px flex-1 bg-[var(--border)]" />
       </div>
 

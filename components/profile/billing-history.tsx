@@ -57,7 +57,7 @@ export function BillingHistoryCard() {
   return (
     <div className="space-y-5">
       <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5">
-        <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400"><Crown className="h-3.5 w-3.5" aria-hidden /> Current plan</p>
+        <p className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-600 dark:text-violet-400"><Crown className="h-3.5 w-3.5" aria-hidden /> Current plan</p>
         <p className="mt-1 text-2xl font-extrabold text-[var(--text-primary)]">{ent.loading ? "…" : ent.paid ? (ent.tier === "pro" ? "Pro" : "Plus") : "Free"}</p>
         <p className="text-sm text-[var(--text-secondary)]">
           {ent.paid && ent.validUntil ? `Active until ${fmtDate(ent.validUntil)} (${Math.max(0, Math.ceil((Date.parse(ent.validUntil) - serverNow()) / 86400_000))} days left). It doesn't renew automatically.` : "Papers, mocks, analytics and sync are free. Plus and Pro add more AI and premium looks."}

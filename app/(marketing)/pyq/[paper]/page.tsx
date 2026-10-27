@@ -36,7 +36,7 @@ export default async function PaperPage({ params }: { params: Promise<{ paper: s
       <SponsorSlot context={p.label} seed={Number(p.year)} />
       {sections.map((sec) => (
         <section key={sec} aria-label={sec}>
-          <h2 className="text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)] mb-3">{sec}</h2>
+          <h2 className="text-sm font-black tracking-normal text-[var(--text-muted)] mb-3">{sec}</h2>
           <ol className="divide-y divide-[var(--border-subtle)] rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
             {qs.filter((q) => (q.section || "Questions") === sec).map((q) => (
               <li key={q.question_id}>

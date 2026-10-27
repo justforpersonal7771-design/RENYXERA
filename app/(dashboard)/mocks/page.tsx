@@ -183,7 +183,7 @@ export default function MocksPage() {
             return (
               <div className="flex flex-col sm:flex-row sm:items-end gap-4 justify-between">
                 <div>
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-400/25 text-emerald-50 text-[11px] font-black uppercase tracking-wider">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-400/25 text-emerald-50 text-xs font-black tracking-normal">
                     <motion.span animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.4, repeat: Infinity }}><Radio className="w-3.5 h-3.5" /></motion.span> Live now
                   </span>
                   <h2 className="mt-2 text-xl sm:text-2xl font-extrabold">{live.title}</h2>
@@ -207,7 +207,7 @@ export default function MocksPage() {
           })() : next ? (
             <div className="flex flex-col sm:flex-row sm:items-end gap-4 justify-between">
               <div className="min-w-0">
-                <p className="text-xs font-bold uppercase tracking-wider text-white/70">Next mock</p>
+                <p className="text-xs font-bold tracking-normal text-white/70">Next mock</p>
                 <h2 className="text-xl sm:text-2xl font-extrabold leading-tight">{next.title}</h2>
                 <p className="text-sm text-white/80 inline-flex items-center gap-1.5"><CalendarDays className="w-4 h-4" /> {fmtWhen(next.starts_at)}</p>
               </div>
@@ -235,7 +235,7 @@ export default function MocksPage() {
             <motion.div key={k} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} whileHover={{ y: -3 }}
               className={`rounded-2xl p-4 bg-gradient-to-br ${tint} border border-[var(--border)]`}>
               <Icon className="w-5 h-5" />
-              <p className="mt-2 text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{k}</p>
+              <p className="mt-2 text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</p>
               <p className="text-lg sm:text-xl font-extrabold font-num text-[var(--text-primary)] truncate">{v}</p>
             </motion.div>
           ))}
@@ -247,7 +247,7 @@ export default function MocksPage() {
         <div aria-hidden="true" className="absolute -top-12 -right-10 w-44 h-44 rounded-full bg-amber-400/15 blur-3xl" />
         <div className="relative flex flex-col sm:flex-row sm:items-center gap-4">
           <div className="flex-1 min-w-0">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-[11px] font-black uppercase tracking-wider"><Zap className="w-3.5 h-3.5" /> Weekly Challenge</span>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-700 dark:text-amber-300 text-xs font-black tracking-normal"><Zap className="w-3.5 h-3.5" /> Weekly Challenge</span>
             <h2 className="mt-2 text-lg font-extrabold text-[var(--text-primary)]">{challengeTitle()}</h2>
             <p className="text-sm text-[var(--text-secondary)]">10 past-GATE questions, the same for everyone this week (Mon–Sun). Your best score counts{user ? "" : " — sign in to be ranked"}.</p>
           </div>
@@ -263,7 +263,7 @@ export default function MocksPage() {
 
       {/* Exam day, like the real GATE */}
       <section className="card-glass rounded-3xl p-5 sm:p-6">
-        <h2 className="text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)] mb-4">Exam day</h2>
+        <h2 className="text-sm font-black tracking-normal text-[var(--text-muted)] mb-4">Exam day</h2>
         <DayTimeline mock={dayRef} now={now} />
         <div className="mt-5"><TimeSplitTips /></div>
         <p className="mt-4 flex items-start gap-1.5 text-[11px] text-[var(--text-muted)]"><ShieldCheck className="w-3.5 h-3.5 shrink-0 text-emerald-500 mt-0.5" /> Start any time in the first 30 minutes and still get the full 180 minutes. Tab switches, leaving full screen and timing are recorded; flagged attempts aren&apos;t ranked. Everyone&apos;s results are released together.</p>
@@ -272,7 +272,7 @@ export default function MocksPage() {
       {/* Upcoming */}
       {upcoming.length > (live ? 0 : 1) && (
         <section>
-          <h2 className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Coming up</h2>
+          <h2 className="mb-3 text-sm font-black tracking-normal text-[var(--text-muted)]">Coming up</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {upcoming.slice(live ? 0 : 1, (live ? 0 : 1) + 3).map((m, i) => {
               const d = new Date(m.starts_at);
@@ -298,7 +298,7 @@ export default function MocksPage() {
       {/* Past */}
       {past.length > 0 && (
         <section>
-          <h2 className="mb-3 text-sm font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Past mocks</h2>
+          <h2 className="mb-3 text-sm font-black tracking-normal text-[var(--text-muted)]">Past mocks</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {past.map((m, i) => {
               const a = attemptFor(m.id);

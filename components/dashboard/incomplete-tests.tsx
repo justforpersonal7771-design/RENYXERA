@@ -55,7 +55,7 @@ export function IncompleteTests() {
         <div className="w-7 h-7 rounded-lg bg-amber-500/15 flex items-center justify-center shrink-0">
           <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
         </div>
-        <h3 className="text-xs font-black text-[var(--text-primary)] uppercase tracking-wide">
+        <h3 className="text-xs font-black text-[var(--text-primary)] tracking-normal">
           Incomplete Tests ({sessions.length})
         </h3>
       </div>
@@ -85,7 +85,7 @@ export function IncompleteTests() {
                 <button
                   onClick={() => handleResume(session)}
                   disabled={busyId === session.id}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-[10px] font-bold uppercase tracking-wide rounded-lg transition-colors cursor-pointer"
+                  className="flex items-center gap-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-bold tracking-normal rounded-lg transition-colors cursor-pointer"
                 >
                   {busyId === session.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Play className="w-3 h-3" />}
                   Resume

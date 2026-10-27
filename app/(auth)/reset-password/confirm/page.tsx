@@ -92,7 +92,7 @@ export default function ResetPasswordConfirmPage() {
               {mismatch && <p className="mt-1.5 text-[11px] text-rose-500">Passwords don't match.</p>}
             </div>
             {error && <p role="alert" className="text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">{error}</p>}
-            <button type="submit" disabled={loading || tooShort || mismatch || !password || !confirm} className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold text-sm px-4 py-2.5 shadow-md shadow-violet-500/30 transition disabled:opacity-50 disabled:pointer-events-none mt-1">
+            <button type="submit" disabled={loading || tooShort || mismatch || !password || !confirm} className="w-full inline-flex items-center justify-center gap-2 rounded-xl grad-brand text-white font-semibold text-sm px-4 py-2.5 shadow-md shadow-violet-500/30 transition disabled:opacity-50 disabled:pointer-events-none mt-1">
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               Update password
             </button>

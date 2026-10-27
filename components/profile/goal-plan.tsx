@@ -61,11 +61,11 @@ export function GoalPlan({ targetRank, targetYear, dailyHours, studyDays = 6 }: 
             <RadialGauge value={plan.recommendedPercent} size={78} stroke={7} from="#8b5cf6" to="#ec4899" className="text-[var(--text-primary)] shrink-0">
               <div className="text-center leading-none">
                 <CountUp value={plan.recommendedPercent} suffix="%" className="text-base font-bold text-[var(--text-primary)]" />
-                <span className="block text-[8px] font-semibold uppercase tracking-wider text-[var(--text-muted)] mt-0.5">focus</span>
+                <span className="block text-[8px] font-semibold tracking-normal text-[var(--text-muted)] mt-0.5">focus</span>
               </div>
             </RadialGauge>
             <div className="min-w-0">
-              <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)] flex items-center gap-1">
+              <p className="text-xs font-bold tracking-normal text-[var(--text-muted)] flex items-center gap-1">
                 AIR <span className="font-num">{targetRank?.toLocaleString()}</span> needs about
                 <InfoTip align="right">
                   Median of published results ({CALIBRATION_LABEL}, general category). The range shows how much sources and years disagree — real cut-offs move with paper difficulty.
@@ -91,12 +91,12 @@ export function GoalPlan({ targetRank, targetYear, dailyHours, studyDays = 6 }: 
           {/* Numbers that drive it */}
           <div className="grid grid-cols-2 gap-2.5">
             <div className="rounded-xl bg-[var(--surface-secondary)]/60 p-3">
-              <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]"><Crosshair className="w-3 h-3" /> Accuracy used</span>
+              <span className="flex items-center gap-1 text-xs font-bold tracking-normal text-[var(--text-muted)]"><Crosshair className="w-3 h-3" /> Accuracy used</span>
               <span className="block mt-1 text-lg font-bold font-num text-[var(--text-primary)]">{Math.round(plan.accuracyUsed * 100)}%</span>
               <span className="text-[10px] text-[var(--text-muted)]">{plan.accuracyIsMeasured ? "Your measured accuracy" : "Typical, until you've done 40+ questions"}</span>
             </div>
             <div className="rounded-xl bg-[var(--surface-secondary)]/60 p-3">
-              <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]"><ListChecks className="w-3 h-3" /> Daily target</span>
+              <span className="flex items-center gap-1 text-xs font-bold tracking-normal text-[var(--text-muted)]"><ListChecks className="w-3 h-3" /> Daily target</span>
               <span className="block mt-1 text-lg font-bold font-num text-[var(--text-primary)]">{plan.dailyQuestions} Qs</span>
               <span className="text-[10px] text-[var(--text-muted)]">About 8 per study hour</span>
             </div>
@@ -104,7 +104,7 @@ export function GoalPlan({ targetRank, targetYear, dailyHours, studyDays = 6 }: 
 
           {/* Time check */}
           <div className="rounded-xl bg-[var(--surface-secondary)]/60 p-3">
-            <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.1em] text-[var(--text-muted)]">
+            <div className="flex items-center justify-between text-xs font-bold tracking-normal text-[var(--text-muted)]">
               <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> Time check</span>
               <span className="font-num normal-case tracking-normal text-[11px] text-[var(--text-secondary)]">
                 {plan.hoursAvailable.toLocaleString()}h available / {plan.hoursNeeded.toLocaleString()}h needed
@@ -168,7 +168,7 @@ export function GoalPlan({ targetRank, targetYear, dailyHours, studyDays = 6 }: 
             className={`mt-auto w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl text-sm font-semibold transition-all cursor-pointer ${
               applied
                 ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 cursor-default"
-                : "bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45"
+                : "grad-brand text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45"
             }`}
           >
             {applied ? <><CheckCircle2 className="w-4 h-4" /> Focus Target matches this plan</> : <><Sparkles className="w-4 h-4" /> Apply {plan.recommendedPercent}% to Focus Target</>}

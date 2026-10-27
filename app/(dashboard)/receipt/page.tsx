@@ -39,7 +39,7 @@ function ReceiptInner() {
               <p className="mt-1 text-xs text-[var(--text-muted)]">renyxera@gmail.com · gate.renyxera.workers.dev</p>
             </div>
             <div className="text-right">
-              <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Payment receipt</p>
+              <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Payment receipt</p>
               <p className="font-num text-sm font-bold text-[var(--text-primary)]">{p.receiptNo}</p>
               <p className="text-xs text-[var(--text-muted)]">{fmtDate(p.paidAt)}</p>
             </div>

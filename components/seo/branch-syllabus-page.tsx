@@ -21,7 +21,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
     <article className="w-full space-y-8">
       <header className="w-full lg:flex lg:items-end lg:justify-between lg:gap-8">
         <div className="min-w-0 flex-1">
-        <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Official syllabus · GATE 2027</p>
+        <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Official syllabus · GATE 2027</p>
         <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">GATE {s.paper} syllabus 2027 with topic-wise weightage</h1>
         <p className="mt-2 text-[var(--text-secondary)] leading-relaxed">
           The official GATE 2027 {b.name} syllabus from IIT Madras, section by section, with how many marks each subject and topic carried
@@ -86,7 +86,7 @@ export function BranchSyllabusPage({ code }: { code: BranchCode }) {
         <TopicProgressNote practiseHref={practise} />
         {(["Engineering Mathematics", "Core"] as const).map((grp) => (
           <div key={grp} className="space-y-3">
-            <h3 className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">{grp === "Core" ? `Core ${s.paper}` : grp} · {s.sections.filter((x) => x.group === grp).reduce((n, x) => n + x.share, 0).toFixed(0)}% of core marks</h3>
+            <h3 className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">{grp === "Core" ? `Core ${s.paper}` : grp} · {s.sections.filter((x) => x.group === grp).reduce((n, x) => n + x.share, 0).toFixed(0)}% of core marks</h3>
         {s.sections.filter((x) => x.group === grp).map((sec) => (
           <details key={sec.title} className="group rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-5 open:shadow-sm" open={s.sections.length <= 4}>
             <summary className="cursor-pointer list-none flex items-center justify-between gap-3">

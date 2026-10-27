@@ -66,8 +66,7 @@ export function TodoQuickPanel() {
       className="nav-cluster fixed sm:absolute left-4 right-4 sm:left-auto top-16 sm:top-full sm:right-0 mt-0 sm:mt-2 sm:w-[340px] rounded-2xl shadow-[0_30px_80px_-24px_rgba(76,29,149,0.45)] overflow-hidden z-50"
     >
       {/* Header */}
-      <div className="relative overflow-hidden p-4 flex items-center justify-between gap-3 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white">
-        <motion.div aria-hidden="true" className="absolute -top-10 -right-8 w-32 h-32 bg-cyan-300/25 rounded-full blur-2xl" animate={{ x: [0, -15, 0], y: [0, 10, 0] }} transition={{ duration: 8, repeat: Infinity }} />
+      <div className="relative overflow-hidden p-4 flex items-center justify-between gap-3 grad-brand text-white">
         <div className="relative flex items-center gap-2.5 min-w-0">
           <span className="w-9 h-9 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center shrink-0">
             <ListTodo className="w-4 h-4" />

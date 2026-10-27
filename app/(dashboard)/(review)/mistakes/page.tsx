@@ -301,7 +301,7 @@ export default function MistakesPage() {
                   setShowMastered(false);
                   setActiveMistake(null);
                 }}
-                className={`flex-1 text-[10px] py-1.5 rounded-md font-bold transition uppercase tracking-wider ${!showMastered ? 'bg-[var(--surface)] shadow text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
+                className={`flex-1 text-xs py-1.5 rounded-md font-bold transition tracking-normal ${!showMastered ? 'bg-[var(--surface)] shadow text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
               >
                 Pending ({mistakes.filter(m => !m.mastered).length})
               </button>
@@ -310,7 +310,7 @@ export default function MistakesPage() {
                   setShowMastered(true);
                   setActiveMistake(null);
                 }}
-                className={`flex-1 text-[10px] py-1.5 rounded-md font-bold transition uppercase tracking-wider ${showMastered ? 'bg-[var(--surface)] shadow text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
+                className={`flex-1 text-xs py-1.5 rounded-md font-bold transition tracking-normal ${showMastered ? 'bg-[var(--surface)] shadow text-[var(--text-primary)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}
               >
                 Mastered ({mistakes.filter(m => m.mastered).length})
               </button>
@@ -577,15 +577,15 @@ export default function MistakesPage() {
                   {/* Stats badges */}
                   <div className="flex items-center gap-3">
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
-                      <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">Occurrences</span>
+                      <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)]">Occurrences</span>
                       <span className="text-xs font-black text-rose-500 font-num">{activeEntry.occurrences || 1}</span>
                     </div>
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
-                      <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">Solved Retries</span>
+                      <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)]">Solved Retries</span>
                       <span className="text-xs font-black text-emerald-500 font-num">{activeEntry.solvedCount || 0} / {activeEntry.retryCount || 0}</span>
                     </div>
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
-                      <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)]">Mastery</span>
+                      <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)]">Mastery</span>
                       <span className="text-xs font-black text-indigo-500 font-num">{activeEntry.mastery || 0}%</span>
                     </div>
                   </div>
@@ -600,7 +600,7 @@ export default function MistakesPage() {
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.85 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                          className={`text-xs font-black uppercase tracking-wider px-3.5 py-2.5 rounded-xl border ${validationOutcome === "correct"
+                          className={`text-xs font-black tracking-normal px-3.5 py-2.5 rounded-xl border ${validationOutcome === "correct"
                               ? "bg-green-500/10 border-green-500/20 text-green-600 dark:text-green-400"
                               : "bg-red-500/10 border-red-500/20 text-rose-600 dark:text-rose-400"
                             }`}>
@@ -612,20 +612,20 @@ export default function MistakesPage() {
                     <motion.button
                       whileTap={{ scale: 0.96 }}
                       onClick={handleValidateAnswer}
-                      className="px-6 py-2.5 text-xs font-black uppercase tracking-wider bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition shadow-md shadow-indigo-600/10 cursor-pointer"
+                      className="px-6 py-2.5 text-xs font-black tracking-normal bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition shadow-md shadow-indigo-600/10 cursor-pointer"
                     >
                       Validate Answer
                     </motion.button>
 
                     {activeEntry.mastered ? (
-                      <span className="text-xs font-extrabold uppercase tracking-wider px-3 py-2 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 rounded-lg border border-emerald-200/50">
+                      <span className="text-xs font-extrabold tracking-normal px-3 py-2 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-400 rounded-lg border border-emerald-200/50">
                         Mastered
                       </span>
                     ) : (
                       <motion.button
                         whileTap={{ scale: 0.96 }}
                         onClick={() => handleUpdateMistakeMeta(activeMistake, { mastered: true })}
-                        className="px-4 py-2 text-xs font-extrabold uppercase tracking-wider bg-[var(--surface-elevated)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)] hover:border-[var(--border-strong)] rounded-lg transition cursor-pointer"
+                        className="px-4 py-2 text-xs font-extrabold tracking-normal bg-[var(--surface-elevated)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--border)] hover:border-[var(--border-strong)] rounded-lg transition cursor-pointer"
                       >
                         Mark Mastered
                       </motion.button>
@@ -662,7 +662,7 @@ export default function MistakesPage() {
           >
             {/* Header */}
             <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
-              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold uppercase tracking-wider text-xs">
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold tracking-normal text-xs">
                 <StickyNote className="w-4 h-4" />
                 <span>Personal Notes</span>
               </div>
@@ -676,7 +676,7 @@ export default function MistakesPage() {
 
             {/* Content */}
             <div className="flex-1 p-4 flex flex-col gap-3">
-              <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-extrabold">
+              <p className="text-xs text-[var(--text-muted)] tracking-normal font-extrabold">
                 Add formulas, shortcuts, hints, or personal notes to this question.
               </p>
               <textarea
@@ -694,7 +694,7 @@ export default function MistakesPage() {
             {/* Footer */}
             <button
               onClick={() => setIsNotesOpen(false)}
-              className="p-4 border-t border-[var(--border-subtle)] text-center bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] transition-colors text-[10px] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-black uppercase tracking-wider cursor-pointer w-full"
+              className="p-4 border-t border-[var(--border-subtle)] text-center bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] transition-colors text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] font-black tracking-normal cursor-pointer w-full"
             >
               Save & Close Note
             </button>

@@ -173,7 +173,7 @@ export function OnboardingGate() {
                 <p className="mt-0.5 text-xs text-[var(--text-secondary)]">Link the bot for reminders and mock alerts, join our channel and group, and verify your mobile number.</p>
                 <div className="mt-3 max-h-[42vh] overflow-y-auto pr-1"><TelegramCard /></div>
               </div>
-              <button onClick={() => setDone(null)} className="mt-6 w-full h-11 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30 cursor-pointer">Continue to my dashboard</button>
+              <button onClick={() => setDone(null)} className="mt-6 w-full h-11 rounded-xl grad-brand text-white font-semibold shadow-md shadow-violet-500/30 cursor-pointer">Continue to my dashboard</button>
             </motion.div>
           ) : (
             <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -259,7 +259,7 @@ export function OnboardingGate() {
 
               {error && <p role="alert" className="mt-4 text-xs font-semibold text-rose-500 bg-rose-500/10 border border-rose-500/20 rounded-lg px-3 py-2">{error}</p>}
 
-              <button onClick={save} disabled={!canSave} className="mt-6 w-full h-11 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30 disabled:opacity-50 cursor-pointer">
+              <button onClick={save} disabled={!canSave} className="mt-6 w-full h-11 inline-flex items-center justify-center gap-2 rounded-xl grad-brand text-white font-semibold shadow-md shadow-violet-500/30 disabled:opacity-50 cursor-pointer">
                 {saving && <Loader2 className="w-4 h-4 animate-spin" />} Continue
               </button>
               <button onClick={signOut} className="mt-3 w-full inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer">

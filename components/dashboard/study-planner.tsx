@@ -281,12 +281,12 @@ export function StudyPlanner() {
         {/* Planner Header controls */}
         <div className="flex-none flex flex-col sm:flex-row gap-4 justify-between sm:items-center border-b border-[var(--border-subtle)] pb-4 mb-4">
           <div className="flex items-center gap-3">
-            <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] flex items-center gap-1.5">
+            <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-primary)] flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-indigo-500" />
               <span>Study Schedule Engine</span>
             </h3>
             
-            <div className="flex bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl p-0.5 text-[10px] font-bold uppercase tracking-wider">
+            <div className="flex bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl p-0.5 text-xs font-bold tracking-normal">
               {["month", "week", "day"].map((type) => (
                 <button 
                   key={type}
@@ -302,7 +302,7 @@ export function StudyPlanner() {
           <div className="flex items-center gap-2">
             <button 
               onClick={setToday}
-              className="px-3 py-1.5 text-xs font-bold uppercase tracking-wider bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-xl transition cursor-pointer"
+              className="px-3 py-1.5 text-xs font-bold tracking-normal bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-xl transition cursor-pointer"
             >
               Today
             </button>
@@ -337,7 +337,7 @@ export function StudyPlanner() {
         <div className="flex-1 overflow-hidden">
           {viewType === "month" && (
             <div className="h-full flex flex-col">
-              <div className="grid grid-cols-7 text-center font-bold text-[10px] text-[var(--text-muted)] uppercase tracking-wider mb-2">
+              <div className="grid grid-cols-7 text-center font-bold text-xs text-[var(--text-muted)] tracking-normal mb-2">
                 {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(day => (
                   <div key={day}>{day}</div>
                 ))}
@@ -405,7 +405,7 @@ export function StudyPlanner() {
                       onClick={() => setSelectedDateStr(dateStr)}
                       className="w-full text-left mb-3 cursor-pointer"
                     >
-                      <p className="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-wider">
+                      <p className="text-xs font-black text-[var(--text-muted)] tracking-normal">
                         {day.toLocaleDateString(undefined, { weekday: "short" })}
                       </p>
                       <p className={`text-base font-black font-num mt-0.5 w-6 h-6 rounded-full flex items-center justify-center ${isToday ? 'bg-indigo-600 text-white' : 'text-[var(--text-primary)]'}`}>
@@ -478,10 +478,10 @@ export function StudyPlanner() {
         {/* Schedule preview header */}
         <div className="flex-none pb-4">
           <div className="flex justify-between items-baseline">
-            <h4 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)]">
+            <h4 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)]">
               Tasks: {new Date(selectedDateStr + "T00:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric" })}
             </h4>
-            <span className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-widest font-num">
+            <span className="text-xs font-black text-indigo-600 dark:text-indigo-400 tracking-normal font-num">
               {selectedDayEvents.length} Scheduled
             </span>
           </div>
@@ -516,14 +516,14 @@ export function StudyPlanner() {
                 <div className="flex justify-between items-start">
                   <div className="flex-1 min-w-0 pr-6">
                     <div className="flex items-center gap-1.5 flex-wrap mb-1">
-                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider border ${priorityColors[e.priority || "Medium"]}`}>
+                      <span className={`px-2 py-0.5 rounded text-[8px] font-black tracking-normal border ${priorityColors[e.priority || "Medium"]}`}>
                         {e.priority}
                       </span>
-                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-wider border ${statusColors[e.status || "Pending"]}`}>
+                      <span className={`px-2 py-0.5 rounded text-[8px] font-black tracking-normal border ${statusColors[e.status || "Pending"]}`}>
                         {e.status}
                       </span>
                       {e.difficulty && (
-                        <span className="bg-slate-100 dark:bg-slate-800 border border-[var(--border-subtle)] text-[8px] font-black uppercase tracking-wider text-[var(--text-secondary)] px-2 py-0.5 rounded">
+                        <span className="bg-slate-100 dark:bg-slate-800 border border-[var(--border-subtle)] text-[8px] font-black tracking-normal text-[var(--text-secondary)] px-2 py-0.5 rounded">
                           {e.difficulty}
                         </span>
                       )}
@@ -634,7 +634,7 @@ export function StudyPlanner() {
               
               <form onSubmit={handleAddEvent} className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Study Title</label>
+                  <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Study Title</label>
                   <input 
                     type="text" 
                     required
@@ -647,7 +647,7 @@ export function StudyPlanner() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Study Type</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Study Type</label>
                     <CustomDropdown
                       value={newEvent.studyType || "Study"}
                       onChange={(v) => setNewEvent({ ...newEvent, studyType: v as any })}
@@ -666,7 +666,7 @@ export function StudyPlanner() {
                   </div>
                   
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Priority</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Priority</label>
                     <CustomDropdown
                       value={newEvent.priority || "Medium"}
                       onChange={(v) => setNewEvent({ ...newEvent, priority: v as any })}
@@ -682,7 +682,7 @@ export function StudyPlanner() {
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Subject</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Subject</label>
                     <input 
                       type="text" 
                       placeholder="e.g. Core CS"
@@ -692,7 +692,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Topic</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Topic</label>
                     <input 
                       type="text" 
                       placeholder="e.g. Graph Search"
@@ -702,7 +702,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Section</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Section</label>
                     <input 
                       type="text" 
                       placeholder="e.g. Section A"
@@ -715,7 +715,7 @@ export function StudyPlanner() {
 
                 <div className="grid grid-cols-3 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Difficulty</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Difficulty</label>
                     <CustomDropdown
                       value={newEvent.difficulty || "Medium"}
                       onChange={(v) => setNewEvent({ ...newEvent, difficulty: v as any })}
@@ -728,7 +728,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Target Questions</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Target Questions</label>
                     <NumberStepper
                       size="sm"
                       ariaLabel="Target questions"
@@ -739,7 +739,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Revision Cycle</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Revision Cycle</label>
                     <CustomDropdown
                       value={newEvent.revisionCycle || "One Time"}
                       onChange={(v) => setNewEvent({ ...newEvent, revisionCycle: v as any })}
@@ -759,7 +759,7 @@ export function StudyPlanner() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Date</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Date</label>
                     <DatePicker
                       value={newEvent.date || ""}
                       onChange={(v) => setNewEvent({ ...newEvent, date: v })}
@@ -767,7 +767,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Time Range Mode</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Time Range Mode</label>
                     <CustomDropdown
                       value={newEvent.timeRangeType || "date_only"}
                       onChange={(v) => setNewEvent({ ...newEvent, timeRangeType: v as any })}
@@ -785,18 +785,18 @@ export function StudyPlanner() {
                 {newEvent.timeRangeType !== "date_only" && (
                   <div className="grid grid-cols-3 gap-4">
                     <div className="space-y-1">
-                      <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Start Time</label>
+                      <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Start Time</label>
                       <TimePicker value={newEvent.startTime ?? ""} onChange={v => setNewEvent({ ...newEvent, startTime: v })} />
                     </div>
                     {newEvent.timeRangeType === "start_end" && (
                       <div className="space-y-1">
-                        <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">End Time</label>
+                        <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">End Time</label>
                         <TimePicker value={newEvent.endTime ?? ""} onChange={v => setNewEvent({ ...newEvent, endTime: v })} />
                       </div>
                     )}
                     {(newEvent.timeRangeType === "duration" || newEvent.timeRangeType === "start_end") && (
                       <div className="space-y-1">
-                        <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Duration (Mins)</label>
+                        <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Duration (Mins)</label>
                         <NumberStepper
                           size="sm"
                           ariaLabel="Duration in minutes"
@@ -812,7 +812,7 @@ export function StudyPlanner() {
                 )}
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Notes / Instructions</label>
+                  <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Notes / Instructions</label>
                   <textarea 
                     placeholder="Provide additional study notes or checklist..."
                     value={newEvent.notes}
@@ -840,7 +840,7 @@ export function StudyPlanner() {
                       }}
                       className="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500"
                     />
-                    <label htmlFor="reminderToggle" className="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)] cursor-pointer">
+                    <label htmlFor="reminderToggle" className="text-xs font-black tracking-normal text-[var(--text-secondary)] cursor-pointer">
                       Enable Reminder {newEvent.reminderToggle && newEvent.startTime ? `@ ${formatTime12h(newEvent.startTime)}` : ""}
                     </label>
                   </div>
@@ -849,13 +849,13 @@ export function StudyPlanner() {
                     <button 
                       type="button"
                       onClick={() => setIsAddOpen(false)}
-                      className="px-4 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-var(--text-primary) text-xs font-bold uppercase tracking-wider rounded-xl transition-colors cursor-pointer"
+                      className="px-4 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-secondary)] hover:text-var(--text-primary) text-xs font-bold tracking-normal rounded-xl transition-colors cursor-pointer"
                     >
                       Cancel
                     </button>
                     <button 
                       type="submit"
-                      className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors cursor-pointer shadow-lg shadow-indigo-500/10"
+                      className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold tracking-normal rounded-xl transition-colors cursor-pointer shadow-lg shadow-indigo-500/10"
                     >
                       Add Event
                     </button>

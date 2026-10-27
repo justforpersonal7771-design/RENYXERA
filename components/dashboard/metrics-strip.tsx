@@ -73,7 +73,7 @@ function MiniStat({
         <div className={`w-6 h-6 rounded-lg flex items-center justify-center ${accent.bg} transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}>
           <Icon className={`w-3.5 h-3.5 ${accent.text}`} />
         </div>
-        <span className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)]">{label}</span>
+        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{label}</span>
       </div>
       <div className="relative text-xl font-black text-[var(--text-primary)] font-num tracking-tight">
         {Math.round(animated)}{suffix}
@@ -124,7 +124,7 @@ export function MetricsStrip({
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm shadow-indigo-500/30">
             <Sparkles className="w-3.5 h-3.5 text-white" />
           </div>
-          <h3 className="text-xs font-black text-[var(--text-primary)] uppercase tracking-wide">Study Momentum</h3>
+          <h3 className="text-xs font-black text-[var(--text-primary)] tracking-normal">Study Momentum</h3>
         </div>
         <div className="flex flex-wrap gap-2">
           <MiniStat icon={Clock} label="Study Hours" value={studyHours} suffix="h" href="/analytics" delay={0.05}
@@ -149,7 +149,7 @@ export function MetricsStrip({
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-rose-500 to-orange-500 flex items-center justify-center shadow-sm shadow-rose-500/30">
             <TargetIcon className="w-3.5 h-3.5 text-white" />
           </div>
-          <h3 className="text-xs font-black text-[var(--text-primary)] uppercase tracking-wide">Performance Signals</h3>
+          <h3 className="text-xs font-black text-[var(--text-primary)] tracking-normal">Performance Signals</h3>
         </div>
         <div className="flex flex-wrap gap-2">
           <MiniStat icon={AlertTriangle} label="Weak Topics" value={weakTopicsCount} href="/analytics" delay={0.1}
@@ -164,7 +164,7 @@ export function MetricsStrip({
 
         {weakTopicsCount + strongTopicsCount > 0 && (
           <div className="mt-3 px-0.5 space-y-1">
-            <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-wide text-[var(--text-muted)]">
+            <div className="flex items-center justify-between text-xs font-black tracking-normal text-[var(--text-muted)]">
               <span>Topic Health</span>
               <span>
                 <span className="text-orange-500">{weakTopicsCount} weak</span>

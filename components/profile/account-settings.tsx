@@ -223,7 +223,7 @@ export function AccountSecurityCard() {
               <p className="text-sm font-semibold text-[var(--text-primary)] truncate">{user.email}</p>
               <div className="flex gap-1.5 mt-1 flex-wrap">
                 {providers === null ? <Loader2 className="w-3 h-3 animate-spin text-[var(--text-muted)]" /> : providers.map((p) => (
-                  <span key={p} className="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">{p === "email" ? "Email & password" : p}</span>
+                  <span key={p} className="px-2 py-0.5 rounded-md text-xs font-bold tracking-normal bg-indigo-500/10 text-indigo-600 dark:text-indigo-300">{p === "email" ? "Email & password" : p}</span>
                 ))}
               </div>
             </div>
@@ -260,7 +260,7 @@ export function AccountSecurityCard() {
               { label: "Email", value: meta ? (meta.verified ? "Verified" : "Not verified") : "—" },
             ].map((m) => (
               <div key={m.label} className="rounded-xl bg-[var(--surface-secondary)]/50 px-3 py-2.5">
-                <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{m.label}</p>
+                <p className="text-xs font-bold tracking-normal text-[var(--text-muted)]">{m.label}</p>
                 <p className={`mt-0.5 text-sm font-semibold ${m.value === "Verified" ? "text-emerald-600 dark:text-emerald-400" : m.value === "Not verified" ? "text-amber-600 dark:text-amber-400" : "text-[var(--text-primary)]"}`}>{m.value}</p>
               </div>
             ))}

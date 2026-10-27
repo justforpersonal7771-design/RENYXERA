@@ -104,7 +104,7 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
           <div className="card-glass rounded-3xl p-6 sm:p-8">
             <p className="text-lg font-bold text-[var(--text-primary)]">Start practising today</p>
             <p className="text-sm text-[var(--text-secondary)] mt-1">Sign in to save every attempt, see your weak topics and pick up on any device.</p>
-            <Link href={`/setup?branch=${b.code}`} className="mt-5 inline-flex w-full h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white font-semibold shadow-md shadow-violet-500/30">
+            <Link href={`/setup?branch=${b.code}`} className="mt-5 inline-flex w-full h-11 items-center justify-center gap-2 rounded-xl grad-brand text-white font-semibold shadow-md shadow-violet-500/30">
               Start a free practice test <ArrowRight className="w-4 h-4" />
             </Link>
             {TELEGRAM_BRANCH[b.paper] && (

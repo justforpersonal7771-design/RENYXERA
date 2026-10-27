@@ -45,7 +45,7 @@ export function CompareAndFaq() {
           <table className="w-full min-w-[640px] border-separate border-spacing-0 text-sm">
             <thead>
               <tr>
-                <th className="py-3 pr-3 text-left text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">What you need</th>
+                <th className="py-3 pr-3 text-left text-xs font-black tracking-normal text-[var(--text-muted)]">What you need</th>
                 {COLS.map((c, i) => <th key={c} className={`px-3 py-3 text-center text-xs font-bold ${i === 0 ? "rounded-t-2xl bg-violet-500/10 text-violet-700 dark:text-violet-300" : "text-[var(--text-secondary)]"}`}>{c}</th>)}
               </tr>
             </thead>

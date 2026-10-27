@@ -53,7 +53,7 @@ export function MissedBlocksCard() {
     <section aria-label="Missed study blocks" className="rounded-2xl border border-amber-500/40 bg-amber-500/5 p-4 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0">
-          <p className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.14em] text-amber-700 dark:text-amber-300"><CalendarClock className="h-3.5 w-3.5" aria-hidden /> Study Planner</p>
+          <p className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-amber-700 dark:text-amber-300"><CalendarClock className="h-3.5 w-3.5" aria-hidden /> Study Planner</p>
           <p className="mt-1 text-base font-extrabold text-[var(--text-primary)]">{missed.length} block{missed.length === 1 ? "" : "s"} didn&apos;t get done. What should we do?</p>
           <p className="text-xs text-[var(--text-muted)]">We ask once a day and never move anything without you.</p>
         </div>

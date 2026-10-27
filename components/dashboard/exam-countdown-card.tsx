@@ -54,13 +54,13 @@ export function ExamCountdownCard() {
       <div className="absolute -top-8 -right-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative flex items-center justify-between mb-4">
-        <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1.5">
+        <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5">
           <CalendarClock className="w-3.5 h-3.5 text-indigo-500" />
           GATE {targetYear} Countdown
         </h3>
         <button
           onClick={() => router.push("/setup")}
-          className="text-[9px] font-black uppercase tracking-wider text-indigo-500 hover:text-indigo-400 flex items-center gap-0.5 cursor-pointer"
+          className="text-xs font-black tracking-normal text-indigo-500 hover:text-indigo-400 flex items-center gap-0.5 cursor-pointer"
         >
           Plan <ChevronRight className="w-3 h-3" />
         </button>
@@ -70,7 +70,7 @@ export function ExamCountdownCard() {
         <span className="text-4xl font-black font-num text-[var(--text-primary)]">
           {daysLeft >= 0 ? daysLeft : 0}
         </span>
-        <span className="text-xs font-bold text-[var(--text-secondary)] uppercase tracking-wide">
+        <span className="text-xs font-bold text-[var(--text-secondary)] tracking-normal">
           {daysLeft >= 0 ? "days left" : "exam date passed"}
         </span>
       </div>
@@ -79,7 +79,7 @@ export function ExamCountdownCard() {
       </p>
 
       <div className="relative border-t border-[var(--border-subtle)] pt-3 space-y-1.5">
-        <p className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-2">Scheduled Ahead</p>
+        <p className="text-xs font-black tracking-normal text-[var(--text-muted)] mb-2">Scheduled Ahead</p>
         {upcomingScheduled.length === 0 ? (
           <p className="text-[11px] font-semibold text-[var(--text-muted)] py-2">Nothing scheduled yet — plan your next session.</p>
         ) : (

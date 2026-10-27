@@ -41,7 +41,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
       {/* Left: Overall Completion Circle */}
       <div className="card-glass rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-sm relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-bl-full pointer-events-none" />
-        <h4 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-6 flex items-center gap-1.5">
+        <h4 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] mb-6 flex items-center gap-1.5">
           <GraduationCap className="w-4 h-4 text-indigo-500" />
           <span>Syllabus Complete</span>
         </h4>
@@ -72,7 +72,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
           </svg>
           <div className="absolute flex flex-col items-center justify-center">
             <span className="text-3xl font-black text-[var(--text-primary)] font-num">{overallCompletionPercentage}%</span>
-            <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider mt-0.5">Syllabus solved</span>
+            <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal mt-0.5">Syllabus solved</span>
           </div>
         </div>
 
@@ -83,7 +83,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
 
       {/* Middle & Right: Subject Mastery Progress Bars */}
       <div className="md:col-span-2 card-glass rounded-2xl p-6 shadow-sm flex flex-col">
-        <h4 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-5 flex items-center gap-1.5">
+        <h4 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] mb-5 flex items-center gap-1.5">
           <PieChart className="w-4 h-4 text-indigo-500" />
           <span>Subject Accuracy matrix</span>
         </h4>
@@ -119,7 +119,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center text-[10px] text-[var(--text-muted)] font-black uppercase tracking-wider mt-4">
+                <div className="flex justify-between items-center text-xs text-[var(--text-muted)] font-black tracking-normal mt-4">
                   <span>{subj.attempted} Attempted</span>
                   <span>Avg Time: {Math.round(subj.timeSpentMs / Math.max(1, subj.attempted) / 1000)}s</span>
                 </div>

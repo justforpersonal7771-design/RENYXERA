@@ -135,8 +135,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
           The outer panel itself must NOT clip (overflow-hidden), or the quick-add
           CustomDropdown's popover list — absolutely positioned within this panel —
           gets cut off and never appears. */}
-      <div className="relative overflow-hidden rounded-t-2xl p-4 flex items-center justify-between gap-2 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600">
-        <motion.div aria-hidden="true" className="absolute -top-10 -right-8 w-32 h-32 bg-cyan-300/25 rounded-full blur-2xl pointer-events-none" animate={{ x: [0, -15, 0], y: [0, 10, 0] }} transition={{ duration: 8, repeat: Infinity }} />
+      <div className="relative overflow-hidden rounded-t-2xl p-4 flex items-center justify-between gap-2 grad-brand">
         <div className="relative flex items-center gap-2.5">
           {isExpanded && (
             <button
@@ -151,7 +150,7 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
             <Calendar className="w-4 h-4 text-white" />
           ) : (
             <span className="w-10 h-11 rounded-xl bg-white text-center shadow-md overflow-hidden flex flex-col shrink-0" aria-hidden="true">
-              <span className="block bg-rose-500 text-[8px] font-bold uppercase tracking-wider text-white py-0.5">{new Date().toLocaleDateString(undefined, { month: "short" })}</span>
+              <span className="block bg-rose-500 text-[8px] font-bold tracking-normal text-white py-0.5">{new Date().toLocaleDateString(undefined, { month: "short" })}</span>
               <span className="flex-1 flex items-center justify-center text-base font-bold font-num text-slate-900 leading-none">{new Date().getDate()}</span>
             </span>
           )}

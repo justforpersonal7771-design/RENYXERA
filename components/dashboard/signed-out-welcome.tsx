@@ -27,7 +27,7 @@ export function SignedOutWelcome() {
   return (
     <>
     <section aria-label="Welcome" className="card-pastel relative overflow-hidden p-5 sm:p-8" data-tint="lilac">
-      <p className="text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">
+      <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">
         {TOTAL_QUESTIONS.toLocaleString("en-IN")} official GATE questions · {PAPERS} papers · 2017–2026
       </p>
       <h2 className="mt-2 max-w-3xl text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
@@ -38,7 +38,7 @@ export function SignedOutWelcome() {
       </p>
       <div className="mt-5 flex flex-wrap items-center gap-3">
         <button type="button" onClick={() => openAuth("signup")}
-          className="inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-5 text-sm font-bold text-white shadow-md shadow-violet-500/30 transition hover:-translate-y-px cursor-pointer">
+          className="inline-flex h-11 items-center gap-2 rounded-xl grad-brand px-5 text-sm font-bold text-white shadow-md shadow-violet-500/30 transition hover:-translate-y-px cursor-pointer">
           Sign in and start <ArrowRight className="h-4 w-4" />
         </button>
         <Link href="/pyq" className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">Browse the official papers →</Link>

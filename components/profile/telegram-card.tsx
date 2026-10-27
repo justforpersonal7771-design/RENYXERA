@@ -234,7 +234,7 @@ export function TelegramCard() {
         <p className="mt-0.5 text-xs text-[var(--text-muted)]">Green tick = included · red cross = not included · numbers = how many you can have.</p>
 
         <div className="mt-4 hidden md:block">
-          <div className="grid grid-cols-[minmax(0,1fr)_6rem_6rem_6rem] items-center gap-x-2 border-b border-[var(--border)] pb-2 text-[11px] font-black uppercase tracking-wider text-[var(--text-muted)]">
+          <div className="grid grid-cols-[minmax(0,1fr)_6rem_6rem_6rem] items-center gap-x-2 border-b border-[var(--border)] pb-2 text-xs font-black tracking-normal text-[var(--text-muted)]">
             <span>Feature</span>{(["free", "plus", "pro"] as const).map((k) => <span key={k} className={`text-center ${col === k ? "text-violet-600 dark:text-violet-400" : ""}`}>{k === "free" ? "Free" : k === "plus" ? "Plus" : "Pro"}{col === k ? " · you" : ""}</span>)}
           </div>
           <ul className="divide-y divide-[var(--border-subtle)]">
@@ -255,7 +255,7 @@ export function TelegramCard() {
               <div className="mt-2 grid grid-cols-3 gap-2">
                 {(["free", "plus", "pro"] as const).map((k) => (
                   <span key={k} className={`flex flex-col items-center gap-1 rounded-lg py-1.5 ${col === k ? "bg-violet-500/10" : "bg-[var(--surface-secondary)]/60"}`}>
-                    <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{k === "free" ? "Free" : k === "plus" ? "Plus" : "Pro"}</span><Mark v={r[k]} />
+                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{k === "free" ? "Free" : k === "plus" ? "Plus" : "Pro"}</span><Mark v={r[k]} />
                   </span>
                 ))}
               </div>

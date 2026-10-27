@@ -272,7 +272,7 @@ export default function BookmarksPage() {
             <div className="flex items-center gap-2 pt-1">
               <button 
                 onClick={() => setShowOnlyFavorites(!showOnlyFavorites)}
-                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-wider transition border ${
+                className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 rounded-lg text-xs font-black tracking-normal transition border ${
                   showOnlyFavorites 
                     ? "bg-amber-500/10 text-amber-500 border-amber-500/20" 
                     : "bg-[var(--surface-secondary)] text-[var(--text-secondary)] border-[var(--border-subtle)] hover:bg-[var(--surface-elevated)]"
@@ -297,7 +297,7 @@ export default function BookmarksPage() {
             <div className="p-3 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/30 flex gap-1 overflow-x-auto custom-scrollbar shrink-0">
               <button
                 onClick={() => setSelectedFolder("ALL")}
-                className={`px-3 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg border ${
+                className={`px-3 py-1 text-xs font-black tracking-normal rounded-lg border ${
                   selectedFolder === "ALL" 
                     ? "bg-indigo-600 border-indigo-600 text-white" 
                     : "bg-[var(--surface)] text-[var(--text-secondary)] border-[var(--border-subtle)]"
@@ -309,7 +309,7 @@ export default function BookmarksPage() {
                 <button
                   key={folder}
                   onClick={() => setSelectedFolder(folder)}
-                  className={`px-3 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg border flex items-center gap-1 whitespace-nowrap ${
+                  className={`px-3 py-1 text-xs font-black tracking-normal rounded-lg border flex items-center gap-1 whitespace-nowrap ${
                     selectedFolder === folder 
                       ? "bg-indigo-600 border-indigo-600 text-white" 
                       : "bg-[var(--surface)] text-[var(--text-secondary)] border-[var(--border-subtle)]"
@@ -378,19 +378,19 @@ export default function BookmarksPage() {
                           {((b.folders && b.folders.length > 0) || (b.tags && b.tags.length > 0) || b.sourceGoalTag) && (
                             <div className="flex flex-wrap gap-1 mt-1">
                               {b.sourceGoalTag && (
-                                <span className="text-[9px] font-black uppercase tracking-wider bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                                <span className="text-xs font-black tracking-normal bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 px-1.5 py-0.5 rounded flex items-center gap-0.5">
                                   <Target className="w-2.5 h-2.5" />
                                   {b.sourceGoalTag.targetPercent}%
                                 </span>
                               )}
                               {(b.folders || []).map(f => (
-                                <span key={f} className="text-[9px] font-black uppercase tracking-wider bg-[var(--surface-secondary)] text-[var(--text-muted)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded flex items-center gap-0.5">
+                                <span key={f} className="text-xs font-black tracking-normal bg-[var(--surface-secondary)] text-[var(--text-muted)] border border-[var(--border-subtle)] px-1.5 py-0.5 rounded flex items-center gap-0.5">
                                   <Folder className="w-2.5 h-2.5" />
                                   {f}
                                 </span>
                               ))}
                               {(b.tags || []).map(t => (
-                                <span key={t} className="text-[9px] font-black uppercase tracking-wider bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/30 px-1.5 py-0.5 rounded">
+                                <span key={t} className="text-xs font-black tracking-normal bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900/30 px-1.5 py-0.5 rounded">
                                   #{t}
                                 </span>
                               ))}
@@ -528,7 +528,7 @@ export default function BookmarksPage() {
               <div className="bg-[var(--surface-secondary)]/50 border-b border-[var(--border-subtle)] px-6 py-3 flex flex-wrap gap-4 items-center justify-between">
                 {/* Current folders list & insertion form */}
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1 mr-1">
+                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)] flex items-center gap-1 mr-1">
                     <Folder className="w-3.5 h-3.5 text-indigo-500" />
                     Folders:
                   </span>
@@ -572,7 +572,7 @@ export default function BookmarksPage() {
 
                 {/* Current tags list & insertion form */}
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1 mr-1">
+                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)] flex items-center gap-1 mr-1">
                     <Tag className="w-3.5 h-3.5 text-indigo-500" />
                     Tags:
                   </span>
@@ -624,7 +624,7 @@ export default function BookmarksPage() {
                   {/* AI Tutor Insights integration */}
                   {(activeEntry.aiShortcut || activeEntry.personalObservations) && (
                     <div className="mt-8 p-4 bg-indigo-500/5 border border-indigo-500/20 rounded-xl space-y-3">
-                      <h4 className="text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
+                      <h4 className="text-xs font-extrabold tracking-normal text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
                         <Sparkles className="w-4 h-4" />
                         AI Tutor Saved Insights
                       </h4>
@@ -677,7 +677,7 @@ export default function BookmarksPage() {
                     {question.question_type === "NAT" && (
                       <div className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-2xl w-full">
                         <div className="flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl">
-                          <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Correct Answer Range</span>
+                          <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct Answer Range</span>
                           <span className="font-num font-bold text-green-600 dark:text-green-400">
                             {formatNatAnswer(question.nat_answer_range)}
                           </span>
@@ -688,7 +688,7 @@ export default function BookmarksPage() {
                               ? 'border-green-500 text-green-700 dark:text-green-500'
                               : 'border-red-500 text-red-700 dark:text-red-500'
                           }`}>
-                            <span className="text-[10px] font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] uppercase tracking-widest">Your Answer</span>
+                            <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your Answer</span>
                             <span className="font-num font-bold">{activeEntry.natValue}</span>
                           </div>
                         )}
@@ -725,14 +725,14 @@ export default function BookmarksPage() {
           >
             {/* Header */}
             <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
-              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold uppercase tracking-wider text-xs">
+              <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold tracking-normal text-xs">
                 <StickyNote className="w-4 h-4" />
                 <span>Personal Notes</span>
               </div>
               <div className="flex items-center gap-1">
                 <button
                   onClick={() => setNotesPreviewMode(prev => !prev)}
-                  className={`px-2 py-1 rounded-md text-[9px] font-black uppercase tracking-wider transition cursor-pointer ${
+                  className={`px-2 py-1 rounded-md text-xs font-black tracking-normal transition cursor-pointer ${
                     notesPreviewMode ? "bg-amber-500/15 text-amber-600 dark:text-amber-400" : "text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                   title="Toggle rendered markdown preview"
@@ -752,7 +752,7 @@ export default function BookmarksPage() {
                 rendered chat-bubble style preview using the same AstNodeRenderer pipeline
                 already used for AI shortcuts/observations elsewhere on this page. */}
             <div className="flex-1 p-4 flex flex-col gap-3 min-h-0">
-              <p className="text-[10px] text-[var(--text-muted)] uppercase tracking-wider font-extrabold">
+              <p className="text-xs text-[var(--text-muted)] tracking-normal font-extrabold">
                 Add formulas, shortcuts, hints, or personal notes to this question.
               </p>
               {notesPreviewMode ? (
@@ -782,7 +782,7 @@ export default function BookmarksPage() {
             {/* Footer */}
             <button
               onClick={() => setIsNotesOpen(false)}
-              className="p-4 border-t border-[var(--border-subtle)] text-center bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] transition-colors text-[10px] text-[var(--text-muted)] hover:text-[var(--text-primary)] font-black uppercase tracking-wider cursor-pointer w-full"
+              className="p-4 border-t border-[var(--border-subtle)] text-center bg-[var(--surface-secondary)] hover:bg-[var(--surface-elevated)] transition-colors text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] font-black tracking-normal cursor-pointer w-full"
             >
               Save & Close Note
             </button>

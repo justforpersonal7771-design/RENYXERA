@@ -527,7 +527,7 @@ export default function ExamSetupPage() {
       <div className="flex items-center justify-center h-[60vh]">
         <div className="flex flex-col items-center gap-4">
           <ServerCog className="w-12 h-12 text-indigo-500 animate-spin-slow" />
-          <div className="text-indigo-600 dark:text-indigo-400 font-bold tracking-widest uppercase">
+          <div className="text-indigo-600 dark:text-indigo-400 font-bold tracking-normal">
             Initializing Engine
           </div>
         </div>
@@ -581,7 +581,7 @@ export default function ExamSetupPage() {
                   {active && (
                     <motion.span
                       layoutId="setup-source-pill"
-                      className="toggle-shine absolute inset-0 rounded-xl -z-10 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 shadow-[0_6px_20px_-4px_rgba(124,58,237,0.6)] overflow-hidden"
+                      className="toggle-shine absolute inset-0 rounded-xl -z-10 grad-brand shadow-[0_6px_20px_-4px_rgba(124,58,237,0.6)] overflow-hidden"
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -649,7 +649,7 @@ export default function ExamSetupPage() {
 
               <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-[var(--border-subtle)]">
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Subject:</span>
+                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Subject:</span>
                   <CustomDropdown
                     value={filterSubject}
                     onChange={(val) => {
@@ -662,7 +662,7 @@ export default function ExamSetupPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Topic:</span>
+                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Topic:</span>
                   <CustomDropdown
                     value={filterTopic}
                     onChange={setFilterTopic}
@@ -672,7 +672,7 @@ export default function ExamSetupPage() {
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Difficulty:</span>
+                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Difficulty:</span>
                   <CustomDropdown
                     value={filterDifficulty}
                     onChange={setFilterDifficulty}
@@ -703,7 +703,7 @@ export default function ExamSetupPage() {
                 </div>
                 <button
                   onClick={() => router.push("/ai-tutor")}
-                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-md"
+                  className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black tracking-normal transition cursor-pointer shadow-md"
                 >
                   Go to AI Tutor Workspace
                 </button>
@@ -744,7 +744,7 @@ export default function ExamSetupPage() {
                             {isAllSectionSelected && <span className="text-[10px] font-black leading-none">✓</span>}
                             {isSomeSectionSelected && <span className="text-[10px] font-black leading-none">-</span>}
                           </button>
-                          <h2 className="text-sm font-extrabold text-[var(--text-primary)] uppercase tracking-wider">{sectionName}</h2>
+                          <h2 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal">{sectionName}</h2>
                         </div>
                         <span className="text-[10px] px-2 py-0.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] text-[var(--text-muted)] font-black rounded-lg">
                           {sectionQs.length} Questions
@@ -891,7 +891,7 @@ export default function ExamSetupPage() {
 
                                                     {q.options && q.options.length > 0 && (
                                                       <div className="space-y-2">
-                                                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)] block">Option List</span>
+                                                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Option List</span>
                                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                                           {q.options.map((opt: any) => {
                                                             const isOptCorrect = !!opt.is_correct;
@@ -917,7 +917,7 @@ export default function ExamSetupPage() {
 
                                                     {q.nat_answer_range && (
                                                       <div className="p-3 bg-green-500/5 border border-green-500/20 rounded-xl text-green-700 dark:text-green-400 font-bold flex justify-between max-w-sm">
-                                                        <span className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Correct Answer Range</span>
+                                                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Correct Answer Range</span>
                                                         <span className="font-num">{formatNatAnswer(q.nat_answer_range)}</span>
                                                       </div>
                                                     )}
@@ -963,14 +963,14 @@ export default function ExamSetupPage() {
                     </div>
                     <button
                       onClick={() => setSelectedQIds(new Set())}
-                      className="px-3 py-2 text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] rounded-lg transition cursor-pointer"
+                      className="px-3 py-2 text-xs font-black tracking-normal text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] rounded-lg transition cursor-pointer"
                     >
                       Clear
                     </button>
                     <motion.button
                       whileTap={{ scale: 0.97 }}
                       onClick={handleStartAITest}
-                      className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black uppercase tracking-wider transition cursor-pointer shadow-md shadow-emerald-600/20"
+                      className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black tracking-normal transition cursor-pointer shadow-md shadow-emerald-600/20"
                     >
                       <Play className="w-4 h-4 fill-current" />
                       <span>Start Test</span>
@@ -1032,7 +1032,7 @@ export default function ExamSetupPage() {
                       whileTap={{ scale: 0.97 }}
                       whileHover={{ y: -1 }}
                       onClick={() => { scrollToBlueprint.current = true; if (examType === "CUSTOM_TEST") customBuilderRef.current?.generate(); else handleGenerate(); }}
-                      className="group relative overflow-hidden w-full sm:w-auto h-[46px] pl-5 pr-4 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white rounded-xl font-semibold text-sm shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45 transition-shadow flex items-center justify-center gap-2.5 cursor-pointer border-0 whitespace-nowrap"
+                      className="group relative overflow-hidden w-full sm:w-auto h-[46px] pl-5 pr-4 grad-brand text-white rounded-xl font-semibold text-sm shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/45 transition-shadow flex items-center justify-center gap-2.5 cursor-pointer border-0 whitespace-nowrap"
                     >
                       {/* light sweep on hover */}
                       <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 -skew-x-12 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-0 group-hover:translate-x-[300%] transition-transform duration-700" />
@@ -1129,7 +1129,7 @@ export default function ExamSetupPage() {
                       <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2 flex items-center gap-1.5">
                         Target Topic
                         {isGoalSliderActive && (
-                          <span className="flex items-center gap-1 text-[9px] font-black uppercase tracking-wide text-indigo-500 bg-indigo-500/10 px-2 py-0.5 rounded-full">
+                          <span className="flex items-center gap-1 text-xs font-black tracking-normal text-indigo-500 bg-indigo-500/10 px-2 py-0.5 rounded-full">
                             <Target className="w-2.5 h-2.5" /> Focus Target: {goalTargetPercent}%
                           </span>
                         )}
@@ -1241,11 +1241,11 @@ export default function ExamSetupPage() {
 
                       <div className="grid grid-cols-2 gap-3">
                          <div className="p-4 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-2xl border border-indigo-500/20">
-                            <span className="text-xs font-bold text-indigo-500 uppercase tracking-widest mb-1 block">Questions</span>
+                            <span className="text-xs font-bold text-indigo-500 tracking-normal mb-1 block">Questions</span>
                             <div className="text-3xl font-extrabold text-[var(--text-primary)]">{currentDraft.questions.length}</div>
                          </div>
                          <div className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-2xl border border-purple-500/20">
-                            <span className="text-xs font-bold text-purple-500 uppercase tracking-widest mb-1 block">Marks</span>
+                            <span className="text-xs font-bold text-purple-500 tracking-normal mb-1 block">Marks</span>
                             <div className="text-3xl font-extrabold text-[var(--text-primary)]">{draftStats.totalMarks}</div>
                          </div>
                       </div>
@@ -1258,43 +1258,43 @@ export default function ExamSetupPage() {
                           before. */}
                       <div className="grid grid-cols-4 gap-2">
                          <div className="p-2.5 bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-xl border border-blue-500/20">
-                            <span className="text-[8px] font-bold text-blue-500 uppercase tracking-wide mb-0.5 block truncate">Sections</span>
+                            <span className="text-[8px] font-bold text-blue-500 tracking-normal mb-0.5 block truncate">Sections</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.sections}</div>
                          </div>
                          <div className="p-2.5 bg-gradient-to-br from-fuchsia-500/10 to-fuchsia-500/5 rounded-xl border border-fuchsia-500/20">
-                            <span className="text-[8px] font-bold text-fuchsia-500 uppercase tracking-wide mb-0.5 block truncate">Subjects</span>
+                            <span className="text-[8px] font-bold text-fuchsia-500 tracking-normal mb-0.5 block truncate">Subjects</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.subjects}</div>
                          </div>
                          <div className="p-2.5 bg-gradient-to-br from-amber-500/10 to-amber-500/5 rounded-xl border border-amber-500/20">
-                            <span className="text-[8px] font-bold text-amber-500 uppercase tracking-wide mb-0.5 block truncate">Topics</span>
+                            <span className="text-[8px] font-bold text-amber-500 tracking-normal mb-0.5 block truncate">Topics</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight">{draftStats.topics}</div>
                          </div>
                          <div className="p-2.5 bg-gradient-to-br from-teal-500/10 to-teal-500/5 rounded-xl border border-teal-500/20">
-                            <span className="text-[8px] font-bold text-teal-500 uppercase tracking-wide mb-0.5 block truncate">Duration</span>
+                            <span className="text-[8px] font-bold text-teal-500 tracking-normal mb-0.5 block truncate">Duration</span>
                             <div className="text-base font-extrabold text-[var(--text-primary)] leading-tight truncate">{draftStats.estimatedMinutes}<span className="text-[10px] font-bold text-[var(--text-muted)] ml-0.5">min</span></div>
                          </div>
                       </div>
 
                       <div>
-                         <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2 block">Question Types</span>
+                         <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-2 block">Question Types</span>
                          <div className="flex gap-2">
                             <div className="flex-1 flex items-center justify-between px-3 py-2 rounded-xl bg-blue-500/10 border border-blue-500/20">
-                               <span className="text-[10px] font-black uppercase tracking-wider text-blue-500">MCQ</span>
+                               <span className="text-xs font-black tracking-normal text-blue-500">MCQ</span>
                                <span className="text-sm font-extrabold text-[var(--text-primary)]">{draftStats.types['MCQ'] || 0}</span>
                             </div>
                             <div className="flex-1 flex items-center justify-between px-3 py-2 rounded-xl bg-violet-500/10 border border-violet-500/20">
-                               <span className="text-[10px] font-black uppercase tracking-wider text-violet-500">MSQ</span>
+                               <span className="text-xs font-black tracking-normal text-violet-500">MSQ</span>
                                <span className="text-sm font-extrabold text-[var(--text-primary)]">{draftStats.types['MSQ'] || 0}</span>
                             </div>
                             <div className="flex-1 flex items-center justify-between px-3 py-2 rounded-xl bg-teal-500/10 border border-teal-500/20">
-                               <span className="text-[10px] font-black uppercase tracking-wider text-teal-500">NAT</span>
+                               <span className="text-xs font-black tracking-normal text-teal-500">NAT</span>
                                <span className="text-sm font-extrabold text-[var(--text-primary)]">{draftStats.types['NAT'] || 0}</span>
                             </div>
                          </div>
                       </div>
 
                       <div className="pb-2">
-                         <span className="text-xs font-bold text-[var(--text-muted)] uppercase tracking-widest mb-2 block">Difficulty Split</span>
+                         <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-2 block">Difficulty Split</span>
                          <div className="flex h-3 rounded-full overflow-hidden w-full gap-0.5">
                             {['Easy', 'Medium', 'Hard'].map(d => {
                                const count = draftStats.diffs[d] || 0;
@@ -1333,7 +1333,7 @@ export default function ExamSetupPage() {
                             setDeploying(false);
                           }
                         }}
-                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-80 disabled:cursor-wait text-white rounded-xl font-black tracking-wider uppercase shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer border-0"
+                        className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-80 disabled:cursor-wait text-white rounded-xl font-black tracking-normal shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer border-0"
                       >
                         {deploying ? <>Starting… <Loader2 className="w-5 h-5 animate-spin" /></> : <>Deploy Session <Play className="w-5 h-5 fill-current" /></>}
                       </motion.button>

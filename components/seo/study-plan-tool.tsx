@@ -129,7 +129,7 @@ export function StudyPlanTool({ byBranch }: { byBranch: Partial<Record<BranchCod
         {([[CalendarDays, "Days left", plan.daysLeft], [Target, "Weeks", plan.weeks], [Clock, "Study hours", plan.total], [Play, "Mock weeks", plan.mockWeeks]] as const).map(([Icon, k, v], i) => (
           <motion.div key={k} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="rounded-2xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/5 border border-violet-500/20 p-4">
             <Icon className="w-4 h-4 text-violet-500" />
-            <p className="mt-1 text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{k}</p>
+            <p className="mt-1 text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</p>
             <p className="text-2xl font-extrabold font-num text-[var(--text-primary)]">{Number(v).toLocaleString("en-IN")}</p>
           </motion.div>
         ))}
@@ -178,7 +178,7 @@ export function StudyPlanTool({ byBranch }: { byBranch: Partial<Record<BranchCod
 
       <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-violet-500/30 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-5 sm:p-6">
         <div className="min-w-0">
-          <p className="text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Plus &amp; Pro</p>
+          <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Plus &amp; Pro</p>
           <h2 className="mt-1 font-extrabold text-[var(--text-primary)]">Put this plan in your calendar automatically</h2>
           <p className="mt-1 max-w-xl text-sm text-[var(--text-secondary)]">We&apos;ll ask how you want it first: start date, study days, daily hours and start time. Then every block goes into your Study Planner so you can tick it off and track it.</p>
         </div>

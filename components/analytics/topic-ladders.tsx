@@ -54,7 +54,7 @@ export function TopicLadders({ topics }: { topics: TopicAnalytics[] }) {
           <ol className="space-y-2.5">
             {shown.map((r, i) => (
               <li key={`${r.subject}-${r.topic}`} className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
-                <span className={`px-2 py-0.5 rounded-md bg-gradient-to-r ${r.tier.cls} text-white text-[10px] font-black uppercase tracking-wide`}>{r.tier.name}</span>
+                <span className={`px-2 py-0.5 rounded-md bg-gradient-to-r ${r.tier.cls} text-white text-xs font-black tracking-normal`}>{r.tier.name}</span>
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-[var(--text-primary)] truncate">{r.topic}</p>
                   <div className="mt-1 h-1.5 rounded-full bg-[var(--surface-secondary)] overflow-hidden">

@@ -43,7 +43,7 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
       className="card-glass rounded-2xl p-6 shadow-sm flex flex-col justify-between hover-lift"
     >
       <div>
-        <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] mb-5 flex items-center gap-1.5">
+        <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] mb-5 flex items-center gap-1.5">
           <Flame className="w-4 h-4 text-rose-500 fill-rose-500 stroke-none" />
           <span>Practice Heatmap (60 Days)</span>
         </h3>
@@ -54,7 +54,7 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
             let color = "bg-[var(--surface-elevated)]";
             if (day.attempted > 0 && day.attempted < 10) color = "bg-violet-500/20 text-violet-300";
             else if (day.attempted >= 10 && day.attempted < 25) color = "bg-violet-500/55 text-violet-100";
-            else if (day.attempted >= 25) color = "bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white";
+            else if (day.attempted >= 25) color = "grad-brand text-white";
 
             return (
               <motion.div
@@ -91,7 +91,7 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
           <span className="w-3.5 h-3.5 rounded-sm bg-[var(--surface-elevated)]"></span>
           <span className="w-3.5 h-3.5 rounded-sm bg-violet-500/20"></span>
           <span className="w-3.5 h-3.5 rounded-sm bg-violet-500/55"></span>
-          <span className="w-3.5 h-3.5 rounded-sm bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600"></span>
+          <span className="w-3.5 h-3.5 rounded-sm grad-brand"></span>
         </div>
         <span>More Solved</span>
       </div>

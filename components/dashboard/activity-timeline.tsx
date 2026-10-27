@@ -101,7 +101,7 @@ export function ActivityTimeline({ recentSessions, bookmarks, mistakes }: Activi
   return (
     <div className="card-glass rounded-2xl p-6 shadow-sm flex flex-col h-full overflow-hidden">
       <div className="flex-none pb-4 border-b border-[var(--border-subtle)] mb-5">
-        <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-1.5">
+        <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5">
           <Activity className="w-4 h-4 text-indigo-500" />
           <span>Activity Log Timeline</span>
         </h3>
@@ -143,7 +143,7 @@ export function ActivityTimeline({ recentSessions, bookmarks, mistakes }: Activi
                           <span className="font-bold text-xs text-[var(--text-primary)] group-hover:text-indigo-500 transition-colors">
                             {item.title}
                           </span>
-                          <span className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider font-num">
+                          <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal font-num">
                             {item.timestamp.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true })}
                           </span>
                         </div>

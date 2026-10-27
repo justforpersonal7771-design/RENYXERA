@@ -35,7 +35,7 @@ export function ToolsFrame({ children }: { children: React.ReactNode }) {
 export function ToolHeader({ kicker, title, lead }: { kicker: string; title: string; lead: string }) {
   return (
     <header className="w-full">
-      <p className="text-xs font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Free tool · {kicker}</p>
+      <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">Free tool · {kicker}</p>
       <h1 className="mt-1.5 text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--text-primary)]">{title}</h1>
       <p className="mt-2 max-w-6xl text-[var(--text-secondary)] leading-relaxed">{lead}</p>
     </header>

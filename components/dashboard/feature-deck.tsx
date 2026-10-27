@@ -63,7 +63,7 @@ export function FeatureDeck(p: Props) {
     <Card key="pyq" tint="mint" label="PYQ bank" title="Every official GATE question, by topic" href="/browse" cta="Browse topics"
       body={`Every GATE ${p.paper} paper from 2017 to 2026, sorted into the exact topic it tests. Open a topic and practise it in the real exam screen.`}
       stats={[{ v: p.totalBank.toLocaleString("en-IN"), l: "official questions" }, { v: String(p.solved), l: "you've solved" }, { v: `${coverage}%`, l: "covered" }]}
-      preview={<div><p className="text-[10px] font-bold uppercase tracking-widest text-[var(--text-muted)]">Your coverage</p>
+      preview={<div><p className="text-xs font-bold tracking-normal text-[var(--text-muted)]">Your coverage</p>
         <div className="mt-3 grid grid-cols-10 gap-1">{Array.from({ length: 50 }, (_, i) => <span key={i} className={`aspect-square rounded-[4px] ${i < Math.round(coverage / 2) ? "bg-emerald-500" : "bg-[color-mix(in_srgb,var(--tint-ink)_12%,transparent)]"}`} />)}</div>
         <p className="mt-3 text-sm text-[var(--text-secondary)]"><span className="font-num text-xl font-extrabold text-[var(--text-primary)]">{p.solved}</span> of {p.totalBank.toLocaleString("en-IN")} done</p></div>} />,
     <Card key="mock" tint="peri" label="Mock tests" title="Practise the real paper, against the clock" href="/mocks" cta="See mocks"

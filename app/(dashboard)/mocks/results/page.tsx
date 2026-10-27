@@ -98,9 +98,9 @@ function Results() {
       {state === "ready" && (
         <>
           {me ? (
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl p-6 bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-[0_18px_50px_-20px_rgba(79,70,229,0.6)] grid grid-cols-3 gap-4 text-center">
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="rounded-3xl p-6 grad-brand text-white shadow-[0_18px_50px_-20px_rgba(79,70,229,0.6)] grid grid-cols-3 gap-4 text-center">
               {[["All-India rank", `#${me.rank.toLocaleString("en-IN")}`], ["Percentile", `${me.percentile}`], ["Score", `${me.score}`]].map(([k, v]) => (
-                <div key={k}><p className="text-[10px] font-black uppercase tracking-wider text-white/75">{k}</p><p className="text-2xl sm:text-3xl font-extrabold font-num">{v}</p></div>
+                <div key={k}><p className="text-xs font-black tracking-normal text-white/75">{k}</p><p className="text-2xl sm:text-3xl font-extrabold font-num">{v}</p></div>
               ))}
             </motion.div>
           ) : myFlags && isDisqualified(myFlags) ? (
@@ -115,7 +115,7 @@ function Results() {
           {mine && mine.status === "ranked" && (
             <div className="card-glass rounded-2xl p-5">
               <div className="flex items-center justify-between gap-3 flex-wrap">
-                <p className="text-xs font-black uppercase tracking-wider text-[var(--text-muted)]">Your scorecard · computed the GATE way</p>
+                <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Your scorecard · computed the GATE way</p>
                 <ShareResultButton title={mock?.title ?? "All-India Mock"} subtitle={`${mine.candidates?.toLocaleString("en-IN") ?? ""} ranked aspirants`}
                   stats={[{ label: "All-India Rank", value: `#${mine.air}` }, { label: "Percentile", value: String(mine.percentile) }, { label: "Marks", value: `${mine.marks}` }, { label: "GATE score", value: mine.gate_score != null ? String(mine.gate_score) : "—" }]} />
               </div>
@@ -127,7 +127,7 @@ function Results() {
                   [mine.pwd ? "PwD rank" : `${CAT_LABEL[mine.category] ?? "General"} rank`, `#${mine.category_rank}`],
                 ] as const).map(([k, v]) => (
                   <div key={k} className="rounded-xl bg-[var(--surface-secondary)]/60 px-3 py-2.5 min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{k}</p>
+                    <p className="text-xs font-bold tracking-normal text-[var(--text-muted)]">{k}</p>
                     <p className="text-base font-extrabold font-num text-[var(--text-primary)] truncate">{v}</p>
                   </div>
                 ))}
@@ -170,7 +170,7 @@ function Results() {
               <p className="p-8 text-center text-sm text-[var(--text-muted)]">No ranked attempts yet.</p>
             ) : (
               <table className="w-full text-sm">
-                <thead><tr className="text-left text-[10px] uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border-subtle)]">
+                <thead><tr className="text-left text-xs tracking-normal text-[var(--text-muted)] border-b border-[var(--border-subtle)]">
                   <th className="px-4 py-3 w-20">Rank</th><th className="px-4 py-3">Aspirant</th><th className="px-4 py-3 text-right">Score</th><th className="px-4 py-3 text-right hidden sm:table-cell">Percentile</th>
                 </tr></thead>
                 <tbody>

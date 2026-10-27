@@ -58,9 +58,9 @@ export function ScorePredictor() {
       {/* Rank on the curve */}
       <div className="lg:col-span-3 rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 flex flex-col">
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div className="rounded-2xl bg-gradient-to-br from-fuchsia-500/15 to-violet-500/5 border border-fuchsia-500/25 p-3"><p className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Likely AIR</p><p className="text-xl sm:text-2xl font-extrabold font-num text-[var(--text-primary)]">~{fmt(r.rank)}</p></div>
-          <div className="rounded-2xl bg-[var(--surface-secondary)]/60 p-3"><p className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Best case</p><p className="text-xl sm:text-2xl font-extrabold font-num text-emerald-600 dark:text-emerald-400">{fmt(r.band.best)}</p></div>
-          <div className="rounded-2xl bg-[var(--surface-secondary)]/60 p-3"><p className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">Worst case</p><p className="text-xl sm:text-2xl font-extrabold font-num text-rose-600 dark:text-rose-400">{fmt(r.band.worst)}</p></div>
+          <div className="rounded-2xl bg-gradient-to-br from-fuchsia-500/15 to-violet-500/5 border border-fuchsia-500/25 p-3"><p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Likely AIR</p><p className="text-xl sm:text-2xl font-extrabold font-num text-[var(--text-primary)]">~{fmt(r.rank)}</p></div>
+          <div className="rounded-2xl bg-[var(--surface-secondary)]/60 p-3"><p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Best case</p><p className="text-xl sm:text-2xl font-extrabold font-num text-emerald-600 dark:text-emerald-400">{fmt(r.band.best)}</p></div>
+          <div className="rounded-2xl bg-[var(--surface-secondary)]/60 p-3"><p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Worst case</p><p className="text-xl sm:text-2xl font-extrabold font-num text-rose-600 dark:text-rose-400">{fmt(r.band.worst)}</p></div>
         </div>
         <div className="mt-4 flex-1">
           <p className="text-xs font-bold text-[var(--text-secondary)] mb-1">Where you land on the marks-vs-rank curve</p>

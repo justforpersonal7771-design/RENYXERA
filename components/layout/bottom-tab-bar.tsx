@@ -7,7 +7,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Timer, Wrench, X } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
-import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 
@@ -17,7 +16,6 @@ import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
  */
 export function BottomTabBar() {
   const pathname = usePathname() ?? "";
-  const { tier } = useEntitlements();
   const signedIn = useAuthStore((s) => !!s.user);
   const [reviewHref, setReviewHref] = useState("/mistakes");
   const [more, setMore] = useState(false);
@@ -30,8 +28,7 @@ export function BottomTabBar() {
     return () => document.removeEventListener("keydown", onKey);
   }, [more]);
 
-  const gold = tier === "pro", silver = tier === "plus";
-  const on = gold ? "text-amber-600 dark:text-amber-400" : silver ? "text-slate-700 dark:text-slate-200" : "text-violet-600 dark:text-violet-400";
+  const on = "text-violet-600 dark:text-violet-400";
   const tabs = [
     { label: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
     { label: "Practice", href: "/setup", icon: Settings, active: pathname.startsWith("/setup") },

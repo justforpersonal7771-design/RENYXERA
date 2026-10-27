@@ -111,7 +111,7 @@ export default function RevisionBuilderPage() {
 
         {/* Left Side: Revision Modes selection (Spans 7) */}
         <div className="lg:col-span-7 card-glass rounded-2xl p-4 shadow-sm">
-          <h3 className="text-xs font-extrabold uppercase tracking-widest text-[var(--text-primary)] mb-3">
+          <h3 className="text-xs font-extrabold tracking-normal text-[var(--text-primary)] mb-3">
             Select Revision Parameters
           </h3>
 
@@ -126,7 +126,7 @@ export default function RevisionBuilderPage() {
                 <h4 className="font-bold text-sm text-[var(--text-primary)]">Mistakes Bank Queue</h4>
                 <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Flagged as incorrect during exams.</p>
               </div>
-              <span className="shrink-0 bg-[var(--surface)] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
+              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
                 {mistakes.filter(m => !m.mastered).length}
               </span>
             </motion.div>
@@ -141,7 +141,7 @@ export default function RevisionBuilderPage() {
                 <h4 className="font-bold text-sm text-[var(--text-primary)]">Bookmarked Items</h4>
                 <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Bookmarks, folders, formula notes.</p>
               </div>
-              <span className="shrink-0 bg-[var(--surface)] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
+              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
                 {bookmarks.length}
               </span>
             </motion.div>
@@ -156,7 +156,7 @@ export default function RevisionBuilderPage() {
                 <h4 className="font-bold text-sm text-[var(--text-primary)]">Weak Topics (&lt;50%)</h4>
                 <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Topics you scored poorly on.</p>
               </div>
-              <span className="shrink-0 bg-[var(--surface)] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
+              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
                 {weakTopics.length}
               </span>
             </motion.div>
@@ -174,7 +174,7 @@ export default function RevisionBuilderPage() {
                 </h4>
                 <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Shortcuts &amp; sheets from AI.</p>
               </div>
-              <span className="shrink-0 bg-[var(--surface)] text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
+              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
                 {bookmarks.filter(b => b.aiShortcut || b.personalObservations).length}
               </span>
             </motion.div>
@@ -184,7 +184,7 @@ export default function RevisionBuilderPage() {
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={handleStartRevision}
-              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold uppercase tracking-wider rounded-xl transition shadow-lg shadow-indigo-600/10 flex items-center gap-2 cursor-pointer text-xs"
+              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold tracking-normal rounded-xl transition shadow-lg shadow-indigo-600/10 flex items-center gap-2 cursor-pointer text-xs"
             >
               <Play className="w-4 h-4 fill-white" />
               <span>Launch Revision Session</span>
@@ -194,7 +194,7 @@ export default function RevisionBuilderPage() {
 
         {/* Right Side: Quick Adaptive recommendations (Spans 5) */}
         <div className="lg:col-span-5 card-glass rounded-2xl p-4 shadow-sm">
-          <h3 className="text-xs font-extrabold uppercase tracking-widest text-[var(--text-primary)] mb-3">
+          <h3 className="text-xs font-extrabold tracking-normal text-[var(--text-primary)] mb-3">
             Engine Suggestions
           </h3>
 
@@ -203,7 +203,7 @@ export default function RevisionBuilderPage() {
               <div className="p-3.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl flex items-start gap-3">
                 <Sparkles className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-0.5">Revision Due Today</span>
+                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Revision Due Today</span>
                   <span className="text-xs font-extrabold text-[var(--text-primary)] block mb-1">
                     {intel.todaysFocus.topic}
                   </span>
@@ -214,7 +214,7 @@ export default function RevisionBuilderPage() {
               <div className="p-3.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl flex items-start gap-3">
                 <Clock className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-[8px] font-black uppercase tracking-widest text-[var(--text-muted)] mb-0.5">Estimated Queue Review Time</span>
+                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Estimated Queue Review Time</span>
                   <span className="text-xs font-extrabold text-[var(--text-primary)] block mb-0.5">
                     {filteredRevisionQueue.reduce((acc, q) => acc + q.estimatedTimeMin, 0)} Minutes
                   </span>
@@ -229,7 +229,7 @@ export default function RevisionBuilderPage() {
       {/* 3. Reordered Revision Queue list — fills remaining space, scrolls internally */}
       <div className="flex-1 min-h-0 card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col">
         <div className="shrink-0 px-5 py-3 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/50 flex justify-between items-center">
-          <h3 className="font-extrabold text-xs uppercase tracking-widest text-[var(--text-primary)] flex items-center gap-1.5">
+          <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-primary)] flex items-center gap-1.5">
             <BookOpen className="w-4 h-4 text-indigo-500" />
             <span>{mode === "ai_insights" ? "Saved AI Formulas & Shortcuts" : "Dynamic Revision Queue"}</span>
           </h3>
@@ -254,7 +254,7 @@ export default function RevisionBuilderPage() {
                       className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-3 shadow-sm hover-lift"
                     >
                       <div className="flex justify-between items-center">
-                        <span className="text-[9px] font-black uppercase tracking-widest text-[var(--text-muted)]">{b.subject}</span>
+                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{b.subject}</span>
                         <button 
                           onClick={() => router.push(`/ai-tutor?qid=${b.questionId}`)}
                           className="text-[9px] font-black uppercase text-indigo-500 hover:underline cursor-pointer"
@@ -318,7 +318,7 @@ export default function RevisionBuilderPage() {
                           <span className="text-[10px] text-[var(--text-muted)] font-semibold block truncate mt-0.5">{item.question.subject}</span>
                         </td>
                         <td className="px-5 py-3.5 text-center">
-                          <span className={`inline-flex whitespace-nowrap px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider ${priorityColor(item.priority)}`}>
+                          <span className={`inline-flex whitespace-nowrap px-2 py-0.5 rounded-full text-xs font-extrabold tracking-normal ${priorityColor(item.priority)}`}>
                             {item.priority.replace(" Priority", "")}
                           </span>
                         </td>

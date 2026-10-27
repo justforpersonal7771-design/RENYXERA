@@ -37,7 +37,7 @@ export function WeeklyBenchmarkCard() {
       else { await navigator.clipboard.writeText(`${text} ${url}`); useToastStore.getState().show("Copied. Paste it to share your week.", "success"); }
     } catch { /* cancelled */ }
   };
-  const stat = (k: string, v: string, s?: string) => <div className="rounded-xl bg-[var(--surface-secondary)]/60 p-3"><dt className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{k}</dt><dd className="mt-0.5 text-lg font-extrabold font-num text-[var(--text-primary)]">{v}</dd>{s && <dd className="text-xs text-[var(--text-muted)]">{s}</dd>}</div>;
+  const stat = (k: string, v: string, s?: string) => <div className="rounded-xl bg-[var(--surface-secondary)]/60 p-3"><dt className="text-xs font-black tracking-normal text-[var(--text-muted)]">{k}</dt><dd className="mt-0.5 text-lg font-extrabold font-num text-[var(--text-primary)]">{v}</dd>{s && <dd className="text-xs text-[var(--text-muted)]">{s}</dd>}</div>;
 
   return (
     <section aria-label="This week compared with other learners" className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 sm:p-5">

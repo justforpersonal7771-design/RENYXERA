@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Segmented } from "@/components/ui/folder-tabs";
 import { BarChart3, Loader2, Play, RefreshCw, Target } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useExamStore } from "@/store/use-exam-store";
@@ -88,18 +89,14 @@ export function DiagnosticCard({ solved }: { solved: number }) {
   return (
     <section aria-label="Start here" className="grid gap-6 rounded-2xl border border-violet-500/25 bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 p-4 sm:p-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center">
 <div>
-      <p className="text-[11px] font-black uppercase tracking-[0.14em] text-violet-600 dark:text-violet-400">Start here · 2 minutes to set up</p>
+      <p className="text-sm font-semibold text-violet-600 dark:text-violet-400">Start here: 2 minutes to set up</p>
       <h2 className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">Find your starting point</h2>
       <p className="mt-1 text-sm text-[var(--text-secondary)] max-w-2xl">Set a weekly goal, then take a {COUNT}-question mixed set. Your dashboard fills with your weak topics and accuracy as soon as you finish.</p>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 max-w-2xl">
         <div>
           <p className="text-xs font-bold text-[var(--text-secondary)] mb-1.5">Study days per week</p>
-          <div className="flex gap-2" role="radiogroup" aria-label="Study days per week">
-            {DAYS.map((d) => (
-              <button key={d} type="button" role="radio" aria-checked={days === d} onClick={() => setDays(d)}
-                className={`h-10 flex-1 rounded-xl border text-sm font-bold cursor-pointer transition ${days === d ? "border-violet-600 bg-violet-600 text-white" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:border-violet-500/50"}`}>{d} days</button>
-            ))}
-          </div>
+          <Segmented label="Study days per week" value={String(days)} onChange={(v) => setDays(Number(v))}
+            options={DAYS.map((d) => ({ id: String(d), label: `${d} days` }))} />
         </div>
         <label className="block">
           <span className="block text-xs font-bold text-[var(--text-secondary)] mb-1.5">Target rank (AIR), optional</span>
@@ -111,7 +108,7 @@ export function DiagnosticCard({ solved }: { solved: number }) {
         </label>
       </div>
       <button type="button" onClick={start} disabled={busy}
-        className="mt-5 inline-flex h-11 items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 px-5 text-sm font-bold text-white shadow-md shadow-violet-500/30 disabled:opacity-80 cursor-pointer">
+        className="btn-main mt-5 disabled:opacity-80">
         {busy ? <>Starting… <Loader2 className="h-4 w-4 animate-spin" /></> : <>Start the {COUNT}-question diagnostic <Play className="h-4 w-4 fill-current" /></>}
       </button>
 </div>
@@ -119,7 +116,7 @@ export function DiagnosticCard({ solved }: { solved: number }) {
         {NEXT.map((s, i) => (
           <li key={s.title} className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 p-4">
             <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400"><s.icon className="h-4 w-4" aria-hidden /></span>
-            <span className="min-w-0"><span className="block text-[10px] font-black uppercase tracking-widest text-[var(--text-muted)]">Step {i + 1}</span><span className="block text-sm font-bold text-[var(--text-primary)]">{s.title}</span><span className="block text-xs text-[var(--text-secondary)] leading-relaxed">{s.body}</span></span>
+            <span className="min-w-0"><span className="block text-xs font-semibold text-[var(--text-muted)]">Step {i + 1}</span><span className="block text-sm font-bold text-[var(--text-primary)]">{s.title}</span><span className="block text-xs text-[var(--text-secondary)] leading-relaxed">{s.body}</span></span>
           </li>
         ))}
       </ol>

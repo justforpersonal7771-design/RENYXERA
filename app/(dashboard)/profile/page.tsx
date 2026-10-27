@@ -383,7 +383,7 @@ export default function ProfilePage() {
                     <div className="flex items-center justify-between mb-1.5">
                       <label className={`${LABEL} !mb-0`}><Sparkles className="w-3.5 h-3.5" /> Bio</label>
                       <motion.button type="button" whileTap={{ scale: 0.95 }} onClick={() => { setBioRound((n) => n + 1); setBioSuggestions(suggestBios(f, branchLabel, bioRound + 1)); }}
-                        className="group inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 text-white text-[11px] font-bold shadow-sm shadow-violet-500/30 cursor-pointer">
+                        className="group inline-flex items-center gap-1.5 h-7 px-2.5 rounded-lg grad-brand text-white text-[11px] font-bold shadow-sm shadow-violet-500/30 cursor-pointer">
                         <Sparkles className="w-3.5 h-3.5 transition-transform duration-500 group-hover:rotate-180" /> {bioSuggestions.length ? "More ideas" : "Suggest a bio"}
                       </motion.button>
                     </div>
@@ -391,7 +391,7 @@ export default function ProfilePage() {
                     <AnimatePresence>
                       {bioSuggestions.length > 0 && (
                         <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
-                          <p className="mt-2 mb-1.5 text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Tap one to use it — edit freely after</p>
+                          <p className="mt-2 mb-1.5 text-xs font-black tracking-normal text-[var(--text-muted)]">Tap one to use it — edit freely after</p>
                           <div className="flex flex-col gap-1.5">
                             {bioSuggestions.map((b, i) => (
                               <motion.button key={b} type="button" initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }} whileHover={{ x: 4, scale: 1.01 }}
@@ -422,7 +422,7 @@ export default function ProfilePage() {
                   </div>
                   <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3.5 py-2.5 min-w-0">
-                      <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Student ID</p>
+                      <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Student ID</p>
                       <div className="mt-0.5 flex items-center gap-2 min-w-0">
                         <span className="font-mono text-sm font-semibold text-[var(--text-primary)] truncate select-all">{profile?.student_id || "—"}</span>
                         {profile?.student_id && (
@@ -433,12 +433,12 @@ export default function ProfilePage() {
                       <p className="text-[10px] text-[var(--text-muted)]">Permanent — can&apos;t be changed</p>
                     </div>
                     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3.5 py-2.5 min-w-0">
-                      <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Email</p>
+                      <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Email</p>
                       <p className="mt-0.5 text-sm font-semibold text-[var(--text-primary)] truncate">{user.email}</p>
                       <p className="text-[10px] text-[var(--text-muted)]">Sign-in email · manage in Account &amp; security</p>
                     </div>
                     <div className="rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3.5 py-2.5 min-w-0">
-                      <p className="text-[10px] font-black uppercase tracking-[0.12em] text-[var(--text-muted)]">Mobile</p>
+                      <p className="text-xs font-black tracking-normal text-[var(--text-muted)]">Mobile</p>
                       <p className="mt-0.5 text-sm font-semibold text-[var(--text-primary)] truncate">{f.phone ? `+91 ${f.phone.slice(0, 5)} ${f.phone.slice(5)}` : "Not added"}</p>
                       <p className="text-[10px] text-[var(--text-muted)]">{f.phone ? (f.contactOptIn ? "Updates allowed" : "No updates") : "Add it above (optional)"}</p>
                     </div>

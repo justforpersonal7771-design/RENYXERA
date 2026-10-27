@@ -168,7 +168,7 @@ export function DatePicker({
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
-                <span className="text-xs font-black uppercase tracking-wider text-[var(--text-primary)]">
+                <span className="text-xs font-black tracking-normal text-[var(--text-primary)]">
                   {MONTHS[viewDate.getMonth()]} {viewDate.getFullYear()}
                 </span>
                 <button
@@ -183,7 +183,7 @@ export function DatePicker({
 
               <div className="grid grid-cols-7 gap-0.5 mb-1">
                 {WEEKDAYS.map((d) => (
-                  <span key={d} className="text-[9px] font-black uppercase tracking-wider text-[var(--text-muted)] text-center py-1">
+                  <span key={d} className="text-xs font-black tracking-normal text-[var(--text-muted)] text-center py-1">
                     {d}
                   </span>
                 ))}
@@ -221,14 +221,14 @@ export function DatePicker({
                 <button
                   type="button"
                   onClick={() => { setViewDate(new Date()); onChange(todayISO); close(); }}
-                  className="text-[10px] font-black uppercase tracking-wider text-indigo-500 hover:underline cursor-pointer"
+                  className="text-xs font-black tracking-normal text-indigo-500 hover:underline cursor-pointer"
                 >
                   Today
                 </button>
                 <button
                   type="button"
                   onClick={close}
-                  className="text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                  className="text-xs font-black tracking-normal text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                 >
                   Close
                 </button>

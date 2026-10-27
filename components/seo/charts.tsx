@@ -32,7 +32,7 @@ export function StatTile({ label, value, sub, accent = "violet" }: { label: stri
   const labelTone = { violet: "text-violet-700 dark:text-violet-300", emerald: "text-emerald-700 dark:text-emerald-300", amber: "text-amber-700 dark:text-amber-300", sky: "text-sky-700 dark:text-sky-300", rose: "text-rose-700 dark:text-rose-300" }[accent];
   return (
     <div className={`chart-rise rounded-2xl border bg-gradient-to-br ${ring} p-3.5 sm:p-4 min-w-0`}>
-      <p className={`text-[11px] sm:text-xs font-black uppercase tracking-wider leading-tight ${labelTone}`}>{label}</p>
+      <p className={`text-xs sm:text-xs font-black tracking-normal leading-tight ${labelTone}`}>{label}</p>
       <p className="mt-1 text-xl sm:text-2xl font-extrabold font-num text-[var(--text-primary)] truncate">{value}</p>
       {sub && <p className="text-xs text-[var(--text-secondary)] leading-snug">{sub}</p>}
     </div>
@@ -74,7 +74,7 @@ export function Donut({ slices, center, sub, size = 168, legend = true }: { slic
     <div className={`flex flex-col items-center gap-5 ${legend ? "sm:flex-row" : "sm:justify-center"}`}>
       <div className="chart-spin relative shrink-0 rounded-full" style={{ width: size, height: size, background: `conic-gradient(${stops})` }}>
         <div className="absolute inset-[18%] rounded-full bg-[var(--surface)] grid place-items-center text-center shadow-inner">
-          <div><p className="text-2xl font-extrabold font-num text-[var(--text-primary)] leading-none">{center}</p>{sub && <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{sub}</p>}</div>
+          <div><p className="text-2xl font-extrabold font-num text-[var(--text-primary)] leading-none">{center}</p>{sub && <p className="mt-1 text-xs font-bold tracking-normal text-[var(--text-muted)]">{sub}</p>}</div>
         </div>
       </div>
       {legend && <ul className="w-full min-w-0 space-y-1.5">
@@ -196,7 +196,7 @@ export function Gauge({ value, max, label, sub }: { value: number; max: number; 
       </svg>
       <div className="absolute inset-x-0 bottom-0 text-center">
         <p className="text-3xl font-extrabold font-num text-[var(--text-primary)] leading-none">{label}</p>
-        {sub && <p className="mt-1 text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">{sub}</p>}
+        {sub && <p className="mt-1 text-xs font-bold tracking-normal text-[var(--text-muted)]">{sub}</p>}
       </div>
     </div>
   );

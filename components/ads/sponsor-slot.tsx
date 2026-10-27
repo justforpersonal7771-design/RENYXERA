@@ -93,7 +93,7 @@ function HouseCard({ promo }: { promo: Promo }) {
         {promo.kind === "affiliate" ? <BookOpen className="w-5 h-5" /> : <Sparkles className="w-5 h-5" />}
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-[10px] font-black uppercase tracking-wider text-[var(--text-muted)]">{promo.kind === "affiliate" ? "Recommended book · affiliate link" : "From RENYXERA"}</span>
+        <span className="block text-xs font-black tracking-normal text-[var(--text-muted)]">{promo.kind === "affiliate" ? "Recommended book · affiliate link" : "From RENYXERA"}</span>
         <span className="block font-bold text-[var(--text-primary)]">{promo.title}</span>
         <span className="block text-sm text-[var(--text-secondary)] line-clamp-2">{promo.blurb}</span>
       </span>
