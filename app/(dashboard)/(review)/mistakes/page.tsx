@@ -530,10 +530,10 @@ export default function MistakesPage() {
                             <div
                               key={o.option_id}
                               onClick={() => handleOptionToggle(o.option_id)}
-                              className={`p-4 border-[2px] rounded-xl transition ${borderClass} overflow-hidden`}
+                              className={`q-tile p-4 border-[2px] rounded-xl transition ${borderClass} overflow-hidden`}
                             >
                               <div className="flex items-start gap-3 w-full">
-                                <div className="shrink-0 font-black text-inherit w-5 mt-0.5 flex flex-col items-center">
+                                <div className="q-tile-letter shrink-0 font-black text-inherit w-5 mt-0.5 flex flex-col items-center">
                                   <span>{o.option_id}.</span>
                                 </div>
                                 <div className="text-[var(--text-primary)] max-w-full overflow-hidden break-words flex-1">

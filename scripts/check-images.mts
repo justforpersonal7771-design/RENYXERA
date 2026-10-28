@@ -10,9 +10,11 @@ for (const b of ["CSE", "ECE", "EE", "ME", "CE", "DA"]) {
   ImageResolver.initialize(man, b === "CSE" ? "/images" : `/images/${b}`);
   const sh = JSON.parse(readFileSync(`public/data/shared/${b}.json`, "utf8"));
   ImageResolver.addExtra(sh.manifest);
-  const raw: any[] = paperRows(sh.papers);
+  // the branch's own papers plus its shared pool
+  const own = JSON.parse(readFileSync(b === "CSE" ? "public/data/questions.json" : `public/data/${b}/questions.json`, "utf8"));
+  const raw: any[] = paperRows([...own, ...sh.papers]);
   const qs = new CompilerFacade().compileSynchronously(raw);
   const walk = (n: any) => { if (!n) return; if (Array.isArray(n)) return n.forEach(walk); if (n.type === "image") { const u = n.resolvedUrl; if (existsSync("public" + u)) ok++; else { bad++; if (ex.length < 4) ex.push(`${b} ${u}`); } } for (const v of Object.values(n)) if (typeof v === "object") walk(v); };
   for (const q of qs) { walk(q.contentAst); for (const o of q.options ?? []) walk((o as any).contentAst); }
 }
-console.log("shared images ok", ok, "broken", bad); console.log(ex.join("\n"));
+console.log("images ok", ok, "broken", bad); console.log(ex.join("\n"));

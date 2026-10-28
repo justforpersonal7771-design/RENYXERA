@@ -164,9 +164,9 @@ function RevisionSessionContent() {
                         else if (!isActuallyCorrect && isUserSelected) borderClass = "border-red-500 bg-red-50 dark:bg-red-900/20 ring-1 ring-red-500 text-red-700 dark:text-red-500";
 
                         return (
-                          <div key={o.option_id} className={`p-4 border-[2px] rounded-xl ${borderClass} overflow-hidden`}>
+                          <div key={o.option_id} className={`q-tile p-4 border-[2px] rounded-xl ${borderClass} overflow-hidden`}>
                             <div className="flex items-start gap-3 w-full">
-                               <div className="shrink-0 font-black text-inherit w-5 mt-0.5">{o.option_id}.</div>
+                               <div className="q-tile-letter shrink-0 font-black text-inherit w-5 mt-0.5">{o.option_id}.</div>
                                <div className="text-[var(--text-primary)] max-w-full overflow-hidden break-words"><AstNodeRenderer nodes={o.contentAst} /></div>
                             </div>
                           </div>

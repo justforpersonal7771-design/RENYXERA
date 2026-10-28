@@ -717,18 +717,18 @@ export default function ExamSessionPage() {
         {tabWarning !== null && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[500] flex items-center justify-center bg-black/55 backdrop-blur-sm px-4" role="alertdialog" aria-labelledby="tab-warn-title">
             <motion.div initial={{ scale: 0.9, y: 16 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0 }} transition={{ type: "spring", stiffness: 320, damping: 24 }}
-              className="w-full max-w-md rounded-3xl bg-[var(--surface)] border-2 border-amber-500/50 p-6 text-center shadow-2xl">
-              <motion.div animate={{ rotate: [0, -8, 8, -4, 0] }} transition={{ duration: 0.6 }} className="w-14 h-14 mx-auto rounded-2xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+              className="w-full max-w-md rounded-3xl bg-[var(--tint-butter)] border-2 border-[#16123a] p-6 text-center shadow-[5px_5px_0_#16123a]">
+              <motion.div animate={{ rotate: [0, -8, 8, -4, 0] }} transition={{ duration: 0.6 }} className="w-14 h-14 mx-auto rounded-2xl bg-[var(--surface)] text-[var(--tint-butter-ink)] flex items-center justify-center">
                 <AlertTriangle className="w-7 h-7" />
               </motion.div>
               <h2 id="tab-warn-title" className="mt-3 text-xl font-extrabold text-[var(--text-primary)]">Warning {tabWarning} of {MOCK_TAB_SWITCH_LIMIT - 1}</h2>
               <p className="mt-1 text-sm text-[var(--text-secondary)]">You left the exam window. That isn&apos;t allowed during a test — {MOCK_TAB_SWITCH_LIMIT - tabWarning === 1 ? "one more time and" : `after ${MOCK_TAB_SWITCH_LIMIT - tabWarning} more times`} your paper is submitted automatically and disqualified from ranking.</p>
               <div className="mt-4 flex justify-center gap-1.5" aria-hidden="true">
                 {Array.from({ length: MOCK_TAB_SWITCH_LIMIT }).map((_, i) => (
-                  <span key={i} className={`h-2 w-8 rounded-full ${i < tabWarning ? "bg-amber-500" : "bg-[var(--surface-secondary)]"}`} />
+                  <span key={i} className={`h-2 w-8 rounded-full ${i < tabWarning ? "bg-[var(--tint-butter-ink)]" : "bg-[var(--surface)]"}`} />
                 ))}
               </div>
-              <button onClick={() => setTabWarning(null)} className="mt-5 h-11 w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold cursor-pointer">Back to the paper</button>
+              <button onClick={() => setTabWarning(null)} className="btn-main mt-5 w-full justify-center">Back to the paper</button>
             </motion.div>
           </motion.div>
         )}

@@ -1752,3 +1752,35 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .folder-wrap .folder-scroll { padding: 2px 2px 4px !important; }
 @media (min-width: 1024px) { .folder-wrap .folder-scroll { max-height: calc(100vh - 230px); } .forge-fill .folder-wrap .folder-scroll { max-height: none; } }
 @media (max-width: 767px) { .folder-wrap { padding: 12px !important; } .folder-wrap::before { inset: 6px; } }
+
+/* Folder tabs inside the tinted card (owner, 28 Oct): real tab shapes again. The outer card is the active tab's tint
+   with the stitch centred in its padding; inside it, the content panel is a lighter sheet of the same colour and the
+   active tab is that same sheet colour, joined to the panel with inverted corners. Inactive tabs sit behind. */
+.folder-wrap { --sheet: color-mix(in srgb, var(--surface) 62%, var(--tab-tint)); gap: 0 !important; }
+.dark .folder-wrap { --sheet: color-mix(in srgb, var(--surface) 70%, var(--tab-tint)); }
+.folder-wrap .folder-tabs { padding: 0 22px !important; gap: 4px; align-items: flex-end; position: relative; z-index: 1; }
+.folder-wrap .folder-tab { border-radius: 14px 14px 0 0 !important; padding: 9px 18px 10px !important; border: 0 !important; box-shadow: none !important;
+  background: color-mix(in srgb, var(--tab-tint) 70%, #16123a 6%) !important; color: var(--tab-ink) !important; }
+.folder-wrap .folder-tab:hover { background: color-mix(in srgb, var(--sheet) 60%, var(--tab-tint)) !important; }
+.folder-wrap .folder-tab[aria-selected="true"] { background: var(--sheet) !important; color: var(--text-primary) !important; padding-top: 12px !important; font-weight: 800; }
+.folder-wrap .folder-tab[aria-selected="true"]::before, .folder-wrap .folder-tab[aria-selected="true"]::after { display: block !important; content: ""; position: absolute; bottom: 0; width: 14px; height: 14px; pointer-events: none; }
+.folder-wrap .folder-tab[aria-selected="true"]::before { left: -14px; background: radial-gradient(circle at 0 0, transparent 13.5px, var(--sheet) 14px); }
+.folder-wrap .folder-tab[aria-selected="true"]::after { right: -14px; background: radial-gradient(circle at 100% 0, transparent 13.5px, var(--sheet) 14px); }
+.folder-wrap .folder-panel { background: var(--sheet) !important; border-radius: calc(var(--card-radius) - 10px) !important; }
+.folder-wrap .folder-scroll { padding: 16px !important; }
+/* Review screens (Mistakes, Bookmarks, Revision) use the same option tile as the test screen; their own state
+   colours (correct, wrong, chosen) stay, set by each screen's border classes. */
+.q-tile { border-radius: 18px !important; background-color: var(--surface); cursor: pointer; }
+.q-tile:hover { box-shadow: 2px 2px 0 color-mix(in srgb, #16123a 35%, transparent); }
+.q-tile-letter { display: grid; place-items: center; width: 30px !important; height: 30px; border-radius: 10px; background: var(--surface-secondary); border: 1.5px solid var(--option-border); font-size: 13px; }
+/* Stitch traces the folder outline (owner, 28 Oct): one dashed seam ~8px inside the sheet, around the content panel
+   and up around the active tab, as one continuous line. No stitch on the outer tinted card. */
+.folder-wrap::before { display: none !important; }
+.folder-wrap .folder-tabs { z-index: 3 !important; }
+.folder-wrap .folder-panel { position: relative; }
+.folder-wrap .folder-panel::before { display: block !important; content: ""; position: absolute; inset: 8px; z-index: 1; pointer-events: none;
+  border: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-radius: calc(var(--card-radius) - 16px); }
+.folder-wrap .folder-tab { isolation: isolate; }
+.folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch { display: block !important; position: absolute; z-index: -1; inset: 7px 7px -9.5px 7px !important;
+  background: var(--sheet); border: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom: 0; border-radius: 9px 9px 0 0; }
+.folder-wrap .folder-scroll { padding: 18px !important; }
