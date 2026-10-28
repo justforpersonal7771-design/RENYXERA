@@ -164,7 +164,7 @@ export default function ReviewPage() {
 
   return (
     <MathJaxContext config={mathJaxConfig}>
-      <div className="flex flex-col h-dvh w-full overflow-hidden bg-[var(--background)] font-sans">
+      <div id="exam-root" data-mode="review" className="flex flex-col h-dvh w-full overflow-hidden bg-[var(--background)] font-sans">
         <AnswersPendingBanner session={session} onGraded={setSession} className="mx-3 mt-3 shrink-0" />
 
         {/* COMMAND BAR — matches the exam session Topbar's structure: a compact
@@ -173,7 +173,7 @@ export default function ReviewPage() {
             exam session's, navigates home when clicked. */}
         {/* One-row command bar (all widths): essentials left, question details inline
             on md+ (they move into the question area on phones), actions right. */}
-        <header className="flex-none bg-[var(--surface)] border-b border-[var(--border)] shadow-sm shrink-0 z-30">
+        <header className="exam-head flex-none border-b border-[var(--border)] shrink-0 z-30">
           <div className="flex items-center justify-between gap-2 px-3 sm:px-5 h-14">
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <button
@@ -264,7 +264,7 @@ export default function ReviewPage() {
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
 
           {/* Question Workspace Component */}
-          <div id="review-workspace-container" className="flex-1 flex flex-col min-w-0 bg-[var(--surface)] h-full relative z-10 w-full lg:w-auto">
+          <div id="review-workspace-container" className="exam-stage flex-1 flex flex-col min-w-0 h-full relative z-10 w-full lg:w-auto">
             {q ? (
               <>
                 {/* GPU-accelerated motion page transitions */}
@@ -366,11 +366,11 @@ export default function ReviewPage() {
                 </AnimatePresence>
 
                 {/* BOTTOM ACTION BAR */}
-                <div className="flex-none px-4 py-3 sm:px-6 flex justify-between items-center gap-2 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur z-20">
+                <div className="flex-none px-4 py-3 sm:px-6 flex justify-between items-center gap-2 border-t border-[var(--border)] exam-foot z-20">
                   <button
                     disabled={currentIndex === 0}
                     onClick={() => setCurrentIndex(i => i - 1)}
-                    className="group inline-flex items-center gap-1.5 px-5 py-2.5 bg-[var(--surface-secondary)] border border-[var(--border)] hover:border-[var(--border-strong)] text-[var(--text-primary)] font-semibold rounded-xl transition disabled:opacity-45 disabled:cursor-not-allowed active:scale-[0.97] cursor-pointer"
+                    className="btn-soft group inline-flex items-center gap-1.5 px-5 py-2.5 font-semibold text-sm disabled:opacity-40"
                   >
                     <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" /> <span className="hidden sm:inline">Previous</span>
                   </button>
@@ -378,7 +378,7 @@ export default function ReviewPage() {
                     <motion.button
                       whileTap={{ scale: 0.96 }}
                       onClick={() => setCurrentIndex(nextWrongIndex)}
-                      className="group inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/25 hover:bg-rose-500/20 text-sm font-semibold transition cursor-pointer"
+                      className="btn-soft btn-rose group inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-semibold"
                       title="Jump to the next question you got wrong"
                     >
                       <XCircle className="w-4 h-4 transition-transform group-hover:rotate-90" /> Next wrong
@@ -387,7 +387,7 @@ export default function ReviewPage() {
                   <button
                     disabled={currentIndex === draftQuestions.length - 1}
                     onClick={() => setCurrentIndex(i => i + 1)}
-                    className="group relative overflow-hidden inline-flex items-center gap-1.5 px-7 py-2.5 grad-brand text-white font-semibold text-sm rounded-xl shadow-md shadow-violet-500/30 transition active:scale-[0.97] disabled:opacity-45 disabled:cursor-not-allowed cursor-pointer"
+                    className="btn-main group px-7 disabled:opacity-40"
                   >
                     <span className="relative">Next</span>
                     <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -450,7 +450,7 @@ export default function ReviewPage() {
             );
             return (
               <>
-                <div className="hidden lg:flex w-[340px] flex-none border-l border-[var(--border)] bg-[var(--surface)] z-20 flex-col h-full overflow-hidden">
+                <div className="exam-side q-palette hidden lg:flex w-[340px] flex-none z-20 flex-col h-full overflow-hidden">
                   <div className="flex-[3] min-h-0 flex flex-col p-4 pb-3 overflow-hidden">
                     <div className="font-bold text-xs tracking-normal text-[var(--text-muted)] mb-3 px-1">Review navigator</div>
               <div className="grid grid-cols-3 gap-2 mb-3">

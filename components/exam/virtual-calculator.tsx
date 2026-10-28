@@ -122,7 +122,7 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
       aria-label="Calculator"
       hidden={!open}
       style={style}
-      className={`fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[520px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
+      className={`calc-root fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[520px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
     >
       <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
         className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 py-1 ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
@@ -152,7 +152,7 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
         {KEYS.map((b) => (
           <button key={b.k} type="button" onClick={() => key(b.k)} aria-label={b.k === "⌫" ? "Backspace" : b.l}
             style={{ gridRow: `${b.r} / span ${b.rs ?? 1}`, gridColumn: `${b.c} / span ${b.cs ?? 1}` }}
-            className={`min-h-8 min-w-0 rounded-md px-0 font-semibold tracking-tight transition active:scale-95 cursor-pointer sm:min-h-9 sm:text-xs ${b.l.length >= 5 ? "text-[9px]" : "text-[11px]"} ${STYLE[b.kind ?? "fn"]}`}>
+            className={`calc-key min-h-8 min-w-0 rounded-md px-0 font-semibold tracking-tight transition active:scale-95 cursor-pointer sm:min-h-9 sm:text-xs ${b.l.length >= 5 ? "text-[9px]" : "text-[11px]"} ${STYLE[b.kind ?? "fn"]}`}>
             {b.k === "⌫" ? <ArrowLeft className="mx-auto h-4 w-4" strokeWidth={2.5} aria-hidden /> : b.l}
           </button>
         ))}

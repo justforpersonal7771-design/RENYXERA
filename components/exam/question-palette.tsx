@@ -80,10 +80,10 @@ export function QuestionPalette() {
   if (!responses || !currentDraft) return null;
 
   return (
-    <div className="h-full flex flex-col pt-0 bg-[var(--surface)] overflow-hidden divide-y divide-[var(--border)]">
+    <div className="q-palette h-full flex flex-col pt-0 bg-[var(--surface)] overflow-hidden divide-y divide-[var(--border)]">
       
       {/* 1. Header Metadata Section (Section, Subject, Topic) */}
-      <div className="flex-none bg-[var(--surface-secondary)] border-b border-[var(--border)] p-4 sm:p-5">
+      <div className="q-palette-info flex-none bg-[var(--surface-secondary)] border-b border-[var(--border)] p-4 sm:p-5">
         {currentQData ? (
           <div className="space-y-3">
             <div>
@@ -103,7 +103,7 @@ export function QuestionPalette() {
       </div>
 
       {/* 2. Legend Status Counters */}
-      <div className="flex-none p-4 sm:p-5 bg-[var(--surface-secondary)]">
+      <div className="q-palette-legend flex-none p-4 sm:p-5 bg-[var(--surface-secondary)]">
         <div className="grid grid-cols-2 gap-3 text-xs font-bold uppercase text-[var(--text-secondary)]">
           <div className="flex items-center gap-2.5">
             <span className="w-5 h-5 rounded bg-green-500 text-white flex items-center justify-center text-[10px] font-bold shadow-sm">{stats.answered}</span>
@@ -144,7 +144,7 @@ export function QuestionPalette() {
       </div>}
 
       {/* 3. Center Aligned Questions Palette Grid */}
-      <div ref={gridRef} className="grid-snap flex-1 overflow-y-auto overflow-x-hidden px-4 pb-4 pt-6 sm:px-5 sm:pb-5 sm:pt-7 custom-scrollbar">
+      <div ref={gridRef} className="q-palette-grid grid-snap flex-1 overflow-y-auto overflow-x-hidden px-4 pb-4 pt-6 sm:px-5 sm:pb-5 sm:pt-7 custom-scrollbar">
         <div className="grid grid-cols-5 gap-2.5 max-w-[300px] mx-auto justify-items-center">
           {sectionQuestions.map(({ q, idx }) => {
             const localQId = q.questionId;
@@ -173,7 +173,8 @@ export function QuestionPalette() {
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.92 }}
                 aria-current={isCurrent ? "step" : undefined}
-                className={`relative aspect-square w-12 rounded-xl flex items-center justify-center font-num font-bold text-sm transition-colors border cursor-pointer ${colorClass}`}
+                data-state={colorClass.includes("emerald") ? "answered" : colorClass.includes("rose") ? "not-answered" : colorClass.includes("violet") ? "marked" : "idle"}
+                className={`q-cell relative aspect-square w-12 rounded-xl flex items-center justify-center font-num font-bold text-sm transition-colors border cursor-pointer ${colorClass}`}
               >
                 {isCurrent && (
                   <motion.span

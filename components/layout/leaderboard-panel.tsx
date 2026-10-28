@@ -213,30 +213,29 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
         transition={{ type: "spring", stiffness: 380, damping: 32 }}
         className="relative w-full sm:w-[420px] max-h-[85dvh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-[var(--surface)] border border-[var(--border)] popover-surface overflow-hidden"
       >
-        <div className="relative px-5 pt-5 pb-4 grad-brand text-white overflow-hidden">
-          <motion.div aria-hidden="true" className="absolute -top-10 -right-8 w-40 h-40 rounded-full bg-amber-300/30 blur-2xl" animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 4, repeat: Infinity }} />
+        <div className="lb-head relative px-5 pt-5 pb-4 bg-[var(--tint-butter)] text-[var(--text-primary)] overflow-hidden">
           <div className="relative flex items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <motion.span initial={{ rotate: -20, scale: 0.6 }} animate={{ rotate: 0, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 12 }} className="w-11 h-11 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center">
-                <Trophy className="w-6 h-6 text-amber-200" />
+              <motion.span initial={{ rotate: -20, scale: 0.6 }} animate={{ rotate: 0, scale: 1 }} transition={{ type: "spring", stiffness: 300, damping: 12 }} className="w-11 h-11 rounded-2xl bg-[#16123a] flex items-center justify-center shadow-[2px_2px_0_rgba(22,18,58,.35)]">
+                <Trophy className="w-6 h-6 text-[#f3d77a]" strokeWidth={2.4} />
               </motion.span>
               <div>
                 <h2 className="text-lg font-extrabold leading-tight">Leaderboard</h2>
-                <p className="text-xs text-white/80">{tab === "practice" ? (scope === "subject" ? `${subject} · marks this week` : scope === "college" ? "Your college · marks this week" : "Marks scored in practice · last 7 days") : tab === "challenge" ? `${challengeTitle()} · best score` : mock ? mock.title : "All-India Mock"}</p>
+                <p className="text-xs text-[var(--text-secondary)]">{tab === "practice" ? (scope === "subject" ? `${subject} · marks this week` : scope === "college" ? "Your college · marks this week" : "Marks scored in practice · last 7 days") : tab === "challenge" ? `${challengeTitle()} · best score` : mock ? mock.title : "All-India Mock"}</p>
               </div>
             </div>
-            <button onClick={onClose} aria-label="Close leaderboard" className="p-1.5 rounded-lg hover:bg-white/15 cursor-pointer"><X className="w-4 h-4" /></button>
+            <button onClick={onClose} aria-label="Close leaderboard" className="btn-soft !p-1.5 !rounded-xl"><X className="w-4 h-4" /></button>
           </div>
-          <div role="tablist" className="relative mt-4 grid grid-cols-3 gap-1 p-1 rounded-xl bg-white/15">
+          <div role="tablist" className="relative mt-4 grid grid-cols-3 gap-1 p-1 rounded-xl bg-[var(--surface)]">
             {(["mock", "practice", "challenge"] as Tab[]).map((t) => (
               <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className="relative py-1.5 text-xs font-bold rounded-lg cursor-pointer">
-                {tab === t && <motion.span layoutId="lb-tab" className="absolute inset-0 rounded-lg bg-white shadow" transition={{ type: "spring", stiffness: 500, damping: 36 }} />}
-                <span className={`relative ${tab === t ? "text-violet-700" : "text-white"}`}>{t === "mock" ? "All-India Mock" : t === "practice" ? "Practice" : "Challenge"}</span>
+                {tab === t && <motion.span layoutId="lb-tab" className="absolute inset-0 rounded-lg bg-[#16123a]" transition={{ type: "spring", stiffness: 500, damping: 36 }} />}
+                <span className={`relative ${tab === t ? "text-white" : "text-[var(--text-secondary)]"}`}>{t === "mock" ? "All-India Mock" : t === "practice" ? "Practice" : "Challenge"}</span>
               </button>
             ))}
           </div>
           {me && (
-            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="relative mt-3 flex items-center justify-between rounded-xl bg-white/15 px-3 py-2 text-sm">
+            <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="relative mt-3 flex items-center justify-between rounded-xl bg-[var(--surface)] px-3 py-2 text-sm border-2 border-[#16123a] shadow-[2px_2px_0_#16123a]">
               <span className="font-semibold">Your rank</span>
               <span className="flex items-center gap-2 font-num font-extrabold">#{me.rank}<Movement rank={me.rank} prev={me.prev_rank} onDark /></span>
             </motion.div>
@@ -289,10 +288,11 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
                     layout
                     key={`${r.display_name}-${r.rank}-${r.score}`}
                     transition={{ layout: { type: "spring", stiffness: 260, damping: 30 } }}
-                    className={`flex items-center gap-3 rounded-xl px-3 py-2 border ${r.is_me ? "border-violet-500/50 bg-violet-500/10 shadow-[0_0_0_3px_rgba(139,92,246,0.12)]" : "border-transparent bg-[var(--surface-secondary)]/50"}`}
+                    data-rank={settled && r.rank <= 3 ? r.rank : undefined}
+                    className={`lb-row flex items-center gap-3 rounded-2xl px-3 py-2.5 border-2 ${r.is_me ? "border-[#16123a] bg-[var(--tint-lilac)] shadow-[2px_2px_0_#16123a]" : "border-transparent bg-[var(--surface-secondary)]"}`}
                   >
                     <span className="w-9 shrink-0 font-num font-extrabold text-[var(--text-primary)] inline-flex items-center gap-1">
-                      {settled && r.rank === 1 ? <Crown className="w-4 h-4 text-amber-500" /> : settled && r.rank <= 3 ? <Medal className="w-4 h-4 text-slate-400" /> : null}
+                      {settled && r.rank === 1 ? <Crown className="w-4 h-4" /> : settled && r.rank <= 3 ? <Medal className="w-4 h-4" /> : null}
                       {r.rank}
                     </span>
                     <span className="flex-1 min-w-0 truncate text-sm text-[var(--text-primary)]">

@@ -578,7 +578,7 @@ export default function ExamSessionPage() {
                           });
                         }}
                         title={(currentResponse?.selectedOptions?.length || currentResponse?.natValue) ? "Mark for review — your answer will be counted" : "Mark for review"}
-                        className="relative group flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-violet-500/10 text-violet-700 dark:text-violet-300 hover:bg-violet-500/20 border border-violet-500/25 rounded-xl text-sm font-semibold transition active:scale-[0.97] cursor-pointer"
+                        className="btn-soft btn-peri relative group flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-4 py-2 text-sm font-semibold"
                       >
                         <Flag className="w-3.5 h-3.5 transition-transform group-hover:-rotate-12" /> Mark &amp; next
                         {/* Green dot = this question has an answer, so "Mark & next" saves it as Marked & Answered (same dot as the palette). */}
@@ -591,7 +591,7 @@ export default function ExamSessionPage() {
                       </button>
                       <button
                         onClick={handleClearResponse}
-                        className="group flex-none inline-flex items-center gap-1.5 px-4 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] hover:border-rose-400/50 hover:text-rose-600 dark:hover:text-rose-400 text-[var(--text-secondary)] font-semibold rounded-xl text-sm transition active:scale-[0.97] cursor-pointer"
+                        className="btn-soft group flex-none inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold"
                       >
                         <Eraser className="w-3.5 h-3.5 transition-transform group-hover:-rotate-12" /> Clear
                       </button>
@@ -613,7 +613,7 @@ export default function ExamSessionPage() {
                       <button
                         disabled={currentQuestionIndex === 0}
                         onClick={previousQuestion}
-                        className="group flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] hover:border-[var(--border-strong)] text-[var(--text-primary)] font-semibold rounded-xl transition disabled:opacity-45 disabled:cursor-not-allowed active:scale-[0.97] cursor-pointer"
+                        className="btn-soft group flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 py-2 text-sm font-semibold disabled:opacity-40"
                       >
                         <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" /> Previous
                       </button>
@@ -631,7 +631,7 @@ export default function ExamSessionPage() {
                             }
                           });
                         }}
-                        className="group relative overflow-hidden flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-7 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold text-sm rounded-xl shadow-md shadow-emerald-500/30 transition hover:brightness-110 active:scale-[0.97] cursor-pointer"
+                        className="btn-main btn-go group relative flex-1 sm:flex-none justify-center px-7"
                       >
                         <span className="relative">Save &amp; next</span>
                         <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-0.5" />

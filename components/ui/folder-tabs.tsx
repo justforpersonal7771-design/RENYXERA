@@ -25,11 +25,12 @@ export function FolderTabs<T extends string>({ tabs, value, onChange, children, 
         {tabs.map((t) => (
           <button key={t.id} id={`${id}-${t.id}`} role="tab" type="button" aria-selected={t.id === value}
             aria-controls={`${id}-panel`} tabIndex={t.id === value ? 0 : -1} className="folder-tab" data-tint={t.tint} onClick={() => onChange(t.id)}>
+            {t.id === value && <span aria-hidden className="folder-tab-stitch" />}
             {t.label}
           </button>
         ))}
       </div>
-      <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-${value}`} className="folder-panel custom-scrollbar" data-tint={activeTint}>{children}</div>
+      <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-${value}`} className="folder-panel" data-tint={activeTint}><div className="folder-scroll custom-scrollbar">{children}</div></div>
     </div>
   );
 }

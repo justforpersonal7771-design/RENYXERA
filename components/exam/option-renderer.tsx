@@ -33,7 +33,7 @@ export const OptionRenderer = memo(function OptionRenderer({
       transition={{ duration: 0.25 }}
       aria-pressed={isSelected}
       className={`
-        relative w-full flex items-start gap-3 p-3 rounded-2xl border-[2px] transition-colors text-left group overflow-hidden
+        q-option relative w-full flex items-start gap-3 p-3 rounded-2xl border-[2px] transition-colors text-left group overflow-hidden
         ${
           isSelected
             ? "border-[var(--option-border-selected)] bg-[var(--option-selected)] shadow-[0_8px_24px_-12px_rgba(99,102,241,0.55)]"
@@ -52,7 +52,7 @@ export const OptionRenderer = memo(function OptionRenderer({
       )}
       <div
         className={`
-        relative flex-shrink-0 w-8 h-8 rounded flex items-center justify-center font-bold text-sm transition-all duration-300 mt-0.5
+        q-letter relative flex-shrink-0 w-8 h-8 rounded flex items-center justify-center font-bold text-sm transition-all duration-300 mt-0.5
         ${
           isSelected
             ? "bg-gradient-to-br from-indigo-500 to-violet-600 text-white shadow-md shadow-indigo-500/40"

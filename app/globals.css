@@ -1658,3 +1658,70 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 
 /* Mocks: lift the flat hero and stats with depth and a soft ring. */
 .page-shell[data-section="peri"] :is(section, div)[class*="rounded-3xl"][class*="bg-gradient"] { box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 24px 50px -30px rgba(12,34,75,.45) !important; }
+
+/* Folder stitching, final: no extra frame behind the tabs. The stitch is a dashed line INSIDE the folder
+ (a small gap from its edge) and INSIDE the active tab; the panel itself does not scroll, its content does, so the
+ stitch stays put. */
+.folder-wrap { padding: 0 !important; border: 0 !important; background: none !important; border-radius: 0 !important; }
+.folder-tab[aria-selected="true"] { border: 0 !important; }
+.folder-tab[aria-selected="true"] > * { position: relative; }
+.folder-tab[aria-selected="true"] { background-image: none; }
+.folder-tab[aria-selected="true"]::marker { content: none; }
+.folder-tab-stitch { position: absolute; inset: 5px 5px 0 5px; border: 1.5px dashed color-mix(in srgb, var(--tab-ink, var(--tint-lilac-ink)) 40%, transparent); border-bottom: 0; border-radius: 11px 11px 0 0; pointer-events: none; }
+.folder-panel { overflow: hidden; display: flex; flex-direction: column; padding: 0 !important; max-height: none !important; }
+.folder-panel::before { inset: 8px !important; }
+.folder-scroll { padding: 20px; min-height: 0; flex: 1; overflow-y: auto; }
+@media (min-width: 1024px) { .folder-scroll { max-height: calc(100vh - 170px); } .forge-fill .folder-scroll { max-height: none; } }
+@media (max-width: 767px) { .folder-scroll { padding: 14px; } }
+
+/* ===== Question experience (test, review, mistakes, bookmarks, AI Tutor, Forge/Spark): one look ===== */
+/* Secondary bold button (Previous, Clear, Mark & next, Next wrong, Exit). */
+.btn-soft { display: inline-flex; align-items: center; gap: 6px; border-radius: 14px; background: var(--surface); color: var(--text-primary);
+  border: 2px solid color-mix(in srgb, #16123a 75%, transparent); box-shadow: 2px 2px 0 color-mix(in srgb, #16123a 75%, transparent);
+  transition: transform .12s, box-shadow .12s, background .15s; cursor: pointer; }
+.btn-soft:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #16123a; background: var(--tint-lilac); }
+.btn-soft:active:not(:disabled) { transform: translate(2px,2px); box-shadow: 0 0 0 #16123a; }
+.btn-soft.btn-rose { background: var(--tint-rose); color: var(--tint-rose-ink); }
+.btn-soft.btn-peri { background: var(--tint-peri); color: var(--tint-peri-ink); }
+.btn-main.btn-go { --btn: #047857; }
+.dark .btn-soft { border-color: #e9e7f5; box-shadow: 2px 2px 0 #e9e7f5; }
+
+/* Options: white tiles with a bold edge; chosen = light blue with an ink edge and a solid letter chip. */
+:root { --option-surface: var(--surface); --option-border: color-mix(in srgb, #16123a 18%, transparent); --option-border-selected: #16123a;
+  --option-selected: var(--tint-lilac); --option-hover: color-mix(in srgb, var(--tint-lilac) 55%, var(--surface)); }
+.dark { --option-border: rgba(255,255,255,.14); --option-border-selected: #e9e7f5; }
+.q-option { border-radius: 18px !important; }
+.q-option[aria-pressed="true"] { box-shadow: 3px 3px 0 #16123a !important; }
+.q-letter { border-radius: 10px !important; background: var(--surface-secondary) !important; color: var(--text-primary) !important; box-shadow: none !important; border: 1.5px solid var(--option-border); }
+.q-option[aria-pressed="true"] .q-letter { background: #16123a !important; color: #fff !important; border-color: #16123a; }
+
+/* Palette: pastel info block, legend on white, grid cells as pastel tiles by state. */
+.q-palette { background: transparent !important; }
+.q-palette-info { background: var(--tint-peri) !important; border-radius: 18px; margin: 10px; border: 0 !important; }
+.q-palette-legend { background: var(--surface) !important; border-radius: 18px; margin: 0 10px 10px; }
+.q-palette-grid { background: var(--surface); border-radius: 18px; margin: 0 10px 10px; }
+.q-cell { border-width: 2px !important; box-shadow: none !important; }
+.q-cell[data-state="idle"] { background: var(--surface) !important; }
+.q-cell[data-state="answered"] { background: var(--tint-mint) !important; color: var(--tint-mint-ink) !important; border-color: var(--tint-mint-ink) !important; }
+.q-cell[data-state="not-answered"] { background: var(--tint-rose) !important; color: var(--tint-rose-ink) !important; border-color: var(--tint-rose-ink) !important; }
+.q-cell[data-state="marked"] { background: var(--tint-peri) !important; color: var(--tint-peri-ink) !important; border-color: var(--tint-peri-ink) !important; }
+#exam-root .exam-side { background: var(--tint-lilac) !important; }
+#exam-root[data-mode="review"] .exam-head { background: var(--tint-mint); }
+
+/* Calculator: a pastel panel, every key the same bold tile; functions, memory, operators and = in their own tints. */
+.calc-root { background: var(--tint-sky) !important; border: 2px solid #16123a !important; box-shadow: 5px 5px 0 #16123a !important; border-radius: 20px !important; }
+.calc-root > div:first-child { border-color: transparent !important; }
+.calc-key { background: var(--surface) !important; color: var(--text-primary) !important; border: 1.5px solid #16123a !important;
+  box-shadow: 2px 2px 0 #16123a !important; border-radius: 10px !important; font-weight: 700 !important; }
+.calc-key:active { transform: translate(2px,2px); box-shadow: 0 0 0 #16123a !important; }
+.calc-key:is([class*="sky"], [class*="blue"], [class*="indigo"]) { background: var(--tint-lilac) !important; color: var(--tint-lilac-ink) !important; }
+.calc-key:is([class*="rose"], [class*="red"]) { background: var(--tint-rose) !important; color: var(--tint-rose-ink) !important; }
+.calc-key:is([class*="violet"], [class*="emerald"]) { background: #0a4fd0 !important; color: #fff !important; }
+.dark .calc-root, .dark .calc-key { border-color: #e9e7f5 !important; box-shadow: 2px 2px 0 #e9e7f5 !important; }
+/* Leaderboard: the top three as pastel podium rows (1 butter, 2 sky, 3 peach) instead of metal colours. */
+.lb-head :is(.text-white, [class*="text-white/"]) { color: var(--text-secondary) !important; }
+.lb-row[data-rank="1"] { background: var(--tint-butter) !important; color: var(--tint-butter-ink); }
+.lb-row[data-rank="2"] { background: var(--tint-sky) !important; color: var(--tint-sky-ink); }
+.lb-row[data-rank="3"] { background: var(--tint-peach) !important; color: var(--tint-peach-ink); }
+.lb-row[data-rank] > span:first-child { color: inherit !important; }
+.lb-row[data-rank="1"] { padding-block: 14px !important; }
