@@ -180,7 +180,7 @@ export function QuestionPalette() {
                   <motion.span
                     layoutId="palette-current"
                     aria-hidden="true"
-                    className="absolute inset-0 rounded-xl ring-[3px] ring-inset ring-indigo-500 dark:ring-indigo-400 shadow-[0_0_14px_rgba(99,102,241,0.5)]"
+                    className="q-current absolute -inset-[3px] rounded-[14px] border-[2.5px] border-[#16123a] dark:border-[#e9e7f5] shadow-[3px_3px_0_#16123a]"
                     transition={{ type: "spring", stiffness: 500, damping: 34 }}
                   />
                 )}

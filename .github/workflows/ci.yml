@@ -59,6 +59,9 @@ jobs:
       - name: Mock question order (same paper, GA first, score order-independent)
         run: npm run check:mock-order
 
+      - name: Every question image resolves (incl. shared-pool questions)
+        run: npm run check:images
+
       - name: End-to-end smoke (phone + desktop × light + dark, guest exam flow)
         run: |
           npx playwright install --with-deps chromium

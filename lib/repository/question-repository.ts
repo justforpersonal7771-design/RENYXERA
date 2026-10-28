@@ -1,3 +1,4 @@
+import { paperRows } from "./paper-rows";
 import { branchImageBase, branchManifestUrl } from "@/lib/branches";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { buildIndexes, IndexCollection } from "./index-builder";
@@ -105,16 +106,7 @@ class QuestionRepositorySingleton {
             rawData.push(...shared.papers);
           }
 
-          const rawQuestions: Question[] = [];
-          for (const paper of rawData) {
-            const yearShiftStr = paper.exam_metadata?.["year-shift"] || "";
-            const [year, shift] = yearShiftStr.split("-");
-            // Shared-pool papers are keyed "2026-FN-CS": the full key finds their images (another branch's folder).
-            const imageKey = yearShiftStr.split("-").length > 2 ? yearShiftStr : undefined;
-            for (const q of paper.questions) {
-              rawQuestions.push({ ...q, year, shift, ...(imageKey ? { image_key: imageKey } : {}) } as Question);
-            }
-          }
+          const rawQuestions: Question[] = paperRows(rawData as never);
 
           if (shared) for (const q of rawQuestions) { const t = shared.tags[q.question_id]; if (t && !q.asked_in) q.asked_in = t; }
           const compiler = new CompilerFacade();

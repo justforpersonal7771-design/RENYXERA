@@ -24,10 +24,7 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
   useEffect(() => {
     const idx = items.findIndex((it) => it.href === active);
     const shell = document.querySelector(".page-shell");
-    const nav = document.querySelector<HTMLElement>(".topbar-island");
     if (shell && idx >= 0) shell.setAttribute("data-tool-tint", SUB_TINTS[idx % SUB_TINTS.length]);
-    // The navbar wash follows the active tool's colour too.
-    if (nav && idx >= 0) nav.style.setProperty("--nav-sec", `var(--tint-${SUB_TINTS[idx % SUB_TINTS.length]})`);
     return () => { shell?.removeAttribute("data-tool-tint"); };
   });
   const [hover, setHover] = useState<string | null>(null);

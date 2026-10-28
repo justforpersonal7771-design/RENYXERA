@@ -10,7 +10,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useReducedMotion } from "motion/react";
 
-const BAR = 64;          // the navbar sits above the app's scroll box (which starts at 64px)
+const BAR = 72;          // the navbar sits above the app's scroll box (which starts at 72px)
 const GAP = 8;           // pinned this far below the top of the scroll box
 const NAV = BAR + GAP;   // where the deck pins, in viewport coordinates
 const STAGE = 720;       // pinned block height cap: heading + pile lips + a ~520px card + bottom room

@@ -230,7 +230,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
             {(["mock", "practice", "challenge"] as Tab[]).map((t) => (
               <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className="relative py-1.5 text-xs font-bold rounded-lg cursor-pointer">
                 {tab === t && <motion.span layoutId="lb-tab" className="absolute inset-0 rounded-lg bg-[#16123a]" transition={{ type: "spring", stiffness: 500, damping: 36 }} />}
-                <span className={`relative ${tab === t ? "text-white" : "text-[var(--text-secondary)]"}`}>{t === "mock" ? "All-India Mock" : t === "practice" ? "Practice" : "Challenge"}</span>
+                <span className={`relative ${tab === t ? "" : "text-[var(--text-secondary)]"}`} style={tab === t ? { color: "#fff" } : undefined}>{t === "mock" ? "All-India Mock" : t === "practice" ? "Practice" : "Challenge"}</span>
               </button>
             ))}
           </div>

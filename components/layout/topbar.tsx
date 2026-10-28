@@ -31,7 +31,7 @@ import { BrandMark, Wordmark } from "@/components/brand/wordmark";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
-import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
+import { TOOLS, TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 import { BranchChip } from "./branch-chip";
 
 const NAV_ITEMS = [
@@ -45,6 +45,17 @@ const NAV_ITEMS = [
   { label: "Review", href: "/mistakes", icon: Library },
   { label: "Analytics", href: "/analytics", icon: PieChart },
 ];
+
+// The navbar always takes the primary card colour of the screen: a navbar section, or the active tool
+// (same order and colours as the tools dock in components/seo/sub-nav.tsx).
+const TOOL_TINTS = ["mint", "sky", "butter", "peri", "peach", "lilac", "rose", "mint", "sky"];
+function screenTint(path: string): string {
+  const ti = TOOLS.findIndex((t) => path === t.href || (t.also ?? []).some((a) => path.startsWith(a)));
+  if (ti >= 0) return TOOL_TINTS[ti % TOOL_TINTS.length];
+  if (path === TOOLS_HOME) return "lilac";
+  const item = NAV_ITEMS.find((n) => (n.href !== "/" ? path.startsWith(n.href) : path === "/"));
+  return NAV_TINTS[item?.label ?? ""] ?? "sky";
+}
 
 // Each section keeps its own pastel when it is the current page (navbar highlight).
 const NAV_TINTS: Record<string, string> = {
@@ -187,7 +198,7 @@ export function Topbar() {
     <header
       data-scrolled={scrolled ? "" : undefined}
       // R18: a floating island (8px from the top, 56px tall, so content still starts at 64px).
-      style={{ ["--nav-sec" as string]: `var(--tint-${NAV_TINTS[NAV_ITEMS.find((n) => n.href !== "/" ? pathname?.startsWith(n.href) : pathname === "/")?.label ?? ""] ?? "sky"})` }}
+      style={{ ["--nav-sec" as string]: `var(--tint-${screenTint(pathname ?? "/")})` }}
       className={`topbar-island h-14 fixed top-2 left-2 right-2 sm:left-4 sm:right-4 z-40 rounded-[20px] transition-shadow duration-300 ${
         scrolled ? "shadow-[0_14px_36px_-18px_rgba(12,34,75,0.35)]" : "shadow-[0_4px_16px_-10px_rgba(12,34,75,0.18)]"
       }`}

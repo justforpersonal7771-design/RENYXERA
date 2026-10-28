@@ -150,7 +150,7 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
           ))}
         </div>
         {KEYS.map((b) => (
-          <button key={b.k} type="button" onClick={() => key(b.k)} aria-label={b.k === "⌫" ? "Backspace" : b.l}
+          <button key={b.k} type="button" onClick={() => key(b.k)} data-k={b.k} aria-label={b.k === "⌫" ? "Backspace" : b.l}
             style={{ gridRow: `${b.r} / span ${b.rs ?? 1}`, gridColumn: `${b.c} / span ${b.cs ?? 1}` }}
             className={`calc-key min-h-8 min-w-0 rounded-md px-0 font-semibold tracking-tight transition active:scale-95 cursor-pointer sm:min-h-9 sm:text-xs ${b.l.length >= 5 ? "text-[9px]" : "text-[11px]"} ${STYLE[b.kind ?? "fn"]}`}>
             {b.k === "⌫" ? <ArrowLeft className="mx-auto h-4 w-4" strokeWidth={2.5} aria-hidden /> : b.l}

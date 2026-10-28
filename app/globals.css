@@ -1242,16 +1242,6 @@ mjx-container[display="true"] {
 
 /* R18 U2 kit */
 /* Folder tabs: index-card tabs that join the panel under them; the active tab takes the panel colour. */
-.folder-tabs { display: flex; width: fit-content; max-width: 100%; min-width: 0; gap: 2px; overflow-x: auto; scrollbar-width: none; padding: 5px; margin-bottom: 14px;
-  border-radius: 18px; background: var(--tint-lilac); }
-.folder-tabs::-webkit-scrollbar { display: none; }
-.folder-tab { position: relative; flex: none; padding: 9px 18px; border-radius: 13px; font-size: 14px; font-weight: 600; color: var(--tint-lilac-ink); cursor: pointer;
-  transition: color .15s, background .15s; }
-.folder-tab:hover { background: color-mix(in srgb, var(--surface) 45%, transparent); }
-.folder-tab[aria-selected="true"] { background: var(--surface); color: var(--text-primary); font-weight: 700; box-shadow: 0 1px 2px rgba(12,34,75,.08), 0 6px 14px -8px rgba(12,34,75,.25); }
-.folder-panel { background: var(--tint-lilac); border-radius: var(--card-radius); padding: 20px; --text-muted: #4b5563; }
-.dark .folder-panel { --text-muted: #b6bcc8; }
-.folder-tabs { background: var(--tint-peri); }
 /* Segmented control: pill track, the thumb is a motion layoutId element. */
 .segmented { display: inline-flex; padding: 4px; gap: 2px; border-radius: 999px; background: color-mix(in srgb, var(--text-primary) 7%, transparent); }
 .segmented button { position: relative; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
@@ -1264,7 +1254,6 @@ mjx-container[display="true"] {
 .btn-main:active { transform: translate(4px,4px); box-shadow: 0 0 0 var(--ink); }
 .dark .btn-main { border-color: #e9e5ff; box-shadow: 4px 4px 0 #e9e5ff; }
 .dark .btn-main:active { box-shadow: 0 0 0 #e9e5ff; }
-@media (prefers-reduced-motion: reduce) { .btn-main, .folder-tab { transition: none; } }
 /* One brand surface for panel headers and brand buttons (replaces the old indigo-violet-fuchsia gradient):
  deep violet ink with a faint dot grid, so white text always reads and the app has one consistent accent. */
 .grad-brand { background-color: #3b0a8c; background-image: radial-gradient(rgba(255,255,255,.10) 1px, transparent 1.4px), linear-gradient(135deg, #4c1d95 0%, #3b0a8c 55%, #2e1065 100%);
@@ -1444,19 +1433,6 @@ main .text-\[11px\] { font-size: 12.5px !important; }
 .dark .card-metal { background: linear-gradient(145deg, #2a2f3a 0%, #1d2129 45%, #2b303b 70%, #1a1d24 100%) !important; border-color: rgba(255,255,255,.08); --text-muted: #b6bcc8; }
 
 /* 7. Folder tabs: each tab its own pastel; the panel takes the active tab's colour; the row sticks while scrolling. */
-.folder-tabs { position: sticky; top: 4px; z-index: 15; background: var(--surface); box-shadow: 0 8px 20px -14px rgba(12,34,75,.35); }
-.folder-tab[data-tint] { background: var(--tab-tint); color: var(--tab-ink); }
-.folder-tab[data-tint][aria-selected="true"] { background: var(--tab-ink); color: #fff; }
-.folder-tab[data-tint="peach"] { --tab-tint: var(--tint-peach); --tab-ink: var(--tint-peach-ink); }
-.folder-tab[data-tint="mint"] { --tab-tint: var(--tint-mint); --tab-ink: var(--tint-mint-ink); }
-.folder-tab[data-tint="peri"] { --tab-tint: var(--tint-peri); --tab-ink: var(--tint-peri-ink); }
-.folder-tab[data-tint="rose"] { --tab-tint: var(--tint-rose); --tab-ink: var(--tint-rose-ink); }
-.folder-tab[data-tint="sky"] { --tab-tint: var(--tint-sky); --tab-ink: var(--tint-sky-ink); }
-.folder-tab[data-tint="butter"] { --tab-tint: var(--tint-butter); --tab-ink: var(--tint-butter-ink); }
-.folder-tab[data-tint="lilac"] { --tab-tint: var(--tint-lilac); --tab-ink: var(--tint-lilac-ink); }
-.folder-panel[data-tint="peach"] { background: var(--tint-peach); } .folder-panel[data-tint="mint"] { background: var(--tint-mint); }
-.folder-panel[data-tint="peri"] { background: var(--tint-peri); } .folder-panel[data-tint="rose"] { background: var(--tint-rose); }
-.folder-panel[data-tint="sky"] { background: var(--tint-sky); } .folder-panel[data-tint="butter"] { background: var(--tint-butter); }
 
 /* 10. Tool pages: every plain white card becomes a pastel card, cycling through the palette; inner fields stay white. */
 .tool-pastel :is(div, section, details, nav)[class*="rounded-"][class*="border-[var(--border)]"][class*="bg-[var(--surface)]"] {
@@ -1470,25 +1446,9 @@ main .text-\[11px\] { font-size: 12.5px !important; }
 /* Real folder tabs (owner, 27 Oct; research: active tab merges with its panel, inactive tabs sit behind in a
    quieter shade with clear contrast). Tabs + panel are one folder: the active tab is the panel's colour and
    flows into it through inverted corners; on large screens the folder stays fixed and its content scrolls inside. */
-.folder-tabs { position: static !important; width: auto !important; background: transparent !important; box-shadow: none !important;
-  border-radius: 0 !important; padding: 0 32px !important; margin: 0 !important; gap: 4px; align-items: flex-end; overflow: visible !important; }
 /* the inverted corners must land on the panel's straight top edge, so tabs start after the panel's corner radius */
 @media (max-width: 767px) {
   /* phones: the tab row scrolls sideways inside its own width instead of widening the page */
-  .folder-tabs { padding: 0 22px !important; overflow-x: auto !important; overflow-y: hidden !important; max-width: 100%; scrollbar-width: none; }
-  .folder-tab, .folder-tab[data-tint] { padding: 8px 14px 9px !important; font-size: 13px; }
-}
-.folder-tab, .folder-tab[data-tint] { position: relative; border-radius: 16px 16px 0 0 !important; padding: 9px 18px 10px !important;
-  background: color-mix(in srgb, var(--tab-tint, var(--tint-lilac)) 55%, var(--background)) !important; color: var(--tab-ink, var(--tint-lilac-ink)) !important;
-  box-shadow: inset 0 -6px 8px -8px rgba(12,34,75,.25) !important; transform: none !important; }
-.folder-tab[aria-selected="true"], .folder-tab[data-tint][aria-selected="true"] { background: var(--tab-tint, var(--tint-lilac)) !important;
-  color: var(--text-primary) !important; padding-top: 12px !important; font-weight: 800; box-shadow: none !important; z-index: 1; }
-.folder-tab[aria-selected="true"]::before, .folder-tab[aria-selected="true"]::after { content: ""; position: absolute; bottom: 0; width: 16px; height: 16px; pointer-events: none; }
-.folder-tab[aria-selected="true"]::before { left: -16px; background: radial-gradient(circle at 0 0, transparent 15.5px, var(--tab-tint, var(--tint-lilac)) 16px); }
-.folder-tab[aria-selected="true"]::after { right: -16px; background: radial-gradient(circle at 100% 0, transparent 15.5px, var(--tab-tint, var(--tint-lilac)) 16px); }
-.folder-panel { border-radius: var(--card-radius) !important; }
-@media (min-width: 1024px) {
-  .folder-panel { max-height: calc(100vh - 150px); overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
 }
 
 /* Two layers everywhere: the page content sits on one soft gradient layer (surface tinted towards the pastels)
@@ -1550,12 +1510,6 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .dark .segmented button[aria-checked="true"] { color: #16123a !important; } .dark .segmented .thumb { background: #e9e7f5 !important; }
 
 /* Folder panels and tabs: a stitched (dashed) inner line, like a sewn folder; tabs keep padding inside the section. */
-.folder-panel { position: relative; }
-.folder-panel::before { content: ""; position: absolute; inset: 7px; border-radius: calc(var(--card-radius) - 6px); border: 1.5px dashed color-mix(in srgb, var(--tab-ink, var(--tint-lilac-ink)) 30%, transparent); pointer-events: none; }
-.folder-tab[aria-selected="true"] { outline: 1.5px dashed color-mix(in srgb, var(--text-primary) 22%, transparent); outline-offset: -5px; }
-.folder-panel[data-tint] { --tab-ink: var(--tint-lilac-ink); }
-.folder-panel[data-tint="mint"] { --tab-ink: var(--tint-mint-ink); } .folder-panel[data-tint="peach"] { --tab-ink: var(--tint-peach-ink); } .folder-panel[data-tint="peri"] { --tab-ink: var(--tint-peri-ink); }
-.folder-panel[data-tint="rose"] { --tab-ink: var(--tint-rose-ink); } .folder-panel[data-tint="butter"] { --tab-ink: var(--tint-butter-ink); } .folder-panel[data-tint="sky"] { --tab-ink: var(--tint-sky-ink); }
 
 /* Page layer follows the current section's colour (set by client-layout as data-section). */
 .page-shell[data-section] { --sec: var(--tint-lilac); }
@@ -1588,11 +1542,6 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 @media (min-width: 1024px) { #app-scroll[data-one-screen] { overflow: hidden; } }
 /* Forge inside Exam Setup: one screen. Hero and plan table hidden here (they live on the Forge landing),
    the folder tabs stay fixed and only the panel's content scrolls. */
-.forge-fill { display: flex; flex-direction: column; }
-.forge-fill > div, .forge-fill > div > div:has(> .folder-wrap) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.forge-fill section[aria-label="Forge"], .forge-fill section[aria-label="What each plan gets"] { display: none; }
-.forge-fill .folder-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.forge-fill .folder-panel { flex: 1; min-height: 0; max-height: none !important; overflow-y: auto; }
 
 /* ===== Owner review 28 Oct, round 2 ===== */
 /* Buttons take the section's card colour (Exam Setup mint, Mocks peri ...) instead of plain navy. */
@@ -1630,9 +1579,6 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 
 /* Folder tabs: padded section with a stitched frame; the active tab is stitched on three sides so the
    stitch runs continuously into the panel's stitch. Panels use the themed scrollbar. */
-.folder-wrap { padding: 10px 10px 10px; border-radius: calc(var(--card-radius) + 8px);
-  background: color-mix(in srgb, var(--surface) 55%, transparent); border: 1.5px dashed color-mix(in srgb, var(--text-primary) 16%, transparent); }
-.folder-tab[aria-selected="true"] { outline: none !important; border: 1.5px dashed color-mix(in srgb, var(--tab-ink, var(--tint-lilac-ink)) 35%, transparent); border-bottom: 0; }
 
 /* Flashcards and other scroll areas: room for focus/hover rings so they are not cut at the sides. */
 .flash-area { padding-inline: 6px; }
@@ -1662,17 +1608,6 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 /* Folder stitching, final: no extra frame behind the tabs. The stitch is a dashed line INSIDE the folder
  (a small gap from its edge) and INSIDE the active tab; the panel itself does not scroll, its content does, so the
  stitch stays put. */
-.folder-wrap { padding: 0 !important; border: 0 !important; background: none !important; border-radius: 0 !important; }
-.folder-tab[aria-selected="true"] { border: 0 !important; }
-.folder-tab[aria-selected="true"] > * { position: relative; }
-.folder-tab[aria-selected="true"] { background-image: none; }
-.folder-tab[aria-selected="true"]::marker { content: none; }
-.folder-tab-stitch { position: absolute; inset: 5px 5px 0 5px; border: 1.5px dashed color-mix(in srgb, var(--tab-ink, var(--tint-lilac-ink)) 40%, transparent); border-bottom: 0; border-radius: 11px 11px 0 0; pointer-events: none; }
-.folder-panel { overflow: hidden; display: flex; flex-direction: column; padding: 0 !important; max-height: none !important; }
-.folder-panel::before { inset: 8px !important; }
-.folder-scroll { padding: 20px; min-height: 0; flex: 1; overflow-y: auto; }
-@media (min-width: 1024px) { .folder-scroll { max-height: calc(100vh - 170px); } .forge-fill .folder-scroll { max-height: none; } }
-@media (max-width: 767px) { .folder-scroll { padding: 14px; } }
 
 /* ===== Question experience (test, review, mistakes, bookmarks, AI Tutor, Forge/Spark): one look ===== */
 /* Secondary bold button (Previous, Clear, Mark & next, Next wrong, Exit). */
@@ -1725,3 +1660,48 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .lb-row[data-rank="3"] { background: var(--tint-peach) !important; color: var(--tint-peach-ink); }
 .lb-row[data-rank] > span:first-child { color: inherit !important; }
 .lb-row[data-rank="1"] { padding-block: 14px !important; }
+
+/* ===== Folder tabs (clean, single definition) =====
+ A folder = a row of tabs on top of one tinted panel. The active tab has the panel colour and joins it (inverted
+ corners). Inside the panel, 8px from its edge, a dashed stitch runs around; the active tab has the same stitch on
+ three sides. The panel keeps its size; only its content scrolls, so the stitch stays put. */
+.folder-wrap { min-width: 0; display: flex; flex-direction: column; }
+.folder-tabs { display: flex; align-items: flex-end; gap: 4px; padding: 0 28px; overflow-x: auto; scrollbar-width: none; position: relative; z-index: 1; }
+.folder-tabs::-webkit-scrollbar { display: none; }
+.folder-tab { --tab-tint: var(--tint-lilac); --tab-ink: var(--tint-lilac-ink); position: relative; flex: none; cursor: pointer;
+  padding: 9px 18px 10px; border-radius: 16px 16px 0 0; font-size: 14px; font-weight: 600;
+  background: color-mix(in srgb, var(--tab-tint) 55%, var(--background)); color: var(--tab-ink); transition: background .15s; }
+.folder-tab:hover { background: color-mix(in srgb, var(--tab-tint) 80%, var(--background)); }
+.folder-tab[aria-selected="true"] { background: var(--tab-tint); color: var(--text-primary); font-weight: 800; padding-top: 12px; }
+.folder-tab[aria-selected="true"]::before, .folder-tab[aria-selected="true"]::after { content: ""; position: absolute; bottom: 0; width: 16px; height: 16px; pointer-events: none; }
+.folder-tab[aria-selected="true"]::before { left: -16px; background: radial-gradient(circle at 0 0, transparent 15.5px, var(--tab-tint) 16px); }
+.folder-tab[aria-selected="true"]::after { right: -16px; background: radial-gradient(circle at 100% 0, transparent 15.5px, var(--tab-tint) 16px); }
+.folder-tab-stitch { position: absolute; inset: 5px 5px -1px; border: 1.5px dashed color-mix(in srgb, var(--tab-ink) 40%, transparent); border-bottom: 0; border-radius: 11px 11px 0 0; pointer-events: none; }
+.folder-panel { --tab-tint: var(--tint-lilac); --tab-ink: var(--tint-lilac-ink); position: relative; background: var(--tab-tint); border-radius: var(--card-radius);
+  display: flex; flex-direction: column; min-height: 0; --text-muted: #4b5563; }
+.dark .folder-panel { --text-muted: #b6bcc8; }
+.folder-panel::before { content: ""; position: absolute; inset: 8px; border-radius: calc(var(--card-radius) - 7px); border: 1.5px dashed color-mix(in srgb, var(--tab-ink) 32%, transparent); pointer-events: none; z-index: 1; }
+.folder-scroll { padding: 22px; min-height: 0; flex: 1; overflow-y: auto; }
+@media (max-width: 767px) { .folder-tabs { padding: 0 20px; } .folder-tab { padding: 8px 13px 9px; font-size: 13px; } .folder-scroll { padding: 16px; } }
+:is(.folder-tab, .folder-panel)[data-tint="mint"] { --tab-tint: var(--tint-mint); --tab-ink: var(--tint-mint-ink); }
+:is(.folder-tab, .folder-panel)[data-tint="peach"] { --tab-tint: var(--tint-peach); --tab-ink: var(--tint-peach-ink); }
+:is(.folder-tab, .folder-panel)[data-tint="peri"] { --tab-tint: var(--tint-peri); --tab-ink: var(--tint-peri-ink); }
+:is(.folder-tab, .folder-panel)[data-tint="rose"] { --tab-tint: var(--tint-rose); --tab-ink: var(--tint-rose-ink); }
+:is(.folder-tab, .folder-panel)[data-tint="sky"] { --tab-tint: var(--tint-sky); --tab-ink: var(--tint-sky-ink); }
+:is(.folder-tab, .folder-panel)[data-tint="butter"] { --tab-tint: var(--tint-butter); --tab-ink: var(--tint-butter-ink); }
+/* Forge inside Exam Setup: one screen. The folder fills the space; its content scrolls inside the stitch. */
+.forge-fill { display: flex; flex-direction: column; min-height: 0; }
+.forge-fill section[aria-label="Forge"], .forge-fill section[aria-label="What each plan gets"] { display: none; }
+.forge-fill > div, .forge-fill > div > div { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 12px; }
+.forge-fill .folder-wrap { flex: 1; min-height: 0; }
+.forge-fill .folder-panel { flex: 1; min-height: 0; }
+
+/* Calculator: soft theme keys, not high-contrast blocks. Numbers white, functions light blue, operators periwinkle,
+ clear rose, only = solid. Thin ink border, small shadow. */
+.calc-root { border-width: 1.5px !important; box-shadow: 0 18px 40px -20px rgba(12,34,75,.45) !important; }
+.calc-key { border: 1px solid color-mix(in srgb, #16123a 30%, transparent) !important; box-shadow: 0 1px 0 color-mix(in srgb, #16123a 25%, transparent) !important; font-weight: 600 !important; }
+.calc-key:is([class*="violet"], [class*="emerald"], [class*="sky"], [class*="blue"], [class*="indigo"]) { background: var(--tint-lilac) !important; color: var(--tint-lilac-ink) !important; }
+.calc-key[aria-label="Equals"], .calc-key:is([data-k="="]) { background: #0a4fd0 !important; color: #fff !important; }
+.dark .calc-key { box-shadow: none !important; border-color: rgba(255,255,255,.15) !important; }
+/* Current question in the palette: ink frame with an offset shadow (state colour stays visible inside). */
+.q-cell { z-index: 0; }

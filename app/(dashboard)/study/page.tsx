@@ -89,16 +89,29 @@ function Lesson({ onBack }: { onBack: () => void }) {
   const L = SAMPLE_LESSON;
   const [shown, setShown] = useState(false);
   const toc = ["Why it matters", "The idea", "Definition", "Worked example", "Trap", "Check yourself", "Try the real PYQs"];
+  // The contents list follows the section being read (and the one clicked).
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const root = document.getElementById("app-scroll");
+    const io = new IntersectionObserver((es) => {
+      const vis = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (vis) setActive(Number(vis.target.id.slice(2)));
+    }, { root, rootMargin: "-10% 0px -60% 0px" });
+    toc.forEach((_, i) => { const el = document.getElementById(`l-${i}`); if (el) io.observe(el); });
+    return () => io.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_300px]">
-      <ReadingProgress />
       <nav aria-label="In this lesson" className="lg:sticky lg:top-24 lg:self-start">
         <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><ArrowLeft className="h-4 w-4" /> All chapters</button>
         <ol className="hidden space-y-1 border-l border-[var(--border)] lg:block">
-          {toc.map((t, i) => <li key={t}><a href={`#l-${i}`} className={`-ml-px block border-l-2 py-1.5 pl-3 text-sm ${i === 0 ? "border-[var(--ink)] font-semibold text-[var(--text-primary)]" : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{t}</a></li>)}
+          {toc.map((t, i) => <li key={t}><a href={`#l-${i}`} onClick={(e) => { e.preventDefault(); setActive(i); document.getElementById(`l-${i}`)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
+            aria-current={i === active ? "true" : undefined}
+            className={`-ml-px block border-l-2 py-1.5 pl-3 text-sm transition-colors ${i === active ? "border-[var(--ink)] font-semibold text-[var(--text-primary)]" : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{t}</a></li>)}
         </ol>
       </nav>
-      <article className="max-w-[68ch] space-y-8">
+      <article className="min-w-0 max-w-none space-y-8">
         <header>
           <p className="text-sm font-semibold text-[var(--text-muted)]">{L.subject} · {L.chapter}</p>
           <h1 className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl">{L.topic}</h1>
@@ -153,17 +166,4 @@ function Lesson({ onBack }: { onBack: () => void }) {
       </aside>
     </div>
   );
-}
-
-/** Reading progress: a thin bar under the navbar that fills as the lesson is read. */
-function ReadingProgress() {
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    const sc = document.getElementById("app-scroll");
-    if (!sc) return;
-    const on = () => setP(sc.scrollTop / Math.max(1, sc.scrollHeight - sc.clientHeight));
-    on(); sc.addEventListener("scroll", on, { passive: true });
-    return () => sc.removeEventListener("scroll", on);
-  }, []);
-  return <div aria-hidden className="fixed inset-x-0 top-16 z-30 h-1 origin-left bg-gradient-to-r from-[#06c2fb] via-[#0a5ff2] to-[#dd42fb]" style={{ transform: `scaleX(${p})` }} />;
 }
