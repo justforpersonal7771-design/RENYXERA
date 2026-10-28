@@ -375,3 +375,12 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ## 8. Product rules (always)
 Never advertise "no login"; show value, then gentle gates. No lifetime offers, free trials or never-charged "was" prices. Free: no AI calls, no Forge questions (Forge Mocks only). Server time for anything time-based. Unfinished study blocks asked about once a day, never moved silently. Official sources only; estimates labelled. Personal data on shares only with consent. Performance and security changes never reduce quality or features. Anything costing money waits for revenue.
+
+## 29 Oct 2026 (UI pass, late)
+- [x] Scrollbars hidden again, no arrows (root cause: scrollbar-width/color in the per-card rule makes Chrome ignore ::-webkit-scrollbar)
+- [x] Folder final shape, palette current-question marker, exam header icon buttons, results screen, rank chart labels
+- [x] AI Tutor home (search, mistakes, bookmarks, plan banner)
+- [x] AI Mentor refactor plan written: docs/roadmap/R21-AI-MENTOR.md (awaiting owner decisions in section 10)
+- [ ] Build AI Mentor M1 (chat shell, Know-me panel, analytics cards moved out)
+- [ ] AI Tutor inner workspace panels on the shared pastel look
+- [ ] Forge items seeding so Forge/Blend use real items; Battles in avatar menu; Ctrl+K palette
