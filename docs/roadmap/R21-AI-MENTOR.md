@@ -150,9 +150,13 @@ Prompts get a compact "learner brief" (about 300 tokens), never the raw history.
 - Free users see a working Mentor without using AI requests.
 - Desktop and mobile in light and dark pass the visual audit (`scripts/zz-audit.mjs`) with no contrast or overflow findings.
 
-## 10. Decisions for the owner
+## 10. Owner decisions (29 Oct 2026, all four accepted)
 
-1. Name: keep "AI Mentor" in the navbar with "Your Mentor" as the page title? (Recommended: yes.)
-2. Free keeps the 5-request teaser plus sponsor-break credits for chat, as today? (Recommended: yes, no change.)
-3. Move Readiness, Mastery, Patterns and Timeline to Analytics in M1, or after the chat ships? (Recommended: M1, so the screen stops reading as analytics immediately.)
-4. Store Mentor memories in the cloud for signed-in users? (Recommended: yes, with a visible "Forget" control.)
+1. Keep the name "AI Mentor" in the navbar, "Your Mentor" as the page title.
+2. Free keeps the 5-request teaser plus sponsor-break credits for chat.
+3. Readiness, Mastery, Patterns and Timeline move to Analytics in M1.
+4. Mentor memories are stored in the cloud for signed-in users, with a visible "Forget" control.
+
+## 11. First task for 30 Oct 2026
+
+Owner is asleep and asked for **no development tonight**. Tomorrow morning, before M1: redo the research properly (Dribbble / Mobbin / Khanmigo / Duolingo Max / Google guided learning / ChatGPT study mode, plus Swaseekh as the owner's reference), settle layout, styles, UI/UX and the feature list on the shared pastel system (docs/design/DESIGN-SYSTEM.md), update this doc, then build M1.
