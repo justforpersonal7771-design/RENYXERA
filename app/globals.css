@@ -1721,12 +1721,14 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 
 /* Scrollbars match their card: thumb in the card ink, track inset so it never runs past the rounded edge. */
 :is(.folder-panel, .card-pastel, .card-glass, .card-well) { --sb-ink: var(--tab-ink, var(--tint-ink, var(--tint-lilac-ink))); }
-:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll) { scrollbar-color: color-mix(in srgb, var(--sb-ink) 45%, transparent) transparent; scrollbar-width: thin; }
-:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar { width: 8px; height: 8px; }
+/* No scrollbar-width / scrollbar-color here: Chrome 121+ then drops every ::-webkit-scrollbar rule and shows the OS bar with arrows, always visible. */
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar { width: 10px; height: 10px; }
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-button { display: none !important; width: 0 !important; height: 0 !important; }
 :is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-track { margin-block: 18px; background: transparent; }
 :is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-thumb { background-image: none !important;
-  background-color: color-mix(in srgb, var(--sb-ink) 45%, transparent) !important; border: 2px solid transparent; background-clip: padding-box; border-radius: 999px; box-shadow: none !important; }
-:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--sb-ink) 70%, transparent) !important; }
+  background-color: color-mix(in srgb, var(--sb-ink) calc(var(--sb-alpha) * 55%), transparent) !important; border: 3px solid transparent; background-clip: padding-box; border-radius: 999px; box-shadow: none !important; }
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--sb-ink) 75%, transparent) !important; }
+@supports not selector(::-webkit-scrollbar) { :is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)[data-scrollbar-reveal="true"] { scrollbar-color: color-mix(in srgb, var(--sb-ink) 45%, transparent) transparent; } }
 /* The page scroll uses the current section colour; its track stops short of the rounded page layer corners. */
 #app-scroll::-webkit-scrollbar-track { margin-block: 20px; }
 
@@ -1784,3 +1786,31 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch { display: block !important; position: absolute; z-index: -1; inset: 7px 7px -9.5px 7px !important;
   background: var(--sheet); border: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom: 0; border-radius: 9px 9px 0 0; }
 .folder-wrap .folder-scroll { padding: 18px !important; }
+/* Root cause of the broken seam: .folder-tabs scrolls sideways (overflow-x:auto), which also clips vertically, so the
+   active tab's stitch was cut at the tab's bottom edge. Give the row 10px of room below (and pull the panel up by
+   the same amount) so the stitch reaches the panel seam and covers it under the tab. */
+.folder-wrap .folder-tabs { padding-bottom: 10px !important; margin-bottom: -10px !important; }
+
+/* Folder, final shape (owner, 29 Oct): no tinted card behind the tabs. The folder is the tabs plus ONE light sheet
+   (the active tab colour = the content panel). The stitch sits inside the sheet, 8px from its edge, and the scroll
+   area is inset inside the stitch, so content never crosses it (top, bottom or sides). */
+.folder-wrap { background: transparent !important; padding: 0 !important; border-radius: 0 !important; gap: 0 !important; }
+.folder-wrap::before { display: none !important; }
+.folder-wrap .folder-tabs { padding: 0 22px 10px !important; margin-bottom: -10px !important; }
+.folder-wrap .folder-panel { padding: 13px !important; border-radius: var(--card-radius) !important; box-shadow: 0 18px 40px -30px rgba(12,34,75,.35); }
+.folder-wrap .folder-panel::before { inset: 8px !important; border-radius: calc(var(--card-radius) - 8px) !important; }
+.folder-wrap .folder-scroll { padding: 8px !important; border-radius: calc(var(--card-radius) - 14px); }
+
+/* Current question in the palette: the cell itself gets a clean ink outline, a soft halo and a larger size; switching
+ question just pops the new cell (no sliding ring, no dark block). */
+.q-cell[data-current="true"] { border-color: #16123a !important; border-width: 2.5px !important; transform: scale(1.1); z-index: 1;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tint-lilac-ink) 22%, transparent) !important; animation: q-pop .28s cubic-bezier(.2,.9,.3,1.3); }
+.dark .q-cell[data-current="true"] { border-color: #e9e7f5 !important; }
+@keyframes q-pop { from { transform: scale(.9); } to { transform: scale(1.1); } }
+@media (prefers-reduced-motion: reduce) { .q-cell[data-current="true"] { animation: none; } }
+
+/* Icon-only version of the soft bold button (exam header: calculator, bookmark, theme, pause, resume). */
+.btn-soft.btn-icon { width: 36px; height: 36px; padding: 0; justify-content: center; border-radius: 12px; color: var(--text-primary); }
+@media (max-width: 639px) { .btn-soft.btn-icon { width: 32px; height: 32px; } }
+.btn-soft.btn-icon.btn-on { background: var(--tint-lilac); color: var(--tint-lilac-ink); }
+.btn-soft.btn-icon.btn-go-soft { background: var(--tint-mint); color: var(--tint-mint-ink); }

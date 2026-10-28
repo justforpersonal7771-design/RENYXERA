@@ -152,7 +152,7 @@ export function LineChart({ series, xTicks, yTicks, log = false, invertY = false
   series: Series[]; xTicks: number[]; yTicks: number[]; log?: boolean; invertY?: boolean; height?: number;
   marker?: { x: number; y: number; label: string }; vLine?: { x: number; label: string }; xLabel?: string; yLabel?: string; fmtY?: (v: number) => string;
 }) {
-  const W = 640, H = height, L = 56, R = 18, T = 30, B = 34;
+  const W = 640, H = height, L = 56, R = 18, T = 40, B = 34;
   const xs = series.flatMap((s) => s.points.map((p) => p.x)).concat(xTicks);
   const ys = series.flatMap((s) => s.points.map((p) => p.y)).concat(yTicks).filter((v) => !log || v > 0);
   const x0 = Math.min(...xs), x1 = Math.max(...xs);
@@ -166,7 +166,7 @@ export function LineChart({ series, xTicks, yTicks, log = false, invertY = false
       {xTicks.map((t) => <text key={`x${t}`} x={px(t)} y={H - B + 16} textAnchor="middle" className="fill-[var(--text-muted)]" fontSize="10">{t}</text>)}
       {xLabel && <text x={(L + W - R) / 2} y={H - 4} textAnchor="middle" className="fill-[var(--text-muted)]" fontSize="10" fontWeight="700">{xLabel}</text>}
       {yLabel && <text x={4} y={12} className="fill-[var(--text-muted)]" fontSize="10" fontWeight="700">{yLabel}</text>}
-      {vLine && <g><line x1={px(vLine.x)} x2={px(vLine.x)} y1={T} y2={H - B} stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="5 4" /><text x={px(vLine.x) + 6} y={H - B - 6} fontSize="10" fontWeight="700" fill="#b45309" stroke="var(--surface)" strokeWidth={4} paintOrder="stroke">{vLine.label}</text></g>}
+      {vLine && <g><line x1={px(vLine.x)} x2={px(vLine.x)} y1={T} y2={H - B} stroke="#f59e0b" strokeWidth={1.5} strokeDasharray="5 4" /><text x={px(vLine.x) + 6} y={T - 10} fontSize="11" fontWeight="700" fill="#b45309">{vLine.label}</text></g>}
       {series.map((s) => {
         const d = s.points.map((p, i) => `${i ? "L" : "M"}${px(p.x).toFixed(1)},${py(p.y).toFixed(1)}`).join(" ");
         return <g key={s.name}>
@@ -177,7 +177,18 @@ export function LineChart({ series, xTicks, yTicks, log = false, invertY = false
       {marker && <g>
         <circle cx={px(marker.x)} cy={py(marker.y)} r={9} fill="#d946ef" opacity={0.2} className="animate-ping origin-center" style={{ transformBox: "fill-box" }} />
         <circle cx={px(marker.x)} cy={py(marker.y)} r={5.5} fill="#d946ef" stroke="white" strokeWidth={2} />
-        <text x={Math.min(px(marker.x) + 10, W - R - 4)} y={py(marker.y) + 22} textAnchor={px(marker.x) > W - 140 ? "end" : "start"} fontSize="12" fontWeight="800" fill="#7e22ce" stroke="var(--surface)" strokeWidth={5} strokeLinejoin="round" paintOrder="stroke">{marker.label}</text>
+        {(() => {
+          const w = marker.label.length * 6.6 + 18, h = 22;
+          const cx = px(marker.x), cy = py(marker.y);
+          const x = Math.min(Math.max(cx - w / 2, L + 4), W - R - w - 2), y = Math.max(T + 6, cy - 78);
+          return (
+            <g>
+              <line x1={cx} y1={cy - 7} x2={cx} y2={y + h} stroke="#a21caf" strokeWidth={1.5} strokeDasharray="3 3" />
+              <rect x={x} y={y} width={w} height={h} rx={11} fill="var(--surface)" stroke="#a21caf" strokeWidth={1.5} />
+              <text x={x + w / 2} y={y + 15} textAnchor="middle" fontSize="11.5" fontWeight="800" fill="#7e22ce">{marker.label}</text>
+            </g>
+          );
+        })()}
       </g>}
     </svg>
   );

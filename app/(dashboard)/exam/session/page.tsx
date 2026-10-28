@@ -405,7 +405,7 @@ export default function ExamSessionPage() {
                  <div className="flex items-center gap-1 border-l border-[var(--border)] pl-1 sm:pl-3 h-9 shrink-0">
                    <button
                      onClick={() => setShowMobilePalette(true)}
-                     className="lg:hidden inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition relative"
+                     className="btn-soft btn-icon lg:hidden relative"
                      title="Question Grid"
                    >
                      <LayoutGrid className="w-4 h-4" />
@@ -414,7 +414,7 @@ export default function ExamSessionPage() {
                    <button
                      data-calc-toggle
                      onClick={() => setShowCalc((v) => !v)}
-                     className={`inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg transition ${showCalc ? "bg-violet-500/15 text-violet-600 dark:text-violet-300" : "text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                     className={`btn-soft btn-icon ${showCalc ? "btn-on" : ""}`}
                      title="Calculator"
                      aria-label="Calculator"
                      aria-pressed={showCalc}
@@ -424,7 +424,7 @@ export default function ExamSessionPage() {
 
                    <button
                      onClick={handleBookmarkToggle}
-                     className="hidden sm:inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                     className="btn-soft btn-icon hidden sm:inline-flex"
                      title="Bookmark Question"
                    >
                      {isCurrentBookmarked ? <BookmarkCheck className="w-4 h-4 text-indigo-500" /> : <Bookmark className="w-4 h-4" />}
@@ -432,7 +432,7 @@ export default function ExamSessionPage() {
 
                    <button
                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                     className="hidden sm:inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-lg text-[var(--text-muted)] hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                     className="btn-soft btn-icon hidden sm:inline-flex"
                      title="Toggle Dark Mode"
                    >
                      {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -441,7 +441,7 @@ export default function ExamSessionPage() {
                    {isMockSession ? null : sessionStatus === "IN_PROGRESS" ? (
                      <button
                        onClick={() => pauseSession()}
-                       className="inline-flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--tint-butter)] transition-colors cursor-pointer shrink-0"
+                       className="btn-soft btn-icon shrink-0"
                        title="Pause the test" aria-label="Pause the test"
                      >
                        <CirclePause className="w-[18px] h-[18px] text-[var(--tint-butter-ink)]" />
@@ -449,7 +449,7 @@ export default function ExamSessionPage() {
                    ) : (
                      <button
                        onClick={() => resumeSession()}
-                       className="inline-flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 text-emerald-700 bg-emerald-100 hover:bg-emerald-200 dark:text-emerald-400 dark:bg-emerald-900/40 rounded-lg transition-colors cursor-pointer shrink-0"
+                       className="btn-soft btn-icon btn-go-soft shrink-0"
                        title="Resume Exam"
                      >
                        <Play className="w-4 h-4" />

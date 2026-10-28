@@ -423,8 +423,8 @@ export default function ResultSummaryPage() {
               style={{ transform: `rotateY(${flipped ? 180 : 0}deg)` }}
             >
               {/* FRONT — scoreboard */}
-              <div aria-hidden={flipped} className={`absolute inset-0 overflow-y-auto overflow-x-hidden lg:overflow-hidden custom-scrollbar [backface-visibility:hidden] ${flipped ? "pointer-events-none" : ""}`}>
-                <div className="h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-9 pb-2 lg:pt-14 lg:pb-8">
+              <div aria-hidden={flipped} className={`absolute inset-0 overflow-y-auto overflow-x-hidden custom-scrollbar [backface-visibility:hidden] ${flipped ? "pointer-events-none" : ""}`}>
+                <div className="min-h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-9 pb-6 lg:pt-12 lg:pb-8">
                   {/* ring side */}
                   <div className="flex flex-col items-center text-center gap-2.5 lg:gap-4">
                     <div className="flex items-center gap-2 flex-wrap justify-center">
@@ -435,7 +435,7 @@ export default function ResultSummaryPage() {
                       {session.draftConfig.config.goalTag && <GoalTagBadge tag={session.draftConfig.config.goalTag} />}
                     </div>
               <motion.div
-                className="relative w-36 h-36 sm:w-48 sm:h-48 lg:w-[min(46vh,24rem)] lg:h-[min(46vh,24rem)] [@media(max-height:760px)]:w-32 [@media(max-height:760px)]:h-32 shrink-0 cursor-default"
+                className="relative w-36 h-36 sm:w-48 sm:h-48 lg:w-[min(40vh,24rem)] lg:h-[min(40vh,24rem)] [@media(max-height:760px)]:w-32 [@media(max-height:760px)]:h-32 shrink-0 cursor-default"
                 initial={{ scale: 0.86, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -524,7 +524,7 @@ export default function ResultSummaryPage() {
                         className="inline-flex items-center gap-2 text-lg sm:text-xl lg:text-3xl font-black tracking-tight text-[var(--text-primary)]">
                         <Award className="w-5 h-5 lg:w-7 lg:h-7 text-amber-500" />{verdict.label}
                       </motion.h1>
-                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-md mx-auto mt-1 mb-3 line-clamp-2 leading-relaxed">{challengeLine ?? cpLine ?? verdict.message}</p>
+                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-md mx-auto mt-1 mb-3 leading-relaxed">{challengeLine ?? cpLine ?? verdict.message}</p>
                     </div>
                   </div>
 

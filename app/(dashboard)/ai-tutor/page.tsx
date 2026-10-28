@@ -1,5 +1,6 @@
 "use client";
 
+import { TutorHome } from "@/components/tutor/tutor-home";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -541,6 +542,9 @@ export default function AITutorWorkspace() {
   };
 
   if (!mounted) return null;
+
+  // No question chosen yet: show the Tutor home (pick from mistakes, bookmarks or search) instead of an empty workspace.
+  if (!qid) return <TutorHome />;
 
   return (
     <MathJaxContext config={{

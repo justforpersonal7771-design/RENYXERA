@@ -173,17 +173,10 @@ export function QuestionPalette() {
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.92 }}
                 aria-current={isCurrent ? "step" : undefined}
+                data-current={isCurrent ? "true" : undefined}
                 data-state={colorClass.includes("emerald") ? "answered" : colorClass.includes("rose") ? "not-answered" : colorClass.includes("violet") ? "marked" : "idle"}
                 className={`q-cell relative aspect-square w-12 rounded-xl flex items-center justify-center font-num font-bold text-sm transition-colors border cursor-pointer ${colorClass}`}
               >
-                {isCurrent && (
-                  <motion.span
-                    layoutId="palette-current"
-                    aria-hidden="true"
-                    className="q-current absolute -inset-[3px] rounded-[14px] border-[2.5px] border-[#16123a] dark:border-[#e9e7f5] shadow-[3px_3px_0_#16123a]"
-                    transition={{ type: "spring", stiffness: 500, damping: 34 }}
-                  />
-                )}
                 {idx + 1}
                 {st === "MARKED_AND_ANSWERED" && (
                   <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-green-400 rounded-full border border-[var(--surface)]" />
