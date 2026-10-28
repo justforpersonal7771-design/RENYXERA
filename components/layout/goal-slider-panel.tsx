@@ -437,8 +437,8 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.1} vertical={false} />
-                      <XAxis dataKey="topicsSelected" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
-                      <YAxis stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
+                      <XAxis dataKey="topicsSelected" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} interval={Math.max(0, Math.ceil(curve.length / 10) - 1)} />
+                      <YAxis stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} domain={[0, 100]} ticks={[0, 25, 50, 75, 100]} interval={0} width={40} tickFormatter={(v) => `${v}%`} />
                       <RechartsTooltip content={<ChartTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1, strokeDasharray: "4 4" }} />
                       <ReferenceLine x={result.includedCount} stroke="#8b5cf6" strokeOpacity={0.6} strokeDasharray="4 4" />
                       <Area type="linear" dataKey="syllabusPercent" name="Syllabus Covered" stroke="#8b5cf6" strokeWidth={2.5} fill="url(#focusSyllabusFill)" dot={false} isAnimationActive={false} />

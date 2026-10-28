@@ -550,10 +550,10 @@ export default function AITutorWorkspace() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="w-full h-full flex flex-col overflow-hidden" data-fill-height="always">
+      <div className="tutor-shell w-full h-full flex flex-col overflow-hidden rounded-[var(--card-radius)] bg-[var(--tint-sky)]" data-fill-height="always">
 
         {/* Sticky Command Bar */}
-        <header className="flex-none bg-[var(--surface)] border-b border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
+        <header className="flex-none bg-transparent border-b border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
           <div className="flex items-center gap-3">
             <button
               onClick={() => router.back()}

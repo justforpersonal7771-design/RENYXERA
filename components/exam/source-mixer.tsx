@@ -20,7 +20,8 @@ export function useSourceMix(force?: string | null): [SourceMix, (m: SourceMix) 
   const [mix, setMix] = useState<SourceMix>(() => {
     let v: Partial<SourceMix> | null = null;
     try { v = typeof window !== "undefined" ? JSON.parse(localStorage.getItem(KEY) ?? "null") : null; } catch { /* private mode */ }
-    const base: SourceMix = { mode: "pyq", forgePct: 30, aiPct: 20, ...(v?.mode ? v : {}) };
+    // Shares are remembered; the source itself always opens on GATE PYQs unless a ?source= link says otherwise.
+    const base: SourceMix = { forgePct: 30, aiPct: 20, ...(v ?? {}), mode: "pyq" };
     return force === "forge" || force === "mix" || force === "pyq" ? { ...base, mode: force } : base;
   });
   const save = (m: SourceMix) => { setMix(m); try { localStorage.setItem(KEY, JSON.stringify(m)); } catch { /* ignore */ } };
@@ -42,10 +43,10 @@ export function SourceMixer({ mix, onChange, total = 65, yearPaper, available }:
   const gotP = total - gotF - gotA;
   const set = (k: "forgePct" | "aiPct", v: number) => {
     const other = k === "forgePct" ? a : f;
-    onChange({ ...mix, [k]: Math.min(v, 90 - other) });
+    onChange({ ...mix, [k]: Math.min(v, 100 - other) });
   };
   return (
-    <div className="card-well space-y-4" data-tint="mint">
+    <div className="card-well space-y-3 !p-3.5" data-tint="mint">
       <div>
         <p className="font-bold text-[var(--text-primary)]">Blend: GATE PYQs, Forge and Spark in one test</p>
         {yearPaper && <p className="mt-1 text-sm text-[var(--text-secondary)]">An official year paper is always the real paper. Pick Subject, Topic, Section or Custom to blend sources.</p>}
@@ -53,20 +54,22 @@ export function SourceMixer({ mix, onChange, total = 65, yearPaper, available }:
       <div className="flex h-3 overflow-hidden rounded-full bg-[var(--surface)]" role="img" aria-label={`PYQs ${p}%, Forge ${f}%, Spark ${a}%`}>
         <span style={{ width: `${p}%`, background: COLORS.pyq }} /><span style={{ width: `${f}%`, background: COLORS.forge }} /><span style={{ width: `${a}%`, background: COLORS.ai }} />
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        {([["forgePct", "Forge", Anvil, COLORS.forge, f], ["aiPct", "Spark (AI)", Sparkles, COLORS.ai, a]] as const).map(([k, label, Icon, col, v]) => (
+      <div className="grid gap-3 sm:grid-cols-2 empty:hidden">
+        {/* A share slider only appears for a source that actually has questions to give. */}
+        {([["forgePct", "Forge", Anvil, COLORS.forge, f, forgeOk && available.forge > 0], ["aiPct", "Spark (AI)", Sparkles, COLORS.ai, a, available.ai > 0]] as const).filter((x) => x[5]).map(([k, label, Icon, col, v]) => (
           <label key={k} className="block rounded-2xl bg-[var(--surface)] p-3">
             <span className="flex items-center justify-between text-sm font-semibold text-[var(--text-primary)]"><span className="inline-flex items-center gap-1.5"><Icon className="h-4 w-4" style={{ color: col }} /> {label}</span><span className="font-num">{v}%</span></span>
-            <input type="range" min={0} max={80} step={10} value={v} onChange={(e) => set(k, Number(e.target.value))}
-              aria-label={`Share of ${label} questions`} className="mix-range mt-2 w-full" style={{ ["--pct" as string]: `calc(11px + (100% - 22px) * ${v / 80})`, ["--fill" as string]: col }} />
+            <input type="range" min={0} max={100} step={10} value={v} onChange={(e) => set(k, Number(e.target.value))}
+              aria-label={`Share of ${label} questions`} className="mix-range mt-2 w-full" style={{ ["--pct" as string]: `calc(11px + (100% - 22px) * ${v / 100})`, ["--fill" as string]: col }} />
           </label>
         ))}
       </div>
-      <div className="grid gap-2 sm:grid-cols-3">
+      <div className="grid gap-2 lg:grid-cols-3">
         {([["GATE PYQs", ScrollText, COLORS.pyq, gotP, available.pyq], ["Forge", Anvil, COLORS.forge, gotF, forgeOk ? available.forge : 0], ["Spark (AI)", Sparkles, COLORS.ai, gotA, available.ai]] as const).map(([label, Icon, col, n, have]) => (
-          <div key={label} className="flex items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
-            <Icon className="h-5 w-5 shrink-0" style={{ color: col }} />
-            <span className="text-sm"><span className="font-num text-lg font-extrabold text-[var(--text-primary)]">{n}</span> <span className="text-[var(--text-secondary)]">of {total} · {have} available</span><span className="block font-semibold text-[var(--text-primary)]">{label}</span></span>
+          <div key={label} className="flex items-center gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm">
+            <Icon className="h-4 w-4 shrink-0" style={{ color: col }} />
+            <span className="font-semibold text-[var(--text-primary)]">{label}</span>
+            <span className="ml-auto text-[var(--text-secondary)]"><b className="font-num text-[var(--text-primary)]">{n}</b> of {total} · {have} avail.</span>
           </div>
         ))}
       </div>

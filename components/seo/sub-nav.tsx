@@ -14,9 +14,19 @@ type Item = { href: string; label: string; short?: string; icon: LucideIcon; als
  * glides between items on a bouncy spring and each item lifts on hover. The app scrolls
  * inside its own container, so scroll is caught in the capture phase from any scroller.
  */
+// Each tool has its own pastel (icon colour, hover, active chip), like the navbar sections.
+const SUB_TINTS = ["mint", "sky", "butter", "peri", "peach", "lilac", "rose", "mint", "sky"];
+
 export function SubNav({ items, label }: { items: Item[]; label: string }) {
   const path = usePathname() ?? "";
   const [hidden, setHidden] = useState(false);
+  // The tool page's primary card follows the active tool's colour (read by globals.css).
+  useEffect(() => {
+    const idx = items.findIndex((it) => it.href === active);
+    const shell = document.querySelector(".page-shell");
+    if (shell && idx >= 0) shell.setAttribute("data-tool-tint", SUB_TINTS[idx % SUB_TINTS.length]);
+    return () => shell?.removeAttribute("data-tool-tint");
+  });
   const [hover, setHover] = useState<string | null>(null);
   const last = useRef(0);
 
@@ -57,11 +67,12 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
         className={`sub-dock pointer-events-auto max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_14px_36px_-18px_rgba(12,34,75,0.35)] p-1.5`}>
         <ul className="flex items-center gap-0.5 w-max">
           <li aria-hidden="true" className="hidden sm:flex items-center gap-1.5 pl-2.5 pr-3 mr-1 border-r border-[var(--border)] text-xs font-black tracking-normal text-[var(--text-muted)]">{label}</li>
-          {items.map((it) => {
+          {items.map((it, idx) => {
             const on = it.href === active;
+            const tint = SUB_TINTS[idx % SUB_TINTS.length];
             return (
               <li key={it.href}>
-                <Link href={it.href} aria-current={on ? "page" : undefined} title={it.label}
+                <Link href={it.href} aria-current={on ? "page" : undefined} title={it.label} data-tint={tint}
                   onMouseEnter={() => setHover(it.href)} onFocus={() => setHover(it.href)} onBlur={() => setHover(null)}
                   className={`relative flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-semibold whitespace-nowrap transition-colors ${on ? "text-[var(--tint-lilac-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
                   {on && <span className="absolute inset-0 rounded-xl nav-active-pill" />}

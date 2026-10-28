@@ -67,7 +67,7 @@ export function ScorePredictor() {
           <LineChart log invertY height={260}
             series={[{ name: "Median rank", color: "#8b5cf6", points: curve.mid }, { name: "Best case", color: "#10b981", points: curve.best, dashed: true }, { name: "Worst case", color: "#f43f5e", points: curve.worst, dashed: true }]}
             xTicks={[30, 40, 50, 60, 70, 80, 90, 95]} yTicks={[10, 100, 1000, 10000, 50000]} fmtY={(v) => (v >= 1000 ? `${v / 1000}k` : String(v))}
-            marker={{ x: Math.max(30, Math.min(95, r.m)), y: r.rank, label: `${r.m} → AIR ~${fmt(r.rank)}` }} vLine={{ x: Math.max(30, r.q), label: `cut-off ${r.q}` }} xLabel="Marks" yLabel="AIR (log)" />
+            marker={{ x: Math.max(30, Math.min(95, r.m)), y: r.rank, label: `${r.m} marks: AIR about ${fmt(r.rank)}` }} vLine={{ x: Math.max(30, r.q), label: `cut-off ${r.q}` }} xLabel="Marks" yLabel="AIR (log)" />
           <div className="mt-2 flex flex-wrap gap-4 text-[11px] text-[var(--text-muted)]"><span className="inline-flex items-center gap-1.5"><i className="w-3 h-0.5 bg-violet-500 inline-block" /> median</span><span className="inline-flex items-center gap-1.5"><i className="w-3 h-0.5 bg-emerald-500 inline-block" /> best case</span><span className="inline-flex items-center gap-1.5"><i className="w-3 h-0.5 bg-rose-500 inline-block" /> worst case</span></div>
         </div>
       </div>

@@ -1399,8 +1399,8 @@ main :is([class*="bg-gradient-to-"][class*="text-white"][class*=" p-"], [class*=
 .mix-range::-webkit-slider-thumb { -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid #16123a; }
 .mix-range::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 3px solid #16123a; }
 /* Any control whose active background is the pastel chip shows its label in ink, not white. */
-:has(> .nav-active-pill) { color: var(--tint-lilac-ink) !important; }
-:has(> .nav-active-pill) :is(svg, span) { color: inherit !important; }
+:is([aria-current="page"], [aria-selected="true"], [aria-checked="true"], [aria-pressed="true"]):has(> .nav-active-pill) { color: var(--tint-lilac-ink) !important; }
+:is([aria-current="page"], [aria-selected="true"], [aria-checked="true"], [aria-pressed="true"]):has(> .nav-active-pill) :is(svg, span) { color: inherit !important; }
 
 /* ---- Owner review 27 Oct (13 points) ---- */
 /* 3. Navbar: each section highlights in its own pastel. */
@@ -1585,11 +1585,76 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .focus-head [class*="bg-white/"] { background-color: var(--surface) !important; border-color: var(--border) !important; }
 .focus-head [class*="text-amber-2"], .focus-head [class*="text-yellow-2"] { color: var(--tint-peach-ink) !important; }
 /* One-screen pages (Exam Setup etc.): no outer scroll on desktop; panels scroll inside. */
-@media (min-width: 1024px) { #app-scroll:has(.page-shell > [data-fill-height]) { overflow: hidden; } }
+@media (min-width: 1024px) { #app-scroll[data-one-screen] { overflow: hidden; } }
 /* Forge inside Exam Setup: one screen. Hero and plan table hidden here (they live on the Forge landing),
    the folder tabs stay fixed and only the panel's content scrolls. */
 .forge-fill { display: flex; flex-direction: column; }
-.forge-fill > div, .forge-fill > div > div:has(> .min-w-0 > .folder-tabs) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.forge-fill > div, .forge-fill > div > div:has(> .folder-wrap) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .forge-fill section[aria-label="Forge"], .forge-fill section[aria-label="What each plan gets"] { display: none; }
-.forge-fill .min-w-0:has(> .folder-tabs) { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.forge-fill .folder-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .forge-fill .folder-panel { flex: 1; min-height: 0; max-height: none !important; overflow-y: auto; }
+
+/* ===== Owner review 28 Oct, round 2 ===== */
+/* Buttons take the section's card colour (Exam Setup mint, Mocks peri ...) instead of plain navy. */
+.page-shell[data-section="mint"] { --btn: var(--tint-mint-ink); } .page-shell[data-section="peri"] { --btn: var(--tint-peri-ink); }
+.page-shell[data-section="peach"] { --btn: var(--tint-peach-ink); } .page-shell[data-section="butter"] { --btn: var(--tint-butter-ink); }
+.page-shell[data-section="sky"] { --btn: var(--tint-sky-ink); } .page-shell[data-section="rose"] { --btn: var(--tint-rose-ink); }
+.page-shell[data-section="lilac"] { --btn: var(--tint-lilac-ink); }
+#exam-root { --btn: #0a4fd0; }
+/* The bold button everywhere: exam screen, review, dialogs, Focus Target; one consistent look. */
+:is(#exam-root, [role="dialog"], .fixed) :is(button, a):is([class*="bg-indigo-6"], [class*="bg-violet-6"], [class*="bg-blue-6"], [class*="bg-emerald-6"], [class*="from-emerald-5"], [class*="from-indigo-6"], [class*="from-violet-6"], .grad-brand):not([role="tab"]):not([role="radio"]):not(:disabled) {
+  background: var(--btn) !important; background-image: none !important; color: #fff !important;
+  border: 2px solid #16123a !important; border-radius: 14px !important; box-shadow: 3px 3px 0 #16123a !important; }
+#exam-root :is(button, a)[class*="bg-[var(--ink)]"], #exam-root :is(button,a)[class*="bg-slate-9"] { box-shadow: 3px 3px 0 #16123a !important; }
+/* Secondary buttons (Previous, Clear, Mark & next, Cancel, Keep going, Ranks, Exit): soft pill with an ink outline. */
+:is(#exam-root, [role="dialog"]) :is(button, a):is([class*="bg-[var(--surface-secondary)]"], [class*="bg-violet-500/10"], [class*="bg-[var(--surface)]"][class*="border"]):not([role="tab"]):not([role="radio"]):not([aria-label*="palette" i]) {
+  border: 2px solid color-mix(in srgb, #16123a 70%, transparent) !important; border-radius: 14px !important; box-shadow: 2px 2px 0 color-mix(in srgb, #16123a 70%, transparent); }
+.pill-soft, main a[class*="border-[var(--border)]"][class*="rounded-xl"], main button[class*="border-[var(--border)]"][class*="h-11"] { transition: background .15s, transform .12s, box-shadow .12s; }
+.pill-soft:hover, main button[class*="border-[var(--border)]"][class*="h-11"]:hover { background: var(--tint-lilac) !important; transform: translate(-1px,-1px); box-shadow: 2px 2px 0 color-mix(in srgb, #16123a 60%, transparent); }
+
+/* Exam Setup: the chosen question source reads clearly (solid chip in its own colour). */
+
+/* Navbar: gradient of the screen's primary card colour on both sides; no stitch. */
+.topbar-island::after { display: none !important; }
+.topbar-island { background: linear-gradient(90deg, var(--nav-sec, var(--tint-lilac)) 0%, color-mix(in srgb, var(--surface) 92%, var(--nav-sec, var(--tint-lilac))) 30%, color-mix(in srgb, var(--surface) 92%, var(--nav-sec, var(--tint-lilac))) 70%, var(--nav-sec, var(--tint-lilac)) 100%) !important; }
+/* Icon group: every icon has its own colour on hover; the leaderboard trophy is clearly visible. */
+.topbar-island .nav-act { transition: background .15s, color .15s; }
+.topbar-island .nav-act:nth-of-type(1):hover, .topbar-island [aria-label*="Search"]:hover { background: var(--tint-sky); color: var(--tint-sky-ink) !important; }
+.topbar-island [aria-label="Study Planner Quick Access"]:hover { background: var(--tint-peach); color: var(--tint-peach-ink) !important; }
+.topbar-island [aria-label="To-Do List Quick Access"]:hover { background: var(--tint-mint); color: var(--tint-mint-ink) !important; }
+.topbar-island [aria-label="Focus Target"]:hover { background: var(--tint-rose); color: var(--tint-rose-ink) !important; }
+.topbar-island [aria-label^="Leaderboard"] { color: var(--tint-butter-ink) !important; }
+.topbar-island [aria-label^="Leaderboard"]:hover { background: var(--tint-butter); }
+.topbar-island [aria-label="Tools"]:hover { background: var(--tint-peri); color: var(--tint-peri-ink) !important; }
+.topbar-island [aria-label="Toggle Theme"]:hover { background: var(--tint-lilac); color: var(--tint-lilac-ink) !important; }
+
+/* Folder tabs: padded section with a stitched frame; the active tab is stitched on three sides so the
+   stitch runs continuously into the panel's stitch. Panels use the themed scrollbar. */
+.folder-wrap { padding: 10px 10px 10px; border-radius: calc(var(--card-radius) + 8px);
+  background: color-mix(in srgb, var(--surface) 55%, transparent); border: 1.5px dashed color-mix(in srgb, var(--text-primary) 16%, transparent); }
+.folder-tab[aria-selected="true"] { outline: none !important; border: 1.5px dashed color-mix(in srgb, var(--tab-ink, var(--tint-lilac-ink)) 35%, transparent); border-bottom: 0; }
+
+/* Flashcards and other scroll areas: room for focus/hover rings so they are not cut at the sides. */
+.flash-area { padding-inline: 6px; }
+/* AI Tutor sits on the sky card: its large panels are transparent/soft, inner blocks stay white. */
+.tutor-shell { --text-muted: #4b5563; }
+.tutor-shell > div > :is([class*="bg-[var(--surface)]"], [class*="bg-[var(--surface-secondary)]"]):not(button) { background-color: transparent !important; }
+.dark .tutor-shell { --text-muted: #b6bcc8; }
+/* Tools dock: coloured icons, coloured hover and an active chip in the tool's own pastel. */
+.sub-dock [data-tint] svg { color: var(--item-ink); }
+.sub-dock [data-tint]:hover { background: var(--item-tint); }
+.sub-dock [data-tint][aria-current="page"] { color: var(--item-ink) !important; }
+.sub-dock [data-tint][aria-current="page"] .nav-active-pill { background: var(--item-tint) !important; }
+.sub-dock [data-tint="mint"] { --item-ink: var(--tint-mint-ink); --item-tint: var(--tint-mint); } .sub-dock [data-tint="sky"] { --item-ink: var(--tint-sky-ink); --item-tint: var(--tint-sky); }
+.sub-dock [data-tint="butter"] { --item-ink: var(--tint-butter-ink); --item-tint: var(--tint-butter); } .sub-dock [data-tint="peri"] { --item-ink: var(--tint-peri-ink); --item-tint: var(--tint-peri); }
+.sub-dock [data-tint="peach"] { --item-ink: var(--tint-peach-ink); --item-tint: var(--tint-peach); } .sub-dock [data-tint="lilac"] { --item-ink: var(--tint-lilac-ink); --item-tint: var(--tint-lilac); }
+.sub-dock [data-tint="rose"] { --item-ink: var(--tint-rose-ink); --item-tint: var(--tint-rose); }
+/* The tool page's first (primary) card takes the active tool's colour. */
+.page-shell[data-tool-tint="mint"] { --sec: var(--tint-mint); } .page-shell[data-tool-tint="sky"] { --sec: var(--tint-sky); }
+.page-shell[data-tool-tint="butter"] { --sec: var(--tint-butter); } .page-shell[data-tool-tint="peri"] { --sec: var(--tint-peri); }
+.page-shell[data-tool-tint="peach"] { --sec: var(--tint-peach); } .page-shell[data-tool-tint="lilac"] { --sec: var(--tint-lilac); }
+.page-shell[data-tool-tint="rose"] { --sec: var(--tint-rose); }
+.tool-pastel :is(div, section, details)[class*="rounded-"][class*="border-[var(--border)]"][class*="bg-[var(--surface)]"]:first-of-type { background: color-mix(in srgb, var(--sec, var(--tint-lilac)) 100%, transparent) !important; }
+
+/* Mocks: lift the flat hero and stats with depth and a soft ring. */
+.page-shell[data-section="peri"] :is(section, div)[class*="rounded-3xl"][class*="bg-gradient"] { box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 24px 50px -30px rgba(12,34,75,.45) !important; }

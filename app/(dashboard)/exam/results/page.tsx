@@ -524,7 +524,7 @@ export default function ResultSummaryPage() {
                         className="inline-flex items-center gap-2 text-lg sm:text-xl lg:text-3xl font-black tracking-tight text-[var(--text-primary)]">
                         <Award className="w-5 h-5 lg:w-7 lg:h-7 text-amber-500" />{verdict.label}
                       </motion.h1>
-                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-sm mx-auto mt-1">{challengeLine ?? cpLine ?? verdict.message}</p>
+                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-md mx-auto mt-1 mb-3 line-clamp-2 leading-relaxed">{challengeLine ?? cpLine ?? verdict.message}</p>
                     </div>
                   </div>
 

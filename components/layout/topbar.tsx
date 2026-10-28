@@ -12,7 +12,17 @@ import { CalendarQuickPanel } from "./calendar-quick-panel";
 import { TodoQuickPanel } from "./todo-quick-panel";
 import dynamic from "next/dynamic";
 // Loaded only when opened: it pulls in the chart library, which no other top-bar control needs.
-const GoalSliderPanel = dynamic(() => import("./goal-slider-panel").then((m) => m.GoalSliderPanel), { ssr: false });
+// Focus Target is heavy (charts): its code is fetched in the background once the page is idle, so the
+// click opens it instantly; a placeholder frame shows if it is clicked before that finishes.
+const loadGoalPanel = () => import("./goal-slider-panel").then((m) => m.GoalSliderPanel);
+const GoalSliderPanel = dynamic(loadGoalPanel, {
+  ssr: false,
+  loading: () => (
+    <div className="fixed inset-0 z-[90] grid place-items-center bg-black/40 backdrop-blur-sm">
+      <div className="popover-surface h-[60vh] w-[min(92vw,1100px)] animate-pulse bg-[var(--surface)]" aria-label="Opening Focus Target" />
+    </div>
+  ),
+});
 import { useToastStore } from "@/store/use-toast-store";
 import { useGoalSliderStore, GOAL_SLIDER_DEFAULT_PERCENT } from "@/store/use-goal-slider-store";
 import { isInsidePortalPopover } from "@/lib/utils";
@@ -43,6 +53,12 @@ const NAV_TINTS: Record<string, string> = {
 };
 
 export function Topbar() {
+  useEffect(() => {
+    const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
+    const go = () => { loadGoalPanel().catch(() => {}); };
+    const t = w.requestIdleCallback ? w.requestIdleCallback(go) : window.setTimeout(go, 2500);
+    return () => { if (!w.requestIdleCallback) clearTimeout(t); };
+  }, []);
   const { setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

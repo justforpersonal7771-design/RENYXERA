@@ -441,10 +441,10 @@ export default function ExamSessionPage() {
                    {isMockSession ? null : sessionStatus === "IN_PROGRESS" ? (
                      <button
                        onClick={() => pauseSession()}
-                       className="inline-flex items-center justify-center gap-1.5 h-8 sm:h-9 px-2.5 sm:px-3 rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--tint-butter)] transition-colors cursor-pointer shrink-0"
+                       className="inline-flex items-center justify-center h-8 w-8 sm:h-9 sm:w-9 rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--tint-butter)] transition-colors cursor-pointer shrink-0"
                        title="Pause the test" aria-label="Pause the test"
                      >
-                       <CirclePause className="w-4 h-4 text-[var(--tint-butter-ink)]" /><span className="hidden sm:inline">Pause</span>
+                       <CirclePause className="w-[18px] h-[18px] text-[var(--tint-butter-ink)]" />
                      </button>
                    ) : (
                      <button

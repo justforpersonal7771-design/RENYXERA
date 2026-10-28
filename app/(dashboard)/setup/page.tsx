@@ -620,7 +620,7 @@ export default function ExamSetupPage() {
                   role="tab"
                   aria-selected={active}
                   whileTap={{ scale: 0.95 }}
-                  style={{ color: active ? `var(--tint-${opt.tint}-ink)` : undefined }}
+                  style={{ color: active ? "#fff" : undefined }}
                   onClick={() => { setSourceType(opt.value); if (opt.mode) setSourceMix({ ...sourceMix, mode: opt.mode }); setToggleRipple((r) => ({ key: r.key + 1, value: opt.value })); }}
                   className={`group relative z-10 flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold rounded-xl transition-colors duration-300 cursor-pointer overflow-hidden ${
                     active ? "text-[var(--text-primary)] font-bold" : "text-[var(--text-secondary)] hover:bg-[var(--surface)]/50"
@@ -629,7 +629,7 @@ export default function ExamSetupPage() {
                   {active && (
                     <motion.span
                       layoutId="setup-source-pill"
-                      className="absolute inset-0 rounded-[13px] -z-10 bg-[var(--surface)] shadow-[0_1px_2px_rgba(12,34,75,.08),0_6px_14px_-8px_rgba(12,34,75,.25)] overflow-hidden"
+                      className="absolute inset-0 rounded-[13px] -z-10 shadow-[0_6px_14px_-8px_rgba(12,34,75,.45)] overflow-hidden" style={{ background: `var(--tint-${opt.tint}-ink)` }}
                       transition={{ type: "spring", stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -662,7 +662,7 @@ export default function ExamSetupPage() {
 
 
         {setupView === "flash" ? (
-          <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-12">
+          <div className="flash-area flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-12">
             <Flashcards source={sourceType === "ai_generated" ? "ai" : sourceMix.mode} pyq={pyqList} ai={aiQuestionsList} />
           </div>
         ) : sourceType === "ai_generated" && setupView === "questions" ? (

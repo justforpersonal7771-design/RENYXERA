@@ -314,7 +314,7 @@ export default function AnalyticsDashboardPage() {
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" opacity={0.1} vertical={false} />
-                    <XAxis dataKey="session" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
+                    <XAxis dataKey="session" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} interval="equidistantPreserveStart" />
                     <YAxis stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
                     <RechartsTooltip content={<ChartTooltip unit={trendMetric === "accuracy" ? "%" : ""} />} cursor={{ stroke: "var(--border)", strokeWidth: 1, strokeDasharray: "4 4" }} />
                     <Area

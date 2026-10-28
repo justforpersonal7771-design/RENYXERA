@@ -64,7 +64,11 @@ export const useAnalyticsStore = create<AnalyticsState>((set, get) => ({
   // Drop the cached metrics so the next loadAnalytics() call recomputes fresh — call this
   // after anything that actually changes the underlying data (e.g. submitting an exam),
   // not on every navigation to Dashboard/Analytics.
+  // Screens load metrics once on mount, so a bare reset (e.g. after a background sync when the
+  // browser tab regains focus) left Analytics on its spinner forever. Recompute in place instead:
+  // the old figures stay on screen until the fresh ones replace them.
   invalidate: () => {
-    set({ dashboardMetrics: null });
+    if (!get().dashboardMetrics) return;
+    void get().refreshAnalytics();
   }
 }));
