@@ -109,8 +109,10 @@ class QuestionRepositorySingleton {
           for (const paper of rawData) {
             const yearShiftStr = paper.exam_metadata?.["year-shift"] || "";
             const [year, shift] = yearShiftStr.split("-");
+            // Shared-pool papers are keyed "2026-FN-CS": the full key finds their images (another branch's folder).
+            const imageKey = yearShiftStr.split("-").length > 2 ? yearShiftStr : undefined;
             for (const q of paper.questions) {
-              rawQuestions.push({ ...q, year, shift });
+              rawQuestions.push({ ...q, year, shift, ...(imageKey ? { image_key: imageKey } : {}) } as Question);
             }
           }
 

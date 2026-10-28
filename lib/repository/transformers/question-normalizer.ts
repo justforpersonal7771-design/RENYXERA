@@ -6,6 +6,8 @@ export interface NormalizationContext {
   year: string;
   shift: string;
   imagesRequired?: string[];
+  /** Full manifest key when it isn't year-shift (shared-pool papers, e.g. "2026-FN-CS"). */
+  imageKey?: string;
 }
 
 export function normalizeQuestion(

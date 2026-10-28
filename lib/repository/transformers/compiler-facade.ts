@@ -15,6 +15,7 @@ export class CompilerFacade implements IASTCompiler {
       const context: NormalizationContext = {
         year: q.year || "",
         shift: q.shift || "",
+        imageKey: (q as Question & { image_key?: string }).image_key,
       };
       
       return normalizeQuestion(q, context);
