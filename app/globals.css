@@ -1705,3 +1705,50 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .dark .calc-key { box-shadow: none !important; border-color: rgba(255,255,255,.15) !important; }
 /* Current question in the palette: ink frame with an offset shadow (state colour stays visible inside). */
 .q-cell { z-index: 0; }
+
+/* Folder content stays INSIDE the stitch (root cause 28 Oct: the scroll box filled the whole panel, so scrolling
+ content slid under the stitch line and the inner padding scrolled away). Panel padding 14px > stitch inset 7px, and
+ the scroll box clips its own content, so nothing ever crosses the stitch. */
+.folder-panel { padding: 14px; overflow: hidden; }
+.folder-panel::before { inset: 7px; border-radius: calc(var(--card-radius) - 6px); }
+.folder-scroll { padding: 10px; border-radius: calc(var(--card-radius) - 12px); overscroll-behavior: contain; }
+@media (max-width: 767px) { .folder-panel { padding: 11px; } .folder-panel::before { inset: 5px; } .folder-scroll { padding: 6px; } }
+/* Active tab stitch joins the folder stitch: it runs down past the tab into the panel to the panel stitch line
+ (panel padding/inset 7px) and its fill hides the panel stitch under the tab, so the two read as one continuous seam. */
+.folder-tab { isolation: isolate; }
+.folder-tab-stitch { z-index: -1; bottom: -9px !important; background: var(--tab-tint); }
+@media (max-width: 767px) { .folder-tab-stitch { bottom: -7px !important; } }
+
+/* Scrollbars match their card: thumb in the card ink, track inset so it never runs past the rounded edge. */
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) { --sb-ink: var(--tab-ink, var(--tint-ink, var(--tint-lilac-ink))); }
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll) { scrollbar-color: color-mix(in srgb, var(--sb-ink) 45%, transparent) transparent; scrollbar-width: thin; }
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar { width: 8px; height: 8px; }
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-track { margin-block: 18px; background: transparent; }
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-thumb { background-image: none !important;
+  background-color: color-mix(in srgb, var(--sb-ink) 45%, transparent) !important; border: 2px solid transparent; background-clip: padding-box; border-radius: 999px; box-shadow: none !important; }
+:is(.folder-panel, .card-pastel, .card-glass, .card-well) :is(.custom-scrollbar, .folder-scroll)::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--sb-ink) 70%, transparent) !important; }
+/* The page scroll uses the current section colour; its track stops short of the rounded page layer corners. */
+#app-scroll::-webkit-scrollbar-track { margin-block: 20px; }
+
+/* ===== Folder = one tinted card (owner, 28 Oct, final) =====
+ The whole section is tinted in the active tab colour, padded on all sides, with ONE stitch inside it. The tabs sit
+ inside at the top; the content sits below and scrolls inside the stitch. */
+.folder-wrap { --tab-tint: var(--tint-lilac); --tab-ink: var(--tint-lilac-ink); position: relative; background: var(--tab-tint) !important;
+  border-radius: var(--card-radius) !important; padding: 16px !important; gap: 10px; display: flex; flex-direction: column; min-height: 0; --text-muted: #4b5563; }
+.dark .folder-wrap { --text-muted: #b6bcc8; }
+.folder-wrap::before { content: ""; position: absolute; inset: 8px; border: 1.5px dashed color-mix(in srgb, var(--tab-ink) 35%, transparent);
+  border-radius: calc(var(--card-radius) - 6px); pointer-events: none; z-index: 2; }
+.folder-wrap[data-tint="mint"] { --tab-tint: var(--tint-mint); --tab-ink: var(--tint-mint-ink); } .folder-wrap[data-tint="peach"] { --tab-tint: var(--tint-peach); --tab-ink: var(--tint-peach-ink); }
+.folder-wrap[data-tint="peri"] { --tab-tint: var(--tint-peri); --tab-ink: var(--tint-peri-ink); } .folder-wrap[data-tint="rose"] { --tab-tint: var(--tint-rose); --tab-ink: var(--tint-rose-ink); }
+.folder-wrap[data-tint="sky"] { --tab-tint: var(--tint-sky); --tab-ink: var(--tint-sky-ink); } .folder-wrap[data-tint="butter"] { --tab-tint: var(--tint-butter); --tab-ink: var(--tint-butter-ink); }
+/* tabs inside: pills; inactive = own pastel on white, active = white chip with ink text and an ink edge */
+.folder-wrap .folder-tabs { padding: 0 !important; gap: 6px; align-items: center; }
+.folder-wrap .folder-tab { border-radius: 12px !important; padding: 8px 16px !important; background: color-mix(in srgb, var(--surface) 55%, var(--tab-tint)) !important; }
+.folder-wrap .folder-tab[aria-selected="true"] { background: var(--surface) !important; color: var(--text-primary) !important; box-shadow: 2px 2px 0 color-mix(in srgb, #16123a 75%, transparent); border: 1.5px solid color-mix(in srgb, #16123a 75%, transparent); padding-top: 8px !important; }
+.folder-wrap .folder-tab[aria-selected="true"]::before, .folder-wrap .folder-tab[aria-selected="true"]::after, .folder-wrap .folder-tab-stitch { display: none !important; }
+/* the panel is just the content area now: no own tint, no own stitch; content clips inside the stitch */
+.folder-wrap .folder-panel { background: transparent !important; padding: 0 !important; border-radius: calc(var(--card-radius) - 14px) !important; overflow: hidden; flex: 1; min-height: 0; }
+.folder-wrap .folder-panel::before { display: none !important; }
+.folder-wrap .folder-scroll { padding: 2px 2px 4px !important; }
+@media (min-width: 1024px) { .folder-wrap .folder-scroll { max-height: calc(100vh - 230px); } .forge-fill .folder-wrap .folder-scroll { max-height: none; } }
+@media (max-width: 767px) { .folder-wrap { padding: 12px !important; } .folder-wrap::before { inset: 6px; } }
