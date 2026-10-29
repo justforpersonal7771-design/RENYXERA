@@ -33,7 +33,7 @@ import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { TOOLS, TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 import { BranchChip } from "./branch-chip";
-import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-centre/brand";
+import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -53,6 +53,8 @@ function screenTint(path: string): string {
   const ti = TOOLS.findIndex((t) => path === t.href || (t.also ?? []).some((a) => path.startsWith(a)));
   if (ti >= 0) return TOOL_TINTS[ti % TOOL_TINTS.length];
   if (path === TOOLS_HOME) return "lilac";
+  const tc = testCentreTint(path);
+  if (tc) return tc;
   const item = NAV_ITEMS.find((n) => (n.label === TEST_CENTRE ? isTestCentrePath(path) : n.href !== "/" ? path.startsWith(n.href) : path === "/"));
   return NAV_TINTS[item?.label ?? ""] ?? "sky";
 }

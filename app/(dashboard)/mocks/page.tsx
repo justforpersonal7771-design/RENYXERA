@@ -162,7 +162,7 @@ export default function MocksPage() {
         <div className="relative flex flex-col gap-6">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-3 min-w-0">
-              <motion.span whileHover={{ rotate: -12, scale: 1.08 }} className="w-12 h-12 shrink-0 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center"><Trophy className="w-6 h-6 text-amber-200" /></motion.span>
+              <motion.span whileHover={{ rotate: -12, scale: 1.08 }} className="w-12 h-12 shrink-0 rounded-2xl bg-white/70 border border-amber-500/30 flex items-center justify-center"><Trophy className="w-6 h-6 text-amber-600" /></motion.span>
               <div className="min-w-0">
                 <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">All-India Mock</h1>
                 <p className="text-xs sm:text-sm text-white/80">Every Sunday · GATE CS pattern · ranked nationally</p>
@@ -170,7 +170,7 @@ export default function MocksPage() {
             </div>
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => openLeaderboard()}
               className="shrink-0 inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-white/15 hover:bg-white/25 border border-white/25 text-sm font-bold cursor-pointer backdrop-blur">
-              <Medal className="w-4 h-4 text-amber-200" /> <span className="hidden sm:inline">Leaderboard</span>
+              <Medal className="w-4 h-4 text-amber-600" /> <span className="hidden sm:inline">Leaderboard</span>
             </motion.button>
           </div>
 

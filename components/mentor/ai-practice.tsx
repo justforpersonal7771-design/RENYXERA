@@ -83,7 +83,7 @@ export function AiPracticePanel({ topics, subjects }: { topics: { topic: string;
                       const on = a.picked.includes(o.option_id), right = (q.correctOptionIds ?? []).includes(o.option_id);
                       return (
                         <li key={o.option_id}><button type="button" onClick={() => pick(i, o.option_id, multi)} aria-pressed={on}
-                          className={`flex w-full cursor-pointer items-start gap-2 rounded-xl border-2 px-3 py-2 text-left text-sm ${a.done && right ? "border-[var(--tint-mint-ink)] bg-[var(--tint-mint)]" : a.done && on ? "border-[var(--tint-rose-ink)] bg-[var(--tint-rose)]" : on ? "border-[var(--tint-sky-ink)] bg-[var(--tint-sky)]" : "border-[var(--border)]"}`}>
+                          className={`opt-tile flex w-full cursor-pointer items-start gap-2 rounded-xl border-2 px-3 py-2 text-left text-sm ${a.done && right ? "border-[var(--tint-mint-ink)] bg-[var(--tint-mint)]" : a.done && on ? "border-[var(--tint-rose-ink)] bg-[var(--tint-rose)]" : on ? "border-[var(--tint-sky-ink)] bg-[var(--tint-sky)]" : "border-[var(--border)]"}`}>
                           <span className="font-bold">{o.option_id}</span><span className="min-w-0 flex-1">{o.content.replace(/\\\(|\\\)/g, "")}</span>
                           {a.done && right && <Check className="h-4 w-4 text-[var(--tint-mint-ink)]" />}{a.done && on && !right && <X className="h-4 w-4 text-[var(--tint-rose-ink)]" />}
                         </button></li>

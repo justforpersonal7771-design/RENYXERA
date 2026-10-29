@@ -535,12 +535,14 @@
      the page scrolls (a fixed height clipped their cards and hid buttons like Deploy Session).
      data-fill-height="always" (chat, lock screens) keeps one screen everywhere. */
   .page-shell:has(> [data-fill-height="always"]) {
-    height: 100%;
+    height: 100%; display: flex; flex-direction: column;
   }
+  .page-shell:has(> [data-fill-height="always"]) > [data-fill-height] { flex: 1 1 0; min-height: 0; }
   @media (min-width: 1024px) {
     .page-shell:has(> [data-fill-height]) {
-      height: 100%;
+      height: 100%; display: flex; flex-direction: column;
     }
+    .page-shell:has(> [data-fill-height]) > [data-fill-height] { flex: 1 1 0; min-height: 0; }
   }
 
   .scrollbar-hide::-webkit-scrollbar {
@@ -1340,7 +1342,7 @@ main :is([class*="bg-gradient-to-"][class*="text-white"][class*=" p-"], [class*=
 .card-band[data-tint="rose"] { --tint: #f9a8c0; } .card-band[data-tint="butter"] { --tint: #f6d365; } .card-band[data-tint="sky"] { --tint: #8cc8f5; }
 .card-band[data-tint="mint"] { --tint: #8fdcb8; } .card-band[data-tint="peach"] { --tint: #f9b98c; } .card-band[data-tint="lilac"] { --tint: #a9bdf7; }
 .card-well { background: var(--tint-lilac); border-radius: var(--card-radius); padding: 14px; }
-.card-well[data-tint="mint"] { background: var(--tint-mint); } .card-well[data-tint="peach"] { background: var(--tint-peach); } .card-well[data-tint="sky"] { background: var(--tint-sky); }
+.card-well[data-tint="mint"] { background: var(--tint-mint); } .card-well[data-tint="peach"] { background: var(--tint-peach); } .card-well[data-tint="sky"] { background: var(--tint-sky); } .card-well[data-tint="rose"] { background: var(--tint-rose); } .card-well[data-tint="butter"] { background: var(--tint-butter); } .card-well[data-tint="peri"] { background: var(--tint-peri); }
 .card-stat { background: var(--surface); border-radius: 20px; padding: 16px; border: 1px solid color-mix(in srgb, var(--text-primary) 7%, transparent);
   box-shadow: inset 0 0 0 4px color-mix(in srgb, var(--surface-secondary) 60%, transparent); }
 /* stat tile on top of a pastel card: white face, tint lives in the icon only */
@@ -1838,12 +1840,12 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 
 /* Watermark on every pastel card (owner, 29 Oct): a soft shape in the card's own ink colour, bottom right, behind the content.
    One shape per colour so neighbouring cards differ. Cards that draw their own icon watermark (.tile-mark) skip it. */
-.card-pastel:not(:has(.tile-mark))::after, .card-well:not(:has(.tile-mark))::after {
+.card-pastel[data-tint]:not(:has(.tile-mark))::after, .card-well[data-tint]:not(:has(.tile-mark))::after {
   content: ""; position: absolute; right: 14px; bottom: 12px; width: 72px; height: 72px; z-index: -1; pointer-events: none;
   background: var(--wm, var(--tint-lilac-ink)); opacity: .08; border-radius: 50%; transition: transform .35s cubic-bezier(.2,.7,.2,1);
 }
 .card-well { position: relative; isolation: isolate; }
-.card-pastel:hover::after, .card-well:hover::after { transform: rotate(-10deg) scale(1.12); }
+.card-pastel[data-tint]:hover::after, .card-well[data-tint]:hover::after { transform: rotate(-10deg) scale(1.12); }
 :is(.card-pastel, .card-well)[data-tint="mint"] { --wm: var(--tint-mint-ink); }
 :is(.card-pastel, .card-well)[data-tint="sky"] { --wm: var(--tint-sky-ink); }
 :is(.card-pastel, .card-well)[data-tint="peach"] { --wm: var(--tint-peach-ink); }
@@ -1860,3 +1862,15 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 :is(.card-pastel, .card-well)[data-tint="peach"]:not(:has(.tile-mark)):hover::after, :is(.card-pastel, .card-well)[data-tint="lilac"]:not(:has(.tile-mark)):hover::after { transform: rotate(0) scale(1.1); }
 .dark :is(.card-pastel, .card-well):not(:has(.tile-mark))::after { opacity: .07; }
 @media (prefers-reduced-motion: reduce) { .card-pastel::after, .card-well::after { transition: none !important; } }
+
+/* Exam-screen feel on every question screen (mistakes, bookmarks, revision, Mentor practice): bold-edged tiles, letter chip,
+   radio on the right, chosen = tinted with an ink edge and offset shadow. State colours (correct, wrong) stay as each screen sets them. */
+.q-tile, .opt-tile { position: relative; padding-right: 3rem !important; border-width: 2px !important; border-radius: 18px !important; transition: transform .12s, box-shadow .12s, background .15s, border-color .15s; }
+.q-tile::after, .opt-tile::after { content: ""; position: absolute; right: 16px; top: 50%; width: 20px; height: 20px; margin-top: -10px; border-radius: 999px; border: 2px solid var(--option-border); background: transparent; }
+.q-tile:not([class*="border-indigo"]):not([class*="border-rose"]):not([class*="border-emerald"]):not([class*="border-green"]), .opt-tile[aria-pressed="false"]:not([class*="tint-mint"]):not([class*="tint-rose"]) { border-color: var(--option-border) !important; background-color: var(--option-surface) !important; }
+.q-tile:not([class*="border-indigo"]):not([class*="border-rose"]):hover, .opt-tile[aria-pressed="false"]:not([class*="tint-mint"]):not([class*="tint-rose"]):hover { background-color: var(--option-hover) !important; border-color: var(--option-border-selected) !important; transform: translateY(-2px); }
+.q-tile[class*="border-indigo"], .opt-tile[aria-pressed="true"]:not([class*="tint-mint"]):not([class*="tint-rose"]) { border-color: var(--option-border-selected) !important; background-color: var(--option-selected) !important; box-shadow: 3px 3px 0 #16123a !important; }
+.q-tile[class*="border-indigo"]::after, .opt-tile[aria-pressed="true"]:not([class*="tint-mint"]):not([class*="tint-rose"])::after { border-color: var(--option-border-selected); background: radial-gradient(circle, var(--option-border-selected) 0 45%, transparent 50%); }
+.dark .q-tile[class*="border-indigo"], .dark .opt-tile[aria-pressed="true"]:not([class*="tint-mint"]):not([class*="tint-rose"]) { box-shadow: 3px 3px 0 #e9e7f5 !important; }
+.q-tile-letter { width: 32px !important; height: 32px !important; border-radius: 10px !important; font-weight: 800; }
+.q-tile[class*="border-indigo"] .q-tile-letter { background: #16123a; color: #fff; border-color: #16123a; }

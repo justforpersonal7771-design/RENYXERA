@@ -43,14 +43,14 @@ export default function TestCentrePage() {
   const current = steps.findIndex((s) => !s.done);
 
   return (
-    <div className="flex w-full flex-col gap-5">
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
-        <section className="card-well relative overflow-hidden p-5 sm:p-6" data-tint="mint" aria-label="Today's mission">
+    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-9.5rem)]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+        <section className="card-well relative overflow-hidden p-4 sm:p-5" data-tint="mint" aria-label="Today's mission">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[var(--tint-mint-ink)] opacity-10" />
           <div aria-hidden className="pointer-events-none absolute -bottom-16 right-24 h-40 w-40 rounded-[2.5rem] bg-[var(--tint-sky-ink)] opacity-10 rotate-12" />
           <Sticker>{TEST_CENTRE} · today&apos;s mission</Sticker>
-          <h1 className="mt-3 font-display text-3xl font-extrabold sm:text-4xl text-[var(--text-primary)]">{current === 0 && open ? `Clear ${Math.min(open, 10)} mistakes first` : current === 1 ? "Now take a timed test" : "See how you did"}</h1>
-          <ol className="relative mt-5 flex flex-wrap items-center gap-x-2 gap-y-3" aria-label="Mission steps">
+          <h1 className="mt-2 font-display text-3xl font-extrabold text-[var(--text-primary)]">{current === 0 && open ? `Clear ${Math.min(open, 10)} mistakes first` : current === 1 ? "Now take a timed test" : "See how you did"}</h1>
+          <ol className="relative mt-3 flex flex-wrap items-center gap-x-2 gap-y-3" aria-label="Mission steps">
             {steps.map((s, i) => (
               <li key={s.n} className="flex items-center gap-2">
                 <Link href={s.href} aria-current={i === current ? "step" : undefined}
@@ -62,25 +62,25 @@ export default function TestCentrePage() {
               </li>
             ))}
           </ol>
-          <Link href={steps[Math.max(current, 0)].href} className="btn-main mt-6"><Play className="h-4 w-4" /> Start step {steps[Math.max(current, 0)].n}</Link>
+          <Link href={steps[Math.max(current, 0)].href} className="btn-main mt-4"><Play className="h-4 w-4" /> Start step {steps[Math.max(current, 0)].n}</Link>
         </section>
         <div className="min-w-0 [&>*]:h-full"><MockStatusCard /></div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {[
           { v: open, l: "mistakes waiting", t: "rose" }, { v: taken, l: "tests taken", t: "peri" },
           { v: lastPct != null ? `${lastPct}%` : "-", l: "last test score", t: "butter" }, { v: attempts ? attempts.filter((a) => a.kind === "mock").length : 0, l: "mocks taken", t: "sky" },
         ].map((s) => (
-          <div key={s.l} data-tint={s.t} className="card-pastel p-4 sm:p-5">
-            <p className={`font-display text-4xl font-extrabold tabular-nums sm:text-5xl ${ink}`}>{s.v}</p>
+          <div key={s.l} data-tint={s.t} className="card-pastel p-3 sm:p-4">
+            <p className={`font-display text-3xl font-extrabold tabular-nums sm:text-4xl ${ink}`}>{s.v}</p>
             <p className="mt-1 text-xs font-bold text-[var(--text-secondary)] sm:text-sm">{s.l}</p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 md:grid-cols-6 md:auto-rows-fr">
-        <Link href="/test-centre/build" data-tint="mint" className={`${tile} md:col-span-3 md:row-span-2`}>
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-12 md:grid-rows-2 md:flex-1 md:min-h-0">
+        <Link href="/test-centre/build" data-tint="mint" className={`${tile} md:col-span-6 md:row-span-2`}>
           <Mark I={Settings} />
           <Sticker tilt="rotate-2">Most used</Sticker>
           <h2 className={`mt-3 font-display text-3xl font-extrabold ${ink}`}>Build a test</h2>
@@ -90,7 +90,7 @@ export default function TestCentrePage() {
           </div>
           <span className={`mt-4 inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Build a test <Arrow /></span>
         </Link>
-        <Link href="/test-centre/practice" data-tint="rose" className={`${tile} md:col-span-3`}>
+        <Link href="/test-centre/practice" data-tint="rose" className={`${tile} md:col-span-6`}>
           <Mark I={RotateCcw} />
           <h2 className={`font-display text-2xl font-extrabold ${ink}`}>Practice</h2>
           <p className="mt-1 flex-1 text-sm text-[var(--text-secondary)]">Revision, checkpoint and your mistakes. Short sessions that fix weak spots.</p>
@@ -102,18 +102,17 @@ export default function TestCentrePage() {
           <p className="mt-1 flex-1 text-sm text-[var(--text-secondary)]">Recall cards, due first.</p>
           <span className={`mt-3 inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
-        <Link href="/challenge" data-tint="lilac" className={`${tile} md:col-span-1`}>
+        <Link href="/challenge" data-tint="lilac" className={`${tile} md:col-span-2`}>
           <Mark I={Swords} />
           <h2 className={`font-display text-xl font-extrabold ${ink}`}>Challenge</h2>
           <p className="mt-1 flex-1 text-sm text-[var(--text-secondary)]">Beat a friend.</p>
           <span className={`mt-3 inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Go <Arrow /></span>
         </Link>
-        <Link href="/test-centre/history" data-tint="sky" className={`${tile} md:col-span-6`}>
+        <Link href="/test-centre/history" data-tint="sky" className={`${tile} md:col-span-2`}>
           <Mark I={BarChart3} />
-          <div className="flex items-center gap-3">
-            <span className="min-w-0 flex-1"><span className={`block font-display text-xl font-extrabold ${ink}`}>History</span><span className="block text-sm text-[var(--text-secondary)]">Every test you have taken, with results and review.</span></span>
-            <Arrow />
-          </div>
+          <h2 className={`font-display text-xl font-extrabold ${ink}`}>History</h2>
+          <p className="mt-1 flex-1 text-sm text-[var(--text-secondary)]">Results and review.</p>
+          <span className={`mt-3 inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
       </div>
     </div>

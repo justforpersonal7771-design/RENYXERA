@@ -18,7 +18,7 @@ export function TestCentreBar() {
   const p = usePathname() ?? "";
   if (p === TEST_CENTRE_HREF || !(isTestCentrePath(p) || p.startsWith("/revision"))) return null;
   return (
-    <nav aria-label={`${TEST_CENTRE} sections`} className="mb-3 flex items-center gap-2 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+    <nav aria-label={`${TEST_CENTRE} sections`} className="-mx-2 -mt-2 mb-1 flex shrink-0 items-center gap-2 overflow-x-auto px-2 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <Link href={TEST_CENTRE_HREF} className="btn-soft !h-10 shrink-0 !px-3 text-sm"><LayoutGrid className="h-4 w-4" /> {TEST_CENTRE}</Link>
       {ITEMS.map((i) => (
         <Link key={i.href} href={i.href} aria-current={i.on(p) ? "page" : undefined} className={`${i.on(p) ? "pill-ink" : "pill-soft"} shrink-0 whitespace-nowrap text-sm`}>{i.label}</Link>

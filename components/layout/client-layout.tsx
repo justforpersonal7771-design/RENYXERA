@@ -27,6 +27,7 @@ import { MotionPrefs } from "@/components/system/motion-prefs";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { TestCentreBar } from "@/components/layout/test-centre-bar";
+import { testCentreTint } from "@/lib/test-centre/brand";
 import { useAuthStore } from "@/store/use-auth-store";
 import { OnboardingGate } from "@/components/auth/onboarding-gate";
 
@@ -44,6 +45,8 @@ const ToastContainer = dynamic(
 function sectionTint(p: string | null): string {
   const path = p ?? "/";
   if (path === "/") return "lilac";
+  const tc = testCentreTint(path);
+  if (tc) return tc;
   const map: [string, string][] = [["/test-centre", "mint"], ["/setup", "mint"], ["/exam", "mint"], ["/mocks", "peri"], ["/study", "butter"], ["/ai-mentor", "sky"], ["/ai-tutor", "sky"],
     ["/mistakes", "rose"], ["/bookmarks", "rose"], ["/revision", "rose"], ["/analytics", "mint"], ["/profile", "peri"], ["/pro", "butter"]];
   return map.find(([k]) => path.startsWith(k))?.[1] ?? "sky";
