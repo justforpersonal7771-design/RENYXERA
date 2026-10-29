@@ -14,6 +14,8 @@ import { AI_DAILY } from "@/lib/billing/plans";
 import { Segmented } from "@/components/ui/folder-tabs";
 import { CardView, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { MentorNote, useMentorData } from "@/components/mentor/use-mentor-data";
+import { CheckInPanel, FocusTimer, GoalsPanel, NoticedPanel, RoadmapPanel } from "@/components/mentor/mentor-extras";
+import { AiPracticePanel } from "@/components/mentor/ai-practice";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 
@@ -119,6 +121,9 @@ export default function AIMentorPage() {
             </div>
           </section>
 
+          <AiPracticePanel topics={d.weakTopics.map((t) => ({ topic: t.topic, subject: t.subject }))} subjects={d.subjects.map((s) => s.subject)} />
+          <RoadmapPanel daysToExam={d.daysToExam} goals={d.goals} />
+
           <section className="card-pastel p-5" data-tint="peach" aria-label="Today's plan">
             <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Today&apos;s plan</h2>
             {d.suggestions.length === 0 ? <p className="mt-2 text-sm text-[var(--text-secondary)]">{noData ? "Take a test and I will build your plan." : "Nothing new to suggest. Your calendar already covers your weak topics."}</p> : (
@@ -161,6 +166,11 @@ export default function AIMentorPage() {
             </div>
             {d.notes.length > 0 && <button type="button" onClick={() => d.saveNotes([])} className="mt-2 inline-flex cursor-pointer items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--tint-rose-ink)]"><Trash2 className="h-3 w-3" /> Forget everything I told you</button>}
           </section>
+
+          <GoalsPanel goals={d.goals} setGoals={d.setGoals} />
+          <NoticedPanel i={{ open: d.open, subjects: d.subjects, testsTaken: d.sessions.length }} />
+          <CheckInPanel checkins={d.checkins} setCheckins={d.setCheckins} />
+          <FocusTimer focus={d.focus} setFocus={d.setFocus} />
 
           <section className="card-pastel p-5" data-tint="rose" aria-label="Next best actions">
             <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Next best actions</h2>

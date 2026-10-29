@@ -34,7 +34,7 @@ function ChatScreen() {
 
   const submit = () => { const t = input; setInput(""); void c.send(t); };
   return (
-    <div className="mx-auto flex h-[calc(100dvh-9.5rem)] min-h-[26rem] max-w-3xl flex-col" data-fill-height="always">
+    <div className="flex h-[calc(100dvh-9.5rem)] min-h-[26rem] w-full flex-col" data-fill-height="always">
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>
         <h1 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Chat with your Mentor</h1>
@@ -56,7 +56,7 @@ function ChatScreen() {
           )}
           {c.msgs.map((m) => (
             <div key={m.id} className={m.role === "user" ? "flex justify-end" : "flex justify-start"}>
-              <div className={`max-w-[92%] rounded-2xl px-4 py-3 text-sm ${m.role === "user" ? "bg-[var(--btn)] text-[var(--btn-fg)]" : "bg-[var(--surface)] text-[var(--text-primary)]"}`}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm lg:max-w-[70%] ${m.role === "user" ? "bg-[var(--btn)] text-[var(--btn-fg)]" : "bg-[var(--surface)] text-[var(--text-primary)]"}`}>
                 <p className="whitespace-pre-wrap leading-relaxed">{clean(m.text)}</p>
                 {m.warn && <p className="mt-2 rounded-lg bg-[var(--tint-butter)] px-2 py-1 text-xs text-[var(--tint-butter-ink)]">Check these numbers before relying on them: {m.warn.join(", ")}. They are not in your data.</p>}
                 {m.cards?.map((cd, i) => <CardView key={i} c={cd} added={c.added} onAdd={(it, k) => c.addPlanItem(it, `${m.id}-${k}`)} idKey={m.id} go={(h) => router.push(h)} />)}
@@ -72,7 +72,7 @@ function ChatScreen() {
           ))}
           {c.busy && <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]"><Loader2 className="h-4 w-4 animate-spin" /> Thinking about your data...</div>}
         </div>
-        <form className="mt-3 flex gap-2" onSubmit={(e) => { e.preventDefault(); submit(); }}>
+        <form className="mx-auto mt-3 flex w-full max-w-3xl gap-2" onSubmit={(e) => { e.preventDefault(); submit(); }}>
           <input value={input} onChange={(e) => setInput(e.target.value)} maxLength={1500} placeholder="Ask your Mentor" aria-label="Message your Mentor"
             className="h-12 min-w-0 flex-1 rounded-2xl border-2 border-[var(--border)] bg-[var(--surface)] px-4 text-[var(--text-primary)] outline-none focus:border-[var(--tint-sky-ink)]" />
           <button type="submit" disabled={c.busy || !input.trim()} className="btn-main !px-4 disabled:opacity-50" aria-label="Send"><Send className="h-4 w-4" /></button>

@@ -11,6 +11,8 @@ import { MasteryEngine, TopicMastery } from "@/lib/learning/MasteryEngine";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { toLocalDateStr } from "@/lib/utils";
 import { buildBrief } from "@/lib/mentor/brief";
+import { CheckIn, FocusLog, Goals, extrasBriefLines, useMemoryKey } from "@/components/mentor/mentor-extras";
+import { PracticeLog, practiceBriefLine } from "@/components/mentor/ai-practice";
 
 export interface MentorNote { id: string; text: string; at: string }
 const NOTES_KEY = "mentor_notes";
@@ -27,6 +29,10 @@ export function useMentorData() {
   const [mastery, setMastery] = useState<Record<string, TopicMastery>>({});
   const [sessions, setSessions] = useState<any[]>([]);
   const [notes, setNotes] = useState<MentorNote[]>([]);
+  const [goals, setGoals] = useMemoryKey<Goals | null>("mentor_goals", null);
+  const [checkins, setCheckins] = useMemoryKey<CheckIn[]>("mentor_checkins", []);
+  const [focus, setFocus] = useMemoryKey<FocusLog[]>("mentor_focus", []);
+  const [practice] = useMemoryKey<PracticeLog[]>("mentor_practice", []);
 
   useEffect(() => {
     let alive = true;
@@ -78,7 +84,7 @@ export function useMentorData() {
       .sort((a, b) => String(b.updatedAt ?? b.startedAt).localeCompare(String(a.updatedAt ?? a.startedAt)));
     const last = done[0];
     const weekEnd = toLocalDateStr(new Date(Date.now() + 7 * 86400000));
-    return buildBrief({
+    const base = buildBrief({
       firstName: firstName ?? "", targetYear, daysToExam,
       accuracy: dashboardMetrics ? Math.round(dashboardMetrics.overview.overallAccuracy) : null,
       attempted: subjects.reduce((a, s) => a + s.attempted, 0),
@@ -92,8 +98,9 @@ export function useMentorData() {
       readiness: readiness ? { marks: Math.round(readiness.expectedMarks), rank: Math.round(readiness.expectedRank), rating: readiness.readinessRating } : null,
       notes: notes.map((n) => n.text).slice(-8),
     });
-  }, [firstName, targetYear, daysToExam, dashboardMetrics, subjects, weakTopics, open, sessions, events, today, plannerDone, readiness, notes]);
+    return [base, ...extrasBriefLines(goals, checkins, focus), practiceBriefLine(practice)].filter(Boolean).join(String.fromCharCode(10));
+  }, [firstName, targetYear, daysToExam, dashboardMetrics, subjects, weakTopics, open, sessions, events, today, plannerDone, readiness, notes, goals, checkins, focus, practice]);
 
   const saveNotes = async (next: MentorNote[]) => { setNotes(next); await IDBManager.saveAIMemory(NOTES_KEY, next); };
-  return { ready, firstName, targetYear, daysToExam, examDate, subjects, weakTopics, open, suggestions, readiness, sessions, plannerDone, notes, saveNotes, brief, events, today };
+  return { goals, setGoals, checkins, setCheckins, focus, setFocus, ready, firstName, targetYear, daysToExam, examDate, subjects, weakTopics, open, suggestions, readiness, sessions, plannerDone, notes, saveNotes, brief, events, today };
 }

@@ -53,6 +53,7 @@ export default function AITutorWorkspace() {
   const router = useRouter();
   const { bookmarks, mistakes, loadStudyData } = useStudyStore();
   const qid = searchParams.get("qid") || "";
+  const [questionMissing, setQuestionMissing] = useState(false);
 
   const [mounted, setMounted] = useState(false);
   const [question, setQuestion] = useState<any>(null);
@@ -121,11 +122,21 @@ export default function AITutorWorkspace() {
 
   useEffect(() => {
     setMounted(true);
-    QuestionRepository.initialize().then(() => {
-      if (qid) {
-        const q = QuestionRepository.getQuestionById(qid);
-        setQuestion(q);
+    QuestionRepository.initialize().then(async () => {
+      if (!qid) return;
+      let q = QuestionRepository.getQuestionById(qid);
+      if (!q) {
+        // Not in the official bank yet: it may be a Spark/AI question saved on this device that the data store has not
+        // registered yet (a race on first load), or a mistake kept as a snapshot. Try both before giving up.
+        try { for (const aq of await IDBManager.getAIGeneratedQuestions()) QuestionRepository.registerDynamicQuestion(aq); } catch { /* ignore */ }
+        q = QuestionRepository.getQuestionById(qid);
+        if (!q) {
+          const snap = useStudyStore.getState().mistakes.find((m) => m.questionId === qid)?.questionSnapshot;
+          if (snap && snap.contentAst) { QuestionRepository.registerDynamicQuestion(snap); q = QuestionRepository.getQuestionById(qid); }
+        }
       }
+      setQuestion(q);
+      setQuestionMissing(!q);
     });
     loadStudyData();
   }, [qid, loadStudyData]);
@@ -732,7 +743,13 @@ export default function AITutorWorkspace() {
               </div>
             ) : (
               <div className="flex-1 flex items-center justify-center p-6 text-center text-xs text-[var(--text-muted)]">
-                No active question loaded.
+                {questionMissing ? (
+                  <span className="space-y-3">
+                    <span className="block text-sm font-bold text-[var(--text-primary)]">This question is not on this device.</span>
+                    <span className="block">It may belong to another GATE paper, or an AI question saved on another device.</span>
+                    <a href="/ai-tutor" className="btn-main !h-10 !text-sm">Pick another question</a>
+                  </span>
+                ) : "Loading the question..."}
               </div>
             )}
           </section>
@@ -743,7 +760,7 @@ export default function AITutorWorkspace() {
             {/* Scrollable list of cards & message history */}
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
 
-              {loading ? (
+              {loading && !questionMissing ? (
                 <div className="py-20 flex flex-col items-center justify-center gap-3">
                   <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
                   <span className="text-xs font-bold text-[var(--text-secondary)] tracking-normal">Compiling contextual AI response...</span>
