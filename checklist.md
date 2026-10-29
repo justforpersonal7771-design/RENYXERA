@@ -113,7 +113,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] **A1 Migration `0040_forge.sql`** written (27 Oct) — **(you) run it in Supabase SQL editor** — `forge_items` (public half, `release_at`, `status`, `mock_only`), `forge_answers` (private, no policies), `forge_item_stats`; RLS hides unreleased/mock items.
   - Done when: security check proves anon/auth can't read answers or unreleased items. Depends on: you run it.
 - [x] **A2 Entitlement** (`FORGE` + `canUseForgeQuestions` in plans.ts; Plus default 10/day until F1) — Forge block + `canUseForgeQuestions(tier)` in `lib/billing/plans.ts`; Plus limit 🔒F1.
-- [ ] **A3 APIs** — `/api/forge/items` (tier/branch/rate-limit), Forge branch in `/api/answers` and `/api/exam/grade`, `/api/forge/report`.
+- [x] **A3 APIs (grading part)** — `/api/forge/items` (tier/branch/rate-limit), Forge branch in `/api/answers` and `/api/exam/grade`, `/api/forge/report`.
   - Done when: scripted tests for guest/Free/Plus/Pro pass; no answer before submit.
 - [ ] **A4 UI** — Daily Forge card (blurred + upgrade for Free), setup source switch Past papers / Forge / Mixed, Forge badge, solutions, report button, analytics split.
   - Done when: screenshots desktop/mobile × light/dark approved.
@@ -405,7 +405,8 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 ## 29 Oct 2026 (evening)
 - [x] Mentor: goals, roadmap by days left, things I noticed, daily check-in, focus timer, AI practice questions (Spark generator) inside the Mentor, full-width chat
 - [x] AI Tutor: finds saved AI/snapshot questions (was "No active question loaded"), clear "not on this device" state, panels tinted peach / sky / lilac
-- [ ] Forge live: needs a DB migration (Forge answers in the exam tables) plus server grading for FORGE_ ids; blocked on you running the migration (Supabase SQL editor), then I wire grading, the live hub and the Blend/Forge test share
+- [x] 29 Oct: Forge live for Plus/Pro: migration 0040 applied, 6 pilot items seeded; `/api/exam/grade` and `/api/answers` grade FORGE_ ids from forge_answers (plan, branch, release rules; solution returned with key); hub Daily/Practice/Bookmarks read `/api/forge/items`; `UPCOMING.forge = "live"`
+- [ ] Forge in built tests: Exam Setup Forge/Blend shares still PYQ-only (grading is ready; wire the generator + a larger bank); Forge Mocks card is a placeholder; `/api/forge/report` not built
 - [ ] You: OPENROUTER_API_KEYS in Cloudflare, GitHub, .env.local; GEMINI_API_KEY in GitHub for the nightly Forge job (docs/AI_PROVIDERS_SETUP.md)
 - [ ] Mentor still to do: cloud-synced memory (migration), Telegram weekly check-in, photo doubts, evaluation set, real-model test after keys
 - [ ] R22 Test Centre (docs/roadmap/R22-TEST-CENTRE.md) after Mentor
@@ -416,3 +417,4 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Test Centre hub redesigned (mission path, mock countdown, big-number tiles, sticker chips, icon watermarks); global shape watermark on every pastel card
 - [x] Tools hub rebuilt as a single-screen bento; exam-style option tiles on mistakes/bookmarks/revision/Mentor practice; Test Centre screens take their hub tile colour; page-shell is a column so fill-height pages fit under the Test Centre bar
 - [x] Tools hub redesigned after research: verb-led intents (rank / plan / practise) as master-detail, one featured tool + rows, single screen; Test Centre hub could take the same pattern if the owner prefers it
+- [x] 29 Oct: OpenRouter key verified (auth 200, Nemotron-3-Ultra answered); model-picker refreshed to the current 17 free text models (old deepseek/qwen/gpt-oss names were no longer free). Free models rate-limit (429): second key and Gemini fallback matter for batches.

@@ -8,7 +8,7 @@
 export type PreviewState = "preview" | "soon" | "live";
 
 export const UPCOMING: Record<"forge" | "study" | "battles", PreviewState> = {
-  forge: "preview",
+  forge: "live",
   study: "preview",
   battles: "preview",
 };

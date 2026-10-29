@@ -134,3 +134,10 @@ Add to `weekly_growth_metrics()` or the admin console (Release 10):
 3. Monthly fair-use ceilings (§3.5): a small migration.
 4. Credit packs (§3.7): when payments go live.
 5. Rewarded ads with server-side verification (§3.8): once an ad network approves the domain.
+
+## Model groups (refreshed 29 Oct 2026)
+OpenRouter lists 456 models (437 text); only 17 text models are free. `lib/ai/model-picker.ts` ranks them per task and falls back to a fixed list:
+- **forge:** nemotron-3-ultra-550b, gemma-4-31b, inkling, laguna-s-2.1, flint
+- **smart:** gemma-4-31b, nemotron-3-ultra-550b, inkling, flint
+- **fast:** gemma-4-26b-a4b, nemotron-3.5-lightning, inkling-small, xing-4.0, laguna-xs-2.1
+Last resort: `openrouter/free`. Re-check this list monthly (`node scripts/zz-models.mjs` prints the live free list). Free models return 429 under load; the picker benches a failing model for 30 minutes.

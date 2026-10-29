@@ -4,7 +4,9 @@
  * Forge hub (R11): original GATE-level questions. Free: Forge Mocks only. Plus: 10 a day + bookmarks, no X.
  * Pro: everything. Runs on sample data until the CS batches are seeded (lib/preview/features.ts).
  */
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { MathJax } from "better-react-mathjax";
+import { isNatCorrect, isOptionsCorrect } from "@/lib/grading";
 import Link from "next/link";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { Anvil, Bookmark, BookmarkCheck, CalendarDays, Check, X, ChevronDown, Flame, Lock, Lightbulb, Trophy, TriangleAlert, Users } from "lucide-react";
@@ -15,7 +17,32 @@ import { UPCOMING } from "@/lib/preview/features";
 import { FORGE, type Tier } from "@/lib/billing/plans";
 import { FORGE_DAILY, FORGE_ITEMS, FORGE_MOCKS, KIND_LABEL, type SampleForgeItem } from "@/lib/preview/sample-data";
 
-const DIFF: Record<string, { label: string; tint: string }> = { E: { label: "Easy", tint: "mint" }, M: { label: "Medium", tint: "butter" }, H: { label: "Hard", tint: "rose" } };
+/** A Forge question as the hub shows it. Preview items carry their answer; live items don't until the student checks (answers stay on the server). */
+type Q = Omit<SampleForgeItem, "answer" | "solution" | "solvedBy" | "accuracy" | "difficulty"> & {
+  difficulty: "E" | "M" | "H" | "X"; answer?: string; solution?: SampleForgeItem["solution"]; solvedBy?: number; accuracy?: number;
+};
+const LIVE = UPCOMING.forge === "live";
+type Row = { id: string; subject: string; topic: string; kind: Q["kind"]; difficulty: Q["difficulty"]; question_type: "MCQ" | "NAT"; marks: 1 | 2; question_text: string; options: { option_id: string; text: string }[] };
+const fromRow = (r: Row): Q => ({ id: r.id, subject: r.subject, topic: r.topic, kind: r.kind, difficulty: r.difficulty, type: r.question_type, marks: r.marks, text: r.question_text, options: r.options?.length ? r.options.map((o) => o.text) : undefined });
+type FeedData = { items: Q[]; state: "loading" | "ready" | "error" };
+
+/** Live: the questions the API releases to this account for today (set=daily) or for practice. Preview: the sample items. */
+function useItems(set: "daily" | "practice"): FeedData {
+  const [res, setRes] = useState<FeedData>({ items: LIVE ? [] : FORGE_ITEMS, state: LIVE ? "loading" : "ready" });
+  useEffect(() => {
+    if (!LIVE) return;
+    let off = false;
+    fetch(`/api/forge/items?set=${set}`).then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((j: { items: Row[] }) => { if (!off) setRes({ items: (j.items ?? []).map(fromRow), state: "ready" }); })
+      .catch(() => { if (!off) setRes({ items: [], state: "error" }); });
+    return () => { off = true; };
+  }, [set]);
+  return res;
+}
+
+const Tex = ({ children }: { children: string }) => <MathJax dynamic inline hideUntilTypeset="every">{children}</MathJax>;
+
+const DIFF: Record<string, { label: string; tint: string }> = { E: { label: "Easy", tint: "mint" }, M: { label: "Medium", tint: "butter" }, H: { label: "Hard", tint: "rose" }, X: { label: "X", tint: "lilac" } };
 type Tab = "daily" | "practice" | "mocks" | "bookmarks";
 
 // Bookmarked Forge question ids, per device (preview); one store so every card and the tab agree.
@@ -49,14 +76,15 @@ export function ForgeHub() {
 function Forge({ tier }: { tier: Tier }) {
   const [tab, setTab] = useState<Tab>("daily");
   const rules = FORGE[tier];
+  const daily = useItems("daily");
   return (
     <>
-      <Hero tier={tier} />
+      <Hero tier={tier} count={LIVE ? (rules.questions ? daily.items.length : null) : undefined} />
       <FolderTabs label="Forge sections" value={tab} onChange={setTab} tabs={[
         { id: "daily", label: "Daily Forge", tint: "peach" }, { id: "practice", label: "Practice", tint: "mint" },
         { id: "mocks", label: "Forge Mocks", tint: "peri" }, { id: "bookmarks", label: <span className="inline-flex items-center gap-1.5"><Bookmark className="h-3.5 w-3.5" /> Bookmarks</span>, tint: "rose" },
       ]}>
-        {tab === "daily" && (rules.questions ? <Daily tier={tier} /> : <Locked plan="Plus" what="The Daily Forge and Forge practice questions come with Plus and Pro. Forge Mocks stay free for everyone." />)}
+        {tab === "daily" && (rules.questions ? <Daily tier={tier} data={daily} /> : <Locked plan="Plus" what="The Daily Forge and Forge practice questions come with Plus and Pro. Forge Mocks stay free for everyone." />)}
         {tab === "practice" && (rules.questions ? <Practice tier={tier} /> : <Locked plan="Plus" what="Practise Forge questions by subject, topic and difficulty with Plus or Pro." />)}
         {tab === "mocks" && <Mocks />}
         {tab === "bookmarks" && (rules.questions ? <Bookmarks /> : <Locked plan="Plus" what="Bookmark Forge questions to revise later with Plus or Pro." />)}
@@ -73,7 +101,7 @@ function Forge({ tier }: { tier: Tier }) {
   );
 }
 
-function Hero({ tier }: { tier: Tier }) {
+function Hero({ tier, count }: { tier: Tier; count?: number | null }) {
   const d = FORGE_DAILY;
   const pct = Math.round((d.doneToday / d.total) * 100);
   return (
@@ -87,9 +115,16 @@ function Hero({ tier }: { tier: Tier }) {
             {FORGE[tier].questions
               ? <button type="button" className="btn-main"><Flame className="h-4 w-4" /> Continue today&apos;s Forge</button>
               : <Link href="/pro" className="btn-main"><Lock className="h-4 w-4" /> Unlock with Plus</Link>}
-            <span className="pill-soft"><Users className="h-4 w-4" /> {d.boardSize.toLocaleString()} students today</span>
+            {count === undefined && <span className="pill-soft"><Users className="h-4 w-4" /> {d.boardSize.toLocaleString()} students today</span>}
           </div>
         </div>
+        {count !== undefined ? (
+          <div className="card-inset p-5 text-center">
+            <span className="font-num text-4xl font-extrabold text-[var(--text-primary)]">{count ?? "—"}</span>
+            <p className="text-xs font-semibold text-[var(--text-muted)]">{count === null ? "Questions in Plus and Pro" : count === 1 ? "question today" : "questions today"}</p>
+            <p className="mt-2 text-xs text-[var(--text-muted)]">New questions are added as they pass our checks.</p>
+          </div>
+        ) : (
         <div className="card-inset grid grid-cols-3 gap-3 p-5 text-center">
           <Stat big={`${d.streak}`} unit="days" label="Streak" icon={<Flame className="h-4 w-4 text-orange-500" />} />
           <Stat big={`${d.doneToday}/${d.total}`} label="Today" />
@@ -99,6 +134,7 @@ function Hero({ tier }: { tier: Tier }) {
           </div>
           <p className="col-span-3 text-xs text-[var(--text-muted)]">New set every day at 6:00 AM. Best streak {d.best} days.</p>
         </div>
+        )}
       </div>
     </section>
   );
@@ -113,12 +149,21 @@ function Stat({ big, unit, label, icon }: { big: string; unit?: string; label: s
   );
 }
 
-function Daily({ tier }: { tier: Tier }) {
+function Feed({ data, empty, children }: { data: FeedData; empty: string; children: (q: Q, i: number) => React.ReactNode }) {
+  if (data.state === "loading") return <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]" role="status">Loading questions…</p>;
+  if (data.state === "error") return <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]" role="alert">Couldn&apos;t load Forge questions. Check your connection and reopen this tab.</p>;
+  if (!data.items.length) return <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]">{empty}</p>;
+  return <>{data.items.map(children)}</>;
+}
+
+function Daily({ tier, data }: { tier: Tier; data: FeedData }) {
   const limit = FORGE[tier].dailyLimit;
   return (
     <div className="grid gap-5 lg:grid-cols-[1fr_300px]">
       <div className="space-y-3">
-        {FORGE_ITEMS.map((q, i) => <ItemCard key={q.id} q={q} n={i + 1} done={i < FORGE_DAILY.doneToday} />)}
+        <Feed data={data} empty="Today's Forge questions are on the way. Practice has everything released so far.">
+          {(q, i) => <ItemCard key={q.id} q={q} n={i + 1} done={!LIVE && i < FORGE_DAILY.doneToday} />}
+        </Feed>
       </div>
       <aside className="space-y-3">
         <div className="card-pastel p-5" data-tint="butter">
@@ -139,14 +184,31 @@ function Daily({ tier }: { tier: Tier }) {
   );
 }
 
-function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolean }) {
+function ItemCard({ q, n, done }: { q: Q; n: number; done?: boolean }) {
   const [open, setOpen] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
   const [nat, setNat] = useState("");
   const [checked, setChecked] = useState(false);
+  const [key, setKey] = useState<{ right: boolean; answer: string; solution?: Q["solution"] } | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
   const reduce = useReducedMotion();
-  // NAT: right if within 0.5% of the key (GATE gives a range; the real items carry their own range).
-  const right = q.type === "NAT" ? Math.abs(Number(nat) - Number(q.answer)) <= Math.abs(Number(q.answer)) * 0.005 + 1e-9 : pick === q.answer;
+  // Preview: right if within 0.5% of the sample key. Live: the key and its range come from the server when the answer is checked.
+  const right = key ? key.right : q.type === "NAT" ? Math.abs(Number(nat) - Number(q.answer)) <= Math.abs(Number(q.answer)) * 0.005 + 1e-9 : pick === q.answer;
+  const answer = key?.answer ?? q.answer ?? "";
+  const solution = key?.solution ?? q.solution;
+  const check = async () => {
+    if (q.answer) { setChecked(true); setOpen(true); return; }
+    setBusy(true); setErr(null);
+    try {
+      const r = await fetch("/api/answers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question_ids: [q.id] }) });
+      const a = ((await r.json()) as { answers?: Record<string, { c: string[]; n: [number, number][] | null; s?: Q["solution"] }> }).answers?.[q.id];
+      if (!r.ok || !a) throw new Error("no key");
+      const ok = q.type === "NAT" ? isNatCorrect(nat, (a.n ?? []).map(([min, max]) => ({ min, max }))) : isOptionsCorrect("MCQ", pick ? [pick] : [], a.c);
+      setKey({ right: ok, answer: q.type === "NAT" ? String(a.n?.[0]?.[0] ?? "") : a.c.join(", "), solution: a.s });
+      setChecked(true); setOpen(true);
+    } catch { setErr("Couldn't check this answer. Try again."); } finally { setBusy(false); }
+  };
   const canCheck = q.type === "NAT" ? nat.trim() !== "" && !Number.isNaN(Number(nat)) : !!pick;
   const d = DIFF[q.difficulty];
   const saved = useBookmarks().includes(q.id);
@@ -166,14 +228,14 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
           </button>
         </span>
       </header>
-      <p className="mt-3 leading-relaxed text-[var(--text-primary)]">{q.text}</p>
+      <p className="mt-3 leading-relaxed text-[var(--text-primary)]"><Tex>{q.text}</Tex></p>
       {q.options && (
         <div className="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label={`Options for question ${n}`}>
           {q.options.map((o, i) => {
             const id = "ABCD"[i];
             const sel = pick === id;
             // After checking: the key turns green, a wrong pick turns red. Before: the pick is a light-blue chip.
-            const state = checked ? (id === q.answer ? "right" : sel ? "wrong" : "idle") : sel ? "picked" : "idle";
+            const state = checked ? (answer.split(", ").includes(id) ? "right" : sel ? "wrong" : "idle") : sel ? "picked" : "idle";
             const look = {
               right: "border-emerald-400 bg-[var(--tint-mint)] text-[var(--text-primary)]",
               wrong: "border-rose-400 bg-[var(--tint-rose)] text-[var(--text-primary)]",
@@ -184,7 +246,7 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
               <button key={id} type="button" role="radio" aria-checked={sel} disabled={checked} onClick={() => setPick(id)}
                 className={`opt-tile flex items-center gap-3 rounded-2xl border-2 p-3 text-left text-sm transition-colors disabled:cursor-default ${look}`}>
                 <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg font-num text-xs font-bold ${state === "right" ? "bg-emerald-500 text-white" : state === "wrong" ? "bg-rose-500 text-white" : state === "picked" ? "bg-[var(--tint-lilac-ink)] text-white" : "border border-[var(--border)]"}`}>
-                  {state === "right" ? <Check className="h-3.5 w-3.5" /> : state === "wrong" ? <X className="h-3.5 w-3.5" /> : id}</span>{o}
+                  {state === "right" ? <Check className="h-3.5 w-3.5" /> : state === "wrong" ? <X className="h-3.5 w-3.5" /> : id}</span><Tex>{o}</Tex>
               </button>
             );
           })}
@@ -199,13 +261,14 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
       )}
       <div className="mt-3 flex flex-wrap items-center gap-3">
         {!checked
-          ? <button type="button" disabled={!canCheck} onClick={() => { setChecked(true); setOpen(true); }} className="pill-ink disabled:opacity-40">Check answer</button>
+          ? <button type="button" disabled={!canCheck || busy} onClick={check} className="pill-ink disabled:opacity-40">{busy ? "Checking…" : "Check answer"}</button>
           : <p role="status" className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold ${right ? "bg-[var(--tint-mint)] text-[var(--tint-mint-ink)]" : "bg-[var(--tint-rose)] text-[var(--tint-rose-ink)]"}`}>
-              {right ? <><Check className="h-4 w-4" /> Correct</> : <><X className="h-4 w-4" /> Not quite: the answer is {q.answer}</>}</p>}
-        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); setOpen(false); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
+              {right ? <><Check className="h-4 w-4" /> Correct</> : <><X className="h-4 w-4" /> Not quite: the answer is {answer}</>}</p>}
+        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); setOpen(false); setKey(null); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
       </div>
       <footer className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--text-muted)]">
-        <span>{q.solvedBy} solved · {q.accuracy}% right</span>
+        {err && <span role="alert" className="font-semibold text-rose-600">{err}</span>}
+        {q.solvedBy !== undefined && <span>{q.solvedBy} solved · {q.accuracy}% right</span>}
         <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} className="ml-auto inline-flex items-center gap-1 rounded-full bg-[var(--surface-secondary)] px-3 py-1.5 text-sm font-semibold text-[var(--text-primary)]">
           {open ? "Hide solution" : "Show solution"} <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
@@ -214,10 +277,12 @@ function ItemCard({ q, n, done }: { q: SampleForgeItem; n: number; done?: boolea
         {open && (
           <motion.div initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? undefined : { height: 0, opacity: 0 }} className="overflow-hidden">
             <div className="mt-4 space-y-3 rounded-2xl bg-[var(--surface-secondary)] p-4 text-sm">
-              <p className="font-bold text-[var(--text-primary)]">Answer: <span className="font-num">{q.answer}</span></p>
-              <ol className="space-y-1.5 text-[var(--text-secondary)]">{q.solution.steps.map((s, i) => <li key={i} className="flex gap-2"><span className="font-num font-bold text-[var(--text-primary)]">{i + 1}.</span>{s}</li>)}</ol>
-              <p className="flex gap-2 text-[var(--text-secondary)]"><Lightbulb className="h-4 w-4 shrink-0 text-amber-500" /><span><b className="text-[var(--text-primary)]">Shortcut:</b> {q.solution.shortcut}</span></p>
-              <p className="flex gap-2 text-[var(--text-secondary)]"><TriangleAlert className="h-4 w-4 shrink-0 text-rose-500" /><span><b className="text-[var(--text-primary)]">Trap:</b> {q.solution.trap}</span></p>
+              <p className="font-bold text-[var(--text-primary)]">Answer: <span className="font-num">{answer}</span></p>
+              {solution && <>
+                <ol className="space-y-1.5 text-[var(--text-secondary)]">{solution.steps.map((s, i) => <li key={i} className="flex gap-2"><span className="font-num font-bold text-[var(--text-primary)]">{i + 1}.</span><Tex>{s}</Tex></li>)}</ol>
+                <p className="flex gap-2 text-[var(--text-secondary)]"><Lightbulb className="h-4 w-4 shrink-0 text-amber-500" /><span><b className="text-[var(--text-primary)]">Shortcut:</b> <Tex>{solution.shortcut}</Tex></span></p>
+                <p className="flex gap-2 text-[var(--text-secondary)]"><TriangleAlert className="h-4 w-4 shrink-0 text-rose-500" /><span><b className="text-[var(--text-primary)]">Trap:</b> <Tex>{solution.trap}</Tex></span></p>
+              </>}
               <button type="button" className="text-xs font-semibold text-[var(--text-muted)] underline underline-offset-4">Report an issue</button>
             </div>
           </motion.div>
@@ -233,7 +298,8 @@ function Chip({ tint, children }: { tint: string; children: React.ReactNode }) {
 
 function Bookmarks() {
   const ids = useBookmarks();
-  const list = FORGE_ITEMS.filter((q) => ids.includes(q.id));
+  const { items } = useItems("practice");
+  const list = items.filter((q) => ids.includes(q.id));
   if (!list.length) return (
     <div className="rounded-[22px] bg-[var(--surface)] p-8 text-center">
       <Bookmark className="mx-auto h-6 w-6 text-[var(--tint-rose-ink)]" />
@@ -246,9 +312,10 @@ function Bookmarks() {
 
 function Practice({ tier, archive }: { tier: Tier; archive?: boolean }) {
   const [diff, setDiff] = useState<"all" | "E" | "M" | "H">("all");
-  const subjects = [...new Set(FORGE_ITEMS.map((q) => q.subject))];
+  const { items, state } = useItems("practice");
+  const subjects = [...new Set(items.map((q) => q.subject))];
   const [subject, setSubject] = useState<string>("all");
-  const list = FORGE_ITEMS.filter((q) => (diff === "all" || q.difficulty === diff) && (subject === "all" || q.subject === subject));
+  const list = items.filter((q) => (diff === "all" || q.difficulty === diff) && (subject === "all" || q.subject === subject));
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
@@ -261,13 +328,20 @@ function Practice({ tier, archive }: { tier: Tier; archive?: boolean }) {
         </div>
         {archive && <span className="ml-auto text-sm text-[var(--text-muted)]">{tier === "pro" ? "Includes X questions" : ""}</span>}
       </div>
-      <div className="space-y-3">{list.map((q, i) => <ItemCard key={q.id} q={q} n={i + 1} />)}</div>
-      {list.length === 0 && <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]">No questions match these filters. Try another difficulty.</p>}
+      <div className="space-y-3">{state === "loading" ? <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]" role="status">Loading questions…</p> : list.map((q, i) => <ItemCard key={q.id} q={q} n={i + 1} />)}</div>
+      {state === "ready" && list.length === 0 && <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]">No questions match these filters. Try another difficulty.</p>}
     </div>
   );
 }
 
 function Mocks() {
+  if (LIVE) return (
+    <div className="card-pastel p-8 text-center" data-tint="peri">
+      <CalendarDays className="mx-auto h-6 w-6 text-[var(--tint-peri-ink)]" />
+      <p className="mt-2 font-display text-xl font-extrabold text-[var(--text-primary)]">The first Forge Mock is being prepared</p>
+      <p className="mx-auto mt-1 max-w-md text-sm text-[var(--text-secondary)]">Forge Mocks are free for everyone. We open one once the question bank is large enough to fill a full paper, and announce it here and on Telegram.</p>
+    </div>
+  );
   return (
     <div className="grid gap-4 md:grid-cols-3">
       {FORGE_MOCKS.map((m) => (

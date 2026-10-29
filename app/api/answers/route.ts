@@ -7,6 +7,7 @@ import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { branchMismatch, getUserBranch, questionsOutsideBranch } from "@/lib/server/branch";
 import { DEFAULT_BRANCH, isBranchCode } from "@/lib/branches";
 import { BRANCH_COOKIE } from "@/lib/branch/current";
+import { loadForgeKeys } from "@/lib/server/forge-keys";
 
 export const runtime = "nodejs";
 
@@ -81,15 +82,16 @@ export async function POST(req: NextRequest) {
       .in("question_id", ids);
     if (error) throw error;
 
-    const answers: Record<string, { c: string[]; n: [number, number][] | null }> = {};
-    for (const row of data ?? []) {
+    const forge = await loadForgeKeys(db, userId, ids);
+    const answers: Record<string, { c: string[]; n: [number, number][] | null; s?: unknown }> = {};
+    for (const row of [...(data ?? []), ...forge.keys]) {
       let n: [number, number][] | null = null;
       if (Array.isArray(row.nat_ranges) && row.nat_ranges.length) {
         n = row.nat_ranges.filter((r: unknown) => Array.isArray(r) && r.length === 2) as [number, number][];
       } else if (row.nat_min !== null && row.nat_max !== null) {
         n = [[Number(row.nat_min), Number(row.nat_max)]];
       }
-      answers[row.question_id] = { c: row.correct_option_ids ?? [], n };
+      answers[row.question_id] = { c: row.correct_option_ids ?? [], n, ...("solution" in row && row.solution ? { s: row.solution } : {}) };
     }
     return NextResponse.json({ answers }, { headers: { "Cache-Control": "private, no-store" } });
   } catch (err) {

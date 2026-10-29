@@ -9,16 +9,18 @@
  */
 export type Task = "fast" | "smart" | "forge";
 
-// Best first. Matched as substrings of the model id with - _ . removed. Edit this list as new models appear.
+// Best first. Matched as substrings of the model id with - _ . removed. Refreshed 29 Oct 2026 against OpenRouter's live free list
+// (17 free text models of 456; the 2025 names deepseek-r1 / qwen3 / gpt-oss are no longer free). Edit as the free list changes.
+//   forge : biggest reasoning models first (accuracy over speed)   smart : strong and JSON-friendly   fast : small mixture-of-experts, quick
 const PREF: Record<Task, string[]> = {
-  forge: ["deepseekr1", "qwen3235b", "qwen3max", "kimik2", "gptoss120b", "deepseekv3", "glm45", "llama3370b", "qwen332b", "gemma327b"],
-  smart: ["deepseekv3", "qwen3235b", "kimik2", "gptoss120b", "deepseekr1", "glm45", "llama3370b", "mistrallarge", "qwen332b", "gemma327b"],
-  fast: ["gptoss20b", "gemma3", "llama318b", "mistralsmall", "qwen38b", "glm45air", "llama32", "qwen3"],
+  forge: ["nemotron3ultra", "gemma431b", "inkling:free", "lagunas21", "flint", "nemotron35super", "xing40", "gemma426b"],
+  smart: ["gemma431b", "nemotron3ultra", "inkling:free", "flint", "nemotron35super", "xing40", "gemma426b", "lagunas21"],
+  fast: ["gemma426b", "nemotron35lightning", "inklingsmall", "xing40", "lagunaxs21", "dots3", "lfm25"],
 };
 const STATIC: Record<Task, string[]> = {
-  forge: ["deepseek/deepseek-r1:free", "qwen/qwen3-235b-a22b:free", "openai/gpt-oss-120b:free"],
-  smart: ["deepseek/deepseek-chat-v3-0324:free", "qwen/qwen3-235b-a22b:free", "openai/gpt-oss-120b:free"],
-  fast: ["openai/gpt-oss-20b:free", "google/gemma-3-27b-it:free", "meta-llama/llama-3.3-70b-instruct:free"],
+  forge: ["nvidia/nemotron-3-ultra-550b-a55b:free", "google/gemma-4-31b-it:free", "thinkingmachines/inkling:free", "openrouter/free"],
+  smart: ["google/gemma-4-31b-it:free", "nvidia/nemotron-3-ultra-550b-a55b:free", "openrouter/free"],
+  fast: ["google/gemma-4-26b-a4b-it:free", "nvidia/nemotron-3.5-lightning:free", "openrouter/free"],
 };
 
 type OrModel = { id: string; context_length?: number; pricing?: { prompt?: string; completion?: string }; supported_parameters?: string[]; architecture?: { output_modalities?: string[] } };
@@ -45,7 +47,7 @@ export async function pickModels(task: Task, limit = 4): Promise<string[]> {
   const free = (await models()).filter((m) =>
     (m.id.endsWith(":free") || (Number(m.pricing?.prompt) === 0 && Number(m.pricing?.completion) === 0)) &&
     (m.architecture?.output_modalities ?? ["text"]).join() === "text" &&
-    !/embed|image|vision|audio|guard|moderation/i.test(m.id) &&
+    !/embed|image|vision|audio|guard|moderation|safety|transcribe|tts/i.test(m.id) &&
     (m.context_length ?? 0) >= 16000 && (benched.get(m.id) ?? 0) < now);
   const rank = (m: OrModel) => {
     const id = norm(m.id); const i = PREF[task].findIndex((p) => id.includes(p));

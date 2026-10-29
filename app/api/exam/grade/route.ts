@@ -8,6 +8,7 @@ import { isNatCorrect, isOptionsCorrect, marksFor } from "@/lib/grading";
 import { mockResultHold } from "@/lib/security/mock-embargo";
 import { MOCK_TAB_SWITCH_LIMIT } from "@/lib/exam/integrity-rules";
 import { branchMismatch, getUserBranch, questionsOutsideBranch } from "@/lib/server/branch";
+import { isForgeId, loadForgeKeys } from "@/lib/server/forge-keys";
 
 export const runtime = "nodejs";
 
@@ -74,8 +75,10 @@ export async function POST(req: NextRequest) {
     if (kErr) throw kErr;
     if (qErr) throw qErr;
 
-    const keyOf = new Map((keys ?? []).map((k) => [k.question_id, k]));
-    const qOf = new Map((qs ?? []).map((q) => [q.id, q]));
+    // Forge items (R11): keys live in forge_answers; plan, branch and release rules are enforced in loadForgeKeys.
+    const forge = await loadForgeKeys(db, userId, ids);
+    const keyOf = new Map<string, any>([...(keys ?? []), ...forge.keys].map((k) => [k.question_id, k]));
+    const qOf = new Map<string, any>([...(qs ?? []), ...forge.meta].map((q) => [q.id, q]));
     const answers: Record<string, { c: string[]; n: [number, number][] | null }> = {};
 
     let score = 0;
@@ -112,6 +115,7 @@ export async function POST(req: NextRequest) {
       const branch = await getUserBranch(db, userId);
       if (questionsOutsideBranch(results.map((r) => r.question_id), branch).length) return branchMismatch();
       const known = results.filter((r) => r.known);
+      const knownPyq = known.filter((r) => !isForgeId(r.question_id)); // exam_responses has a foreign key to the PYQ bank
       if (known.length) {
         const nowIso = new Date().toISOString();
         const { data: row } = await db.from("exam_attempts")
@@ -148,8 +152,8 @@ export async function POST(req: NextRequest) {
             if (error && error.code !== "23505") console.error("storing attempt failed", error);
           }
           if (attemptOk) {
-            const { error: rErr } = await db.from("exam_responses").insert(
-              known.map((r) => {
+            const { error: rErr } = !knownPyq.length ? { error: null } : await db.from("exam_responses").insert(
+              knownPyq.map((r) => {
                 const src = byId.get(r.question_id)!;
                 return {
                   attempt_id: attempt.id,
