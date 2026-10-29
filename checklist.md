@@ -413,3 +413,4 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Test Centre phase A1: hub at /test-centre, one navbar item replaces Exam Setup + Mocks, bottom bar updated, old routes unchanged
 - [x] Test Centre A2-A6 (routes): /test-centre/{build,mocks,mocks/results,practice,history}; old /setup, /mocks, /mocks/results redirect; section bar with back-to-hub on every screen; one Attempt model (features/test-centre/model.ts)
 - [ ] Test Centre later: physically move runner/stores out of app/(dashboard)/exam, merge challenge/checkpoint/fresh-mock routes, add the mock countdown to the hub, one TestConfig
+- [x] Test Centre hub redesigned (mission path, mock countdown, big-number tiles, sticker chips, icon watermarks); global shape watermark on every pastel card

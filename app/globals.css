@@ -1835,3 +1835,28 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .tutor-shell section[class*="border-l"][class*="bg-[var(--surface)]"] { background-color: color-mix(in srgb, var(--tint-lilac) 75%, var(--surface)) !important; }
 .tutor-shell section[class*="bg-[var(--surface-secondary)]/20"] { background-color: color-mix(in srgb, var(--tint-sky) 55%, var(--surface)) !important; }
 .tutor-shell .bg-indigo-600 { background-color: var(--tint-sky-ink) !important; }
+
+/* Watermark on every pastel card (owner, 29 Oct): a soft shape in the card's own ink colour, bottom right, behind the content.
+   One shape per colour so neighbouring cards differ. Cards that draw their own icon watermark (.tile-mark) skip it. */
+.card-pastel:not(:has(.tile-mark))::after, .card-well:not(:has(.tile-mark))::after {
+  content: ""; position: absolute; right: 14px; bottom: 12px; width: 72px; height: 72px; z-index: -1; pointer-events: none;
+  background: var(--wm, var(--tint-lilac-ink)); opacity: .08; border-radius: 50%; transition: transform .35s cubic-bezier(.2,.7,.2,1);
+}
+.card-well { position: relative; isolation: isolate; }
+.card-pastel:hover::after, .card-well:hover::after { transform: rotate(-10deg) scale(1.12); }
+:is(.card-pastel, .card-well)[data-tint="mint"] { --wm: var(--tint-mint-ink); }
+:is(.card-pastel, .card-well)[data-tint="sky"] { --wm: var(--tint-sky-ink); }
+:is(.card-pastel, .card-well)[data-tint="peach"] { --wm: var(--tint-peach-ink); }
+:is(.card-pastel, .card-well)[data-tint="rose"] { --wm: var(--tint-rose-ink); }
+:is(.card-pastel, .card-well)[data-tint="butter"] { --wm: var(--tint-butter-ink); }
+:is(.card-pastel, .card-well)[data-tint="peri"] { --wm: var(--tint-peri-ink); }
+:is(.card-pastel, .card-well)[data-tint="mint"]:not(:has(.tile-mark))::after { border-radius: 50%; }
+:is(.card-pastel, .card-well)[data-tint="sky"]:not(:has(.tile-mark))::after { background: transparent; border: 12px solid var(--wm); border-radius: 50%; }
+:is(.card-pastel, .card-well)[data-tint="peach"]:not(:has(.tile-mark))::after { border-radius: 22px; transform: rotate(14deg); }
+:is(.card-pastel, .card-well)[data-tint="rose"]:not(:has(.tile-mark))::after { border-radius: 0; clip-path: polygon(35% 0, 65% 0, 65% 35%, 100% 35%, 100% 65%, 65% 65%, 65% 100%, 35% 100%, 35% 65%, 0 65%, 0 35%, 35% 35%); }
+:is(.card-pastel, .card-well)[data-tint="lilac"]:not(:has(.tile-mark))::after { border-radius: 10px; transform: rotate(45deg) scale(.8); }
+:is(.card-pastel, .card-well)[data-tint="butter"]:not(:has(.tile-mark))::after { border-radius: 0; clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); }
+:is(.card-pastel, .card-well)[data-tint="peri"]:not(:has(.tile-mark))::after { border-radius: 72px 72px 0 0; height: 36px; bottom: 12px; }
+:is(.card-pastel, .card-well)[data-tint="peach"]:not(:has(.tile-mark)):hover::after, :is(.card-pastel, .card-well)[data-tint="lilac"]:not(:has(.tile-mark)):hover::after { transform: rotate(0) scale(1.1); }
+.dark :is(.card-pastel, .card-well):not(:has(.tile-mark))::after { opacity: .07; }
+@media (prefers-reduced-motion: reduce) { .card-pastel::after, .card-well::after { transition: none !important; } }
