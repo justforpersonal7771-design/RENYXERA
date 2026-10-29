@@ -27,7 +27,7 @@ export function ToolsFrame({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="tool-pastel min-w-0 pb-24 space-y-6">{children}</div>
-      <SubNav items={TOOL_ITEMS} label="Tools" />
+      <SubNav items={TOOL_ITEMS} label="Tools" home="/tools" />
     </>
   );
 }

@@ -17,7 +17,7 @@ type Item = { href: string; label: string; short?: string; icon: LucideIcon; als
 // Each tool has its own pastel (icon colour, hover, active chip), like the navbar sections.
 const SUB_TINTS = ["mint", "sky", "butter", "peri", "peach", "lilac", "rose", "mint", "sky"];
 
-export function SubNav({ items, label }: { items: Item[]; label: string }) {
+export function SubNav({ items, label, home }: { items: Item[]; label: string; home?: string }) {
   const path = usePathname() ?? "";
   const [hidden, setHidden] = useState(false);
   // The tool page's primary card follows the active tool's colour (read by globals.css).
@@ -66,7 +66,7 @@ export function SubNav({ items, label }: { items: Item[]; label: string }) {
       <nav ref={navRef} aria-label={label} onMouseLeave={() => setHover(null)}
         className={`sub-dock pointer-events-auto max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_14px_36px_-18px_rgba(12,34,75,0.35)] p-1.5`}>
         <ul className="flex items-center gap-0.5 w-max">
-          <li aria-hidden="true" className="hidden sm:flex items-center gap-1.5 pl-2.5 pr-3 mr-1 border-r border-[var(--border)] text-xs font-black tracking-normal text-[var(--text-muted)]">{label}</li>
+          <li {...(home ? {} : { "aria-hidden": true })} className="hidden sm:flex items-center gap-1.5 pl-2.5 pr-3 mr-1 border-r border-[var(--border)] text-xs font-black tracking-normal text-[var(--text-muted)]">{home ? <Link href={home} title={`All ${label.toLowerCase()}`} className="hover:text-[var(--text-primary)] hover:underline">{label}</Link> : label}</li>
           {items.map((it, idx) => {
             const on = it.href === active;
             const tint = SUB_TINTS[idx % SUB_TINTS.length];

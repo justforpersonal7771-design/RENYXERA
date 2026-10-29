@@ -20,27 +20,6 @@ const INTENTS = [
   { id: "practise", tint: "peach", verb: "Practise and revise", promise: "Real past papers, aptitude lessons and offline study.", hrefs: ["/pyq", "/ga-lessons", "/downloads"] },
 ] as const;
 
-function Example() {
-  return (
-    <span className="mt-3 block rounded-3xl bg-[var(--surface)] p-4" aria-label="Example result">
-      <span className="text-xs font-semibold text-[var(--text-secondary)]">Example: 45 marks, General</span>
-      <span className="mt-2 grid grid-cols-3 gap-2">
-        {[["GATE score", "525", "lilac"], ["Likely AIR", "~7,000", "mint"], ["Cut-off", "Cleared", "peach"]].map(([l, v, t]) => (
-          <span key={l} className="rounded-2xl p-2.5" style={{ background: `var(--tint-${t})` }}>
-            <span className="block text-xs font-semibold text-[var(--text-secondary)]">{l}</span>
-            <span className="block font-display text-lg font-extrabold text-[var(--text-primary)]">{v}</span>
-          </span>
-        ))}
-      </span>
-      <svg viewBox="0 0 300 90" className="mt-3 h-20 w-full" aria-hidden>
-        <path d="M5 85 C 70 80, 120 60, 170 45 S 260 10, 295 5" fill="none" stroke="var(--tint-lilac-ink)" strokeWidth="3" strokeLinecap="round" />
-        <path d="M5 85 C 70 82, 130 70, 180 58 S 260 25, 295 12" fill="none" stroke="var(--tint-mint-ink)" strokeWidth="2" strokeDasharray="5 5" />
-        <circle cx="140" cy="54" r="6" fill="var(--tint-peach-ink)" />
-      </svg>
-    </span>
-  );
-}
-
 export function ToolsHub() {
   const [sel, setSel] = useState<(typeof INTENTS)[number]["id"]>("rank");
   const onKey = (e: React.KeyboardEvent) => {
@@ -48,9 +27,9 @@ export function ToolsHub() {
     if (d) { e.preventDefault(); setSel(INTENTS[(i + d + INTENTS.length) % INTENTS.length].id); }
   };
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-12.5rem)]">
+    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-14rem)]">
       <header>
-        <span className="inline-block -rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Free tools</span>
+        <span className="inline-block -rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Tools</span>
         <h1 className="mt-2 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl">What do you want to do?</h1>
       </header>
 
@@ -80,7 +59,7 @@ export function ToolsHub() {
                   <span className="inline-block self-start rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Start here</span>
                   <span className="mt-3 block font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)]">{lead.title}</span>
                   <span className="mt-1 block text-[var(--text-secondary)]">{lead.blurb}</span>
-                  {lead.href.endsWith("score-calculator") ? <Example /> : <span className="flex-1" />}
+                  <span className="flex-1" />
                   <span className="pill-ink mt-4 inline-flex self-start">Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
                 </Link>
                 <ul className="flex min-w-0 flex-col gap-3">
