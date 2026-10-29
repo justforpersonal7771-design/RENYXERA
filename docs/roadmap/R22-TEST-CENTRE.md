@@ -16,7 +16,7 @@ The sessions, timer, palette, results and review are already shared code. Only t
 
 ## 2. Name
 
-Recommended: **Test Centre**. Short, fits the Battles and leaderboard idea, and covers "where you are tested". Alternatives: **Test Centre** (clear, plain), **Trials**. The label is set in one place (`lib/arena/brand.ts`, to be created) so it can change in a minute.
+Recommended: **Test Centre**. Short, fits the Battles and leaderboard idea, and covers "where you are tested". The label is set in one place (`lib/test-centre/brand.ts`, to be created) so it can change in a minute.
 
 ## 3. The new section (one navbar item, one hub screen)
 
@@ -34,19 +34,19 @@ Routes (old ones redirect, so links, bookmarks and Telegram messages keep workin
 
 | New | Replaces |
 |---|---|
-| `/arena` | `/setup` landing, `/mocks` landing |
-| `/arena/build` | `/setup` |
-| `/arena/mocks`, `/arena/mocks/[id]` | `/mocks`, `/fresh-mock` |
-| `/arena/practice` | `/revision`, `/checkpoint`, topic drills |
-| `/arena/history`, `/arena/history/[id]` | `/exam/results`, `/mocks/results`, `/exam/results/review` |
-| `/arena/run` | `/exam/session` (one runner for every test kind) |
+| `/test-centre` | `/setup` landing, `/mocks` landing |
+| `/test-centre/build` | `/setup` |
+| `/test-centre/mocks`, `/test-centre/mocks/[id]` | `/mocks`, `/fresh-mock` |
+| `/test-centre/practice` | `/revision`, `/checkpoint`, topic drills |
+| `/test-centre/history`, `/test-centre/history/[id]` | `/exam/results`, `/mocks/results`, `/exam/results/review` |
+| `/test-centre/run` | `/exam/session` (one runner for every test kind) |
 
 ## 4. Code reorganisation
 
 One feature folder instead of pieces spread across `app/(dashboard)/exam`, `setup`, `mocks`, `components/exam`:
 
 ```
-features/arena/
+features/test-centre/
   model/        types: TestKind (custom | mock | forge-mock | revision | challenge | checkpoint), TestConfig, Attempt, Result
   engine/       session store, timer, grading client, palette state (today's use-exam stores and lib/exam)
   build/        source mixer, subject picker, blueprint, flashcards (today's setup components)
@@ -73,8 +73,8 @@ Type cleanup that this enables:
 
 | Phase | Deliverable | Risk |
 |---|---|---|
-| A1 | Rename and hub: `/arena` landing with redirects from old routes; navbar and bottom bar updated | Low: no logic moves |
-| A2 | `features/arena` skeleton; move the runner (`/exam/session`) and stores with imports updated | Medium: largest diff; guarded by the existing smoke test |
+| A1 | Rename and hub: `/test-centre` landing with redirects from old routes; navbar and bottom bar updated | Low: no logic moves |
+| A2 | `features/test-centre` skeleton; move the runner (`/exam/session`) and stores with imports updated | Medium: largest diff; guarded by the existing smoke test |
 | A3 | Merge Build and Mocks screens; one `TestConfig` | Medium |
 | A4 | History: one list, one result and review route | Medium |
 | A5 | Practice door (revision, checkpoint, drills) and the Start button | Low |
@@ -84,6 +84,6 @@ Done when: the old URLs all redirect, the CI smoke test (guest exam flow on phon
 
 ## 7. Open choices for the owner
 
-1. The name (Test Centre, Test Centre or Trials).
+1. The name (Test Centre, as you chose).
 2. Keep "Exam Setup" wording anywhere (SEO pages use it) or rename everywhere?
 3. Should Battles live inside Test Centre later, or stay its own item? (Recommended: stay separate until Battles is live.)
