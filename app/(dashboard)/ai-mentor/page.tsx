@@ -85,8 +85,8 @@ export default function AIMentorPage() {
         </div>
       </section>
 
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-        <div className="min-w-0 space-y-5">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:block lg:columns-2 lg:gap-5">
+        <div className="contents lg:[&>section]:mb-5 lg:[&>section]:break-inside-avoid">
           {/* Quick ask: short questions only. */}
           <section className="card-well p-4 sm:p-5" data-tint="lilac" aria-label="Quick ask">
             <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Quick question</h2>
@@ -140,7 +140,7 @@ export default function AIMentorPage() {
           </section>
         </div>
 
-        <div className="min-w-0 space-y-5">
+        <div className="contents lg:[&>section]:mb-5 lg:[&>section]:break-inside-avoid">
           <section className="card-pastel p-5" data-tint="mint" aria-label="What I know about you">
             <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">What I know about you</h2>
             <ul className="mt-2 space-y-1 text-sm text-[var(--text-secondary)]">

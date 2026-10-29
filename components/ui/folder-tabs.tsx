@@ -19,7 +19,7 @@ export function FolderTabs<T extends string>({ tabs, value, onChange, children, 
     document.getElementById(`${id}-${next.id}`)?.focus();
   };
   return (
-    <div className="folder-wrap min-w-0" data-tint={activeTint}>
+    <div className="folder-wrap min-w-0" data-tint={activeTint} data-first={tabs[0]?.id === value}>
       <div role="tablist" aria-label={label} className="folder-tabs"
         onKeyDown={(e) => { if (e.key === "ArrowRight") move(1); if (e.key === "ArrowLeft") move(-1); }}>
         {tabs.map((t) => (

@@ -591,7 +591,7 @@ export default function ExamSetupPage() {
                <p className="text-sm font-medium text-[var(--text-secondary)]">Design your perfect test environment.</p>
             </div>
             {/* View: Build a test (all sources) / Forge or Spark questions / Flashcards (all sources). */}
-            <div className="mt-3 w-full overflow-x-auto sm:mt-0 sm:ml-2 sm:w-auto">
+            <div className="mt-3 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-0 sm:ml-2 sm:w-auto sm:shrink-0 sm:overflow-visible">
               <Segmented label="View" value={canBrowse ? setupView : setupView === "questions" ? "build" : setupView}
             onChange={setSetupView}
             options={[

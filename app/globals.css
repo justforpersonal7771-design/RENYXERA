@@ -1820,7 +1820,10 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 
 /* display lives in the components layer so Tailwind's hidden / lg:hidden / sm:inline-flex can override it. In an unlayered rule it always won, which kept the
    exam header's Question Grid button on desktop and its bookmark/theme buttons on phones (pushing Submit off screen). */
-@layer components { .btn-main, .btn-soft { display: inline-flex; } }
+@layer components { .btn-main, .btn-soft { display: inline-flex; } .btn-soft { padding-inline: 16px; font-weight: 700; font-size: 14px; min-height: 40px; justify-content: center; } }
+/* First tab active: the sheet and its seam start square under the tab, so no stray curve shows beside it. */
+.folder-wrap[data-first="true"] .folder-panel { border-top-left-radius: 0 !important; }
+.folder-wrap[data-first="true"] .folder-panel::before { border-top-left-radius: 0 !important; }
 
 /* A button outside any tinted card was filled with the same ink as its border and offset shadow, so the shadow fused with the fill and cut a notch
    into two corners (Test submitted, Confirm Submit). Neutral buttons now use a brand blue (dark mode: soft blue) that the ink edge can outline. */

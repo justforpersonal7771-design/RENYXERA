@@ -1,4 +1,4 @@
-# Release 22: Arena, one place for Mocks and the Exam engine
+# Release 22: Test Centre, one place for Mocks and the Exam engine
 
 *Owner document, 29 Oct 2026. Written for Adil. Status: plan only. Starts after the AI Mentor release (R21). Nothing here is built.*
 
@@ -16,12 +16,12 @@ The sessions, timer, palette, results and review are already shared code. Only t
 
 ## 2. Name
 
-Recommended: **Arena**. Short, fits the Battles and leaderboard idea, and covers "where you are tested". Alternatives: **Test Centre** (clear, plain), **Trials**. The label is set in one place (`lib/arena/brand.ts`, to be created) so it can change in a minute.
+Recommended: **Test Centre**. Short, fits the Battles and leaderboard idea, and covers "where you are tested". Alternatives: **Test Centre** (clear, plain), **Trials**. The label is set in one place (`lib/arena/brand.ts`, to be created) so it can change in a minute.
 
 ## 3. The new section (one navbar item, one hub screen)
 
 ```
-Arena
+Test Centre
  +- Start      what to do now (rule-based, shared with the Mentor's next actions)
  +- Build      custom test: source, type, subjects, length (today's Exam Setup)
  +- Mocks      All-India mocks, full-length papers, Forge Mocks (today's Mocks + fresh mock)
@@ -53,7 +53,7 @@ features/arena/
   mocks/        schedule, countdown, embargo and result release rules
   run/          question screen, palette, calculator, submit dialog, tab-switch guard
   results/      score, analysis, review, share card
-  hub/          the Arena screen
+  hub/          the Test Centre screen
 ```
 Type cleanup that this enables:
 - One `TestKind` and one `TestConfig` instead of separate shapes for custom tests, mocks, challenges and checkpoints.
@@ -84,6 +84,6 @@ Done when: the old URLs all redirect, the CI smoke test (guest exam flow on phon
 
 ## 7. Open choices for the owner
 
-1. The name (Arena, Test Centre or Trials).
+1. The name (Test Centre, Test Centre or Trials).
 2. Keep "Exam Setup" wording anywhere (SEO pages use it) or rename everywhere?
-3. Should Battles live inside Arena later, or stay its own item? (Recommended: stay separate until Battles is live.)
+3. Should Battles live inside Test Centre later, or stay its own item? (Recommended: stay separate until Battles is live.)
