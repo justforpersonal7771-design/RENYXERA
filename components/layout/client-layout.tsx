@@ -26,6 +26,7 @@ import { MotionPrefs } from "@/components/system/motion-prefs";
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { TestCentreBar } from "@/components/layout/test-centre-bar";
 import { useAuthStore } from "@/store/use-auth-store";
 import { OnboardingGate } from "@/components/auth/onboarding-gate";
 
@@ -195,6 +196,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             data-section={sectionTint(pathname)}
           >
             <PlanExpiryNotice />
+            <TestCentreBar />
             {children}
           </motion.div>
         </div>

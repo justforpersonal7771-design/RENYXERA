@@ -14,6 +14,14 @@ const nextConfig: NextConfig = {
   transpilePackages: ['motion'],
   experimental: { optimizePackageImports: ['lucide-react', 'recharts', 'motion', 'date-fns'] },
   compiler: { removeConsole: process.env.NODE_ENV === 'production' ? { exclude: ['error', 'warn'] } : false },
+  // Test Centre (R22): the old Exam Setup and Mocks URLs keep working (links, bookmarks, Telegram messages); query strings are kept.
+  async redirects() {
+    return [
+      { source: '/setup', destination: '/test-centre/build', permanent: false },
+      { source: '/mocks', destination: '/test-centre/mocks', permanent: false },
+      { source: '/mocks/results', destination: '/test-centre/mocks/results', permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

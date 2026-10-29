@@ -411,4 +411,5 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] R22 Test Centre (docs/roadmap/R22-TEST-CENTRE.md) after Mentor
 
 - [x] Test Centre phase A1: hub at /test-centre, one navbar item replaces Exam Setup + Mocks, bottom bar updated, old routes unchanged
-- [ ] Test Centre A2-A6: move runner and stores, merge Build + Mocks, one history, practice door, delete old routes (docs/roadmap/R22-TEST-CENTRE.md)
+- [x] Test Centre A2-A6 (routes): /test-centre/{build,mocks,mocks/results,practice,history}; old /setup, /mocks, /mocks/results redirect; section bar with back-to-hub on every screen; one Attempt model (features/test-centre/model.ts)
+- [ ] Test Centre later: physically move runner/stores out of app/(dashboard)/exam, merge challenge/checkpoint/fresh-mock routes, add the mock countdown to the hub, one TestConfig
