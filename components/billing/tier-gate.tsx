@@ -43,7 +43,7 @@ export function TierGate({ tier, feature, perk, children, className = "" }: { ti
 }
 
 /**
- * Whole-screen lock for paid-only screens (7A). A Free account sees NO real metric: the
+ * Whole-screen lock for paid-only screens (7A). Stays a hard lock by owner decision (29 Oct): analytics is a view, not a feature to try. A Free account sees NO real metric: the
  * page is not rendered at all behind the card (just a decorative skeleton), and the card
  * compares Plus and Pro. Plus/Pro accounts see the screen normally.
  */

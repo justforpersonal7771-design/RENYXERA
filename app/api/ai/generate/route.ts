@@ -9,7 +9,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { getEntitlement } from "@/lib/billing/server";
-import { AI_DAILY, FREE_AI_DAILY, PRO_AI_DAILY, PLUS_PRACTICE_SETS_DAILY } from "@/lib/billing/plans";
+import { AI_DAILY, FREE_AI_DAILY, PRO_AI_DAILY, PLUS_PRACTICE_SETS_DAILY, FREE_PRACTICE_SETS_TASTER } from "@/lib/billing/plans";
 
 export const runtime = "nodejs";
 
@@ -245,7 +245,12 @@ export async function POST(req: NextRequest) {
   if (parsed.data.type === "PRACTICE") {
     const tier = (await getEntitlement(userId)).tier;
     if (tier === "free") {
-      return NextResponse.json({ error: "GATE-level practice sets are part of Plus and Pro. See the Plans page.", upgrade: true, quotaExceeded: true }, { status: 403 });
+      // Tease, don't block: a fixed taster of sets for the whole account. Fails closed: without the counter (migration 0042) Free gets none.
+      const { data: tq, error: tqErr } = db ? await db.rpc("consume_taster", { p_user: userId, p_feature: "practice_set", p_limit: FREE_PRACTICE_SETS_TASTER }) : { data: null, error: new Error("no db") };
+      const trow = Array.isArray(tq) ? tq[0] : tq;
+      if (tqErr || !trow?.allowed) {
+        return NextResponse.json({ error: tqErr ? "GATE-level practice sets are part of Plus and Pro. See the Plans page." : `You've used your ${FREE_PRACTICE_SETS_TASTER} free GATE-level practice sets. Plus gives ${PLUS_PRACTICE_SETS_DAILY} new sets every day, Pro has no set limit.`, upgrade: true, quotaExceeded: true }, { status: 403 });
+      }
     }
     if (tier === "plus" && db) {
       const { data: pq, error: pqErr } = await db.rpc("consume_practice_set", { p_user: userId, p_limit: PLUS_PRACTICE_SETS_DAILY });

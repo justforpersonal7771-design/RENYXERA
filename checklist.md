@@ -420,3 +420,6 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 29 Oct: OpenRouter key verified (auth 200, Nemotron-3-Ultra answered); model-picker refreshed to the current 17 free text models (old deepseek/qwen/gpt-oss names were no longer free). Free models rate-limit (429): second key and Gemini fallback matter for batches.
 - [x] 29 Oct: "tease, don't block" for paid features (owner rule): Forge Free = fixed taster of 10 playable questions (solution locked, rest as locked cards, server-enforced); Study Free = Operating Systems > Deadlock, first 4 topics open, rest locked with study-pass prompt; locked chapters link to plans
 - [ ] Apply the same taster to the other gated features (AI practice sets, Battles, Spark, Planner automation, offline downloads); audit each Free-blocked screen
+- [x] 29 Oct: Tutor panels recoloured to the blue family; Free AI practice sets taster (3 per account, never reset) coded; fails closed until migration `0042_free_taster.sql` is run (you). Analytics stays a full lock (owner: a view, not a feature to try)
+- [ ] **(you) run `supabase/migrations/0042_free_taster.sql`** in Supabase SQL editor (click-by-click steps given in chat)
+- [ ] Taster for Battles, Spark and planner automation: audit when those go live

@@ -1833,8 +1833,9 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .dark { --btn: #93b4ff; --btn-fg: #10131f; }
 
 /* AI Tutor workspace: three panels, three pastels (question = peach, conversation = sky, tools = lilac) instead of one white wash. */
-.tutor-shell section[class*="border-r"][class*="bg-[var(--surface)]"] { background-color: color-mix(in srgb, var(--tint-peach) 75%, var(--surface)) !important; }
-.tutor-shell section[class*="border-l"][class*="bg-[var(--surface)]"] { background-color: color-mix(in srgb, var(--tint-lilac) 75%, var(--surface)) !important; }
+/* The Tutor is a blue screen: its side panels stay in the blue family (lighter sky on the left, periwinkle on the right), never peach or lilac. */
+.tutor-shell section[class*="border-r"][class*="bg-[var(--surface)]"] { background-color: color-mix(in srgb, var(--tint-sky) 45%, var(--surface)) !important; }
+.tutor-shell section[class*="border-l"][class*="bg-[var(--surface)]"] { background-color: color-mix(in srgb, var(--tint-peri) 50%, var(--surface)) !important; }
 .tutor-shell section[class*="bg-[var(--surface-secondary)]/20"] { background-color: color-mix(in srgb, var(--tint-sky) 55%, var(--surface)) !important; }
 .tutor-shell .bg-indigo-600 { background-color: var(--tint-sky-ink) !important; }
 

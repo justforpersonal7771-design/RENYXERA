@@ -704,13 +704,13 @@ export default function AITutorWorkspace() {
                           <div
                             key={o.option_id}
                             className={`p-3 border rounded-xl flex items-start gap-2.5 text-xs font-semibold ${isCorrect
-                              ? "border-[var(--tint-mint-ink)] bg-[var(--tint-mint)] text-[var(--tint-mint-ink)]"
+                              ? "border-[var(--tint-peri-ink)] bg-[var(--tint-peri)] text-[var(--tint-peri-ink)]"
                               : "border-[var(--border-subtle)] bg-[var(--surface)] text-[var(--text-secondary)]"
                               }`}
                           >
                             <span className="font-extrabold shrink-0">{o.option_id}.</span>
                             <div className="overflow-hidden break-words"><AstNodeRenderer nodes={o.contentAst} /></div>
-                            {isCorrect && <CheckCircle className="w-3.5 h-3.5 ml-auto text-[var(--tint-mint-ink)] shrink-0 mt-0.5" />}
+                            {isCorrect && <CheckCircle className="w-3.5 h-3.5 ml-auto text-[var(--tint-peri-ink)] shrink-0 mt-0.5" />}
                           </div>
                         );
                       })}
@@ -1235,7 +1235,7 @@ export default function AITutorWorkspace() {
                                             key={opt.option_id}
                                             className={`p-2.5 rounded-lg border text-xs font-semibold flex items-start gap-2 ${
                                               isCorrect
-                                                ? "bg-[var(--tint-mint)] border-[var(--tint-mint-ink)] text-[var(--tint-mint-ink)] font-bold"
+                                                ? "bg-[var(--tint-peri)] border-[var(--tint-peri-ink)] text-[var(--tint-peri-ink)] font-bold"
                                                 : "bg-[var(--surface)] border-[var(--border-subtle)] text-[var(--text-secondary)]"
                                             }`}
                                           >

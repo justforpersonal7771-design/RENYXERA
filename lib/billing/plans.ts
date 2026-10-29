@@ -89,6 +89,8 @@ export const PLUS_AI_DAILY = 75;
 export const PRO_AI_DAILY = 150;
 /** AI-generated GATE-level practice sets (8 questions each) per day. Free: none; Pro: no extra cap (uses its AI allowance). */
 export const PLUS_PRACTICE_SETS_DAILY = 5;
+/** Free taster of GATE-level practice sets: a fixed number for the whole account, never reset (migration 0042). */
+export const FREE_PRACTICE_SETS_TASTER = 3;
 /** Forge (original GATE-level questions, R11). Questions: Plus and Pro only; Free gets Forge Mocks only.
  *  Plus limit is owner decision F1 (default until decided: the Daily Forge set, no archive, no "X" items). */
 export const FORGE: Record<Tier, { questions: boolean; mocks: boolean; archive: boolean; hardX: boolean; dailyLimit: number | null; teaser: number }> = {
