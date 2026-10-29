@@ -45,6 +45,20 @@ function runVerify(code) {
   return JSON.parse(r.stdout.trim().split("\n").pop());
 }
 async function gemini(prompt, temperature) {
+  // OpenRouter first when configured (OPENROUTER_API_KEY + OPENROUTER_MODEL_SMART); Gemini free tier is the fallback.
+  if (process.env.OPENROUTER_API_KEY && process.env.OPENROUTER_MODEL_SMART) {
+    for (let a = 0; a < 3; a++) {
+      try {
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST", headers: { Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ model: process.env.OPENROUTER_MODEL_SMART, temperature, response_format: { type: "json_object" }, messages: [{ role: "user", content: prompt }] }),
+        });
+        if (res.ok) { const j = await res.json(); return JSON.parse(j.choices[0].message.content); }
+        if (res.status === 402) break;
+        await sleep(4000 * (a + 1));
+      } catch { await sleep(2000); }
+    }
+  }
   for (let a = 0; a < 6; a++) {
     try {
       const res = await ai.models.generateContent({ model: MODEL, contents: prompt, config: { responseMimeType: "application/json", temperature } });

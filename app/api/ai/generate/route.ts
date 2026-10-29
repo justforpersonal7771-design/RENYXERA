@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getGoogleGenAIClient, GEMINI_MODEL, AI_ROUTE } from "@/lib/ai/gemini";
 import { sharedCacheKey } from "@/lib/ai/shared-cache";
+import { generateJson } from "@/lib/ai/llm";
 import { PromptBuilder } from "@/lib/ai/ai-prompts";
 import { aiRequestSchema, type AIGenerateRequest } from "@/lib/security/ai-request-schema";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
@@ -293,17 +294,7 @@ export async function POST(req: NextRequest) {
   const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
 
   try {
-    const response = await getGoogleGenAIClient().models.generateContent({
-      model: route.model,
-      contents: prompt,
-      config: {
-        systemInstruction,
-        responseMimeType: "application/json",
-        maxOutputTokens: route.maxOutputTokens,
-      },
-    });
-
-    const text = response.text;
+    const text = await generateJson({ geminiModel: route.model, systemInstruction, prompt, maxOutputTokens: route.maxOutputTokens, signal: controller.signal });
     if (!text) {
       return NextResponse.json({ error: "Empty response received from Gemini API" }, { status: 502 });
     }
