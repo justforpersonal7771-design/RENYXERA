@@ -84,7 +84,7 @@ export function TutorHome() {
           <div className="flex flex-wrap items-center gap-3">
             <label className="flex h-12 min-w-[240px] flex-1 items-center gap-2 rounded-2xl border-2 border-[var(--border)] px-4 focus-within:border-[var(--tint-sky-ink)]">
               <Search className="h-4 w-4 text-[var(--text-muted)]" aria-hidden />
-              <input id="tutor-search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search a topic, a word from the question, or a question ID"
+              <input id="tutor-search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search topic or question"
                 className="w-full bg-transparent text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)]" aria-label="Search questions" />
             </label>
             <CustomDropdown value={subject} onChange={setSubject} options={[{ label: "All subjects", value: "all" }, ...subjects.map((s) => ({ label: s, value: s }))]} className="w-64 text-sm" />

@@ -112,14 +112,14 @@ export function ExamSubmitDialog({ isOpen, onConfirm, onCancel, stats }: ExamSub
           <div className="flex gap-2.5 pt-1">
             <button
               onClick={onCancel}
-              className="flex-1 h-11 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-primary)] hover:border-[var(--border-strong)] transition cursor-pointer"
+              className="btn-soft flex-1 !h-11 !px-3 justify-center text-sm whitespace-nowrap"
             >
               Keep going
             </button>
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={onConfirm}
-              className="group relative overflow-hidden flex-1 h-11 rounded-xl grad-brand text-white text-sm font-semibold shadow-lg shadow-violet-500/30 inline-flex items-center justify-center gap-2 cursor-pointer"
+              className="btn-main group flex-1 !h-11 !px-3 justify-center !text-sm whitespace-nowrap"
             >
               <Send className="relative w-4 h-4" />
               <span className="relative">Confirm Submit</span>

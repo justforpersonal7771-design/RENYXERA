@@ -232,7 +232,7 @@ export function Topbar() {
 
         {/* Desktop nav — a floating glass dock with a hover highlight that glides
             between items and a gradient pill on the active page. */}
-        <div className="hidden lg:flex flex-1 justify-center min-w-0">
+        <div className="hidden lg:flex flex-1 justify-center min-w-0 lg:pl-3">
           <nav
             onMouseLeave={() => setHovered(null)}
             className="main-dock flex items-center gap-0.5"

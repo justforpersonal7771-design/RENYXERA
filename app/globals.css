@@ -1248,7 +1248,7 @@ mjx-container[display="true"] {
 .segmented button[aria-checked="true"] { color: var(--text-primary); }
 .segmented .thumb { position: absolute; inset: 0; border-radius: 999px; background: var(--surface); box-shadow: 0 1px 3px rgba(22,18,58,.14); z-index: -1; }
 /* The one main action per screen: ink border, offset shadow, presses down on click. */
-.btn-main { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: 14px; font-weight: 700; font-size: 15px;
+.btn-main { align-items: center; gap: 8px; height: 48px; padding: 0 22px; border-radius: 14px; font-weight: 700; font-size: 15px;
   background: #6d28d9; color: #fff; border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); transition: transform .1s, box-shadow .1s; cursor: pointer; }
 .btn-main:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 var(--ink); }
 .btn-main:active { transform: translate(4px,4px); box-shadow: 0 0 0 var(--ink); }
@@ -1611,7 +1611,7 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 
 /* ===== Question experience (test, review, mistakes, bookmarks, AI Tutor, Forge/Spark): one look ===== */
 /* Secondary bold button (Previous, Clear, Mark & next, Next wrong, Exit). */
-.btn-soft { display: inline-flex; align-items: center; gap: 6px; border-radius: 14px; background: var(--surface); color: var(--text-primary);
+.btn-soft { align-items: center; gap: 6px; border-radius: 14px; background: var(--surface); color: var(--text-primary);
   border: 2px solid color-mix(in srgb, #16123a 75%, transparent); box-shadow: 2px 2px 0 color-mix(in srgb, #16123a 75%, transparent);
   transition: transform .12s, box-shadow .12s, background .15s; cursor: pointer; }
 .btn-soft:hover:not(:disabled) { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 #16123a; background: var(--tint-lilac); }
@@ -1814,3 +1814,15 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 @media (max-width: 639px) { .btn-soft.btn-icon { width: 32px; height: 32px; } }
 .btn-soft.btn-icon.btn-on { background: var(--tint-lilac); color: var(--tint-lilac-ink); }
 .btn-soft.btn-icon.btn-go-soft { background: var(--tint-mint); color: var(--tint-mint-ink); }
+
+/* Phones: the floating bar must fit 360-390px with its right margin (owner, 29 Oct: avatar was cut off). Quick icons shrink from 32px to 28px. */
+@media (max-width: 639px) { .topbar-island .nav-act { padding: 6px !important; } .topbar-island .nav-act svg { width: 16px; height: 16px; } }
+
+/* display lives in the components layer so Tailwind's hidden / lg:hidden / sm:inline-flex can override it. In an unlayered rule it always won, which kept the
+   exam header's Question Grid button on desktop and its bookmark/theme buttons on phones (pushing Submit off screen). */
+@layer components { .btn-main, .btn-soft { display: inline-flex; } }
+
+/* A button outside any tinted card was filled with the same ink as its border and offset shadow, so the shadow fused with the fill and cut a notch
+   into two corners (Test submitted, Confirm Submit). Neutral buttons now use a brand blue (dark mode: soft blue) that the ink edge can outline. */
+:root { --btn: #1d4ed8; --btn-fg: #fff; }
+.dark { --btn: #93b4ff; --btn-fg: #10131f; }

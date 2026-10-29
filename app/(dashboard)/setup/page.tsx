@@ -582,7 +582,7 @@ export default function ExamSetupPage() {
           transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="shrink-0 flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-[var(--border)] pb-2.5"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 max-sm:w-full">
             <div className="p-2.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 rounded-xl">
                <Settings className="w-5 h-5" />
             </div>
@@ -591,7 +591,7 @@ export default function ExamSetupPage() {
                <p className="text-sm font-medium text-[var(--text-secondary)]">Design your perfect test environment.</p>
             </div>
             {/* View: Build a test (all sources) / Forge or Spark questions / Flashcards (all sources). */}
-            <div className="ml-2 hidden sm:block">
+            <div className="mt-3 w-full overflow-x-auto sm:mt-0 sm:ml-2 sm:w-auto">
               <Segmented label="View" value={canBrowse ? setupView : setupView === "questions" ? "build" : setupView}
             onChange={setSetupView}
             options={[

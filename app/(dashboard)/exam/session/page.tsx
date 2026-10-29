@@ -278,7 +278,7 @@ export default function ExamSessionPage() {
                // initializeStore() call since IDB has nothing to restore.
                router.push(`/exam/results?id=${sessionId}`);
             }}
-            className="group relative overflow-hidden mt-4 h-13 py-3.5 w-full grad-brand text-white rounded-xl font-semibold text-base shadow-lg shadow-violet-500/30 cursor-pointer inline-flex items-center justify-center gap-2"
+            className="btn-main group mt-4 w-full justify-center"
           >
             <span className="relative">See my results</span>
             <ArrowRight className="relative w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -406,7 +406,7 @@ export default function ExamSessionPage() {
                    <button
                      onClick={() => setShowMobilePalette(true)}
                      className="btn-soft btn-icon lg:hidden relative"
-                     title="Question Grid"
+                     title="Question Grid" aria-label="Question grid"
                    >
                      <LayoutGrid className="w-4 h-4" />
                    </button>
@@ -425,7 +425,7 @@ export default function ExamSessionPage() {
                    <button
                      onClick={handleBookmarkToggle}
                      className="btn-soft btn-icon hidden sm:inline-flex"
-                     title="Bookmark Question"
+                     title="Bookmark Question" aria-label="Bookmark question"
                    >
                      {isCurrentBookmarked ? <BookmarkCheck className="w-4 h-4 text-indigo-500" /> : <Bookmark className="w-4 h-4" />}
                    </button>
@@ -433,7 +433,7 @@ export default function ExamSessionPage() {
                    <button
                      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                      className="btn-soft btn-icon hidden sm:inline-flex"
-                     title="Toggle Dark Mode"
+                     title="Toggle Dark Mode" aria-label="Toggle dark mode"
                    >
                      {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
                    </button>
@@ -450,7 +450,7 @@ export default function ExamSessionPage() {
                      <button
                        onClick={() => resumeSession()}
                        className="btn-soft btn-icon btn-go-soft shrink-0"
-                       title="Resume Exam"
+                       title="Resume Exam" aria-label="Resume exam"
                      >
                        <Play className="w-4 h-4" />
                      </button>
@@ -458,7 +458,7 @@ export default function ExamSessionPage() {
                    <motion.button
                      whileTap={{ scale: 0.95 }}
                      onClick={() => setShowSubmitModal(true)}
-                     className="group relative overflow-hidden h-8 sm:h-9 px-2.5 sm:px-5 inline-flex items-center gap-1.5 text-xs font-bold grad-brand text-white rounded-lg shadow-md shadow-violet-500/30 cursor-pointer shrink-0"
+                     className="btn-main group !h-8 sm:!h-9 !px-2.5 sm:!px-5 !gap-1.5 !text-xs !rounded-xl shrink-0"
                    >
                      <Send className="relative w-3.5 h-3.5" />
                      <span className="relative ">Submit</span>

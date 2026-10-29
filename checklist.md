@@ -384,3 +384,12 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Build AI Mentor M1 (chat shell, Know-me panel, analytics cards moved out)
 - [ ] AI Tutor inner workspace panels on the shared pastel look
 - [ ] Forge items seeding so Forge/Blend use real items; Battles in avatar menu; Ctrl+K palette
+
+## 29 Oct 2026 (mobile pass)
+- [x] Exam Setup on phones: Build a test / Forge or Spark questions / Flashcards switcher was hidden below 640px; now shown (tested in every source)
+- [x] Floating top bar fits 360-390px (avatar no longer cut off)
+- [x] Exam header on phones: Submit no longer pushed off screen (root cause: unlayered .btn-soft display beat Tailwind hidden); aria-labels added
+- [x] Neutral buttons no longer fuse with their ink shadow (notched corners on "See my results" / "Confirm Submit"); exam Submit, results Dashboard/Retry now use the shared button style
+- [x] Battles in the avatar menu; Ctrl+K palette: pastel selection, links to Mentor, Tutor, Study, Forge, Mocks, Battles, Tools, Calendar, Plans
+- [ ] Forge items are not seeded: seeding approves live content, so it needs your go-ahead and a release date (see scripts/forge/seed.mjs)
+- [ ] Build AI Mentor M1 (research first, tomorrow)

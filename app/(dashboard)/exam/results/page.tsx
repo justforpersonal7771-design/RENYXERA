@@ -314,7 +314,7 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={() => router.push("/")}
-                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-[var(--surface-secondary)] border border-[var(--border)] text-[var(--text-primary)] hover:border-[var(--border-strong)] font-semibold rounded-xl transition text-sm flex items-center justify-center gap-2 cursor-pointer"
+                className="btn-soft group flex-1 !h-11 justify-center text-sm"
               >
                 <Home className="w-4 h-4 transition-transform group-hover:-translate-y-0.5" />
                 <span>Dashboard</span>
@@ -322,7 +322,7 @@ export default function ResultSummaryPage() {
               <motion.button
                 whileTap={{ scale: 0.97 }}
                 onClick={handleRetry}
-                className="group flex-1 px-4 py-3 [@media(max-height:860px)]:py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-md shadow-amber-500/30 hover:brightness-110 transition flex items-center justify-center gap-2 cursor-pointer text-sm"
+                className="btn-soft group flex-1 !h-11 justify-center text-sm"
               >
                 <RefreshCw className="w-4 h-4 transition-transform duration-500 group-hover:rotate-180" />
                 <span className="whitespace-nowrap">Retry test</span>

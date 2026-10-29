@@ -6,7 +6,8 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "motion/react";
 import { 
   Search, Moon, Sun, ClipboardList, Bookmark, RefreshCw, 
-  PieChart, Calendar, Award, CornerDownLeft, Sparkles, Clock, Trash2
+  PieChart, Calendar, Award, CornerDownLeft, Sparkles, Clock, Trash2,
+  BrainCircuit, GraduationCap, BookOpenText, FlaskConical, Timer, Swords, Wrench, Crown
 } from "lucide-react";
 import { useStudyStore } from "@/store/use-study-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
@@ -122,6 +123,69 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
       category: "Actions",
       icon: PieChart,
       action: () => { router.push("/analytics"); onClose(); }
+    },
+    {
+      id: "action-mentor",
+      title: "Open AI Mentor",
+      category: "Actions",
+      icon: BrainCircuit,
+      action: () => { router.push("/ai-mentor"); onClose(); }
+    },
+    {
+      id: "action-tutor",
+      title: "Open AI Tutor",
+      category: "Actions",
+      icon: GraduationCap,
+      action: () => { router.push("/ai-tutor"); onClose(); }
+    },
+    {
+      id: "action-study",
+      title: "Study materials",
+      category: "Actions",
+      icon: BookOpenText,
+      action: () => { router.push("/study"); onClose(); }
+    },
+    {
+      id: "action-forge",
+      title: "Forge questions",
+      category: "Actions",
+      icon: FlaskConical,
+      action: () => { router.push("/setup?source=forge"); onClose(); }
+    },
+    {
+      id: "action-mocks",
+      title: "Mocks",
+      category: "Actions",
+      icon: Timer,
+      action: () => { router.push("/mocks"); onClose(); }
+    },
+    {
+      id: "action-battles",
+      title: "Battles",
+      category: "Actions",
+      icon: Swords,
+      action: () => { router.push("/battles"); onClose(); }
+    },
+    {
+      id: "action-tools",
+      title: "Tools: score and rank predictor",
+      category: "Actions",
+      icon: Wrench,
+      action: () => { router.push("/tools/gate-score-calculator"); onClose(); }
+    },
+    {
+      id: "action-calendar",
+      title: "Open Study Calendar",
+      category: "Actions",
+      icon: Calendar,
+      action: () => { router.push("/calendar"); onClose(); }
+    },
+    {
+      id: "action-plans",
+      title: "Plans and pricing",
+      category: "Actions",
+      icon: Crown,
+      action: () => { router.push("/pro"); onClose(); }
     },
     {
       id: "action-dark-mode",
@@ -317,19 +381,19 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
                     }}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl transition text-left ${
                       isSelected 
-                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/10" 
+                        ? "bg-[var(--tint-lilac)] text-[var(--tint-lilac-ink)] ring-1 ring-[var(--tint-lilac-ink)]/25" 
                         : "hover:bg-[var(--surface-secondary)] text-[var(--text-primary)]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className={`w-4 h-4 ${isSelected ? "text-white" : "text-indigo-500"}`} />
+                      <Icon className={`w-4 h-4 ${isSelected ? "text-[var(--tint-lilac-ink)]" : "text-[var(--tint-lilac-ink)]/80"}`} />
                       <div className="flex flex-col">
                         <span className="text-xs font-bold leading-tight">{item.title}</span>
-                        <span className={`text-xs tracking-normal font-extrabold ${isSelected ? "text-indigo-200" : "text-[var(--text-muted)]"}`}>{item.category}</span>
+                        <span className={`text-xs tracking-normal font-extrabold ${isSelected ? "text-[var(--tint-lilac-ink)]/80" : "text-[var(--text-muted)]"}`}>{item.category}</span>
                       </div>
                     </div>
                     {isSelected && (
-                      <div className="flex items-center gap-1 text-xs font-black tracking-normal text-indigo-100 font-mono">
+                      <div className="flex items-center gap-1 text-xs font-black tracking-normal text-[var(--tint-lilac-ink)] font-mono">
                         <span>Select</span>
                         <CornerDownLeft className="w-3.5 h-3.5" />
                       </div>
