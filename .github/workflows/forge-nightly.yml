@@ -1,0 +1,70 @@
+name: Forge nightly generation
+
+# Generates a batch of Forge questions with Gemini (free tier) every night, verifies them (blind re-solve, computed
+# answer, TeX render, dedupe, option checks) and pushes the batch to the branch forge-auto for human review.
+# It never touches main and never seeds the database: a reviewed batch is seeded by hand with scripts/forge/seed.mjs.
+# Needs the repository secret GEMINI_API_KEY. Run it by hand from the Actions tab with a different branch/count if wanted.
+on:
+  schedule:
+    - cron: "30 20 * * *" # 02:00 IST
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Exam branch code (CS, EC, EE, ME, CE, DA)"
+        default: "CS"
+      count:
+        description: "Questions to try to make"
+        default: "20"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forge-nightly
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: npm ci
+
+      - name: Continue the forge-auto branch
+        run: |
+          git config user.name "forge-bot"
+          git config user.email "forge-bot@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin forge-auto >/dev/null; then
+            git fetch origin forge-auto && git checkout -B forge-auto origin/forge-auto && git merge --no-edit origin/main || true
+          else
+            git checkout -b forge-auto
+          fi
+
+      - name: Generate and verify
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BR: ${{ github.event.inputs.branch || 'CS' }}
+          N: ${{ github.event.inputs.count || '20' }}
+        run: |
+          B="auto-$(date -u +%Y%m%d)"
+          node scripts/forge/generate.mjs --branch="$BR" --n="$N" --batch="$B" || true
+
+      - name: Push for review
+        run: |
+          git add data/forge
+          if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi
+          git commit -m "Forge: automated batch for review (not seeded)"
+          git push origin forge-auto
