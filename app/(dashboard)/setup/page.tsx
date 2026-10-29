@@ -63,6 +63,12 @@ export default function ExamSetupPage() {
   const [sourceMix, setSourceMix] = useSourceMix(searchParams.get("source"));
   // Build a test (all sources) / Questions (Forge, Spark) / Flashcards (all sources). /forge opens Forge questions.
   const [setupView, setSetupView] = useState<"build" | "questions" | "flash">(() => (searchParams.get("source") === "forge" ? "questions" : searchParams.get("view") === "flashcards" ? "flash" : "build"));
+  // On a statically built page the query string only arrives after hydration, so apply the deep links (/forge, Flashcards door) here too.
+  const deepSource = searchParams.get("source"), deepView = searchParams.get("view");
+  useEffect(() => {
+    if (deepSource === "forge") setSetupView("questions");
+    else if (deepView === "flashcards") setSetupView("flash");
+  }, [deepSource, deepView]);
 
   const [availablePapers, setAvailablePapers] = useState<string[]>([]);
   const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
