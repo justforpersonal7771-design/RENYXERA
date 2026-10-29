@@ -35,6 +35,7 @@ export const AI_ROUTE: Record<string, { model: string; maxOutputTokens: number }
   HINT: { model: GEMINI_LITE_MODEL, maxOutputTokens: 1024 },
   SHORTCUT: { model: GEMINI_LITE_MODEL, maxOutputTokens: 1536 },
   FOLLOWUP: { model: GEMINI_MODEL, maxOutputTokens: 2048 },
+  MENTOR_CHAT: { model: GEMINI_MODEL, maxOutputTokens: 2048 },
   EXPLAIN: { model: GEMINI_MODEL, maxOutputTokens: 3072 },
   PRACTICE: { model: GEMINI_MODEL, maxOutputTokens: 4096 },
   REVISION: { model: GEMINI_MODEL, maxOutputTokens: 4096 },

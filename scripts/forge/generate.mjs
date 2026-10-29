@@ -1,5 +1,5 @@
 // Forge generator (local, $0): plan -> Gemini draft -> blind re-solve -> compute -> TeX render -> dedupe -> option checks.
-//   node --env-file=.env.local scripts/forge/generate.mjs --branch=CS --n=10 --batch=b001
+//   npx tsx --env-file=.env.local scripts/forge/generate.mjs --branch=CS --n=10 --batch=b001
 // Writes data/forge/<BR>/batches/<batch>.json and runs scripts/forge/validate.py on it (writes the report seed.mjs needs).
 // Every rejected draft is logged to data/forge/<BR>/rejects/<batch>.jsonl with the reason, so quality problems are visible.
 // Free-tier friendly: sequential calls, backoff on 429/503, stops cleanly when the daily quota is gone.
@@ -45,18 +45,23 @@ function runVerify(code) {
   return JSON.parse(r.stdout.trim().split("\n").pop());
 }
 async function gemini(prompt, temperature) {
-  // OpenRouter first when configured (OPENROUTER_API_KEY + OPENROUTER_MODEL_SMART); Gemini free tier is the fallback.
-  if (process.env.OPENROUTER_API_KEY && process.env.OPENROUTER_MODEL_SMART) {
-    for (let a = 0; a < 3; a++) {
-      try {
-        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-          method: "POST", headers: { Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ model: process.env.OPENROUTER_MODEL_SMART, temperature, response_format: { type: "json_object" }, messages: [{ role: "user", content: prompt }] }),
-        });
-        if (res.ok) { const j = await res.json(); return JSON.parse(j.choices[0].message.content); }
-        if (res.status === 402) break;
-        await sleep(4000 * (a + 1));
-      } catch { await sleep(2000); }
+  // Order: local OmniRoute gateway (OMNIROUTE_URL), then OpenRouter free models picked automatically for the "forge" task
+  // (keys in OPENROUTER_API_KEYS, one per account), then the Gemini free tier below.
+  const tryChat = async (url, key, model) => {
+    try {
+      const res = await fetch(url, { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ model, temperature, response_format: { type: "json_object" }, messages: [{ role: "user", content: prompt }] }) });
+      if (!res.ok) return { status: res.status };
+      const t = String((await res.json()).choices?.[0]?.message?.content ?? ""); const a = t.indexOf("{"), b = t.lastIndexOf("}");
+      return { json: JSON.parse(t.slice(a, b + 1)) };
+    } catch { return { status: 0 }; }
+  };
+  if (process.env.OMNIROUTE_URL) { const r = await tryChat(`${process.env.OMNIROUTE_URL}/chat/completions`, process.env.OMNIROUTE_KEY ?? "", process.env.OMNIROUTE_MODEL ?? "renyxera-dev"); if (r.json) return r.json; }
+  const keys = (process.env.OPENROUTER_API_KEYS || process.env.OPENROUTER_API_KEY || "").split(",").map((k) => k.trim()).filter(Boolean);
+  if (keys.length) {
+    const { pickModels, benchModel } = await import("../../lib/ai/model-picker.ts");
+    for (const model of await pickModels("forge", 4)) {
+      for (const key of keys) { const r = await tryChat("https://openrouter.ai/api/v1/chat/completions", key, model); if (r.json) return r.json; if (r.status === 404 || r.status === 400) { benchModel(model); break; } }
     }
   }
   for (let a = 0; a < 6; a++) {

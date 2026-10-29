@@ -129,6 +129,16 @@ const followUpParamsSchema = z.object({
   nextMessage: z.string().min(1).max(4000),
 });
 
+// AI Mentor chat: the client sends a compact "learner brief" it computed from real data (no raw history), the mode and the
+// conversation so far. The server owns the instruction text.
+const mentorParamsSchema = z.object({
+  mode: z.enum(["Ask", "Socratic", "Quiz", "Plan", "Review", "Weekly"]),
+  personality: z.enum(["Friendly", "Strict", "Concise"]),
+  brief: z.string().min(1).max(6000),
+  history: z.array(z.object({ role: z.enum(["user", "model"]), text: z.string().max(3000) })).max(12),
+  nextMessage: z.string().min(1).max(2000),
+});
+
 /**
  * Server-owned enum of the only prompt templates this route will ever build. A `type`
  * outside this set is rejected before any Gemini call is made.
@@ -140,6 +150,7 @@ export const aiRequestSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("PRACTICE"), params: practiceParamsSchema }),
   z.object({ type: z.literal("REVISION"), params: revisionParamsSchema }),
   z.object({ type: z.literal("FOLLOWUP"), params: followUpParamsSchema }),
+  z.object({ type: z.literal("MENTOR_CHAT"), params: mentorParamsSchema }),
 ]);
 
 export type AIGenerateRequest = z.infer<typeof aiRequestSchema>;

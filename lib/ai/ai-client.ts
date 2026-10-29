@@ -6,7 +6,7 @@ import { AIResponse, AITokenUsage } from "@/types/ai.types";
 
 // The set of server-owned prompt templates — must stay in sync with the discriminated
 // union in lib/security/ai-request-schema.ts and the switch in app/api/ai/generate/route.ts.
-export type AIRequestType = "EXPLAIN" | "HINT" | "SHORTCUT" | "PRACTICE" | "REVISION" | "FOLLOWUP";
+export type AIRequestType = "EXPLAIN" | "HINT" | "SHORTCUT" | "PRACTICE" | "REVISION" | "FOLLOWUP" | "MENTOR_CHAT";
 
 export class AIClient {
   /**

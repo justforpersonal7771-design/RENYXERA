@@ -1,0 +1,1008 @@
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import { useStudyStore } from "@/store/use-study-store";
+import { useDisplayName, useTargetYear } from "@/store/use-auth-store";
+import { examDateFor } from "@/lib/goals/exam-year";
+import { useAnalyticsStore } from "@/store/use-analytics-store";
+import { MemoryEngine, KnowledgeGraph, InsightMemory, MistakePattern, LearnerTimelineMilestone, ReadinessScorecard } from "@/lib/ai/memory/MemoryEngine";
+import { StudyPlanEngine, StudyPlanSuggestion } from "@/lib/ai/memory/StudyPlanEngine";
+import { MasteryEngine, TopicMastery } from "@/lib/learning/MasteryEngine";
+import { IDBManager } from "@/lib/repository/storage/idb-manager";
+import { toLocalDateStr } from "@/lib/utils";
+import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
+import { AIResponseParser } from "@/lib/ai/ai-response-parser";
+import {
+  Sparkles, Loader2, BrainCircuit, Activity, Clock, Zap, Star, AlertTriangle,
+  HelpCircle, ShieldCheck, TrendingUp, Calendar, BookOpen, Layers, CheckCircle2, Flame, Award, CalendarPlus, Check, Search, StickyNote
+} from "lucide-react";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { DatePicker } from "@/components/ui/date-picker";
+import { MathJaxContext } from "better-react-mathjax";
+import { useToastStore } from "@/store/use-toast-store";
+import { useCalendarStore } from "@/store/use-calendar-store";
+import { AnimatePresence, motion } from "motion/react";
+import { buildStudyReportMarkdown, downloadTextFile } from "@/lib/export/markdown-export";
+import { Download } from "lucide-react";
+import { GuestLock } from "@/components/auth/guest-lock";
+import { useRouter } from "next/navigation";
+import { ArrowRight, ChevronDown, ChevronRight, Target, MessageSquareText, ClipboardList } from "lucide-react";
+import { CountUp, RadialGauge, TiltCard, InfoTip } from "@/components/ui/interactive";
+
+export default function CoachInsightsPage() {
+  const router = useRouter();
+  const { first: firstName } = useDisplayName();
+  const { mistakes, bookmarks, loadStudyData } = useStudyStore();
+  // Knowledge-graph drill-down trail (topic -> prerequisite -> its prerequisite ...)
+  const [graphTrail, setGraphTrail] = useState<string[]>([]);
+  const [openPattern, setOpenPattern] = useState<string | null>(null);
+  const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
+
+  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  // The insight cards are computed asynchronously (mastery → readiness → study plan, patterns, timeline).
+  // Showing the page piecemeal pushed later cards down as each one landed, so the page is revealed once,
+  // when all of it is ready (with a short safety timeout so a slow computation can never block it).
+  const [patternsDone, setPatternsDone] = useState(false);
+  const [timelineDone, setTimelineDone] = useState(false);
+  const [planDone, setPlanDone] = useState(false);
+  const [forceReady, setForceReady] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setForceReady(true), 3500); return () => clearTimeout(t); }, []);
+  const [selectedTopic, setSelectedTopic] = useState<string>("");
+  
+  // Dynamic AI Mentor Metrics
+  const [readiness, setReadiness] = useState<ReadinessScorecard | null>(null);
+  const [timeline, setTimeline] = useState<LearnerTimelineMilestone[]>([]);
+  const [mistakePatterns, setMistakePatterns] = useState<MistakePattern[]>([]);
+  
+  // Prerequisites diagnostic state
+  const [diagnostics, setDiagnostics] = useState<{ topic: string; mastery: number; description: string }[]>([]);
+
+  // Real computed inputs for readiness prediction — never fabricated.
+  const [topicMasteryMap, setTopicMasteryMap] = useState<Record<string, TopicMastery>>({});
+  const [plannerCompletion, setPlannerCompletion] = useState<number | null>(null);
+  // Set automatically from the target GATE year; a date the learner picked in the Study Planner overrides it.
+  const targetYear = useTargetYear();
+  const [savedExamDate, setSavedExamDate] = useState<string | null>(null);
+  const examDate = examDateFor(targetYear, savedExamDate);
+
+  // AI Study Planner — rule-based recommendations (see StudyPlanEngine),
+  // never auto-added to the calendar; the student must click to add each one.
+  const [studyPlanSuggestions, setStudyPlanSuggestions] = useState<StudyPlanSuggestion[]>([]);
+  const [addedSuggestionIds, setAddedSuggestionIds] = useState<Set<string>>(new Set());
+  const { addEvent: addCalendarEvent, events: calendarEvents, loadEvents: loadCalendarEvents } = useCalendarStore();
+
+  useEffect(() => {
+    setMounted(true);
+    const loadMentorData = async () => {
+      setLoading(true);
+      await loadStudyData();
+      await loadAnalytics();
+      await MemoryEngine.initialize();
+      await loadCalendarEvents();
+      const rec = await IDBManager.getMetadata("target_exam_date");
+      setSavedExamDate(rec?.value ? String(rec.value) : null);
+      setLoading(false);
+    };
+    loadMentorData();
+  }, [loadStudyData, loadAnalytics, loadCalendarEvents]);
+
+  const daysToExam = examDate
+    ? Math.round((new Date(examDate + "T00:00:00").getTime() - new Date(toLocalDateStr() + "T00:00:00").getTime()) / (1000 * 60 * 60 * 24))
+    : null;
+
+  // Aggregate student stats & masteries across subjects. Confidence is the
+  // average of real per-mistake confidence scores recorded for that subject;
+  // when no mistake has been logged for it yet, accuracy is the closest real
+  // signal we have, so we fall back to that instead of a fabricated constant.
+  const subjectMasteries = useMemo(() => {
+    if (!dashboardMetrics) return [];
+    return dashboardMetrics.subjectPerformance.map(sub => {
+      const accuracy = sub.attempted > 0 ? (sub.correct / sub.attempted) * 100 : 0;
+      const subjectMistakeConfidences = mistakes
+        .filter(m => m.subject === sub.subject && typeof m.confidence === "number")
+        .map(m => m.confidence as number);
+      const averageConfidence = subjectMistakeConfidences.length > 0
+        ? Math.round(subjectMistakeConfidences.reduce((a, b) => a + b, 0) / subjectMistakeConfidences.length)
+        : Math.round(accuracy);
+      return {
+        subject: sub.subject,
+        masteryIndex: Math.round(accuracy),
+        averageConfidence
+      };
+    });
+  }, [dashboardMetrics, mistakes]);
+
+  // Compute real topic mastery (reusing the same MasteryEngine the rest of the
+  // app uses) and real planner completion from actual calendar events.
+  useEffect(() => {
+    if (!mounted || loading) return;
+
+    const computeRealInputs = async () => {
+      const { QuestionRepository } = await import("@/lib/repository/question-repository");
+      await QuestionRepository.initialize();
+      const allQuestions = QuestionRepository.getAllQuestions();
+      const sessionRecords = await IDBManager.getAllExamSessions();
+      const sessions = sessionRecords.map(r => r.sessionData as any);
+      setTopicMasteryMap(MasteryEngine.calculateTopicMastery(allQuestions, sessions, mistakes));
+
+      const events = await IDBManager.getCalendarEvents();
+      if (events.length === 0) {
+        // No planner data yet — use a neutral midpoint rather than a fabricated
+        // "typical" completion rate, so it neither rewards nor penalizes readiness.
+        setPlannerCompletion(50);
+      } else {
+        const completed = events.filter(e => e.completed).length;
+        setPlannerCompletion(Math.round((completed / events.length) * 100));
+      }
+    };
+    computeRealInputs();
+  }, [mounted, loading, mistakes]);
+
+  // Build Readiness prediction scorecards
+  useEffect(() => {
+    if (!mounted || loading || plannerCompletion === null) return;
+
+    const totalSolved = mistakes.length + bookmarks.length;
+    const accuracy = dashboardMetrics?.overview.overallAccuracy ?? 0;
+
+    const pred = MemoryEngine.predictExamReadiness(
+      subjectMasteries,
+      totalSolved,
+      accuracy,
+      plannerCompletion
+    );
+    setReadiness(pred);
+  }, [mounted, loading, subjectMasteries, mistakes, bookmarks, dashboardMetrics, plannerCompletion]);
+
+  // AI Study Planner — recompute suggestions once real mastery/readiness/
+  // calendar data is available. Purely rule-based (see StudyPlanEngine),
+  // no AI API call involved.
+  useEffect(() => {
+    if (!mounted || loading || !readiness || Object.keys(topicMasteryMap).length === 0) return;
+    const suggestions = StudyPlanEngine.generateSuggestions({
+      mistakes,
+      topicMasteryMap,
+      burnoutRisk: readiness.burnoutRisk,
+      existingEvents: calendarEvents,
+    });
+    setStudyPlanSuggestions(suggestions);
+    setPlanDone(true);
+  }, [mounted, loading, readiness, topicMasteryMap, mistakes, calendarEvents]);
+
+  const handleAddSuggestionToCalendar = async (s: StudyPlanSuggestion, date: string, priority: "Low" | "Medium" | "High") => {
+    await addCalendarEvent({
+      id: crypto.randomUUID(),
+      title: s.title,
+      description: s.reason,
+      category: s.studyType === "Revision" ? "Revision" : s.studyType === "Mistakes" ? "Mistakes Review" : s.studyType === "Mock Test" ? "Mock Test" : "Study",
+      date,
+      color: priority === "High" ? "#f43f5e" : priority === "Medium" ? "#f59e0b" : "#6366f1",
+      priority,
+      completed: false,
+      subject: s.subject,
+      topic: s.topic,
+      studyType: s.studyType,
+      timeRangeType: "date_only",
+      revisionCycle: "One Time",
+      status: "Pending",
+    });
+    setAddedSuggestionIds(prev => new Set(prev).add(s.id));
+    useToastStore.getState().show(`"${s.title}" added to your calendar`);
+  };
+
+  // Per-suggestion date/priority overrides — defaults to the engine's suggestion but
+  // lets the student pick a different target date/priority before committing it to
+  // the calendar, instead of the old one-click "take it or leave it" add.
+  const [suggestionOverrides, setSuggestionOverrides] = useState<Record<string, { date: string; priority: "Low" | "Medium" | "High" }>>({});
+  const getSuggestionOverride = (s: StudyPlanSuggestion) =>
+    suggestionOverrides[s.id] || { date: s.suggestedDate, priority: s.priority };
+
+  const handleExportMarkdown = () => {
+    const md = buildStudyReportMarkdown({
+      generatedAt: new Date().toLocaleString(),
+      coachGreeting: coachAdvice.greeting,
+      coachBody: coachAdvice.body,
+      readiness,
+      metrics: {
+        learningVelocity: readiness?.velocityScore ?? 0,
+        spacedRevisionDebt: mistakes.filter(m => !m.mastered).length,
+        burnoutRisk: readiness?.burnoutRisk ?? "Low",
+        daysToExam,
+      },
+      mistakePatterns,
+      savedShortcuts,
+      studyPlanSuggestions,
+      timeline,
+      subjectMasteries,
+    });
+    downloadTextFile(`gate-os-study-report-${toLocalDateStr()}.md`, md);
+    useToastStore.getState().show("Study report exported");
+  };
+
+  // Scan and discover mistakes patterns
+  useEffect(() => {
+    if (!mounted || loading) return;
+
+    const runMistakesScan = async () => {
+      const { QuestionRepository } = await import("@/lib/repository/question-repository");
+      await QuestionRepository.initialize();
+      const pats = await InsightMemory.scanMistakePatterns(mistakes, QuestionRepository);
+      setMistakePatterns(pats);
+      setPatternsDone(true);
+    };
+    runMistakesScan();
+  }, [mounted, loading, mistakes]);
+
+  // Compile student milestones timeline
+  useEffect(() => {
+    if (!mounted || loading) return;
+
+    const buildTimeline = async () => {
+      const logs = await MemoryEngine.getLearnerTimeline(bookmarks, mistakes);
+      setTimeline(logs);
+      setTimelineDone(true);
+    };
+    buildTimeline();
+  }, [mounted, loading, bookmarks, mistakes]);
+
+  // Filter bookmarked shortcuts list — deliberately excludes plain personal notes;
+  // see the fix in ai-tutor's handleSaveNotes for why aiShortcut alone is now a
+  // reliable "this is a saved shortcut" signal rather than a side effect of every note save.
+  const savedShortcuts = useMemo(() => {
+    return bookmarks.filter(b => b.isShortcutOnly || b.aiShortcut);
+  }, [bookmarks]);
+
+  const [shortcutSearch, setShortcutSearch] = useState("");
+  const filteredShortcuts = useMemo(() => {
+    const q = shortcutSearch.trim().toLowerCase();
+    if (!q) return savedShortcuts;
+    return savedShortcuts.filter(b =>
+      b.subject.toLowerCase().includes(q) ||
+      b.topic.toLowerCase().includes(q) ||
+      (b.aiShortcut || "").toLowerCase().includes(q)
+    );
+  }, [savedShortcuts, shortcutSearch]);
+
+  // Saved Notes — the plain-note counterpart to the Shortcut Library above; any
+  // bookmark carrying real personal observations that ISN'T a shortcut entry.
+  const savedNotes = useMemo(() => {
+    return bookmarks.filter(b => !b.isShortcutOnly && !b.aiShortcut && (b.notes?.trim() || b.personalObservations?.trim()));
+  }, [bookmarks]);
+
+  const [notesSearch, setNotesSearch] = useState("");
+  const filteredNotes = useMemo(() => {
+    const q = notesSearch.trim().toLowerCase();
+    if (!q) return savedNotes;
+    return savedNotes.filter(b =>
+      b.subject.toLowerCase().includes(q) ||
+      b.topic.toLowerCase().includes(q) ||
+      (b.notes || b.personalObservations || "").toLowerCase().includes(q)
+    );
+  }, [savedNotes, notesSearch]);
+
+  // Handle prerequisite diagnosis whenever a topic is selected. Uses the same
+  // real MasteryEngine scores the rest of the app relies on (topicMasteryMap),
+  // not an ad hoc estimate.
+  const handleDiagnosePrerequisites = (topic: string, keepTrail = false) => {
+    setSelectedTopic(topic);
+    setGraphTrail((t) => (keepTrail ? [...t, topic] : [topic]));
+
+    const masteries: Record<string, number> = {};
+    Object.values(topicMasteryMap).forEach(tm => {
+      masteries[tm.topic] = tm.score;
+    });
+
+    const weaknesses = KnowledgeGraph.diagnosePrerequisiteWeaknesses(topic, masteries);
+    setDiagnostics(weaknesses);
+  };
+
+  // Compile daily personalized coach advice — every claim below is derived
+  // from real stored data (streak/lastActiveDate/mistakes); nothing is invented.
+  const coachAdvice = useMemo(() => {
+    if (mistakes.length === 0) {
+      return {
+        greeting: firstName ? `Welcome, ${firstName}. Let's get started.` : "Welcome to your AI Mentor workspace",
+        body: "You have not recorded any study session mistakes yet. Complete mock tests and practice questions to feed context back to the AI coach."
+      };
+    }
+
+    const pendingMistakes = mistakes.filter(m => !m.mastered);
+    const weakTopic = pendingMistakes[0]?.topic;
+    const pendingCount = pendingMistakes.length;
+
+    const lastActiveDate = dashboardMetrics?.overview.lastActiveDate;
+    const streak = dashboardMetrics?.overview.currentStreak ?? 0;
+    const activitySummary = lastActiveDate
+      ? `You were last active on ${new Date(lastActiveDate).toLocaleDateString(undefined, { month: "short", day: "numeric" })}${streak > 0 ? ` (${streak}-day streak)` : ""}.`
+      : "No recent activity is recorded yet.";
+
+    if (!weakTopic || pendingCount === 0) {
+      return {
+        greeting: firstName ? `Good to see you back, ${firstName}.` : "Good to see you back.",
+        body: `${activitySummary} You have no open mistakes right now — solid position. Consider a fresh practice set or revisiting bookmarks to keep momentum.`
+      };
+    }
+
+    return {
+      greeting: firstName ? `Good to see you back, ${firstName}.` : "Good to see you back.",
+      body: `${activitySummary} Your concept retention is flagged on "${weakTopic}" — you have ${pendingCount} pending mistake${pendingCount === 1 ? "" : "s"} there. Today, we recommend reviewing "${weakTopic}" before starting any new subject.`
+    };
+  }, [mistakes, dashboardMetrics, firstName]);
+
+  // Weakest real topic by MasteryEngine score (only topics actually attempted).
+  const weakestTopic = Object.values(topicMasteryMap)
+    .filter((t) => t.totalAttempts > 0)
+    .sort((a, b) => a.score - b.score)[0];
+  const quickActions = [
+    ...(weakestTopic && weakestTopic.score < 60
+      ? [{ label: `Practise ${weakestTopic.topic.length > 26 ? weakestTopic.topic.slice(0, 25) + "…" : weakestTopic.topic}`, icon: Target, onClick: () => router.push(`/setup?topic=${encodeURIComponent(weakestTopic.topic)}`) }]
+      : []),
+    { label: "Review mistakes", icon: ClipboardList, onClick: () => router.push("/mistakes") },
+    { label: "Open AI Tutor", icon: MessageSquareText, onClick: () => router.push("/ai-tutor") },
+  ];
+
+  const masteryOf = (topic: string): number | null => {
+    const m = Object.values(topicMasteryMap).find((t) => t.topic === topic);
+    return m && m.totalAttempts > 0 ? m.score : null;
+  };
+  const toneOf = (v: number | null) =>
+    v === null ? "border-[var(--border)] text-[var(--text-secondary)] bg-[var(--surface)]"
+      : v < 60 ? "border-rose-500/40 text-rose-600 dark:text-rose-400 bg-rose-500/10"
+      : v < 80 ? "border-amber-500/40 text-amber-600 dark:text-amber-400 bg-amber-500/10"
+      : "border-emerald-500/40 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10";
+  // Quick picks: graph topics you have actually attempted, weakest first.
+  const graphQuickPicks = KnowledgeGraph.getAllNodes()
+    .map((n) => ({ topic: n.topic, m: masteryOf(n.topic) }))
+    .filter((n) => n.m !== null)
+    .sort((a, b) => (a.m as number) - (b.m as number))
+    .slice(0, 6);
+
+  if (!mounted) return null;
+
+  const mathJaxConfig = {
+    loader: { load: ["[tex]/html"] },
+    tex: {
+      packages: { "[+]": ["html"] },
+      inlineMath: [["\\(", "\\)"]],
+      displayMath: [["\\[", "\\]"]],
+    },
+  };
+
+  return (
+    <GuestLock
+      feature="AI Mentor"
+      description="Get personalized explanations, hints, and a revision plan built from your own mistakes — sign in to start."
+    >
+    <MathJaxContext config={mathJaxConfig}>
+      <div className="w-full space-y-6 pb-8">
+
+        {loading || !(forceReady || (readiness && plannerCompletion !== null && patternsDone && timelineDone && (planDone || Object.keys(topicMasteryMap).length === 0))) ? (
+          <div className="py-24 flex flex-col items-center justify-center gap-3">
+            <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
+            <span className="text-xs font-bold text-[var(--text-secondary)] tracking-normal">Syncing complete learning memory logs...</span>
+          </div>
+        ) : (
+          <>
+          {/* Unified summary hero: identity + coach advice + readiness scorecard,
+              replacing the old plain header + separate coach card + duplicate
+              "Predict Readiness" tile + separate Readiness Predictor card. */}
+          <motion.div
+            initial={{ opacity: 0, y: -8, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+            className="bg-gradient-to-br from-blue-600 via-violet-600 to-fuchsia-600 text-white p-6 md:p-7 rounded-[var(--card-radius)] shadow-lg shadow-violet-600/20 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-300/20 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-40 h-40 bg-fuchsia-400/20 rounded-full blur-3xl -ml-8 -mb-8 pointer-events-none" />
+
+            <div className="relative z-10 flex flex-col lg:flex-row gap-6 lg:items-stretch">
+              {/* Identity + coach message */}
+              <div className="flex-1 space-y-3 min-w-0">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="inline-flex items-center gap-1.5 text-xs font-black tracking-normal bg-white/15 px-3 py-1 rounded-full">
+                    <BrainCircuit className="w-3 h-3" />
+                    AI Mentor
+                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={handleExportMarkdown}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-lg transition text-xs font-bold tracking-normal cursor-pointer"
+                      title="Compile a full study report from your real progress, mistakes, readiness, and mentor data"
+                    >
+                      <Download className="w-3 h-3" />
+                      Export Report
+                    </button>
+                  </div>
+                </div>
+                <h1 className="text-2xl md:text-3xl font-bold tracking-tight">{coachAdvice.greeting}</h1>
+                <p className="text-sm font-medium leading-relaxed text-indigo-100 max-w-2xl">
+                  {coachAdvice.body}
+                </p>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {quickActions.map((a) => (
+                    <motion.button
+                      key={a.label}
+                      whileHover={{ y: -2 }}
+                      whileTap={{ scale: 0.96 }}
+                      onClick={a.onClick}
+                      className="group inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold cursor-pointer transition-colors"
+                    >
+                      <a.icon className="w-3.5 h-3.5" />
+                      {a.label}
+                      <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Readiness scorecard */}
+              {readiness && (
+                <div className="lg:w-[340px] shrink-0 bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur-sm space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black tracking-normal text-indigo-100 flex items-center gap-1">
+                      <Award className="w-3.5 h-3.5" /> Readiness Predictor
+                    </span>
+                    <span className="px-2 py-0.5 bg-white text-indigo-700 rounded text-xs font-black tracking-normal">{readiness.readinessRating}</span>
+                  </div>
+                  <div className="flex items-center gap-4 py-1">
+                    <RadialGauge value={readiness.expectedMarks} size={86} stroke={8} from="#67e8f9" to="#f0abfc" track="#fff" trackOpacity={0.15}>
+                      <div className="text-center leading-none">
+                        <CountUp value={readiness.expectedMarks} className="text-xl font-bold" />
+                        <span className="block text-[8px] font-semibold text-indigo-200 mt-0.5">/ 100</span>
+                      </div>
+                    </RadialGauge>
+                    <div className="min-w-0">
+                      <span className="block text-xs font-bold text-indigo-200 tracking-normal">Expected rank</span>
+                      <span className="block text-2xl font-bold">#<CountUp value={readiness.expectedRank} /></span>
+                      <span className="block text-[10px] font-medium text-indigo-100/80">Likely range {readiness.confidenceInterval[0]}–{readiness.confidenceInterval[1]} marks</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-[10px] font-bold pt-1 border-t border-white/15">
+                    <div className="flex flex-col">
+                      <span className="text-indigo-200 text-xs tracking-normal">Suggested Mock</span>
+                      <span className="text-white">{readiness.suggestedMockDate}</span>
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-indigo-200 text-xs tracking-normal">Revision Target</span>
+                      <span className="text-white">{readiness.revisionCompletionDate}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+          {/* AI Study Planner — rule-based recommendations derived from real
+              revision-priority/mastery/burnout data; opt-in only, nothing is
+              ever written to the calendar without an explicit click here. */}
+          {studyPlanSuggestions.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: 0.1 }}
+              className="card-well p-5 space-y-4" data-tint="lilac"
+            >
+              <div className="flex items-center justify-between border-b border-[var(--border-subtle)] pb-3">
+                <div>
+                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
+                    <CalendarPlus className="w-4 h-4 text-indigo-500" />
+                    AI Study Plan Suggestions
+                  </h3>
+                  <p className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">Derived from your real revision priority and mistake data. Nothing is added to your calendar unless you click.</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {studyPlanSuggestions.map((s, idx) => {
+                  const isAdded = addedSuggestionIds.has(s.id);
+                  const override = getSuggestionOverride(s);
+                  return (
+                    <motion.div
+                      key={s.id}
+                      initial={{ opacity: 0, y: 72 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                      data-tint={s.priority === "High" ? "rose" : s.priority === "Medium" ? "butter" : "sky"} className="card-band p-4 pt-5 space-y-3 flex flex-col justify-between"
+                    >
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                            s.priority === "High" ? "bg-rose-500/10 text-rose-500" :
+                            s.priority === "Medium" ? "bg-amber-500/10 text-amber-600 dark:text-amber-400" :
+                            "bg-indigo-500/10 text-indigo-500"
+                          }`}>Suggested: {s.priority}</span>
+                          <span className="text-xs text-[var(--text-muted)] font-num">{s.suggestedDate}</span>
+                        </div>
+                        <h4 className="font-display font-extrabold text-base text-[var(--text-primary)] leading-snug">{s.title}</h4>
+                        <p className="text-sm text-[var(--text-secondary)] leading-relaxed">{s.reason}</p>
+                      </div>
+
+                      {!isAdded && (
+                        <div className="flex items-center gap-2">
+                          <DatePicker
+                            compact
+                            className="flex-1 min-w-0"
+                            value={override.date}
+                            onChange={(v) => setSuggestionOverrides(prev => ({ ...prev, [s.id]: { ...override, date: v } }))}
+                          />
+                          <CustomDropdown
+                            value={override.priority}
+                            onChange={(v) => setSuggestionOverrides(prev => ({ ...prev, [s.id]: { ...override, priority: v as any } }))}
+                            options={[
+                              { label: "Low", value: "Low" },
+                              { label: "Medium", value: "Medium" },
+                              { label: "High", value: "High" },
+                            ]}
+                            className="w-[104px] shrink-0 text-[10px] [&>button]:px-2 [&>button]:py-1.5 [&>button]:rounded-lg"
+                          />
+                        </div>
+                      )}
+
+                      <motion.button
+                        whileTap={{ scale: 0.96 }}
+                        disabled={isAdded}
+                        onClick={() => handleAddSuggestionToCalendar(s, override.date, override.priority)}
+                        className={`self-start inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition cursor-pointer ${
+                          isAdded
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 cursor-default"
+                            : "pill-ink"
+                        }`}
+                      >
+                        {isAdded ? <><Check className="w-3.5 h-3.5" /> Added to Calendar</> : <><CalendarPlus className="w-3.5 h-3.5" /> Add to Calendar</>}
+                      </motion.button>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            {/* LEFT & CENTER COLLAPSED DUAL COLUMN */}
+            <div className="lg:col-span-2 space-y-6">
+
+              {/* Learning Health Metrics Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {[
+                  { label: "Learning Velocity", val: `${readiness?.velocityScore ?? 50}/100`, desc: "Solving rate index", icon: TrendingUp, badge: "bg-indigo-500/10", color: "text-indigo-500", glow: "bg-indigo-500", href: "/analytics",
+                    info: "How quickly you are getting through material, from your recent solving rate. Higher means you are covering ground faster." },
+                  { label: "Spaced Revision Debt", val: `${mistakes.filter(m => !m.mastered).length} items`, desc: "Pending queue", icon: Layers, badge: "bg-amber-500/10", color: "text-amber-500", glow: "bg-amber-500", href: "/mistakes",
+                    info: "Mistakes you have not mastered yet. Clearing these is usually the fastest way to gain marks. Click to review them." },
+                  { label: "Burnout Risk", val: readiness?.burnoutRisk ?? "Low", desc: "Planner & solves density", icon: Flame, badge: "bg-rose-500/10", color: "text-rose-500", glow: "bg-rose-500", href: "/calendar",
+                    info: "Based on how packed your planner is and how intensely you have been solving. If it is high, plan a lighter day." },
+                  { label: "Days to Target Exam", val: daysToExam !== null ? (daysToExam >= 0 ? `${daysToExam}d` : "Passed") : "Not Set", desc: "Auto from your target year · change in Study Planner", icon: Calendar, badge: "bg-emerald-500/10", color: "text-emerald-500", glow: "bg-emerald-500", href: "/calendar",
+                    info: "Counts down to the exam date you set in the Calendar. Click to change it." }
+                ].map((item, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-60px" }}
+                    transition={{ delay: 0.1 + idx * 0.05 }}
+                  >
+                    <TiltCard as="button" onClick={() => router.push(item.href)} className="card-pastel p-4 flex flex-col justify-between shadow-sm overflow-hidden group">
+                      <div className={`absolute -top-8 -right-8 w-24 h-24 rounded-full blur-2xl opacity-[0.15] ${item.glow} pointer-events-none group-hover:opacity-30 transition-opacity`} />
+                      <div className="relative flex items-start justify-between w-full mb-3">
+                        <div className={`w-9 h-9 rounded-xl ${item.badge} flex items-center justify-center transition-transform group-hover:scale-110 group-hover:-rotate-6`}>
+                          <item.icon className={`w-4.5 h-4.5 ${item.color}`} />
+                        </div>
+                        <span onClick={(e) => e.stopPropagation()} className="text-[var(--text-muted)]"><InfoTip align="right">{item.info}</InfoTip></span>
+                      </div>
+                      <span className="relative text-xs font-bold tracking-normal text-[var(--text-muted)]">{item.label}</span>
+                      <div className="relative mt-1.5">
+                        <span className="block text-2xl font-bold text-[var(--text-primary)] font-num">{item.val}</span>
+                        <span className="text-[10px] font-semibold text-[var(--text-muted)] inline-flex items-center gap-1">{item.desc}<ArrowRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" /></span>
+                      </div>
+                    </TiltCard>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* AI Prerequisite Knowledge Graph */}
+              <div className="card-pastel p-5 space-y-4" data-tint="sky">
+                <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
+                  <div>
+                    <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
+                      <Layers className="w-4 h-4 text-indigo-500" />
+                      Concept Prerequisite Knowledge Graph
+                    </h3>
+                    <p className="text-[11px] font-semibold text-[var(--text-muted)] mt-0.5">Diagnose underlying concept weaknesses before revising topics.</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  {/* Selectors List */}
+                  <div className="w-full sm:w-64 space-y-2">
+                    <span className="text-[10px] font-black uppercase text-[var(--text-muted)] block">Select Target Topic</span>
+                    <CustomDropdown
+                      value={selectedTopic}
+                      onChange={handleDiagnosePrerequisites}
+                      options={KnowledgeGraph.getAllNodes().map(n => ({ label: n.topic, value: n.topic }))}
+                      placeholder="Choose topic..."
+                      className="text-xs font-bold w-full"
+                    />
+                    {graphQuickPicks.length > 0 && (
+                      <div className="pt-2 space-y-1.5">
+                        <span className="text-xs font-bold tracking-normal text-[var(--text-muted)] block">Your weakest, one click</span>
+                        <div className="flex flex-wrap gap-1.5">
+                          {graphQuickPicks.map((q) => (
+                            <motion.button
+                              key={q.topic}
+                              whileHover={{ y: -1 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleDiagnosePrerequisites(q.topic)}
+                              title={q.topic}
+                              className={`max-w-full truncate px-2 py-1 rounded-lg border text-[10px] font-semibold cursor-pointer ${toneOf(q.m)} ${selectedTopic === q.topic ? "ring-2 ring-indigo-500/50" : ""}`}
+                            >
+                              {q.topic.length > 22 ? q.topic.slice(0, 21) + "…" : q.topic} · <span className="font-num">{q.m}%</span>
+                            </motion.button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Diagnostic Output */}
+                  <div className="flex-1 bg-[var(--surface-secondary)]/30 border border-[var(--border-subtle)] rounded-xl p-4 min-h-[140px] flex flex-col justify-center overflow-hidden">
+                    <AnimatePresence mode="wait">
+                    {selectedTopic ? (
+                      <motion.div
+                        key={selectedTopic}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.15 }}
+                        className="space-y-3"
+                      >
+                        {/* Breadcrumb trail — click to step back up the chain */}
+                        {graphTrail.length > 1 && (
+                          <div className="flex flex-wrap items-center gap-1 text-[10px] font-semibold text-[var(--text-muted)]">
+                            {graphTrail.map((t, i) => (
+                              <span key={t + i} className="inline-flex items-center gap-1">
+                                {i > 0 && <ChevronRight className="w-3 h-3" />}
+                                <button
+                                  onClick={() => {
+                                    setGraphTrail(graphTrail.slice(0, i + 1));
+                                    setSelectedTopic(t);
+                                    const masteries: Record<string, number> = {};
+                                    Object.values(topicMasteryMap).forEach((tm) => { masteries[tm.topic] = tm.score; });
+                                    setDiagnostics(KnowledgeGraph.diagnosePrerequisiteWeaknesses(t, masteries));
+                                  }}
+                                  className={`hover:text-indigo-500 cursor-pointer truncate max-w-[160px] ${i === graphTrail.length - 1 ? "text-[var(--text-primary)]" : ""}`}
+                                >
+                                  {t}
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Node map: the selected concept and what it builds on */}
+                        <div className="flex flex-col items-center gap-0">
+                          <div className={`px-3.5 py-2 rounded-xl border-2 text-xs font-bold text-center max-w-full ${toneOf(masteryOf(selectedTopic))}`}>
+                            {selectedTopic}
+                            <span className="block text-[10px] font-semibold opacity-80 mt-0.5">
+                              {masteryOf(selectedTopic) === null ? "Not attempted yet" : <>Mastery <span className="font-num">{masteryOf(selectedTopic)}%</span></>}
+                            </span>
+                          </div>
+                          {(KnowledgeGraph.getNode(selectedTopic)?.prerequisites.length ?? 0) > 0 ? (
+                            <>
+                              <motion.div initial={{ scaleY: 0 }} animate={{ scaleY: 1 }} className="w-px h-4 bg-[var(--border)] origin-top" />
+                              <span className="text-xs font-bold tracking-normal text-[var(--text-muted)] mb-1.5">Builds on · click to explore</span>
+                              <div className="flex flex-wrap justify-center gap-2">
+                                {KnowledgeGraph.getNode(selectedTopic)!.prerequisites.map((p, i) => {
+                                  const m = masteryOf(p);
+                                  return (
+                                    <motion.button
+                                      key={p}
+                                      initial={{ opacity: 0, y: 6 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{ delay: 0.05 * i }}
+                                      whileHover={{ y: -2, scale: 1.03 }}
+                                      whileTap={{ scale: 0.96 }}
+                                      onClick={() => handleDiagnosePrerequisites(p, true)}
+                                      className={`px-3 py-1.5 rounded-lg border text-[11px] font-semibold cursor-pointer text-left max-w-[260px] ${toneOf(m)}`}
+                                    >
+                                      <span className="block truncate">{p}</span>
+                                      <span className="block text-[9px] opacity-80">{m === null ? "no data" : <><span className="font-num">{m}%</span> mastery</>}</span>
+                                    </motion.button>
+                                  );
+                                })}
+                              </div>
+                            </>
+                          ) : (
+                            <span className="mt-2 text-[10px] font-semibold text-[var(--text-muted)]">A foundation topic — it has no prerequisites.</span>
+                          )}
+                        </div>
+
+                        {diagnostics.length === 0 ? (
+                          <p className="text-xs font-semibold text-[var(--text-secondary)] leading-relaxed flex items-center gap-1.5">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                            All prerequisite dependencies have high mastery levels. Your foundation is solid!
+                          </p>
+                        ) : (
+                          <div className="space-y-2">
+                            <span className="text-[9px] font-black uppercase text-rose-500 block">Critical Foundational Gaps Found:</span>
+                            {diagnostics.map((d, idx) => (
+                              <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, x: -6 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: idx * 0.05 }}
+                                className="p-2.5 bg-rose-500/5 border border-rose-500/10 rounded-lg flex items-center justify-between text-xs"
+                              >
+                                <div>
+                                  <span className="font-extrabold text-[var(--text-primary)] block">{d.topic}</span>
+                                  <span className="text-[9px] text-[var(--text-muted)] font-semibold mt-0.5">{d.description}</span>
+                                </div>
+                                <div className="flex items-center gap-2 shrink-0 ml-2">
+                                  <span className="text-rose-500 font-bold font-num">{d.mastery}%</span>
+                                  <button
+                                    onClick={() => router.push(`/setup?topic=${encodeURIComponent(d.topic)}`)}
+                                    className="px-2 py-1 rounded-md bg-rose-500 hover:bg-rose-600 text-white text-[10px] font-bold cursor-pointer"
+                                  >
+                                    Fix
+                                  </button>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        )}
+                      </motion.div>
+                    ) : (
+                      <div className="text-center text-xs text-[var(--text-muted)] font-semibold">
+                        Select a concept from the dropdown list to scan its foundational prerequisite dependency tree.
+                      </div>
+                    )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </div>
+
+              {/* Saved Shortcuts Library (Part 4) — AI-generated tricks/shortcuts only;
+                  plain personal notes live in the separate Saved Notes card below. */}
+              <div className="card-pastel p-5 space-y-4" data-tint="peach">
+                <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
+                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
+                    <Zap className="w-4 h-4 text-amber-500" />
+                    Shortcut & Exam Trick Library
+                  </h3>
+                  <span className="text-[10px] bg-amber-500/10 text-amber-500 px-2 py-0.5 rounded font-black uppercase">{savedShortcuts.length} Saved</span>
+                </div>
+
+                {savedShortcuts.length > 0 && (
+                  <div className="relative">
+                    <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-[var(--text-muted)]" />
+                    <input
+                      type="text"
+                      value={shortcutSearch}
+                      onChange={(e) => setShortcutSearch(e.target.value)}
+                      placeholder="Filter by subject, topic, or trick text..."
+                      className="w-full pl-9 pr-3 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-lg text-xs font-semibold text-[var(--text-primary)] outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                  </div>
+                )}
+
+                {savedShortcuts.length === 0 ? (
+                  <div className="p-8 text-center text-xs text-[var(--text-muted)] font-semibold border border-dashed border-[var(--border-subtle)] rounded-xl">
+                    No shortcut tricks saved yet. Click "Save Shortcut" inside the AI Tutor workspace to build your custom memory cheat sheet!
+                  </div>
+                ) : filteredShortcuts.length === 0 ? (
+                  <div className="p-6 text-center text-xs text-[var(--text-muted)] font-semibold">
+                    No shortcuts match "{shortcutSearch}".
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filteredShortcuts.map((b, idx) => (
+                      <motion.div
+                        key={b.questionId}
+                        initial={{ opacity: 0, y: 72 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                        className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{b.subject}</span>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(b.aiShortcut || "");
+                              useToastStore.getState().show("Shortcut trick copied!");
+                            }}
+                            className="text-[9px] font-black uppercase text-indigo-500 hover:underline"
+                          >
+                            Copy Formula
+                          </button>
+                        </div>
+                        <h4 className="font-extrabold text-xs text-[var(--text-primary)]">{b.topic}</h4>
+                        <div className="p-3 bg-[var(--surface)] border border-[var(--border-subtle)] rounded-lg text-xs leading-relaxed text-[var(--text-secondary)] font-medium">
+                          <AstNodeRenderer nodes={AIResponseParser.parse(b.aiShortcut || "")} />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Saved Notes — plain personal notes/observations, kept separate from the
+                  AI-generated Shortcut Library above. */}
+              <div className="card-pastel p-5 space-y-4" data-tint="mint">
+                <div className="flex justify-between items-center border-b border-[var(--border-subtle)] pb-3">
+                  <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5">
+                    <StickyNote className="w-4 h-4 text-indigo-500" />
+                    Saved Notes
+                  </h3>
+                  <span className="text-[10px] bg-indigo-500/10 text-indigo-500 px-2 py-0.5 rounded font-black uppercase">{savedNotes.length} Saved</span>
+                </div>
+
+                {savedNotes.length > 0 && (
+                  <div className="relative">
+                    <Search className="absolute left-3 top-2.5 w-3.5 h-3.5 text-[var(--text-muted)]" />
+                    <input
+                      type="text"
+                      value={notesSearch}
+                      onChange={(e) => setNotesSearch(e.target.value)}
+                      placeholder="Filter by subject, topic, or note text..."
+                      className="w-full pl-9 pr-3 py-2 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-lg text-xs font-semibold text-[var(--text-primary)] outline-none focus:ring-1 focus:ring-indigo-500"
+                    />
+                  </div>
+                )}
+
+                {savedNotes.length === 0 ? (
+                  <div className="p-8 text-center text-xs text-[var(--text-muted)] font-semibold border border-dashed border-[var(--border-subtle)] rounded-xl">
+                    No personal notes saved yet. Click "Save Notes" inside the AI Tutor workspace to keep your own observations here.
+                  </div>
+                ) : filteredNotes.length === 0 ? (
+                  <div className="p-6 text-center text-xs text-[var(--text-muted)] font-semibold">
+                    No notes match "{notesSearch}".
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {filteredNotes.map((b, idx) => (
+                      <motion.div
+                        key={b.questionId}
+                        initial={{ opacity: 0, y: 72 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                        className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-2.5 shadow-sm hover-lift"
+                      >
+                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{b.subject}</span>
+                        <h4 className="font-extrabold text-xs text-[var(--text-primary)]">{b.topic}</h4>
+                        <p className="p-3 bg-[var(--surface)] border border-[var(--border-subtle)] rounded-lg text-xs leading-relaxed text-[var(--text-secondary)] font-medium whitespace-pre-wrap">
+                          {b.notes || b.personalObservations}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </div>
+
+            {/* RIGHT SIDE PANEL: Predictor Dashboard & Timeline */}
+            <motion.div
+              initial={{ opacity: 0, y: 72 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-6"
+            >
+
+              {/* Mistake Cognitive Patterns (Part 5) */}
+              <div className="card-pastel p-5 space-y-4" data-tint="rose">
+                <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
+                  <AlertTriangle className="w-4 h-4 text-rose-500 animate-pulse" />
+                  Mistake Cognitive Patterns
+                </h3>
+
+                {mistakePatterns.length === 0 ? (
+                  <div className="p-4 text-center text-xs text-[var(--text-muted)] font-semibold">
+                    Scanning active mistake behaviors... No structural flaws compiled yet.
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {mistakePatterns.map((p, idx) => (
+                      <motion.div
+                        key={p.id}
+                        initial={{ opacity: 0, y: 72 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, amount: 0.2 }}
+                        transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                        className="p-3 bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] rounded-xl space-y-1.5"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setOpenPattern(openPattern === p.id ? null : p.id)}
+                          className="w-full text-left space-y-1.5 cursor-pointer"
+                        >
+                          <div className="flex justify-between items-center gap-2">
+                            <span className="font-bold text-xs text-[var(--text-primary)]">{p.name}</span>
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-rose-500">
+                              <span className="font-num">{p.probability}%</span>
+                              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${openPattern === p.id ? "rotate-180" : ""}`} />
+                            </span>
+                          </div>
+                          <div className="h-1 rounded-full bg-[var(--surface-secondary)] overflow-hidden">
+                            <motion.div
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${p.probability}%` }}
+                              viewport={{ once: true }}
+                              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                              className="h-full rounded-full bg-gradient-to-r from-amber-400 to-rose-500"
+                            />
+                          </div>
+                          <p className="text-[11px] text-[var(--text-secondary)] leading-relaxed font-medium">
+                            {p.description}
+                          </p>
+                        </button>
+                        <AnimatePresence initial={false}>
+                          {openPattern === p.id && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="mt-1 p-2.5 bg-indigo-500/5 border border-indigo-500/20 rounded-lg text-[11px] text-[var(--text-secondary)] font-medium leading-relaxed">
+                                <span className="block text-xs font-bold tracking-normal text-indigo-500 mb-1">How to fix it</span>
+                                {p.suggestedFix}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Learning Timeline Journey Map (Part 12) */}
+              <div className="card-pastel p-5 space-y-4" data-tint="butter">
+                <h3 className="text-sm font-extrabold text-[var(--text-primary)] tracking-normal flex items-center gap-1.5 border-b border-[var(--border-subtle)] pb-3">
+                  <Activity className="w-4 h-4 text-indigo-500" />
+                  Your Learning Timeline
+                </h3>
+
+                {timeline.length === 0 ? (
+                  <div className="p-4 text-center text-xs text-[var(--text-muted)] font-semibold">
+                    No active timeline logs compiled. Master mistakes or add bookmarks to seed milestones.
+                  </div>
+                ) : (
+                  <div className="relative border-l-2 border-indigo-100 dark:border-indigo-950/60 ml-2 pl-4 space-y-6 max-h-[400px] overflow-y-auto custom-scrollbar">
+                    {timeline.map((t, idx) => (
+                      <motion.div
+                        key={t.id}
+                        initial={{ opacity: 0, x: -8 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: Math.min(idx * 0.04, 0.3) }}
+                        className="relative"
+                      >
+                        <span className="absolute -left-[25px] top-1.5 bg-indigo-500 w-2.5 h-2.5 rounded-full border-2 border-white dark:border-[var(--surface)]" />
+                        <span className="text-[9px] font-bold text-[var(--text-muted)] block">{new Date(t.timestamp).toLocaleDateString()}</span>
+                        <span className="font-extrabold text-xs text-[var(--text-primary)] block mt-0.5">{t.title}</span>
+                        <p className="text-[11px] font-semibold text-[var(--text-secondary)] leading-relaxed mt-0.5">
+                          {t.description}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+            </motion.div>
+
+          </div>
+          </>
+        )}
+
+      </div>
+    </MathJaxContext>
+    </GuestLock>
+  );
+}

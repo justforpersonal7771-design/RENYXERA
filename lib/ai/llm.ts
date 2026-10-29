@@ -1,43 +1,66 @@
 import "server-only";
 import { getGoogleGenAIClient, GEMINI_LITE_MODEL } from "@/lib/ai/gemini";
+import { pickModels, benchModel } from "@/lib/ai/model-picker";
 
 /**
- * One entry point for every server-side model call. If OPENROUTER_API_KEY is set, requests go to OpenRouter
- * (OpenAI-compatible; many models, the owner's token balance) and fall back to Gemini when OpenRouter fails or
- * is out of credit. Without the key everything uses Gemini exactly as before.
- *   OPENROUTER_MODEL_FAST   short formulaic tasks (hints, shortcuts)
- *   OPENROUTER_MODEL_SMART  reasoning tasks (explain, mentor chat, practice sets)
+ * One entry point for every server-side model call.
+ *
+ * With OPENROUTER_API_KEYS set (comma separated: one key per account) requests go to OpenRouter, trying each model in
+ * the list with each key in turn, and moving on when a key/model is rate limited, out of free quota, or erroring.
+ * If every OpenRouter attempt fails, Gemini answers, so the app never goes down because a free model did.
+ *   OPENROUTER_API_KEYS          key1,key2
+ *   Models are chosen automatically per task by lib/ai/model-picker.ts (free text models with JSON support, ranked).
+ *   OPENROUTER_MODELS_FAST / _SMART / _FORGE optionally force a list.
+ * Without a key everything uses Gemini exactly as before.
  */
-export async function generateJson(opts: { geminiModel: string; systemInstruction: string; prompt: string; maxOutputTokens: number; signal?: AbortSignal }): Promise<string> {
-  const key = process.env.OPENROUTER_API_KEY;
-  if (key) {
-    const model = opts.geminiModel === GEMINI_LITE_MODEL
-      ? process.env.OPENROUTER_MODEL_FAST || process.env.OPENROUTER_MODEL_SMART
-      : process.env.OPENROUTER_MODEL_SMART;
-    if (model) {
+const list = (v?: string) => (v ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+let rot = 0; // spreads load across keys
+
+/** Free models do not all honour JSON mode; take the outermost {...} of whatever came back. */
+function extractJson(text: string): string | null {
+  const a = text.indexOf("{"), b = text.lastIndexOf("}");
+  if (a < 0 || b <= a) return null;
+  const cut = text.slice(a, b + 1);
+  try { JSON.parse(cut); return cut; } catch { return null; }
+}
+
+async function viaOpenRouter(fast: boolean, o: { systemInstruction: string; prompt: string; maxOutputTokens: number; signal?: AbortSignal }): Promise<string | null> {
+  const keys = list(process.env.OPENROUTER_API_KEYS || process.env.OPENROUTER_API_KEY);
+  if (!keys.length) return null;
+  const models = await pickModels(fast ? "fast" : "smart");
+  if (!models.length) return null;
+  const deadline = Date.now() + 22_000; // leave room for the Gemini fallback inside the route timeout
+  for (const model of models) {
+    for (let k = 0; k < keys.length; k++) {
+      if (Date.now() > deadline) return null;
+      const key = keys[(rot + k) % keys.length];
       try {
         const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
           method: "POST",
-          signal: opts.signal,
+          signal: o.signal,
           headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", "X-Title": "RENYXERA" },
           body: JSON.stringify({
             model,
-            max_tokens: opts.maxOutputTokens,
+            max_tokens: o.maxOutputTokens,
             response_format: { type: "json_object" },
-            messages: [{ role: "system", content: opts.systemInstruction }, { role: "user", content: opts.prompt }],
+            messages: [{ role: "system", content: o.systemInstruction }, { role: "user", content: o.prompt }],
           }),
         });
-        if (res.ok) {
-          const j = await res.json();
-          const text = j?.choices?.[0]?.message?.content;
-          if (typeof text === "string" && text.trim()) return text;
-        } else console.warn("[llm] openrouter status", res.status);
+        if (!res.ok) { if (res.status === 429 || res.status === 402) rot++; else if (res.status === 404 || res.status === 400) { benchModel(model); break; } continue; } // next key, then next model
+        const j = await res.json();
+        const json = extractJson(String(j?.choices?.[0]?.message?.content ?? ""));
+        if (json) return json;
       } catch (e) {
-        if (opts.signal?.aborted) throw e;
-        console.warn("[llm] openrouter failed, using Gemini", String((e as Error)?.message).slice(0, 100));
+        if (o.signal?.aborted) throw e;
       }
     }
   }
+  return null;
+}
+
+export async function generateJson(opts: { geminiModel: string; systemInstruction: string; prompt: string; maxOutputTokens: number; signal?: AbortSignal }): Promise<string> {
+  const viaOr = await viaOpenRouter(opts.geminiModel === GEMINI_LITE_MODEL, opts);
+  if (viaOr) return viaOr;
   const response = await getGoogleGenAIClient().models.generateContent({
     model: opts.geminiModel,
     contents: opts.prompt,

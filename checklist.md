@@ -393,3 +393,11 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Battles in the avatar menu; Ctrl+K palette: pastel selection, links to Mentor, Tutor, Study, Forge, Mocks, Battles, Tools, Calendar, Plans
 - [ ] Forge items are not seeded: seeding approves live content, so it needs your go-ahead and a release date (see scripts/forge/seed.mjs)
 - [ ] Build AI Mentor M1 (research first, tomorrow)
+
+## 29 Oct 2026 (AI Mentor and AI providers)
+- [x] AI Mentor rebuilt: home (quick ask, today's plan, next actions, what I know + forget), dedicated chat screen /ai-mentor/chat (plan, review, quiz, guided, weekly), MENTOR_CHAT server type, number check, notes, flags; old analytics cards moved to Analytics > Coach insights
+- [x] AI provider layer: OpenRouter free models auto-picked per task with key rotation, Gemini fallback; docs/AI_PROVIDERS_SETUP.md
+- [x] Forge generator (Gemini/OpenRouter/OmniRoute) + nightly workflow to forge-auto
+- [ ] You: add OPENROUTER_API_KEYS to Cloudflare + GitHub + .env.local (steps in docs/AI_PROVIDERS_SETUP.md)
+- [ ] Mentor not done: cloud-synced memory, Telegram weekly check-in, photo doubts, 50-question evaluation set, live test with a real model reply
+- [ ] R22 Arena (merge Mocks + Exam engine): docs/roadmap/R22-ARENA.md, after Mentor

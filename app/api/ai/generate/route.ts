@@ -87,6 +87,8 @@ function buildPrompt(req: AIGenerateRequest): { systemInstruction: string; promp
       );
     case "REVISION":
       return PromptBuilder.buildRevisionPrompt(req.params.context as any, req.params.subject);
+    case "MENTOR_CHAT":
+      return PromptBuilder.buildMentorPrompt(req.params);
     case "FOLLOWUP":
       return PromptBuilder.buildFollowUpPrompt(
         req.params.context as any,

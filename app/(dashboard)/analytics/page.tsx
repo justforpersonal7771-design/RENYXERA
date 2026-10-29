@@ -193,6 +193,7 @@ export default function AnalyticsDashboardPage() {
           <p className="mt-2 text-sm text-[var(--text-secondary)] font-medium">
             Hover, click and filter anything below. Click a subject bar to narrow the topic explorer to it.
           </p>
+          <a href="/analytics/coach" className="pill-soft mt-3 inline-flex">Readiness, mastery, mistake patterns and learning timeline</a>
         </motion.div>
 
         {/* 1. HUD gauges */}

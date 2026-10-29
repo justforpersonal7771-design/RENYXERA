@@ -56,11 +56,12 @@ jobs:
       - name: Generate and verify
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEYS: ${{ secrets.OPENROUTER_API_KEYS }}
           BR: ${{ github.event.inputs.branch || 'CS' }}
           N: ${{ github.event.inputs.count || '20' }}
         run: |
           B="auto-$(date -u +%Y%m%d)"
-          node scripts/forge/generate.mjs --branch="$BR" --n="$N" --batch="$B" || true
+          npx tsx scripts/forge/generate.mjs --branch="$BR" --n="$N" --batch="$B" || true
 
       - name: Push for review
         run: |
