@@ -400,7 +400,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Forge generator (Gemini/OpenRouter/OmniRoute) + nightly workflow to forge-auto
 - [ ] You: add OPENROUTER_API_KEYS to Cloudflare + GitHub + .env.local (steps in docs/AI_PROVIDERS_SETUP.md)
 - [ ] Mentor not done: cloud-synced memory, Telegram weekly check-in, photo doubts, 50-question evaluation set, live test with a real model reply
-- [ ] R22 Arena (merge Mocks + Exam engine): docs/roadmap/R22-ARENA.md, after Mentor
+- [ ] R22 Test Centre (merge Mocks + Exam engine): docs/roadmap/R22-TEST-CENTRE.md, after Mentor
 
 ## 29 Oct 2026 (evening)
 - [x] Mentor: goals, roadmap by days left, things I noticed, daily check-in, focus timer, AI practice questions (Spark generator) inside the Mentor, full-width chat
@@ -408,4 +408,4 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Forge live: needs a DB migration (Forge answers in the exam tables) plus server grading for FORGE_ ids; blocked on you running the migration (Supabase SQL editor), then I wire grading, the live hub and the Blend/Forge test share
 - [ ] You: OPENROUTER_API_KEYS in Cloudflare, GitHub, .env.local; GEMINI_API_KEY in GitHub for the nightly Forge job (docs/AI_PROVIDERS_SETUP.md)
 - [ ] Mentor still to do: cloud-synced memory (migration), Telegram weekly check-in, photo doubts, evaluation set, real-model test after keys
-- [ ] R22 Arena (docs/roadmap/R22-ARENA.md) after Mentor
+- [ ] R22 Test Centre (docs/roadmap/R22-TEST-CENTRE.md) after Mentor
