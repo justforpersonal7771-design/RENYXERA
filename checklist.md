@@ -415,3 +415,4 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Test Centre later: physically move runner/stores out of app/(dashboard)/exam, merge challenge/checkpoint/fresh-mock routes, add the mock countdown to the hub, one TestConfig
 - [x] Test Centre hub redesigned (mission path, mock countdown, big-number tiles, sticker chips, icon watermarks); global shape watermark on every pastel card
 - [x] Tools hub rebuilt as a single-screen bento; exam-style option tiles on mistakes/bookmarks/revision/Mentor practice; Test Centre screens take their hub tile colour; page-shell is a column so fill-height pages fit under the Test Centre bar
+- [x] Tools hub redesigned after research: verb-led intents (rank / plan / practise) as master-detail, one featured tool + rows, single screen; Test Centre hub could take the same pattern if the owner prefers it
