@@ -1,11 +1,12 @@
 "use client";
 
+import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-centre/brand";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Timer, Wrench, X, BookOpenText, Swords } from "lucide-react";
+import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
@@ -31,12 +32,11 @@ export function BottomTabBar() {
   const on = "text-violet-600 dark:text-violet-400";
   const tabs = [
     { label: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
-    { label: "Practice", href: "/setup", icon: Settings, active: pathname.startsWith("/setup") },
+    { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings, active: isTestCentrePath(pathname) },
     { label: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
     { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
   ];
   const rest = [
-    { label: "Mocks", href: "/mocks", icon: Timer, active: pathname.startsWith("/mocks") },
     { label: "Study materials", href: "/study", icon: BookOpenText, active: pathname.startsWith("/study") },
     { label: "Battles", href: "/battles", icon: Swords, active: pathname.startsWith("/battles") },
     { label: "Analytics", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },

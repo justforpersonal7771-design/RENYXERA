@@ -62,7 +62,7 @@ export default function ExamSetupPage() {
   const [examType, setExamType] = useState<ExamType>("YEAR_PAPER");
   const [sourceMix, setSourceMix] = useSourceMix(searchParams.get("source"));
   // Build a test (all sources) / Questions (Forge, Spark) / Flashcards (all sources). /forge opens Forge questions.
-  const [setupView, setSetupView] = useState<"build" | "questions" | "flash">(() => (searchParams.get("source") === "forge" ? "questions" : "build"));
+  const [setupView, setSetupView] = useState<"build" | "questions" | "flash">(() => (searchParams.get("source") === "forge" ? "questions" : searchParams.get("view") === "flashcards" ? "flash" : "build"));
 
   const [availablePapers, setAvailablePapers] = useState<string[]>([]);
   const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);

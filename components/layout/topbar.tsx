@@ -3,7 +3,7 @@
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Timer, Library, Wrench, BookOpenText } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Library, Wrench, BookOpenText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -33,11 +33,11 @@ import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { TOOLS, TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 import { BranchChip } from "./branch-chip";
+import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-centre/brand";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
-  { label: "Exam Setup", href: "/setup", icon: Settings },
-  { label: "Mocks", href: "/mocks", icon: Timer },
+  { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings },
   // Forge lives inside Exam Setup (question source); Tools moved to the icon group.
   { label: "Study", href: "/study", icon: BookOpenText },
   { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit },
@@ -53,13 +53,13 @@ function screenTint(path: string): string {
   const ti = TOOLS.findIndex((t) => path === t.href || (t.also ?? []).some((a) => path.startsWith(a)));
   if (ti >= 0) return TOOL_TINTS[ti % TOOL_TINTS.length];
   if (path === TOOLS_HOME) return "lilac";
-  const item = NAV_ITEMS.find((n) => (n.href !== "/" ? path.startsWith(n.href) : path === "/"));
+  const item = NAV_ITEMS.find((n) => (n.label === TEST_CENTRE ? isTestCentrePath(path) : n.href !== "/" ? path.startsWith(n.href) : path === "/"));
   return NAV_TINTS[item?.label ?? ""] ?? "sky";
 }
 
 // Each section keeps its own pastel when it is the current page (navbar highlight).
 const NAV_TINTS: Record<string, string> = {
-  Dashboard: "lilac", "Exam Setup": "mint", Mocks: "peri", Forge: "peach", Study: "butter",
+  Dashboard: "lilac", [TEST_CENTRE]: "mint", Forge: "peach", Study: "butter",
   "AI Mentor": "sky", Review: "rose", Analytics: "mint", Tools: "peach",
 };
 
@@ -238,7 +238,7 @@ export function Topbar() {
             className="main-dock flex items-center gap-0.5"
           >
             {NAV_ITEMS.map((item) => {
-              const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
+              const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === TEST_CENTRE ? isTestCentrePath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
               return (
                 <Link
                   key={item.href}

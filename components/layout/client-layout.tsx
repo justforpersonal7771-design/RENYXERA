@@ -43,7 +43,7 @@ const ToastContainer = dynamic(
 function sectionTint(p: string | null): string {
   const path = p ?? "/";
   if (path === "/") return "lilac";
-  const map: [string, string][] = [["/setup", "mint"], ["/exam", "mint"], ["/mocks", "peri"], ["/study", "butter"], ["/ai-mentor", "sky"], ["/ai-tutor", "sky"],
+  const map: [string, string][] = [["/test-centre", "mint"], ["/setup", "mint"], ["/exam", "mint"], ["/mocks", "peri"], ["/study", "butter"], ["/ai-mentor", "sky"], ["/ai-tutor", "sky"],
     ["/mistakes", "rose"], ["/bookmarks", "rose"], ["/revision", "rose"], ["/analytics", "mint"], ["/profile", "peri"], ["/pro", "butter"]];
   return map.find(([k]) => path.startsWith(k))?.[1] ?? "sky";
 }
