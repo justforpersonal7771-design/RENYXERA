@@ -6,6 +6,7 @@ import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { getEntitlement } from "@/lib/billing/server";
 import { FORGE } from "@/lib/billing/plans";
 import { getUserBranch } from "@/lib/server/branch";
+import { teaserIds } from "@/lib/server/forge-keys";
 
 export const runtime = "nodejs";
 
@@ -24,10 +25,20 @@ export async function GET(req: NextRequest) {
 
   const ent = await getEntitlement(userId);
   const rules = FORGE[ent.tier];
-  if (!rules.questions) return NextResponse.json({ error: "Forge questions are part of Plus and Pro. Forge Mocks are free for everyone.", reason: "plan" }, { status: 403 });
-
   const db = createServiceRoleClient();
   const branch = await getUserBranch(db, userId);
+
+  if (!rules.questions) {
+    // Free is not blocked: the 10 taster questions in full, plus the other released questions as locked cards (no text, no options).
+    const ids = await teaserIds(db, branch, rules.teaser);
+    const [{ data: items }, { data: locked }] = await Promise.all([
+      ids.length ? db.from("forge_items").select("id, branch, subject, topic, kind, difficulty, question_type, marks, question_text, options, images, release_at").in("id", ids) : Promise.resolve({ data: [] }),
+      db.from("forge_items").select("id, subject, topic, kind, difficulty, question_type, marks")
+        .eq("branch", branch).eq("status", "approved").eq("mock_only", false).neq("difficulty", "X").lte("release_at", new Date().toISOString())
+        .not("id", "in", `(${ids.join(",") || "none"})`).order("release_at", { ascending: false }).limit(9),
+    ]);
+    return NextResponse.json({ items: items ?? [], locked: locked ?? [], tier: ent.tier, set: "teaser" }, { headers: { "Cache-Control": "private, no-store" } });
+  }
   const set = req.nextUrl.searchParams.get("set") === "practice" ? "practice" : "daily";
   const topic = req.nextUrl.searchParams.get("topic");
 

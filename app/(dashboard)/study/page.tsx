@@ -2,7 +2,7 @@
 
 /**
  * Study materials (R12): our own lessons per syllabus topic, sold as a separate study pass per branch.
- * One sample chapter (Deadlock) is free. Runs on sample data until Phase 0 ships (lib/preview/features.ts).
+ * Free is a taster, not a lock: one subject (Operating Systems) with one chapter (Deadlock) whose first topics are open; the rest of the chapter and every other chapter show locked with a study-pass prompt. Runs on sample data until Phase 0 ships (lib/preview/features.ts).
  */
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -18,7 +18,7 @@ export default function StudyPage() {
   return (
     <div className="space-y-6 pb-8">
       <PreviewFrame state={UPCOMING.study} name="Study materials" when="Lessons for every GATE CS topic, written by us and checked against official papers. Other branches follow.">
-        {(tier) => reading ? <Lesson onBack={() => setReading(false)} /> : <Library owned={tier === "pro"} onRead={() => setReading(true)} />}
+        {(tier) => reading ? <Lesson owned={tier === "pro"} onBack={() => setReading(false)} /> : <Library owned={tier === "pro"} onRead={() => setReading(true)} />}
       </PreviewFrame>
     </div>
   );
@@ -56,7 +56,7 @@ function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
         </ul>
       </FolderTabs>
       <PlanCompare title="Study materials by plan" rows={[
-        ["Free sample chapter (Deadlock)", "✓", "✓", "✓"],
+        ["Free taster: Operating Systems, Deadlock (first topics)", "✓", "✓", "✓"],
         ["Every chapter of your branch", "Study pass", "Study pass", "Study pass"],
         ["Check-yourself questions and linked PYQs", "Sample only", "✓", "✓"],
         ["Ask the AI Mentor about any lesson", "Free daily AI", "Plus daily AI", "Pro daily AI"],
@@ -67,25 +67,30 @@ function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
   );
 }
 
+const ROW = "group flex w-full items-center gap-4 rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-4 text-left transition-colors hover:border-[var(--text-secondary)]";
+/** A locked chapter is still tappable: it leads to the study pass instead of being a dead, greyed-out row. */
+function Row({ locked, onRead, children }: { locked: boolean; onRead: () => void; children: React.ReactNode }) {
+  return locked ? <Link href="/pro" className={ROW}>{children}</Link> : <button type="button" onClick={onRead} className={ROW}>{children}</button>;
+}
+
 function ChapterRow({ c, n, tint, locked, onRead }: { c: StudyChapter; n: number; tint: string; locked: boolean; onRead: () => void }) {
   const pct = Math.round((c.done / c.topics) * 100);
   return (
     <li className="min-w-0">
-      <button type="button" disabled={locked} onClick={onRead}
-        className="group flex w-full items-center gap-4 rounded-[20px] border border-[var(--border)] bg-[var(--surface)] p-4 text-left transition-colors hover:border-[var(--text-secondary)] disabled:cursor-not-allowed disabled:opacity-70">
+      <Row locked={locked} onRead={onRead}>
         <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl font-num text-lg font-extrabold" style={{ background: `var(--tint-${tint})`, color: `var(--tint-${tint}-ink)` }}>{n}</span>
         <span className="min-w-0 flex-1">
           <span className="flex items-center gap-2"><span className="truncate font-bold text-[var(--text-primary)]">{c.title}</span>{c.free && <span className="rounded-full bg-[var(--tint-mint)] px-2 py-0.5 text-xs font-bold text-[var(--tint-mint-ink)]">Free</span>}</span>
           <span className="mt-0.5 flex items-center gap-3 text-xs text-[var(--text-muted)]"><span>{c.topics} topics</span><span className="inline-flex items-center gap-1"><Clock className="h-3 w-3" />{c.minutes} min</span><span>{c.weight} marks a paper</span></span>
           <span className="mt-2 block h-1.5 overflow-hidden rounded-full bg-[var(--surface-secondary)]"><span className="block h-full rounded-full bg-[var(--ink)]" style={{ width: `${pct}%` }} /></span>
         </span>
-        {locked ? <Lock className="h-4 w-4 text-[var(--text-muted)]" /> : pct === 100 ? <Check className="h-4 w-4 text-emerald-500" /> : null}
-      </button>
+        {locked ? <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--tint-butter)] px-2.5 py-1 text-xs font-bold text-[var(--tint-butter-ink)]"><Lock className="h-3 w-3" /> Unlock</span> : pct === 100 ? <Check className="h-4 w-4 text-emerald-500" /> : null}
+      </Row>
     </li>
   );
 }
 
-function Lesson({ onBack }: { onBack: () => void }) {
+function Lesson({ onBack, owned }: { onBack: () => void; owned: boolean }) {
   const L = SAMPLE_LESSON;
   const [shown, setShown] = useState(false);
   const toc = ["Why it matters", "The idea", "Definition", "Worked example", "Trap", "Check yourself", "Try the real PYQs"];
@@ -130,6 +135,16 @@ function Lesson({ onBack }: { onBack: () => void }) {
           </div>
           <ol className="mt-4 space-y-3">{L.steps.map((s, i) => <li key={i} className="flex gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--ink)] font-num text-xs font-bold text-[var(--background)]">{i + 1}</span><p className="lesson-p">{s}</p></li>)}</ol>
         </section>
+        {!owned && (
+          <section className="card-pastel relative overflow-hidden p-6 text-center" data-tint="butter" aria-label="Unlock the rest of this chapter">
+            <Lock className="mx-auto h-6 w-6 text-[var(--tint-butter-ink)]" />
+            <p className="mt-2 font-display text-xl font-extrabold text-[var(--text-primary)]">That was the free part</p>
+            <p className="mx-auto mt-1 max-w-md text-sm text-[var(--text-secondary)]">The trap, the check-yourself question and the linked PYQs, plus the other {STUDY_SUBJECTS.reduce((a, x) => a + x.chapters.length, 0) - 1} chapters, come with the study pass.</p>
+            <Link href="/pro" className="btn-main mt-4 inline-flex">See the study pass</Link>
+            <div aria-hidden className="pointer-events-none mt-5 space-y-2 blur-[4px] opacity-60"><div className="mx-auto h-3 w-5/6 rounded-full bg-[var(--surface)]" /><div className="mx-auto h-3 w-2/3 rounded-full bg-[var(--surface)]" /><div className="mx-auto h-3 w-3/4 rounded-full bg-[var(--surface)]" /></div>
+          </section>
+        )}
+        {owned && <>
         <section id="l-4" className="card-pastel flex gap-3 p-5" data-tint="rose"><TriangleAlert className="h-5 w-5 shrink-0 text-[var(--tint-rose-ink)]" /><p className="text-[var(--text-primary)]"><b>Trap:</b> {L.trap}</p></section>
         <section id="l-5" className="card-pastel p-5" data-tint="peri">
           <p className="flex items-center gap-2 font-bold text-[var(--text-primary)]"><Lightbulb className="h-4 w-4" /> Check yourself</p>
@@ -141,12 +156,13 @@ function Lesson({ onBack }: { onBack: () => void }) {
           <h2 className="lesson-h">Try the real PYQs</h2>
           <div className="flex flex-wrap gap-2">{L.pyqs.map((p) => <Link key={p} href="/setup" className="pill-soft">{p}</Link>)}</div>
         </section>
+        </>}
       </article>
       {/* Side rail: progress, the PYQs, what's next and a quick AI ask, so the reading column has company. */}
       <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start" aria-label="Lesson tools">
         <div className="card-pastel p-5" data-tint="mint">
           <p className="text-sm font-semibold text-[var(--text-secondary)]">This chapter</p>
-          <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">3 of 7 topics</p>
+          <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{owned ? "3 of 7 topics" : "4 of 7 topics free"}</p>
           <div className="mt-3 h-2 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full w-[43%] rounded-full bg-[var(--tint-mint-ink)]" /></div>
         </div>
         <div className="card-pastel p-5" data-tint="peri">

@@ -52,3 +52,6 @@ CS first, then EC, then the rest (your earlier decision), unless you change F5.
 - **Cost:** stays at $0 only because Claude authors in sessions; there is no paid API.
 - **Leak risk:** unreleased items are invisible via `release_at`; mock items are embargoed.
 - **Cannibalisation:** do not give Free users the Daily Forge or full archive, or Plus/Pro lose their reason to pay.
+
+## Update 29 Oct 2026: Free gets a taster (owner rule)
+Free users are no longer fully blocked from Forge questions: they can play a fixed set of 10 questions (the first 10 released, in id order) and check answers; the worked solution, shortcut and trap, the rest of the bank, the Daily Forge, archive and X items stay with Plus and Pro. Other questions show as locked cards (topic and difficulty only). Enforced in `/api/forge/items`, `/api/answers` and `/api/exam/grade` via `lib/server/forge-keys.ts`. This supersedes the "Free: No" row in the table above.

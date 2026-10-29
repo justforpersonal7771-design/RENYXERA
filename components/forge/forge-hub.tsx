@@ -24,7 +24,8 @@ type Q = Omit<SampleForgeItem, "answer" | "solution" | "solvedBy" | "accuracy" |
 const LIVE = UPCOMING.forge === "live";
 type Row = { id: string; subject: string; topic: string; kind: Q["kind"]; difficulty: Q["difficulty"]; question_type: "MCQ" | "NAT"; marks: 1 | 2; question_text: string; options: { option_id: string; text: string }[] };
 const fromRow = (r: Row): Q => ({ id: r.id, subject: r.subject, topic: r.topic, kind: r.kind, difficulty: r.difficulty, type: r.question_type, marks: r.marks, text: r.question_text, options: r.options?.length ? r.options.map((o) => o.text) : undefined });
-type FeedData = { items: Q[]; state: "loading" | "ready" | "error" };
+type Locked = { id: string; subject: string; topic: string; difficulty: Q["difficulty"]; question_type: "MCQ" | "NAT"; marks: number };
+type FeedData = { items: Q[]; state: "loading" | "ready" | "error"; locked?: Locked[] };
 
 /** Live: the questions the API releases to this account for today (set=daily) or for practice. Preview: the sample items. */
 function useItems(set: "daily" | "practice"): FeedData {
@@ -33,7 +34,7 @@ function useItems(set: "daily" | "practice"): FeedData {
     if (!LIVE) return;
     let off = false;
     fetch(`/api/forge/items?set=${set}`).then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
-      .then((j: { items: Row[] }) => { if (!off) setRes({ items: (j.items ?? []).map(fromRow), state: "ready" }); })
+      .then((j: { items: Row[]; locked?: Locked[] }) => { if (!off) setRes({ items: (j.items ?? []).map(fromRow), state: "ready", locked: j.locked }); })
       .catch(() => { if (!off) setRes({ items: [], state: "error" }); });
     return () => { off = true; };
   }, [set]);
@@ -79,19 +80,20 @@ function Forge({ tier }: { tier: Tier }) {
   const daily = useItems("daily");
   return (
     <>
-      <Hero tier={tier} count={LIVE ? (rules.questions ? daily.items.length : null) : undefined} />
+      <Hero tier={tier} count={LIVE ? (rules.questions ? daily.items.length : -daily.items.length) : undefined} />
       <FolderTabs label="Forge sections" value={tab} onChange={setTab} tabs={[
         { id: "daily", label: "Daily Forge", tint: "peach" }, { id: "practice", label: "Practice", tint: "mint" },
         { id: "mocks", label: "Forge Mocks", tint: "peri" }, { id: "bookmarks", label: <span className="inline-flex items-center gap-1.5"><Bookmark className="h-3.5 w-3.5" /> Bookmarks</span>, tint: "rose" },
       ]}>
-        {tab === "daily" && (rules.questions ? <Daily tier={tier} data={daily} /> : <Locked plan="Plus" what="The Daily Forge and Forge practice questions come with Plus and Pro. Forge Mocks stay free for everyone." />)}
-        {tab === "practice" && (rules.questions ? <Practice tier={tier} /> : <Locked plan="Plus" what="Practise Forge questions by subject, topic and difficulty with Plus or Pro." />)}
+        {tab === "daily" && (rules.questions ? <Daily tier={tier} data={daily} /> : <Taster data={daily} />)}
+        {tab === "practice" && (rules.questions ? <Practice tier={tier} /> : <Taster data={daily} />)}
         {tab === "mocks" && <Mocks />}
         {tab === "bookmarks" && (rules.questions ? <Bookmarks /> : <Locked plan="Plus" what="Bookmark Forge questions to revise later with Plus or Pro." />)}
       </FolderTabs>
       <PlanCompare rows={[
         ["Forge Mocks (full papers, ranked)", "✓", "✓", "✓"],
-        ["Daily Forge", "—", "10 a day", "Unlimited"],
+        ["Forge questions", "10 to try", "10 a day", "Unlimited"],
+        ["Worked solutions, shortcuts and traps", "—", "✓", "✓"],
         ["Practice by subject, topic, difficulty", "—", "Within 10 a day", "Unlimited"],
         ["Bookmarks", "—", "✓", "✓"],
         ["X questions (hardest set)", "—", "—", "✓"],
@@ -101,7 +103,7 @@ function Forge({ tier }: { tier: Tier }) {
   );
 }
 
-function Hero({ tier, count }: { tier: Tier; count?: number | null }) {
+function Hero({ tier, count }: { tier: Tier; count?: number }) {
   const d = FORGE_DAILY;
   const pct = Math.round((d.doneToday / d.total) * 100);
   return (
@@ -114,14 +116,14 @@ function Hero({ tier, count }: { tier: Tier; count?: number | null }) {
           <div className="mt-5 flex flex-wrap gap-2.5">
             {FORGE[tier].questions
               ? <button type="button" className="btn-main"><Flame className="h-4 w-4" /> Continue today&apos;s Forge</button>
-              : <Link href="/pro" className="btn-main"><Lock className="h-4 w-4" /> Unlock with Plus</Link>}
+              : <Link href="/pro" className="btn-main"><Lock className="h-4 w-4" /> Unlock all with Plus</Link>}
             {count === undefined && <span className="pill-soft"><Users className="h-4 w-4" /> {d.boardSize.toLocaleString()} students today</span>}
           </div>
         </div>
         {count !== undefined ? (
           <div className="card-inset p-5 text-center">
-            <span className="font-num text-4xl font-extrabold text-[var(--text-primary)]">{count ?? "—"}</span>
-            <p className="text-xs font-semibold text-[var(--text-muted)]">{count === null ? "Questions in Plus and Pro" : count === 1 ? "question today" : "questions today"}</p>
+            <span className="font-num text-4xl font-extrabold text-[var(--text-primary)]">{Math.abs(count)}</span>
+            <p className="text-xs font-semibold text-[var(--text-muted)]">{count < 0 ? "free questions to try" : count === 1 ? "question today" : "questions today"}</p>
             <p className="mt-2 text-xs text-[var(--text-muted)]">New questions are added as they pass our checks.</p>
           </div>
         ) : (
@@ -145,6 +147,31 @@ function Stat({ big, unit, label, icon }: { big: string; unit?: string; label: s
     <div>
       <div className="flex items-center justify-center gap-1">{icon}<span className="font-num text-2xl font-extrabold text-[var(--text-primary)]">{big}</span>{unit && <span className="text-xs text-[var(--text-muted)]">{unit}</span>}</div>
       <p className="text-xs font-semibold text-[var(--text-muted)]">{label}</p>
+    </div>
+  );
+}
+
+/** Free: playable taster questions (answer checked, worked solution locked), then the rest as locked cards with one clear way to subscribe. */
+function Taster({ data }: { data: FeedData }) {
+  const locked = data.locked ?? [];
+  return (
+    <div className="space-y-3">
+      <div className="card-pastel flex flex-wrap items-center justify-between gap-3 p-4" data-tint="butter">
+        <p className="text-sm text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">Try Forge free.</b> These questions are yours to play. Plus unlocks every question with its worked solution, shortcut and trap.</p>
+        <Link href="/pro" className="pill-ink shrink-0">See Plus</Link>
+      </div>
+      <Feed data={data} empty="Forge questions are on the way.">{(q, i) => <ItemCard key={q.id} q={q} n={i + 1} taster />}</Feed>
+      {locked.map((l) => (
+        <Link key={l.id} href="/pro" className="group relative flex items-center gap-3 overflow-hidden rounded-[22px] border border-[var(--border)] bg-[var(--surface)] p-5">
+          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--tint-butter)] text-[var(--tint-butter-ink)]"><Lock className="h-4 w-4" /></span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-sm font-bold text-[var(--text-primary)]">{l.topic}</span>
+            <span className="block text-xs text-[var(--text-muted)]">{l.subject} · {DIFF[l.difficulty]?.label} · {l.question_type} · {l.marks} {l.marks === 1 ? "mark" : "marks"}</span>
+            <span aria-hidden className="mt-2 block space-y-1.5 blur-[3px]"><span className="block h-2.5 w-11/12 rounded-full bg-[var(--surface-secondary)]" /><span className="block h-2.5 w-7/12 rounded-full bg-[var(--surface-secondary)]" /></span>
+          </span>
+          <span className="shrink-0 rounded-full bg-[var(--tint-butter)] px-3 py-1.5 text-xs font-bold text-[var(--tint-butter-ink)] group-hover:bg-[var(--ink)] group-hover:text-[var(--background)]">Unlock with Plus</span>
+        </Link>
+      ))}
     </div>
   );
 }
@@ -184,7 +211,7 @@ function Daily({ tier, data }: { tier: Tier; data: FeedData }) {
   );
 }
 
-function ItemCard({ q, n, done }: { q: Q; n: number; done?: boolean }) {
+function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; taster?: boolean }) {
   const [open, setOpen] = useState(false);
   const [pick, setPick] = useState<string | null>(null);
   const [nat, setNat] = useState("");
@@ -270,7 +297,7 @@ function ItemCard({ q, n, done }: { q: Q; n: number; done?: boolean }) {
         {err && <span role="alert" className="font-semibold text-rose-600">{err}</span>}
         {q.solvedBy !== undefined && <span>{q.solvedBy} solved · {q.accuracy}% right</span>}
         <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} className="ml-auto inline-flex items-center gap-1 rounded-full bg-[var(--surface-secondary)] px-3 py-1.5 text-sm font-semibold text-[var(--text-primary)]">
-          {open ? "Hide solution" : "Show solution"} <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
+          {open ? "Hide solution" : taster ? "Solution (Plus)" : "Show solution"} <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
       </footer>
       <AnimatePresence initial={false}>
@@ -278,6 +305,9 @@ function ItemCard({ q, n, done }: { q: Q; n: number; done?: boolean }) {
           <motion.div initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? undefined : { height: 0, opacity: 0 }} className="overflow-hidden">
             <div className="mt-4 space-y-3 rounded-2xl bg-[var(--surface-secondary)] p-4 text-sm">
               <p className="font-bold text-[var(--text-primary)]">Answer: <span className="font-num">{answer}</span></p>
+              {taster && !solution && (
+                <p className="flex flex-wrap items-center gap-2 rounded-xl bg-[var(--tint-butter)] p-3 text-[var(--tint-butter-ink)]"><Lock className="h-4 w-4 shrink-0" /><span className="flex-1">The worked solution, shortcut and trap come with Plus.</span><Link href="/pro" className="font-bold underline underline-offset-4">See Plus</Link></p>
+              )}
               {solution && <>
                 <ol className="space-y-1.5 text-[var(--text-secondary)]">{solution.steps.map((s, i) => <li key={i} className="flex gap-2"><span className="font-num font-bold text-[var(--text-primary)]">{i + 1}.</span><Tex>{s}</Tex></li>)}</ol>
                 <p className="flex gap-2 text-[var(--text-secondary)]"><Lightbulb className="h-4 w-4 shrink-0 text-amber-500" /><span><b className="text-[var(--text-primary)]">Shortcut:</b> <Tex>{solution.shortcut}</Tex></span></p>

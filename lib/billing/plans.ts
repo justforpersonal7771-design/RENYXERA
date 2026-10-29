@@ -91,10 +91,11 @@ export const PRO_AI_DAILY = 150;
 export const PLUS_PRACTICE_SETS_DAILY = 5;
 /** Forge (original GATE-level questions, R11). Questions: Plus and Pro only; Free gets Forge Mocks only.
  *  Plus limit is owner decision F1 (default until decided: the Daily Forge set, no archive, no "X" items). */
-export const FORGE: Record<Tier, { questions: boolean; mocks: boolean; archive: boolean; hardX: boolean; dailyLimit: number | null }> = {
-  free: { questions: false, mocks: true, archive: false, hardX: false, dailyLimit: 0 },
-  plus: { questions: true, mocks: true, archive: false, hardX: false, dailyLimit: 10 },
-  pro: { questions: true, mocks: true, archive: true, hardX: true, dailyLimit: null },
+export const FORGE: Record<Tier, { questions: boolean; mocks: boolean; archive: boolean; hardX: boolean; dailyLimit: number | null; teaser: number }> = {
+  // Free is not blocked: a fixed taster of 10 playable Forge questions (answer checked, worked solution locked); every other question is shown locked.
+  free: { questions: false, mocks: true, archive: false, hardX: false, dailyLimit: 0, teaser: 10 },
+  plus: { questions: true, mocks: true, archive: false, hardX: false, dailyLimit: 10, teaser: 0 },
+  pro: { questions: true, mocks: true, archive: true, hardX: true, dailyLimit: null, teaser: 0 },
 };
 export const canUseForgeQuestions = (tier: Tier) => FORGE[tier].questions;
 export const AI_DAILY: Record<Tier, number> = { free: FREE_AI_DAILY, plus: PLUS_AI_DAILY, pro: PRO_AI_DAILY };
