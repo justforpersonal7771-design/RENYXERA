@@ -47,7 +47,9 @@ function Body({ text }: { text: string }) {
     ? <pre key={i} className="my-3 overflow-x-auto rounded-xl bg-[var(--surface-secondary)] p-3 font-mono text-sm leading-snug text-[var(--text-primary)]">{part.replace(/\n$/, "")}</pre>
     : part.trim() ? <Tex key={i}>{part}</Tex> : null)}</>;
 }
-const Tex = ({ children }: { children: string }) => <MathJax dynamic inline hideUntilTypeset="every">{children}</MathJax>;
+// Only text that actually contains maths waits for MathJax; plain text shows at once (no blank flash while the library loads).
+const HAS_TEX = /\\\(|\\\[|\$\$/;
+const Tex = ({ children }: { children: string }) => (HAS_TEX.test(children) ? <MathJax dynamic inline hideUntilTypeset="every">{children}</MathJax> : <>{children}</>);
 
 const DIFF: Record<string, { label: string; tint: string }> = { E: { label: "Easy", tint: "mint" }, M: { label: "Medium", tint: "butter" }, H: { label: "Hard", tint: "rose" }, X: { label: "X", tint: "lilac" } };
 type Tab = "daily" | "practice" | "mocks" | "bookmarks";

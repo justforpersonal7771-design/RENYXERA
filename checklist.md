@@ -17,7 +17,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **(me) R11 Forge**, then **R20 Solutions** for every question, with **R12 Study materials** possibly in parallel. Refs: `R11-FORGE.md`, `R20-SOLUTIONS.md`, `R12-STUDY-MATERIALS.md`.
 - [ ] **(you)** Swaseekh signed-in review: sign in with Google and send screenshots of dashboard, question bank, a textbook page, analytics with institute filter, mock test, pricing (I can't sign in with a Google account). Analysis so far: `docs/competitors/COMPETITORS_2026-10.md`.
 - [ ] **(you)** Telegram: edit the pinned welcome post (it still says "with yesterday's answer"; now the answer is a spoiler in the same post). To refresh old link previews in Telegram, send the site link to **@WebpageBot**.
-- [x] **R16-A1 dependency patch** done 30 Oct (`npm audit fix` x2: 0 vulnerabilities, prod and dev). Still open: **R16-A2/A3 headers + sanitising**.
+- [x] **R16-A1 dependency patch** done 30 Oct (`npm audit fix` x2: 0 vulnerabilities, prod and dev). R16-A2 security headers done 30 Oct (see below). Still open: **R16-A3 sanitising**.
 - [ ] **(you)** Decisions F1, S1, S4 (`docs/OPEN_DECISIONS_FOR_YOU.md`).
 
 ### 0a. Bug batch 26 Oct (verified on a local production build, phone 390 + desktop 1440, light)
@@ -208,7 +208,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 ### 3F · Release 16 — Security hardening · `docs/roadmap/R16-SECURITY.md`
 *Audit 22 Oct: no HTTP security headers; 9 vulnerable production dependencies (1 critical); `html` AST nodes injected raw; per-isolate rate limits; no security.txt or Dependabot.*
 - [x] **A1 Patch dependencies** (critical/high to 0) — 0 vulnerabilities on 30 Oct.
-- [ ] **A2 Security headers** — HSTS, nosniff, Referrer-Policy, Permissions-Policy, frame-ancestors none, COOP same-origin-allow-popups, CSP (report-only → enforce, nonces for inline scripts).
+- [x] **A2 Security headers** (30 Oct: HSTS, nosniff, frame deny, referrer, permissions, COOP same-origin-allow-popups; CSP in REPORT-ONLY mode with /api/csp-report; 14 signed-in pages gave 0 violations; Razorpay checkout, Turnstile login and Google sign-in not exercised). Original note: HSTS, nosniff, Referrer-Policy, Permissions-Policy, frame-ancestors none, COOP same-origin-allow-popups, CSP (report-only → enforce, nonces for inline scripts).
 - [ ] **A3 Sanitise HTML nodes** — bank-only `html` nodes, allow-list sanitiser, AI parser emits no HTML; XSS payload tests.
 - [ ] **B1 2FA on all owner accounts** (you) · **B2 key-rotation runbook** · **B3 GitHub secret scanning, push protection, Dependabot, branch protection** · **B4 optional TOTP 2FA for paid students**.
 - [ ] **C1 Shared rate limits** (Postgres counters or Cloudflare free rule) · **C2 Turnstile on waitlist/report/contact** · **C3 WAF/Bot Fight Mode after domain** · **C4 webhook replay protection**.
@@ -450,3 +450,6 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Hero word reveal built (`components/ui/word-reveal.tsx`, CSS only, plays once, reduced-motion safe; on the Tools hub headline; verified staggered fade-in and instant under reduced motion). Still to build: "how it works" line draw, sign-up/upgrade button states, use the reveal on the landing headline
 - [ ] Forge next batches: more MCQ and MSQ items (b002-b004 are mostly numeric answers), then toward 800
 - [x] 30 Oct: Forge hub supports multiple-select (MSQ) questions: checkboxes, "Select all that apply", graded with the MSQ rule
+- [ ] **Enforce the CSP** after about a week of real traffic: read `csp_violation` log lines, fix what is legitimate, then switch `Content-Security-Policy-Report-Only` to `Content-Security-Policy`; later replace `'unsafe-inline'` scripts with nonces
+- [ ] Exercise the three third-party flows under the new headers on a real phone: Razorpay checkout, Turnstile on sign-in, Google sign-in popup
+- [x] 30 Oct: Forge plain text (options, steps) no longer waits for MathJax; only text with maths does
