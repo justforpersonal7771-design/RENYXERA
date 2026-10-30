@@ -42,3 +42,9 @@
 - **Student verification** for the personalised share cards: we only show what the student types; no ID check. Is that acceptable?
 - **GST/tax** on the study-materials product once revenue grows (talk to an accountant).
 - **Content licences:** whether you hold any rights to the textbooks in `notes/` beyond personal study.
+
+## Answered on 31 Oct 2026
+- **F1 (Plus Forge limit):** Plus gets **15 Forge questions a day** (owner said 15 to 20; started at the lower number because raising later is easy and lowering is not); Pro unlimited. Free gets a fixed 10-question taster (owner's tease rule, 30 Oct).
+- **S1 (Study pricing):** per-subject packs at ₹99 to ₹149, curated bundles (core subjects, the hottest, the toughest, with Pro), refunds only for glitches and errors by email. Details and numbers: `docs/study-materials/13-PRICING-BUNDLES-AND-OFFERS.md`.
+- **S2 (branch order):** CS first, then the other branches; **General Aptitude last** (built once, shared by every branch).
+- **S4 (accuracy reviewer):** the owner reviews CS. A paid reviewer per subject is revisited after CS.

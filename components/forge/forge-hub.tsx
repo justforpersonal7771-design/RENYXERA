@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Forge hub (R11): original GATE-level questions. Free: Forge Mocks only. Plus: 10 a day + bookmarks, no X.
+ * Forge hub (R11): original GATE-level questions. Free: Forge Mocks only. Plus: 15 a day + bookmarks, no X.
  * Pro: everything. Runs on sample data until the CS batches are seeded (lib/preview/features.ts).
  */
 import { useEffect, useState, useSyncExternalStore } from "react";
@@ -100,9 +100,9 @@ function Forge({ tier }: { tier: Tier }) {
       </FolderTabs>
       <PlanCompare rows={[
         ["Forge Mocks (full papers, ranked)", "✓", "✓", "✓"],
-        ["Forge questions", "10 to try", "10 a day", "Unlimited"],
+        ["Forge questions", "10 to try", "15 a day", "Unlimited"],
         ["Worked solutions, shortcuts and traps", "—", "✓", "✓"],
-        ["Practice by subject, topic, difficulty", "—", "Within 10 a day", "Unlimited"],
+        ["Practice by subject, topic, difficulty", "—", "Within 15 a day", "Unlimited"],
         ["Bookmarks", "—", "✓", "✓"],
         ["X questions (hardest set)", "—", "—", "✓"],
         ["Every past Daily Forge", "—", "—", "✓"],

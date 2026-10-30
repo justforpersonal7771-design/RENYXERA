@@ -29,7 +29,7 @@ export default function ContactPage() {
             <li><strong className="text-[var(--text-primary)]">A wrong answer or typo in a question</strong> — include the paper and question number (for example, &ldquo;GATE CS 2024 FN, Q23&rdquo;). We aim to fix accepted reports within 24 hours.</li>
             <li><strong className="text-[var(--text-primary)]">Account or sign-in problems</strong> — tell us the email you signed up with. Never send us your password.</li>
             <li><strong className="text-[var(--text-primary)]">Your data</strong> — you can download everything yourself from <Link href="/profile#security" className={A}>Profile → Account &amp; security → Export my data</Link>. To have your account and data deleted, email us from the address on the account.</li>
-            <li><strong className="text-[var(--text-primary)]">Payments and refunds</strong> — see our <Link href="/refunds" className={A}>Refund policy</Link>. RENYXERA doesn&apos;t take any payments yet.</li>
+            <li><strong className="text-[var(--text-primary)]">Payments and refunds</strong> — see our <Link href="/refunds" className={A}>Refund policy</Link>. For a billing error or a technical fault, email us from your account address with the payment reference and the reason.</li>
             <li><strong className="text-[var(--text-primary)]">Feedback, ideas or partnerships</strong> — always welcome.</li>
           </ul>
         </section>

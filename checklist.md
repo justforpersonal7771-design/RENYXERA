@@ -41,16 +41,16 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 ## 1. Needs YOU
 
 ### Decisions (context + my defaults: `docs/OPEN_DECISIONS_FOR_YOU.md`)
-- [ ] 🔒 **F1** Plus Forge limit — default: Daily Forge + filtered practice, no archive, no "X" items; Pro gets all. *Blocks R11-A2 limits.*
+- [x] 🔒 **F1** Plus Forge limit (31 Oct: 15 a day, Pro unlimited) — was: — default: Daily Forge + filtered practice, no archive, no "X" items; Pro gets all. *Blocks R11-A2 limits.*
 - [ ] **F2** Free sees Forge Mock solutions after the mock — default: yes, one week.
 - [ ] **F3** One Daily Forge teaser per branch channel — default: yes.
 - [ ] **F4** Forge Mock cadence — default: weekly CS, fortnightly others until buffers exist.
 - [ ] **F5** Order CS → EC → EE, ME, CE, DA — default: yes.
 - [ ] **F6** Keep the name "Forge" — default: yes.
-- [ ] 🔒 **S1** Study-materials pricing model/price — default: one-time pass per branch, test ₹499–999. *Blocks R12-A6.*
-- [ ] **S2** Branch order after CS — default: EC, EE, ME, CE, DA.
+- [x] 🔒 **S1** Study-materials pricing model/price (31 Oct: per-subject packs ₹99-149 + bundles; `13-PRICING-BUNDLES-AND-OFFERS.md`) — was: — default: one-time pass per branch, test ₹499–999. *Blocks R12-A6.*
+- [x] **S2** Branch order after CS (31 Oct: CS first, other branches after, General Aptitude last and shared) — was: — default: EC, EE, ME, CE, DA.
 - [ ] **S3** Sources rule — default: confirmed (learn from textbooks; coaching notes for layout/coverage only).
-- [ ] 🔒 **S4** Accuracy reviewer — default: you spot-check CS, paid tutor per subject later. *Blocks R12-A5 sign-off.*
+- [x] 🔒 **S4** Accuracy reviewer (31 Oct: owner reviews CS) — was: — default: you spot-check CS, paid tutor per subject later. *Blocks R12-A5 sign-off.*
 - [ ] **S5** English only at launch — default: yes.
 - [ ] **S6** "Deadlock" sample chapter first — default: yes.
 - [ ] **S7** Study content in a private repo/bucket — default: yes.
@@ -438,7 +438,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 30 Oct package updates verified: full build passes, Battles create/finish/compare (zod routes), grading and security checks pass
 - [x] 30 Oct: reviewed `New folder/` (3 MadeToScale Instagram Reels + a 20-page "12 landing page animations" PDF; third-party, reference only, not for committing)
 - [ ] Owner to choose from the ideas taken from those references: Reels format for GATE (countdown list, kinetic captions, "comment a keyword" lead magnet), landing-page motion (hero reveal, count-up, process draw, price roll) within our rules (reduced motion, transform/opacity only, play once, real data only)
-- [ ] Decide whether `New folder/` stays out of git (28 MB of third-party video; add to .gitignore)
+- [x] `New folder/`: owner will delete it (31 Oct), no .gitignore needed
 - [x] 30 Oct: UI UX Pro Max skill (nextlevelbuilder, MIT) reviewed and installed at `.claude/skills/ui-ux-pro-max` (scripts have no network/exec/write; design system stays `docs/design/DESIGN-SYSTEM.md`); standing rule saved: use fitting skills/plugins each round
 - [x] 30 Oct: reference review written: `docs/reference/MADETOSCALE_REFERENCE_REVIEW.md` (tools verdicts, which animations to adopt, reel format)
 - [x] **Reel template built (30 Oct):** composition `CountdownReel` in `video/` (1080x1920, 30 fps, 22 s: hook, five numbered topics, outro) from real data via `video/scripts/make-reel-data.mjs`; stills checked, **not rendered** (render when you ask: `cd video && npx remotion render src/index.ts CountdownReel out/reel-top5.mp4`). Open: voice-over/captions audio (Kokoro), Hindi version, export cuts, a second reel (e.g. "3 traps in cache questions")
@@ -460,3 +460,9 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 30 Oct: standing rule for live tests: use the Free test account (no device limit), never the Pro account
 - [ ] **Single-screen rule (owner, 30 Oct): measured with `scripts/zz-fit.mjs` at 1920x912 / 1440x900 / 1366x768.** Page overflow in px (0 = fits): Test Centre hub 14-22, Tools hub 38, Build/Practice/History/Challenge/Forge/Downloads/Analytics/Revision/Mistakes/Bookmarks/Profile 0; still scrolling: Mocks 675+, Checkpoint 253+, AI Mentor 666+, AI Tutor 138+, Battles 118+, Study 378+, Calendar 108+, Plans 536+; the exam RESULTS screen (circled in the owner's screenshot) clips its stat tiles under the action bar. Fix order: results screen, Test Centre hub, Tools hub, Checkpoint, Mocks, Battles, then the rest; inherently long pages (Plans, Mentor chat) get an internal scroll area instead of page scroll
 - [ ] Owner-side steps listed in chat on 30 Oct (payment test, device rows, Supabase Advisors, 2FA, GitHub protections, decisions F1/S1/S4, reel review)
+- [x] 31 Oct: Security Advisor (0 errors, 35 warnings, 26 info) and Performance Advisor (0 errors, 15 warnings, 26 info) opened by the owner. **(you)** open the **Warnings** tab of each, click **Export** (or screenshot the list) and send it so I can fix them; the 26 "info" items are probably the private tables that intentionally have no read policy
+- [x] 31 Oct: GitHub protections done by the owner (secret scanning, push protection, Dependabot, ruleset). 2FA on all accounts: owner will do later
+- [x] 31 Oct: Pro test account device cooldown: owner chose option C (leave it; ages out around 27 Nov). All live tests use the Free test account
+- [x] 31 Oct: refund policy rewritten to the owner's rule (refunds only for glitches and errors, by email with a genuine reason): `/refunds`, `/terms` section 7, Plans confirm box, receipt, contact page; the old "currently free, no payments" and 7-day refund wording removed. Legal review still open
+- [ ] **Study materials: build plan after the decisions:** (1) pack and bundle data model + `study_access` per subject, (2) Plans checkout add-on row with server validation, (3) offer moments from `13` section 4 in order (results screen, post-purchase, mistakes), (4) CS lessons built subject by subject with owner review, Aptitude last. Future features list: `docs/study-materials/14-FUTURE-FEATURES.md`
+- [ ] Answer the owner: how much effort to move the repo to a renyxera@gmail.com GitHub account (options: rename + add email; organization; new personal account), see the reply of 31 Oct; the remote uses the SSH alias `github-personal`

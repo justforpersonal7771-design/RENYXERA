@@ -230,7 +230,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                 <ul className="mt-4 space-y-1.5 text-xs text-[var(--text-secondary)]">
                   <li>• Starts instantly once the payment is confirmed.</li>
                   <li>• Does <b className="text-[var(--text-primary)]">not</b> renew automatically — no surprise charges.</li>
-                  <li>• Purchases are final: <b className="text-[var(--text-primary)]">no refunds</b> (a failed or duplicate charge is always fixed).</li>
+                  <li>• Purchases are final: <b className="text-[var(--text-primary)]">refunds only for our errors</b> (double charge, payment that did not activate, a fault we cannot fix), by email with a genuine reason.</li>
                 </ul>
                 <div className="mt-4">
                   <div className="flex gap-2">
