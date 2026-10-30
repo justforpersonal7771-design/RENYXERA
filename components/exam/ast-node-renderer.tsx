@@ -3,6 +3,7 @@
 import { memo, useContext, useEffect, useRef } from "react";
 import { RenderNode } from "@/types/ast.types";
 import { MathJax, MathJaxBaseContext } from "better-react-mathjax";
+import { sanitizeHtml } from "@/lib/security/sanitize-html";
 
 import { CodeBlock } from "@/components/ui/code-block";
 import { ImageThemeAdapter } from "./image-theme-adapter";
@@ -119,7 +120,7 @@ function AstBody({ nodes, className = "" }: AstNodeRendererProps) {
             return (
               <span
                 key={i}
-                dangerouslySetInnerHTML={{ __html: node.content }}
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(node.content) }}
                 className="inline-block"
               />
             );

@@ -10,6 +10,7 @@ import { syllabusStats } from "@/lib/seo/weightage";
 import { TOOLS } from "@/lib/seo/tools";
 import { Donut, ShareBar, TrendBadge } from "@/components/seo/charts";
 import { TELEGRAM_BRANCH, TELEGRAM_CHAT, TELEGRAM_FOLDER } from "@/lib/social";
+import { jsonLd as safeJsonLd } from "@/lib/seo/json-ld";
 
 // Step 8 (4H): one static, crawlable landing page per GATE branch — /gate-cse, /gate-da, …
 export const dynamicParams = false;
@@ -70,7 +71,7 @@ export default async function BranchPage({ params }: { params: Promise<{ slug: s
 
   return (
     <div className="space-y-14 pb-6">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
 
       {/* Branch switcher */}
       <nav aria-label="GATE branches" className="-mx-4 px-4 sm:mx-0 sm:px-0 overflow-x-auto sm:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
