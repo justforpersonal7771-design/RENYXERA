@@ -439,3 +439,9 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 30 Oct: reviewed `New folder/` (3 MadeToScale Instagram Reels + a 20-page "12 landing page animations" PDF; third-party, reference only, not for committing)
 - [ ] Owner to choose from the ideas taken from those references: Reels format for GATE (countdown list, kinetic captions, "comment a keyword" lead magnet), landing-page motion (hero reveal, count-up, process draw, price roll) within our rules (reduced motion, transform/opacity only, play once, real data only)
 - [ ] Decide whether `New folder/` stays out of git (28 MB of third-party video; add to .gitignore)
+- [x] 30 Oct: UI UX Pro Max skill (nextlevelbuilder, MIT) reviewed and installed at `.claude/skills/ui-ux-pro-max` (scripts have no network/exec/write; design system stays `docs/design/DESIGN-SYSTEM.md`); standing rule saved: use fitting skills/plugins each round
+- [x] 30 Oct: reference review written: `docs/reference/MADETOSCALE_REFERENCE_REVIEW.md` (tools verdicts, which animations to adopt, reel format)
+- [ ] **Reel template (Remotion):** "5 CS topics that give the most marks" countdown from real `profile.json` data, 1080x1920, brand fonts, captions; render only when you ask
+- [ ] **Landing motion with `motion` (no GSAP):** one shared `CountUp`, hero word reveal, "how it works" line draw, Plans price roll, sign-up/upgrade button states; checked with the ui-ux-pro-max motion rules and the 6-point pre-ship list (reduced motion, transform/opacity only, play once, under 2.5 s, real data only)
+- [ ] Optional: try Chatterbox on one Hindi line for Hindi/Hinglish reels (needs your OK; never clone a real voice without consent); OpenWhispr voice typing for you
+- [ ] Review the `claude-youtube` skill pack before the YouTube channel launches (third-party: review first)
