@@ -185,7 +185,7 @@ async function gradeNow(
   await hydrateAnswerKeys();
   const { parseNatValue } = await import("@/lib/grading");
   const responses = Object.values(session.responses ?? {})
-    .filter((r) => /^GATE_/.test(r.questionId))
+    .filter((r) => /^(GATE|FORGE)_/.test(r.questionId))
     .map((r) => {
       const answered = r.status === "ANSWERED" || r.status === "MARKED_AND_ANSWERED";
       const nat = answered ? parseNatValue(r.natValue) : null;

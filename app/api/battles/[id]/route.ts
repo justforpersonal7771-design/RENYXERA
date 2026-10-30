@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { battleCtx, isCtx, gradedAttempt, nameOf, UUID_RE } from "@/lib/server/battles";
+import { notifyBattle, battleText } from "@/lib/telegram/notify";
 
 export const runtime = "nodejs";
 
@@ -46,7 +47,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
   const body = actionSchema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
 
-  const { data: b } = await db.from("battles").select("id, owner_id, question_ids, owner_score, max_score, expires_at").eq("id", id).maybeSingle();
+  const { data: b } = await db.from("battles").select("id, owner_id, title, question_ids, owner_score, max_score, expires_at").eq("id", id).maybeSingle();
   if (!b) return NextResponse.json({ error: "This battle doesn't exist." }, { status: 404 });
   if (b.expires_at <= new Date().toISOString()) return NextResponse.json({ error: "This battle has expired (battles last 7 days).", reason: "expired" }, { status: 410 });
   if (b.owner_id === userId) return NextResponse.json({ error: "This is your own battle. Send the link to a friend.", reason: "own" }, { status: 409 });
@@ -66,6 +67,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
     const row = { status: "started", total: a.total, answered: 0, started_at: nowIso, last_seen_at: nowIso };
     if (!entry) await db.from("battle_entries").insert({ battle_id: id, user_id: userId, display_name: await nameOf(db, userId!), ...row });
     else await db.from("battle_entries").update(row).eq("battle_id", id).eq("user_id", userId!);
+    if (entry?.status !== "started") void notifyBattle(db, b.owner_id, id, battleText.started(await nameOf(db, userId!), b.title));
     return NextResponse.json({ ok: true, status: "started" });
   }
 
@@ -93,5 +95,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
   await db.from("battle_entries").update({
     status: "submitted", attempt_id: attempt.id, score: attempt.server_score, max_score: attempt.server_max, answered: ids.length, submitted_at: nowIso, last_seen_at: nowIso,
   }).eq("battle_id", id).eq("user_id", userId!);
+  const mineP = attempt.server_score / attempt.server_max, theirsP = Number(b.owner_score) / Number(b.max_score);
+  void notifyBattle(db, b.owner_id, id, battleText.finished(await nameOf(db, userId!), b.title, attempt.server_score, attempt.server_max, Number(b.owner_score), mineP > theirsP ? "They won." : mineP === theirsP ? "A tie." : "You won."));
   return NextResponse.json({ ok: true, status: "submitted", score: attempt.server_score, maxScore: attempt.server_max, ownerScore: b.owner_score, ownerMax: b.max_score });
 }

@@ -16,3 +16,16 @@ export async function notifyPayment(db: Db, userId: string, razorpayOrderId: str
     await send(acct.chat_id, `✅ <b>Payment received</b>\n${planLabel(o.plan_id)} · ₹${(o.amount_paise / 100).toLocaleString("en-IN")}${until ? `\nActive until <b>${until}</b>` : ""}`, [[{ text: "View receipt", url: appLink(`/receipt?id=${o.id}`) }]]);
   } catch { /* a missed Telegram message must never affect a payment */ }
 }
+
+const esc = (t: string) => t.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]!);
+
+/** Tell a battle's owner that a friend started or finished (R19). Linked members only; mutable with prefs.battles = false. Never throws. */
+export async function notifyBattle(db: Db, ownerId: string, battleId: string, text: string): Promise<void> {
+  try {
+    const acct = await accountOf(db, ownerId);
+    if (!acct || acct.blocked || acct.prefs.battles === false) return;
+    await send(acct.chat_id, `⚔️ ${text}`, [[{ text: "Open the battle board", url: appLink("/battles") }]]);
+  } catch { /* a missed Telegram message must never affect a battle */ }
+}
+export const battleText = { started: (who: string, title: string) => `<b>${esc(who)}</b> started your battle <i>${esc(title)}</i>.`,
+  finished: (who: string, title: string, theirs: number, max: number, mine: number, verdict: string) => `<b>${esc(who)}</b> finished <i>${esc(title)}</i>: <b>${theirs}</b>/${max} against your <b>${mine}</b>. ${esc(verdict)}` };
