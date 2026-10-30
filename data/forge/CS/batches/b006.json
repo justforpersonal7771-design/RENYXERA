@@ -1,0 +1,558 @@
+{
+ "branch": "CS",
+ "batch": "b006",
+ "note": "Authored in a Claude session; every answer computed by its own verify code (author_b006.py), then validate.py.",
+ "items": [
+  {
+   "id": "FORGE_CS_000055",
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "kind": "multi_concept",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "Consider the grammar with start symbol \\(S\\): \\(S \\to A\\,a\\,B \\mid B\\), \\(A \\to b\\,A \\mid \\varepsilon\\), \\(B \\to c\\,B \\mid d\\). Which one of the following is \\(\\text{FIRST}(S)\\)?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "{a, b, c}"
+    },
+    {
+     "option_id": "B",
+     "text": "{a, b, c, d}"
+    },
+    {
+     "option_id": "C",
+     "text": "{b, c, d, ε}"
+    },
+    {
+     "option_id": "D",
+     "text": "{a, c, d, ε}"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "G = {'S': [['A', 'a', 'B'], ['B']], 'A': [['b', 'A'], []], 'B': [['c', 'B'], ['d']]}\nnts = set(G)\nfirst = {n: set() for n in G}\nnullable = {n: False for n in G}\nchanged = True\nwhile changed:\n    changed = False\n    for n, prods in G.items():\n        for p in prods:\n            all_null = True\n            for s in p:\n                if s in nts:\n                    if not first[s] <= first[n]:\n                        first[n] |= first[s]\n                        changed = True\n                    if not nullable[s]:\n                        all_null = False\n                        break\n                else:\n                    if s not in first[n]:\n                        first[n].add(s)\n                        changed = True\n                    all_null = False\n                    break\n            if all_null and not nullable[n]:\n                nullable[n] = True\n                changed = True\nres = set(first['S'])\nif nullable['S']:\n    res.add('eps')\ncands = [{'a', 'b', 'c'}, {'a', 'b', 'c', 'd'}, {'b', 'c', 'd', 'eps'}, {'a', 'c', 'd', 'eps'}]\nanswer = 'ABCD'[cands.index(res)]"
+   },
+   "solution": {
+    "given": "S -> A a B | B; A -> b A | epsilon; B -> c B | d",
+    "find": "FIRST(S)",
+    "steps": [
+     "\\(\\text{FIRST}(B) = \\{c, d\\}\\) (B always starts with \\(c\\) or \\(d\\)); \\(B\\) is not nullable.",
+     "\\(\\text{FIRST}(A) = \\{b, \\varepsilon\\}\\): A starts with \\(b\\) or vanishes.",
+     "\\(S \\to A\\,a\\,B\\): FIRST starts with FIRST(A) minus \\(\\varepsilon\\), which is \\(\\{b\\}\\). Because \\(A\\) can vanish, \\(a\\) is also a possible first symbol: add \\(\\{a\\}\\).",
+     "\\(S \\to B\\) adds \\(\\{c, d\\}\\). So \\(\\text{FIRST}(S) = \\{a, b, c, d\\}\\), and \\(\\varepsilon\\) is not in it because \\(B\\) cannot derive \\(\\varepsilon\\)."
+    ],
+    "shortcut": "Walk each production left to right, adding FIRST of each symbol while the previous symbols are nullable.",
+    "trap": "Forgetting that a nullable \\(A\\) exposes the next symbol \\(a\\), or adding \\(\\varepsilon\\) to FIRST(S) just because A is nullable."
+   },
+   "answer": {
+    "options": [
+     "B"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000056",
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
+   "kind": "trace",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A DFA over \\(\\{0, 1\\}\\) has start state \\(q_0\\) and the single accepting state \\(q_2\\). Its transitions are \\(\\delta(q_0,0) = q_1,\\ \\delta(q_0,1) = q_0,\\ \\delta(q_1,0) = q_1,\\ \\delta(q_1,1) = q_2,\\ \\delta(q_2,0) = q_1,\\ \\delta(q_2,1) = q_0\\). The language accepted by this DFA is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "All strings ending in 01"
+    },
+    {
+     "option_id": "B",
+     "text": "All strings containing 01"
+    },
+    {
+     "option_id": "C",
+     "text": "All strings starting with 01"
+    },
+    {
+     "option_id": "D",
+     "text": "All strings ending in 10"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "delta = {('q0', '0'): 'q1', ('q0', '1'): 'q0', ('q1', '0'): 'q1', ('q1', '1'): 'q2', ('q2', '0'): 'q1', ('q2', '1'): 'q0'}\ndef accepts(w):\n    s = 'q0'\n    for c in w:\n        s = delta[(s, c)]\n    return s == 'q2'\npreds = [lambda w: w.endswith('01'), lambda w: '01' in w, lambda w: w.startswith('01'), lambda w: w.endswith('10')]\nstrings = []\nfor n in range(0, 10):\n    for t in itertools.product('01', repeat=n):\n        strings.append(''.join(t))\nmatch = [i for i, f in enumerate(preds) if all(accepts(w) == f(w) for w in strings)]\nanswer = 'ABCD'[match[0]] if len(match) == 1 else 'X'"
+   },
+   "solution": {
+    "given": "a 3-state DFA",
+    "find": "the accepted language",
+    "steps": [
+     "\\(q_1\\) means 'the last symbol was \\(0\\)'; \\(q_2\\) means 'the last two symbols were \\(01\\)'; \\(q_0\\) is everything else.",
+     "From \\(q_0\\): a \\(0\\) goes to \\(q_1\\), a \\(1\\) stays. From \\(q_1\\): a \\(0\\) stays, a \\(1\\) reaches \\(q_2\\). From \\(q_2\\): any symbol leaves (a \\(0\\) goes to \\(q_1\\), a \\(1\\) goes to \\(q_0\\)), so the DFA is in \\(q_2\\) only right after reading \\(01\\) as the final two symbols.",
+     "So it accepts exactly the strings ending in 01. (Checked against every string of length up to 9.)"
+    ],
+    "shortcut": "Name each state by what it remembers; a state that is left on any further symbol marks an 'ends with' language.",
+    "trap": "Choosing 'contains 01': the DFA does not stay accepting after seeing 01, since q2 moves on."
+   },
+   "answer": {
+    "options": [
+     "A"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000057",
+   "subject": "Operating Systems",
+   "topic": "Memory Management and Virtual Memory",
+   "kind": "trap_aware",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "The page reference string \\(1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5\\) is processed by a demand-paged system with FIFO page replacement. Initially all frames are empty. Which one of the following statements is TRUE?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "Four frames give fewer page faults than three"
+    },
+    {
+     "option_id": "B",
+     "text": "Four frames give more page faults than three"
+    },
+    {
+     "option_id": "C",
+     "text": "Three and four frames give the same number of faults"
+    },
+    {
+     "option_id": "D",
+     "text": "The faults depend on the initial frame contents"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "refs = [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5]\ndef fifo(n):\n    frames = []\n    faults = 0\n    for p in refs:\n        if p not in frames:\n            faults += 1\n            if len(frames) == n:\n                frames.pop(0)\n            frames.append(p)\n    return faults\nf3 = fifo(3)\nf4 = fifo(4)\nanswer = 'A' if f4 < f3 else ('B' if f4 > f3 else 'C')"
+   },
+   "solution": {
+    "given": "FIFO, reference string of 12 pages",
+    "find": "relation between 3 and 4 frames",
+    "steps": [
+     "With 3 frames FIFO faults on: 1, 2, 3, 4, 1, 2, 5, 3, 4 = 9 page faults (the three hits are the 1 and 2 right after the first 5, and the final 5).",
+     "With 4 frames FIFO faults on: 1, 2, 3, 4, 5, 1, 2, 3, 4, 5 = 10 page faults.",
+     "More frames gave MORE faults: this is Belady's anomaly, which can occur with FIFO (but never with LRU or the optimal policy)."
+    ],
+    "shortcut": "Simulate both frame counts; if the larger one faults more, it is Belady's anomaly.",
+    "trap": "Assuming more memory can never hurt: that holds for stack algorithms (LRU, optimal) but not for FIFO."
+   },
+   "answer": {
+    "options": [
+     "B"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000058",
+   "subject": "Databases",
+   "topic": "SQL Queries (DDL/DML, Joins, Aggregations)",
+   "kind": "trace",
+   "difficulty": "E",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "The table \\(\\text{Emp}(\\text{dept}, \\text{sal})\\) has the rows \\((A, 40000), (A, 70000), (B, 45000), (B, 50000), (C, 90000), (C, 20000), (C, 70000)\\). The query SELECT dept FROM Emp GROUP BY dept HAVING AVG(sal) > 50000 returns the departments",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "A and B"
+    },
+    {
+     "option_id": "B",
+     "text": "A and C"
+    },
+    {
+     "option_id": "C",
+     "text": "B and C"
+    },
+    {
+     "option_id": "D",
+     "text": "A, B and C"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "rows = [('A', 40000), ('A', 70000), ('B', 45000), ('B', 50000), ('C', 90000), ('C', 20000), ('C', 70000)]\ndepts = sorted({d for d, s in rows})\nout = []\nfor d in depts:\n    xs = [s for dd, s in rows if dd == d]\n    if sum(xs) / len(xs) > 50000:\n        out.append(d)\ncands = [['A', 'B'], ['A', 'C'], ['B', 'C'], ['A', 'B', 'C']]\nanswer = 'ABCD'[cands.index(out)]"
+   },
+   "solution": {
+    "given": "a 7-row table, GROUP BY dept HAVING AVG(sal) > 50000",
+    "find": "departments returned",
+    "steps": [
+     "Averages: A = (40000 + 70000)/2 = 55000; B = (45000 + 50000)/2 = 47500; C = (90000 + 20000 + 70000)/3 = 60000.",
+     "HAVING keeps the groups whose average is greater than 50000: A and C."
+    ],
+    "shortcut": "GROUP BY first, then compute the aggregate per group, then filter groups with HAVING.",
+    "trap": "Filtering rows with WHERE sal > 50000 before grouping (a different query), or using the overall average."
+   },
+   "answer": {
+    "options": [
+     "B"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000059",
+   "subject": "Computer Networks",
+   "topic": "Transport Layer (Flow Control and Congestion Control, TCP, UDP, Sockets)",
+   "kind": "numeric_chain",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A TCP sender starts with a congestion window of \\(1\\) MSS and a slow-start threshold of \\(16\\) MSS. There are no losses. In slow start the window doubles every RTT until it reaches the threshold; after that it grows by \\(1\\) MSS per RTT. During the \\(7\\)th RTT the congestion window (in MSS) is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "17"
+    },
+    {
+     "option_id": "B",
+     "text": "18"
+    },
+    {
+     "option_id": "C",
+     "text": "19"
+    },
+    {
+     "option_id": "D",
+     "text": "32"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "cwnd = 1\nssthresh = 16\nw = []\nfor rtt in range(1, 8):\n    w.append(cwnd)\n    if cwnd < ssthresh:\n        cwnd = min(cwnd * 2, ssthresh)\n    else:\n        cwnd += 1\nopts = [17, 18, 19, 32]\nanswer = 'ABCD'[opts.index(w[6])]"
+   },
+   "solution": {
+    "given": "initial cwnd 1, ssthresh 16, no loss",
+    "find": "cwnd in the 7th RTT",
+    "steps": [
+     "Slow start: RTT 1 = 1, RTT 2 = 2, RTT 3 = 4, RTT 4 = 8, RTT 5 = 16 (the threshold is reached).",
+     "Congestion avoidance adds 1 per RTT: RTT 6 = 17, RTT 7 = 18."
+    ],
+    "shortcut": "List the window RTT by RTT; the doubling stops exactly at the threshold.",
+    "trap": "Continuing to double after reaching the threshold (32), or counting the window at the end instead of the start of the RTT."
+   },
+   "answer": {
+    "options": [
+     "B"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000060",
+   "subject": "Computer Organization and Architecture",
+   "topic": "Machine Instructions & Addressing Modes",
+   "kind": "numeric_chain",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A processor has \\(16\\)-bit instructions and uses expanding opcodes. Every address field is \\(4\\) bits. Instructions have \\(12\\) three-address formats and \\(30\\) two-address formats already defined. The maximum number of one-address instructions that can still be defined is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "544"
+    },
+    {
+     "option_id": "B",
+     "text": "512"
+    },
+    {
+     "option_id": "C",
+     "text": "576"
+    },
+    {
+     "option_id": "D",
+     "text": "510"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "field = 4\nfirst = 2 ** field\nleft3 = first - 12\ntwo_space = left3 * 2 ** field\nleft2 = two_space - 30\none_space = left2 * 2 ** field\nopts = [544, 512, 576, 510]\nanswer = 'ABCD'[opts.index(one_space)]"
+   },
+   "solution": {
+    "given": "16-bit instructions, 4-bit address fields, 12 three-address and 30 two-address instructions",
+    "find": "maximum one-address instructions",
+    "steps": [
+     "A three-address instruction has a 4-bit opcode and three 4-bit addresses. The 4-bit opcode has \\(16\\) patterns; \\(12\\) are used, so \\(4\\) patterns are free for longer opcodes.",
+     "Each free pattern is extended with another 4 bits (two-address instructions have an 8-bit opcode): \\(4 \\times 16 = 64\\) two-address opcodes available; \\(30\\) are used, so \\(34\\) are free.",
+     "Each of those is extended by 4 more bits (one-address instructions have a 12-bit opcode): \\(34 \\times 16 = 544\\)."
+    ],
+    "shortcut": "Free patterns at one level, times 2^(address bits), become the available patterns at the next level.",
+    "trap": "Multiplying by 2^4 only once, or counting the zero-address instructions as well (that would use up the patterns)."
+   },
+   "answer": {
+    "options": [
+     "A"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000061",
+   "subject": "Digital Logic",
+   "topic": "Combinational Logic (Multiplexers, Decoders, Adders)",
+   "kind": "multi_concept",
+   "difficulty": "M",
+   "question_type": "MSQ",
+   "marks": 2,
+   "question_text": "Let \\(f(A, B) = \\overline{A}B + A\\overline{B} + AB\\). Which of the following expressions is/are equal to \\(f\\) for all values of \\(A\\) and \\(B\\)? (Select all that apply.)",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(A + B\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(\\overline{\\overline{A}\\,\\overline{B}}\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(A \\oplus B\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(A + \\overline{A}B\\)"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "f = lambda a, b: ((not a) and b) or (a and (not b)) or (a and b)\ncands = [\n    lambda a, b: a or b,\n    lambda a, b: not ((not a) and (not b)),\n    lambda a, b: a != b,\n    lambda a, b: a or ((not a) and b),\n]\nvals = list(itertools.product([False, True], repeat=2))\nanswer = ['ABCD'[i] for i, g in enumerate(cands) if all((not f(a, b)) == (not g(a, b)) for a, b in vals)]"
+   },
+   "solution": {
+    "given": "f = A'B + AB' + AB",
+    "find": "equivalent expressions",
+    "steps": [
+     "\\(f\\) is true for \\((0,1), (1,0), (1,1)\\) and false only for \\((0,0)\\), so \\(f = A + B\\).",
+     "\\(A + B\\): equal. \\(\\overline{\\overline{A}\\,\\overline{B}}\\) is \\(A + B\\) by De Morgan: equal. \\(A \\oplus B\\) is false at \\((1,1)\\): not equal. \\(A + \\overline{A}B = A + B\\) (absorption): equal."
+    ],
+    "shortcut": "Build the 4-row truth table of f once and compare each option with it.",
+    "trap": "Reading \\(A \\oplus B\\) as equal because two of the three terms match: the term \\(AB\\) makes \\(f\\) true at (1,1), but XOR is false there."
+   },
+   "answer": {
+    "options": [
+     "A",
+     "B",
+     "D"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000062",
+   "subject": "Operating Systems",
+   "topic": "Deadlock Prevention, Avoidance, Detection, Recovery",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "MSQ",
+   "marks": 2,
+   "question_text": "A system has \\(4\\) processes and \\(3\\) resource types. Allocation: \\(P0 = (0,2,3),\\ P1 = (0,1,3),\\ P2 = (2,2,3),\\ P3 = (0,0,3)\\). Maximum: \\(P0 = (1,4,6),\\ P1 = (1,3,5),\\ P2 = (5,2,6),\\ P3 = (1,3,3)\\). Available \\(= (3,0,3)\\). Which of the following orderings is/are safe sequences? (Select all that apply.)",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "P2, P0, P1, P3"
+    },
+    {
+     "option_id": "B",
+     "text": "P0, P2, P1, P3"
+    },
+    {
+     "option_id": "C",
+     "text": "P2, P1, P3, P0"
+    },
+    {
+     "option_id": "D",
+     "text": "P3, P2, P0, P1"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "alloc = {'P0': (0, 2, 3), 'P1': (0, 1, 3), 'P2': (2, 2, 3), 'P3': (0, 0, 3)}\nmx = {'P0': (1, 4, 6), 'P1': (1, 3, 5), 'P2': (5, 2, 6), 'P3': (1, 3, 3)}\navail = (3, 0, 3)\ndef safe(seq):\n    work = list(avail)\n    for p in seq:\n        need = [mx[p][i] - alloc[p][i] for i in range(3)]\n        if any(need[i] > work[i] for i in range(3)):\n            return False\n        work = [work[i] + alloc[p][i] for i in range(3)]\n    return True\ncands = [('P2', 'P0', 'P1', 'P3'), ('P0', 'P2', 'P1', 'P3'), ('P2', 'P1', 'P3', 'P0'), ('P3', 'P2', 'P0', 'P1')]\nanswer = ['ABCD'[i] for i, c in enumerate(cands) if safe(c)]"
+   },
+   "solution": {
+    "given": "Allocation, Maximum and Available as given",
+    "find": "which orderings are safe",
+    "steps": [
+     "Need = Maximum - Allocation: P0 = (1,2,3), P1 = (1,2,2), P2 = (3,0,3), P3 = (1,3,0). Available = (3,0,3).",
+     "Only P2 (needs 3,0,3) can run first: P0 needs 2 of Y and P1 needs 2 of Y, but none is free, and P3 needs 3 of Y.",
+     "Order A: P2 runs (Work becomes 6,2,6), then P0 (needs 1,2,3), then P1, then P3: safe.",
+     "Order B starts with P0, which needs (1,2,3) but only (3,0,3) is available: not safe. Order D starts with P3 (needs 1,3,0): not safe.",
+     "Order C: P2, then P1 (needs 1,2,2 with Work 6,2,6), then P3, then P0: safe."
+    ],
+    "shortcut": "A safe sequence must start with a process whose Need fits the Available vector, and each step adds the finished process's Allocation.",
+    "trap": "Judging by process numbering: P0 first looks natural but its Need exceeds Available."
+   },
+   "answer": {
+    "options": [
+     "A",
+     "C"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000063",
+   "subject": "Algorithms",
+   "topic": "Searching, Sorting, Hashing Mechanisms",
+   "kind": "conceptual",
+   "difficulty": "M",
+   "question_type": "MSQ",
+   "marks": 2,
+   "question_text": "A sorting algorithm is stable if equal keys keep their original relative order. Which of the following implementations is/are stable? (Select all that apply.)",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "Insertion sort"
+    },
+    {
+     "option_id": "B",
+     "text": "Selection sort (swap the minimum into place)"
+    },
+    {
+     "option_id": "C",
+     "text": "Merge sort (left half first on ties)"
+    },
+    {
+     "option_id": "D",
+     "text": "Heap sort"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "def insertion(a):\n    a = list(a)\n    for i in range(1, len(a)):\n        x = a[i]\n        j = i - 1\n        while j >= 0 and a[j][0] > x[0]:\n            a[j + 1] = a[j]\n            j -= 1\n        a[j + 1] = x\n    return a\ndef selection(a):\n    a = list(a)\n    for i in range(len(a)):\n        m = min(range(i, len(a)), key=lambda k: (a[k][0], k))\n        a[i], a[m] = a[m], a[i]\n    return a\ndef merge(a):\n    if len(a) <= 1:\n        return list(a)\n    mid = len(a) // 2\n    l = merge(a[:mid])\n    r = merge(a[mid:])\n    out = []\n    i = j = 0\n    while i < len(l) and j < len(r):\n        if l[i][0] <= r[j][0]:\n            out.append(l[i])\n            i += 1\n        else:\n            out.append(r[j])\n            j += 1\n    return out + l[i:] + r[j:]\ndef heap(a):\n    a = list(a)\n    n = len(a)\n    def sift(i, n):\n        while True:\n            l = 2 * i + 1\n            r = 2 * i + 2\n            m = i\n            if l < n and a[l][0] > a[m][0]:\n                m = l\n            if r < n and a[r][0] > a[m][0]:\n                m = r\n            if m == i:\n                return\n            a[i], a[m] = a[m], a[i]\n            i = m\n    for i in range(n // 2 - 1, -1, -1):\n        sift(i, n)\n    for end in range(n - 1, 0, -1):\n        a[0], a[end] = a[end], a[0]\n        sift(0, end)\n    return a\ndata = [(2, 'a'), (2, 'b'), (1, 'c'), (2, 'd'), (1, 'e')]\ndef is_stable(f):\n    for perm in itertools.permutations(data):\n        if f(list(perm)) != sorted(perm, key=lambda x: x[0]):\n            return False\n    return True\nanswer = [l for l, f in zip('ABCD', [insertion, selection, merge, heap]) if is_stable(f)]"
+   },
+   "solution": {
+    "given": "four textbook implementations",
+    "find": "which are stable",
+    "steps": [
+     "Insertion sort shifts only elements strictly greater than the key, so equal keys never pass each other: stable.",
+     "Selection sort swaps the minimum into position i, which can jump an element over equal keys (for example 2a, 2b, 1c becomes 1c, 2b, 2a): not stable.",
+     "Merge sort that takes from the left half when keys are equal keeps the original order: stable.",
+     "Heap sort moves elements through swaps with far-away positions: not stable.",
+     "(The code was also run on every ordering of a 5-element list with repeated keys to confirm.)"
+    ],
+    "shortcut": "Ask whether the algorithm ever swaps or moves an element across an equal key.",
+    "trap": "Assuming every comparison sort is stable, or thinking selection sort is stable because it 'always picks the first minimum'."
+   },
+   "answer": {
+    "options": [
+     "A",
+     "C"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000064",
+   "subject": "Discrete Mathematics",
+   "topic": "Propositional and First-Order Quantifier Logic",
+   "kind": "multi_concept",
+   "difficulty": "M",
+   "question_type": "MSQ",
+   "marks": 2,
+   "question_text": "Which of the following propositional formulas is/are tautologies? (Select all that apply.)",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\((p \\to q) \\lor (q \\to p)\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\((p \\to q) \\to (q \\to p)\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(((p \\to q) \\land (q \\to r)) \\to (p \\to r)\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\((p \\to q) \\land (q \\to p)\\)"
+    }
+   ],
+   "verify": {
+    "lang": "python",
+    "code": "imp = lambda a, b: (not a) or b\ncands = [\n    lambda p, q, r: imp(p, q) or imp(q, p),\n    lambda p, q, r: imp(imp(p, q), imp(q, p)),\n    lambda p, q, r: imp(imp(p, q) and imp(q, r), imp(p, r)),\n    lambda p, q, r: imp(p, q) and imp(q, p),\n]\nvals = list(itertools.product([False, True], repeat=3))\nanswer = ['ABCD'[i] for i, f in enumerate(cands) if all(f(*v) for v in vals)]"
+   },
+   "solution": {
+    "given": "four formulas in p, q, r",
+    "find": "which are tautologies",
+    "steps": [
+     "A: \\((p \\to q) \\lor (q \\to p)\\). If \\(p\\) is false the first part is true; if \\(p\\) is true then \\(q\\to p\\) is true. A tautology.",
+     "B: \\((p \\to q) \\to (q \\to p)\\) is false when \\(p\\) is false and \\(q\\) is true (the premise is true, the conclusion false). Not a tautology.",
+     "C: \\(((p \\to q) \\land (q \\to r)) \\to (p \\to r)\\) is the hypothetical syllogism: a tautology.",
+     "D: \\((p \\to q) \\land (q \\to p)\\) is the equivalence \\(p \\leftrightarrow q\\), false when \\(p\\) and \\(q\\) differ. Not a tautology."
+    ],
+    "shortcut": "Look for one assignment that makes the formula false; if you cannot find one, check by truth table.",
+    "trap": "Reading 'p -> q' and 'q -> p' as the same statement: the converse is not equivalent to the implication."
+   },
+   "answer": {
+    "options": [
+     "A",
+     "C"
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000065",
+   "subject": "Discrete Mathematics",
+   "topic": "Combinatorics (Counting Rules, Summation Formulas)",
+   "kind": "multi_concept",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "The number of distinct arrangements of all the letters of the word BOOKKEEPER is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "word = \"BOOKKEEPER\"\ncounts = {}\nfor ch in word:\n    counts[ch] = counts.get(ch, 0) + 1\nden = 1\nfor v in counts.values():\n    den *= math.factorial(v)\nanswer = math.factorial(len(word)) // den"
+   },
+   "solution": {
+    "given": "the letters B, O, O, K, K, E, E, E, P, R",
+    "find": "number of distinct arrangements",
+    "steps": [
+     "There are \\(10\\) letters: B once, O twice, K twice, E three times, P once, R once.",
+     "Arrangements \\(= \\dfrac{10!}{2!\\,2!\\,3!} = \\dfrac{3{,}628{,}800}{24} = 151{,}200\\)."
+    ],
+    "shortcut": "n! divided by the factorial of each repeated letter's count.",
+    "trap": "Using 10! (treating identical letters as different) or dividing only by 3! for the three E's."
+   },
+   "answer": {
+    "range": [
+     151200.0,
+     151200.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000066",
+   "subject": "Programming in C",
+   "topic": "Data Types, Syntax, Control Structures, Loops",
+   "kind": "trace",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "What is the value returned by f(12) in the following C function?\n```\nint f(int n) {\n    int s = 0;\n    for (int i = 1; i <= n; i++) {\n        if (i % 3 == 0) continue;\n        if (i > 8) break;\n        s += i;\n    }\n    return s;\n}\n```\nThe value returned is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "n = 12\ns = 0\ni = 1\nwhile i <= n:\n    if i % 3 == 0:\n        i += 1\n        continue\n    if i > 8:\n        break\n    s += i\n    i += 1\nanswer = s"
+   },
+   "solution": {
+    "given": "loop with continue and break",
+    "find": "value of f(12)",
+    "steps": [
+     "For \\(i = 1, 2\\): added (1 + 2 = 3). \\(i = 3\\): multiple of 3, skipped by continue.",
+     "\\(i = 4, 5\\): added (3 + 4 + 5 = 12). \\(i = 6\\): skipped. \\(i = 7, 8\\): added (12 + 7 + 8 = 27). \\(i = 9\\): multiple of 3, skipped.",
+     "\\(i = 10\\): not a multiple of 3 and \\(i > 8\\), so the loop breaks. The function returns \\(27\\)."
+    ],
+    "shortcut": "Tabulate i, then apply continue (skip) before break (stop).",
+    "trap": "Checking the break condition before the continue, which would stop at i = 9 instead of skipping it (same sum here, but the order matters in general)."
+   },
+   "answer": {
+    "range": [
+     27.0,
+     27.0
+    ]
+   }
+  }
+ ]
+}

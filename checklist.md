@@ -433,7 +433,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Next Forge batches: author_b003.py (other CS topics: compilers, COA pipeline/cache, DBMS transactions, networks, programming), then EC/EE/ME/CE/DA; static answer-free `forge.json` per branch still to do
 - [x] 30 Oct: Forge hub: questions use the full width (side cards moved below), "Show solution" before checking fetches the key first, fenced code blocks render for C questions; bank now 29 CS questions (b003 = 12 more, `author_b003.py`)
 - [x] Owner decision: size to reach for CS before starting the other five branches in parallel (design target was ~800 across practice + Daily + mocks)
-- [ ] Forge CS bank: 54 of the 800-question target (b005 = 12 more incl. first MCQ/MSQ, 30 Oct; author_b005.py) (owner, 30 Oct: finish CS to 800 before any other branch; then the other branches in parallel)
+- [ ] Forge CS bank: 66 of the 800-question target (b006 = 12 more: 6 MCQ, 4 MSQ, 2 NAT, 30 Oct; author_b006.py) (owner, 30 Oct: finish CS to 800 before any other branch; then the other branches in parallel)
 - [x] **Checkpoint** rebuilt 30 Oct: `/checkpoint` no longer a dead end: mixed 10-question checkpoint from the last 5 tests + mistakes (unseen first, easy to hard) and a searchable topic picker for the 8-question single-topic one; started a real 1/10 session (desktop light, mobile dark). Open: look at results/retry flow for a checkpoint, and mobile light / desktop dark views
 - [x] 30 Oct package updates verified: full build passes, Battles create/finish/compare (zod routes), grading and security checks pass
 - [x] 30 Oct: reviewed `New folder/` (3 MadeToScale Instagram Reels + a 20-page "12 landing page animations" PDF; third-party, reference only, not for committing)
