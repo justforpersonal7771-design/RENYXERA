@@ -10,7 +10,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
   return (
     <ClientLayout>
       {/* Fill the viewport (minus navbar and page padding) so the footer sits at the bottom on short pages. */}
-      <div className="flex flex-col min-h-[calc(100dvh-6rem)] sm:min-h-[calc(100dvh-7rem)] md:min-h-[calc(100dvh-8rem)]">
+      <div className="flex flex-col min-h-[calc(100dvh-6rem)] sm:min-h-[calc(100dvh-7rem)] md:min-h-[calc(100dvh-10.5rem)]">
         <div className="flex-1">
           <ToolsFrame>{children}</ToolsFrame>
         </div>

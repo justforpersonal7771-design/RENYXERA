@@ -1881,3 +1881,16 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .word-reveal > span { display: inline-block; animation: word-reveal-in .6s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
 @media (prefers-reduced-motion: reduce) { .word-reveal > span { animation: none; } }
 html[data-motion="reduce"] .word-reveal > span { animation: none; }
+
+/* Dark-mode outlines (owner, 31 Oct): the near-white 2px borders and offset shadows on buttons, pills, keys and selected tiles were harsh to look at.
+   In dark mode every outline uses one soft slate-violet line instead; light mode is unchanged. */
+.dark { --edge: rgb(150 148 190 / .55); --edge-soft: rgb(150 148 190 / .3); --option-border-selected: #aab0f0; }
+.dark :is(.btn-main, .pill-ink) { border-color: var(--edge) !important; box-shadow: 3px 3px 0 var(--edge-soft) !important; }
+.dark :is(.btn-main, .pill-ink):hover { box-shadow: 4px 4px 0 var(--edge-soft) !important; }
+.dark :is(.btn-main, .pill-ink):active { box-shadow: 0 0 0 var(--edge-soft) !important; }
+.dark .btn-soft { border-color: var(--edge); box-shadow: 2px 2px 0 var(--edge-soft); }
+.dark .calc-root, .dark .calc-key { border-color: var(--edge) !important; box-shadow: 2px 2px 0 var(--edge-soft) !important; }
+.dark .q-cell[data-current="true"] { border-color: #aab0f0 !important; }
+.dark [class*="border-[var(--text-primary)]"] { border-color: var(--edge); }
+.dark [class*="ring-[var(--text-primary)]"] { --tw-ring-color: var(--edge); }
+.dark [class*="_0_var(--text-primary)"] { box-shadow: 4px 4px 0 var(--edge-soft) !important; }

@@ -44,7 +44,7 @@ export default function TestCentrePage() {
   const current = steps.findIndex((s) => !s.done);
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-9.5rem)]">
+    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-12rem)]">
       <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
         <section className="card-well relative overflow-hidden p-4 sm:p-5" data-tint="mint" aria-label="Today's mission">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[var(--tint-mint-ink)] opacity-10" />

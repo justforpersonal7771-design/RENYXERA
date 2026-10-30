@@ -28,7 +28,7 @@ export function ToolsHub() {
     if (d) { e.preventDefault(); setSel(INTENTS[(i + d + INTENTS.length) % INTENTS.length].id); }
   };
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-14rem)]">
+    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-17rem)]">
       <header>
         <span className="inline-block -rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Tools</span>
         <h1 className="mt-2 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl"><WordReveal text="What do you want to do?" /></h1>

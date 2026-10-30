@@ -8,6 +8,15 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ---
 
+## 0-new. 31 Oct 2026 turn
+
+- [x] Migration 0044 applied by owner; `check:rpc` + `check:rls` clean; Performance Advisor clean. Security Advisor leftovers are accepted by design (6 public leaderboard functions; signed-in own-data functions). Leaked-password protection needs Supabase Pro (paid) → **accepted/skipped**, sign-in has no passwords.
+- [x] Build a test / Setup screen now fits one screen at 1920×912, 1440×900, 1366×768 (Test Centre bar is a floating back button on desktop, slim row on phones; Blueprint panel tightened).
+- [ ] Tools hub overflow (38 px): marketing layout min-height reduced; verify after build 21.
+- [ ] Still scrolling (audit): Checkpoint (200–730 px), Mocks (620–770), Battles (120–260), then Tutor/Study/Calendar/Mentor/Plans. Next turn.
+- [ ] Results screen single-screen + dark soft edges: built, not yet visually verified.
+- [ ] Commit/push batch (0044 file, check:rpc, manifest + icons, R24 plan, results, dark edges, Test Centre bar).
+
 ## 0. Now — next steps in order (26 Oct)
 
 - [x] **(you) URGENT: Supabase rejects every signed-in database call from browsers** ("JWT issued at future", PGRST303, measured for 12+ minutes on 26 Oct). This breaks the referral link ("Creating your link…"), the sponsor break, profile loading/saving and anything else read directly from the browser. Steps: Supabase dashboard → your project → **Project Settings → General → Restart project**; if it persists, **Project Settings → JWT Keys**: check the current signing key, and open a ticket with Supabase support quoting PGRST303. Tell me when done; I re-test. **VERIFIED RESOLVED 30 Oct:** 11 live screens signed in (Pro and Free accounts) show no Supabase 4xx/5xx and no console errors; profile saves (PATCH profiles 204, value persists after reload).
@@ -466,3 +475,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 31 Oct: refund policy rewritten to the owner's rule (refunds only for glitches and errors, by email with a genuine reason): `/refunds`, `/terms` section 7, Plans confirm box, receipt, contact page; the old "currently free, no payments" and 7-day refund wording removed. Legal review still open
 - [ ] **Study materials: build plan after the decisions:** (1) pack and bundle data model + `study_access` per subject, (2) Plans checkout add-on row with server validation, (3) offer moments from `13` section 4 in order (results screen, post-purchase, mistakes), (4) CS lessons built subject by subject with owner review, Aptitude last. Future features list: `docs/study-materials/14-FUTURE-FEATURES.md`
 - [ ] Answer the owner: how much effort to move the repo to a renyxera@gmail.com GitHub account (options: rename + add email; organization; new personal account), see the reply of 31 Oct; the remote uses the SSH alias `github-personal`
+- [x] 31 Oct: **Supabase Advisors fixed with migration `0044_advisor_fixes.sql` (applied by the owner; verified from outside with `npm run check:rpc` and `npm run check:rls`)**: 15 slow-policy warnings (`auth.uid()` now `(select auth.uid())`), 2 mutable search paths, and signed-out/signed-in access to SECURITY DEFINER functions (signed-out visitors now denied `mock_paper`, `mock_my_result` and every private function; any signed-in user denied `account_tier` and the trigger functions). Kept on purpose: the six public-leaderboard functions for visitors, and the self-scoped functions signed-in users call (my_referral_code, claim_referral, change_my_branch, ...). Those remaining "signed-in can execute" warnings are accepted by design (each reads or writes only the caller's own rows). Live site re-checked after: 11 screens clean. Open: owner to click Refresh in both Advisors and send what remains
+- [x] 31 Oct: manifest fixed ("GATE CSE" removed): new name/description, maskable icons, 5 screenshots, 5 shortcuts, `orientation: any`, categories, launch handler (R17-M1 mostly done; not done: window-controls-overlay styling, share target, taskbar badge)
+- [x] 31 Oct: mobile app plan written: `docs/roadmap/R24-MOBILE-APP.md` (PWA first, Play via TWA when funded, iPhone stays PWA, native wrapper only for photo doubts/widgets). Next: install prompt moments, iPhone Add-to-Home-Screen card, web push, phone single-screen audit
+- [ ] Exam results screen single-screen fix (ring and tiles now follow the window height) and dark-mode outline softening: built, being tested

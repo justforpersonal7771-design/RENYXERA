@@ -1307,16 +1307,16 @@ export default function ExamSetupPage() {
                       transition={{ duration: 0.25 }}
                       className="flex-1 min-h-0 flex flex-col"
                     >
-                      <div className="flex-1 min-h-0 px-5 space-y-3 overflow-y-auto custom-scrollbar pb-2">
+                      <div className="flex-1 min-h-0 px-5 space-y-2.5 overflow-y-auto custom-scrollbar pb-1">
 
                       <div className="grid grid-cols-2 gap-3">
-                         <div className="p-4 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-2xl border border-indigo-500/20">
-                            <span className="blueprint-stat-label text-indigo-500 tracking-normal mb-1 block">Questions</span>
-                            <div className="text-3xl font-extrabold text-[var(--text-primary)]">{currentDraft.questions.length}</div>
+                         <div className="p-3 bg-gradient-to-br from-indigo-500/10 to-indigo-500/5 rounded-2xl border border-indigo-500/20">
+                            <span className="blueprint-stat-label text-indigo-500 tracking-normal block">Questions</span>
+                            <div className="text-2xl font-extrabold leading-tight text-[var(--text-primary)]">{currentDraft.questions.length}</div>
                          </div>
-                         <div className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-2xl border border-purple-500/20">
-                            <span className="blueprint-stat-label text-purple-500 tracking-normal mb-1 block">Marks</span>
-                            <div className="text-3xl font-extrabold text-[var(--text-primary)]">{draftStats.totalMarks}</div>
+                         <div className="p-3 bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-2xl border border-purple-500/20">
+                            <span className="blueprint-stat-label text-purple-500 tracking-normal block">Marks</span>
+                            <div className="text-2xl font-extrabold leading-tight text-[var(--text-primary)]">{draftStats.totalMarks}</div>
                          </div>
                       </div>
 
@@ -1382,11 +1382,11 @@ export default function ExamSetupPage() {
                       </div>
                       </div>
 
-                      <div className="p-5 pt-3 shrink-0">
+                      <div className="px-5 pb-4 pt-2 shrink-0">
                       {(currentDraft.config.examType === "GRAND_MOCK" || currentDraft.config.examType === "YEAR_PAPER") && (
-                        <p className="mb-3 flex items-start gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/60 px-3 py-2 text-[11px] leading-snug text-[var(--text-secondary)]">
+                        <p className="mb-2 flex items-start gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/60 px-3 py-1.5 text-[11px] leading-snug text-[var(--text-secondary)]">
                           <ShieldCheck className="w-3.5 h-3.5 mt-0.5 shrink-0 text-emerald-500" />
-                          <span>Graded paper: to keep rankings fair, tab switches, leaving fullscreen, pauses and timing are recorded with your attempt. They never change your score.</span>
+                          <span>Graded paper: tab switches, leaving fullscreen and pauses are recorded with your attempt. They never change your score.</span>
                         </p>
                       )}
                       <motion.button
