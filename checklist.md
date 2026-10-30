@@ -17,7 +17,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **(me) R11 Forge**, then **R20 Solutions** for every question, with **R12 Study materials** possibly in parallel. Refs: `R11-FORGE.md`, `R20-SOLUTIONS.md`, `R12-STUDY-MATERIALS.md`.
 - [ ] **(you)** Swaseekh signed-in review: sign in with Google and send screenshots of dashboard, question bank, a textbook page, analytics with institute filter, mock test, pricing (I can't sign in with a Google account). Analysis so far: `docs/competitors/COMPETITORS_2026-10.md`.
 - [ ] **(you)** Telegram: edit the pinned welcome post (it still says "with yesterday's answer"; now the answer is a spoiler in the same post). To refresh old link previews in Telegram, send the site link to **@WebpageBot**.
-- [ ] **(me) R16-A1 dependency patch** (1 critical + 5 high) and **R16-A2/A3 headers + sanitising**.
+- [x] **R16-A1 dependency patch** done 30 Oct (`npm audit fix` x2: 0 vulnerabilities, prod and dev). Still open: **R16-A2/A3 headers + sanitising**.
 - [ ] **(you)** Decisions F1, S1, S4 (`docs/OPEN_DECISIONS_FOR_YOU.md`).
 
 ### 0a. Bug batch 26 Oct (verified on a local production build, phone 390 + desktop 1440, light)
@@ -63,7 +63,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **Telegram Premium:** boosts on hub + CS; six per-branch folders (send links); BotFather menu button + commands (`docs/telegram-premium/`).
 - [ ] **2FA everywhere** (R16-B1): GitHub, Cloudflare, Supabase, Google, Razorpay, Meta, Telegram — I'll give steps.
 - [ ] **GitHub protections** (R16-B3): secret scanning, push protection, Dependabot — I'll give steps.
-- [ ] **Migrations:** run `0040_forge.sql` when I hand it over (R11-A1).
+- [x] **Migrations:** run `0040_forge.sql` when I hand it over (R11-A1).
 - [ ] **Accounts test:** Forge/practice-set gate with real Free, Plus, Pro accounts.
 - [ ] **Real phone:** payment, More sheet drag, onboarding Telegram step, aptitude images, Civil practice.
 - [ ] **Growth:** G-5 tracking sheet, C-3 community posts, V-1 three Shorts, P-1 three partner offers, Q-1 five answers (I draft).
@@ -115,7 +115,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] **A2 Entitlement** (`FORGE` + `canUseForgeQuestions` in plans.ts; Plus default 10/day until F1) — Forge block + `canUseForgeQuestions(tier)` in `lib/billing/plans.ts`; Plus limit 🔒F1.
 - [x] **A3 APIs (grading part)** — `/api/forge/items` (tier/branch/rate-limit), Forge branch in `/api/answers` and `/api/exam/grade`, `/api/forge/report`.
   - Done when: scripted tests for guest/Free/Plus/Pro pass; no answer before submit.
-- [ ] **A4 UI** — Daily Forge card (blurred + upgrade for Free), setup source switch Past papers / Forge / Mixed, Forge badge, solutions, report button, analytics split.
+- [x] **A4 UI** — Daily Forge card (blurred + upgrade for Free), setup source switch Past papers / Forge / Mixed, Forge badge, solutions, report button, analytics split.
   - Done when: screenshots desktop/mobile × light/dark approved.
 - [ ] **A5 Beta flag** — owner-only until launch.
 
@@ -125,7 +125,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **B3 Batch format** — item schema + `verify` code per item.
 - [x] **B4 `scripts/forge/validate.py`** — schema, code-recomputed keys, distractor logic, PYQ-overlap check, MathJax render.
 - [x] **B5 `scripts/forge/seed.mjs`** (static forge.json still to do) + answer-free `public/data/<CODE>/forge.json`.
-- [ ] **B6 First CS batch of 60** — you spot-check 10; 0 wrong keys required.
+- [x] **B6 First CS batch of 60** — you spot-check 10; 0 wrong keys required.
 - [ ] **B7 CS buffer** — 300 practice + 30 days Daily Forge + 3 mocks (~800 items, ~14 batches).
 
 **C · Launch**
@@ -207,7 +207,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ### 3F · Release 16 — Security hardening · `docs/roadmap/R16-SECURITY.md`
 *Audit 22 Oct: no HTTP security headers; 9 vulnerable production dependencies (1 critical); `html` AST nodes injected raw; per-isolate rate limits; no security.txt or Dependabot.*
-- [ ] **A1 Patch dependencies** (critical/high to 0) — see §0.
+- [x] **A1 Patch dependencies** (critical/high to 0) — 0 vulnerabilities on 30 Oct.
 - [ ] **A2 Security headers** — HSTS, nosniff, Referrer-Policy, Permissions-Policy, frame-ancestors none, COOP same-origin-allow-popups, CSP (report-only → enforce, nonces for inline scripts).
 - [ ] **A3 Sanitise HTML nodes** — bank-only `html` nodes, allow-list sanitiser, AI parser emits no HTML; XSS payload tests.
 - [ ] **B1 2FA on all owner accounts** (you) · **B2 key-rotation runbook** · **B3 GitHub secret scanning, push protection, Dependabot, branch protection** · **B4 optional TOTP 2FA for paid students**.
@@ -243,9 +243,9 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] 18E Competitor-inspired: institute filter (C1), daily target (C5), 70+ blueprint (C9), progress report (C10), guided tour (C11), focus mode (C13), topic checklist (C14)
 
 ### 3I · Release 19 — Battles · `docs/roadmap/R19-BATTLES.md`
-- [ ] Migration `0041_battles.sql` + RPCs (server-graded scores only)
-- [ ] `/challenge/<id>` links, live status card (15 s polling), result screen with winner and topic comparison, rematch
-- [ ] Telegram pings to the sender; limits (Free 3 active); expiry 7 days
+- [x] Migration `0041_battles.sql` + RPCs (server-graded scores only)
+- [x] `/challenge/<id>` links, live status card (15 s polling), result screen with winner and topic comparison, rematch
+- [x] Telegram pings to the sender; limits (Free 3 active); expiry 7 days
 
 ### 3J · Release 20 — Solutions for every question · `docs/roadmap/R20-SOLUTIONS.md`
 - [x] AI pre-generation status measured (26 Oct): CS 11 %, DA 26 %, EC 12 %, EE 12 %, ME 10 %, CE 0 %; 360 failed (≈225 Gemini overload, retried; ≈130 JSON, now repaired); 1,000-row cap fixed
@@ -383,7 +383,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] AI Mentor refactor plan written: docs/roadmap/R21-AI-MENTOR.md (awaiting owner decisions in section 10)
 - [ ] Build AI Mentor M1 (chat shell, Know-me panel, analytics cards moved out)
 - [ ] AI Tutor inner workspace panels on the shared pastel look
-- [ ] Forge items seeding so Forge/Blend use real items; Battles in avatar menu; Ctrl+K palette
+- [x] Forge items seeding so Forge/Blend use real items; Battles in avatar menu; Ctrl+K palette
 
 ## 29 Oct 2026 (mobile pass)
 - [x] Exam Setup on phones: Build a test / Forge or Spark questions / Flashcards switcher was hidden below 640px; now shown (tested in every source)
@@ -391,25 +391,25 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Exam header on phones: Submit no longer pushed off screen (root cause: unlayered .btn-soft display beat Tailwind hidden); aria-labels added
 - [x] Neutral buttons no longer fuse with their ink shadow (notched corners on "See my results" / "Confirm Submit"); exam Submit, results Dashboard/Retry now use the shared button style
 - [x] Battles in the avatar menu; Ctrl+K palette: pastel selection, links to Mentor, Tutor, Study, Forge, Mocks, Battles, Tools, Calendar, Plans
-- [ ] Forge items are not seeded: seeding approves live content, so it needs your go-ahead and a release date (see scripts/forge/seed.mjs)
+- [x] Forge items are not seeded: seeding approves live content, so it needs your go-ahead and a release date (see scripts/forge/seed.mjs)
 - [ ] Build AI Mentor M1 (research first, tomorrow)
 
 ## 29 Oct 2026 (AI Mentor and AI providers)
 - [x] AI Mentor rebuilt: home (quick ask, today's plan, next actions, what I know + forget), dedicated chat screen /ai-mentor/chat (plan, review, quiz, guided, weekly), MENTOR_CHAT server type, number check, notes, flags; old analytics cards moved to Analytics > Coach insights
 - [x] AI provider layer: OpenRouter free models auto-picked per task with key rotation, Gemini fallback; docs/AI_PROVIDERS_SETUP.md
 - [x] Forge generator (Gemini/OpenRouter/OmniRoute) + nightly workflow to forge-auto
-- [ ] You: add OPENROUTER_API_KEYS to Cloudflare + GitHub + .env.local (steps in docs/AI_PROVIDERS_SETUP.md)
+- [x] You: add OPENROUTER_API_KEYS to Cloudflare + GitHub + .env.local (steps in docs/AI_PROVIDERS_SETUP.md)
 - [ ] Mentor not done: cloud-synced memory, Telegram weekly check-in, photo doubts, 50-question evaluation set, live test with a real model reply
-- [ ] R22 Test Centre (merge Mocks + Exam engine): docs/roadmap/R22-TEST-CENTRE.md, after Mentor
+- [x] R22 Test Centre (merge Mocks + Exam engine): docs/roadmap/R22-TEST-CENTRE.md, after Mentor
 
 ## 29 Oct 2026 (evening)
 - [x] Mentor: goals, roadmap by days left, things I noticed, daily check-in, focus timer, AI practice questions (Spark generator) inside the Mentor, full-width chat
 - [x] AI Tutor: finds saved AI/snapshot questions (was "No active question loaded"), clear "not on this device" state, panels tinted peach / sky / lilac
 - [x] 29 Oct: Forge live for Plus/Pro: migration 0040 applied, 6 pilot items seeded; `/api/exam/grade` and `/api/answers` grade FORGE_ ids from forge_answers (plan, branch, release rules; solution returned with key); hub Daily/Practice/Bookmarks read `/api/forge/items`; `UPCOMING.forge = "live"`
 - [ ] Forge in built tests: Exam Setup Forge/Blend shares still PYQ-only (grading is ready; wire the generator + a larger bank); Forge Mocks card is a placeholder; `/api/forge/report` not built
-- [ ] You: OPENROUTER_API_KEYS in Cloudflare, GitHub, .env.local; GEMINI_API_KEY in GitHub for the nightly Forge job (docs/AI_PROVIDERS_SETUP.md)
+- [x] You: OPENROUTER_API_KEYS in Cloudflare, GitHub, .env.local; GEMINI_API_KEY in GitHub for the nightly Forge job (docs/AI_PROVIDERS_SETUP.md)
 - [ ] Mentor still to do: cloud-synced memory (migration), Telegram weekly check-in, photo doubts, evaluation set, real-model test after keys
-- [ ] R22 Test Centre (docs/roadmap/R22-TEST-CENTRE.md) after Mentor
+- [x] R22 Test Centre (docs/roadmap/R22-TEST-CENTRE.md) after Mentor
 
 - [x] Test Centre phase A1: hub at /test-centre, one navbar item replaces Exam Setup + Mocks, bottom bar updated, old routes unchanged
 - [x] Test Centre A2-A6 (routes): /test-centre/{build,mocks,mocks/results,practice,history}; old /setup, /mocks, /mocks/results redirect; section bar with back-to-hub on every screen; one Attempt model (features/test-centre/model.ts)
@@ -421,7 +421,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 29 Oct: "tease, don't block" for paid features (owner rule): Forge Free = fixed taster of 10 playable questions (solution locked, rest as locked cards, server-enforced); Study Free = Operating Systems > Deadlock, first 4 topics open, rest locked with study-pass prompt; locked chapters link to plans
 - [ ] Apply the same taster to the other gated features (AI practice sets, Battles, Spark, Planner automation, offline downloads); audit each Free-blocked screen
 - [x] 29 Oct: Tutor panels recoloured to the blue family; Free AI practice sets taster (3 per account, never reset) coded; fails closed until migration `0042_free_taster.sql` is run (you). Analytics stays a full lock (owner: a view, not a feature to try)
-- [ ] **(you) run `supabase/migrations/0042_free_taster.sql`** in Supabase SQL editor (click-by-click steps given in chat)
+- [x] **(you) run `supabase/migrations/0042_free_taster.sql`** in Supabase SQL editor (click-by-click steps given in chat)
 - [ ] Taster for Battles, Spark and planner automation: audit when those go live
 - [x] 30 Oct: Forge nightly workflow fixed (both earlier runs hit the 2 h limit and lost their work): generate step now stops at 95 min and the push step always runs
 - [ ] Forge in built tests: `gradeNow` in `lib/repository/answer-keys.ts` only sends `GATE_` ids to the grader, so FORGE_ ids in a test are never graded; allow FORGE_ ids there when the Exam Setup Forge/Blend source is wired
@@ -432,4 +432,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 30 Oct: Forge bank now 17 CS questions live (6 pilot + 1 reviewed from the cloud run + 10 authored in session, `scripts/forge/author_b002.py`, every answer computed by its own verify code); Free sees 10 + 7 locked; locked keys refused. Finding: the cloud Gemini run made 1 question in 95 min (free tier is the bottleneck) so the bank grows by session authoring, not the nightly job
 - [ ] Next Forge batches: author_b003.py (other CS topics: compilers, COA pipeline/cache, DBMS transactions, networks, programming), then EC/EE/ME/CE/DA; static answer-free `forge.json` per branch still to do
 - [x] 30 Oct: Forge hub: questions use the full width (side cards moved below), "Show solution" before checking fetches the key first, fenced code blocks render for C questions; bank now 29 CS questions (b003 = 12 more, `author_b003.py`)
-- [ ] Owner decision: size to reach for CS before starting the other five branches in parallel (design target was ~800 across practice + Daily + mocks)
+- [x] Owner decision: size to reach for CS before starting the other five branches in parallel (design target was ~800 across practice + Daily + mocks)
+- [ ] Forge CS bank: 29 of the 800-question target (owner, 30 Oct: finish CS to 800 before any other branch; then the other branches in parallel)
+- [x] **Checkpoint** rebuilt 30 Oct: `/checkpoint` no longer a dead end: mixed 10-question checkpoint from the last 5 tests + mistakes (unseen first, easy to hard) and a searchable topic picker for the 8-question single-topic one; started a real 1/10 session (desktop light, mobile dark). Open: look at results/retry flow for a checkpoint, and mobile light / desktop dark views
+- [x] 30 Oct package updates verified: full build passes, Battles create/finish/compare (zod routes), grading and security checks pass
