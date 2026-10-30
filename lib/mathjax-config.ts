@@ -11,6 +11,9 @@ export const MATHJAX_CONFIG = {
   loader: { load: ["input/tex", "output/chtml", "[tex]/html"] },
   tex: {
     packages: { "[+]": ["html"] },
+    // R16-A3: formulas from AI answers or notes must not be able to carry links or styles. MathJax 4 has no "safe" extension, so these four
+    // macros are redefined to show only their text argument (the URL / class / style / id is ignored). No shipped content uses them.
+    macros: { href: ["{#2}", 2], class: ["{#2}", 2], style: ["{#2}", 2], cssId: ["{#2}", 2] },
     // "\\(" in source is the two characters \( — the delimiters the dataset uses.
     inlineMath: [["\\(", "\\)"]],
     displayMath: [["\\[", "\\]"]],

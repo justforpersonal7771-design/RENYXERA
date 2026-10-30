@@ -61,7 +61,7 @@ export default function TermsOfServicePage() {
 
         <section>
           <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">7. Payments and refunds</h2>
-          <p>Payments are processed by Razorpay; we never see or store your card or UPI details. A plan is activated only after the payment provider confirms the payment. <strong className="text-[var(--text-primary)]">Purchases are final: we do not offer refunds</strong>, because access is delivered digitally and instantly. If you were charged but your plan did not activate, or you were charged twice, contact us and we will fix it or refund the duplicate charge. The Refund &amp; Cancellation Policy gives the details.</p>
+          <p>Payments are processed by Razorpay; we never see or store your card or UPI details. A plan is activated only after the payment provider confirms the payment. <strong className="text-[var(--text-primary)]">Purchases are final: we do not offer refunds</strong>, because access is delivered digitally and instantly. We refund only for our own errors: a double or wrong charge, a payment that did not activate, or a technical fault or content error we cannot fix. Requests are made by email with the payment reference and a genuine reason, and we review each one. The Refund &amp; Cancellation Policy gives the details.</p>
         </section>
 
         <section>

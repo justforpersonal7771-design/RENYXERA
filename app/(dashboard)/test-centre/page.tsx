@@ -6,6 +6,7 @@
  */
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { CountUp } from "@/components/ui/count-up";
 import { ArrowRight, BarChart3, Check, Layers, Play, RotateCcw, Settings, Swords, Timer } from "lucide-react";
 import { useStudyStore } from "@/store/use-study-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
@@ -43,7 +44,7 @@ export default function TestCentrePage() {
   const current = steps.findIndex((s) => !s.done);
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-9.5rem)]">
+    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-12rem)]">
       <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
         <section className="card-well relative overflow-hidden p-4 sm:p-5" data-tint="mint" aria-label="Today's mission">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[var(--tint-mint-ink)] opacity-10" />
@@ -70,10 +71,10 @@ export default function TestCentrePage() {
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {[
           { v: open, l: "mistakes waiting", t: "rose" }, { v: taken, l: "tests taken", t: "peri" },
-          { v: lastPct != null ? `${lastPct}%` : "-", l: "last test score", t: "butter" }, { v: attempts ? attempts.filter((a) => a.kind === "mock").length : 0, l: "mocks taken", t: "sky" },
-        ].map((s) => (
+          { v: lastPct, suffix: "%", l: "last test score", t: "butter" }, { v: attempts ? attempts.filter((a) => a.kind === "mock").length : 0, l: "mocks taken", t: "sky" },
+        ].map((s: { v: number | null; suffix?: string; l: string; t: string }) => (
           <div key={s.l} data-tint={s.t} className="card-pastel p-3 sm:p-4">
-            <p className={`font-display text-3xl font-extrabold tabular-nums sm:text-4xl ${ink}`}>{s.v}</p>
+            <p className={`font-display text-3xl font-extrabold tabular-nums sm:text-4xl ${ink}`}>{s.v == null ? "-" : <><CountUp value={s.v} />{s.suffix}</>}</p>
             <p className="mt-1 text-xs font-bold text-[var(--text-secondary)] sm:text-sm">{s.l}</p>
           </div>
         ))}

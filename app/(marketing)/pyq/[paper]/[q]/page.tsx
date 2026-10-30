@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { allPapers, allQuestions, paperBySlug, paperOfQuestion, paperQuestions, plainText, subjectSlug } from "@/lib/seo/pyq";
 import { SITE_URL } from "@/lib/site";
 import { PyqBody } from "@/components/seo/pyq-body";
+import { jsonLd as safeJsonLd } from "@/lib/seo/json-ld";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -53,7 +54,7 @@ export default async function QuestionPage({ params }: { params: Promise<{ paper
 
   return (
     <div className="py-8 sm:py-12 max-w-3xl">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <nav aria-label="Breadcrumb" className="text-sm flex flex-wrap items-center gap-1 text-[var(--text-secondary)]">
         <Link href="/pyq" className="hover:text-violet-600">GATE {p.paperCode} PYQs</Link><span aria-hidden="true">/</span>
         <Link href={`/pyq/${p.slug}`} className="hover:text-violet-600">{p.label}</Link><span aria-hidden="true">/</span>

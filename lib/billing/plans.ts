@@ -96,7 +96,7 @@ export const FREE_PRACTICE_SETS_TASTER = 3;
 export const FORGE: Record<Tier, { questions: boolean; mocks: boolean; archive: boolean; hardX: boolean; dailyLimit: number | null; teaser: number }> = {
   // Free is not blocked: a fixed taster of 10 playable Forge questions (answer checked, worked solution locked); every other question is shown locked.
   free: { questions: false, mocks: true, archive: false, hardX: false, dailyLimit: 0, teaser: 10 },
-  plus: { questions: true, mocks: true, archive: false, hardX: false, dailyLimit: 10, teaser: 0 },
+  plus: { questions: true, mocks: true, archive: false, hardX: false, dailyLimit: 15, teaser: 0 },
   pro: { questions: true, mocks: true, archive: true, hardX: true, dailyLimit: null, teaser: 0 },
 };
 export const canUseForgeQuestions = (tier: Tier) => FORGE[tier].questions;

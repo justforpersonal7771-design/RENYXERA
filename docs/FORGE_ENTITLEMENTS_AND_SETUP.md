@@ -55,3 +55,6 @@ CS first, then EC, then the rest (your earlier decision), unless you change F5.
 
 ## Update 29 Oct 2026: Free gets a taster (owner rule)
 Free users are no longer fully blocked from Forge questions: they can play a fixed set of 10 questions (the first 10 released, in id order) and check answers; the worked solution, shortcut and trap, the rest of the bank, the Daily Forge, archive and X items stay with Plus and Pro. Other questions show as locked cards (topic and difficulty only). Enforced in `/api/forge/items`, `/api/answers` and `/api/exam/grade` via `lib/server/forge-keys.ts`. This supersedes the "Free: No" row in the table above.
+
+## Update 31 Oct 2026: F1 decided
+Plus gets 15 Forge questions a day (code: `FORGE.plus.dailyLimit = 15` in `lib/billing/plans.ts`); Pro unlimited with the archive and the "X" hard items.

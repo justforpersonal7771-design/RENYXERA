@@ -1,0 +1,2 @@
+Source: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill (MIT), commit 28b3b8d, 26 Oct 2026. Reviewed before install: no network calls, no subprocess/exec, no file writes in the scripts.
+Project rule: docs/design/DESIGN-SYSTEM.md stays the authority; use targeted --domain/--stack searches and the checklists, do not replace the pastel system with a generated one.

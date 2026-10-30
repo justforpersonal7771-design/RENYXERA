@@ -1,0 +1,49 @@
+{
+ "papers": 15,
+ "yearFrom": 2017,
+ "yearTo": 2026,
+ "yearsCount": 10,
+ "totalMarks": 14.2,
+ "items": [
+  {
+   "rank": 1,
+   "name": "Cache mapping",
+   "tagline": "Direct and set-associative caches, hits and misses",
+   "subject": "Computer Organization and Architecture",
+   "marksPerPaper": 3.13,
+   "yearsAsked": 10
+  },
+  {
+   "rank": 2,
+   "name": "Parsing: LL, LR, LALR",
+   "tagline": "FIRST/FOLLOW sets, parse tables, conflicts",
+   "subject": "Compiler Design",
+   "marksPerPaper": 2.87,
+   "yearsAsked": 10
+  },
+  {
+   "rank": 3,
+   "name": "C: functions and recursion",
+   "tagline": "Scope, parameter passing, tracing recursive calls",
+   "subject": "Programming in C",
+   "marksPerPaper": 2.87,
+   "yearsAsked": 9
+  },
+  {
+   "rank": 4,
+   "name": "DFA and NFA",
+   "tagline": "Minimal DFAs, conversions, regular expressions",
+   "subject": "Theory of Computation",
+   "marksPerPaper": 2.67,
+   "yearsAsked": 10
+  },
+  {
+   "rank": 5,
+   "name": "Regular and context-free languages",
+   "tagline": "Closure, pumping lemma, grammars",
+   "subject": "Theory of Computation",
+   "marksPerPaper": 2.67,
+   "yearsAsked": 10
+  }
+ ]
+}

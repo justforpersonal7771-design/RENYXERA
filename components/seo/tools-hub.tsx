@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, BookOpen, Calculator, CalendarDays, Download, FileText, Flame, LineChart, type LucideIcon } from "lucide-react";
 import { TOOLS, type ToolEntry } from "@/lib/seo/tools";
+import { WordReveal } from "@/components/ui/word-reveal";
 
 const ICONS: Record<ToolEntry["icon"], LucideIcon> = { calculator: Calculator, chart: LineChart, calendar: CalendarDays, flame: Flame, book: BookOpen, file: FileText };
 const DOWNLOADS: ToolEntry = { href: "/downloads", title: "Downloads", short: "Downloads", blurb: "Save whole papers and subjects to study offline, encrypted on this device.", kind: "tool", icon: "file" };
@@ -27,10 +28,10 @@ export function ToolsHub() {
     if (d) { e.preventDefault(); setSel(INTENTS[(i + d + INTENTS.length) % INTENTS.length].id); }
   };
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-14rem)]">
+    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-17rem)]">
       <header>
         <span className="inline-block -rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Tools</span>
-        <h1 className="mt-2 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl">What do you want to do?</h1>
+        <h1 className="mt-2 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl"><WordReveal text="What do you want to do?" /></h1>
       </header>
 
       <div className="grid flex-1 grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">

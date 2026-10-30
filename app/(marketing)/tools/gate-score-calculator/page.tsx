@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ScorePredictor } from "@/components/seo/score-predictor";
 import { SponsorSlot } from "@/components/ads/sponsor-slot";
 import { ToolHeader } from "@/components/seo/tool-shell";
+import { jsonLd as safeJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata: Metadata = {
   title: "GATE CS Score Calculator & Rank Predictor (Marks vs Rank) | RENYXERA",
@@ -20,7 +21,7 @@ export default function ScoreCalculatorPage() {
   const jsonLd = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) };
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
       <ToolHeader kicker="Predictor" title="GATE CS score & rank predictor" lead="Move the slider to your marks and pick your category. You'll see your GATE score, where you land on the real marks-vs-rank curve, and whether you clear the qualifying mark." />
       <ScorePredictor />
       <SponsorSlot context="aptitude" seed={1} />

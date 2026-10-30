@@ -436,9 +436,9 @@ export default function ResultSummaryPage() {
             >
               {/* FRONT — scoreboard */}
               <div aria-hidden={flipped} className={`absolute inset-0 overflow-y-auto overflow-x-hidden custom-scrollbar [backface-visibility:hidden] ${flipped ? "pointer-events-none" : ""}`}>
-                <div className="min-h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-9 pb-6 lg:pt-12 lg:pb-8">
+                <div className="min-h-full grid grid-rows-[auto_1fr] lg:grid-rows-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] items-center gap-3 lg:gap-12 px-5 sm:px-8 lg:px-16 pt-9 pb-6 lg:pt-8 lg:pb-3">
                   {/* ring side */}
-                  <div className="flex flex-col items-center text-center gap-2.5 lg:gap-4">
+                  <div className="flex flex-col items-center text-center gap-2.5 lg:gap-3">
                     <div className="flex items-center gap-2 flex-wrap justify-center">
                       <motion.span initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
                         className="relative overflow-hidden inline-flex items-center gap-1.5 text-xs font-black tracking-normal text-violet-700 dark:text-violet-300 bg-violet-500/10 ring-1 ring-violet-500/20 px-3 py-1 rounded-full">
@@ -447,7 +447,7 @@ export default function ResultSummaryPage() {
                       {session.draftConfig.config.goalTag && <GoalTagBadge tag={session.draftConfig.config.goalTag} />}
                     </div>
               <motion.div
-                className="relative w-36 h-36 sm:w-48 sm:h-48 lg:w-[min(40vh,24rem)] lg:h-[min(40vh,24rem)] [@media(max-height:760px)]:w-32 [@media(max-height:760px)]:h-32 shrink-0 cursor-default"
+                className="relative w-36 h-36 sm:w-48 sm:h-48 lg:w-[clamp(7rem,calc(100dvh-40rem),20rem)] lg:h-[clamp(7rem,calc(100dvh-40rem),20rem)] [@media(max-height:760px)]:w-32 [@media(max-height:760px)]:h-32 shrink-0 cursor-default"
                 initial={{ scale: 0.86, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
@@ -525,7 +525,7 @@ export default function ResultSummaryPage() {
                 </svg>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl sm:text-5xl lg:text-7xl [@media(max-height:760px)]:text-3xl font-black font-num leading-none grad-brand dark:from-indigo-300 dark:via-violet-300 dark:to-fuchsia-300 bg-clip-text text-transparent">
+                  <span className="text-4xl sm:text-5xl lg:text-[clamp(2rem,calc((100dvh-40rem)*0.24),4.5rem)] [@media(max-height:760px)]:text-3xl font-black font-num leading-none grad-brand dark:from-indigo-300 dark:via-violet-300 dark:to-fuchsia-300 bg-clip-text text-transparent">
                     <CountUp value={accuracy} decimals={0} />%
                   </span>
                   <span className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-300 mt-1.5 lg:mt-3 lg:text-xs">Accuracy</span>
@@ -536,19 +536,19 @@ export default function ResultSummaryPage() {
                         className="inline-flex items-center gap-2 text-lg sm:text-xl lg:text-3xl font-black tracking-tight text-[var(--text-primary)]">
                         <Award className="w-5 h-5 lg:w-7 lg:h-7 text-amber-500" />{verdict.label}
                       </motion.h1>
-                      <p className="hidden sm:block text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-md mx-auto mt-1 mb-3 leading-relaxed">{challengeLine ?? cpLine ?? verdict.message}</p>
+                      <p className="hidden sm:block [@media(max-height:860px)]:lg:hidden text-[var(--text-secondary)] text-xs lg:text-sm font-medium max-w-md mx-auto mt-1 mb-1 lg:mb-0 leading-relaxed">{challengeLine ?? cpLine ?? verdict.message}</p>
                     </div>
                   </div>
 
                   {/* summary side */}
-                  <div className="w-full max-w-2xl mx-auto self-stretch lg:self-center flex flex-col justify-evenly lg:justify-center gap-3 lg:gap-7 min-h-0">
+                  <div className="w-full max-w-2xl mx-auto self-stretch lg:self-center flex flex-col justify-evenly lg:justify-center gap-3 lg:gap-4 min-h-0">
                     <div className="grid grid-cols-2 gap-3">
                       {[
                         { icon: Target, label: `of ${maxPossibleMarks} marks`, node: <CountUp value={marks} decimals={2} />, tint: "from-indigo-500 to-violet-600" },
                         { icon: Clock, label: "time taken", node: <>{m}m {s}s</>, tint: "from-fuchsia-500 to-pink-600" },
                       ].map((t, i) => (
                         <motion.div key={t.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.08 }}
-                          className="group flex items-center gap-3 rounded-2xl bg-[var(--surface)]/70 ring-1 ring-[var(--border)] px-3 py-2.5 lg:px-5 lg:py-4 transition-all duration-300 hover:ring-violet-500/40 hover:shadow-lg hover:shadow-violet-500/10 hover:-translate-y-0.5">
+                          className="group flex items-center gap-3 rounded-2xl bg-[var(--surface)]/70 ring-1 ring-[var(--border)] px-3 py-2.5 lg:px-5 lg:py-3 transition-all duration-300 hover:ring-violet-500/40 hover:shadow-lg hover:shadow-violet-500/10 hover:-translate-y-0.5">
                           <span className={`grid place-items-center w-9 h-9 lg:w-11 lg:h-11 shrink-0 rounded-xl bg-gradient-to-br ${t.tint} text-white shadow-md transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110`}><t.icon className="w-4 h-4 lg:w-5 lg:h-5" /></span>
                           <span className="min-w-0">
                             <span className="block text-xl lg:text-3xl font-black font-num leading-none text-[var(--text-primary)]">{t.node}</span>
@@ -559,7 +559,7 @@ export default function ResultSummaryPage() {
                     </div>
             <div className="hidden sm:block [@media(min-height:800px)]:block">
               <span className="text-xs font-black text-[var(--text-muted)] tracking-normal block mb-1">Attempted vs Skipped</span>
-              <div className="grid grid-cols-2 gap-4 [@media(max-height:760px)]:hidden">
+              <div className="grid grid-cols-2 gap-4 [@media(max-height:900px)]:hidden">
                 <div>
                   <span className="text-2xl lg:text-3xl font-black text-[var(--text-primary)] font-num">{totalAttempted}</span>
                   <span className="text-sm font-bold text-[var(--text-muted)] font-num"> / {session.totalQuestions}</span>
@@ -607,8 +607,8 @@ export default function ResultSummaryPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15 + idx * 0.05 }}
                 >
-                  <TiltCard max={8} className={`group border p-2.5 lg:p-4 rounded-xl lg:rounded-2xl transition-shadow duration-300 hover:shadow-lg flex flex-col items-center justify-center text-center ${stat.bg}`}>
-                    <span className="hidden [@media(min-height:761px)]:grid sm:grid mb-1.5 lg:mb-2 place-items-center w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-[var(--surface)] shadow-sm ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md"><stat.icon className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:-rotate-12 ${stat.color}`} /></span>
+                  <TiltCard max={8} className={`group border p-2.5 lg:p-3 rounded-xl lg:rounded-2xl transition-shadow duration-300 hover:shadow-lg flex flex-col items-center justify-center text-center ${stat.bg}`}>
+                    <span className="hidden [@media(min-height:900px)]:grid sm:max-lg:grid mb-1.5 lg:mb-2 place-items-center w-7 h-7 lg:w-9 lg:h-9 rounded-full bg-[var(--surface)] shadow-sm ring-1 ring-black/5 dark:ring-white/10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-md"><stat.icon className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:-rotate-12 ${stat.color}`} /></span>
                     <span className={`text-xs font-black tracking-normal mb-0.5 ${stat.color}`}>{stat.label}</span>
                     <CountUpFx value={stat.value} decimals={stat.decimals} prefix={stat.prefix} className="text-base lg:text-2xl font-black text-[var(--text-primary)]" />
                   </TiltCard>

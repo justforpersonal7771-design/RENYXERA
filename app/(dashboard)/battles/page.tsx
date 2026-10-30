@@ -6,14 +6,14 @@
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Swords, Hourglass, Trophy, Link2, Loader2 } from "lucide-react";
+import { Swords, Hourglass, Trophy, Link2, Loader2, RotateCcw, ChevronDown } from "lucide-react";
 import { PlanCompare } from "@/components/preview/plan-compare";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
-type Entry = { userId: string; name: string; status: "opened" | "started" | "submitted" | "abandoned"; answered: number; total: number; score: number | null; maxScore: number | null; submittedAt: string | null; lastSeenAt: string; you: boolean };
+type Entry = { userId: string; name: string; status: "opened" | "started" | "submitted" | "abandoned"; answered: number; total: number; score: number | null; maxScore: number | null; submittedAt: string | null; lastSeenAt: string; you: boolean; attemptId?: string | null };
 type Battle = { id: string; title: string; ownerName: string; ownerScore: number; maxScore: number; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; entries: Entry[] };
 
 const STATUS: Record<Entry["status"], { label: string; tint: string }> = {
@@ -143,7 +143,72 @@ function BattleCard({ b, onCopy }: { b: Battle; onCopy: () => void }) {
       <div className="mt-4 flex flex-wrap gap-2">
         {b.mine && !b.expired && <button type="button" onClick={onCopy} className="pill-soft"><Link2 className="h-4 w-4" /> Copy the link</button>}
         {!b.mine && !b.expired && mine?.status !== "submitted" && <Link href={`/challenge/${b.id}`} className="pill-ink">Take the battle</Link>}
+        {!b.mine && mine?.status === "submitted" && mine.attemptId && <Rematch attemptId={mine.attemptId} opponent={b.ownerName} />}
       </div>
+      {b.entries.filter((e) => e.status === "submitted" && (b.mine || e.you)).map((e) => <Compare key={e.userId} battleId={b.id} entry={e} owner={b.mine} ownerName={b.ownerName} />)}
     </section>
+  );
+}
+
+/** Rematch: turn my own score into a new battle and send it back, so the other player has a score to beat. */
+function Rematch({ attemptId, opponent }: { attemptId: string; opponent: string }) {
+  const [busy, setBusy] = useState(false);
+  const go = async () => {
+    setBusy(true);
+    try {
+      const r = await fetch("/api/battles", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ attempt_id: attemptId }) });
+      const j = (await r.json().catch(() => ({}))) as { path?: string; error?: string };
+      if (!r.ok || !j.path) { useToastStore.getState().show(j.error ?? "Couldn't make the rematch right now.", "error"); return; }
+      const url = window.location.origin + j.path;
+      const text = `Rematch! Beat my score, ${opponent}.`;
+      try { if (navigator.share) await navigator.share({ title: "Battle rematch", text, url }); else { await navigator.clipboard.writeText(`${text} ${url}`); useToastStore.getState().show(`Rematch link copied. Send it to ${opponent}.`, "success"); } }
+      catch { try { await navigator.clipboard.writeText(`${text} ${url}`); useToastStore.getState().show(`Rematch link copied. Send it to ${opponent}.`, "success"); } catch { /* cancelled */ } }
+    } finally { setBusy(false); }
+  };
+  return <button type="button" onClick={go} disabled={busy} className="pill-soft"><RotateCcw className="h-4 w-4" /> {busy ? "Making it…" : `Rematch ${opponent}`}</button>;
+}
+
+type Split = { ownerName: string; friendName: string; ownerIsYou: boolean; subjects: { subject: string; owner: number; friend: number; max: number }[] };
+/** Where the marks were won: one bar pair per subject, loaded when opened. */
+function Compare({ battleId, entry, owner, ownerName }: { battleId: string; entry: Entry; owner: boolean; ownerName: string }) {
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState<Split | null>(null);
+  const [err, setErr] = useState(false);
+  const toggle = async () => {
+    setOpen(!open);
+    if (open || data) return;
+    try {
+      const r = await fetch(`/api/battles/${battleId}/compare${owner ? `?with=${entry.userId}` : ""}`);
+      if (!r.ok) throw new Error(String(r.status));
+      setData((await r.json()) as Split);
+    } catch { setErr(true); }
+  };
+  const them = owner ? entry.name : ownerName;
+  return (
+    <div className="mt-4 border-t border-[var(--border)] pt-3">
+      <button type="button" onClick={toggle} aria-expanded={open} className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--text-primary)]">
+        Where the marks went vs {them} <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        err ? <p className="mt-2 text-sm text-[var(--text-secondary)]" role="alert">Couldn&apos;t load the comparison. Try again later.</p>
+        : !data ? <p className="mt-2 text-sm text-[var(--text-secondary)]" role="status">Loading…</p>
+        : data.subjects.length === 0 ? <p className="mt-2 text-sm text-[var(--text-secondary)]">No subject data for this battle.</p>
+        : (
+          <ul className="mt-3 space-y-3">
+            {data.subjects.map((s) => {
+              const you = owner ? s.owner : s.friend, other = owner ? s.friend : s.owner, total = Math.max(0.01, Math.abs(you) + Math.abs(other));
+              return (
+                <li key={s.subject}>
+                  <p className="flex justify-between gap-3 text-sm"><span className="font-semibold text-[var(--text-primary)]">{s.subject}</span><span className="font-num text-[var(--text-secondary)]">You {you} : {other} {them}</span></p>
+                  <div className="mt-1 flex h-2 gap-0.5 overflow-hidden rounded-full" role="img" aria-label={`${s.subject}: you ${you}, ${them} ${other}`}>
+                    <span className="bg-[var(--ink)]" style={{ flex: Math.max(0.02, Math.abs(you)) / total }} /><span className="bg-[var(--tint-rose-ink)]/50" style={{ flex: Math.max(0.02, Math.abs(other)) / total }} />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )
+      )}
+    </div>
   );
 }

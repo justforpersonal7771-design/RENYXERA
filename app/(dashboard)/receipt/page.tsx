@@ -61,7 +61,7 @@ function ReceiptInner() {
             <span className="text-2xl font-extrabold font-num text-[var(--text-primary)]">{formatPrice(p.amountPaise)}</span>
           </div>
           <p className="mt-4 text-[11px] leading-relaxed text-[var(--text-muted)]">
-            This is a receipt for a one-time purchase that does not renew automatically. Purchases are final as described in our Refund &amp; Cancellation Policy; a failed or duplicate charge is always fixed.
+            This is a receipt for a one-time purchase that does not renew automatically. Purchases are final as described in our Refund &amp; Cancellation Policy; refunds are given only for our own errors (a double or wrong charge, a payment that did not activate, a fault we cannot fix), requested by email with a genuine reason.
             {p.mode === "test" && " This was a test-mode payment and no money was charged."}
           </p>
         </article>

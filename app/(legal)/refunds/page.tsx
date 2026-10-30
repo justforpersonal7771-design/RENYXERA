@@ -12,62 +12,68 @@ export default function RefundPolicyPage() {
   return (
     <article>
       <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--text-primary)] mb-1">Refund &amp; Cancellation Policy</h1>
-      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 26 September 2026</p>
+      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 31 October 2026</p>
 
       <div className="space-y-8 text-[var(--text-secondary)] leading-relaxed">
         <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)]/60 p-4">
           <p>
-            <strong className="text-[var(--text-primary)]">RENYXERA is currently free.</strong> We don&apos;t take any payments today, so there is
-            nothing to refund. This policy sets out how refunds and cancellations will work once paid plans are
-            introduced; we&apos;ll update the date above and tell existing users before anything changes.
+            <strong className="text-[var(--text-primary)]">In short:</strong> everything we sell is a one-time purchase for a fixed period and is delivered
+            digitally and instantly, so <strong className="text-[var(--text-primary)]">purchases are final</strong>. We refund only when something went wrong on
+            our side: a billing error or a technical fault we cannot fix. Nothing renews automatically.
           </p>
         </section>
 
         <section>
-          <h2 className={H}>1. Paid plans</h2>
+          <h2 className={H}>1. What we sell</h2>
           <p>
-            Paid plans (for example monthly, season or yearly access) will be sold in Indian Rupees through a licensed
-            payment gateway. The price, what&apos;s included and the access period will be shown clearly before you pay.
+            Paid plans (Plus and Pro, as a monthly, yearly or season pass) and, when they launch, Study materials (subject packs and bundles) are sold in
+            Indian Rupees through a licensed payment gateway. The price, what&apos;s included and the access period are shown before you pay, and you accept
+            these terms at checkout.
           </p>
         </section>
 
         <section>
-          <h2 className={H}>2. 7-day refund on your first purchase</h2>
+          <h2 className={H}>2. When we refund</h2>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>You were <strong className="text-[var(--text-primary)]">charged twice</strong>, or charged the wrong amount.</li>
+            <li>You were charged but <strong className="text-[var(--text-primary)]">your plan or pack did not activate</strong>, and we could not fix it.</li>
+            <li>A <strong className="text-[var(--text-primary)]">technical fault or an error in what you bought</strong> stopped you from using it, and we could not put it right within a reasonable time.</li>
+          </ul>
+          <p className="mt-2">We always try to fix the problem first. If we cannot, we refund the affected purchase.</p>
+        </section>
+
+        <section>
+          <h2 className={H}>3. When we do not refund</h2>
           <p>
-            If a paid plan isn&apos;t right for you, you can ask for a full refund within <strong className="text-[var(--text-primary)]">7 days</strong> of your
-            first purchase of that plan. To keep this fair for everyone, it doesn&apos;t apply if more than 5 full mock tests
-            have been attempted on the plan in that time, or where there are signs of account sharing or misuse.
+            Change of mind, finding a free alternative, not using the product, a changed exam date or result, a later price change or offer, or accounts that
+            were shared or misused. Because the free parts of RENYXERA and the free previews let you try before you buy, we do not offer a trial refund.
           </p>
         </section>
 
         <section>
-          <h2 className={H}>3. Cancelling a subscription</h2>
+          <h2 className={H}>4. How to ask</h2>
           <p>
-            You can cancel a recurring plan at any time. Cancelling stops future renewals; you keep access until the end of
-            the period you&apos;ve already paid for. Renewals that have already been charged aren&apos;t refunded, except where
-            required by law or where the renewal was charged in error.
+            Email <a href="mailto:renyxera@gmail.com" className={A}>renyxera@gmail.com</a> from the email address on your account. Include the payment
+            reference (it is on your receipt), what happened, a screenshot if you have one, and <strong className="text-[var(--text-primary)]">the genuine reason</strong>{" "}
+            for the request. We read every request, may ask for more detail, and reply with our decision. Approved refunds go back to the original payment
+            method, usually within 5–7 working days (the exact time depends on your bank).
           </p>
         </section>
 
         <section>
-          <h2 className={H}>4. Payment problems</h2>
+          <h2 className={H}>5. Cancelling</h2>
           <p>
-            If you were charged twice, charged but didn&apos;t receive access, or charged the wrong amount, contact us and we&apos;ll
-            fix it or refund the difference in full.
+            Plans and packs are fixed-period and do not renew, so there is nothing to cancel. Access ends when the period you paid for ends.
           </p>
         </section>
 
         <section>
-          <h2 className={H}>5. How to request a refund</h2>
-          <p>
-            Email <a href="mailto:renyxera@gmail.com" className={A}>renyxera@gmail.com</a> from the email address on your
-            account, with the payment reference and the reason. Approved refunds are returned to the original payment
-            method, usually within 5–7 working days of approval (the exact time depends on your bank).
-          </p>
+          <h2 className={H}>6. Your legal rights</h2>
+          <p>Nothing in this policy limits any right you have under the law that applies to you.</p>
         </section>
 
         <section>
-          <h2 className={H}>6. Related</h2>
+          <h2 className={H}>7. Related</h2>
           <p>
             <Link href="/terms" className={A}>Terms</Link> · <Link href="/privacy" className={A}>Privacy policy</Link> ·{" "}
             <Link href="/contact" className={A}>Contact</Link>

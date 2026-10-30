@@ -10,7 +10,11 @@
    "kind": "numeric_chain",
    "difficulty": "H",
    "question_type": "NAT",
+<<<<<<< HEAD
    "marks": 1,
+=======
+   "marks": 2,
+>>>>>>> origin/main
    "question_text": "Consider a file system with a disk block size of \\(2\\text{ KB}\\) (\\(2048\\text{ bytes}\\)) and disk block pointers of size \\(4\\text{ bytes}\\). An inode in this file system contains \\(10\\) direct block pointers, \\(1\\) single indirect block pointer, and \\(1\\) double indirect block pointer.\n\nA process issues requests to read three byte ranges from a large file:\n1. Bytes \\(15,000\\) to \\(16,000\\)\n2. Bytes \\(30,000\\) to \\(31,000\\)\n3. Bytes \\(1,100,000\\) to \\(1,101,000\\)\n\nAssume that initially, no disk blocks are present in the buffer cache except the inode itself. All required uncached disk blocks (including metadata index blocks and data blocks) are added to the disk scheduling queue before disk scheduling begins.\n\nThe physical cylinder locations of the blocks are given below:\n- Direct Data Block 7: Cylinder 45\n- Single Indirect Block (SIB): Cylinder 120\n- Data Block 14: Cylinder 85\n- Data Block 15: Cylinder 190\n- Double Indirect Block (DIB): Cylinder 10\n- First SIB inside DIB: Cylinder 160\n- Data Block 537: Cylinder 70\n\nIf the disk head is initially at cylinder \\(100\\), the total head movement (in cylinders) using the Shortest Seek Time First (SSTF) disk scheduling algorithm is ______.",
    "options": [],
    "answer": {

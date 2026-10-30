@@ -2,6 +2,7 @@
 
 import { PromoVideo } from "@/components/marketing/promo-video";
 import { useRef, useState } from "react";
+import { PriceRoll } from "@/components/ui/price-roll";
 import { createPortal } from "react-dom";
 import { branchByCode } from "@/lib/branches";
 import Link from "next/link";
@@ -167,7 +168,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
               </div>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 {cmp && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-2 decoration-rose-500/70">{formatPrice(cmp.wasPaise)}</span>}
-                <span className="text-3xl font-extrabold text-[var(--text-primary)]">{formatPrice(plan.pricePaise)}</span>
+                <span className="text-3xl font-extrabold text-[var(--text-primary)]"><PriceRoll value={formatPrice(plan.pricePaise)} /></span>
                 {plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]">{plan.periodLabel}</span>}
                 {cmp && <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-xs font-black tracking-normal">Save {cmp.savePct}%</span>}
               </div>
@@ -229,7 +230,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                 <ul className="mt-4 space-y-1.5 text-xs text-[var(--text-secondary)]">
                   <li>• Starts instantly once the payment is confirmed.</li>
                   <li>• Does <b className="text-[var(--text-primary)]">not</b> renew automatically — no surprise charges.</li>
-                  <li>• Purchases are final: <b className="text-[var(--text-primary)]">no refunds</b> (a failed or duplicate charge is always fixed).</li>
+                  <li>• Purchases are final: <b className="text-[var(--text-primary)]">refunds only for our errors</b> (double charge, payment that did not activate, a fault we cannot fix), by email with a genuine reason.</li>
                 </ul>
                 <div className="mt-4">
                   <div className="flex gap-2">

@@ -1,5 +1,7 @@
 # 08 · Product, pricing and introduction
 
+> **Update 31 Oct 2026 (owner decision S1):** the model is now **per-subject packs (₹99 to ₹149) plus curated bundles**, CS first and Aptitude last; refunds only for glitches and errors by email. The full decision, prices, bundles and where we offer them are in `13-PRICING-BUNDLES-AND-OFFERS.md`; the future feature list is `14-FUTURE-FEATURES.md`. §3 below is kept as history.
+
 Study Materials is a **separate product**. It is not included in Free, Plus or Pro, and buying Plus or Pro does not unlock it (a purchase discount is allowed; inclusion is not).
 
 ## 1. Why it stays outside the plans
