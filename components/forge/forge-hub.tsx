@@ -41,6 +41,12 @@ function useItems(set: "daily" | "practice"): FeedData {
   return res;
 }
 
+/** Question text: ``` fences become a code block (C snippets); everything else is typeset with MathJax. */
+function Body({ text }: { text: string }) {
+  return <>{text.split(/```\n?/).map((part, i) => i % 2
+    ? <pre key={i} className="my-3 overflow-x-auto rounded-xl bg-[var(--surface-secondary)] p-3 font-mono text-sm leading-snug text-[var(--text-primary)]">{part.replace(/\n$/, "")}</pre>
+    : part.trim() ? <Tex key={i}>{part}</Tex> : null)}</>;
+}
 const Tex = ({ children }: { children: string }) => <MathJax dynamic inline hideUntilTypeset="every">{children}</MathJax>;
 
 const DIFF: Record<string, { label: string; tint: string }> = { E: { label: "Easy", tint: "mint" }, M: { label: "Medium", tint: "butter" }, H: { label: "Hard", tint: "rose" }, X: { label: "X", tint: "lilac" } };
@@ -186,13 +192,13 @@ function Feed({ data, empty, children }: { data: FeedData; empty: string; childr
 function Daily({ tier, data }: { tier: Tier; data: FeedData }) {
   const limit = FORGE[tier].dailyLimit;
   return (
-    <div className="grid gap-5 lg:grid-cols-[1fr_300px]">
+    <div className="space-y-5">
       <div className="space-y-3">
         <Feed data={data} empty="Today's Forge questions are on the way. Practice has everything released so far.">
           {(q, i) => <ItemCard key={q.id} q={q} n={i + 1} done={!LIVE && i < FORGE_DAILY.doneToday} />}
         </Feed>
       </div>
-      <aside className="space-y-3">
+      <aside className="grid gap-3 md:grid-cols-2">
         <div className="card-pastel p-5" data-tint="butter">
           <p className="font-bold text-[var(--text-primary)]">Your plan</p>
           <p className="mt-1 text-sm text-[var(--text-secondary)]">{limit === null ? "Unlimited Forge questions, every past Daily Forge and the X questions." : `${limit} Forge questions a day. Past Daily Forges and X questions come with Pro.`}</p>
@@ -222,8 +228,22 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
   const reduce = useReducedMotion();
   // Preview: right if within 0.5% of the sample key. Live: the key and its range come from the server when the answer is checked.
   const right = key ? key.right : q.type === "NAT" ? Math.abs(Number(nat) - Number(q.answer)) <= Math.abs(Number(q.answer)) * 0.005 + 1e-9 : pick === q.answer;
-  const answer = key?.answer ?? q.answer ?? "";
-  const solution = key?.solution ?? q.solution;
+  const [peek, setPeek] = useState<{ answer: string; solution?: Q["solution"] } | null>(null);
+  const answer = key?.answer ?? peek?.answer ?? q.answer ?? "";
+  const solution = key?.solution ?? peek?.solution ?? q.solution;
+  // "Show solution" before checking: fetch the key first (otherwise the box would open empty).
+  const reveal = async () => {
+    if (open) { setOpen(false); return; }
+    if (q.answer || key || peek) { setOpen(true); return; }
+    setBusy(true); setErr(null);
+    try {
+      const r = await fetch("/api/answers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question_ids: [q.id] }) });
+      const a = ((await r.json()) as { answers?: Record<string, { c: string[]; n: [number, number][] | null; s?: Q["solution"] }> }).answers?.[q.id];
+      if (!r.ok || !a) throw new Error("no key");
+      setPeek({ answer: q.type === "NAT" ? String(a.n?.[0]?.[0] ?? "") : a.c.join(", "), solution: a.s });
+      setOpen(true);
+    } catch { setErr("Couldn't load the solution. Try again."); } finally { setBusy(false); }
+  };
   const check = async () => {
     if (q.answer) { setChecked(true); setOpen(true); return; }
     setBusy(true); setErr(null);
@@ -255,7 +275,7 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
           </button>
         </span>
       </header>
-      <p className="mt-3 leading-relaxed text-[var(--text-primary)]"><Tex>{q.text}</Tex></p>
+      <div className="mt-3 leading-relaxed text-[var(--text-primary)]"><Body text={q.text} /></div>
       {q.options && (
         <div className="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label={`Options for question ${n}`}>
           {q.options.map((o, i) => {
@@ -291,12 +311,12 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
           ? <button type="button" disabled={!canCheck || busy} onClick={check} className="pill-ink disabled:opacity-40">{busy ? "Checking…" : "Check answer"}</button>
           : <p role="status" className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold ${right ? "bg-[var(--tint-mint)] text-[var(--tint-mint-ink)]" : "bg-[var(--tint-rose)] text-[var(--tint-rose-ink)]"}`}>
               {right ? <><Check className="h-4 w-4" /> Correct</> : <><X className="h-4 w-4" /> Not quite: the answer is {answer}</>}</p>}
-        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); setOpen(false); setKey(null); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
+        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); setOpen(false); setKey(null); setPeek(null); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
       </div>
       <footer className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--text-muted)]">
         {err && <span role="alert" className="font-semibold text-rose-600">{err}</span>}
         {q.solvedBy !== undefined && <span>{q.solvedBy} solved · {q.accuracy}% right</span>}
-        <button type="button" onClick={() => setOpen(!open)} aria-expanded={open} className="ml-auto inline-flex items-center gap-1 rounded-full bg-[var(--surface-secondary)] px-3 py-1.5 text-sm font-semibold text-[var(--text-primary)]">
+        <button type="button" onClick={reveal} disabled={busy} aria-expanded={open} className="ml-auto inline-flex items-center gap-1 rounded-full bg-[var(--surface-secondary)] px-3 py-1.5 text-sm font-semibold text-[var(--text-primary)]">
           {open ? "Hide solution" : taster ? "Solution (Plus)" : "Show solution"} <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
         </button>
       </footer>
