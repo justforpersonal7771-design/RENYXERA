@@ -18,13 +18,13 @@ import { FORGE, type Tier } from "@/lib/billing/plans";
 import { FORGE_DAILY, FORGE_ITEMS, FORGE_MOCKS, KIND_LABEL, type SampleForgeItem } from "@/lib/preview/sample-data";
 
 /** A Forge question as the hub shows it. Preview items carry their answer; live items don't until the student checks (answers stay on the server). */
-type Q = Omit<SampleForgeItem, "answer" | "solution" | "solvedBy" | "accuracy" | "difficulty"> & {
-  difficulty: "E" | "M" | "H" | "X"; answer?: string; solution?: SampleForgeItem["solution"]; solvedBy?: number; accuracy?: number;
+type Q = Omit<SampleForgeItem, "answer" | "solution" | "solvedBy" | "accuracy" | "difficulty" | "type"> & {
+  type: "MCQ" | "MSQ" | "NAT"; difficulty: "E" | "M" | "H" | "X"; answer?: string; solution?: SampleForgeItem["solution"]; solvedBy?: number; accuracy?: number;
 };
 const LIVE = UPCOMING.forge === "live";
-type Row = { id: string; subject: string; topic: string; kind: Q["kind"]; difficulty: Q["difficulty"]; question_type: "MCQ" | "NAT"; marks: 1 | 2; question_text: string; options: { option_id: string; text: string }[] };
+type Row = { id: string; subject: string; topic: string; kind: Q["kind"]; difficulty: Q["difficulty"]; question_type: "MCQ" | "MSQ" | "NAT"; marks: 1 | 2; question_text: string; options: { option_id: string; text: string }[] };
 const fromRow = (r: Row): Q => ({ id: r.id, subject: r.subject, topic: r.topic, kind: r.kind, difficulty: r.difficulty, type: r.question_type, marks: r.marks, text: r.question_text, options: r.options?.length ? r.options.map((o) => o.text) : undefined });
-type Locked = { id: string; subject: string; topic: string; difficulty: Q["difficulty"]; question_type: "MCQ" | "NAT"; marks: number };
+type Locked = { id: string; subject: string; topic: string; difficulty: Q["difficulty"]; question_type: "MCQ" | "MSQ" | "NAT"; marks: number };
 type FeedData = { items: Q[]; state: "loading" | "ready" | "error"; locked?: Locked[] };
 
 /** Live: the questions the API releases to this account for today (set=daily) or for practice. Preview: the sample items. */
@@ -219,7 +219,8 @@ function Daily({ tier, data }: { tier: Tier; data: FeedData }) {
 
 function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; taster?: boolean }) {
   const [open, setOpen] = useState(false);
-  const [pick, setPick] = useState<string | null>(null);
+  const [picks, setPicks] = useState<string[]>([]);
+  const pick = picks[0] ?? null;
   const [nat, setNat] = useState("");
   const [checked, setChecked] = useState(false);
   const [key, setKey] = useState<{ right: boolean; answer: string; solution?: Q["solution"] } | null>(null);
@@ -227,7 +228,7 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
   const [err, setErr] = useState<string | null>(null);
   const reduce = useReducedMotion();
   // Preview: right if within 0.5% of the sample key. Live: the key and its range come from the server when the answer is checked.
-  const right = key ? key.right : q.type === "NAT" ? Math.abs(Number(nat) - Number(q.answer)) <= Math.abs(Number(q.answer)) * 0.005 + 1e-9 : pick === q.answer;
+  const right = key ? key.right : q.type === "NAT" ? Math.abs(Number(nat) - Number(q.answer)) <= Math.abs(Number(q.answer)) * 0.005 + 1e-9 : q.type === "MSQ" ? [...picks].sort().join(", ") === q.answer : pick === q.answer;
   const [peek, setPeek] = useState<{ answer: string; solution?: Q["solution"] } | null>(null);
   const answer = key?.answer ?? peek?.answer ?? q.answer ?? "";
   const solution = key?.solution ?? peek?.solution ?? q.solution;
@@ -251,12 +252,12 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
       const r = await fetch("/api/answers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question_ids: [q.id] }) });
       const a = ((await r.json()) as { answers?: Record<string, { c: string[]; n: [number, number][] | null; s?: Q["solution"] }> }).answers?.[q.id];
       if (!r.ok || !a) throw new Error("no key");
-      const ok = q.type === "NAT" ? isNatCorrect(nat, (a.n ?? []).map(([min, max]) => ({ min, max }))) : isOptionsCorrect("MCQ", pick ? [pick] : [], a.c);
+      const ok = q.type === "NAT" ? isNatCorrect(nat, (a.n ?? []).map(([min, max]) => ({ min, max }))) : isOptionsCorrect(q.type === "MSQ" ? "MSQ" : "MCQ", picks, a.c);
       setKey({ right: ok, answer: q.type === "NAT" ? String(a.n?.[0]?.[0] ?? "") : a.c.join(", "), solution: a.s });
       setChecked(true); setOpen(true);
     } catch { setErr("Couldn't check this answer. Try again."); } finally { setBusy(false); }
   };
-  const canCheck = q.type === "NAT" ? nat.trim() !== "" && !Number.isNaN(Number(nat)) : !!pick;
+  const canCheck = q.type === "NAT" ? nat.trim() !== "" && !Number.isNaN(Number(nat)) : picks.length > 0;
   const d = DIFF[q.difficulty];
   const saved = useBookmarks().includes(q.id);
   return (
@@ -276,11 +277,12 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
         </span>
       </header>
       <div className="mt-3 leading-relaxed text-[var(--text-primary)]"><Body text={q.text} /></div>
+      {q.type === "MSQ" && <p className="mt-3 text-xs font-bold uppercase tracking-wide text-[var(--text-muted)]">Select all that apply</p>}
       {q.options && (
-        <div className="mt-3 grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label={`Options for question ${n}`}>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2" role={q.type === "MSQ" ? "group" : "radiogroup"} aria-label={q.type === "MSQ" ? `Options for question ${n}: select all that apply` : `Options for question ${n}`}>
           {q.options.map((o, i) => {
             const id = "ABCD"[i];
-            const sel = pick === id;
+            const sel = picks.includes(id);
             // After checking: the key turns green, a wrong pick turns red. Before: the pick is a light-blue chip.
             const state = checked ? (answer.split(", ").includes(id) ? "right" : sel ? "wrong" : "idle") : sel ? "picked" : "idle";
             const look = {
@@ -290,7 +292,7 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
               idle: "border-[var(--border)] hover:border-[var(--text-secondary)]",
             }[state];
             return (
-              <button key={id} type="button" role="radio" aria-checked={sel} disabled={checked} onClick={() => setPick(id)}
+              <button key={id} type="button" role={q.type === "MSQ" ? "checkbox" : "radio"} aria-checked={sel} disabled={checked} onClick={() => setPicks(q.type === "MSQ" ? (picks.includes(id) ? picks.filter((x) => x !== id) : [...picks, id]) : [id])}
                 className={`opt-tile flex items-center gap-3 rounded-2xl border-2 p-3 text-left text-sm transition-colors disabled:cursor-default ${look}`}>
                 <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg font-num text-xs font-bold ${state === "right" ? "bg-emerald-500 text-white" : state === "wrong" ? "bg-rose-500 text-white" : state === "picked" ? "bg-[var(--tint-lilac-ink)] text-white" : "border border-[var(--border)]"}`}>
                   {state === "right" ? <Check className="h-3.5 w-3.5" /> : state === "wrong" ? <X className="h-3.5 w-3.5" /> : id}</span><Tex>{o}</Tex>
@@ -311,7 +313,7 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
           ? <button type="button" disabled={!canCheck || busy} onClick={check} className="pill-ink disabled:opacity-40">{busy ? "Checking…" : "Check answer"}</button>
           : <p role="status" className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-bold ${right ? "bg-[var(--tint-mint)] text-[var(--tint-mint-ink)]" : "bg-[var(--tint-rose)] text-[var(--tint-rose-ink)]"}`}>
               {right ? <><Check className="h-4 w-4" /> Correct</> : <><X className="h-4 w-4" /> Not quite: the answer is {answer}</>}</p>}
-        {checked && <button type="button" onClick={() => { setChecked(false); setPick(null); setNat(""); setOpen(false); setKey(null); setPeek(null); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
+        {checked && <button type="button" onClick={() => { setChecked(false); setPicks([]); setNat(""); setOpen(false); setKey(null); setPeek(null); }} className="text-sm font-semibold text-[var(--text-muted)] underline underline-offset-4">Try again</button>}
       </div>
       <footer className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[var(--text-muted)]">
         {err && <span role="alert" className="font-semibold text-rose-600">{err}</span>}

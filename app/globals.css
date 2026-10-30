@@ -1875,3 +1875,9 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .dark .q-tile[class*="border-indigo"], .dark .opt-tile:is([aria-pressed="true"], [aria-checked="true"]):not([class*="tint-mint"]):not([class*="tint-rose"]) { box-shadow: 3px 3px 0 #e9e7f5 !important; }
 .q-tile-letter { width: 32px !important; height: 32px !important; border-radius: 10px !important; font-weight: 800; }
 .q-tile[class*="border-indigo"] .q-tile-letter { background: #16123a; color: #fff; border-color: #16123a; }
+
+/* WordReveal (components/ui/word-reveal.tsx): headline words rise in one after another, once on load. Transform, opacity and a short blur only. */
+@keyframes word-reveal-in { from { opacity: 0; transform: translateY(14px); filter: blur(8px); } to { opacity: 1; transform: none; filter: none; } }
+.word-reveal > span { display: inline-block; animation: word-reveal-in .6s cubic-bezier(.22, 1, .36, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+@media (prefers-reduced-motion: reduce) { .word-reveal > span { animation: none; } }
+html[data-motion="reduce"] .word-reveal > span { animation: none; }
