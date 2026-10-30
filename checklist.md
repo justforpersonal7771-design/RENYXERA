@@ -10,7 +10,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ## 0. Now — next steps in order (26 Oct)
 
-- [ ] **(you) URGENT: Supabase rejects every signed-in database call from browsers** ("JWT issued at future", PGRST303, measured for 12+ minutes on 26 Oct). This breaks the referral link ("Creating your link…"), the sponsor break, profile loading/saving and anything else read directly from the browser. Steps: Supabase dashboard → your project → **Project Settings → General → Restart project**; if it persists, **Project Settings → JWT Keys**: check the current signing key, and open a ticket with Supabase support quoting PGRST303. Tell me when done; I re-test.
+- [x] **(you) URGENT: Supabase rejects every signed-in database call from browsers** ("JWT issued at future", PGRST303, measured for 12+ minutes on 26 Oct). This breaks the referral link ("Creating your link…"), the sponsor break, profile loading/saving and anything else read directly from the browser. Steps: Supabase dashboard → your project → **Project Settings → General → Restart project**; if it persists, **Project Settings → JWT Keys**: check the current signing key, and open a ticket with Supabase support quoting PGRST303. Tell me when done; I re-test. **VERIFIED RESOLVED 30 Oct:** 11 live screens signed in (Pro and Free accounts) show no Supabase 4xx/5xx and no console errors; profile saves (PATCH profiles 204, value persists after reload).
 - [x] **Bug batch of 26 Oct fixed, verified, deployed** — see §0a.
 - [x] **R19 Battles** built and tested 30 Oct (migration `0043_battles.sql` applied): `/api/battles`, `/challenge/<id>`, live `/battles` board (15 s polling), server-graded scores, Free 3 active, 7-day expiry. Open: Telegram ping to the sender, topic-by-topic comparison, rematch. Ref: `docs/roadmap/R19-BATTLES.md`
 - [ ] **(me) R18 UI refresh** — dashboard first, then analytics, AI Mentor, other screens; contact sheet of layouts for you to pick. Ref: `docs/roadmap/R18-UI-REFRESH.md`.
@@ -27,13 +27,13 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] 6 Results scoreboard was empty on phones (card had no height) → fixed, both faces checked phone + desktop
 - [x] 7 Review Previous/Next hidden on phones (100vh behind the browser bar) → dynamic viewport height on all full-screen pages; verified
 - [x] 8 Long equations were cut off → they scroll sideways; swipe-to-navigate ignores equations and tables
-- [ ] 9 Profile save button missing → **cause is the Supabase outage above** (profile never loads); the page now says so with a Try again button. Re-test after the Supabase fix.
+- [x] 9 Profile save button missing → **cause is the Supabase outage above** (profile never loads); the page now says so with a Try again button. Re-test after the Supabase fix. Verified 30 Oct on the live site: the "Save changes" button appears once something is edited; the save succeeds and persists.
 - [x] 10 Telegram section lists your branch channel, hub, discussion group and the all-in-one folder link (shows when Telegram is enabled; check on the live site)
 - [x] 11 "Very high priority" badge no longer wraps (single line, shorter label)
 - [x] 12 Locked Pro sections show a short faded preview (max 420 px), not a page-long blur
 - [x] 13 Today, study planner and study timer cards now have the same card effect as the rest
 - [x] 14 Syllabus: every sub-topic chip shows its share of the unit's marks with a fill bar and details on hover/tap (shared tags marked *) — CS page; other branches next
-- [ ] 15 Referral link / sponsor break → **same Supabase outage**; re-test after the fix
+- [x] 15 Referral link / sponsor break → **same Supabase outage**; re-test after the fix Verified 30 Oct: Profile overview no longer stuck on "Creating your link…" (referral/sponsor flows not exercised end to end).
 - [x] 2 Speed: first-load JS cut — exam session 443→241 KB, setup 421→219 KB, AI Mentor 435→233 KB, profile 768→279 KB; the 1.8 MB avatar library no longer loads on every page (styles load one at a time); chart library only when the goal panel opens; decorative fonts not preloaded
 - [ ] 1 Live battles → R19 (planned above)
 - [x] AI pre-generation: fixed the 1,000-row cap (Civil and older papers were never processed) and LaTeX-backslash JSON failures; status table in `docs/roadmap/R20-SOLUTIONS.md`
@@ -212,7 +212,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] **A3 Sanitise HTML nodes** (30 Oct: `lib/security/sanitize-html.ts` allow-list, no attributes; 17 XSS payloads pass via `npm run check:sanitize`; JSON-LD scripts escape "<" via `lib/seo/json-ld.ts`; MathJax `\href`/`\class`/`\style`/`\cssId` neutralised in `lib/mathjax-config.ts`. Note: MathJax 4.1.0 has NO "safe" extension (asking for it breaks all formulas); original text: — bank-only `html` nodes, allow-list sanitiser, AI parser emits no HTML; XSS payload tests.
 - [ ] **B1 2FA on all owner accounts** (you) · **B2 key-rotation runbook** · **B3 GitHub secret scanning, push protection, Dependabot, branch protection** · **B4 optional TOTP 2FA for paid students**.
 - [ ] **C1 Shared rate limits** (Postgres counters or Cloudflare free rule) · **C2 Turnstile on waitlist/report/contact** · **C3 WAF/Bot Fight Mode after domain** · **C4 webhook replay protection**.
-- [ ] **D1 Supabase Security Advisor clean** · **D2 automated RLS probe of every private table** · **D3 DPDP retention + consent records** · **D4 privacy policy update** (Forge, study materials, shares, channels).
+- [ ] **D1 Supabase Security Advisor clean** (you: Dashboard > Advisors) · [x] **D2 automated RLS probe** done 30 Oct: `npm run check:rls` probes all 43 tables signed-out and as an ordinary account: no leaks, `question_answers` and all private tables denied · **D3 DPDP retention + consent records** · **D4 privacy policy update** (Forge, study materials, shares, channels).
 - [ ] **E1 Sentry alerts** · **E2 user-visible security events** · **E3 `/.well-known/security.txt`** · **E4 quarterly restore drill + incident checklist**.
 
 ### 3H · Release 18 — UI refresh (priority) · `docs/roadmap/R18-UI-REFRESH.md`
@@ -455,3 +455,6 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] **(you) Real payment test:** pay the smallest plan once (or use a 100% coupon if you have one) from a spare account, confirm the plan turns on within a minute, the receipt appears, and the payment shows in Razorpay; then refund it
 - [x] 30 Oct: Forge plain text (options, steps) no longer waits for MathJax; only text with maths does
 - [ ] Note for future MathJax upgrades: re-run `scripts/zz-mjsafe.mjs`-style check (a `\href{javascript:...}` must produce no link and formulas must still render) after changing the config or the MathJax version
+- [ ] **(you) Device-limit cooldown on the Pro TEST account** (justforpersonal7774@gmail.com): my automated sessions registered 44 one-shot "devices" in 30 days, so a NEW device signing in with that Pro account now gets "Too many new devices this month" (the limit is 4 new devices per 30 days). Fix: delete those rows (tell me "delete the test device rows", I was not allowed to without your OK) or revoke them in Profile > Devices; they age out by about 27 Nov. Free accounts are never limited, so all my live tests now use zz-free-tester@example.com
+- [ ] Profile UX nit: the "Save changes" button only appears after an edit (fine), but the old report "Save button missing" came from the outage; consider a visible "All changes saved" state
+- [x] 30 Oct: standing rule for live tests: use the Free test account (no device limit), never the Pro account
