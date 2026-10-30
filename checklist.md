@@ -426,5 +426,6 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 30 Oct: Forge nightly workflow fixed (both earlier runs hit the 2 h limit and lost their work): generate step now stops at 95 min and the push step always runs
 - [ ] Forge in built tests: `gradeNow` in `lib/repository/answer-keys.ts` only sends `GATE_` ids to the grader, so FORGE_ ids in a test are never graded; allow FORGE_ ids there when the Exam Setup Forge/Blend source is wired
 - [x] 30 Oct: Battles Telegram message to the owner when a friend starts and finishes (linked members; mute with prefs.battles=false); FORGE ids now sent to the grader (server still applies plan/branch/release rules)
-- [ ] Battles: topic-by-topic comparison, rematch button; test the Challenge button on a real result page and the Free 3-battle limit
+- [x] 30 Oct: Battles subject-by-subject comparison (`/api/battles/[id]/compare`), rematch (friend turns their score into a new battle), Free 3-active-battle limit verified
+- [ ] Battles: look at the comparison and rematch UI in a browser (API verified only); test the Challenge button on a real result page
 - [ ] Forge in built tests: load Forge items into the exam engine (they live in the database, the engine reads the static bank), keep them in the saved session for review, then enable the Forge/Blend shares in Exam Setup

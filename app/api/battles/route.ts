@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
   const all = [...(owned ?? []).map((b) => ({ ...b, mine: true })), ...(others ?? []).map((b) => ({ ...b, mine: false }))];
   const ids = all.map((b) => b.id);
   const { data: entries } = ids.length
-    ? await db.from("battle_entries").select("battle_id, user_id, display_name, status, answered, total, score, max_score, started_at, submitted_at, last_seen_at").in("battle_id", ids)
+    ? await db.from("battle_entries").select("battle_id, user_id, display_name, status, answered, total, score, max_score, attempt_id, started_at, submitted_at, last_seen_at").in("battle_id", ids)
     : { data: [] };
   return NextResponse.json({
     now: nowIso,
@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
       // Everyone in a battle sees the entries of the owner's battles; a joiner sees only their own row.
       entries: (entries ?? []).filter((e) => e.battle_id === b.id && (b.mine || e.user_id === userId)).map((e) => ({
         userId: e.user_id, name: e.display_name, status: e.status, answered: e.answered, total: e.total, score: e.score, maxScore: e.max_score,
-        submittedAt: e.submitted_at, lastSeenAt: e.last_seen_at, you: e.user_id === userId,
+        submittedAt: e.submitted_at, lastSeenAt: e.last_seen_at, you: e.user_id === userId, attemptId: e.user_id === userId ? e.attempt_id : null,
       })),
     })),
   }, { headers: { "Cache-Control": "private, no-store" } });
