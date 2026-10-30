@@ -436,3 +436,6 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Forge CS bank: 29 of the 800-question target (owner, 30 Oct: finish CS to 800 before any other branch; then the other branches in parallel)
 - [x] **Checkpoint** rebuilt 30 Oct: `/checkpoint` no longer a dead end: mixed 10-question checkpoint from the last 5 tests + mistakes (unseen first, easy to hard) and a searchable topic picker for the 8-question single-topic one; started a real 1/10 session (desktop light, mobile dark). Open: look at results/retry flow for a checkpoint, and mobile light / desktop dark views
 - [x] 30 Oct package updates verified: full build passes, Battles create/finish/compare (zod routes), grading and security checks pass
+- [x] 30 Oct: reviewed `New folder/` (3 MadeToScale Instagram Reels + a 20-page "12 landing page animations" PDF; third-party, reference only, not for committing)
+- [ ] Owner to choose from the ideas taken from those references: Reels format for GATE (countdown list, kinetic captions, "comment a keyword" lead magnet), landing-page motion (hero reveal, count-up, process draw, price roll) within our rules (reduced motion, transform/opacity only, play once, real data only)
+- [ ] Decide whether `New folder/` stays out of git (28 MB of third-party video; add to .gitignore)
