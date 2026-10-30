@@ -150,7 +150,7 @@ type SubmittableSession = {
   id: string;
   startedAt?: string;
   elapsedSeconds?: number;
-  draftConfig?: { config?: { examType?: string; yearShift?: string; mockId?: string; title?: string } };
+  draftConfig?: { config?: { examType?: string; yearShift?: string; mockId?: string; title?: string; battle?: { id: string } } };
   integrity?: { tabBlurs?: number; fullscreenExits?: number; pausedSeconds?: number; disqualifiedReason?: string };
   responses: Record<string, { questionId: string; status: string; selectedOptions?: string[]; natValue?: string; timeSpentSeconds?: number }>;
 };
@@ -267,6 +267,10 @@ async function gradeNow(
   }
   // Server rounds per call; keep two decimals overall.
   results.score = Math.round(results.score * 100) / 100;
+  // A battle (R19): tell the server this friend finished. It reads the score from the stored attempt, never from here.
+  if (cfg?.battle?.id && results.stored) {
+    void fetch(`/api/battles/${cfg.battle.id}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "finish", attempt_id: session.id }) }).catch(() => {});
+  }
   return results;
 }
 

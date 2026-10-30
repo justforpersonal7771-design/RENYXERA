@@ -15,7 +15,7 @@ export type ShareStat = { label: string; value: string };
  * name on it follows the person's leaderboard display choice (anonymous by default);
  * never an email.
  */
-export function ShareResultButton({ title, subtitle, stats, getLink, className = "" }: { title: string; subtitle: string; stats: ShareStat[]; getLink?: () => string; className?: string }) {
+export function ShareResultButton({ title, subtitle, stats, getLink, className = "" }: { title: string; subtitle: string; stats: ShareStat[]; getLink?: () => string | Promise<string>; className?: string }) {
   const profile = useAuthStore((s) => s.profile);
   const toast = useToastStore((s) => s.show);
   const [busy, setBusy] = useState(false);
@@ -33,12 +33,18 @@ export function ShareResultButton({ title, subtitle, stats, getLink, className =
   const shareLink = async () => {
     setMenu(false);
     track("share_clicked", null, "result_link");
-    const url = getLink?.() ?? "https://gate.renyxera.workers.dev/";
+    const url = (await getLink?.()) ?? "https://gate.renyxera.workers.dev/";
     const text = `${title}: ${stats.map((s) => `${s.label} ${s.value}`).join(", ")} on RENYXERA. Can you beat it?`;
     try {
       if (navigator.share) await navigator.share({ title: "My RENYXERA result", text, url });
       else { await navigator.clipboard.writeText(`${text} ${url}`); toast("Link copied. Paste it anywhere to share.", "success"); }
-    } catch (e) { if ((e as Error)?.name !== "AbortError") toast("Couldn't share the link. Try again.", "error"); }
+    } catch (e) {
+      const name = (e as Error)?.name;
+      if (name === "NotAllowedError") { // the share sheet needs a fresh tap after a server round trip: copy instead
+        try { await navigator.clipboard.writeText(`${text} ${url}`); toast("Link copied. Paste it anywhere to share.", "success"); return; } catch { /* fall through */ }
+      }
+      if (name !== "AbortError") toast("Couldn't share the link. Try again.", "error");
+    }
   };
 
   const who = (() => {

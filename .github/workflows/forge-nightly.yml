@@ -54,6 +54,9 @@ jobs:
           fi
 
       - name: Generate and verify
+        # Stops itself well before the 120-minute job limit (a cancelled job loses the push step), keeping whatever was accepted so far.
+        timeout-minutes: 95
+        continue-on-error: true
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEYS: ${{ secrets.OPENROUTER_API_KEYS }}
@@ -64,6 +67,7 @@ jobs:
           npx tsx scripts/forge/generate.mjs --branch="$BR" --n="$N" --batch="$B" || true
 
       - name: Push for review
+        if: always()
         run: |
           git add data/forge
           if git diff --cached --quiet; then echo "Nothing new"; exit 0; fi

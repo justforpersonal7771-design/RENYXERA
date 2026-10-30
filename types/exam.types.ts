@@ -54,6 +54,8 @@ export interface TestConfig {
   goalTag?: GoalTag;
   /** "Beat my score": the friend's result this set was shared with. */
   challenge?: { score: number; max: number; by: string };
+  /** A live battle (R19): progress is sent while playing and the server-graded score is attached on submit. */
+  battle?: { id: string };
   // When Focus Target is active, the exact set of topics it currently recommends —
   // custom-block generation restricts every block's pool to this set, same as
   // Subject Mastery / Section Sprint already do. Undefined/omitted means unfiltered.

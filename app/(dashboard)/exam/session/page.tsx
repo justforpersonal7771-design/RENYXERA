@@ -3,7 +3,7 @@
 import { VirtualCalculator } from "@/components/exam/virtual-calculator";
 import { MOCK_TAB_SWITCH_LIMIT } from "@/lib/exam/integrity-rules";
 import { FS_EVENT, isFullscreen, wireFullscreenEvents } from "@/lib/fullscreen";
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
@@ -45,6 +45,17 @@ export default function ExamSessionPage() {
   const responsesFromStore = useExamRuntimeStore((state) => state.activeSession?.responses);
   const responses = useMemo(() => responsesFromStore || {}, [responsesFromStore]);
   const sessionGoalTag = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.goalTag);
+
+  // Live battle (R19): tell the server how far along this player is, every 20 s while the test runs.
+  const battleId = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.battle?.id);
+  const answeredRef = useRef(0);
+  answeredRef.current = Object.values(responses).filter((r) => r.status === "ANSWERED" || r.status === "MARKED_AND_ANSWERED").length;
+  useEffect(() => {
+    if (!battleId) return;
+    const send = () => { void fetch(`/api/battles/${battleId}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "progress", answered: answeredRef.current }) }).catch(() => {}); };
+    const t = setInterval(send, 20_000);
+    return () => clearInterval(t);
+  }, [battleId]);
 
   const pauseSession = useExamRuntimeStore((state) => state.pauseSession);
   const isMockSession = useExamRuntimeStore((state) => !!state.activeSession?.draftConfig?.config?.mockId);

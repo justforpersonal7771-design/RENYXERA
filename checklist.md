@@ -12,7 +12,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 - [ ] **(you) URGENT: Supabase rejects every signed-in database call from browsers** ("JWT issued at future", PGRST303, measured for 12+ minutes on 26 Oct). This breaks the referral link ("Creating your link…"), the sponsor break, profile loading/saving and anything else read directly from the browser. Steps: Supabase dashboard → your project → **Project Settings → General → Restart project**; if it persists, **Project Settings → JWT Keys**: check the current signing key, and open a ticket with Supabase support quoting PGRST303. Tell me when done; I re-test.
 - [x] **Bug batch of 26 Oct fixed, verified, deployed** — see §0a.
-- [ ] **(me) R19 Battles** — live "Beat my score" (opened/started/progress/submitted/winner, Telegram ping). Needs migration `0041_battles.sql` (you run it). Ref: `docs/roadmap/R19-BATTLES.md`. Waits for the Supabase fix to test.
+- [x] **R19 Battles** built and tested 30 Oct (migration `0043_battles.sql` applied): `/api/battles`, `/challenge/<id>`, live `/battles` board (15 s polling), server-graded scores, Free 3 active, 7-day expiry. Open: Telegram ping to the sender, topic-by-topic comparison, rematch. Ref: `docs/roadmap/R19-BATTLES.md`
 - [ ] **(me) R18 UI refresh** — dashboard first, then analytics, AI Mentor, other screens; contact sheet of layouts for you to pick. Ref: `docs/roadmap/R18-UI-REFRESH.md`.
 - [ ] **(me) R11 Forge**, then **R20 Solutions** for every question, with **R12 Study materials** possibly in parallel. Refs: `R11-FORGE.md`, `R20-SOLUTIONS.md`, `R12-STUDY-MATERIALS.md`.
 - [ ] **(you)** Swaseekh signed-in review: sign in with Google and send screenshots of dashboard, question bank, a textbook page, analytics with institute filter, mock test, pricing (I can't sign in with a Google account). Analysis so far: `docs/competitors/COMPETITORS_2026-10.md`.
@@ -423,3 +423,5 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 29 Oct: Tutor panels recoloured to the blue family; Free AI practice sets taster (3 per account, never reset) coded; fails closed until migration `0042_free_taster.sql` is run (you). Analytics stays a full lock (owner: a view, not a feature to try)
 - [ ] **(you) run `supabase/migrations/0042_free_taster.sql`** in Supabase SQL editor (click-by-click steps given in chat)
 - [ ] Taster for Battles, Spark and planner automation: audit when those go live
+- [x] 30 Oct: Forge nightly workflow fixed (both earlier runs hit the 2 h limit and lost their work): generate step now stops at 95 min and the push step always runs
+- [ ] Forge in built tests: `gradeNow` in `lib/repository/answer-keys.ts` only sends `GATE_` ids to the grader, so FORGE_ ids in a test are never graded; allow FORGE_ ids there when the Exam Setup Forge/Blend source is wired

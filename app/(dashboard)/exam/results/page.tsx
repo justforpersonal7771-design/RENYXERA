@@ -296,8 +296,20 @@ export default function ResultSummaryPage() {
   const challengeLine = ch ? (myMarks > ch.score ? `You beat ${ch.by}'s ${ch.score}/${ch.max} with ${myMarks}.` : myMarks === ch.score ? `You matched ${ch.by}'s ${ch.score}/${ch.max}.` : `${ch.by} scored ${ch.score}/${ch.max}. You got ${myMarks}. Try again?`) : null;
   const cpCfg = session.draftConfig.config as { examType?: string; topics?: string[] };
   const cpLine = cpCfg.examType === "TOPIC_TEST" && cpCfg.topics?.length === 1 && wrong > 0 ? `You missed ${wrong} on ${cpCfg.topics[0]}. Read those solutions in Review, then retry this checkpoint.` : null;
+  // A live battle link (/challenge/<id>) when signed in and the test is saved on the server; otherwise the plain "beat my score" link.
+  const battleLink = async (): Promise<string> => {
+    const fallback = challengeUrl(window.location.origin, { ids: session.draftConfig.questions.map((q) => q.questionId), score: marks, max: maxPossibleMarks, by: useAuthStore.getState().profile?.display_name || "A friend", title: String((session.draftConfig.config as { title?: string }).title ?? "Practice set") });
+    if (!useAuthStore.getState().user) return fallback;
+    try {
+      const r = await fetch("/api/battles", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ attempt_id: session.id }) });
+      const j = (await r.json().catch(() => ({}))) as { path?: string; error?: string };
+      if (r.ok && j.path) return window.location.origin + j.path;
+      if (r.status === 403 && j.error) useToastStore.getState().show(j.error, "info");
+    } catch { /* offline: fall back to the plain link */ }
+    return fallback;
+  };
   const shareChallenge = async () => {
-    const url = challengeUrl(window.location.origin, { ids: session.draftConfig.questions.map((q) => q.questionId), score: marks, max: maxPossibleMarks, by: useAuthStore.getState().profile?.display_name || "A friend", title: String((session.draftConfig.config as { title?: string }).title ?? "Practice set") });
+    const url = await battleLink();
     const text = `I scored ${myMarks}/${maxPossibleMarks} on this set. Can you beat it?`;
     try {
       if (navigator.share) await navigator.share({ title: "Beat my score", text, url });
@@ -307,7 +319,7 @@ export default function ResultSummaryPage() {
   };
   const renderActions = (cls: string) => (
             <div className={cls}>
-              <ShareResultButton getLink={() => challengeUrl(window.location.origin, { ids: session.draftConfig.questions.map((q) => q.questionId), score: marks, max: maxPossibleMarks, by: useAuthStore.getState().profile?.display_name || "A friend", title: String((session.draftConfig.config as { title?: string }).title ?? "Practice set") })} className="h-auto py-3 [@media(max-height:860px)]:py-2.5"
+              <ShareResultButton getLink={battleLink} className="h-auto py-3 [@media(max-height:860px)]:py-2.5"
                 title={String((session.draftConfig.config as { title?: string }).title ?? ((session.draftConfig.config as { yearShift?: string }).yearShift ? `GATE ${paperLabel()} ${(session.draftConfig.config as { yearShift?: string }).yearShift} paper` : "Practice test"))}
                 subtitle="Practice test"
                 stats={[{ label: "Marks", value: `${Math.round(marks * 100) / 100} / ${maxPossibleMarks}` }, { label: "Accuracy", value: `${Math.round(accuracy)}%` }, { label: "Correct", value: String(correct) }, { label: "Attempted", value: `${totalAttempted}` }]} />
