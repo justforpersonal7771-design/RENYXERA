@@ -1,0 +1,428 @@
+{
+ "branch": "CS",
+ "batch": "b004",
+ "note": "Authored in a Claude session; every answer computed by its own verify code (author_b004.py), then validate.py.",
+ "items": [
+  {
+   "id": "FORGE_CS_000030",
+   "subject": "Databases",
+   "topic": "File Organization & Indexing (e.g., B and B+ Trees)",
+   "kind": "numeric_chain",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A B+ tree index is built on a file. Each disk block is \\(4096\\) bytes, a search key is \\(12\\) bytes, a record pointer is \\(8\\) bytes and a block pointer is \\(8\\) bytes. Every internal node and every leaf node occupies exactly one block, and each leaf also stores one block pointer to the next leaf. The maximum number of record pointers that a \\(3\\)-level B+ tree (the root, one level of internal nodes, and the leaf level) can hold is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "block = 4096\nkey = 12\nrec = 8\nptr = 8\np = 0\nwhile (p + 1) * ptr + p * key <= block:\n    p += 1\nq = 0\nwhile (q + 1) * (key + rec) + ptr <= block:\n    q += 1\nanswer = p * p * q"
+   },
+   "solution": {
+    "given": "block 4096 B, key 12 B, record pointer 8 B, block pointer 8 B",
+    "find": "maximum record pointers in a 3-level B+ tree",
+    "steps": [
+     "Internal node with \\(p\\) children holds \\(p\\) block pointers and \\(p-1\\) keys: \\(8p + 12(p-1) \\le 4096\\), so \\(20p \\le 4108\\) and \\(p = 205\\).",
+     "Leaf node with \\(q\\) keys holds \\(q\\) keys, \\(q\\) record pointers and one next-leaf pointer: \\(20q + 8 \\le 4096\\), so \\(q = 204\\).",
+     "A 3-level tree: the root has up to \\(205\\) children, each of those has up to \\(205\\) leaf children, and each leaf has up to \\(204\\) record pointers.",
+     "Maximum \\(= 205 \\times 205 \\times 204 = 8{,}573{,}100\\)."
+    ],
+    "shortcut": "Solve the block-size inequality once for internal nodes and once for leaves; then multiply fan-outs level by level.",
+    "trap": "Using the same capacity for internal nodes and leaves, or forgetting the next-leaf pointer in the leaf."
+   },
+   "answer": {
+    "range": [
+     8573100.0,
+     8573100.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000031",
+   "subject": "Computer Networks",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "kind": "numeric_chain",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "A sender uses CRC error detection with the generator polynomial \\(G(x) = x^3 + x + 1\\). The data bits are \\(1101011\\). The CRC (the remainder appended to the data) is a \\(3\\)-bit string. The decimal value of this \\(3\\)-bit CRC is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "data = [1, 1, 0, 1, 0, 1, 1]\ngen = [1, 0, 1, 1]\nd = data + [0, 0, 0]\nfor i in range(len(data)):\n    if d[i] == 1:\n        for j in range(len(gen)):\n            d[i + j] = d[i + j] ^ gen[j]\nrem = d[-3:]\nanswer = rem[0] * 4 + rem[1] * 2 + rem[2]"
+   },
+   "solution": {
+    "given": "data 1101011, generator 1011",
+    "find": "decimal value of the 3-bit CRC",
+    "steps": [
+     "Generator \\(x^3 + x + 1\\) is the bit string 1011 (4 bits), so append 3 zeros: 1101011000.",
+     "Divide by XOR (no borrows). Each line shows the bits after one XOR step, with the leading 1 cleared: 0110011000, 0011111000, 0001001000, 0000010000, 0000000110.",
+     "The last 3 bits after the final step are 110, which is the CRC.",
+     "\\(110_2 = 6\\)."
+    ],
+    "shortcut": "Mod-2 long division: wherever the current leading bit is 1, XOR the generator under it; the last r bits are the CRC.",
+    "trap": "Using ordinary subtraction instead of XOR, or appending 4 zeros (the generator length) instead of 3 (its degree)."
+   },
+   "answer": {
+    "range": [
+     6.0,
+     6.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000032",
+   "subject": "Operating Systems",
+   "topic": "Memory Management and Virtual Memory",
+   "kind": "numeric_chain",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A system has a \\(46\\)-bit virtual address, a page size of \\(8\\) KB and a page-table entry of \\(8\\) bytes. The page table is organised as a multi-level table in which every table (at every level) occupies exactly one page. The minimum number of levels of page tables required to translate every virtual address is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "va = 46\npage = 8192\npte = 8\noffset = 0\nwhile 2 ** (offset + 1) <= page:\n    offset += 1\nper_level = 0\nwhile 2 ** (per_level + 1) <= page // pte:\n    per_level += 1\nneed = va - offset\nlevels = 0\ncovered = 0\nwhile covered < need:\n    covered += per_level\n    levels += 1\nanswer = levels"
+   },
+   "solution": {
+    "given": "46-bit virtual address, 8 KB pages, 8-byte entries",
+    "find": "minimum number of page-table levels",
+    "steps": [
+     "Page offset \\(= \\log_2 8192 = 13\\) bits, so the page number has \\(46 - 13 = 33\\) bits.",
+     "One page holds \\(8192 / 8 = 1024 = 2^{10}\\) entries, so each level can resolve \\(10\\) bits.",
+     "\\(3\\) levels resolve only \\(30\\) bits, which is not enough for \\(33\\); \\(4\\) levels resolve \\(40 \\ge 33\\)."
+    ],
+    "shortcut": "Levels \\(= \\lceil (\\text{VA bits} - \\text{offset bits}) / \\log_2(\\text{entries per page}) \\rceil\\).",
+    "trap": "Dividing the address size by the page size in bytes, or forgetting that every table must fit exactly one page."
+   },
+   "answer": {
+    "range": [
+     4.0,
+     4.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000033",
+   "subject": "Algorithms",
+   "topic": "Greedy Approach & Divide-and-Conquer Designs",
+   "kind": "trace",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A message of \\(100\\) characters uses six symbols whose frequencies (counts out of 100) are \\(a = 5,\\ b = 7,\\ c = 10,\\ d = 15,\\ e = 20,\\ f = 43\\). Each symbol is given a Huffman code. The total number of bits needed to encode the whole message is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "freq = [5, 7, 10, 15, 20, 43]\nnodes = sorted(freq)\ntotal = 0\nwhile len(nodes) > 1:\n    a = nodes.pop(0)\n    b = nodes.pop(0)\n    total += a + b\n    nodes.append(a + b)\n    nodes.sort()\nanswer = total"
+   },
+   "solution": {
+    "given": "six symbol frequencies summing to 100",
+    "find": "total encoded length in bits",
+    "steps": [
+     "Repeatedly merge the two smallest: 5 + 7 = 12; 10 + 12 = 22; 15 + 20 = 35; 22 + 35 = 57; 43 + 57 = 100.",
+     "The total encoded length equals the sum of the weights of all internal (merged) nodes, because each merge adds one bit to every symbol beneath it.",
+     "\\(12 + 22 + 35 + 57 + 100 = 226\\) bits.",
+     "Check by code lengths: f = 1 bit (43), e = 3 bits (20), d = 3 bits (15), c = 3 bits (10), a and b = 4 bits (5, 7): 43 + 60 + 45 + 30 + 20 + 28 = 226."
+    ],
+    "shortcut": "Sum of the internal-node weights equals the weighted path length: no need to assign the codes.",
+    "trap": "Adding only the leaf frequencies (100), or merging the largest two by mistake."
+   },
+   "answer": {
+    "range": [
+     226.0,
+     226.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000034",
+   "subject": "Algorithms",
+   "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
+   "kind": "trace",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "An undirected weighted graph on vertices \\(S, A, B, C, D\\) has the edges \\(SA = 4,\\ SB = 1,\\ BA = 2,\\ AC = 1,\\ BC = 5,\\ CD = 3,\\ BD = 9\\). Dijkstra's algorithm is run from \\(S\\). The sum of the shortest-path distances from \\(S\\) to all five vertices (including \\(S\\) itself) is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "edges = [('S','A',4),('S','B',1),('B','A',2),('A','C',1),('B','C',5),('C','D',3),('B','D',9)]\nverts = ['S','A','B','C','D']\ndist = {v: 10 ** 9 for v in verts}\ndist['S'] = 0\ndone = set()\nwhile len(done) < len(verts):\n    u = min((v for v in verts if v not in done), key=lambda v: dist[v])\n    done.add(u)\n    for a, b, w in edges:\n        if a == u and dist[u] + w < dist[b]:\n            dist[b] = dist[u] + w\n        if b == u and dist[u] + w < dist[a]:\n            dist[a] = dist[u] + w\nanswer = sum(dist.values())"
+   },
+   "solution": {
+    "given": "7 undirected weighted edges",
+    "find": "sum of shortest distances from S",
+    "steps": [
+     "Start: S = 0. Edges from S give A = 4, B = 1. Take the closest unvisited vertex B (1).",
+     "From B: A = min(4, 1 + 2) = 3, C = 1 + 5 = 6, D = 1 + 9 = 10. Next closest: A (3).",
+     "From A: C = min(6, 3 + 1) = 4. Next closest: C (4). From C: D = min(10, 4 + 3) = 7.",
+     "Distances: \\(S = 0, B = 1, A = 3, C = 4, D = 7\\); sum \\(= 15\\)."
+    ],
+    "shortcut": "Write the distance table and update it only from the vertex just finalised.",
+    "trap": "Using the direct edge SA = 4 or BD = 9 without checking shorter routes through other vertices."
+   },
+   "answer": {
+    "range": [
+     15.0,
+     15.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000035",
+   "subject": "Data Structures",
+   "topic": "Binary Search Trees (BSTs) & Binary Heaps",
+   "kind": "trace",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "The keys \\(25, 14, 32, 8, 41, 19, 27, 36\\) are inserted one by one, in this order, into an initially empty binary max-heap stored in an array (index \\(1\\) is the root). Then the maximum is extracted twice (each extraction moves the last element to the root and sifts it down). The key stored at array index \\(2\\) after both extractions is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "arr = []\ndef up(i):\n    while i > 0 and arr[(i - 1) // 2] < arr[i]:\n        arr[(i - 1) // 2], arr[i] = arr[i], arr[(i - 1) // 2]\n        i = (i - 1) // 2\ndef down(i):\n    n = len(arr)\n    while True:\n        l = 2 * i + 1\n        r = 2 * i + 2\n        m = i\n        if l < n and arr[l] > arr[m]:\n            m = l\n        if r < n and arr[r] > arr[m]:\n            m = r\n        if m == i:\n            break\n        arr[i], arr[m] = arr[m], arr[i]\n        i = m\nfor k in [25, 14, 32, 8, 41, 19, 27, 36]:\n    arr.append(k)\n    up(len(arr) - 1)\nfor _ in range(2):\n    arr[0] = arr[-1]\n    arr.pop()\n    down(0)\nanswer = arr[1]"
+   },
+   "solution": {
+    "given": "8 keys inserted into a max-heap, then two extract-max operations",
+    "find": "array element at index 2",
+    "steps": [
+     "Insertions (sift up): [25]; [25,14]; [32,14,25]; [32,14,25,8]; [41,32,25,8,14]; [41,32,25,8,14,19]; [41,32,27,8,14,19,25]; [41,36,27,32,14,19,25,8].",
+     "First extract-max (remove 41): move 8 to the root and sift down: [36,32,27,8,14,19,25].",
+     "Second extract-max (remove 36): move 25 to the root and sift down: [32,25,27,8,14,19].",
+     "Index 2 (1-based) holds 25."
+    ],
+    "shortcut": "Write the heap as an array after every step; sift-up compares with the parent (index i/2), sift-down with the larger child.",
+    "trap": "Using 0-based indexing when the question counts from 1, or sifting the moved element only one level."
+   },
+   "answer": {
+    "range": [
+     25.0,
+     25.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000036",
+   "subject": "Discrete Mathematics",
+   "topic": "Combinatorics (Counting Rules, Summation Formulas)",
+   "kind": "multi_concept",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "The number of binary strings of length \\(8\\) that do not contain two consecutive \\(1\\)s is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "count = 0\nfor x in range(256):\n    if x & (x >> 1) == 0:\n        count += 1\nanswer = count"
+   },
+   "solution": {
+    "given": "binary strings of length 8",
+    "find": "strings with no two adjacent 1s",
+    "steps": [
+     "Let \\(a_n\\) be the count for length \\(n\\). A valid string ends in 0 (any valid string of length \\(n-1\\) before it) or in 01 (any valid string of length \\(n-2\\) before it): \\(a_n = a_{n-1} + a_{n-2}\\).",
+     "\\(a_1 = 2\\) (0, 1) and \\(a_2 = 3\\) (00, 01, 10).",
+     "\\(a_3 = 5,\\ a_4 = 8,\\ a_5 = 13,\\ a_6 = 21,\\ a_7 = 34,\\ a_8 = 55\\)."
+    ],
+    "shortcut": "It is a Fibonacci recurrence: a_n = a_(n-1) + a_(n-2).",
+    "trap": "Using 2^8 minus the strings that contain a 11 pair without handling overlaps (inclusion-exclusion gets messy); the recurrence is cleaner."
+   },
+   "answer": {
+    "range": [
+     55.0,
+     55.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000037",
+   "subject": "Computer Organization and Architecture",
+   "topic": "I/O Interfaces (Interrupts & DMA Control Modes)",
+   "kind": "numeric_chain",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "A device transfers data to memory through a DMA controller in cycle-stealing mode at \\(1\\) MB/s (\\(10^6\\) bytes per second). The controller moves one byte per stolen CPU cycle. The CPU clock frequency is \\(100\\) MHz. The percentage of CPU cycles stolen by DMA is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "bytes_per_sec = 1_000_000\ncycles_per_byte = 1\ncpu_hz = 100_000_000\nanswer = bytes_per_sec * cycles_per_byte / cpu_hz * 100"
+   },
+   "solution": {
+    "given": "1 MB/s, one stolen cycle per byte, 100 MHz CPU",
+    "find": "percentage of CPU cycles stolen",
+    "steps": [
+     "Stolen cycles per second \\(= 10^6\\) bytes \\(\\times 1\\) cycle \\(= 10^6\\).",
+     "CPU cycles per second \\(= 100 \\times 10^6 = 10^8\\).",
+     "Fraction stolen \\(= 10^6 / 10^8 = 0.01 = 1\\%\\)."
+    ],
+    "shortcut": "Percentage stolen = (bytes per second x cycles per byte) / clock frequency x 100.",
+    "trap": "Comparing bytes per second with bits per second, or forgetting the clock is 100 times faster than the byte rate."
+   },
+   "answer": {
+    "range": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000038",
+   "subject": "Digital Logic",
+   "topic": "Sequential Circuits (Flip-Flops, Registers, Counters)",
+   "kind": "numeric_chain",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A modulo-\\(100\\) asynchronous (ripple) counter is built from the minimum number of flip-flops. Each flip-flop has a propagation delay of \\(12\\) ns, and the counter output is read only after the clock change has rippled through all the flip-flops. The maximum clock frequency at which the counter works correctly is ______ MHz (up to one decimal place).",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "n = 0\nwhile 2 ** n < 100:\n    n += 1\nperiod_ns = n * 12\nanswer = round(1000 / period_ns, 1)"
+   },
+   "solution": {
+    "given": "mod-100 ripple counter, 12 ns per flip-flop",
+    "find": "maximum clock frequency",
+    "steps": [
+     "Flip-flops needed: \\(2^6 = 64 < 100 \\le 128 = 2^7\\), so \\(n = 7\\).",
+     "In a ripple counter the change travels through all stages one after another: settling time \\(= 7 \\times 12 = 84\\) ns.",
+     "The clock period must be at least \\(84\\) ns, so \\(f_{max} = 1/84\\text{ ns} = 11.9\\) MHz."
+    ],
+    "shortcut": "Ripple counter: minimum clock period = (number of flip-flops) x (delay of one).",
+    "trap": "Using the delay of one flip-flop (83.3 MHz): that is the limit for a synchronous counter, not a ripple counter."
+   },
+   "answer": {
+    "range": [
+     11.85,
+     11.95
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000039",
+   "subject": "Compiler Design",
+   "topic": "Intermediate Code Generation & Local Code Optimization",
+   "kind": "trace",
+   "difficulty": "E",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "The expression \\(a * b + c * d - e / (f + g)\\) is translated into three-address code with no optimisation, one binary operation per instruction. The number of three-address instructions generated is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "expr = \"a*b+c*d-e/(f+g)\"\nanswer = sum(1 for ch in expr if ch in \"+-*/\")"
+   },
+   "solution": {
+    "given": "a*b + c*d - e/(f+g)",
+    "find": "number of three-address instructions",
+    "steps": [
+     "t1 = a * b; t2 = c * d; t3 = t1 + t2; t4 = f + g; t5 = e / t4; t6 = t3 - t5.",
+     "Every binary operator needs exactly one instruction. The expression has 6 operators (*, *, +, +, /, -)."
+    ],
+    "shortcut": "Count the binary operators: each one becomes one three-address instruction.",
+    "trap": "Counting the operands (7) or forgetting the operator inside the parentheses."
+   },
+   "answer": {
+    "range": [
+     6.0,
+     6.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000040",
+   "subject": "Databases",
+   "topic": "Relational Models, Relational Algebra, Tuple Calculus",
+   "kind": "trace",
+   "difficulty": "E",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "Relation \\(R(A, B)\\) has the tuples \\((1,x), (2,y), (3,x), (4,z), (5,y)\\). Relation \\(S(B, C)\\) has the tuples \\((x,10), (x,20), (y,30), (w,40)\\). The number of tuples in the natural join \\(R \\bowtie S\\) is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "R = [(1, 'x'), (2, 'y'), (3, 'x'), (4, 'z'), (5, 'y')]\nS = [('x', 10), ('x', 20), ('y', 30), ('w', 40)]\nanswer = sum(1 for a, b in R for c, d in S if b == c)"
+   },
+   "solution": {
+    "given": "R(A,B) with 5 tuples, S(B,C) with 4 tuples",
+    "find": "size of the natural join",
+    "steps": [
+     "The join matches tuples on B. For B = x: R has 2 tuples (1 and 3), S has 2 tuples (10 and 20), giving 2 x 2 = 4.",
+     "For B = y: R has 2 tuples (2 and 5), S has 1 tuple (30): 2 x 1 = 2.",
+     "B = z appears only in R and B = w only in S, so they join with nothing.",
+     "Total = 4 + 2 = 6."
+    ],
+    "shortcut": "Group by the join value and multiply the counts from the two relations.",
+    "trap": "Counting tuples that do not match (a left outer join would give 7), or multiplying all 5 x 4 tuples."
+   },
+   "answer": {
+    "range": [
+     6.0,
+     6.0
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000041",
+   "subject": "Engineering Mathematics",
+   "topic": "Conditional Probability & Bayes Theorem",
+   "kind": "multi_concept",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A disease affects \\(1\\%\\) of a population. A test detects the disease in \\(95\\%\\) of the people who have it (true positive rate), and wrongly reports it in \\(10\\%\\) of the people who do not have it. A randomly chosen person tests positive. The probability that this person actually has the disease is ______ (rounded off to two decimal places).",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "p_d = 0.01\ntp = 0.95\nfp = 0.10\nanswer = p_d * tp / (p_d * tp + (1 - p_d) * fp)"
+   },
+   "solution": {
+    "given": "prevalence 1%, true positive 95%, false positive 10%",
+    "find": "P(disease | positive)",
+    "steps": [
+     "\\(P(+) = 0.01 \\times 0.95 + 0.99 \\times 0.10 = 0.0095 + 0.099 = 0.1085\\).",
+     "\\(P(D \\mid +) = 0.0095 / 0.1085 \\approx 0.0876\\).",
+     "Rounded to two decimals: \\(0.09\\)."
+    ],
+    "shortcut": "Bayes with a small prevalence: most positives are false positives, so the answer is much smaller than the test's 95%.",
+    "trap": "Answering 0.95 (the test's sensitivity) instead of the probability of disease given a positive result."
+   },
+   "answer": {
+    "range": [
+     0.082558,
+     0.092558
+    ]
+   }
+  },
+  {
+   "id": "FORGE_CS_000042",
+   "subject": "Discrete Mathematics",
+   "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "Let \\(G\\) be the graph obtained from the complete graph \\(K_4\\) (4 vertices, 6 edges) by deleting exactly one edge. The number of distinct spanning trees of \\(G\\) is ______.",
+   "options": [],
+   "verify": {
+    "lang": "python",
+    "code": "edges = [(0, 1), (0, 2), (0, 3), (1, 2), (1, 3)]\nn = 4\nL = [[0] * n for _ in range(n)]\nfor a, b in edges:\n    L[a][a] += 1\n    L[b][b] += 1\n    L[a][b] -= 1\n    L[b][a] -= 1\nM = [[fractions.Fraction(L[i][j]) for j in range(1, n)] for i in range(1, n)]\ndet = fractions.Fraction(1)\nm = n - 1\nfor i in range(m):\n    piv = next(r for r in range(i, m) if M[r][i] != 0)\n    if piv != i:\n        M[i], M[piv] = M[piv], M[i]\n        det = -det\n    det *= M[i][i]\n    for r in range(i + 1, m):\n        f = M[r][i] / M[i][i]\n        for c in range(i, m):\n            M[r][c] -= f * M[i][c]\nanswer = int(det)"
+   },
+   "solution": {
+    "given": "K4 minus one edge",
+    "find": "number of spanning trees",
+    "steps": [
+     "Cayley's formula: \\(K_4\\) has \\(4^{4-2} = 16\\) spanning trees, each with \\(3\\) edges.",
+     "By symmetry every one of the \\(6\\) edges lies in the same number of spanning trees: \\(16 \\times 3 / 6 = 8\\).",
+     "Spanning trees that avoid the deleted edge \\(= 16 - 8 = 8\\)."
+    ],
+    "shortcut": "Count the trees of the full graph that do NOT use the deleted edge: total minus those containing it.",
+    "trap": "Answering 16 (the number for K4) or 10 (counting edge subsets instead of trees)."
+   },
+   "answer": {
+    "range": [
+     8.0,
+     8.0
+    ]
+   }
+  }
+ ]
+}

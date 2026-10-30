@@ -6,6 +6,7 @@
  */
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { CountUp } from "@/components/ui/count-up";
 import { ArrowRight, BarChart3, Check, Layers, Play, RotateCcw, Settings, Swords, Timer } from "lucide-react";
 import { useStudyStore } from "@/store/use-study-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
@@ -70,10 +71,10 @@ export default function TestCentrePage() {
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
         {[
           { v: open, l: "mistakes waiting", t: "rose" }, { v: taken, l: "tests taken", t: "peri" },
-          { v: lastPct != null ? `${lastPct}%` : "-", l: "last test score", t: "butter" }, { v: attempts ? attempts.filter((a) => a.kind === "mock").length : 0, l: "mocks taken", t: "sky" },
-        ].map((s) => (
+          { v: lastPct, suffix: "%", l: "last test score", t: "butter" }, { v: attempts ? attempts.filter((a) => a.kind === "mock").length : 0, l: "mocks taken", t: "sky" },
+        ].map((s: { v: number | null; suffix?: string; l: string; t: string }) => (
           <div key={s.l} data-tint={s.t} className="card-pastel p-3 sm:p-4">
-            <p className={`font-display text-3xl font-extrabold tabular-nums sm:text-4xl ${ink}`}>{s.v}</p>
+            <p className={`font-display text-3xl font-extrabold tabular-nums sm:text-4xl ${ink}`}>{s.v == null ? "-" : <><CountUp value={s.v} />{s.suffix}</>}</p>
             <p className="mt-1 text-xs font-bold text-[var(--text-secondary)] sm:text-sm">{s.l}</p>
           </div>
         ))}

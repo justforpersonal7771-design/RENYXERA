@@ -2,6 +2,7 @@
 
 import { PromoVideo } from "@/components/marketing/promo-video";
 import { useRef, useState } from "react";
+import { PriceRoll } from "@/components/ui/price-roll";
 import { createPortal } from "react-dom";
 import { branchByCode } from "@/lib/branches";
 import Link from "next/link";
@@ -167,7 +168,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
               </div>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 {cmp && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-2 decoration-rose-500/70">{formatPrice(cmp.wasPaise)}</span>}
-                <span className="text-3xl font-extrabold text-[var(--text-primary)]">{formatPrice(plan.pricePaise)}</span>
+                <span className="text-3xl font-extrabold text-[var(--text-primary)]"><PriceRoll value={formatPrice(plan.pricePaise)} /></span>
                 {plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]">{plan.periodLabel}</span>}
                 {cmp && <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-xs font-black tracking-normal">Save {cmp.savePct}%</span>}
               </div>

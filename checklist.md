@@ -433,7 +433,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Next Forge batches: author_b003.py (other CS topics: compilers, COA pipeline/cache, DBMS transactions, networks, programming), then EC/EE/ME/CE/DA; static answer-free `forge.json` per branch still to do
 - [x] 30 Oct: Forge hub: questions use the full width (side cards moved below), "Show solution" before checking fetches the key first, fenced code blocks render for C questions; bank now 29 CS questions (b003 = 12 more, `author_b003.py`)
 - [x] Owner decision: size to reach for CS before starting the other five branches in parallel (design target was ~800 across practice + Daily + mocks)
-- [ ] Forge CS bank: 29 of the 800-question target (owner, 30 Oct: finish CS to 800 before any other branch; then the other branches in parallel)
+- [ ] Forge CS bank: 42 of the 800-question target (b004 = 13 more, 30 Oct; author_b004.py) (owner, 30 Oct: finish CS to 800 before any other branch; then the other branches in parallel)
 - [x] **Checkpoint** rebuilt 30 Oct: `/checkpoint` no longer a dead end: mixed 10-question checkpoint from the last 5 tests + mistakes (unseen first, easy to hard) and a searchable topic picker for the 8-question single-topic one; started a real 1/10 session (desktop light, mobile dark). Open: look at results/retry flow for a checkpoint, and mobile light / desktop dark views
 - [x] 30 Oct package updates verified: full build passes, Battles create/finish/compare (zod routes), grading and security checks pass
 - [x] 30 Oct: reviewed `New folder/` (3 MadeToScale Instagram Reels + a 20-page "12 landing page animations" PDF; third-party, reference only, not for committing)
@@ -445,3 +445,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] **Landing motion with `motion` (no GSAP):** one shared `CountUp`, hero word reveal, "how it works" line draw, Plans price roll, sign-up/upgrade button states; checked with the ui-ux-pro-max motion rules and the 6-point pre-ship list (reduced motion, transform/opacity only, play once, under 2.5 s, real data only)
 - [ ] Optional: try Chatterbox on one Hindi line for Hindi/Hinglish reels (needs your OK; never clone a real voice without consent); OpenWhispr voice typing for you
 - [ ] Review the `claude-youtube` skill pack before the YouTube channel launches (third-party: review first)
+- [x] 30 Oct: Reel rendered: `video/out/reel-top5.mp4` (22.6 s, 1080x1920, H.264, silent; local only, not committed). Open: voice-over + captions audio, Hindi cut, watch-through review by you
+- [x] 30 Oct: shared motion components built with `motion` (no GSAP): `components/ui/count-up.tsx` (used on the Test Centre hub stat tiles) and `components/ui/price-roll.tsx` (used on the Plans prices); both honour reduced motion and expose the real value to screen readers. Verified 30 Oct: price roll on Plans (desktop light, mid-roll and settled; mobile dark prices correct; reduced motion shows plain text). Open: count-up on the hub with real numbers (test account had zeros) and mobile light/dark visuals
+- [ ] Landing motion still to build: hero word reveal, "how it works" line draw, sign-up/upgrade button states
+- [ ] Forge next batches: more MCQ and MSQ items (b002-b004 are mostly numeric answers), then toward 800
