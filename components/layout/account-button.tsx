@@ -187,12 +187,12 @@ export function AccountButton() {
                 <span className="relative flex-1 text-sm font-semibold text-[var(--text-primary)]">Battles</span>
                 <ChevronRight className="relative w-4 h-4 text-[var(--text-muted)] opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
               </Link>
-              <button type="button" role="menuitem" onClick={() => { setOpen(false); openUpgrade(); }}
+              {!pro && <button type="button" role="menuitem" onClick={() => { setOpen(false); openUpgrade(); }}
                 className="group relative mt-1 flex w-full cursor-pointer items-center gap-3 rounded-xl px-2.5 py-2 text-left bg-gradient-to-r from-amber-500/10 via-violet-500/10 to-fuchsia-500/10 hover:from-amber-500/20 hover:to-fuchsia-500/20 transition-colors">
                 <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-fuchsia-600 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110 group-hover:-rotate-6"><Crown className="w-4 h-4" /></span>
-                <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">{pro ? "You're on Pro" : plus ? "You're on Plus" : "Plus & Pro plans"}</span>
+                <span className="flex-1 text-sm font-bold text-[var(--text-primary)]">{plus ? "You're on Plus" : "Plus & Pro plans"}</span>
                 <span className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-300">More AI</span>
-              </button>
+              </button>}
 
               {!hasJoinedChannel(tg) && <a href="https://t.me/renyxera" target="_blank" rel="noopener noreferrer" role="menuitem"
                 onClick={() => { void import("@/lib/growth/track").then((m) => m.track("telegram_join", null, "profile_menu")); setOpen(false); }}
