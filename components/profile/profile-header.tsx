@@ -3,8 +3,9 @@
 import { ProCrown } from "@/components/brand/pro-crown";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin, AtSign, IdCard, Crown, Phone } from "lucide-react";
+import { Sparkles, Mail, GraduationCap, Trophy, Clock, LogOut, Loader2, CalendarDays, MapPin, AtSign, IdCard, Crown, Phone, ChevronsDown, ChevronsUp } from "lucide-react";
 
 /**
  * Compact, horizontal profile header: exactly as tall as the avatar, pinned above the
@@ -30,6 +31,24 @@ export function ProfileHeader({
   const live = useEntitlements().tier;
   const paidTier = live !== "free" ? live : null;
   const R = 22, C = 2 * Math.PI * R;
+  // A one-line version of the header for people who want the sections higher up; the choice is remembered on this device.
+  const [compact, setCompact] = useState(false);
+  useEffect(() => { try { setCompact(localStorage.getItem("profile_header_compact") === "1"); } catch { /* private mode */ } }, []);
+  const flip = () => setCompact((v) => { try { localStorage.setItem("profile_header_compact", v ? "0" : "1"); } catch { /* private mode */ } return !v; });
+  if (compact) return (
+    <header className="relative flex items-center gap-3 overflow-hidden rounded-2xl grad-brand px-3 py-2 text-white shadow-[0_10px_28px_-16px_rgba(79,70,229,0.6)]">
+      <div className={`hero-avatar relative h-9 w-9 shrink-0 ${paidTier ? `tier-${paidTier}` : ""}`}>
+        <div className="h-full w-full overflow-hidden rounded-xl bg-white/15">{/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}<img src={avatarUri} alt="Your avatar" className="h-full w-full" width={36} height={36} /></div>
+      </div>
+      <h1 className="min-w-0 truncate text-base font-extrabold">{name}</h1>
+      <span className="shrink-0 rounded-full bg-white/20 px-2 py-0.5 text-xs font-black">{paidTier ?? "free"}</span>
+      <span className="hidden truncate text-xs font-semibold text-white/85 sm:inline">{daysLeft != null && daysLeft >= 0 ? `GATE ${targetYear} · ${daysLeft} days left` : `GATE ${targetYear}`}</span>
+      <span className="flex-1" />
+      <span className="hidden shrink-0 text-xs font-bold sm:inline">{completeness}% complete</span>
+      <button type="button" onClick={flip} aria-label="Show the full profile card" title="Show the full card" className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg bg-white/15 hover:bg-white/25"><ChevronsDown className="h-4 w-4" /></button>
+      <button type="button" onClick={onSignOut} disabled={signingOut} aria-label="Sign out" className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg bg-white/15 hover:bg-white/25 disabled:opacity-50">{signingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}</button>
+    </header>
+  );
 
   return (
     <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
@@ -100,6 +119,7 @@ export function ProfileHeader({
           </div>
         </div>
 
+        <button type="button" onClick={flip} aria-label="Shrink the profile card to one line" title="Shrink to one line" className="grid h-9 w-9 shrink-0 cursor-pointer place-items-center rounded-xl bg-white/15 hover:bg-white/25"><ChevronsUp className="h-4 w-4" /></button>
         <motion.button whileTap={{ scale: 0.95 }} onClick={onSignOut} disabled={signingOut} aria-label="Sign out"
           className="group/so shrink-0 inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold bg-white/15 hover:bg-white/25 border border-white/15 backdrop-blur transition-colors disabled:opacity-50 cursor-pointer">
           {signingOut ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <LogOut className="w-3.5 h-3.5 transition-transform group-hover/so:translate-x-0.5" />}
