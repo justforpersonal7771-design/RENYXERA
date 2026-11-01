@@ -11,9 +11,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, Folder, FolderInput, FolderMinus, FolderOpen, History, Maximize2, Minimize2, MessageSquarePlus, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, Folder, FolderInput, FolderMinus, FolderOpen, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { MentorMark } from "@/components/brand/mentor-mark";
+import { MentorLogo } from "@/components/brand/mentor-logo";
 import { CardView, MODES, Mode, Msg, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { useMentorData } from "@/components/mentor/use-mentor-data";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
@@ -73,18 +73,15 @@ function MenuSelect<T extends string>({ label, value, options, onChange }: { lab
   );
 }
 
-/** The spark logo with colour flowing through the shape. Nothing behind it. */
-const Spark = ({ className = "h-6 w-6", still = false }: { className?: string; still?: boolean }) => <span aria-hidden className={`spark-flow ${still ? "is-still" : ""} ${className}`} />;
-
-function Thinking() {
+function Thinking({ onStop }: { onStop: () => void }) {
   const [step, setStep] = useState(0);
   useEffect(() => { const t = setInterval(() => setStep((s) => s + 1), 2200); return () => clearInterval(t); }, []);
   const words = ["Thinking", "Working it out", "Putting the answer together", "Almost there"];
   return (
     <div className="flex items-start gap-3" role="status" aria-live="polite" aria-label="The Mentor is thinking">
-      <Spark className="mt-0.5 h-7 w-7 shrink-0" />
+      <MentorLogo className="mt-0.5 h-12" mode="think" />
       <div className="min-w-0 flex-1 pt-1">
-        <p className="shimmer-text text-sm font-bold">{words[Math.min(step, words.length - 1)]}…</p>
+        <p className="flex items-center gap-3"><span className="shimmer-text text-sm font-bold">{words[Math.min(step, words.length - 1)]}…</span><button type="button" onClick={onStop} className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-0.5 text-xs font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><Square className="h-3 w-3 fill-current" /> Stop</button></p>
         <div className="mt-2 space-y-2" aria-hidden>
           {[92, 78, 55].map((w, i) => <span key={w} className="block h-2.5 rounded-full bg-[var(--surface-secondary)] motion-safe:animate-pulse" style={{ width: `${w}%`, animationDelay: `${i * 160}ms` }} />)}
         </div>
@@ -138,6 +135,17 @@ function sectionsOf(list: ChatMeta[]): Section[] {
   ];
 }
 
+/** The logo doubles as the history toggle, like Gemini's: it shows the logo, and on hover or focus it turns into the collapse (or expand) icon. */
+function LogoToggle({ open, onClick, label }: { open: boolean; onClick: () => void; label: string }) {
+  return (
+    <button type="button" onClick={onClick} aria-label={label} title={label} className="group/logo relative grid h-11 w-11 shrink-0 cursor-pointer place-items-center rounded-xl transition-colors hover:bg-[var(--surface)]/70 focus-visible:bg-[var(--surface)]/70">
+      <MentorLogo className="h-9 transition-all duration-200 group-hover/logo:scale-75 group-hover/logo:opacity-0 group-focus-visible/logo:scale-75 group-focus-visible/logo:opacity-0" mode="blink" />
+      {open ? <PanelLeftClose className="absolute h-5 w-5 scale-75 text-[var(--text-primary)] opacity-0 transition-all duration-200 group-hover/logo:scale-100 group-hover/logo:opacity-100 group-focus-visible/logo:scale-100 group-focus-visible/logo:opacity-100" />
+        : <PanelLeftOpen className="absolute h-5 w-5 scale-75 text-[var(--text-primary)] opacity-0 transition-all duration-200 group-hover/logo:scale-100 group-hover/logo:opacity-100 group-focus-visible/logo:scale-100 group-focus-visible/logo:opacity-100" />}
+    </button>
+  );
+}
+
 function ChatScreen() {
   const router = useRouter();
   const params = useSearchParams();
@@ -162,6 +170,8 @@ function ChatScreen() {
   const [copied, setCopied] = useState<string | null>(null);
   const [typedDone, setTypedDone] = useState<Set<string>>(new Set());
   const listRef = useRef<HTMLDivElement>(null);
+  const composerRef = useRef<HTMLDivElement>(null);
+  const [composerH, setComposerH] = useState(120);
   const taRef = useRef<HTMLTextAreaElement>(null);
   const fired = useRef(false);
   const fromBar = params.get("from") === "bar";
@@ -205,13 +215,13 @@ function ChatScreen() {
   const sections = useMemo(() => sectionsOf(c.chats.filter((x) => !q || x.title.toLowerCase().includes(q) || (x.snippet ?? "").includes(q) || (x.group ?? "").toLowerCase().includes(q))), [c.chats, q]);
   const groupNames = useMemo(() => [...new Set(c.chats.map((x) => x.group).filter(Boolean) as string[])].sort((a, b) => a.localeCompare(b)), [c.chats]);
   const lastId = c.msgs[c.msgs.length - 1]?.id;
+  const unanswered = !c.busy && c.msgs.length > 0 && c.msgs[c.msgs.length - 1].role === "user";
 
-  const history = (
+  const renderHistory = (inDrawer: boolean) => (
     <div className="flex h-full min-h-0 flex-col">
       <div className="mb-3 flex items-center gap-2">
-        <span className="flex items-center gap-2"><span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-[var(--brand-a)] via-[var(--brand-b)] to-[var(--brand-c)] text-white"><MentorMark className="h-[18px] w-[18px]" /></span><span className="font-display text-sm font-extrabold text-[var(--text-primary)]">AI Mentor</span></span>
-        <span className="flex-1" />
-        <button type="button" onClick={toggleSide} aria-label="Hide chat history" title="Hide history" className="hidden cursor-pointer rounded-lg p-1.5 text-[var(--text-secondary)] hover:bg-[var(--surface)] lg:block"><PanelLeftClose className="h-4 w-4" /></button>
+        <LogoToggle open label={inDrawer ? "Close chat history" : "Hide chat history"} onClick={inDrawer ? () => setDrawer(false) : toggleSide} />
+        <span className="font-display text-sm font-extrabold text-[var(--text-primary)]">AI Mentor</span>
       </div>
       {c.signedIn && <button type="button" onClick={() => { c.newChat(); setDrawer(false); }} className="btn-main !h-10 w-full justify-center !text-sm"><MessageSquarePlus className="h-4 w-4" /> New chat</button>}
       {!c.signedIn ? (
@@ -282,9 +292,16 @@ function ChatScreen() {
   );
 
   const empty = c.msgs.length === 0 && !c.busy;
+  // The messages scroll behind the floating box; they need to stop above it, whatever height the box has (one line, stacked, enlarged).
+  useEffect(() => {
+    const el = composerRef.current; if (!el || empty) return;
+    const ro = new ResizeObserver(() => setComposerH(Math.round(el.getBoundingClientRect().height)));
+    ro.observe(el); setComposerH(Math.round(el.getBoundingClientRect().height));
+    return () => ro.disconnect();
+  }, [empty]);
   const showExpand = big || lines >= 3;
   const composerBlock = (
-    <div className={`mx-auto w-full max-w-3xl ${empty ? "" : "mt-3"}`}>
+    <div ref={composerRef} className="mx-auto w-full max-w-3xl">
       {!c.signedIn && !c.guestLocked && (
         <p className="mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl bg-[var(--tint-butter)] px-3 py-2 text-center text-xs text-[var(--tint-butter-ink)]">
           Temporary chat: 2 free messages, not saved. <button type="button" onClick={() => openAuth("signup")} className="cursor-pointer font-bold underline">Sign in to save it</button>
@@ -298,7 +315,7 @@ function ChatScreen() {
       )}
       <form hidden={c.guestLocked} onSubmit={(e) => { e.preventDefault(); submit(); }}
         className={`relative flex flex-wrap items-center border-2 border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-18px_rgba(67,56,202,.55)] transition-[border-radius,border-color] duration-200 focus-within:border-[var(--tint-sky-ink)] ${stacked || big ? "rounded-3xl px-4 pb-2 pt-3" : "rounded-full py-1.5 pl-5 pr-2"}`}>
-        <textarea ref={taRef} value={input} rows={1} autoFocus={empty} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }}
+        <textarea ref={taRef} value={input} rows={1} autoFocus={empty} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } if (e.key === "Escape" && c.busy) c.stop(); }}
           maxLength={1500} placeholder="Ask your Mentor" aria-label="Message your Mentor"
           className={`field-bare block min-h-6 resize-none leading-6 text-[var(--text-primary)] ${stacked || big ? `w-full basis-full ${showExpand ? "pr-8" : ""}` : "min-w-0 flex-1"}`} />
         {showExpand && (
@@ -310,10 +327,14 @@ function ChatScreen() {
         <div className={`flex items-center gap-1 ${stacked || big ? "mt-1 w-full justify-end" : "shrink-0"}`}>
           <MenuSelect label="What should I do" value={c.mode} options={MODES} onChange={c.setMode} />
           <MenuSelect label="How should I sound" value={c.voice} options={VOICES} onChange={c.setVoice} />
-          <button type="submit" disabled={c.busy || !input.trim()} className="btn-main !h-9 !w-9 !p-0 justify-center disabled:opacity-50" aria-label="Send"><Send className="h-4 w-4" /></button>
+          {c.busy ? (
+            <button type="button" onClick={c.stop} className="btn-main !h-9 !w-9 !p-0 justify-center" aria-label="Stop"><Square className="h-3.5 w-3.5 fill-current" /></button>
+          ) : (
+            <button type="submit" disabled={!input.trim()} className="btn-main !h-9 !w-9 !p-0 justify-center disabled:opacity-50" aria-label="Send"><Send className="h-4 w-4" /></button>
+          )}
         </div>
       </form>
-      <p className="mt-1.5 text-center text-[11px] leading-snug text-[var(--text-muted)]">The Mentor is an AI and can make mistakes, so check important facts, numbers and dates before you rely on them.</p>
+      <p className="mx-auto mt-1.5 w-fit max-w-full rounded-full bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-3 py-0.5 text-center text-[11px] leading-snug text-[var(--text-muted)] backdrop-blur-sm">The Mentor is an AI and can make mistakes, so check important facts, numbers and dates before you rely on them.</p>
     </div>
   );
 
@@ -326,7 +347,7 @@ function ChatScreen() {
         {STARTERS.map((st) => (
           <li key={st.title}>
             <button type="button" onClick={() => { if (st.mode) c.setMode(st.mode); void c.send(st.text, st.mode ?? "Ask"); }} className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface)]/70">
-              <MentorMark className="h-4 w-4 shrink-0 text-[var(--tint-peri-ink)]" /><span className="font-semibold">{st.title}</span><span className="truncate text-[var(--text-muted)]">{st.text}</span>
+              <MentorLogo className="h-5" /><span className="font-semibold">{st.title}</span><span className="truncate text-[var(--text-muted)]">{st.text}</span>
             </button>
           </li>
         ))}
@@ -336,15 +357,14 @@ function ChatScreen() {
 
   const body = (
     <div className={`flex w-full gap-3 ${wide ? "h-full" : "h-[calc(100dvh-9.5rem)] min-h-[26rem]"}`} data-fill-height="always">
-      {sideOpen && <aside aria-label="Chats" className="ai-panel hidden w-64 shrink-0 p-3 lg:block">{history}</aside>}
+      {sideOpen && <aside aria-label="Chats" className="ai-panel hidden w-64 shrink-0 p-3 lg:block">{renderHistory(false)}</aside>}
       {/* Phone history drawer, portalled to <body>: the page container is transformed, which would trap a fixed drawer under the top bar. */}
       {mounted && createPortal(<AnimatePresence>
         {drawer && (
           <div className="fixed inset-0 z-[300] lg:hidden">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDrawer(false)} className="absolute inset-0 bg-black/30" />
             <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" className="ai-panel absolute inset-y-0 left-0 w-[17rem] max-w-[85vw] rounded-l-none p-3">
-              <button type="button" onClick={() => setDrawer(false)} aria-label="Close history" className="absolute right-2 top-2 cursor-pointer rounded-lg p-1.5 hover:bg-[var(--surface)]"><X className="h-4 w-4" /></button>
-              <div className="h-full">{history}</div>
+              <div className="h-full">{renderHistory(true)}</div>
             </motion.aside>
           </div>
         )}
@@ -353,22 +373,17 @@ function ChatScreen() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
-          {!sideOpen && (
-            <span className="hidden items-center gap-2 lg:flex">
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-[var(--brand-a)] via-[var(--brand-b)] to-[var(--brand-c)] text-white"><MentorMark className="h-[18px] w-[18px]" /></span>
-              <button type="button" onClick={toggleSide} aria-label="Show chat history" title="Show history" className="btn-soft !h-10 !px-3"><PanelLeftOpen className="h-4 w-4" /></button>
-            </span>
-          )}
+          {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
           {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
-          {tier !== "pro" && <Link href="/pro" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorMark className="h-4 w-4" /> Upgrade</Link>}
+          {tier !== "pro" && <Link href="/pro" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorLogo className="h-5" /> Upgrade</Link>}
           <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>
           {c.signedIn && <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>}
         </div>
 
-        <section className="flex min-h-0 flex-1 flex-col" aria-label="Conversation">
-          {empty && centred}
-          <div ref={listRef} hidden={empty} className="custom-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto pr-1" aria-live="polite">
+        <section className="relative min-h-0 flex-1" aria-label="Conversation">
+          {empty && <div className="absolute inset-0">{centred}</div>}
+          <div ref={listRef} hidden={empty} style={{ paddingBottom: composerH + 24 }} className="custom-scrollbar absolute inset-0 space-y-4 overflow-y-auto pr-1" aria-live="polite">
             {c.msgs.map((m) => (
               <div key={m.id} className={`group/msg flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 {m.role === "user" ? (
@@ -398,7 +413,7 @@ function ChatScreen() {
                   </div>
                 ) : (
                   <div className="flex max-w-[92%] items-start gap-3 lg:max-w-[78%]">
-                    <Spark className="mt-1 h-6 w-6 shrink-0" still />
+                    <MentorLogo className="mt-1 h-8" />
                     <div className="min-w-0 flex-1 text-sm text-[var(--text-primary)]">
                       <div className="rounded-2xl bg-[var(--surface)] px-4 py-3">
                         <Typewriter text={clean(m.text)} active={c.typingId === m.id && !typedDone.has(m.id)} onDone={() => setTypedDone((s) => new Set(s).add(m.id))} />
@@ -422,17 +437,22 @@ function ChatScreen() {
                 )}
               </div>
             ))}
-            {c.busy && <Thinking />}
+            {c.busy && <Thinking onStop={c.stop} />}
+            {unanswered && (
+              <p className="flex items-center gap-3 text-sm text-[var(--text-secondary)]"><MentorLogo className="h-7" />
+                No answer yet. <button type="button" onClick={() => void c.retry()} className="pill-ink cursor-pointer text-xs">Try again</button></p>
+            )}
           </div>
 
-          {!empty && composerBlock}
+          {!empty && <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-1 pb-1"><div className="pointer-events-auto">{composerBlock}</div></div>}
         </section>
       </div>
     </div>
   );
 
-  // Enlarged: the chat fills the app area under the top bar (not the browser's full screen). Portalled so the page's own padding and transform do not constrain it.
-  return wide && mounted ? createPortal(<div className="fixed inset-x-0 bottom-0 top-[72px] z-[35] overflow-hidden bg-[var(--background)] p-3 max-lg:bottom-16">{body}</div>, document.body) : body;
+  // Enlarged: the chat covers the top bar and fills the whole window (not the browser's full screen), with the same cards and styling.
+  // Portalled so the page's own padding and transform do not constrain it; the shrink button is in the header.
+  return wide && mounted ? createPortal(<div className="fixed inset-0 z-[320] bg-[var(--background)] p-2 sm:p-3"><div className="h-full rounded-[var(--card-radius)] border border-[var(--border)] bg-[color-mix(in_srgb,var(--tint-sky)_55%,var(--surface))] p-3 shadow-sm sm:p-4">{body}</div></div>, document.body) : body;
 }
 
 export default function MentorChatPage() {

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Check } from "lucide-react";
 import { AIClient } from "@/lib/ai/ai-client";
+import { RateLimiter } from "@/lib/ai/rate-limiter";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { useCalendarStore } from "@/store/use-calendar-store";
 import { useToastStore } from "@/store/use-toast-store";
@@ -48,13 +49,17 @@ export function useMentorChat(brief: string) {
   const indexRef = useRef<ChatMeta[]>([]);
   const [mode, setMode] = useState<Mode>("Ask");
   const [voice, setVoice] = useState<Voice>("Friendly");
-  const [busy, setBusy] = useState(false);
-  const busyRef = useRef(false);
-  useEffect(() => { busyRef.current = busy; }, [busy]);
+  const [busyIds, setBusyIds] = useState<Set<string>>(new Set());   // chats that are waiting for an answer
+  const busyRef = useRef<Set<string>>(new Set());
+  useEffect(() => { busyRef.current = busyIds; }, [busyIds]);
+  const reqRef = useRef<Map<string, string>>(new Map());      // chat id -> its running request, so it can be cancelled
+  const stoppedRef = useRef<Set<string>>(new Set());
+  const markBusy = (id: string, on: boolean) => setBusyIds((cur) => { const n = new Set(cur); if (on) n.add(id); else n.delete(id); return n; });
   const [loaded, setLoaded] = useState(false);
   const [typingId, setTypingId] = useState<string | null>(null);
   const [added, setAdded] = useState<Set<string>>(new Set());
 
+  const busy = !!chat && busyIds.has(chat.id);
   const setActive = useCallback((c: Chat | null) => { chatRef.current = c; setChat(c); }, []);
   const setIdx = useCallback((i: ChatMeta[]) => { indexRef.current = i; setIndex(i); void IDBManager.saveAIMemory(INDEX_KEY, i); }, []);
   const saveChat = useCallback((c: Chat) => {
@@ -93,7 +98,7 @@ export function useMentorChat(brief: string) {
   // Another device changed a chat: refresh the list and the open chat (not while an answer is on its way).
   useEffect(() => {
     const onSynced = async () => {
-      if (busyRef.current) return;
+      if (busyRef.current.size) return;
       const list = await IDBManager.getAIMemory(INDEX_KEY);
       if (Array.isArray(list)) { indexRef.current = list; setIndex(list); }
       const open = chatRef.current;
@@ -126,9 +131,11 @@ export function useMentorChat(brief: string) {
     const before: TreeMsg[] = []; for (let id = u.parentId; id && c.nodes[id]; id = c.nodes[id].parentId) before.unshift(c.nodes[id]);
     // Each call re-sends the recent conversation, which is what makes long chats cost more: keep it to the last 6 messages, 1,200 characters each.
     const history = before.slice(-HISTORY_TURNS).map((x) => ({ role: x.role, text: x.text.slice(0, HISTORY_CHARS) }));
-    setBusy(true);
+    markBusy(chatId, true);
     try {
-      const res = await AIClient.request<unknown>(`mentor_${Date.now()}`, "MENTOR_CHAT", { mode: m, personality: v, brief, history, nextMessage: u.text }, { bypassCache: true });
+      const rid = `mentor_${chatId}_${Date.now()}`; reqRef.current.set(chatId, rid);
+      const res = await AIClient.request<unknown>(rid, "MENTOR_CHAT", { mode: m, personality: v, brief, history, nextMessage: u.text }, { bypassCache: true });
+      if (stoppedRef.current.delete(chatId)) return;
       if (!res.success) throw new Error((res as { error?: string }).error || "The Mentor could not answer.");
       const r: MentorReply = parseReply(res.data);
       const warn = unverifiedNumbers(r.reply, brief, u.text, ...history.map((h) => h.text));
@@ -136,10 +143,23 @@ export function useMentorChat(brief: string) {
       const id = uid(); setTypingId(id);
       await commit(chatId, (cur) => addNode(cur, { id, role: "model", text: r.reply || "I did not get a usable answer. Try asking in a different way.", cards: r.cards, followUps: r.followUps, warn: warn.length ? warn : undefined, parentId: userId }, new Date().toISOString()));
     } catch (e) {
+      if (stoppedRef.current.delete(chatId)) return;   // the student pressed Stop: no error message, the question stays so they can ask again
       await commit(chatId, (cur) => addNode(cur, { id: uid(), role: "model", text: (e as Error).message || "Something went wrong.", parentId: userId }, new Date().toISOString()));
-    } finally { setBusy(false); }
+    } finally { reqRef.current.delete(chatId); markBusy(chatId, false); }
   }, [brief, commit]);
 
+  /** Stop the answer that is being written for the open chat (really cancels the request). */
+  const stop = useCallback(() => {
+    const c = chatRef.current; if (!c) return;
+    const rid = reqRef.current.get(c.id); if (!rid) return;
+    stoppedRef.current.add(c.id); RateLimiter.cancelRequest(rid);
+  }, []);
+  /** The last message has no answer (for example the page was reloaded while waiting): ask again. */
+  const retry = useCallback(async () => {
+    const c = chatRef.current; if (!c || !c.leafId || blocked()) return;
+    const leaf = c.nodes[c.leafId]; if (!leaf || leaf.role !== "user" || busyRef.current.has(c.id)) return;
+    await answer(c.id, leaf.id, mode, voice);
+  }, [answer, mode, voice]); // eslint-disable-line react-hooks/exhaustive-deps
   const newChat = useCallback(() => { if (!signedInRef.current && chatRef.current) { useAuthModalStore.getState().open("signup"); return; } setActive(null); persist(ACTIVE_KEY, ""); setTypingId(null); }, [setActive, persist]);
   const openChat = useCallback(async (id: string) => {
     const c = (await IDBManager.getAIMemory(chatKey(id))) as Chat | undefined;
@@ -219,7 +239,7 @@ export function useMentorChat(brief: string) {
   }) : []), [chat]);
 
   return { signedIn, guestLocked, msgs, chats: index, activeId: chat?.id ?? null, title: chat?.title ?? "New chat", typingId, mode, setMode, voice, setVoice, busy, loaded, added,
-    send, editAndResend, setChatGroup, regenerate, stepVersion, newChat, openChat, renameChat, pinChat, deleteChat, deleteMessageBranch, addPlanItem, mark, clear };
+    send, editAndResend, retry, stop, setChatGroup, regenerate, stepVersion, newChat, openChat, renameChat, pinChat, deleteChat, deleteMessageBranch, addPlanItem, mark, clear };
 }
 
 export function CardView({ c, added, onAdd, idKey, go }: { c: MentorCard; added: Set<string>; onAdd: (it: PlanItem, key: string) => void; idKey: string; go: (h: string) => void }) {
