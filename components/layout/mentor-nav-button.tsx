@@ -13,8 +13,8 @@ export function MentorNavButton() {
   const on = (usePathname() ?? "").startsWith("/ai-mentor/chat"); // no pill or ring for the active state: the logo stays bare
   return (
     <Link href="/ai-mentor/chat?from=bar" aria-label="Chat with your AI Mentor" aria-current={on ? "page" : undefined} title="Chat with your AI Mentor"
-      className={`ai-nav-btn nav-act group relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-lg`}>
-      <MentorLogo className="h-[22px]" mode="blink" />
+      className={`ai-nav-btn nav-act group relative z-10 grid h-9 w-9 shrink-0 place-items-center rounded-lg`}>
+      <MentorLogo className="h-[30px]" mode="blink" />
     </Link>
   );
 }

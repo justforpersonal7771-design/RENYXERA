@@ -1,9 +1,10 @@
 import "@/lib/time/install-ist";
 import type {Metadata} from 'next';
-import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC } from 'next/font/google';
+import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC, Pixelify_Sans, Space_Grotesk, Archivo_Black, Outfit } from 'next/font/google';
 import './globals.css'; // Global styles
 import './looks.css';
 import './looks-pro2.css'; // Design Studio Looks, batch 2
+import './looks-details.css'; // fonts, motion, full Pixel treatment
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
 import { LookApplier } from '@/components/looks/look-applier';
@@ -28,6 +29,14 @@ const accentSerif = Fraunces({ subsets: ['latin'], style: ['normal', 'italic'], 
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', display: 'swap', preload: false });
 const script = Playball({ subsets: ['latin'], weight: '400', variable: '--font-script', display: 'swap', preload: false });
 const luxe = Cinzel({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-luxe', display: 'swap', preload: false });
+// Look and override fonts (Design Studio): loaded only when a page uses them (preload off). The two -opt- ones are copies of Manrope and Sora under their own
+// names, so a font override can point at them even while --font-sans and --font-display are being replaced.
+const fPixel = Pixelify_Sans({ subsets: ['latin'], variable: '--font-pixel', display: 'swap', preload: false });
+const fGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-grotesk', display: 'swap', preload: false });
+const fArchivo = Archivo_Black({ subsets: ['latin'], weight: '400', variable: '--font-archivo', display: 'swap', preload: false });
+const fOutfit = Outfit({ subsets: ['latin'], variable: '--font-outfit', display: 'swap', preload: false });
+const fManropeOpt = Manrope({ subsets: ['latin'], variable: '--font-opt-manrope', display: 'swap', preload: false });
+const fSoraOpt = Sora({ subsets: ['latin'], variable: '--font-opt-sora', display: 'swap', preload: false });
 const brand = Bruno_Ace_SC({ subsets: ['latin'], weight: '400', variable: '--font-brand', display: 'swap' });
 
 export const metadata: Metadata = {
@@ -82,12 +91,12 @@ const THEME_BOOTSTRAP = `(function(){try{if(typeof window.__name!=="function"){w
 // "Loading chunk … failed". Any such script/style/chunk failure reloads onto the new
 // version once (at most every 30 s, so a real outage can't loop). See lib/stale-deploy.ts.
 // Puts the chosen Design Studio Look on <html> before the first paint (the store in store/use-look-store.ts keeps the same key).
-const LOOK_BOOTSTRAP = `(function(){try{var s=JSON.parse(localStorage.getItem("renyxera_look_v1")||"null");if(!s)return;var id=(s.trial&&s.trial.endsAt>Date.now())?s.trial.id:s.look;if(id&&id!=="classic")document.documentElement.setAttribute("data-look",id)}catch(e){}})();`;
+const LOOK_BOOTSTRAP = `(function(){try{var s=JSON.parse(localStorage.getItem("renyxera_look_v1")||"null");if(!s)return;var id=(s.trial&&s.trial.endsAt>Date.now())?s.trial.id:s.look;if(id&&id!=="classic")document.documentElement.setAttribute("data-look",id);var f=s.fonts;if(f){if(f.display)document.documentElement.style.setProperty("--font-display","var("+f.display+")");if(f.body)document.documentElement.style.setProperty("--font-sans","var("+f.body+")")}}catch(e){}})();`;
 const STALE_GUARD = `(function(){function r(){try{var k="renyxera_stale_reload_at",l=+(sessionStorage.getItem(k)||0);if(Date.now()-l<30000)return;sessionStorage.setItem(k,String(Date.now()))}catch(e){}location.reload()}window.addEventListener("error",function(e){var t=e.target;if(!t||t===window)return;var u=(t.src||t.href||"");if((t.tagName==="SCRIPT"||t.tagName==="LINK")&&u.indexOf("/_next/static/")!==-1)r()},true);window.addEventListener("unhandledrejection",function(e){var m=String((e.reason&&(e.reason.name+" "+e.reason.message))||e.reason||"");if(/ChunkLoadError|Loading (CSS )?chunk|dynamically imported module|Importing a module script failed/i.test(m))r()})})();`;
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${luxe.variable} ${brand.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${luxe.variable} ${brand.variable} ${fPixel.variable} ${fGrotesk.variable} ${fArchivo.variable} ${fOutfit.variable} ${fManropeOpt.variable} ${fSoraOpt.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: LOOK_BOOTSTRAP }} />

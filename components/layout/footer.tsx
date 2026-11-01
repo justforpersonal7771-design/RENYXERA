@@ -17,6 +17,7 @@ export function Footer() {
           ["/about", "About"],
           ["/pyq", "Previous year questions"],
           ["/gate-cse", "GATE branches"],
+          ["/compare", "How we compare"],
           ["/terms", "Terms"],
           ["/privacy", "Privacy"],
           ["/cookies", "Cookies"],

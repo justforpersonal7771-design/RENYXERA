@@ -35,6 +35,9 @@ import { TOOLS, TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 import { BranchChip } from "./branch-chip";
 import { TestCentreMenu } from "@/components/layout/test-centre-menu";
 import { MentorNavButton } from "@/components/layout/mentor-nav-button";
+import { LookQuickPanel } from "@/components/layout/look-quick-panel";
+import { effectiveLookId, useLookStore } from "@/store/use-look-store";
+import { lookById } from "@/lib/looks/looks";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
 
 const NAV_ITEMS = [
@@ -134,6 +137,17 @@ export function Topbar() {
     window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }));
 
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [looksOpen, setLooksOpen] = useState(false);
+  const lookState = useLookStore();
+  const lookModes = lookById(effectiveLookId(lookState)).modes;
+  const looksRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!looksOpen) return;
+    const away = (e: MouseEvent) => { if (isInsidePortalPopover(e.target)) return; if (looksRef.current && !looksRef.current.contains(e.target as Node)) setLooksOpen(false); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setLooksOpen(false); };
+    document.addEventListener("mousedown", away); document.addEventListener("keydown", esc);
+    return () => { document.removeEventListener("mousedown", away); document.removeEventListener("keydown", esc); };
+  }, [looksOpen]);
   const calendarRef = useRef<HTMLDivElement>(null);
   const [isTodoOpen, setIsTodoOpen] = useState(false);
   const todoRef = useRef<HTMLDivElement>(null);
@@ -406,10 +420,14 @@ export function Topbar() {
              </Link>
 
              <div className="relative z-10 hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
-             <Link href="/design-studio" className="nav-act relative z-10 hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors sm:block" aria-label="Design Studio" title="Design Studio">
-                <Palette className="w-4 h-4" />
-             </Link>
-             <button
+             <div className="relative hidden sm:block" ref={looksRef}>
+                <button type="button" onClick={() => setLooksOpen((v) => !v)} aria-label="Looks" aria-expanded={looksOpen} title="Looks (Design Studio)"
+                  className={`nav-act relative z-10 cursor-pointer rounded-lg p-2 transition-colors ${looksOpen ? "nav-active-pill text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+                  <Palette className="w-4 h-4" />
+                </button>
+                <AnimatePresence>{looksOpen && <LookQuickPanel onClose={() => setLooksOpen(false)} />}</AnimatePresence>
+             </div>
+             {lookModes === "both" && <button
                 onClick={toggleTheme}
                 className="nav-act relative z-10 p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer overflow-hidden"
                 aria-label="Toggle Theme"
@@ -419,7 +437,7 @@ export function Topbar() {
                     first paint, so navigating between layouts never replays a sun/moon animation. */}
                 <Sun className="hidden dark:block w-4 h-4" />
                 <Moon className="block dark:hidden w-4 h-4" />
-             </button>
+             </button>}
 
              <div className="relative z-10 flex items-center"><BranchChip /></div>
 

@@ -162,6 +162,8 @@ function ChatScreen() {
   const [big, setBig] = useState(false);                // taller composer
   const [stacked, setStacked] = useState(false);       // tools under the text (from the second line)
   const [lines, setLines] = useState(1);
+  const [narrow, setNarrow] = useState(false);   // phones: tools always under the text, the box at the bottom, history as a side panel
+  useEffect(() => { const mq = window.matchMedia("(max-width: 639px)"); const f = () => setNarrow(mq.matches); f(); mq.addEventListener("change", f); return () => mq.removeEventListener("change", f); }, []);
   const [closed, setClosed] = useState<Record<string, boolean>>({});   // folders the student collapsed
   const [renaming, setRenaming] = useState<{ id: string; text: string } | null>(null);
   const [groupFor, setGroupFor] = useState<string | null>(null);
@@ -246,7 +248,7 @@ function ChatScreen() {
                                 <span className="min-w-0 flex-1 truncate">{g.label}</span><span className="rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-bold text-[var(--text-secondary)]">{g.items.length}</span>
               </button>
             ) : <p className="px-2.5 pb-1 text-xs font-bold text-[var(--text-secondary)]">{g.label}</p>}
-            <ul className={`space-y-0.5 ${g.folder ? "ml-4 mt-1 border-l-2 border-[var(--tint-lilac-ink)]/30 pl-1.5" : ""} ${g.folder && closed[g.label] ? "hidden" : ""}`}>
+            <ul className={`space-y-0.5 ${g.folder ? "folder-kids ml-5 mt-1 pl-3" : ""} ${g.folder && closed[g.label] ? "hidden" : ""}`}>
               {g.items.map((m) => (
                 <li key={m.id} className={`rounded-xl ${m.id === c.activeId ? "bg-[var(--surface)] shadow-sm" : "hover:bg-[var(--surface)]/60"}`}>
                   <div className="group flex items-center gap-1 px-2 py-1.5">
@@ -287,7 +289,6 @@ function ChatScreen() {
         ))}
       </nav>
       </>)}
-      {c.signedIn && <p className="mt-2 text-[11px] leading-snug text-[var(--text-muted)]">Saved to your account and synced to your other devices.</p>}
     </div>
   );
 
@@ -298,7 +299,7 @@ function ChatScreen() {
     const ro = new ResizeObserver(() => setComposerH(Math.round(el.getBoundingClientRect().height)));
     ro.observe(el); setComposerH(Math.round(el.getBoundingClientRect().height));
     return () => ro.disconnect();
-  }, [empty]);
+  }, [empty, narrow]);
   const showExpand = big || lines >= 3;
   const composerBlock = (
     <div ref={composerRef} className="mx-auto w-full max-w-3xl">
@@ -314,17 +315,17 @@ function ChatScreen() {
         </div>
       )}
       <form hidden={c.guestLocked} onSubmit={(e) => { e.preventDefault(); submit(); }}
-        className={`relative flex flex-wrap items-center border-2 border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-18px_rgba(67,56,202,.55)] transition-[border-radius,border-color] duration-200 focus-within:border-[var(--tint-sky-ink)] ${stacked || big ? "rounded-3xl px-4 pb-2 pt-3" : "rounded-full py-1.5 pl-5 pr-2"}`}>
+        className={`relative flex flex-wrap items-center border-2 border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-18px_rgba(67,56,202,.55)] transition-[border-radius,border-color] duration-200 focus-within:border-[var(--tint-sky-ink)] ${stacked || big || narrow ? "rounded-3xl px-4 pb-2 pt-3" : "rounded-full py-1.5 pl-5 pr-2"}`}>
         <textarea ref={taRef} value={input} rows={1} autoFocus={empty} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } if (e.key === "Escape" && c.busy) c.stop(); }}
           maxLength={1500} placeholder="Ask your Mentor" aria-label="Message your Mentor"
-          className={`field-bare block min-h-6 resize-none leading-6 text-[var(--text-primary)] ${stacked || big ? `w-full basis-full ${showExpand ? "pr-8" : ""}` : "min-w-0 flex-1"}`} />
+          className={`field-bare block min-h-6 resize-none leading-6 text-[var(--text-primary)] ${stacked || big || narrow ? `w-full basis-full ${showExpand ? "pr-8" : ""}` : "min-w-0 flex-1"}`} />
         {showExpand && (
           <button type="button" onClick={() => setBig((v) => !v)} aria-pressed={big} aria-label={big ? "Make the text box smaller" : "Make the text box bigger"} title={big ? "Smaller box" : "Bigger box"}
             className="absolute right-3 top-3 grid h-7 w-7 cursor-pointer place-items-center rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]">
             {big ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
         )}
-        <div className={`flex items-center gap-1 ${stacked || big ? "mt-1 w-full justify-end" : "shrink-0"}`}>
+        <div className={`flex items-center gap-1 ${stacked || big || narrow ? "mt-1 w-full justify-end" : "shrink-0"}`}>
           <MenuSelect label="What should I do" value={c.mode} options={MODES} onChange={c.setMode} />
           <MenuSelect label="How should I sound" value={c.voice} options={VOICES} onChange={c.setVoice} />
           {c.busy ? (
@@ -363,7 +364,7 @@ function ChatScreen() {
         {drawer && (
           <div className="fixed inset-0 z-[300] lg:hidden">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDrawer(false)} className="absolute inset-0 bg-black/30" />
-            <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" className="ai-panel absolute inset-y-0 left-0 w-[17rem] max-w-[85vw] rounded-l-none p-3">
+            <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" style={{ position: "absolute" }} className="ai-panel inset-y-0 left-0 h-full w-[18.5rem] max-w-[86vw] !rounded-l-none !rounded-r-3xl p-3 pt-4 shadow-2xl">
               <div className="h-full">{renderHistory(true)}</div>
             </motion.aside>
           </div>
@@ -376,14 +377,24 @@ function ChatScreen() {
           {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
           {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
-          {tier !== "pro" && <Link href="/pro" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorLogo className="h-5" /> Upgrade</Link>}
+          {tier !== "pro" && <Link href="/pro" className="ml-auto inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorLogo className="h-5" /> Upgrade</Link>}
           <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>
           {c.signedIn && <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>}
         </div>
 
         <section className="relative min-h-0 flex-1" aria-label="Conversation">
-          {empty && <div className="absolute inset-0">{centred}</div>}
-          <div ref={listRef} hidden={empty} style={{ paddingBottom: composerH + 24 }} className="custom-scrollbar absolute inset-0 space-y-4 overflow-y-auto pr-1" aria-live="polite">
+          {empty && !narrow && <div className="absolute inset-0">{centred}</div>}
+          <div ref={listRef} hidden={empty && !narrow} style={{ paddingBottom: composerH + 24 }} className="custom-scrollbar absolute inset-0 space-y-4 overflow-y-auto pr-1" aria-live="polite">
+            {empty && narrow && (
+              <div className="pt-2">
+                <h2 className="mb-3 text-center font-display text-2xl font-extrabold text-[var(--text-primary)]">What shall we work on?</h2>
+                <ul className="space-y-1.5">
+                  {STARTERS.map((st) => (
+                    <li key={st.title}><button type="button" onClick={() => { if (st.mode) c.setMode(st.mode); void c.send(st.text, st.mode ?? "Ask"); }} className="flex w-full cursor-pointer flex-col rounded-2xl bg-[var(--surface)] px-4 py-3 text-left"><span className="text-sm font-bold text-[var(--text-primary)]">{st.title}</span><span className="truncate text-xs text-[var(--text-muted)]">{st.text}</span></button></li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {c.msgs.map((m) => (
               <div key={m.id} className={`group/msg flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 {m.role === "user" ? (
@@ -444,7 +455,7 @@ function ChatScreen() {
             )}
           </div>
 
-          {!empty && <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-1 pb-1"><div className="pointer-events-auto">{composerBlock}</div></div>}
+          {(!empty || narrow) && <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 px-1 pb-1"><div className="pointer-events-auto">{composerBlock}</div></div>}
         </section>
       </div>
     </div>

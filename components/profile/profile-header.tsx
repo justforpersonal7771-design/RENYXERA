@@ -41,7 +41,7 @@ export function ProfileHeader({
         <div className="h-full w-full overflow-hidden rounded-xl bg-white/15">{/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}<img src={avatarUri} alt="Your avatar" className="h-full w-full" width={36} height={36} /></div>
       </div>
       <h1 className="min-w-0 truncate text-base font-extrabold">{name}</h1>
-      <span className={`shrink-0 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-black tracking-normal ${paidTier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow" : paidTier === "plus" ? "bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900 shadow" : "bg-white/20 backdrop-blur"}`}>{paidTier ? <Crown className="h-3 w-3" /> : <Sparkles className="h-3 w-3" />} {paidTier ?? "free"}</span>
+      <span className={`shrink-0 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-black tracking-normal ${paidTier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow" : paidTier === "plus" ? "bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900 shadow" : "bg-white/20 backdrop-blur"}`}>{paidTier ? <Crown className="h-3 w-3" /> : <Sparkles className="h-3 w-3" />} <span className="uppercase">{paidTier ?? "free"}</span></span>
       <span className="hidden truncate text-xs font-semibold text-white/85 sm:inline">{daysLeft != null && daysLeft >= 0 ? `GATE ${targetYear} · ${daysLeft} days left` : `GATE ${targetYear}`}</span>
       <span className="flex-1" />
       <span className="hidden shrink-0 items-center gap-2 sm:flex" title="Profile complete">
@@ -77,7 +77,7 @@ export function ProfileHeader({
           <div className="flex items-center gap-2.5 min-w-0">
             <h1 className="shine-text text-2xl sm:text-3xl xl:text-[2.1rem] font-extrabold tracking-tight leading-tight truncate">{name}</h1>
             <span className={`shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-black tracking-normal ${paidTier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow" : paidTier === "plus" ? "bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900 shadow" : "bg-white/20 backdrop-blur"}`}>
-              {paidTier ? <Crown className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />} {paidTier ?? "free"}
+              {paidTier ? <Crown className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />} <span className="uppercase">{paidTier ?? "free"}</span>
             </span>
           </div>
           {/* On small screens the identity block below is hidden — keep the handle here. */}

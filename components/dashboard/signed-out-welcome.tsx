@@ -6,7 +6,6 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { BANK_SUMMARY } from "@/lib/branches";
 import { PromoVideo } from "@/components/marketing/promo-video";
-import { CompareAndFaq } from "@/components/marketing/compare-faq";
 
 const TOTAL_QUESTIONS = Object.values(BANK_SUMMARY).reduce((n, b) => n + (b?.questions ?? 0), 0);
 const PAPERS = Object.keys(BANK_SUMMARY).length;
@@ -54,7 +53,6 @@ export function SignedOutWelcome() {
         ))}
       </ul>
     </section>
-    <CompareAndFaq />
     </>
   );
 }

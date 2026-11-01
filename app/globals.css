@@ -1941,3 +1941,20 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .mentor-wide { animation: mentor-wide-in .18s ease-out; }
 @keyframes mentor-wide-in { from { opacity: .6; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .mentor-wide { animation: none; } }
+
+/* Plan badge beside the wordmark: the same vivid gold (or silver) pill as the profile badge, not a pale outline. */
+.pro-badge { background: linear-gradient(180deg, #fde68a, #fbbf24) !important; color: #451a03 !important; border: 1px solid rgba(180, 83, 9, .35) !important; box-shadow: 0 2px 6px -2px rgba(217, 119, 6, .55), inset 0 1px 0 rgba(255, 255, 255, .6); font-weight: 900; }
+.pro-badge.is-silver { background: linear-gradient(180deg, #f3f4f6, #cbd5e1) !important; color: #1f2937 !important; border-color: rgba(100, 116, 139, .45) !important; box-shadow: 0 2px 6px -2px rgba(71, 85, 105, .5), inset 0 1px 0 rgba(255, 255, 255, .7); }
+
+/* Folder tabs: the open tab is solid ink (the text colour as its fill, the page colour as its text), raised, with a pointer, so it is unmistakable. */
+.folder-tab { transition: background .15s, color .15s, transform .15s; }
+.folder-tab[aria-selected="true"] { background: var(--text-primary) !important; color: var(--background) !important; font-weight: 800; padding-top: 12px; transform: translateY(0); box-shadow: 0 -4px 14px -8px rgba(0, 0, 0, .35); }
+.folder-tab[aria-selected="true"]::before { content: none; }
+.folder-tab[aria-selected="true"]::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 14px; height: 14px; right: auto; background: var(--text-primary); transform: translateX(-50%) rotate(45deg); border-radius: 3px; z-index: 0; }
+.folder-tab[aria-selected="true"] { z-index: 2; }
+.folder-tab-stitch { display: none; }
+/* the panel's dashed stitch follows the card's own curve at every corner */
+.folder-panel::before { border-radius: calc(var(--card-radius) - 7px); border-style: dashed; }
+/* chat history: a folder's chats hang from a curved connector instead of a straight rule */
+.folder-kids > li { position: relative; }
+.folder-kids > li::before { content: ""; position: absolute; left: -14px; top: -10px; width: 12px; height: calc(50% + 10px); border-left: 2px solid color-mix(in srgb, var(--tint-lilac-ink) 45%, transparent); border-bottom: 2px solid color-mix(in srgb, var(--tint-lilac-ink) 45%, transparent); border-bottom-left-radius: 10px; pointer-events: none; }

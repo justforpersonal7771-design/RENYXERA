@@ -1,0 +1,44 @@
+/* Design Studio Looks: fonts, motion and the complete Pixel treatment. Spec for every Look: docs/design/LOOKS-SPEC.md */
+
+/* ---- fonts each Look is drawn with (a font chosen in the Studio overrides these through an inline style on <html>) ---- */
+[data-look="glass"], [data-look="aurora"] { --font-sans: var(--font-outfit), system-ui, sans-serif; --font-display: var(--font-outfit), system-ui, sans-serif; }
+[data-look="arcade"] { --font-sans: var(--font-grotesk), system-ui, sans-serif; --font-display: var(--font-archivo), var(--font-grotesk), sans-serif; }
+[data-look="neon"] { --font-sans: var(--font-grotesk), system-ui, sans-serif; --font-display: var(--font-grotesk), system-ui, sans-serif; }
+[data-look="pixel"] { --font-sans: var(--font-pixel), ui-monospace, monospace; --font-display: var(--font-pixel), ui-monospace, monospace; }
+
+/* ---- PIXEL QUEST, everywhere: no curves, no easing, stepped motion, a flat background ---- */
+[data-look="pixel"][data-look="pixel"] *, [data-look="pixel"][data-look="pixel"] *::before, [data-look="pixel"][data-look="pixel"] *::after {
+  border-radius: 0 !important; transition: none !important; animation-timing-function: steps(5, end) !important; scroll-behavior: auto !important;
+}
+[data-look="pixel"][data-look="pixel"] .ambient-gradient, html[data-look="pixel"][data-look="pixel"] body {
+  background-image: none !important; background-color: #dde7cf !important;
+}
+:is(.dark[data-look="pixel"], .dark [data-look="pixel"]) .ambient-gradient, html.dark[data-look="pixel"] body { background-color: #12142a !important; }
+[data-look="pixel"][data-look="pixel"] body, [data-look="pixel"][data-look="pixel"] { letter-spacing: 0; font-size-adjust: none; }
+[data-look="pixel"][data-look="pixel"] :is(h1, h2, h3, h4) { letter-spacing: 0; line-height: 1.15; }
+[data-look="pixel"][data-look="pixel"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft) { text-transform: none; font-size: 0.95rem; padding-inline: 14px; }
+/* every hover is a hard step (a block shadow grows), not a glide */
+[data-look="pixel"][data-look="pixel"] :is(.card-pastel, .btn-main, .pill-ink, .btn-soft, .pill-soft):hover { transform: translate(-2px, -2px); }
+[data-look="pixel"][data-look="pixel"] :is(.card-pastel, .btn-main, .pill-ink, .btn-soft, .pill-soft):active { transform: translate(3px, 3px); }
+[data-look="pixel"][data-look="pixel"] :is(input, textarea, select, [role="tab"], [role="menuitem"]) { border-radius: 0 !important; }
+[data-look="pixel"][data-look="pixel"] .animate-pulse, [data-look="pixel"][data-look="pixel"] .animate-spin { animation-timing-function: steps(8, end) !important; }
+
+/* ---- NEO-BRUTAL ARCADE: snappy, hard-stop motion ---- */
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .btn-main, .pill-ink, .btn-soft, .pill-soft) { transition-duration: .08s !important; transition-timing-function: steps(3, end) !important; }
+
+/* ---- NEON NIGHTS: a longer, glowing fade ---- */
+[data-look="neon"][data-look="neon"] :is(.card-pastel, .btn-main, .pill-ink, .btn-soft, .pill-soft) { transition: box-shadow .35s ease, filter .35s ease, transform .2s ease !important; }
+/* labels and chips that used dark ink on a light chip: keep them readable on the dark glow surfaces */
+[data-look="neon"][data-look="neon"] .section-label { background: rgba(255, 255, 255, .08) !important; color: #ffd6f6 !important; border-color: rgba(255, 43, 214, .5) !important; }
+[data-look="neon"][data-look="neon"] .pro-badge { background: linear-gradient(180deg, #ffe066, #ffb703) !important; color: #2a1800 !important; }
+
+/* ---- contrast: secondary and muted text on the flat, saturated tints (found by scripts/zz-looks-audit.mjs) ---- */
+[data-look="arcade"][data-look="arcade"], [data-look="pixel"][data-look="pixel"] { --text-secondary: #1c2030; --text-muted: #343a4c; }
+:is(.dark[data-look="arcade"], .dark [data-look="arcade"], .dark[data-look="pixel"], .dark [data-look="pixel"]) { --text-secondary: #e6e0cf; --text-muted: #c9c2ad; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-band) *, [data-look="pixel"][data-look="pixel"] :is(.card-pastel, .card-well, .card-band) * { --text-muted: #2b3142; }
+:is(.dark[data-look="arcade"], .dark [data-look="arcade"], .dark[data-look="pixel"], .dark [data-look="pixel"]) :is(.card-pastel, .card-well, .card-band) * { --text-muted: #d6d0bd; --text-secondary: #ebe5d3; }
+
+/* Pixel: the app's own rounded buttons use very specific rules; this one is more specific still, so nothing stays curved. */
+:root[data-look="pixel"][data-look="pixel"][data-look="pixel"] body main * { border-radius: 0 !important; }
+/* Arcade dark: small coloured labels on flat tints */
+:is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) :is(p, span)[class*="text-[var(--tint"], :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) [class*="text-blue"], :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) [class*="text-sky"] { color: #fff7d6 !important; }

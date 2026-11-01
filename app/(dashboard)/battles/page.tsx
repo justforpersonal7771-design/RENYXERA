@@ -56,9 +56,10 @@ export default function BattlesPage() {
       <section className="card-pastel p-6 sm:p-8" data-tint="rose" aria-label="Battles">
         <span className="section-label"><Swords className="h-3.5 w-3.5" /> Battles</span>
         <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.08] text-[var(--text-primary)] sm:text-5xl">Same questions.<br />Who scores more?</h1>
-        <p className="mt-3 max-w-xl text-[var(--text-secondary)]">Finish any test, tap <b>Challenge a friend</b> on the result, and see when they open it, how far they are and who won. Scores come from the server, never the browser.</p>
+        <p className="mt-3 max-w-xl text-[var(--text-secondary)]">Pick any topic, subject or paper in the test builder, take it, then <b>challenge a friend</b> with the same questions, or challenge on a test you already finished. See when they open it, how far they are and who won. Scores come from the server, never the browser.</p>
         <div className="mt-5 flex flex-wrap items-center gap-3">
-          <Link href="/test-centre/history" className="btn-main"><Swords className="h-4 w-4" /> Pick a finished test</Link>
+          <Link href="/test-centre/build?challenge=1" className="btn-main"><Swords className="h-4 w-4" /> Start a new challenge</Link>
+          <Link href="/test-centre/history" className="btn-soft">Challenge on a finished test</Link>
           <span className="text-sm text-[var(--text-muted)]">{tier === "free" ? `${Math.min(active, 3)} of 3 active battles on Free` : "Unlimited battles"}</span>
         </div>
       </section>

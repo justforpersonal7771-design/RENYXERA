@@ -600,8 +600,8 @@ export default function ExamSetupPage() {
                <Settings className="w-5 h-5" />
             </div>
             <div>
-               <h1 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight">Configuration Engine</h1>
-               <p className="text-sm font-medium text-[var(--text-secondary)]">Design your perfect test environment.</p>
+               <h1 className="text-2xl font-extrabold text-[var(--text-primary)] tracking-tight">{searchParams.get("challenge") === "1" ? "New challenge" : "Configuration Engine"}</h1>
+               <p className="text-sm font-medium text-[var(--text-secondary)]">{searchParams.get("challenge") === "1" ? "Build any test, take it, then send the same questions to friends as a challenge." : "Design your perfect test environment."}</p>
             </div>
             {/* View: Build a test (all sources) / Forge or Spark questions / Flashcards (all sources). */}
             <div className="mt-3 w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mt-0 sm:ml-2 sm:w-auto sm:shrink-0 sm:overflow-visible">
@@ -1412,7 +1412,7 @@ export default function ExamSetupPage() {
                         }}
                         className="btn-main w-full justify-center disabled:opacity-80 disabled:cursor-wait cursor-pointer border-0"
                       >
-                        {deploying ? <>Starting… <Loader2 className="w-5 h-5 animate-spin" /></> : <>Deploy Session <Play className="w-5 h-5 fill-current" /></>}
+                        {deploying ? <>Starting… <Loader2 className="w-5 h-5 animate-spin" /></> : <>{searchParams.get("challenge") === "1" ? "Start the challenge" : "Deploy Session"} <Play className="w-5 h-5 fill-current" /></>}
                       </motion.button>
                       </div>
 

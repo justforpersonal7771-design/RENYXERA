@@ -87,7 +87,7 @@ export function StackCards({ items, header, aside }: { items: ReactNode[]; heade
                     zIndex: i + 1, visibility: hidden ? "hidden" : "visible",
                     filter: back > 0 ? `brightness(${1 - Math.min(back, 3) * 0.03})` : undefined,
                   }}>
-                  <div className="h-full overflow-hidden rounded-[var(--card-radius)] shadow-[0_-12px_40px_-24px_rgba(22,18,58,.35)] [&>*]:h-full">{it}</div>
+                  <div className="h-full overflow-hidden rounded-[var(--card-radius)] bg-[var(--background)] shadow-[0_-12px_40px_-24px_rgba(22,18,58,.35)] [&>*]:h-full">{it}</div>
                 </div>
               );
             })}

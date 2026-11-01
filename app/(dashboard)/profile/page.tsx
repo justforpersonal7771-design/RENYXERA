@@ -20,6 +20,7 @@ import { AvatarPicker } from "@/components/profile/avatar-picker";
 import { StatsAchievements } from "@/components/profile/stats-achievements";
 import { GoalPlan } from "@/components/profile/goal-plan";
 import { ProfileHeader } from "@/components/profile/profile-header";
+import { DesignStudio } from "@/components/looks/design-studio";
 import { PreferencesCard, AccountSecurityCard, DevicesCard } from "@/components/profile/account-settings";
 import { BillingHistoryCard } from "@/components/profile/billing-history";
 import { TelegramCard } from "@/components/profile/telegram-card";
@@ -81,6 +82,7 @@ const STUDY_TIMES = [
 const SECTIONS = [
   { id: "overview", label: "Overview", subtitle: "Your progress, streaks and achievements at a glance.", icon: LayoutGrid, tint: "bg-indigo-500/10 text-indigo-500" },
   { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Palette, tint: "bg-pink-500/10 text-pink-500" },
+  { id: "design", label: "Design Studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, tint: "bg-violet-500/10 text-violet-500" },
   { id: "personal", label: "Personal info", subtitle: "Your identity and background.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
   { id: "goals", label: "Exam goals", subtitle: "Your target, schedule and the plan it builds.", icon: Target, tint: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
   { id: "preferences", label: "Preferences", subtitle: "Theme, motion and reminders on this device.", icon: SlidersHorizontal, tint: "bg-violet-500/10 text-violet-500" },
@@ -343,6 +345,7 @@ export default function ProfilePage() {
 
   const tabBody = (() => {
     switch (tab) {
+      case "design": return <Card icon={Palette} title="Design Studio" subtitle="Change the whole look of the app. Tap a Look to apply it; Looks you do not have can be tried for 5 minutes." tint="bg-violet-500/10 text-violet-500"><DesignStudio /></Card>;
       case "avatar":
         return (
           <Card icon={Palette} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations. Silver styles need Plus, Gold styles need Pro." tint="bg-pink-500/10 text-pink-500">

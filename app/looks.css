@@ -24,7 +24,7 @@
   --glass-shadow: 0 16px 44px -16px rgba(0, 0, 0, .75);
 }
 /* backdrop: soft colour fields the glass picks up */
-[data-look="glass"] .ambient-gradient, html[data-look="glass"] body {
+[data-look="glass"][data-look="glass"] .ambient-gradient, html[data-look="glass"] body {
   background-image:
     radial-gradient(760px 520px at 8% -4%, rgba(96, 165, 250, .55), transparent 62%),
     radial-gradient(700px 520px at 92% 12%, rgba(192, 132, 252, .5), transparent 62%),
@@ -41,38 +41,38 @@
   background-color: #0a0b1c !important;
 }
 /* every surface becomes frosted glass */
-[data-look="glass"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .popover-surface, .card-inset, .tile) {
+[data-look="glass"][data-look="glass"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .popover-surface, .card-inset, .tile) {
   background: var(--glass-fill) !important;
   -webkit-backdrop-filter: blur(20px) saturate(1.6); backdrop-filter: blur(20px) saturate(1.6);
   border: 1px solid var(--glass-edge) !important;
   box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, .55) !important;
 }
-[data-look="glass"] .card-pastel[data-tint], [data-look="glass"] .card-well[data-tint], [data-look="glass"] .card-band[data-tint] {
-  background: color-mix(in srgb, var(--tint, var(--tint-lilac)) 34%, var(--glass-fill)) !important;
+[data-look="glass"][data-look="glass"] .card-pastel[data-tint], [data-look="glass"] .card-well[data-tint], [data-look="glass"] .card-band[data-tint] {
+  background: color-mix(in srgb, var(--tint, var(--tint-lilac)) 18%, var(--glass-fill)) !important;
 }
-[data-look="glass"] .card-pastel:hover { box-shadow: 0 18px 46px -14px rgba(80, 70, 200, .48), inset 0 1px 0 rgba(255, 255, 255, .7) !important; }
-[data-look="glass"] .ai-panel::after { opacity: .1; }
+[data-look="glass"][data-look="glass"] .card-pastel:hover { box-shadow: 0 18px 46px -14px rgba(80, 70, 200, .48), inset 0 1px 0 rgba(255, 255, 255, .7) !important; }
+[data-look="glass"][data-look="glass"] .ai-panel::after { opacity: .1; }
 /* the soft colour behind the section stays out of the way */
-[data-look="glass"] .page-shell { --sec: transparent; }
-[data-look="glass"] .page-shell::before, [data-look="glass"] .page-shell::after { opacity: 0 !important; }
+[data-look="glass"][data-look="glass"] .page-shell { --sec: transparent; }
+[data-look="glass"][data-look="glass"] .page-shell::before, [data-look="glass"] .page-shell::after { opacity: 0 !important; }
 /* buttons: glowing glass, no hard offset shadow */
-[data-look="glass"] :is(.btn-main, .pill-ink) {
+[data-look="glass"][data-look="glass"] :is(.btn-main, .pill-ink) {
   background: linear-gradient(135deg, rgba(79, 70, 229, .92), rgba(168, 85, 247, .92)) !important; color: #fff !important;
   border: 1px solid rgba(255, 255, 255, .55) !important; box-shadow: 0 10px 24px -10px rgba(99, 60, 220, .85), inset 0 1px 0 rgba(255, 255, 255, .45) !important;
 }
-[data-look="glass"] :is(.btn-main, .pill-ink):active { transform: translateY(1px) scale(.99); box-shadow: 0 4px 10px -6px rgba(99, 60, 220, .8), inset 0 1px 0 rgba(255, 255, 255, .35) !important; }
-[data-look="glass"] :is(.btn-soft, .pill-soft) {
+[data-look="glass"][data-look="glass"] :is(.btn-main, .pill-ink):active { transform: translateY(1px) scale(.99); box-shadow: 0 4px 10px -6px rgba(99, 60, 220, .8), inset 0 1px 0 rgba(255, 255, 255, .35) !important; }
+[data-look="glass"][data-look="glass"] :is(.btn-soft, .pill-soft) {
   background: rgba(255, 255, 255, .5) !important; color: var(--text-primary) !important; border: 1px solid var(--glass-edge) !important;
   box-shadow: 0 6px 16px -10px rgba(55, 65, 160, .4), inset 0 1px 0 rgba(255, 255, 255, .6) !important;
   -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
 }
 :is(.dark[data-look="glass"], .dark [data-look="glass"]) :is(.btn-soft, .pill-soft) { background: rgba(255, 255, 255, .08) !important; }
 /* inputs and menus read as frosted too */
-[data-look="glass"] :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { background: rgba(255, 255, 255, .5); }
+[data-look="glass"][data-look="glass"] :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { background: rgba(255, 255, 255, .5); }
 :is(.dark[data-look="glass"], .dark [data-look="glass"]) :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { background: rgba(255, 255, 255, .06); }
 [data-look="glass"] [role="menu"] { -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
 /* headings pick up a little depth */
-[data-look="glass"] :is(h1, h2) { letter-spacing: -0.015em; }
+[data-look="glass"][data-look="glass"] :is(h1, h2) { letter-spacing: -0.015em; }
 
 /* ============================== NEO-BRUTAL ARCADE (Pro) ============================== */
 [data-look="arcade"] {
@@ -104,43 +104,47 @@
   --background: #12111a;
   --btn: #ffd43b; --btn-fg: #111;
 }
-[data-look="arcade"] .ambient-gradient, html[data-look="arcade"] body {
-  background-image: radial-gradient(circle at 1px 1px, rgba(17, 17, 17, .13) 1.2px, transparent 1.4px) !important; background-size: 22px 22px !important; background-color: var(--background) !important;
-}
-:is(.dark[data-look="arcade"], .dark [data-look="arcade"]) .ambient-gradient, html.dark[data-look="arcade"] body {
-  background-image: radial-gradient(circle at 1px 1px, rgba(245, 240, 230, .12) 1.2px, transparent 1.4px) !important;
-}
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .popover-surface, .card-inset, .tile) {
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .popover-surface, .card-inset, .tile) {
   border: 3px solid var(--ink-line) !important; border-radius: var(--card-radius) !important;
   box-shadow: 6px 6px 0 var(--ink-line) !important; -webkit-backdrop-filter: none; backdrop-filter: none;
 }
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="mint"] { background: var(--tint-mint) !important; }
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="rose"] { background: var(--tint-rose) !important; }
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="peach"] { background: var(--tint-peach) !important; }
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="peri"] { background: var(--tint-peri) !important; }
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="lilac"] { background: var(--tint-lilac) !important; }
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="butter"] { background: var(--tint-butter) !important; }
-[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="sky"] { background: var(--tint-sky) !important; }
-[data-look="arcade"] .card-well:not([data-tint]), [data-look="arcade"] .card-pastel:not([data-tint]) { background: var(--surface) !important; }
-[data-look="arcade"] .ai-panel { background: var(--tint-peri) !important; }
-[data-look="arcade"] .ai-panel::after { opacity: .18; }
-[data-look="arcade"] .card-pastel { transition: transform .12s ease, box-shadow .12s ease; }
-[data-look="arcade"] .card-pastel:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--ink-line) !important; }
-[data-look="arcade"] .card-pastel:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--ink-line) !important; }
-[data-look="arcade"] .page-shell { --sec: transparent; }
-[data-look="arcade"] .page-shell::before, [data-look="arcade"] .page-shell::after { opacity: 0 !important; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="mint"] { background: var(--tint-mint) !important; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="rose"] { background: var(--tint-rose) !important; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="peach"] { background: var(--tint-peach) !important; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="peri"] { background: var(--tint-peri) !important; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="lilac"] { background: var(--tint-lilac) !important; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="butter"] { background: var(--tint-butter) !important; }
+[data-look="arcade"][data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="sky"] { background: var(--tint-sky) !important; }
+[data-look="arcade"][data-look="arcade"] .card-well:not([data-tint]), [data-look="arcade"] .card-pastel:not([data-tint]) { background: var(--surface) !important; }
+[data-look="arcade"][data-look="arcade"] .ai-panel { background: var(--tint-peri) !important; }
+[data-look="arcade"][data-look="arcade"] .ai-panel::after { opacity: .18; }
+[data-look="arcade"][data-look="arcade"] .card-pastel { transition: transform .12s ease, box-shadow .12s ease; }
+[data-look="arcade"][data-look="arcade"] .card-pastel:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--ink-line) !important; }
+[data-look="arcade"][data-look="arcade"] .card-pastel:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--ink-line) !important; }
+[data-look="arcade"][data-look="arcade"] .page-shell { --sec: transparent; }
+[data-look="arcade"][data-look="arcade"] .page-shell::before, [data-look="arcade"] .page-shell::after { opacity: 0 !important; }
 /* buttons: flat colour, thick outline, hard shadow that presses in */
-[data-look="arcade"] :is(.btn-main, .pill-ink) {
+[data-look="arcade"][data-look="arcade"] :is(.btn-main, .pill-ink) {
   background: #ffd43b !important; color: #111 !important; border: 3px solid var(--ink-line) !important; border-radius: 12px !important;
   box-shadow: 4px 4px 0 var(--ink-line) !important; font-weight: 800; transition: transform .1s ease, box-shadow .1s ease;
 }
-[data-look="arcade"] :is(.btn-main, .pill-ink):hover { transform: translate(-1px, -1px); box-shadow: 6px 6px 0 var(--ink-line) !important; filter: none; }
-[data-look="arcade"] :is(.btn-main, .pill-ink):active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink-line) !important; }
-[data-look="arcade"] :is(.btn-main, .pill-ink) :is(svg, span) { color: #111 !important; }
-[data-look="arcade"] :is(.btn-soft, .pill-soft) {
+[data-look="arcade"][data-look="arcade"] :is(.btn-main, .pill-ink):hover { transform: translate(-1px, -1px); box-shadow: 6px 6px 0 var(--ink-line) !important; filter: none; }
+[data-look="arcade"][data-look="arcade"] :is(.btn-main, .pill-ink):active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink-line) !important; }
+[data-look="arcade"][data-look="arcade"] :is(.btn-main, .pill-ink) :is(svg, span) { color: #111 !important; }
+[data-look="arcade"][data-look="arcade"] :is(.btn-soft, .pill-soft) {
   background: var(--surface) !important; color: var(--text-primary) !important; border: 3px solid var(--ink-line) !important; border-radius: 12px !important;
   box-shadow: 3px 3px 0 var(--ink-line) !important; font-weight: 700;
 }
-[data-look="arcade"] :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { border: 3px solid var(--ink-line) !important; border-radius: 10px !important; background: var(--surface); }
-[data-look="arcade"] :is(h1, h2, h3) { font-weight: 900; letter-spacing: -0.01em; }
+[data-look="arcade"][data-look="arcade"] :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { border: 3px solid var(--ink-line) !important; border-radius: 10px !important; background: var(--surface); }
+[data-look="arcade"][data-look="arcade"] :is(h1, h2, h3) { font-weight: 900; letter-spacing: -0.01em; }
 :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.btn-main, .pill-ink) { background: #ffd43b !important; }
+
+/* Popovers, menus and dialogs: a real frosted panel (strong blur, mostly opaque), so the page behind never shows through the text. */
+[data-look="glass"][data-look="glass"] :is(.popover-surface, [role="menu"], [role="dialog"], [role="listbox"]) {
+  background: rgba(255, 255, 255, .86) !important; -webkit-backdrop-filter: blur(28px) saturate(1.7) !important; backdrop-filter: blur(28px) saturate(1.7) !important;
+  border: 1px solid rgba(255, 255, 255, .8) !important; box-shadow: 0 24px 60px -20px rgba(40, 50, 140, .5) !important;
+}
+:is(.dark[data-look="glass"], .dark [data-look="glass"]) :is(.popover-surface, [role="menu"], [role="dialog"], [role="listbox"]) { background: rgba(16, 18, 40, .88) !important; border-color: rgba(255, 255, 255, .16) !important; }
+[data-look="glass"][data-look="glass"] :is(.popover-surface, [role="menu"], [role="dialog"]) :is(.card-pastel, .card-well, .card-glass) { background: rgba(255, 255, 255, .5) !important; }
+/* the dimmed page behind a modal is blurred too */
+[data-look="glass"][data-look="glass"] :is([class*="bg-black/"], [class*="backdrop-blur"]):not(.topbar-island):not(.popover-surface) { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
