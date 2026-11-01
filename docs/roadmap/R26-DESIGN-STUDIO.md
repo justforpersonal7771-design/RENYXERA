@@ -27,34 +27,40 @@ A Look is a bundle of settings on one page attribute (`html[data-look="paper"]`,
 
 **Engine:** the app already uses tokens (`--tint-*`, `--surface`, `--text-*`, `--card-radius`, `--btn`). A Look is a block of overrides for those tokens plus a few new ones (`--card-shadow`, `--card-border`, `--bg-image`, `--density`, `--motion-scale`, `--icon-weight`). **No attribute means Classic pastel** (today's look, untouched), so nothing can break for anyone who never opens the Studio. The choice is saved on the device and, when signed in, on the profile, and applied by a tiny script before first paint (no flash).
 
-## 3. The Looks, in three tiers
-Names are working titles. Each Look is a full design, with its own cards, background, fonts, corners and icons.
+## 3. The Looks, in three tiers (Free 2, Plus 4, Pro 10)
+Names are working titles. Each Look is a full design with its own cards, background, fonts, corners, icons and motion. The list comes from the style guides the owner shared and a wider survey (sources in section 10). **High contrast** is not a Look: it is an accessibility switch (black, white and yellow, 2 px outlines, larger text) that works on top of any Look and is always free.
 
-### Free (always)
-| Look | Character |
-|---|---|
-| **Classic pastel** | Today's look: soft pastels, ink buttons, friendly. The default. |
-| **Paper** | Calm exam-hall reading: warm off-white, ink text, thin rules, serif headings, almost no colour. Best for long study. |
-| **High contrast** | Black, white and yellow, 2 px outlines, larger text. Accessibility is never a paid feature. |
+### Free (2)
+| Look | Style family | Character |
+|---|---|---|
+| **Classic pastel** | Soft UI / bento | Today's look: soft pastels, ink buttons, friendly. The default. |
+| **Paper** | E-ink / paper, Swiss | Calm exam-hall reading: warm off-white, ink text, thin rules, serif headings, almost no colour. |
 
-### Plus
-| Look | Character |
-|---|---|
-| **Midnight** | True dark, indigo accent, glow instead of borders, calm motion. For night study. |
-| **Ocean** | Cool blue-teal, crisp white surfaces, round corners. |
-| **Sunrise** | Peach and gold washes, warm shadows, lively motion. Motivating. |
-| **Forest** | Deep greens and moss, serif accents, grain background. Grounded. |
+### Plus (4)
+| Look | Style family | Character |
+|---|---|---|
+| **Minimal Mono** | Minimalism, Swiss modern | Black and white with one accent colour, big whitespace, hairline rules, no shadows, grid-strict. Fast and quiet. |
+| **Midnight** | Dark mode (OLED) | True black, vivid indigo accent, glow instead of borders, calm motion. For night study. |
+| **Ocean Bento** | Flat, bento grid | Cool blue-teal, mixed-size rounded tiles, crisp white surfaces, no shadows. |
+| **Sunrise Soft** | Soft UI (neumorphic, accessible) | Peach and gold, gently raised surfaces with good contrast, warm shadows. Motivating. |
 
-### Pro (premium)
-| Look | Character |
-|---|---|
-| **Neo-brutal Arcade** | Thick black outlines, hard offset shadows, flat saturated colour, sticker tilts, chunky fonts. The game look (default for the Arena if chosen, see 7). |
-| **Aurora Glass** | Frosted glass cards over a slow animated aurora background, thin light borders, soft glow. |
-| **Editorial** | Magazine feel: large serif headlines, hairline rules, generous space, restrained colour. |
-| **Terminal** | Near-black with green and amber, monospace numerals and labels, square corners, a blinking caret accent. |
-| **Blueprint** | Engineer's drawing: deep blue grid paper, white line art, dimension-line details. Fits GATE well. |
+### Pro (10)
+| Look | Style family | Character |
+|---|---|---|
+| **Glass** | Glassmorphism | Frosted translucent cards with blur over a soft colour backdrop, thin light borders, layered depth. |
+| **Liquid Glass** | Liquid glass, iridescence | Glass whose edges shimmer and morph slowly, rainbow highlights, floating panels. |
+| **Aurora** | Aurora UI, gradient mesh | Flowing animated gradients behind clean cards; the premium "wow" background. |
+| **Neo-brutal Arcade** | Neubrutalism | Thick black outlines, hard offset shadows, flat saturated colour, sticker tilts, chunky type. The Arena's home look. |
+| **Pixel Quest** | Pixel art, 8-bit | Limited palette, pixel fonts for headings, stepped (non-smooth) borders and shadows, tiny pixel icons, blip sounds (opt-in). |
+| **Neon Nights** | Cyberpunk, synthwave, retro-futurism | Near-black with magenta, cyan and violet neon glow, scan-line texture, glitch on hover, glowing numbers. |
+| **HUD Terminal** | Sci-fi HUD, terminal | Thin lines, green and amber on black, monospace numerals, square corners, blinking caret. |
+| **Blueprint** | Engineering drawing | Deep blue grid paper, white line art, dimension-line details. Suits GATE. |
+| **Editorial** | Editorial / magazine | Large serif headlines, hairline rules, generous space, restrained colour. |
+| **Clay** | Claymorphism | Soft inflated 3D shapes, thick rounded corners, bright pastels, squishy button motion. |
 
-**Rule for paid Looks ("tease, don't block"):** Free and Plus students can **preview** any Look for the whole app for 60 seconds, and **try it for one day, once per Look**, then it returns to their own. The picker always shows the real thing on a live mini-screen. Nothing is hidden.
+Extra Pro candidates waiting in the wings (not in the first release): Memphis Pop, Vaporwave Sunset, Y2K Chrome, Hand-drawn Notebook, Dimensional Paper-stack, Nature Distilled (earthy, organic).
+
+**Try before you buy ("tease, don't block"):** any Free or Plus student can **try any paid Look for 5 minutes, once per Look**, across the whole app (a small countdown chip with "Keep it" and "Switch back"), after which the app returns to their own Look. The picker always shows a live preview of the real design on a mini-screen, so nothing is hidden. Plus Looks are also included in Pro.
 
 ## 4. The Design Studio (where parts and fonts are chosen)
 A separate section in Profile, "Design Studio", with a live preview pane (a real mini dashboard drawn with the chosen parts) beside the controls.
@@ -83,12 +89,12 @@ Also: a **text size** slider (90 to 130 %), **line spacing** and a **dyslexia-fr
 ## 6. Plan, in order
 1. **Audit hard-coded colours and styles** in components (raw hex, `bg-indigo-600`, `text-white`, fixed shadows and radii). They ignore Looks and are where Looks will break. Replace with tokens as each screen is touched. (Tools: `hallmark audit`, the `taste-skill` inspector, `interface-design` for the consistency pass; `stitch-extract-design-md` to write the current system into `docs/design/DESIGN-SYSTEM.md` as the contract.)
 2. **Engine:** token contract (section 2), Classic expressed through it, the no-flash script, `scripts/check-looks.mjs` (all tokens present, text contrast at least 4.5:1 on every tint in light and dark, focus ring at least 3:1).
-3. **Studio shell:** Looks tab, Customize tab, live preview, My looks. Ship with Classic, Paper and High contrast (the three Free Looks) to prove the mechanism.
+3. **Studio shell:** Looks tab, Customize tab, live preview, My looks. Ship with Classic and Paper (the two Free Looks) plus the High-contrast switch to prove the mechanism.
 4. **Fonts tab** with the Free set, then Plus and Pro fonts.
-5. **Plus Looks** (Midnight first, then Ocean, Sunrise, Forest), then **Pro Looks** (Neo-brutal Arcade first because the Arena reuses it, then Aurora Glass, Editorial, Terminal, Blueprint). Batches of 2 to 3, each checked on Dashboard, Test Centre, Build a test, exam session, results, Mentor, Study, Plans, Tools on desktop and phone, light and dark, with a contact sheet for the owner to approve before release.
+5. **Plus Looks** (Midnight and Minimal Mono first, then Ocean Bento, Sunrise Soft), then **Pro Looks** (Neo-brutal Arcade first because the Arena reuses it, then Glass, Neon Nights, Pixel Quest, Aurora, Liquid Glass, HUD Terminal, Blueprint, Editorial, Clay). Batches of 2 to 3, each checked on Dashboard, Test Centre, Build a test, exam session, results, Mentor, Study, Plans, Tools on desktop and phone, light and dark, with a contact sheet for the owner to approve before release.
 6. **Entitlements:** a server-checked list of owned Looks by plan (no client-only locks), try-for-a-day state, My looks limits.
 
-Order of value: the Free Looks and the Studio shell prove the system; Neo-brutal Arcade comes first among the premium Looks because it carries the Arena and is the most distinctive.
+Order of value: the Free Looks and the Studio shell prove the system; Neo-brutal Arcade comes first among the premium Looks because it carries the Arena; Glass, Neon Nights and Pixel Quest follow because they are the most visibly different and the best upgrade hooks.
 
 ## 7. Arena look (R25)
 The Arena has its own **Arena style** setting in the Studio and in the room's settings, with three choices: **Arcade** (always the game look, the default for everyone), **My Look** (the Arena follows the student's chosen Look), and **Calm** (flat, minimal, no particles, for low-end phones and low-distraction play). Arcade is a Pro-grade Look, so for Free and Plus players the Arena shows Arcade as a free **in-game** style (rooms are a game space, not a Look purchase); owning the Neo-brutal Arcade Look only extends that style to the rest of the app.
@@ -102,7 +108,12 @@ The Arena has its own **Arena style** setting in the Studio and in the room's se
 - **Support and correctness:** an invalid or missing Look falls back to Classic; "Reset appearance" is always one tap.
 
 ## 9. Open choices for the owner
-1. Tier lines: are Midnight, Ocean, Sunrise and Forest right for Plus, and the five right for Pro? (Easy to move later.)
-2. Free Looks: Classic, Paper, High contrast. Add one more free, for example Midnight, so night-time students do not need a paid plan?
-3. My looks limits (1, 5, unlimited) and the "try one day" rule: accept or change?
+1. Tier lines: are Minimal Mono, Midnight, Ocean Bento and Sunrise Soft right for Plus, and the ten right for Pro? (Easy to move later.)
+2. Free has two Looks (Classic, Paper) plus the High-contrast switch. Add Midnight to Free so night-time students never need a paid plan?
+3. My looks limits (1, 5, unlimited) and the "try for 5 minutes, once per Look" rule: accept or change?
 4. Price effect: show the Pro Looks as one of the reasons to upgrade on the Plans page? (Recommendation: yes, as a small "Looks and Studio" row, never the main reason.)
+
+## 10. Sources and style map
+Surveyed 1 Nov 2026: [Fireart, web design styles](https://fireart.studio/blog/web-design-styles-complete-guide/) (flat, minimalist, retro, Y2K, neo-brutalism, claymorphism, Memphis), [Tilda Education](https://tilda.education/en/web-design-styles) (minimalism, brutalism and neobrutalism, constructivism, Swiss, editorial, hand-drawn, retro, flat, bento), and [UI Style Guide](https://www.uistyleguide.com/) (67 styles in 10 groups, including glassmorphism, liquid glass, aurora, pixel art, cyberpunk and HUD). The UX Planet "50 design styles" article blocked automated reading (HTTP 403), so it is not used. Style families chosen for GATE: those that keep dense information readable (minimal, glass, flat, bento, dark), those with game energy for the Arena (neubrutalism, pixel, neon), and those with a clear identity for marketing and sharing (aurora, blueprint, editorial).
+
+**Safety notes per family:** glass and aurora need a readable-text overlay and a "reduce transparency" fallback; neon, scan-lines and glitch effects must respect "reduce motion" and never flash faster than 3 times a second; pixel fonts are used for headings and numerals only, never for question text or maths.
