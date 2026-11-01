@@ -2,7 +2,8 @@ import "@/lib/time/install-ist";
 import type {Metadata} from 'next';
 import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC } from 'next/font/google';
 import './globals.css'; // Global styles
-import './looks.css'; // Design Studio Looks (docs/roadmap/R26-DESIGN-STUDIO.md)
+import './looks.css';
+import './looks-pro2.css'; // Design Studio Looks, batch 2
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
 import { LookApplier } from '@/components/looks/look-applier';

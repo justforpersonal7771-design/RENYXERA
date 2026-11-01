@@ -41,10 +41,13 @@ export function ProfileHeader({
         <div className="h-full w-full overflow-hidden rounded-xl bg-white/15">{/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}<img src={avatarUri} alt="Your avatar" className="h-full w-full" width={36} height={36} /></div>
       </div>
       <h1 className="min-w-0 truncate text-base font-extrabold">{name}</h1>
-      <span className="shrink-0 rounded-full bg-white/20 px-2 py-0.5 text-xs font-black">{paidTier ?? "free"}</span>
+      <span className={`shrink-0 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-black tracking-normal ${paidTier === "pro" ? "bg-gradient-to-b from-amber-200 to-amber-400 text-amber-950 shadow" : paidTier === "plus" ? "bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900 shadow" : "bg-white/20 backdrop-blur"}`}>{paidTier ? <Crown className="h-3 w-3" /> : <Sparkles className="h-3 w-3" />} {paidTier ?? "free"}</span>
       <span className="hidden truncate text-xs font-semibold text-white/85 sm:inline">{daysLeft != null && daysLeft >= 0 ? `GATE ${targetYear} · ${daysLeft} days left` : `GATE ${targetYear}`}</span>
       <span className="flex-1" />
-      <span className="hidden shrink-0 text-xs font-bold sm:inline">{completeness}% complete</span>
+      <span className="hidden shrink-0 items-center gap-2 sm:flex" title="Profile complete">
+        <svg width="28" height="28" viewBox="0 0 56 56" className="-rotate-90" aria-hidden="true"><circle cx="28" cy="28" r={R} fill="none" stroke="var(--surface)" strokeWidth="6" /><circle cx="28" cy="28" r={R} fill="none" stroke="var(--tint-lilac-ink)" strokeWidth="6" strokeLinecap="round" strokeDasharray={C} strokeDashoffset={C * (1 - completeness / 100)} /></svg>
+        <span className="text-xs font-bold leading-tight"><span className="font-num text-sm font-extrabold">{completeness}%</span> complete</span>
+      </span>
       <button type="button" onClick={flip} aria-label="Show the full profile card" title="Show the full card" className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg bg-white/15 hover:bg-white/25"><ChevronsDown className="h-4 w-4" /></button>
       <button type="button" onClick={onSignOut} disabled={signingOut} aria-label="Sign out" className="grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg bg-white/15 hover:bg-white/25 disabled:opacity-50">{signingOut ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="h-4 w-4" />}</button>
     </header>
