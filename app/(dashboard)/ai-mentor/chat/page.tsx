@@ -2,19 +2,22 @@
 
 /**
  * AI Mentor: the dedicated chat screen, built like the chat apps students already know:
- * a history of chats (rename, pin, delete), edit an earlier message and keep both versions (the "1 / 2" pager),
- * ask again for another answer, a thinking animation, and answers that type out.
+ * a collapsible history (search inside chats, group by date or by your own groups, pin, rename, delete), edit an earlier message
+ * and keep both versions (the "1 / 2" pager), ask again for another answer, a flowing-logo thinking state, answers that type out,
+ * a composer with mode and style menus, an enlarge-the-box button, and an enlarge-the-whole-chat button (fills the app, not full screen).
  */
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Copy, Flag, History, MessageSquarePlus, Pencil, Pin, PinOff, RefreshCw, Search, Send, Sparkles, ThumbsUp, Trash2, X } from "lucide-react";
-import { Segmented } from "@/components/ui/folder-tabs";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, Folder, FolderInput, FolderMinus, FolderOpen, History, Maximize2, Minimize2, MessageSquarePlus, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
+import { MentorMark } from "@/components/brand/mentor-mark";
 import { CardView, MODES, Mode, Msg, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { useMentorData } from "@/components/mentor/use-mentor-data";
+import { useEntitlements } from "@/lib/billing/use-entitlements";
+import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { istDateStr } from "@/lib/time/ist";
 import type { ChatMeta } from "@/lib/mentor/chat-tree";
 
@@ -22,27 +25,65 @@ const AUTO: Partial<Record<Mode, string>> = {
   Plan: "Make me a study plan for this week from my data.", Review: "Review my last test.", Weekly: "Give me my weekly review.",
   Quiz: "Quiz me on my weakest topic.", Socratic: "Guide me on my weakest topic. Ask me one question at a time.",
 };
-const STARTERS: { icon: typeof Sparkles; title: string; text: string; mode?: Mode }[] = [
-  { icon: Sparkles, title: "Plan my week", text: AUTO.Plan!, mode: "Plan" },
-  { icon: RefreshCw, title: "Review my last test", text: AUTO.Review!, mode: "Review" },
-  { icon: Pencil, title: "Quiz me", text: AUTO.Quiz!, mode: "Quiz" },
-  { icon: History, title: "My weekly review", text: AUTO.Weekly!, mode: "Weekly" },
+const STARTERS: { title: string; text: string; mode?: Mode }[] = [
+  { title: "Plan my week", text: AUTO.Plan!, mode: "Plan" },
+  { title: "Review my last test", text: AUTO.Review!, mode: "Review" },
+  { title: "Quiz me", text: AUTO.Quiz!, mode: "Quiz" },
+  { title: "My weekly review", text: AUTO.Weekly!, mode: "Weekly" },
 ];
+const VOICES: { id: Voice; label: string }[] = [{ id: "Friendly", label: "Friendly" }, { id: "Strict", label: "Strict" }, { id: "Concise", label: "Concise" }];
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get: (k: string, d: string) => { try { return localStorage.getItem(k) ?? d; } catch { return d; } },
+  set: (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
+};
 
-/** Gemini-style thinking: a turning sparkle, a shimmering line that changes wording, and soft placeholder lines. */
+/** Small menu button used in the composer (mode, style). Opens upwards, closes on outside click and Escape. */
+function MenuSelect<T extends string>({ label, value, options, onChange }: { label: string; value: T; options: { id: T; label: string }[]; onChange: (v: T) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const away = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node)) setOpen(false); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", away); document.addEventListener("keydown", esc);
+    return () => { document.removeEventListener("mousedown", away); document.removeEventListener("keydown", esc); };
+  }, [open]);
+  const cur = options.find((o) => o.id === value)?.label ?? value;
+  return (
+    <div ref={ref} className="relative">
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="menu" aria-expanded={open} aria-label={`${label}: ${cur}`} className="flex h-9 cursor-pointer items-center gap-1 rounded-full px-3 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]">
+        {cur} <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div role="menu" aria-label={label} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 6 }} transition={{ duration: 0.12 }}
+            className="absolute bottom-full left-0 z-30 mb-2 min-w-40 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-xl">
+            <p className="px-3 pb-1 pt-1.5 text-xs font-bold text-[var(--text-muted)]">{label}</p>
+            {options.map((o) => (
+              <button key={o.id} type="button" role="menuitemradio" aria-checked={o.id === value} onClick={() => { onChange(o.id); setOpen(false); }} className="flex w-full cursor-pointer items-center justify-between gap-3 rounded-xl px-3 py-2 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">
+                {o.label}{o.id === value && <Check className="h-4 w-4" />}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/** The spark logo with colour flowing through the shape. Nothing behind it. */
+const Spark = ({ className = "h-6 w-6", still = false }: { className?: string; still?: boolean }) => <span aria-hidden className={`spark-flow ${still ? "is-still" : ""} ${className}`} />;
+
 function Thinking() {
   const [step, setStep] = useState(0);
   useEffect(() => { const t = setInterval(() => setStep((s) => s + 1), 2200); return () => clearInterval(t); }, []);
   const words = ["Thinking", "Working it out", "Putting the answer together", "Almost there"];
   return (
     <div className="flex items-start gap-3" role="status" aria-live="polite" aria-label="The Mentor is thinking">
-      <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-full">
-        <span aria-hidden className="absolute inset-0 rounded-full bg-[conic-gradient(from_0deg,var(--tint-sky-ink),var(--tint-peri-ink),var(--tint-rose-ink),var(--tint-sky-ink))] opacity-70 motion-safe:animate-[spin_2.4s_linear_infinite]" />
-        <span className="relative grid h-7 w-7 place-items-center rounded-full bg-[var(--surface)]"><Sparkles className="h-4 w-4 text-[var(--tint-peri-ink)] motion-safe:animate-pulse" /></span>
-      </span>
-      <div className="min-w-0 flex-1 pt-1.5">
+      <Spark className="mt-0.5 h-7 w-7 shrink-0" />
+      <div className="min-w-0 flex-1 pt-1">
         <p className="shimmer-text text-sm font-bold">{words[Math.min(step, words.length - 1)]}…</p>
         <div className="mt-2 space-y-2" aria-hidden>
           {[92, 78, 55].map((w, i) => <span key={w} className="block h-2.5 rounded-full bg-[var(--surface-secondary)] motion-safe:animate-pulse" style={{ width: `${w}%`, animationDelay: `${i * 160}ms` }} />)}
@@ -79,15 +120,22 @@ function Pager({ m, onStep }: { m: Msg; onStep: (id: string, d: -1 | 1) => void 
   );
 }
 
-/** "Today", "Yesterday", "Previous 7 days", "Older", with days counted in India time. */
-function groupChats(list: ChatMeta[]): { label: string; items: ChatMeta[] }[] {
+type Section = { label: string; items: ChatMeta[]; folder?: boolean };
+/** History as a tree: pinned chats, then each group as a folder holding its chats, then the chats with no group by India-time day. */
+function sectionsOf(list: ChatMeta[]): Section[] {
+  const pinned: ChatMeta[] = [], groups: Record<string, ChatMeta[]> = {}, dated: Record<string, ChatMeta[]> = {};
   const today = istDateStr(), yest = istDateStr(new Date(Date.now() - 86400000)), week = istDateStr(new Date(Date.now() - 7 * 86400000));
-  const g: Record<string, ChatMeta[]> = { Pinned: [], Today: [], Yesterday: [], "Previous 7 days": [], Older: [] };
   for (const c of list) {
+    if (c.pinned) { pinned.push(c); continue; }
+    if (c.group) { (groups[c.group] ??= []).push(c); continue; }
     const d = istDateStr(new Date(c.updatedAt));
-    (c.pinned ? g.Pinned : d === today ? g.Today : d === yest ? g.Yesterday : d >= week ? g["Previous 7 days"] : g.Older).push(c);
+    (dated[d === today ? "Today" : d === yest ? "Yesterday" : d >= week ? "Previous 7 days" : "Older"] ??= []).push(c);
   }
-  return Object.entries(g).filter(([, v]) => v.length).map(([label, items]) => ({ label, items }));
+  return [
+    ...(pinned.length ? [{ label: "Pinned", items: pinned }] : []),
+    ...Object.keys(groups).sort((a, b) => a.localeCompare(b)).map((g) => ({ label: g, items: groups[g], folder: true })),
+    ...["Today", "Yesterday", "Previous 7 days", "Older"].filter((k) => dated[k]?.length).map((k) => ({ label: k, items: dated[k] })),
+  ];
 }
 
 function ChatScreen() {
@@ -95,21 +143,52 @@ function ChatScreen() {
   const params = useSearchParams();
   const d = useMentorData();
   const c = useMentorChat(d.brief);
+  const { tier } = useEntitlements();
+  const openAuth = useAuthModalStore((st) => st.open);
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [drawer, setDrawer] = useState(false);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  const [sideOpen, setSideOpen] = useState(true);      // history panel on desktop
+  const [wide, setWide] = useState(false);              // chat fills the whole app area
+  const [big, setBig] = useState(false);                // taller composer
+  const [stacked, setStacked] = useState(false);       // tools under the text (from the second line)
+  const [lines, setLines] = useState(1);
+  const [closed, setClosed] = useState<Record<string, boolean>>({});   // folders the student collapsed
   const [renaming, setRenaming] = useState<{ id: string; text: string } | null>(null);
+  const [groupFor, setGroupFor] = useState<string | null>(null);
+  const [newGroup, setNewGroup] = useState("");
   const [editing, setEditing] = useState<{ id: string; text: string } | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [typedDone, setTypedDone] = useState<Set<string>>(new Set());
   const listRef = useRef<HTMLDivElement>(null);
+  const taRef = useRef<HTMLTextAreaElement>(null);
   const fired = useRef(false);
   const fromBar = params.get("from") === "bar";
 
+  useEffect(() => {
+    setMounted(true);
+    setSideOpen(store.get("mentor_side", "1") === "1"); setWide(store.get("mentor_wide", "0") === "1");
+  }, []);
+  const toggleSide = () => { setSideOpen((v) => { store.set("mentor_side", v ? "0" : "1"); return !v; }); };
+  const toggleWide = () => { setWide((v) => { store.set("mentor_wide", v ? "0" : "1"); return !v; }); };
+
   const scrollDown = useCallback(() => { const el = listRef.current; if (el) el.scrollTo({ top: el.scrollHeight, behavior: prefersReduced() ? "auto" : "smooth" }); }, []);
   useEffect(() => { scrollDown(); }, [c.msgs.length, c.busy, c.activeId, scrollDown]);
+
+  // Composer, Gemini style: one line is a pill with the tools beside the text; from the second line the tools drop underneath;
+  // from the third line an expand icon appears top-right. The box grows to a limit, then scrolls (scrollbar only when needed).
+  useEffect(() => {
+    const ta = taRef.current; if (!ta) return;
+    if (!input) { setStacked(false); setLines(1); }
+    if (big) { ta.style.height = "38dvh"; ta.style.overflowY = "auto"; return; }
+    ta.style.height = "auto";
+    const n = Math.max(1, Math.round(ta.scrollHeight / 24));
+    setLines(n);
+    if (n > 1 || input.includes("\n")) setStacked(true);
+    const h = Math.min(ta.scrollHeight, 168);
+    ta.style.height = `${h}px`; ta.style.overflowY = ta.scrollHeight > 168 ? "auto" : "hidden";
+  }, [input, big, wide, stacked]);
 
   // Arriving from the Mentor home with a heavy request: run it once, in a fresh chat, when the Mentor's data and history are loaded.
   useEffect(() => {
@@ -119,41 +198,77 @@ function ChatScreen() {
     router.replace(fromBar ? "/ai-mentor/chat?from=bar" : "/ai-mentor/chat");
   }, [params, d.ready, c.loaded, c, router, fromBar]);
 
-  const submit = () => { const t = input; if (!t.trim() || c.busy) return; setInput(""); void c.send(t); };
+  const submit = () => { const t = input; if (!t.trim() || c.busy) return; setInput(""); setBig(false); void c.send(t); };
   const copy = async (id: string, text: string) => { try { await navigator.clipboard.writeText(clean(text)); setCopied(id); setTimeout(() => setCopied((x) => (x === id ? null : x)), 1500); } catch { /* clipboard blocked */ } };
-  const askDelete = async (m: ChatMeta) => { if (await confirmDialog({ title: "Delete this chat?", message: `"${m.title}" and all its versions will be removed from this device.`, confirmLabel: "Delete", tone: "danger" })) void c.deleteChat(m.id); };
-  const groups = useMemo(() => groupChats(c.chats.filter((x) => !query.trim() || x.title.toLowerCase().includes(query.trim().toLowerCase()))), [c.chats, query]);
+  const askDelete = async (m: ChatMeta) => { if (await confirmDialog({ title: "Delete this chat?", message: `"${m.title}" and all its versions will be removed from your account.`, confirmLabel: "Delete", tone: "danger" })) void c.deleteChat(m.id); };
+  const q = query.trim().toLowerCase();
+  const sections = useMemo(() => sectionsOf(c.chats.filter((x) => !q || x.title.toLowerCase().includes(q) || (x.snippet ?? "").includes(q) || (x.group ?? "").toLowerCase().includes(q))), [c.chats, q]);
+  const groupNames = useMemo(() => [...new Set(c.chats.map((x) => x.group).filter(Boolean) as string[])].sort((a, b) => a.localeCompare(b)), [c.chats]);
   const lastId = c.msgs[c.msgs.length - 1]?.id;
 
   const history = (
     <div className="flex h-full min-h-0 flex-col">
-      <button type="button" onClick={() => { c.newChat(); setDrawer(false); }} className="btn-main !h-10 w-full justify-center !text-sm"><MessageSquarePlus className="h-4 w-4" /> New chat</button>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="flex items-center gap-2"><span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-[var(--brand-a)] via-[var(--brand-b)] to-[var(--brand-c)] text-white"><MentorMark className="h-[18px] w-[18px]" /></span><span className="font-display text-sm font-extrabold text-[var(--text-primary)]">AI Mentor</span></span>
+        <span className="flex-1" />
+        <button type="button" onClick={toggleSide} aria-label="Hide chat history" title="Hide history" className="hidden cursor-pointer rounded-lg p-1.5 text-[var(--text-secondary)] hover:bg-[var(--surface)] lg:block"><PanelLeftClose className="h-4 w-4" /></button>
+      </div>
+      {c.signedIn && <button type="button" onClick={() => { c.newChat(); setDrawer(false); }} className="btn-main !h-10 w-full justify-center !text-sm"><MessageSquarePlus className="h-4 w-4" /> New chat</button>}
+      {!c.signedIn ? (
+        <div className="mt-3 rounded-2xl bg-[var(--surface)] p-4 text-sm text-[var(--text-secondary)]">
+          <p className="font-bold text-[var(--text-primary)]">This is a temporary chat</p>
+          <p className="mt-1">It is not saved and disappears when you leave. Sign in to keep your chats, search them and use them on your other devices.</p>
+          <button type="button" onClick={() => openAuth("signup")} className="btn-main mt-3 !h-10 w-full justify-center !text-sm">Sign in to save</button>
+        </div>
+      ) : (<>
       <label className="relative mt-3 block">
         <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" />
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search chats" aria-label="Search chats" className="h-10 w-full rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] pl-9 pr-3 text-sm outline-none focus:border-[var(--tint-sky-ink)]" />
       </label>
       <nav aria-label="Chat history" className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
-        {groups.length === 0 && <p className="px-2 text-sm text-[var(--text-muted)]">{query ? "No chats match." : "Your chats will appear here."}</p>}
-        {groups.map((g) => (
+        {sections.length === 0 && <p className="px-2 text-sm text-[var(--text-muted)]">{q ? "No chats match." : "Your chats will appear here."}</p>}
+        {sections.map((g) => (
           <div key={g.label}>
-            <p className="px-2 pb-1 text-xs font-bold text-[var(--text-muted)]">{g.label}</p>
-            <ul className="space-y-0.5">
+            {g.folder ? (
+              <button type="button" onClick={() => setClosed((v) => ({ ...v, [g.label]: !v[g.label] }))} aria-expanded={!closed[g.label]} className="flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-left text-xs font-bold text-[var(--text-secondary)] hover:bg-[var(--surface)]/60">
+                <ChevronRight className={`h-3.5 w-3.5 transition-transform ${closed[g.label] ? "" : "rotate-90"}`} />
+                {closed[g.label] ? <Folder className="h-3.5 w-3.5" /> : <FolderOpen className="h-3.5 w-3.5" />}
+                <span className="min-w-0 flex-1 truncate">{g.label}</span><span className="font-num text-[var(--text-muted)]">{g.items.length}</span>
+              </button>
+            ) : <p className="px-2 pb-1 text-xs font-bold text-[var(--text-muted)]">{g.label}</p>}
+            <ul className={`space-y-0.5 ${g.folder ? "ml-3 border-l border-[var(--border)] pl-1" : ""} ${g.folder && closed[g.label] ? "hidden" : ""}`}>
               {g.items.map((m) => (
-                <li key={m.id} className={`group flex items-center gap-1 rounded-xl px-2 py-1.5 ${m.id === c.activeId ? "bg-[var(--surface)] shadow-sm" : "hover:bg-[var(--surface)]/60"}`}>
-                  {renaming?.id === m.id ? (
-                    <input autoFocus value={renaming.text} aria-label="Chat name" maxLength={80} onChange={(e) => setRenaming({ id: m.id, text: e.target.value })}
-                      onKeyDown={(e) => { if (e.key === "Enter") { void c.renameChat(m.id, renaming.text); setRenaming(null); } if (e.key === "Escape") setRenaming(null); }}
-                      onBlur={() => { void c.renameChat(m.id, renaming.text); setRenaming(null); }}
-                      className="h-8 min-w-0 flex-1 rounded-lg border-2 border-[var(--tint-sky-ink)] bg-[var(--surface)] px-2 text-sm outline-none" />
-                  ) : (
-                    <button type="button" onClick={() => { void c.openChat(m.id); setDrawer(false); }} aria-current={m.id === c.activeId ? "true" : undefined} className="min-w-0 flex-1 cursor-pointer truncate text-left text-sm text-[var(--text-primary)]" title={m.title}>{m.title}</button>
-                  )}
-                  {renaming?.id !== m.id && (
-                    <span className="flex shrink-0 items-center opacity-100 lg:opacity-0 lg:transition-opacity lg:group-focus-within:opacity-100 lg:group-hover:opacity-100">
-                      <button type="button" onClick={() => c.pinChat(m.id)} aria-label={m.pinned ? "Unpin chat" : "Pin chat"} title={m.pinned ? "Unpin" : "Pin"} className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]">{m.pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}</button>
-                      <button type="button" onClick={() => setRenaming({ id: m.id, text: m.title })} aria-label="Rename chat" title="Rename" className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><Pencil className="h-3.5 w-3.5" /></button>
-                      <button type="button" onClick={() => void askDelete(m)} aria-label="Delete chat" title="Delete" className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] hover:text-[var(--tint-rose-ink)]"><Trash2 className="h-3.5 w-3.5" /></button>
-                    </span>
+                <li key={m.id} className={`rounded-xl ${m.id === c.activeId ? "bg-[var(--surface)] shadow-sm" : "hover:bg-[var(--surface)]/60"}`}>
+                  <div className="group flex items-center gap-1 px-2 py-1.5">
+                    {renaming?.id === m.id ? (
+                      <input autoFocus value={renaming.text} aria-label="Chat name" maxLength={80} onChange={(e) => setRenaming({ id: m.id, text: e.target.value })}
+                        onKeyDown={(e) => { if (e.key === "Enter") { void c.renameChat(m.id, renaming.text); setRenaming(null); } if (e.key === "Escape") setRenaming(null); }}
+                        onBlur={() => { void c.renameChat(m.id, renaming.text); setRenaming(null); }}
+                        className="h-8 min-w-0 flex-1 rounded-lg border-2 border-[var(--tint-sky-ink)] bg-[var(--surface)] px-2 text-sm outline-none" />
+                    ) : (
+                      <button type="button" onClick={() => { void c.openChat(m.id); setDrawer(false); }} aria-current={m.id === c.activeId ? "true" : undefined} className="min-w-0 flex-1 cursor-pointer truncate text-left text-sm text-[var(--text-primary)]" title={m.title}>{m.title}</button>
+                    )}
+                    {renaming?.id !== m.id && (
+                      <span className="flex shrink-0 items-center opacity-100 lg:opacity-0 lg:transition-opacity lg:group-focus-within:opacity-100 lg:group-hover:opacity-100">
+                        <button type="button" onClick={() => c.pinChat(m.id)} aria-label={m.pinned ? "Unpin chat" : "Pin chat"} title={m.pinned ? "Unpin" : "Pin"} className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]">{m.pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}</button>
+                        <button type="button" onClick={() => { setGroupFor(groupFor === m.id ? null : m.id); setNewGroup(""); }} aria-label="Move to a group" title="Move to a group" aria-expanded={groupFor === m.id} className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><FolderInput className="h-3.5 w-3.5" /></button>
+                        <button type="button" onClick={() => setRenaming({ id: m.id, text: m.title })} aria-label="Rename chat" title="Rename" className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><Pencil className="h-3.5 w-3.5" /></button>
+                        <button type="button" onClick={() => void askDelete(m)} aria-label="Delete chat" title="Delete" className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] hover:text-[var(--tint-rose-ink)]"><Trash2 className="h-3.5 w-3.5" /></button>
+                      </span>
+                    )}
+                  </div>
+                  {groupFor === m.id && (
+                    <div className="mx-2 mb-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2">
+                      <p className="px-1 pb-1 text-xs font-bold text-[var(--text-muted)]">Move to group</p>
+                      <div className="flex flex-wrap gap-1">
+                        {groupNames.map((n) => <button key={n} type="button" onClick={() => { void c.setChatGroup(m.id, n); setGroupFor(null); }} className={`pill-soft cursor-pointer text-xs ${m.group === n ? "!bg-[var(--btn)] !text-[var(--btn-fg)]" : ""}`}>{n}</button>)}
+                        {m.group && <button type="button" onClick={() => { void c.setChatGroup(m.id, ""); setGroupFor(null); }} className="pill-soft inline-flex cursor-pointer items-center gap-1 text-xs"><FolderMinus className="h-3 w-3" /> Remove</button>}
+                      </div>
+                      <form className="mt-2 flex gap-1" onSubmit={(e) => { e.preventDefault(); if (newGroup.trim()) { void c.setChatGroup(m.id, newGroup); setGroupFor(null); } }}>
+                        <input value={newGroup} onChange={(e) => setNewGroup(e.target.value)} maxLength={40} placeholder="New group name" aria-label="New group name" className="h-8 min-w-0 flex-1 rounded-lg border-2 border-[var(--border)] bg-[var(--surface)] px-2 text-xs outline-none focus:border-[var(--tint-sky-ink)]" />
+                        <button type="submit" disabled={!newGroup.trim()} className="pill-ink cursor-pointer text-xs disabled:opacity-50">Add</button>
+                      </form>
+                    </div>
                   )}
                 </li>
               ))}
@@ -161,21 +276,75 @@ function ChatScreen() {
           </div>
         ))}
       </nav>
-      <p className="mt-2 text-[11px] leading-snug text-[var(--text-muted)]">Chats are saved on this device.</p>
+      </>)}
+      {c.signedIn && <p className="mt-2 text-[11px] leading-snug text-[var(--text-muted)]">Saved to your account and synced to your other devices.</p>}
     </div>
   );
 
-  return (
-    <div className="flex h-[calc(100dvh-9.5rem)] min-h-[26rem] w-full gap-3" data-fill-height="always">
-      <aside aria-label="Chats" className="card-well hidden w-64 shrink-0 p-3 lg:block" data-tint="sky">{history}</aside>
-      {/* Portalled to <body>: the page container is transformed, which would trap a fixed drawer under the top bar. */}
+  const empty = c.msgs.length === 0 && !c.busy;
+  const showExpand = big || lines >= 3;
+  const composerBlock = (
+    <div className={`mx-auto w-full max-w-3xl ${empty ? "" : "mt-3"}`}>
+      {!c.signedIn && !c.guestLocked && (
+        <p className="mb-2 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-2xl bg-[var(--tint-butter)] px-3 py-2 text-center text-xs text-[var(--tint-butter-ink)]">
+          Temporary chat: 2 free messages, not saved. <button type="button" onClick={() => openAuth("signup")} className="cursor-pointer font-bold underline">Sign in to save it</button>
+        </p>
+      )}
+      {c.guestLocked && (
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border-2 border-[var(--border)] bg-[var(--surface)] px-5 py-4">
+          <p className="min-w-0 flex-1 text-sm text-[var(--text-primary)]"><span className="font-bold">You have used your 2 free messages.</span> Sign in to keep chatting; your chat will be saved.</p>
+          <button type="button" onClick={() => openAuth("signup")} className="btn-main !h-10 justify-center !text-sm">Sign in to continue</button>
+        </div>
+      )}
+      <form hidden={c.guestLocked} onSubmit={(e) => { e.preventDefault(); submit(); }}
+        className={`relative flex flex-wrap items-center border-2 border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-18px_rgba(67,56,202,.55)] transition-[border-radius,border-color] duration-200 focus-within:border-[var(--tint-sky-ink)] ${stacked || big ? "rounded-3xl px-4 pb-2 pt-3" : "rounded-full py-1.5 pl-5 pr-2"}`}>
+        <textarea ref={taRef} value={input} rows={1} autoFocus={empty} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }}
+          maxLength={1500} placeholder="Ask your Mentor" aria-label="Message your Mentor"
+          className={`field-bare block min-h-6 resize-none leading-6 text-[var(--text-primary)] ${stacked || big ? `w-full basis-full ${showExpand ? "pr-8" : ""}` : "min-w-0 flex-1"}`} />
+        {showExpand && (
+          <button type="button" onClick={() => setBig((v) => !v)} aria-pressed={big} aria-label={big ? "Make the text box smaller" : "Make the text box bigger"} title={big ? "Smaller box" : "Bigger box"}
+            className="absolute right-3 top-3 grid h-7 w-7 cursor-pointer place-items-center rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]">
+            {big ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+          </button>
+        )}
+        <div className={`flex items-center gap-1 ${stacked || big ? "mt-1 w-full justify-end" : "shrink-0"}`}>
+          <MenuSelect label="What should I do" value={c.mode} options={MODES} onChange={c.setMode} />
+          <MenuSelect label="How should I sound" value={c.voice} options={VOICES} onChange={c.setVoice} />
+          <button type="submit" disabled={c.busy || !input.trim()} className="btn-main !h-9 !w-9 !p-0 justify-center disabled:opacity-50" aria-label="Send"><Send className="h-4 w-4" /></button>
+        </div>
+      </form>
+      <p className="mt-1.5 text-center text-[11px] leading-snug text-[var(--text-muted)]">The Mentor is an AI and can make mistakes, so check important facts, numbers and dates before you rely on them.</p>
+    </div>
+  );
+
+  // A new chat opens like Gemini's: a greeting, the box in the middle, suggestions under it. After the first message the box docks at the bottom.
+  const centred = (
+    <div className="mentor-stage mx-auto flex h-full w-full max-w-3xl flex-col justify-center px-1">
+      <h2 className="mb-5 text-center font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl">What shall we work on?</h2>
+      {composerBlock}
+      <ul className="mx-auto mt-4 w-full max-w-xl space-y-1">
+        {STARTERS.map((st) => (
+          <li key={st.title}>
+            <button type="button" onClick={() => { if (st.mode) c.setMode(st.mode); void c.send(st.text, st.mode ?? "Ask"); }} className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface)]/70">
+              <MentorMark className="h-4 w-4 shrink-0 text-[var(--tint-peri-ink)]" /><span className="font-semibold">{st.title}</span><span className="truncate text-[var(--text-muted)]">{st.text}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+
+  const body = (
+    <div className={`flex w-full gap-3 ${wide ? "h-full" : "h-[calc(100dvh-9.5rem)] min-h-[26rem]"}`} data-fill-height="always">
+      {sideOpen && <aside aria-label="Chats" className="ai-panel hidden w-64 shrink-0 p-3 lg:block">{history}</aside>}
+      {/* Phone history drawer, portalled to <body>: the page container is transformed, which would trap a fixed drawer under the top bar. */}
       {mounted && createPortal(<AnimatePresence>
         {drawer && (
           <div className="fixed inset-0 z-[300] lg:hidden">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDrawer(false)} className="absolute inset-0 bg-black/30" />
-            <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" className="card-well absolute inset-y-0 left-0 w-[17rem] max-w-[85vw] rounded-l-none p-3" data-tint="sky">
+            <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" className="ai-panel absolute inset-y-0 left-0 w-[17rem] max-w-[85vw] rounded-l-none p-3">
               <button type="button" onClick={() => setDrawer(false)} aria-label="Close history" className="absolute right-2 top-2 cursor-pointer rounded-lg p-1.5 hover:bg-[var(--surface)]"><X className="h-4 w-4" /></button>
-              <div className="h-full pt-8">{history}</div>
+              <div className="h-full">{history}</div>
             </motion.aside>
           </div>
         )}
@@ -184,32 +353,22 @@ function ChatScreen() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
+          {!sideOpen && (
+            <span className="hidden items-center gap-2 lg:flex">
+              <span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-[var(--brand-a)] via-[var(--brand-b)] to-[var(--brand-c)] text-white"><MentorMark className="h-[18px] w-[18px]" /></span>
+              <button type="button" onClick={toggleSide} aria-label="Show chat history" title="Show history" className="btn-soft !h-10 !px-3"><PanelLeftOpen className="h-4 w-4" /></button>
+            </span>
+          )}
           {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
-          <Segmented label="Mentor voice" value={c.voice} onChange={(v: Voice) => c.setVoice(v)} options={[{ id: "Friendly", label: "Friendly" }, { id: "Strict", label: "Strict" }, { id: "Concise", label: "Concise" }]} />
-          <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>
+          {tier !== "pro" && <Link href="/pro" className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorMark className="h-4 w-4" /> Upgrade</Link>}
+          <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>
+          {c.signedIn && <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>}
         </div>
-        <div className="mb-2 max-w-full overflow-x-auto"><Segmented label="Mentor mode" value={c.mode} onChange={c.setMode} options={MODES} /></div>
 
-        <section className="card-well flex min-h-0 flex-1 flex-col p-3 sm:p-4" data-tint="lilac" aria-label="Conversation">
-          <div ref={listRef} className="custom-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto pr-1" aria-live="polite">
-            {c.msgs.length === 0 && !c.busy && (
-              <div className="mx-auto flex h-full max-w-2xl flex-col items-center justify-center text-center">
-                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[var(--surface)]"><Sparkles className="h-6 w-6 text-[var(--tint-peri-ink)]" /></span>
-                <h2 className="mt-3 font-display text-2xl font-extrabold text-[var(--text-primary)]">What shall we work on?</h2>
-                <p className="mt-1 text-sm text-[var(--text-secondary)]">Ask anything about your preparation, or start with one of these.</p>
-                <div className="mt-5 grid w-full grid-cols-1 gap-2 sm:grid-cols-2">
-                  {STARTERS.map((s) => (
-                    <button key={s.title} type="button" onClick={() => { if (s.mode) c.setMode(s.mode); void c.send(s.text, s.mode ?? "Ask"); }}
-                      className="group flex cursor-pointer items-center gap-3 rounded-2xl bg-[var(--surface)] p-3 text-left transition-transform hover:-translate-y-0.5">
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--surface-secondary)]"><s.icon className="h-4 w-4 text-[var(--text-primary)]" /></span>
-                      <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{s.title}</span><span className="block truncate text-xs text-[var(--text-muted)]">{s.text}</span></span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
+        <section className="flex min-h-0 flex-1 flex-col" aria-label="Conversation">
+          {empty && centred}
+          <div ref={listRef} hidden={empty} className="custom-scrollbar min-h-0 flex-1 space-y-4 overflow-y-auto pr-1" aria-live="polite">
             {c.msgs.map((m) => (
               <div key={m.id} className={`group/msg flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 {m.role === "user" ? (
@@ -218,7 +377,7 @@ function ChatScreen() {
                       <div className="w-full min-w-[16rem] rounded-2xl border-2 border-[var(--tint-sky-ink)] bg-[var(--surface)] p-2">
                         <textarea autoFocus rows={3} value={editing.text} onChange={(e) => setEditing({ id: m.id, text: e.target.value })} maxLength={1500} aria-label="Edit your message"
                           onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); if (editing.text.trim()) { void c.editAndResend(m.id, editing.text); setEditing(null); } } if (e.key === "Escape") setEditing(null); }}
-                          className="w-full resize-none bg-transparent px-2 py-1 text-sm text-[var(--text-primary)] outline-none" />
+                          className="field-bare w-full resize-none px-2 py-1 text-sm text-[var(--text-primary)]" />
                         <div className="flex justify-end gap-2">
                           <button type="button" onClick={() => setEditing(null)} className="pill-soft cursor-pointer text-xs">Cancel</button>
                           <button type="button" disabled={!editing.text.trim() || c.busy} onClick={() => { void c.editAndResend(m.id, editing.text); setEditing(null); }} className="pill-ink cursor-pointer text-xs disabled:opacity-50">Send</button>
@@ -231,15 +390,15 @@ function ChatScreen() {
                       <div className="flex items-center gap-0.5 text-[var(--text-muted)]">
                         <Pager m={m} onStep={c.stepVersion} />
                         <span className="flex items-center gap-0.5 lg:opacity-0 lg:transition-opacity lg:group-focus-within/msg:opacity-100 lg:group-hover/msg:opacity-100">
-                        <button type="button" onClick={() => setEditing({ id: m.id, text: m.text })} disabled={c.busy} aria-label="Edit message" title="Edit" className="cursor-pointer rounded p-1 hover:bg-[var(--surface-secondary)] disabled:opacity-40"><Pencil className="h-3.5 w-3.5" /></button>
-                        <button type="button" onClick={() => void copy(m.id, m.text)} aria-label="Copy message" title="Copy" className="cursor-pointer rounded p-1 hover:bg-[var(--surface-secondary)]">{copied === m.id ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}</button>
+                          <button type="button" onClick={() => setEditing({ id: m.id, text: m.text })} disabled={c.busy} aria-label="Edit message" title="Edit" className="cursor-pointer rounded p-1 hover:bg-[var(--surface-secondary)] disabled:opacity-40"><Pencil className="h-3.5 w-3.5" /></button>
+                          <button type="button" onClick={() => void copy(m.id, m.text)} aria-label="Copy message" title="Copy" className="cursor-pointer rounded p-1 hover:bg-[var(--surface-secondary)]">{copied === m.id ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}</button>
                         </span>
                       </div>
                     )}
                   </div>
                 ) : (
                   <div className="flex max-w-[92%] items-start gap-3 lg:max-w-[78%]">
-                    <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--surface)]"><Sparkles className="h-4 w-4 text-[var(--tint-peri-ink)]" /></span>
+                    <Spark className="mt-1 h-6 w-6 shrink-0" still />
                     <div className="min-w-0 flex-1 text-sm text-[var(--text-primary)]">
                       <div className="rounded-2xl bg-[var(--surface)] px-4 py-3">
                         <Typewriter text={clean(m.text)} active={c.typingId === m.id && !typedDone.has(m.id)} onDone={() => setTypedDone((s) => new Set(s).add(m.id))} />
@@ -266,17 +425,14 @@ function ChatScreen() {
             {c.busy && <Thinking />}
           </div>
 
-          <form className="mx-auto mt-3 flex w-full max-w-3xl items-end gap-2" onSubmit={(e) => { e.preventDefault(); submit(); }}>
-            <textarea value={input} rows={1} onChange={(e) => { setInput(e.target.value); e.currentTarget.style.height = "auto"; e.currentTarget.style.height = `${Math.min(e.currentTarget.scrollHeight, 140)}px`; }}
-              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } }} maxLength={1500} placeholder="Ask your Mentor" aria-label="Message your Mentor"
-              className="h-12 max-h-[140px] min-w-0 flex-1 resize-none rounded-2xl border-2 border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-[var(--text-primary)] outline-none focus:border-[var(--tint-sky-ink)]" />
-            <button type="submit" disabled={c.busy || !input.trim()} className="btn-main !h-12 !px-4 disabled:opacity-50" aria-label="Send"><Send className="h-4 w-4" /></button>
-          </form>
-          <p className="mx-auto mt-1 w-full max-w-3xl text-center text-[11px] text-[var(--text-muted)]">Enter to send, Shift+Enter for a new line. The Mentor can make mistakes: check important numbers.</p>
+          {!empty && composerBlock}
         </section>
       </div>
     </div>
   );
+
+  // Enlarged: the chat fills the app area under the top bar (not the browser's full screen). Portalled so the page's own padding and transform do not constrain it.
+  return wide && mounted ? createPortal(<div className="fixed inset-x-0 bottom-0 top-[72px] z-[35] overflow-hidden bg-[var(--background)] p-3 max-lg:bottom-16">{body}</div>, document.body) : body;
 }
 
 export default function MentorChatPage() {

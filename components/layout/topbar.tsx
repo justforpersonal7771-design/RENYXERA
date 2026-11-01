@@ -34,6 +34,7 @@ import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { TOOLS, TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 import { BranchChip } from "./branch-chip";
 import { TestCentreMenu } from "@/components/layout/test-centre-menu";
+import { MentorNavButton } from "@/components/layout/mentor-nav-button";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
 
 const NAV_ITEMS = [
@@ -82,6 +83,14 @@ export function Topbar() {
   const isPro = signedIn && tier === "pro";
   const isPlus = signedIn && tier === "plus";
   const [hovered, setHovered] = useState<string | null>(null);
+  // Tooltips on the main items appear only when the names are hidden (below 1280px); at full width the name is already on screen.
+  const [compactNav, setCompactNav] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1279px)");
+    const f = () => setCompactNav(mq.matches);
+    f(); mq.addEventListener("change", f);
+    return () => mq.removeEventListener("change", f);
+  }, []);
   // "Review" reopens the tab used last; read after mount so SSR and hydration agree.
   const [reviewHref, setReviewHref] = useState("/mistakes");
   useEffect(() => { setReviewHref(lastReviewHref()); }, [pathname]);
@@ -251,7 +260,7 @@ export function Topbar() {
                   onMouseEnter={() => setHovered(item.href)}
                   onFocus={() => setHovered(item.href)}
                   data-tint={NAV_TINTS[item.label]}
-                  title={item.label}
+                  title={compactNav ? item.label : undefined}
                   className={`group relative flex items-center gap-2 px-2.5 xl:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
                     isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
@@ -275,7 +284,7 @@ export function Topbar() {
                   <span className="hidden xl:inline">{item.label}</span>
                 </Link>
               );
-              return item.label === TEST_CENTRE ? <div key={item.href} className="group/tc relative">{link}<TestCentreMenu /></div> : link;
+              return item.label === TEST_CENTRE && pathname !== TEST_CENTRE_HREF ? <div key={item.href} className="group/tc relative">{link}<TestCentreMenu /></div> : link;
             })}
           </nav>
         </div>
@@ -303,6 +312,7 @@ export function Topbar() {
                    />
                 )}
              </AnimatePresence>
+             <MentorNavButton />
              <button
                 onClick={openPalette}
                 className="nav-act relative z-10 hidden md:flex items-center gap-2 p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"

@@ -12,7 +12,6 @@ import { useTargetYear } from "@/store/use-auth-store";
 import { examDateFor } from "@/lib/goals/exam-year";
 import { CalendarEvent } from "@/types/calendar.types";
 import { CompactCalendarView } from "./compact-calendar-view";
-import { MentorChatButton } from "./mentor-chat-button";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { DatePicker } from "@/components/ui/date-picker";
 import { RadialGauge } from "@/components/ui/interactive";
@@ -166,8 +165,6 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
             )}
           </div>
         </div>
-        <div className="relative flex items-center gap-2">
-        <MentorChatButton onOpen={onClose} />
         {isExpanded && (
           <button
             onClick={() => { onClose(); router.push("/calendar"); }}
@@ -191,7 +188,6 @@ export function CalendarQuickPanel({ onClose }: { onClose: () => void }) {
             </button>
           </div>
         )}
-        </div>
       </div>
 
       {isExpanded ? (

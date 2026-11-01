@@ -1,5 +1,5 @@
 // Unit checks for lib/mentor/chat-tree.ts (run: npx tsx scripts/check-chat-tree.mts)
-import { addNode, activePath, emptyChat, siblingInfo, switchSibling, removeBranch, chatFromFlat, autoTitle } from "../lib/mentor/chat-tree.ts";
+import { addNode, activePath, emptyChat, siblingInfo, switchSibling, removeBranch, chatFromFlat, autoTitle, mergeChats } from "../lib/mentor/chat-tree.ts";
 
 let fail = 0;
 const ok = (n: string, c: boolean) => { if (!c) fail++; console.log(`${c ? "PASS" : "FAIL"}  ${n}`); };
@@ -39,6 +39,20 @@ ok("root switch restores the old conversation", ids(c) === "u1,m1,u2,m2");
 ok("title is cut at 44 characters", autoTitle("x".repeat(80)).length === 44);
 const f = chatFromFlat([{ id: "a", role: "user", text: "hi" }, { id: "b", role: "model", text: "hello" }], now());
 ok("flat history migrates to one path", activePath(f).length === 2 && f.title === "hi");
+
+// two devices edit the same chat
+let d1 = emptyChat(now(), "x1");
+d1 = addNode(d1, { id: "a1", role: "user", text: "hello", parentId: null }, now());
+d1 = addNode(d1, { id: "a2", role: "model", text: "hi", parentId: "a1" }, now());
+let d2 = JSON.parse(JSON.stringify(d1));
+d1 = addNode(d1, { id: "a3", role: "user", text: "phone question", parentId: "a2" }, now());
+d2 = addNode(d2, { id: "b3", role: "user", text: "laptop question", parentId: "a2" }, now());
+d2.title = "Renamed on laptop"; d2.titled = true;
+const merged = mergeChats(d1, d2);
+ok("merge keeps messages from both devices", !!merged.nodes["a3"] && !!merged.nodes["b3"]);
+ok("merge shows both as versions of the same turn", siblingInfo(merged, "b3").count === 2);
+ok("merge keeps the newer copy's rename", merged.title === "Renamed on laptop" && merged.titled === true);
+ok("merge is the same in either order (messages)", Object.keys(mergeChats(d2, d1).nodes).sort().join() === Object.keys(merged.nodes).sort().join());
 
 console.log(fail ? `\n${fail} failed` : "\nall passed");
 process.exit(fail ? 1 : 0);

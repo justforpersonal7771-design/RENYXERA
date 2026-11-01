@@ -17,6 +17,7 @@ import { CardView, Voice, clean, useMentorChat } from "@/components/mentor/use-m
 import { MentorNote, useMentorData } from "@/components/mentor/use-mentor-data";
 import { CheckInPanel, FocusTimer, GoalsPanel, NoticedPanel, RoadmapPanel } from "@/components/mentor/mentor-extras";
 import { AiPracticePanel } from "@/components/mentor/ai-practice";
+import { CoachInsights } from "@/components/analytics/coach-insights";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
 
@@ -188,10 +189,12 @@ export default function AIMentorPage() {
                 </li>
               ))}
             </ul>
-            <Link href="/analytics/coach" className="pill-soft mt-3 inline-flex">See the full picture</Link>
+            <Link href="/analytics" className="pill-soft mt-3 inline-flex">Open your analytics</Link>
           </section>
         </div>
       </div>
+      {/* Study plan suggestions (moved here from the old Coach insights screen): opt-in, nothing reaches the calendar without a click. */}
+      <CoachInsights show={["planner"]} />
     </div>
   );
 }

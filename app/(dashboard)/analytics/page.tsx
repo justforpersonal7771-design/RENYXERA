@@ -20,6 +20,7 @@ import { LearningEngine, PersonalizedIntelligence } from "@/lib/learning/Learnin
 import { AnimatePresence, motion } from "motion/react";
 import { Reveal } from "@/components/ui/reveal";
 import { MockAnalytics } from "@/components/analytics/mock-analytics";
+import { CoachInsights } from "@/components/analytics/coach-insights";
 import { TopicLadders } from "@/components/analytics/topic-ladders";
 import { GuestLock } from "@/components/auth/guest-lock";
 import { PaidScreen, TierGate } from "@/components/billing/tier-gate";
@@ -193,7 +194,6 @@ export default function AnalyticsDashboardPage() {
           <p className="mt-2 text-sm text-[var(--text-secondary)] font-medium">
             Hover, click and filter anything below. Click a subject bar to narrow the topic explorer to it.
           </p>
-          <a href="/analytics/coach" className="pill-soft mt-3 inline-flex">Readiness, mastery, mistake patterns and learning timeline</a>
         </motion.div>
 
         {/* 1. HUD gauges */}
@@ -504,6 +504,9 @@ export default function AnalyticsDashboardPage() {
             )}
           </div>
         </motion.div>
+
+        {/* Moved here from the old Coach insights screen (Plus and Pro) */}
+        <CoachInsights show={["export", "health", "graph", "patterns", "timeline", "shortcuts", "notes"]} />
 
         {/* Pro analytics — one combined upgrade for Plus members, at the end of the page */}
         <section className="space-y-4">

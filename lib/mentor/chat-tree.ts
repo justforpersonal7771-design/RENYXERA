@@ -16,8 +16,10 @@ export interface Chat {
   pick: Record<string, string>;
   /** User-set title: stops the automatic title from the first message. */
   titled?: boolean;
+  /** Name of the group (folder) this chat is filed under, if any. */
+  group?: string;
 }
-export interface ChatMeta { id: string; title: string; createdAt: string; updatedAt: string; pinned?: boolean }
+export interface ChatMeta { id: string; title: string; createdAt: string; updatedAt: string; pinned?: boolean; group?: string; /** Start of the conversation, lower-cased, so the history search can look inside chats. */ snippet?: string }
 
 const ROOT = "__root__";
 export const newId = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4);
@@ -96,7 +98,8 @@ export function removeBranch(chat: Chat, id: string, now: string): Chat {
   return { ...next, leafId: leaf };
 }
 
-export const metaOf = (c: Chat, pinned?: boolean): ChatMeta => ({ id: c.id, title: c.title, createdAt: c.createdAt, updatedAt: c.updatedAt, pinned });
+export const snippetOf = (c: Chat): string => Object.values(c.nodes).sort((x, y) => x.at.localeCompare(y.at)).slice(0, 8).map((n) => n.text).join(" ").replace(/\s+/g, " ").toLowerCase().slice(0, 600);
+export const metaOf = (c: Chat, pinned?: boolean): ChatMeta => ({ id: c.id, title: c.title, createdAt: c.createdAt, updatedAt: c.updatedAt, pinned, group: c.group, snippet: snippetOf(c) });
 
 /** Build a one-branch chat from an old flat message list (the previous single-thread format). */
 export function chatFromFlat(msgs: { id?: string; role: "user" | "model"; text: string }[], now: string): Chat {
@@ -110,4 +113,21 @@ export function chatFromFlat(msgs: { id?: string; role: "user" | "model"; text: 
   const firstUser = msgs.find((m) => m.role === "user");
   chat.title = firstUser ? autoTitle(firstUser.text) : "Earlier conversation";
   return chat;
+}
+
+/** Combine two copies of the same chat (edited on two devices): keep every message from both, the newer copy's title and open branch. */
+export function mergeChats(a: Chat, b: Chat): Chat {
+  const [older, newer] = a.updatedAt <= b.updatedAt ? [a, b] : [b, a];
+  const nodes: Record<string, TreeMsg> = { ...older.nodes };
+  for (const [id, n] of Object.entries(newer.nodes)) {
+    const o = nodes[id];
+    nodes[id] = o ? { ...n, liked: o.liked || n.liked || undefined, flagged: o.flagged || n.flagged || undefined } : n;
+  }
+  const leafId = newer.leafId && nodes[newer.leafId] ? newer.leafId : older.leafId && nodes[older.leafId] ? older.leafId : null;
+  const useOlderTitle = !newer.titled && !!older.titled;
+  return {
+    id: newer.id, createdAt: older.createdAt < newer.createdAt ? older.createdAt : newer.createdAt, updatedAt: newer.updatedAt,
+    title: useOlderTitle ? older.title : newer.title, titled: newer.titled || older.titled, group: newer.group,
+    nodes, leafId, pick: { ...older.pick, ...newer.pick },
+  };
 }

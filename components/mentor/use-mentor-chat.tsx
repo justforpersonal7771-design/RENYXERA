@@ -8,6 +8,9 @@ import { useCalendarStore } from "@/store/use-calendar-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { toLocalDateStr } from "@/lib/utils";
 import { MentorCard, MentorReply, PlanItem, parseReply, unverifiedNumbers } from "@/lib/mentor/brief";
+import { recordLocalChange, syncNow } from "@/lib/sync/sync-engine";
+import { useAuthStore } from "@/store/use-auth-store";
+import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { Chat, ChatMeta, TreeMsg, activePath, addNode, chatFromFlat, emptyChat, metaOf, removeBranch, siblingInfo, switchSibling } from "@/lib/mentor/chat-tree";
 
 export type Mode = "Ask" | "Socratic" | "Quiz" | "Plan" | "Review" | "Weekly";
@@ -19,6 +22,7 @@ export const MODES: { id: Mode; label: string }[] = [{ id: "Ask", label: "Ask" }
 export const HEAVY: Mode[] = ["Plan", "Review", "Weekly", "Quiz", "Socratic"];
 export const clean = (t: string) => t.replace(/\\\(|\\\)|\\\[|\\\]/g, "");
 const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-3);
+const HISTORY_TURNS = 6, HISTORY_CHARS = 1200, GUEST_FREE_ANSWERS = 2;
 const INDEX_KEY = "mentor_chats", ACTIVE_KEY = "mentor_active_chat", MAX_CHATS = 60;
 const chatKey = (id: string) => `mentor_chat_${id}`;
 const EVENT_TYPE = (s?: string) => (s === "Revision" ? "Revision" : s === "Mistakes" ? "Mistakes Review" : s === "Mock Test" ? "Mock Test" : "Study");
@@ -26,6 +30,18 @@ const EVENT_TYPE = (s?: string) => (s === "Revision" ? "Revision" : s === "Mista
 export function useMentorChat(brief: string) {
   const { addEvent } = useCalendarStore();
   const toast = useToastStore((s) => s.show);
+  // Guests chat in a temporary chat that is never saved; signing in saves it (and syncs it).
+  const signedIn = !!useAuthStore((st) => st.user);
+  const signedInRef = useRef(false);
+  signedInRef.current = signedIn;
+  // A guest gets two free answers per device (kept in localStorage so a refresh cannot reset it), in one temporary chat; then sign-in.
+  const [guestUsed, setGuestUsed] = useState(0);
+  const guestUsedRef = useRef(0);
+  useEffect(() => { try { const n = Number(localStorage.getItem("mentor_guest_answers") ?? 0) || 0; guestUsedRef.current = n; setGuestUsed(n); } catch { /* private mode */ } }, []);
+  const bumpGuest = () => { const n = guestUsedRef.current + 1; guestUsedRef.current = n; setGuestUsed(n); try { localStorage.setItem("mentor_guest_answers", String(n)); } catch { /* private mode */ } };
+  const guestLocked = !signedIn && guestUsed >= GUEST_FREE_ANSWERS;
+  const blocked = () => { if (!signedInRef.current && guestUsedRef.current >= GUEST_FREE_ANSWERS) { useAuthModalStore.getState().open("signup"); return true; } return false; };
+  const persist = useCallback((k: string, v: unknown) => { if (signedInRef.current) void IDBManager.saveAIMemory(k, v); }, []);
   const [index, setIndex] = useState<ChatMeta[]>([]);
   const [chat, setChat] = useState<Chat | null>(null);
   const chatRef = useRef<Chat | null>(null);
@@ -33,6 +49,8 @@ export function useMentorChat(brief: string) {
   const [mode, setMode] = useState<Mode>("Ask");
   const [voice, setVoice] = useState<Voice>("Friendly");
   const [busy, setBusy] = useState(false);
+  const busyRef = useRef(false);
+  useEffect(() => { busyRef.current = busy; }, [busy]);
   const [loaded, setLoaded] = useState(false);
   const [typingId, setTypingId] = useState<string | null>(null);
   const [added, setAdded] = useState<Set<string>>(new Set());
@@ -40,7 +58,9 @@ export function useMentorChat(brief: string) {
   const setActive = useCallback((c: Chat | null) => { chatRef.current = c; setChat(c); }, []);
   const setIdx = useCallback((i: ChatMeta[]) => { indexRef.current = i; setIndex(i); void IDBManager.saveAIMemory(INDEX_KEY, i); }, []);
   const saveChat = useCallback((c: Chat) => {
+    if (!signedInRef.current) return; // temporary chat
     void IDBManager.saveAIMemory(chatKey(c.id), c);
+    recordLocalChange("mentor_chat", c.id, true); // uploads the chat when signed in (read back from storage at upload time)
     const meta = metaOf(c, indexRef.current.find((m) => m.id === c.id)?.pinned);
     const rest = indexRef.current.filter((m) => m.id !== c.id);
     let next = [meta, ...rest].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
@@ -50,6 +70,7 @@ export function useMentorChat(brief: string) {
 
   // Load the chat list and the open chat; the older single thread becomes the first chat.
   useEffect(() => { (async () => {
+    if (!signedIn) { setLoaded(true); return; }
     let list: ChatMeta[] = Array.isArray(await IDBManager.getAIMemory(INDEX_KEY)) ? await IDBManager.getAIMemory(INDEX_KEY) : [];
     const old = await IDBManager.getAIMemory("mentor_thread");
     if (!list.length && Array.isArray(old) && old.length) {
@@ -62,11 +83,33 @@ export function useMentorChat(brief: string) {
     indexRef.current = list; setIndex(list);
     const activeId = (await IDBManager.getAIMemory(ACTIVE_KEY)) as string | undefined;
     const pick = list.find((m) => m.id === activeId) ?? list[0];
-    if (pick) { const c = (await IDBManager.getAIMemory(chatKey(pick.id))) as Chat | undefined; if (c?.nodes) setActive(c); }
+    if (pick && !chatRef.current) { const c = (await IDBManager.getAIMemory(chatKey(pick.id))) as Chat | undefined; if (c?.nodes) setActive(c); }
     const p = await IDBManager.getAIMemory("mentor_prefs"); if (p?.voice) setVoice(p.voice);
     setLoaded(true);
-  })(); }, [setActive]);
-  useEffect(() => { if (loaded) void IDBManager.saveAIMemory("mentor_prefs", { voice }); }, [voice, loaded]);
+  })(); }, [setActive, signedIn]);
+  // A guest who signs in keeps the temporary chat: it is saved to their history now.
+  useEffect(() => { const c = chatRef.current; if (signedIn && c && Object.keys(c.nodes).length) saveChat(c); }, [signedIn, saveChat]);
+  useEffect(() => { if (loaded) persist("mentor_prefs", { voice }); }, [voice, loaded, persist]);
+  // Another device changed a chat: refresh the list and the open chat (not while an answer is on its way).
+  useEffect(() => {
+    const onSynced = async () => {
+      if (busyRef.current) return;
+      const list = await IDBManager.getAIMemory(INDEX_KEY);
+      if (Array.isArray(list)) { indexRef.current = list; setIndex(list); }
+      const open = chatRef.current;
+      if (open) {
+        const fresh = (await IDBManager.getAIMemory(chatKey(open.id))) as Chat | undefined;
+        if (!fresh?.nodes) { setActive(null); return; }
+        if (fresh.updatedAt > open.updatedAt) setActive(fresh);
+      }
+    };
+    window.addEventListener("renyxera:synced", onSynced);
+    // Automatic, no button: while a chat screen is open, check for other devices' changes every 20 seconds and when the window regains focus (the app-wide check is every 5 minutes).
+    const poll = () => { if (!document.hidden) void syncNow(); };
+    const timer = setInterval(poll, 20_000);
+    window.addEventListener("focus", poll);
+    return () => { window.removeEventListener("renyxera:synced", onSynced); clearInterval(timer); window.removeEventListener("focus", poll); };
+  }, [setActive]);
 
   /** Apply a change to the open chat (or to a chat that is no longer open, when an answer arrives late) and save it. */
   const commit = useCallback(async (chatId: string, fn: (c: Chat) => Chat) => {
@@ -81,13 +124,15 @@ export function useMentorChat(brief: string) {
     const c = chatRef.current?.id === chatId ? chatRef.current : ((await IDBManager.getAIMemory(chatKey(chatId))) as Chat | undefined);
     const u = c?.nodes[userId]; if (!c || !u) return;
     const before: TreeMsg[] = []; for (let id = u.parentId; id && c.nodes[id]; id = c.nodes[id].parentId) before.unshift(c.nodes[id]);
-    const history = before.slice(-10).map((x) => ({ role: x.role, text: x.text.slice(0, 2500) }));
+    // Each call re-sends the recent conversation, which is what makes long chats cost more: keep it to the last 6 messages, 1,200 characters each.
+    const history = before.slice(-HISTORY_TURNS).map((x) => ({ role: x.role, text: x.text.slice(0, HISTORY_CHARS) }));
     setBusy(true);
     try {
       const res = await AIClient.request<unknown>(`mentor_${Date.now()}`, "MENTOR_CHAT", { mode: m, personality: v, brief, history, nextMessage: u.text }, { bypassCache: true });
       if (!res.success) throw new Error((res as { error?: string }).error || "The Mentor could not answer.");
       const r: MentorReply = parseReply(res.data);
       const warn = unverifiedNumbers(r.reply, brief, u.text, ...history.map((h) => h.text));
+      if (!signedInRef.current) bumpGuest();
       const id = uid(); setTypingId(id);
       await commit(chatId, (cur) => addNode(cur, { id, role: "model", text: r.reply || "I did not get a usable answer. Try asking in a different way.", cards: r.cards, followUps: r.followUps, warn: warn.length ? warn : undefined, parentId: userId }, new Date().toISOString()));
     } catch (e) {
@@ -95,16 +140,16 @@ export function useMentorChat(brief: string) {
     } finally { setBusy(false); }
   }, [brief, commit]);
 
-  const newChat = useCallback(() => { setActive(null); void IDBManager.saveAIMemory(ACTIVE_KEY, ""); setTypingId(null); }, [setActive]);
+  const newChat = useCallback(() => { if (!signedInRef.current && chatRef.current) { useAuthModalStore.getState().open("signup"); return; } setActive(null); persist(ACTIVE_KEY, ""); setTypingId(null); }, [setActive, persist]);
   const openChat = useCallback(async (id: string) => {
     const c = (await IDBManager.getAIMemory(chatKey(id))) as Chat | undefined;
-    if (c?.nodes) { setActive(c); setTypingId(null); void IDBManager.saveAIMemory(ACTIVE_KEY, id); }
+    if (c?.nodes) { setActive(c); setTypingId(null); persist(ACTIVE_KEY, id); }
   }, [setActive]);
 
   const send = useCallback(async (text: string, m: Mode = mode, v: Voice = voice) => {
-    const msg = text.trim(); if (!msg || busy) return;
+    const msg = text.trim(); if (!msg || busy || blocked()) return;
     let c = chatRef.current;
-    if (!c) { c = emptyChat(new Date().toISOString()); setActive(c); void IDBManager.saveAIMemory(ACTIVE_KEY, c.id); }
+    if (!c) { c = emptyChat(new Date().toISOString()); setActive(c); persist(ACTIVE_KEY, c.id); }
     const userId = uid();
     const next = addNode(c, { id: userId, role: "user", text: msg, parentId: c.leafId }, new Date().toISOString());
     setActive(next); saveChat(next);
@@ -113,7 +158,7 @@ export function useMentorChat(brief: string) {
 
   /** Edit an earlier message: the new text becomes a second version of that message and the Mentor answers it again; the old version stays one tap away. */
   const editAndResend = useCallback(async (id: string, text: string) => {
-    const c = chatRef.current; const msg = text.trim(); if (!c || !c.nodes[id] || !msg || busy) return;
+    const c = chatRef.current; const msg = text.trim(); if (!c || !c.nodes[id] || !msg || busy || blocked()) return;
     const userId = uid();
     const next = addNode(c, { id: userId, role: "user", text: msg, parentId: c.nodes[id].parentId }, new Date().toISOString());
     setActive(next); saveChat(next);
@@ -122,7 +167,7 @@ export function useMentorChat(brief: string) {
 
   /** Ask again for the same message: the new answer is another version of the reply. */
   const regenerate = useCallback(async (id: string) => {
-    const c = chatRef.current; const n = c?.nodes[id]; if (!c || !n || !n.parentId || busy) return;
+    const c = chatRef.current; const n = c?.nodes[id]; if (!c || !n || !n.parentId || busy || blocked()) return;
     const next = { ...c, leafId: n.parentId };
     setActive(next);
     await answer(c.id, n.parentId, mode, voice);
@@ -137,9 +182,15 @@ export function useMentorChat(brief: string) {
     const t = title.replace(/\s+/g, " ").trim().slice(0, 80); if (!t) return;
     await commit(id, (c) => ({ ...c, title: t, titled: true }));
   }, [commit]);
+  /** File a chat under a group (or take it out of its group with an empty name). */
+  const setChatGroup = useCallback(async (id: string, group: string) => {
+    const g = group.replace(/\s+/g, " ").trim().slice(0, 40);
+    await commit(id, (c) => ({ ...c, group: g || undefined, updatedAt: new Date().toISOString() }));
+  }, [commit]);
   const pinChat = useCallback((id: string) => { setIdx(indexRef.current.map((m) => (m.id === id ? { ...m, pinned: !m.pinned } : m))); }, [setIdx]);
   const deleteChat = useCallback(async (id: string) => {
     await IDBManager.deleteAIMemory(chatKey(id));
+    recordLocalChange("mentor_chat", id, null); // tells the other devices
     setIdx(indexRef.current.filter((m) => m.id !== id));
     if (chatRef.current?.id === id) { const nextId = indexRef.current[0]?.id; if (nextId) await openChat(nextId); else newChat(); }
   }, [setIdx, openChat, newChat]);
@@ -167,8 +218,8 @@ export function useMentorChat(brief: string) {
     return { ...(n as unknown as Msg), sib: s.count > 1 ? { index: s.index, count: s.count } : undefined };
   }) : []), [chat]);
 
-  return { msgs, chats: index, activeId: chat?.id ?? null, title: chat?.title ?? "New chat", typingId, mode, setMode, voice, setVoice, busy, loaded, added,
-    send, editAndResend, regenerate, stepVersion, newChat, openChat, renameChat, pinChat, deleteChat, deleteMessageBranch, addPlanItem, mark, clear };
+  return { signedIn, guestLocked, msgs, chats: index, activeId: chat?.id ?? null, title: chat?.title ?? "New chat", typingId, mode, setMode, voice, setVoice, busy, loaded, added,
+    send, editAndResend, setChatGroup, regenerate, stepVersion, newChat, openChat, renameChat, pinChat, deleteChat, deleteMessageBranch, addPlanItem, mark, clear };
 }
 
 export function CardView({ c, added, onAdd, idKey, go }: { c: MentorCard; added: Set<string>; onAdd: (it: PlanItem, key: string) => void; idKey: string; go: (h: string) => void }) {

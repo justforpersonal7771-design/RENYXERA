@@ -66,8 +66,10 @@ export default function ExamSetupPage() {
   // On a statically built page the query string only arrives after hydration, so apply the deep links (/forge, Flashcards door) here too.
   const deepSource = searchParams.get("source"), deepView = searchParams.get("view");
   useEffect(() => {
+    // Runs whenever the link changes (the menu and the hub navigate within this same screen), so Flashcards and Build a test always switch the view.
     if (deepSource === "forge") setSetupView("questions");
     else if (deepView === "flashcards") setSetupView("flash");
+    else setSetupView("build");
   }, [deepSource, deepView]);
 
   const [availablePapers, setAvailablePapers] = useState<string[]>([]);
@@ -84,7 +86,11 @@ export default function ExamSetupPage() {
   const [questionCount, setQuestionCount] = useState<number>(10);
   const [maxAvailable, setMaxAvailable] = useState<number>(0);
   const [sourceType, setSourceType] = useState<"standard" | "ai_generated">("standard");
-  useEffect(() => { if (deepSource === "spark") setSourceType("ai_generated"); }, [deepSource]);
+  useEffect(() => {
+    if (deepSource === "spark") setSourceType("ai_generated");
+    else if (deepSource === "pyq" || deepSource === "mix") { setSourceType("standard"); setSourceMix({ ...sourceMix, mode: deepSource }); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deepSource]);
   const [deploying, setDeploying] = useState(false);
 
   // Live stats for the selected Official Year Paper — the Volume field only shows for

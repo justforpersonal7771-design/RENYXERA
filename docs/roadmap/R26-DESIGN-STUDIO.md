@@ -60,7 +60,7 @@ Names are working titles. Each Look is a full design with its own cards, backgro
 
 Extra Pro candidates waiting in the wings (not in the first release): Memphis Pop, Vaporwave Sunset, Y2K Chrome, Hand-drawn Notebook, Dimensional Paper-stack, Nature Distilled (earthy, organic).
 
-**Try before you buy ("tease, don't block"):** any Free or Plus student can **try any paid Look for 5 minutes, once per Look**, across the whole app (a small countdown chip with "Keep it" and "Switch back"), after which the app returns to their own Look. The picker always shows a live preview of the real design on a mini-screen, so nothing is hidden. Plus Looks are also included in Pro.
+**Try before you buy ("tease, don't block"):** a student can **try a paid Look for 5 minutes, once per Look**, across the whole app (a small countdown chip with "Keep it" and "Switch back"), after which the app returns to their own Look. **Trials are capped per tier:** at most **2 Looks from each paid tier** can be tried per account (a Free student can try 2 Plus Looks and 2 Pro Looks; a Plus subscriber can try 2 Pro Looks). A tried Look cannot be tried again, even after the cap resets by upgrading. The count is stored on the server (not only on the device) so clearing the browser does not reset it. The picker always shows a live preview of the real design on a mini-screen, so nothing is hidden. Plus Looks are also included in Pro.
 
 ## 4. The Design Studio (where parts and fonts are chosen)
 A separate section in Profile, "Design Studio", with a live preview pane (a real mini dashboard drawn with the chosen parts) beside the controls.
@@ -110,7 +110,7 @@ The Arena has its own **Arena style** setting in the Studio and in the room's se
 ## 9. Open choices for the owner
 1. Tier lines: are Minimal Mono, Midnight, Ocean Bento and Sunrise Soft right for Plus, and the ten right for Pro? (Easy to move later.)
 2. Free has two Looks (Classic, Paper) plus the High-contrast switch. Add Midnight to Free so night-time students never need a paid plan?
-3. My looks limits (1, 5, unlimited) and the "try for 5 minutes, once per Look" rule: accept or change?
+3. My looks limits (1, 5, unlimited) and the trial rule ("5 minutes, once per Look, 2 Looks per paid tier"): is that how you meant the cap of 2?
 4. Price effect: show the Pro Looks as one of the reasons to upgrade on the Plans page? (Recommendation: yes, as a small "Looks and Studio" row, never the main reason.)
 
 ## 10. Sources and style map

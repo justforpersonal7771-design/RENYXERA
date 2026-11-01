@@ -20,7 +20,7 @@ import { getCurrentBranch } from "@/lib/branch/current";
  *     newest wins for the rest; session (finished test) → never overwritten once present.
  *   Tombstones delete locally.
  */
-export type SyncKind = "bookmark" | "mistake" | "session";
+export type SyncKind = "bookmark" | "mistake" | "session" | "mentor_chat";
 type QueueItem = { kind: SyncKind; key: string; data: unknown | null; deleted: boolean; at: string; ref?: boolean };
 export type SyncState = "off" | "idle" | "pending" | "syncing" | "synced" | "offline" | "failed";
 
@@ -44,6 +44,7 @@ const pullKey = () => `renyxera_sync_pulled__${userId}${brSuffix()}`;
 /** Which branch a synced record belongs to: bookmarks/mistakes by their question id; a
  *  finished test by the questions inside it. Unknown -> CSE (everything before Release 8). */
 function rowBranch(kind: SyncKind, key: string, data: any): string {
+  if (kind === "mentor_chat") return getCurrentBranch(); // chats are not tied to a branch
   if (kind !== "session") return SHARED.has(key) ? getCurrentBranch() : branchOfQuestionId(key) ?? "CSE";
   const ids: string[] = [...Object.keys(data?.responses ?? {}), ...(data?.draftConfig?.questionIds ?? [])];
   for (const id of ids) { if (SHARED.has(String(id))) continue; const b = branchOfQuestionId(String(id)); if (b) return b; }
@@ -63,7 +64,7 @@ export function recordLocalChange(kind: SyncKind, key: string, data: unknown | n
   const q = readQ();
   // Finished tests are big: queue a reference and read them from IndexedDB at upload time
   // (localStorage only holds a few MB).
-  const ref = kind === "session" && data !== null;
+  const ref = (kind === "session" || kind === "mentor_chat") && data !== null;
   q[`${kind}:${key}`] = { kind, key, data: ref ? null : data, deleted: data === null, at: new Date().toISOString(), ref };
   writeQ(q);
   useSyncStatus.setState({ state: "pending" });
@@ -90,16 +91,40 @@ async function flush() {
     const batch = items.slice(i, i + 50);
     const rows = [];
     for (const it of batch) {
-      const data = it.deleted ? null : it.ref ? (await IDBManager.loadExamSession(it.key)) ?? null : it.data;
+      const data = it.deleted ? null : it.ref ? (it.kind === "mentor_chat" ? (await IDBManager.getAIMemory(`mentor_chat_${it.key}`)) ?? null : (await IDBManager.loadExamSession(it.key)) ?? null) : it.data;
+      if (data && it.kind === "mentor_chat" && JSON.stringify(data).length > 240000) continue; // too large for one row: stays on this device
       if (!it.deleted && data === null) continue; // gone locally since queued
       rows.push({ user_id: userId, kind: it.kind, key: it.key, data, deleted: it.deleted, client_updated_at: it.at });
     }
-    const { error } = rows.length ? await sb.from("user_records").upsert(rows, { onConflict: "user_id,kind,key" }) : { error: null };
+    const others = rows.filter((r) => r.kind !== "mentor_chat"), chats = rows.filter((r) => r.kind === "mentor_chat");
+    const { error } = others.length ? await sb.from("user_records").upsert(others, { onConflict: "user_id,kind,key" }) : { error: null };
     if (error) throw error;
+    // Chats upload on their own: if the database does not accept them yet (migration 0045 not applied), they wait in the queue and never block bookmarks, mistakes or tests.
+    const chatsOk = !chats.length || !(await sb.from("user_records").upsert(chats, { onConflict: "user_id,kind,key" })).error;
     const now = readQ();
-    for (const it of batch) { const k = `${it.kind}:${it.key}`; if (now[k]?.at === it.at) delete now[k]; }
+    for (const it of batch) { if (it.kind === "mentor_chat" && !chatsOk) continue; const k = `${it.kind}:${it.key}`; if (now[k]?.at === it.at) delete now[k]; }
     writeQ(now);
   }
+}
+
+/** Apply a chat pulled from another device: merge it into the local copy (or remove it when it was deleted there) and keep the chat list in step. */
+async function applyChatRow(id: string, data: unknown, deleted: boolean) {
+  const { IDBManager } = await import("@/lib/repository/storage/idb-manager");
+  const { mergeChats, metaOf } = await import("@/lib/mentor/chat-tree");
+  const list: { id: string; updatedAt: string; pinned?: boolean }[] = (await IDBManager.getAIMemory("mentor_chats")) ?? [];
+  if (deleted) {
+    await IDBManager.deleteAIMemory(`mentor_chat_${id}`);
+    await IDBManager.saveAIMemory("mentor_chats", list.filter((m) => m.id !== id));
+    return;
+  }
+  const incoming = data as import("@/lib/mentor/chat-tree").Chat;
+  if (!incoming?.nodes) return;
+  const local = (await IDBManager.getAIMemory(`mentor_chat_${id}`)) as import("@/lib/mentor/chat-tree").Chat | undefined;
+  const merged = local?.nodes ? mergeChats(local, incoming) : incoming;
+  await IDBManager.saveAIMemory(`mentor_chat_${id}`, merged);
+  const pinned = list.find((m) => m.id === id)?.pinned;
+  const next = [metaOf(merged, pinned), ...list.filter((m) => m.id !== id)].sort((x, y) => y.updatedAt.localeCompare(x.updatedAt));
+  await IDBManager.saveAIMemory("mentor_chats", next);
 }
 
 async function pull() {
@@ -130,6 +155,8 @@ async function pull() {
             reviewCount: Math.max(local.reviewCount ?? 0, row.data.reviewCount ?? 0),
             mastered: !!(local.mastered || row.data.mastered),
           } : row.data);
+        } else if (row.kind === "mentor_chat") {
+          await applyChatRow(row.key, row.data, row.deleted);
         } else if (row.kind === "session") {
           if (row.deleted) { await IDBManager.deleteExamSession(row.key); continue; }
           if (!(await IDBManager.loadExamSession(row.key))) await IDBManager.saveExamSession(row.data);
@@ -174,6 +201,8 @@ async function seedExisting() {
   for (const b of bm) recordLocalChange("bookmark", b.questionId, b);
   for (const m of mi) recordLocalChange("mistake", m.questionId, m);
   for (const s of ss) recordLocalChange("session", s.id, s);
+  const chats: { id: string }[] = (await IDBManager.getAIMemory("mentor_chats")) ?? [];
+  for (const c of chats) recordLocalChange("mentor_chat", c.id, true);
   localStorage.setItem(seedKey(), new Date().toISOString());
 }
 
