@@ -15,7 +15,14 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] Tools hub overflow (38 px): marketing layout min-height reduced; verify after build 21.
 - [ ] Still scrolling (audit): Checkpoint (200–730 px), Mocks (620–770), Battles (120–260), then Tutor/Study/Calendar/Mentor/Plans. Next turn.
 - [ ] Results screen single-screen + dark soft edges: built, not yet visually verified.
-- [ ] Commit/push batch (0044 file, check:rpc, manifest + icons, R24 plan, results, dark edges, Test Centre bar).
+- [x] Commit/push batch (0044 file, check:rpc, manifest + icons, R24 plan, results, dark edges, Test Centre bar) — pushed 31 Oct (55fd871). Tools hub verified 0 px; Test Centre hub shortened again (unverified).
+- [x] R25 UX/visual design spec written (`R25-ARENA-UX-DESIGN.md`: hint ladder, pick cards, power cards, reveal choreography, wireframes) and app-wide `docs/FEATURE-IDEAS.md` (living). **ON HOLD by owner (31 Oct): research and documentation only, no building yet.** When released: static design sandbox page for approval, then backend.
+- [ ] **R25 Battle Arena** (live rooms, rotating Setter, speed + order scoring): design doc written `docs/roadmap/R25-BATTLE-ARENA.md` (living, idea log at the bottom). Build steps A–D next, then Telegram/share, Free taster.
+
+- [x] 1 Nov: skills installed in `~/.claude/skills` (load at next session start): taste-skill, hallmark, interface-design (+ ui-ux-pro-max earlier). **Not found by name, need links from owner:** Stitch Skills, Scroll World, Frontend Slides, Diagram Design, Website Cloner, Archify.
+- [x] 1 Nov bugs (build 22, unpushed until verified): Test Centre section bar replaced by a dropdown under the top-bar Test Centre item (all doors + GATE PYQs/Forge/Spark/Blend), phones keep a slim row; `/challenge` opens `/battles`; Test Centre hub re-laid (4 mini stat cards top right, All-India mock card beside Practice); Practice screen reorganised (one big "Revise mistakes" + checkpoint + 3 small); leaderboard no longer dims/blurs the page, crisp HD crowns (gold rank 1, silver rank 2, no blur filter); Daily check-in rewritten (loads what is saved, log with edit/delete, pick date and time); Mentor chat button (animated) in calendar and to-do panels, opens chat without "back to Mentor".
+- [ ] **(me) Move "full picture" content out of `/analytics/coach` (1000-line old Mentor screen)** into dashboard / analytics / AI Mentor, then delete the route. Own task, needs a plan of which block goes where.
+- [ ] **(me) Theme system + design-style themes**: keep the current look as "Classic pastel", add a theme picker (profile + quick toggle) with 8-10 styles; refactor with the installed skills. Plan first (token map per theme), then build.
 
 ## 0. Now — next steps in order (26 Oct)
 

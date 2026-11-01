@@ -1055,7 +1055,7 @@ html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; 
   filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.55));
 }
 .pro-crown { position: absolute; top: -17px; right: -12px; width: 26px; height: 20px; transform: rotate(16deg); z-index: 2; }
-.pro-crown-svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 1px 0.5px rgba(120, 53, 15, 0.55)); }
+.pro-crown-svg { width: 100%; height: 100%; overflow: visible; shape-rendering: geometricPrecision; }
 .pro-crown-glint { animation: pro-crown-glint 3.4s ease-in-out infinite; }
 .pro-spark { position: absolute; right: -5px; top: -4px; width: 7px; height: 7px; opacity: 0; animation: pro-spark 3.4s ease-in-out infinite 1.2s; }
 .pro-spark::before, .pro-spark::after { content: ""; position: absolute; left: 50%; top: 50%; background: #fff7c2; border-radius: 1px; transform: translate(-50%, -50%); }
@@ -1091,7 +1091,7 @@ html.has-pseudo-fullscreen, html.has-pseudo-fullscreen body { overflow: hidden; 
 .pro-crown.is-hero { top: -20px; right: -16px; width: 36px; height: 27px; transform: rotate(16deg); }
 .hero-avatar.tier-pro > .hero-avatar-ring { background: conic-gradient(from var(--ang), #fde68a, #f59e0b, #fff7c2, #d97706, #fbbf24, #fde68a) !important; opacity: 1 !important; }
 .hero-avatar.tier-plus > .hero-avatar-ring { background: conic-gradient(from var(--ang), #f9fafb, #9ca3af, #ffffff, #6b7280, #d1d5db, #f9fafb) !important; opacity: 1 !important; }
-.pro-crown.is-silver .pro-crown-svg { filter: drop-shadow(0 1px 0.5px rgba(55, 65, 81, 0.55)); }
+.pro-crown.is-silver .pro-crown-svg { shape-rendering: geometricPrecision; }
 @media (prefers-reduced-motion: reduce) {
   .avatar-fx.is-pro .avatar-ring, .pro-crown-glint, .pro-spark,  .pro-badge::after, .avatar-fx.is-plus .avatar-ring { animation: none; }
 }

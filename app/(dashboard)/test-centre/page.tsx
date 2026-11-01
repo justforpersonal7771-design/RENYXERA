@@ -65,19 +65,17 @@ export default function TestCentrePage() {
           </ol>
           <Link href={steps[Math.max(current, 0)].href} className="btn-main mt-4"><Play className="h-4 w-4" /> Start step {steps[Math.max(current, 0)].n}</Link>
         </section>
-        <div className="min-w-0 [&>*]:h-full"><MockStatusCard /></div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        {[
-          { v: open, l: "mistakes waiting", t: "rose" }, { v: taken, l: "tests taken", t: "peri" },
-          { v: lastPct, suffix: "%", l: "last test score", t: "butter" }, { v: attempts ? attempts.filter((a) => a.kind === "mock").length : 0, l: "mocks taken", t: "sky" },
-        ].map((s: { v: number | null; suffix?: string; l: string; t: string }) => (
-          <div key={s.l} data-tint={s.t} className="card-pastel p-3 sm:p-4">
-            <p className={`font-display text-3xl font-extrabold tabular-nums sm:text-4xl ${ink}`}>{s.v == null ? "-" : <><CountUp value={s.v} />{s.suffix}</>}</p>
-            <p className="mt-1 text-xs font-bold text-[var(--text-secondary)] sm:text-sm">{s.l}</p>
-          </div>
-        ))}
+        <div className="grid min-w-0 grid-cols-2 gap-2 sm:gap-3" aria-label="Your numbers">
+          {[
+            { v: open, l: "mistakes waiting", t: "rose" }, { v: taken, l: "tests taken", t: "peri" },
+            { v: lastPct, suffix: "%", l: "last test score", t: "butter" }, { v: attempts ? attempts.filter((a) => a.kind === "mock").length : 0, l: "mocks taken", t: "sky" },
+          ].map((s: { v: number | null; suffix?: string; l: string; t: string }) => (
+            <div key={s.l} data-tint={s.t} className="card-pastel flex flex-col justify-center px-3 py-2">
+              <p className={`font-display text-2xl font-extrabold leading-none tabular-nums ${ink}`}>{s.v == null ? "-" : <><CountUp value={s.v} />{s.suffix}</>}</p>
+              <p className="mt-1 text-xs font-bold text-[var(--text-secondary)]">{s.l}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-12 md:grid-rows-2 md:flex-1 md:min-h-0">
@@ -91,12 +89,13 @@ export default function TestCentrePage() {
           </div>
           <span className={`mt-4 inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Build a test <Arrow /></span>
         </Link>
-        <Link href="/test-centre/practice" data-tint="rose" className={`${tile} md:col-span-6`}>
+        <Link href="/test-centre/practice" data-tint="rose" className={`${tile} md:col-span-3`}>
           <Mark I={RotateCcw} />
           <h2 className={`font-display text-2xl font-extrabold ${ink}`}>Practice</h2>
           <p className="mt-1 flex-1 text-sm text-[var(--text-secondary)]">Revision, checkpoint and your mistakes. Short sessions that fix weak spots.</p>
           <span className={`mt-3 inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Practise <Arrow /></span>
         </Link>
+        <div className="min-w-0 md:col-span-3 [&>*]:h-full"><MockStatusCard /></div>
         <Link href="/test-centre/build?view=flashcards" data-tint="butter" className={`${tile} md:col-span-2`}>
           <Mark I={Layers} />
           <h2 className={`font-display text-xl font-extrabold ${ink}`}>Flashcards</h2>

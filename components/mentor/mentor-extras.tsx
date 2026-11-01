@@ -4,12 +4,14 @@
  * a daily check-in and a focus timer. Goals and check-ins are also added to the learner brief so chat answers use them.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Check, Pause, Play, RotateCcw, Timer } from "lucide-react";
+import { Check, Pause, Pencil, Play, RotateCcw, Timer, Trash2 } from "lucide-react";
+import { DatePicker } from "@/components/ui/date-picker";
+import { TimePicker } from "@/components/ui/time-picker";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { toLocalDateStr } from "@/lib/utils";
 
 export interface Goals { targetMarks: number; hoursPerDay: number }
-export interface CheckIn { date: string; energy: number; hours: number }
+export interface CheckIn { date: string; energy: number; hours: number; time?: string }
 export interface FocusLog { date: string; minutes: number }
 
 export function useMemoryKey<T>(key: string, initial: T): [T, (v: T) => void, boolean] {
@@ -95,19 +97,64 @@ export function NoticedPanel({ i }: { i: NoticeInput }) {
   );
 }
 
+const pad = (n: number) => String(n).padStart(2, "0");
+const nowTime = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+
+/** Daily check-in with a log: one entry per day, shown newest first, each one can be edited (date, time, energy, hours) or deleted. */
 export function CheckInPanel({ checkins, setCheckins }: { checkins: CheckIn[]; setCheckins: (c: CheckIn[]) => void }) {
-  const today = toLocalDateStr(); const cur = checkins.find((c) => c.date === today);
-  const [e, setE] = useState(cur?.energy ?? 3), [h, setH] = useState(String(cur?.hours ?? 0));
-  const save = () => setCheckins([...checkins.filter((c) => c.date !== today), { date: today, energy: e, hours: Math.max(0, Math.min(16, +h || 0)) }].slice(-60));
+  const today = toLocalDateStr();
+  const [date, setDate] = useState(today), [time, setTime] = useState(nowTime), [e, setE] = useState(3), [h, setH] = useState("0");
+  const [editing, setEditing] = useState<string | null>(null);
+  const [done, setDone] = useState(false);
+  const existing = checkins.find((c) => c.date === date);
+  // Load what is already saved for the chosen day (the data arrives after the first render).
+  useEffect(() => {
+    if (editing && editing !== date) return;
+    if (existing) { setE(existing.energy); setH(String(existing.hours)); if (existing.time) setTime(existing.time); }
+    else if (!editing) { setE(3); setH("0"); }
+  }, [existing?.date, existing?.energy, existing?.hours, existing?.time, date, editing]); // eslint-disable-line react-hooks/exhaustive-deps
+  const log = [...checkins].sort((a, b) => (b.date + (b.time ?? "")).localeCompare(a.date + (a.time ?? "")));
+
+  const save = () => {
+    const entry: CheckIn = { date, time, energy: e, hours: Math.max(0, Math.min(16, +h || 0)) };
+    // Editing may move an entry to another day: drop the old one, and replace any entry already on the new day.
+    setCheckins([...checkins.filter((c) => c.date !== date && c.date !== editing), entry].sort((a, b) => a.date.localeCompare(b.date)).slice(-120));
+    setEditing(null); setDone(true); setTimeout(() => setDone(false), 1800);
+  };
+  const edit = (c: CheckIn) => { setEditing(c.date); setDate(c.date); setTime(c.time ?? nowTime()); setE(c.energy); setH(String(c.hours)); };
+  const remove = (d: string) => { setCheckins(checkins.filter((c) => c.date !== d)); if (editing === d) setEditing(null); };
+
   return (
     <section className={card} data-tint="mint" aria-label="Daily check-in">
       <h2 className={h2}>Daily check-in</h2>
-      <p className="mt-1 text-sm text-[var(--text-secondary)]">How is your energy today, and how many hours have you studied?</p>
-      <div className="mt-3 flex items-center gap-1" role="radiogroup" aria-label="Energy">
-        {[1, 2, 3, 4, 5].map((n) => <button key={n} type="button" role="radio" aria-checked={e === n} onClick={() => setE(n)} className={`h-9 w-9 cursor-pointer rounded-xl text-sm font-bold ${e === n ? "bg-[var(--btn)] text-[var(--btn-fg)]" : "bg-[var(--surface)] text-[var(--text-secondary)]"}`}>{n}</button>)}
-        <input className={`${inp} ml-3 !w-24`} inputMode="decimal" value={h} onChange={(x) => setH(x.target.value)} aria-label="Hours studied today" /><span className="text-xs text-[var(--text-muted)]">hours</span>
+      <p className="mt-1 text-sm text-[var(--text-secondary)]">{editing ? "Editing an entry. Change anything and save." : "How is your energy, and how many hours did you study? Pick a day to add or fix one."}</p>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <DatePicker value={date} onChange={(v) => v && setDate(v)} max={today} compact />
+        <TimePicker value={time} onChange={setTime} step={5} />
       </div>
-      <button type="button" onClick={save} className="btn-soft mt-3 !h-10 !text-sm">{cur ? <><Check className="h-4 w-4" /> Saved, update</> : "Save check-in"}</button>
+      <div className="mt-3 flex flex-wrap items-center gap-1" role="radiogroup" aria-label="Energy">
+        <span className="mr-1 text-xs font-bold text-[var(--text-muted)]">Energy</span>
+        {[1, 2, 3, 4, 5].map((n) => <button key={n} type="button" role="radio" aria-checked={e === n} onClick={() => setE(n)} className={`h-9 w-9 cursor-pointer rounded-xl text-sm font-bold ${e === n ? "bg-[var(--btn)] text-[var(--btn-fg)]" : "bg-[var(--surface)] text-[var(--text-primary)]"}`}>{n}</button>)}
+        <input className={`${inp} ml-3 !w-20`} inputMode="decimal" value={h} onChange={(x) => setH(x.target.value)} aria-label="Hours studied" /><span className="text-xs text-[var(--text-muted)]">hours</span>
+      </div>
+      <div className="mt-3 flex items-center gap-2">
+        <button type="button" onClick={save} className="btn-soft !h-10 !text-sm">{done ? <><Check className="h-4 w-4" /> Saved</> : editing ? "Save changes" : existing ? "Update this day" : "Save check-in"}</button>
+        {editing && <button type="button" onClick={() => { setEditing(null); setDate(today); setTime(nowTime()); }} className="pill-soft cursor-pointer text-xs">Cancel</button>}
+      </div>
+      <div className="mt-4 border-t border-[var(--border)] pt-3">
+        <p className="text-xs font-bold text-[var(--text-muted)]">Your log ({log.length})</p>
+        {log.length === 0 ? <p className="mt-1 text-sm text-[var(--text-secondary)]">Nothing saved yet.</p> : (
+          <ul className="mt-2 max-h-48 space-y-1.5 overflow-y-auto pr-1">
+            {log.map((c) => (
+              <li key={c.date} className="flex items-center gap-2 rounded-xl bg-[var(--surface)] px-3 py-1.5 text-sm text-[var(--text-primary)]">
+                <span className="min-w-0 flex-1 truncate"><span className="font-bold">{c.date}</span>{c.time ? <span className="text-[var(--text-muted)]"> {c.time}</span> : null} · energy {c.energy}/5 · {c.hours} h</span>
+                <button type="button" onClick={() => edit(c)} className="cursor-pointer rounded-lg p-1.5 text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]" aria-label={`Edit ${c.date}`}><Pencil className="h-4 w-4" /></button>
+                <button type="button" onClick={() => remove(c.date)} className="cursor-pointer rounded-lg p-1.5 text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]" aria-label={`Delete ${c.date}`}><Trash2 className="h-4 w-4" /></button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </section>
   );
 }

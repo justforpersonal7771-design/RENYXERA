@@ -84,6 +84,7 @@ export default function ExamSetupPage() {
   const [questionCount, setQuestionCount] = useState<number>(10);
   const [maxAvailable, setMaxAvailable] = useState<number>(0);
   const [sourceType, setSourceType] = useState<"standard" | "ai_generated">("standard");
+  useEffect(() => { if (deepSource === "spark") setSourceType("ai_generated"); }, [deepSource]);
   const [deploying, setDeploying] = useState(false);
 
   // Live stats for the selected Official Year Paper — the Volume field only shows for

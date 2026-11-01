@@ -22,6 +22,7 @@ function ChatScreen() {
   const [input, setInput] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
   const fired = useRef(false);
+  const fromBar = params.get("from") === "bar";
 
   useEffect(() => { listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" }); }, [c.msgs, c.busy]);
   // Arriving from the Mentor home with a heavy request: run it once, when the Mentor's data and thread are loaded.
@@ -29,14 +30,14 @@ function ChatScreen() {
     const m = params.get("mode") as Mode | null;
     if (fired.current || !m || params.get("auto") !== "1" || !d.ready || !c.loaded || !AUTO[m]) return;
     fired.current = true; c.setMode(m); void c.send(AUTO[m]!, m);
-    router.replace("/ai-mentor/chat");
-  }, [params, d.ready, c.loaded, c, router]);
+    router.replace(fromBar ? "/ai-mentor/chat?from=bar" : "/ai-mentor/chat");
+  }, [params, d.ready, c.loaded, c, router, fromBar]);
 
   const submit = () => { const t = input; setInput(""); void c.send(t); };
   return (
     <div className="flex h-[calc(100dvh-9.5rem)] min-h-[26rem] w-full flex-col" data-fill-height="always">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>
+        {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
         <h1 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Chat with your Mentor</h1>
         <span className="flex-1" />
         <Segmented label="Mentor voice" value={c.voice} onChange={(v: Voice) => c.setVoice(v)} options={[{ id: "Friendly", label: "Friendly" }, { id: "Strict", label: "Strict" }, { id: "Concise", label: "Concise" }]} />

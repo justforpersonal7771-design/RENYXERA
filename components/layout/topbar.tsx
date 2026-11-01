@@ -33,6 +33,7 @@ import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { TOOLS, TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 import { BranchChip } from "./branch-chip";
+import { TestCentreMenu } from "@/components/layout/test-centre-menu";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
 
 const NAV_ITEMS = [
@@ -241,7 +242,7 @@ export function Topbar() {
           >
             {NAV_ITEMS.map((item) => {
               const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === TEST_CENTRE ? isTestCentrePath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
-              return (
+              const link = (
                 <Link
                   key={item.href}
                   href={item.label === "Review" ? reviewHref : item.href}
@@ -274,6 +275,7 @@ export function Topbar() {
                   <span className="hidden xl:inline">{item.label}</span>
                 </Link>
               );
+              return item.label === TEST_CENTRE ? <div key={item.href} className="group/tc relative">{link}<TestCentreMenu /></div> : link;
             })}
           </nav>
         </div>

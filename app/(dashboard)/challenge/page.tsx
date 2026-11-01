@@ -29,9 +29,14 @@ function ChallengeInner() {
   useEffect(() => { useDataStore.getState().loadRepository(); }, []);
   useEffect(() => { if (challenge) track("visit", null, "challenge_link"); }, [challenge]);
 
+  // /challenge with no friend link is the Challenge door: send people to their battles.
+  const bare = params.toString() === "";
+  useEffect(() => { if (bare) router.replace("/battles"); }, [bare, router]);
+
   const available = useMemo(() => (challenge && isInitialized ? challenge.ids.filter((id) => !!QuestionRepository.getQuestionById(id)) : []), [challenge, isInitialized]);
   useEffect(() => { if (challenge && isInitialized) setMissing(challenge.ids.length - available.length); }, [challenge, isInitialized, available]);
 
+  if (bare) return <div className="mx-auto max-w-md py-20 text-center"><Loader2 className="mx-auto h-6 w-6 animate-spin text-[var(--text-muted)]" aria-label="Opening battles" /></div>;
   if (!challenge) return <div className="mx-auto max-w-md py-20 text-center"><p className="font-bold text-[var(--text-primary)]">This challenge link isn&apos;t valid.</p><Link href="/setup" className="mt-3 inline-block text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">Open Exam Setup →</Link></div>;
 
   const start = async () => {

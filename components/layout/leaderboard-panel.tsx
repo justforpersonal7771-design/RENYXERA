@@ -9,7 +9,7 @@ import { challengeTitle } from "@/lib/exam/weekly-challenge";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { ProCrown } from "@/components/brand/pro-crown";
-import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Crown, Medal, Loader2, Lock } from "lucide-react";
+import { Trophy, X, ArrowUp, ArrowDown, Sparkles, Medal, Loader2, Lock } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { serverNow } from "@/lib/time/server-time";
@@ -206,7 +206,7 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
 
   return (
     <div className="fixed inset-0 z-[300] flex items-end sm:items-start sm:justify-end sm:p-4 sm:pt-20">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-transparent" />
       <motion.section
         role="dialog" aria-label="Leaderboard"
         initial={{ opacity: 0, y: 30, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20, scale: 0.97 }}
@@ -292,11 +292,11 @@ function LeaderboardPanel({ mocks, signedIn, onClose }: { mocks: Mock[]; signedI
                     className={`lb-row flex items-center gap-3 rounded-2xl px-3 py-2.5 border-2 ${r.is_me ? "border-[#16123a] bg-[var(--tint-lilac)] shadow-[2px_2px_0_#16123a]" : "border-transparent bg-[var(--surface-secondary)]"}`}
                   >
                     <span className="w-9 shrink-0 font-num font-extrabold text-[var(--text-primary)] inline-flex items-center gap-1">
-                      {settled && r.rank === 1 ? <Crown className="w-4 h-4" /> : settled && r.rank <= 3 ? <Medal className="w-4 h-4" /> : null}
+                      {settled && r.rank <= 2 ? <ProCrown metal={r.rank === 1 ? "gold" : "silver"} className="is-inline !h-[21px] !w-7" /> : settled && r.rank === 3 ? <Medal className="w-4 h-4" /> : null}
                       {r.rank}
                     </span>
                     <span className="flex-1 min-w-0 truncate text-sm text-[var(--text-primary)]">
-                      {r.display_name}{tiers[r.display_name] && <span title={tiers[r.display_name] === "pro" ? "Pro member" : "Plus member"} className="relative inline-block align-middle ml-1 w-5 h-4"><ProCrown metal={tiers[r.display_name] === "pro" ? "gold" : "silver"} className="is-inline !w-5 !h-4" /></span>}{r.is_me && <span className="ml-1.5 text-[10px] font-bold text-violet-600 dark:text-violet-300">You</span>}
+                      {r.display_name}{tiers[r.display_name] && <span title={tiers[r.display_name] === "pro" ? "Pro member" : "Plus member"} className="relative inline-block align-middle ml-1 w-7 h-[21px]"><ProCrown metal={tiers[r.display_name] === "pro" ? "gold" : "silver"} className="is-inline !w-7 !h-[21px]" /></span>}{r.is_me && <span className="ml-1.5 text-[10px] font-bold text-violet-600 dark:text-violet-300">You</span>}
                     </span>
                     <span className="w-10 text-right">{settled && <Movement rank={r.rank} prev={r.prev_rank} />}</span>
                     <span className="w-12 text-right font-num font-bold text-sm text-[var(--text-primary)]">{r.score}</span>

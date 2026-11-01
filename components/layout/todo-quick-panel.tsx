@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Check, GripVertical, ListTodo, Plus, Trash2, Sparkles, PartyPopper } from "lucide-react";
 import { useTodoStore } from "@/store/use-todo-store";
 import { TodoItem } from "@/types/todo.types";
+import { MentorChatButton } from "./mentor-chat-button";
 import { RadialGauge, CountUp, Segmented } from "@/components/ui/interactive";
 
 const PRIORITY: Record<TodoItem["priority"], { dot: string; chip: string; bar: string }> = {
@@ -76,9 +77,12 @@ export function TodoQuickPanel() {
             <p className="text-[11px] text-white/75"><span className="font-num font-semibold text-white">{pending.length}</span> open · <span className="font-num">{completed.length}</span> done</p>
           </div>
         </div>
+        <div className="relative flex shrink-0 items-center gap-2">
+          <MentorChatButton />
         <RadialGauge value={pct} size={46} stroke={5} from="#a7f3d0" to="#fde68a" track="#fff" trackOpacity={0.2} className="relative shrink-0">
           <CountUp value={pct} suffix="%" duration={0.5} className="text-[11px] font-bold text-white" />
         </RadialGauge>
+        </div>
       </div>
 
       <div className="bg-[var(--surface)]">
