@@ -1927,12 +1927,17 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 @media (prefers-reduced-motion: reduce) { .mentor-logo-star, .mentor-logo-body { animation: none !important; transition: none !important; } }
 
 /* The Mentor's history panel: a deeper indigo surface with the Mentor logo itself, very faint, as the watermark. */
-.ai-panel { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--card-radius); border: 1px solid color-mix(in srgb, var(--tint-peri-ink) 26%, transparent);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--tint-peri-ink) 20%, var(--tint-peri)), color-mix(in srgb, var(--tint-peri-ink) 30%, var(--tint-lilac))); }
-.dark .ai-panel { background: linear-gradient(180deg, color-mix(in srgb, #4338ca 24%, #0d0e1c), color-mix(in srgb, #4338ca 14%, #0a0b16)); border-color: color-mix(in srgb, #818cf8 22%, transparent); }
+.ai-panel { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--card-radius); border: 1px solid color-mix(in srgb, #0a5ff2 28%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, #0a5ff2 22%, var(--tint-lilac)), color-mix(in srgb, #0a5ff2 32%, var(--tint-sky))); }
+.dark .ai-panel { background: linear-gradient(180deg, color-mix(in srgb, #0a5ff2 24%, #0b1020), color-mix(in srgb, #0a5ff2 16%, #090d1a)); border-color: color-mix(in srgb, #60a5fa 24%, transparent); }
 .ai-panel::after { content: ""; position: absolute; right: -26px; bottom: -22px; width: 190px; height: 239px; z-index: -1; opacity: .12; pointer-events: none; background: url("/brand/mentor/mentor-ai.png") center / contain no-repeat; }
 .dark .ai-panel::after { opacity: .16; }
 
 /* New-chat stage in the Mentor: a soft glow behind the centred box (like the big chat apps), nothing geometric. */
 .mentor-stage { position: relative; }
 .mentor-stage::before { content: ""; position: absolute; inset: -20% -10%; z-index: -1; pointer-events: none; background: radial-gradient(60% 50% at 50% 45%, color-mix(in srgb, var(--tint-peri-ink) 14%, transparent), transparent 70%); }
+
+/* Enlarged Mentor chat: a soft fade-in only (opacity), so nothing flashes blank. */
+.mentor-wide { animation: mentor-wide-in .18s ease-out; }
+@keyframes mentor-wide-in { from { opacity: .6; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .mentor-wide { animation: none; } }

@@ -3,7 +3,7 @@
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Library, Wrench, BookOpenText } from "lucide-react";
+import { Moon, Palette, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Library, Wrench, BookOpenText } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -406,6 +406,9 @@ export function Topbar() {
              </Link>
 
              <div className="relative z-10 hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
+             <Link href="/design-studio" className="nav-act relative z-10 hidden p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors sm:block" aria-label="Design Studio" title="Design Studio">
+                <Palette className="w-4 h-4" />
+             </Link>
              <button
                 onClick={toggleTheme}
                 className="nav-act relative z-10 p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer overflow-hidden"

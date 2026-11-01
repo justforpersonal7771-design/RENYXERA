@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, Folder, FolderInput, FolderMinus, FolderOpen, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, FolderInput, FolderMinus, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { MentorLogo } from "@/components/brand/mentor-logo";
 import { CardView, MODES, Mode, Msg, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
@@ -73,7 +73,7 @@ function MenuSelect<T extends string>({ label, value, options, onChange }: { lab
   );
 }
 
-function Thinking({ onStop }: { onStop: () => void }) {
+function Thinking() {
   const [step, setStep] = useState(0);
   useEffect(() => { const t = setInterval(() => setStep((s) => s + 1), 2200); return () => clearInterval(t); }, []);
   const words = ["Thinking", "Working it out", "Putting the answer together", "Almost there"];
@@ -81,7 +81,7 @@ function Thinking({ onStop }: { onStop: () => void }) {
     <div className="flex items-start gap-3" role="status" aria-live="polite" aria-label="The Mentor is thinking">
       <MentorLogo className="mt-0.5 h-12" mode="think" />
       <div className="min-w-0 flex-1 pt-1">
-        <p className="flex items-center gap-3"><span className="shimmer-text text-sm font-bold">{words[Math.min(step, words.length - 1)]}…</span><button type="button" onClick={onStop} className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-0.5 text-xs font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><Square className="h-3 w-3 fill-current" /> Stop</button></p>
+        <p className="flex items-center gap-3"><span className="shimmer-text text-sm font-bold">{words[Math.min(step, words.length - 1)]}…</span></p>
         <div className="mt-2 space-y-2" aria-hidden>
           {[92, 78, 55].map((w, i) => <span key={w} className="block h-2.5 rounded-full bg-[var(--surface-secondary)] motion-safe:animate-pulse" style={{ width: `${w}%`, animationDelay: `${i * 160}ms` }} />)}
         </div>
@@ -220,8 +220,9 @@ function ChatScreen() {
   const renderHistory = (inDrawer: boolean) => (
     <div className="flex h-full min-h-0 flex-col">
       <div className="mb-3 flex items-center gap-2">
-        <LogoToggle open label={inDrawer ? "Close chat history" : "Hide chat history"} onClick={inDrawer ? () => setDrawer(false) : toggleSide} />
-        <span className="font-display text-sm font-extrabold text-[var(--text-primary)]">AI Mentor</span>
+        <MentorLogo className="h-9" mode="blink" />
+        <span className="min-w-0 flex-1 truncate font-display text-base font-extrabold text-[var(--text-primary)]">AI Mentor</span>
+        <button type="button" onClick={inDrawer ? () => setDrawer(false) : toggleSide} aria-label={inDrawer ? "Close chat history" : "Hide chat history"} title={inDrawer ? "Close" : "Hide history"} className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface)]/70 hover:text-[var(--text-primary)]"><PanelLeftClose className="h-[18px] w-[18px]" /></button>
       </div>
       {c.signedIn && <button type="button" onClick={() => { c.newChat(); setDrawer(false); }} className="btn-main !h-10 w-full justify-center !text-sm"><MessageSquarePlus className="h-4 w-4" /> New chat</button>}
       {!c.signedIn ? (
@@ -240,13 +241,12 @@ function ChatScreen() {
         {sections.map((g) => (
           <div key={g.label}>
             {g.folder ? (
-              <button type="button" onClick={() => setClosed((v) => ({ ...v, [g.label]: !v[g.label] }))} aria-expanded={!closed[g.label]} className="flex w-full cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-left text-xs font-bold text-[var(--text-secondary)] hover:bg-[var(--surface)]/60">
+              <button type="button" onClick={() => setClosed((v) => ({ ...v, [g.label]: !v[g.label] }))} aria-expanded={!closed[g.label]} className="flex w-full cursor-pointer items-center gap-2 rounded-xl bg-[var(--surface)]/55 px-2.5 py-2 text-left text-sm font-extrabold text-[var(--text-primary)] hover:bg-[var(--surface)]/80">
                 <ChevronRight className={`h-3.5 w-3.5 transition-transform ${closed[g.label] ? "" : "rotate-90"}`} />
-                {closed[g.label] ? <Folder className="h-3.5 w-3.5" /> : <FolderOpen className="h-3.5 w-3.5" />}
-                <span className="min-w-0 flex-1 truncate">{g.label}</span><span className="font-num text-[var(--text-muted)]">{g.items.length}</span>
+                                <span className="min-w-0 flex-1 truncate">{g.label}</span><span className="rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-bold text-[var(--text-secondary)]">{g.items.length}</span>
               </button>
-            ) : <p className="px-2 pb-1 text-xs font-bold text-[var(--text-muted)]">{g.label}</p>}
-            <ul className={`space-y-0.5 ${g.folder ? "ml-3 border-l border-[var(--border)] pl-1" : ""} ${g.folder && closed[g.label] ? "hidden" : ""}`}>
+            ) : <p className="px-2.5 pb-1 text-xs font-bold text-[var(--text-secondary)]">{g.label}</p>}
+            <ul className={`space-y-0.5 ${g.folder ? "ml-4 mt-1 border-l-2 border-[var(--tint-lilac-ink)]/30 pl-1.5" : ""} ${g.folder && closed[g.label] ? "hidden" : ""}`}>
               {g.items.map((m) => (
                 <li key={m.id} className={`rounded-xl ${m.id === c.activeId ? "bg-[var(--surface)] shadow-sm" : "hover:bg-[var(--surface)]/60"}`}>
                   <div className="group flex items-center gap-1 px-2 py-1.5">
@@ -268,15 +268,15 @@ function ChatScreen() {
                     )}
                   </div>
                   {groupFor === m.id && (
-                    <div className="mx-2 mb-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-2">
-                      <p className="px-1 pb-1 text-xs font-bold text-[var(--text-muted)]">Move to group</p>
-                      <div className="flex flex-wrap gap-1">
-                        {groupNames.map((n) => <button key={n} type="button" onClick={() => { void c.setChatGroup(m.id, n); setGroupFor(null); }} className={`pill-soft cursor-pointer text-xs ${m.group === n ? "!bg-[var(--btn)] !text-[var(--btn-fg)]" : ""}`}>{n}</button>)}
-                        {m.group && <button type="button" onClick={() => { void c.setChatGroup(m.id, ""); setGroupFor(null); }} className="pill-soft inline-flex cursor-pointer items-center gap-1 text-xs"><FolderMinus className="h-3 w-3" /> Remove</button>}
-                      </div>
-                      <form className="mt-2 flex gap-1" onSubmit={(e) => { e.preventDefault(); if (newGroup.trim()) { void c.setChatGroup(m.id, newGroup); setGroupFor(null); } }}>
-                        <input value={newGroup} onChange={(e) => setNewGroup(e.target.value)} maxLength={40} placeholder="New group name" aria-label="New group name" className="h-8 min-w-0 flex-1 rounded-lg border-2 border-[var(--border)] bg-[var(--surface)] px-2 text-xs outline-none focus:border-[var(--tint-sky-ink)]" />
-                        <button type="submit" disabled={!newGroup.trim()} className="pill-ink cursor-pointer text-xs disabled:opacity-50">Add</button>
+                    <div role="menu" aria-label="Move to a group" className="mx-2 mb-2 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-md">
+                      <p className="border-b border-[var(--border)] px-3 py-1.5 text-xs font-bold text-[var(--text-secondary)]">Move to</p>
+                      <ul className="max-h-40 overflow-y-auto py-1">
+                        <li><button type="button" role="menuitem" onClick={() => { void c.setChatGroup(m.id, ""); setGroupFor(null); }} className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><FolderMinus className="h-4 w-4" /><span className="flex-1">No group</span>{!m.group && <Check className="h-4 w-4" />}</button></li>
+                        {groupNames.map((n) => <li key={n}><button type="button" role="menuitem" onClick={() => { void c.setChatGroup(m.id, n); setGroupFor(null); }} className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><span className="min-w-0 flex-1 truncate">{n}</span>{m.group === n && <Check className="h-4 w-4" />}</button></li>)}
+                      </ul>
+                      <form className="flex items-center gap-1.5 border-t border-[var(--border)] p-2" onSubmit={(e) => { e.preventDefault(); if (newGroup.trim()) { void c.setChatGroup(m.id, newGroup); setGroupFor(null); } }}>
+                        <input value={newGroup} onChange={(e) => setNewGroup(e.target.value)} maxLength={40} placeholder="New group" aria-label="New group name" className="h-8 min-w-0 flex-1 rounded-lg border border-[var(--border)] bg-[var(--surface-secondary)] px-2 text-sm outline-none focus:border-[var(--tint-lilac-ink)]" />
+                        <button type="submit" disabled={!newGroup.trim()} className="grid h-8 shrink-0 cursor-pointer place-items-center rounded-lg bg-[var(--tint-lilac-ink)] px-3 text-sm font-bold text-white disabled:opacity-40">Create</button>
                       </form>
                     </div>
                   )}
@@ -437,7 +437,7 @@ function ChatScreen() {
                 )}
               </div>
             ))}
-            {c.busy && <Thinking onStop={c.stop} />}
+            {c.busy && <Thinking />}
             {unanswered && (
               <p className="flex items-center gap-3 text-sm text-[var(--text-secondary)]"><MentorLogo className="h-7" />
                 No answer yet. <button type="button" onClick={() => void c.retry()} className="pill-ink cursor-pointer text-xs">Try again</button></p>
@@ -452,7 +452,19 @@ function ChatScreen() {
 
   // Enlarged: the chat covers the top bar and fills the whole window (not the browser's full screen), with the same cards and styling.
   // Portalled so the page's own padding and transform do not constrain it; the shrink button is in the header.
-  return wide && mounted ? createPortal(<div className="fixed inset-0 z-[320] bg-[var(--background)] p-2 sm:p-3"><div className="h-full rounded-[var(--card-radius)] border border-[var(--border)] bg-[color-mix(in_srgb,var(--tint-sky)_55%,var(--surface))] p-3 shadow-sm sm:p-4">{body}</div></div>, document.body) : body;
+  // One persistent container holds the chat. Enlarging MOVES that container to <body> (above the top bar, which the page's transform would otherwise trap it under)
+  // and shrinking moves it back, so React never remounts the chat: no blank flash, no lost typing, no reloaded images.
+  const [host, setHost] = useState<HTMLDivElement | null>(null);   // created after mount, so the server and the first client render agree
+  useEffect(() => { setHost(document.createElement("div")); }, []);
+  const slotRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!host) return;
+    if (wide) { host.className = "mentor-wide fixed inset-0 z-[320] bg-[var(--background)] p-2 sm:p-3"; document.body.appendChild(host); }
+    else { host.className = "contents"; slotRef.current?.appendChild(host); }
+    return () => { host.remove(); };
+  }, [host, wide]);
+  const framed = <div className={wide ? "h-full rounded-[var(--card-radius)] border border-[var(--border)] bg-[color-mix(in_srgb,var(--tint-sky)_55%,var(--surface))] p-3 shadow-sm sm:p-4" : "contents"}>{body}</div>;
+  return <><div ref={slotRef} className="contents" />{host ? createPortal(framed, host) : null}</>;
 }
 
 export default function MentorChatPage() {

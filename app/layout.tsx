@@ -2,8 +2,10 @@ import "@/lib/time/install-ist";
 import type {Metadata} from 'next';
 import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC } from 'next/font/google';
 import './globals.css'; // Global styles
+import './looks.css'; // Design Studio Looks (docs/roadmap/R26-DESIGN-STUDIO.md)
 import { ScrollbarActivity } from '@/components/system/scrollbar-activity';
 import { AuthListener } from '@/components/system/auth-listener';
+import { LookApplier } from '@/components/looks/look-applier';
 import { CardSpotlight } from '@/components/system/card-spotlight';
 import { ThemeProvider } from '@/components/theme-provider';
 import { SITE_URL } from "@/lib/site";
@@ -78,6 +80,8 @@ const THEME_BOOTSTRAP = `(function(){try{if(typeof window.__name!=="function"){w
 // /_next/static files, which no longer exist — the page then renders unstyled or throws
 // "Loading chunk … failed". Any such script/style/chunk failure reloads onto the new
 // version once (at most every 30 s, so a real outage can't loop). See lib/stale-deploy.ts.
+// Puts the chosen Design Studio Look on <html> before the first paint (the store in store/use-look-store.ts keeps the same key).
+const LOOK_BOOTSTRAP = `(function(){try{var s=JSON.parse(localStorage.getItem("renyxera_look_v1")||"null");if(!s)return;var id=(s.trial&&s.trial.endsAt>Date.now())?s.trial.id:s.look;if(id&&id!=="classic")document.documentElement.setAttribute("data-look",id)}catch(e){}})();`;
 const STALE_GUARD = `(function(){function r(){try{var k="renyxera_stale_reload_at",l=+(sessionStorage.getItem(k)||0);if(Date.now()-l<30000)return;sessionStorage.setItem(k,String(Date.now()))}catch(e){}location.reload()}window.addEventListener("error",function(e){var t=e.target;if(!t||t===window)return;var u=(t.src||t.href||"");if((t.tagName==="SCRIPT"||t.tagName==="LINK")&&u.indexOf("/_next/static/")!==-1)r()},true);window.addEventListener("unhandledrejection",function(e){var m=String((e.reason&&(e.reason.name+" "+e.reason.message))||e.reason||"");if(/ChunkLoadError|Loading (CSS )?chunk|dynamically imported module|Importing a module script failed/i.test(m))r()})})();`;
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
@@ -85,6 +89,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${luxe.variable} ${brand.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
+        <script dangerouslySetInnerHTML={{ __html: LOOK_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: STALE_GUARD }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ORG_JSON_LD }} />
         {/* MathJax (formulas) comes from this CDN; warming the connection early shaves
@@ -108,6 +113,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           <ScrollbarActivity />
           <AuthListener />
+          <LookApplier />
           <TooltipLayer />
           <VersionWatch />
           <CardSpotlight />

@@ -1,0 +1,146 @@
+/*
+ * Looks (Design Studio, docs/roadmap/R26-DESIGN-STUDIO.md). Each Look is a block under [data-look="<id>"]. The attribute goes on <html> for the
+ * whole app, or on a wrapper for the Studio's live previews, so the same rules draw both. No attribute = Classic pastel (nothing here applies).
+ * Dark variants use :is(.dark[data-look="x"], .dark [data-look="x"]) so they work on <html> and on a preview wrapper inside a dark page.
+ * Loaded after globals.css; !important is used only where globals.css already forces a surface (cards, buttons).
+ */
+
+/* ============================== GLASS (Pro) ============================== */
+[data-look="glass"] {
+  --card-radius: 26px;
+  --surface: rgba(255, 255, 255, .58);
+  --surface-secondary: rgba(255, 255, 255, .38);
+  --border: rgba(255, 255, 255, .72);
+  --glass-fill: rgba(255, 255, 255, .42);
+  --glass-edge: rgba(255, 255, 255, .7);
+  --glass-shadow: 0 14px 40px -16px rgba(55, 65, 160, .38);
+}
+:is(.dark[data-look="glass"], .dark [data-look="glass"]) {
+  --surface: rgba(26, 28, 54, .6);
+  --surface-secondary: rgba(255, 255, 255, .06);
+  --border: rgba(255, 255, 255, .14);
+  --glass-fill: rgba(28, 30, 60, .5);
+  --glass-edge: rgba(255, 255, 255, .16);
+  --glass-shadow: 0 16px 44px -16px rgba(0, 0, 0, .75);
+}
+/* backdrop: soft colour fields the glass picks up */
+[data-look="glass"] .ambient-gradient, html[data-look="glass"] body {
+  background-image:
+    radial-gradient(760px 520px at 8% -4%, rgba(96, 165, 250, .55), transparent 62%),
+    radial-gradient(700px 520px at 92% 12%, rgba(192, 132, 252, .5), transparent 62%),
+    radial-gradient(820px 600px at 70% 104%, rgba(244, 114, 182, .42), transparent 62%),
+    radial-gradient(600px 460px at 0% 96%, rgba(45, 212, 191, .34), transparent 62%) !important;
+  background-color: #eef3ff !important;
+}
+:is(.dark[data-look="glass"], .dark [data-look="glass"]) .ambient-gradient, html.dark[data-look="glass"] body {
+  background-image:
+    radial-gradient(760px 520px at 8% -4%, rgba(59, 130, 246, .38), transparent 62%),
+    radial-gradient(700px 520px at 92% 12%, rgba(139, 92, 246, .4), transparent 62%),
+    radial-gradient(820px 600px at 70% 104%, rgba(219, 39, 119, .3), transparent 62%),
+    radial-gradient(600px 460px at 0% 96%, rgba(13, 148, 136, .26), transparent 62%) !important;
+  background-color: #0a0b1c !important;
+}
+/* every surface becomes frosted glass */
+[data-look="glass"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .popover-surface, .card-inset, .tile) {
+  background: var(--glass-fill) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(1.6); backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid var(--glass-edge) !important;
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, .55) !important;
+}
+[data-look="glass"] .card-pastel[data-tint], [data-look="glass"] .card-well[data-tint], [data-look="glass"] .card-band[data-tint] {
+  background: color-mix(in srgb, var(--tint, var(--tint-lilac)) 34%, var(--glass-fill)) !important;
+}
+[data-look="glass"] .card-pastel:hover { box-shadow: 0 18px 46px -14px rgba(80, 70, 200, .48), inset 0 1px 0 rgba(255, 255, 255, .7) !important; }
+[data-look="glass"] .ai-panel::after { opacity: .1; }
+/* the soft colour behind the section stays out of the way */
+[data-look="glass"] .page-shell { --sec: transparent; }
+[data-look="glass"] .page-shell::before, [data-look="glass"] .page-shell::after { opacity: 0 !important; }
+/* buttons: glowing glass, no hard offset shadow */
+[data-look="glass"] :is(.btn-main, .pill-ink) {
+  background: linear-gradient(135deg, rgba(79, 70, 229, .92), rgba(168, 85, 247, .92)) !important; color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, .55) !important; box-shadow: 0 10px 24px -10px rgba(99, 60, 220, .85), inset 0 1px 0 rgba(255, 255, 255, .45) !important;
+}
+[data-look="glass"] :is(.btn-main, .pill-ink):active { transform: translateY(1px) scale(.99); box-shadow: 0 4px 10px -6px rgba(99, 60, 220, .8), inset 0 1px 0 rgba(255, 255, 255, .35) !important; }
+[data-look="glass"] :is(.btn-soft, .pill-soft) {
+  background: rgba(255, 255, 255, .5) !important; color: var(--text-primary) !important; border: 1px solid var(--glass-edge) !important;
+  box-shadow: 0 6px 16px -10px rgba(55, 65, 160, .4), inset 0 1px 0 rgba(255, 255, 255, .6) !important;
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+}
+:is(.dark[data-look="glass"], .dark [data-look="glass"]) :is(.btn-soft, .pill-soft) { background: rgba(255, 255, 255, .08) !important; }
+/* inputs and menus read as frosted too */
+[data-look="glass"] :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { background: rgba(255, 255, 255, .5); }
+:is(.dark[data-look="glass"], .dark [data-look="glass"]) :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { background: rgba(255, 255, 255, .06); }
+[data-look="glass"] [role="menu"] { -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); }
+/* headings pick up a little depth */
+[data-look="glass"] :is(h1, h2) { letter-spacing: -0.015em; }
+
+/* ============================== NEO-BRUTAL ARCADE (Pro) ============================== */
+[data-look="arcade"] {
+  --card-radius: 14px;
+  --ink-line: #111;
+  --tint-mint: #b6f0c8; --tint-mint-ink: #0a4d28;
+  --tint-rose: #ffb4c6; --tint-rose-ink: #8a0f33;
+  --tint-peach: #ffcfa0; --tint-peach-ink: #7a3300;
+  --tint-peri: #cbc8ff; --tint-peri-ink: #2c1fa6;
+  --tint-lilac: #bcd6ff; --tint-lilac-ink: #0b3fa8;
+  --tint-butter: #ffe45e; --tint-butter-ink: #5c4300;
+  --tint-sky: #a9e2ff; --tint-sky-ink: #05476b;
+  --border: #111;
+  --surface: #fffdf6; --surface-secondary: #fff3c4;
+  --background: #fff7da;
+  --btn: #111; --btn-fg: #fff;
+}
+:is(.dark[data-look="arcade"], .dark [data-look="arcade"]) {
+  --ink-line: #f5f0e6;
+  --tint-mint: #14532d; --tint-mint-ink: #86efac;
+  --tint-rose: #7f1d3a; --tint-rose-ink: #fda4bf;
+  --tint-peach: #7c3a0a; --tint-peach-ink: #fdba74;
+  --tint-peri: #3b2f9a; --tint-peri-ink: #c4b5fd;
+  --tint-lilac: #1e3a8a; --tint-lilac-ink: #93c5fd;
+  --tint-butter: #6b5200; --tint-butter-ink: #fde047;
+  --tint-sky: #0c4a6e; --tint-sky-ink: #7dd3fc;
+  --border: #f5f0e6;
+  --surface: #1b1a26; --surface-secondary: #2a2838;
+  --background: #12111a;
+  --btn: #ffd43b; --btn-fg: #111;
+}
+[data-look="arcade"] .ambient-gradient, html[data-look="arcade"] body {
+  background-image: radial-gradient(circle at 1px 1px, rgba(17, 17, 17, .13) 1.2px, transparent 1.4px) !important; background-size: 22px 22px !important; background-color: var(--background) !important;
+}
+:is(.dark[data-look="arcade"], .dark [data-look="arcade"]) .ambient-gradient, html.dark[data-look="arcade"] body {
+  background-image: radial-gradient(circle at 1px 1px, rgba(245, 240, 230, .12) 1.2px, transparent 1.4px) !important;
+}
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .popover-surface, .card-inset, .tile) {
+  border: 3px solid var(--ink-line) !important; border-radius: var(--card-radius) !important;
+  box-shadow: 6px 6px 0 var(--ink-line) !important; -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="mint"] { background: var(--tint-mint) !important; }
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="rose"] { background: var(--tint-rose) !important; }
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="peach"] { background: var(--tint-peach) !important; }
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="peri"] { background: var(--tint-peri) !important; }
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="lilac"] { background: var(--tint-lilac) !important; }
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="butter"] { background: var(--tint-butter) !important; }
+[data-look="arcade"] :is(.card-pastel, .card-well, .card-glass, .card-band)[data-tint="sky"] { background: var(--tint-sky) !important; }
+[data-look="arcade"] .card-well:not([data-tint]), [data-look="arcade"] .card-pastel:not([data-tint]) { background: var(--surface) !important; }
+[data-look="arcade"] .ai-panel { background: var(--tint-peri) !important; }
+[data-look="arcade"] .ai-panel::after { opacity: .18; }
+[data-look="arcade"] .card-pastel { transition: transform .12s ease, box-shadow .12s ease; }
+[data-look="arcade"] .card-pastel:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--ink-line) !important; }
+[data-look="arcade"] .card-pastel:active { transform: translate(4px, 4px); box-shadow: 2px 2px 0 var(--ink-line) !important; }
+[data-look="arcade"] .page-shell { --sec: transparent; }
+[data-look="arcade"] .page-shell::before, [data-look="arcade"] .page-shell::after { opacity: 0 !important; }
+/* buttons: flat colour, thick outline, hard shadow that presses in */
+[data-look="arcade"] :is(.btn-main, .pill-ink) {
+  background: #ffd43b !important; color: #111 !important; border: 3px solid var(--ink-line) !important; border-radius: 12px !important;
+  box-shadow: 4px 4px 0 var(--ink-line) !important; font-weight: 800; transition: transform .1s ease, box-shadow .1s ease;
+}
+[data-look="arcade"] :is(.btn-main, .pill-ink):hover { transform: translate(-1px, -1px); box-shadow: 6px 6px 0 var(--ink-line) !important; filter: none; }
+[data-look="arcade"] :is(.btn-main, .pill-ink):active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink-line) !important; }
+[data-look="arcade"] :is(.btn-main, .pill-ink) :is(svg, span) { color: #111 !important; }
+[data-look="arcade"] :is(.btn-soft, .pill-soft) {
+  background: var(--surface) !important; color: var(--text-primary) !important; border: 3px solid var(--ink-line) !important; border-radius: 12px !important;
+  box-shadow: 3px 3px 0 var(--ink-line) !important; font-weight: 700;
+}
+[data-look="arcade"] :is(input, textarea, select):not([type="checkbox"], [type="radio"], [type="range"]) { border: 3px solid var(--ink-line) !important; border-radius: 10px !important; background: var(--surface); }
+[data-look="arcade"] :is(h1, h2, h3) { font-weight: 900; letter-spacing: -0.01em; }
+:is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.btn-main, .pill-ink) { background: #ffd43b !important; }
