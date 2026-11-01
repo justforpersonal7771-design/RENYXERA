@@ -102,13 +102,16 @@ const nowTime = () => { const d = new Date(); return `${pad(d.getHours())}:${pad
 
 /** Daily check-in with a log: one entry per day, shown newest first, each one can be edited (date, time, energy, hours) or deleted. */
 export function CheckInPanel({ checkins, setCheckins }: { checkins: CheckIn[]; setCheckins: (c: CheckIn[]) => void }) {
-  const today = toLocalDateStr();
-  const [date, setDate] = useState(today), [time, setTime] = useState(nowTime), [e, setE] = useState(3), [h, setH] = useState("0");
+  // The clock is read after mount only: reading it while rendering on the server gives text that differs from the browser's (hydration error).
+  const [today, setToday] = useState("");
+  const [date, setDate] = useState(""), [time, setTime] = useState(""), [e, setE] = useState(3), [h, setH] = useState("0");
+  useEffect(() => { const t = toLocalDateStr(); setToday(t); setDate(t); setTime(nowTime()); }, []);
   const [editing, setEditing] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const existing = checkins.find((c) => c.date === date);
   // Load what is already saved for the chosen day (the data arrives after the first render).
   useEffect(() => {
+    if (!date) return;
     if (editing && editing !== date) return;
     if (existing) { setE(existing.energy); setH(String(existing.hours)); if (existing.time) setTime(existing.time); }
     else if (!editing) { setE(3); setH("0"); }
@@ -116,6 +119,7 @@ export function CheckInPanel({ checkins, setCheckins }: { checkins: CheckIn[]; s
   const log = [...checkins].sort((a, b) => (b.date + (b.time ?? "")).localeCompare(a.date + (a.time ?? "")));
 
   const save = () => {
+    if (!date) return;
     const entry: CheckIn = { date, time, energy: e, hours: Math.max(0, Math.min(16, +h || 0)) };
     // Editing may move an entry to another day: drop the old one, and replace any entry already on the new day.
     setCheckins([...checkins.filter((c) => c.date !== date && c.date !== editing), entry].sort((a, b) => a.date.localeCompare(b.date)).slice(-120));
@@ -129,8 +133,7 @@ export function CheckInPanel({ checkins, setCheckins }: { checkins: CheckIn[]; s
       <h2 className={h2}>Daily check-in</h2>
       <p className="mt-1 text-sm text-[var(--text-secondary)]">{editing ? "Editing an entry. Change anything and save." : "How is your energy, and how many hours did you study? Pick a day to add or fix one."}</p>
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        <DatePicker value={date} onChange={(v) => v && setDate(v)} max={today} compact />
-        <TimePicker value={time} onChange={setTime} step={5} />
+        {date ? <><DatePicker value={date} onChange={(v) => v && setDate(v)} max={today} compact /><TimePicker value={time} onChange={setTime} step={5} /></> : <span className="h-10" aria-hidden />}
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-1" role="radiogroup" aria-label="Energy">
         <span className="mr-1 text-xs font-bold text-[var(--text-muted)]">Energy</span>
