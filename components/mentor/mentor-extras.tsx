@@ -1,4 +1,5 @@
 "use client";
+import { istTime } from "@/lib/time/ist";
 /**
  * AI Mentor extras (rule-based, free, stored on this device): goals, the roadmap for the days left, things the Mentor has noticed,
  * a daily check-in and a focus timer. Goals and check-ins are also added to the learner brief so chat answers use them.
@@ -98,7 +99,7 @@ export function NoticedPanel({ i }: { i: NoticeInput }) {
 }
 
 const pad = (n: number) => String(n).padStart(2, "0");
-const nowTime = () => { const d = new Date(); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+const nowTime = () => istTime();
 
 /** Daily check-in with a log: one entry per day, shown newest first, each one can be edited (date, time, energy, hours) or deleted. */
 export function CheckInPanel({ checkins, setCheckins }: { checkins: CheckIn[]; setCheckins: (c: CheckIn[]) => void }) {

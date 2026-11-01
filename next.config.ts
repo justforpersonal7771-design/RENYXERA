@@ -15,7 +15,7 @@ const CSP = [
   "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://cdn.jsdelivr.net",
-  `connect-src 'self' ${supabaseOrigin} ${supabaseWs} https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-metrics.razorpay.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://challenges.cloudflare.com https://*.ingest.sentry.io`,
+  `connect-src 'self' data: ${supabaseOrigin} ${supabaseWs} https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-metrics.razorpay.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://challenges.cloudflare.com https://*.ingest.sentry.io`,
   "frame-src https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://www.youtube-nocookie.com https://www.youtube.com",
   "worker-src 'self' blob:",
   "manifest-src 'self'",

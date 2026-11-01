@@ -1,3 +1,4 @@
+import { istDateStr } from "@/lib/time/ist";
 // The device clock is user-controlled, so anything time-based in the UI (exam timers, mock embargoes,
 // plan expiry, daily goals) reads `serverNow()` instead of Date.now(). The real authority is still the
 // server and database (attempt start/finish, results embargo, entitlements all use server time);
@@ -24,7 +25,7 @@ export const isTimeSynced = () => synced;
 
 /** Local YYYY-MM-DD for the true current day. */
 export function serverDayKey(d = serverDate()): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return istDateStr(d);
 }
 
 /** Fetch the server time and compute the device offset (half the round trip is assumed one-way). */

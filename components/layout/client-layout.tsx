@@ -1,4 +1,5 @@
 "use client";
+import "@/lib/time/install-ist";
 
 import { SmoothScroll } from "@/components/system/smooth-scroll";
 import { useEffect } from "react";

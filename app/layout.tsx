@@ -1,3 +1,4 @@
+import "@/lib/time/install-ist";
 import type {Metadata} from 'next';
 import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC } from 'next/font/google';
 import './globals.css'; // Global styles

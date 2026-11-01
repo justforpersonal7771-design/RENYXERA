@@ -1894,3 +1894,8 @@ html[data-motion="reduce"] .word-reveal > span { animation: none; }
 .dark [class*="border-[var(--text-primary)]"] { border-color: var(--edge); }
 .dark [class*="ring-[var(--text-primary)]"] { --tw-ring-color: var(--edge); }
 .dark [class*="_0_var(--text-primary)"] { box-shadow: 4px 4px 0 var(--edge-soft) !important; }
+
+/* Mentor chat: shimmering "thinking" text (Gemini-style). Falls back to plain text with reduced motion. */
+.shimmer-text { background: linear-gradient(100deg, var(--text-muted) 30%, var(--text-primary) 50%, var(--text-muted) 70%); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shimmer-x 1.6s linear infinite; }
+@keyframes shimmer-x { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+@media (prefers-reduced-motion: reduce) { .shimmer-text { animation: none; color: var(--text-secondary); background: none; } }

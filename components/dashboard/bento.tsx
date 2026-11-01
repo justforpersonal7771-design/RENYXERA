@@ -1,4 +1,5 @@
 "use client";
+import { istHour } from "@/lib/time/ist";
 
 /**
  * R18 dashboard bento (27 Oct 2026). Pastel cards, one per question the student has:
@@ -49,7 +50,7 @@ export function useSolvedIds(ready: boolean): Set<string> {
 }
 
 const noopSubscribe = () => () => {};
-const greeting = () => { const h = new Date().getHours(); return h < 5 ? "Still up" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; };
+const greeting = () => { const h = istHour(); return h < 5 ? "Still up" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; };
 const pct = (c: number, a: number) => (a > 0 ? Math.round((c / a) * 100) : 0);
 
 /** Card entrance: rises once into view (B4); static for reduced motion. */

@@ -1,11 +1,12 @@
 "use client";
+import { istHour } from "@/lib/time/ist";
 
 /**
  * AI Mentor home (R21): what the Mentor knows, today's plan, the next best actions, and a quick-ask box for small questions.
  * Long conversations and the heavy requests (plan, test review, quiz, guided steps, weekly review) open the dedicated chat screen.
  * Everything here that can be computed without AI is rule-based and free. Readiness, mastery, patterns and the timeline live in Analytics > Coach insights.
  */
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, BookOpen, BrainCircuit, CalendarPlus, Check, Loader2, MessageSquareText, Plus, Send, Sparkles, Target, Trash2, X, Zap } from "lucide-react";
@@ -27,8 +28,10 @@ export default function AIMentorPage() {
   const [note, setNote] = useState("");
   const [quick, setQuick] = useState("");
 
-  const hour = new Date().getHours();
-  const greet = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  // The hour is read after mount: the server runs in UTC, so reading it while rendering gave a different greeting than the browser (hydration error).
+  const [hour, setHour] = useState<number | null>(null);
+  useEffect(() => { setHour(istHour()); }, []);
+  const greet = hour === null ? "Hello" : hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
   const noData = d.ready && d.subjects.every((s) => s.attempted === 0);
   const locked = !tierLoading && tier === "free";
 

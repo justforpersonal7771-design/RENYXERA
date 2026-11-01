@@ -1,3 +1,4 @@
+import { istMinutes } from "@/lib/time/ist";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { toLocalDateStr } from "@/lib/utils";
 
@@ -43,7 +44,7 @@ export async function checkDueReminders(): Promise<void> {
   const events = await IDBManager.getCalendarEvents();
   const todayStr = toLocalDateStr();
   const now = new Date();
-  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const nowMinutes = istMinutes(now);
   const fired = getFiredSet();
 
   for (const event of events as any[]) {

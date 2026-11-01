@@ -1,3 +1,4 @@
+import { istDateStr } from "@/lib/time/ist";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -43,10 +44,8 @@ export const SIGNED_OUT_FLAG = "renyxera_just_signed_out";
  * previous day's evening in UTC.
  */
 export function toLocalDateStr(date: Date = new Date()): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
+  // The app runs on India Standard Time only (lib/time/ist.ts); the name is kept so every caller gets IST without changes.
+  return istDateStr(date);
 }
 
 /** Formats a stored "HH:MM" (24hr, from <input type="time">) as 12hr with AM/PM, e.g.

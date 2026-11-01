@@ -1,4 +1,5 @@
 "use client";
+import { istHour } from "@/lib/time/ist";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { usePaperLabel } from "@/lib/branch/use-paper-label";
@@ -28,7 +29,7 @@ const RANKS = [
 ];
 
 function timeGreeting() {
-  const h = new Date().getHours();
+  const h = istHour();
   if (h < 5) return "Burning the midnight oil";
   if (h < 12) return "Good morning";
   if (h < 17) return "Good afternoon";
