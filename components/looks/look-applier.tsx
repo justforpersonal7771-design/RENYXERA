@@ -39,6 +39,7 @@ export function LookApplier() {
     const r = document.documentElement.style;
     if (fonts?.display) r.setProperty("--font-display", `var(${fonts.display})`); else r.removeProperty("--font-display");
     if (fonts?.body) r.setProperty("--font-sans", `var(${fonts.body})`); else r.removeProperty("--font-sans");
+    if (fonts?.numbers) r.setProperty("--font-num", `var(${fonts.numbers})`); else r.removeProperty("--font-num");
   }, [fonts, hydrated, id]);
   // A Look designed only for dark switches the app to dark while it is on, and gives the student's choice back afterwards.
   const mode = lookById(id).modes;

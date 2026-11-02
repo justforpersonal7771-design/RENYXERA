@@ -9,7 +9,7 @@ import { LOOKS, TRIALS_PER_TIER, TRIAL_MS, lookById, type LookTier } from "@/lib
  * stops clearing the browser from resetting trials is planned in the R26 doc.
  */
 const KEY = "renyxera_look_v1";
-export interface LookState { look: string; trial: { id: string; endsAt: number } | null; tried: string[]; fonts?: { display?: string; body?: string } }
+export interface LookState { look: string; trial: { id: string; endsAt: number } | null; tried: string[]; fonts?: { display?: string; body?: string; numbers?: string } }
 const empty: LookState = { look: "classic", trial: null, tried: [], fonts: {} };
 
 const read = (): LookState => {
@@ -26,7 +26,7 @@ interface Store extends LookState {
   endTrial: (keep: boolean) => void;
   triesLeft: (tier: LookTier) => number;
   /** Override the Look's fonts. Pass a CSS variable name from FONT_CHOICES, or undefined to follow the Look. */
-  setFont: (which: "display" | "body", cssVar: string | undefined) => void;
+  setFont: (which: "display" | "body" | "numbers", cssVar: string | undefined) => void;
 }
 
 export const useLookStore = create<Store>((set, get) => ({

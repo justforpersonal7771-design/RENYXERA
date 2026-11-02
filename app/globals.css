@@ -527,7 +527,7 @@
   /* Big numbers (stats, scores, timers): Sora with tabular figures, so counting-up
      values don't jitter sideways and read as display type rather than code. */
   .font-num {
-    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-family: var(--font-num, var(--font-display)), var(--font-sans), sans-serif;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
   }
@@ -1968,3 +1968,9 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [class*="bg-blue-600"], [class*="bg-emerald-600"], [class*="bg-emerald-700"], [class*="from-indigo-600"], [class*="from-violet-600"], [class*="bg-amber-500"], [class*="bg-rose-600"]):not([role="tab"]):not([role="radio"]):not([role="switch"]):not([aria-pressed]):not(.btn-main):not(.pill-ink):not(.ai-nav-btn):not(:disabled):active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
 .dark :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [class*="bg-blue-600"], [class*="bg-emerald-600"], [class*="from-indigo-600"], [class*="bg-amber-500"]):not(.btn-main):not(.pill-ink) { border-color: var(--edge, #9694be); box-shadow: 4px 4px 0 var(--edge-soft, rgba(150,148,190,.3)); }
 @media (prefers-reduced-motion: reduce) { :is(button, a)[class*="bg-"] { transition: none; } }
+
+/* The profile quick menu can be taller than a short window: it scrolls instead of running off the screen. */
+[data-account-menu] { max-height: calc(100dvh - 5.5rem); overflow-y: auto; overscroll-behavior: contain; }
+
+/* The crown on the navbar avatar sat above the top of the window and was cut off: bring it down onto the avatar's corner. */
+.topbar-island .pro-crown { top: -9px; right: -9px; }

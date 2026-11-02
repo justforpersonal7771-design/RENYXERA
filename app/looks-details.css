@@ -3,8 +3,8 @@
 /* ---- fonts each Look is drawn with (a font chosen in the Studio overrides these through an inline style on <html>) ---- */
 [data-look="glass"], [data-look="aurora"] { --font-sans: var(--font-outfit), system-ui, sans-serif; --font-display: var(--font-outfit), system-ui, sans-serif; }
 [data-look="arcade"] { --font-sans: var(--font-grotesk), system-ui, sans-serif; --font-display: var(--font-archivo), var(--font-grotesk), sans-serif; }
-[data-look="neon"] { --font-sans: var(--font-grotesk), system-ui, sans-serif; --font-display: var(--font-grotesk), system-ui, sans-serif; }
-[data-look="pixel"] { --font-sans: var(--font-pixel), ui-monospace, monospace; --font-display: var(--font-pixel), ui-monospace, monospace; }
+[data-look="neon"] { --font-sans: var(--font-grotesk), system-ui, sans-serif; --font-display: var(--font-orbitron), var(--font-grotesk), sans-serif; --font-num: var(--font-orbitron), var(--font-grotesk), sans-serif; }
+[data-look="pixel"] { --font-sans: var(--font-dotgothic), ui-monospace, monospace; --font-display: var(--font-silkscreen), var(--font-dotgothic), monospace; --font-num: var(--font-silkscreen), monospace; }
 
 /* ---- PIXEL QUEST, everywhere: no curves, no easing, stepped motion, a flat background ---- */
 [data-look="pixel"][data-look="pixel"] *, [data-look="pixel"][data-look="pixel"] *::before, [data-look="pixel"][data-look="pixel"] *::after {
@@ -44,8 +44,8 @@
 :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) :is(p, span)[class*="text-[var(--tint"], :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) [class*="text-blue"], :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) [class*="text-sky"] { color: #fff7d6 !important; }
 
 /* Jersey 15 is a compact face: scale everything up so body text stays comfortable to read. */
-html[data-look="pixel"] { font-size: 112.5%; }
-[data-look="pixel"][data-look="pixel"] :is(h1, h2, h3) { font-weight: 400; letter-spacing: .02em; }
+html[data-look="pixel"] { font-size: 106%; }
+[data-look="pixel"][data-look="pixel"] :is(h1, h2, h3) { font-weight: 400; letter-spacing: .03em; line-height: 1.2; }
 [data-look="pixel"][data-look="pixel"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft) { font-weight: 400; font-size: 1.05rem; }
 [data-look="pixel"][data-look="pixel"] :is(body, body *):not(svg):not(svg *) { font-weight: 400 !important; }
-[data-look="pixel"][data-look="pixel"] :is(.text-\[9px\], .text-\[10px\], .text-\[11px\]) { font-size: 12px !important; }
+[data-look="pixel"][data-look="pixel"] :is(.text-\[9px\], .text-\[10px\], .text-\[11px\]) { font-size: 13px !important; }

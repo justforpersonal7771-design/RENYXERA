@@ -145,7 +145,7 @@ export function AccountButton() {
       {typeof document !== "undefined" && createPortal(
         <AnimatePresence>
           {open && pos && (
-            <motion.div data-account-menu role="menu" aria-label="Profile quick access" onMouseEnter={show} onMouseLeave={hideSoon}
+            <motion.div data-account-menu role="menu" aria-label="Profile quick access" data-scroll onMouseEnter={show} onMouseLeave={hideSoon}
               initial={{ opacity: 0, y: -8, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }}
               transition={{ type: "spring", stiffness: 460, damping: 32 }}
               style={{ position: "fixed", top: pos.top, right: pos.right, transformOrigin: "top right" }}

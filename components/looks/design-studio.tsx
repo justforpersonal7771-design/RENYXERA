@@ -10,7 +10,7 @@ import { useState } from "react";
 import { Check, Lock, Sparkles, Timer } from "lucide-react";
 import { LookPreview } from "@/components/looks/look-preview";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
-import { FONT_CHOICES, LOOKS, TRIALS_PER_TIER, TRIAL_MS, canUseLook, lookById, type Look } from "@/lib/looks/looks";
+import { LOOKS, fontSetFor, TRIALS_PER_TIER, TRIAL_MS, canUseLook, lookById, type Look } from "@/lib/looks/looks";
 import { useLookStore } from "@/store/use-look-store";
 import { useToastStore } from "@/store/use-toast-store";
 
@@ -60,21 +60,21 @@ export function DesignStudio() {
       </div>
 
       <section aria-label="Fonts" className="w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
-        <div className="flex flex-wrap items-baseline gap-x-3"><h3 className="font-display text-base font-extrabold text-[var(--text-primary)]">Fonts</h3><p className="text-sm text-[var(--text-secondary)]">Each Look brings its own fonts ({onNow.fonts.display} and {onNow.fonts.body}). Pick your own to override them.</p></div>
-        <div className="mt-3 grid w-full gap-4 md:grid-cols-2">
-          {([["display", "Headings and numbers"], ["body", "Text"]] as const).map(([which, label]) => (
+        <div className="flex flex-wrap items-baseline gap-x-3"><h3 className="font-display text-base font-extrabold text-[var(--text-primary)]">Fonts for {onNow.name}</h3><p className="text-sm text-[var(--text-secondary)]">Chosen to suit this design. It uses {onNow.fonts.display} for headings and {onNow.fonts.body} for text; pick your own below. Your choice stays when you change Look.</p></div>
+        <div className="mt-3 grid w-full gap-4 lg:grid-cols-3">
+          {([["display", "Headings", fontSetFor(onNow.id).headings], ["numbers", "Numbers", fontSetFor(onNow.id).numbers], ["body", "Text", fontSetFor(onNow.id).text]] as const).map(([which, label, list]) => (
             <div key={which}>
               <p className="mb-1.5 text-xs font-bold text-[var(--text-muted)]">{label}</p>
               <div className="flex flex-wrap gap-2">
                 <button type="button" onClick={() => setFont(which, undefined)} aria-pressed={!fonts?.[which]} className={`cursor-pointer rounded-xl border px-3 py-1.5 text-sm font-bold ${!fonts?.[which] ? "border-[var(--text-primary)] bg-[var(--btn)] text-[var(--btn-fg)]" : "border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)]"}`}>Match the Look</button>
-                {FONT_CHOICES.map((f) => (
-                  <button key={f.id} type="button" onClick={() => setFont(which, f.var)} aria-pressed={fonts?.[which] === f.var} style={{ fontFamily: `var(${f.var})` }} className={`cursor-pointer rounded-xl border px-3 py-1.5 text-sm ${fonts?.[which] === f.var ? "border-[var(--text-primary)] bg-[var(--btn)] text-[var(--btn-fg)]" : "border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)]"}`}>{f.name}</button>
+                {list.map((f) => (
+                  <button key={f.id} type="button" onClick={() => setFont(which, f.var)} aria-pressed={fonts?.[which] === f.var} style={{ fontFamily: `var(${f.var})` }} className={`cursor-pointer rounded-xl border px-3 py-1.5 text-base ${fonts?.[which] === f.var ? "border-[var(--text-primary)] bg-[var(--btn)] text-[var(--btn-fg)]" : "border-[var(--border)] bg-[var(--surface-secondary)] text-[var(--text-primary)]"}`}>{which === "numbers" ? `${f.name} 0123` : f.name}</button>
                 ))}
               </div>
             </div>
           ))}
         </div>
-        <p className="mt-3 text-[var(--text-primary)]" style={{ fontFamily: "var(--font-display)" }}><span className="text-xl font-extrabold">Practise every GATE paper</span> <span style={{ fontFamily: "var(--font-sans)" }} className="text-sm">The quick brown fox solves 1,024 questions.</span></p>
+        <p className="mt-4 text-[var(--text-primary)]"><span className="font-display text-xl font-extrabold">Practise every GATE paper</span> <span className="ml-2 text-sm">The quick brown fox solves questions.</span> <span className="font-num ml-2 text-lg font-bold">1,024 · 65 marks · 17%</span></p>
       </section>
 
       <ul className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

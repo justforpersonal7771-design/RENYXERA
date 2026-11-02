@@ -7,7 +7,7 @@ import { ExamBranchPanel } from "@/components/profile/exam-branch-panel";
 import { branchByCode } from "@/lib/branches";
 import { motion, AnimatePresence } from "motion/react";
 import {
-  Loader2, Save, CheckCircle2, User as UserIcon, Palette, IdCard, Target, GraduationCap, CalendarDays,
+  Loader2, Save, Smile, CheckCircle2, User as UserIcon, Palette, IdCard, Target, GraduationCap, CalendarDays,
   Trophy, Clock, XCircle, LayoutGrid, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, MapPin, BookOpen,
   Building2, Copy, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles, Phone, Crown, Send,
 } from "lucide-react";
@@ -81,7 +81,7 @@ const STUDY_TIMES = [
 
 const SECTIONS = [
   { id: "overview", label: "Overview", subtitle: "Your progress, streaks and achievements at a glance.", icon: LayoutGrid, tint: "bg-indigo-500/10 text-indigo-500" },
-  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Palette, tint: "bg-pink-500/10 text-pink-500" },
+  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Smile, tint: "bg-pink-500/10 text-pink-500" },
   { id: "design", label: "Design Studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, tint: "bg-violet-500/10 text-violet-500" },
   { id: "personal", label: "Personal info", subtitle: "Your identity and background.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
   { id: "goals", label: "Exam goals", subtitle: "Your target, schedule and the plan it builds.", icon: Target, tint: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
@@ -348,7 +348,7 @@ export default function ProfilePage() {
       case "design": return <Card icon={Palette} title="Design Studio" subtitle="Change the whole look of the app. Tap a Look to apply it; Looks you do not have can be tried for 5 minutes." tint="bg-violet-500/10 text-violet-500"><DesignStudio /></Card>;
       case "avatar":
         return (
-          <Card icon={Palette} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations. Silver styles need Plus, Gold styles need Pro." tint="bg-pink-500/10 text-pink-500">
+          <Card icon={Smile} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations. Silver styles need Plus, Gold styles need Pro." tint="bg-pink-500/10 text-pink-500">
             <AvatarPicker value={{ style: f.avatarStyle as any, seed: f.avatarSeed }} onChange={(v) => setForm((x) => ({ ...x, avatarStyle: v.style, avatarSeed: v.seed }))} />
           </Card>
         );
@@ -596,7 +596,7 @@ export default function ProfilePage() {
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4">
         <motion.nav aria-label="Profile sections" initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35, delay: 0.05 }}
           className="shrink-0 lg:w-60 card-glass rounded-3xl p-2 lg:self-start">
-          <div className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible scrollbar-hide">
+          <div className="custom-scrollbar flex gap-1 overflow-x-auto scrollbar-hide lg:max-h-[calc(100dvh-14rem)] lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden lg:pr-1">
             {SECTIONS.map((sct, i) => {
               const active = sct.id === tab;
               return (
