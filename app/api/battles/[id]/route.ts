@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { battleCtx, isCtx, gradedAttempt, nameOf, UUID_RE } from "@/lib/server/battles";
 import { notifyBattle, battleText } from "@/lib/telegram/notify";
+import { settleBattle } from "@/lib/server/arena";
 
 export const runtime = "nodejs";
 
@@ -57,6 +58,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       const ownIds = new Set<string>(b.question_ids);
       if (!own || !own.question_ids.every((q) => ownIds.has(q))) return NextResponse.json({ error: "That test doesn't match this challenge.", reason: "mismatch" }, { status: 409 });
       await db.from("battles").update({ owner_score: own.server_score, max_score: own.server_max, owner_attempt_id: own.id, owner_submitted_at: new Date().toISOString() }).eq("id", id);
+      await settleBattle(db, id); // friends who already played now get their points
       return NextResponse.json({ ok: true, status: "owner", score: own.server_score, maxScore: own.server_max });
     }
     if (body.data.action === "finish" || body.data.action === "start" || body.data.action === "progress") return NextResponse.json({ ok: true, status: "owner" });
@@ -106,6 +108,7 @@ export async function POST(req: NextRequest, { params }: Ctx) {
   await db.from("battle_entries").update({
     status: "submitted", attempt_id: attempt.id, score: attempt.server_score, max_score: attempt.server_max, answered: ids.length, submitted_at: nowIso, last_seen_at: nowIso,
   }).eq("battle_id", id).eq("user_id", userId!);
+  await settleBattle(db, id); // no-op until the owner has a score
   const ownerDone = b.owner_score !== null && b.max_score !== null;
   const mineP = attempt.server_score / attempt.server_max, theirsP = ownerDone ? Number(b.owner_score) / Number(b.max_score) : -1;
   void notifyBattle(db, b.owner_id, id, battleText.finished(await nameOf(db, userId!), b.title, attempt.server_score, attempt.server_max, Number(b.owner_score), mineP > theirsP ? "They won." : mineP === theirsP ? "A tie." : "You won."));

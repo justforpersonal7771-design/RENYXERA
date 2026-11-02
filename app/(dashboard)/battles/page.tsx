@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Swords, Hourglass, Trophy, Link2, Loader2, RotateCcw, ChevronDown } from "lucide-react";
 import { PlanCompare } from "@/components/preview/plan-compare";
 import { FriendsPanel } from "@/components/friends/friends-panel";
+import { ArenaLeaderboard } from "@/components/friends/arena-leaderboard";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
@@ -68,6 +69,7 @@ export default function BattlesPage() {
       </section>
 
       {user ? <FriendsPanel /> : null}
+      {user ? <ArenaLeaderboard /> : null}
 
       {forYou.length > 0 ? (
         <section className="card-well p-5 sm:p-6" data-tint="butter" aria-label="Challenges for you">

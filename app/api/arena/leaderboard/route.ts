@@ -1,0 +1,57 @@
+import { NextRequest, NextResponse } from "next/server";
+import { battleCtx, isCtx } from "@/lib/server/battles";
+import { weekStartIso } from "@/lib/server/arena";
+
+export const runtime = "nodejs";
+
+/**
+ * Arena leaderboard (R29 step 3).  GET ?scope=friends|everyone&period=week|all
+ * Week = Monday 00:00 IST to now. "Everyone" shows usernames only (never real names); "friends" may show display names.
+ * Returns the top 50, plus my own row (even when I'm outside the top 50), my rating and my points.
+ */
+type Row = { rank: number; id: string; name: string; points: number; battles: number; wins: number; rating: number; you: boolean };
+
+export async function GET(req: NextRequest) {
+  const c = await battleCtx(req, { bucket: "leaderboard", limit: 30, needUser: true });
+  if (!isCtx(c)) return c;
+  const { db, userId } = c;
+  const me = userId!;
+  const q = req.nextUrl.searchParams;
+  const scope = q.get("scope") === "friends" ? "friends" : "everyone";
+  const since = q.get("period") === "all" ? "1970-01-01T00:00:00Z" : weekStartIso();
+
+  let totals: { user_id: string; points: number; battles: number; wins: number }[] = [];
+  if (scope === "everyone") {
+    const { data } = await db.rpc("arena_leaderboard", { p_since: since, p_limit: 200 });
+    totals = ((data ?? []) as { user_id: string; points: number | string; battles: number | string; wins: number | string }[]).map((r) => ({ user_id: r.user_id, points: Number(r.points), battles: Number(r.battles), wins: Number(r.wins) }));
+  } else {
+    const { data: fr } = await db.from("friendships").select("user_a, user_b").eq("status", "accepted").or(`user_a.eq.${me},user_b.eq.${me}`).limit(500);
+    const ids = [me, ...(fr ?? []).map((r) => (r.user_a === me ? r.user_b : r.user_a) as string)];
+    const { data: rows } = await db.from("points_ledger").select("user_id, amount, kind").in("user_id", ids).gte("created_at", since).limit(20000);
+    const m = new Map<string, { user_id: string; points: number; battles: number; wins: number }>();
+    for (const r of rows ?? []) {
+      const t = m.get(r.user_id) ?? { user_id: r.user_id, points: 0, battles: 0, wins: 0 };
+      t.points += r.amount; t.battles += 1; if (r.kind === "win") t.wins += 1; m.set(r.user_id, t);
+    }
+    for (const id of ids) if (!m.has(id)) m.set(id, { user_id: id, points: 0, battles: 0, wins: 0 });
+    totals = [...m.values()].sort((a, b) => b.points - a.points || b.battles - a.battles);
+  }
+
+  const top = totals.slice(0, 50);
+  const myIdx = totals.findIndex((t) => t.user_id === me);
+  const want = [...new Set([...top.map((t) => t.user_id), me])];
+  const [{ data: profs }, { data: rats }] = await Promise.all([
+    db.from("profiles").select("id, username, display_name").in("id", want),
+    db.from("ratings").select("user_id, rating").in("user_id", want),
+  ]);
+  const nameOf = (id: string) => {
+    const p = profs?.find((x) => x.id === id);
+    const raw = scope === "friends" ? (p?.display_name || p?.username) : p?.username;
+    return ((raw as string | undefined) ?? "Student").slice(0, 40);
+  };
+  const rating = (id: string) => rats?.find((r) => r.user_id === id)?.rating ?? 1000;
+  const shape = (t: (typeof totals)[number], i: number): Row => ({ rank: i + 1, id: t.user_id, name: nameOf(t.user_id), points: t.points, battles: t.battles, wins: t.wins, rating: rating(t.user_id), you: t.user_id === me });
+  const rows = top.map(shape);
+  const mine = myIdx >= 0 ? shape(totals[myIdx], myIdx) : ({ rank: 0, id: me, name: nameOf(me), points: 0, battles: 0, wins: 0, rating: rating(me), you: true } as Row);
+  return NextResponse.json({ scope, period: q.get("period") === "all" ? "all" : "week", weekStart: since, rows, me: mine }, { headers: { "Cache-Control": "private, no-store" } });
+}
