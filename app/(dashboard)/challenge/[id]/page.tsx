@@ -81,7 +81,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
       <section className="card-pastel p-6 text-center sm:p-8" data-tint="lilac" aria-label="Battle">
         <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--surface)] text-[var(--tint-lilac-ink)]"><Swords className="h-7 w-7" aria-hidden /></span>
         <p className="mt-4 text-xs font-extrabold uppercase tracking-wide text-[var(--tint-lilac-ink)]">Battle</p>
-        <h1 className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{b.ownerScore === null ? <>{b.ownerName} challenges you</> : <>{b.ownerName} scored <span className="font-num">{b.ownerScore}</span> out of <span className="font-num">{b.maxScore}</span></>}</h1>
+        <h1 className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{b.ownerScore === null ? (data.isOwner ? <>Your challenge</> : <>{b.ownerName} challenges you</>) : <>{b.ownerName} scored <span className="font-num">{b.ownerScore}</span> out of <span className="font-num">{b.maxScore}</span></>}</h1>
         <p className="mt-2 text-sm text-[var(--text-secondary)]">{b.title} · {b.questionIds.length} questions. Take the same questions in the real exam screen. {b.ownerName} sees when you open it, how far you are and who wins.</p>
         <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)]"><Hourglass className="h-3.5 w-3.5" /> {b.expired ? "Expired" : `Open until ${new Date(b.expiresAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}`}</p>
 
@@ -91,8 +91,23 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
           <p className="mt-6 text-sm font-semibold text-[var(--tint-rose-ink)]">This battle has expired. Ask {b.ownerName} for a new one.</p>
         ) : done ? (
           <div className="mt-6">
-            <p className="font-display text-xl font-extrabold text-[var(--text-primary)]">You scored <span className="font-num">{done.score}</span> / <span className="font-num">{done.maxScore}</span></p>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">{b.ownerScore === null ? `${b.ownerName} has not finished yet. Check the battle later to see who won.` : Number(done.score) > b.ownerScore ? `You beat ${b.ownerName}.` : Number(done.score) === b.ownerScore ? `You matched ${b.ownerName}.` : `${b.ownerName} is ahead. Try a rematch.`}</p>
+            {b.ownerScore !== null && done.score !== null && done.maxScore ? (
+              <div className="mx-auto grid max-w-md grid-cols-2 gap-3 text-center" aria-label="Combined result">
+                {[{ who: "You", score: Number(done.score), max: Number(done.maxScore) }, { who: b.ownerName, score: b.ownerScore, max: b.maxScore ?? 1 }].map((p, i, all) => {
+                  const win = p.score > all[1 - i].score;
+                  return (
+                    <div key={p.who} className={`rounded-2xl border p-3 ${win ? "border-[var(--text-primary)] bg-[var(--surface)]" : "border-[var(--border)] bg-[var(--surface)]"}`}>
+                      <p className="truncate text-xs font-bold uppercase tracking-wide text-[var(--text-muted)]">{p.who}</p>
+                      <p className="font-display text-3xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{p.score}</span><span className="text-base font-bold text-[var(--text-muted)]"> / <span className="font-num">{p.max}</span></span></p>
+                      <p className="text-xs text-[var(--text-secondary)]"><span className="font-num">{Math.round((p.score / (p.max || 1)) * 100)}</span>% {win ? "· Winner" : ""}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="font-display text-xl font-extrabold text-[var(--text-primary)]">You scored <span className="font-num">{done.score}</span> / <span className="font-num">{done.maxScore}</span></p>
+            )}
+            <p className="mt-3 text-sm text-[var(--text-secondary)]">{b.ownerScore === null ? `${b.ownerName} has not finished yet. Check the battle later to see who won.` : Number(done.score) > b.ownerScore ? `You beat ${b.ownerName}.` : Number(done.score) === b.ownerScore ? `You matched ${b.ownerName}.` : `${b.ownerName} is ahead. Try a rematch.`}</p>
             <Link href="/battles" className="btn-main mt-4 inline-flex">See the battle</Link>
           </div>
         ) : (
