@@ -15,7 +15,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 type Entry = { userId: string; name: string; status: "opened" | "started" | "submitted" | "abandoned"; answered: number; total: number; score: number | null; maxScore: number | null; submittedAt: string | null; lastSeenAt: string; you: boolean; attemptId?: string | null };
-type Battle = { id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; entries: Entry[] };
+type Battle = { id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; invited?: boolean; entries: Entry[] };
 
 const STATUS: Record<Entry["status"], { label: string; tint: string }> = {
   opened: { label: "Opened the link", tint: "sky" }, started: { label: "Playing now", tint: "butter" }, submitted: { label: "Submitted", tint: "mint" }, abandoned: { label: "Left", tint: "rose" },
@@ -52,6 +52,7 @@ export default function BattlesPage() {
     catch { useToastStore.getState().show("Couldn't copy the link. Open the battle and copy it from the address bar.", "error"); }
   };
   const active = (battles ?? []).filter((b) => b.mine && !b.expired).length;
+  const forYou = (battles ?? []).filter((b) => b.invited && !b.expired && !b.entries.some((e) => e.you && e.status === "submitted"));
 
   return (
     <div className="space-y-6 pb-8">
@@ -67,6 +68,20 @@ export default function BattlesPage() {
       </section>
 
       {user ? <FriendsPanel /> : null}
+
+      {forYou.length > 0 ? (
+        <section className="card-well p-5 sm:p-6" data-tint="butter" aria-label="Challenges for you">
+          <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-[var(--text-primary)]"><Swords className="h-5 w-5" /> Challenges for you <span className="text-sm font-semibold text-[var(--text-muted)]">{forYou.length}</span></h2>
+          <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {forYou.map((b) => (
+              <li key={b.id} className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{b.ownerName} challenges you</span><span className="block truncate text-xs text-[var(--text-muted)]">{b.title} · {b.questions} questions · {left(b.expiresAt)}</span></span>
+                <Link href={`/challenge/${b.id}`} className="btn-main !px-3 !py-1.5 text-xs">Play</Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {!authReady ? null : !user ? (
         <section className="card-well p-6 text-center" data-tint="butter">

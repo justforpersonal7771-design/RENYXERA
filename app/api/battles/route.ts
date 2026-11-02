@@ -63,11 +63,13 @@ export async function GET(req: NextRequest) {
   if (!isCtx(c)) return c;
   const { db, userId } = c;
   const nowIso = new Date().toISOString();
-  const [{ data: owned }, { data: joined }] = await Promise.all([
+  const [{ data: owned }, { data: joined }, { data: invitedRows }] = await Promise.all([
     db.from("battles").select("id, title, owner_name, owner_score, max_score, question_ids, created_at, expires_at").eq("owner_id", userId!).order("created_at", { ascending: false }).limit(30),
     db.from("battle_entries").select("battle_id").eq("user_id", userId!).order("last_seen_at", { ascending: false }).limit(30),
+    db.from("battle_invites").select("battle_id").eq("user_id", userId!).order("created_at", { ascending: false }).limit(30),
   ]);
-  const joinedIds = (joined ?? []).map((j) => j.battle_id as string).filter((id) => !(owned ?? []).some((o) => o.id === id));
+  const invitedIds = new Set((invitedRows ?? []).map((j) => j.battle_id as string));
+  const joinedIds = [...new Set([...(joined ?? []).map((j) => j.battle_id as string), ...invitedIds])].filter((id) => !(owned ?? []).some((o) => o.id === id));
   const { data: others } = joinedIds.length
     ? await db.from("battles").select("id, title, owner_name, owner_score, max_score, question_ids, created_at, expires_at").in("id", joinedIds)
     : { data: [] as NonNullable<typeof owned> };
@@ -81,6 +83,7 @@ export async function GET(req: NextRequest) {
     battles: all.map((b) => ({
       id: b.id, title: b.title, ownerName: b.owner_name, ownerScore: b.owner_score, maxScore: b.max_score, questions: b.question_ids.length,
       createdAt: b.created_at, expiresAt: b.expires_at, expired: b.expires_at <= nowIso, mine: b.mine,
+      invited: !b.mine && invitedIds.has(b.id),
       // Everyone in a battle sees the entries of the owner's battles; a joiner sees only their own row.
       entries: (entries ?? []).filter((e) => e.battle_id === b.id && (b.mine || e.user_id === userId)).map((e) => ({
         userId: e.user_id, name: e.display_name, status: e.status, answered: e.answered, total: e.total, score: e.score, maxScore: e.max_score,
