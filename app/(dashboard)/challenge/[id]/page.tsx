@@ -83,7 +83,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
         <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--surface)] text-[var(--tint-lilac-ink)]"><Swords className="h-7 w-7" aria-hidden /></span>
         <p className="mt-4 text-xs font-extrabold uppercase tracking-wide text-[var(--tint-lilac-ink)]">Battle</p>
         <h1 className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{b.ownerScore === null ? (data.isOwner ? <>Your challenge</> : <>{b.ownerName} challenges you</>) : <>{b.ownerName} scored <span className="font-num">{b.ownerScore}</span> out of <span className="font-num">{b.maxScore}</span></>}</h1>
-        <p className="mt-2 text-sm text-[var(--text-secondary)]">{b.title} · {b.questionIds.length} questions. Take the same questions in the real exam screen. {b.ownerName} sees when you open it, how far you are and who wins.</p>
+        <p className="mt-2 text-sm text-[var(--text-secondary)]">{b.title} · {b.questionIds.length} questions. Take the same questions in the real exam screen. {data.isOwner ? "You see when friends open it, how far they are and who wins." : `${b.ownerName} sees when you open it, how far you are and who wins.`}</p>
         <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)]"><Hourglass className="h-3.5 w-3.5" /> {b.expired ? "Expired" : `Open until ${new Date(b.expiresAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}`}</p>
 
         {data.isOwner ? (
