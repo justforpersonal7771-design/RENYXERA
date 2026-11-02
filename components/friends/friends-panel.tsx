@@ -73,7 +73,7 @@ export function FriendsPanel() {
   return (
     <section className="card-well p-5 sm:p-6" data-tint="mint" aria-label="Friends">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-[var(--text-primary)]"><Users className="h-5 w-5" /> Friends{data ? <span className="text-sm font-semibold text-[var(--text-muted)]">{data.friends.length}{active ? ` · ${active} active now` : ""}</span> : null}</h2>
+        <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-[var(--text-primary)]"><Users className="h-5 w-5" /> Friends{data ? <span className="text-sm font-semibold text-[var(--text-muted)]">{data.friends.length === 1 ? "1 friend" : `${data.friends.length} friends`}{active ? ` · ${active} active now` : ""}</span> : null}</h2>
         {data ? (
           <button type="button" className="btn-soft !px-3 !py-1.5 text-xs" aria-pressed={data.showPresence} onClick={() => void act("presence", { action: "presence", show: !data.showPresence })}>
             {data.showPresence ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />} {data.showPresence ? "Friends can see when I'm online" : "My status is hidden"}
