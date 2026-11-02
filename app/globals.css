@@ -1958,3 +1958,13 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 /* chat history: a folder's chats hang from a curved connector instead of a straight rule */
 .folder-kids > li { position: relative; }
 .folder-kids > li::before { content: ""; position: absolute; left: -14px; top: -10px; width: 12px; height: calc(50% + 10px); border-left: 2px solid color-mix(in srgb, var(--tint-lilac-ink) 45%, transparent); border-bottom: 2px solid color-mix(in srgb, var(--tint-lilac-ink) 45%, transparent); border-bottom-left-radius: 10px; pointer-events: none; }
+
+/* One press effect for every solid call-to-action (the "bump" of the hero button): a hard shadow that grows on hover and collapses on press.
+   Covers the buttons built with plain colour classes (timer Start, Start revision, Resume, ...) so none of them feels flat next to .btn-main. */
+:is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [class*="bg-blue-600"], [class*="bg-emerald-600"], [class*="bg-emerald-700"], [class*="from-indigo-600"], [class*="from-violet-600"], [class*="bg-amber-500"], [class*="bg-rose-600"]):not([role="tab"]):not([role="radio"]):not([role="switch"]):not([aria-pressed]):not(.btn-main):not(.pill-ink):not(.ai-nav-btn) {
+  border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); transition: transform .1s, box-shadow .1s;
+}
+:is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [class*="bg-blue-600"], [class*="bg-emerald-600"], [class*="bg-emerald-700"], [class*="from-indigo-600"], [class*="from-violet-600"], [class*="bg-amber-500"], [class*="bg-rose-600"]):not([role="tab"]):not([role="radio"]):not([role="switch"]):not([aria-pressed]):not(.btn-main):not(.pill-ink):not(.ai-nav-btn):not(:disabled):hover { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+:is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [class*="bg-blue-600"], [class*="bg-emerald-600"], [class*="bg-emerald-700"], [class*="from-indigo-600"], [class*="from-violet-600"], [class*="bg-amber-500"], [class*="bg-rose-600"]):not([role="tab"]):not([role="radio"]):not([role="switch"]):not([aria-pressed]):not(.btn-main):not(.pill-ink):not(.ai-nav-btn):not(:disabled):active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+.dark :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [class*="bg-blue-600"], [class*="bg-emerald-600"], [class*="from-indigo-600"], [class*="bg-amber-500"]):not(.btn-main):not(.pill-ink) { border-color: var(--edge, #9694be); box-shadow: 4px 4px 0 var(--edge-soft, rgba(150,148,190,.3)); }
+@media (prefers-reduced-motion: reduce) { :is(button, a)[class*="bg-"] { transition: none; } }

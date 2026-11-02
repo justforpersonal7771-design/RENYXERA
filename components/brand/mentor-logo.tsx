@@ -11,7 +11,7 @@
  */
 export function MentorLogo({ className = "h-6", mode = "still" }: { className?: string; mode?: "still" | "blink" | "think" }) {
   return (
-    <span aria-hidden className={`mentor-logo relative inline-block shrink-0 aspect-[465/585] ${className}`} data-mode={mode}>
+    <span aria-hidden className={`mentor-logo relative block shrink-0 aspect-[465/585] ${className}`} data-mode={mode}>
       <img src="/brand/mentor/mentor-ai-body.png" alt="" draggable={false} decoding="async" className="mentor-logo-body absolute inset-0 h-full w-full select-none object-contain" />
       <img src="/brand/mentor/mentor-ai-star.png" alt="" draggable={false} decoding="async" className="mentor-logo-star absolute inset-0 h-full w-full select-none object-contain" />
     </span>

@@ -41,7 +41,7 @@
 - **Idea:** 8-bit game UI. Everything is a rectangle; nothing is curved or eased.
 - **Principles:** **no curves anywhere** (every `border-radius` is 0, cards use a stepped-corner clip), **no easing** (transitions off, animations in discrete steps), a **flat** background (no pattern), 4 px outlines, block shadows that disappear when pressed, a pixel font everywhere.
 - **Colour:** light page `#dde7cf`, surface `#fffdf2`, ink `#2b2d42`, flat tints (green, rose, orange, lavender, blue, yellow); dark page `#12142a`, surface `#1f2140`, ink `#f1e9c8`. Primary buttons amber `#ffb703` with dark text.
-- **Fonts:** Pixelify Sans for headings and text (readable pixel font); numbers and maths keep their own fonts so exam content stays legible.
+- **Fonts:** Jersey 15 (a clean, compact pixel face) for headings and text, with the whole page scaled up 12.5 % so it reads comfortably; numbers and maths keep their own fonts so exam content stays legible. (Pixelify Sans was tried first and was too hard to read.)
 - **Motion:** hover moves the block 2 px (hard step), press moves it 3 px and removes the shadow; spinners step in 8 frames.
 
 ## Aurora (Pro, light and dark)

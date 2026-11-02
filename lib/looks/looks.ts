@@ -19,7 +19,7 @@ export interface Look {
 
 const F = {
   base: { display: "Sora", body: "Manrope" }, outfit: { display: "Outfit", body: "Outfit" }, arcade: { display: "Archivo Black", body: "Space Grotesk" },
-  neon: { display: "Space Grotesk", body: "Space Grotesk" }, pixel: { display: "Pixelify Sans", body: "Pixelify Sans" },
+  neon: { display: "Space Grotesk", body: "Space Grotesk" }, pixel: { display: "Jersey 15", body: "Jersey 15" },
 };
 
 export const LOOKS: Look[] = [
@@ -58,6 +58,6 @@ export const FONT_CHOICES: FontChoice[] = [
   { id: "grotesk", name: "Space Grotesk", var: "--font-grotesk", kind: "sans" },
   { id: "archivo", name: "Archivo Black", var: "--font-archivo", kind: "display" },
   { id: "fraunces", name: "Fraunces", var: "--font-serif", kind: "serif" },
-  { id: "pixel", name: "Pixelify Sans", var: "--font-pixel", kind: "pixel" },
+  { id: "pixel", name: "Jersey 15", var: "--font-pixel", kind: "pixel" },
   { id: "mono", name: "JetBrains Mono", var: "--font-mono", kind: "mono" },
 ];

@@ -14,7 +14,7 @@
   background-image: none !important; background-color: #dde7cf !important;
 }
 :is(.dark[data-look="pixel"], .dark [data-look="pixel"]) .ambient-gradient, html.dark[data-look="pixel"] body { background-color: #12142a !important; }
-[data-look="pixel"][data-look="pixel"] body, [data-look="pixel"][data-look="pixel"] { letter-spacing: 0; font-size-adjust: none; }
+[data-look="pixel"][data-look="pixel"] body, [data-look="pixel"][data-look="pixel"] { letter-spacing: .01em; }
 [data-look="pixel"][data-look="pixel"] :is(h1, h2, h3, h4) { letter-spacing: 0; line-height: 1.15; }
 [data-look="pixel"][data-look="pixel"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft) { text-transform: none; font-size: 0.95rem; padding-inline: 14px; }
 /* every hover is a hard step (a block shadow grows), not a glide */
@@ -42,3 +42,10 @@
 :root[data-look="pixel"][data-look="pixel"][data-look="pixel"] body main * { border-radius: 0 !important; }
 /* Arcade dark: small coloured labels on flat tints */
 :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) :is(p, span)[class*="text-[var(--tint"], :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) [class*="text-blue"], :is(.dark[data-look="arcade"], .dark [data-look="arcade"]) :is(.card-pastel, .card-well) [class*="text-sky"] { color: #fff7d6 !important; }
+
+/* Jersey 15 is a compact face: scale everything up so body text stays comfortable to read. */
+html[data-look="pixel"] { font-size: 112.5%; }
+[data-look="pixel"][data-look="pixel"] :is(h1, h2, h3) { font-weight: 400; letter-spacing: .02em; }
+[data-look="pixel"][data-look="pixel"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft) { font-weight: 400; font-size: 1.05rem; }
+[data-look="pixel"][data-look="pixel"] :is(body, body *):not(svg):not(svg *) { font-weight: 400 !important; }
+[data-look="pixel"][data-look="pixel"] :is(.text-\[9px\], .text-\[10px\], .text-\[11px\]) { font-size: 12px !important; }

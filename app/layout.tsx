@@ -1,6 +1,6 @@
 import "@/lib/time/install-ist";
 import type {Metadata} from 'next';
-import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC, Pixelify_Sans, Space_Grotesk, Archivo_Black, Outfit } from 'next/font/google';
+import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC, Jersey_15, Space_Grotesk, Archivo_Black, Outfit } from 'next/font/google';
 import './globals.css'; // Global styles
 import './looks.css';
 import './looks-pro2.css'; // Design Studio Looks, batch 2
@@ -31,7 +31,7 @@ const script = Playball({ subsets: ['latin'], weight: '400', variable: '--font-s
 const luxe = Cinzel({ subsets: ['latin'], weight: ['600', '700'], variable: '--font-luxe', display: 'swap', preload: false });
 // Look and override fonts (Design Studio): loaded only when a page uses them (preload off). The two -opt- ones are copies of Manrope and Sora under their own
 // names, so a font override can point at them even while --font-sans and --font-display are being replaced.
-const fPixel = Pixelify_Sans({ subsets: ['latin'], variable: '--font-pixel', display: 'swap', preload: false });
+const fPixel = Jersey_15({ subsets: ['latin'], weight: '400', variable: '--font-pixel', display: 'swap', preload: false });
 const fGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-grotesk', display: 'swap', preload: false });
 const fArchivo = Archivo_Black({ subsets: ['latin'], weight: '400', variable: '--font-archivo', display: 'swap', preload: false });
 const fOutfit = Outfit({ subsets: ['latin'], variable: '--font-outfit', display: 'swap', preload: false });
