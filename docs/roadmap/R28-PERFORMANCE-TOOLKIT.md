@@ -58,6 +58,13 @@ Text compression OK. Static files had no long cache (276 files). Two 397 KB PNGs
 ## After this release (local production build, phone emulation)
 0 duplicate API calls, 0 images over 150 KB, 0 PNG/JPG over 20 KB, 0 uncompressed text. Still high: JavaScript about 3 MB per page uncompressed (1.5 MB on /login). Next step is a bundle analysis (`@next/bundle-analyzer`, free) to find what the public pages load that they do not need (MathJax and the exam engine are the first suspects).
 
+## Bundle analysis (3 Nov 2026, local production build, uncompressed)
+Home page loads 3,372 KB of JavaScript in 55 files; /login loads 1,509 KB in 24 files. Largest chunks on the home page: the chart library (recharts, 338 KB), the Supabase client (252 KB), the Turnstile and auth code, React and Next runtime. Cloudflare compresses these with Brotli, so the real transfer is roughly a quarter of that.
+- **Found:** the top bar prefetched the goal panel (which carries recharts) at idle on every page.
+- **Fixed:** it now prefetches on idle only on a 4g, non-data-saver connection; otherwise it loads when the student points at or focuses the goal button. Measured with a simulated 3g phone: home page 3,372 KB to 2,976 KB, 8 fewer files, chart chunk gone.
+- **Already fine:** Sentry loads on demand, avatar styles load one at a time, MathJax loads only on question screens.
+- **Next candidates:** the Supabase client is needed for sign-in on every page; the 333 KB and 278 KB chunks on the home page are not yet identified (run `@next/bundle-analyzer`, free, to name them).
+
 ## Release plan
 1. This release: items 2, 3, 12, 27 and the injection guard; `check:perf` module. 
 2. Next: 1, 4, 11, 19, 23 (all small).

@@ -71,6 +71,10 @@ const NAV_TINTS: Record<string, string> = {
 
 export function Topbar() {
   useEffect(() => {
+    // The goal panel carries the chart library (about 340 KB). Fetch it ahead of time only on a fast, unmetered connection; elsewhere it loads
+    // when the student points at or touches the goal button (see onPointerEnter below), which is still before the click lands.
+    const net = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    if (net?.saveData || (net?.effectiveType && net.effectiveType !== "4g")) return;
     const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
     const go = () => { loadGoalPanel().catch(() => {}); };
     const t = w.requestIdleCallback ? w.requestIdleCallback(go) : window.setTimeout(go, 2500);
@@ -375,6 +379,8 @@ export function Topbar() {
                  anchored to this button), so triggering it from the mobile menu
                  instead needs no extra plumbing. */}
              <button
+                onPointerEnter={() => { loadGoalPanel().catch(() => {}); }}
+                onFocus={() => { loadGoalPanel().catch(() => {}); }}
                 onClick={() => setIsGoalSliderOpen(true)}
                 className={`nav-act z-10 flex relative p-2 rounded-lg transition-colors cursor-pointer ${
                   isGoalSliderOpen
