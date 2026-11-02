@@ -11,7 +11,7 @@ Legend: DONE, PART (partly), TODO, N/A.
 | 1 | Skeleton loading screens | PART | `app/(dashboard)/loading.tsx` exists; add per-screen skeletons for Study, Mentor, Battles |
 | 2 | WebP or AVIF images | DONE | Brand marks 396 KB to 16 KB, mentor art 181 KB to 20 KB (this release). `check:perf` flags any PNG/JPG over 20 KB |
 | 3 | Prevent duplicate API calls | DONE | `/api/version` was fetched twice per page load; the timer and navigation check now share one 30 s window. `check:perf` reports duplicates |
-| 4 | Debounce search and autocomplete | PART | Username check is debounced; audit the PYQ, tools and Study search boxes |
+| 4 | Debounce search and autocomplete | DONE | Audited 3 Nov 2026: every search box filters a small in-memory list (topics, bookmarks, mistakes, command palette); the only server call, the username check, is debounced. Topic browser now uses a deferred value so typing never waits on the list |
 | 5 | Paginate API results | PART | Battles and lists are capped; PYQ list is client-side from static JSON |
 | 6 | Static files through a CDN | DONE | Cloudflare serves everything from its edge |
 | 7 | Background job queue | PART | Supabase scheduled functions and Telegram reminders exist; no general queue (not needed yet) |

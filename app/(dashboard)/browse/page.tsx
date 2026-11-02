@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { useDataStore } from "@/store/use-data-store";
@@ -36,7 +36,7 @@ export default function BrowseTopicsPage() {
     if (!isInitialized || !focusOn) return null;
     return new Set(computeGoalSliderResult(filterOfficialQuestions(QuestionRepository.getAllQuestions()), targetPercent).includedTopics.map((t) => t.topic));
   }, [isInitialized, focusOn, targetPercent]);
-  const needle = q.trim().toLowerCase();
+  const needle = useDeferredValue(q).trim().toLowerCase(); // the box stays instant; the topic list catches up without blocking typing
   const shown = subjects.map((s) => ({ ...s, topics: needle && !s.subject.toLowerCase().includes(needle) ? s.topics.filter(([t]) => t.toLowerCase().includes(needle)) : s.topics })).filter((s) => s.topics.length > 0);
   const count = shown.reduce((n, s) => n + s.topics.length, 0);
   const grand = Math.max(1, subjects.reduce((n, s) => n + s.total, 0));
