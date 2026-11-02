@@ -70,9 +70,9 @@ export function AuthModal() {
 
         <div className="relative z-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/mark-light.png" alt="" className="h-9 w-auto mb-4 dark:hidden drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]" />
+          <img src="/brand/mark-light.webp" alt="" className="h-9 w-auto mb-4 dark:hidden drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/mark-dark.png" alt="" className="h-9 w-auto mb-4 hidden dark:block drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]" />
+          <img src="/brand/mark-dark.webp" alt="" className="h-9 w-auto mb-4 hidden dark:block drop-shadow-[0_4px_14px_rgba(79,70,229,0.35)]" />
 
           {mode === "login" && (
             <LoginForm

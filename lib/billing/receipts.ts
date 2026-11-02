@@ -32,7 +32,7 @@ const auth = (k: Keys) => ({ Authorization: `Basic ${btoa(`${k.id}:${k.secret}`)
 /** What paid: "UPI", "Card ····1234 (visa)", "Netbanking", "Wallet" — no full card numbers or UPI ids are kept. */
 export async function fetchPaymentMethod(k: Keys, paymentId: string): Promise<{ method: string; detail: string | null } | null> {
   try {
-    const r = await fetch(`https://api.razorpay.com/v1/payments/${paymentId}`, { headers: auth(k) });
+    const r = await fetch(`https://api.razorpay.com/v1/payments/${paymentId}`, { headers: auth(k), signal: AbortSignal.timeout(10_000) });
     if (!r.ok) return null;
     const p = (await r.json()) as { method?: string; card?: { last4?: string; network?: string }; bank?: string; wallet?: string };
     const method = p.method === "upi" ? "UPI" : p.method === "card" ? "Card" : p.method === "netbanking" ? "Netbanking" : p.method === "wallet" ? "Wallet" : (p.method ?? "Online");
@@ -48,7 +48,7 @@ export async function fetchPaymentMethod(k: Keys, paymentId: string): Promise<{ 
  */
 export async function reconcileOrder(db: Db, k: Keys, razorpayOrderId: string): Promise<"paid" | "unpaid" | "error"> {
   try {
-    const r = await fetch(`https://api.razorpay.com/v1/orders/${razorpayOrderId}/payments`, { headers: auth(k) });
+    const r = await fetch(`https://api.razorpay.com/v1/orders/${razorpayOrderId}/payments`, { headers: auth(k), signal: AbortSignal.timeout(10_000) });
     if (!r.ok) return "error";
     const j = (await r.json()) as { items?: { id: string; status: string }[] };
     const paid = (j.items ?? []).find((p) => p.status === "captured");

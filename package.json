@@ -8,6 +8,7 @@
     "build": "next build",
     "check:security": "node scripts/check-security.mjs",
     "check:rls": "node --env-file=.env.local scripts/check-rls.mjs",
+    "check:perf": "node scripts/check-perf.mjs",
     "check:credits": "node --experimental-strip-types scripts/check-ai-credits.ts",
     "check:chat": "node --experimental-strip-types scripts/check-chat-tree.ts",
     "check:rpc": "node --env-file=.env.local scripts/check-rpc-access.mjs",

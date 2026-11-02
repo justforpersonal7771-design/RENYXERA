@@ -50,7 +50,7 @@ export async function verifyTurnstile(token: string | undefined, ip: string | nu
   if (!token) return false;
   try {
     const body = new URLSearchParams({ secret, response: token, ...(ip ? { remoteip: ip } : {}) });
-    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body });
+    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", { method: "POST", body, signal: AbortSignal.timeout(10_000) });
     const j = (await r.json()) as { success?: boolean };
     return !!j.success;
   } catch { return false; }

@@ -1930,7 +1930,7 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .ai-panel { position: relative; isolation: isolate; overflow: hidden; border-radius: var(--card-radius); border: 1px solid color-mix(in srgb, #0a5ff2 28%, transparent);
   background: linear-gradient(180deg, color-mix(in srgb, #0a5ff2 22%, var(--tint-lilac)), color-mix(in srgb, #0a5ff2 32%, var(--tint-sky))); }
 .dark .ai-panel { background: linear-gradient(180deg, color-mix(in srgb, #0a5ff2 24%, #0b1020), color-mix(in srgb, #0a5ff2 16%, #090d1a)); border-color: color-mix(in srgb, #60a5fa 24%, transparent); }
-.ai-panel::after { content: ""; position: absolute; right: -26px; bottom: -22px; width: 190px; height: 239px; z-index: -1; opacity: .12; pointer-events: none; background: url("/brand/mentor/mentor-ai.png") center / contain no-repeat; }
+.ai-panel::after { content: ""; position: absolute; right: -26px; bottom: -22px; width: 190px; height: 239px; z-index: -1; opacity: .12; pointer-events: none; background: url("/brand/mentor/mentor-ai.webp") center / contain no-repeat; }
 .dark .ai-panel::after { opacity: .16; }
 
 /* New-chat stage in the Mentor: a soft glow behind the centred box (like the big chat apps), nothing geometric. */

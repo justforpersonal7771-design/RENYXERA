@@ -7,6 +7,7 @@ import { useToastStore } from "@/store/use-toast-store";
 const MINE = process.env.NEXT_PUBLIC_BUILD_ID;
 const EVERY = 5 * 60_000;
 const KEY = "renyxera_version_reload_at";
+let lastCheck = 0;   // shared by the timer and the navigation check, so a page load asks the server once, not twice
 
 /** At most one automatic reload a minute, so a stubborn cache can never cause a loop. */
 function reloadOnce() {
@@ -30,10 +31,9 @@ export function VersionWatch() {
 
   useEffect(() => {
     if (!MINE) return;
-    let last = 0;
     const check = async () => {
-      if (Date.now() - last < 30_000 || document.hidden || !navigator.onLine) return;
-      last = Date.now();
+      if (Date.now() - lastCheck < 30_000 || document.hidden || !navigator.onLine) return;
+      lastCheck = Date.now();
       try {
         const res = await fetch("/api/version", { cache: "no-store" });
         if (!res.ok) return;
@@ -55,7 +55,8 @@ export function VersionWatch() {
 
   // Also check on every in-app navigation (cheap: rate-limited above).
   useEffect(() => {
-    if (!MINE || pathname?.startsWith("/exam/session")) return;
+    if (!MINE || pathname?.startsWith("/exam/session") || Date.now() - lastCheck < 30_000) return;
+    lastCheck = Date.now();
     (async () => {
       try {
         const res = await fetch("/api/version", { cache: "no-store" });

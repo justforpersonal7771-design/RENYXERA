@@ -10,7 +10,7 @@ export const botConfigured = () => !!token();
 export async function tg<T = unknown>(method: string, body: Json = {}): Promise<{ ok: boolean; result?: T; error?: string; code?: number }> {
   if (!token()) return { ok: false, error: "Bot token not configured" };
   try {
-    const r = await fetch(`https://api.telegram.org/bot${token()}/${method}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const r = await fetch(`https://api.telegram.org/bot${token()}/${method}`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(10_000) });
     const j = (await r.json()) as { ok: boolean; result?: T; description?: string; error_code?: number };
     return j.ok ? { ok: true, result: j.result } : { ok: false, error: j.description, code: j.error_code };
   } catch (e) {

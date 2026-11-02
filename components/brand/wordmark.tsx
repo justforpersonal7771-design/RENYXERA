@@ -32,9 +32,9 @@ export function BrandMark({ className = "h-8 w-8" }: { className?: string }) {
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/brand/mark-light.png" alt="" aria-hidden="true" width={40} height={40} style={{ maxWidth: 80, maxHeight: 80 }} className={`object-contain dark:hidden ${className}`} />
+      <img src="/brand/mark-light.webp" alt="" aria-hidden="true" width={40} height={40} style={{ maxWidth: 80, maxHeight: 80 }} className={`object-contain dark:hidden ${className}`} />
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/brand/mark-dark.png" alt="" aria-hidden="true" width={40} height={40} style={{ maxWidth: 80, maxHeight: 80 }} className={`object-contain hidden dark:block ${className}`} />
+      <img src="/brand/mark-dark.webp" alt="" aria-hidden="true" width={40} height={40} style={{ maxWidth: 80, maxHeight: 80 }} className={`object-contain hidden dark:block ${className}`} />
     </>
   );
 }

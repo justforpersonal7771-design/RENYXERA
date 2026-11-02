@@ -3,6 +3,7 @@ import { getGoogleGenAIClient, GEMINI_MODEL, AI_ROUTE } from "@/lib/ai/gemini";
 import { sharedCacheKey } from "@/lib/ai/shared-cache";
 import { generateJson } from "@/lib/ai/llm";
 import { PromptBuilder } from "@/lib/ai/ai-prompts";
+import { looksLikeInjection } from "@/lib/ai/guard";
 import { aiRequestSchema, type AIGenerateRequest } from "@/lib/security/ai-request-schema";
 import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
@@ -213,6 +214,10 @@ export async function POST(req: NextRequest) {
       { error: "Invalid request.", issues: parsed.error.issues.slice(0, 5) },
       { status: 400 }
     );
+  }
+
+  if (looksLikeInjection(parsed.data)) {
+    return NextResponse.json({ error: "That message tries to change the Mentor's rules, so it was not sent. Ask your study question directly." }, { status: 400 });
   }
 
   const startedAt = Date.now();

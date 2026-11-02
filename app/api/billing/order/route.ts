@@ -79,6 +79,7 @@ export async function POST(req: NextRequest) {
   }
 
   const r = await fetch("https://api.razorpay.com/v1/orders", {
+    signal: AbortSignal.timeout(10_000),
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Basic ${btoa(`${keys.id}:${keys.secret}`)}` },
     body: JSON.stringify({ amount, currency: "INR", receipt: `u_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: plan.id, branch: branch } }),

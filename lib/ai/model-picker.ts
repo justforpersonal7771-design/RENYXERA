@@ -33,7 +33,7 @@ export function benchModel(id: string) { benched.set(id, Date.now() + 30 * 60_00
 async function models(): Promise<OrModel[]> {
   if (cache && Date.now() - cache.at < 6 * 3600_000) return cache.models;
   try {
-    const res = await fetch("https://openrouter.ai/api/v1/models");
+    const res = await fetch("https://openrouter.ai/api/v1/models", { signal: AbortSignal.timeout(10_000) });
     if (res.ok) { cache = { at: Date.now(), models: (await res.json()).data ?? [] }; return cache.models; }
   } catch { /* use the static list */ }
   return cache?.models ?? [];
