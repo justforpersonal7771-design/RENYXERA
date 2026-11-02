@@ -6,7 +6,7 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
-import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { canUseLook, lookById } from "@/lib/looks/looks";
@@ -17,6 +17,7 @@ export function LookApplier() {
   const { look, trial, hydrated, load, setLook, endTrial, fonts } = useLookStore();
   const { setTheme, resolvedTheme } = useTheme();
   const before = useRef<string | null>(null);   // the student's own light/dark choice, restored when a dark-only Look ends
+  const path = usePathname() ?? "";
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { load(); }, [load]);
   useEffect(() => { if (!trial) return; const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, [trial]);
@@ -33,6 +34,8 @@ export function LookApplier() {
     if (id === "classic") root.removeAttribute("data-look"); else root.setAttribute("data-look", id);
   }, [id, hydrated]);
 
+  // Exams run on a still page: ambient animations (the Aurora drift, glows) are frozen there so timing and taps stay crisp.
+  useEffect(() => { const r = document.documentElement; if (path.startsWith("/exam")) r.setAttribute("data-in-exam", ""); else r.removeAttribute("data-in-exam"); }, [path]);
   // Fonts: the Look brings its own (CSS in looks*.css); an override from the Fonts section wins.
   useEffect(() => {
     if (!hydrated) return;
@@ -50,15 +53,17 @@ export function LookApplier() {
     else if (before.current !== null) { setTheme(before.current); before.current = null; }
   }, [mode, hydrated, resolvedTheme, setTheme]);
 
-  if (!trial || trial.endsAt <= now) return null;
+  // During an exam nothing may float over the screen: the trial keeps running and the chip returns afterwards.
+  if (!trial || trial.endsAt <= now || path.startsWith("/exam")) return null;
   const left = Math.max(0, Math.ceil((trial.endsAt - now) / 1000)), mm = Math.floor(left / 60), ss = String(left % 60).padStart(2, "0");
   return (
-    <div role="status" aria-live="polite" className="fixed bottom-20 left-3 z-[330] flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 py-1.5 text-sm text-[var(--text-primary)] shadow-lg lg:bottom-4">
-      <Sparkles className="h-4 w-4 text-[var(--tint-peri-ink)]" aria-hidden />
-      <span className="font-bold">Trying {lookById(trial.id).name}</span>
-      <span className="font-num tabular-nums text-[var(--text-secondary)]">{mm}:{ss}</span>
-      <Link href="/pro" className="pill-ink !px-3 !py-1 text-xs">Get it</Link>
-      <button type="button" onClick={() => endTrial(false)} className="pill-soft cursor-pointer !px-3 !py-1 text-xs">Switch back</button>
+    <div role="status" aria-live="polite" className="pointer-events-none fixed bottom-[78px] left-3 z-[330] lg:bottom-4">
+      <div className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] py-1 pl-2.5 pr-1 text-xs text-[var(--text-primary)] shadow-lg">
+        <Sparkles className="h-3.5 w-3.5 text-[var(--tint-peri-ink)]" aria-hidden />
+        <span className="max-w-[7.5rem] truncate font-bold" title={`Trying ${lookById(trial.id).name}`}>{lookById(trial.id).name}</span>
+        <span className="font-num tabular-nums text-[var(--text-secondary)]">{mm}:{ss}</span>
+        <button type="button" onClick={() => endTrial(false)} aria-label="Stop the trial and switch back" title="Switch back" className="grid h-6 w-6 cursor-pointer place-items-center rounded-full hover:bg-[var(--surface-secondary)]">&times;</button>
+      </div>
     </div>
   );
 }

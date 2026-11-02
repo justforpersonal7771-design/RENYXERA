@@ -54,6 +54,12 @@
 ## Not built yet (specified in R26): Liquid Glass, HUD Terminal, Blueprint, Editorial, Clay, Minimal Mono, Midnight, Ocean Bento, Sunrise Soft, Paper.
 Each needs: tokens, surfaces, controls, fonts, mode support, motion, contrast audit, this spec section.
 
+## Test results (2 Nov 2026, local production build)
+- Guest exam flow (setup, deploy, calculator, answer, submit, results, card download): **passes in all 5 Looks on phone and desktop, light and dark** (Neon dark only). Script: `scripts/zz-exam-look.mjs` (`LOOK=glass SCHEME=dark DESKTOP=1`).
+- Page audit on 19 screens, desktop and phone: no sideways scroll anywhere; Pixel has 0 rounded elements; remaining contrast flags are selected pills whose fill is a separate layer (checked by eye).
+- Bugs found and fixed by this testing: the trial chip covered the Deploy and results buttons; Aurora's moving background slowed the exam screen (now frozen during exams, lighter blur).
+- Known rough edges: Arcade dark shows a flat blue block inside the Configuration card; Pixel shows a faint ghost square behind the last segmented option.
+
 ## Checklist for adding or changing a Look
 - [ ] Tokens set (light and dark, or one mode declared) and fonts chosen.
 - [ ] Surfaces: cards, wells, bands, panels, topbar, dock, popovers, menus, dialogs.

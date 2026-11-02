@@ -49,3 +49,16 @@ html[data-look="pixel"] { font-size: 106%; }
 [data-look="pixel"][data-look="pixel"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft) { font-weight: 400; font-size: 1.05rem; }
 [data-look="pixel"][data-look="pixel"] :is(body, body *):not(svg):not(svg *) { font-weight: 400 !important; }
 [data-look="pixel"][data-look="pixel"] :is(.text-\[9px\], .text-\[10px\], .text-\[11px\]) { font-size: 13px !important; }
+
+/* Small coloured labels (indigo, blue, violet "eyebrows" and counters) keep their hue but get darker on the flat light tints, and lighter on the dark ones. */
+[data-look="arcade"][data-look="arcade"] :is([class*="text-indigo-"], [class*="text-blue-"], [class*="text-violet-"], [class*="text-sky-"]):not(.btn-main):not(.pill-ink),
+[data-look="pixel"][data-look="pixel"] :is([class*="text-indigo-"], [class*="text-blue-"], [class*="text-violet-"], [class*="text-sky-"]):not(.btn-main):not(.pill-ink) { color: #14237a !important; }
+:is(.dark[data-look="arcade"], .dark [data-look="arcade"], .dark[data-look="pixel"], .dark [data-look="pixel"]) :is([class*="text-indigo-"], [class*="text-blue-"], [class*="text-violet-"], [class*="text-sky-"]):not(.btn-main):not(.pill-ink) { color: #e0e7ff !important; }
+
+/* Exams: no ambient motion, and cheaper blur, so the exam screen stays fast in every Look. */
+html[data-in-exam][data-look] .ambient-gradient, html[data-in-exam][data-look] body { animation: none !important; }
+html[data-in-exam][data-look="aurora"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .topbar-island, .popover-surface) { -webkit-backdrop-filter: none; backdrop-filter: none; }
+html[data-in-exam][data-look="glass"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .topbar-island) { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+html[data-in-exam][data-look="neon"] .btn-main:hover { animation: none; }
+/* Aurora: a lighter blur everywhere (it was 10px behind a moving background). */
+[data-look="aurora"][data-look="aurora"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .topbar-island, .main-dock, .nav-cluster, .card-inset, .tile) { -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }

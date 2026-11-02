@@ -14,6 +14,7 @@ const b = await chromium.launch();
 try {
   for (const [dev, scheme] of [["phone", "light"], ["phone", "dark"], ["desktop", "light"], ["desktop", "dark"]]) {
     const ctx = await b.newContext({ ...(dev === "phone" ? devices["iPhone 13"] : { viewport: { width: 1440, height: 900 } }), colorScheme: scheme });
+    if (process.env.LOOK) await ctx.addInitScript((l) => { try { localStorage.setItem("renyxera_look_v1", JSON.stringify({ look: "classic", trial: { id: l, endsAt: Date.now() + 36e5 }, tried: [l], fonts: {} })); } catch {} }, process.env.LOOK);
     await ctx.addInitScript((t) => { try { localStorage.setItem("theme", t); sessionStorage.setItem("renyxera_intro_seen", "1"); } catch {} }, scheme);
     const p = await ctx.newPage();
     const errors = [];
@@ -30,6 +31,7 @@ try {
 
   // Guest exam flow on a phone: setup → deploy → answer → submit → results.
   const ctx = await b.newContext({ ...devices["iPhone 13"] });
+    if (process.env.LOOK) await ctx.addInitScript((l) => { try { localStorage.setItem("renyxera_look_v1", JSON.stringify({ look: "classic", trial: { id: l, endsAt: Date.now() + 36e5 }, tried: [l], fonts: {} })); } catch {} }, process.env.LOOK);
   await ctx.addInitScript(() => { try { sessionStorage.setItem("renyxera_intro_seen", "1"); } catch {} });
   const p = await ctx.newPage();
   const errors = [];
