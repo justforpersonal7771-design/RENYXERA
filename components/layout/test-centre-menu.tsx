@@ -4,6 +4,7 @@
 import Link from "next/link";
 import { BarChart3, Layers, Settings, Swords, Timer, Trophy, RotateCcw } from "lucide-react";
 import { TEST_CENTRE_HREF } from "@/lib/test-centre/brand";
+import { SocialDot } from "@/components/friends/social-dot";
 
 const DOORS = [
   { href: "/test-centre/build", label: "Build a test", icon: Settings },
@@ -23,7 +24,7 @@ export function TestCentreMenu() {
             <li key={d.href}>
               <Link href={d.href} role="menuitem" className="flex h-full items-center gap-2 rounded-2xl px-3 py-2.5 hover:bg-[var(--surface-secondary)]">
                 <d.icon className="h-4 w-4 shrink-0 text-[var(--text-primary)]" aria-hidden />
-                <span className="min-w-0 whitespace-nowrap text-sm font-bold text-[var(--text-primary)]">{d.label}</span>
+                <span className="min-w-0 whitespace-nowrap text-sm font-bold text-[var(--text-primary)]">{d.label}</span>{d.href === "/battles" ? <SocialDot /> : null}
               </Link>
             </li>
           ))}

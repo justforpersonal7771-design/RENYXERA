@@ -16,6 +16,7 @@ import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { hasJoinedChannel, useTelegramState } from "@/components/growth/use-telegram-state";
+import { SocialDot } from "@/components/friends/social-dot";
 
 const ITEMS = [
   { id: "overview", label: "Overview", icon: LayoutGrid, tint: "from-indigo-500 to-violet-600" },
@@ -184,7 +185,7 @@ export function AccountButton() {
 
               <Link href="/battles" role="menuitem" onClick={() => setOpen(false)} className="group relative flex items-center gap-3 rounded-xl px-2.5 py-2 outline-none hover:bg-[var(--surface-secondary)] focus-visible:bg-[var(--surface-secondary)]">
                 <span className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-rose-500 to-orange-500 text-white flex items-center justify-center shadow-md transition-transform group-hover:scale-110"><Swords className="w-4 h-4" /></span>
-                <span className="relative flex-1 text-sm font-semibold text-[var(--text-primary)]">Battles</span>
+                <span className="relative flex-1 text-sm font-semibold text-[var(--text-primary)]">Battles</span><SocialDot className="relative" />
                 <ChevronRight className="relative w-4 h-4 text-[var(--text-muted)] opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" />
               </Link>
               {!pro && <button type="button" role="menuitem" onClick={() => { setOpen(false); openUpgrade(); }}

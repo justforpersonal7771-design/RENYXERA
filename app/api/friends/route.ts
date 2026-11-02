@@ -64,7 +64,23 @@ export async function POST(req: NextRequest) {
 
   if (b.action === "ping") {
     await db.from("profiles").update({ last_seen_at: new Date().toISOString() }).eq("id", me);
-    return NextResponse.json({ ok: true });
+    // What is waiting: challenges I was sent and have not played, and friend requests for me. Rides on the ping, so no extra request.
+    const nowIso = new Date().toISOString();
+    const [{ data: inv }, { count: requests }] = await Promise.all([
+      db.from("battle_invites").select("battle_id").eq("user_id", me).order("created_at", { ascending: false }).limit(30),
+      db.from("friendships").select("user_a", { count: "exact", head: true }).eq("status", "pending").neq("requested_by", me).or(`user_a.eq.${me},user_b.eq.${me}`),
+    ]);
+    let challenges = 0;
+    const ids = (inv ?? []).map((r) => r.battle_id as string);
+    if (ids.length) {
+      const [{ data: live }, { data: done }] = await Promise.all([
+        db.from("battles").select("id").in("id", ids).gt("expires_at", nowIso),
+        db.from("battle_entries").select("battle_id").eq("user_id", me).eq("status", "submitted").in("battle_id", ids),
+      ]);
+      const finished = new Set((done ?? []).map((d) => d.battle_id as string));
+      challenges = (live ?? []).filter((l) => !finished.has(l.id as string)).length;
+    }
+    return NextResponse.json({ ok: true, challenges, requests: requests ?? 0 });
   }
   if (b.action === "presence") {
     await db.from("profiles").update({ show_presence: b.show }).eq("id", me);

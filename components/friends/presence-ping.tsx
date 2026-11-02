@@ -7,6 +7,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/use-auth-store";
+import { useSocialStore } from "@/store/use-social-store";
 
 const EVERY_MS = 60_000;
 let lastPing = 0; // shared, so a remount or a second effect never doubles the request
@@ -16,11 +17,14 @@ export function PresencePing() {
   const pathname = usePathname();
   const inExam = pathname?.startsWith("/exam") ?? false;
   useEffect(() => {
-    if (!user || inExam) return;
+    if (!user) { useSocialStore.getState().reset(); return; }
+    if (inExam) return;
     const ping = () => {
       if (document.visibilityState !== "visible" || !navigator.onLine || Date.now() - lastPing < EVERY_MS - 2000) return;
       lastPing = Date.now();
-      void fetch("/api/friends", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "ping" }), keepalive: true }).catch(() => {});
+      void fetch("/api/friends", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "ping" }), keepalive: true })
+        .then(async (r) => { if (r.ok) { const j = (await r.json()) as { challenges?: number; requests?: number }; useSocialStore.getState().set({ challenges: j.challenges ?? 0, requests: j.requests ?? 0 }); } })
+        .catch(() => {});
     };
     ping();
     const t = setInterval(ping, EVERY_MS);

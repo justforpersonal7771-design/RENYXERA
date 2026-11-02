@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SocialDot } from "@/components/friends/social-dot";
 import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -62,7 +63,7 @@ export function BottomTabBar() {
           <li className="flex-1 min-w-0">
             <button type="button" aria-haspopup="dialog" aria-expanded={more} onClick={() => setMore((o) => !o)}
               className={`flex h-14 w-full flex-col items-center justify-center gap-0.5 text-[10px] font-bold cursor-pointer transition-colors ${more || moreActive ? on : "text-[var(--text-muted)] active:text-[var(--text-primary)]"}`}>
-              {more ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              <span className="relative">{more ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}{!more ? <SocialDot plain className="absolute -right-1 -top-0.5" /> : null}</span>
               <span>More</span>
             </button>
           </li>
@@ -79,7 +80,7 @@ export function BottomTabBar() {
                 <li key={r.label}>
                   <Link href={r.href} onClick={() => setMore(false)} aria-current={r.active ? "page" : undefined}
                     className={`flex items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold transition-colors ${r.active ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white" : "text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"}`}>
-                    <r.icon className="h-5 w-5 shrink-0" aria-hidden /> {r.label}
+                    <r.icon className="h-5 w-5 shrink-0" aria-hidden /> {r.label}{r.href === "/battles" ? <SocialDot className="ml-auto" /> : null}
                   </Link>
                 </li>
               ))}
