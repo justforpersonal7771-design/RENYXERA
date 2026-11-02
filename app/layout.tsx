@@ -14,6 +14,7 @@ import { SITE_URL } from "@/lib/site";
 import { SAME_AS } from "@/lib/social";
 import { TooltipLayer } from "@/components/ui/tooltip-layer";
 import { VersionWatch } from "@/components/system/version-watch";
+import { PresencePing } from "@/components/friends/presence-ping";
 
 // One family per job, all SIL OFL (served via next/font, self-hosted at build):
 //  - Manrope   — body & UI text: calm, open, very legible at small sizes
@@ -146,6 +147,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
           <LookApplier />
           <TooltipLayer />
           <VersionWatch />
+          <PresencePing />
           <CardSpotlight />
           {children}
         </ThemeProvider>

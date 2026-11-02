@@ -8,6 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Swords, Hourglass, Trophy, Link2, Loader2, RotateCcw, ChevronDown } from "lucide-react";
 import { PlanCompare } from "@/components/preview/plan-compare";
+import { FriendsPanel } from "@/components/friends/friends-panel";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
@@ -40,6 +41,7 @@ export default function BattlesPage() {
   }, []);
   useEffect(() => {
     if (!user) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
     const t = setInterval(() => { if (document.visibilityState === "visible") void load(); }, 15_000);
     return () => clearInterval(t);
@@ -63,6 +65,8 @@ export default function BattlesPage() {
           <span className="text-sm text-[var(--text-muted)]">{tier === "free" ? `${Math.min(active, 3)} of 3 active battles on Free` : "Unlimited battles"}</span>
         </div>
       </section>
+
+      {user ? <FriendsPanel /> : null}
 
       {!authReady ? null : !user ? (
         <section className="card-well p-6 text-center" data-tint="butter">
