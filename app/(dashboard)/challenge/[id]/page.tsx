@@ -13,7 +13,7 @@ import { QuestionRepository } from "@/lib/repository/question-repository";
 import { track } from "@/lib/growth/track";
 import type { ExamSessionDraft } from "@/types/exam.types";
 
-type Battle = { id: string; title: string; ownerName: string; ownerScore: number; maxScore: number; questionIds: string[]; expiresAt: string; expired: boolean };
+type Battle = { id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questionIds: string[]; expiresAt: string; expired: boolean };
 type Loaded = { battle: Battle; isOwner: boolean; entries: { you: boolean; status: string; score: number | null; maxScore: number | null }[] };
 
 const MIN_COVER = 0.8; // must match the server: a friend needs most of the battle's questions in their bank
@@ -64,7 +64,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
       if (!r.ok) { const j = await r.json().catch(() => ({})); setError((j as { error?: string }).error ?? "Couldn't start this battle."); setBusy(false); return; }
       const draft: ExamSessionDraft = {
         id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
-        config: { examType: "CUSTOM_TEST", title: b.title, questionCount: available.length, challenge: { score: b.ownerScore, max: b.maxScore, by: b.ownerName }, battle: { id } },
+        config: { examType: "CUSTOM_TEST", title: b.title, questionCount: available.length, ...(b.ownerScore !== null && b.maxScore !== null ? { challenge: { score: b.ownerScore, max: b.maxScore, by: b.ownerName } } : {}), battle: { id } },
         questions: available.map((questionId, i) => ({ questionId, sequence: i + 1 })),
         createdAt: new Date().toISOString(),
       };
@@ -80,7 +80,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
       <section className="card-pastel p-6 text-center sm:p-8" data-tint="lilac" aria-label="Battle">
         <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--surface)] text-[var(--tint-lilac-ink)]"><Swords className="h-7 w-7" aria-hidden /></span>
         <p className="mt-4 text-xs font-extrabold uppercase tracking-wide text-[var(--tint-lilac-ink)]">Battle</p>
-        <h1 className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{b.ownerName} scored <span className="font-num">{b.ownerScore}</span> out of <span className="font-num">{b.maxScore}</span></h1>
+        <h1 className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{b.ownerScore === null ? <>{b.ownerName} challenges you</> : <>{b.ownerName} scored <span className="font-num">{b.ownerScore}</span> out of <span className="font-num">{b.maxScore}</span></>}</h1>
         <p className="mt-2 text-sm text-[var(--text-secondary)]">{b.title} · {b.questionIds.length} questions. Take the same questions in the real exam screen. {b.ownerName} sees when you open it, how far you are and who wins.</p>
         <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)]"><Hourglass className="h-3.5 w-3.5" /> {b.expired ? "Expired" : `Open until ${new Date(b.expiresAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}`}</p>
 
@@ -91,7 +91,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
         ) : done ? (
           <div className="mt-6">
             <p className="font-display text-xl font-extrabold text-[var(--text-primary)]">You scored <span className="font-num">{done.score}</span> / <span className="font-num">{done.maxScore}</span></p>
-            <p className="mt-1 text-sm text-[var(--text-secondary)]">{Number(done.score) > b.ownerScore ? `You beat ${b.ownerName}.` : Number(done.score) === b.ownerScore ? `You matched ${b.ownerName}.` : `${b.ownerName} is ahead. Try a rematch.`}</p>
+            <p className="mt-1 text-sm text-[var(--text-secondary)]">{b.ownerScore === null ? `${b.ownerName} has not finished yet. Check the battle later to see who won.` : Number(done.score) > b.ownerScore ? `You beat ${b.ownerName}.` : Number(done.score) === b.ownerScore ? `You matched ${b.ownerName}.` : `${b.ownerName} is ahead. Try a rematch.`}</p>
             <Link href="/battles" className="btn-main mt-4 inline-flex">See the battle</Link>
           </div>
         ) : (

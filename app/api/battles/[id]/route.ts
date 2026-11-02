@@ -50,7 +50,18 @@ export async function POST(req: NextRequest, { params }: Ctx) {
   const { data: b } = await db.from("battles").select("id, owner_id, title, question_ids, owner_score, max_score, expires_at").eq("id", id).maybeSingle();
   if (!b) return NextResponse.json({ error: "This battle doesn't exist." }, { status: 404 });
   if (b.expires_at <= new Date().toISOString()) return NextResponse.json({ error: "This battle has expired (battles last 7 days).", reason: "expired" }, { status: 410 });
-  if (b.owner_id === userId) return NextResponse.json({ error: "This is your own battle. Send the link to a friend.", reason: "own" }, { status: 409 });
+  if (b.owner_id === userId) {
+    // The owner plays their own challenge too: their score is copied from the server-graded attempt when they finish.
+    if (body.data.action === "finish" && b.owner_score === null) {
+      const own = await gradedAttempt(db, userId!, body.data.attempt_id);
+      const ownIds = new Set<string>(b.question_ids);
+      if (!own || !own.question_ids.every((q) => ownIds.has(q))) return NextResponse.json({ error: "That test doesn't match this challenge.", reason: "mismatch" }, { status: 409 });
+      await db.from("battles").update({ owner_score: own.server_score, max_score: own.server_max, owner_attempt_id: own.id, owner_submitted_at: new Date().toISOString() }).eq("id", id);
+      return NextResponse.json({ ok: true, status: "owner", score: own.server_score, maxScore: own.server_max });
+    }
+    if (body.data.action === "finish" || body.data.action === "start" || body.data.action === "progress") return NextResponse.json({ ok: true, status: "owner" });
+    return NextResponse.json({ error: "This is your own battle. Send the link to a friend.", reason: "own" }, { status: 409 });
+  }
 
   const { data: entry } = await db.from("battle_entries").select("status, started_at, answered").eq("battle_id", id).eq("user_id", userId!).maybeSingle();
   const nowIso = new Date().toISOString();
@@ -95,7 +106,8 @@ export async function POST(req: NextRequest, { params }: Ctx) {
   await db.from("battle_entries").update({
     status: "submitted", attempt_id: attempt.id, score: attempt.server_score, max_score: attempt.server_max, answered: ids.length, submitted_at: nowIso, last_seen_at: nowIso,
   }).eq("battle_id", id).eq("user_id", userId!);
-  const mineP = attempt.server_score / attempt.server_max, theirsP = Number(b.owner_score) / Number(b.max_score);
+  const ownerDone = b.owner_score !== null && b.max_score !== null;
+  const mineP = attempt.server_score / attempt.server_max, theirsP = ownerDone ? Number(b.owner_score) / Number(b.max_score) : -1;
   void notifyBattle(db, b.owner_id, id, battleText.finished(await nameOf(db, userId!), b.title, attempt.server_score, attempt.server_max, Number(b.owner_score), mineP > theirsP ? "They won." : mineP === theirsP ? "A tie." : "You won."));
   return NextResponse.json({ ok: true, status: "submitted", score: attempt.server_score, maxScore: attempt.server_max, ownerScore: b.owner_score, ownerMax: b.max_score });
 }

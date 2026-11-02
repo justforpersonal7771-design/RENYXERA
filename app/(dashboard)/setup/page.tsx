@@ -1404,6 +1404,14 @@ export default function ExamSetupPage() {
                           // load takes a moment, and a silent button looked broken.
                           setDeploying(true);
                           try {
+                            // A new challenge exists the moment it starts: the questions are fixed, friends can join, and your score is added when you finish.
+                            if (searchParams.get("challenge") === "1") {
+                              const r = await fetch("/api/battles", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question_ids: currentDraft.questions.map((q) => q.questionId), title: currentDraft.config.title ?? undefined }) });
+                              const j = (await r.json().catch(() => ({}))) as { id?: string; error?: string };
+                              if (!r.ok || !j.id) { setDeploying(false); useToastStore.getState().show(j.error ?? "Sign in to start a challenge.", "error"); return; }
+                              currentDraft.config = { ...currentDraft.config, battle: { id: j.id } } as typeof currentDraft.config;
+                              try { sessionStorage.setItem("renyxera_new_challenge", j.id); } catch { /* private mode */ }
+                            }
                             await useExamRuntimeStore.getState().startSession(currentDraft);
                             router.push("/exam/session");
                           } catch {

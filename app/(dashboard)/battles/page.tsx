@@ -14,7 +14,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 type Entry = { userId: string; name: string; status: "opened" | "started" | "submitted" | "abandoned"; answered: number; total: number; score: number | null; maxScore: number | null; submittedAt: string | null; lastSeenAt: string; you: boolean; attemptId?: string | null };
-type Battle = { id: string; title: string; ownerName: string; ownerScore: number; maxScore: number; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; entries: Entry[] };
+type Battle = { id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; entries: Entry[] };
 
 const STATUS: Record<Entry["status"], { label: string; tint: string }> = {
   opened: { label: "Opened the link", tint: "sky" }, started: { label: "Playing now", tint: "butter" }, submitted: { label: "Submitted", tint: "mint" }, abandoned: { label: "Left", tint: "rose" },
@@ -98,13 +98,13 @@ function BattleCard({ b, onCopy }: { b: Battle; onCopy: () => void }) {
   const mine = b.entries.find((e) => e.you);
   // Rows: the owner's own score first, then each friend.
   const rows: { key: string; name: string; you: boolean; status: Entry["status"]; answered: number; total: number; score: number | null; maxScore: number | null }[] = [
-    { key: "owner", name: b.mine ? "You" : b.ownerName, you: b.mine, status: "submitted", answered: b.questions, total: b.questions, score: b.ownerScore, maxScore: b.maxScore },
+    { key: "owner", name: b.mine ? "You" : b.ownerName, you: b.mine, status: b.ownerScore === null ? "started" : "submitted", answered: b.ownerScore === null ? 0 : b.questions, total: b.questions, score: b.ownerScore, maxScore: b.maxScore },
     ...b.entries.map((e) => ({ key: e.userId, name: e.you ? "You" : e.name, you: e.you, status: e.status, answered: e.answered, total: e.total || b.questions, score: e.score, maxScore: e.maxScore })),
   ];
-  const ownerPct = pct(b.ownerScore, b.maxScore)!;
+  const ownerPct = pct(b.ownerScore, b.maxScore);
   const verdict = (e: Entry) => {
     const p = pct(e.score, e.maxScore);
-    if (p === null) return null;
+    if (p === null || ownerPct === null) return null;
     return p > ownerPct ? (b.mine ? `${e.name} beat you` : `You beat ${b.ownerName}`) : p === ownerPct ? "Tied" : (b.mine ? "You won" : `${b.ownerName} won`);
   };
   return (

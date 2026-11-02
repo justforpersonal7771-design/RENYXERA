@@ -10,7 +10,11 @@ export const runtime = "nodejs";
  *   POST { attempt_id }   make (or reuse) the battle for a finished, stored test of this account
  *   GET                   my battles (owned and joined) with their entries
  */
-const createSchema = z.object({ attempt_id: z.string().uuid() });
+const createSchema = z.union([
+  z.object({ attempt_id: z.string().uuid() }),
+  // Challenge first: the questions of a test the owner is about to take (any topic, subject or paper from the builder).
+  z.object({ question_ids: z.array(z.string().min(3).max(60)).min(3).max(200), title: z.string().max(80).optional() }),
+]);
 
 export async function POST(req: NextRequest) {
   const c = await battleCtx(req, { bucket: "create", limit: 10, needUser: true });
@@ -19,7 +23,19 @@ export async function POST(req: NextRequest) {
   const body = createSchema.safeParse(await req.json().catch(() => null));
   if (!body.success) return NextResponse.json({ error: "Invalid request." }, { status: 400 });
 
-  const attempt = await gradedAttempt(db, userId!, body.data.attempt_id);
+  const data0 = body.data;
+  if ("question_ids" in data0) {
+    const ent0 = await getEntitlement(userId);
+    if (ent0.tier === "free") {
+      const { count } = await db.from("battles").select("id", { count: "exact", head: true }).eq("owner_id", userId!).gt("expires_at", new Date().toISOString());
+      if ((count ?? 0) >= FREE_ACTIVE_BATTLES) return NextResponse.json({ error: `Free accounts can have ${FREE_ACTIVE_BATTLES} active challenges at a time. They expire after 7 days. Plus and Pro have no limit.`, reason: "limit" }, { status: 403 });
+    }
+    const title0 = String(data0.title ?? "New challenge").replace(/[^\p{L}\p{N} .,'&-]/gu, "").trim().slice(0, 80) || "New challenge";
+    const { data: made, error: e0 } = await db.from("battles").insert({ owner_id: userId, owner_name: await nameOf(db, userId!), title: title0, question_ids: [...new Set(data0.question_ids)].slice(0, 200) }).select("id").single();
+    if (e0 || !made) return NextResponse.json({ error: "Couldn't create the challenge right now." }, { status: 503 });
+    return NextResponse.json({ id: made.id, path: `/challenge/${made.id}` });
+  }
+  const attempt = await gradedAttempt(db, userId!, data0.attempt_id);
   if (!attempt || attempt.question_ids.length < 3) return NextResponse.json({ error: "Finish and save a test first, then challenge a friend.", reason: "attempt" }, { status: 409 });
 
   const { data: existing } = await db.from("battles").select("id").eq("owner_attempt_id", attempt.id).maybeSingle();
