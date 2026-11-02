@@ -18,7 +18,7 @@ Legend: DONE, PART (partly), TODO, N/A.
 | 8 | Fix N+1 queries | PART | RPCs are used for batches; audit `battles` list and leaderboard when Arena grows |
 | 9 | Brotli or Gzip | DONE | Cloudflare sends Brotli; `check:perf` confirms 0 uncompressed text files |
 | 10 | Redis cache | N/A | Replaced by `ai_response_cache` table (hash of the prompt, hit counter) and the browser IndexedDB cache; Redis would cost money |
-| 11 | Remove unused dependencies | TODO | Run `npx depcheck` and remove; one-time task |
+| 11 | Remove unused dependencies | DONE | `depcheck` found six unused (`react-markdown`, `remark-gfm`, `@hookform/resolvers`, `class-variance-authority`, `tw-animate-css`, `firebase-tools`); removed, lockfile about 10,000 lines smaller, npm audit 40 to 27 findings; `mathjax-full` now declared for the scripts |
 | 12 | Timeouts on external API calls | DONE | Razorpay, receipts, Turnstile, Telegram, OpenRouter models now abort after 10 s; the Mentor call already has a deadline |
 | 13 | Stream AI responses | TODO | Mentor replies arrive whole. Streaming needs the model route to return SSE and the chat UI to append tokens; plan in R27 |
 | 14 | Optimistic UI | PART | Chat messages and checklist ticks are instant; add to battle accept/decline and friend requests (R29) |
