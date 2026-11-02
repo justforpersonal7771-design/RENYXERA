@@ -12,9 +12,10 @@ import { useExamRuntimeStore } from "@/store/use-exam-runtime-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { track } from "@/lib/growth/track";
 import { InviteFriends } from "@/components/friends/invite-friends";
+import { LiveLobby, MakeLiveButton } from "@/components/friends/live-lobby";
 import type { ExamSessionDraft } from "@/types/exam.types";
 
-type Battle = { id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questionIds: string[]; expiresAt: string; expired: boolean };
+type Battle = { id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questionIds: string[]; expiresAt: string; expired: boolean; mode?: "async" | "live" };
 type Loaded = { battle: Battle; isOwner: boolean; entries: { you: boolean; status: string; score: number | null; maxScore: number | null }[] };
 
 const MIN_COVER = 0.8; // must match the server: a friend needs most of the battle's questions in their bank
@@ -86,7 +87,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
         <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)]"><Hourglass className="h-3.5 w-3.5" /> {b.expired ? "Expired" : `Open until ${new Date(b.expiresAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}`}</p>
 
         {data.isOwner ? (
-          <div className="mt-6"><p className="text-sm text-[var(--text-secondary)]">This is your battle. Challenge friends below, or send the link to anyone, and watch them play.</p>{!b.expired ? <InviteFriends battleId={b.id} /> : null}<Link href="/battles" className="btn-soft mt-4 inline-flex">See live status</Link></div>
+          <div className="mt-6"><p className="text-sm text-[var(--text-secondary)]">This is your battle. Challenge friends below, or send the link to anyone, and watch them play.</p>{!b.expired && b.mode === "live" && b.ownerScore === null ? <LiveLobby battleId={b.id} isOwner canPlay={isInitialized && enough} onStart={start} /> : null}{!b.expired ? <InviteFriends battleId={b.id} /> : null}{!b.expired && b.mode !== "live" && b.ownerScore === null ? <div><MakeLiveButton battleId={b.id} /></div> : null}<div><Link href="/battles" className="btn-soft mt-4 inline-flex">See live status</Link></div></div>
         ) : b.expired ? (
           <p className="mt-6 text-sm font-semibold text-[var(--tint-rose-ink)]">This battle has expired. Ask {b.ownerName} for a new one.</p>
         ) : done ? (
@@ -110,6 +111,8 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
             <p className="mt-3 text-sm text-[var(--text-secondary)]">{b.ownerScore === null ? `${b.ownerName} has not finished yet. Check the battle later to see who won.` : Number(done.score) > b.ownerScore ? `You beat ${b.ownerName}.` : Number(done.score) === b.ownerScore ? `You matched ${b.ownerName}.` : `${b.ownerName} is ahead. Try a rematch.`}</p>
             <Link href="/battles" className="btn-main mt-4 inline-flex">See the battle</Link>
           </div>
+        ) : b.mode === "live" && user ? (
+          <LiveLobby battleId={b.id} isOwner={false} canPlay={isInitialized && enough} onStart={start} />
         ) : (
           <>
             {isInitialized && !enough ? <p className="mt-3 text-xs text-[var(--tint-butter-ink)]">Only {available.length} of these {b.questionIds.length} questions are in your paper&apos;s bank, so this battle can&apos;t be fair for you. Switch your branch in Profile if it was set for another paper.</p> : null}

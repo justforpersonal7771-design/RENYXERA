@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, { params }: Ctx) {
   const c = await battleCtx(req, { bucket: "get", limit: 60 });
   if (!isCtx(c)) return c;
   const { db, userId } = c;
-  const { data: b } = await db.from("battles").select("id, owner_id, owner_name, title, question_ids, owner_score, max_score, created_at, expires_at").eq("id", id).maybeSingle();
+  const { data: b } = await db.from("battles").select("id, owner_id, owner_name, title, question_ids, owner_score, max_score, created_at, expires_at, mode").eq("id", id).maybeSingle();
   if (!b) return NextResponse.json({ error: "This battle doesn't exist." }, { status: 404 });
   const isOwner = userId === b.owner_id;
   const { data: entries } = userId
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest, { params }: Ctx) {
     : { data: [] };
   const visible = (entries ?? []).filter((e) => isOwner || e.user_id === userId);
   return NextResponse.json({
-    battle: { id: b.id, title: b.title, ownerName: b.owner_name, ownerScore: b.owner_score, maxScore: b.max_score, questionIds: b.question_ids, createdAt: b.created_at, expiresAt: b.expires_at, expired: b.expires_at <= new Date().toISOString() },
+    battle: { id: b.id, title: b.title, ownerName: b.owner_name, ownerScore: b.owner_score, maxScore: b.max_score, questionIds: b.question_ids, createdAt: b.created_at, expiresAt: b.expires_at, expired: b.expires_at <= new Date().toISOString(), mode: b.mode },
     isOwner,
     entries: visible.map((e) => ({ userId: e.user_id, name: e.display_name, status: e.status, answered: e.answered, total: e.total, score: e.score, maxScore: e.max_score, submittedAt: e.submitted_at, you: e.user_id === userId })),
   }, { headers: { "Cache-Control": "private, no-store" } });
