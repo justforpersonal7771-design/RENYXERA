@@ -1,4 +1,6 @@
-# R30: Admin console (owner only)
+# R30: Admin-lite (first slice of Release 10)
+
+**This is not a separate release.** The full admin console is Release 10 (`R09-R10-DEPTH-AND-ADMIN.md`, items 10A to 10M). R30 is the admin-lite page that R10 lists as "first": Overview, Funnel and tagged links, inside the student app at `/admin`. On 3 Nov 2026 the owner asked for the full console to be a **separate app** with super-admin powers (grant Plus or Pro and more). It will be built as R10 (10A to 10M) in its own Worker and replace `/admin`; the planned order below maps onto R10 items.
 
 Goal (owner, 3 Nov 2026): one place to analyse, market and automate, without code.
 

@@ -27,7 +27,7 @@ Flashcards for questions; Telegram phone verification + weekly report; WhatsApp 
 
 | ID | What | Key acceptance |
 |---|---|---|
-| 10A | Separate `/admin` sign-in; admins only in `admin_users` seeded by SQL; TOTP 2FA; short sessions; IP allow-list option | No self-sign-up path; every action audited |
+| 10A | **Separate app and Worker (owner decision 3 Nov 2026, e.g. gate-admin.renyxera.workers.dev), not a route in the student app;** separate sign-in; admins only in `admin_users` seeded by SQL; TOTP 2FA; short sessions; IP allow-list option | No self-sign-up path; every action audited |
 | 10B | Roles (owner, admin, moderator, content editor, support, analyst) with fine-grained permissions enforced in Postgres | RLS/security-definer tests per role |
 | 10C | Mock management: calendar, papers from blueprint, timing, publish/withhold results, re-rank | A full mock run from the console |
 | 10D | Integrity review queue with signals | Approve/exclude with notes |
@@ -38,4 +38,4 @@ Flashcards for questions; Telegram phone verification + weekly report; WhatsApp 
 | 10I | Communications: banners, announcements, reminders | Scheduled, targeted by branch/tier |
 | 10J–10M | Audit log, settings + kill switches, AI pre-generation console, AI request logs with retention | Append-only log; kill switch tested |
 
-**Admin-lite first (idea 36):** before full R10, a protected page for the owner with Forge review queue, reported questions, coupons and mock scheduling.
+**Admin-lite first (idea 36), started 3 Nov 2026 as R30 (`/admin`: Overview, Funnel, Links):** before full R10, a protected page for the owner with Forge review queue, reported questions, coupons and mock scheduling.
