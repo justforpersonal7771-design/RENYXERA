@@ -40,6 +40,7 @@ export function SignedOutWelcome() {
           className="inline-flex h-11 items-center gap-2 rounded-xl grad-brand px-5 text-sm font-bold text-white shadow-md shadow-violet-500/30 transition hover:-translate-y-px cursor-pointer">
           Sign in and start <ArrowRight className="h-4 w-4" />
         </button>
+        <Link href="/setup" className="inline-flex h-11 items-center gap-2 rounded-xl border border-violet-500/40 bg-[var(--surface)] px-5 text-sm font-bold text-violet-700 dark:text-violet-300 transition hover:-translate-y-px">Try a quick sample test</Link>
         <Link href="/pyq" className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">Browse the official papers →</Link>
       </div>
       <PromoVideo className="mt-6 max-w-3xl" />
