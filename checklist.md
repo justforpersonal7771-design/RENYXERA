@@ -382,7 +382,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **Flashcards** · **Telegram phone verification + weekly report** · 🟡 WhatsApp.
 
 ### Release 10 — Admin console · `docs/roadmap/R09-R10-DEPTH-AND-ADMIN.md`
-- [ ] **Admin-lite first** (Forge review queue, reports, coupons, mocks). Owner wants the full R10 as a SEPARATE app with super-admin powers (grant Plus/Pro); R30 `/admin` is the first slice.
+- [ ] **Admin-lite first** (Forge review queue, reports, coupons, mocks). Full spec written: `docs/roadmap/R10-ADMIN-SPEC.md` (decided: stays at `/admin`, not a separate app; modules for learners, money, marketing, Telegram/Instagram/YouTube, automations, content ops, health). Owner said do not build yet; R30 `/admin` is the first slice.
 - [ ] **10A strict login + 2FA · 10B roles in Postgres · 10C mocks · 10D integrity queue · 10E content editing with versioning · 10F users (DPDP) · 10G dashboards · 10H money · 10I comms · 10J audit · 10K flags/kill switches · 10L AI pre-gen console · 10M AI logs with retention**.
 
 ### Platform-wide
