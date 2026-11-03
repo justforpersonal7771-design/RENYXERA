@@ -8,7 +8,7 @@ Legend: DONE, PART (partly), TODO, N/A.
 
 | # | Item | Status | What we have / what is left |
 |---|------|--------|-----------------------------|
-| 1 | Skeleton loading screens | PART | `app/(dashboard)/loading.tsx` exists; add per-screen skeletons for Study, Mentor, Battles |
+| 1 | Skeleton loading screens | DONE | `app/(dashboard)/loading.tsx` is now a page-shaped shimmer (hero card, tiles, card grid) used by every dashboard route; the topic browser has its own |
 | 2 | WebP or AVIF images | DONE | Brand marks 396 KB to 16 KB, mentor art 181 KB to 20 KB (this release). `check:perf` flags any PNG/JPG over 20 KB |
 | 3 | Prevent duplicate API calls | DONE | `/api/version` was fetched twice per page load; the timer and navigation check now share one 30 s window. `check:perf` reports duplicates |
 | 4 | Debounce search and autocomplete | DONE | Audited 3 Nov 2026: every search box filters a small in-memory list (topics, bookmarks, mistakes, command palette); the only server call, the username check, is debounced. Topic browser now uses a deferred value so typing never waits on the list |
@@ -26,7 +26,7 @@ Legend: DONE, PART (partly), TODO, N/A.
 | 16 | Parallel requests | DONE | Pages use `Promise.all` for independent calls |
 | 17 | Database indexes | PART | Indexes exist on the hot tables; add on `battle_entries(battle_id)`, `battles(owner_id,status)` with R29 |
 | 18 | OpenTelemetry tracing | N/A | Needs a paid collector; use Cloudflare Workers logs plus the slow-call check in `check:perf` |
-| 19 | Servers near the database | TODO | Confirm the Supabase region is closest to the Mumbai edge; `/api/billing/me` takes about 1.6 s, partly distance |
+| 19 | Servers near the database | TODO | Owner check: Supabase dashboard, Project Settings, General, Region. Best is Mumbai (ap-south-1). Latency measured from the dev PC is not usable: Cloudflare routes it via a Marseille data centre (CF-RAY ends MRS), which adds about 1 s to every call there. Phones in India reach a nearer data centre |
 | 20 | SSR or build-time rendering | DONE | Next.js App Router pre-renders public pages |
 | 21 | Third-party scripts after the page | PART | Turnstile and MathJax load on demand; keep them out of the first paint (check list in `check:perf`) |
 | 22 | Split JavaScript by page | DONE | Next.js splits per route; `check:perf` shows JS weight per page |

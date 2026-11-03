@@ -1,24 +1,19 @@
-import { BrandMark } from "@/components/brand/wordmark";
-
 /**
- * Shown while a dashboard route's code/data is being fetched on navigation. Kept quiet
- * and brand-consistent (breathing mark + a thin gradient bar) instead of a spinner with
- * "Loading dashboard…" text — which was also wrong on every non-dashboard page.
+ * Shown while a dashboard route's code or data is being fetched on navigation: a skeleton in the shape of a typical screen (a hero card,
+ * then a grid of cards) instead of a spinner, so the page feels like it is already there and nothing jumps when it arrives.
+ * Full width like every screen; the shimmer is switched off for "reduce motion" by .skeleton-shimmer itself.
  */
 export default function DashboardLoading() {
   return (
-    <div className="flex h-[50vh] items-center justify-center" role="status" aria-label="Loading">
-      <div className="flex flex-col items-center gap-5">
-        <div className="relative">
-          <span className="absolute inset-0 rounded-full bg-violet-500/25 blur-xl animate-pulse" />
-          <span className="relative block animate-pulse">
-            <BrandMark className="h-12 w-12" />
-          </span>
-        </div>
-        <div className="relative w-28 h-[3px] rounded-full bg-[var(--border)] overflow-hidden">
-          <span className="absolute inset-y-0 w-1/2 rounded-full bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] animate-[loader-slide_1.1s_ease-in-out_infinite]" />
-        </div>
+    <div className="w-full space-y-4" role="status" aria-label="Loading" aria-busy="true">
+      <div className="skeleton-shimmer h-40 w-full rounded-3xl sm:h-48" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {[0, 1, 2, 3].map((i) => <div key={i} className="skeleton-shimmer h-20 rounded-2xl" />)}
       </div>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {[0, 1, 2].map((i) => <div key={i} className="skeleton-shimmer h-44 rounded-3xl" />)}
+      </div>
+      <span className="sr-only">Loading</span>
     </div>
   );
 }

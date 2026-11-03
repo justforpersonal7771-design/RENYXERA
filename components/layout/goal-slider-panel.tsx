@@ -280,7 +280,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-400/20 border border-emerald-300/30 text-[11px] font-semibold text-emerald-50"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-600/30 text-[11px] font-semibold text-emerald-800 dark:bg-emerald-400/20 dark:border-emerald-300/30 dark:text-emerald-50"
                       title="This is your saved Focus Target"
                     >
                       <Check className="w-3.5 h-3.5" /> <span className="font-num">{targetPercent}%</span><span className="hidden sm:inline">&nbsp;saved</span>
@@ -417,7 +417,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart
                       data={curve}
-                      margin={{ top: 10, right: 12, bottom: 4, left: -12 }}
+                      margin={{ top: 10, right: 12, bottom: 4, left: 4 }}
                       onMouseDown={handleChartMouseDown}
                       onMouseMove={handleChartMouseMove}
                       onMouseUp={commitDrag}
