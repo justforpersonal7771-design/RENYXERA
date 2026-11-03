@@ -26,7 +26,7 @@ Legend: DONE, PART (partly), TODO, N/A.
 | 16 | Parallel requests | DONE | Pages use `Promise.all` for independent calls |
 | 17 | Database indexes | PART | Indexes exist on the hot tables; add on `battle_entries(battle_id)`, `battles(owner_id,status)` with R29 |
 | 18 | OpenTelemetry tracing | N/A | Needs a paid collector; use Cloudflare Workers logs plus the slow-call check in `check:perf` |
-| 19 | Servers near the database | TODO | Owner check: Supabase dashboard, Project Settings, General, Region. Best is Mumbai (ap-south-1). Latency measured from the dev PC is not usable: Cloudflare routes it via a Marseille data centre (CF-RAY ends MRS), which adds about 1 s to every call there. Phones in India reach a nearer data centre |
+| 19 | Servers near the database | DONE | Checked 3 Nov 2026: Supabase project `renyxera-prod` is in Southeast Asia (Singapore, ap-southeast-1), about 60 ms from Mumbai. The region cannot be edited on an existing project; moving would mean a new project and a data migration, not worth it for 60 ms. Latency from the dev PC is not usable (Cloudflare routes it via Marseille) |
 | 20 | SSR or build-time rendering | DONE | Next.js App Router pre-renders public pages |
 | 21 | Third-party scripts after the page | PART | Turnstile and MathJax load on demand; keep them out of the first paint (check list in `check:perf`) |
 | 22 | Split JavaScript by page | DONE | Next.js splits per route; `check:perf` shows JS weight per page |
