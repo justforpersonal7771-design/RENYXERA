@@ -63,6 +63,7 @@ Home page loads 3,372 KB of JavaScript in 55 files; /login loads 1,509 KB in 24 
 - **Found:** the top bar prefetched the goal panel (which carries recharts) at idle on every page.
 - **Fixed:** it now prefetches on idle only on a 4g, non-data-saver connection; otherwise it loads when the student points at or focuses the goal button. Measured with a simulated 3g phone: home page 3,372 KB to 2,976 KB, 8 fewer files, chart chunk gone.
 - **Already fine:** Sentry loads on demand, avatar styles load one at a time, MathJax loads only on question screens.
+- **Named (3 Nov):** the 333 KB chunk on every page was the Sentry error-reporting SDK, loaded at startup. It now loads after the page has been idle (up to 8 s), or at once if an error happens first, or never until an error on a slow or data-saver link. The 364 KB, 277 KB and 252 KB chunks are React and Next runtime, the Supabase client and app code shared by all pages.
 - **Next candidates:** the Supabase client is needed for sign-in on every page; the 333 KB and 278 KB chunks on the home page are not yet identified (run `@next/bundle-analyzer`, free, to name them).
 
 ## Release plan

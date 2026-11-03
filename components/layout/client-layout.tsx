@@ -87,12 +87,37 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Step 9: error monitoring (no-op unless NEXT_PUBLIC_SENTRY_DSN is set).
+  // The SDK is about 330 KB, so it loads when the page has been idle for a few seconds, not during first paint. An error before that moment
+  // loads it straight away and is reported (see `early`), so nothing is lost.
   useEffect(() => {
-    void import("@/lib/monitoring").then(({ initMonitoring, setMonitoringUser }) => {
-      void initMonitoring();
-      setMonitoringUser(useAuthStore.getState().user?.id ?? null);
-      return useAuthStore.subscribe((st) => setMonitoringUser(st.user?.id ?? null));
-    });
+    let off = false;
+    let unsub: (() => void) | undefined;
+    const boot = () => {
+      window.removeEventListener("error", early);
+      window.removeEventListener("unhandledrejection", early);
+      void import("@/lib/monitoring").then(({ initMonitoring, setMonitoringUser }) => {
+        if (off) return;
+        void initMonitoring();
+        setMonitoringUser(useAuthStore.getState().user?.id ?? null);
+        unsub = useAuthStore.subscribe((st) => setMonitoringUser(st.user?.id ?? null));
+      });
+    };
+    function early(e: Event) {
+      const err = e instanceof ErrorEvent ? e.error : (e as PromiseRejectionEvent).reason;
+      boot();
+      void import("@/lib/monitoring").then(({ reportError }) => reportError(err ?? new Error("Unknown error before monitoring loaded")));
+    }
+    window.addEventListener("error", early);
+    window.addEventListener("unhandledrejection", early);
+    const net = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+    const slow = !!net?.saveData || (!!net?.effectiveType && net.effectiveType !== "4g"); // on a slow link the SDK loads only if an error happens
+    const w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number };
+    const t = slow ? 0 : w.requestIdleCallback ? w.requestIdleCallback(boot, { timeout: 8000 }) : window.setTimeout(boot, 5000);
+    return () => {
+      off = true; unsub?.();
+      window.removeEventListener("error", early); window.removeEventListener("unhandledrejection", early);
+      if (!slow && !w.requestIdleCallback) clearTimeout(t);
+    };
   }, []);
 
   // The device clock is user-controlled: keep an offset to the server clock for every time-based UI.
