@@ -1,7 +1,7 @@
 // Minimal anonymous product events (docs/GROWTH_TASKS.md G-3). Fire-and-forget: never blocks,
 // never throws, sends nothing but a random per-browser id, the event name, branch and first-touch
 // source. "visit" is sent at most once per browser per day (for D1/D7 return rates).
-export type TrackEvent = "visit" | "test_started" | "test_submitted" | "review_opened" | "ai_used" | "invite_shared" | "share_clicked" | "telegram_join";
+export type TrackEvent = "visit" | "test_started" | "test_submitted" | "review_opened" | "ai_used" | "invite_shared" | "share_clicked" | "telegram_join" | "signed_in" | "upgrade_viewed" | "checkout_started";
 
 const ID = "renyxera:anon";
 const DAY = "renyxera:visit-day";

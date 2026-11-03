@@ -19,3 +19,12 @@ const by = (k) => Object.entries((ev ?? []).reduce((a, e) => ((a[e[k] ?? "—"] 
 console.log("\nLast 7 days — events:", Object.fromEntries(by("event")));
 console.log("Last 7 days — by first-touch source:", Object.fromEntries(by("source")));
 console.log("Last 7 days — by branch:", Object.fromEntries(by("branch")));
+
+// Funnel by first-touch source (needs migration 0051). Last 30 days, distinct visitors per stage.
+const days = Number(process.argv[3] ?? 30);
+const { data: fn, error: fe } = await sb.rpc("funnel_by_source", { p_days: days });
+if (fe) console.log("\nfunnel_by_source failed (has migration 0051 run?):", fe.message);
+else {
+  console.log(`\nFunnel by source, last ${days} days (distinct visitors; paid = users with a paid order):`);
+  console.table(fn.map((r) => ({ source: r.source, visitors: r.visitors, tested: r.tested, "signed in": r.signed_in, "saw plans": r.upgrade_viewed, "clicked pay": r.checkout_started, paid: r.paid })));
+}

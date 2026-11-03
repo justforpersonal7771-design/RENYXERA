@@ -1,7 +1,7 @@
 "use client";
 
 import { PromoVideo } from "@/components/marketing/promo-video";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PriceRoll } from "@/components/ui/price-roll";
 import { createPortal } from "react-dom";
 import { branchByCode } from "@/lib/branches";
@@ -43,6 +43,7 @@ const LOOK = {
 export function PlansContent({ onDone, inModal = false }: { onDone?: () => void; inModal?: boolean }) {
   const ent = useEntitlements();
   const signedIn = useAuthStore((s) => !!s.user);
+  useEffect(() => { void import("@/lib/growth/track").then((m) => m.track("upgrade_viewed")); }, []);
   const [period, setPeriod] = useState<"monthly" | "yearly" | "season">("yearly");
   // GATE season pass: the exam year defaults to the account's target year, and can be any of the next five.
   const targetYear = useAuthStore((s) => s.profile?.target_year ?? null);
@@ -89,6 +90,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
       // First click opens the confirm window; its Pay button calls this again.
       if (confirm !== planId) { setAgreed(false); setTypedPaper(""); setCoupon(null); setCouponText(""); setCouponMsg(null); setConfirm(planId); return; }
       if (!agreed || !paperOk) return;
+      void import("@/lib/growth/track").then((m) => m.track("checkout_started", null, planId));
       const r = await fetch("/api/billing/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ planId, coupon: coupon?.code, acceptedTerms: true, branchConfirm: typedPaper.trim().toUpperCase() }) });
       
       const j = await r.json();

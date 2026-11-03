@@ -100,6 +100,13 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         void initMonitoring();
         setMonitoringUser(useAuthStore.getState().user?.id ?? null);
         unsub = useAuthStore.subscribe((st) => setMonitoringUser(st.user?.id ?? null));
+        const markSignedIn = (uid: string | null | undefined) => {
+          if (!uid) return;
+          try { if (localStorage.getItem("renyxera:signed-in-tracked")) return; localStorage.setItem("renyxera:signed-in-tracked", "1"); } catch { return; }
+          void import("@/lib/growth/track").then((m) => m.track("signed_in"));
+        };
+        markSignedIn(useAuthStore.getState().user?.id);
+        useAuthStore.subscribe((st) => markSignedIn(st.user?.id));
       });
     };
     function early(e: Event) {
