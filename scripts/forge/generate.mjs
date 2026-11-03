@@ -18,8 +18,8 @@ const BR = arg("branch", "CS"), N = +arg("n", "10"), BATCH = arg("batch", "b001"
 const MAX_TRIES = +arg("tries", "4");
 const dir = `data/forge/${BR}`;
 const profile = JSON.parse(readFileSync(`${dir}/profile.json`, "utf8"));
-if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY missing (use --env-file=.env.local)");
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let _ai;
+const getAi = () => { if (!process.env.GEMINI_API_KEY) throw new Error("GEMINI_API_KEY missing (use --env-file=.env.local)"); return (_ai ??= new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })); };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // ---------- helpers ----------
@@ -66,7 +66,7 @@ async function gemini(prompt, temperature) {
   }
   for (let a = 0; a < 6; a++) {
     try {
-      const res = await ai.models.generateContent({ model: MODEL, contents: prompt, config: { responseMimeType: "application/json", temperature } });
+      const res = await getAi().models.generateContent({ model: MODEL, contents: prompt, config: { responseMimeType: "application/json", temperature } });
       return JSON.parse(res.text);
     } catch (e) {
       const m = String(e?.message ?? e);
@@ -83,24 +83,28 @@ async function gemini(prompt, temperature) {
 const prior = [];
 for (const f of existsSync(`${dir}/batches`) ? readdirSync(`${dir}/batches`) : []) {
   if (f === `${BATCH}.json`) continue;
-  for (const it of JSON.parse(readFileSync(`${dir}/batches/${f}`, "utf8")).items) prior.push({ id: it.id, w: words(it.question_text), n: nums(it.question_text) });
+  for (const it of JSON.parse(readFileSync(`${dir}/batches/${f}`, "utf8")).items) prior.push({ id: it.id, w: words(it.question_text), n: nums(it.question_text), topic: it.topic, type: it.question_type });
 }
 let nextId = Math.max(0, ...prior.map((p) => +p.id.split("_").pop())) + 1;
 const batchFile = `${dir}/batches/${BATCH}.json`;
 const items = existsSync(batchFile) ? JSON.parse(readFileSync(batchFile, "utf8")).items : [];
-for (const it of items) { prior.push({ id: it.id, w: words(it.question_text), n: nums(it.question_text) }); nextId = Math.max(nextId, +it.id.split("_").pop() + 1); }
+for (const it of items) { prior.push({ id: it.id, w: words(it.question_text), n: nums(it.question_text), topic: it.topic, type: it.question_type }); nextId = Math.max(nextId, +it.id.split("_").pop() + 1); }
 
 // ---------- slot planning ----------
 const KINDS = ["multi_concept", "numeric_chain", "conceptual", "trap_aware", "trace", "application", "data_interpretation", "msq_discriminator"];
-const usedTopics = {}; for (const it of items) usedTopics[it.topic] = (usedTopics[it.topic] ?? 0) + 1;
+const usedTopics = {}, typeCount = { MCQ: 0, MSQ: 0, NAT: 0 };
+for (const p of prior) { usedTopics[p.topic] = (usedTopics[p.topic] ?? 0) + 1; if (p.type in typeCount) typeCount[p.type]++; }
 function pickSlot(i) {
   const pool = profile.topics.map((t) => ({ t, w: (t.weight ?? 1) / (1 + (usedTopics[t.topic] ?? 0) * 2) }));
   let r = Math.random() * pool.reduce((s, x) => s + x.w, 0), pick = pool[0].t;
   for (const x of pool) { r -= x.w; if (r <= 0) { pick = x.t; break; } }
-  const ty = pick.types ?? { MCQ: 1 }; const tot = Object.values(ty).reduce((a, b) => a + b, 0); let q = Math.random() * tot, type = "MCQ";
-  for (const [k, v] of Object.entries(ty)) { q -= v; if (q <= 0) { type = k; break; } }
+  // Aim for roughly the real GATE CS mix, measured over everything made so far (not just this batch).
+  const TARGET = { NAT: 0.36, MCQ: 0.52, MSQ: 0.12 };
+  const total = Math.max(1, typeCount.MCQ + typeCount.MSQ + typeCount.NAT);
+  const type = Object.keys(TARGET).map((k) => [k, TARGET[k] - typeCount[k] / total + (pick.types?.[k] ? 0.05 : -0.05) + Math.random() * 0.06]).sort((x, y) => y[1] - x[1])[0][0];
+  usedTopics[pick.topic] = (usedTopics[pick.topic] ?? 0) + 1; typeCount[type]++;
   const kind = type === "MSQ" ? "msq_discriminator" : KINDS[(i + Math.floor(Math.random() * 3)) % KINDS.length];
-  return { subject: pick.subject, topic: pick.topic, type, kind, difficulty: Math.random() < 0.2 ? "M" : "H", marks: Math.random() < 0.55 ? 2 : 1 };
+  return { subject: pick.subject, topic: pick.topic, type, kind, key: type === "MCQ" ? "ABCD"[Math.floor(Math.random() * 4)] : null, difficulty: Math.random() < 0.2 ? "M" : "H", marks: Math.random() < 0.55 ? 2 : 1 };
 }
 
 const SCHEMA = `Return ONE JSON object:
@@ -114,11 +118,12 @@ Rules:
 - NAT range follows GATE: a single value (lo=hi) for integers, otherwise a tight tolerance (e.g. 2 decimals).
 - No figures or images: put any data in text, small tables written as lines, or code.
 - Exactly one correct option for MCQ. Distractors come from real misconceptions. Do not use "all of the above", "none of the above" or "both A and B".
-- Original wording and numbers; never copy a past GATE question.`;
+- Original wording and numbers; never copy a past GATE question.
+- In the solution never refer to option letters (A, B, C, D): describe an option by its content.`;
 
 function draftPrompt(s) {
   return `You write original GATE ${profile.branch === "CS" ? "Computer Science and Information Technology" : profile.branch} exam questions at the difficulty of the real paper.
-Write ONE ${s.type} question, ${s.marks} mark(s), difficulty ${s.difficulty === "H" ? "hard (top 10% of GATE)" : "typical GATE"}, kind "${s.kind}".
+Write ONE ${s.type} question, ${s.marks} mark(s), difficulty ${s.difficulty === "H" ? "hard (top 10% of GATE)" : "typical GATE"}, kind "${s.kind}".${s.key ? ` The correct option must be ${s.key}.` : ""}
 Subject: ${s.subject}. Topic: ${s.topic}. It must combine at least two concepts or several dependent steps, and be solvable without a calculator-heavy grind.
 ${SCHEMA}`;
 }
@@ -146,6 +151,8 @@ function check(d, s, others) {
     if (new Set(ts).size !== ts.length) why.push("duplicate options");
     for (let i = 0; i < ws.length; i++) for (let j = i + 1; j < ws.length; j++) if (ws[i].size > 2 && jac(ws[i], ws[j]) > 0.9 && JSON.stringify([...nums(opts[i].text)]) === JSON.stringify([...nums(opts[j].text)])) why.push("near-identical options");
     if (opts.some((o) => /all of the above|none of the above|both a and b/i.test(o.text))) why.push("banned option wording");
+    if (/\b(option|choice)s?\s*\(?[A-D]\)?\b/i.test(JSON.stringify(d.solution))) why.push("solution refers to option letters");
+    if (s.type === "MCQ" && s.key && d.answer.options?.[0] !== s.key) why.push(`key must be ${s.key}`);
     if (s.type === "MSQ" && (d.answer.options.length === 4 || d.answer.options.length === 0)) why.push("MSQ answer too obvious");
     if (s.type === "MCQ") { const lens = opts.map((o) => o.text.length); const kl = lens["ABCD".indexOf(d.answer.options[0])]; if (kl === Math.max(...lens) && kl > 1.8 * (lens.reduce((a, b) => a + b, 0) / 4)) why.push("key is conspicuously the longest option"); }
   }
@@ -157,29 +164,74 @@ function check(d, s, others) {
 }
 const closeNum = (a, b, lo, hi) => { const pad = Math.max(Math.abs(b) * 0.005, 0.01); return a >= lo - pad && a <= hi + pad; };
 
+// ---------- normalise ----------
+const CANON = { "Operating Systems": "Operating Systems (OS)", "Computer Organization and Architecture": "Computer Organization and Architecture (COA)", "Computer Networks": "Computer Networks (CN)", Databases: "Database Management Systems (DBMS)", "Database Management Systems": "Database Management Systems (DBMS)", "Theory of Computation": "Theory of Computation (TOC)" };
+const canonSubject = (x) => CANON[x] ?? x;
+
+// ---------- modes ----------
+//   (default)         automatic: draft with a free model, then vet
+//   --plan=N          write N balanced slots to data/<BR>/plans/<batch>.json for a LOCAL Claude Code session to author (no network, no key)
+//   --ingest=FILE     vet drafts written by that session (array of { slot, question_text, options, answer, solution, verify }); --blind=1 adds the free-model re-solve
+const PLAN = +arg("plan", "0"), INGEST = arg("ingest", "");
+const NOTE = INGEST ? "Authored in a local Claude Code session from a generator plan; verified by the generator: computed answer, TeX render, dedupe, option checks." : `Generated by scripts/forge/generate.mjs (${MODEL}); verified: blind re-solve, computed answer, TeX render, dedupe, option checks.`;
+if (PLAN) {
+  mkdirSync(`${dir}/plans`, { recursive: true });
+  const slots = Array.from({ length: PLAN }, (_, i) => { const sl = pickSlot(items.length + i); return { index: i, ...sl, prompt: draftPrompt(sl) }; });
+  const out = `${dir}/plans/${BATCH}.json`;
+  writeFileSync(out, JSON.stringify({ branch: BR, batch: BATCH, how: "Author one question per slot following its prompt. Save an array to data/" + BR + "/drafts/" + BATCH + ".json, each item { slot, question_text, options, answer, solution, verify }. Then: node scripts/forge/generate.mjs --branch=" + BR + " --batch=" + BATCH + " --ingest=data/" + BR + "/drafts/" + BATCH + ".json", slots }, null, 1));
+  console.log(`Plan written: ${out} (${PLAN} slots). Types: ${JSON.stringify(slots.reduce((m, x) => ((m[x.type] = (m[x.type] ?? 0) + 1), m), {}))}`);
+  process.exit(0);
+}
+
+// ---------- vet one draft ----------
+async function vet(d, s, useBlind) {
+  const why = check(d, s, prior);
+  if (why.length) return { why };
+  let computed; try { computed = runVerify(d.verify.code); } catch (e) { return { why: ["verify: " + e.message] }; }
+  if (s.type === "NAT") { const [lo, hi] = d.answer.range; if (!closeNum(+computed, +computed, lo, hi)) return { why: [`computed ${computed} outside ${lo}..${hi}`] }; }
+  else { const got = [].concat(computed).map(String).sort().join(), want = [...d.answer.options].sort().join(); if (got !== want) return { why: [`computed ${got} != key ${want}`] }; }
+  if (useBlind) {
+    const b = await gemini(blindPrompt({ ...d, type: s.type }), 0.2);
+    if (s.type === "NAT") { const [lo, hi] = d.answer.range; if (!closeNum(+b.answer, +computed, lo, hi)) return { why: [`blind solver said ${b.answer}, key ${lo}..${hi}`] }; }
+    else { const got = [].concat(b.answer).map(String).sort().join(), want = [...d.answer.options].sort().join(); if (got !== want) return { why: [`blind solver said ${got}, key ${want}`] }; }
+  }
+  return { computed };
+}
+
 // ---------- main loop ----------
 mkdirSync(`${dir}/rejects`, { recursive: true });
 const rejFile = `${dir}/rejects/${BATCH}.jsonl`;
 const reject = (s, d, why) => { appendFileSync(rejFile, JSON.stringify({ slot: s, why, draft: d }) + "\n"); console.log("  x", why.join("; ").slice(0, 120)); };
-const save = () => writeFileSync(batchFile, JSON.stringify({ branch: BR, batch: BATCH, note: `Generated by scripts/forge/generate.mjs (${MODEL}); verified: blind re-solve, computed answer, TeX render, dedupe, option checks.`, items }, null, 1));
+const save = () => writeFileSync(batchFile, JSON.stringify({ branch: BR, batch: BATCH, note: NOTE, items }, null, 1));
 let made = 0, attempts = 0;
-while (made < N && attempts < N * MAX_TRIES) {
+const addItem = (d, s) => {
+  const id = `FORGE_${BR}_${String(nextId++).padStart(6, "0")}`;
+  const it = { id, subject: canonSubject(s.subject), topic: s.topic, kind: s.kind, difficulty: s.difficulty, question_type: s.type, marks: s.marks, question_text: d.question_text, options: d.options ?? [], answer: d.answer, solution: d.solution, verify: d.verify };
+  items.push(it); prior.push({ id, w: words(it.question_text), n: nums(it.question_text), topic: it.topic, type: it.question_type }); made++; save(); console.log("  ok", id);
+};
+if (INGEST) {
+  const plan = JSON.parse(readFileSync(`${dir}/plans/${BATCH}.json`, "utf8"));
+  const raw = JSON.parse(readFileSync(INGEST, "utf8")); const drafts = Array.isArray(raw) ? raw : raw.drafts ?? [];
+  for (const d0 of drafts) {
+    attempts++;
+    const s = plan.slots.find((x) => x.index === d0.slot);
+    if (!s) { console.log("  x no such slot", d0.slot); continue; }
+    let d = fixSlashes(d0); if (d?.verify?.code) d.verify.code = stripImports(d.verify.code);
+    console.log(`[slot ${s.index}] ${s.type} ${s.marks}m ${s.kind} :: ${s.topic.slice(0, 60)}`);
+    try {
+      const r = await vet(d, s, arg("blind", "0") === "1");
+      if (r.why) reject(s, d, r.why); else addItem(d, s);
+    } catch (e) { console.log("  error", String(e.message).slice(0, 140)); }
+  }
+} else while (made < N && attempts < N * MAX_TRIES) {
   attempts++;
   const s = pickSlot(items.length + made);
   console.log(`[${made + 1}/${N}] ${s.type} ${s.marks}m ${s.kind} :: ${s.topic.slice(0, 60)}`);
   try {
     let d = await gemini(draftPrompt(s), 0.9); d = fixSlashes(d); if (d?.verify?.code) d.verify.code = stripImports(d.verify.code);
-    const why = check(d, s, prior);
-    if (why.length) { reject(s, d, why); continue; }
-    let computed; try { computed = runVerify(d.verify.code); } catch (e) { reject(s, d, ["verify: " + e.message]); continue; }
-    if (s.type === "NAT") { const [lo, hi] = d.answer.range; if (!closeNum(+computed, +computed, lo, hi)) { reject(s, d, [`computed ${computed} outside ${lo}..${hi}`]); continue; } }
-    else { const got = [].concat(computed).map(String).sort().join(), want = [...d.answer.options].sort().join(); if (got !== want) { reject(s, d, [`computed ${got} != key ${want}`]); continue; } }
-    const b = await gemini(blindPrompt({ ...d, type: s.type }), 0.2);
-    if (s.type === "NAT") { const [lo, hi] = d.answer.range; if (!closeNum(+b.answer, +computed, lo, hi)) { reject(s, d, [`blind solver said ${b.answer}, key ${lo}..${hi}`]); continue; } }
-    else { const got = [].concat(b.answer).map(String).sort().join(), want = [...d.answer.options].sort().join(); if (got !== want) { reject(s, d, [`blind solver said ${got}, key ${want}`]); continue; } }
-    const id = `FORGE_${BR}_${String(nextId++).padStart(6, "0")}`;
-    const it = { id, subject: s.subject, topic: s.topic, kind: s.kind, difficulty: s.difficulty, question_type: s.type, marks: s.marks, question_text: d.question_text, options: d.options ?? [], answer: d.answer, solution: d.solution, verify: d.verify };
-    items.push(it); prior.push({ id, w: words(it.question_text), n: nums(it.question_text) }); made++; save(); console.log("  ok", id);
+    const r = await vet(d, s, true);
+    if (r.why) { reject(s, d, r.why); continue; }
+    addItem(d, s);
   } catch (e) {
     if (e.quota) { console.log("Daily Gemini quota reached; stopping. Run again tomorrow."); break; }
     console.log("  error", String(e.message).slice(0, 140)); await sleep(3000);

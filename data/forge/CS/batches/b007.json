@@ -1,0 +1,202 @@
+{
+ "branch": "CS",
+ "batch": "b007",
+ "note": "Authored in a local Claude Code session from a generator plan; verified by the generator: computed answer, TeX render, dedupe, option checks.",
+ "items": [
+  {
+   "id": "FORGE_CS_000067",
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
+   "kind": "numeric_chain",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "Let \\(L = \\{ w \\in \\{a, b\\}^* : \\text{the number of } a\\text{'s in } w \\text{ is even and } |w| \\text{ is a multiple of } 3 \\}\\). Let \\(m\\) be the number of states in the minimal complete DFA that accepts \\(L\\), and \\(n\\) the number of states in the minimal complete DFA that accepts the complement of \\(L\\). The value of \\(m + n\\) is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(6\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(9\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(11\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(12\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "L needs the parity of the number of a's and the length modulo 3.",
+    "find": "m + n for the minimal complete DFAs of L and of its complement",
+    "steps": [
+     "Track the pair (parity of #a, |w| mod 3). Reading a flips the parity and advances the length by 1; reading b only advances the length. All \\(2 \\times 3 = 6\\) pairs are reachable from \\((0,0)\\).",
+     "Any two different pairs are distinguished by some suffix: a different parity is separated by the suffix a followed by enough symbols to fix the length, and a different length residue is separated by padding with b's. So the minimal DFA for \\(L\\) has \\(m = 6\\) states.",
+     "Complementing a complete DFA only swaps accepting and non-accepting states, so the distinguishability relation is unchanged: \\(n = 6\\).",
+     "\\(m + n = 6 + 6 = 12\\)."
+    ],
+    "shortcut": "Independent conditions on two counters multiply the states: 2 x 3 = 6; complement keeps the count.",
+    "trap": "Choosing 6 (forgetting that the question asks for the sum), or thinking the complement needs fewer or more states."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "start = (0, 0)\ndef step(s, ch):\n    p, q = s\n    return ((p + (1 if ch == 'a' else 0)) % 2, (q + 1) % 3)\nseen = [start]\ni = 0\nwhile i < len(seen):\n    for ch in 'ab':\n        t = step(seen[i], ch)\n        if t not in seen:\n            seen.append(t)\n    i += 1\ndef count_classes(accepting):\n    cls = {}\n    for s in seen:\n        cls[s] = 1 if s in accepting else 0\n    while True:\n        ids = {}\n        new = {}\n        for s in seen:\n            sig = (cls[s], cls[step(s, 'a')], cls[step(s, 'b')])\n            if sig not in ids:\n                ids[sig] = len(ids)\n            new[s] = ids[sig]\n        if len(set(new.values())) == len(set(cls.values())):\n            return len(set(new.values()))\n        cls = new\nacc = set([s for s in seen if s == (0, 0)])\nrej = set([s for s in seen if s != (0, 0)])\ntotal = count_classes(acc) + count_classes(rej)\nopts = {'A': 6, 'B': 9, 'C': 11, 'D': 12}\nanswer = [k for k in 'ABCD' if opts[k] == total][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000068",
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "kind": "trap_aware",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "The Boolean function \\(f(A, B, C, D) = \\sum m(0, 2, 3, 5, 7, 8, 10, 11, 13, 15)\\) is to be implemented as a sum of products. The minimum number of literals in any sum-of-products expression for \\(f\\) is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(3\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(4\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(5\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(6\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "Minterms 0, 2, 3, 5, 7, 8, 10, 11, 13, 15 of four variables (D is the least significant bit).",
+    "find": "The minimum literal count of a sum of products",
+    "steps": [
+     "The four corner minterms 0, 2, 8, 10 form the prime implicant \\(\\bar{B}\\bar{D}\\); the minterms 5, 7, 13, 15 form \\(BD\\). Both are essential (minterm 0 appears only in the first, minterm 5 only in these with \\(BD\\)).",
+     "Minterms 3 and 11 remain. The cheapest cover is a two-literal implicant, \\(CD\\) (3, 7, 11, 15) or \\(\\bar{B}C\\) (2, 3, 10, 11); the three-literal \\(\\bar{B}CD\\) is never needed.",
+     "Total: \\(2 + 2 + 2 = 6\\) literals, for example \\(f = \\bar{B}\\bar{D} + BD + CD\\)."
+    ],
+    "shortcut": "Two essential 2-literal groups plus one more 2-literal group: three terms of two literals.",
+    "trap": "Counting terms (3) instead of literals, or covering minterms 3 and 11 with the 3-literal group, which gives 7."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "on = set([0, 2, 3, 5, 7, 8, 10, 11, 13, 15])\ncubes = []\nfor mask in range(16):\n    for val in range(16):\n        if val & (15 - mask):\n            continue\n        cover = set([m for m in range(16) if (m & mask) == val])\n        if cover <= on:\n            cubes.append((mask, val, cover))\nprimes = [c for c in cubes if not any(c[2] < d[2] for d in cubes)]\nbest = 99\nfor r in range(1, len(primes) + 1):\n    for combo in itertools.combinations(primes, r):\n        cov = set()\n        for c in combo:\n            cov = cov | c[2]\n        if cov == on:\n            cost = sum(bin(c[0]).count('1') for c in combo)\n            best = min(best, cost)\nopts = {'A': 3, 'B': 4, 'C': 5, 'D': 6}\nanswer = [k for k in 'ABCD' if opts[k] == best][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000069",
+   "subject": "Compiler Design",
+   "topic": "Syntax-Directed Translation & Runtime Environments",
+   "kind": "conceptual",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A compiler writer classifies the attribute grammars used for semantic analysis into the S-attributed and L-attributed classes. Exactly one of the claims below about attribute dependencies and about these two classes is valid. Which one is it?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "An attribute computed from the attributes of a node's parent and siblings is called a synthesized attribute."
+    },
+    {
+     "option_id": "B",
+     "text": "An S-attributed definition may use inherited attributes provided they depend only on the attributes of the node's children."
+    },
+    {
+     "option_id": "C",
+     "text": "Every S-attributed definition is also an L-attributed definition."
+    },
+    {
+     "option_id": "D",
+     "text": "In an L-attributed definition, an inherited attribute of a right-hand-side symbol may depend on the attributes of symbols to its right in the same production."
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "Definitions of synthesized, inherited, S-attributed and L-attributed.",
+    "find": "The true statement",
+    "steps": [
+     "A synthesized attribute depends on the node's children (and its own attributes); an attribute that depends on the parent and siblings is inherited, so the first statement is false.",
+     "An S-attributed definition uses synthesized attributes only, so it cannot use inherited ones at all; the second statement is false.",
+     "An L-attributed definition allows synthesized attributes computed from the children and inherited attributes from the parent and left siblings. An S-attributed definition uses only the first kind, so it is L-attributed: the third statement is true.",
+     "Inherited attributes in an L-attributed definition may depend only on the parent and on symbols to the LEFT, never on symbols to the right, so the last statement is false."
+    ],
+    "shortcut": "S-attributed is the special case of L-attributed with no inherited attributes.",
+    "trap": "Mixing up the direction: synthesized flows up from children, inherited comes from parent and left siblings."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "DEP = {'synthesized': set(['children']), 'inherited': set(['parent', 'left siblings', 'own inherited'])}\nS_KINDS = set(['synthesized'])\nL_KINDS = set(['synthesized', 'inherited'])\nL_SYN_DEP = set(['children', 'own inherited'])\ntruth = {}\ntruth['A'] = DEP['synthesized'] == set(['parent', 'left siblings', 'right siblings'])\ntruth['B'] = 'inherited' in S_KINDS\ntruth['C'] = S_KINDS <= L_KINDS and DEP['synthesized'] <= L_SYN_DEP\ntruth['D'] = 'right siblings' in DEP['inherited']\nanswer = [k for k in 'ABCD' if truth[k]][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000070",
+   "subject": "Data Structures",
+   "topic": "Linked Lists & Binary Trees",
+   "kind": "trace",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A singly linked list holds the values \\(1, 2, 3, 4, 5, 6, 7, 8\\) in this order. The following function is called as g(head, 3), where head points to the first node.\n```c\nstruct node { int d; struct node *next; };\nstruct node *g(struct node *h, int k) {\n    struct node *p = h, *prev = NULL, *nx;\n    int c = 0;\n    while (p && c < k) { p = p->next; c++; }\n    if (c < k) return h;\n    p = h; c = 0;\n    while (p && c < k) { nx = p->next; p->next = prev; prev = p; p = nx; c++; }\n    h->next = g(p, k);\n    return prev;\n}\n```\nThe values in the list returned by the call, from first to last, are",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "3, 2, 1, 6, 5, 4, 8, 7"
+    },
+    {
+     "option_id": "B",
+     "text": "2, 1, 4, 3, 6, 5, 8, 7"
+    },
+    {
+     "option_id": "C",
+     "text": "3, 2, 1, 4, 5, 6, 7, 8"
+    },
+    {
+     "option_id": "D",
+     "text": "3, 2, 1, 6, 5, 4, 7, 8"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "g reverses each complete block of k nodes and leaves a final block shorter than k unchanged.",
+    "find": "The list after g(head, 3)",
+    "steps": [
+     "The first scan checks that 3 nodes exist; the loop then reverses 1, 2, 3 into 3, 2, 1 and the old first node (1) is linked to the result of g on the rest.",
+     "The second call handles 4, 5, 6 the same way and gives 6, 5, 4.",
+     "The third call starts at 7 and finds only 2 nodes, so c < k and it returns the list 7, 8 untouched.",
+     "Joined together: 3, 2, 1, 6, 5, 4, 7, 8."
+    ],
+    "shortcut": "Reverse every full group of 3; the leftover pair 7, 8 stays in order.",
+    "trap": "Reversing the last short block as well (giving 8, 7) because the other blocks are reversed."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "nxt = {1: 2, 2: 3, 3: 4, 4: 5, 5: 6, 6: 7, 7: 8, 8: None}\ndef g(h, k):\n    p = h\n    c = 0\n    while p is not None and c < k:\n        p = nxt[p]\n        c += 1\n    if c < k:\n        return h\n    p = h\n    prev = None\n    c = 0\n    while p is not None and c < k:\n        n = nxt[p]\n        nxt[p] = prev\n        prev = p\n        p = n\n        c += 1\n    nxt[h] = g(p, k)\n    return prev\nhead = g(1, 3)\nout = []\nwhile head is not None:\n    out.append(head)\n    head = nxt[head]\nopts = {'A': [3, 2, 1, 6, 5, 4, 8, 7], 'B': [2, 1, 4, 3, 6, 5, 8, 7], 'C': [3, 2, 1, 4, 5, 6, 7, 8], 'D': [3, 2, 1, 6, 5, 4, 7, 8]}\nanswer = [k for k in 'ABCD' if opts[k] == out][0]"
+   }
+  }
+ ]
+}
