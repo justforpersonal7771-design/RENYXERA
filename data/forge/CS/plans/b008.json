@@ -1,0 +1,1307 @@
+{
+ "branch": "CS",
+ "batch": "b008",
+ "how": "Author one question per slot following its prompt. Save an array to data/CS/drafts/b008.json, each item { slot, question_text, options, answer, solution, verify }. Then: node scripts/forge/generate.mjs --branch=CS --batch=b008 --ingest=data/CS/drafts/b008.json",
+ "slots": [
+  {
+   "index": 0,
+   "subject": "Data Structures",
+   "topic": "Binary Search Trees (BSTs) & Binary Heaps",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 1,
+   "subject": "General Aptitude",
+   "topic": "Mensuration and Geometry",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 2,
+   "subject": "Probability & Statistics",
+   "topic": "Random Variables & Sampling Rules",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 3,
+   "subject": "Algorithms",
+   "topic": "Minimum Spanning Trees (Prim/Kruskal Algorithms)",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "A",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 4,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Context-Free Grammars & Push-Down Automata",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 5,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular and Context-Free Languages & Pumping Lemma",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "C",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 6,
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 7,
+   "subject": "Digital Logic",
+   "topic": "Sequential Circuits (Flip-Flops, Registers, Counters)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 8,
+   "subject": "General Aptitude",
+   "topic": "Mensuration and Geometry",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 9,
+   "subject": "Probability & Statistics",
+   "topic": "Random Variables & Sampling Rules",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 10,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Transactions, Concurrency Control, Conflict Serializability",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "A",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 11,
+   "subject": "Digital Logic",
+   "topic": "Number Representations & Fixed/Floating Point Math",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 12,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular and Context-Free Languages & Pumping Lemma",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 13,
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 14,
+   "subject": "Compiler Design",
+   "topic": "Syntax-Directed Translation & Runtime Environments",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "C",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 15,
+   "subject": "Computer Networks (CN)",
+   "topic": "Transport Layer (Flow Control and Congestion Control, TCP, UDP, Sockets)",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 16,
+   "subject": "General Aptitude",
+   "topic": "Elementary Statistics and Probability",
+   "type": "MCQ",
+   "kind": "numeric_chain",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 17,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Transactions, Concurrency Control, Conflict Serializability",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 18,
+   "subject": "Operating Systems (OS)",
+   "topic": "System Calls, Processes, Threads, InterProcess Communication",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 19,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular and Context-Free Languages & Pumping Lemma",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 20,
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 21,
+   "subject": "Computer Networks (CN)",
+   "topic": "OSI & TCP/IP Protocol Layers",
+   "type": "MCQ",
+   "kind": "data_interpretation",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 22,
+   "subject": "Computer Networks (CN)",
+   "topic": "Transport Layer (Flow Control and Congestion Control, TCP, UDP, Sockets)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 23,
+   "subject": "General Aptitude",
+   "topic": "Elementary Statistics and Probability",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 24,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Transactions, Concurrency Control, Conflict Serializability",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 25,
+   "subject": "Digital Logic",
+   "topic": "Number Representations & Fixed/Floating Point Math",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 26,
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 27,
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 28,
+   "subject": "Data Structures",
+   "topic": "BSTs & Binary Heaps",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 29,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Normalization Schemes (1NF, 2NF, 3NF, BCNF Boundaries)",
+   "type": "MCQ",
+   "kind": "data_interpretation",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 30,
+   "subject": "General Aptitude",
+   "topic": "Numerical Relations & Arithmetic Logic",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 31,
+   "subject": "Computer Networks (CN)",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 32,
+   "subject": "Algorithms",
+   "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 33,
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "B",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 34,
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 35,
+   "subject": "General Aptitude",
+   "topic": "Mathematical Operations (Powers, Exponents, Logarithms)",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 36,
+   "subject": "Computer Networks (CN)",
+   "topic": "Routing Protocols (Shortest Path, Flooding, Distance Vector, Link State Routing)",
+   "type": "NAT",
+   "kind": "application",
+   "key": null,
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 37,
+   "subject": "Discrete Mathematics",
+   "topic": "Sets, Relations, Functions, Partial Orders, Lattices",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 38,
+   "subject": "Discrete Mathematics",
+   "topic": "Sets, Relations, Functions, Partial Orders, Lattices",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 39,
+   "subject": "Digital Logic",
+   "topic": "Number Representations & Fixed/Floating Point Math",
+   "type": "MCQ",
+   "kind": "numeric_chain",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 40,
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "B",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 41,
+   "subject": "Computer Networks (CN)",
+   "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
+   "type": "MCQ",
+   "kind": "numeric_chain",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 42,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Turing Machines & Undecidability",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 43,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Normalization Schemes (1NF, 2NF, 3NF, BCNF Boundaries)",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "C",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 44,
+   "subject": "Discrete Mathematics",
+   "topic": "Algebraic Structures (Monoids, Groups)",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 45,
+   "subject": "Computer Networks (CN)",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 46,
+   "subject": "General Aptitude",
+   "topic": "Operational Puzzles and Systemic Reasoning",
+   "type": "MCQ",
+   "kind": "data_interpretation",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 47,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Instruction Pipelining, Performance, Hazard Management",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 48,
+   "subject": "Programming in C",
+   "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 49,
+   "subject": "Compiler Design",
+   "topic": "Intermediate Code Generation & Local Code Optimization",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "A",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 50,
+   "subject": "General Aptitude",
+   "topic": "Logic Deduction and Induction Frameworks",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 51,
+   "subject": "Discrete Mathematics",
+   "topic": "Algebraic Structures (Monoids, Groups)",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 52,
+   "subject": "Computer Networks (CN)",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 53,
+   "subject": "General Aptitude",
+   "topic": "Operational Puzzles and Systemic Reasoning",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 54,
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 55,
+   "subject": "Programming in C",
+   "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
+   "type": "NAT",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 56,
+   "subject": "Operating Systems (OS)",
+   "topic": "Memory Management and Virtual Memory",
+   "type": "NAT",
+   "kind": "numeric_chain",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 57,
+   "subject": "General Aptitude",
+   "topic": "Logic Deduction and Induction Frameworks",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "B",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 58,
+   "subject": "Calculus",
+   "topic": "Limits, Continuity, and Differentiability",
+   "type": "NAT",
+   "kind": "trap_aware",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 59,
+   "subject": "Algorithms",
+   "topic": "Asymptotic Analysis (O, Omega, Theta Complexities)",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 60,
+   "subject": "General Aptitude",
+   "topic": "Operational Puzzles and Systemic Reasoning",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 61,
+   "subject": "Linear Algebra",
+   "topic": "Matrices, Determinants, & Linear Equation Systems",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "A",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 62,
+   "subject": "Programming in C",
+   "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 63,
+   "subject": "General Aptitude",
+   "topic": "Data Interpretation (Bar Graphs, Pie Charts, Histograms)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 64,
+   "subject": "Linear Algebra",
+   "topic": "Eigenvalues and Eigenvectors",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 65,
+   "subject": "Discrete Mathematics",
+   "topic": "Advanced Graph Bounds (Matching, Coloring Theorems)",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 66,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Integrity Constraints & Functional Dependencies",
+   "type": "NAT",
+   "kind": "conceptual",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 67,
+   "subject": "Operating Systems (OS)",
+   "topic": "CPU and I/O Scheduling",
+   "type": "NAT",
+   "kind": "application",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 68,
+   "subject": "Operating Systems (OS)",
+   "topic": "System Calls, Processes, Threads, InterProcess Communication",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 69,
+   "subject": "Computer Networks (CN)",
+   "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 70,
+   "subject": "General Aptitude",
+   "topic": "Combinatorics Core (Permutations, Combinations, Series)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 71,
+   "subject": "Linear Algebra",
+   "topic": "Eigenvalues and Eigenvectors",
+   "type": "MCQ",
+   "kind": "numeric_chain",
+   "key": "C",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 72,
+   "subject": "Discrete Mathematics",
+   "topic": "Advanced Graph Bounds (Matching, Coloring Theorems)",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 73,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Integrity Constraints & Functional Dependencies",
+   "type": "NAT",
+   "kind": "trap_aware",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 74,
+   "subject": "Programming in C",
+   "topic": "Pointers, Multi-Dimensional Arrays, Structures",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 75,
+   "subject": "Linear Algebra",
+   "topic": "Matrices, Determinants, & Linear Equation Systems",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 76,
+   "subject": "Programming in C",
+   "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
+   "type": "NAT",
+   "kind": "application",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 77,
+   "subject": "Discrete Mathematics",
+   "topic": "Propositional and First-Order Quantifier Logic",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 78,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Relational Models, Relational Algebra, Tuple Calculus",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 79,
+   "subject": "General Aptitude",
+   "topic": "Numerical Relations & Arithmetic Logic",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 80,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Machine Instructions & Addressing Modes",
+   "type": "NAT",
+   "kind": "numeric_chain",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 81,
+   "subject": "Programming in C",
+   "topic": "Pointers, Multi-Dimensional Arrays, Structures",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 82,
+   "subject": "Linear Algebra",
+   "topic": "Matrices, Determinants, & Linear Equation Systems",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 83,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Instruction Pipelining, Performance, Hazard Management",
+   "type": "NAT",
+   "kind": "application",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 84,
+   "subject": "Calculus",
+   "topic": "Mean Value Theorems & Definite Integration",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 85,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Relational Models, Relational Algebra, Tuple Calculus",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 86,
+   "subject": "Algorithms",
+   "topic": "Searching, Sorting, Hashing Mechanisms",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 87,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Machine Instructions & Addressing Modes",
+   "type": "NAT",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 88,
+   "subject": "Operating Systems (OS)",
+   "topic": "CPU and I/O Scheduling",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 89,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
+   "type": "NAT",
+   "kind": "trap_aware",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 90,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Instruction Pipelining, Performance, Hazard Management",
+   "type": "NAT",
+   "kind": "conceptual",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 91,
+   "subject": "Data Structures",
+   "topic": "Linked Lists & Binary Trees",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "A",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 92,
+   "subject": "Computer Networks (CN)",
+   "topic": "Routing Protocols (Shortest Path, Flooding, Distance Vector, Link State Routing)",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "D",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 93,
+   "subject": "Data Structures",
+   "topic": "Abstract Data Types (ADTs), Stacks, Queues",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 94,
+   "subject": "Discrete Mathematics",
+   "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
+   "type": "NAT",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 95,
+   "subject": "Programming in C",
+   "topic": "Pointers, Multi-Dimensional Arrays, Structures",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 96,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
+   "type": "NAT",
+   "kind": "numeric_chain",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 97,
+   "subject": "Computer Networks (CN)",
+   "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
+   "type": "MCQ",
+   "kind": "numeric_chain",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 98,
+   "subject": "Probability & Statistics",
+   "topic": "Conditional Probability & Bayes Theorem",
+   "type": "NAT",
+   "kind": "conceptual",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 99,
+   "subject": "Digital Logic",
+   "topic": "Combinational Logic (Multiplexers, Decoders, Adders)",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "A",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 100,
+   "subject": "Algorithms",
+   "topic": "Searching, Sorting, Hashing Mechanisms",
+   "type": "MCQ",
+   "kind": "application",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 101,
+   "subject": "Algorithms",
+   "topic": "Asymptotic Analysis (O, Omega, Theta Complexities)",
+   "type": "MCQ",
+   "kind": "data_interpretation",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 102,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Integrity Constraints & Functional Dependencies",
+   "type": "NAT",
+   "kind": "data_interpretation",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 103,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 104,
+   "subject": "Computer Networks (CN)",
+   "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 105,
+   "subject": "Algorithms",
+   "topic": "Dynamic Programming Infrastructure",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 106,
+   "subject": "General Aptitude",
+   "topic": "Numerical Computation (Percentages, Ratios)",
+   "type": "MCQ",
+   "kind": "conceptual",
+   "key": "C",
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 107,
+   "subject": "Operating Systems (OS)",
+   "topic": "Concurrency & Synchronization (Semaphores, Mutex, Monitors, Locks)",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 108,
+   "subject": "Discrete Mathematics",
+   "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
+   "type": "NAT",
+   "kind": "application",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 109,
+   "subject": "Algorithms",
+   "topic": "Minimum Spanning Trees (Prim/Kruskal Algorithms)",
+   "type": "MCQ",
+   "kind": "data_interpretation",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 110,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Context-Free Grammars & Push-Down Automata",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 111,
+   "subject": "Computer Networks (CN)",
+   "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 112,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 113,
+   "subject": "Compiler Design",
+   "topic": "Data Flow Analysis: Constant Propagation, Liveliness Analysis, Common Subexpression Elimination",
+   "type": "MCQ",
+   "kind": "numeric_chain",
+   "key": "B",
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 114,
+   "subject": "Calculus",
+   "topic": "Limits, Continuity, and Differentiability",
+   "type": "NAT",
+   "kind": "trace",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 115,
+   "subject": "Operating Systems (OS)",
+   "topic": "File Systems Operations & Disk Scheduling Optimization",
+   "type": "NAT",
+   "kind": "trap_aware",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 116,
+   "subject": "Algorithms",
+   "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 117,
+   "subject": "Operating Systems (OS)",
+   "topic": "CPU and I/O Scheduling",
+   "type": "NAT",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 118,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular and Context-Free Languages & Pumping Lemma",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 119,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "File Organization & Indexing (e.g., B and B+ Trees)",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 120,
+   "subject": "Probability & Statistics",
+   "topic": "Continuous/Discrete Distributions (Uniform, Normal, Exponential)",
+   "type": "NAT",
+   "kind": "conceptual",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 121,
+   "subject": "Operating Systems (OS)",
+   "topic": "Concurrency & Synchronization (Semaphores, Mutex, Monitors, Locks)",
+   "type": "MCQ",
+   "kind": "numeric_chain",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 122,
+   "subject": "Operating Systems (OS)",
+   "topic": "File Systems Operations & Disk Scheduling Optimization",
+   "type": "NAT",
+   "kind": "trace",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 123,
+   "subject": "Algorithms",
+   "topic": "Minimum Spanning Trees (Prim/Kruskal Algorithms)",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 124,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Context-Free Grammars & Push-Down Automata",
+   "type": "MCQ",
+   "kind": "trace",
+   "key": "B",
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 125,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Instruction Pipelining, Performance, Hazard Management",
+   "type": "NAT",
+   "kind": "application",
+   "key": null,
+   "difficulty": "M",
+   "marks": 2
+  },
+  {
+   "index": 126,
+   "subject": "Computer Networks (CN)",
+   "topic": "Application Layer (DNS, SMTP, HTTP, FTP, Email) & Security",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "M",
+   "marks": 1
+  },
+  {
+   "index": 127,
+   "subject": "Programming in C",
+   "topic": "Data Types, Syntax, Control Structures, Loops",
+   "type": "NAT",
+   "kind": "numeric_chain",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2
+  },
+  {
+   "index": 128,
+   "subject": "Data Structures",
+   "topic": "Abstract Data Types (ADTs), Stacks, Queues",
+   "type": "NAT",
+   "kind": "numeric_chain",
+   "key": null,
+   "difficulty": "H",
+   "marks": 1
+  },
+  {
+   "index": 129,
+   "subject": "Algorithms",
+   "topic": "Asymptotic Analysis (O, Omega, Theta Complexities)",
+   "type": "MCQ",
+   "kind": "trap_aware",
+   "key": "A",
+   "difficulty": "H",
+   "marks": 2
+  }
+ ]
+}

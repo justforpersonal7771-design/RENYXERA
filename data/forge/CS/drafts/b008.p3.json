@@ -1,0 +1,671 @@
+[
+ {
+  "slot": 29,
+  "kind": "multi_concept",
+  "question_text": "A relation \\(R(A, B, C, D, E)\\) satisfies the functional dependencies \\(A \\to B,\\ BC \\to D,\\ D \\to A,\\ E \\to C\\). The number of candidate keys of \\(R\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(E\\) appears on no right-hand side, so every key contains \\(E\\); \\(E \\to C\\) then supplies \\(C\\).",
+    "The remaining attributes \\(A, B, D\\) are linked by \\(D \\to A \\to B\\) and \\(BC \\to D\\): any one of \\(A\\), \\(B\\), \\(D\\) together with \\(E\\) (and so \\(C\\)) determines everything.",
+    "Candidate keys: AE, BE, DE: 3 keys."
+   ],
+   "shortcut": "Start from attributes that never appear on a right-hand side, then see which single attribute completes the closure.",
+   "trap": "Stopping at one key found by the usual closure from \\(A\\) and forgetting that cyclic dependencies give several keys."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "attrs = 'ABCDE'\nF = [('A', 'B'), ('BC', 'D'), ('D', 'A'), ('E', 'C')]\ndef closure(s):\n    s = set(s)\n    ch = True\n    while ch:\n        ch = False\n        for l, r in F:\n            if set(l) <= s and not set(r) <= s:\n                s = s | set(r)\n                ch = True\n    return s\nkeys = []\nfor k in range(1, 6):\n    for c in itertools.combinations(attrs, k):\n        if closure(c) == set(attrs) and not any(set(x) <= set(c) for x in keys):\n            keys.append(c)\nval = len(keys)\nnames = [''.join(k) for k in keys]\nwrong = [1, 2, 4]\nopts = {'A': 3, 'B': 1, 'C': 2, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 30,
+  "kind": "application",
+  "question_text": "The sum of the present ages of a father and his son is \\(54\\) years. Six years ago the father was exactly five times as old as his son was then. The present age of the son, in years, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(14\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(11\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(13\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let the son be \\(s\\) now: the father is \\(54 - s\\).",
+    "Six years ago: \\(54 - s - 6 = 5(s - 6)\\), so \\(48 - s = 5s - 30\\) and \\(6s = 78\\): \\(s = 13\\)."
+   ],
+   "shortcut": "Sum of ages six years ago \\(= 54 - 12 = 42\\), split 5 : 1 gives son 7 then, 13 now.",
+   "trap": "Applying the ratio 5 : 1 to the present ages instead of the ages six years ago."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "val = 0\nfor s in range(7, 54):\n    f = 54 - s\n    if f - 6 == 5 * (s - 6):\n        val = s\nwrong = [12, 14, 11]\nopts = {'A': 12, 'B': 14, 'C': 11, 'D': 13}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 31,
+  "kind": "application",
+  "question_text": "A sender uses CRC with the generator polynomial \\(x^4 + x + 1\\) (bit pattern 10011). The data word is \\(1101011011\\). The four check bits appended to the data word by the sender are",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "1110"
+   },
+   {
+    "option_id": "B",
+    "text": "0111"
+   },
+   {
+    "option_id": "C",
+    "text": "1010"
+   },
+   {
+    "option_id": "D",
+    "text": "1011"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Append four zeros to the data: \\(11010110110000\\).",
+    "Divide by \\(10011\\) with modulo-2 (XOR) division, bringing down bits as needed.",
+    "The remainder is 1110; these four bits are sent after the data word."
+   ],
+   "shortcut": "XOR the generator under every leading 1, left to right, and read the last four bits.",
+   "trap": "Using ordinary subtraction instead of XOR, or sending the quotient instead of the remainder."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "data = '1101011011'\ngen = '10011'\nbits = [int(c) for c in data + '0000']\nfor i in range(len(data)):\n    if bits[i] == 1:\n        for j in range(5):\n            bits[i + j] ^= int(gen[j])\nval = ''.join(str(b) for b in bits[-4:])\nwrong = ['0111', '1010', '1011']\nopts = {'A': '1110', 'B': '0111', 'C': '1010', 'D': '1011'}\nanswer = [k for k in 'ABCD' if opts[k] == val][0]"
+  }
+ },
+ {
+  "slot": 32,
+  "kind": "msq_discriminator",
+  "question_text": "An undirected graph on vertices \\(0, 1, \\dots, 5\\) has edges (weights): \\(0\\text{-}1\\,(4)\\), \\(0\\text{-}2\\,(1)\\), \\(1\\text{-}2\\,(2)\\), \\(1\\text{-}3\\,(1)\\), \\(2\\text{-}3\\,(5)\\), \\(3\\text{-}4\\,(3)\\), \\(4\\text{-}5\\,(2)\\), \\(3\\text{-}5\\,(6)\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The shortest distance from vertex 0 to vertex 5 is 9."
+   },
+   {
+    "option_id": "B",
+    "text": "Every shortest path from vertex 0 to vertex 3 passes through vertex 2."
+   },
+   {
+    "option_id": "C",
+    "text": "The shortest path from vertex 0 to vertex 1 is the direct edge 0-1."
+   },
+   {
+    "option_id": "D",
+    "text": "A breadth-first search from vertex 0 (visiting neighbours in increasing order) reaches vertex 4 before vertex 3."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Dijkstra from 0 gives the distances 0, 3, 1, 4, 7, 9 for vertices 0 to 5.",
+    "Vertex 1 is reached through 0-2-1 (cost 3) rather than the direct edge (cost 4), and vertex 3 through 0-2-1-3 (cost 4), so vertex 2 is on that path; vertex 5 costs 9.",
+    "Breadth-first search visits 0, then 1 and 2, then 3, then 4 and 5: vertex 3 comes before vertex 4."
+   ],
+   "shortcut": "Compute all distances once with Dijkstra, then check each statement.",
+   "trap": "Taking the direct edge to a vertex as the shortest path, or confusing the BFS level order with distance in weighted edges."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "W = {}\nfor a, b, w in [(0, 1, 4), (0, 2, 1), (1, 2, 2), (1, 3, 1), (2, 3, 5), (3, 4, 3), (4, 5, 2), (3, 5, 6)]:\n    W[(a, b)] = w\n    W[(b, a)] = w\ndist = {v: 10 ** 9 for v in range(6)}\ndist[0] = 0\nprev = {}\ndone = set()\nwhile len(done) < 6:\n    u = min([v for v in range(6) if v not in done], key=lambda v: dist[v])\n    done.add(u)\n    for v in range(6):\n        if (u, v) in W and dist[u] + W[(u, v)] < dist[v]:\n            dist[v] = dist[u] + W[(u, v)]\n            prev[v] = u\ndef path(v):\n    p = [v]\n    while v in prev:\n        v = prev[v]\n        p.append(v)\n    return p[::-1]\norder = [0]\nq = [0]\nwhile q:\n    u = q.pop(0)\n    for v in range(6):\n        if (u, v) in W and v not in order:\n            order.append(v)\n            q.append(v)\ntruth = [dist[5] == 9, 2 in path(3), path(1) == [0, 1], order.index(4) < order.index(3)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 33,
+  "kind": "conceptual",
+  "question_text": "The function \\(f(A,B,C,D) = \\sum m(1, 3, 4, 5, 9, 10, 11, 12, 13, 15)\\) is to be realised as a sum of products. The minimum number of product terms needed is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(6\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The function has 5 prime implicants (maximal groups on the map).",
+    "Trying covers of size 1, 2, 3, ... the smallest cover that includes all ten minterms has 4 terms."
+   ],
+   "shortcut": "Take the essential prime implicants first and then the fewest extra groups for what is left.",
+   "trap": "Using every prime implicant, or choosing groups greedily by size, which can need one term more than the minimum."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def primes_of(on, nv):\n    full = (1 << nv) - 1\n    cubes = []\n    for mask in range(full + 1):\n        for v in range(full + 1):\n            if v & (full - mask):\n                continue\n            cover = set([m for m in range(full + 1) if (m & mask) == v])\n            if cover <= on:\n                cubes.append(cover)\n    return [c for c in cubes if not any(c < d for d in cubes)]\non = set([1, 3, 4, 5, 9, 10, 11, 12, 13, 15])\npr = primes_of(on, 4)\nval = None\nfor r in range(1, len(pr) + 1):\n    if any(set().union(*c) == on for c in itertools.combinations(pr, r)):\n        val = r\n        break\nnpr = len(pr)\nwrong = sorted(set([3, 4, 5, 6]) - set([val]))[:3]\nopts = {'A': 3, 'B': 4, 'C': 5, 'D': 6}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 34,
+  "kind": "trace",
+  "question_text": "Consider the grammar \\(S' \\to S\\), \\(S \\to E\\), \\(E \\to E + T \\mid T\\), \\(T \\to T * F \\mid F\\), \\(F \\to (E) \\mid \\text{id}\\). The number of LR(0) items in the closure of the initial item set \\(\\{S' \\to \\cdot S\\}\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(8\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(6\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(9\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Start with \\(S' \\to \\cdot S\\). The dot is before \\(S\\), so add \\(S \\to \\cdot E\\).",
+    "Before \\(E\\): add \\(E \\to \\cdot E + T\\) and \\(E \\to \\cdot T\\); before \\(T\\): \\(T \\to \\cdot T * F\\) and \\(T \\to \\cdot F\\); before \\(F\\): \\(F \\to \\cdot (E)\\) and \\(F \\to \\cdot \\text{id}\\).",
+    "Total 8 items."
+   ],
+   "shortcut": "One item per production, because every nonterminal is reachable from the start.",
+   "trap": "Counting grammar productions (8) or missing the item for the augmented production."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "G = [(\"S'\", ('S',)), ('S', ('E',)), ('E', ('E', '+', 'T')), ('E', ('T',)), ('T', ('T', '*', 'F')), ('T', ('F',)), ('F', ('(', 'E', ')')), ('F', ('id',))]\nNT = set([\"S'\", 'S', 'E', 'T', 'F'])\nitems = set([(\"S'\", ('S',), 0)])\nch = True\nwhile ch:\n    ch = False\n    for (l, r, d) in list(items):\n        if d < len(r) and r[d] in NT:\n            for (l2, r2) in G:\n                if l2 == r[d] and (l2, r2, 0) not in items:\n                    items.add((l2, r2, 0))\n                    ch = True\nval = len(items)\nwrong = [5, 6, 9]\nopts = {'A': 5, 'B': 8, 'C': 6, 'D': 9}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 35,
+  "kind": "trap_aware",
+  "question_text": "If \\(\\log_2 x + \\log_4 x = 6\\) for a positive real number \\(x\\), then \\(x\\) equals",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(8\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(16\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(32\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(64\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(\\log_4 x = \\tfrac12 \\log_2 x\\), so \\(\\tfrac32 \\log_2 x = 6\\).",
+    "\\(\\log_2 x = 4\\), hence \\(x = 2^4 = 16\\)."
+   ],
+   "shortcut": "Convert both logarithms to base 2 first.",
+   "trap": "Writing \\(\\log_4 x = 2\\log_2 x\\) (inverting the change of base), which gives \\(x = 8\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "val = 0\nfor x in range(1, 5000):\n    if abs(math.log2(x) + math.log(x, 4) - 6) < 1e-9:\n        val = x\nwrong = [8, 32, 64]\nopts = {'A': 8, 'B': 16, 'C': 32, 'D': 64}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 36,
+  "kind": "numeric_chain",
+  "question_text": "A network has routers A to F and links with costs: A-B \\(7\\), A-C \\(9\\), A-F \\(14\\), B-C \\(10\\), B-D \\(12\\), C-D \\(11\\), C-F \\(2\\), D-E \\(5\\), E-F \\(9\\). Using the least-cost routes computed by link-state routing at router A, the sum of the costs of the least-cost paths from A to the other five routers is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    66,
+    66
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Dijkstra from A settles B at 7, C at 9, F at 11 (A-C-F), D at 19 (A-B-D), E at 20 (A-C-F-E).",
+    "Costs to B, C, D, E, F are 7, 9, 19, 20, 11; their sum is 66."
+   ],
+   "shortcut": "Settle vertices in order of distance and relax their neighbours.",
+   "trap": "Using the direct link A-F (14) instead of A-C-F (11), or A-C-D (20) instead of A-B-D (19)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "W = {}\nfor a, b, w in [('A', 'B', 7), ('A', 'C', 9), ('A', 'F', 14), ('B', 'C', 10), ('B', 'D', 12), ('C', 'D', 11), ('C', 'F', 2), ('D', 'E', 5), ('E', 'F', 9)]:\n    W[(a, b)] = w\n    W[(b, a)] = w\nnodes = 'ABCDEF'\ndist = {v: 10 ** 9 for v in nodes}\ndist['A'] = 0\ndone = set()\nwhile len(done) < 6:\n    u = min([v for v in nodes if v not in done], key=lambda v: dist[v])\n    done.add(u)\n    for v in nodes:\n        if (u, v) in W and dist[u] + W[(u, v)] < dist[v]:\n            dist[v] = dist[u] + W[(u, v)]\nanswer = sum(dist[v] for v in nodes if v != 'A')\ndd = [dist[v] for v in nodes if v != 'A']"
+  }
+ },
+ {
+  "slot": 37,
+  "kind": "msq_discriminator",
+  "question_text": "Consider the set \\(P = \\{1, 2, 3, 4, 6, 12\\}\\) partially ordered by divisibility (\\(a \\preceq b\\) iff \\(a\\) divides \\(b\\)). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The poset is a lattice."
+   },
+   {
+    "option_id": "B",
+    "text": "The poset has exactly two minimal elements."
+   },
+   {
+    "option_id": "C",
+    "text": "Exactly two elements cover 1 in the Hasse diagram."
+   },
+   {
+    "option_id": "D",
+    "text": "The longest chain in the poset has exactly 3 elements."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Any two elements of \\(P\\) have a gcd and an lcm inside \\(P\\), so every pair has a greatest lower bound and a least upper bound: it is a lattice.",
+    "The only minimal element is 1 (everything is a multiple of 1); 2 and 3 are the elements that cover 1.",
+    "The chain \\(1 \\prec 2 \\prec 4 \\prec 12\\) has 4 elements, so the longest chain is not 3."
+   ],
+   "shortcut": "Draw the Hasse diagram: 1 at the bottom, 12 at the top, 2, 3, 4, 6 in between.",
+   "trap": "Counting the chain length by edges (3) while the statement counts elements, or taking 2 and 3 as minimal."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "P = [1, 2, 3, 4, 6, 12]\nle = lambda a, b: b % a == 0\ndef lub(a, b):\n    ub = [x for x in P if le(a, x) and le(b, x)]\n    low = [x for x in ub if all(le(x, y) for y in ub)]\n    return low[0] if low else None\ndef glb(a, b):\n    lb = [x for x in P if le(x, a) and le(x, b)]\n    hi = [x for x in lb if all(le(y, x) for y in lb)]\n    return hi[0] if hi else None\nis_lattice = all(lub(a, b) is not None and glb(a, b) is not None for a in P for b in P)\nminimal = [x for x in P if not any(y != x and le(y, x) for y in P)]\ncovers1 = [y for y in P if y != 1 and not any(z not in (1, y) and le(1, z) and le(z, y) for z in P)]\nbest = 0\nfor r in range(1, 7):\n    for c in itertools.combinations(P, r):\n        if all(le(a, b) or le(b, a) for a in c for b in c):\n            best = max(best, r)\ntruth = [is_lattice, len(minimal) == 2, len(covers1) == 2, best == 3]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 38,
+  "kind": "conceptual",
+  "question_text": "Let \\(R\\) be the relation on \\(A = \\{1, 2, 3, 4\\}\\) defined by \\((a, b) \\in R\\) iff \\(a + b\\) is even. Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(R\\) is reflexive."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(R\\) is symmetric."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(R\\) is transitive."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(R\\) is antisymmetric."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(a + a = 2a\\) is always even, so \\(R\\) is reflexive; \\(a + b = b + a\\) makes it symmetric.",
+    "If \\(a + b\\) and \\(b + c\\) are even then \\(a\\) and \\(c\\) have the same parity as \\(b\\), so \\(a + c\\) is even: transitive.",
+    "But \\((1,3)\\) and \\((3,1)\\) are both in \\(R\\) with \\(1 \\ne 3\\), so it is not antisymmetric. \\(R\\) is an equivalence relation with classes \\(\\{1,3\\}\\) and \\(\\{2,4\\}\\)."
+   ],
+   "shortcut": "\\(R\\) is 'same parity': an equivalence relation.",
+   "trap": "Thinking symmetric relations must be antisymmetric or the reverse; an equivalence relation with a class larger than one element is never antisymmetric."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "A = [1, 2, 3, 4]\nR = set((a, b) for a in A for b in A if (a + b) % 2 == 0)\nrefl = all((a, a) in R for a in A)\nsymm = all((b, a) in R for (a, b) in R)\ntrans = all((a, d) in R for (a, b) in R for (c, d) in R if b == c)\nanti = all(a == b for (a, b) in R if (b, a) in R)\ntruth = [refl, symm, trans, anti]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 39,
+  "kind": "application",
+  "question_text": "The 8-bit one's complement representation of the decimal number \\(-37\\), written in hexadecimal, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0xDB"
+   },
+   {
+    "option_id": "B",
+    "text": "0xDA"
+   },
+   {
+    "option_id": "C",
+    "text": "0xA5"
+   },
+   {
+    "option_id": "D",
+    "text": "0x25"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(37 = \\texttt{00100101}_2 = \\texttt{0x25}\\).",
+    "Inverting every bit gives \\(\\texttt{11011010}_2 = 0xDA\\) (the same as \\(255 - 37 = 218\\))."
+   ],
+   "shortcut": "One's complement of \\(n\\) in 8 bits is \\(255 - n\\).",
+   "trap": "Writing the two's complement (0xDB) or just setting the sign bit (0xA5, sign-magnitude)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "n = 37\nv = 255 - n\nval = '0x' + '0123456789ABCDEF'[v // 16] + '0123456789ABCDEF'[v % 16]\nwrong = ['0xDB', '0xA5', '0x25']\nopts = {'A': '0xDB', 'B': '0xDA', 'C': '0xA5', 'D': '0x25'}\nanswer = [k for k in 'ABCD' if opts[k] == val][0]"
+  }
+ },
+ {
+  "slot": 40,
+  "kind": "conceptual",
+  "question_text": "A Boolean function \\(f\\) of three variables is self-dual if \\(f(\\bar{x}, \\bar{y}, \\bar{z}) = \\overline{f(x, y, z)}\\) for all inputs. The number of self-dual functions of three variables is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(8\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(16\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(32\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(64\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Pair each input with its complement: 4 pairs of rows, such as (000, 111).",
+    "Choosing \\(f\\) on one row of each pair fixes the other row, so there are \\(2^4 = 16\\) self-dual functions."
+   ],
+   "shortcut": "\\(2^{2^{n-1}}\\) self-dual functions of \\(n\\) variables.",
+   "trap": "Using \\(2^8\\) (all functions) or \\(2^3\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor tt in range(256):\n    f = [(tt >> i) & 1 for i in range(8)]\n    if all(f[7 - i] == 1 - f[i] for i in range(8)):\n        cnt += 1\nval = cnt\nwrong = [8, 32, 64]\nopts = {'A': 8, 'B': 16, 'C': 32, 'D': 64}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 41,
+  "kind": "application",
+  "question_text": "An IPv4 datagram of total length \\(4000\\) bytes (including a \\(20\\)-byte header) must cross a link with an MTU of \\(1500\\) bytes. The fragment offset field (in units of 8 bytes) of the last fragment is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(370\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(185\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(497\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(369\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Each fragment carries at most \\(1500 - 20 = 1480\\) bytes of data (a multiple of 8).",
+    "The 3980 data bytes need 3 fragments of 1480, 1480 and 1020 bytes; the offsets in 8-byte units are 0, 185, 370.",
+    "The last fragment's offset is 370."
+   ],
+   "shortcut": "Offset \\(= \\) bytes before the fragment divided by 8: \\(2960 / 8\\).",
+   "trap": "Giving the byte offset 2960 or computing 3980/8 = 497."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "payload = 4000 - 20\nper = (1500 - 20) // 8 * 8\noff = 0\noffs = []\nrem = payload\nwhile rem > 0:\n    offs.append(off // 8)\n    take = min(per, rem)\n    rem -= take\n    off += take\nval = offs[-1]\nnf = len(offs)\nwrong = [185, 497, 369]\nopts = {'A': 370, 'B': 185, 'C': 497, 'D': 369}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 42,
+  "kind": "trace",
+  "question_text": "A Turing machine has states \\(q_0\\) (start), \\(q_1\\) and a halting state \\(q_h\\); the tape alphabet is \\(\\{0, 1, \\sqcup\\}\\). Transitions: in \\(q_0\\), reading 0 or 1 it leaves the symbol and moves right (stay in \\(q_0\\)); reading \\(\\sqcup\\) it moves left into \\(q_1\\). In \\(q_1\\), reading 1 it writes 0 and moves left; reading 0 or \\(\\sqcup\\) it writes 1 and halts. Started in \\(q_0\\) on the leftmost symbol of the input \\(10111\\), the number of moves (transitions) made before halting is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(10\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(9\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(11\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(15\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The machine adds 1 to the binary number: it scans right to the blank, then carries leftwards.",
+    "Moves: 5 to the right over \\(10111\\), 1 to step back onto the last symbol, then three carry steps (1 to 0) and one final write: 10 moves in all; the tape ends as 11000."
+   ],
+   "shortcut": "Scan right (n moves), turn around (1 move), then one move per carried 1 plus the final write.",
+   "trap": "Forgetting the move that turns around at the blank, or counting the halting write as no move."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "tape = {i: c for i, c in enumerate('10111')}\npos, state, steps = 0, 'q0', 0\nwhile state != 'qh':\n    c = tape.get(pos, '_')\n    if state == 'q0':\n        if c in '01':\n            pos += 1\n        else:\n            state = 'q1'\n            pos -= 1\n    else:\n        if c == '1':\n            tape[pos] = '0'\n            pos -= 1\n        else:\n            tape[pos] = '1'\n            state = 'qh'\n    steps += 1\nval = steps\nfinal = ''.join(tape[i] for i in sorted(tape))\nwrong = [9, 11, 15]\nopts = {'A': 10, 'B': 9, 'C': 11, 'D': 15}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 43,
+  "kind": "trap_aware",
+  "question_text": "A relation \\(R(A, B, C, D, E)\\) has the functional dependencies \\(AB \\to C,\\ C \\to D,\\ D \\to E\\). Which one of the following statements about its highest normal form is correct?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "R is in BCNF."
+   },
+   {
+    "option_id": "B",
+    "text": "R is in 3NF but not in BCNF."
+   },
+   {
+    "option_id": "C",
+    "text": "R is in 2NF but not in 3NF."
+   },
+   {
+    "option_id": "D",
+    "text": "R is in 1NF but not in 2NF."
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The only candidate key is \\(AB\\) (closure \\(AB \\to C \\to D \\to E\\)); \\(C, D, E\\) are non-prime.",
+    "No proper subset of \\(AB\\) determines a non-prime attribute, so there is no partial dependency: R is in 2NF.",
+    "\\(C \\to D\\) and \\(D \\to E\\) are transitive dependencies of non-prime attributes on the key (\\(C\\) and \\(D\\) are not superkeys and \\(D\\), \\(E\\) are not prime): R is not in 3NF."
+   ],
+   "shortcut": "2NF removes partial dependencies; 3NF also removes transitive ones on non-prime attributes.",
+   "trap": "Stopping at the check for partial dependencies and calling the relation 3NF."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "attrs = 'ABCDE'\nF = [('AB', 'C'), ('C', 'D'), ('D', 'E')]\ndef closure(s):\n    s = set(s)\n    ch = True\n    while ch:\n        ch = False\n        for l, r in F:\n            if set(l) <= s and not set(r) <= s:\n                s = s | set(r)\n                ch = True\n    return s\nkeys = []\nfor k in range(1, 6):\n    for c in itertools.combinations(attrs, k):\n        if closure(c) == set(attrs) and not any(set(x) <= set(c) for x in keys):\n            keys.append(c)\nprime = set(a for k in keys for a in k)\ndef superkey(x):\n    return closure(x) == set(attrs)\nbcnf = all(superkey(l) for l, r in F)\nnf3 = all(superkey(l) or set(r) <= prime for l, r in F)\npartial = any(set(l) < set(k) and not set(r) <= prime for l, r in F for k in keys) or any(set(k) > set(l) and set(r) - prime for l, r in F for k in keys if set(l) < set(k))\nfor l, r in F:\n    for k in keys:\n        if set(l) < set(k) and (set(closure(l)) - set(l) - prime):\n            partial = True\nnf2 = not partial\ntruth = [bcnf, nf3 and not bcnf, nf2 and not nf3, not nf2]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 44,
+  "kind": "conceptual",
+  "question_text": "Which of the following structures is/are groups?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\{1, 3, 5, 7\\}\\) under multiplication modulo 8"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\{0, 1, \\dots, 7\\}\\) under multiplication modulo 8"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\{1, 2, 3, 4\\}\\) under multiplication modulo 5"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\{1, 2, 3, 4, 5\\}\\) under multiplication modulo 6"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The units modulo \\(n\\) form a group under multiplication: \\(\\{1,3,5,7\\}\\) mod 8 and \\(\\{1,2,3,4\\}\\) mod 5 are groups.",
+    "Including 0 (mod 8) destroys inverses; and \\(\\{1,\\dots,5\\}\\) mod 6 is not even closed (\\(2 \\times 3 = 0\\))."
+   ],
+   "shortcut": "Keep only the residues coprime to the modulus.",
+   "trap": "Assuming any set closed under multiplication mod \\(n\\) is a group; inverses exist only for numbers coprime to \\(n\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def is_group(S, op):\n    S = list(S)\n    if not all(op(a, b) in S for a in S for b in S):\n        return False\n    if not all(op(op(a, b), c) == op(a, op(b, c)) for a in S for b in S for c in S):\n        return False\n    ids = [e for e in S if all(op(e, a) == a and op(a, e) == a for a in S)]\n    if not ids:\n        return False\n    e = ids[0]\n    return all(any(op(a, b) == e and op(b, a) == e for b in S) for a in S)\ntruth = [is_group([1, 3, 5, 7], lambda a, b: a * b % 8), is_group(range(8), lambda a, b: a * b % 8), is_group([1, 2, 3, 4], lambda a, b: a * b % 5), is_group([1, 2, 3, 4, 5], lambda a, b: a * b % 6)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ }
+]

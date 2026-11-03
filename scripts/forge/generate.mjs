@@ -156,7 +156,7 @@ function check(d, s, others) {
     if (s.type === "MSQ" && (d.answer.options.length === 4 || d.answer.options.length === 0)) why.push("MSQ answer too obvious");
     if (s.type === "MCQ") { const lens = opts.map((o) => o.text.length); const kl = lens["ABCD".indexOf(d.answer.options[0])]; if (kl === Math.max(...lens) && kl > 1.8 * (lens.reduce((a, b) => a + b, 0) / 4)) why.push("key is conspicuously the longest option"); }
   }
-  const all = [d.question_text, ...opts.map((o) => o.text), JSON.stringify(d.solution)].join("\n");
+  const all = [d.question_text, ...opts.map((o) => o.text), ...Object.values(d.solution).flat().map(String)].join("\n"); // the real text: JSON.stringify would double every backslash
   const te = texErrors(all); if (te.length) why.push("TeX: " + te.join(" | "));
   const w = words(d.question_text), n = nums(d.question_text);
   for (const p of others) { if (jac(w, p.w) > 0.5 || (n.size >= 3 && jac(n, p.n) > 0.8 && jac(w, p.w) > 0.3)) { why.push(`too close to ${p.id}`); break; } }
@@ -206,7 +206,7 @@ const save = () => writeFileSync(batchFile, JSON.stringify({ branch: BR, batch: 
 let made = 0, attempts = 0;
 const addItem = (d, s) => {
   const id = `FORGE_${BR}_${String(nextId++).padStart(6, "0")}`;
-  const it = { id, subject: canonSubject(s.subject), topic: s.topic, kind: s.kind, difficulty: s.difficulty, question_type: s.type, marks: s.marks, question_text: d.question_text, options: d.options ?? [], answer: d.answer, solution: d.solution, verify: d.verify };
+  const it = { id, subject: canonSubject(s.subject), topic: s.topic, kind: KINDS.includes(d.kind) ? d.kind : s.kind, difficulty: s.difficulty, question_type: s.type, marks: s.marks, question_text: d.question_text, options: d.options ?? [], answer: d.answer, solution: d.solution, verify: d.verify };
   items.push(it); prior.push({ id, w: words(it.question_text), n: nums(it.question_text), topic: it.topic, type: it.question_type }); made++; save(); console.log("  ok", id);
 };
 if (INGEST) {

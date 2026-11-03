@@ -1,0 +1,685 @@
+[
+ {
+  "slot": 13,
+  "kind": "multi_concept",
+  "question_text": "Consider the grammar with start symbol \\(S\\): \\(S \\to XYZ\\), \\(X \\to xX \\mid \\varepsilon\\), \\(Y \\to yY \\mid X\\), \\(Z \\to z \\mid \\varepsilon\\). The number of terminal symbols (counting the end marker \\(\\$\\)) in \\(\\text{FOLLOW}(X)\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(5\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "In \\(S \\to XYZ\\): \\(\\text{FIRST}(Y) = \\{y, x\\}\\); because \\(Y\\) and then \\(Z\\) can vanish, \\(\\text{FOLLOW}(X)\\) also receives \\(\\text{FIRST}(Z) = \\{z\\}\\) and \\(\\text{FOLLOW}(S) = \\{\\$\\}\\).",
+    "From \\(X \\to xX\\) it receives \\(\\text{FOLLOW}(X)\\) itself, and from \\(Y \\to X\\) it receives \\(\\text{FOLLOW}(Y) = \\{z, \\$\\}\\).",
+    "\\(\\text{FOLLOW}(X) = \\{$, x, y, z\\}\\), so there are 4 symbols."
+   ],
+   "shortcut": "Pass through every nullable symbol to the right of \\(X\\) until a non-nullable one or the end of the production.",
+   "trap": "Using only the first symbol after \\(X\\) (giving \\(\\{x, y\\}\\)) and forgetting that nullable symbols let the lookahead pass through to \\(z\\) and \\(\\$\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def first_follow(G, start):\n    NT = list(G)\n    first = {A: set() for A in NT}\n    nullable = {A: False for A in NT}\n    ch = True\n    while ch:\n        ch = False\n        for A in NT:\n            for rhs in G[A]:\n                nul = True\n                for X in rhs:\n                    add = first[X] if X in G else set([X])\n                    if not add <= first[A]:\n                        first[A] = first[A] | add\n                        ch = True\n                    if not (nullable[X] if X in G else False):\n                        nul = False\n                        break\n                if nul and not nullable[A]:\n                    nullable[A] = True\n                    ch = True\n    follow = {A: set() for A in NT}\n    follow[start].add('$')\n    ch = True\n    while ch:\n        ch = False\n        for A in NT:\n            for rhs in G[A]:\n                for i, X in enumerate(rhs):\n                    if X in G:\n                        rest_null = True\n                        add = set()\n                        for Y in rhs[i + 1:]:\n                            add = add | (first[Y] if Y in G else set([Y]))\n                            if not (nullable[Y] if Y in G else False):\n                                rest_null = False\n                                break\n                        if rest_null:\n                            add = add | follow[A]\n                        if not add <= follow[X]:\n                            follow[X] = follow[X] | add\n                            ch = True\n    return first, follow, nullable\nG = {'S': [('X', 'Y', 'Z')], 'X': [('x', 'X'), ()], 'Y': [('y', 'Y'), ('X',)], 'Z': [('z',), ()]}\nfirst, follow, nullable = first_follow(G, 'S')\nfx = sorted(follow['X'])\nval = len(fx)\nwrong = [2, 3, 5]\nopts = {'A': 2, 'B': 4, 'C': 3, 'D': 5}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 14,
+  "kind": "numeric_chain",
+  "question_text": "A function is defined as \\(f(n) = 1\\) for \\(n \\le 1\\), and for \\(n \\ge 2\\) it makes the two recursive calls \\(f(n-1)\\) and \\(f(n-2)\\) (each call needs one activation record). The total number of activation records created by the single call \\(f(6)\\), including the first, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(15\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(21\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(25\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(31\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let \\(C(n)\\) be the number of calls: \\(C(0) = C(1) = 1\\) and \\(C(n) = 1 + C(n-1) + C(n-2)\\).",
+    "\\(C(2)=3,\\ C(3)=5,\\ C(4)=9,\\ C(5)=15,\\ C(6)=25\\)."
+   ],
+   "shortcut": "\\(C(n) = 2F(n+1) - 1\\) with \\(F(1)=F(2)=1\\); here \\(2 \\times 13 - 1\\).",
+   "trap": "Reporting the stack depth (6) or the Fibonacci number \\(F(6)\\) instead of the count of all calls."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "calls = [0]\ndef f(n):\n    calls[0] += 1\n    if n >= 2:\n        f(n - 1)\n        f(n - 2)\nf(6)\nval = calls[0]\nwrong = [15, 21, 31]\nopts = {'A': 15, 'B': 21, 'C': 25, 'D': 31}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 15,
+  "kind": "trace",
+  "question_text": "A TCP sender starts with a congestion window of \\(1\\) MSS and a slow-start threshold of \\(16\\) MSS. There are no losses. The window is doubled each round trip while it is below the threshold (but never beyond the threshold in one step), and is increased by \\(1\\) MSS per round trip once it has reached the threshold. The window size (in MSS) after \\(7\\) round trips is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(18\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(19\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(128\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(24\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Rounds 1 to 4 double the window: \\(1 \\to 2 \\to 4 \\to 8 \\to 16\\), reaching the threshold.",
+    "Rounds 5 to 7 add one MSS each: \\(16 \\to 17 \\to 18 \\to 19\\)."
+   ],
+   "shortcut": "4 doublings to reach 16, then 3 additive steps: 16 + 3.",
+   "trap": "Doubling all 7 times (128), ignoring the threshold, or counting one round too few."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cw = 1\nfor r in range(7):\n    if cw < 16:\n        cw = min(cw * 2, 16)\n    else:\n        cw += 1\nval = cw\nwrong = [18, 128, 24]\nopts = {'A': 18, 'B': 19, 'C': 128, 'D': 24}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 16,
+  "kind": "numeric_chain",
+  "question_text": "The scores of eight candidates in a test are \\(6, 8, 8, 10, 14, 16, 16, 18\\). The population standard deviation of these scores, correct to three decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(4.536\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4.243\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(18\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Mean \\(= 96/8 = 12\\); squared deviations: \\(36, 16, 16, 4, 4, 16, 16, 36\\), sum \\(= 144\\).",
+    "Population variance \\(= 144/8 = 18\\), so the standard deviation is \\(\\sqrt{18} \\approx 4.243\\)."
+   ],
+   "shortcut": "Population: divide the sum of squares by \\(n\\) and take the root.",
+   "trap": "Dividing by \\(n - 1\\) (sample standard deviation, 4.536) or reporting the variance 18."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "x = [6, 8, 8, 10, 14, 16, 16, 18]\nm = sum(x) / len(x)\nss = sum((a - m) ** 2 for a in x)\nval = round(math.sqrt(ss / len(x)), 3)\nwrong = [round(math.sqrt(ss / (len(x) - 1)), 3), round(ss / len(x), 3), 4.0]\nopts = {'A': 4.536, 'B': 4.243, 'C': 18.0, 'D': 4.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 17,
+  "kind": "trace",
+  "question_text": "Four interleaved schedules over items \\(A, B\\) are given, with \\(R_i\\) and \\(W_i\\) denoting read and write by transaction \\(T_i\\). Exactly one of them is conflict serializable. Which one?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(R_1(A)\\ W_2(A)\\ R_2(B)\\ W_1(B)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(R_1(A)\\ R_2(A)\\ W_1(A)\\ W_2(A)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(R_1(A)\\ W_1(A)\\ R_2(A)\\ W_2(A)\\ R_3(B)\\ W_3(B)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(W_1(A)\\ R_2(A)\\ W_2(B)\\ R_1(B)\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Draw an edge \\(T_i \\to T_j\\) for each conflicting pair with \\(T_i\\)'s operation first.",
+    "Schedules 1, 2 and 4 each give edges both ways between \\(T_1\\) and \\(T_2\\): a cycle, so they are not conflict serializable.",
+    "Schedule 3 only has \\(T_1 \\to T_2\\) (and \\(T_3\\) is independent), so it is serializable (equivalent to \\(T_1, T_2, T_3\\))."
+   ],
+   "shortcut": "Look for a pair of transactions with conflicts in both directions.",
+   "trap": "Judging by whether the operations of each transaction look grouped together rather than by cycles in the precedence graph."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "scheds = [\n    [(1, 'R', 'A'), (2, 'W', 'A'), (2, 'R', 'B'), (1, 'W', 'B')],\n    [(1, 'R', 'A'), (2, 'R', 'A'), (1, 'W', 'A'), (2, 'W', 'A')],\n    [(1, 'R', 'A'), (1, 'W', 'A'), (2, 'R', 'A'), (2, 'W', 'A'), (3, 'R', 'B'), (3, 'W', 'B')],\n    [(1, 'W', 'A'), (2, 'R', 'A'), (2, 'W', 'B'), (1, 'R', 'B')],\n]\ndef acyclic(S):\n    edges = set()\n    for i in range(len(S)):\n        for j in range(i + 1, len(S)):\n            a, b = S[i], S[j]\n            if a[0] != b[0] and a[2] == b[2] and 'W' in (a[1], b[1]):\n                edges.add((a[0], b[0]))\n    nodes = set(t for t, o, d in S)\n    while nodes:\n        free = [n for n in nodes if not any(b == n and a in nodes for a, b in edges)]\n        if not free:\n            return False\n        nodes = nodes - set(free)\n    return True\ntruth = [acyclic(S) for S in scheds]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 18,
+  "kind": "msq_discriminator",
+  "question_text": "Consider the following C fragment executed by a single process (all calls succeed).\n```c\nfork();\nif (fork() == 0) {\n    fork();\n}\nprintf(\"x\");\n```\nWhich of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The statement printf prints x exactly six times in total."
+   },
+   {
+    "option_id": "B",
+    "text": "The innermost fork() (inside the if) creates three new processes."
+   },
+   {
+    "option_id": "C",
+    "text": "The fork() in the if condition is executed by exactly four processes."
+   },
+   {
+    "option_id": "D",
+    "text": "Five new processes are created by the three fork() statements together."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The first fork() is run by 1 process and creates 1 new one: 2 processes. The fork() in the if condition is run by both, creating 2 more: 4 processes.",
+    "The innermost fork() runs only in the 2 children of the second fork, creating 2 more: 6 processes in total, and each prints once.",
+    "New processes: \\(1 + 2 + 2 = 5\\). The condition fork is executed by 2 processes (not 4), and the innermost fork creates 2 processes (not 3)."
+   ],
+   "shortcut": "Count how many processes reach each fork(), not just how many forks appear.",
+   "trap": "Applying the rule \\(2^n\\) for n forks (8 processes) without noticing that the innermost fork is guarded by the if."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "P = 1\ncreated1 = P\nP = P * 2\nexecuted2 = P\ncreated2 = P\nchildren = P\nP = P * 2\nexecuted3 = children\ncreated3 = children\nP = P + children\nprints = P\ntotal_new = created1 + created2 + created3\ntruth = [prints == 6, created3 == 3, executed2 == 4, total_new == 5]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 19,
+  "kind": "numeric_chain",
+  "question_text": "Let \\(L_1 = \\{ w \\in \\{a,b\\}^* : \\text{the number of } a\\text{'s in } w \\text{ is even} \\}\\) and \\(L_2 = \\{ w \\in \\{a,b\\}^* : \\text{the number of } b\\text{'s in } w \\equiv 1 \\pmod 3 \\}\\). The number of strings of length \\(6\\) that belong to \\(L_1\\) but not to \\(L_2\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(15\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(32\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(17\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(47\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Strings of length 6 with an even number of a's: \\(2^5 = 32\\).",
+    "Among them, those with the number of b's \\(\\equiv 1 \\pmod 3\\): 4 b's and 2 a's gives \\(\\binom{6}{4} = 15\\) (1 b would leave 5 a's, odd).",
+    "Answer \\(= 32 - 15 = 17\\)."
+   ],
+   "shortcut": "Half of all strings have an even a-count; remove the intersection with \\(L_2\\).",
+   "trap": "Subtracting the wrong count or forgetting that the a-count is tied to the b-count by the length."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor bits in range(64):\n    w = [(bits >> j) & 1 for j in range(6)]\n    na = 6 - sum(w)\n    nb = sum(w)\n    if na % 2 == 0 and nb % 3 != 1:\n        cnt += 1\nval = cnt\nwrong = [15, 32, 47]\nopts = {'A': 15, 'B': 32, 'C': 17, 'D': 47}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 20,
+  "kind": "trap_aware",
+  "question_text": "For the grammar \\(S \\to aAb \\mid aB \\mid A\\), \\(A \\to aA \\mid \\varepsilon\\), \\(B \\to b\\), the number of productions of \\(S\\) that the LL(1) parsing-table construction enters in the cell \\(M[S, a]\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(\\text{FIRST}(aAb) = \\{a\\}\\) and \\(\\text{FIRST}(aB) = \\{a\\}\\).",
+    "\\(\\text{FIRST}(A) = \\{a, \\varepsilon\\}\\), so \\(S \\to A\\) is also entered under \\(a\\).",
+    "All 3 productions of \\(S\\) go into \\(M[S, a]\\): the grammar is not LL(1)."
+   ],
+   "shortcut": "Compute FIRST of every right-hand side, including those that start with a nonterminal.",
+   "trap": "Counting only the two productions that start with the terminal \\(a\\) and missing the one reached through the nullable \\(A\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def first_follow(G, start):\n    NT = list(G)\n    first = {A: set() for A in NT}\n    nullable = {A: False for A in NT}\n    ch = True\n    while ch:\n        ch = False\n        for A in NT:\n            for rhs in G[A]:\n                nul = True\n                for X in rhs:\n                    add = first[X] if X in G else set([X])\n                    if not add <= first[A]:\n                        first[A] = first[A] | add\n                        ch = True\n                    if not (nullable[X] if X in G else False):\n                        nul = False\n                        break\n                if nul and not nullable[A]:\n                    nullable[A] = True\n                    ch = True\n    follow = {A: set() for A in NT}\n    follow[start].add('$')\n    ch = True\n    while ch:\n        ch = False\n        for A in NT:\n            for rhs in G[A]:\n                for i, X in enumerate(rhs):\n                    if X in G:\n                        rest_null = True\n                        add = set()\n                        for Y in rhs[i + 1:]:\n                            add = add | (first[Y] if Y in G else set([Y]))\n                            if not (nullable[Y] if Y in G else False):\n                                rest_null = False\n                                break\n                        if rest_null:\n                            add = add | follow[A]\n                        if not add <= follow[X]:\n                            follow[X] = follow[X] | add\n                            ch = True\n    return first, follow, nullable\nG = {'S': [('a', 'A', 'b'), ('a', 'B'), ('A',)], 'A': [('a', 'A'), ()], 'B': [('b',)]}\nfirst, follow, nullable = first_follow(G, 'S')\ndef first_of(rhs):\n    out = set()\n    nul = True\n    for X in rhs:\n        out = out | (first[X] if X in G else set([X]))\n        if not (nullable[X] if X in G else False):\n            nul = False\n            break\n    return out, nul\nval = 0\nfor rhs in G['S']:\n    f, nul = first_of(rhs)\n    if 'a' in f or (nul and 'a' in follow['S']):\n        val += 1\nwrong = [1, 2, 4]\nopts = {'A': 1, 'B': 2, 'C': 3, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 21,
+  "kind": "application",
+  "question_text": "An application sends \\(1200\\) bytes of data in one TCP segment. The TCP header is \\(20\\) bytes, the IP header is \\(20\\) bytes, and Ethernet adds a \\(14\\)-byte header and a \\(4\\)-byte trailer. The percentage of the bytes on the wire that is application data, correct to one decimal place, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(96.8\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(98.4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(93\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(95.4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Total bytes on the wire \\(= 1200 + 20 + 20 + 14 + 4 = 1258\\).",
+    "Efficiency \\(= 1200 / 1258 \\approx 95.4\\%\\)."
+   ],
+   "shortcut": "Add every header of every layer to the denominator.",
+   "trap": "Leaving out the Ethernet header and trailer (96.8 %), or counting only one header."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "data = 1200\ntot = data + 20 + 20 + 14 + 4\nval = round(100 * data / tot, 1)\nwrong = [round(100 * data / (data + 40), 1), round(100 * data / (data + 20), 1), 93.0]\nopts = {'A': 96.8, 'B': 98.4, 'C': 93.0, 'D': 95.4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 22,
+  "kind": "application",
+  "question_text": "A TCP connection uses a fixed window of \\(65535\\) bytes and has a round-trip time of \\(80\\) ms. The maximum throughput the window allows, in megabits per second (taking \\(1\\) Mb \\(= 10^6\\) bits), correct to two decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(6.55\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5.24\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(52.43\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(8.19\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "At most one window can be sent per round trip: \\(65535 \\times 8\\) bits per \\(0.08\\) s.",
+    "Throughput \\(= 524280 / 0.08 \\approx 6.55\\) Mbps."
+   ],
+   "shortcut": "Throughput \\(= W / RTT\\).",
+   "trap": "Forgetting to convert bytes to bits (giving 0.82 Mbps) or using the one-way delay."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "val = round(65535 * 8 / 0.080 / 1e6, 2)\nwrong = [5.24, 52.43, 8.19]\nopts = {'A': 6.55, 'B': 5.24, 'C': 52.43, 'D': 8.19}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 23,
+  "kind": "application",
+  "question_text": "A box contains \\(5\\) red and \\(4\\) blue balls. Two balls are drawn at random without replacement. The probability that both balls have the same colour, correct to four decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0.4444\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(0.5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(0.5556\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(0.2778\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Pairs of the same colour: \\(\\binom{5}{2} + \\binom{4}{2} = 10 + 6 = 16\\).",
+    "All pairs: \\(\\binom{9}{2} = 36\\). Probability \\(= 16/36 = 0.4444\\)."
+   ],
+   "shortcut": "\\(P(\\text{same}) = 1 - P(\\text{different}) = 1 - 20/36\\).",
+   "trap": "Giving 0.5556, the probability of different colours, or using draws with replacement."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "tot = math.comb(9, 2)\nsame = math.comb(5, 2) + math.comb(4, 2)\nval = round(same / tot, 4)\nwrong = [0.5, round(math.comb(5, 1) * math.comb(4, 1) / tot, 4), 0.2778]\nopts = {'A': 0.4444, 'B': 0.5, 'C': 0.5556, 'D': 0.2778}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 24,
+  "kind": "trap_aware",
+  "question_text": "In a lock-based system the wait-for graph has an edge \\(T_i \\to T_j\\) when \\(T_i\\) waits for \\(T_j\\). The edges are \\(T_1 \\to T_2,\\ T_2 \\to T_3,\\ T_3 \\to T_1,\\ T_3 \\to T_4,\\ T_4 \\to T_5,\\ T_5 \\to T_6,\\ T_6 \\to T_4\\). The minimum number of transactions that must be aborted so that no deadlock remains is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "There are two cycles: \\(T_1 \\to T_2 \\to T_3 \\to T_1\\) and \\(T_4 \\to T_5 \\to T_6 \\to T_4\\). The edge \\(T_3 \\to T_4\\) only links them and is on no cycle.",
+    "The cycles share no transaction, so one abort cannot break both; aborting one transaction in each (for example \\(T_1\\) and \\(T_4\\)) is enough: the minimum is 2."
+   ],
+   "shortcut": "Count disjoint cycles: each needs its own victim.",
+   "trap": "Aborting \\(T_3\\) because it appears to connect everything; that breaks only the first cycle."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = [(1, 2), (2, 3), (3, 1), (3, 4), (4, 5), (5, 6), (6, 4)]\ndef has_cycle(removed):\n    nodes = set(range(1, 7)) - set(removed)\n    es = [(a, b) for a, b in E if a in nodes and b in nodes]\n    while nodes:\n        free = [n for n in nodes if not any(b == n for a, b in es if a in nodes)]\n        if not free:\n            return True\n        nodes = nodes - set(free)\n    return False\nval = next(k for k in range(0, 7) if any(not has_cycle(c) for c in itertools.combinations(range(1, 7), k)))\nwrong = [1, 3, 4]\nopts = {'A': 1, 'B': 3, 'C': 2, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 25,
+  "kind": "application",
+  "question_text": "A 32-bit IEEE 754 single-precision number has the hexadecimal pattern \\(\\texttt{0xC1480000}\\). The decimal value it represents is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(-6.25\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(-12.5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(12.5\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(-25\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Sign bit \\(= 1\\) (negative); exponent field \\(= \\texttt{0x82} = 130\\), so the exponent is \\(130 - 127 = 3\\).",
+    "Fraction \\(= \\texttt{0x480000} / 2^{23} = 0.5625\\), so the significand is \\(1.5625\\).",
+    "Value \\(= -1.5625 \\times 2^3 = -12.5\\)."
+   ],
+   "shortcut": "1.5625 is 1 + 9/16; times 8 gives 12.5.",
+   "trap": "Dropping the sign (12.5) or using bias 128."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "bits = 0xC1480000\nsign = -1 if (bits >> 31) & 1 else 1\nexp = (bits >> 23) & 0xFF\nfrac = bits & 0x7FFFFF\nval = sign * (1 + frac / 2 ** 23) * 2 ** (exp - 127)\nwrong = [-6.25, 12.5, -25.0]\nopts = {'A': -6.25, 'B': -12.5, 'C': 12.5, 'D': -25.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 26,
+  "kind": "conceptual",
+  "question_text": "The function \\(f(A,B,C,D) = \\sum m(0, 1, 2, 5, 6, 7, 8, 9, 10, 14)\\) is minimised on a Karnaugh map. The number of essential prime implicants of \\(f\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The prime implicants are the largest groups of 1s: there are 6 of them.",
+    "A prime implicant is essential when it covers a minterm that no other prime implicant covers.",
+    "Checking each minterm, the essential prime implicants number 2."
+   ],
+   "shortcut": "Look for 1s on the map that sit in exactly one maximal group.",
+   "trap": "Counting all prime implicants, or all groups in the final minimal cover, instead of only the essential ones."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "on = set([0, 1, 2, 5, 6, 7, 8, 9, 10, 14])\ncubes = []\nfor mask in range(16):\n    for val0 in range(16):\n        if val0 & (15 - mask):\n            continue\n        cover = set([m for m in range(16) if (m & mask) == val0])\n        if cover <= on:\n            cubes.append(cover)\nprimes = [c for c in cubes if not any(c < d for d in cubes)]\ness = []\nfor m in on:\n    owners = [p for p in primes if m in p]\n    if len(owners) == 1 and owners[0] not in ess:\n        ess.append(owners[0])\nval = len(ess)\nnpr = len(primes)\nwrong = sorted(set([1, 2, 3, 4, 5]) - set([val]))[:3]\nopts = {'A': 1, 'B': 3, 'C': 4, 'D': 2}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 27,
+  "kind": "trace",
+  "question_text": "A lexical analyser uses the longest-match rule with these token classes: identifiers (letter followed by letters or digits), unsigned numbers (digits with an optional fractional part such as 2.5), and the operators \\(<=, >=, ==, !=, <, >, =, *\\). Whitespace separates nothing here; the input is the string `x1=y<=z>=2.5*3!=w`. The number of tokens produced is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(9\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(14\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(11\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Scanning with the longest match: x1, =, y, <=, z, >=, 2.5, *, 3, !=, w.",
+    "That is 11 tokens; \\(x1\\) is one identifier, \\(2.5\\) one number, and \\(<=\\), \\(>=\\), \\(!=\\) are single tokens."
+   ],
+   "shortcut": "Always take the longest string that matches some token class.",
+   "trap": "Splitting \\(<=\\) into \\(<\\) and \\(=\\), or splitting \\(2.5\\) at the point."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "s = 'x1=y<=z>=2.5*3!=w'\nops2 = ['<=', '>=', '==', '!=']\nops1 = ['<', '>', '=', '*']\ni, n = 0, 0\nwhile i < len(s):\n    c = s[i]\n    if c.isalpha():\n        j = i + 1\n        while j < len(s) and (s[j].isalpha() or s[j].isdigit()):\n            j += 1\n        i = j\n    elif c.isdigit():\n        j = i + 1\n        while j < len(s) and s[j].isdigit():\n            j += 1\n        if j + 1 < len(s) and s[j] == '.' and s[j + 1].isdigit():\n            j += 1\n            while j < len(s) and s[j].isdigit():\n                j += 1\n        i = j\n    elif s[i:i + 2] in ops2:\n        i += 2\n    else:\n        i += 1\n    n += 1\nval = n\nwrong = [9, 12, 14]\nopts = {'A': 9, 'B': 12, 'C': 14, 'D': 11}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 28,
+  "kind": "msq_discriminator",
+  "question_text": "Keys \\(40, 20, 60, 10, 30, 50, 70, 25, 35\\) are inserted in this order into an initially empty binary search tree (no rebalancing). Which of the following statements is/are TRUE? (Height is the number of edges on the longest root-to-leaf path.)",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The height of the tree is 3."
+   },
+   {
+    "option_id": "B",
+    "text": "The in-order successor of 30 is 35."
+   },
+   {
+    "option_id": "C",
+    "text": "The in-order traversal prints the keys in increasing order."
+   },
+   {
+    "option_id": "D",
+    "text": "The seventh key in level-order (breadth-first) traversal is 50."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The tree is 40 (20 (10, 30 (25, 35)), 60 (50, 70)); the longest path is 40, 20, 30, 25: height 3.",
+    "30 has a right child 35 with no left child, so its successor is 35; in-order traversal of any BST is sorted.",
+    "Level-order is 40, 20, 60, 10, 30, 50, 70, 25, 35, whose seventh key is 70, not 50."
+   ],
+   "shortcut": "Draw the tree once and answer all four from the picture.",
+   "trap": "Reading level-order as sorted order, or counting nodes instead of edges for the height."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "root = None\ndef ins(t, k):\n    if t is None:\n        return [k, None, None]\n    if k < t[0]:\n        t[1] = ins(t[1], k)\n    else:\n        t[2] = ins(t[2], k)\n    return t\ndef height(t):\n    return -1 if t is None else 1 + max(height(t[1]), height(t[2]))\ndef inorder(t):\n    return [] if t is None else inorder(t[1]) + [t[0]] + inorder(t[2])\nfor k in [40, 20, 60, 10, 30, 50, 70, 25, 35]:\n    root = ins(root, k)\nh = height(root)\norder = inorder(root)\nsucc30 = order[order.index(30) + 1]\nlevels = [root]\nseq = []\nwhile levels:\n    nxt = []\n    for t in levels:\n        seq.append(t[0])\n        if t[1]:\n            nxt.append(t[1])\n        if t[2]:\n            nxt.append(t[2])\n    levels = nxt\ntruth = [h == 3, succ30 == 35, order == sorted(order), seq[6] == 50]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ }
+]

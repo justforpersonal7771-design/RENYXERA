@@ -27,3 +27,23 @@ Proof it works: batch b007 (4 questions) was authored this way and passed. The v
 
 ## Review rules (unchanged)
 Claude reviews a batch before it is seeded: read each solution, confirm the answer by hand for a sample, read the rejects file. Seeding is always a separate, deliberate step.
+
+## Authoring kit and one-command rebuild (added 3 Nov 2026)
+- `scripts/forge/replan_by_weight.py CS b008 200`: gives the planned slots to topics in proportion to how often GATE asks them (profile weight = share of past-paper marks), measured against everything already made, and skips topics that need a picture or are purely verbal (they cannot be checked by code).
+- `scripts/forge/author_kit.py`: a session writes each question as a short spec (`K.add(slot, text, code, opts / stmts / steps, trap, short)`). The kit RUNS the code to get the answer, puts the correct MCQ option on the assigned key letter, checks that an MCQ has exactly one true statement and an MSQ one to three, and fills `«name» placeholders in the explanation from the code's results so the text cannot drift from the answer.
+- `scripts/forge/build_batch.py CS b008`: merges all `drafts/b008.*.json` parts (a later part replaces an earlier one for the same slot) and rebuilds the batch from scratch through ingest and the validator.
+- Sandbox: verify code may use only math, itertools, fractions and basic builtins (no `frozenset`, `format`, `hex`, `isinstance`).
+
+## b008 result (3 Nov 2026)
+130 questions authored in 8 parts, all accepted: with the earlier 70 the CS Forge set is **200 questions**, 200 unique ids, all batch files pass `validate.py`.
+- Types: 102 MCQ, 73 NAT, 25 MSQ (51 %, 36.5 %, 12.5 %). MCQ key letters: A 26, B 30, C 23, D 23.
+- Topics follow past-paper weight: 69 of 91 topics covered, all 23 topics with weight of 1.5 or more are covered, and the most-asked topics have 5 to 6 questions each (parsing, cache, DFA and regular languages, virtual memory, K-maps, recursion in C, IP fragmentation, pipelining).
+- Subjects: 15, with the past-paper names; General Aptitude 15 (numeric and logic only; verbal and picture items are left for a later, differently verified process).
+- Hand audit of the explanations found and fixed one real error (an asymptotics question whose key pointed at the wrong bound because the code's candidate list was ordered differently from the statements) and one ambiguity. The generator's TeX check also had a bug (it tested JSON-escaped text) which is fixed.
+
+## To publish (owner, writes to Supabase)
+```
+node --env-file=.env.local scripts/forge/seed.mjs data/forge/CS/batches/b007.json --approve
+node --env-file=.env.local scripts/forge/seed.mjs data/forge/CS/batches/b008.json --approve
+```
+Add `--release=<ISO time>` to stagger releases (for example one batch per week) so the Daily Forge does not use all 200 at once.

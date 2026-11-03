@@ -1,0 +1,881 @@
+[
+ {
+  "slot": 105,
+  "kind": "msq_discriminator",
+  "question_text": "Four claims are made about classic dynamic-programming problems. Select every claim that is correct.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The longest common subsequence of ABCBDAB and BDCABA has length 4."
+   },
+   {
+    "option_id": "B",
+    "text": "For a 0/1 knapsack of capacity 10 with weights \\((5, 4, 6, 3)\\) and values \\((10, 40, 30, 50)\\), the maximum value is 90."
+   },
+   {
+    "option_id": "C",
+    "text": "The edit distance (insertions, deletions, substitutions) between kitten and sitting is 4."
+   },
+   {
+    "option_id": "D",
+    "text": "The longest strictly increasing subsequence of \\(5, 2, 8, 6, 3, 6, 9, 7\\) has length 5."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Filling the tables gives LCS length 4, knapsack optimum 90 (items of weight 3 and 4), edit distance 3 (two substitutions and one insertion) and LIS length 4 (for example 2, 3, 6, 9).",
+    "So the first two claims hold; the edit distance is not 4 and the longest increasing subsequence is not 5."
+   ],
+   "shortcut": "Fill each table once; do not trust a remembered textbook value.",
+   "trap": "Counting the edit distance with substitutions costing 2, or taking a non-strict increasing subsequence."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def lcs(a, b):\n    t = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            t[i][j] = t[i - 1][j - 1] + 1 if a[i - 1] == b[j - 1] else max(t[i - 1][j], t[i][j - 1])\n    return t[-1][-1]\ndef knap(cap, w, v):\n    best = [0] * (cap + 1)\n    for i in range(len(w)):\n        for c in range(cap, w[i] - 1, -1):\n            best[c] = max(best[c], best[c - w[i]] + v[i])\n    return best[cap]\ndef edit(a, b):\n    d = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]\n    for i in range(len(a) + 1):\n        d[i][0] = i\n    for j in range(len(b) + 1):\n        d[0][j] = j\n    for i in range(1, len(a) + 1):\n        for j in range(1, len(b) + 1):\n            d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] != b[j - 1]))\n    return d[-1][-1]\ndef lis(x):\n    best = [1] * len(x)\n    for i in range(len(x)):\n        for j in range(i):\n            if x[j] < x[i]:\n                best[i] = max(best[i], best[j] + 1)\n    return max(best)\nl1 = lcs('ABCBDAB', 'BDCABA')\nk1 = knap(10, [5, 4, 6, 3], [10, 40, 30, 50])\ne1 = edit('kitten', 'sitting')\ns1 = lis([5, 2, 8, 6, 3, 6, 9, 7])\ntruth = [l1 == 4, k1 == 90, e1 == 4, s1 == 5]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 106,
+  "kind": "application",
+  "question_text": "A trader marks up the cost price of an article by \\(40\\%\\) and then allows a discount of \\(25\\%\\) on the marked price. The profit percentage on the cost price is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(15\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(10\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(0\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Take the cost as 100: marked price \\(= 140\\); selling price \\(= 0.75 \\times 140 = 105\\).",
+    "Profit \\(= 5\\) on a cost of 100: 5 %."
+   ],
+   "shortcut": "\\(1.4 \\times 0.75 = 1.05\\).",
+   "trap": "Subtracting the percentages (\\(40 - 25 = 15\\)); the discount is on the marked price, not on the cost."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cost = 100\nmarked = cost * 1.40\nsell = marked * 0.75\nval = round((sell - cost) / cost * 100, 1)\nwrong = [15.0, 10.0, 0.0]\nopts = {'A': 15.0, 'B': 10.0, 'C': 5.0, 'D': 0.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 107,
+  "kind": "trace",
+  "question_text": "A counting semaphore \\(S\\) is initialised to \\(3\\). Processes execute the operations wait(S) and signal(S) in this global order: wait, wait, wait, wait, signal, wait, wait, signal. A process that finds the semaphore value not positive blocks, and a signal wakes one blocked process (if any). After all eight operations, the number of processes that are blocked is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let the semaphore value go negative to count blocked processes: start at 3; each wait subtracts 1, each signal adds 1.",
+    "Net change \\(= -(6) + 2 = -4\\), so the value ends at -1; a value of \\(-k\\) means \\(k\\) blocked processes: 1."
+   ],
+   "shortcut": "Final value \\(= 3 - \\#\\text{waits} + \\#\\text{signals}\\); negative values count the blocked.",
+   "trap": "Forgetting that signals first wake blocked processes instead of raising the value."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "s = 3\nops = ['w', 'w', 'w', 'w', 's', 'w', 'w', 's']\nfor o in ops:\n    s += -1 if o == 'w' else 1\nval = max(0, -s)\nfinal = s\nwrong = [0, 2, 3]\nopts = {'A': 0, 'B': 2, 'C': 1, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 108,
+  "kind": "conceptual",
+  "question_text": "The number of distinct spanning trees of the complete graph \\(K_7\\) on seven labelled vertices, which equals the number of labelled trees on seven vertices, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    16807,
+    16807
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "By Cayley's formula there are \\(n^{n-2}\\) labelled trees on \\(n\\) vertices.",
+    "For \\(n = 7\\): \\(7^5 = 16807\\) (the matrix-tree theorem gives the same value)."
+   ],
+   "shortcut": "\\(n^{n-2}\\).",
+   "trap": "Using \\(n^{n-1}\\) or \\((n-1)!\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "n = 7\nL = [[fractions.Fraction(n - 1) if i == j else fractions.Fraction(-1) for j in range(n)] for i in range(n)]\nM = [row[1:] for row in L[1:]]\nm = n - 1\nd = fractions.Fraction(1)\nfor i in range(m):\n    p = next(r for r in range(i, m) if M[r][i] != 0)\n    if p != i:\n        M[i], M[p] = M[p], M[i]\n        d = -d\n    d = d * M[i][i]\n    for r in range(i + 1, m):\n        f = M[r][i] / M[i][i]\n        M[r] = [M[r][k] - f * M[i][k] for k in range(m)]\nanswer = int(d)"
+  }
+ },
+ {
+  "slot": 109,
+  "kind": "application",
+  "question_text": "A utility company must connect six sites \\(A, \\dots, F\\) with the least total cable. The possible cable routes and their lengths in km are: AB 4, AC 3, BC 1, BD 2, CD 4, DE 2, CE 5, EF 3, DF 6. Using only these routes, the shortest total length of cable that keeps all six sites connected is, in km,",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(11\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(10\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(13\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Kruskal: sort the edges and add each one that does not close a cycle: BC, BD, DE, AC, EF.",
+    "The five chosen edges weigh 11 in total."
+   ],
+   "shortcut": "Five edges for six vertices: 1 + 2 + 2 + 3 + 3.",
+   "trap": "Taking the lightest edge at every vertex (which can create a cycle) instead of running Kruskal or Prim."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = [('A', 'B', 4), ('A', 'C', 3), ('B', 'C', 1), ('B', 'D', 2), ('C', 'D', 4), ('D', 'E', 2), ('C', 'E', 5), ('E', 'F', 3), ('D', 'F', 6)]\npar = {v: v for v in 'ABCDEF'}\ndef f(x):\n    while par[x] != x:\n        x = par[x]\n    return x\nval = 0\npicked = []\nfor a, b, w in sorted(E, key=lambda e: e[2]):\n    if f(a) != f(b):\n        par[f(a)] = f(b)\n        val += w\n        picked.append(a + b)\nwrong = [12, 10, 13]\npk = ', '.join(picked)\nopts = {'A': 11, 'B': 12, 'C': 10, 'D': 13}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 110,
+  "kind": "multi_concept",
+  "question_text": "Consider the ambiguous grammar \\(S \\to SS \\mid a\\). The number of distinct parse trees for the string \\(aaaaaa\\) (six a's) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(14\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(32\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(42\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(132\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let \\(t(n)\\) be the number of parse trees for \\(a^n\\): \\(t(1) = 1\\) and \\(t(n) = \\sum_{k=1}^{n-1} t(k)\\,t(n-k)\\) (choose where the top \\(SS\\) splits).",
+    "This gives \\(1, 1, 2, 5, 14, 42\\) for \\(n = 1, \\dots, 6\\): Catalan numbers."
+   ],
+   "shortcut": "Parse trees of \\(a^n\\) number \\(C_{n-1}\\).",
+   "trap": "Confusing the number of strings (one) with the number of parse trees, or using \\(C_4 = 14\\) (that is for five a's)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "t = {1: 1}\nfor n in range(2, 7):\n    t[n] = sum(t[k] * t[n - k] for k in range(1, n))\nval = t[6]\nwrong = [14, 32, 132]\nopts = {'A': 14, 'B': 32, 'C': 42, 'D': 132}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 111,
+  "kind": "application",
+  "question_text": "A host sends one datagram with \\(5000\\) bytes of data plus a \\(20\\)-byte header over a link with an MTU of \\(1500\\) bytes. Counting every fragment with its own \\(20\\)-byte header, the total number of bytes sent on the link is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(5020\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5080\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(5060\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(5100\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Each fragment carries at most 1480 data bytes: \\(\\lceil 5000/1480 \\rceil = 4\\) fragments.",
+    "Total bytes \\(= 5000 + 4 \\times 20 = 5080\\)."
+   ],
+   "shortcut": "Data plus one header per fragment.",
+   "trap": "Adding only one header (5020)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "data = 5000\nper = (1500 - 20) // 8 * 8\nn = -(-data // per)\nval = data + 20 * n\nwrong = [5020, 5060, 5100]\nopts = {'A': 5020, 'B': 5080, 'C': 5060, 'D': 5100}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 112,
+  "kind": "msq_discriminator",
+  "question_text": "Four regular languages over \\(\\{0, 1\\}\\) are given. Which of the following claims about the number of states of their minimal complete DFAs is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "'The third symbol from the right end is 1' needs 8 states."
+   },
+   {
+    "option_id": "B",
+    "text": "'The string ends with 11' needs 3 states."
+   },
+   {
+    "option_id": "C",
+    "text": "'The string contains 01 as a substring' needs 3 states."
+   },
+   {
+    "option_id": "D",
+    "text": "'The string ends with 00' needs 4 states."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The minimal DFA needs one state per Myhill-Nerode class: the DFA must remember the last 3 symbols for the first language (8 states), the length of the current suffix of 1s (0, 1, 2 or more) for the second (3), and whether 0, then 01 has been seen for the third (3).",
+    "'Ends with 00' needs only the number of trailing zeros up to 2: 3 states, not 4."
+   ],
+   "shortcut": "Ask what the automaton must remember about the past.",
+   "trap": "Assuming the number of states is the length of the pattern plus one for every language."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def words(n):\n    out = ['']\n    for L in range(1, n + 1):\n        for bits in range(2 ** L):\n            out.append(''.join('1' if (bits >> j) & 1 else '0' for j in range(L)))\n    return out\nW = words(6)\ndef classes(pred):\n    return len(set(tuple(pred(u + v) for v in W) for u in W))\nL1 = lambda w: len(w) >= 3 and w[-3] == '1'\nL2 = lambda w: w.endswith('11')\nL3 = lambda w: '01' in w\nL4 = lambda w: w.endswith('00')\nc1, c2, c3, c4 = classes(L1), classes(L2), classes(L3), classes(L4)\ntruth = [c1 == 8, c2 == 3, c3 == 3, c4 == 4]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 113,
+  "kind": "trace",
+  "question_text": "A control-flow graph has blocks \\(B_1, B_2, B_3, B_4\\) with edges \\(B_1 \\to B_2,\\ B_1 \\to B_3,\\ B_2 \\to B_4,\\ B_3 \\to B_4\\). The blocks contain: \\(B_1\\): a = 1; b = 2; c = 3. \\(B_2\\): d = a + b. \\(B_3\\): e = b + c. \\(B_4\\): print(d + e). Using live-variable analysis, the number of variables live at the exit of \\(B_1\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(6\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Work backwards: \\(\\text{live-in}(B_4) = \\{d, e\\}\\). \\(\\text{live-in}(B_2) = \\{a, b, e\\}\\) (uses \\(a, b\\); \\(e\\) passes through) and \\(\\text{live-in}(B_3) = \\{b, c, d\\}\\).",
+    "\\(\\text{live-out}(B_1)\\) is the union of the live-in sets of its successors: \\(\\{abcde\\}\\), 5 variables."
+   ],
+   "shortcut": "live-out of a block = union of live-in of its successors.",
+   "trap": "Counting only the variables used in the next block on one path instead of the union over both successors."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "use = {1: set(), 2: set('ab'), 3: set('bc'), 4: set('de')}\ndfn = {1: set('abc'), 2: set('d'), 3: set('e'), 4: set()}\nsucc = {1: [2, 3], 2: [4], 3: [4], 4: []}\nlive_in = {b: set() for b in range(1, 5)}\nlive_out = {b: set() for b in range(1, 5)}\nch = True\nwhile ch:\n    ch = False\n    for b in range(1, 5):\n        out = set()\n        for s in succ[b]:\n            out = out | live_in[s]\n        inn = use[b] | (out - dfn[b])\n        if out != live_out[b] or inn != live_in[b]:\n            live_out[b], live_in[b] = out, inn\n            ch = True\nval = len(live_out[1])\nlv = ''.join(sorted(live_out[1]))\nwrong = [3, 4, 6]\nopts = {'A': 3, 'B': 5, 'C': 4, 'D': 6}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 114,
+  "kind": "application",
+  "question_text": "Evaluate \\(\\displaystyle \\lim_{x \\to 0} \\frac{\\sin 3x - 3\\sin x}{x^{3}}\\): ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    -4,
+    -4
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Expand \\(\\sin 3x = 3x - \\dfrac{27x^3}{6} + \\cdots\\) and \\(3\\sin x = 3x - \\dfrac{3x^3}{6} + \\cdots\\).",
+    "The difference is \\(-\\dfrac{24x^3}{6} = -4x^3\\), so the limit is -4."
+   ],
+   "shortcut": "Triple-angle identity: \\(\\sin 3x - 3\\sin x = -4\\sin^3 x\\).",
+   "trap": "Using \\(\\sin 3x \\approx 3\\sin x\\) and concluding 0, which drops the cubic terms."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "x = 1e-2\nanswer = round((math.sin(3 * x) - 3 * math.sin(x)) / x ** 3, 1)"
+  }
+ },
+ {
+  "slot": 115,
+  "kind": "trace",
+  "question_text": "A disk head is at cylinder \\(50\\) and the pending requests are for cylinders \\(95, 180, 34, 119, 11, 123, 62, 64\\). Under shortest-seek-time-first (SSTF) scheduling, the total head movement in cylinders is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    236,
+    236
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Always go to the closest pending cylinder: the service order is 62, 64, 34, 11, 95, 119, 123, 180.",
+    "Adding the distances gives 236 cylinders."
+   ],
+   "shortcut": "Recompute the nearest request after every move.",
+   "trap": "Serving in arrival order (FCFS) or sweeping in one direction (SCAN)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "head = 50\npend = [95, 180, 34, 119, 11, 123, 62, 64]\ntot = 0\norder = []\nwhile pend:\n    nx = min(pend, key=lambda c: abs(c - head))\n    tot += abs(nx - head)\n    head = nx\n    pend.remove(nx)\n    order.append(nx)\nanswer = tot\nod = ', '.join(str(x) for x in order)"
+  }
+ },
+ {
+  "slot": 116,
+  "kind": "msq_discriminator",
+  "question_text": "A directed graph on vertices \\(0, 1, 2, 3, 4\\) has the edges \\(0 \\to 1,\\ 0 \\to 2,\\ 1 \\to 3,\\ 2 \\to 3,\\ 3 \\to 4,\\ 4 \\to 1\\). A depth-first search starts at vertex 0 and always explores out-neighbours in increasing order. Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The graph contains a directed cycle."
+   },
+   {
+    "option_id": "B",
+    "text": "In the DFS, vertex 4 finishes before vertex 3 finishes."
+   },
+   {
+    "option_id": "C",
+    "text": "Vertices 2 and 3 belong to the same strongly connected component."
+   },
+   {
+    "option_id": "D",
+    "text": "The graph has exactly 3 strongly connected components."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The cycle \\(1 \\to 3 \\to 4 \\to 1\\) exists, so the graph is not a DAG. The DFS goes \\(0, 1, 3, 4\\); vertex 4 has only the visited neighbour 1, so it finishes first, then 3.",
+    "Vertex 2 cannot be reached from 3 (no edge leads back to it), so 2 and 3 are in different components. The components are \\(\\{0\\}\\), \\(\\{2\\}\\) and \\(\\{1, 3, 4\\}\\): three."
+   ],
+   "shortcut": "Two vertices share a component only if each reaches the other.",
+   "trap": "Merging all vertices on the DFS path into one component, or confusing reachability one way with mutual reachability."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "adj = {0: [1, 2], 1: [3], 2: [3], 3: [4], 4: [1]}\nseen = []\nfin = []\ndef dfs(u):\n    seen.append(u)\n    for v in adj[u]:\n        if v not in seen:\n            dfs(v)\n    fin.append(u)\ndfs(0)\ndef reach(a):\n    r = set([a])\n    st = [a]\n    while st:\n        u = st.pop()\n        for v in adj[u]:\n            if v not in r:\n                r.add(v)\n                st.append(v)\n    return r\nR = {a: reach(a) for a in range(5)}\ncomps = set()\nfor a in range(5):\n    comps.add(tuple(sorted(b for b in range(5) if b in R[a] and a in R[b])))\nhas_cycle = any(a in reach_b for a in range(5) for reach_b in [set().union(*[R[v] for v in adj[a]])])\ntruth = [has_cycle, fin.index(4) < fin.index(3), 3 in R[2] and 2 in R[3], len(comps) == 3]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 117,
+  "kind": "trace",
+  "question_text": "Four processes arrive at times \\(0, 1, 2, 3\\) ms with CPU bursts \\(6, 4, 2, 5\\) ms and priorities \\(3, 1, 4, 2\\) (a smaller number means a higher priority). Non-preemptive priority scheduling is used. The average waiting time, in ms, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    6.24,
+    6.26
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(P_1\\) starts at 0 and cannot be preempted (runs to 6). Then the highest-priority waiting process is chosen each time.",
+    "Waiting times of \\(P_1, \\dots, P_4\\) are 0, 5, 13, 7 ms; the average is 6.25 ms."
+   ],
+   "shortcut": "Wait \\(=\\) start time \\(-\\) arrival time.",
+   "trap": "Preempting \\(P_1\\) when the higher-priority \\(P_2\\) arrives (that is preemptive priority)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "procs = [(0, 6, 3), (1, 4, 1), (2, 2, 4), (3, 5, 2)]\nt = 0\ndone = set()\nwait = {}\nwhile len(done) < 4:\n    ready = [i for i in range(4) if procs[i][0] <= t and i not in done]\n    if not ready:\n        t += 1\n        continue\n    i = min(ready, key=lambda k: procs[k][2])\n    wait[i] = t - procs[i][0]\n    t += procs[i][1]\n    done.add(i)\nanswer = sum(wait.values()) / 4\nwl = [wait[i] for i in range(4)]"
+  }
+ },
+ {
+  "slot": 118,
+  "kind": "multi_concept",
+  "question_text": "Let \\(L = \\{ w \\in \\{a, b\\}^* : w \\text{ ends with } abb \\}\\). The smallest integer \\(p\\) such that every \\(w \\in L\\) with \\(|w| \\ge p\\) can be split as \\(w = xyz\\) with \\(|xy| \\le p\\), \\(|y| \\ge 1\\) and \\(xy^iz \\in L\\) for all \\(i \\ge 0\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The string \\(abb \\in L\\) has length 3: pumping any non-empty part of it down (\\(i = 0\\)) leaves a string that does not end with \\(abb\\), so \\(p = 3\\) fails.",
+    "For \\(p = 4\\), every longer member can pump its first symbol (removing or repeating it keeps the suffix \\(abb\\)). The smallest \\(p\\) is 4, the number of states of the minimal DFA."
+   ],
+   "shortcut": "For this language the minimum pumping length is the number of DFA states.",
+   "trap": "Answering 3 (the length of the pattern), which fails for the string \\(abb\\) itself."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def inL(w):\n    return w.endswith('abb')\nwords = []\nfor n in range(0, 11):\n    for bits in range(2 ** n):\n        words.append(''.join('a' if (bits >> j) & 1 else 'b' for j in range(n)))\ndef ok(p):\n    for w in words:\n        if len(w) >= p and inL(w):\n            good = False\n            for i in range(0, p + 1):\n                for j in range(i + 1, p + 1):\n                    if j <= len(w):\n                        x, y, z = w[:i], w[i:j], w[j:]\n                        if all(inL(x + y * k + z) for k in range(0, 4)):\n                            good = True\n            if not good:\n                return False\n    return True\nval = next(p for p in range(1, 9) if ok(p))\nwrong = [3, 5, 2]\nopts = {'A': 3, 'B': 5, 'C': 2, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 119,
+  "kind": "numeric_chain",
+  "question_text": "The internal nodes of a B+ tree index are stored in disk blocks of \\(4096\\) bytes. A search key is \\(12\\) bytes and a block pointer is \\(8\\) bytes. An internal node with \\(p\\) pointers holds \\(p - 1\\) keys and must fit in one block. The largest possible value of \\(p\\) (the order of the internal nodes) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    205,
+    205
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The node needs \\(8p + 12(p - 1) \\le 4096\\), that is \\(20p \\le 4108\\).",
+    "So \\(p \\le 205.4\\): the largest order is 205."
+   ],
+   "shortcut": "Pointers outnumber keys by one.",
+   "trap": "Writing \\(8p + 12p \\le 4096\\) (one key per pointer), which gives 204."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "p = 1\nwhile 8 * (p + 1) + 12 * p <= 4096:\n    p += 1\nanswer = p"
+  }
+ },
+ {
+  "slot": 120,
+  "kind": "application",
+  "question_text": "The number of requests that reach a server in a minute follows a Poisson distribution with mean \\(2\\). The probability that at least \\(3\\) requests arrive in a given minute, correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    0.31,
+    0.33
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(P(X \\le 2) = e^{-2}(1 + 2 + 2) = 5e^{-2} \\approx 0.6767\\).",
+    "\\(P(X \\ge 3) = 1 - 0.6767 \\approx 0.32\\)."
+   ],
+   "shortcut": "At least 3 is the complement of at most 2.",
+   "trap": "Computing \\(P(X > 3)\\) or \\(P(X = 3)\\) alone."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "lam = 2\np_less = sum(math.exp(-lam) * lam ** k / math.factorial(k) for k in range(3))\nanswer = round(1 - p_less, 2)"
+  }
+ },
+ {
+  "slot": 121,
+  "kind": "multi_concept",
+  "question_text": "Semaphores \\(S = 1\\) and \\(T = 0\\) are shared. Process \\(P_1\\) executes twice the sequence: wait(S); print a; signal(T). Process \\(P_2\\) executes twice the sequence: wait(T); print b; signal(S). A third process \\(P_3\\) just prints c once, with no synchronisation. All three run concurrently in any interleaving. The number of distinct output strings that complete runs can produce is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(10\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(P_1\\) and \\(P_2\\) are forced to alternate, so together they print \\(abab\\) in that order.",
+    "The independent \\(c\\) can be inserted at any of the 5 positions of \\(abab\\): the strings are ababc, abacb, abcab, acbab, cabab — 5 in all."
+   ],
+   "shortcut": "Fixed order for the pair; 5 slots for the free symbol.",
+   "trap": "Answering 1 (the synchronised pair) and forgetting the unsynchronised third process."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "P1 = [('w', 'S'), ('p', 'a'), ('s', 'T')] * 2\nP2 = [('w', 'T'), ('p', 'b'), ('s', 'S')] * 2\nP3 = [('p', 'c')]\nprogs = [P1, P2, P3]\nstart = ((0, 0, 0), (1, 0), '')\nseen = set([start])\nstack = [start]\nouts = set()\nwhile stack:\n    pcs, sem, out = stack.pop()\n    moved = False\n    for i, p in enumerate(progs):\n        if pcs[i] >= len(p):\n            continue\n        op, x = p[pcs[i]]\n        s = list(sem)\n        o = out\n        if op == 'w':\n            k = 0 if x == 'S' else 1\n            if s[k] == 0:\n                continue\n            s[k] -= 1\n        elif op == 's':\n            k = 0 if x == 'S' else 1\n            s[k] += 1\n        else:\n            o = out + x\n        npcs = list(pcs)\n        npcs[i] += 1\n        st = (tuple(npcs), tuple(s), o)\n        moved = True\n        if st not in seen:\n            seen.add(st)\n            stack.append(st)\n    if not moved and all(pcs[i] >= len(progs[i]) for i in range(3)):\n        outs.add(out)\nval = len(outs)\nol = ', '.join(sorted(outs))\nwrong = [1, 4, 10]\nopts = {'A': 1, 'B': 4, 'C': 5, 'D': 10}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 122,
+  "kind": "numeric_chain",
+  "question_text": "A file system uses blocks of \\(2\\) KB and \\(4\\)-byte block pointers. Each inode has \\(12\\) direct pointers, one single indirect pointer and one double indirect pointer. The maximum size of a file, in megabytes (\\(1\\) MB \\(= 1024\\) KB), correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    513.01,
+    513.03
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Pointers per block \\(= 2048/4 = 512\\).",
+    "Blocks \\(= 12 + 512 + 512^2 = 262668\\); size \\(= 262668 \\times 2\\) KB \\(= 525336\\) KB \\(\\approx 513.02\\) MB."
+   ],
+   "shortcut": "Add the three ranges: direct, single indirect, double indirect.",
+   "trap": "Leaving out the direct and single-indirect blocks, or using the block size 4 KB."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "ptrs = 2048 // 4\nblocks = 12 + ptrs + ptrs * ptrs\nkb = blocks * 2\nanswer = round(kb / 1024, 2)"
+  }
+ },
+ {
+  "slot": 123,
+  "kind": "multi_concept",
+  "question_text": "A weighted undirected graph on vertices \\(0, \\dots, 5\\) has edges \\(01\\,3,\\ 02\\,4,\\ 12\\,2,\\ 13\\,5,\\ 23\\,1,\\ 24\\,6,\\ 34\\,4,\\ 35\\,7,\\ 45\\,2\\). Let \\(W_1\\) be the weight of a minimum spanning tree and \\(W_2\\) the smallest weight strictly greater than \\(W_1\\) among all spanning trees. The value of \\(W_2 - W_1\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Kruskal gives a minimum spanning tree of weight \\(W_1 = 12\\).",
+    "Listing the weights of all spanning trees (swapping one tree edge for a non-tree edge), the next larger weight is \\(W_2 = 13\\), so \\(W_2 - W_1 = 1\\)."
+   ],
+   "shortcut": "Second-best tree: add a non-tree edge, drop the heaviest edge on the cycle it makes.",
+   "trap": "Assuming the second-best tree always differs by the smallest non-tree edge weight, without checking the cycle it closes."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = [(0, 1, 3), (0, 2, 4), (1, 2, 2), (1, 3, 5), (2, 3, 1), (2, 4, 6), (3, 4, 4), (3, 5, 7), (4, 5, 2)]\ndef connected(es):\n    par = list(range(6))\n    def f(x):\n        while par[x] != x:\n            x = par[x]\n        return x\n    for a, b, w in es:\n        par[f(a)] = f(b)\n    return len(set(f(x) for x in range(6))) == 1\nws = sorted(set(sum(e[2] for e in c) for c in itertools.combinations(E, 5) if connected(c)))\nval = ws[1] - ws[0]\nw1 = ws[0]\nw2 = ws[1]\nwrong = [2, 3, 4]\nopts = {'A': 1, 'B': 2, 'C': 3, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 124,
+  "kind": "numeric_chain",
+  "question_text": "A string generator starts from the symbol \\(S\\) and may rewrite it as \\(aSb\\), as \\(bSa\\), as \\(SS\\), or delete it, as described by the productions \\(S \\to aSb \\mid bSa \\mid SS \\mid \\varepsilon\\). Counting the empty string, how many different strings of length at most \\(4\\) can it produce?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(6\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(9\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(16\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The grammar generates exactly the strings with equally many a's and b's.",
+    "Length 0: 1 string; length 2: \\(ab, ba\\) (2); length 4: \\(\\binom{4}{2} = 6\\). Total 9."
+   ],
+   "shortcut": "Equal numbers of a and b: \\(\\binom{2k}{k}\\) strings of length \\(2k\\).",
+   "trap": "Counting only the balanced-bracket strings (which gives 1 + 1 + 2 = 4) or forgetting the empty string."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "S = set([''])\nchanged = True\nwhile changed:\n    changed = False\n    new = set()\n    for s in S:\n        for t in ('a' + s + 'b', 'b' + s + 'a'):\n            if len(t) <= 6:\n                new.add(t)\n    for s in S:\n        for t in S:\n            if len(s + t) <= 6:\n                new.add(s + t)\n    if not new <= S:\n        S = S | new\n        changed = True\nval = len([s for s in S if len(s) <= 4])\nwrong = [6, 12, 16]\nopts = {'A': 6, 'B': 9, 'C': 12, 'D': 16}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 125,
+  "kind": "numeric_chain",
+  "question_text": "A non-pipelined processor has a clock period of \\(10\\) ns and a CPI of \\(1\\). A pipelined version of the same processor has a clock period of \\(2.2\\) ns and a CPI of \\(1.4\\) because of stalls. The speedup of the pipelined processor over the non-pipelined one, correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    3.24,
+    3.26
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Time per instruction: non-pipelined \\(= 10 \\times 1 = 10\\) ns; pipelined \\(= 2.2 \\times 1.4 = 3.08\\) ns.",
+    "Speedup \\(= 10 / 3.08 \\approx 3.25\\)."
+   ],
+   "shortcut": "Speedup \\(= \\dfrac{CPI_1 \\times T_1}{CPI_2 \\times T_2}\\).",
+   "trap": "Using only the ratio of clock periods (4.55) and ignoring the stalls."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "answer = round((10 * 1) / (2.2 * 1.4), 2)"
+  }
+ },
+ {
+  "slot": 126,
+  "kind": "application",
+  "question_text": "A client asks its local recursive resolver for the address of \\(\\texttt{www.example.com}\\). The resolver has an empty cache and resolves the name iteratively by asking one root server, one top-level-domain (TLD) server and one authoritative server in turn. Counting each query and each response as one message, and including the query from the client to the resolver and its final response, the total number of DNS messages exchanged is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    8,
+    8
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Client and resolver exchange a query and a response: 2 messages.",
+    "The resolver then sends a query to each of the three servers and gets a response from each: \\(3 \\times 2 = 6\\). Total 8."
+   ],
+   "shortcut": "One query and one response per hop.",
+   "trap": "Counting the queries only (4) or forgetting the client-resolver pair."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "servers = ['root', 'tld', 'authoritative']\nmsgs = 2\nfor s in servers:\n    msgs += 2\nanswer = msgs"
+  }
+ },
+ {
+  "slot": 127,
+  "kind": "trace",
+  "question_text": "The following C fragment is executed with the 16-bit unsigned value `x = 0xB5C3`.\n```c\nint count = 0;\nwhile (x != 0) {\n    x = x & (x - 1);\n    count++;\n}\n```\nThe value of `count` after the loop ends is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    9,
+    9
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The statement `x & (x - 1)` clears the lowest set bit each time, so the loop runs once for each 1 bit.",
+    "\\(\\texttt{0xB5C3} = 1011\\,0101\\,1100\\,0011_2\\) has 9 one-bits."
+   ],
+   "shortcut": "Number of iterations \\(=\\) population count.",
+   "trap": "Counting the bits in the word (16) or the number of hex digits."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "x = 0xB5C3\ncount = 0\nwhile x != 0:\n    x = x & (x - 1)\n    count += 1\nanswer = count"
+  }
+ },
+ {
+  "slot": 128,
+  "kind": "trace",
+  "question_text": "The postfix expression \\(5\\ 6\\ 2\\ +\\ *\\ 12\\ 4\\ /\\ -\\) is evaluated using a stack of integers (operators pop two operands; the first popped is the right operand). The value left on the stack is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    37,
+    37
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(6\\ 2\\ + = 8\\); \\(5\\ 8\\ * = 40\\); \\(12\\ 4\\ / = 3\\).",
+    "\\(40\\ 3\\ - = 37\\)."
+   ],
+   "shortcut": "Work left to right, applying each operator to the two latest values.",
+   "trap": "Taking the first popped operand as the left operand, which gives \\(3 - 40\\) for the final step."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "stack = []\nfor tok in '5 6 2 + * 12 4 / -'.split():\n    if tok in '+-*/' and len(tok) == 1:\n        b = stack.pop()\n        a = stack.pop()\n        stack.append(a + b if tok == '+' else a - b if tok == '-' else a * b if tok == '*' else a // b)\n    else:\n        stack.append(int(tok))\nanswer = stack[0]"
+  }
+ },
+ {
+  "slot": 129,
+  "kind": "multi_concept",
+  "question_text": "Which of the following is the tightest asymptotic bound for \\(S(n) = \\sum_{i=1}^{n} i \\log_2 i\\)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\Theta(n^2 \\log n)\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\Theta(n \\log n)\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(\\Theta(n^2)\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\Theta(n^3)\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The sum is dominated by its large terms: at least \\(n/2\\) terms are each \\(\\ge \\tfrac n2 \\log \\tfrac n2\\), so \\(S(n) = \\Omega(n^2 \\log n)\\); every term is \\(\\le n \\log n\\), so \\(S(n) = O(n^2 \\log n)\\).",
+    "Dividing \\(S(n)\\) by \\(n^2 \\log n\\) settles at a constant, while the ratios for \\(n^2\\), \\(n \\log n\\) and \\(n^3\\) keep drifting."
+   ],
+   "shortcut": "Sum of \\(n\\) terms, half of them of size about \\(n \\log n\\).",
+   "trap": "Using the integral \\(\\int x \\log x\\) bound without checking both ends, or picking \\(n^2\\) because of \\(\\sum i = \\Theta(n^2)\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def S(n):\n    return sum(i * math.log2(i) for i in range(2, n + 1))\ncands = [lambda n: n * math.log2(n), lambda n: n * n, lambda n: n * n * math.log2(n), lambda n: n ** 3]\ndef settles(f):\n    n1, n2 = 2 ** 12, 2 ** 16\n    r1, r2 = S(n1) / f(n1), S(n2) / f(n2)\n    return abs(r2 / r1 - 1) < 0.1\ntruth = [settles(cands[2]), settles(cands[0]), settles(cands[1]), settles(cands[3])]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ }
+]

@@ -1,0 +1,671 @@
+[
+ {
+  "slot": 45,
+  "kind": "application",
+  "question_text": "A shared Ethernet-like bus of length \\(2000\\) m runs at \\(10\\) Mbps and signals travel at \\(2 \\times 10^8\\) m/s. For CSMA/CD to detect every collision before a sender finishes transmitting, the minimum frame size, in bits, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(100\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(200\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(400\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(25\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "One-way propagation time \\(= 2000 / (2 \\times 10^8) = 10\\ \\mu s\\).",
+    "The sender must still be transmitting when a collision signal returns after a round trip of \\(20\\ \\mu s\\): frame \\(\\ge 20\\ \\mu s \\times 10\\) Mbps \\(= 200\\) bits."
+   ],
+   "shortcut": "Minimum frame time \\(= 2T_p\\).",
+   "trap": "Using the one-way delay (100 bits) or reporting 25 bytes without converting."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "bw = 10e6\nd = 2000\nv = 2e8\nval = int(round(2 * (d / v) * bw))\nwrong = [100, 400, 25]\nopts = {'A': 100, 'B': 200, 'C': 400, 'D': 25}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 46,
+  "kind": "multi_concept",
+  "question_text": "Each of three people \\(A, B, C\\) is either a truth-teller (always tells the truth) or a liar (always lies). A says: 'Exactly one of us is a liar.' B says: 'C is a liar.' C says: 'A and B are both truth-tellers.' The number of liars among the three is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Suppose C is a truth-teller: then A and B are truth-tellers, but B says C is a liar: contradiction. So C is a liar.",
+    "Then B's statement is true, so B is a truth-teller, and C's statement is false, so A and B are not both truthful: A is a liar.",
+    "Check: liars are A and C, so the statement 'exactly one of us is a liar' is false, as it must be for a liar. The number of liars is 2."
+   ],
+   "shortcut": "Start with the person whose truth value is forced by contradiction (C).",
+   "trap": "Accepting A's statement as true without testing it against the other two statements."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "sols = []\nfor tA in (True, False):\n    for tB in (True, False):\n        for tC in (True, False):\n            liars = [tA, tB, tC].count(False)\n            sA = liars == 1\n            sB = not tC\n            sC = tA and tB\n            if tA == sA and tB == sB and tC == sC:\n                sols.append((tA, tB, tC))\nassert len(sols) == 1\nval = sols[0].count(False)\nwrong = [0, 1, 3]\nopts = {'A': 0, 'B': 1, 'C': 2, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 47,
+  "kind": "numeric_chain",
+  "question_text": "An instruction is executed in five stages with stage delays \\(200, 150, 250, 180, 170\\) ps. In a pipelined processor every stage is followed by a latch of delay \\(20\\) ps. The non-pipelined processor needs the sum of the stage delays per instruction. For \\(1000\\) instructions with no stalls, the speedup of the pipelined processor over the non-pipelined one, correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    3.49,
+    3.51
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Non-pipelined time per instruction \\(= 950\\) ps; for 1000 instructions \\(= 950000\\) ps.",
+    "Pipelined clock \\(= 250 + 20 = 270\\) ps; time \\(= (5 + 999) \\times 270 = 271080\\) ps.",
+    "Speedup \\(= 950000 / 271080 \\approx 3.5\\)."
+   ],
+   "shortcut": "Clock \\(= \\max(\\text{stage}) + \\text{latch}\\); time \\(= (k + n - 1) \\times\\) clock.",
+   "trap": "Using the ideal speedup of 5, or forgetting the latch delay and the pipeline fill time."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "stages = [200, 150, 250, 180, 170]\nclock = max(stages) + 20\nn = 1000\nnonpipe = n * sum(stages)\npipe = (len(stages) + n - 1) * clock\nanswer = round(nonpipe / pipe, 2)\nseq = sum(stages)"
+  }
+ },
+ {
+  "slot": 48,
+  "kind": "trace",
+  "question_text": "A programmer keeps a running total inside a routine by declaring a counter with static storage, hoping each activation will add to the same location. The routine is shown below. In a fresh run of the program, the very first activation is made with the argument 4. What number does that outermost activation hand back to its caller? ______\n```c\nint f(int n) {\n    static int c = 0;\n    c += n;\n    if (n > 1) f(n - 1);\n    return c;\n}\n```",
+  "options": [],
+  "answer": {
+   "range": [
+    10,
+    10
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The static variable \\(c\\) is shared by all calls: the calls add 4, 3, 2 and 1 in that order, so \\(c\\) becomes 4, 7, 9, 10.",
+    "The outermost call returns \\(c\\) after the recursion has finished, so it returns 10."
+   ],
+   "shortcut": "Static means one shared copy: the final value is \\(4 + 3 + 2 + 1\\).",
+   "trap": "Returning the value \\(c\\) had at the time of the call (4) as if it were a local variable."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "c = [0]\ndef f(n):\n    c[0] += n\n    if n > 1:\n        f(n - 1)\n    return c[0]\nanswer = f(4)"
+  }
+ },
+ {
+  "slot": 49,
+  "kind": "trace",
+  "question_text": "A compiler builds a directed acyclic graph (DAG) with value numbering for the expression \\((a + b) * (a + b) + (a + b) * c\\), merging every repeated subexpression. The total number of nodes in the DAG, counting leaves and operator nodes, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(7\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(6\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(8\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(10\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Leaves: \\(a, b, c\\): 3 nodes. The two occurrences of \\(a + b\\) share one node (4 nodes so far).",
+    "\\((a+b)*(a+b)\\) is one node, \\((a+b)*c\\) another, and the final \\(+\\) a third: \\(4 + 3 = 7\\) nodes."
+   ],
+   "shortcut": "Count each distinct (operator, operands) pair once.",
+   "trap": "Building a tree (12 nodes) or merging the two products into one node."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "nodes = {}\ndef mk(*key):\n    if key not in nodes:\n        nodes[key] = len(nodes)\n    return nodes[key]\na = mk('leaf', 'a')\nb = mk('leaf', 'b')\nc = mk('leaf', 'c')\ns1 = mk('+', a, b)\ns2 = mk('+', a, b)\np1 = mk('*', s1, s2)\np2 = mk('*', s1, c)\ntop = mk('+', p1, p2)\nval = len(nodes)\nwrong = [6, 8, 10]\nopts = {'A': 7, 'B': 6, 'C': 8, 'D': 10}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 50,
+  "kind": "multi_concept",
+  "question_text": "Five runners \\(P, Q, R, S, T\\) finish a race with no ties. It is known that \\(P\\) finishes before \\(Q\\); \\(S\\) finishes immediately before \\(R\\); and \\(T\\) neither wins nor comes last. The number of possible finishing orders is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(8\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(18\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(6\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Treat \\(SR\\) as one block; arrange the 4 units \\(P, Q, T, [SR]\\) in a row: \\(4! = 24\\) ways.",
+    "Keep \\(P\\) before \\(Q\\): half, 12. Of these, remove the ones where \\(T\\) is first or last; the remaining number is 6."
+   ],
+   "shortcut": "Glue S and R, use symmetry for P before Q, then subtract the cases with T at an end.",
+   "trap": "Counting arrangements of the block as 2 (allowing \\(RS\\)), or forgetting that the block takes two places."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor o in itertools.permutations('PQRST'):\n    pos = {x: i for i, x in enumerate(o)}\n    if pos['P'] < pos['Q'] and pos['R'] - pos['S'] == 1 and pos['T'] not in (0, 4):\n        cnt += 1\nval = cnt\nwrong = [8, 12, 18]\nopts = {'A': 8, 'B': 12, 'C': 18, 'D': 6}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 51,
+  "kind": "msq_discriminator",
+  "question_text": "A relation \\(R(A, B, C, D)\\) has the functional dependencies \\(A \\to B,\\ B \\to C,\\ C \\to D\\). Two decompositions are considered: \\(D_1 = \\{AB, BC, CD\\}\\) and \\(D_2 = \\{AC, BD\\}\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(D_1\\) is a lossless-join decomposition."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(D_1\\) is dependency preserving."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(D_2\\) is a lossless-join decomposition."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(D_2\\) is dependency preserving."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(D_1\\) keeps each dependency inside one relation (\\(A \\to B\\) in \\(AB\\), \\(B \\to C\\) in \\(BC\\), \\(C \\to D\\) in \\(CD\\)), so it is dependency preserving, and joining along the chain \\(B\\), \\(C\\) is lossless.",
+    "\\(D_2 = \\{AC, BD\\}\\) share no attribute, so their join is a Cartesian product: lossy.",
+    "For \\(D_2\\), \\(A \\to B\\) cannot be recovered: from \\(A\\) the projections only give \\(C\\), never \\(B\\), so it is not dependency preserving."
+   ],
+   "shortcut": "Lossless: test with the chase (or common attributes for two pieces). Preserving: grow the closure of each left side inside the pieces.",
+   "trap": "Assuming that any decomposition into 2NF or 3NF pieces keeps both properties; each property has to be tested separately."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "attrs = 'ABCD'\nF = [('A', 'B'), ('B', 'C'), ('C', 'D')]\ndef closure(s, fds):\n    s = set(s)\n    ch = True\n    while ch:\n        ch = False\n        for l, r in fds:\n            if set(l) <= s and not set(r) <= s:\n                s = s | set(r)\n                ch = True\n    return s\ndef lossless(rels):\n    tab = [[0 if x in r else i + 1 for x in attrs] for i, r in enumerate(rels)]\n    ch = True\n    while ch:\n        ch = False\n        for l, r in F:\n            li = [attrs.index(x) for x in l]\n            ri = attrs.index(r)\n            for i in range(len(tab)):\n                for j in range(len(tab)):\n                    if i != j and all(tab[i][k] == tab[j][k] for k in li) and tab[i][ri] != tab[j][ri]:\n                        lo = min(tab[i][ri], tab[j][ri])\n                        hi = max(tab[i][ri], tab[j][ri])\n                        for row in tab:\n                            if row[ri] == hi:\n                                row[ri] = lo\n                        ch = True\n    return any(all(v == 0 for v in row) for row in tab)\ndef preserving(rels):\n    for l, r in F:\n        z = set(l)\n        ch = True\n        while ch:\n            ch = False\n            for rel in rels:\n                add = closure(z & set(rel), F) & set(rel)\n                if not add <= z:\n                    z = z | add\n                    ch = True\n        if not set(r) <= z:\n            return False\n    return True\nD1 = ['AB', 'BC', 'CD']\nD2 = ['AC', 'BD']\ntruth = [lossless(D1), preserving(D1), lossless(D2), preserving(D2)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 52,
+  "kind": "application",
+  "question_text": "A tank is filled by pipe \\(P\\) alone in \\(12\\) hours and by pipe \\(Q\\) alone in \\(15\\) hours. A drain pipe \\(R\\) empties the full tank in \\(20\\) hours. If the tank is initially empty and all three pipes are opened together, the time taken to fill the tank, in hours, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(8\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(15\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(10\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Net rate \\(= \\tfrac1{12} + \\tfrac1{15} - \\tfrac1{20} = \\tfrac{5 + 4 - 3}{60} = \\tfrac{6}{60} = \\tfrac1{10}\\) of the tank per hour.",
+    "Time \\(= 1 / (1/10) = 10\\) hours."
+   ],
+   "shortcut": "Use the common denominator 60: 5 + 4 - 3 = 6 parts per hour out of 60.",
+   "trap": "Adding the drain's rate instead of subtracting it (giving 6.67 hours)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "rate = fractions.Fraction(1, 12) + fractions.Fraction(1, 15) - fractions.Fraction(1, 20)\nval = int(1 / rate)\nwrong = [8, 12, 15]\nopts = {'A': 8, 'B': 12, 'C': 15, 'D': 10}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 53,
+  "kind": "application",
+  "question_text": "\\(A\\) alone can complete a job in \\(10\\) days and \\(B\\) alone in \\(15\\) days. They start together, and \\(A\\) leaves after \\(4\\) days. The number of additional days \\(B\\) needs to finish the remaining work alone is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(6\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(7\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "In 4 days together they complete \\(4(\\tfrac1{10} + \\tfrac1{15}) = \\tfrac23\\) of the job.",
+    "Remaining \\(\\tfrac13\\); \\(B\\) does \\(\\tfrac1{15}\\) per day, so he needs \\(\\tfrac13 \\div \\tfrac1{15} = 5\\) days."
+   ],
+   "shortcut": "Combined rate \\(= 1/6\\) per day: 4 days finish two thirds.",
+   "trap": "Subtracting only \\(A\\)'s share of the first four days."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "done = 4 * (fractions.Fraction(1, 10) + fractions.Fraction(1, 15))\nrest = 1 - done\nval = int(rest / fractions.Fraction(1, 15))\nwrong = [4, 6, 7]\nopts = {'A': 4, 'B': 5, 'C': 6, 'D': 7}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 54,
+  "kind": "trace",
+  "question_text": "Basic timestamp ordering is used with timestamps \\(TS(T_1) = 10\\), \\(TS(T_2) = 20\\), \\(TS(T_3) = 30\\). The operations arrive in the order \\(R_1(A)\\ W_2(A)\\ R_3(A)\\ W_1(A)\\ R_2(B)\\ W_3(B)\\ W_2(B)\\). An operation that violates the rules causes its transaction to abort (its later operations are ignored). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(T_1\\) is aborted."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(T_2\\) is aborted."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(T_3\\) is aborted."
+   },
+   {
+    "option_id": "D",
+    "text": "Exactly two transactions are aborted."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(R_1(A)\\), \\(W_2(A)\\), \\(R_3(A)\\) are allowed: \\(\\text{RTS}(A) = 30\\), \\(\\text{WTS}(A) = 20\\).",
+    "\\(W_1(A)\\) has \\(TS = 10 < \\text{RTS}(A) = 30\\): \\(T_1\\) aborts. \\(R_2(B)\\) and \\(W_3(B)\\) are allowed (\\(\\text{RTS}(B) = 20\\), \\(\\text{WTS}(B) = 30\\)).",
+    "\\(W_2(B)\\) has \\(TS = 20 < \\text{WTS}(B) = 30\\): \\(T_2\\) aborts. \\(T_3\\) completes. So \\(T_1\\) and \\(T_2\\) abort: two transactions."
+   ],
+   "shortcut": "Track RTS and WTS of each item after every operation.",
+   "trap": "Applying the rules to the order of the operations of one transaction only, or letting an aborted transaction's later operations still update the timestamps."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "TS = {1: 10, 2: 20, 3: 30}\nrts = {'A': 0, 'B': 0}\nwts = {'A': 0, 'B': 0}\naborted = set()\nops = [(1, 'R', 'A'), (2, 'W', 'A'), (3, 'R', 'A'), (1, 'W', 'A'), (2, 'R', 'B'), (3, 'W', 'B'), (2, 'W', 'B')]\nfor t, o, x in ops:\n    if t in aborted:\n        continue\n    if o == 'R':\n        if TS[t] < wts[x]:\n            aborted.add(t)\n        else:\n            rts[x] = max(rts[x], TS[t])\n    else:\n        if TS[t] < rts[x] or TS[t] < wts[x]:\n            aborted.add(t)\n        else:\n            wts[x] = TS[t]\ntruth = [1 in aborted, 2 in aborted, 3 in aborted, len(aborted) == 2]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 55,
+  "kind": "trace",
+  "question_text": "The routine below splits its argument twice at every level, once into halves and once into quarters, using truncating integer division, and adds up the parity (remainder modulo 2) of every argument it meets until the argument reaches zero. Work out the total that the call with argument 20 produces. ______\n```c\nint g(int n) {\n    if (n == 0) return 0;\n    return n % 2 + g(n / 2) + g(n / 4);\n}\n```",
+  "options": [],
+  "answer": {
+   "range": [
+    7,
+    7
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Integer division truncates. \\(g(20) = 0 + g(10) + g(5)\\); \\(g(10) = 0 + g(5) + g(2)\\); \\(g(5) = 1 + g(2) + g(1)\\).",
+    "Working down: \\(g(1) = 1\\), \\(g(2) = 0 + g(1) + g(0) = 1\\), \\(g(5) = 1 + 1 + 1 = 3\\), \\(g(10) = 3 + 1 = 4\\), \\(g(20) = 4 + 3 = 7\\)."
+   ],
+   "shortcut": "Tabulate \\(g(0), g(1), g(2), g(5), g(10), g(20)\\) bottom-up.",
+   "trap": "Evaluating \\(n/4\\) as a real number or forgetting that \\(g(0) = 0\\) ends the recursion."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def g(n):\n    if n == 0:\n        return 0\n    return n % 2 + g(n // 2) + g(n // 4)\nanswer = g(20)"
+  }
+ },
+ {
+  "slot": 56,
+  "kind": "numeric_chain",
+  "question_text": "A system has a single-level page table in main memory. A TLB lookup takes \\(20\\) ns and a main-memory access takes \\(100\\) ns. The TLB hit ratio is \\(90\\%\\) and the TLB is searched before the page table is read on a miss. The effective memory access time, in nanoseconds, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    130,
+    130
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "A hit costs \\(20 + 100 = 120\\) ns; a miss costs \\(20 + 100 + 100 = 220\\) ns (extra access for the page-table entry).",
+    "Effective time \\(= 0.9 \\times 120 + 0.1 \\times 220 = 130\\) ns."
+   ],
+   "shortcut": "EAT \\(= t_{TLB} + t_{mem} + (1 - h)\\,t_{mem}\\).",
+   "trap": "Leaving out the TLB lookup time on a miss, or counting the page-table access on a hit."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "hit = 0.9\ntlb = 20\nmem = 100\nanswer = round(hit * (tlb + mem) + (1 - hit) * (tlb + mem + mem), 6)"
+  }
+ },
+ {
+  "slot": 57,
+  "kind": "trap_aware",
+  "question_text": "Five friends \\(P, Q, R, S, T\\) sit in a row of five chairs. \\(P\\) and \\(Q\\) refuse to sit next to each other. The number of different seating arrangements is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(48\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(72\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(96\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(60\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Total arrangements \\(5! = 120\\).",
+    "Arrangements with \\(P\\) and \\(Q\\) adjacent: treat them as a block, \\(4! \\times 2 = 48\\).",
+    "Required \\(= 120 - 48 = 72\\)."
+   ],
+   "shortcut": "Count the complement.",
+   "trap": "Reporting the 48 adjacent arrangements."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor o in itertools.permutations('PQRST'):\n    if abs(o.index('P') - o.index('Q')) != 1:\n        cnt += 1\nval = cnt\nwrong = [48, 96, 60]\nopts = {'A': 48, 'B': 72, 'C': 96, 'D': 60}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 58,
+  "kind": "application",
+  "question_text": "A student wants to know how closely the second-degree Taylor polynomial of \\(e^{3x}\\) about \\(0\\) approximates the function near the origin. Evaluate the limit \\(\\displaystyle \\lim_{x \\to 0} \\dfrac{e^{3x} - 1 - 3x - \\tfrac{9}{2}x^{2}}{x^{3}}\\), correct to one decimal place: ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    4.49,
+    4.51
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Expand \\(e^{3x} = 1 + 3x + \\dfrac{(3x)^2}{2} + \\dfrac{(3x)^3}{6} + \\cdots\\); the first three terms cancel the polynomial in the numerator.",
+    "What remains is \\(\\dfrac{27}{6}x^3 + \\cdots = 4.5\\,x^3 + \\cdots\\), so the limit is \\(4.5\\). (L'Hopital three times gives \\(27/6\\) as well.)"
+   ],
+   "shortcut": "The limit is the next Taylor coefficient: \\(3^3/3!\\).",
+   "trap": "Stopping the expansion one term early (limit 0), or using \\((3x)^3/3!\\) with 3 instead of 27 in the numerator."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "x = 1e-3\nanswer = round((math.exp(3 * x) - 1 - 3 * x - 4.5 * x * x) / (x ** 3), 1)"
+  }
+ },
+ {
+  "slot": 59,
+  "kind": "trap_aware",
+  "question_text": "Which one of the following statements is TRUE for the growth of functions as \\(n \\to \\infty\\) (all logarithms are to base 2)?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\((\\log n)^{\\log n} = \\Omega(n^{2})\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(n^{\\log n} = O(n^{100})\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2^{\\sqrt{n}} = O((\\log n)^{50})\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(n! = O(2^{n})\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Compare logarithms of the two sides for large \\(n\\). \\(n^{\\log n}\\) has logarithm \\(\\log n \\ln n\\), which eventually exceeds \\(100 \\ln n\\): the first statement is false.",
+    "\\(2^{\\sqrt n}\\) grows faster than any polynomial in \\(\\log n\\): false. \\(n!\\) grows faster than \\(2^n\\): false.",
+    "\\((\\log n)^{\\log n} = n^{\\log\\log n}\\), and \\(\\log \\log n\\) eventually exceeds 2, so it is \\(\\Omega(n^2)\\): true."
+   ],
+   "shortcut": "Rewrite each function as \\(2^{\\text{something}}\\) and compare the somethings.",
+   "trap": "Judging by the look of the exponent (a bigger constant exponent seems 'faster') instead of comparing logarithms."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "n = 2.0 ** 500\nln = math.log\nlg = math.log2(n)\nlnA = lg * ln(n)\nlnA2 = 100 * ln(n)\nlnB = math.sqrt(n) * ln(2)\nlnB2 = 50 * ln(lg)\nlnC = lg * ln(lg)\nlnC2 = 2 * ln(n)\nlnD = math.lgamma(n + 1)\nlnD2 = n * ln(2)\ntruth = [lnA <= lnA2, lnB <= lnB2, lnC >= lnC2, lnD <= lnD2]\nperm = [2, 0, 1, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 60,
+  "kind": "application",
+  "question_text": "A train \\(150\\) m long crosses a platform \\(250\\) m long in \\(20\\) seconds at a constant speed. The speed of the train, in km/h, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(60\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(72\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(54\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(90\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "To cross the platform the train covers its own length plus the platform: \\(150 + 250 = 400\\) m.",
+    "Speed \\(= 400/20 = 20\\) m/s \\(= 20 \\times 3.6 = 72\\) km/h."
+   ],
+   "shortcut": "Distance \\(=\\) train \\(+\\) platform.",
+   "trap": "Using only the platform length (12.5 m/s = 45 km/h)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "dist = 150 + 250\nms = dist / 20\nval = int(round(ms * 3.6))\nwrong = [60, 54, 90]\nopts = {'A': 60, 'B': 72, 'C': 54, 'D': 90}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 61,
+  "kind": "trace",
+  "question_text": "The determinant of the matrix \\(M = \\begin{pmatrix} 2 & 1 & 0 & 3 \\\\ 1 & 3 & 2 & 1 \\\\ 0 & 2 & 4 & 1 \\\\ 3 & 1 & 1 & 2 \\end{pmatrix}\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(-41\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(-29\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(41\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(-82\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Reduce to upper triangular form with row operations (swaps change the sign; adding a multiple of a row does not).",
+    "The product of the diagonal entries after elimination, with the sign changes, is -41."
+   ],
+   "shortcut": "Eliminate below the pivots and multiply the diagonal.",
+   "trap": "Forgetting the sign change for each row swap, or scaling a row without dividing the determinant."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "M = [[2, 1, 0, 3], [1, 3, 2, 1], [0, 2, 4, 1], [3, 1, 1, 2]]\ndef det(A):\n    A = [[fractions.Fraction(x) for x in r] for r in A]\n    n = len(A)\n    d = fractions.Fraction(1)\n    for i in range(n):\n        p = next((r for r in range(i, n) if A[r][i] != 0), None)\n        if p is None:\n            return 0\n        if p != i:\n            A[i], A[p] = A[p], A[i]\n            d = -d\n        d = d * A[i][i]\n        for r in range(i + 1, n):\n            f = A[r][i] / A[i][i]\n            A[r] = [A[r][k] - f * A[i][k] for k in range(n)]\n    return d\nval = int(det(M))\nwrong = [val + 12, -val, 2 * val]\nopts = {'A': -41, 'B': -29, 'C': 41, 'D': -82}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 62,
+  "kind": "conceptual",
+  "question_text": "A Boolean function \\(f(x, y, z)\\) is monotone if \\(f(a) \\le f(b)\\) whenever \\(a \\le b\\) bitwise (that is, changing any input from 0 to 1 never changes the output from 1 to 0). The number of monotone Boolean functions of three variables is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    20,
+    20
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Monotone functions correspond to up-sets of the 8-element cube of inputs (an antichain of minimal true points).",
+    "Counting the antichains in the Boolean lattice of 3 elements gives 20 functions (the Dedekind number \\(M(3)\\))."
+   ],
+   "shortcut": "Dedekind numbers: 2, 3, 6, 20, 168 for \\(n = 0, 1, 2, 3, 4\\).",
+   "trap": "Counting only the functions built from AND and OR without constants (18) and missing the constants 0 and 1."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor tt in range(256):\n    f = [(tt >> i) & 1 for i in range(8)]\n    ok = True\n    for a in range(8):\n        for b in range(8):\n            if (a & b) == a and f[a] > f[b]:\n                ok = False\n    if ok:\n        cnt += 1\nanswer = cnt"
+  }
+ }
+]

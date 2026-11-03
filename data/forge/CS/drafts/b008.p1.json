@@ -1,0 +1,552 @@
+[
+ {
+  "slot": 0,
+  "kind": "trace",
+  "question_text": "Keys \\(15, 22, 9, 30, 12, 27, 5, 18\\) are inserted one by one into an initially empty array-based max-heap (each key is placed at the end and moved up while it is larger than its parent). The maximum is then removed twice (each removal moves the last element to the root and sifts it down, swapping with the larger child). The array, from index 1, after the two removals is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "[27, 22, 15, 18, 12, 9, 5]"
+   },
+   {
+    "option_id": "B",
+    "text": "[22, 18, 15, 12, 9, 5]"
+   },
+   {
+    "option_id": "C",
+    "text": "[22, 18, 12, 9, 5, 15]"
+   },
+   {
+    "option_id": "D",
+    "text": "[22, 18, 15, 5, 12, 9]"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Insertions with sift-up give the heap 30, 22, 27, 18, 12, 9, 5, 15.",
+    "First removal returns 30 and leaves 27, 22, 15, 18, 12, 9, 5 after the sift-down.",
+    "Second removal returns 27; the final array is 22, 18, 15, 5, 12, 9."
+   ],
+   "shortcut": "Do each removal separately: last element to the root, then swap with the larger child until the heap order holds.",
+   "trap": "Stopping after one removal, or deleting the two largest keys from the original array without repairing the heap order."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "H = []\ndef up(i):\n    while i > 0 and H[(i - 1) // 2] < H[i]:\n        H[(i - 1) // 2], H[i] = H[i], H[(i - 1) // 2]\n        i = (i - 1) // 2\ndef down(i):\n    n = len(H)\n    while True:\n        l, r, m = 2 * i + 1, 2 * i + 2, i\n        if l < n and H[l] > H[m]:\n            m = l\n        if r < n and H[r] > H[m]:\n            m = r\n        if m == i:\n            return\n        H[m], H[i] = H[i], H[m]\n        i = m\ndef extract():\n    top = H[0]\n    H[0] = H[-1]\n    H.pop()\n    if H:\n        down(0)\n    return top\nfor k in [15, 22, 9, 30, 12, 27, 5, 18]:\n    H.append(k)\n    up(len(H) - 1)\nH0 = list(H)\na = extract()\nH1 = list(H)\nb = extract()\nval = list(H)\nwrong = [H1, sorted(val)[::-1], [x for x in H0 if x not in (a, b)]]\nopts = {'A': [27, 22, 15, 18, 12, 9, 5], 'B': [22, 18, 15, 12, 9, 5], 'C': [22, 18, 12, 9, 5, 15], 'D': [22, 18, 15, 5, 12, 9]}\nanswer = [k for k in 'ABCD' if opts[k] == val][0]"
+  }
+ },
+ {
+  "slot": 1,
+  "kind": "application",
+  "question_text": "A solid metal cone has base radius \\(6\\) cm and height \\(8\\) cm. It is melted and recast into identical solid spheres of radius \\(1\\) cm, with no loss of metal. The number of spheres obtained is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(216\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(288\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(72\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(36\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Volume of the cone \\(= \\tfrac13 \\pi r^2 h = \\tfrac13 \\pi \\cdot 36 \\cdot 8 = 96\\pi\\).",
+    "Volume of one sphere \\(= \\tfrac43 \\pi \\cdot 1^3 = \\tfrac43 \\pi\\).",
+    "Number of spheres \\(= 96\\pi \\div \\tfrac43\\pi = 72\\)."
+   ],
+   "shortcut": "Both volumes carry the same \\(\\pi\\): compare \\(\\tfrac13 r^2 h = 96\\) with \\(\\tfrac43 = 1.33\\).",
+   "trap": "Forgetting the factor \\(\\tfrac13\\) in the cone volume (giving 216)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cone = fractions.Fraction(1, 3) * 36 * 8\nsphere = fractions.Fraction(4, 3) * 1\nval = int(cone / sphere)\nwrong = [int(fractions.Fraction(36 * 8) / sphere), int(cone / (fractions.Fraction(1, 3) * 1)), int(cone / (4 * fractions.Fraction(1, 3) * 2))]\nopts = {'A': 216, 'B': 288, 'C': 72, 'D': 36}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 2,
+  "kind": "numeric_chain",
+  "question_text": "Two fair six-faced dice are thrown and \\(X\\) is the larger of the two numbers shown. The expected value \\(E[X]\\), correct to three decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(4.472\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(3.5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2.528\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(5\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(P(X = k) = \\dfrac{2k - 1}{36}\\) for \\(k = 1, \\dots, 6\\), because \\(2k-1\\) of the 36 outcomes have maximum \\(k\\).",
+    "\\(E[X] = \\dfrac{1}{36}\\sum_{k=1}^{6} k(2k-1) = \\dfrac{161}{36} \\approx 4.472\\)."
+   ],
+   "shortcut": "\\(E[\\max] + E[\\min] = 7\\), and \\(E[\\min] = 91/36\\).",
+   "trap": "Using \\(E[\\text{one die}] = 3.5\\), or computing the expected minimum instead."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "tot = 0\nmn = 0\nfor a in range(1, 7):\n    for b in range(1, 7):\n        tot += max(a, b)\n        mn += min(a, b)\nval = round(tot / 36, 3)\nwrong = [3.5, round(mn / 36, 3), 5.0]\nopts = {'A': 4.472, 'B': 3.5, 'C': 2.528, 'D': 5.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 3,
+  "kind": "trap_aware",
+  "question_text": "A connected undirected graph has vertices \\(0\\) to \\(6\\) and edges (weights in brackets): \\(0\\text{-}1\\,(2)\\), \\(0\\text{-}2\\,(2)\\), \\(1\\text{-}2\\,(2)\\), \\(1\\text{-}3\\,(3)\\), \\(2\\text{-}3\\,(3)\\), \\(3\\text{-}4\\,(1)\\), \\(3\\text{-}5\\,(2)\\), \\(4\\text{-}5\\,(2)\\), \\(5\\text{-}6\\,(4)\\), \\(4\\text{-}6\\,(4)\\). The number of distinct minimum spanning trees of this graph is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(24\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(18\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(36\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Kruskal takes the weight-1 edge, then the weight-2 edges in every possible way that avoids cycles; ties are where different trees appear.",
+    "Enumerating all 6-edge subsets that connect the 7 vertices and keeping those of least weight gives 24 minimum spanning trees (weight 14)."
+   ],
+   "shortcut": "Count independent tie choices: choosing 2 of the 3 equal edges in a triangle gives 3 ways, and two parallel equal routes give 2 more.",
+   "trap": "Reporting 1 because the minimum weight is unique; the weight is unique but the tree is not."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = [(0, 1, 2), (0, 2, 2), (1, 2, 2), (1, 3, 3), (2, 3, 3), (3, 4, 1), (3, 5, 2), (4, 5, 2), (5, 6, 4), (4, 6, 4)]\ndef connected(es):\n    par = list(range(7))\n    def f(x):\n        while par[x] != x:\n            x = par[x]\n        return x\n    for a, b, w in es:\n        par[f(a)] = f(b)\n    return len(set(f(x) for x in range(7))) == 1\nbest, cnt = 10 ** 9, 0\nfor c in itertools.combinations(E, 6):\n    if connected(c):\n        w = sum(e[2] for e in c)\n        if w < best:\n            best, cnt = w, 1\n        elif w == best:\n            cnt += 1\nval = cnt\nwrong = [12, 18, 36]\nopts = {'A': 24, 'B': 12, 'C': 18, 'D': 36}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 4,
+  "kind": "numeric_chain",
+  "question_text": "Consider the context-free grammar \\(G: S \\to aSb \\mid SS \\mid \\varepsilon\\). The number of distinct strings of length \\(8\\) in \\(L(G)\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(16\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(14\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(70\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(42\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(L(G)\\) is the set of balanced bracket strings (with \\(a\\) as an opening and \\(b\\) as a closing bracket).",
+    "Generating strings from the rules until nothing new of length at most 8 appears gives 14 strings of length 8, the Catalan number \\(C_4\\)."
+   ],
+   "shortcut": "Balanced strings of length \\(2n\\) number \\(\\frac{1}{n+1}\\binom{2n}{n}\\); for \\(n = 4\\) that is 14.",
+   "trap": "Counting all strings with four a's and four b's (\\(\\binom{8}{4} = 70\\)), which ignores the balance condition."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "S = set([''])\nchanged = True\nwhile changed:\n    changed = False\n    new = set()\n    for s in S:\n        t = 'a' + s + 'b'\n        if len(t) <= 8:\n            new.add(t)\n    for s in S:\n        for t in S:\n            if len(s + t) <= 8:\n                new.add(s + t)\n    if not new <= S:\n        S = S | new\n        changed = True\nval = len([s for s in S if len(s) == 8])\nwrong = [16, 70, 42]\nopts = {'A': 16, 'B': 14, 'C': 70, 'D': 42}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 5,
+  "kind": "multi_concept",
+  "question_text": "Let \\(L = \\{ w \\in \\{a, b\\}^* : \\text{the number of } a\\text{'s in } w \\equiv 2 \\pmod 4 \\}\\). The smallest integer \\(p\\) for which \\(L\\) satisfies the pumping lemma for regular languages (every \\(w \\in L\\) with \\(|w| \\ge p\\) can be written \\(w = xyz\\) with \\(|xy| \\le p\\), \\(|y| \\ge 1\\) and \\(xy^iz \\in L\\) for all \\(i \\ge 0\\)) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "A pumped piece \\(y\\) must keep the count of a's unchanged modulo 4, so either \\(y\\) contains no a, or it contains a multiple of 4 a's.",
+    "The string \\(a^6 \\in L\\) has no b to pump, so \\(y\\) would have to be a block of 4 a's inside the first \\(p\\) symbols: \\(p \\ge 4\\).",
+    "With \\(p = 4\\) every long enough string works (pump a b, or a block of 4 a's). The smallest valid \\(p\\) is 4, the number of states of the minimal DFA."
+   ],
+   "shortcut": "For this kind of language the minimum pumping length equals the number of states of the minimal DFA: 4.",
+   "trap": "Answering 3 or 2 from short strings such as \\(aa\\) or \\(aab\\), without checking strings like \\(a^6\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def inL(w):\n    return w.count('a') % 4 == 2\nwords = []\nfor n in range(0, 11):\n    for bits in range(2 ** n):\n        words.append(''.join('a' if (bits >> j) & 1 else 'b' for j in range(n)))\ndef ok(p):\n    for w in words:\n        if len(w) >= p and inL(w):\n            good = False\n            for i in range(0, p + 1):\n                for j in range(i + 1, p + 1):\n                    if j <= len(w):\n                        x, y, z = w[:i], w[i:j], w[j:]\n                        if all(inL(x + y * k + z) for k in range(0, 4)):\n                            good = True\n            if not good:\n                return False\n    return True\nval = next(p for p in range(1, 9) if ok(p))\nwrong = [3, 5, 2]\nopts = {'A': 3, 'B': 5, 'C': 4, 'D': 2}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 6,
+  "kind": "multi_concept",
+  "question_text": "Consider the grammar \\(S' \\to S\\), \\(S \\to AA\\), \\(A \\to aA \\mid b\\). Let \\(m\\) be the number of states in the canonical LR(1) automaton and \\(n\\) the number of states in the LR(0) automaton of this (augmented) grammar. The value of \\(m - n\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Building the LR(0) automaton from \\(S' \\to \\cdot S\\) gives \\(n = 7\\) states.",
+    "In LR(1) the items carry lookaheads, so the two sets that LR(0) merges for \\(A \\to aA\\cdot\\) and \\(A \\to b\\cdot\\) split into copies with lookahead \\(\\{a,b\\}\\) and \\(\\$\\): the canonical LR(1) automaton has \\(m = 10\\) states.",
+    "\\(m - n = 3\\)."
+   ],
+   "shortcut": "Count the states whose items differ only in lookahead: they merge in LR(0) and LALR(1) but not in canonical LR(1).",
+   "trap": "Assuming LR(1) has the same states as LR(0) (difference 0) or confusing it with the LALR(1) automaton, which merges them back to \\(n\\) states."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "G = [('S1', ('S',)), ('S', ('A', 'A')), ('A', ('a', 'A')), ('A', ('b',))]\nNT = set(['S1', 'S', 'A'])\nFIRST = {'S': set(['a', 'b']), 'A': set(['a', 'b']), 'a': set(['a']), 'b': set(['b'])}\ndef closure(items, lr1):\n    items = set(items)\n    ch = True\n    while ch:\n        ch = False\n        for (l, r, d, la) in list(items):\n            if d < len(r) and r[d] in NT:\n                beta = r[d + 1:]\n                las = (FIRST[beta[0]] if beta else set([la])) if lr1 else set([''])\n                for (l2, r2) in G:\n                    if l2 == r[d]:\n                        for x in las:\n                            it = (l2, r2, 0, x)\n                            if it not in items:\n                                items.add(it)\n                                ch = True\n    return tuple(sorted(items))\ndef count(lr1):\n    start = closure(set([('S1', ('S',), 0, '$' if lr1 else '')]), lr1)\n    seen = [start]\n    i = 0\n    while i < len(seen):\n        st = seen[i]\n        for X in ['S', 'A', 'a', 'b']:\n            nxt = set((l, r, d + 1, la) for (l, r, d, la) in st if d < len(r) and r[d] == X)\n            if nxt:\n                c = closure(nxt, lr1)\n                if c not in seen:\n                    seen.append(c)\n        i += 1\n    return len(seen)\nm = count(True)\nn = count(False)\nval = m - n\nwrong = [2, 4, 5]\nopts = {'A': 2, 'B': 4, 'C': 5, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 7,
+  "kind": "trace",
+  "question_text": "A 4-bit right-shift register \\(Q_3Q_2Q_1Q_0\\) is clocked synchronously. On each clock the new value of \\(Q_3\\) is \\(Q_0 \\oplus Q_1\\), and \\(Q_2, Q_1, Q_0\\) take the old values of \\(Q_3, Q_2, Q_1\\) respectively. Starting from \\(Q_3Q_2Q_1Q_0 = 1000\\), the number of clock pulses after which the register first returns to \\(1000\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(16\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(14\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(7\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(15\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Apply the rule repeatedly: \\(Q_3' = Q_0 \\oplus Q_1\\), \\(Q_2' = Q_3\\), \\(Q_1' = Q_2\\), \\(Q_0' = Q_1\\).",
+    "The state sequence starting at 1000 returns to 1000 after 15 pulses."
+   ],
+   "shortcut": "The taps \\(Q_0, Q_1\\) give a maximal-length sequence: \\(2^4 - 1 = 15\\) pulses.",
+   "trap": "Answering 16 (all states of a 4-bit register); the all-zero state can never be reached from a non-zero state, so a cycle has at most 15 states."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "s = (1, 0, 0, 0)\nn = 0\nwhile True:\n    q3, q2, q1, q0 = s\n    s = (q0 ^ q1, q3, q2, q1)\n    n += 1\n    if s == (1, 0, 0, 0):\n        break\nval = n\nwrong = [16, 14, 7]\nopts = {'A': 16, 'B': 14, 'C': 7, 'D': 15}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 8,
+  "kind": "application",
+  "question_text": "A rectangle has a perimeter of \\(34\\) cm and a diagonal of \\(13\\) cm. Its area, in square centimetres, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(60\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(52\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(66\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(72\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let the sides be \\(a, b\\): \\(a + b = 17\\) and \\(a^2 + b^2 = 169\\).",
+    "\\(2ab = (a+b)^2 - (a^2+b^2) = 289 - 169 = 120\\), so \\(ab = 60\\)."
+   ],
+   "shortcut": "\\(ab = \\dfrac{(a+b)^2 - d^2}{2}\\).",
+   "trap": "Trying to find the sides first (5 and 12) and then mis-multiplying; use the identity instead."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "val = 0\nfor a in range(1, 17):\n    b = 17 - a\n    if a * a + b * b == 169:\n        val = a * b\nwrong = [52, 66, 72]\nopts = {'A': 60, 'B': 52, 'C': 66, 'D': 72}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 9,
+  "kind": "conceptual",
+  "question_text": "A random variable \\(X\\) follows a binomial distribution with \\(n = 10\\) trials and success probability \\(p = 0.3\\). The variance of \\(X\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(0.21\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4.2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2.1\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "For a binomial variable \\(\\text{Var}(X) = np(1-p) = 10 \\times 0.3 \\times 0.7 = 2.1\\).",
+    "Summing \\((k - 3)^2 P(X = k)\\) over \\(k = 0, \\dots, 10\\) confirms the value."
+   ],
+   "shortcut": "\\(npq\\): \\(10 \\times 0.3 \\times 0.7\\).",
+   "trap": "Reporting the mean \\(np = 3\\) as the variance."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "pmf = [math.comb(10, k) * 0.3 ** k * 0.7 ** (10 - k) for k in range(11)]\nmean = sum(k * pmf[k] for k in range(11))\nval = round(sum((k - mean) ** 2 * pmf[k] for k in range(11)), 6)\nwrong = [3, 0.21, 4.2]\nopts = {'A': 3, 'B': 0.21, 'C': 4.2, 'D': 2.1}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 10,
+  "kind": "trace",
+  "question_text": "Three transactions \\(T_1, T_2, T_3\\) run interleaved in the order \\(R_2(Z)\\ R_3(Y)\\ R_1(X)\\ W_3(Z)\\ W_1(Y)\\ R_2(X)\\ W_1(Z)\\); here \\(R_i(D)\\) means \\(T_i\\) reads item \\(D\\) and \\(W_i(D)\\) means \\(T_i\\) writes it. Exactly one of the serial executions below produces a conflict-equivalent schedule. Which one is it?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(T_2, T_3, T_1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(T_1, T_2, T_3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(T_3, T_1, T_2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(T_3, T_2, T_1\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Conflicting pairs from different transactions: \\(R_2(Z)\\) before \\(W_3(Z)\\) gives \\(T_2 \\to T_3\\); \\(R_3(Y)\\) before \\(W_1(Y)\\) gives \\(T_3 \\to T_1\\); \\(R_2(Z)\\) and \\(W_3(Z)\\) before \\(W_1(Z)\\) give \\(T_2 \\to T_1\\) and \\(T_3 \\to T_1\\).",
+    "The precedence graph is acyclic with the single topological order \\(T_2, T_3, T_1\\); that is the only conflict-equivalent serial schedule."
+   ],
+   "shortcut": "List conflict edges, then topologically sort.",
+   "trap": "Ordering by the position of each transaction's first operation (which gives \\(T_2, T_3, T_1\\) here only by luck of this schedule); always build the precedence graph."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "S = [(2, 'R', 'Z'), (3, 'R', 'Y'), (1, 'R', 'X'), (3, 'W', 'Z'), (1, 'W', 'Y'), (2, 'R', 'X'), (1, 'W', 'Z')]\nedges = set()\nfor i in range(len(S)):\n    for j in range(i + 1, len(S)):\n        a, b = S[i], S[j]\n        if a[0] != b[0] and a[2] == b[2] and 'W' in (a[1], b[1]):\n            edges.add((a[0], b[0]))\ndef valid(order):\n    pos = {t: k for k, t in enumerate(order)}\n    return all(pos[a] < pos[b] for a, b in edges)\ncands = [(1, 2, 3), (2, 3, 1), (3, 1, 2), (3, 2, 1)]\ntruth = [valid(c) for c in cands]\nperm = [1, 0, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 11,
+  "kind": "application",
+  "question_text": "The 8-bit two's complement numbers \\(\\texttt{0x7B}\\) and \\(\\texttt{0x59}\\) are added using an 8-bit adder and the 8-bit result is read as a signed number. The value read is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(212\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(44\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(-44\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(-84\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(\\texttt{0x7B} = 123\\) and \\(\\texttt{0x59} = 89\\), so the true sum 212 does not fit in 8 bits (maximum 127): signed overflow.",
+    "The adder keeps the low 8 bits, \\(212 - 256\\), which reads as -44."
+   ],
+   "shortcut": "Overflow: two positives give a negative; subtract 256 from the sum.",
+   "trap": "Giving the mathematical sum 212, or its magnitude 44 without the sign."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "s = (0x7B + 0x59) & 0xFF\nval = s - 256 if s >= 128 else s\nwrong = [212, 44, -84]\nopts = {'A': 212, 'B': 44, 'C': -44, 'D': -84}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 12,
+  "kind": "conceptual",
+  "question_text": "Consider the languages over \\(\\{a, b\\}\\): \\(L_1 = \\{ w : |w| \\text{ is divisible by } 3 \\}\\), \\(L_2 = \\{ a^m b^n : m, n \\ge 0 \\}\\), \\(L_3 = \\{ a^n b^n : n \\ge 0 \\}\\), \\(L_4 = \\{ w : w \\text{ ends with } ab \\}\\). Which one of the following languages is NOT regular?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(L_1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(L_3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(L_2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(L_4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "A language is regular exactly when it has finitely many Myhill-Nerode classes. \\(L_1\\) has 3, \\(L_2\\) has 3 and \\(L_4\\) has 3 classes.",
+    "For \\(L_3 = \\{a^nb^n\\}\\) the prefixes \\(a^0, a^1, a^2, \\dots\\) are pairwise distinguishable (use the suffix \\(b^n\\)), so the number of classes is unbounded and \\(L_3\\) is not regular."
+   ],
+   "shortcut": "Spot the language that compares two unbounded counts.",
+   "trap": "Treating \\(L_2 = a^*b^*\\) as non-regular because it looks like \\(a^nb^n\\); it has no matching of counts."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def inL(k, w):\n    if k == 0:\n        return len(w) % 3 == 0\n    if k == 1:\n        return 'ba' not in w\n    if k == 2:\n        n = len(w) // 2\n        return w == 'a' * n + 'b' * n\n    return w.endswith('ab')\ndef words(n):\n    out = ['']\n    for L in range(1, n + 1):\n        for bits in range(2 ** L):\n            out.append(''.join('a' if (bits >> j) & 1 else 'b' for j in range(L)))\n    return out\ndef classes(k, N):\n    P = words(N)\n    S = words(N)\n    return len(set(tuple(inL(k, u + v) for v in S) for u in P))\ngrow = [classes(k, 9) > classes(k, 6) for k in range(4)]\ntruth = grow\nperm = [0, 2, 1, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ }
+]
