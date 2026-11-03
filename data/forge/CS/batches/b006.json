@@ -102,7 +102,7 @@
   },
   {
    "id": "FORGE_CS_000057",
-   "subject": "Operating Systems",
+   "subject": "Operating Systems (OS)",
    "topic": "Memory Management and Virtual Memory",
    "kind": "trap_aware",
    "difficulty": "M",
@@ -150,7 +150,7 @@
   },
   {
    "id": "FORGE_CS_000058",
-   "subject": "Databases",
+   "subject": "Database Management Systems (DBMS)",
    "topic": "SQL Queries (DDL/DML, Joins, Aggregations)",
    "kind": "trace",
    "difficulty": "E",
@@ -197,7 +197,7 @@
   },
   {
    "id": "FORGE_CS_000059",
-   "subject": "Computer Networks",
+   "subject": "Computer Networks (CN)",
    "topic": "Transport Layer (Flow Control and Congestion Control, TCP, UDP, Sockets)",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -244,7 +244,7 @@
   },
   {
    "id": "FORGE_CS_000060",
-   "subject": "Computer Organization and Architecture",
+   "subject": "Computer Organization and Architecture (COA)",
    "topic": "Machine Instructions & Addressing Modes",
    "kind": "numeric_chain",
    "difficulty": "H",
@@ -341,7 +341,7 @@
   },
   {
    "id": "FORGE_CS_000062",
-   "subject": "Operating Systems",
+   "subject": "Operating Systems (OS)",
    "topic": "Deadlock Prevention, Avoidance, Detection, Recovery",
    "kind": "multi_concept",
    "difficulty": "H",

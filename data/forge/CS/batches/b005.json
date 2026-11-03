@@ -5,7 +5,7 @@
  "items": [
   {
    "id": "FORGE_CS_000043",
-   "subject": "Computer Networks",
+   "subject": "Computer Networks (CN)",
    "topic": "IP Addressing, Subnetting and CIDR",
    "kind": "trap_aware",
    "difficulty": "M",
@@ -53,7 +53,7 @@
   },
   {
    "id": "FORGE_CS_000044",
-   "subject": "Databases",
+   "subject": "Database Management Systems (DBMS)",
    "topic": "Normalization (1NF, 2NF, 3NF, BCNF Boundaries)",
    "kind": "multi_concept",
    "difficulty": "M",
@@ -101,7 +101,7 @@
   },
   {
    "id": "FORGE_CS_000045",
-   "subject": "Operating Systems",
+   "subject": "Operating Systems (OS)",
    "topic": "CPU Scheduling Algorithms (FCFS, SJF, RR, Priority)",
    "kind": "trace",
    "difficulty": "M",
@@ -247,7 +247,7 @@
   },
   {
    "id": "FORGE_CS_000048",
-   "subject": "Computer Organization and Architecture",
+   "subject": "Computer Organization and Architecture (COA)",
    "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -393,7 +393,7 @@
   },
   {
    "id": "FORGE_CS_000051",
-   "subject": "Databases",
+   "subject": "Database Management Systems (DBMS)",
    "topic": "Transactions and Concurrency Control (Serializability, 2PL)",
    "kind": "multi_concept",
    "difficulty": "H",
@@ -492,7 +492,7 @@
   },
   {
    "id": "FORGE_CS_000053",
-   "subject": "Computer Organization and Architecture",
+   "subject": "Computer Organization and Architecture (COA)",
    "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
    "kind": "multi_concept",
    "difficulty": "H",

@@ -5,7 +5,7 @@
  "items": [
   {
    "id": "FORGE_CS_000008",
-   "subject": "Engineering Mathematics",
+   "subject": "Probability & Statistics",
    "topic": "Probability: Conditional Probability & Bayes",
    "kind": "multi_concept",
    "difficulty": "M",
@@ -70,7 +70,7 @@
   },
   {
    "id": "FORGE_CS_000010",
-   "subject": "Databases",
+   "subject": "Database Management Systems (DBMS)",
    "topic": "Normalization (1NF, 2NF, 3NF, BCNF Boundaries)",
    "kind": "multi_concept",
    "difficulty": "H",
@@ -153,7 +153,7 @@
   },
   {
    "id": "FORGE_CS_000012",
-   "subject": "Operating Systems",
+   "subject": "Operating Systems (OS)",
    "topic": "Memory Management and Virtual Memory",
    "kind": "trace",
    "difficulty": "M",
@@ -186,7 +186,7 @@
   },
   {
    "id": "FORGE_CS_000013",
-   "subject": "Computer Networks",
+   "subject": "Computer Networks (CN)",
    "topic": "IP Addressing, Subnetting and CIDR",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -218,7 +218,7 @@
   },
   {
    "id": "FORGE_CS_000014",
-   "subject": "Computer Organization and Architecture",
+   "subject": "Computer Organization and Architecture (COA)",
    "topic": "Number Representations & Floating Point",
    "kind": "conceptual",
    "difficulty": "M",

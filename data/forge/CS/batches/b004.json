@@ -5,7 +5,7 @@
  "items": [
   {
    "id": "FORGE_CS_000030",
-   "subject": "Databases",
+   "subject": "Database Management Systems (DBMS)",
    "topic": "File Organization & Indexing (e.g., B and B+ Trees)",
    "kind": "numeric_chain",
    "difficulty": "H",
@@ -38,7 +38,7 @@
   },
   {
    "id": "FORGE_CS_000031",
-   "subject": "Computer Networks",
+   "subject": "Computer Networks (CN)",
    "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -71,7 +71,7 @@
   },
   {
    "id": "FORGE_CS_000032",
-   "subject": "Operating Systems",
+   "subject": "Operating Systems (OS)",
    "topic": "Memory Management and Virtual Memory",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -234,7 +234,7 @@
   },
   {
    "id": "FORGE_CS_000037",
-   "subject": "Computer Organization and Architecture",
+   "subject": "Computer Organization and Architecture (COA)",
    "topic": "I/O Interfaces (Interrupts & DMA Control Modes)",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -329,7 +329,7 @@
   },
   {
    "id": "FORGE_CS_000040",
-   "subject": "Databases",
+   "subject": "Database Management Systems (DBMS)",
    "topic": "Relational Models, Relational Algebra, Tuple Calculus",
    "kind": "trace",
    "difficulty": "E",
@@ -362,7 +362,7 @@
   },
   {
    "id": "FORGE_CS_000041",
-   "subject": "Engineering Mathematics",
+   "subject": "Probability & Statistics",
    "topic": "Conditional Probability & Bayes Theorem",
    "kind": "multi_concept",
    "difficulty": "M",

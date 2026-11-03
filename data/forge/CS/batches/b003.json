@@ -5,7 +5,7 @@
  "items": [
   {
    "id": "FORGE_CS_000018",
-   "subject": "Operating Systems",
+   "subject": "Operating Systems (OS)",
    "topic": "CPU Scheduling Algorithms (FCFS, SJF, RR, Priority)",
    "kind": "trace",
    "difficulty": "M",
@@ -38,7 +38,7 @@
   },
   {
    "id": "FORGE_CS_000019",
-   "subject": "Operating Systems",
+   "subject": "Operating Systems (OS)",
    "topic": "Deadlock: Prevention, Avoidance (Banker's) and Detection",
    "kind": "multi_concept",
    "difficulty": "H",
@@ -72,7 +72,7 @@
   },
   {
    "id": "FORGE_CS_000020",
-   "subject": "Computer Organization and Architecture",
+   "subject": "Computer Organization and Architecture (COA)",
    "topic": "Cache Memory: Mapping and Replacement",
    "kind": "trace",
    "difficulty": "M",
@@ -105,7 +105,7 @@
   },
   {
    "id": "FORGE_CS_000021",
-   "subject": "Computer Organization and Architecture",
+   "subject": "Computer Organization and Architecture (COA)",
    "topic": "Instruction Pipelining and Hazards",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -136,7 +136,7 @@
   },
   {
    "id": "FORGE_CS_000022",
-   "subject": "Databases",
+   "subject": "Database Management Systems (DBMS)",
    "topic": "Transactions and Concurrency Control (Serializability, 2PL)",
    "kind": "multi_concept",
    "difficulty": "H",
@@ -169,7 +169,7 @@
   },
   {
    "id": "FORGE_CS_000023",
-   "subject": "Computer Networks",
+   "subject": "Computer Networks (CN)",
    "topic": "Flow Control and Reliable Transmission (Sliding Window)",
    "kind": "numeric_chain",
    "difficulty": "M",
@@ -234,7 +234,7 @@
   },
   {
    "id": "FORGE_CS_000025",
-   "subject": "Programming and Data Structures",
+   "subject": "Programming in C",
    "topic": "Recursion and Static Variables in C",
    "kind": "trace",
    "difficulty": "M",
@@ -299,7 +299,7 @@
   },
   {
    "id": "FORGE_CS_000027",
-   "subject": "Engineering Mathematics",
+   "subject": "Linear Algebra",
    "topic": "Linear Algebra: Matrices, Eigenvalues and Eigenvectors",
    "kind": "multi_concept",
    "difficulty": "M",
@@ -363,7 +363,7 @@
   },
   {
    "id": "FORGE_CS_000029",
-   "subject": "Programming and Data Structures",
+   "subject": "Data Structures",
    "topic": "Hashing: Open Addressing and Collision Resolution",
    "kind": "trace",
    "difficulty": "M",

@@ -36,6 +36,7 @@ export default function MistakesPage() {
 
   const [activeMistake, setActiveMistake] = useState<string | null>(null);
   const [filterSubject, setFilterSubject] = useState<string>("ALL");
+  const [shown, setShown] = useState(60); // the list renders in pages of 60: hundreds of animated rows at once is slow on a phone
   const [filterTopic, setFilterTopic] = useState<string>("ALL");
   const [showMastered, setShowMastered] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -252,6 +253,7 @@ export default function MistakesPage() {
     : null;
   const { ready: answerReady } = useEnsureAnswer(question?.question_id);
   const activeIndex = filteredMistakes.findIndex(m => m.questionId === activeMistake);
+  const visibleMistakes = filteredMistakes.slice(0, Math.max(shown, activeIndex + 1)); // the open question is always inside the rendered part
 
   const handlePrev = activeIndex > 0 ? () => {
     setActiveMistake(filteredMistakes[activeIndex - 1].questionId);
@@ -356,7 +358,7 @@ export default function MistakesPage() {
               </div>
             ) : (
               <ul className="divide-y divide-gray-100 dark:divide-gray-800">
-                {filteredMistakes.map((m, idx) => {
+                {visibleMistakes.map((m, idx) => {
                   const isCurrent = activeMistake === m.questionId;
                   const repeatCount = m.occurrences || 1;
 
@@ -398,6 +400,9 @@ export default function MistakesPage() {
                 })}
               </ul>
             )}
+            {visibleMistakes.length < filteredMistakes.length ? (
+              <button type="button" onClick={() => setShown((n) => n + 60)} className="btn-soft m-3 w-[calc(100%-1.5rem)] justify-center text-xs">Show {Math.min(60, filteredMistakes.length - visibleMistakes.length)} more ({filteredMistakes.length - visibleMistakes.length} left)</button>
+            ) : null}
           </div>
         </div>
 
