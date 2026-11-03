@@ -33,6 +33,7 @@ export default function BookmarksPage() {
   const { bookmarks, loadStudyData, removeBookmark } = useStudyStore();
   
   const [activeBookmark, setActiveBookmark] = useState<string | null>(null);
+  const [shown, setShown] = useState(60); // the list renders in pages of 60: hundreds of animated rows at once is slow on a phone
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   // Phones: list first; tapping an item opens its detail full-width, Back returns (md+: side by side).
   const [mobileDetail, setMobileDetail] = useState(false);
@@ -201,6 +202,7 @@ export default function BookmarksPage() {
   useEnsureAnswer(question?.question_id);
 
   const activeIndex = processedBookmarks.findIndex(b => b.questionId === activeBookmark);
+  const visibleBookmarks = processedBookmarks.slice(0, Math.max(shown, activeIndex + 1)); // the open bookmark is always inside the rendered part
   const handlePrev = activeIndex > 0 ? () => {
     setActiveBookmark(processedBookmarks[activeIndex - 1].questionId);
   } : undefined;
@@ -329,7 +331,7 @@ export default function BookmarksPage() {
                 </div>
               ) : (
                 <ul className="divide-y divide-gray-100 dark:divide-gray-800">
-                  {processedBookmarks.map((b, idx) => {
+                  {visibleBookmarks.map((b, idx) => {
                     const isFav = b.favorite;
                     const isPinned = b.pinned;
                     const priorityColor = b.priority === "High" ? "bg-red-500" : b.priority === "Medium" ? "bg-amber-500" : "bg-blue-500";
@@ -402,6 +404,9 @@ export default function BookmarksPage() {
                   })}
                 </ul>
               )}
+              {visibleBookmarks.length < processedBookmarks.length ? (
+                <button type="button" onClick={() => setShown((n) => n + 60)} className="btn-soft m-3 w-[calc(100%-1.5rem)] justify-center text-xs">Show {Math.min(60, processedBookmarks.length - visibleBookmarks.length)} more ({processedBookmarks.length - visibleBookmarks.length} left)</button>
+              ) : null}
             </div>
           </div>
         </div>

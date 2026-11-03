@@ -30,7 +30,7 @@ Legend: DONE, PART (partly), TODO, N/A.
 | 20 | SSR or build-time rendering | DONE | Next.js App Router pre-renders public pages |
 | 21 | Third-party scripts after the page | PART | Turnstile and MathJax load on demand; keep them out of the first paint (check list in `check:perf`) |
 | 22 | Split JavaScript by page | DONE | Next.js splits per route; `check:perf` shows JS weight per page |
-| 23 | Virtualize long lists | TODO | Question lists over 200 rows (PYQ browser, Forge) |
+| 23 | Virtualize long lists | DONE | The two screens that rendered every row as an animated component (Mistakes, up to 679 rows on the test account, and Bookmarks) now render 60 rows at a time with a Show more button; the open item is always kept in view. No library needed |
 | 24 | Select only needed columns | PART | Most queries name columns; audit `select("*")` |
 | 25 | Connection pooling | N/A | Supabase REST (PostgREST) pools connections for us |
 | 26 | Prevent re-renders | PART | Zustand selectors in hot screens; profile the exam screen |
