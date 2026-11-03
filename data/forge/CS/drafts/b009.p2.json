@@ -1,0 +1,896 @@
+[
+ {
+  "slot": 25,
+  "kind": "conceptual",
+  "question_text": "A connected undirected simple graph has \\(9\\) vertices and exactly \\(2\\) independent cycles (its cycle space has dimension \\(2\\)). The number of edges in the graph is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    10,
+    10
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "A connected graph with \\(n\\) vertices and \\(m\\) edges has cycle-space dimension \\(m - n + 1\\).",
+    "So \\(m = n - 1 + 2 = 10\\)."
+   ],
+   "shortcut": "Spanning tree (\\(n - 1\\) edges) plus one edge per independent cycle.",
+   "trap": "Using \\(m = n - 1\\) (a tree) and forgetting that every independent cycle needs one extra edge."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "n = 9\nk = 2\nanswer = n - 1 + k"
+  }
+ },
+ {
+  "slot": 26,
+  "kind": "application",
+  "question_text": "In the excess-3 binary-coded-decimal code each decimal digit \\(d\\) is stored as the 4-bit binary value of \\(d + 3\\). The excess-3 code of the decimal number \\(59\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "0101 1001"
+   },
+   {
+    "option_id": "B",
+    "text": "1000 1001"
+   },
+   {
+    "option_id": "C",
+    "text": "1100 1000"
+   },
+   {
+    "option_id": "D",
+    "text": "1000 1100"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Digit 5: \\(5 + 3 = 8 = 1000_2\\). Digit 9: \\(9 + 3 = 12 = 1100_2\\).",
+    "The code is 1000 1100."
+   ],
+   "shortcut": "Add 3 to each digit separately, then convert.",
+   "trap": "Writing plain BCD (0101 1001) or forgetting to add 3 to the second digit."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def b4(x):\n    return ''.join('1' if (x >> k) & 1 else '0' for k in (3, 2, 1, 0))\nval = b4(5 + 3) + ' ' + b4(9 + 3)\nwrong = [b4(5) + ' ' + b4(9), b4(8) + ' ' + b4(9), b4(9 + 3) + ' ' + b4(5 + 3)]\nopts = {'A': '0101 1001', 'B': '1000 1001', 'C': '1100 1000', 'D': '1000 1100'}\nanswer = [k for k in 'ABCD' if opts[k] == val][0]"
+  }
+ },
+ {
+  "slot": 27,
+  "kind": "trap_aware",
+  "question_text": "Four grammars (start symbol \\(S\\)) are given. Exactly one of them is LL(1). Which one?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(S \\to aS \\mid a\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(S \\to SA \\mid a,\\ A \\to b\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(S \\to AB,\\ A \\to a \\mid \\varepsilon,\\ B \\to a\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(S \\to aA,\\ A \\to bA \\mid \\varepsilon\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The first grammar has two productions that both start with \\(a\\) (needs left factoring); the second is left recursive.",
+    "In the third, \\(A \\to \\varepsilon\\) is chosen on \\(\\text{FOLLOW}(A) = \\{a\\}\\), the same lookahead as \\(A \\to a\\): a conflict.",
+    "In the last, \\(A \\to bA\\) is chosen on \\(b\\) and \\(A \\to \\varepsilon\\) on \\(\\text{FOLLOW}(A) = \\{\\$\\}\\): no clash, so it is LL(1)."
+   ],
+   "shortcut": "For every nonterminal the lookahead sets of its productions must be disjoint.",
+   "trap": "Forgetting the FOLLOW sets for nullable productions, and so accepting the third grammar."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def first_follow(G, start):\n    NT = list(G)\n    first = {A: set() for A in NT}\n    nullable = {A: False for A in NT}\n    ch = True\n    while ch:\n        ch = False\n        for A in NT:\n            for rhs in G[A]:\n                nul = True\n                for X in rhs:\n                    add = first[X] if X in G else set([X])\n                    if not add <= first[A]:\n                        first[A] = first[A] | add\n                        ch = True\n                    if not (nullable[X] if X in G else False):\n                        nul = False\n                        break\n                if nul and not nullable[A]:\n                    nullable[A] = True\n                    ch = True\n    follow = {A: set() for A in NT}\n    follow[start].add('$')\n    ch = True\n    while ch:\n        ch = False\n        for A in NT:\n            for rhs in G[A]:\n                for i, X in enumerate(rhs):\n                    if X in G:\n                        rest_null = True\n                        add = set()\n                        for Y in rhs[i + 1:]:\n                            add = add | (first[Y] if Y in G else set([Y]))\n                            if not (nullable[Y] if Y in G else False):\n                                rest_null = False\n                                break\n                        if rest_null:\n                            add = add | follow[A]\n                        if not add <= follow[X]:\n                            follow[X] = follow[X] | add\n                            ch = True\n    return first, follow, nullable\ndef is_ll1(G, start):\n    first, follow, nullable = first_follow(G, start)\n    for A in G:\n        seen = set()\n        for rhs in G[A]:\n            f = set()\n            nul = True\n            for X in rhs:\n                f = f | (first[X] if X in G else set([X]))\n                if not (nullable[X] if X in G else False):\n                    nul = False\n                    break\n            sel = set(f)\n            if nul:\n                sel = sel | follow[A]\n            if seen & sel:\n                return False\n            seen = seen | sel\n    return True\nG1 = {'S': [('a', 'S'), ('a',)]}\nG2 = {'S': [('a', 'A')], 'A': [('b', 'A'), ()]}\nG3 = {'S': [('S', 'A'), ('a',)], 'A': [('b',)]}\nG4 = {'S': [('A', 'B')], 'A': [('a',), ()], 'B': [('a',)]}\ntruth = [is_ll1(G1, 'S'), is_ll1(G3, 'S'), is_ll1(G4, 'S'), is_ll1(G2, 'S')]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 28,
+  "kind": "trace",
+  "question_text": "Three processes \\(P_1, P_2, P_3\\) all arrive at time \\(0\\) in this order with CPU bursts of \\(10, 6, 3\\) ms. Round-robin scheduling with a time quantum of \\(4\\) ms is used. Not counting the very first dispatch and the end of the last process, the number of context switches (changes from one running process to a different one) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    5,
+    5
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The time slices run in the order P1 P2 P3 P1 P2 P1.",
+    "Each change between two slices of different processes is a context switch: 5."
+   ],
+   "shortcut": "Slices minus one, if no two neighbouring slices belong to the same process.",
+   "trap": "Counting the first dispatch or the last completion as switches."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "rem = [10, 6, 3]\nqueue = [0, 1, 2]\nslices = []\nwhile queue:\n    i = queue.pop(0)\n    run = min(4, rem[i])\n    rem[i] -= run\n    slices.append(i)\n    if rem[i] > 0:\n        queue.append(i)\nanswer = sum(1 for a, b in zip(slices, slices[1:]) if a != b)\norder = ' '.join('P' + str(i + 1) for i in slices)"
+  }
+ },
+ {
+  "slot": 29,
+  "kind": "trace",
+  "question_text": "A flow graph has blocks \\(B_1, B_2, B_3, B_4\\) with edges \\(B_1 \\to B_2,\\ B_1 \\to B_3,\\ B_2 \\to B_4,\\ B_3 \\to B_4\\). Definitions: \\(B_1\\): \\(d_1: x = 1\\) and \\(d_2: y = 2\\). \\(B_2\\): \\(d_3: x = 3\\). \\(B_3\\): \\(d_4: y = 4\\) and \\(d_5: z = x\\). The number of definitions that reach the entry of \\(B_4\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(6\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(5\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Reaching definitions: \\(\\text{OUT}(B_2) = \\{d_2, d_3\\}\\) (\\(d_3\\) kills \\(d_1\\)) and \\(\\text{OUT}(B_3) = \\{d_1, d_4, d_5\\}\\) (\\(d_4\\) kills \\(d_2\\)).",
+    "\\(\\text{IN}(B_4)\\) is the union: d1 d2 d3 d4 d5, that is 5 definitions."
+   ],
+   "shortcut": "Reaching definitions use union at the join points.",
+   "trap": "Intersecting the two OUT sets (as for available expressions) instead of taking the union."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "gen = {1: set(['d1', 'd2']), 2: set(['d3']), 3: set(['d4', 'd5']), 4: set()}\nkill = {1: set(), 2: set(['d1']), 3: set(['d2']), 4: set()}\npred = {1: [], 2: [1], 3: [1], 4: [2, 3]}\nIN = {b: set() for b in range(1, 5)}\nOUT = {b: set() for b in range(1, 5)}\nch = True\nwhile ch:\n    ch = False\n    for b in range(1, 5):\n        i = set()\n        for p in pred[b]:\n            i = i | OUT[p]\n        o = gen[b] | (i - kill[b])\n        if i != IN[b] or o != OUT[b]:\n            IN[b], OUT[b] = i, o\n            ch = True\nval = len(IN[4])\nds = ' '.join(sorted(IN[4]))\nwrong = [3, 4, 6]\nopts = {'A': 3, 'B': 4, 'C': 6, 'D': 5}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 30,
+  "kind": "msq_discriminator",
+  "question_text": "A system uses the banker's algorithm with four processes and three resource types. Allocation: \\(P_0 = (1,1,0),\\ P_1 = (2,0,1),\\ P_2 = (3,0,2),\\ P_3 = (1,1,1)\\). Maximum demand: \\(P_0 = (4,3,2),\\ P_1 = (3,2,2),\\ P_2 = (6,0,3),\\ P_3 = (2,2,2)\\). Available: \\((2,2,1)\\). Which of the following orders is/are safe sequences?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(P_1, P_3, P_0, P_2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(P_3, P_1, P_2, P_0\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(P_0, P_1, P_2, P_3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(P_2, P_3, P_1, P_0\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Need \\(=\\) Max \\(-\\) Allocation: \\(P_0 = (3,2,2),\\ P_1 = (1,2,1),\\ P_2 = (3,0,0),\\ P_3 = (1,1,1)\\).",
+    "A sequence is safe if each process's need fits in the work vector when its turn comes, and the work vector then grows by its allocation. Checking the four orders one by one in the way just described gives the marked sequences."
+   ],
+   "shortcut": "Work vector \\(\\ge\\) need at each step, then add that process's allocation.",
+   "trap": "Comparing the maximum demand (instead of the remaining need) with the available resources."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "alloc = [(1, 1, 0), (2, 0, 1), (3, 0, 2), (1, 1, 1)]\nmx = [(4, 3, 2), (3, 2, 2), (6, 0, 3), (2, 2, 2)]\nneed = [[mx[i][k] - alloc[i][k] for k in range(3)] for i in range(4)]\ndef safe(order):\n    work = [2, 2, 1]\n    for i in order:\n        if any(need[i][k] > work[k] for k in range(3)):\n            return False\n        work = [work[k] + alloc[i][k] for k in range(3)]\n    return True\ntruth = [safe([1, 3, 0, 2]), safe([3, 1, 2, 0]), safe([0, 1, 2, 3]), safe([2, 3, 1, 0])]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 31,
+  "kind": "multi_concept",
+  "question_text": "The ambiguous grammar \\(E \\to E + E \\mid E * E \\mid \\text{id}\\) is used to parse the string \\(\\text{id} + \\text{id} * \\text{id} + \\text{id}\\) (four operands, three operators). The number of distinct parse trees for this string is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(14\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Each parse tree corresponds to choosing which operator is the root and then parsing the left and right operands independently.",
+    "For three operators the number of choices is the Catalan number \\(C_3 = 5\\), whatever the operators are, because the grammar has no precedence rules."
+   ],
+   "shortcut": "Number of full bracketings of \\(n\\) operands: \\(C_{n-1}\\).",
+   "trap": "Using precedence to reduce the count; an ambiguous grammar without precedence rules admits every grouping."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "ops = ['+', '*', '+']\nt = {}\ndef cnt(i, j):\n    if i == j:\n        return 1\n    if (i, j) not in t:\n        t[(i, j)] = sum(cnt(i, k) * cnt(k + 1, j) for k in range(i, j))\n    return t[(i, j)]\nval = cnt(0, 3)\nwrong = [2, 3, 14]\nopts = {'A': 2, 'B': 5, 'C': 3, 'D': 14}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 32,
+  "kind": "numeric_chain",
+  "question_text": "A DFA over \\(\\{0, 1\\}\\) has states \\(q_0\\) (start), \\(q_1, q_2, q_3\\) and the transitions: \\(q_0\\): on 0 to \\(q_0\\), on 1 to \\(q_1\\); \\(q_1\\): on 0 to \\(q_2\\), on 1 to \\(q_0\\); \\(q_2\\): on 0 to \\(q_2\\), on 1 to \\(q_3\\); \\(q_3\\): on 0 to \\(q_1\\), on 1 to \\(q_3\\). The only accepting state is \\(q_3\\). The number of strings of length \\(6\\) accepted by the DFA is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(11\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(21\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(25\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(15\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Count, for every state, how many strings of the current length lead to it, starting from \\(q_0\\) with one string of length 0, and apply the transitions 6 times.",
+    "The number of length-6 strings that end in \\(q_3\\) is 15."
+   ],
+   "shortcut": "Dynamic programming over states: new count of a state = sum over its incoming transitions.",
+   "trap": "Counting accepting paths of length 6 that merely pass through \\(q_3\\) instead of ending there."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "delta = {0: (0, 1), 1: (2, 0), 2: (2, 3), 3: (1, 3)}\ncnt = {0: 1, 1: 0, 2: 0, 3: 0}\nfor _ in range(6):\n    nxt = {s: 0 for s in range(4)}\n    for s, c in cnt.items():\n        for sym in (0, 1):\n            nxt[delta[s][sym]] += c\n    cnt = nxt\nval = cnt[3]\nwrong = [val - 4, val + 6, val + 10]\nopts = {'A': 11, 'B': 21, 'C': 25, 'D': 15}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 33,
+  "kind": "application",
+  "question_text": "For the matrix \\(A = \\begin{pmatrix} 2 & 1 & 0 \\\\ 1 & 3 & 1 \\\\ 0 & 1 & 3 \\end{pmatrix}\\), the sum of all nine entries of \\(A^{-1}\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(\\frac{12}{13}\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\frac{10}{13}\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(\\frac{11}{13}\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The sum of all entries of \\(A^{-1}\\) equals \\(\\mathbf{1}^{T}A^{-1}\\mathbf{1}\\), the sum of the solution of \\(A\\mathbf{x} = \\mathbf{1}\\).",
+    "Solving \\(A\\mathbf{x} = \\mathbf{1}\\) by elimination gives entries that add up to \\(\\frac{11}{13}\\)."
+   ],
+   "shortcut": "Solve one linear system instead of inverting the whole matrix.",
+   "trap": "Adding the entries of \\(A\\) or inverting each entry separately."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "A = [[fractions.Fraction(x) for x in r] for r in [[2, 1, 0], [1, 3, 1], [0, 1, 3]]]\nb = [fractions.Fraction(1)] * 3\nM = [A[i][:] + [b[i]] for i in range(3)]\nfor c in range(3):\n    p = next(r for r in range(c, 3) if M[r][c] != 0)\n    M[c], M[p] = M[p], M[c]\n    M[c] = [x / M[c][c] for x in M[c]]\n    for r in range(3):\n        if r != c:\n            f = M[r][c]\n            M[r] = [M[r][k] - f * M[c][k] for k in range(4)]\nx = [M[i][3] for i in range(3)]\ns = sum(x)\ndef show(f):\n    if f.denominator == 1:\n        return '\\\\(' + str(f.numerator) + '\\\\)'\n    sign = '-' if f < 0 else ''\n    return '\\\\(' + sign + '\\\\frac{' + str(abs(f.numerator)) + '}{' + str(f.denominator) + '}\\\\)'\ndn = s.denominator\nval = show(s)\nwrong = [show(s + fractions.Fraction(1, dn)), show(s - fractions.Fraction(1, dn)), show(s + fractions.Fraction(2, dn))]\nssum = show(s)\nopts = {'A': '\\\\(\\\\frac{12}{13}\\\\)', 'B': '\\\\(\\\\frac{10}{13}\\\\)', 'C': '\\\\(1\\\\)', 'D': '\\\\(\\\\frac{11}{13}\\\\)'}\nanswer = [k for k in 'ABCD' if opts[k] == val][0]"
+  }
+ },
+ {
+  "slot": 34,
+  "kind": "conceptual",
+  "question_text": "Consider the languages \\(L_1 = \\{ w \\in \\{a,b\\}^* : \\#_a(w) - \\#_b(w) \\text{ is even} \\}\\), \\(L_2 = \\{ a^n b^m c^{n+m} : n, m \\ge 0 \\}\\), \\(L_3 = \\{ a^n b^m : n + m \\text{ is even} \\}\\) and \\(L_4 = \\{ w \\in \\{a,b\\}^* : w \\text{ contains } aba \\}\\). Exactly one of them is not regular. Which one?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(L_2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(L_1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(L_3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(L_4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(L_1\\) and \\(L_3\\) depend only on a parity, and \\(L_4\\) needs only to remember how much of \\(aba\\) has been seen: all three have finitely many Myhill-Nerode classes and are regular.",
+    "\\(L_2\\) must compare the number of \\(c\\)'s with \\(n + m\\): the prefixes \\(a^i\\) (or \\(a^ib^j\\) with different \\(i + j\\)) are pairwise distinguishable, so there are infinitely many classes and \\(L_2\\) is not regular."
+   ],
+   "shortcut": "Parity and substring conditions are regular; matching an unbounded count is not.",
+   "trap": "Judging a language by whether it 'counts' something; counting modulo a constant is fine, counting without a bound is not."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def words(alpha, n):\n    out = ['']\n    cur = ['']\n    for _ in range(n):\n        cur = [w + c for w in cur for c in alpha]\n        out = out + cur\n    return out\ndef pred(k):\n    if k == 0:\n        return lambda w: (w.count('a') - w.count('b')) % 2 == 0\n    if k == 1:\n        def f(w):\n            n = len(w) - len(w.lstrip('a'))\n            r = w[n:]\n            m = len(r) - len(r.lstrip('b'))\n            rest = r[m:]\n            return rest == 'c' * (n + m)\n        return f\n    if k == 2:\n        def g(w):\n            r = w.lstrip('a')\n            n = len(w) - len(r)\n            m = len(r) - len(r.lstrip('b'))\n            return n + m == len(w) and (n + m) % 2 == 0\n        return g\n    return lambda w: 'aba' in w\ndef classes(k, N):\n    alpha = 'abc' if k == 1 else 'ab'\n    W = words(alpha, N)\n    p = pred(k)\n    return len(set(tuple(p(u + v) for v in W) for u in W))\ntruth = [classes(k, 6) > classes(k, 4) for k in range(4)]\ntruth = [truth[1], truth[0], truth[2], truth[3]]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 35,
+  "kind": "application",
+  "question_text": "A fair coin is replaced by a biased coin that shows heads with probability \\(0.25\\). The coin is tossed \\(8\\) times independently. The probability of getting at least \\(2\\) heads, correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    0.62,
+    0.64
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(P(X = 0) = 0.75^8 \\approx 0.1001\\) and \\(P(X = 1) = 8 \\times 0.25 \\times 0.75^7 \\approx 0.2670\\).",
+    "\\(P(X \\ge 2) = 1 - 0.1001 - 0.2670 \\approx 0.63\\)."
+   ],
+   "shortcut": "At least 2 is the complement of at most 1.",
+   "trap": "Computing \\(P(X = 2)\\) only, or \\(P(X > 2)\\)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "p = 0.25\nn = 8\nless = sum(math.comb(n, k) * p ** k * (1 - p) ** (n - k) for k in range(2))\nanswer = round(1 - less, 2)"
+  }
+ },
+ {
+  "slot": 36,
+  "kind": "trap_aware",
+  "question_text": "A TCP receiver expects the first data byte to have sequence number \\(1\\). It receives, in this order, segments carrying bytes \\(1\\text{-}500\\), \\(501\\text{-}1000\\) and \\(1501\\text{-}2000\\) (the segment with bytes \\(1001\\text{-}1500\\) has been lost or delayed). The acknowledgement number carried by the ACK sent after the third segment arrives is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1001\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2001\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1501\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(501\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "TCP acknowledgements are cumulative: the ACK number is the next byte the receiver expects in order.",
+    "Bytes 1-1000 arrived in order; byte 1001 is missing, so the ACK number stays at 1001 even though bytes up to 2000 have arrived."
+   ],
+   "shortcut": "ACK = first missing byte.",
+   "trap": "Acknowledging the highest byte received (2001), which TCP does not do without selective acknowledgements."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "got = set()\nfor lo, hi in [(1, 500), (501, 1000), (1501, 2000)]:\n    for b in range(lo, hi + 1):\n        got.add(b)\nnxt = 1\nwhile nxt in got:\n    nxt += 1\nval = nxt\nwrong = [2001, 1501, 501]\nopts = {'A': 1001, 'B': 2001, 'C': 1501, 'D': 501}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 37,
+  "kind": "numeric_chain",
+  "question_text": "In a pipelined processor \\(20\\%\\) of instructions are conditional branches. A branch predictor is correct for \\(90\\%\\) of the branches; each misprediction costs \\(4\\) stall cycles and correct predictions cost none. All other instructions flow without stalls. The average cycles per instruction, correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    1.07,
+    1.09
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Stall cycles per instruction \\(= 0.20 \\times 0.10 \\times 4 = 0.08\\).",
+    "\\(\\text{CPI} = 1 + 0.08 = 1.08\\)."
+   ],
+   "shortcut": "CPI \\(= 1 + f_{\\text{branch}} \\times \\text{miss rate} \\times \\text{penalty}\\).",
+   "trap": "Charging the penalty for every branch (CPI 1.8) rather than only for mispredicted ones."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "answer = round(1 + 0.20 * 0.10 * 4, 2)"
+  }
+ },
+ {
+  "slot": 38,
+  "kind": "conceptual",
+  "question_text": "A twisted-ring (Johnson) counter is to cycle through exactly \\(12\\) distinct states. The minimum number of flip-flops it needs is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(6\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(12\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "An \\(n\\)-bit Johnson counter has \\(2n\\) distinct states.",
+    "For 12 states: \\(n = 12/2 = 6\\) flip-flops (a ring counter would need 12)."
+   ],
+   "shortcut": "Johnson counter: \\(2n\\) states from \\(n\\) flip-flops.",
+   "trap": "Using \\(\\lceil \\log_2 12 \\rceil = 4\\), which is the size of a binary counter, not of a Johnson counter."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "states = 12\nval = states // 2\nwrong = [4, 5, 12]\nopts = {'A': 4, 'B': 5, 'C': 6, 'D': 12}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 39,
+  "kind": "trace",
+  "question_text": "The following C fragment is executed. The value of `count` at the end is ______.\n```c\nint count = 0;\nfor (int i = 1; i <= 100; i *= 2)\n    for (int j = i; j > 0; j /= 2)\n        count++;\n```",
+  "options": [],
+  "answer": {
+   "range": [
+    28,
+    28
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The outer loop runs with \\(i = 1, 2, 4, 8, 16, 32, 64\\).",
+    "For \\(i = 2^k\\) the inner loop halves \\(j\\) from \\(2^k\\) down to 1, which is \\(k + 1\\) iterations: \\(1 + 2 + \\dots + 7 = 28\\)."
+   ],
+   "shortcut": "Sum of \\(k + 1\\) for \\(k = 0, \\dots, 6\\).",
+   "trap": "Counting \\(\\log^2 100\\) loosely or including \\(i = 128\\) (it exceeds 100)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "count = 0\ni = 1\nwhile i <= 100:\n    j = i\n    while j > 0:\n        count += 1\n        j //= 2\n    i *= 2\nanswer = count"
+  }
+ },
+ {
+  "slot": 40,
+  "kind": "trace",
+  "question_text": "A process is given \\(3\\) page frames, initially empty, and uses FIFO page replacement. The page reference string is \\(3, 2, 1, 0, 3, 2, 4, 3, 2, 1, 0, 4, 1, 0, 3\\). The number of page faults is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    10,
+    10
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Simulate the three frames in arrival order; a page already in a frame causes no fault, otherwise the oldest page is replaced.",
+    "Counting the faults over the 15 references gives 10."
+   ],
+   "shortcut": "Keep the frames in a queue ordered by arrival.",
+   "trap": "Using LRU (the oldest page is not necessarily the least recently used)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "refs = [3, 2, 1, 0, 3, 2, 4, 3, 2, 1, 0, 4, 1, 0, 3]\nframes = []\nfaults = 0\nfor r in refs:\n    if r not in frames:\n        faults += 1\n        if len(frames) == 3:\n            frames.pop(0)\n        frames.append(r)\nanswer = faults"
+  }
+ },
+ {
+  "slot": 41,
+  "kind": "trace",
+  "question_text": "With \\(3\\) initially empty page frames and LRU replacement, the reference string \\(3, 2, 1, 0, 3, 2, 4, 3, 2, 1, 0, 4, 1, 0, 3\\) is processed. The number of page faults is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    11,
+    11
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Keep the frames ordered from least to most recently used; on a hit move the page to the end, on a miss evict the front page.",
+    "The number of faults is 11."
+   ],
+   "shortcut": "Recency, not arrival order, decides the victim.",
+   "trap": "Not refreshing the position of a page on a hit, which turns LRU into FIFO."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "refs = [3, 2, 1, 0, 3, 2, 4, 3, 2, 1, 0, 4, 1, 0, 3]\nframes = []\nfaults = 0\nfor r in refs:\n    if r in frames:\n        frames.remove(r)\n        frames.append(r)\n    else:\n        faults += 1\n        if len(frames) == 3:\n            frames.pop(0)\n        frames.append(r)\nanswer = faults"
+  }
+ },
+ {
+  "slot": 42,
+  "kind": "application",
+  "question_text": "An 8-bit adder adds the two's complement numbers \\(\\texttt{0x9A}\\) and \\(\\texttt{0x8D}\\) and discards the carry out of the top bit. The decimal value of the 8-bit result, read as a signed number, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    39,
+    39
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(\\texttt{0x9A} = -102\\) and \\(\\texttt{0x8D} = -115\\), so the true sum \\(-217\\) is below \\(-128\\): signed overflow.",
+    "The adder keeps the low 8 bits of \\(295\\), which read as 39."
+   ],
+   "shortcut": "Overflow wraps modulo 256.",
+   "trap": "Reporting the true sum -217 (not representable in 8 bits)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "s = (0x9A + 0x8D) & 0xFF\nanswer = s - 256 if s >= 128 else s\nraw = 0x9A + 0x8D"
+  }
+ },
+ {
+  "slot": 43,
+  "kind": "trace",
+  "question_text": "The following program is run (all system calls succeed, and `wait` blocks until the child has terminated). Which of the following statements is/are TRUE?\n```c\nint main() {\n    if (fork() == 0) {\n        printf(\"A\");\n    } else {\n        wait(NULL);\n        printf(\"B\");\n    }\n    printf(\"C\");\n    return 0;\n}\n```",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The output ACBC is possible."
+   },
+   {
+    "option_id": "B",
+    "text": "The output BCAC is possible."
+   },
+   {
+    "option_id": "C",
+    "text": "The letter A is always printed before the letter B."
+   },
+   {
+    "option_id": "D",
+    "text": "The letter C is printed exactly twice."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "C",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The child prints A then C and terminates; only then does `wait` return in the parent, which prints B then C. The only possible output is ACBC.",
+    "So ACBC is possible, BCAC is not, A always precedes B, and C appears twice (once from each process)."
+   ],
+   "shortcut": "With `wait`, the child's output comes entirely before the parent's.",
+   "trap": "Forgetting that the parent's `wait` forces the child to finish first, which allows only one interleaving."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "outs = set()\nchild = 'A' + 'C'\nparent = 'B' + 'C'\nouts.add(child + parent)\ntruth = ['ACBC' in outs, 'BCAC' in outs, all(o.index('A') < o.index('B') for o in outs), all(o.count('C') == 2 for o in outs)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 44,
+  "kind": "conceptual",
+  "question_text": "The lifetime \\(X\\) of a component is exponentially distributed with rate \\(0.5\\) per year. Given that the component has already survived \\(2\\) years, the probability that it survives at least \\(4\\) years in total, correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    0.36,
+    0.38
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The exponential distribution is memoryless: \\(P(X > 4 \\mid X > 2) = P(X > 2)\\).",
+    "\\(P(X > 2) = e^{-0.5 \\times 2} = e^{-1} \\approx 0.37\\)."
+   ],
+   "shortcut": "Memoryless: the past does not matter.",
+   "trap": "Computing \\(P(X > 4) = e^{-2}\\), which ignores the information that the component has already survived 2 years."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "lam = 0.5\nanswer = round(math.exp(-lam * 2), 2)"
+  }
+ },
+ {
+  "slot": 45,
+  "kind": "trace",
+  "question_text": "A disk has cylinders \\(0\\) to \\(199\\). The head is at cylinder \\(50\\) moving towards higher numbers. The pending requests are for cylinders \\(95, 180, 34, 119, 11, 123, 62, 64\\). With C-SCAN scheduling the head serves requests upward, continues to cylinder \\(199\\), then jumps back to cylinder \\(0\\) and continues upward (the jump back is counted as a movement of \\(199\\) cylinders). It stops at the last request. The total head movement in cylinders is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    382,
+    382
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Upward from 50 to 199: \\(199 - 50 = 149\\). Jump from 199 to 0: 199.",
+    "Then upward from 0 to the last low request 34: 34 more. Total \\(149 + 199 + 34 = 382\\)."
+   ],
+   "shortcut": "Add the sweep to the end of the disk, the jump back, and the final partial sweep.",
+   "trap": "Leaving out the return jump, or stopping the upward sweep at the last request instead of at 199."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "head = 50\nreqs = [95, 180, 34, 119, 11, 123, 62, 64]\nup = sorted(r for r in reqs if r >= head)\nlow = sorted(r for r in reqs if r < head)\ntot = 0\npos = head\nfor r in up:\n    tot += r - pos\n    pos = r\ntot += 199 - pos\npos = 199\ntot += 199\npos = 0\nfor r in low:\n    tot += r - pos\n    pos = r\nanswer = tot"
+  }
+ },
+ {
+  "slot": 46,
+  "kind": "trace",
+  "question_text": "An open-addressing hash table with \\(11\\) slots (numbered \\(0\\) to \\(10\\)) uses the hash function \\(h(k) = k \\bmod 11\\) and linear probing (next slot, wrapping around). The keys \\(22, 33, 44, 55, 47, 58\\) are inserted in this order into an empty table. The slot in which the key \\(58\\) is stored is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(22, 33, 44, 55\\) all hash to 0, so they occupy slots 0, 1, 2, 3 in turn.",
+    "\\(47 \\bmod 11 = 3\\) is occupied, so 47 goes to slot 4. \\(58 \\bmod 11 = 3\\): slots 3 and 4 are taken, so 58 is stored in slot 5."
+   ],
+   "shortcut": "Follow each probe sequence one key at a time.",
+   "trap": "Forgetting that 47 also hashes to 3 and occupies slot 4 first."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "T = [None] * 11\npos = {}\nfor k in [22, 33, 44, 55, 47, 58]:\n    i = k % 11\n    while T[i] is not None:\n        i = (i + 1) % 11\n    T[i] = k\n    pos[k] = i\nval = pos[58]\nwrong = [x for x in (0, 1, 2, 3, 4, 5, 6, 7) if x != val][:3]\nopts = {'A': 0, 'B': 1, 'C': 5, 'D': 2}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 47,
+  "kind": "application",
+  "question_text": "Two fair six-faced dice are thrown independently and \\(S\\) is the sum of the two numbers shown. The variance of \\(S\\), correct to three decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2.917\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5.833\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(35\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(7\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "For one die, \\(\\text{Var} = 35/12\\). For independent dice the variances add.",
+    "\\(\\text{Var}(S) = 2 \\times 35/12 = 35/6 \\approx 5.833\\)."
+   ],
+   "shortcut": "Variances of independent variables add.",
+   "trap": "Reporting the variance of one die (2.917) or squaring the standard deviation twice."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "vals = [a + b for a in range(1, 7) for b in range(1, 7)]\nm = sum(vals) / 36\nval = round(sum((v - m) ** 2 for v in vals) / 36, 3)\nwrong = [round(35 / 12, 3), 35.0, 7.0]\nopts = {'A': 2.917, 'B': 5.833, 'C': 35.0, 'D': 7.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 48,
+  "kind": "multi_concept",
+  "question_text": "Let \\(L = \\{ w \\in \\{0, 1\\}^* : w \\text{ contains } 101 \\text{ as a substring} \\}\\). The smallest integer \\(p\\) such that every \\(w \\in L\\) with \\(|w| \\ge p\\) can be written as \\(w = xyz\\) with \\(|xy| \\le p\\), \\(|y| \\ge 1\\) and \\(xy^iz \\in L\\) for all \\(i \\ge 0\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The string \\(101 \\in L\\) has length 3, and removing or repeating any part of it destroys the substring, so \\(p = 3\\) fails.",
+    "With \\(p = 4\\) every longer string in \\(L\\) has a symbol within the first \\(p\\) positions that can be pumped without breaking an occurrence of 101. The smallest such \\(p\\) is 4."
+   ],
+   "shortcut": "The minimum pumping length equals the number of states of the minimal DFA.",
+   "trap": "Answering 3, the length of the pattern, which fails on \\(101\\) itself."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def inL(w):\n    return '101' in w\nwords = []\nfor n in range(0, 11):\n    for bits in range(2 ** n):\n        words.append(''.join('1' if (bits >> j) & 1 else '0' for j in range(n)))\ndef ok(p):\n    for w in words:\n        if len(w) >= p and inL(w):\n            good = False\n            for i in range(0, p + 1):\n                for j in range(i + 1, p + 1):\n                    if j <= len(w):\n                        x, y, z = w[:i], w[i:j], w[j:]\n                        if all(inL(x + y * k + z) for k in range(0, 4)):\n                            good = True\n            if not good:\n                return False\n    return True\nval = next(p for p in range(1, 9) if ok(p))\nwrong = [3, 5, 2]\nopts = {'A': 3, 'B': 5, 'C': 2, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 49,
+  "kind": "application",
+  "question_text": "A compiler translates \\((x + y) * (x + y) + (x + y) * z\\) into three-address code and applies local common-subexpression elimination, so \\(x + y\\) is computed only once. The number of three-address instructions (assignments to temporaries) in the optimised code is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(6\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "After elimination: \\(t_1 = x + y\\); \\(t_2 = t_1 * t_1\\); \\(t_3 = t_1 * z\\); \\(t_4 = t_2 + t_3\\).",
+    "That is 4 instructions (without the optimisation there would be 6)."
+   ],
+   "shortcut": "One instruction per distinct operator application.",
+   "trap": "Counting 6 (no elimination) or 5 (eliminating only one of the three occurrences)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "instrs = []\nseen = {}\ndef op(o, a, b):\n    key = (o, a, b)\n    if key not in seen:\n        seen[key] = 't' + str(len(seen) + 1)\n        instrs.append(key)\n    return seen[key]\nt1 = op('+', 'x', 'y')\nt2 = op('*', t1, t1)\nt3 = op('*', t1, 'z')\nt4 = op('+', t2, t3)\nval = len(instrs)\nwrong = [3, 5, 6]\nopts = {'A': 3, 'B': 5, 'C': 4, 'D': 6}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ }
+]

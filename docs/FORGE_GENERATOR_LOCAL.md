@@ -47,3 +47,9 @@ node --env-file=.env.local scripts/forge/seed.mjs data/forge/CS/batches/b007.jso
 node --env-file=.env.local scripts/forge/seed.mjs data/forge/CS/batches/b008.json --approve
 ```
 Add `--release=<ISO time>` to stagger releases (for example one batch per week) so the Daily Forge does not use all 200 at once.
+
+## b009 (3 Nov 2026): 50 more, total 250
+Planned with `replan_by_weight.py CS b009 250`, authored in three parts (`author_b009_p1..p3.py`), 50 of 50 accepted. Nine first drafts overlapped existing questions and were replaced with different content on the same topic. Total CS Forge: 250 questions (131 MCQ, 89 NAT, 30 MSQ; MCQ keys A 35, B 34, C 29, D 33). b007 and b008 are seeded; to publish b009:
+```
+node --env-file=.env.local scripts/forge/seed.mjs data/forge/CS/batches/b009.json --approve
+```
