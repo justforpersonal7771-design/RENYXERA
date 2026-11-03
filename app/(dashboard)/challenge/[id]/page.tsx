@@ -58,6 +58,16 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
   if (!data) return <div className="grid place-items-center py-24" role="status"><Loader2 className="h-6 w-6 animate-spin text-[var(--text-muted)]" /></div>;
   const b = data.battle;
 
+  const rematch = async () => {
+    setBusy(true);
+    try {
+      const r = await fetch(`/api/battles/${id}/rematch`, { method: "POST" });
+      const j = (await r.json().catch(() => ({}))) as { path?: string; error?: string };
+      if (!r.ok || !j.path) { setError(j.error ?? "Couldn't start the rematch."); setBusy(false); return; }
+      router.push(j.path);
+    } catch { setBusy(false); }
+  };
+
   const start = async () => {
     if (!user) { openAuth("signup"); return; }
     setBusy(true);
@@ -87,7 +97,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
         <p className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--text-muted)]"><Hourglass className="h-3.5 w-3.5" /> {b.expired ? "Expired" : `Open until ${new Date(b.expiresAt).toLocaleDateString(undefined, { day: "numeric", month: "short" })}`}</p>
 
         {data.isOwner ? (
-          <div className="mt-6"><p className="text-sm text-[var(--text-secondary)]">This is your battle. Challenge friends below, or send the link to anyone, and watch them play.</p>{!b.expired && b.mode === "live" && b.ownerScore === null ? <LiveLobby battleId={b.id} isOwner canPlay={isInitialized && enough} onStart={start} /> : null}{!b.expired ? <InviteFriends battleId={b.id} /> : null}{!b.expired && b.mode !== "live" && b.ownerScore === null ? <div><MakeLiveButton battleId={b.id} /></div> : null}<div><Link href="/battles" className="btn-soft mt-4 inline-flex">See live status</Link></div></div>
+          <div className="mt-6"><p className="text-sm text-[var(--text-secondary)]">This is your battle. Challenge friends below, or send the link to anyone, and watch them play.</p>{!b.expired && b.mode !== "live" && b.ownerScore === null ? <div><button type="button" onClick={start} disabled={busy || !isInitialized || !enough} className="btn-main mt-4 disabled:opacity-50">{busy ? <><Loader2 className="h-4 w-4 animate-spin" /> Starting…</> : "Take it now"}</button></div> : null}{!b.expired && b.mode === "live" && b.ownerScore === null ? <LiveLobby battleId={b.id} isOwner canPlay={isInitialized && enough} onStart={start} /> : null}{!b.expired ? <InviteFriends battleId={b.id} /> : null}{!b.expired && b.mode !== "live" && b.ownerScore === null ? <div><MakeLiveButton battleId={b.id} /></div> : null}{b.ownerScore !== null && data.entries.length > 0 ? <div><button type="button" onClick={rematch} disabled={busy} className="btn-main mt-4">{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Swords className="h-4 w-4" />} Rematch</button></div> : null}<div><Link href="/battles" className="btn-soft mt-4 inline-flex">See live status</Link></div></div>
         ) : b.expired ? (
           <p className="mt-6 text-sm font-semibold text-[var(--tint-rose-ink)]">This battle has expired. Ask {b.ownerName} for a new one.</p>
         ) : done ? (
@@ -109,7 +119,7 @@ export default function BattlePage({ params }: { params: Promise<{ id: string }>
               <p className="font-display text-xl font-extrabold text-[var(--text-primary)]">You scored <span className="font-num">{done.score}</span> / <span className="font-num">{done.maxScore}</span></p>
             )}
             <p className="mt-3 text-sm text-[var(--text-secondary)]">{b.ownerScore === null ? `${b.ownerName} has not finished yet. Check the battle later to see who won.` : Number(done.score) > b.ownerScore ? `You beat ${b.ownerName}.` : Number(done.score) === b.ownerScore ? `You matched ${b.ownerName}.` : `${b.ownerName} is ahead. Try a rematch.`}</p>
-            <Link href="/battles" className="btn-main mt-4 inline-flex">See the battle</Link>
+            <div className="mt-4 flex flex-wrap justify-center gap-2"><button type="button" onClick={rematch} disabled={busy} className="btn-main">{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Swords className="h-4 w-4" />} Rematch</button><Link href="/battles" className="btn-soft inline-flex">See the battle</Link></div>
           </div>
         ) : b.mode === "live" && user ? (
           <LiveLobby battleId={b.id} isOwner={false} canPlay={isInitialized && enough} onStart={start} />

@@ -51,10 +51,8 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
         {/* Heatmap Grid */}
         <div className="flex flex-wrap gap-1.5 py-2">
           {heatmapDays.map((day, idx) => {
-            let color = "bg-[var(--surface-elevated)]";
-            if (day.attempted > 0 && day.attempted < 10) color = "bg-violet-500/20 text-violet-300";
-            else if (day.attempted >= 10 && day.attempted < 25) color = "bg-violet-500/55 text-violet-100";
-            else if (day.attempted >= 25) color = "grad-brand text-white";
+            // Four shades of the card's own colour (see .heat-0 to .heat-3 in globals.css), so the map always matches its card and every Look.
+            const color = day.attempted >= 25 ? "heat-3" : day.attempted >= 10 ? "heat-2" : day.attempted > 0 ? "heat-1" : "heat-0";
 
             return (
               <motion.div
@@ -71,8 +69,8 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
                     <span>Solved: <strong className="text-white">{day.attempted} Questions</strong></span>
                     {day.attempted > 0 && (
                       <>
-                        <span>Accuracy: <strong className="text-violet-300">{day.accuracy}%</strong></span>
-                        <span>Duration: <strong className="text-indigo-400">{day.durationMin}m</strong></span>
+                        <span>Accuracy: <strong className="text-emerald-300">{day.accuracy}%</strong></span>
+                        <span>Duration: <strong className="text-emerald-200">{day.durationMin}m</strong></span>
                       </>
                     )}
                   </div>
@@ -88,10 +86,10 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
       <div className="flex justify-between items-center mt-6 pt-4 border-t border-[var(--border-subtle)] text-[9px] font-black uppercase text-[var(--text-muted)] tracking-wider">
         <span>Less Solved</span>
         <div className="flex items-center gap-1.5">
-          <span className="w-3.5 h-3.5 rounded-sm bg-[var(--surface-elevated)]"></span>
-          <span className="w-3.5 h-3.5 rounded-sm bg-violet-500/20"></span>
-          <span className="w-3.5 h-3.5 rounded-sm bg-violet-500/55"></span>
-          <span className="w-3.5 h-3.5 rounded-sm grad-brand"></span>
+          <span className="heat-0 h-3.5 w-3.5 rounded-sm"></span>
+          <span className="heat-1 h-3.5 w-3.5 rounded-sm"></span>
+          <span className="heat-2 h-3.5 w-3.5 rounded-sm"></span>
+          <span className="heat-3 h-3.5 w-3.5 rounded-sm"></span>
         </div>
         <span>More Solved</span>
       </div>

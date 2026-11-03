@@ -52,6 +52,7 @@ export default function MocksPage() {
   const [starting, setStarting] = useState<string | null>(null);
 
   const load = useCallback(async () => {
+    try {
     const { createClient } = await import("@/lib/supabase/client");
     const sb = createClient();
     const { data, error } = await sb.from("mock_events").select("id,title,starts_at,ends_at,results_at,question_count,duration_seconds,start_grace_minutes").eq("branch_code", getCurrentBranch()).order("starts_at", { ascending: false }).limit(24);
@@ -61,6 +62,7 @@ export default function MocksPage() {
       const { data: a } = await sb.from("exam_attempts").select("id,mock_id,status,server_score,server_max,integrity_flags").not("mock_id", "is", null);
       setMine((a as MyAttempt[]) ?? []);
     }
+    } catch { setUnavailable(true); setMocks([]); } // no network or no Supabase settings: show the unavailable state instead of an uncaught error
   }, [user]);
   useEffect(() => { void load(); }, [load]);
   // Refresh the moment the next results are released (leaderboard + scores update live).

@@ -1974,3 +1974,16 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 
 /* The crown on the navbar avatar sat above the top of the window and was cut off: bring it down onto the avatar's corner. */
 .topbar-island .pro-crown { top: -9px; right: -9px; }
+
+/* Practice heatmap: four shades of the card's own tint ink, so the map matches its card in every Look. */
+.heat-0 { background: color-mix(in srgb, var(--surface) 85%, transparent); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tint-ink, #16a34a) 16%, transparent); }
+.heat-1 { background: color-mix(in srgb, var(--tint-ink, #16a34a) 28%, var(--surface)); }
+.heat-2 { background: color-mix(in srgb, var(--tint-ink, #16a34a) 58%, var(--surface)); }
+.heat-3 { background: var(--tint-ink, #16a34a); }
+
+/* The plan badge ("PLUS"/"PRO") sits next to the logo only from tablet width up. On a phone it took the room the account avatar needs
+   (a Tailwind utility cannot hide it: this unlayered rule sets its display and wins), so it is hidden here. */
+@media (max-width: 639.98px) { .pro-badge { display: none !important; } }
+
+/* Decorations that bleed past a card (watermark shapes, tile icons) are clipped to the card's rounded corners. Pickers and menus are portalled, so nothing real is cut. */
+.card-pastel[data-tint]:not(.folder-panel), .card-well[data-tint]:not(.folder-panel) { overflow: clip; }
