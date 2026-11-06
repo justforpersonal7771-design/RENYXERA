@@ -240,7 +240,7 @@ steps=["Arithmetic on an unsigned 8-bit variable wraps modulo \\(256\\): after \
 trap="Assuming the loop never reaches 4 because 250 is above it, or counting only the iterations before the first wrap.", short="Solve 250 + 3k = 4 (mod 256) with the modular inverse of 3.", kind="multi_concept")
 
 # 13 recursion with a pointer parameter (NAT)
-K.add(13, r"Consider the C program below. ```c int f(int n, int *c) { if (n < 2) { (*c)++; return n; } return f(n - 1, c) + f(n - 2, c); } int main(void) { int calls = 0; int v = f(9, &calls); /* the value of v + calls is printed */ } ``` The value printed is ______.",
+K.add(13, r"A student instruments a naive Fibonacci routine with a shared leaf counter passed by address, as follows. ```c int f(int n, int *c) { if (n < 2) { (*c)++; return n; } return f(n - 1, c) + f(n - 2, c); } int main(void) { int calls = 0; int v = f(9, &calls); /* the sum v + calls is then printed */ } ``` The sum that the student sees is ______.",
 """calls = 0
 def f(n):
     global calls

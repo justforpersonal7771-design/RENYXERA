@@ -1,0 +1,355 @@
+[
+ {
+  "slot": 20,
+  "kind": "application",
+  "question_text": "A four-variable output \\(f(A, B, C, D)\\) of a sensor decoder is \\(1\\) for the input combinations \\(2, 3, 7, 9, 11, 13\\) (numbered with \\(A\\) as the most significant bit), is a don't-care for \\(1, 10, 15\\), and is \\(0\\) for all others. The minimum number of literals in a sum-of-products expression for \\(f\\), using the don't-cares to advantage, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(7\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(8\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(6\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Group the \\(1\\)s and don't-cares on the Karnaugh map into the largest blocks: there are 4 prime implicants once the don't-cares \\(1, 10, 15\\) are allowed to join groups.",
+    "Choose the cheapest set of prime implicants that still covers every required \\(1\\) (the don't-cares need not be covered); the cheapest cover uses 6 literals in total."
+   ],
+   "shortcut": "Use don't-cares to enlarge groups, but cover only the required ones.",
+   "trap": "Covering the don't-cares as well, or leaving them out of the groups so that the blocks come out smaller."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def qm(n, ones, dcs):\n    terms = set((m, 0) for m in ones + dcs)\n    primes = set()\n    while terms:\n        used = set()\n        new = set()\n        tl = sorted(terms)\n        for i in range(len(tl)):\n            for j in range(i + 1, len(tl)):\n                a = tl[i]\n                b = tl[j]\n                if a[1] == b[1]:\n                    d = a[0] ^ b[0]\n                    if d and (d & (d - 1)) == 0:\n                        new.add((a[0] & ~d, a[1] | d))\n                        used.add(a)\n                        used.add(b)\n        primes |= (terms - used)\n        terms = new\n    return sorted(primes)\ndef solve(n, ones, dcs):\n    pl = qm(n, ones, dcs)\n    best = None\n    cnt = 0\n    for mask in range(1, 1 << len(pl)):\n        sel = [pl[i] for i in range(len(pl)) if (mask >> i) & 1]\n        if all(any((m & ~p[1]) == p[0] for p in sel) for m in ones):\n            c = sum(n - bin(p[1]).count('1') for p in sel)\n            if best is None or c < best:\n                best = c\n                cnt = 1\n            elif c == best:\n                cnt += 1\n    return len(pl), best, cnt\nnpr, best, cnt = solve(4, [2, 3, 7, 9, 11, 13], [1, 10, 15])\nval = best\nwrong = [val - 1, val + 1, val + 2]\nopts = {'A': 5, 'B': 7, 'C': 8, 'D': 6}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 34,
+  "kind": "trap_aware",
+  "question_text": "The function \\(f(A, B, C, D) = \\sum m(0, 1, 5, 7, 8, 10, 14, 15)\\) (with \\(A\\) the most significant bit) has no don't-cares. Among all sum-of-products expressions that use the fewest possible literals, how many different expressions (as sets of product terms) exist?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Every \\(1\\) lies in prime implicants of two cells each: all 8 prime implicants are pairs, and none is essential (every minterm is covered by two of them), so the map is cyclic.",
+    "The pairs form two cycles of covers that cost the same \\(12\\) literals, so the fewest-literal expressions are not unique: there are 2 of them."
+   ],
+   "shortcut": "A cyclic map has no essential primes; look for equally cheap alternative covers.",
+   "trap": "Assuming a minimal expression is unique, or taking all prime implicants as essential."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def qm(n, ones, dcs):\n    terms = set((m, 0) for m in ones + dcs)\n    primes = set()\n    while terms:\n        used = set()\n        new = set()\n        tl = sorted(terms)\n        for i in range(len(tl)):\n            for j in range(i + 1, len(tl)):\n                a = tl[i]\n                b = tl[j]\n                if a[1] == b[1]:\n                    d = a[0] ^ b[0]\n                    if d and (d & (d - 1)) == 0:\n                        new.add((a[0] & ~d, a[1] | d))\n                        used.add(a)\n                        used.add(b)\n        primes |= (terms - used)\n        terms = new\n    return sorted(primes)\ndef solve(n, ones, dcs):\n    pl = qm(n, ones, dcs)\n    best = None\n    cnt = 0\n    for mask in range(1, 1 << len(pl)):\n        sel = [pl[i] for i in range(len(pl)) if (mask >> i) & 1]\n        if all(any((m & ~p[1]) == p[0] for p in sel) for m in ones):\n            c = sum(n - bin(p[1]).count('1') for p in sel)\n            if best is None or c < best:\n                best = c\n                cnt = 1\n            elif c == best:\n                cnt += 1\n    return len(pl), best, cnt\nnpr, best, cnt = solve(4, [0, 1, 5, 7, 8, 10, 14, 15], [])\nval = cnt\nwrong = [1, 3, 4]\nopts = {'A': 1, 'B': 3, 'C': 4, 'D': 2}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 40,
+  "kind": "conceptual",
+  "question_text": "A sensor uses an \\(8\\)-bit floating-point format: \\(1\\) sign bit, \\(4\\) exponent bits with bias \\(7\\) and \\(3\\) fraction bits. Exponent field \\(0\\) denotes subnormal numbers (value \\(= 0.f \\times 2^{1 - 7}\\)), the all-ones exponent field is reserved for infinity and NaN, and all other fields are normalised (value \\(= 1.f \\times 2^{e - 7}\\)). The ratio of the largest finite positive value to the smallest positive value, as an integer, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(61440\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(245760\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(240\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(122880\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Largest finite: exponent field \\(14\\) (the all-ones field \\(15\\) is reserved), fraction \\(111_2\\): \\((1 + 7/8) \\times 2^{14 - 7} = 240\\).",
+    "Smallest positive: the subnormal \\(0.001_2 \\times 2^{-6} = 2^{-3} \\times 2^{-6} = 2^{-9}\\).",
+    "Ratio \\(= 240 \\times 512 = 122880\\)."
+   ],
+   "shortcut": "Largest = 1.111 x 2^7; smallest = 0.001 x 2^-6.",
+   "trap": "Using exponent field 15 for the maximum, or taking the smallest normal number (2^-6) as the minimum instead of the subnormal 2^-9."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "vals = []\nfor e in range(15):\n    for f in range(8):\n        v = (f / 8) * 2.0 ** (1 - 7) if e == 0 else (1 + f / 8) * 2.0 ** (e - 7)\n        if v > 0:\n            vals.append(v)\nmx = max(vals)\nmn = min(vals)\nval = int(round(mx / mn))\nwrong = [61440, 245760, 240]\nopts = {'A': 61440, 'B': 245760, 'C': 240, 'D': 122880}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 57,
+  "kind": "trace",
+  "question_text": "A Turing machine increments a binary number. It starts in \\(q_0\\) on the leftmost bit of the input and moves right over all bits (one step per bit) until it reads the blank to the right of the input, then moves left in state \\(q_1\\) (one step for that move). In \\(q_1\\), on a \\(1\\) it writes \\(0\\) and moves left (one step), and on a \\(0\\) or on the blank to the left of the input it writes \\(1\\) and halts (one step). The machine is run once on each of the \\(32\\) binary strings of length \\(5\\) (\\(00000\\) to \\(11111\\)). The total number of steps (transitions executed) over all \\(32\\) runs is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(224\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(255\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(256\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(192\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Every run first spends \\(5\\) steps moving right over the bits and \\(1\\) step turning left at the blank: \\(6\\) steps, plus one step to write the final \\(1\\) and halt, plus one step for every trailing \\(1\\) it turns into \\(0\\).",
+    "Over the \\(32\\) inputs the fixed part is \\(32 \\times 7 = 224\\); the number of trailing ones summed over all inputs is \\(16 + 8 + 4 + 2 + 1 = 31\\) (half of the strings end in \\(1\\), a quarter in \\(11\\), and so on).",
+    "Total \\(= 224 + 31 = 255\\) steps."
+   ],
+   "shortcut": "Fixed cost 7 per run plus the trailing ones; sum the trailing ones over all inputs.",
+   "trap": "Counting only the carry steps (31) or forgetting the right-moving scan and the final writing step."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def run(w):\n    tape = list(w) + ['_']\n    pos = 0\n    state = 'q0'\n    steps = 0\n    while True:\n        if pos < 0:\n            tape.insert(0, '_')\n            pos = 0\n        sym = tape[pos]\n        if state == 'q0':\n            if sym in '01':\n                pos += 1\n            else:\n                state = 'q1'\n                pos -= 1\n            steps += 1\n        else:\n            if sym == '1':\n                tape[pos] = '0'\n                pos -= 1\n                steps += 1\n            else:\n                tape[pos] = '1'\n                steps += 1\n                break\n    return steps\ntot = 0\nfor i in range(32):\n    tot += run(format(i, '05b')) if False else run(''.join('1' if (i >> (4 - k)) & 1 else '0' for k in range(5)))\nval = tot\nwrong = [224, 256, 192]\nopts = {'A': 224, 'B': 255, 'C': 256, 'D': 192}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 59,
+  "kind": "conceptual",
+  "question_text": "Let \\(L\\) be the language over \\(\\{a, b\\}\\) of all strings that contain the substring \\(bb\\) or whose length is a multiple of \\(5\\). The pumping lemma for regular languages says that there is a number \\(p\\) such that every \\(w \\in L\\) with \\(|w| \\ge p\\) can be written \\(w = xyz\\) with \\(|xy| \\le p\\), \\(|y| \\ge 1\\) and \\(xy^{i}z \\in L\\) for all \\(i \\ge 0\\). The smallest such \\(p\\) for \\(L\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(5\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(6\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(10\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(p = 5\\) works: a word of \\(L\\) containing \\(bb\\) keeps a \\(bb\\) when we pump a single letter that is not part of it (some such letter lies among the first \\(5\\), and removing or repeating it never separates the two \\(b\\)s); a word with no \\(bb\\) has length divisible by \\(5\\), and pumping its first \\(5\\) letters changes the length by multiples of \\(5\\).",
+    "\\(p = 4\\) fails: take \\(w = ababa\\) (length \\(5\\), no \\(bb\\)); every substring \\(y\\) of the first \\(4\\) letters, repeated or removed, either leaves a length that is not a multiple of \\(5\\) and no \\(bb\\), or breaks some pumped word. Smaller \\(p\\) fail for similar reasons.",
+    "So the smallest pumping length is 5, even though the minimal DFA of \\(L\\) has more states."
+   ],
+   "shortcut": "Find the shortest word that cannot be pumped within p letters, then p is one more.",
+   "trap": "Taking the number of states of the minimal DFA as the pumping length; the smallest valid p can be smaller."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def words(n):\n    out = ['']\n    cur = ['']\n    for _ in range(n):\n        cur = [w + c for w in cur for c in 'ab']\n        out = out + cur\n    return out\nW = words(11)\ndef pred(w):\n    return 'bb' in w or len(w) % 5 == 0\nLs = [w for w in W if pred(w)]\ndef works(p):\n    for w in Ls:\n        if len(w) < p:\n            continue\n        ok = False\n        for i in range(p + 1):\n            for j in range(i + 1, p + 1):\n                x = w[:i]\n                y = w[i:j]\n                z = w[j:]\n                if all(pred(x + y * k + z) for k in range(4)):\n                    ok = True\n                    break\n            if ok:\n                break\n        if not ok:\n            return False\n    return True\nval = 1\nwhile not works(val):\n    val += 1\nwrong = [val - 1, val + 1, val + 5]\nopts = {'A': 5, 'B': 4, 'C': 6, 'D': 10}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 24,
+  "kind": "multi_concept",
+  "question_text": "A designer approximates the difference between \\(1/x^{2}\\) and the cotangent-based term \\(1/(x\\tan x)\\) for small \\(x\\). The value of \\(\\displaystyle \\lim_{x \\to 0}\\left(\\frac{1}{x^{2}} - \\frac{1}{x \\tan x}\\right)\\), correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    0.32,
+    0.34
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Write \\(\\dfrac{1}{x^2} - \\dfrac{\\cos x}{x \\sin x} = \\dfrac{\\sin x - x\\cos x}{x^{2}\\sin x}\\).",
+    "Expand: \\(\\sin x - x\\cos x = (x - x^3/6) - (x - x^3/2) + O(x^5) = x^3/3 + O(x^5)\\) and \\(x^2 \\sin x = x^3 + O(x^5)\\).",
+    "The ratio tends to \\(1/3 \\approx 0.33\\)."
+   ],
+   "shortcut": "Combine the fractions and expand sin and cos to third order.",
+   "trap": "Treating the expression as infinity minus infinity and stopping, or using only the first term of each expansion so that the x^3 terms cancel."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def g(x):\n    return (math.sin(x) - x * math.cos(x)) / (x * x * math.sin(x))\nanswer = round(g(1e-3), 2)"
+  }
+ },
+ {
+  "slot": 44,
+  "kind": "conceptual",
+  "question_text": "A product catalogue is stored as one table with five columns \\(A, B, C, D, E\\). Its only business rules are: columns \\(A\\) and \\(B\\) together fix \\(C\\); column \\(C\\) fixes \\(A\\); \\(A\\) and \\(B\\) together fix \\(D\\); and \\(D\\) fixes \\(E\\). The designer wants to know how far the table has been normalised. Which one of the following claims is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The table satisfies second normal form but violates third normal form."
+   },
+   {
+    "option_id": "B",
+    "text": "The table already satisfies Boyce-Codd normal form."
+   },
+   {
+    "option_id": "C",
+    "text": "The table satisfies third normal form but violates Boyce-Codd normal form."
+   },
+   {
+    "option_id": "D",
+    "text": "The table satisfies only first normal form because a non-key column depends on part of a key."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Candidate keys: AB, BC. The prime attributes are \\(A, B, C\\); \\(D\\) and \\(E\\) are non-prime.",
+    "2NF: no non-prime attribute depends on a proper part of a key (\\(A\\), \\(B\\) or \\(C\\) alone fix only \\(A\\), \\(B\\) or \\(\\{C, A\\}\\), all prime), so \\(R\\) is in 2NF.",
+    "3NF fails: \\(D \\to E\\) has a left side that is not a superkey and a non-prime right side. So \\(R\\) is in 2NF but not in 3NF (hence not in BCNF)."
+   ],
+   "shortcut": "List all keys, mark prime attributes, then test partial and transitive dependencies.",
+   "trap": "Counting only AB as a key; C with B is also a key because C determines A."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "attrs = 'ABCDE'\nfds = [('AB', 'C'), ('C', 'A'), ('AB', 'D'), ('D', 'E')]\ndef closure(x):\n    s = set(x)\n    ch = True\n    while ch:\n        ch = False\n        for l, r in fds:\n            if set(l) <= s and not set(r) <= s:\n                s |= set(r)\n                ch = True\n    return s\nkeys = []\nfor n in range(1, 6):\n    for comb in itertools.combinations(attrs, n):\n        if closure(comb) == set(attrs) and not any(set(k) <= set(comb) for k in keys):\n            keys.append(comb)\nprime = set()\nfor k in keys:\n    prime |= set(k)\ndef superkey(x):\n    return closure(x) == set(attrs)\nbcnf = all(superkey(l) for l, r in fds)\nnf3 = all(superkey(l) or r in prime for l, r in fds)\nnf2 = True\nfor k in keys:\n    for n in range(1, len(k)):\n        for sub in itertools.combinations(k, n):\n            if any(a not in prime and a not in sub for a in closure(sub)):\n                nf2 = False\ntruth = [bcnf, nf3 and not bcnf, nf2 and not nf3, not nf2]\nkstr = ', '.join(''.join(k) for k in keys)\nperm = [2, 0, 1, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 47,
+  "kind": "trace",
+  "question_text": "A processor supports register-indexed addressing with scaling, memory-indirect addressing and base-displacement addressing. Memory (byte addresses, \\(4\\)-byte words, addresses and values in decimal) holds: \\(M[4108] = 8192\\), \\(M[8192] = 8200\\), \\(M[8204] = 25\\). Registers: \\(R_2 = 4096\\), \\(R_3 = 3\\). The instructions run in order: \\(I_1\\): \\(R_1 \\leftarrow M[M[R_2 + R_3 \\times 4]]\\) (indexed with scale \\(4\\), then one level of indirection); \\(I_2\\): \\(R_4 \\leftarrow M[R_1 + 4]\\) (base plus displacement); \\(I_3\\): \\(R_5 \\leftarrow R_1 + R_4\\). The final value of \\(R_5\\) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    8225,
+    8225
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(I_1\\): effective address \\(= 4096 + 3 \\times 4 = 4108\\); \\(M[4108] = 8192\\) is a pointer, and \\(M[8192] = 8200\\), so \\(R_1 = 8200\\).",
+    "\\(I_2\\): address \\(R_1 + 4 = 8204\\), and \\(M[8204] = 25\\), so \\(R_4 = 25\\).",
+    "\\(I_3\\): \\(R_5 = 8200 + 25 = 8225\\)."
+   ],
+   "shortcut": "Evaluate each addressing mode in turn: address arithmetic first, memory reads after.",
+   "trap": "Stopping after the first memory access (taking 8192 as R1) instead of following the pointer once more."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "M = {4108: 8192, 8192: 8200, 8204: 25}\nR2 = 4096\nR3 = 3\nea = R2 + R3 * 4\nR1 = M[M[ea]]\nR4 = M[R1 + 4]\nR5 = R1 + R4\nanswer = R5"
+  }
+ },
+ {
+  "slot": 50,
+  "kind": "trace",
+  "question_text": "Consider the C fragment below on a machine where \\(\\texttt{int}\\) occupies \\(4\\) bytes and a structure of two ints has no padding. ```c struct P { int a; int b; }; struct P arr[3] = {{1, 2}, {3, 4}, {5, 6}}; struct P *p = arr; p += 2; int r = (p - 1)->b + *(int *)p + ((int *)arr)[3]; ``` The value of \\(r\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(13\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(11\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(9\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(17\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "After \\(p \\mathrel{+}= 2\\) the pointer addresses \\(\\texttt{arr[2]}\\); pointer arithmetic moves in units of the whole structure (\\(8\\) bytes).",
+    "\\((p - 1)\\text{->}b = \\texttt{arr[1].b} = 4\\); \\(*(\\texttt{int}*)p\\) is the first member of \\(\\texttt{arr[2]}\\), that is \\(5\\); \\(((\\texttt{int}*)\\texttt{arr})[3]\\) treats the array as ints, so it is the fourth int, \\(4\\).",
+    "\\(r = 4 + 5 + 4 = 13\\)."
+   ],
+   "shortcut": "Pointer arithmetic scales by the pointee type; a cast changes the unit.",
+   "trap": "Scaling the pointer by 4 bytes instead of by the structure size, or indexing the int view as if it were the structure array."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "flat = [1, 2, 3, 4, 5, 6]\npidx = 2\nt1 = flat[(pidx - 1) * 2 + 1]\nt2 = flat[pidx * 2]\nt3 = flat[3]\nval = t1 + t2 + t3\nwrong = [11, 9, 17]\nopts = {'A': 13, 'B': 11, 'C': 9, 'D': 17}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ }
+]

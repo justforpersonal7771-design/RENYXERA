@@ -282,7 +282,7 @@
  {
   "slot": 13,
   "kind": "trace",
-  "question_text": "Consider the C program below. ```c int f(int n, int *c) { if (n < 2) { (*c)++; return n; } return f(n - 1, c) + f(n - 2, c); } int main(void) { int calls = 0; int v = f(9, &calls); /* the value of v + calls is printed */ } ``` The value printed is ______.",
+  "question_text": "A student instruments a naive Fibonacci routine with a shared leaf counter passed by address, as follows. ```c int f(int n, int *c) { if (n < 2) { (*c)++; return n; } return f(n - 1, c) + f(n - 2, c); } int main(void) { int calls = 0; int v = f(9, &calls); /* the sum v + calls is then printed */ } ``` The sum that the student sees is ______.",
   "options": [],
   "answer": {
    "range": [

@@ -5,6 +5,57 @@
  "items": [
   {
    "id": "FORGE_CS_000251",
+   "subject": "General Aptitude",
+   "topic": "Combinatorics Core (Permutations, Combinations, Series)",
+   "kind": "msq_discriminator",
+   "difficulty": "H",
+   "question_type": "MSQ",
+   "marks": 1,
+   "question_text": "A club secretary makes four counting claims. Which of the following claims is/are correct?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "Six people can be seated around a round table (rotations count as the same arrangement) in \\(120\\) ways."
+    },
+    {
+     "option_id": "B",
+     "text": "The number of \\(3\\)-letter strings over \\(\\{A, B, C, D\\}\\) in which no letter is repeated is \\(24\\)."
+    },
+    {
+     "option_id": "C",
+     "text": "From \\(7\\) people a committee of \\(3\\) is formed so that two particular people are never both on it; this can be done in \\(28\\) ways."
+    },
+    {
+     "option_id": "D",
+     "text": "The number of non-negative integer solutions of \\(x + y + z = 10\\) is \\(66\\)."
+    }
+   ],
+   "answer": {
+    "options": [
+     "A",
+     "B",
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Round table: fix one person and arrange the other five: \\(5! = 120\\), so the first claim is correct.",
+     "No repeated letter: \\(4 \\times 3 \\times 2 = 24\\), correct.",
+     "Committees: \\(\\binom{7}{3} = 35\\) minus the \\(5\\) that contain both particular people gives 30, not \\(28\\): the third claim is wrong.",
+     "Stars and bars: \\(\\binom{12}{2} = 66\\), correct."
+    ],
+    "shortcut": "Check each count by the standard formula: circular (n-1)!, product rule, complement, stars and bars.",
+    "trap": "Subtracting the number of people (7) instead of the number of committees that contain the forbidden pair (5)."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "circ = sum(1 for p in itertools.permutations(range(6)) if p[0] == 0)\nstrings = sum(1 for p in itertools.product('ABCD', repeat=3) if len(set(p)) == 3)\ncomm = sum(1 for c in itertools.combinations(range(7), 3) if not (0 in c and 1 in c))\nsols = sum(1 for x in range(11) for y in range(11) for z in range(11) if x + y + z == 10)\ntruth = [circ == 120, strings == 24, comm == 28, sols == 66]\ntrue_comm = comm\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000252",
    "subject": "Theory of Computation (TOC)",
    "topic": "Context-Free Grammars & Push-Down Automata",
    "kind": "trace",
@@ -52,7 +103,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000252",
+   "id": "FORGE_CS_000253",
    "subject": "Operating Systems (OS)",
    "topic": "File Systems Operations & Disk Scheduling Optimization",
    "kind": "application",
@@ -84,7 +135,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000253",
+   "id": "FORGE_CS_000254",
    "subject": "Computer Organization and Architecture (COA)",
    "topic": "Instruction Pipelining, Performance, Hazard Management",
    "kind": "multi_concept",
@@ -116,7 +167,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000254",
+   "id": "FORGE_CS_000255",
    "subject": "Linear Algebra",
    "topic": "Matrices, Determinants, & Linear Equation Systems",
    "kind": "multi_concept",
@@ -164,7 +215,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000255",
+   "id": "FORGE_CS_000256",
    "subject": "Algorithms",
    "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
    "kind": "msq_discriminator",
@@ -213,7 +264,39 @@
    }
   },
   {
-   "id": "FORGE_CS_000256",
+   "id": "FORGE_CS_000257",
+   "subject": "Programming in C",
+   "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
+   "kind": "trace",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "Consider the C program below. ```c int g = 1; int f(int x) { static int s = 0; s += x; g += s; return g * x; } int main(void) { int a = f(1); int b = f(2); int c = f(3); /* a + b + c is printed */ } ``` The value printed is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     45,
+     45
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Calls run in the order shown. The static variable \\(s\\) keeps its value between calls, the global \\(g\\) accumulates \\(s\\).",
+     "\\(f(1)\\): \\(s = 1,\\ g = 2\\), returns \\(2\\). \\(f(2)\\): \\(s = 3,\\ g = 5\\), returns \\(10\\). \\(f(3)\\): \\(s = 6,\\ g = 11\\), returns \\(33\\).",
+     "\\(a + b + c = 2 + 10 + 33 = 45\\)."
+    ],
+    "shortcut": "Track s (static) and g (global) call by call.",
+    "trap": "Re-initialising the static variable on each call, or updating g with x instead of with the running total s."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "g = 1\ns = 0\nres = []\nfor x in (1, 2, 3):\n    s += x\n    g += s\n    res.append(g * x)\na, b, c = res\nanswer = a + b + c"
+   }
+  },
+  {
+   "id": "FORGE_CS_000258",
    "subject": "Computer Organization and Architecture (COA)",
    "topic": "I/O Interfaces (Interrupts & DMA Control Modes)",
    "kind": "application",
@@ -261,7 +344,54 @@
    }
   },
   {
-   "id": "FORGE_CS_000257",
+   "id": "FORGE_CS_000259",
+   "subject": "Digital Logic",
+   "topic": "Combinational Logic (Multiplexers, Decoders, Adders)",
+   "kind": "application",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A \\(2\\)-bit magnitude comparator has inputs \\(A_1A_0\\) and \\(B_1B_0\\) and three outputs \\(A>B\\), \\(A=B\\) and \\(A<B\\). It is built from a \\(4\\)-to-\\(16\\) decoder (all \\(16\\) input combinations decoded, active-high outputs) followed by one OR gate per comparator output, each OR gate receiving exactly the decoder lines of the combinations for which its output is \\(1\\). The total number of OR-gate inputs used is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(12\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(10\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(16\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(24\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Each of the \\(16\\) input combinations \\((a, b)\\) makes exactly one output \\(1\\): \\(a > b\\) in \\(6\\) cases, \\(a = b\\) in \\(4\\), \\(a < b\\) in \\(6\\).",
+     "An OR gate needs one input per combination in its output's minterm list: \\(6 + 4 + 6 = 16\\) inputs in total (the decoder lines are partitioned among the three gates)."
+    ],
+    "shortcut": "The three output functions partition the 16 minterms.",
+    "trap": "Counting the 16 decoder outputs once per gate, or forgetting that every combination belongs to exactly one comparison result."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "gt = 0\neq = 0\nlt = 0\nfor a in range(4):\n    for b in range(4):\n        if a > b:\n            gt += 1\n        elif a == b:\n            eq += 1\n        else:\n            lt += 1\nval = gt + eq + lt\nwrong = [12, 10, 24]\nopts = {'A': 12, 'B': 10, 'C': 16, 'D': 24}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000260",
    "subject": "Probability & Statistics",
    "topic": "Random Variables & Sampling Rules",
    "kind": "multi_concept",
@@ -308,7 +438,102 @@
    }
   },
   {
-   "id": "FORGE_CS_000258",
+   "id": "FORGE_CS_000261",
+   "subject": "General Aptitude",
+   "topic": "Mensuration and Geometry",
+   "kind": "application",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A cylindrical vessel of radius \\(5\\) cm holds water to a depth of \\(12\\) cm. A solid iron sphere of radius \\(3\\) cm is dropped in and sinks completely, with no water spilling. By how many centimetres does the water level rise, correct to two decimal places?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(1.2\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(1.8\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(1.44\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(2.16\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "The water level rises until the extra volume equals the volume of the sphere: \\(\\tfrac43 \\pi \\times 3^3 = 36\\pi\\) cm\\(^3\\).",
+     "Rise \\(= 36\\pi / (\\pi \\times 5^2) = 36/25 = 1.44\\) cm."
+    ],
+    "shortcut": "Rise = sphere volume / base area of the vessel.",
+    "trap": "Using the area of the sphere's cross-section or adding the sphere's diameter to the depth."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "vs = 4 / 3 * math.pi * 27\narea = math.pi * 25\nval = round(vs / area, 2)\nwrong = [1.2, 1.8, 2.16]\nopts = {'A': 1.2, 'B': 1.8, 'C': 1.44, 'D': 2.16}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000262",
+   "subject": "Algorithms",
+   "topic": "Asymptotic Analysis (O, Omega, Theta Complexities)",
+   "kind": "conceptual",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "Let \\(f_1(n) = n^{2}\\), \\(f_2(n) = (\\log_2 n)^{\\log_2 n}\\), \\(f_3(n) = n^{\\log_2 n}\\), \\(f_4(n) = 2^{\\sqrt{n}}\\) and \\(f_5(n) = n!\\). Write \\(f \\prec g\\) when \\(f(n) = o(g(n))\\). Which one of the following chains is correct?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(f_1 \\prec f_2 \\prec f_3 \\prec f_4 \\prec f_5\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(f_1 \\prec f_3 \\prec f_2 \\prec f_4 \\prec f_5\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(f_1 \\prec f_2 \\prec f_3 \\prec f_5 \\prec f_4\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(f_2 \\prec f_1 \\prec f_3 \\prec f_4 \\prec f_5\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "A"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Compare logarithms with \\(n = 2^k\\): \\(\\ln f_1 = 2k\\ln 2\\), \\(\\ln f_2 = k \\ln k\\), \\(\\ln f_3 = k^2 \\ln 2\\), \\(\\ln f_4 = 2^{k/2}\\ln 2\\), \\(\\ln f_5 \\approx 2^k k \\ln 2\\).",
+     "These grow as \\(k\\), \\(k\\log k\\), \\(k^2\\), \\(2^{k/2}\\), \\(2^k k\\): strictly in this order for large \\(k\\), so the chain \\(f_1 \\prec f_2 \\prec f_3 \\prec f_4 \\prec f_5\\) is correct.",
+     "In the other chains an adjacent pair is swapped, which contradicts the comparison of the logarithms."
+    ],
+    "shortcut": "Compare logarithms of the functions (in terms of k = log n), not the functions themselves.",
+    "trap": "Judging by small values of n: (log n)^(log n) overtakes n^2 only when log n exceeds 4."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "L = math.log(2)\ndef lns(k):\n    return [2 * k * L, k * math.log(k), k * k * L, math.sqrt(2.0 ** k) * L, 2.0 ** k * k * L - 2.0 ** k]\ndef holds(order):\n    for k in (64, 128):\n        v = lns(k)\n        for a, b in zip(order, order[1:]):\n            if not v[a] < v[b]:\n                return False\n    return True\ntruth = [holds([0, 1, 2, 3, 4]), holds([0, 2, 1, 3, 4]), holds([0, 1, 2, 4, 3]), holds([1, 0, 2, 3, 4])]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000263",
    "subject": "Compiler Design",
    "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
    "kind": "msq_discriminator",
@@ -356,14 +581,14 @@
    }
   },
   {
-   "id": "FORGE_CS_000259",
+   "id": "FORGE_CS_000264",
    "subject": "Programming in C",
    "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
    "kind": "trace",
    "difficulty": "H",
    "question_type": "NAT",
    "marks": 1,
-   "question_text": "Consider the C program below. ```c int f(int n, int *c) { if (n < 2) { (*c)++; return n; } return f(n - 1, c) + f(n - 2, c); } int main(void) { int calls = 0; int v = f(9, &calls); /* the value of v + calls is printed */ } ``` The value printed is ______.",
+   "question_text": "A student instruments a naive Fibonacci routine with a shared leaf counter passed by address, as follows. ```c int f(int n, int *c) { if (n < 2) { (*c)++; return n; } return f(n - 1, c) + f(n - 2, c); } int main(void) { int calls = 0; int v = f(9, &calls); /* the sum v + calls is then printed */ } ``` The sum that the student sees is ______.",
    "options": [],
    "answer": {
     "range": [
@@ -388,7 +613,86 @@
    }
   },
   {
-   "id": "FORGE_CS_000260",
+   "id": "FORGE_CS_000265",
+   "subject": "General Aptitude",
+   "topic": "Elementary Statistics and Probability",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A first group of \\(10\\) students scored a mean of \\(12\\) with a standard deviation of \\(2\\); a second group of \\(15\\) students scored a mean of \\(18\\) with a standard deviation of \\(3\\) (both are population standard deviations). The population standard deviation of all \\(25\\) scores together, correct to two decimal places, is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(2.6\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(3.95\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(4.5\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(3\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "B"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "The combined mean is \\((10 \\times 12 + 15 \\times 18)/25 = 15.6\\).",
+     "Combined variance \\(= \\dfrac{10(2^2 + 3.6^2) + 15(3^2 + 2.4^2)}{25} = 15.64\\): the spread of the group means around the grand mean adds to the within-group variances.",
+     "Standard deviation \\(= \\sqrt{15.64} \\approx 3.95\\)."
+    ],
+    "shortcut": "Total variance = average within-group variance + variance of the group means.",
+    "trap": "Averaging the two standard deviations (about 2.6), which ignores the gap between the group means."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "n1, m1, s1 = 10, 12.0, 2.0\nn2, m2, s2 = 15, 18.0, 3.0\nN = n1 + n2\nM = (n1 * m1 + n2 * m2) / N\nvar = (n1 * (s1 ** 2 + (m1 - M) ** 2) + n2 * (s2 ** 2 + (m2 - M) ** 2)) / N\nval = round(var ** 0.5, 2)\nwrong = [2.6, 4.5, 3.0]\ngm = M\nv2 = round(var, 2)\nopts = {'A': 2.6, 'B': 3.95, 'C': 4.5, 'D': 3.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000266",
+   "subject": "General Aptitude",
+   "topic": "Logic Deduction and Induction Frameworks",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "Seven islanders are numbered \\(1\\) to \\(7\\). Knights always speak truly and knaves always speak falsely, and every islander is one or the other. Islander \\(i\\) declares: ``Among the seven of us, precisely \\(i\\) are knaves.'' The number of knaves among the seven islanders is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     6,
+     6
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "If the number of knaves is \\(L\\), then exactly one declaration (the one by islander \\(L\\)) is true and the other six are false, so there is exactly one knight and \\(L = 7 - 1 = 6\\).",
+     "Check: islander \\(6\\) says precisely \\(6\\) are knaves, which is true, and the other six speak falsely: consistent. A search over all \\(128\\) assignments finds 1 consistent assignment, with 6 knaves."
+    ],
+    "shortcut": "Exactly one of the seven statements can be true, so exactly one truth-teller.",
+    "trap": "Trying to make several statements true together; only one statement can match the actual number of liars."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "sols = []\nfor mask in range(128):\n    truth = [(mask >> k) & 1 for k in range(7)]\n    liars = 7 - sum(truth)\n    ok = True\n    for i in range(7):\n        statement = (liars == i + 1)\n        if (truth[i] == 1) != statement:\n            ok = False\n            break\n    if ok:\n        sols.append(liars)\nanswer = sols[0]\nnsol = len(sols)"
+   }
+  },
+  {
+   "id": "FORGE_CS_000267",
    "subject": "Algorithms",
    "topic": "Minimum Spanning Trees (Prim/Kruskal Algorithms)",
    "kind": "multi_concept",
@@ -419,7 +723,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000261",
+   "id": "FORGE_CS_000268",
    "subject": "Discrete Mathematics",
    "topic": "Algebraic Structures (Monoids, Groups)",
    "kind": "msq_discriminator",
@@ -469,7 +773,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000262",
+   "id": "FORGE_CS_000269",
    "subject": "Discrete Mathematics",
    "topic": "Sets, Relations, Functions, Partial Orders, Lattices",
    "kind": "msq_discriminator",
@@ -519,7 +823,153 @@
    }
   },
   {
-   "id": "FORGE_CS_000263",
+   "id": "FORGE_CS_000270",
+   "subject": "Data Structures",
+   "topic": "Binary Search Trees (BSTs) & Binary Heaps",
+   "kind": "trace",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "The keys \\(50, 30, 70, 20, 40, 60, 80, 35, 45, 65, 38, 48\\) are inserted in this order into an initially empty binary search tree. Then the keys \\(30\\) and \\(50\\) are deleted in that order (a node with two children is replaced by its inorder successor, which is then removed from the right subtree), and finally \\(36, 46, 62\\) are inserted in that order. The height of the resulting tree (the number of edges on its longest root-to-leaf path) is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(4\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(5\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(6\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(7\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "B"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "After the twelve insertions the tree has height 4. Deleting \\(30\\) (two children) copies its inorder successor \\(35\\) into its place; deleting the root \\(50\\) copies its successor \\(60\\) to the root.",
+     "After the two deletions the height is 4, and the root is 60.",
+     "Insert \\(36, 46, 62\\) by the usual comparisons from the new root; the deepest of the new leaves sets the final height 5."
+    ],
+    "shortcut": "Simulate each operation carefully; the shape depends on which neighbour replaces a deleted node.",
+    "trap": "Using the inorder predecessor, or forgetting that the successor itself must be removed from the right subtree."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "def ins(t, k):\n    if t is None:\n        return [k, None, None]\n    if k < t[0]:\n        t[1] = ins(t[1], k)\n    else:\n        t[2] = ins(t[2], k)\n    return t\ndef dele(t, k):\n    if t is None:\n        return None\n    if k < t[0]:\n        t[1] = dele(t[1], k)\n    elif k > t[0]:\n        t[2] = dele(t[2], k)\n    else:\n        if t[1] is None:\n            return t[2]\n        if t[2] is None:\n            return t[1]\n        s = t[2]\n        while s[1] is not None:\n            s = s[1]\n        t[0] = s[0]\n        t[2] = dele(t[2], s[0])\n    return t\ndef height(t):\n    return -1 if t is None else 1 + max(height(t[1]), height(t[2]))\nt = None\nfor k in [50, 30, 70, 20, 40, 60, 80, 35, 45, 65, 38, 48]:\n    t = ins(t, k)\nh0 = height(t)\nt = dele(t, 30)\nt = dele(t, 50)\nh1 = height(t)\nfor k in [36, 46, 62]:\n    t = ins(t, k)\nval = height(t)\nroot = t[0]\nwrong = [val - 1, val + 1, val + 2]\nopts = {'A': 4, 'B': 5, 'C': 6, 'D': 7}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000271",
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "kind": "application",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A four-variable output \\(f(A, B, C, D)\\) of a sensor decoder is \\(1\\) for the input combinations \\(2, 3, 7, 9, 11, 13\\) (numbered with \\(A\\) as the most significant bit), is a don't-care for \\(1, 10, 15\\), and is \\(0\\) for all others. The minimum number of literals in a sum-of-products expression for \\(f\\), using the don't-cares to advantage, is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(5\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(7\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(8\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(6\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Group the \\(1\\)s and don't-cares on the Karnaugh map into the largest blocks: there are 4 prime implicants once the don't-cares \\(1, 10, 15\\) are allowed to join groups.",
+     "Choose the cheapest set of prime implicants that still covers every required \\(1\\) (the don't-cares need not be covered); the cheapest cover uses 6 literals in total."
+    ],
+    "shortcut": "Use don't-cares to enlarge groups, but cover only the required ones.",
+    "trap": "Covering the don't-cares as well, or leaving them out of the groups so that the blocks come out smaller."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "def qm(n, ones, dcs):\n    terms = set((m, 0) for m in ones + dcs)\n    primes = set()\n    while terms:\n        used = set()\n        new = set()\n        tl = sorted(terms)\n        for i in range(len(tl)):\n            for j in range(i + 1, len(tl)):\n                a = tl[i]\n                b = tl[j]\n                if a[1] == b[1]:\n                    d = a[0] ^ b[0]\n                    if d and (d & (d - 1)) == 0:\n                        new.add((a[0] & ~d, a[1] | d))\n                        used.add(a)\n                        used.add(b)\n        primes |= (terms - used)\n        terms = new\n    return sorted(primes)\ndef solve(n, ones, dcs):\n    pl = qm(n, ones, dcs)\n    best = None\n    cnt = 0\n    for mask in range(1, 1 << len(pl)):\n        sel = [pl[i] for i in range(len(pl)) if (mask >> i) & 1]\n        if all(any((m & ~p[1]) == p[0] for p in sel) for m in ones):\n            c = sum(n - bin(p[1]).count('1') for p in sel)\n            if best is None or c < best:\n                best = c\n                cnt = 1\n            elif c == best:\n                cnt += 1\n    return len(pl), best, cnt\nnpr, best, cnt = solve(4, [2, 3, 7, 9, 11, 13], [1, 10, 15])\nval = best\nwrong = [val - 1, val + 1, val + 2]\nopts = {'A': 5, 'B': 7, 'C': 8, 'D': 6}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000272",
+   "subject": "General Aptitude",
+   "topic": "Numerical Relations & Arithmetic Logic",
+   "kind": "msq_discriminator",
+   "difficulty": "H",
+   "question_type": "MSQ",
+   "marks": 1,
+   "question_text": "A quiz-setter prints four statements about whole numbers and asks the class to mark all of the ones that are right.",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "There are exactly \\(75\\) three-digit numbers divisible by both \\(4\\) and \\(6\\)."
+    },
+    {
+     "option_id": "B",
+     "text": "The sum of all two-digit multiples of \\(7\\) is \\(728\\)."
+    },
+    {
+     "option_id": "C",
+     "text": "There are exactly \\(21\\) perfect squares between \\(100\\) and \\(1000\\) inclusive."
+    },
+    {
+     "option_id": "D",
+     "text": "There are exactly \\(15\\) prime numbers less than \\(50\\)."
+    }
+   ],
+   "answer": {
+    "options": [
+     "A",
+     "B",
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Divisible by \\(4\\) and \\(6\\) means divisible by \\(12\\): \\(\\lfloor 999/12 \\rfloor - \\lfloor 99/12 \\rfloor = 83 - 8 = 75\\), correct.",
+     "Two-digit multiples of \\(7\\) are \\(7 \\times 2, \\dots, 7 \\times 14\\); their sum is \\(7 \\times 104 = 728\\), correct.",
+     "Squares from \\(10^2 = 100\\) to \\(31^2 = 961\\) number \\(22\\), not \\(21\\): wrong.",
+     "The primes below \\(50\\) are \\(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47\\): \\(15\\), correct."
+    ],
+    "shortcut": "Count with floor differences and check the endpoints.",
+    "trap": "Forgetting that both end points are included when counting squares from 10^2 to 31^2."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "c1 = sum(1 for n in range(100, 1000) if n % 4 == 0 and n % 6 == 0)\nc2 = sum(n for n in range(10, 100) if n % 7 == 0)\nc3 = sum(1 for n in range(10, 32) if 100 <= n * n <= 1000)\ndef isp(n):\n    return n > 1 and all(n % d for d in range(2, int(n ** 0.5) + 1))\nc4 = sum(1 for n in range(50) if isp(n))\ntruth = [c1 == 75, c2 == 728, c3 == 21, c4 == 15]\ntrue3 = c3\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000273",
    "subject": "Discrete Mathematics",
    "topic": "Propositional and First-Order Quantifier Logic",
    "kind": "multi_concept",
@@ -566,7 +1016,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000264",
+   "id": "FORGE_CS_000274",
    "subject": "Digital Logic",
    "topic": "Sequential Circuits (Flip-Flops, Registers, Counters)",
    "kind": "application",
@@ -597,7 +1047,39 @@
    }
   },
   {
-   "id": "FORGE_CS_000265",
+   "id": "FORGE_CS_000275",
+   "subject": "Calculus",
+   "topic": "Limits, Continuity, and Differentiability",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A designer approximates the difference between \\(1/x^{2}\\) and the cotangent-based term \\(1/(x\\tan x)\\) for small \\(x\\). The value of \\(\\displaystyle \\lim_{x \\to 0}\\left(\\frac{1}{x^{2}} - \\frac{1}{x \\tan x}\\right)\\), correct to two decimal places, is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     0.32,
+     0.34
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Write \\(\\dfrac{1}{x^2} - \\dfrac{\\cos x}{x \\sin x} = \\dfrac{\\sin x - x\\cos x}{x^{2}\\sin x}\\).",
+     "Expand: \\(\\sin x - x\\cos x = (x - x^3/6) - (x - x^3/2) + O(x^5) = x^3/3 + O(x^5)\\) and \\(x^2 \\sin x = x^3 + O(x^5)\\).",
+     "The ratio tends to \\(1/3 \\approx 0.33\\)."
+    ],
+    "shortcut": "Combine the fractions and expand sin and cos to third order.",
+    "trap": "Treating the expression as infinity minus infinity and stopping, or using only the first term of each expansion so that the x^3 terms cancel."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "def g(x):\n    return (math.sin(x) - x * math.cos(x)) / (x * x * math.sin(x))\nanswer = round(g(1e-3), 2)"
+   }
+  },
+  {
+   "id": "FORGE_CS_000276",
    "subject": "Discrete Mathematics",
    "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
    "kind": "multi_concept",
@@ -629,7 +1111,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000266",
+   "id": "FORGE_CS_000277",
    "subject": "Data Structures",
    "topic": "Binary Search Trees (BSTs) & Binary Heaps",
    "kind": "multi_concept",
@@ -677,7 +1159,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000267",
+   "id": "FORGE_CS_000278",
    "subject": "Theory of Computation (TOC)",
    "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
    "kind": "multi_concept",
@@ -708,7 +1190,102 @@
    }
   },
   {
-   "id": "FORGE_CS_000268",
+   "id": "FORGE_CS_000279",
+   "subject": "General Aptitude",
+   "topic": "Data Interpretation (Bar Graphs, Pie Charts, Histograms)",
+   "kind": "data_interpretation",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A company sells three products. The table gives, for two years, the units sold (in thousands) and the price per unit (in rupees). | Product | Units 2022 | Price 2022 | Units 2024 | Price 2024 | |---|---|---|---|---| | A | 40 | 50 | 55 | 60 | | B | 30 | 80 | 25 | 90 | | C | 20 | 120 | 35 | 110 |. The percentage increase in total revenue from 2022 to 2024, correct to one decimal place, is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(37.5\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(40\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(38.2\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(34.5\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Revenue (in thousands of rupees) in 2022: \\(40 \\times 50 + 30 \\times 80 + 20 \\times 120 = 6800\\).",
+     "Revenue in 2024: \\(55 \\times 60 + 25 \\times 90 + 35 \\times 110 = 9400\\).",
+     "Increase \\(= (9400 - 6800)/6800 \\times 100 \\approx 38.2\\%\\)."
+    ],
+    "shortcut": "Revenue = sum of units x price for each year, then the percentage change.",
+    "trap": "Adding units and prices separately, or comparing only the price columns."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "r22 = 40 * 50 + 30 * 80 + 20 * 120\nr24 = 55 * 60 + 25 * 90 + 35 * 110\nval = round((r24 - r22) / r22 * 100, 1)\nwrong = [37.5, 40.0, 34.5]\nopts = {'A': 37.5, 'B': 40.0, 'C': 38.2, 'D': 34.5}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000280",
+   "subject": "General Aptitude",
+   "topic": "Mathematical Operations (Powers, Exponents, Logarithms)",
+   "kind": "conceptual",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "Let \\(a, b, c\\) be non-zero real numbers with \\(3^{a} = 5^{b} = 15^{c}\\). Which one of the following relations is TRUE?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(a + b = c\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(ab = c^{2}\\) and \\(a + b = c\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(a + b = 2c\\) and \\(a = b\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(1/a + 1/b = 1/c\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Let the common value be \\(k\\). Then \\(a = \\log_3 k\\)-type: \\(a \\ln 3 = b \\ln 5 = c \\ln 15 = \\ln k\\), so \\(1/a = \\ln 3 / \\ln k\\), \\(1/b = \\ln 5 / \\ln k\\), \\(1/c = \\ln 15 / \\ln k\\).",
+     "Since \\(\\ln 15 = \\ln 3 + \\ln 5\\), we get \\(1/c = 1/a + 1/b\\): the third relation holds, and the other three do not (a numeric check with \\(k = 1.7\\) confirms)."
+    ],
+    "shortcut": "Take logarithms: each reciprocal is ln(base)/ln(k), and ln 15 = ln 3 + ln 5.",
+    "trap": "Adding the exponents themselves instead of their reciprocals."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "k = 1.7\na = math.log(k) / math.log(3)\nb = math.log(k) / math.log(5)\nc = math.log(k) / math.log(15)\ntruth = [abs(a + b - c) < 1e-9, abs(a * b - c * c) < 1e-9 and abs(a + b - c) < 1e-9, abs(1 / a + 1 / b - 1 / c) < 1e-9, abs(a + b - 2 * c) < 1e-9 and abs(a - b) < 1e-9]\nperm = [0, 1, 3, 2]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000281",
    "subject": "Programming in C",
    "topic": "Data Types, Syntax, Control Structures, Loops",
    "kind": "multi_concept",
@@ -740,7 +1317,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000269",
+   "id": "FORGE_CS_000282",
    "subject": "Database Management Systems (DBMS)",
    "topic": "Integrity Constraints & Functional Dependencies",
    "kind": "multi_concept",
@@ -771,7 +1348,134 @@
    }
   },
   {
-   "id": "FORGE_CS_000270",
+   "id": "FORGE_CS_000283",
+   "subject": "Computer Networks (CN)",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "kind": "application",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A stop-and-wait link carries \\(1000\\)-bit frames at \\(2\\) Mbps with a one-way propagation delay of \\(2\\) ms; acknowledgements are tiny and their transmission time is negligible. Each frame is corrupted independently with probability \\(0.1\\), a lost frame or acknowledgement is detected after a timeout exactly equal to one round trip, and the frame is then resent. The useful throughput (correct frames delivered), in kilobits per second and correct to the nearest whole number, is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(222\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(180\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(200\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(250\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "One attempt takes the transmission time \\(1000/(2 \\times 10^6) = 0.5\\) ms plus the round trip \\(2 \\times 2 = 4\\) ms: 4.5 ms.",
+     "A frame succeeds with probability \\(0.9\\), so the expected time per delivered frame is 4.5\\(/0.9\\) ms.",
+     "Throughput \\(= 1000\\text{ bits} \\times 0.9 / 4.5\\text{ ms} = 200\\) kbps."
+    ],
+    "shortcut": "Throughput = L(1 - p) / (t_tx + 2 t_prop).",
+    "trap": "Ignoring the retransmission factor, or computing the efficiency with the frame transmission time alone (2 Mbps)."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "tx = 1000 / 2e6\ncycle = tx + 2 * 0.002\np = 0.1\nval = round(1000 * (1 - p) / cycle / 1000)\nwrong = [222, 180, 250]\ncyc_ms = cycle * 1000\nopts = {'A': 222, 'B': 180, 'C': 200, 'D': 250}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000284",
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
+   "kind": "application",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A processor has a virtually indexed, physically tagged data cache of \\(256\\) KB that is \\(8\\)-way set-associative with \\(64\\)-byte lines. The operating system uses \\(4\\) KB pages and wants to avoid cache aliasing by giving each virtual page a physical frame of the same cache colour (the same value of the index bits that lie above the page offset). The number of distinct page colours is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     8,
+     8
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Number of sets \\(= 256\\text{ KB} / (8 \\times 64) = 512\\), so the index uses \\(\\log_2 512 = 9\\) bits and the line offset \\(6\\) bits: \\(15\\) bits in all.",
+     "A \\(4\\) KB page fixes only the lowest \\(12\\) bits, so \\(15 - 12 = 3\\) index bits depend on the physical frame number: the cache looks at the page in 8 different groups of sets.",
+     "Equivalently, one way is \\(32\\) KB and a page is \\(4\\) KB, so there are \\(32/4 = 8\\) page colours."
+    ],
+    "shortcut": "Colours = (cache size / associativity) / page size.",
+    "trap": "Dividing the whole cache size by the page size (64) instead of the size of one way."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "cache = 256 * 1024\nways = 8\npage = 4 * 1024\nway_size = cache // ways\nanswer = way_size // page\nsets = cache // (ways * 64)"
+   }
+  },
+  {
+   "id": "FORGE_CS_000285",
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization, K-Maps",
+   "kind": "trap_aware",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "The function \\(f(A, B, C, D) = \\sum m(0, 1, 5, 7, 8, 10, 14, 15)\\) (with \\(A\\) the most significant bit) has no don't-cares. Among all sum-of-products expressions that use the fewest possible literals, how many different expressions (as sets of product terms) exist?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(1\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(3\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(4\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(2\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Every \\(1\\) lies in prime implicants of two cells each: all 8 prime implicants are pairs, and none is essential (every minterm is covered by two of them), so the map is cyclic.",
+     "The pairs form two cycles of covers that cost the same \\(12\\) literals, so the fewest-literal expressions are not unique: there are 2 of them."
+    ],
+    "shortcut": "A cyclic map has no essential primes; look for equally cheap alternative covers.",
+    "trap": "Assuming a minimal expression is unique, or taking all prime implicants as essential."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "def qm(n, ones, dcs):\n    terms = set((m, 0) for m in ones + dcs)\n    primes = set()\n    while terms:\n        used = set()\n        new = set()\n        tl = sorted(terms)\n        for i in range(len(tl)):\n            for j in range(i + 1, len(tl)):\n                a = tl[i]\n                b = tl[j]\n                if a[1] == b[1]:\n                    d = a[0] ^ b[0]\n                    if d and (d & (d - 1)) == 0:\n                        new.add((a[0] & ~d, a[1] | d))\n                        used.add(a)\n                        used.add(b)\n        primes |= (terms - used)\n        terms = new\n    return sorted(primes)\ndef solve(n, ones, dcs):\n    pl = qm(n, ones, dcs)\n    best = None\n    cnt = 0\n    for mask in range(1, 1 << len(pl)):\n        sel = [pl[i] for i in range(len(pl)) if (mask >> i) & 1]\n        if all(any((m & ~p[1]) == p[0] for p in sel) for m in ones):\n            c = sum(n - bin(p[1]).count('1') for p in sel)\n            if best is None or c < best:\n                best = c\n                cnt = 1\n            elif c == best:\n                cnt += 1\n    return len(pl), best, cnt\nnpr, best, cnt = solve(4, [0, 1, 5, 7, 8, 10, 14, 15], [])\nval = cnt\nwrong = [1, 3, 4]\nopts = {'A': 1, 'B': 3, 'C': 4, 'D': 2}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000286",
    "subject": "Linear Algebra",
    "topic": "Eigenvalues and Eigenvectors",
    "kind": "multi_concept",
@@ -803,7 +1507,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000271",
+   "id": "FORGE_CS_000287",
    "subject": "Database Management Systems (DBMS)",
    "topic": "Transactions, Concurrency Control, Conflict Serializability",
    "kind": "msq_discriminator",
@@ -854,7 +1558,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000272",
+   "id": "FORGE_CS_000288",
    "subject": "Discrete Mathematics",
    "topic": "Advanced Graph Bounds (Matching, Coloring Theorems)",
    "kind": "msq_discriminator",
@@ -905,7 +1609,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000273",
+   "id": "FORGE_CS_000289",
    "subject": "Data Structures",
    "topic": "BSTs & Binary Heaps",
    "kind": "trace",
@@ -937,7 +1641,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000274",
+   "id": "FORGE_CS_000290",
    "subject": "Database Management Systems (DBMS)",
    "topic": "Relational Models, Relational Algebra, Tuple Calculus",
    "kind": "trap_aware",
@@ -985,7 +1689,55 @@
    }
   },
   {
-   "id": "FORGE_CS_000275",
+   "id": "FORGE_CS_000291",
+   "subject": "Digital Logic",
+   "topic": "Number Representations & Fixed/Floating Point Math",
+   "kind": "conceptual",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A sensor uses an \\(8\\)-bit floating-point format: \\(1\\) sign bit, \\(4\\) exponent bits with bias \\(7\\) and \\(3\\) fraction bits. Exponent field \\(0\\) denotes subnormal numbers (value \\(= 0.f \\times 2^{1 - 7}\\)), the all-ones exponent field is reserved for infinity and NaN, and all other fields are normalised (value \\(= 1.f \\times 2^{e - 7}\\)). The ratio of the largest finite positive value to the smallest positive value, as an integer, is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(61440\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(245760\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(240\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(122880\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Largest finite: exponent field \\(14\\) (the all-ones field \\(15\\) is reserved), fraction \\(111_2\\): \\((1 + 7/8) \\times 2^{14 - 7} = 240\\).",
+     "Smallest positive: the subnormal \\(0.001_2 \\times 2^{-6} = 2^{-3} \\times 2^{-6} = 2^{-9}\\).",
+     "Ratio \\(= 240 \\times 512 = 122880\\)."
+    ],
+    "shortcut": "Largest = 1.111 x 2^7; smallest = 0.001 x 2^-6.",
+    "trap": "Using exponent field 15 for the maximum, or taking the smallest normal number (2^-6) as the minimum instead of the subnormal 2^-9."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "vals = []\nfor e in range(15):\n    for f in range(8):\n        v = (f / 8) * 2.0 ** (1 - 7) if e == 0 else (1 + f / 8) * 2.0 ** (e - 7)\n        if v > 0:\n            vals.append(v)\nmx = max(vals)\nmn = min(vals)\nval = int(round(mx / mn))\nwrong = [61440, 245760, 240]\nopts = {'A': 61440, 'B': 245760, 'C': 240, 'D': 122880}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000292",
    "subject": "Theory of Computation (TOC)",
    "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
    "kind": "multi_concept",
@@ -1032,7 +1784,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000276",
+   "id": "FORGE_CS_000293",
    "subject": "Discrete Mathematics",
    "topic": "Recurrence Relations and Generating Functions",
    "kind": "multi_concept",
@@ -1079,7 +1831,103 @@
    }
   },
   {
-   "id": "FORGE_CS_000277",
+   "id": "FORGE_CS_000294",
+   "subject": "General Aptitude",
+   "topic": "Operational Puzzles and Systemic Reasoning",
+   "kind": "multi_concept",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "Two jugs hold exactly \\(3\\) litres and \\(5\\) litres and have no markings. There is an unlimited supply of water. One operation is: fill a jug completely, empty a jug completely, or pour from one jug into the other until the source is empty or the target is full. The least number of operations needed to leave exactly \\(4\\) litres in one of the jugs is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(6\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(4\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(5\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(7\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "A"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Describe a state as the pair of contents \\((x, y)\\) and search level by level over the three kinds of moves.",
+     "One shortest sequence: fill \\(5\\) \\(\\to (0,5)\\); pour into \\(3\\) \\(\\to (3,2)\\); empty \\(3\\) \\(\\to (0,2)\\); pour \\(\\to (2,0)\\); fill \\(5\\) \\(\\to (2,5)\\); pour into \\(3\\) \\(\\to (3,4)\\).",
+     "That is 6 operations, and the breadth-first search shows no shorter sequence exists."
+    ],
+    "shortcut": "Breadth-first search over states (x, y).",
+    "trap": "Starting by filling the 3-litre jug: that route needs more operations, and a greedy choice can miss the shortest one."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "from_state = (0, 0)\ndist = {from_state: 0}\nqueue = [from_state]\ncaps = (3, 5)\nwhile queue:\n    s = queue.pop(0)\n    nxt = []\n    for i in range(2):\n        t = list(s)\n        t[i] = caps[i]\n        nxt.append(tuple(t))\n        t = list(s)\n        t[i] = 0\n        nxt.append(tuple(t))\n        j = 1 - i\n        amt = min(s[i], caps[j] - s[j])\n        t = list(s)\n        t[i] -= amt\n        t[j] += amt\n        nxt.append(tuple(t))\n    for n in nxt:\n        if n not in dist:\n            dist[n] = dist[s] + 1\n            queue.append(n)\nbest = min(d for st, d in dist.items() if 4 in st)\nval = best\nwrong = [4, 5, 7]\nopts = {'A': 6, 'B': 4, 'C': 5, 'D': 7}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000295",
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Normalization Schemes (1NF, 2NF, 3NF, BCNF Boundaries)",
+   "kind": "conceptual",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "A product catalogue is stored as one table with five columns \\(A, B, C, D, E\\). Its only business rules are: columns \\(A\\) and \\(B\\) together fix \\(C\\); column \\(C\\) fixes \\(A\\); \\(A\\) and \\(B\\) together fix \\(D\\); and \\(D\\) fixes \\(E\\). The designer wants to know how far the table has been normalised. Which one of the following claims is TRUE?",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "The table satisfies second normal form but violates third normal form."
+    },
+    {
+     "option_id": "B",
+     "text": "The table already satisfies Boyce-Codd normal form."
+    },
+    {
+     "option_id": "C",
+     "text": "The table satisfies third normal form but violates Boyce-Codd normal form."
+    },
+    {
+     "option_id": "D",
+     "text": "The table satisfies only first normal form because a non-key column depends on part of a key."
+    }
+   ],
+   "answer": {
+    "options": [
+     "A"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Candidate keys: AB, BC. The prime attributes are \\(A, B, C\\); \\(D\\) and \\(E\\) are non-prime.",
+     "2NF: no non-prime attribute depends on a proper part of a key (\\(A\\), \\(B\\) or \\(C\\) alone fix only \\(A\\), \\(B\\) or \\(\\{C, A\\}\\), all prime), so \\(R\\) is in 2NF.",
+     "3NF fails: \\(D \\to E\\) has a left side that is not a superkey and a non-prime right side. So \\(R\\) is in 2NF but not in 3NF (hence not in BCNF)."
+    ],
+    "shortcut": "List all keys, mark prime attributes, then test partial and transitive dependencies.",
+    "trap": "Counting only AB as a key; C with B is also a key because C determines A."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "attrs = 'ABCDE'\nfds = [('AB', 'C'), ('C', 'A'), ('AB', 'D'), ('D', 'E')]\ndef closure(x):\n    s = set(x)\n    ch = True\n    while ch:\n        ch = False\n        for l, r in fds:\n            if set(l) <= s and not set(r) <= s:\n                s |= set(r)\n                ch = True\n    return s\nkeys = []\nfor n in range(1, 6):\n    for comb in itertools.combinations(attrs, n):\n        if closure(comb) == set(attrs) and not any(set(k) <= set(comb) for k in keys):\n            keys.append(comb)\nprime = set()\nfor k in keys:\n    prime |= set(k)\ndef superkey(x):\n    return closure(x) == set(attrs)\nbcnf = all(superkey(l) for l, r in fds)\nnf3 = all(superkey(l) or r in prime for l, r in fds)\nnf2 = True\nfor k in keys:\n    for n in range(1, len(k)):\n        for sub in itertools.combinations(k, n):\n            if any(a not in prime and a not in sub for a in closure(sub)):\n                nf2 = False\ntruth = [bcnf, nf3 and not bcnf, nf2 and not nf3, not nf2]\nkstr = ', '.join(''.join(k) for k in keys)\nperm = [2, 0, 1, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000296",
    "subject": "Algorithms",
    "topic": "Searching, Sorting, Hashing Mechanisms",
    "kind": "application",
@@ -1127,7 +1975,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000278",
+   "id": "FORGE_CS_000297",
    "subject": "Operating Systems (OS)",
    "topic": "Memory Management and Virtual Memory",
    "kind": "multi_concept",
@@ -1159,7 +2007,39 @@
    }
   },
   {
-   "id": "FORGE_CS_000279",
+   "id": "FORGE_CS_000298",
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Machine Instructions & Addressing Modes",
+   "kind": "trace",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A processor supports register-indexed addressing with scaling, memory-indirect addressing and base-displacement addressing. Memory (byte addresses, \\(4\\)-byte words, addresses and values in decimal) holds: \\(M[4108] = 8192\\), \\(M[8192] = 8200\\), \\(M[8204] = 25\\). Registers: \\(R_2 = 4096\\), \\(R_3 = 3\\). The instructions run in order: \\(I_1\\): \\(R_1 \\leftarrow M[M[R_2 + R_3 \\times 4]]\\) (indexed with scale \\(4\\), then one level of indirection); \\(I_2\\): \\(R_4 \\leftarrow M[R_1 + 4]\\) (base plus displacement); \\(I_3\\): \\(R_5 \\leftarrow R_1 + R_4\\). The final value of \\(R_5\\) is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     8225,
+     8225
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "\\(I_1\\): effective address \\(= 4096 + 3 \\times 4 = 4108\\); \\(M[4108] = 8192\\) is a pointer, and \\(M[8192] = 8200\\), so \\(R_1 = 8200\\).",
+     "\\(I_2\\): address \\(R_1 + 4 = 8204\\), and \\(M[8204] = 25\\), so \\(R_4 = 25\\).",
+     "\\(I_3\\): \\(R_5 = 8200 + 25 = 8225\\)."
+    ],
+    "shortcut": "Evaluate each addressing mode in turn: address arithmetic first, memory reads after.",
+    "trap": "Stopping after the first memory access (taking 8192 as R1) instead of following the pointer once more."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "M = {4108: 8192, 8192: 8200, 8204: 25}\nR2 = 4096\nR3 = 3\nea = R2 + R3 * 4\nR1 = M[M[ea]]\nR4 = M[R1 + 4]\nR5 = R1 + R4\nanswer = R5"
+   }
+  },
+  {
+   "id": "FORGE_CS_000299",
    "subject": "Compiler Design",
    "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
    "kind": "trace",
@@ -1207,7 +2087,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000280",
+   "id": "FORGE_CS_000300",
    "subject": "Computer Networks (CN)",
    "topic": "Transport Layer (Flow Control and Congestion Control, TCP, UDP, Sockets)",
    "kind": "trace",
@@ -1240,7 +2120,87 @@
    }
   },
   {
-   "id": "FORGE_CS_000281",
+   "id": "FORGE_CS_000301",
+   "subject": "Programming in C",
+   "topic": "Pointers, Multi-Dimensional Arrays, Structures",
+   "kind": "trace",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "Consider the C fragment below on a machine where \\(\\texttt{int}\\) occupies \\(4\\) bytes and a structure of two ints has no padding. ```c struct P { int a; int b; }; struct P arr[3] = {{1, 2}, {3, 4}, {5, 6}}; struct P *p = arr; p += 2; int r = (p - 1)->b + *(int *)p + ((int *)arr)[3]; ``` The value of \\(r\\) is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(13\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(11\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(9\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(17\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "A"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "After \\(p \\mathrel{+}= 2\\) the pointer addresses \\(\\texttt{arr[2]}\\); pointer arithmetic moves in units of the whole structure (\\(8\\) bytes).",
+     "\\((p - 1)\\text{->}b = \\texttt{arr[1].b} = 4\\); \\(*(\\texttt{int}*)p\\) is the first member of \\(\\texttt{arr[2]}\\), that is \\(5\\); \\(((\\texttt{int}*)\\texttt{arr})[3]\\) treats the array as ints, so it is the fourth int, \\(4\\).",
+     "\\(r = 4 + 5 + 4 = 13\\)."
+    ],
+    "shortcut": "Pointer arithmetic scales by the pointee type; a cast changes the unit.",
+    "trap": "Scaling the pointer by 4 bytes instead of by the structure size, or indexing the int view as if it were the structure array."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "flat = [1, 2, 3, 4, 5, 6]\npidx = 2\nt1 = flat[(pidx - 1) * 2 + 1]\nt2 = flat[pidx * 2]\nt3 = flat[3]\nval = t1 + t2 + t3\nwrong = [11, 9, 17]\nopts = {'A': 13, 'B': 11, 'C': 9, 'D': 17}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000302",
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Main Memory & Virtual Memory Mechanics",
+   "kind": "application",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "A process on a machine with \\(32\\)-bit virtual addresses uses a two-level page table: pages are \\(4\\) KB, page-table entries are \\(4\\) bytes, and every table (top-level or second-level) occupies exactly one page. The process maps three regions: code from address \\(\\texttt{0x00400000}\\) of size \\(1\\) MB, heap from \\(\\texttt{0x10000000}\\) of size \\(6\\) MB, and a stack of \\(2\\) MB ending just below \\(\\texttt{0xC0000000}\\). Only second-level tables that contain at least one valid entry are allocated. The total number of pages occupied by the page tables is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     5,
+     5
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "A table page holds \\(4096/4 = 1024\\) entries, so the top-level index is the upper \\(10\\) address bits, and each second-level table covers \\(1024 \\times 4\\) KB \\(= 4\\) MB of address space.",
+     "Code (\\(1\\) MB inside one \\(4\\) MB block): \\(1\\) table; heap (\\(6\\) MB starting on a \\(4\\) MB boundary): \\(2\\) tables; stack (\\(2\\) MB ending at a \\(4\\) MB boundary): \\(1\\) table: 4 second-level tables.",
+     "Add the single top-level table: \\(1 + 4 = 5\\) pages."
+    ],
+    "shortcut": "Count the distinct 4 MB blocks touched, then add the top-level table.",
+    "trap": "Allocating all 1024 second-level tables, or counting by region size without checking which 4 MB blocks each region touches."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "regions = [(0x00400000, 1 << 20), (0x10000000, 6 << 20), (0xC0000000 - (2 << 20), 2 << 20)]\nl1 = set()\nfor start, size in regions:\n    p0 = start >> 12\n    p1 = (start + size - 1) >> 12\n    for p in range(p0, p1 + 1):\n        l1.add(p >> 10)\nnsecond = len(l1)\nanswer = 1 + nsecond"
+   }
+  },
+  {
+   "id": "FORGE_CS_000303",
    "subject": "Data Structures",
    "topic": "Abstract Data Types (ADTs), Stacks, Queues",
    "kind": "multi_concept",
@@ -1272,7 +2232,103 @@
    }
   },
   {
-   "id": "FORGE_CS_000282",
+   "id": "FORGE_CS_000304",
+   "subject": "Data Structures",
+   "topic": "Linked Lists & Binary Trees",
+   "kind": "trace",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A binary tree has the preorder traversal \\(1, 2, 4, 7, 5, 3, 6, 8, 9\\) and the inorder traversal \\(7, 4, 2, 5, 1, 6, 3, 8, 9\\). The number of nodes of the tree that have exactly one child is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(1\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(3\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(2\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(4\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "The first preorder element \\(1\\) is the root; in the inorder sequence it splits the left part \\(7, 4, 2, 5\\) from the right part \\(6, 3, 8, 9\\). Repeat on each part using the preorder blocks of the same sizes.",
+     "Left subtree: root \\(2\\) with left part \\(7, 4\\) (root \\(4\\), left child \\(7\\)) and right child \\(5\\). Right subtree: root \\(3\\) with left child \\(6\\) and right part \\(8, 9\\) (root \\(8\\), right child \\(9\\)).",
+     "Nodes with exactly one child: 4, 8, that is 2 nodes."
+    ],
+    "shortcut": "Preorder gives each root; inorder gives the sizes of the left and right parts.",
+    "trap": "Mixing up the left and right blocks when splitting the preorder sequence."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "pre = [1, 2, 4, 7, 5, 3, 6, 8, 9]\nino = [7, 4, 2, 5, 1, 6, 3, 8, 9]\none = []\ndef build(pre, ino):\n    if not pre:\n        return None\n    r = pre[0]\n    i = ino.index(r)\n    left = build(pre[1:1 + i], ino[:i])\n    right = build(pre[1 + i:], ino[i + 1:])\n    if (left is None) != (right is None):\n        one.append(r)\n    return (r, left, right)\nbuild(pre, ino)\nval = len(one)\nlst = ', '.join(str(x) for x in sorted(one))\nwrong = [val - 1, val + 1, val + 2]\nopts = {'A': 1, 'B': 3, 'C': 2, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000305",
+   "subject": "Computer Networks (CN)",
+   "topic": "Fragmentation and IP Addressing (IPv4, IPv6, CIDR, Basics of IP support Protocols (ARP, DHCP, ICMP), NAT)",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "Two stations on a CSMA/CD Ethernet start transmitting at exactly the same instant and collide. After the \\(i\\)-th collision each station independently picks a backoff delay uniformly at random from \\(\\{0, 1, \\dots, 2^{i} - 1\\}\\) slot times (binary exponential backoff) and, when the two delays are equal, they collide again; when the delays differ, the station with the smaller delay transmits successfully. The probability that the stations collide exactly three times in total and then one of them succeeds on its fourth attempt, correct to three decimal places, is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(0.125\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(0.25\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(0.063\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(0.109\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "D"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "After collision \\(i\\) the delays come from \\(2^i\\) values, so the stations pick the same value with probability \\(2^{-i}\\): \\(1/2\\) after the first, \\(1/4\\) after the second, \\(1/8\\) after the third.",
+     "Exactly three collisions in total means collision \\(1\\) (given), collision \\(2\\) again after the first backoff (\\(1/2\\)), collision \\(3\\) again after the second (\\(1/4\\)), then no collision after the third (\\(1 - 1/8 = 7/8\\)).",
+     "Probability \\(= \\tfrac12 \\times \\tfrac14 \\times \\tfrac78 = \\tfrac{7}{64} \\approx 0.109\\)."
+    ],
+    "shortcut": "Multiply 2^-i for each repeated collision, then the success probability of the last round.",
+    "trap": "Multiplying the collision probabilities without the final success factor, or using the same backoff range every time."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "F = fractions.Fraction\np_coll = [F(1, 2 ** i) for i in (1, 2, 3)]\npr = p_coll[0] * p_coll[1] * (1 - p_coll[2])\nval = round(float(pr), 3)\nwrong = [0.125, 0.25, 0.063]\nopts = {'A': 0.125, 'B': 0.25, 'C': 0.063, 'D': 0.109}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000306",
    "subject": "Computer Organization and Architecture (COA)",
    "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
    "kind": "trace",
@@ -1304,7 +2360,7 @@
    }
   },
   {
-   "id": "FORGE_CS_000283",
+   "id": "FORGE_CS_000307",
    "subject": "Probability & Statistics",
    "topic": "Conditional Probability & Bayes Theorem",
    "kind": "msq_discriminator",
@@ -1354,7 +2410,55 @@
    }
   },
   {
-   "id": "FORGE_CS_000284",
+   "id": "FORGE_CS_000308",
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Turing Machines & Undecidability",
+   "kind": "trace",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A Turing machine increments a binary number. It starts in \\(q_0\\) on the leftmost bit of the input and moves right over all bits (one step per bit) until it reads the blank to the right of the input, then moves left in state \\(q_1\\) (one step for that move). In \\(q_1\\), on a \\(1\\) it writes \\(0\\) and moves left (one step), and on a \\(0\\) or on the blank to the left of the input it writes \\(1\\) and halts (one step). The machine is run once on each of the \\(32\\) binary strings of length \\(5\\) (\\(00000\\) to \\(11111\\)). The total number of steps (transitions executed) over all \\(32\\) runs is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(224\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(255\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(256\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(192\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "B"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Every run first spends \\(5\\) steps moving right over the bits and \\(1\\) step turning left at the blank: \\(6\\) steps, plus one step to write the final \\(1\\) and halt, plus one step for every trailing \\(1\\) it turns into \\(0\\).",
+     "Over the \\(32\\) inputs the fixed part is \\(32 \\times 7 = 224\\); the number of trailing ones summed over all inputs is \\(16 + 8 + 4 + 2 + 1 = 31\\) (half of the strings end in \\(1\\), a quarter in \\(11\\), and so on).",
+     "Total \\(= 224 + 31 = 255\\) steps."
+    ],
+    "shortcut": "Fixed cost 7 per run plus the trailing ones; sum the trailing ones over all inputs.",
+    "trap": "Counting only the carry steps (31) or forgetting the right-moving scan and the final writing step."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "def run(w):\n    tape = list(w) + ['_']\n    pos = 0\n    state = 'q0'\n    steps = 0\n    while True:\n        if pos < 0:\n            tape.insert(0, '_')\n            pos = 0\n        sym = tape[pos]\n        if state == 'q0':\n            if sym in '01':\n                pos += 1\n            else:\n                state = 'q1'\n                pos -= 1\n            steps += 1\n        else:\n            if sym == '1':\n                tape[pos] = '0'\n                pos -= 1\n                steps += 1\n            else:\n                tape[pos] = '1'\n                steps += 1\n                break\n    return steps\ntot = 0\nfor i in range(32):\n    tot += run(format(i, '05b')) if False else run(''.join('1' if (i >> (4 - k)) & 1 else '0' for k in range(5)))\nval = tot\nwrong = [224, 256, 192]\nopts = {'A': 224, 'B': 255, 'C': 256, 'D': 192}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000309",
    "subject": "Linear Algebra",
    "topic": "Matrix Factorization & LU Decomposition",
    "kind": "msq_discriminator",
@@ -1400,6 +2504,54 @@
    "verify": {
     "lang": "python",
     "code": "F = fractions.Fraction\nA = [[2, 4, 2], [1, 2, 3], [3, 5, 1]]\ndef nopivot(A):\n    M = [[F(x) for x in r] for r in A]\n    for c in range(3):\n        if M[c][c] == 0:\n            return False\n        for r in range(c + 1, 3):\n            f = M[r][c] / M[c][c]\n            M[r] = [M[r][k] - f * M[c][k] for k in range(3)]\n    return True\ndef det_pivot(A):\n    M = [[F(x) for x in r] for r in A]\n    sign = 1\n    for c in range(3):\n        p = None\n        for r in range(c, 3):\n            if M[r][c] != 0:\n                p = r\n                break\n        if p is None:\n            return 0\n        if p != c:\n            M[c], M[p] = M[p], M[c]\n            sign = -sign\n        for r in range(c + 1, 3):\n            f = M[r][c] / M[c][c]\n            M[r] = [M[r][k] - f * M[c][k] for k in range(3)]\n    return sign * M[0][0] * M[1][1] * M[2][2]\ndet = (A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) - A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) + A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]))\ndp = det_pivot(A)\ntruth = [nopivot(A), dp == det, det != 0, det == 0]\ndetv = int(det)\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000310",
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular and Context-Free Languages & Pumping Lemma",
+   "kind": "conceptual",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 1,
+   "question_text": "Let \\(L\\) be the language over \\(\\{a, b\\}\\) of all strings that contain the substring \\(bb\\) or whose length is a multiple of \\(5\\). The pumping lemma for regular languages says that there is a number \\(p\\) such that every \\(w \\in L\\) with \\(|w| \\ge p\\) can be written \\(w = xyz\\) with \\(|xy| \\le p\\), \\(|y| \\ge 1\\) and \\(xy^{i}z \\in L\\) for all \\(i \\ge 0\\). The smallest such \\(p\\) for \\(L\\) is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(5\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(4\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(6\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(10\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "A"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "\\(p = 5\\) works: a word of \\(L\\) containing \\(bb\\) keeps a \\(bb\\) when we pump a single letter that is not part of it (some such letter lies among the first \\(5\\), and removing or repeating it never separates the two \\(b\\)s); a word with no \\(bb\\) has length divisible by \\(5\\), and pumping its first \\(5\\) letters changes the length by multiples of \\(5\\).",
+     "\\(p = 4\\) fails: take \\(w = ababa\\) (length \\(5\\), no \\(bb\\)); every substring \\(y\\) of the first \\(4\\) letters, repeated or removed, either leaves a length that is not a multiple of \\(5\\) and no \\(bb\\), or breaks some pumped word. Smaller \\(p\\) fail for similar reasons.",
+     "So the smallest pumping length is 5, even though the minimal DFA of \\(L\\) has more states."
+    ],
+    "shortcut": "Find the shortest word that cannot be pumped within p letters, then p is one more.",
+    "trap": "Taking the number of states of the minimal DFA as the pumping length; the smallest valid p can be smaller."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "def words(n):\n    out = ['']\n    cur = ['']\n    for _ in range(n):\n        cur = [w + c for w in cur for c in 'ab']\n        out = out + cur\n    return out\nW = words(11)\ndef pred(w):\n    return 'bb' in w or len(w) % 5 == 0\nLs = [w for w in W if pred(w)]\ndef works(p):\n    for w in Ls:\n        if len(w) < p:\n            continue\n        ok = False\n        for i in range(p + 1):\n            for j in range(i + 1, p + 1):\n                x = w[:i]\n                y = w[i:j]\n                z = w[j:]\n                if all(pred(x + y * k + z) for k in range(4)):\n                    ok = True\n                    break\n            if ok:\n                break\n        if not ok:\n            return False\n    return True\nval = 1\nwhile not works(val):\n    val += 1\nwrong = [val - 1, val + 1, val + 5]\nopts = {'A': 5, 'B': 4, 'C': 6, 'D': 10}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
    }
   }
  ]
