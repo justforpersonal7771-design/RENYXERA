@@ -1,0 +1,288 @@
+[
+ {
+  "slot": 46,
+  "kind": "multi_concept",
+  "question_text": "A demand-paged system has a single-level page table in memory. A TLB lookup takes \\(5\\) ns and a memory access takes \\(100\\) ns; the TLB is searched first and has a hit ratio of \\(0.95\\). On a TLB miss the page table is read from memory (one extra memory access) before the data access. In addition, a fraction \\(10^{-5}\\) of all memory references cause a page fault. Servicing a fault takes \\(8\\) ms when the victim page is clean and \\(20\\) ms when it is dirty; \\(30\\%\\) of victims are dirty. The effective access time, in nanoseconds and correct to the nearest whole number, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    226,
+    226
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Without faults: TLB hit \\(5 + 100 = 105\\) ns, TLB miss \\(5 + 100 + 100 = 205\\) ns, so \\(0.95 \\times 105 + 0.05 \\times 205 = 110\\) ns.",
+    "Average fault service time \\(= 0.7 \\times 8 + 0.3 \\times 20 = 11.6\\) ms \\(= 1.16 \\times 10^{7}\\) ns.",
+    "\\(\\text{EAT} = (1 - 10^{-5}) \\times 110 + 10^{-5} \\times 1.16 \\times 10^{7} \\approx 226\\) ns: the rare faults add more than the whole fault-free time."
+   ],
+   "shortcut": "EAT = (1 - p) x (TLB-weighted access) + p x (weighted fault time), all in the same unit.",
+   "trap": "Treating the fault service time in milliseconds as if it were nanoseconds, or ignoring the dirty-victim mix."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "hit = 5 + 100\nmiss = 5 + 100 + 100\nbase = 0.95 * hit + 0.05 * miss\nfault = 0.7 * 8e6 + 0.3 * 20e6\np = 1e-5\nanswer = round((1 - p) * base + p * fault, 2)\nfault_ms = fault / 1e6"
+  }
+ },
+ {
+  "slot": 55,
+  "kind": "trace",
+  "question_text": "The product \\(C = A \\times B\\) of two \\(8 \\times 8\\) matrices of \\(4\\)-byte integers is computed by the loops \\(i, j, k\\) (outermost to innermost) with the statement \\(C[i][j] \\mathrel{+}= A[i][k] \\times B[k][j]\\); only the reads of \\(A\\) and \\(B\\) go through a data cache (\\(C\\) is kept in a register). Both matrices are stored row by row, \\(A\\) from byte address \\(0\\) and \\(B\\) from byte address \\(256\\). The cache is direct-mapped with \\(8\\) lines of \\(32\\) bytes and is initially empty. The total number of cache misses is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    149,
+    149
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Each \\(32\\)-byte line holds \\(8\\) integers; \\(A\\) occupies lines \\(0\\) to \\(7\\) of memory and \\(B\\) lines \\(8\\) to \\(15\\), so \\(A\\)'s row \\(i\\) (line \\(i\\)) and \\(B\\)'s row \\(i\\) (line \\(8 + i\\)) fight for the same cache line \\(i\\).",
+    "In the innermost loop \\(A[i][k]\\) sits in the line of row \\(i\\) while \\(B[k][j]\\) moves down a column through all \\(8\\) lines; each \\(B\\) access evicts \\(A\\)'s row line when \\(k = i\\) and every other step brings in a fresh \\(B\\) line.",
+    "Simulating all \\(512\\) iterations with the direct-mapped rule (line \\(= \\text{block} \\bmod 8\\)) gives 149 misses."
+   ],
+   "shortcut": "Trace both address streams through the direct-mapped mapping; the column walk of B conflicts with A.",
+   "trap": "Using the hit pattern of a single matrix (row access hits 7 of 8) and forgetting that the two matrices map to the same cache lines."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cache = [-1] * 8\nmiss = 0\nfor i in range(8):\n    for j in range(8):\n        for k in range(8):\n            for addr in (4 * (i * 8 + k), 256 + 4 * (k * 8 + j)):\n                blk = addr // 32\n                s = blk % 8\n                if cache[s] != blk:\n                    cache[s] = blk\n                    miss += 1\nanswer = miss"
+  }
+ },
+ {
+  "slot": 36,
+  "kind": "msq_discriminator",
+  "question_text": "The log of a three-user session on a bank database lists, in time order: user 1 reads then writes account \\(A\\); user 2 reads \\(A\\) and writes account \\(B\\); user 1 commits; user 3 reads \\(B\\); user 2 commits; user 3 commits. In shorthand the history is \\(S: R_1(A)\\ W_1(A)\\ R_2(A)\\ W_2(B)\\ C_1\\ R_3(B)\\ C_2\\ C_3\\), where \\(C_k\\) is the commit of user \\(k\\). Pick every correct claim.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(S\\) is conflict serializable."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(S\\) is recoverable."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(S\\) is cascadeless (avoids cascading aborts)."
+   },
+   {
+    "option_id": "D",
+    "text": "If the positions of \\(C_1\\) and \\(C_2\\) were swapped (nothing else changed), the schedule would not be recoverable."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Conflict graph: \\(W_1(A)\\) before \\(R_2(A)\\) gives \\(T_1 \\to T_2\\); \\(W_2(B)\\) before \\(R_3(B)\\) gives \\(T_2 \\to T_3\\). No cycle, so the schedule is conflict serializable (order \\(T_1, T_2, T_3\\)).",
+    "\\(T_2\\) reads \\(A\\) written by \\(T_1\\) and \\(T_3\\) reads \\(B\\) written by \\(T_2\\); each writer commits before its reader (\\(C_1\\) before \\(C_2\\) before \\(C_3\\)), so the schedule is recoverable.",
+    "But both reads happen before the writer commits (\\(R_2(A)\\) precedes \\(C_1\\), \\(R_3(B)\\) precedes \\(C_2\\)): dirty reads, so it is not cascadeless.",
+    "Swapping the two commits makes \\(T_2\\) commit before \\(T_1\\) although it read \\(T_1\\)'s write: not recoverable."
+   ],
+   "shortcut": "Serializability = acyclic conflict graph; recoverability = readers commit after writers; cascadelessness = no dirty reads.",
+   "trap": "Mixing up recoverable (commit order of reader and writer) with cascadeless (no read of uncommitted data)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "ops = [(1, 'R', 'A'), (1, 'W', 'A'), (2, 'R', 'A'), (2, 'W', 'B'), (1, 'C', None), (3, 'R', 'B'), (2, 'C', None), (3, 'C', None)]\ndef csr(ops):\n    edges = set()\n    for x in range(len(ops)):\n        for y in range(x + 1, len(ops)):\n            a, b = ops[x], ops[y]\n            if a[0] != b[0] and a[1] != 'C' and b[1] != 'C' and a[2] == b[2] and 'W' in (a[1], b[1]):\n                edges.add((a[0], b[0]))\n    nodes = set([1, 2, 3])\n    while True:\n        free = [n for n in nodes if not any(e[1] == n and e[0] in nodes for e in edges)]\n        if not free:\n            break\n        nodes.remove(free[0])\n    return len(nodes) == 0\ndef info(ops):\n    commit = {}\n    for idx, o in enumerate(ops):\n        if o[1] == 'C':\n            commit[o[0]] = idx\n    rf = []\n    for idx, o in enumerate(ops):\n        if o[1] == 'R':\n            w = None\n            for y in range(idx):\n                if ops[y][1] == 'W' and ops[y][2] == o[2]:\n                    w = ops[y][0]\n            if w is not None and w != o[0]:\n                rf.append((w, o[0], idx))\n    return commit, rf\ndef recoverable(ops):\n    commit, rf = info(ops)\n    return all(commit[w] < commit[t] for w, t, j in rf)\ndef cascadeless(ops):\n    commit, rf = info(ops)\n    return all(commit[w] < j for w, t, j in rf)\nops2 = list(ops)\nops2[4], ops2[6] = ops2[6], ops2[4]\ntruth = [csr(ops), recoverable(ops), cascadeless(ops), not recoverable(ops2)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 41,
+  "kind": "multi_concept",
+  "question_text": "A hardware checker reads a stream of bits, the first bit being the most significant, and must raise a valid flag after a prefix exactly when the number formed so far is a multiple of \\(5\\) and an even number of bits has been consumed (reading no bits means the number \\(0\\)). A deterministic machine with a transition defined for every state and input bit is to produce the flag. The smallest possible number of states of such a machine is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(9\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(10\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(11\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(12\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Divisibility by \\(5\\) needs the remainder of the value so far (\\(5\\) states, update \\(r \\to 2r + b \\bmod 5\\)); the length parity needs \\(2\\) states: at most \\(5 \\times 2 = 10\\).",
+    "All pairs of these product states are reachable and no suffix merges them, so the minimal DFA has 10 states."
+   ],
+   "shortcut": "Independent conditions multiply; then check reachability and distinguishability.",
+   "trap": "Adding the component sizes (5 + 2) instead of multiplying them for an intersection, or assuming two product states merge."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def words(n):\n    out = ['']\n    cur = ['']\n    for _ in range(n):\n        cur = [w + c for w in cur for c in '01']\n        out = out + cur\n    return out\nW = words(8)\ndef pred(w):\n    v = 0\n    for ch in w:\n        v = v * 2 + int(ch)\n    return v % 5 == 0 and len(w) % 2 == 0\nval = len(set(tuple(pred(u + v) for v in W) for u in W))\nwrong = [val - 1, val + 1, val + 2]\nopts = {'A': 9, 'B': 10, 'C': 11, 'D': 12}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 56,
+  "kind": "msq_discriminator",
+  "question_text": "A condition affects \\(2\\%\\) of a population. Test \\(T_1\\) is positive for \\(90\\%\\) of affected and \\(5\\%\\) of unaffected people. Test \\(T_2\\) is positive for \\(80\\%\\) of affected and \\(10\\%\\) of unaffected people. Given the person's true status, the two tests are independent. A randomly chosen person is tested with both. Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The probability of the condition given only that \\(T_1\\) is positive exceeds \\(0.25\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "The probability of the condition given that both tests are positive exceeds \\(0.6\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "The probability of the condition given \\(T_1\\) positive and \\(T_2\\) negative is below \\(0.02\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "The two test results are independent of each other when the person's status is not known."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(P(D \\mid T_1^+) = 0.018 / (0.018 + 0.049) \\approx 0.269\\), above \\(0.25\\).",
+    "\\(P(D \\mid T_1^+ T_2^+) = 0.0144 / (0.0144 + 0.0049) \\approx 0.746\\), above \\(0.6\\).",
+    "\\(P(D \\mid T_1^+ T_2^-) = 0.0036 / (0.0036 + 0.0441) \\approx 0.075\\), well above \\(0.02\\), so the third statement is false.",
+    "The tests are independent only given the status; unconditionally both depend on the status, so \\(P(T_1^+ T_2^+) \\ne P(T_1^+)P(T_2^+)\\)."
+   ],
+   "shortcut": "Multiply the likelihoods under each status, then normalise.",
+   "trap": "Applying the independence of the tests without conditioning on the status, or reading a low prior as a low posterior."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "p = 0.02\ns1, f1 = 0.9, 0.05\ns2, f2 = 0.8, 0.10\na = p * s1 / (p * s1 + (1 - p) * f1)\nb = p * s1 * s2 / (p * s1 * s2 + (1 - p) * f1 * f2)\nc = p * s1 * (1 - s2) / (p * s1 * (1 - s2) + (1 - p) * f1 * (1 - f2))\npt1 = p * s1 + (1 - p) * f1\npt2 = p * s2 + (1 - p) * f2\npboth = p * s1 * s2 + (1 - p) * f1 * f2\ntruth = [a > 0.25, b > 0.6, c < 0.02, abs(pboth - pt1 * pt2) < 1e-9]\npa = round(a, 3)\npb = round(b, 3)\npc = round(c, 3)\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 31,
+  "kind": "multi_concept",
+  "question_text": "A table has seven columns named \\(A\\) to \\(G\\). The business rules are: the value of \\(A\\) fixes \\(B\\); the value of \\(B\\) fixes \\(C\\); the value of \\(C\\) fixes \\(A\\); the value of \\(D\\) fixes \\(E\\); the value of \\(E\\) fixes \\(D\\); and \\(C\\) and \\(D\\) together fix \\(G\\). No rule ever determines column \\(F\\). Counting every smallest set of columns that identifies a row uniquely, with no smaller subset doing so, the table has ______ such sets (candidate keys).",
+  "options": [],
+  "answer": {
+   "range": [
+    6,
+    6
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(F\\) appears on no right-hand side, so it is in every key. \\(A, B, C\\) determine one another (a cycle), and so do \\(D, E\\).",
+    "A key needs \\(F\\), one of \\(\\{A, B, C\\}\\) and one of \\(\\{D, E\\}\\); then \\(CD \\to G\\) supplies \\(G\\) through the closure. That is \\(3 \\times 2 = 6\\) keys, and no proper subset of any of them works."
+   ],
+   "shortcut": "Attributes never on a right-hand side are in every key; each cycle contributes a free choice.",
+   "trap": "Stopping at the first key found instead of letting every member of each cycle stand in for the others."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "attrs = 'ABCDEFG'\nfds = [('A', 'B'), ('B', 'C'), ('C', 'A'), ('D', 'E'), ('E', 'D'), ('CD', 'G')]\ndef closure(x):\n    s = set(x)\n    ch = True\n    while ch:\n        ch = False\n        for l, r in fds:\n            if set(l) <= s and not set(r) <= s:\n                s |= set(r)\n                ch = True\n    return s\nkeys = []\nfor n in range(1, 8):\n    for comb in itertools.combinations(attrs, n):\n        if closure(comb) == set(attrs) and not any(set(k) <= set(comb) for k in keys):\n            keys.append(comb)\nanswer = len(keys)"
+  }
+ },
+ {
+  "slot": 49,
+  "kind": "trace",
+  "question_text": "A TCP sender starts with a congestion window of \\(1\\) segment and a slow-start threshold of \\(16\\) segments. In every round-trip time (RTT) it sends a number of segments equal to the current window. At the end of an RTT with no loss the window doubles in slow start (but never above the threshold) and grows by \\(1\\) segment once it is at or above the threshold. At the end of the \\(7\\)th RTT three duplicate acknowledgements arrive: the threshold is set to half the current window (rounded down) and the window to the new threshold. At the end of the \\(10\\)th RTT a timeout occurs: the threshold is again set to half the current window (rounded down) and the window to \\(1\\). The total number of segments sent in the first \\(14\\) RTTs is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    108,
+    108
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Windows per RTT: \\(1, 2, 4, 8, 16\\) (slow start up to the threshold), then \\(17, 18\\) (additive increase): \\(66\\) segments in RTTs \\(1\\) to \\(7\\).",
+    "After the triple duplicate acknowledgement the threshold and window become \\(9\\): RTTs \\(8\\) to \\(10\\) send \\(9, 10, 11 = 30\\).",
+    "After the timeout the threshold is \\(5\\) and the window \\(1\\): RTTs \\(11\\) to \\(14\\) send \\(1, 2, 4, 5 = 12\\) (the doubling is capped at the threshold \\(5\\)).",
+    "Total \\(= 108\\) segments."
+   ],
+   "shortcut": "Simulate RTT by RTT, applying the rule that matches each event.",
+   "trap": "Resetting the window to 1 after the triple duplicate acknowledgement (that is the timeout rule), or letting slow start overshoot the threshold."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cwnd = 1\nss = 16\ntotal = 0\nfor r in range(1, 15):\n    total += cwnd\n    if r == 7:\n        ss = cwnd // 2\n        cwnd = ss\n    elif r == 10:\n        ss = cwnd // 2\n        cwnd = 1\n    elif cwnd < ss:\n        cwnd = min(2 * cwnd, ss)\n    else:\n        cwnd += 1\nanswer = total"
+  }
+ },
+ {
+  "slot": 17,
+  "kind": "msq_discriminator",
+  "question_text": "For a positive integer \\(n\\), let \\(U_n\\) denote the set of integers in \\(\\{1, \\dots, n - 1\\}\\) that are coprime to \\(n\\), with multiplication modulo \\(n\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(U_{10}\\) is a cyclic group."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(U_{12}\\) is a cyclic group."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(U_{15}\\) has exactly \\(3\\) elements of order \\(2\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "The set \\(\\{0, 1, 2, 3, 4, 5\\}\\) with multiplication modulo \\(6\\) is a group."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(U_{10} = \\{1, 3, 7, 9\\}\\): the element \\(3\\) has order \\(4\\) (\\(3, 9, 7, 1\\)), so the group is cyclic.",
+    "\\(U_{12} = \\{1, 5, 7, 11\\}\\): every element squares to \\(1\\), so no element has order \\(4\\) and the group is not cyclic.",
+    "\\(U_{15} \\cong U_3 \\times U_5\\), of order \\(8\\); its elements of order \\(2\\) are \\(4, 11, 14\\): exactly three.",
+    "In \\(\\{0, \\dots, 5\\}\\) under multiplication mod \\(6\\), \\(0\\) has no inverse (and neither do \\(2, 3, 4\\)), so it is not a group."
+   ],
+   "shortcut": "Check the element orders against the group order; remember zero divisors have no inverse.",
+   "trap": "Assuming every group of units is cyclic, or including non-invertible elements in the set."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def units(n):\n    return [x for x in range(1, n) if math.gcd(x, n) == 1]\ndef order(x, n):\n    k = 1\n    v = x % n\n    while v != 1:\n        v = v * x % n\n        k += 1\n    return k\ndef cyclic(n):\n    u = units(n)\n    return any(order(x, n) == len(u) for x in u)\ndef cnt2(n):\n    return sum(1 for x in units(n) if order(x, n) == 2)\ndef group_mod(n):\n    for x in range(n):\n        if not any(x * y % n == 1 for y in range(n)):\n            return False\n    return True\ntruth = [cyclic(10), cyclic(12), cnt2(15) == 3, group_mod(6)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ }
+]

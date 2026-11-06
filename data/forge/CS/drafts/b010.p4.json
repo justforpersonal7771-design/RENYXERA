@@ -1,0 +1,375 @@
+[
+ {
+  "slot": 1,
+  "kind": "trace",
+  "question_text": "A grammar in Chomsky normal form for a small command language has the rules \\(S \\to AB \\mid BC\\), \\(A \\to BA \\mid a\\), \\(B \\to CC \\mid b\\), \\(C \\to AB \\mid a\\). The CYK algorithm is run on the string \\(baaba\\). The table cell that covers the whole string contains exactly how many non-terminals?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Length-1 cells: \\(b \\to \\{B\\}\\), each \\(a \\to \\{A, C\\}\\).",
+    "Combine shorter cells for every split point of each substring (\\(O(n^3)\\) work); the cell for all five symbols is built from the splits \\(b \\mid aaba\\), \\(ba \\mid aba\\), \\(baa \\mid ba\\) and \\(baab \\mid a\\).",
+    "Its entry is \\(\\{A, C, S\\}\\): 3 non-terminals, and since the start symbol \\(S\\) is among them, \\(baaba\\) is in the language."
+   ],
+   "shortcut": "Fill the table by increasing substring length, trying every split.",
+   "trap": "Reading the table off by length-1 cells only, or counting rule applications instead of distinct non-terminals in the cell."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "bins = [('S', 'A', 'B'), ('S', 'B', 'C'), ('A', 'B', 'A'), ('B', 'C', 'C'), ('C', 'A', 'B')]\nterms = [('A', 'a'), ('B', 'b'), ('C', 'a')]\nw = 'baaba'\nn = len(w)\nT = {}\nfor i in range(n):\n    T[(i, 1)] = set(l for l, t in terms if t == w[i])\nfor L in range(2, n + 1):\n    for i in range(n - L + 1):\n        cell = set()\n        for k in range(1, L):\n            for l, X, Y in bins:\n                if X in T[(i, k)] and Y in T[(i + k, L - k)]:\n                    cell.add(l)\n        T[(i, L)] = cell\ntop = sorted(T[(0, n)])\nval = len(top)\nnames = ', '.join(top)\nwrong = [1, 2, 4]\nopts = {'A': 1, 'B': 2, 'C': 4, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 4,
+  "kind": "multi_concept",
+  "question_text": "For an integer \\(k\\) in the range \\(-5 \\le k \\le 5\\), consider the system \\(x + y + kz = 1\\), \\(x + ky + z = 1\\), \\(kx + y + z = 1\\), which models three symmetric balance conditions. For how many of these \\(11\\) values of \\(k\\) does the system have no solution at all?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The coefficient determinant is \\((k - 1)^2 (k + 2)\\), so the system is singular only for \\(k = 1\\) and \\(k = -2\\); for every other value the solution is unique.",
+    "At each singular value compare the rank of the coefficient matrix with the rank of the augmented matrix: a larger augmented rank means no solution, equal ranks below \\(3\\) mean infinitely many.",
+    "Over \\(-5 \\le k \\le 5\\) the inconsistent values are \\(k \\in \\{-2\\}\\) (and the dependent but consistent values are 1), so 1 values give no solution."
+   ],
+   "shortcut": "Singular coefficient matrix, then compare ranks of A and [A | b].",
+   "trap": "Treating every singular matrix as having no solution; consistency depends on the right-hand side."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "F = fractions.Fraction\ndef rank(M):\n    M = [[F(x) for x in r] for r in M]\n    r = 0\n    for c in range(len(M[0])):\n        p = None\n        for i in range(r, len(M)):\n            if M[i][c] != 0:\n                p = i\n                break\n        if p is None:\n            continue\n        M[r], M[p] = M[p], M[r]\n        for i in range(len(M)):\n            if i != r and M[i][c] != 0:\n                f = M[i][c] / M[r][c]\n                M[i] = [M[i][j] - f * M[r][j] for j in range(len(M[0]))]\n        r += 1\n    return r\nnone = []\nmany = []\nfor k in range(-5, 6):\n    A = [[1, 1, k], [1, k, 1], [k, 1, 1]]\n    Ab = [[1, 1, k, 1], [1, k, 1, 1], [k, 1, 1, 1]]\n    ra = rank(A)\n    rb = rank(Ab)\n    if ra < rb:\n        none.append(k)\n    elif ra < 3:\n        many.append(k)\nval = len(none)\nnlist = ', '.join(str(k) for k in none)\nmlist = ', '.join(str(k) for k in many)\nwrong = [0, 2, 3]\nopts = {'A': 0, 'B': 2, 'C': 1, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 9,
+  "kind": "multi_concept",
+  "question_text": "A breakfast cereal puts exactly one of \\(6\\) different collectible cards in each box, and every card is equally likely in every box, independently of the others. A fan keeps buying boxes until every one of the \\(6\\) cards has been collected. The expected number of boxes bought, correct to one decimal place, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(9.8\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(21\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(14.7\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "After \\(i\\) different cards have been collected, a new card appears with probability \\((6 - i)/6\\), so the number of boxes until the next new card is geometric with mean \\(6/(6 - i)\\).",
+    "By linearity the expected total is \\(6\\left(\\tfrac16 + \\tfrac15 + \\tfrac14 + \\tfrac13 + \\tfrac12 + 1\\right) = 6 H_6 = 6 \\times 2.45 = 14.7\\)."
+   ],
+   "shortcut": "Sum of 6/(6 - i) for i = 0..5, that is 6 times the sixth harmonic number.",
+   "trap": "Using the mean of the last stage only (6) or the expected number for a fixed number of boxes instead of summing the six geometric waiting times."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "val = round(6 * sum(1 / i for i in range(1, 7)), 1)\nwrong = [12.0, 9.8, 21.0]\nh6 = round(sum(1 / i for i in range(1, 7)), 3)\nopts = {'A': 12.0, 'B': 9.8, 'C': 21.0, 'D': 14.7}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 16,
+  "kind": "multi_concept",
+  "question_text": "A utility plans cables between seven sites numbered \\(0\\) to \\(6\\). The possible cables and their costs are \\(0\\text{-}1: 2\\), \\(0\\text{-}2: 2\\), \\(1\\text{-}2: 2\\), \\(2\\text{-}3: 3\\), \\(3\\text{-}4: 3\\), \\(3\\text{-}5: 1\\), \\(4\\text{-}5: 3\\), \\(5\\text{-}6: 4\\) and \\(4\\text{-}6: 4\\). Several different cheapest ways to connect all the sites exist. The number of cables that are used in every one of these cheapest connections (every minimum spanning tree) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    2,
+    2
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The minimum total cost is 15. Ties (the three cost-2 edges of the triangle \\(0, 1, 2\\), and the cost-3 edges around \\(3, 4, 5\\) together with the cost-4 pair at vertex \\(6\\)) create several equal-cost trees: 12 in all.",
+    "An edge is in every minimum spanning tree only if no tie can replace it. Intersecting all 12 trees leaves 2 edges."
+   ],
+   "shortcut": "An edge is forced when it is the unique cheapest edge across some cut.",
+   "trap": "Counting the edges of one MST (6) instead of the edges that no tie can exchange."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = [(0, 1, 2), (0, 2, 2), (1, 2, 2), (2, 3, 3), (3, 4, 3), (3, 5, 1), (4, 5, 3), (5, 6, 4), (4, 6, 4)]\ndef tree(sub):\n    par = list(range(7))\n    def f(x):\n        while par[x] != x:\n            x = par[x]\n        return x\n    for a, b, w in sub:\n        ra = f(a)\n        rb = f(b)\n        if ra == rb:\n            return False\n        par[ra] = rb\n    return True\nbest = None\nmsts = []\nfor sub in itertools.combinations(E, 6):\n    if tree(sub):\n        w = sum(e[2] for e in sub)\n        if best is None or w < best:\n            best = w\n            msts = [sub]\n        elif w == best:\n            msts.append(sub)\ncommon = set(msts[0])\nfor m in msts[1:]:\n    common &= set(m)\nanswer = len(common)\nnm = len(msts)\ncost = best"
+  }
+ },
+ {
+  "slot": 18,
+  "kind": "msq_discriminator",
+  "question_text": "In a build system the tasks are labelled by the positive divisors of \\(72\\), and task \\(a\\) must finish before task \\(b\\) whenever \\(a\\) divides \\(b\\). Treat this order as a partial order whose meet is the gcd and whose join is the lcm. Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The lattice of tasks is distributive."
+   },
+   {
+    "option_id": "B",
+    "text": "The lattice of tasks is complemented."
+   },
+   {
+    "option_id": "C",
+    "text": "There are exactly \\(10\\) maximal chains from task \\(1\\) to task \\(72\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "Exactly \\(2\\) tasks cover task \\(1\\) (the atoms of the lattice)."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "C",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(72 = 2^3 \\cdot 3^2\\), so the order is the product of a chain of \\(4\\) elements and a chain of \\(3\\): 12 tasks, meet gcd, join lcm. Divisor lattices are always distributive.",
+    "A complement of \\(2\\) would need gcd \\(1\\) and lcm \\(72\\), impossible because the \\(2\\)-part of such an lcm would stay \\(2\\); the lattice is complemented only for square-free numbers, so it is not complemented.",
+    "A maximal chain raises one prime exponent at a time: \\(3\\) steps in \\(2\\) and \\(2\\) in \\(3\\), \\(\\binom{5}{2} = 10\\) orders; the elements covering \\(1\\) are \\(2\\) and \\(3\\), so there are 2 atoms."
+   ],
+   "shortcut": "Divisor lattices are distributive; complemented only for square-free n; chains = multinomial of exponents.",
+   "trap": "Assuming every divisor lattice is complemented; that needs a square-free number."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "N = 72\nD = [d for d in range(1, N + 1) if N % d == 0]\ndef meet(a, b):\n    return math.gcd(a, b)\ndef join(a, b):\n    return a * b // math.gcd(a, b)\ndist = all(meet(x, join(y, z)) == join(meet(x, y), meet(x, z)) for x in D for y in D for z in D)\ncomp = all(any(meet(x, y) == 1 and join(x, y) == N for y in D) for x in D)\ndef covers(e, d):\n    return d % e == 0 and e < d and not any(e < m < d and m % e == 0 and d % m == 0 for m in D)\npaths = {1: 1}\nfor d in D:\n    if d != 1:\n        paths[d] = sum(paths[e] for e in D if covers(e, d))\nchains = paths[N]\natoms = sum(1 for d in D if covers(1, d))\ntruth = [dist, comp, chains == 10, atoms == 2]\nnd = len(D)\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 22,
+  "kind": "multi_concept",
+  "question_text": "An interpretation of a binary predicate \\(R\\) over the three-element domain \\(\\{1, 2, 3\\}\\) is just a subset of \\(\\{1,2,3\\} \\times \\{1,2,3\\}\\). The number of interpretations that make both \\(\\forall x\\, \\exists y\\, R(x, y)\\) and \\(\\forall x\\, \\forall y\\, (R(x, y) \\rightarrow \\neg R(y, x))\\) true is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(343\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(512\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(27\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The second sentence says \\(R\\) is asymmetric: no pair \\((x, x)\\) and never both \\((x, y)\\) and \\((y, x)\\). So each of the \\(3\\) unordered pairs \\(\\{x, y\\}\\) has \\(3\\) states (none, \\(x \\to y\\), \\(y \\to x\\)): \\(27\\) asymmetric relations.",
+    "An asymmetric relation on \\(3\\) elements has at most \\(3\\) pairs (one per unordered pair). The first sentence needs every element to have an outgoing pair, which forces exactly \\(3\\) pairs with exactly one outgoing pair per element: a function with no fixed point and no \\(2\\)-cycle, that is, one of the two \\(3\\)-cycles. So there are 2 interpretations."
+   ],
+   "shortcut": "Count asymmetric relations (3 states per pair) that also leave no vertex without an outgoing pair.",
+   "trap": "Counting serial relations alone (343) or asymmetric relations alone (27)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "pairs = [(a, b) for a in range(3) for b in range(3)]\ncnt = 0\nfor mask in range(512):\n    R = set(pairs[i] for i in range(9) if (mask >> i) & 1)\n    serial = all(any((x, y) in R for y in range(3)) for x in range(3))\n    asym = all(not ((x, y) in R and (y, x) in R) for x in range(3) for y in range(3))\n    if serial and asym:\n        cnt += 1\nval = cnt\nwrong = [343, 512, 27]\nserial_only = 343\nopts = {'A': 343, 'B': 512, 'C': 27, 'D': 2}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 37,
+  "kind": "msq_discriminator",
+  "question_text": "The Petersen graph has \\(10\\) vertices: an outer \\(5\\)-cycle, an inner five-pointed star (vertex \\(i\\) joined to vertex \\(i + 2\\) modulo \\(5\\) on the inner ring) and five spokes joining each outer vertex to its inner partner; every vertex has degree \\(3\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The chromatic number of the Petersen graph is \\(3\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "The Petersen graph has a perfect matching."
+   },
+   {
+    "option_id": "C",
+    "text": "The largest set of pairwise non-adjacent vertices of the Petersen graph has exactly \\(4\\) vertices."
+   },
+   {
+    "option_id": "D",
+    "text": "The Petersen graph has a Hamiltonian cycle."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "It contains \\(5\\)-cycles, so it is not bipartite (\\(\\chi \\ge 3\\)); a proper \\(3\\)-colouring exists, so \\(\\chi = 3\\).",
+    "A cubic graph without bridges has a perfect matching (Petersen's theorem), and the Petersen graph has \\(6\\) of them.",
+    "Its independence number is \\(4\\) (every independent set of size \\(5\\) would force an edge to a neighbour covered twice).",
+    "Famously the Petersen graph has no Hamiltonian cycle (a search over all vertex orders confirms it), although it has a Hamiltonian path."
+   ],
+   "shortcut": "Check colouring, matching, independence and Hamiltonicity one by one; the Petersen graph is the classic exception for Hamiltonicity.",
+   "trap": "Assuming a regular, highly symmetric graph must be Hamiltonian."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = set()\nfor i in range(5):\n    E.add((i, (i + 1) % 5))\n    E.add((i, i + 5))\n    E.add((5 + i, 5 + (i + 2) % 5))\nadj = {v: set() for v in range(10)}\nfor a, b in E:\n    adj[a].add(b)\n    adj[b].add(a)\ndef colourable(k):\n    col = [-1] * 10\n    def go(v):\n        if v == 10:\n            return True\n        for c in range(k):\n            if all(col[u] != c for u in adj[v] if u < v):\n                col[v] = c\n                if go(v + 1):\n                    return True\n        col[v] = -1\n        return False\n    return go(0)\nchi = 1\nwhile not colourable(chi):\n    chi += 1\ndef perfect(rem):\n    if not rem:\n        return True\n    v = min(rem)\n    for u in adj[v]:\n        if u in rem:\n            if perfect(rem - set([v, u])):\n                return True\n    return False\npm = perfect(set(range(10)))\nalpha = 0\nfor mask in range(1024):\n    s = [v for v in range(10) if (mask >> v) & 1]\n    if all(b not in adj[a] for a in s for b in s):\n        alpha = max(alpha, len(s))\ndef ham():\n    path = [0]\n    used = [False] * 10\n    used[0] = True\n    def go():\n        if len(path) == 10:\n            return 0 in adj[path[-1]]\n        for u in adj[path[-1]]:\n            if not used[u]:\n                used[u] = True\n                path.append(u)\n                if go():\n                    return True\n                path.pop()\n                used[u] = False\n        return False\n    return go()\nhc = ham()\ntruth = [chi == 3, pm, alpha == 4, hc]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 39,
+  "kind": "trap_aware",
+  "question_text": "The table \\(\\text{Staff}(\\text{id}, \\text{boss})\\) holds the rows \\((1, \\text{NULL}), (2, 1), (3, 1), (4, 2), (5, \\text{NULL})\\). Query \\(Q_1\\) is SELECT id FROM Staff WHERE id NOT IN (SELECT boss FROM Staff). Query \\(Q_2\\) is SELECT s.id FROM Staff s WHERE NOT EXISTS (SELECT 1 FROM Staff t WHERE t.boss = s.id). The number of rows returned by \\(Q_2\\) minus the number of rows returned by \\(Q_1\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(5\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The subquery of \\(Q_1\\) returns \\(\\{\\text{NULL}, 1, 1, 2, \\text{NULL}\\}\\). \\(x \\text{ NOT IN } (\\dots, \\text{NULL})\\) is \\(\\text{false}\\) when \\(x\\) matches a value and \\(\\text{unknown}\\) otherwise, never true, so \\(Q_1\\) returns \\(0\\) rows.",
+    "\\(Q_2\\) compares only with real values: the ids that nobody has as a boss are \\(3, 4, 5\\), so it returns \\(3\\) rows.",
+    "Difference \\(= 3 - 0 = 3\\)."
+   ],
+   "shortcut": "Three-valued logic: x NOT IN (..., NULL) can never be true.",
+   "trap": "Expecting NOT IN to behave like NOT EXISTS: a single NULL in the subquery makes NOT IN return no rows."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "rows = [(1, None), (2, 1), (3, 1), (4, 2), (5, None)]\nbosses = [b for i, b in rows]\ndef not_in(x):\n    res = True\n    for b in bosses:\n        if b is None:\n            r = None\n        else:\n            r = (x != b)\n        if r is False:\n            return False\n        if r is None:\n            res = None\n    return res\nq1 = sum(1 for i, b in rows if not_in(i) is True)\nq2 = sum(1 for i, b in rows if not any(t == i for t in bosses if t is not None))\nval = q2 - q1\nwrong = [0, 2, 5]\nopts = {'A': 0, 'B': 3, 'C': 2, 'D': 5}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 48,
+  "kind": "trace",
+  "question_text": "A grammar for a data-record format has start symbol \\(S\\) and the productions \\(S \\to A\\,B\\,c\\), \\(A \\to a\\,A \\mid \\varepsilon\\), \\(B \\to a\\,B \\mid b \\mid \\varepsilon\\). When the LL(1) predictive parsing table is built, the number of table cells that contain more than one production is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(\\text{FIRST}(A) = \\{a, \\varepsilon\\}\\), \\(\\text{FIRST}(B) = \\{a, b, \\varepsilon\\}\\); since \\(A\\) and \\(B\\) can vanish, \\(\\text{FOLLOW}(A) = \\{a, b, c\\}\\) (the first symbols of \\(B\\,c\\)) and \\(\\text{FOLLOW}(B) = \\{c\\}\\).",
+    "For \\(A\\): the rule \\(A \\to aA\\) is entered under \\(a\\), and \\(A \\to \\varepsilon\\) is entered under every symbol of \\(\\text{FOLLOW}(A)\\), which includes \\(a\\): cell \\([A, a]\\) holds two productions.",
+    "For \\(B\\): \\(aB\\) under \\(a\\), \\(b\\) under \\(b\\), \\(\\varepsilon\\) under \\(c\\): no clash. Cells with more than one production: 1."
+   ],
+   "shortcut": "Check each nullable non-terminal: FIRST of its other alternatives against its FOLLOW.",
+   "trap": "Ignoring that an epsilon production is entered under FOLLOW, which can overlap FIRST of a sibling alternative."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "G = [('S', ['A', 'B', 'c']), ('A', ['a', 'A']), ('A', []), ('B', ['a', 'B']), ('B', ['b']), ('B', [])]\nNT = ['S', 'A', 'B']\nnullable = set()\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        if l not in nullable and all(x in nullable for x in r):\n            nullable.add(l)\n            ch = True\nfirst = {n: set() for n in NT}\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        for x in r:\n            add = first[x] if x in NT else set([x])\n            if not add <= first[l]:\n                first[l] |= add\n                ch = True\n            if not (x in nullable):\n                break\ndef fseq(seq):\n    out = set()\n    for x in seq:\n        out |= first[x] if x in NT else set([x])\n        if not (x in nullable):\n            return out, False\n    return out, True\nfollow = {n: set() for n in NT}\nfollow['S'].add('$')\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        for k, x in enumerate(r):\n            if x in NT:\n                f, nl = fseq(r[k + 1:])\n                add = set(f)\n                if nl:\n                    add |= follow[l]\n                if not add <= follow[x]:\n                    follow[x] |= add\n                    ch = True\ntable = {}\nfor p, (l, r) in enumerate(G):\n    f, nl = fseq(r)\n    cells = set(f)\n    if nl:\n        cells |= follow[l]\n    for t in cells:\n        table.setdefault((l, t), []).append(p)\nval = sum(1 for v in table.values() if len(v) > 1)\nfa = ', '.join(sorted(follow['A']))\nwrong = [0, 2, 3]\nopts = {'A': 0, 'B': 2, 'C': 1, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ }
+]

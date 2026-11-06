@@ -1,5 +1,48 @@
 [
  {
+  "slot": 1,
+  "kind": "trace",
+  "question_text": "A grammar in Chomsky normal form for a small command language has the rules \\(S \\to AB \\mid BC\\), \\(A \\to BA \\mid a\\), \\(B \\to CC \\mid b\\), \\(C \\to AB \\mid a\\). The CYK algorithm is run on the string \\(baaba\\). The table cell that covers the whole string contains exactly how many non-terminals?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(4\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Length-1 cells: \\(b \\to \\{B\\}\\), each \\(a \\to \\{A, C\\}\\).",
+    "Combine shorter cells for every split point of each substring (\\(O(n^3)\\) work); the cell for all five symbols is built from the splits \\(b \\mid aaba\\), \\(ba \\mid aba\\), \\(baa \\mid ba\\) and \\(baab \\mid a\\).",
+    "Its entry is \\(\\{A, C, S\\}\\): 3 non-terminals, and since the start symbol \\(S\\) is among them, \\(baaba\\) is in the language."
+   ],
+   "shortcut": "Fill the table by increasing substring length, trying every split.",
+   "trap": "Reading the table off by length-1 cells only, or counting rule applications instead of distinct non-terminals in the cell."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "bins = [('S', 'A', 'B'), ('S', 'B', 'C'), ('A', 'B', 'A'), ('B', 'C', 'C'), ('C', 'A', 'B')]\nterms = [('A', 'a'), ('B', 'b'), ('C', 'a')]\nw = 'baaba'\nn = len(w)\nT = {}\nfor i in range(n):\n    T[(i, 1)] = set(l for l, t in terms if t == w[i])\nfor L in range(2, n + 1):\n    for i in range(n - L + 1):\n        cell = set()\n        for k in range(1, L):\n            for l, X, Y in bins:\n                if X in T[(i, k)] and Y in T[(i + k, L - k)]:\n                    cell.add(l)\n        T[(i, L)] = cell\ntop = sorted(T[(0, n)])\nval = len(top)\nnames = ', '.join(top)\nwrong = [1, 2, 4]\nopts = {'A': 1, 'B': 2, 'C': 4, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
   "slot": 2,
   "kind": "application",
   "question_text": "A backup tool reads a file of exactly \\(5{,}000{,}000\\) bytes sequentially from its first byte. The file system uses \\(1\\) KB blocks (\\(1024\\) bytes) and \\(4\\)-byte block pointers. Each inode holds \\(12\\) direct pointers, one single-indirect pointer and one double-indirect pointer. The inode is read once, and each index block (single-indirect, double-indirect or second-level) is read from disk once and then kept in memory while the file is read; every data block is read once. The total number of disk block reads is ______.",
@@ -51,6 +94,49 @@
   "verify": {
    "lang": "python",
    "code": "cpi = 1 + 0.25 * 0.4 * 1 + 0.2 * 0.15 * 3 + 0.02 * 40 + 0.25 * 0.05 * 40\nanswer = round(cpi * 1e8 / 2e9 * 1000, 2)"
+  }
+ },
+ {
+  "slot": 4,
+  "kind": "multi_concept",
+  "question_text": "For an integer \\(k\\) in the range \\(-5 \\le k \\le 5\\), consider the system \\(x + y + kz = 1\\), \\(x + ky + z = 1\\), \\(kx + y + z = 1\\), which models three symmetric balance conditions. For how many of these \\(11\\) values of \\(k\\) does the system have no solution at all?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The coefficient determinant is \\((k - 1)^2 (k + 2)\\), so the system is singular only for \\(k = 1\\) and \\(k = -2\\); for every other value the solution is unique.",
+    "At each singular value compare the rank of the coefficient matrix with the rank of the augmented matrix: a larger augmented rank means no solution, equal ranks below \\(3\\) mean infinitely many.",
+    "Over \\(-5 \\le k \\le 5\\) the inconsistent values are \\(k \\in \\{-2\\}\\) (and the dependent but consistent values are 1), so 1 values give no solution."
+   ],
+   "shortcut": "Singular coefficient matrix, then compare ranks of A and [A | b].",
+   "trap": "Treating every singular matrix as having no solution; consistency depends on the right-hand side."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "F = fractions.Fraction\ndef rank(M):\n    M = [[F(x) for x in r] for r in M]\n    r = 0\n    for c in range(len(M[0])):\n        p = None\n        for i in range(r, len(M)):\n            if M[i][c] != 0:\n                p = i\n                break\n        if p is None:\n            continue\n        M[r], M[p] = M[p], M[r]\n        for i in range(len(M)):\n            if i != r and M[i][c] != 0:\n                f = M[i][c] / M[r][c]\n                M[i] = [M[i][j] - f * M[r][j] for j in range(len(M[0]))]\n        r += 1\n    return r\nnone = []\nmany = []\nfor k in range(-5, 6):\n    A = [[1, 1, k], [1, k, 1], [k, 1, 1]]\n    Ab = [[1, 1, k, 1], [1, k, 1, 1], [k, 1, 1, 1]]\n    ra = rank(A)\n    rb = rank(Ab)\n    if ra < rb:\n        none.append(k)\n    elif ra < 3:\n        many.append(k)\nval = len(none)\nnlist = ', '.join(str(k) for k in none)\nmlist = ', '.join(str(k) for k in many)\nwrong = [0, 2, 3]\nopts = {'A': 0, 'B': 2, 'C': 1, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
   }
  },
  {
@@ -138,6 +224,276 @@
   "verify": {
    "lang": "python",
    "code": "words = 4e6 / 4\ncycle = words * 100e-9\nblocks = 4e6 / 16000\nirq = blocks * 2 * 20e-6\nval = round((cycle + irq) * 100, 2)\nwrong = [10.0, 1.0, 21.0]\nopts = {'A': 10.0, 'B': 1.0, 'C': 11.0, 'D': 21.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 9,
+  "kind": "multi_concept",
+  "question_text": "A breakfast cereal puts exactly one of \\(6\\) different collectible cards in each box, and every card is equally likely in every box, independently of the others. A fan keeps buying boxes until every one of the \\(6\\) cards has been collected. The expected number of boxes bought, correct to one decimal place, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(12\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(9.8\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(21\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(14.7\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "After \\(i\\) different cards have been collected, a new card appears with probability \\((6 - i)/6\\), so the number of boxes until the next new card is geometric with mean \\(6/(6 - i)\\).",
+    "By linearity the expected total is \\(6\\left(\\tfrac16 + \\tfrac15 + \\tfrac14 + \\tfrac13 + \\tfrac12 + 1\\right) = 6 H_6 = 6 \\times 2.45 = 14.7\\)."
+   ],
+   "shortcut": "Sum of 6/(6 - i) for i = 0..5, that is 6 times the sixth harmonic number.",
+   "trap": "Using the mean of the last stage only (6) or the expected number for a fixed number of boxes instead of summing the six geometric waiting times."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "val = round(6 * sum(1 / i for i in range(1, 7)), 1)\nwrong = [12.0, 9.8, 21.0]\nh6 = round(sum(1 / i for i in range(1, 7)), 3)\nopts = {'A': 12.0, 'B': 9.8, 'C': 21.0, 'D': 14.7}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 12,
+  "kind": "msq_discriminator",
+  "question_text": "A parser generator is given a toy protocol grammar whose terminals are \\(a, b, c, d, e\\) and whose non-terminals are \\(S\\) (the start), \\(A\\) and \\(B\\). The productions are \\(S \\to a\\,A\\,d \\mid b\\,B\\,d \\mid a\\,B\\,e \\mid b\\,A\\,e\\), \\(A \\to c\\) and \\(B \\to c\\). Which one of the following classifications of the grammar is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The grammar is LR(1) but not LALR(1)."
+   },
+   {
+    "option_id": "B",
+    "text": "The grammar is SLR(1)."
+   },
+   {
+    "option_id": "C",
+    "text": "The grammar is LALR(1) but not SLR(1)."
+   },
+   {
+    "option_id": "D",
+    "text": "The grammar is not LR(1)."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "After reading \\(a\\,c\\) the parser holds \\(A \\to c\\cdot\\) with look-ahead \\(d\\) and \\(B \\to c\\cdot\\) with look-ahead \\(e\\); after \\(b\\,c\\) the look-aheads are the other way round (\\(A\\): \\(e\\), \\(B\\): \\(d\\)). With full look-aheads there is no conflict, so the grammar is LR(1) (the canonical collection has 14 states).",
+    "LALR(1) merges states with the same core: the two states \\(\\{A \\to c\\cdot,\\ B \\to c\\cdot\\}\\) merge into one in which both reductions have look-ahead set \\(\\{d, e\\}\\), a reduce-reduce conflict (the merged automaton has 13 states).",
+    "SLR(1) uses \\(\\text{FOLLOW}(A) = \\text{FOLLOW}(B) = \\{d, e\\}\\) and conflicts in the same way. So the grammar is LR(1) but neither LALR(1) nor SLR(1)."
+   ],
+   "shortcut": "Compare the look-aheads of the two reductions before and after merging same-core states.",
+   "trap": "Assuming LALR(1) is as strong as LR(1): merging states can create reduce-reduce conflicts that full look-aheads avoid."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "G = [(\"S'\", (\"S\",)), (\"S\", (\"a\", \"A\", \"d\")), (\"S\", (\"b\", \"B\", \"d\")), (\"S\", (\"a\", \"B\", \"e\")), (\"S\", (\"b\", \"A\", \"e\")), (\"A\", (\"c\",)), (\"B\", (\"c\",))]\nNT = [\"S'\", \"S\", \"A\", \"B\"]\ndef first(sym):\n    if sym not in NT:\n        return set([sym])\n    out = set()\n    for l, r in G:\n        if l == sym:\n            out |= first(r[0])\n    return out\ndef closure(items):\n    items = set(items)\n    ch = True\n    while ch:\n        ch = False\n        for (p, d, la) in list(items):\n            lhs, rhs = G[p]\n            if d < len(rhs) and rhs[d] in NT:\n                beta = rhs[d + 1:]\n                las = first(beta[0]) if beta else set([la])\n                for q, (l2, r2) in enumerate(G):\n                    if l2 == rhs[d]:\n                        for x in las:\n                            it = (q, 0, x)\n                            if it not in items:\n                                items.add(it)\n                                ch = True\n    return tuple(sorted(items))\ndef goto(st, X):\n    moved = set((p, d + 1, la) for (p, d, la) in st if d < len(G[p][1]) and G[p][1][d] == X)\n    return closure(moved) if moved else None\nstart = closure(set([(0, 0, '$')]))\nstates = [start]\nseen = {start: 0}\nsyms = set()\nfor l, r in G:\n    syms.add(l)\n    for s in r:\n        syms.add(s)\nsyms = sorted(syms)\ni = 0\nwhile i < len(states):\n    for X in syms:\n        g = goto(states[i], X)\n        if g is not None and g not in seen:\n            seen[g] = len(states)\n            states.append(g)\n    i += 1\ndef conflict(st, la_of):\n    reds = []\n    shifts = set()\n    for (p, d, la) in st:\n        if d == len(G[p][1]):\n            for x in la_of(p, la):\n                reds.append((p, x))\n        elif G[p][1][d] not in NT:\n            shifts.add(G[p][1][d])\n    las = [x for p, x in reds]\n    return any(x in shifts for x in las) or len(las) != len(set(las))\nlr1_ok = not any(conflict(s, lambda p, la: [la]) for s in states)\ngroups = {}\nfor s in states:\n    core = tuple(sorted(set((p, d) for (p, d, la) in s)))\n    groups[core] = groups.get(core, set()) | set(s)\nlalr_ok = not any(conflict(tuple(sorted(g)), lambda p, la: [la]) for g in groups.values())\nfollow = {n: set() for n in NT}\nfollow[\"S'\"].add('$')\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        for k, s in enumerate(r):\n            if s in NT:\n                add = first(r[k + 1]) if k + 1 < len(r) else follow[l]\n                if not add <= follow[s]:\n                    follow[s] |= add\n                    ch = True\nslr_ok = not any(conflict(tuple(sorted(set((p, d, 'x') for (p, d) in core))), lambda p, la: sorted(follow[G[p][0]])) for core in groups.keys())\nnstates = len(states)\nncores = len(groups)\ntruth = [slr_ok, lalr_ok and not slr_ok, lr1_ok and not lalr_ok, not lr1_ok]\nperm = [2, 0, 1, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 13,
+  "kind": "trace",
+  "question_text": "Consider the C program below. ```c int f(int n, int *c) { if (n < 2) { (*c)++; return n; } return f(n - 1, c) + f(n - 2, c); } int main(void) { int calls = 0; int v = f(9, &calls); /* the value of v + calls is printed */ } ``` The value printed is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    89,
+    89
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(v = f(9)\\) is the Fibonacci number \\(F_9 = 34\\).",
+    "Every call with \\(n < 2\\) is a leaf and increments the shared counter: the number of leaves for \\(f(9)\\) is \\(F_{10} = 55\\).",
+    "\\(v + \\text{calls} = 89\\)."
+   ],
+   "shortcut": "Leaf count for f(n) is the next Fibonacci number; the pointer shares one counter.",
+   "trap": "Counting every call (not only the leaves) or treating the counter as a local copy."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "calls = 0\ndef f(n):\n    global calls\n    if n < 2:\n        calls += 1\n        return n\n    return f(n - 1) + f(n - 2)\nv = f(9)\nanswer = v + calls"
+  }
+ },
+ {
+  "slot": 16,
+  "kind": "multi_concept",
+  "question_text": "A utility plans cables between seven sites numbered \\(0\\) to \\(6\\). The possible cables and their costs are \\(0\\text{-}1: 2\\), \\(0\\text{-}2: 2\\), \\(1\\text{-}2: 2\\), \\(2\\text{-}3: 3\\), \\(3\\text{-}4: 3\\), \\(3\\text{-}5: 1\\), \\(4\\text{-}5: 3\\), \\(5\\text{-}6: 4\\) and \\(4\\text{-}6: 4\\). Several different cheapest ways to connect all the sites exist. The number of cables that are used in every one of these cheapest connections (every minimum spanning tree) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    2,
+    2
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The minimum total cost is 15. Ties (the three cost-2 edges of the triangle \\(0, 1, 2\\), and the cost-3 edges around \\(3, 4, 5\\) together with the cost-4 pair at vertex \\(6\\)) create several equal-cost trees: 12 in all.",
+    "An edge is in every minimum spanning tree only if no tie can replace it. Intersecting all 12 trees leaves 2 edges."
+   ],
+   "shortcut": "An edge is forced when it is the unique cheapest edge across some cut.",
+   "trap": "Counting the edges of one MST (6) instead of the edges that no tie can exchange."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = [(0, 1, 2), (0, 2, 2), (1, 2, 2), (2, 3, 3), (3, 4, 3), (3, 5, 1), (4, 5, 3), (5, 6, 4), (4, 6, 4)]\ndef tree(sub):\n    par = list(range(7))\n    def f(x):\n        while par[x] != x:\n            x = par[x]\n        return x\n    for a, b, w in sub:\n        ra = f(a)\n        rb = f(b)\n        if ra == rb:\n            return False\n        par[ra] = rb\n    return True\nbest = None\nmsts = []\nfor sub in itertools.combinations(E, 6):\n    if tree(sub):\n        w = sum(e[2] for e in sub)\n        if best is None or w < best:\n            best = w\n            msts = [sub]\n        elif w == best:\n            msts.append(sub)\ncommon = set(msts[0])\nfor m in msts[1:]:\n    common &= set(m)\nanswer = len(common)\nnm = len(msts)\ncost = best"
+  }
+ },
+ {
+  "slot": 17,
+  "kind": "msq_discriminator",
+  "question_text": "For a positive integer \\(n\\), let \\(U_n\\) denote the set of integers in \\(\\{1, \\dots, n - 1\\}\\) that are coprime to \\(n\\), with multiplication modulo \\(n\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(U_{10}\\) is a cyclic group."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(U_{12}\\) is a cyclic group."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(U_{15}\\) has exactly \\(3\\) elements of order \\(2\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "The set \\(\\{0, 1, 2, 3, 4, 5\\}\\) with multiplication modulo \\(6\\) is a group."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(U_{10} = \\{1, 3, 7, 9\\}\\): the element \\(3\\) has order \\(4\\) (\\(3, 9, 7, 1\\)), so the group is cyclic.",
+    "\\(U_{12} = \\{1, 5, 7, 11\\}\\): every element squares to \\(1\\), so no element has order \\(4\\) and the group is not cyclic.",
+    "\\(U_{15} \\cong U_3 \\times U_5\\), of order \\(8\\); its elements of order \\(2\\) are \\(4, 11, 14\\): exactly three.",
+    "In \\(\\{0, \\dots, 5\\}\\) under multiplication mod \\(6\\), \\(0\\) has no inverse (and neither do \\(2, 3, 4\\)), so it is not a group."
+   ],
+   "shortcut": "Check the element orders against the group order; remember zero divisors have no inverse.",
+   "trap": "Assuming every group of units is cyclic, or including non-invertible elements in the set."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def units(n):\n    return [x for x in range(1, n) if math.gcd(x, n) == 1]\ndef order(x, n):\n    k = 1\n    v = x % n\n    while v != 1:\n        v = v * x % n\n        k += 1\n    return k\ndef cyclic(n):\n    u = units(n)\n    return any(order(x, n) == len(u) for x in u)\ndef cnt2(n):\n    return sum(1 for x in units(n) if order(x, n) == 2)\ndef group_mod(n):\n    for x in range(n):\n        if not any(x * y % n == 1 for y in range(n)):\n            return False\n    return True\ntruth = [cyclic(10), cyclic(12), cnt2(15) == 3, group_mod(6)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 18,
+  "kind": "msq_discriminator",
+  "question_text": "In a build system the tasks are labelled by the positive divisors of \\(72\\), and task \\(a\\) must finish before task \\(b\\) whenever \\(a\\) divides \\(b\\). Treat this order as a partial order whose meet is the gcd and whose join is the lcm. Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The lattice of tasks is distributive."
+   },
+   {
+    "option_id": "B",
+    "text": "The lattice of tasks is complemented."
+   },
+   {
+    "option_id": "C",
+    "text": "There are exactly \\(10\\) maximal chains from task \\(1\\) to task \\(72\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "Exactly \\(2\\) tasks cover task \\(1\\) (the atoms of the lattice)."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "C",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(72 = 2^3 \\cdot 3^2\\), so the order is the product of a chain of \\(4\\) elements and a chain of \\(3\\): 12 tasks, meet gcd, join lcm. Divisor lattices are always distributive.",
+    "A complement of \\(2\\) would need gcd \\(1\\) and lcm \\(72\\), impossible because the \\(2\\)-part of such an lcm would stay \\(2\\); the lattice is complemented only for square-free numbers, so it is not complemented.",
+    "A maximal chain raises one prime exponent at a time: \\(3\\) steps in \\(2\\) and \\(2\\) in \\(3\\), \\(\\binom{5}{2} = 10\\) orders; the elements covering \\(1\\) are \\(2\\) and \\(3\\), so there are 2 atoms."
+   ],
+   "shortcut": "Divisor lattices are distributive; complemented only for square-free n; chains = multinomial of exponents.",
+   "trap": "Assuming every divisor lattice is complemented; that needs a square-free number."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "N = 72\nD = [d for d in range(1, N + 1) if N % d == 0]\ndef meet(a, b):\n    return math.gcd(a, b)\ndef join(a, b):\n    return a * b // math.gcd(a, b)\ndist = all(meet(x, join(y, z)) == join(meet(x, y), meet(x, z)) for x in D for y in D for z in D)\ncomp = all(any(meet(x, y) == 1 and join(x, y) == N for y in D) for x in D)\ndef covers(e, d):\n    return d % e == 0 and e < d and not any(e < m < d and m % e == 0 and d % m == 0 for m in D)\npaths = {1: 1}\nfor d in D:\n    if d != 1:\n        paths[d] = sum(paths[e] for e in D if covers(e, d))\nchains = paths[N]\natoms = sum(1 for d in D if covers(1, d))\ntruth = [dist, comp, chains == 10, atoms == 2]\nnd = len(D)\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 22,
+  "kind": "multi_concept",
+  "question_text": "An interpretation of a binary predicate \\(R\\) over the three-element domain \\(\\{1, 2, 3\\}\\) is just a subset of \\(\\{1,2,3\\} \\times \\{1,2,3\\}\\). The number of interpretations that make both \\(\\forall x\\, \\exists y\\, R(x, y)\\) and \\(\\forall x\\, \\forall y\\, (R(x, y) \\rightarrow \\neg R(y, x))\\) true is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(343\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(512\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(27\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The second sentence says \\(R\\) is asymmetric: no pair \\((x, x)\\) and never both \\((x, y)\\) and \\((y, x)\\). So each of the \\(3\\) unordered pairs \\(\\{x, y\\}\\) has \\(3\\) states (none, \\(x \\to y\\), \\(y \\to x\\)): \\(27\\) asymmetric relations.",
+    "An asymmetric relation on \\(3\\) elements has at most \\(3\\) pairs (one per unordered pair). The first sentence needs every element to have an outgoing pair, which forces exactly \\(3\\) pairs with exactly one outgoing pair per element: a function with no fixed point and no \\(2\\)-cycle, that is, one of the two \\(3\\)-cycles. So there are 2 interpretations."
+   ],
+   "shortcut": "Count asymmetric relations (3 states per pair) that also leave no vertex without an outgoing pair.",
+   "trap": "Counting serial relations alone (343) or asymmetric relations alone (27)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "pairs = [(a, b) for a in range(3) for b in range(3)]\ncnt = 0\nfor mask in range(512):\n    R = set(pairs[i] for i in range(9) if (mask >> i) & 1)\n    serial = all(any((x, y) in R for y in range(3)) for x in range(3))\n    asym = all(not ((x, y) in R and (y, x) in R) for x in range(3) for y in range(3))\n    if serial and asym:\n        cnt += 1\nval = cnt\nwrong = [343, 512, 27]\nserial_only = 343\nopts = {'A': 343, 'B': 512, 'C': 27, 'D': 2}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
   }
  },
  {
@@ -260,6 +616,616 @@
   "verify": {
    "lang": "python",
    "code": "def words(n):\n    out = ['']\n    cur = ['']\n    for _ in range(n):\n        cur = [w + c for w in cur for c in 'ab']\n        out = out + cur\n    return out\nW = words(7)\npred = lambda w: len(w) % 3 == 0 or w.endswith('ab')\nanswer = len(set(tuple(pred(u + v) for v in W) for u in W))"
+  }
+ },
+ {
+  "slot": 30,
+  "kind": "multi_concept",
+  "question_text": "The following C fragment is executed on a machine where \\(\\texttt{unsigned char}\\) has \\(8\\) bits. The value of \\(\\texttt{count}\\) when the loop ends is ______. ```c unsigned char i; int count = 0; for (i = 250; i != 4; i += 3) count++; ```",
+  "options": [],
+  "answer": {
+   "range": [
+    174,
+    174
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Arithmetic on an unsigned 8-bit variable wraps modulo \\(256\\): after \\(k\\) steps \\(i = (250 + 3k) \\bmod 256\\).",
+    "The loop stops when \\(250 + 3k \\equiv 4 \\pmod{256}\\), that is \\(3k \\equiv 10 \\pmod{256}\\). Since \\(3 \\times 171 = 513 \\equiv 1\\), \\(k \\equiv 10 \\times 171 = 1710 \\equiv 174 \\pmod{256}\\).",
+    "The body runs once per step before the test succeeds: \\(174\\) times. (The value \\(4\\) is reached only after wrapping past \\(255\\).)"
+   ],
+   "shortcut": "Solve 250 + 3k = 4 (mod 256) with the modular inverse of 3.",
+   "trap": "Assuming the loop never reaches 4 because 250 is above it, or counting only the iterations before the first wrap."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "i = 250\ncount = 0\nguard = 0\nwhile i != 4 and guard < 100000:\n    count += 1\n    i = (i + 3) % 256\n    guard += 1\nanswer = count\ninv = 171"
+  }
+ },
+ {
+  "slot": 31,
+  "kind": "multi_concept",
+  "question_text": "A table has seven columns named \\(A\\) to \\(G\\). The business rules are: the value of \\(A\\) fixes \\(B\\); the value of \\(B\\) fixes \\(C\\); the value of \\(C\\) fixes \\(A\\); the value of \\(D\\) fixes \\(E\\); the value of \\(E\\) fixes \\(D\\); and \\(C\\) and \\(D\\) together fix \\(G\\). No rule ever determines column \\(F\\). Counting every smallest set of columns that identifies a row uniquely, with no smaller subset doing so, the table has ______ such sets (candidate keys).",
+  "options": [],
+  "answer": {
+   "range": [
+    6,
+    6
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(F\\) appears on no right-hand side, so it is in every key. \\(A, B, C\\) determine one another (a cycle), and so do \\(D, E\\).",
+    "A key needs \\(F\\), one of \\(\\{A, B, C\\}\\) and one of \\(\\{D, E\\}\\); then \\(CD \\to G\\) supplies \\(G\\) through the closure. That is \\(3 \\times 2 = 6\\) keys, and no proper subset of any of them works."
+   ],
+   "shortcut": "Attributes never on a right-hand side are in every key; each cycle contributes a free choice.",
+   "trap": "Stopping at the first key found instead of letting every member of each cycle stand in for the others."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "attrs = 'ABCDEFG'\nfds = [('A', 'B'), ('B', 'C'), ('C', 'A'), ('D', 'E'), ('E', 'D'), ('CD', 'G')]\ndef closure(x):\n    s = set(x)\n    ch = True\n    while ch:\n        ch = False\n        for l, r in fds:\n            if set(l) <= s and not set(r) <= s:\n                s |= set(r)\n                ch = True\n    return s\nkeys = []\nfor n in range(1, 8):\n    for comb in itertools.combinations(attrs, n):\n        if closure(comb) == set(attrs) and not any(set(k) <= set(comb) for k in keys):\n            keys.append(comb)\nanswer = len(keys)"
+  }
+ },
+ {
+  "slot": 35,
+  "kind": "multi_concept",
+  "question_text": "A number generator advances its state vector by multiplying it with the \\(2 \\times 2\\) matrix \\(A = \\begin{pmatrix} 1 & 1 \\\\ 1 & 0 \\end{pmatrix}\\), so that the state after \\(n\\) steps holds two consecutive Fibonacci numbers. Each of the two eigenvalues of \\(A\\) is raised to the tenth power and the two results are added. The sum is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    123,
+    123
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The eigenvalues of \\(A^{10}\\) are \\(\\lambda_1^{10}\\) and \\(\\lambda_2^{10}\\), so their sum is the trace of \\(A^{10}\\).",
+    "\\(A^{n} = \\begin{pmatrix} F_{n+1} & F_{n} \\\\ F_{n} & F_{n-1} \\end{pmatrix}\\), so the trace is \\(F_{11} + F_{9} = 89 + 34 = 123\\) (the Lucas number \\(L_{10}\\)).",
+    "Check: \\(\\lambda\\) are the roots of \\(x^2 = x + 1\\), the golden ratio and its conjugate; the power sum obeys the same recurrence as the Fibonacci numbers."
+   ],
+   "shortcut": "Sum of eigenvalue powers = trace of the matrix power.",
+   "trap": "Computing the eigenvalues numerically and raising them to the tenth power with rounding, or reporting a Fibonacci number instead of the Lucas number."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "M = [[1, 0], [0, 1]]\nA = [[1, 1], [1, 0]]\nfor _ in range(10):\n    M = [[M[0][0] * A[0][0] + M[0][1] * A[1][0], M[0][0] * A[0][1] + M[0][1] * A[1][1]], [M[1][0] * A[0][0] + M[1][1] * A[1][0], M[1][0] * A[0][1] + M[1][1] * A[1][1]]]\nanswer = M[0][0] + M[1][1]\nf = [0, 1]\nfor _ in range(12):\n    f.append(f[-1] + f[-2])\nlucas = f[9] + f[11]"
+  }
+ },
+ {
+  "slot": 36,
+  "kind": "msq_discriminator",
+  "question_text": "The log of a three-user session on a bank database lists, in time order: user 1 reads then writes account \\(A\\); user 2 reads \\(A\\) and writes account \\(B\\); user 1 commits; user 3 reads \\(B\\); user 2 commits; user 3 commits. In shorthand the history is \\(S: R_1(A)\\ W_1(A)\\ R_2(A)\\ W_2(B)\\ C_1\\ R_3(B)\\ C_2\\ C_3\\), where \\(C_k\\) is the commit of user \\(k\\). Pick every correct claim.",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(S\\) is conflict serializable."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(S\\) is recoverable."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(S\\) is cascadeless (avoids cascading aborts)."
+   },
+   {
+    "option_id": "D",
+    "text": "If the positions of \\(C_1\\) and \\(C_2\\) were swapped (nothing else changed), the schedule would not be recoverable."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Conflict graph: \\(W_1(A)\\) before \\(R_2(A)\\) gives \\(T_1 \\to T_2\\); \\(W_2(B)\\) before \\(R_3(B)\\) gives \\(T_2 \\to T_3\\). No cycle, so the schedule is conflict serializable (order \\(T_1, T_2, T_3\\)).",
+    "\\(T_2\\) reads \\(A\\) written by \\(T_1\\) and \\(T_3\\) reads \\(B\\) written by \\(T_2\\); each writer commits before its reader (\\(C_1\\) before \\(C_2\\) before \\(C_3\\)), so the schedule is recoverable.",
+    "But both reads happen before the writer commits (\\(R_2(A)\\) precedes \\(C_1\\), \\(R_3(B)\\) precedes \\(C_2\\)): dirty reads, so it is not cascadeless.",
+    "Swapping the two commits makes \\(T_2\\) commit before \\(T_1\\) although it read \\(T_1\\)'s write: not recoverable."
+   ],
+   "shortcut": "Serializability = acyclic conflict graph; recoverability = readers commit after writers; cascadelessness = no dirty reads.",
+   "trap": "Mixing up recoverable (commit order of reader and writer) with cascadeless (no read of uncommitted data)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "ops = [(1, 'R', 'A'), (1, 'W', 'A'), (2, 'R', 'A'), (2, 'W', 'B'), (1, 'C', None), (3, 'R', 'B'), (2, 'C', None), (3, 'C', None)]\ndef csr(ops):\n    edges = set()\n    for x in range(len(ops)):\n        for y in range(x + 1, len(ops)):\n            a, b = ops[x], ops[y]\n            if a[0] != b[0] and a[1] != 'C' and b[1] != 'C' and a[2] == b[2] and 'W' in (a[1], b[1]):\n                edges.add((a[0], b[0]))\n    nodes = set([1, 2, 3])\n    while True:\n        free = [n for n in nodes if not any(e[1] == n and e[0] in nodes for e in edges)]\n        if not free:\n            break\n        nodes.remove(free[0])\n    return len(nodes) == 0\ndef info(ops):\n    commit = {}\n    for idx, o in enumerate(ops):\n        if o[1] == 'C':\n            commit[o[0]] = idx\n    rf = []\n    for idx, o in enumerate(ops):\n        if o[1] == 'R':\n            w = None\n            for y in range(idx):\n                if ops[y][1] == 'W' and ops[y][2] == o[2]:\n                    w = ops[y][0]\n            if w is not None and w != o[0]:\n                rf.append((w, o[0], idx))\n    return commit, rf\ndef recoverable(ops):\n    commit, rf = info(ops)\n    return all(commit[w] < commit[t] for w, t, j in rf)\ndef cascadeless(ops):\n    commit, rf = info(ops)\n    return all(commit[w] < j for w, t, j in rf)\nops2 = list(ops)\nops2[4], ops2[6] = ops2[6], ops2[4]\ntruth = [csr(ops), recoverable(ops), cascadeless(ops), not recoverable(ops2)]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 37,
+  "kind": "msq_discriminator",
+  "question_text": "The Petersen graph has \\(10\\) vertices: an outer \\(5\\)-cycle, an inner five-pointed star (vertex \\(i\\) joined to vertex \\(i + 2\\) modulo \\(5\\) on the inner ring) and five spokes joining each outer vertex to its inner partner; every vertex has degree \\(3\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The chromatic number of the Petersen graph is \\(3\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "The Petersen graph has a perfect matching."
+   },
+   {
+    "option_id": "C",
+    "text": "The largest set of pairwise non-adjacent vertices of the Petersen graph has exactly \\(4\\) vertices."
+   },
+   {
+    "option_id": "D",
+    "text": "The Petersen graph has a Hamiltonian cycle."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "It contains \\(5\\)-cycles, so it is not bipartite (\\(\\chi \\ge 3\\)); a proper \\(3\\)-colouring exists, so \\(\\chi = 3\\).",
+    "A cubic graph without bridges has a perfect matching (Petersen's theorem), and the Petersen graph has \\(6\\) of them.",
+    "Its independence number is \\(4\\) (every independent set of size \\(5\\) would force an edge to a neighbour covered twice).",
+    "Famously the Petersen graph has no Hamiltonian cycle (a search over all vertex orders confirms it), although it has a Hamiltonian path."
+   ],
+   "shortcut": "Check colouring, matching, independence and Hamiltonicity one by one; the Petersen graph is the classic exception for Hamiltonicity.",
+   "trap": "Assuming a regular, highly symmetric graph must be Hamiltonian."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = set()\nfor i in range(5):\n    E.add((i, (i + 1) % 5))\n    E.add((i, i + 5))\n    E.add((5 + i, 5 + (i + 2) % 5))\nadj = {v: set() for v in range(10)}\nfor a, b in E:\n    adj[a].add(b)\n    adj[b].add(a)\ndef colourable(k):\n    col = [-1] * 10\n    def go(v):\n        if v == 10:\n            return True\n        for c in range(k):\n            if all(col[u] != c for u in adj[v] if u < v):\n                col[v] = c\n                if go(v + 1):\n                    return True\n        col[v] = -1\n        return False\n    return go(0)\nchi = 1\nwhile not colourable(chi):\n    chi += 1\ndef perfect(rem):\n    if not rem:\n        return True\n    v = min(rem)\n    for u in adj[v]:\n        if u in rem:\n            if perfect(rem - set([v, u])):\n                return True\n    return False\npm = perfect(set(range(10)))\nalpha = 0\nfor mask in range(1024):\n    s = [v for v in range(10) if (mask >> v) & 1]\n    if all(b not in adj[a] for a in s for b in s):\n        alpha = max(alpha, len(s))\ndef ham():\n    path = [0]\n    used = [False] * 10\n    used[0] = True\n    def go():\n        if len(path) == 10:\n            return 0 in adj[path[-1]]\n        for u in adj[path[-1]]:\n            if not used[u]:\n                used[u] = True\n                path.append(u)\n                if go():\n                    return True\n                path.pop()\n                used[u] = False\n        return False\n    return go()\nhc = ham()\ntruth = [chi == 3, pm, alpha == 4, hc]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 38,
+  "kind": "trace",
+  "question_text": "The array \\([3, 9, 2, 1, 7, 5, 8, 6, 4]\\) is turned into a binary max-heap by Floyd's bottom-up method (sift down every internal node from the last one to the root; at each step swap with the larger child while that child is larger than the node). Then the maximum is extracted twice (move the last element to the root, shrink the heap and sift down). The total number of swaps performed, in the build and the two extractions together, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    8,
+    8
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Build phase: sift down indices \\(3, 2, 1, 0\\) (the internal nodes of a \\(9\\)-element heap), counting each swap with the larger child; this takes 4 swaps.",
+    "Each extraction places the last element at the root and sifts it down; the two extractions take 4 swaps.",
+    "Total swaps \\(= 8\\)."
+   ],
+   "shortcut": "Simulate Floyd's method exactly; the heap shape depends on the method.",
+   "trap": "Building the heap by repeated insertion (sift-up), which gives a different heap and a different swap count."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "a = [3, 9, 2, 1, 7, 5, 8, 6, 4]\nswaps = 0\ndef sift(a, i, n):\n    global swaps\n    while True:\n        l = 2 * i + 1\n        r = l + 1\n        m = i\n        if l < n and a[l] > a[m]:\n            m = l\n        if r < n and a[r] > a[m]:\n            m = r\n        if m == i:\n            break\n        a[i], a[m] = a[m], a[i]\n        swaps += 1\n        i = m\nn = len(a)\nfor i in range(n // 2 - 1, -1, -1):\n    sift(a, i, n)\nbuild = swaps\nfor _ in range(2):\n    a[0] = a[n - 1]\n    n -= 1\n    sift(a, 0, n)\nanswer = swaps\next = swaps - build"
+  }
+ },
+ {
+  "slot": 39,
+  "kind": "trap_aware",
+  "question_text": "The table \\(\\text{Staff}(\\text{id}, \\text{boss})\\) holds the rows \\((1, \\text{NULL}), (2, 1), (3, 1), (4, 2), (5, \\text{NULL})\\). Query \\(Q_1\\) is SELECT id FROM Staff WHERE id NOT IN (SELECT boss FROM Staff). Query \\(Q_2\\) is SELECT s.id FROM Staff s WHERE NOT EXISTS (SELECT 1 FROM Staff t WHERE t.boss = s.id). The number of rows returned by \\(Q_2\\) minus the number of rows returned by \\(Q_1\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(5\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The subquery of \\(Q_1\\) returns \\(\\{\\text{NULL}, 1, 1, 2, \\text{NULL}\\}\\). \\(x \\text{ NOT IN } (\\dots, \\text{NULL})\\) is \\(\\text{false}\\) when \\(x\\) matches a value and \\(\\text{unknown}\\) otherwise, never true, so \\(Q_1\\) returns \\(0\\) rows.",
+    "\\(Q_2\\) compares only with real values: the ids that nobody has as a boss are \\(3, 4, 5\\), so it returns \\(3\\) rows.",
+    "Difference \\(= 3 - 0 = 3\\)."
+   ],
+   "shortcut": "Three-valued logic: x NOT IN (..., NULL) can never be true.",
+   "trap": "Expecting NOT IN to behave like NOT EXISTS: a single NULL in the subquery makes NOT IN return no rows."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "rows = [(1, None), (2, 1), (3, 1), (4, 2), (5, None)]\nbosses = [b for i, b in rows]\ndef not_in(x):\n    res = True\n    for b in bosses:\n        if b is None:\n            r = None\n        else:\n            r = (x != b)\n        if r is False:\n            return False\n        if r is None:\n            res = None\n    return res\nq1 = sum(1 for i, b in rows if not_in(i) is True)\nq2 = sum(1 for i, b in rows if not any(t == i for t in bosses if t is not None))\nval = q2 - q1\nwrong = [0, 2, 5]\nopts = {'A': 0, 'B': 3, 'C': 2, 'D': 5}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 41,
+  "kind": "multi_concept",
+  "question_text": "A hardware checker reads a stream of bits, the first bit being the most significant, and must raise a valid flag after a prefix exactly when the number formed so far is a multiple of \\(5\\) and an even number of bits has been consumed (reading no bits means the number \\(0\\)). A deterministic machine with a transition defined for every state and input bit is to produce the flag. The smallest possible number of states of such a machine is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(9\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(10\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(11\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(12\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Divisibility by \\(5\\) needs the remainder of the value so far (\\(5\\) states, update \\(r \\to 2r + b \\bmod 5\\)); the length parity needs \\(2\\) states: at most \\(5 \\times 2 = 10\\).",
+    "All pairs of these product states are reachable and no suffix merges them, so the minimal DFA has 10 states."
+   ],
+   "shortcut": "Independent conditions multiply; then check reachability and distinguishability.",
+   "trap": "Adding the component sizes (5 + 2) instead of multiplying them for an intersection, or assuming two product states merge."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "def words(n):\n    out = ['']\n    cur = ['']\n    for _ in range(n):\n        cur = [w + c for w in cur for c in '01']\n        out = out + cur\n    return out\nW = words(8)\ndef pred(w):\n    v = 0\n    for ch in w:\n        v = v * 2 + int(ch)\n    return v % 5 == 0 and len(w) % 2 == 0\nval = len(set(tuple(pred(u + v) for v in W) for u in W))\nwrong = [val - 1, val + 1, val + 2]\nopts = {'A': 9, 'B': 10, 'C': 11, 'D': 12}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 42,
+  "kind": "multi_concept",
+  "question_text": "A transmitter sends binary strings of length \\(10\\) in which no three consecutive \\(0\\)s may appear. Let \\(a_n\\) be the number of valid strings of length \\(n\\). The value of \\(a_{10}\\) is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(274\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(144\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(504\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(233\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Classify a valid string by its last block of zeros: it ends in \\(1\\), \\(10\\) or \\(100\\), so \\(a_n = a_{n-1} + a_{n-2} + a_{n-3}\\) with \\(a_0 = 1,\\ a_1 = 2,\\ a_2 = 4\\).",
+    "The sequence is \\(1, 2, 4, 7, 13, 24, 44, 81, 149, 274, 504\\) (indices \\(0\\) to \\(10\\)), so \\(a_{10} = 504\\) (the recurrence gives 504, and brute force over all \\(1024\\) strings agrees)."
+   ],
+   "shortcut": "Condition on how the string ends: the recurrence has three terms.",
+   "trap": "Stopping one term early (274 is a_9, not a_10), or using the Fibonacci recurrence that forbids two consecutive zeros (144)."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor x in range(1024):\n    s = bin(x)[2:].zfill(10) if False else ''.join('1' if (x >> k) & 1 else '0' for k in range(10))\n    if '000' not in s:\n        cnt += 1\na = [1, 2, 4]\nfor n in range(3, 11):\n    a.append(a[-1] + a[-2] + a[-3])\nval = cnt\nrec = a[10]\nwrong = [274, 144, 233]\nopts = {'A': 274, 'B': 144, 'C': 504, 'D': 233}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 45,
+  "kind": "application",
+  "question_text": "Ten keys \\(10, 25, 3, 18, 45, 12, 26, 33, 19, 40\\) are inserted in this order into a hash table with \\(7\\) slots using \\(h(k) = k \\bmod 7\\) and separate chaining (a new key is added at the end of its chain). Each key is then searched for once. The average number of key comparisons for a successful search, correct to three decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2.6\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2.1\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(2.9\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2.4\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Chains (slot: keys in insertion order): the keys fall into slots by \\(k \\bmod 7\\); the longest chain has 5 keys.",
+    "A successful search for the \\(j\\)-th key of a chain costs \\(j\\) comparisons, so the total over all ten keys is 24.",
+    "Average \\(= 24 / 10 = 2.4\\)."
+   ],
+   "shortcut": "Successful search cost = position of the key in its chain.",
+   "trap": "Averaging chain lengths (unsuccessful search) instead of the position of each key in its chain, or inserting at the head of the chain."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "keys = [10, 25, 3, 18, 45, 12, 26, 33, 19, 40]\nch = {}\nfor k in keys:\n    ch.setdefault(k % 7, []).append(k)\ntot = 0\nfor k in keys:\n    tot += ch[k % 7].index(k) + 1\nval = round(tot / 10, 3)\nwrong = [round(val + 0.2, 3), round(val - 0.3, 3), round(val + 0.5, 3)]\nlongest = max(len(v) for v in ch.values())\nopts = {'A': 2.6, 'B': 2.1, 'C': 2.9, 'D': 2.4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 46,
+  "kind": "multi_concept",
+  "question_text": "A demand-paged system has a single-level page table in memory. A TLB lookup takes \\(5\\) ns and a memory access takes \\(100\\) ns; the TLB is searched first and has a hit ratio of \\(0.95\\). On a TLB miss the page table is read from memory (one extra memory access) before the data access. In addition, a fraction \\(10^{-5}\\) of all memory references cause a page fault. Servicing a fault takes \\(8\\) ms when the victim page is clean and \\(20\\) ms when it is dirty; \\(30\\%\\) of victims are dirty. The effective access time, in nanoseconds and correct to the nearest whole number, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    226,
+    226
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Without faults: TLB hit \\(5 + 100 = 105\\) ns, TLB miss \\(5 + 100 + 100 = 205\\) ns, so \\(0.95 \\times 105 + 0.05 \\times 205 = 110\\) ns.",
+    "Average fault service time \\(= 0.7 \\times 8 + 0.3 \\times 20 = 11.6\\) ms \\(= 1.16 \\times 10^{7}\\) ns.",
+    "\\(\\text{EAT} = (1 - 10^{-5}) \\times 110 + 10^{-5} \\times 1.16 \\times 10^{7} \\approx 226\\) ns: the rare faults add more than the whole fault-free time."
+   ],
+   "shortcut": "EAT = (1 - p) x (TLB-weighted access) + p x (weighted fault time), all in the same unit.",
+   "trap": "Treating the fault service time in milliseconds as if it were nanoseconds, or ignoring the dirty-victim mix."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "hit = 5 + 100\nmiss = 5 + 100 + 100\nbase = 0.95 * hit + 0.05 * miss\nfault = 0.7 * 8e6 + 0.3 * 20e6\np = 1e-5\nanswer = round((1 - p) * base + p * fault, 2)\nfault_ms = fault / 1e6"
+  }
+ },
+ {
+  "slot": 48,
+  "kind": "trace",
+  "question_text": "A grammar for a data-record format has start symbol \\(S\\) and the productions \\(S \\to A\\,B\\,c\\), \\(A \\to a\\,A \\mid \\varepsilon\\), \\(B \\to a\\,B \\mid b \\mid \\varepsilon\\). When the LL(1) predictive parsing table is built, the number of table cells that contain more than one production is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(1\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(3\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(\\text{FIRST}(A) = \\{a, \\varepsilon\\}\\), \\(\\text{FIRST}(B) = \\{a, b, \\varepsilon\\}\\); since \\(A\\) and \\(B\\) can vanish, \\(\\text{FOLLOW}(A) = \\{a, b, c\\}\\) (the first symbols of \\(B\\,c\\)) and \\(\\text{FOLLOW}(B) = \\{c\\}\\).",
+    "For \\(A\\): the rule \\(A \\to aA\\) is entered under \\(a\\), and \\(A \\to \\varepsilon\\) is entered under every symbol of \\(\\text{FOLLOW}(A)\\), which includes \\(a\\): cell \\([A, a]\\) holds two productions.",
+    "For \\(B\\): \\(aB\\) under \\(a\\), \\(b\\) under \\(b\\), \\(\\varepsilon\\) under \\(c\\): no clash. Cells with more than one production: 1."
+   ],
+   "shortcut": "Check each nullable non-terminal: FIRST of its other alternatives against its FOLLOW.",
+   "trap": "Ignoring that an epsilon production is entered under FOLLOW, which can overlap FIRST of a sibling alternative."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "G = [('S', ['A', 'B', 'c']), ('A', ['a', 'A']), ('A', []), ('B', ['a', 'B']), ('B', ['b']), ('B', [])]\nNT = ['S', 'A', 'B']\nnullable = set()\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        if l not in nullable and all(x in nullable for x in r):\n            nullable.add(l)\n            ch = True\nfirst = {n: set() for n in NT}\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        for x in r:\n            add = first[x] if x in NT else set([x])\n            if not add <= first[l]:\n                first[l] |= add\n                ch = True\n            if not (x in nullable):\n                break\ndef fseq(seq):\n    out = set()\n    for x in seq:\n        out |= first[x] if x in NT else set([x])\n        if not (x in nullable):\n            return out, False\n    return out, True\nfollow = {n: set() for n in NT}\nfollow['S'].add('$')\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        for k, x in enumerate(r):\n            if x in NT:\n                f, nl = fseq(r[k + 1:])\n                add = set(f)\n                if nl:\n                    add |= follow[l]\n                if not add <= follow[x]:\n                    follow[x] |= add\n                    ch = True\ntable = {}\nfor p, (l, r) in enumerate(G):\n    f, nl = fseq(r)\n    cells = set(f)\n    if nl:\n        cells |= follow[l]\n    for t in cells:\n        table.setdefault((l, t), []).append(p)\nval = sum(1 for v in table.values() if len(v) > 1)\nfa = ', '.join(sorted(follow['A']))\nwrong = [0, 2, 3]\nopts = {'A': 0, 'B': 2, 'C': 1, 'D': 3}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 49,
+  "kind": "trace",
+  "question_text": "A TCP sender starts with a congestion window of \\(1\\) segment and a slow-start threshold of \\(16\\) segments. In every round-trip time (RTT) it sends a number of segments equal to the current window. At the end of an RTT with no loss the window doubles in slow start (but never above the threshold) and grows by \\(1\\) segment once it is at or above the threshold. At the end of the \\(7\\)th RTT three duplicate acknowledgements arrive: the threshold is set to half the current window (rounded down) and the window to the new threshold. At the end of the \\(10\\)th RTT a timeout occurs: the threshold is again set to half the current window (rounded down) and the window to \\(1\\). The total number of segments sent in the first \\(14\\) RTTs is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    108,
+    108
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Windows per RTT: \\(1, 2, 4, 8, 16\\) (slow start up to the threshold), then \\(17, 18\\) (additive increase): \\(66\\) segments in RTTs \\(1\\) to \\(7\\).",
+    "After the triple duplicate acknowledgement the threshold and window become \\(9\\): RTTs \\(8\\) to \\(10\\) send \\(9, 10, 11 = 30\\).",
+    "After the timeout the threshold is \\(5\\) and the window \\(1\\): RTTs \\(11\\) to \\(14\\) send \\(1, 2, 4, 5 = 12\\) (the doubling is capped at the threshold \\(5\\)).",
+    "Total \\(= 108\\) segments."
+   ],
+   "shortcut": "Simulate RTT by RTT, applying the rule that matches each event.",
+   "trap": "Resetting the window to 1 after the triple duplicate acknowledgement (that is the timeout rule), or letting slow start overshoot the threshold."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cwnd = 1\nss = 16\ntotal = 0\nfor r in range(1, 15):\n    total += cwnd\n    if r == 7:\n        ss = cwnd // 2\n        cwnd = ss\n    elif r == 10:\n        ss = cwnd // 2\n        cwnd = 1\n    elif cwnd < ss:\n        cwnd = min(2 * cwnd, ss)\n    else:\n        cwnd += 1\nanswer = total"
+  }
+ },
+ {
+  "slot": 52,
+  "kind": "multi_concept",
+  "question_text": "The numbers \\(1, 2, 3, 4, 5, 6\\) arrive in some order on an input line. A single stack is available: each arriving number may be pushed, and the top of the stack may be popped to the output at any time. A permutation of \\(1, \\dots, 6\\) is called stack-sortable if some sequence of pushes and pops makes the output \\(1, 2, 3, 4, 5, 6\\) in that order. The number of stack-sortable permutations is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    132,
+    132
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Greedy rule: after each push, pop while the top equals the next number the output needs; if the stack still holds a number when the input ends, the permutation cannot be sorted.",
+    "A permutation is sortable exactly when it avoids the pattern \\(2\\,3\\,1\\) (a larger number buried under a smaller one that is needed first); these permutations are counted by the Catalan number \\(C_6 = \\frac{1}{7}\\binom{12}{6} = 132\\).",
+    "So there are 132 stack-sortable permutations of \\(6\\) numbers."
+   ],
+   "shortcut": "Stack-sortable permutations avoid 231 and are Catalan-counted.",
+   "trap": "Counting all \\(6!\\) permutations or the \\(2^{n-1}\\) permutations from a single pass of the greedy rule without checking the pattern."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor p in itertools.permutations(range(1, 7)):\n    st = []\n    need = 1\n    for x in p:\n        st.append(x)\n        while st and st[-1] == need:\n            st.pop()\n            need += 1\n    if need == 7:\n        cnt += 1\nanswer = cnt\ncat = math.comb(12, 6) // 7"
+  }
+ },
+ {
+  "slot": 55,
+  "kind": "trace",
+  "question_text": "The product \\(C = A \\times B\\) of two \\(8 \\times 8\\) matrices of \\(4\\)-byte integers is computed by the loops \\(i, j, k\\) (outermost to innermost) with the statement \\(C[i][j] \\mathrel{+}= A[i][k] \\times B[k][j]\\); only the reads of \\(A\\) and \\(B\\) go through a data cache (\\(C\\) is kept in a register). Both matrices are stored row by row, \\(A\\) from byte address \\(0\\) and \\(B\\) from byte address \\(256\\). The cache is direct-mapped with \\(8\\) lines of \\(32\\) bytes and is initially empty. The total number of cache misses is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    149,
+    149
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Each \\(32\\)-byte line holds \\(8\\) integers; \\(A\\) occupies lines \\(0\\) to \\(7\\) of memory and \\(B\\) lines \\(8\\) to \\(15\\), so \\(A\\)'s row \\(i\\) (line \\(i\\)) and \\(B\\)'s row \\(i\\) (line \\(8 + i\\)) fight for the same cache line \\(i\\).",
+    "In the innermost loop \\(A[i][k]\\) sits in the line of row \\(i\\) while \\(B[k][j]\\) moves down a column through all \\(8\\) lines; each \\(B\\) access evicts \\(A\\)'s row line when \\(k = i\\) and every other step brings in a fresh \\(B\\) line.",
+    "Simulating all \\(512\\) iterations with the direct-mapped rule (line \\(= \\text{block} \\bmod 8\\)) gives 149 misses."
+   ],
+   "shortcut": "Trace both address streams through the direct-mapped mapping; the column walk of B conflicts with A.",
+   "trap": "Using the hit pattern of a single matrix (row access hits 7 of 8) and forgetting that the two matrices map to the same cache lines."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cache = [-1] * 8\nmiss = 0\nfor i in range(8):\n    for j in range(8):\n        for k in range(8):\n            for addr in (4 * (i * 8 + k), 256 + 4 * (k * 8 + j)):\n                blk = addr // 32\n                s = blk % 8\n                if cache[s] != blk:\n                    cache[s] = blk\n                    miss += 1\nanswer = miss"
+  }
+ },
+ {
+  "slot": 56,
+  "kind": "msq_discriminator",
+  "question_text": "A condition affects \\(2\\%\\) of a population. Test \\(T_1\\) is positive for \\(90\\%\\) of affected and \\(5\\%\\) of unaffected people. Test \\(T_2\\) is positive for \\(80\\%\\) of affected and \\(10\\%\\) of unaffected people. Given the person's true status, the two tests are independent. A randomly chosen person is tested with both. Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The probability of the condition given only that \\(T_1\\) is positive exceeds \\(0.25\\)."
+   },
+   {
+    "option_id": "B",
+    "text": "The probability of the condition given that both tests are positive exceeds \\(0.6\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "The probability of the condition given \\(T_1\\) positive and \\(T_2\\) negative is below \\(0.02\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "The two test results are independent of each other when the person's status is not known."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A",
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "\\(P(D \\mid T_1^+) = 0.018 / (0.018 + 0.049) \\approx 0.269\\), above \\(0.25\\).",
+    "\\(P(D \\mid T_1^+ T_2^+) = 0.0144 / (0.0144 + 0.0049) \\approx 0.746\\), above \\(0.6\\).",
+    "\\(P(D \\mid T_1^+ T_2^-) = 0.0036 / (0.0036 + 0.0441) \\approx 0.075\\), well above \\(0.02\\), so the third statement is false.",
+    "The tests are independent only given the status; unconditionally both depend on the status, so \\(P(T_1^+ T_2^+) \\ne P(T_1^+)P(T_2^+)\\)."
+   ],
+   "shortcut": "Multiply the likelihoods under each status, then normalise.",
+   "trap": "Applying the independence of the tests without conditioning on the status, or reading a low prior as a low posterior."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "p = 0.02\ns1, f1 = 0.9, 0.05\ns2, f2 = 0.8, 0.10\na = p * s1 / (p * s1 + (1 - p) * f1)\nb = p * s1 * s2 / (p * s1 * s2 + (1 - p) * f1 * f2)\nc = p * s1 * (1 - s2) / (p * s1 * (1 - s2) + (1 - p) * f1 * (1 - f2))\npt1 = p * s1 + (1 - p) * f1\npt2 = p * s2 + (1 - p) * f2\npboth = p * s1 * s2 + (1 - p) * f1 * f2\ntruth = [a > 0.25, b > 0.6, c < 0.02, abs(pboth - pt1 * pt2) < 1e-9]\npa = round(a, 3)\npb = round(b, 3)\npc = round(c, 3)\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ },
+ {
+  "slot": 58,
+  "kind": "msq_discriminator",
+  "question_text": "Let \\(A = \\begin{pmatrix} 2 & 4 & 2 \\\\ 1 & 2 & 3 \\\\ 3 & 5 & 1 \\end{pmatrix}\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(A\\) can be factorised as \\(LU\\) with \\(L\\) unit lower triangular and \\(U\\) upper triangular, using no row interchanges."
+   },
+   {
+    "option_id": "B",
+    "text": "The determinant of \\(A\\) equals the product of the diagonal entries of \\(U\\) (from \\(PA = LU\\) with partial pivoting) multiplied by \\((-1)^{s}\\), where \\(s\\) is the number of row swaps."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(A\\) is invertible."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(A\\) has rank \\(2\\)."
+   }
+  ],
+  "answer": {
+   "options": [
+    "B",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Eliminate below the first pivot \\(2\\): \\(R_2 - \\tfrac12 R_1 = (0, 0, 2)\\) and \\(R_3 - \\tfrac32 R_1 = (0, -1, -2)\\). The second pivot is \\(0\\), so elimination without a row swap breaks down: no \\(LU\\) without interchanges.",
+    "Swapping rows \\(2\\) and \\(3\\) gives the pivots \\(2, -1, 2\\); the determinant is \\((-1)^{1} \\times 2 \\times (-1) \\times 2 = 4\\), which agrees with the cofactor expansion (the determinant rule holds with the sign for swaps).",
+    "The determinant is non-zero, so \\(A\\) is invertible and its rank is \\(3\\), not \\(2\\)."
+   ],
+   "shortcut": "A zero pivot needs a swap, not a conclusion about rank; the determinant uses the sign of the swaps.",
+   "trap": "Reading a zero second pivot as singularity: it only calls for a row swap."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "F = fractions.Fraction\nA = [[2, 4, 2], [1, 2, 3], [3, 5, 1]]\ndef nopivot(A):\n    M = [[F(x) for x in r] for r in A]\n    for c in range(3):\n        if M[c][c] == 0:\n            return False\n        for r in range(c + 1, 3):\n            f = M[r][c] / M[c][c]\n            M[r] = [M[r][k] - f * M[c][k] for k in range(3)]\n    return True\ndef det_pivot(A):\n    M = [[F(x) for x in r] for r in A]\n    sign = 1\n    for c in range(3):\n        p = None\n        for r in range(c, 3):\n            if M[r][c] != 0:\n                p = r\n                break\n        if p is None:\n            return 0\n        if p != c:\n            M[c], M[p] = M[p], M[c]\n            sign = -sign\n        for r in range(c + 1, 3):\n            f = M[r][c] / M[c][c]\n            M[r] = [M[r][k] - f * M[c][k] for k in range(3)]\n    return sign * M[0][0] * M[1][1] * M[2][2]\ndet = (A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) - A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0]) + A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]))\ndp = det_pivot(A)\ntruth = [nopivot(A), dp == det, det != 0, det == 0]\ndetv = int(det)\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
   }
  }
 ]
