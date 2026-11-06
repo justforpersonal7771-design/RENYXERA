@@ -22,7 +22,7 @@ Consequences for the design:
 - [`FORGE_DESIGN.md`](FORGE_DESIGN.md) §7 says free users get today's Daily Forge set. **That changes: Daily Forge is Plus/Pro only.** Free users see a locked card with an upgrade prompt.
 - Forge Mocks are the free hook: they are a ranked, weekly event, which brings Free users back every Sunday and shows them the quality of the questions. The mock paper reveals its questions only during/after the event (existing embargo), so it does not leak the bank.
 - After a mock ends, its questions are **not** added to the free pool. They join the Plus/Pro practice pool.
-- Free users see mock **results and ranks**; the detailed per-question Forge solutions after a mock are shown (it is the conversion moment). Plus/Pro additionally get the archive of past mocks. (Decision F2.)
+- Free users see mock **results and ranks**; the detailed per-question Forge solutions after a mock are **Plus/Pro only** (owner decision F2, 6 Nov 2026: Free does not see Forge Mock solutions; the locked solution is the upgrade moment). Plus/Pro additionally get the archive of past mocks.
 - Where it is enforced: server side only. A single function `canUseForgeQuestions(tier)` in [`lib/billing/plans.ts`](../../lib/billing/plans.ts), checked in the API that serves Forge items (never trust the screen). Free requests for non-mock Forge items return 403 with `reason: "plan"`.
 
 ## 3. Architecture (summary of what to build)

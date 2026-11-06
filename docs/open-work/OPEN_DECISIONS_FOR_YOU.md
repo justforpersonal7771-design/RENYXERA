@@ -47,6 +47,15 @@
 
 All your remaining to-dos are in one checklist: [OWNER-TASKS.md](OWNER-TASKS.md).
 
+## Answered on 6 Nov 2026
+- **F2:** Free does **not** see Forge Mock solutions (results and ranks only); solutions are Plus/Pro.
+- **F3, F4, F5, F6:** defaults accepted: one Daily Forge teaser per branch channel (1 of 10), Forge Mock weekly for CS and fortnightly for the rest, launch order CS then EC, EE, ME, CE, DA, keep the name Forge.
+- **S3, S5, S6, S7:** defaults accepted: coaching notes for layout only, English only at launch, Deadlock sample chapter first, study content in a private repo or bucket.
+- **Battles:** go-ahead for seasons and badges and per-question speed scoring.
+- **Spark and Blend names:** keep.
+- **Repo account:** not needed now, but we will move to the renyxera account later (task H7).
+- **Still open:** feature ideas (D6) and Looks/Mentor choices (D9): owner will go through them.
+
 ## Answered on 31 Oct 2026
 - **F1 (Plus Forge limit):** Plus gets **15 Forge questions a day** (owner said 15 to 20; started at the lower number because raising later is easy and lowering is not); Pro unlimited. Free gets a fixed 10-question taster (owner's tease rule, 30 Oct).
 - **S1 (Study pricing):** per-subject packs at ₹99 to ₹149, curated bundles (core subjects, the hottest, the toughest, with Pro), refunds only for glitches and errors by email. Details and numbers: [`docs/study-materials/13-PRICING-BUNDLES-AND-OFFERS.md`](../study-materials/13-PRICING-BUNDLES-AND-OFFERS.md).

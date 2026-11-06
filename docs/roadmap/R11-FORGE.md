@@ -69,7 +69,7 @@ Done when: 0 wrong keys in the spot check; batch approved.
 ## R11-C · Launch
 
 - **C1 Daily Forge (CS):** release 06:00 IST via `release_at`; streak + per-branch board (`board()` scope `forge_daily`); CI check fails if fewer than 14 days are queued.
-- **C2 Forge Mocks (all tiers):** `scripts/forge/build-mock.mjs --branch CS --date …` freezes 65 items (GA + subject, official pattern) into `mock_events`; Sunday 10:00 IST (cadence F4); results/ranks; Free sees solutions per F2; after the mock items join the Plus/Pro pool.
+- **C2 Forge Mocks (all tiers):** `scripts/forge/build-mock.mjs --branch CS --date …` freezes 65 items (GA + subject, official pattern) into `mock_events`; Sunday 10:00 IST (cadence F4); results/ranks; Free does NOT see solutions (F2 = no, 6 Nov; show the "Solution (Plus)" lock); after the mock items join the Plus/Pro pool.
 - **C3 Calibration:** after 50 attempts, flag items with p < 0.05, p > 0.95 or discrimination < 0.1; hide from new mocks; review queue.
 - **C4 Telegram:** branch channels post one Daily Forge teaser with spoiler answer (F3); hub announces Forge Mocks ([`scripts/telegram-hub.mjs`](../../scripts/telegram-hub.mjs)).
 - **C5 Marketing:** launch post, film cut, Plans page section "Forge", email-less announcement in app (What's new).
