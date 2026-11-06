@@ -53,6 +53,7 @@ Rules that apply to every task: ₹0 budget, never use claudexit02@gmail.com any
 
 ## F. Real device and account tests (phone first, then desktop, each in light and dark)
 - [ ] **E9. Restore drill (quarterly, first before 31 Jan 2027):** follow section 3 of [SECURITY-RUNBOOK.md](../engineering/SECURITY-RUNBOOK.md); note the date in the drill log.
+- [ ] **E10. Supabase Performance Advisor (R15-E2):** Supabase, left menu Advisors, Performance, copy the list of warnings (text, no passwords) and send it to Claude; indexes are added only for warnings that are real.
 - [ ] **F1.** Phone: a payment, the More sheet drag, the onboarding Telegram step, aptitude images, Civil practice.
 - [ ] **F2.** Free, Plus and Pro accounts through the Forge and practice-set gates.
 - [ ] **F3.** Battles comparison and rematch screens.

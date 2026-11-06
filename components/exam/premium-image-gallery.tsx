@@ -85,6 +85,7 @@ export function PremiumImageGallery({ urls, altText }: PremiumImageGalleryProps)
                 src={url}
                 alt={altText}
                 loading="lazy"
+                decoding="async"
                 className={`max-w-full h-auto max-h-[360px] md:max-h-[450px] object-contain rounded-xl select-none pointer-events-none transition-all duration-300 ${profile}`}
               />
               
