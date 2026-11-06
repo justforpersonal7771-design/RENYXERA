@@ -7,6 +7,8 @@ import { Clock, Pause } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { serverNow } from "@/lib/time/server-time";
 
+const FULL_PAPER_SECONDS = 3 * 60 * 60;
+
 export function ExamTimer({ compact = false }: { compact?: boolean }) {
   const status = useExamRuntimeStore((state) => state.activeSession?.status);
   const elapsed = useExamRuntimeStore((state) => state.activeSession?.elapsedSeconds || 0);
@@ -35,7 +37,8 @@ export function ExamTimer({ compact = false }: { compact?: boolean }) {
 
   const TOTAL_TIME = useMemo(() => {
     if (serverLimit && serverLimit > 0) return serverLimit;
-    if (!draftQuestions || draftQuestions.length === 0) return 10800; // default to 3 hours
+    // No questions to size a limit from (should not happen for a started test): use the full-paper duration, GATE's 3 hours.
+    if (!draftQuestions || draftQuestions.length === 0) return FULL_PAPER_SECONDS;
     return draftQuestions.reduce((acc, q) => {
       const questionData = QuestionRepository.getQuestionById(q.questionId);
       if (questionData) {

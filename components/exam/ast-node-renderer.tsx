@@ -68,7 +68,8 @@ function AstBody({ nodes, className = "" }: AstNodeRendererProps) {
   // that MathJax loads at app start (before any question is on screen), typeset this
   // body explicitly once MathJax is ready. The body is keyed by its content (above), so
   // React never has to patch DOM that MathJax has rewritten.
-  const hasRawMath = nodes.some((n) => (n.type === "text" || n.type === "html") && RAW_MATH.test(n.content));
+  // Table cells count too: a header like "Iteration (\( i \))" sits in a table node, not a text node, and was never typeset.
+  const hasRawMath = nodes.some((n) => (n.type === "text" || n.type === "html") ? RAW_MATH.test(n.content) : n.type === "table" && n.rows.some((row) => row.some((cell) => RAW_MATH.test(cell))));
   useEffect(() => {
     if (!hasRawMath || !mathJax?.promise) return;
     let cancelled = false;

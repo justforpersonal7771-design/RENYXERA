@@ -24,9 +24,9 @@ const fmt = (ms: number) => new Date(ms).toLocaleDateString("en-IN", { day: "num
 export function PlanExpiryNotice() {
   const user = useAuthStore((s) => s.user);
   const ent = useEntitlements();
-  const [dismissed, setDismissed] = useState(true);
+  // Read once on first render (client only; the notice needs the signed-in user, so the server render is empty anyway).
+  const [dismissed, setDismissed] = useState(() => typeof window === "undefined" || read<string>(DISMISS_KEY) === serverDayKey());
 
-  useEffect(() => { setDismissed(read<string>(DISMISS_KEY) === serverDayKey()); }, []);
   useEffect(() => { if (ent.paid && ent.validUntil) write(UNTIL_KEY, { tier: ent.tier, until: Date.parse(ent.validUntil) }); }, [ent.paid, ent.validUntil, ent.tier]);
 
   if (!user || ent.loading || dismissed) return null;
