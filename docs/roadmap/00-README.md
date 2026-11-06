@@ -11,8 +11,8 @@
 | 7 | Monetisation II: payments, anti-misuse | Mostly done | — | `R13-MONETISATION.md`, `R16-SECURITY.md` |
 | 8 | Multi-branch + revenue lines | Branches done; revenue lines open | — | `R13-MONETISATION.md` |
 | 9 | Product depth and community | Not started | P5 | `R09-R10-DEPTH-AND-ADMIN.md` |
-| 10 | Admin console | Not started | P6 | `R09-R10-DEPTH-AND-ADMIN.md` |
-| **11** | **Forge** (original GATE-level questions and mocks) | Designed | **P1** | `R11-FORGE.md` |
+| 10 | Admin console | Admin-lite built (R30); full console ON HOLD until the non-negotiable set is done | P6 | `R09-R10-DEPTH-AND-ADMIN.md`, `R10-ADMIN-SPEC.md`, `R30-ADMIN-CONSOLE.md` |
+| **11** | **Forge** (original GATE-level questions and mocks) | Live: 329 CS questions (6 Nov); launch pieces and other branches open | **P1** | `R11-FORGE.md`, `../FORGE_GENERATOR_LOCAL.md`, `../FORGE_AUDIT_2026-11-06.md` |
 | **12** | **Study materials** (separate paid product) | Planned | **P2** | `R12-STUDY-MATERIALS.md` |
 | **13** | **Monetisation III** (conversion, new revenue) | Open | **P3** | `R13-MONETISATION.md` |
 | **14** | **Marketing and growth** | Open | **P4** | `R14-MARKETING-GROWTH.md` |
@@ -20,8 +20,19 @@
 | **16** | **Security hardening** | Audited 22 Oct | **P1 (critical fixes) / P3 (rest)** | `R16-SECURITY.md` |
 | **17** | **Microsoft Store app** (Windows, via PWA) | Planned | P4 | `R17-MICROSOFT-STORE.md` |
 | **18** | **UI refresh** (dashboard first) | Planned 26 Oct | **P0** | `R18-UI-REFRESH.md` |
-| 19 | Battles (live Beat my score) | Planned | P1 | `R19-BATTLES.md` |
+| 19 | Battles (live Beat my score) | Built (see R29 for the game layer) | P1 | `R19-BATTLES.md` |
 | 20 | Solutions for every question | Planned; AI pre-gen status inside | P2 (after Forge) | `R20-SOLUTIONS.md` |
+| 21 | AI Mentor | Built; backlog in R27 | — | `R21-AI-MENTOR.md` |
+| 22 | Test Centre | Routes merged; leftovers open | — | `R22-TEST-CENTRE.md` |
+| 24 | Mobile app (PWA first) | Plan only | — | `R24-MOBILE-APP.md` |
+| 25 | Battle Arena (live rooms) | Design only, ON HOLD | — | `R25-BATTLE-ARENA.md`, `R25-ARENA-UX-DESIGN.md` |
+| 26 | Design Studio and Looks | 5 Pro Looks live; the rest ON HOLD | — | `R26-DESIGN-STUDIO.md` |
+| 27 | Mentor chat features | Backlog | — | `R27-MENTOR-CHAT-FEATURES.md` |
+| 28 | Performance toolkit | Partly done | — | `R28-PERFORMANCE-TOOLKIT.md` |
+| 29 | Battles as a game | Steps 1 to 4 built; seasons and badges open | — | `R29-BATTLES-AS-A-GAME.md` |
+| 30 | Admin-lite (first slice of R10) | Built | — | `R30-ADMIN-CONSOLE.md` |
+
+**All open work, grouped and prioritised: `../OPEN-ITEMS-2026-11-06.md`.**
 | — | Competitors (Swaseekh, Hatchable) | 26 Oct | — | `../competitors/COMPETITORS_2026-10.md` |
 | — | Feature catalogue (proposals) | Ideas | owner picks | `FEATURES.md` |
 
