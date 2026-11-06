@@ -15,7 +15,7 @@ export default function TermsOfServicePage() {
       <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--text-primary)] mb-1">
         Terms of Service
       </h1>
-      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 30 September 2026</p>
+      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 6 November 2026</p>
 
       <div className="space-y-8 text-[var(--text-secondary)] leading-relaxed">
         <section>
@@ -61,7 +61,7 @@ export default function TermsOfServicePage() {
 
         <section>
           <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">7. Payments and refunds</h2>
-          <p>Payments are processed by Razorpay; we never see or store your card or UPI details. A plan is activated only after the payment provider confirms the payment. <strong className="text-[var(--text-primary)]">Purchases are final: we do not offer refunds</strong>, because access is delivered digitally and instantly. We refund only for our own errors: a double or wrong charge, a payment that did not activate, or a technical fault or content error we cannot fix. Requests are made by email with the payment reference and a genuine reason, and we review each one. The Refund &amp; Cancellation Policy gives the details.</p>
+          <p>Payments are processed by Razorpay; we never see or store your card or UPI details. A plan is activated only after the payment provider confirms the payment. <strong className="text-[var(--text-primary)]">Purchases are final: we do not offer refunds</strong>, because access is delivered digitally and instantly. We refund only for our own errors: a double or wrong charge, a payment that did not activate, or a technical fault or content error we cannot fix. Requests are made by email with the payment reference and a genuine reason, and we review each one. Study materials are digital content and are not refundable once purchased, except for the errors listed above. The Refund &amp; Cancellation Policy gives the details.</p>
         </section>
 
         <section>

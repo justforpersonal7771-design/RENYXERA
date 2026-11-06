@@ -12,7 +12,7 @@ export default function RefundPolicyPage() {
   return (
     <article>
       <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--text-primary)] mb-1">Refund &amp; Cancellation Policy</h1>
-      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 31 October 2026</p>
+      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 6 November 2026</p>
 
       <div className="space-y-8 text-[var(--text-secondary)] leading-relaxed">
         <section className="rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)]/60 p-4">
@@ -40,6 +40,11 @@ export default function RefundPolicyPage() {
             <li>A <strong className="text-[var(--text-primary)]">technical fault or an error in what you bought</strong> stopped you from using it, and we could not put it right within a reasonable time.</li>
           </ul>
           <p className="mt-2">We always try to fix the problem first. If we cannot, we refund the affected purchase.</p>
+          <p className="mt-2">
+            <strong className="text-[var(--text-primary)]">Study materials</strong> (subject packs and bundles) are digital content that you can read
+            immediately, so they are <strong className="text-[var(--text-primary)]">not refundable</strong> once the purchase is complete. The only
+            exceptions are a double or wrong charge, or a pack that was charged but never opened for you.
+          </p>
         </section>
 
         <section>

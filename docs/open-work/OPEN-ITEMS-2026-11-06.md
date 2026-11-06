@@ -36,6 +36,8 @@ If you want an item moved out of this table or another moved in, say so; the res
 - Applied and verified: migrations 0044 to 0052, [`supabase/forge-subject-names.sql`](../../supabase/forge-subject-names.sql), [`supabase/forge-audit-fixes.sql`](../../supabase/forge-audit-fixes.sql), seeds b007 to b011 (CS Forge live = 329 + the pilot rows).
 - (you, verify) `0046_challenge_first.sql` was never confirmed in writing; Battles work, so it is probably applied.
 
+> **Every owner to-do, with a tick box, is in [OWNER-TASKS.md](OWNER-TASKS.md)** ([owner-tasks.html](owner-tasks.html) strikes items off). Decided 6 Nov: study materials no refunds; share cards profile-only (built); GST and licences later, when revenue arrives.
+
 ### 2.2 Decisions (defaults in [`docs/open-work/OPEN_DECISIONS_FOR_YOU.md`](OPEN_DECISIONS_FOR_YOU.md))
 - Forge: F2 Free sees Forge Mock solutions after the mock; F3 one Daily Forge teaser per branch channel; F4 Forge Mock cadence; F5 branch order; F6 keep the name Forge.
 - Study materials: S3 sources rule, S5 English only, S6 Deadlock sample first, S7 private repo or bucket for content; business: study-pass refund policy, GST later, rights for reference books.

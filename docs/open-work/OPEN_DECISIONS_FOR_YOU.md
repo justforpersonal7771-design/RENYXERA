@@ -39,11 +39,13 @@
 | 7 | Growth tasks G-5, C-3, V-1, P-1 | [`docs/growth/GROWTH_TASKS.md`](../growth/GROWTH_TASKS.md) |
 | 8 | Check payment, More sheet, onboarding Telegram step, aptitude images, Civil practice on a real phone | checklist |
 
-## D. Business and policy questions I cannot answer for you
-- **Refund and pricing policy** for the study-materials pass (links to the existing refund page).
-- **Student verification** for the personalised share cards: we only show what the student types; no ID check. Is that acceptable?
-- **GST/tax** on the study-materials product once revenue grows (talk to an accountant).
-- **Content licences:** whether you hold any rights to the textbooks in `notes/` beyond personal study.
+## D. Business and policy questions (answered 6 Nov 2026)
+- **Refund policy for study materials:** **no refunds.** Claude updates the refund and terms wording (owner reviews).
+- **Share cards:** show **only the profile's details, not editable** (built 6 Nov: fields read-only, photo upload removed). Student verification: add later only if misuse appears.
+- **GST/tax** on study materials: decided later, when revenue arrives.
+- **Content licences** for `notes/`: owner holds the rights for now; revisit when the product is paid.
+
+All your remaining to-dos are in one checklist: [OWNER-TASKS.md](OWNER-TASKS.md).
 
 ## Answered on 31 Oct 2026
 - **F1 (Plus Forge limit):** Plus gets **15 Forge questions a day** (owner said 15 to 20; started at the lower number because raising later is easy and lowering is not); Pro unlimited. Free gets a fixed 10-question taster (owner's tease rule, 30 Oct).
