@@ -1,0 +1,301 @@
+[
+ {
+  "slot": 10,
+  "kind": "multi_concept",
+  "question_text": "A job moves between three processing stages \\(1, 2, 3\\) and finishes (is absorbed) at some step. In each step: from stage \\(1\\) it stays with probability \\(0.6\\), goes to stage \\(2\\) with probability \\(0.3\\) and finishes with probability \\(0.1\\); from stage \\(2\\) it goes to stage \\(1\\), stays, or goes to stage \\(3\\) with probabilities \\(0.3, 0.4, 0.3\\); from stage \\(3\\) it goes to stage \\(2\\) with probability \\(0.4\\), stays with probability \\(0.1\\) and finishes with probability \\(0.5\\). A job starts in stage \\(1\\). The expected number of steps until it finishes, correct to two decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    8.96,
+    8.98
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let \\(h_i\\) be the expected number of steps to finish from stage \\(i\\). Conditioning on the first step: \\(h_1 = 1 + 0.6h_1 + 0.3h_2\\), \\(h_2 = 1 + 0.3h_1 + 0.4h_2 + 0.3h_3\\), \\(h_3 = 1 + 0.4h_2 + 0.1h_3\\).",
+    "In matrix form \\((I - Q)h = \\mathbf 1\\) where \\(Q\\) holds the transitions among stages; solving the \\(3 \\times 3\\) system gives \\(h_2 \\approx 8.62\\), \\(h_3 \\approx 4.94\\) and \\(h_1 \\approx 8.97\\)."
+   ],
+   "shortcut": "Solve (I - Q)h = 1 for the expected absorption times.",
+   "trap": "Using the finishing probability of stage 1 alone (1/0.1 = 10 steps) or averaging the three stages' finishing probabilities."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "F = fractions.Fraction\nQ = [[F('0.6'), F('0.3'), F(0)], [F('0.3'), F('0.4'), F('0.3')], [F(0), F('0.4'), F('0.1')]]\nA = [[(1 if i == j else 0) - Q[i][j] for j in range(3)] + [F(1)] for i in range(3)]\nfor c in range(3):\n    p = next(r for r in range(c, 3) if A[r][c] != 0)\n    A[c], A[p] = A[p], A[c]\n    A[c] = [x / A[c][c] for x in A[c]]\n    for r in range(3):\n        if r != c:\n            f = A[r][c]\n            A[r] = [A[r][k] - f * A[c][k] for k in range(4)]\nh = [A[i][3] for i in range(3)]\nanswer = round(float(h[0]), 2)\nh2 = round(float(h[1]), 2)\nh3 = round(float(h[2]), 2)"
+  }
+ },
+ {
+  "slot": 11,
+  "kind": "multi_concept",
+  "question_text": "A network planner wants to connect \\(8\\) labelled sites \\(1, \\dots, 8\\) with a tree (any labelled tree on the \\(8\\) sites). Site \\(1\\) must have exactly \\(4\\) neighbours and site \\(2\\) exactly \\(3\\) neighbours. The number of such labelled trees is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    360,
+    360
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Labelled trees on \\(8\\) vertices correspond one-to-one with Prufer sequences of length \\(6\\); in the sequence a vertex appears exactly \\(\\deg - 1\\) times.",
+    "Site \\(1\\) (degree \\(4\\)) appears \\(3\\) times and site \\(2\\) (degree \\(3\\)) appears \\(2\\) times; the sixth position holds one of the other \\(6\\) labels: \\(\\frac{6!}{3!\\,2!\\,1!} \\times 6 = 360\\) sequences.",
+    "Counting the sequences directly gives 360 trees."
+   ],
+   "shortcut": "Prufer sequences: degree minus one occurrences, then a multinomial.",
+   "trap": "Counting spanning trees of a specific graph, or placing the free sixth label in the formula as a seventh class without the factor 6."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor seq in itertools.product(range(1, 9), repeat=6):\n    if seq.count(1) == 3 and seq.count(2) == 2:\n        cnt += 1\nanswer = cnt\nformula = math.factorial(6) // (math.factorial(3) * math.factorial(2) * math.factorial(1)) * 6"
+  }
+ },
+ {
+  "slot": 12,
+  "kind": "trace",
+  "question_text": "Routers \\(A\\), \\(B\\), \\(C\\) form a chain with link costs \\(A\\text{-}B = 1\\) and \\(B\\text{-}C = 2\\). Distance-vector routing (no split horizon, no hold-down) has converged: \\(B\\) reaches \\(A\\) at cost \\(1\\) and \\(C\\) reaches \\(A\\) at cost \\(3\\) through \\(B\\). Then the link \\(A\\text{-}B\\) fails. From then on \\(B\\) first recomputes its cost to \\(A\\) using \\(C\\)'s last advertised cost, then \\(C\\) recomputes using \\(B\\)'s new cost, then \\(B\\) again, alternately, one update at a time. Infinity is taken as \\(16\\). The number of updates until a router's cost to \\(A\\) first reaches \\(16\\) or more is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    7,
+    7
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "After the failure \\(B\\) has no direct route and believes \\(C\\)'s stale route: \\(B = 2 + 3 = 5\\); then \\(C = 2 + 5 = 7\\); then \\(B = 9\\), \\(C = 11\\), \\(B = 13\\), \\(C = 15\\), \\(B = 17\\).",
+    "Each update raises the advertised cost by \\(2 \\times 2 = 4\\) over two updates; the first value that reaches \\(16\\) or more is 17 after 7 updates."
+   ],
+   "shortcut": "Simulate the alternating updates: each router adds the link cost to its neighbour's last advertisement.",
+   "trap": "Stopping at 16 exactly (the sequence jumps over it by steps of 2) or forgetting that the first update uses C's stale value."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cost_bc = 2\nb = 1\nc = 3\nupdates = 0\nturn = 'B'\nwhile b < 16 and c < 16:\n    if turn == 'B':\n        b = cost_bc + c\n        turn = 'C'\n    else:\n        c = cost_bc + b\n        turn = 'B'\n    updates += 1\nanswer = updates\nlast = max(b, c)"
+  }
+ },
+ {
+  "slot": 13,
+  "kind": "multi_concept",
+  "question_text": "Two AVL trees have the same shape if they are identical as unlabelled binary trees (the left and right subtrees of every node are compared in order). An AVL tree is a binary search tree in which, for every node, the heights of its two subtrees differ by at most \\(1\\). The number of different AVL tree shapes with exactly \\(12\\) nodes is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    184,
+    184
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let \\(f(n, h)\\) be the number of AVL shapes with \\(n\\) nodes and height \\(h\\) (\\(f(0, -1) = 1\\)). The root has subtrees of \\(l\\) and \\(n - 1 - l\\) nodes whose heights are \\((h - 1, h - 1)\\), \\((h - 1, h - 2)\\) or \\((h - 2, h - 1)\\).",
+    "A \\(12\\)-node AVL tree can have height 3, 4 only, and summing \\(f(12, h)\\) over those heights counts every shape: 184."
+   ],
+   "shortcut": "Dynamic programming over (nodes, height) with the three allowed height combinations.",
+   "trap": "Counting only complete trees or the number of BSTs (Catalan number 208012), which ignores the balance condition."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = {}\ndef f(n, h):\n    if (n, h) in cnt:\n        return cnt[(n, h)]\n    if n == 0:\n        r = 1 if h == -1 else 0\n    elif h < 0:\n        r = 0\n    else:\n        r = 0\n        for l in range(n):\n            rr = n - 1 - l\n            r += f(l, h - 1) * f(rr, h - 1) + f(l, h - 1) * f(rr, h - 2) + f(l, h - 2) * f(rr, h - 1)\n    cnt[(n, h)] = r\n    return r\nanswer = sum(f(12, h) for h in range(-1, 12))\nhh = [h for h in range(-1, 12) if f(12, h) > 0]\nhs = ', '.join(str(h) for h in hh)"
+  }
+ },
+ {
+  "slot": 14,
+  "kind": "multi_concept",
+  "question_text": "A \\(7\\)-bit codeword (\\(4\\) data bits and a \\(3\\)-bit CRC) uses the generator polynomial \\(G(x) = x^{3} + x + 1\\). A burst of noise flips each of the \\(7\\) bits according to an error pattern that is uniformly random over the \\(127\\) non-zero patterns. The probability that the error is NOT detected by the CRC, correct to three decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0.125\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(0.063\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(0.118\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(0.25\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "An error pattern is missed exactly when its polynomial is divisible by \\(G(x)\\), that is, when it is itself a non-zero codeword.",
+    "The code has \\(2^4 = 16\\) codewords, so \\(15\\) non-zero error patterns are undetectable (a division of all \\(127\\) patterns by \\(G\\) confirms 15).",
+    "Probability \\(= 15/127 \\approx 0.118\\), slightly below the \\(1/8\\) a random-looking check would give."
+   ],
+   "shortcut": "Undetected errors = non-zero codewords: (2^k - 1) of the (2^n - 1) non-zero patterns.",
+   "trap": "Using 2^-3 = 0.125 (a random check of 3 bits), which counts the zero error pattern's share and ignores that there are 127 non-zero patterns."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "g = 0b1011\ndef mod(v):\n    for i in range(6, 2, -1):\n        if (v >> i) & 1:\n            v ^= g << (i - 3)\n    return v\nund = sum(1 for e in range(1, 128) if mod(e) == 0)\nval = round(und / 127, 3)\nwrong = [0.125, 0.063, 0.25]\nopts = {'A': 0.125, 'B': 0.063, 'C': 0.118, 'D': 0.25}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 15,
+  "kind": "multi_concept",
+  "question_text": "A system has \\(5\\) processes and \\(3\\) resource types with the allocation, maximum-demand and currently available vectors \\(\\text{Alloc}: P_0 = (0,1,0), P_1 = (2,0,0), P_2 = (3,0,2), P_3 = (2,1,1), P_4 = (0,0,2)\\); \\(\\text{Max}: P_0 = (7,5,3), P_1 = (3,2,2), P_2 = (9,0,2), P_3 = (2,2,2), P_4 = (4,3,3)\\); \\(\\text{Available} = (3,3,2)\\). A safe sequence is an order of all five processes in which each can finish with the resources available at its turn (finished processes release everything they hold). The number of different safe sequences is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    16,
+    16
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Need \\(= \\text{Max} - \\text{Alloc}\\): \\(P_0 = (7,4,3),\\ P_1 = (1,2,2),\\ P_2 = (6,0,0),\\ P_3 = (0,1,1),\\ P_4 = (4,3,1)\\).",
+    "A sequence is safe when every process finds its remaining need within the resources available at its turn (those plus everything released earlier). Checking all \\(5! = 120\\) orders gives 16 safe sequences.",
+    "A single safe sequence only proves the state is safe; the number of safe sequences measures how much scheduling freedom remains."
+   ],
+   "shortcut": "Compute Need, then count the permutations where each step is satisfiable.",
+   "trap": "Stopping at the first safe sequence found, or testing demand (Max) instead of remaining need."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "alloc = [(0, 1, 0), (2, 0, 0), (3, 0, 2), (2, 1, 1), (0, 0, 2)]\nmx = [(7, 5, 3), (3, 2, 2), (9, 0, 2), (2, 2, 2), (4, 3, 3)]\navail = (3, 3, 2)\nneed = [tuple(mx[i][k] - alloc[i][k] for k in range(3)) for i in range(5)]\ncnt = 0\nfor perm in itertools.permutations(range(5)):\n    w = list(avail)\n    ok = True\n    for p in perm:\n        if all(need[p][k] <= w[k] for k in range(3)):\n            w = [w[k] + alloc[p][k] for k in range(3)]\n        else:\n            ok = False\n            break\n    if ok:\n        cnt += 1\nanswer = cnt"
+  }
+ },
+ {
+  "slot": 16,
+  "kind": "multi_concept",
+  "question_text": "A delivery network has junctions \\(S, A, B, C, D, E, T\\) and two-way roads with lengths \\(S\\text{-}A: 2\\), \\(S\\text{-}B: 2\\), \\(A\\text{-}C: 3\\), \\(B\\text{-}C: 3\\), \\(A\\text{-}D: 5\\), \\(B\\text{-}E: 5\\), \\(C\\text{-}D: 2\\), \\(C\\text{-}E: 2\\), \\(D\\text{-}T: 3\\), \\(E\\text{-}T: 3\\), \\(C\\text{-}T: 5\\). The number of different shortest routes from \\(S\\) to \\(T\\) (different sequences of junctions with the minimum total length) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    8,
+    8
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Dijkstra gives the shortest distance \\(d(S, T) = 10\\).",
+    "Count shortest routes by dynamic programming in order of distance: a junction's count is the sum of the counts of its neighbours \\(u\\) with \\(d(u) + w(u, v) = d(v)\\).",
+    "The count at \\(T\\) is 8."
+   ],
+   "shortcut": "Dijkstra for distances, then add the path counts along tight edges.",
+   "trap": "Counting all routes of any length, or stopping at the first shortest path found."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "E = [('S', 'A', 2), ('S', 'B', 2), ('A', 'C', 3), ('B', 'C', 3), ('A', 'D', 5), ('B', 'E', 5), ('C', 'D', 2), ('C', 'E', 2), ('D', 'T', 3), ('E', 'T', 3), ('C', 'T', 5)]\nadj = {}\nfor a, b, w in E:\n    adj.setdefault(a, []).append((b, w))\n    adj.setdefault(b, []).append((a, w))\nINF = 10 ** 9\ndist = {v: INF for v in adj}\ndist['S'] = 0\ndone = set()\nwhile len(done) < len(adj):\n    u = min((v for v in adj if v not in done), key=lambda v: dist[v])\n    done.add(u)\n    for v, w in adj[u]:\n        if dist[u] + w < dist[v]:\n            dist[v] = dist[u] + w\nways = {v: 0 for v in adj}\nways['S'] = 1\nfor u in sorted(adj, key=lambda v: dist[v]):\n    for v, w in adj[u]:\n        if dist[u] + w == dist[v] and u != v:\n            ways[v] += ways[u]\nanswer = ways['T']\nd = dist['T']"
+  }
+ },
+ {
+  "slot": 17,
+  "kind": "trace",
+  "question_text": "Transactions \\(T_1\\) and \\(T_2\\) each execute the same four operations in the same order: read \\(A\\), write \\(A\\), read \\(B\\), write \\(B\\). An interleaving merges the two sequences of four operations into one schedule of eight operations (the order inside each transaction is kept). Among all the possible interleavings, the number that are conflict serializable is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    12,
+    12
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "There are \\(\\binom{8}{4} = 70\\) interleavings. Two operations conflict when they touch the same item and at least one is a write.",
+    "The schedule is conflict serializable exactly when the precedence graph has no cycle, that is, when the conflicts do not force both \\(T_1 \\to T_2\\) and \\(T_2 \\to T_1\\).",
+    "Checking every interleaving leaves 12 serializable ones (the serial schedules and those where all conflicts on \\(A\\) and on \\(B\\) point the same way)."
+   ],
+   "shortcut": "Enumerate the 70 interleavings and test the precedence graph for a cycle.",
+   "trap": "Counting only the 2 serial schedules, or treating any interleaving as serializable because the operations are identical."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "ops = ['RA', 'WA', 'RB', 'WB']\ntotal = 0\ngood = 0\nfor pos in itertools.combinations(range(8), 4):\n    t1 = list(pos)\n    seq = []\n    i1 = 0\n    i2 = 0\n    for k in range(8):\n        if k in t1:\n            seq.append((1, ops[i1]))\n            i1 += 1\n        else:\n            seq.append((2, ops[i2]))\n            i2 += 1\n    edges = set()\n    for x in range(8):\n        for y in range(x + 1, 8):\n            a = seq[x]\n            b = seq[y]\n            if a[0] != b[0] and a[1][1] == b[1][1] and 'W' in (a[1][0], b[1][0]):\n                edges.add((a[0], b[0]))\n    total += 1\n    if not ((1, 2) in edges and (2, 1) in edges):\n        good += 1\nanswer = good"
+  }
+ },
+ {
+  "slot": 18,
+  "kind": "multi_concept",
+  "question_text": "A circuit designer examines every possible truth table with three input wires and one output wire. She calls a truth table \\(f\\) affine when, for every choice of three input vectors \\(x, y, z \\in \\{0, 1\\}^3\\), the four outputs \\(f(x), f(y), f(z)\\) and \\(f(x \\oplus y \\oplus z)\\) combine by exclusive-or to \\(0\\) (the \\(\\oplus\\) inside \\(f\\) acts bit by bit on the vectors). The number of affine truth tables among all \\(256\\) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    16,
+    16
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The condition says that \\(g(x) = f(x) \\oplus f(0)\\) is linear over \\(\\mathrm{GF}(2)\\): such functions are \\(a_1x_1 \\oplus a_2x_2 \\oplus a_3x_3\\), possibly complemented.",
+    "That gives \\(2^3\\) choices of the coefficients and \\(2\\) choices for the constant: \\(16\\) functions; testing all \\(256\\) truth tables confirms 16."
+   ],
+   "shortcut": "Affine = linear function over GF(2) plus a constant: 2^(n+1) functions.",
+   "trap": "Counting only linear functions without the constant term (8), or all monotone functions."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "pts = list(range(8))\ncnt = 0\nfor table in range(256):\n    f = [(table >> x) & 1 for x in pts]\n    if all((f[x] ^ f[y] ^ f[z] ^ f[x ^ y ^ z]) == 0 for x in pts for y in pts for z in pts):\n        cnt += 1\nanswer = cnt"
+  }
+ },
+ {
+  "slot": 19,
+  "kind": "msq_discriminator",
+  "question_text": "The random variables \\(X \\in \\{0, 1, 2\\}\\) and \\(Y \\in \\{0, 1\\}\\) have the joint probabilities \\(P(0,0) = 0.10\\), \\(P(1,0) = 0.20\\), \\(P(2,0) = 0.10\\), \\(P(0,1) = 0.05\\), \\(P(1,1) = 0.25\\), \\(P(2,1) = 0.30\\). Which of the following statements is/are TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(X\\) and \\(Y\\) are independent."
+   },
+   {
+    "option_id": "B",
+    "text": "\\(\\operatorname{Cov}(X, Y) > 0\\)."
+   },
+   {
+    "option_id": "C",
+    "text": "\\(E[X \\mid Y = 1] > E[X \\mid Y = 0]\\)."
+   },
+   {
+    "option_id": "D",
+    "text": "\\(P(X + Y \\text{ is even}) > 0.5\\)."
+   }
+  ],
+  "answer": {
+   "options": [
+    "B",
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Independence would need \\(P(x, y) = P(x)P(y)\\) in every cell; for example \\(P(0,0) = 0.10\\) but \\(P(X = 0)P(Y = 0) = 0.15 \\times 0.40 = 0.06\\), so the variables are dependent.",
+    "\\(E[X] = 1.25\\), \\(E[Y] = 0.6\\) and \\(E[XY] = 0.25 + 0.60 = 0.85\\), so \\(\\operatorname{Cov} = 0.1 > 0\\); consistently \\(E[X \\mid Y = 1] = 1.417\\) exceeds \\(E[X \\mid Y = 0] = 1\\).",
+    "\\(P(X + Y \\text{ even}) = P(0,0) + P(2,0) + P(1,1) = 0.45\\), which is not above \\(0.5\\)."
+   ],
+   "shortcut": "Compare each cell with the product of marginals, then compute covariance and conditional means.",
+   "trap": "Reading a positive covariance as independence, or confusing E[X | Y] with E[X]."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "P = {(0, 0): 0.10, (1, 0): 0.20, (2, 0): 0.10, (0, 1): 0.05, (1, 1): 0.25, (2, 1): 0.30}\nEX = sum(x * p for (x, y), p in P.items())\nEY = sum(y * p for (x, y), p in P.items())\nEXY = sum(x * y * p for (x, y), p in P.items())\ncov = EXY - EX * EY\npy = {0: sum(p for (x, y), p in P.items() if y == 0), 1: sum(p for (x, y), p in P.items() if y == 1)}\nex0 = sum(x * p for (x, y), p in P.items() if y == 0) / py[0]\nex1 = sum(x * p for (x, y), p in P.items() if y == 1) / py[1]\nvarx = sum((x - EX) ** 2 * p for (x, y), p in P.items())\npx = {x: sum(p for (a, b), p in P.items() if a == x) for x in range(3)}\nindep = all(abs(P[(x, y)] - px[x] * py[y]) < 1e-12 for x in range(3) for y in range(2))\neven = sum(p for (x, y), p in P.items() if (x + y) % 2 == 0)\ntruth = [indep, cov > 0, ex1 > ex0, even > 0.5]\ncv = round(cov, 3)\ne0 = round(ex0, 3)\ne1 = round(ex1, 3)\nev = round(even, 2)\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+  }
+ }
+]

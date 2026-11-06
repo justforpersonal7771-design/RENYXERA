@@ -1,0 +1,336 @@
+[
+ {
+  "slot": 0,
+  "kind": "multi_concept",
+  "question_text": "A disk head is at cylinder \\(53\\) and the pending requests are for cylinders \\(98, 183, 37, 122, 14, 124, 65, 67\\). Shortest-seek-time-first (SSTF) serves the nearest pending request each time. An offline planner that knows all the requests may serve them in any order it likes. The number of extra cylinders that SSTF moves compared with the best possible order is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    28,
+    28
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "SSTF repeatedly jumps to the nearest request: from \\(53\\) it goes \\(65, 67, 37, 14, 98, 122, 124, 183\\), moving a total of 236 cylinders.",
+    "The cheapest order sweeps one side first and then the other; checking all \\(8! = 40320\\) service orders gives a minimum of 208 cylinders.",
+    "Difference \\(= 236 - 208 = 28\\): greedy nearest-first is not optimal."
+   ],
+   "shortcut": "Compute SSTF greedily, then compare with the minimum over all service orders.",
+   "trap": "Assuming SSTF is optimal because every step is the cheapest one, or comparing it with SCAN instead of the true optimum."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "head = 53\nreqs = [98, 183, 37, 122, 14, 124, 65, 67]\ndef cost(order):\n    pos = head\n    t = 0\n    for r in order:\n        t += abs(r - pos)\n        pos = r\n    return t\nleft = list(reqs)\npos = head\norder = []\nwhile left:\n    nxt = min(left, key=lambda r: (abs(r - pos), r))\n    left.remove(nxt)\n    order.append(nxt)\n    pos = nxt\nsstf = cost(order)\nbest = min(cost(p) for p in itertools.permutations(reqs))\nanswer = sstf - best"
+  }
+ },
+ {
+  "slot": 1,
+  "kind": "multi_concept",
+  "question_text": "A \\(2\\)-way set-associative cache set with LRU replacement serves a stream of independent random accesses to three blocks \\(X, Y, Z\\) that all map to this set, with probabilities \\(0.5, 0.3\\) and \\(0.2\\) respectively. In the long run, the fraction of accesses that hit in the set, correct to three decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(0.739\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(0.719\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(0.669\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(0.667\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "B"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The state of the set is the ordered pair (most recently used, least recently used). A hit leaves the pair unchanged or swaps it; a miss brings in the third block, evicting the least recently used one.",
+    "Solve the \\(6\\)-state Markov chain for its stationary distribution \\(\\pi\\) (power iteration converges quickly).",
+    "In state \\((m, l)\\) the hit probability is \\(p_m + p_l\\); averaging over \\(\\pi\\) gives the long-run hit fraction 0.719, above the uniform-access value \\(2/3\\) because the popular blocks stay resident."
+   ],
+   "shortcut": "Stationary distribution of the LRU-stack Markov chain, then average the hit probability.",
+   "trap": "Using the uniform value 2/3 or the sum of the two largest probabilities (0.8), which assumes the two hottest blocks are always the resident ones."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "p = [0.5, 0.3, 0.2]\nstates = [(a, b) for a in range(3) for b in range(3) if a != b]\nidx = {s: i for i, s in enumerate(states)}\npi = [1.0 / len(states)] * len(states)\nfor _ in range(3000):\n    new = [0.0] * len(states)\n    for s in states:\n        mru, lru = s\n        for b in range(3):\n            if b == mru:\n                t = s\n            else:\n                t = (b, mru)\n            new[idx[t]] += pi[idx[s]] * p[b]\n    pi = new\nval = round(sum(pi[idx[s]] * (p[s[0]] + p[s[1]]) for s in states), 3)\nwrong = [round(val + 0.02, 3), round(val - 0.05, 3), 0.667]\nopts = {'A': 0.739, 'B': 0.719, 'C': 0.669, 'D': 0.667}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 2,
+  "kind": "multi_concept",
+  "question_text": "A line encoder sends binary strings of length \\(14\\) in which any two \\(1\\)s must be at least \\(3\\) positions apart (so \\(1001\\) is allowed, \\(101\\) and \\(11\\) are not). The number of strings the encoder can send is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    277,
+    277
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Look at the last symbol: if it is \\(0\\), the first \\(n - 1\\) symbols form any valid string; if it is \\(1\\), the two symbols before it must be \\(0\\) and the first \\(n - 3\\) symbols are any valid string.",
+    "So \\(a_n = a_{n-1} + a_{n-3}\\) with \\(a_0 = 1,\\ a_1 = 2,\\ a_2 = 3\\), giving \\(a_{14} = 277\\); checking all \\(2^{14}\\) strings gives 277.",
+    "Equivalently, this counts the strings accepted by a \\(4\\)-state DFA, the recurrence is its characteristic polynomial \\(x^3 = x^2 + 1\\)."
+   ],
+   "shortcut": "Condition on the last symbol: a_n = a_{n-1} + a_{n-3}.",
+   "trap": "Using the Fibonacci recurrence (distance 2) or counting the spacing as an exact distance instead of a minimum."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "cnt = 0\nfor x in range(1 << 14):\n    ones = [i for i in range(14) if (x >> i) & 1]\n    if all(b - a >= 3 for a, b in zip(ones, ones[1:])):\n        cnt += 1\nf = [1, 2, 3]\nfor n in range(3, 15):\n    f.append(f[-1] + f[-3])\nanswer = cnt\nrec = f[14]"
+  }
+ },
+ {
+  "slot": 3,
+  "kind": "multi_concept",
+  "question_text": "Randomized quickselect finds the \\(4\\)-th smallest of \\(7\\) distinct numbers. In each round it picks a pivot uniformly at random from the current elements, compares every other element with the pivot (so a round on \\(m\\) elements costs \\(m - 1\\) comparisons), and recurses only into the part that contains the target. The expected number of comparisons, correct to three decimal places, is",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(10.386\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(12.786\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(11.486\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(12\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "C"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Let \\(E(n, k)\\) be the expected number of comparisons for rank \\(k\\) among \\(n\\) elements; \\(E(1, k) = 0\\). With a pivot of rank \\(i\\) (probability \\(1/n\\)): done if \\(i = k\\), otherwise recurse on the \\(i - 1\\) smaller elements (if \\(i > k\\)) or on the \\(n - i\\) larger ones with rank \\(k - i\\) (if \\(i < k\\)).",
+    "\\(E(n, k) = (n - 1) + \\frac1n \\sum_i \\bigl(\\text{cost of the recursion for pivot rank } i\\bigr)\\); evaluating the recurrence from small sizes up to \\(E(7, 4)\\) gives 11.486."
+   ],
+   "shortcut": "Dynamic programming over (size, rank) with a uniformly random pivot.",
+   "trap": "Using the quicksort recurrence (recursing on both sides) or ignoring that the target's rank changes after a right-hand recursion."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "F = fractions.Fraction\nE = {}\ndef e(n, k):\n    if n <= 1:\n        return F(0)\n    if (n, k) in E:\n        return E[(n, k)]\n    tot = F(0)\n    for i in range(1, n + 1):\n        if i == k:\n            pass\n        elif i > k:\n            tot += e(i - 1, k)\n        else:\n            tot += e(n - i, k - i)\n    E[(n, k)] = (n - 1) + tot / n\n    return E[(n, k)]\nval = round(float(e(7, 4)), 3)\nwrong = [round(val - 1.1, 3), round(val + 1.3, 3), 12.0]\nopts = {'A': 10.386, 'B': 12.786, 'C': 11.486, 'D': 12.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 4,
+  "kind": "multi_concept",
+  "question_text": "Seven transactions \\(T_1, \\dots, T_7\\) run the schedule \\(S\\) (in time order): \\(R_1(A)\\ R_4(B)\\ R_6(C)\\ W_2(A)\\ W_5(B)\\ W_7(C)\\ R_3(A)\\ W_3(D)\\ R_7(D)\\), where \\(R_i(X)\\) and \\(W_i(X)\\) are a read and a write of item \\(X\\) by \\(T_i\\). \\(S\\) is conflict serializable. The number of different serial schedules (orders of the seven transactions) that are conflict equivalent to \\(S\\) is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    84,
+    84
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Conflicting pairs (different transactions, same item, at least one write) give the precedence edges: T1 to T2, T2 to T3, T3 to T7, T4 to T5, T6 to T7.",
+    "A serial schedule is equivalent to \\(S\\) exactly when it respects every edge, so the count is the number of topological orders of this graph.",
+    "The graph splits into the chain \\(T_1 \\to T_2 \\to T_3 \\to T_7\\) joined by \\(T_6 \\to T_7\\), and the pair \\(T_4 \\to T_5\\); counting the valid orders of the seven transactions gives 84."
+   ],
+   "shortcut": "Build the precedence graph and count its topological orders.",
+   "trap": "Reporting one serial order (the usual 'the' equivalent serial schedule), or ignoring edges that arise through a third transaction."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "ops = [(1, 'R', 'A'), (4, 'R', 'B'), (6, 'R', 'C'), (2, 'W', 'A'), (5, 'W', 'B'), (7, 'W', 'C'), (3, 'R', 'A'), (3, 'W', 'D'), (7, 'R', 'D')]\nedges = set()\nfor x in range(len(ops)):\n    for y in range(x + 1, len(ops)):\n        a = ops[x]\n        b = ops[y]\n        if a[0] != b[0] and a[2] == b[2] and 'W' in (a[1], b[1]):\n            edges.add((a[0], b[0]))\ncnt = 0\nfor perm in itertools.permutations(range(1, 8)):\n    pos = {t: i for i, t in enumerate(perm)}\n    if all(pos[a] < pos[b] for a, b in edges):\n        cnt += 1\nanswer = cnt\nelist = ', '.join('T%d to T%d' % e for e in sorted(edges))"
+  }
+ },
+ {
+  "slot": 5,
+  "kind": "multi_concept",
+  "question_text": "Ten stations share a slotted ALOHA channel. In every slot each station independently transmits with the same probability \\(p\\); a slot is successful when exactly one station transmits. When \\(p\\) is chosen to maximise the long-run fraction of successful slots, the average number of slots the channel needs per delivered frame is, correct to two decimal places,",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "\\(2\\)"
+   },
+   {
+    "option_id": "B",
+    "text": "\\(2.72\\)"
+   },
+   {
+    "option_id": "C",
+    "text": "\\(3\\)"
+   },
+   {
+    "option_id": "D",
+    "text": "\\(2.58\\)"
+   }
+  ],
+  "answer": {
+   "options": [
+    "D"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "The success probability of a slot is \\(S(p) = 10\\,p\\,(1 - p)^{9}\\); setting \\(S'(p) = 0\\) gives \\(p = 1/10\\).",
+    "\\(S(0.1) = 10 \\times 0.1 \\times 0.9^{9} \\approx 0.3874\\).",
+    "The average number of slots per delivered frame is \\(1/S \\approx 2.58\\)."
+   ],
+   "shortcut": "Maximise n p (1-p)^(n-1) at p = 1/n and invert.",
+   "trap": "Using the large-n limit 1/e (giving e = 2.72 slots) instead of the exact value for ten stations."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "n = 10\nbestS = 0.0\nbestp = 0.0\nfor i in range(1, 1000):\n    p = i / 1000.0\n    S = n * p * (1 - p) ** (n - 1)\n    if S > bestS:\n        bestS = S\n        bestp = p\nval = round(1 / bestS, 2)\nwrong = [2.0, 2.72, 3.0]\nsp = round(bestS, 4)\nopts = {'A': 2.0, 'B': 2.72, 'C': 3.0, 'D': 2.58}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+  }
+ },
+ {
+  "slot": 6,
+  "kind": "multi_concept",
+  "question_text": "An \\(8\\)-bit two's complement multiplier register holds \\(-57\\) (the bit pattern \\(11000111\\)). A radix-4 Booth multiplier recodes it into four digits from the set \\(\\{-2, -1, 0, +1, +2\\}\\) by examining overlapping triples of bits (with an extra \\(0\\) appended to the right of the least significant bit), and generates one partial product per digit but skips a partial product whose digit is \\(0\\). The number of non-zero partial products is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    3,
+    3
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Recode each triple \\((b_{2i+1}, b_{2i}, b_{2i-1})\\) as \\(-2 b_{2i+1} + b_{2i} + b_{2i-1}\\); starting from the least significant pair the digits are -1, 2, 0, -1.",
+    "Check: \\(\\sum d_i 4^i = -57\\), which is the multiplier \\(-57\\).",
+    "Only the digits that are not zero need a partial product: 3 of the four."
+   ],
+   "shortcut": "Recode in overlapping triples; skip zero digits.",
+   "trap": "Forgetting the appended zero on the right, or counting all four digits as partial products."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "bits = [1, 1, 0, 0, 0, 1, 1, 1]\nb = bits[::-1] + [0]\ndigits = []\nfor i in range(4):\n    b0 = b[2 * i]\n    b1 = b[2 * i + 1]\n    bm = b[2 * i - 1] if i > 0 else 0\n    digits.append(-2 * b1 + b0 + bm)\nvalue = sum(d * 4 ** i for i, d in enumerate(digits))\nanswer = sum(1 for d in digits if d != 0)\nds = ', '.join(str(d) for d in digits)"
+  }
+ },
+ {
+  "slot": 7,
+  "kind": "msq_discriminator",
+  "question_text": "A compiler course uses the grammar with terminals \\(a, b, c, d\\) and start symbol \\(S\\): \\(S \\to A\\,a \\mid b\\,A\\,c \\mid d\\,c \\mid b\\,d\\,a\\), \\(A \\to d\\). Which one of the following classifications of the grammar is TRUE?",
+  "options": [
+   {
+    "option_id": "A",
+    "text": "The grammar is LALR(1) but not SLR(1)."
+   },
+   {
+    "option_id": "B",
+    "text": "The grammar is SLR(1)."
+   },
+   {
+    "option_id": "C",
+    "text": "The grammar is LR(1) but not LALR(1)."
+   },
+   {
+    "option_id": "D",
+    "text": "The grammar is not LR(1)."
+   }
+  ],
+  "answer": {
+   "options": [
+    "A"
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Consider the state reached after reading \\(d\\) from the start: it holds \\(A \\to d\\cdot\\) (the reduction needed for \\(S \\to Aa\\)) and \\(S \\to d\\cdot c\\) (a shift on \\(c\\)).",
+    "With SLR(1), the reduction \\(A \\to d\\) is used on \\(\\text{FOLLOW}(A) = \\{a, c\\}\\), which contains \\(c\\): a shift-reduce conflict, so the grammar is not SLR(1).",
+    "With look-aheads the reduction in that state applies only on \\(a\\), and the state reached after \\(b\\,d\\) (look-ahead \\(c\\)) has a different core, so no states merge in LALR(1): the grammar is LR(1) and LALR(1) (the automaton has 11 states) but not SLR(1)."
+   ],
+   "shortcut": "Look for the state where FOLLOW overlaps a shift symbol; check whether look-aheads separate it.",
+   "trap": "Judging the grammar by FOLLOW sets alone (SLR) and concluding it cannot be LR(1)-family at all."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "G = [(\"S'\", (\"S\",)), (\"S\", (\"A\", \"a\")), (\"S\", (\"b\", \"A\", \"c\")), (\"S\", (\"d\", \"c\")), (\"S\", (\"b\", \"d\", \"a\")), (\"A\", (\"d\",))]\nNT = [\"S'\", \"S\", \"A\"]\ndef first(sym):\n    if sym not in NT:\n        return set([sym])\n    out = set()\n    for l, r in G:\n        if l == sym and r[0] != sym:\n            out |= first(r[0])\n    return out\ndef closure(items):\n    items = set(items)\n    ch = True\n    while ch:\n        ch = False\n        for (p, d, la) in list(items):\n            lhs, rhs = G[p]\n            if d < len(rhs) and rhs[d] in NT:\n                beta = rhs[d + 1:]\n                las = first(beta[0]) if beta else set([la])\n                for q, (l2, r2) in enumerate(G):\n                    if l2 == rhs[d]:\n                        for x in las:\n                            it = (q, 0, x)\n                            if it not in items:\n                                items.add(it)\n                                ch = True\n    return tuple(sorted(items))\ndef goto(st, X):\n    moved = set((p, d + 1, la) for (p, d, la) in st if d < len(G[p][1]) and G[p][1][d] == X)\n    return closure(moved) if moved else None\nstart = closure(set([(0, 0, '$')]))\nstates = [start]\nseen = {start: 0}\nsyms = set()\nfor l, r in G:\n    syms.add(l)\n    for s in r:\n        syms.add(s)\nsyms = sorted(syms)\ni = 0\nwhile i < len(states):\n    for X in syms:\n        g = goto(states[i], X)\n        if g is not None and g not in seen:\n            seen[g] = len(states)\n            states.append(g)\n    i += 1\ndef conflict(st, la_of):\n    reds = []\n    shifts = set()\n    for (p, d, la) in st:\n        if d == len(G[p][1]):\n            for x in la_of(p, la):\n                reds.append((p, x))\n        elif G[p][1][d] not in NT:\n            shifts.add(G[p][1][d])\n    las = [x for p, x in reds]\n    return any(x in shifts for x in las) or len(las) != len(set(las))\nlr1_ok = not any(conflict(s, lambda p, la: [la]) for s in states)\ngroups = {}\nfor s in states:\n    core = tuple(sorted(set((p, d) for (p, d, la) in s)))\n    groups[core] = groups.get(core, set()) | set(s)\nlalr_ok = not any(conflict(tuple(sorted(g)), lambda p, la: [la]) for g in groups.values())\nfollow = {n: set() for n in NT}\nfollow[\"S'\"].add('$')\nch = True\nwhile ch:\n    ch = False\n    for l, r in G:\n        for k, s in enumerate(r):\n            if s in NT:\n                add = first(r[k + 1]) if k + 1 < len(r) else follow[l]\n                if not add <= follow[s]:\n                    follow[s] |= add\n                    ch = True\nslr_ok = not any(conflict(tuple(sorted(set((p, d, 'x') for (p, d) in core))), lambda p, la: sorted(follow[G[p][0]])) for core in groups.keys())\nnstates = len(states)\nncores = len(groups)\ntruth = [slr_ok, lalr_ok and not slr_ok, lr1_ok and not lalr_ok, not lr1_ok]\nperm = [1, 0, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x][0]"
+  }
+ },
+ {
+  "slot": 8,
+  "kind": "trace",
+  "question_text": "A \\(5\\)-stage pipeline (IF, ID, EX, MEM, WB) has full forwarding for ALU results, but a load followed immediately by an instruction that uses its result still stalls for \\(1\\) cycle. Conditional branches are resolved in the ID stage: if the branch needs a register produced by the immediately preceding ALU instruction it stalls for \\(1\\) cycle (\\(2\\) cycles if that instruction is a load), and a taken branch costs \\(1\\) extra cycle (the fetched instruction is squashed; not taken costs nothing). The loop \\(\\texttt{L: lw r1,0(r2);\\ add r3,r3,r1;\\ addi r2,r2,4;\\ bne r2,r5,L}\\) is executed \\(10\\) times (the branch is taken \\(9\\) times). Counting from the first instruction fetch to the last write-back, the total number of cycles is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    73,
+    73
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Dynamic instructions: \\(4 \\times 10 = 40\\). An ideal pipeline needs \\(40 + 4 = 44\\) cycles.",
+    "Per iteration: the \\(\\texttt{add}\\) uses the register just loaded (1 stall), and \\(\\texttt{bne}\\) uses \\(\\texttt{r2}\\) written by the \\(\\texttt{addi}\\) just before it (1 stall): \\(2 \\times 10 = 20\\) stall cycles.",
+    "The branch is taken \\(9\\) times, each adding one squashed fetch: \\(9\\) cycles.",
+    "Total \\(= 44 + 20 + 9 = 73\\)."
+   ],
+   "shortcut": "Cycles = instructions + 4 + stalls + branch penalties.",
+   "trap": "Charging the load-use stall to the branch as well, or adding a branch penalty to the final not-taken branch."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "trace = []\nfor it in range(10):\n    trace += [('lw', 'r1', ['r2']), ('add', 'r3', ['r3', 'r1']), ('addi', 'r2', ['r2']), ('bne', None, ['r2', 'r5'])]\nstalls = 0\nfor k in range(1, len(trace)):\n    prev = trace[k - 1]\n    cur = trace[k]\n    if cur[0] == 'bne':\n        if prev[1] in cur[2]:\n            stalls += 2 if prev[0] == 'lw' else 1\n    else:\n        if prev[0] == 'lw' and prev[1] in cur[2]:\n            stalls += 1\nn = len(trace)\ntaken = 9\nanswer = n + 4 + stalls + taken"
+  }
+ },
+ {
+  "slot": 9,
+  "kind": "multi_concept",
+  "question_text": "An open-addressing hash table has \\(8\\) slots and uses linear probing (next slot, wrapping around). Five keys are inserted one after another; the hash value of each key is independently and uniformly random over the \\(8\\) slots. A sixth, new key (not in the table) with a uniformly random hash value is then searched for. The search examines slots starting at its hash slot until it finds an empty slot, and the empty slot examined counts as a probe. The expected number of probes, correct to three decimal places, is ______.",
+  "options": [],
+  "answer": {
+   "range": [
+    2.4,
+    2.42
+   ]
+  },
+  "solution": {
+   "given": "The data stated in the question.",
+   "find": "The quantity or statement asked for.",
+   "steps": [
+    "Average over all \\(8^5\\) equally likely hash sequences for the five keys and over the \\(8\\) hash values of the new key.",
+    "For a given final table the search for hash value \\(h\\) takes \\(1 + \\) (length of the run of occupied slots starting at \\(h\\)) probes, so clusters make the average larger than the \\(1 + 5/8\\) a random placement would suggest.",
+    "Exact enumeration of all \\(8^6\\) cases gives 2.412."
+   ],
+   "shortcut": "Enumerate all hash sequences; probes = 1 + run length of occupied slots from the hash position.",
+   "trap": "Using the textbook large-table formula for linear probing or the load factor alone (about 1.6), which ignores primary clustering at this size."
+  },
+  "verify": {
+   "lang": "python",
+   "code": "m = 8\ntotal = 0\nfor hs in itertools.product(range(m), repeat=5):\n    t = [0] * m\n    for h in hs:\n        j = h\n        while t[j]:\n            j = (j + 1) % m\n        t[j] = 1\n    for h in range(m):\n        j = h\n        pr = 1\n        while t[j]:\n            j = (j + 1) % m\n            pr += 1\n        total += pr\nanswer = round(total / (m ** 6), 3)"
+  }
+ }
+]

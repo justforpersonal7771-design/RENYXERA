@@ -1,0 +1,227 @@
+{
+ "branch": "CS",
+ "batch": "b011",
+ "how": "Hand-designed plan for the X-tier batch (cross-concept challenge questions, 12 X and 8 H, all 2 marks).",
+ "slots": [
+  {
+   "index": 0,
+   "subject": "Operating Systems (OS)",
+   "topic": "File Systems Operations & Disk Scheduling Optimization",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 1,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Memory Hierarchy (Direct/Associative Cache Mapping)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "B",
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 2,
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 3,
+   "subject": "Algorithms",
+   "topic": "Searching, Sorting, Hashing Mechanisms",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 4,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Transactions, Concurrency Control, Conflict Serializability",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 5,
+   "subject": "Computer Networks (CN)",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "D",
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 6,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Number Representations & Floating Point",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 7,
+   "subject": "Compiler Design",
+   "topic": "Lexical Analysis & Parsing Architectures (LL(1), LR(1), LALR)",
+   "type": "MCQ",
+   "kind": "msq_discriminator",
+   "key": "A",
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 8,
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Instruction Pipelining and Hazards",
+   "type": "NAT",
+   "kind": "trace",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 9,
+   "subject": "Algorithms",
+   "topic": "Searching, Sorting, Hashing Mechanisms",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 10,
+   "subject": "Linear Algebra",
+   "topic": "Linear Algebra: Matrices, Eigenvalues and Eigenvectors",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 11,
+   "subject": "Discrete Mathematics",
+   "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 12,
+   "subject": "Computer Networks (CN)",
+   "topic": "Routing Protocols (Shortest Path, Flooding, Distance Vector, Link State Routing)",
+   "type": "NAT",
+   "kind": "trace",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 13,
+   "subject": "Data Structures",
+   "topic": "Binary Search Trees (BSTs) & Binary Heaps",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 14,
+   "subject": "Computer Networks (CN)",
+   "topic": "Data Link Layer (Framing, Error Detection, MAC, Ethernet Bridging)",
+   "type": "MCQ",
+   "kind": "multi_concept",
+   "key": "C",
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 15,
+   "subject": "Operating Systems (OS)",
+   "topic": "Deadlock Prevention, Avoidance, Detection, Recovery",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 16,
+   "subject": "Algorithms",
+   "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 17,
+   "subject": "Database Management Systems (DBMS)",
+   "topic": "Transactions and Concurrency Control (Serializability, 2PL)",
+   "type": "NAT",
+   "kind": "trace",
+   "key": null,
+   "difficulty": "X",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 18,
+   "subject": "Digital Logic",
+   "topic": "Boolean Algebra, Minimization and K-Maps",
+   "type": "NAT",
+   "kind": "multi_concept",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  },
+  {
+   "index": 19,
+   "subject": "Probability & Statistics",
+   "topic": "Random Variables & Sampling Rules",
+   "type": "MSQ",
+   "kind": "msq_discriminator",
+   "key": null,
+   "difficulty": "H",
+   "marks": 2,
+   "prompt": "Designed X-tier batch: see scripts/forge/author_b011_p*.py"
+  }
+ ]
+}
