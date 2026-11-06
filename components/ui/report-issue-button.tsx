@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { Flag, Loader2, X } from "lucide-react";
 import { useToastStore } from "@/store/use-toast-store";
+import { useAuthStore } from "@/store/use-auth-store";
+import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 
 const REASONS = [
   ["wrong_answer", "Answer key looks wrong"],
@@ -20,25 +22,28 @@ const REASONS = [
  */
 export function ReportIssueButton({ questionId, source = "app", compact = false }: { questionId: string; source?: "app" | "public" | "review"; compact?: boolean }) {
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = typeof document !== "undefined"; // the dialog is portalled; it renders nothing while closed, so server and client markup agree
   const [reason, setReason] = useState<(typeof REASONS)[number][0]>("wrong_answer");
   const [details, setDetails] = useState("");
   const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState(false);
-  useEffect(() => setMounted(true), []);
-  useEffect(() => { setDone(false); }, [questionId]);
+  const [doneFor, setDoneFor] = useState<string | null>(null); // question id already reported (derived, so it resets on its own when the question changes)
+  const done = doneFor === questionId;
+  const signedIn = !!useAuthStore((s) => s.user);
+  const [captcha, setCaptcha] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   const submit = async () => {
+    if (!signedIn && !captcha) { useToastStore.getState().show("Please wait for the quick security check to finish, then send again.", "info"); return; }
     setBusy(true);
     try {
-      const res = await fetch("/api/report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId, reason, details: details.trim() || undefined, source }) });
+      const res = await fetch("/api/report", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ questionId, reason, details: details.trim() || undefined, source, captcha: signedIn ? undefined : captcha }) });
       const j = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(j.error || "Couldn't send that right now.");
-      setDone(true); setOpen(false); setDetails("");
+      setDoneFor(questionId); setOpen(false); setDetails("");
       useToastStore.getState().show("Thanks — we'll check this question within 24 hours.", "success");
     } catch (e) {
       useToastStore.getState().show((e as Error).message, "error");
-    } finally { setBusy(false); }
+    } finally { setBusy(false); turnstileRef.current?.reset(); }
   };
 
   return (
@@ -69,6 +74,7 @@ export function ReportIssueButton({ questionId, source = "app", compact = false 
                 </fieldset>
                 <textarea value={details} onChange={(e) => setDetails(e.target.value.slice(0, 1000))} rows={3} placeholder="Anything that helps us fix it (optional)"
                   className="mt-3 w-full rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] p-3 text-sm text-[var(--text-primary)] outline-none focus:border-violet-500/60" />
+                {!signedIn && <div className="mt-3"><TurnstileWidget ref={turnstileRef} onToken={setCaptcha} /></div>}
                 <div className="mt-4 flex justify-end gap-2">
                   <button type="button" onClick={() => setOpen(false)} className="h-10 px-4 rounded-xl text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] cursor-pointer">Cancel</button>
                   <button type="button" onClick={submit} disabled={busy} className="h-10 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-sm font-bold shadow-md shadow-violet-500/25 disabled:opacity-60 inline-flex items-center gap-2 cursor-pointer">

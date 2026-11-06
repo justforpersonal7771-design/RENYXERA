@@ -52,6 +52,7 @@ Rules that apply to every task: ₹0 budget, never use claudexit02@gmail.com any
 - [ ] **E7. Clean the working folder:** delete `New folder/`, decide about `docs/*.zip` and the untracked images, move `logo/` and `video/.bundle2/` out or ignore them.
 
 ## F. Real device and account tests (phone first, then desktop, each in light and dark)
+- [ ] **E9. Restore drill (quarterly, first before 31 Jan 2027):** follow section 3 of [SECURITY-RUNBOOK.md](../engineering/SECURITY-RUNBOOK.md); note the date in the drill log.
 - [ ] **F1.** Phone: a payment, the More sheet drag, the onboarding Telegram step, aptitude images, Civil practice.
 - [ ] **F2.** Free, Plus and Pro accounts through the Forge and practice-set gates.
 - [ ] **F3.** Battles comparison and rematch screens.

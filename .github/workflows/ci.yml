@@ -41,6 +41,9 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
 
+      - name: Bundle size budget
+        run: node scripts/check-bundle.mjs
+
       - name: Security checks (no service-role key in bundle; anon can't read answer keys)
         run: npm run check:security
         env:

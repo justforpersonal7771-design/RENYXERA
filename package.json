@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/copy-static-data.mjs",
     "build": "next build",
+    "check:bundle": "node scripts/check-bundle.mjs",
     "check:security": "node scripts/check-security.mjs",
     "check:rls": "node --env-file=.env.local scripts/check-rls.mjs",
     "check:perf": "node scripts/check-perf.mjs",

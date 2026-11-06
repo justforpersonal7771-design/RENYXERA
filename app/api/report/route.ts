@@ -4,6 +4,7 @@ import { checkRateLimit, getClientKey } from "@/lib/security/rate-limiter";
 import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
+import { verifyTurnstile } from "@/lib/billing/server";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,7 @@ const schema = z.object({
   details: z.string().trim().max(1000).optional(),
   source: z.enum(["app", "public", "review"]).default("app"),
   website: z.string().max(500).optional(), // honeypot
+  captcha: z.string().max(4096).optional(),
 });
 
 /**
@@ -32,6 +34,8 @@ export async function POST(req: NextRequest) {
 
   const claims = await getVerifiedClaims().catch(() => null);
   const userId = typeof claims?.sub === "string" ? claims.sub : null;
+  // Guests must pass Turnstile; signed-in members are already verified.
+  if (!userId && !(await verifyTurnstile(parsed.data.captcha, getClientKey(req) === "unknown" ? null : getClientKey(req)))) return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
   if (userId && !checkRateLimit(`report:u:${userId}`, { limit: 30, windowMs: 24 * 60 * 60_000 }).allowed) {
     return NextResponse.json({ error: "Daily report limit reached — thank you for all the help!" }, { status: 429 });
   }

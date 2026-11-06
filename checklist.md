@@ -214,7 +214,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 **Open**
 - [ ] **A1 Forge locks as the main upgrade moment** — blurred Daily Forge, "practise like the ones you missed" after Forge Mocks; events per source.
-- [ ] **A2 Plans page refresh** — comparison table, FAQ, testimonials (consent), film.
+- [x] **A2 Plans page refresh** — comparison table and FAQ done 6 Nov (`components/billing/plans-compare.tsx`); testimonials wait for consented ones; film already on the page.
 - [ ] **A3 Season-pass campaign Dec → exam** — banner by date, weekly hub post, Instagram, early-buyer coupon.
 - [ ] **A4 Smart upgrade sheet** — preview of the locked feature + price per day + one tap.
 - [ ] **A5 Bundling nudge** after 3 purchases.
@@ -243,10 +243,10 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 *Audit 22 Oct: 1,280 PNG images (79 MB), recharts in the top bar on every app page, full Prism highlighter in the question renderer, 7 font families preloaded, 824 KB CS bank + 3.5 MB shared pool loaded whole, motion in 81 files without LazyMotion.*
 *Budgets: LCP ≤ 2.0 s public / 2.5 s app, INP ≤ 200 ms, CLS ≤ 0.05, ≤ 180 KB first-load JS per app route.*
 - [ ] **A1 Lazy-load goal slider panel** (recharts off the shared chunk) — [`components/layout/topbar.tsx`](components/layout/topbar.tsx).
-- [ ] **A2 PrismLight + registered languages, dynamic `CodeBlock`** — identical rendering on 10 code questions.
-- [ ] **A3 Fonts** — preload only Manrope, Sora, Bruno Ace SC; decorative fonts only on the dashboard hero.
-- [ ] **A4 [`next.config.ts`](next.config.ts) hygiene** — drop picsum, `optimizePackageImports`, `removeConsole` (keep error/warn).
-- [ ] **A5 Bundle analyser + CI budget** (`scripts/check-bundle.mjs`).
+- [x] **A2 PrismLight + registered languages, dynamic `CodeBlock`** — identical rendering on 10 code questions.
+- [x] **A3 Fonts** — preload only Manrope, Sora, Bruno Ace SC; decorative fonts only on the dashboard hero.
+- [x] **A4 [`next.config.ts`](next.config.ts) hygiene** — drop picsum, `optimizePackageImports`, `removeConsole` (keep error/warn).
+- [x] **A5 Bundle CI budget** (6 Nov: `scripts/check-bundle.mjs` in CI after Build; total 2000 KB and 140 KB per chunk, gzip; the visual analyser is optional).
 - [ ] **B1 WebP for question images** (lossless/near-lossless, PNG fallback, `<picture>`) — ≥ 50 % smaller, 30-diagram visual check in light/dark.
 - [ ] **B2 Image sizes + lazy/priority loading** — CLS 0 on navigation.
 - [ ] **B3 WebP brand/poster assets** (OG stays PNG).
@@ -262,10 +262,10 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] **A1 Patch dependencies** (critical/high to 0) — 0 vulnerabilities on 30 Oct.
 - [x] **A2 Security headers** (30 Oct: HSTS, nosniff, frame deny, referrer, permissions, COOP same-origin-allow-popups; CSP in REPORT-ONLY mode with /api/csp-report; 14 signed-in pages gave 0 violations; Razorpay checkout, Turnstile login and Google sign-in not exercised). Original note: HSTS, nosniff, Referrer-Policy, Permissions-Policy, frame-ancestors none, COOP same-origin-allow-popups, CSP (report-only → enforce, nonces for inline scripts).
 - [x] **A3 Sanitise HTML nodes** (30 Oct: [`lib/security/sanitize-html.ts`](lib/security/sanitize-html.ts) allow-list, no attributes; 17 XSS payloads pass via `npm run check:sanitize`; JSON-LD scripts escape "<" via [`lib/seo/json-ld.ts`](lib/seo/json-ld.ts); MathJax `\href`/`\class`/`\style`/`\cssId` neutralised in [`lib/mathjax-config.ts`](lib/mathjax-config.ts). Note: MathJax 4.1.0 has NO "safe" extension (asking for it breaks all formulas); original text: — bank-only `html` nodes, allow-list sanitiser, AI parser emits no HTML; XSS payload tests.
-- [ ] **B1 2FA on all owner accounts** (you) · **B2 key-rotation runbook** · **B3 GitHub secret scanning, push protection, Dependabot, branch protection** · **B4 optional TOTP 2FA for paid students**.
-- [ ] **C1 Shared rate limits** (Postgres counters or Cloudflare free rule) · **C2 Turnstile on waitlist** (done 6 Nov, guests only; report/contact still open) · **C3 WAF/Bot Fight Mode after domain** · **C4 webhook replay protection** (already done: billing_events stores each event id once).
+- [ ] **B1 2FA on all owner accounts** (you) · **B2 key-rotation runbook** (done 6 Nov: [`docs/engineering/SECURITY-RUNBOOK.md`](docs/engineering/SECURITY-RUNBOOK.md)) · **B3 GitHub secret scanning, push protection, Dependabot, branch protection** · **B4 optional TOTP 2FA for paid students**.
+- [ ] **C1 Shared rate limits** (Postgres counters or Cloudflare free rule) · **C2 Turnstile on waitlist and issue reports** (done 6 Nov, guests only; the contact page has no form) · **C3 WAF/Bot Fight Mode after domain** · **C4 webhook replay protection** (already done: billing_events stores each event id once).
 - [ ] **D1 Supabase Security Advisor clean** (you: Dashboard > Advisors) · [x] **D2 automated RLS probe** done 30 Oct: `npm run check:rls` probes all 43 tables signed-out and as an ordinary account: no leaks, `question_answers` and all private tables denied · **D3 DPDP retention + consent records** · **D4 privacy policy update** (Forge, study materials, shares, channels).
-- [ ] **E1 Sentry alerts** · **E2 user-visible security events** · **E3 `/.well-known/security.txt`** · **E4 quarterly restore drill + incident checklist**.
+- [ ] **E1 Sentry alerts** · **E2 user-visible security events** · **E3 `/.well-known/security.txt`** · **E4 quarterly restore drill + incident checklist** (written 6 Nov in the runbook; the first drill is yours, task E9).
 
 ### 3H · Release 18 — UI refresh (priority) · [`docs/roadmap/R18-UI-REFRESH.md`](docs/roadmap/R18-UI-REFRESH.md)
 - [x] U1 (27 Oct): share card (clean share base, branch names, no overlaps), stack deck clipped to tidy lips, navbar gold/silver rings removed, dot-grid texture. Plan: [`docs/roadmap/R18-UI-UPGRADE-PLAN.md`](docs/roadmap/R18-UI-UPGRADE-PLAN.md)
