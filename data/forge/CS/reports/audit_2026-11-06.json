@@ -1,0 +1,2003 @@
+{
+ "rubric": {
+  "T1": "Basic: one concept, direct formula, recall or one short trace",
+  "T2": "Standard GATE-medium: one topic, several steps",
+  "T3": "Forge-grade: combines concepts or needs modelling and misconception-aware reasoning, 3+ steps",
+  "T3b": "Borderline upper-standard",
+  "GA": "General Aptitude (numeric/logic), judged separately"
+ },
+ "items": [
+  {
+   "n": 0,
+   "id": "FORGE_CS_000001",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 1,
+   "id": "FORGE_CS_000002",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 2,
+   "id": "FORGE_CS_000003",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 3,
+   "id": "FORGE_CS_000004",
+   "subject": "Digital Logic",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 4,
+   "id": "FORGE_CS_000005",
+   "subject": "Operating Systems (OS)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 5,
+   "id": "FORGE_CS_000006",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 6,
+   "id": "FORGE_CS_000008",
+   "subject": "Probability & Statistics",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 7,
+   "id": "FORGE_CS_000009",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 8,
+   "id": "FORGE_CS_000010",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T3b"
+  },
+  {
+   "n": 9,
+   "id": "FORGE_CS_000011",
+   "subject": "Algorithms",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T3"
+  },
+  {
+   "n": 10,
+   "id": "FORGE_CS_000012",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 11,
+   "id": "FORGE_CS_000013",
+   "subject": "Computer Networks (CN)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 12,
+   "id": "FORGE_CS_000014",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 13,
+   "id": "FORGE_CS_000015",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 14,
+   "id": "FORGE_CS_000016",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 15,
+   "id": "FORGE_CS_000017",
+   "subject": "Discrete Mathematics",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 16,
+   "id": "FORGE_CS_000018",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 17,
+   "id": "FORGE_CS_000019",
+   "subject": "Operating Systems (OS)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 18,
+   "id": "FORGE_CS_000020",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 19,
+   "id": "FORGE_CS_000021",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 20,
+   "id": "FORGE_CS_000022",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T3b"
+  },
+  {
+   "n": 21,
+   "id": "FORGE_CS_000023",
+   "subject": "Computer Networks (CN)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 22,
+   "id": "FORGE_CS_000024",
+   "subject": "Compiler Design",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 23,
+   "id": "FORGE_CS_000025",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 24,
+   "id": "FORGE_CS_000026",
+   "subject": "Digital Logic",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 25,
+   "id": "FORGE_CS_000027",
+   "subject": "Linear Algebra",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 26,
+   "id": "FORGE_CS_000028",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 27,
+   "id": "FORGE_CS_000029",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 28,
+   "id": "FORGE_CS_000030",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 29,
+   "id": "FORGE_CS_000031",
+   "subject": "Computer Networks (CN)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 30,
+   "id": "FORGE_CS_000032",
+   "subject": "Operating Systems (OS)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 31,
+   "id": "FORGE_CS_000033",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 32,
+   "id": "FORGE_CS_000034",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 33,
+   "id": "FORGE_CS_000035",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 34,
+   "id": "FORGE_CS_000036",
+   "subject": "Discrete Mathematics",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 35,
+   "id": "FORGE_CS_000037",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 36,
+   "id": "FORGE_CS_000038",
+   "subject": "Digital Logic",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 37,
+   "id": "FORGE_CS_000039",
+   "subject": "Compiler Design",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 38,
+   "id": "FORGE_CS_000040",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 39,
+   "id": "FORGE_CS_000041",
+   "subject": "Probability & Statistics",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 40,
+   "id": "FORGE_CS_000042",
+   "subject": "Discrete Mathematics",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 41,
+   "id": "FORGE_CS_000043",
+   "subject": "Computer Networks (CN)",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 42,
+   "id": "FORGE_CS_000044",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 43,
+   "id": "FORGE_CS_000045",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 44,
+   "id": "FORGE_CS_000046",
+   "subject": "Algorithms",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 45,
+   "id": "FORGE_CS_000047",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 46,
+   "id": "FORGE_CS_000048",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 47,
+   "id": "FORGE_CS_000049",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 48,
+   "id": "FORGE_CS_000050",
+   "subject": "Discrete Mathematics",
+   "kind": "multi_concept",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 49,
+   "id": "FORGE_CS_000051",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 50,
+   "id": "FORGE_CS_000052",
+   "subject": "Algorithms",
+   "kind": "multi_concept",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 51,
+   "id": "FORGE_CS_000053",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "multi_concept",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 52,
+   "id": "FORGE_CS_000054",
+   "subject": "Data Structures",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 53,
+   "id": "FORGE_CS_000055",
+   "subject": "Compiler Design",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 54,
+   "id": "FORGE_CS_000056",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 55,
+   "id": "FORGE_CS_000057",
+   "subject": "Operating Systems (OS)",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 56,
+   "id": "FORGE_CS_000058",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 57,
+   "id": "FORGE_CS_000059",
+   "subject": "Computer Networks (CN)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 58,
+   "id": "FORGE_CS_000060",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 59,
+   "id": "FORGE_CS_000061",
+   "subject": "Digital Logic",
+   "kind": "multi_concept",
+   "type": "MSQ",
+   "tier": "T1"
+  },
+  {
+   "n": 60,
+   "id": "FORGE_CS_000062",
+   "subject": "Operating Systems (OS)",
+   "kind": "multi_concept",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 61,
+   "id": "FORGE_CS_000063",
+   "subject": "Algorithms",
+   "kind": "conceptual",
+   "type": "MSQ",
+   "tier": "T1"
+  },
+  {
+   "n": 62,
+   "id": "FORGE_CS_000064",
+   "subject": "Discrete Mathematics",
+   "kind": "multi_concept",
+   "type": "MSQ",
+   "tier": "T1"
+  },
+  {
+   "n": 63,
+   "id": "FORGE_CS_000065",
+   "subject": "Discrete Mathematics",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 64,
+   "id": "FORGE_CS_000066",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 65,
+   "id": "FORGE_CS_000067",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 66,
+   "id": "FORGE_CS_000068",
+   "subject": "Digital Logic",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 67,
+   "id": "FORGE_CS_000069",
+   "subject": "Compiler Design",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 68,
+   "id": "FORGE_CS_000070",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 69,
+   "id": "FORGE_CS_000071",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 70,
+   "id": "FORGE_CS_000072",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 71,
+   "id": "FORGE_CS_000073",
+   "subject": "Probability & Statistics",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 72,
+   "id": "FORGE_CS_000074",
+   "subject": "Algorithms",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T3b"
+  },
+  {
+   "n": 73,
+   "id": "FORGE_CS_000075",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 74,
+   "id": "FORGE_CS_000076",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 75,
+   "id": "FORGE_CS_000077",
+   "subject": "Compiler Design",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T3b"
+  },
+  {
+   "n": 76,
+   "id": "FORGE_CS_000078",
+   "subject": "Digital Logic",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 77,
+   "id": "FORGE_CS_000079",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 78,
+   "id": "FORGE_CS_000080",
+   "subject": "Probability & Statistics",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 79,
+   "id": "FORGE_CS_000081",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 80,
+   "id": "FORGE_CS_000082",
+   "subject": "Digital Logic",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 81,
+   "id": "FORGE_CS_000083",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 82,
+   "id": "FORGE_CS_000084",
+   "subject": "Compiler Design",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T3"
+  },
+  {
+   "n": 83,
+   "id": "FORGE_CS_000085",
+   "subject": "Compiler Design",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 84,
+   "id": "FORGE_CS_000086",
+   "subject": "Computer Networks (CN)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 85,
+   "id": "FORGE_CS_000087",
+   "subject": "General Aptitude",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 86,
+   "id": "FORGE_CS_000088",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 87,
+   "id": "FORGE_CS_000089",
+   "subject": "Operating Systems (OS)",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 88,
+   "id": "FORGE_CS_000090",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 89,
+   "id": "FORGE_CS_000091",
+   "subject": "Compiler Design",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 90,
+   "id": "FORGE_CS_000092",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 91,
+   "id": "FORGE_CS_000093",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 92,
+   "id": "FORGE_CS_000094",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 93,
+   "id": "FORGE_CS_000095",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 94,
+   "id": "FORGE_CS_000096",
+   "subject": "Digital Logic",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 95,
+   "id": "FORGE_CS_000097",
+   "subject": "Digital Logic",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 96,
+   "id": "FORGE_CS_000098",
+   "subject": "Compiler Design",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 97,
+   "id": "FORGE_CS_000099",
+   "subject": "Data Structures",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 98,
+   "id": "FORGE_CS_000100",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 99,
+   "id": "FORGE_CS_000101",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 100,
+   "id": "FORGE_CS_000102",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 101,
+   "id": "FORGE_CS_000103",
+   "subject": "Algorithms",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 102,
+   "id": "FORGE_CS_000104",
+   "subject": "Digital Logic",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 103,
+   "id": "FORGE_CS_000105",
+   "subject": "Compiler Design",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 104,
+   "id": "FORGE_CS_000106",
+   "subject": "General Aptitude",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 105,
+   "id": "FORGE_CS_000107",
+   "subject": "Computer Networks (CN)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 106,
+   "id": "FORGE_CS_000108",
+   "subject": "Discrete Mathematics",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 107,
+   "id": "FORGE_CS_000109",
+   "subject": "Discrete Mathematics",
+   "kind": "conceptual",
+   "type": "MSQ",
+   "tier": "T1"
+  },
+  {
+   "n": 108,
+   "id": "FORGE_CS_000110",
+   "subject": "Digital Logic",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 109,
+   "id": "FORGE_CS_000111",
+   "subject": "Digital Logic",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 110,
+   "id": "FORGE_CS_000112",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 111,
+   "id": "FORGE_CS_000113",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 112,
+   "id": "FORGE_CS_000114",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 113,
+   "id": "FORGE_CS_000115",
+   "subject": "Discrete Mathematics",
+   "kind": "conceptual",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 114,
+   "id": "FORGE_CS_000116",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 115,
+   "id": "FORGE_CS_000117",
+   "subject": "General Aptitude",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 116,
+   "id": "FORGE_CS_000118",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 117,
+   "id": "FORGE_CS_000119",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 118,
+   "id": "FORGE_CS_000120",
+   "subject": "Compiler Design",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 119,
+   "id": "FORGE_CS_000121",
+   "subject": "General Aptitude",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 120,
+   "id": "FORGE_CS_000122",
+   "subject": "Discrete Mathematics",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 121,
+   "id": "FORGE_CS_000123",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 122,
+   "id": "FORGE_CS_000124",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 123,
+   "id": "FORGE_CS_000125",
+   "subject": "Digital Logic",
+   "kind": "trace",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 124,
+   "id": "FORGE_CS_000126",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 125,
+   "id": "FORGE_CS_000127",
+   "subject": "Operating Systems (OS)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 126,
+   "id": "FORGE_CS_000128",
+   "subject": "General Aptitude",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 127,
+   "id": "FORGE_CS_000129",
+   "subject": "Calculus",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 128,
+   "id": "FORGE_CS_000130",
+   "subject": "Algorithms",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 129,
+   "id": "FORGE_CS_000131",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 130,
+   "id": "FORGE_CS_000132",
+   "subject": "Linear Algebra",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 131,
+   "id": "FORGE_CS_000133",
+   "subject": "Programming in C",
+   "kind": "conceptual",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 132,
+   "id": "FORGE_CS_000134",
+   "subject": "General Aptitude",
+   "kind": "data_interpretation",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 133,
+   "id": "FORGE_CS_000135",
+   "subject": "Linear Algebra",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 134,
+   "id": "FORGE_CS_000136",
+   "subject": "Discrete Mathematics",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 135,
+   "id": "FORGE_CS_000137",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 136,
+   "id": "FORGE_CS_000138",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 137,
+   "id": "FORGE_CS_000139",
+   "subject": "Operating Systems (OS)",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T3"
+  },
+  {
+   "n": 138,
+   "id": "FORGE_CS_000140",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 139,
+   "id": "FORGE_CS_000141",
+   "subject": "General Aptitude",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 140,
+   "id": "FORGE_CS_000142",
+   "subject": "Linear Algebra",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 141,
+   "id": "FORGE_CS_000143",
+   "subject": "Discrete Mathematics",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T3"
+  },
+  {
+   "n": 142,
+   "id": "FORGE_CS_000144",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 143,
+   "id": "FORGE_CS_000145",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 144,
+   "id": "FORGE_CS_000146",
+   "subject": "Linear Algebra",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 145,
+   "id": "FORGE_CS_000147",
+   "subject": "Programming in C",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 146,
+   "id": "FORGE_CS_000148",
+   "subject": "Discrete Mathematics",
+   "kind": "conceptual",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 147,
+   "id": "FORGE_CS_000149",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 148,
+   "id": "FORGE_CS_000150",
+   "subject": "General Aptitude",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 149,
+   "id": "FORGE_CS_000151",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 150,
+   "id": "FORGE_CS_000152",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 151,
+   "id": "FORGE_CS_000153",
+   "subject": "Linear Algebra",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 152,
+   "id": "FORGE_CS_000154",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 153,
+   "id": "FORGE_CS_000155",
+   "subject": "Calculus",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 154,
+   "id": "FORGE_CS_000156",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 155,
+   "id": "FORGE_CS_000157",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 156,
+   "id": "FORGE_CS_000158",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 157,
+   "id": "FORGE_CS_000159",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 158,
+   "id": "FORGE_CS_000160",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 159,
+   "id": "FORGE_CS_000161",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 160,
+   "id": "FORGE_CS_000162",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 161,
+   "id": "FORGE_CS_000163",
+   "subject": "Computer Networks (CN)",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 162,
+   "id": "FORGE_CS_000164",
+   "subject": "Data Structures",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T1"
+  },
+  {
+   "n": 163,
+   "id": "FORGE_CS_000165",
+   "subject": "Discrete Mathematics",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 164,
+   "id": "FORGE_CS_000166",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 165,
+   "id": "FORGE_CS_000167",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 166,
+   "id": "FORGE_CS_000168",
+   "subject": "Computer Networks (CN)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T3"
+  },
+  {
+   "n": 167,
+   "id": "FORGE_CS_000169",
+   "subject": "Probability & Statistics",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 168,
+   "id": "FORGE_CS_000170",
+   "subject": "Digital Logic",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 169,
+   "id": "FORGE_CS_000171",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 170,
+   "id": "FORGE_CS_000172",
+   "subject": "Algorithms",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 171,
+   "id": "FORGE_CS_000173",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "multi_concept",
+   "type": "NAT",
+   "tier": "T3"
+  },
+  {
+   "n": 172,
+   "id": "FORGE_CS_000174",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 173,
+   "id": "FORGE_CS_000175",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 174,
+   "id": "FORGE_CS_000176",
+   "subject": "Algorithms",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 175,
+   "id": "FORGE_CS_000177",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 176,
+   "id": "FORGE_CS_000178",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 177,
+   "id": "FORGE_CS_000179",
+   "subject": "Discrete Mathematics",
+   "kind": "conceptual",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 178,
+   "id": "FORGE_CS_000180",
+   "subject": "Algorithms",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 179,
+   "id": "FORGE_CS_000181",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 180,
+   "id": "FORGE_CS_000182",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 181,
+   "id": "FORGE_CS_000183",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 182,
+   "id": "FORGE_CS_000184",
+   "subject": "Compiler Design",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 183,
+   "id": "FORGE_CS_000185",
+   "subject": "Calculus",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 184,
+   "id": "FORGE_CS_000186",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 185,
+   "id": "FORGE_CS_000187",
+   "subject": "Algorithms",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 186,
+   "id": "FORGE_CS_000188",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 187,
+   "id": "FORGE_CS_000189",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 188,
+   "id": "FORGE_CS_000190",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 189,
+   "id": "FORGE_CS_000191",
+   "subject": "Probability & Statistics",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 190,
+   "id": "FORGE_CS_000192",
+   "subject": "Operating Systems (OS)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 191,
+   "id": "FORGE_CS_000193",
+   "subject": "Operating Systems (OS)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 192,
+   "id": "FORGE_CS_000194",
+   "subject": "Algorithms",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T3"
+  },
+  {
+   "n": 193,
+   "id": "FORGE_CS_000195",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 194,
+   "id": "FORGE_CS_000196",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 195,
+   "id": "FORGE_CS_000197",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 196,
+   "id": "FORGE_CS_000198",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 197,
+   "id": "FORGE_CS_000199",
+   "subject": "Data Structures",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 198,
+   "id": "FORGE_CS_000200",
+   "subject": "Algorithms",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 199,
+   "id": "FORGE_CS_000201",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 200,
+   "id": "FORGE_CS_000202",
+   "subject": "Compiler Design",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 201,
+   "id": "FORGE_CS_000203",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 202,
+   "id": "FORGE_CS_000204",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 203,
+   "id": "FORGE_CS_000205",
+   "subject": "Programming in C",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 204,
+   "id": "FORGE_CS_000206",
+   "subject": "Data Structures",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 205,
+   "id": "FORGE_CS_000207",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 206,
+   "id": "FORGE_CS_000208",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 207,
+   "id": "FORGE_CS_000209",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 208,
+   "id": "FORGE_CS_000210",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 209,
+   "id": "FORGE_CS_000211",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 210,
+   "id": "FORGE_CS_000212",
+   "subject": "Digital Logic",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 211,
+   "id": "FORGE_CS_000213",
+   "subject": "Digital Logic",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T3"
+  },
+  {
+   "n": 212,
+   "id": "FORGE_CS_000214",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 213,
+   "id": "FORGE_CS_000215",
+   "subject": "Computer Networks (CN)",
+   "kind": "conceptual",
+   "type": "MSQ",
+   "tier": "T1"
+  },
+  {
+   "n": 214,
+   "id": "FORGE_CS_000216",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 215,
+   "id": "FORGE_CS_000217",
+   "subject": "Probability & Statistics",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 216,
+   "id": "FORGE_CS_000218",
+   "subject": "Computer Networks (CN)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 217,
+   "id": "FORGE_CS_000219",
+   "subject": "Algorithms",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 218,
+   "id": "FORGE_CS_000220",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 219,
+   "id": "FORGE_CS_000221",
+   "subject": "Compiler Design",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 220,
+   "id": "FORGE_CS_000222",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 221,
+   "id": "FORGE_CS_000223",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 222,
+   "id": "FORGE_CS_000224",
+   "subject": "General Aptitude",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "GA"
+  },
+  {
+   "n": 223,
+   "id": "FORGE_CS_000225",
+   "subject": "Database Management Systems (DBMS)",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T2"
+  },
+  {
+   "n": 224,
+   "id": "FORGE_CS_000226",
+   "subject": "Discrete Mathematics",
+   "kind": "conceptual",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 225,
+   "id": "FORGE_CS_000227",
+   "subject": "Digital Logic",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 226,
+   "id": "FORGE_CS_000228",
+   "subject": "Compiler Design",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 227,
+   "id": "FORGE_CS_000229",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 228,
+   "id": "FORGE_CS_000230",
+   "subject": "Compiler Design",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 229,
+   "id": "FORGE_CS_000231",
+   "subject": "Operating Systems (OS)",
+   "kind": "msq_discriminator",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 230,
+   "id": "FORGE_CS_000232",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 231,
+   "id": "FORGE_CS_000233",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "numeric_chain",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 232,
+   "id": "FORGE_CS_000234",
+   "subject": "Linear Algebra",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 233,
+   "id": "FORGE_CS_000235",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 234,
+   "id": "FORGE_CS_000236",
+   "subject": "Probability & Statistics",
+   "kind": "application",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 235,
+   "id": "FORGE_CS_000237",
+   "subject": "Computer Networks (CN)",
+   "kind": "trap_aware",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 236,
+   "id": "FORGE_CS_000238",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 237,
+   "id": "FORGE_CS_000239",
+   "subject": "Digital Logic",
+   "kind": "conceptual",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 238,
+   "id": "FORGE_CS_000240",
+   "subject": "Programming in C",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 239,
+   "id": "FORGE_CS_000241",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 240,
+   "id": "FORGE_CS_000242",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 241,
+   "id": "FORGE_CS_000243",
+   "subject": "Computer Organization and Architecture (COA)",
+   "kind": "numeric_chain",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 242,
+   "id": "FORGE_CS_000244",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "MSQ",
+   "tier": "T2"
+  },
+  {
+   "n": 243,
+   "id": "FORGE_CS_000245",
+   "subject": "Probability & Statistics",
+   "kind": "conceptual",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 244,
+   "id": "FORGE_CS_000246",
+   "subject": "Operating Systems (OS)",
+   "kind": "trace",
+   "type": "NAT",
+   "tier": "T1"
+  },
+  {
+   "n": 245,
+   "id": "FORGE_CS_000247",
+   "subject": "Algorithms",
+   "kind": "trace",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 246,
+   "id": "FORGE_CS_000248",
+   "subject": "Probability & Statistics",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T2"
+  },
+  {
+   "n": 247,
+   "id": "FORGE_CS_000249",
+   "subject": "Theory of Computation (TOC)",
+   "kind": "multi_concept",
+   "type": "MCQ",
+   "tier": "T1"
+  },
+  {
+   "n": 248,
+   "id": "FORGE_CS_000250",
+   "subject": "Compiler Design",
+   "kind": "application",
+   "type": "MCQ",
+   "tier": "T1"
+  }
+ ]
+}
