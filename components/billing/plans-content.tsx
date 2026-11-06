@@ -9,6 +9,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Crown, Loader2, Sparkles, X } from "lucide-react";
 import { PlansCompare } from "@/components/billing/plans-compare";
+import { MentorRecharges } from "@/components/billing/mentor-recharges";
 import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, planById, seasonPlan, seasonYears, upcomingSeasonYear, type PlanId } from "@/lib/billing/plans";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { useEntitlements, waitForTier } from "@/lib/billing/use-entitlements";
@@ -195,6 +196,8 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
       </div>
 
       {period === "season" && <p className="text-center text-xs text-[var(--text-muted)]">One payment covers you until 31 March {seasonYear}, after results. It doesn&apos;t renew. The longer the runway, the lower the monthly cost.</p>}
+
+      <MentorRecharges compact={inModal} />
 
       {!inModal && <PlansCompare />}
 

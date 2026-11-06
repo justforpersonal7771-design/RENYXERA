@@ -84,7 +84,9 @@ export function PremiumImageGallery({ urls, altText }: PremiumImageGalleryProps)
               <img
                 src={url}
                 alt={altText}
-                loading="lazy"
+                // The first image of a question loads at once (a lazy image inside an animated card can stay blank on some phones); later ones wait until near the screen.
+                loading={index === 0 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : "auto"}
                 decoding="async"
                 className={`max-w-full h-auto max-h-[360px] md:max-h-[450px] object-contain rounded-xl select-none pointer-events-none transition-all duration-300 ${profile}`}
               />

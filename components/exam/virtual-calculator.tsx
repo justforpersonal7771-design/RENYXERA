@@ -146,33 +146,33 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
       className={`calc-root fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[520px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
     >
       <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
-        className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 py-1 ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
+        className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 ${phone ? "py-0.5" : "py-1"} ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
         {!phone && <GripHorizontal className="h-3.5 w-3.5 text-[var(--text-muted)]" aria-hidden />}
         <button type="button" aria-label="Close calculator" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="ml-auto rounded p-0.5 text-[var(--text-muted)] transition hover:text-[var(--text-primary)] cursor-pointer"><X className="h-3.5 w-3.5" /></button>
       </div>
 
-      <div className="px-2 pt-1.5">
-        <div className="rounded-lg bg-[var(--surface-secondary)] px-3 py-1.5" role="status" aria-live="polite">
+      <div className={phone ? "px-1.5 pt-1" : "px-2 pt-1.5"}>
+        <div className={`rounded-lg bg-[var(--surface-secondary)] px-3 ${phone ? "py-0.5" : "py-1.5"}`} role="status" aria-live="polite">
           {/* Row 1: the expression as typed. Row 2: the running answer, updated after every key. */}
-          <div ref={exprBox} className="max-h-[3.75rem] min-h-[1.5rem] overflow-y-auto text-right" title={expr}><span className="break-words text-base font-semibold leading-6 text-[var(--text-secondary)] font-num">{expr || " "}</span></div>
+          <div ref={exprBox} className={`overflow-y-auto text-right ${phone ? "max-h-9 min-h-[1.25rem]" : "max-h-[3.75rem] min-h-[1.5rem]"}`} title={expr}><span className={`break-words font-semibold text-[var(--text-secondary)] font-num ${phone ? "text-sm leading-5" : "text-base leading-6"}`}>{expr || " "}</span></div>
           <div className="flex items-baseline justify-between gap-2 border-t border-[var(--border)]/60 pt-0.5">
             <span className="text-[9px] font-black text-sky-500">{st.mem !== 0 ? "M" : ""}</span>
-            <span className={`truncate text-2xl font-extrabold leading-8 font-num ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{result}</span>
+            <span className={`truncate font-extrabold font-num ${phone ? "text-xl leading-7" : "text-2xl leading-8"} ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{result}</span>
           </div>
         </div>
       </div>
 
       {phone ? (
-        <div className="space-y-1 p-2">
+        <div className="space-y-1 p-1.5">
           <div className="grid gap-1" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
             <div style={{ gridColumn: "span 2" }} className="grid">{angle}</div>
-            {[modKey, ...memKeys].map((b, i) => keyBtn(b, "h-9 text-[11px]", { gridColumn: `${3 + i} / span 1`, gridRow: 1 }))}
+            {[modKey, ...memKeys].map((b, i) => keyBtn(b, "h-[30px] text-[11px]", { gridColumn: `${3 + i} / span 1`, gridRow: 1 }))}
           </div>
           <div className="grid gap-1" style={{ gridTemplateColumns: "repeat(6, minmax(0, 1fr))" }}>
-            {sciKeys.map((b) => keyBtn(b, "h-9 text-xs", { gridRow: b.r - 1, gridColumn: b.c }))}
+            {sciKeys.map((b) => keyBtn(b, "h-[30px] text-[11px]", { gridRow: b.r - 1, gridColumn: b.c }))}
           </div>
-          <div className="grid gap-1 pt-1" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
-            {padKeys.map((b) => keyBtn(b, "h-10 text-sm", { gridRow: `${b.r - 1} / span ${b.rs ?? 1}`, gridColumn: `${b.c - 6} / span ${b.cs ?? 1}` }))}
+          <div className="grid gap-1" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
+            {padKeys.map((b) => keyBtn(b, "h-[34px] text-sm", { gridRow: `${b.r - 1} / span ${b.rs ?? 1}`, gridColumn: `${b.c - 6} / span ${b.cs ?? 1}` }))}
           </div>
         </div>
       ) : (
