@@ -105,6 +105,7 @@ export const AI_DAILY: Record<Tier, number> = { free: FREE_AI_DAILY, plus: PLUS_
 /** What each paid tier adds. Everything not listed stays free for everyone. */
 export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body: string }[]> = {
   plus: [
+    { title: `Forge: ${FORGE.plus.dailyLimit} original GATE-level questions a day`, body: "Every question with its worked solution, shortcut and trap, plus the solutions after each Forge Mock." },
     { title: `${PLUS_AI_DAILY} AI requests every day`, body: "AI Mentor & Tutor for daily doubts and revision." },
     { title: `GATE-level practice: ${PLUS_PRACTICE_SETS_DAILY} new sets a day`, body: `Fresh AI-made questions on any topic, ${PLUS_PRACTICE_SETS_DAILY * 8} a day. Pro has no set limit.` },
     { title: "Smart insights & daily adaptive path", body: "Personal insights and a focus topic chosen for you every day." },
@@ -115,6 +116,7 @@ export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body:
     { title: "Silver crown & navbar", body: "A silver ring and crown on your avatar." },
   ],
   pro: [
+    { title: "Unlimited Forge, including the hardest tier", body: "No daily limit, the archive of past Forge Mocks and the X tier of exam-topping questions." },
     { title: `${PRO_AI_DAILY} AI requests every day`, body: "Twice Plus — for students who lean on the AI Mentor." },
     { title: "Unlimited GATE-level practice", body: "New AI-made practice sets on any topic, as many as your daily AI requests allow." },
     { title: "Deep analytics", body: "Detailed mock analytics, topic ladders and difficulty analysis." },
@@ -126,4 +128,4 @@ export const TIER_FEATURES: Record<Exclude<Tier, "free">, { title: string; body:
   ],
 };
 
-export const FREE_FOREVER = ["Every official PYQ in the bank for your paper (CS since 2017)", "Exam-like simulator & custom tests", "All-India mocks & leaderboards", "Analytics, mistakes bank & revision", "Cloud sync across devices", "Telegram: daily question, exam countdown, mock result alerts and a timer", `${FREE_AI_TEASER} AI requests to try — earn more with sponsor breaks & referrals`];
+export const FREE_FOREVER = ["Every official PYQ in the bank for your paper (CS since 2017)", "Exam-like simulator & custom tests", "All-India mocks & leaderboards (Forge Mocks included; results and ranks free)", `${FORGE.free.teaser} Forge questions to try, answers checked`, "Analytics, mistakes bank & revision", "Cloud sync across devices", "Telegram: daily question, exam countdown, mock result alerts and a timer", `${FREE_AI_TEASER} AI requests to try — earn more with sponsor breaks & referrals`];
