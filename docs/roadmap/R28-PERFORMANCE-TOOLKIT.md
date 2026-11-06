@@ -1,6 +1,8 @@
 # R28: Performance toolkit ("Release 28: Fast")
 
-*2 Nov 2026. Source: the owner's Instagram screenshot and the video (transcribed: 31 items, the post says "33"), plus the second video on enterprise AI agents (cache, routing, guardrails, evals). Module: `scripts/check-perf.mjs` (`npm run check:perf`, `BASE=https://gate.renyxera.workers.dev` for the live site). It loads real pages in an emulated phone and measures what can be measured; the rest is a reviewed checklist below.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*2 Nov 2026. Source: the owner's Instagram screenshot and the video (transcribed: 31 items, the post says "33"), plus the second video on enterprise AI agents (cache, routing, guardrails, evals). Module: [`scripts/check-perf.mjs`](../../scripts/check-perf.mjs) (`npm run check:perf`, `BASE=https://gate.renyxera.workers.dev` for the live site). It loads real pages in an emulated phone and measures what can be measured; the rest is a reviewed checklist below.*
 
 **How many can we achieve?** Of 31 items: **13 done**, **10 partly done**, **4 to do (all free)**, **4 do not apply or do not pay off on our free stack** (Cloudflare Workers + Supabase free tier). So **27 of 31 (87%) are achievable at $0**; the four that are not (Redis, OpenTelemetry, connection pooling, load balancing) are covered by what Cloudflare and Supabase already do.
 
@@ -8,7 +10,7 @@ Legend: DONE, PART (partly), TODO, N/A.
 
 | # | Item | Status | What we have / what is left |
 |---|------|--------|-----------------------------|
-| 1 | Skeleton loading screens | DONE | `app/(dashboard)/loading.tsx` is now a page-shaped shimmer (hero card, tiles, card grid) used by every dashboard route; the topic browser has its own |
+| 1 | Skeleton loading screens | DONE | [`app/(dashboard)/loading.tsx`](../../app/%28dashboard%29/loading.tsx) is now a page-shaped shimmer (hero card, tiles, card grid) used by every dashboard route; the topic browser has its own |
 | 2 | WebP or AVIF images | DONE | Brand marks 396 KB to 16 KB, mentor art 181 KB to 20 KB (this release). `check:perf` flags any PNG/JPG over 20 KB |
 | 3 | Prevent duplicate API calls | DONE | `/api/version` was fetched twice per page load; the timer and navigation check now share one 30 s window. `check:perf` reports duplicates |
 | 4 | Debounce search and autocomplete | DONE | Audited 3 Nov 2026: every search box filters a small in-memory list (topics, bookmarks, mistakes, command palette); the only server call, the username check, is debounced. Topic browser now uses a deferred value so typing never waits on the list |
@@ -47,7 +49,7 @@ Count check: DONE 2, 3, 6, 9, 12, 15, 16, 20, 22, 27, 29, 30, 31 (13); PART 1, 4
 |------|--------------------|
 | Semantic caching | PART: exact-prompt cache is live (`ai_response_cache`); near-duplicate matching needs embeddings (later) |
 | Model routing (simple questions to a small model) | DONE: `route.model` and `route.maxOutputTokens` per request kind in `/api/ai/generate` |
-| Guardrails against prompt injection | DONE this release: `lib/ai/guard.ts` blocks "ignore previous instructions" style input before any model call |
+| Guardrails against prompt injection | DONE this release: [`lib/ai/guard.ts`](../../lib/ai/guard.ts) blocks "ignore previous instructions" style input before any model call |
 | Output PII redaction | N/A: Mentor never receives other students' data; answers come from shared question text |
 | Per-user identity on every tool call | DONE: Supabase RLS and the signed-in check on each API |
 | Evals before swapping models | TODO: a small fixed question set run against each candidate model; spec in R27 |

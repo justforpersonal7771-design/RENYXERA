@@ -1,6 +1,8 @@
 # Looks specification (every detail of every Look)
 
-*2 Nov 2026. One section per shipped Look: its design principles, tokens, fonts, motion, mode support and the rules for each kind of component. The code lives in `app/looks.css`, `app/looks-pro2.css` and `app/looks-details.css`; metadata (tier, fonts, modes) in `lib/looks/looks.ts`. Checks: `scripts/zz-looks-audit.mjs` (contrast, rounded corners, fonts, light/dark switch) and the screenshots in `scripts/zz-looks.mjs`. Plan and tiers: `docs/roadmap/R26-DESIGN-STUDIO.md`.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*2 Nov 2026. One section per shipped Look: its design principles, tokens, fonts, motion, mode support and the rules for each kind of component. The code lives in [`app/looks.css`](../../app/looks.css), [`app/looks-pro2.css`](../../app/looks-pro2.css) and [`app/looks-details.css`](../../app/looks-details.css); metadata (tier, fonts, modes) in [`lib/looks/looks.ts`](../../lib/looks/looks.ts). Checks: `scripts/zz-looks-audit.mjs` (contrast, rounded corners, fonts, light/dark switch) and the screenshots in `scripts/zz-looks.mjs`. Plan and tiers: [`docs/roadmap/R26-DESIGN-STUDIO.md`](../roadmap/R26-DESIGN-STUDIO.md).*
 
 ## Rules that apply to every Look
 1. **A Look restyles everything, not a few components.** It sets tokens (`--surface`, `--tint-*`, `--border`, `--btn`, `--card-radius`, fonts) and then overrides every surface class (`.card-pastel`, `.card-well`, `.card-band`, `.folder-panel`, `.ai-panel`, topbar, popovers) and every control class (`.btn-main`, `.pill-ink`, `.btn-soft`, `.pill-soft`, inputs, tabs). New components must use those classes or tokens, never fixed colours, so Looks reach them.

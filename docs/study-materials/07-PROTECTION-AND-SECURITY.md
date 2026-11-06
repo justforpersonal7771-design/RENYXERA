@@ -1,5 +1,7 @@
 # 07 · Protection and security
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 The brief: study materials only inside the website, "very secured and protected", and if someone tries to obtain them they "should see blank pages".
 
 ## 0. The honest boundary (read this first)
@@ -28,7 +30,7 @@ That combination is what real content businesses (publishers, exam platforms) re
 
 ### Layer A · Nothing readable ever travels or sits in the page
 - Published chapters are **encrypted bundles** (AES-256-GCM). The server stores and serves only ciphertext. A scraper, `curl`, "view source", or the browser's Network tab gets opaque bytes.
-- The key is released per chapter, per session, over an authenticated, entitlement-checked call; it is imported as a **non-extractable** CryptoKey (the pattern already in `lib/vault/vault.ts`). Keys rotate with every content version.
+- The key is released per chapter, per session, over an authenticated, entitlement-checked call; it is imported as a **non-extractable** CryptoKey (the pattern already in [`lib/vault/vault.ts`](../../lib/vault/vault.ts)). Keys rotate with every content version.
 - Decryption happens **in memory only**. There is no `.html`, `.pdf`, `.docx` or image file to download; images do not exist at all (everything is vector data).
 - Responses carry `Cache-Control: no-store`; the service worker never caches protected bundles unencrypted; offline reading reuses the encrypted per-account vault (14-day key renewal), wiped on sign-out.
 
@@ -86,8 +88,8 @@ Also disabled: context menu, drag, text selection, long-press save, `Ctrl+S/P/U/
 ## 4. What this costs us (engineering effort, free-tier friendly)
 
 All on the existing free stack: Cloudflare Workers (key endpoint, rate limits), Supabase (entitlements, reading log, RLS), the browser's Web Crypto (already used in the vault). No paid DRM service. The pieces map onto what exists:
-- vault and non-extractable key: `lib/vault/vault.ts`, `/api/vault/key` (reuse and extend per chapter);
-- watermark and blur shield and print blocking: `app/(dashboard)/downloads/view/page.tsx` (extend to the reader);
+- vault and non-extractable key: [`lib/vault/vault.ts`](../../lib/vault/vault.ts), `/api/vault/key` (reuse and extend per chapter);
+- watermark and blur shield and print blocking: [`app/(dashboard)/downloads/view/page.tsx`](../../app/%28dashboard%29/downloads/view/page.tsx) (extend to the reader);
 - device limits and cooldown: migrations for 7D;
 - Turnstile verification: existing helper.
 

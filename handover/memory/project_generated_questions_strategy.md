@@ -22,4 +22,4 @@ The pipeline should be robust and advanced, with daily generation, covering ever
 - The design doc can be drafted alongside, but generation runs after a branch's PYQs are tagged.
 - Related: [[tag-during-transcription]], [[pyq-claude-extracts]].
 
-Forge rollout order (user, 6 Oct 2026): CS first, then EC, then other branches as their PYQs finish. Design: docs/FORGE_DESIGN.md.
+Forge rollout order (user, 6 Oct 2026): CS first, then EC, then other branches as their PYQs finish. Design: docs/forge/FORGE_DESIGN.md.

@@ -8,7 +8,7 @@ metadata:
   modified: 2026-09-29T13:43:51.274Z
 ---
 
-At the end of each turn: update `checklist.md` (and DEVELOPMENT_LOG) to reflect what changed, then tell the user the next items I'll work on.
+At the end of each turn: update [`checklist.md`](../../checklist.md) (and DEVELOPMENT_LOG) to reflect what changed, then tell the user the next items I'll work on.
 
 **Why:** user asked (30 Sep 2026) — they track progress through the checklist and want to know what's coming.
 **How to apply:** last step of every turn, even small ones; keep the colour rule ([[project-zero-budget-constraint]] for 🟡 rows).

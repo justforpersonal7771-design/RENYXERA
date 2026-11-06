@@ -1,7 +1,7 @@
 name: social-check
 
 # Run once by hand after adding IG_USER_ID / IG_ACCESS_TOKEN: confirms the Instagram token and the Telegram
-# bot work, without posting anything. See docs/instagram/.
+# bot work, without posting anything. See docs/growth/instagram/.
 on:
   workflow_dispatch: {}
 jobs:

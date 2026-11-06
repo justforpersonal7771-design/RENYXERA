@@ -1,6 +1,8 @@
 # Release 24 — RENYXERA on phones (the mobile app plan)
 
-*Plan, 31 Oct 2026. Owner: "most of the users use the mobile". The rule that shapes everything: **zero budget until revenue** (`project_zero_budget_constraint`), one codebase, and the web app is the product. So the mobile app is the same app, installed on the phone's home screen, and then, as money allows, wrapped for the stores. Windows is a separate release (`R17-MICROSOFT-STORE.md`). Claims marked "verify" depend on store rules that change; check them on the day.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*Plan, 31 Oct 2026. Owner: "most of the users use the mobile". The rule that shapes everything: **zero budget until revenue** (`project_zero_budget_constraint`), one codebase, and the web app is the product. So the mobile app is the same app, installed on the phone's home screen, and then, as money allows, wrapped for the stores. Windows is a separate release ([`R17-MICROSOFT-STORE.md`](R17-MICROSOFT-STORE.md)). Claims marked "verify" depend on store rules that change; check them on the day.*
 
 ## 1. Where we are today
 

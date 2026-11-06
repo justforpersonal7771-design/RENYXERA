@@ -1,5 +1,7 @@
 # 06 · Learning design: how every topic is taught so it sticks
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 The brief: "ease the topics so students understand them and memorise them and keep them in mind forever". This doc turns that into a fixed method that every lesson follows, so quality does not depend on mood.
 
 ## 1. The method in one line

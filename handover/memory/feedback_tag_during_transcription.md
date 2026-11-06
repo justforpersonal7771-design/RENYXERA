@@ -8,7 +8,7 @@ metadata:
   modified: 2026-10-05T14:59:05.282Z
 ---
 
-When transcribing a PYQ paper, write its tag file `data/pyq/<BRANCH>/tags/<paper>.tsv` (qno, CODE.topic-index, E/M/H, using `scripts/pyq/tagcodes.py` codes over the curated `data/pyq/<BRANCH>/syllabus.json`) in the same pass as each `bNN.json` batch.
+When transcribing a PYQ paper, write its tag file `data/pyq/<BRANCH>/tags/<paper>.tsv` (qno, CODE.topic-index, E/M/H, using [`scripts/pyq/tagcodes.py`](../../scripts/pyq/tagcodes.py) codes over the curated `data/pyq/<BRANCH>/syllabus.json`) in the same pass as each `bNN.json` batch.
 
 **Why:** the user said (5 Oct 2026) "from next time tag the subject, section and topic and relevant items during the transcription itself" — a separate tagging pass re-reads all 390 questions and wastes tokens.
 

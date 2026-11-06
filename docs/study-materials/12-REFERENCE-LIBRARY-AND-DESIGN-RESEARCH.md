@@ -1,5 +1,7 @@
 # 12 · Reference library review and design research
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *17 Oct 2026. Based on the `notes/` folder you added (88 PDFs, about 1.5 GB) and on learning-science practice. The folder is **reference only**: it informs structure, coverage and design. Nothing is copied from it (see section 6).*
 
 ## 1. What is in the library
@@ -34,7 +36,7 @@ I opened sample pages from the Unacademy OS notes, the PW handbook and the Made 
 These come from learning-science findings that are well established (retrieval practice, spacing, worked examples, interleaving, dual coding) and from the better parts of the references above. I did a web check on current practice; the sources were mostly vendor blogs with little on textbook structure, so I treat them as background and the design below as **our own decisions**, to be tested with students in Phase 0.
 
 1. **One page = one idea.** A topic lesson answers one question and takes 5 to 12 minutes. Short pages beat long chapters on phones.
-2. **Fixed lesson skeleton** (the template in `templates/chapter-template.md` already has it): *Why it matters → Intuition → Exact statement → Worked example (our numbers) → Common mistakes → Check yourself (3 to 5 questions) → PYQs on this topic → Go deeper (textbook reference)*.
+2. **Fixed lesson skeleton** (the template in [`templates/chapter-template.md`](templates/chapter-template.md) already has it): *Why it matters → Intuition → Exact statement → Worked example (our numbers) → Common mistakes → Check yourself (3 to 5 questions) → PYQs on this topic → Go deeper (textbook reference)*.
 3. **Worked example, then faded practice.** First a fully solved example, then one with a blank step, then one to do alone. This is the best-supported sequence for procedures (Dijkstra, normalisation, CPU scheduling).
 4. **Retrieval before re-reading.** Every lesson ends with check-yourself questions; the Review tab brings them back at spaced intervals (reuse the Revision engine already in the app).
 5. **Dual coding.** A diagram, table or trace next to every abstract rule; animated step-through for algorithms, protocols, pipelines (doc 05).
@@ -83,7 +85,7 @@ Rule: **two independent sources must agree** on every definition, formula and re
 
 ## 7. Updates this causes elsewhere
 
-- `00-README.md`: this doc added to the index; decision 3 (sources rule) reworded.
-- `03-CONTENT-PIPELINE.md`: rule 6 and the overlap-check source list reworded.
+- [`00-README.md`](00-README.md): this doc added to the index; decision 3 (sources rule) reworded.
+- [`03-CONTENT-PIPELINE.md`](03-CONTENT-PIPELINE.md): rule 6 and the overlap-check source list reworded.
 - Phase 0 sample chapter stays **Deadlock** (OS): richest in diagrams, traces and numeric questions, and the references hold three independent treatments (Silberschatz in the folder, Unacademy for the design comparison, PYQs from our bank).
 - A **side-by-side coverage matrix** (syllabus × PYQ weight × reference coverage) is a Phase 0 deliverable, built by script from the local PDFs.

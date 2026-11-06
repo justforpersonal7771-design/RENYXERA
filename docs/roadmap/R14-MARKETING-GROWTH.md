@@ -1,17 +1,19 @@
 # Release 14 — Marketing and growth (P4)
 
-*Strategy docs: `../GROWTH_MASTER_PLAN.md`, `../GROWTH_TASKS.md`, `../GROWTH_ASSETS.md`, `../MARKETING_STRATEGY.md`, `../CONTENT_STRATEGY.md`, `../INFLUENCER_OUTREACH_MESSAGES.md`, `../SOCIAL_AUTOMATION_PLAYBOOK.md`. Channels: `../TELEGRAM_MULTI_BRANCH_AND_SEO.md`, `../telegram-premium/`, `../instagram/`.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*Strategy docs: [`../growth/GROWTH_MASTER_PLAN.md`](../growth/GROWTH_MASTER_PLAN.md), [`../growth/GROWTH_TASKS.md`](../growth/GROWTH_TASKS.md), [`../growth/GROWTH_ASSETS.md`](../growth/GROWTH_ASSETS.md), [`../growth/MARKETING_STRATEGY.md`](../growth/MARKETING_STRATEGY.md), [`../growth/CONTENT_STRATEGY.md`](../growth/CONTENT_STRATEGY.md), [`../growth/INFLUENCER_OUTREACH_MESSAGES.md`](../growth/INFLUENCER_OUTREACH_MESSAGES.md), [`../growth/SOCIAL_AUTOMATION_PLAYBOOK.md`](../growth/SOCIAL_AUTOMATION_PLAYBOOK.md). Channels: [`../growth/TELEGRAM_MULTI_BRANCH_AND_SEO.md`](../growth/TELEGRAM_MULTI_BRANCH_AND_SEO.md), `../telegram-premium/`, `../instagram/`.*
 
 ## R14-A · Promo film (assets ready)
 - **A1 · Frame check (me):** sample 12 frames of each v8 file (`video/out/renyxera-film-v8-4k.mp4`, `-vertical-1080.mp4`, `-vertical-4k.mp4`); check text overlaps, tooltips in frame, logo, end card; fix and re-render if needed.
 - **A2 · Owner review** on laptop and phone.
 - **A3 · Publish:** YouTube (landscape, title/description with keywords + Telegram folder link + site link with UTM), YouTube Short (vertical), Instagram Reel (vertical 1080, 31.6 MB).
-- **A4 · Website:** set `NEXT_PUBLIC_PROMO_YT_ID`; click-to-play poster on welcome + Plans (`components/marketing/promo-video.tsx`).
+- **A4 · Website:** set `NEXT_PUBLIC_PROMO_YT_ID`; click-to-play poster on welcome + Plans ([`components/marketing/promo-video.tsx`](../../components/marketing/promo-video.tsx)).
 - **A5 · Cut-downs:** 30 s and 15 s versions, 4:5 feed version.
 
 ## R14-B · Instagram
-- **B1 · Setup (owner):** `../instagram/01-SETUP.md`, then `social-check`.
-- **B2 · 4-week calendar (me):** 5 posts/week in `content/calendar.json`: PYQ of the day (carousel), topic trick, weightage fact, Forge/mock reminder, feature demo; captions with hooks, hashtags, UTM links.
+- **B1 · Setup (owner):** [`../growth/instagram/01-SETUP.md`](../growth/instagram/01-SETUP.md), then `social-check`.
+- **B2 · 4-week calendar (me):** 5 posts/week in [`content/calendar.json`](../../content/calendar.json): PYQ of the day (carousel), topic trick, weightage fact, Forge/mock reminder, feature demo; captions with hooks, hashtags, UTM links.
 - **B3 · Carousel generator:** script turning a PYQ + solution into 5 branded slides (1080×1350) with the approved card fonts.
 
 ## R14-C · Telegram

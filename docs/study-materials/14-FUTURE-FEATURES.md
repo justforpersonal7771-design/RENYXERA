@@ -1,6 +1,8 @@
 # 14 · Future features for Study materials
 
-*31 Oct 2026. Owner request: "think and list them down, like summary, voice and many more". Effort is a rough size for one person working with Claude: S = a day or two, M = about a week, L = several weeks. Phase: **MVP** (ships with the first CS packs), **v1** (first months after launch), **Later**. Everything respects the product rules: zero budget (local or free tools), real data only, content protection (`07-PROTECTION-AND-SECURITY.md`), and a separate paid product from the plans.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*31 Oct 2026. Owner request: "think and list them down, like summary, voice and many more". Effort is a rough size for one person working with Claude: S = a day or two, M = about a week, L = several weeks. Phase: **MVP** (ships with the first CS packs), **v1** (first months after launch), **Later**. Everything respects the product rules: zero budget (local or free tools), real data only, content protection ([`07-PROTECTION-AND-SECURITY.md`](07-PROTECTION-AND-SECURITY.md)), and a separate paid product from the plans.*
 
 ## A. Understand it (the lesson itself)
 

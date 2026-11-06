@@ -11,7 +11,7 @@ const header = `-- =============================================================
 -- script. On a NEW Supabase project, run it top to bottom in the SQL Editor to recreate
 -- the full schema. Never edit it by hand: add a new numbered migration, then regenerate:
 --   npm run schema:build
--- Human-readable explanation of every table, policy and function: docs/TECHNICAL_REFERENCE.md §6
+-- Human-readable explanation of every table, policy and function: docs/engineering/TECHNICAL_REFERENCE.md §6
 -- ============================================================================
 `;
 const body = files

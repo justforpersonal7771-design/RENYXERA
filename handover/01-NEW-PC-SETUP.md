@@ -96,11 +96,11 @@ If `fetch.py` fails for a year, copy `data/pyq/official_pdfs/` and `data/pyq/_wo
 1. In VS Code, open Extensions (Ctrl+Shift+X), search **"Claude Code"** (publisher: Anthropic) and install it.
 2. Click the Claude icon in the sidebar and sign in with your Claude account.
 3. Optional, terminal version: run `npm install -g @anthropic-ai/claude-code`, then run `claude` inside the repo folder.
-4. **Restore Claude's memory notes.** They are in the repo under `docs/claude-memory/`. Copy them to:
+4. **Restore Claude's memory notes.** They are in the repo under `docs/engineering/claude-memory/`. Copy them to:
    ```
    C:\Users\<you>\.claude\projects\D--0-UI-r2ma-stable\memory\
    ```
-   Open the repo once in Claude Code first, so that the `projects\…` folder exists. Check the exact folder name it creates, then paste the files in. If you skip this step, the master prompt below tells Claude to read them from `docs/claude-memory/`.
+   Open the repo once in Claude Code first, so that the `projects\…` folder exists. Check the exact folder name it creates, then paste the files in. If you skip this step, the master prompt below tells Claude to read them from `docs/engineering/claude-memory/`.
 
 ### A9. Optional tools
 
@@ -117,8 +117,8 @@ Repo: D:\0-UI\r2ma-stable (GitHub: justforpersonal7771-design/RENYXERA, branch m
 
 Before doing anything, read in this order:
 1. HANDOVER_NEW_PC.md (this handover - parts C and D)
-2. docs/claude-memory/*.md (my standing rules; save them into your memory dir if not already there)
-3. docs/PYQ_EXTRACTION_HANDBOOK.md and scripts/pyq/README.md (the PYQ pipeline rules)
+2. docs/engineering/claude-memory/*.md (my standing rules; save them into your memory dir if not already there)
+3. docs/forge/PYQ_EXTRACTION_HANDBOOK.md and scripts/pyq/README.md (the PYQ pipeline rules)
 4. checklist.md (status of every module)
 
 Standing rules:
@@ -148,12 +148,12 @@ Resume EC 2022 at Q36, then EC 2021, then EC subject/topic tagging, then EE, ME,
 - analytics and rank or score calibration from official marks-to-AIR data;
 - leaderboards, All-India mocks, protected offline downloads, cloud sync, and a content and SEO engine.
 
-It launched with **GATE CSE**, which has 975 questions from the existing file `data/Aggregated_Output.json`. Other branches show "Coming Soon" until their data passes the launch gate (checklist module 8C).
+It launched with **GATE CSE**, which has 975 questions from the existing file [`data/Aggregated_Output.json`](../data/Aggregated_Output.json). Other branches show "Coming Soon" until their data passes the launch gate (checklist module 8C).
 
 ### Stack
 
 - **App:** Next.js 15 (App Router), React 19, Tailwind 4, Zustand, MathJax (`better-react-mathjax`), Recharts and Motion.
-- **Hosting:** Cloudflare Workers via OpenNext (`wrangler.jsonc`, `open-next.config.ts`).
+- **Hosting:** Cloudflare Workers via OpenNext (`wrangler.jsonc`, [`open-next.config.ts`](../open-next.config.ts)).
 - **Data:** Supabase Postgres, Auth and Row Level Security (`supabase/migrations/`). Cloudflare Turnstile protects the auth forms.
 - **CI and automation:** GitHub Actions in `.github/workflows/`.
   - `ci.yml` runs the checks, then deploys on a push to main.
@@ -165,18 +165,18 @@ It launched with **GATE CSE**, which has 975 questions from the existing file `d
 
 - ₹0 budget. Paid items wait in "Backlog (paid)" until the app earns money. The custom domain is also deferred.
 - Next.js hot reload already works. Do not migrate to Vite.
-- Security first, then retention, then money. The execution order is at the top of `checklist.md`.
+- Security first, then retention, then money. The execution order is at the top of [`checklist.md`](../checklist.md).
 
 ### Key documents
 
 | File | What it holds |
 |---|---|
 | `RENYXERA_Master_Plan_Auth_Security_Monetization.md` | Full plan and rationale, module by module |
-| `checklist.md` | Status of every deliverable (source of truth for progress) |
-| `docs/TECHNICAL_REFERENCE.md` | Architecture and operations runbook |
-| `docs/PYQ_ACQUISITION_STRATEGY.md`, `docs/PYQ_EXTRACTION_HANDBOOK.md`, `scripts/pyq/README.md` | PYQ pipeline |
-| `docs/CONTENT_STRATEGY.md`, `docs/MARKETING_STRATEGY.md`, `BUGS.md` | Content plan, marketing plan, known bugs |
-| `docs/claude-memory/` | Claude's saved rules and lessons from earlier sessions |
+| [`checklist.md`](../checklist.md) | Status of every deliverable (source of truth for progress) |
+| [`docs/engineering/TECHNICAL_REFERENCE.md`](../docs/engineering/TECHNICAL_REFERENCE.md) | Architecture and operations runbook |
+| [`docs/done/archive/docs/PYQ_ACQUISITION_STRATEGY.md`](../docs/done/archive/docs/PYQ_ACQUISITION_STRATEGY.md), [`docs/forge/PYQ_EXTRACTION_HANDBOOK.md`](../docs/forge/PYQ_EXTRACTION_HANDBOOK.md), [`scripts/pyq/README.md`](../scripts/pyq/README.md) | PYQ pipeline |
+| [`docs/growth/CONTENT_STRATEGY.md`](../docs/growth/CONTENT_STRATEGY.md), [`docs/growth/MARKETING_STRATEGY.md`](../docs/growth/MARKETING_STRATEGY.md), [`BUGS.md`](../BUGS.md) | Content plan, marketing plan, known bugs |
+| `docs/engineering/claude-memory/` | Claude's saved rules and lessons from earlier sessions |
 
 ### Agreed for the later "branching" release (in the checklist, not built yet)
 
@@ -189,7 +189,7 @@ It launched with **GATE CSE**, which has 975 questions from the existing file `d
 
 ### Output format (agreed)
 
-The branch JSON is `data/pyq/<BRANCH>/gate_<branch>_pyqs.json`. It uses the same structure as the CS file `data/Aggregated_Output.json`: a top-level list of `{ "exam_metadata": { "year-shift": "2024" }, "questions": [...] }`.
+The branch JSON is `data/pyq/<BRANCH>/gate_<branch>_pyqs.json`. It uses the same structure as the CS file [`data/Aggregated_Output.json`](../data/Aggregated_Output.json): a top-level list of `{ "exam_metadata": { "year-shift": "2024" }, "questions": [...] }`.
 
 - For EC, `year-shift` is just the year.
 - In marks-to-all (MTA) questions, every option is marked `is_correct`.

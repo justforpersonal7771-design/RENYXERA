@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ started_at: existing.server_started_at, duration_seconds: existing.duration_seconds, status: existing.status });
     }
     // Multi-branch: an attempt belongs to the account's branch; questions from any other
-    // branch are refused (docs/MULTI_BRANCH_DESIGN.md §6).
+    // branch are refused (docs/done/MULTI_BRANCH_DESIGN.md §6).
     const branch = await getUserBranch(db, userId);
     if (questionsOutsideBranch(ids, branch).length) return branchMismatch();
     const nowMs = Date.now();

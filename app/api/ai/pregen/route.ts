@@ -7,7 +7,7 @@ import { PREGEN_KINDS, sharedCacheKey } from "@/lib/ai/shared-cache";
 export const runtime = "nodejs";
 
 /**
- * Background pre-generation of question-level AI answers (docs/AI_USAGE_STRATEGY.md §3.1).
+ * Background pre-generation of question-level AI answers (docs/engineering/AI_USAGE_STRATEGY.md §3.1).
  * Called by the "AI pre-generation" GitHub Action (and later the admin console) with the
  * PREGEN_SECRET header — never by students. Each call processes up to `batch` items of the
  * fixed sequence (every official question × HINT, SHORTCUT, EXPLAIN), saving each answer

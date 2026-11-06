@@ -1,7 +1,7 @@
 # HANDOFF — RENYXERA (GATE OS)
 
 **Written:** 22 October 2026, for a fresh Claude account/session with no prior context.
-**Read with:** `CLAUDE.md` (auto-loaded rules), `checklist.md` (the single live task list), `handover/MASTER_PROMPT.md` (the full brief), `handover/memory/` (standing notes).
+**Read with:** [`CLAUDE.md`](CLAUDE.md) (auto-loaded rules), [`checklist.md`](checklist.md) (the single live task list), [`handover/MASTER_PROMPT.md`](handover/MASTER_PROMPT.md) (the full brief), `handover/memory/` (standing notes).
 No secrets are in this file. Secrets live only in `.env.local` (local, git-ignored), Cloudflare Worker secrets and GitHub Actions secrets.
 
 ---
@@ -44,7 +44,7 @@ CS (975 Qs, 2017–2026, fully verified against official papers), EC (390), EE (
 - **Browser (PWA):** all UI, local engines, IndexedDB (study data, answer-key cache, encrypted Downloads vault), service worker (`public/sw.js`). Question bank is a static, **answer-free** JSON per branch on the CDN.
 - **Worker (server):** `/api/*` routes, middleware, SSR/prerendered pages. Only the Worker holds the service-role key and Gemini key; it grades, unlocks answers, rate-limits.
 - **Postgres (Supabase):** source of truth for accounts, private answer keys (`question_answers`, no RLS policies), attempts, mocks, leaderboards, billing, Telegram, events. Browser reads only its own rows through RLS.
-Full detail: `docs/TECHNICAL_REFERENCE.md` (architecture diagrams, tables, API list, runbook).
+Full detail: [`docs/engineering/TECHNICAL_REFERENCE.md`](docs/engineering/TECHNICAL_REFERENCE.md) (architecture diagrams, tables, API list, runbook).
 
 ### Folder structure
 ```
@@ -74,7 +74,7 @@ scripts/         seeding, checks, schedulers, Telegram/social publishers, make-o
 supabase/        migrations 0001…0039 (+ SCHEMA.sql built from them)
 video/           Remotion promo film (src/Film4.tsx, Root.tsx, timeline, voice/music scripts, out/ = renders, not in git)
 docs/            strategy and reference docs (index: docs/README.md); study-materials/ (plan; notes/ git-ignored)
-archive/         finished work (COMPLETED.md), old checklist, old docs and handovers
+docs/done/archive/         finished work (COMPLETED.md), old checklist, old docs and handovers
 handover/        HANDOVER.md, MASTER_PROMPT.md, 01-NEW-PC-SETUP.md, memory/ (Claude notes to restore)
 logo/            owner-supplied branch logos (CSIT, EC, EE, ME, CE, DA) used for cards/branch pages
 .github/workflows/ ci, ai-pregen, backup, billing-reconcile, keepalive, social-check, social-publish,
@@ -94,24 +94,24 @@ logo/            owner-supplied branch logos (CSIT, EC, EE, ME, CE, DA) used for
 - **All-India mocks + leaderboards:** Sunday mock engine, embargo, fair ranking, branch leaderboards, privacy display choice, weekly challenge. *(New mock scheduling is ON HOLD until Forge exists — see decisions.)*
 - **Money:** Razorpay live (instant verify, signed webhook, hourly reconcile), Plus ₹29/mo · ₹249/yr, Pro ₹99/mo · ₹799/yr, GATE season pass priced from server clock, prorated Plus→Pro, coupons (built, unused), receipts, billing history, plan-ending reminders, refund/billing scripts. First real payment received.
 - **SEO/content:** 6 branch landing pages (keyword titles, FAQ JSON-LD incl. Telegram FAQ, branch logo), public PYQ pages per question (any-branch official-answer reveal fixed 18 Oct), subject/topic hubs, syllabus pages per branch, GATE updates/2027 changes, GA lessons, articles, free tools (score calculator, rank predictor, cut-offs, study plan, branch cut-offs), sitemap/robots/canonicals, Organization + WebSite JSON-LD with `sameAs`, per-branch social cards `public/og/*` (final style approved).
-- **Sharing:** share-as-image card with consented personalisation (name, username, student ID, avatar) — `components/growth/share-card.tsx`, in the profile referral card; referrals with AI-credit rewards.
+- **Sharing:** share-as-image card with consented personalisation (name, username, student ID, avatar) — [`components/growth/share-card.tsx`](components/growth/share-card.tsx), in the profile referral card; referrals with AI-credit rewards.
 - **Telegram:** bot with commands, linking, reminders; hub channel (updates only: GATE 2027 facts, Monday countdown, Saturday mock reminder) via `telegram-hub.yml`; 6 branch channels `@renyxera_gate_cs/_ece/_ee/_me/_ce/_da` each get their own daily PYQ with the answer as a tap-to-reveal spoiler via `telegram-daily.yml`; discussion group with topics; folder link `https://t.me/addlist/fY_dvTl36FA3ZTQ1`. Owner confirmed setup through step F works.
-- **Instagram/social automation:** publisher + scheduler + calendar + `social-check` workflow built (`scripts/social-publish.mjs`, `content/calendar.json`).
+- **Instagram/social automation:** publisher + scheduler + calendar + `social-check` workflow built ([`scripts/social-publish.mjs`](scripts/social-publish.mjs), [`content/calendar.json`](content/calendar.json)).
 - **PYQ data:** all six branches transcribed, tagged, keyed, seeded. CS fully re-verified (keys + wording + figures) against official PDFs 2017–2026.
 - **Promo film v8 (Remotion):** `video/out/renyxera-film-v8-4k.mp4` (landscape 4K), `renyxera-film-v8-vertical-1080.mp4` (31.6 MB, Instagram-ready size), `renyxera-film-v8-vertical-4k.mp4`. Four plain transitions, "Start now" CTA, tagline under wordmark, tooltips kept in frame. **Not yet watched end-to-end by Claude or the owner.**
-- **Docs:** reorganised (17 Oct): `checklist.md` live list, `archive/COMPLETED.md` for history, `docs/README.md` index; Forge design + entitlements; study-materials plan (00–12); Telegram multi-branch + SEO; Telegram Premium; Instagram setup; open decisions file.
+- **Docs:** reorganised (17 Oct): [`checklist.md`](checklist.md) live list, [`docs/done/archive/COMPLETED.md`](docs/done/archive/COMPLETED.md) for history, [`docs/README.md`](docs/README.md) index; Forge design + entitlements; study-materials plan (00–12); Telegram multi-branch + SEO; Telegram Premium; Instagram setup; open decisions file.
 
 ### In progress / half-finished
-- **Film hand-over:** renders exist; need a frame check of the vertical cuts and owner review → YouTube upload → owner sends video id → set `NEXT_PUBLIC_PROMO_YT_ID` (click-to-play poster component `components/marketing/promo-video.tsx` already wired into signed-out welcome + Plans).
+- **Film hand-over:** renders exist; need a frame check of the vertical cuts and owner review → YouTube upload → owner sends video id → set `NEXT_PUBLIC_PROMO_YT_ID` (click-to-play poster component [`components/marketing/promo-video.tsx`](components/marketing/promo-video.tsx) already wired into signed-out welcome + Plans).
 - **Share card:** built but not browser-tested; only in profile referral card (not yet on results/question share rows).
-- **Forge:** designed (`docs/FORGE_DESIGN.md`, `docs/FORGE_ENTITLEMENTS_AND_SETUP.md`); only the AI practice-set gate exists. No Forge tables, scripts, questions or screens yet. Blocked on owner decision F1.
+- **Forge:** designed ([`docs/forge/FORGE_DESIGN.md`](docs/forge/FORGE_DESIGN.md), [`docs/forge/FORGE_ENTITLEMENTS_AND_SETUP.md`](docs/forge/FORGE_ENTITLEMENTS_AND_SETUP.md)); only the AI practice-set gate exists. No Forge tables, scripts, questions or screens yet. Blocked on owner decision F1.
 - **Study materials:** plan complete (`docs/study-materials/00…12`), nothing built. Blocked on owner decisions S1 (pricing) and S4 (reviewer).
-- **Instagram:** code ready; owner must do `docs/instagram/01-SETUP.md`.
-- **Telegram Premium extras:** steps written (`docs/telegram-premium/`); code for bot deep links/Mini App menu and story images not built (needs owner's BotFather step).
+- **Instagram:** code ready; owner must do [`docs/growth/instagram/01-SETUP.md`](docs/growth/instagram/01-SETUP.md).
+- **Telegram Premium extras:** steps written (`docs/growth/telegram-premium/`); code for bot deep links/Mini App menu and story images not built (needs owner's BotFather step).
 
 ### Broken / suspect / to verify
-- Markdown pipe tables in question text once rendered as raw text (`GATE_CS_2025_AN_Q8`); a table extractor now exists (`lib/repository/transformers/table-extractor.ts`) — **verify** it renders.
-- `components/exam/exam-timer.tsx` falls back to a hard-coded 3 h when no draft exists (low priority).
+- Markdown pipe tables in question text once rendered as raw text (`GATE_CS_2025_AN_Q8`); a table extractor now exists ([`lib/repository/transformers/table-extractor.ts`](lib/repository/transformers/table-extractor.ts)) — **verify** it renders.
+- [`components/exam/exam-timer.tsx`](components/exam/exam-timer.tsx) falls back to a hard-coded 3 h when no draft exists (low priority).
 - Dead code: unused `design-system/*` (if present) and duplicate `PersonalNotesDrawer` (low priority).
 - Working tree on 22 Oct: owner deleted the `docs/og-*.png` option sheets (unstaged deletions) and dropped zip files in `docs/` (`instagram.zip`, `study-materials.zip`, `telegram-premium*.zip`) — confirm with owner before committing either.
 
@@ -127,7 +127,7 @@ logo/            owner-supplied branch logos (CSIT, EC, EE, ME, CE, DA) used for
 | Answer keys | Never in the bundle/static JSON; unlocked per question/attempt via rate-limited `/api/answers` | Exam integrity. Public PYQ pages may reveal one answer of any branch (`public_pyq: true`) |
 | Grading | Server-authoritative, attempt tokens, idempotent submit, grace windows | Leaderboards must be trustworthy; regression suite proves client = server |
 | Auth | Email + Google; Turnstile; email confirmation switched OFF (26 Sep) | Supabase free mailer rate-limited sign-ups. Re-enable with custom SMTP after revenue. Phone OTP deferred (Blaze cost) |
-| Branch scoping | One branch per account + one final change; guests switch freely | Simplicity and fair leaderboards (`docs/MULTI_BRANCH_DESIGN.md`) |
+| Branch scoping | One branch per account + one final change; guests switch freely | Simplicity and fair leaderboards ([`docs/done/MULTI_BRANCH_DESIGN.md`](docs/done/MULTI_BRANCH_DESIGN.md)) |
 | PYQ extraction | Claude transcribes from page images + text layer; never Gemini | Accuracy (owner stopped Gemini extraction 30 Sep). Tag during transcription |
 | More branches | None for now (18 Oct) | Focus on Forge, study materials, monetisation, marketing |
 | Plans/prices | Free · Plus ₹29/mo ₹249/yr · Pro ₹99/mo ₹799/yr · season pass; no lifetime, no free trial, no "was" prices that were never charged | Penetration pricing for students; Indian dark-pattern rules |
@@ -151,16 +151,16 @@ logo/            owner-supplied branch logos (CSIT, EC, EE, ME, CE, DA) used for
 ## 4. Conventions
 
 - **Language/style:** TypeScript strict, React function components, server components for public pages, client components for app screens. Match the surrounding code's comment density and naming. Comments explain *why*.
-- **Imports:** `@/` alias. Zod validates every API body. Server-only modules import `server-only` (service-role client in `lib/supabase/service-role.ts`).
+- **Imports:** `@/` alias. Zod validates every API body. Server-only modules import `server-only` (service-role client in [`lib/supabase/service-role.ts`](lib/supabase/service-role.ts)).
 - **API routes:** origin check (`isCrossOriginRequest`), rate limit (`checkRateLimit`), verify JWT (`getVerifiedClaims`), tier/branch checks on the server, JSON errors with clear messages, `Cache-Control: private, no-store` on private data.
-- **Tiers and prices:** only in `lib/billing/plans.ts`. Entitlement checks server-side (`getEntitlement`, RPCs like `consume_ai_call`, `consume_practice_set`).
+- **Tiers and prices:** only in [`lib/billing/plans.ts`](lib/billing/plans.ts). Entitlement checks server-side (`getEntitlement`, RPCs like `consume_ai_call`, `consume_practice_set`).
 - **DB:** numbered migrations `supabase/migrations/NNNN_name.sql`, backward-safe; owner runs them in the Supabase SQL editor; then `npm run schema:build`. RLS on every table; private tables have no policies.
-- **UI:** Tailwind v4 with CSS variables (`var(--text-primary)`, `--surface`, `--border`…); light + dark; screens use only the app shell's padding (`w-full`, no extra `max-w`/`mx-auto`/`p-*` at page roots); motion respects reduced-motion; never native date/time inputs (use `components/ui/date-picker.tsx` / `time-picker.tsx`; eslint enforces); brand name via `components/brand/wordmark.tsx` (`Wordmark`, `BrandName`, `BrandMark`).
+- **UI:** Tailwind v4 with CSS variables (`var(--text-primary)`, `--surface`, `--border`…); light + dark; screens use only the app shell's padding (`w-full`, no extra `max-w`/`mx-auto`/`p-*` at page roots); motion respects reduced-motion; never native date/time inputs (use [`components/ui/date-picker.tsx`](components/ui/date-picker.tsx) / `time-picker.tsx`; eslint enforces); brand name via [`components/brand/wordmark.tsx`](components/brand/wordmark.tsx) (`Wordmark`, `BrandName`, `BrandMark`).
 - **Time:** server clock for anything time-based (`/api/time`), IST for daily resets; avoid `toISOString().split('T')[0]` for local dates.
-- **Content:** official sources only for facts (GATE 2027 facts in `lib/seo/gate2027.ts` with `CHECKED_ON`); predictions show data vintage or an "estimate" label.
+- **Content:** official sources only for facts (GATE 2027 facts in [`lib/seo/gate2027.ts`](lib/seo/gate2027.ts) with `CHECKED_ON`); predictions show data vintage or an "estimate" label.
 - **Files:** repo mixes CRLF and LF — preserve each file's style. Write TeX/regex with the Write/Edit tools, never via Bash heredocs.
 - **Commits:** commit as you go with clear messages; push to `main` once per finished batch (push = deploy). End commit messages with the Co-Authored-By line the session specifies.
-- **Checklist:** `checklist.md` is the owner's only tracker; update it every turn with real `- [ ]` / `- [x]` checkboxes.
+- **Checklist:** [`checklist.md`](checklist.md) is the owner's only tracker; update it every turn with real `- [ ]` / `- [x]` checkboxes.
 
 ---
 
@@ -174,7 +174,7 @@ npm install
 copy .env.example .env.local        # then fill values yourself (never paste secrets in chat)
 npm run dev                         # http://localhost:3000
 ```
-Node 24.x, Python 3.12+ (`pip install pymupdf pillow numpy`), GitHub CLI. Git: `core.autocrlf false`. Full new-PC steps: `handover/01-NEW-PC-SETUP.md`.
+Node 24.x, Python 3.12+ (`pip install pymupdf pillow numpy`), GitHub CLI. Git: `core.autocrlf false`. Full new-PC steps: [`handover/01-NEW-PC-SETUP.md`](handover/01-NEW-PC-SETUP.md).
 
 ### Build / test / deploy
 | Purpose | Command |
@@ -188,7 +188,7 @@ Node 24.x, Python 3.12+ (`pip install pymupdf pillow numpy`), GitHub CLI. Git: `
 | E2E smoke | `npm run build && npx next start` then `npm run test:e2e` (desktop/mobile × light/dark) |
 | Seed questions/keys | `node scripts/seed-questions.mjs` then `npm run check:keys` |
 | CS bank text fixes | `python scripts/pyq/patch-cs.py <patches.json>` |
-| PYQ pipeline | `scripts/pyq/{fetch,keys,render,regions,crop,validate,tagcodes,build,verify-cs}.py` — rules in `docs/PYQ_EXTRACTION_HANDBOOK.md` |
+| PYQ pipeline | `scripts/pyq/{fetch,keys,render,regions,crop,validate,tagcodes,build,verify-cs}.py` — rules in [`docs/forge/PYQ_EXTRACTION_HANDBOOK.md`](docs/forge/PYQ_EXTRACTION_HANDBOOK.md) |
 | Social cards | `python scripts/make-og.py` (fonts in `scripts/fonts/`, logos in `logo/`) |
 | Telegram dry run | `node scripts/telegram-daily.mjs --dry-run` (`POST_BRANCH=CS` for a branch); `node scripts/telegram-hub.mjs --dry` |
 | Social publish check | `node scripts/social-publish.mjs --check` / `--dry` |
@@ -211,9 +211,9 @@ GitHub Actions secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`, the `NE
 
 ## 6. Open tasks (prioritised)
 
-Highest priority (owner, 22 Oct): **Forge question generation, study materials, monetisation, marketing**, plus new layers **R15 performance**, **R16 security** (audit found no security headers and 1 critical + 5 high dependency vulnerabilities) and **R17 Microsoft Store app**. Full list: `checklist.md`; full detail per release: `docs/roadmap/`.
+Highest priority (owner, 22 Oct): **Forge question generation, study materials, monetisation, marketing**, plus new layers **R15 performance**, **R16 security** (audit found no security headers and 1 critical + 5 high dependency vulnerabilities) and **R17 Microsoft Store app**. Full list: [`checklist.md`](checklist.md); full detail per release: `docs/roadmap/`.
 
-1. **Owner decisions** in `docs/OPEN_DECISIONS_FOR_YOU.md` — F1 (Plus Forge limit), S1 (study-materials pricing), S4 (reviewer) block work.
+1. **Owner decisions** in [`docs/open-work/OPEN_DECISIONS_FOR_YOU.md`](docs/open-work/OPEN_DECISIONS_FOR_YOU.md) — F1 (Plus Forge limit), S1 (study-materials pricing), S4 (reviewer) block work.
 2. **Forge build (CS first):** migration (`forge_items`, `forge_answers`, `forge_item_stats`), `canUseForgeQuestions(tier)`, `/api/forge/items`, locked UI for Free, authoring scripts (`scripts/forge/*` profile → plan → draft → code-verify → seed), first 60 hand-checked CS items, 30-day buffer + 3 mocks, owner-only beta, then launch; resume Sunday Forge Mocks; Daily Forge teaser to branch channels.
 3. **Study materials Phase 0:** decisions, coverage matrix script, reference chapter "Deadlock", renderer + protection prototype, paid pass entitlement + checkout.
 4. **Monetisation:** conversion funnel (Forge locks, mock → upgrade moments, plan comparison), season-pass pushes before exam, study-materials pass, affiliate links, AdSense after domain.

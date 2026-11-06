@@ -1,6 +1,8 @@
 # 13 · Study materials: subject packs, bundles and where we offer them
 
-*31 Oct 2026. Owner decision (S1/S4) recorded here; it replaces the "branch pass" recommendation in `08-PRODUCT-AND-PRICING.md` §3. Prices are proposals on the owner's range (₹99 to ₹149 per subject); every number below is derived from our own measured data (`data/forge/CS/profile.json`: marks per paper and the share of Hard questions over 15 official papers, 2017 to 2026).*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*31 Oct 2026. Owner decision (S1/S4) recorded here; it replaces the "branch pass" recommendation in [`08-PRODUCT-AND-PRICING.md`](08-PRODUCT-AND-PRICING.md) §3. Prices are proposals on the owner's range (₹99 to ₹149 per subject); every number below is derived from our own measured data ([`data/forge/CS/profile.json`](../../data/forge/CS/profile.json): marks per paper and the share of Hard questions over 15 official papers, 2017 to 2026).*
 
 ## 1. Decisions (owner, 31 Oct)
 
@@ -87,7 +89,7 @@ Not allowed: pre-ticked boxes, countdown timers that reset, invented "original p
 - `product_id` per pack and per bundle in the billing order; a **bundle expands into pack entitlements** (`study_access (user_id, branch, subject_id, valid_until)` one row per subject), so a later single-pack purchase never double-grants.
 - Aptitude is a shared pack (`branch = ALL`).
 - Plans checkout gets the optional add-on row (moment 1); the order API validates the add-on server-side (price and eligibility), like coupons.
-- The refund script (`scripts/refund.mjs`) must revoke the pack rows of a refunded order.
+- The refund script ([`scripts/refund.mjs`](../../scripts/refund.mjs)) must revoke the pack rows of a refunded order.
 - New policy text is live at `/refunds`, `/terms` §7 and on the Plans confirm box (31 Oct).
 - Open: GST treatment of digital packs (accountant), the exact wording of the checkout row (legal read before launch), and the final numbers after the first 50 pilot buyers.
 

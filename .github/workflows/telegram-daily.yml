@@ -10,7 +10,7 @@ on:
 
 jobs:
   # Branch channels: each branch's own question, every day. A branch is skipped quietly until its
-  # TELEGRAM_CHANNEL_<CODE> secret exists (see docs/TELEGRAM_MULTI_BRANCH_AND_SEO.md).
+  # TELEGRAM_CHANNEL_<CODE> secret exists (see docs/growth/TELEGRAM_MULTI_BRANCH_AND_SEO.md).
   branches:
     runs-on: ubuntu-latest
     timeout-minutes: 5

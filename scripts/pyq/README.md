@@ -1,6 +1,6 @@
 # PYQ pipeline: official GATE papers → one verified JSON per branch
 
-Strategy: `archive/docs/PYQ_ACQUISITION_STRATEGY.md`. **Working rules: `docs/PYQ_EXTRACTION_HANDBOOK.md`** (extraction is done by Claude, not Gemini).
+Strategy: `docs/done/archive/docs/PYQ_ACQUISITION_STRATEGY.md`. **Working rules: `docs/forge/PYQ_EXTRACTION_HANDBOOK.md`** (extraction is done by Claude, not Gemini).
 
 ## Folders
 
@@ -25,7 +25,7 @@ python scripts/pyq/fetch.py EC                      # official QPs + keys → of
 python scripts/pyq/keys.py EC                       # exact answer keys (all papers)
 python scripts/pyq/render.py EC --paper EC_2026     # 300-dpi page PNGs + text layers
 python scripts/pyq/regions.py EC --paper EC_2026    # figure regions
-# Claude transcribes -> data/pyq/EC/transcriptions/EC_2026/b*.json  (see docs/PYQ_EXTRACTION_HANDBOOK.md)
+# Claude transcribes -> data/pyq/EC/transcriptions/EC_2026/b*.json  (see docs/forge/PYQ_EXTRACTION_HANDBOOK.md)
 python scripts/pyq/crop.py EC --paper EC_2026       # merge + crop figures
 python scripts/pyq/validate.py EC --paper EC_2026   # every check → reports/EC_2026.md
 # tagging: Claude, from the official syllabus (tag.py still calls Gemini - to be replaced)

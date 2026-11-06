@@ -105,7 +105,7 @@ function buildPrompt(req: AIGenerateRequest): { systemInstruction: string; promp
  * official question in the request. Fails open — the prompt is simply built without it.
  */
 /**
- * AI cost cut 2 (docs/AI_USAGE_STRATEGY.md §3.1/§3.3): hints, shortcuts and standard
+ * AI cost cut 2 (docs/engineering/AI_USAGE_STRATEGY.md §3.1/§3.3): hints, shortcuts and standard
  * explanations of an official PYQ depend on the question, not on the student. For those,
  * drop the learner's personal context so every student sends the IDENTICAL prompt — the
  * response cache then answers everyone after the first request for free (cache hits don't

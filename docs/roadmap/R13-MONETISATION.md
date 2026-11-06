@@ -1,6 +1,8 @@
 # Release 13 — Monetisation III (P3)
 
-*Builds on what is live: Free / Plus ₹29·₹249 / Pro ₹99·₹799, season pass, prorated upgrade, coupons, receipts (`lib/billing/plans.ts`, `components/billing/*`, `app/api/billing/*`). Rules: no lifetime deals, no free trials, no fake "was" prices, ₹0 running cost.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*Builds on what is live: Free / Plus ₹29·₹249 / Pro ₹99·₹799, season pass, prorated upgrade, coupons, receipts ([`lib/billing/plans.ts`](../../lib/billing/plans.ts), `components/billing/*`, `app/api/billing/*`). Rules: no lifetime deals, no free trials, no fake "was" prices, ₹0 running cost.*
 
 ## R13-A · Conversion (highest impact)
 
@@ -14,7 +16,7 @@ Done when: page passes the design review; CWV budget met.
 
 ### A3 · Season-pass campaign (Dec → exam)
 Banner in app, Telegram hub post weekly, Instagram posts; countdown-based copy; coupon for early buyers (coupons already built).
-Done when: campaign calendar in `content/calendar.json`; banner switchable by date.
+Done when: campaign calendar in [`content/calendar.json`](../../content/calendar.json); banner switchable by date.
 
 ### A4 · Smart upgrade sheet
 One sheet that shows exactly what the locked feature gives (preview image/video), price per day ("₹0.97/day"), and one tap to pay.
@@ -36,8 +38,8 @@ After payment: a 3-step tour of what was unlocked; Telegram Plus/Pro features li
 
 ## R13-C · Money operations
 - **C1** Confirm UPI MDR on Razorpay (owner).
-- **C2** Monthly billing report (`scripts/billing-report.mjs`) sent to the owner's Telegram automatically.
-- **C3** Refund flow documented; `scripts/refund.mjs` tested in test mode.
+- **C2** Monthly billing report ([`scripts/billing-report.mjs`](../../scripts/billing-report.mjs)) sent to the owner's Telegram automatically.
+- **C3** Refund flow documented; [`scripts/refund.mjs`](../../scripts/refund.mjs) tested in test mode.
 - **C4** 🟡 GST registration and invoices once revenue requires it.
 - **C5** A/B test framework (feature flags) for price display and copy — never different prices for the same plan at the same time.
 

@@ -6,7 +6,7 @@ import sharedIds from "@/data/shared-question-ids.json";
 const SHARED = new Set<string>(sharedIds as string[]);
 
 /**
- * Server-side branch rules (docs/MULTI_BRANCH_DESIGN.md §6). A request's branch is ALWAYS
+ * Server-side branch rules (docs/done/MULTI_BRANCH_DESIGN.md §6). A request's branch is ALWAYS
  * the account's profiles.target_branch, never anything the client sends.
  */
 

@@ -1,6 +1,6 @@
 ---
 name: feedback-pyq-claude-extracts
-description: "PYQ extraction must be done by Claude reading page images, never Gemini; rules live in docs/PYQ_EXTRACTION_HANDBOOK.md"
+description: "PYQ extraction must be done by Claude reading page images, never Gemini; rules live in docs/forge/PYQ_EXTRACTION_HANDBOOK.md"
 metadata:
   node_type: memory
   type: feedback

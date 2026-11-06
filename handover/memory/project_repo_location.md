@@ -8,7 +8,7 @@ metadata:
   modified: 2026-09-17T17:37:56.521Z
 ---
 
-The real GATE OS codebase is **D:\0-UI\r2ma-stable**, a git repo with 2 commits ("...exam repository..." and "release 2 complete...feat: core learning analytics engines and UI") plus substantial uncommitted work in the working tree (the entire `lib/ai/` directory, `app/(dashboard)/ai-tutor/`, `app/(dashboard)/ai-mentor/`, `types/ai.types.ts`, plus modified bookmarks/mistakes/revision/setup/results-review pages and repository/storage files).
+The real GATE OS codebase is **D:\0-UI\r2ma-stable**, a git repo with 2 commits ("...exam repository..." and "release 2 complete...feat: core learning analytics engines and UI") plus substantial uncommitted work in the working tree (the entire `lib/ai/` directory, `app/(dashboard)/ai-tutor/`, `app/(dashboard)/ai-mentor/`, [`types/ai.types.ts`](../../types/ai.types.ts), plus modified bookmarks/mistakes/revision/setup/results-review pages and repository/storage files).
 
 **D:\Personal\Adil GATE\GATE_OS** (the directory this Claude Code session's working directory/VS Code window is actually rooted in) is a stale/abandoned earlier copy containing only Release 1 foundations (data layer, AST pipeline, basic exam engine) — no Bookmarks, Mistakes, Revision, Calendar, Command Palette, or AI Tutor/Mentor exist there. A git repo was initialized there early in the 2026-09-17 session (commit `4bace30`) before this mismatch was discovered — that commit/repo is not the project of record.
 

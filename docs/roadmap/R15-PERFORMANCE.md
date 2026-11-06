@@ -1,12 +1,14 @@
 # Release 15 — Performance optimisation (without losing quality)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *Audit 22 Oct 2026 by reading the code and data. Nothing here removes features, lowers image/maths quality, or changes behaviour; every change is measured before and after.*
 
 ## Targets (budgets)
 
 | Metric | Target (phone, 4G, mid-range Android) | How measured |
 |---|---|---|
-| LCP | ≤ 2.0 s public pages, ≤ 2.5 s app pages | `scripts/check-cwv.mjs` (extend), Lighthouse CI |
+| LCP | ≤ 2.0 s public pages, ≤ 2.5 s app pages | [`scripts/check-cwv.mjs`](../../scripts/check-cwv.mjs) (extend), Lighthouse CI |
 | INP | ≤ 200 ms (exam palette, option click, next question) | Web Vitals in Cloudflare Web Analytics / Playwright trace |
 | CLS | ≤ 0.05 | same |
 | First-load JS per route | ≤ 180 KB gzip (app), ≤ 120 KB (public pages) | bundle analyser report in CI |
@@ -16,13 +18,13 @@
 ## Findings from the audit
 
 1. **Images:** `public/images` holds **1,280 PNG files, 79 MB**; zero WebP/AVIF. Diagrams are the heaviest thing a student downloads.
-2. **recharts on every app page:** `components/layout/topbar.tsx` imports `GoalSliderPanel` statically, which imports `recharts`. The top bar is on every dashboard page, so every page ships the chart library even if the panel is never opened.
-3. **Full Prism highlighter:** `components/ui/code-block.tsx` imports `Prism` from `react-syntax-highlighter` (all languages) and is used by `components/exam/ast-node-renderer.tsx`, which renders every question (exam, review, public PYQ pages).
-4. **Seven font families in the root layout** (`app/layout.tsx`: Manrope, Sora, Fraunces, JetBrains Mono, Playball, Cinzel, Bruno Ace SC). `next/font` preloads them on every route; Playball and Cinzel are used only in the dashboard hero.
+2. **recharts on every app page:** [`components/layout/topbar.tsx`](../../components/layout/topbar.tsx) imports `GoalSliderPanel` statically, which imports `recharts`. The top bar is on every dashboard page, so every page ships the chart library even if the panel is never opened.
+3. **Full Prism highlighter:** [`components/ui/code-block.tsx`](../../components/ui/code-block.tsx) imports `Prism` from `react-syntax-highlighter` (all languages) and is used by [`components/exam/ast-node-renderer.tsx`](../../components/exam/ast-node-renderer.tsx), which renders every question (exam, review, public PYQ pages).
+4. **Seven font families in the root layout** ([`app/layout.tsx`](../../app/layout.tsx): Manrope, Sora, Fraunces, JetBrains Mono, Playball, Cinzel, Bruno Ace SC). `next/font` preloads them on every route; Playball and Cinzel are used only in the dashboard hero.
 5. **Question banks:** CS `questions.json` 824 KB, `public/data/shared` 3.5 MB; loaded as whole files.
 6. **motion** imported in 81 files with full `motion` components (no `LazyMotion`).
 7. **MathJax** loads from jsDelivr on demand (preconnect exists); typesetting runs on whole pages.
-8. **Leftovers in `next.config.ts`:** `picsum.photos` remote pattern (unused), no `optimizePackageImports`.
+8. **Leftovers in [`next.config.ts`](../../next.config.ts):** `picsum.photos` remote pattern (unused), no `optimizePackageImports`.
 9. **Third-party scripts:** Razorpay loads only on Plans (good); Turnstile only on auth (good); Sentry lazy (good); Cloudflare beacon deferred (good).
 
 ## Tasks
@@ -31,17 +33,17 @@
 
 #### A1 · Lazy-load the goal slider panel (recharts off the critical path)
 What: load `GoalSliderPanel` only when the user opens it.
-How: in `components/layout/topbar.tsx` replace the static import with `const GoalSliderPanel = dynamic(() => import("./goal-slider-panel").then(m => m.GoalSliderPanel), { ssr: false, loading: () => <PanelSkeleton/> })`; keep the open/close animation by rendering the skeleton inside the same container.
+How: in [`components/layout/topbar.tsx`](../../components/layout/topbar.tsx) replace the static import with `const GoalSliderPanel = dynamic(() => import("./goal-slider-panel").then(m => m.GoalSliderPanel), { ssr: false, loading: () => <PanelSkeleton/> })`; keep the open/close animation by rendering the skeleton inside the same container.
 Done when: recharts no longer appears in the shared/app-layout chunk in the bundle report; the panel opens with no visible delay (skeleton < 150 ms on 4G); analytics page charts unchanged.
-Refs: `components/layout/topbar.tsx`, `components/layout/goal-slider-panel.tsx`.
+Refs: [`components/layout/topbar.tsx`](../../components/layout/topbar.tsx), [`components/layout/goal-slider-panel.tsx`](../../components/layout/goal-slider-panel.tsx).
 
 #### A2 · Light syntax highlighter, loaded only when a question has code
 How: switch to `PrismLight` and register only the languages present in the banks (c, cpp, java, python, sql, plus plain text); wrap `CodeBlock` in `next/dynamic` so pages without code blocks never download it; keep the `vscDarkPlus` look (import the style object only).
 Done when: identical rendering on 10 code questions (C, SQL, Python) in light/dark; highlighter chunk ≥ 70 % smaller; public PYQ pages without code load no highlighter code.
-Refs: `components/ui/code-block.tsx`, `components/exam/ast-node-renderer.tsx`.
+Refs: [`components/ui/code-block.tsx`](../../components/ui/code-block.tsx), [`components/exam/ast-node-renderer.tsx`](../../components/exam/ast-node-renderer.tsx).
 
 #### A3 · Fonts: preload only what the first paint needs
-How: in `app/layout.tsx` keep `preload: true` for Manrope (body), Sora (display) and Bruno Ace SC (wordmark); set `preload: false` for Fraunces, JetBrains Mono, Playball, Cinzel; restrict weights to the ones used (audit `font-*` classes); move Playball/Cinzel to the dashboard hero via a small font module so public pages never request them.
+How: in [`app/layout.tsx`](../../app/layout.tsx) keep `preload: true` for Manrope (body), Sora (display) and Bruno Ace SC (wordmark); set `preload: false` for Fraunces, JetBrains Mono, Playball, Cinzel; restrict weights to the ones used (audit `font-*` classes); move Playball/Cinzel to the dashboard hero via a small font module so public pages never request them.
 Done when: font requests on `/about` drop to ≤ 3 files; no layout shift from late fonts (`display: swap` + `adjustFontFallback`); visual diff of hero unchanged.
 
 #### A4 · next.config hygiene
@@ -57,7 +59,7 @@ Done when: CI prints a per-route size table; budgets enforced.
 #### B1 · Convert question images to WebP (lossless for line art), keep PNG fallback
 How: `scripts/optimise-images.mjs` using `sharp` (update to ≥ 0.35.5 first, see R16-A1): for each PNG write `.webp` (lossless or near-lossless q 90 for diagrams; check text crispness), skip if WebP is not smaller; keep originals for the pipeline; update the image manifest with both; render with `<picture><source type="image/webp">` in `PremiumImageGallery`.
 Done when: total images ≥ 50 % smaller; a side-by-side check of 30 diagrams (thin lines, subscripts) at 1× and 2× shows no visible loss in light and dark (dark-mode inversion filter still correct).
-Refs: `components/exam/*gallery*`, `data/image-manifest.json`, `scripts/generate-manifest.ts`.
+Refs: `components/exam/*gallery*`, [`data/image-manifest.json`](../../data/image-manifest.json), [`scripts/generate-manifest.ts`](../../scripts/generate-manifest.ts).
 
 #### B2 · Responsive sizes and lazy loading
 How: width/height attributes from the manifest (no CLS), `loading="lazy"` except the first image of the current question, `decoding="async"`, `fetchpriority="high"` on the current question's first image.

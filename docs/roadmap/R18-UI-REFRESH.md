@@ -1,5 +1,7 @@
 # Release 18 — UI refresh of the core screens (priority, before Forge)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *Owner request, 26 Oct 2026: refresh the dashboard (first), analytics, AI Mentor and other main screens; replace dull or odd cards with useful, attractive ones; a fresh, current, premium look. Order after this release: Forge (R11) → solutions for every question (R20) → study materials (R12; may start before R20).*
 
 ## Principles
@@ -37,7 +39,7 @@ Proposed layout (bento):
 ## 18D · Other screens
 Practice setup (fewer steps, presets), Results (scoreboard refined, battle outcome), Review (sticky bottom bar, solution panel), Profile (save bar reliability), Mocks list, Planner, Mistakes/Bookmarks/Revision lists (priority badges, compact rows), Syllabus (item shares done; heat colours), public pages (consistency).
 
-## 18E · Competitor-inspired additions (see `../competitors/COMPETITORS_2026-10.md`)
+## 18E · Competitor-inspired additions (see [`../business/competitors/COMPETITORS_2026-10.md`](../business/competitors/COMPETITORS_2026-10.md))
 C1 institute filter · C5 daily target · C9 score blueprint · C10 progress report · C11 guided tour · C13 focus mode · C14 topic checklist.
 
 ## Done when

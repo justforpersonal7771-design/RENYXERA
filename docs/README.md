@@ -1,35 +1,154 @@
-# docs/ — what is where
+# Docs index: what is where
 
-Live work is tracked in **one place**: `../checklist.md` (open items only). Finished work is in `../archive/`.
+**One-file overview of everything (product, built, open, future): [MASTER.md](MASTER.md).** Everything is grouped by purpose. **Open work** is in [open-work](open-work/); **finished work kept for reference** is in [done](done/). The live tracker is [../checklist.md](../checklist.md) (one line per task) and the single grouped view is [open-work/OPEN-ITEMS-2026-11-06.md](open-work/OPEN-ITEMS-2026-11-06.md).
 
-## Active and reference docs (kept here)
+**Outside this folder:** [../HANDOFF.md](../HANDOFF.md) (new-session context) · [../CLAUDE.md](../CLAUDE.md) (rules for Claude) · [../BUGS.md](../BUGS.md) · [../handover/](../handover/HANDOVER.md) (new-PC setup and master prompt) · [../README.md](../README.md).
 
-| Doc | Use |
-|---|---|
-| `study-materials/` | **New programme, planning stage**: master plan for the study-materials product (index: `study-materials/00-README.md`) |
-| `TECHNICAL_REFERENCE.md` | How the system is built (architecture, data, caching, runbooks) |
-| `MULTI_BRANCH_DESIGN.md` | Branch scoping and switching design |
-| `PYQ_EXTRACTION_HANDBOOK.md` | Rules and pipeline for past-paper extraction (reference for any new branch) |
-| `AI_USAGE_STRATEGY.md`, `FORGE_DESIGN.md` | AI quota policy and the GATE-level practice (Forge) design |
-| `instagram/` | Instagram automation: one-time setup (click by click) and daily use |
-| `roadmap/` | **Release-wise detailed plan**: R11 Forge, R12 Study materials, R13 Monetisation, R14 Marketing, R15 Performance, R16 Security, R17 Microsoft Store, R9–R10, feature catalogue (56 ideas) |
-| `OPEN_DECISIONS_FOR_YOU.md` | Every decision and task that depends on you, with context and my default |
-| `FORGE_ENTITLEMENTS_AND_SETUP.md` | Forge access rules (questions: Plus/Pro; mocks: all) and the build plan; addendum to `FORGE_DESIGN.md` |
-| `telegram-premium/` | What your Telegram Premium unlocks (boosts, stories, folders, Business, Mini App) and the steps |
-| `SOCIAL_AUTOMATION_PLAYBOOK.md` | Instagram, YouTube and Telegram posting automation (the publisher is built; setup steps pending) |
-| `GROWTH_MASTER_PLAN.md`, `GROWTH_TASKS.md`, `GROWTH_ASSETS.md`, `MARKETING_STRATEGY.md`, `CONTENT_STRATEGY.md`, `INFLUENCER_OUTREACH_MESSAGES.md` | Growth and marketing (the open tasks are in `../checklist.md`) |
-| `BUSINESS_EMAIL_STRATEGY.md`, `FREE_ALTERNATIVES_GUIDE.md`, `TELEGRAM_SETUP_AND_PROMOTION.md` | Setup guides for items still waiting on a domain or your action |
-| `reference/RENYXERA_Master_Plan_Auth_Security_Monetization.md` | The original full master plan (rationale, module by module) |
-| `claude-memory/` | Working notes for the AI assistant |
+| Folder | What is inside | Status |
+|---|---|---|
+| [open-work](open-work/) | What is still open, grouped; decisions waiting on the owner; living idea list. | active |
+| [roadmap](roadmap/) | One plan per release (R9 to R30) that still has open work. Built releases moved to done/roadmap. | active |
+| [forge](forge/) | Design, access rules, the local generator workflow, audit of the question bank, PYQ extraction handbook. | active |
+| [study-materials](study-materials/) | Programme plan 00 to 14 and chapter templates. | active (planning) |
+| [growth](growth/) | Growth plan and tasks, marketing strategy, Telegram, Instagram and social automation, weekly content packs. | active |
+| [engineering](engineering/) | Technical reference, architecture, AI providers and usage, free alternatives, copy of the Claude memory notes. | reference |
+| [business](business/) | Business email strategy, competitor analysis, master plan reference. | reference |
+| [design](design/) | Design system and the Looks specification. | active |
+| [done](done/) | Finished work: built roadmap items, old reviews, logo explorations, the old archive, duplicate zips. | completed |
 
-## Archive (moved 17 Oct 2026, `../archive/`)
+## Open work (start here)
 
-| Item | What it is |
-|---|---|
-| `COMPLETED.md` | Every shipped item from the old checklist, grouped by release and module |
-| `checklist-full-2026-10-17.md` | The untouched original checklist |
-| `BUGS-all-fixed.md` | The bug and feature backlog (all items fixed) |
-| `docs/` | Finished specs and research: promo film picks and brief, payments research, competitor gaps, growth research, study-planner and Telegram specs, Gemini setup, PYQ acquisition strategy, development log |
-| `handover/` | Old handover notes and the early implementation blueprint and module spec |
+What is still open, grouped; decisions waiting on the owner; living idea list. ([folder](open-work/))
 
-Rule: when work finishes, tick it in `checklist.md`, then move its row to `archive/COMPLETED.md` in the same commit.
+- [Feature ideas for the whole app (living backlog)](open-work/FEATURE-IDEAS.md) — Started 31 Oct 2026 at the owner's request: ideas for any part of RENYXERA, not only battles. Add new ideas at the bottom of each section as they...
+- [RENYXERA open items, grouped (6 Nov 2026)](open-work/OPEN-ITEMS-2026-11-06.md) — Built by reading all of checklist.md (524 lines, 208 open boxes), the roadmap files and the work of 3 to 6 Nov. Where the old checklist and the...
+- [Decisions only you can make (with context)](open-work/OPEN_DECISIONS_FOR_YOU.md) — 18 Oct 2026. Answer in any form ("F1 A, F2 yes..."). Each item says why it matters and what I will do by default if you say nothing. Items marked...
+- [Open work (start here)](open-work/README.md) — What is still open, grouped; decisions waiting on the owner; living idea list.
+
+## Roadmap (active releases)
+
+One plan per release (R9 to R30) that still has open work. Built releases moved to done/roadmap. ([folder](roadmap/))
+
+- [Roadmap index and release map](roadmap/00-README.md)
+- [Feature catalogue (proposals — owner approves by number)](roadmap/FEATURES.md) — 22 Oct 2026. Each idea: what it is · why it matters · how (main pieces) · tier · effort (S ≤ 1 session, M 2–4, L 5+) · cost. Nothing here is...
+- [Releases 9 and 10 — Product depth, community, admin console](roadmap/R09-R10-DEPTH-AND-ADMIN.md) — What: FSRS scheduling over mistakes, bookmarks, Forge items and (later) study flashcards; a daily adaptive set mixing due reviews, weak topics and...
+- [Release 10: Admin console, full specification (4 Nov 2026)](roadmap/R10-ADMIN-SPEC.md) — Status: plan only, nothing from this file is built yet except the admin-lite slice (R30: Overview, Funnel, tagged links at /admin). Written after...
+- [Release 11 — Forge: original GATE-level questions and mocks (P1)](roadmap/R11-FORGE.md) — Detailed task plan. Product design: . Access rules:  (wins on conflicts). Owner decisions F1–F6: .
+- [Release 12 — Study materials (separate paid product, P2)](roadmap/R12-STUDY-MATERIALS.md) — Detailed task plan. Full programme:  … 12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md. Blocking owner decisions: S1 (pricing), S4 (reviewer). Others...
+- [Release 13 — Monetisation III (P3)](roadmap/R13-MONETISATION.md) — Builds on what is live: Free / Plus ₹29·₹249 / Pro ₹99·₹799, season pass, prorated upgrade, coupons, receipts (lib/billing/plans.ts,...
+- [Release 14 — Marketing and growth (P4)](roadmap/R14-MARKETING-GROWTH.md) — Strategy docs: , , , , , , . Channels: , ../telegram-premium/, ../instagram/.
+- [Release 15 — Performance optimisation (without losing quality)](roadmap/R15-PERFORMANCE.md) — Audit 22 Oct 2026 by reading the code and data. Nothing here removes features, lowers image/maths quality, or changes behaviour; every change is...
+- [Release 16 — Security hardening](roadmap/R16-SECURITY.md) — Audit 22 Oct 2026. Strong already: private answer keys, RLS, server-side grading, Turnstile, origin checks, rate limits, signed Razorpay webhook,...
+- [Release 17 — RENYXERA on the Microsoft Store (Windows app)](roadmap/R17-MICROSOFT-STORE.md) — Plan, 22 Oct 2026. The app ships as the existing PWA packaged with PWABuilder (MSIX). No second codebase: Store users run the same site, so every...
+- [R18 design pick-list — tick what you want (27 Oct 2026)](roadmap/R18-DESIGN-PICKLIST.md) — From a second review of Swaseekh (desktop 1440 + phone 390, scrolled step by step so every animation fired) and the Hatchable hub. Nothing is...
+- [Release 18 — UI refresh of the core screens (priority, before Forge)](roadmap/R18-UI-REFRESH.md) — Owner request, 26 Oct 2026: refresh the dashboard (first), analytics, AI Mentor and other main screens; replace dull or odd cards with useful,...
+- [R18 · Full UI/UX upgrade plan (27 Oct 2026)](roadmap/R18-UI-UPGRADE-PLAN.md) — Owner brief: the UI looks ugly; fix stacking, share card, dashboard first experience; texture background with the gradient;
+- [Release 20 — A worked solution for every question (after Forge)](roadmap/R20-SOLUTIONS.md) — Status of AI-generated help (measured 26 Oct 2026 from ai_pregen_items): the background job pre-generates HINT, SHORTCUT and EXPLAIN for each...
+- [Release 22: Test Centre, one place for Mocks and the Exam engine](roadmap/R22-TEST-CENTRE.md) — Owner document, 29 Oct 2026. Written for Adil. Status: plan only. Starts after the AI Mentor release (R21). Nothing here is built.
+- [Release 24 — RENYXERA on phones (the mobile app plan)](roadmap/R24-MOBILE-APP.md) — Plan, 31 Oct 2026. Owner: "most of the users use the mobile". The rule that shapes everything: zero budget until revenue...
+- [R25b · Arena UX and visual design (the room, round by round)](roadmap/R25-ARENA-UX-DESIGN.md) — 31 Oct 2026. Companion to R25-BATTLE-ARENA.md (rules and build plan). Owner decisions: the Setter knows the key and earns a bonus only when not...
+- [R25 · Battle Arena (live rooms, "scribbl for GATE")](roadmap/R25-BATTLE-ARENA.md) — Living document. Started 31 Oct 2026 from the owner's idea; add every new idea at the bottom under "Idea log". Builds on R19 (async battles,...
+- [R26 · Looks and the Design Studio (the whole design of the app, not just colours)](roadmap/R26-DESIGN-STUDIO.md) — Plan, 1 Nov 2026 (rewrites the earlier "Themes" plan after the owner's clarification). A Look is a complete design of the application: card style,...
+- [R27 · Mentor chat: feature backlog and AI top-ups](roadmap/R27-MENTOR-CHAT-FEATURES.md) — Written 1 Nov 2026 from the owner's request: "create a list of features that we can add to this by researching: speech, talking with AI, uploading...
+- [R28: Performance toolkit ("Release 28: Fast")](roadmap/R28-PERFORMANCE-TOOLKIT.md) — 2 Nov 2026. Source: the owner's Instagram screenshot and the video (transcribed: 31 items, the post says "33"), plus the second video on...
+- [R29: Battles as a game (friends, presence, two modes, points)](roadmap/R29-BATTLES-AS-A-GAME.md) — 2 Nov 2026. Extends R25-BATTLE-ARENA.md and R25-ARENA-UX-DESIGN.md. Owner brief: treat Battles and Arena like a game (8-ball-pool feel): friends...
+
+## Forge (original GATE-level questions)
+
+Design, access rules, the local generator workflow, audit of the question bank, PYQ extraction handbook. ([folder](forge/))
+
+- [Forge CS audit: all 249 questions read and rated (6 Nov 2026)](forge/FORGE_AUDIT_2026-11-06.md) — Per-question ratings: data/forge/CS/reports/audit_2026-11-06.json (n, id, subject, kind, type, tier). Every question was read by hand against this...
+- [RENYXERA Forge — original GATE-level questions and mocks (design)](forge/FORGE_DESIGN.md) — Status: design, 6 Oct 2026. Build starts after each branch's past papers (PYQs) are transcribed and tagged. The order is set by the user: PYQs...
+- [Forge: access rules (updated) and the build/setup plan](forge/FORGE_ENTITLEMENTS_AND_SETUP.md) — 18 Oct 2026. Addendum to FORGE_DESIGN.md (the full design: principles, item schema, authoring pipeline, storage, daily set, mocks, calibration)....
+- [Forge generator: the local workflow (3 Nov 2026)](forge/FORGE_GENERATOR_LOCAL.md) — Rule from the owner: everything that involves Claude runs locally, in a Claude Code session on this PC. The generator never calls Claude through a...
+- [PYQ Extraction Handbook (start here in a new chat)](forge/PYQ_EXTRACTION_HANDBOOK.md) — This is the single source of instructions for extracting official GATE previous-year questions
+- [Forge (original GATE-level questions)](forge/README.md) — Design, access rules, the local generator workflow, audit of the question bank, PYQ extraction handbook.
+
+## Study materials (paid product)
+
+Programme plan 00 to 14 and chapter templates. ([folder](study-materials/))
+
+- [Programme index](study-materials/00-README.md)
+- [01 · Vision and principles](study-materials/01-VISION-AND-PRINCIPLES.md) — A student opens a topic, for example Deadlock in Operating Systems, and finds one page that starts from why the topic exists, builds the idea in...
+- [02 · Syllabus and content structure](study-materials/02-SYLLABUS-AND-STRUCTURE.md) — The structure is not invented. It is derived, mechanically and then hand-corrected, from the official GATE syllabus of each paper, so a student...
+- [03 · Content pipeline: how a chapter is actually made](study-materials/03-CONTENT-PIPELINE.md) — This is the accuracy engine. The rule: nothing reaches a student that has not passed machine checks and a human review. Writing is cheap; being...
+- [04 · Content format and rendering](study-materials/04-CONTENT-FORMAT-AND-RENDERING.md) — Goal: every equation, code listing, table, diagram and flow is stored as structured data, validated by scripts, and rendered by one renderer that...
+- [05 · Diagrams, tables and flows](study-materials/05-DIAGRAMS-TABLES-AND-FLOWS.md) — Diagrams are where most study materials are weakest (blurry, copied, inconsistent). Ours are generated from data, so they are exact, consistent,...
+- [06 · Learning design: how every topic is taught so it sticks](study-materials/06-LEARNING-DESIGN.md) — The brief: "ease the topics so students understand them and memorise them and keep them in mind forever". This doc turns that into a fixed method...
+- [07 · Protection and security](study-materials/07-PROTECTION-AND-SECURITY.md) — The brief: study materials only inside the website, "very secured and protected", and if someone tries to obtain them they "should see blank pages".
+- [08 · Product, pricing and introduction](study-materials/08-PRODUCT-AND-PRICING.md) — > Update 31 Oct 2026 (owner decision S1): the model is now per-subject packs (₹99 to ₹149) plus curated bundles, CS first and Aptitude last;...
+- [09 · Roadmap and phases](study-materials/09-ROADMAP-AND-PHASES.md) — Principle: depth before breadth, and a hard gate between phases. We ship one subject-quality pilot, learn from it, then scale. Each phase has exit...
+- [10 · Edge cases and risks](study-materials/10-EDGE-CASES-AND-RISKS.md) — Each row: the situation, why it matters, the planned handling. Grouped so nothing is missed. "Gate" means a build or release check blocks it.
+- [11 · QA checklists (hard gates)](study-materials/11-QA-CHECKLISTS.md) — A box that is not ticked means the item does not ship. Scripts tick what they can; humans tick the rest and sign the review record.
+- [12 · Reference library review and design research](study-materials/12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md) — 17 Oct 2026. Based on the notes/ folder you added (88 PDFs, about 1.5 GB) and on learning-science practice. The folder is reference only: it...
+- [13 · Study materials: subject packs, bundles and where we offer them](study-materials/13-PRICING-BUNDLES-AND-OFFERS.md) — 31 Oct 2026. Owner decision (S1/S4) recorded here; it replaces the "branch pass" recommendation in 08-PRODUCT-AND-PRICING.md §3. Prices are...
+- [14 · Future features for Study materials](study-materials/14-FUTURE-FEATURES.md) — 31 Oct 2026. Owner request: "think and list them down, like summary, voice and many more". Effort is a rough size for one person working with...
+- [Study materials (paid product)](study-materials/README.md) — Programme plan 00 to 14 and chapter templates.
+
+## Growth, marketing and channels
+
+Growth plan and tasks, marketing strategy, Telegram, Instagram and social automation, weekly content packs. ([folder](growth/))
+
+- [RENYXERA — Content Strategy & Workflow](growth/CONTENT_STRATEGY.md) — PYQs · original practice questions · study material · protected offline access — all branches
+- [RENYXERA — Growth assets (drafts)](growth/GROWTH_ASSETS.md) — Companion to GROWTH_MASTER_PLAN.md. Status of everything here: Drafted (nothing posted or sent).
+- [RENYXERA — Growth & Marketing Master Plan (₹0)](growth/GROWTH_MASTER_PLAN.md) — > Source of truth for marketing from 8 Oct 2026. Supersedes 
+- [RENYXERA — Growth task checklist](growth/GROWTH_TASKS.md) — Plan: GROWTH_MASTER_PLAN.md · Drafts: GROWTH_ASSETS.md.
+- [Instagram influencer outreach: messages you can send](growth/INFLUENCER_OUTREACH_MESSAGES.md) — How to use this file: pick the message that matches the creator, replace the words in [BRACKETS], and send it from your own account. Send 15 to 20...
+- [RENYXERA — Growth, Marketing & Revenue Plan](growth/MARKETING_STRATEGY.md) — > Acquisition plan superseded on 8 Oct 2026 by  (tasks: ). Pricing and revenue sections below still apply.
+- [Growth, marketing and channels](growth/README.md) — Growth plan and tasks, marketing strategy, Telegram, Instagram and social automation, weekly content packs.
+- [Social automation playbook: videos, posts, YouTube, Instagram and Telegram on autopilot](growth/SOCIAL_AUTOMATION_PLAYBOOK.md) — Goal: after a one-time setup, one weekly session of about 60 minutes produces and schedules every post for the week. Everything below runs on free...
+- [Telegram for every branch, and SEO for Telegram and the website](growth/TELEGRAM_MULTI_BRANCH_AND_SEO.md) — Owner guide, 17 Oct 2026. Everything is free. It assumes you have finished TELEGRAM_SETUP_AND_PROMOTION.md up to Part 6: you already have the main...
+- [Telegram: complete setup and promotion playbook](growth/TELEGRAM_SETUP_AND_PROMOTION.md) — Owner guide, 30 Sep 2026. Everything here is free.
+- [Instagram setup: click by click](growth/instagram/01-SETUP.md) — Meta changes its screens often. If a button has a slightly different name, pick the closest one and tell me what you see.
+- [Instagram: daily use](growth/instagram/02-DAILY-USE.md) — Add an object to content/calendar.json:
+- [Instagram automation: setup and daily use](growth/instagram/README.md) — Profile: https://www.instagram.com/renyxera
+- [Growth toolkit: the ten repos, checked](growth/marketing/GROWTH-TOOLKIT.md) — 2 Nov 2026. Licences and last-push dates were read from the GitHub API on 2 Nov 2026. "Fit" is judged for RENYXERA: a B2C app for GATE students in...
+- [Week 1 content pack (drafted 3 Nov 2026)](growth/marketing/WEEK-01-CONTENT-PACK.md) — Source: our own past-paper profile for GATE CSE (15 papers, 2017 to 2026; marks per paper = marks asked on that topic divided by 15). Every number...
+- [Boosts: put your 4 Premium boosts to work](growth/telegram-premium/02-BOOSTS.md) — Facts: a Premium account gives 4 boosts. You can put them all on one channel or split them, and move a boost to another channel once every 24...
+- [Channel stories, custom reactions, emoji status](growth/telegram-premium/03-STORIES-AND-REACTIONS.md) — These need the channel to reach boost level 1 or higher (02-BOOSTS.md). The options appear only when unlocked; Boosts → Features in the app lists...
+- [Folders and links (Premium raises the limits)](growth/telegram-premium/04-FOLDERS-AND-LINKS.md) — You already have the main folder https://t.me/addlist/fY_dvTl36FA3ZTQ1 (all rooms). With Premium you can also make one folder per branch so a...
+- [Telegram Business: a support inbox in your DMs](growth/telegram-premium/05-BUSINESS-AND-SUPPORT.md) — Check first: Settings, look for Telegram Business. I could not confirm from Telegram's pages whether it is included in your Premium plan or...
+- [Open the app inside Telegram (Mini App) and branch deep links](growth/telegram-premium/06-MINI-APP-AND-BOT.md) — This does not need Premium, but it is what makes your channels convert, so it is part of this plan.
+- [Telegram Premium: what it unlocks for RENYXERA, and the steps](growth/telegram-premium/README.md) — 17-18 Oct 2026. You have Telegram Premium on your own account. Premium belongs to you, not to the bot, so some perks help the channels you own and...
+
+## Engineering and AI
+
+Technical reference, architecture, AI providers and usage, free alternatives, copy of the Claude memory notes. ([folder](engineering/))
+
+- [AI providers and keys: what we use, what to set up](engineering/AI_PROVIDERS_SETUP.md) — Owner guide, 29 Oct 2026. Written for Adil. Everything here is free. Never paste a key into chat, email or a commit. Keys go only into the places...
+- [AI usage strategy: generous Free, profitable Plus/Pro at low prices](engineering/AI_USAGE_STRATEGY.md) — Owner document, 30 Sep 2026. Prices: Plus ₹29/month (₹249/year), Pro ₹99/month (₹799/year).
+- [RENYXERA architecture, updated 29 Oct 2026](engineering/ARCHITECTURE_UPDATE.md) — Written for Adil. Extends  (read that for tables and migrations); this file covers what changed and what is planned.
+- [RENYXERA — Free Alternatives Guide (reviewed 29 Sep 2026)](engineering/FREE_ALTERNATIVES_GUIDE.md) — Step-by-step guides for the free options that replace paid items. Each one is legitimate
+- [Engineering and AI](engineering/README.md) — Technical reference, architecture, AI providers and usage, free alternatives, copy of the Claude memory notes.
+- [RENYXERA — Technical Reference](engineering/TECHNICAL_REFERENCE.md) — The official engineering document for RENYXERA: architecture, technology, data model,
+
+## Business
+
+Business email strategy, competitor analysis, master plan reference. ([folder](business/))
+
+- [RENYXERA business email strategy: every address, every email, every rule](business/BUSINESS_EMAIL_STRATEGY.md) — Read top to bottom once, then use it as a reference. Prices and free-tier limits change, so check each provider's page on the day you sign up....
+- [Business](business/README.md) — Business email strategy, competitor analysis, master plan reference.
+- [Competitor analysis — Swaseekh and GATE CS Preparation Hub (26 Oct 2026)](business/competitors/COMPETITORS_2026-10.md) — Method: both sites opened on desktop (1440) and phone (390). Swaseekh: public home page, /about, and the owner's screenshots; every inner page...
+- [Reference review: MadeToScale reels and "12 Landing Page Animations" guide](business/reference/MADETOSCALE_REFERENCE_REVIEW.md) — 30 Oct 2026. Source files: New folder/ (3 Instagram reels by @madetoscale2026, one 20-page PDF). Third-party material: ideas and structure only,...
+- [RENYXERA — Master Plan](business/reference/RENYXERA_Master_Plan_Auth_Security_Monetization.md) — Document version: 2.0
+
+## Design
+
+Design system and the Looks specification. ([folder](design/))
+
+- [RENYXERA design system: unified pastel (R18, 27 Oct 2026)](design/DESIGN-SYSTEM.md) — One look across every screen. This file is the rulebook: when building or changing any screen, use these tokens and components only.
+- [Looks specification (every detail of every Look)](design/LOOKS-SPEC.md) — 2 Nov 2026. One section per shipped Look: its design principles, tokens, fonts, motion, mode support and the rules for each kind of component. The...
+- [Design](design/README.md) — Design system and the Looks specification.
+
+## Done (kept for reference)
+
+Finished work: built roadmap items, old reviews, logo explorations, the old archive, duplicate zips. ([folder](done/))
+
+- [Forge and solutions pipeline: review, 3 Nov 2026](done/FORGE_REVIEW_2026-11-03.md) — Count: 66 CS questions, all approved and released in Supabase (66 answers stored). Target is 800 for CS, so 8 % done. Other branches: none yet (CS...
+- [Multi-Branch Design (Release 8A/8C), v2](done/MULTI_BRANCH_DESIGN.md) — Status: v2, 5 Oct 2026. It replaces v1 (free switching plus email subscription change) following the user's decision on simplicity.
+- [Done (kept for reference)](done/README.md) — Finished work: built roadmap items, old reviews, logo explorations, the old archive, duplicate zips.
+- [Image prompts for the AI Mentor logo](done/design-mentor-logo/mentor-logo-image-prompts.md) — Use with any image generator (Gemini, ChatGPT images, Midjourney, Ideogram). Step 1 gives ten concepts in one picture; step 2 finalises the one...
+- [Release 19 — "Beat my score" battles with live status (bug list item 1, 26 Oct)](done/roadmap/R19-BATTLES.md) — Today: the challenge link carries the question ids, score and name in the URL (challengeUrl); the friend's result is only shown to the friend. The...
+- [Release 21: AI Mentor, rebuilt as the brain of the app](done/roadmap/R21-AI-MENTOR.md) — Owner document, 29 Oct 2026. Written for Adil. Status: plan only, nothing built yet.
+- [R30: Admin-lite (first slice of Release 10)](done/roadmap/R30-ADMIN-CONSOLE.md) — This is not a separate release. The full admin console is Release 10 (, items 10A to 10M). R30 is the admin-lite page that R10 lists as "first":...
+

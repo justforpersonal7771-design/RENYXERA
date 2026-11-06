@@ -1,6 +1,8 @@
 # Feature catalogue (proposals — owner approves by number)
 
-*22 Oct 2026. Each idea: what it is · why it matters · how (main pieces) · tier · effort (S ≤ 1 session, M 2–4, L 5+) · cost. Nothing here is decided; approved items move into the relevant release file and `checklist.md`. All are ₹0 to run unless marked 🟡.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*22 Oct 2026. Each idea: what it is · why it matters · how (main pieces) · tier · effort (S ≤ 1 session, M 2–4, L 5+) · cost. Nothing here is decided; approved items move into the relevant release file and [`checklist.md`](../../checklist.md). All are ₹0 to run unless marked 🟡.*
 
 ## A. Learning and practice
 
@@ -45,7 +47,7 @@
 33. **Instagram carousel generator** from PYQ explanations (approved card fonts). M.
 34. **YouTube Shorts generator** — Remotion template: question → 30 s solution with voice. M.
 35. **Exam-season live pages** — answer-key release tracker, response-sheet score calculator, result-day rank estimator (official data only). M.
-36. **GATE calendar alerts** on Telegram hub — form dates, admit card, exam days, results (from `lib/seo/gate2027.ts`). S.
+36. **GATE calendar alerts** on Telegram hub — form dates, admit card, exam days, results (from [`lib/seo/gate2027.ts`](../../lib/seo/gate2027.ts)). S.
 37. **PSU recruitment via GATE tracker** — official notifications list per branch (links only, cited). M.
 
 ## E. UI/UX

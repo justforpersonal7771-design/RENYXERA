@@ -9,7 +9,7 @@ metadata:
 ---
 
 The user requires (2026-09-26) that predictions and content rest on real, complete data. Recorded in the repo's master plan and checklist.md as:
-- **4J · P0 Calibration Data** — official marks↔AIR, cut-offs, candidates, normalisation, schedule, syllabus; versioned `calibration/<branch>/<year>.json` + source ledger. Until it lands, `lib/goals/goal-engine.ts` uses an approximate RANK_MARKS curve that the UI labels as an estimate.
+- **4J · P0 Calibration Data** — official marks↔AIR, cut-offs, candidates, normalisation, schedule, syllabus; versioned `calibration/<branch>/<year>.json` + source ledger. Until it lands, [`lib/goals/goal-engine.ts`](../../lib/goals/goal-engine.ts) uses an approximate RANK_MARKS curve that the UI labels as an estimate.
 - **6D Practice bank** beyond PYQs — AI-draft → mandatory expert review; **Annual Trend Refresh every March** after new papers.
 - **6E Study materials** per branch → section → subject → topic, original writing, linked to PYQs/practice, feeds SEO.
 - **8C Multi-branch acquisition** — official papers + official answer keys + syllabus + calibration per branch; launch gate before a branch leaves "Coming Soon".

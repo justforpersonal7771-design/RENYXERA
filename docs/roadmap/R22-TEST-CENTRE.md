@@ -1,5 +1,7 @@
 # Release 22: Test Centre, one place for Mocks and the Exam engine
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *Owner document, 29 Oct 2026. Written for Adil. Status: plan only. Starts after the AI Mentor release (R21). Nothing here is built.*
 
 ## 1. Why merge
@@ -16,7 +18,7 @@ The sessions, timer, palette, results and review are already shared code. Only t
 
 ## 2. Name
 
-Recommended: **Test Centre**. Short, fits the Battles and leaderboard idea, and covers "where you are tested". The label is set in one place (`lib/test-centre/brand.ts`, to be created) so it can change in a minute.
+Recommended: **Test Centre**. Short, fits the Battles and leaderboard idea, and covers "where you are tested". The label is set in one place ([`lib/test-centre/brand.ts`](../../lib/test-centre/brand.ts), to be created) so it can change in a minute.
 
 ## 3. The new section (one navbar item, one hub screen)
 

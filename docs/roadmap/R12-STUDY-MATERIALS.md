@@ -1,6 +1,8 @@
 # Release 12 — Study materials (separate paid product, P2)
 
-*Detailed task plan. Full programme: `../study-materials/00-README.md` … `12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md`. Blocking owner decisions: S1 (pricing), S4 (reviewer). Others have defaults (`../OPEN_DECISIONS_FOR_YOU.md`).*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*Detailed task plan. Full programme: [`../study-materials/00-README.md`](../study-materials/00-README.md) … `12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md`. Blocking owner decisions: S1 (pricing), S4 (reviewer). Others have defaults ([`../open-work/OPEN_DECISIONS_FOR_YOU.md`](../open-work/OPEN_DECISIONS_FOR_YOU.md)).*
 
 ## R12-A · Phase 0 — foundations and one reference chapter
 
@@ -8,7 +10,7 @@
 What: one table per subject: syllabus topic × PYQ weight (marks, frequency, trend) × reference coverage (which textbook chapters cover it).
 How: `scripts/study/coverage.py` reads `data/pyq/CS/syllabus.json`, CS tags and a hand-made reference map (`data/study/CS/references.json`, chapter titles only, no copied text).
 Done when: CSV + markdown report; topics with high PYQ weight and thin coverage flagged.
-Refs: `../study-materials/02-SYLLABUS-AND-STRUCTURE.md`, `12-…`.
+Refs: [`../study-materials/02-SYLLABUS-AND-STRUCTURE.md`](../study-materials/02-SYLLABUS-AND-STRUCTURE.md), `12-…`.
 
 ### A2 · Content format
 What: lessons as structured JSON/MDX blocks: heading, paragraph, definition, theorem, equation (TeX), code (language), table, diagram (data → SVG), flow (steps), callout (trap/tip), worked example (steps), check-yourself (question + answer), linked PYQs (ids), go-deeper (reference).

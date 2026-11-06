@@ -1,6 +1,6 @@
 name: social-publish
 # Posts due entries from content/calendar.json to Instagram + the Telegram channel, then commits the
-# updated statuses back. Free on GitHub Actions. See docs/SOCIAL_AUTOMATION_PLAYBOOK.md.
+# updated statuses back. Free on GitHub Actions. See docs/growth/SOCIAL_AUTOMATION_PLAYBOOK.md.
 on:
   schedule: [{ cron: "*/30 * * * *" }]
   workflow_dispatch: {}

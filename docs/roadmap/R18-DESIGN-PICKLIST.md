@@ -1,5 +1,7 @@
 # R18 design pick-list — tick what you want (27 Oct 2026)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *From a second review of Swaseekh (desktop 1440 + phone 390, scrolled step by step so every animation fired) and the Hatchable hub. Nothing is copied: each item is our own, better version. Tick `[x]` on the ones you want; ⭐ = my recommendation. Grouped so related items ship together.*
 
 **What makes Swaseekh feel premium (observed):** warm off-white canvas (not pure white); pastel colour per feature (mint, rose, peach, periwinkle, lilac, butter, sky); big rounded cards (32 px desktop, 24 px phone) with soft deep shadows; **sticky stacking cards** — each card pins near the top and the earlier ones shrink to 72 % and peek out above like a deck; a mini live preview on the right of each card (dot grid of years, progress bars, a timer ring, a fake textbook page with a pinned PYQ); black pill buttons; small black uppercase labels ("PYQ BANK"); playful illustrated mascots band; tilted floating stat cards in the hero; live countdown in the header; a step-by-step animated solution demo with a progress bar; a segmented tab bar under a device mock-up; a giant watermark wordmark in the footer; "cursor name tags" on the newsletter card.

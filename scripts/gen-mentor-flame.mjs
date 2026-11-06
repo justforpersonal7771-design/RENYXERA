@@ -56,9 +56,9 @@ const sheet = `<!doctype html><meta charset="utf-8"><body style="margin:0;paddin
 <div style="background:#fff;border-radius:20px;padding:20px;width:230px;text-align:center"><div style="height:210px;display:grid;place-items:center">${files["mentor-app-icon.svg"].replace("<svg ", '<svg height="190" ')}</div>App icon</div>
 <div style="background:#fff;border-radius:20px;padding:20px;width:330px"><div style="display:flex;gap:16px;align-items:end;justify-content:center;height:130px">${[96, 48, 32, 24, 18].map((s) => files["mentor-logo.svg"].replace("<svg ", `<svg height="${s}" `)).join("")}</div><div style="text-align:center;margin-top:6px">Sizes: 96, 48, 32, 24, 18 px</div>
 <div style="display:flex;gap:12px;justify-content:center;margin-top:14px">${[44, 32].map((s) => `<span style="display:grid;place-items:center;width:${s}px;height:${s}px;border-radius:${s / 3.4}px;background:linear-gradient(135deg,#06c2fb,#5b21e0 55%,#dd42fb)">${files["mentor-logo-white.svg"].replace("<svg ", `<svg height="${s * 0.58}" `)}</span>`).join("")}<span style="display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#141418">${files["mentor-logo-dark.svg"].replace("<svg ", '<svg height="26" ')}</span></div></div></div>`;
-fs.writeFileSync("docs/design/mentor-logo-final.html", sheet);
+fs.writeFileSync("docs/done/design-mentor-logo/mentor-logo-final.html", sheet);
 const sp = await b.newPage({ viewport: { width: 1100, height: 400 }, deviceScaleFactor: 2 });
 await sp.goto("file://" + process.cwd().replaceAll("\\", "/") + "/docs/design/mentor-logo-final.html"); await sp.waitForTimeout(300);
-await sp.screenshot({ path: "docs/design/mentor-logo-final.png", fullPage: true });
+await sp.screenshot({ path: "docs/done/design-mentor-logo/mentor-logo-final.png", fullPage: true });
 await b.close();
 console.log(fs.readdirSync(OUT).join("\n"));

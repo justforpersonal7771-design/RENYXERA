@@ -1,5 +1,7 @@
 # R27 · Mentor chat: feature backlog and AI top-ups
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *Written 1 Nov 2026 from the owner's request: "create a list of features that we can add to this by researching: speech, talking with AI, uploading images, PDFs and so on, to make it robust". Companion to the chat screen that exists today (history, groups, search, edit with versions, answer again, mode and style menus, enlarge options, cross-device sync). Everything here must respect: zero budget until revenue (free tiers, browser features first), answers grounded in the student's own data, "tease, don't block" for paid features, phone first, and India time (IST).*
 
 ## 1. What the big chat apps offer (research)
@@ -109,7 +111,7 @@ Effort: S = days, M = about a week, L = weeks. "Cost" is what it needs beyond to
 If every request counted as "one message" whatever its size, a student who always sends huge requests would cost more than they pay. So the allowance and the packs are counted in **Mentor tokens** (the real unit of AI cost, including the conversation, or "context", the Mentor reads again each turn):
 - **What already limits cost (built):** the message is capped at 2,000 characters, the answer at 2,048 tokens, the learner summary at 6,000 characters, and requests are rate-limited (15 a minute). So no single request can run away.
 - **The main hidden cost is the conversation being re-sent on every turn.** Fixed 1 Nov: only the last **6** messages, trimmed to **1,200 characters** each (was 10 and 2,500), so a long chat no longer costs more per turn than a short one.
-- **Token meter (function written and tested, `lib/billing/ai-credits.ts`, `npm run check:credits`):** each request is charged what it needs: input (message + recent conversation + summary) plus the expected answer, with a minimum of 1,000 and a ceiling of 16,000 tokens. A short question is about 1.5K; a deep question in a long chat or a full-week plan costs more; two photos add about 3K. The server later charges the real token counts the model reports.
+- **Token meter (function written and tested, [`lib/billing/ai-credits.ts`](../../lib/billing/ai-credits.ts), `npm run check:credits`):** each request is charged what it needs: input (message + recent conversation + summary) plus the expected answer, with a minimum of 1,000 and a ceiling of 16,000 tokens. A short question is about 1.5K; a deep question in a long chat or a full-week plan costs more; two photos add about 3K. The server later charges the real token counts the model reports.
 - **Honest and visible:** under the box, "This will use about 2.4K tokens" appears before sending, and "Tokens left today: 38K" sits beside the plan. Pack pages say plainly: "A short question is about 1.5K tokens. Long plans and long chats use more."
 - **Per-mode daily ceilings:** heavy modes (Plan, Review, Weekly, Quiz) also have a small daily cap per plan, so one student cannot spend a whole allowance on 5-message requests in one go.
 - **A safety ceiling:** an absolute daily maximum of work per account (a circuit breaker above any pack) and an alert for us when an account passes a high-spend line, so a bug or abuse cannot run up a bill.

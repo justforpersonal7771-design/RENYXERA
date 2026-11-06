@@ -5,7 +5,7 @@ name: Database backup
 # Needs two repository secrets:
 #   SUPABASE_DB_URL      — the Session pooler connection string (Supabase → Connect)
 #   BACKUP_PASSPHRASE    — any long random passphrase; needed to decrypt a backup
-# Restore: see docs/TECHNICAL_REFERENCE.md → Operations runbook.
+# Restore: see docs/engineering/TECHNICAL_REFERENCE.md → Operations runbook.
 on:
   schedule:
     - cron: "41 20 * * 6" # Sunday 02:11 IST

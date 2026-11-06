@@ -27,7 +27,7 @@ export const GEMINI_MODEL = "gemini-3.5-flash"; // 2.5-flash free tier dropped t
 export const GEMINI_LITE_MODEL = "gemini-3.5-flash-lite"; // 2.5-flash-lite is closed to new API users (checked 30 Sep 2026)
 
 /**
- * Model routing + output caps (docs/AI_USAGE_STRATEGY.md §3.2, §3.4): short, formulaic
+ * Model routing + output caps (docs/engineering/AI_USAGE_STRATEGY.md §3.2, §3.4): short, formulaic
  * requests go to Flash-Lite (~5× cheaper, higher free quota); reasoning-heavy ones stay on
  * Flash. Caps are generous so JSON answers never truncate, but stop runaway outputs.
  */

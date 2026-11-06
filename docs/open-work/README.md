@@ -1,0 +1,9 @@
+# Open work (start here)
+
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md) · [Checklist](../../checklist.md)
+
+What is still open, grouped; decisions waiting on the owner; living idea list.
+
+- [Feature ideas for the whole app (living backlog)](FEATURE-IDEAS.md) — Started 31 Oct 2026 at the owner's request: ideas for any part of RENYXERA, not only battles. Add new ideas at the bottom of each section as they...
+- [RENYXERA open items, grouped (6 Nov 2026)](OPEN-ITEMS-2026-11-06.md) — Built by reading all of checklist.md (524 lines, 208 open boxes), the roadmap files and the work of 3 to 6 Nov. Where the old checklist and the...
+- [Decisions only you can make (with context)](OPEN_DECISIONS_FOR_YOU.md) — 18 Oct 2026. Answer in any form ("F1 A, F2 yes..."). Each item says why it matters and what I will do by default if you say nothing. Items marked...

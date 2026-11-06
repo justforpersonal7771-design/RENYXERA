@@ -1,6 +1,8 @@
 # 08 · Product, pricing and introduction
 
-> **Update 31 Oct 2026 (owner decision S1):** the model is now **per-subject packs (₹99 to ₹149) plus curated bundles**, CS first and Aptitude last; refunds only for glitches and errors by email. The full decision, prices, bundles and where we offer them are in `13-PRICING-BUNDLES-AND-OFFERS.md`; the future feature list is `14-FUTURE-FEATURES.md`. §3 below is kept as history.
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+> **Update 31 Oct 2026 (owner decision S1):** the model is now **per-subject packs (₹99 to ₹149) plus curated bundles**, CS first and Aptitude last; refunds only for glitches and errors by email. The full decision, prices, bundles and where we offer them are in [`13-PRICING-BUNDLES-AND-OFFERS.md`](13-PRICING-BUNDLES-AND-OFFERS.md); the future feature list is [`14-FUTURE-FEATURES.md`](14-FUTURE-FEATURES.md). §3 below is kept as history.
 
 Study Materials is a **separate product**. It is not included in Free, Plus or Pro, and buying Plus or Pro does not unlock it (a purchase discount is allowed; inclusion is not).
 
@@ -40,7 +42,7 @@ Operational pricing notes:
 - A new `product_id` in the billing order (`study_cs_2027`, `study_ec_2027`, …); the existing Razorpay order → signed webhook → idempotent apply pattern grants the row. The webhook remains the only path that grants access.
 - A `getStudyAccess(userId, branch)` server helper, fail-closed, used by the key endpoint (see `07`).
 - Branch scoping already exists (one branch per account with a final change); study access is **per branch purchased**, so a student who switches branch keeps the access they paid for and sees the other branch's free preview.
-- Refund script (`scripts/refund.mjs`) extends to revoke study access and chapter keys.
+- Refund script ([`scripts/refund.mjs`](../../scripts/refund.mjs)) extends to revoke study access and chapter keys.
 
 ## 5. Policies that must be written before launch
 

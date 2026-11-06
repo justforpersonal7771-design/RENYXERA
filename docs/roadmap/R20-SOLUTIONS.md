@@ -1,5 +1,7 @@
 # Release 20 — A worked solution for every question (after Forge)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 **Status of AI-generated help (measured 26 Oct 2026 from `ai_pregen_items`):** the background job pre-generates HINT, SHORTCUT and EXPLAIN for each official question with Gemini.
 
 | Branch | Questions | Items needed (×3) | Done | Failed | Done % |

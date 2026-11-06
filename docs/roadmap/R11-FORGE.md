@@ -1,12 +1,14 @@
 # Release 11 — Forge: original GATE-level questions and mocks (P1)
 
-*Detailed task plan. Product design: `../FORGE_DESIGN.md`. Access rules: `../FORGE_ENTITLEMENTS_AND_SETUP.md` (wins on conflicts). Owner decisions F1–F6: `../OPEN_DECISIONS_FOR_YOU.md`.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*Detailed task plan. Product design: [`../forge/FORGE_DESIGN.md`](../forge/FORGE_DESIGN.md). Access rules: [`../forge/FORGE_ENTITLEMENTS_AND_SETUP.md`](../forge/FORGE_ENTITLEMENTS_AND_SETUP.md) (wins on conflicts). Owner decisions F1–F6: [`../open-work/OPEN_DECISIONS_FOR_YOU.md`](../open-work/OPEN_DECISIONS_FOR_YOU.md).*
 
 **Access (decided 18 Oct):** Forge questions — Plus and Pro only (Plus limit = F1; Pro adds archive and "X" items). Free — Forge Mocks only. AI practice sets (already live) stay as they are.
 
 ## R11-A · Foundation (no content needed; can start before F1)
 
-### A1 · Database migration `supabase/migrations/0040_forge.sql`
+### A1 · Database migration [`supabase/migrations/0040_forge.sql`](../../supabase/migrations/0040_forge.sql)
 What: tables for Forge items, private answers, stats.
 How:
 - `forge_items` (id `FORGE_<BR>_000123`, branch, subject, topic, syllabus_code, kind, difficulty E/M/H/X, question_type MCQ/MSQ/NAT, marks, question_text, options jsonb (no correctness), has_image, images, `release_at`, `status` draft/approved/retired, `mock_only` bool, `version`, `created_at`).
@@ -14,10 +16,10 @@ How:
 - `forge_item_stats` (item id, attempts, correct, p_value, discrimination, avg_time_ms, reports).
 - RLS: `forge_items` readable by authenticated users only where `release_at <= now()` and `status = 'approved'` and not `mock_only`; mock items only through mock endpoints.
 - Indexes: (branch, status, release_at), (branch, topic).
-Done when: migration runs clean on a copy; `scripts/check-security.mjs` proves anon and authenticated users cannot read `forge_answers` or unreleased items.
+Done when: migration runs clean on a copy; [`scripts/check-security.mjs`](../../scripts/check-security.mjs) proves anon and authenticated users cannot read `forge_answers` or unreleased items.
 Depends on: owner runs the migration.
 
-### A2 · Entitlement in `lib/billing/plans.ts`
+### A2 · Entitlement in [`lib/billing/plans.ts`](../../lib/billing/plans.ts)
 How: `FORGE` constants per tier (`free: { questions: false, mocks: true }`, `plus: { questions: true, dailyLimit: F1, archive: false, x: false }`, `pro: { questions: true, archive: true, x: true }`) and `canUseForgeQuestions(tier)`; Plans page/feature list reads these.
 Done when: one place controls Forge access; unit check script covers all tiers.
 
@@ -50,11 +52,11 @@ Blueprint: topics weighted by trend, archetypes (multi-concept, application, tra
 ### B3 · Drafting format
 One JSON per batch `data/forge/<BR>/batches/<batch>.json` with the item schema of `FORGE_DESIGN.md` §5, including a `verify` block (Python code that recomputes the answer and every numeric option).
 
-### B4 · `scripts/forge/validate.py`
+### B4 · [`scripts/forge/validate.py`](../../scripts/forge/validate.py)
 Checks: schema; `verify` code runs and matches the key (NAT range ±tolerance); MCQ has exactly one correct, MSQ ≥ 1; distractors are distinct and plausible (each tied to a named misconception); no near-duplicate of any PYQ (text similarity threshold); LaTeX renders (MathJax check script); difficulty label present.
 Done when: a batch fails loudly on any error; report saved to `data/forge/<BR>/reports/`.
 
-### B5 · `scripts/forge/seed.mjs`
+### B5 · [`scripts/forge/seed.mjs`](../../scripts/forge/seed.mjs)
 Loads approved items into `forge_items`/`forge_answers`; writes answer-free `public/data/<CODE>/forge.json` for released practice items.
 
 ### B6 · First CS batch (60) + human check
@@ -69,7 +71,7 @@ Done when: 0 wrong keys in the spot check; batch approved.
 - **C1 Daily Forge (CS):** release 06:00 IST via `release_at`; streak + per-branch board (`board()` scope `forge_daily`); CI check fails if fewer than 14 days are queued.
 - **C2 Forge Mocks (all tiers):** `scripts/forge/build-mock.mjs --branch CS --date …` freezes 65 items (GA + subject, official pattern) into `mock_events`; Sunday 10:00 IST (cadence F4); results/ranks; Free sees solutions per F2; after the mock items join the Plus/Pro pool.
 - **C3 Calibration:** after 50 attempts, flag items with p < 0.05, p > 0.95 or discrimination < 0.1; hide from new mocks; review queue.
-- **C4 Telegram:** branch channels post one Daily Forge teaser with spoiler answer (F3); hub announces Forge Mocks (`scripts/telegram-hub.mjs`).
+- **C4 Telegram:** branch channels post one Daily Forge teaser with spoiler answer (F3); hub announces Forge Mocks ([`scripts/telegram-hub.mjs`](../../scripts/telegram-hub.mjs)).
 - **C5 Marketing:** launch post, film cut, Plans page section "Forge", email-less announcement in app (What's new).
 - **C6 Roll-out:** EC next, then EE, ME, CE, DA (F5) — each needs B1–B7 for that branch.
 

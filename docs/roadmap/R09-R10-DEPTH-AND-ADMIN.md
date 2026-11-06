@@ -1,12 +1,14 @@
 # Releases 9 and 10 — Product depth, community, admin console
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 ## Release 9 — Product depth and controlled community (P5)
 
 ### 9A · Spaced repetition and adaptive daily set
 What: FSRS scheduling over mistakes, bookmarks, Forge items and (later) study flashcards; a daily adaptive set mixing due reviews, weak topics and new questions; per-topic mastery feeding the goals engine.
 How: `lib/learning/fsrs.ts` (open algorithm, no cost), review states in IndexedDB + cloud sync, "Due today" card, Telegram reminder for due reviews (Plus/Pro).
 Done when: due counts are correct across devices; retention measured (recall rate) in analytics.
-Refs: `lib/learning/*`, `lib/goals/*`, `docs/AI_USAGE_STRATEGY.md`.
+Refs: `lib/learning/*`, `lib/goals/*`, [`docs/engineering/AI_USAGE_STRATEGY.md`](../engineering/AI_USAGE_STRATEGY.md).
 
 ### 9B · Gamification depth
 Streak freeze tokens (earned by mocks), XP and levels, daily goals, study-time boards; respects "no weekly league" decision.
@@ -15,7 +17,7 @@ Streak freeze tokens (earned by mocks), XP and levels, daily goals, study-time b
 Doubt threads per question, reputation, toxicity scoring (free model or keyword + report flow), moderator tools in R10; opens only when moderation exists.
 
 ### 9D · App stores
-Microsoft Store → **Release 17** (`R17-MICROSOFT-STORE.md`). Android TWA (Play Store 🟡).
+Microsoft Store → **Release 17** ([`R17-MICROSOFT-STORE.md`](R17-MICROSOFT-STORE.md)). Android TWA (Play Store 🟡).
 
 ### 9E · AI depth
 AI study plan from the weakness profile, AI mocks assembled from weak topics (Forge items + PYQs), natural-language search ("show me 2-mark DBMS normalisation questions from 2020+"), voice revision (TTS). Readiness predictor reads calibration with data vintage.
@@ -27,7 +29,7 @@ Flashcards for questions; Telegram phone verification + weekly report; WhatsApp 
 
 | ID | What | Key acceptance |
 |---|---|---|
-| 10A | **Decided 4 Nov 2026: stays at `/admin` inside the app (own route group, strict gate, extractable later); full spec in `R10-ADMIN-SPEC.md`;** separate sign-in; admins only in `admin_users` seeded by SQL; TOTP 2FA; short sessions; IP allow-list option | No self-sign-up path; every action audited |
+| 10A | **Decided 4 Nov 2026: stays at `/admin` inside the app (own route group, strict gate, extractable later); full spec in [`R10-ADMIN-SPEC.md`](R10-ADMIN-SPEC.md);** separate sign-in; admins only in `admin_users` seeded by SQL; TOTP 2FA; short sessions; IP allow-list option | No self-sign-up path; every action audited |
 | 10B | Roles (owner, admin, moderator, content editor, support, analyst) with fine-grained permissions enforced in Postgres | RLS/security-definer tests per role |
 | 10C | Mock management: calendar, papers from blueprint, timing, publish/withhold results, re-rank | A full mock run from the console |
 | 10D | Integrity review queue with signals | Approve/exclude with notes |

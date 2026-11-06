@@ -1,5 +1,7 @@
 # 09 · Roadmap and phases
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 Principle: **depth before breadth, and a hard gate between phases.** We ship one subject-quality pilot, learn from it, then scale. Each phase has exit criteria; failing one means we fix the pipeline, not push on.
 
 Estimates are for planning only and assume work in focused sessions plus reviewer turnaround; the *review* step is the long pole.

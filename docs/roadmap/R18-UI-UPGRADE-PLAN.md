@@ -1,5 +1,7 @@
 # R18 · Full UI/UX upgrade plan (27 Oct 2026)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 Owner brief: the UI looks ugly; fix stacking, share card, dashboard first experience; texture background with the gradient;
 no gold/silver navbar effects (crown + PRO badge only); new styles (tab windows, stacks and more) across every screen.
 

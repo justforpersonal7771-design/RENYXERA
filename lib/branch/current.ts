@@ -1,5 +1,5 @@
 /**
- * The branch this browser is working in (docs/MULTI_BRANCH_DESIGN.md §3).
+ * The branch this browser is working in (docs/done/MULTI_BRANCH_DESIGN.md §3).
  *
  * - Signed-in: the account's branch is profiles.target_branch (server truth). It is cached
  *   per account in localStorage so the very first IndexedDB open on a page load already

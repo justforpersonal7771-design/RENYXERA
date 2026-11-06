@@ -1,7 +1,7 @@
 /**
  * Step 8 (4H): GATE branches for the landing pages and waitlist. Codes match
  * public.branches. Candidate numbers are approximate appeared counts for GATE 2026
- * (see docs/CONTENT_STRATEGY.md §1 for sources) — refresh each March.
+ * (see docs/growth/CONTENT_STRATEGY.md §1 for sources) — refresh each March.
  */
 export type BranchCode = "CSE" | "DA" | "ECE" | "EE" | "ME" | "CE";
 
@@ -62,7 +62,7 @@ export const branchBySlug = (slug: string) => BRANCHES.find((b) => b.slug === sl
 export const branchByCode = (code: string) => BRANCHES.find((b) => b.code === code);
 
 // ---------------------------------------------------------------------------------------
-// Multi-branch (docs/MULTI_BRANCH_DESIGN.md). This file is the ONLY place that maps the
+// Multi-branch (docs/done/MULTI_BRANCH_DESIGN.md). This file is the ONLY place that maps the
 // app/DB branch code (CSE, ECE, …) to GATE's paper code (CS, EC, …).
 // ---------------------------------------------------------------------------------------
 

@@ -1,27 +1,29 @@
 # Study Materials programme: master plan (index)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 **Status:** planning, nothing built yet. Written 17 October 2026.
 **One-line goal:** for every branch we serve, the best GATE study material a student can find in one place, written for understanding and for remembering, structured exactly like the official syllabus, rendered perfectly (equations, code, tables, diagrams, flowcharts), and available only inside the app.
 
-This is a separate product. It is **not** part of Free, Plus or Pro. Plans and pricing are in `08-PRODUCT-AND-PRICING.md`.
+This is a separate product. It is **not** part of Free, Plus or Pro. Plans and pricing are in [`08-PRODUCT-AND-PRICING.md`](08-PRODUCT-AND-PRICING.md).
 
 ## How to read this plan
 
 | Doc | What it decides |
 |---|---|
-| `01-VISION-AND-PRINCIPLES.md` | What "great" means here, the promises we make to students, what we refuse to do |
-| `02-SYLLABUS-AND-STRUCTURE.md` | The content tree (branch → section → subject → chapter → topic → lesson), IDs, ordering rules, per-branch coverage maps, how it follows the official GATE syllabus |
-| `03-CONTENT-PIPELINE.md` | How a chapter is actually produced: sources, drafting, fact-checking, review gates, versioning, who does what |
-| `04-CONTENT-FORMAT-AND-RENDERING.md` | The authoring format, every block type (equation, code, table, diagram, flow, example…), the renderer, and the exactness rules |
-| `05-DIAGRAMS-TABLES-AND-FLOWS.md` | How diagrams, tables and flowcharts are authored so they are exact, accessible and impossible to copy as image files |
-| `06-LEARNING-DESIGN.md` | The teaching method: how each topic is written so students understand and remember it |
-| `07-PROTECTION-AND-SECURITY.md` | What "secured and protected" can honestly mean, the layers we build, and the limits |
-| `08-PRODUCT-AND-PRICING.md` | Why it sits outside the plans, pricing options, launch order, how it is introduced |
-| `09-ROADMAP-AND-PHASES.md` | Phases with exit gates, effort estimates, the CS pilot, branch order, March refresh cycle |
-| `10-EDGE-CASES-AND-RISKS.md` | Every edge case and risk we could think of, with the planned handling |
-| `11-QA-CHECKLISTS.md` | The per-topic, per-chapter and per-release checklists used as hard gates |
-| `12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md` | Review of the reference notes and textbooks in `notes/`, what we adopt from them, suggested textbooks per subject, and the hard rules for using them |
-| `templates/chapter-template.md` | The exact skeleton every chapter starts from |
+| [`01-VISION-AND-PRINCIPLES.md`](01-VISION-AND-PRINCIPLES.md) | What "great" means here, the promises we make to students, what we refuse to do |
+| [`02-SYLLABUS-AND-STRUCTURE.md`](02-SYLLABUS-AND-STRUCTURE.md) | The content tree (branch → section → subject → chapter → topic → lesson), IDs, ordering rules, per-branch coverage maps, how it follows the official GATE syllabus |
+| [`03-CONTENT-PIPELINE.md`](03-CONTENT-PIPELINE.md) | How a chapter is actually produced: sources, drafting, fact-checking, review gates, versioning, who does what |
+| [`04-CONTENT-FORMAT-AND-RENDERING.md`](04-CONTENT-FORMAT-AND-RENDERING.md) | The authoring format, every block type (equation, code, table, diagram, flow, example…), the renderer, and the exactness rules |
+| [`05-DIAGRAMS-TABLES-AND-FLOWS.md`](05-DIAGRAMS-TABLES-AND-FLOWS.md) | How diagrams, tables and flowcharts are authored so they are exact, accessible and impossible to copy as image files |
+| [`06-LEARNING-DESIGN.md`](06-LEARNING-DESIGN.md) | The teaching method: how each topic is written so students understand and remember it |
+| [`07-PROTECTION-AND-SECURITY.md`](07-PROTECTION-AND-SECURITY.md) | What "secured and protected" can honestly mean, the layers we build, and the limits |
+| [`08-PRODUCT-AND-PRICING.md`](08-PRODUCT-AND-PRICING.md) | Why it sits outside the plans, pricing options, launch order, how it is introduced |
+| [`09-ROADMAP-AND-PHASES.md`](09-ROADMAP-AND-PHASES.md) | Phases with exit gates, effort estimates, the CS pilot, branch order, March refresh cycle |
+| [`10-EDGE-CASES-AND-RISKS.md`](10-EDGE-CASES-AND-RISKS.md) | Every edge case and risk we could think of, with the planned handling |
+| [`11-QA-CHECKLISTS.md`](11-QA-CHECKLISTS.md) | The per-topic, per-chapter and per-release checklists used as hard gates |
+| [`12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md`](12-REFERENCE-LIBRARY-AND-DESIGN-RESEARCH.md) | Review of the reference notes and textbooks in `notes/`, what we adopt from them, suggested textbooks per subject, and the hard rules for using them |
+| [`templates/chapter-template.md`](templates/chapter-template.md) | The exact skeleton every chapter starts from |
 
 ## Decisions I need from you (before Phase 0 starts)
 

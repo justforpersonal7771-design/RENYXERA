@@ -9,7 +9,7 @@ metadata:
 ---
 
 Files in the GATE OS repo ([[project_repo_location]]) have twice been found silently zero-filled (raw NUL bytes, correct file length, blank content) with no clear trigger from Claude Code's own actions:
-1. Earlier in the project: `package.json`/`package-lock.json` got zero-filled mid-`npm install`, originally attributed to a power outage.
+1. Earlier in the project: [`package.json`](../../package.json)/[`package-lock.json`](../../package-lock.json) got zero-filled mid-`npm install`, originally attributed to a power outage.
 2. 2026-09-18: `.git/HEAD` was found to be 31 bytes of pure `0x00`, discovered when `git status` started failing with "not a git repository" despite `.git/objects` and `.git/refs/heads/*` all being completely intact and correct.
 
 **Likely cause:** not power outages both times — probably a background process on this Windows machine (antivirus real-time scan, OneDrive/backup sync, or a file indexer) doing a partial/interrupted write to files in this directory. Worth the user checking if `D:\0-UI\r2ma-stable` is inside a synced/monitored folder and excluding it if so.

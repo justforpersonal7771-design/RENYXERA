@@ -1,5 +1,7 @@
 # Release 10: Admin console, full specification (4 Nov 2026)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 Status: **plan only, nothing from this file is built yet** except the admin-lite slice (R30: Overview, Funnel, tagged links at `/admin`). Written after reading the app (53 API routes, 60 pages, 45 tables, 12 GitHub workflows, 100+ scripts), the roadmap and the social/Telegram docs. The owner asked for the most complete picture; every feature names where its data comes from, so nothing is invented.
 
 ## 1. Decision: keep it inside the app at `/admin` (not a separate app)
@@ -35,13 +37,13 @@ Roles are stored in Postgres (10B): `owner`, `admin`, `content_editor`, `moderat
 - Support notes per learner, visible only to staff.
 
 ### C. Money (10H)
-- Orders and payments with Razorpay reconciliation (existing `billing/reconcile`, `recheck`, `scripts/billing-report.mjs`); **refund button** wrapping `scripts/refund.mjs` logic (full or partial, optionally revoke plan).
+- Orders and payments with Razorpay reconciliation (existing `billing/reconcile`, `recheck`, [`scripts/billing-report.mjs`](../../scripts/billing-report.mjs)); **refund button** wrapping [`scripts/refund.mjs`](../../scripts/refund.mjs) logic (full or partial, optionally revoke plan).
 - **Coupons**: create, pause, limit, see redemptions (`coupons`, `coupon_redemptions`). Interest list for unopened plans (`pro_interest`), waitlists (`branch_waitlist`), sponsor-break claims (`sponsor_claims`).
 - Price and plan table view; billing mode indicator (interest/test/live); failed-payment and pending-order queue.
 
 ### D. Marketing and growth (R14)
 - **Tagged-link builder** (built) and a campaign table: each campaign = source, medium, name, dates, spend (usually 0), results from the funnel.
-- **Content calendar** over `content/calendar.json`: week/month view, status flow (idea, drafted, approved, scheduled, posted, failed), edit caption/hashtags/media/link, approve with one click, per-channel status and error. Writes through a safe commit or a database copy (see section 4).
+- **Content calendar** over [`content/calendar.json`](../../content/calendar.json): week/month view, status flow (idea, drafted, approved, scheduled, posted, failed), edit caption/hashtags/media/link, approve with one click, per-channel status and error. Writes through a safe commit or a database copy (see section 4).
 - Weekly content pack generator hook: stores the pack Claude drafts locally (Claude stays local per the owner's rule) and lets the owner review and approve.
 - Reply tracker for community answers (thread link, community, date, result), influencer and partner pipeline (`INFLUENCER_OUTREACH_MESSAGES.md`), institute outreach list with weekly cap counter (max 20/week).
 - **Referral and share loop stats:** invites shared, joins, rewards given (`referrals`), top referrers, fraud flags (same device).
@@ -69,7 +71,7 @@ See section 3 for the per-channel detail. In the console each channel has: conne
 - Moderation (R9): doubt threads and reports, toxicity flags, moderator actions.
 
 ### I. AI and platform health (10M)
-- AI request logs with retention, per-provider quota, error rates, prompt-injection guard hits (`lib/ai/guard.ts`), Mentor usage per tier.
+- AI request logs with retention, per-provider quota, error rates, prompt-injection guard hits ([`lib/ai/guard.ts`](../../lib/ai/guard.ts)), Mentor usage per tier.
 - Security: CSP reports (`csp-report`), rate-limit hits, failed sign-ins, RLS and RPC access check results (`check-rls`, `check-rpc-access`), secrets rotation reminders, backup restore drill date.
 - Cost watch: free-tier meters (Supabase DB size, egress, Cloudflare requests, GitHub Actions minutes, Gemini/OpenRouter quota). Zero-budget alarm when any meter passes 70%.
 
@@ -83,7 +85,7 @@ See section 3 for the per-channel detail. In the console each channel has: conne
 | Channel | Exists today | Gaps and limits | Console features |
 |---|---|---|---|
 | **Telegram** | Hub channel plus 6 branch channels, one PYQ a day with spoiler answer (`telegram-daily.yml`), hub updates (`telegram-hub.yml`), per-user reminders and dispatch every minute through pg_cron (backup 5-minute workflow), webhook, link/prefs/weak-topics routes, tables `telegram_accounts`, `_actions`, `_reminders`, `_sent`, `_link_codes` | No view of delivery failures or subscriber growth in one place | Post now to any channel, edit/cancel a queued post, preview the daily question before it goes out, swap the question, pause a channel, subscriber and join counts, linked-user stats, reminder sends/failures, bot health (`getMe`), webhook status |
-| **Instagram** | Publisher exists inside `social-publish.mjs` (Graph API, reels and images, token refresh); **the owner still has to complete `docs/instagram/01-SETUP.md`** | Needs a professional account and a long-lived token (refresh before 60 days); about 100 posts per 24 h cap; media must be at a public URL (`social-upload.mjs`) | Token expiry countdown and refresh button, media upload, caption editor, schedule, publish result with permalink, comment inbox (read) later, insights (reach, plays, saves) pulled daily and stored |
+| **Instagram** | Publisher exists inside `social-publish.mjs` (Graph API, reels and images, token refresh); **the owner still has to complete [`docs/growth/instagram/01-SETUP.md`](../growth/instagram/01-SETUP.md)** | Needs a professional account and a long-lived token (refresh before 60 days); about 100 posts per 24 h cap; media must be at a public URL (`social-upload.mjs`) | Token expiry countdown and refresh button, media upload, caption editor, schedule, publish result with permalink, comment inbox (read) later, insights (reach, plays, saves) pulled daily and stored |
 | **YouTube** | **Not built.** Only strategy text in the playbook. `social-publish.mjs` handles Instagram and Telegram only | YouTube Data API needs OAuth and has a daily quota (an upload costs about 1,600 of 10,000 units, so roughly 6 uploads a day). Videos uploaded through an API project that has not passed Google's audit are locked private, so either request the audit (free) or upload by hand and let the console prepare the title, description, tags, thumbnail and chapters | Phase 1: metadata pack builder and a "ready to upload" checklist; Phase 2: API upload and scheduling once the audit passes; analytics (views, watch time, subscribers) pulled daily |
 
 Cross-channel: one calendar, one approval step, one result log, a UTM tag added automatically to every link, "repurpose" button (one approved script becomes a Reel, a Short and a Telegram post), and a best-time chart from stored insights. Rule from the playbook stays: a human approves every post; nothing posts unreviewed.
@@ -110,7 +112,7 @@ Rough size: phases 1 and 2 are the most valuable for revenue (grant plans, see m
 ## 6. Risks and rules
 - Money and plan actions need the owner role plus a fresh sign-in, and always write the audit log with a reason.
 - DB migrations and any seeding stay owner-run (standing rule). The console never runs SQL and never holds keys in the browser.
-- All times shown in IST (`lib/time/ist.ts`).
+- All times shown in IST ([`lib/time/ist.ts`](../../lib/time/ist.ts)).
 - Mobile-friendly and full width, light and dark, like the rest of the app.
 - Opt-in messaging only (DPDP Act, TRAI); every lifecycle message has a stop option; no scraping logged-in platforms.
 - The student app must not slow down: admin code is lazy and per route, and admin analytics run on indexed queries over `events` (pruned at 400 days).

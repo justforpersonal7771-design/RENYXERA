@@ -1,7 +1,7 @@
 # RENYXERA — Master checklist (the only tracker)
 
-**Last updated:** 6 November 2026 · **Grouped open items (single view): `docs/OPEN-ITEMS-2026-11-06.md`** · **Live:** https://gate.renyxera.workers.dev · **Repo:** `D:\0-UI\r2ma-stable` (push to `main` = deploy)
-Every open task below has its key steps, a "done when" check and a reference. Full detail per release: `docs/roadmap/` (index `docs/roadmap/00-README.md`). Shipped history: `archive/COMPLETED.md`. New-session context: `HANDOFF.md`, `CLAUDE.md`, `handover/MASTER_PROMPT.md`.
+**Last updated:** 6 November 2026 · **Everything in one file: [`docs/MASTER.md`](docs/MASTER.md)** · **Grouped open items (single view): [`docs/open-work/OPEN-ITEMS-2026-11-06.md`](docs/open-work/OPEN-ITEMS-2026-11-06.md)** · **Live:** https://gate.renyxera.workers.dev · **Repo:** `D:\0-UI\r2ma-stable` (push to `main` = deploy)
+Every open task below has its key steps, a "done when" check and a reference. Full detail per release: `docs/roadmap/` (index [`docs/roadmap/00-README.md`](docs/roadmap/00-README.md)). Shipped history: [`docs/done/archive/COMPLETED.md`](docs/done/archive/COMPLETED.md). New-session context: [`HANDOFF.md`](HANDOFF.md), [`CLAUDE.md`](CLAUDE.md), [`handover/MASTER_PROMPT.md`](handover/MASTER_PROMPT.md).
 
 **Legend:** `- [x]` done · `- [ ]` open · **(you)** owner action · **(me)** Claude builds · 🔒 blocked by a decision · 🟡 costs money, waits for revenue · ⏸ on hold by decision · 💡 idea awaiting approval.
 **Priorities (owner, 22 Oct):** 1 Forge · 2 Study materials · 3 Monetisation · 4 Marketing — plus the new layers: Performance (R15), Security (R16), Microsoft Store app (R17).
@@ -16,47 +16,47 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] Still scrolling (audit): Checkpoint (200–730 px), Mocks (620–770), Battles (120–260), then Tutor/Study/Calendar/Mentor/Plans. Next turn.
 - [ ] Results screen single-screen + dark soft edges: built, not yet visually verified.
 - [x] Commit/push batch (0044 file, check:rpc, manifest + icons, R24 plan, results, dark edges, Test Centre bar) — pushed 31 Oct (55fd871). Tools hub verified 0 px; Test Centre hub shortened again (unverified).
-- [x] R25 UX/visual design spec written (`R25-ARENA-UX-DESIGN.md`: hint ladder, pick cards, power cards, reveal choreography, wireframes) and app-wide `docs/FEATURE-IDEAS.md` (living). **ON HOLD by owner (31 Oct): research and documentation only, no building yet.** When released: static design sandbox page for approval, then backend.
-- [ ] **R25 Battle Arena** (live rooms, rotating Setter, speed + order scoring): design doc written `docs/roadmap/R25-BATTLE-ARENA.md` (living, idea log at the bottom). Build steps A–D next, then Telegram/share, Free taster.
+- [x] R25 UX/visual design spec written (`R25-ARENA-UX-DESIGN.md`: hint ladder, pick cards, power cards, reveal choreography, wireframes) and app-wide [`docs/open-work/FEATURE-IDEAS.md`](docs/open-work/FEATURE-IDEAS.md) (living). **ON HOLD by owner (31 Oct): research and documentation only, no building yet.** When released: static design sandbox page for approval, then backend.
+- [ ] **R25 Battle Arena** (live rooms, rotating Setter, speed + order scoring): design doc written [`docs/roadmap/R25-BATTLE-ARENA.md`](docs/roadmap/R25-BATTLE-ARENA.md) (living, idea log at the bottom). Build steps A–D next, then Telegram/share, Free taster.
 
 - [x] 1 Nov: skills installed in `~/.claude/skills` (load at next session start): taste-skill, hallmark, interface-design (+ ui-ux-pro-max earlier). **Not found by name, need links from owner:** Stitch Skills, Scroll World, Frontend Slides, Diagram Design, Website Cloner, Archify.
 - [x] 1 Nov bugs (build 22, unpushed until verified): Test Centre section bar replaced by a dropdown under the top-bar Test Centre item (all doors + GATE PYQs/Forge/Spark/Blend), phones keep a slim row; `/challenge` opens `/battles`; Test Centre hub re-laid (4 mini stat cards top right, All-India mock card beside Practice); Practice screen reorganised (one big "Revise mistakes" + checkpoint + 3 small); leaderboard no longer dims/blurs the page, crisp HD crowns (gold rank 1, silver rank 2, no blur filter); Daily check-in rewritten (loads what is saved, log with edit/delete, pick date and time); Mentor chat button (animated) in calendar and to-do panels, opens chat without "back to Mentor".
 - [ ] **(me) Move "full picture" content out of `/analytics/coach` (1000-line old Mentor screen)** into dashboard / analytics / AI Mentor, then delete the route. Own task, needs a plan of which block goes where.
-- [ ] **(me) R26 Looks and Design Studio** (plan rewritten 1 Nov: a Look = the whole design of the app: cards, backgrounds, fonts, corners, density, icons, motion; three tiers Free / Plus / Pro; Design Studio with part-by-part customising, font picker, My looks; Arena style option). Doc: `docs/roadmap/R26-DESIGN-STUDIO.md`. Build order: audit hard-coded styles, token engine, Studio shell + 3 Free Looks, fonts, then Plus and Pro Looks. Waiting on owner choices in section 9.
+- [ ] **(me) R26 Looks and Design Studio** (plan rewritten 1 Nov: a Look = the whole design of the app: cards, backgrounds, fonts, corners, density, icons, motion; three tiers Free / Plus / Pro; Design Studio with part-by-part customising, font picker, My looks; Arena style option). Doc: [`docs/roadmap/R26-DESIGN-STUDIO.md`](docs/roadmap/R26-DESIGN-STUDIO.md). Build order: audit hard-coded styles, token engine, Studio shell + 3 Free Looks, fonts, then Plus and Pro Looks. Waiting on owner choices in section 9.
 
-- [x] 1 Nov (late): **India time only (IST)** across the app: `lib/time/ist.ts`, `toLocalDateStr` is IST, every `toLocale*String` defaults to Asia/Kolkata + en-IN (`lib/time/install-ist.ts`); fixed the `/ai-mentor` hydration error found on the deployed app (greeting hour differed UTC server vs browser). Verified with the server running in UTC. CSP `connect-src` now allows `data:` (Turnstile warning). Civil syllabus link no longer 404.
+- [x] 1 Nov (late): **India time only (IST)** across the app: [`lib/time/ist.ts`](lib/time/ist.ts), `toLocalDateStr` is IST, every `toLocale*String` defaults to Asia/Kolkata + en-IN ([`lib/time/install-ist.ts`](lib/time/install-ist.ts)); fixed the `/ai-mentor` hydration error found on the deployed app (greeting hour differed UTC server vs browser). Verified with the server running in UTC. CSP `connect-src` now allows `data:` (Turnstile warning). Civil syllabus link no longer 404.
 - [x] 1 Nov: **Mentor chat rebuilt like ChatGPT/Gemini**: chat history sidebar (search, pin, rename, delete, grouped Today/Yesterday/7 days/Older in IST), chats saved on device as trees, edit an earlier message (keeps both versions with a "1 / 2" pager), answer again (versions), new-chat, Gemini-style thinking animation, typed-out answers, auto-growing input (Enter sends), phone drawer. Tests: `npm run check:chat` (13 tree checks) + `scripts/zz-e2e-chat.mjs` (21 checks, AI stubbed). Open: cloud sync of chats across devices (needs a table + free-tier check), export chat, share chat link.
 - [x] R26 updated: Looks tiers Free 2 / Plus 4 / Pro 10 incl. Minimal, Glass, Pixel Quest, Neon Nights; 5-minute try once per Look.
 
-- [x] 1 Nov (night): Mentor chat v2 built: history collapsible, groups (by date or your own groups), search inside chats, Upgrade button, enlarge-chat (fills the app, not full screen) and enlarge-box buttons, mode and style menus inside the composer, rewritten AI-mistakes note, no scrollbar until needed, flowing-colour logo (no circle behind it), RENYXERA logo in the history header, AI chat button in the top-bar cluster with its own gradient look. Chat sync is automatic (uploads in seconds; other devices refresh every 20 s while a chat is open; no device limit). **Owner: apply `supabase/migrations/0045_mentor_chat_sync.sql` for cross-device chat sync** (until then chats stay on the device and nothing else is affected). Test Centre hub re-laid (mission + upcoming mock on top, slim stats, short door tiles, Mocks as a plain door), menu has no descriptions or source chips, Flashcards/Build a test switch correctly.
-- [x] Release 28 Fast (performance toolkit): `docs/roadmap/R28-PERFORMANCE-TOOLKIT.md`; `npm run check:perf`; long cache headers (`public/_headers`), WebP brand art, one version check per load, 10 s timeouts on external calls, Mentor prompt-injection guard. Open: skeletons per screen, search debounce audit, depcheck, Supabase region, virtualised lists, AI streaming. Done since: unused deps removed, topic search deferred, skeleton loading screen, goal-panel chunk deferred on slow links. Open: Supabase region (owner check in dashboard), long-list virtualising, Mentor streaming (needs the reply format changed from JSON). Big chunks named (DiceBear styles on demand, recharts, Sentry; nothing to fix).
-- [x] Admin-lite (R30, first slice of Release 10) built and live: `/admin` Overview, Funnel, Links; migration 0052 applied and 1 admin registered (6 Nov). The full admin console (R10) is ON HOLD until the non-negotiable set in `docs/OPEN-ITEMS-2026-11-06.md` is done; spec in `docs/roadmap/R10-ADMIN-SPEC.md`.
-- [x] Week 1 content pack drafted: `docs/marketing/WEEK-01-CONTENT-PACK.md` (carousel, reel, Telegram post, reply templates; owner reviews and posts).
+- [x] 1 Nov (night): Mentor chat v2 built: history collapsible, groups (by date or your own groups), search inside chats, Upgrade button, enlarge-chat (fills the app, not full screen) and enlarge-box buttons, mode and style menus inside the composer, rewritten AI-mistakes note, no scrollbar until needed, flowing-colour logo (no circle behind it), RENYXERA logo in the history header, AI chat button in the top-bar cluster with its own gradient look. Chat sync is automatic (uploads in seconds; other devices refresh every 20 s while a chat is open; no device limit). **Owner: apply [`supabase/migrations/0045_mentor_chat_sync.sql`](supabase/migrations/0045_mentor_chat_sync.sql) for cross-device chat sync** (until then chats stay on the device and nothing else is affected). Test Centre hub re-laid (mission + upcoming mock on top, slim stats, short door tiles, Mocks as a plain door), menu has no descriptions or source chips, Flashcards/Build a test switch correctly.
+- [x] Release 28 Fast (performance toolkit): [`docs/roadmap/R28-PERFORMANCE-TOOLKIT.md`](docs/roadmap/R28-PERFORMANCE-TOOLKIT.md); `npm run check:perf`; long cache headers (`public/_headers`), WebP brand art, one version check per load, 10 s timeouts on external calls, Mentor prompt-injection guard. Open: skeletons per screen, search debounce audit, depcheck, Supabase region, virtualised lists, AI streaming. Done since: unused deps removed, topic search deferred, skeleton loading screen, goal-panel chunk deferred on slow links. Open: Supabase region (owner check in dashboard), long-list virtualising, Mentor streaming (needs the reply format changed from JSON). Big chunks named (DiceBear styles on demand, recharts, Sentry; nothing to fix).
+- [x] Admin-lite (R30, first slice of Release 10) built and live: `/admin` Overview, Funnel, Links; migration 0052 applied and 1 admin registered (6 Nov). The full admin console (R10) is ON HOLD until the non-negotiable set in [`docs/open-work/OPEN-ITEMS-2026-11-06.md`](docs/open-work/OPEN-ITEMS-2026-11-06.md) is done; spec in [`docs/roadmap/R10-ADMIN-SPEC.md`](docs/roadmap/R10-ADMIN-SPEC.md).
+- [x] Week 1 content pack drafted: [`docs/growth/marketing/WEEK-01-CONTENT-PACK.md`](docs/growth/marketing/WEEK-01-CONTENT-PACK.md) (carousel, reel, Telegram post, reply templates; owner reviews and posts).
 - [x] Growth step 1 done: funnel events + `funnel_by_source` report (migration 0051 applied; run `node scripts/growth-metrics.mjs`). Step 2 in progress: invite nudge now shows at any score with a challenge message (referral reward 7 days Pro each already exists, migration 0020). Next: read the funnel once traffic exists, then weekly content pack.
-- [x] Forge audit done (`docs/FORGE_AUDIT_2026-11-06.md`): 124 basic, 93 standard, 8 Forge-grade, 20 aptitude; `supabase/forge-audit-fixes.sql` run by the owner (live labels now M 236, H 82, X 12). Still open: more Forge-grade items and a larger X tier.
+- [x] Forge audit done ([`docs/forge/FORGE_AUDIT_2026-11-06.md`](docs/forge/FORGE_AUDIT_2026-11-06.md)): 124 basic, 93 standard, 8 Forge-grade, 20 aptitude; [`supabase/forge-audit-fixes.sql`](supabase/forge-audit-fixes.sql) run by the owner (live labels now M 236, H 82, X 12). Still open: more Forge-grade items and a larger X tier.
 - [x] Forge b010 (60 designed) and b011 (20 X-tier challenge) seeded by the owner 6 Nov: CS Forge live = 329 (database shows 330 rows incl. the cloud-run item). Read the enumeration-heavy b011 items (owner). Next: toward 800 (about 471 to go), other branches ON HOLD.
 - [x] Forge CS raised to 250 (b009, 50 questions, validated and audited). b007, b008 and b009 seeded by the owner (b009 release 2026-11-03T16:31:46Z). Other branches and verbal/picture Aptitude are on hold by the owner.
 - [x] Forge CS set raised to 200 (3 Nov), seeded by the owner; superseded by the 329 line above.
-- [x] Forge generator fixed (3 Nov): local plan, author, ingest loop in `docs/FORGE_GENERATOR_LOCAL.md`; used for b007 to b011.
-- [x] Forge review (3 Nov): `docs/FORGE_REVIEW_2026-11-03.md`; its findings (key letters, NAT share, subject names) are fixed; later audit in `docs/FORGE_AUDIT_2026-11-06.md`.
-- [ ] Battles as a game: `docs/roadmap/R29-BATTLES-AS-A-GAME.md` (friends and presence, live and async modes, points, leaderboard). Owner decisions in section 9. Build step 1: friends. **Step 1 done and pushed (friends, requests, presence dot, privacy switch; migration 0047 applied; 22 API checks pass; phone and desktop checked). Step 2 done: challenge specific friends (migration 0048, 11 API checks pass), Challenges for you list, side-by-side combined result. Still to do: navbar notification dot, rematch button, 24 h expiry, Step 3 done: Arena Points (win 30, draw 15, loss 8), Elo rating, weekly and all-time leaderboard, friends and everyone (migration 0049, 13 play-through checks pass). Step 4 done: live (concurrent) mode with lobby, ready check and shared server-clock countdown (migration 0050, 13 API checks pass). Navbar badge done. Rematch done (8 API checks pass), owner can Take it now. 24 h expiry decided: keep 7 days (revisit later). Still to do: seasons and badges, per-question speed scoring.**
-- [x] Marketing toolkit review: `docs/marketing/GROWTH-TOOLKIT.md` (10 repos, licences, fit, rules).
+- [x] Forge generator fixed (3 Nov): local plan, author, ingest loop in [`docs/forge/FORGE_GENERATOR_LOCAL.md`](docs/forge/FORGE_GENERATOR_LOCAL.md); used for b007 to b011.
+- [x] Forge review (3 Nov): [`docs/done/FORGE_REVIEW_2026-11-03.md`](docs/done/FORGE_REVIEW_2026-11-03.md); its findings (key letters, NAT share, subject names) are fixed; later audit in [`docs/forge/FORGE_AUDIT_2026-11-06.md`](docs/forge/FORGE_AUDIT_2026-11-06.md).
+- [ ] Battles as a game: [`docs/roadmap/R29-BATTLES-AS-A-GAME.md`](docs/roadmap/R29-BATTLES-AS-A-GAME.md) (friends and presence, live and async modes, points, leaderboard). Owner decisions in section 9. Build step 1: friends. **Step 1 done and pushed (friends, requests, presence dot, privacy switch; migration 0047 applied; 22 API checks pass; phone and desktop checked). Step 2 done: challenge specific friends (migration 0048, 11 API checks pass), Challenges for you list, side-by-side combined result. Still to do: navbar notification dot, rematch button, 24 h expiry, Step 3 done: Arena Points (win 30, draw 15, loss 8), Elo rating, weekly and all-time leaderboard, friends and everyone (migration 0049, 13 play-through checks pass). Step 4 done: live (concurrent) mode with lobby, ready check and shared server-clock countdown (migration 0050, 13 API checks pass). Navbar badge done. Rematch done (8 API checks pass), owner can Take it now. 24 h expiry decided: keep 7 days (revisit later). Still to do: seasons and badges, per-question speed scoring.**
+- [x] Marketing toolkit review: [`docs/growth/marketing/GROWTH-TOOLKIT.md`](docs/growth/marketing/GROWTH-TOOLKIT.md) (10 repos, licences, fit, rules).
 - [x] Transcripts of the two videos (AI agent story; performance list) folded into R28.
-- [ ] Mentor chat backlog and AI top-ups: `docs/roadmap/R27-MENTOR-CHAT-FEATURES.md` (dictation, read aloud, photo and PDF questions, talk mode, weak-topic memory, top-up packs). Owner decisions in section 4.
+- [ ] Mentor chat backlog and AI top-ups: [`docs/roadmap/R27-MENTOR-CHAT-FEATURES.md`](docs/roadmap/R27-MENTOR-CHAT-FEATURES.md) (dictation, read aloud, photo and PDF questions, talk mode, weak-topic memory, top-up packs). Owner decisions in section 4.
 
-- [x] 1 Nov (late night): **Mentor logo final = the owner's ribbon-flame-with-spark** (concept 8 of the AI-generated sheet, finalised version). Traced to a vector (`scripts/trace-mentor-flame.py`, `scripts/gen-mentor-flame.mjs`), recoloured with the exact RENYXERA brand gradient, exported to `public/brand/mentor/` (SVG: light, dark, white, ink, app icon; PNG: 128/512/1024, app icon 64/192/512/1024) and used for the top-bar AI chat button, the chat header, the Upgrade chip and the flowing "thinking" logo (`components/brand/mentor-mark.tsx`). Preview: `docs/design/mentor-logo-final.png`. Concept 3 (robot bubble with cap) is parked as a possible friendly avatar; needs the image file.
-- [x] Chat v3: Gemini-style composer (one-line pill, tools drop under from line 2, expand icon top-right from line 3, centred box on a new chat with suggestions), hierarchical history (groups are collapsible folders, no toggle), no card around the chat, AI-style panel (constellation watermark), guests: one temporary chat, 2 free messages then sign-in (counter survives refresh), tokens instead of messages for allowance and packs (`lib/billing/ai-credits.ts`, `npm run check:credits`).
-- [x] Owner applied `supabase/migrations/0045_mentor_chat_sync.sql` (tables `mentor_chats`, `mentor_chat_sync` exist; verified 6 Nov).
+- [x] 1 Nov (late night): **Mentor logo final = the owner's ribbon-flame-with-spark** (concept 8 of the AI-generated sheet, finalised version). Traced to a vector ([`scripts/trace-mentor-flame.py`](scripts/trace-mentor-flame.py), [`scripts/gen-mentor-flame.mjs`](scripts/gen-mentor-flame.mjs)), recoloured with the exact RENYXERA brand gradient, exported to `public/brand/mentor/` (SVG: light, dark, white, ink, app icon; PNG: 128/512/1024, app icon 64/192/512/1024) and used for the top-bar AI chat button, the chat header, the Upgrade chip and the flowing "thinking" logo ([`components/brand/mentor-mark.tsx`](components/brand/mentor-mark.tsx)). Preview: [`docs/done/design-mentor-logo/mentor-logo-final.png`](docs/done/design-mentor-logo/mentor-logo-final.png). Concept 3 (robot bubble with cap) is parked as a possible friendly avatar; needs the image file.
+- [x] Chat v3: Gemini-style composer (one-line pill, tools drop under from line 2, expand icon top-right from line 3, centred box on a new chat with suggestions), hierarchical history (groups are collapsible folders, no toggle), no card around the chat, AI-style panel (constellation watermark), guests: one temporary chat, 2 free messages then sign-in (counter survives refresh), tokens instead of messages for allowance and packs ([`lib/billing/ai-credits.ts`](lib/billing/ai-credits.ts), `npm run check:credits`).
+- [x] Owner applied [`supabase/migrations/0045_mentor_chat_sync.sql`](supabase/migrations/0045_mentor_chat_sync.sql) (tables `mentor_chats`, `mentor_chat_sync` exist; verified 6 Nov).
 
-- [x] 1 Nov (night): Mentor chat v4 from the owner's 9 points: logo in its **original colours** (flame body + spark as two transparent layers; `components/brand/mentor-logo.tsx`, `scripts/extract-mentor-logo.py`), bare top-bar button (no tile/outline, spark blinks, pops on hover), bigger logo in history and while thinking, **the logo is also the collapse/expand button** (turns into the panel icon on hover), the logo itself as the history watermark, deeper indigo history panel, messages flow behind and around a floating box, **enlarge = whole window incl. top bar** with the same cards, **Stop button** (really cancels the request; Esc too) + "No answer yet / Try again" after a stop or reload, **New chat while an answer is pending now opens a clean new chat** (busy is per chat). Edge-case suite: `scripts/zz-e2e-chat3.mjs` (38 checks incl. delete while busy, Enter twice, 1,500-char limit, reload mid-answer, phone).
+- [x] 1 Nov (night): Mentor chat v4 from the owner's 9 points: logo in its **original colours** (flame body + spark as two transparent layers; [`components/brand/mentor-logo.tsx`](components/brand/mentor-logo.tsx), [`scripts/extract-mentor-logo.py`](scripts/extract-mentor-logo.py)), bare top-bar button (no tile/outline, spark blinks, pops on hover), bigger logo in history and while thinking, **the logo is also the collapse/expand button** (turns into the panel icon on hover), the logo itself as the history watermark, deeper indigo history panel, messages flow behind and around a floating box, **enlarge = whole window incl. top bar** with the same cards, **Stop button** (really cancels the request; Esc too) + "No answer yet / Try again" after a stop or reload, **New chat while an answer is pending now opens a clean new chat** (busy is per chat). Edge-case suite: `scripts/zz-e2e-chat3.mjs` (38 checks incl. delete while busy, Enter twice, 1,500-char limit, reload mid-answer, phone).
 - [ ] **Design Studio (R26): starting with the Pro Looks** (owner, 1 Nov). Order: engine + Looks tab, then Glass, Neo-brutal Arcade, Neon Nights, Pixel Quest, Aurora, then the rest.
 
 - [x] 2 Nov: Design Studio `/design-studio` live with 5 Pro Looks (Glass, Neo-brutal Arcade, Neon Nights, Pixel Quest, Aurora; light+dark checked on hub). Remaining Pro: Liquid Glass, HUD Terminal, Blueprint, Editorial, Clay; then Plus (Minimal Mono, Midnight, Ocean Bento, Sunrise Soft) and Free Paper. Open: server-side trial record, cross-device saved Look, per-screen audit of all 5 Looks (exam, results, Study, Plans).
 
-- [x] 2 Nov (night): Design Studio moved into Profile (Design Studio tab) + a quick window under the navbar palette button; Looks now have fonts per Look + a Fonts override section, single-mode Looks (Neon = dark only) hide the light/dark switch, Pixel is square/stepped/flat everywhere, previews are isolated (iframes) so one Look no longer leaks into another's preview, Arcade keeps the default grain; spec for every Look: `docs/design/LOOKS-SPEC.md`; audit: `scripts/zz-looks-audit.mjs`. Mobile Mentor chat: box at bottom, history as a full-height side panel. "One place instead of five" comparison moved to `/compare` (footer link "How we compare"), off the home screen. Challenge: share button now says "Challenge a friend"; `/battles` has "Start a new challenge" (build any test in the exam engine, take it, then challenge friends).
+- [x] 2 Nov (night): Design Studio moved into Profile (Design Studio tab) + a quick window under the navbar palette button; Looks now have fonts per Look + a Fonts override section, single-mode Looks (Neon = dark only) hide the light/dark switch, Pixel is square/stepped/flat everywhere, previews are isolated (iframes) so one Look no longer leaks into another's preview, Arcade keeps the default grain; spec for every Look: [`docs/design/LOOKS-SPEC.md`](docs/design/LOOKS-SPEC.md); audit: `scripts/zz-looks-audit.mjs`. Mobile Mentor chat: box at bottom, history as a full-height side panel. "One place instead of five" comparison moved to `/compare` (footer link "How we compare"), off the home screen. Challenge: share button now says "Challenge a friend"; `/battles` has "Start a new challenge" (build any test in the exam engine, take it, then challenge friends).
 - [ ] Challenge as a game (next): create a challenge BEFORE playing (no finished test needed), live lobby, per-question speed bonus; see R25 Arena doc.
 
-- [x] 2 Nov: **Challenge first** (code pushed, untested end to end): `/test-centre/build?challenge=1` -> "Start the challenge" creates the battle with its questions BEFORE anyone plays (`POST /api/battles {question_ids,title}`), friends can open the link and play at once, the owner's score is copied from the server-graded attempt when they finish (screens show "challenges you / not finished yet" until then). **Owner: apply `supabase/migrations/0046_challenge_first.sql`** (makes owner_score nullable). Until then creating a new challenge shows "Couldn't create".
+- [x] 2 Nov: **Challenge first** (code pushed, untested end to end): `/test-centre/build?challenge=1` -> "Start the challenge" creates the battle with its questions BEFORE anyone plays (`POST /api/battles {question_ids,title}`), friends can open the link and play at once, the owner's score is copied from the server-graded attempt when they finish (screens show "challenges you / not finished yet" until then). **Owner: apply [`supabase/migrations/0046_challenge_first.sql`](supabase/migrations/0046_challenge_first.sql)** (makes owner_score nullable). Until then creating a new challenge shows "Couldn't create".
 - [ ] Challenge game next: live lobby with presence, per-question speed bonus and order scoring, hints near the end (R25 design docs), then Arena rooms.
 - [ ] Looks still to build: Liquid Glass, HUD Terminal, Blueprint, Editorial, Clay, Minimal Mono, Midnight, Ocean Bento, Sunrise Soft, Paper; then exam/results/Plans screen audit per Look; save Look to account.
 
@@ -64,13 +64,13 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 - [x] **(you) URGENT: Supabase rejects every signed-in database call from browsers** ("JWT issued at future", PGRST303, measured for 12+ minutes on 26 Oct). This breaks the referral link ("Creating your link…"), the sponsor break, profile loading/saving and anything else read directly from the browser. Steps: Supabase dashboard → your project → **Project Settings → General → Restart project**; if it persists, **Project Settings → JWT Keys**: check the current signing key, and open a ticket with Supabase support quoting PGRST303. Tell me when done; I re-test. **VERIFIED RESOLVED 30 Oct:** 11 live screens signed in (Pro and Free accounts) show no Supabase 4xx/5xx and no console errors; profile saves (PATCH profiles 204, value persists after reload).
 - [x] **Bug batch of 26 Oct fixed, verified, deployed** — see §0a.
-- [x] **R19 Battles** built and tested 30 Oct (migration `0043_battles.sql` applied): `/api/battles`, `/challenge/<id>`, live `/battles` board (15 s polling), server-graded scores, Free 3 active, 7-day expiry. Open: Telegram ping to the sender, topic-by-topic comparison, rematch. Ref: `docs/roadmap/R19-BATTLES.md`
-- [ ] **(me) R18 UI refresh** — dashboard first, then analytics, AI Mentor, other screens; contact sheet of layouts for you to pick. Ref: `docs/roadmap/R18-UI-REFRESH.md`.
+- [x] **R19 Battles** built and tested 30 Oct (migration `0043_battles.sql` applied): `/api/battles`, `/challenge/<id>`, live `/battles` board (15 s polling), server-graded scores, Free 3 active, 7-day expiry. Open: Telegram ping to the sender, topic-by-topic comparison, rematch. Ref: [`docs/done/roadmap/R19-BATTLES.md`](docs/done/roadmap/R19-BATTLES.md)
+- [ ] **(me) R18 UI refresh** — dashboard first, then analytics, AI Mentor, other screens; contact sheet of layouts for you to pick. Ref: [`docs/roadmap/R18-UI-REFRESH.md`](docs/roadmap/R18-UI-REFRESH.md).
 - [ ] **(me) R11 Forge**, then **R20 Solutions** for every question, with **R12 Study materials** possibly in parallel. Refs: `R11-FORGE.md`, `R20-SOLUTIONS.md`, `R12-STUDY-MATERIALS.md`.
-- [ ] **(you)** Swaseekh signed-in review: sign in with Google and send screenshots of dashboard, question bank, a textbook page, analytics with institute filter, mock test, pricing (I can't sign in with a Google account). Analysis so far: `docs/competitors/COMPETITORS_2026-10.md`.
+- [ ] **(you)** Swaseekh signed-in review: sign in with Google and send screenshots of dashboard, question bank, a textbook page, analytics with institute filter, mock test, pricing (I can't sign in with a Google account). Analysis so far: [`docs/business/competitors/COMPETITORS_2026-10.md`](docs/business/competitors/COMPETITORS_2026-10.md).
 - [ ] **(you)** Telegram: edit the pinned welcome post (it still says "with yesterday's answer"; now the answer is a spoiler in the same post). To refresh old link previews in Telegram, send the site link to **@WebpageBot**.
 - [x] **R16-A1 dependency patch** done 30 Oct (`npm audit fix` x2: 0 vulnerabilities, prod and dev). R16-A2 security headers done 30 Oct (see below). Still open: **R16-A3 sanitising**.
-- [ ] **(you)** Decisions F1, S1, S4 (`docs/OPEN_DECISIONS_FOR_YOU.md`).
+- [ ] **(you)** Decisions F1, S1, S4 ([`docs/open-work/OPEN_DECISIONS_FOR_YOU.md`](docs/open-work/OPEN_DECISIONS_FOR_YOU.md)).
 
 ### 0a. Bug batch 26 Oct (verified on a local production build, phone 390 + desktop 1440, light)
 - [x] 3 Link previews used an old built-in image (`app/opengraph-image.tsx` overrode the cards) → removed; every page now uses the approved cards (branch pages their own)
@@ -88,11 +88,11 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] 15 Referral link / sponsor break → **same Supabase outage**; re-test after the fix Verified 30 Oct: Profile overview no longer stuck on "Creating your link…" (referral/sponsor flows not exercised end to end).
 - [x] 2 Speed: first-load JS cut — exam session 443→241 KB, setup 421→219 KB, AI Mentor 435→233 KB, profile 768→279 KB; the 1.8 MB avatar library no longer loads on every page (styles load one at a time); chart library only when the goal panel opens; decorative fonts not preloaded
 - [ ] 1 Live battles → R19 (planned above)
-- [x] AI pre-generation: fixed the 1,000-row cap (Civil and older papers were never processed) and LaTeX-backslash JSON failures; status table in `docs/roadmap/R20-SOLUTIONS.md`
+- [x] AI pre-generation: fixed the 1,000-row cap (Civil and older papers were never processed) and LaTeX-backslash JSON failures; status table in [`docs/roadmap/R20-SOLUTIONS.md`](docs/roadmap/R20-SOLUTIONS.md)
 
 ## 1. Needs YOU
 
-### Decisions (context + my defaults: `docs/OPEN_DECISIONS_FOR_YOU.md`)
+### Decisions (context + my defaults: [`docs/open-work/OPEN_DECISIONS_FOR_YOU.md`](docs/open-work/OPEN_DECISIONS_FOR_YOU.md))
 - [x] 🔒 **F1** Plus Forge limit (31 Oct: 15 a day, Pro unlimited) — was: — default: Daily Forge + filtered practice, no archive, no "X" items; Pro gets all. *Blocks R11-A2 limits.*
 - [ ] **F2** Free sees Forge Mock solutions after the mock — default: yes, one week.
 - [ ] **F3** One Daily Forge teaser per branch channel — default: yes.
@@ -107,12 +107,12 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **S6** "Deadlock" sample chapter first — default: yes.
 - [ ] **S7** Study content in a private repo/bucket — default: yes.
 - [ ] Business: study-pass refund policy; GST later (accountant); rights for reference books in `notes/`.
-- [ ] Feature catalogue: approve any of the 56 ideas in `docs/roadmap/FEATURES.md` (reply "approve 1, 3, 23…").
+- [ ] Feature catalogue: approve any of the 56 ideas in [`docs/roadmap/FEATURES.md`](docs/roadmap/FEATURES.md) (reply "approve 1, 3, 23…").
 
 ### Tasks
 - [ ] **Films:** watch v8 on laptop + phone → YouTube (landscape `renyxera-film-v8-4k.mp4`), Short + Instagram Reel (`renyxera-film-v8-vertical-1080.mp4`) → send the YouTube id.
-- [ ] **Instagram:** Professional account → Meta app → tester → token → secrets `IG_USER_ID`, `IG_ACCESS_TOKEN` → run `social-check` (`docs/instagram/01-SETUP.md`).
-- [ ] **Telegram Premium:** boosts on hub + CS; six per-branch folders (send links); BotFather menu button + commands (`docs/telegram-premium/`).
+- [ ] **Instagram:** Professional account → Meta app → tester → token → secrets `IG_USER_ID`, `IG_ACCESS_TOKEN` → run `social-check` ([`docs/growth/instagram/01-SETUP.md`](docs/growth/instagram/01-SETUP.md)).
+- [ ] **Telegram Premium:** boosts on hub + CS; six per-branch folders (send links); BotFather menu button + commands (`docs/growth/telegram-premium/`).
 - [ ] **2FA everywhere** (R16-B1): GitHub, Cloudflare, Supabase, Google, Razorpay, Meta, Telegram — I'll give steps.
 - [ ] **GitHub protections** (R16-B3): secret scanning, push protection, Dependabot — I'll give steps.
 - [x] **Migrations:** run `0040_forge.sql` when I hand it over (R11-A1).
@@ -122,7 +122,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **Razorpay:** confirm UPI MDR (Settings → Pricing).
 - [ ] **Microsoft Store (R17):** create Partner Center individual account (confirm it's free), reserve "RENYXERA", send Package ID/Publisher ID/Publisher name.
 - [ ] 🟡 Custom domain (eu.org pending since 29 Sep, or buy after revenue) → email, AdSense, OAuth branding.
-- [ ] Google OAuth logo: upload `public/brand/oauth-logo.png` in Google Cloud console.
+- [ ] Google OAuth logo: upload [`public/brand/oauth-logo.png`](public/brand/oauth-logo.png) in Google Cloud console.
 - [ ] Working tree: confirm committing the deletion of `docs/og-*.png` and keeping the `docs/*.zip` files out of git.
 
 ---
@@ -156,15 +156,15 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ## 3. Priority tracks (detail in `docs/roadmap/`)
 
-### 3A · Release 11 — Forge (P1) · `docs/roadmap/R11-FORGE.md`
+### 3A · Release 11 — Forge (P1) · [`docs/roadmap/R11-FORGE.md`](docs/roadmap/R11-FORGE.md)
 **Done**
-- [x] Design (`docs/FORGE_DESIGN.md`) and access rules (`docs/FORGE_ENTITLEMENTS_AND_SETUP.md`)
+- [x] Design ([`docs/forge/FORGE_DESIGN.md`](docs/forge/FORGE_DESIGN.md)) and access rules ([`docs/forge/FORGE_ENTITLEMENTS_AND_SETUP.md`](docs/forge/FORGE_ENTITLEMENTS_AND_SETUP.md))
 - [x] AI practice sets gated by plan (migration 0039)
 
 **A · Foundation**
 - [x] **A1 Migration `0040_forge.sql`** written (27 Oct) — **(you) run it in Supabase SQL editor** — `forge_items` (public half, `release_at`, `status`, `mock_only`), `forge_answers` (private, no policies), `forge_item_stats`; RLS hides unreleased/mock items.
   - Done when: security check proves anon/auth can't read answers or unreleased items. Depends on: you run it.
-- [x] **A2 Entitlement** (`FORGE` + `canUseForgeQuestions` in plans.ts; Plus default 10/day until F1) — Forge block + `canUseForgeQuestions(tier)` in `lib/billing/plans.ts`; Plus limit 🔒F1.
+- [x] **A2 Entitlement** (`FORGE` + `canUseForgeQuestions` in plans.ts; Plus default 10/day until F1) — Forge block + `canUseForgeQuestions(tier)` in [`lib/billing/plans.ts`](lib/billing/plans.ts); Plus limit 🔒F1.
 - [x] **A3 APIs (grading part)** — `/api/forge/items` (tier/branch/rate-limit), Forge branch in `/api/answers` and `/api/exam/grade`, `/api/forge/report`.
   - Done when: scripted tests for guest/Free/Plus/Pro pass; no answer before submit.
 - [x] **A4 UI** — Daily Forge card (blurred + upgrade for Free), setup source switch Past papers / Forge / Mixed, Forge badge, solutions, report button, analytics split.
@@ -172,11 +172,11 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **A5 Beta flag** — owner-only until launch.
 
 **B · Authoring pipeline (₹0, Claude sessions)**
-- [x] **B1 `scripts/forge/profile.py`** (CS: 91 topics weighted) — per-topic weight, type mix, difficulty, 3-year trend.
+- [x] **B1 [`scripts/forge/profile.py`](scripts/forge/profile.py)** (CS: 91 topics weighted) — per-topic weight, type mix, difficulty, 3-year trend.
 - [ ] **B2 `scripts/forge/plan.py`** — batch blueprint (topics × archetypes × difficulty).
 - [ ] **B3 Batch format** — item schema + `verify` code per item.
-- [x] **B4 `scripts/forge/validate.py`** — schema, code-recomputed keys, distractor logic, PYQ-overlap check, MathJax render.
-- [x] **B5 `scripts/forge/seed.mjs`** (static forge.json still to do) + answer-free `public/data/<CODE>/forge.json`.
+- [x] **B4 [`scripts/forge/validate.py`](scripts/forge/validate.py)** — schema, code-recomputed keys, distractor logic, PYQ-overlap check, MathJax render.
+- [x] **B5 [`scripts/forge/seed.mjs`](scripts/forge/seed.mjs)** (static forge.json still to do) + answer-free `public/data/<CODE>/forge.json`.
 - [x] **B6 First CS batch of 60** — you spot-check 10; 0 wrong keys required.
 - [ ] **B7 CS buffer** — 300 practice + 30 days Daily Forge + 3 mocks (~800 items, ~14 batches).
 
@@ -189,7 +189,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **C6 Roll-out** EC → EE, ME, CE, DA (F5).
 - [ ] 💡 "X" items for Pro · subject mini-mocks · adaptive Forge sets.
 
-### 3B · Release 12 — Study materials (P2) · `docs/roadmap/R12-STUDY-MATERIALS.md`
+### 3B · Release 12 — Study materials (P2) · [`docs/roadmap/R12-STUDY-MATERIALS.md`](docs/roadmap/R12-STUDY-MATERIALS.md)
 **Done**
 - [x] Full programme plan (`docs/study-materials/00…12`), reference library review, `notes/` git-ignored
 
@@ -208,9 +208,9 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **C Complete CS + launch** — free first lesson per subject, Plans/topic-page placement, campaign.
 - [ ] **D Other branches** (S2 order) + yearly March review.
 
-### 3C · Release 13 — Monetisation III (P3) · `docs/roadmap/R13-MONETISATION.md`
+### 3C · Release 13 — Monetisation III (P3) · [`docs/roadmap/R13-MONETISATION.md`](docs/roadmap/R13-MONETISATION.md)
 **Done**
-- [x] Plans in `lib/billing/plans.ts`; Razorpay live (verify, webhook, reconcile, receipts); season pass; prorated upgrade; coupons; upgrade prompts; referrals; ad slot architecture
+- [x] Plans in [`lib/billing/plans.ts`](lib/billing/plans.ts); Razorpay live (verify, webhook, reconcile, receipts); season pass; prorated upgrade; coupons; upgrade prompts; referrals; ad slot architecture
 
 **Open**
 - [ ] **A1 Forge locks as the main upgrade moment** — blurred Daily Forge, "practise like the ones you missed" after Forge Mocks; events per source.
@@ -222,7 +222,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **B1 Study pass** (R12-A6) · **B2 Affiliates** (books, calculator; disclosure; click tracking) · **B3 Sponsorship media kit** · **B4 College licences** · **B5 Formula-sheet packs** · **B6 🟡 Ads after domain** (consent, non-personalised under 18, ad-free for paid).
 - [ ] **C2 Monthly billing report to your Telegram** · **C3 Refund flow test** · **C5 Feature-flag copy tests** · **C4 🟡 GST**.
 
-### 3D · Release 14 — Marketing and growth (P4) · `docs/roadmap/R14-MARKETING-GROWTH.md`
+### 3D · Release 14 — Marketing and growth (P4) · [`docs/roadmap/R14-MARKETING-GROWTH.md`](docs/roadmap/R14-MARKETING-GROWTH.md)
 **Done**
 - [x] Film v8 (4K landscape, vertical 1080 at 31.6 MB, vertical 4K); click-to-play component
 - [x] Telegram hub + six branch channels + topics group + folder link (working; hub bot posted 19 Oct)
@@ -239,13 +239,13 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **F Weekly growth report** to your Telegram.
 - [ ] 🟡 Welcome email series (needs domain/SMTP).
 
-### 3E · Release 15 — Performance optimisation (no quality loss) · `docs/roadmap/R15-PERFORMANCE.md`
+### 3E · Release 15 — Performance optimisation (no quality loss) · [`docs/roadmap/R15-PERFORMANCE.md`](docs/roadmap/R15-PERFORMANCE.md)
 *Audit 22 Oct: 1,280 PNG images (79 MB), recharts in the top bar on every app page, full Prism highlighter in the question renderer, 7 font families preloaded, 824 KB CS bank + 3.5 MB shared pool loaded whole, motion in 81 files without LazyMotion.*
 *Budgets: LCP ≤ 2.0 s public / 2.5 s app, INP ≤ 200 ms, CLS ≤ 0.05, ≤ 180 KB first-load JS per app route.*
-- [ ] **A1 Lazy-load goal slider panel** (recharts off the shared chunk) — `components/layout/topbar.tsx`.
+- [ ] **A1 Lazy-load goal slider panel** (recharts off the shared chunk) — [`components/layout/topbar.tsx`](components/layout/topbar.tsx).
 - [ ] **A2 PrismLight + registered languages, dynamic `CodeBlock`** — identical rendering on 10 code questions.
 - [ ] **A3 Fonts** — preload only Manrope, Sora, Bruno Ace SC; decorative fonts only on the dashboard hero.
-- [ ] **A4 `next.config.ts` hygiene** — drop picsum, `optimizePackageImports`, `removeConsole` (keep error/warn).
+- [ ] **A4 [`next.config.ts`](next.config.ts) hygiene** — drop picsum, `optimizePackageImports`, `removeConsole` (keep error/warn).
 - [ ] **A5 Bundle analyser + CI budget** (`scripts/check-bundle.mjs`).
 - [ ] **B1 WebP for question images** (lossless/near-lossless, PNG fallback, `<picture>`) — ≥ 50 % smaller, 30-diagram visual check in light/dark.
 - [ ] **B2 Image sizes + lazy/priority loading** — CLS 0 on navigation.
@@ -257,18 +257,18 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **E1 Edge caching for public pages** · **E2 Supabase Performance Advisor + indexes** · **E3 service-worker strategy**.
 - [ ] **F1 Lighthouse CI + extended CWV script (INP, app pages)** · **F2 real-user web vitals to `/api/events`**.
 
-### 3F · Release 16 — Security hardening · `docs/roadmap/R16-SECURITY.md`
+### 3F · Release 16 — Security hardening · [`docs/roadmap/R16-SECURITY.md`](docs/roadmap/R16-SECURITY.md)
 *Audit 22 Oct: no HTTP security headers; 9 vulnerable production dependencies (1 critical); `html` AST nodes injected raw; per-isolate rate limits; no security.txt or Dependabot.*
 - [x] **A1 Patch dependencies** (critical/high to 0) — 0 vulnerabilities on 30 Oct.
 - [x] **A2 Security headers** (30 Oct: HSTS, nosniff, frame deny, referrer, permissions, COOP same-origin-allow-popups; CSP in REPORT-ONLY mode with /api/csp-report; 14 signed-in pages gave 0 violations; Razorpay checkout, Turnstile login and Google sign-in not exercised). Original note: HSTS, nosniff, Referrer-Policy, Permissions-Policy, frame-ancestors none, COOP same-origin-allow-popups, CSP (report-only → enforce, nonces for inline scripts).
-- [x] **A3 Sanitise HTML nodes** (30 Oct: `lib/security/sanitize-html.ts` allow-list, no attributes; 17 XSS payloads pass via `npm run check:sanitize`; JSON-LD scripts escape "<" via `lib/seo/json-ld.ts`; MathJax `\href`/`\class`/`\style`/`\cssId` neutralised in `lib/mathjax-config.ts`. Note: MathJax 4.1.0 has NO "safe" extension (asking for it breaks all formulas); original text: — bank-only `html` nodes, allow-list sanitiser, AI parser emits no HTML; XSS payload tests.
+- [x] **A3 Sanitise HTML nodes** (30 Oct: [`lib/security/sanitize-html.ts`](lib/security/sanitize-html.ts) allow-list, no attributes; 17 XSS payloads pass via `npm run check:sanitize`; JSON-LD scripts escape "<" via [`lib/seo/json-ld.ts`](lib/seo/json-ld.ts); MathJax `\href`/`\class`/`\style`/`\cssId` neutralised in [`lib/mathjax-config.ts`](lib/mathjax-config.ts). Note: MathJax 4.1.0 has NO "safe" extension (asking for it breaks all formulas); original text: — bank-only `html` nodes, allow-list sanitiser, AI parser emits no HTML; XSS payload tests.
 - [ ] **B1 2FA on all owner accounts** (you) · **B2 key-rotation runbook** · **B3 GitHub secret scanning, push protection, Dependabot, branch protection** · **B4 optional TOTP 2FA for paid students**.
 - [ ] **C1 Shared rate limits** (Postgres counters or Cloudflare free rule) · **C2 Turnstile on waitlist/report/contact** · **C3 WAF/Bot Fight Mode after domain** · **C4 webhook replay protection**.
 - [ ] **D1 Supabase Security Advisor clean** (you: Dashboard > Advisors) · [x] **D2 automated RLS probe** done 30 Oct: `npm run check:rls` probes all 43 tables signed-out and as an ordinary account: no leaks, `question_answers` and all private tables denied · **D3 DPDP retention + consent records** · **D4 privacy policy update** (Forge, study materials, shares, channels).
 - [ ] **E1 Sentry alerts** · **E2 user-visible security events** · **E3 `/.well-known/security.txt`** · **E4 quarterly restore drill + incident checklist**.
 
-### 3H · Release 18 — UI refresh (priority) · `docs/roadmap/R18-UI-REFRESH.md`
-- [x] U1 (27 Oct): share card (clean share base, branch names, no overlaps), stack deck clipped to tidy lips, navbar gold/silver rings removed, dot-grid texture. Plan: `docs/roadmap/R18-UI-UPGRADE-PLAN.md`
+### 3H · Release 18 — UI refresh (priority) · [`docs/roadmap/R18-UI-REFRESH.md`](docs/roadmap/R18-UI-REFRESH.md)
+- [x] U1 (27 Oct): share card (clean share base, branch names, no overlaps), stack deck clipped to tidy lips, navbar gold/silver rings removed, dot-grid texture. Plan: [`docs/roadmap/R18-UI-UPGRADE-PLAN.md`](docs/roadmap/R18-UI-UPGRADE-PLAN.md)
 - [ ] U2 shared UI kit — partly done 27 Oct: FolderTabs, Segmented, btn-main, grad-brand built; 291 labels in 84 files moved to sentence case; old purple gradient replaced in 34 places. Left: restyle each components/ui file
 - [ ] U3 app shell: topbar, bottom tabs, to-do panel, calendar panel, goal slider, leaderboard, account menu, Ctrl+K
 - [ ] U4 dashboard + planner — partly done: first-run hero (no empty rings, one start ask), to-do + calendar panel headers. Left: remaining dashboard/planner components
@@ -294,22 +294,22 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] 18D Other screens (setup, results, review, profile, mocks, planner, lists, syllabus, public pages)
 - [ ] 18E Competitor-inspired: institute filter (C1), daily target (C5), 70+ blueprint (C9), progress report (C10), guided tour (C11), focus mode (C13), topic checklist (C14)
 
-### 3I · Release 19 — Battles · `docs/roadmap/R19-BATTLES.md`
+### 3I · Release 19 — Battles · [`docs/done/roadmap/R19-BATTLES.md`](docs/done/roadmap/R19-BATTLES.md)
 - [x] Migration `0041_battles.sql` + RPCs (server-graded scores only)
 - [x] `/challenge/<id>` links, live status card (15 s polling), result screen with winner and topic comparison, rematch
 - [x] Telegram pings to the sender; limits (Free 3 active); expiry 7 days
 
-### 3J · Release 20 — Solutions for every question · `docs/roadmap/R20-SOLUTIONS.md`
+### 3J · Release 20 — Solutions for every question · [`docs/roadmap/R20-SOLUTIONS.md`](docs/roadmap/R20-SOLUTIONS.md)
 - [x] AI pre-generation status measured (26 Oct): CS 11 %, DA 26 %, EC 12 %, EE 12 %, ME 10 %, CE 0 %; 360 failed (≈225 Gemini overload, retried; ≈130 JSON, now repaired); 1,000-row cap fixed
 - [ ] Solution format + validator (answer must equal official key; control-character scan)
 - [ ] `question_solutions` table + review panel + flag-an-error
 - [ ] CS → EC → EE → ME → CE → DA; GA once
 
-### 3K · Competitors · `docs/competitors/COMPETITORS_2026-10.md`
+### 3K · Competitors · [`docs/business/competitors/COMPETITORS_2026-10.md`](docs/business/competitors/COMPETITORS_2026-10.md)
 - [x] Swaseekh (public pages) and GATE CS Preparation Hub (Hatchable) analysed on desktop + phone; 16 ideas ranked (C1–C16)
 - [ ] Signed-in Swaseekh review (needs your screenshots)
 
-### 3G · Release 17 — Microsoft Store app (Windows) · `docs/roadmap/R17-MICROSOFT-STORE.md`
+### 3G · Release 17 — Microsoft Store app (Windows) · [`docs/roadmap/R17-MICROSOFT-STORE.md`](docs/roadmap/R17-MICROSOFT-STORE.md)
 - [ ] **M1 Manifest upgrade** — id, name/description for all branches, categories, separate any/maskable icons, screenshots (wide + narrow), shortcuts (Practice, Mocks, AI Mentor, Planner, Mistakes), `display_override` window-controls-overlay, `launch_handler`, optional `share_target`.
   - Done when: PWABuilder report all required green.
 - [ ] **M2 Desktop polish** — title-bar overlay layout, offline banner, exam keyboard shortcuts sheet, taskbar badge (due revisions), opt-in notifications.
@@ -326,7 +326,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ### Release 1 — Core ✅
 - [x] Bank, images, AST/MathJax, IndexedDB, all test types, timer, palette, bookmarks, notes, mistakes, revision, results, review, analytics, planner, command palette, fullscreen
-- [ ] **Verify markdown tables** render (`lib/repository/transformers/table-extractor.ts`; test `GATE_CS_2025_AN_Q8`) — done when shown as a table in exam, review, PYQ page.
+- [ ] **Verify markdown tables** render ([`lib/repository/transformers/table-extractor.ts`](lib/repository/transformers/table-extractor.ts); test `GATE_CS_2025_AN_Q8`) — done when shown as a table in exam, review, PYQ page.
 
 ### Release 2 — Premium experience ✅
 - [x] Design system, themes, motion, redesigned dashboard/analytics
@@ -338,7 +338,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 ### Release 4 — Foundation
 - [x] 4A Cloudflare + CI/CD + rollback + PWA · 4B Postgres/RLS/seeding · 4C email + Google auth, Turnstile · 4D guest mode · 4E profile/goals/achievements · 4F isolation + devices · 4G API hardening · 4H branch pages · 4I cloud sync · 4J calibration 2023–2026
 - [ ] **4J Official marks↔AIR + category curves** — March 2027 refresh from the official report; label vintage.
-- [ ] **4J Official schedule page** from the GATE 2027 brochure (`lib/seo/gate2027.ts`).
+- [ ] **4J Official schedule page** from the GATE 2027 brochure ([`lib/seo/gate2027.ts`](lib/seo/gate2027.ts)).
 - [ ] **4J Readiness predictor reads calibration** (with 9E).
 - [ ] **4J Opt-in anonymised scorecards** (March 2027).
 - [ ] **4E Recent-year PYQ weighting as the exam nears** (with 9A).
@@ -375,7 +375,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **Revenue lines** → R13-B.
 - [ ] 💡 2017–2020 papers for non-CS branches · ⏸ more branches.
 
-### Release 9 — Depth and community · `docs/roadmap/R09-R10-DEPTH-AND-ADMIN.md`
+### Release 9 — Depth and community · [`docs/roadmap/R09-R10-DEPTH-AND-ADMIN.md`](docs/roadmap/R09-R10-DEPTH-AND-ADMIN.md)
 - [ ] **9A FSRS spaced repetition + daily adaptive set** — due counts sync across devices; recall measured.
 - [ ] **9B Freeze tokens, XP/levels, daily goals, study-time boards**.
 - [ ] **9C Moderated community** (only with moderation tools).
@@ -383,13 +383,13 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [ ] **9E AI depth** — weakness study plan, AI mocks, natural-language search, voice revision.
 - [ ] **Flashcards** · **Telegram phone verification + weekly report** · 🟡 WhatsApp.
 
-### Release 10 — Admin console · `docs/roadmap/R09-R10-DEPTH-AND-ADMIN.md`
-- [ ] **Admin-lite first** (Forge review queue, reports, coupons, mocks). Full spec written: `docs/roadmap/R10-ADMIN-SPEC.md` (decided: stays at `/admin`, not a separate app; modules for learners, money, marketing, Telegram/Instagram/YouTube, automations, content ops, health). Owner said do not build yet; R30 `/admin` is the first slice.
+### Release 10 — Admin console · [`docs/roadmap/R09-R10-DEPTH-AND-ADMIN.md`](docs/roadmap/R09-R10-DEPTH-AND-ADMIN.md)
+- [ ] **Admin-lite first** (Forge review queue, reports, coupons, mocks). Full spec written: [`docs/roadmap/R10-ADMIN-SPEC.md`](docs/roadmap/R10-ADMIN-SPEC.md) (decided: stays at `/admin`, not a separate app; modules for learners, money, marketing, Telegram/Instagram/YouTube, automations, content ops, health). Owner said do not build yet; R30 `/admin` is the first slice.
 - [ ] **10A strict login + 2FA · 10B roles in Postgres · 10C mocks · 10D integrity queue · 10E content editing with versioning · 10F users (DPDP) · 10G dashboards · 10H money · 10I comms · 10J audit · 10K flags/kill switches · 10L AI pre-gen console · 10M AI logs with retention**.
 
 ### Platform-wide
 - [x] Sentry, Web Analytics, keep-alive, encrypted backups + drill, CWV script, E2E smoke in CI
-- [x] Handover pack (`HANDOFF.md`, `CLAUDE.md`, `handover/`, `docs/roadmap/`) — 22 Oct
+- [x] Handover pack ([`HANDOFF.md`](HANDOFF.md), [`CLAUDE.md`](CLAUDE.md), `handover/`, `docs/roadmap/`) — 22 Oct
 - [ ] **Accessibility pass** — keyboard, focus, contrast, maths labels (FEATURES 45).
 - [ ] **Structured logs + alerts, diagnostics view** (R10, R16-E1).
 
@@ -407,15 +407,15 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ## 6. Bugs and tech debt
 - [ ] Markdown tables verification (Release 1)
-- [ ] `components/exam/exam-timer.tsx` 3 h fallback when no draft
+- [ ] [`components/exam/exam-timer.tsx`](components/exam/exam-timer.tsx) 3 h fallback when no draft
 - [ ] Dead code: `design-system/*` (if present), duplicate `PersonalNotesDrawer`
-- [ ] Rename `data/Aggregated_Output.json` → `data/pyq/CS/gate_cs_pyqs.json` (update loaders/scripts)
+- [ ] Rename [`data/Aggregated_Output.json`](data/Aggregated_Output.json) → `data/pyq/CS/gate_cs_pyqs.json` (update loaders/scripts)
 - [ ] Share card browser test; Playfair "Q" swash review
 - [ ] Manifest still says "GATE CSE" (fixed by R17-M1)
 
 ---
 
-## 7. Feature catalogue 💡 — 56 proposals with what/why/how/tier/effort in `docs/roadmap/FEATURES.md`
+## 7. Feature catalogue 💡 — 56 proposals with what/why/how/tier/effort in [`docs/roadmap/FEATURES.md`](docs/roadmap/FEATURES.md)
 - **Learning (1–16):** Mistake DNA · mastery heatmap · exam-day rehearsal · time coach · revision playlists · FSRS flashcards · why-wrong for every option · similar-question finder · attempt comparison · error notebook · calculator speed trainer · normalisation simulator · peer benchmark · audio revision · doubt from a photo · explain levels.
 - **Motivation (17–22):** freeze tokens · study-with-me link · milestone cards · Telegram mentor check-in · private study groups · parent/mentor progress link.
 - **Monetisation (23–28):** Forge Mock report unlock · Target pack · college dashboard · scholarship coupons · exam-season gift pass · PSU/M.Tech interview add-on.
@@ -432,7 +432,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Scrollbars hidden again, no arrows (root cause: scrollbar-width/color in the per-card rule makes Chrome ignore ::-webkit-scrollbar)
 - [x] Folder final shape, palette current-question marker, exam header icon buttons, results screen, rank chart labels
 - [x] AI Tutor home (search, mistakes, bookmarks, plan banner)
-- [x] AI Mentor refactor plan written: docs/roadmap/R21-AI-MENTOR.md (awaiting owner decisions in section 10)
+- [x] AI Mentor refactor plan written: docs/done/roadmap/R21-AI-MENTOR.md (awaiting owner decisions in section 10)
 - [ ] Build AI Mentor M1 (chat shell, Know-me panel, analytics cards moved out)
 - [ ] AI Tutor inner workspace panels on the shared pastel look
 - [x] Forge items seeding so Forge/Blend use real items; Battles in avatar menu; Ctrl+K palette
@@ -448,9 +448,9 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 
 ## 29 Oct 2026 (AI Mentor and AI providers)
 - [x] AI Mentor rebuilt: home (quick ask, today's plan, next actions, what I know + forget), dedicated chat screen /ai-mentor/chat (plan, review, quiz, guided, weekly), MENTOR_CHAT server type, number check, notes, flags; old analytics cards moved to Analytics > Coach insights
-- [x] AI provider layer: OpenRouter free models auto-picked per task with key rotation, Gemini fallback; docs/AI_PROVIDERS_SETUP.md
+- [x] AI provider layer: OpenRouter free models auto-picked per task with key rotation, Gemini fallback; docs/engineering/AI_PROVIDERS_SETUP.md
 - [x] Forge generator (Gemini/OpenRouter/OmniRoute) + nightly workflow to forge-auto
-- [x] You: add OPENROUTER_API_KEYS to Cloudflare + GitHub + .env.local (steps in docs/AI_PROVIDERS_SETUP.md)
+- [x] You: add OPENROUTER_API_KEYS to Cloudflare + GitHub + .env.local (steps in docs/engineering/AI_PROVIDERS_SETUP.md)
 - [ ] Mentor not done: cloud-synced memory, Telegram weekly check-in, photo doubts, 50-question evaluation set, live test with a real model reply
 - [x] R22 Test Centre (merge Mocks + Exam engine): docs/roadmap/R22-TEST-CENTRE.md, after Mentor
 
@@ -459,7 +459,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] AI Tutor: finds saved AI/snapshot questions (was "No active question loaded"), clear "not on this device" state, panels tinted peach / sky / lilac
 - [x] 29 Oct: Forge live for Plus/Pro: migration 0040 applied, 6 pilot items seeded; `/api/exam/grade` and `/api/answers` grade FORGE_ ids from forge_answers (plan, branch, release rules; solution returned with key); hub Daily/Practice/Bookmarks read `/api/forge/items`; `UPCOMING.forge = "live"`
 - [ ] Forge in built tests: Exam Setup Forge/Blend shares still PYQ-only (grading is ready; wire the generator + a larger bank); Forge Mocks card is a placeholder; `/api/forge/report` not built
-- [x] You: OPENROUTER_API_KEYS in Cloudflare, GitHub, .env.local; GEMINI_API_KEY in GitHub for the nightly Forge job (docs/AI_PROVIDERS_SETUP.md)
+- [x] You: OPENROUTER_API_KEYS in Cloudflare, GitHub, .env.local; GEMINI_API_KEY in GitHub for the nightly Forge job (docs/engineering/AI_PROVIDERS_SETUP.md)
 - [ ] Mentor still to do: cloud-synced memory (migration), Telegram weekly check-in, photo doubts, evaluation set, real-model test after keys
 - [x] R22 Test Centre (docs/roadmap/R22-TEST-CENTRE.md) after Mentor
 
@@ -473,15 +473,15 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 29 Oct: "tease, don't block" for paid features (owner rule): Forge Free = fixed taster of 10 playable questions (solution locked, rest as locked cards, server-enforced); Study Free = Operating Systems > Deadlock, first 4 topics open, rest locked with study-pass prompt; locked chapters link to plans
 - [ ] Apply the same taster to the other gated features (AI practice sets, Battles, Spark, Planner automation, offline downloads); audit each Free-blocked screen
 - [x] 29 Oct: Tutor panels recoloured to the blue family; Free AI practice sets taster (3 per account, never reset) coded; fails closed until migration `0042_free_taster.sql` is run (you). Analytics stays a full lock (owner: a view, not a feature to try)
-- [x] **(you) run `supabase/migrations/0042_free_taster.sql`** in Supabase SQL editor (click-by-click steps given in chat)
+- [x] **(you) run [`supabase/migrations/0042_free_taster.sql`](supabase/migrations/0042_free_taster.sql)** in Supabase SQL editor (click-by-click steps given in chat)
 - [ ] Taster for Battles, Spark and planner automation: audit when those go live
 - [x] 30 Oct: Forge nightly workflow fixed (both earlier runs hit the 2 h limit and lost their work): generate step now stops at 95 min and the push step always runs
-- [ ] Forge in built tests: `gradeNow` in `lib/repository/answer-keys.ts` only sends `GATE_` ids to the grader, so FORGE_ ids in a test are never graded; allow FORGE_ ids there when the Exam Setup Forge/Blend source is wired
+- [ ] Forge in built tests: `gradeNow` in [`lib/repository/answer-keys.ts`](lib/repository/answer-keys.ts) only sends `GATE_` ids to the grader, so FORGE_ ids in a test are never graded; allow FORGE_ ids there when the Exam Setup Forge/Blend source is wired
 - [x] 30 Oct: Battles Telegram message to the owner when a friend starts and finishes (linked members; mute with prefs.battles=false); FORGE ids now sent to the grader (server still applies plan/branch/release rules)
 - [x] 30 Oct: Battles subject-by-subject comparison (`/api/battles/[id]/compare`), rematch (friend turns their score into a new battle), Free 3-active-battle limit verified
 - [ ] Battles: look at the comparison and rematch UI in a browser (API verified only); test the Challenge button on a real result page
 - [ ] Forge in built tests: load Forge items into the exam engine (they live in the database, the engine reads the static bank), keep them in the saved session for review, then enable the Forge/Blend shares in Exam Setup
-- [x] 30 Oct: Forge bank now 17 CS questions live (6 pilot + 1 reviewed from the cloud run + 10 authored in session, `scripts/forge/author_b002.py`, every answer computed by its own verify code); Free sees 10 + 7 locked; locked keys refused. Finding: the cloud Gemini run made 1 question in 95 min (free tier is the bottleneck) so the bank grows by session authoring, not the nightly job
+- [x] 30 Oct: Forge bank now 17 CS questions live (6 pilot + 1 reviewed from the cloud run + 10 authored in session, [`scripts/forge/author_b002.py`](scripts/forge/author_b002.py), every answer computed by its own verify code); Free sees 10 + 7 locked; locked keys refused. Finding: the cloud Gemini run made 1 question in 95 min (free tier is the bottleneck) so the bank grows by session authoring, not the nightly job
 - [ ] Next Forge batches: author_b003.py (other CS topics: compilers, COA pipeline/cache, DBMS transactions, networks, programming), then EC/EE/ME/CE/DA; static answer-free `forge.json` per branch still to do
 - [x] 30 Oct: Forge hub: questions use the full width (side cards moved below), "Show solution" before checking fetches the key first, fenced code blocks render for C questions; bank now 29 CS questions (b003 = 12 more, `author_b003.py`)
 - [x] Owner decision: size to reach for CS before starting the other five branches in parallel (design target was ~800 across practice + Daily + mocks)
@@ -491,15 +491,15 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 30 Oct: reviewed `New folder/` (3 MadeToScale Instagram Reels + a 20-page "12 landing page animations" PDF; third-party, reference only, not for committing)
 - [ ] Owner to choose from the ideas taken from those references: Reels format for GATE (countdown list, kinetic captions, "comment a keyword" lead magnet), landing-page motion (hero reveal, count-up, process draw, price roll) within our rules (reduced motion, transform/opacity only, play once, real data only)
 - [x] `New folder/`: owner will delete it (31 Oct), no .gitignore needed
-- [x] 30 Oct: UI UX Pro Max skill (nextlevelbuilder, MIT) reviewed and installed at `.claude/skills/ui-ux-pro-max` (scripts have no network/exec/write; design system stays `docs/design/DESIGN-SYSTEM.md`); standing rule saved: use fitting skills/plugins each round
-- [x] 30 Oct: reference review written: `docs/reference/MADETOSCALE_REFERENCE_REVIEW.md` (tools verdicts, which animations to adopt, reel format)
-- [x] **Reel template built (30 Oct):** composition `CountdownReel` in `video/` (1080x1920, 30 fps, 22 s: hook, five numbered topics, outro) from real data via `video/scripts/make-reel-data.mjs`; stills checked, **not rendered** (render when you ask: `cd video && npx remotion render src/index.ts CountdownReel out/reel-top5.mp4`). Open: voice-over/captions audio (Kokoro), Hindi version, export cuts, a second reel (e.g. "3 traps in cache questions")
+- [x] 30 Oct: UI UX Pro Max skill (nextlevelbuilder, MIT) reviewed and installed at `.claude/skills/ui-ux-pro-max` (scripts have no network/exec/write; design system stays [`docs/design/DESIGN-SYSTEM.md`](docs/design/DESIGN-SYSTEM.md)); standing rule saved: use fitting skills/plugins each round
+- [x] 30 Oct: reference review written: [`docs/business/reference/MADETOSCALE_REFERENCE_REVIEW.md`](docs/business/reference/MADETOSCALE_REFERENCE_REVIEW.md) (tools verdicts, which animations to adopt, reel format)
+- [x] **Reel template built (30 Oct):** composition `CountdownReel` in `video/` (1080x1920, 30 fps, 22 s: hook, five numbered topics, outro) from real data via [`video/scripts/make-reel-data.mjs`](video/scripts/make-reel-data.mjs); stills checked, **not rendered** (render when you ask: `cd video && npx remotion render src/index.ts CountdownReel out/reel-top5.mp4`). Open: voice-over/captions audio (Kokoro), Hindi version, export cuts, a second reel (e.g. "3 traps in cache questions")
 - [ ] **Landing motion with `motion` (no GSAP):** one shared `CountUp`, hero word reveal, "how it works" line draw, Plans price roll, sign-up/upgrade button states; checked with the ui-ux-pro-max motion rules and the 6-point pre-ship list (reduced motion, transform/opacity only, play once, under 2.5 s, real data only)
 - [ ] Optional: try Chatterbox on one Hindi line for Hindi/Hinglish reels (needs your OK; never clone a real voice without consent); OpenWhispr voice typing for you
 - [ ] Review the `claude-youtube` skill pack before the YouTube channel launches (third-party: review first)
 - [x] 30 Oct: Reel rendered: `video/out/reel-top5.mp4` (22.6 s, 1080x1920, H.264, silent; local only, not committed). Open: voice-over + captions audio, Hindi cut, watch-through review by you
-- [x] 30 Oct: shared motion components built with `motion` (no GSAP): `components/ui/count-up.tsx` (used on the Test Centre hub stat tiles) and `components/ui/price-roll.tsx` (used on the Plans prices); both honour reduced motion and expose the real value to screen readers. Verified 30 Oct: price roll on Plans (desktop light, mid-roll and settled; mobile dark prices correct; reduced motion shows plain text). Open: count-up on the hub with real numbers (test account had zeros) and mobile light/dark visuals
-- [x] Hero word reveal built (`components/ui/word-reveal.tsx`, CSS only, plays once, reduced-motion safe; on the Tools hub headline; verified staggered fade-in and instant under reduced motion). Still to build: "how it works" line draw, sign-up/upgrade button states, use the reveal on the landing headline
+- [x] 30 Oct: shared motion components built with `motion` (no GSAP): [`components/ui/count-up.tsx`](components/ui/count-up.tsx) (used on the Test Centre hub stat tiles) and [`components/ui/price-roll.tsx`](components/ui/price-roll.tsx) (used on the Plans prices); both honour reduced motion and expose the real value to screen readers. Verified 30 Oct: price roll on Plans (desktop light, mid-roll and settled; mobile dark prices correct; reduced motion shows plain text). Open: count-up on the hub with real numbers (test account had zeros) and mobile light/dark visuals
+- [x] Hero word reveal built ([`components/ui/word-reveal.tsx`](components/ui/word-reveal.tsx), CSS only, plays once, reduced-motion safe; on the Tools hub headline; verified staggered fade-in and instant under reduced motion). Still to build: "how it works" line draw, sign-up/upgrade button states, use the reveal on the landing headline
 - [ ] Forge next batches: more MCQ and MSQ items (b002-b004 are mostly numeric answers), then toward 800
 - [x] 30 Oct: Forge hub supports multiple-select (MSQ) questions: checkboxes, "Select all that apply", graded with the MSQ rule
 - [ ] **Enforce the CSP** after about a week of real traffic: read `csp_violation` log lines, fix what is legitimate, then switch `Content-Security-Policy-Report-Only` to `Content-Security-Policy`; later replace `'unsafe-inline'` scripts with nonces
@@ -516,9 +516,9 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 31 Oct: GitHub protections done by the owner (secret scanning, push protection, Dependabot, ruleset). 2FA on all accounts: owner will do later
 - [x] 31 Oct: Pro test account device cooldown: owner chose option C (leave it; ages out around 27 Nov). All live tests use the Free test account
 - [x] 31 Oct: refund policy rewritten to the owner's rule (refunds only for glitches and errors, by email with a genuine reason): `/refunds`, `/terms` section 7, Plans confirm box, receipt, contact page; the old "currently free, no payments" and 7-day refund wording removed. Legal review still open
-- [ ] **Study materials: build plan after the decisions:** (1) pack and bundle data model + `study_access` per subject, (2) Plans checkout add-on row with server validation, (3) offer moments from `13` section 4 in order (results screen, post-purchase, mistakes), (4) CS lessons built subject by subject with owner review, Aptitude last. Future features list: `docs/study-materials/14-FUTURE-FEATURES.md`
+- [ ] **Study materials: build plan after the decisions:** (1) pack and bundle data model + `study_access` per subject, (2) Plans checkout add-on row with server validation, (3) offer moments from `13` section 4 in order (results screen, post-purchase, mistakes), (4) CS lessons built subject by subject with owner review, Aptitude last. Future features list: [`docs/study-materials/14-FUTURE-FEATURES.md`](docs/study-materials/14-FUTURE-FEATURES.md)
 - [ ] Answer the owner: how much effort to move the repo to a renyxera@gmail.com GitHub account (options: rename + add email; organization; new personal account), see the reply of 31 Oct; the remote uses the SSH alias `github-personal`
 - [x] 31 Oct: **Supabase Advisors fixed with migration `0044_advisor_fixes.sql` (applied by the owner; verified from outside with `npm run check:rpc` and `npm run check:rls`)**: 15 slow-policy warnings (`auth.uid()` now `(select auth.uid())`), 2 mutable search paths, and signed-out/signed-in access to SECURITY DEFINER functions (signed-out visitors now denied `mock_paper`, `mock_my_result` and every private function; any signed-in user denied `account_tier` and the trigger functions). Kept on purpose: the six public-leaderboard functions for visitors, and the self-scoped functions signed-in users call (my_referral_code, claim_referral, change_my_branch, ...). Those remaining "signed-in can execute" warnings are accepted by design (each reads or writes only the caller's own rows). Live site re-checked after: 11 screens clean. Open: owner to click Refresh in both Advisors and send what remains
 - [x] 31 Oct: manifest fixed ("GATE CSE" removed): new name/description, maskable icons, 5 screenshots, 5 shortcuts, `orientation: any`, categories, launch handler (R17-M1 mostly done; not done: window-controls-overlay styling, share target, taskbar badge)
-- [x] 31 Oct: mobile app plan written: `docs/roadmap/R24-MOBILE-APP.md` (PWA first, Play via TWA when funded, iPhone stays PWA, native wrapper only for photo doubts/widgets). Next: install prompt moments, iPhone Add-to-Home-Screen card, web push, phone single-screen audit
+- [x] 31 Oct: mobile app plan written: [`docs/roadmap/R24-MOBILE-APP.md`](docs/roadmap/R24-MOBILE-APP.md) (PWA first, Play via TWA when funded, iPhone stays PWA, native wrapper only for photo doubts/widgets). Next: install prompt moments, iPhone Add-to-Home-Screen card, web push, phone single-screen audit
 - [ ] Exam results screen single-screen fix (ring and tiles now follow the window height) and dark-mode outline softening: built, being tested

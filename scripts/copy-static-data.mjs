@@ -7,7 +7,7 @@
 // /api/answers. The build fails if an answer field survives. data/ stays the single
 // source of truth; public/data/ (and the copied non-CS images) are generated and git-ignored.
 //
-// Multi-branch (docs/MULTI_BRANCH_DESIGN.md §5):
+// Multi-branch (docs/done/MULTI_BRANCH_DESIGN.md §5):
 //   CSE  data/Aggregated_Output.json            -> public/data/questions.json (path unchanged)
 //        data/image-manifest.json                -> public/data/image-manifest.json
 //        images already live in public/images/<year-shift>/

@@ -1,5 +1,7 @@
 # 03 · Content pipeline: how a chapter is actually made
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 This is the accuracy engine. The rule: **nothing reaches a student that has not passed machine checks and a human review.** Writing is cheap; being wrong is expensive.
 
 ## 1. Roles

@@ -1,5 +1,7 @@
 # 10 · Edge cases and risks
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 Each row: the situation, why it matters, the planned handling. Grouped so nothing is missed. "Gate" means a build or release check blocks it.
 
 ## A. Content accuracy and sources

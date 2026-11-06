@@ -1,5 +1,7 @@
 # 04 · Content format and rendering
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 Goal: every equation, code listing, table, diagram and flow is stored as **structured data**, validated by scripts, and rendered by one renderer that we control. No raw HTML, no pasted images of equations, no hand-placed pixels.
 
 ## 1. Authoring format

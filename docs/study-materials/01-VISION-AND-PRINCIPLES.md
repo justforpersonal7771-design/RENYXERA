@@ -1,5 +1,7 @@
 # 01 · Vision and principles
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 ## The product in one paragraph
 
 A student opens a topic, for example *Deadlock* in Operating Systems, and finds one page that starts from why the topic exists, builds the idea in small steps with a picture for every step, shows the formal definition, walks through two or three exactly solved examples (one from a real GATE question), lists the traps, ends with a one-screen recall sheet and a short check, and links straight to the past-paper questions on that topic. It reads like a great teacher's explanation, not a textbook summary, and it is exact where exactness matters: every equation, line of code and table cell is checked.

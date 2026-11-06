@@ -1,5 +1,7 @@
 # 11 · QA checklists (hard gates)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 A box that is not ticked means the item does not ship. Scripts tick what they can; humans tick the rest and sign the review record.
 
 ## 1. Topic checklist (every lesson)

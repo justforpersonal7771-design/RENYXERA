@@ -116,4 +116,4 @@ auto: true
 - Every `diagram` needs `alt` and, for graphs and automata, the compiler generates the text-equivalent table.
 - Use snippet references (`:::snippet id=binary-search-trace`) instead of redrawing a standard figure.
 - Keep each callout to one idea.
-- Run `npm run study:check <chapter>` before asking for review; it runs every machine check in `docs/study-materials/03-CONTENT-PIPELINE.md` §4.
+- Run `npm run study:check <chapter>` before asking for review; it runs every machine check in [`docs/study-materials/03-CONTENT-PIPELINE.md`](../03-CONTENT-PIPELINE.md) §4.

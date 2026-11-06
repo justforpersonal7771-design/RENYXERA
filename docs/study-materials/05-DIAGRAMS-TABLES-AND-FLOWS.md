@@ -1,5 +1,7 @@
 # 05 · Diagrams, tables and flows
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 Diagrams are where most study materials are weakest (blurry, copied, inconsistent). Ours are generated from data, so they are exact, consistent, theme-aware, accessible and not downloadable as image files.
 
 ## 1. Principle

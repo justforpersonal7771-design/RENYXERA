@@ -1,6 +1,8 @@
 # R29: Battles as a game (friends, presence, two modes, points)
 
-*2 Nov 2026. Extends `R25-BATTLE-ARENA.md` and `R25-ARENA-UX-DESIGN.md`. Owner brief: treat Battles and Arena like a game (8-ball-pool feel): friends with active or inactive status, friend requests inside RENYXERA, leaderboard, points, a combined end result, and two modes: concurrent, and asynchronous (one submits, the other submits later, then the result is evaluated).*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*2 Nov 2026. Extends [`R25-BATTLE-ARENA.md`](R25-BATTLE-ARENA.md) and [`R25-ARENA-UX-DESIGN.md`](R25-ARENA-UX-DESIGN.md). Owner brief: treat Battles and Arena like a game (8-ball-pool feel): friends with active or inactive status, friend requests inside RENYXERA, leaderboard, points, a combined end result, and two modes: concurrent, and asynchronous (one submits, the other submits later, then the result is evaluated).*
 
 ## 1. What the game loop is
 Invite a friend (or a stranger from the leaderboard) → pick the paper (topic, count, time) → play → see ONE combined result screen → points move → rematch in one tap. Same loop as pool apps: a friends list with a green dot, a "Play" button on each friend, a lobby, a result with both players side by side, a rematch button, a ladder.
@@ -57,7 +59,7 @@ Free: 3 active battles, friends list, async mode, weekly leaderboard view. Plus 
 - Telegram notification when a friend challenges: on by default for linked users?
 
 ## Decision (3 Nov 2026): async battles keep the 7-day expiry
-The owner left the 24 h question to me, to be revisited later. Kept at 7 days: friends study on different schedules, a 24 h window would turn many challenges into "expired" before the friend opens them, and live battles are already time-boxed by the lobby. Free accounts' active-challenge cap still limits slot hogging. To change later: the `expires_at` default in migration 0044 and the "7 days" text in `app/api/battles/route.ts` and `[id]/rematch/route.ts`.
+The owner left the 24 h question to me, to be revisited later. Kept at 7 days: friends study on different schedules, a 24 h window would turn many challenges into "expired" before the friend opens them, and live battles are already time-boxed by the lobby. Free accounts' active-challenge cap still limits slot hogging. To change later: the `expires_at` default in migration 0044 and the "7 days" text in [`app/api/battles/route.ts`](../../app/api/battles/route.ts) and `[id]/rematch/route.ts`.
 
 ## Chunk audit (3 Nov 2026)
 The four biggest JS chunks are DiceBear avatar style JSON (two, loaded on demand), recharts (deferred) and Sentry (deferred). Nothing to fix.

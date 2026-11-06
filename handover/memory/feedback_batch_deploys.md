@@ -8,7 +8,7 @@ metadata:
   modified: 2026-09-26T19:36:14.583Z
 ---
 
-Commit locally as work progresses; push to `main` only once per finished module/release batch. As of 2026-09-27 the `deploy` job in `.github/workflows/ci.yml` deploys to Cloudflare automatically on every push to `main`, but only after the `check` job (type-check, build, security/goals/grading/calibration checks) passes, then smoke-tests the live site.
+Commit locally as work progresses; push to `main` only once per finished module/release batch. As of 2026-09-27 the `deploy` job in [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) deploys to Cloudflare automatically on every push to `main`, but only after the `check` job (type-check, build, security/goals/grading/calibration checks) passes, then smoke-tests the live site.
 
 **Why:** User (2026-09-26): "don't deploy each time… deploy all the commits for that release or module in a single batch". User (2026-09-27): "By just pushing the code to our main branch should trigger a deployment" — wants Vercel-style auto-deploy. Also said "don't deploy this change, we will deploy this in other batch" — respect explicit holds.
 

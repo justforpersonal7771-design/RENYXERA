@@ -1,5 +1,7 @@
 # 02 · Syllabus and content structure
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 The structure is not invented. It is derived, mechanically and then hand-corrected, from the **official GATE syllabus** of each paper, so a student sees the same section/subject/topic names they see in the brochure and in our past-paper bank.
 
 ## 1. The content tree
@@ -14,7 +16,7 @@ Branch (paper)            e.g. CS, EC, EE, ME, CE, DA
 ```
 
 - **Chapter = our unit of authoring, review and release.** A chapter is reviewed and published as a whole; a topic is the unit of reading and progress tracking.
-- Chapters map to the **units** already defined for CS in `lib/seo/syllabus.ts` (17 sections, 70 units, ~176 syllabus items) and to the hand-curated `data/pyq/<BR>/syllabus.json` for the other branches (EC 186 items, EE 154, ME 143, CE 152, DA 60). The syllabus item lists are the **coverage checklist**: every official item must be covered by at least one topic, and every topic must cite the syllabus item(s) it serves.
+- Chapters map to the **units** already defined for CS in [`lib/seo/syllabus.ts`](../../lib/seo/syllabus.ts) (17 sections, 70 units, ~176 syllabus items) and to the hand-curated `data/pyq/<BR>/syllabus.json` for the other branches (EC 186 items, EE 154, ME 143, CE 152, DA 60). The syllabus item lists are the **coverage checklist**: every official item must be covered by at least one topic, and every topic must cite the syllabus item(s) it serves.
 
 ## 2. Sizes (planning numbers)
 

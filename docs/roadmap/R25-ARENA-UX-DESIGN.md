@@ -1,6 +1,8 @@
 # R25b · Arena UX and visual design (the room, round by round)
 
-*31 Oct 2026. Companion to `R25-BATTLE-ARENA.md` (rules and build plan). Owner decisions: the **Setter knows the key** and earns a bonus only when not everyone gets it right; **hints appear as the countdown closes** (the skribbl letter-reveal idea); **every player gets a turn to pick a question**; the screen must feel like a game, not a form. Built with the existing pastel system (`docs/design/DESIGN-SYSTEM.md`): thick ink outlines, offset shadows, sticker tilts, tint colours per role. Research notes at the end; items marked "verify" need a real-player test.*
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
+*31 Oct 2026. Companion to [`R25-BATTLE-ARENA.md`](R25-BATTLE-ARENA.md) (rules and build plan). Owner decisions: the **Setter knows the key** and earns a bonus only when not everyone gets it right; **hints appear as the countdown closes** (the skribbl letter-reveal idea); **every player gets a turn to pick a question**; the screen must feel like a game, not a form. Built with the existing pastel system ([`docs/design/DESIGN-SYSTEM.md`](../design/DESIGN-SYSTEM.md)): thick ink outlines, offset shadows, sticker tilts, tint colours per role. Research notes at the end; items marked "verify" need a real-player test.*
 
 ## 1. Design idea in one line
 **A game-show stage on a phone.** One question lives centre stage; the countdown is a physical object (a fuse that burns down); hints are the fuse's sparks; players are small characters on a rail that react in real time. Everything you do (answer, bluff, react) has a visible, instant consequence.

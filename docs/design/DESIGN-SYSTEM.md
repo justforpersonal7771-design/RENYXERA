@@ -1,5 +1,7 @@
 # RENYXERA design system: unified pastel (R18, 27 Oct 2026)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 One look across every screen. This file is the rulebook: when building or changing any screen, use these tokens and components only.
 
 ## 1. Research behind it
@@ -10,7 +12,7 @@ One look across every screen. This file is the rulebook: when building or changi
 | Saturated colour should be reserved for signals (Duolingo keeps orange/red/blue for streak, danger, XP) | [Notion x Duolingo token remix](https://github.com/rohitg00/awesome-claude-design/blob/main/design-md/remix/notion-x-duolingo.md) | Logo blue only for the main action and links; red/amber only for errors, streaks |
 | Light bento dashboards: white cards on light wells, soft tints, double borders for depth | [shadcnblocks bento](https://www.shadcnblocks.com/block/bento39), [Superdesign bento](https://superdesign.dev/library/bento-configuration-dashboard) | Card family below (pastel, band, well, stat) |
 | Active nav item needs more than one cue (fill + weight + colour), never hue alone | [saasui tabs/segmented](https://www.saasui.design/blog/saas-tabs-segmented-control-ux-patterns), [uxpatterns tabs](https://uxpatterns.dev/patterns/navigation/tabs) | Navbar: pastel chip + bold + blue ink text |
-| Segmented controls: 2–4 segments; tabs use tablist/tab/tabpanel roles; don't slide content between tabs | [eleken segmented](https://www.eleken.co/blog-posts/segmented-control-ui), [uxpatterns](https://uxpatterns.dev/patterns/navigation/tabs) | `Segmented` and `FolderTabs` in `components/ui/folder-tabs.tsx` |
+| Segmented controls: 2–4 segments; tabs use tablist/tab/tabpanel roles; don't slide content between tabs | [eleken segmented](https://www.eleken.co/blog-posts/segmented-control-ui), [uxpatterns](https://uxpatterns.dev/patterns/navigation/tabs) | `Segmented` and `FolderTabs` in [`components/ui/folder-tabs.tsx`](../../components/ui/folder-tabs.tsx) |
 | Pastel fills pass with dark text, but grey labels and light borders often fail; focus rings need 3:1 | [Texas DIR contrast guide](https://dir.texas.gov/txds/accessibility/color-contrast/), [Twilio Paste utils](https://www.mintlify.com/Twilio-labs/paste/utilities/color-contrast-utils) | Muted text darkens inside pastel surfaces; 2px blue focus ring |
 | Competitor Swaseekh: pinned card stack in a tinted frame, ink pills, big stat pairs | owner screenshots | Toolkit deck on the dashboard |
 

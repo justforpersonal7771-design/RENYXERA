@@ -1,4 +1,4 @@
-// Weekly learner metrics (docs/GROWTH_TASKS.md G-4). Needs migration 0032 and SUPABASE_SERVICE_ROLE_KEY.
+// Weekly learner metrics (docs/growth/GROWTH_TASKS.md G-4). Needs migration 0032 and SUPABASE_SERVICE_ROLE_KEY.
 //   node scripts/growth-metrics.mjs [weeks=6]
 import { createClient } from "@supabase/supabase-js";
 import fs from "fs";

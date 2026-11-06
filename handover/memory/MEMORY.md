@@ -10,7 +10,7 @@
 - [Detailed user steps](feedback_detailed_user_steps.md) — give click-by-click steps for any user action, then hold until they confirm
 - [Signed-in e2e tests](reference_signed_in_e2e.md) — bypass Turnstile in Playwright via admin magic link + @supabase/ssr cookies
 - [CRLF-aware edits](feedback_crlf_edits.md) — repo mixes CRLF/LF; scripted replaces must match newline style + assert
-- [PYQ: Claude extracts](feedback_pyq_claude_extracts.md) — no Gemini for PYQs; resume from docs/PYQ_EXTRACTION_HANDBOOK.md
+- [PYQ: Claude extracts](feedback_pyq_claude_extracts.md) — no Gemini for PYQs; resume from docs/forge/PYQ_EXTRACTION_HANDBOOK.md
 - [Turn-end next items](feedback_turn_end_next_items.md) — update checklist + list next items at the end of every turn
 - [Tag during transcription](feedback_tag_during_transcription.md) — write tags/<paper>.tsv in the same pass as each transcription batch
 - [Generated questions plan](project_generated_questions_strategy.md) — mocks on hold; PYQs for all branches first, then GATE-level question generation

@@ -1,4 +1,4 @@
-"""Forge authoring kit for a LOCAL Claude Code session (docs/FORGE_GENERATOR_LOCAL.md).
+"""Forge authoring kit for a LOCAL Claude Code session (docs/forge/FORGE_GENERATOR_LOCAL.md).
 
 A session writes questions as short specs; the kit RUNS each spec's code to find the answer, puts the correct option on the key letter the plan
 assigned (MCQ), and writes drafts that `generate.mjs --ingest` then checks (TeX, key letter, dedupe, verify, validator).

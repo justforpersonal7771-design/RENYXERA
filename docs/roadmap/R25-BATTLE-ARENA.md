@@ -1,5 +1,7 @@
 # R25 · Battle Arena (live rooms, "scribbl for GATE")
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *Living document. Started 31 Oct 2026 from the owner's idea; add every new idea at the bottom under "Idea log". Builds on R19 (async battles, shipped). Rules: zero budget (free tiers only), real server-side grading (the browser never sees the answer key), plan taster for Free ("tease, don't block"), works on phones first, every UI checked desktop + mobile x light + dark.*
 
 ## 1. The owner's idea, restated
@@ -48,10 +50,10 @@ First playable (A to D) is about one working session; E and F follow.
 See the idea log. Short list: **Trap Room** (every question is a known PYQ trap), **Blitz** (10 s questions), **Team vs team** (branches or friends groups), **Spectator mode**, **Boss round** (everyone vs one very hard question, pooled points), **Setter bluff** (setter also posts a fake wrong option that tempts), **Wager** (stake points before seeing the options), **Last stand** (wrong answer = out until one remains), **Daily room** (a public room at 9 pm with the day's topic), **Leagues** (weekly ladder across rooms), **Study-buddy mode** (collaborative, shared score vs the clock), **Mistake replay** (a room built from the players' own recent mistakes).
 
 ## 7b. Decisions made (31 Oct, owner)
-- **Setter knows the key** and earns a bonus only when not everyone gets it right (zero if nobody does). Replaces the earlier "60 per correct guesser" rule; the detailed rule is in `R25-ARENA-UX-DESIGN.md` section 2.
+- **Setter knows the key** and earns a bonus only when not everyone gets it right (zero if nobody does). Replaces the earlier "60 per correct guesser" rule; the detailed rule is in [`R25-ARENA-UX-DESIGN.md`](R25-ARENA-UX-DESIGN.md) section 2.
 - **Hints unlock as the countdown closes** (skribbl-style), each worth fewer points; see the hint ladder in the UX doc.
 - **Every player gets to pick** a question in turn, from three face-down cards.
-- Visuals and flow are specified in `R25-ARENA-UX-DESIGN.md`. App-wide ideas live in `docs/FEATURE-IDEAS.md`.
+- Visuals and flow are specified in [`R25-ARENA-UX-DESIGN.md`](R25-ARENA-UX-DESIGN.md). App-wide ideas live in [`docs/open-work/FEATURE-IDEAS.md`](../open-work/FEATURE-IDEAS.md).
 
 ## 8. Idea log (add below, newest last)
 - 31 Oct: owner idea, rotating Setter with speed and order scoring (this document).

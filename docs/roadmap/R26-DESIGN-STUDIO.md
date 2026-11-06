@@ -1,5 +1,7 @@
 # R26 · Looks and the Design Studio (the whole design of the app, not just colours)
 
+[← Docs index](../README.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+
 *Plan, 1 Nov 2026 (rewrites the earlier "Themes" plan after the owner's clarification). A **Look** is a complete design of the application: card style, backgrounds, fonts, corners, density, icons, motion and colour together. Students choose a Look, and in the **Design Studio** they can adjust each part and pick fonts. Looks are grouped in three tiers: **Free**, **Plus** and **Pro**. Rules: zero budget (CSS and free fonts only), every Look works in light and dark, every Look passes the single-screen audit and contrast checks, "tease, don't block" for paid Looks, and the exam screen stays fair and fast in every Look.*
 
 ## 1. Words we use
@@ -84,10 +86,10 @@ Also: a **text size** slider (90 to 130 %), **line spacing** and a **dyslexia-fr
 ## 5. Where it appears
 - **Profile → Design Studio** (full), and a palette button beside the sun/moon in the top bar for quick switching among the last 4 Looks.
 - First-run: after onboarding, one gentle card "Make it yours" (skippable), not before.
-- Upgrade moments (see `study-materials/13-PRICING-BUNDLES-AND-OFFERS.md`): trying a Pro Look is a natural, low-pressure offer ("Keep Aurora Glass").
+- Upgrade moments (see [`../study-materials/13-PRICING-BUNDLES-AND-OFFERS.md`](../study-materials/13-PRICING-BUNDLES-AND-OFFERS.md)): trying a Pro Look is a natural, low-pressure offer ("Keep Aurora Glass").
 
 ## 6. Plan, in order
-1. **Audit hard-coded colours and styles** in components (raw hex, `bg-indigo-600`, `text-white`, fixed shadows and radii). They ignore Looks and are where Looks will break. Replace with tokens as each screen is touched. (Tools: `hallmark audit`, the `taste-skill` inspector, `interface-design` for the consistency pass; `stitch-extract-design-md` to write the current system into `docs/design/DESIGN-SYSTEM.md` as the contract.)
+1. **Audit hard-coded colours and styles** in components (raw hex, `bg-indigo-600`, `text-white`, fixed shadows and radii). They ignore Looks and are where Looks will break. Replace with tokens as each screen is touched. (Tools: `hallmark audit`, the `taste-skill` inspector, `interface-design` for the consistency pass; `stitch-extract-design-md` to write the current system into [`docs/design/DESIGN-SYSTEM.md`](../design/DESIGN-SYSTEM.md) as the contract.)
 2. **Engine:** token contract (section 2), Classic expressed through it, the no-flash script, `scripts/check-looks.mjs` (all tokens present, text contrast at least 4.5:1 on every tint in light and dark, focus ring at least 3:1).
 3. **Studio shell:** Looks tab, Customize tab, live preview, My looks. Ship with Classic and Paper (the two Free Looks) plus the High-contrast switch to prove the mechanism.
 4. **Fonts tab** with the Free set, then Plus and Pro fonts.
