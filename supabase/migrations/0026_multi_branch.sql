@@ -1,4 +1,4 @@
--- RENYXERA — Release 8: multi-branch (docs/MULTI_BRANCH_DESIGN.md v2). Run once in the
+-- RENYXERA — Release 8: multi-branch (docs/done/MULTI_BRANCH_DESIGN.md v2). Run once in the
 -- Supabase SQL Editor. Safe to re-run.
 --
 -- Rules enforced here:

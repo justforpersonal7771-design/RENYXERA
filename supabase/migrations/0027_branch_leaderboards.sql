@@ -1,4 +1,4 @@
--- RENYXERA — Release 8: leaderboards per branch (docs/MULTI_BRANCH_DESIGN.md §4.4, §7).
+-- RENYXERA — Release 8: leaderboards per branch (docs/done/MULTI_BRANCH_DESIGN.md §4.4, §7).
 -- Run once in the Supabase SQL Editor (after 0026). Safe to re-run.
 --
 -- Every practice board (all / subject / college / weekly challenge) now ranks only attempts

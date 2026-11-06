@@ -1,4 +1,4 @@
--- Growth events (docs/GROWTH_TASKS.md G-3). Anonymous and minimal: a random per-browser id,
+-- Growth events (docs/growth/GROWTH_TASKS.md G-3). Anonymous and minimal: a random per-browser id,
 -- the event name, branch and first-touch source. No answers, no emails, no IPs.
 -- Inserted only by the server (/api/events, service role); no browser access.
 create table if not exists public.events (

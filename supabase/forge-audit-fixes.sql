@@ -1,4 +1,4 @@
--- Forge corrections after the 6 Nov 2026 audit (docs/FORGE_AUDIT_2026-11-06.md). Run once in the Supabase SQL editor; safe to run twice.
+-- Forge corrections after the 6 Nov 2026 audit (docs/forge/FORGE_AUDIT_2026-11-06.md). Run once in the Supabase SQL editor; safe to run twice.
 -- 1) Five questions carried the wrong subject/topic. 2) Difficulty labels now match the audit rating: basic and standard questions are M (medium), Forge-grade and borderline are H. No E, no inflated H.
 
 update public.forge_items set subject = 'Database Management Systems (DBMS)', topic = 'Integrity Constraints & Functional Dependencies', updated_at = now() where id = 'FORGE_CS_000122';

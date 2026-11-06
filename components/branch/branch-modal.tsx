@@ -12,7 +12,7 @@ import { applyAccountBranch, getCurrentBranch, switchGuestBranch } from "@/lib/b
 import { setAccountBranch } from "@/lib/branch/account";
 
 /**
- * The one place a branch is chosen (docs/MULTI_BRANCH_DESIGN.md §3). Opened from the header
+ * The one place a branch is chosen (docs/done/MULTI_BRANCH_DESIGN.md §3). Opened from the header
  * chip and from Profile → Exam goals.
  *   Guests:   pick a paper → switch at once (no limit).
  *   Accounts: pick a paper → confirm step (from → to, what happens, type the paper code,

@@ -2,7 +2,7 @@
 
 /**
  * A number that counts up once, when it first scrolls into view. Learned from the "count-up stats" pattern of the MadeToScale
- * guide, built with `motion` (already on the site) instead of GSAP. Rules (docs/reference/MADETOSCALE_REFERENCE_REVIEW.md):
+ * guide, built with `motion` (already on the site) instead of GSAP. Rules (docs/business/reference/MADETOSCALE_REFERENCE_REVIEW.md):
  * only the real value is ever shown, reduced motion shows it at once, screen readers read the final value straight away,
  * and it plays once (never again on re-scroll).
  */

@@ -6,7 +6,7 @@ import { availableBranches, branchByCode, isBranchCode, type BranchCode } from "
 import { openBranchModal } from "@/components/branch/branch-modal";
 
 /** Profile → Exam goals: the account's branch as one clear button that opens the branch modal
- *  (where the one change happens). docs/MULTI_BRANCH_DESIGN.md §3.3. */
+ *  (where the one change happens). docs/done/MULTI_BRANCH_DESIGN.md §3.3. */
 export function ExamBranchPanel() {
   const profile = useAuthStore((s) => s.profile) as { target_branch?: string; branch_changes_used?: number; branch_previous?: string | null } | null;
   const current: BranchCode = isBranchCode(profile?.target_branch) ? (profile!.target_branch as BranchCode) : "CSE";

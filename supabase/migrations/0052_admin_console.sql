@@ -1,4 +1,4 @@
--- Admin console (docs/roadmap/R30-ADMIN-CONSOLE.md). Who may open /admin is decided by this table,
+-- Admin console (docs/done/roadmap/R30-ADMIN-CONSOLE.md). Who may open /admin is decided by this table,
 -- checked on the server with the service role; the browser can neither read nor write it.
 create table if not exists public.admin_users (
   user_id uuid primary key references auth.users(id) on delete cascade,

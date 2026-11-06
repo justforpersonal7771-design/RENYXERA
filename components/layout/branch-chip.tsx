@@ -6,7 +6,7 @@ import { availableBranches, branchByCode } from "@/lib/branches";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { openBranchModal } from "@/components/branch/branch-modal";
 
-/** Header branch chip (docs/MULTI_BRANCH_DESIGN.md §3, §7): opens the branch modal for guests
+/** Header branch chip (docs/done/MULTI_BRANCH_DESIGN.md §3, §7): opens the branch modal for guests
  *  and accounts alike. Hidden while only one branch is available. */
 const noopSubscribe = () => () => {};
 

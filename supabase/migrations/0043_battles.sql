@@ -1,4 +1,4 @@
--- 0043: Battles (R19, docs/roadmap/R19-BATTLES.md): "beat my score" with live status.
+-- 0043: Battles (R19, docs/done/roadmap/R19-BATTLES.md): "beat my score" with live status.
 -- Scores are never taken from the browser: a battle's owner score and every entry's score are copied by the API from the
 -- server-graded exam_attempts row (exam_attempts.server_score). Writes happen only through the API (service role).
 create table if not exists public.battles (
