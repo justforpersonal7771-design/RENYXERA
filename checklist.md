@@ -233,6 +233,8 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] Growth docs and UTM + `weekly_growth_metrics()`
 
 **Open**
+- [ ] **Next-level videos (owner, 7 Nov: "all the videos are boring", the vertical film looks messed up, wants trending, AI-made-style reels, not basic ones)**: audit the vertical film (FilmVertical) and the v8 landscape film; research current trending reel and launch-film styles first (kinetic type, real product screen recordings with cursor moves, fast cuts on beat, big proof numbers, strong 2-second hook); rebuild in Remotion with the installed skills (remotion, motion-reel, animation-studio); test every cut on phone and desktop frames before handing over; reel-top5 number flicker already fixed 7 Nov.
+- [ ] **Update the landscape promo film (v8, 4K) to the current product** (7 Nov: owner is uploading the old v8 now so the channel is not empty; later re-cut with Forge, Battles, the AI Mentor, the plans page and recharges; owner re-uploads or replaces the video id).
 - [ ] **A1 Frame-check films** (12 frames each) → **A3 publish** (you) → **A4 set YouTube id** → **A5 30 s/15 s/4:5 cuts**.
 - [ ] **B2 Instagram 4-week calendar** (5 posts/week) → **B3 carousel generator** (PYQ → 5 branded slides).
 - [ ] **C2 Telegram deep links + branch commands** (after BotFather) · **C3 story images** · **C4 per-branch folder links on pages** · **C5 Forge teasers**.

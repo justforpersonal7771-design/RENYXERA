@@ -80,7 +80,9 @@ const Item: React.FC<{ item: (typeof data.items)[number] }> = ({ item }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const pop = spring({ frame, fps, config: { damping: 14, stiffness: 140 } });
-  const count = interpolate(frame, [10, 44], [0, item.marksPerPaper], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
+  // The marks number appears ONCE (fade and rise) and then stays still. It used to count up through two decimals, so its digits changed on nearly
+  // every frame and read as blinking on a phone. Only the progress bar below moves smoothly; its text shows the settled value.
+  const numIn = interpolate(frame, [10, 26], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
   // Running tally: how many marks the topics revealed so far (from #5 down to this one) are worth together.
   const revealed = data.items.filter((i) => i.rank >= item.rank).reduce((s, i) => s + i.marksPerPaper, 0);
   const before = data.items.filter((i) => i.rank > item.rank).reduce((s, i) => s + i.marksPerPaper, 0);
@@ -104,7 +106,7 @@ const Item: React.FC<{ item: (typeof data.items)[number] }> = ({ item }) => {
       </div>
 
       <div style={{ marginTop: 64, display: "flex", alignItems: "baseline", gap: 24 }}>
-        <span style={{ fontFamily: uiFont, fontSize: 190, fontWeight: 800, color: C.ink, letterSpacing: -6, fontVariantNumeric: "tabular-nums" }}>{count.toFixed(2)}</span>
+        <span style={{ fontFamily: uiFont, fontSize: 190, fontWeight: 800, color: C.ink, letterSpacing: -6, fontVariantNumeric: "tabular-nums", display: "inline-block", opacity: numIn, transform: `translateY(${(1 - numIn) * 40}px)` }}>{item.marksPerPaper.toFixed(2)}</span>
         <span style={{ fontFamily: uiFont, fontSize: 48, fontWeight: 700, color: C.muted, lineHeight: 1.1 }}>marks<br />per paper</span>
       </div>
 
@@ -118,7 +120,7 @@ const Item: React.FC<{ item: (typeof data.items)[number] }> = ({ item }) => {
       <div style={{ position: "absolute", left: SAFE_X, right: SAFE_X, bottom: 150 }}>
         <div style={{ display: "flex", justifyContent: "space-between", fontFamily: uiFont, fontSize: 40, fontWeight: 700, color: C.ink }}>
           <span>{item.rank === 5 ? "So far" : `Top ${6 - item.rank} together`}</span>
-          <span style={{ fontVariantNumeric: "tabular-nums" }}>{tally.toFixed(1)} of 100 marks</span>
+          <span style={{ fontVariantNumeric: "tabular-nums", opacity: interpolate(frame, [30, 44], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" }) }}>{revealed.toFixed(1)} of 100 marks</span>
         </div>
         <div style={{ marginTop: 16, height: 18, borderRadius: 9, background: `${C.violet}1f`, overflow: "hidden" }}>
           <div style={{ height: "100%", width: `${(tally / 100) * 100}%`, background: ribbon, borderRadius: 9 }} />

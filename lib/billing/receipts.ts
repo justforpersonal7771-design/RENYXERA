@@ -16,6 +16,8 @@ export type OrderRow = {
 export function planLabel(planId: string): string {
   const fixed = planById(planId, 0);
   if (fixed) return fixed.name;
+  const tp = /^topup_(small|medium|large)$/.exec(planId);
+  if (tp) return `AI Mentor recharge · ${tp[1][0].toUpperCase()}${tp[1].slice(1)}`;
   const m = /^(plus|pro)_season_(\d{4})$/.exec(planId);
   if (m) return `${m[1] === "pro" ? "Pro" : "Plus"} · GATE ${m[2]} Pass`;
   return planId;

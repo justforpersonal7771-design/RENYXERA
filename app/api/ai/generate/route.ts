@@ -29,6 +29,8 @@ const MAX_BODY_BYTES = 220_000;
 // 5 requests (ensure_welcome_ai) plus whatever they earn (sponsor breaks, referrals).
 const AI_DAILY_LIMIT = FREE_AI_DAILY;
 // Pro accounts (7A, server-side entitlement) get a larger daily allowance.
+/** Tokens taken from a recharge pack for one request once the daily allowance is gone (a typical short question, docs/roadmap/R27 section 3). */
+const PACK_REQUEST_TOKENS = 1500;
 const PRO_DAILY_LIMIT = Math.max(AI_DAILY_LIMIT, Number(process.env.PRO_AI_DAILY_LIMIT) || PRO_AI_DAILY);
 
 async function sha256(input: string): Promise<string> {
@@ -292,7 +294,9 @@ export async function POST(req: NextRequest) {
       const row = Array.isArray(quota) ? quota[0] : quota;
       // 7E: out of daily requests → spend a bonus credit (referrals / sponsor breaks) if any.
       const bonus = row && !row.allowed ? (await db.rpc("consume_ai_bonus", { p_user: userId })).data === true : false;
-      if (row && !row.allowed && !bonus) {
+      // Then a recharge pack (migration 0055): about 1.5K tokens for a typical request, taken only if the packs hold that much.
+      const pack = row && !row.allowed && !bonus ? (((await db.rpc("spend_ai_pack", { p_user: userId, p_tokens: PACK_REQUEST_TOKENS })).data as number | null) ?? -1) >= 0 : false;
+      if (row && !row.allowed && !bonus && !pack) {
         return NextResponse.json(
           { error: row.day_limit === 0 ? "You've used your free AI tries. Take a short sponsor break on the Plans page for a few more today, invite a friend, or upgrade to Plus (75 a day) or Pro (150 a day)." : `You've used today's ${row.day_limit} AI requests. They reset at midnight (IST).${row.day_limit < PRO_DAILY_LIMIT ? ` Pro gives ${PRO_DAILY_LIMIT} a day — see the Plans page.` : ""} You can also earn a few extra today with a short sponsor break on the Plans page.`, quotaExceeded: true, upgrade: row.day_limit < PRO_DAILY_LIMIT },
           { status: 429, headers: { "X-AI-Quota-Remaining": "0" } }
