@@ -55,7 +55,7 @@ export function NotifyForm({ branch, branchName }: { branch: string; branchName:
           <motion.div key="ok" initial={{ opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-2">
             <CheckCircle2 className="w-10 h-10 text-emerald-500 mx-auto mb-2" />
             <p className="text-lg font-bold text-[var(--text-primary)]">{state === "already" ? "You're already on the list" : "You're on the list!"}</p>
-            <p className="text-sm text-[var(--text-secondary)] mt-1">We'll let you know the moment GATE {branchName} opens on RENYXERA.</p>
+            <p className="text-sm text-[var(--text-secondary)] mt-1">We&apos;ll let you know the moment GATE {branchName} opens on RENYXERA.</p>
           </motion.div>
         ) : (
           <motion.form key="form" onSubmit={submit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
