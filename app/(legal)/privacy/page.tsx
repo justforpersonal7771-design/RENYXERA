@@ -17,7 +17,7 @@ export default function PrivacyPolicyPage() {
       <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--text-primary)] mb-1">
         Privacy Policy
       </h1>
-      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 25 September 2026</p>
+      <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 6 November 2026</p>
 
       <div className="space-y-8 text-[var(--text-secondary)] leading-relaxed">
         <section>
@@ -40,6 +40,9 @@ export default function PrivacyPolicyPage() {
           <p className="mt-2"><strong className="text-[var(--text-primary)]">If you choose to give us your mobile number</strong> (optional, at account setup), we store it with your account. We contact you on it (WhatsApp or SMS) only if you ticked the box allowing it, and only about RENYXERA — mocks, results and product updates. We never sell or share it, and you can remove it or withdraw consent at any time by writing to us (see Contact).</p>
           <p className="mt-2"><strong className="text-[var(--text-primary)]">If you link Telegram</strong> (optional), we store your Telegram chat ID, username and first name, whether you have joined our channel and group, your alert settings, and the reminders, timers and alarms you ask for, so the bot can message you. If you verify your mobile number through Telegram, Telegram sends us your own number once; we store it as verified on your account. You can unlink at any time from Profile → Telegram or with /unlink, which deletes the link and any reminders waiting to be sent. Telegram processes messages under its own privacy policy.</p>
           <p className="mt-2">When you first arrive, we note where you came from (for example a link tagged with a campaign name, or the website that referred you) and, if you create an account, save this once with it. We use it only in aggregate to understand which channels help students find us.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">Anonymous usage events.</strong> To learn which steps students use and where they drop off, the browser sends a small event (for example "test started", "upgrade page viewed" or which locked card was tapped) with a random browser id, your branch and the first-touch source above. It contains no answers, no email and no IP address, and if you are signed in it is linked to your account only so we can count paying students.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">Forge and study materials.</strong> We record which Forge questions you attempt and your answers so we can show your progress and calibrate difficulty. When study materials launch we will record which packs you own and your reading progress; lessons are delivered only to the account that bought them.</p>
+          <p className="mt-2"><strong className="text-[var(--text-primary)]">Share cards.</strong> A share card is drawn in your browser from details already on your profile (name, username, student ID, avatar) and only the items you tick; it is not uploaded to us, and you share it yourself.</p>
           <p className="mt-2">We also collect standard technical data automatically — IP address, browser type, and pages visited — for security (rate-limiting abuse) and to understand which parts of the product are used.</p>
         </section>
 
@@ -99,11 +102,9 @@ export default function PrivacyPolicyPage() {
         </section>
 
         <section>
-          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">8. Payments (planned, not yet live)</h2>
+          <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">8. Payments</h2>
           <p>
-            When paid plans launch, payments will be processed by Razorpay. We do not, and will
-            not, handle or store your card details ourselves — that happens entirely on
-            Razorpay's own secure systems.
+            Payments are processed by Razorpay. We keep the order record (plan, amount, payment reference and time) for accounts and tax purposes. We do not, and will not, handle or store your card or UPI details ourselves: that happens entirely on Razorpay's own secure systems.
           </p>
         </section>
 
