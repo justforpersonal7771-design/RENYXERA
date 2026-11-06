@@ -1,7 +1,7 @@
 // Minimal anonymous product events (docs/growth/GROWTH_TASKS.md G-3). Fire-and-forget: never blocks,
 // never throws, sends nothing but a random per-browser id, the event name, branch and first-touch
 // source. "visit" is sent at most once per browser per day (for D1/D7 return rates).
-export type TrackEvent = "visit" | "test_started" | "test_submitted" | "review_opened" | "ai_used" | "invite_shared" | "share_clicked" | "telegram_join" | "signed_in" | "upgrade_viewed" | "checkout_started";
+export type TrackEvent = "visit" | "test_started" | "test_submitted" | "review_opened" | "ai_used" | "invite_shared" | "share_clicked" | "telegram_join" | "signed_in" | "upgrade_viewed" | "upgrade_clicked" | "checkout_started";
 
 const ID = "renyxera:anon";
 const DAY = "renyxera:visit-day";
@@ -25,7 +25,7 @@ export function track(event: TrackEvent, branch?: string | null, detail?: string
     }
     let source: string | null = null;
     try { source = JSON.parse(localStorage.getItem("renyxera:acq") ?? "null")?.source ?? null; } catch {}
-    const body = JSON.stringify({ anon, event, branch: branch ?? null, source: event === "telegram_join" && detail ? `tg:${detail}` : source });
+    const body = JSON.stringify({ anon, event, branch: branch ?? null, source: event === "telegram_join" && detail ? `tg:${detail}` : event === "upgrade_clicked" && detail ? `lock:${detail}` : source });
     if (navigator.sendBeacon?.("/api/events", new Blob([body], { type: "application/json" }))) return;
     void fetch("/api/events", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {});
   } catch { /* never break the app for analytics */ }

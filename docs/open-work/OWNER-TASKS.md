@@ -48,6 +48,7 @@ Rules that apply to every task: ₹0 budget, never use claudexit02@gmail.com any
 - [ ] **E4. Google sign-in logo upload** (needs a custom domain, so after revenue).
 - [ ] **E5. Microsoft Partner Center:** create an individual account and reserve the app name.
 - [ ] **E6. Verify migration 0046** (`0046_challenge_first.sql`): in Supabase SQL editor run `select count(*) from information_schema.columns where table_name='battles';` and tell Claude it returns rows.
+- [ ] **E8. Run migration `supabase/migrations/0053_upgrade_clicks.sql`** in the Supabase SQL editor (open the file, copy all, paste in SQL Editor, press Run, expect "Success"). It lets us see which lock makes people click Upgrade. Tell Claude "done 0053".
 - [ ] **E7. Clean the working folder:** delete `New folder/`, decide about `docs/*.zip` and the untracked images, move `logo/` and `video/.bundle2/` out or ignore them.
 
 ## F. Real device and account tests (phone first, then desktop, each in light and dark)

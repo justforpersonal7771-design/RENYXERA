@@ -14,6 +14,7 @@ import { PreviewFrame } from "@/components/preview/preview-frame";
 import { PlanCompare } from "@/components/preview/plan-compare";
 import { FolderTabs, Segmented } from "@/components/ui/folder-tabs";
 import { UPCOMING } from "@/lib/preview/features";
+import { track } from "@/lib/growth/track";
 import { FORGE, type Tier } from "@/lib/billing/plans";
 import { FORGE_DAILY, FORGE_ITEMS, FORGE_MOCKS, KIND_LABEL, type SampleForgeItem } from "@/lib/preview/sample-data";
 
@@ -124,7 +125,7 @@ function Hero({ tier, count }: { tier: Tier; count?: number }) {
           <div className="mt-5 flex flex-wrap gap-2.5">
             {FORGE[tier].questions
               ? <button type="button" className="btn-main"><Flame className="h-4 w-4" /> Continue today&apos;s Forge</button>
-              : <Link href="/pro" className="btn-main"><Lock className="h-4 w-4" /> Unlock all with Plus</Link>}
+              : <Link href="/pro" onClick={() => track("upgrade_clicked", null, "forge_unlock_all")} className="btn-main"><Lock className="h-4 w-4" /> Unlock all with Plus</Link>}
             {count === undefined && <span className="pill-soft"><Users className="h-4 w-4" /> {d.boardSize.toLocaleString()} students today</span>}
           </div>
         </div>
@@ -166,11 +167,11 @@ function Taster({ data }: { data: FeedData }) {
     <div className="space-y-3">
       <div className="card-pastel flex flex-wrap items-center justify-between gap-3 p-4" data-tint="butter">
         <p className="text-sm text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">Try Forge free.</b> These questions are yours to play. Plus unlocks every question with its worked solution, shortcut and trap.</p>
-        <Link href="/pro" className="pill-ink shrink-0">See Plus</Link>
+        <Link href="/pro" onClick={() => track("upgrade_clicked", null, "forge_taster_banner")} className="pill-ink shrink-0">See Plus</Link>
       </div>
       <Feed data={data} empty="Forge questions are on the way.">{(q, i) => <ItemCard key={q.id} q={q} n={i + 1} taster />}</Feed>
       {locked.map((l) => (
-        <Link key={l.id} href="/pro" className="group relative flex items-center gap-3 overflow-hidden rounded-[22px] border border-[var(--border)] bg-[var(--surface)] p-5">
+        <Link key={l.id} href="/pro" onClick={() => track("upgrade_clicked", null, "forge_locked_card")} className="group relative flex items-center gap-3 overflow-hidden rounded-[22px] border border-[var(--border)] bg-[var(--surface)] p-5">
           <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[var(--tint-butter)] text-[var(--tint-butter-ink)]"><Lock className="h-4 w-4" /></span>
           <span className="min-w-0 flex-1">
             <span className="block text-sm font-bold text-[var(--text-primary)]">{l.topic}</span>
@@ -330,7 +331,7 @@ function ItemCard({ q, n, done, taster }: { q: Q; n: number; done?: boolean; tas
             <div className="mt-4 space-y-3 rounded-2xl bg-[var(--surface-secondary)] p-4 text-sm">
               <p className="font-bold text-[var(--text-primary)]">Answer: <span className="font-num">{answer}</span></p>
               {taster && !solution && (
-                <p className="flex flex-wrap items-center gap-2 rounded-xl bg-[var(--tint-butter)] p-3 text-[var(--tint-butter-ink)]"><Lock className="h-4 w-4 shrink-0" /><span className="flex-1">The worked solution, shortcut and trap come with Plus.</span><Link href="/pro" className="font-bold underline underline-offset-4">See Plus</Link></p>
+                <p className="flex flex-wrap items-center gap-2 rounded-xl bg-[var(--tint-butter)] p-3 text-[var(--tint-butter-ink)]"><Lock className="h-4 w-4 shrink-0" /><span className="flex-1">The worked solution, shortcut and trap come with Plus.</span><Link href="/pro" onClick={() => track("upgrade_clicked", null, "forge_solution")} className="font-bold underline underline-offset-4">See Plus</Link></p>
               )}
               {solution && <>
                 <ol className="space-y-1.5 text-[var(--text-secondary)]">{solution.steps.map((s, i) => <li key={i} className="flex gap-2"><span className="font-num font-bold text-[var(--text-primary)]">{i + 1}.</span><Tex>{s}</Tex></li>)}</ol>

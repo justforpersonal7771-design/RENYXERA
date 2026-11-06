@@ -56,24 +56,25 @@ code{background:var(--line);padding:1px 5px;border-radius:4px}a{color:var(--acc)
 <label class="t"><input type="checkbox" data-id="t35"> <span><b>E4. Google sign-in logo upload</b> (needs a custom domain, so after revenue).</span></label>
 <label class="t"><input type="checkbox" data-id="t36"> <span><b>E5. Microsoft Partner Center:</b> create an individual account and reserve the app name.</span></label>
 <label class="t"><input type="checkbox" data-id="t37"> <span><b>E6. Verify migration 0046</b> (<code>0046_challenge_first.sql</code>): in Supabase SQL editor run <code>select count(*) from information_schema.columns where table_name=&#x27;battles&#x27;;</code> and tell Claude it returns rows.</span></label>
-<label class="t"><input type="checkbox" data-id="t38"> <span><b>E7. Clean the working folder:</b> delete <code>New folder/</code>, decide about <code>docs/*.zip</code> and the untracked images, move <code>logo/</code> and <code>video/.bundle2/</code> out or ignore them.</span></label>
+<label class="t"><input type="checkbox" data-id="t38"> <span><b>E8. Run migration <code>supabase/migrations/0053_upgrade_clicks.sql</code></b> in the Supabase SQL editor (open the file, copy all, paste in SQL Editor, press Run, expect &quot;Success&quot;). It lets us see which lock makes people click Upgrade. Tell Claude &quot;done 0053&quot;.</span></label>
+<label class="t"><input type="checkbox" data-id="t39"> <span><b>E7. Clean the working folder:</b> delete <code>New folder/</code>, decide about <code>docs/*.zip</code> and the untracked images, move <code>logo/</code> and <code>video/.bundle2/</code> out or ignore them.</span></label>
 <h2>F. Real device and account tests (phone first, then desktop, each in light and dark)</h2>
-<label class="t"><input type="checkbox" data-id="t39"> <span><b>F1.</b> Phone: a payment, the More sheet drag, the onboarding Telegram step, aptitude images, Civil practice.</span></label>
-<label class="t"><input type="checkbox" data-id="t40"> <span><b>F2.</b> Free, Plus and Pro accounts through the Forge and practice-set gates.</span></label>
-<label class="t"><input type="checkbox" data-id="t41"> <span><b>F3.</b> Battles comparison and rematch screens.</span></label>
-<label class="t"><input type="checkbox" data-id="t42"> <span><b>F4.</b> The new share card (profile details only): tick name, username, ID, avatar, share and download.</span></label>
-<label class="t"><input type="checkbox" data-id="t43"> <span><b>F5.</b> Check <code>https://gate.renyxera.workers.dev/.well-known/security.txt</code> opens after the next deploy.</span></label>
+<label class="t"><input type="checkbox" data-id="t40"> <span><b>F1.</b> Phone: a payment, the More sheet drag, the onboarding Telegram step, aptitude images, Civil practice.</span></label>
+<label class="t"><input type="checkbox" data-id="t41"> <span><b>F2.</b> Free, Plus and Pro accounts through the Forge and practice-set gates.</span></label>
+<label class="t"><input type="checkbox" data-id="t42"> <span><b>F3.</b> Battles comparison and rematch screens.</span></label>
+<label class="t"><input type="checkbox" data-id="t43"> <span><b>F4.</b> The new share card (profile details only): tick name, username, ID, avatar, share and download.</span></label>
+<label class="t"><input type="checkbox" data-id="t44"> <span><b>F5.</b> Check <code>https://gate.renyxera.workers.dev/.well-known/security.txt</code> opens after the next deploy.</span></label>
 <h2>G. Marketing actions (Claude drafts, you post)</h2>
-<label class="t"><input type="checkbox" data-id="t44"> <span><b>G1.</b> Growth tasks G-5, C-3, V-1, P-1 in <a href="../growth/GROWTH_TASKS.md">GROWTH_TASKS.md</a>.</span></label>
-<label class="t"><input type="checkbox" data-id="t45"> <span><b>G2.</b> Review the <code>claude-youtube</code> skill pack before the YouTube channel launches.</span></label>
-<label class="t"><input type="checkbox" data-id="t46"> <span><b>G3.</b> Telegram deep links and branch commands (after C2 of R14 is built).</span></label>
+<label class="t"><input type="checkbox" data-id="t45"> <span><b>G1.</b> Growth tasks G-5, C-3, V-1, P-1 in <a href="../growth/GROWTH_TASKS.md">GROWTH_TASKS.md</a>.</span></label>
+<label class="t"><input type="checkbox" data-id="t46"> <span><b>G2.</b> Review the <code>claude-youtube</code> skill pack before the YouTube channel launches.</span></label>
+<label class="t"><input type="checkbox" data-id="t47"> <span><b>G3.</b> Telegram deep links and branch commands (after C2 of R14 is built).</span></label>
 <h2>H. Later (waiting on revenue or a trigger)</h2>
-<label class="t"><input type="checkbox" data-id="t47"> <span><b>H1.</b> Custom domain and business email (see <a href="../business/BUSINESS_EMAIL_STRATEGY.md">BUSINESS_EMAIL_STRATEGY.md</a>).</span></label>
-<label class="t"><input type="checkbox" data-id="t48"> <span><b>H2.</b> GST registration and invoicing: ask an accountant once revenue grows.</span></label>
-<label class="t"><input type="checkbox" data-id="t49"> <span><b>H3.</b> Licence check for the textbooks in <code>notes/</code> before study materials are sold.</span></label>
-<label class="t"><input type="checkbox" data-id="t50"> <span><b>H4.</b> Legal review of refund and terms text.</span></label>
-<label class="t"><input type="checkbox" data-id="t51"> <span><b>H5.</b> Play Store listing (₹2,100) and welcome email series.</span></label>
-<label class="t"><input type="checkbox" data-id="t52"> <span><b>H6.</b> March 2027: official marks-to-rank data and PYQ refresh (Claude prepares, you confirm sources).</span></label>
+<label class="t"><input type="checkbox" data-id="t48"> <span><b>H1.</b> Custom domain and business email (see <a href="../business/BUSINESS_EMAIL_STRATEGY.md">BUSINESS_EMAIL_STRATEGY.md</a>).</span></label>
+<label class="t"><input type="checkbox" data-id="t49"> <span><b>H2.</b> GST registration and invoicing: ask an accountant once revenue grows.</span></label>
+<label class="t"><input type="checkbox" data-id="t50"> <span><b>H3.</b> Licence check for the textbooks in <code>notes/</code> before study materials are sold.</span></label>
+<label class="t"><input type="checkbox" data-id="t51"> <span><b>H4.</b> Legal review of refund and terms text.</span></label>
+<label class="t"><input type="checkbox" data-id="t52"> <span><b>H5.</b> Play Store listing (₹2,100) and welcome email series.</span></label>
+<label class="t"><input type="checkbox" data-id="t53"> <span><b>H6.</b> March 2027: official marks-to-rank data and PYQ refresh (Claude prepares, you confirm sources).</span></label>
 <script>
 const K='renyxera-owner-tasks';let s={};try{s=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
 const bx=[...document.querySelectorAll('input[data-id]')];

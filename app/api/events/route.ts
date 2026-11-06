@@ -9,7 +9,7 @@ export const runtime = "nodejs";
 
 const schema = z.object({
   anon: z.string().regex(/^[a-z0-9]{8,40}$/),
-  event: z.enum(["visit", "test_started", "test_submitted", "review_opened", "ai_used", "invite_shared", "share_clicked", "telegram_join", "signed_in", "upgrade_viewed", "checkout_started"]),
+  event: z.enum(["visit", "test_started", "test_submitted", "review_opened", "ai_used", "invite_shared", "share_clicked", "telegram_join", "signed_in", "upgrade_viewed", "upgrade_clicked", "checkout_started"]),
   branch: z.string().regex(/^[A-Z]{2,4}$/).nullable().optional(),
   source: z.string().trim().max(60).nullable().optional(),
 });
