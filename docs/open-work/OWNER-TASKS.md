@@ -52,6 +52,8 @@ Rules that apply to every task: ₹0 budget, never use claudexit02@gmail.com any
 - [ ] **E7. Clean the working folder:** delete `New folder/`, decide about `docs/*.zip` and the untracked images, move `logo/` and `video/.bundle2/` out or ignore them.
 
 ## F. Real device and account tests (phone first, then desktop, each in light and dark)
+- [ ] **E11. Run migration `supabase/migrations/0054_season_awards.sql`** (Battle season badges and speed bonus). Steps: 1) open the file in VS Code, press Ctrl+A then Ctrl+C. 2) Supabase dashboard, your project, left menu "SQL Editor", "New query". 3) Paste, press Run (or Ctrl+Enter). 4) Expect "Success. No rows returned". Tell Claude "done 0054".
+- [ ] **E12. Run migration `supabase/migrations/0055_mentor_topups.sql`** (AI Mentor recharge packs; it also replaces the paid-order function, so run it after 0054 and do not skip it). Same steps as E11. Tell Claude "done 0055".
 - [ ] **E9. Restore drill (quarterly, first before 31 Jan 2027):** follow section 3 of [SECURITY-RUNBOOK.md](../engineering/SECURITY-RUNBOOK.md); note the date in the drill log.
 - [ ] **E10. Supabase Performance Advisor (R15-E2):** Supabase, left menu Advisors, Performance, copy the list of warnings (text, no passwords) and send it to Claude; indexes are added only for warnings that are real.
 - [ ] **F1.** Phone: a payment, the More sheet drag, the onboarding Telegram step, aptitude images, Civil practice.

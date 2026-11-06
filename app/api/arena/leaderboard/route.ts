@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { battleCtx, isCtx } from "@/lib/server/battles";
-import { weekStartIso } from "@/lib/server/arena";
+import { seasonWindow, weekStartIso } from "@/lib/server/arena";
 
 export const runtime = "nodejs";
 
 /**
- * Arena leaderboard (R29 step 3).  GET ?scope=friends|everyone&period=week|all
+ * Arena leaderboard (R29 step 3).  GET ?scope=friends|everyone&period=week|season|all
  * Week = Monday 00:00 IST to now. "Everyone" shows usernames only (never real names); "friends" may show display names.
  * Returns the top 50, plus my own row (even when I'm outside the top 50), my rating and my points.
  */
@@ -18,7 +18,9 @@ export async function GET(req: NextRequest) {
   const me = userId!;
   const q = req.nextUrl.searchParams;
   const scope = q.get("scope") === "friends" ? "friends" : "everyone";
-  const since = q.get("period") === "all" ? "1970-01-01T00:00:00Z" : weekStartIso();
+  const period = q.get("period") === "all" ? "all" : q.get("period") === "season" ? "season" : "week";
+  const season = seasonWindow();
+  const since = period === "all" ? "1970-01-01T00:00:00Z" : period === "season" ? season.startIso : weekStartIso();
 
   let totals: { user_id: string; points: number; battles: number; wins: number }[] = [];
   if (scope === "everyone") {
@@ -53,5 +55,5 @@ export async function GET(req: NextRequest) {
   const shape = (t: (typeof totals)[number], i: number): Row => ({ rank: i + 1, id: t.user_id, name: nameOf(t.user_id), points: t.points, battles: t.battles, wins: t.wins, rating: rating(t.user_id), you: t.user_id === me });
   const rows = top.map(shape);
   const mine = myIdx >= 0 ? shape(totals[myIdx], myIdx) : ({ rank: 0, id: me, name: nameOf(me), points: 0, battles: 0, wins: 0, rating: rating(me), you: true } as Row);
-  return NextResponse.json({ scope, period: q.get("period") === "all" ? "all" : "week", weekStart: since, rows, me: mine }, { headers: { "Cache-Control": "private, no-store" } });
+  return NextResponse.json({ scope, period, weekStart: since, season: { number: season.number, daysLeft: season.daysLeft, endsAt: season.endIso }, rows, me: mine }, { headers: { "Cache-Control": "private, no-store" } });
 }

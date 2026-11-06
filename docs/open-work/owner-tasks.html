@@ -59,27 +59,29 @@ code{background:var(--line);padding:1px 5px;border-radius:4px}a{color:var(--acc)
 <label class="t"><input type="checkbox" data-id="t38" checked> <span><b>E8. Run migration <code>supabase/migrations/0053_upgrade_clicks.sql</code></b> in the Supabase SQL editor (open the file, copy all, paste in SQL Editor, press Run, expect &quot;Success&quot;). It lets us see which lock makes people click Upgrade. Tell Claude &quot;done 0053&quot;.</span></label>
 <label class="t"><input type="checkbox" data-id="t39"> <span><b>E7. Clean the working folder:</b> delete <code>New folder/</code>, decide about <code>docs/*.zip</code> and the untracked images, move <code>logo/</code> and <code>video/.bundle2/</code> out or ignore them.</span></label>
 <h2>F. Real device and account tests (phone first, then desktop, each in light and dark)</h2>
-<label class="t"><input type="checkbox" data-id="t40"> <span><b>E9. Restore drill (quarterly, first before 31 Jan 2027):</b> follow section 3 of <a href="../engineering/SECURITY-RUNBOOK.md">SECURITY-RUNBOOK.md</a>; note the date in the drill log.</span></label>
-<label class="t"><input type="checkbox" data-id="t41"> <span><b>E10. Supabase Performance Advisor (R15-E2):</b> Supabase, left menu Advisors, Performance, copy the list of warnings (text, no passwords) and send it to Claude; indexes are added only for warnings that are real.</span></label>
-<label class="t"><input type="checkbox" data-id="t42"> <span><b>F1.</b> Phone: a payment, the More sheet drag, the onboarding Telegram step, aptitude images, Civil practice.</span></label>
-<label class="t"><input type="checkbox" data-id="t43"> <span><b>F2.</b> Free, Plus and Pro accounts through the Forge and practice-set gates.</span></label>
-<label class="t"><input type="checkbox" data-id="t44"> <span><b>F3.</b> Battles comparison and rematch screens.</span></label>
-<label class="t"><input type="checkbox" data-id="t45"> <span><b>F4.</b> The new share card (profile details only): tick name, username, ID, avatar, share and download.</span></label>
-<label class="t"><input type="checkbox" data-id="t46"> <span><b>F5.</b> Check <code>https://gate.renyxera.workers.dev/.well-known/security.txt</code> opens after the next deploy.</span></label>
+<label class="t"><input type="checkbox" data-id="t40"> <span><b>E11. Run migration <code>supabase/migrations/0054_season_awards.sql</code></b> (Battle season badges and speed bonus). Steps: 1) open the file in VS Code, press Ctrl+A then Ctrl+C. 2) Supabase dashboard, your project, left menu &quot;SQL Editor&quot;, &quot;New query&quot;. 3) Paste, press Run (or Ctrl+Enter). 4) Expect &quot;Success. No rows returned&quot;. Tell Claude &quot;done 0054&quot;.</span></label>
+<label class="t"><input type="checkbox" data-id="t41"> <span><b>E12. Run migration <code>supabase/migrations/0055_mentor_topups.sql</code></b> (AI Mentor recharge packs; it also replaces the paid-order function, so run it after 0054 and do not skip it). Same steps as E11. Tell Claude &quot;done 0055&quot;.</span></label>
+<label class="t"><input type="checkbox" data-id="t42"> <span><b>E9. Restore drill (quarterly, first before 31 Jan 2027):</b> follow section 3 of <a href="../engineering/SECURITY-RUNBOOK.md">SECURITY-RUNBOOK.md</a>; note the date in the drill log.</span></label>
+<label class="t"><input type="checkbox" data-id="t43"> <span><b>E10. Supabase Performance Advisor (R15-E2):</b> Supabase, left menu Advisors, Performance, copy the list of warnings (text, no passwords) and send it to Claude; indexes are added only for warnings that are real.</span></label>
+<label class="t"><input type="checkbox" data-id="t44"> <span><b>F1.</b> Phone: a payment, the More sheet drag, the onboarding Telegram step, aptitude images, Civil practice.</span></label>
+<label class="t"><input type="checkbox" data-id="t45"> <span><b>F2.</b> Free, Plus and Pro accounts through the Forge and practice-set gates.</span></label>
+<label class="t"><input type="checkbox" data-id="t46"> <span><b>F3.</b> Battles comparison and rematch screens.</span></label>
+<label class="t"><input type="checkbox" data-id="t47"> <span><b>F4.</b> The new share card (profile details only): tick name, username, ID, avatar, share and download.</span></label>
+<label class="t"><input type="checkbox" data-id="t48"> <span><b>F5.</b> Check <code>https://gate.renyxera.workers.dev/.well-known/security.txt</code> opens after the next deploy.</span></label>
 <h2>G. Marketing actions (Claude drafts, you post)</h2>
-<label class="t"><input type="checkbox" data-id="t47"> <span><b>G1.</b> Growth tasks G-5, C-3, V-1, P-1 in <a href="../growth/GROWTH_TASKS.md">GROWTH_TASKS.md</a>.</span></label>
-<label class="t"><input type="checkbox" data-id="t48" checked> <span><b>G2.</b> <code>claude-youtube</code> skill pack reviewed 6 Nov: safe to install (report: <a href="../growth/YOUTUBE-SKILL-REVIEW.md">YOUTUBE-SKILL-REVIEW.md</a>). Optional install is task G4.</span></label>
-<label class="t"><input type="checkbox" data-id="t49"> <span><b>G3b. Upload your first video to the YouTube channel</b> (YouTube Studio, Create, Upload videos, pick the film from <code>video/out/</code>, title and description from the week 1 pack, publish), then send Claude the video link.</span></label>
-<label class="t"><input type="checkbox" data-id="t50"> <span><b>G4. (optional) Install the pack:</b> after reading the review, tell Claude &quot;install youtube skill&quot; and it runs the install; or run <code>git clone --depth 1 https://github.com/AgriciDaniel/claude-youtube</code> then copy <code>skills/claude-youtube</code> into your <code>.claude/skills/youtube</code> folder.</span></label>
-<label class="t"><input type="checkbox" data-id="t51"> <span><b>G3.</b> Telegram deep links and branch commands (after C2 of R14 is built).</span></label>
+<label class="t"><input type="checkbox" data-id="t49"> <span><b>G1.</b> Growth tasks G-5, C-3, V-1, P-1 in <a href="../growth/GROWTH_TASKS.md">GROWTH_TASKS.md</a>.</span></label>
+<label class="t"><input type="checkbox" data-id="t50" checked> <span><b>G2.</b> <code>claude-youtube</code> skill pack reviewed 6 Nov: safe to install (report: <a href="../growth/YOUTUBE-SKILL-REVIEW.md">YOUTUBE-SKILL-REVIEW.md</a>). Optional install is task G4.</span></label>
+<label class="t"><input type="checkbox" data-id="t51"> <span><b>G3b. Upload your first video to the YouTube channel</b> (YouTube Studio, Create, Upload videos, pick the film from <code>video/out/</code>, title and description from the week 1 pack, publish), then send Claude the video link.</span></label>
+<label class="t"><input type="checkbox" data-id="t52"> <span><b>G4. (optional) Install the pack:</b> after reading the review, tell Claude &quot;install youtube skill&quot; and it runs the install; or run <code>git clone --depth 1 https://github.com/AgriciDaniel/claude-youtube</code> then copy <code>skills/claude-youtube</code> into your <code>.claude/skills/youtube</code> folder.</span></label>
+<label class="t"><input type="checkbox" data-id="t53"> <span><b>G3.</b> Telegram deep links and branch commands (after C2 of R14 is built).</span></label>
 <h2>H. Later (waiting on revenue or a trigger)</h2>
-<label class="t"><input type="checkbox" data-id="t52"> <span><b>H1.</b> Custom domain and business email (see <a href="../business/BUSINESS_EMAIL_STRATEGY.md">BUSINESS_EMAIL_STRATEGY.md</a>).</span></label>
-<label class="t"><input type="checkbox" data-id="t53"> <span><b>H2.</b> GST registration and invoicing: ask an accountant once revenue grows.</span></label>
-<label class="t"><input type="checkbox" data-id="t54"> <span><b>H3.</b> Licence check for the textbooks in <code>notes/</code> before study materials are sold.</span></label>
-<label class="t"><input type="checkbox" data-id="t55"> <span><b>H4.</b> Legal review of refund and terms text.</span></label>
-<label class="t"><input type="checkbox" data-id="t56"> <span><b>H5.</b> Play Store listing (₹2,100) and welcome email series.</span></label>
-<label class="t"><input type="checkbox" data-id="t57"> <span><b>H7.</b> Move the repo to the renyxera account (decided: later).</span></label>
-<label class="t"><input type="checkbox" data-id="t58"> <span><b>H6.</b> March 2027: official marks-to-rank data and PYQ refresh (Claude prepares, you confirm sources).</span></label>
+<label class="t"><input type="checkbox" data-id="t54"> <span><b>H1.</b> Custom domain and business email (see <a href="../business/BUSINESS_EMAIL_STRATEGY.md">BUSINESS_EMAIL_STRATEGY.md</a>).</span></label>
+<label class="t"><input type="checkbox" data-id="t55"> <span><b>H2.</b> GST registration and invoicing: ask an accountant once revenue grows.</span></label>
+<label class="t"><input type="checkbox" data-id="t56"> <span><b>H3.</b> Licence check for the textbooks in <code>notes/</code> before study materials are sold.</span></label>
+<label class="t"><input type="checkbox" data-id="t57"> <span><b>H4.</b> Legal review of refund and terms text.</span></label>
+<label class="t"><input type="checkbox" data-id="t58"> <span><b>H5.</b> Play Store listing (₹2,100) and welcome email series.</span></label>
+<label class="t"><input type="checkbox" data-id="t59"> <span><b>H7.</b> Move the repo to the renyxera account (decided: later).</span></label>
+<label class="t"><input type="checkbox" data-id="t60"> <span><b>H6.</b> March 2027: official marks-to-rank data and PYQ refresh (Claude prepares, you confirm sources).</span></label>
 <script>
 const K='renyxera-owner-tasks';let s={};try{s=JSON.parse(localStorage.getItem(K)||'{}')}catch(e){}
 const bx=[...document.querySelectorAll('input[data-id]')];
