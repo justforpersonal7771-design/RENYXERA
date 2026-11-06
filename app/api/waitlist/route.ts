@@ -5,6 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BRANCHES } from "@/lib/branches";
+import { verifyTurnstile } from "@/lib/billing/server";
 
 export const runtime = "nodejs";
 
@@ -13,6 +14,7 @@ const joinSchema = z.object({
   branch: z.enum(CODES),
   email: z.string().trim().toLowerCase().email().max(254).optional(),
   website: z.string().max(500).optional(), // honeypot: real people never fill this
+  captcha: z.string().max(4096).optional(),
 });
 
 /**
@@ -36,6 +38,8 @@ export async function POST(req: NextRequest) {
 
   const claims = await getVerifiedClaims().catch(() => null);
   const userId = typeof claims?.sub === "string" ? claims.sub : null;
+  // Guests (no account) must pass the Turnstile check; members are already verified by sign-in.
+  if (!userId && !(await verifyTurnstile(parsed.data.captcha, getClientKey(req) === "unknown" ? null : getClientKey(req)))) return NextResponse.json({ error: "Security check failed. Please try again." }, { status: 400 });
   const email = parsed.data.email ?? (typeof claims?.email === "string" ? claims.email.toLowerCase() : undefined);
   if (!userId && !email) return NextResponse.json({ error: "Enter your email address." }, { status: 400 });
 

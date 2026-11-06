@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Bell, CheckCircle2, Loader2, Users } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { emailProblem } from "@/lib/auth-messages";
+import { TurnstileWidget, type TurnstileHandle } from "@/components/auth/turnstile-widget";
 
 /** "Notify me" for a branch that isn't live yet. Members join with one click; guests by email. */
 export function NotifyForm({ branch, branchName }: { branch: string; branchName: string }) {
@@ -15,6 +16,8 @@ export function NotifyForm({ branch, branchName }: { branch: string; branchName:
   const [state, setState] = useState<"idle" | "saving" | "done" | "already">("idle");
   const [error, setError] = useState<string | null>(null);
   const [count, setCount] = useState<number | null>(null);
+  const [captcha, setCaptcha] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   useEffect(() => {
     fetch("/api/waitlist").then((r) => r.json()).then((j) => setCount(j?.counts?.[branch] ?? null)).catch(() => {});
@@ -25,6 +28,7 @@ export function NotifyForm({ branch, branchName }: { branch: string; branchName:
     if (!user) {
       const problem = emailProblem(email);
       if (problem) return setError(problem);
+      if (!captcha) return setError("Please wait for the quick security check to finish, then try again.");
     }
     setError(null);
     setState("saving");
@@ -32,10 +36,10 @@ export function NotifyForm({ branch, branchName }: { branch: string; branchName:
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ branch, email: user ? undefined : email.trim(), website: trap || undefined }),
+        body: JSON.stringify({ branch, email: user ? undefined : email.trim(), website: trap || undefined, captcha: user ? undefined : captcha }),
       });
       const j = await res.json().catch(() => ({}));
-      if (!res.ok) { setState("idle"); return setError(j.error || "Couldn't save that. Please try again."); }
+      if (!res.ok) { setState("idle"); turnstileRef.current?.reset(); return setError(j.error || "Couldn't save that. Please try again."); }
       setState(j.already ? "already" : "done");
       if (!j.already) setCount((c) => (c === null ? c : c + 1));
     } catch {
@@ -79,6 +83,7 @@ export function NotifyForm({ branch, branchName }: { branch: string; branchName:
                 </button>
               </div>
             )}
+            {!authLoading && !user && <div className="mt-3"><TurnstileWidget ref={turnstileRef} onToken={setCaptcha} /></div>}
             {error && <p role="alert" className="mt-2 text-xs font-medium text-rose-500">{error}</p>}
           </motion.form>
         )}
