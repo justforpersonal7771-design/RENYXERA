@@ -9,6 +9,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Crown, Loader2, Sparkles, X } from "lucide-react";
 import { PlansCompare } from "@/components/billing/plans-compare";
+import { startPurchaseTour } from "@/components/billing/post-purchase-tour";
 import { MentorRecharges } from "@/components/billing/mentor-recharges";
 import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, planById, seasonPlan, seasonYears, upcomingSeasonYear, type PlanId } from "@/lib/billing/plans";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
@@ -110,7 +111,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           try { await fetch("/api/billing/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId: resp?.razorpay_order_id, paymentId: resp?.razorpay_payment_id, signature: resp?.razorpay_signature }) }); } catch { /* the webhook still activates it */ }
           const ok = await waitForTier(ent.accountKey, plan.tier);
           toast.show(ok ? `You're on ${plan.tier === "pro" ? "Pro" : "Plus"} — enjoy!` : "Payment received. Your plan will appear within a minute — no need to pay again.", ok ? "success" : "info");
-          if (ok) onDone?.();
+          if (ok) { startPurchaseTour(plan.tier); onDone?.(); }
         },
       });
       rz.on("payment.failed", (r) => useToastStore.getState().show(r?.error?.description || "Payment failed. Please try again or use another method.", "error"));

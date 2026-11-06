@@ -11,6 +11,7 @@ import { BottomTabBar } from "./bottom-tab-bar";
 import { startTimeSync } from "@/lib/time/server-time";
 import { PlanExpiryNotice } from "@/components/billing/plan-expiry-notice";
 import { UpgradeModalHost } from "@/components/billing/upgrade-modal";
+import { PostPurchaseTour } from "@/components/billing/post-purchase-tour";
 import { SpacedRevisionSync } from "@/components/planner/spaced-revision-sync";
 import { TelegramActionsSync } from "@/components/planner/telegram-actions-sync";
 import { LaunchIntro } from "./launch-intro";
@@ -240,6 +241,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <TelegramActionsSync />
       <SpacedRevisionSync />
       <UpgradeModalHost />
+      <PostPurchaseTour />
       {!pathname?.startsWith("/exam/results") && <BottomTabBar />}
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
