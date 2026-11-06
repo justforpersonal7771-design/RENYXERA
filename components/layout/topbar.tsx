@@ -92,7 +92,7 @@ export function Topbar() {
   // Tooltips on the main items appear only when the names are hidden (below 1280px); at full width the name is already on screen.
   const [compactNav, setCompactNav] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1279px)");
+    const mq = window.matchMedia("(max-width: 1339px)");
     const f = () => setCompactNav(mq.matches);
     f(); mq.addEventListener("change", f);
     return () => mq.removeEventListener("change", f);
@@ -269,7 +269,7 @@ export function Topbar() {
                   onFocus={() => setHovered(item.href)}
                   data-tint={NAV_TINTS[item.label]}
                   title={compactNav ? item.label : undefined}
-                  className={`group relative flex items-center gap-2 px-2.5 xl:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
+                  className={`group relative flex items-center gap-2 px-2.5 min-[1340px]:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
                     isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
@@ -288,8 +288,8 @@ export function Topbar() {
                     />
                   )}
                   <item.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
-                  {/* Seven items: names shown from 1280px; below that icons (name on hover). */}
-                  <span className="hidden xl:inline">{item.label}</span>
+                  {/* Seven items: names shown from 1340px (at 1280 they ran into the wordmark and clipped Analytics); below that icons, name on hover. */}
+                  <span className="hidden min-[1340px]:inline">{item.label}</span>
                 </Link>
               );
               return item.label === TEST_CENTRE && pathname !== TEST_CENTRE_HREF ? <div key={item.href} className="group/tc relative">{link}<TestCentreMenu /></div> : link;
