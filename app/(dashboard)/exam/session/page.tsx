@@ -425,7 +425,8 @@ export default function ExamSessionPage() {
                    <button
                      data-calc-toggle
                      onClick={() => setShowCalc((v) => !v)}
-                     className={`btn-soft btn-icon ${showCalc ? "btn-on" : ""}`}
+                     disabled={sessionStatus === "PAUSED"}
+                     className={`btn-soft btn-icon ${showCalc ? "btn-on" : ""} disabled:opacity-40 disabled:pointer-events-none`}
                      title="Calculator"
                      aria-label="Calculator"
                      aria-pressed={showCalc}
@@ -488,7 +489,8 @@ export default function ExamSessionPage() {
           </div>
         </header>
 
-        <VirtualCalculator open={showCalc} onClose={() => setShowCalc(false)} />
+        {/* Not usable while the test is paused (it comes back, with its display and memory, when the test resumes). */}
+        <VirtualCalculator open={showCalc && sessionStatus !== "PAUSED"} onClose={() => setShowCalc(false)} />
 
         {/* SECTION TABS ROW */}
         <div className="md:hidden flex-none bg-[var(--surface)] border-b border-[var(--border)] z-20 w-full overflow-x-auto shadow-sm">

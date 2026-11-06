@@ -28,7 +28,7 @@ export default function PracticePage() {
       </section>
 
       <Link href="/revision" data-tint="rose" className={`${tile} md:col-span-7 md:row-span-2`}>
-        <RotateCcw aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 h-44 w-44 -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110" />
+        <RotateCcw aria-hidden className="pointer-events-none absolute bottom-3 right-3 h-28 w-28 -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110" />
         <span className={`inline-block self-start rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold ${ink}`}>Best next step</span>
         <h2 className={`mt-3 font-display text-4xl font-extrabold ${ink}`}>Revise mistakes</h2>
         <p className="mt-2 max-w-md text-[var(--text-secondary)]">{open ? "Spaced repetition brings back the questions you are about to forget, easiest first." : "Nothing is waiting right now. Questions you get wrong will show up here."}</p>
@@ -39,7 +39,7 @@ export default function PracticePage() {
       </Link>
 
       <Link href="/checkpoint" data-tint="peri" className={`${tile} md:col-span-5`}>
-        <Flag aria-hidden className="pointer-events-none absolute -bottom-4 -right-3 h-28 w-28 -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0" />
+        <Flag aria-hidden className="pointer-events-none absolute bottom-3 right-3 h-20 w-20 -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0" />
         <h2 className={`font-display text-2xl font-extrabold ${ink}`}>Checkpoint</h2>
         <p className="mt-1 flex-1 text-sm text-[var(--text-secondary)]">Ten mixed questions from your recent tests and mistakes. Shows what has stuck.</p>
         <span className={`mt-3 inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Start <Arrow /></span>

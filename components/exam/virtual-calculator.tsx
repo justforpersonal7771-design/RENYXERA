@@ -115,6 +115,27 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
   useEffect(() => { const el = exprBox.current; if (el) el.scrollTop = el.scrollHeight; }, [st]);
   const result = liveResult(st);
   const style = phone ? undefined : { left: pos?.x ?? 16, top: pos?.y ?? 68, width: W };
+  const keyBtn = (b: K, size: string, place?: React.CSSProperties) => (
+    <button key={b.k} type="button" onClick={() => key(b.k)} data-k={b.k} aria-label={b.k === "⌫" ? "Backspace" : b.l}
+      style={place ?? { gridRow: `${b.r} / span ${b.rs ?? 1}`, gridColumn: `${b.c} / span ${b.cs ?? 1}` }}
+      className={`calc-key min-w-0 overflow-hidden whitespace-nowrap rounded-md px-0 font-semibold tracking-tight transition active:scale-95 cursor-pointer ${size} ${STYLE[b.kind ?? "fn"]}`}>
+      {b.k === "⌫" ? <ArrowLeft className="mx-auto h-4 w-4" strokeWidth={2.5} aria-hidden /> : b.l}
+    </button>
+  );
+  const angle = (
+    <div role="radiogroup" aria-label="Angle mode" className="grid grid-cols-2 rounded-md border border-[var(--border)] bg-[var(--surface-secondary)] p-0.5">
+      {(["deg", "rad"] as const).map((m) => (
+        <button key={m} type="button" role="radio" aria-checked={st.mode === m} onClick={() => key(m)}
+          className={`rounded text-[11px] font-bold transition cursor-pointer ${st.mode === m ? "bg-violet-600 text-white shadow-sm" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{m === "deg" ? "Deg" : "Rad"}</button>
+      ))}
+    </div>
+  );
+  // Phone layout: the 11-column desktop grid made every key about 30 px wide, so labels like sinh⁻¹ spilled out. Here the scientific keys
+  // (6 columns) and the number pad (5 columns) are two separate blocks, with mode and memory in a row of their own.
+  const memKeys = KEYS.filter((b) => b.kind === "mem");
+  const modKey = KEYS.find((b) => b.k === "mod")!;
+  const sciKeys = KEYS.filter((b) => b.c <= 6 && b.r >= 2);
+  const padKeys = KEYS.filter((b) => b.c >= 7 && b.r >= 2);
   return (
     <div
       ref={panel}
@@ -141,22 +162,25 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
         </div>
       </div>
 
-      <div className="grid gap-1 p-2" style={{ gridTemplateColumns: "repeat(11, minmax(0, 1fr))", gridAutoRows: "minmax(2rem, 1fr)" }}>
-        {/* Deg / Rad: one switch instead of two radio buttons */}
-        <div role="radiogroup" aria-label="Angle mode" style={{ gridRow: 1, gridColumn: "2 / span 3" }} className="grid grid-cols-2 rounded-md border border-[var(--border)] bg-[var(--surface-secondary)] p-0.5">
-          {(["deg", "rad"] as const).map((m) => (
-            <button key={m} type="button" role="radio" aria-checked={st.mode === m} onClick={() => key(m)}
-              className={`rounded text-[11px] font-bold transition cursor-pointer ${st.mode === m ? "bg-violet-600 text-white shadow-sm" : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{m === "deg" ? "Deg" : "Rad"}</button>
-          ))}
+      {phone ? (
+        <div className="space-y-1 p-2">
+          <div className="grid gap-1" style={{ gridTemplateColumns: "repeat(8, minmax(0, 1fr))" }}>
+            <div style={{ gridColumn: "span 2" }} className="grid">{angle}</div>
+            {[modKey, ...memKeys].map((b, i) => keyBtn(b, "h-9 text-[11px]", { gridColumn: `${3 + i} / span 1`, gridRow: 1 }))}
+          </div>
+          <div className="grid gap-1" style={{ gridTemplateColumns: "repeat(6, minmax(0, 1fr))" }}>
+            {sciKeys.map((b) => keyBtn(b, "h-9 text-xs", { gridRow: b.r - 1, gridColumn: b.c }))}
+          </div>
+          <div className="grid gap-1 pt-1" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
+            {padKeys.map((b) => keyBtn(b, "h-10 text-sm", { gridRow: `${b.r - 1} / span ${b.rs ?? 1}`, gridColumn: `${b.c - 6} / span ${b.cs ?? 1}` }))}
+          </div>
         </div>
-        {KEYS.map((b) => (
-          <button key={b.k} type="button" onClick={() => key(b.k)} data-k={b.k} aria-label={b.k === "⌫" ? "Backspace" : b.l}
-            style={{ gridRow: `${b.r} / span ${b.rs ?? 1}`, gridColumn: `${b.c} / span ${b.cs ?? 1}` }}
-            className={`calc-key min-h-8 min-w-0 rounded-md px-0 font-semibold tracking-tight transition active:scale-95 cursor-pointer sm:min-h-9 sm:text-xs ${b.l.length >= 5 ? "text-[9px]" : "text-[11px]"} ${STYLE[b.kind ?? "fn"]}`}>
-            {b.k === "⌫" ? <ArrowLeft className="mx-auto h-4 w-4" strokeWidth={2.5} aria-hidden /> : b.l}
-          </button>
-        ))}
-      </div>
+      ) : (
+        <div className="grid gap-1 p-2" style={{ gridTemplateColumns: "repeat(11, minmax(0, 1fr))", gridAutoRows: "minmax(2rem, 1fr)" }}>
+          <div style={{ gridRow: 1, gridColumn: "2 / span 3" }} className="grid">{angle}</div>
+          {KEYS.map((b) => keyBtn(b, `min-h-8 sm:min-h-9 ${b.l.length >= 5 ? "text-[10px]" : "text-xs"}`))}
+        </div>
+      )}
     </div>
   );
 }

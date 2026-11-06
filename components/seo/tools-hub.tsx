@@ -56,7 +56,7 @@ export function ToolsHub() {
               <section key={it.id} role="tabpanel" id={`tools-panel-${it.id}`} aria-labelledby={`tools-tab-${it.id}`} hidden={it.id !== sel} data-tint={it.tint}
                 className="card-well h-full grid-cols-[minmax(0,1fr)] gap-4 p-4 data-[open=true]:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] sm:p-5" data-open={it.id === sel}>
                 <Link href={lead.href} className="group relative flex min-w-0 flex-col overflow-hidden rounded-3xl bg-[var(--surface)]/70 p-5 transition-transform hover:-translate-y-0.5">
-                  <LeadIcon aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 h-36 w-36 -rotate-12 text-[var(--text-primary)] opacity-[0.06] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110" />
+                  <LeadIcon aria-hidden className="pointer-events-none absolute bottom-3 right-3 h-24 w-24 -rotate-12 text-[var(--text-primary)] opacity-[0.06] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110" />
                   <span className="inline-block self-start rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Start here</span>
                   <span className="mt-3 block font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)]">{lead.title}</span>
                   <span className="mt-1 block text-[var(--text-secondary)]">{lead.blurb}</span>

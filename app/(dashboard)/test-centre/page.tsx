@@ -19,7 +19,7 @@ import { TEST_CENTRE } from "@/lib/test-centre/brand";
 const tile = "card-pastel group relative flex min-w-0 flex-col justify-between overflow-hidden p-5";
 const ink = "text-[var(--text-primary)]";
 const Arrow = () => <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />;
-const Mark = ({ I, size = "h-24 w-24" }: { I: typeof Timer; size?: string }) => <I aria-hidden className={`tile-mark pointer-events-none absolute -bottom-4 -right-3 ${size} -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110`} />;
+const Mark = ({ I, size = "h-24 w-24" }: { I: typeof Timer; size?: string }) => <I aria-hidden className={`tile-mark pointer-events-none absolute bottom-3 right-3 ${size} -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110`} />;
 const Sticker = ({ children, tilt = "-rotate-2" }: { children: React.ReactNode; tilt?: string }) => <span className={`inline-block self-start ${tilt} rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold ${ink}`}>{children}</span>;
 
 export default function TestCentrePage() {
@@ -51,8 +51,9 @@ export default function TestCentrePage() {
 
   return (
     <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-12rem)]">
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-4 lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
-        <section className="card-well relative flex flex-col overflow-hidden p-4 sm:p-5" data-tint="mint" aria-label="Today's mission">
+      {/* Phone order: mission, then the doors (the actions), then mock info. From lg the two blocks sit side by side again. */}
+      <div className="contents lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:gap-4">
+        <section className="card-well relative order-1 flex flex-col overflow-hidden p-4 sm:p-5 lg:order-none" data-tint="mint" aria-label="Today's mission">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[var(--tint-mint-ink)] opacity-10" />
           <Sticker>{TEST_CENTRE} · today&apos;s mission</Sticker>
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -81,16 +82,16 @@ export default function TestCentrePage() {
             ))}
           </div>
         </section>
-        <div className="flex min-w-0 flex-col gap-3">
+        <div className="order-3 flex min-w-0 flex-col gap-3 lg:order-none">
           <MockStatusCard />
           <UpcomingMocks />
         </div>
       </div>
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
-      <div className="grid flex-1 grid-cols-2 gap-3 md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
+      <div className="order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
-          <Mark I={Settings} size="h-32 w-32" />
+          <Mark I={Settings} size="h-28 w-28" />
           <div>
             <Sticker tilt="rotate-2">Most used</Sticker>
             <h2 className={`mt-3 font-display text-3xl font-extrabold ${ink}`}>Build a test</h2>
@@ -118,7 +119,7 @@ export default function TestCentrePage() {
           <h2 className={`font-display text-xl font-extrabold ${ink}`}>Challenge</h2>
           <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Go <Arrow /></span>
         </Link>
-        <Link href="/test-centre/history" data-tint="sky" className={`${tile} md:col-span-2`}>
+        <Link href="/test-centre/history" data-tint="sky" className={`${tile} col-span-2 md:col-span-2`}>
           <Mark I={BarChart3} />
           <h2 className={`font-display text-xl font-extrabold ${ink}`}>History</h2>
           <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Open <Arrow /></span>

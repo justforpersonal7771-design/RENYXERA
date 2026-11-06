@@ -20,6 +20,9 @@ import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { istDateStr } from "@/lib/time/ist";
 import type { ChatMeta } from "@/lib/mentor/chat-tree";
+import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
+import { AIResponseParser } from "@/lib/ai/ai-response-parser";
+import { RICH } from "@/components/mentor/mentor-rich";
 
 const AUTO: Partial<Record<Mode, string>> = {
   Plan: "Make me a study plan for this week from my data.", Review: "Review my last test.", Weekly: "Give me my weekly review.",
@@ -103,6 +106,15 @@ function Typewriter({ text, active, onDone }: { text: string; active: boolean; o
   }, [text, active]);
   useEffect(() => { if (active && n >= text.length && !doneRef.current) { doneRef.current = true; onDone(); } }, [n, text.length, active, onDone]);
   return <p className="whitespace-pre-wrap leading-relaxed" onClick={() => setN(text.length)}>{text.slice(0, n)}{active && n < text.length && <span aria-hidden className="ml-0.5 inline-block h-4 w-1.5 translate-y-0.5 rounded-sm bg-[var(--tint-peri-ink)] motion-safe:animate-pulse" />}</p>;
+}
+
+/** A Mentor answer. Plain answers type out; answers with formatting are drawn at once (equations, code blocks, tables, bold, lists) so half-typed TeX never shows. */
+function MentorText({ text, active, onDone }: { text: string; active: boolean; onDone: () => void }) {
+  const rich = RICH.test(text);
+  const nodes = useMemo(() => (rich ? AIResponseParser.parse(text) : []), [rich, text]);
+  useEffect(() => { if (rich && active) onDone(); }, [rich, active, onDone]);
+  if (!rich) return <Typewriter text={clean(text)} active={active} onDone={onDone} />;
+  return <div className="mentor-rich leading-relaxed [&_.ast-content]:block [&_.ast-content]:items-start"><AstNodeRenderer nodes={nodes} chat /></div>;
 }
 
 function Pager({ m, onStep }: { m: Msg; onStep: (id: string, d: -1 | 1) => void }) {
@@ -335,7 +347,7 @@ function ChatScreen() {
           )}
         </div>
       </form>
-      <p className="mx-auto mt-1.5 w-fit max-w-full rounded-full bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-3 py-0.5 text-center text-[11px] leading-snug text-[var(--text-muted)] backdrop-blur-sm">The Mentor is an AI and can make mistakes, so check important facts, numbers and dates before you rely on them.</p>
+      <p className="mx-auto mt-1.5 w-fit max-w-full rounded-full bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-3 py-0.5 text-center text-[11px] leading-snug text-[var(--text-muted)] backdrop-blur-sm">AI Mentor can make mistakes. Check important facts.</p>
     </div>
   );
 
@@ -427,7 +439,7 @@ function ChatScreen() {
                     <MentorLogo className="mt-1 h-8" />
                     <div className="min-w-0 flex-1 text-sm text-[var(--text-primary)]">
                       <div className="rounded-2xl bg-[var(--surface)] px-4 py-3">
-                        <Typewriter text={clean(m.text)} active={c.typingId === m.id && !typedDone.has(m.id)} onDone={() => setTypedDone((s) => new Set(s).add(m.id))} />
+                        <MentorText text={m.text} active={c.typingId === m.id && !typedDone.has(m.id)} onDone={() => setTypedDone((s) => new Set(s).add(m.id))} />
                         {(c.typingId !== m.id || typedDone.has(m.id)) && (
                           <>
                             {m.warn && <p className="mt-2 rounded-lg bg-[var(--tint-butter)] px-2 py-1 text-xs text-[var(--tint-butter-ink)]">Check these numbers before relying on them: {m.warn.join(", ")}. They are not in your data.</p>}

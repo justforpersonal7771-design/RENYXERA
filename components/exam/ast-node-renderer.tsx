@@ -13,6 +13,8 @@ import { PremiumImageGallery } from "./premium-image-gallery";
 interface AstNodeRendererProps {
   nodes: RenderNode[];
   className?: string; // Additional classes for the container
+  /** AI chat replies: also turn "# heading" lines and "- " bullets into readable text (question text is left exactly as written). */
+  chat?: boolean;
 }
 
 function formatMarkdownText(text: string): React.ReactNode {
@@ -37,6 +39,26 @@ function formatMarkdownText(text: string): React.ReactNode {
   });
 }
 
+/** Chat replies: line by line, "## Title" becomes a bold line and "- item" or "* item" a bullet; **bold** and *italic* as before. */
+function formatChatText(text: string): React.ReactNode {
+  const lines = text.split("\n");
+  return lines.map((line, i) => {
+    const heading = /^\s{0,3}#{1,4}\s+(.*)$/.exec(line);
+    const bullet = /^(\s*)[-*•]\s+(.*)$/.exec(line);
+    const body = heading ? <strong className="font-extrabold text-[var(--text-primary)]">{heading[1].replace(/\*\*/g, "")}</strong> : bullet ? <>{bullet[1]}{"• "}{formatMarkdownText(bullet[2])}</> : formatMarkdownText(line);
+    return <span key={i}>{body}{i < lines.length - 1 ? "\n" : ""}</span>;
+  });
+}
+
+const BLOCK_TYPES = new Set(["code", "table", "latex-display", "image"]);
+/** Chat replies: the blank lines next to a code block, table or displayed equation are dropped (those blocks bring their own spacing), and long runs of blank lines shrink to one. */
+function tightAroundBlocks(content: string, prev?: RenderNode, next?: RenderNode): string {
+  let s = content.replace(/\n{3,}/g, "\n\n");
+  if (prev && BLOCK_TYPES.has(prev.type)) s = s.replace(/^\n+/, "");
+  if (next && BLOCK_TYPES.has(next.type)) s = s.replace(/\n+$/, "");
+  return s;
+}
+
 // A stable id per parsed node array, so the body remounts (fresh DOM) whenever the
 // content changes — see the typesetting note in AstBody.
 const nodeIds = new WeakMap<RenderNode[], number>();
@@ -53,12 +75,13 @@ const RAW_MATH = /\\\(|\\\[/;
 export const AstNodeRenderer = memo(function AstNodeRenderer({
   nodes,
   className = "",
+  chat = false,
 }: AstNodeRendererProps) {
   if (!nodes || nodes.length === 0) return null;
-  return <AstBody key={idFor(nodes)} nodes={nodes} className={className} />;
+  return <AstBody key={idFor(nodes)} nodes={nodes} className={className} chat={chat} />;
 });
 
-function AstBody({ nodes, className = "" }: AstNodeRendererProps) {
+function AstBody({ nodes, className = "", chat = false }: AstNodeRendererProps) {
   const ref = useRef<HTMLDivElement>(null);
   const mathJax = useContext(MathJaxBaseContext);
 
@@ -93,7 +116,7 @@ function AstBody({ nodes, className = "" }: AstNodeRendererProps) {
           case "text":
             return (
               <span key={i} className="whitespace-pre-wrap">
-                {formatMarkdownText(node.content)}
+                {chat ? formatChatText(tightAroundBlocks(node.content, nodes[i - 1], nodes[i + 1])) : formatMarkdownText(node.content)}
               </span>
             );
           case "latex-inline":

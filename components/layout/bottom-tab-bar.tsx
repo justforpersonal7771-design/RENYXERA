@@ -90,7 +90,7 @@ export function BottomTabBar() {
                       <span className="block text-sm font-extrabold leading-tight text-[var(--text-primary)]">{r.label}</span>
                       <span className="mt-0.5 block text-[11px] font-semibold leading-snug text-[var(--text-secondary)]">{r.hint}</span>
                     </span>
-                    <r.icon aria-hidden className="pointer-events-none absolute -bottom-3 -right-2 h-16 w-16 -rotate-12 opacity-[0.08]" />
+                    <r.icon aria-hidden className="pointer-events-none absolute bottom-1 right-1 h-12 w-12 -rotate-12 opacity-[0.08]" />
                   </Link>
                 </li>
               ))}

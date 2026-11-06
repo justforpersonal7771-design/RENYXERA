@@ -17,6 +17,7 @@ import { CardView, Voice, clean, useMentorChat } from "@/components/mentor/use-m
 import { MentorNote, useMentorData } from "@/components/mentor/use-mentor-data";
 import { CheckInPanel, FocusTimer, GoalsPanel, NoticedPanel, RoadmapPanel } from "@/components/mentor/mentor-extras";
 import { AiPracticePanel } from "@/components/mentor/ai-practice";
+import { MentorRich } from "@/components/mentor/mentor-rich";
 import { CoachInsights } from "@/components/analytics/coach-insights";
 
 const uid = () => Math.random().toString(36).slice(2, 10);
@@ -108,7 +109,7 @@ export default function AIMentorPage() {
                 {lastUser && <p className="text-xs font-semibold text-[var(--text-muted)]">You asked: {clean(lastUser.text).slice(0, 120)}</p>}
                 {c.busy ? <p className="flex items-center gap-2 text-[var(--text-muted)]"><Loader2 className="h-4 w-4 animate-spin" /> Thinking about your data...</p> : last && (
                   <>
-                    <p className="whitespace-pre-wrap leading-relaxed text-[var(--text-primary)]">{clean(last.text)}</p>
+                    <MentorRich text={last.text} className="text-[var(--text-primary)]" />
                     {last.warn && <p className="rounded-lg bg-[var(--tint-butter)] px-2 py-1 text-xs text-[var(--tint-butter-ink)]">Check these numbers before relying on them: {last.warn.join(", ")}. They are not in your data.</p>}
                     {last.cards?.map((cd, i) => <CardView key={i} c={cd} added={c.added} onAdd={(it, k) => c.addPlanItem(it, `${last.id}-${k}`)} idKey={last.id} go={(h) => router.push(h)} />)}
                   </>
