@@ -1,0 +1,310 @@
+{
+ "branch": "CS",
+ "batch": "b010",
+ "note": "Authored in a local Claude Code session from a generator plan; verified by the generator: computed answer, TeX render, dedupe, option checks.",
+ "items": [
+  {
+   "id": "FORGE_CS_000251",
+   "subject": "Operating Systems (OS)",
+   "topic": "File Systems Operations & Disk Scheduling Optimization",
+   "kind": "application",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "A backup tool reads a file of exactly \\(5{,}000{,}000\\) bytes sequentially from its first byte. The file system uses \\(1\\) KB blocks (\\(1024\\) bytes) and \\(4\\)-byte block pointers. Each inode holds \\(12\\) direct pointers, one single-indirect pointer and one double-indirect pointer. The inode is read once, and each index block (single-indirect, double-indirect or second-level) is read from disk once and then kept in memory while the file is read; every data block is read once. The total number of disk block reads is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     4905,
+     4905
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Data blocks: \\(\\lceil 5{,}000{,}000 / 1024 \\rceil = 4883\\). Each index block holds \\(1024/4 = 256\\) pointers.",
+     "The first \\(12\\) blocks are direct and the next \\(256\\) are reached through the single-indirect block, leaving 4615 blocks for the double-indirect tree, which needs \\(\\lceil 4615 / 256 \\rceil = 19\\) second-level index blocks.",
+     "Reads: inode \\(1\\) + data 4883 + single-indirect \\(1\\) + double-indirect \\(1\\) + second-level 19 \\(= 4905\\)."
+    ],
+    "shortcut": "Count data blocks, then only the index blocks whose pointers the file really needs.",
+    "trap": "Forgetting the first-level double-indirect block, or counting the second-level blocks as 256 instead of only those the file actually uses."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "block = 1024\nper = block // 4\nsize = 5000000\ndata = -(-size // block)\nrest = data - 12 - per\nsecond = -(-rest // per)\nanswer = 1 + data + 1 + 1 + second"
+   }
+  },
+  {
+   "id": "FORGE_CS_000252",
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "Instruction Pipelining, Performance, Hazard Management",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A \\(2\\) GHz processor has a 5-stage pipeline with an ideal CPI of \\(1\\). Of its instructions, \\(25\\%\\) are loads and \\(20\\%\\) are branches. Forwarding is used, but a load followed immediately by a dependent instruction still costs \\(1\\) stall cycle, and \\(40\\%\\) of loads are followed by such an instruction. The branch predictor is correct for \\(85\\%\\) of the branches; a misprediction costs \\(3\\) cycles. Every instruction fetch misses the instruction cache with probability \\(0.02\\), and every load misses the data cache with probability \\(0.05\\); each cache miss costs \\(40\\) cycles. The program has \\(10^8\\) instructions. Its execution time, in milliseconds, is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     124.49,
+     124.51
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Add every stall source to the ideal CPI: load-use \\(0.25 \\times 0.4 \\times 1 = 0.10\\); branch \\(0.2 \\times 0.15 \\times 3 = 0.09\\); instruction cache \\(0.02 \\times 40 = 0.80\\); data cache \\(0.25 \\times 0.05 \\times 40 = 0.50\\).",
+     "\\(\\text{CPI} = 1 + 0.10 + 0.09 + 0.80 + 0.50 = 2.49\\).",
+     "Time \\(= \\text{CPI} \\times 10^8 / (2 \\times 10^9)\\) s \\(= 124.5\\) ms."
+    ],
+    "shortcut": "CPI = 1 + sum of (frequency x probability x penalty) over every stall source; then time = CPI x N / f.",
+    "trap": "Charging the instruction-cache miss only to loads, or the data-cache miss to every instruction, instead of weighting each by how often it happens."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "cpi = 1 + 0.25 * 0.4 * 1 + 0.2 * 0.15 * 3 + 0.02 * 40 + 0.25 * 0.05 * 40\nanswer = round(cpi * 1e8 / 2e9 * 1000, 2)"
+   }
+  },
+  {
+   "id": "FORGE_CS_000253",
+   "subject": "Algorithms",
+   "topic": "Graph Traversals (BFS, DFS) & Single-Source Shortest Paths",
+   "kind": "msq_discriminator",
+   "difficulty": "H",
+   "question_type": "MSQ",
+   "marks": 1,
+   "question_text": "A directed graph on vertices \\(0\\) to \\(4\\) has the weighted edges \\(0 \\to 1\\,(1)\\), \\(0 \\to 2\\,(3)\\), \\(2 \\to 1\\,(-3)\\), \\(1 \\to 3\\,(1)\\) and \\(3 \\to 4\\,(2)\\); it has no negative cycle. Single-source shortest paths from vertex \\(0\\) are wanted. Which of the following statements is/are TRUE? (Dijkstra's algorithm here means: repeatedly remove the unfinished vertex of least estimate, finalise it, and relax its outgoing edges only towards unfinished vertices.)",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "Dijkstra's algorithm, as described, reports the correct shortest distance to vertex \\(4\\)."
+    },
+    {
+     "option_id": "B",
+     "text": "The true shortest distance from vertex \\(0\\) to vertex \\(1\\) is \\(0\\)."
+    },
+    {
+     "option_id": "C",
+     "text": "Bellman-Ford, relaxing the edges in the order listed, changes some estimate only in its first pass; the second pass changes nothing."
+    },
+    {
+     "option_id": "D",
+     "text": "Adding \\(2\\) to every edge weight (to make all weights non-negative) and running Dijkstra gives a path to vertex \\(4\\) whose original weight is the true shortest distance."
+    }
+   ],
+   "answer": {
+    "options": [
+     "B",
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Bellman-Ford (edges in the listed order): after one pass \\(d_1 = 0\\) (through \\(2\\)), \\(d_2 = 3\\), \\(d_3 = 1\\), \\(d_4 = 3\\); a second pass changes nothing.",
+     "Dijkstra finalises vertex \\(1\\) with estimate \\(1\\) before it has seen the edge \\(2 \\to 1\\), so it never improves \\(d_1\\) to \\(0\\) and finally reports \\(d_4 = 4\\) instead of \\(3\\).",
+     "After adding \\(2\\) to every edge, paths with more edges are penalised more: the route \\(0 \\to 1 \\to 3 \\to 4\\) (3 edges) becomes cheaper than the true shortest route \\(0 \\to 2 \\to 1 \\to 3 \\to 4\\) (4 edges), so its original weight is \\(4\\), not 3."
+    ],
+    "shortcut": "Negative edges break Dijkstra's finalising rule; a uniform shift is not a fix; Bellman-Ford copes.",
+    "trap": "Believing a uniform shift removes negative edges safely: it changes the ranking of paths with different numbers of edges."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "E = [(0, 1, 1), (0, 2, 3), (2, 1, -3), (1, 3, 1), (3, 4, 2)]\nN = 5\nINF = 10 ** 9\ndef bf(E):\n    d = [INF] * N\n    d[0] = 0\n    passes = 0\n    while True:\n        ch = False\n        for a, b, w in E:\n            if d[a] < INF and d[a] + w < d[b]:\n                d[b] = d[a] + w\n                ch = True\n        if not ch:\n            break\n        passes += 1\n    return d, passes\ntrue, passes = bf(E)\ndef dij(E):\n    d = [INF] * N\n    d[0] = 0\n    done = [False] * N\n    for _ in range(N):\n        u = -1\n        for v in range(N):\n            if not done[v] and d[v] < INF and (u == -1 or d[v] < d[u]):\n                u = v\n        if u == -1:\n            break\n        done[u] = True\n        for a, b, w in E:\n            if a == u and not done[b] and d[u] + w < d[b]:\n                d[b] = d[u] + w\n    return d\ndj = dij(E)\nEs = [(a, b, w + 2) for a, b, w in E]\ndef bfp(E):\n    d = [INF] * N\n    d[0] = 0\n    par = [-1] * N\n    for _ in range(N):\n        for a, b, w in E:\n            if d[a] < INF and d[a] + w < d[b]:\n                d[b] = d[a] + w\n                par[b] = a\n    return d, par\nds, par = bfp(Es)\nwmap = {(a, b): w for a, b, w in E}\nv = 4\ncost = 0\nwhile par[v] != -1:\n    cost += wmap[(par[v], v)]\n    v = par[v]\nt4 = true[4]\nd4 = dj[4]\nt1 = true[1]\ntruth = [dj[4] == true[4], true[1] == 0, passes == 1, cost == true[4]]\nperm = [0, 1, 2, 3]\ntruth = [truth[j] for j in perm]\nanswer = [k for k, x in zip('ABCD', truth) if x]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000254",
+   "subject": "Computer Organization and Architecture (COA)",
+   "topic": "I/O Interfaces (Interrupts & DMA Control Modes)",
+   "kind": "application",
+   "difficulty": "M",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "A disk delivers data at \\(4 \\times 10^{6}\\) bytes per second to memory through a DMA controller. The controller transfers one \\(4\\)-byte word per stolen bus cycle (cycle stealing), and one bus cycle lasts \\(100\\) ns, during which the CPU cannot use memory. The data moves in blocks of \\(16000\\) bytes. For every block the CPU runs two interrupt handlers (one to start the transfer, one at its end), each lasting \\(20\\ \\mu\\text{s}\\). The percentage of CPU time lost to this device is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(10\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(1\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(11\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(21\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Words per second \\(= 4 \\times 10^6 / 4 = 10^6\\); each steals \\(100\\) ns, so \\(10^6 \\times 10^{-7} = 0.1\\), that is \\(10\\%\\) of the CPU's memory time.",
+     "Blocks per second \\(= 4 \\times 10^6 / 16000 = 250\\); interrupt time \\(= 250 \\times 2 \\times 20\\ \\mu\\text{s} = 0.01\\), that is \\(1\\%\\).",
+     "Total \\(= 11\\%\\)."
+    ],
+    "shortcut": "Add the DMA cycle-stealing fraction to the interrupt-handler fraction.",
+    "trap": "Counting only the stolen cycles (10%) and forgetting the two interrupt handlers per block, or the reverse."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "words = 4e6 / 4\ncycle = words * 100e-9\nblocks = 4e6 / 16000\nirq = blocks * 2 * 20e-6\nval = round((cycle + irq) * 100, 2)\nwrong = [10.0, 1.0, 21.0]\nopts = {'A': 10.0, 'B': 1.0, 'C': 11.0, 'D': 21.0}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000255",
+   "subject": "Digital Logic",
+   "topic": "Sequential Circuits (Flip-Flops, Registers, Counters)",
+   "kind": "application",
+   "difficulty": "M",
+   "question_type": "NAT",
+   "marks": 2,
+   "question_text": "A \\(6\\)-bit synchronous binary counter uses T flip-flops. The toggle input of bit \\(i\\) is the AND of all lower bits, built as a chain of \\(2\\)-input AND gates, so the input of the most significant stage passes through \\(4\\) AND gates in series. Each AND gate has a delay of \\(8\\) ns, a flip-flop has a clock-to-output delay of \\(15\\) ns and a set-up time of \\(5\\) ns. Ignoring clock skew, the maximum clock frequency of the counter, in MHz and correct to two decimal places, is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     19.22,
+     19.24
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "The slowest path starts at a flip-flop output, ripples through the \\(4\\) AND gates and must meet the set-up time of the last flip-flop.",
+     "Minimum period \\(= 15 + 4 \\times 8 + 5 = 52\\) ns, so \\(f_{max} = 1000 / 52 = 19.23\\) MHz."
+    ],
+    "shortcut": "Clock period = clock-to-Q + chain of gates + set-up.",
+    "trap": "Using a ripple-counter formula (adding every flip-flop delay) or leaving out the set-up time."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "tcq = 15\ntand = 8\ntsu = 5\ngates = 4\nperiod = tcq + gates * tand + tsu\nanswer = round(1000 / period, 2)"
+   }
+  },
+  {
+   "id": "FORGE_CS_000256",
+   "subject": "Discrete Mathematics",
+   "topic": "Graph Theory (Connectivity, Paths, Cycles, Trees)",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "A network designer lists every labelled simple graph on the \\(5\\) sites \\(\\{1, 2, 3, 4, 5\\}\\) that has exactly \\(6\\) links. The number of those graphs that are connected is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     205,
+     205
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "There are \\(\\binom{10}{6} = 210\\) labelled graphs with \\(6\\) of the \\(10\\) possible edges.",
+     "With \\(6\\) edges the only way to be disconnected is to put all \\(6\\) edges on four vertices (a complete \\(K_4\\)) and leave one vertex isolated: one choice of the isolated vertex each, so 5 graphs (a component of size \\(3\\) holds at most \\(3\\) edges and one of size \\(2\\) at most \\(1\\), so no other split works).",
+     "Connected graphs: \\(210 - 5 = 205\\)."
+    ],
+    "shortcut": "Total edge subsets minus the disconnected ones.",
+    "trap": "Counting spanning trees or unlabelled graphs instead of labelled connected graphs with a fixed number of edges."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "edges = list(itertools.combinations(range(5), 2))\ncount = 0\nfor sub in itertools.combinations(edges, 6):\n    par = list(range(5))\n    def f(x):\n        while par[x] != x:\n            x = par[x]\n        return x\n    for a, b in sub:\n        ra = f(a)\n        rb = f(b)\n        if ra != rb:\n            par[ra] = rb\n    if len(set(f(x) for x in range(5))) == 1:\n        count += 1\ntotal = math.comb(10, 6)\ndisc = total - count\nanswer = count"
+   }
+  },
+  {
+   "id": "FORGE_CS_000257",
+   "subject": "Data Structures",
+   "topic": "Binary Search Trees (BSTs) & Binary Heaps",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "MCQ",
+   "marks": 2,
+   "question_text": "The keys \\(40, 25, 60, 10, 30, 50, 70, 5, 15, 28\\) are inserted one by one, in this order, into an initially empty binary search tree and, separately, into an initially empty array-based min-heap (each key is added at the end and moved up while it is smaller than its parent; the root is at depth \\(0\\)). The number of keys whose depth in the binary search tree equals their depth in the heap is",
+   "options": [
+    {
+     "option_id": "A",
+     "text": "\\(2\\)"
+    },
+    {
+     "option_id": "B",
+     "text": "\\(3\\)"
+    },
+    {
+     "option_id": "C",
+     "text": "\\(1\\)"
+    },
+    {
+     "option_id": "D",
+     "text": "\\(4\\)"
+    }
+   ],
+   "answer": {
+    "options": [
+     "C"
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Insert into the BST: depths are \\(40\\!:\\!0,\\ 25\\!:\\!1,\\ 60\\!:\\!1,\\ 10\\!:\\!2,\\ 30\\!:\\!2,\\ 50\\!:\\!2,\\ 70\\!:\\!2,\\ 5\\!:\\!3,\\ 15\\!:\\!3,\\ 28\\!:\\!3\\).",
+     "Insert into the min-heap with sift-up and read each key's depth from its array index (index \\(i\\) has depth \\(\\lfloor \\log_2 (i + 1) \\rfloor\\)); the heap shape is complete, so only the keys' positions change.",
+     "Comparing the two depths key by key gives 1 key(s) with equal depth; the BST and the heap shape the same keys very differently."
+    ],
+    "shortcut": "Build both structures, then compare depth per key.",
+    "trap": "Assuming both structures place a key at the same depth because both are binary trees; the BST shape follows the insertion order, the heap shape follows array positions."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "keys = [40, 25, 60, 10, 30, 50, 70, 5, 15, 28]\nL = {}\nR = {}\ndepth = {}\nroot = None\nfor k in keys:\n    if root is None:\n        root = k\n        depth[k] = 0\n        continue\n    cur = root\n    dd = 0\n    while True:\n        dd += 1\n        if k < cur:\n            if cur in L:\n                cur = L[cur]\n            else:\n                L[cur] = k\n                break\n        else:\n            if cur in R:\n                cur = R[cur]\n            else:\n                R[cur] = k\n                break\n    depth[k] = dd\nh = []\nfor k in keys:\n    h.append(k)\n    i = len(h) - 1\n    while i > 0 and h[(i - 1) // 2] > h[i]:\n        h[(i - 1) // 2], h[i] = h[i], h[(i - 1) // 2]\n        i = (i - 1) // 2\nhd = {}\nfor i, k in enumerate(h):\n    hd[k] = (i + 1).bit_length() - 1\nval = sum(1 for k in keys if depth[k] == hd[k])\nwrong = [val + 1, val + 2, val + 3]\nopts = {'A': 2, 'B': 3, 'C': 1, 'D': 4}\nanswer = [k for k in 'ABCD' if abs(float(opts[k]) - float(val)) < 1e-9][0]"
+   }
+  },
+  {
+   "id": "FORGE_CS_000258",
+   "subject": "Theory of Computation (TOC)",
+   "topic": "Regular Expressions & Finite Automata (DFA/NFA Min)",
+   "kind": "multi_concept",
+   "difficulty": "H",
+   "question_type": "NAT",
+   "marks": 1,
+   "question_text": "A log-line filter accepts a string over \\(\\{a, b\\}\\) if its length is a multiple of \\(3\\) or if it ends with \\(ab\\) (the empty string is accepted because its length \\(0\\) is a multiple of \\(3\\)). The number of states in the minimal complete DFA for this language is ______.",
+   "options": [],
+   "answer": {
+    "range": [
+     7,
+     7
+    ]
+   },
+   "solution": {
+    "given": "The data stated in the question.",
+    "find": "The quantity or statement asked for.",
+    "steps": [
+     "Build the product of a length-mod-3 counter (\\(3\\) states) and a tracker of the last two symbols relevant for ending in \\(ab\\) (\\(3\\) states: nothing useful, ends in \\(a\\), ends in \\(ab\\)): at most \\(9\\) states.",
+     "Not all of the \\(9\\) product states are distinguishable: some pairs accept exactly the same continuations, so merging by the Myhill-Nerode test leaves 7 states."
+    ],
+    "shortcut": "Start from the product DFA, then merge states that no suffix can separate.",
+    "trap": "Stopping at the product bound of 9 without testing which states can be merged."
+   },
+   "verify": {
+    "lang": "python",
+    "code": "def words(n):\n    out = ['']\n    cur = ['']\n    for _ in range(n):\n        cur = [w + c for w in cur for c in 'ab']\n        out = out + cur\n    return out\nW = words(7)\npred = lambda w: len(w) % 3 == 0 or w.endswith('ab')\nanswer = len(set(tuple(pred(u + v) for v in W) for u in W))"
+   }
+  }
+ ]
+}

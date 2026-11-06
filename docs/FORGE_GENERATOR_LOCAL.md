@@ -53,3 +53,6 @@ Planned with `replan_by_weight.py CS b009 250`, authored in three parts (`author
 ```
 node --env-file=.env.local scripts/forge/seed.mjs data/forge/CS/batches/b009.json --approve
 ```
+
+## b010 (6 Nov 2026): designed batch, rated against the Forge rubric
+After the audit (`docs/FORGE_AUDIT_2026-11-06.md`: only 8 of 249 were Forge-grade), b010 is written to the Forge design: each question blends topics (for example pipeline + branch prediction + two caches; file system + index-block counting; Dijkstra vs Bellman-Ford vs the weight-shift trick; DMA + interrupt overhead), sits in a scenario, takes 3+ steps and has distractors from named misconceptions. Planned for 60 slots (`plans/b010.json`, weighted to 310 total); part 1 (8 questions, `author_b010_p1.py`) is accepted and validated. Parts 2 onwards continue; do not seed b010 until the full batch is done.
