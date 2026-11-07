@@ -49,7 +49,7 @@ export function BottomTabBar() {
 
   return (
     <>
-      <nav aria-label="Main" className="lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)]">
+      <nav aria-label="Main" className="bottom-pill lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)]">
         <ul className="mx-auto flex max-w-xl items-stretch">
           {tabs.map((t) => (
             <li key={t.label} className="flex-1 min-w-0">

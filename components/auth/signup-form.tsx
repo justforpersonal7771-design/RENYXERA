@@ -97,7 +97,7 @@ export function SignupForm({ onSwitchToLogin, onDismiss }: SignupFormProps) {
 
   return (
     <div>
-      <h1 className="text-xl font-display font-bold text-[var(--text-primary)] mb-1">Create your <span className="font-serif italic font-normal text-[1.15em] bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent pr-0.5">account</span></h1>
+      <h1 className="text-xl font-display font-bold text-[var(--text-primary)] mb-1">Create your <span className="font-serif italic font-normal text-[1.15em] bg-gradient-to-r from-[#5e96db] to-[#f0906f] bg-clip-text text-transparent pr-0.5">account</span></h1>
       <p className="text-sm text-[var(--text-secondary)] mb-6">Free forever, on the free plan — upgrade only if you want to.</p>
 
       <div onClickCapture={(e) => { if (!agreed) { e.preventDefault(); e.stopPropagation(); setError("Please tick the box to agree to the Terms of Service and Privacy Policy first."); setNudge(true); window.setTimeout(() => setNudge(false), 1400); } }}>

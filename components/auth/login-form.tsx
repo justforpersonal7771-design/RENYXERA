@@ -70,7 +70,7 @@ export function LoginForm({ redirectTo = "/", onSuccess, onSwitchToSignup, onSwi
 
   return (
     <div>
-      <h1 className="text-xl font-display font-bold text-[var(--text-primary)] mb-1">Welcome <span className="font-serif italic font-normal text-[1.15em] bg-gradient-to-r from-[#06c2fb] via-[#5b21e0] to-[#dd42fb] bg-clip-text text-transparent pr-0.5">back</span></h1>
+      <h1 className="text-xl font-display font-bold text-[var(--text-primary)] mb-1">Welcome <span className="font-serif italic font-normal text-[1.15em] bg-gradient-to-r from-[#5e96db] to-[#f0906f] bg-clip-text text-transparent pr-0.5">back</span></h1>
       <p className="text-sm text-[var(--text-secondary)] mb-6">Sign in to sync your progress across devices.</p>
 
       <div onClickCapture={(e) => { if (!agreed) { e.preventDefault(); e.stopPropagation(); setError("Please tick the box to agree to the Terms of Service and Privacy Policy first."); setNudge(true); window.setTimeout(() => setNudge(false), 1400); } }}>
