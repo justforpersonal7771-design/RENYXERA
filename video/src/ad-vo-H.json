@@ -1,0 +1,146 @@
+{
+ "format": "H",
+ "voice": "af_heart",
+ "lines": {
+  "hook_h": {
+   "at": 0.2,
+   "text": "One guess. Marks gone.",
+   "dur": 1.34
+  },
+  "w1": {
+   "at": 4.05,
+   "text": "Solve.",
+   "dur": 0.58
+  },
+  "w2": {
+   "at": 5.55,
+   "text": "Check the key.",
+   "dur": 0.81
+  },
+  "w3": {
+   "at": 7.05,
+   "text": "Wrong.",
+   "dur": 0.51
+  },
+  "w4": {
+   "at": 8.55,
+   "text": "Again.",
+   "dur": 0.54
+  },
+  "n1": {
+   "at": 10.15,
+   "text": "Eleven forty-seven.",
+   "dur": 1.24
+  },
+  "n2": {
+   "at": 11.55,
+   "text": "You know the answer is C.",
+   "dur": 1.22
+  },
+  "n3": {
+   "at": 12.95,
+   "text": "But nobody tells you why.",
+   "dur": 1.28
+  },
+  "until": {
+   "at": 14.5,
+   "text": "Until now.",
+   "dur": 0.72
+  },
+  "m1": {
+   "at": 18.2,
+   "text": "Meet your AI Mentor.",
+   "dur": 1.25
+  },
+  "m2": {
+   "at": 24.1,
+   "text": "It explains your mistake, step by step.",
+   "dur": 2.22
+  },
+  "m3": {
+   "at": 26.7,
+   "text": "It explains exactly why.",
+   "dur": 1.54
+  },
+  "p1": {
+   "at": 28.35,
+   "text": "Ten years of official GATE papers.",
+   "dur": 1.86
+  },
+  "p2": {
+   "at": 32.2,
+   "text": "Inside an exam-identical simulator.",
+   "dur": 2.33
+  },
+  "f1": {
+   "at": 36.2,
+   "text": "Run out of past papers?",
+   "dur": 1.32
+  },
+  "f2": {
+   "at": 40.2,
+   "text": "Over three hundred original questions.",
+   "dur": 2.12
+  },
+  "f3": {
+   "at": 42.4,
+   "text": "Inside the Forge.",
+   "dur": 1.05
+  },
+  "pl0": {
+   "at": 45.3,
+   "text": "Want more power?",
+   "dur": 0.85
+  },
+  "pl1": {
+   "at": 48.3,
+   "text": "Unlock Plus and Pro.",
+   "dur": 1.24
+  },
+  "pl2": {
+   "at": 50.9,
+   "text": "A hundred and fifty AI requests a day. Unlimited Forge. Offline downloads.",
+   "dur": 4.97
+  },
+  "pl3": {
+   "at": 55.95,
+   "text": "Plus from twenty-nine rupees a month.",
+   "dur": 1.84
+  },
+  "s1a": {
+   "at": 58.1,
+   "text": "Solve.",
+   "dur": 0.58
+  },
+  "s1b": {
+   "at": 60.1,
+   "text": "Check.",
+   "dur": 0.51
+  },
+  "s1c": {
+   "at": 62.1,
+   "text": "Wrong.",
+   "dur": 0.51
+  },
+  "s2": {
+   "at": 64.0,
+   "text": "Understand.",
+   "dur": 0.76
+  },
+  "s3": {
+   "at": 66.1,
+   "text": "With your AI Mentor.",
+   "dur": 1.14
+  },
+  "c1": {
+   "at": 68.25,
+   "text": "Official papers, free forever.",
+   "dur": 1.69
+  },
+  "c2_h": {
+   "at": 71.3,
+   "text": "Start free. Upgrade when ready.",
+   "dur": 1.29
+  }
+ }
+}

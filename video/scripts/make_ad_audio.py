@@ -12,9 +12,9 @@ import numpy as np
 fmt = (sys.argv[1] if len(sys.argv) > 1 else "V").upper()
 # scene start times in seconds: must match SCENES in video/src/Ad.tsx
 if fmt == "V":
-    S = dict(hook=0.0, loop=2.0, night=6.0, until=8.0, reveal=10.0, papers=17.0, forge=19.0, stack=21.0, cta=25.0)
+    S = dict(hook=0.0, loop=2.0, night=6.0, until=8.0, reveal=9.5, papers=14.0, forge=16.5, stack=19.0, cta=25.0)
 else:
-    S = dict(hook=0.0, loop=2.0, night=6.0, until=8.0, reveal=10.0, papers=17.0, forge=19.0, battle=21.0, stack=23.5, cta=26.5)
+    S = dict(hook=0.0, loop=2.0, night=6.0, until=8.0, reveal=9.5, papers=14.0, forge=16.5, battle=19.0, stack=22.0, cta=26.5)
 DUR, name = 30.0, ("ad-vertical.wav" if fmt == "V" else "ad-landscape.wav")
 SR, BPM = 44100, 120
 BEAT = 60.0 / BPM
@@ -97,7 +97,7 @@ for key, t0 in S.items():
         continue
     add(t0, hit(0.7), 0.5)
 # the slam-replacement ("Wrong." becomes "Understand.") gets its own heavy hit, as the reference ad does for "Done." / "Earn."
-add(S["stack"] + (1.67 if fmt == "H" else 2.07), hit(1.0), 1.0)
+add(S["stack"] + (2.0 if fmt == "H" else 2.67), hit(1.0), 1.0)
 add(S["cta"], pad(220.0, DUR - S["cta"], 0.12), 1.0)  # a warm tail under the end card
 
 out *= np.minimum(1.0, (DUR - np.arange(n) / SR) / 0.5)  # 0.5 s fade at the very end
