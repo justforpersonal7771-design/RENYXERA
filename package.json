@@ -23,6 +23,7 @@
     "check:calibration": "node --experimental-strip-types --no-warnings scripts/check-calibration.mts",
     "test:e2e": "node scripts/e2e-smoke.mjs",
     "check:score": "node --experimental-strip-types --no-warnings scripts/check-score-regression.mts",
+    "check:radar": "node --experimental-strip-types --no-warnings scripts/check-radar.mts",
     "check:mock-order": "node --experimental-strip-types --no-warnings scripts/check-mock-order.mts",
     "start": "next start",
     "lint": "eslint .",

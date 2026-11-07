@@ -1987,3 +1987,14 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 
 /* Decorations that bleed past a card (watermark shapes, tile icons) are clipped to the card's rounded corners. Pickers and menus are portalled, so nothing real is cut. */
 .card-pastel[data-tint]:not(.folder-panel), .card-well[data-tint]:not(.folder-panel) { overflow: clip; }
+
+/* soft pointer spotlight on cards (components/billing/plans-content.tsx); mouse only, no blur layer */
+.spot-host { position: relative; }
+.spot-layer { pointer-events: none; position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent, #3a6fb8) 16%, transparent), transparent 45%); }
+@media (hover: hover) { .spot-host:hover .spot-layer { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .spot-layer { transition: none; } }
+
+/* adaptive subject radar: the shape's line colour (components/analytics/subject-radar-card.tsx) */
+:root { --radar-line: #3a6fb8; }
+.dark { --radar-line: #8db9f0; }

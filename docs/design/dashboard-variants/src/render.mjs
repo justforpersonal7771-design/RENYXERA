@@ -2,13 +2,14 @@ import { chromium } from "file:///D:/0-UI/r2ma-stable/node_modules/playwright/in
 import fs from "node:fs";
 import { shell } from "./common.mjs";
 import { SET_A } from "./v1to5.mjs";
-let SET_B = [];
+let SET_B = [], SET_C = [];
 try { ({ SET_B } = await import("./v6to10.mjs")); } catch (e) { if (!String(e).includes("Cannot find")) throw e; }
+({ SET_C } = await import("./v11to20.mjs"));
 
 const OUT = process.argv[3] || "D:/0-UI/r2ma-stable/docs/design/dashboard-variants/";
 const only = (process.argv[2] || "").split(",").filter(Boolean);
 fs.mkdirSync(OUT, { recursive: true });
-const all = [...SET_A, ...SET_B].filter((v) => !only.length || only.includes(v.id));
+const all = [...SET_A, ...SET_B, ...SET_C].filter((v) => !only.length || only.includes(v.id));
 const b = await chromium.launch();
 for (const v of all) {
   for (const t of ["light", "dark"]) {

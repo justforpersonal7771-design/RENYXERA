@@ -70,3 +70,33 @@ A hybrid I would propose after you choose: **05's week strip on top, 01's timeli
 - Only the logo is the real asset; everything else is drawn for the mockup.
 - 10 and 03 leave more empty space on purpose; 07 is the densest.
 - Owner next step: open the `sheets/` images, name your top one or two (or the mix), and say what to add or remove. Nothing else is built until you confirm.
+
+---
+
+## Round 2 and 3 (7 Nov, night): owner feedback and ten new concepts
+
+Owner feedback on round 1: liked **01, 02, 03** (03 is good for the AI Mentor); **04** was too thin (a ring and a chat bar) and the **chat must not be on the dashboard**; **05 to 10 not wanted** (05 reads as a planner). Owner also asked for the original logo with our own wordmark font.
+
+- **Logo in every image now:** the original mark, "RENYX" in navy and "ERA" in the cyan-violet gradient, set live in **Bruno Ace SC**, with the gold PRO badge (as in the owner's screenshot).
+- **No chat on the dashboard anywhere.** The Mentor appears only as an "Open Mentor" button with a line such as "3 explanations ready". Command Home (03) keeps its command bar because it is search and navigation, with "Ask the Mentor" as one of its shortcuts.
+- **Liked set, updated:** `dashboard-variants-set1-liked/` holds 01 to 04 (16 images). 04 now has four detailed satellites (weak topics with bars, due mistakes by subject, streak with a week of dots, mock with rank and sparkline), a legend, and a minutes-studied chart.
+- **Ten new concepts, none a planner, dense table, chat panel or editorial page:** `dashboard-variants-set2-new/` holds 11 to 20 (40 images). Open `sheets/` first.
+
+Research this round: Whoop and Oura (one score as the product), Apple Fitness rings (glanceable daily goals), CRED and Credit Karma (gauge plus factors that move it), Monzo and Revolut home screens (little found), and 2026 dashboard layout roundups (progressive disclosure, decision loops). Sixteen further concepts were weighed; six were dropped (daily-brief text, garden or gamified, kanban, heatmap-first, iOS launcher grid, coverflow) as editorial-like, gamified, wrong posture or too close to Bento.
+
+| # | Name | The idea | Nav |
+|---|---|---|---|
+| 11 | Score Gauge | One predicted-score gauge and the five factors that move it, each with its fix | Centre pill |
+| 12 | Daily Rings | Three goals as concentric rings (practise, revise, Forge); a week of mini rings | Left rail |
+| 13 | Card Stack | A wallet of cards; the next step in front, the rest peek with one number | Bottom dock |
+| 14 | Split Spotlight | Dark half is only "now", light half is "where I stand" | Icons in the dark half |
+| 15 | Marks Map | The syllabus as a treemap: size is weightage, colour is mastery | Text tabs |
+| 16 | Subject Radar | Your shape against the 70% target; the dents are the plan | Left rail |
+| 17 | Story Rail | A rail of six circles; tap one and its card fills the stage | Centre pill |
+| 18 | Widget Desktop | Glass widgets on the wallpaper and a dock of app icons | App dock |
+| 19 | Pulse Feed | A feed of plain sentences about what changed, each with one action | Text tabs |
+| 20 | Focus Session | Pick a length and a mode, press play; stats at the edges | Centre pill |
+
+Review fixes after looking: radar overflowed its column (16); option pills unstyled on phone (20); text invisible on the dark half in light mode and nav colliding with the tools (14); phone stack broken (13); ring labels clipped (12); muted text unreadable on the navy widget (18); lower right empty (11); PRO badge pushed the tools off the phone header (01 to 04).
+
+Honest limits: several tiles need features that do not exist yet (predicted score, daily-goal rings, mastery-by-weightage map, "marks gained if you reach 70%", per-day plan blocks, focus sessions). All numbers are examples. Nothing here is committed or built.

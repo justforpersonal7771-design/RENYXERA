@@ -62,6 +62,9 @@ jobs:
       - name: Mock question order (same paper, GA first, score order-independent)
         run: npm run check:mock-order
 
+      - name: Adaptive subject radar rules (1 to 20 subjects)
+        run: npm run check:radar
+
       - name: Every question image resolves (incl. shared-pool questions)
         run: npm run check:images
 

@@ -31,6 +31,7 @@ import { InstallPrompt } from "@/components/growth/install-prompt";
 import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 import { FeatureDeck } from "@/components/dashboard/feature-deck";
+import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { usePaperLabel } from "@/lib/branch/use-paper-label";
 import { NextActionHero, MarksLeakCard, RevisionDueCard, SubjectTilesCard, YearDotsCard, useSolvedIds } from "@/components/dashboard/bento";
@@ -231,6 +232,8 @@ export default function Home() {
         <div className="md:col-span-2"><SubjectTilesCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></div>
         {weakest ? <Reveal className="h-full"><MockStatusCard /></Reveal> : <Reveal className="h-full"><ExamCountdownCard /></Reveal>}
       </div>
+
+      <SubjectRadarCard subjects={dashboardMetrics?.subjectPerformance ?? []} />
 
       <WeeklyBenchmarkCard />
 

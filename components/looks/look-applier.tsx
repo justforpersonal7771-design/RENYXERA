@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { Sparkles } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
-import { canUseLook, lookById } from "@/lib/looks/looks";
+import { LOOKS, canUseLook, lookById } from "@/lib/looks/looks";
 import { effectiveLookId, useLookStore } from "@/store/use-look-store";
 
 export function LookApplier() {
@@ -21,6 +21,16 @@ export function LookApplier() {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => { load(); }, [load]);
   useEffect(() => { if (!trial) return; const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, [trial]);
+
+  // Preview link: any page with ?look=<id> (for example ?look=lunar, or ?look=classic to go back) switches to that Look and remembers it.
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      const q = new URLSearchParams(window.location.search).get("look");
+      if (q && LOOKS.some((l) => l.id === q) && q !== look) setLook(q);
+    } catch { /* no search string */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- only on first hydration
+  }, [hydrated]);
 
   // trial over
   useEffect(() => { if (trial && trial.endsAt <= now) endTrial(false); }, [trial, now, endTrial]);

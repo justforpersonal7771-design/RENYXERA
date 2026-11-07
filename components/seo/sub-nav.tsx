@@ -61,7 +61,7 @@ export function SubNav({ items, label, home }: { items: Item[]; label: string; h
       initial={false}
       animate={{ y: hidden ? 120 : 0, opacity: hidden ? 0 : 1 }}
       transition={{ type: "spring", stiffness: 380, damping: 30 }}
-      className="fixed inset-x-0 bottom-[4.25rem] lg:bottom-5 z-40 flex justify-center px-3 pointer-events-none"
+      className="subnav-host fixed inset-x-0 bottom-[4.25rem] lg:bottom-5 z-40 flex justify-center px-3 pointer-events-none"
     >
       <nav ref={navRef} aria-label={label} onMouseLeave={() => setHover(null)}
         className={`sub-dock pointer-events-auto max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_14px_36px_-18px_rgba(12,34,75,0.35)] p-1.5`}>

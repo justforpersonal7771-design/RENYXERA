@@ -182,3 +182,30 @@ Additional motion logic worth adding in the same system: **shared-element transi
 ## 12. Coverage statement
 
 Every one of the 70 page routes and the 179 component files, plus the global style files, the Look system, the app icons, the manifest and share images, is listed with its template, what changes and its phase in [`UIUX-COVERAGE-MATRIX.md`](UIUX-COVERAGE-MATRIX.md). The matrix is generated from the code by a script, and it reports **0 unmapped** routes and files (one gap, `components/theme-provider.tsx`, was found by the script and added). Anything added to the app later must be added to the matrix; the script is `docs/design/` friendly and can be re-run.
+
+
+See also: [MOTION-INTERACTION-CATALOGUE.md](MOTION-INTERACTION-CATALOGUE.md) (the full list, 21 effects, mapped to the chosen screens).
+
+---
+
+## Navigation decision (7 Nov 2026): where the menus live
+
+Question from the owner: the bottom dock of variant 02 could collide with other bottom-anchored items; decide, from research, whether pages go left or elsewhere.
+
+**Decision**
+
+| Surface | Desktop | Phone |
+|---|---|---|
+| Pages (Home, Test Centre, Study, AI Mentor, Review, Analytics, Battles) | **Slim floating glass rail on the left**: seven icons, name on hover or focus, one gliding indicator | Floating bottom pill of five (Home, Test Centre, Review, AI Mentor, More) |
+| Logo | Top-left (original mark, Bruno Ace SC wordmark, PRO badge) | Top-left |
+| Tools group (search, planner, to-do, focus target, leaderboard, tools, theme, paper chip, profile) | One glass pill, top-right | Compact pill, top-right |
+| Tools and legal section dock | **Top of the page** (centre), was bottom centre | Unchanged, above the tab bar |
+| Bottom of the desktop screen | **Reserved for page actions** | The tab pill |
+
+**Why (evidence and the app's own conflicts)**
+
+- Research this turn: sidebars are the usual desktop choice for complex apps and for six or more destinations; a bottom tab bar is mainly a mobile pattern (source list in the sources section of [MOTION-INTERACTION-CATALOGUE.md](MOTION-INTERACTION-CATALOGUE.md) and the search results of 7 Nov); utilities such as account and settings are kept apart from primary navigation, which the top-right tools group already does. Vertical space is scarcer than horizontal on laptops. (Sources were agency blogs; I found no NN/g article on this, so the app's own conflicts below carry the decision.)
+- The code already anchors things to the bottom centre on desktop, and a global bottom dock would sit on top of all of them: the Test Centre "Start test" bar (`setup/page.tsx`, fixed bottom-6 centre), the tools and legal section dock (`seo/sub-nav.tsx`, bottom-5 centre), the profile save bar (`profile/page.tsx`), the results banner (`exam/results/page.tsx`), the look trial chip (`look-applier.tsx`), and the Mentor composer.
+- The left rail holds only pages, so it stays uncrowded; the logo and tools stay where the owner asked.
+
+Supersedes the earlier choice of variant 02's bottom dock for desktop navigation. The classic look is unchanged: all of this is the Lunar look.

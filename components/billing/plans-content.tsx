@@ -43,6 +43,15 @@ const LOOK = {
  * buttons record interest only; no money moves. In test/live mode they open Razorpay
  * checkout, and the tier is granted only by the verified webhook, never by this page.
  */
+/** Feeds the pointer position to the soft spotlight on a plan card (mouse only; see .spot-layer in globals.css). */
+function spot(e: React.PointerEvent<HTMLElement>) {
+  if (e.pointerType !== "mouse") return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+  el.style.setProperty("--my", `${e.clientY - r.top}px`);
+}
+
 export function PlansContent({ onDone, inModal = false }: { onDone?: () => void; inModal?: boolean }) {
   const ent = useEntitlements();
   const signedIn = useAuthStore((s) => !!s.user);
@@ -165,7 +174,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           const credit = upgrading ? Math.min(ent.upgradeCreditPaise, plan.pricePaise! - 100) : 0;
           const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - serverNow()) / 86400_000)) : 0;
           return (
-            <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`relative flex flex-col rounded-3xl p-6 border ${look.ring}`}>
+            <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`spot-host relative flex flex-col rounded-3xl p-6 border ${look.ring}`} onPointerMove={spot}><span aria-hidden className="spot-layer" />
               {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] text-xs font-black tracking-normal shadow">Most loved</span>}
               <div className="flex items-center justify-between">
                 <p className={`text-sm font-black tracking-normal ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>

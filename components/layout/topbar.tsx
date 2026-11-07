@@ -306,7 +306,7 @@ export function Topbar() {
             ref={clusterRef}
             onMouseOver={onClusterOver}
             onMouseLeave={() => setActPill(null)}
-            className="relative flex min-w-0 items-center gap-0.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_2px_8px_-4px_rgba(12,34,75,0.15)]"
+            className="tools-cluster relative flex min-w-0 items-center gap-0.5 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_2px_8px_-4px_rgba(12,34,75,0.15)]"
           >
              <AnimatePresence>
                 {actPill && (

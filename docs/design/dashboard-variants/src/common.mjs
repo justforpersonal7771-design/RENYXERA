@@ -68,7 +68,7 @@ export const spark = (pts, w = 120, h = 36, col = "var(--powder-d)") => {
   return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><polyline points="${p}" fill="none" stroke="${col}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 };
 
-export const logo = (t, h = 30) => `<img class="logo" src="${LOCKUP[t]}" style="height:${h}px" alt="RENYXERA">`;
+export const logo = (t, h = 40, pro = true) => `<span class="lg"><img class="logo" src="${MARK[t]}" style="height:${Math.round(h * 0.92)}px" alt=""><span class="wm" style="font-size:${Math.round(h * 0.66)}px"><b>RENYX</b><i>ERA</i></span>${pro ? '<span class="probadge">PRO</span>' : ""}</span>`;
 
 // tools cluster: the small gliding group (top right). `on` = index of the highlighted tool.
 export const tools = (t, on = 2, extra = "") => {
@@ -96,7 +96,7 @@ body{font-family:'Outfit',system-ui,sans-serif;color:var(--ink);background:var(-
 [data-t=dark] .grain{mix-blend-mode:screen;opacity:.05}
 .page{position:relative;z-index:1;width:100%;height:100%}
 .ic{flex:none}
-.logo{display:block;width:auto}
+.logo{display:block;width:auto}.lg{display:inline-flex;align-items:center;gap:10px}.wm{font-family:'Bruno Ace SC','Outfit',sans-serif;letter-spacing:.04em;line-height:1;white-space:nowrap}.wm b{font-weight:400;color:var(--ink)}.wm i{font-style:normal;background:linear-gradient(90deg,#06c2fb,#5b21e0 70%,#8b4df0);-webkit-background-clip:text;background-clip:text;color:transparent}[data-t=dark] .wm i{background:linear-gradient(90deg,#5edcff,#8b5cf6 70%,#c084fc);-webkit-background-clip:text;background-clip:text}.probadge{margin-left:2px;padding:3px 10px;border-radius:8px;font-size:11px;font-weight:800;letter-spacing:.04em;color:#5a3a00;background:linear-gradient(180deg,#fde68a,#f5b93a);box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 2px 6px rgba(245,185,58,.35)}
 .num{font-variant-numeric:tabular-nums}
 .muted{color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)}
@@ -132,4 +132,4 @@ body{font-family:'Outfit',system-ui,sans-serif;color:var(--ink);background:var(-
 .pad{padding:22px}
 .ex{position:absolute;right:14px;bottom:8px;font-size:11px;color:var(--muted);z-index:9}@media (max-width:500px){.ex{right:auto;left:50%;transform:translateX(-50%);bottom:2px;font-size:9px}}
 `;
-export const shell = (t, bodyCss, inner, fonts = "") => `<!doctype html><html data-t="${t}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,300;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>${BASE_CSS}${bodyCss}</style></head><body><div class="aur"></div><div class="grain"></div><div class="page">${inner}</div><div class="ex">Example data</div></body></html>`;
+export const shell = (t, bodyCss, inner, fonts = "") => `<!doctype html><html data-t="${t}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Bruno+Ace+SC&family=Fraunces:opsz,wght@9..144,300;9..144,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"><style>${BASE_CSS}${bodyCss}</style></head><body><div class="aur"></div><div class="grain"></div><div class="page">${inner}</div><div class="ex">Example data</div></body></html>`;

@@ -1,0 +1,3 @@
+# rendered design review images are large and re-renderable (see dashboard-variants/src)
+dashboard-*/**/*.png
+dashboard-*/*.png

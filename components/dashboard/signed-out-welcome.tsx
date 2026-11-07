@@ -6,6 +6,7 @@ import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { BANK_SUMMARY } from "@/lib/branches";
 import { PromoVideo } from "@/components/marketing/promo-video";
+import { Magnetic } from "@/components/ui/magnetic";
 
 const TOTAL_QUESTIONS = Object.values(BANK_SUMMARY).reduce((n, b) => n + (b?.questions ?? 0), 0);
 const PAPERS = Object.keys(BANK_SUMMARY).length;
@@ -36,10 +37,10 @@ export function SignedOutWelcome() {
         Sign in once and your branch, targets, mistakes and scores stay with you — so every session starts exactly where the last one ended.
       </p>
       <div className="mt-5 flex flex-wrap items-center gap-3">
-        <button type="button" onClick={() => openAuth("signup")}
+        <Magnetic><button type="button" onClick={() => openAuth("signup")}
           className="inline-flex h-11 items-center gap-2 rounded-xl grad-brand px-5 text-sm font-bold text-white shadow-md shadow-violet-500/30 transition hover:-translate-y-px cursor-pointer">
           Sign in and start <ArrowRight className="h-4 w-4" />
-        </button>
+        </button></Magnetic>
         <Link href="/setup" className="inline-flex h-11 items-center gap-2 rounded-xl border border-violet-500/40 bg-[var(--surface)] px-5 text-sm font-bold text-violet-700 dark:text-violet-300 transition hover:-translate-y-px">Try a quick sample test</Link>
         <Link href="/pyq" className="text-sm font-bold text-violet-600 dark:text-violet-400 hover:underline">Browse the official papers →</Link>
       </div>
