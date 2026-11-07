@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Topbar } from "./topbar";
 import { BottomTabBar } from "./bottom-tab-bar";
-import { SideDock } from "./side-dock";
+import { SideDock, useLunarDock } from "./side-dock";
 import { startTimeSync } from "@/lib/time/server-time";
 import { PlanExpiryNotice } from "@/components/billing/plan-expiry-notice";
 import { UpgradeModalHost } from "@/components/billing/upgrade-modal";
@@ -59,6 +59,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const loadRepository = useDataStore((state) => state.loadRepository);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
+  const lunarDock = useLunarDock();
 
   // Sign-out's redirect (auth-listener.tsx) always lands here fresh — surface the
   // confirmation as a toast on this page rather than a dedicated "you're signed out"
@@ -209,8 +210,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           (background-attachment: fixed, unaffected by scroll position) still
           shows through its glass/blur regardless of how the content below is
           structured. */}
-      <Topbar />
-      <SideDock />
+      {lunarDock ? <SideDock /> : <Topbar />}
       <SmoothScroll />
       {/* <main> itself no longer owns the scroll — it's a full-height,
           non-scrolling passthrough. The actual scrolling element is the inner
