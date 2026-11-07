@@ -24,6 +24,7 @@ const F = {
 
 export const LOOKS: Look[] = [
   { id: "classic", name: "Classic pastel", tier: "free", family: "Soft UI", blurb: "Soft pastels, ink buttons. The look you know.", swatch: ["#dcf5e5", "#e1e7ff", "#17151f"], ready: true, modes: "both", fonts: F.base },
+  { id: "lunar", name: "Lunar Glass", tier: "free", family: "Soft glass", blurb: "Lavender ground, powder blue and peach, frosted pills and soft shadows.", swatch: ["#e9e8f8", "#8db9f0", "#f5b69e"], ready: true, modes: "both", fonts: F.outfit },
   { id: "paper", name: "Paper", tier: "free", family: "Paper, Swiss", blurb: "Calm exam-hall reading: warm paper, thin rules, serif headings.", swatch: ["#f6f1e7", "#e9e2d2", "#2a2118"], ready: false, modes: "both", fonts: F.base },
   { id: "minimal", name: "Minimal Mono", tier: "plus", family: "Minimalism", blurb: "Black and white with one accent, hairlines, no shadows.", swatch: ["#ffffff", "#eeeeee", "#111111"], ready: false, modes: "both", fonts: F.base },
   { id: "midnight", name: "Midnight", tier: "plus", family: "Dark (OLED)", blurb: "True black with an indigo glow, for night study.", swatch: ["#05050a", "#14152b", "#818cf8"], ready: false, modes: "both", fonts: F.base },

@@ -148,3 +148,114 @@
 [data-look="glass"][data-look="glass"] :is(.popover-surface, [role="menu"], [role="dialog"]) :is(.card-pastel, .card-well, .card-glass) { background: rgba(255, 255, 255, .5) !important; }
 /* the dimmed page behind a modal is blurred too */
 [data-look="glass"][data-look="glass"] :is([class*="bg-black/"], [class*="backdrop-blur"]):not(.topbar-island):not(.popover-surface) { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+
+/* ============================== LUNAR GLASS (free; candidate default) ==============================
+ * Palette from the owner's reference (7 Nov 2026): Soft Lavender White #E9E8F8 ground, Powder Blue #8DB9F0 for active states and primary surfaces,
+ * Warm Sunset Peach #F5B69E for highlights. Plan, contrast fixes and rollout: docs/design/LUNAR-GLASS-UI-PLAN.md.
+ * Contrast notes that differ from the reference brief: muted text is #566379 (the reference #64748B is 3.9:1 on lavender, below 4.5:1), and peach is
+ * a FILL colour only; peach text uses the darker ink in --tint-peach-ink. Blur is kept to the nav, hero band and popovers (cheap on low-end phones).
+ */
+[data-look="lunar"] {
+  --card-radius: 32px;
+  --background: #e9e8f8;
+  --surface: rgba(255, 255, 255, .74);
+  --surface-secondary: rgba(255, 255, 255, .52);
+  --surface-elevated: rgba(255, 255, 255, .92);
+  --text-primary: #1a1c29;
+  --text-secondary: #475569;
+  --text-muted: #566379;
+  --border: rgba(255, 255, 255, .72);
+  --border-subtle: rgba(26, 28, 41, .06);
+  --border-strong: rgba(26, 28, 41, .2);
+  --accent: #1a1c29; --accent-hover: #2b2e45; --accent-foreground: #ffffff;
+  --btn: #1a1c29; --btn-fg: #ffffff; --ink: #1a1c29;
+  --lunar-powder: #8db9f0; --lunar-peach: #f5b69e; --lunar-lavender: #e9e8f8;
+  --shadow-soft: 0 20px 40px -10px rgba(26, 28, 41, .08);
+  --shadow-float: 0 30px 60px -15px rgba(141, 185, 240, .28);
+  --tint-mint: #dcebfb;  --tint-mint-ink: #2b5a96;
+  --tint-sky: #d3e5fa;   --tint-sky-ink: #2b5a96;
+  --tint-lilac: #e4e3f7; --tint-lilac-ink: #4a4d9e;
+  --tint-peri: #e6e5f8;  --tint-peri-ink: #4a4d9e;
+  --tint-peach: #fbe3d8; --tint-peach-ink: #9f4a28;
+  --tint-rose: #fbdcd5;  --tint-rose-ink: #a33f2c;
+  --tint-butter: #f7ead9; --tint-butter-ink: #85582a;
+}
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) {
+  --background: #0e1020;
+  --surface: rgba(255, 255, 255, .07);
+  --surface-secondary: rgba(255, 255, 255, .05);
+  --surface-elevated: rgba(30, 33, 56, .94);
+  --text-primary: #eceef8;
+  --text-secondary: #b6bdd2;
+  --text-muted: #96a0b8;
+  --border: rgba(255, 255, 255, .12);
+  --border-subtle: rgba(255, 255, 255, .07);
+  --border-strong: rgba(255, 255, 255, .3);
+  --accent: #8db9f0; --accent-hover: #a5c8f4; --accent-foreground: #0e1020;
+  --btn: #8db9f0; --btn-fg: #0e1020; --ink: #8db9f0;
+  --shadow-soft: 0 20px 40px -10px rgba(0, 0, 0, .5);
+  --shadow-float: 0 30px 60px -15px rgba(141, 185, 240, .18);
+  --tint-mint: #1a2a40;  --tint-mint-ink: #a9cdf6;
+  --tint-sky: #172538;   --tint-sky-ink: #a9cdf6;
+  --tint-lilac: #1f2040; --tint-lilac-ink: #b9bdf2;
+  --tint-peri: #1f2040;  --tint-peri-ink: #b9bdf2;
+  --tint-peach: #36241e; --tint-peach-ink: #f7bfa8;
+  --tint-rose: #38221f;  --tint-rose-ink: #f7b4a8;
+  --tint-butter: #2f261c; --tint-butter-ink: #f0d2a4;
+}
+/* ground: lavender with two soft fields, powder top-left and peach bottom-right */
+html[data-look="lunar"] body {
+  background-color: #e9e8f8 !important;
+  background-image:
+    radial-gradient(900px 620px at -4% -8%, rgba(141, 185, 240, .46), transparent 62%),
+    radial-gradient(820px 580px at 104% 106%, rgba(245, 182, 158, .38), transparent 62%) !important;
+  background-attachment: fixed !important;
+  font-family: var(--font-sans), "Outfit", system-ui, sans-serif;
+}
+html.dark[data-look="lunar"] body {
+  background-color: #0e1020 !important;
+  background-image:
+    radial-gradient(900px 620px at -4% -8%, rgba(141, 185, 240, .16), transparent 62%),
+    radial-gradient(820px 580px at 104% 106%, rgba(245, 182, 158, .12), transparent 62%) !important;
+}
+/* cards: soft white glass, no ink edge, diffuse shadow. Blur only where it is cheap (below). */
+[data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well, .card-glass, .card-band, .folder-panel, .ai-panel, .card-metal, .card-inset, .tile) {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-soft) !important;
+  border-radius: var(--card-radius) !important;
+}
+[data-look="lunar"][data-look="lunar"] .card-pastel[data-tint], [data-look="lunar"] .card-well[data-tint], [data-look="lunar"] .card-band[data-tint] {
+  background: color-mix(in srgb, var(--tint, var(--tint-lilac)) 72%, rgba(255, 255, 255, .5)) !important;
+}
+[data-look="lunar"][data-look="lunar"] .card-pastel:hover { box-shadow: var(--shadow-float) !important; transform: translateY(-2px); }
+/* nav, popovers, the hero band: real glass */
+[data-look="lunar"][data-look="lunar"] :is(.topbar-island, .main-dock, .nav-cluster, .popover-surface) {
+  background: rgba(255, 255, 255, .66) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4);
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow-soft) !important;
+  border-radius: 9999px;
+}
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) :is(.topbar-island, .main-dock, .nav-cluster, .popover-surface) { background: rgba(24, 27, 48, .7) !important; }
+[data-look="lunar"] .popover-surface { border-radius: 24px; }
+[data-look="lunar"] .topbar-island [aria-current="page"] .nav-active-pill, [data-look="lunar"] .nav-active-pill { background: #8db9f0 !important; }
+[data-look="lunar"] .topbar-island [aria-current="page"] { color: #1a1c29 !important; }
+/* buttons: dark pill primary, powder secondary, soft lift on hover, no hard offset shadows */
+[data-look="lunar"][data-look="lunar"] :is(.btn-main, .pill-ink) {
+  background: var(--btn) !important; color: var(--btn-fg) !important; border: 0 !important; border-radius: 9999px !important;
+  box-shadow: var(--shadow-soft) !important; font-weight: 600; transition: transform .3s cubic-bezier(.16, 1, .3, 1), box-shadow .3s;
+}
+[data-look="lunar"][data-look="lunar"] :is(.btn-main, .pill-ink):hover { transform: translateY(-3px) !important; box-shadow: var(--shadow-float) !important; opacity: 1; }
+[data-look="lunar"][data-look="lunar"] :is(.btn-main, .pill-ink):active { transform: translateY(0) scale(.98) !important; }
+[data-look="lunar"][data-look="lunar"] :is(.btn-soft, .pill-soft) {
+  background: rgba(141, 185, 240, .38) !important; color: var(--text-primary) !important; border: 1px solid rgba(255, 255, 255, .6) !important;
+  border-radius: 9999px !important; box-shadow: none !important;
+}
+[data-look="lunar"] :is(.btn-soft, .pill-soft):hover { background: rgba(141, 185, 240, .55) !important; }
+/* type: airy headings, small tracked eyebrows */
+[data-look="lunar"] :is(h1, h2) { font-weight: 300; letter-spacing: -.02em; }
+[data-look="lunar"] .eyebrow { text-transform: uppercase; letter-spacing: .2em; font-size: 10px; font-weight: 700; color: var(--text-muted); }
+@media (prefers-reduced-transparency: reduce) {
+  [data-look="lunar"][data-look="lunar"] :is(.topbar-island, .main-dock, .nav-cluster, .popover-surface) { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface-elevated) !important; }
+}
