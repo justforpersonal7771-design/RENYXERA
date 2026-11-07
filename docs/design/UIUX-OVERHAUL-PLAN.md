@@ -1,6 +1,6 @@
 # RENYXERA UI/UX overhaul plan: reorganise first, then restyle
 
-[← Docs index](../README.md) · [Design system](DESIGN-SYSTEM.md) · [Looks spec](LOOKS-SPEC.md) · [Logo prompt](LOGO-MASTER-PROMPT.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
+[← Docs index](../README.md) · [Design system](DESIGN-SYSTEM.md) · [Looks spec](LOOKS-SPEC.md) · [Logo prompt](LOGO-MASTER-PROMPT.md) · [Coverage matrix](UIUX-COVERAGE-MATRIX.md) · [Open items](../open-work/OPEN-ITEMS-2026-11-06.md)
 
 Written 7 Nov 2026 on branch `feature/lunar-glass-ui`. Scope per the owner: every component, screen, module, modal and flow, on desktop **and** phone; mostly **reorganisation, transitions, effects and animation**; colour and logo are a separate layer (palette below, logo in the logo prompt). Nothing here is applied to `main` until each phase passes the review gates in section 9.
 
@@ -147,9 +147,38 @@ Bottom glass pill (5 items, 56 px high, 12 px from the edge, safe-area aware); t
 
 Test matrix for every phase: desktop 1440 and 1280, phone 390, light and dark, signed-out and signed-in, Free and Pro; the existing end-to-end smoke, `check:perf`, `check:images`, `check:security` must stay green; screenshot comparison before and after for every route; real-device phone check for the exam and the Mentor.
 
-## 10. Risks and decisions for the owner
-- **Glass on low-end phones:** limited by the effects budget above; will be measured on a real phone before the default flips.
-- **Exam fidelity:** the real GATE interface must stay recognisable; only chrome changes. The owner should confirm the proposed option placement (directly under the question).
-- **Paid Looks:** the new theme becomes the free default; Looks remain as optional extras, so the Pro Looks promise is unchanged.
-- **Scale:** this is a multi-week programme; phases ship on the branch, one at a time, and `main` stays shippable.
-- **Decisions needed:** (1) approve the dock and tray layout; (2) approve "one primary action" on Results and the 8 to 4 tile reduction; (3) approve moving the options under the question in the exam; (4) confirm the logo palette (recolour of the original shape) once the new logo files arrive.
+## 10. Risks and decisions (resolved on 7 Nov 2026; the owner delegated these)
+
+| Question | Decision | Why and how it is protected |
+|---|---|---|
+| Glass on low-end phones | **Auto "lite effects" mode.** Blur and animated backgrounds switch off when `navigator.deviceMemory <= 4`, `hardwareConcurrency <= 4`, `prefers-reduced-transparency`, or `prefers-reduced-motion`. Blur exists only on the dock, the hero card, sheets and popovers. | Measured before the default flips: Playwright with 4x and 6x CPU throttling on the exam, Mentor and dashboard, with a frame-time and INP budget (phase 6 gate). |
+| Exam fidelity | **Chrome changes only; the function does not.** The same palette states (answered, not answered, not visited, marked, marked and answered), the same timer, the same keyboard shortcuts, the same scoring. | The scoring, grading and mock-order check scripts must stay green; a side-by-side screenshot review against the current exam. |
+| Options directly under the question | **Approved.** Behind a switch (`examLayout=compact`, default on) so it can be reverted in one line. | Same answer logic; only the vertical arrangement changes. |
+| Paid Looks | The new theme becomes the **free default**. Looks stay as optional extras, so the Pro Looks promise is unchanged. | The Look system is kept as it is. |
+| Scale | A multi-week programme shipped as phases on the branch; `main` stays shippable. | Section 9 gates. |
+| Dock and tray layout | **Approved as in section 3**, with a switch back to the classic top bar during the transition. | Removes the risk of a big-bang change. |
+| Results: one primary action and 8 tiles to 4 | **Approved.** Nothing is deleted: the four tiles removed (attempted, skipped, penalty, time detail) move into the "Breakdown" segment below. | Same data, calmer first view. |
+| Logo palette | **Confirmed:** the owner's table (Lavender, Powder Blue, Peach, Deep Navy, White) applied to the **original logo shape**; see the single prompt at the top of `LOGO-MASTER-PROMPT.md`. | New logo files will be wired in on arrival; until then the existing mark is used in the dock. |
+
+## 11. Trending interactions: what we adopt, what we adapt, and what we change from the reference snippets
+
+The owner supplied ten effects as references. They are good ideas, and several of the snippets, applied exactly as written, would hurt the product. This table is the engineering decision for each. All effects use the `motion` package already installed (`motion/react`, the same API as framer-motion), the shared motion tokens of section 6, and honour reduced motion.
+
+| # | Effect | Verdict | Where it goes | Corrections to the snippet |
+|---|---|---|---|---|
+| 1 | Morphing tabs (glide pill) | **Adopt, as the one Segmented control** | Test Centre command bar, Analytics ranges, leaderboard scope, Review tabs, Plans period, Mentor tone | Wrap each group in `LayoutGroup` and give every instance a unique `layoutId` (two groups on a page would collide); arrow-key support and `role="tablist"`; muted text uses `#566379`, not `#64748B` (3.9:1 fails). |
+| 2 | Magnetic spotlight cards | **Adapt** | Plan cards, Forge and hub tiles (not list rows) | Only where `(hover: hover)`; follow the pointer with `requestAnimationFrame`; no extra `backdrop-blur-2xl` per card (blur on every card is the main phone cost); the highlight's radius must match the card (the snippet mixes 32 px and `rounded-xl`). |
+| 3 | Parallax card stacking | **Adapt** | Dashboard "Coming up" (3 cards) and the landing feature stack | The snippet's scale is computed from the index, so it does not react to scrolling; drive it with `useScroll` and `useTransform` per card; keep content reachable; plain stack under reduced motion; test on a phone. |
+| 4 | Elastic swipe-to-action | **Adopt on phone lists, with safeguards** | Mistakes, Bookmarks, Revision queue | Add visible buttons or a kebab menu (swipe-only is not discoverable or accessible); "Remove" gets a 5-second **Undo** instead of instant deletion; swipe right = "Revise now"; `touch-action: pan-y` so vertical scrolling is not stolen; light haptic where supported. (The snippet's `useDrag` note is wrong: Motion uses the `drag` props, which the code correctly uses.) |
+| 5 | Dynamic mesh aurora | **Adapt** | Dashboard hero and Mentor chat background on desktop only | A full-viewport fixed layer with `blur-[100px]` and `mix-blend-multiply` animating is one of the most expensive things a browser can do; on phones and lite mode it is **two static colour fields** (already in the Look); paused during exams and when the tab is hidden; `/noise.png` does not exist, so the grain is a tiny generated tile or skipped. |
+| 6 | Expandable bento (fluid modal) | **Adopt, narrowly** | Dashboard summary cards that have a quick view (Mistakes, Analytics snapshot, Mentor status) | The route and deep link stay (an "Open full page" button inside); focus trap, focus return, Esc, scroll lock; a full-screen Sheet on phone. The brief's "wrap the Test/Mock score summary" is not done: the result page is a destination, not a card in a grid. |
+| 7 | Magnetic call-to-action | **Adapt, narrowly** | **Hero CTAs only**: landing "Try a quick sample test", Plans "Get Pro", the dashboard hero action | Only `(hover: hover) and (pointer: fine)`, a maximum pull of 6 px, off under reduced motion. **Not applied to every `.btn-main`**: hundreds of buttons listening to the mouse, targets that move under the cursor reduce click accuracy, and exam screens must stay still. |
+| 8 | Dynamic Island timer | **Adapt** | A running timed test or All-India mock while the student is elsewhere in the app; a pending Battle invite | One timer source: the exam runtime store with `serverNow()`, never a second clock; hidden on the exam page itself (the header timer stays); "Submit" asks for confirmation; "Pause" is not shown for All-India mocks (they cannot be paused); sits below dialogs; respects the phone safe area. |
+| 9 | Fluid odometer | **Adapt** | Rank and rating changes, streak increments, the score on the results reveal | Animate only when the value **changes** after first paint (and once on the result reveal); never on a static analytics number at mount; tabular digits with fixed width so nothing jitters; key by digit **position**; reduced motion shows the number. It replaces `CountUp`, which flickers (the same bug as the reel). |
+| 10 | Ethereal success orbs | **Adopt** | Strong result, Daily Forge finished, referral reward, season badge | `aria-hidden`; once per event id; at most 12 orbs; `transform` and `opacity` only, with pre-blurred radial backgrounds instead of animating `filter: blur`; off under reduced motion. |
+
+Additional motion logic worth adding in the same system: **shared-element transitions** between a list item and its detail (View Transitions API with a fade fallback); **scroll-linked progress** on long Reading pages; **skeleton to content cross-fade**; **layout animation** when a list filters or reorders; a **press-and-hold** confirmation on the exam Submit as an accidental-tap guard; the **command palette** spring.
+
+## 12. Coverage statement
+
+Every one of the 70 page routes and the 179 component files, plus the global style files, the Look system, the app icons, the manifest and share images, is listed with its template, what changes and its phase in [`UIUX-COVERAGE-MATRIX.md`](UIUX-COVERAGE-MATRIX.md). The matrix is generated from the code by a script, and it reports **0 unmapped** routes and files (one gap, `components/theme-provider.tsx`, was found by the script and added). Anything added to the app later must be added to the matrix; the script is `docs/design/` friendly and can be re-run.

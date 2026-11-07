@@ -6,6 +6,36 @@ Corrected 7 Nov 2026 after the owner's clarification: **the logo SHAPE is the or
 
 **Always attach the current logo files as image references:** `video/public/mark-light.png` (the mark) and `video/public/lockup-light.png` (mark plus wordmark). Without them the model invents a different logo.
 
+## THE ONE PROMPT (use this first: recolour the existing logo)
+
+Attach `video/public/mark-light.png` and `video/public/lockup-light.png` to the model, then paste:
+
+```
+I am attaching the CURRENT logo of my education app RENYXERA (the mark and the full lockup). Recolour it. Do NOT redesign it.
+
+KEEP EXACTLY: the shape of the mark (the folded ribbon that loops into a rounded R: the triangular fold at the top, the band that wraps around and back, the tail at the lower right), its proportions, its depth and shading, and the wordmark "RENYXERA" with its lettering style, weight and spacing. Do not simplify it into flat clip-art, do not add or remove any shape, do not invent a different symbol.
+
+CHANGE ONLY THE COLOURS to this theme palette, which belongs to a soft, calm, glass-like interface with a lavender background:
+- Soft Lavender White #E9E8F8 (background only)
+- Powder Blue #8DB9F0 (primary accent)
+- Warm Sunset Peach #F5B69E (secondary accent)
+- Deep Slate Navy #1A1C29 (ink)
+- White #FFFFFF
+For depth you may use lighter and darker tints of those same hues (for example #B5D2F6 and #5E96DB for the blue, a lighter and a deeper peach); do not introduce any other hue: no cyan, violet, purple, magenta, green or orange.
+
+COLOUR MAPPING: the top fold and upper band that were cyan and blue become Powder Blue, light to deeper for the shading; the inner folds, shadows and the underside of the loop that were royal blue and indigo become Deep Slate Navy, with a softer mid-navy tint where the shape needs a gentler step; the turn of the ribbon blends from Powder Blue toward navy; the tail at the lower right that was orchid and magenta becomes Warm Sunset Peach, light to deeper. In the wordmark, "RENYX" is Deep Slate Navy and "ERA" flows from Powder Blue into Warm Peach.
+
+STYLE: premium, calm and fluid, like polished frosted glass: soft light and depth inside the ribbon, smooth edges, no outer glow, no neon halo, no lens flare, no heavy drop shadow, no 3D bevel, no texture. The outline and geometry stay the original's.
+
+DELIVER on a Soft Lavender White (#E9E8F8) background, each on its own labelled panel: (1) the mark alone, large; (2) the horizontal lockup; (3) the mark at 16, 32 and 64 pixels side by side to prove it still reads at small sizes; (4) a version for dark backgrounds (#0E1020) where the navy parts become white or very light powder and the blue and peach stay; (5) the mark in one colour, Deep Slate Navy #1A1C29, on transparent; (6) an app icon: the mark centred on a rounded-square tile in white or Soft Lavender White, 1024 by 1024, mark inside the central 66 percent. SVG if possible, otherwise PNG at 2048 pixels.
+
+Do not add text, a tagline, or any other element.
+```
+
+If a result changes the shape, reply to the model with: "The shape changed. Use the attached logo as the exact outline; only recolour it." Then use Prompts A, B and C below only if you want extra tuning or the full asset set.
+
+---
+
 ## The theme palette (use exactly these, nothing else)
 
 | Role | Name | Hex |
