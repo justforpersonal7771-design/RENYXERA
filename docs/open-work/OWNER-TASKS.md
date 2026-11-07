@@ -65,6 +65,7 @@ Rules that apply to every task: ₹0 budget, never use claudexit02@gmail.com any
 ## G. Marketing actions (Claude drafts, you post)
 - [ ] **G1.** Growth tasks G-5, C-3, V-1, P-1 in [GROWTH_TASKS.md](../growth/GROWTH_TASKS.md).
 - [x] **G2.** `claude-youtube` skill pack reviewed 6 Nov: safe to install (report: [YOUTUBE-SKILL-REVIEW.md](../growth/YOUTUBE-SKILL-REVIEW.md)). Optional install is task G4.
+- [ ] **G5. Approve the video rebuild shot list:** read [VIDEO-REBUILD-SHOTLIST.md](../growth/marketing/VIDEO-REBUILD-SHOTLIST.md) (about 4 minutes), then tell Claude: OK or edits, music (a track you may use, or "synthesize"), voice-over yes/no, caption language. Claude builds film A first.
 - [ ] **G3b. Upload your first video to the YouTube channel** (YouTube Studio, Create, Upload videos, pick the film from `video/out/`, title and description from the week 1 pack, publish), then send Claude the video link.
 - [ ] **G4. (optional) Install the pack:** after reading the review, tell Claude "install youtube skill" and it runs the install; or run `git clone --depth 1 https://github.com/AgriciDaniel/claude-youtube` then copy `skills/claude-youtube` into your `.claude/skills/youtube` folder.
 - [ ] **G3.** Telegram deep links and branch commands (after C2 of R14 is built).
