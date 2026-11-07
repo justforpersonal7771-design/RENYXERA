@@ -54,7 +54,7 @@ export function CountUp({
 /** Circular progress ring (0–100) that sweeps in when it scrolls into view. The
  *  centre is whatever children are passed (usually a CountUp). */
 export function RadialGauge({
-  value, size = 96, stroke = 8, from = "#8db9f0", to = "#f5b69e", track = "currentColor",
+  value, size = 96, stroke = 8, from = "#06c2fb", to = "#dd42fb", track = "currentColor",
   trackOpacity = 0.12, children, className = "",
 }: {
   value: number; size?: number; stroke?: number; from?: string; to?: string; track?: string;

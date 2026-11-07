@@ -1,4 +1,4 @@
-# Where the new logo goes
+# Where a new logo would go (ON HOLD: the owner decided on 7 Nov to keep the original logo)
 
 [← Docs index](../README.md) · [Logo prompt](LOGO-MASTER-PROMPT.md) · [UI/UX plan](UIUX-OVERHAUL-PLAN.md)
 
