@@ -55,9 +55,9 @@ export function LunarDock() {
     { label: "Analytics", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },
     { label: "Battles", href: "/battles", icon: Swords, active: pathname.startsWith("/battles") },
   ];
-  // On the Mentor chat the bottom belongs to the message box, so the dock moves to the top there instead of hiding.
-  const top = pathname.startsWith("/ai-mentor/chat");
-  const hide = !top && (away || typing);
+  // Owner decision (7 Nov): the page menu lives in the top bar on every screen, so it never collides with bottom bars or the Mentor message box.
+  const top = true;
+  const hide = false;
 
   return (
     <nav aria-label="Pages" className="lunar-dock" data-pos={top ? "top" : undefined} data-hidden={hide ? "" : undefined}>

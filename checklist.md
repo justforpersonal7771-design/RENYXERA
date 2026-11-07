@@ -540,3 +540,5 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Folder tabs, second and later tabs: both flares mirror and the dashed stitch curves into the sheet line (fixed 7 Nov).
 - [x] 7 Nov: Mentor chat restyled as the Command Home under Lunar (glass command pill, suggestion tiles, navy/white bubbles); folder tab curves fixed and live.
 - [ ] Next: Analytics screen (variant 04), swipe cards, Dynamic Island timer, expandable cards, success orbs.
+- [x] 8 Nov: Analytics Readiness Orbit header; page menu in the top bar on every screen; gauge shows current vs goal clearly; Lunar scrollbar reverted to default.
+- [ ] Next: rest of Analytics layout, Mentor conversation view, Test Centre/Study/Review/Battles/Profile/Setup rebuilds, swipe cards, Dynamic Island timer, expandable cards, success orbs.

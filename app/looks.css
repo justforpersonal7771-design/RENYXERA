@@ -406,8 +406,6 @@ html[data-look="lunar"] {
     box-shadow: var(--shadow-float); transition: transform .55s var(--spring), opacity .3s;
   }
   [data-look="lunar"] .lunar-dock[data-hidden] { transform: translate(-50%, 170%); opacity: 0; pointer-events: none; }
-  [data-look="lunar"] #app-scroll { padding-bottom: 116px; }
-  [data-look="lunar"] .lunar-lift { bottom: 104px !important; }
   /* tools and legal section menu: a rail on the left that unfolds its names on hover (it used to sit at the bottom centre) */
   [data-look="lunar"] .subnav-host { inset: auto !important; left: 16px; top: calc(72px + (100dvh - 72px) / 2); transform: translateY(-50%) !important; opacity: 1 !important; display: block; padding: 0; }
   [data-look="lunar"] .subnav-host nav.sub-dock { overflow: visible !important; width: max-content; max-width: none; padding: 10px 8px; border-radius: 32px; background: rgba(255, 255, 255, .66) !important; border: 1px solid var(--border); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); box-shadow: var(--shadow-soft) !important; }
@@ -457,10 +455,6 @@ html[data-in-exam][data-look="lunar"] .page-shell > * { animation: none; }
 /* the spotlight on plan cards is a Lunar effect */
 [data-look="lunar"] .spot-host:hover .spot-layer { opacity: 1; }
 
-/* ===== Lunar scrollbar: thin, flat, one colour (no gradient) ===== */
-html[data-look="lunar"] { scrollbar-color: rgba(26, 28, 41, .28) transparent; }
-html.dark[data-look="lunar"] { scrollbar-color: rgba(255, 255, 255, .3) transparent; }
-html[data-look="lunar"] :is(#app-scroll, .custom-scrollbar, .overflow-y-auto, .overflow-auto, .overflow-x-auto) { scrollbar-width: thin; }
 
 /* ===== Lunar cards: watermark shapes fit inside the card (they used to be cropped by small cards) ===== */
 [data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well)[data-tint]:not(:has(.tile-mark))::after {
@@ -569,4 +563,16 @@ html[data-look="lunar"] .mentor-home__tiles button > .mentor-home__ico { flex: n
   [data-look="lunar"] .lunar-dock[data-pos="top"] { top: 10px; bottom: auto; z-index: 60; padding: 6px; }
   [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item { height: 44px; transform-origin: 50% 0; }
   [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:hover, [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:focus-visible { transform: translateY(5px) scale(1.15); }
+}
+
+/* Dark mode: the gauge's goal flag and track keep their contrast */
+html.dark[data-look="lunar"] .lg-track { stroke: rgba(255,255,255,.14); }
+html.dark[data-look="lunar"] .lg-fill { stroke: #8db9f0; }
+html.dark[data-look="lunar"] .lg-flag { fill: #f4f5fb; }
+html.dark[data-look="lunar"] .lg-flag-text { fill: #1a1c29; }
+html.dark[data-look="lunar"] .lg-goal { stroke: #f4f5fb; }
+@media (min-width: 1024px) and (max-width: 1279px) {
+  [data-look="lunar"] .lunar-dock[data-pos="top"] { left: 326px; transform: none; }
+  [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item { padding: 0 11px; }
+  [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item[data-active] .lunar-dock__label { max-width: 0; opacity: 0; margin-left: 0; }
 }

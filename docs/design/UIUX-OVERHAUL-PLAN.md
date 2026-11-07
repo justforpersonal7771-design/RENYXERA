@@ -220,3 +220,7 @@ After seeing the left rail, the owner confirmed the **bottom dock of design 02**
 - **Menus that would collide with the dock** (the tools and legal section menu) move to a **rail on the left** that unfolds its names on hover.
 - **Header:** the logo, wordmark and PRO or PLUS badge in one frosted capsule (no tile behind the mark); the tools group as one pill on the right.
 - **Phone:** unchanged, the floating bottom pill.
+
+### Update (8 Nov 2026): the page menu moved to the top bar on every screen
+
+Owner decision: the glass menu now sits in the header row on desktop for all screens (so it never meets bottom bars or the Mentor message box). It is left-aligned beside the logo between 1024 and 1279 px wide so it does not overlap the tools. Phone keeps the bottom pill. The old lift for bottom bars is no longer needed on desktop. Lunar scrollbar styling was removed (the app default is back). The readiness gauge now shows one blue progress arc, a peach lane to the goal and a labelled Goal flag.

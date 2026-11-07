@@ -1,6 +1,8 @@
 "use client";
 
 import { SmartUpgrade } from "@/components/growth/smart-upgrade";
+import { LunarOrbit } from "@/components/analytics/lunar-orbit";
+import { useIsLunar } from "@/lib/looks/use-lunar";
 import { useEffect, useState, useMemo } from "react";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { useRouter } from "next/navigation";
@@ -67,6 +69,7 @@ function ChartTooltip({ active, payload, label, unit }: any) {
 
 export default function AnalyticsDashboardPage() {
   const router = useRouter();
+  const lunar = useIsLunar();
   const { first: firstName } = useDisplayName();
   const { isInitialized } = useDataStore();
   const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
@@ -196,12 +199,18 @@ export default function AnalyticsDashboardPage() {
           </p>
         </motion.div>
 
+        {lunar && !loadingIntel && intel && (
+          <LunarOrbit intel={intel} topics={topics} onPractise={practice}
+            subjects={(dashboardMetrics?.subjectPerformance ?? []).map((x) => ({ full: x.subject, accuracy: x.attempted > 0 ? Math.round((x.correct / x.attempted) * 100) : 0, attempts: x.attempted }))}
+            trend={trendData} />
+        )}
+
         {/* 1. HUD gauges */}
         {loadingIntel ? (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[0, 1, 2, 3].map((i) => <div key={i} className="skeleton-shimmer h-[124px] rounded-2xl" />)}
           </div>
-        ) : intel && (
+        ) : intel && !lunar && (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {hud.map((stat, idx) => (
               <motion.div key={stat.label} {...rise} transition={{ ...rise.transition, delay: idx * 0.06 }}>
@@ -232,7 +241,7 @@ export default function AnalyticsDashboardPage() {
         {!loadingIntel && intel && (
           <Reveal>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8 card-pastel p-6" data-tint="butter">
+            <div className={`${lunar ? "lg:col-span-12" : "lg:col-span-8"} card-pastel p-6`} data-tint="butter">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] mb-4 flex items-center gap-2">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
                 Smart insights
@@ -262,7 +271,7 @@ export default function AnalyticsDashboardPage() {
               </div>
             </div>
 
-            <div className="lg:col-span-4 card-pastel p-6 space-y-4" data-tint="mint">
+            <div className={`lg:col-span-4 card-pastel p-6 space-y-4 ${lunar ? "hidden" : ""}`} data-tint="mint">
               <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
                 <Compass className="w-4 h-4 text-emerald-500" />
                 Today&apos;s adaptive path
