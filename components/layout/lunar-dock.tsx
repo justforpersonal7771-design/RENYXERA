@@ -55,10 +55,12 @@ export function LunarDock() {
     { label: "Analytics", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },
     { label: "Battles", href: "/battles", icon: Swords, active: pathname.startsWith("/battles") },
   ];
-  const hide = away || typing || pathname.startsWith("/ai-mentor/chat");
+  // On the Mentor chat the bottom belongs to the message box, so the dock moves to the top there instead of hiding.
+  const top = pathname.startsWith("/ai-mentor/chat");
+  const hide = !top && (away || typing);
 
   return (
-    <nav aria-label="Pages" className="lunar-dock" data-hidden={hide ? "" : undefined}>
+    <nav aria-label="Pages" className="lunar-dock" data-pos={top ? "top" : undefined} data-hidden={hide ? "" : undefined}>
       <LayoutGroup id="lunar-dock">
         <ul>
           {items.map((it) => (

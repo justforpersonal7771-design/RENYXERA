@@ -546,3 +546,27 @@ html[data-look="lunar"] section[aria-label="Conversation"] .bg-\[var\(--btn\)\] 
 html[data-look="lunar"] section[aria-label="Conversation"] .rounded-2xl.bg-\[var\(--surface\)\] { background: rgba(255,255,255,.8) !important; border: 1px solid rgba(255,255,255,.9); border-radius: 22px 22px 22px 6px !important; box-shadow: 0 12px 30px -22px rgba(58,111,184,.5); }
 html.dark[data-look="lunar"] section[aria-label="Conversation"] .rounded-2xl.bg-\[var\(--surface\)\] { background: rgba(28,32,64,.75) !important; border-color: rgba(141,185,240,.2); }
 html[data-look="lunar"] .mentor-stage ul > li { margin: 0 !important; }
+
+/* Command Home layout for a new Mentor chat (Lunar): greeting, the question, the command pill, four action tiles with an icon each. */
+html[data-look="lunar"] .mentor-home__hi { text-align: center; font-size: 15px; font-weight: 700; color: #3a6fb8; margin-bottom: 6px; }
+html.dark[data-look="lunar"] .mentor-home__hi { color: #8db9f0; }
+html[data-look="lunar"] .mentor-home__q { text-align: center; font-family: var(--font-display, inherit); font-weight: 800; font-size: clamp(2rem, 4.4vw, 3rem); letter-spacing: -.025em; line-height: 1.08; margin: 0 0 26px; color: var(--text-primary); }
+html[data-look="lunar"] .mentor-home__tiles { grid-template-columns: repeat(4, 1fr) !important; gap: 12px !important; max-width: 100%; }
+html[data-look="lunar"] .mentor-home__tiles button { display: flex !important; flex-direction: column; align-items: flex-start !important; gap: 4px; min-height: 148px; padding: 16px !important; border-radius: 24px !important; }
+html[data-look="lunar"] .mentor-home__ico { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 14px; margin-bottom: 14px; background: linear-gradient(135deg, #cfe2fb, #8db9f0); color: #1a1c29; transition: transform .35s var(--spring); }
+html[data-look="lunar"] .mentor-home__tiles button:hover .mentor-home__ico { transform: rotate(-8deg) scale(1.12); }
+html[data-look="lunar"] .mentor-home__tiles li:nth-child(2) .mentor-home__ico { background: linear-gradient(135deg, #fbd9cb, #f5b69e); }
+html[data-look="lunar"] .mentor-home__t { font-weight: 800; font-size: 15px; color: var(--text-primary); }
+html[data-look="lunar"] .mentor-home__s { font-size: 12.5px; line-height: 1.4; color: var(--text-secondary); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 900px) { html[data-look="lunar"] .mentor-home__tiles { grid-template-columns: 1fr 1fr !important; } }
+@media (max-width: 640px) { html[data-look="lunar"] .mentor-home__tiles button { min-height: 0; } }
+html[data-look="lunar"] .mentor-home__tiles button { flex-wrap: nowrap !important; align-content: normal !important; justify-content: flex-start !important; text-align: left; width: 100%; }
+html[data-look="lunar"] .mentor-home__tiles button > span { flex-basis: auto !important; white-space: normal; max-width: 100%; }
+html[data-look="lunar"] .mentor-home__tiles button > .mentor-home__ico { flex: none !important; }
+
+/* Dock at the top on the Mentor chat (the bottom is the message box): same glass pill, centred in the header row, pops downward. */
+@media (min-width: 1024px) {
+  [data-look="lunar"] .lunar-dock[data-pos="top"] { top: 10px; bottom: auto; z-index: 60; padding: 6px; }
+  [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item { height: 44px; transform-origin: 50% 0; }
+  [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:hover, [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:focus-visible { transform: translateY(5px) scale(1.15); }
+}

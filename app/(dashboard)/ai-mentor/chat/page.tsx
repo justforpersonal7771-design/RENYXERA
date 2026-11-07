@@ -6,19 +6,20 @@
  * and keep both versions (the "1 / 2" pager), ask again for another answer, a flowing-logo thinking state, answers that type out,
  * a composer with mode and style menus, an enlarge-the-box button, and an enlarge-the-whole-chat button (fills the app, not full screen).
  */
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, FolderInput, FolderMinus, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
+import { ArrowLeft, BarChart3, Brain, CalendarDays, Check, ClipboardCheck, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, FolderInput, FolderMinus, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { MentorLogo } from "@/components/brand/mentor-logo";
 import { CardView, MODES, Mode, Msg, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { useMentorData } from "@/components/mentor/use-mentor-data";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
-import { istDateStr } from "@/lib/time/ist";
+import { istDateStr, istHour } from "@/lib/time/ist";
+import { useIsLunar } from "@/lib/looks/use-lunar";
 import type { ChatMeta } from "@/lib/mentor/chat-tree";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { AIResponseParser } from "@/lib/ai/ai-response-parser";
@@ -34,6 +35,12 @@ const STARTERS: { title: string; text: string; mode?: Mode }[] = [
   { title: "Quiz me", text: AUTO.Quiz!, mode: "Quiz" },
   { title: "My weekly review", text: AUTO.Weekly!, mode: "Weekly" },
 ];
+const STARTER_ICON: Record<string, React.ReactNode> = {
+  "Plan my week": <CalendarDays className="h-5 w-5" />, "Review my last test": <ClipboardCheck className="h-5 w-5" />,
+  "Quiz me": <Brain className="h-5 w-5" />, "My weekly review": <BarChart3 className="h-5 w-5" />,
+};
+const noop = () => () => {};
+const greeting = () => { const h = istHour(); return h < 5 ? "Still up" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; };
 const VOICES: { id: Voice; label: string }[] = [{ id: "Friendly", label: "Friendly" }, { id: "Strict", label: "Strict" }, { id: "Concise", label: "Concise" }];
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -162,6 +169,8 @@ function ChatScreen() {
   const router = useRouter();
   const params = useSearchParams();
   const d = useMentorData();
+  const lunar = useIsLunar();
+  const greet = useSyncExternalStore(noop, greeting, () => "Welcome");
   const c = useMentorChat(d.brief);
   const { tier } = useEntitlements();
   const openAuth = useAuthModalStore((st) => st.open);
@@ -347,12 +356,30 @@ function ChatScreen() {
           )}
         </div>
       </form>
-      <p className="mx-auto mt-1.5 w-fit max-w-full rounded-full bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-3 py-0.5 text-center text-[11px] leading-snug text-[var(--text-muted)] backdrop-blur-sm">AI Mentor can make mistakes. Check important facts.</p>
+      {c.msgs.length > 0 && <p className="mx-auto mt-1.5 w-fit max-w-full rounded-full bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-3 py-0.5 text-center text-[11px] leading-snug text-[var(--text-muted)] backdrop-blur-sm">AI Mentor can make mistakes. Check important facts.</p>}
     </div>
   );
 
   // A new chat opens like Gemini's: a greeting, the box in the middle, suggestions under it. After the first message the box docks at the bottom.
-  const centred = (
+  const weakest = d.weakTopics.filter((x) => x.attempts > 0).sort((a, b) => a.score - b.score)[0];
+  const centred = lunar ? (
+    <div className="mentor-stage mentor-home mx-auto flex h-full w-full max-w-3xl flex-col justify-center px-1">
+      <p className="mentor-home__hi">{greet}{d.firstName ? `, ${d.firstName}` : ""}.</p>
+      <h2 className="mentor-home__q">What shall we work on?</h2>
+      {composerBlock}
+      <ul className="mentor-home__tiles">
+        {STARTERS.map((st) => (
+          <li key={st.title}>
+            <button type="button" onClick={() => { if (st.mode) c.setMode(st.mode); void c.send(st.text, st.mode ?? "Ask"); }}>
+              <span className="mentor-home__ico">{STARTER_ICON[st.title]}</span>
+              <span className="mentor-home__t">{st.title}</span>
+              <span className="mentor-home__s">{st.title === "Quiz me" && weakest ? `Start with ${weakest.topic}` : st.text}</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : (
     <div className="mentor-stage mx-auto flex h-full w-full max-w-3xl flex-col justify-center px-1">
       <h2 className="mb-5 text-center font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl">What shall we work on?</h2>
       {composerBlock}
@@ -370,11 +397,11 @@ function ChatScreen() {
 
   const body = (
     <div className={`flex w-full gap-3 ${wide ? "h-full" : "h-[calc(100dvh-9.5rem)] min-h-[26rem]"}`} data-fill-height="always">
-      {sideOpen && <aside aria-label="Chats" className="ai-panel hidden w-64 shrink-0 p-3 lg:block">{renderHistory(false)}</aside>}
+      {sideOpen && !lunar && <aside aria-label="Chats" className="ai-panel hidden w-64 shrink-0 p-3 lg:block">{renderHistory(false)}</aside>}
       {/* Phone history drawer, portalled to <body>: the page container is transformed, which would trap a fixed drawer under the top bar. */}
       {mounted && createPortal(<AnimatePresence>
         {drawer && (
-          <div className="fixed inset-0 z-[300] lg:hidden">
+          <div className={`fixed inset-0 z-[300] ${lunar ? "" : "lg:hidden"}`}>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDrawer(false)} className="absolute inset-0 bg-black/30" />
             <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" style={{ position: "absolute" }} className="ai-panel inset-y-0 left-0 h-full w-[18.5rem] max-w-[86vw] !rounded-l-none !rounded-r-3xl p-3 pt-4 shadow-2xl">
               <div className="h-full">{renderHistory(true)}</div>
@@ -385,8 +412,8 @@ function ChatScreen() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-2 flex flex-wrap items-center gap-2">
-          <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
-          {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
+          <button type="button" onClick={() => setDrawer(true)} className={`btn-soft !h-10 !px-3 text-sm ${lunar ? "" : "lg:hidden"}`} aria-label="Chat history"><History className="h-4 w-4" /></button>
+          {!sideOpen && !lunar && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
           {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
           {tier !== "pro" && <Link href="/pro" className="ml-auto inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorLogo className="h-5" /> Upgrade</Link>}
@@ -399,6 +426,7 @@ function ChatScreen() {
           <div ref={listRef} hidden={empty && !narrow} style={{ paddingBottom: composerH + 24 }} className="custom-scrollbar absolute inset-0 space-y-4 overflow-y-auto pr-1" aria-live="polite">
             {empty && narrow && (
               <div className="pt-2">
+                {lunar && <p className="mentor-home__hi">{greet}{d.firstName ? `, ${d.firstName}` : ""}.</p>}
                 <h2 className="mb-3 text-center font-display text-2xl font-extrabold text-[var(--text-primary)]">What shall we work on?</h2>
                 <ul className="space-y-1.5">
                   {STARTERS.map((st) => (
