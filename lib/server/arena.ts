@@ -21,11 +21,12 @@ export function weekStartIso(now: Date = new Date()): string {
 /** Seasons: fixed 4-week windows (Monday 00:00 IST), counted from Monday 2 Nov 2026. No table needed: the window follows from the date. */
 const SEASON_EPOCH_MS = new Date("2026-11-02T00:00:00+05:30").getTime();
 const SEASON_MS = 28 * 86_400_000;
-export function seasonWindow(now: Date = new Date()): { number: number; startIso: string; endIso: string; daysLeft: number } {
-  const n = Math.max(0, Math.floor((now.getTime() - SEASON_EPOCH_MS) / SEASON_MS));
+export function seasonByNumber(number: number, now: Date = new Date()): { number: number; startIso: string; endIso: string; daysLeft: number } {
+  const n = Math.max(0, number - 1);
   const start = SEASON_EPOCH_MS + n * SEASON_MS, end = start + SEASON_MS;
   return { number: n + 1, startIso: new Date(start).toISOString(), endIso: new Date(end).toISOString(), daysLeft: Math.max(0, Math.ceil((end - now.getTime()) / 86_400_000)) };
 }
+export const seasonWindow = (now: Date = new Date()) => seasonByNumber(Math.max(0, Math.floor((now.getTime() - SEASON_EPOCH_MS) / SEASON_MS)) + 1, now);
 const todayStartIso = (now: Date = new Date()) => new Date(`${istDateStr(now)}T00:00:00+05:30`).toISOString();
 
 type Kind = "win" | "draw" | "loss";

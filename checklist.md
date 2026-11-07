@@ -217,7 +217,7 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 - [x] **A2 Plans page refresh** — comparison table and FAQ done 6 Nov (`components/billing/plans-compare.tsx`); testimonials wait for consented ones; film already on the page.
 - [ ] **A3 Season-pass campaign Dec → exam** — banner by date, weekly hub post, Instagram, early-buyer coupon.
 - [x] **A4 Smart upgrade sheet** (6 Nov: per-day price strip and per-surface click tracking; a feature preview image is still to do).
-- [ ] **Battles seasons and badges** (6 Nov: Season tab on the leaderboard built; migration 0054 written, owner to run; still to build: award job, badge on avatar, speed bonus in settlement).
+- [x] **Battles seasons and badges** (7 Nov: Season tab, lazy badge awards after each season, badges next to names; migration 0054 applied). Still open: speed bonus in settlement (needs the owner's finish time), a Look trial as the season reward.
 - [ ] **Mentor recharge packs: make them purchasable** (6 Nov: shown with "Notify me" on the Plans page and upgrade sheet, Rs 19/49/79 for 150K/450K/1.2M tokens; buying needs the `ai_credits` pack ledger migration, a "topup" Razorpay order type, token metering in the AI route, and the Receipt ledger; spec in [`docs/roadmap/R27-MENTOR-CHAT-FEATURES.md`](docs/roadmap/R27-MENTOR-CHAT-FEATURES.md) section 3).
 - [ ] **A5 Bundling nudge** after 3 purchases.
 - [x] **A6 Post-purchase tour** (6 Nov: 3-step welcome after activation; verify on the next real payment).

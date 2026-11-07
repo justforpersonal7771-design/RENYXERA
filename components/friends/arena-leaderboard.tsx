@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Trophy, Loader2 } from "lucide-react";
 
-type Row = { rank: number; id: string; name: string; points: number; battles: number; wins: number; rating: number; you: boolean };
+type Row = { rank: number; id: string; name: string; points: number; battles: number; wins: number; rating: number; you: boolean; badges?: { season: number; badge: string }[] };
 type Data = { rows: Row[]; me: Row; season?: { number: number; daysLeft: number; endsAt: string } };
 
 export function ArenaLeaderboard() {
@@ -60,7 +60,7 @@ export function ArenaLeaderboard() {
               {data.rows.filter((r) => r.battles > 0 || r.you).map((r) => (
                 <li key={r.id} className={`flex items-center gap-3 rounded-2xl border p-2.5 ${r.you ? "border-[var(--text-primary)]" : "border-[var(--border)]"} bg-[var(--surface)]`}>
                   <span className="w-8 shrink-0 text-center text-sm font-extrabold text-[var(--text-primary)]">{medal(r.rank)}</span>
-                  <span className="min-w-0 flex-1 truncate text-sm font-bold text-[var(--text-primary)]">{r.name}{r.you ? " (you)" : ""}</span>
+                  <span className="min-w-0 flex-1 truncate text-sm font-bold text-[var(--text-primary)]">{r.name}{r.you ? " (you)" : ""}{(r.badges ?? []).map((b) => <span key={b.season} title={`Season ${b.season} ${b.badge === "champion" ? "champion" : b.badge === "podium" ? "podium finish" : "top 10"}`} aria-label={`Season ${b.season} ${b.badge}`} className="ml-1.5 inline-block rounded-full bg-[var(--tint-butter)] px-1.5 text-[10px] font-black text-[var(--tint-butter-ink)]">{b.badge === "champion" ? "🏆" : b.badge === "podium" ? "🥈" : "⭐"} S{b.season}</span>)}</span>
                   <span className="hidden text-xs text-[var(--text-muted)] sm:inline">{r.wins}W · {r.battles} played · rating {r.rating}</span>
                   <span className="shrink-0 text-sm font-extrabold text-[var(--text-primary)]"><span className="font-num">{r.points}</span> AP</span>
                 </li>
