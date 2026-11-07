@@ -1022,7 +1022,7 @@ export default function ExamSetupPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 40 }}
                     transition={{ duration: 0.2 }}
-                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-5 py-3.5 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl"
+                    className="lunar-lift fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-5 py-3.5 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl"
                   >
                     <div>
                       <span className="text-[9px] font-black uppercase text-[var(--text-muted)] block tracking-wide">Selected</span>

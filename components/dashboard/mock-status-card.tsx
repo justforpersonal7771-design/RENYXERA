@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { getCurrentBranch } from "@/lib/branch/current";
 import Link from "next/link";
 import { motion, AnimatePresence } from "motion/react";
-import { Trophy, Play, Hourglass, CloudOff, Medal, ShieldAlert, CalendarDays, ChevronRight, Loader2 } from "lucide-react";
+import { Check, Trophy, Play, Hourglass, CloudOff, Medal, ShieldAlert, CalendarDays, ChevronRight, Loader2 } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { openLeaderboard } from "@/components/layout/leaderboard-panel";
 import { serverNow } from "@/lib/time/server-time";
@@ -19,7 +19,7 @@ type View =
   | { kind: "waiting"; mock: Mock }
   | { kind: "delayed"; mock: Mock }
   | { kind: "result"; mock: Mock; r: MyResult }
-  | { kind: "next"; mock: Mock }
+  | { kind: "next"; mock: Mock; more?: Mock[] }
   | { kind: "empty" };
 
 const fmt = (ms: number) => {
@@ -33,7 +33,7 @@ const fmt = (ms: number) => {
  * results after submitting, a clear "taking longer than expected" state if results are
  * late (retries on its own), then rank / percentile / GATE score once released.
  */
-export function MockStatusCard() {
+export function MockStatusCard({ withUpcoming = false }: { withUpcoming?: boolean } = {}) {
   const user = useAuthStore((s) => s.user);
   const [view, setView] = useState<View>({ kind: "loading" });
   const [now, setNow] = useState(0); // set on mount so server and first client render match
@@ -63,8 +63,9 @@ export function MockStatusCard() {
           return setView({ kind: "result", mock: m, r: row });
         }
       }
-      const upcoming = list.filter((m) => Date.parse(m.starts_at) > t || (Date.parse(m.starts_at) <= t && t < Date.parse(m.ends_at))).sort((x, y) => Date.parse(x.starts_at) - Date.parse(y.starts_at))[0];
-      setView(upcoming ? { kind: "next", mock: upcoming } : { kind: "empty" });
+      const upcomingAll = list.filter((m) => Date.parse(m.starts_at) > t || (Date.parse(m.starts_at) <= t && t < Date.parse(m.ends_at))).sort((x, y) => Date.parse(x.starts_at) - Date.parse(y.starts_at));
+      const upcoming = upcomingAll[0];
+      setView(upcoming ? { kind: "next", mock: upcoming, more: upcomingAll.slice(1, 3) } : { kind: "empty" });
     } catch {
       setView((v) => (v.kind === "loading" ? { kind: "empty" } : v));
     }
@@ -81,6 +82,14 @@ export function MockStatusCard() {
     if (view.kind === "delayed") { const t = setInterval(() => void load(), 30_000); return () => clearInterval(t); }
   }, [view, load]);
 
+  const facts = withUpcoming ? (
+    <ul className="my-3 space-y-2 text-sm text-[var(--text-secondary)]" aria-label="How the All-India Mock works">
+      {["Free every Sunday", "Ranked across India against everyone who sits it", "Results are released to everyone at the same time"].map((t) => (
+        <li key={t} className="flex items-start gap-2"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[var(--radar-line,#3a6fb8)]" aria-hidden />{t}</li>
+      ))}
+    </ul>
+  ) : null;
+
   const shell = "card-pastel p-5 shadow-sm relative overflow-hidden";
   const title = (
     <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5 mb-3">
@@ -89,12 +98,12 @@ export function MockStatusCard() {
   );
 
   return (
-    <div data-tint="peri" className={shell}>
+    <div data-tint="peri" className={`${shell} mock-card`}>
       <div className="absolute -top-10 -right-10 w-36 h-36 bg-violet-500/10 rounded-full blur-3xl pointer-events-none" />
       <div className="relative">
         {title}
         <AnimatePresence mode="wait">
-          <motion.div key={view.kind} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25 }}>
+          <motion.div key={view.kind} data-mock-body initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25 }}>
             {view.kind === "loading" && <div className="flex justify-center py-6"><Loader2 className="w-5 h-5 animate-spin text-violet-500" /></div>}
 
             {view.kind === "in_progress" && (
@@ -152,14 +161,25 @@ export function MockStatusCard() {
               <div className="space-y-2">
                 <p className="text-sm font-bold text-[var(--text-primary)] truncate">{view.mock.title}</p>
                 <p className="text-xs text-[var(--text-secondary)] inline-flex items-center gap-1.5"><CalendarDays className="w-3.5 h-3.5" /> {Date.parse(view.mock.starts_at) <= now ? "Live now" : `Starts in ${fmt(Date.parse(view.mock.starts_at) - now)}`}</p>
-                <Link href="/mocks" className="inline-flex w-full items-center justify-center gap-1 h-9 rounded-xl border border-[var(--border)] text-xs font-bold text-[var(--text-primary)] hover:border-violet-500/50">Open All-India Mock <ChevronRight className="w-3.5 h-3.5" /></Link>
+                {facts}<Link href="/mocks" className="inline-flex w-full items-center justify-center gap-1 h-9 rounded-xl border border-[var(--border)] text-xs font-bold text-[var(--text-primary)] hover:border-violet-500/50">Open All-India Mock <ChevronRight className="w-3.5 h-3.5" /></Link>
               </div>
+            )}
+
+            {withUpcoming && view.kind === "next" && view.more && view.more.length > 0 && (
+              <ul className="mt-3 space-y-1.5" aria-label="More upcoming mocks">
+                {view.more.map((m) => (
+                  <li key={m.id} className="flex items-center justify-between gap-3 rounded-xl bg-[var(--surface)]/70 px-3 py-2 text-xs">
+                    <span className="min-w-0 truncate font-bold text-[var(--text-primary)]">{m.title}</span>
+                    <span className="shrink-0 text-[var(--text-secondary)]">{new Date(m.starts_at).toLocaleString("en-IN", { weekday: "short", day: "numeric", month: "short", hour: "numeric", minute: "2-digit", timeZone: "Asia/Kolkata" })}</span>
+                  </li>
+                ))}
+              </ul>
             )}
 
             {view.kind === "empty" && (
               <div className="space-y-2">
-                <p className="text-xs text-[var(--text-secondary)]">A free GATE-pattern mock every Sunday, ranked across India.</p>
-                <Link href="/mocks" className="inline-flex w-full items-center justify-center gap-1 h-9 rounded-xl border border-[var(--border)] text-xs font-bold text-[var(--text-primary)] hover:border-violet-500/50">See the schedule <ChevronRight className="w-3.5 h-3.5" /></Link>
+                <p className="text-xs text-[var(--text-secondary)]">{withUpcoming ? "No mock is scheduled yet. A free GATE-pattern mock runs on Sundays, ranked across India; it will appear here as soon as it is announced." : "A free GATE-pattern mock every Sunday, ranked across India."}</p>
+                {facts}<Link href="/mocks" className="inline-flex w-full items-center justify-center gap-1 h-9 rounded-xl border border-[var(--border)] text-xs font-bold text-[var(--text-primary)] hover:border-violet-500/50">See the schedule <ChevronRight className="w-3.5 h-3.5" /></Link>
               </div>
             )}
           </motion.div>

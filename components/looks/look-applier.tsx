@@ -67,7 +67,7 @@ export function LookApplier() {
   if (!trial || trial.endsAt <= now || path.startsWith("/exam")) return null;
   const left = Math.max(0, Math.ceil((trial.endsAt - now) / 1000)), mm = Math.floor(left / 60), ss = String(left % 60).padStart(2, "0");
   return (
-    <div role="status" aria-live="polite" className="pointer-events-none fixed bottom-[78px] left-3 z-[330] lg:bottom-4">
+    <div role="status" aria-live="polite" className="lunar-lift pointer-events-none fixed bottom-[78px] left-3 z-[330] lg:bottom-4">
       <div className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] py-1 pl-2.5 pr-1 text-xs text-[var(--text-primary)] shadow-lg">
         <Sparkles className="h-3.5 w-3.5 text-[var(--tint-peri-ink)]" aria-hidden />
         <span className="max-w-[7.5rem] truncate font-bold" title={`Trying ${lookById(trial.id).name}`}>{lookById(trial.id).name}</span>

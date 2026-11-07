@@ -13,8 +13,8 @@ import { AnimatedNumber } from "@/components/ui/animated-number";
 import { buildRadar, labelAnchor, labelRoom, polar, type RadarAxis, type RadarModel } from "@/lib/analytics/radar";
 import type { SubjectAnalytics } from "@/types/analytics.types";
 
-const R = 118;        // chart radius in viewBox units
-const PAD_Y = 56;     // room above and below for the first / opposite labels (two lines each)
+const R = 150;        // chart radius in viewBox units
+const PAD_Y = 64;     // room above and below for the first / opposite labels (two lines each)
 
 function RadarSvg({ model }: { model: RadarModel }) {
   const reduce = useReducedMotion();
@@ -43,8 +43,8 @@ function RadarSvg({ model }: { model: RadarModel }) {
           <g key={a.key}>
             <title>{a.merged ? `${a.label}: ${a.merged.join(", ")}` : a.label}</title>
             <circle cx={mx} cy={my} r={a.hasData ? 5.5 : 3.5} fill="var(--background)" stroke="var(--radar-line, #3a6fb8)" strokeWidth={a.hasData ? 3 : 2} strokeDasharray={a.hasData && !a.reliable ? "2 2" : undefined} />
-            <text x={lx} y={ly + dy - 2} textAnchor={anchor} fontSize={13.5} fontWeight={600} fill="var(--text-primary)">{a.short}</text>
-            <text x={lx} y={ly + dy + 14} textAnchor={anchor} fontSize={12.5} fill="var(--text-muted)">{a.hasData ? `${a.value}%${a.reliable ? "" : "*"}` : "no data"}</text>
+            <text x={lx} y={ly + dy - 2} textAnchor={anchor} fontSize={16} fontWeight={600} fill="var(--text-primary)">{a.short}</text>
+            <text x={lx} y={ly + dy + 14} textAnchor={anchor} fontSize={14.5} fill="var(--text-muted)">{a.hasData ? `${a.value}%${a.reliable ? "" : "*"}` : "no data"}</text>
           </g>
         );
       })}
@@ -74,7 +74,7 @@ export function SubjectRadarCard({ subjects }: { subjects: SubjectAnalytics[] })
   const gaps = model.axes.filter((a) => a.hasData).sort((a, b) => a.value - b.value).slice(0, 4);
   const partial = model.axes.some((a) => a.hasData && !a.reliable);
   return (
-    <section aria-label="Your subject shape" className="card-pastel p-5 sm:p-7" data-tint="sky">
+    <section aria-label="Your subject shape" className="card-pastel p-5 sm:p-7" data-tint="sky" data-nowm>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Your subject shape</h2>

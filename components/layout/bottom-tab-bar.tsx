@@ -7,10 +7,11 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SocialDot } from "@/components/friends/social-dot";
-import { BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
+import { BrainCircuit, ClipboardCheck, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
+import { useIsLunar } from "@/lib/looks/use-lunar";
 
 /**
  * Phone/tablet tab bar (below lg): the four places a student goes most, within thumb reach. "More" slides a sheet up
@@ -18,6 +19,7 @@ import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
  */
 export function BottomTabBar() {
   const pathname = usePathname() ?? "";
+  const lunar = useIsLunar();
   const signedIn = useAuthStore((s) => !!s.user);
   const [reviewHref, setReviewHref] = useState("/mistakes");
   const [more, setMore] = useState(false);
@@ -33,7 +35,7 @@ export function BottomTabBar() {
   const on = "text-violet-600 dark:text-violet-400";
   const tabs = [
     { label: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
-    { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings, active: isTestCentrePath(pathname) },
+    { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: lunar ? ClipboardCheck : Settings, active: isTestCentrePath(pathname) },
     { label: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
     { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
   ];

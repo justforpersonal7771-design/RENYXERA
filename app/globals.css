@@ -1992,9 +1992,24 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .spot-host { position: relative; }
 .spot-layer { pointer-events: none; position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity .3s;
   background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 0%), color-mix(in srgb, var(--accent, #3a6fb8) 16%, transparent), transparent 45%); }
-@media (hover: hover) { .spot-host:hover .spot-layer { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .spot-layer { transition: none; } }
 
 /* adaptive subject radar: the shape's line colour (components/analytics/subject-radar-card.tsx) */
 :root { --radar-line: #3a6fb8; }
 .dark { --radar-line: #8db9f0; }
+
+/* Folder tabs, first tab active: the tab is flush with the sheet (it was indented 22px while the sheet's top-left corner is square, which left a stray curve and
+   a stitch that did not meet). The stitch now runs straight from the tab's edge into the sheet's edge and the inverted fillet beside the tab is not drawn. */
+.folder-wrap[data-first="true"] .folder-tabs { padding-left: 0 !important; }
+.folder-wrap[data-first="true"] .folder-tab[aria-selected="true"]::before { display: none !important; }
+.folder-wrap[data-first="true"] .folder-tab[aria-selected="true"] .folder-tab-stitch { left: 8px !important; border-top-left-radius: 9px; }
+
+/* right fillet of the active tab was being rotated/centred by a stray pointer rule: reset so both flares mirror */
+.folder-wrap .folder-tab[aria-selected="true"]::after { left: auto !important; right: -14px !important; bottom: 0 !important; transform: none !important; border-radius: 0 !important; width: 14px !important; height: 14px !important; }
+
+/* Stitch turns the corner: where the tab's dashed outline meets the sheet's dashed line, both sides flare out in a curve instead of a right angle. */
+.folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch::before,
+.folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch::after { content: ""; position: absolute; bottom: 0; width: 12px; height: 12px; box-sizing: border-box; pointer-events: none; background: var(--sheet); }
+.folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch::before { left: -12px; border-right: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom-right-radius: 12px; box-shadow: 6px 6px 0 6px var(--sheet); }
+.folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch::after { right: -12px; border-left: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom-left-radius: 12px; box-shadow: -6px 6px 0 6px var(--sheet); }
+.folder-wrap[data-first="true"] .folder-tab[aria-selected="true"] .folder-tab-stitch::before { display: none; }

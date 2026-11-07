@@ -140,7 +140,7 @@ export function labelAnchor(i: number, n: number): "start" | "middle" | "end" {
 }
 
 /** Horizontal room (in px) the labels need on each side, from the longest short label, so the viewBox is never clipped. */
-export function labelRoom(axes: RadarAxis[], charPx = 7.4, valuePx = 54) {
+export function labelRoom(axes: RadarAxis[], charPx = 9.2, valuePx = 62) {
   const longest = Math.max(0, ...axes.map((a) => a.short.length));
   return Math.round(Math.max(longest * charPx, valuePx) + 16);
 }

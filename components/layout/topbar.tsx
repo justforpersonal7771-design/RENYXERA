@@ -235,7 +235,7 @@ export function Topbar() {
         {/* Logo hover (.logo-fx): the mark spins once in 3D inside a glowing halo with an
             expanding ripple, and a light sweeps across the wordmark while its "ERA"
             gradient starts flowing. */}
-        <Link href="/" aria-label="RENYXERA — Dashboard" className="logo-fx shrink-0 flex items-center gap-2.5">
+        <Link href="/" aria-label="RENYXERA — Dashboard" className="logo-fx brand-chip shrink-0 flex items-center gap-2.5">
           <span className="logo-mark relative flex items-center justify-center">
             <span className="logo-halo" aria-hidden="true" />
             <span className="logo-ripple" aria-hidden="true" />

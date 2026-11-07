@@ -31,7 +31,8 @@ import { InstallPrompt } from "@/components/growth/install-prompt";
 import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 import { FeatureDeck } from "@/components/dashboard/feature-deck";
-import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
+import { LunarHome } from "@/components/dashboard/lunar-home";
+import { useIsLunar } from "@/lib/looks/use-lunar";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { usePaperLabel } from "@/lib/branch/use-paper-label";
 import { NextActionHero, MarksLeakCard, RevisionDueCard, SubjectTilesCard, YearDotsCard, useSolvedIds } from "@/components/dashboard/bento";
@@ -67,6 +68,7 @@ const ExamCountdownCard = dynamic(() => import("@/components/dashboard/exam-coun
 
 export default function Home() {
   const router = useRouter();
+  const lunar = useIsLunar();
   const { loadRepository, isInitialized } = useDataStore();
   const { activeSession, isHydrated, initializeStore, clearSession } = useExamRuntimeStore();
   const { dashboardMetrics, loadAnalytics, loading } = useAnalyticsStore();
@@ -143,11 +145,20 @@ export default function Home() {
       <SignedOutWelcome />
 
       {/* R18: compact "next step" hero with the student's own rings (replaces the large banner). */}
+      {lunar ? (
+        <LunarHome
+          solved={solvedCount} accuracy={accuracyValue} streak={streakDays} pendingMistakes={pendingMistakesCount}
+          weakest={weakest} hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"} onResume={handleResume} loading={isLoading}
+          topics={dashboardMetrics?.topicPerformance ?? []} subjects={dashboardMetrics?.subjectPerformance ?? []} snapshots={snapshots}
+          sessions={dashboardMetrics?.recentSessions ?? []}
+        />
+      ) : (
       <NextActionHero
         solved={solvedCount} accuracy={accuracyValue} streak={streakDays} pendingMistakes={pendingMistakesCount}
         weakest={weakest} hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"} onResume={handleResume}
         loading={isLoading}
       />
+      )}
 
       {isLoading ? (
         // Same shape as the real content below, so the swap is a fill-in, not a jump.
@@ -212,19 +223,24 @@ export default function Home() {
       </AnimatePresence>
 
       <MissedBlocksCard />
-      <TodayBlocksCard />
+      {!lunar && <TodayBlocksCard />}
       <WeakTopicsSync topics={dashboardMetrics?.topicPerformance ?? []} />
       <div id="diagnostic" className="scroll-mt-24"><DiagnosticCard solved={solvedCount} /></div>
 
       {/* Today strip: missions + study timer side by side. */}
+      {lunar ? (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2"><StudyTimer /><InstallPrompt /></div>
+      ) : (
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2"><TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} /></div>
         <div className="flex flex-col gap-4"><StudyTimer /><InstallPrompt /></div>
       </div>
+      )}
 
       <IncompleteTests />
 
       {/* Bento: one pastel card per question a student asks themselves. */}
+      {!lunar && (
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <MarksLeakCard topics={dashboardMetrics?.topicPerformance ?? []} />
         <RevisionDueCard pending={pendingMistakesCount} mastered={masteredMistakesCount} />
@@ -232,8 +248,7 @@ export default function Home() {
         <div className="md:col-span-2"><SubjectTilesCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></div>
         {weakest ? <Reveal className="h-full"><MockStatusCard /></Reveal> : <Reveal className="h-full"><ExamCountdownCard /></Reveal>}
       </div>
-
-      <SubjectRadarCard subjects={dashboardMetrics?.subjectPerformance ?? []} />
+      )}
 
       <WeeklyBenchmarkCard />
 

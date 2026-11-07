@@ -15,7 +15,7 @@ export function SmoothScroll() {
   useEffect(() => {
     const wrapper = document.getElementById("app-scroll");
     if (!wrapper || off || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const lenis = new Lenis({ wrapper, content: wrapper.firstElementChild as HTMLElement, lerp: 0.1, smoothWheel: true, allowNestedScroll: true, anchors: { offset: -16 } });
+    const lenis = new Lenis({ wrapper, content: wrapper.firstElementChild as HTMLElement, lerp: document.documentElement.getAttribute("data-look") === "lunar" ? 0.17 : 0.1, smoothWheel: true, allowNestedScroll: true, anchors: { offset: -16 } });
     let raf = requestAnimationFrame(function loop(t) { lenis.raf(t); raf = requestAnimationFrame(loop); });
     return () => { cancelAnimationFrame(raf); lenis.destroy(); };
   }, [off, pathname]);

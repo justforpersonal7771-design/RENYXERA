@@ -209,3 +209,14 @@ Question from the owner: the bottom dock of variant 02 could collide with other 
 - The left rail holds only pages, so it stays uncrowded; the logo and tools stay where the owner asked.
 
 Supersedes the earlier choice of variant 02's bottom dock for desktop navigation. The classic look is unchanged: all of this is the Lunar look.
+
+### Update (7 Nov 2026, later): the owner kept the bottom dock
+
+After seeing the left rail, the owner confirmed the **bottom dock of design 02** for the pages ("in the case of conflict, tools and other menus should appear on left"). Final rules:
+
+- **Pages:** floating glass dock at the bottom centre on desktop (Lunar look). Hovering an icon pops it up and grows it, its neighbours lean in, and the name unfolds beside it (no tooltip); the active page shows a powder-blue pill with its name. Test Centre uses a clipboard icon, not a gear.
+- **The dock steps aside** while scrolling down, while typing in a field, and on the full-screen Mentor chat.
+- **Bars that live at the bottom of a page** (Test Centre "Start test", profile save bar, results banner, look trial chip) carry the `lunar-lift` class and sit above the dock.
+- **Menus that would collide with the dock** (the tools and legal section menu) move to a **rail on the left** that unfolds its names on hover.
+- **Header:** the logo, wordmark and PRO or PLUS badge in one frosted capsule (no tile behind the mark); the tools group as one pill on the right.
+- **Phone:** unchanged, the floating bottom pill.

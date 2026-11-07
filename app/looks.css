@@ -230,14 +230,14 @@ html.dark[data-look="lunar"] body {
 }
 [data-look="lunar"][data-look="lunar"] .card-pastel:hover { box-shadow: var(--shadow-float) !important; transform: translateY(-2px); }
 /* nav, popovers, the hero band: real glass */
-[data-look="lunar"][data-look="lunar"] :is(.topbar-island, .main-dock, .nav-cluster, .popover-surface) {
+[data-look="lunar"][data-look="lunar"] :is(.topbar-island, .main-dock, .nav-cluster) {
   background: rgba(255, 255, 255, .66) !important;
   -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4);
   border: 1px solid var(--border) !important;
   box-shadow: var(--shadow-soft) !important;
   border-radius: 9999px;
 }
-:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) :is(.topbar-island, .main-dock, .nav-cluster, .popover-surface) { background: rgba(24, 27, 48, .7) !important; }
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) :is(.topbar-island, .main-dock, .nav-cluster) { background: rgba(24, 27, 48, .7) !important; }
 [data-look="lunar"] .popover-surface { border-radius: 24px; }
 [data-look="lunar"] .topbar-island [aria-current="page"] .nav-active-pill, [data-look="lunar"] .nav-active-pill { background: #8db9f0 !important; }
 [data-look="lunar"] .topbar-island [aria-current="page"] { color: #1a1c29 !important; }
@@ -257,45 +257,8 @@ html.dark[data-look="lunar"] body {
 [data-look="lunar"] :is(h1, h2) { font-weight: 300; letter-spacing: -.02em; }
 [data-look="lunar"] .eyebrow { text-transform: uppercase; letter-spacing: .2em; font-size: 10px; font-weight: 700; color: var(--text-muted); }
 @media (prefers-reduced-transparency: reduce) {
-  [data-look="lunar"][data-look="lunar"] :is(.topbar-island, .main-dock, .nav-cluster, .popover-surface) { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface-elevated) !important; }
+  [data-look="lunar"][data-look="lunar"] :is(.topbar-island, .main-dock, .nav-cluster) { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface-elevated) !important; }
 }
-
-/* ===== Lunar: navigation (slim left rail on desktop, floating pill on phone) =====
-   Decision (7 Nov 2026): the bottom of the desktop screen is left free for page actions; pages live in a left rail. */
-.lunar-dock { display: none; }
-[data-look="lunar"] .bottom-pill ul { max-width: none; }
-@media (min-width: 1024px) {
-  /* top bar keeps only the logo (left) and the tools group (right): no bar, no page links */
-  [data-look="lunar"] .topbar-nav { display: none !important; }
-  [data-look="lunar"][data-look="lunar"] .topbar-island { background: transparent !important; border: 0 !important; box-shadow: none !important; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0; }
-  [data-look="lunar"] .tools-cluster {
-    border-radius: 9999px; background: rgba(255, 255, 255, .66); border: 1px solid var(--border);
-    -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); box-shadow: var(--shadow-soft);
-  }
-  [data-look="lunar"] .lunar-dock {
-    display: block; position: fixed; z-index: 35; left: 16px; top: calc(72px + (100dvh - 72px) / 2); transform: translateY(-50%);
-    padding: 10px 8px; border-radius: 32px; background: rgba(255, 255, 255, .66); border: 1px solid var(--border);
-    -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); box-shadow: var(--shadow-soft);
-  }
-  [data-look="lunar"] #app-scroll { padding-left: 96px; }
-  /* tools and legal section dock: top of the page on desktop (was bottom centre), so nothing collides with page actions */
-  [data-look="lunar"] .subnav-host { bottom: auto !important; top: 72px; transform: none !important; opacity: 1 !important; left: 96px; }
-  [data-look="lunar"] #app-scroll:has(.subnav-host) { padding-top: 72px; }
-}
-:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) .lunar-dock { background: rgba(24, 27, 48, .72); }
-:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) .tools-cluster { background: rgba(24, 27, 48, .7); }
-.lunar-dock ul { display: flex; flex-direction: column; gap: 6px; list-style: none; margin: 0; padding: 0; }
-.lunar-dock__item { position: relative; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 9999px; color: var(--text-secondary); transition: color .2s, transform .3s cubic-bezier(.16, 1, .3, 1); }
-.lunar-dock__item:hover, .lunar-dock__item:focus-visible { color: var(--text-primary); transform: scale(1.08); }
-.lunar-dock__item[data-active] { color: #1a1c29; }
-.lunar-dock__indicator { position: absolute; inset: 0; border-radius: 9999px; background: #8db9f0; box-shadow: 0 6px 16px -6px rgba(141, 185, 240, .9); }
-.lunar-dock__icon { position: relative; z-index: 1; }
-.lunar-dock__tip {
-  position: absolute; left: calc(100% + 14px); top: 50%; transform: translate(-6px, -50%); opacity: 0; pointer-events: none; white-space: nowrap;
-  padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; background: #1a1c29; color: #fff;
-  transition: opacity .2s, transform .25s cubic-bezier(.16, 1, .3, 1);
-}
-.lunar-dock__item:hover .lunar-dock__tip, .lunar-dock__item:focus-visible .lunar-dock__tip { opacity: 1; transform: translate(0, -50%); }
 
 /* phone: the bottom bar becomes a floating glass pill */
 @media (max-width: 1023px) {
@@ -314,254 +277,10 @@ html.dark[data-look="lunar"] body {
   [data-look="lunar"] :is(.lunar-dock, nav.bottom-pill) { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface-elevated); }
 }
 
-/* ===== Lunar: remap hard-coded indigo/violet/purple/fuchsia/blue utilities to the palette (no per-file edits) ===== */
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="text-indigo-"],
-  [class*=" text-indigo-"],
-  [class^="text-violet-"],
-  [class*=" text-violet-"],
-  [class^="text-purple-"],
-  [class*=" text-purple-"],
-  [class^="text-fuchsia-"],
-  [class*=" text-fuchsia-"],
-  [class^="text-blue-"],
-  [class*=" text-blue-"]
-) { color: #3a6fb8; }
-:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) [data-look="lunar"][data-look="lunar"] :is(
-  [class^="text-indigo-"],
-  [class*=" text-indigo-"],
-  [class^="text-violet-"],
-  [class*=" text-violet-"],
-  [class^="text-purple-"],
-  [class*=" text-purple-"],
-  [class^="text-fuchsia-"],
-  [class*=" text-fuchsia-"],
-  [class^="text-blue-"],
-  [class*=" text-blue-"],
-  [class*="dark:text-indigo-"],
-  [class*="dark:text-violet-"],
-  [class*="dark:text-purple-"],
-  [class*="dark:text-fuchsia-"],
-  [class*="dark:text-blue-"]
-) { color: #8db9f0; }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="bg-indigo-600"],
-  [class*=" bg-indigo-600"],
-  [class^="bg-indigo-700"],
-  [class*=" bg-indigo-700"],
-  [class^="bg-indigo-800"],
-  [class*=" bg-indigo-800"],
-  [class^="bg-indigo-900"],
-  [class*=" bg-indigo-900"],
-  [class^="bg-indigo-950"],
-  [class*=" bg-indigo-950"],
-  [class^="bg-violet-600"],
-  [class*=" bg-violet-600"],
-  [class^="bg-violet-700"],
-  [class*=" bg-violet-700"],
-  [class^="bg-violet-800"],
-  [class*=" bg-violet-800"],
-  [class^="bg-violet-900"],
-  [class*=" bg-violet-900"],
-  [class^="bg-violet-950"],
-  [class*=" bg-violet-950"],
-  [class^="bg-purple-600"],
-  [class*=" bg-purple-600"],
-  [class^="bg-purple-700"],
-  [class*=" bg-purple-700"],
-  [class^="bg-purple-800"],
-  [class*=" bg-purple-800"],
-  [class^="bg-purple-900"],
-  [class*=" bg-purple-900"],
-  [class^="bg-purple-950"],
-  [class*=" bg-purple-950"],
-  [class^="bg-fuchsia-600"],
-  [class*=" bg-fuchsia-600"],
-  [class^="bg-fuchsia-700"],
-  [class*=" bg-fuchsia-700"],
-  [class^="bg-fuchsia-800"],
-  [class*=" bg-fuchsia-800"],
-  [class^="bg-fuchsia-900"],
-  [class*=" bg-fuchsia-900"],
-  [class^="bg-fuchsia-950"],
-  [class*=" bg-fuchsia-950"],
-  [class^="bg-blue-600"],
-  [class*=" bg-blue-600"],
-  [class^="bg-blue-700"],
-  [class*=" bg-blue-700"],
-  [class^="bg-blue-800"],
-  [class*=" bg-blue-800"],
-  [class^="bg-blue-900"],
-  [class*=" bg-blue-900"],
-  [class^="bg-blue-950"],
-  [class*=" bg-blue-950"]
-) { background-color: #1a1c29; color: #fff; }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="bg-indigo-400"],
-  [class*=" bg-indigo-400"],
-  [class^="bg-indigo-500"],
-  [class*=" bg-indigo-500"],
-  [class^="bg-violet-400"],
-  [class*=" bg-violet-400"],
-  [class^="bg-violet-500"],
-  [class*=" bg-violet-500"],
-  [class^="bg-purple-400"],
-  [class*=" bg-purple-400"],
-  [class^="bg-purple-500"],
-  [class*=" bg-purple-500"],
-  [class^="bg-fuchsia-400"],
-  [class*=" bg-fuchsia-400"],
-  [class^="bg-fuchsia-500"],
-  [class*=" bg-fuchsia-500"],
-  [class^="bg-blue-400"],
-  [class*=" bg-blue-400"],
-  [class^="bg-blue-500"],
-  [class*=" bg-blue-500"]
-) { background-color: #3a6fb8; }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="bg-indigo-50"],
-  [class*=" bg-indigo-50"],
-  [class^="bg-indigo-100"],
-  [class*=" bg-indigo-100"],
-  [class^="bg-indigo-200"],
-  [class*=" bg-indigo-200"],
-  [class^="bg-violet-50"],
-  [class*=" bg-violet-50"],
-  [class^="bg-violet-100"],
-  [class*=" bg-violet-100"],
-  [class^="bg-violet-200"],
-  [class*=" bg-violet-200"],
-  [class^="bg-purple-50"],
-  [class*=" bg-purple-50"],
-  [class^="bg-purple-100"],
-  [class*=" bg-purple-100"],
-  [class^="bg-purple-200"],
-  [class*=" bg-purple-200"],
-  [class^="bg-fuchsia-50"],
-  [class*=" bg-fuchsia-50"],
-  [class^="bg-fuchsia-100"],
-  [class*=" bg-fuchsia-100"],
-  [class^="bg-fuchsia-200"],
-  [class*=" bg-fuchsia-200"],
-  [class^="bg-blue-50"],
-  [class*=" bg-blue-50"],
-  [class^="bg-blue-100"],
-  [class*=" bg-blue-100"],
-  [class^="bg-blue-200"],
-  [class*=" bg-blue-200"]
-) { background-color: rgba(141, 185, 240, .28); }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="border-indigo-"],
-  [class*=" border-indigo-"],
-  [class^="border-violet-"],
-  [class*=" border-violet-"],
-  [class^="border-purple-"],
-  [class*=" border-purple-"],
-  [class^="border-fuchsia-"],
-  [class*=" border-fuchsia-"],
-  [class^="border-blue-"],
-  [class*=" border-blue-"],
-  [class^="ring-indigo-"],
-  [class*=" ring-indigo-"],
-  [class^="ring-violet-"],
-  [class*=" ring-violet-"],
-  [class^="ring-purple-"],
-  [class*=" ring-purple-"],
-  [class^="ring-fuchsia-"],
-  [class*=" ring-fuchsia-"],
-  [class^="ring-blue-"],
-  [class*=" ring-blue-"],
-  [class^="outline-indigo-"],
-  [class*=" outline-indigo-"],
-  [class^="outline-violet-"],
-  [class*=" outline-violet-"],
-  [class^="outline-purple-"],
-  [class*=" outline-purple-"],
-  [class^="outline-fuchsia-"],
-  [class*=" outline-fuchsia-"],
-  [class^="outline-blue-"],
-  [class*=" outline-blue-"]
-) { border-color: rgba(141, 185, 240, .75); --tw-ring-color: rgba(141, 185, 240, .6); outline-color: rgba(141, 185, 240, .75); }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="shadow-indigo-"],
-  [class*=" shadow-indigo-"],
-  [class^="shadow-violet-"],
-  [class*=" shadow-violet-"],
-  [class^="shadow-purple-"],
-  [class*=" shadow-purple-"],
-  [class^="shadow-fuchsia-"],
-  [class*=" shadow-fuchsia-"],
-  [class^="shadow-blue-"],
-  [class*=" shadow-blue-"]
-) { --tw-shadow-color: rgba(141, 185, 240, .45); }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="from-indigo-"],
-  [class*=" from-indigo-"],
-  [class^="from-violet-"],
-  [class*=" from-violet-"],
-  [class^="from-purple-"],
-  [class*=" from-purple-"],
-  [class^="from-fuchsia-"],
-  [class*=" from-fuchsia-"],
-  [class^="from-blue-"],
-  [class*=" from-blue-"]
-) { --tw-gradient-from: #1a1c29; }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="via-indigo-"],
-  [class*=" via-indigo-"],
-  [class^="via-violet-"],
-  [class*=" via-violet-"],
-  [class^="via-purple-"],
-  [class*=" via-purple-"],
-  [class^="via-fuchsia-"],
-  [class*=" via-fuchsia-"],
-  [class^="via-blue-"],
-  [class*=" via-blue-"]
-) { --tw-gradient-via: #28406b; }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class^="to-indigo-"],
-  [class*=" to-indigo-"],
-  [class^="to-violet-"],
-  [class*=" to-violet-"],
-  [class^="to-purple-"],
-  [class*=" to-purple-"],
-  [class^="to-fuchsia-"],
-  [class*=" to-fuchsia-"],
-  [class^="to-blue-"],
-  [class*=" to-blue-"]
-) { --tw-gradient-to: #3a6fb8; }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class*="hover:bg-indigo-"]:hover,
-  [class*="hover:bg-violet-"]:hover,
-  [class*="hover:bg-purple-"]:hover,
-  [class*="hover:bg-fuchsia-"]:hover,
-  [class*="hover:bg-blue-"]:hover
-) { background-color: #2b2e45; }
-[data-look="lunar"][data-look="lunar"] :is(
-  [class*="hover:text-indigo-"]:hover,
-  [class*="hover:text-violet-"]:hover,
-  [class*="hover:text-purple-"]:hover,
-  [class*="hover:text-fuchsia-"]:hover,
-  [class*="hover:text-blue-"]:hover
-) { color: #1a1c29; }
-:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) [data-look="lunar"][data-look="lunar"] :is(
-  [class*="hover:text-indigo-"]:hover,
-  [class*="hover:text-violet-"]:hover,
-  [class*="hover:text-purple-"]:hover,
-  [class*="hover:text-fuchsia-"]:hover,
-  [class*="hover:text-blue-"]:hover
-) { color: #fff; }
-[data-look="lunar"][data-look="lunar"] :is(.grad-brand) { background: #1a1c29 !important; color: #fff !important; }
-:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) [data-look="lunar"][data-look="lunar"] :is(.grad-brand) { background: #8db9f0 !important; color: #1a1c29 !important; }
-
 /* primary buttons are navy (powder in dark) on every section: globals.css sets --btn per section tint */
 [data-look="lunar"][data-look="lunar"] :is(.page-shell[data-section], .card-glass, .card-well, .folder-panel, .card-band, .card-pastel)[data-section], 
 [data-look="lunar"][data-look="lunar"] :is(.page-shell, .card-glass, .card-well, .folder-panel, .card-band, .card-pastel) { --btn: #1a1c29; --btn-fg: #fff; }
 :is(.dark[data-look="lunar"], .dark [data-look="lunar"]) [data-look="lunar"][data-look="lunar"] :is(.page-shell, .card-glass, .card-well, .folder-panel, .card-band, .card-pastel) { --btn: #8db9f0; --btn-fg: #0e1020; }
-/* branch chip and other tinted pills: readable ink on a powder wash */
-[data-look="lunar"] [class*="from-indigo-500/"][class*="to-fuchsia-500/"] { background-image: none; background-color: rgba(141, 185, 240, .32); color: #1a1c29; }
-:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) [data-look="lunar"] [class*="from-indigo-500/"][class*="to-fuchsia-500/"] { color: #eceef8; }
-
 /* ===== Lunar aurora ground: slow drifting light fields and fine grain; transform-only, off for reduced motion and phones ===== */
 html[data-look="lunar"] body::before {
   content: ""; position: fixed; inset: -20%; z-index: -1; pointer-events: none;
@@ -593,3 +312,212 @@ html.dark[data-look="lunar"] body::after { mix-blend-mode: screen; opacity: .05;
 [data-look="lunar"][data-look="lunar"] section[aria-label="Welcome"]::before, [data-look="lunar"][data-look="lunar"] section[aria-label="Welcome"]::after { display: none !important; }
 html[data-look="lunar"] body .ambient-gradient { background: transparent !important; }
 html[data-look="lunar"] body [data-look="lunar"] section[aria-label="Welcome"], html[data-look="lunar"] body section[aria-label="Welcome"].card-pastel { background: transparent !important; box-shadow: none !important; border: 0 !important; }
+
+/* ===== Lunar palette: the app's blue and violet scales become the Lunar blues (opacity, hover and dark variants follow automatically) ===== */
+html[data-look="lunar"] {
+  --spring: cubic-bezier(.34, 1.56, .64, 1); --ease: cubic-bezier(.16, 1, .3, 1);
+  --color-violet-50: #f0f5fd;
+  --color-violet-100: #e3edfb;
+  --color-violet-200: #cddff8;
+  --color-violet-300: #b0cdf4;
+  --color-violet-400: #8db9f0;
+  --color-violet-500: #5f93d8;
+  --color-violet-600: #3a6fb8;
+  --color-violet-700: #2b5590;
+  --color-violet-800: #213f6b;
+  --color-violet-900: #1a2c4c;
+  --color-violet-950: #141c33;
+  --color-indigo-50: #f0f5fd;
+  --color-indigo-100: #e3edfb;
+  --color-indigo-200: #cddff8;
+  --color-indigo-300: #b0cdf4;
+  --color-indigo-400: #8db9f0;
+  --color-indigo-500: #5f93d8;
+  --color-indigo-600: #3a6fb8;
+  --color-indigo-700: #2b5590;
+  --color-indigo-800: #213f6b;
+  --color-indigo-900: #1a2c4c;
+  --color-indigo-950: #141c33;
+  --color-purple-50: #f0f5fd;
+  --color-purple-100: #e3edfb;
+  --color-purple-200: #cddff8;
+  --color-purple-300: #b0cdf4;
+  --color-purple-400: #8db9f0;
+  --color-purple-500: #5f93d8;
+  --color-purple-600: #3a6fb8;
+  --color-purple-700: #2b5590;
+  --color-purple-800: #213f6b;
+  --color-purple-900: #1a2c4c;
+  --color-purple-950: #141c33;
+  --color-fuchsia-50: #f0f5fd;
+  --color-fuchsia-100: #e3edfb;
+  --color-fuchsia-200: #cddff8;
+  --color-fuchsia-300: #b0cdf4;
+  --color-fuchsia-400: #8db9f0;
+  --color-fuchsia-500: #5f93d8;
+  --color-fuchsia-600: #3a6fb8;
+  --color-fuchsia-700: #2b5590;
+  --color-fuchsia-800: #213f6b;
+  --color-fuchsia-900: #1a2c4c;
+  --color-fuchsia-950: #141c33;
+  --color-blue-50: #f0f5fd;
+  --color-blue-100: #e3edfb;
+  --color-blue-200: #cddff8;
+  --color-blue-300: #b0cdf4;
+  --color-blue-400: #8db9f0;
+  --color-blue-500: #5f93d8;
+  --color-blue-600: #3a6fb8;
+  --color-blue-700: #2b5590;
+  --color-blue-800: #213f6b;
+  --color-blue-900: #1a2c4c;
+  --color-blue-950: #141c33;
+}
+
+[data-look="lunar"][data-look="lunar"] :is(.grad-brand) { background: #1a1c29 !important; color: #fff !important; }
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) [data-look="lunar"][data-look="lunar"] :is(.grad-brand) { background: #8db9f0 !important; color: #1a1c29 !important; }
+
+/* ===== Lunar header: logo capsule (left) and tools pill (right), no bar between them =====
+   Research (7 Nov 2026): floating frosted pills are the 2026 header pattern, and wordmarks lead over standalone marks, so the logo, wordmark and
+   PRO badge sit in one capsule that mirrors the tools pill on the right; the mark sits on a soft tile; a light sheen crosses it on hover. */
+[data-look="lunar"][data-look="lunar"] .topbar-island { background: transparent !important; border: 0 !important; box-shadow: none !important; -webkit-backdrop-filter: none; backdrop-filter: none; border-radius: 0; }
+[data-look="lunar"] .tools-cluster { border-radius: 9999px; background: rgba(255, 255, 255, .66); border: 1px solid var(--border); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); box-shadow: var(--shadow-soft); }
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) .tools-cluster { background: rgba(24, 27, 48, .7); }
+[data-look="lunar"] .brand-chip {
+  position: relative; overflow: hidden; gap: 10px; padding: 6px 18px 6px 14px; border-radius: 9999px; background: rgba(255, 255, 255, .66); border: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); box-shadow: var(--shadow-soft); transition: transform .5s var(--spring), box-shadow .3s;
+}
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) .brand-chip { background: rgba(24, 27, 48, .7); }
+[data-look="lunar"] .brand-chip .logo-mark { display: grid; place-items: center; width: 40px; height: 40px; background: none; box-shadow: none; border-radius: 0; }
+[data-look="lunar"] .brand-chip .logo-halo, [data-look="lunar"] .brand-chip .logo-ripple { display: none; }
+[data-look="lunar"] .brand-chip::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .75) 50%, transparent 65%); transform: translateX(-130%); }
+[data-look="lunar"] .brand-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-float); }
+[data-look="lunar"] .brand-chip:hover::after { transform: translateX(130%); transition: transform .9s var(--ease); }
+@media (max-width: 639px) { [data-look="lunar"] .brand-chip { padding: 4px 8px; gap: 0; } [data-look="lunar"] .brand-chip .logo-mark { width: 36px; height: 36px; } }
+
+/* ===== Lunar navigation: bottom dock on desktop (design 02), floating pill on phone =====
+   The dock steps aside for things that live at the bottom; menus that would collide with it (tools, legal) move to a left rail. */
+.lunar-dock { display: none; }
+[data-look="lunar"] .bottom-pill ul { max-width: none; }
+@media (min-width: 1024px) {
+  [data-look="lunar"] .topbar-nav { display: none !important; }
+  [data-look="lunar"] .lunar-dock {
+    display: block; position: fixed; z-index: 35; left: 50%; bottom: 20px; transform: translate(-50%, 0); padding: 8px; border-radius: 9999px;
+    background: rgba(255, 255, 255, .66); border: 1px solid var(--border); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4);
+    box-shadow: var(--shadow-float); transition: transform .55s var(--spring), opacity .3s;
+  }
+  [data-look="lunar"] .lunar-dock[data-hidden] { transform: translate(-50%, 170%); opacity: 0; pointer-events: none; }
+  [data-look="lunar"] #app-scroll { padding-bottom: 116px; }
+  [data-look="lunar"] .lunar-lift { bottom: 104px !important; }
+  /* tools and legal section menu: a rail on the left that unfolds its names on hover (it used to sit at the bottom centre) */
+  [data-look="lunar"] .subnav-host { inset: auto !important; left: 16px; top: calc(72px + (100dvh - 72px) / 2); transform: translateY(-50%) !important; opacity: 1 !important; display: block; padding: 0; }
+  [data-look="lunar"] .subnav-host nav.sub-dock { overflow: visible !important; width: max-content; max-width: none; padding: 10px 8px; border-radius: 32px; background: rgba(255, 255, 255, .66) !important; border: 1px solid var(--border); -webkit-backdrop-filter: blur(22px) saturate(1.4); backdrop-filter: blur(22px) saturate(1.4); box-shadow: var(--shadow-soft) !important; }
+  :is(.dark[data-look="lunar"], .dark [data-look="lunar"]) .subnav-host nav.sub-dock { background: rgba(24, 27, 48, .72) !important; }
+  [data-look="lunar"] .subnav-host ul { flex-direction: column !important; align-items: stretch; gap: 6px; width: auto !important; }
+  [data-look="lunar"] .subnav-host ul > li:first-child { display: none !important; }
+  [data-look="lunar"] .subnav-host a { height: 46px; padding: 0 13px !important; border-radius: 9999px; overflow: hidden; }
+  [data-look="lunar"] .subnav-host a > span > span { display: inline-block; max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; transition: max-width .5s var(--spring), opacity .25s, margin .4s var(--spring); }
+  [data-look="lunar"] .subnav-host nav.sub-dock:hover a > span > span, [data-look="lunar"] .subnav-host a:focus-visible > span > span { max-width: 150px; opacity: 1; margin-left: 4px; }
+  [data-look="lunar"] #app-scroll:has(.subnav-host) { padding-left: 104px; }
+}
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) .lunar-dock { background: rgba(24, 27, 48, .72); }
+.lunar-dock ul { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
+.lunar-dock li { display: flex; }
+.lunar-dock__item { position: relative; display: flex; align-items: center; height: 48px; padding: 0 15px; border-radius: 9999px; color: var(--text-secondary); font-size: 14px; font-weight: 600; white-space: nowrap; transform-origin: 50% 100%; transition: transform .5s var(--spring), color .2s; }
+.lunar-dock__item[data-active] { color: #1a1c29; }
+.lunar-dock__indicator { position: absolute; inset: 0; border-radius: 9999px; background: #8db9f0; box-shadow: 0 8px 18px -8px rgba(141, 185, 240, .95); }
+.lunar-dock__icon, .lunar-dock__label { position: relative; z-index: 1; }
+.lunar-dock__label { max-width: 0; opacity: 0; overflow: hidden; margin-left: 0; transition: max-width .5s var(--spring), opacity .25s, margin-left .4s var(--spring); }
+/* bumpy: the hovered icon pops up and grows, its neighbours lean in */
+.lunar-dock__item:hover, .lunar-dock__item:focus-visible { color: var(--text-primary); transform: translateY(-9px) scale(1.2); }
+.lunar-dock__item[data-active]:hover { color: #1a1c29; }
+.lunar-dock li:has(+ li:hover) .lunar-dock__item, .lunar-dock li:hover + li .lunar-dock__item { transform: translateY(-4px) scale(1.08); }
+.lunar-dock li:has(+ li + li:hover) .lunar-dock__item, .lunar-dock li:hover + li + li .lunar-dock__item { transform: translateY(-1px) scale(1.025); }
+/* flowy: the name unfolds beside the icon on hover and stays open for the active page */
+.lunar-dock__item:hover .lunar-dock__label, .lunar-dock__item:focus-visible .lunar-dock__label, .lunar-dock__item[data-active] .lunar-dock__label { max-width: 112px; opacity: 1; margin-left: 9px; }
+@media (prefers-reduced-motion: reduce) { .lunar-dock, .lunar-dock__item, .lunar-dock__label, .brand-chip { transition: none !important; } .lunar-dock__item:hover { transform: none; } }
+
+/* ===== Lunar interaction layer: springy buttons, lifting cards, a rising page entrance ===== */
+[data-look="lunar"][data-look="lunar"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft) { transition: transform .4s var(--spring), box-shadow .3s, background .2s; }
+[data-look="lunar"][data-look="lunar"] :is(.btn-main, .pill-ink):hover { transform: translateY(-3px) scale(1.035) !important; }
+[data-look="lunar"][data-look="lunar"] :is(.btn-soft, .pill-soft):hover { transform: translateY(-2px) scale(1.03); }
+[data-look="lunar"][data-look="lunar"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft):active { transform: translateY(0) scale(.94) !important; transition-duration: .12s; }
+[data-look="lunar"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft) svg:last-child:not(:first-child) { transition: transform .35s var(--spring); }
+[data-look="lunar"] :is(.btn-main, .pill-ink, .btn-soft, .pill-soft):hover svg:last-child:not(:first-child) { transform: translateX(3px); }
+[data-look="lunar"] main :is(a, button)[data-tint]:not([role="tab"]), [data-look="lunar"] main a.tile { transition: transform .5s var(--spring), box-shadow .35s; }
+[data-look="lunar"] main :is(a, button)[data-tint]:not([role="tab"]):hover, [data-look="lunar"] main a.tile:hover { transform: translateY(-5px); box-shadow: var(--shadow-float); }
+[data-look="lunar"] main :is(a, button)[data-tint]:not([role="tab"]):active, [data-look="lunar"] main a.tile:active { transform: translateY(-1px) scale(.985); transition-duration: .12s; }
+[data-look="lunar"] :is(input, textarea, select):focus-visible { outline: 0; box-shadow: 0 0 0 3px rgba(141, 185, 240, .55); }
+@keyframes lunar-rise { from { opacity: 0; transform: translateY(16px); filter: blur(5px); } to { opacity: 1; transform: none; filter: none; } }
+html[data-look="lunar"] .page-shell > * { animation: lunar-rise .6s var(--ease) both; }
+html[data-look="lunar"] .page-shell > *:nth-child(2) { animation-delay: .05s; } html[data-look="lunar"] .page-shell > *:nth-child(3) { animation-delay: .1s; }
+html[data-look="lunar"] .page-shell > *:nth-child(4) { animation-delay: .15s; } html[data-look="lunar"] .page-shell > *:nth-child(5) { animation-delay: .2s; }
+html[data-look="lunar"] .page-shell > *:nth-child(n+6) { animation-delay: .25s; }
+@media (prefers-reduced-motion: reduce) { html[data-look="lunar"] .page-shell > * { animation: none; } }
+html[data-in-exam][data-look="lunar"] .page-shell > * { animation: none; }
+/* the spotlight on plan cards is a Lunar effect */
+[data-look="lunar"] .spot-host:hover .spot-layer { opacity: 1; }
+
+/* ===== Lunar scrollbar: thin, flat, one colour (no gradient) ===== */
+html[data-look="lunar"] { scrollbar-color: rgba(26, 28, 41, .28) transparent; }
+html.dark[data-look="lunar"] { scrollbar-color: rgba(255, 255, 255, .3) transparent; }
+html[data-look="lunar"] :is(#app-scroll, .custom-scrollbar, .overflow-y-auto, .overflow-auto, .overflow-x-auto) { scrollbar-width: thin; }
+
+/* ===== Lunar cards: watermark shapes fit inside the card (they used to be cropped by small cards) ===== */
+[data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well)[data-tint]:not(:has(.tile-mark))::after {
+  width: auto; height: clamp(26px, 58%, 76px); aspect-ratio: 1; right: 16px; bottom: 50%; transform: translateY(50%); opacity: .08;
+}
+[data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well)[data-tint="peach"]:not(:has(.tile-mark))::after { transform: translateY(50%) rotate(14deg) scale(.82); }
+[data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well)[data-tint="lilac"]:not(:has(.tile-mark))::after { transform: translateY(50%) rotate(45deg) scale(.68); }
+[data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well)[data-tint="peri"]:not(:has(.tile-mark))::after { height: clamp(18px, 29%, 38px); aspect-ratio: 2 / 1; bottom: 14px; transform: none; }
+[data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well)[data-tint]:not(:has(.tile-mark)):hover::after { transform: translateY(50%) rotate(-8deg) scale(1.08); }
+[data-look="lunar"][data-look="lunar"] :is(.card-pastel, .card-well)[data-tint="peri"]:not(:has(.tile-mark)):hover::after { transform: scale(1.08); }
+
+/* ===== Lunar toolkit deck: no tinted frame, the cards sit on the ground ===== */
+html[data-look="lunar"] .deck-frame { background: none !important; padding: 0 !important; border-radius: 0; overflow: visible !important; box-shadow: none; }
+
+/* ===== Lunar pop-ups: big panels (Focus Target, dialogs) get a normal radius, not the pill radius ===== */
+[data-look="lunar"][data-look="lunar"] .popover-surface { border-radius: 28px !important; }
+
+/* ===== Lunar: card watermarks off on dense dashboard cards; the toolkit deck's previews use the Lunar palette ===== */
+[data-look="lunar"] [data-nowm]::after { display: none !important; }
+[data-look="lunar"] .deck-frame .bg-emerald-500 { background-color: #5f93d8; }
+[data-look="lunar"] .deck-frame .bg-emerald-400 { background-color: #8db9f0; }
+[data-look="lunar"] .deck-frame :is(.text-rose-600, .text-rose-500) { color: #9a4527; }
+[data-look="lunar"] .deck-frame :is(.bg-rose-500, .bg-rose-600) { background-color: #f0906f; }
+:is(.dark[data-look="lunar"], .dark [data-look="lunar"]) .deck-frame :is(.text-rose-600, .text-rose-500) { color: #f5b69e; }
+
+[data-look="lunar"] .brand-chip .pro-badge { margin-left: 2px; }
+
+/* ===== Lunar: room around content. Dense cards, stat tiles and step chips had text sitting on their outlines. ===== */
+[data-look="lunar"][data-look="lunar"] .card-pastel.p-4, [data-look="lunar"][data-look="lunar"] .card-well.p-4 { padding: 22px 24px; }
+[data-look="lunar"][data-look="lunar"] .card-pastel.p-5, [data-look="lunar"][data-look="lunar"] .card-well.p-5 { padding: 24px 26px; }
+[data-look="lunar"][data-look="lunar"] .card-pastel.px-3.py-2 { padding: 14px 18px; }
+[data-look="lunar"][data-look="lunar"] .card-pastel.px-4.py-3 { padding: 16px 20px; }
+[data-look="lunar"] ol[aria-label="Mission steps"] a { border-width: 1px; padding: 7px 18px 7px 7px; gap: 10px; }
+[data-look="lunar"] [aria-label="Your numbers"] { gap: 12px; margin-top: 20px; }
+[data-look="lunar"] .section-label, [data-look="lunar"] .tag-sticker { padding-inline: 12px; }
+/* hub: the mock card fills its column, with the action sitting at the bottom */
+[data-look="lunar"] .hub-mock-col > .mock-card { flex: 1; display: flex; }
+[data-look="lunar"] .mock-card > .relative { flex: 1; display: flex; flex-direction: column; }
+[data-look="lunar"] .mock-card [data-mock-body], [data-look="lunar"] .mock-card [data-mock-body] > div { flex: 1; display: flex; flex-direction: column; }
+[data-look="lunar"] .mock-card [data-mock-body] > div > a:last-child { margin-top: auto; }
+
+/* ===== Lunar Test Centre hub: more room for the top cards, slightly shorter door tiles ===== */
+@media (min-width: 1024px) {
+  [data-look="lunar"] .hub-top { flex: 1; gap: 20px; }
+  [data-look="lunar"][data-look="lunar"] .hub-top > section.card-well, [data-look="lunar"][data-look="lunar"] .hub-top .hub-mock-col > .mock-card { padding: 30px 34px; }
+  [data-look="lunar"] .hub-top ol[aria-label="Mission steps"] { margin-top: 22px; }
+  [data-look="lunar"] .hub-top [aria-label="Your numbers"] { margin-top: 28px; gap: 14px; }
+  [data-look="lunar"] .hub-doors { flex: none !important; min-height: 0 !important; height: clamp(300px, 39vh, 400px); gap: 14px; }
+  [data-look="lunar"] .hub-top > section.card-well { justify-content: center; }
+}
+
+/* Folder sheet keeps its original look under Lunar (the card rule above had added a border, a flat background and a rounded top-left corner, which broke the seam
+   under the first tab). With the first tab active the corner is square so the tab, the sheet and the stitch meet. */
+html[data-look="lunar"] .folder-wrap .folder-panel { background: var(--sheet) !important; border: 0 !important; box-shadow: 0 18px 40px -30px rgba(12, 34, 75, .35) !important; }
+html[data-look="lunar"] .folder-wrap[data-first="true"] .folder-panel { border-top-left-radius: 0 !important; }
+
+/* Root cause of the line showing under the tab: Lunar's surface colour is see-through, so the folder sheet (and the tab's cover-up of the seam) were see-through too.
+   The sheet colour is opaque here, as it is in Classic. */
+html[data-look="lunar"] .folder-wrap { --sheet: color-mix(in srgb, #ffffff 62%, var(--tab-tint)); }
+html.dark[data-look="lunar"] .folder-wrap { --sheet: color-mix(in srgb, #1c2040 70%, var(--tab-tint)); }

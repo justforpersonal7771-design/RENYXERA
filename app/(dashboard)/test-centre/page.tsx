@@ -8,12 +8,13 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CountUp } from "@/components/ui/count-up";
-import { ArrowRight, BarChart3, Check, Layers, Play, RotateCcw, Settings, Swords, Timer, Trophy } from "lucide-react";
+import { ArrowRight, BarChart3, Check, ClipboardCheck, Layers, Play, RotateCcw, Settings, Swords, Timer, Trophy } from "lucide-react";
 import { useStudyStore } from "@/store/use-study-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { summarizeSession, type Attempt } from "@/features/test-centre/model";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 import { UpcomingMocks } from "@/components/test-centre/upcoming-mocks";
+import { useIsLunar } from "@/lib/looks/use-lunar";
 import { TEST_CENTRE } from "@/lib/test-centre/brand";
 
 const tile = "card-pastel group relative flex min-w-0 flex-col justify-between overflow-hidden p-5";
@@ -23,6 +24,7 @@ const Mark = ({ I, size = "h-24 w-24" }: { I: typeof Timer; size?: string }) => 
 const Sticker = ({ children, tilt = "-rotate-2" }: { children: React.ReactNode; tilt?: string }) => <span className={`inline-block self-start ${tilt} rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold ${ink}`}>{children}</span>;
 
 export default function TestCentrePage() {
+  const lunar = useIsLunar();
   const { mistakes, loadStudyData } = useStudyStore();
   const [attempts, setAttempts] = useState<Attempt[] | null>(null);
   useEffect(() => { void loadStudyData(); }, [loadStudyData]);
@@ -52,7 +54,7 @@ export default function TestCentrePage() {
   return (
     <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-12rem)]">
       {/* Phone order: mission, then the doors (the actions), then mock info. From lg the two blocks sit side by side again. */}
-      <div className="contents lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:gap-4">
+      <div className="hub-top contents lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:gap-4">
         <section className="card-well relative order-1 flex flex-col overflow-hidden p-4 sm:p-5 lg:order-none" data-tint="mint" aria-label="Today's mission">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[var(--tint-mint-ink)] opacity-10" />
           <Sticker>{TEST_CENTRE} · today&apos;s mission</Sticker>
@@ -82,16 +84,16 @@ export default function TestCentrePage() {
             ))}
           </div>
         </section>
-        <div className="order-3 flex min-w-0 flex-col gap-3 lg:order-none">
-          <MockStatusCard />
-          <UpcomingMocks />
+        <div className="hub-mock-col order-3 flex min-w-0 flex-col gap-3 lg:order-none">
+          <MockStatusCard withUpcoming={lunar} />
+          {!lunar && <UpcomingMocks />}
         </div>
       </div>
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
-      <div className="order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
+      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
-          <Mark I={Settings} size="h-28 w-28" />
+          <Mark I={lunar ? ClipboardCheck : Settings} size="h-28 w-28" />
           <div>
             <Sticker tilt="rotate-2">Most used</Sticker>
             <h2 className={`mt-3 font-display text-3xl font-extrabold ${ink}`}>Build a test</h2>
