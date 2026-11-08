@@ -8,6 +8,11 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ---
 
+## 0-newest. 8 Nov 2026: Interview cards
+
+- [x] (me) New page `/interview-cards`: interview flashcards, same screen design and controls as the GATE flashcards, separate deck, own progress key (`renyxera_interview_sr`), own filters (book dropdown, kind, star path, size, which cards). Menu door "Interview cards" added under Test Centre. Data: `public/interview-cards.json` (4,595 cards from 27 books, generated from the interview library by `tools/export_cards_json.py` in the library folder). Type-check and lint clean; **not yet checked visually at 1440 and 390 in light and dark, and not committed.**
+- [ ] **(you)** Review `/interview-cards` on desktop and phone, light and dark, then commit and push (push = deploy). Decide whether it should be Plus/Pro only (it is open to every signed-in user now).
+
 ## 0-new. 31 Oct 2026 turn
 
 - [x] Migration 0044 applied by owner; `check:rpc` + `check:rls` clean; Performance Advisor clean. Security Advisor leftovers are accepted by design (6 public leaderboard functions; signed-in own-data functions). Leaked-password protection needs Supabase Pro (paid) → **accepted/skipped**, sign-in has no passwords.
@@ -542,3 +547,8 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [ ] Next: Analytics screen (variant 04), swipe cards, Dynamic Island timer, expandable cards, success orbs.
 - [x] 8 Nov: Analytics Readiness Orbit header; page menu in the top bar on every screen; gauge shows current vs goal clearly; Lunar scrollbar reverted to default.
 - [ ] Next: rest of Analytics layout, Mentor conversation view, Test Centre/Study/Review/Battles/Profile/Setup rebuilds, swipe cards, Dynamic Island timer, expandable cards, success orbs.
+
+## 0-newest. 9 Nov 2026: Interview section (private)
+- [x] (me) New section /interview, visible only to emails in the interview_access table (checked on the server; others get a 404 and no menu item). Pages: hub, Books reader with done-marking, Flashcards (moved behind the same check; public/interview-cards.json removed), Code lab (C++, C#, Python, JS, TS on the free wandbox.org runner; book labs are checked against the book's own output), SQL practice (10 exercises, SQLite with a small T-SQL translator, check against a reference answer), Progress and mistakes (reading per book, pass rate per kind, failing items with Retry). Migration 0056, scripts/seed-interview.mjs, supabase/scripts/interview_grant.sql.
+- [ ] **(you)** 1) Run supabase/migrations/0056_interview.sql in the Supabase SQL editor. 2) Run supabase/scripts/interview_grant.sql (adds your two emails). 3) From the repo: node --env-file=.env.local scripts/seed-interview.mjs "D:/Projects/interview-books" (loads books, labs, 4,595 cards). 4) Sign in with an allowed email and open /interview.
+- [ ] Not done yet: English, system design, AI and Azure have reading and flashcards only (no runnable practice, no quizzes); SQL Server itself cannot run on a free host, so SQL practice uses SQLite; flashcard results are not yet in the mistakes list; phone has no Interview button (use /interview); not checked in a browser.

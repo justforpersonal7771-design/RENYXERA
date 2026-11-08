@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LayoutGroup, motion } from "motion/react";
-import { BookOpenText, BrainCircuit, ClipboardCheck, LayoutDashboard, Library, PieChart, Swords } from "lucide-react";
+import { BookOpenText, Briefcase, BrainCircuit, ClipboardCheck, LayoutDashboard, Library, PieChart, Swords } from "lucide-react";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-centre/brand";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { SPRING } from "@/lib/motion/tokens";
+import { useInterviewAccess } from "@/components/interview/interview-gate";
 
 /**
  * Lunar Glass desktop navigation: a floating glass dock at the bottom centre holding the app's pages (the design the owner chose, variant 02).
@@ -20,6 +21,7 @@ import { SPRING } from "@/lib/motion/tokens";
 export function LunarDock() {
   const pathname = usePathname() ?? "";
   const [reviewHref, setReviewHref] = useState("/mistakes");
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage after mount
   useEffect(() => { setReviewHref(lastReviewHref()); }, [pathname]);
 
   const [away, setAway] = useState(false);     // scrolling down
@@ -37,6 +39,7 @@ export function LunarDock() {
     document.addEventListener("scroll", onScroll, { capture: true, passive: true });
     return () => document.removeEventListener("scroll", onScroll, { capture: true } as AddEventListenerOptions);
   }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- reset on navigation
   useEffect(() => { last.current = 0; setAway(false); }, [pathname]);
   useEffect(() => {
     const field = (t: EventTarget | null) => t instanceof HTMLElement && t.matches('textarea, select, [contenteditable="true"], input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"])');
@@ -46,6 +49,7 @@ export function LunarDock() {
     return () => { document.removeEventListener("focusin", on); document.removeEventListener("focusout", off); };
   }, []);
 
+  const iv = useInterviewAccess();
   const items = [
     { label: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
     { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: ClipboardCheck, active: isTestCentrePath(pathname) },
@@ -54,6 +58,7 @@ export function LunarDock() {
     { label: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
     { label: "Analytics", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },
     { label: "Battles", href: "/battles", icon: Swords, active: pathname.startsWith("/battles") },
+    ...(iv ? [{ label: "Interview", href: "/interview", icon: Briefcase, active: pathname.startsWith("/interview") }] : []),
   ];
   // Owner decision (7 Nov): the page menu lives in the top bar on every screen, so it never collides with bottom bars or the Mentor message box.
   const top = true;
