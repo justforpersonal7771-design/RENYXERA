@@ -14,6 +14,9 @@ export default defineConfig([{ ignores: ["video/**"] }, {
         "no-restricted-syntax": ["error", {
             selector: "JSXAttribute[name.name='type'][value.value=/^(date|time|datetime-local|month|week)$/]",
             message: "Native date/time inputs show the browser's default picker. Use DatePicker / TimePicker from components/ui.",
+        }, {
+            selector: "JSXOpeningElement[name.name='select']",
+            message: "Native <select> shows the browser's plain list. Use CustomDropdown from components/ui/custom-dropdown.",
         }],
     },
 }]);

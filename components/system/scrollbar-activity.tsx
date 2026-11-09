@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 const REVEAL_ATTR = "data-scrollbar-reveal";
 const HIDE_DELAY_MS = 900;
+/** Every kind of scroll area that wears the app scrollbar (see app/globals.css). */
+const SCROLLERS = '.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea';
 
 /**
  * Drives the app's hide-until-active scrollbars (app/globals.css) entirely from JS,
@@ -49,7 +51,7 @@ export function ScrollbarActivity() {
     const handleMouseMove = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
-      const scrollable = target.closest(".custom-scrollbar");
+      const scrollable = target.closest(SCROLLERS);
       if (scrollable) reveal(scrollable);
     };
 

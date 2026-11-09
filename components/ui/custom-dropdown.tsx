@@ -19,9 +19,11 @@ interface CustomDropdownProps {
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
+  /** Minimum width (px) of the open list, for options longer than the button is wide. It never runs off the screen. */
+  listWidth?: number;
 }
 
-export function CustomDropdown({ options, value, onChange, placeholder = "Select...", className = "" }: CustomDropdownProps) {
+export function CustomDropdown({ options, value, onChange, placeholder = "Select...", className = "", listWidth }: CustomDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [rect, setRect] = useState<{ top: number; left: number; width: number; openUp: boolean } | null>(null);
@@ -118,8 +120,8 @@ export function CustomDropdown({ options, value, onChange, placeholder = "Select
                 position: "fixed",
                 top: rect.openUp ? undefined : rect.top + 8,
                 bottom: rect.openUp ? window.innerHeight - rect.top + 8 : undefined,
-                left: rect.left,
-                width: rect.width,
+                left: Math.max(8, Math.min(rect.left, window.innerWidth - Math.max(rect.width, Math.min(listWidth ?? 0, window.innerWidth - 16)) - 8)),
+                width: Math.max(rect.width, Math.min(listWidth ?? 0, window.innerWidth - 16)),
               }}
               className="z-[400] bg-[var(--surface)] border border-[var(--border-subtle)] rounded-xl popover-surface max-h-60 overflow-auto custom-scrollbar focus:outline-none"
               role="listbox"

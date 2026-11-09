@@ -904,22 +904,24 @@
      transition: filter 0.3s ease;
   }
 
-  .custom-scrollbar {
+  /* One scrollbar for the whole app: the thin, hide-until-active one. It applies to the .custom-scrollbar class AND to any element made scrollable
+     with a Tailwind overflow-*-auto/scroll class, so no screen can end up with the browser's plain bar. */
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea) {
     transition: --sb-alpha 0.3s ease;
   }
 
-  .custom-scrollbar::-webkit-scrollbar {
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar {
     width: 10px;
     height: 10px;
     background: transparent;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-track,
-  .custom-scrollbar::-webkit-scrollbar-corner {
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar-track,
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar-corner {
     background: transparent;
   }
 
-  .custom-scrollbar::-webkit-scrollbar-thumb {
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar-thumb {
     border-radius: 9999px;
     border: 3px solid transparent;
     background-clip: padding-box;
@@ -932,14 +934,14 @@
     );
   }
 
-  .custom-scrollbar[data-scrollbar-reveal="true"] {
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"] {
     --sb-alpha: 0.8;
   }
 
   /* The "bump": the thumb thickens from 4px to 8px (thinner transparent
      border) and glows while the pointer is on it or it's being dragged. */
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover,
-  .custom-scrollbar::-webkit-scrollbar-thumb:active {
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar-thumb:hover,
+  :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar-thumb:active {
     --sb-alpha: 1;
     border-width: 1px;
     box-shadow: 0 0 8px 1px var(--scrollbar-thumb-glow);
@@ -947,11 +949,11 @@
 
   /* Firefox has no scrollbar pseudo-elements; fade the standard colours. */
   @supports not selector(::-webkit-scrollbar) {
-    .custom-scrollbar {
+    :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea) {
       scrollbar-width: thin;
       scrollbar-color: transparent transparent;
     }
-    .custom-scrollbar[data-scrollbar-reveal="true"] {
+    :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"] {
       scrollbar-color: var(--scrollbar-thumb) transparent;
     }
   }

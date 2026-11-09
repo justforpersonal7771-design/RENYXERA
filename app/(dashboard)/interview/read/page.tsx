@@ -9,6 +9,7 @@ import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock, Lightbulb, MessageSquarePlus, NotebookPen, Sparkles, Star, Trash2, X } from "lucide-react";
 import { ivPost, type IvDoc } from "@/components/interview/interview-gate";
 import { useIvLibrary } from "@/components/interview/use-iv-library";
@@ -219,13 +220,11 @@ function Lesson({ id }: { id: string }) {
   if (!doc) return <div className="skeleton-shimmer h-96 rounded-3xl" aria-hidden />;
   const prev = siblings[idx - 1], next = siblings[idx + 1];
   return (
-    <div className="grid gap-6 lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[230px_minmax(0,1fr)_320px]">
+    <div className="grid gap-6 lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[230px_minmax(0,1fr)_320px] [&>*]:min-w-0">
       <nav aria-label="In this chapter" className="lg:sticky lg:top-[calc(var(--sticky-top,8px)+64px)] lg:max-h-[calc(100dvh-11.5rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pr-2">
         <Link href={`/interview/read?book=${encodeURIComponent(book)}`} className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><ArrowLeft className="h-4 w-4" /> All chapters</Link>
-        <label className="mb-3 block"><span className="sr-only">Jump to another chapter</span>
-          <select value={id} onChange={(e) => router.push(`/interview/read?doc=${encodeURIComponent(e.target.value)}`)} className="h-10 w-full rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] px-2 text-sm font-semibold">
-            {siblings.map((d) => <option key={d.id} value={d.id}>{done.has(d.id) ? "✓ " : ""}{d.title}</option>)}
-          </select></label>
+        <div className="mb-3 block" aria-label="Jump to another chapter">
+          <CustomDropdown listWidth={440} value={id} onChange={(v) => router.push(`/interview/read?doc=${encodeURIComponent(v)}`)} options={siblings.map((d) => ({ label: `${done.has(d.id) ? "✓ " : ""}${d.title}`, value: d.id }))} /></div>
         {toc.length > 0 && <ol className="hidden space-y-0.5 border-l border-[var(--border)] lg:block">
           {toc.map((h) => <li key={h.id}><a href={`#${h.id}`} onClick={(e) => { e.preventDefault(); const el = document.getElementById(h.id); const top = (el?.getBoundingClientRect().top ?? 0) + (scroller()?.scrollTop ?? 0) - 100; scroller()?.scrollTo({ top, behavior: "smooth" }); }}
             className={`-ml-px block border-l-2 py-1.5 text-sm transition-colors ${h.level === 3 ? "pl-6" : "pl-3"} ${active === h.id ? "border-[var(--ink)] font-semibold text-[var(--text-primary)]" : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{h.text}</a></li>)}

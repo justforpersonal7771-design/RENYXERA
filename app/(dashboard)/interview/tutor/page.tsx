@@ -5,6 +5,7 @@ import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ArrowRight, Loader2, RotateCcw, Sparkles, Target } from "lucide-react";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { IvTutorPanel, type TutorSeed } from "@/components/interview/iv-tutor-panel";
 import { IvMarkdown } from "@/components/interview/iv-markdown";
 import { useIvLibrary } from "@/components/interview/use-iv-library";
@@ -54,7 +55,7 @@ function Mock({ initialTrack }: { initialTrack: string }) {
             <h2 className="mt-3 font-display text-3xl font-extrabold text-[var(--text-primary)]">Answer like it is the real thing.</h2>
             <p className="mt-2 max-w-xl text-[var(--text-secondary)]">You get a real interview question from your books. Type the answer you would say. The tutor scores it from 0 to 10 against the book&apos;s model answer, tells you what you missed, and adds misses to your fix list.</p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
-              <select value={track} onChange={(e) => setTrack(e.target.value)} aria-label="Track" className="h-11 rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-bold"><option value="all">All tracks</option>{TRACKS.map((t) => <option key={t.id} value={t.id}>{t.title}</option>)}</select>
+              <CustomDropdown className="w-72" value={track} onChange={setTrack} options={[{ label: "All tracks", value: "all" }, ...TRACKS.map((t) => ({ label: t.title, value: t.id }))]} />
               <button type="button" onClick={() => void next()} disabled={busy} className="btn-main">{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}Ask me a question</button>
             </div>
             {err && <p className="mt-3 text-sm font-bold text-rose-600">{err}</p>}

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { GATE_2026, paperScore, qualifiedPercent, type CategoryKey } from "@/lib/seo/gate2026";
 
 const CATS: [CategoryKey, string][] = [[0, "General"], [1, "OBC-NCL / EWS"], [2, "SC / ST / PwD"]];
@@ -40,11 +41,9 @@ export function BranchCutoffs() {
 
       <div className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6 grid gap-5 md:grid-cols-2">
         <div className="space-y-4">
-          <label className="block text-sm font-bold text-[var(--text-secondary)]">Paper
-            <select value={code} onChange={(e) => setCode(e.target.value)} className="mt-1 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm">
-              {GATE_2026.map((x) => <option key={x.code} value={x.code}>{x.code} · {x.name}</option>)}
-            </select>
-          </label>
+          <div className="block text-sm font-bold text-[var(--text-secondary)]">Paper
+            <CustomDropdown className="mt-1" value={code} onChange={setCode} options={GATE_2026.map((x) => ({ label: `${x.code} · ${x.name}`, value: x.code }))} />
+          </div>
           <fieldset>
             <legend className="text-sm font-bold text-[var(--text-secondary)]">Category</legend>
             <div className="mt-1 grid grid-cols-3 gap-1 rounded-xl bg-[var(--surface-secondary)] p-1">

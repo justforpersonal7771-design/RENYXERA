@@ -1,8 +1,9 @@
 "use client";
 
 /** Code lab: a plain editor that runs C#, C++, Python, JavaScript and TypeScript on a free hosted compiler. Load a lab from the books and it is checked against the book's own output. */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Loader2, Play } from "lucide-react";
+import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { InterviewGate, ivPost, type IvDoc } from "@/components/interview/interview-gate";
 
 const LANGS = { cpp: "C++17", csharp: "C#", python: "Python", javascript: "JavaScript", typescript: "TypeScript" } as const;
@@ -36,7 +37,6 @@ function Lab() {
   // eslint-disable-next-line react-hooks/set-state-in-effect -- reads the code handed over from a lesson (browser session storage) after mount
   useEffect(() => { try { const s = sessionStorage.getItem("iv_lab_seed"); if (s) { sessionStorage.removeItem("iv_lab_seed"); const d = JSON.parse(s) as { lang: Lang; code: string }; if (d.lang in LANGS) { setLang(d.lang); setCode(d.code); } } } catch { /* ignore */ } }, []);
   useEffect(() => { void fetch("/api/interview/docs", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((d: { docs: IvDoc[] } | null) => { if (d) setLabs(d.docs.filter((x) => x.kind === "lab" && x.meta?.lang && x.meta.lang !== "sql")); }); }, []);
-  const byBook = useMemo(() => { const m = new Map<string, IvDoc[]>(); for (const l of labs) m.set(l.book_title, [...(m.get(l.book_title) ?? []), l]); return [...m.entries()]; }, [labs]);
 
   const pickLang = (l: Lang) => { setLang(l); setLoaded(null); setVerdict(null); setOut(null); setCode(STARTER[l]); };
   const loadLab = async (id: string) => {
@@ -67,10 +67,10 @@ function Lab() {
     <div className="w-full space-y-4">
       <section className="card-well flex flex-wrap items-center gap-3 p-4" data-tint="mint" aria-label="Code lab controls">
         <h1 className="mr-auto font-display text-xl font-extrabold">Code lab</h1>
-        <label className="flex items-center gap-2 text-sm font-bold">Language
-          <select value={lang} onChange={(e) => pickLang(e.target.value as Lang)} className="h-10 rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] px-2">{(Object.keys(LANGS) as Lang[]).map((l) => <option key={l} value={l}>{LANGS[l]}</option>)}</select></label>
-        <label className="flex items-center gap-2 text-sm font-bold">Book lab
-          <select value={loaded?.id ?? ""} onChange={(e) => void loadLab(e.target.value)} className="h-10 max-w-[16rem] rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] px-2"><option value="">Free editor</option>{byBook.map(([b, ls]) => <optgroup key={b} label={b}>{ls.map((l) => <option key={l.id} value={l.id}>{l.title}</option>)}</optgroup>)}</select></label>
+        <div className="flex items-center gap-2 text-sm font-bold">Language
+          <CustomDropdown className="w-44" value={lang} onChange={(v) => pickLang(v as Lang)} options={(Object.keys(LANGS) as Lang[]).map((l) => ({ label: LANGS[l], value: l }))} /></div>
+        <div className="flex items-center gap-2 text-sm font-bold">Book lab
+          <CustomDropdown listWidth={420} className="w-72" value={loaded?.id ?? ""} onChange={(v) => void loadLab(v)} options={[{ label: "Free editor", value: "" }, ...labs.map((l) => ({ label: l.title, value: l.id, subLabel: l.book_title }))]} /></div>
         <button type="button" onClick={() => void run()} disabled={busy || needsLocal(lang, code)} className="btn-main !h-10 text-sm">{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}Run <span className="hidden text-xs opacity-70 sm:inline">Ctrl+Enter</span></button>
       </section>
       <div className="grid gap-4 lg:grid-cols-2">
