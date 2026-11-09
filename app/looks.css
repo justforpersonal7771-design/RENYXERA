@@ -626,10 +626,7 @@ html[data-look="lunar"] .grad-brand.bg-clip-text, html[data-look="lunar"] .bg-cl
 html[data-look="lunar"] div.grad-brand:not(.bg-clip-text) { background: linear-gradient(135deg, #2a3358, #1a1c29) !important; color: #fff !important; }
 html[data-look="lunar"] div.grad-brand:not(.bg-clip-text) :is(h1, h2, h3, p, span, strong) { color: #fff; }
 
-/* 1. Content flows under the translucent header: the scroll area now starts at the very top and is padded down by the header's height,
-   so text slides behind the frosted capsules instead of being cut off by a hard edge. */
-html[data-look="lunar"] #app-scroll { top: 0 !important; padding-top: 84px !important; }
-@media (min-width: 640px) { html[data-look="lunar"] #app-scroll { padding-top: 88px !important; } }
+/* Content stops below the navbar (it does not scroll up behind it). */
 html[data-look="lunar"] .topbar-island > * { -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); }
 
 /* 2. Mentor history panel: a floating white sheet BELOW the header (the logo stays visible), with only a faint scrim, not a grey page. */
@@ -647,10 +644,12 @@ html[data-look="lunar"] .recharts-bar-rectangle:hover path { fill: #3a6fb8 !impo
 html[data-look="lunar"] .recharts-cartesian-grid line { stroke: rgba(26,28,41,.08) !important; }
 html[data-look="lunar"] .recharts-dot { stroke: #3a6fb8 !important; fill: #fff !important; }
 
-/* Frosted band under the top bar: scrolled content goes soft behind the header (also in the gaps between the capsules) instead of showing sharp text. */
-html[data-look="lunar"] body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 39; pointer-events: none; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); background: linear-gradient(to bottom, color-mix(in srgb, var(--background) 72%, transparent), transparent); -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent); mask-image: linear-gradient(to bottom, #000 58%, transparent); }
 
 /* Sticky offsets are measured from inside the scroll area's padding, and Lunar pads the top by the header height (so content can flow under the header).
    --sticky-top is the number to use for "stick just under the header": 76px from the screen top minus that padding. */
-html[data-look="lunar"] #app-scroll { --sticky-top: -8px; }
-@media (min-width: 640px) { html[data-look="lunar"] #app-scroll { --sticky-top: -12px; } }
+html[data-look="lunar"] #app-scroll { --sticky-top: 14px; }
+@media (min-width: 640px) { html[data-look="lunar"] #app-scroll { --sticky-top: 10px; } }
+
+/* Soft top edge: the page content stops below the navbar (it never goes behind it), and instead of a hard cut its top 26px fades out through a blur.
+   A thin frosted strip sits just under the bar, inside the app wrapper (above the content, below the bar). Only on screens that have the scroll area. */
+html[data-look="lunar"] .ambient-gradient:has(#app-scroll)::after { content: ""; position: fixed; top: 72px; left: 0; right: 0; height: 26px; z-index: 30; pointer-events: none; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); -webkit-mask-image: linear-gradient(to bottom, #000 10%, transparent); mask-image: linear-gradient(to bottom, #000 10%, transparent); }

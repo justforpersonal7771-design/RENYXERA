@@ -220,7 +220,7 @@ function Lesson({ id }: { id: string }) {
   const prev = siblings[idx - 1], next = siblings[idx + 1];
   return (
     <div className="grid gap-6 lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[230px_minmax(0,1fr)_320px]">
-      <nav aria-label="In this chapter" className="lg:sticky lg:top-[calc(var(--sticky-top,8px)+64px)] lg:max-h-[calc(100dvh-10rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pr-2">
+      <nav aria-label="In this chapter" className="lg:sticky lg:top-[calc(var(--sticky-top,8px)+64px)] lg:max-h-[calc(100dvh-11.5rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pr-2">
         <Link href={`/interview/read?book=${encodeURIComponent(book)}`} className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><ArrowLeft className="h-4 w-4" /> All chapters</Link>
         <label className="mb-3 block"><span className="sr-only">Jump to another chapter</span>
           <select value={id} onChange={(e) => router.push(`/interview/read?doc=${encodeURIComponent(e.target.value)}`)} className="h-10 w-full rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] px-2 text-sm font-semibold">
@@ -259,7 +259,7 @@ function Lesson({ id }: { id: string }) {
         </div>
       </article>
 
-      <aside className="space-y-4 xl:sticky xl:top-[calc(var(--sticky-top,8px)+64px)] xl:max-h-[calc(100dvh-10rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:pr-1" aria-label="Lesson tools">
+      <aside className="space-y-4 xl:sticky xl:top-[calc(var(--sticky-top,8px)+64px)] xl:max-h-[calc(100dvh-11.5rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:pr-1" aria-label="Lesson tools">
         <div className="card-pastel p-5" data-tint="mint">
           <p className="text-sm font-semibold text-[var(--text-secondary)]">This book</p>
           <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{siblings.filter((d) => done.has(d.id)).length} of {siblings.length} read</p>
