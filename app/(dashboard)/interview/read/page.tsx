@@ -8,6 +8,7 @@
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { createPortal } from "react-dom";
 import { ArrowLeft, ArrowRight, BookOpenText, Check, Clock, Lightbulb, MessageSquarePlus, NotebookPen, Sparkles, Star, Trash2, X } from "lucide-react";
 import { ivPost, type IvDoc } from "@/components/interview/interview-gate";
 import { useIvLibrary } from "@/components/interview/use-iv-library";
@@ -25,20 +26,34 @@ const scroller = () => document.getElementById("app-scroll");
 const SWATCH: Record<HlColor, string> = { yellow: "#facc15", green: "#4ade80", pink: "#f472b6", blue: "#60a5fa" };
 
 /* ---------- 1. library: every track and its books ---------- */
-function Library() {
+function Library({ track }: { track?: string }) {
   const { ready, docs, done } = useIvLibrary();
   const byBook = useMemo(() => { const m = new Map<string, IvDoc[]>(); for (const d of docs) m.set(d.book, [...(m.get(d.book) ?? []), d]); return m; }, [docs]);
   if (!ready) return <div className="skeleton-shimmer h-64 rounded-3xl" aria-hidden />;
   const known = new Set(TRACKS.flatMap((t) => t.books));
   const extra = [...byBook.keys()].filter((b) => !known.has(b));
-  const groups = [...TRACKS, ...(extra.length ? [{ id: "more", title: "More", blurb: "", tint: "sky" as const, books: extra }] : [])];
+  const all0 = [...TRACKS, ...(extra.length ? [{ id: "more", title: "More", blurb: "", tint: "sky" as const, books: extra }] : [])];
+  const groups = track ? all0.filter((g) => g.id === track) : all0;
+  const one = track ? groups[0] : undefined;
+  if (track && !one) return <p className="text-[var(--text-secondary)]">That track does not exist. <Link href="/interview/read" className="font-bold underline">Back to the library</Link></p>;
+  const oneBooks = one ? one.books.filter((b) => byBook.has(b)) : [];
+  const oneDocs = oneBooks.flatMap((b) => byBook.get(b)!);
   return (
     <div className="space-y-8">
+      {one ? (
+        <section className="card-pastel p-6 sm:p-8" data-tint={one.tint} aria-label={one.title}>
+          <Link href="/interview/read" className="section-label"><ArrowLeft className="h-3.5 w-3.5" /> All tracks</Link>
+          <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.1] text-[var(--text-primary)] sm:text-4xl">{one.title}</h1>
+          <p className="mt-2 max-w-2xl text-[var(--text-secondary)]">{one.blurb}</p>
+          <p className="mt-3 text-sm font-bold text-[var(--text-secondary)]">{oneBooks.length} books · {oneDocs.length} lessons · <span className="font-num">{oneDocs.filter((d) => done.has(d.id)).length}</span> read</p>
+        </section>
+      ) : (
       <section className="card-pastel p-6 sm:p-8" data-tint="butter" aria-label="Library">
         <span className="section-label"><BookOpenText className="h-3.5 w-3.5" /> Library</span>
         <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.1] text-[var(--text-primary)] sm:text-4xl">{byBook.size} books, {docs.length} lessons,<br />one path to the interview.</h1>
         <p className="mt-2 max-w-2xl text-[var(--text-secondary)]">Pick a track. Every lesson ends with a check-yourself, and anything you select can be highlighted, noted or sent to the tutor.</p>
       </section>
+      )}
       {groups.map((t) => {
         const books = t.books.filter((b) => byBook.has(b));
         if (!books.length) return null;
@@ -46,7 +61,7 @@ function Library() {
         return (
           <section key={t.id} aria-label={t.title}>
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{t.title}</h2>
+              {one ? <span /> : <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]"><Link href={`/interview/read?track=${t.id}`} className="hover:underline">{t.title}</Link></h2>}
               <p className="text-sm text-[var(--text-muted)]"><span className="font-num font-bold text-[var(--text-secondary)]">{n}</span> of {all.length} read</p>
             </div>
             {t.blurb && <p className="text-sm text-[var(--text-secondary)]">{t.blurb}</p>}
@@ -131,7 +146,7 @@ function Lesson({ id }: { id: string }) {
   const [notes, setNotes] = useState<Note[]>([]);
   const [cards, setCards] = useState<Card[]>([]);
   const [active, setActive] = useState("");
-  const [sel, setSel] = useState<{ x: number; y: number; text: string } | null>(null);
+  const [sel, setSel] = useState<{ x: number; y: number; text: string; touch?: boolean } | null>(null);
   const [draft, setDraft] = useState<{ x: number; y: number; text: string; note: string } | null>(null);
   const [tutor, setTutor] = useState<TutorSeed | null>(null);
   const [drawer, setDrawer] = useState(false);
@@ -165,18 +180,26 @@ function Lesson({ id }: { id: string }) {
   }, [doc]);
   // text selection -> floating toolbar
   useEffect(() => {
-    const up = () => {
+    // Mouse: the toolbar floats above the selection. Touch (long-press, then drag the handles): there is no mouseup, and the phone's own
+    // copy menu sits on the selection, so the toolbar waits until the selection stops changing and docks above the bottom bar instead.
+    const touch = () => window.matchMedia?.("(pointer: coarse)").matches ?? false;
+    const read = () => {
       const s = window.getSelection();
       if (!s || s.isCollapsed || !art.current || !s.anchorNode || !art.current.contains(s.anchorNode)) { setSel(null); return; }
       const text = s.toString().replace(/\s+/g, " ").trim();
       if (text.length < 3) { setSel(null); return; }
       const r = s.getRangeAt(0).getBoundingClientRect();
-      setSel({ x: Math.min(Math.max(r.left + r.width / 2, 150), window.innerWidth - 150), y: Math.max(r.top - 52, 76), text: text.slice(0, 600) });
+      const t = touch();
+      setSel({ x: t ? window.innerWidth / 2 : Math.min(Math.max(r.left + r.width / 2, 150), window.innerWidth - 150), y: t ? Math.max(window.innerHeight - 250, 120) : Math.max(r.top - 52, 76), text: text.slice(0, 600), touch: t });
     };
-    document.addEventListener("mouseup", up); document.addEventListener("keyup", up);
-    const hide = () => { if (window.getSelection()?.isCollapsed) setSel(null); };
-    document.addEventListener("selectionchange", hide);
-    return () => { document.removeEventListener("mouseup", up); document.removeEventListener("keyup", up); document.removeEventListener("selectionchange", hide); };
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const onChange = () => {
+      if (window.getSelection()?.isCollapsed) { clearTimeout(timer); setSel(null); return; }
+      clearTimeout(timer); timer = setTimeout(read, touch() ? 250 : 120);   // wait until the finger or mouse stops moving
+    };
+    document.addEventListener("selectionchange", onChange);
+    document.addEventListener("keyup", read);
+    return () => { clearTimeout(timer); document.removeEventListener("selectionchange", onChange); document.removeEventListener("keyup", read); };
   }, []);
 
   const addNote = useCallback(async (text: string, color: HlColor, note = "") => {
@@ -197,7 +220,7 @@ function Lesson({ id }: { id: string }) {
   const prev = siblings[idx - 1], next = siblings[idx + 1];
   return (
     <div className="grid gap-6 lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[230px_minmax(0,1fr)_320px]">
-      <nav aria-label="In this chapter" className="lg:sticky lg:top-24 lg:self-start">
+      <nav aria-label="In this chapter" className="lg:sticky lg:top-[calc(var(--sticky-top,8px)+64px)] lg:max-h-[calc(100dvh-10rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pr-2">
         <Link href={`/interview/read?book=${encodeURIComponent(book)}`} className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><ArrowLeft className="h-4 w-4" /> All chapters</Link>
         <label className="mb-3 block"><span className="sr-only">Jump to another chapter</span>
           <select value={id} onChange={(e) => router.push(`/interview/read?doc=${encodeURIComponent(e.target.value)}`)} className="h-10 w-full rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] px-2 text-sm font-semibold">
@@ -236,7 +259,7 @@ function Lesson({ id }: { id: string }) {
         </div>
       </article>
 
-      <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start" aria-label="Lesson tools">
+      <aside className="space-y-4 xl:sticky xl:top-[calc(var(--sticky-top,8px)+64px)] xl:max-h-[calc(100dvh-10rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:pr-1" aria-label="Lesson tools">
         <div className="card-pastel p-5" data-tint="mint">
           <p className="text-sm font-semibold text-[var(--text-secondary)]">This book</p>
           <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{siblings.filter((d) => done.has(d.id)).length} of {siblings.length} read</p>
@@ -249,7 +272,7 @@ function Lesson({ id }: { id: string }) {
               <li key={n.id} className="rounded-xl bg-[var(--surface)] p-3">
                 <button type="button" onClick={() => jump(n)} className="block w-full text-left text-sm" style={{ borderLeft: `4px solid ${SWATCH[n.color]}`, paddingLeft: 8 }}>{n.quote.length > 110 ? n.quote.slice(0, 110) + "…" : n.quote}</button>
                 <textarea defaultValue={n.note} onBlur={(e) => { if (e.target.value !== n.note) saveNote(n, e.target.value); }} rows={1} placeholder="Add a note…" aria-label="Note" className="mt-2 w-full resize-y rounded-lg border border-[var(--border)] bg-transparent px-2 py-1 text-xs outline-none" />
-                <div className="mt-1 flex justify-between"><button type="button" onClick={() => ask("explain", n.quote)} className="text-xs font-bold text-[var(--text-secondary)]">Ask tutor</button><button type="button" onClick={() => delNote(n)} aria-label="Delete highlight" className="text-xs text-[var(--text-muted)]"><Trash2 className="h-3.5 w-3.5" /></button></div>
+                <div className="mt-1 flex justify-between"><button type="button" onClick={() => ask("explain", n.quote)} className="text-xs font-bold text-[var(--text-secondary)]">Ask tutor</button><button type="button" onClick={() => delNote(n)} aria-label="Delete highlight" className="-m-2 grid h-10 w-10 place-items-center rounded-full text-xs text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><Trash2 className="h-4 w-4" /></button></div>
               </li>))}</ul>)}
           <Link href="/interview/notes" className="pill-soft mt-3 inline-flex">Open notebook</Link>
         </div>
@@ -265,12 +288,14 @@ function Lesson({ id }: { id: string }) {
         </div>
       </aside>
 
+      {/* floating pieces live on the page body so a transformed parent can never move them off the screen */}
+      {typeof document !== "undefined" && createPortal(<>
       {sel && !draft && (
-        <div role="toolbar" aria-label="Selected text" style={{ left: sel.x, top: sel.y }} onMouseDown={(e) => e.preventDefault()} className="fixed z-[500] flex -translate-x-1/2 items-center gap-1 rounded-full border border-[var(--border)] bg-white p-1.5 shadow-xl dark:bg-[#1c2040]">
-          {HL_COLORS.map((c) => <button key={c} type="button" onClick={() => void addNote(sel.text, c)} aria-label={`Highlight ${c}`} className="h-7 w-7 rounded-full border-2 border-white" style={{ background: SWATCH[c] }} />)}
+        <div role="toolbar" aria-label="Selected text" style={sel.touch ? undefined : { left: sel.x, top: sel.y }} onMouseDown={(e) => e.preventDefault()} onTouchStart={(e) => e.stopPropagation()} className={`z-[500] flex items-center gap-1 border border-[var(--border)] bg-white shadow-xl dark:bg-[#1c2040] ${sel.touch ? "fixed inset-x-3 bottom-[calc(84px+env(safe-area-inset-bottom))] justify-center rounded-3xl p-2.5" : "fixed -translate-x-1/2 rounded-full p-1.5"}`}>
+          {HL_COLORS.map((c) => <button key={c} type="button" onClick={() => void addNote(sel.text, c)} aria-label={`Highlight ${c}`} className={`${sel.touch ? "h-10 w-10" : "h-7 w-7"} shrink-0 rounded-full border-2 border-white`} style={{ background: SWATCH[c] }} />)}
           <span className="mx-1 h-5 w-px bg-[var(--border)]" />
-          <button type="button" onClick={() => setDraft({ x: sel.x, y: sel.y, text: sel.text, note: "" })} className="rounded-full px-3 py-1.5 text-xs font-bold hover:bg-[var(--surface-secondary)]">Note</button>
-          <button type="button" onClick={() => ask("explain", sel.text)} className="rounded-full bg-[var(--ink)] px-3 py-1.5 text-xs font-bold text-[var(--background)]">Ask tutor</button>
+          <button type="button" onClick={() => setDraft({ x: sel.x, y: sel.y, text: sel.text, note: "" })} className={`rounded-full px-3 text-xs font-bold hover:bg-[var(--surface-secondary)] ${sel.touch ? "py-3" : "py-1.5"}`}>Note</button>
+          <button type="button" onClick={() => ask("explain", sel.text)} className={`rounded-full bg-[var(--ink)] px-3 text-xs font-bold text-[var(--background)] ${sel.touch ? "py-3" : "py-1.5"}`}>Ask tutor</button>
         </div>
       )}
       {draft && (
@@ -289,13 +314,14 @@ function Lesson({ id }: { id: string }) {
           </aside>
         </div>
       )}
+      </>, document.body)}
     </div>
   );
 }
 
 function Reader() {
   const sp = useSearchParams();
-  const doc = sp.get("doc"), book = sp.get("book");
-  return doc ? <Lesson key={doc} id={doc} /> : book ? <Chapters book={book} /> : <Library />;
+  const doc = sp.get("doc"), book = sp.get("book"), track = sp.get("track");
+  return doc ? <Lesson key={doc} id={doc} /> : book ? <Chapters book={book} /> : track ? <Library track={track} /> : <Library />;
 }
 export default function ReadPage() { return <Suspense fallback={null}><Reader /></Suspense>; }

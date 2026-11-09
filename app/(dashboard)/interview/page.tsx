@@ -87,7 +87,7 @@ export default function InterviewHome() {
             const ds = docs.filter((d) => t.books.includes(d.book)), n = ds.filter((d) => done.has(d.id)).length;
             return (
               <li key={t.id}>
-                <Link href={`/interview/read?book=${encodeURIComponent(t.books.find((b) => ds.some((d) => d.book === b)) ?? t.books[0])}`} className="card-pastel flex h-full flex-col gap-1 p-5" data-tint={t.tint}>
+                <Link href={`/interview/read?track=${t.id}`} className="card-pastel flex h-full flex-col gap-1 p-5" data-tint={t.tint}>
                   <span className="font-display text-lg font-extrabold text-[var(--text-primary)]">{t.title}</span>
                   <span className="text-sm text-[var(--text-secondary)]">{t.blurb}</span>
                   <span className="mt-3 flex items-center justify-between text-xs font-bold text-[var(--text-secondary)]"><span>{t.books.length} books</span><span className="font-num">{n}/{ds.length}</span></span>

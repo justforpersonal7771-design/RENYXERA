@@ -8,6 +8,7 @@ import { Children, isValidElement, memo, type ReactNode } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Copy, Play, Sparkles } from "lucide-react";
+import { ClassDiagram, SequenceDiagram } from "./iv-diagrams";
 
 export const slug = (s: string) => s.toLowerCase().replace(/[`*_]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const textOf = (n: ReactNode): string => Children.toArray(n).map((c) => (typeof c === "string" || typeof c === "number" ? String(c) : isValidElement(c) ? textOf((c.props as { children?: ReactNode }).children) : "")).join("");
@@ -75,7 +76,7 @@ function makeComponents(h: Handlers): Components {
       const cls = isValidElement(el) ? String((el.props as { className?: string }).className ?? "") : "";
       const lang = cls.replace("language-", "").trim().toLowerCase();
       const code = textOf(isValidElement(el) ? (el.props as { children?: ReactNode }).children : children).replace(/\n$/, "");
-      if (lang === "mermaid") return <Flow code={code} />;
+      if (lang === "mermaid") { const kind = code.trim().split(/\s/)[0]; return kind === "sequenceDiagram" ? <SequenceDiagram code={code.trim()} /> : kind === "classDiagram" ? <ClassDiagram code={code.trim()} /> : <Flow code={code} />; }
       const run = RUNNABLE[lang];
       return (
         <div className={`iv-codeblock ${lang === "result" ? "is-output" : ""}`}>

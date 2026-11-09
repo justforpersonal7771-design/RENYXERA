@@ -646,3 +646,11 @@ html[data-look="lunar"] .recharts-bar-rectangle path, html[data-look="lunar"] .r
 html[data-look="lunar"] .recharts-bar-rectangle:hover path { fill: #3a6fb8 !important; }
 html[data-look="lunar"] .recharts-cartesian-grid line { stroke: rgba(26,28,41,.08) !important; }
 html[data-look="lunar"] .recharts-dot { stroke: #3a6fb8 !important; fill: #fff !important; }
+
+/* Frosted band under the top bar: scrolled content goes soft behind the header (also in the gaps between the capsules) instead of showing sharp text. */
+html[data-look="lunar"] body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; height: 80px; z-index: 39; pointer-events: none; -webkit-backdrop-filter: blur(16px) saturate(1.2); backdrop-filter: blur(16px) saturate(1.2); background: linear-gradient(to bottom, color-mix(in srgb, var(--background) 72%, transparent), transparent); -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent); mask-image: linear-gradient(to bottom, #000 58%, transparent); }
+
+/* Sticky offsets are measured from inside the scroll area's padding, and Lunar pads the top by the header height (so content can flow under the header).
+   --sticky-top is the number to use for "stick just under the header": 76px from the screen top minus that padding. */
+html[data-look="lunar"] #app-scroll { --sticky-top: -8px; }
+@media (min-width: 640px) { html[data-look="lunar"] #app-scroll { --sticky-top: -12px; } }

@@ -559,3 +559,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] AI route: no rate limit; OpenRouter first, then Gemini (shared lib/ai/llm.ts); still limited to allowed emails.
 - [ ] **(you)** Run supabase/migrations/0057_interview_notes_mock.sql (done 9 Nov) before using notes. Push deploys.
 - [ ] Not done: 19 non-flowchart Mermaid diagrams show as source; AI replies take 10 to 20 s; no Interview button in the phone bottom bar; touch long-press highlighting untested; results, test-taking and review screens still need real redesigns.
+- [x] 9 Nov: Lunar results scoreboard rebuilt (components/exam/lunar-results.tsx): three-part ring (right/wrong/skipped), marks hero, time/attempted/penalty/per-question tiles, Fix these first with Practise links, tabbed breakdown, clickable question map. Classic results unchanged. Previewed on a sample-data page at desktop and phone, light and dark; not yet seen with a real finished attempt.
+- [ ] Next: test-taking screen and review screens redesign; Interview button on the phone bar.
+- [x] 9 Nov (later): Interview phone button (More sheet), all 19 non-flowchart diagrams drawn (sequence and class), touch highlighting (toolbar docks above the bottom bar, finger-sized buttons, portal), track pages, sticky frosted section menu, scrolling side columns, single-screen Progress, blur band under the navbar, More sheet no longer chopped, results in green and red. Focused test 21/21.
+- [ ] Next: test-taking screen and review screens redesign.

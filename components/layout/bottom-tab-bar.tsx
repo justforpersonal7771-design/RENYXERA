@@ -7,7 +7,8 @@ import { motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SocialDot } from "@/components/friends/social-dot";
-import { BrainCircuit, ClipboardCheck, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
+import { useInterviewAccess } from "@/components/interview/interview-gate";
+import { Briefcase, BrainCircuit, ClipboardCheck, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
@@ -21,6 +22,7 @@ export function BottomTabBar() {
   const pathname = usePathname() ?? "";
   const lunar = useIsLunar();
   const signedIn = useAuthStore((s) => !!s.user);
+  const interview = useInterviewAccess();   // only the allowed accounts get the Interview door
   const [reviewHref, setReviewHref] = useState("/mistakes");
   const [more, setMore] = useState(false);
   useEffect(() => { setReviewHref(lastReviewHref()); }, [pathname]);
@@ -40,6 +42,7 @@ export function BottomTabBar() {
     { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
   ];
   const rest = [
+    ...(interview ? [{ label: "Interview", hint: "Books, flashcards, code lab, mock interviews", tint: "butter", wide: true, href: "/interview", icon: Briefcase, active: pathname.startsWith("/interview") }] : []),
     { label: "Battles", hint: "Challenge friends, climb the board", tint: "rose", wide: true, href: "/battles", icon: Swords, active: pathname.startsWith("/battles") },
     { label: "Study materials", hint: "Notes and formulas", tint: "mint", href: "/study", icon: BookOpenText, active: pathname.startsWith("/study") },
     { label: "Analytics", hint: "Your progress", tint: "peri", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },
@@ -73,9 +76,9 @@ export function BottomTabBar() {
       </nav>
 
       {more && typeof document !== "undefined" && createPortal(
-        <div className="lg:hidden fixed inset-x-0 top-0 bottom-[calc(3.5rem+env(safe-area-inset-bottom))] z-[45] overflow-hidden">
+        <div className={`lg:hidden fixed inset-x-0 top-0 z-[45] overflow-hidden ${lunar ? "bottom-[calc(5.9rem+env(safe-area-inset-bottom))]" : "bottom-[calc(3.5rem+env(safe-area-inset-bottom))]"}`}>
           <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setMore(false)} />
-          <motion.div role="dialog" aria-label="More pages" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-x-0 bottom-0 touch-none mx-auto max-w-xl rounded-t-3xl border border-b-0 border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
+          <motion.div role="dialog" aria-label="More pages" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-x-0 bottom-0 touch-pan-y mx-auto max-h-full max-w-xl overflow-y-auto overscroll-contain rounded-t-3xl border border-b-0 border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
             <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-[var(--text-muted)]/40" aria-hidden />
             <p className="mb-2.5 px-1 text-[11px] font-extrabold uppercase tracking-wide text-[var(--text-muted)]">More from RENYXERA</p>
             <ul className="grid grid-cols-2 gap-2.5 pb-1">

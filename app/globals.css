@@ -2061,3 +2061,6 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 ::highlight(iv-green) { background-color: rgba(74, 222, 128, .45); color: inherit; }
 ::highlight(iv-pink) { background-color: rgba(244, 114, 182, .42); color: inherit; }
 ::highlight(iv-blue) { background-color: rgba(96, 165, 250, .42); color: inherit; }
+
+/* Interview section menu: translucent and truly blurred. (.ambient-gradient switches off every backdrop-blur inside the page area for speed, so this one is forced.) */
+.iv-sticky { background: color-mix(in srgb, var(--background) 55%, transparent) !important; -webkit-backdrop-filter: blur(18px) saturate(1.25) !important; backdrop-filter: blur(18px) saturate(1.25) !important; }

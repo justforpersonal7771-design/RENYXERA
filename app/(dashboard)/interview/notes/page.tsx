@@ -45,7 +45,7 @@ export default function NotebookPage() {
             <li key={n.id} className="rounded-2xl bg-[var(--surface)] p-4">
               <p className="text-[15px] leading-relaxed" style={{ borderLeft: `5px solid ${SWATCH[n.color]}`, paddingLeft: 10 }}>{n.quote}</p>
               <textarea defaultValue={n.note} onBlur={(e) => { if (e.target.value !== n.note) save(n, e.target.value); }} rows={2} placeholder="Add a note…" aria-label="Note" className="mt-3 w-full resize-y rounded-xl border border-[var(--border)] bg-transparent px-3 py-2 text-sm outline-none" />
-              <div className="mt-2 flex items-center justify-between text-xs text-[var(--text-muted)]"><span>{new Date(n.created_at).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" })}</span><span className="flex gap-3"><Link href={`/interview/read?doc=${encodeURIComponent(id)}`} className="font-bold text-[var(--text-secondary)]">Open lesson</Link><button type="button" onClick={() => del(n)} aria-label="Delete"><Trash2 className="h-4 w-4" /></button></span></div>
+              <div className="mt-2 flex items-center justify-between text-xs text-[var(--text-muted)]"><span>{new Date(n.created_at).toLocaleDateString("en-IN", { timeZone: "Asia/Kolkata", day: "numeric", month: "short" })}</span><span className="flex gap-3"><Link href={`/interview/read?doc=${encodeURIComponent(id)}`} className="font-bold text-[var(--text-secondary)]">Open lesson</Link><button type="button" onClick={() => del(n)} aria-label="Delete" className="-m-2 grid h-10 w-10 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><Trash2 className="h-4 w-4" /></button></span></div>
             </li>))}</ul>
         </section>
       ))}
