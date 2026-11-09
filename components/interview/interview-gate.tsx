@@ -26,4 +26,4 @@ export const InterviewCtx = { Provider: Ctx.Provider, use: () => useContext(Ctx)
 
 /** Small client helpers shared by the Interview pages. */
 export const ivPost = (body: unknown) => fetch("/api/interview/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }).catch(() => undefined);
-export type IvDoc = { id: string; book: string; book_title: string; kind: string; ord: number; title: string; meta: { star?: boolean; minutes?: number; lang?: string; expected?: string; level?: number } };
+export type IvDoc = { id: string; book: string; book_title: string; kind: string; ord: number; title: string; meta: { star?: boolean; minutes?: number; lang?: string; expected?: string; level?: number; likelihood?: string } };

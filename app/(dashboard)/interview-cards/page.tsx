@@ -5,11 +5,13 @@ import Link from "next/link";
 import { Briefcase } from "lucide-react";
 import { InterviewFlashcards } from "@/components/interview/interview-flashcards";
 import { InterviewGate } from "@/components/interview/interview-gate";
+import { IvNav } from "@/components/interview/iv-nav";
 
 export default function InterviewCardsPage() {
   return (
     <InterviewGate>
     <div className="w-full space-y-4">
+      <IvNav />
       <section className="card-well flex flex-wrap items-center justify-between gap-3 p-4 sm:px-6" data-tint="butter" aria-label="Interview flashcards">
         <div className="flex items-center gap-3">
           <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[var(--surface)]"><Briefcase className="h-5 w-5 text-[var(--text-primary)]" aria-hidden /></span>

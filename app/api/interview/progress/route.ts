@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     await db.from("interview_progress").upsert({ user_id: userId, doc_id: String(b.doc.id).slice(0, 200), status: b.doc.status, updated_at: new Date().toISOString() });
   }
   const a = b?.attempt;
-  if (a?.id && typeof a.ok === "boolean" && ["lab", "sql", "card", "code"].includes(String(a.kind))) {
+  if (a?.id && typeof a.ok === "boolean" && ["lab", "sql", "card", "code", "mock"].includes(String(a.kind))) {
     const detail = JSON.parse(JSON.stringify(a.detail ?? {}).slice(0, 4000) || "{}");
     await db.from("interview_attempts").insert({ user_id: userId, item_kind: a.kind, item_id: String(a.id).slice(0, 200), ok: a.ok, detail });
   }

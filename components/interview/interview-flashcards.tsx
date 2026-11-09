@@ -25,7 +25,7 @@ export function InterviewFlashcards() {
   const reduce = useReducedMotion();
   const [cards, setCards] = useState<Card[] | null>(null);
   const [failed, setFailed] = useState(false);
-  const [book, setBook] = useState("all");
+  const [book, setBook] = useState(() => (typeof window === "undefined" ? "all" : new URLSearchParams(window.location.search).get("book") ?? "all"));
   const [type, setType] = useState<"all" | Card["type"]>("all");
   const [star, setStar] = useState<"all" | "star">("all");
   const [size, setSize] = useState<"10" | "20" | "40">("20");

@@ -2013,3 +2013,51 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch::before { left: -12px; border-right: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom-right-radius: 12px; box-shadow: 6px 6px 0 6px var(--sheet); }
 .folder-wrap .folder-tab[aria-selected="true"] .folder-tab-stitch::after { right: -12px; border-left: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom: 1.5px dashed color-mix(in srgb, var(--tab-ink) 38%, transparent); border-bottom-left-radius: 12px; box-shadow: -6px 6px 0 6px var(--sheet); }
 .folder-wrap[data-first="true"] .folder-tab[aria-selected="true"] .folder-tab-stitch::before { display: none; }
+
+/* ===== Interview reader: the book text. Same type scale as the Study lessons (.lesson-h / .lesson-p). ===== */
+.iv-md { color: var(--text-primary); font-size: 1.0625rem; line-height: 1.75; overflow-wrap: anywhere; }
+.iv-md > * + *, .iv-md > .iv-details + *, .iv-md > * + .iv-details { margin-top: 1rem; }
+.iv-md .iv-details { border-radius: 16px; border: 1.5px solid var(--border); background: var(--surface); overflow: hidden; }
+.iv-md .iv-details > summary { cursor: pointer; padding: .75rem 1rem; font-weight: 800; list-style: none; display: flex; align-items: center; gap: .5rem; }
+.iv-md .iv-details > summary::before { content: "▸"; transition: transform .15s; display: inline-block; }
+.iv-md .iv-details[open] > summary::before { transform: rotate(90deg); }
+.iv-md .iv-details > summary::-webkit-details-marker { display: none; }
+.iv-md .iv-details > div { padding: 0 1rem 1rem; }
+.iv-md .iv-details > div > * + * { margin-top: .75rem; }
+.iv-md p, .iv-md li { line-height: 1.75; }
+.iv-md .iv-h1 { font-family: var(--font-display, inherit); font-size: 1.9rem; font-weight: 800; margin-top: 2.2rem; }
+.iv-md .iv-h2 { font-family: var(--font-display, inherit); font-size: 1.45rem; font-weight: 800; margin-top: 2.2rem; padding-bottom: .35rem; border-bottom: 1.5px solid var(--border); scroll-margin-top: 100px; }
+.iv-md .iv-h3 { font-family: var(--font-display, inherit); font-size: 1.15rem; font-weight: 800; margin-top: 1.6rem; scroll-margin-top: 100px; }
+.iv-md .iv-h4 { font-weight: 800; margin-top: 1.2rem; }
+.iv-md ul, .iv-md ol { padding-left: 1.4rem; } .iv-md ul { list-style: disc; } .iv-md ol { list-style: decimal; } .iv-md li + li { margin-top: .35rem; }
+.iv-md li > ul, .iv-md li > ol { margin-top: .35rem; }
+.iv-md strong { font-weight: 800; }
+.iv-md hr { border: 0; border-top: 1.5px solid var(--border); margin: 2rem 0; }
+.iv-md .iv-link { color: var(--tint-sky-ink, #3a6fb8); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.iv-md .iv-code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .9em; padding: .12em .42em; border-radius: 8px; background: var(--surface-secondary); border: 1px solid var(--border); }
+.iv-md .iv-callout { border-radius: 18px; border-left: 5px solid var(--ink); background: var(--surface); padding: 1rem 1.2rem; box-shadow: 0 1px 0 var(--border) inset; }
+.iv-md .iv-callout > * + * { margin-top: .5rem; } .iv-md .iv-callout p:first-child strong:first-child { letter-spacing: .02em; }
+.iv-md .iv-table { overflow-x: auto; border-radius: 16px; border: 1px solid var(--border); background: var(--surface); }
+.iv-md .iv-table table { width: 100%; font-size: .94rem; border-collapse: collapse; }
+.iv-md .iv-table th { text-align: left; font-weight: 800; padding: .65rem 1rem; background: var(--surface-secondary); color: var(--text-secondary); white-space: nowrap; }
+.iv-md .iv-table td { padding: .6rem 1rem; border-top: 1px solid var(--border); vertical-align: top; }
+.iv-md .iv-codeblock { border-radius: 18px; overflow: hidden; background: #14161f; color: #e8eaf6; box-shadow: 0 14px 34px -22px rgba(0,0,0,.6); }
+.iv-md .iv-codeblock__bar { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .5rem .9rem; background: #1d2030; font-size: .78rem; font-weight: 800; color: #b9bfd8; }
+.iv-md .iv-codeblock__acts { display: flex; gap: .35rem; flex-wrap: wrap; }
+.iv-md .iv-codeblock__acts button { display: inline-flex; align-items: center; gap: .3rem; cursor: pointer; padding: .28rem .65rem; border-radius: 9999px; background: rgba(255,255,255,.08); color: #e8eaf6; font-weight: 700; transition: background .15s; }
+.iv-md .iv-codeblock__acts button:hover { background: rgba(255,255,255,.18); }
+.iv-md .iv-codeblock pre { margin: 0; padding: 1rem 1.1rem; overflow-x: auto; font-size: .86rem; line-height: 1.65; tab-size: 2; }
+.iv-md .iv-codeblock pre code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; background: none; border: 0; padding: 0; }
+.iv-md .iv-codeblock.is-output { background: #f1f3fb; color: #1a1c29; } .iv-md .iv-codeblock.is-output .iv-codeblock__bar { background: #e4e8f6; color: #4a5070; }
+.dark .iv-md .iv-codeblock.is-output { background: #1c2040; color: #e8eaf6; } .dark .iv-md .iv-codeblock.is-output .iv-codeblock__bar { background: #262b52; color: #b9bfd8; }
+.iv-pre { background: #14161f; color: #e8eaf6; border-radius: 14px; padding: 1rem; overflow-x: auto; font-size: .85rem; }
+.iv-md .iv-flow { margin-top: 1rem; }
+.iv-flow { padding: 1.2rem; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; gap: .15rem; }
+.iv-flow__layer { display: flex; flex-direction: column; align-items: center; gap: .15rem; width: 100%; }
+.iv-flow__arrow { color: var(--text-muted); font-weight: 800; line-height: 1; }
+.iv-flow__row { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
+.iv-flow__node { padding: .5rem .95rem; border-radius: 14px; background: var(--tint-sky, #dbeafe); color: var(--tint-sky-ink, #1e3a8a); font-weight: 800; font-size: .92rem; border: 1px solid var(--border); }
+::highlight(iv-yellow) { background-color: rgba(250, 204, 21, .5); color: inherit; }
+::highlight(iv-green) { background-color: rgba(74, 222, 128, .45); color: inherit; }
+::highlight(iv-pink) { background-color: rgba(244, 114, 182, .42); color: inherit; }
+::highlight(iv-blue) { background-color: rgba(96, 165, 250, .42); color: inherit; }

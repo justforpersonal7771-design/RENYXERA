@@ -6,8 +6,8 @@ import { useEffect, useMemo, useState } from "react";
 import { InterviewGate, type IvDoc } from "@/components/interview/interview-gate";
 
 type Att = { item_kind: string; item_id: string; ok: boolean; detail: { err?: string; note?: string }; created_at: string };
-const KIND = { lab: "Book labs", sql: "SQL", code: "Free code runs", card: "Flashcards" } as Record<string, string>;
-const HREF = (a: { kind: string; id: string }) => (a.kind === "sql" ? "/interview/sql" : a.kind === "card" ? "/interview-cards" : "/interview/lab");
+const KIND = { lab: "Book labs", sql: "SQL", code: "Free code runs", card: "Flashcards", mock: "Mock interview" } as Record<string, string>;
+const HREF = (a: { kind: string; id: string }) => (a.kind === "sql" ? "/interview/sql" : a.kind === "card" ? `/interview-cards?book=${encodeURIComponent(a.id.split(":")[0])}` : a.kind === "mock" ? "/interview/tutor?mode=mock" : "/interview/lab");
 
 function Progress() {
   const [docs, setDocs] = useState<IvDoc[]>([]);
@@ -27,9 +27,9 @@ function Progress() {
   }, [att]);
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full min-w-0 space-y-4">
       <h1 className="font-display text-2xl font-extrabold">Progress and mistakes</h1>
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid min-w-0 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
         <section className="card-pastel space-y-3 p-5" data-tint="sky" aria-label="Reading">
           <h2 className="text-sm font-extrabold">Reading by book</h2>
           {books.length === 0 ? <p className="text-sm text-[var(--text-secondary)]">Nothing loaded yet.</p> : books.map(([b, e]) => (

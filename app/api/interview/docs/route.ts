@@ -15,9 +15,12 @@ export async function GET(req: NextRequest) {
     const { data } = await db.from("interview_docs").select("id,book,book_title,kind,title,body,meta").eq("id", id).maybeSingle();
     return data ? NextResponse.json(data, { headers: NO }) : new NextResponse(null, { status: 404 });
   }
-  const [docs, prog] = await Promise.all([
-    db.from("interview_docs").select("id,book,book_title,kind,ord,title,meta").order("book").order("ord").limit(5000),
-    db.from("interview_progress").select("doc_id,status").eq("user_id", userId).limit(5000),
+  // Labs carry their expected output in meta (up to 8 KB each); the list only needs their language, so it is picked out instead of sent whole.
+  const [docs0, labs0, prog] = await Promise.all([
+    db.from("interview_docs").select("id,book,book_title,kind,ord,title,meta").neq("kind", "lab").order("book").order("ord").limit(5000),
+    db.from("interview_docs").select("id,book,book_title,kind,ord,title,lang:meta->>lang").eq("kind", "lab").order("book").order("ord").limit(5000),
+    db.from("interview_progress").select("doc_id,status,updated_at").eq("user_id", userId).limit(5000),
   ]);
-  return NextResponse.json({ docs: docs.data ?? [], progress: prog.data ?? [] }, { headers: NO });
+  const labs = ((labs0.data ?? []) as unknown as { id: string; book: string; book_title: string; kind: string; ord: number; title: string; lang: string | null }[]).map(({ lang, ...r }) => ({ ...r, meta: { lang: lang ?? undefined } }));
+  return NextResponse.json({ docs: [...(docs0.data ?? []), ...labs], progress: prog.data ?? [] }, { headers: NO });
 }

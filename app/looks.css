@@ -576,3 +576,73 @@ html.dark[data-look="lunar"] .lg-goal { stroke: #f4f5fb; }
   [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item { padding: 0 11px; }
   [data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item[data-active] .lunar-dock__label { max-width: 0; opacity: 0; margin-left: 0; }
 }
+
+/* Menus, dropdown lists and pop-ups sit on top of text, so they get a solid white (dark: solid navy) panel, never the see-through glass surface. */
+html[data-look="lunar"] :is(.popover-surface, [role="listbox"], [role="menu"], [role="tooltip"], [role="dialog"] > div) { background-color: #ffffff !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html[data-look="lunar"] [role="menu"] > .card-well, html[data-look="lunar"] [role="menu"] .card-well { background-color: #ffffff !important; background-image: none !important; }
+html.dark[data-look="lunar"] :is(.popover-surface, [role="listbox"], [role="menu"], [role="tooltip"], [role="dialog"] > div) { background-color: #1c2040 !important; }
+html.dark[data-look="lunar"] [role="menu"] > .card-well, html.dark[data-look="lunar"] [role="menu"] .card-well { background-color: #1c2040 !important; }
+
+/* Profile summary banner: it is a dark gradient, so everything on it is light (the name and "% complete" were dark-on-dark and vanished,
+   leaving an empty ring that looked like a spinner). The ring track is visible on the dark ground. */
+html[data-look="lunar"] header.grad-brand { background: linear-gradient(135deg, #2a3358, #1a1c29) !important; color: #fff !important; }
+html[data-look="lunar"] header.grad-brand :is(h1, h2, p, span, div):not(.hero-avatar *):not([class*="text-amber"]):not([class*="text-slate"]) { color: #fff; }
+html[data-look="lunar"] header.grad-brand .shine-text { background: none !important; -webkit-text-fill-color: #fff !important; color: #fff !important; }
+html[data-look="lunar"] header.grad-brand svg circle:first-child { stroke: rgba(255,255,255,.22) !important; }
+html[data-look="lunar"] header.grad-brand svg circle:last-child { stroke: #8db9f0 !important; }
+html[data-look="lunar"] header.grad-brand .bg-\[var\(--surface\)\], html[data-look="lunar"] header.grad-brand [class*="bg-[var(--surface)]"] { background: rgba(255,255,255,.94) !important; }
+html[data-look="lunar"] header.grad-brand [class*="bg-[var(--surface)]"] * { color: #1a1c29 !important; }
+
+/* Command palette: the typing field is one clean line inside the rounded bar, no inner box or focus rectangle. */
+html[data-look="lunar"] .search-bare, html[data-look="lunar"] .search-bare:focus, html[data-look="lunar"] .search-bare:focus-visible { border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent !important; border-radius: 0 !important; }
+html[data-look="lunar"] .search-row-line { background: #f4f5fb !important; }
+html.dark[data-look="lunar"] .search-row-line { background: #232850 !important; }
+
+/* Top menu, calm version (owner: hovering and switching felt jumpy). Every icon is the same fixed size, so nothing ever changes width.
+   Hover = a soft round highlight; the page name floats below the icon as a small dark label and never pushes neighbours. The active page is a blue pill. */
+@media (min-width: 1024px) {
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] ul { gap: 4px; }
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item { width: 46px; height: 44px; padding: 0 !important; justify-content: center; transform: none !important; transition: background-color .15s ease, color .15s ease !important; }
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:hover,
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:focus-visible { transform: none !important; background-color: rgba(26,28,41,.07); }
+  html.dark[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:hover { background-color: rgba(255,255,255,.1); }
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item[data-active]:hover { background-color: transparent; }
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:active { transform: scale(.94) !important; }
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] li:has(+ li:hover) .lunar-dock__item, html[data-look="lunar"] .lunar-dock[data-pos="top"] li:hover + li .lunar-dock__item,
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] li:has(+ li + li:hover) .lunar-dock__item, html[data-look="lunar"] .lunar-dock[data-pos="top"] li:hover + li + li .lunar-dock__item { transform: none !important; }
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__label,
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item[data-active] .lunar-dock__label { position: absolute; top: calc(100% + 12px); left: 50%; max-width: none !important; margin: 0 !important; padding: 5px 11px; border-radius: 9999px; background: #1a1c29; color: #fff; font-size: 12px; font-weight: 700; line-height: 1.2; opacity: 0 !important; pointer-events: none; transform: translate(-50%, -4px); transition: opacity .14s ease, transform .14s ease !important; z-index: 80; }
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:hover .lunar-dock__label,
+  html[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__item:focus-visible .lunar-dock__label { opacity: 1 !important; transform: translate(-50%, 0); transition-delay: .25s; }
+  html.dark[data-look="lunar"] .lunar-dock[data-pos="top"] .lunar-dock__label { background: #f4f5fb; color: #1a1c29; }
+}
+
+/* Dialogs that reuse the .nav-cluster class (Focus Target) are panels, not the top-menu pill: normal rounded corners and a solid background. */
+html[data-look="lunar"] [role="dialog"] .nav-cluster, html[data-look="lunar"] .nav-cluster.max-w-6xl { border-radius: 28px !important; padding: 0 !important; background-color: #ffffff !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+html.dark[data-look="lunar"] [role="dialog"] .nav-cluster, html.dark[data-look="lunar"] .nav-cluster.max-w-6xl { background-color: #1c2040 !important; }
+
+/* .grad-brand is a dark panel under Lunar: light text on panels, and where it is used to colour TEXT (the big result numbers) it is a blue gradient clipped to the letters, not a black box. */
+html[data-look="lunar"] .grad-brand.bg-clip-text, html[data-look="lunar"] .bg-clip-text.grad-brand { background: linear-gradient(135deg, #2f5fa8, #6f9fe0 60%, #f08f6f) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent !important; color: transparent !important; box-shadow: none !important; }
+html[data-look="lunar"] div.grad-brand:not(.bg-clip-text) { background: linear-gradient(135deg, #2a3358, #1a1c29) !important; color: #fff !important; }
+html[data-look="lunar"] div.grad-brand:not(.bg-clip-text) :is(h1, h2, h3, p, span, strong) { color: #fff; }
+
+/* 1. Content flows under the translucent header: the scroll area now starts at the very top and is padded down by the header's height,
+   so text slides behind the frosted capsules instead of being cut off by a hard edge. */
+html[data-look="lunar"] #app-scroll { top: 0 !important; padding-top: 84px !important; }
+@media (min-width: 640px) { html[data-look="lunar"] #app-scroll { padding-top: 88px !important; } }
+html[data-look="lunar"] .topbar-island > * { -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); }
+
+/* 2. Mentor history panel: a floating white sheet BELOW the header (the logo stays visible), with only a faint scrim, not a grey page. */
+html[data-look="lunar"] aside.ai-panel[aria-label="Chats"] { top: 84px !important; bottom: 16px !important; left: 16px !important; height: auto !important; width: 320px !important; border-radius: 26px !important; background: #ffffff !important; box-shadow: 0 30px 80px -30px rgba(26,28,41,.45) !important; }
+html.dark[data-look="lunar"] aside.ai-panel[aria-label="Chats"] { background: #1c2040 !important; }
+html[data-look="lunar"] .fixed.inset-0 > .absolute.inset-0.bg-black\/30 { background: rgba(26,28,41,.10) !important; }
+
+/* 3. One colour language everywhere: wide "band" cards are soft glass (no loud sky or peach), and charts use the Lunar blues and peach. */
+html[data-look="lunar"] .card-band { background: rgba(255,255,255,.55) !important; border: 1px solid rgba(255,255,255,.8) !important; box-shadow: 0 18px 44px -28px rgba(58,111,184,.35); }
+html.dark[data-look="lunar"] .card-band { background: rgba(28,32,64,.55) !important; border-color: rgba(141,185,240,.18) !important; }
+html[data-look="lunar"] .recharts-area-curve, html[data-look="lunar"] .recharts-line-curve { stroke: #3a6fb8 !important; }
+html[data-look="lunar"] .recharts-area-area { fill: rgba(141,185,240,.32) !important; }
+html[data-look="lunar"] .recharts-bar-rectangle path, html[data-look="lunar"] .recharts-bar-rectangle rect { fill: #8db9f0 !important; }
+html[data-look="lunar"] .recharts-bar-rectangle:hover path { fill: #3a6fb8 !important; }
+html[data-look="lunar"] .recharts-cartesian-grid line { stroke: rgba(26,28,41,.08) !important; }
+html[data-look="lunar"] .recharts-dot { stroke: #3a6fb8 !important; fill: #fff !important; }
