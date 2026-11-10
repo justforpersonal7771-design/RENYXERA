@@ -31,7 +31,7 @@ interface Store extends LookState {
 
 export const useLookStore = create<Store>((set, get) => ({
   ...empty, hydrated: false,
-  load: () => set({ ...read(), hydrated: true }),
+  load: () => { const s = read(); const gone = (id: string | null | undefined) => id === "lunar"; set({ ...s, look: gone(s.look) ? "classic" : s.look, trial: s.trial && gone(s.trial.id) ? null : s.trial, hydrated: true }); },
   setLook: (id) => { const next = { look: id, trial: null, tried: get().tried, fonts: get().fonts }; write(next); set(next); },
   startTrial: (id) => {
     const l = lookById(id), s = get();

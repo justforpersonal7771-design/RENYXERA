@@ -28,7 +28,9 @@ const INDEX_KEY = "mentor_chats", ACTIVE_KEY = "mentor_active_chat", MAX_CHATS =
 const chatKey = (id: string) => `mentor_chat_${id}`;
 const EVENT_TYPE = (s?: string) => (s === "Revision" ? "Revision" : s === "Mistakes" ? "Mistakes Review" : s === "Mock Test" ? "Mock Test" : "Study");
 
-export function useMentorChat(brief: string) {
+/** `autoOpen: false` (the chat screen) lands on a NEW chat; past chats open only when picked (or via ?chat=<id>). The Mentor home keeps showing the latest one. */
+export function useMentorChat(brief: string, opts: { autoOpen?: boolean } = {}) {
+  const autoOpen = opts.autoOpen !== false;
   const { addEvent } = useCalendarStore();
   const toast = useToastStore((s) => s.show);
   // Guests chat in a temporary chat that is never saved; signing in saves it (and syncs it).
@@ -88,7 +90,7 @@ export function useMentorChat(brief: string) {
     indexRef.current = list; setIndex(list);
     const activeId = (await IDBManager.getAIMemory(ACTIVE_KEY)) as string | undefined;
     const pick = list.find((m) => m.id === activeId) ?? list[0];
-    if (pick && !chatRef.current) { const c = (await IDBManager.getAIMemory(chatKey(pick.id))) as Chat | undefined; if (c?.nodes) setActive(c); }
+    if (autoOpen && pick && !chatRef.current) { const c = (await IDBManager.getAIMemory(chatKey(pick.id))) as Chat | undefined; if (c?.nodes) setActive(c); }
     const p = await IDBManager.getAIMemory("mentor_prefs"); if (p?.voice) setVoice(p.voice);
     setLoaded(true);
   })(); }, [setActive, signedIn]);

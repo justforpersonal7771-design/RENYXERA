@@ -5,7 +5,8 @@
  * Polls every 30 s while the tab is visible. Presence dots: green = active in the last 2 minutes, amber = within the hour, grey = offline.
  */
 import { useCallback, useEffect, useState } from "react";
-import { UserPlus, Check, X, Loader2, Users, Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
+import { UserPlus, Check, X, Loader2, Users, Eye, EyeOff, Swords } from "lucide-react";
 import { useToastStore } from "@/store/use-toast-store";
 
 type Presence = "active" | "away" | "offline" | "hidden";
@@ -109,6 +110,7 @@ export function FriendsPanel() {
           {data.friends.map((p) => (
             <li key={p.id}>
               <Row p={p} dot>
+                <Link href={`/test-centre/build?challenge=1&to=${p.id}&name=${encodeURIComponent(p.name)}`} className="btn-main !px-3 !py-1.5 text-xs" aria-label={`Challenge ${p.name}`}><Swords className="h-3.5 w-3.5" /> Challenge</Link>
                 <button type="button" className="btn-soft !px-3 !py-1.5 text-xs" disabled={busy === `r${p.id}`} onClick={() => { if (window.confirm(`Remove ${p.name} from your friends?`)) void act(`r${p.id}`, { action: "remove", userId: p.id }); }}>Remove</button>
               </Row>
             </li>

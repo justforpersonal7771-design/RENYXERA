@@ -1,18 +1,18 @@
 "use client";
 
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-centre/brand";
+import { MENTOR_NEW_CHAT } from "@/lib/mentor/links";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion } from "motion/react";
+import { LayoutGroup, motion } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SocialDot } from "@/components/friends/social-dot";
 import { useInterviewAccess } from "@/components/interview/interview-gate";
-import { Briefcase, BrainCircuit, ClipboardCheck, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
+import { Briefcase, BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, Settings, Wrench, X, BookOpenText, Swords } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
-import { useIsLunar } from "@/lib/looks/use-lunar";
 
 /**
  * Phone/tablet tab bar (below lg): the four places a student goes most, within thumb reach. "More" slides a sheet up
@@ -20,7 +20,6 @@ import { useIsLunar } from "@/lib/looks/use-lunar";
  */
 export function BottomTabBar() {
   const pathname = usePathname() ?? "";
-  const lunar = useIsLunar();
   const signedIn = useAuthStore((s) => !!s.user);
   const interview = useInterviewAccess();   // only the allowed accounts get the Interview door
   const [reviewHref, setReviewHref] = useState("/mistakes");
@@ -37,9 +36,9 @@ export function BottomTabBar() {
   const on = "text-violet-600 dark:text-violet-400";
   const tabs = [
     { label: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
-    { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: lunar ? ClipboardCheck : Settings, active: isTestCentrePath(pathname) },
+    { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings, active: isTestCentrePath(pathname) },
     { label: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
-    { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
+    { label: "AI Mentor", href: MENTOR_NEW_CHAT, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
   ];
   const rest = [
     ...(interview ? [{ label: "Interview", hint: "Books, flashcards, code lab, mock interviews", tint: "butter", wide: true, href: "/interview", icon: Briefcase, active: pathname.startsWith("/interview") }] : []),
@@ -54,29 +53,33 @@ export function BottomTabBar() {
 
   return (
     <>
-      <nav aria-label="Main" className="bottom-pill lg:hidden fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border)] bg-[var(--surface)]/95 backdrop-blur-xl pb-[env(safe-area-inset-bottom)]">
-        <ul className="mx-auto flex max-w-xl items-stretch">
-          {tabs.map((t) => (
-            <li key={t.label} className="flex-1 min-w-0">
-              <Link href={t.href} aria-current={t.active ? "page" : undefined}
-                className={`flex h-14 flex-col items-center justify-center gap-0.5 text-[10px] font-bold transition-colors ${t.active ? on : "text-[var(--text-muted)] active:text-[var(--text-primary)]"}`}>
-                <t.icon className={`h-5 w-5 transition-transform ${t.active ? "scale-110" : ""}`} />
-                <span className="truncate">{t.label}</span>
-              </Link>
+      {/* Floating glass dock (research: a floating pill, 3 to 5 items, an expanding label on the active one, safe-area spacing). The active page is a dark
+          pill that glides between items and shows its name; the rest are icons. */}
+      <nav aria-label="Main" className="bottom-dock lg:hidden fixed inset-x-3 z-40" style={{ bottom: "calc(12px + env(safe-area-inset-bottom))" }}>
+        <LayoutGroup id="bottom-dock">
+          <ul className="bottom-dock__bar mx-auto flex max-w-md items-center justify-between gap-1 p-1.5">
+            {tabs.map((t) => (
+              <li key={t.label} className="min-w-0 shrink-0">
+                <Link href={t.href} aria-label={t.label} aria-current={t.active ? "page" : undefined} data-active={t.active ? "" : undefined} className="dock-item">
+                  {t.active && <motion.span layoutId="bottom-dock-pill" className="dock-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+                  <t.icon className="dock-icon h-[21px] w-[21px]" />
+                  <span className="dock-label">{t.label}</span>
+                </Link>
+              </li>
+            ))}
+            <li className="min-w-0 shrink-0">
+              <button type="button" aria-haspopup="dialog" aria-expanded={more} aria-label="More pages" onClick={() => setMore((o) => !o)} data-active={more || moreActive ? "" : undefined} className="dock-item cursor-pointer">
+                {(more || moreActive) && <motion.span layoutId="bottom-dock-pill" className="dock-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+                <span className="relative">{more ? <X className="dock-icon h-[21px] w-[21px]" /> : <Menu className="dock-icon h-[21px] w-[21px]" />}{!more ? <SocialDot plain className="absolute -right-1 -top-0.5" /> : null}</span>
+                <span className="dock-label">More</span>
+              </button>
             </li>
-          ))}
-          <li className="flex-1 min-w-0">
-            <button type="button" aria-haspopup="dialog" aria-expanded={more} onClick={() => setMore((o) => !o)}
-              className={`flex h-14 w-full flex-col items-center justify-center gap-0.5 text-[10px] font-bold cursor-pointer transition-colors ${more || moreActive ? on : "text-[var(--text-muted)] active:text-[var(--text-primary)]"}`}>
-              <span className="relative">{more ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}{!more ? <SocialDot plain className="absolute -right-1 -top-0.5" /> : null}</span>
-              <span>More</span>
-            </button>
-          </li>
-        </ul>
+          </ul>
+        </LayoutGroup>
       </nav>
 
       {more && typeof document !== "undefined" && createPortal(
-        <div className={`lg:hidden fixed inset-x-0 top-0 z-[45] overflow-hidden ${lunar ? "bottom-[calc(5.9rem+env(safe-area-inset-bottom))]" : "bottom-[calc(3.5rem+env(safe-area-inset-bottom))]"}`}>
+        <div className="lg:hidden fixed inset-x-0 top-0 bottom-[calc(5.6rem+env(safe-area-inset-bottom))] z-[45] overflow-hidden">
           <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setMore(false)} />
           <motion.div role="dialog" aria-label="More pages" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-x-0 bottom-0 touch-pan-y mx-auto max-h-full max-w-xl overflow-y-auto overscroll-contain rounded-t-3xl border border-b-0 border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
             <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-[var(--text-muted)]/40" aria-hidden />

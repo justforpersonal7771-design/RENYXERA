@@ -3,7 +3,7 @@
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Calendar as CalendarIcon, ListTodo, Target, Search, Library, Wrench, BookOpenText } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Briefcase, Calendar as CalendarIcon, ListTodo, Target, Search, Library, Wrench, BookOpenText, Swords } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -29,14 +29,17 @@ import { isInsidePortalPopover } from "@/lib/utils";
 import { AccountButton } from "./account-button";
 import { BrandMark, Wordmark } from "@/components/brand/wordmark";
 import { useAuthStore } from "@/store/use-auth-store";
+import { usePendingChallenges } from "@/lib/battles/pending";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { TOOLS, TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
 import { BranchChip } from "./branch-chip";
 import { TestCentreMenu } from "@/components/layout/test-centre-menu";
+import { useInterviewAccess } from "@/components/interview/interview-gate";
 import { MentorNavButton } from "@/components/layout/mentor-nav-button";
 import { effectiveLookId, useLookStore } from "@/store/use-look-store";
 import { lookById } from "@/lib/looks/looks";
+import { MENTOR_NEW_CHAT } from "@/lib/mentor/links";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
 
 const NAV_ITEMS = [
@@ -44,8 +47,9 @@ const NAV_ITEMS = [
   { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings },
   // Forge lives inside Exam Setup (question source); Tools moved to the icon group.
   { label: "Study", href: "/study", icon: BookOpenText },
-  { label: "AI Mentor", href: "/ai-mentor", icon: BrainCircuit },
+  { label: "AI Mentor", href: MENTOR_NEW_CHAT, icon: BrainCircuit },
   // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
+  { label: "Battles", href: "/battles", icon: Swords },
   { label: "Review", href: "/mistakes", icon: Library },
   { label: "Analytics", href: "/analytics", icon: PieChart },
 ];
@@ -59,17 +63,20 @@ function screenTint(path: string): string {
   if (path === TOOLS_HOME) return "lilac";
   const tc = testCentreTint(path);
   if (tc) return tc;
-  const item = NAV_ITEMS.find((n) => (n.label === TEST_CENTRE ? isTestCentrePath(path) : n.href !== "/" ? path.startsWith(n.href) : path === "/"));
+  const item = NAV_ITEMS.find((n) => (n.label === TEST_CENTRE ? isTestCentrePath(path) : n.href !== "/" ? path.startsWith(n.href.split("?")[0]) : path === "/"));
   return NAV_TINTS[item?.label ?? ""] ?? "sky";
 }
 
 // Each section keeps its own pastel when it is the current page (navbar highlight).
 const NAV_TINTS: Record<string, string> = {
   Dashboard: "lilac", [TEST_CENTRE]: "mint", Forge: "peach", Study: "butter",
-  "AI Mentor": "sky", Review: "rose", Analytics: "mint", Tools: "peach",
+  "AI Mentor": "sky", Review: "rose", Analytics: "mint", Tools: "peach", Interview: "butter",
 };
 
 export function Topbar() {
+  // The private Interview section shows only for the accounts the server lists (see lib/server/interview.ts).
+  const interviewAccess = useInterviewAccess();
+  const navItems = interviewAccess ? [...NAV_ITEMS, { label: "Interview", href: "/interview", icon: Briefcase }] : NAV_ITEMS;
   useEffect(() => {
     // The goal panel carries the chart library (about 340 KB). Fetch it ahead of time only on a fast, unmetered connection; elsewhere it loads
     // when the student points at or touches the goal button (see onPointerEnter below), which is still before the click lands.
@@ -85,9 +92,8 @@ export function Topbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const signedIn = useAuthStore((st) => !!st.user);
+  const pendingChallenges = usePendingChallenges(signedIn);
   const tier = useEntitlements().tier;
-  const isPro = signedIn && tier === "pro";
-  const isPlus = signedIn && tier === "plus";
   const [hovered, setHovered] = useState<string | null>(null);
   // Tooltips on the main items appear only when the names are hidden (below 1280px); at full width the name is already on screen.
   const [compactNav, setCompactNav] = useState(false);
@@ -247,7 +253,6 @@ export function Topbar() {
             <Wordmark />
             <span className="logo-sweep" aria-hidden="true" />
           </span>
-          {(isPro || isPlus) && <span className={`pro-badge max-sm:hidden ${isPlus ? "is-silver" : ""}`}>{isPro ? "PRO" : "PLUS"}</span>}
         </Link>
 
         {/* Desktop nav — a floating glass dock with a hover highlight that glides
@@ -257,8 +262,8 @@ export function Topbar() {
             onMouseLeave={() => setHovered(null)}
             className="main-dock flex items-center gap-0.5"
           >
-            {NAV_ITEMS.map((item) => {
-              const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === TEST_CENTRE ? isTestCentrePath(pathname) : item.label === "Tools" ? isToolPath(pathname) : pathname === item.href;
+            {navItems.map((item) => {
+              const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === TEST_CENTRE ? isTestCentrePath(pathname) : item.label === "Tools" ? isToolPath(pathname) : item.label === "AI Mentor" ? pathname.startsWith("/ai-mentor") : item.label === "Interview" ? pathname.startsWith("/interview") : item.label === "Battles" ? (pathname.startsWith("/battles") || pathname.startsWith("/challenge")) : pathname === item.href;
               const link = (
                 <Link
                   key={item.href}
@@ -287,9 +292,12 @@ export function Topbar() {
                       transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <item.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
+                  <span className="relative">
+                    <item.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
+                    {item.label === "Battles" && pendingChallenges > 0 ? <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-extrabold leading-none text-white" aria-label={`${pendingChallenges} challenges waiting`}>{pendingChallenges}</span> : null}
+                  </span>
                   {/* Seven items: names shown from 1340px (at 1280 they ran into the wordmark and clipped Analytics); below that icons, name on hover. */}
-                  <span className="hidden min-[1340px]:inline">{item.label}</span>
+                  <span className={interviewAccess ? "hidden min-[1660px]:inline" : "hidden min-[1340px]:inline"}>{item.label}</span>
                 </Link>
               );
               return item.label === TEST_CENTRE && pathname !== TEST_CENTRE_HREF ? <div key={item.href} className="group/tc relative">{link}<TestCentreMenu /></div> : link;

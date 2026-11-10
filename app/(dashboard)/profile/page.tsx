@@ -31,6 +31,8 @@ import { generateAvatarDataUri, randomAvatarSeed, useAvatarStyles } from "@/lib/
 import { SIGNED_OUT_FLAG } from "@/lib/utils";
 import { Combobox, type ComboOption } from "@/components/ui/combobox";
 import { DEGREES, customDegrees, rememberCustomDegree } from "@/lib/degrees";
+import { customColleges, loadColleges, rememberCustomCollege, type CollegeData } from "@/lib/colleges";
+import { CollegePicker } from "@/components/ui/college-picker";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { useToastStore } from "@/store/use-toast-store";
 
@@ -80,10 +82,8 @@ const STUDY_TIMES = [
 ];
 
 const SECTIONS = [
-  { id: "overview", label: "Overview", subtitle: "Your progress, streaks and achievements at a glance.", icon: LayoutGrid, tint: "bg-indigo-500/10 text-indigo-500" },
-  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Smile, tint: "bg-pink-500/10 text-pink-500" },
-  { id: "design", label: "Design Studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, tint: "bg-violet-500/10 text-violet-500" },
   { id: "personal", label: "Personal info", subtitle: "Your identity and background.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
+  { id: "overview", label: "Overview", subtitle: "Your progress, streaks and achievements, and how your account looks.", icon: LayoutGrid, tint: "bg-indigo-500/10 text-indigo-500" },
   { id: "goals", label: "Exam goals", subtitle: "Your target, schedule and the plan it builds.", icon: Target, tint: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
   { id: "preferences", label: "Preferences", subtitle: "Theme, motion and reminders on this device.", icon: SlidersHorizontal, tint: "bg-violet-500/10 text-violet-500" },
   { id: "security", label: "Account & security", subtitle: "Sign-in, password, your data and account.", icon: ShieldCheck, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
@@ -91,6 +91,8 @@ const SECTIONS = [
   { id: "telegram", label: "Telegram", subtitle: "Reminders, timers and alerts in Telegram.", icon: Send, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "devices", label: "Devices", subtitle: "Where you're signed in.", icon: Laptop, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "data", label: "Data & storage", subtitle: "What this device holds, and tools to clean it up.", icon: HardDrive, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
+  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Smile, hidden: true, tint: "bg-pink-500/10 text-pink-500" },
+  { id: "design", label: "Design studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, hidden: true, tint: "bg-violet-500/10 text-violet-500" },
 ] as const;
 type SectionId = (typeof SECTIONS)[number]["id"];
 
@@ -179,6 +181,9 @@ export default function ProfilePage() {
     const mine = [...customDegreeList, ...(form.degree && !known.has(form.degree) && !customDegreeList.includes(form.degree) ? [form.degree] : [])];
     return [...mine.map((v) => ({ value: v, group: "Added by you" })), ...DEGREES];
   }, [customDegreeList, form.degree]);
+  const [collegeData, setCollegeData] = useState<CollegeData | null>(null);
+  const [myColleges, setMyColleges] = useState<string[]>([]);
+  useEffect(() => { setMyColleges(customColleges()); void loadColleges().then(setCollegeData); }, []);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -220,9 +225,9 @@ export default function ProfilePage() {
   // Sections, synced to the URL hash so /profile#devices opens that section directly.
   // ?tab=goals etc. deep-links a section (e.g. the header branch badge).
   const [tab, setTab] = useState<SectionId>(() => {
-    if (typeof window === "undefined") return "overview";
+    if (typeof window === "undefined") return "personal";
     const t = new URLSearchParams(window.location.search).get("tab");
-    return (SECTIONS.some((s) => s.id === t) ? t : "overview") as SectionId;
+    return (SECTIONS.some((s) => s.id === t) ? t : "personal") as SectionId;
   });
   useEffect(() => {
     const read = () => {
@@ -345,7 +350,7 @@ export default function ProfilePage() {
 
   const tabBody = (() => {
     switch (tab) {
-      case "design": return <Card icon={Palette} title="Design Studio" subtitle="Change the whole look of the app. Tap a Look to apply it; Looks you do not have can be tried for 5 minutes." tint="bg-violet-500/10 text-violet-500"><DesignStudio /></Card>;
+      case "design": return <Card icon={Palette} title="Design studio" subtitle="Change the whole look of the app. Tap a Look to apply it; Looks you do not have can be tried for 5 minutes." tint="bg-violet-500/10 text-violet-500"><DesignStudio /></Card>;
       case "avatar":
         return (
           <Card icon={Smile} title="Avatar studio" subtitle="Pick a style, shuffle, or choose from fresh variations. Silver styles need Plus, Gold styles need Pro." tint="bg-pink-500/10 text-pink-500">
@@ -453,6 +458,9 @@ export default function ProfilePage() {
             <Card icon={GraduationCap} title="Background" subtitle="Helps us tailor plans and, later, peer comparisons." tint="bg-violet-500/10 text-violet-500" delay={0.08}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                   <div>
+                    <ExamBranchPanel />
+                  </div>
+                  <div>
                     <label className={LABEL}><UserIcon className="w-3.5 h-3.5" /> I am a</label>
                     <CustomDropdown value={f.aspirantStatus} onChange={(v) => set("aspirantStatus", v)} options={STATUSES} className="w-full text-sm font-medium" />
                   </div>
@@ -466,7 +474,7 @@ export default function ProfilePage() {
                   </div>
                   <div>
                     <label className={LABEL}><Building2 className="w-3.5 h-3.5" /> College / university</label>
-                    <input value={f.college} onChange={(e) => set("college", e.target.value)} maxLength={120} className={INPUT} placeholder="e.g. NIT Trichy" />
+                    <CollegePicker value={f.college} onChange={(v) => set("college", v.slice(0, 120))} data={collegeData} mine={myColleges} onAddCustom={(v) => { rememberCustomCollege(v.slice(0, 120)); setMyColleges(customColleges()); }} />
                   </div>
                   <div>
                     <label className={LABEL}><BookOpen className="w-3.5 h-3.5" /> Degree</label>
@@ -572,6 +580,17 @@ export default function ProfilePage() {
       default:
         return (
           <div className="space-y-5">
+            <div className="grid gap-3 sm:grid-cols-2" aria-label="Personalise">
+              {([
+                { id: "avatar" as const, icon: Smile, title: "Avatar studio", text: "Pick your style: free, Silver and Gold.", tint: "rose" },
+                { id: "design" as const, icon: Palette, title: "Design studio", text: "Change the cards, backgrounds, corners and buttons.", tint: "lilac" },
+              ]).map((x) => (
+                <button key={x.id} type="button" onClick={() => selectTab(x.id)} className="card-pastel flex cursor-pointer items-center gap-3 p-4 text-left" data-tint={x.tint}>
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[var(--surface)]"><x.icon className="h-5 w-5" aria-hidden /></span>
+                  <span className="min-w-0"><span className="block font-display text-lg font-extrabold text-[var(--text-primary)]">{x.title}</span><span className="block text-sm text-[var(--text-secondary)]">{x.text}</span></span>
+                </button>
+              ))}
+            </div>
             <StatsAchievements />
           </div>
         );
@@ -597,7 +616,7 @@ export default function ProfilePage() {
         <motion.nav aria-label="Profile sections" initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35, delay: 0.05 }}
           className="shrink-0 lg:w-60 card-glass rounded-3xl p-2 lg:self-start">
           <div className="custom-scrollbar flex gap-1 overflow-x-auto scrollbar-hide lg:max-h-[calc(100dvh-14rem)] lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden lg:pr-1">
-            {SECTIONS.map((sct, i) => {
+            {SECTIONS.filter((s) => !("hidden" in s && s.hidden)).map((sct, i) => {
               const active = sct.id === tab;
               return (
                 <motion.button key={sct.id} onClick={() => selectTab(sct.id)} aria-current={active ? "page" : undefined}
@@ -633,7 +652,7 @@ export default function ProfilePage() {
       {typeof document !== "undefined" && createPortal(<AnimatePresence>
         {(dirty || saving || saved || error) && (
           <motion.div initial={{ opacity: 0, y: 40, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 40, scale: 0.96 }} transition={{ type: "spring", stiffness: 380, damping: 30 }}
-            className="lunar-lift fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] lg:bottom-4 inset-x-0 mx-auto z-[60] w-[calc(100%-2rem)] max-w-xl">
+            className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] lg:bottom-4 inset-x-0 mx-auto z-[60] w-[calc(100%-2rem)] max-w-xl">
             <div className="nav-cluster rounded-2xl px-4 py-3 flex items-center gap-3 shadow-[0_20px_50px_-15px_rgba(76,29,149,0.45)]">
               {error ? (
                 <p role="alert" className="flex-1 min-w-0 text-xs font-semibold text-rose-500">{error}</p>

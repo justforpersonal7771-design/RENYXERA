@@ -31,11 +31,13 @@ import { InstallPrompt } from "@/components/growth/install-prompt";
 import { TodayCard } from "@/components/dashboard/today-card";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 import { FeatureDeck } from "@/components/dashboard/feature-deck";
-import { LunarHome } from "@/components/dashboard/lunar-home";
-import { useIsLunar } from "@/lib/looks/use-lunar";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { usePaperLabel } from "@/lib/branch/use-paper-label";
-import { NextActionHero, MarksLeakCard, RevisionDueCard, SubjectTilesCard, YearDotsCard, useSolvedIds } from "@/components/dashboard/bento";
+import { MarksLeakCard, RevisionDueCard, SubjectTilesCard, YearDotsCard, useSolvedIds } from "@/components/dashboard/bento";
+import { DashboardHero, readinessOf } from "@/components/dashboard/dashboard-hero";
+import { ChallengeBanner } from "@/components/dashboard/challenge-banner";
+import { KpiStrip } from "@/components/dashboard/kpi-strip";
+import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
 
 // Everything below the hero is client-only and code-split.
 
@@ -68,7 +70,6 @@ const ExamCountdownCard = dynamic(() => import("@/components/dashboard/exam-coun
 
 export default function Home() {
   const router = useRouter();
-  const lunar = useIsLunar();
   const { loadRepository, isInitialized } = useDataStore();
   const { activeSession, isHydrated, initializeStore, clearSession } = useExamRuntimeStore();
   const { dashboardMetrics, loadAnalytics, loading } = useAnalyticsStore();
@@ -144,20 +145,20 @@ export default function Home() {
       
       <SignedOutWelcome />
 
-      {/* R18: compact "next step" hero with the student's own rings (replaces the large banner). */}
-      {lunar ? (
-        <LunarHome
-          solved={solvedCount} accuracy={accuracyValue} streak={streakDays} pendingMistakes={pendingMistakesCount}
-          weakest={weakest} hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"} onResume={handleResume} loading={isLoading}
-          topics={dashboardMetrics?.topicPerformance ?? []} subjects={dashboardMetrics?.subjectPerformance ?? []} snapshots={snapshots}
-          sessions={dashboardMetrics?.recentSessions ?? []}
-        />
-      ) : (
-      <NextActionHero
+      {/* 1. Hero: the one sentence that matters today, the one action, and the readiness tracker against your goal. */}
+      <ChallengeBanner />
+      <DashboardHero
         solved={solvedCount} accuracy={accuracyValue} streak={streakDays} pendingMistakes={pendingMistakesCount}
         weakest={weakest} hasActiveSession={!!activeSession && activeSession.status !== "SUBMITTED"} onResume={handleResume}
         loading={isLoading}
       />
+
+      {/* 2. Headline numbers (hidden for a brand-new student: no strip of zeros). */}
+      {(isLoading || solvedCount > 0) && (
+        <KpiStrip
+          readiness={readinessOf(solvedCount, accuracyValue)} accuracy={accuracyValue} solved={solvedCount} streak={streakDays} bestStreak={bestStreak}
+          studyMs={overview?.totalTimeSpentMs ?? 0} pendingMistakes={pendingMistakesCount} masteredMistakes={masteredMistakesCount} snapshots={snapshots} loading={isLoading}
+        />
       )}
 
       {isLoading ? (
@@ -222,34 +223,40 @@ export default function Home() {
       )}
       </AnimatePresence>
 
+      {/* 3. Needs attention: each card appears only when there is something to act on. */}
       <MissedBlocksCard />
-      {!lunar && <TodayBlocksCard />}
+      <IncompleteTests />
       <WeakTopicsSync topics={dashboardMetrics?.topicPerformance ?? []} />
       <div id="diagnostic" className="scroll-mt-24"><DiagnosticCard solved={solvedCount} /></div>
 
-      {/* Today strip: missions + study timer side by side. */}
-      {lunar ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2"><StudyTimer /><InstallPrompt /></div>
-      ) : (
+      {/* 4. Today: planner blocks, the day's missions, the study timer. */}
+      <TodayBlocksCard />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2"><TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} /></div>
         <div className="flex flex-col gap-4"><StudyTimer /><InstallPrompt /></div>
       </div>
-      )}
 
-      <IncompleteTests />
-
-      {/* Bento: one pastel card per question a student asks themselves. */}
-      {!lunar && (
+      {/* 5. Where your marks are: what to fix first, what to revise, how often GATE asks your weakest topic. */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
         <MarksLeakCard topics={dashboardMetrics?.topicPerformance ?? []} />
         <RevisionDueCard pending={pendingMistakesCount} mastered={masteredMistakesCount} />
-        {weakest ? <YearDotsCard topic={weakest} solvedIds={solvedIds} /> : <Reveal className="h-full"><MockStatusCard /></Reveal>}
-        <div className="md:col-span-2"><SubjectTilesCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></div>
-        {weakest ? <Reveal className="h-full"><MockStatusCard /></Reveal> : <Reveal className="h-full"><ExamCountdownCard /></Reveal>}
+        {weakest && <YearDotsCard topic={weakest} solvedIds={solvedIds} />}
       </div>
-      )}
 
+      {/* 6. Your subject shape, across the whole width. */}
+      <Reveal><SubjectRadarCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>
+
+      {/* 7. Subjects, and how consistent you have been. */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2"><SubjectTilesCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></div>
+        <Reveal className="h-full"><GithubHeatmap snapshots={snapshots} /></Reveal>
+      </div>
+
+      {/* 8. The All-India mock, the countdown and the weekly benchmark. */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Reveal className="h-full"><MockStatusCard /></Reveal>
+        <Reveal className="h-full"><ExamCountdownCard /></Reveal>
+      </div>
       <WeeklyBenchmarkCard />
 
       {/* R18 B1: Swaseekh-style sticky stacking deck, with the student's own numbers. */}
@@ -264,8 +271,6 @@ export default function Home() {
           <Reveal><ActivityTimeline recentSessions={dashboardMetrics?.recentSessions || []} bookmarks={bookmarks} mistakes={mistakes} /></Reveal>
         </div>
         <div className="lg:col-span-4 flex flex-col gap-4">
-          {weakest && <Reveal><ExamCountdownCard /></Reveal>}
-          <Reveal><GithubHeatmap snapshots={snapshots} /></Reveal>
           <Reveal><TelegramJoinCard /></Reveal>
         </div>
       </div>

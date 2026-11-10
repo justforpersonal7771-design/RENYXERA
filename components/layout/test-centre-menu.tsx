@@ -11,7 +11,7 @@ const DOORS = [
   { href: "/test-centre/build?view=flashcards", label: "Flashcards", icon: Layers },
   { href: "/test-centre/practice", label: "Practice", icon: RotateCcw },
   { href: "/test-centre/mocks", label: "Mocks", icon: Trophy },
-  { href: "/battles", label: "Challenge", icon: Swords },
+  { href: "/battles", label: "Battles", icon: Swords },
   { href: "/test-centre/history", label: "History", icon: BarChart3 },
 ];
 export function TestCentreMenu() {

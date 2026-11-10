@@ -6,20 +6,19 @@
  * and keep both versions (the "1 / 2" pager), ask again for another answer, a flowing-logo thinking state, answers that type out,
  * a composer with mode and style menus, an enlarge-the-box button, and an enlarge-the-whole-chat button (fills the app, not full screen).
  */
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, BarChart3, Brain, CalendarDays, Check, ClipboardCheck, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, FolderInput, FolderMinus, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, Pin, PinOff, RefreshCw, Search, Send, ThumbsUp, Trash2, X } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, RefreshCw, Send, ThumbsUp } from "lucide-react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { MentorLogo } from "@/components/brand/mentor-logo";
+import { ChatSidebar } from "@/components/mentor/chat-sidebar";
 import { CardView, MODES, Mode, Msg, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { useMentorData } from "@/components/mentor/use-mentor-data";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
-import { istDateStr, istHour } from "@/lib/time/ist";
-import { useIsLunar } from "@/lib/looks/use-lunar";
 import type { ChatMeta } from "@/lib/mentor/chat-tree";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { AIResponseParser } from "@/lib/ai/ai-response-parser";
@@ -35,12 +34,6 @@ const STARTERS: { title: string; text: string; mode?: Mode }[] = [
   { title: "Quiz me", text: AUTO.Quiz!, mode: "Quiz" },
   { title: "My weekly review", text: AUTO.Weekly!, mode: "Weekly" },
 ];
-const STARTER_ICON: Record<string, React.ReactNode> = {
-  "Plan my week": <CalendarDays className="h-5 w-5" />, "Review my last test": <ClipboardCheck className="h-5 w-5" />,
-  "Quiz me": <Brain className="h-5 w-5" />, "My weekly review": <BarChart3 className="h-5 w-5" />,
-};
-const noop = () => () => {};
-const greeting = () => { const h = istHour(); return h < 5 ? "Still up" : h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening"; };
 const VOICES: { id: Voice; label: string }[] = [{ id: "Friendly", label: "Friendly" }, { id: "Strict", label: "Strict" }, { id: "Concise", label: "Concise" }];
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -136,24 +129,6 @@ function Pager({ m, onStep }: { m: Msg; onStep: (id: string, d: -1 | 1) => void 
   );
 }
 
-type Section = { label: string; items: ChatMeta[]; folder?: boolean };
-/** History as a tree: pinned chats, then each group as a folder holding its chats, then the chats with no group by India-time day. */
-function sectionsOf(list: ChatMeta[]): Section[] {
-  const pinned: ChatMeta[] = [], groups: Record<string, ChatMeta[]> = {}, dated: Record<string, ChatMeta[]> = {};
-  const today = istDateStr(), yest = istDateStr(new Date(Date.now() - 86400000)), week = istDateStr(new Date(Date.now() - 7 * 86400000));
-  for (const c of list) {
-    if (c.pinned) { pinned.push(c); continue; }
-    if (c.group) { (groups[c.group] ??= []).push(c); continue; }
-    const d = istDateStr(new Date(c.updatedAt));
-    (dated[d === today ? "Today" : d === yest ? "Yesterday" : d >= week ? "Previous 7 days" : "Older"] ??= []).push(c);
-  }
-  return [
-    ...(pinned.length ? [{ label: "Pinned", items: pinned }] : []),
-    ...Object.keys(groups).sort((a, b) => a.localeCompare(b)).map((g) => ({ label: g, items: groups[g], folder: true })),
-    ...["Today", "Yesterday", "Previous 7 days", "Older"].filter((k) => dated[k]?.length).map((k) => ({ label: k, items: dated[k] })),
-  ];
-}
-
 /** The logo doubles as the history toggle, like Gemini's: it shows the logo, and on hover or focus it turns into the collapse (or expand) icon. */
 function LogoToggle({ open, onClick, label }: { open: boolean; onClick: () => void; label: string }) {
   return (
@@ -169,13 +144,10 @@ function ChatScreen() {
   const router = useRouter();
   const params = useSearchParams();
   const d = useMentorData();
-  const lunar = useIsLunar();
-  const greet = useSyncExternalStore(noop, greeting, () => "Welcome");
-  const c = useMentorChat(d.brief);
+  const c = useMentorChat(d.brief, { autoOpen: false });
   const { tier } = useEntitlements();
   const openAuth = useAuthModalStore((st) => st.open);
   const [input, setInput] = useState("");
-  const [query, setQuery] = useState("");
   const [drawer, setDrawer] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [sideOpen, setSideOpen] = useState(true);      // history panel on desktop
@@ -185,10 +157,6 @@ function ChatScreen() {
   const [lines, setLines] = useState(1);
   const [narrow, setNarrow] = useState(false);   // phones: tools always under the text, the box at the bottom, history as a side panel
   useEffect(() => { const mq = window.matchMedia("(max-width: 639px)"); const f = () => setNarrow(mq.matches); f(); mq.addEventListener("change", f); return () => mq.removeEventListener("change", f); }, []);
-  const [closed, setClosed] = useState<Record<string, boolean>>({});   // folders the student collapsed
-  const [renaming, setRenaming] = useState<{ id: string; text: string } | null>(null);
-  const [groupFor, setGroupFor] = useState<string | null>(null);
-  const [newGroup, setNewGroup] = useState("");
   const [editing, setEditing] = useState<{ id: string; text: string } | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
   const [typedDone, setTypedDone] = useState<Set<string>>(new Set());
@@ -203,6 +171,29 @@ function ChatScreen() {
     setMounted(true);
     setSideOpen(store.get("mentor_side", "1") === "1"); setWide(store.get("mentor_wide", "0") === "1");
   }, []);
+  const newFired = useRef(false);
+  useEffect(() => {
+    if (newFired.current || params.get("new") !== "1" || !c.loaded) return;
+    newFired.current = true; c.newChat();
+    router.replace(fromBar ? "/ai-mentor/chat?from=bar" : "/ai-mentor/chat");
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, when the history has loaded
+  }, [c.loaded]);
+  // The address names the open conversation (?chat=<id>), so a refresh keeps it and a link to one works; no address means a new chat.
+  const opening = useRef(false);
+  const urlSynced = useRef<string | null>(null);
+  useEffect(() => {
+    if (!c.loaded) return;
+    const want = params.get("chat");
+    if (want && want !== c.activeId && !opening.current && urlSynced.current !== want) { urlSynced.current = want; opening.current = true; void c.openChat(want).finally(() => { opening.current = false; }); }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- once, when the history has loaded
+  }, [c.loaded]);
+  useEffect(() => {
+    if (!c.loaded || opening.current || params.get("new") === "1") return;
+    const cur = params.get("chat");
+    if (c.activeId && cur !== c.activeId) router.replace(`/ai-mentor/chat?chat=${c.activeId}${fromBar ? "&from=bar" : ""}`);
+    else if (!c.activeId && cur) router.replace(fromBar ? "/ai-mentor/chat?from=bar" : "/ai-mentor/chat");
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- follows the open chat
+  }, [c.activeId, c.loaded]);
   const toggleSide = () => { setSideOpen((v) => { store.set("mentor_side", v ? "0" : "1"); return !v; }); };
   const toggleWide = () => { setWide((v) => { store.set("mentor_wide", v ? "0" : "1"); return !v; }); };
 
@@ -234,83 +225,14 @@ function ChatScreen() {
   const submit = () => { const t = input; if (!t.trim() || c.busy) return; setInput(""); setBig(false); void c.send(t); };
   const copy = async (id: string, text: string) => { try { await navigator.clipboard.writeText(clean(text)); setCopied(id); setTimeout(() => setCopied((x) => (x === id ? null : x)), 1500); } catch { /* clipboard blocked */ } };
   const askDelete = async (m: ChatMeta) => { if (await confirmDialog({ title: "Delete this chat?", message: `"${m.title}" and all its versions will be removed from your account.`, confirmLabel: "Delete", tone: "danger" })) void c.deleteChat(m.id); };
-  const q = query.trim().toLowerCase();
-  const sections = useMemo(() => sectionsOf(c.chats.filter((x) => !q || x.title.toLowerCase().includes(q) || (x.snippet ?? "").includes(q) || (x.group ?? "").toLowerCase().includes(q))), [c.chats, q]);
-  const groupNames = useMemo(() => [...new Set(c.chats.map((x) => x.group).filter(Boolean) as string[])].sort((a, b) => a.localeCompare(b)), [c.chats]);
   const lastId = c.msgs[c.msgs.length - 1]?.id;
   const unanswered = !c.busy && c.msgs.length > 0 && c.msgs[c.msgs.length - 1].role === "user";
 
-  const renderHistory = (inDrawer: boolean) => (
-    <div className="flex h-full min-h-0 flex-col">
-      <div className="mb-3 flex items-center gap-2">
-        <MentorLogo className="h-9" mode="blink" />
-        <span className="min-w-0 flex-1 truncate font-display text-base font-extrabold text-[var(--text-primary)]">AI Mentor</span>
-        <button type="button" onClick={inDrawer ? () => setDrawer(false) : toggleSide} aria-label={inDrawer ? "Close chat history" : "Hide chat history"} title={inDrawer ? "Close" : "Hide history"} className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg text-[var(--text-secondary)] hover:bg-[var(--surface)]/70 hover:text-[var(--text-primary)]"><PanelLeftClose className="h-[18px] w-[18px]" /></button>
-      </div>
-      {c.signedIn && <button type="button" onClick={() => { c.newChat(); setDrawer(false); }} className="btn-main !h-10 w-full justify-center !text-sm"><MessageSquarePlus className="h-4 w-4" /> New chat</button>}
-      {!c.signedIn ? (
-        <div className="mt-3 rounded-2xl bg-[var(--surface)] p-4 text-sm text-[var(--text-secondary)]">
-          <p className="font-bold text-[var(--text-primary)]">This is a temporary chat</p>
-          <p className="mt-1">It is not saved and disappears when you leave. Sign in to keep your chats, search them and use them on your other devices.</p>
-          <button type="button" onClick={() => openAuth("signup")} className="btn-main mt-3 !h-10 w-full justify-center !text-sm">Sign in to save</button>
-        </div>
-      ) : (<>
-      <label className="relative mt-3 block">
-        <Search aria-hidden className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" />
-        <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search chats" aria-label="Search chats" className="h-10 w-full rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] pl-9 pr-3 text-sm outline-none focus:border-[var(--tint-sky-ink)]" />
-      </label>
-      <nav aria-label="Chat history" className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
-        {sections.length === 0 && <p className="px-2 text-sm text-[var(--text-muted)]">{q ? "No chats match." : "Your chats will appear here."}</p>}
-        {sections.map((g) => (
-          <div key={g.label}>
-            {g.folder ? (
-              <button type="button" onClick={() => setClosed((v) => ({ ...v, [g.label]: !v[g.label] }))} aria-expanded={!closed[g.label]} className="flex w-full cursor-pointer items-center gap-2 rounded-xl bg-[var(--surface)]/55 px-2.5 py-2 text-left text-sm font-extrabold text-[var(--text-primary)] hover:bg-[var(--surface)]/80">
-                <ChevronRight className={`h-3.5 w-3.5 transition-transform ${closed[g.label] ? "" : "rotate-90"}`} />
-                                <span className="min-w-0 flex-1 truncate">{g.label}</span><span className="rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-bold text-[var(--text-secondary)]">{g.items.length}</span>
-              </button>
-            ) : <p className="px-2.5 pb-1 text-xs font-bold text-[var(--text-secondary)]">{g.label}</p>}
-            <ul className={`space-y-0.5 ${g.folder ? "folder-kids ml-5 mt-1 pl-3" : ""} ${g.folder && closed[g.label] ? "hidden" : ""}`}>
-              {g.items.map((m) => (
-                <li key={m.id} className={`rounded-xl ${m.id === c.activeId ? "bg-[var(--surface)] shadow-sm" : "hover:bg-[var(--surface)]/60"}`}>
-                  <div className="group flex items-center gap-1 px-2 py-1.5">
-                    {renaming?.id === m.id ? (
-                      <input autoFocus value={renaming.text} aria-label="Chat name" maxLength={80} onChange={(e) => setRenaming({ id: m.id, text: e.target.value })}
-                        onKeyDown={(e) => { if (e.key === "Enter") { void c.renameChat(m.id, renaming.text); setRenaming(null); } if (e.key === "Escape") setRenaming(null); }}
-                        onBlur={() => { void c.renameChat(m.id, renaming.text); setRenaming(null); }}
-                        className="h-8 min-w-0 flex-1 rounded-lg border-2 border-[var(--tint-sky-ink)] bg-[var(--surface)] px-2 text-sm outline-none" />
-                    ) : (
-                      <button type="button" onClick={() => { void c.openChat(m.id); setDrawer(false); }} aria-current={m.id === c.activeId ? "true" : undefined} className="min-w-0 flex-1 cursor-pointer truncate text-left text-sm text-[var(--text-primary)]" title={m.title}>{m.title}</button>
-                    )}
-                    {renaming?.id !== m.id && (
-                      <span className="flex shrink-0 items-center opacity-100 lg:opacity-0 lg:transition-opacity lg:group-focus-within:opacity-100 lg:group-hover:opacity-100">
-                        <button type="button" onClick={() => c.pinChat(m.id)} aria-label={m.pinned ? "Unpin chat" : "Pin chat"} title={m.pinned ? "Unpin" : "Pin"} className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]">{m.pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}</button>
-                        <button type="button" onClick={() => { setGroupFor(groupFor === m.id ? null : m.id); setNewGroup(""); }} aria-label="Move to a group" title="Move to a group" aria-expanded={groupFor === m.id} className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><FolderInput className="h-3.5 w-3.5" /></button>
-                        <button type="button" onClick={() => setRenaming({ id: m.id, text: m.title })} aria-label="Rename chat" title="Rename" className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><Pencil className="h-3.5 w-3.5" /></button>
-                        <button type="button" onClick={() => void askDelete(m)} aria-label="Delete chat" title="Delete" className="cursor-pointer rounded-md p-1 text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] hover:text-[var(--tint-rose-ink)]"><Trash2 className="h-3.5 w-3.5" /></button>
-                      </span>
-                    )}
-                  </div>
-                  {groupFor === m.id && (
-                    <div role="menu" aria-label="Move to a group" className="mx-2 mb-2 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)] shadow-md">
-                      <p className="border-b border-[var(--border)] px-3 py-1.5 text-xs font-bold text-[var(--text-secondary)]">Move to</p>
-                      <ul className="max-h-40 overflow-y-auto py-1">
-                        <li><button type="button" role="menuitem" onClick={() => { void c.setChatGroup(m.id, ""); setGroupFor(null); }} className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><FolderMinus className="h-4 w-4" /><span className="flex-1">No group</span>{!m.group && <Check className="h-4 w-4" />}</button></li>
-                        {groupNames.map((n) => <li key={n}><button type="button" role="menuitem" onClick={() => { void c.setChatGroup(m.id, n); setGroupFor(null); }} className="flex w-full cursor-pointer items-center gap-2 px-3 py-1.5 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><span className="min-w-0 flex-1 truncate">{n}</span>{m.group === n && <Check className="h-4 w-4" />}</button></li>)}
-                      </ul>
-                      <form className="flex items-center gap-1.5 border-t border-[var(--border)] p-2" onSubmit={(e) => { e.preventDefault(); if (newGroup.trim()) { void c.setChatGroup(m.id, newGroup); setGroupFor(null); } }}>
-                        <input value={newGroup} onChange={(e) => setNewGroup(e.target.value)} maxLength={40} placeholder="New group" aria-label="New group name" className="h-8 min-w-0 flex-1 rounded-lg border border-[var(--border)] bg-[var(--surface-secondary)] px-2 text-sm outline-none focus:border-[var(--tint-lilac-ink)]" />
-                        <button type="submit" disabled={!newGroup.trim()} className="grid h-8 shrink-0 cursor-pointer place-items-center rounded-lg bg-[var(--tint-lilac-ink)] px-3 text-sm font-bold text-white disabled:opacity-40">Create</button>
-                      </form>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </nav>
-      </>)}
-    </div>
+  const sidebar = (inDrawer: boolean) => (
+    <ChatSidebar chats={c.chats} activeId={c.activeId} signedIn={c.signedIn} inDrawer={inDrawer}
+      onOpen={(id) => { void c.openChat(id); setDrawer(false); }} onNew={() => { c.newChat(); setDrawer(false); }}
+      onPin={(id) => c.pinChat(id)} onRename={(id, text) => void c.renameChat(id, text)} onMove={(id, folder) => void c.setChatGroup(id, folder)}
+      onDelete={(m) => void askDelete(m)} onSignIn={() => openAuth("signup")} onClose={inDrawer ? () => setDrawer(false) : toggleSide} />
   );
 
   const empty = c.msgs.length === 0 && !c.busy;
@@ -361,25 +283,7 @@ function ChatScreen() {
   );
 
   // A new chat opens like Gemini's: a greeting, the box in the middle, suggestions under it. After the first message the box docks at the bottom.
-  const weakest = d.weakTopics.filter((x) => x.attempts > 0).sort((a, b) => a.score - b.score)[0];
-  const centred = lunar ? (
-    <div className="mentor-stage mentor-home mx-auto flex h-full w-full max-w-3xl flex-col justify-center px-1">
-      <p className="mentor-home__hi">{greet}{d.firstName ? `, ${d.firstName}` : ""}.</p>
-      <h2 className="mentor-home__q">What shall we work on?</h2>
-      {composerBlock}
-      <ul className="mentor-home__tiles">
-        {STARTERS.map((st) => (
-          <li key={st.title}>
-            <button type="button" onClick={() => { if (st.mode) c.setMode(st.mode); void c.send(st.text, st.mode ?? "Ask"); }}>
-              <span className="mentor-home__ico">{STARTER_ICON[st.title]}</span>
-              <span className="mentor-home__t">{st.title}</span>
-              <span className="mentor-home__s">{st.title === "Quiz me" && weakest ? `Start with ${weakest.topic}` : st.text}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  ) : (
+  const centred = (
     <div className="mentor-stage mx-auto flex h-full w-full max-w-3xl flex-col justify-center px-1">
       <h2 className="mb-5 text-center font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl">What shall we work on?</h2>
       {composerBlock}
@@ -397,14 +301,18 @@ function ChatScreen() {
 
   const body = (
     <div className={`flex w-full gap-3 ${wide ? "h-full" : "h-[calc(100dvh-9.5rem)] min-h-[26rem]"}`} data-fill-height="always">
-      {sideOpen && !lunar && <aside aria-label="Chats" className="ai-panel hidden w-64 shrink-0 p-3 lg:block">{renderHistory(false)}</aside>}
+      <motion.aside aria-label="Chats" aria-hidden={!sideOpen} initial={false}
+        animate={{ width: sideOpen ? 284 : 0, opacity: sideOpen ? 1 : 0, marginRight: sideOpen ? 0 : -12 }} transition={{ type: "spring", stiffness: 360, damping: 38 }}
+        style={{ pointerEvents: sideOpen ? "auto" : "none" }} className="mentor-side hidden shrink-0 overflow-hidden lg:block">
+        <div className="h-full w-[284px] p-3">{sidebar(false)}</div>
+      </motion.aside>
       {/* Phone history drawer, portalled to <body>: the page container is transformed, which would trap a fixed drawer under the top bar. */}
       {mounted && createPortal(<AnimatePresence>
         {drawer && (
-          <div className={`fixed inset-0 z-[300] ${lunar ? "" : "lg:hidden"}`}>
+          <div className="fixed inset-0 z-[300] lg:hidden">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDrawer(false)} className="absolute inset-0 bg-black/30" />
-            <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" style={{ position: "absolute" }} className="ai-panel inset-y-0 left-0 h-full w-[18.5rem] max-w-[86vw] !rounded-l-none !rounded-r-3xl p-3 pt-4 shadow-2xl">
-              <div className="h-full">{renderHistory(true)}</div>
+            <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" style={{ position: "absolute" }} className="mentor-side inset-y-0 left-0 h-full w-[18.5rem] max-w-[86vw] !rounded-l-none !rounded-r-3xl p-3 pt-4 shadow-2xl">
+              <div className="h-full">{sidebar(true)}</div>
             </motion.aside>
           </div>
         )}
@@ -412,8 +320,8 @@ function ChatScreen() {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="mb-2 flex flex-wrap items-center gap-2">
-          <button type="button" onClick={() => setDrawer(true)} className={`btn-soft !h-10 !px-3 text-sm ${lunar ? "" : "lg:hidden"}`} aria-label="Chat history"><History className="h-4 w-4" /></button>
-          {!sideOpen && !lunar && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
+          <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
+          {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
           {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
           {tier !== "pro" && <Link href="/pro" className="ml-auto inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorLogo className="h-5" /> Upgrade</Link>}
@@ -426,7 +334,6 @@ function ChatScreen() {
           <div ref={listRef} hidden={empty && !narrow} style={{ paddingBottom: composerH + 24 }} className="custom-scrollbar absolute inset-0 space-y-4 overflow-y-auto pr-1" aria-live="polite">
             {empty && narrow && (
               <div className="pt-2">
-                {lunar && <p className="mentor-home__hi">{greet}{d.firstName ? `, ${d.firstName}` : ""}.</p>}
                 <h2 className="mb-3 text-center font-display text-2xl font-extrabold text-[var(--text-primary)]">What shall we work on?</h2>
                 <ul className="space-y-1.5">
                   {STARTERS.map((st) => (

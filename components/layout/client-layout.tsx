@@ -8,10 +8,10 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { Topbar } from "./topbar";
 import { BottomTabBar } from "./bottom-tab-bar";
-import { LunarDock } from "./lunar-dock";
 import { startTimeSync } from "@/lib/time/server-time";
 import { PlanExpiryNotice } from "@/components/billing/plan-expiry-notice";
 import { UpgradeModalHost } from "@/components/billing/upgrade-modal";
+import { ChallengePromptHost } from "@/components/battles/challenge-prompt";
 import { PostPurchaseTour } from "@/components/billing/post-purchase-tour";
 import { SpacedRevisionSync } from "@/components/planner/spaced-revision-sync";
 import { TelegramActionsSync } from "@/components/planner/telegram-actions-sync";
@@ -210,7 +210,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           shows through its glass/blur regardless of how the content below is
           structured. */}
       <Topbar />
-      <LunarDock />
       <SmoothScroll />
       {/* <main> itself no longer owns the scroll — it's a full-height,
           non-scrolling passthrough. The actual scrolling element is the inner
@@ -225,7 +224,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           topbar is the only way to keep the scrollbar from ever reaching that
           region. */}
       <main className="relative z-10 w-full h-full overflow-hidden">
-        <div id="app-scroll" className={`absolute inset-x-0 bottom-0 top-[72px] overflow-y-auto [scrollbar-gutter:stable_both-edges] custom-scrollbar px-2 sm:px-4 pt-3 sm:pt-4 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-20"} lg:pb-8`}>
+        <div id="app-scroll" className={`absolute inset-x-0 bottom-0 top-[72px] overflow-y-auto [scrollbar-gutter:stable_both-edges] custom-scrollbar px-2 sm:px-4 pt-3 sm:pt-4 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-28"} lg:pb-8`}>
           <motion.div
             key={pathname}
             initial={{ opacity: 0, y: 8 }}
@@ -243,6 +242,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <TelegramActionsSync />
       <SpacedRevisionSync />
       <UpgradeModalHost />
+      <ChallengePromptHost />
       <PostPurchaseTour />
       {!pathname?.startsWith("/exam/results") && <BottomTabBar />}
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />

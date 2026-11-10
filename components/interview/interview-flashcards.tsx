@@ -27,8 +27,9 @@ export function InterviewFlashcards() {
   const [failed, setFailed] = useState(false);
   const [book, setBook] = useState(() => (typeof window === "undefined" ? "all" : new URLSearchParams(window.location.search).get("book") ?? "all"));
   const [type, setType] = useState<"all" | Card["type"]>("all");
-  const [star, setStar] = useState<"all" | "star">("all");
-  const [size, setSize] = useState<"10" | "20" | "40">("20");
+  const cram = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("cram") === "1";   // "10-minute cram" from Last moments
+  const [star, setStar] = useState<"all" | "star">(cram ? "star" : "all");
+  const [size, setSize] = useState<"10" | "20" | "40">(cram ? "40" : "20");
   const [mode, setMode] = useState<"due" | "new" | "all">("due");
   const [seed, setSeed] = useState(11);
   const [sr, setSr] = useState<SR>(() => (typeof window === "undefined" ? {} : readSR()));
@@ -70,6 +71,7 @@ export function InterviewFlashcards() {
     const next = { ...sr, [card.id]: { box, due: Date.now() + GAP_DAYS[box] * 86_400_000 } };
     setSr(next); writeSR(next);
     setResults((r) => ({ ...r, [card.id]: ok }));
+    void fetch("/api/interview/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ attempt: { kind: "card", id: card.id, ok, detail: { q: card.front.slice(0, 160), note: card.ch } } }) }).catch(() => undefined);
     go(1);
   }, [card, sr, go]);
 

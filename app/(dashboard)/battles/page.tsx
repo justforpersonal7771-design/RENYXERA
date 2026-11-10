@@ -10,13 +10,14 @@ import { Swords, Hourglass, Trophy, Link2, Loader2, RotateCcw, ChevronDown } fro
 import { PlanCompare } from "@/components/preview/plan-compare";
 import { FriendsPanel } from "@/components/friends/friends-panel";
 import { ArenaLeaderboard } from "@/components/friends/arena-leaderboard";
+import { ArenaStats } from "@/components/battles/arena-stats";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 type Entry = { userId: string; name: string; status: "opened" | "started" | "submitted" | "abandoned"; answered: number; total: number; score: number | null; maxScore: number | null; submittedAt: string | null; lastSeenAt: string; you: boolean; attemptId?: string | null };
-type Battle = { id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; invited?: boolean; entries: Entry[] };
+type Battle = { invite?: { at: string | null; playNow: boolean; scheduledAt: string | null } | null; id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; invited?: boolean; entries: Entry[] };
 
 const STATUS: Record<Entry["status"], { label: string; tint: string }> = {
   opened: { label: "Opened the link", tint: "sky" }, started: { label: "Playing now", tint: "butter" }, submitted: { label: "Submitted", tint: "mint" }, abandoned: { label: "Left", tint: "rose" },
@@ -67,6 +68,8 @@ export default function BattlesPage() {
           <span className="text-sm text-[var(--text-muted)]">{tier === "free" ? `${Math.min(active, 3)} of 3 active battles on Free` : "Unlimited battles"}</span>
         </div>
       </section>
+
+      {user ? <ArenaStats /> : null}
 
       {user ? <FriendsPanel /> : null}
       {user ? <ArenaLeaderboard /> : null}

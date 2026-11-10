@@ -36,7 +36,7 @@ function Library({ track }: { track?: string }) {
   const all0 = [...TRACKS, ...(extra.length ? [{ id: "more", title: "More", blurb: "", tint: "sky" as const, books: extra }] : [])];
   const groups = track ? all0.filter((g) => g.id === track) : all0;
   const one = track ? groups[0] : undefined;
-  if (track && !one) return <p className="text-[var(--text-secondary)]">That track does not exist. <Link href="/interview/read" className="font-bold underline">Back to the library</Link></p>;
+  if (track && !one) return <p className="text-[var(--text-secondary)]">That track does not exist. <Link href="/interview/read" className="font-bold underline">Back to the books</Link></p>;
   const oneBooks = one ? one.books.filter((b) => byBook.has(b)) : [];
   const oneDocs = oneBooks.flatMap((b) => byBook.get(b)!);
   return (
@@ -49,8 +49,8 @@ function Library({ track }: { track?: string }) {
           <p className="mt-3 text-sm font-bold text-[var(--text-secondary)]">{oneBooks.length} books · {oneDocs.length} lessons · <span className="font-num">{oneDocs.filter((d) => done.has(d.id)).length}</span> read</p>
         </section>
       ) : (
-      <section className="card-pastel p-6 sm:p-8" data-tint="butter" aria-label="Library">
-        <span className="section-label"><BookOpenText className="h-3.5 w-3.5" /> Library</span>
+      <section className="card-pastel p-6 sm:p-8" data-tint="butter" aria-label="Books">
+        <span className="section-label"><BookOpenText className="h-3.5 w-3.5" /> Books</span>
         <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.1] text-[var(--text-primary)] sm:text-4xl">{byBook.size} books, {docs.length} lessons,<br />one path to the interview.</h1>
         <p className="mt-2 max-w-2xl text-[var(--text-secondary)]">Pick a track. Every lesson ends with a check-yourself, and anything you select can be highlighted, noted or sent to the tutor.</p>
       </section>
@@ -97,7 +97,7 @@ function Chapters({ book }: { book: string }) {
   const [star, setStar] = useState(false);
   const ds = useMemo(() => docs.filter((d) => d.book === book).sort((a, b) => (KIND_GROUP[a.kind]?.order ?? 9) - (KIND_GROUP[b.kind]?.order ?? 9) || a.ord - b.ord), [docs, book]);
   if (!ready) return <div className="skeleton-shimmer h-64 rounded-3xl" aria-hidden />;
-  if (!ds.length) return <p className="text-[var(--text-secondary)]">That book is not in the library.</p>;
+  if (!ds.length) return <p className="text-[var(--text-secondary)]">That book is not available.</p>;
   const t = trackOf(book), chapters = ds.filter((d) => d.kind === "chapter"), back = ds.filter((d) => d.kind !== "chapter");
   const n = ds.filter((d) => done.has(d.id)).length;
   const last = [...progress].filter((p) => p.doc_id.startsWith(book + ":")).sort((a, b) => b.updated_at.localeCompare(a.updated_at))[0];
@@ -221,7 +221,7 @@ function Lesson({ id }: { id: string }) {
   const prev = siblings[idx - 1], next = siblings[idx + 1];
   return (
     <div className="grid gap-6 lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[230px_minmax(0,1fr)_320px] [&>*]:min-w-0">
-      <nav aria-label="In this chapter" className="lg:sticky lg:top-[calc(var(--sticky-top,8px)+64px)] lg:max-h-[calc(100dvh-11.5rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pr-2">
+      <nav aria-label="In this chapter" className="no-scrollbar lg:sticky lg:top-[calc(var(--sticky-top,-8px)+112px)] lg:max-h-[calc(100dvh-13rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain lg:pr-2">
         <Link href={`/interview/read?book=${encodeURIComponent(book)}`} className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><ArrowLeft className="h-4 w-4" /> All chapters</Link>
         <div className="mb-3 block" aria-label="Jump to another chapter">
           <CustomDropdown listWidth={440} value={id} onChange={(v) => router.push(`/interview/read?doc=${encodeURIComponent(v)}`)} options={siblings.map((d) => ({ label: `${done.has(d.id) ? "✓ " : ""}${d.title}`, value: d.id }))} /></div>
@@ -258,7 +258,7 @@ function Lesson({ id }: { id: string }) {
         </div>
       </article>
 
-      <aside className="space-y-4 xl:sticky xl:top-[calc(var(--sticky-top,8px)+64px)] xl:max-h-[calc(100dvh-11.5rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:pr-1" aria-label="Lesson tools">
+      <aside className="no-scrollbar space-y-4 xl:sticky xl:top-[calc(var(--sticky-top,-8px)+112px)] xl:max-h-[calc(100dvh-13rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain xl:pr-1" aria-label="Lesson tools">
         <div className="card-pastel p-5" data-tint="mint">
           <p className="text-sm font-semibold text-[var(--text-secondary)]">This book</p>
           <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{siblings.filter((d) => done.has(d.id)).length} of {siblings.length} read</p>

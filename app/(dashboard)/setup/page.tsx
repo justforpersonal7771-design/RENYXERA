@@ -26,6 +26,10 @@ import { GoalTagBadge } from "@/components/ui/goal-tag-badge";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
+import { VsScreen } from "@/components/battles/vs-screen";
+import { DatePicker } from "@/components/ui/date-picker";
+import { TimePicker } from "@/components/ui/time-picker";
+import { istDateStr } from "@/lib/time/ist";
 
 import { formatNatAnswer } from "@/lib/grading";
 const mathJaxConfig = {
@@ -92,6 +96,11 @@ export default function ExamSetupPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deepSource]);
   const [deploying, setDeploying] = useState(false);
+  // Challenging a friend: play now (they get a live prompt if they are on the site) or at a set time (IST).
+  const [chWhen, setChWhen] = useState<"now" | "later">("now");
+  const [chDate, setChDate] = useState(() => istDateStr());
+  const [chTime, setChTime] = useState("20:00");
+  const [vs, setVs] = useState<{ done: () => void } | null>(null);
 
   // Live stats for the selected Official Year Paper — the Volume field only shows for
   // non-YEAR_PAPER modes, so this was the one deployment type with no feedback at all
@@ -1022,7 +1031,7 @@ export default function ExamSetupPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 40 }}
                     transition={{ duration: 0.2 }}
-                    className="lunar-lift fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-5 py-3.5 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl"
+                    className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-5 py-3.5 bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-2xl"
                   >
                     <div>
                       <span className="text-[9px] font-black uppercase text-[var(--text-muted)] block tracking-wide">Selected</span>
@@ -1396,6 +1405,25 @@ export default function ExamSetupPage() {
                           <span>Graded paper: tab switches, leaving fullscreen and pauses are recorded with your attempt. They never change your score.</span>
                         </p>
                       )}
+                      {searchParams.get("challenge") === "1" && searchParams.get("to") ? (
+                        <div className="mb-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)] p-3" role="group" aria-label="When to play">
+                          <p className="text-sm font-bold text-[var(--text-primary)]">Challenge {searchParams.get("name") ?? "your friend"}</p>
+                          <div className="mt-2 flex gap-2">
+                            {([["now", "Play now"], ["later", "Schedule"]] as const).map(([k, l]) => (
+                              <button key={k} type="button" aria-pressed={chWhen === k} onClick={() => setChWhen(k)}
+                                className={`flex-1 cursor-pointer rounded-full border px-3 py-1.5 text-sm font-bold ${chWhen === k ? "border-transparent bg-[var(--text-primary)] text-[var(--surface)]" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)]"}`}>{l}</button>
+                            ))}
+                          </div>
+                          {chWhen === "later" ? (
+                            <div className="mt-3 grid grid-cols-2 gap-2">
+                              <DatePicker value={chDate} onChange={setChDate} min={istDateStr()} placeholder="Day" />
+                              <TimePicker value={chTime} onChange={setChTime} />
+                            </div>
+                          ) : null}
+                          <p className="mt-2 text-xs text-[var(--text-muted)]">{chWhen === "now" ? "If they are on the site they get a prompt right away; otherwise it waits in their Battles." : "They see it in Battles at that time (IST) and get a reminder badge."}</p>
+                        </div>
+                      ) : null}
+                      {vs ? <VsScreen me="You" opponent={searchParams.get("name") ?? "Friend"} title={currentDraft.config.title ?? "New challenge"} onDone={() => { vs.done(); setVs(null); }} /> : null}
                       <motion.button
                         whileTap={{ scale: 0.97 }}
                         disabled={deploying}
@@ -1409,6 +1437,13 @@ export default function ExamSetupPage() {
                               const r = await fetch("/api/battles", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question_ids: currentDraft.questions.map((q) => q.questionId), title: currentDraft.config.title ?? undefined }) });
                               const j = (await r.json().catch(() => ({}))) as { id?: string; error?: string };
                               if (!r.ok || !j.id) { setDeploying(false); useToastStore.getState().show(j.error ?? "Sign in to start a challenge.", "error"); return; }
+                              // "Challenge" on a friend's row: send them the invite right away, so it shows in their "Challenges for you".
+                              const to = searchParams.get("to");
+                              if (to && /^[0-9a-f-]{36}$/i.test(to)) {
+                                const when = chWhen === "later" ? new Date(`${chDate}T${chTime}:00+05:30`) : null;
+                                await fetch(`/api/battles/${j.id}/invite`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ userIds: [to], ...(when && !Number.isNaN(when.getTime()) ? { scheduledAt: when.toISOString() } : { playNow: true }) }) }).catch(() => {});
+                                if (chWhen === "now") await new Promise<void>((done) => setVs({ done }));
+                              }
                               currentDraft.config = { ...currentDraft.config, battle: { id: j.id } } as typeof currentDraft.config;
                               try { sessionStorage.setItem("renyxera_new_challenge", j.id); } catch { /* private mode */ }
                             }

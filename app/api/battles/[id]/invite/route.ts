@@ -11,7 +11,7 @@ export const runtime = "nodejs";
  */
 const MAX_PER_CALL = 10;
 const MAX_PER_BATTLE = 30;
-const body = z.object({ userIds: z.array(z.string().regex(UUID_RE)).min(1).max(MAX_PER_CALL) });
+const body = z.object({ userIds: z.array(z.string().regex(UUID_RE)).min(1).max(MAX_PER_CALL), playNow: z.boolean().optional(), scheduledAt: z.string().datetime().optional() });
 
 async function ownBattle(db: Db, id: string, userId: string) {
   if (!UUID_RE.test(id)) return null;
@@ -50,7 +50,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
   const { count } = await db.from("battle_invites").select("user_id", { count: "exact", head: true }).eq("battle_id", id);
   if ((count ?? 0) + allowed.length > MAX_PER_BATTLE) return NextResponse.json({ error: `One battle can go to ${MAX_PER_BATTLE} friends.` }, { status: 403 });
-  const { error } = await db.from("battle_invites").upsert(allowed.map((u) => ({ battle_id: id, user_id: u, invited_by: me })), { onConflict: "battle_id,user_id", ignoreDuplicates: true });
+  // When to play: now (a live prompt if the friend is active) or at a set time within the next 7 days. Needs migration 0058; without it the invite is sent plain.
+  const at = parsed.data.scheduledAt ? Date.parse(parsed.data.scheduledAt) : NaN;
+  if (parsed.data.scheduledAt && (!(at > Date.now() - 60_000) || at > Date.now() + 7 * 86_400_000)) return NextResponse.json({ error: "Pick a time within the next 7 days." }, { status: 400 });
+  const timing = { play_now: !!parsed.data.playNow && !parsed.data.scheduledAt, scheduled_at: parsed.data.scheduledAt ?? null };
+  const plain = allowed.map((u) => ({ battle_id: id, user_id: u, invited_by: me }));
+  let { error } = await db.from("battle_invites").upsert(allowed.map((u) => ({ battle_id: id, user_id: u, invited_by: me, ...timing })), { onConflict: "battle_id,user_id", ignoreDuplicates: true });
+  if (error) ({ error } = await db.from("battle_invites").upsert(plain, { onConflict: "battle_id,user_id", ignoreDuplicates: true }));
   if (error) return NextResponse.json({ error: "Couldn't send the challenge right now." }, { status: 503 });
   return NextResponse.json({ ok: true, sent: allowed.length });
 }

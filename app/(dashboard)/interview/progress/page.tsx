@@ -48,7 +48,7 @@ function Progress() {
   }, [att]);
 
   return (
-    <div className="flex w-full min-w-0 flex-col gap-4 lg:h-[calc(100dvh-18.5rem)] lg:min-h-[380px]">
+    <div className="flex w-full min-w-0 flex-col gap-4 lg:h-[calc(100dvh-21.5rem)] lg:min-h-[380px]">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h1 className="font-display text-2xl font-extrabold text-[var(--text-primary)]">Progress and mistakes</h1>
         <p className="text-sm font-bold text-[var(--text-secondary)]"><span className="font-num">{read}</span> of {total} lessons read · <span className="font-num">{tries}</span> tries · <span className="font-num">{mistakes.filter((m) => !m.solved).length}</span> to fix</p>

@@ -4,16 +4,32 @@ import { createServiceRoleClient } from "@/lib/supabase/service-role";
 
 export const runtime = "nodejs";
 const NO = { "Cache-Control": "private, no-store" };
+const KINDS = ["chapter", "revision", "glossary", "traps", "snippets"];
 
-/** No id: the list of documents (no bodies) plus this user's progress. With ?id=: one document. 404 for everyone without access. */
+/**
+ * No parameters: the list of documents (no bodies) plus this user's progress.
+ * ?id=ID: one document with its body.
+ * ?kind=revision&books=a,b,c: the bodies of every document of that kind in those books (the "Last moments" pages), at most 40.
+ * 404 for everyone without access.
+ */
 export async function GET(req: NextRequest) {
   const { ok, userId } = await interviewAccess();
   if (!ok || !userId) return new NextResponse(null, { status: 404 });
   const db = createServiceRoleClient();
-  const id = req.nextUrl.searchParams.get("id");
+  const sp = req.nextUrl.searchParams;
+  const id = sp.get("id");
   if (id) {
     const { data } = await db.from("interview_docs").select("id,book,book_title,kind,title,body,meta").eq("id", id).maybeSingle();
     return data ? NextResponse.json(data, { headers: NO }) : new NextResponse(null, { status: 404 });
+  }
+  const kind = sp.get("kind");
+  if (kind) {
+    if (!KINDS.includes(kind)) return NextResponse.json({ error: "Bad kind" }, { status: 400 });
+    const books = (sp.get("books") ?? "").split(",").map((b) => b.trim()).filter(Boolean).slice(0, 40);
+    let q = db.from("interview_docs").select("id,book,book_title,kind,ord,title,body").eq("kind", kind).order("book").limit(40);
+    if (books.length) q = q.in("book", books);
+    const { data } = await q;
+    return NextResponse.json({ docs: data ?? [] }, { headers: NO });
   }
   // Labs carry their expected output in meta (up to 8 KB each); the list only needs their language, so it is picked out instead of sent whole.
   const [docs0, labs0, prog] = await Promise.all([

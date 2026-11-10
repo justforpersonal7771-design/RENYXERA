@@ -22,7 +22,7 @@ const loadCheckout = () => new Promise<boolean>((resolve) => {
 });
 
 /** "AI Mentor recharges": small one-off packs for students who run out of daily Mentor messages. Buying works for any signed-in student (Free included); until payments are on, "Notify me". */
-export function MentorRecharges({ compact = false }: { compact?: boolean }) {
+export function MentorRecharges(_props: { compact?: boolean }) {
   const signedIn = useAuthStore((s) => !!s.user);
   const live = BILLING_MODE !== "interest";
   const [noted, setNoted] = useState<string[]>([]);
@@ -81,7 +81,7 @@ export function MentorRecharges({ compact = false }: { compact?: boolean }) {
           : <span className="rounded-full bg-[var(--tint-butter)] px-2.5 py-0.5 text-[11px] font-black text-[var(--tint-butter-ink)]">Coming soon</span>}
       </div>
       <p className="mt-1 text-sm text-[var(--text-secondary)]">Ran out of Mentor messages for today? A recharge adds more, used after your daily allowance. It lasts {TOPUP_EXPIRY_DAYS} days and works on any plan, Free included. A recharge never unlocks Pro features.</p>
-      <div className={`mt-4 grid gap-3 ${compact ? "grid-cols-1" : "sm:grid-cols-3"}`}>
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
         {TOPUP_PACKS.map((p) => {
           const small = costInSmallPacksPaise(p);
           const done = noted.includes(p.id);

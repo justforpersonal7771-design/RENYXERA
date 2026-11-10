@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { LogIn, LayoutGrid, IdCard, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown, Send, Swords } from "lucide-react";
+import { LogIn, LayoutGrid, IdCard, Palette, Smile, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown, Send, Swords } from "lucide-react";
 import { ProCrown } from "@/components/brand/pro-crown";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -19,8 +19,10 @@ import { hasJoinedChannel, useTelegramState } from "@/components/growth/use-tele
 import { SocialDot } from "@/components/friends/social-dot";
 
 const ITEMS = [
-  { id: "overview", label: "Overview", icon: LayoutGrid, tint: "from-indigo-500 to-violet-600" },
   { id: "personal", label: "Personal info", icon: IdCard, tint: "from-fuchsia-500 to-pink-600" },
+  { id: "overview", label: "Overview", icon: LayoutGrid, tint: "from-indigo-500 to-violet-600" },
+  { id: "avatar", label: "Avatar studio", icon: Smile, tint: "from-pink-500 to-rose-600" },
+  { id: "design", label: "Design studio", icon: Palette, tint: "from-violet-500 to-purple-600" },
   { id: "goals", label: "Exam goals", icon: Target, tint: "from-cyan-500 to-sky-600" },
   { id: "preferences", label: "Preferences", icon: SlidersHorizontal, tint: "from-violet-500 to-purple-600" },
   { id: "security", label: "Account & security", icon: ShieldCheck, tint: "from-emerald-500 to-teal-600" },
@@ -159,13 +161,13 @@ export function AccountButton() {
                   <img src={avatarUri} alt="" className="w-full h-full" width={64} height={64} />
                 </span>
                 <span className="relative min-w-0 flex-1">
-                  <span className="block text-sm font-bold text-[var(--text-primary)] truncate">{name}</span>
+                  <span className="flex items-center gap-1.5"><span className="block min-w-0 truncate text-sm font-bold text-[var(--text-primary)]">{name}</span>{(pro || plus) && <span className={`pro-badge shrink-0 ${plus ? "is-silver" : ""}`}>{pro ? "PRO" : "PLUS"}</span>}</span>
                   <span className="block text-[11px] text-[var(--text-muted)] truncate">{profile?.username ? `@${profile.username}` : user.email}</span>
                   {profile?.student_id && <span className="mt-0.5 inline-block font-mono text-[10px] font-semibold text-violet-600 dark:text-violet-300">{profile.student_id}</span>}
                 </span>
               </Link>
 
-              <div className="relative" onMouseLeave={() => setHover(null)}>
+              <div className="no-scrollbar relative max-h-[min(46vh,20rem)] overflow-y-auto overscroll-contain" onMouseLeave={() => setHover(null)}>
                 {ITEMS.map((it, i) => (
                   <motion.div key={it.id} initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.02 * i }}>
                     <Link href={`/profile#${it.id}`} role="menuitem" onClick={goSection(it.id)} onMouseEnter={() => setHover(it.id)} onFocus={() => setHover(it.id)}

@@ -3,7 +3,7 @@
 /** Tutor: a mock interviewer (a real question from your bank, your typed answer scored against the book's model answer) and a free chat. */
 import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, Loader2, RotateCcw, Sparkles, Target } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { IvTutorPanel, type TutorSeed } from "@/components/interview/iv-tutor-panel";
@@ -102,7 +102,9 @@ function Mock({ initialTrack }: { initialTrack: string }) {
 
 function Tutor() {
   const sp = useSearchParams();
-  const [tab, setTab] = useState<"mock" | "chat">(sp.get("mode") === "mock" || sp.get("track") ? "mock" : "chat");
+  const router = useRouter();
+  const tab: "mock" | "chat" = sp.get("mode") === "chat" ? "chat" : "mock";
+  const setTab = (k: "mock" | "chat") => router.replace(`/interview/tutor?mode=${k}${sp.get("track") ? `&track=${sp.get("track")}` : ""}`);
   const seed = useMemo<TutorSeed>(() => ({ key: "free", mode: "chat" }), []);
   return (
     <div className="space-y-4">

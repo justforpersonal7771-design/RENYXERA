@@ -3,7 +3,7 @@
 /** Interview home: what to do today (practise, test, fix, ask), where you stopped, and how each track is going. All numbers are yours. */
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, Brain, ClipboardCheck, Code2, Database, NotebookPen, Sparkles, Target, Wrench } from "lucide-react";
+import { ArrowRight, BookOpenText, Brain, ChartNoAxesColumn, ClipboardCheck, Code2, Database, Dumbbell, NotebookPen, Sparkles, Target, Timer, Wrench } from "lucide-react";
 import { useIvLibrary } from "@/components/interview/use-iv-library";
 import { TRACKS, bookIdOf } from "@/lib/interview/tracks";
 
@@ -36,7 +36,7 @@ export default function InterviewHome() {
     { href: "/interview-cards", icon: Brain, tint: "lilac", title: "Practise now", text: due ? `${due} flashcards are due.` : "Spaced-repetition flashcards.", cta: due ? "Review due cards" : "Start a deck" },
     { href: "/interview/tutor?mode=mock", icon: ClipboardCheck, tint: "mint", title: "Test now", text: "A mock interviewer asks a real question and scores your answer.", cta: "Start a mock" },
     { href: "/interview/progress", icon: Wrench, tint: "peach", title: "Fix mistakes", text: open ? `${open} items still failing.` : "Nothing failing yet.", cta: "Open the fix list" },
-    { href: "/interview/tutor", icon: Sparkles, tint: "sky", title: "Ask the tutor", text: "Explain, simplify, quiz or review your code.", cta: "Open the tutor" },
+    { href: "/interview/tutor?mode=chat", icon: Sparkles, tint: "sky", title: "Ask the tutor", text: "Explain, simplify, quiz or review your code.", cta: "Open the tutor" },
   ] as const;
 
   return (
@@ -49,12 +49,32 @@ export default function InterviewHome() {
             <p className="mt-3 max-w-xl text-[var(--text-secondary)]">One loop for every topic: read the lesson, practise with cards and code, sit a mock, then fix what you missed. Your highlights, notes and mistakes follow you everywhere.</p>
           </div>
           <div className="card-inset space-y-3 p-5">
-            <p className="text-sm font-semibold text-[var(--text-secondary)]">{ready ? `${read} of ${total} lessons read` : "Loading your library…"}</p>
+            <p className="text-sm font-semibold text-[var(--text-secondary)]">{ready ? `${read} of ${total} lessons read` : "Loading your books…"}</p>
             <div className="h-2 overflow-hidden rounded-full bg-[var(--surface-secondary)]"><div className="h-full rounded-full bg-[var(--ink)]" style={{ width: `${total ? (read / total) * 100 : 0}%` }} /></div>
             {nextDoc ? <Link href={`/interview/read?doc=${encodeURIComponent(nextDoc.id)}`} className="btn-main w-full justify-center">{read ? "Continue" : "Start"}: {nextDoc.title.slice(0, 26)}{nextDoc.title.length > 26 ? "…" : ""}</Link> : <Link href="/interview/read" className="btn-main w-full justify-center">Open the library</Link>}
             {nextDoc && <p className="truncate text-xs text-[var(--text-muted)]">{nextDoc.book_title}</p>}
           </div>
         </div>
+      </section>
+
+      <section aria-label="Where everything is">
+        <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Where everything is</h2>
+        <ul className="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {[
+            { href: "/interview/learn", icon: BookOpenText, tint: "sky", title: "Learn", text: "Books, and the Last moments pack for the night before." },
+            { href: "/interview/practise", icon: Dumbbell, tint: "mint", title: "Practise", text: "Flashcards, a code lab and SQL exercises." },
+            { href: "/interview/tutor?mode=mock", icon: ClipboardCheck, tint: "lilac", title: "Test", text: "A mock interviewer and your AI tutor." },
+            { href: "/interview/progress", icon: ChartNoAxesColumn, tint: "peach", title: "Review", text: "Your progress, your mistakes and your notes." },
+          ].map((r) => (
+            <li key={r.title}>
+              <Link href={r.href} className="card-pastel flex h-full items-start gap-3 p-4" data-tint={r.tint}>
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[var(--surface)]"><r.icon className="h-5 w-5" aria-hidden /></span>
+                <span className="min-w-0"><span className="block font-display text-lg font-extrabold text-[var(--text-primary)]">{r.title}</span><span className="block text-sm text-[var(--text-secondary)]">{r.text}</span></span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <Link href="/interview/last-moments" className="card-pastel mt-3 flex flex-wrap items-center gap-3 p-4" data-tint="butter"><span className="grid h-11 w-11 place-items-center rounded-2xl bg-[var(--surface)]"><Timer className="h-5 w-5" aria-hidden /></span><span className="min-w-0 flex-1"><span className="block font-display text-lg font-extrabold text-[var(--text-primary)]">Last moments</span><span className="block text-sm text-[var(--text-secondary)]">Every book&apos;s revision sheet, traps, snippets and glossary on one page, for the night before.</span></span><ArrowRight className="h-4 w-4" /></Link>
       </section>
 
       <section aria-label="Today">
@@ -81,7 +101,7 @@ export default function InterviewHome() {
       )}
 
       <section aria-label="Tracks">
-        <div className="flex items-baseline justify-between"><h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Tracks</h2><Link href="/interview/read" className="text-sm font-bold text-[var(--text-secondary)]">Whole library</Link></div>
+        <div className="flex items-baseline justify-between"><h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Tracks</h2><Link href="/interview/read" className="text-sm font-bold text-[var(--text-secondary)]">All books</Link></div>
         <ul className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {TRACKS.map((t) => {
             const ds = docs.filter((d) => t.books.includes(d.book)), n = ds.filter((d) => done.has(d.id)).length;

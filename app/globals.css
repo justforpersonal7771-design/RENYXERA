@@ -1159,13 +1159,15 @@ mjx-container[display="true"] {
   --card-radius: 28px;
 }
 .dark {
-  --tint-mint: color-mix(in srgb, #10b981 16%, #141418);   --tint-mint-ink: #6ee7b7;
-  --tint-rose: color-mix(in srgb, #f43f5e 16%, #141418);   --tint-rose-ink: #fda4af;
-  --tint-peach: color-mix(in srgb, #f97316 16%, #141418);  --tint-peach-ink: #fdba74;
-  --tint-peri: color-mix(in srgb, #6366f1 18%, #141418);   --tint-peri-ink: #a5b4fc;
-  --tint-lilac: color-mix(in srgb, #0a5ff2 20%, #141418);  --tint-lilac-ink: #86b6ff;
-  --tint-butter: color-mix(in srgb, #eab308 14%, #141418); --tint-butter-ink: #fde68a;
-  --tint-sky: color-mix(in srgb, #0ea5e9 16%, #141418);    --tint-sky-ink: #7dd3fc;
+  /* Dark pastel, rebuilt (10 Nov): depth comes from stepping the card surface LIGHTER than the page and tinting it with the module's own hue
+     (OKLCH, so every tint has the same lightness and a real chroma), not from greying a colour out. Inks stay pastel so text and icons glow on it. */
+  --tint-mint:   oklch(0.345 0.078 165);  --tint-mint-ink:   oklch(0.88 0.135 165);
+  --tint-rose:   oklch(0.345 0.092 10);   --tint-rose-ink:   oklch(0.87 0.115 10);
+  --tint-peach:  oklch(0.355 0.088 48);   --tint-peach-ink:  oklch(0.88 0.115 55);
+  --tint-peri:   oklch(0.345 0.110 282);  --tint-peri-ink:   oklch(0.86 0.115 282);
+  --tint-lilac:  oklch(0.345 0.115 255);  --tint-lilac-ink:  oklch(0.86 0.115 250);
+  --tint-butter: oklch(0.385 0.088 84);   --tint-butter-ink: oklch(0.93 0.135 92);
+  --tint-sky:    oklch(0.345 0.092 228);  --tint-sky-ink:    oklch(0.88 0.115 222);
   --ink: #f4f3f8;
 }
 @media (max-width: 640px) { :root { --card-radius: 22px; } }
@@ -2064,5 +2066,66 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 ::highlight(iv-pink) { background-color: rgba(244, 114, 182, .42); color: inherit; }
 ::highlight(iv-blue) { background-color: rgba(96, 165, 250, .42); color: inherit; }
 
+/* Side panes that scroll but never show a scrollbar (the outline and tool rail beside a lesson); only the middle content keeps its bar. */
+.no-scrollbar { scrollbar-width: none !important; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+
 /* Interview section menu: translucent and truly blurred. (.ambient-gradient switches off every backdrop-blur inside the page area for speed, so this one is forced.) */
 .iv-sticky { background: color-mix(in srgb, var(--background) 55%, transparent) !important; -webkit-backdrop-filter: blur(18px) saturate(1.25) !important; backdrop-filter: blur(18px) saturate(1.25) !important; }
+
+/* ===== Dark cards: a soft gradient on the tint, a coloured edge and glow (premium, not flat) ===== */
+.card-pastel { --card-base: var(--tint); }
+.dark .card-pastel {
+  --card-base: radial-gradient(75% 95% at 0% 0%, color-mix(in oklab, var(--tint-ink) 16%, transparent), transparent 72%), linear-gradient(152deg, color-mix(in oklab, var(--tint) 84%, white) 0%, var(--tint) 44%, color-mix(in oklab, var(--tint) 82%, black) 100%);
+  background: var(--card-base);
+  border-color: color-mix(in oklab, var(--tint-ink) 20%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.25), 0 1px 2px rgba(0,0,0,.45), 0 26px 50px -30px color-mix(in oklab, var(--tint-ink) 38%, black);
+}
+.dark .card-inset { background: color-mix(in oklab, var(--tint, #000) 66%, black); border: 1px solid color-mix(in oklab, var(--tint-ink, #fff) 14%, transparent); }
+/* rows and chips that sit on a tinted dark card read as a lighter glass layer, not a grey slab */
+.dark .card-pastel :where([class*="bg-[var(--surface)]"], .bg-surface) { background-color: color-mix(in oklab, var(--tint) 70%, white 9%) !important; }
+
+/* ===== Premium card hover =====
+   A soft spotlight follows the pointer (components/system/card-hover.tsx sets --mx/--my), the edge lights up in the card's own ink colour and the
+   card lifts a few pixels. Only for real hover devices (mouse, trackpad); touch gets a short press-in instead; reduced motion keeps colour only. */
+@media (hover: hover) and (pointer: fine) {
+  .card-pastel[data-hot] {
+    background: radial-gradient(460px circle at var(--mx, 50%) var(--my, 0%), color-mix(in oklab, var(--tint-ink) 15%, transparent), transparent 62%), var(--card-base);
+    border-color: color-mix(in oklab, var(--tint-ink) 34%, transparent);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 0 0 1px color-mix(in oklab, var(--tint-ink) 22%, transparent), 0 2px 4px rgba(0,0,0,.06), 0 30px 56px -30px color-mix(in oklab, var(--tint-ink) 62%, transparent);
+  }
+  .dark .card-pastel[data-hot] {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 0 0 1px color-mix(in oklab, var(--tint-ink) 30%, transparent), 0 2px 4px rgba(0,0,0,.5), 0 32px 60px -30px color-mix(in oklab, var(--tint-ink) 55%, black);
+  }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card-pastel[data-hot]:not(.metal) { transform: translateY(-3px); }
+}
+@media (hover: none), (pointer: coarse) {
+  a.card-pastel:active, button.card-pastel:active, [role="link"].card-pastel:active { transform: scale(.985); transition-duration: .08s; }
+}
+
+/* ===== AI Mentor chat history panel (components/mentor/chat-sidebar.tsx): one calm tinted panel, not a heavy slab ===== */
+.mentor-side { position: relative; border-radius: var(--card-radius); border: 1px solid color-mix(in srgb, var(--tint-sky-ink) 22%, transparent);
+  background: linear-gradient(180deg, color-mix(in srgb, white 70%, var(--tint-sky)) 0%, color-mix(in srgb, white 88%, var(--tint-sky)) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 1px 2px rgba(22,18,58,.06), 0 22px 44px -26px color-mix(in srgb, var(--tint-sky-ink) 45%, transparent); }
+.dark .mentor-side { background: linear-gradient(180deg, color-mix(in oklab, var(--tint-sky) 70%, #0b0e1a) 0%, color-mix(in oklab, var(--tint-sky) 34%, #0b0e1a) 100%);
+  border-color: color-mix(in oklab, var(--tint-sky-ink) 26%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 28px 54px -30px rgba(0,0,0,.8); }
+
+/* ===== Phone dock: a floating, rounded glass capsule ===== */
+.bottom-dock__bar { border-radius: 9999px; list-style: none; background: color-mix(in srgb, var(--surface) 78%, transparent);
+  -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+  border: 1px solid color-mix(in srgb, var(--text-primary) 9%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 18px 40px -14px rgba(22,18,58,.35), 0 2px 6px rgba(22,18,58,.08); }
+.dark .bottom-dock__bar { background: color-mix(in oklab, var(--surface) 80%, #0b0e1a); border-color: color-mix(in oklab, white 10%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 22px 44px -16px rgba(0,0,0,.8), 0 2px 6px rgba(0,0,0,.4); }
+.dock-item { position: relative; display: flex; align-items: center; justify-content: center; height: 46px; min-width: 46px; padding: 0 13px; border-radius: 9999px;
+  color: var(--text-secondary); font-size: 13px; font-weight: 800; white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: color .2s, transform .2s cubic-bezier(.34,1.56,.64,1); }
+.dock-item:active { transform: scale(.9); }
+.dock-item[data-active] { color: var(--background); padding: 0 16px; }
+.dock-pill { position: absolute; inset: 0; border-radius: 9999px; background: var(--ink); box-shadow: 0 10px 22px -10px var(--ink); }
+.dock-icon, .dock-label { position: relative; z-index: 1; }
+.dock-label { max-width: 0; opacity: 0; overflow: hidden; margin-left: 0; transition: max-width .4s cubic-bezier(.16,1,.3,1), opacity .22s, margin-left .3s; }
+.dock-item[data-active] .dock-label { max-width: 96px; opacity: 1; margin-left: 8px; }
+@media (prefers-reduced-motion: reduce) { .dock-item, .dock-label { transition: none; } }

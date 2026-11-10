@@ -17,8 +17,11 @@ export interface ComboOption {
  * an "Add “…”" row lets the user keep a custom value. Portaled above every overlay.
  */
 export function Combobox({
-  value, onChange, options, placeholder = "Select…", addLabel = "Add", onAddCustom, ariaLabel,
+  value, onChange, options, placeholder = "Select…", addLabel = "Add", onAddCustom, ariaLabel, searchPlaceholder = "Search degrees… e.g. btech cse, bsc, mca", limit = 0,
 }: {
+  searchPlaceholder?: string;
+  /** Render at most this many rows (for very long lists); 0 = all. */
+  limit?: number;
   value: string;
   onChange: (v: string) => void;
   options: ComboOption[];
@@ -53,7 +56,7 @@ export function Combobox({
   }, [q, options]);
   const exact = options.some((o) => o.value.toLowerCase() === q.trim().toLowerCase());
   const canAdd = !!onAddCustom && q.trim().length >= 2 && !exact;
-  const rows = useMemo(() => [...filtered.map((o) => ({ kind: "opt" as const, o })), ...(canAdd ? [{ kind: "add" as const, o: { value: q.trim() } }] : [])], [filtered, canAdd, q]);
+  const rows = useMemo(() => [...(limit ? filtered.slice(0, limit) : filtered).map((o) => ({ kind: "opt" as const, o })), ...(canAdd ? [{ kind: "add" as const, o: { value: q.trim() } }] : [])], [filtered, canAdd, q, limit]);
 
   useEffect(() => { setActive(0); }, [q]);
   useEffect(() => {
@@ -121,7 +124,7 @@ export function Combobox({
               <div className="p-2 border-b border-[var(--border-subtle)]">
                 <div className="relative">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-muted)]" />
-                  <input ref={input} value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder="Search degrees… e.g. btech cse, bsc, mca"
+                  <input ref={input} value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={onKey} placeholder={searchPlaceholder}
                     className="w-full h-9 rounded-lg bg-[var(--surface-secondary)] pl-8 pr-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] border border-transparent search-input" />
                 </div>
                 <p className="mt-1.5 px-1 text-[10px] text-[var(--text-muted)]">{filtered.length} match{filtered.length === 1 ? "" : "es"}{onAddCustom ? " · not listed? type it and add it" : ""}</p>

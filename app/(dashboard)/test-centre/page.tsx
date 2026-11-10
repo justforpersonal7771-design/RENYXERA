@@ -14,7 +14,6 @@ import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { summarizeSession, type Attempt } from "@/features/test-centre/model";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 import { UpcomingMocks } from "@/components/test-centre/upcoming-mocks";
-import { useIsLunar } from "@/lib/looks/use-lunar";
 import { TEST_CENTRE } from "@/lib/test-centre/brand";
 
 const tile = "card-pastel group relative flex min-w-0 flex-col justify-between overflow-hidden p-5";
@@ -24,7 +23,6 @@ const Mark = ({ I, size = "h-24 w-24" }: { I: typeof Timer; size?: string }) => 
 const Sticker = ({ children, tilt = "-rotate-2" }: { children: React.ReactNode; tilt?: string }) => <span className={`inline-block self-start ${tilt} rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold ${ink}`}>{children}</span>;
 
 export default function TestCentrePage() {
-  const lunar = useIsLunar();
   const { mistakes, loadStudyData } = useStudyStore();
   const [attempts, setAttempts] = useState<Attempt[] | null>(null);
   useEffect(() => { void loadStudyData(); }, [loadStudyData]);
@@ -85,15 +83,15 @@ export default function TestCentrePage() {
           </div>
         </section>
         <div className="hub-mock-col order-3 flex min-w-0 flex-col gap-3 lg:order-none">
-          <MockStatusCard withUpcoming={lunar} />
-          {!lunar && <UpcomingMocks />}
+          <MockStatusCard />
+          <UpcomingMocks />
         </div>
       </div>
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
       <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
-          <Mark I={lunar ? ClipboardCheck : Settings} size="h-28 w-28" />
+          <Mark I={Settings} size="h-28 w-28" />
           <div>
             <Sticker tilt="rotate-2">Most used</Sticker>
             <h2 className={`mt-3 font-display text-3xl font-extrabold ${ink}`}>Build a test</h2>

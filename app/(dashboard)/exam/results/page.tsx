@@ -28,8 +28,6 @@ import { useMockResultsGate, MockResultsLocked } from "@/components/exam/mock-re
 import { challengeUrl } from "@/lib/growth/challenge";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
-import { LunarResults } from "@/components/exam/lunar-results";
-import { useIsLunar } from "@/lib/looks/use-lunar";
 import { track } from "@/lib/growth/track";
 /** Animated count-up for a numeric value, e.g. marks or accuracy percentage. */
 function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
@@ -85,7 +83,6 @@ export default function ResultSummaryPage() {
   }, [id]);
 
   // All-India mock: hidden until the results time, then unlocks itself.
-  const lunar = useIsLunar();
   const gate = useMockResultsGate(session);
   useEffect(() => { if (gate.released) setSession(gate.released); }, [gate.released]);
 
@@ -400,28 +397,9 @@ export default function ResultSummaryPage() {
             </div>
   );
 
-  // Lunar look: the new scoreboard (same numbers, one flowing page). Classic keeps the flip card below.
-  if (lunar) {
-    const asList = (o: typeof subjectSplits) => Object.keys(o).map((k) => ({ label: k, ...o[k] }));
-    const cfg = session.draftConfig.config as { title?: string; yearShift?: string };
-    return (
-      <LunarResults
-        title={String(cfg.title ?? (cfg.yearShift ? `GATE ${paperLabel()} ${cfg.yearShift} paper` : "Practice test"))}
-        goalTag={session.draftConfig.config.goalTag ? <GoalTagBadge tag={session.draftConfig.config.goalTag} /> : null}
-        verdict={verdict} extraLine={challengeLine ?? cpLine}
-        marks={marks} max={maxPossibleMarks} accuracy={accuracy} correct={correct} wrong={wrong} skipped={skipped} attempted={totalAttempted} totalQs={totalQs}
-        timeText={`${m}m ${s}s`} elapsedSeconds={session.elapsedSeconds} penalty={totalNegativeMarks}
-        splits={{ subject: asList(subjectSplits), section: asList(sectionSplits), difficulty: asList(difficultySplits), type: asList(typeSplits) }}
-        grid={questionGrid} actions={renderActions("flex flex-wrap items-stretch gap-2")}
-        banner={<AnswersPendingBanner session={session} onGraded={setSession} className="lunar-lift fixed z-50 inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-xl backdrop-blur-xl lg:static lg:inset-auto lg:mb-4 lg:shadow-none" />}
-        onOpenQuestion={(i) => router.push(`/exam/results/review?id=${id}&q=${i}`)}
-      />
-    );
-  }
-
   return (
     <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 pb-4" data-fill-height>
-      <AnswersPendingBanner session={session} onGraded={setSession} className="lunar-lift fixed z-50 inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-xl backdrop-blur-xl lg:static lg:inset-auto lg:mb-4 lg:shadow-none" />
+      <AnswersPendingBanner session={session} onGraded={setSession} className="fixed z-50 inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-xl backdrop-blur-xl lg:static lg:inset-auto lg:mb-4 lg:shadow-none" />
 
       {/* One card, one surface. Front: ring + score summary. Back: question grid + breakdown.
           The faces stay mounted and the card turns in CSS 3D, so flipping is smooth both ways. */}

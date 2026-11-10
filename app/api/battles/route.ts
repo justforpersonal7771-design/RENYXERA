@@ -66,9 +66,16 @@ export async function GET(req: NextRequest) {
   const [{ data: owned }, { data: joined }, { data: invitedRows }] = await Promise.all([
     db.from("battles").select("id, title, owner_name, owner_score, max_score, question_ids, created_at, expires_at").eq("owner_id", userId!).order("created_at", { ascending: false }).limit(30),
     db.from("battle_entries").select("battle_id").eq("user_id", userId!).order("last_seen_at", { ascending: false }).limit(30),
-    db.from("battle_invites").select("battle_id").eq("user_id", userId!).order("created_at", { ascending: false }).limit(30),
+    db.from("battle_invites").select("battle_id, created_at, play_now, scheduled_at").eq("user_id", userId!).order("created_at", { ascending: false }).limit(30),
   ]);
-  const invitedIds = new Set((invitedRows ?? []).map((j) => j.battle_id as string));
+  // Before migration 0058 the timing columns do not exist: fall back to the plain list.
+  let inviteRows = (invitedRows ?? []) as { battle_id: string; created_at?: string; play_now?: boolean; scheduled_at?: string | null }[];
+  if (!invitedRows) {
+    const { data: plain } = await db.from("battle_invites").select("battle_id, created_at").eq("user_id", userId!).order("created_at", { ascending: false }).limit(30);
+    inviteRows = (plain ?? []) as typeof inviteRows;
+  }
+  const invitedIds = new Set(inviteRows.map((j) => j.battle_id));
+  const inviteOf = new Map(inviteRows.map((j) => [j.battle_id, j]));
   const joinedIds = [...new Set([...(joined ?? []).map((j) => j.battle_id as string), ...invitedIds])].filter((id) => !(owned ?? []).some((o) => o.id === id));
   const { data: others } = joinedIds.length
     ? await db.from("battles").select("id, title, owner_name, owner_score, max_score, question_ids, created_at, expires_at").in("id", joinedIds)
@@ -84,6 +91,7 @@ export async function GET(req: NextRequest) {
       id: b.id, title: b.title, ownerName: b.owner_name, ownerScore: b.owner_score, maxScore: b.max_score, questions: b.question_ids.length,
       createdAt: b.created_at, expiresAt: b.expires_at, expired: b.expires_at <= nowIso, mine: b.mine,
       invited: !b.mine && invitedIds.has(b.id),
+      invite: !b.mine && invitedIds.has(b.id) ? { at: inviteOf.get(b.id)?.created_at ?? null, playNow: !!inviteOf.get(b.id)?.play_now, scheduledAt: inviteOf.get(b.id)?.scheduled_at ?? null } : null,
       // Everyone in a battle sees the entries of the owner's battles; a joiner sees only their own row.
       entries: (entries ?? []).filter((e) => e.battle_id === b.id && (b.mine || e.user_id === userId)).map((e) => ({
         userId: e.user_id, name: e.display_name, status: e.status, answered: e.answered, total: e.total, score: e.score, maxScore: e.max_score,
