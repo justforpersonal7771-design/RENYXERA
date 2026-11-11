@@ -5,7 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { LogIn, LayoutGrid, IdCard, Palette, Smile, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown, Send, Swords } from "lucide-react";
+import { LogIn, IdCard, Palette, Smile, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown, Send, Swords } from "lucide-react";
 import { ProCrown } from "@/components/brand/pro-crown";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { useAuthStore } from "@/store/use-auth-store";
@@ -20,7 +20,6 @@ import { SocialDot } from "@/components/friends/social-dot";
 
 const ITEMS = [
   { id: "personal", label: "Personal info", icon: IdCard, tint: "from-fuchsia-500 to-pink-600" },
-  { id: "overview", label: "Overview", icon: LayoutGrid, tint: "from-indigo-500 to-violet-600" },
   { id: "avatar", label: "Avatar studio", icon: Smile, tint: "from-pink-500 to-rose-600" },
   { id: "design", label: "Design studio", icon: Palette, tint: "from-violet-500 to-purple-600" },
   { id: "goals", label: "Exam goals", icon: Target, tint: "from-cyan-500 to-sky-600" },
@@ -152,9 +151,9 @@ export function AccountButton() {
               initial={{ opacity: 0, y: -8, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }}
               transition={{ type: "spring", stiffness: 460, damping: 32 }}
               style={{ position: "fixed", top: pos.top, right: pos.right, transformOrigin: "top right" }}
-              className="nav-cluster z-[450] w-72 rounded-2xl p-2 shadow-[0_24px_60px_-18px_rgba(76,29,149,0.45)]">
+              className="nav-cluster no-scrollbar z-[450] max-h-[calc(100dvh-5.5rem)] w-72 overflow-y-auto overscroll-contain rounded-2xl p-2 shadow-[0_24px_60px_-18px_rgba(76,29,149,0.45)]">
               {/* Mini profile */}
-              <Link href="/profile" onClick={goSection("overview")} className="group relative flex items-center gap-3 rounded-xl p-2.5 mb-1 overflow-hidden">
+              <Link href="/profile" onClick={goSection("personal")} className="group relative flex items-center gap-3 rounded-xl p-2.5 mb-1 overflow-hidden">
                 <span aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-indigo-600/10 via-violet-600/10 to-fuchsia-600/10 opacity-80" />
                 <span className="relative w-11 h-11 rounded-xl overflow-hidden border border-[var(--border)] bg-[var(--surface-secondary)] shrink-0 transition-transform duration-300 group-hover:scale-105 group-hover:-rotate-3">
                   {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}

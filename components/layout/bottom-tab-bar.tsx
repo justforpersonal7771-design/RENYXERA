@@ -49,19 +49,20 @@ export function BottomTabBar() {
     { label: "Tools", hint: "Calculators and plans", tint: "butter", href: TOOLS_HOME, icon: Wrench, active: isToolPath(pathname) },
     ...(signedIn ? [{ label: "Downloads", hint: "Your saved files", tint: "peach", href: "/downloads", icon: Download, active: pathname.startsWith("/downloads") }] : []),
   ];
+  const oddRegular = rest.filter((r) => !("wide" in r && r.wide)).length % 2 === 1;   // an odd last tile spans the row, so no empty cell
   const moreActive = rest.some((r) => r.active);
 
   return (
     <>
       {/* Floating glass dock (research: a floating pill, 3 to 5 items, an expanding label on the active one, safe-area spacing). The active page is a dark
           pill that glides between items and shows its name; the rest are icons. */}
-      <nav aria-label="Main" className="bottom-dock lg:hidden fixed inset-x-3 z-40" style={{ bottom: "calc(12px + env(safe-area-inset-bottom))" }}>
+      <nav aria-label="Main" className={`bottom-dock lg:hidden fixed inset-x-3 ${more ? "z-[46]" : "z-40"}`} style={{ bottom: "calc(12px + env(safe-area-inset-bottom))" }}>
         <LayoutGroup id="bottom-dock">
           <ul className="bottom-dock__bar mx-auto flex max-w-md items-center justify-between gap-1 p-1.5">
             {tabs.map((t) => (
               <li key={t.label} className="min-w-0 shrink-0">
-                <Link href={t.href} aria-label={t.label} aria-current={t.active ? "page" : undefined} data-active={t.active ? "" : undefined} className="dock-item">
-                  {t.active && <motion.span layoutId="bottom-dock-pill" className="dock-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+                <Link href={t.href} aria-label={t.label} aria-current={t.active ? "page" : undefined} data-active={t.active && !more ? "" : undefined} className="dock-item">
+                  {t.active && !more && <motion.span layoutId="bottom-dock-pill" className="dock-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
                   <t.icon className="dock-icon h-[21px] w-[21px]" />
                   <span className="dock-label">{t.label}</span>
                 </Link>
@@ -79,14 +80,15 @@ export function BottomTabBar() {
       </nav>
 
       {more && typeof document !== "undefined" && createPortal(
-        <div className="lg:hidden fixed inset-x-0 top-0 bottom-[calc(5.6rem+env(safe-area-inset-bottom))] z-[45] overflow-hidden">
-          <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" onClick={() => setMore(false)} />
-          <motion.div role="dialog" aria-label="More pages" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="absolute inset-x-0 bottom-0 touch-pan-y mx-auto max-h-full max-w-xl overflow-y-auto overscroll-contain rounded-t-3xl border border-b-0 border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
+        <div className="lg:hidden">
+          <button type="button" aria-label="Close menu" className="fixed inset-0 z-[39] bg-black/40" onClick={() => setMore(false)} />
+          <div className="pointer-events-none fixed inset-x-3 top-0 bottom-[calc(5.4rem+env(safe-area-inset-bottom))] z-[45] flex items-end overflow-hidden">
+          <motion.div role="dialog" aria-label="More pages" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="pointer-events-auto touch-pan-y mx-auto max-h-full w-full max-w-xl overflow-y-auto overscroll-contain rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
             <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-[var(--text-muted)]/40" aria-hidden />
             <p className="mb-2.5 px-1 text-[11px] font-extrabold uppercase tracking-wide text-[var(--text-muted)]">More from RENYXERA</p>
             <ul className="grid grid-cols-2 gap-2.5 pb-1">
               {rest.map((r, i) => (
-                <li key={r.label} className={r.wide || (i === rest.length - 1 && rest.length % 2 === 0) ? "col-span-2" : ""}>
+                <li key={r.label} className={r.wide || (i === rest.length - 1 && oddRegular) ? "col-span-2" : ""}>
                   <Link href={r.href} onClick={() => setMore(false)} aria-current={r.active ? "page" : undefined}
                     style={{ background: `var(--tint-${r.tint})`, color: `var(--tint-${r.tint}-ink)` }}
                     className={`relative flex h-full overflow-hidden rounded-2xl border border-[color-mix(in_srgb,currentColor_14%,transparent)] p-3.5 active:scale-[.98] transition-transform ${r.wide ? "items-center gap-3.5" : "flex-col gap-2.5"} ${r.active ? "ring-2 ring-current" : ""}`}>
@@ -104,6 +106,7 @@ export function BottomTabBar() {
               ))}
             </ul>
           </motion.div>
+          </div>
         </div>,
         document.body,
       )}

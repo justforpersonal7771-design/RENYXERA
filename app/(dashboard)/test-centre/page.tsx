@@ -75,7 +75,7 @@ export default function TestCentrePage() {
           {/* Your four numbers, inside the mission card. */}
           <div className="relative mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4" aria-label="Your numbers">
             {stats.map((s) => (
-              <div key={s.l} data-tint={s.t} className="card-pastel px-3 py-2">
+              <div key={s.l} data-tint={s.t} className="card-pastel wm-sm px-3 py-2">
                 <p className={`font-display text-2xl font-extrabold leading-none tabular-nums ${ink}`}>{s.v == null ? "-" : <><CountUp value={s.v} />{s.suffix}</>}</p>
                 <p className="mt-1 text-xs font-bold text-[var(--text-secondary)]">{s.l}</p>
               </div>

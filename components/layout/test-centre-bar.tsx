@@ -12,14 +12,14 @@ import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-cent
 const ITEMS = [
   { href: "/test-centre/build", label: "Build a test", on: (p: string) => p.startsWith("/test-centre/build") || p.startsWith("/setup") || p.startsWith("/exam") },
   { href: "/test-centre/mocks", label: "Mocks", on: (p: string) => p.startsWith("/test-centre/mocks") || p.startsWith("/mocks") || p.startsWith("/fresh-mock") },
-  { href: "/test-centre/practice", label: "Practice", on: (p: string) => p.startsWith("/test-centre/practice") || p.startsWith("/revision") || p.startsWith("/checkpoint") },
+  { href: "/test-centre/practice", label: "Practice", on: (p: string) => p.startsWith("/test-centre/practice") || p.startsWith("/checkpoint") },
   { href: "/test-centre/history", label: "History", on: (p: string) => p.startsWith("/test-centre/history") },
   { href: "/battles", label: "Battles", on: (p: string) => p.startsWith("/battles") || p.startsWith("/challenge") },
 ];
 
 export function TestCentreBar() {
   const p = usePathname() ?? "";
-  if (p === TEST_CENTRE_HREF || !(isTestCentrePath(p) || p.startsWith("/revision"))) return null;
+  if (p === TEST_CENTRE_HREF || !isTestCentrePath(p)) return null;
   return (
     <nav aria-label={`${TEST_CENTRE} sections`} className="-mx-2 -mt-2 mb-1 flex shrink-0 items-center gap-1.5 overflow-x-auto px-2 py-1.5 [scrollbar-width:none] lg:hidden [&::-webkit-scrollbar]:hidden">
       <Link href={TEST_CENTRE_HREF} className="btn-soft !h-9 shrink-0 !px-3 text-sm"><LayoutGrid className="h-4 w-4" /> {TEST_CENTRE}</Link>

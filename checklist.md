@@ -564,3 +564,18 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] 9 Nov (later): Interview phone button (More sheet), all 19 non-flowchart diagrams drawn (sequence and class), touch highlighting (toolbar docks above the bottom bar, finger-sized buttons, portal), track pages, sticky frosted section menu, scrolling side columns, single-screen Progress, blur band under the navbar, More sheet no longer chopped, results in green and red. Focused test 21/21.
 - [ ] Next: test-taking screen and review screens redesign.
 - [x] 9 Nov (later): no native dropdowns anywhere (all <select> replaced with CustomDropdown; lint rule bans new ones); the app's thin hide-until-active scrollbar now applies to every scroll area; content stops below the navbar with a soft blurred edge (nothing behind the bar); chapter and lab pickers wider lists; phone overflow from the picker fixed.
+
+## 0-newest. 11 Nov 2026: Classic only, Battles lobby, college picker
+- [x] Dashboard toolkit deck back to the classic pinned stack, now also on phones (tighter pile above the dock)
+- [x] More sheet: floats above the dock, dock stays bright, no empty cell in the grid
+- [x] Review screen no longer shows the Test Centre pills; Interview: removed duplicate Books/Last moments and Mock/Tutor toggles
+- [x] Profile: Overview merged into Personal info; Avatar and Design studio are their own items again; hidden-scrollbar lists
+- [x] Watermarks shrink instead of being cut (small tiles, phones); soft blurred band under the navbar
+- [ ] Interview question bank rewrite (scenario-based, senior-level, full answers) - not started
+- [x] Study lesson: select text to highlight in 4 colours (kept on this device), 'Your highlights' list in the side rail
+- [ ] Study notes (typed notes per highlight) and cross-device sync need a table (owner-run migration)
+- [x] Lunar look removed (Classic pastel only); dashboard hero + KPI strip + full-width radar; premium card hover; dark tints fixed; Mentor sidebar redesign and new-chat landing; floating phone dock. Pushed in 100874c.
+- [x] Profile: Personal info first, Branch in Background, plan badge moved from the logo to the account menu, integrated College picker (68,900 AISHE institutions; State/District chips in one control; Other college).
+- [x] Battles in the navbar (badge for waiting challenges), player card, Challenge a friend with Play now / Schedule (migration 0058 applied), live prompt top-centre with do-not-disturb during tests, VS screen + countdown, dashboard banner. Pushed.
+- [x] Analytics: full-width subject radar added. Study lesson: side panes scroll without bars (not yet pushed).
+- [ ] Not done: live two-way match room, clubs, rewards; Study reader fixes (highlights/notes); Analytics reorganisation + extra metrics; test-taking/review redesign; casing audit; Test Centre mobile card order; Interview mock session/date plan; run scripts/upload-interview-packs.mjs.

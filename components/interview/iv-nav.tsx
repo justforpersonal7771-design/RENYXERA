@@ -19,10 +19,7 @@ const ROOMS: Room[] = [
   { id: "home", label: "Home", href: "/interview", icon: House, match: (p) => p === "/interview", subs: [] },
   { id: "learn", label: "Learn", href: "/interview/learn", icon: BookOpenText,
     match: (p) => p.startsWith("/interview/learn") || p.startsWith("/interview/read") || p.startsWith("/interview/last-moments"),
-    subs: [
-      { label: "Books", href: "/interview/read", match: (p) => p.startsWith("/interview/read") },
-      { label: "Last moments", href: "/interview/last-moments", match: (p) => p.startsWith("/interview/last-moments") },
-    ] },
+    subs: [] },
   { id: "practise", label: "Practise", href: "/interview/practise", icon: Dumbbell,
     match: (p) => p.startsWith("/interview/practise") || p.startsWith("/interview-cards") || p.startsWith("/interview/lab") || p.startsWith("/interview/sql"),
     subs: [

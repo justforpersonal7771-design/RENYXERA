@@ -3,7 +3,7 @@
 /** Tutor: a mock interviewer (a real question from your bank, your typed answer scored against the book's model answer) and a free chat. */
 import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, Loader2, RotateCcw, Sparkles, Target } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { IvTutorPanel, type TutorSeed } from "@/components/interview/iv-tutor-panel";
@@ -102,15 +102,10 @@ function Mock({ initialTrack }: { initialTrack: string }) {
 
 function Tutor() {
   const sp = useSearchParams();
-  const router = useRouter();
   const tab: "mock" | "chat" = sp.get("mode") === "chat" ? "chat" : "mock";
-  const setTab = (k: "mock" | "chat") => router.replace(`/interview/tutor?mode=${k}${sp.get("track") ? `&track=${sp.get("track")}` : ""}`);
   const seed = useMemo<TutorSeed>(() => ({ key: "free", mode: "chat" }), []);
   return (
     <div className="space-y-4">
-      <div className="flex gap-1 rounded-full bg-[var(--surface)] p-1 w-fit" role="tablist" aria-label="Tutor">
-        {([["mock", "Mock interview"], ["chat", "Ask the tutor"]] as const).map(([k, l]) => <button key={k} type="button" role="tab" aria-selected={tab === k} onClick={() => setTab(k)} className={`rounded-full px-4 py-2 text-sm font-bold ${tab === k ? "bg-[var(--ink)] text-[var(--background)]" : "text-[var(--text-secondary)]"}`}>{l}</button>)}
-      </div>
       {tab === "mock" ? <Mock initialTrack={TRACKS.some((t) => t.id === sp.get("track")) ? sp.get("track")! : "all"} />
         : <section className="card-pastel h-[calc(100vh-260px)] min-h-[420px] p-5" data-tint="sky"><IvTutorPanel seed={seed} className="h-full" /></section>}
     </div>

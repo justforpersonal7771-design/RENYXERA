@@ -238,6 +238,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             {children}
           </motion.div>
         </div>
+        <div aria-hidden className="nav-edge pointer-events-none absolute inset-x-0 top-[72px] z-20 h-8" />
       </main>
       <TelegramActionsSync />
       <SpacedRevisionSync />

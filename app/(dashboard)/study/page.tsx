@@ -7,6 +7,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BookOpenText, Check, Clock, Lightbulb, Lock, TriangleAlert } from "lucide-react";
+import { useLessonHighlights } from "@/components/study/lesson-highlights";
 import { PreviewFrame } from "@/components/preview/preview-frame";
 import { PlanCompare } from "@/components/preview/plan-compare";
 import { FolderTabs } from "@/components/ui/folder-tabs";
@@ -93,6 +94,7 @@ function ChapterRow({ c, n, tint, locked, onRead }: { c: StudyChapter; n: number
 function Lesson({ onBack, owned }: { onBack: () => void; owned: boolean }) {
   const L = SAMPLE_LESSON;
   const [shown, setShown] = useState(false);
+  const { attach: attachArticle, toolbar: hlToolbar, list: hlList } = useLessonHighlights(SAMPLE_LESSON.topic);
   const toc = ["Why it matters", "The idea", "Definition", "Worked example", "Trap", "Check yourself", "Try the real PYQs"];
   // The contents list follows the section being read (and the one clicked).
   const [active, setActive] = useState(0);
@@ -108,7 +110,7 @@ function Lesson({ onBack, owned }: { onBack: () => void; owned: boolean }) {
   }, []);
   return (
     <div className="grid gap-6 lg:grid-cols-[220px_minmax(0,1fr)] xl:grid-cols-[220px_minmax(0,1fr)_300px]">
-      <nav aria-label="In this lesson" className="lg:sticky lg:top-24 lg:self-start">
+      <nav aria-label="In this lesson" className="no-scrollbar lg:sticky lg:top-24 lg:max-h-[calc(100dvh-7rem)] lg:self-start lg:overflow-y-auto lg:overscroll-contain">
         <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--text-secondary)]"><ArrowLeft className="h-4 w-4" /> All chapters</button>
         <ol className="hidden space-y-1 border-l border-[var(--border)] lg:block">
           {toc.map((t, i) => <li key={t}><a href={`#l-${i}`} onClick={(e) => { e.preventDefault(); setActive(i); document.getElementById(`l-${i}`)?.scrollIntoView({ behavior: "smooth", block: "start" }); }}
@@ -116,7 +118,7 @@ function Lesson({ onBack, owned }: { onBack: () => void; owned: boolean }) {
             className={`-ml-px block border-l-2 py-1.5 pl-3 text-sm transition-colors ${i === active ? "border-[var(--ink)] font-semibold text-[var(--text-primary)]" : "border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"}`}>{t}</a></li>)}
         </ol>
       </nav>
-      <article className="min-w-0 max-w-none space-y-8">
+      <article ref={attachArticle} className="min-w-0 max-w-none space-y-8">
         <header>
           <p className="text-sm font-semibold text-[var(--text-muted)]">{L.subject} · {L.chapter}</p>
           <h1 className="mt-1 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl">{L.topic}</h1>
@@ -159,7 +161,8 @@ function Lesson({ onBack, owned }: { onBack: () => void; owned: boolean }) {
         </>}
       </article>
       {/* Side rail: progress, the PYQs, what's next and a quick AI ask, so the reading column has company. */}
-      <aside className="space-y-4 xl:sticky xl:top-24 xl:self-start" aria-label="Lesson tools">
+      <aside className="no-scrollbar space-y-4 xl:sticky xl:top-24 xl:max-h-[calc(100dvh-7rem)] xl:self-start xl:overflow-y-auto xl:overscroll-contain" aria-label="Lesson tools">
+        {hlList}
         <div className="card-pastel p-5" data-tint="mint">
           <p className="text-sm font-semibold text-[var(--text-secondary)]">This chapter</p>
           <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]">{owned ? "3 of 7 topics" : "4 of 7 topics free"}</p>
@@ -180,6 +183,7 @@ function Lesson({ onBack, owned }: { onBack: () => void; owned: boolean }) {
           <Link href="/ai-mentor" className="pill-soft mt-3 inline-flex">Ask the AI Mentor</Link>
         </div>
       </aside>
+      {hlToolbar}
     </div>
   );
 }

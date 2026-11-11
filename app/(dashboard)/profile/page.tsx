@@ -8,7 +8,7 @@ import { branchByCode } from "@/lib/branches";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Loader2, Save, Smile, CheckCircle2, User as UserIcon, Palette, IdCard, Target, GraduationCap, CalendarDays,
-  Trophy, Clock, XCircle, LayoutGrid, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, MapPin, BookOpen,
+  Trophy, Clock, XCircle, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, MapPin, BookOpen,
   Building2, Copy, Sunrise, Sun, Sunset, Moon, CloudMoon, Hash, Sparkles, Phone, Crown, Send,
 } from "lucide-react";
 import { upcomingExamYear, effectiveTargetYear, targetYearRolledForward, examDateFor } from "@/lib/goals/exam-year";
@@ -82,8 +82,7 @@ const STUDY_TIMES = [
 ];
 
 const SECTIONS = [
-  { id: "personal", label: "Personal info", subtitle: "Your identity and background.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
-  { id: "overview", label: "Overview", subtitle: "Your progress, streaks and achievements, and how your account looks.", icon: LayoutGrid, tint: "bg-indigo-500/10 text-indigo-500" },
+  { id: "personal", label: "Personal info", subtitle: "Your identity, background, progress and achievements.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
   { id: "goals", label: "Exam goals", subtitle: "Your target, schedule and the plan it builds.", icon: Target, tint: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
   { id: "preferences", label: "Preferences", subtitle: "Theme, motion and reminders on this device.", icon: SlidersHorizontal, tint: "bg-violet-500/10 text-violet-500" },
   { id: "security", label: "Account & security", subtitle: "Sign-in, password, your data and account.", icon: ShieldCheck, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
@@ -91,8 +90,8 @@ const SECTIONS = [
   { id: "telegram", label: "Telegram", subtitle: "Reminders, timers and alerts in Telegram.", icon: Send, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "devices", label: "Devices", subtitle: "Where you're signed in.", icon: Laptop, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "data", label: "Data & storage", subtitle: "What this device holds, and tools to clean it up.", icon: HardDrive, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Smile, hidden: true, tint: "bg-pink-500/10 text-pink-500" },
-  { id: "design", label: "Design studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, hidden: true, tint: "bg-violet-500/10 text-violet-500" },
+  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Smile, tint: "bg-pink-500/10 text-pink-500" },
+  { id: "design", label: "Design studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, tint: "bg-violet-500/10 text-violet-500" },
 ] as const;
 type SectionId = (typeof SECTIONS)[number]["id"];
 
@@ -577,23 +576,7 @@ export default function ProfilePage() {
       case "telegram": return <TelegramCard />;
       case "devices": return <DevicesCard />;
       case "data": return <DataStorageCard />;
-      default:
-        return (
-          <div className="space-y-5">
-            <div className="grid gap-3 sm:grid-cols-2" aria-label="Personalise">
-              {([
-                { id: "avatar" as const, icon: Smile, title: "Avatar studio", text: "Pick your style: free, Silver and Gold.", tint: "rose" },
-                { id: "design" as const, icon: Palette, title: "Design studio", text: "Change the cards, backgrounds, corners and buttons.", tint: "lilac" },
-              ]).map((x) => (
-                <button key={x.id} type="button" onClick={() => selectTab(x.id)} className="card-pastel flex cursor-pointer items-center gap-3 p-4 text-left" data-tint={x.tint}>
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[var(--surface)]"><x.icon className="h-5 w-5" aria-hidden /></span>
-                  <span className="min-w-0"><span className="block font-display text-lg font-extrabold text-[var(--text-primary)]">{x.title}</span><span className="block text-sm text-[var(--text-secondary)]">{x.text}</span></span>
-                </button>
-              ))}
-            </div>
-            <StatsAchievements />
-          </div>
-        );
+      default: return null;
     }
   })();
 
@@ -615,7 +598,7 @@ export default function ProfilePage() {
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4">
         <motion.nav aria-label="Profile sections" initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35, delay: 0.05 }}
           className="shrink-0 lg:w-60 card-glass rounded-3xl p-2 lg:self-start">
-          <div className="custom-scrollbar flex gap-1 overflow-x-auto scrollbar-hide lg:max-h-[calc(100dvh-14rem)] lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden lg:pr-1">
+          <div className="no-scrollbar flex gap-1 overflow-x-auto lg:max-h-[calc(100dvh-14rem)] lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden lg:pr-1">
             {SECTIONS.filter((s) => !("hidden" in s && s.hidden)).map((sct, i) => {
               const active = sct.id === tab;
               return (
@@ -643,6 +626,7 @@ export default function ProfilePage() {
           <AnimatePresence mode="wait">
             <motion.div key={tab} initial={{ opacity: 0, y: 14, filter: "blur(4px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -10, filter: "blur(4px)" }} transition={{ duration: 0.22 }}>
               {tabBody}
+              {tab === "personal" && <div className="mt-5"><StatsAchievements /></div>}
             </motion.div>
           </AnimatePresence>
         </section>
