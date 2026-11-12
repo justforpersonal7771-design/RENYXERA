@@ -1,5 +1,6 @@
 "use client";
 
+import { switchTheme } from "@/lib/theme/switch-theme";
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
@@ -205,9 +206,10 @@ export function Topbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isTodoOpen]);
 
-  const toggleTheme = () => {
+  const toggleTheme = (e?: React.MouseEvent) => {
     if (!mounted) return;
-    setTheme(resolvedTheme === "light" ? "dark" : "light");
+    const rect = (e?.currentTarget as HTMLElement | undefined)?.getBoundingClientRect();
+    switchTheme(resolvedTheme === "light" ? "dark" : "light", setTheme, rect ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 } : undefined);
   };
 
 
@@ -426,7 +428,7 @@ export function Topbar() {
              <div className="relative z-10 hidden sm:block w-px h-5 bg-[var(--border)] mx-0.5" />
 
              {lookModes === "both" && <button
-                onClick={toggleTheme}
+                onClick={(e) => toggleTheme(e)}
                 className="nav-act relative z-10 p-2 text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors cursor-pointer overflow-hidden"
                 aria-label="Toggle Theme"
                 suppressHydrationWarning

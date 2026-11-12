@@ -8,10 +8,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Swords, Hourglass, Trophy, Link2, Loader2, RotateCcw, ChevronDown } from "lucide-react";
 import { PlanCompare } from "@/components/preview/plan-compare";
-import { FriendsPanel } from "@/components/friends/friends-panel";
-import { ArenaLeaderboard } from "@/components/friends/arena-leaderboard";
-import { ArenaStats } from "@/components/battles/arena-stats";
-import { ClubPanel, CoinShop, DailyReward } from "@/components/battles/clubs-coins";
+import { BattleLobby } from "@/components/battles/battle-lobby";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
@@ -59,37 +56,15 @@ export default function BattlesPage() {
 
   return (
     <div className="space-y-6 pb-8">
-      <section className="card-pastel p-6 sm:p-8" data-tint="rose" aria-label="Battles">
-        <span className="section-label"><Swords className="h-3.5 w-3.5" /> Battles</span>
-        <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.08] text-[var(--text-primary)] sm:text-5xl">Same questions.<br />Who scores more?</h1>
-        <p className="mt-3 max-w-xl text-[var(--text-secondary)]">Pick any topic, subject or paper in the test builder, take it, then <b>challenge a friend</b> with the same questions, or challenge on a test you already finished. See when they open it, how far they are and who won. Scores come from the server, never the browser.</p>
-        <div className="mt-5 flex flex-wrap items-center gap-3">
-          <Link href="/test-centre/build?challenge=1" className="btn-main"><Swords className="h-4 w-4" /> Start a new challenge</Link>
-          <Link href="/test-centre/history" className="btn-soft">Challenge on a finished test</Link>
-          <span className="text-sm text-[var(--text-muted)]">{tier === "free" ? `${Math.min(active, 3)} of 3 active battles on Free` : "Unlimited battles"}</span>
-        </div>
-      </section>
-
-      {user ? <ArenaStats /> : null}
-      {user ? <div className="grid gap-4 lg:grid-cols-2"><DailyReward /><ClubPanel /></div> : null}
-      {user ? <CoinShop /> : null}
-
-      {user ? <FriendsPanel /> : null}
-      {user ? <ArenaLeaderboard /> : null}
-
-      {forYou.length > 0 ? (
-        <section className="card-well p-5 sm:p-6" data-tint="butter" aria-label="Challenges for you">
-          <h2 className="flex items-center gap-2 font-display text-xl font-extrabold text-[var(--text-primary)]"><Swords className="h-5 w-5" /> Challenges for you <span className="text-sm font-semibold text-[var(--text-muted)]">{forYou.length}</span></h2>
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {forYou.map((b) => (
-              <li key={b.id} className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
-                <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{b.ownerName} challenges you</span><span className="block truncate text-xs text-[var(--text-muted)]">{b.title} · {b.questions} questions · {left(b.expiresAt)}</span></span>
-                <Link href={`/challenge/${b.id}`} className="btn-main !px-3 !py-1.5 text-xs">Play</Link>
-              </li>
-            ))}
-          </ul>
+      {user ? <BattleLobby invites={forYou.map((b) => ({ id: b.id, title: b.title, ownerName: b.ownerName, questions: b.questions }))} /> : (
+        <section className="arena-stage relative overflow-hidden rounded-[32px] p-8 text-center text-white" aria-label="Battles">
+          <h1 className="relative font-display text-4xl font-extrabold sm:text-5xl">Same questions. Who scores more?</h1>
+          <p className="relative mx-auto mt-3 max-w-xl text-white/85">Challenge friends to the same test, live or later. Win points, coins and climb the board.</p>
         </section>
-      ) : null}
+      )}
+      {tier === "free" ? <p className="text-sm text-[var(--text-muted)]">{Math.min(active, 3)} of 3 active battles on Free</p> : null}
+      <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Your battles</h2>
+
 
       {!authReady ? null : !user ? (
         <section className="card-well p-6 text-center" data-tint="butter">

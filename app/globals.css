@@ -2169,3 +2169,79 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .dark[data-dk="tinted"] { --background: #0f1116; --surface: #181b22; }
 .dark[data-dk="tinted"] :is(.card-pastel, .card-well, .card-band)[data-tint] { border: 1px solid color-mix(in oklab, var(--tint-ink, #fff) 16%, transparent) !important; }
 .dark .card-well[data-tint] { --tint-ink: var(--wm); }
+
+/* Battles lobby: a game screen, night arena in both themes. */
+.arena-stage {
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(124, 92, 255, .45), transparent 70%),
+    radial-gradient(40% 40% at 0% 100%, rgba(14, 165, 233, .25), transparent 70%),
+    radial-gradient(40% 40% at 100% 100%, rgba(244, 63, 94, .22), transparent 70%),
+    linear-gradient(180deg, #151a45, #0b0e2a);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 30px 70px -30px rgba(20, 10, 80, .7);
+}
+.arena-stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .35;
+  background-image: radial-gradient(rgba(255,255,255,.18) 1px, transparent 1px); background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent); mask-image: radial-gradient(70% 60% at 50% 30%, #000, transparent); }
+.play-btn { background: linear-gradient(180deg, #fde047, #f59e0b); box-shadow: 0 7px 0 #b45309, 0 14px 30px -8px rgba(245, 158, 11, .7), inset 0 2px 0 rgba(255,255,255,.6);
+  transition: transform .12s ease, box-shadow .12s ease; animation: play-pulse 2.4s ease-in-out infinite; }
+.play-btn:hover { transform: translateY(-2px); }
+.play-btn:active { transform: translateY(5px); box-shadow: 0 2px 0 #b45309, inset 0 2px 0 rgba(255,255,255,.6); }
+@keyframes play-pulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.12); } }
+@media (prefers-reduced-motion: reduce) { .play-btn { animation: none; } }
+
+/* Edge dark style, refined: watermarks and corner shapes take the card's own colour, with a soft glow behind them. */
+.dark:not([data-dk]) .tile-mark, .dark[data-dk="edge"] .tile-mark { color: var(--tint-ink, #8b9cff) !important; opacity: .22 !important; }
+.dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint]:not(:has(.tile-mark))::after,
+.dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint]:not(:has(.tile-mark))::after { opacity: .2 !important; }
+.dark:not([data-dk]) :is(.card-pastel, .card-well, .card-band)[data-tint],
+.dark[data-dk="edge"] :is(.card-pastel, .card-well, .card-band)[data-tint] {
+  background: radial-gradient(70% 60% at 100% 100%, color-mix(in oklab, var(--tint-ink, #8b9cff) 13%, transparent), transparent 70%), #171a21 !important;
+}
+.dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint],
+.dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint] {
+  background: radial-gradient(80% 80% at 100% 100%, color-mix(in oklab, var(--tint-ink, #8b9cff) 16%, transparent), transparent 70%), #1f232c !important;
+}
+
+/* Theme switch: the new theme grows as a circle from the toggle; the old one stays still underneath. */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { z-index: 2; }
+html.theme-switching * { transition: none !important; }
+
+/* ===== Edge dark style, crafted pass (interface-design checklist) =====
+   Elevation by lightness, one hue (cool slate): page 0 -> card +4% -> inner +7% -> raised +10%. Borders are low-opacity white,
+   never harsh; shadows collapse to a single ring because depth shadows don't read on dark. Four text levels. Colour means identity:
+   a 2px top stripe, the title and the watermark carry the card's ink; everything else stays structural. */
+.dark:not([data-dk]), .dark[data-dk="edge"] {
+  --background: #0d0f14; --surface: #15181f; --surface-secondary: #1c2028; --surface-raised: #232833;
+  --text-primary: #eef0f5; --text-secondary: #b3b9c6; --text-muted: #8a91a1; --text-faint: #646b7a;
+  --border: rgba(255,255,255,.08); --border-subtle: rgba(255,255,255,.05);
+  -webkit-font-smoothing: antialiased;
+}
+.dark:not([data-dk]) :is(.card-pastel, .card-well, .card-band)[data-tint],
+.dark[data-dk="edge"] :is(.card-pastel, .card-well, .card-band)[data-tint] {
+  border: 1px solid rgba(255,255,255,.07) !important;
+  box-shadow: inset 0 2px 0 color-mix(in oklab, var(--tint-ink, #8b9cff) 85%, transparent), 0 0 0 1px rgba(0,0,0,.25) !important;
+  transition: border-color .18s cubic-bezier(.23,1,.32,1), transform .18s cubic-bezier(.23,1,.32,1);
+}
+.dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint]:hover,
+.dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint]:hover { border-color: color-mix(in oklab, var(--tint-ink, #fff) 30%, transparent) !important; }
+.dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint],
+.dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint] {
+  border-color: rgba(255,255,255,.06) !important; box-shadow: inset 0 1px 0 color-mix(in oklab, var(--tint-ink, #8b9cff) 70%, transparent) !important;
+}
+.dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well, .card-inset),
+.dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well, .card-inset) { --text-muted: #9aa1b0; }
+/* inputs sit below their surface: darker, so they read as "type here" */
+.dark:not([data-dk]) :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark[data-dk="edge"] :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]) { background-color: #0f1218; }
+/* the page shell (the big rounded frame around each screen) is barely lifted, so cards lead */
+.dark:not([data-dk]) .page-shell[data-section], .dark[data-dk="edge"] .page-shell[data-section] {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--sec) 22%, #0d0f14) 0%, #0d0f14 55%) !important; border-color: rgba(255,255,255,.05) !important;
+}
+/* PLAY button: one light sweep every few seconds, the lobby's single attention cue. */
+.play-btn { position: relative; overflow: hidden; }
+.play-btn::after { content: ""; position: absolute; inset: -40% auto -40% -60%; width: 40%; transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.65), transparent); animation: play-shine 3.2s cubic-bezier(.23,1,.32,1) infinite; }
+@keyframes play-shine { 0%, 55% { left: -60%; } 100% { left: 130%; } }
+@media (prefers-reduced-motion: reduce) { .play-btn::after { animation: none; display: none; } }
+.arena-rail-btn:focus-visible, .play-btn:focus-visible { outline: 3px solid #fde047; outline-offset: 3px; }
