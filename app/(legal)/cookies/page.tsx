@@ -21,7 +21,7 @@ const ROWS: [string, string, string][] = [
 export default function CookiePolicyPage() {
   return (
     <article>
-      <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--text-primary)] mb-1">Cookie Policy</h1>
+      <h1 className="text-2xl sm:text-3xl font-display font-bold text-[var(--text-primary)] mb-1">Cookie policy</h1>
       <p className="text-sm text-[var(--text-muted)] mb-8">Last updated: 26 September 2026</p>
 
       <div className="space-y-8 text-[var(--text-secondary)] leading-relaxed">

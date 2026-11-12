@@ -201,7 +201,7 @@ export default function ExamSessionPage() {
     return (
       <div className="flex h-dvh flex-col items-center justify-center p-8 bg-[var(--background)]">
         <div className="p-8 text-center space-y-4 max-w-md bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-lg">
-          <h2 className="text-2xl font-bold text-[var(--text-primary)]">No Active Session</h2>
+          <h2 className="text-2xl font-bold text-[var(--text-primary)]">No active session</h2>
           <p className="text-[var(--text-secondary)] text-sm">
              You don't have an active exam session. Start one from the dashboard workspace.
           </p>
@@ -696,7 +696,7 @@ export default function ExamSessionPage() {
                   className="relative bg-[var(--surface)] border-t border-[var(--border)] rounded-t-2xl shadow-2xl z-10 flex flex-col max-h-[75vh] overflow-hidden"
                 >
                   <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border-subtle)] shrink-0">
-                    <span className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Question Grid</span>
+                    <span className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Question grid</span>
                     <div className="flex items-center gap-1">
                       {/* Bookmark is hidden from the cramped row 1 on mobile — reachable here instead. */}
                       <button

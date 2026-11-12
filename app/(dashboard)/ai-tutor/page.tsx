@@ -719,7 +719,7 @@ export default function AITutorWorkspace() {
 
                   {question.question_type === "NAT" && question.nat_answer_range && (
                     <div className="p-3 bg-emerald-500/5 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded-xl text-xs font-semibold font-num flex justify-between items-center">
-                      <span>Correct Answer Range</span>
+                      <span>Correct answer range</span>
                       <span>{formatNatAnswer(question.nat_answer_range)}</span>
                     </div>
                   )}
@@ -735,7 +735,7 @@ export default function AITutorWorkspace() {
                     </div>
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] p-2 rounded-lg">
                       <span className="block text-[8px] font-black uppercase text-[var(--text-muted)]">Revision Pri.</span>
-                      <span className="text-xs font-bold text-rose-500">Very High</span>
+                      <span className="text-xs font-bold text-rose-500">Very high</span>
                     </div>
                   </div>
                 </div>
@@ -1060,7 +1060,7 @@ export default function AITutorWorkspace() {
                     onClick={() => setIsOutlineCollapsed(!isOutlineCollapsed)}
                     className="w-full flex justify-between items-center text-left focus:outline-none cursor-pointer group"
                   >
-                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition">Tutor Outline Navigator</span>
+                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition">Tutor outline navigator</span>
                     {isOutlineCollapsed ? (
                       <ChevronDown className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition" />
                     ) : (
@@ -1104,7 +1104,7 @@ export default function AITutorWorkspace() {
                 {/* Personal notes attachments editor */}
                 <div className="space-y-2 border-t border-[var(--border-subtle)] pt-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Workspace Notes</span>
+                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Workspace notes</span>
                     <div className="flex gap-1.5">
                       <button
                         onClick={() => setNotesPreviewMode(prev => !prev)}
@@ -1152,7 +1152,7 @@ export default function AITutorWorkspace() {
                 <div className="space-y-3 border-t border-[var(--border-subtle)] pt-4">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Dynamic Practice Set</span>
+                      <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Dynamic practice set</span>
                       {practiceQuestions.length > 0 && (
                         <span className="flex items-center gap-1 text-[8px] font-black tracking-normal bg-amber-500/10 text-amber-600 dark:text-amber-400 px-1.5 py-0.5 rounded" title="AI-generated practice — not official GATE questions">
                           <Sparkles className="w-2.5 h-2.5" />
@@ -1218,7 +1218,7 @@ export default function AITutorWorkspace() {
                             {isExpanded && (
                               <div className="p-3.5 space-y-3.5 text-xs">
                                 <div>
-                                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-1">Question Text</span>
+                                  <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-1">Question text</span>
                                   <div className="font-bold text-[var(--text-primary)] leading-relaxed bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl whitespace-pre-wrap">
                                     <AstNodeRenderer nodes={AIResponseParser.parse(q.questionText)} />
                                   </div>

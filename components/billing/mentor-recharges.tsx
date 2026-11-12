@@ -101,7 +101,7 @@ export function MentorRecharges(_props: { compact?: boolean }) {
                   <div className="mt-2 space-y-2">
                     <label className="flex items-start gap-2 text-[11px] text-[var(--text-secondary)] cursor-pointer">
                       <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
-                      <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold underline">Refund Policy</Link>: recharges are not refundable except for our errors.</span>
+                      <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold underline">Refund policy</Link>: recharges are not refundable except for our errors.</span>
                     </label>
                     <button type="button" onClick={() => void pay(p)} disabled={!agreed || !!busy} className="inline-flex h-9 w-full items-center justify-center gap-1.5 rounded-xl bg-[var(--btn)] text-sm font-bold text-[var(--btn-fg)] disabled:opacity-50 cursor-pointer">
                       {busy === p.id && <Loader2 className="h-4 w-4 animate-spin" />} Pay {formatPrice(p.pricePaise)}

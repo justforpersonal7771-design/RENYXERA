@@ -330,7 +330,7 @@ export default function ProfilePage() {
           <div className="w-16 h-16 mx-auto mb-5 rounded-2xl flex items-center justify-center bg-gradient-to-br from-cyan-500 via-indigo-600 to-fuchsia-500 text-white shadow-lg shadow-indigo-500/30"><UserIcon className="w-8 h-8" /></div>
           <h1 className="text-xl font-extrabold text-[var(--text-primary)] mb-1.5">You&apos;re not signed in</h1>
           <p className="text-sm text-[var(--text-secondary)] mb-6">Sign in to set up your profile and sync your progress across devices.</p>
-          <button onClick={() => openAuthModal("login", "/profile")} className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-md shadow-indigo-500/25 transition-colors">Sign In</button>
+          <button onClick={() => openAuthModal("login", "/profile")} className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-sm shadow-md shadow-indigo-500/25 transition-colors">Sign in</button>
         </div>
       </div>
     );

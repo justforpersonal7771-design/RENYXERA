@@ -24,6 +24,11 @@ function Mock({ initialTrack }: { initialTrack: string }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const [log, setLog] = useState<number[]>([]);
+  const [total, setTotal] = useState("5");                       // questions in one mock session ("1" = one at a time)
+  const [misses, setMisses] = useState<{ q: string; m: string[] }[]>([]);
+  const [report, setReport] = useState(false);
+  const goal = Number(total);
+  const sessionDone = goal > 1 && log.length >= goal;
 
   const next = async () => {
     setBusy(true); setRes(null); setAnswer(""); setErr("");
@@ -40,7 +45,7 @@ function Mock({ initialTrack }: { initialTrack: string }) {
     try {
       const r = await fetch("/api/interview/ai", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ mode: "mock_score", cardId: q.id, answer }) });
       const d = (await r.json()) as Res & { error?: string };
-      if (d.error) setErr(d.error); else { setRes(d); setLog((l) => [...l, d.score]); }
+      if (d.error) setErr(d.error); else { setRes(d); setLog((l) => [...l, d.score]); if (d.missing?.length) setMisses((x) => [...x, { q: q.question, m: d.missing }]); }
     } catch { setErr("Could not reach the server."); } finally { setBusy(false); }
   };
   const lesson = q && docs.find((d) => d.book === q.book && d.kind === "chapter" && (norm(q.ch).includes(norm(d.title).slice(0, 24)) || norm(d.title).includes(norm(q.ch).slice(0, 24))));
@@ -49,12 +54,29 @@ function Mock({ initialTrack }: { initialTrack: string }) {
   return (
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px]">
       <div className="space-y-4">
-        {!q ? (
+        {report ? (
+          <section className="space-y-4" aria-live="polite">
+            <div className="card-pastel p-6 sm:p-8" data-tint={avg != null && avg >= 6 ? "mint" : "rose"}>
+              <span className="section-label"><Target className="h-3.5 w-3.5" /> Mock report</span>
+              <p className="mt-3 font-display text-5xl font-extrabold text-[var(--text-primary)]">{avg}<span className="text-xl text-[var(--text-muted)]"> / 10 average</span></p>
+              <p className="mt-2 text-[var(--text-secondary)]">{log.length} questions · best {Math.max(...log)} · lowest {Math.min(...log)} · {log.filter((x) => x >= 6).length} you would pass</p>
+            </div>
+            <div className="card-pastel p-6" data-tint="butter">
+              <p className="font-bold text-[var(--text-primary)]">What to work on before the real one</p>
+              {misses.length ? <ul className="mt-3 space-y-3">{misses.map((x, i) => <li key={i} className="text-sm"><p className="font-semibold text-[var(--text-primary)]">{x.q}</p><ul className="mt-1 list-disc pl-5 text-[var(--text-secondary)]">{x.m.map((m, j) => <li key={j}>{m}</li>)}</ul></li>)}</ul> : <p className="mt-2 text-sm text-[var(--text-secondary)]">Nothing major was missing. Try a harder track next.</p>}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button type="button" onClick={() => { setReport(false); setLog([]); setMisses([]); setQ(null); setRes(null); }} className="btn-main">Start another mock</button>
+              <Link href="/interview/progress" className="pill-soft">See all mistakes</Link>
+            </div>
+          </section>
+        ) : !q ? (
           <section className="card-pastel p-6 sm:p-8" data-tint="mint">
             <span className="section-label"><Target className="h-3.5 w-3.5" /> Mock interview</span>
             <h2 className="mt-3 font-display text-3xl font-extrabold text-[var(--text-primary)]">Answer like it is the real thing.</h2>
             <p className="mt-2 max-w-xl text-[var(--text-secondary)]">You get a real interview question from your books. Type the answer you would say. The tutor scores it from 0 to 10 against the book&apos;s model answer, tells you what you missed, and adds misses to your fix list.</p>
             <div className="mt-5 flex flex-wrap items-center gap-3">
+              <CustomDropdown className="w-56" value={total} onChange={setTotal} options={[{ label: "5-question mock", value: "5" }, { label: "10-question mock", value: "10" }, { label: "One at a time", value: "1" }]} />
               <CustomDropdown className="w-72" value={track} onChange={setTrack} options={[{ label: "All tracks", value: "all" }, ...TRACKS.map((t) => ({ label: t.title, value: t.id }))]} />
               <button type="button" onClick={() => void next()} disabled={busy} className="btn-main">{busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}Ask me a question</button>
             </div>
@@ -83,7 +105,7 @@ function Mock({ initialTrack }: { initialTrack: string }) {
                   <div className="card-pastel p-5" data-tint="rose"><p className="font-bold">What was missing</p><ul className="mt-2 list-disc space-y-1 pl-5 text-sm">{res.missing.length ? res.missing.map((g, i) => <li key={i}>{g}</li>) : <li>Nothing. Well answered.</li>}</ul></div>
                 </div>
                 <div className="card-pastel p-5" data-tint="butter"><p className="font-bold">A stronger answer</p><div className="mt-2 text-sm"><IvMarkdown body={res.better} /></div></div>
-                <div className="flex flex-wrap gap-2"><button type="button" onClick={() => void next()} className="btn-main">Next question<ArrowRight className="h-4 w-4" /></button><button type="button" onClick={() => { setRes(null); setAnswer(""); }} className="btn-soft"><RotateCcw className="h-4 w-4" />Try again</button>{lesson && <Link href={`/interview/read?doc=${encodeURIComponent(lesson.id)}`} className="pill-soft">Read the lesson</Link>}<button type="button" onClick={() => { setQ(null); setRes(null); }} className="pill-soft">Change track</button></div>
+                <div className="flex flex-wrap gap-2">{sessionDone ? <button type="button" onClick={() => setReport(true)} className="btn-main">See your report<ArrowRight className="h-4 w-4" /></button> : <button type="button" onClick={() => void next()} className="btn-main">{goal > 1 ? `Question ${log.length + 1} of ${goal}` : "Next question"}<ArrowRight className="h-4 w-4" /></button>}<button type="button" onClick={() => { setRes(null); setAnswer(""); }} className="btn-soft"><RotateCcw className="h-4 w-4" />Try again</button>{lesson && <Link href={`/interview/read?doc=${encodeURIComponent(lesson.id)}`} className="pill-soft">Read the lesson</Link>}<button type="button" onClick={() => { setQ(null); setRes(null); }} className="pill-soft">Change track</button></div>
               </section>
             )}
           </>

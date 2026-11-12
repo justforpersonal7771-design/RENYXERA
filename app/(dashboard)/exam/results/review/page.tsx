@@ -344,7 +344,7 @@ export default function ReviewPage() {
                         {q.question_type === "NAT" && (
                           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface)] border border-[var(--border)] rounded-2xl w-full">
                             <div className="flex-1 flex justify-between items-center bg-[var(--surface-secondary)] p-3 border border-[var(--border-subtle)] rounded-xl">
-                              <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct Answer Range</span>
+                              <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct answer range</span>
                               <span className="font-num font-bold text-green-600 dark:text-green-400">
                                 {formatNatAnswer(q.nat_answer_range)}
                               </span>
@@ -355,7 +355,7 @@ export default function ReviewPage() {
                                   : 'border-red-500 text-red-700 dark:text-red-500')
                                 : 'border-[var(--border-subtle)] text-[var(--text-secondary)]'
                               }`}>
-                              <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your Answer</span>
+                              <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your answer</span>
                               <span className="font-num font-bold">{currentResponse?.natValue || "None"}</span>
                             </div>
                           </motion.div>

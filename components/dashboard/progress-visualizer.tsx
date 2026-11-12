@@ -43,7 +43,7 @@ export function ProgressVisualizer({ subjectPerformance, totalSolved }: Progress
         <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500/5 rounded-bl-full pointer-events-none" />
         <h4 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] mb-6 flex items-center gap-1.5">
           <GraduationCap className="w-4 h-4 text-indigo-500" />
-          <span>Syllabus Complete</span>
+          <span>Syllabus complete</span>
         </h4>
         
         <div className="relative flex items-center justify-center w-36 h-36">

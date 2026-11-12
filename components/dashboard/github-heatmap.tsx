@@ -84,14 +84,14 @@ export function GithubHeatmap({ snapshots }: GithubHeatmapProps) {
       </div>
 
       <div className="flex justify-between items-center mt-6 pt-4 border-t border-[var(--border-subtle)] text-[9px] font-black uppercase text-[var(--text-muted)] tracking-wider">
-        <span>Less Solved</span>
+        <span>Less solved</span>
         <div className="flex items-center gap-1.5">
           <span className="heat-0 h-3.5 w-3.5 rounded-sm"></span>
           <span className="heat-1 h-3.5 w-3.5 rounded-sm"></span>
           <span className="heat-2 h-3.5 w-3.5 rounded-sm"></span>
           <span className="heat-3 h-3.5 w-3.5 rounded-sm"></span>
         </div>
-        <span>More Solved</span>
+        <span>More solved</span>
       </div>
     </motion.div>
   );

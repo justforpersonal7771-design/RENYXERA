@@ -283,7 +283,7 @@ export function StudyPlanner() {
           <div className="flex items-center gap-3">
             <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-primary)] flex items-center gap-1.5">
               <Calendar className="w-4 h-4 text-indigo-500" />
-              <span>Study Schedule Engine</span>
+              <span>Study schedule engine</span>
             </h3>
             
             <div className="flex bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl p-0.5 text-xs font-bold tracking-normal">
@@ -599,11 +599,11 @@ export function StudyPlanner() {
             </div>
             <div className="bg-[var(--surface-secondary)] border border-[var(--border-subtle)] p-2 rounded-xl">
               <span className="block text-indigo-500 text-sm font-black font-num">{stats.pendingToday}</span>
-              <span>Pending Today</span>
+              <span>Pending today</span>
             </div>
             <div className="bg-[var(--surface-secondary)] border border-[var(--border-subtle)] p-2 rounded-xl">
               <span className="block text-emerald-500 text-sm font-black font-num">{stats.completedToday}</span>
-              <span>Solved Today</span>
+              <span>Solved today</span>
             </div>
           </div>
         </div>
@@ -630,11 +630,11 @@ export function StudyPlanner() {
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               className="relative w-full max-w-xl bg-[var(--surface)] border border-[var(--border)] rounded-3xl popover-surface p-6 overflow-hidden z-10 max-h-[90vh] overflow-y-auto custom-scrollbar"
             >
-              <h4 className="font-extrabold text-base text-[var(--text-primary)] mb-5">Create Planned Study Event</h4>
+              <h4 className="font-extrabold text-base text-[var(--text-primary)] mb-5">Create planned study event</h4>
               
               <form onSubmit={handleAddEvent} className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Study Title</label>
+                  <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Study title</label>
                   <input 
                     type="text" 
                     required
@@ -647,7 +647,7 @@ export function StudyPlanner() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
-                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Study Type</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Study type</label>
                     <CustomDropdown
                       value={newEvent.studyType || "Study"}
                       onChange={(v) => setNewEvent({ ...newEvent, studyType: v as any })}
@@ -728,7 +728,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Target Questions</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Target questions</label>
                     <NumberStepper
                       size="sm"
                       ariaLabel="Target questions"
@@ -739,7 +739,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Revision Cycle</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Revision cycle</label>
                     <CustomDropdown
                       value={newEvent.revisionCycle || "One Time"}
                       onChange={(v) => setNewEvent({ ...newEvent, revisionCycle: v as any })}
@@ -767,7 +767,7 @@ export function StudyPlanner() {
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Time Range Mode</label>
+                    <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Time range mode</label>
                     <CustomDropdown
                       value={newEvent.timeRangeType || "date_only"}
                       onChange={(v) => setNewEvent({ ...newEvent, timeRangeType: v as any })}
@@ -785,12 +785,12 @@ export function StudyPlanner() {
                 {newEvent.timeRangeType !== "date_only" && (
                   <div className="grid grid-cols-3 gap-4">
                     <div className="space-y-1">
-                      <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Start Time</label>
+                      <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">Start time</label>
                       <TimePicker value={newEvent.startTime ?? ""} onChange={v => setNewEvent({ ...newEvent, startTime: v })} />
                     </div>
                     {newEvent.timeRangeType === "start_end" && (
                       <div className="space-y-1">
-                        <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">End Time</label>
+                        <label className="text-xs font-black tracking-normal text-[var(--text-secondary)]">End time</label>
                         <TimePicker value={newEvent.endTime ?? ""} onChange={v => setNewEvent({ ...newEvent, endTime: v })} />
                       </div>
                     )}

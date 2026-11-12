@@ -21,6 +21,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Reveal } from "@/components/ui/reveal";
 import { MockAnalytics } from "@/components/analytics/mock-analytics";
 import { CoachInsights } from "@/components/analytics/coach-insights";
+import { KeyNumbers, SectionHead } from "@/components/analytics/key-numbers";
 import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
 import { TopicLadders } from "@/components/analytics/topic-ladders";
 import { GuestLock } from "@/components/auth/guest-lock";
@@ -164,9 +165,9 @@ export default function AnalyticsDashboardPage() {
 
   const hud = intel
     ? [
-        { label: "Mastery Score", value: intel.masteryScore, icon: CheckCircle, tag: "Core CSE", color: "text-indigo-500", from: "#6366f1", to: "#a855f7",
+        { label: "Mastery score", value: intel.masteryScore, icon: CheckCircle, tag: "Core CSE", color: "text-indigo-500", from: "#6366f1", to: "#a855f7",
           info: "How well you know the syllabus overall, weighted by how much of each subject you've covered and how accurately." },
-        { label: "Readiness Index", value: intel.readinessScore, icon: Award, tag: "Exam ready", color: "text-emerald-500", from: "#10b981", to: "#06b6d4",
+        { label: "Readiness index", value: intel.readinessScore, icon: Award, tag: "Exam ready", color: "text-emerald-500", from: "#10b981", to: "#06b6d4",
           info: "How prepared you look for the real exam right now, combining mastery, accuracy under time, and syllabus coverage." },
         { label: "Confidence", value: intel.confidenceScore, icon: Sparkles, tag: "Accuracy × speed", color: "text-amber-500", from: "#f59e0b", to: "#f43f5e",
           info: "Whether you answer correctly and at GATE pace. High accuracy but slow answers keeps this lower." },
@@ -193,7 +194,7 @@ export default function AnalyticsDashboardPage() {
             {firstName ? `${firstName}'s` : "Your"} <span className="font-serif italic font-medium bg-gradient-to-r from-indigo-500 via-violet-500 to-pink-500 bg-clip-text text-transparent pr-1">analytics</span>
           </h1>
           <p className="mt-2 text-sm text-[var(--text-secondary)] font-medium">
-            Hover, click and filter anything below. Click a subject bar to narrow the topic explorer to it.
+            Where you stand, what to do next, then the detail by subject, topic and time.
           </p>
         </motion.div>
 
@@ -223,15 +224,9 @@ export default function AnalyticsDashboardPage() {
             ))}
           </div>
         )}
+        <KeyNumbers m={dashboardMetrics} />
 
-        {/* Where GATE's marks come from vs how you do there (expand a row for its most-asked topics). */}
-        {/* The shape of your preparation: every subject on one full-width radar. */}
-        {!loadingIntel && <Reveal><SubjectRadarCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>}
-
-        {!loadingIntel && <SubjectShareList subjects={dashboardMetrics?.subjectPerformance ?? []} onPractise={practice} />}
-
-        {/* All-India Mock history (empty state when none) */}
-
+        <SectionHead title="What to do next" hint="From your latest attempts" />
         {/* 2. Insights + adaptive path */}
         {!loadingIntel && intel && (
           <Reveal>
@@ -296,49 +291,15 @@ export default function AnalyticsDashboardPage() {
           </Reveal>
         )}
 
-        {/* 3. Trend + difficulty */}
-        <div className="grid grid-cols-1 gap-6">
-          <motion.div {...rise} className="card-band p-6 pt-7" data-tint="sky">
-            <div className="flex items-center justify-between gap-3 mb-6">
-              <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-indigo-500" />
-                Trend across recent exams
-              </h3>
-              <Segmented size="xs" value={trendMetric} onChange={setTrendMetric} options={[{ label: "Accuracy", value: "accuracy" }, { label: "Score", value: "score" }]} />
-            </div>
-            <div className="h-[280px] w-full">
-              {trendData.length === 0 ? (
-                <ChartEmptyState label="Complete a mock test to start tracking your trend across exams." />
-              ) : (
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={trendData}>
-                    <defs>
-                      <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={trendMetric === "accuracy" ? "#6366f1" : "#ec4899"} stopOpacity={0.4} />
-                        <stop offset="95%" stopColor={trendMetric === "accuracy" ? "#6366f1" : "#ec4899"} stopOpacity={0} />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" opacity={0.1} vertical={false} />
-                    <XAxis dataKey="session" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} interval="equidistantPreserveStart" />
-                    <YAxis stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
-                    <RechartsTooltip content={<ChartTooltip unit={trendMetric === "accuracy" ? "%" : ""} />} cursor={{ stroke: "var(--border)", strokeWidth: 1, strokeDasharray: "4 4" }} />
-                    <Area
-                      key={trendMetric}
-                      type="monotone"
-                      dataKey={trendMetric}
-                      name={trendMetric === "accuracy" ? "Accuracy" : "Score"}
-                      stroke={trendMetric === "accuracy" ? "#6366f1" : "#ec4899"}
-                      strokeWidth={3}
-                      fill="url(#trendFill)"
-                      activeDot={{ r: 6, stroke: "var(--surface)", strokeWidth: 2 }}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              )}
-            </div>
-          </motion.div>
-        </div>
 
+        <SectionHead title="Subjects" hint="Click a bar to filter the topics below" />
+        {/* Where GATE's marks come from vs how you do there (expand a row for its most-asked topics). */}
+        {/* The shape of your preparation: every subject on one full-width radar. */}
+        {!loadingIntel && <Reveal><SubjectRadarCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>}
+
+        {!loadingIntel && <SubjectShareList subjects={dashboardMetrics?.subjectPerformance ?? []} onPractise={practice} />}
+
+        {/* All-India Mock history (empty state when none) */}
 
         {/* 4. Subject explorer — one chart, three metrics, bars act as a filter */}
         <motion.div {...rise} className="card-band p-6 pt-7" data-tint="peach">
@@ -395,6 +356,7 @@ export default function AnalyticsDashboardPage() {
           </div>
         </motion.div>
 
+        <SectionHead title="Topics" />
         {/* 5. Topic explorer — tabs, search, sortable columns, one-click practice */}
         <motion.div {...rise} className="card-band pt-1.5" data-tint="lilac">
           <div className="p-5 border-b border-[var(--border-subtle)] flex flex-col lg:flex-row lg:items-center gap-3 justify-between">
@@ -508,6 +470,52 @@ export default function AnalyticsDashboardPage() {
             )}
           </div>
         </motion.div>
+
+        <SectionHead title="Over time" />
+        {/* 3. Trend + difficulty */}
+        <div className="grid grid-cols-1 gap-6">
+          <motion.div {...rise} className="card-band p-6 pt-7" data-tint="sky">
+            <div className="flex items-center justify-between gap-3 mb-6">
+              <h3 className="font-bold text-sm tracking-tight text-[var(--text-primary)] flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-indigo-500" />
+                Trend across recent exams
+              </h3>
+              <Segmented size="xs" value={trendMetric} onChange={setTrendMetric} options={[{ label: "Accuracy", value: "accuracy" }, { label: "Score", value: "score" }]} />
+            </div>
+            <div className="h-[280px] w-full">
+              {trendData.length === 0 ? (
+                <ChartEmptyState label="Complete a mock test to start tracking your trend across exams." />
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={trendData}>
+                    <defs>
+                      <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={trendMetric === "accuracy" ? "#6366f1" : "#ec4899"} stopOpacity={0.4} />
+                        <stop offset="95%" stopColor={trendMetric === "accuracy" ? "#6366f1" : "#ec4899"} stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.1} vertical={false} />
+                    <XAxis dataKey="session" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} interval="equidistantPreserveStart" />
+                    <YAxis stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
+                    <RechartsTooltip content={<ChartTooltip unit={trendMetric === "accuracy" ? "%" : ""} />} cursor={{ stroke: "var(--border)", strokeWidth: 1, strokeDasharray: "4 4" }} />
+                    <Area
+                      key={trendMetric}
+                      type="monotone"
+                      dataKey={trendMetric}
+                      name={trendMetric === "accuracy" ? "Accuracy" : "Score"}
+                      stroke={trendMetric === "accuracy" ? "#6366f1" : "#ec4899"}
+                      strokeWidth={3}
+                      fill="url(#trendFill)"
+                      activeDot={{ r: 6, stroke: "var(--surface)", strokeWidth: 2 }}
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          </motion.div>
+        </div>
+
+
 
         {/* Moved here from the old Coach insights screen (Plus and Pro) */}
         <CoachInsights show={["export", "health", "graph", "patterns", "timeline", "shortcuts", "notes"]} />

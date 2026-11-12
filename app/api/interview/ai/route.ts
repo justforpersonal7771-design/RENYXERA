@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   try {
     // Mock interviewer, step 1: the server picks a real question from the bank (not the model).
     if (b.mode === "mock_next") {
-      let q = db.from("interview_cards").select("id,book,book_title,ch,front").eq("type", "Question").limit(1500);
+      let q = db.from("interview_cards").select("id,book,book_title,ch,front").in("type", ["Question", "Scenario"]).limit(3000);
       if (b.track) q = q.in("book", b.track.split(",").slice(0, 12));
       const { data } = await q;
       if (!data?.length) return NextResponse.json({ error: "No questions for that track yet." }, { status: 404 });

@@ -116,7 +116,7 @@ export default function TestCentrePage() {
         </Link>
         <Link href="/battles" data-tint="lilac" className={`${tile} md:col-span-2`}>
           <Mark I={Swords} />
-          <h2 className={`font-display text-xl font-extrabold ${ink}`}>Challenge</h2>
+          <h2 className={`font-display text-xl font-extrabold ${ink}`}>Battles</h2>
           <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Go <Arrow /></span>
         </Link>
         <Link href="/test-centre/history" data-tint="sky" className={`${tile} col-span-2 md:col-span-2`}>

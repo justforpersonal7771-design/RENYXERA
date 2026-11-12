@@ -123,7 +123,7 @@ export default function RevisionBuilderPage() {
               onClick={() => setMode("mistakes")}
             >
               <div>
-                <h4 className="font-bold text-sm text-[var(--text-primary)]">Mistakes Bank Queue</h4>
+                <h4 className="font-bold text-sm text-[var(--text-primary)]">Mistakes bank queue</h4>
                 <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Flagged as incorrect during exams.</p>
               </div>
               <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
@@ -138,7 +138,7 @@ export default function RevisionBuilderPage() {
               onClick={() => setMode("bookmarks")}
             >
               <div>
-                <h4 className="font-bold text-sm text-[var(--text-primary)]">Bookmarked Items</h4>
+                <h4 className="font-bold text-sm text-[var(--text-primary)]">Bookmarked items</h4>
                 <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Bookmarks, folders, formula notes.</p>
               </div>
               <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
@@ -187,7 +187,7 @@ export default function RevisionBuilderPage() {
               className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold tracking-normal rounded-xl transition shadow-lg shadow-indigo-600/10 flex items-center gap-2 cursor-pointer text-xs"
             >
               <Play className="w-4 h-4 fill-white" />
-              <span>Launch Revision Session</span>
+              <span>Launch revision session</span>
             </motion.button>
           </div>
         </div>
@@ -203,7 +203,7 @@ export default function RevisionBuilderPage() {
               <div className="p-3.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl flex items-start gap-3">
                 <Sparkles className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Revision Due Today</span>
+                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Revision due today</span>
                   <span className="text-xs font-extrabold text-[var(--text-primary)] block mb-1">
                     {intel.todaysFocus.topic}
                   </span>
@@ -214,7 +214,7 @@ export default function RevisionBuilderPage() {
               <div className="p-3.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl flex items-start gap-3">
                 <Clock className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
                 <div>
-                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Estimated Queue Review Time</span>
+                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Estimated queue review time</span>
                   <span className="text-xs font-extrabold text-[var(--text-primary)] block mb-0.5">
                     {filteredRevisionQueue.reduce((acc, q) => acc + q.estimatedTimeMin, 0)} Minutes
                   </span>
@@ -265,7 +265,7 @@ export default function RevisionBuilderPage() {
                       <h4 className="font-extrabold text-xs text-[var(--text-primary)]">{b.topic}</h4>
                       {b.aiShortcut && (
                         <div className="bg-[var(--surface)] border border-[var(--border-subtle)] p-3 rounded-lg">
-                          <span className="text-[9px] font-black uppercase text-indigo-500 block mb-1">Saved Shortcut</span>
+                          <span className="text-[9px] font-black uppercase text-indigo-500 block mb-1">Saved shortcut</span>
                           <div className="text-xs font-semibold text-[var(--text-secondary)] leading-relaxed">
                             <AstNodeRenderer nodes={AIResponseParser.parse(b.aiShortcut)} />
                           </div>
@@ -273,7 +273,7 @@ export default function RevisionBuilderPage() {
                       )}
                       {b.personalObservations && (
                         <div className="bg-[var(--surface)] border border-[var(--border-subtle)] p-3 rounded-lg">
-                          <span className="text-[9px] font-black uppercase text-amber-500 block mb-1">Personal Observation</span>
+                          <span className="text-[9px] font-black uppercase text-amber-500 block mb-1">Personal observation</span>
                           <div className="text-xs font-semibold text-[var(--text-secondary)] leading-relaxed">
                             <AstNodeRenderer nodes={AIResponseParser.parse(b.personalObservations)} />
                           </div>
@@ -290,12 +290,12 @@ export default function RevisionBuilderPage() {
                 <table className="w-full text-xs text-left min-w-[700px]">
                   <thead className="text-[9px] font-black uppercase bg-[var(--surface-secondary)] text-[var(--text-muted)] border-b border-[var(--border-subtle)] sticky top-0 z-10">
                     <tr>
-                      <th className="px-5 py-3.5">Topic Details</th>
+                      <th className="px-5 py-3.5">Topic details</th>
                       <th className="px-5 py-3.5 text-center">Priority</th>
-                      <th className="px-5 py-3.5">Revision Reason</th>
+                      <th className="px-5 py-3.5">Revision reason</th>
                       <th className="px-5 py-3.5 text-center">Est. Time</th>
                       <th className="px-5 py-3.5 text-center">Confidence</th>
-                      <th className="px-5 py-3.5 text-center">Solved Counts</th>
+                      <th className="px-5 py-3.5 text-center">Solved counts</th>
                       <th className="px-5 py-3.5 text-right">Next suggested</th>
                     </tr>
                   </thead>

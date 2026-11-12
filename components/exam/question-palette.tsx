@@ -87,15 +87,15 @@ export function QuestionPalette() {
         {currentQData ? (
           <div className="space-y-3">
             <div>
-              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current Section</span>
+              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current section</span>
               <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.section || "N/A"} />
             </div>
             <div>
-              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current Subject</span>
+              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current subject</span>
               <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.subject || "N/A"} />
             </div>
             <div>
-              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current Topic</span>
+              <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block mb-0.5">Current topic</span>
               <SmartTruncate className="text-xs font-bold text-[var(--text-primary)]" text={currentQData.topic || "N/A"} />
             </div>
           </div>
@@ -111,11 +111,11 @@ export function QuestionPalette() {
           </div>
           <div className="flex items-center gap-2.5">
             <span className="w-5 h-5 rounded bg-red-500 text-white flex items-center justify-center text-[10px] font-bold shadow-sm">{stats.notAnswered}</span>
-            <span>Not Answered</span>
+            <span>Not answered</span>
           </div>
           <div className="flex items-center gap-2.5">
             <span className="w-5 h-5 rounded bg-[var(--surface-elevated)] border border-[var(--border)] text-[var(--text-secondary)] flex items-center justify-center text-[10px] font-bold shadow-sm">{stats.notVisited}</span>
-            <span>Not Visited</span>
+            <span>Not visited</span>
           </div>
           <div className="flex items-center gap-2.5">
             <span className="w-5 h-5 rounded bg-purple-500 text-white flex items-center justify-center text-[10px] font-bold shadow-sm">{stats.marked}</span>

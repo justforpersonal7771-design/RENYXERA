@@ -572,6 +572,15 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Profile: Overview merged into Personal info; Avatar and Design studio are their own items again; hidden-scrollbar lists
 - [x] Watermarks shrink instead of being cut (small tiles, phones); soft blurred band under the navbar
 - [ ] Interview question bank rewrite (scenario-based, senior-level, full answers) - not started
+- [x] Analytics regrouped: Where you stand, What to do next, Subjects, Topics, Over time; new key numbers (solved, accuracy, pace vs GATE, skipped, streak, hours, best/weakest subject)
+- [x] Interview: 5 or 10 question mock sessions with an end report (average, best, lowest, what was missing)
+- [x] Interview: interview-date plan (days left, chapters a day, cards due, mocks before then)
+- [x] Casing audit: 32 files of Title Case labels to sentence case; Test Centre tile 'Challenge' renamed 'Battles'
+- [x] Navbar blur band works (inline backdrop filter; the CSS rule was being stripped)
+- [x] Test Centre phone card order: already in place (mission, doors, mock info)
+- [ ] Study typed notes + cross-device sync (needs owner migration)
+- [ ] Two-way live Battles room, clubs, rewards
+- [ ] Ad video on hold (owner)
 - [x] Study lesson: select text to highlight in 4 colours (kept on this device), 'Your highlights' list in the side rail
 - [ ] Study notes (typed notes per highlight) and cross-device sync need a table (owner-run migration)
 - [x] Lunar look removed (Classic pastel only); dashboard hero + KPI strip + full-width radar; premium card hover; dark tints fixed; Mentor sidebar redesign and new-chat landing; floating phone dock. Pushed in 100874c.

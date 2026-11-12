@@ -54,7 +54,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
       <div className="px-6 py-5 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
         <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5">
           <Award className="w-4 h-4 text-indigo-500" />
-          <span>Recent Mock Exams</span>
+          <span>Recent mock exams</span>
         </h3>
       </div>
 
@@ -127,7 +127,7 @@ export function RecentExams({ recentSessions }: RecentExamsProps) {
                       {relaunchingId === session.id
                         ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
                         : <RotateCcw className="w-3.5 h-3.5" />}
-                      <span>Practice Again</span>
+                      <span>Practice again</span>
                     </button>
                   </div>
                 </div>

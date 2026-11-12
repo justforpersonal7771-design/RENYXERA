@@ -967,7 +967,7 @@ export default function ExamSetupPage() {
 
                                                     {q.options && q.options.length > 0 && (
                                                       <div className="space-y-2">
-                                                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Option List</span>
+                                                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Option list</span>
                                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                                                           {q.options.map((opt: any) => {
                                                             const isOptCorrect = !!opt.is_correct;
@@ -993,7 +993,7 @@ export default function ExamSetupPage() {
 
                                                     {q.nat_answer_range && (
                                                       <div className="p-3 bg-green-500/5 border border-green-500/20 rounded-xl text-green-700 dark:text-green-400 font-bold flex justify-between max-w-sm">
-                                                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Correct Answer Range</span>
+                                                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">Correct answer range</span>
                                                         <span className="font-num">{formatNatAnswer(q.nat_answer_range)}</span>
                                                       </div>
                                                     )}
@@ -1174,7 +1174,7 @@ export default function ExamSetupPage() {
 
                   {examType === "SECTION_TEST" && (
                     <div>
-                      <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target Section</label>
+                      <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target section</label>
                       <div className="relative">
                         <CustomDropdown
                           value={selectedSection}
@@ -1198,7 +1198,7 @@ export default function ExamSetupPage() {
                         </div>
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target Subject</label>
+                        <label className="block text-sm font-bold text-[var(--text-secondary)] mb-2">Target subject</label>
                         <div className="relative">
                           <CustomDropdown
                             value={selectedSubject}
@@ -1309,7 +1309,7 @@ export default function ExamSetupPage() {
                     <div className={`p-2 rounded-lg ${currentDraft ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/40 dark:text-emerald-400' : 'bg-[var(--surface-secondary)] text-[var(--text-muted)]'}`}>
                        <FileText className="w-5 h-5" />
                     </div>
-                    <h3 className="font-bold text-lg text-[var(--text-primary)]">Generated Blueprint</h3>
+                    <h3 className="font-bold text-lg text-[var(--text-primary)]">Generated blueprint</h3>
                     {currentDraft?.config?.goalTag && <GoalTagBadge tag={currentDraft.config.goalTag} />}
                   </div>
 
@@ -1362,7 +1362,7 @@ export default function ExamSetupPage() {
                       </div>
 
                       <div>
-                         <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-2 block">Question Types</span>
+                         <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-2 block">Question types</span>
                          <div className="flex gap-2">
                             <div className="flex-1 flex items-center justify-between px-3 py-2 rounded-xl bg-blue-500/10 border border-blue-500/20">
                                <span className="text-xs font-black tracking-normal text-blue-500">MCQ</span>
@@ -1380,7 +1380,7 @@ export default function ExamSetupPage() {
                       </div>
 
                       <div className="pb-2">
-                         <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-2 block">Difficulty Split</span>
+                         <span className="text-xs font-bold text-[var(--text-muted)] tracking-normal mb-2 block">Difficulty split</span>
                          <div className="flex h-3 rounded-full overflow-hidden w-full gap-0.5">
                             {['Easy', 'Medium', 'Hard'].map(d => {
                                const count = draftStats.diffs[d] || 0;
@@ -1470,7 +1470,7 @@ export default function ExamSetupPage() {
                       className="flex-1 min-h-0 flex flex-col items-center justify-center text-center border-2 border-dashed border-[var(--border)] rounded-2xl bg-[var(--surface-secondary)]/50 p-5 mx-5 mb-5"
                     >
                        <ServerCog className="w-10 h-10 text-gray-300 dark:text-gray-700 mb-3" />
-                       <h4 className="font-bold text-[var(--text-primary)] text-sm mb-1">Awaiting Configuration</h4>
+                       <h4 className="font-bold text-[var(--text-primary)] text-sm mb-1">Awaiting configuration</h4>
                        <p className="text-xs font-medium text-[var(--text-muted)]">Set your parameters and hit Generate to compile the test.</p>
                     </motion.div>
                   )}

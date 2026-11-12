@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, BookOpenText, Brain, ChartNoAxesColumn, ClipboardCheck, Code2, Database, Dumbbell, NotebookPen, Sparkles, Target, Timer, Wrench } from "lucide-react";
 import { useIvLibrary } from "@/components/interview/use-iv-library";
 import { TRACKS, bookIdOf } from "@/lib/interview/tracks";
+import { InterviewDatePlan } from "@/components/interview/interview-date-plan";
 
 type Att = { item_kind: string; item_id: string; ok: boolean; created_at: string };
 const SR_KEY = "renyxera_interview_sr";
@@ -76,6 +77,8 @@ export default function InterviewHome() {
         </ul>
         <Link href="/interview/last-moments" className="card-pastel mt-3 flex flex-wrap items-center gap-3 p-4" data-tint="butter"><span className="grid h-11 w-11 place-items-center rounded-2xl bg-[var(--surface)]"><Timer className="h-5 w-5" aria-hidden /></span><span className="min-w-0 flex-1"><span className="block font-display text-lg font-extrabold text-[var(--text-primary)]">Last moments</span><span className="block text-sm text-[var(--text-secondary)]">Every book&apos;s revision sheet, traps, snippets and glossary on one page, for the night before.</span></span><ArrowRight className="h-4 w-4" /></Link>
       </section>
+
+      {ready && <InterviewDatePlan chaptersLeft={docs.filter((d) => d.kind === "chapter" && !done.has(d.id)).length} due={due} />}
 
       <section aria-label="Today">
         <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Today</h2>

@@ -78,9 +78,9 @@ function RevisionSessionContent() {
   if (questions.length === 0) {
     return (
       <div className="p-12 text-center max-w-lg mx-auto">
-        <h2 className="text-xl font-bold mb-4">No Questions Found</h2>
+        <h2 className="text-xl font-bold mb-4">No questions found</h2>
         <p className="text-[var(--text-muted)] mb-6">There are no questions available for this revision mode currently.</p>
-        <button onClick={() => router.push("/revision")} className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold">Go Back</button>
+        <button onClick={() => router.push("/revision")} className="bg-indigo-600 text-white px-6 py-2 rounded-lg font-bold">Go back</button>
       </div>
     );
   }
@@ -177,7 +177,7 @@ function RevisionSessionContent() {
                  {currentQuestion.question_type === "NAT" && (
                    <div className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-2xl w-full">
                      <div className="flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl">
-                       <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct Answer Range</span>
+                       <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct answer range</span>
                        <span className="font-num font-bold text-green-600 dark:text-green-400">
                          {formatNatAnswer(currentQuestion.nat_answer_range)}
                        </span>
@@ -188,7 +188,7 @@ function RevisionSessionContent() {
                            ? 'border-green-500 text-green-700 dark:text-green-500'
                            : 'border-red-500 text-red-700 dark:text-red-500'
                        }`}>
-                         <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your Answer</span>
+                         <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your answer</span>
                          <span className="font-num font-bold">{natValue}</span>
                        </div>
                      )}

@@ -97,7 +97,7 @@ export function ScheduleModal({ open, onClose, sections, marks, fixedHours, exam
             <p className="mt-1 text-sm text-[var(--text-secondary)]">{done} study blocks for {branchLabel} until {examDate}. Tick them off as you go. You can remove this plan or change any day under <b>My plans</b> in the Study Planner.</p>
             {tgNote && <p className="mt-2 text-sm font-semibold text-sky-600 dark:text-sky-400">{tgNote}</p>}
             <div className="mt-5 flex justify-center gap-2">
-              <Link href="/calendar" className="inline-flex h-10 items-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 text-sm font-bold text-white">Open Study Planner</Link>
+              <Link href="/calendar" className="inline-flex h-10 items-center rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 px-5 text-sm font-bold text-white">Open study planner</Link>
               <button type="button" onClick={onClose} className="h-10 rounded-xl border border-[var(--border)] px-5 text-sm font-semibold text-[var(--text-primary)] cursor-pointer">Done</button>
             </div>
           </div>

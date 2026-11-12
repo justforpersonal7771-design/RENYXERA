@@ -79,7 +79,7 @@ export function ExamCountdownCard() {
       </p>
 
       <div className="relative border-t border-[var(--border-subtle)] pt-3 space-y-1.5">
-        <p className="text-xs font-black tracking-normal text-[var(--text-muted)] mb-2">Scheduled Ahead</p>
+        <p className="text-xs font-black tracking-normal text-[var(--text-muted)] mb-2">Scheduled ahead</p>
         {upcomingScheduled.length === 0 ? (
           <p className="text-[11px] font-semibold text-[var(--text-muted)] py-2">Nothing scheduled yet — plan your next session.</p>
         ) : (

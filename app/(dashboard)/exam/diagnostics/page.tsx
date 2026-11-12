@@ -25,7 +25,7 @@ export default function DiagnosticsPage() {
     return (
       <div className="p-8 text-center text-red-600">
         <AlertCircle className="w-12 h-12 mx-auto mb-4" />
-        <h2 className="text-xl font-semibold mb-2">Diagnostic Error</h2>
+        <h2 className="text-xl font-semibold mb-2">Diagnostic error</h2>
         <p>{error}</p>
       </div>
     );
@@ -62,15 +62,15 @@ export default function DiagnosticsPage() {
           </h2>
           <div className="space-y-4">
             <div className="flex justify-between items-center border-b pb-2">
-              <span className="text-gray-600">Cache Source</span>
+              <span className="text-gray-600">Cache source</span>
               <span className="font-mono bg-gray-100 px-2 py-1 rounded text-sm font-medium">{diagnostics.cacheSource}</span>
             </div>
             <div className="flex justify-between items-center border-b pb-2">
-              <span className="text-gray-600">Compilation Time</span>
+              <span className="text-gray-600">Compilation time</span>
               <span className="font-mono text-sm">{diagnostics.compilationDurationMs.toFixed(2)} ms</span>
             </div>
             <div className="flex justify-between items-center border-b pb-2">
-              <span className="text-gray-600">Indexing Time</span>
+              <span className="text-gray-600">Indexing time</span>
               <span className="font-mono text-sm">{diagnostics.indexingDurationMs.toFixed(2)} ms</span>
             </div>
           </div>
@@ -83,12 +83,12 @@ export default function DiagnosticsPage() {
           </h2>
           <div className="space-y-4">
             <div className="flex justify-between items-center border-b pb-2">
-              <span className="text-gray-600">Broken Images</span>
+              <span className="text-gray-600">Broken images</span>
               <span className="font-mono text-sm font-medium text-rose-600 bg-rose-50 px-2 py-1 rounded">{diagnostics.brokenImageCount}</span>
             </div>
             
             <div className="pt-2">
-              <span className="block text-gray-600 mb-2 font-medium">Unresolved Tokens</span>
+              <span className="block text-gray-600 mb-2 font-medium">Unresolved tokens</span>
               <div className="h-32 overflow-y-auto bg-gray-50 border rounded p-2 text-xs font-mono">
                 {diagnostics.imageFailures?.unresolvedTokens.length > 0 
                   ? diagnostics.imageFailures.unresolvedTokens.map((t, i) => <div key={i} className="text-rose-600 mb-1">{t}</div>)

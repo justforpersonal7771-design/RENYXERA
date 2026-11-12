@@ -19,7 +19,7 @@ export default function CalendarPage() {
             <Calendar className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-xl font-black text-[var(--text-primary)] tracking-tight">Study Planner</h1>
+            <h1 className="text-xl font-black text-[var(--text-primary)] tracking-tight">Study planner</h1>
             <p className="text-xs font-semibold text-[var(--text-secondary)]">Schedule revisions, mocks, and practice. Quick access from the top bar too.</p>
           </div>
         </div>

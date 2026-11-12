@@ -436,7 +436,7 @@ export default function BookmarksPage() {
                     <ChevronRight className={`w-4 h-4 transition-transform ${isSidebarCollapsed ? '' : 'rotate-180'}`} />
                   </button>
                   <div>
-                     <h3 className="font-extrabold text-[var(--text-primary)] text-sm tracking-tight">Question Review</h3>
+                     <h3 className="font-extrabold text-[var(--text-primary)] text-sm tracking-tight">Question review</h3>
                      <span className="text-[11px] text-[var(--text-muted)] font-semibold">{question.subject} • {question.topic}</span>
                   </div>
                 </div>
@@ -635,7 +635,7 @@ export default function BookmarksPage() {
                       </h4>
                       {activeEntry.aiShortcut && (
                         <div>
-                          <span className="text-[10px] font-black uppercase text-[var(--text-muted)] block mb-0.5">Saved Shortcut Trick</span>
+                          <span className="text-[10px] font-black uppercase text-[var(--text-muted)] block mb-0.5">Saved shortcut trick</span>
                           <div className="text-xs font-semibold text-[var(--text-secondary)] leading-relaxed">
                             <AstNodeRenderer nodes={AIResponseParser.parse(activeEntry.aiShortcut)} />
                           </div>
@@ -643,7 +643,7 @@ export default function BookmarksPage() {
                       )}
                       {activeEntry.personalObservations && (
                         <div>
-                          <span className="text-[10px] font-black uppercase text-[var(--text-muted)] block mb-0.5">Personal Observations</span>
+                          <span className="text-[10px] font-black uppercase text-[var(--text-muted)] block mb-0.5">Personal observations</span>
                           <div className="text-xs font-semibold text-[var(--text-secondary)] leading-relaxed">
                             <AstNodeRenderer nodes={AIResponseParser.parse(activeEntry.personalObservations)} />
                           </div>
@@ -682,7 +682,7 @@ export default function BookmarksPage() {
                     {question.question_type === "NAT" && (
                       <div className="flex flex-col sm:flex-row gap-4 p-4 bg-[var(--surface-secondary)] border border-[var(--border)] rounded-2xl w-full">
                         <div className="flex-1 flex justify-between items-center bg-[var(--surface)] p-3 border border-[var(--border-subtle)] rounded-xl">
-                          <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct Answer Range</span>
+                          <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Correct answer range</span>
                           <span className="font-num font-bold text-green-600 dark:text-green-400">
                             {formatNatAnswer(question.nat_answer_range)}
                           </span>
@@ -693,7 +693,7 @@ export default function BookmarksPage() {
                               ? 'border-green-500 text-green-700 dark:text-green-500'
                               : 'border-red-500 text-red-700 dark:text-red-500'
                           }`}>
-                            <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your Answer</span>
+                            <span className="text-xs font-black text-[var(--text-muted)] dark:text-[var(--text-muted)] tracking-normal">Your answer</span>
                             <span className="font-num font-bold">{activeEntry.natValue}</span>
                           </div>
                         )}
@@ -732,7 +732,7 @@ export default function BookmarksPage() {
             <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
               <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold tracking-normal text-xs">
                 <StickyNote className="w-4 h-4" />
-                <span>Personal Notes</span>
+                <span>Personal notes</span>
               </div>
               <div className="flex items-center gap-1">
                 <button

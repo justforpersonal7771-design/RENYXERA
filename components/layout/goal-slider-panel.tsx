@@ -265,7 +265,7 @@ export function GoalSliderPanel({ onClose }: { onClose: () => void }) {
                 <Target className="w-5 h-5" />
               </motion.div>
               <div className="min-w-0">
-                <h2 className="font-bold text-lg sm:text-xl leading-tight">Focus Target</h2>
+                <h2 className="font-bold text-lg sm:text-xl leading-tight">Focus target</h2>
                 <p className="hidden sm:block text-[11px] font-medium text-white/75">Past-paper weighted · highest-yield topics first</p>
               </div>
             </div>

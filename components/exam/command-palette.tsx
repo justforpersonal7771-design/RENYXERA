@@ -346,7 +346,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
             {recentSearches.length > 0 && !query && (
               <div className="mb-2">
                 <div className="px-3 py-1 flex justify-between items-center text-xs font-black tracking-normal text-[var(--text-muted)]">
-                  <span>Recent Searches</span>
+                  <span>Recent searches</span>
                   <button onClick={clearRecentSearches} className="hover:text-[var(--danger)] transition">Clear</button>
                 </div>
                 <div className="space-y-0.5 mt-1">

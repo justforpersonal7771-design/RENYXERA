@@ -103,7 +103,7 @@ export function ActivityTimeline({ recentSessions, bookmarks, mistakes }: Activi
       <div className="flex-none pb-4 border-b border-[var(--border-subtle)] mb-5">
         <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-muted)] flex items-center gap-1.5">
           <Activity className="w-4 h-4 text-indigo-500" />
-          <span>Activity Log Timeline</span>
+          <span>Activity log timeline</span>
         </h3>
       </div>
 

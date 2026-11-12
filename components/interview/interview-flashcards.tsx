@@ -10,6 +10,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { Check, ChevronLeft, ChevronRight, Eye, Keyboard, Loader2, RotateCcw, Shuffle, Trophy } from "lucide-react";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { Segmented } from "@/components/ui/folder-tabs";
+import { IvMarkdown } from "@/components/interview/iv-markdown";
 
 type Card = { id: string; book: string; bookTitle: string; type: "Term" | "Question" | "Check"; ch: string; star: boolean; front: string; back: string; more: string };
 
@@ -151,7 +152,7 @@ export function InterviewFlashcards() {
         {shown && (
           <div className="mt-4 rounded-2xl bg-[var(--surface)] p-4 text-sm text-[var(--text-primary)]">
             <p className="font-bold">Answer</p>
-            <p className="mt-1 text-base leading-relaxed">{card.back}</p>
+            <div className="mt-1 text-base leading-relaxed"><IvMarkdown body={card.back} /></div>
             {card.more && <p className="mt-3 border-t border-dashed border-[var(--border)] pt-3 text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">In more detail:</b> {card.more}</p>}
           </div>
         )}

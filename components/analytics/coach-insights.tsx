@@ -475,11 +475,11 @@ export function CoachInsights({ show = ALL_BLOCKS, bare = false }: { show?: Coac
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-[10px] font-bold pt-1 border-t border-white/15">
                     <div className="flex flex-col">
-                      <span className="text-indigo-200 text-xs tracking-normal">Suggested Mock</span>
+                      <span className="text-indigo-200 text-xs tracking-normal">Suggested mock</span>
                       <span className="text-white">{readiness.suggestedMockDate}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-indigo-200 text-xs tracking-normal">Revision Target</span>
+                      <span className="text-indigo-200 text-xs tracking-normal">Revision target</span>
                       <span className="text-white">{readiness.revisionCompletionDate}</span>
                     </div>
                   </div>
@@ -639,7 +639,7 @@ export function CoachInsights({ show = ALL_BLOCKS, bare = false }: { show?: Coac
                 <div className="flex flex-col sm:flex-row gap-4">
                   {/* Selectors List */}
                   <div className="w-full sm:w-64 space-y-2">
-                    <span className="text-[10px] font-black uppercase text-[var(--text-muted)] block">Select Target Topic</span>
+                    <span className="text-[10px] font-black uppercase text-[var(--text-muted)] block">Select target topic</span>
                     <CustomDropdown
                       value={selectedTopic}
                       onChange={handleDiagnosePrerequisites}

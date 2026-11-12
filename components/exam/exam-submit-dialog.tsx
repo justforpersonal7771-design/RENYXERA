@@ -122,7 +122,7 @@ export function ExamSubmitDialog({ isOpen, onConfirm, onCancel, stats }: ExamSub
               className="btn-main group flex-1 !h-11 !px-3 justify-center !text-sm whitespace-nowrap"
             >
               <Send className="relative w-4 h-4" />
-              <span className="relative">Confirm Submit</span>
+              <span className="relative">Confirm submit</span>
             </motion.button>
           </div>
         </div>

@@ -228,7 +228,7 @@ export function OnboardingGate() {
                   {phone && phoneOk && (
                     <label className="mt-2 flex items-start gap-2 text-[11px] text-[var(--text-secondary)] cursor-pointer">
                       <input type="checkbox" checked={optIn} onChange={(e) => setOptIn(e.target.checked)} className="mt-0.5 accent-violet-600" />
-                      <span>RENYXERA may contact me on this number (WhatsApp/SMS) about mocks, results and updates. I can turn this off any time. See the <a href="/privacy" target="_blank" className="underline">Privacy Policy</a>.</span>
+                      <span>RENYXERA may contact me on this number (WhatsApp/SMS) about mocks, results and updates. I can turn this off any time. See the <a href="/privacy" target="_blank" className="underline">Privacy policy</a>.</span>
                     </label>
                   )}
                 </div>

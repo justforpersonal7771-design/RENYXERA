@@ -289,7 +289,7 @@ export default function MistakesPage() {
         <div className={`${mobileDetail ? "hidden md:flex" : "flex"} flex-col card-glass rounded-2xl overflow-hidden transition-all duration-300 shrink-0 md:h-full ${isSidebarCollapsed ? "w-0 opacity-0 pointer-events-none" : "w-full md:w-80 opacity-100"}`}>
           <div className="p-4 space-y-3 flex flex-col shrink-0 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/10">
             <div className="flex justify-between items-center">
-              <h2 className="font-extrabold text-lg text-[var(--text-primary)]">Mistakes Bank</h2>
+              <h2 className="font-extrabold text-lg text-[var(--text-primary)]">Mistakes bank</h2>
               <span className="text-xs px-2 py-0.5 font-bold bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-md">
                 {filteredMistakes.length} Total
               </span>
@@ -432,7 +432,7 @@ export default function MistakesPage() {
                     <ChevronRight className={`w-4 h-4 transition-transform ${isSidebarCollapsed ? '' : 'rotate-180'}`} />
                   </button>
                   <div>
-                    <h3 className="font-extrabold text-[var(--text-primary)] text-sm tracking-tight">Mistake Review</h3>
+                    <h3 className="font-extrabold text-[var(--text-primary)] text-sm tracking-tight">Mistake review</h3>
                     <span className="text-[11px] text-[var(--text-muted)] font-semibold block">{question.subject} • {question.topic}</span>
                   </div>
                 </div>
@@ -586,7 +586,7 @@ export default function MistakesPage() {
                       <span className="text-xs font-black text-rose-500 font-num">{activeEntry.occurrences || 1}</span>
                     </div>
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
-                      <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)]">Solved Retries</span>
+                      <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)]">Solved retries</span>
                       <span className="text-xs font-black text-emerald-500 font-num">{activeEntry.solvedCount || 0} / {activeEntry.retryCount || 0}</span>
                     </div>
                     <div className="bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-1.5 rounded-xl text-center min-w-[80px]">
@@ -669,7 +669,7 @@ export default function MistakesPage() {
             <div className="p-4 border-b border-[var(--border-subtle)] flex items-center justify-between bg-[var(--surface-secondary)]">
               <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-extrabold tracking-normal text-xs">
                 <StickyNote className="w-4 h-4" />
-                <span>Personal Notes</span>
+                <span>Personal notes</span>
               </div>
               <button
                 onClick={() => setIsNotesOpen(false)}

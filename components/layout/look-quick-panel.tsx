@@ -15,7 +15,7 @@ export function LookQuickPanel({ onClose }: { onClose: () => void }) {
       role="dialog" aria-label="Looks" className="nav-cluster fixed left-4 right-4 top-16 z-50 overflow-hidden rounded-2xl popover-surface sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-[340px]">
       <div className="flex items-center justify-between gap-2 border-b border-[var(--border)] bg-[var(--surface)] px-4 py-3">
         <div><p className="text-sm font-extrabold text-[var(--text-primary)]">Looks</p><p className="text-[11px] text-[var(--text-muted)]">Tap one to change the whole app</p></div>
-        <Link href="/profile?tab=design" onClick={onClose} className="pill-soft text-xs">Open Studio</Link>
+        <Link href="/profile?tab=design" onClick={onClose} className="pill-soft text-xs">Open studio</Link>
       </div>
       <ul className="custom-scrollbar max-h-[58vh] overflow-y-auto bg-[var(--surface)] p-2">
         {rows.map((l) => {
