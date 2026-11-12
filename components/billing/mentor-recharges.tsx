@@ -10,16 +10,7 @@ import { track } from "@/lib/growth/track";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
 
-type RzOpts = Record<string, unknown>;
-type Rz = new (opts: RzOpts) => { open: () => void; on: (event: string, cb: (r: { error?: { description?: string } }) => void) => void };
-const rzWindow = () => window as unknown as { Razorpay?: Rz };
-const loadCheckout = () => new Promise<boolean>((resolve) => {
-  if (rzWindow().Razorpay) return resolve(true);
-  const s = document.createElement("script");
-  s.src = "https://checkout.razorpay.com/v1/checkout.js";
-  s.onload = () => resolve(true); s.onerror = () => resolve(false);
-  document.body.appendChild(s);
-});
+import { openCheckout } from "@/lib/billing/checkout-client";
 
 /** "AI Mentor recharges": small one-off packs for students who run out of daily Mentor messages. Buying works for any signed-in student (Free included); until payments are on, "Notify me". */
 export function MentorRecharges(_props: { compact?: boolean }) {
@@ -51,23 +42,18 @@ export function MentorRecharges(_props: { compact?: boolean }) {
       const r = await fetch("/api/billing/topup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ packId: p.id, acceptedTerms: true }) });
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
-      if (!(await loadCheckout()) || !rzWindow().Razorpay) throw new Error("Couldn't load the payment window. Check your connection.");
       const before = balance ?? 0;
-      const rz = new (rzWindow().Razorpay as Rz)({
-        key: j.keyId, order_id: j.orderId, amount: j.amount, currency: j.currency, name: "RENYXERA", description: j.planName,
-        prefill: { email: j.email ?? undefined }, theme: { color: "#64748b" },
-        modal: { ondismiss: () => toast.show("Checkout closed. If you already paid, your tokens appear within a minute.", "info") },
-        handler: async (resp: { razorpay_order_id?: string; razorpay_payment_id?: string; razorpay_signature?: string }) => {
+      await openCheckout(j, {
+        onDismiss: () => toast.show("Checkout closed. If you already paid, your tokens appear within a minute.", "info"),
+        onFail: (m) => toast.show(m, "error"),
+        onPaid: async () => {
           toast.show("Payment received. Adding your tokens...", "success");
-          try { await fetch("/api/billing/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId: resp?.razorpay_order_id, paymentId: resp?.razorpay_payment_id, signature: resp?.razorpay_signature }) }); } catch { /* the webhook still adds it */ }
           let ok = false;
           for (let i = 0; i < 8 && !ok; i++) { const b = await loadBalance(); ok = b != null && b > before; if (!ok) await new Promise((res) => setTimeout(res, 2000)); }
           toast.show(ok ? `Added ${formatTokens(p.tokens)} tokens to your Mentor.` : "Payment received. Your tokens will appear within a minute. No need to pay again.", ok ? "success" : "info");
           setConfirm(null);
         },
       });
-      rz.on("payment.failed", (e) => toast.show(e?.error?.description || "Payment failed. Please try again or use another method.", "error"));
-      rz.open();
     } catch (e) {
       toast.show((e as Error).message, "error");
     } finally { setBusy(null); }

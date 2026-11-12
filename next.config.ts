@@ -11,18 +11,18 @@ const supabaseWs = supabaseOrigin.replace(/^https:/, "wss:");
 const CSP = [
   "default-src 'self'",
   // Next.js inlines its bootstrap scripts, so 'unsafe-inline' stays until nonces are added. Third parties we really load: MathJax (jsDelivr), Turnstile, Razorpay, Cloudflare analytics, EthicalAds.
-  "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://challenges.cloudflare.com https://checkout.razorpay.com https://cdn.razorpay.com https://static.cloudflareinsights.com https://media.ethicalads.io",
+  "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://challenges.cloudflare.com https://checkout.razorpay.com https://cdn.razorpay.com https://sdk.cashfree.com https://static.cloudflareinsights.com https://media.ethicalads.io",
   "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://cdn.jsdelivr.net",
-  `connect-src 'self' data: ${supabaseOrigin} ${supabaseWs} https://api.razorpay.com https://lumberjack.razorpay.com https://lumberjack-metrics.razorpay.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://challenges.cloudflare.com https://*.ingest.sentry.io`,
-  "frame-src https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://www.youtube-nocookie.com https://www.youtube.com",
+  `connect-src 'self' data: ${supabaseOrigin} ${supabaseWs} https://api.razorpay.com https://api.cashfree.com https://sandbox.cashfree.com https://sdk.cashfree.com https://lumberjack.razorpay.com https://lumberjack-metrics.razorpay.com https://cdn.jsdelivr.net https://cloudflareinsights.com https://challenges.cloudflare.com https://*.ingest.sentry.io`,
+  "frame-src https://challenges.cloudflare.com https://api.razorpay.com https://checkout.razorpay.com https://sdk.cashfree.com https://api.cashfree.com https://sandbox.cashfree.com https://payments.cashfree.com https://payments-test.cashfree.com https://www.youtube-nocookie.com https://www.youtube.com",
   "worker-src 'self' blob:",
   "manifest-src 'self'",
   "media-src 'self' blob: https:",
   "object-src 'none'",
   "base-uri 'self'",
-  "form-action 'self' https://api.razorpay.com",
+  "form-action 'self' https://api.razorpay.com https://api.cashfree.com https://sandbox.cashfree.com",
   "frame-ancestors 'none'",
   "report-uri /api/csp-report",
 ].join('; ');

@@ -5,7 +5,8 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BILLING_MODE } from "@/lib/billing/plans";
-import { isDisposableEmail, razorpayKeys } from "@/lib/billing/server";
+import { isDisposableEmail } from "@/lib/billing/server";
+import { activeProvider } from "@/lib/billing/providers";
 import { getUserBranch } from "@/lib/server/branch";
 import { TOPUP_EXPIRY_DAYS, TOPUP_PACKS } from "@/lib/billing/ai-topups";
 
@@ -33,8 +34,8 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   if (isCrossOriginRequest(req)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   if (BILLING_MODE === "interest") return NextResponse.json({ error: "Payments aren't open yet." }, { status: 409 });
-  const keys = razorpayKeys();
-  if (!keys) return NextResponse.json({ error: "Payments aren't configured yet." }, { status: 503 });
+  const provider = activeProvider();
+  if (!provider) return NextResponse.json({ error: "Payments aren't configured yet." }, { status: 503 });
   if (!checkRateLimit(`topup:ip:${getClientKey(req)}`, { limit: 5, windowMs: 10 * 60_000 }).allowed) {
     return NextResponse.json({ error: "Too many attempts. Please wait a few minutes." }, { status: 429 });
   }
@@ -56,17 +57,9 @@ export async function POST(req: NextRequest) {
 
   const db = createServiceRoleClient();
   const branch = await getUserBranch(db, userId);
-  const r = await fetch("https://api.razorpay.com/v1/orders", {
-    signal: AbortSignal.timeout(10_000),
-    method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: `Basic ${btoa(`${keys.id}:${keys.secret}`)}` },
-    body: JSON.stringify({ amount: pack.pricePaise, currency: "INR", receipt: `t_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: planId, branch } }),
-  });
-  if (!r.ok) {
-    console.error("razorpay topup order failed", r.status, await r.text().catch(() => ""));
-    return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 502 });
-  }
-  const order = (await r.json()) as { id: string; amount: number; currency: string };
+  const made = await provider.createOrder({ amountPaise: pack.pricePaise, receipt: `t_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: planId, branch }, customer: { id: userId, email }, returnUrl: `${(process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin)}/ai-mentor?paid=1` });
+  if ("error" in made) return NextResponse.json({ error: made.error }, { status: 502 });
+  const order = { id: made.orderId, amount: pack.pricePaise, currency: "INR" };
   const { error } = await db.from("billing_orders").insert({
     user_id: userId, plan_id: planId, amount_paise: pack.pricePaise, upgrade_credit_paise: 0, period_days: TOPUP_EXPIRY_DAYS,
     razorpay_order_id: order.id, mode: BILLING_MODE, branch_code: branch,
@@ -75,5 +68,5 @@ export async function POST(req: NextRequest) {
     console.error("billing_orders insert (topup) failed", error);
     return NextResponse.json({ error: "Couldn't start checkout. Please try again." }, { status: 503 });
   }
-  return NextResponse.json({ orderId: order.id, amount: order.amount, currency: order.currency, keyId: keys.id, planName: `AI Mentor recharge · ${pack.name}`, email });
+  return NextResponse.json({ orderId: order.id, amount: order.amount, currency: order.currency, keyId: made.checkout.kind === "razorpay" ? made.checkout.keyId : null, checkout: made.checkout, planName: `AI Mentor recharge · ${pack.name}`, email });
 }

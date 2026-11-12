@@ -21,17 +21,7 @@ import { SponsorBreakCard } from "@/components/profile/sponsor-break-card";
 import { ProCrown } from "@/components/brand/pro-crown";
 import { serverNow } from "@/lib/time/server-time";
 
-declare global { interface Window { Razorpay?: new (opts: Record<string, unknown>) => { open: () => void; on: (event: string, cb: (r: { error?: { description?: string } }) => void) => void } } }
-
-function loadCheckout() {
-  return new Promise<boolean>((resolve) => {
-    if (window.Razorpay) return resolve(true);
-    const s = document.createElement("script");
-    s.src = "https://checkout.razorpay.com/v1/checkout.js";
-    s.onload = () => resolve(true); s.onerror = () => resolve(false);
-    document.body.appendChild(s);
-  });
-}
+import { openCheckout } from "@/lib/billing/checkout-client";
 
 const LOOK = {
   plus: { ring: "border-transparent bg-[var(--tint-sky)]", kicker: "text-slate-600 dark:text-slate-300", btn: "bg-[var(--tint-sky)] text-[var(--tint-sky-ink)] border border-[color-mix(in_srgb,var(--tint-sky-ink)_25%,transparent)] shadow-slate-500/30", metal: "silver" as const, label: "Silver" },
@@ -107,24 +97,19 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
       
       const j = await r.json();
       if (!r.ok) throw new Error(j.error || "Couldn't start checkout.");
-      if (!(await loadCheckout()) || !window.Razorpay) throw new Error("Couldn't load the payment window. Check your connection.");
       setConfirm(null);
-      const rz = new window.Razorpay({
-        key: j.keyId, order_id: j.orderId, amount: j.amount, currency: j.currency, name: "RENYXERA", description: j.planName,
-        prefill: { email: j.email ?? undefined }, theme: { color: plan.tier === "pro" ? "#d97706" : "#64748b" },
-        modal: { ondismiss: () => useToastStore.getState().show("Checkout closed. If you already paid, your plan appears within a minute.", "info") },
-        handler: async (resp: { razorpay_order_id?: string; razorpay_payment_id?: string; razorpay_signature?: string }) => {
+      await openCheckout(j, {
+        color: plan.tier === "pro" ? "#d97706" : "#64748b",
+        onDismiss: () => useToastStore.getState().show("Checkout closed. If you already paid, your plan appears within a minute.", "info"),
+        onFail: (m) => useToastStore.getState().show(m, "error"),
+        onPaid: async () => {
           const toast = useToastStore.getState();
           toast.show("Payment received — activating your plan…", "success");
-          // Verify the payment signature on the server for instant activation (the webhook is the backup).
-          try { await fetch("/api/billing/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId: resp?.razorpay_order_id, paymentId: resp?.razorpay_payment_id, signature: resp?.razorpay_signature }) }); } catch { /* the webhook still activates it */ }
           const ok = await waitForTier(ent.accountKey, plan.tier);
           toast.show(ok ? `You're on ${plan.tier === "pro" ? "Pro" : "Plus"} — enjoy!` : "Payment received. Your plan will appear within a minute — no need to pay again.", ok ? "success" : "info");
           if (ok) { startPurchaseTour(plan.tier); onDone?.(); }
         },
       });
-      rz.on("payment.failed", (r) => useToastStore.getState().show(r?.error?.description || "Payment failed. Please try again or use another method.", "error"));
-      rz.open();
     } catch (e) {
       useToastStore.getState().show((e as Error).message, "error");
     } finally { setBusy(null); }
@@ -274,14 +259,14 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                   className={`mt-4 w-full h-12 rounded-xl font-bold shadow-lg disabled:opacity-50 inline-flex items-center justify-center gap-2 cursor-pointer ${LOOK[cp.tier].btn}`}>
                   {busy === cp.id && <Loader2 className="w-4 h-4 animate-spin" />} Pay {formatPrice(total)} securely
                 </button>
-                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!paperOk ? `Type ${branchPaper} above to confirm your branch.` : !agreed ? "Tick the box to continue." : "You'll finish on Razorpay — UPI, cards or net banking."}</p>
+                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!paperOk ? `Type ${branchPaper} above to confirm your branch.` : !agreed ? "Tick the box to continue." : "You'll finish on the secure payment pay — UPI, cards or net banking."}</p>
               </motion.div>
             </motion.div>
           );
         })()}
       </AnimatePresence>,
         document.body)}
-      <p className="text-center text-[11px] text-[var(--text-muted)]">{payments ? "Payments are processed securely by Razorpay (UPI, cards, net banking). Your plan unlocks once Razorpay confirms the payment." : "Plans aren't on sale yet. Tapping a button only tells us you're interested — no payment is taken."}</p>
+      <p className="text-center text-[11px] text-[var(--text-muted)]">{payments ? "Payments are processed securely by our payment partner (UPI, cards, net banking). Your plan unlocks once the payment is confirmed." : "Plans aren't on sale yet. Tapping a button only tells us you're interested — no payment is taken."}</p>
     </div>
   );
 }

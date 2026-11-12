@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
-import { razorpayKeys } from "@/lib/billing/server";
+import { activeProvider } from "@/lib/billing/providers";
 import { reconcileOrder } from "@/lib/billing/receipts";
 
 export const runtime = "nodejs";
@@ -12,8 +12,8 @@ export const runtime = "nodejs";
 export async function POST(req: NextRequest) {
   const secret = process.env.PREGEN_SECRET || "";
   if (!secret || req.headers.get("x-pregen-secret") !== secret) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  const keys = razorpayKeys();
-  if (!keys) return NextResponse.json({ error: "Payments aren't configured." }, { status: 503 });
+  const provider = activeProvider();
+  if (!provider) return NextResponse.json({ error: "Payments aren't configured." }, { status: 503 });
 
   const db = createServiceRoleClient();
   const now = Date.now();
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   for (const o of data ?? []) {
     if (!o.razorpay_order_id) continue;
     out.checked++;
-    const r = await reconcileOrder(db, keys, o.razorpay_order_id);
+    const r = await reconcileOrder(db, provider, o.razorpay_order_id);
     if (r === "paid") out.applied++; else if (r === "unpaid") out.unpaid++; else out.errors++;
   }
   return NextResponse.json(out);

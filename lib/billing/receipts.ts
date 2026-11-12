@@ -1,5 +1,6 @@
 import "server-only";
 import { planById } from "@/lib/billing/plans";
+import type { PaymentProvider } from "@/lib/billing/providers";
 import type { createServiceRoleClient } from "@/lib/supabase/service-role";
 
 type Db = ReturnType<typeof createServiceRoleClient>;
@@ -48,14 +49,10 @@ export async function fetchPaymentMethod(k: Keys, paymentId: string): Promise<{ 
  * applies it (idempotent). Covers a closed tab, a missed webhook or a failed verify call, so nobody who
  * paid is ever left without their plan. Returns "paid" when the plan was (or already is) granted.
  */
-export async function reconcileOrder(db: Db, k: Keys, razorpayOrderId: string): Promise<"paid" | "unpaid" | "error"> {
-  try {
-    const r = await fetch(`https://api.razorpay.com/v1/orders/${razorpayOrderId}/payments`, { headers: auth(k), signal: AbortSignal.timeout(10_000) });
-    if (!r.ok) return "error";
-    const j = (await r.json()) as { items?: { id: string; status: string }[] };
-    const paid = (j.items ?? []).find((p) => p.status === "captured");
-    if (!paid) return "unpaid";
-    const { error } = await db.rpc("apply_paid_order", { p_order: razorpayOrderId, p_payment: paid.id });
-    return error ? "error" : "paid";
-  } catch { return "error"; }
+export async function reconcileOrder(db: Db, provider: PaymentProvider, orderId: string): Promise<"paid" | "unpaid" | "error"> {
+  const s = await provider.orderStatus(orderId);
+  if (s.status !== "paid" || !s.paymentId) return s.status === "paid" ? "error" : s.status;
+  const { error } = await db.rpc("apply_paid_order", { p_order: orderId, p_payment: s.paymentId });
+  if (!error && s.method) await db.from("billing_orders").update({ payment_method: s.method, payment_detail: s.detail ?? null }).eq("razorpay_order_id", orderId);
+  return error ? "error" : "paid";
 }

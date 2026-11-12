@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
-import { razorpayKeys } from "@/lib/billing/server";
-import { fetchPaymentMethod, planLabel, receiptNo, type OrderRow } from "@/lib/billing/receipts";
+import { activeProvider } from "@/lib/billing/providers";
+import { planLabel, receiptNo, type OrderRow } from "@/lib/billing/receipts";
 
 export const runtime = "nodejs";
 
@@ -18,13 +18,13 @@ export async function GET() {
   const rows = (data ?? []) as OrderRow[];
 
   // Fill in how each paid order was paid (once), best-effort and capped so this stays fast.
-  const keys = razorpayKeys();
-  if (keys) {
-    for (const o of rows.filter((x) => x.status === "paid" && x.razorpay_payment_id && !x.payment_method).slice(0, 3)) {
-      const m = await fetchPaymentMethod(keys, o.razorpay_payment_id!);
-      if (!m) continue;
-      o.payment_method = m.method; o.payment_detail = m.detail;
-      await db.from("billing_orders").update({ payment_method: m.method, payment_detail: m.detail }).eq("id", o.id); // no-op until migration 0034 is run
+  const provider = activeProvider();
+  if (provider) {
+    for (const o of rows.filter((x) => x.status === "paid" && x.razorpay_order_id && !x.payment_method).slice(0, 3)) {
+      const m = await provider.orderStatus(o.razorpay_order_id!);
+      if (m.status !== "paid" || !m.method) continue;
+      o.payment_method = m.method; o.payment_detail = m.detail ?? null;
+      await db.from("billing_orders").update({ payment_method: m.method, payment_detail: m.detail ?? null }).eq("id", o.id);
     }
   }
 
