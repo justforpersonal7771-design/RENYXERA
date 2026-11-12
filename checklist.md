@@ -578,7 +578,7 @@ Never advertise "no login"; show value, then gentle gates. No lifetime offers, f
 - [x] Casing audit: 32 files of Title Case labels to sentence case; Test Centre tile 'Challenge' renamed 'Battles'
 - [x] Navbar blur band works (inline backdrop filter; the CSS rule was being stripped)
 - [x] Test Centre phone card order: already in place (mission, doors, mock info)
-- [ ] Study typed notes + cross-device sync (needs owner migration)
+- [x] Study typed notes + cross-device sync (code done; owner applies migration 0059_study_notes.sql)
 - [ ] Two-way live Battles room, clubs, rewards
 - [ ] Ad video on hold (owner)
 - [x] Study lesson: select text to highlight in 4 colours (kept on this device), 'Your highlights' list in the side rail

@@ -1,25 +1,46 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Highlighter, X } from "lucide-react";
-import { HL_COLORS, paintHighlights, supportsHighlights, type HlItem } from "@/components/interview/iv-highlights";
+import { Highlighter, NotebookPen, X } from "lucide-react";
+import { HL_COLORS, paintHighlights, supportsHighlights } from "@/components/interview/iv-highlights";
 
+type Item = { id: number; quote: string; color: string; note: string };
 const SWATCH: Record<string, string> = { yellow: "#fde047", green: "#86efac", pink: "#f9a8d4", blue: "#93c5fd" };
 const key = (lesson: string) => `renyxera.study.hl.${lesson}`;
-const load = (lesson: string): HlItem[] => { try { return JSON.parse(localStorage.getItem(key(lesson)) ?? "[]") as HlItem[]; } catch { return []; } };
-const save = (lesson: string, items: HlItem[]) => { try { localStorage.setItem(key(lesson), JSON.stringify(items)); } catch { /* private mode */ } };
+const loadLocal = (lesson: string): Item[] => { try { return (JSON.parse(localStorage.getItem(key(lesson)) ?? "[]") as Item[]).map((x) => ({ ...x, note: x.note ?? "" })); } catch { return []; } };
+const saveLocal = (lesson: string, items: Item[]) => { try { localStorage.setItem(key(lesson), JSON.stringify(items)); } catch { /* private mode */ } };
 
 /**
- * Highlights for a lesson. Select text inside the article, pick a colour; the quote is kept on this device and painted again on every visit
- * with the browser's Custom Highlight API (React's DOM is never edited). Shows a small "Your highlights" list with remove buttons.
+ * Highlights and notes for a lesson. Select text in the article, pick a colour, then type a note under it in the side list.
+ * Signed in (and migration 0059 applied): saved to the account and synced across devices; anything kept on this device earlier is uploaded once.
+ * Otherwise: kept on this device. Painted with the browser's Custom Highlight API, so React's DOM is never edited.
  */
 export function useLessonHighlights(lesson: string) {
   const [art, setArt] = useState<HTMLElement | null>(null);
-  const [items, setItems] = useState<HlItem[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
+  const [cloud, setCloud] = useState(false);
   const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
 
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- reads this device's saved highlights after mount
-  useEffect(() => { setItems(load(lesson)); }, [lesson]);
+  useEffect(() => {
+    let alive = true;
+    const local = loadLocal(lesson);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- show this device's copy at once, then the account's
+    setItems(local);
+    void (async () => {
+      const r = await fetch(`/api/study/notes?lesson=${encodeURIComponent(lesson)}`, { cache: "no-store" }).catch(() => null);
+      if (!alive || !r?.ok) return;                                  // signed out or table missing: stay on this device
+      let list = ((await r.json()) as { notes: Item[] }).notes;
+      const fresh = local.filter((l) => !list.some((c) => c.quote === l.quote));
+      for (const l of fresh) {                                       // one-time upload of highlights made on this device
+        const u = await fetch("/api/study/notes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lesson, quote: l.quote, note: l.note, color: l.color }) }).catch(() => null);
+        if (u?.ok) list = [...list, ((await u.json()) as { note: Item }).note];
+      }
+      if (!alive) return;
+      saveLocal(lesson, []);
+      setCloud(true); setItems(list);
+    })();
+    return () => { alive = false; };
+  }, [lesson]);
   useEffect(() => { if (art) return paintHighlights(art, items); }, [art, items]);
   useEffect(() => {
     if (!supportsHighlights()) return;
@@ -37,31 +58,54 @@ export function useLessonHighlights(lesson: string) {
     return () => { clearTimeout(t); document.removeEventListener("selectionchange", onChange); };
   }, [art]);
 
-  const add = (color: string) => {
+  const persist = (next: Item[]) => { setItems(next); if (!cloud) saveLocal(lesson, next); };
+  const add = async (color: string) => {
     if (!sel) return;
-    const next = [...items, { id: items.reduce((m, x) => Math.max(m, x.id), 0) + 1, quote: sel.text, color }];
-    setItems(next); save(lesson, next); window.getSelection()?.removeAllRanges(); setSel(null);
+    const quote = sel.text;
+    window.getSelection()?.removeAllRanges(); setSel(null);
+    if (cloud) {
+      const r = await fetch("/api/study/notes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lesson, quote, color }) }).catch(() => null);
+      if (r?.ok) { const { note } = (await r.json()) as { note: Item }; setItems((x) => [...x, note]); return; }
+    }
+    persist([...items, { id: items.reduce((m, x) => Math.max(m, x.id), 0) + 1, quote, color, note: "" }]);
   };
-  const remove = (id: number) => { const next = items.filter((x) => x.id !== id); setItems(next); save(lesson, next); };
+  const remove = (id: number) => {
+    persist(items.filter((x) => x.id !== id));
+    if (cloud) void fetch(`/api/study/notes?id=${id}`, { method: "DELETE" });
+  };
+  const setNote = (id: number, note: string) => persist(items.map((x) => (x.id === id ? { ...x, note } : x)));
+  const saveNote = (id: number) => {
+    const it = items.find((x) => x.id === id);
+    if (cloud && it) void fetch("/api/study/notes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, note: it.note }) });
+  };
 
   const toolbar = sel && (
     <div role="toolbar" aria-label="Highlight selection" style={{ left: sel.x, top: sel.y }}
       className="fixed z-[560] flex -translate-x-1/2 -translate-y-full items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1.5 shadow-[0_14px_34px_-12px_rgba(40,20,120,.5)]">
       <Highlighter className="ml-1.5 h-4 w-4 text-[var(--text-muted)]" aria-hidden />
-      {HL_COLORS.map((c) => <button key={c} type="button" aria-label={`Highlight ${c}`} onMouseDown={(e) => e.preventDefault()} onClick={() => add(c)} className="h-7 w-7 cursor-pointer rounded-full border-2 border-white" style={{ background: SWATCH[c] }} />)}
+      {HL_COLORS.map((c) => <button key={c} type="button" aria-label={`Highlight ${c}`} onMouseDown={(e) => e.preventDefault()} onClick={() => void add(c)} className="h-7 w-7 cursor-pointer rounded-full border-2 border-white" style={{ background: SWATCH[c] }} />)}
     </div>
   );
 
   const list = (
     <div className="card-pastel p-5" data-tint="butter">
-      <p className="flex items-center gap-2 font-bold text-[var(--text-primary)]"><Highlighter className="h-4 w-4" aria-hidden /> Your highlights</p>
+      <p className="flex items-center gap-2 font-bold text-[var(--text-primary)]"><Highlighter className="h-4 w-4" aria-hidden /> Highlights and notes</p>
+      <p className="mt-0.5 text-xs text-[var(--text-secondary)]">{cloud ? "Saved to your account" : "Saved on this device"}</p>
       {items.length === 0
-        ? <p className="mt-1 text-sm text-[var(--text-secondary)]">{supportsHighlights() ? "Select any text in the lesson to highlight it." : "Highlighting needs a newer browser."}</p>
-        : <ul className="mt-2 space-y-2">{items.map((h) => (
-          <li key={h.id} className="flex items-start gap-2 text-sm text-[var(--text-primary)]">
-            <span className="mt-1 h-3 w-3 shrink-0 rounded-full" style={{ background: SWATCH[h.color] }} />
-            <span className="min-w-0 flex-1 break-words">{h.quote}</span>
-            <button type="button" aria-label="Remove highlight" onClick={() => remove(h.id)} className="grid h-6 w-6 shrink-0 cursor-pointer place-items-center rounded-full text-[var(--text-muted)] hover:bg-[var(--surface)]"><X className="h-3.5 w-3.5" /></button>
+        ? <p className="mt-2 text-sm text-[var(--text-secondary)]">{supportsHighlights() ? "Select any text in the lesson to highlight it, then add a note." : "Highlighting needs a newer browser."}</p>
+        : <ul className="mt-3 space-y-3">{items.map((h) => (
+          <li key={h.id} className="rounded-2xl bg-[var(--surface)] p-3">
+            <div className="flex items-start gap-2 text-sm text-[var(--text-primary)]">
+              <span className="mt-1 h-3 w-3 shrink-0 rounded-full" style={{ background: SWATCH[h.color] }} />
+              <span className="min-w-0 flex-1 break-words font-semibold">{h.quote}</span>
+              <button type="button" aria-label="Remove highlight" onClick={() => remove(h.id)} className="grid h-6 w-6 shrink-0 cursor-pointer place-items-center rounded-full text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><X className="h-3.5 w-3.5" /></button>
+            </div>
+            <label className="mt-2 flex items-start gap-2">
+              <NotebookPen className="mt-2 h-3.5 w-3.5 shrink-0 text-[var(--text-muted)]" aria-hidden />
+              <textarea value={h.note} onChange={(e) => setNote(h.id, e.target.value)} onBlur={() => saveNote(h.id)} rows={h.note ? 2 : 1} maxLength={2000}
+                placeholder="Add a note…" aria-label="Note for this highlight"
+                className="min-h-[34px] w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-2.5 py-1.5 text-sm text-[var(--text-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-violet,#7c3aed)]" />
+            </label>
           </li>))}</ul>}
     </div>
   );
