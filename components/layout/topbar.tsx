@@ -39,7 +39,7 @@ import { useInterviewAccess } from "@/components/interview/interview-gate";
 import { MentorNavButton } from "@/components/layout/mentor-nav-button";
 import { effectiveLookId, useLookStore } from "@/store/use-look-store";
 import { lookById } from "@/lib/looks/looks";
-import { MENTOR_NEW_CHAT } from "@/lib/mentor/links";
+import { MENTOR_HOME } from "@/lib/mentor/links";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
 
 const NAV_ITEMS = [
@@ -47,7 +47,7 @@ const NAV_ITEMS = [
   { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings },
   // Forge lives inside Exam Setup (question source); Tools moved to the icon group.
   { label: "Study", href: "/study", icon: BookOpenText },
-  { label: "AI Mentor", href: MENTOR_NEW_CHAT, icon: BrainCircuit },
+  { label: "AI Mentor", href: MENTOR_HOME, icon: BrainCircuit },
   // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
   { label: "Battles", href: "/battles", icon: Swords },
   { label: "Review", href: "/mistakes", icon: Library },

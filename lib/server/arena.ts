@@ -60,6 +60,12 @@ async function award(db: Db, battleId: string, a: string, o: string, aKind: Kind
     { user_id: o, battle_id: battleId, opponent_id: a, kind: oKind, amount: POINTS[oKind] },
   ], { onConflict: "user_id,battle_id,opponent_id", ignoreDuplicates: true }).select("user_id");
   if ((fresh?.length ?? 0) < 2) return; // already settled (or one side was): do not move ratings twice
+  // Coins (migration 0061): win 20, draw 10, playing 5; paid once per battle per student. Ignored if the table is missing.
+  const COIN = { win: { kind: "battle_win", amount: 20 }, draw: { kind: "battle_draw", amount: 10 }, loss: { kind: "battle_play", amount: 5 } } as const;
+  await db.from("coins_ledger").upsert([
+    { user_id: a, kind: COIN[aKind].kind, amount: COIN[aKind].amount, ref: battleId },
+    { user_id: o, kind: COIN[oKind].kind, amount: COIN[oKind].amount, ref: battleId },
+  ], { onConflict: "user_id,kind,ref", ignoreDuplicates: true }).then(() => null, () => null);
   const { data: rs } = await db.from("ratings").select("user_id, rating").in("user_id", [a, o]);
   const ra = rs?.find((r) => r.user_id === a)?.rating ?? 1000, ro = rs?.find((r) => r.user_id === o)?.rating ?? 1000;
   const ea = 1 / (1 + 10 ** ((ro - ra) / 400));

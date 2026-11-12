@@ -1,7 +1,7 @@
 "use client";
 
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-centre/brand";
-import { MENTOR_NEW_CHAT } from "@/lib/mentor/links";
+import { MENTOR_HOME } from "@/lib/mentor/links";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { LayoutGroup, motion } from "motion/react";
@@ -38,7 +38,7 @@ export function BottomTabBar() {
     { label: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
     { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings, active: isTestCentrePath(pathname) },
     { label: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
-    { label: "AI Mentor", href: MENTOR_NEW_CHAT, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
+    { label: "AI Mentor", href: MENTOR_HOME, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
   ];
   const rest = [
     ...(interview ? [{ label: "Interview", hint: "Books, flashcards, code lab, mock interviews", tint: "butter", wide: true, href: "/interview", icon: Briefcase, active: pathname.startsWith("/interview") }] : []),
