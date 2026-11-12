@@ -53,6 +53,22 @@ Your rule was: *Zaakpay first if it gives 0% on the first ₹5 lakh; Paytm first
 - **Pricing:** Standard 1.99% ("Free*", T&C not shown), Enterprise custom; zero setup and AMC; per-method rates and settlement not published; a "Super Savings Offer" with no stated end or cap.
 - **Reviews:** too few to judge (G2 4.5 from 5; Capterra 5.0 from 2).
 
+
+## 3b. More alternatives checked (12 Nov 2026)
+
+| Provider | Pricing (own page unless marked) | Setup / annual | Settlement | Fit for RENYXERA |
+|---|---|---|---|---|
+| **PayU** | Visa/Mastercard cards, net banking, wallets, pay-later **2%**; Diners, AmEx, EMI, international **3%**; UPI "varies by business type"; + GST | ₹0 setup, ₹0 AMC (T&C apply) | **T+2**; same-day for a fee | Solid backup; no 0% offer published (a "Startup Program" link has no terms) |
+| **Easebuzz** | **No public rates**: "customised pricing", sent by email after signing the agreement; one blog quotes ~1.5–1.75% (**unconfirmed**) | not stated | T+1 working day | Possibly cheapest on cards; ask for a written quote |
+| **Instamojo** | Payment Links Quick ₹0/yr at **2% + ₹3** per payment; free store plans charge **5–10% + ₹3**; corporate cards 3% + ₹3; + GST | Paid plans ₹4,999–14,999/yr | **T+3** standard | Too expensive at our ticket sizes (₹3 fixed on a ₹29 plan is 10%) |
+| **CCAvenue** | Pricing page sits behind a sign-up form; blogs list ~2% and an annual fee of about ₹1,200 waived in year one (**unconfirmed**) | annual fee reported | not checked | Older, heavier onboarding; not first choice |
+| **Stripe India** | ~2% per a blog; invite-only for Indian businesses (**unconfirmed**) | ₹0 | not checked | Hard to get; best only for international customers |
+| **Juspay, Airpay** | No public pricing found | n/a | n/a | Enterprise-oriented; skip for now |
+
+**Effect on the ranking:** Cashfree stays first because it is the only one with a published, current zero-fee offer that includes credit cards. If Cashfree rejects or freezes the account, the order becomes **Zaakpay** (if its offer is confirmed in writing), then **PayU** or **Paytm** (about 2% / 1.99%, no setup or annual fee), with **Easebuzz** worth a quote. Instamojo's ₹3 fixed fee rules it out for ₹19–₹99 purchases.
+
+Extra sources: payu.in/pricing, easebuzz.in/pricing, instamojo.com/pricing, ccavenue.com (redirects to registration), Xflowpay, Skydo, EngineerBabu, Qikink, Analytics Insight and SalaryBox 2026 gateway roundups.
+
 ## 4. Rules that apply whichever provider you choose
 - **RuPay credit card on UPI:** customers pay nothing; merchants pay a fee above ₹2,000 per payment (about 1.1–2% by category). Start date reported as 1 June 2026 in one Canara Bank notice and 15 Oct 2026 in another.
 - **UPI and RuPay debit:** zero fee at the bank level, but gateways may still add their own platform fee.
