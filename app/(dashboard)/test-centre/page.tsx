@@ -13,7 +13,6 @@ import { useStudyStore } from "@/store/use-study-store";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { summarizeSession, type Attempt } from "@/features/test-centre/model";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
-import { UpcomingMocks } from "@/components/test-centre/upcoming-mocks";
 import { TEST_CENTRE } from "@/lib/test-centre/brand";
 
 const tile = "card-pastel group relative flex min-w-0 flex-col justify-between overflow-hidden p-5";
@@ -83,8 +82,7 @@ export default function TestCentrePage() {
           </div>
         </section>
         <div className="hub-mock-col order-3 flex min-w-0 flex-col gap-3 lg:order-none">
-          <MockStatusCard />
-          <UpcomingMocks />
+          <div className="flex min-h-0 flex-1 flex-col [&>*]:flex-1">{/* one integrated card: status, next mocks, how it works */}<MockStatusCard withUpcoming /></div>
         </div>
       </div>
 

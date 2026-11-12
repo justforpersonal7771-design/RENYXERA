@@ -83,6 +83,8 @@ const STUDY_TIMES = [
 
 const SECTIONS = [
   { id: "personal", label: "Personal info", subtitle: "Your identity, background, progress and achievements.", icon: IdCard, tint: "bg-fuchsia-500/10 text-fuchsia-500" },
+  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Smile, tint: "bg-pink-500/10 text-pink-500" },
+  { id: "design", label: "Design studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, tint: "bg-violet-500/10 text-violet-500" },
   { id: "goals", label: "Exam goals", subtitle: "Your target, schedule and the plan it builds.", icon: Target, tint: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400" },
   { id: "preferences", label: "Preferences", subtitle: "Theme, motion and reminders on this device.", icon: SlidersHorizontal, tint: "bg-violet-500/10 text-violet-500" },
   { id: "security", label: "Account & security", subtitle: "Sign-in, password, your data and account.", icon: ShieldCheck, tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" },
@@ -90,8 +92,6 @@ const SECTIONS = [
   { id: "telegram", label: "Telegram", subtitle: "Reminders, timers and alerts in Telegram.", icon: Send, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "devices", label: "Devices", subtitle: "Where you're signed in.", icon: Laptop, tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400" },
   { id: "data", label: "Data & storage", subtitle: "What this device holds, and tools to clean it up.", icon: HardDrive, tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400" },
-  { id: "avatar", label: "Avatar studio", subtitle: "Your look — free, Silver and Gold styles.", icon: Smile, tint: "bg-pink-500/10 text-pink-500" },
-  { id: "design", label: "Design studio", subtitle: "Change the whole look of the app: cards, backgrounds, corners and buttons.", icon: Palette, tint: "bg-violet-500/10 text-violet-500" },
 ] as const;
 type SectionId = (typeof SECTIONS)[number]["id"];
 

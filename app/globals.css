@@ -1532,11 +1532,8 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 /* Blueprint stat labels larger. */
 .blueprint-stat-label { font-size: 14px !important; font-weight: 700; }
 
-/* Dark mode: calm, low-saturation tints on a deep neutral; brighter inks. */
-.dark { --background: #0f1117; --surface: #181b24; --surface-secondary: #20242f;
-  --tint-mint: #16251f; --tint-mint-ink: #7ee2b2; --tint-rose: #2a1b22; --tint-rose-ink: #f5a3b8; --tint-peach: #2a2019; --tint-peach-ink: #f7bb8a;
-  --tint-peri: #1c1f33; --tint-peri-ink: #aab6ff; --tint-lilac: #182236; --tint-lilac-ink: #8fb8ff; --tint-butter: #28241a; --tint-butter-ink: #f3d77a;
-  --tint-sky: #172530; --tint-sky-ink: #86cff5; }
+/* Dark mode surfaces. The tints come from the OKLCH block near the top (vivid, same lightness); do not override them here. */
+.dark { --background: #0f1117; --surface: #181b24; --surface-secondary: #20242f; }
 .dark .page-shell[data-section] { background: linear-gradient(165deg, color-mix(in srgb, var(--sec) 70%, var(--background)) 0%, var(--background) 70%) !important; border-color: rgba(255,255,255,.06); }
 .dark .topbar-island { background: linear-gradient(100deg, color-mix(in srgb, var(--nav-sec, var(--tint-lilac)) 90%, var(--surface)) 0%, var(--surface) 55%) !important; }
 /* Focus Target header on pastel: white-on-gradient leftovers read as ink. */
