@@ -1162,13 +1162,13 @@ mjx-container[display="true"] {
   /* Dark pastel, retuned (13 Nov): deep near-neutral surfaces with a quiet hue; the colour lives in the ink, the edge and a soft top glow, not in big saturated blocks.
      Earlier note (10 Nov): depth comes from stepping the card surface LIGHTER than the page and tinting it with the module's own hue
      (OKLCH, so every tint has the same lightness and a real chroma), not from greying a colour out. Inks stay pastel so text and icons glow on it. */
-  --tint-mint:   oklch(0.27 0.056 165);  --tint-mint-ink:   oklch(0.86 0.12 165);
-  --tint-rose:   oklch(0.27 0.062 12);   --tint-rose-ink:   oklch(0.84 0.10 12);
-  --tint-peach:  oklch(0.275 0.058 52);   --tint-peach-ink:  oklch(0.86 0.10 58);
-  --tint-peri:   oklch(0.27 0.07 282);  --tint-peri-ink:   oklch(0.84 0.10 282);
-  --tint-lilac:  oklch(0.27 0.07 255);  --tint-lilac-ink:  oklch(0.84 0.10 250);
-  --tint-butter: oklch(0.285 0.056 88);    --tint-butter-ink: oklch(0.90 0.12 92);
-  --tint-sky:    oklch(0.27 0.062 230);  --tint-sky-ink:    oklch(0.86 0.10 224);
+  --tint-mint: #047857;   --tint-mint-ink: #dcf5e5;
+  --tint-rose: #be123c;   --tint-rose-ink: #ffe0e3;
+  --tint-peach: #9a3412;  --tint-peach-ink: #ffe7cf;
+  --tint-peri: #4338ca;   --tint-peri-ink: #e1e7ff;
+  --tint-lilac: #0a4fd0;  --tint-lilac-ink: #e3eeff;
+  --tint-butter: #854d0e; --tint-butter-ink: #fff3c4;
+  --tint-sky: #0369a1;    --tint-sky-ink: #dbefff;
   --ink: #f4f3f8;
 }
 @media (max-width: 640px) { :root { --card-radius: 22px; } }
@@ -2142,22 +2142,3 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 
 
 
-/* Dark mode, strategy 3 (13 Nov): every card is the same charcoal glass; its colour is light, not paint.
-   A soft glow of the card's ink from the top-right corner, a hairline edge, and a 1px top highlight. Small chips keep their tint. */
-.dark { --background: #0b0d12; --surface: #14161c; --surface-secondary: #1b1e26; --card-glass-edge: rgba(255,255,255,.07); }
-.dark :is(.card-pastel, .card-well, .card-band)[data-tint] {
-  background-color: #14161c !important;
-  background-image:
-    radial-gradient(90% 70% at 100% 0%, color-mix(in oklab, var(--tint-ink, #8b9cff) 16%, transparent), transparent 70%),
-    linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,0) 40%) !important;
-  border: 1px solid color-mix(in oklab, var(--tint-ink, #fff) 14%, rgba(255,255,255,.06)) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 18px 40px -24px rgba(0,0,0,.9) !important;
-}
-.dark :is(.card-pastel, .card-well, .card-band)[data-tint]:hover {
-  border-color: color-mix(in oklab, var(--tint-ink, #fff) 32%, transparent) !important;
-}
-/* inner tiles inside a card sit one step lighter and stay neutral */
-.dark :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint] { background-color: #191c23 !important; }
-/* the card's title and figures pick up its ink a little, so each card still has an identity */
-.dark :is(.card-pastel, .card-well)[data-tint] :is(h2, h3) { color: color-mix(in oklab, var(--tint-ink, #fff) 35%, #f4f5f8); }
-.dark .card-well[data-tint] { --tint-ink: var(--wm); }
