@@ -7,8 +7,13 @@ import { join } from "node:path";
 const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
 const dir = "content/interview";
 const files = readdirSync(dir).filter((f) => /^senior-pack-\d+\.json$/.test(f)).sort();
-const { data: books } = await db.from("interview_cards").select("book,book_title").limit(5000);
-const titleOf = new Map((books ?? []).map((b) => [b.book, b.book_title]));
+const titleOf = new Map();
+for (let from = 0; from < 20000; from += 1000) {   // page through: the API returns at most 1,000 rows per call
+  const { data } = await db.from("interview_cards").select("book,book_title").not("id", "like", "SR-%").range(from, from + 999);
+  if (!data?.length) break;
+  for (const b of data) titleOf.set(b.book, b.book_title);
+  if (data.length < 1000) break;
+}
 let n = 0;
 for (const f of files) {
   const rows = JSON.parse(readFileSync(join(dir, f), "utf8")).map((c) => ({
