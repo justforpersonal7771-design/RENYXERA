@@ -97,6 +97,8 @@ export const viewport = {
   themeColor: '#4f46e5',
 };
 
+// Dark-mode style (edge | midnight | tinted) set before paint so the page never flashes the wrong style.
+const DARK_STYLE_BOOTSTRAP = `try{var d=localStorage.getItem("renyxera_dark_style");document.documentElement.setAttribute("data-dk",d==="midnight"||d==="tinted"?d:"edge")}catch(e){document.documentElement.setAttribute("data-dk","edge")}`;
 // Runs in <head>, before anything paints. Kept as a plain string on purpose: the
 // Cloudflare build (OpenNext/esbuild with keepNames) rewrites next-themes' own inline
 // script — which is generated from a function via toString() — to call an esbuild
@@ -123,6 +125,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: LOOK_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: STALE_GUARD }} />
+        <script dangerouslySetInnerHTML={{ __html: DARK_STYLE_BOOTSTRAP }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: ORG_JSON_LD }} />
         {/* MathJax (formulas) comes from this CDN; warming the connection early shaves
             the DNS/TLS round-trips off the first question with maths. */}

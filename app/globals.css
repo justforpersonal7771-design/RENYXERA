@@ -1162,13 +1162,13 @@ mjx-container[display="true"] {
   /* Dark pastel, retuned (13 Nov): deep near-neutral surfaces with a quiet hue; the colour lives in the ink, the edge and a soft top glow, not in big saturated blocks.
      Earlier note (10 Nov): depth comes from stepping the card surface LIGHTER than the page and tinting it with the module's own hue
      (OKLCH, so every tint has the same lightness and a real chroma), not from greying a colour out. Inks stay pastel so text and icons glow on it. */
-  --tint-mint: #047857;   --tint-mint-ink: #dcf5e5;
-  --tint-rose: #be123c;   --tint-rose-ink: #ffe0e3;
-  --tint-peach: #9a3412;  --tint-peach-ink: #ffe7cf;
-  --tint-peri: #4338ca;   --tint-peri-ink: #e1e7ff;
-  --tint-lilac: #0a4fd0;  --tint-lilac-ink: #e3eeff;
-  --tint-butter: #854d0e; --tint-butter-ink: #fff3c4;
-  --tint-sky: #0369a1;    --tint-sky-ink: #dbefff;
+  --tint-mint:   oklch(0.27 0.05 165);  --tint-mint-ink:   oklch(0.86 0.12 165);
+  --tint-rose:   oklch(0.27 0.055 12);  --tint-rose-ink:   oklch(0.84 0.10 12);
+  --tint-peach:  oklch(0.275 0.05 52);  --tint-peach-ink:  oklch(0.86 0.10 58);
+  --tint-peri:   oklch(0.27 0.06 282);  --tint-peri-ink:   oklch(0.84 0.10 282);
+  --tint-lilac:  oklch(0.27 0.06 255);  --tint-lilac-ink:  oklch(0.84 0.10 250);
+  --tint-butter: oklch(0.285 0.05 88);  --tint-butter-ink: oklch(0.90 0.12 92);
+  --tint-sky:    oklch(0.27 0.055 230); --tint-sky-ink:    oklch(0.86 0.10 224);
   --ink: #f4f3f8;
 }
 @media (max-width: 640px) { :root { --card-radius: 22px; } }
@@ -2142,3 +2142,30 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 
 
 
+
+/* ===== Dark-mode options for the owner to choose from (13 Nov). html[data-dk] picks one; default is "edge". =====
+   tinted: deep low-saturation tinted cards (colour as surface, quiet)
+   edge:   neutral elevated cards, colour as a 3px top stripe + coloured title/icons (Linear/Vercel style)
+   midnight: the whole app on deep indigo, cards one step lighter, colour only in titles and accents (brand violet) */
+.dark:not([data-dk]) , .dark[data-dk="edge"] { --background: #0e1015; --surface: #171a21; --surface-secondary: #1f232c; }
+.dark:not([data-dk]) :is(.card-pastel, .card-well, .card-band)[data-tint],
+.dark[data-dk="edge"] :is(.card-pastel, .card-well, .card-band)[data-tint] {
+  background: #171a21 !important; border: 1px solid rgba(255,255,255,.07) !important;
+  box-shadow: inset 0 3px 0 var(--tint-ink, #8b9cff), 0 16px 36px -22px rgba(0,0,0,.85) !important;
+}
+.dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint],
+.dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint] { background: #1f232c !important; box-shadow: inset 0 2px 0 var(--tint-ink, #8b9cff) !important; }
+.dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint] :is(h2, h3),
+.dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint] :is(h2, h3) { color: var(--tint-ink) !important; }
+
+.dark[data-dk="midnight"] { --background: #0c0f24; --surface: #151a38; --surface-secondary: #1c2248; }
+.dark[data-dk="midnight"] :is(.card-pastel, .card-well, .card-band)[data-tint] {
+  background: linear-gradient(180deg, #181e40, #141936) !important; border: 1px solid rgba(160,170,255,.12) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 18px 40px -24px rgba(0,0,0,.9) !important;
+}
+.dark[data-dk="midnight"] :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well)[data-tint] { background: #1e2550 !important; }
+.dark[data-dk="midnight"] :is(.card-pastel, .card-well)[data-tint] :is(h2, h3) { color: var(--tint-ink) !important; }
+
+.dark[data-dk="tinted"] { --background: #0f1116; --surface: #181b22; }
+.dark[data-dk="tinted"] :is(.card-pastel, .card-well, .card-band)[data-tint] { border: 1px solid color-mix(in oklab, var(--tint-ink, #fff) 16%, transparent) !important; }
+.dark .card-well[data-tint] { --tint-ink: var(--wm); }

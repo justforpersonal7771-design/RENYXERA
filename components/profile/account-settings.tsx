@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useTheme } from "next-themes";
+import { applyDarkStyle, readDarkStyle, type DarkStyle } from "@/lib/theme/dark-style";
 import {
   SlidersHorizontal, Sun, Moon, Monitor, Sparkles, Bell, ShieldCheck, Mail, KeyRound, Download,
   Loader2, Trash2, Smartphone, Laptop, LogOut, CheckCircle2, Eye, EyeOff, AlertTriangle,
@@ -98,6 +99,7 @@ export function PreferencesCard() {
                 options={[{ value: "light", label: "Light", icon: Sun }, { value: "dark", label: "Dark", icon: Moon }, { value: "system", label: "System", icon: Monitor }]} />
             )}
           </div>
+          {mounted && <DarkStylePicker />}
           <div>
             <p className="text-xs font-bold text-[var(--text-secondary)] mb-2">Motion</p>
             <Segmented<MotionPref> label="Motion" value={motionPref} onChange={setMotion}
@@ -405,5 +407,19 @@ export function DevicesCard() {
           </button>
         </div>
       </motion.section>
+  );
+}
+
+
+/** Dark style: three looks for dark mode, applied at once; shown only so the owner can compare and pick a default. */
+function DarkStylePicker() {
+  const [v, setV] = useState<DarkStyle>(() => readDarkStyle());
+  const pick = (x: DarkStyle) => { setV(x); applyDarkStyle(x); };
+  return (
+    <div>
+      <p className="text-xs font-bold text-[var(--text-secondary)] mb-2">Dark style</p>
+      <Segmented<DarkStyle> label="Dark style" value={v} onChange={pick}
+        options={[{ value: "edge", label: "Edge", icon: Moon }, { value: "midnight", label: "Midnight", icon: Moon }, { value: "tinted", label: "Tinted", icon: Moon }]} />
+    </div>
   );
 }
