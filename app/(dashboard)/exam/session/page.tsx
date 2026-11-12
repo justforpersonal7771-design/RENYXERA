@@ -1,5 +1,6 @@
 "use client";
 
+import { BattleLiveStrip } from "@/components/battles/battle-live";
 import { VirtualCalculator } from "@/components/exam/virtual-calculator";
 import { MOCK_TAB_SWITCH_LIMIT } from "@/lib/exam/integrity-rules";
 import { FS_EVENT, isFullscreen, wireFullscreenEvents } from "@/lib/fullscreen";
@@ -46,14 +47,15 @@ export default function ExamSessionPage() {
   const responses = useMemo(() => responsesFromStore || {}, [responsesFromStore]);
   const sessionGoalTag = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.goalTag);
 
-  // Live battle (R19): tell the server how far along this player is, every 20 s while the test runs.
+  // Live battle: tell the server how far along this player is, every 5 s while the test runs (shown in the opponent's VS strip).
   const battleId = useExamRuntimeStore((state) => state.activeSession?.draftConfig?.config?.battle?.id);
   const answeredRef = useRef(0);
   answeredRef.current = Object.values(responses).filter((r) => r.status === "ANSWERED" || r.status === "MARKED_AND_ANSWERED").length;
   useEffect(() => {
     if (!battleId) return;
     const send = () => { void fetch(`/api/battles/${battleId}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "progress", answered: answeredRef.current }) }).catch(() => {}); };
-    const t = setInterval(send, 20_000);
+    send();
+    const t = setInterval(send, 5_000);   // live room: the opponent sees this within a few seconds
     return () => clearInterval(t);
   }, [battleId]);
 
@@ -345,6 +347,7 @@ export default function ExamSessionPage() {
   return (
     <MathJaxContext config={mathJaxConfig}>
       <div id="exam-root" className="flex flex-col h-dvh w-full overflow-hidden bg-[var(--background)] font-sans">
+        {battleId && <BattleLiveStrip battleId={battleId} myAnswered={answeredRef.current} myTotal={totalQuestions} />}
         
         {/* REDESIGNED COMMAND BAR — a compact always-visible row (logo, Q counter, timer,
             actions) that never wraps, plus a details row (type/marks/difficulty and

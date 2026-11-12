@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 import { TelegramJoinCard, TelegramJoinLink } from "@/components/growth/telegram-join";
 import { InviteNudge } from "@/components/growth/invite-nudge";
@@ -319,6 +320,7 @@ export default function ResultSummaryPage() {
   };
   const renderActions = (cls: string) => (
             <div className={cls}>
+              {(session.draftConfig.config as { battle?: { id?: string } }).battle?.id && <Link href={`/challenge/${(session.draftConfig.config as { battle?: { id?: string } }).battle!.id}`} className="btn-main flex-1 !h-11 justify-center text-sm">See the battle result</Link>}
               <ShareResultButton getLink={battleLink} className="h-auto py-3 [@media(max-height:860px)]:py-2.5"
                 title={String((session.draftConfig.config as { title?: string }).title ?? ((session.draftConfig.config as { yearShift?: string }).yearShift ? `GATE ${paperLabel()} ${(session.draftConfig.config as { yearShift?: string }).yearShift} paper` : "Practice test"))}
                 subtitle="Practice test"

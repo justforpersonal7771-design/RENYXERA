@@ -61,6 +61,9 @@ export async function POST(req: NextRequest, { params }: Ctx) {
       await settleBattle(db, id); // friends who already played now get their points
       return NextResponse.json({ ok: true, status: "owner", score: own.server_score, maxScore: own.server_max });
     }
+    // Live match: the challenger's progress is kept on the battle row (migration 0060; a missing column is ignored).
+    if (body.data.action === "start") await db.from("battles").update({ owner_total: body.data.total, owner_answered: 0, owner_seen_at: new Date().toISOString() }).eq("id", id).then(() => null, () => null);
+    if (body.data.action === "progress") await db.from("battles").update({ owner_answered: body.data.answered, owner_seen_at: new Date().toISOString() }).eq("id", id).then(() => null, () => null);
     if (body.data.action === "finish" || body.data.action === "start" || body.data.action === "progress") return NextResponse.json({ ok: true, status: "owner" });
     return NextResponse.json({ error: "This is your own battle. Send the link to a friend.", reason: "own" }, { status: 409 });
   }
