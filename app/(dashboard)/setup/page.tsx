@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link";
+import { paperLabel } from "@/lib/branch/current";
 
 import { SourceMixer, useSourceMix } from "@/components/exam/source-mixer";
 import { SparkGenerator } from "@/components/exam/spark-generator";
@@ -141,6 +143,16 @@ export default function ExamSetupPage() {
     return QuestionRepository.getAllQuestions().filter(q => !(q as any).isAiGenerated);
   }, [isInitialized, totalQuestions]);
   const canBrowse = sourceType === "ai_generated" || sourceMix.mode === "forge";
+  // An official year paper is the real paper, so it exists only for the GATE PYQs source; Spark, Forge and Blend build by subject, topic, section or custom.
+  const pyqOnly = sourceType === "standard" && sourceMix.mode === "pyq";
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- leaving the PYQ source moves off the year-paper deployment
+  useEffect(() => { if (!pyqOnly && examType === "YEAR_PAPER") setExamType("SUBJECT_TEST"); }, [pyqOnly, examType]);
+  // Released Forge questions for this account's paper (null until loaded); Forge tests are taken on the Forge page, not built from PYQs.
+  const [forgeCount, setForgeCount] = useState<number | null>(null);
+  useEffect(() => {
+    if (sourceMix.mode !== "forge" || sourceType !== "standard") return;
+    void fetch("/api/forge/items?set=practice", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((j: { items?: unknown[]; locked?: unknown[] } | null) => setForgeCount(j ? (j.items?.length ?? 0) + (j.locked?.length ?? 0) : 0)).catch(() => setForgeCount(0));
+  }, [sourceMix.mode, sourceType]);
 
   const aiSubjects = useMemo(() => {
     return Array.from(new Set(aiQuestionsList.map(q => q.subject).filter(Boolean))).sort();
@@ -1093,7 +1105,7 @@ export default function ExamSetupPage() {
                       value={examType}
                       onChange={(val) => setExamType(val as ExamType)}
                       options={[
-                        { label: "Official Year Paper", value: "YEAR_PAPER" },
+                        ...(pyqOnly ? [{ label: "Official Year Paper", value: "YEAR_PAPER" }] : []),
                         { label: "Section Sprint", value: "SECTION_TEST" },
                         { label: "Subject Mastery", value: "SUBJECT_TEST" },
                         { label: "Topic Spotlight", value: "TOPIC_TEST" },
@@ -1129,10 +1141,16 @@ export default function ExamSetupPage() {
 
               <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar">
               {sourceType === "standard" && sourceMix.mode === "forge" && (
-                <p className="mx-5 md:mx-6 mt-4 rounded-2xl bg-[var(--surface)] px-4 py-3 text-sm text-[var(--text-secondary)]">
-                  Forge is in preview: tests built here use official PYQs until the first Forge set is released. See the Forge questions under <b className="text-[var(--text-primary)]">Forge questions</b> above.
-                </p>
+                <div className="mx-5 md:mx-6 mt-4 rounded-2xl bg-[var(--surface)] p-5">
+                  <p className="font-display text-lg font-extrabold text-[var(--text-primary)]">{forgeCount === null ? "Checking Forge…" : forgeCount > 0 ? `${forgeCount} Forge questions ready for GATE ${paperLabel()}` : `Forge for GATE ${paperLabel()} isn't out yet`}</p>
+                  <p className="mt-1 text-sm text-[var(--text-secondary)]">{forgeCount ? "Forge questions are original, not past papers, and are practised and marked on the Forge page with their worked solutions and traps." : "Forge is live for GATE CS first. Your paper is next; until then, build tests from GATE PYQs or generate Spark questions."}</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {forgeCount ? <Link href="/forge" className="btn-main">Practise Forge</Link> : null}
+                    <button type="button" onClick={() => setSourceMix({ ...sourceMix, mode: "pyq" })} className="pill-soft">Use GATE PYQs</button>
+                  </div>
+                </div>
               )}
+              {!(sourceType === "standard" && sourceMix.mode === "forge") && (<>
               {sourceType === "standard" && sourceMix.mode === "mix" && <div className="px-5 md:px-6 pt-4"><SourceMixer mix={sourceMix} onChange={setSourceMix} yearPaper={examType === "YEAR_PAPER"}
                 available={{ pyq: totalQuestions, forge: 0, ai: aiQuestionsList.length }} /></div>}
               {examType === "CUSTOM_TEST" ? (
@@ -1297,6 +1315,7 @@ export default function ExamSetupPage() {
                       duplicated down here. */}
                 </div>
               )}
+              </>)}
               </div>
             </div>
 

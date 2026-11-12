@@ -11,7 +11,7 @@ import { PlanCompare } from "@/components/preview/plan-compare";
 import { FriendsPanel } from "@/components/friends/friends-panel";
 import { ArenaLeaderboard } from "@/components/friends/arena-leaderboard";
 import { ArenaStats } from "@/components/battles/arena-stats";
-import { ClubPanel, DailyReward } from "@/components/battles/clubs-coins";
+import { ClubPanel, CoinShop, DailyReward } from "@/components/battles/clubs-coins";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useToastStore } from "@/store/use-toast-store";
@@ -72,6 +72,7 @@ export default function BattlesPage() {
 
       {user ? <ArenaStats /> : null}
       {user ? <div className="grid gap-4 lg:grid-cols-2"><DailyReward /><ClubPanel /></div> : null}
+      {user ? <CoinShop /> : null}
 
       {user ? <FriendsPanel /> : null}
       {user ? <ArenaLeaderboard /> : null}

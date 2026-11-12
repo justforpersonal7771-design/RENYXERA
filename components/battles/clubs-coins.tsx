@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Coins, Copy, Crown, Flame, LogOut, Plus, Users } from "lucide-react";
 import { useToastStore } from "@/store/use-toast-store";
+import { SHOP } from "@/lib/coins/shop";
 
 type CoinState = { balance: number; claimedToday: boolean; streak: number; daily: number; bonus: number };
 type Member = { id: string; name: string; role: string; points: number; you: boolean };
@@ -123,6 +124,58 @@ export function ClubPanel() {
         ))}
       </ol>
       <p className="mt-2 text-xs text-[var(--text-secondary)]">{club.members.length} of {club.max} members · the board resets every Monday (IST).</p>
+    </section>
+  );
+}
+
+/** Coin shop: Mentor token boosts and avatar frames, bought with coins. Frames can be worn or taken off. */
+export function CoinShop() {
+  const [coins, setCoins] = useState<number | null>(null);
+  const [own, setOwn] = useState<{ owned: string[]; equipped: string | null } | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const load = useCallback(async () => {
+    const [c, s] = await Promise.all([fetch("/api/coins", { cache: "no-store" }).catch(() => null), fetch("/api/coins/shop", { cache: "no-store" }).catch(() => null)]);
+    if (c?.ok) setCoins(((await c.json()) as CoinState).balance);
+    if (s?.ok) setOwn(await s.json());
+  }, []);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- loads balance and owned items once after mount
+  useEffect(() => { void load(); }, [load]);
+  if (coins === null || !own) return null;
+  const act = async (b: Record<string, unknown>, id: string) => {
+    setBusy(id);
+    const r = await fetch("/api/coins/shop", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(b) }).catch(() => null);
+    setBusy(null);
+    const j = (await r?.json().catch(() => ({}))) as { error?: string; balance?: number; owned?: string[]; equipped?: string | null };
+    if (!r?.ok) { useToastStore.getState().show(j.error ?? "Something went wrong.", "error"); return; }
+    if (typeof j.balance === "number") setCoins(j.balance);
+    if (j.owned) setOwn({ owned: j.owned, equipped: j.equipped ?? null });
+    window.dispatchEvent(new Event("renyxera:frame"));
+    if (b.action === "buy") useToastStore.getState().show(SHOP.find((x) => x.id === id)?.kind === "mentor" ? "Mentor tokens added." : "Frame unlocked and equipped.", "success");
+  };
+  return (
+    <section className="card-pastel p-5" data-tint="mint" aria-label="Coin shop">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="flex items-center gap-2 font-display text-lg font-extrabold text-[var(--text-primary)]"><Coins className="h-5 w-5 text-amber-500" aria-hidden /> Coin shop</p>
+        <span className="rounded-full bg-[var(--surface)] px-3 py-1 text-sm font-extrabold tabular-nums text-[var(--text-primary)]">{coins} coins</span>
+      </div>
+      <ul className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+        {SHOP.map((it) => {
+          const has = own.owned.includes(it.id), on = own.equipped === it.id, short = coins < it.cost;
+          return (
+            <li key={it.id} className="flex flex-col rounded-2xl bg-[var(--surface)] p-4">
+              {it.kind === "frame"
+                ? <span className="mx-auto grid h-14 w-14 place-items-center rounded-full p-[4px]" style={{ background: it.ring }}><span className="h-full w-full rounded-full bg-[var(--surface-secondary)]" /></span>
+                : <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[var(--tint-sky)] text-lg font-black text-[var(--tint-sky-ink)]">{Math.round((it.tokens ?? 0) / 1000)}K</span>}
+              <p className="mt-2 text-center font-bold text-[var(--text-primary)]">{it.name}</p>
+              <p className="mt-0.5 flex-1 text-center text-xs text-[var(--text-secondary)]">{it.blurb}</p>
+              {it.kind === "frame" && has
+                ? <button type="button" disabled={busy === it.id} onClick={() => void act({ action: "equip", item: on ? null : it.id }, it.id)} className="pill-soft mt-3 justify-center">{on ? "Take off" : "Wear"}</button>
+                : <button type="button" disabled={busy === it.id || short} onClick={() => void act({ action: "buy", item: it.id }, it.id)} className="btn-main mt-3 justify-center disabled:opacity-50"><Coins className="h-4 w-4" /> {it.cost}</button>}
+            </li>
+          );
+        })}
+      </ul>
+      <p className="mt-2 text-xs text-[var(--text-secondary)]">Coins can&apos;t be bought or cashed out; you earn them by studying and battling.</p>
     </section>
   );
 }

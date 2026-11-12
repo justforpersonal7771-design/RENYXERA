@@ -8,6 +8,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { LogIn, IdCard, Palette, Smile, Target, SlidersHorizontal, ShieldCheck, Laptop, HardDrive, LogOut, ChevronRight, Crown, Send, Swords } from "lucide-react";
 import { ProCrown } from "@/components/brand/pro-crown";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
+import { shopItem } from "@/lib/coins/shop";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { generateAvatarDataUri, useAvatarStyles } from "@/lib/avatar/generate-avatar";
@@ -38,11 +39,26 @@ const ITEMS = [
  * (smooth zoom-and-slide on hover, a highlight gliding between rows), and
  * Sign out. Portaled so the navbar's rounded cluster can't clip it.
  */
+
+/** The avatar frame bought in the coin shop (none until one is worn). Refreshes when the shop changes it. */
+function useFrame(signedIn: boolean) {
+  const [ring, setRing] = useState<string | null>(null);
+  useEffect(() => {
+    if (!signedIn) return;
+    const load = () => void fetch("/api/coins/shop", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((j: { equipped?: string | null } | null) => setRing(j?.equipped ? shopItem(j.equipped)?.ring ?? null : null)).catch(() => {});
+    load();
+    window.addEventListener("renyxera:frame", load);
+    return () => window.removeEventListener("renyxera:frame", load);
+  }, [signedIn]);
+  return ring;
+}
+
 export function AccountButton() {
   const styleProfile = useAuthStore((st) => st.profile);
   useAvatarStyles([styleProfile && isAvatarStyleId(styleProfile.avatar_style) ? styleProfile.avatar_style : "adventurer"]);
   const user = useAuthStore((s) => s.user);
   const profile = useAuthStore((s) => s.profile);
+  const frame = useFrame(!!user);
   const loading = useAuthStore((s) => s.loading);
   const openAuthModal = useAuthModalStore((s) => s.open);
   const pathname = usePathname();
@@ -134,7 +150,7 @@ export function AccountButton() {
         onClick={(e) => { e.preventDefault(); if (open && pinned.current) { pinned.current = false; setOpen(false); } else { pinned.current = true; show(); } }}
         className={`avatar-fx group relative flex items-center rounded-xl outline-none shrink-0 ${pro ? "is-pro" : plus ? "is-plus" : ""}`}>
         <span className="relative block w-8 h-8">
-          <span className="avatar-ring" aria-hidden="true" />
+          {frame ? <span aria-hidden="true" className="absolute -inset-[3px] rounded-[12px]" style={{ background: frame }} /> : <span className="avatar-ring" aria-hidden="true" />}
           <span className="relative block w-8 h-8 rounded-[9px] overflow-hidden border border-[var(--border)] bg-[var(--surface-secondary)] transition-[filter,transform] duration-300 group-hover:saturate-150 group-hover:brightness-110 group-hover:scale-105">
             {/* eslint-disable-next-line @next/next/no-img-element -- data: URI */}
             <img src={avatarUri} alt="Your avatar" className="w-full h-full" width={64} height={64} />
