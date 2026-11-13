@@ -1,0 +1,207 @@
+RENYXERA: COMPLETE PRODUCT CONTEXT + ADVISORY PROMPT
+(Written 14 Nov 2026 for pasting into ChatGPT or another model. Everything below is fact about the product unless it is marked PLANNED, ON HOLD or IDEA. Paste the whole file. At the end there is a reusable per-screen prompt.)
+
+======================================================================
+PART 0. HOW TO USE THIS FILE (instructions for the model reading it)
+======================================================================
+You are a senior product designer, UX writer, motion designer, growth marketer and staff engineer advising a one-person, zero-budget product. Read every part. Then answer the request in PART 12 (or the per-screen prompt in PART 13). Rules for your answer:
+- Never invent features, numbers, users, testimonials or prices. If you want to state something not in this file, list it under "Needs owner confirmation".
+- Everything must be buildable for Rs 0 (free tiers, open-source, free assets).
+- Respect the hard rules in PART 9 (they are the owner's standing decisions).
+- Give concrete output: numbers, durations, hex values, copy, wireframes (ASCII), component names. No marketing fluff.
+- Give TWO layouts for any screen: MOBILE (portrait phone ~390 px, touch, PWA) and DESKTOP (landscape 1440 px+, full width, mouse/keyboard). Say what changes, not just the size.
+
+======================================================================
+PART 1. WHAT RENYXERA IS
+======================================================================
+- A web app (installable PWA, phone and desktop) for Indian engineering students preparing for GATE (Graduate Aptitude Test in Engineering), a national computer-based postgraduate entrance exam. Tagline: "A new ERA of intelligent learning". Old internal name: GATE OS.
+- Live at https://gate.renyxera.workers.dev . No custom domain yet (deferred until revenue).
+- Owner: a non-developer product owner. All engineering is done by an AI coding assistant (Claude Code) in local sessions. The owner runs database migrations and account setups himself.
+- Stage: live, early. About 1,200 visitors in the 30 days to 6 Nov 2026; about 7% start a test; 0 paying customers so far (only the owner's own test payments).
+- GATE facts: 65 questions, 100 marks, 3 hours. Question types: MCQ (single answer; wrong 1-mark = -1/3, wrong 2-mark = -2/3), MSQ (multiple correct, no negative, all-or-nothing), NAT (numeric answer within a range, no negative). Papers live in the app: CS, EC, EE, ME, CE, DA. GATE 2027 runs 6 to 21 Feb 2027 (IIT Madras). Results usually mid-March; March is also when the app refreshes official data.
+- Audience: 20 to 26 years old, final-year students and graduates (some working), mostly studying alone, often at night, mostly on phones, cost-sensitive (coaching is expensive), English-medium for now (Hindi later).
+
+======================================================================
+PART 2. WHAT IS BUILT AND LIVE, MODULE BY MODULE
+======================================================================
+2.1 Practise and exam
+- Official past-paper (PYQ) banks: about 3,250 questions, 2017 to 2026, six papers; CS verified against official papers. Images, maths (MathJax) and code render properly.
+- Exam-identical session: countdown timer, question palette, mark for review, save and next, submit confirmation, GATE-style virtual scientific calculator, fullscreen, integrity signals (tab switches counted, never change the score). Server-side grading with GATE rules. Results, review with solutions where available, mistakes bank, bookmarks, notes, revision sessions, spaced-repetition flashcards, checkpoint quiz, diagnostics.
+- Test Centre (one hub): Build a test (deployment types: Official Year Paper, Section Sprint, Subject Mastery, Topic Spotlight, Custom Advanced Generator), Practice, Mocks, History. Question sources: GATE PYQs, Forge (originals), Spark (AI-generated, made by the student), Blend (mix of sources by share).
+  * Known state: "Official Year Paper" now appears only for the PYQ source. Forge questions cannot yet be placed inside built tests (their answers are server-side and the exam screen does not grade them yet); the Forge tab shows how many exist for your paper and links to the Forge page. Blend needs a proper redesign (availability per scope, presets, in-scope Spark only). PENDING.
+- All-India Mock: a free GATE-pattern mock on Sundays with ranks (results and ranks free for everyone). One integrated card on the Test Centre shows status, next mocks and how it works.
+- Focus Target / goal slider: picks the topics that capture the most marks for a target %.
+
+2.2 Forge (original questions)
+- Original GATE-level questions, written and verified by code (answers computed, not guessed), each with worked solution, shortcut and "trap" note. 329 live for CS. Other papers: not yet (CS first, then EC, EE, ME, CE, DA).
+- Access: Free gets a fixed taster of 10 plus Forge Mocks (results/ranks only); Plus 15 a day with worked solutions; Pro unlimited including the hardest tier ("X") and the archive.
+- PLANNED: grow CS to 800, Daily Forge, Forge Mocks schedule (weekly CS, fortnightly others), Telegram teaser (1 of the daily 10), calibration loop.
+
+2.3 Spark (AI questions)
+- Students generate practice questions with AI (plan-limited: Plus 5 sets a day, Pro unlimited), saved on their device, usable in tests and flashcards.
+
+2.4 AI Mentor (core differentiator)
+- A ChatGPT-like chat: history, groups, search, edit with versions, stop, sync across devices, maths/code/tables in replies, disclaimer. It reads the student's own data (weak topics, recent mistakes, goals, last test) to explain, plan, quiz and review. Mentor home/dashboard plus chat; goals, roadmap by days left, daily check-in, focus timer.
+- AI Tutor: explain a question (from mistakes and bookmarks); AI practice sets; AI revision sheets.
+- Daily allowance: Free a small taster (5 requests), Plus 75/day, Pro 150/day. Recharge packs (one-off, 90 days, any plan): Small Rs 19 (150K tokens), Medium Rs 49 (450K), Large Rs 79 (1.2M). Coin-shop Mentor boosts (30K and 80K tokens for coins).
+- AI models (all free tier, server-only): Google Gemini ("gemini-3.5-flash" for chat/explain/practice, a "lite" model for hints/shortcuts), OpenRouter free models as fallback. Free-tier quotas throttle volume; answers are cached and pre-generated nightly where possible.
+- PLANNED: streaming replies, photo doubts, weak-topic memory, Mentor rebuild items.
+
+2.5 Planner and analytics
+- Study planner with calendar and to-dos, goals slider, countdown to GATE 2027, GitHub-style heatmap, Mistake DNA, coach insights, readiness estimate calibrated on official data (2023 to 2026).
+- Analytics (reorganised 12 Nov): sections "What to do next" (smart insights, today's adaptive path), "Subjects" (full-width subject radar, where marks come from, subject explorer), "Topics" (sortable explorer), "Over time" (trend), coach insights, Pro analytics (mock history, topic ladders, difficulty). Key numbers strip: questions solved, accuracy, time per question vs GATE pace (~108 s per 1-mark), skip rate, streak, hours, best/weakest subject. HUD gauges: mastery, readiness, confidence, consistency.
+
+2.6 Study materials (PLANNED paid product, preview live)
+- Our own lessons per syllabus topic: why it matters (frequency), idea, definition, worked example with our numbers, trap, check-yourself, linked PYQs. Free taster: Operating Systems > Deadlock chapter (first topics). Lesson reader: contents that follow the scroll, side rail, text highlights in 4 colours with typed notes synced to the account.
+- Business: per-subject packs Rs 99 to 149 plus bundles; one-time; no refunds except our errors; English first; owner reviews CS accuracy; content kept in a private repo/bucket. Phase 0 (sample chapters) PENDING.
+
+2.7 Solutions
+- Many PYQs have solutions; AI solutions are pre-generated nightly within free quotas (about 300 in 8 days). Goal: a worked solution for every question. PENDING at scale.
+
+2.8 Battles and Arena (competitive mode)
+- Friends by username with presence; challenge a friend (async up to 7 days, live with shared 6-second countdown, scheduled within 7 days with do-not-disturb during tests); live progress (answered counts every 5 s, VS strip in the exam screen); result board with winner and points; rematch; subject-by-subject comparison.
+- Arena: Elo rating (start 1000, K=24), points win 30 / draw 15 / loss 8, at most 10 point-earning battles a day, weekly and all-time leaderboards (friends/everyone), 4-week seasons (first ends 30 Nov 2026), top-10 badges.
+- Coins: daily reward 10 (60 on day 7), battles win 20 / draw 10 / play 5; never bought or cashed out. Coin shop: Mentor boosts (150/350), avatar frames (200 to 400, worn on the navbar avatar). Clubs: 6-character code, 30 members, weekly club board and rank.
+- Current UI: a game-style lobby card on the Battles page (HUD, rail, swipeable mode tables, PLAY button). The owner REJECTED it as not enough of a game. PLANNED: a full-screen game mode with no site chrome ("Midnight Circuit" art direction proposed by ChatGPT: #111827, #1C2740, #283653, #8585E8, #8DB9F0, #E6C58C, #F2F3FA), ranked matchmaking (honest, no fake players), engineering tier names (Circuit Initiate to Apex Engineer), XP/levels, missions, badges, free season track, Quick Clash (5 Q x 60 s), emotes only, result share cards.
+
+2.9 Interview preparation (private, owner-only area, not for students)
+- A private study section for the owner's own job interviews: 27 books (System Design, .NET, SQL Server, Azure, React/TS, DSA, AI engineering, workplace English, a codebase guide), reader with highlights/notes, flashcards (about 4,600 basic cards plus 64 senior scenario cards with full model answers), code lab, SQL practice, AI tutor and mock interviewer (5/10-question mock sessions with a report), interview-date plan, "Last moments" pack. Access is restricted to allowed accounts. Do NOT design it as a student feature.
+
+2.10 Design and shell
+- Floating navbar "island" (desktop: Dashboard, Test Centre, Study, AI Mentor, Battles, Review, Analytics, Interview for allowed accounts; tools on the right: Mentor sparkle, search, calendar, to-do, focus target, leaderboard, tools, theme toggle, branch chip, avatar). Phone: floating bottom dock (Home, Test Centre, Review, AI Mentor, More sheet).
+- Pastel card system in light mode (mint, sky, peach, rose, butter, peri, lilac tints with matching inks), "card-pastel" shells, coloured watermark shapes/icons. Fonts: Sora (display), Manrope (body), Bruno Ace SC (wordmark). Brand: violet-to-blue gradient logo (folded-ribbon R).
+- Dark mode: under active redesign. Owner rejected saturated colour blocks, muddy tints, plain charcoal, and a straight colour swap. Current default "Edge" (neutral elevated charcoal cards, 2px coloured top stripe, coloured titles and watermarks), with "Midnight" and "Tinted" as alternatives (Profile > Preferences > Dark style). Light/dark switch animates as a circle growing from the toggle. Owner says dark mode still "looks bad" overall: NEEDS a proper research-backed direction.
+- Design Studio: 5 premium "Looks" (themes) live for Pro; ten more ON HOLD.
+- Profile: Personal info (merged with overview stats), Avatar studio, Design studio, Exam goals, Preferences, Account & security, Plan & payments, Telegram, Devices, Data & storage. College picker with ~69,000 Indian institutions (AISHE) by state and district.
+- Dashboard: hero with a personal headline and readiness gauge, KPI tiles, today plan, study timer, toolkit deck (pinned stacking cards), challenge banner.
+- Rules in the UI: no native date/time pickers or dropdowns (custom components), full width (no narrow centred columns), IST everywhere, sentence case labels.
+
+2.11 Public site and SEO
+- Branch landing pages, a page per past paper and per question, syllabus and topic pages, GATE 2027 changes, cut-off tool, score calculator, study-plan tool, "How we compare", legal pages.
+
+2.12 Growth and channels
+- Event tracking visit to payment, tagged-link builder, funnel report, /admin lite (overview, funnel, links). Telegram hub plus six branch channels posting one PYQ a day. Instagram publisher built (owner setup pending). YouTube channel exists, no video yet. Referral: both get 7 days of Pro when the friend finishes a first test. Share cards for results and challenges (profile details only, consent-based).
+- A 68-second ad video ("Why." concept: desk at night, red pen on an answer key, dive into the AI Mentor orb, features, plans) was rendered; ON HOLD by owner.
+
+2.13 Payments and plans
+- Plans: Free forever; Plus Rs 29/month or Rs 249/year; Pro Rs 99/month or Rs 799/year; GATE season pass (priced by date); no auto-renew, no free trial, no lifetime plans; Plus to Pro prorated; coupons; receipts.
+- Free includes: every official past paper for your branch, exam simulator and custom tests, All-India mocks and ranks, analytics, mistakes/revision, cloud sync, Telegram reminders, 10 Forge questions, small AI taster.
+- Payment provider: Razorpay account was disabled. A switchable provider layer is built (Razorpay and Cashfree working; Paytm, Zaakpay, PhonePe slots). Recommended: Cashfree (zero platform fee on first Rs 20 lakh for sign-ups until 31 Mar 2027, credit cards included under 60% share), then Zaakpay, Paytm/PayU. Owner still needs to sign up and add keys.
+- Free tier teases paid features (small fixed samples + subscribe prompt), never a hard lock.
+
+======================================================================
+PART 3. TECHNOLOGY (for feasibility)
+======================================================================
+- Next.js 16 (App Router, Turbopack), React 19, TypeScript strict, Tailwind v4, motion/react, Zustand, IndexedDB (local-first), Supabase (Postgres + RLS + Auth; Realtime available on free tier, not yet used), Cloudflare Workers via OpenNext, GitHub Actions (CI, deploy, backups, nightly AI, Telegram, social), Gemini/OpenRouter free models (server only).
+- Three trust zones: browser (UI, local data, answer-free static bank) / Worker API (service role, grading, AI, rate limits) / Postgres (accounts, private answer keys, attempts, billing, battles).
+- Push to main deploys after checks. Migrations are hand-applied by the owner.
+
+======================================================================
+PART 4. PENDING WORK (open, in rough priority)
+======================================================================
+1. Traffic and conversion: tagged posting, first-visit conversion, upgrade moments that convert.
+2. Payment provider switch (Cashfree keys, sandbox test, then live).
+3. Battles full-screen game mode (two design specs being merged).
+4. Dark mode final direction.
+5. Blend / Forge / Spark rework in the test builder, Forge inside built tests (server grading in the exam engine).
+6. Forge CS to 800 and launch pieces; other papers later.
+7. Study materials Phase 0 (sample chapters, reader, protection, checkout).
+8. Solutions for every question.
+9. AI Mentor upgrades (streaming, photo doubts, memory).
+10. Privacy/consent (India DPDP), two-factor on owner accounts, CSP enforcement, shared rate limits, Sentry alerts.
+11. Results screen and single-screen fixes; casing and copy consistency.
+12. Instagram/YouTube setup and first content; Telegram Premium setup.
+13. March 2027 data refresh (official keys, marks-to-rank, cut-offs).
+
+======================================================================
+PART 5. ON HOLD
+======================================================================
+- Ad video (rendered, owner reviewing direction later).
+- Full admin console (spec written).
+- Ten more Design Studio Looks.
+- Custom domain, branded email, GST, paid ads, Play Store/Microsoft Store listing (after revenue).
+- More branches' Forge; verbal and picture aptitude; Arena rooms; Hindi.
+
+======================================================================
+PART 6. MARKETING AND EXPANSION CONTEXT
+======================================================================
+- Positioning ideas in use: "the AI Mentor for GATE", "every official question since 2017 on the real exam screen", "free forever core", "no auto-renewal".
+- Competitors: coaching platforms and test-series apps (free YouTube channels, paid test series). Students already do PYQs; the pain is not knowing WHY an answer was wrong, negative-marking anxiety, time pressure, studying alone.
+- Channels available for free: Telegram (hub + 6 branch channels), Instagram, YouTube, WhatsApp shares, SEO pages, college communities (college picker data exists), referrals, Battles invites (viral loop).
+- Constraints: no scraping, opt-in only, every link tagged with utm_source, never claim user counts or results.
+- Expansion ideas (IDEA): other exams later (ESE, PSU interviews), Hindi, Android/Windows store packaging (PWA wrapper), institutional/college groups.
+
+======================================================================
+PART 7. WHAT THE OWNER DISLIKES (avoid these)
+======================================================================
+- Anything that looks AI-generated or templated: identical rounded cards everywhere, gradient blobs, purple-blue gradients as decoration, tracked uppercase eyebrow labels, emoji icons, generic glass/neon.
+- Dull, muddy dark mode; garish saturated blocks; "chillar" (cheap) looks.
+- Battles that look like a dashboard instead of a game.
+- Narrow centred layouts; native browser dropdowns/date pickers; UTC or device time instead of IST.
+- Redundant toggles and duplicated navigation; misleading copy ("tests built here use PYQs" under Forge).
+- Advertising "no login needed"; fake urgency; fake "was" prices.
+
+======================================================================
+PART 8. WHAT THE OWNER LIKES
+======================================================================
+- 8 Ball Pool's feel for Battles (lobby, challenge flow, VS, rewards, clubs, coins).
+- Pastel light mode with coloured watermarks; bold but tasteful; motion that answers actions; game-like delight where it fits.
+- Research-backed decisions (cite references), detailed specs he can hand to an engineer.
+
+======================================================================
+PART 9. HARD RULES (do not break)
+======================================================================
+Rs 0 budget; free tiers only; no custom domain until revenue; IST everywhere; full-width layouts; no native pickers/dropdowns; test every UI on desktop and phone in light and dark; never fake users/counts/testimonials; coins never purchasable; no loot boxes or real-money stakes; scores always server-graded; answer keys never shipped to the browser; tease paid features, never hard-lock; plans and prices only as listed; no auto-renew; consent for personal data in shares; accessibility (keyboard, screen reader, reduced motion); 60 fps on a mid-range Android phone.
+
+======================================================================
+PART 10. HOW TO MAKE FEATURES THAT DO NOT LOOK AI-DEVELOPED (give advice in this frame)
+======================================================================
+1. Start from the subject's world, not a template: exam hall, answer sheets, OMR bubbles, red pen, calculator keys, circuit boards, lab notebooks, rank lists, cut-off tables. Pull shapes, textures and copy from there.
+2. One signature element per screen (for example the readiness gauge, the question palette, the VS intro), everything else quiet.
+3. Hierarchy by size + weight + colour, not by boxing everything in cards. Vary density and rhythm; avoid identical card grids.
+4. Real data and real copy in plain words (sentence case, verbs that say what happens, no "Unlock your potential").
+5. Motion that answers an action (press, open, confirm, reward), with physical easing; one orchestrated moment per screen; reduced-motion versions.
+6. Colour used for meaning (status, identity, reward), not decoration; one accent per surface; dark mode built as its own system (elevation by lightness, desaturated accents).
+7. Finish details: tabular numbers, optical alignment, empty/loading/error states designed, focus rings, hit areas 44 px, concentric radii.
+8. Taste check: would another AI produce the same screen from the same prompt? If yes, change the idea, not the colour.
+
+======================================================================
+PART 11. WHICH CLAUDE CODE SKILLS THE ENGINEER WILL USE (so your suggestions can map to them)
+======================================================================
+- interface-design: dashboards and app screens (Test Centre, Analytics, Profile, Mentor, Battles HUD); tokens, hierarchy, states.
+- frontend-design + hallmark + taste-skill: new pages and marketing surfaces (landing, plans page, study library), distinctive art direction, anti-template checks.
+- unslop: clean up screens that look AI-generated.
+- design-skills:design-critique / design:design-critique: heuristic reviews of screenshots before shipping.
+- design-skills:design-elevation, design-skills:interaction-design, design-skills:ux-writing / design:ux-copy: polish, interaction patterns, microcopy.
+- design:accessibility-review / design-skills:accessibility-audit: WCAG checks.
+- dataviz: every chart, gauge, KPI tile and radar.
+- design-skills:ux-research, journey-mapping, ux-strategy: flows (onboarding, upgrade moments, Battles loop).
+- motion-reel / remotion / animation-studio: ad videos and animated explainers (zero budget).
+- marketing:* and small-business:* (content-creation, campaign-plan, seo-audit, competitive-brief, social-content-engine): marketing and growth.
+- product-management:write-spec, roadmap-update, metrics-review: specs, roadmap and funnel reviews.
+- superpowers:brainstorming / systematic-debugging / verification-before-completion: process.
+Mention the relevant skill next to each recommendation where it helps (for example "Analytics radar: dataviz + interface-design").
+
+======================================================================
+PART 12. THE REQUEST (answer in these numbered sections)
+======================================================================
+1. Product audit: for each module in PART 2, the top 3 problems you expect a student to feel, and the fix.
+2. Feature suggestions: 15 to 25 features that fit the audience and Rs 0 budget, each with value, effort (S/M/L), which plan it belongs to (Free/Plus/Pro), and the skill to use. Separate "quick wins (under a day)" from bigger bets.
+3. UI/UX upgrade plan per screen: Dashboard, Test Centre, Test builder (with Blend/Forge/Spark), Exam screen, Results and review, Mistakes/Revision, Flashcards, AI Mentor (home and chat), Analytics, Study materials reader, Battles (game mode), Profile, Plans page, Navbar and phone dock, Onboarding. For each: what to keep, what to change, mobile vs desktop differences, one signature element.
+4. Visual system: a refined light palette and a dark-mode direction that will not look muddy or garish (give hex values and elevation steps), typography scale, radius scale, icon style, illustration/texture ideas from the GATE world.
+5. Motion and effects: page transitions, list and card entrances, button press, reward moments, theme switch, loading skeletons, celebration rules; durations and easing; reduced-motion versions.
+6. Copy: rewrite 20 key interface strings (buttons, empty states, errors, upgrade prompts) in plain, specific, non-salesy English.
+7. Monetisation and upgrade moments: where Free users should see Plus/Pro value without hard locks; pricing presentation; trust signals that are honest.
+8. Marketing and growth (Rs 0): a 30-day plan for Telegram, Instagram, YouTube Shorts, WhatsApp, SEO, college communities and Battles invites; 10 content ideas; metrics to watch.
+9. Expansion: what to add after GATE 2027 results (March 2027) and after first revenue (domain, stores, other exams), in order.
+10. Risks: what could make students distrust or leave, and how to prevent it.
+11. Needs owner confirmation: every assumption you made.
+
+======================================================================
+PART 13. REUSABLE PER-SCREEN PROMPT (paste after this file, fill the brackets)
+======================================================================
+"Using the RENYXERA context above, design the [SCREEN OR MODULE NAME] in depth.
+Current state: [describe or attach screenshots, light and dark, phone and desktop].
+What the owner dislikes about it: [list].
+Goal of the screen: [the one thing the student comes to do].
+Give me: (a) the problems with evidence (UX laws/heuristics), (b) a new layout for MOBILE and DESKTOP as ASCII wireframes, (c) the signature element, (d) components and states (default, hover, active, focus, disabled, loading, empty, error), (e) colour and type tokens (light and dark, hex), (f) motion spec (what moves, ms, easing, reduced-motion), (g) final copy for every string, (h) accessibility notes, (i) what NOT to do so it doesn't look AI-generated, (j) which Claude Code skills the engineer should use for it, (k) needs owner confirmation."
