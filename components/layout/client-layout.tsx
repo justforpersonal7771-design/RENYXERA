@@ -167,6 +167,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Remember the last study screen so the Battles "Exit to study" button returns there.
+  useEffect(() => {
+    if (!pathname || pathname.startsWith("/battles") || pathname.startsWith("/exam/session")) return;
+    try { sessionStorage.setItem("renyxera_study_path", pathname + window.location.search); } catch { /* storage off */ }
+  }, [pathname]);
+
   // Global key listener for Ctrl+K command palette
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -196,6 +202,23 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <OnboardingGate />
       </div>
       </MathJaxContext></MotionPrefs>
+    );
+  }
+
+  // Battles is a game (R31): its own full-screen shell (app/(dashboard)/battles/layout.tsx) with game navigation and
+  // "Exit to study". The site navbar, dock, banners, challenge pop-ups and Test Centre bar are not drawn here.
+  if (pathname?.startsWith("/battles")) {
+    return (
+      <MotionPrefs>
+      <div className="h-dvh w-screen overflow-hidden font-sans relative">
+        {children}
+        <ToastContainer />
+        <AuthModal />
+        <DeviceLimitDialog />
+        <ConfirmHost />
+        <OnboardingGate />
+      </div>
+      </MotionPrefs>
     );
   }
 

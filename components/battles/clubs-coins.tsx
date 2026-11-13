@@ -26,7 +26,7 @@ export function DailyReward() {
     setBusy(false);
     if (!r?.ok) { useToastStore.getState().show("Couldn't claim right now. Try again.", "error"); return; }
     const j = (await r.json()) as CoinState & { added: number; bonusHit?: boolean };
-    setS(j); setPop(j.added);
+    setS(j); setPop(j.added); window.dispatchEvent(new Event("renyxera:coins"));
     setTimeout(() => setPop(null), 1800);
   };
   const dayInWeek = s.claimedToday ? ((s.streak - 1) % 7) + 1 : (s.streak % 7) + 1;   // 1..7, today's slot
@@ -149,7 +149,7 @@ export function CoinShop() {
     if (!r?.ok) { useToastStore.getState().show(j.error ?? "Something went wrong.", "error"); return; }
     if (typeof j.balance === "number") setCoins(j.balance);
     if (j.owned) setOwn({ owned: j.owned, equipped: j.equipped ?? null });
-    window.dispatchEvent(new Event("renyxera:frame"));
+    window.dispatchEvent(new Event("renyxera:frame")); window.dispatchEvent(new Event("renyxera:coins"));
     if (b.action === "buy") useToastStore.getState().show(SHOP.find((x) => x.id === id)?.kind === "mentor" ? "Mentor tokens added." : "Frame unlocked and equipped.", "success");
   };
   return (

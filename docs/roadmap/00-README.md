@@ -33,6 +33,7 @@
 | 28 | Performance toolkit | Partly done | — | [`R28-PERFORMANCE-TOOLKIT.md`](R28-PERFORMANCE-TOOLKIT.md) |
 | 29 | Battles as a game | Steps 1 to 4 built; seasons and badges open | — | [`R29-BATTLES-AS-A-GAME.md`](R29-BATTLES-AS-A-GAME.md) |
 | 30 | Admin-lite (first slice of R10) | Built | — | [`../done/roadmap/R30-ADMIN-CONSOLE.md`](../done/roadmap/R30-ADMIN-CONSOLE.md) |
+| 31–37 | Upcoming releases from the ChatGPT audits (Battles shell, trust, funnel, design system, Battles V2, Mentor/Study, growth) | R31 in progress | — | [`RELEASES-2026-11.md`](RELEASES-2026-11.md) |
 | — | Competitors (Swaseekh, Hatchable) | 26 Oct | — | [`../business/competitors/COMPETITORS_2026-10.md`](../business/competitors/COMPETITORS_2026-10.md) |
 | — | Feature catalogue (proposals) | Ideas | owner picks | [`FEATURES.md`](FEATURES.md) |
 

@@ -28,7 +28,7 @@ const initials = (n: string) => n.split(/\s+/).map((w) => w[0]).join("").slice(0
 
 /**
  * The live VS strip inside the exam screen: you and your opponent(s), how many each has answered, and a flash when someone finishes.
- * Sits at the bottom left, clear of the question, palette and timer. Your own count is live from this device; theirs refreshes every 4 s.
+ * Phones: a slim bar under the exam header. Desktop: the top of the right-hand panel. Never over the question or the options. Your own count is live from this device; theirs refreshes every 4 s.
  */
 export function BattleLiveStrip({ battleId, myAnswered, myTotal }: { battleId: string; myAnswered: number; myTotal: number }) {
   const players = useBattleLive(battleId);
@@ -47,7 +47,7 @@ export function BattleLiveStrip({ battleId, myAnswered, myTotal }: { battleId: s
   const others = (players ?? []).filter((p) => !p.you).slice(0, 2);
   const rows = [{ id: "me", name: "You", answered: myAnswered, total: myTotal, done: false, you: true }, ...others];
   return (
-    <div className="pointer-events-none fixed bottom-4 left-4 z-[70] w-[min(20rem,calc(100vw-2rem))]" aria-live="polite">
+    <div className="pointer-events-none fixed inset-x-2 top-[60px] z-[70] lg:inset-x-auto lg:right-4 lg:top-[72px] lg:w-[19rem]" aria-live="polite">
       <AnimatePresence>
         {flash && (
           <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}

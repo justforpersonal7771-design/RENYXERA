@@ -1,12 +1,28 @@
 # RENYXERA — Master checklist (the only tracker)
 
-**Last updated:** 6 November 2026 · **Everything in one file: [`docs/MASTER.md`](docs/MASTER.md)** · **Grouped open items (single view): [`docs/open-work/OPEN-ITEMS-2026-11-06.md`](docs/open-work/OPEN-ITEMS-2026-11-06.md)** · **Live:** https://gate.renyxera.workers.dev · **Repo:** `D:\0-UI\r2ma-stable` (push to `main` = deploy)
+**Last updated:** 14 November 2026 · **Everything in one file: [`docs/MASTER.md`](docs/MASTER.md)** · **Grouped open items (single view): [`docs/open-work/OPEN-ITEMS-2026-11-06.md`](docs/open-work/OPEN-ITEMS-2026-11-06.md)** · **Live:** https://gate.renyxera.workers.dev · **Repo:** `D:\0-UI\r2ma-stable` (push to `main` = deploy)
 Every open task below has its key steps, a "done when" check and a reference. Full detail per release: `docs/roadmap/` (index [`docs/roadmap/00-README.md`](docs/roadmap/00-README.md)). Shipped history: [`docs/done/archive/COMPLETED.md`](docs/done/archive/COMPLETED.md). New-session context: [`HANDOFF.md`](HANDOFF.md), [`CLAUDE.md`](CLAUDE.md), [`handover/MASTER_PROMPT.md`](handover/MASTER_PROMPT.md).
 
 **Legend:** `- [x]` done · `- [ ]` open · **(you)** owner action · **(me)** Claude builds · 🔒 blocked by a decision · 🟡 costs money, waits for revenue · ⏸ on hold by decision · 💡 idea awaiting approval.
 **Priorities (owner, 22 Oct):** 1 Forge · 2 Study materials · 3 Monetisation · 4 Marketing — plus the new layers: Performance (R15), Security (R16), Microsoft Store app (R17).
 
 ---
+
+## 0-latest. 14 Nov 2026: Releases R31 to R37 + R31 Battles game shell
+Plan: [`docs/roadmap/RELEASES-2026-11.md`](docs/roadmap/RELEASES-2026-11.md) (every ChatGPT audit item, by release, module, priority and skills).
+- [x] **(me)** Releases doc R31 to R37 written from the advice doc, the Battles handoff, the spec PDF and the Phase 0 audit
+- [x] **(me)** 31A-1 Battles opens full screen: no site navbar, dock, banners or pop-ups; Exit to study returns to the last study screen
+- [x] **(me)** 31A-2 Game navigation: top HUD (back, avatar, rating badge, coins, points, exit) + bottom game dock (Lobby, Arena, Play, Friends, Shop), phone and desktop; no side menu (owner review)
+- [x] **(me)** 31A-3 Game world always night (Circuit Afterhours palette), own tokens; reused panels remapped
+- [x] **(me)** 31B-1 Lobby: arena stage (you on a podium vs an open rival slot, VS emblem, circuit light), gold PLAY, round menu buttons, popups for Daily/Friends/Clubs, challenge tickets
+- [x] **(me)** 31B-2 Play: game mode tiles; Ranked and Quick shown locked (no fake modes)
+- [x] **(me)** 31B-3 Arena: podium for the top three, ladder with your row lit, Friends/Everyone and Week/Season/All time
+- [x] **(me)** 31B-4/5 Matches, Friends, Clubs, Shop, Me screens inside the shell
+- [ ] **(me)** 31B second pass: Matches, Friends, Clubs, Shop and Me rebuilt in the same game material (now reused panels on game tokens)
+- [ ] **(me)** 31C VS intro + server countdown in the live lobby; challenge page (/challenge/[id]) inside the game shell; result + rewards screen
+- [ ] **(me)** 31C-4 Live two-player answering verified end to end (test account)
+- [ ] **(me)** 31D trust quick wins (source badges, solution label, Forge per paper, "Saved on this device", sample sizes, marking line, shortcut help)
+- [ ] **(you)** Look at /battles on phone and desktop and say what still doesn't feel like a game
 
 ## 0-newest. 8 Nov 2026: Interview cards
 

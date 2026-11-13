@@ -1,0 +1,252 @@
+/* Hallmark · v2.0.0 · shape: game lobby · theme: Circuit Afterhours (by request, chatgpt/RENYXERA_Battles_Claude_Handoff.md §11) · genre: playful · signature: the arena stage (you on a podium facing a rival slot across the VS emblem, circuit light running across the floor) */
+/* critique: owner (14 Nov) rejected the calm app-screen pass as dull; the game takes game material: lit stage, bevelled buttons, depth and moving light. Colour still means something: royal = act, cyan = you and progress, amber = reward and PLAY, rose = rival. */
+/* waive 2a: no purple-to-blue gradient anywhere; bevelled solid fills instead. waive 'no glows': a lit arena needs light; glows sit only on the stage, the PLAY button and the VS emblem. */
+
+/* ---- tokens: the game world is always night (Arena Midnight), in light and dark mode alike ---- */
+.game-world, .dark .game-world {
+  --g-dur-micro: 100ms;
+  --g-dur-short: 200ms;
+  --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --g-rose: #ff6b8b;
+  --g-mint: #34d399;
+  --g-deep: #0a0c1f;
+  --g-bg: #111429;
+  --g-surface: #1a1e3a;
+  --g-surface-2: #202443;
+  --g-surface-3: #2a2f55;
+  --g-line: rgba(233, 237, 249, 0.09);
+  --g-line-strong: rgba(233, 237, 249, 0.2);
+  --g-grid: rgba(169, 154, 247, 0.06);
+  --g-text: #e9edf9;
+  --g-text-2: #b9bedd;
+  --g-muted: #9095ba;
+  --g-royal: #5146c8;
+  --g-royal-hover: #5f55d8;
+  --g-on-royal: #ffffff;
+  --g-signal: #22d3ee;
+  --g-signal-soft: rgba(34, 211, 238, 0.14);
+  --g-violet: #a99af7;
+  --g-amber: #ffb86b;
+  --g-amber-ink: #ffb86b;
+  --g-on-amber: #2a1600;
+  --g-danger: #ff8a7a;
+  --g-focus: #a99af7;
+  --g-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 14px 30px -22px rgba(0, 0, 0, 0.7);
+}
+
+/* The app's own tokens, remapped so the reused panels (friends, clubs, shop, leaderboard) sit inside the game world
+   instead of carrying the study app's pastel cards. */
+.game-world,
+.dark .game-world {
+  --background: var(--g-bg);
+  --surface: var(--g-surface);
+  --surface-secondary: var(--g-surface-2);
+  --text-primary: var(--g-text);
+  --text-secondary: var(--g-text-2);
+  --text-muted: var(--g-muted);
+  --border: var(--g-line);
+  --ink: var(--g-text);
+  --btn: var(--g-royal);
+  --btn-fg: var(--g-on-royal);
+  --brand-violet: var(--g-royal);
+  --tint-mint: var(--g-surface-2); --tint-mint-ink: var(--g-text);
+  --tint-rose: var(--g-surface-2); --tint-rose-ink: var(--g-text);
+  --tint-peach: var(--g-surface-2); --tint-peach-ink: var(--g-text);
+  --tint-peri: var(--g-surface-2); --tint-peri-ink: var(--g-text);
+  --tint-lilac: var(--g-surface-2); --tint-lilac-ink: var(--g-text);
+  --tint-butter: var(--g-surface-2); --tint-butter-ink: var(--g-text);
+  --tint-sky: var(--g-surface-2); --tint-sky-ink: var(--g-text);
+  background-color: var(--g-bg);
+  color: var(--g-text);
+}
+@layer components {
+.game-world :is(.card-pastel, .card-well, .card-metal, .card-inset) {
+  background: var(--g-surface);
+  border: 1px solid var(--g-line);
+  box-shadow: var(--g-shadow);
+}
+.game-world :is(.card-pastel, .card-well, .card-metal)::before,
+.game-world :is(.card-pastel, .card-well, .card-metal)::after { display: none; }
+.game-world :is(.tile-mark, .card-mark) { display: none; }
+
+/* The reused panels' buttons take the game's one primary style and its quiet style. */
+.game-world .btn-main, .dark .game-world .btn-main {
+  background: var(--g-royal); color: var(--g-on-royal); border: 1px solid transparent; box-shadow: none;
+  font-family: var(--font-display), var(--font-sans), sans-serif; font-weight: 800;
+  transition: background-color var(--g-dur-short) var(--g-ease), transform var(--g-dur-micro) var(--g-ease);
+}
+.game-world .btn-main:hover { background: var(--g-royal-hover); transform: none; box-shadow: none; }
+.game-world .btn-main:active { transform: scale(0.97); box-shadow: none; }
+.game-world .btn-main:disabled { background: var(--g-surface-3); color: var(--g-muted); opacity: 1; }
+.game-world :is(.pill-soft, .pill-ink) { background: var(--g-surface-2); color: var(--g-text); border: 1px solid var(--g-line); box-shadow: none; }
+
+/* ---- the blueprint ground: a 32px grid, drawn once on the canvas, never on panels ---- */
+.g-ground {
+  background-color: var(--g-bg);
+  background-image:
+    linear-gradient(var(--g-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--g-grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}
+
+/* ---- surfaces ---- */
+.g-panel {
+  background: var(--g-surface);
+  border: 1px solid var(--g-line);
+  border-radius: 20px;
+  box-shadow: var(--g-shadow);
+}
+.g-panel-quiet {
+  background: var(--g-surface-2);
+  border: 1px solid var(--g-line);
+  border-radius: 16px;
+}
+
+/* ---- type ---- */
+.g-title { font-family: var(--font-display), var(--font-sans), sans-serif; font-weight: 800; color: var(--g-text); letter-spacing: -0.01em; overflow-wrap: break-word; min-width: 0; }
+.g-num { font-family: var(--font-display), var(--font-sans), sans-serif; font-variant-numeric: tabular-nums; }
+.g-label { font-family: var(--font-sans), sans-serif; font-size: 0.8125rem; font-weight: 600; color: var(--g-muted); }
+.g-text-2 { color: var(--g-text-2); }
+.g-muted { color: var(--g-muted); }
+.g-signal { color: var(--g-signal); }
+.g-amber { color: var(--g-amber-ink); }
+
+/* ---- actions: one primary style ---- */
+.g-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 44px; padding: 0 1.25rem; border-radius: 14px;
+  font-family: var(--font-display), var(--font-sans), sans-serif; font-weight: 800; font-size: 0.95rem;
+  background: var(--g-royal); color: var(--g-on-royal);
+  border: 1px solid transparent; cursor: pointer;
+  transition: background-color var(--g-dur-short) var(--g-ease), transform var(--g-dur-micro) var(--g-ease);
+}
+.g-btn:hover { background: var(--g-royal-hover); }
+.g-btn:active { transform: scale(0.97); }
+.g-btn[aria-disabled="true"], .g-btn:disabled { background: var(--g-surface-3); color: var(--g-muted); cursor: not-allowed; transform: none; }
+.g-btn-quiet {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 44px; padding: 0 1rem; border-radius: 14px;
+  font-weight: 700; font-size: 0.9rem;
+  background: var(--g-surface-2); color: var(--g-text); border: 1px solid var(--g-line);
+  cursor: pointer;
+  transition: background-color var(--g-dur-short) var(--g-ease), border-color var(--g-dur-short) var(--g-ease), transform var(--g-dur-micro) var(--g-ease);
+}
+.g-btn-quiet:hover { background: var(--g-surface-3); border-color: var(--g-line-strong); }
+.g-btn-quiet:active { transform: scale(0.97); }
+
+.game-world :is(a, button, [role="tab"], input, [tabindex]):focus-visible {
+  outline: 2px solid var(--g-focus);
+  outline-offset: 2px;
+  transition: none;
+}
+
+/* ---- navigation ---- */
+.g-rail-link {
+  display: flex; align-items: center; gap: 0.75rem;
+  min-height: 44px; padding: 0 0.875rem; border-radius: 12px;
+  font-weight: 700; font-size: 0.95rem; color: var(--g-text-2);
+  transition: background-color var(--g-dur-short) var(--g-ease), color var(--g-dur-short) var(--g-ease);
+}
+.g-rail-link:hover { background: var(--g-surface-2); color: var(--g-text); }
+.g-rail-link[aria-current="page"] { background: var(--g-surface-2); color: var(--g-text); box-shadow: inset 3px 0 0 var(--g-signal); }
+.g-tab {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 56px; min-width: 0; flex: 1 1 0;
+  font-size: 0.75rem; font-weight: 700; color: var(--g-muted);
+  transition: color var(--g-dur-short) var(--g-ease);
+}
+.g-tab[aria-current="page"] { color: var(--g-text); }
+.g-tab[aria-current="page"] svg { color: var(--g-signal); }
+.g-tab-play {
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 16px;
+  background: var(--g-royal); color: var(--g-on-royal);
+  transition: transform var(--g-dur-micro) var(--g-ease);
+}
+.g-tab:active .g-tab-play { transform: scale(0.95); }
+
+/* ---- the Arena trace (signature) ---- */
+.g-trace { position: relative; height: 10px; }
+.g-trace-line { position: absolute; inset: 4px 0 auto 0; height: 2px; background: var(--g-line-strong); border-radius: 2px; }
+.g-trace-fill { position: absolute; inset: 4px auto auto 0; height: 2px; background: var(--g-signal); border-radius: 2px; transform-origin: left; }
+.g-trace-node { position: absolute; top: 1px; width: 8px; height: 8px; margin-left: -4px; border-radius: 2px; background: var(--g-bg); border: 2px solid var(--g-line-strong); }
+.g-trace-node[data-on="true"] { border-color: var(--g-signal); background: var(--g-signal); }
+.g-trace-head { position: absolute; top: -3px; width: 16px; height: 16px; margin-left: -8px; border-radius: 4px; background: var(--g-signal); box-shadow: 0 0 0 4px var(--g-signal-soft); }
+
+/* ---- the entry: the game shell rises over the study app; pure CSS so content shows without script ---- */
+@keyframes g-enter { from { opacity: 0; transform: scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes g-veil { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+.g-enter { animation: g-enter 450ms var(--g-ease) both; }
+.g-veil { animation: g-veil 600ms var(--g-ease) forwards; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .g-enter { animation: none; }
+  .g-veil { animation-duration: 1ms; }
+  .g-btn, .g-btn-quiet, .g-tab-play { transition: none; }
+  .g-btn:active, .g-btn-quiet:active { transform: none; }
+}
+
+
+/* =================== game material (R31, second pass) =================== */
+.game-world { --g-bevel: 0 6px 0 var(--g-deep), 0 14px 24px -10px rgba(0, 0, 0, 0.6); }
+
+/* stage */
+.g-stage { position: relative; overflow: hidden; border-radius: 28px; background: radial-gradient(120% 90% at 50% 0%, #2b2a78 0%, #171a45 45%, var(--g-deep) 100%); border: 1px solid rgba(169, 154, 247, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 30px 60px -30px rgba(0, 0, 0, 0.9); }
+.g-stage svg { display: block; width: 100%; height: 100%; }
+.g-pulse { stroke-dasharray: 18 420; animation: g-pulse 3.6s linear infinite; }
+.g-pulse.d2 { animation-delay: -1.2s; } .g-pulse.d3 { animation-delay: -2.4s; }
+@keyframes g-pulse { from { stroke-dashoffset: 438; } to { stroke-dashoffset: 0; } }
+.g-float { animation: g-float 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.g-float.alt { animation-delay: -2s; }
+@keyframes g-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.g-vs { animation: g-vs 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes g-vs { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+.g-sweep { animation: g-sweep 6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes g-sweep { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
+
+/* the PLAY button: chunky, bevelled, pressed down on tap */
+.g-play {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+  min-height: 64px; padding: 0 2.75rem; border-radius: 20px;
+  font-family: var(--font-display), sans-serif; font-weight: 900; font-size: 1.6rem; letter-spacing: 0.02em;
+  color: var(--g-on-amber);
+  background: linear-gradient(180deg, #ffd59e 0%, var(--g-amber) 45%, #f08a2c 100%);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.6), inset 0 -3px 0 rgba(120, 50, 0, 0.35), 0 7px 0 #a34f0c, 0 18px 34px -8px rgba(255, 150, 60, 0.55);
+  transition: transform var(--g-dur-micro) var(--g-ease), box-shadow var(--g-dur-micro) var(--g-ease), filter var(--g-dur-short) var(--g-ease);
+}
+.g-play:hover { filter: brightness(1.06); }
+.g-play:active { transform: translateY(6px); box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5), 0 1px 0 #a34f0c, 0 8px 16px -8px rgba(255, 150, 60, 0.5); }
+
+/* round menu buttons (Daily, Shop, Clubs, Friends, Ranks) */
+.g-orb { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 64px; font-size: 0.78rem; font-weight: 800; color: var(--g-text); }
+.g-orb-face {
+  position: relative; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 20px; color: #fff;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--c) 100%, white 22%), var(--c) 55%, color-mix(in oklab, var(--c) 65%, black));
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45), 0 5px 0 color-mix(in oklab, var(--c) 45%, black), 0 12px 20px -8px rgba(0, 0, 0, 0.7);
+  transition: transform var(--g-dur-micro) var(--g-ease), box-shadow var(--g-dur-micro) var(--g-ease);
+}
+.g-orb:hover .g-orb-face { transform: translateY(-2px); }
+.g-orb:active .g-orb-face { transform: translateY(4px); box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4), 0 1px 0 color-mix(in oklab, var(--c) 45%, black); }
+.g-orb-badge { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--g-rose); color: #fff; font-size: 11px; font-weight: 900; display: grid; place-items: center; border: 2px solid var(--g-deep); }
+
+/* HUD pills */
+.g-hud { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 40px; padding: 0 0.9rem 0 0.35rem; border-radius: 999px; background: rgba(10, 12, 31, 0.7); border: 1px solid rgba(169, 154, 247, 0.25); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06); font-family: var(--font-display), sans-serif; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--g-text); }
+.g-hud-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; }
+.g-hex { clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%); }
+
+/* challenge tickets: amber stubs with notches */
+.g-ticket {
+  position: relative; display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 0.9rem 0.8rem 1.1rem; border-radius: 16px;
+  background: linear-gradient(100deg, #ffd59e, var(--g-amber) 60%, #f6a04d); color: var(--g-on-amber);
+  box-shadow: 0 5px 0 #a34f0c, 0 14px 22px -12px rgba(0, 0, 0, 0.7);
+  -webkit-mask: radial-gradient(circle 9px at 0 50%, transparent 98%, #000) , radial-gradient(circle 9px at 100% 50%, transparent 98%, #000);
+  -webkit-mask-composite: source-in; mask-composite: intersect;
+}
+.g-ticket-go { display: inline-flex; align-items: center; min-height: 40px; padding: 0 1rem; border-radius: 12px; background: var(--g-deep); color: var(--g-amber); font-family: var(--font-display), sans-serif; font-weight: 900; }
+
+@media (prefers-reduced-motion: reduce) {
+  .g-pulse, .g-float, .g-vs, .g-sweep { animation: none; }
+  .g-play, .g-orb-face { transition: none; }
+  .g-play:active, .g-orb:active .g-orb-face { transform: none; }
+}
+
+} /* end @layer components */

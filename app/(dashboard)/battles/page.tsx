@@ -1,217 +1,209 @@
 "use client";
 
 /**
- * Battles (R19): send a finished test to friends and watch them play it live. Scores are copied by the server from the
- * graded attempts (migration 0043); this screen polls every 15 s while it is open.
+ * Battles lobby (R31B-1, rebuilt 14 Nov after the owner's "doesn't look like a game" review).
+ * Research applied (Clash Royale / Brawl Stars breakdowns): an open centre stage, one gold primary action in the lower
+ * half, oversized round menu buttons, and popups that keep the lobby visible instead of leaving it.
+ *  - Stage: you on a podium facing an open rival slot across the VS emblem (components/game/arena-stage.tsx).
+ *  - PLAY: the one gold action, bevelled, pressed down on tap.
+ *  - Round buttons: Daily, Clubs, Friends (popups over the lobby); Ranks, Matches (screens).
+ *  - Challenge tickets: real invites from /api/battles. Every figure comes from the server.
  */
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { Swords, Hourglass, Trophy, Link2, Loader2, RotateCcw, ChevronDown } from "lucide-react";
-import { PlanCompare } from "@/components/preview/plan-compare";
-import { BattleLobby } from "@/components/battles/battle-lobby";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Gift, ListChecks, Medal, Play, Swords, UserPlus, Users, UsersRound, X } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
-import { useToastStore } from "@/store/use-toast-store";
-import { useEntitlements } from "@/lib/billing/use-entitlements";
+import { ClubPanel, DailyReward } from "@/components/battles/clubs-coins";
+import { FriendsPanel } from "@/components/friends/friends-panel";
+import { ArenaStage } from "@/components/game/arena-stage";
+import { useArenaMe, usePlayer } from "@/components/game/use-arena";
 
-type Entry = { userId: string; name: string; status: "opened" | "started" | "submitted" | "abandoned"; answered: number; total: number; score: number | null; maxScore: number | null; submittedAt: string | null; lastSeenAt: string; you: boolean; attemptId?: string | null };
-type Battle = { invite?: { at: string | null; playNow: boolean; scheduledAt: string | null } | null; id: string; title: string; ownerName: string; ownerScore: number | null; maxScore: number | null; questions: number; createdAt: string; expiresAt: string; expired: boolean; mine: boolean; invited?: boolean; entries: Entry[] };
+type Ticket = { id: string; title: string; ownerName: string; questions: number; expiresAt: string };
+type ApiBattle = { id: string; title: string; ownerName: string; questions: number; expiresAt: string; expired: boolean; invited?: boolean; entries: { you: boolean; status: string }[] };
+type Sheet = "daily" | "clubs" | "friends" | null;
 
-const STATUS: Record<Entry["status"], { label: string; tint: string }> = {
-  opened: { label: "Opened the link", tint: "sky" }, started: { label: "Playing now", tint: "butter" }, submitted: { label: "Submitted", tint: "mint" }, abandoned: { label: "Left", tint: "rose" },
-};
-const pct = (s: number | null, m: number | null) => (s !== null && m ? s / m : null);
-const left = (iso: string) => { const d = Math.ceil((Date.parse(iso) - Date.now()) / 86_400_000); return d <= 0 ? "Expired" : d === 1 ? "1 day left" : `${d} days left`; };
+export default function GameLobby() {
+  const user = useAuthStore((s) => s.user);
+  const ready = useAuthStore((s) => !s.loading);
+  const openAuth = useAuthModalStore((s) => s.open);
+  if (!user && !ready) return <div className="g-stage h-[300px] animate-pulse motion-reduce:animate-none sm:h-[460px]" aria-label="Loading the arena" />;
+  if (!user) return (
+    <div className="space-y-6">
+      <div className="g-stage relative h-[300px] sm:h-[460px]">
+        <ArenaStage name="You" avatar="" rating={null} ring={null} season={null} />
+      </div>
+      <div className="text-center">
+        <h1 className="g-title text-3xl sm:text-5xl">Same questions. Who scores more?</h1>
+        <p className="mx-auto mt-2 max-w-xl g-text-2">Real GATE questions against your friends, live or later. Scores are checked by the server, so every win is fair.</p>
+        <button type="button" onClick={() => openAuth("signup")} className="g-play mt-6">Sign in to play</button>
+      </div>
+    </div>
+  );
+  return <Lobby />;
+}
+
+function Lobby() {
+  const p = usePlayer();
+  const { data } = useArenaMe();
+  const tickets = useTickets();
+  const [sheet, setSheet] = useState<Sheet>(null);
+  const [daily, setDaily] = useState<boolean | null>(null);
+  useEffect(() => {
+    const load = () => void fetch("/api/coins", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((j: { claimedToday?: boolean } | null) => j && setDaily(!j.claimedToday)).catch(() => {});
+    load();
+    window.addEventListener("renyxera:coins", load);
+    return () => window.removeEventListener("renyxera:coins", load);
+  }, []);
+  const season = data?.season ? `Season ${data.season.number}, ${data.season.daysLeft} ${data.season.daysLeft === 1 ? "day" : "days"} left` : null;
+  const count = Array.isArray(tickets) ? tickets.length : 0;
+
+  const orbs: { key: string; label: string; icon: typeof Gift; c: string; badge?: string; sheet?: Sheet; href?: string }[] = [
+    { key: "daily", label: "Daily", icon: Gift, c: "#f59e0b", badge: daily ? "1" : undefined, sheet: "daily" },
+    { key: "friends", label: "Friends", icon: Users, c: "#0ea5e9", sheet: "friends" },
+    { key: "clubs", label: "Clubs", icon: UsersRound, c: "#8b5cf6", sheet: "clubs" },
+    { key: "ranks", label: "Ranks", icon: Medal, c: "#ef4466", href: "/battles/arena" },
+    { key: "matches", label: "Matches", icon: ListChecks, c: "#10b981", href: "/battles/matches" },
+  ];
+
+  return (
+    <>
+      <div className="grid gap-5 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,340px)] lg:gap-6">
+        {/* round menu buttons: a row on phones, a column on desktop */}
+        <nav aria-label="Lobby" className="order-2 flex justify-between gap-1 lg:order-1 lg:flex-col lg:justify-start lg:gap-5 lg:pt-4">
+          {orbs.map((o) => {
+            const face = (
+              <>
+                <span className="g-orb-face" style={{ ["--c" as string]: o.c }}>
+                  <o.icon className="h-7 w-7 drop-shadow" strokeWidth={2.2} aria-hidden />
+                  {o.badge && <span className="g-orb-badge" aria-label="Ready to claim">{o.badge}</span>}
+                </span>
+                {o.label}
+              </>
+            );
+            return o.href
+              ? <Link key={o.key} href={o.href} className="g-orb">{face}</Link>
+              : <button key={o.key} type="button" onClick={() => setSheet(o.sheet!)} className="g-orb cursor-pointer">{face}</button>;
+          })}
+        </nav>
+
+        {/* the stage and PLAY */}
+        <section aria-label="Arena" className="order-1 lg:order-2">
+          <div className="g-stage relative h-[300px] sm:h-[420px] xl:h-[500px]">
+            <ArenaStage name={p.name} avatar={p.avatar} rating={data?.me.rating ?? null} ring={p.ring} season={season} />
+          </div>
+          <div className="-mt-7 flex justify-center">
+            <Link href="/battles/play" className="g-play relative z-10"><Play className="h-7 w-7" fill="currentColor" aria-hidden /> PLAY</Link>
+          </div>
+          {data && (
+            <dl className="mx-auto mt-5 grid max-w-md grid-cols-3 gap-2 text-center">
+              <Figure label="Points this week" value={String(data.me.points)} />
+              <Figure label="Friends rank" value={data.me.rank > 0 ? `#${data.me.rank}` : "–"} />
+              <Figure label="Wins" value={`${data.me.wins}/${data.me.battles}`} />
+            </dl>
+          )}
+        </section>
+
+        {/* challenges waiting */}
+        <aside aria-labelledby="tickets-h" className="order-3">
+          <h2 id="tickets-h" className="g-title mb-3 flex items-center gap-2 text-xl"><Swords className="h-5 w-5 text-[var(--g-rose)]" aria-hidden /> Challenges {count > 0 && <span className="g-orb-badge !static">{count}</span>}</h2>
+          <Tickets tickets={tickets} onFriends={() => setSheet("friends")} />
+        </aside>
+      </div>
+
+      <LobbySheet open={sheet} onClose={() => setSheet(null)} />
+    </>
+  );
+}
+
+function Figure({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-2xl border border-[var(--g-line)] bg-[rgba(10,12,31,0.55)] px-2 py-2.5">
+      <dd className="g-num text-2xl font-black text-[var(--g-text)]">{value}</dd>
+      <dt className="text-[11px] font-bold text-[var(--g-muted)]">{label}</dt>
+    </div>
+  );
+}
+
+/** Popups over the lobby (research: keep the previous screen visible behind, so the player never feels lost). */
+function LobbySheet({ open, onClose }: { open: Sheet; onClose: () => void }) {
+  const reduce = useReducedMotion();
+  useEffect(() => {
+    if (!open) return;
+    const k = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", k);
+    return () => window.removeEventListener("keydown", k);
+  }, [open, onClose]);
+  const title = open === "daily" ? "Daily reward" : open === "clubs" ? "Your club" : "Friends";
+  const body: ReactNode = open === "daily" ? <DailyReward /> : open === "clubs" ? <ClubPanel /> : <FriendsPanel />;
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div className="fixed inset-0 z-[60] flex items-end justify-center bg-[rgba(5,6,18,0.7)] p-0 sm:items-center sm:p-6" onClick={onClose}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+          <motion.div role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}
+            initial={reduce ? { opacity: 0 } : { y: 40, scale: 0.96, opacity: 0 }} animate={{ y: 0, scale: 1, opacity: 1 }} exit={reduce ? { opacity: 0 } : { y: 30, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 380, damping: 30 }}
+            className="no-scrollbar max-h-[85dvh] w-full max-w-2xl overflow-y-auto rounded-t-[28px] border border-[rgba(169,154,247,0.3)] bg-[var(--g-surface)] p-4 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] sm:rounded-[28px] sm:p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="g-title text-2xl">{title}</p>
+              <button type="button" onClick={onClose} aria-label="Close" className="g-orb !min-w-0" style={{ ["--c" as string]: "#ef4466" }}>
+                <span className="g-orb-face !h-10 !w-10 !rounded-xl"><X className="h-5 w-5" aria-hidden /></span>
+              </button>
+            </div>
+            {body}
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function useTickets(): Ticket[] | null | "error" {
+  const [t, setT] = useState<Ticket[] | null | "error">(null);
+  useEffect(() => {
+    let live = true;
+    const load = () => fetch("/api/battles", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+      .then((j: { battles: ApiBattle[] }) => {
+        if (!live) return;
+        setT(j.battles.filter((b) => b.invited && !b.expired && !b.entries.some((e) => e.you && e.status === "submitted"))
+          .map((b) => ({ id: b.id, title: b.title, ownerName: b.ownerName, questions: b.questions, expiresAt: b.expiresAt })));
+      })
+      .catch(() => { if (live) setT((x) => (Array.isArray(x) ? x : "error")); });
+    void load();
+    const i = setInterval(() => { if (document.visibilityState === "visible") void load(); }, 20_000);
+    return () => { live = false; clearInterval(i); };
+  }, []);
+  return t;
+}
+
+const daysLeft = (iso: string) => { const d = Math.ceil((Date.parse(iso) - Date.now()) / 86_400_000); return d <= 1 ? "Ends today" : `${d} days left`; };
 const initials = (n: string) => n.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase() || "?";
 
-export default function BattlesPage() {
-  const user = useAuthStore((s) => s.user);
-  const authReady = useAuthStore((s) => !s.loading);
-  const openAuth = useAuthModalStore((s) => s.open);
-  const { tier } = useEntitlements();
-  const [battles, setBattles] = useState<Battle[] | null>(null);
-  const [error, setError] = useState(false);
-
-  const load = useCallback(async () => {
-    try {
-      const r = await fetch("/api/battles");
-      if (!r.ok) throw new Error(String(r.status));
-      setBattles(((await r.json()) as { battles: Battle[] }).battles); setError(false);
-    } catch { setError(true); }
-  }, []);
-  useEffect(() => {
-    if (!user) return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    void load();
-    const t = setInterval(() => { if (document.visibilityState === "visible") void load(); }, 15_000);
-    return () => clearInterval(t);
-  }, [user, load]);
-
-  const copy = async (id: string) => {
-    try { await navigator.clipboard.writeText(`${window.location.origin}/challenge/${id}`); useToastStore.getState().show("Battle link copied. Paste it to your friend.", "success"); }
-    catch { useToastStore.getState().show("Couldn't copy the link. Open the battle and copy it from the address bar.", "error"); }
-  };
-  const active = (battles ?? []).filter((b) => b.mine && !b.expired).length;
-  const forYou = (battles ?? []).filter((b) => b.invited && !b.expired && !b.entries.some((e) => e.you && e.status === "submitted"));
-
-  return (
-    <div className="space-y-6 pb-8">
-      {user ? <BattleLobby invites={forYou.map((b) => ({ id: b.id, title: b.title, ownerName: b.ownerName, questions: b.questions }))} /> : (
-        <section className="arena-stage relative overflow-hidden rounded-[32px] p-8 text-center text-white" aria-label="Battles">
-          <h1 className="relative font-display text-4xl font-extrabold sm:text-5xl">Same questions. Who scores more?</h1>
-          <p className="relative mx-auto mt-3 max-w-xl text-white/85">Challenge friends to the same test, live or later. Win points, coins and climb the board.</p>
-        </section>
-      )}
-      {tier === "free" ? <p className="text-sm text-[var(--text-muted)]">{Math.min(active, 3)} of 3 active battles on Free</p> : null}
-      <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">Your battles</h2>
-
-
-      {!authReady ? null : !user ? (
-        <section className="card-well p-6 text-center" data-tint="butter">
-          <p className="font-bold text-[var(--text-primary)]">Sign in to see your battles</p>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">Battles are tied to your account so the winner is fair.</p>
-          <button type="button" onClick={() => openAuth("signup")} className="btn-main mt-4">Sign in</button>
-        </section>
-      ) : battles === null && !error ? (
-        <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]" role="status"><Loader2 className="mr-2 inline h-4 w-4 animate-spin" />Loading your battles…</p>
-      ) : error && battles === null ? (
-        <p className="card-inset p-6 text-center text-sm text-[var(--text-secondary)]" role="alert">Couldn&apos;t load battles right now. Try again in a moment.</p>
-      ) : battles!.length === 0 ? (
-        <section className="card-well p-8 text-center" data-tint="peri">
-          <Trophy className="mx-auto h-6 w-6 text-[var(--tint-peri-ink)]" />
-          <p className="mt-2 font-display text-xl font-extrabold text-[var(--text-primary)]">No battles yet</p>
-          <p className="mx-auto mt-1 max-w-md text-sm text-[var(--text-secondary)]">Finish a test, then use <b>Challenge a friend</b> on its result. Your first battle will show up here with live progress.</p>
-        </section>
-      ) : (
-        <div className="space-y-4">{battles!.map((b) => <BattleCard key={b.id} b={b} onCopy={() => copy(b.id)} />)}</div>
-      )}
-
-      <PlanCompare title="Battles by plan" rows={[
-        ["Challenge friends with any finished test", "✓", "✓", "✓"],
-        ["Active battles at a time", "3", "Unlimited", "Unlimited"],
-        ["Live progress and who won", "✓", "✓", "✓"],
-        ["Battle links last", "7 days", "7 days", "7 days"],
-      ]} />
+function Tickets({ tickets, onFriends }: { tickets: Ticket[] | null | "error"; onFriends: () => void }) {
+  if (tickets === null) return <div className="h-20 animate-pulse rounded-2xl bg-[var(--g-surface-2)] motion-reduce:animate-none" aria-label="Loading challenges" />;
+  if (tickets === "error") return <p className="rounded-2xl border border-[var(--g-line)] bg-[var(--g-surface)] p-4 text-sm g-text-2" role="alert">Couldn&apos;t load your challenges. They will appear when the connection is back.</p>;
+  if (tickets.length === 0) return (
+    <div className="rounded-2xl border-2 border-dashed border-[rgba(255,184,107,0.35)] p-5 text-center">
+      <p className="font-bold text-[var(--g-text)]">No challenges waiting</p>
+      <p className="mt-1 text-sm g-text-2">Add friends and they can challenge you here.</p>
+      <button type="button" onClick={onFriends} className="g-btn mt-4"><UserPlus className="h-4 w-4" aria-hidden /> Add friends</button>
     </div>
   );
-}
-
-function BattleCard({ b, onCopy }: { b: Battle; onCopy: () => void }) {
-  const mine = b.entries.find((e) => e.you);
-  // Rows: the owner's own score first, then each friend.
-  const rows: { key: string; name: string; you: boolean; status: Entry["status"]; answered: number; total: number; score: number | null; maxScore: number | null }[] = [
-    { key: "owner", name: b.mine ? "You" : b.ownerName, you: b.mine, status: b.ownerScore === null ? "started" : "submitted", answered: b.ownerScore === null ? 0 : b.questions, total: b.questions, score: b.ownerScore, maxScore: b.maxScore },
-    ...b.entries.map((e) => ({ key: e.userId, name: e.you ? "You" : e.name, you: e.you, status: e.status, answered: e.answered, total: e.total || b.questions, score: e.score, maxScore: e.maxScore })),
-  ];
-  const ownerPct = pct(b.ownerScore, b.maxScore);
-  const verdict = (e: Entry) => {
-    const p = pct(e.score, e.maxScore);
-    if (p === null || ownerPct === null) return null;
-    return p > ownerPct ? (b.mine ? `${e.name} beat you` : `You beat ${b.ownerName}`) : p === ownerPct ? "Tied" : (b.mine ? "You won" : `${b.ownerName} won`);
-  };
   return (
-    <section className="card-metal metal p-5 sm:p-6" aria-label={b.title}>
-      <div className="flex flex-wrap items-center gap-3">
-        <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{b.title}</h2>
-        <span className="rounded-full bg-[var(--surface-secondary)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-secondary)]">{b.mine ? "Yours" : `From ${b.ownerName}`}</span>
-        <span className="text-sm text-[var(--text-muted)]">{b.questions} questions · {b.maxScore} marks</span>
-        <span className="ml-auto inline-flex items-center gap-1.5 text-sm text-[var(--text-muted)]"><Hourglass className="h-4 w-4" /> {left(b.expiresAt)}</span>
-      </div>
-      <ul className="mt-4 space-y-3">
-        {rows.map((p) => {
-          const s = STATUS[p.status];
-          const e = b.entries.find((x) => x.userId === p.key);
-          const v = e ? verdict(e) : null;
-          return (
-            <li key={p.key} className="flex items-center gap-4 rounded-2xl bg-[var(--surface-secondary)] p-4">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[var(--ink)] text-sm font-bold text-[var(--background)]">{initials(p.name)}</span>
-              <span className="min-w-0 flex-1">
-                <span className="flex flex-wrap items-center gap-2"><span className="font-bold text-[var(--text-primary)]">{p.name}</span>
-                  {p.key !== "owner" && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold" style={{ background: `var(--tint-${s.tint})`, color: `var(--tint-${s.tint}-ink)` }}>
-                      {p.status === "started" && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-current motion-reduce:animate-none" />}{s.label}</span>
-                  )}
-                  {v && <span className="inline-flex items-center gap-1 text-xs font-bold text-[var(--text-primary)]"><Trophy className="h-3.5 w-3.5 text-amber-500" />{v}</span>}</span>
-                {p.key !== "owner" && (
-                  <span className="mt-2 block h-2 overflow-hidden rounded-full bg-[var(--surface)]" role="progressbar" aria-label={`${p.name} answered`} aria-valuenow={p.answered} aria-valuemin={0} aria-valuemax={p.total}>
-                    <span className="block h-full rounded-full bg-[var(--ink)] transition-[width] duration-700" style={{ width: `${Math.min(100, (p.answered / Math.max(1, p.total)) * 100)}%` }} /></span>
-                )}
-              </span>
-              <span className="text-right"><span className="block font-num text-xl font-extrabold text-[var(--text-primary)]">{p.score ?? "–"}</span><span className="text-xs text-[var(--text-muted)]">{p.key === "owner" || p.status === "submitted" ? `of ${p.maxScore}` : `${p.answered}/${p.total}`}</span></span>
-            </li>
-          );
-        })}
-        {b.mine && b.entries.length === 0 && <li className="rounded-2xl bg-[var(--surface-secondary)] p-4 text-sm text-[var(--text-secondary)]">Nobody has opened the link yet. Send it to a friend.</li>}
-      </ul>
-      <div className="mt-4 flex flex-wrap gap-2">
-        {b.mine && !b.expired && <button type="button" onClick={onCopy} className="pill-soft"><Link2 className="h-4 w-4" /> Copy the link</button>}
-        {!b.mine && !b.expired && mine?.status !== "submitted" && <Link href={`/challenge/${b.id}`} className="pill-ink">Take the battle</Link>}
-        {!b.mine && mine?.status === "submitted" && mine.attemptId && <Rematch attemptId={mine.attemptId} opponent={b.ownerName} />}
-      </div>
-      {b.entries.filter((e) => e.status === "submitted" && (b.mine || e.you)).map((e) => <Compare key={e.userId} battleId={b.id} entry={e} owner={b.mine} ownerName={b.ownerName} />)}
-    </section>
-  );
-}
-
-/** Rematch: turn my own score into a new battle and send it back, so the other player has a score to beat. */
-function Rematch({ attemptId, opponent }: { attemptId: string; opponent: string }) {
-  const [busy, setBusy] = useState(false);
-  const go = async () => {
-    setBusy(true);
-    try {
-      const r = await fetch("/api/battles", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ attempt_id: attemptId }) });
-      const j = (await r.json().catch(() => ({}))) as { path?: string; error?: string };
-      if (!r.ok || !j.path) { useToastStore.getState().show(j.error ?? "Couldn't make the rematch right now.", "error"); return; }
-      const url = window.location.origin + j.path;
-      const text = `Rematch! Beat my score, ${opponent}.`;
-      try { if (navigator.share) await navigator.share({ title: "Battle rematch", text, url }); else { await navigator.clipboard.writeText(`${text} ${url}`); useToastStore.getState().show(`Rematch link copied. Send it to ${opponent}.`, "success"); } }
-      catch { try { await navigator.clipboard.writeText(`${text} ${url}`); useToastStore.getState().show(`Rematch link copied. Send it to ${opponent}.`, "success"); } catch { /* cancelled */ } }
-    } finally { setBusy(false); }
-  };
-  return <button type="button" onClick={go} disabled={busy} className="pill-soft"><RotateCcw className="h-4 w-4" /> {busy ? "Making it…" : `Rematch ${opponent}`}</button>;
-}
-
-type Split = { ownerName: string; friendName: string; ownerIsYou: boolean; subjects: { subject: string; owner: number; friend: number; max: number }[] };
-/** Where the marks were won: one bar pair per subject, loaded when opened. */
-function Compare({ battleId, entry, owner, ownerName }: { battleId: string; entry: Entry; owner: boolean; ownerName: string }) {
-  const [open, setOpen] = useState(false);
-  const [data, setData] = useState<Split | null>(null);
-  const [err, setErr] = useState(false);
-  const toggle = async () => {
-    setOpen(!open);
-    if (open || data) return;
-    try {
-      const r = await fetch(`/api/battles/${battleId}/compare${owner ? `?with=${entry.userId}` : ""}`);
-      if (!r.ok) throw new Error(String(r.status));
-      setData((await r.json()) as Split);
-    } catch { setErr(true); }
-  };
-  const them = owner ? entry.name : ownerName;
-  return (
-    <div className="mt-4 border-t border-[var(--border)] pt-3">
-      <button type="button" onClick={toggle} aria-expanded={open} className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--text-primary)]">
-        Where the marks went vs {them} <ChevronDown className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        err ? <p className="mt-2 text-sm text-[var(--text-secondary)]" role="alert">Couldn&apos;t load the comparison. Try again later.</p>
-        : !data ? <p className="mt-2 text-sm text-[var(--text-secondary)]" role="status">Loading…</p>
-        : data.subjects.length === 0 ? <p className="mt-2 text-sm text-[var(--text-secondary)]">No subject data for this battle.</p>
-        : (
-          <ul className="mt-3 space-y-3">
-            {data.subjects.map((s) => {
-              const you = owner ? s.owner : s.friend, other = owner ? s.friend : s.owner, total = Math.max(0.01, Math.abs(you) + Math.abs(other));
-              return (
-                <li key={s.subject}>
-                  <p className="flex justify-between gap-3 text-sm"><span className="font-semibold text-[var(--text-primary)]">{s.subject}</span><span className="font-num text-[var(--text-secondary)]">You {you} : {other} {them}</span></p>
-                  <div className="mt-1 flex h-2 gap-0.5 overflow-hidden rounded-full" role="img" aria-label={`${s.subject}: you ${you}, ${them} ${other}`}>
-                    <span className="bg-[var(--ink)]" style={{ flex: Math.max(0.02, Math.abs(you)) / total }} /><span className="bg-[var(--tint-rose-ink)]/50" style={{ flex: Math.max(0.02, Math.abs(other)) / total }} />
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
-        )
-      )}
-    </div>
+    <ul className="space-y-3">
+      {tickets.map((t) => (
+        <li key={t.id} className="g-ticket">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--g-deep)] text-sm font-black text-[var(--g-amber)]">{initials(t.ownerName)}</span>
+          <span className="min-w-0 flex-1">
+            <span className="block truncate font-black">{t.ownerName}</span>
+            <span className="block truncate text-xs font-bold opacity-80">{t.questions} questions, {daysLeft(t.expiresAt)}</span>
+          </span>
+          <Link href={`/challenge/${t.id}`} className="g-ticket-go">PLAY</Link>
+        </li>
+      ))}
+    </ul>
   );
 }
