@@ -9,6 +9,8 @@ You are a senior product designer, UX writer, motion designer, growth marketer a
 - Everything must be buildable for Rs 0 (free tiers, open-source, free assets).
 - Respect the hard rules in PART 9 (they are the owner's standing decisions).
 - Give concrete output: numbers, durations, hex values, copy, wireframes (ASCII), component names. No marketing fluff.
+- OUTPUT FORMAT (mandatory): put your ENTIRE answer in ONE downloadable file, either RENYXERA-ADVICE.md (Markdown) or RENYXERA-ADVICE.txt. Do not write the answer in the chat window. Your chat reply must contain only the file (download link/attachment), nothing else. If you cannot create files, output one single code block containing the whole Markdown document and nothing outside it.
+- DEPTH (mandatory): cover EVERY screen listed in PART 12 section 3 in full depth, one section per screen, never summarised or merged. For each screen give all items (a) to (k) from PART 13. Do not stop early or say "and so on"; if the file gets long, keep going until every screen is complete.
 - Give TWO layouts for any screen: MOBILE (portrait phone ~390 px, touch, PWA) and DESKTOP (landscape 1440 px+, full width, mouse/keyboard). Say what changes, not just the size.
 
 ======================================================================
@@ -187,7 +189,7 @@ PART 12. THE REQUEST (answer in these numbered sections)
 ======================================================================
 1. Product audit: for each module in PART 2, the top 3 problems you expect a student to feel, and the fix.
 2. Feature suggestions: 15 to 25 features that fit the audience and Rs 0 budget, each with value, effort (S/M/L), which plan it belongs to (Free/Plus/Pro), and the skill to use. Separate "quick wins (under a day)" from bigger bets.
-3. UI/UX upgrade plan per screen: Dashboard, Test Centre, Test builder (with Blend/Forge/Spark), Exam screen, Results and review, Mistakes/Revision, Flashcards, AI Mentor (home and chat), Analytics, Study materials reader, Battles (game mode), Profile, Plans page, Navbar and phone dock, Onboarding. For each: what to keep, what to change, mobile vs desktop differences, one signature element.
+3. UI/UX upgrade plan per screen, IN FULL DEPTH (one complete section per screen, each with items (a) to (k) from PART 13): Dashboard, Test Centre, Test builder (with Blend/Forge/Spark), Exam screen, Results and review, Mistakes/Revision, Flashcards, AI Mentor (home and chat), Analytics, Study materials reader, Battles (game mode), Profile, Plans page, Navbar and phone dock, Onboarding. For each: what to keep, what to change, mobile vs desktop differences, one signature element.
 4. Visual system: a refined light palette and a dark-mode direction that will not look muddy or garish (give hex values and elevation steps), typography scale, radius scale, icon style, illustration/texture ideas from the GATE world.
 5. Motion and effects: page transitions, list and card entrances, button press, reward moments, theme switch, loading skeletons, celebration rules; durations and easing; reduced-motion versions.
 6. Copy: rewrite 20 key interface strings (buttons, empty states, errors, upgrade prompts) in plain, specific, non-salesy English.
@@ -204,4 +206,5 @@ PART 13. REUSABLE PER-SCREEN PROMPT (paste after this file, fill the brackets)
 Current state: [describe or attach screenshots, light and dark, phone and desktop].
 What the owner dislikes about it: [list].
 Goal of the screen: [the one thing the student comes to do].
-Give me: (a) the problems with evidence (UX laws/heuristics), (b) a new layout for MOBILE and DESKTOP as ASCII wireframes, (c) the signature element, (d) components and states (default, hover, active, focus, disabled, loading, empty, error), (e) colour and type tokens (light and dark, hex), (f) motion spec (what moves, ms, easing, reduced-motion), (g) final copy for every string, (h) accessibility notes, (i) what NOT to do so it doesn't look AI-generated, (j) which Claude Code skills the engineer should use for it, (k) needs owner confirmation."
+Give me: (a) the problems with evidence (UX laws/heuristics), (b) a new layout for MOBILE and DESKTOP as ASCII wireframes, (c) the signature element, (d) components and states (default, hover, active, focus, disabled, loading, empty, error), (e) colour and type tokens (light and dark, hex), (f) motion spec (what moves, ms, easing, reduced-motion), (g) final copy for every string, (h) accessibility notes, (i) what NOT to do so it doesn't look AI-generated, (j) which Claude Code skills the engineer should use for it, (k) needs owner confirmation.
+Output: put the whole answer in ONE file, [SCREEN-NAME]-design.md (or .txt). Your chat reply must contain only that file, nothing else. If you cannot create files, output one single code block with the whole document and nothing outside it."
