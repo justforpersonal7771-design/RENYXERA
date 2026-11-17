@@ -84,11 +84,12 @@ function cashfree(): PaymentProvider {
     id: "cashfree", configured: () => !!appId && !!secret,
     async createOrder(i) {
       const orderId = `rx_${i.receipt}`.replace(/[^A-Za-z0-9_-]/g, "").slice(0, 45);
-      const r = await fetch(`${base}/orders`, { signal: T(), method: "POST", headers: H, body: JSON.stringify({
+      let r: Response;
+      try { r = await fetch(`${base}/orders`, { signal: T(), method: "POST", headers: H, body: JSON.stringify({
         order_id: orderId, order_amount: i.amountPaise / 100, order_currency: "INR", order_note: i.notes.plan_id ?? "",
         customer_details: { customer_id: i.customer.id.slice(0, 50), customer_email: i.customer.email ?? undefined, customer_phone: i.customer.phone || "9999999999" },
         order_meta: { return_url: `${i.returnUrl}${i.returnUrl.includes("?") ? "&" : "?"}order_id={order_id}` }, order_tags: i.notes,
-      }) });
+      }) }); } catch (e) { console.error("cashfree order request failed", String(e)); return { error: "Couldn't reach the payment provider. Please try again." }; }
       if (!r.ok) { console.error("cashfree order failed", r.status, await r.text().catch(() => "")); return { error: "Couldn't start checkout. Please try again." }; }
       const o = (await r.json()) as { order_id: string; payment_session_id: string };
       return { orderId: o.order_id, checkout: { kind: "cashfree", sessionId: o.payment_session_id, orderId: o.order_id, env: prod ? "production" : "sandbox" } };
