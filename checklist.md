@@ -8,6 +8,15 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ---
 
+## 0-now. 18 Nov 2026: Study materials Phase 0 + Battles v3
+- [x] **(me)** Study blueprint merged from both ChatGPT reports: docs/study-materials/BLUEPRINT-FINAL.md
+- [x] **(me)** Lesson format + validator (lib/study/schema.ts, scripts/study-validate.ts), diagram engine, lesson renderer
+- [x] **(me)** Deadlock chapter, topic 1 of 6 complete (3 figures, 2 worked examples, faded example, 3 traps, 5 check questions): /study/deadlock
+- [ ] **(you)** Review /study/deadlock on phone and desktop against the blueprint
+- [ ] **(me)** Deadlock topics 2-6 (prevention, Banker's with verified step tables, detection, n(k-1)+1, starvation/livelock); verify scripts; PYQ links from the bank
+- [ ] **(you)** Approve Syllabus Conquest after the mockup (docs/battles/concepts/conquest-*.png)
+- [ ] **(you)** Cashfree Full KYC so UPI/Visa/RuPay/net banking activate
+
 ## 0-latest. 14 Nov 2026: Releases R31 to R37 + R31 Battles game shell
 Plan: [`docs/roadmap/RELEASES-2026-11.md`](docs/roadmap/RELEASES-2026-11.md) (every ChatGPT audit item, by release, module, priority and skills).
 - [x] **(me)** Releases doc R31 to R37 written from the advice doc, the Battles handoff, the spec PDF and the Phase 0 audit
