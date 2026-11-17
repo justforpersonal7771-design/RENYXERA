@@ -22,7 +22,7 @@ import { useArenaMe, usePlayer } from "@/components/game/use-arena";
 
 type Ticket = { id: string; title: string; ownerName: string; questions: number; expiresAt: string };
 type ApiBattle = { id: string; title: string; ownerName: string; questions: number; expiresAt: string; expired: boolean; invited?: boolean; entries: { you: boolean; status: string }[] };
-type Sheet = "daily" | "clubs" | "friends" | null;
+type Sheet = "daily" | "clubs" | "friends" | "challenges" | null;
 
 export default function GameLobby() {
   const user = useAuthStore((s) => s.user);
@@ -60,8 +60,9 @@ function Lobby() {
   const count = Array.isArray(tickets) ? tickets.length : 0;
 
   const orbs: { key: string; label: string; icon: typeof Gift; c: string; badge?: string; sheet?: Sheet; href?: string }[] = [
+    { key: "challenges", label: "Challenges", icon: Swords, c: "#c4412d", badge: count > 0 ? String(count) : undefined, sheet: "challenges" },
     { key: "daily", label: "Daily", icon: Gift, c: "#e2ad25", badge: daily ? "1" : undefined, sheet: "daily" },
-    { key: "friends", label: "Friends", icon: Users, c: "#c4412d", sheet: "friends" },
+    { key: "friends", label: "Friends", icon: Users, c: "#2e6b4f", sheet: "friends" },
     { key: "clubs", label: "Clubs", icon: UsersRound, c: "#d9772b", sheet: "clubs" },
     { key: "ranks", label: "Ranks", icon: Medal, c: "#7a2230", href: "/battles/arena" },
     { key: "matches", label: "Matches", icon: ListChecks, c: "#24201c", href: "/battles/matches" },
@@ -69,9 +70,9 @@ function Lobby() {
 
   return (
     <>
-      <div className="grid gap-5 lg:grid-cols-[auto_minmax(0,1fr)_minmax(0,340px)] lg:gap-6">
+      <div className="grid gap-5 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-6">
         {/* round menu buttons: a row on phones, a column on desktop */}
-        <nav aria-label="Lobby" className="order-2 flex justify-between gap-1 lg:order-1 lg:flex-col lg:justify-start lg:gap-5 lg:pt-4">
+        <nav aria-label="Lobby" className="order-2 grid grid-cols-6 gap-1 lg:order-1 lg:flex lg:flex-col lg:justify-start lg:gap-5 lg:pt-4 [&_.g-orb]:min-w-0 max-sm:[&_.g-orb-face]:h-12 max-sm:[&_.g-orb-face]:w-12 max-sm:[&_.g-orb]:text-[11px]">
           {orbs.map((o) => {
             const face = (
               <>
@@ -106,13 +107,9 @@ function Lobby() {
         </section>
 
         {/* challenges waiting */}
-        <aside aria-labelledby="tickets-h" className="order-3">
-          <h2 id="tickets-h" className="g-title mb-3 flex items-center gap-2 text-xl"><Swords className="h-5 w-5 text-[var(--g-muted)]" aria-hidden /> Challenges {count > 0 && <span className="g-orb-badge !static">{count}</span>}</h2>
-          <Tickets tickets={tickets} onFriends={() => setSheet("friends")} />
-        </aside>
       </div>
 
-      <LobbySheet open={sheet} onClose={() => setSheet(null)} />
+      <LobbySheet open={sheet} onClose={() => setSheet(null)} challenges={<Tickets tickets={tickets} onFriends={() => setSheet("friends")} />} />
     </>
   );
 }
@@ -127,7 +124,7 @@ function Figure({ label, value }: { label: string; value: string }) {
 }
 
 /** Popups over the lobby (research: keep the previous screen visible behind, so the player never feels lost). */
-function LobbySheet({ open, onClose }: { open: Sheet; onClose: () => void }) {
+function LobbySheet({ open, onClose, challenges }: { open: Sheet; onClose: () => void; challenges: ReactNode }) {
   const reduce = useReducedMotion();
   useEffect(() => {
     if (!open) return;
@@ -135,8 +132,8 @@ function LobbySheet({ open, onClose }: { open: Sheet; onClose: () => void }) {
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
   }, [open, onClose]);
-  const title = open === "daily" ? "Daily reward" : open === "clubs" ? "Your club" : "Friends";
-  const body: ReactNode = open === "daily" ? <DailyReward /> : open === "clubs" ? <ClubPanel /> : <FriendsPanel />;
+  const title = open === "daily" ? "Daily reward" : open === "clubs" ? "Your club" : open === "challenges" ? "Challenges for you" : "Friends";
+  const body: ReactNode = open === "daily" ? <DailyReward /> : open === "clubs" ? <ClubPanel /> : open === "challenges" ? challenges : <FriendsPanel />;
   return (
     <AnimatePresence>
       {open && (
