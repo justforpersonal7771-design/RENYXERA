@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Coins, Copy, Crown, Flame, LogOut, Plus, Users } from "lucide-react";
 import { useToastStore } from "@/store/use-toast-store";
 import { SHOP } from "@/lib/coins/shop";
+import { confirmDialog } from "@/components/ui/confirm-dialog";
 
 type CoinState = { balance: number; claimedToday: boolean; streak: number; daily: number; bonus: number };
 type Member = { id: string; name: string; role: string; points: number; you: boolean };
@@ -112,7 +113,7 @@ export function ClubPanel() {
           <p className="text-sm text-[var(--text-secondary)]"><span className="font-bold tabular-nums text-[var(--text-primary)]">{club.total}</span> points this week · rank <span className="font-bold tabular-nums text-[var(--text-primary)]">#{club.rank}</span> of {club.clubs}</p>
         </div>
         <button type="button" onClick={() => { void navigator.clipboard.writeText(club.code).then(() => useToastStore.getState().show(`Code ${club.code} copied. Send it to a friend.`, "success")); }} className="pill-soft"><Copy className="h-4 w-4" /> {club.code}</button>
-        <button type="button" onClick={() => { if (confirm("Leave this club?")) void act({ action: "leave" }); }} className="pill-soft" aria-label="Leave club"><LogOut className="h-4 w-4" /></button>
+        <button type="button" onClick={async () => { if (await confirmDialog({ title: "Leave this club?", message: "Your points stay yours, but they stop counting for this club. You can join again with the code.", confirmLabel: "Leave club", tone: "danger" })) void act({ action: "leave" }); }} className="pill-soft" aria-label="Leave club"><LogOut className="h-4 w-4" /></button>
       </div>
       <ol className="mt-4 space-y-1.5">
         {club.members.map((m, i) => (

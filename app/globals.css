@@ -1686,7 +1686,7 @@ main :is(button, a):is([class*="bg-indigo-600"], [class*="bg-violet-600"], [clas
 .dark .folder-panel { --text-muted: #b6bcc8; }
 .folder-panel::before { content: ""; position: absolute; inset: 8px; border-radius: calc(var(--card-radius) - 7px); border: 1.5px dashed color-mix(in srgb, var(--tab-ink) 32%, transparent); pointer-events: none; z-index: 1; }
 .folder-scroll { padding: 22px; min-height: 0; flex: 1; overflow-y: auto; }
-@media (max-width: 767px) { .folder-tabs { padding: 0 20px; } .folder-tab { padding: 8px 13px 9px; font-size: 13px; } .folder-scroll { padding: 16px; } }
+@media (max-width: 767px) { .folder-tabs { padding: 0 26px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 22px), transparent 100%); } .folder-tab { padding: 8px 13px 9px; font-size: 13px; } .folder-scroll { padding: 16px; } }
 :is(.folder-tab, .folder-panel)[data-tint="mint"] { --tab-tint: var(--tint-mint); --tab-ink: var(--tint-mint-ink); }
 :is(.folder-tab, .folder-panel)[data-tint="peach"] { --tab-tint: var(--tint-peach); --tab-ink: var(--tint-peach-ink); }
 :is(.folder-tab, .folder-panel)[data-tint="peri"] { --tab-tint: var(--tint-peri); --tab-ink: var(--tint-peri-ink); }
@@ -2070,7 +2070,19 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .iv-flow__layer { display: flex; flex-direction: column; align-items: center; gap: .15rem; width: 100%; }
 .iv-flow__arrow { color: var(--text-muted); font-weight: 800; line-height: 1; }
 .iv-flow__row { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; }
-.iv-flow__node { padding: .5rem .95rem; border-radius: 14px; background: var(--tint-sky, #dbeafe); color: var(--tint-sky-ink, #1e3a8a); font-weight: 800; font-size: .92rem; border: 1px solid var(--border); }
+.iv-flow__node { padding: .5rem .95rem; border-radius: 14px; background: var(--tint-sky, #dbeafe); color: var(--tint-sky-ink, #1e3a8a); font-weight: 800; font-size: .92rem; border: 1px solid var(--border); position: relative; text-align: center; }
+/* Branches (one box leading to several): drawn connected, not as a loose row. Desktop: a bus line with a drop to each box.
+   Phones: a left rail with a tick into each box, so the boxes read as children of the box above. */
+.iv-flow__via { display: block; font-size: .72rem; font-weight: 700; opacity: .75; margin-bottom: .1rem; }
+.iv-flow__row.is-branch { position: relative; padding-top: 16px; flex-wrap: nowrap; }
+.iv-flow__row.is-branch::before { content: ""; position: absolute; top: 0; left: 12%; right: 12%; height: 2px; background: var(--tint-sky-ink, #1e3a8a); opacity: .45; border-radius: 2px; }
+.iv-flow__row.is-branch > .iv-flow__node::before { content: ""; position: absolute; top: -16px; left: 50%; width: 2px; height: 16px; background: var(--tint-sky-ink, #1e3a8a); opacity: .45; }
+@media (max-width: 640px) {
+  .iv-flow__row.is-branch { flex-direction: column; align-items: stretch; padding: 0 0 0 22px; gap: .5rem; width: 100%; }
+  .iv-flow__row.is-branch::before { top: 0; bottom: 1.3rem; left: 9px; right: auto; width: 2px; height: auto; }
+  .iv-flow__row.is-branch > .iv-flow__node { text-align: left; }
+  .iv-flow__row.is-branch > .iv-flow__node::before { top: 50%; left: -13px; width: 13px; height: 2px; }
+}
 ::highlight(iv-yellow) { background-color: rgba(250, 204, 21, .5); color: inherit; }
 ::highlight(iv-green) { background-color: rgba(74, 222, 128, .45); color: inherit; }
 ::highlight(iv-pink) { background-color: rgba(244, 114, 182, .42); color: inherit; }
@@ -2232,8 +2244,8 @@ html.theme-switching * { transition: none !important; }
 .dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well, .card-inset),
 .dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well, .card-inset) { --text-muted: #9aa1b0; }
 /* inputs sit below their surface: darker, so they read as "type here" */
-.dark:not([data-dk]) :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]),
-.dark[data-dk="edge"] :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]) { background-color: #0f1218; }
+.dark:not([data-dk]) :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.field-bare),
+.dark[data-dk="edge"] :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.field-bare) { background-color: #0f1218; }
 /* the page shell (the big rounded frame around each screen) is barely lifted, so cards lead */
 .dark:not([data-dk]) .page-shell[data-section], .dark[data-dk="edge"] .page-shell[data-section] {
   background: linear-gradient(180deg, color-mix(in oklab, var(--sec) 22%, #0d0f14) 0%, #0d0f14 55%) !important; border-color: rgba(255,255,255,.05) !important;

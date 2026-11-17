@@ -112,14 +112,14 @@ export function StudyPlanTool({ byBranch }: { byBranch: Partial<Record<BranchCod
       <details className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
         <summary className="cursor-pointer text-sm font-extrabold text-[var(--text-primary)]">Set exact hours for a section <span className="ml-1 rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-black uppercase text-amber-700 dark:text-amber-300">Plus &amp; Pro</span></summary>
         <p className="mt-2 text-xs text-[var(--text-muted)]">Leave a box empty to let the weightage decide. Hours are for the learning phase when the plan goes into your Study Planner; the other sections share what is left.</p>
-        <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+        <ul className="mt-3 grid grid-cols-[minmax(0,1fr)] gap-2 sm:grid-cols-2">
           {sections.map((s) => (
-            <li key={s.title} className="flex items-center gap-3 rounded-xl bg-[var(--surface-secondary)]/60 px-3 py-2">
+            <li key={s.title} className="flex min-w-0 items-center gap-2 rounded-xl bg-[var(--surface-secondary)]/60 py-2 pl-3 pr-2">
               <span className="min-w-0 flex-1 truncate text-sm text-[var(--text-primary)]" title={s.title}>{s.title}</span>
               <input type="number" min={0} max={400} inputMode="numeric" aria-label={`Hours for ${s.title}`} value={fixed[s.title] ?? ""} placeholder="auto"
                 onChange={(e) => setFixed((f) => { const n = { ...f }; if (e.target.value === "") delete n[s.title]; else n[s.title] = Math.max(0, Math.min(400, Number(e.target.value))); return n; })}
-                className="h-9 w-20 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 text-right text-sm font-num text-[var(--text-primary)] outline-none focus:border-violet-500" />
-              <span className="text-xs text-[var(--text-muted)]">h</span>
+                className="h-9 w-16 shrink-0 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 text-right text-sm font-num text-[var(--text-primary)] outline-none focus:border-violet-500" />
+              <span className="shrink-0 text-xs text-[var(--text-muted)]">h</span>
             </li>
           ))}
         </ul>

@@ -49,7 +49,7 @@ export default async function SubjectHub({ params }: { params: Promise<{ subject
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <StatTile label="Questions" value={s.count} sub={`${s.topics.size} topics`} />
-        <StatTile label="Avg marks / paper" value={(s.marks / (papers.length || 1)).toFixed(1)} sub={`${s.marks} marks in total`} accent="sky" />
+        <StatTile label="Avg marks / year" value={(s.marks / (years.length || 1)).toFixed(1)} sub={`${s.marks} marks over ${years.length} years`} accent="sky" />
         <StatTile label="Peak year" value={years[peakIdx] ?? "—"} sub={`${series[peakIdx] ?? 0} marks`} accent="amber" />
         <StatTile label="Trend" value={t.dir === "up" ? "Rising" : t.dir === "down" ? "Cooling" : "Steady"} sub={t.dir === "flat" ? "last 3 yrs ≈ earlier" : `${t.pct > 0 ? "+" : ""}${t.pct}% last 3 yrs`} accent={t.dir === "up" ? "emerald" : t.dir === "down" ? "rose" : "violet"} />
       </div>

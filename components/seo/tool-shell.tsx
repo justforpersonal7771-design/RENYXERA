@@ -1,5 +1,6 @@
 "use client";
 
+import { useBranchHref } from "@/lib/seo/use-branch-href";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { BookOpen, Calculator, CalendarDays, FileText, Flame, LineChart } from "lucide-react";
@@ -12,6 +13,7 @@ const TOOL_ITEMS = TOOLS.map((t) => ({ href: t.href, label: t.title, short: t.sh
 /** Tool pages get the adaptive tools dock at the bottom of the screen; other public pages don't. */
 export function ToolsFrame({ children }: { children: React.ReactNode }) {
   const path = usePathname() ?? "";
+  const bh = useBranchHref();
   // The app scrolls inside <main>, not the window, so a new tool would otherwise open
   // at the previous tool's scroll position.
   useEffect(() => {
@@ -27,7 +29,7 @@ export function ToolsFrame({ children }: { children: React.ReactNode }) {
   return (
     <>
       <div className="tool-pastel min-w-0 pb-24 space-y-6">{children}</div>
-      <SubNav items={TOOL_ITEMS} label="Tools" home="/tools" />
+      <SubNav items={TOOL_ITEMS.map((i) => ({ ...i, href: bh(i.href) }))} label="Tools" home="/tools" />
     </>
   );
 }

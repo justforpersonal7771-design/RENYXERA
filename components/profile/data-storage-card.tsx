@@ -46,8 +46,19 @@ export function DataStorageCard() {
     void refresh();
   };
 
+  const clearPractice = async () => {
+    if (!(await confirmDialog({ title: "Clear your practice history?", message: user ? "Your finished tests, practice sessions, Mistakes Bank, analytics and flashcard progress are deleted from this device and your account, for every branch. Bookmarks, settings, downloads, AI Mentor chats, your plan and battles stay. This can't be undone." : "Your finished tests, practice sessions, Mistakes Bank, analytics and flashcard progress on this device are deleted. Bookmarks, settings and downloads stay. This can't be undone.", confirmLabel: "Clear history", tone: "danger" }))) return;
+    setBusy("practice");
+    try {
+      const { clearPracticeHistory } = await import("@/lib/clear-practice");
+      await clearPracticeHistory(!!user);
+      toast("Practice history cleared", "success");
+      setTimeout(() => window.location.reload(), 600);
+    } catch (e) { setBusy(null); toast((e as Error).message, "error"); }
+  };
+
   const hardReset = async () => {
-    if (!(await confirmDialog({ title: "Hard reset this device?", message: "Everything stored on this device is erased — study history not yet synced, bookmarks, mistakes, downloads, preferences and caches — and you'll be signed out here. Your account on the server is not affected.", confirmLabel: "Reset this device", tone: "danger" }))) return;
+    if (!(await confirmDialog({ title: "Hard reset this device?", message: "Everything stored in this browser is erased, including settings and downloads, and you'll be signed out here. Your account keeps your synced tests, mistakes and bookmarks, and they come back when you sign in. To delete your practice history, use Clear my practice history instead.", confirmLabel: "Reset this device", tone: "danger" }))) return;
     setBusy("reset");
     const { hardResetDevice } = await import("@/lib/hard-reset");
     await hardResetDevice().catch(() => { setBusy(null); toast("Reset failed — try again", "error"); });
@@ -91,6 +102,16 @@ export function DataStorageCard() {
           </div>
           <button onClick={clearOfflineCache} disabled={!!busy} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] text-sm font-semibold text-[var(--text-primary)] hover:border-sky-500/50 disabled:opacity-50 cursor-pointer">
             {busy === "cache" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />} Clear
+          </button>
+        </div>
+        <div className="flex items-center gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/5 p-4">
+          <Trash2 className="w-5 h-5 text-amber-600 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-[var(--text-primary)]">Clear my practice history</p>
+            <p className="text-[11px] text-[var(--text-muted)]">Deletes finished tests, practice, mistakes and progress. Keeps bookmarks, settings and downloads.</p>
+          </div>
+          <button onClick={clearPractice} disabled={!!busy} className="shrink-0 inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl border border-amber-500/50 bg-[var(--surface)] text-sm font-semibold text-[var(--text-primary)] disabled:opacity-50 cursor-pointer">
+            {busy === "practice" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />} Clear
           </button>
         </div>
         <div className="flex items-center gap-3 rounded-2xl border border-rose-500/30 bg-rose-500/5 p-4">

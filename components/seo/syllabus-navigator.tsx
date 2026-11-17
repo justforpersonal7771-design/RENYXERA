@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronUp, ListTree, Search, X } from "lucide-react";
 
@@ -34,6 +35,9 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
   const groups = useMemo(() => [...new Set(entries.map((e) => e.group))], [entries]);
   const max = Math.max(...entries.map((e) => e.share), 1);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- portal target exists only after mount
+  useEffect(() => setMounted(true), []);
   const [q, setQ] = useState("");
   const current = entries[idx];
   const filtered = entries.filter((e) => e.title.toLowerCase().includes(q.toLowerCase()));
@@ -72,22 +76,23 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
       </nav>
 
       {/* Phone / tablet: floating current-subject pill + searchable sheet */}
-      <div className="xl:hidden fixed right-3 bottom-20 z-40">
+      {mounted && createPortal(<>
+      <div className="xl:hidden fixed right-3 z-40" style={{ bottom: "calc(8.75rem + env(safe-area-inset-bottom))" }}>
         <button type="button" onClick={() => setOpen(true)} className="flex items-center gap-2 max-w-[70vw] pl-3 pr-3.5 h-11 rounded-2xl grad-brand text-white text-sm font-bold shadow-lg shadow-violet-500/40 cursor-pointer">
           <ListTree className="w-4 h-4 shrink-0" /><span className="truncate">{current?.title}</span><span className="shrink-0 text-[11px] font-num opacity-80">{idx + 1}/{entries.length}</span>
         </button>
       </div>
       <AnimatePresence>
         {open && (
-          <motion.div className="xl:hidden fixed inset-0 z-50 flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div className="xl:hidden fixed inset-0 z-[120] flex items-end" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <button aria-label="Close" className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setOpen(false)} />
-            <motion.div role="dialog" aria-label="Jump to subject" className="relative w-full max-h-[75vh] flex flex-col rounded-t-3xl border-t border-[var(--border)] bg-[var(--surface)] p-4 pb-6"
+            <motion.div role="dialog" aria-label="Jump to subject" className="relative w-full max-h-[75vh] flex flex-col rounded-t-3xl border-t border-[var(--border)] bg-[var(--surface)] p-4" style={{ paddingBottom: "calc(1.25rem + env(safe-area-inset-bottom))" }}
               initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", stiffness: 380, damping: 34 }}>
               <div className="flex items-center gap-2 mb-3">
                 <div className="search-row flex-1 flex items-center gap-2 h-10 px-3 rounded-xl border border-transparent bg-[var(--surface-secondary)]"><Search className="w-4 h-4 text-[var(--text-muted)]" /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Find a subject" className="search-bare flex-1 bg-transparent text-sm text-[var(--text-primary)]" /></div>
                 <button type="button" onClick={() => setOpen(false)} className="w-10 h-10 grid place-items-center rounded-xl bg-[var(--surface-secondary)] cursor-pointer" aria-label="Close"><X className="w-4 h-4" /></button>
               </div>
-              <div className="overflow-y-auto">
+              <div className="-mx-1 overflow-y-auto px-1 pb-1">
                 {groups.map((g) => {
                   const list = filtered.filter((e) => e.group === g);
                   if (!list.length) return null;
@@ -110,6 +115,7 @@ export function SyllabusNavigator({ entries }: { entries: Entry[] }) {
           </motion.div>
         )}
       </AnimatePresence>
+      </>, document.body)}
       <button type="button" onClick={() => go(ids[0])} className="sr-only"><ChevronUp /> Back to first subject</button>
     </>
   );

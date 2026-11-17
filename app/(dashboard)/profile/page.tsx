@@ -2,7 +2,7 @@
 
 import { createPortal } from "react-dom";
 import { DatePicker } from "@/components/ui/date-picker";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ExamBranchPanel } from "@/components/profile/exam-branch-panel";
 import { branchByCode } from "@/lib/branches";
 import { motion, AnimatePresence } from "motion/react";
@@ -242,6 +242,13 @@ export default function ProfilePage() {
     window.addEventListener("hashchange", read);
     return () => { clearTimeout(late); window.removeEventListener("hashchange", read); };
   }, []);
+  // Phones: the section row scrolls sideways; keep the chosen section centred in it and bring the details into view.
+  const navRow = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const row = navRow.current, el = row?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!row || !el || row.scrollWidth <= row.clientWidth) return;
+    row.scrollTo({ left: el.offsetLeft - (row.clientWidth - el.offsetWidth) / 2, behavior: "smooth" });
+  }, [tab]);
   const selectTab = (id: SectionId) => {
     setTab(id);
     history.replaceState(null, "", `#${id}`);
@@ -598,7 +605,7 @@ export default function ProfilePage() {
       <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-4">
         <motion.nav aria-label="Profile sections" initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35, delay: 0.05 }}
           className="shrink-0 lg:w-60 card-glass rounded-3xl p-2 lg:self-start">
-          <div className="no-scrollbar flex gap-1 overflow-x-auto lg:max-h-[calc(100dvh-14rem)] lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden lg:pr-1">
+          <div ref={navRow} className="no-scrollbar flex gap-1 overflow-x-auto lg:max-h-[calc(100dvh-14rem)] lg:flex-col lg:overflow-y-auto lg:overflow-x-hidden lg:pr-1">
             {SECTIONS.filter((s) => !("hidden" in s && s.hidden)).map((sct, i) => {
               const active = sct.id === tab;
               return (

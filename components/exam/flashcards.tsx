@@ -12,7 +12,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { Check, X, ChevronLeft, ChevronRight, Keyboard, Loader2, RotateCcw, Shuffle, Trophy } from "lucide-react";
+import { Check, X, ChevronLeft, ChevronRight, Loader2, RotateCcw, Shuffle, Trophy } from "lucide-react";
 import type { RenderableQuestion } from "@/types/question.types";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { ensureAnswers } from "@/lib/repository/answer-keys";
@@ -223,14 +223,13 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
         )}
       </motion.article>
 
-      <div className="flex flex-wrap items-center justify-center gap-3">
-        <button type="button" onClick={() => go(-1)} disabled={i === 0} className="pill-soft disabled:opacity-40"><ChevronLeft className="h-4 w-4" /> Back</button>
-        <button type="button" onClick={() => mark(false)} className="inline-flex items-center gap-1.5 rounded-full bg-[var(--tint-rose)] px-4 py-2 text-sm font-bold text-[var(--tint-rose-ink)]"><RotateCcw className="h-4 w-4" /> Again <kbd className="rounded bg-[var(--surface)] px-1.5 text-xs">1</kbd></button>
-        <button type="button" onClick={() => mark(true)} className="inline-flex items-center gap-1.5 rounded-full bg-[var(--tint-mint)] px-4 py-2 text-sm font-bold text-[var(--tint-mint-ink)]"><Check className="h-4 w-4" /> Got it <kbd className="rounded bg-[var(--surface)] px-1.5 text-xs">2</kbd></button>
-        <button type="button" onClick={() => go(1)} disabled={i >= deck.length - 1} className="pill-soft disabled:opacity-40">Skip <ChevronRight className="h-4 w-4" /></button>
+      <div className="grid grid-cols-4 gap-2">
+        <button type="button" onClick={() => go(-1)} disabled={i === 0} className="pill-soft min-w-0 justify-center !px-2 disabled:opacity-40"><ChevronLeft className="h-4 w-4 shrink-0" /> Back</button>
+        <button type="button" onClick={() => mark(false)} className="inline-flex min-w-0 items-center justify-center gap-1.5 rounded-full bg-[var(--tint-rose)] px-2 py-2 text-sm font-bold text-[var(--tint-rose-ink)]" aria-keyshortcuts="1"><RotateCcw className="h-4 w-4 shrink-0" /> Again <kbd className="hidden rounded bg-[var(--surface)] px-1.5 text-xs lg:inline">1</kbd></button>
+        <button type="button" onClick={() => mark(true)} className="inline-flex min-w-0 items-center justify-center gap-1.5 rounded-full bg-[var(--tint-mint)] px-2 py-2 text-sm font-bold text-[var(--tint-mint-ink)]" aria-keyshortcuts="2"><Check className="h-4 w-4 shrink-0" /> Got it <kbd className="hidden rounded bg-[var(--surface)] px-1.5 text-xs lg:inline">2</kbd></button>
+        <button type="button" onClick={() => go(1)} disabled={i >= deck.length - 1} className="pill-soft min-w-0 justify-center !px-2 disabled:opacity-40">Skip <ChevronRight className="h-4 w-4 shrink-0" /></button>
       </div>
-      <p className="flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--text-secondary)]"><Keyboard className="h-3.5 w-3.5" /> Enter check · 1 Again · 2 Got it · ← → move
-        {card.kind === "bank" && card.topic && <> · <Link href={`/setup?topic=${encodeURIComponent(card.topic)}&subject=${encodeURIComponent(card.subject)}`} className="font-semibold underline underline-offset-4">Practise {card.topic} as a test</Link></>}</p>
+      {card.kind === "bank" && card.topic && <p className="text-center text-xs"><Link href={`/setup?topic=${encodeURIComponent(card.topic)}&subject=${encodeURIComponent(card.subject)}`} className="font-semibold text-[var(--text-secondary)] underline underline-offset-4">Practise {card.topic} as a test</Link></p>}
     </div>
   );
 }

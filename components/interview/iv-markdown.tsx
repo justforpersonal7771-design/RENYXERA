@@ -52,7 +52,10 @@ function Flow({ code }: { code: string }) {
       {f.layers.map((row, i) => (
         <div key={i} className="iv-flow__layer">
           {i > 0 && <span className="iv-flow__arrow" aria-hidden>↓</span>}
-          <div className="iv-flow__row">{row.map((id) => <span key={id} className="iv-flow__node">{f.label.get(id) ?? id}</span>)}</div>
+          <div className={`iv-flow__row${row.length > 1 ? " is-branch" : ""}`}>{row.map((id) => {
+            const via = f.edges.find(([, b, l]) => b === id && l.trim())?.[2].trim();
+            return <span key={id} className="iv-flow__node">{via && <span className="iv-flow__via">{via}</span>}{f.label.get(id) ?? id}</span>;
+          })}</div>
         </div>
       ))}
     </figure>

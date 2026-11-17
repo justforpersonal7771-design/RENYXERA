@@ -4,7 +4,7 @@
  * R18 U2 kit. FolderTabs: index-card tabs joined to the panel below (Analytics, Profile, Setup, Review).
  * Segmented: short switches with a sliding thumb (days per week, theme, ranges).
  */
-import { useId, type ReactNode } from "react";
+import { useEffect, useId, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 
 export function FolderTabs<T extends string>({ tabs, value, onChange, children, label }: {
@@ -12,6 +12,13 @@ export function FolderTabs<T extends string>({ tabs, value, onChange, children, 
 }) {
   const activeTint = tabs.find((t) => t.id === value)?.tint;
   const id = useId();
+  // Keep the open tab fully inside the row (centred when the row scrolls), so its stitch always meets the panel.
+  useEffect(() => {
+    const el = document.getElementById(`${id}-${value}`);
+    const row = el?.parentElement;
+    if (!el || !row || row.scrollWidth <= row.clientWidth) return;
+    row.scrollTo({ left: el.offsetLeft - (row.clientWidth - el.offsetWidth) / 2, behavior: "smooth" });
+  }, [id, value]);
   const move = (dir: number) => {
     const i = tabs.findIndex((t) => t.id === value);
     const next = tabs[(i + dir + tabs.length) % tabs.length];

@@ -309,7 +309,7 @@ function ChatScreen() {
       {/* Phone history drawer, portalled to <body>: the page container is transformed, which would trap a fixed drawer under the top bar. */}
       {mounted && createPortal(<AnimatePresence>
         {drawer && (
-          <div className="fixed inset-0 z-[300] lg:hidden">
+          <div className="fixed inset-0 z-[340] lg:hidden">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setDrawer(false)} className="absolute inset-0 bg-black/30" />
             <motion.aside initial={{ x: -300 }} animate={{ x: 0 }} exit={{ x: -300 }} transition={{ type: "spring", stiffness: 380, damping: 36 }} aria-label="Chats" style={{ position: "absolute" }} className="mentor-side inset-y-0 left-0 h-full w-[18.5rem] max-w-[86vw] !rounded-l-none !rounded-r-3xl p-3 pt-4 shadow-2xl">
               <div className="h-full">{sidebar(true)}</div>
