@@ -8,9 +8,9 @@ import Link from "next/link";
 import { CalendarClock, Coins, History, Lock, Radio, Timer, Trophy } from "lucide-react";
 
 const MODES = [
-  { id: "live", icon: Radio, title: "Live duel", line: "Start together on the same questions. Shared countdown, each other's progress on screen.", href: "/test-centre/build?challenge=1", cta: "Pick questions", c1: "#14b8a6", c2: "#0b5e63" },
-  { id: "later", icon: CalendarClock, title: "Play later", line: "Send it now or for a set time within 7 days. Your friend plays when free.", href: "/test-centre/build?challenge=1", cta: "Pick questions", c1: "#6366f1", c2: "#2e2a87" },
-  { id: "beat", icon: History, title: "Beat my score", line: "Pick a test you already finished and dare friends to beat your marks.", href: "/test-centre/history", cta: "Choose a test", c1: "#f97316", c2: "#8a2a12" },
+  { id: "live", icon: Radio, title: "Live duel", line: "Start together on the same questions. Shared countdown, each other's progress on screen.", href: "/test-centre/build?challenge=1", cta: "Pick questions", c1: "#c4412d", c2: "#6e1f14" },
+  { id: "later", icon: CalendarClock, title: "Play later", line: "Send it now or for a set time within 7 days. Your friend plays when free.", href: "/test-centre/build?challenge=1", cta: "Pick questions", c1: "#d9772b", c2: "#7a3a10" },
+  { id: "beat", icon: History, title: "Beat my score", line: "Pick a test you already finished and dare friends to beat your marks.", href: "/test-centre/history", cta: "Choose a test", c1: "#2a2420", c2: "#0f0c0a" },
 ] as const;
 
 const LOCKED = [
@@ -47,7 +47,7 @@ export default function PlayPage() {
         <h2 id="locked-h" className="g-title mb-3 text-xl">Locked for now</h2>
         <ul className="grid gap-4 md:grid-cols-2">
           {LOCKED.map((m) => (
-            <li key={m.id} className="relative flex items-center gap-4 overflow-hidden rounded-[22px] border-2 border-dashed border-[var(--g-line-strong)] bg-[rgba(10,12,31,0.5)] p-5">
+            <li key={m.id} className="relative flex items-center gap-4 overflow-hidden rounded-[22px] border-2 border-dashed border-[var(--g-line-strong)] bg-[rgba(7,37,25,0.6)] p-5">
               <span className="relative grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[var(--g-surface-3)] text-[var(--g-muted)]">
                 <m.icon className="h-7 w-7" aria-hidden />
                 <span className="absolute -bottom-1.5 -right-1.5 grid h-6 w-6 place-items-center rounded-full bg-[var(--g-deep)] text-[var(--g-amber)]"><Lock className="h-3.5 w-3.5" aria-label="Locked" /></span>

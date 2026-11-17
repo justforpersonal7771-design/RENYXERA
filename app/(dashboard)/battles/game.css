@@ -1,37 +1,56 @@
-/* Hallmark · v2.0.0 · shape: game lobby · theme: Circuit Afterhours (by request, chatgpt/RENYXERA_Battles_Claude_Handoff.md §11) · genre: playful · signature: the arena stage (you on a podium facing a rival slot across the VS emblem, circuit light running across the floor) */
-/* critique: owner (14 Nov) rejected the calm app-screen pass as dull; the game takes game material: lit stage, bevelled buttons, depth and moving light. Colour still means something: royal = act, cyan = you and progress, amber = reward and PLAY, rose = rival. */
-/* waive 2a: no purple-to-blue gradient anywhere; bevelled solid fills instead. waive 'no glows': a lit arena needs light; glows sit only on the stage, the PLAY button and the VS emblem. */
+/* Hallmark · v2.0.0 · shape: game lobby · theme: Duel Table (custom, owner 18 Nov: no purple/blue) · signature: the chess clock (a timed GATE duel is a chess-clock duel) on a baize games table */
+/* critique: every Circuit/neon look read as AI. The world now comes from physical game objects: baize, walnut rail, brass fittings, chalk, cue red, scorecards on paper. Chalk = you, cue red = rival, brass = act and reward. */
+/* waive glows: only brass catches light (PLAY plunger, coin); everything else is matte material with real offset shadows. */
 
 /* ---- tokens: the game world is always night (Arena Midnight), in light and dark mode alike ---- */
 .game-world, .dark .game-world {
-  --g-dur-micro: 100ms;
+  --g-dur-micro: 120ms;
   --g-dur-short: 200ms;
-  --g-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --g-rose: #ff6b8b;
-  --g-mint: #34d399;
-  --g-deep: #0a0c1f;
-  --g-bg: #111429;
-  --g-surface: #1a1e3a;
-  --g-surface-2: #202443;
-  --g-surface-3: #2a2f55;
-  --g-line: rgba(233, 237, 249, 0.09);
-  --g-line-strong: rgba(233, 237, 249, 0.2);
-  --g-grid: rgba(169, 154, 247, 0.06);
-  --g-text: #e9edf9;
-  --g-text-2: #b9bedd;
-  --g-muted: #9095ba;
-  --g-royal: #5146c8;
-  --g-royal-hover: #5f55d8;
-  --g-on-royal: #ffffff;
-  --g-signal: #22d3ee;
-  --g-signal-soft: rgba(34, 211, 238, 0.14);
-  --g-violet: #a99af7;
-  --g-amber: #ffb86b;
-  --g-amber-ink: #ffb86b;
-  --g-on-amber: #2a1600;
-  --g-danger: #ff8a7a;
-  --g-focus: #a99af7;
-  --g-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 14px 30px -22px rgba(0, 0, 0, 0.7);
+  --g-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  /* materials */
+  --g-felt: #145a41;
+  --g-felt-dark: #0b3a2a;
+  --g-felt-deep: #072519;
+  --g-wood: #6b3f22;
+  --g-wood-dark: #3b200f;
+  --g-wood-hi: #8c5732;
+  --g-brass: #d9ab4f;
+  --g-brass-hi: #f3d58c;
+  --g-brass-dark: #8f6421;
+  --g-paper: #f3ecdc;
+  --g-paper-2: #e8dec8;
+  --g-ink: #241a10;
+  --g-chalk: #f6f2e8;
+  --g-cue: #c4412d;
+  --g-cue-dark: #8e2a1b;
+  /* roles (names kept so every screen re-themes) */
+  --g-rose: var(--g-cue);
+  --g-mint: #7fd1a3;
+  --g-deep: var(--g-felt-deep);
+  --g-bg: var(--g-felt-dark);
+  --g-surface: #0f4532;
+  --g-surface-2: #12503b;
+  --g-surface-3: #1a5f47;
+  --g-line: rgba(246, 242, 232, 0.12);
+  --g-line-strong: rgba(246, 242, 232, 0.28);
+  --g-grid: transparent;
+  --g-text: var(--g-chalk);
+  --g-text-2: #d6e3d9;
+  --g-muted: #a8c2b3;
+  --g-royal: var(--g-brass);
+  --g-royal-hover: var(--g-brass-hi);
+  --g-on-royal: var(--g-ink);
+  --g-signal: var(--g-chalk);
+  --g-signal-soft: rgba(246, 242, 232, 0.16);
+  --g-violet: var(--g-brass-hi);
+  --g-amber: var(--g-brass);
+  --g-amber-ink: var(--g-brass-hi);
+  --g-on-amber: var(--g-ink);
+  --g-danger: #ff9b86;
+  --g-focus: var(--g-brass-hi);
+  --g-shadow: 0 2px 0 rgba(0, 0, 0, 0.25), 0 12px 24px -12px rgba(0, 0, 0, 0.6);
+  --font-game: var(--font-russo), var(--font-display), sans-serif;
+  --font-game-num: var(--font-chakra), var(--font-sans), sans-serif;
 }
 
 /* The app's own tokens, remapped so the reused panels (friends, clubs, shop, leaderboard) sit inside the game world
@@ -84,10 +103,9 @@
 .g-ground {
   background-color: var(--g-bg);
   background-image:
-    linear-gradient(var(--g-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--g-grid) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: -1px -1px;
+    radial-gradient(120% 80% at 50% 30%, rgba(255, 255, 255, 0.07), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: auto, 160px 160px;
 }
 
 /* ---- surfaces ---- */
@@ -186,67 +204,83 @@
 }
 
 
-/* =================== game material (R31, second pass) =================== */
-.game-world { --g-bevel: 0 6px 0 var(--g-deep), 0 14px 24px -10px rgba(0, 0, 0, 0.6); }
+/* =================== Duel Table materials =================== */
 
-/* stage */
-.g-stage { position: relative; overflow: hidden; border-radius: 28px; background: radial-gradient(120% 90% at 50% 0%, #2b2a78 0%, #171a45 45%, var(--g-deep) 100%); border: 1px solid rgba(169, 154, 247, 0.22); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 30px 60px -30px rgba(0, 0, 0, 0.9); }
+/* the table: baize inside a walnut rail with brass corner caps */
+.g-stage {
+  position: relative; overflow: hidden; border-radius: 30px;
+  background:
+    radial-gradient(90% 70% at 50% 40%, #1d7a58 0%, var(--g-felt) 45%, var(--g-felt-dark) 100%);
+  border: 14px solid var(--g-wood);
+  border-image: none;
+  box-shadow:
+    inset 0 0 0 2px var(--g-wood-dark),
+    inset 0 10px 30px rgba(0, 0, 0, 0.45),
+    0 2px 0 var(--g-wood-hi),
+    0 24px 40px -18px rgba(0, 0, 0, 0.75);
+}
+.g-stage::before { /* rail grain highlight */
+  content: ""; position: absolute; inset: -14px; border-radius: 30px; pointer-events: none;
+  box-shadow: inset 0 2px 0 rgba(255, 220, 170, 0.25), inset 0 -2px 0 rgba(0, 0, 0, 0.35);
+}
 .g-stage svg { display: block; width: 100%; height: 100%; }
-.g-pulse { stroke-dasharray: 18 420; animation: g-pulse 3.6s linear infinite; }
-.g-pulse.d2 { animation-delay: -1.2s; } .g-pulse.d3 { animation-delay: -2.4s; }
-@keyframes g-pulse { from { stroke-dashoffset: 438; } to { stroke-dashoffset: 0; } }
-.g-float { animation: g-float 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-.g-float.alt { animation-delay: -2s; }
-@keyframes g-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-.g-vs { animation: g-vs 2.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes g-vs { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-.g-sweep { animation: g-sweep 6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-@keyframes g-sweep { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.7; } }
 
-/* the PLAY button: chunky, bevelled, pressed down on tap */
+/* the PLAY plunger: polished brass, physically pressed */
 .g-play {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-  min-height: 64px; padding: 0 2.75rem; border-radius: 20px;
-  font-family: var(--font-display), sans-serif; font-weight: 900; font-size: 1.6rem; letter-spacing: 0.02em;
-  color: var(--g-on-amber);
-  background: linear-gradient(180deg, #ffd59e 0%, var(--g-amber) 45%, #f08a2c 100%);
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.6), inset 0 -3px 0 rgba(120, 50, 0, 0.35), 0 7px 0 #a34f0c, 0 18px 34px -8px rgba(255, 150, 60, 0.55);
-  transition: transform var(--g-dur-micro) var(--g-ease), box-shadow var(--g-dur-micro) var(--g-ease), filter var(--g-dur-short) var(--g-ease);
-}
-.g-play:hover { filter: brightness(1.06); }
-.g-play:active { transform: translateY(6px); box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.5), 0 1px 0 #a34f0c, 0 8px 16px -8px rgba(255, 150, 60, 0.5); }
-
-/* round menu buttons (Daily, Shop, Clubs, Friends, Ranks) */
-.g-orb { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 64px; font-size: 0.78rem; font-weight: 800; color: var(--g-text); }
-.g-orb-face {
-  position: relative; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 20px; color: #fff;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--c) 100%, white 22%), var(--c) 55%, color-mix(in oklab, var(--c) 65%, black));
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45), 0 5px 0 color-mix(in oklab, var(--c) 45%, black), 0 12px 20px -8px rgba(0, 0, 0, 0.7);
+  min-height: 64px; padding: 0 2.6rem; border-radius: 18px;
+  font-family: var(--font-game); font-size: 1.7rem; letter-spacing: 0.03em; text-transform: uppercase;
+  color: var(--g-ink);
+  background: linear-gradient(180deg, var(--g-brass-hi) 0%, var(--g-brass) 48%, #b9852f 100%);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.55), inset 0 -3px 0 rgba(90, 55, 10, 0.4), 0 6px 0 var(--g-brass-dark), 0 14px 22px -8px rgba(0, 0, 0, 0.6);
   transition: transform var(--g-dur-micro) var(--g-ease), box-shadow var(--g-dur-micro) var(--g-ease);
 }
-.g-orb:hover .g-orb-face { transform: translateY(-2px); }
-.g-orb:active .g-orb-face { transform: translateY(4px); box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.4), 0 1px 0 color-mix(in oklab, var(--c) 45%, black); }
-.g-orb-badge { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--g-rose); color: #fff; font-size: 11px; font-weight: 900; display: grid; place-items: center; border: 2px solid var(--g-deep); }
+.g-play:active { transform: translateY(5px); box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45), 0 1px 0 var(--g-brass-dark), 0 6px 12px -6px rgba(0, 0, 0, 0.6); }
+@media (hover: hover) and (pointer: fine) { .g-play:hover { filter: brightness(1.05); } }
 
-/* HUD pills */
-.g-hud { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 40px; padding: 0 0.9rem 0 0.35rem; border-radius: 999px; background: rgba(10, 12, 31, 0.7); border: 1px solid rgba(169, 154, 247, 0.25); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06); font-family: var(--font-display), sans-serif; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--g-text); }
-.g-hud-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; }
-.g-hex { clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%); }
-
-/* challenge tickets: amber stubs with notches */
-.g-ticket {
-  position: relative; display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 0.9rem 0.8rem 1.1rem; border-radius: 16px;
-  background: linear-gradient(100deg, #ffd59e, var(--g-amber) 60%, #f6a04d); color: var(--g-on-amber);
-  box-shadow: 0 5px 0 #a34f0c, 0 14px 22px -12px rgba(0, 0, 0, 0.7);
-  -webkit-mask: radial-gradient(circle 9px at 0 50%, transparent 98%, #000) , radial-gradient(circle 9px at 100% 50%, transparent 98%, #000);
-  -webkit-mask-composite: source-in; mask-composite: intersect;
+/* enamel game buttons with brass rims */
+.g-orb { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 64px; font-family: var(--font-game-num); font-size: 0.8rem; font-weight: 700; color: var(--g-chalk); text-shadow: 0 1px 0 rgba(0,0,0,.4); }
+.g-orb-face {
+  position: relative; display: grid; place-items: center; width: 58px; height: 58px; border-radius: 999px; color: var(--g-chalk);
+  background: radial-gradient(70% 70% at 35% 30%, color-mix(in oklab, var(--c) 70%, white 25%), var(--c) 60%, color-mix(in oklab, var(--c) 60%, black));
+  box-shadow: 0 0 0 3px var(--g-brass), 0 0 0 5px var(--g-brass-dark), 0 6px 0 5px rgba(0, 0, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.35);
+  transition: transform var(--g-dur-micro) var(--g-ease);
 }
-.g-ticket-go { display: inline-flex; align-items: center; min-height: 40px; padding: 0 1rem; border-radius: 12px; background: var(--g-deep); color: var(--g-amber); font-family: var(--font-display), sans-serif; font-weight: 900; }
+.g-orb:active .g-orb-face { transform: translateY(3px) scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .g-orb:hover .g-orb-face { transform: translateY(-2px); } }
+.g-orb-badge { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--g-cue); color: var(--g-chalk); font-size: 11px; font-weight: 800; display: grid; place-items: center; border: 2px solid var(--g-felt-deep); font-family: var(--font-game-num); }
+
+/* HUD: brass plaques on the rail */
+.g-hud { display: inline-flex; align-items: center; gap: 0.45rem; min-height: 40px; padding: 0 0.9rem 0 0.35rem; border-radius: 12px;
+  background: linear-gradient(180deg, var(--g-wood-hi), var(--g-wood) 55%, var(--g-wood-dark));
+  box-shadow: inset 0 1px 0 rgba(255, 220, 170, 0.35), 0 2px 0 rgba(0, 0, 0, 0.4);
+  font-family: var(--font-game-num); font-weight: 700; font-variant-numeric: tabular-nums; color: var(--g-chalk); }
+.g-hud-ico { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 999px; }
+.g-hex { clip-path: none; border-radius: 6px; }
+
+/* scorecards: paper on the table (tickets, lists, panels) */
+.g-ticket {
+  position: relative; display: flex; align-items: center; gap: 0.75rem; padding: 0.8rem 0.9rem 0.8rem 1.1rem; border-radius: 6px;
+  background: var(--g-paper); color: var(--g-ink);
+  box-shadow: 0 1px 0 var(--g-paper-2), 0 10px 18px -10px rgba(0, 0, 0, 0.7);
+  transform: rotate(-0.6deg);
+  background-image: repeating-linear-gradient(0deg, transparent 0 23px, rgba(36, 26, 16, 0.08) 23px 24px);
+}
+.g-ticket:nth-child(even) { transform: rotate(0.5deg); }
+.g-ticket-go { display: inline-flex; align-items: center; min-height: 40px; padding: 0 1rem; border-radius: 10px; background: var(--g-cue); color: var(--g-chalk); font-family: var(--font-game); letter-spacing: 0.03em; box-shadow: 0 3px 0 var(--g-cue-dark); }
+
+/* clock face digits */
+.g-digits { font-family: var(--font-game-num); font-variant-numeric: tabular-nums; }
+.g-title { font-family: var(--font-game); font-weight: 400; letter-spacing: 0.01em; }
+
+@keyframes g-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0.15; } }
+.g-blink { animation: g-blink 1s steps(1) infinite; }
+@keyframes g-glint { 0%, 80%, 100% { opacity: 1; } 90% { opacity: 0.7; } }
+.g-glint { animation: g-glint 5s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .g-pulse, .g-float, .g-vs, .g-sweep { animation: none; }
+  .g-blink, .g-glint { animation: none; }
   .g-play, .g-orb-face { transition: none; }
   .g-play:active, .g-orb:active .g-orb-face { transform: none; }
 }
-
 } /* end @layer components */

@@ -1,110 +1,111 @@
 "use client";
 
 /**
- * The arena stage (signature of the Battles lobby). A lit circuit floor in perspective, you on the left podium,
- * an open rival slot on the right, the VS emblem between them, and light running along the circuit traces.
- * Pure SVG + CSS animation (no canvas, no 3D library) so it stays at 60 fps on a mid-range phone; reduced motion
- * stops every loop (game.css). The rival slot is honest: it says "Choose a rival", never a fake player.
+ * The Duel Table (signature of the Battles lobby). A GATE battle is a timed duel, and the object of a timed duel is a
+ * chess clock: it stands on a baize games table, your face on the left (your Arena rating in its window), your rival's
+ * face on the right, still blank until you pick one. A cue and a chalk cube lie on the table (the owner's 8 Ball Pool reference).
+ * Pure SVG; no idle loops (unslop pass): nothing moves unless it means something.
+ * Honest by design: the rival face says "Pick a rival", never a fake player.
  */
 import { useId } from "react";
 
 export function ArenaStage({ name, avatar, rating, ring, season }: { name: string; avatar: string; rating: number | null; ring: string | null; season: string | null }) {
   const id = useId().replace(/:/g, "");
-  const W = 1000, H = 560, VX = 500, VY = 250, FLOOR = 300;
-  // perspective floor: horizontal lines closer together towards the horizon, rays from the vanishing point
-  const rows = Array.from({ length: 9 }, (_, i) => FLOOR + Math.pow((i + 1) / 9, 1.8) * (H - FLOOR));
-  const rays = Array.from({ length: 17 }, (_, i) => -900 + i * (2800 / 16));
+  const short = name.length > 14 ? name.slice(0, 13) + "…" : name;
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" role="img" aria-label={`Arena: ${name}${rating ? `, rating ${rating}` : ""}, waiting for a rival`}>
+    <svg viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label={`Duel table: ${name}${rating ? `, rating ${rating}` : ""}, no rival picked yet`}>
       <defs>
-        <radialGradient id={`spot${id}`} cx="50%" cy="0%" r="80%">
-          <stop offset="0%" stopColor="#6d63ff" stopOpacity="0.55" />
-          <stop offset="60%" stopColor="#2b2a78" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="#0a0c1f" stopOpacity="0" />
+        <linearGradient id={`wood${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#8c5732" /><stop offset=".45" stopColor="#6b3f22" /><stop offset="1" stopColor="#3b200f" />
+        </linearGradient>
+        <linearGradient id={`woodTop${id}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#7a4727" /><stop offset=".5" stopColor="#95603a" /><stop offset="1" stopColor="#7a4727" />
+        </linearGradient>
+        <linearGradient id={`brass${id}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#8f6421" /><stop offset=".35" stopColor="#f3d58c" /><stop offset=".6" stopColor="#d9ab4f" /><stop offset="1" stopColor="#8f6421" />
+        </linearGradient>
+        <linearGradient id={`plate${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#f6efdd" /><stop offset="1" stopColor="#ddd0b2" />
+        </linearGradient>
+        <linearGradient id={`lcd${id}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#1d2a1f" /><stop offset="1" stopColor="#0f1711" />
+        </linearGradient>
+        <linearGradient id={`cue${id}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#2b170b" /><stop offset=".55" stopColor="#6b3f22" /><stop offset=".8" stopColor="#c99a62" /><stop offset="1" stopColor="#efdcb6" />
+        </linearGradient>
+        <radialGradient id={`lamp${id}`} cx="50%" cy="45%" r="60%">
+          <stop offset="0" stopColor="#fff7dc" stopOpacity=".18" /><stop offset="1" stopColor="#fff7dc" stopOpacity="0" />
         </radialGradient>
-        <linearGradient id={`floor${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1d2160" />
-          <stop offset="100%" stopColor="#0a0c1f" />
-        </linearGradient>
-        <linearGradient id={`podC${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#2c3a8a" /><stop offset="100%" stopColor="#141844" />
-        </linearGradient>
-        <linearGradient id={`podR${id}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#4a2a6e" /><stop offset="100%" stopColor="#1b1238" />
-        </linearGradient>
-        <filter id={`glow${id}`} x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" /></filter>
-        <clipPath id={`me${id}`}><circle cx="330" cy="300" r="78" /></clipPath>
+        <filter id={`soft${id}`} x="-20%" y="-20%" width="140%" height="160%"><feGaussianBlur stdDeviation="10" /></filter>
+        <clipPath id={`av${id}`}><circle cx="300" cy="487" r="26" /></clipPath>
       </defs>
 
-      {/* sky and spotlight */}
-      <rect width={W} height={H} fill="#0d0f2a" />
-      <rect width={W} height={H} fill={`url(#spot${id})`} className="g-sweep" />
+      {/* lamp pool on the baize */}
+      <rect width="1000" height="560" fill={`url(#lamp${id})`} />
 
-      {/* floor */}
-      <rect y={FLOOR} width={W} height={H - FLOOR} fill={`url(#floor${id})`} />
-      <g stroke="#7c74ff" strokeOpacity="0.22" strokeWidth="1.2">
-        {rows.map((y) => <line key={y} x1="0" x2={W} y1={y} y2={y} />)}
-        {rays.map((x) => <line key={x} x1={VX} y1={VY} x2={x} y2={H} />)}
+      {/* cue lying across the table, with chalk cube */}
+      <g transform="rotate(-9 500 520)">
+        <rect x="40" y="515" width="560" height="12" rx="6" fill="#000" opacity=".25" filter={`url(#soft${id})`} />
+        <rect x="40" y="505" width="560" height="11" rx="5.5" fill={`url(#cue${id})`} />
+        <rect x="586" y="505" width="14" height="11" rx="3" fill="#f6f2e8" />
       </g>
-      <line x1="0" x2={W} y1={FLOOR} y2={FLOOR} stroke="#a99af7" strokeOpacity="0.5" strokeWidth="1.5" />
-
-      {/* circuit traces running into each podium, with light pulses */}
-      <g fill="none" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-        <path id={`tL${id}`} d="M0 470 H120 L230 420 H330" stroke="#22d3ee" strokeOpacity="0.25" />
-        <path d="M0 470 H120 L230 420 H330" stroke="#22d3ee" className="g-pulse" />
-        <path d="M0 530 H180 L290 480 H330" stroke="#22d3ee" strokeOpacity="0.25" />
-        <path d="M0 530 H180 L290 480 H330" stroke="#22d3ee" className="g-pulse d2" />
-        <path d="M1000 470 H880 L770 420 H670" stroke="#ff6b8b" strokeOpacity="0.25" />
-        <path d="M1000 470 H880 L770 420 H670" stroke="#ff6b8b" className="g-pulse d3" />
-        <path d="M1000 530 H820 L710 480 H670" stroke="#ff6b8b" strokeOpacity="0.25" />
-        <path d="M1000 530 H820 L710 480 H670" stroke="#ff6b8b" className="g-pulse" />
-        <path d="M250 520 H670" stroke="#a99af7" strokeOpacity="0.2" />
-        <path d="M250 520 H670" stroke="#ffb86b" className="g-pulse d2" />
+      <g transform="translate(820 470) rotate(12)">
+        <rect x="4" y="10" width="40" height="34" rx="4" fill="#000" opacity=".25" filter={`url(#soft${id})`} />
+        <rect width="40" height="34" rx="4" fill="#ece6d6" />
+        <rect x="6" y="6" width="28" height="22" rx="3" fill="#d9d1bd" />
       </g>
 
-      {/* podiums */}
+      {/* clock shadow */}
+      <ellipse cx="500" cy="438" rx="300" ry="26" fill="#000" opacity=".4" filter={`url(#soft${id})`} />
+
+      {/* plungers: yours is down (you are ready), the rival's is up (waiting) */}
       <g>
-        <ellipse cx="330" cy="425" rx="140" ry="34" fill="#22d3ee" opacity="0.35" filter={`url(#glow${id})`} />
-        <path d="M190 410 a140 32 0 0 0 280 0 v24 a140 32 0 0 1 -280 0z" fill={`url(#podC${id})`} />
-        <ellipse cx="330" cy="410" rx="140" ry="32" fill="#20286b" stroke="#22d3ee" strokeWidth="3" />
-        <ellipse cx="670" cy="425" rx="140" ry="34" fill="#ff6b8b" opacity="0.3" filter={`url(#glow${id})`} />
-        <path d="M530 410 a140 32 0 0 0 280 0 v24 a140 32 0 0 1 -280 0z" fill={`url(#podR${id})`} />
-        <ellipse cx="670" cy="410" rx="140" ry="32" fill="#2c1a4f" stroke="#ff6b8b" strokeWidth="3" />
+        <rect x="355" y="142" width="40" height="30" rx="6" fill={`url(#brass${id})`} />
+        <rect x="347" y="134" width="56" height="12" rx="6" fill={`url(#brass${id})`} />
+        <rect x="605" y="104" width="40" height="68" rx="6" fill={`url(#brass${id})`} />
+        <rect x="597" y="96" width="56" height="12" rx="6" fill={`url(#brass${id})`} />
       </g>
 
-      {/* you */}
-      <g className="g-float">
-        <circle cx="330" cy="300" r="92" fill="#22d3ee" opacity="0.35" filter={`url(#glow${id})`} />
-        <circle cx="330" cy="300" r="86" fill={ring ? "#ffb86b" : "#22d3ee"} />
-        <circle cx="330" cy="300" r="80" fill="#1a1e3a" />
-        <image href={avatar} x="252" y="222" width="156" height="156" clipPath={`url(#me${id})`} />
+      {/* clock body */}
+      <path d="M232 178 Q232 166 244 166 H756 Q768 166 768 178 L790 420 Q792 436 776 436 H224 Q208 436 210 420 Z" fill={`url(#wood${id})`} />
+      <path d="M244 166 H756 Q768 166 768 178 L770 196 H230 L232 178 Q232 166 244 166 Z" fill={`url(#woodTop${id})`} />
+      <rect x="230" y="196" width="540" height="3" fill="#2b170b" opacity=".5" />
+
+      {/* left face: you */}
+      <g>
+        <rect x="262" y="214" width="226" height="196" rx="16" fill={`url(#brass${id})`} />
+        <rect x="270" y="222" width="210" height="180" rx="12" fill={`url(#plate${id})`} />
+        <text x="375" y="252" textAnchor="middle" fontFamily="var(--font-chakra)" fontWeight="700" fontSize="20" fill="#5a4630">You</text>
+        <rect x="290" y="266" width="170" height="86" rx="8" fill={`url(#lcd${id})`} />
+        <text x="375" y="331" textAnchor="middle" fontFamily="var(--font-chakra)" fontWeight="700" fontSize="58" fill="#f6f2e8" letterSpacing="2">{rating ?? "----"}</text>
+        <text x="375" y="384" textAnchor="middle" fontFamily="var(--font-chakra)" fontWeight="500" fontSize="17" fill="#5a4630">Arena rating</text>
       </g>
 
-      {/* rival slot */}
-      <g className="g-float alt">
-        <circle cx="670" cy="300" r="80" fill="#1b1238" stroke="#ff6b8b" strokeWidth="4" strokeDasharray="14 10" />
-        <text x="670" y="328" textAnchor="middle" fontFamily="var(--font-display)" fontWeight="900" fontSize="84" fill="#ff6b8b" opacity="0.85">?</text>
+      {/* right face: the rival */}
+      <g>
+        <rect x="512" y="214" width="226" height="196" rx="16" fill={`url(#brass${id})`} />
+        <rect x="520" y="222" width="210" height="180" rx="12" fill={`url(#plate${id})`} />
+        <text x="625" y="252" textAnchor="middle" fontFamily="var(--font-chakra)" fontWeight="700" fontSize="20" fill="#5a4630">Rival</text>
+        <rect x="540" y="266" width="170" height="86" rx="8" fill={`url(#lcd${id})`} />
+        <text x="625" y="331" textAnchor="middle" fontFamily="var(--font-chakra)" fontWeight="700" fontSize="58" fill="#c4412d" letterSpacing="2">--:--</text>
+        <text x="625" y="384" textAnchor="middle" fontFamily="var(--font-chakra)" fontWeight="500" fontSize="17" fill="#5a4630">Pick a rival</text>
+        {/* the flag that falls when time runs out */}
+        <path d="M690 228 l0 26 l18 -8 z" fill="#c4412d" />
       </g>
 
-      {/* VS emblem */}
-      <g className="g-vs">
-        <polygon points="500,190 562,226 562,298 500,334 438,298 438,226" fill="#ffb86b" opacity="0.5" filter={`url(#glow${id})`} />
-        <polygon points="500,196 556,229 556,295 500,328 444,295 444,229" fill="#1a1440" stroke="#ffb86b" strokeWidth="4" />
-        <text x="500" y="282" textAnchor="middle" fontFamily="var(--font-display)" fontWeight="900" fontSize="60" fill="#ffd59e" fontStyle="italic">VS</text>
-      </g>
-
-      {/* name plates */}
-      <g fontFamily="var(--font-display)" textAnchor="middle">
-        <text x="330" y="462" fontWeight="800" fontSize="30" fill="#e9edf9">{name.length > 14 ? name.slice(0, 13) + "…" : name}</text>
-        <text x="330" y="494" fontWeight="700" fontSize="22" fill="#22d3ee">{rating ? `Rating ${rating}` : " "}</text>
-        <text x="670" y="462" fontWeight="800" fontSize="28" fill="#e9edf9">Choose a rival</text>
-        <text x="670" y="494" fontWeight="700" fontSize="22" fill="#ff8aa3">Live or later</text>
+      {/* name plates on the baize */}
+      <g>
+        <circle cx="300" cy="487" r="29" fill={ring ? "#d9ab4f" : "#f6f2e8"} />
+        <circle cx="300" cy="487" r="26" fill="#0b3a2a" />
+        {avatar && <image href={avatar} x="274" y="461" width="52" height="52" clipPath={`url(#av${id})`} />}
+        <text x="340" y="496" fontFamily="var(--font-russo)" fontSize="26" fill="#f6f2e8">{short}</text>
       </g>
 
       {season && (
         <g>
-          <rect x="370" y="34" width="260" height="44" rx="22" fill="#0a0c1f" fillOpacity="0.75" stroke="#a99af7" strokeOpacity="0.4" />
-          <text x="500" y="63" textAnchor="middle" fontFamily="var(--font-display)" fontWeight="800" fontSize="20" fill="#e9edf9">{season}</text>
+          <rect x="390" y="30" width="220" height="40" rx="8" fill={`url(#brass${id})`} />
+          <rect x="394" y="34" width="212" height="32" rx="6" fill="none" stroke="#8f6421" strokeWidth="1.5" />
+          <text x="500" y="57" textAnchor="middle" fontFamily="var(--font-chakra)" fontWeight="700" fontSize="18" fill="#241a10">{season}</text>
         </g>
       )}
     </svg>

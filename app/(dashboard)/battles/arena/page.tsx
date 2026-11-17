@@ -114,7 +114,7 @@ export default function ArenaPage() {
 
 function LadderRow({ r }: { r: Row }) {
   return (
-    <li className={`flex items-center gap-3 rounded-2xl border px-4 py-3 ${r.you ? "border-[var(--g-signal)] bg-[rgba(34,211,238,0.1)] shadow-[0_0_20px_rgba(34,211,238,0.15)]" : "border-[var(--g-line)] bg-[var(--g-surface)]"}`}>
+    <li className={`flex items-center gap-3 rounded-2xl border px-4 py-3 ${r.you ? "border-[var(--g-brass)] bg-[rgba(217,171,79,0.12)]" : "border-[var(--g-line)] bg-[var(--g-surface)]"}`}>
       <span className="g-num w-8 text-center text-lg font-black text-[var(--g-muted)]">{r.rank > 0 ? r.rank : "–"}</span>
       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--g-surface-3)] text-sm font-black text-[var(--g-text)]">{initials(r.name)}</span>
       <span className="min-w-0 flex-1">
@@ -128,10 +128,10 @@ function LadderRow({ r }: { r: Row }) {
 
 function Segment<T extends string>({ items, value, onChange, label }: { items: readonly (readonly [T, string])[]; value: T; onChange: (v: T) => void; label: string }) {
   return (
-    <div role="tablist" aria-label={label} className="flex rounded-2xl border border-[var(--g-line)] bg-[rgba(10,12,31,0.7)] p-1">
+    <div role="tablist" aria-label={label} className="flex rounded-2xl border border-[var(--g-line)] bg-[linear-gradient(180deg,var(--g-wood),var(--g-wood-dark))] p-1">
       {items.map(([v, t]) => (
         <button key={v} type="button" role="tab" aria-selected={value === v} onClick={() => onChange(v)}
-          className={`min-h-[40px] rounded-xl px-3.5 text-sm font-extrabold transition-colors ${value === v ? "bg-[var(--g-royal)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,.25),0_3px_0_#2c2580]" : "text-[var(--g-muted)] hover:text-[var(--g-text)]"}`}>{t}</button>
+          className={`min-h-[40px] rounded-xl px-3.5 text-sm font-extrabold transition-colors ${value === v ? "bg-[var(--g-brass)] text-[var(--g-ink)] shadow-[inset_0_1px_0_rgba(255,255,255,.4),0_3px_0_var(--g-brass-dark)]" : "text-[var(--g-muted)] hover:text-[var(--g-text)]"}`}>{t}</button>
       ))}
     </div>
   );
