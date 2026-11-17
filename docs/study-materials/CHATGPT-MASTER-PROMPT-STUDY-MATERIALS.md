@@ -1,167 +1,82 @@
-# Master prompt: GATE-level study materials from ChatGPT (deep research)
+# Master prompt: research how RENYXERA should build its GATE study materials
 
-18 Nov 2026. For the owner. Paste the prompt in the box below into ChatGPT, one chapter per chat, in **Deep research** mode (or the strongest model with web search). Save each answer as `content/study/CS/<chapter-id>/chatgpt-draft.md` and hand it to Claude Code. Claude converts it to the app's block format, recomputes every number with scripts, links the real PYQs from our bank by tag, checks for copied text, and renders it for your review. **ChatGPT's draft is raw material, never published as-is.**
+18 Nov 2026, rewritten after owner feedback: ChatGPT is asked for **research and a build blueprint**, not to write the chapters. Claude Code authors every chapter from this blueprint.
 
 ## How to run it (owner steps)
 
-1. Open ChatGPT, start a new chat, choose **Deep research** (or GPT with search on).
-2. Copy everything inside the box below.
-3. At the very bottom, fill the three lines under `=== THIS RUN ===` (subject, chapter, topics). Start with **Operating System → Deadlock** (our reference chapter), then go subject by subject in the order given in section 9.
-4. Send. If it stops midway, reply `continue from where you stopped, same format`.
-5. When it finishes, reply with the **self-check** line: `Run the section 8 checklist on your answer and fix anything that fails. Then give me the full corrected file once more.`
-6. Download or copy the final answer into one `.md` file named `<chapter-id>.md` (for example `cs.os.deadlock.md`) and put it in `D:\0-UI\r2ma-stable\content\study\CS\incoming\`. Tell Claude Code "new chapter drafts in incoming".
-
-One chapter per chat keeps the depth high; a whole subject in one chat gets short and shallow.
+1. Open ChatGPT, new chat, choose **Deep research**.
+2. Copy everything inside the box below and send it.
+3. When it finishes, send: `Run the section 9 self-check on your answer, fix what fails, and give me the complete corrected document once more.`
+4. Save the final answer as `D:\0-UI\r2ma-stable\docs\study-materials\chatgpt-blueprint.md` and tell Claude Code "blueprint saved". Claude compares it with our plan (files 01 to 14 in this folder), shows you what differs, and then builds.
 
 ```
-You are a senior GATE CS faculty member, textbook author and instructional designer. You have taught GATE CS for 15 years, you know every official paper from 1990 to 2026 and the official GATE 2027 syllabus, and you write for students who find textbooks hard. Use web research to confirm facts, current syllabus wording and how topics are asked, but write everything in your own words. Never copy sentences, examples or figures from any book, website, coaching material or paper solution site.
+You are a team of four working together: (1) a learning scientist who knows the research on how students learn technical subjects, (2) a GATE CS subject expert who has taught GATE for 15 years and knows every official paper from 1990 to 2026 and the GATE 2027 syllabus, (3) a textbook and instructional designer who has shipped digital textbooks, and (4) a product researcher who studies the best study apps and digital books. Do real web research. Cite sources for every claim about research, competitors or exam facts. Where you are unsure, say so.
 
-=== 1. THE PRODUCT AND THE READER ===
-RENYXERA is a GATE preparation web app (phone and desktop). Its study materials are paid lesson packs that sit next to an official past-paper bank (about 3,250 official GATE questions, 2017 to 2026), an exam-identical test screen, flashcards and an AI tutor. Lessons are read inside the app: a reading column with diagrams drawn from data, typeset maths, highlights and notes.
-Reader: an Indian engineering student, 20 to 25, preparing alone, often on a phone, often at night. English is their second language. Many have weak fundamentals and get lost in textbook language. They need to understand the idea first, then the exact rule, then see it used on real GATE-style numbers, then know the traps.
-Goal of every chapter: a student who reads only this chapter can solve every GATE question ever asked on it, and explain why.
+I am NOT asking you to write study material. I am asking you to research and design HOW our study materials must be built so that our writer (an AI author working inside our codebase) can produce GATE-level chapters that are complete, accurate, easy to understand, and better than anything students can get today.
 
-=== 2. WRITING RULES (STRICT) ===
-- Simple English. Short sentences (mostly under 20 words). Explain every term the first time it appears. No idioms, no slang, no filler ("It is important to note that…", "In today's world…").
-- Concept first, symbols second: say it in words, show it in a picture, then give the formal statement.
-- Detailed, not brief. Each topic is a full lesson, not a summary. Typical topic length: 900 to 1,800 words plus diagrams, examples and questions. A chapter usually has 5 to 10 topics.
-- Every claim is exact. Give conditions of validity ("only when the resource has a single instance"). Say which convention you use when books differ (for example, whether a heap is 0- or 1-indexed, log base, page size units) and keep it consistent.
-- Numbers: show every step of every calculation. Round as GATE does and state the rounding.
-- Use Indian-exam context naturally (GATE question types: MCQ with negative marking, MSQ with no negative marking, NAT numeric answer). Never mention coaching institutes or brand names.
-- No emojis. No marketing tone.
+=== 1. THE PRODUCT ===
+RENYXERA is a GATE preparation web app (installable, phone and desktop) for Indian engineering students: official past-paper bank (about 3,250 official questions, 2017 to 2026, CS verified), exam-identical test screen, AI tutor, analytics, flashcards, mistakes bank. Study materials are a planned paid product: lesson packs per subject (₹99 to ₹149, one-time), read inside the app. Free sample: Operating Systems → Deadlock. Budget for tools is zero: everything must be free or built in-house. Branches: CS first, then DA, EC, EE, ME, CE.
+How lessons are shown today (planned): one reading column; content stored as structured blocks (hook, intuition, definition/theorem/formula, walkthrough, worked example, trap, shortcut, gate-note, recall card, check questions, PYQ links, references); maths typeset; diagrams drawn from data as SVG (graphs, trees, automata, Gantt charts, memory layouts, circuits, plots); highlights in four colours and typed notes that sync; copy protection.
 
-=== 3. REQUIRED STRUCTURE OF EVERY TOPIC (IN THIS ORDER) ===
-Write the chapter as Markdown using these exact fenced blocks so it can be converted automatically. Every topic starts with "# Topic: <title>" and "id: <chapter-id>.<topic-slug>".
+=== 2. THE READER ===
+20 to 25 years old, preparing alone, mostly on a phone, often at night. English is a second language. Many have weak fundamentals and get lost in textbook language. Many have watched long video lectures and still cannot solve 2-mark GATE questions. They need: the idea first, then the exact rule, then real GATE-style use, then the traps, then practice.
 
-:::hook
-1 to 2 sentences: a real situation where this idea matters (everyday or computing).
-:::
+=== 3. THE OWNER'S REQUIREMENTS (NON-NEGOTIABLE) ===
+- No chapter may be blank, thin or a summary. Each must be detailed, at full GATE depth.
+- Real diagrams and images in every topic (not only flowcharts and tables): figures that show the concept (graphs, trees, memory, timelines, circuits, state machines, plots, step-by-step algorithm states).
+- Simple English, easy to understand.
+- Past GATE questions, worked examples, practice, traps, and links between topics and subjects.
+- Everything a top-quality GATE study material should have.
 
-:::intuition
-The idea in plain words (150 to 300 words), with an analogy that is technically faithful (say where the analogy breaks). Followed by the first diagram.
-:::
+=== 4. WHAT I NEED FROM YOU (USE THESE SECTION NUMBERS) ===
 
-:::diagram <type> id=<id> alt="<one-sentence description for screen readers>"
-(see section 4 for the diagram format)
-:::
+4.1 Learning science: what research says works for technical self-study and exam preparation (worked examples and fading, retrieval practice, spacing, interleaving, dual coding, concrete-to-abstract, cognitive load, misconception-first teaching, self-explanation prompts, signalling). For each: the finding, the source, and exactly how it should appear on a lesson page (a concrete rule our writer can follow).
 
-:::definition name="<name>"   (or :::theorem / :::formula)
-The exact statement. For a formula, add a symbol table: symbol | meaning | unit or range.
-:::
+4.2 Benchmark: study the best references and products and say what to copy (as patterns, not content): leading GATE books and notes, classic textbooks (Cormen, Silberschatz, Tanenbaum, Hopcroft-Ullman, Morris Mano, Hamacher/Patterson, Korth, etc.), NPTEL courses, Brilliant, Khan Academy, Better Explained, 3Blue1Brown style visual explanation, interactive textbooks (e.g. Open DSA, MIT OCW notes), and any strong Indian GATE platforms. For each: what it does best, what it does badly, and the pattern we should adopt. A comparison table at the end.
 
-:::walkthrough
-How we get there, step by step: derivation, algorithm steps, or proof sketch. Each step has a one-line reason.
-:::
+4.3 The ideal chapter blueprint: the exact structure of a GATE-level chapter and of each topic inside it, block by block, with the purpose of each block, minimum and maximum lengths, how many examples/traps/diagrams/questions, and the order. Explain why this order. Include chapter-level pieces (chapter map, notation table, summary, formula sheet, mistake list, mixed practice, revision sheet) and say which are essential vs optional.
 
-:::example id=<id> level=<easy|gate|hard>
-given: …
-find: …
-steps:
-  - say: "<what we do and why>"
-    math: "<TeX>"
-answer: "<final answer with unit/rounding>"
-check: "<a quick independent way to confirm the answer>"
-:::
-(At least 3 examples per topic: one easy, one at GATE level, one hard or multi-concept. Use your own numbers. Where an example is modelled on a real GATE question, add pattern="GATE CS <year> (Set/Shift if known) Q<number if known>" and keep your numbers different.)
+4.4 Depth standard: a measurable definition of "GATE level" for a chapter (for example: every syllabus line covered; every question pattern from 1990 to 2026 has a worked method; 2-mark NAT/MSQ handled; edge cases listed). Give a scoring rubric (0 to 5 per criterion) our reviewer can apply to each chapter.
 
-:::trap
-wrong: "<the common wrong belief or step>"
-why-tempting: "<why students fall for it>"
-why-wrong: "<the precise reason, with a counter-example>"
-rule: "<the correct rule in one line>"
-:::
-(2 to 4 traps per topic, taken from how students actually lose marks in GATE.)
+4.5 Diagrams and images: which figure types each CS subject needs (OS, DBMS, CN, Algorithms, Programming and DS, TOC, Compiler Design, COA, Digital Logic, Discrete Maths, Linear Algebra, Calculus, Probability, General Aptitude), with 5 to 10 concrete figure ideas per subject (for example "page-table walk with TLB hit and miss paths", "B+ tree insertion split, three states"). Rules for good technical figures (one idea per figure, step sequences, labelling, colour use, accessibility, phone width). How to keep figures exactly correct (generated from data, checked against the worked example). When an illustration (not a precise figure) helps, and how to brief it.
 
-:::shortcut
-The faster method, the exact condition when it is valid, and one example where using it wrongly gives a wrong answer.
-:::
-(Only where a real shortcut exists.)
+4.6 Simple English: a style guide for second-language readers (sentence length, vocabulary list to avoid, how to introduce a term, how to write a definition, how to phrase a trap), with before/after examples of a hard textbook sentence rewritten.
 
-:::compare
-A side-by-side table when two or three concepts are confused (same attributes in every column).
-:::
+4.7 PYQ integration: how to use past questions inside lessons without copying question text (patterns, methods, year references, linking to the app's question bank by topic tag), how many to show per topic, where they go in the lesson, and how to show frequency/trend of a topic in GATE.
 
-:::gate-note
-How GATE asks this topic: question types seen (MCQ/MSQ/NAT), typical numbers, years it appeared (only years you are confident about; write "(verify)" after any year you are not sure of), marks, and how the difficulty has changed over time.
-:::
+4.8 Linking: how to connect topics within a chapter, across chapters, and across subjects (prerequisite maps, "used later in", cross-subject bridges), and how to show this to students (maps, links, recaps).
 
-:::pyq-patterns
-Group the real GATE questions on this topic into 3 to 6 patterns (for example "find the safe sequence", "count minimum resources to avoid deadlock"). For each pattern: the idea, a method that solves every question of that pattern, and the GATE years/sets where it appeared (mark uncertain ones "(verify)"). Do NOT reproduce any official question text; describe the pattern in your own words. RENYXERA links the actual questions from its own bank.
-:::
+4.9 Practice and revision inside lessons: check questions per topic (types, difficulty mix, solutions), mixed practice per chapter, recall cards, spaced revision hooks into the app's flashcards and mistakes bank.
 
-:::recall
-cue → answer pairs (5 to 8), one mnemonic if useful, a one-line summary, and "If you forget everything else, remember: …". At most 60 words of recall text.
-:::
+4.10 Accuracy and quality pipeline: how a small team (one owner plus an AI author) can guarantee correctness: verify every number by script, run every code sample, check diagrams against data, plagiarism/overlap checks, expert review checklist, error reports from students, versioning. Give the checklists.
 
-:::check
-4 to 6 practice questions in GATE format (mix of MCQ, MSQ, NAT), each with: question, options (for MCQ/MSQ), answer, full worked solution, marks (1 or 2), and the topic tag. Original questions only.
-:::
+4.11 Per-subject plan for CS: for each subject, the chapter list in teaching order mapped to the GATE 2027 syllabus lines, estimated topics per chapter, the hardest concepts students struggle with, and the top question patterns from past papers (years where you are confident; mark uncertain ones "(verify)").
 
-:::links
-prerequisites: <topic ids from earlier chapters this depends on, with one line why>
-used-later-in: <topics/subjects that build on this, with one line how>
-cross-subject: <links to other GATE subjects, e.g. "Deadlock ↔ Graph cycle detection (Algorithms)">
-:::
+4.12 One fully worked sample of the blueprint applied to ONE topic: "Banker's algorithm" (OS → Deadlock), showing every block with real content, including at least two figures described precisely (data for an SVG engine) so our writer sees the standard. This is the only content I want you to write.
 
-At the end of the chapter (once):
-- :::chapter-summary (a one-page revision sheet: key formulas, rules, decision steps)
-- :::formula-sheet (every formula in the chapter with conditions)
-- :::mistake-list (the 10 most common mistakes in this chapter, one line each)
-- :::mixed-practice (8 to 12 GATE-level questions that mix topics of this chapter, with solutions)
-- :::references (the standard textbooks and official sources a student can read further: title, author, chapter name only; no copied text; add the official GATE 2027 syllabus line this chapter covers)
+4.13 Mobile reading experience: what makes long technical lessons readable on a phone (chunking, sticky context, progress, diagram zoom, tables on narrow screens, dark mode), with sources.
 
-=== 4. DIAGRAMS: REAL FIGURES, NOT ONLY FLOWS AND TABLES (MANDATORY) ===
-Every topic must have at least 2 diagrams, and the chapter at least 8, of which most are true figures: graphs, trees, state machines, memory/stack layouts, timelines (Gantt charts), circuit/logic diagrams, matrices with arrows, plots, block diagrams, page tables, packet headers, automata, schedules, address-translation pictures. Flowcharts and tables do not count towards the minimum.
-For every diagram give BOTH:
-(a) a data description that RENYXERA's diagram engine can draw exactly, in this format:
-:::diagram <graph|tree|automaton|gantt|memory|matrix|plot|circuit|block|timeline|table-figure|geometry> id=<id> alt="<description>"
-nodes: …        (id, label, kind)
-edges: …        (from -> to, label)
-layout: …       (left-to-right, top-down, layered, grid; positions if they matter)
-highlight: …    (what to colour and why)
-caption: "<one sentence the student should take from the picture>"
-:::
-(b) a complete, valid inline SVG version of the same figure (viewBox set, no external fonts or images, text as <text>, colours limited to 3 plus black/grey, readable at 360 px width), inside a ```svg fenced block directly after the diagram block.
-Diagrams must be correct to the last edge and number: if a figure shows an algorithm state, it must match the worked example step it belongs to. Prefer several small step-by-step figures (state 1, state 2, state 3) over one crowded figure.
-Where a picture would help but cannot be drawn exactly (an analogy, a real-world scene), add an :::illustration-brief block describing the illustration for an artist (what is in the scene, labels, the one idea it must show). These are optional extras, never replacements for exact figures.
+4.14 Pricing and packaging signals: what students value enough to pay for in study material versus free YouTube/notes, and what would make RENYXERA's material clearly better (with evidence where available).
 
-=== 5. GATE LEVEL AND DEPTH ===
-- Cover every line of the official GATE 2027 CS syllabus for this chapter, plus the background a GATE question silently assumes. Mark anything beyond the syllabus as :::optional-advanced.
-- Depth target: a student who finishes the chapter should handle 2-mark NAT and MSQ questions, not just definitions.
-- Include the "why" behind every rule (where it comes from), so students can rebuild it in the exam.
-- Include edge cases GATE loves (empty structures, single instance vs multiple instances, off-by-one, worst vs average case, boundary values).
+4.15 Risks: copyright, accuracy, AI-written content looking generic, outdated syllabus, too long to finish. How to prevent each.
 
-=== 6. LINKING AND FLOW BETWEEN TOPICS ===
-- The chapter must read as one story: each topic opens by connecting to the previous one and ends with a one-line bridge to the next.
-- Use consistent notation across the whole chapter (state a notation table at the start of the chapter).
-- Give a :::chapter-map at the very start: a diagram (with SVG) of how the topics depend on each other and on other subjects.
+4.16 A build plan: the order to produce materials (which subject first and why), how long a chapter takes with an AI author plus review, and what to measure after launch (completion, check-question scores, return rate).
 
-=== 7. HONESTY AND ORIGINALITY ===
-- Write every sentence, example, figure and question yourself. If a fact is widely standard (an algorithm, a theorem), explain it in your own words with your own example.
-- Never invent GATE years, marks or question numbers. If unsure, write "(verify)". Do not quote official GATE question text.
-- If two sources disagree, say so in a :::note and state which convention this chapter uses.
-- If something is genuinely unclear or ambiguous in GATE's history (a disputed answer key), say so.
+=== 5. RULES ===
+- Cite sources (title, author/organisation, link) for research findings, competitor observations and exam facts.
+- No invented statistics. Say "no reliable data found" when that is the case.
+- Concrete over general: every recommendation must be something our writer can apply on a page.
+- Do not copy any book or website text.
 
-=== 8. SELF-CHECK BEFORE YOU ANSWER (RUN IT, THEN FIX) ===
-For every topic confirm: all required blocks present in order; ≥ 3 examples with every step shown; ≥ 2 traps; ≥ 2 true diagrams each with data + SVG; check questions with full solutions; links block filled. For the chapter: chapter-map, notation table, summary, formula sheet, mistake list, mixed practice, references. Recompute every number in every example and question once more and fix any mismatch. Confirm no sentence is copied from any source. Confirm uncertain years are marked "(verify)". Confirm simple English (short sentences, every new term explained).
+=== 6. OUTPUT ===
+One Markdown document with the section numbers above, tables where useful, and a final "Top 20 rules for the writer" list that condenses everything into rules an AI author can follow while writing a chapter.
 
-=== 9. ORDER OF CHAPTERS (FOR THE OWNER; NOT PART OF THIS RUN) ===
-CS core: Operating System, Databases, Computer Networks, Algorithms, Programming and Data Structures, Theory of Computation, Compiler Design, Computer Organization and Architecture, Digital Logic. Engineering Mathematics: Discrete Mathematics, Linear Algebra, Calculus, Probability and Statistics. General Aptitude: Verbal, Quantitative, Analytical, Spatial.
-
-=== 10. OUTPUT ===
-One Markdown document only, nothing before or after it: front matter, chapter-map, notation table, then every topic in order with all blocks, then the end-of-chapter blocks. If the answer is too long for one reply, stop at the end of a topic and write "CONTINUES IN NEXT REPLY"; I will say "continue".
-
-=== THIS RUN ===
-Subject: Operating System
-Chapter: Deadlock (chapter id: cs.os.deadlock)
-Topics to cover (add any the syllabus needs that I missed): system model and resource types; the four necessary conditions; resource-allocation graph (single and multiple instances, reducibility); deadlock prevention (breaking each condition, costs); deadlock avoidance (safe state, Banker's algorithm with full step tables, resource-request algorithm); deadlock detection (wait-for graph, detection algorithm for multiple instances); recovery (termination, pre-emption, rollback, starvation); minimum resources to guarantee no deadlock (the n(k-1)+1 type problems); deadlock vs starvation vs livelock; GATE patterns across the chapter.
+=== 9. SELF-CHECK ===
+Before answering, check: every section 4.1 to 4.16 is answered; every research claim has a source; the rubric is measurable; the Banker's sample includes all blocks and two precise figures; the figure lists cover every CS subject; nothing is copied.
 ```
 
-## What Claude Code does with each draft
-
-1. Converts the Markdown blocks into the lesson JSON schema (`docs/study-materials/04-CONTENT-FORMAT-AND-RENDERING.md`); rejects missing blocks.
-2. Writes a verify script for every example and check question; any number that does not reproduce is fixed or the example is dropped.
-3. Validates every diagram's data, renders it with the app's diagram engine, and compares it with ChatGPT's SVG; the data version is what ships (theme-aware, light/dark).
-4. Replaces `pyq-patterns` year references with real links from our bank by tag; anything marked "(verify)" is checked against the bank or removed.
-5. Runs an overlap check against public sources for copied text.
-6. Renders the chapter on phone and desktop, light and dark, for your review before it goes behind the paywall.
+## What Claude Code does with the blueprint
+1. Compares it with our existing plan (`01` to `14` in this folder) and lists what changes.
+2. Updates the chapter template, block schema and reviewer rubric.
+3. Builds the lesson renderer and diagram engine to the blueprint.
+4. Writes the Deadlock reference chapter itself (all topics, figures from data, every number verified by script, PYQs linked from our bank) and shows it to you on phone and desktop before writing more.
