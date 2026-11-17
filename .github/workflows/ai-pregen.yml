@@ -21,8 +21,9 @@ jobs:
         run: |
           if [ -z "$PREGEN_SECRET" ]; then echo "PREGEN_SECRET not set — skipping"; exit 0; fi
           for i in 1 2 3; do
-            out=$(curl -sS -m 280 -X POST https://gate.renyxera.workers.dev/api/ai/pregen \
-              -H "Content-Type: application/json" -H "x-pregen-secret: $PREGEN_SECRET" -d '{"batch":6}')
+            # A timeout or a 5xx from the free AI models is not a broken pipeline: warn; the next scheduled run continues.
+            out=$(curl -sS -m 280 --retry 2 --retry-delay 20 -X POST https://gate.renyxera.workers.dev/api/ai/pregen \
+              -H "Content-Type: application/json" -H "x-pregen-secret: $PREGEN_SECRET" -d '{"batch":6}') || { echo "::warning::pre-generation request failed (attempt $i); the next run picks up where this stopped"; out=""; }
             echo "$out"
             echo "$out" | grep -q '"state":"running"' || break
           done
