@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concept F: Studio Showdown</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter+Tight:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--stage:#0b0806;--floor:#1c140e;--gold:#f0b73a;--gold2:#9a6a12;--red:#d4302a;--cream:#f6efe2;--muted:#a8998a;--bulb:#ffd98a}
+*{box-sizing:border-box;margin:0}body{background:var(--stage);color:var(--cream);font-family:"Inter Tight",sans-serif;overflow-x:clip}
+.app{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto;background:radial-gradient(40% 50% at 50% 10%,rgba(255,217,138,.28),transparent 70%),linear-gradient(var(--stage) 60%,var(--floor))}
+.hud{display:flex;gap:8px;align-items:center;padding:12px 16px}
+.plaq{border:1px solid var(--gold2);border-radius:4px;padding:4px 10px;font-weight:700}.plaq b{color:var(--gold)}.sp{flex:1}
+main{padding:0 16px 16px;display:grid;gap:16px;align-content:start}
+.marquee{position:relative;text-align:center;padding:14px;border:3px solid var(--gold);border-radius:10px;background:#140e09}
+.marquee:before{content:"";position:absolute;inset:6px;border-radius:6px;background:radial-gradient(circle,var(--bulb) 2px,transparent 2.5px) 0 0/16px 16px;opacity:.55;pointer-events:none;-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;padding:4px}
+.marquee h1{font-family:Anton;font-size:44px;letter-spacing:.04em;color:var(--gold)}
+.podiums{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end}
+.pod{text-align:center}.pod .head{width:86px;height:86px;border-radius:50%;margin:0 auto -10px;background:#2a1f16;border:3px solid var(--gold);display:grid;place-items:center;font-family:Anton;font-size:30px}
+.pod .desk{padding:24px 10px 12px;border-radius:10px 10px 4px 4px;background:linear-gradient(var(--red),#8e1c18);border-top:4px solid var(--gold)}
+.pod .desk b{font-family:Anton;font-size:44px;display:block;color:var(--cream)}.pod .desk span{color:#f3c9bd}
+.pod.r .head{border-style:dashed;color:var(--muted)}.pod.r .desk{background:linear-gradient(#3a2c22,#241a12)}.pod.r .desk span{color:var(--muted)}
+.buzz{display:grid;place-items:center}.buzz button{width:180px;height:180px;border-radius:50%;border:8px solid var(--gold);background:radial-gradient(circle at 40% 35%,#ff6a55,var(--red) 55%,#7a1512);color:var(--cream);font-family:Anton;font-size:40px;letter-spacing:.04em;box-shadow:0 10px 0 #5a0f0c,0 0 40px rgba(212,48,42,.35)}
+.note{color:var(--muted);text-align:center}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.modes div{border:1px solid var(--gold2);border-radius:8px;padding:8px;text-align:center;font-weight:700}.modes small{display:block;color:var(--muted);font-weight:500}.modes .on{background:var(--gold);color:#1a1208}.modes .on small{color:#4a3510}
+.dock{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--gold2);background:#0b0806}.dock a{text-align:center;padding:12px 0;font-weight:700;color:var(--muted)}.dock a.on{color:var(--gold)}
+@media(min-width:1000px){main{grid-template-columns:1.4fr 1fr;padding:0 40px 24px}.dock{grid-template-columns:repeat(4,160px);justify-content:center}}
+</style></head><body><div class="app">
+<header class="hud"><span class="plaq">Test Student <b>1000</b></span><span class="sp"></span><span class="plaq">Coins <b>10</b></span><span class="plaq">Inbox <b>2</b></span></header>
+<main>
+<section style="display:grid;gap:16px">
+ <div class="marquee"><h1>GATE SHOWDOWN</h1></div>
+ <div class="podiums"><div class="pod"><div class="head">TS</div><div class="desk"><b>0</b><span>You, rating 1000</span></div></div><div class="pod r"><div class="head">?</div><div class="desk"><b>–</b><span>Pick a rival</span></div></div></div>
+</section>
+<section style="display:grid;gap:14px;align-content:start">
+ <div class="buzz"><button>PLAY</button></div>
+ <div class="modes"><div class="on">Quick<small>5 questions</small></div><div>Show<small>10 questions</small></div><div>Finale<small>15 questions</small></div></div>
+ <p class="note">Both contestants get the same question on screen. Lock in your answer; marks light up on your podium, wrong MCQs take marks away. Highest podium wins.</p>
+</section>
+</main>
+<nav class="dock"><a class="on">Play</a><a>Ranks</a><a>Friends</a><a>Profile</a></nav>
+</div></body></html>

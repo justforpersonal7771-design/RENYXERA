@@ -1,0 +1,50 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concept D: Grid Race</title>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;800&family=Saira:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--asphalt:#1d1d1f;--asph2:#2a2a2d;--kerb-r:#e23b2e;--kerb-w:#f2f0ea;--orange:#ff6b1a;--lime:#c6f24e;--grey:#8d8b86;--white:#f6f4ef}
+*{box-sizing:border-box;margin:0}body{background:var(--asphalt);color:var(--white);font-family:Saira,sans-serif;overflow-x:clip}
+.app{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto}
+.hud{display:flex;gap:8px;align-items:center;padding:12px 16px;background:#111}
+.pill{font-family:"Saira Condensed";font-weight:800;font-size:18px;padding:4px 10px;border-radius:4px;background:var(--asph2)}
+.pill b{color:var(--orange)}.sp{flex:1}
+main{padding:16px;display:grid;gap:16px;align-content:start}
+.track{position:relative;border-radius:14px;overflow:hidden;background:var(--asph2)}
+.track svg{display:block;width:100%;height:auto}
+.lanes{display:grid;gap:8px}
+.lane{display:grid;grid-template-columns:72px 1fr 56px;align-items:center;gap:10px;font-family:"Saira Condensed";font-weight:800;font-size:18px}
+.bar{height:14px;border-radius:7px;background:#333;overflow:hidden}.bar i{display:block;height:100%;background:var(--orange)}
+.bar.r i{background:var(--grey);width:0}
+.go{display:block;width:100%;padding:16px;border:0;border-radius:10px;background:var(--orange);color:#1a0d04;font-family:"Saira Condensed";font-weight:800;font-size:40px;letter-spacing:.04em;transform:skew(-6deg);box-shadow:0 6px 0 #9c3b06}
+.lights{display:flex;gap:10px;justify-content:center}.lights i{width:26px;height:26px;border-radius:50%;background:#3a1210;box-shadow:inset 0 0 0 3px #111}.lights i.on{background:var(--kerb-r);box-shadow:0 0 14px var(--kerb-r)}
+.note{color:var(--grey)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.modes div{background:var(--asph2);border-radius:8px;padding:10px;font-family:"Saira Condensed";font-weight:800;font-size:20px}.modes small{display:block;font-family:Saira;font-weight:500;font-size:13px;color:var(--grey)}
+.modes .on{outline:2px solid var(--orange)}
+.dock{display:grid;grid-template-columns:repeat(4,1fr);background:#111}.dock a{text-align:center;padding:12px 0;font-family:"Saira Condensed";font-weight:800;font-size:18px;color:var(--grey)}.dock a.on{color:var(--orange)}
+@media(min-width:1000px){main{grid-template-columns:1.5fr 1fr;padding:24px 40px}.dock{grid-template-columns:repeat(4,160px);justify-content:center}}
+</style></head><body><div class="app">
+<header class="hud"><span class="pill">Test Student <b>1000</b></span><span class="sp"></span><span class="pill">Coins <b>10</b></span><span class="pill">Inbox <b>2</b></span></header>
+<main>
+<section style="display:grid;gap:14px">
+ <div class="track"><svg viewBox="0 0 600 300">
+  <rect width="600" height="300" fill="#2a2a2d"/>
+  <path d="M60 240 C60 60 540 60 540 150 C540 240 160 260 160 170 C160 110 420 110 420 170" fill="none" stroke="#3b3b3f" stroke-width="54" stroke-linecap="round"/>
+  <path d="M60 240 C60 60 540 60 540 150 C540 240 160 260 160 170 C160 110 420 110 420 170" fill="none" stroke="#f2f0ea" stroke-width="2" stroke-dasharray="10 12" opacity=".5"/>
+  <path d="M60 240 C60 60 540 60 540 150" fill="none" stroke="#e23b2e" stroke-width="6" stroke-dasharray="14 14" opacity=".9" transform="translate(0 30)"/>
+  <rect x="34" y="226" width="52" height="8" fill="#f2f0ea"/><rect x="34" y="226" width="13" height="4" fill="#111"/><rect x="60" y="226" width="13" height="4" fill="#111"/><rect x="47" y="230" width="13" height="4" fill="#111"/><rect x="73" y="230" width="13" height="4" fill="#111"/>
+  <g transform="translate(46 196) rotate(-80)"><rect x="-14" y="-7" width="28" height="14" rx="5" fill="#ff6b1a"/><rect x="2" y="-5" width="7" height="10" rx="2" fill="#1d1d1f"/></g>
+  <g transform="translate(76 206) rotate(-80)" opacity=".55"><rect x="-14" y="-7" width="28" height="14" rx="5" fill="#8d8b86"/></g>
+  <text x="300" y="285" text-anchor="middle" font-family="Saira Condensed" font-weight="800" font-size="20" fill="#8d8b86">Lap 0 of 10</text>
+ </svg></div>
+ <div class="lanes"><div class="lane">You<div class="bar"><i style="width:4%"></i></div>0/10</div><div class="lane" style="color:var(--grey)">Rival<div class="bar r"><i></i></div>?</div></div>
+</section>
+<section style="display:grid;gap:12px;align-content:start">
+ <div class="lights"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+ <button class="go">Start race</button>
+ <div class="modes"><div class="on">Sprint<small>5 questions</small></div><div>Race<small>10 questions</small></div><div>Endurance<small>15 questions</small></div></div>
+ <p class="note">Every correct answer is a lap; a 2-mark question is a faster lap. A wrong MCQ is a pit-stop penalty (negative marking). First across the line with the most marks wins.</p>
+</section>
+</main>
+<nav class="dock"><a class="on">Play</a><a>Ranks</a><a>Friends</a><a>Profile</a></nav>
+</div></body></html>

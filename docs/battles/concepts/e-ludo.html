@@ -1,0 +1,43 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concept E: Board Run</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#f7edd8;--cream2:#ecdcb8;--red:#d7392b;--green:#2f9d55;--yellow:#f2b51e;--ink:#2a1d14;--wood:#7a4a26;--muted:#7d6a55}
+*{box-sizing:border-box;margin:0}body{background:var(--wood);color:var(--ink);font-family:"Baloo 2",sans-serif;overflow-x:clip}
+.app{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto;background:repeating-linear-gradient(90deg,#7a4a26 0 18px,#6f4222 18px 36px)}
+.hud{display:flex;gap:8px;align-items:center;padding:12px 16px}
+.tok{background:var(--cream);border-radius:999px;padding:4px 12px;font-weight:800;box-shadow:0 3px 0 #4a2a12}.tok b{color:var(--red)}.sp{flex:1}
+main{padding:0 16px 16px;display:grid;gap:16px;align-content:start}
+.board{background:var(--cream);border-radius:18px;padding:12px;box-shadow:0 8px 0 #4a2a12,0 20px 30px -10px rgba(0,0,0,.5)}
+.board svg{display:block;width:100%;height:auto}
+.go{display:block;width:100%;padding:14px;border:0;border-radius:16px;background:var(--red);color:var(--cream);font-weight:800;font-size:36px;box-shadow:0 6px 0 #8e2117}
+.panel{background:var(--cream);border-radius:16px;padding:14px;box-shadow:0 5px 0 #4a2a12}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}.modes div{border:2px solid var(--cream2);border-radius:12px;padding:8px;font-weight:800}.modes small{display:block;color:var(--muted);font-weight:600}.modes .on{border-color:var(--green)}
+.dock{display:grid;grid-template-columns:repeat(4,1fr);background:var(--cream)}.dock a{text-align:center;padding:10px 0;font-weight:800;color:var(--muted)}.dock a.on{color:var(--red)}
+@media(min-width:1000px){main{grid-template-columns:1fr 1fr;padding:0 40px 24px}.board{max-width:620px}.dock{grid-template-columns:repeat(4,160px);justify-content:center}}
+</style></head><body><div class="app">
+<header class="hud"><span class="tok">Test Student <b>1000</b></span><span class="sp"></span><span class="tok">Coins <b>10</b></span><span class="tok">Inbox <b>2</b></span></header>
+<main>
+<section class="board"><svg viewBox="0 0 300 300">
+ <rect width="300" height="300" rx="10" fill="#f7edd8"/>
+ <rect x="10" y="10" width="110" height="110" rx="10" fill="#d7392b"/><rect x="180" y="10" width="110" height="110" rx="10" fill="#2f9d55"/>
+ <rect x="10" y="180" width="110" height="110" rx="10" fill="#f2b51e"/><rect x="180" y="180" width="110" height="110" rx="10" fill="#2a1d14" opacity=".85"/>
+ <circle cx="65" cy="65" r="34" fill="#f7edd8"/><circle cx="235" cy="65" r="34" fill="#f7edd8"/><circle cx="65" cy="235" r="34" fill="#f7edd8"/><circle cx="235" cy="235" r="34" fill="#f7edd8"/>
+ <g fill="none" stroke="#ecdcb8" stroke-width="1.5">
+  <path d="M120 10 V120 H10 M180 10 V120 H290 M120 290 V180 H10 M180 290 V180 H290"/>
+  <path d="M140 10 V120 M160 10 V120 M140 180 V290 M160 180 V290 M10 140 H120 M10 160 H120 M180 140 H290 M180 160 H290"/>
+ </g>
+ <polygon points="120,120 180,120 150,150" fill="#2f9d55"/><polygon points="120,120 120,180 150,150" fill="#d7392b"/><polygon points="120,180 180,180 150,150" fill="#f2b51e"/><polygon points="180,120 180,180 150,150" fill="#2a1d14"/>
+ <circle cx="65" cy="65" r="14" fill="#d7392b" stroke="#2a1d14" stroke-width="3"/><text x="65" y="70" text-anchor="middle" font-size="12" font-weight="800" fill="#f7edd8">You</text>
+ <circle cx="235" cy="65" r="14" fill="#f7edd8" stroke="#2f9d55" stroke-width="3" stroke-dasharray="4 3"/><text x="235" y="70" text-anchor="middle" font-size="14" font-weight="800" fill="#2f9d55">?</text>
+ <g transform="translate(150 230)"><rect x="-16" y="-16" width="32" height="32" rx="7" fill="#fff" stroke="#2a1d14" stroke-width="2.5"/><circle cx="-7" cy="-7" r="3" fill="#2a1d14"/><circle cx="7" cy="7" r="3" fill="#2a1d14"/><circle cx="0" cy="0" r="3" fill="#2a1d14"/></g>
+</svg></section>
+<section style="display:grid;gap:12px;align-content:start">
+ <button class="go">Roll and play</button>
+ <div class="panel"><b>How it works</b><p>Answer right and your token moves: 1-mark question = 1 square... 2-mark = 2 squares. A wrong MCQ sends you back (negative marking). First token home wins.</p>
+ <div class="modes"><div class="on">Short<small>5 questions</small></div><div>Classic<small>10 questions</small></div><div>Long<small>15 questions</small></div></div></div>
+</section>
+</main>
+<nav class="dock"><a class="on">Play</a><a>Ranks</a><a>Friends</a><a>Profile</a></nav>
+</div></body></html>
