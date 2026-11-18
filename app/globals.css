@@ -2343,3 +2343,6 @@ html.theme-switching * { transition: none !important; }
 .mentor-btn { border: 2px solid transparent !important; color: var(--tint-lilac-ink) !important;
   background: linear-gradient(var(--tint-lilac), var(--tint-lilac)) padding-box, linear-gradient(120deg, #6366f1, #a855f7 45%, #ec4899) border-box !important; }
 .dark .mentor-btn { color: #f3e8ff !important; background: linear-gradient(#2a1f3d, #2a1f3d) padding-box, linear-gradient(120deg, #6366f1, #a855f7 45%, #ec4899) border-box !important; }
+
+/* Phones: the floating lesson tools step aside while the contents sheet is open. */
+body[data-lesson-sheet] .lesson-dock { display: none; }

@@ -10,6 +10,9 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, BookOpen, History, Search, X } from "lucide-react";
 import { CS_SHELF } from "@/lib/study/catalog";
 import { useStudyTabs, type StudyTab } from "@/lib/study/tabs";
+import { NEW_TAB, StudyTabs } from "@/components/study/study-tabs";
+
+const NEW: StudyTab = { href: NEW_TAB, title: "New tab", subject: "Pick a chapter" };
 
 const READY: StudyTab[] = CS_SHELF.flatMap((b) => b.chapters.filter((c) => c.href).map((c) => ({ href: c.href!, title: c.title, subject: b.title, tint: b.tint })));
 const ALL = CS_SHELF.flatMap((b) => b.chapters.map((c) => ({ ...c, subject: b.title, tint: b.tint })));
@@ -34,10 +37,11 @@ export default function StudyNewTab() {
   const found = useMemo(() => (term ? ALL.filter((c) => `${c.subject} ${c.title}`.toLowerCase().includes(term)) : []), [term]);
   return (
     <div className="space-y-6 pb-10">
-      <div className="flex flex-wrap items-center gap-3">
-        <Link href="/study" className="pill-soft inline-flex items-center gap-1.5"><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link>
-        <h1 className="font-display text-3xl font-extrabold text-[var(--text-primary)]">New tab</h1>
+      <div className="flex min-w-0 items-end gap-2">
+        <Link href="/study" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5"><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link>
+        <div className="min-w-0 flex-1"><StudyTabs current={NEW} /></div>
       </div>
+      <h1 className="font-display text-2xl font-extrabold text-[var(--text-primary)]">Open a chapter in this tab</h1>
       <label className="flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-4">
         <Search className="h-5 w-5 text-[var(--text-muted)]" aria-hidden />
         <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search every subject and chapter" aria-label="Search chapters" className="search-bare h-12 flex-1 bg-transparent text-[var(--text-primary)]" />

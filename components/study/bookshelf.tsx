@@ -9,10 +9,10 @@
  * search across subjects and chapters, and an availability filter.
  */
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { BookOpen, Feather, Plus, Search, X } from "lucide-react";
-import { useStudyTabs } from "@/lib/study/tabs";
 import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { GOAL_SLIDER_DEFAULT_PERCENT, useGoalSliderStore } from "@/store/use-goal-slider-store";
@@ -109,23 +109,24 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
     <ol className="space-y-1">
       {b.chapters.map((c, i) => {
         const w = weights[i];
-        const tip = w.qs ? `${w.share.toFixed(1)}% of all marks · ${w.qs} past questions${focus?.active ? (w.inTarget ? " · inside your focus target" : " · outside your focus target") : ""}` : "Not yet tagged in the question bank";
         const mark = w.tier === "high" ? <span className="rounded-full px-2 py-0.5 text-[11px] font-extrabold text-white" style={{ background: ink }}>High weight</span>
           : w.tier === "mid" ? <span className="rounded-full border px-2 py-0.5 text-[11px] font-bold" style={{ borderColor: ink, color: ink }}>Medium</span> : null;
         const row = (
           <>
             <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
-            <span className={`min-w-0 flex-1 ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
+            <span className="min-w-[55%] flex-1">
+              <span className={`block ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
+              {w.qs > 0 && <span className="mt-1 flex items-center gap-2"><span className="h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, w.share * 12)}%`, background: ink }} /></span><span className="text-[11px] font-semibold text-[var(--text-secondary)]">{w.share.toFixed(1)}% of marks · {w.qs} PYQs{focus?.active && !w.inTarget ? " · outside your target" : ""}</span></span>}
+            </span>
             {mark}
-            {c.href ? <span className="flex items-center gap-1.5"><span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span><button type="button" title="Open in a new tab" aria-label={`Open ${c.title} in a new tab`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); useStudyTabs.getState().open({ href: c.href!, title: c.title, subject: b.title, tint: b.tint }); window.location.assign(c.href!); }} className="grid h-7 w-7 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><Plus className="h-3.5 w-3.5" /></button></span>
+            {c.href ? <span className="flex items-center gap-1.5"><span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span></span>
               : <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]"><Feather className="h-3 w-3" aria-hidden /> Being written</span>}
-            <span role="tooltip" className="pointer-events-none absolute bottom-full left-10 z-10 mb-1 hidden whitespace-nowrap rounded-lg bg-[var(--ink)] px-2.5 py-1 text-xs font-semibold text-[var(--background)] shadow-lg group-hover:block group-focus-visible:block">{tip}</span>
           </>
         );
-        const cls = `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 ${w.tier === "high" ? "border-l-4" : "border-l-4 border-transparent"} ${focus?.active && !w.inTarget ? "opacity-45" : ""}`;
+        const cls = `group relative flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl px-3 py-2.5 ${w.tier === "high" ? "border-l-4" : "border-l-4 border-transparent"} ${focus?.active && !w.inTarget ? "opacity-45" : ""}`;
         const style = w.tier === "high" ? { borderLeftColor: ink } : undefined;
         return (
-          <li key={c.id} title={tip}>
+          <li key={c.id}>
             {c.href ? <Link href={c.href} className={`${cls} hover:bg-black/5 dark:hover:bg-white/5`} style={style}>{row}</Link>
               : <div tabIndex={0} className={cls} style={style}>{row}</div>}
           </li>
@@ -168,14 +169,18 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
     window.addEventListener("keydown", k);
     return () => window.removeEventListener("keydown", k);
   }, [b, onClose]);
-  return (
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- the document exists only after mount
+  useEffect(() => setMounted(true), []);
+  if (!mounted) return null;
+  return createPortal(
     <AnimatePresence>
       {b && (
-        <motion.div className="fixed inset-0 z-[120] grid place-items-center bg-[rgba(24,21,18,.42)] p-3 sm:p-6" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.div className="fixed inset-0 z-[400] grid place-items-center bg-[rgba(24,21,18,.42)] p-3 pb-[calc(1rem+env(safe-area-inset-bottom))] sm:p-6" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <motion.div role="dialog" aria-modal="true" aria-label={b.title} onClick={(e) => e.stopPropagation()} style={{ transformPerspective: 1400 }}
             initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
             transition={{ duration: reduce ? 0.14 : 0.38, ease: [0.22, 1, 0.36, 1] }}
-            className="grid max-h-[88dvh] w-full max-w-4xl overflow-hidden rounded-[16px] shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr]">
+            className="grid max-h-[88dvh] w-full max-w-4xl overflow-y-auto rounded-[16px] md:overflow-hidden shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr]">
             <div className="relative p-6 sm:p-8" style={{ background: `var(--tint-${b.tint ?? "peri"})`, color: `var(--tint-${b.tint ?? "peri"}-ink)`, borderLeft: `14px solid var(--tint-${b.tint ?? "peri"}-ink)` }}>
               <BookOpen className="h-7 w-7" aria-hidden />
               <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
@@ -193,7 +198,8 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 
@@ -265,7 +271,7 @@ export function Bookshelf() {
           if (!books.length) return null;
           const stacks = sh.stacks.map((st) => st.filter((id) => books.some((b) => b.id === id))).filter((st) => st.length);
           const open1 = books.find((b) => b.id === drawer);
-          const openIt = (b: ShelfBook) => { if (isPhone()) setDrawer((d) => (d === b.id ? null : b.id)); else setOpen(b); };
+          const openIt = (b: ShelfBook) => setOpen(b);
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
           return (
             <div key={sh.id} className="sp2-shelf">

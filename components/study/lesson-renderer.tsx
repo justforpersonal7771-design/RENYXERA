@@ -136,7 +136,7 @@ function sectionsOf(t: Topic): Sec[] {
   return out;
 }
 const secId = (t: Topic, key: string) => `${t.id}--${key}`;
-const Sect = ({ t, k, children, className = "" }: { t: Topic; k: string; children: ReactNode; className?: string }) => <section id={secId(t, k)} data-sec="" className={`scroll-mt-4 ${className}`}>{children}</section>;
+const Sect = ({ t, k, children, className = "" }: { t: Topic; k: string; children: ReactNode; className?: string }) => <section id={secId(t, k)} data-sec="" className={`scroll-mt-24 lg:scroll-mt-4 ${className}`}>{children}</section>;
 
 /* ------------------------------------------------------------------ topic layout in rows */
 function TopicView({ t, index }: { t: Topic; index: number }) {
@@ -146,7 +146,7 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
   const lab = one("lab"), practice = one("practice"), hook = one("hook"), obj = one("objectives"), intu = one("intuition"), def = one("definition"), walk = one("walkthrough"), faded = one("faded"), shortcut = one("shortcut"), gate = one("gate"), recall = one("recall"), links = one("links");
   const qs = all("check").flatMap((c) => c.questions);
   return (
-    <article id={t.id} className="scroll-mt-4 space-y-5">
+    <article id={t.id} className="scroll-mt-24 space-y-5 lg:scroll-mt-4">
       <header className="lesson-topic-head">
         <p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
         <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2>
@@ -177,6 +177,9 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const [current, setCurrent] = useState<string>("");
   const [soon, setSoon] = useState<number | null>(null);
   const [open, setOpen] = useState<Record<string, boolean>>({});
+  const [sheet, setSheet] = useState(false);
+  // hide the floating tools while the contents sheet is open on a phone
+  useEffect(() => { if (sheet) document.body.dataset.lessonSheet = "1"; else delete document.body.dataset.lessonSheet; return () => { delete document.body.dataset.lessonSheet; }; }, [sheet]);
   const railRef = useRef<HTMLOListElement | null>(null);
   // keep the outline on the reader's place: scroll the active section (or its topic) into the middle of the rail
   useEffect(() => {
@@ -205,33 +208,49 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     return () => { el.removeEventListener("scroll", on); cancelAnimationFrame(raf); };
   }, [href]);
 
-  // follow the reader: the last section whose top has passed the upper third of the reading pane
+  // follow the reader: the last section whose top has passed the upper third of the visible reading area
   useEffect(() => {
     const root = pane.current;
     if (!root) return;
-    const scroller = getComputedStyle(root).overflowY === "auto" ? root : null;
+    const scroller: HTMLElement = getComputedStyle(root).overflowY === "auto" ? root : (document.getElementById("app-scroll") ?? document.documentElement);
     const secs = [...root.querySelectorAll<HTMLElement>("[data-sec]")];
-    const io = new IntersectionObserver((entries) => {
-      const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-      if (vis[0]) setCurrent(vis[0].target.id);
-    }, { root: scroller, rootMargin: "0px 0px -65% 0px", threshold: 0 });
-    secs.forEach((s) => io.observe(s));
-    return () => io.disconnect();
+    let raf = 0;
+    const pick = () => {
+      const box = scroller.getBoundingClientRect();
+      const line = box.top + box.height * 0.33;
+      let cur = secs[0];
+      for (const s of secs) { if (s.getBoundingClientRect().top <= line) cur = s; else break; }
+      if (cur) setCurrent((c) => (c === cur.id ? c : cur.id));
+    };
+    const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(pick); };
+    scroller.addEventListener("scroll", on, { passive: true });
+    pick();
+    return () => { scroller.removeEventListener("scroll", on); cancelAnimationFrame(raf); };
   }, [chapter]);
 
   const go = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    const wasSheet = sheet;
+    setSheet(false);
+    // after the sheet has closed (its re-render would interrupt a smooth scroll)
+    setTimeout(() => el.scrollIntoView({ behavior: reduce || wasSheet ? "auto" : "smooth", block: "start" }), wasSheet ? 80 : 0);
     setCurrent(id);
   };
 
   return (
     <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-4" style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
       <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
-      <nav aria-label="Chapter outline" className="relative flex min-h-0 flex-col">
+      {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
+      <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">
+        <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject} · {chapter.title}</span><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{(() => { const t = chapter.topics.find((x) => current.startsWith(`${x.id}--`)) ?? chapter.topics[0]; const sec = t ? sectionsOf(t).find((x) => secId(t, x.key) === current) : null; return sec ? sec.label : t?.title; })()}</span></span>
+        <button type="button" onClick={() => setSheet(true)} className="pill-ink !h-9 shrink-0 !px-3" style={{ ["--btn" as string]: "var(--st-accent)" }}>Contents</button>
+      </div>
+      {sheet && <div aria-hidden className="fixed inset-0 z-[310] bg-black/40 lg:hidden" onClick={() => setSheet(false)} />}
+      <nav aria-label="Chapter outline" className={`relative min-h-0 flex-col ${sheet ? "fixed inset-x-2 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-[320] flex max-h-[68dvh] overflow-y-auto rounded-3xl bg-[var(--surface)] p-4 shadow-2xl" : "hidden"} lg:static lg:z-auto lg:flex lg:max-h-none lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none`}>
         <div className="shrink-0 pb-3">
+        {sheet && <button type="button" onClick={() => setSheet(false)} className="float-right grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] lg:hidden" aria-label="Close contents"><ChevronDown className="h-4 w-4" /></button>}
         <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
         </div>
