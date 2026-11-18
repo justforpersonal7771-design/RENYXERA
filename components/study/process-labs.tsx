@@ -211,7 +211,7 @@ export function SyscallLab() {
         <div className="space-y-3">
           <div className="flex items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
             <span className="text-sm font-bold">Mode bit:</span>
-            <span className={`rounded-full px-3 py-1 text-xs font-extrabold text-white ${mode === "kernel" ? "bg-rose-600" : "bg-emerald-600"}`}>{mode === "kernel" ? "0 · kernel mode" : "1 · user mode"}</span>
+            <span className={`rounded-full px-3 py-1 text-xs font-extrabold text-white ${mode === "kernel" ? "bg-rose-700" : "bg-emerald-700"}`}>{mode === "kernel" ? "0 · kernel mode" : "1 · user mode"}</span>
           </div>
           <ol className="space-y-1.5">
             {TRIP.slice(0, step).map((t, i) => <li key={i} className={`rounded-xl px-3 py-2 text-sm ${t.who === "kernel" ? "bg-rose-600/10" : t.who === "trap" ? "bg-amber-500/15 font-semibold" : "bg-[var(--surface)]"}`}>{i + 1}. {t.text}</li>)}

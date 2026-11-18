@@ -2355,3 +2355,17 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
 .dark .hl-ink::before { opacity: .28; }
 /* Contrast (owner, 18 Nov): indigo-500 text is too light on pastel cards in light mode; use indigo-700 there. */
 :root:not(.dark) :is(.card-pastel, .card-well, [data-tint]) :is(.text-indigo-500, .text-blue-500, .text-blue-600) { color: #4338ca !important; }
+/* Contrast (owner, 18 Nov): small accent text from Tailwind's 500/600 shades falls below 4.5:1 on white and pastels in light mode.
+   One shade darker everywhere in light mode; dark-mode variants (dark:text-*) are untouched. Indigo-500 alone in dark is too dim. */
+:root:not(.dark) :is(.text-sky-600, .text-sky-500) { color: #0369a1; }
+:root:not(.dark) :is(.text-orange-600, .text-orange-500) { color: #c2410c; }
+:root:not(.dark) :is(.text-rose-500, .text-rose-600, .text-pink-600) { color: #be123c; }
+:root:not(.dark) :is(.text-emerald-600, .text-emerald-700, .text-green-600) { color: #047857; }
+:root:not(.dark) :is(.bg-emerald-500\/15, .bg-emerald-500\/10) :is(.text-emerald-700), :root:not(.dark) .bg-emerald-500\/15.text-emerald-700 { color: #065f46; }
+:root:not(.dark) :is(.text-amber-700, .text-amber-600) { color: #92400e; }
+:root:not(.dark) :is(.text-violet-600, .text-violet-500, .text-blue-600, .text-blue-500, .text-indigo-500, .text-indigo-600) { color: #4338ca; }
+.dark .text-indigo-500 { color: #a5b4fc; }
+.dark .text-rose-500 { color: #fda4af; }
+.dark .bg-violet-500\/10 { color: #c4b5fd; }
+:root:not(.dark) :is(.text-amber-500, .text-yellow-600) { color: #92400e; }
+:root:not(.dark) :is(.text-emerald-500, .text-emerald-600, .text-emerald-700, .text-green-600) { color: #065f46; }
