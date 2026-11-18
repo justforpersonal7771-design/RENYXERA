@@ -176,6 +176,14 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const [current, setCurrent] = useState<string>("");
   const [soon, setSoon] = useState<number | null>(null);
   const [open, setOpen] = useState<Record<string, boolean>>({});
+  const railRef = useRef<HTMLOListElement | null>(null);
+  // keep the outline on the reader's place: scroll the active section (or its topic) into the middle of the rail
+  useEffect(() => {
+    const rail = railRef.current; if (!rail || !current) return;
+    const el = rail.querySelector<HTMLElement>('[aria-current="location"]'); if (!el) return;
+    const r = el.getBoundingClientRect(), b = rail.getBoundingClientRect();
+    if (r.top < b.top + 40 || r.bottom > b.bottom - 40) rail.scrollTo({ top: rail.scrollTop + (r.top - b.top) - b.height / 2 + r.height / 2, behavior: "smooth" });
+  }, [current]);
   const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
   const href = usePathname() ?? "/study";
   const tab = useMemo(() => ({ href, title: chapter.title, subject: chapter.subject, tint: CS_SHELF.find((b) => b.chapters.some((c) => c.href === href))?.tint }), [href, chapter.title, chapter.subject]);
@@ -213,14 +221,13 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
 
   return (
     <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-4" style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
-      <div className="flex min-w-0 items-end gap-3 lg:col-span-2"><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div><Link href={backHref} className="mb-1 hidden shrink-0 items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1.5 text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] lg:inline-flex"><ArrowLeft className="h-4 w-4" aria-hidden /> All books</Link></div>
+      <div className="flex min-w-0 items-end gap-3 lg:col-span-2"><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div><Link href={backHref} className="mb-1 hidden shrink-0 items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1.5 text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex"><ArrowLeft className="h-4 w-4" aria-hidden /> All books</Link></div>
       <nav aria-label="Chapter outline" className="relative flex min-h-0 flex-col">
         <div className="shrink-0 pb-3">
-        <Link href={backHref} className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"><ArrowLeft className="h-4 w-4" aria-hidden /> Study materials</Link>
-        <p className="mt-4 text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
+        <p className="text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
         </div>
-        <ol className="no-scrollbar min-h-0 space-y-2 lg:flex-1 lg:overflow-y-auto lg:pr-2">
+        <ol ref={railRef} className="no-scrollbar min-h-0 space-y-2 lg:flex-1 lg:overflow-y-auto lg:pr-2">
           {steps.map((s, i) => {
             const t = chapter.topics[i];
             if (!t) return (
