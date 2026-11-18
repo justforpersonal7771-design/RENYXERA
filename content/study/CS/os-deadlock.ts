@@ -94,8 +94,29 @@ export const OS_DEADLOCK: Chapter = {
           check: "Try removing any one edge, for example P3's request for R1. The ring opens, P3 can finish, release R3, then P2 can finish, then P1. So all four conditions were needed.",
         },
         {
+          type: "figure", id: "rag-ring", for: "ex1",
+          caption: "Example 1: three processes, three single-instance resources, one closed ring.",
+          alt: "P1 holds R1 and requests R2, P2 holds R2 and requests R3, P3 holds R3 and requests R1.",
+          fig: {
+            kind: "graph", w: 380, h: 300,
+            nodes: [
+              { id: "P1", label: "P1", kind: "process", x: 190, y: 40 },
+              { id: "R2", label: "R2", kind: "resource", x: 320, y: 110, instances: 1 },
+              { id: "P2", label: "P2", kind: "process", x: 300, y: 250 },
+              { id: "R3", label: "R3", kind: "resource", x: 190, y: 268, instances: 1 },
+              { id: "P3", label: "P3", kind: "process", x: 80, y: 250 },
+              { id: "R1", label: "R1", kind: "resource", x: 60, y: 110, instances: 1 },
+            ],
+            edges: [
+              { from: "R1", to: "P1", kind: "assign", hl: true }, { from: "P1", to: "R2", kind: "request", hl: true },
+              { from: "R2", to: "P2", kind: "assign", hl: true }, { from: "P2", to: "R3", kind: "request", hl: true },
+              { from: "R3", to: "P3", kind: "assign", hl: true }, { from: "P3", to: "R1", kind: "request", hl: true },
+            ],
+          },
+        },
+        {
           type: "figure",
-          id: "rag-multi",
+          id: "rag-multi", for: "ex2",
           caption: "R1 has two instances. There is a cycle, but P3 is not waiting, so no deadlock.",
           alt: "R1 with two dots: one assigned to P1 and one to P3. P1 requests R2. R2 is assigned to P2. P2 requests R1. P3 has no request.",
           fig: {
@@ -133,7 +154,7 @@ export const OS_DEADLOCK: Chapter = {
         },
         {
           type: "figure",
-          id: "rag-reduce",
+          id: "rag-reduce", for: "ex2",
           caption: "Reducing the graph from Example 2, one finished process at a time.",
           alt: "Three steps: P3 finishes, then P2, then P1.",
           fig: { kind: "strip", items: [{ label: "P3 finishes", sub: "frees one R1", state: "done" }, { label: "P2 finishes", sub: "gets R1, frees R1 + R2", state: "done" }, { label: "P1 finishes", sub: "gets R2", state: "done" }, { label: "No deadlock", sub: "every process reduced", state: "now" }] },
