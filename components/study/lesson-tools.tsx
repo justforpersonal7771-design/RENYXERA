@@ -310,7 +310,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteI
       <div className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-3 z-[280] flex gap-2 sm:right-6 lg:bottom-6">
         <button type="button" onClick={(e) => toggle("notes", e.currentTarget)} aria-pressed={open.notes} className={`${btn} hl-btn`}><Highlighter className="h-4 w-4" aria-hidden /> <span className="hl-ink">Notes</span>{noteCount > 0 && <span className="rounded-full bg-white/70 px-1.5 text-xs text-[#3a2a00]">{noteCount}</span>}</button>
         <button type="button" onClick={(e) => toggle("pyqs", e.currentTarget)} aria-pressed={open.pyqs} className={`${btn} !border-transparent !bg-[var(--tint-peri)] !text-[var(--tint-peri-ink)]`}><FileQuestion className="h-4 w-4" aria-hidden /> PYQs{pyqs && pyqs.length > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{pyqs.length}</span>}</button>
-        <button type="button" onClick={(e) => toggle("mentor", e.currentTarget)} aria-pressed={open.mentor} className={`${btn} !py-1.5 !pl-2`}><MentorLogo className="h-7" mode="blink" /> Ask Mentor</button>
+        <button type="button" onClick={(e) => toggle("mentor", e.currentTarget)} aria-pressed={open.mentor} className={`${btn} mentor-btn !py-1.5 !pl-2`}><MentorLogo className="h-7" mode="blink" /> Ask Mentor</button>
       </div>
       <MentorWindow open={open.mentor} onClose={() => close("mentor")} lesson={lesson} section={section} notes={noteItems} anchor={at.mentor} z={z("mentor")} onRaise={() => raise("mentor")} />
       <PyqModal q={q} onClose={() => setQ(null)} />

@@ -46,7 +46,16 @@ export const CS_SHELF: ShelfBook[] = [
   { id: "la", title: "Linear Algebra", short: "Lin. Alg.", tint: "peach", cloth: "#E9D9B8", ink: "#1B1917", paper: "#8C5A12", dark: "#8C5A12", band: "maths", chapters: [{ id: "matrices", title: "Matrices and systems" }, { id: "eigen", title: "Eigenvalues" }] },
   { id: "prob", title: "Probability and Statistics", short: "Probability", tint: "sky", cloth: "#CCDACF", ink: "#1B1917", paper: "#1E5A4A", dark: "#1E5A4A", band: "maths", chapters: [{ id: "prob", title: "Probability" }, { id: "rv", title: "Random variables and distributions" }] },
   { id: "calc", title: "Calculus", short: "Calculus", tint: "lilac", cloth: "#E2CDBA", ink: "#1B1917", paper: "#5A2E1A", dark: "#5A2E1A", band: "maths", chapters: [{ id: "limits", title: "Limits, continuity, derivatives" }, { id: "integrals", title: "Integration" }] },
-  { id: "ga", title: "General Aptitude", short: "Aptitude", tint: "peri", cloth: "#EBC9B8", ink: "#1B1917", paper: "#8E2A1E", dark: "#8E2A1E", band: "aptitude", chapters: [
-    { id: "verbal", title: "Verbal" }, { id: "quant", title: "Quantitative" }, { id: "analytical", title: "Analytical" }, { id: "spatial", title: "Spatial" },
+  { id: "verbal", title: "Verbal Aptitude", short: "Verbal", tint: "peri", cloth: "#EBC9B8", ink: "#1B1917", band: "aptitude", chapters: [
+    { id: "grammar", title: "Grammar and usage" }, { id: "vocab", title: "Vocabulary and word meaning" }, { id: "reading", title: "Reading comprehension" }, { id: "sentence", title: "Sentence completion and ordering" },
+  ] },
+  { id: "quant", title: "Quantitative Aptitude", short: "Quant", tint: "mint", cloth: "#C9D6C2", ink: "#1B1917", band: "aptitude", chapters: [
+    { id: "numbers", title: "Numbers and percentages" }, { id: "ratio", title: "Ratio, mixtures and averages" }, { id: "time", title: "Time, speed and work" }, { id: "data", title: "Data interpretation" },
+  ] },
+  { id: "analytical", title: "Analytical Aptitude", short: "Analytical", tint: "butter", cloth: "#EBD8B0", ink: "#1B1917", band: "aptitude", chapters: [
+    { id: "logic", title: "Logical reasoning" }, { id: "deduction", title: "Deduction and induction" }, { id: "arrange", title: "Arrangements and puzzles" },
+  ] },
+  { id: "spatial", title: "Spatial Aptitude", short: "Spatial", tint: "rose", cloth: "#E4C9D2", ink: "#1B1917", band: "aptitude", chapters: [
+    { id: "shapes", title: "Shapes, rotation and mirror images" }, { id: "folding", title: "Paper folding and cutting" }, { id: "patterns", title: "Patterns and figure series" },
   ] },
 ];

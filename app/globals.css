@@ -2320,8 +2320,9 @@ html.theme-switching * { transition: none !important; }
 .hl-btn svg { color: #ca8a04; }
 .hl-ink { position: relative; z-index: 0; padding: 0 4px; font-weight: 800; }
 .hl-ink::before { content: ""; position: absolute; left: -1px; right: -1px; top: 48%; height: 52%; z-index: -1; border-radius: 4px 10px 6px 12px;
-  background: #fde047; transform: rotate(-2deg); animation: hl-colors 8s linear infinite; }
+  background: #fde047; transform: rotate(-2deg); transition: background-color 300ms; }
 .dark .hl-ink::before { opacity: .55; }
+@media (hover: hover) { .hl-btn:hover .hl-ink::before { animation: hl-colors 2.4s steps(1) infinite; } }
 @keyframes hl-colors { 0%, 22% { background: #fde047; } 25%, 47% { background: #86efac; } 50%, 72% { background: #f9a8d4; } 75%, 97% { background: #93c5fd; } 100% { background: #fde047; } }
 @media (prefers-reduced-motion: reduce) { .hl-ink::before { animation: none; } }
 
@@ -2337,3 +2338,8 @@ html.theme-switching * { transition: none !important; }
 .hl-flash { animation: hl-flash 1.5s ease-out; border-radius: 4px; }
 @keyframes hl-flash { 0%, 30% { box-shadow: 0 0 0 4px color-mix(in srgb, #fde047 80%, transparent); background: color-mix(in srgb, #fde047 35%, transparent); } 100% { box-shadow: 0 0 0 0 transparent; } }
 @media (prefers-reduced-motion: reduce) { .hl-flash { animation: none; outline: 3px solid #fde047; } }
+
+/* Ask Mentor (owner, 18 Nov): not plain black or white. A soft lilac pill with a thin brand-gradient border (static, cheap). */
+.mentor-btn { border: 2px solid transparent !important; color: var(--tint-lilac-ink) !important;
+  background: linear-gradient(var(--tint-lilac), var(--tint-lilac)) padding-box, linear-gradient(120deg, #6366f1, #a855f7 45%, #ec4899) border-box !important; }
+.dark .mentor-btn { color: #f3e8ff !important; background: linear-gradient(#2a1f3d, #2a1f3d) padding-box, linear-gradient(120deg, #6366f1, #a855f7 45%, #ec4899) border-box !important; }

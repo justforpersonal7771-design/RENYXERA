@@ -14,18 +14,22 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { BookOpen, Feather, Search, X } from "lucide-react";
 import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
+import { GOAL_SLIDER_DEFAULT_PERCENT, useGoalSliderStore } from "@/store/use-goal-slider-store";
+import { computeGoalSliderResult, computeTopicFrequencies, type TopicFrequency } from "@/lib/analytics/goal-slider-engine";
+import type { RenderableQuestion } from "@/types/question.types";
 import { branchByCode } from "@/lib/branches";
 
 const SHELVES: { id: string; title: string; note: string; tint: string; stacks: string[][] }[] = [
   { id: "core", title: "Core computer science", note: "Nine subjects in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "toc"], ["cd", "coa", "dl"]] },
-  { id: "maths", title: "Mathematics and aptitude", note: "Shared by every GATE paper", tint: "sky", stacks: [["dm", "la", "prob"], ["calc", "ga"]] },
+  { id: "maths", title: "Engineering mathematics", note: "Discrete maths, linear algebra, probability and calculus", tint: "sky", stacks: [["dm", "la"], ["prob", "calc"]] },
+  { id: "apt", title: "General aptitude", note: "15 marks, the same section in every GATE paper", tint: "peri", stacks: [["verbal", "quant"], ["analytical", "spatial"]] },
 ];
 /** Bank subject names per book, for the marks preview. */
 const BANK: Record<string, string[]> = {
   os: ["Operating Systems (OS)"], dbms: ["Database Management Systems (DBMS)"], cn: ["Computer Networks (CN)"], algo: ["Algorithms"],
   pds: ["Programming in C", "Data Structures"], toc: ["Theory of Computation (TOC)"], cd: ["Compiler Design"], coa: ["Computer Organization and Architecture (COA)"],
   dl: ["Digital Logic"], dm: ["Discrete Mathematics"], la: ["Linear Algebra"], prob: ["Probability & Statistics"], calc: ["Calculus"],
-  ga: ["Verbal Aptitude", "Quantitative Aptitude", "Analytical Aptitude", "Spatial Aptitude"],
+  verbal: ["Verbal Aptitude"], quant: ["Quantitative Aptitude"], analytical: ["Analytical Aptitude"], spatial: ["Spatial Aptitude"],
 };
 const slug = (t: string) => t.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 type Peek = { papers: number; perPaper: number; qs: number; two: number; top: [string, number][] };
@@ -108,7 +112,68 @@ function Contents({ b }: { b: ShelfBook }) {
   );
 }
 
-function OpenBook({ b, onClose }: { b: ShelfBook | null; onClose: () => void }) {
+/**
+ * Topic weight from the official CS bank, and the student's Focus Target (the top-bar goal slider). With a target below
+ * 100%, only subjects and topics inside it are shown (owner, 18 Nov).
+ */
+function useLibraryFocus() {
+  const target = useGoalSliderStore((x) => x.targetPercent);
+  const loadGoal = useGoalSliderStore((x) => x.load);
+  const [qs, setQs] = useState<RenderableQuestion[] | null>(null);
+  useEffect(() => { void loadGoal(); }, [loadGoal]);
+  useEffect(() => {
+    bankCache ??= fetch("/data/questions.json").then((r) => r.json());
+    void bankCache.then((papers) => setQs(papers.flatMap((p) => p.questions) as unknown as RenderableQuestion[])).catch(() => setQs([]));
+  }, []);
+  return useMemo(() => {
+    const active = target < GOAL_SLIDER_DEFAULT_PERCENT && !!qs?.length;
+    const freq: TopicFrequency[] = qs ? computeTopicFrequencies(qs) : [];
+    const inTarget = active ? new Set(computeGoalSliderResult(qs!, target).includedTopics.map((t) => `${t.subject}::${t.topic}`)) : null;
+    const topicIn = (t: TopicFrequency) => !inTarget || inTarget.has(`${t.subject}::${t.topic}`);
+    const bookIn = (b: ShelfBook) => !inTarget || freq.some((t) => (BANK[b.id] ?? []).includes(t.subject) && topicIn(t));
+    const topicsOf = (b: ShelfBook) => freq.filter((t) => (BANK[b.id] ?? []).includes(t.subject));
+    return { active, target, topicIn, bookIn, topicsOf };
+  }, [qs, target]);
+}
+type Focus = ReturnType<typeof useLibraryFocus>;
+
+/** The subject's topics ranked by marks share; filter to the Focus Target or show all. */
+function ImportantTopics({ b, focus }: { b: ShelfBook; focus: Focus }) {
+  const [only, setOnly] = useState(focus.active);
+  const [all, setAll] = useState(false);
+  const list = focus.topicsOf(b).filter((t) => !only || focus.topicIn(t));
+  if (!focus.topicsOf(b).length) return null;
+  const shown = all ? list : list.slice(0, 6);
+  return (
+    <div className="mb-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="text-sm font-bold text-[var(--text-secondary)]">Most important topics</p>
+        <span className="flex-1" />
+        {focus.active && <>
+          <button type="button" aria-pressed={only} onClick={() => setOnly(true)} className={`rounded-full px-2.5 py-1 text-xs font-bold ${only ? "bg-[var(--ink)] text-[var(--background)]" : "text-[var(--text-secondary)]"}`}>In my target</button>
+          <button type="button" aria-pressed={!only} onClick={() => setOnly(false)} className={`rounded-full px-2.5 py-1 text-xs font-bold ${!only ? "bg-[var(--ink)] text-[var(--background)]" : "text-[var(--text-secondary)]"}`}>All</button>
+        </>}
+      </div>
+      {list.length === 0 ? <p className="mt-2 text-sm text-[var(--text-secondary)]">None of this subject&apos;s topics are inside your focus target.</p> : (
+        <ol className="mt-2 space-y-1.5">
+          {shown.map((t, i) => (
+            <li key={t.topic} className="flex items-center gap-3 rounded-xl bg-[var(--surface)] px-3 py-2">
+              <span className="w-5 text-center font-num text-xs font-bold text-[var(--text-secondary)]">{i + 1}</span>
+              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-[var(--text-primary)]">{t.topic}</span>
+              <span className="text-xs text-[var(--text-secondary)]">{t.questionCount} Qs</span>
+              <span className="h-1.5 w-16 overflow-hidden rounded-full bg-black/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, t.marksShare * 25)}%`, background: `var(--tint-${b.tint ?? "peri"}-ink)` }} /></span>
+              <span className="w-12 text-right font-num text-xs font-bold text-[var(--text-primary)]">{t.marksShare.toFixed(1)}%</span>
+            </li>
+          ))}
+        </ol>
+      )}
+      {list.length > 6 && <button type="button" onClick={() => setAll((x) => !x)} className="mt-2 text-sm font-bold underline underline-offset-4">{all ? "Show fewer" : `Show all ${list.length}`}</button>}
+      <p className="mt-1 text-xs text-[var(--text-secondary)]">Share of all marks in the official GATE CS papers in our bank.</p>
+    </div>
+  );
+}
+
+function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => void; focus: Focus }) {
   const reduce = useReducedMotion();
   useEffect(() => {
     if (!b) return;
@@ -135,6 +200,7 @@ function OpenBook({ b, onClose }: { b: ShelfBook | null; onClose: () => void }) 
             </div>
             <div className="no-scrollbar relative overflow-y-auto p-5 sm:p-7" style={{ background: `color-mix(in srgb, var(--tint-${b.tint ?? "peri"}) 35%, var(--surface))` }}>
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full border border-[var(--border)] md:grid"><X className="h-5 w-5" /></button>
+              <ImportantTopics key={b.id} b={b} focus={focus} />
               <p className="mb-2 text-sm font-bold text-[var(--text-secondary)]">Contents</p>
               <Contents b={b} />
             </div>
@@ -161,7 +227,11 @@ export function Bookshelf() {
   const match = useMemo(() => (b: ShelfBook) => (!term || b.title.replace(/­/g, "").toLowerCase().includes(term) || b.chapters.some((c) => c.title.toLowerCase().includes(term))) && (!onlyReady || ready(b) > 0), [term, onlyReady]);
   const free = CS_SHELF.find((b) => ready(b) > 0);
   const resume = last ?? (free ? { href: free.chapters.find((c) => c.href)!.href!, title: `${free.title}: ${free.chapters.find((c) => c.href)!.title}` } : null);
-  const hits = CS_SHELF.filter(match).length;
+  const focus = useLibraryFocus();
+  const [showAll, setShowAll] = useState(false);
+  const visible = (b: ShelfBook) => showAll || focus.bookIn(b);
+  const hidden = CS_SHELF.filter((b) => !visible(b)).length;
+  const hits = CS_SHELF.filter((b) => visible(b) && match(b)).length;
   const isPhone = () => typeof window !== "undefined" && !window.matchMedia("(min-width: 1024px)").matches;
 
   return (
@@ -196,10 +266,18 @@ export function Bookshelf() {
         </div>
       </div>
 
+      {focus.active && (
+        <div className="card-pastel flex flex-wrap items-center gap-3 p-4" data-tint="mint">
+          <p className="min-w-0 flex-1 text-sm text-[var(--text-primary)]"><b>Focus target {focus.target}%.</b> {hidden ? `${hidden} subject${hidden === 1 ? " is" : "s are"} outside your target and hidden. ` : "Every subject has topics inside your target. "}Inside each book, the most important topics come first.</p>
+          {hidden > 0 && <button type="button" onClick={() => setShowAll((x) => !x)} className="pill-soft">{showAll ? "Hide them again" : "Show all subjects"}</button>}
+        </div>
+      )}
       {/* the shelves */}
       <div className="sp2-case">
         {SHELVES.map((sh) => {
-          const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id));
+          const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id) && visible(b));
+          if (!books.length) return null;
+          const stacks = sh.stacks.map((st) => st.filter((id) => books.some((b) => b.id === id))).filter((st) => st.length);
           const open1 = books.find((b) => b.id === drawer);
           const openIt = (b: ShelfBook) => { if (isPhone()) setDrawer((d) => (d === b.id ? null : b.id)); else setOpen(b); };
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
@@ -210,8 +288,8 @@ export function Bookshelf() {
                 <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{sh.title}</h2>
                 <span className="text-sm text-[var(--text-secondary)]">{sh.note} · {books.length} books · {books.reduce((t, b) => t + ready(b), 0)} of {books.reduce((t, b) => t + b.chapters.length, 0)} chapters ready</span>
               </div>
-              <div className={`grid items-end gap-4 ${sh.stacks.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2"}`}>
-                {sh.stacks.map((st, si) => (
+              <div className={`grid items-end gap-4 ${stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
+                {stacks.map((st, si) => (
                   <div key={si} className="flex flex-col gap-3">
                     <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} onOpen={() => openIt(byId(id))} />)}</div>
                   </div>
@@ -233,7 +311,7 @@ export function Bookshelf() {
         })}
         {hits === 0 && <p className="rounded-2xl bg-[var(--surface)] p-4 text-center text-[var(--text-secondary)]">No book matches “{q}”. <button type="button" onClick={() => { setQ(""); setOnlyReady(false); }} className="font-bold underline underline-offset-4">Clear the search</button> or <Link href="/topics/operating-systems-os" className="font-bold underline underline-offset-4">search the past-question bank</Link>.</p>}
       </div>
-      <OpenBook b={open} onClose={() => setOpen(null)} />
+      <OpenBook b={open} onClose={() => setOpen(null)} focus={focus} />
     </section>
   );
 }
