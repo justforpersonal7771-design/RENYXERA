@@ -72,7 +72,7 @@ const ready = (b: ShelfBook) => b.chapters.filter((c) => c.ready).length;
 
 /** A book lying flat: app pastel cloth with a deep spine edge, the full name horizontal in big heavy capitals.
  *  The featured book (has a ready chapter) is thicker, carries the gold ribbon and names its free chapter. Hover slides it out. */
-function Slab({ b, i, dim, onOpen }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void }) {
+function Slab({ b, i, dim, onOpen, weight = 0 }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number }) {
   const r = ready(b);
   const free = b.chapters.find((c) => c.ready);
   return (
@@ -84,7 +84,7 @@ function Slab({ b, i, dim, onOpen }: { b: ShelfBook; i: number; dim: boolean; on
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
         {free && <span className="mt-0.5 block text-sm font-bold text-[var(--tint-ink)]">Free chapter: {free.title}</span>}
       </span>
-      <span className="sp3-stamp">{r ? `${r}/${b.chapters.length} ready` : `${b.chapters.length} chapters`}</span>
+      <span className="flex shrink-0 flex-col items-end gap-1">{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{r ? `${r}/${b.chapters.length} ready` : `${b.chapters.length} chapters`}</span></span>
     </button>
   );
 }
@@ -98,7 +98,7 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
   const topics = focus?.topicsOf(b) ?? [];
   const weights: Weight[] = b.chapters.map((c) => {
     const st = stems(c.title);
-    const hit = topics.filter((t) => { const ts = stems(t.topic); return st.some((w) => ts.includes(w)); });
+    const hit = c.match ? topics.filter((t) => new RegExp(c.match!, "i").test(t.topic)) : topics.filter((t) => { const ts = stems(t.topic); return st.some((w) => ts.includes(w)); });
     return { share: hit.reduce((x, t) => x + t.marksShare, 0), qs: hit.reduce((x, t) => x + t.questionCount, 0), inTarget: !focus?.active || hit.some((t) => focus.topicIn(t)), tier: "none" };
   });
   const sorted = weights.map((w) => w.share).filter((x) => x > 0).sort((x, y) => y - x);
@@ -116,6 +116,7 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
             <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
             <span className="min-w-[55%] flex-1">
               <span className={`block ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
+              {w.qs === 0 && topics.length > 0 && <span className="mt-1 block text-[11px] font-semibold text-[var(--text-secondary)]">Not tagged as its own topic in past papers</span>}
               {w.qs > 0 && <span className="mt-1 flex items-center gap-2"><span className="h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, w.share * 12)}%`, background: ink }} /></span><span className="text-[11px] font-semibold text-[var(--text-secondary)]">{w.share.toFixed(1)}% of marks · {w.qs} PYQs{focus?.active && !w.inTarget ? " · outside your target" : ""}</span></span>}
             </span>
             {mark}
@@ -221,6 +222,7 @@ export function Bookshelf() {
   const resume = last ?? (free ? { href: free.chapters.find((c) => c.href)!.href!, title: `${free.title}: ${free.chapters.find((c) => c.href)!.title}` } : null);
   const focus = useLibraryFocus();
   const [showAll, setShowAll] = useState(false);
+  const weightOf = (bs: ShelfBook[]) => bs.reduce((t, b) => t + focus.topicsOf(b).reduce((x, tp) => x + tp.marksShare, 0), 0);
   const visible = (b: ShelfBook) => showAll || focus.bookIn(b);
   const hidden = CS_SHELF.filter((b) => !visible(b)).length;
   const hits = CS_SHELF.filter((b) => visible(b) && match(b)).length;
@@ -266,7 +268,7 @@ export function Bookshelf() {
       )}
       {/* the shelves */}
       <div className="sp2-case">
-        {SHELVES.map((sh) => {
+        {(() => { const shelves = SHELVES.map((sh) => {
           const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id) && visible(b));
           if (!books.length) return null;
           const stacks = sh.stacks.map((st) => st.filter((id) => books.some((b) => b.id === id))).filter((st) => st.length);
@@ -278,12 +280,12 @@ export function Bookshelf() {
               <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b-2 border-dashed border-[var(--border)] pb-2">
                 <span className="h-3 w-3 self-center rounded-full" style={{ background: `var(--tint-${sh.tint}-ink)` }} aria-hidden />
                 <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{sh.title}</h2>
-                <span className="text-sm text-[var(--text-secondary)]">{sh.note} · {books.length} books · {books.reduce((t, b) => t + ready(b), 0)} of {books.reduce((t, b) => t + b.chapters.length, 0)} chapters ready</span>
+                {weightOf(books) > 0 && <span className="rounded-full px-2.5 py-0.5 text-xs font-extrabold" style={{ background: `var(--tint-${sh.tint})`, color: `var(--tint-${sh.tint}-ink)` }}>{weightOf(books).toFixed(1)}% of marks</span>}
               </div>
-              <div className={`grid items-end gap-4 ${stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
+              <div className={`grid items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
                 {stacks.map((st, si) => (
                   <div key={si} className="flex flex-col gap-3">
-                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} onOpen={() => openIt(byId(id))} />)}</div>
+                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} onOpen={() => openIt(byId(id))} />)}</div>
                   </div>
                 ))}
               </div>
@@ -300,7 +302,9 @@ export function Bookshelf() {
               </AnimatePresence>
             </div>
           );
-        })}
+        });
+        // core books across the whole width; mathematics and aptitude side by side underneath
+        return <>{shelves[0]}<div className="grid gap-5 lg:grid-cols-2">{shelves.slice(1)}</div></>; })()}
         {hits === 0 && <p className="rounded-2xl bg-[var(--surface)] p-4 text-center text-[var(--text-secondary)]">No book matches “{q}”. <button type="button" onClick={() => { setQ(""); setOnlyReady(false); }} className="font-bold underline underline-offset-4">Clear the search</button> or <Link href="/topics/operating-systems-os" className="font-bold underline underline-offset-4">search the past-question bank</Link>.</p>}
       </div>
       <OpenBook b={open} onClose={() => setOpen(null)} focus={focus} />

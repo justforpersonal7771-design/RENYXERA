@@ -39,9 +39,11 @@ const ordered = (tabs: StudyTab[]) => {
 
 type S = {
   tabs: StudyTab[]; loaded: boolean; closed: StudyTab[]; groups: TabGroup[];
-  /** A second chapter shown beside the current one (split view, wide screens). */
-  split: string | null;
-  setSplit: (href: string | null) => void;
+  /** Two tabs merged into one split view [left, right], like Chrome's split tabs (wide screens). */
+  split: [string, string] | null;
+  setSplit: (pair: [string, string] | null) => void;
+  recolorGroup: (id: string, color: string) => void;
+  closeGroup: (id: string) => string[];
   newGroup: (href: string) => void;
   addToGroup: (href: string, group: string | null) => void;
   renameGroup: (id: string, name: string) => void;
@@ -62,8 +64,14 @@ type S = {
 
 export const useStudyTabs = create<S>((set, get) => ({
   tabs: [], loaded: false, closed: [], groups: [], split: null,
-  hydrate: () => { if (!get().loaded) { let split: string | null = null; try { split = sessionStorage.getItem(SPLIT_KEY); } catch { /* private */ } set({ tabs: load(), closed: loadClosed(), groups: loadGroups(), split, loaded: true }); } },
-  setSplit: (href) => { set({ split: href }); try { if (href) sessionStorage.setItem(SPLIT_KEY, href); else sessionStorage.removeItem(SPLIT_KEY); } catch { /* private */ } },
+  hydrate: () => { if (!get().loaded) { let split: [string, string] | null = null; try { const v = JSON.parse(localStorage.getItem(SPLIT_KEY) ?? "null"); if (Array.isArray(v) && v.length === 2) split = [v[0], v[1]]; } catch { /* private */ } set({ tabs: load(), closed: loadClosed(), groups: loadGroups(), split, loaded: true }); } },
+  setSplit: (pair) => { set({ split: pair }); try { if (pair) localStorage.setItem(SPLIT_KEY, JSON.stringify(pair)); else localStorage.removeItem(SPLIT_KEY); } catch { /* private */ } },
+  recolorGroup: (id, color) => { const groups = get().groups.map((g) => (g.id === id ? { ...g, color } : g)); set({ groups }); saveGroups(groups); },
+  closeGroup: (id) => {
+    const gone = get().tabs.filter((t) => t.group === id && !t.pinned).map((t) => t.href);
+    gone.forEach((h) => get().close(h));
+    get().ungroup(id); return gone;
+  },
   newGroup: (href) => {
     const used = get().groups.map((g) => g.color);
     const color = GROUP_COLORS.find((c) => !used.includes(c)) ?? GROUP_COLORS[get().groups.length % GROUP_COLORS.length];
@@ -107,6 +115,7 @@ export const useStudyTabs = create<S>((set, get) => ({
     const next = tabs.filter((x) => x.href !== href);
     const closed = [tabs[i], ...get().closed.filter((c) => c.href !== href)].slice(0, 5);
     set({ tabs: next, closed }); save(next); saveClosed(closed); forgetScroll(href);
+    if (get().split?.includes(href)) get().setSplit(null);
     const n = next[i] ?? next[i - 1];
     return n ? n.href : null; // the neighbour to show if the closed tab was the one being read
   },

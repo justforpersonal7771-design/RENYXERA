@@ -3,7 +3,7 @@
  * Status is honest: only chapters whose content exists in content/study are "ready"; everything else is "writing".
  * No reading times, progress or counts are shown that the app cannot measure.
  */
-export type ShelfChapter = { id: string; title: string; href?: string; ready?: string };
+export type ShelfChapter = { id: string; title: string; href?: string; ready?: string; /** Regex (source) matching question-bank topic names, when the title words do not. */ match?: string };
 export type ShelfBook = { id: string; title: string; short: string; cloth: string; ink: string; band: "core" | "maths" | "aptitude"; chapters: ShelfChapter[]; paper?: string; dark?: string; tint?: string };
 
 export const CS_SHELF: ShelfBook[] = [
@@ -17,7 +17,7 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "txn", title: "Transactions and concurrency" }, { id: "index", title: "Indexing and B+ trees" },
   ] },
   { id: "cn", title: "Computer Networks", short: "CN", tint: "butter", cloth: "#EBD8B0", ink: "#1B1917", paper: "#B07A1E", dark: "#B07A1E", band: "core", chapters: [
-    { id: "layers", title: "Layering and switching" }, { id: "dll", title: "Data link and MAC" }, { id: "ip", title: "IP addressing and routing" },
+    { id: "layers", title: "Layering and switching", match: "OSI|Protocol Layers" }, { id: "dll", title: "Data link and MAC" }, { id: "ip", title: "IP addressing and routing" },
     { id: "tcp", title: "TCP, UDP and flow control" }, { id: "app", title: "Application layer" },
   ] },
   { id: "algo", title: "Algorithms", short: "Algo", tint: "peri", cloth: "#D9D2C2", ink: "#1B1917", paper: "#22324F", dark: "#22324F", band: "core", chapters: [
@@ -25,7 +25,7 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "dp", title: "Dynamic programming" }, { id: "graphs", title: "Graph algorithms" }, { id: "sort", title: "Sorting and searching" },
   ] },
   { id: "pds", title: "Programming and Data Structures", short: "P & DS", tint: "peach", cloth: "#E6CDB4", ink: "#1B1917", paper: "#9A3B1F", dark: "#9A3B1F", band: "core", chapters: [
-    { id: "c", title: "Programming in C" }, { id: "recursion", title: "Recursion" }, { id: "lists", title: "Arrays, stacks, queues, lists" },
+    { id: "c", title: "Programming in C", match: "Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing" }, { id: "recursion", title: "Recursion" }, { id: "lists", title: "Arrays, stacks, queues, lists" },
     { id: "trees", title: "Trees and heaps" }, { id: "hashing", title: "Hashing" },
   ] },
   { id: "toc", title: "Theory of Computation", short: "TOC", tint: "sky", cloth: "#D6CFE6", ink: "#1B1917", paper: "#155E63", dark: "#155E63", band: "core", chapters: [
@@ -47,7 +47,7 @@ export const CS_SHELF: ShelfBook[] = [
   { id: "prob", title: "Probability and Statistics", short: "Probability", tint: "sky", cloth: "#CCDACF", ink: "#1B1917", paper: "#1E5A4A", dark: "#1E5A4A", band: "maths", chapters: [{ id: "prob", title: "Probability" }, { id: "rv", title: "Random variables and distributions" }] },
   { id: "calc", title: "Calculus", short: "Calculus", tint: "lilac", cloth: "#E2CDBA", ink: "#1B1917", paper: "#5A2E1A", dark: "#5A2E1A", band: "maths", chapters: [{ id: "limits", title: "Limits, continuity, derivatives" }, { id: "integrals", title: "Integration" }] },
   { id: "verbal", title: "Verbal Aptitude", short: "Verbal", tint: "peri", cloth: "#EBC9B8", ink: "#1B1917", band: "aptitude", chapters: [
-    { id: "grammar", title: "Grammar and usage" }, { id: "vocab", title: "Vocabulary and word meaning" }, { id: "reading", title: "Reading comprehension" }, { id: "sentence", title: "Sentence completion and ordering" },
+    { id: "grammar", title: "Grammar and usage" }, { id: "vocab", title: "Vocabulary and word meaning" }, { id: "reading", title: "Reading comprehension" }, { id: "sentence", title: "Sentence completion and ordering", match: "Narrative Sequencing" },
   ] },
   { id: "quant", title: "Quantitative Aptitude", short: "Quant", tint: "mint", cloth: "#C9D6C2", ink: "#1B1917", band: "aptitude", chapters: [
     { id: "numbers", title: "Numbers and percentages" }, { id: "ratio", title: "Ratio, mixtures and averages" }, { id: "time", title: "Time, speed and work" }, { id: "data", title: "Data interpretation" },
@@ -59,3 +59,10 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "shapes", title: "Shapes, rotation and mirror images" }, { id: "folding", title: "Paper folding and cutting" }, { id: "patterns", title: "Patterns and figure series" },
   ] },
 ];
+
+/** The book colour for a chapter page (/study/<chapter>), or null elsewhere. */
+export function bookTintFor(path: string): string | null {
+  if (!path.startsWith("/study/")) return null;
+  const b = CS_SHELF.find((x) => x.chapters.some((c) => c.href === path));
+  return b?.tint ?? null;
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import { bookTintFor } from "@/lib/study/catalog";
 import { switchTheme } from "@/lib/theme/switch-theme";
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
@@ -59,6 +60,8 @@ const NAV_ITEMS = [
 // (same order and colours as the tools dock in components/seo/sub-nav.tsx).
 const TOOL_TINTS = ["mint", "sky", "butter", "peri", "peach", "lilac", "rose", "mint", "sky"];
 function screenTint(path: string): string {
+  // a study chapter takes its book's colour, so navbar, panel and tab agree from the first paint
+  { const bt = path ? bookTintFor(path) : null; if (bt) return bt; }
   const ti = TOOLS.findIndex((t) => path === t.href || (t.also ?? []).some((a) => path.startsWith(a)));
   if (ti >= 0) return TOOL_TINTS[ti % TOOL_TINTS.length];
   if (path === TOOLS_HOME) return "lilac";

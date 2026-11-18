@@ -1,4 +1,5 @@
 "use client";
+import { bookTintFor } from "@/lib/study/catalog";
 import "@/lib/time/install-ist";
 
 import { SmoothScroll } from "@/components/system/smooth-scroll";
@@ -46,6 +47,8 @@ const ToastContainer = dynamic(
 
 // The pastel of the section the student is in: drives the page layer and the navbar wash.
 function sectionTint(p: string | null): string {
+  // a study chapter takes its book's colour, so navbar, panel and tab agree from the first paint
+  { const bt = p ? bookTintFor(p) : null; if (bt) return bt; }
   const path = p ?? "/";
   if (path === "/") return "lilac";
   const tc = testCentreTint(path);

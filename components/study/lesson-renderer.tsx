@@ -11,6 +11,7 @@
  */
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import { createPortal } from "react-dom";
 import { motion } from "motion/react";
 import { StudyTabs } from "@/components/study/study-tabs";
 import { rememberScroll, recallScroll, useStudyTabs } from "@/lib/study/tabs";
@@ -198,6 +199,9 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const [soon, setSoon] = useState<number | null>(null);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [sheet, setSheet] = useState(false);
+  const [sheetHost, setSheetHost] = useState<HTMLElement | null>(null);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- the portal target exists only after mount
+  useEffect(() => setSheetHost(document.body), []);
   const split = useStudyTabs((x) => x.split);
   const setSplit = useStudyTabs((x) => x.setSplit);
   const [wide, setWide] = useState(false);
@@ -224,13 +228,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
   const href = usePathname() ?? "/study";
   const tab = useMemo(() => ({ href, title: chapter.title, subject: chapter.subject, tint: CS_SHELF.find((b) => b.chapters.some((c) => c.href === href))?.tint }), [href, chapter.title, chapter.subject]);
-  // the page's main panel takes the book's own colour (owner, 18 Nov); restored when leaving the lesson
-  useEffect(() => {
-    const shell = pane.current?.closest<HTMLElement>(".page-shell"); if (!shell || !tab.tint) return;
-    const was = shell.getAttribute("data-section");
-    shell.setAttribute("data-section", tab.tint);
-    return () => { if (was === null) shell.removeAttribute("data-section"); else shell.setAttribute("data-section", was); };
-  }, [tab.tint]);
+  // the page panel and navbar take the book colour from the URL (lib/study/catalog bookTintFor), so nothing flashes
   // each tab returns to where you were reading
   useEffect(() => {
     const el = pane.current; if (!el) return;
@@ -272,34 +270,13 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     setCurrent(id);
   };
 
-  const splitHref = wide && split && split !== href && CHAPTERS[split] ? split : null;
+  const other = split && split.includes(href) ? (split[0] === href ? split[1] : split[0]) : null;
+  const splitHref = wide && other && CHAPTERS[other] ? other : null;
   const folded = (railShut ?? !!splitHref);
   const topicIdx = Math.max(0, chapter.topics.findIndex((x) => current.startsWith(`${x.id}--`)));
   const written = chapter.topics.length;
-  return (
-    <div className={`study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
-      <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
-      {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
-      <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">
-        <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject} · {chapter.title}</span><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{(() => { const t = chapter.topics.find((x) => current.startsWith(`${x.id}--`)) ?? chapter.topics[0]; const sec = t ? sectionsOf(t).find((x) => secId(t, x.key) === current) : null; return sec ? sec.label : t?.title; })()}</span></span>
-        <button type="button" onClick={() => setSheet(true)} className="pill-ink !h-9 shrink-0 !px-3" style={{ ["--btn" as string]: "var(--st-accent)" }}>Contents</button>
-      </div>
-      {sheet && <div aria-hidden className="fixed inset-0 z-[310] bg-black/40 lg:hidden" onClick={() => setSheet(false)} />}
-      {folded && (
-        <div className="hidden min-h-0 flex-col items-center gap-2 lg:flex">
-          <button type="button" onClick={() => setRailShut(false)} aria-label="Unfold the outline" title="Unfold the outline" className="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><ChevronsRight className="h-4 w-4" /></button>
-          <div className="relative flex flex-1 flex-col items-center gap-2 py-2">
-            <span aria-hidden className="absolute bottom-2 top-2 w-1 rounded-full bg-[var(--surface-secondary)]"><span className="block w-full rounded-full transition-all duration-500" style={{ height: `${((topicIdx + 1) / Math.max(1, written)) * 100}%`, background: "var(--st-accent)" }} /></span>
-            {chapter.topics.map((t, i) => (
-              <button key={t.id} type="button" onClick={() => go(t.id)} aria-label={`Topic ${i + 1}: ${t.title}`} title={t.title}
-                className={`relative z-10 grid h-8 w-8 place-items-center rounded-full text-xs font-bold ${i === topicIdx ? "bg-[var(--st-accent)] text-white" : i < topicIdx ? "border-2 border-[var(--st-accent)] bg-[var(--surface)] text-[var(--st-accent)]" : "border-2 border-dashed border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)]"}`}>
-                {i < topicIdx ? <Check className="h-3.5 w-3.5" /> : i + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-      <nav aria-label="Chapter outline" className={`${folded ? "lg:!hidden" : ""} relative min-h-0 flex-col ${sheet ? "fixed inset-x-2 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-[320] flex max-h-[68dvh] overflow-y-auto rounded-3xl bg-[var(--surface)] p-4 shadow-2xl" : "hidden"} lg:static lg:z-auto lg:flex lg:max-h-none lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none`}>
+  const outlineInner = (
+    <>
         <div className="shrink-0 pb-3">
         {sheet && <button type="button" onClick={() => setSheet(false)} className="float-right grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] lg:hidden" aria-label="Close contents"><ChevronDown className="h-4 w-4" /></button>}
         <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject}</p>
@@ -332,7 +309,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
               <li key={i}>
                 <div className={`flex w-full items-start gap-2 rounded-xl border-2 px-2 py-2 transition-colors ${inTopic ? "border-[var(--st-accent)]" : passed ? "border-dashed border-[var(--st-accent)] bg-[color-mix(in_srgb,var(--st-accent)_7%,transparent)]" : "border-dashed border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
                   <button type="button" onClick={() => { setOpen((x) => ({ ...x, [t.id]: true })); go(t.id); }} className="flex min-w-0 flex-1 items-start gap-3 text-left">
-                    <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${passed ? "border-2 border-[var(--st-accent)] text-[var(--st-accent)]" : "bg-[var(--st-accent)] text-white"}`}>{passed ? <Check className="h-3.5 w-3.5" aria-label="Read" /> : i + 1}</span>
+                    <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${passed ? "border-2 border-[var(--st-accent)] text-[var(--st-accent)]" : "bg-[var(--st-accent)] text-[var(--surface)]"}`}>{passed ? <Check className="h-3.5 w-3.5" aria-label="Read" /> : i + 1}</span>
                     <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-secondary)]">{passed ? "Read" : s.sub}</span></span>
                   </button>
                   <button type="button" onClick={() => setOpen((x) => ({ ...x, [t.id]: !expanded }))} aria-expanded={expanded} aria-label={`${expanded ? "Hide" : "Show"} sections of ${s.label}`} className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><ChevronDown className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`} /></button>
@@ -355,7 +332,38 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
             );
           })}
         </ol>
-      </nav>
+    </>
+  );
+  return (
+    <div className={`study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
+      <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
+      {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
+      <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">
+        <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject} · {chapter.title}</span><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{(() => { const t = chapter.topics.find((x) => current.startsWith(`${x.id}--`)) ?? chapter.topics[0]; const sec = t ? sectionsOf(t).find((x) => secId(t, x.key) === current) : null; return sec ? sec.label : t?.title; })()}</span></span>
+        <button type="button" onClick={() => setSheet(true)} className="pill-ink !h-9 shrink-0 !px-3" style={{ ["--btn" as string]: "var(--st-accent)" }}>Contents</button>
+      </div>
+      {folded && (
+        <div className="hidden min-h-0 flex-col items-center gap-2 lg:flex">
+          <button type="button" onClick={() => setRailShut(false)} aria-label="Unfold the outline" title="Unfold the outline" className="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><ChevronsRight className="h-4 w-4" /></button>
+          <div className="relative flex flex-1 flex-col items-center gap-2 py-2">
+            <span aria-hidden className="absolute bottom-2 top-2 w-1 rounded-full bg-[var(--surface-secondary)]"><span className="block w-full rounded-full transition-all duration-500" style={{ height: `${((topicIdx + 1) / Math.max(1, written)) * 100}%`, background: "var(--st-accent)" }} /></span>
+            {chapter.topics.map((t, i) => (
+              <button key={t.id} type="button" onClick={() => go(t.id)} aria-label={`Topic ${i + 1}: ${t.title}`} title={t.title}
+                className={`relative z-10 grid h-8 w-8 place-items-center rounded-full text-xs font-bold ${i === topicIdx ? "bg-[var(--st-accent)] text-[var(--surface)]" : i < topicIdx ? "border-2 border-[var(--st-accent)] bg-[var(--surface)] text-[var(--st-accent)]" : "border-2 border-dashed border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)]"}`}>
+                {i < topicIdx ? <Check className="h-3.5 w-3.5" /> : i + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+      <nav aria-label="Chapter outline" className={`${folded ? "lg:!hidden" : ""} relative hidden min-h-0 flex-col lg:flex`}>
+{outlineInner}      </nav>
+      {sheet && sheetHost && createPortal(
+        <>
+          <div aria-hidden className="fixed inset-0 z-[600] bg-black/40 lg:hidden" onClick={() => setSheet(false)} />
+          <nav aria-label="Chapter outline" className="fixed inset-x-2 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-[610] flex max-h-[68dvh] flex-col overflow-y-auto rounded-3xl bg-[var(--surface)] p-4 shadow-2xl lg:hidden" style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
+{outlineInner}          </nav>
+        </>, sheetHost)}
       <div className={splitHref ? "grid min-h-0 min-w-0 gap-0" : "contents"} style={splitHref ? { gridTemplateColumns: `minmax(0,${splitW}fr) 14px minmax(0,${100 - splitW}fr)`, gridTemplateRows: "minmax(0,1fr)" } : undefined}>
       <div ref={bind} className="@container custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
         {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
