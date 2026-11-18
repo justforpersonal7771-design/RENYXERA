@@ -304,4 +304,37 @@
   .g-gate-mark { animation-duration: 200ms; } .cz-bld:hover { transform: none; }
 }
 @keyframes g-fade-out { to { opacity: 0; visibility: hidden; } }
+
+/* in-game round (components/game/round.tsx): a parchment question card on the walnut table, brass option keys */
+.g-round { background: radial-gradient(70% 60% at 50% 0%, rgba(255,200,130,.12), transparent 70%), linear-gradient(180deg, var(--g-felt-dark), var(--g-felt-deep)); color: var(--g-text); }
+.g-parchment { --text-primary: var(--g-ink); --text-secondary: #5c4738; --border: rgba(60,35,20,.25); background: var(--g-paper); color: var(--g-ink); border-radius: 18px; padding: 18px 18px 20px; box-shadow: 0 3px 0 #2b170b, inset 0 0 0 2px rgba(140,87,50,.35); }
+.g-rule { display: flex; align-items: center; gap: 10px; border-radius: 14px; padding: 10px 14px; background: var(--g-felt-deep); box-shadow: inset 0 0 0 1px var(--g-line); font-weight: 700; }
+.g-opt { --text-primary: var(--g-ink); --text-secondary: #5c4738; position: relative; display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left; padding: 12px 14px; border-radius: 16px; background: var(--g-paper); color: var(--g-ink); border: 2px solid transparent; box-shadow: 0 3px 0 #2b170b; cursor: pointer; transition: transform 160ms cubic-bezier(.22,1,.36,1), box-shadow 160ms, border-color 120ms, background-color 120ms; }
+.g-opt:disabled { cursor: default; }
+.g-opt-key { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(180deg, var(--g-brass-hi), var(--g-brass)); color: var(--g-ink); font-weight: 900; box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 2px 0 var(--g-brass-dark); }
+.g-opt.is-on { border-color: var(--g-brass-dark); background: #f7e3b8; transform: translateX(4px); }
+.g-opt.is-on .g-opt-key { background: var(--g-ink); color: var(--g-brass-hi); box-shadow: none; }
+.g-opt.is-right { border-color: #2e6b3b; background: #dcefd6; }
+.g-opt.is-right .g-opt-key { background: #2e6b3b; color: #eaf6e6; box-shadow: none; }
+.g-opt.is-wrong { border-color: #8e2f1f; background: #f6d9cf; }
+.g-opt.is-wrong .g-opt-key { background: #8e2f1f; color: #fbe7df; box-shadow: none; }
+.g-opt:focus-visible { outline: 3px solid var(--g-brass-hi); outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) { .g-opt:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 5px 0 #2b170b; } .g-opt.is-on:not(:disabled):hover { transform: translateX(4px) translateY(-2px); } }
+.g-opt:not(:disabled):active { transform: translateY(2px); box-shadow: 0 1px 0 #2b170b; }
+
+/* the RENYXERA plaque sits above the door handles, not over them */
+.g-gate-mark { place-items: start center; padding-top: 22vh; }
+.g-gate-mark span { padding: 10px 22px; border-radius: 12px; background: linear-gradient(180deg, #4a2c18, #2b170b); box-shadow: inset 0 0 0 2px #8c5732, 0 3px 0 #1a0d06; }
+/* leaving the game: the doors close (480 ms), then the app takes over */
+.g-gate-close { animation: none; z-index: 140; }
+.g-gate-close .g-gate-door { transform: translateX(-102%); animation: g-door-in 480ms cubic-bezier(.7,0,.84,0) forwards; }
+.g-gate-close .g-gate-door + .g-gate-door { transform: translateX(102%); animation-name: g-door-in; }
+.g-gate-close-mark { position: fixed; inset: 0; z-index: 141; display: grid; place-items: start center; padding-top: 22vh; pointer-events: none; opacity: 0; animation: g-fade-in 200ms ease-out 360ms forwards; }
+.g-gate-close-mark span { font-family: var(--font-brand), var(--font-game); font-size: clamp(1.1rem, 3.4vw, 1.6rem); color: var(--g-brass-hi); padding: 10px 22px; border-radius: 12px; background: linear-gradient(180deg, #4a2c18, #2b170b); box-shadow: inset 0 0 0 2px #8c5732; }
+@keyframes g-door-in { to { transform: translateX(0); } }
+@keyframes g-fade-in { to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .g-opt, .g-opt.is-on { transition: none; transform: none; }
+  .g-gate-close .g-gate-door, .g-gate-close .g-gate-door + .g-gate-door { transform: none; opacity: 0; animation: g-fade-in 200ms ease forwards; }
+}
 } /* end @layer components */

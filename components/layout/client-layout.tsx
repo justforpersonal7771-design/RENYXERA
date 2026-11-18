@@ -209,7 +209,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   // "Exit to study". The site navbar, dock, banners, challenge pop-ups and Test Centre bar are not drawn here.
   if (pathname?.startsWith("/battles")) {
     return (
-      <MotionPrefs>
+      <MotionPrefs><MathJaxContext config={MATHJAX_CONFIG}>
       <div className="h-dvh w-screen overflow-hidden font-sans relative">
         {children}
         <ToastContainer />
@@ -218,7 +218,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <ConfirmHost />
         <OnboardingGate />
       </div>
-      </MotionPrefs>
+      </MathJaxContext></MotionPrefs>
     );
   }
 

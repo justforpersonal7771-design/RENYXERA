@@ -6,13 +6,17 @@
  * (lib/game/citadel.ts, analytics subjectPerformance). Tap a building to see its level, what the next level needs,
  * and to train or attack that subject. Inbox, daily reward and friends open as popups over the citadel.
  */
-import { useEffect, useMemo, useState, type ReactNode } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Gift, Inbox, Swords, UserPlus, Users, UsersRound, X } from "lucide-react";
+import { Gift, Inbox, Swords, UserPlus, X } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
+import { useDataStore } from "@/store/use-data-store";
+import { Round, type RoundSpec } from "@/components/game/round";
+import { GamePortal } from "@/components/game/game-shell";
+import { poolFor } from "@/lib/game/train";
+import { buzz, sfx } from "@/lib/game/sound";
 import { ClubPanel, DailyReward } from "@/components/battles/clubs-coins";
 import { FriendsPanel } from "@/components/friends/friends-panel";
 import { CitadelScene } from "@/components/game/citadel-scene";
@@ -39,10 +43,22 @@ export default function GameHome() {
   return <Citadel />;
 }
 
-function Citadel() {
-  const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
-  useEffect(() => { void loadAnalytics(); }, [loadAnalytics]);
+/**
+ * Levels need the question bank: analytics maps each answer to its subject through the repository, so computing them
+ * before the bank loads gives every building level 0 (the "empty citadel" bug). Wait for the bank, then recompute.
+ */
+function useCitadelPerf() {
+  const bankReady = useDataStore((s) => s.isInitialized);
+  const initData = useDataStore((s) => s.initializeData);
+  const { dashboardMetrics, refreshAnalytics } = useAnalyticsStore();
+  useEffect(() => { if (!bankReady) void initData(); }, [bankReady, initData]);
+  useEffect(() => { if (bankReady) void refreshAnalytics(); }, [bankReady, refreshAnalytics]);
   const perf = useMemo(() => (dashboardMetrics?.subjectPerformance ?? []).map((s) => ({ subject: s.subject, attempted: s.attempted, correct: s.correct })), [dashboardMetrics]);
+  return { perf, ready: bankReady && !!dashboardMetrics };
+}
+
+function Citadel() {
+  const { perf, ready: perfReady } = useCitadelPerf();
   const states = useMemo(() => BUILDINGS.map((b) => buildingState(b, perf)), [perf]);
   const hall = townHallLevel(states);
   const levelSum = states.reduce((t, b) => t + b.level, 0);
@@ -51,8 +67,36 @@ function Citadel() {
   const league = data ? leagueOf(data.me.rating) : null;
   const tickets = useTickets();
   const [sheet, setSheet] = useState<Sheet>(null);
-  const [pick, setPick] = useState<BuildingState | null>(null);
+  const [pickId, setPickId] = useState<string | null>(null);
+  const pick = states.find((b) => b.id === pickId) ?? null;
+  const [round, setRound] = useState<RoundSpec | null>(null);
+  const [raid, setRaid] = useState<BuildingState | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
   const [daily, setDaily] = useState<boolean | null>(null);
+  // a building that went up a level since the last look gets a fanfare and a line of text
+  const seen = useRef<Record<string, number> | null>(null);
+  useEffect(() => {
+    if (!perfReady) return;
+    const now = Object.fromEntries(states.map((b) => [b.id, b.level]));
+    const before = seen.current;
+    seen.current = now;
+    if (!before) return;
+    const up = states.find((b) => (before[b.id] ?? 0) < b.level);
+    if (up) {
+      sfx("level"); buzz([18, 40, 25, 40, 45]);
+      setToast(`${up.name} reached level ${up.level}`);
+      const t = setTimeout(() => setToast(null), 4200);
+      return () => clearTimeout(t);
+    }
+  }, [states, perfReady]);
+  const playTicket = async (id: string) => {
+    sfx("tap");
+    const r = await fetch(`/api/battles/${id}`, { cache: "no-store" }).then((x) => (x.ok ? x.json() : null)).catch(() => null) as { battle?: { title: string; questionIds: string[] } } | null;
+    if (!r?.battle) { setToast("Couldn't open that challenge. Try again in a moment."); return; }
+    setSheet(null);
+    void fetch(`/api/battles/${id}`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action: "open" }) }).catch(() => {});
+    setRound({ kind: "set", title: r.battle.title, questionIds: r.battle.questionIds, battleId: id });
+  };
   useEffect(() => {
     const load = () => void fetch("/api/coins", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((j: { claimedToday?: boolean } | null) => j && setDaily(!j.claimedToday)).catch(() => {});
     load();
@@ -60,41 +104,121 @@ function Citadel() {
     return () => window.removeEventListener("renyxera:coins", load);
   }, []);
   const count = Array.isArray(tickets) ? tickets.length : 0;
-
-  const orbs: { key: string; label: string; icon: typeof Gift; c: string; badge?: string; sheet?: Sheet; href?: string }[] = [
-    { key: "attack", label: "Attack", icon: Swords, c: "#c4412d", href: "/battles/play" },
-    { key: "inbox", label: "Inbox", icon: Inbox, c: "#7a2230", badge: count > 0 ? String(count) : undefined, sheet: "challenges" },
-    { key: "daily", label: "Daily", icon: Gift, c: "#e2ad25", badge: daily ? "1" : undefined, sheet: "daily" },
-    { key: "clan", label: "Clan", icon: UsersRound, c: "#d9772b", href: "/battles/clubs" },
-    { key: "friends", label: "Friends", icon: Users, c: "#5a7230", sheet: "friends" },
-  ];
+  const weakest = perfReady ? [...states].sort((a, b) => a.level - b.level || a.attempted - b.attempted)[0] : null;
 
   return (
     <>
       <section aria-label="Your citadel" className="relative -mx-3 sm:-mx-6 lg:-mx-10">
-        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className="no-scrollbar h-[54vh] min-h-[340px] overflow-x-auto overscroll-x-contain lg:h-[64vh] lg:overflow-visible"><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => setPick(states.find((b) => b.id === id) ?? null)} /></div>
-        <div className="pointer-events-none absolute left-3 top-1 flex flex-wrap gap-2 sm:left-6 lg:left-10">
+        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className={`no-scrollbar h-[56vh] min-h-[340px] overflow-x-auto overscroll-x-contain transition-opacity duration-300 lg:h-[66vh] lg:overflow-visible ${perfReady ? "" : "opacity-60"}`}><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => { sfx("focus"); buzz(10); setPickId(id); }} /></div>
+        <div className="absolute inset-x-3 top-1 flex flex-wrap items-start gap-2 sm:inset-x-6 lg:inset-x-10">
           <span className="g-hud !pl-3">Town Hall <b className="text-[var(--g-brass-hi)]">{hall}</b></span>
           {league && <span className="g-hud !pl-3">{league.name} league</span>}
+          {!perfReady && <span className="g-hud !pl-3" role="status">Counting your practice…</span>}
+          <span className="flex-1" />
+          <button type="button" onClick={() => { sfx("tap"); setSheet("challenges"); }} className="g-hud relative" aria-label={`Challenges for you${count ? `, ${count} waiting` : ""}`}>
+            <Inbox className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Inbox</span>{count > 0 && <span className="g-orb-badge !static ml-1">{count}</span>}
+          </button>
+          <button type="button" onClick={() => { sfx("tap"); setSheet("daily"); }} className="g-hud relative" aria-label={daily ? "Daily reward ready" : "Daily reward"}>
+            <Gift className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Daily</span>{daily && <span className="g-orb-badge !static ml-1">1</span>}
+          </button>
         </div>
       </section>
 
-      <div className="mx-auto mt-2 grid max-w-5xl gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+      <div className="mx-auto mt-2 grid max-w-5xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
         <div className="rounded-2xl bg-[linear-gradient(180deg,var(--g-wood),var(--g-wood-dark))] p-4 shadow-[inset_0_1px_0_rgba(255,220,170,0.3)]">
           <p className="g-title text-lg">{toNextHall === 0 ? `Town Hall ${hall + 1} is ready` : `Town Hall ${hall + 1}: raise your buildings ${toNextHall} more level${toNextHall === 1 ? "" : "s"} in total`}</p>
-          <p className="mt-1 text-sm g-text-2">Tap a building to see what its next level needs. Levels come only from questions you solve.</p>
+          <p className="mt-1 text-sm g-text-2">Tap a building to train it or raid a friend&apos;s. Levels come only from questions you solve.</p>
         </div>
-        <nav aria-label="Citadel" className="grid grid-cols-5 gap-1 [&_.g-orb]:min-w-0 max-sm:[&_.g-orb-face]:h-12 max-sm:[&_.g-orb-face]:w-12 max-sm:[&_.g-orb]:text-[11px] lg:flex lg:gap-4">
-          {orbs.map((o) => {
-            const face = (<><span className="g-orb-face" style={{ ["--c" as string]: o.c }}><o.icon className="h-7 w-7 drop-shadow" strokeWidth={2.2} aria-hidden />{o.badge && <span className="g-orb-badge">{o.badge}</span>}</span>{o.label}</>);
-            return o.href ? <Link key={o.key} href={o.href} className="g-orb">{face}</Link> : <button key={o.key} type="button" onClick={() => setSheet(o.sheet!)} className="g-orb cursor-pointer">{face}</button>;
-          })}
-        </nav>
+        {weakest && (
+          <button type="button" onClick={() => { sfx("tap"); setRound({ kind: "rush", title: `${weakest.name} rush`, subjects: weakest.subjects }); }} className="g-play !min-h-[64px] !px-6 !text-lg">
+            <Swords className="h-5 w-5" aria-hidden /> Train {weakest.name}
+          </button>
+        )}
       </div>
 
-      <BuildingSheet b={pick} onClose={() => setPick(null)} />
-      <LobbySheet open={sheet} onClose={() => setSheet(null)} challenges={<Tickets tickets={tickets} onFriends={() => setSheet("friends")} />} />
+      <AnimatePresence>
+        {toast && (
+          <motion.p initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} role="status"
+            className="fixed left-1/2 top-20 z-[85] -translate-x-1/2 rounded-2xl bg-[var(--g-brass)] px-5 py-3 text-base font-black text-[var(--g-ink)] shadow-[0_3px_0_var(--g-brass-dark)]">{toast}</motion.p>
+        )}
+      </AnimatePresence>
+
+      <GamePortal>
+      <BuildingSheet b={pick} onClose={() => setPickId(null)}
+        onTrain={(b) => { setPickId(null); setRound({ kind: "rush", title: `${b.name} rush`, subjects: b.subjects }); }}
+        onRaid={(b) => { setPickId(null); setRaid(b); }} />
+      <RaidSheet b={raid} onClose={() => setRaid(null)} onPlay={(spec) => { setRaid(null); setRound(spec); }} />
+      <LobbySheet open={sheet} onClose={() => setSheet(null)} challenges={<Tickets tickets={tickets} onFriends={() => setSheet("friends")} onPlay={playTicket} />} />
+      <AnimatePresence>{round && <Round key={round.title} spec={round} onClose={() => setRound(null)} />}</AnimatePresence>
+      </GamePortal>
     </>
+  );
+}
+
+type Friend = { id: string; name: string; username: string | null; presence: string };
+
+/** Raid a friend's building: 8 questions from this building's subjects, sent to the friend; you play your run now. */
+function RaidSheet({ b, onClose, onPlay }: { b: BuildingState | null; onClose: () => void; onPlay: (s: RoundSpec) => void }) {
+  const [friends, setFriends] = useState<Friend[] | null | "error">(null);
+  const [busy, setBusy] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    if (!b) return;
+    let live = true;
+    fetch("/api/friends", { cache: "no-store" }).then((r) => (r.ok ? r.json() : Promise.reject(new Error()))).then((j: { friends: Friend[] }) => { if (live) setFriends(j.friends); }).catch(() => { if (live) setFriends("error"); });
+    return () => { live = false; };
+  }, [b]);
+  const go = async (f: Friend) => {
+    if (!b) return;
+    setBusy(f.id); setErr(null); sfx("lock");
+    const ids = poolFor(b.subjects).slice(0, 8).map((q) => q.question_id);
+    if (ids.length < 3) { setErr("Not enough questions for this building in your bank yet."); setBusy(null); return; }
+    const title = `${b.name} raid`;
+    const made = await fetch("/api/battles", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question_ids: ids, title }) }).then(async (r) => ({ ok: r.ok, j: await r.json().catch(() => ({})) as { id?: string; error?: string } })).catch(() => null);
+    if (!made?.ok || !made.j.id) { setErr(made?.j.error ?? "Couldn't start the raid. Check your connection."); setBusy(null); return; }
+    await fetch(`/api/battles/${made.j.id}/invite`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ userIds: [f.id] }) }).catch(() => null);
+    setBusy(null);
+    onPlay({ kind: "set", title: `${title} on ${f.name}`, questionIds: ids, battleId: made.j.id, owner: true });
+  };
+  const reduce = useReducedMotion();
+  return (
+    <AnimatePresence>
+      {b && (
+        <motion.div className="fixed inset-0 z-[60] flex items-end justify-center bg-[rgba(10,6,2,0.6)] sm:items-center sm:p-6" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+          <motion.div role="dialog" aria-modal="true" aria-label={`Raid a friend's ${b.name}`} onClick={(e) => e.stopPropagation()}
+            initial={reduce ? { opacity: 0 } : { y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={reduce ? { opacity: 0 } : { y: 30, opacity: 0 }} transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            className="no-scrollbar max-h-[85dvh] w-full max-w-lg overflow-y-auto rounded-t-[26px] border-4 border-[var(--g-wood)] bg-[var(--g-surface)] p-5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] sm:rounded-[26px]">
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1"><p className="g-title text-2xl">Raid a {b.name}</p><p className="g-text-2">8 questions from {b.subject}. You play now; your friend gets the same questions. Higher marks win.</p></div>
+              <button type="button" onClick={onClose} aria-label="Close" className="g-orb !min-w-0" style={{ ["--c" as string]: "#c4412d" }}><span className="g-orb-face !h-10 !w-10"><X className="h-5 w-5" aria-hidden /></span></button>
+            </div>
+            {err && <p role="alert" className="mt-3 rounded-xl bg-[#8e2f1f] px-3 py-2 text-sm font-bold text-[#fbe7df]">{err}</p>}
+            <div className="mt-4">
+              {friends === null ? <div className="h-24 animate-pulse rounded-2xl bg-[var(--g-surface-2)] motion-reduce:animate-none" aria-label="Loading friends" />
+                : friends === "error" ? <p className="text-sm g-text-2" role="alert">Couldn&apos;t load your friends. Try again in a moment.</p>
+                : friends.length === 0 ? (
+                  <div className="rounded-2xl border-2 border-dashed border-[rgba(246,242,232,0.35)] p-5 text-center">
+                    <p className="font-bold text-[var(--g-text)]">No friends to raid yet</p>
+                    <p className="mt-1 text-sm g-text-2">Add friends by username from Friends in the menu below.</p>
+                  </div>
+                ) : (
+                  <ul className="space-y-2">
+                    {friends.map((f) => (
+                      <li key={f.id}>
+                        <button type="button" disabled={!!busy} onClick={() => void go(f)} className="g-ticket w-full text-left disabled:opacity-60">
+                          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--g-deep)] text-sm font-black text-[var(--g-amber)]">{initials(f.name)}</span>
+                          <span className="min-w-0 flex-1"><span className="block truncate font-black">{f.name}</span>{f.presence === "online" && <span className="block text-xs font-bold opacity-80">Online now</span>}</span>
+                          <span className="g-ticket-go">{busy === f.id ? "…" : "RAID"}</span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
@@ -108,7 +232,7 @@ function Bar({ value, max, label }: { value: number; max: number; label: string 
   );
 }
 
-function BuildingSheet({ b, onClose }: { b: BuildingState | null; onClose: () => void }) {
+function BuildingSheet({ b, onClose, onTrain, onRaid }: { b: BuildingState | null; onClose: () => void; onTrain: (b: BuildingState) => void; onRaid: (b: BuildingState) => void }) {
   const reduce = useReducedMotion();
   return (
     <AnimatePresence>
@@ -137,8 +261,8 @@ function BuildingSheet({ b, onClose }: { b: BuildingState | null; onClose: () =>
               </div>
             ) : <p className="mt-4 font-bold text-[var(--g-brass-hi)]">Fully built. Keep it sharp.</p>}
             <div className="mt-5 grid gap-2 sm:grid-cols-2">
-              <Link href={`/battles/play?subject=${encodeURIComponent(b.subjects[0])}`} className="g-play !min-h-[52px] !text-lg">Train</Link>
-              <Link href="/battles/play" className="g-btn-quiet justify-center">Attack a friend&apos;s {b.name}</Link>
+              <button type="button" onClick={() => onTrain(b)} className="g-play !min-h-[52px] !text-lg">Train: Blitz Rush</button>
+              <button type="button" onClick={() => onRaid(b)} className="g-btn-quiet justify-center">Raid a friend&apos;s {b.name}</button>
             </div>
           </motion.div>
         </motion.div>
@@ -212,7 +336,7 @@ function useTickets(): Ticket[] | null | "error" {
 const daysLeft = (iso: string) => { const d = Math.ceil((Date.parse(iso) - Date.now()) / 86_400_000); return d <= 1 ? "Ends today" : `${d} days left`; };
 const initials = (n: string) => n.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase() || "?";
 
-function Tickets({ tickets, onFriends }: { tickets: Ticket[] | null | "error"; onFriends: () => void }) {
+function Tickets({ tickets, onFriends, onPlay }: { tickets: Ticket[] | null | "error"; onFriends: () => void; onPlay: (id: string) => void }) {
   if (tickets === null) return <div className="h-20 animate-pulse rounded-2xl bg-[var(--g-surface-2)] motion-reduce:animate-none" aria-label="Loading challenges" />;
   if (tickets === "error") return <p className="rounded-2xl border border-[var(--g-line)] bg-[var(--g-surface)] p-4 text-sm g-text-2" role="alert">Couldn&apos;t load your challenges. They will appear when the connection is back.</p>;
   if (tickets.length === 0) return (
@@ -231,7 +355,7 @@ function Tickets({ tickets, onFriends }: { tickets: Ticket[] | null | "error"; o
             <span className="block truncate font-black">{t.ownerName}</span>
             <span className="block truncate text-xs font-bold opacity-80">{t.questions} questions, {daysLeft(t.expiresAt)}</span>
           </span>
-          <Link href={`/challenge/${t.id}`} className="g-ticket-go">PLAY</Link>
+          <button type="button" onClick={() => onPlay(t.id)} className="g-ticket-go">PLAY</button>
         </li>
       ))}
     </ul>
