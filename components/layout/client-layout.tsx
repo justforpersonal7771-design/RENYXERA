@@ -79,6 +79,14 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     return () => { window.removeEventListener("error", onErr); window.removeEventListener("unhandledrejection", onRej); clearTimeout(ok); };
   }, []);
 
+  // Page width matches the navbar (owner, 19 Nov): the scroller reserves a scrollbar gutter on both edges, so subtract its
+  // measured width from the side padding. Phones have overlay scrollbars (gutter 0); desktops usually ~10px per side.
+  useEffect(() => {
+    const el = document.getElementById("app-scroll"); if (!el) return;
+    const set = () => el.style.setProperty("--sb-gutter", `${Math.max(0, (el.offsetWidth - el.clientWidth) / 2)}px`);
+    set(); const ro = new ResizeObserver(set); ro.observe(el); return () => ro.disconnect();
+  }, []);
+
   // Sign-out's redirect (auth-listener.tsx) always lands here fresh — surface the
   // confirmation as a toast on this page rather than a dedicated "you're signed out"
   // screen, which is what the profile page briefly showed before this existed.
@@ -266,7 +274,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           topbar is the only way to keep the scrollbar from ever reaching that
           region. */}
       <main className="relative z-10 w-full h-full overflow-hidden">
-        <div id="app-scroll" className={`absolute inset-x-0 bottom-0 top-[72px] overflow-y-auto [scrollbar-gutter:stable_both-edges] custom-scrollbar px-2 sm:px-4 pt-3 sm:pt-4 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-[calc(10rem+env(safe-area-inset-bottom))]"} lg:pb-8`}>
+        <div id="app-scroll" className={`absolute inset-x-0 bottom-0 top-[72px] overflow-y-auto [scrollbar-gutter:stable_both-edges] custom-scrollbar px-[max(0px,calc(0.5rem-var(--sb-gutter,0px)))] sm:px-[max(0px,calc(1rem-var(--sb-gutter,0px)))] pt-3 sm:pt-4 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-[calc(10rem+env(safe-area-inset-bottom))]"} lg:pb-8`}>
           <motion.div
             key={pathname}
             initial={{ opacity: 0, y: 8 }}
