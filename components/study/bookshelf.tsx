@@ -1,40 +1,68 @@
 "use client";
 
 /**
- * Study library as a bookshelf (owner, 18 Nov). Wooden shelves by band (core CS, maths, aptitude); each subject is a
- * cloth-bound book whose thickness follows its chapter count. Tapping a book pulls it out and opens it as a two-page
- * spread: the left page introduces the subject, the right page lists chapters with an honest status (ready / being
- * written). Edge cases: other branches see the CS shelf with a note; books with nothing written yet still open (no dead
- * clicks); keyboard and screen readers get real buttons and a dialog; phones scroll each shelf sideways.
+ * Study Library hub (v2, from the four design reports: Gemini x2, ChatGPT x2). "Warm Paper Press": paper canvas, matte
+ * buckram cloth books with dark ink, a flat shelf lip (no wood photos). No skinny vertical slivers: wide spines carry the
+ * full subject name horizontally in heavy Sora; the book with a ready chapter faces out; a shelf-end plaque fills any
+ * remaining width so a shelf never shows empty space. Desktop hover lifts the book and shows a popover with honest
+ * chapter status; phones open an inline drawer under the shelf row. A reading desk on top: continue or start here,
+ * search across subjects and chapters, and an availability filter.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { BookOpen, Feather, X } from "lucide-react";
+import { BookOpen, Feather, Search, X } from "lucide-react";
 import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { branchByCode } from "@/lib/branches";
 
-const BANDS: { id: ShelfBook["band"]; title: string }[] = [
-  { id: "core", title: "Core computer science" },
-  { id: "maths", title: "Engineering mathematics" },
-  { id: "aptitude", title: "General aptitude" },
+const SHELVES: { id: string; title: string; note: string; stacks: string[][] }[] = [
+  { id: "core", title: "Core computer science", note: "Nine subjects, written in teaching order. Operating Systems is first.", stacks: [["os", "dbms", "cn"], ["algo", "pds", "toc"], ["cd", "coa", "dl"]] },
+  { id: "maths", title: "Mathematics and aptitude", note: "Discrete maths, linear algebra, probability, calculus, and the aptitude section every paper shares.", stacks: [["dm", "la", "prob", "calc"], ["ga"]] },
 ];
+const ready = (b: ShelfBook) => b.chapters.filter((c) => c.ready).length;
+const vars = (b: ShelfBook) => ({ ["--cloth" as string]: b.paper ?? b.cloth, ["--cloth-dk" as string]: b.dark ?? b.cloth });
 
-function Spine({ b, onOpen, i }: { b: ShelfBook; onOpen: () => void; i: number }) {
-  const ready = b.chapters.some((c) => c.ready);
-  const w = 46 + b.chapters.length * 7, h = 172 + ((i * 37) % 4) * 10;
+/** A book lying flat: app pastel cloth with a deep spine edge, the full name horizontal in big heavy capitals.
+ *  The featured book (has a ready chapter) is thicker, carries the gold ribbon and names its free chapter. Hover slides it out. */
+function Slab({ b, i, dim, onOpen }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void }) {
+  const r = ready(b);
+  const free = b.chapters.find((c) => c.ready);
   return (
-    <button type="button" onClick={onOpen} aria-label={`${b.title}, ${b.chapters.length} chapters${ready ? ", has a free chapter" : ", being written"}`}
-      className="sp-book group relative shrink-0 cursor-pointer rounded-t-[4px] text-left outline-none"
-      style={{ width: w, height: h, background: `linear-gradient(90deg, rgba(0,0,0,.28), rgba(255,255,255,.08) 18%, rgba(0,0,0,0) 40%, rgba(0,0,0,.18) 92%), ${b.cloth}`, color: b.ink }}>
-      <span aria-hidden className="absolute inset-x-0 top-3 h-[3px] opacity-60" style={{ background: b.ink }} />
-      <span aria-hidden className="absolute inset-x-0 bottom-5 h-[3px] opacity-60" style={{ background: b.ink }} />
-      <span className="absolute inset-x-0 top-6 bottom-8 flex items-center justify-center [writing-mode:vertical-rl] rotate-180">
-        <span className="font-display text-[15px] font-extrabold tracking-wide">{b.short}</span>
+    <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: `${(i % 3) * 8}px`, ["--h" as string]: `${44 + b.chapters.length * 8}px` }}
+      aria-label={`${b.title}. ${b.chapters.length} chapters, ${r ? `${r} ready to read` : "being written"}.`}
+      className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
+      {free && <span aria-hidden className="sp2-ribbon !right-24" />}
+      <span className="min-w-0 flex-1">
+        <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
+        {free && <span className="mt-0.5 block text-sm font-bold text-[var(--tint-ink)]">Free chapter: {free.title}</span>}
       </span>
-      {ready && <span aria-hidden className="absolute -top-2 right-2 h-9 w-3 bg-[#d8a548] [clip-path:polygon(0_0,100%_0,100%_100%,50%_80%,0_100%)]" />}
+      <span className="sp3-stamp">{r ? `${r}/${b.chapters.length} ready` : `${b.chapters.length} chapters`}</span>
     </button>
+  );
+}
+
+function Contents({ b }: { b: ShelfBook }) {
+  return (
+    <ol className="space-y-1">
+      {b.chapters.map((c, i) => (
+        <li key={c.id}>
+          {c.href ? (
+            <Link href={c.href} className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-black/5 dark:hover:bg-white/5">
+              <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
+              <span className="min-w-0 flex-1 font-bold text-[var(--text-primary)]">{c.title}</span>
+              <span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span>
+            </Link>
+          ) : (
+            <div className="flex items-center gap-3 px-3 py-2.5">
+              <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
+              <span className="min-w-0 flex-1 text-[var(--text-secondary)]">{c.title}</span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]"><Feather className="h-3 w-3" aria-hidden /> Being written</span>
+            </div>
+          )}
+        </li>
+      ))}
+    </ol>
   );
 }
 
@@ -49,40 +77,24 @@ function OpenBook({ b, onClose }: { b: ShelfBook | null; onClose: () => void }) 
   return (
     <AnimatePresence>
       {b && (
-        <motion.div className="fixed inset-0 z-[120] grid place-items-center bg-black/45 p-3 sm:p-6" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <motion.div role="dialog" aria-modal="true" aria-label={b.title} onClick={(e) => e.stopPropagation()}
-            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotateY: -14 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.96 }}
-            transition={{ type: "spring", stiffness: 260, damping: 28 }} style={{ transformPerspective: 1400 }}
-            className="relative grid max-h-[88dvh] w-full max-w-4xl overflow-hidden rounded-[18px] shadow-[0_40px_80px_-30px_rgba(0,0,0,.8)] md:grid-cols-2"
-          >
-            <div className="relative p-6 sm:p-8" style={{ background: b.cloth, color: b.ink }}>
-              <BookOpen className="h-7 w-7 opacity-80" aria-hidden />
-              <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight sm:text-4xl">{b.title}</h2>
-              <p className="mt-3 max-w-sm text-[15px] leading-relaxed opacity-90">{b.chapters.length} chapters in teaching order. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
-              <Link href="/gate-cs-syllabus" className="mt-6 inline-block text-sm font-bold underline underline-offset-4">See how many marks this subject carries</Link>
-              <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/20 md:hidden"><X className="h-5 w-5" /></button>
+        <motion.div className="fixed inset-0 z-[120] grid place-items-center bg-[rgba(24,21,18,.42)] p-3 sm:p-6" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          <motion.div role="dialog" aria-modal="true" aria-label={b.title} onClick={(e) => e.stopPropagation()} style={{ ...vars(b), transformPerspective: 1400 }}
+            initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
+            transition={{ duration: reduce ? 0.14 : 0.38, ease: [0.22, 1, 0.36, 1] }}
+            className="grid max-h-[88dvh] w-full max-w-4xl overflow-hidden rounded-[16px] shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr]">
+            <div className="sp2-cover relative p-6 sm:p-8">
+              <BookOpen className="h-7 w-7" aria-hidden />
+              <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
+              <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series</p>
+              <p className="mt-4 text-[15px] leading-relaxed">{b.chapters.length} chapters in teaching order, {ready(b) ? `${ready(b)} ready to read now` : "all being written"}. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
+              {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="pill-ink mt-5 inline-flex">Read: {b.chapters.find((c) => c.href)!.title}</Link>}
+              <Link href="/gate-cs-syllabus" className="mt-4 block text-sm font-bold underline underline-offset-4">How many marks this subject carries</Link>
+              <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/10 md:hidden"><X className="h-5 w-5" /></button>
             </div>
-            <div className="no-scrollbar relative overflow-y-auto bg-[#f7f0e1] p-6 text-[#2a1f14] sm:p-8 dark:bg-[#211b14] dark:text-[#efe5d2]">
-              <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full border border-current/20 md:grid"><X className="h-5 w-5" /></button>
-              <p className="text-sm font-bold opacity-70">Contents</p>
-              <ol className="mt-3 space-y-1">
-                {b.chapters.map((c, i) => (
-                  <li key={c.id}>
-                    {c.href ? (
-                      <Link href={c.href} className="flex items-baseline gap-3 rounded-lg px-2 py-2.5 hover:bg-black/5 dark:hover:bg-white/5">
-                        <span className="font-num text-sm opacity-60">{i + 1}</span>
-                        <span className="min-w-0 flex-1"><span className="block font-bold">{c.title}</span><span className="block text-sm text-emerald-800 dark:text-emerald-300">{c.ready}</span></span>
-                        <span className="text-sm font-bold underline underline-offset-4">Read</span>
-                      </Link>
-                    ) : (
-                      <div className="flex items-baseline gap-3 px-2 py-2.5 opacity-70">
-                        <span className="font-num text-sm opacity-60">{i + 1}</span>
-                        <span className="min-w-0 flex-1"><span className="block font-semibold">{c.title}</span><span className="flex items-center gap-1 text-sm"><Feather className="h-3.5 w-3.5" aria-hidden /> Being written</span></span>
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ol>
+            <div className="no-scrollbar relative overflow-y-auto bg-[var(--surface)] p-5 sm:p-7">
+              <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full border border-[var(--border)] md:grid"><X className="h-5 w-5" /></button>
+              <p className="mb-2 text-sm font-bold text-[var(--text-secondary)]">Contents</p>
+              <Contents b={b} />
             </div>
           </motion.div>
         </motion.div>
@@ -93,29 +105,94 @@ function OpenBook({ b, onClose }: { b: ShelfBook | null; onClose: () => void }) 
 
 export function Bookshelf() {
   const [open, setOpen] = useState<ShelfBook | null>(null);
+  const [drawer, setDrawer] = useState<string | null>(null);
+  const [q, setQ] = useState("");
+  const [onlyReady, setOnlyReady] = useState(false);
   const [paper, setPaper] = useState<string | null>(null);
-  // eslint-disable-next-line react-hooks/set-state-in-effect -- the branch lives on the device; read after mount
-  useEffect(() => { setPaper(branchByCode(getCurrentBranch())?.paper ?? null); }, []);
+  const [last, setLast] = useState<{ href: string; title: string } | null>(null);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only values, read once after mount
+    setPaper(branchByCode(getCurrentBranch())?.paper ?? null);
+    try { const v = localStorage.getItem("renyxera.study.last"); if (v) setLast(JSON.parse(v)); } catch { /* storage off */ }
+  }, []);
+  const term = q.trim().toLowerCase();
+  const match = useMemo(() => (b: ShelfBook) => (!term || b.title.replace(/­/g, "").toLowerCase().includes(term) || b.chapters.some((c) => c.title.toLowerCase().includes(term))) && (!onlyReady || ready(b) > 0), [term, onlyReady]);
+  const free = CS_SHELF.find((b) => ready(b) > 0);
+  const resume = last ?? (free ? { href: free.chapters.find((c) => c.href)!.href!, title: `${free.title}: ${free.chapters.find((c) => c.href)!.title}` } : null);
+  const hits = CS_SHELF.filter(match).length;
+  const isPhone = () => typeof window !== "undefined" && !window.matchMedia("(min-width: 1024px)").matches;
+
   return (
-    <section aria-label="Study shelf" className="space-y-6">
-      <header className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-5xl">The GATE CS shelf</h1>
-          <p className="mt-2 max-w-2xl text-[var(--text-secondary)]">Pull out a book to open it. Books with a gold ribbon have a chapter you can read now; the rest are being written in teaching order.</p>
-        </div>
-        {paper && paper !== "CS" && <p className="rounded-xl bg-[var(--surface-secondary)] px-3 py-2 text-sm text-[var(--text-secondary)]">Your branch is GATE {paper}. Its shelf comes after CS; you can read the CS books meanwhile.</p>}
-      </header>
-      <div className="sp-case rounded-[22px] p-3 sm:p-5">
-        {BANDS.map((band) => (
-          <div key={band.id} className="sp-shelf">
-            <p className="px-2 pb-2 text-xs font-bold text-[#f3e3c3]/80">{band.title}</p>
-            <div className="no-scrollbar flex items-end gap-1.5 overflow-x-auto px-2 pt-3">
-              {CS_SHELF.filter((b) => b.band === band.id).map((b, i) => <Spine key={b.id} b={b} i={i} onOpen={() => setOpen(b)} />)}
-              <span aria-hidden className="ml-2 h-24 w-8 shrink-0 self-end rounded-sm bg-[#3a2416] opacity-60 [transform:skewX(-8deg)]" />
-            </div>
-            <div aria-hidden className="sp-plank" />
+    <section aria-label="Study library" lang="en" className="space-y-5">
+      {/* reading desk */}
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+        <div className="card-pastel flex flex-col justify-between p-5 sm:p-6" data-tint="butter">
+          <div>
+            <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] sm:text-4xl">The GATE CS library</h1>
+            <p className="mt-1 text-[var(--text-secondary)]">Lessons written for the way GATE asks. Pull a book to see what is inside.</p>
           </div>
-        ))}
+          {resume && (
+            <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
+              <BookOpen className="h-5 w-5 text-[var(--text-primary)]" aria-hidden />
+              <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-[var(--text-secondary)]">{last ? "Continue reading" : "Start here, free"}</span><span className="block truncate font-bold text-[var(--text-primary)]">{resume.title}</span></span>
+              <Link href={resume.href} className="pill-ink">{last ? "Resume" : "Read now"}</Link>
+            </div>
+          )}
+        </div>
+        <div className="card-pastel flex flex-col justify-between gap-3 p-5 sm:p-6" data-tint="peri">
+          <label className="flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3">
+            <Search className="h-4 w-4 text-[var(--text-muted)]" aria-hidden />
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search subjects and chapters" aria-label="Search subjects and chapters" className="search-bare h-11 flex-1 bg-transparent text-[var(--text-primary)]" />
+            {q && <button type="button" onClick={() => setQ("")} aria-label="Clear search" className="grid h-8 w-8 place-items-center"><X className="h-4 w-4" /></button>}
+          </label>
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="button" aria-pressed={!onlyReady} onClick={() => setOnlyReady(false)} className={!onlyReady ? "pill-ink" : "pill-soft"}>All books</button>
+            <button type="button" aria-pressed={onlyReady} onClick={() => setOnlyReady(true)} className={onlyReady ? "pill-ink" : "pill-soft"}>Ready to read</button>
+            <span className="text-sm text-[var(--text-secondary)]">{hits} of {CS_SHELF.length} books</span>
+          </div>
+          {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; the CS books are open to you meanwhile.</p>}
+        </div>
+      </div>
+
+      {/* the shelves */}
+      <div className="sp2-case">
+        {SHELVES.map((sh) => {
+          const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id));
+          const open1 = books.find((b) => b.id === drawer);
+          const openIt = (b: ShelfBook) => { if (isPhone()) setDrawer((d) => (d === b.id ? null : b.id)); else setOpen(b); };
+          const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
+          const plaque = (
+            <div className="sp2-plaque">
+              <p className="font-display text-lg font-extrabold text-[var(--text-primary)]">{sh.title}</p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">{sh.note}</p>
+              <p className="mt-2 text-sm font-bold text-[var(--text-primary)]">{books.reduce((t, b) => t + ready(b), 0)} of {books.reduce((t, b) => t + b.chapters.length, 0)} chapters ready</p>
+            </div>
+          );
+          return (
+            <div key={sh.id} className="sp2-shelf">
+              <div className={`grid items-end gap-4 ${sh.stacks.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2"}`}>
+                {sh.stacks.map((st, si) => (
+                  <div key={si} className="flex flex-col gap-3">
+                    {st.length === 1 && plaque}
+                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} onOpen={() => openIt(byId(id))} />)}</div>
+                  </div>
+                ))}
+              </div>
+              <div aria-hidden className="sp2-lip" />
+              <AnimatePresence>
+                {open1 && (
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden lg:hidden">
+                    <div className="mt-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+                      <div className="flex items-start justify-between gap-2"><p className="font-display text-lg font-extrabold text-[var(--text-primary)]">{open1.title}</p><button type="button" onClick={() => setDrawer(null)} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)]"><X className="h-4 w-4" /></button></div>
+                      <Contents b={open1} />
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+        {hits === 0 && <p className="rounded-2xl bg-[var(--surface)] p-4 text-center text-[var(--text-secondary)]">No book matches “{q}”. <button type="button" onClick={() => { setQ(""); setOnlyReady(false); }} className="font-bold underline underline-offset-4">Clear the search</button> or <Link href="/topics/operating-systems-os" className="font-bold underline underline-offset-4">search the past-question bank</Link>.</p>}
       </div>
       <OpenBook b={open} onClose={() => setOpen(null)} />
     </section>
