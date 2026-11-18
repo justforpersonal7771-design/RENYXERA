@@ -109,5 +109,5 @@ export function useLessonHighlights(lesson: string) {
     </div>
   );
 
-  return { attach: setArt, toolbar, list, count: items.length };
+  return { attach: setArt, toolbar, list, count: items.length, items };
 }

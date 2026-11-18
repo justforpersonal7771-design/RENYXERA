@@ -25,6 +25,13 @@ import { isResponseCorrect } from "@/lib/grading";
 import type { RenderableQuestion } from "@/types/question.types";
 
 type Tool = "notes" | "pyqs" | null;
+type Anchor = { right: number; bottom: number } | null;
+/** Where a panel opens: right above the button that opened it, right edges aligned (phones keep the full-width sheet). */
+const anchorOf = (el: HTMLElement): Anchor => {
+  if (window.innerWidth < 640) return null;
+  const r = el.getBoundingClientRect();
+  return { right: Math.max(8, Math.round(window.innerWidth - r.right)), bottom: Math.round(window.innerHeight - r.top + 10) };
+};
 
 function Portal({ children }: { children: ReactNode }) {
   const [ok, setOk] = useState(false);
@@ -115,7 +122,15 @@ function PyqModal({ q, onClose }: { q: RenderableQuestion | null; onClose: () =>
 }
 
 /* ---------------------------------------------------------------- Mentor window */
-function MentorWindow({ open, onClose, lesson, section }: { open: boolean; onClose: () => void; lesson: string; section: string }) {
+type NoteItem = { quote: string; note: string };
+/** The student's own highlights and notes, short enough to travel with each question. */
+const notesContext = (items: NoteItem[]) => {
+  if (!items.length) return "";
+  const lines = items.slice(-8).map((h) => `"${h.quote.replace(/\s+/g, " ").slice(0, 160)}"${h.note.trim() ? ` (my note: ${h.note.trim().slice(0, 160)})` : ""}`);
+  return ` My highlights: ${lines.join("; ")}.`;
+};
+
+function MentorWindow({ open, onClose, lesson, section, notes, anchor }: { open: boolean; onClose: () => void; lesson: string; section: string; notes: NoteItem[]; anchor: Anchor }) {
   const d = useMentorData();
   const c = useMentorChat(d.brief, { autoOpen: false });
   const [text, setText] = useState("");
@@ -130,10 +145,10 @@ function MentorWindow({ open, onClose, lesson, section }: { open: boolean; onClo
   const ask = (q: string) => {
     if (!q.trim() || c.busy) return;
     if (!started.current) { c.newChat(); started.current = true; }
-    void c.send(`[Study lesson: ${lesson}. Section: ${section}.] ${q.trim()}`, "Ask");
+    void c.send(`[Study lesson: ${lesson}. Section: ${section}.${notesContext(notes)}] ${q.trim()}`, "Ask");
     setText(""); setHist(false);
   };
-  const quick = ["Explain this section more simply", "Give me a similar GATE question", "Why does a cycle not always mean deadlock?"];
+  const quick = [...(notes.length ? ["Explain my highlights", "Quiz me on my notes"] : []), "Explain this section more simply", "Give me a similar GATE question"];
   return (
     <>
       <div ref={bounds} aria-hidden className="pointer-events-none fixed inset-2 z-[0]" />
@@ -141,7 +156,8 @@ function MentorWindow({ open, onClose, lesson, section }: { open: boolean; onClo
         {open && (
           <motion.div role="dialog" aria-label="AI Mentor" drag dragListener={false} dragControls={drag} dragMomentum={false} dragConstraints={bounds} dragElastic={0.04}
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduce ? { opacity: 0 } : { opacity: 0, y: 16, scale: 0.98 }} transition={{ type: "spring", stiffness: 380, damping: 32 }}
-            className={`fixed inset-x-2 bottom-[calc(5.5rem+env(safe-area-inset-bottom))] z-[300] flex flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_30px_70px_-20px_rgba(0,0,0,.5)] sm:inset-x-auto sm:right-6 sm:w-[420px] lg:bottom-24 ${min ? "" : "h-[min(620px,72dvh)]"}`}>
+            style={anchor ? { right: anchor.right, bottom: anchor.bottom, left: "auto", transformOrigin: "bottom right" } : undefined}
+            className={`fixed inset-x-2 bottom-[calc(9.5rem+env(safe-area-inset-bottom))] z-[300] flex flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_30px_70px_-20px_rgba(0,0,0,.5)] sm:w-[420px] ${min ? "" : "h-[min(620px,calc(100dvh-10rem))]"}`}>
             <div onPointerDown={(e) => { if (window.innerWidth >= 640 && !(e.target as HTMLElement).closest("button")) drag.start(e); }}
               className="flex cursor-grab items-center gap-2 border-b border-[var(--border)] px-3 py-2.5 active:cursor-grabbing sm:touch-none">
               <MentorLogo className="h-8" mode={c.busy ? "think" : "still"} />
@@ -167,7 +183,7 @@ function MentorWindow({ open, onClose, lesson, section }: { open: boolean; onClo
                 <div className="no-scrollbar flex-1 space-y-3 overflow-y-auto p-4">
                   {c.msgs.length === 0 && (
                     <div className="space-y-2">
-                      <p className="text-sm text-[var(--text-secondary)]">Ask anything about this lesson. The chat is saved in your Mentor history.</p>
+                      <p className="text-sm text-[var(--text-secondary)]">Ask anything about this lesson. {notes.length ? `The Mentor can see your ${notes.length} highlight${notes.length === 1 ? "" : "s"} and notes. ` : "Highlight text in the lesson and the Mentor can use it. "}The chat is saved in your Mentor history.</p>
                       {quick.map((q) => <button key={q} type="button" onClick={() => ask(q)} className="block w-full rounded-xl border border-[var(--border)] px-3 py-2 text-left text-sm text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">{q}</button>)}
                     </div>
                   )}
@@ -194,10 +210,12 @@ function MentorWindow({ open, onClose, lesson, section }: { open: boolean; onClo
 }
 
 /* ---------------------------------------------------------------- the floating dock */
-export function LessonTools({ lesson, section, pyqTopic, notes, noteCount }: { lesson: string; section: string; pyqTopic: RegExp; notes: ReactNode; noteCount: number }) {
+export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteItems = [] }: { lesson: string; section: string; pyqTopic: RegExp; notes: ReactNode; noteCount: number; noteItems?: NoteItem[] }) {
   const pyqs = useTopicPyqs(pyqTopic);
   const [tool, setTool] = useState<Tool>(null);
   const [mentor, setMentor] = useState(false);
+  const [at, setAt] = useState<Anchor>(null);
+  const [mAt, setMAt] = useState<Anchor>(null);
   const [q, setQ] = useState<RenderableQuestion | null>(null);
   const reduce = useReducedMotion();
   useEffect(() => {
@@ -214,7 +232,8 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount }: { l
         {tool && (
           <motion.div role="dialog" aria-label={tool === "notes" ? "Highlights and notes" : "Real GATE questions on this topic"}
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 14, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }} transition={{ type: "spring", stiffness: 420, damping: 34 }}
-            className="no-scrollbar fixed inset-x-2 bottom-[calc(9.5rem+env(safe-area-inset-bottom))] z-[290] max-h-[60dvh] overflow-y-auto rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-[0_30px_70px_-20px_rgba(0,0,0,.45)] sm:inset-x-auto sm:right-6 sm:w-[400px] lg:bottom-24">
+            style={at ? { right: at.right, bottom: at.bottom, left: "auto", transformOrigin: "bottom right" } : undefined}
+            className="no-scrollbar fixed inset-x-2 bottom-[calc(9.5rem+env(safe-area-inset-bottom))] z-[290] max-h-[60dvh] overflow-y-auto rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3 shadow-[0_30px_70px_-20px_rgba(0,0,0,.45)] sm:w-[400px]">
             <div className="mb-2 flex items-center justify-between px-1">
               <p className="flex items-center gap-2 text-sm font-bold text-[var(--text-primary)]">{tool === "notes" ? <><Highlighter className="h-4 w-4" aria-hidden /> Highlights and notes</> : <><FileQuestion className="h-4 w-4" aria-hidden /> Real GATE questions</>}</p>
               <button type="button" onClick={() => setTool(null)} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
@@ -237,12 +256,12 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount }: { l
       </AnimatePresence>
       <div className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-3 z-[280] flex flex-col items-end gap-2 sm:right-6 lg:bottom-6">
         <div className="flex gap-2">
-          <button type="button" onClick={() => setTool((t) => (t === "notes" ? null : "notes"))} aria-pressed={tool === "notes"} className={`${btn} !border-transparent !bg-[var(--tint-butter)] !text-[var(--tint-butter-ink)]`}><Highlighter className="h-4 w-4" aria-hidden /> Notes{noteCount > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{noteCount}</span>}</button>
-          <button type="button" onClick={() => setTool((t) => (t === "pyqs" ? null : "pyqs"))} aria-pressed={tool === "pyqs"} className={`${btn} !border-transparent !bg-[var(--tint-peri)] !text-[var(--tint-peri-ink)]`}><FileQuestion className="h-4 w-4" aria-hidden /> PYQs{pyqs && pyqs.length > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{pyqs.length}</span>}</button>
-          <button type="button" onClick={() => { setMentor((m) => !m); setTool(null); }} aria-pressed={mentor} className={`${btn} !border-transparent !bg-[var(--ink)] !py-1.5 !pl-2 !text-[var(--background)]`}><MentorLogo className="h-7" mode="blink" /> Ask Mentor</button>
+          <button type="button" onClick={(e) => { setAt(anchorOf(e.currentTarget)); setMentor(false); setTool((t) => (t === "notes" ? null : "notes")); }} aria-pressed={tool === "notes"} className={`${btn} hl-btn`}><Highlighter className="h-4 w-4" aria-hidden /> <span className="hl-ink">Notes</span>{noteCount > 0 && <span className="rounded-full bg-white/70 px-1.5 text-xs text-[#3a2a00]">{noteCount}</span>}</button>
+          <button type="button" onClick={(e) => { setAt(anchorOf(e.currentTarget)); setMentor(false); setTool((t) => (t === "pyqs" ? null : "pyqs")); }} aria-pressed={tool === "pyqs"} className={`${btn} !border-transparent !bg-[var(--tint-peri)] !text-[var(--tint-peri-ink)]`}><FileQuestion className="h-4 w-4" aria-hidden /> PYQs{pyqs && pyqs.length > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{pyqs.length}</span>}</button>
+          <button type="button" onClick={(e) => { setMAt(anchorOf(e.currentTarget)); setMentor((m) => !m); setTool(null); }} aria-pressed={mentor} className={`${btn} !py-1.5 !pl-2`}><MentorLogo className="h-7" mode="blink" /> Ask Mentor</button>
         </div>
       </div>
-      <MentorWindow open={mentor} onClose={() => setMentor(false)} lesson={lesson} section={section} />
+      <MentorWindow open={mentor} onClose={() => setMentor(false)} lesson={lesson} section={section} notes={noteItems} anchor={mAt} />
       <PyqModal q={q} onClose={() => setQ(null)} />
     </Portal>
   );

@@ -162,7 +162,7 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
 
 /* ------------------------------------------------------------------ chapter */
 export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chapter; backHref?: string }) {
-  const { attach, toolbar, list, count } = useLessonHighlights(chapter.id);
+  const { attach, toolbar, list, count, items } = useLessonHighlights(chapter.id);
   const steps = chapter.map.kind === "strip" ? chapter.map.items : [];
   const pane = useRef<HTMLDivElement | null>(null);
   const [current, setCurrent] = useState<string>("");
@@ -237,7 +237,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
       <div ref={bind} className="no-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:pb-28 lg:pr-1">
         {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
       </div>
-      <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} noteCount={count} />
+      <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} noteCount={count} noteItems={items} />
       {toolbar}
     </div>
   );
