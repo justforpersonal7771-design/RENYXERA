@@ -129,11 +129,11 @@ function OpenBook({ b, onClose }: { b: ShelfBook | null; onClose: () => void }) 
               <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
               <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series</p>
               <p className="mt-4 text-[15px] leading-relaxed">{b.chapters.length} chapters in teaching order, {ready(b) ? `${ready(b)} ready to read now` : "all being written"}. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
-              {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="pill-ink mt-5 inline-flex">Read: {b.chapters.find((c) => c.href)!.title}</Link>}
+              {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="mt-5 inline-flex rounded-full px-5 py-2.5 text-sm font-bold text-white shadow-[0_3px_0_rgba(0,0,0,.25)] transition-transform hover:-translate-y-0.5" style={{ background: `var(--tint-${b.tint ?? "peri"}-ink)` }}>Read: {b.chapters.find((c) => c.href)!.title}</Link>}
               <MarksPeek key={b.id} b={b} />
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/10 md:hidden"><X className="h-5 w-5" /></button>
             </div>
-            <div className="no-scrollbar relative overflow-y-auto bg-[var(--surface)] p-5 sm:p-7">
+            <div className="no-scrollbar relative overflow-y-auto p-5 sm:p-7" style={{ background: `color-mix(in srgb, var(--tint-${b.tint ?? "peri"}) 35%, var(--surface))` }}>
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full border border-[var(--border)] md:grid"><X className="h-5 w-5" /></button>
               <p className="mb-2 text-sm font-bold text-[var(--text-secondary)]">Contents</p>
               <Contents b={b} />

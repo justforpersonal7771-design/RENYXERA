@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation";
 import { StudyTabs } from "@/components/study/study-tabs";
 import { rememberScroll, recallScroll } from "@/lib/study/tabs";
 import { CS_SHELF } from "@/lib/study/catalog";
-import { ArrowLeft, ArrowUpRight, Check, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronDown, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { RagLab } from "@/components/study/rag-lab";
@@ -175,7 +175,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const pane = useRef<HTMLDivElement | null>(null);
   const [current, setCurrent] = useState<string>("");
   const [soon, setSoon] = useState<number | null>(null);
-  const [shut, setShut] = useState<Record<string, boolean>>({});
+  const [open, setOpen] = useState<Record<string, boolean>>({});
   const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
   const href = usePathname() ?? "/study";
   const tab = useMemo(() => ({ href, title: chapter.title, subject: chapter.subject, tint: CS_SHELF.find((b) => b.chapters.some((c) => c.href === href))?.tint }), [href, chapter.title, chapter.subject]);
@@ -212,15 +212,15 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   };
 
   return (
-    <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-4" style={{ ["--st-accent" as string]: "#c2410c" }}>
-      <div className="min-w-0 lg:col-span-2"><StudyTabs current={tab} /></div>
+    <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-4" style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
+      <div className="flex min-w-0 items-end gap-3 lg:col-span-2"><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div><Link href={backHref} className="mb-1 hidden shrink-0 items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1.5 text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] lg:inline-flex"><ArrowLeft className="h-4 w-4" aria-hidden /> All books</Link></div>
       <nav aria-label="Chapter outline" className="relative flex min-h-0 flex-col">
         <div className="shrink-0 pb-3">
         <Link href={backHref} className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"><ArrowLeft className="h-4 w-4" aria-hidden /> Study materials</Link>
         <p className="mt-4 text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
         </div>
-        <ol className="lesson-scroll min-h-0 space-y-2 lg:flex-1 lg:overflow-y-auto lg:pr-2">
+        <ol className="no-scrollbar min-h-0 space-y-2 lg:flex-1 lg:overflow-y-auto lg:pr-2">
           {steps.map((s, i) => {
             const t = chapter.topics[i];
             if (!t) return (
@@ -234,15 +234,20 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
               </li>
             );
             const secs = sectionsOf(t);
-            const inTopic = current.startsWith(`${t.id}--`) || (!current && i === 0);
+            const curIdx = Math.max(0, chapter.topics.findIndex((x) => current.startsWith(`${x.id}--`)));
+            const inTopic = i === curIdx;
+            const passed = i < curIdx;
+            const expanded = open[t.id] ?? inTopic;
             return (
               <li key={i}>
-                <button type="button" onClick={() => { if (inTopic) setShut((x) => ({ ...x, [t.id]: !x[t.id] })); else { setShut((x) => ({ ...x, [t.id]: false })); go(t.id); } }} aria-expanded={!shut[t.id]}
-                  className={`flex w-full items-start gap-3 rounded-xl border-2 px-2 py-2 text-left transition-colors ${inTopic ? "border-[var(--st-accent)]" : "border-dashed border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
-                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--st-accent)] text-[11px] font-bold text-white">{i + 1}</span>
-                  <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-secondary)]">{s.sub}</span></span>
-                </button>
-                {!shut[t.id] && <ol className="ml-5 mt-1 border-l-2 border-[var(--border)] py-1">
+                <div className={`flex w-full items-start gap-2 rounded-xl border-2 px-2 py-2 transition-colors ${inTopic ? "border-[var(--st-accent)]" : passed ? "border-dashed border-[var(--st-accent)] bg-[color-mix(in_srgb,var(--st-accent)_7%,transparent)]" : "border-dashed border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
+                  <button type="button" onClick={() => { setOpen((x) => ({ ...x, [t.id]: true })); go(t.id); }} className="flex min-w-0 flex-1 items-start gap-3 text-left">
+                    <span className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${passed ? "border-2 border-[var(--st-accent)] text-[var(--st-accent)]" : "bg-[var(--st-accent)] text-white"}`}>{passed ? <Check className="h-3.5 w-3.5" aria-label="Read" /> : i + 1}</span>
+                    <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-secondary)]">{passed ? "Read" : s.sub}</span></span>
+                  </button>
+                  <button type="button" onClick={() => setOpen((x) => ({ ...x, [t.id]: !expanded }))} aria-expanded={expanded} aria-label={`${expanded ? "Hide" : "Show"} sections of ${s.label}`} className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><ChevronDown className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`} /></button>
+                </div>
+                {expanded && <ol className="ml-5 mt-1 border-l-2 border-[var(--border)] py-1">
                   {secs.map((x) => {
                     const id = secId(t, x.key); const on = current === id;
                     return (
@@ -258,7 +263,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
           })}
         </ol>
       </nav>
-      <div ref={bind} className="lesson-scroll relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
+      <div ref={bind} className="custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
         {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
       </div>
       <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} noteCount={count} noteItems={items} />

@@ -104,11 +104,13 @@ function Citadel() {
     return () => window.removeEventListener("renyxera:coins", load);
   }, []);
   const count = Array.isArray(tickets) ? tickets.length : 0;
+  // Quick train: a 5-minute Blitz Rush on the building that most needs work (lowest level, then fewest questions).
+  const weakest = perfReady ? [...states].sort((a, b) => a.level - b.level || a.attempted - b.attempted)[0] : null;
 
   return (
     <>
       <section aria-label="Your citadel" className="relative -mx-3 sm:-mx-6 lg:-mx-10">
-        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className={`no-scrollbar h-[calc(100dvh-21rem)] min-h-[300px] overflow-x-auto overscroll-x-contain transition-opacity duration-300 lg:h-[calc(100dvh-19rem)] lg:overflow-visible ${perfReady ? "" : "opacity-60"}`}><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => { sfx("focus"); buzz(10); setPickId(id); }} /></div>
+        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className={`no-scrollbar h-[calc(100dvh-25rem)] min-h-[280px] overflow-x-auto overscroll-x-contain transition-opacity duration-300 lg:h-[calc(100dvh-19rem)] lg:overflow-visible ${perfReady ? "" : "opacity-60"}`}><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => { sfx("focus"); buzz(10); setPickId(id); }} /></div>
         <div className="absolute inset-x-3 top-1 flex flex-wrap items-start gap-2 sm:inset-x-6 lg:inset-x-10">
           <span className="g-hud !pl-3">Town Hall <b className="text-[var(--g-brass-hi)]">{hall}</b></span>
           {league && <span className="g-hud hidden !pl-3 sm:inline-flex">{league.name} league</span>}
@@ -127,6 +129,9 @@ function Citadel() {
         <div className="rounded-2xl bg-[linear-gradient(180deg,var(--g-wood),var(--g-wood-dark))] p-4 shadow-[inset_0_1px_0_rgba(255,220,170,0.3)]">
           <p className="g-title text-lg">{toNextHall === 0 ? `Town Hall ${hall + 1} is ready` : `Town Hall ${hall + 1}: raise your buildings ${toNextHall} more level${toNextHall === 1 ? "" : "s"} in total`}</p>
           <p className="mt-1 text-sm g-text-2">Tap a building to train it or raid a friend&apos;s. Levels come only from questions you solve.</p>
+          {weakest && <button type="button" onClick={() => { sfx("tap"); setRound({ kind: "rush", title: `${weakest.name} rush`, subjects: weakest.subjects }); }} className="g-play mt-3 !min-h-[48px] !px-5 !text-base" title="Starts a 5-minute Blitz Rush on your weakest building">
+            <Swords className="h-5 w-5" aria-hidden /> Quick train: {weakest.name}
+          </button>}
         </div>
       </div>
 

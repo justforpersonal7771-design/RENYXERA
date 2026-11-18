@@ -200,7 +200,7 @@ function MentorWindow({ open, onClose, lesson, section, notes, anchor, z, onRais
               </ul>
             ) : (
               <>
-                <div className="lesson-scroll flex-1 space-y-3 overflow-y-auto p-4">
+                <div className="custom-scrollbar flex-1 space-y-3 overflow-y-auto p-4">
                   {c.msgs.length === 0 && (
                     <div className="space-y-2">
                       <p className="text-sm text-[var(--text-secondary)]">Ask anything about this lesson. {notes.length ? `The Mentor can see your ${notes.length} highlight${notes.length === 1 ? "" : "s"} and notes. ` : "Highlight text in the lesson and the Mentor can use it. "}The chat is saved in your Mentor history.</p>
@@ -252,7 +252,7 @@ function FloatPanel({ title, icon, anchor, z, onRaise, onClose, children, tools 
         <button type="button" onClick={onClose} aria-label={`Close ${title}`} className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
       </div>
       {tools}
-      <div className="lesson-scroll min-h-0 flex-1 overflow-y-auto p-3">{children}</div>
+      <div className="custom-scrollbar min-h-0 flex-1 overflow-y-auto p-3">{children}</div>
     </motion.div>
   );
 }
