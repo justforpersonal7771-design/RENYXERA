@@ -5,7 +5,7 @@
  */
 export type Job = { id: string; arrival: number; burst: number; priority?: number };
 export type Slice = { id: string | null; start: number; end: number }; // id null = CPU idle
-export type Algo = "FCFS" | "SJF" | "SRTF" | "RR" | "PRIO";
+export type Algo = "FCFS" | "SJF" | "SRTF" | "RR" | "PRIO" | "HRRN" | "LJF" | "LRTF";
 export type Result = { gantt: Slice[]; rows: { id: string; arrival: number; burst: number; completion: number; turnaround: number; waiting: number; response: number }[]; avgTat: number; avgWt: number; switches: number };
 
 export function schedule(jobs: Job[], algo: Algo, quantum = 2): Result {
@@ -34,11 +34,11 @@ export function schedule(jobs: Job[], algo: Algo, quantum = 2): Result {
       admit(t);
       if (j.left > 0) queue.push(j);
     }
-  } else if (algo === "SRTF") {
+  } else if (algo === "SRTF" || algo === "LRTF") {
     while (!done()) {
       const ready = arrived();
       if (!ready.length) { const nxt = js.filter((j) => j.left > 0).sort(byArr)[0]; push(null, t, nxt.arrival); t = nxt.arrival; continue; }
-      const j = ready.sort((a, b) => a.left - b.left || byArr(a, b))[0];
+      const j = ready.sort((a, b) => (algo === "SRTF" ? a.left - b.left : b.left - a.left) || byArr(a, b))[0];
       if (j.first < 0) j.first = t;
       push(j.id, t, t + 1); t += 1; j.left -= 1;
     }
@@ -46,7 +46,8 @@ export function schedule(jobs: Job[], algo: Algo, quantum = 2): Result {
     while (!done()) {
       const ready = arrived();
       if (!ready.length) { const nxt = js.filter((j) => j.left > 0).sort(byArr)[0]; push(null, t, nxt.arrival); t = nxt.arrival; continue; }
-      const j = algo === "FCFS" ? ready.sort(byArr)[0] : algo === "SJF" ? ready.sort((a, b) => a.burst - b.burst || byArr(a, b))[0] : ready.sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0) || byArr(a, b))[0];
+      const rr = (x: typeof js[number]) => (t - x.arrival + x.burst) / x.burst; // HRRN response ratio
+      const j = algo === "FCFS" ? ready.sort(byArr)[0] : algo === "SJF" ? ready.sort((a, b) => a.burst - b.burst || byArr(a, b))[0] : algo === "LJF" ? ready.sort((a, b) => b.burst - a.burst || byArr(a, b))[0] : algo === "HRRN" ? ready.sort((a, b) => rr(b) - rr(a) || byArr(a, b))[0] : ready.sort((a, b) => (a.priority ?? 0) - (b.priority ?? 0) || byArr(a, b))[0];
       j.first = t; push(j.id, t, t + j.left); t += j.left; j.left = 0;
     }
   }
@@ -57,4 +58,24 @@ export function schedule(jobs: Job[], algo: Algo, quantum = 2): Result {
   const busy = gantt.filter((s) => s.id);
   let switches = 0; for (let k = 1; k < busy.length; k++) if (busy[k].id !== busy[k - 1].id) switches++;
   return { gantt, rows, avgTat: rows.reduce((x, r) => x + r.turnaround, 0) / n, avgWt: rows.reduce((x, r) => x + r.waiting, 0) / n, switches };
+}
+
+/** Multilevel feedback queue: Q0 round robin q0, Q1 round robin q1, Q2 FCFS. A job that uses its whole quantum drops a level.
+ *  A job arriving in a higher queue pre-empts at once; the pre-empted job goes to the tail of its own queue with a fresh quantum. */
+export function mlfq(jobs: Job[], q0 = 2, q1 = 4) {
+  const js = jobs.map((j, i) => ({ ...j, i, left: j.burst, level: 0, used: 0, done: -1 }));
+  const Q: number[][] = [[], [], []]; const gantt: (Slice & { level: number })[] = []; const quanta = [q0, q1, Infinity];
+  let t = 0, cur: number | null = null; const admitted = new Set<number>();
+  const admit = () => js.filter((j) => j.arrival <= t && !admitted.has(j.i)).sort((a, b) => a.arrival - b.arrival || a.i - b.i).forEach((j) => { Q[0].push(j.i); admitted.add(j.i); });
+  while (js.some((j) => j.left > 0)) {
+    admit();
+    if (cur !== null) { const c = js[cur]; const higher = Q.slice(0, c.level).some((q) => q.length); if (higher) { Q[c.level].push(cur); c.used = 0; cur = null; } }
+    if (cur === null) { const lv = Q.findIndex((q) => q.length); if (lv < 0) { const nx = Math.min(...js.filter((j) => j.left > 0).map((j) => j.arrival)); gantt.push({ id: null, start: t, end: nx, level: -1 }); t = nx; continue; } cur = Q[lv].shift()!; js[cur].used = 0; }
+    const c = js[cur]; const last = gantt[gantt.length - 1];
+    if (last && last.id === c.id && last.end === t && last.level === c.level) last.end = t + 1; else gantt.push({ id: c.id, start: t, end: t + 1, level: c.level });
+    t++; c.left--; c.used++;
+    if (c.left === 0) { c.done = t; cur = null; }
+    else if (c.used >= quanta[c.level]) { c.level = Math.min(2, c.level + 1); admit(); Q[c.level].push(cur); cur = null; }
+  }
+  return { gantt, rows: js.map((j) => ({ id: j.id, completion: j.done, turnaround: j.done - j.arrival, waiting: j.done - j.arrival - j.burst, level: j.level })) };
 }

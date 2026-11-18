@@ -656,7 +656,7 @@
     --surface-elevated: #ffffff;
     
     --text-primary: #18181b;
-    --text-secondary: #71717a;
+    --text-secondary: #52525b;
     --text-muted: #a1a1aa;
 
     --border: #e4e4e7;
@@ -2346,3 +2346,12 @@ html.theme-switching * { transition: none !important; }
 
 /* Phones: the floating lesson tools step aside while the contents sheet is open. */
 body[data-lesson-sheet] .lesson-dock { display: none; }
+
+/* Dark mode, app-wide (owner, 18 Nov): card watermarks and tile icons stay muted everywhere, as in lessons. */
+.dark.dark:not(#_) :is(.card-pastel, .card-well)[data-tint]:not(:has(.tile-mark))::after { opacity: .05 !important; filter: saturate(.5); }
+.dark.dark:not(#_) .tile-mark { opacity: .08 !important; }
+/* Notes button: light text over a faint highlighter stroke, readable in dark. */
+.dark .hl-ink { color: #fef3c7; }
+.dark .hl-ink::before { opacity: .28; }
+/* Contrast (owner, 18 Nov): indigo-500 text is too light on pastel cards in light mode; use indigo-700 there. */
+:root:not(.dark) :is(.card-pastel, .card-well, [data-tint]) :is(.text-indigo-500, .text-blue-500, .text-blue-600) { color: #4338ca !important; }

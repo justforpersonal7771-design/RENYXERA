@@ -11,7 +11,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useDragControls, useReducedMotion } from "motion/react";
-import { Check, FileQuestion, GripHorizontal, Highlighter, History, Loader2, Minus, Send, SquarePen, TextSelect, X } from "lucide-react";
+import { Check, ScrollText, GripHorizontal, Highlighter, History, Loader2, Minus, Send, SquarePen, TextSelect, X } from "lucide-react";
 import { LESSON_SELECTION_EVENT } from "@/components/study/lesson-highlights";
 import { normalizeQuestion } from "@/lib/repository/transformers/question-normalizer";
 import type { Question } from "@/types/question.types";
@@ -96,7 +96,7 @@ function PyqModal({ q, onClose }: { q: RenderableQuestion | null; onClose: () =>
             initial={reduce ? { opacity: 0 } : { y: 30, opacity: 0, scale: 0.98 }} animate={{ y: 0, opacity: 1, scale: 1 }} exit={reduce ? { opacity: 0 } : { y: 20, opacity: 0 }} transition={{ type: "spring", stiffness: 400, damping: 34 }}
             className="no-scrollbar flex max-h-[90dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-3xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_30px_80px_-20px_rgba(0,0,0,.5)] sm:rounded-3xl">
             <div className="flex items-center gap-3 border-b border-[var(--border)] px-5 py-3">
-              <FileQuestion className="h-5 w-5 text-[var(--text-primary)]" aria-hidden />
+              <ScrollText className="h-5 w-5 text-[var(--text-primary)]" aria-hidden />
               <p className="min-w-0 flex-1 text-sm font-bold text-[var(--text-primary)]">GATE CS {paperName(q.year_shift)}, Q{q.question_no} <span className="font-semibold text-[var(--text-secondary)]">· {q.marks} mark{q.marks > 1 ? "s" : ""} · {q.question_type}</span></p>
               <button type="button" onClick={onClose} aria-label="Close question" className="grid h-9 w-9 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
             </div>
@@ -116,7 +116,7 @@ function PyqModal({ q, onClose }: { q: RenderableQuestion | null; onClose: () =>
                   })}
                 </ul>
               )}
-              {state === "right" && <p role="status" className="rounded-2xl bg-emerald-600 px-4 py-3 font-bold text-white">Right.</p>}
+              {state === "right" && <p role="status" className="rounded-2xl bg-emerald-700 px-4 py-3 font-bold text-white">Right.</p>}
               {state === "wrong" && <p role="status" className="rounded-2xl bg-rose-600 px-4 py-3 font-bold text-white">Not quite.{q.question_type === "NAT" && q.nat_answer_range ? ` Accepted: ${q.nat_answer_range.min}${q.nat_answer_range.max !== q.nat_answer_range.min ? ` to ${q.nat_answer_range.max}` : ""}.` : " The right option is marked green."}</p>}
               {state === "offline" && <p role="status" className="rounded-2xl bg-[var(--surface-secondary)] px-4 py-3 text-sm text-[var(--text-primary)]">Couldn&apos;t check right now. Try again when you are online.</p>}
             </div>
@@ -292,7 +292,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteI
           <FloatPanel key="notes" title="Highlights and notes" icon={<Highlighter className="h-4 w-4" aria-hidden />} anchor={at.notes} z={z("notes")} onRaise={() => raise("notes")} onClose={() => close("notes")}>{notes}</FloatPanel>
         )}
         {open.pyqs && (
-          <FloatPanel key="pyqs" title="Real GATE questions" icon={<FileQuestion className="h-4 w-4" aria-hidden />} anchor={at.pyqs} z={z("pyqs")} onRaise={() => raise("pyqs")} onClose={() => close("pyqs")}
+          <FloatPanel key="pyqs" title="Real GATE questions" icon={<ScrollText className="h-4 w-4" aria-hidden />} anchor={at.pyqs} z={z("pyqs")} onRaise={() => raise("pyqs")} onClose={() => close("pyqs")}
             tools={pyqs && pyqs.length > 0 ? <p className="shrink-0 border-b border-[var(--border)] px-4 py-2 text-sm text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">{pyqs.length}</b> official GATE CS questions, {twoMark} of them 2-mark. Tap one to try it here.</p> : null}>
             {pyqs === null ? <p className="p-2 text-sm text-[var(--text-secondary)]">Loading…</p> : pyqs.length === 0 ? <p className="p-2 text-sm text-[var(--text-secondary)]">No past questions tagged to this topic yet.</p> : (
               <ul className="space-y-1">
@@ -309,7 +309,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteI
       </AnimatePresence>
       <div className="lesson-dock fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-3 z-[280] flex gap-2 sm:right-6 lg:bottom-6">
         <button type="button" onClick={(e) => toggle("notes", e.currentTarget)} aria-pressed={open.notes} aria-label="Notes" className={`${btn} hl-btn`}><Highlighter className="h-4 w-4" aria-hidden /> <span className="hl-ink hidden sm:inline">Notes</span>{noteCount > 0 && <span className="rounded-full bg-white/70 px-1.5 text-xs text-[#3a2a00]">{noteCount}</span>}</button>
-        <button type="button" onClick={(e) => toggle("pyqs", e.currentTarget)} aria-pressed={open.pyqs} aria-label="PYQs" className={`${btn} !border-transparent !bg-[var(--tint-peri)] !text-[var(--tint-peri-ink)]`}><FileQuestion className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">PYQs</span>{pyqs && pyqs.length > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{pyqs.length}</span>}</button>
+        <button type="button" onClick={(e) => toggle("pyqs", e.currentTarget)} aria-pressed={open.pyqs} aria-label="PYQs" className={`${btn} !border-transparent !bg-[var(--tint-peri)] !text-[var(--tint-peri-ink)]`}><ScrollText className="h-4 w-4" aria-hidden /> <span>PYQs</span>{pyqs && pyqs.length > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{pyqs.length}</span>}</button>
         <button type="button" onClick={(e) => toggle("mentor", e.currentTarget)} aria-pressed={open.mentor} aria-label="Ask Mentor" className={`${btn} mentor-btn !py-1.5 !pl-2`}><MentorLogo className="h-7" mode="blink" /> <span className="hidden sm:inline">Ask Mentor</span></button>
       </div>
       <MentorWindow open={open.mentor} onClose={() => close("mentor")} lesson={lesson} section={section} notes={noteItems} anchor={at.mentor} z={z("mentor")} onRaise={() => raise("mentor")} />

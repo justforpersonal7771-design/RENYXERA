@@ -79,7 +79,7 @@ export default function BrowseTopicsPage() {
                           className="card-inset group relative inline-flex max-w-full items-center gap-2 overflow-hidden !rounded-full py-1.5 pl-3 pr-1.5 text-[12.5px] font-medium text-[var(--text-primary)] transition hover:-translate-y-px">
                           <span aria-hidden className="absolute inset-y-0 left-0 bg-[color-mix(in_srgb,var(--tint-ink)_12%,transparent)]" style={{ width: `${(n / max) * 100}%` }} />
                           <span className={`relative min-w-0 truncate ${inFocus && !inFocus.has(topic) ? "opacity-50" : ""}`}>{inFocus?.has(topic) ? "★ " : ""}{topic}</span>
-                          <span className="relative shrink-0 rounded-full bg-[var(--tint-ink)] px-1.5 font-num text-[10px] font-bold text-white">{n}</span>
+                          <span className="relative shrink-0 rounded-full bg-[var(--tint-ink)] px-1.5 font-num text-[10px] font-bold text-[var(--surface)]">{n}</span>
                         </Link>
                       </li>
                     ))}

@@ -10,7 +10,7 @@ import { Minus, Plus, RotateCcw } from "lucide-react";
 import { schedule, type Algo, type Job } from "@/lib/study/scheduling";
 
 const START: Job[] = [{ id: "P1", arrival: 0, burst: 5, priority: 3 }, { id: "P2", arrival: 1, burst: 3, priority: 1 }, { id: "P3", arrival: 2, burst: 1, priority: 4 }, { id: "P4", arrival: 4, burst: 2, priority: 2 }];
-const ALGOS: { k: Algo; label: string }[] = [{ k: "FCFS", label: "FCFS" }, { k: "SJF", label: "SJF" }, { k: "SRTF", label: "SRTF" }, { k: "RR", label: "Round robin" }, { k: "PRIO", label: "Priority" }];
+const ALGOS: { k: Algo; label: string }[] = [{ k: "FCFS", label: "FCFS" }, { k: "SJF", label: "SJF" }, { k: "SRTF", label: "SRTF" }, { k: "RR", label: "Round robin" }, { k: "PRIO", label: "Priority" }, { k: "HRRN", label: "HRRN" }, { k: "LJF", label: "LJF" }, { k: "LRTF", label: "LRTF" }];
 const COLORS = ["var(--tint-rose-ink)", "var(--tint-sky-ink)", "var(--tint-mint-ink)", "var(--tint-butter-ink)", "var(--tint-lilac-ink)"];
 
 function Step({ v, set, min, max, label }: { v: number; set: (n: number) => void; min: number; max: number; label: string }) {

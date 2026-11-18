@@ -185,7 +185,7 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
                 <button key={o.id} type="button" disabled={checked} role={qType === "MSQ" ? "checkbox" : "radio"} aria-checked={sel}
                   onClick={() => setPicked((p) => qType === "MSQ" ? (p.includes(o.id) ? p.filter((x) => x !== o.id) : [...p, o.id]) : [o.id])}
                   className={`flex items-start gap-3 rounded-2xl border-2 p-3 text-left text-sm text-[var(--text-primary)] transition-colors disabled:cursor-default ${look}`}>
-                  <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg font-num text-xs font-bold ${state === "right" ? "bg-emerald-500 text-white" : state === "wrong" ? "bg-rose-500 text-white" : state === "picked" ? "bg-[var(--tint-lilac-ink)] text-white" : "border border-[var(--border)]"}`}>
+                  <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg font-num text-xs font-bold ${state === "right" ? "bg-emerald-500 text-white" : state === "wrong" ? "bg-rose-500 text-white" : state === "picked" ? "bg-[var(--tint-lilac-ink)] text-[var(--surface)]" : "border border-[var(--border)]"}`}>
                     {state === "right" ? <Check className="h-3.5 w-3.5" /> : state === "wrong" ? <X className="h-3.5 w-3.5" /> : o.id}</span>
                   <span className="min-w-0 flex-1">{o.node}</span>
                 </button>

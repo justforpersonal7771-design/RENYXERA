@@ -72,11 +72,11 @@ const ready = (b: ShelfBook) => b.chapters.filter((c) => c.ready).length;
 
 /** A book lying flat: app pastel cloth with a deep spine edge, the full name horizontal in big heavy capitals.
  *  The featured book (has a ready chapter) is thicker, carries the gold ribbon and names its free chapter. Hover slides it out. */
-function Slab({ b, i, dim, onOpen, weight = 0 }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number }) {
+function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number; flat?: boolean }) {
   const r = ready(b);
   const free = b.chapters.find((c) => c.ready);
   return (
-    <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: `${(i % 3) * 8}px`, ["--h" as string]: `${44 + b.chapters.length * 8}px` }}
+    <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: flat ? "0px" : `${(i % 3) * 8}px`, ["--h" as string]: flat ? "76px" : `${44 + b.chapters.length * 8}px` }}
       aria-label={`${b.title}. ${b.chapters.length} chapters, ${r ? `${r} ready to read` : "being written"}.`}
       className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
       {free && <span aria-hidden className="sp2-ribbon !right-24" />}
@@ -109,7 +109,7 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
     <ol className="space-y-1">
       {b.chapters.map((c, i) => {
         const w = weights[i];
-        const mark = w.tier === "high" ? <span className="rounded-full px-2 py-0.5 text-[11px] font-extrabold text-white" style={{ background: ink }}>High weight</span>
+        const mark = w.tier === "high" ? <span className="rounded-full px-2 py-0.5 text-[11px] font-extrabold" style={{ background: ink, color: "var(--surface)" }}>High weight</span>
           : w.tier === "mid" ? <span className="rounded-full border px-2 py-0.5 text-[11px] font-bold" style={{ borderColor: ink, color: ink }}>Medium</span> : null;
         const row = (
           <>
@@ -271,7 +271,9 @@ export function Bookshelf() {
         {(() => { const shelves = SHELVES.map((sh) => {
           const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id) && visible(b));
           if (!books.length) return null;
-          const stacks = sh.stacks.map((st) => st.filter((id) => books.some((b) => b.id === id))).filter((st) => st.length);
+          const stacks0 = sh.stacks.map((st) => st.filter((id) => books.some((b) => b.id === id))).filter((st) => st.length);
+          // maths and aptitude: one continuous stack of equal-height books so the two shelves line up
+          const stacks = sh.id === "core" ? stacks0 : stacks0.length ? [stacks0.flat()] : [];
           const open1 = books.find((b) => b.id === drawer);
           const openIt = (b: ShelfBook) => setOpen(b);
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
@@ -285,7 +287,7 @@ export function Bookshelf() {
               <div className={`grid items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
                 {stacks.map((st, si) => (
                   <div key={si} className="flex flex-col gap-3">
-                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} onOpen={() => openIt(byId(id))} />)}</div>
+                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} flat={sh.id !== "core"} onOpen={() => openIt(byId(id))} />)}</div>
                   </div>
                 ))}
               </div>
@@ -304,7 +306,7 @@ export function Bookshelf() {
           );
         });
         // core books across the whole width; mathematics and aptitude side by side underneath
-        return <>{shelves[0]}<div className="grid gap-5 lg:grid-cols-2">{shelves.slice(1)}</div></>; })()}
+        return <>{shelves[0]}<div className="grid gap-5 lg:grid-cols-2 [&>.sp2-shelf]:!mt-0">{shelves.slice(1)}</div></>; })()}
         {hits === 0 && <p className="rounded-2xl bg-[var(--surface)] p-4 text-center text-[var(--text-secondary)]">No book matches “{q}”. <button type="button" onClick={() => { setQ(""); setOnlyReady(false); }} className="font-bold underline underline-offset-4">Clear the search</button> or <Link href="/topics/operating-systems-os" className="font-bold underline underline-offset-4">search the past-question bank</Link>.</p>}
       </div>
       <OpenBook b={open} onClose={() => setOpen(null)} focus={focus} />

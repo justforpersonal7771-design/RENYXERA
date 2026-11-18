@@ -87,7 +87,7 @@ export function FeatureDeck(p: Props) {
       body="Eight expert coaches that read your attempts, explain step by step, and tell you what to do next."
       stats={[{ v: "8", l: "coaches" }, { v: "24×7", l: "available" }]}
       preview={<div className="space-y-2 text-xs">
-        <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-[var(--tint-ink)] px-3 py-2 text-white">Why is my answer to this deadlock question wrong?</p>
+        <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm bg-[var(--tint-ink)] px-3 py-2 text-[var(--surface)]">Why is my answer to this deadlock question wrong?</p>
         <p className="w-fit max-w-[90%] rounded-2xl rounded-bl-sm bg-[var(--surface)] px-3 py-2 text-[var(--text-primary)] border border-[var(--border)]">You checked only the current request. Banker&apos;s algorithm needs a safe sequence for <b>all</b> processes — let&apos;s find it step by step…</p>
       </div>} />,
     <Card key="plan" tint="peach" label="Study planner" title="A plan that fits your day" href="/calendar" cta="Open planner"

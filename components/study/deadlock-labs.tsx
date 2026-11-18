@@ -73,7 +73,7 @@ export function PreventLab() {
             {CONDS.map((c) => (
               <li key={c.k}><button type="button" aria-pressed={on[c.k]} onClick={() => setOn((x) => ({ ...x, [c.k]: !x[c.k] }))}
                 className={`w-full rounded-2xl border-2 p-3 text-left ${on[c.k] ? "border-[var(--text-primary)] bg-[var(--surface)]" : "border-dashed border-[var(--border)] bg-transparent"}`}>
-                <span className="flex items-center justify-between gap-2"><b className="text-sm text-[var(--text-primary)]">{c.name}</b><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${on[c.k] ? "bg-rose-600 text-white" : "bg-emerald-600 text-white"}`}>{on[c.k] ? "holds" : "broken"}</span></span>
+                <span className="flex items-center justify-between gap-2"><b className="text-sm text-[var(--text-primary)]">{c.name}</b><span className={`rounded-full px-2 py-0.5 text-xs font-bold ${on[c.k] ? "bg-rose-600 text-white" : "bg-emerald-700 text-white"}`}>{on[c.k] ? "holds" : "broken"}</span></span>
                 {!on[c.k] && <span className="mt-1 block text-xs text-[var(--text-secondary)]"><b>How:</b> {c.off} <b>Cost:</b> {c.cost}</span>}
               </button></li>
             ))}
@@ -87,7 +87,7 @@ export function PreventLab() {
             <button type="button" aria-pressed={order === "same"} onClick={() => { setOrder("same"); setT(0); }} className={order === "same" ? "pill-ink" : "pill-soft"}>A then B (same order)</button>
           </div>
           <ol className="mt-3 space-y-1.5">
-            {plan.slice(0, t).map((s, i) => <li key={i} className={`rounded-xl px-3 py-2 text-sm ${i === plan.length - 1 ? (order === "opposite" ? "bg-rose-600 font-bold text-white" : "bg-emerald-600 font-bold text-white") : "bg-[var(--surface)] text-[var(--text-primary)]"}`}>{i + 1}. {s}</li>)}
+            {plan.slice(0, t).map((s, i) => <li key={i} className={`rounded-xl px-3 py-2 text-sm ${i === plan.length - 1 ? (order === "opposite" ? "bg-rose-600 font-bold text-white" : "bg-emerald-700 font-bold text-white") : "bg-[var(--surface)] text-[var(--text-primary)]"}`}>{i + 1}. {s}</li>)}
           </ol>
           <div className="mt-3 flex gap-2">
             {t < plan.length ? <button type="button" onClick={() => setT((x) => x + 1)} className="pill-ink"><StepForward className="h-4 w-4" aria-hidden /> {t ? "Next step" : "Run the worst timing"}</button> : null}
@@ -182,7 +182,7 @@ export function DetectLab() {
               return (
                 <tr key={i}><td className="rounded-l-xl bg-[var(--surface)] px-2 py-1.5 font-bold">P{i}</td><td className="bg-[var(--surface)] px-2 font-num">{v(a)}</td>
                   <td className="bg-[var(--surface)] px-2">{RES.map((x, k) => <span key={x} className="mr-2 inline-flex items-center gap-1"><b className="text-xs">{x}</b><Stepper label={`P${i} ${x}`} value={reqs[i][k]} min={0} max={2} onChange={(n) => set(i, k, n)} /></span>)}</td>
-                  <td className="rounded-r-xl bg-[var(--surface)] px-2">{gone ? <span className="text-xs font-bold text-[var(--text-secondary)]">aborted</span> : !ran ? "–" : stuck ? <span className="rounded-full bg-rose-600 px-2 py-0.5 text-xs font-bold text-white">deadlocked</span> : <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-xs font-bold text-white">finishes</span>}</td></tr>
+                  <td className="rounded-r-xl bg-[var(--surface)] px-2">{gone ? <span className="text-xs font-bold text-[var(--text-secondary)]">aborted</span> : !ran ? "–" : stuck ? <span className="rounded-full bg-rose-600 px-2 py-0.5 text-xs font-bold text-white">deadlocked</span> : <span className="rounded-full bg-emerald-700 px-2 py-0.5 text-xs font-bold text-white">finishes</span>}</td></tr>
               );
             })}
           </tbody>
@@ -270,7 +270,7 @@ export function StarveLab() {
             {Array.from({ length: tick }, (_, t) => {
               const p = 1 + (ageing ? t + 1 : 0);
               const runsL = ageing && p > 5;
-              return <li key={t} className={`rounded-xl px-3 py-1.5 text-sm ${runsL ? "bg-emerald-600 font-bold text-white" : "bg-[var(--surface)] text-[var(--text-primary)]"}`}>Tick {t + 1}: L priority {p}. {runsL ? "L finally runs." : "A new priority-5 job runs; L waits."}</li>;
+              return <li key={t} className={`rounded-xl px-3 py-1.5 text-sm ${runsL ? "bg-emerald-700 font-bold text-white" : "bg-[var(--surface)] text-[var(--text-primary)]"}`}>Tick {t + 1}: L priority {p}. {runsL ? "L finally runs." : "A new priority-5 job runs; L waits."}</li>;
             })}
           </ol>
           <div className="mt-2"><Out>{tick === 0 ? <p>Press <b>Next tick</b>.</p> : lRuns || (ageing && tick >= (runAt ?? 99)) ? <Good>With ageing, L&apos;s priority climbs past 5 and it runs. Starvation is gone.</Good> : ageing ? <p>L&apos;s priority is rising: {lPrio}.</p> : <Bad>Without ageing, L waits for ever while the system stays busy. That is starvation, not deadlock.</Bad>}</Out></div>
@@ -285,7 +285,7 @@ export function StarveLab() {
                   {(["Deadlock", "Livelock", "Starvation"] as const).map((o) => {
                     const chose = picked[i] === o, right = o === c.a;
                     return <button key={o} type="button" onClick={() => setPicked((x) => ({ ...x, [i]: o }))} aria-pressed={chose}
-                      className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${picked[i] ? (right ? "border-emerald-600 bg-emerald-600 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)] text-[var(--text-primary)]"}`}>{o}</button>;
+                      className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${picked[i] ? (right ? "border-emerald-700 bg-emerald-700 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)] text-[var(--text-primary)]"}`}>{o}</button>;
                   })}
                 </div>
               </li>

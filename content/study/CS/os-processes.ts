@@ -1,4 +1,5 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
+import { OS_IPC } from "@/content/study/CS/os-extra";
 import { syscalls, threads } from "./os-processes-more";
 import { deepen } from "./os-depth";
 
@@ -141,5 +142,5 @@ export const OS_PROCESSES: Chapter = {
       { label: "4. System calls", sub: "and the kernel boundary", state: "done" },
     ],
   },
-  topics: deepen([states, forks, threads, syscalls]),
+  topics: [...deepen([states, forks, threads, syscalls]), OS_IPC],
 };

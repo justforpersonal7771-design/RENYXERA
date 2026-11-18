@@ -153,7 +153,7 @@ export function ThreadLab() {
               {threads.map((t) => (
                 <li key={t} className="flex items-center gap-3">
                   <span className="w-20 text-sm font-bold">Thread {t}</span>
-                  <span className={`flex-1 rounded-full px-3 py-1 text-center text-xs font-bold ${blocked === t ? "bg-amber-500 text-white" : runs(t) ? "bg-emerald-600 text-white" : "bg-rose-600 text-white"}`}>{blocked === t ? "waiting for disk" : runs(t) ? "can run" : "stuck: whole process blocked"}</span>
+                  <span className={`flex-1 rounded-full px-3 py-1 text-center text-xs font-bold ${blocked === t ? "bg-amber-700 text-white" : runs(t) ? "bg-emerald-700 text-white" : "bg-rose-600 text-white"}`}>{blocked === t ? "waiting for disk" : runs(t) ? "can run" : "stuck: whole process blocked"}</span>
                   <button type="button" onClick={() => setBlocked(blocked === t ? null : t)} className="pill-soft !h-8 !px-3 text-xs">{blocked === t ? "I/O done" : "Read file"}</button>
                 </li>
               ))}
@@ -169,7 +169,7 @@ export function ThreadLab() {
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="min-w-0 flex-1 font-semibold text-[var(--text-primary)]">{x.item}</span>
                   {[true, false].map((v) => { const chose = picks[i] === v, right = x.shared === v, done = i in picks; return (
-                    <button key={String(v)} type="button" onClick={() => setPicks((p) => ({ ...p, [i]: v }))} className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${done ? (right ? "border-emerald-600 bg-emerald-600 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)]"}`}>{v ? "Shared" : "Per thread"}</button>
+                    <button key={String(v)} type="button" onClick={() => setPicks((p) => ({ ...p, [i]: v }))} className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${done ? (right ? "border-emerald-700 bg-emerald-700 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)]"}`}>{v ? "Shared" : "Per thread"}</button>
                   ); })}
                 </div>
                 {i in picks && <p className="mt-1 text-xs text-[var(--text-secondary)]">{x.why}</p>}
@@ -229,7 +229,7 @@ export function SyscallLab() {
               <li key={x.op} className="flex flex-wrap items-center gap-2 rounded-2xl bg-[var(--surface)] p-3 text-sm">
                 <span className="min-w-0 flex-1 font-semibold text-[var(--text-primary)]">{x.op}</span>
                 {[true, false].map((v) => { const chose = picks[i] === v, right = x.priv === v, done = i in picks; return (
-                  <button key={String(v)} type="button" onClick={() => setPicks((p) => ({ ...p, [i]: v }))} className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${done ? (right ? "border-emerald-600 bg-emerald-600 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)]"}`}>{v ? "Privileged" : "Ordinary"}</button>
+                  <button key={String(v)} type="button" onClick={() => setPicks((p) => ({ ...p, [i]: v }))} className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${done ? (right ? "border-emerald-700 bg-emerald-700 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)]"}`}>{v ? "Privileged" : "Ordinary"}</button>
                 ); })}
               </li>
             ))}

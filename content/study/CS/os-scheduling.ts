@@ -1,4 +1,5 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
+import { OS_HRRN, OS_MLFQ } from "@/content/study/CS/os-extra";
 
 /**
  * Operating System → CPU scheduling. Our own words and numbers. Every schedule here was produced by
@@ -220,5 +221,5 @@ export const OS_SCHEDULING: Chapter = {
     { label: "2. SRTF and round robin", sub: "pre-emption and the quantum", state: "done" },
     { label: "3. Priority and MLFQ", sub: "starvation and ageing", state: "done" },
   ] },
-  topics: [basics, preemptive, priority],
+  topics: [basics, preemptive, priority, OS_HRRN, OS_MLFQ],
 };

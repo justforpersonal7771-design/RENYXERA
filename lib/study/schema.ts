@@ -28,7 +28,7 @@ export type Block =
   | { type: "recall"; cards: { q: string; a: string }[] }
   | { type: "check"; questions: CheckQ[] }
   | { type: "links"; prereq?: string[]; usedIn?: string[]; cross?: string[] }
-  | { type: "lab"; lab: "rag" | "prevent" | "banker" | "detect" | "count" | "starve" | "states" | "fork" | "threads" | "syscall" | "sched" | "sched-prio" | "race" | "semaphore" | "buffer" | "fit" | "paging" | "tlb" | "replace" | "disk" | "alloc" }
+  | { type: "lab"; lab: "rag" | "prevent" | "banker" | "detect" | "count" | "starve" | "states" | "fork" | "threads" | "syscall" | "sched" | "sched-prio" | "race" | "semaphore" | "buffer" | "fit" | "paging" | "tlb" | "replace" | "disk" | "alloc" | "encap" | "delay" | "crc" | "window" | "mac" | "subnet" | "frag" | "route" | "seq" | "cwnd" | "http" | "ports" | "sched-hrrn" | "mlfq" | "pipe" | "segment" }
   | { type: "practice"; links: { label: string; sub: string; href: string }[] };
 
 export type CheckQ = { id: string; kind: "MCQ" | "MSQ" | "NAT"; marks: 1 | 2; q: string; options?: string[]; answer: string; solution: string };

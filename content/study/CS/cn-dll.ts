@@ -1,0 +1,211 @@
+import type { Chapter, Topic } from "@/lib/study/schema";
+
+/**
+ * Computer Networks → Data link and MAC. Numbers from components/study/cn-labs.tsx, checked by script:
+ * CRC 110101 ÷ 1011 → remainder 111, frame 110101111. Window: Tt 1 ms, Tp 4.5 ms → a 4.5, stop-and-wait 10%, W 7 → 70%,
+ * 100% needs W 10 → GBN 4 bits, SR 5 bits. CSMA/CD: 10 Mbps, 2 km → 200 bits (25 bytes); 100 Mbps, 1 km → 1000 bits.
+ * ALOHA peaks: pure 18.4% at G 0.5, slotted 36.8% at G 1.
+ */
+
+const errors: Topic = {
+  id: "cs.cn.dll.errors",
+  title: "Framing and error detection",
+  blocks: [
+    { type: "hook", text: "Electrical noise flips a bit in a frame. The receiver cannot see the noise, only the bits. With three extra check bits computed by a little long division, it can still tell that something went wrong." },
+    { type: "objectives", items: ["Compute a CRC by modulo-2 division and check a received frame.", "Relate Hamming distance to how many errors can be detected or corrected.", "Explain framing by byte and bit stuffing."] },
+    { type: "intuition", paras: ["The sender treats the data as a long binary number, appends zeros, divides by an agreed generator using XOR instead of subtraction, and sends the remainder after the data. The whole frame is then exactly divisible by the generator.", "The receiver divides what it got by the same generator. A zero remainder means accept; anything else means an error happened.", "Parity and checksums are simpler cousins. Hamming codes add enough redundancy to locate (and so correct) a single wrong bit."], analogyLimit: "A check digit on a bank account number catches typos; CRC catches all burst errors shorter than the generator, which digits cannot." },
+    { type: "definition", name: "CRC and Hamming distance", text: "CRC: append r zeros (r = degree of the generator), divide modulo 2, and replace the zeros with the remainder.", items: ["Generator of degree r gives r check bits.", "CRC detects all single-bit errors, all odd numbers of errors if (x + 1) is a factor, and all bursts of length ≤ r.", "Hamming distance d of a code: detects up to d − 1 errors, corrects up to ⌊(d − 1)/2⌋.", "Hamming code for m data bits needs r check bits with 2^r ≥ m + r + 1."] },
+    { type: "deep", sections: [
+      { h: "Modulo-2 division", paras: ["Line the generator up under the leftmost 1 and XOR. Move to the next leftmost 1 and repeat until fewer than r + 1 bits remain to the right of the start. There are no borrows and no carries: XOR is both addition and subtraction."] },
+      { h: "Framing", points: ["Byte stuffing: a flag byte marks frame ends; an escape byte is put before any flag or escape that appears in the data.", "Bit stuffing (HDLC): the flag is 01111110; after five 1s in the data the sender inserts a 0, and the receiver removes it.", "Length field: a count at the start; fragile if the count itself is corrupted."], paras: [] },
+      { h: "Parity and checksum", paras: ["One even-parity bit detects any odd number of flipped bits but misses an even number. A 2-D parity block can correct one error. The Internet checksum adds 16-bit words in one's complement; it is weaker than CRC but cheap in software."] },
+      { h: "Why distance matters", paras: ["If every two valid codewords differ in at least d bits, then d − 1 flips can never turn one valid codeword into another, so they are detected. To correct, the received word must be closer to the true codeword than to any other, which needs fewer than d/2 errors."] },
+    ] },
+    { type: "walkthrough", steps: ["Note r = generator length − 1. Append r zeros to the data.", "Divide modulo 2 (XOR under each leading 1).", "The last r bits are the remainder: send data followed by the remainder.", "At the receiver, divide the whole frame: remainder 0 means no detected error."], prompt: { q: "Can CRC miss an error?", a: "Yes, if the error pattern is itself a multiple of the generator. Good generators make such patterns very unlikely." } },
+    { type: "figure", id: "crc", caption: "CRC of 110101 with generator 1011 (degree 3).", alt: "Remainder 111; transmitted frame 110101111.", fig: { kind: "strip", items: [{ label: "Data", sub: "110101", state: "done" }, { label: "Append 000", sub: "110101000", state: "done" }, { label: "÷ 1011", sub: "remainder 111", state: "now" }, { label: "Send", sub: "110101111", state: "done" }] } },
+    { type: "example", id: "ex1", level: "gate", title: "Computing a CRC", given: "Data 110101, generator 1011.", find: "The check bits and the transmitted frame.",
+      steps: [
+        { say: "Degree 3: append 000 → 110101000." },
+        { say: "XOR under each leading 1: 011001000, 001111000, 000100000, 000001100, 000000111." },
+        { say: "Remainder = last 3 bits.", result: "111" },
+      ],
+      answer: "Check bits 111; frame 110101111.",
+      check: "Dividing 110101111 by 1011 leaves 000, so the receiver accepts it." },
+    { type: "figure", id: "dist", for: "ex2", caption: "What a code's minimum distance buys.", alt: "Distance 3 detects 2 and corrects 1; distance 5 detects 4 and corrects 2.", fig: { kind: "matrix", title: "Hamming distance", cols: ["Detect", "Correct"], rows: [{ label: "d = 2", cells: [1, 0] }, { label: "d = 3", cells: [2, 1], hl: true }, { label: "d = 5", cells: [4, 2] }] } },
+    { type: "example", id: "ex2", level: "gate", title: "Distance and correction", given: "A code's valid codewords are 00000, 01011, 10101 and 11110.", find: "Its minimum distance, and how many errors it detects and corrects.",
+      steps: [
+        { say: "Pairwise distances: 00000–01011: 3; 00000–10101: 3; 00000–11110: 4; 01011–10101: 4; 01011–11110: 3; 10101–11110: 3." },
+        { say: "Minimum is 3.", result: "d = 3" },
+        { say: "Detect d − 1 = 2; correct ⌊2/2⌋ = 1.", result: "detects 2, corrects 1" },
+      ],
+      answer: "d = 3: detects up to 2 errors, corrects 1.",
+      check: "Hamming (7,4) codes also have distance 3, which is why they correct single errors." },
+    { type: "example", id: "ex3", level: "edge", title: "How many Hamming check bits?", given: "7 data bits must be protected against any single-bit error.", find: "The fewest check bits r.",
+      steps: [
+        { say: "Need 2^r ≥ m + r + 1 = 8 + r." },
+        { say: "r = 3: 8 ≥ 11? No. r = 4: 16 ≥ 12? Yes.", result: "r = 4" },
+      ],
+      answer: "4 check bits (an 11-bit codeword).",
+      check: "The r check bits must name every one of the m + r positions, plus 'no error'." },
+    { type: "lab", lab: "crc" },
+    { type: "faded", title: "Your turn", given: "Bit stuffing with flag 01111110. Data: 0111111011.",
+      steps: [{ say: "Stuffed data?", blank: true, answer: "After five 1s insert a 0: 01111101011." }] },
+    { type: "trap", wrong: "Appending as many zeros as the generator has bits.", tempting: "The generator 1011 has four bits.", whyWrong: "Append r zeros, where r is the degree: one less than the generator's length.", rule: "Generator of n bits → n − 1 check bits." },
+    { type: "trap", wrong: "A distance-4 code corrects 2 errors.", tempting: "Half of 4 is 2.", whyWrong: "Correction needs fewer than d/2 errors: ⌊(4 − 1)/2⌋ = 1.", rule: "Correct ⌊(d − 1)/2⌋; detect d − 1." },
+    { type: "gate", text: "GATE asks CRC remainders, the CRC of a given frame, minimum Hamming distance and what it can detect or correct, and bit stuffing outputs. Do the XOR division on paper, line by line." },
+    { type: "recall", cards: [{ q: "CRC check bits", a: "Degree of generator (length − 1)" }, { q: "Detect with distance d", a: "d − 1 errors" }, { q: "Hamming check bits", a: "2^r ≥ m + r + 1" }] },
+    { type: "check", questions: [
+      { id: "er1", kind: "MCQ", marks: 2, q: "Data 110101, generator 1011. The CRC check bits are", options: ["011", "101", "111", "110"], answer: "C", solution: "Remainder of 110101000 ÷ 1011 is 111." },
+      { id: "er2", kind: "NAT", marks: 1, q: "A code has minimum distance 5. How many errors can it correct?", answer: "2", solution: "⌊4/2⌋ = 2." },
+      { id: "er3", kind: "NAT", marks: 2, q: "Fewest Hamming check bits for 7 data bits?", answer: "4", solution: "2⁴ = 16 ≥ 7 + 4 + 1." },
+      { id: "er4", kind: "MSQ", marks: 2, q: "A CRC with a degree-r generator always detects", options: ["Every single-bit error", "Every burst of length r or less", "Every possible error", "Every even number of bit errors"], answer: "A, B", solution: "No code detects every possible error; error patterns divisible by the generator slip through." },
+      { id: "er5", kind: "NAT", marks: 1, q: "Valid codewords 00000, 01011, 10101, 11110. Minimum Hamming distance?", answer: "3", solution: "Smallest pairwise distance." },
+    ] },
+    { type: "practice", links: [
+      { label: "Real GATE questions on Computer Networks", sub: "CRC and Hamming distance", href: "/topics/computer-networks-cn" },
+      { label: "Topic 2: flow control", sub: "What happens after an error", href: "/study/data-link" },
+      { label: "Digital Logic", sub: "XOR and parity circuits", href: "/topics/digital-logic" },
+    ] },
+    { type: "links", prereq: ["Binary arithmetic"], usedIn: ["Retransmission in sliding window protocols"], cross: ["Digital Logic: XOR"] },
+  ],
+};
+
+const windowT: Topic = {
+  id: "cs.cn.dll.window",
+  title: "Flow control: stop-and-wait and sliding windows",
+  blocks: [
+    { type: "hook", text: "Send one frame, then wait for its acknowledgement to come back across a long link. On a satellite hop you would spend over 99% of the time waiting. Sliding windows keep the pipe full instead." },
+    { type: "objectives", items: ["Compute efficiency of stop-and-wait and sliding window protocols.", "Find the window size and sequence bits for full utilisation.", "Compare Go-Back-N and Selective Repeat."] },
+    { type: "intuition", paras: ["After sending a frame (time Tt), the sender waits for it to arrive (Tp) and the acknowledgement to return (Tp). A full cycle is Tt + 2Tp, of which only Tt is useful.", "With a window of W frames, the sender can transmit W frames before it must wait, so it is busy for W × Tt of each cycle.", "Go-Back-N resends everything from a lost frame onward; Selective Repeat resends only the lost frame but needs the receiver to buffer out-of-order frames."], analogyLimit: "Like posting several letters before the first reply arrives; but frames need sequence numbers so old and new ones are not confused." },
+    { type: "definition", name: "Window efficiency", text: "With a = Tp / Tt, efficiency η = min(1, W / (1 + 2a)).", items: ["Stop-and-wait: W = 1, η = 1 / (1 + 2a).", "Full utilisation needs W ≥ 1 + 2a.", "Go-Back-N with n-bit sequence numbers: W ≤ 2ⁿ − 1 (receiver window 1).", "Selective Repeat: W ≤ 2ⁿ⁻¹ (sender and receiver windows equal).", "Throughput = η × bandwidth."] },
+    { type: "deep", sections: [
+      { h: "Why the sequence-number limits", paras: ["In Go-Back-N with 2ⁿ frames outstanding, if all acknowledgements are lost the receiver cannot tell retransmitted old frames from new ones carrying the same numbers; one slot fewer removes the ambiguity. Selective Repeat's receiver accepts a whole window of numbers, so the sender and receiver windows must not overlap: each at most half the space."] },
+      { h: "Including acknowledgement time", paras: ["If the acknowledgement itself takes time to transmit, the cycle becomes Tt + 2Tp + Tack. Questions usually ignore it; read whether they include processing or ack transmission."] },
+      { h: "Retransmissions", paras: ["When a frame is lost in Go-Back-N with window W, up to W frames are sent again. Selective Repeat sends one. On noisy links Selective Repeat saves bandwidth; on clean links Go-Back-N's simpler receiver is good enough."] },
+      { h: "Piggybacking", paras: ["In two-way traffic, acknowledgements ride inside data frames going the other way, saving separate ack frames."] },
+    ] },
+    { type: "walkthrough", steps: ["Compute Tt = frame bits / rate and Tp = distance / speed.", "a = Tp / Tt.", "η = min(1, W / (1 + 2a)).", "For full use: W = ⌈1 + 2a⌉, then bits from W ≤ 2ⁿ − 1 (GBN) or W ≤ 2ⁿ⁻¹ (SR)."], prompt: { q: "Does a bigger frame improve stop-and-wait efficiency?", a: "Yes. A larger Tt makes a smaller, so 1/(1 + 2a) grows; but larger frames are more likely to be hit by errors." } },
+    { type: "figure", id: "sw", caption: "Tt = 1 ms, Tp = 4.5 ms: one cycle is 10 ms.", alt: "Stop-and-wait uses 1 ms of 10; window 7 uses 7 of 10.", fig: { kind: "matrix", title: "Efficiency", cols: ["Window", "η"], rows: [{ label: "Stop-and-wait", cells: [1, "10%"] }, { label: "Sliding window", cells: [7, "70%"] }, { label: "Full pipe", cells: [10, "100%"], hl: true }] } },
+    { type: "example", id: "wx1", level: "gate", title: "Stop-and-wait versus a window of 7", given: "Tt = 1 ms, Tp = 4.5 ms, link 1 Mbps.", find: "Efficiency and throughput with stop-and-wait and with W = 7.",
+      steps: [
+        { say: "a = 4.5; 1 + 2a = 10." },
+        { say: "Stop-and-wait: 1/10.", result: "10%, 100 kbps" },
+        { say: "W = 7: 7/10.", result: "70%, 700 kbps" },
+      ],
+      answer: "10% (100 kbps) with stop-and-wait; 70% (700 kbps) with a window of 7.",
+      check: "A window of 10 or more would keep the link 100% busy." },
+    { type: "figure", id: "bits", for: "wx2", caption: "Sequence bits needed for a window of 10.", alt: "GBN needs 4 bits, SR needs 5.", fig: { kind: "matrix", title: "Window 10", cols: ["Rule", "Bits"], rows: [{ label: "Go-Back-N", cells: ["W ≤ 2ⁿ − 1", 4] }, { label: "Selective Repeat", cells: ["W ≤ 2ⁿ⁻¹", 5], hl: true }] } },
+    { type: "example", id: "wx2", level: "gate", title: "Sequence bits for full utilisation", given: "Same link (1 + 2a = 10).", find: "Minimum sequence-number bits for 100% efficiency under GBN and SR.",
+      steps: [
+        { say: "Needed window: 10." },
+        { say: "GBN: 2ⁿ − 1 ≥ 10 → n = 4 (15).", result: "4 bits" },
+        { say: "SR: 2ⁿ⁻¹ ≥ 10 → n = 5 (16).", result: "5 bits" },
+      ],
+      answer: "4 bits for Go-Back-N, 5 for Selective Repeat.",
+      check: "With 3 bits, GBN allows W = 7 and SR only W = 4." },
+    { type: "example", id: "wx3", level: "edge", title: "Frames resent after one loss", given: "Go-Back-N with window 7. Frames 0–6 are sent; frame 2 is lost; all others arrive.", find: "How many frames are sent again (GBN) and with Selective Repeat?",
+      steps: [
+        { say: "GBN receiver discards 3–6 (out of order). On timeout the sender resends 2, 3, 4, 5, 6.", result: "5 frames" },
+        { say: "SR receiver buffers 3–6; only 2 is resent.", result: "1 frame" },
+      ],
+      answer: "5 frames under Go-Back-N, 1 under Selective Repeat.",
+      check: "That saving is what Selective Repeat buys with its receiver buffer." },
+    { type: "lab", lab: "window" },
+    { type: "faded", title: "Your turn", given: "Frame 1000 bits, link 1 Mbps, propagation 9.5 ms.",
+      steps: [{ say: "Stop-and-wait efficiency?", blank: true, answer: "Tt = 1 ms, a = 9.5, 1 + 2a = 20: η = 1/20 = 5%." }] },
+    { type: "trap", wrong: "Selective Repeat allows a window of 2ⁿ − 1.", tempting: "That is the Go-Back-N rule.", whyWrong: "SR's receiver also has a window; the two must fit in half the sequence space: W ≤ 2ⁿ⁻¹.", rule: "GBN: 2ⁿ − 1. SR: 2ⁿ⁻¹." },
+    { type: "trap", wrong: "Efficiency = W / (1 + a).", tempting: "Propagation happens once per frame.", whyWrong: "The sender waits for the frame to arrive and the acknowledgement to come back: two propagations.", rule: "Cycle = Tt + 2Tp." },
+    { type: "gate", text: "One of the most frequent CN NATs: efficiency, required window, or sequence bits for GBN or SR. Write a = Tp/Tt first and check whether an acknowledgement time is given." },
+    { type: "recall", cards: [{ q: "Stop-and-wait efficiency", a: "1 / (1 + 2a)" }, { q: "GBN max window", a: "2ⁿ − 1" }, { q: "SR max window", a: "2ⁿ⁻¹" }] },
+    { type: "check", questions: [
+      { id: "wn1", kind: "NAT", marks: 2, q: "Tt = 1 ms, Tp = 4.5 ms, window 7. Efficiency in percent?", answer: "70", solution: "7 / 10." },
+      { id: "wn2", kind: "NAT", marks: 2, q: "1 + 2a = 10. Minimum sequence bits for 100% efficiency with Selective Repeat?", answer: "5", solution: "2⁴ = 16 ≥ 10." },
+      { id: "wn3", kind: "NAT", marks: 1, q: "Frame 1000 bits, 1 Mbps, Tp 9.5 ms. Stop-and-wait efficiency in percent?", answer: "5", solution: "1 / 20." },
+      { id: "wn4", kind: "MSQ", marks: 2, q: "Which are true?", options: ["GBN's receiver window is 1", "SR resends only the lost frames", "SR needs a receiver buffer", "GBN with 3-bit numbers allows window 8"], answer: "A, B, C", solution: "GBN with 3 bits allows at most 7." },
+      { id: "wn5", kind: "NAT", marks: 1, q: "Go-Back-N, frames 0–6 sent, frame 2 lost. How many frames are retransmitted?", answer: "5", solution: "2, 3, 4, 5, 6." },
+    ] },
+    { type: "practice", links: [
+      { label: "Real GATE questions on Computer Networks", sub: "Sliding window NATs", href: "/topics/computer-networks-cn" },
+      { label: "Switching and delays", sub: "Tt and Tp from scratch", href: "/study/layering" },
+      { label: "TCP flow control", sub: "The same idea, in bytes", href: "/study/transport" },
+    ] },
+    { type: "links", prereq: ["Transmission and propagation delay"], usedIn: ["TCP windows"], cross: ["Computer Organisation: pipelining"] },
+  ],
+};
+
+const mac: Topic = {
+  id: "cs.cn.dll.mac",
+  title: "Medium access: ALOHA, CSMA/CD and Ethernet",
+  blocks: [
+    { type: "hook", text: "Many computers share one cable or one radio channel. If two talk at once, both messages are garbled. The rules for who may talk when decide whether the channel carries 18%, 37% or nearly 100% of its capacity." },
+    { type: "objectives", items: ["Compute ALOHA throughput and its peak.", "Derive the minimum frame size for CSMA/CD.", "Describe Ethernet's binary exponential backoff."] },
+    { type: "intuition", paras: ["Pure ALOHA sends whenever it has data. A frame is safe only if no other frame starts within one frame time before or after it: a vulnerable period of two frame times.", "Slotted ALOHA allows sending only at slot starts, halving the vulnerable period and doubling the peak throughput.", "CSMA/CD listens before sending and stops as soon as it hears a collision. To be sure to hear it, a station must still be transmitting when the collision's echo returns: the frame must last at least one round trip."], analogyLimit: "Like polite conversation: listen first, stop if you talk over someone. But signals take time to travel, so two stations can both hear silence and start together." },
+    { type: "definition", name: "Random access", text: "With offered load G (frames per frame time):", items: ["Pure ALOHA: S = G e^(−2G), maximum 1/(2e) ≈ 18.4% at G = 0.5.", "Slotted ALOHA: S = G e^(−G), maximum 1/e ≈ 36.8% at G = 1.", "CSMA/CD: minimum frame time ≥ 2 Tp, so L_min = 2 × Tp × R.", "Ethernet backoff: after the k-th collision, wait K slot times, K random from 0 to 2^min(k,10) − 1."] },
+    { type: "deep", sections: [
+      { h: "Ethernet bridging: learning and spanning tree", points: ["A bridge (switch) learns: when a frame arrives on port p from MAC address A, it records A → p in its table.", "Forwarding: if the destination is in the table on another port, send it only there; if on the same port, drop it (filter); if unknown, or a broadcast, flood it to every port except the one it came on.", "Table entries age out (typically a few minutes), so moved hosts are relearned.", "Loops of bridges would circulate floods forever, so bridges run the spanning tree protocol: elect the bridge with the lowest ID as root, keep each bridge's least-cost port towards the root, and block the rest."], paras: [] },
+      { h: "Where the e's come from", paras: ["With Poisson arrivals, the chance that no other frame starts in a period of length t frame times is e^(−Gt). Pure ALOHA needs 2 frame times clear, slotted needs 1. Throughput is load × success probability."] },
+      { h: "CSMA/CD efficiency", paras: ["A common approximation is η = 1 / (1 + 6.44a) with a = Tp / Tt: short cables and long frames work best. Classic 10 Mbps Ethernet sets a 64-byte (512-bit) minimum frame for this reason."] },
+      { h: "Controlled access", points: ["Polling: a master asks each station in turn.", "Token passing: only the token holder may send; efficiency is high under load.", "Reservation: stations book slots in a short contention period."], paras: [] },
+      { h: "Wireless uses CSMA/CA", paras: ["A radio cannot hear collisions while sending, and hidden stations cannot hear each other. Wi-Fi avoids collisions with random waits and optional RTS/CTS handshakes instead."] },
+    ] },
+    { type: "walkthrough", steps: ["For ALOHA, plug G into the right formula; remember the peaks.", "For CSMA/CD: Tp = distance / speed; L_min = 2 Tp R.", "If a frame size is given, find the maximum distance: d = L v / (2R).", "For backoff after k collisions: K ∈ {0, …, 2^k − 1}."], prompt: { q: "Why must the frame last at least 2Tp, not Tp?", a: "In the worst case the other station starts just before the first bit reaches it; that collision needs another Tp to travel back." } },
+    { type: "figure", id: "aloha", caption: "ALOHA peaks.", alt: "Pure 18.4% at G 0.5, slotted 36.8% at G 1.", fig: { kind: "matrix", title: "Maximum throughput", cols: ["Best G", "S max"], rows: [{ label: "Pure ALOHA", cells: [0.5, "18.4%"] }, { label: "Slotted ALOHA", cells: [1, "36.8%"], hl: true }] } },
+    { type: "example", id: "mx1", level: "gate", title: "Minimum frame for CSMA/CD", given: "10 Mbps, 2 km cable, signal speed 2 × 10⁸ m/s.", find: "The minimum frame size.",
+      steps: [
+        { say: "Tp = 2000 / 2 × 10⁸ = 10 µs." },
+        { say: "L = 2 × 10 µs × 10 × 10⁶ bps.", result: "200 bits = 25 bytes" },
+      ],
+      answer: "200 bits (25 bytes).",
+      check: "At 100 Mbps over 1 km: 2 × 5 µs × 10⁸ = 1000 bits. Faster links need longer minimum frames or shorter cables." },
+    { type: "figure", id: "backoff", for: "mx2", caption: "Backoff choices after each collision.", alt: "After 1 collision K in 0..1, after 2 in 0..3, after 3 in 0..7.", fig: { kind: "matrix", title: "Binary exponential backoff", cols: ["K from"], rows: [{ label: "1st collision", cells: ["0–1"] }, { label: "2nd collision", cells: ["0–3"], hl: true }, { label: "3rd collision", cells: ["0–7"] }] } },
+    { type: "example", id: "mx2", level: "gate", title: "Collision again?", given: "Stations A and B collide for the first time. Each picks K from {0, 1}.", find: "Probability they collide again, and that A goes first.",
+      steps: [
+        { say: "Four equally likely pairs: (0,0), (0,1), (1,0), (1,1)." },
+        { say: "Collide again when equal: 2 of 4.", result: "1/2" },
+        { say: "A first only for (0,1).", result: "1/4" },
+      ],
+      answer: "Collide again with probability 0.5; A wins with 0.25 (and B with 0.25).",
+      check: "After the second collision K ranges over 0–3, so a repeat collision has probability 1/4." },
+    { type: "example", id: "mx3", level: "edge", title: "Throughput in frames", given: "A slotted ALOHA channel of 100 kbps carries 1000-bit frames at the best load.", find: "Successful frames per second.",
+      steps: [
+        { say: "Slots per second: 100,000 / 1000 = 100." },
+        { say: "At G = 1, S = 1/e ≈ 0.368.", result: "≈ 36.8 frames/s" },
+      ],
+      answer: "About 37 successful frames per second.",
+      check: "Pure ALOHA at its best would deliver about 18." },
+    { type: "lab", lab: "mac" },
+    { type: "faded", title: "Your turn", given: "Minimum frame 512 bits at 10 Mbps, signal speed 2 × 10⁸ m/s.",
+      steps: [{ say: "Longest cable?", blank: true, answer: "Frame time 51.2 µs = 2Tp → Tp = 25.6 µs → d = 25.6 µs × 2 × 10⁸ = 5120 m." }] },
+    { type: "trap", wrong: "Slotted ALOHA's peak is at G = 0.5.", tempting: "That is where pure ALOHA peaks.", whyWrong: "Slotted ALOHA peaks at G = 1 with 1/e; pure ALOHA at G = 0.5 with 1/(2e).", rule: "Pure: G = 0.5, 18.4%. Slotted: G = 1, 36.8%." },
+    { type: "trap", wrong: "Minimum frame = Tp × R.", tempting: "One trip seems enough to reach the far end.", whyWrong: "The sender must hear the collision, which needs a round trip.", rule: "L_min = 2 Tp R." },
+    { type: "gate", text: "Expect the CSMA/CD minimum frame or maximum distance NAT, ALOHA throughput values, and backoff probabilities. Keep units straight: µs × Mbps gives bits." },
+    { type: "recall", cards: [{ q: "Pure ALOHA max", a: "18.4% at G = 0.5" }, { q: "Slotted ALOHA max", a: "36.8% at G = 1" }, { q: "CSMA/CD min frame", a: "2 × Tp × R" }] },
+    { type: "check", questions: [
+      { id: "mc1", kind: "NAT", marks: 2, q: "10 Mbps, 2 km, 2 × 10⁸ m/s. CSMA/CD minimum frame in bits?", answer: "200", solution: "2 × 10 µs × 10⁷." },
+      { id: "mc2", kind: "NAT", marks: 2, q: "512-bit minimum frame at 10 Mbps, 2 × 10⁸ m/s. Maximum cable length in metres?", answer: "5120", solution: "Tp = 25.6 µs." },
+      { id: "mc3", kind: "NAT", marks: 1, q: "After their first collision, the probability two Ethernet stations collide again? (Decimal.)", answer: "0.5", solution: "Equal picks from {0,1}." },
+      { id: "mc4", kind: "MSQ", marks: 2, q: "Which are true?", options: ["Slotted ALOHA doubles the peak of pure ALOHA", "CSMA/CD is used by classic wired Ethernet", "Wi-Fi uses CSMA/CD", "Pure ALOHA's vulnerable period is two frame times"], answer: "A, B, D", solution: "Wi-Fi uses CSMA/CA." },
+      { id: "mc5", kind: "MCQ", marks: 1, q: "Maximum throughput of slotted ALOHA is about", options: ["18.4%", "36.8%", "50%", "100%"], answer: "B", solution: "1/e." },
+    ] },
+    { type: "practice", links: [
+      { label: "Real GATE questions on Computer Networks", sub: "MAC protocols and Ethernet", href: "/topics/computer-networks-cn" },
+      { label: "Topic 1: error detection", sub: "Ethernet's CRC trailer", href: "/study/data-link" },
+      { label: "Probability", sub: "Poisson arrivals", href: "/topics/probability-and-statistics" },
+    ] },
+    { type: "links", prereq: ["Propagation delay"], usedIn: ["Ethernet design"], cross: ["Probability: Poisson process"] },
+  ],
+};
+
+export const CN_DLL: Chapter = {
+  id: "cs.cn.dll",
+  subject: "Computer Networks",
+  title: "Data link and MAC",
+  syllabus: ["CS · Computer Networks: Data link layer: framing, error detection, MAC and Ethernet bridging"],
+  pyqTopic: /data link|error|ethernet|MAC|sliding window/i,
+  map: { kind: "strip", items: [
+    { label: "1. Error detection", sub: "CRC, Hamming", state: "done" },
+    { label: "2. Flow control", sub: "windows", state: "done" },
+    { label: "3. Medium access", sub: "ALOHA, CSMA/CD", state: "done" },
+  ] },
+  topics: [errors, windowT, mac],
+};
