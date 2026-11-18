@@ -16,12 +16,54 @@ import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { branchByCode } from "@/lib/branches";
 
-const SHELVES: { id: string; title: string; note: string; stacks: string[][] }[] = [
-  { id: "core", title: "Core computer science", note: "Nine subjects, written in teaching order. Operating Systems is first.", stacks: [["os", "dbms", "cn"], ["algo", "pds", "toc"], ["cd", "coa", "dl"]] },
-  { id: "maths", title: "Mathematics and aptitude", note: "Discrete maths, linear algebra, probability, calculus, and the aptitude section every paper shares.", stacks: [["dm", "la", "prob", "calc"], ["ga"]] },
+const SHELVES: { id: string; title: string; note: string; tint: string; stacks: string[][] }[] = [
+  { id: "core", title: "Core computer science", note: "Nine subjects in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "toc"], ["cd", "coa", "dl"]] },
+  { id: "maths", title: "Mathematics and aptitude", note: "Shared by every GATE paper", tint: "sky", stacks: [["dm", "la", "prob"], ["calc", "ga"]] },
 ];
+/** Bank subject names per book, for the marks preview. */
+const BANK: Record<string, string[]> = {
+  os: ["Operating Systems (OS)"], dbms: ["Database Management Systems (DBMS)"], cn: ["Computer Networks (CN)"], algo: ["Algorithms"],
+  pds: ["Programming in C", "Data Structures"], toc: ["Theory of Computation (TOC)"], cd: ["Compiler Design"], coa: ["Computer Organization and Architecture (COA)"],
+  dl: ["Digital Logic"], dm: ["Discrete Mathematics"], la: ["Linear Algebra"], prob: ["Probability & Statistics"], calc: ["Calculus"],
+  ga: ["Verbal Aptitude", "Quantitative Aptitude", "Analytical Aptitude", "Spatial Aptitude"],
+};
+const slug = (t: string) => t.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+type Peek = { papers: number; perPaper: number; qs: number; two: number; top: [string, number][] };
+let bankCache: Promise<{ exam_metadata: { "year-shift": string }; questions: { subject: string; topic?: string; marks: number }[] }[]> | null = null;
+
+/** Brief marks info for one book from the official CS bank; "See the full breakdown" opens the subject page. */
+function MarksPeek({ b }: { b: ShelfBook }) {
+  const [open, setOpen] = useState(false);
+  const [d, setD] = useState<Peek | null>(null);
+  useEffect(() => {
+    if (!open || d) return;
+    bankCache ??= fetch("/data/questions.json").then((r) => r.json());
+    void bankCache.then((papers) => {
+      const subs = BANK[b.id] ?? [];
+      let marks = 0, qs = 0, two = 0; const top = new Map<string, number>();
+      for (const p of papers) for (const q of p.questions) if (subs.includes(q.subject)) { marks += q.marks; qs++; if (q.marks === 2) two++; if (q.topic) top.set(q.topic, (top.get(q.topic) ?? 0) + 1); }
+      setD({ papers: papers.length, perPaper: papers.length ? marks / papers.length : 0, qs, two, top: [...top.entries()].sort((x, y) => y[1] - x[1]).slice(0, 3) });
+    }).catch(() => setD({ papers: 0, perPaper: 0, qs: 0, two: 0, top: [] }));
+  }, [open, d, b.id]);
+  return (
+    <div className="mt-4">
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="text-sm font-bold underline underline-offset-4">How many marks this subject carries</button>
+      {open && (
+        <div className="mt-2 rounded-2xl bg-[var(--surface)] p-4 text-[var(--text-primary)] shadow-[0_8px_24px_-14px_rgba(0,0,0,.4)]">
+          {!d ? <p className="text-sm text-[var(--text-secondary)]">Counting…</p> : d.qs === 0 ? <p className="text-sm text-[var(--text-secondary)]">No questions found in the bank for this subject yet.</p> : (
+            <>
+              <p className="font-display text-3xl font-extrabold">{d.perPaper.toFixed(1)} <span className="text-base font-bold text-[var(--text-secondary)]">marks per paper, on average</span></p>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">{d.qs} questions across {d.papers} official GATE CS papers, {d.two} of them 2-mark.</p>
+              {d.top.length > 0 && <p className="mt-2 text-sm"><b>Asked most: </b>{d.top.map(([t]) => t).join(", ")}</p>}
+              <Link href={`/topics/${slug((BANK[b.id] ?? [b.title])[0])}`} className="mt-3 inline-flex text-sm font-bold underline underline-offset-4">See the full breakdown</Link>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 const ready = (b: ShelfBook) => b.chapters.filter((c) => c.ready).length;
-const vars = (b: ShelfBook) => ({ ["--cloth" as string]: b.paper ?? b.cloth, ["--cloth-dk" as string]: b.dark ?? b.cloth });
 
 /** A book lying flat: app pastel cloth with a deep spine edge, the full name horizontal in big heavy capitals.
  *  The featured book (has a ready chapter) is thicker, carries the gold ribbon and names its free chapter. Hover slides it out. */
@@ -78,17 +120,17 @@ function OpenBook({ b, onClose }: { b: ShelfBook | null; onClose: () => void }) 
     <AnimatePresence>
       {b && (
         <motion.div className="fixed inset-0 z-[120] grid place-items-center bg-[rgba(24,21,18,.42)] p-3 sm:p-6" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <motion.div role="dialog" aria-modal="true" aria-label={b.title} onClick={(e) => e.stopPropagation()} style={{ ...vars(b), transformPerspective: 1400 }}
+          <motion.div role="dialog" aria-modal="true" aria-label={b.title} onClick={(e) => e.stopPropagation()} style={{ transformPerspective: 1400 }}
             initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
             transition={{ duration: reduce ? 0.14 : 0.38, ease: [0.22, 1, 0.36, 1] }}
             className="grid max-h-[88dvh] w-full max-w-4xl overflow-hidden rounded-[16px] shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr]">
-            <div className="sp2-cover relative p-6 sm:p-8">
+            <div className="relative p-6 sm:p-8" style={{ background: `var(--tint-${b.tint ?? "peri"})`, color: `var(--tint-${b.tint ?? "peri"}-ink)`, borderLeft: `14px solid var(--tint-${b.tint ?? "peri"}-ink)` }}>
               <BookOpen className="h-7 w-7" aria-hidden />
               <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
               <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series</p>
               <p className="mt-4 text-[15px] leading-relaxed">{b.chapters.length} chapters in teaching order, {ready(b) ? `${ready(b)} ready to read now` : "all being written"}. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
               {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="pill-ink mt-5 inline-flex">Read: {b.chapters.find((c) => c.href)!.title}</Link>}
-              <Link href="/gate-cs-syllabus" className="mt-4 block text-sm font-bold underline underline-offset-4">How many marks this subject carries</Link>
+              <MarksPeek key={b.id} b={b} />
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/10 md:hidden"><X className="h-5 w-5" /></button>
             </div>
             <div className="no-scrollbar relative overflow-y-auto bg-[var(--surface)] p-5 sm:p-7">
@@ -161,19 +203,16 @@ export function Bookshelf() {
           const open1 = books.find((b) => b.id === drawer);
           const openIt = (b: ShelfBook) => { if (isPhone()) setDrawer((d) => (d === b.id ? null : b.id)); else setOpen(b); };
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
-          const plaque = (
-            <div className="sp2-plaque">
-              <p className="font-display text-lg font-extrabold text-[var(--text-primary)]">{sh.title}</p>
-              <p className="mt-1 text-sm text-[var(--text-secondary)]">{sh.note}</p>
-              <p className="mt-2 text-sm font-bold text-[var(--text-primary)]">{books.reduce((t, b) => t + ready(b), 0)} of {books.reduce((t, b) => t + b.chapters.length, 0)} chapters ready</p>
-            </div>
-          );
           return (
             <div key={sh.id} className="sp2-shelf">
+              <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b-2 border-dashed border-[var(--border)] pb-2">
+                <span className="h-3 w-3 self-center rounded-full" style={{ background: `var(--tint-${sh.tint}-ink)` }} aria-hidden />
+                <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{sh.title}</h2>
+                <span className="text-sm text-[var(--text-secondary)]">{sh.note} · {books.length} books · {books.reduce((t, b) => t + ready(b), 0)} of {books.reduce((t, b) => t + b.chapters.length, 0)} chapters ready</span>
+              </div>
               <div className={`grid items-end gap-4 ${sh.stacks.length === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2"}`}>
                 {sh.stacks.map((st, si) => (
                   <div key={si} className="flex flex-col gap-3">
-                    {st.length === 1 && plaque}
                     <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} onOpen={() => openIt(byId(id))} />)}</div>
                   </div>
                 ))}
