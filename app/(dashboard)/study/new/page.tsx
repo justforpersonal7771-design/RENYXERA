@@ -5,7 +5,7 @@
  * (section → subject → chapter) with search, plus compact rows for continuing, open tabs and recently closed.
  * Picking only navigates; the chapter page adds its own tab, so the strip does not reshuffle mid-click.
  */
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, BookOpen, Feather, History, Play, Search, X } from "lucide-react";
@@ -34,8 +34,9 @@ export default function StudyNewTab() {
   const books = CS_SHELF.filter((b) => b.band === section);
   const [bookId, setBookId] = useState<string>(CS_SHELF.find((b) => b.band === "core")!.id);
   const book = books.find((b) => b.id === bookId) ?? books[0];
-  const [last, setLast] = useState<{ href: string; title: string } | null>(null);
-  useEffect(() => { hydrate(); try { const v = localStorage.getItem("renyxera.study.last"); if (v) setLast(JSON.parse(v)); } catch { /* storage off */ } }, [hydrate]);
+  const lastRaw = useSyncExternalStore(() => () => {}, () => { try { return localStorage.getItem("renyxera.study.last"); } catch { return null; } }, () => null);
+  const last = useMemo(() => { try { return lastRaw ? (JSON.parse(lastRaw) as { href: string; title: string }) : null; } catch { return null; } }, [lastRaw]);
+  useEffect(() => { hydrate(); }, [hydrate]);
   const go = (href: string) => router.push(href);
   const term = q.trim().toLowerCase();
   const found = useMemo(() => (term ? ALL.filter((c) => `${c.subject} ${c.title}`.toLowerCase().includes(term)) : []), [term]);
@@ -44,7 +45,7 @@ export default function StudyNewTab() {
   return (
     <div className="space-y-5 pb-10">
       <div className="flex min-w-0 items-end gap-2">
-        <Link href="/study" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5"><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link>
+        <Link href="/study" aria-label="Back to all books" className="pill-ink mb-1 inline-flex !h-9 shrink-0 items-center gap-1.5 !px-2.5 sm:!h-10 sm:!px-4"><ArrowLeft className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Books</span></Link>
         <div className="min-w-0 flex-1"><StudyTabs current={NEW} /></div>
       </div>
       <h1 className="font-display text-2xl font-extrabold text-[var(--text-primary)]">Open a chapter in this tab</h1>

@@ -34,7 +34,7 @@ export function useLessonHighlights(lesson: string) {
   const [art, setArt] = useState<HTMLElement | null>(null);
   const [items, setItems] = useState<Item[]>([]);
   const [cloud, setCloud] = useState(false);
-  const [sel, setSel] = useState<{ text: string; x: number; y: number } | null>(null);
+  const [sel, setSel] = useState<{ text: string; x: number; y: number; below?: boolean } | null>(null);
   const [penFor, setPenFor] = useState<{ id: number; x: number; y: number } | null>(null);
   const [filter, setFilter] = useState<string | null>(null);
   const [sort, setSort] = useState<"place" | "newest" | "mine">("place");
@@ -73,7 +73,8 @@ export function useLessonHighlights(lesson: string) {
       window.dispatchEvent(new CustomEvent(LESSON_SELECTION_EVENT, { detail: text.slice(0, 600) }));
       if (!supportsHighlights()) return;
       const r = range.getBoundingClientRect();
-      setSel({ text, x: Math.min(Math.max(r.left + r.width / 2, 140), window.innerWidth - 140), y: Math.max(r.top - 8, 72) });
+      const touch = window.matchMedia("(pointer: coarse)").matches; // phones put their own Copy menu above a selection, so ours goes below
+      setSel({ text, x: Math.min(Math.max(r.left + r.width / 2, 140), window.innerWidth - 140), y: touch ? Math.min(r.bottom + 34, window.innerHeight - 120) : Math.max(r.top - 8, 72), below: touch });
     };
     const onChange = () => { clearTimeout(t); t = setTimeout(read, 250); };
     document.addEventListener("selectionchange", onChange);
@@ -136,7 +137,7 @@ export function useLessonHighlights(lesson: string) {
     <>
       {sel && (
         <div role="toolbar" aria-label="Highlight selection" style={{ left: sel.x, top: sel.y }}
-          className="fixed z-[560] flex -translate-x-1/2 -translate-y-full items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1.5 shadow-[0_14px_34px_-12px_rgba(40,20,120,.5)]">
+          className={`fixed z-[560] flex -translate-x-1/2 ${sel.below ? "" : "-translate-y-full"} items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] p-1.5 shadow-[0_14px_34px_-12px_rgba(40,20,120,.5)]`}>
           <Highlighter className="ml-1.5 h-4 w-4 text-[var(--text-muted)]" aria-hidden />
           {HL_COLORS.map((c) => <button key={c} type="button" aria-label={`Highlight ${c}`} onMouseDown={(e) => e.preventDefault()} onClick={() => void add(c)} className="h-7 w-7 cursor-pointer rounded-full border-2 border-white" style={{ background: SWATCH[c] }} />)}
           <span className="mx-0.5 h-5 w-px bg-[var(--border)]" aria-hidden />

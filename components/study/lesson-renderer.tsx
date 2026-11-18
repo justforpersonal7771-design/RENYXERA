@@ -76,7 +76,7 @@ import { StudyTabs } from "@/components/study/study-tabs";
 import { rememberScroll, recallScroll, useStudyTabs } from "@/lib/study/tabs";
 import { CHAPTERS } from "@/lib/study/chapters";
 import { CS_SHELF } from "@/lib/study/catalog";
-import { ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, BookOpenText, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { LessonTools } from "@/components/study/lesson-tools";
@@ -240,6 +240,39 @@ function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index:
   );
 }
 
+/** Chapters of this subject: previous / next chapter and the whole list, the open chapter expanded to its topics (owner, 19 Nov). */
+function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
+  const [open, setOpen] = useState(false);
+  const book = CS_SHELF.find((b) => b.chapters.some((c) => c.href === href));
+  if (!book) return null;
+  const i = book.chapters.findIndex((c) => c.href === href);
+  const ready = book.chapters.filter((c) => c.href);
+  const r = ready.findIndex((c) => c.href === href);
+  const prev = ready[r - 1], next = ready[r + 1];
+  const btn = "grid h-8 w-8 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] aria-disabled:pointer-events-none aria-disabled:opacity-35";
+  return (
+    <div className="relative mt-2 flex items-center gap-1.5">
+      <Link href={prev?.href ?? href} aria-disabled={!prev} aria-label={prev ? `Previous chapter: ${prev.title}` : "No previous chapter"} className={btn}><ChevronLeft className="h-4 w-4" /></Link>
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="inline-flex h-8 min-w-0 flex-1 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-bold"><BookOpenText className="h-3.5 w-3.5 shrink-0" aria-hidden /><span className="truncate">Chapter {i + 1} of {book.chapters.length}</span><ChevronDown className="ml-auto h-3.5 w-3.5 shrink-0" aria-hidden /></button>
+      <Link href={next?.href ?? href} aria-disabled={!next} aria-label={next ? `Next chapter: ${next.title}` : "No next chapter"} className={btn}><ChevronRight className="h-4 w-4" /></Link>
+      {open && <>
+        <button type="button" aria-label="Close chapters" className="fixed inset-0 z-[70] cursor-default" onClick={() => setOpen(false)} />
+        <div role="menu" className="custom-scrollbar absolute left-0 top-10 z-[80] max-h-[65vh] w-[min(22rem,85vw)] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-[0_20px_40px_-20px_rgba(0,0,0,.5)]">
+          <p className="px-2 pb-1 text-xs font-bold text-[var(--text-secondary)]">{book.title}</p>
+          {book.chapters.map((c, k) => (
+            <div key={c.id} className={`rounded-xl p-2 ${c.href === href ? "bg-[color-mix(in_srgb,var(--st-accent)_10%,transparent)]" : ""}`}>
+              {c.href ? <Link href={c.href} role="menuitem" onClick={() => setOpen(false)} className="flex items-start gap-2 text-sm font-bold"><span className="font-num text-[var(--st-accent)]">{k + 1}</span><span className="min-w-0 flex-1">{c.title}</span><span className="shrink-0 text-[11px] font-semibold text-[var(--text-secondary)]">{c.ready}</span></Link>
+                : <p className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"><span className="font-num">{k + 1}</span><span className="min-w-0 flex-1">{c.title}</span><span className="shrink-0 text-[11px]">Being written</span></p>}
+              {c.href === href && <ul className="mt-1 space-y-1 pl-5">{chapter.topics.map((t, n) => <li key={t.id}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(t.id); }} className="w-full rounded-lg px-2 py-0.5 text-left text-xs font-semibold hover:bg-[var(--surface-secondary)]">{n + 1}. {t.title}</button>
+                <ul className="pl-3">{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(t, sec.key)); }} className="w-full rounded-lg px-2 py-0.5 text-left text-[11px] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]">{sec.label}</button></li>)}</ul></li>)}</ul>}
+            </div>
+          ))}
+        </div>
+      </>}
+    </div>
+  );
+}
+
 function TopicView({ t, index, topics }: { t: Topic; index: number; topics: Topic[] }) {
   const one = <T extends Block["type"]>(k: T) => t.blocks.find((b) => b.type === k) as B<T> | undefined;
   const all = <T extends Block["type"]>(k: T) => t.blocks.filter((b) => b.type === k) as B<T>[];
@@ -277,7 +310,30 @@ function TopicView({ t, index, topics }: { t: Topic; index: number; topics: Topi
 }
 
 /* ------------------------------------------------------------------ split view (wide screens) */
+/** The split pane's own contents rail, styled like the main rail: numbered topic cards that open to their sections. */
+function PaneRail({ topics }: { topics: Topic[] }) {
+  const [openId, setOpenId] = useState<string | null>(topics[0]?.id ?? null);
+  return (
+    <nav aria-label="Contents of the second chapter" className="custom-scrollbar min-h-0 w-60 shrink-0 space-y-2 overflow-y-auto border-r border-[var(--border)] p-3">
+      {topics.map((t, i) => {
+        const on = openId === t.id;
+        return (
+          <div key={t.id}>
+            <button type="button" onClick={() => { setOpenId(on ? null : t.id); goTo(t.id); }} aria-expanded={on} className={`flex w-full items-start gap-2 rounded-xl border-2 px-2 py-2 text-left ${on ? "border-[var(--st-accent)]" : "border-dashed border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
+              <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold ${on ? "bg-[var(--st-accent)] text-[var(--surface)]" : "border-2 border-[var(--st-accent)] text-[var(--st-accent)]"}`}>{i + 1}</span>
+              <span className="min-w-0 flex-1 text-sm font-bold leading-snug text-[var(--text-primary)]">{t.title}</span>
+              <ChevronDown className={`mt-0.5 h-4 w-4 shrink-0 text-[var(--text-secondary)] transition-transform ${on ? "rotate-180" : ""}`} aria-hidden />
+            </button>
+            {on && <ul className="ml-4 mt-1 space-y-0.5 border-l-2 border-[var(--border)] pl-2">{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" onClick={() => goTo(secId(t, sec.key))} className="w-full rounded-lg px-2 py-1 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]">{sec.label}</button></li>)}</ul>}
+          </div>
+        );
+      })}
+    </nav>
+  );
+}
+
 function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
+  const [rail, setRail] = useState(true);
   const [loaded, setLoaded] = useState<{ href: string; ch: Chapter } | null>(null);
   useEffect(() => { let live = true; CHAPTERS[href]?.().then((c) => { if (live) setLoaded({ href, ch: c }); }); return () => { live = false; }; }, [href]);
   const ch = loaded?.href === href ? loaded.ch : null;
@@ -286,12 +342,15 @@ function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
     <section aria-label={`Beside: ${ch.subject}, ${ch.title}`} className="flex min-h-0 min-w-0 flex-col rounded-[22px] border border-[var(--border)] bg-[var(--surface)]/60">
       <header className="flex shrink-0 items-center gap-2 border-b border-[var(--border)] px-4 py-2.5">
         <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]">{ch.subject}</span><span className="block truncate font-display text-base font-extrabold text-[var(--text-primary)]">{ch.title}</span></span>
-        <TopicNav topics={ch.topics} index={-1} menuOnly />
+        <button type="button" onClick={() => setRail((x) => !x)} aria-pressed={rail} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-bold hover:bg-[var(--surface-secondary)]"><ListTree className="h-4 w-4" aria-hidden /> Contents</button>
         <Link href={href} aria-label={`Open ${ch.title} on its own`} className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><ExternalLink className="h-4 w-4" /></Link>
         <button type="button" onClick={onClose} aria-label="Close split view" className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><XIcon className="h-4 w-4" /></button>
       </header>
-      <div className="@container custom-scrollbar relative min-h-0 flex-1 space-y-12 overflow-y-auto p-4">
-        {ch.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} topics={ch.topics} />)}
+      <div className="flex min-h-0 flex-1">
+        {rail && <PaneRail topics={ch.topics} />}
+        <div className="@container custom-scrollbar relative min-h-0 min-w-0 flex-1 space-y-12 overflow-y-auto p-4">
+          {ch.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} topics={ch.topics} />)}
+        </div>
       </div>
     </section>
   );
@@ -390,6 +449,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
         {sheet && <button type="button" onClick={() => setSheet(false)} className="float-right grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] lg:hidden" aria-label="Close contents"><ChevronDown className="h-4 w-4" /></button>}
         <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
+        <ChapterNav href={href} chapter={chapter} />
         <div className="mt-3 flex items-center gap-2">
           <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--surface-secondary)]"><div className="h-full rounded-full transition-all duration-500" style={{ width: `${((topicIdx + 1) / Math.max(1, written)) * 100}%`, background: "var(--st-accent)" }} /></div>
           <span className="font-num text-[11px] font-bold text-[var(--st-accent)]">Topic {topicIdx + 1}/{written}</span>
@@ -445,7 +505,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   );
   return (
     <div className={`study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
-      <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
+      <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex !h-9 shrink-0 items-center gap-1.5 !px-2.5 sm:!h-10 sm:!px-4" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Books</span></Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
       {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
       <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">
         <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject} · {chapter.title}</span><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{(() => { const t = chapter.topics.find((x) => current.startsWith(`${x.id}--`)) ?? chapter.topics[0]; const sec = t ? sectionsOf(t).find((x) => secId(t, x.key) === current) : null; return sec ? sec.label : t?.title; })()}</span></span>

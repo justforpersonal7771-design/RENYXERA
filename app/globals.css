@@ -2383,3 +2383,13 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
   --scrollbar-thumb-gradient: linear-gradient(var(--sb-ink), var(--sb-ink));
   --scrollbar-thumb-glow: color-mix(in srgb, var(--sb-ink) 45%, transparent);
 }
+
+/* The thumb above is painted from fixed brand RGB stops; inside a tinted card or a lesson it takes the card's ink instead.
+   Colour only: --sb-alpha still drives the show-on-activity fade, and hover/drag keep their existing rules. */
+:is([data-tint]:not([data-tint="plain"]), .study-lesson) :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar-thumb,
+:is([data-tint]:not([data-tint="plain"]), .study-lesson):is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(color-mix(in srgb, var(--sb-ink) calc(var(--sb-alpha, 0) * 100%), transparent), color-mix(in srgb, var(--sb-ink) calc(var(--sb-alpha, 0) * 100%), transparent));
+}
+@supports not selector(::-webkit-scrollbar) {
+  :is([data-tint]:not([data-tint="plain"]), .study-lesson) :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"], :is([data-tint]:not([data-tint="plain"]), .study-lesson):is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"] { scrollbar-color: var(--sb-ink) transparent; }
+}
