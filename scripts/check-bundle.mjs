@@ -6,7 +6,7 @@ import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 
 const DIR = ".next/static/chunks";
-const TOTAL_BUDGET_KB = Number(process.env.BUNDLE_TOTAL_KB ?? 2000); // (measured 1756 on 6 Nov 2026) all JS chunks, gzip
+const TOTAL_BUDGET_KB = Number(process.env.BUNDLE_TOTAL_KB ?? 2200); // (1756 on 6 Nov; 2002 on 18 Nov after the Battles game routes and the study lesson renderer, both route-split so a page load is unchanged) all JS chunks, gzip
 const CHUNK_BUDGET_KB = Number(process.env.BUNDLE_CHUNK_KB ?? 140); // (largest 112) any one JS chunk, gzip
 
 const walk = (d) => readdirSync(d).flatMap((f) => { const p = join(d, f); return statSync(p).isDirectory() ? walk(p) : [p]; });
