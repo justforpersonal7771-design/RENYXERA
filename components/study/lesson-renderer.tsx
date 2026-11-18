@@ -9,8 +9,44 @@
  * the outline lists every section of the topic, jumps to it and follows your place. Notes, PYQs and the Mentor are
  * floating tools (lesson-tools.tsx), so the lesson gets the whole remaining width.
  */
-import { MlfqLab, PipeLab, SegmentLab } from "@/components/study/os-extra-labs";
-import { EncapLab, DelayLab, CrcLab, WindowLab, MacLab, SubnetLab, FragLab, RouteLab, SeqLab, CwndLab, HttpLab, PortsLab } from "@/components/study/cn-labs";
+import dynamic from "next/dynamic";
+/* Labs load on demand (bundle budget, 18 Nov): each lab module is its own chunk. */
+const labLoading = () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden />;
+const MlfqLab = dynamic(() => import("@/components/study/os-extra-labs").then((m) => m.MlfqLab), { ssr: false, loading: labLoading });
+const PipeLab = dynamic(() => import("@/components/study/os-extra-labs").then((m) => m.PipeLab), { ssr: false, loading: labLoading });
+const SegmentLab = dynamic(() => import("@/components/study/os-extra-labs").then((m) => m.SegmentLab), { ssr: false, loading: labLoading });
+const EncapLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.EncapLab), { ssr: false, loading: labLoading });
+const DelayLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.DelayLab), { ssr: false, loading: labLoading });
+const CrcLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.CrcLab), { ssr: false, loading: labLoading });
+const WindowLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.WindowLab), { ssr: false, loading: labLoading });
+const MacLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.MacLab), { ssr: false, loading: labLoading });
+const SubnetLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.SubnetLab), { ssr: false, loading: labLoading });
+const FragLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.FragLab), { ssr: false, loading: labLoading });
+const RouteLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.RouteLab), { ssr: false, loading: labLoading });
+const SeqLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.SeqLab), { ssr: false, loading: labLoading });
+const CwndLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.CwndLab), { ssr: false, loading: labLoading });
+const HttpLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.HttpLab), { ssr: false, loading: labLoading });
+const PortsLab = dynamic(() => import("@/components/study/cn-labs").then((m) => m.PortsLab), { ssr: false, loading: labLoading });
+const RagLab = dynamic(() => import("@/components/study/rag-lab").then((m) => m.RagLab), { ssr: false, loading: labLoading });
+const BankerLab = dynamic(() => import("@/components/study/deadlock-labs").then((m) => m.BankerLab), { ssr: false, loading: labLoading });
+const CountLab = dynamic(() => import("@/components/study/deadlock-labs").then((m) => m.CountLab), { ssr: false, loading: labLoading });
+const DetectLab = dynamic(() => import("@/components/study/deadlock-labs").then((m) => m.DetectLab), { ssr: false, loading: labLoading });
+const PreventLab = dynamic(() => import("@/components/study/deadlock-labs").then((m) => m.PreventLab), { ssr: false, loading: labLoading });
+const StarveLab = dynamic(() => import("@/components/study/deadlock-labs").then((m) => m.StarveLab), { ssr: false, loading: labLoading });
+const ForkLab = dynamic(() => import("@/components/study/process-labs").then((m) => m.ForkLab), { ssr: false, loading: labLoading });
+const ProcessStateLab = dynamic(() => import("@/components/study/process-labs").then((m) => m.ProcessStateLab), { ssr: false, loading: labLoading });
+const SyscallLab = dynamic(() => import("@/components/study/process-labs").then((m) => m.SyscallLab), { ssr: false, loading: labLoading });
+const ThreadLab = dynamic(() => import("@/components/study/process-labs").then((m) => m.ThreadLab), { ssr: false, loading: labLoading });
+const SchedLab = dynamic(() => import("@/components/study/sched-lab").then((m) => m.SchedLab), { ssr: false, loading: labLoading });
+const BufferLab = dynamic(() => import("@/components/study/sync-labs").then((m) => m.BufferLab), { ssr: false, loading: labLoading });
+const RaceLab = dynamic(() => import("@/components/study/sync-labs").then((m) => m.RaceLab), { ssr: false, loading: labLoading });
+const SemaphoreLab = dynamic(() => import("@/components/study/sync-labs").then((m) => m.SemaphoreLab), { ssr: false, loading: labLoading });
+const FitLab = dynamic(() => import("@/components/study/memory-labs").then((m) => m.FitLab), { ssr: false, loading: labLoading });
+const PagingLab = dynamic(() => import("@/components/study/memory-labs").then((m) => m.PagingLab), { ssr: false, loading: labLoading });
+const TlbLab = dynamic(() => import("@/components/study/memory-labs").then((m) => m.TlbLab), { ssr: false, loading: labLoading });
+const ReplaceLab = dynamic(() => import("@/components/study/vm-labs").then((m) => m.ReplaceLab), { ssr: false, loading: labLoading });
+const AllocLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m.AllocLab), { ssr: false, loading: labLoading });
+const DiskLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m.DiskLab), { ssr: false, loading: labLoading });
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
@@ -22,14 +58,6 @@ import { CS_SHELF } from "@/lib/study/catalog";
 import { ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
-import { RagLab } from "@/components/study/rag-lab";
-import { BankerLab, CountLab, DetectLab, PreventLab, StarveLab } from "@/components/study/deadlock-labs";
-import { ForkLab, ProcessStateLab, SyscallLab, ThreadLab } from "@/components/study/process-labs";
-import { SchedLab } from "@/components/study/sched-lab";
-import { BufferLab, RaceLab, SemaphoreLab } from "@/components/study/sync-labs";
-import { FitLab, PagingLab, TlbLab } from "@/components/study/memory-labs";
-import { ReplaceLab } from "@/components/study/vm-labs";
-import { AllocLab, DiskLab } from "@/components/study/fs-labs";
 import { LessonTools } from "@/components/study/lesson-tools";
 import { useLessonHighlights } from "@/components/study/lesson-highlights";
 import Link from "next/link";
@@ -198,8 +226,10 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
 
 /* ------------------------------------------------------------------ split view (wide screens) */
 function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
-  const ch = CHAPTERS[href];
-  if (!ch) return null;
+  const [loaded, setLoaded] = useState<{ href: string; ch: Chapter } | null>(null);
+  useEffect(() => { let live = true; CHAPTERS[href]?.().then((c) => { if (live) setLoaded({ href, ch: c }); }); return () => { live = false; }; }, [href]);
+  const ch = loaded?.href === href ? loaded.ch : null;
+  if (!ch) return <section aria-label="Loading the second chapter" className="min-h-0 min-w-0 animate-pulse rounded-[22px] border border-[var(--border)] bg-[var(--surface)]/60" />;
   return (
     <section aria-label={`Beside: ${ch.subject}, ${ch.title}`} className="flex min-h-0 min-w-0 flex-col rounded-[22px] border border-[var(--border)] bg-[var(--surface)]/60">
       <header className="flex shrink-0 items-center gap-2 border-b border-[var(--border)] px-4 py-2.5">

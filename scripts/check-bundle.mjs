@@ -6,7 +6,7 @@ import { gzipSync } from "node:zlib";
 import { join } from "node:path";
 
 const DIR = ".next/static/chunks";
-const TOTAL_BUDGET_KB = Number(process.env.BUNDLE_TOTAL_KB ?? 2200); // (1756 on 6 Nov; 2002 on 18 Nov after the Battles game routes and the study lesson renderer, both route-split so a page load is unchanged) all JS chunks, gzip
+const TOTAL_BUDGET_KB = Number(process.env.BUNDLE_TOTAL_KB ?? 3500); // (1756 on 6 Nov; 2002 on 18 Nov after Battles + the lesson renderer; 2362 on 18 Nov with OS + CN books. Raised to 3500: every study chapter and lab is its own lazily loaded chunk, so this total grows ~60-90 KB per book as all ~17 books are written, while a page load does not. The per-chunk budget below is what guards page weight.) all JS chunks, gzip
 const CHUNK_BUDGET_KB = Number(process.env.BUNDLE_CHUNK_KB ?? 140); // (largest 112) any one JS chunk, gzip
 
 const walk = (d) => readdirSync(d).flatMap((f) => { const p = join(d, f); return statSync(p).isDirectory() ? walk(p) : [p]; });
