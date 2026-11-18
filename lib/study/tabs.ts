@@ -7,7 +7,13 @@
  */
 import { create } from "zustand";
 
-export type StudyTab = { href: string; title: string; subject: string; tint?: string; pinned?: boolean };
+export type StudyTab = { href: string; title: string; subject: string; tint?: string; pinned?: boolean; group?: string };
+export type TabGroup = { id: string; name: string; color: string; collapsed?: boolean };
+export const GROUP_COLORS = ["rose", "sky", "mint", "butter", "lilac", "peach"] as const;
+const GROUPS_KEY = "renyxera.study.tab-groups.v1";
+const SPLIT_KEY = "renyxera.study.split.v1";
+const loadGroups = (): TabGroup[] => { try { const v = JSON.parse(localStorage.getItem(GROUPS_KEY) ?? "[]"); return Array.isArray(v) ? v : []; } catch { return []; } };
+const saveGroups = (g: TabGroup[]) => { try { localStorage.setItem(GROUPS_KEY, JSON.stringify(g)); } catch { /* private */ } };
 const KEY = "renyxera.study.tabs.v1";
 const SCROLL_KEY = "renyxera.study.tab-scroll.v1";
 const CLOSED_KEY = "renyxera.study.tabs-closed.v1";
@@ -20,10 +26,27 @@ const load = (): StudyTab[] => {
 };
 const save = (tabs: StudyTab[]) => { try { localStorage.setItem(KEY, JSON.stringify(tabs)); } catch { /* private mode */ } };
 // pinned tabs stay at the front, in the order they were pinned
-const ordered = (tabs: StudyTab[]) => [...tabs.filter((t) => t.pinned), ...tabs.filter((t) => !t.pinned)];
+const ordered = (tabs: StudyTab[]) => {
+  const flat = [...tabs.filter((t) => t.pinned), ...tabs.filter((t) => !t.pinned)];
+  const out: StudyTab[] = [], seen = new Set<string>();
+  for (const t of flat) {
+    if (!t.group) { out.push(t); continue; }
+    if (seen.has(t.group)) continue;
+    seen.add(t.group); out.push(...flat.filter((x) => x.group === t.group));
+  }
+  return out;
+};
 
 type S = {
-  tabs: StudyTab[]; loaded: boolean; closed: StudyTab[];
+  tabs: StudyTab[]; loaded: boolean; closed: StudyTab[]; groups: TabGroup[];
+  /** A second chapter shown beside the current one (split view, wide screens). */
+  split: string | null;
+  setSplit: (href: string | null) => void;
+  newGroup: (href: string) => void;
+  addToGroup: (href: string, group: string | null) => void;
+  renameGroup: (id: string, name: string) => void;
+  toggleGroup: (id: string) => void;
+  ungroup: (id: string) => void;
   /** Reopen the most recently closed tab; returns its href. */
   reopen: () => string | null;
   hydrate: () => void;
@@ -38,8 +61,25 @@ type S = {
 };
 
 export const useStudyTabs = create<S>((set, get) => ({
-  tabs: [], loaded: false, closed: [],
-  hydrate: () => { if (!get().loaded) set({ tabs: load(), closed: loadClosed(), loaded: true }); },
+  tabs: [], loaded: false, closed: [], groups: [], split: null,
+  hydrate: () => { if (!get().loaded) { let split: string | null = null; try { split = sessionStorage.getItem(SPLIT_KEY); } catch { /* private */ } set({ tabs: load(), closed: loadClosed(), groups: loadGroups(), split, loaded: true }); } },
+  setSplit: (href) => { set({ split: href }); try { if (href) sessionStorage.setItem(SPLIT_KEY, href); else sessionStorage.removeItem(SPLIT_KEY); } catch { /* private */ } },
+  newGroup: (href) => {
+    const used = get().groups.map((g) => g.color);
+    const color = GROUP_COLORS.find((c) => !used.includes(c)) ?? GROUP_COLORS[get().groups.length % GROUP_COLORS.length];
+    const g: TabGroup = { id: Math.random().toString(36).slice(2, 8), name: `Group ${get().groups.length + 1}`, color };
+    const groups = [...get().groups, g]; set({ groups }); saveGroups(groups);
+    get().addToGroup(href, g.id);
+  },
+  addToGroup: (href, group) => {
+    const tabs = ordered(get().tabs.map((t) => (t.href === href ? { ...t, group: group ?? undefined } : t)));
+    const live = new Set(tabs.map((t) => t.group).filter(Boolean));
+    const groups = get().groups.filter((g) => live.has(g.id));
+    set({ tabs, groups }); save(tabs); saveGroups(groups);
+  },
+  renameGroup: (id, name) => { const groups = get().groups.map((g) => (g.id === id ? { ...g, name: name.slice(0, 24) || g.name } : g)); set({ groups }); saveGroups(groups); },
+  toggleGroup: (id) => { const groups = get().groups.map((g) => (g.id === id ? { ...g, collapsed: !g.collapsed } : g)); set({ groups }); saveGroups(groups); },
+  ungroup: (id) => { const tabs = get().tabs.map((t) => (t.group === id ? { ...t, group: undefined } : t)); const groups = get().groups.filter((g) => g.id !== id); set({ tabs, groups }); save(tabs); saveGroups(groups); },
   reopen: () => {
     get().hydrate();
     const [t, ...rest] = get().closed; if (!t) return null;

@@ -11,10 +11,12 @@
  */
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
+import { motion } from "motion/react";
 import { StudyTabs } from "@/components/study/study-tabs";
-import { rememberScroll, recallScroll } from "@/lib/study/tabs";
+import { rememberScroll, recallScroll, useStudyTabs } from "@/lib/study/tabs";
+import { CHAPTERS } from "@/lib/study/chapters";
 import { CS_SHELF } from "@/lib/study/catalog";
-import { ArrowLeft, ArrowUpRight, Check, ChevronDown, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { RagLab } from "@/components/study/rag-lab";
@@ -151,21 +153,39 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
         <p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
         <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2>
       </header>
-      {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
-      {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 lg:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
-      {walk && <Sect t={t} k="method" className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"><Walk b={walk} />{loose[0] && <Figure b={loose[0]} />}</Sect>}
-      {loose.length > 1 && <div className="grid gap-5 md:grid-cols-2">{loose.slice(1).map((f) => <Figure key={f.id} b={f} />)}</div>}
+      {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
+      {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 @3xl:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
+      {walk && <Sect t={t} k="method" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"><Walk b={walk} />{loose[0] && <Figure b={loose[0]} />}</Sect>}
+      {loose.length > 1 && <div className="grid gap-5 @xl:grid-cols-2">{loose.slice(1).map((f) => <Figure key={f.id} b={f} />)}</div>}
       {all("example").map((ex, i) => {
         const own = figs.filter((f) => f.for === ex.id);
-        return <Sect key={ex.id} t={t} k={`ex${i}`} className={`grid gap-5 ${own.length ? "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</Sect>;
+        return <Sect key={ex.id} t={t} k={`ex${i}`} className={`grid gap-5 ${own.length ? "@3xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</Sect>;
       })}
       {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : <StarveLab />}</Sect>}
-      {(faded || shortcut) && <Sect t={t} k="faded" className={`grid gap-5 ${faded && shortcut ? "lg:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</Sect>}
-      {all("trap").length > 0 && <Sect t={t} k="traps" className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</Sect>}
-      {(gate || recall) && <Sect t={t} k="gate" className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</Sect>}
-      {qs.length > 0 && <Sect t={t} k="check"><h3 className="lesson-h flex items-center gap-2"><Check className="h-5 w-5" aria-hidden /> Check yourself</h3><ol className="mt-2 grid gap-4 xl:grid-cols-2">{qs.map((q, i) => <CheckQuestion key={q.id} q={q} n={i + 1} />)}</ol></Sect>}
+      {(faded || shortcut) && <Sect t={t} k="faded" className={`grid gap-5 ${faded && shortcut ? "@3xl:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</Sect>}
+      {all("trap").length > 0 && <Sect t={t} k="traps" className="grid gap-5 @xl:grid-cols-2 @5xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</Sect>}
+      {(gate || recall) && <Sect t={t} k="gate" className="grid gap-5 @3xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</Sect>}
+      {qs.length > 0 && <Sect t={t} k="check"><h3 className="lesson-h flex items-center gap-2"><Check className="h-5 w-5" aria-hidden /> Check yourself</h3><ol className="mt-2 grid gap-4 @5xl:grid-cols-2">{qs.map((q, i) => <CheckQuestion key={q.id} q={q} n={i + 1} />)}</ol></Sect>}
       {(links || practice) && <Sect t={t} k="next" className="space-y-5">{links && <Links b={links} />}{practice && <Practice b={practice} />}</Sect>}
     </article>
+  );
+}
+
+/* ------------------------------------------------------------------ split view (wide screens) */
+function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
+  const ch = CHAPTERS[href];
+  if (!ch) return null;
+  return (
+    <section aria-label={`Beside: ${ch.subject}, ${ch.title}`} className="flex min-h-0 min-w-0 flex-col rounded-[22px] border border-[var(--border)] bg-[var(--surface)]/60">
+      <header className="flex shrink-0 items-center gap-2 border-b border-[var(--border)] px-4 py-2.5">
+        <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]">{ch.subject}</span><span className="block truncate font-display text-base font-extrabold text-[var(--text-primary)]">{ch.title}</span></span>
+        <Link href={href} aria-label={`Open ${ch.title} on its own`} className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><ExternalLink className="h-4 w-4" /></Link>
+        <button type="button" onClick={onClose} aria-label="Close split view" className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><XIcon className="h-4 w-4" /></button>
+      </header>
+      <div className="@container custom-scrollbar relative min-h-0 flex-1 space-y-12 overflow-y-auto p-4">
+        {ch.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
+      </div>
+    </section>
   );
 }
 
@@ -178,6 +198,19 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const [soon, setSoon] = useState<number | null>(null);
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const [sheet, setSheet] = useState(false);
+  const split = useStudyTabs((x) => x.split);
+  const setSplit = useStudyTabs((x) => x.setSplit);
+  const [wide, setWide] = useState(false);
+  const [splitW, setSplitW] = useState(55); // % of the reading area for the current chapter
+  const [railShut, setRailShut] = useState<boolean | null>(null); // null = automatic (folded while split)
+  useEffect(() => { const m = window.matchMedia("(min-width: 1280px)"); const f = () => setWide(m.matches); f(); m.addEventListener("change", f); return () => m.removeEventListener("change", f); }, []);
+  const dragSplit = (e: React.PointerEvent<HTMLDivElement>) => {
+    const box = (e.currentTarget.parentElement as HTMLElement).getBoundingClientRect();
+    const move = (ev: PointerEvent) => setSplitW(Math.min(72, Math.max(30, ((ev.clientX - box.left) / box.width) * 100)));
+    document.body.style.userSelect = "none"; window.getSelection()?.removeAllRanges();
+    const up = () => { document.body.style.userSelect = ""; window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up); };
+    window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
+  };
   // hide the floating tools while the contents sheet is open on a phone
   useEffect(() => { if (sheet) document.body.dataset.lessonSheet = "1"; else delete document.body.dataset.lessonSheet; return () => { delete document.body.dataset.lessonSheet; }; }, [sheet]);
   const railRef = useRef<HTMLOListElement | null>(null);
@@ -239,8 +272,12 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     setCurrent(id);
   };
 
+  const splitHref = wide && split && split !== href && CHAPTERS[split] ? split : null;
+  const folded = (railShut ?? !!splitHref);
+  const topicIdx = Math.max(0, chapter.topics.findIndex((x) => current.startsWith(`${x.id}--`)));
+  const written = chapter.topics.length;
   return (
-    <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-4" style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
+    <div className={`study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
       <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
       {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
       <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">
@@ -248,11 +285,30 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
         <button type="button" onClick={() => setSheet(true)} className="pill-ink !h-9 shrink-0 !px-3" style={{ ["--btn" as string]: "var(--st-accent)" }}>Contents</button>
       </div>
       {sheet && <div aria-hidden className="fixed inset-0 z-[310] bg-black/40 lg:hidden" onClick={() => setSheet(false)} />}
-      <nav aria-label="Chapter outline" className={`relative min-h-0 flex-col ${sheet ? "fixed inset-x-2 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-[320] flex max-h-[68dvh] overflow-y-auto rounded-3xl bg-[var(--surface)] p-4 shadow-2xl" : "hidden"} lg:static lg:z-auto lg:flex lg:max-h-none lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none`}>
+      {folded && (
+        <div className="hidden min-h-0 flex-col items-center gap-2 lg:flex">
+          <button type="button" onClick={() => setRailShut(false)} aria-label="Unfold the outline" title="Unfold the outline" className="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><ChevronsRight className="h-4 w-4" /></button>
+          <div className="relative flex flex-1 flex-col items-center gap-2 py-2">
+            <span aria-hidden className="absolute bottom-2 top-2 w-1 rounded-full bg-[var(--surface-secondary)]"><span className="block w-full rounded-full transition-all duration-500" style={{ height: `${((topicIdx + 1) / Math.max(1, written)) * 100}%`, background: "var(--st-accent)" }} /></span>
+            {chapter.topics.map((t, i) => (
+              <button key={t.id} type="button" onClick={() => go(t.id)} aria-label={`Topic ${i + 1}: ${t.title}`} title={t.title}
+                className={`relative z-10 grid h-8 w-8 place-items-center rounded-full text-xs font-bold ${i === topicIdx ? "bg-[var(--st-accent)] text-white" : i < topicIdx ? "border-2 border-[var(--st-accent)] bg-[var(--surface)] text-[var(--st-accent)]" : "border-2 border-dashed border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)]"}`}>
+                {i < topicIdx ? <Check className="h-3.5 w-3.5" /> : i + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+      <nav aria-label="Chapter outline" className={`${folded ? "lg:!hidden" : ""} relative min-h-0 flex-col ${sheet ? "fixed inset-x-2 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-[320] flex max-h-[68dvh] overflow-y-auto rounded-3xl bg-[var(--surface)] p-4 shadow-2xl" : "hidden"} lg:static lg:z-auto lg:flex lg:max-h-none lg:overflow-visible lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none`}>
         <div className="shrink-0 pb-3">
         {sheet && <button type="button" onClick={() => setSheet(false)} className="float-right grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] lg:hidden" aria-label="Close contents"><ChevronDown className="h-4 w-4" /></button>}
         <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
+        <div className="mt-3 flex items-center gap-2">
+          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[var(--surface-secondary)]"><div className="h-full rounded-full transition-all duration-500" style={{ width: `${((topicIdx + 1) / Math.max(1, written)) * 100}%`, background: "var(--st-accent)" }} /></div>
+          <span className="font-num text-[11px] font-bold text-[var(--st-accent)]">Topic {topicIdx + 1}/{written}</span>
+          <button type="button" onClick={() => setRailShut(true)} aria-label="Fold the outline" title="Fold the outline" className="hidden h-7 w-7 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] lg:grid"><ChevronsLeft className="h-4 w-4" /></button>
+        </div>
         </div>
         <ol ref={railRef} className="no-scrollbar min-h-0 space-y-2 lg:flex-1 lg:overflow-y-auto lg:pr-2">
           {steps.map((s, i) => {
@@ -287,7 +343,10 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
                     return (
                       <li key={x.key}>
                         <button type="button" onClick={() => go(id)} aria-current={on ? "location" : undefined}
-                          className={`-ml-[2px] block w-full border-l-2 py-1.5 pl-3 pr-2 text-left text-[13px] leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{x.label}</button>
+                          className={`relative -ml-[2px] block w-full border-l-2 py-1.5 pl-3 pr-2 text-left text-[13px] leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+                          {on && <motion.span layoutId="lesson-outline-pill" aria-hidden className="absolute inset-0 rounded-r-lg" style={{ background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }} transition={{ type: "spring", stiffness: 480, damping: 38 }} />}
+                          <span className="relative">{x.label}</span>
+                        </button>
                       </li>
                     );
                   })}
@@ -297,8 +356,16 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
           })}
         </ol>
       </nav>
-      <div ref={bind} className="custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
+      <div className={splitHref ? "grid min-h-0 min-w-0 gap-0" : "contents"} style={splitHref ? { gridTemplateColumns: `minmax(0,${splitW}fr) 14px minmax(0,${100 - splitW}fr)`, gridTemplateRows: "minmax(0,1fr)" } : undefined}>
+      <div ref={bind} className="@container custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
         {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
+      </div>
+      {splitHref && <>
+        <div role="separator" aria-orientation="vertical" aria-label="Drag to resize the two chapters" tabIndex={0} onPointerDown={dragSplit}
+          onKeyDown={(e) => { if (e.key === "ArrowLeft") setSplitW((w) => Math.max(30, w - 4)); if (e.key === "ArrowRight") setSplitW((w) => Math.min(72, w + 4)); }}
+          className="group flex cursor-col-resize items-center justify-center"><span className="h-16 w-1.5 rounded-full bg-[var(--border)] transition-colors group-hover:bg-[var(--st-accent)] group-focus-visible:bg-[var(--st-accent)]" /></div>
+        <SplitPane href={splitHref} onClose={() => setSplit(null)} />
+      </>}
       </div>
       <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} noteCount={count} noteItems={items} />
       {toolbar}
