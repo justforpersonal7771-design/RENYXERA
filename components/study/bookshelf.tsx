@@ -88,26 +88,48 @@ function Slab({ b, i, dim, onOpen }: { b: ShelfBook; i: number; dim: boolean; on
   );
 }
 
-function Contents({ b }: { b: ShelfBook }) {
+/** Words that tie a chapter to the bank's topic names ("Synchronisation" ~ "Synchronization"). */
+const stems = (t: string) => t.toLowerCase().replace(/is(e|ing|ation)/g, "iz$1").split(/[^a-z]+/).filter((w) => w.length > 3 && !["and", "with", "from"].includes(w)).map((w) => w.slice(0, 6));
+type Weight = { share: number; qs: number; inTarget: boolean; tier: "high" | "mid" | "low" | "none" };
+
+/** Chapters in syllabus (teaching) order, each marked by how much GATE weight it carries; hover for the numbers. */
+function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
+  const topics = focus?.topicsOf(b) ?? [];
+  const weights: Weight[] = b.chapters.map((c) => {
+    const st = stems(c.title);
+    const hit = topics.filter((t) => { const ts = stems(t.topic); return st.some((w) => ts.includes(w)); });
+    return { share: hit.reduce((x, t) => x + t.marksShare, 0), qs: hit.reduce((x, t) => x + t.questionCount, 0), inTarget: !focus?.active || hit.some((t) => focus.topicIn(t)), tier: "none" };
+  });
+  const sorted = weights.map((w) => w.share).filter((x) => x > 0).sort((x, y) => y - x);
+  const hiCut = sorted[Math.max(0, Math.ceil(sorted.length / 3) - 1)] ?? Infinity, midCut = sorted[Math.max(0, Math.ceil((sorted.length * 2) / 3) - 1)] ?? Infinity;
+  weights.forEach((w) => { w.tier = w.share <= 0 ? "none" : w.share >= hiCut ? "high" : w.share >= midCut ? "mid" : "low"; });
+  const ink = `var(--tint-${b.tint ?? "peri"}-ink)`;
   return (
     <ol className="space-y-1">
-      {b.chapters.map((c, i) => (
-        <li key={c.id}>
-          {c.href ? (
-            <Link href={c.href} className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-black/5 dark:hover:bg-white/5">
-              <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
-              <span className="min-w-0 flex-1 font-bold text-[var(--text-primary)]">{c.title}</span>
-              <span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span>
-            </Link>
-          ) : (
-            <div className="flex items-center gap-3 px-3 py-2.5">
-              <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
-              <span className="min-w-0 flex-1 text-[var(--text-secondary)]">{c.title}</span>
-              <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]"><Feather className="h-3 w-3" aria-hidden /> Being written</span>
-            </div>
-          )}
-        </li>
-      ))}
+      {b.chapters.map((c, i) => {
+        const w = weights[i];
+        const tip = w.qs ? `${w.share.toFixed(1)}% of all marks · ${w.qs} past questions${focus?.active ? (w.inTarget ? " · inside your focus target" : " · outside your focus target") : ""}` : "Not yet tagged in the question bank";
+        const mark = w.tier === "high" ? <span className="rounded-full px-2 py-0.5 text-[11px] font-extrabold text-white" style={{ background: ink }}>High weight</span>
+          : w.tier === "mid" ? <span className="rounded-full border px-2 py-0.5 text-[11px] font-bold" style={{ borderColor: ink, color: ink }}>Medium</span> : null;
+        const row = (
+          <>
+            <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
+            <span className={`min-w-0 flex-1 ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
+            {mark}
+            {c.href ? <span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span>
+              : <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]"><Feather className="h-3 w-3" aria-hidden /> Being written</span>}
+            <span role="tooltip" className="pointer-events-none absolute bottom-full left-10 z-10 mb-1 hidden whitespace-nowrap rounded-lg bg-[var(--ink)] px-2.5 py-1 text-xs font-semibold text-[var(--background)] shadow-lg group-hover:block group-focus-visible:block">{tip}</span>
+          </>
+        );
+        const cls = `group relative flex items-center gap-3 rounded-xl px-3 py-2.5 ${w.tier === "high" ? "border-l-4" : "border-l-4 border-transparent"} ${focus?.active && !w.inTarget ? "opacity-45" : ""}`;
+        const style = w.tier === "high" ? { borderLeftColor: ink } : undefined;
+        return (
+          <li key={c.id} title={tip}>
+            {c.href ? <Link href={c.href} className={`${cls} hover:bg-black/5 dark:hover:bg-white/5`} style={style}>{row}</Link>
+              : <div tabIndex={0} className={cls} style={style}>{row}</div>}
+          </li>
+        );
+      })}
     </ol>
   );
 }
@@ -137,42 +159,6 @@ function useLibraryFocus() {
 }
 type Focus = ReturnType<typeof useLibraryFocus>;
 
-/** The subject's topics ranked by marks share; filter to the Focus Target or show all. */
-function ImportantTopics({ b, focus }: { b: ShelfBook; focus: Focus }) {
-  const [only, setOnly] = useState(focus.active);
-  const [all, setAll] = useState(false);
-  const list = focus.topicsOf(b).filter((t) => !only || focus.topicIn(t));
-  if (!focus.topicsOf(b).length) return null;
-  const shown = all ? list : list.slice(0, 6);
-  return (
-    <div className="mb-5">
-      <div className="flex flex-wrap items-center gap-2">
-        <p className="text-sm font-bold text-[var(--text-secondary)]">Most important topics</p>
-        <span className="flex-1" />
-        {focus.active && <>
-          <button type="button" aria-pressed={only} onClick={() => setOnly(true)} className={`rounded-full px-2.5 py-1 text-xs font-bold ${only ? "bg-[var(--ink)] text-[var(--background)]" : "text-[var(--text-secondary)]"}`}>In my target</button>
-          <button type="button" aria-pressed={!only} onClick={() => setOnly(false)} className={`rounded-full px-2.5 py-1 text-xs font-bold ${!only ? "bg-[var(--ink)] text-[var(--background)]" : "text-[var(--text-secondary)]"}`}>All</button>
-        </>}
-      </div>
-      {list.length === 0 ? <p className="mt-2 text-sm text-[var(--text-secondary)]">None of this subject&apos;s topics are inside your focus target.</p> : (
-        <ol className="mt-2 space-y-1.5">
-          {shown.map((t, i) => (
-            <li key={t.topic} className="flex items-center gap-3 rounded-xl bg-[var(--surface)] px-3 py-2">
-              <span className="w-5 text-center font-num text-xs font-bold text-[var(--text-secondary)]">{i + 1}</span>
-              <span className="min-w-0 flex-1 truncate text-sm font-semibold text-[var(--text-primary)]">{t.topic}</span>
-              <span className="text-xs text-[var(--text-secondary)]">{t.questionCount} Qs</span>
-              <span className="h-1.5 w-16 overflow-hidden rounded-full bg-black/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, t.marksShare * 25)}%`, background: `var(--tint-${b.tint ?? "peri"}-ink)` }} /></span>
-              <span className="w-12 text-right font-num text-xs font-bold text-[var(--text-primary)]">{t.marksShare.toFixed(1)}%</span>
-            </li>
-          ))}
-        </ol>
-      )}
-      {list.length > 6 && <button type="button" onClick={() => setAll((x) => !x)} className="mt-2 text-sm font-bold underline underline-offset-4">{all ? "Show fewer" : `Show all ${list.length}`}</button>}
-      <p className="mt-1 text-xs text-[var(--text-secondary)]">Share of all marks in the official GATE CS papers in our bank.</p>
-    </div>
-  );
-}
-
 function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => void; focus: Focus }) {
   const reduce = useReducedMotion();
   useEffect(() => {
@@ -194,15 +180,14 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
               <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
               <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series</p>
               <p className="mt-4 text-[15px] leading-relaxed">{b.chapters.length} chapters in teaching order, {ready(b) ? `${ready(b)} ready to read now` : "all being written"}. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
-              {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="mt-5 inline-flex rounded-full px-5 py-2.5 text-sm font-bold text-white shadow-[0_3px_0_rgba(0,0,0,.25)] transition-transform hover:-translate-y-0.5" style={{ background: `var(--tint-${b.tint ?? "peri"}-ink)` }}>Read: {b.chapters.find((c) => c.href)!.title}</Link>}
+              {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="pill-ink mt-5 inline-flex" style={{ ["--btn" as string]: `var(--tint-${b.tint ?? "peri"}-ink)` }}>Read: {b.chapters.find((c) => c.href)!.title}</Link>}
               <MarksPeek key={b.id} b={b} />
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/10 md:hidden"><X className="h-5 w-5" /></button>
             </div>
             <div className="no-scrollbar relative overflow-y-auto p-5 sm:p-7" style={{ background: `color-mix(in srgb, var(--tint-${b.tint ?? "peri"}) 35%, var(--surface))` }}>
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full border border-[var(--border)] md:grid"><X className="h-5 w-5" /></button>
-              <ImportantTopics key={b.id} b={b} focus={focus} />
               <p className="mb-2 text-sm font-bold text-[var(--text-secondary)]">Contents</p>
-              <Contents b={b} />
+              <Contents b={b} focus={focus} />
             </div>
           </motion.div>
         </motion.div>
@@ -301,7 +286,7 @@ export function Bookshelf() {
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden lg:hidden">
                     <div className="mt-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
                       <div className="flex items-start justify-between gap-2"><p className="font-display text-lg font-extrabold text-[var(--text-primary)]">{open1.title}</p><button type="button" onClick={() => setDrawer(null)} aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full border border-[var(--border)]"><X className="h-4 w-4" /></button></div>
-                      <Contents b={open1} />
+                      <Contents b={open1} focus={focus} />
                     </div>
                   </motion.div>
                 )}

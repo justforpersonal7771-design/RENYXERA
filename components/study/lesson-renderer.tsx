@@ -187,6 +187,13 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
   const href = usePathname() ?? "/study";
   const tab = useMemo(() => ({ href, title: chapter.title, subject: chapter.subject, tint: CS_SHELF.find((b) => b.chapters.some((c) => c.href === href))?.tint }), [href, chapter.title, chapter.subject]);
+  // the page's main panel takes the book's own colour (owner, 18 Nov); restored when leaving the lesson
+  useEffect(() => {
+    const shell = pane.current?.closest<HTMLElement>(".page-shell"); if (!shell || !tab.tint) return;
+    const was = shell.getAttribute("data-section");
+    shell.setAttribute("data-section", tab.tint);
+    return () => { if (was === null) shell.removeAttribute("data-section"); else shell.setAttribute("data-section", was); };
+  }, [tab.tint]);
   // each tab returns to where you were reading
   useEffect(() => {
     const el = pane.current; if (!el) return;
@@ -221,10 +228,10 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
 
   return (
     <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-4" style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
-      <div className="flex min-w-0 items-end gap-3 lg:col-span-2"><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div><Link href={backHref} className="mb-1 inline-flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--border)] px-3 py-1.5 text-sm font-semibold text-[var(--text-secondary)] hover:text-[var(--text-primary)] inline-flex"><ArrowLeft className="h-4 w-4" aria-hidden /> All books</Link></div>
+      <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex shrink-0 items-center gap-1.5" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /> Books</Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
       <nav aria-label="Chapter outline" className="relative flex min-h-0 flex-col">
         <div className="shrink-0 pb-3">
-        <p className="text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
+        <p className="text-[11px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
         </div>
         <ol ref={railRef} className="no-scrollbar min-h-0 space-y-2 lg:flex-1 lg:overflow-y-auto lg:pr-2">
