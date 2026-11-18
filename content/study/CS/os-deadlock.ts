@@ -1,8 +1,9 @@
 import type { Chapter } from "@/lib/study/schema";
+import { DEADLOCK_TOPICS_2_6 } from "./os-deadlock-more";
 
 /**
  * Reference chapter: Operating System → Deadlock (docs/study-materials/BLUEPRINT-FINAL.md).
- * Written by Claude in our own words and numbers. Topic 1 is complete; topics 2–6 follow the same blueprint.
+ * Written by Claude in our own words and numbers. All six topics are written; topics 2 to 6 live in os-deadlock-more.ts.
  */
 export const OS_DEADLOCK: Chapter = {
   id: "cs.os.deadlock",
@@ -14,11 +15,11 @@ export const OS_DEADLOCK: Chapter = {
     kind: "strip",
     items: [
       { label: "1. The four conditions", sub: "and the resource graph", state: "now" },
-      { label: "2. Prevention", sub: "break one condition", state: "todo" },
-      { label: "3. Avoidance", sub: "safe states, Banker's", state: "todo" },
-      { label: "4. Detection", sub: "and recovery", state: "todo" },
-      { label: "5. How many resources?", sub: "the n(k-1)+1 problems", state: "todo" },
-      { label: "6. Deadlock vs starvation", sub: "and livelock", state: "todo" },
+      { label: "2. Prevention", sub: "break one condition", state: "done" },
+      { label: "3. Avoidance", sub: "safe states, Banker's", state: "done" },
+      { label: "4. Detection", sub: "and recovery", state: "done" },
+      { label: "5. How many resources?", sub: "the n(k-1)+1 problems", state: "done" },
+      { label: "6. Deadlock vs starvation", sub: "and livelock", state: "done" },
     ],
   },
   topics: [
@@ -194,5 +195,6 @@ export const OS_DEADLOCK: Chapter = {
         { type: "links", prereq: ["Process states and the ready/waiting queues", "Locks and semaphores (Synchronisation)"], usedIn: ["Deadlock prevention: breaking one condition", "Banker's algorithm (avoidance)", "Detection with a wait-for graph"], cross: ["Algorithms: cycle detection in a directed graph (DFS)", "Databases: wait-for graphs between transactions holding locks"] },
       ],
     },
+    ...DEADLOCK_TOPICS_2_6,
   ],
 };

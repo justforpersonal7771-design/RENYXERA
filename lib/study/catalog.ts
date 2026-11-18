@@ -8,7 +8,7 @@ export type ShelfBook = { id: string; title: string; short: string; cloth: strin
 
 export const CS_SHELF: ShelfBook[] = [
   { id: "os", title: "Operating Systems", short: "OS", tint: "rose", cloth: "#E8C5B8", ink: "#1B1917", paper: "#7B1E22", dark: "#7B1E22", band: "core", chapters: [
-    { id: "deadlock", title: "Deadlock", href: "/study/deadlock", ready: "Topic 1 of 6 ready, free" },
+    { id: "deadlock", title: "Deadlock", href: "/study/deadlock", ready: "6 topics ready, free" },
     { id: "process", title: "Processes and threads" }, { id: "sched", title: "CPU scheduling" }, { id: "sync", title: "Synchronisation" },
     { id: "memory", title: "Memory management" }, { id: "vm", title: "Virtual memory" }, { id: "fs", title: "File systems and disk" },
   ] },
