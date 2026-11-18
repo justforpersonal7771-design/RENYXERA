@@ -2,6 +2,7 @@
 import { validateTopic } from "../lib/study/schema";
 import { OS_DEADLOCK } from "../content/study/CS/os-deadlock";
 import { OS_PROCESSES } from "../content/study/CS/os-processes";
+import { OS_SCHEDULING } from "../content/study/CS/os-scheduling";
 let bad = 0;
-for (const t of [...OS_DEADLOCK.topics, ...OS_PROCESSES.topics]) { const p = validateTopic(t); bad += p.length; console.log(p.length ? p.join("\n") : `ok  ${t.id}`); }
+for (const t of [...OS_DEADLOCK.topics, ...OS_PROCESSES.topics, ...OS_SCHEDULING.topics]) { const p = validateTopic(t); bad += p.length; console.log(p.length ? p.join("\n") : `ok  ${t.id}`); }
 process.exit(bad ? 1 : 0);
