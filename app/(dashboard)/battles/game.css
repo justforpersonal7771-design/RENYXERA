@@ -353,4 +353,16 @@
 .g-gate-mark span { display: grid; justify-items: center; gap: 2px; }
 .g-gate-mark span b { font-family: var(--font-game), var(--font-brand); font-weight: 400; font-size: clamp(1.6rem, 4.6vw, 2.8rem); letter-spacing: .06em; }
 .g-gate-mark span small { font-family: var(--font-brand), var(--font-sans); font-size: clamp(.7rem, 1.4vw, .9rem); letter-spacing: .3em; color: #d9b382; }
+
+/* Citadel scene life (GAME-DESIGN-MERGED.md): ripples, lamp glow, lit windows, fireflies. Paused in battery saver / reduced motion. */
+.cz-scene { --cz-label: #3d2c1c; --cz-label-halo: rgba(243,233,216,.85); }
+.cz-scene[data-phase="dusk"], .cz-scene[data-phase="night"] { --cz-label: #f2e7d5; --cz-label-halo: rgba(29,22,19,.85); }
+.cz-ripples ellipse { transform-box: fill-box; transform-origin: center; animation: cz-ripple 4.4s ease-out infinite; }
+@keyframes cz-ripple { 0% { transform: scale(.4); opacity: .8; } 100% { transform: scale(1.6); opacity: 0; } }
+.cz-glow { animation: cz-flicker 2.6s ease-in-out infinite; }
+@keyframes cz-flicker { 0%, 100% { opacity: .22; } 50% { opacity: .38; } }
+.cz-flies circle { animation: cz-fly 6s ease-in-out infinite alternate; }
+@keyframes cz-fly { 0% { transform: translate(0, 0); opacity: .2; } 50% { opacity: 1; } 100% { transform: translate(18px, -14px); opacity: .3; } }
+.cz-scene.is-still .cz-ripples ellipse, .cz-scene.is-still .cz-glow, .cz-scene.is-still .cz-flies circle { animation: none; }
+@media (prefers-reduced-motion: reduce) { .cz-ripples ellipse, .cz-glow, .cz-flies circle { animation: none; } }
 } /* end @layer components */

@@ -109,9 +109,11 @@ function Citadel() {
 
   return (
     <>
-      <section aria-label="Your citadel" className="relative -mx-3 sm:-mx-6 lg:-mx-10">
-        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className={`no-scrollbar h-[calc(100dvh-25rem)] min-h-[280px] overflow-x-auto overscroll-x-contain transition-opacity duration-300 lg:h-[calc(100dvh-19rem)] lg:overflow-visible ${perfReady ? "" : "opacity-60"}`}><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => { sfx("focus"); buzz(10); setPickId(id); }} /></div>
-        <div className="absolute inset-x-3 top-1 flex flex-wrap items-start gap-2 sm:inset-x-6 lg:inset-x-10">
+      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-5">
+      <div className="min-w-0">
+      <section aria-label="Your citadel" className="relative -mx-3 overflow-hidden sm:-mx-6 lg:mx-0 lg:rounded-[28px] lg:shadow-[0_20px_50px_-24px_rgba(0,0,0,.7)]">
+        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className={`no-scrollbar h-[calc(100dvh-25rem)] min-h-[280px] overflow-x-auto overscroll-x-contain transition-opacity duration-300 lg:h-[calc(100dvh-12.5rem)] lg:overflow-hidden ${perfReady ? "" : "opacity-60"}`}><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => { sfx("focus"); buzz(10); setPickId(id); }} /></div>
+        <div className="absolute inset-x-3 top-2 flex flex-wrap items-start gap-2 sm:inset-x-6 lg:inset-x-4">
           <span className="g-hud !pl-3">Town Hall <b className="text-[var(--g-brass-hi)]">{hall}</b></span>
           {league && <span className="g-hud hidden !pl-3 sm:inline-flex">{league.name} league</span>}
           {!perfReady && <span className="g-hud !pl-3" role="status">Counting your practice…</span>}
@@ -125,7 +127,7 @@ function Citadel() {
         </div>
       </section>
 
-      <div className="mx-auto mt-2 max-w-5xl">
+      <div className="mx-auto mt-2 max-w-5xl lg:hidden">
         <div className="rounded-2xl bg-[linear-gradient(180deg,var(--g-wood),var(--g-wood-dark))] p-4 shadow-[inset_0_1px_0_rgba(255,220,170,0.3)]">
           <p className="g-title text-lg">{toNextHall === 0 ? `Town Hall ${hall + 1} is ready` : `Town Hall ${hall + 1}: raise your buildings ${toNextHall} more level${toNextHall === 1 ? "" : "s"} in total`}</p>
           <p className="mt-1 text-sm g-text-2">Tap a building to train it or raid a friend&apos;s. Levels come only from questions you solve.</p>
@@ -133,6 +135,33 @@ function Citadel() {
             <Swords className="h-5 w-5" aria-hidden /> Quick train: {weakest.name}
           </button>}
         </div>
+      </div>
+      </div>
+      {/* Commander's Ledger (desktop): what to do next, from real data */}
+      <aside aria-label="Commander's ledger" className="hidden min-h-0 flex-col gap-3 lg:flex">
+        <div className="rounded-[22px] bg-[linear-gradient(180deg,var(--g-wood),var(--g-wood-dark))] p-4 shadow-[inset_0_1px_0_rgba(255,220,170,0.3)]">
+          <p className="g-title text-lg">Town Hall {hall}</p>
+          <p className="mt-1 text-sm g-text-2">{toNextHall === 0 ? `Town Hall ${hall + 1} is ready.` : `${toNextHall} more building level${toNextHall === 1 ? "" : "s"} to reach Town Hall ${hall + 1}.`}</p>
+          <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-[var(--g-felt-deep)]"><div className="h-full rounded-full bg-[var(--g-brass)]" style={{ width: `${Math.round(((levelSum % states.length) / states.length) * 100)}%` }} /></div>
+        </div>
+        <div className="rounded-[22px] bg-[var(--g-surface)] p-4">
+          <p className="text-sm font-extrabold text-[var(--g-brass-hi)]">Train next</p>
+          <ul className="mt-2 space-y-2">
+            {(perfReady ? [...states].sort((a, b) => a.level - b.level || a.attempted - b.attempted).slice(0, 3) : []).map((b) => (
+              <li key={b.id} className="flex items-center gap-2 rounded-xl bg-[var(--g-felt-deep)] px-3 py-2">
+                <span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-[var(--g-text)]">{b.name}</span><span className="block text-xs text-[var(--g-muted)]">Level {b.level} · {b.attempted} solved</span></span>
+                <button type="button" onClick={() => { sfx("tap"); setRound({ kind: "rush", title: `${b.name} rush`, subjects: b.subjects }); }} className="g-play !min-h-[36px] !px-3 !text-sm">Rush</button>
+              </li>
+            ))}
+            {!perfReady && <li className="text-sm g-text-2">Counting your practice…</li>}
+          </ul>
+          <p className="mt-2 text-xs text-[var(--g-muted)]">Weakest first: lowest level, then fewest questions solved.</p>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <button type="button" onClick={() => { sfx("tap"); setSheet("challenges"); }} className="rounded-[22px] bg-[var(--g-surface)] p-4 text-left"><Inbox className="h-5 w-5 text-[var(--g-brass-hi)]" aria-hidden /><p className="mt-2 text-2xl font-black text-[var(--g-text)]">{count}</p><p className="text-xs text-[var(--g-muted)]">challenges waiting</p></button>
+          <button type="button" onClick={() => { sfx("tap"); setSheet("daily"); }} className="rounded-[22px] bg-[var(--g-surface)] p-4 text-left"><Gift className="h-5 w-5 text-[var(--g-brass-hi)]" aria-hidden /><p className="mt-2 text-sm font-black text-[var(--g-text)]">{daily ? "Ready to claim" : daily === false ? "Claimed today" : "…"}</p><p className="text-xs text-[var(--g-muted)]">daily reward</p></button>
+        </div>
+      </aside>
       </div>
 
       <AnimatePresence>
