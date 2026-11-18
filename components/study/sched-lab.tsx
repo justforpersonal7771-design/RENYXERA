@@ -10,6 +10,7 @@ import { Minus, Plus, RotateCcw } from "lucide-react";
 import { schedule, type Algo, type Job } from "@/lib/study/scheduling";
 
 const START: Job[] = [{ id: "P1", arrival: 0, burst: 5, priority: 3 }, { id: "P2", arrival: 1, burst: 3, priority: 1 }, { id: "P3", arrival: 2, burst: 1, priority: 4 }, { id: "P4", arrival: 4, burst: 2, priority: 2 }];
+const FULL = { FCFS: "First come, first served", SJF: "Shortest job first", SRTF: "Shortest remaining time first", HRRN: "Highest response ratio next", LJF: "Longest job first", LRTF: "Longest remaining time first", SSTF: "Shortest seek time first", SCAN: "Elevator: sweep to the disk end and back", CSCAN: "Circular SCAN", LOOK: "SCAN that turns at the last request", CLOOK: "Circular LOOK", FIFO: "First in, first out", LRU: "Least recently used" } as Record<string, string>;
 const ALGOS: { k: Algo; label: string }[] = [{ k: "FCFS", label: "FCFS" }, { k: "SJF", label: "SJF" }, { k: "SRTF", label: "SRTF" }, { k: "RR", label: "Round robin" }, { k: "PRIO", label: "Priority" }, { k: "HRRN", label: "HRRN" }, { k: "LJF", label: "LJF" }, { k: "LRTF", label: "LRTF" }];
 const COLORS = ["var(--tint-rose-ink)", "var(--tint-sky-ink)", "var(--tint-mint-ink)", "var(--tint-butter-ink)", "var(--tint-lilac-ink)"];
 
@@ -35,7 +36,7 @@ export function SchedLab({ initial = "FCFS" as Algo }: { initial?: Algo }) {
     <section className="card-pastel p-5 sm:p-6" data-tint="sky" aria-label="Scheduling lab">
       <div className="flex flex-wrap items-baseline gap-2"><p className="font-display text-xl font-extrabold text-[var(--text-primary)]">Scheduling lab</p><span className="text-sm text-[var(--text-secondary)]">Change the processes or the algorithm; the Gantt chart and the averages update.</span></div>
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        {ALGOS.map((a) => <button key={a.k} type="button" aria-pressed={algo === a.k} onClick={() => setAlgo(a.k)} className={algo === a.k ? "pill-ink" : "pill-soft"}>{a.label}</button>)}
+        {ALGOS.map((a) => <button key={a.k} type="button" title={FULL[a.k]} aria-pressed={algo === a.k} onClick={() => setAlgo(a.k)} className={algo === a.k ? "pill-ink" : "pill-soft"}>{a.label}</button>)}
         {algo === "RR" && <span className="inline-flex items-center gap-2 rounded-xl bg-[var(--surface)] px-3 py-1 text-sm"><b>Quantum</b><Step v={q} set={setQ} min={1} max={6} label="quantum" /></span>}
         <button type="button" onClick={() => { setJobs(START); setQ(2); }} className="pill-soft"><RotateCcw className="h-4 w-4" aria-hidden /> Reset</button>
       </div>

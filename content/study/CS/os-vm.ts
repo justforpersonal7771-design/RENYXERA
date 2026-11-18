@@ -45,7 +45,7 @@ const demand: Topic = {
       ],
       answer: "12 ms on average.",
       check: "Preferring clean victims (as enhanced clock does) lowers this cost." },
-    { type: "lab", lab: "replace" },
+    { type: "lab", lab: "pagefault" },
     { type: "faded", title: "Your turn", given: "Memory 200 ns, page-fault service 10 ms, fault rate 1 in 10,000.",
       steps: [
         { say: "EAT?", blank: true, answer: "0.9999 × 200 + 0.0001 × 10,000,000 = 199.98 + 1000 ≈ 1200 ns." },
@@ -176,7 +176,7 @@ const thrashing: Topic = {
       ],
       answer: "About 4 frames for A and 57 for B (plus one spare to place).",
       check: "Equal allocation would give 31 each, wasting frames on the small process." },
-    { type: "lab", lab: "replace" },
+    { type: "lab", lab: "workingset" },
     { type: "faded", title: "Your turn", given: "References 5 6 5 7 5 8 8 7, window Δ = 4.",
       steps: [
         { say: "Working set after the 8th reference?", blank: true, answer: "Last four: 5, 8, 8, 7: {5, 7, 8}, size 3." },

@@ -112,6 +112,7 @@ export function StudyTabs({ current }: { current: StudyTab }) {
                             <span className="max-w-[150px]">{label(byHref(pair[1]), on)}</span>
                           </Link>
                           <button type="button" onClick={(e) => showMenu(t.href, e.currentTarget)} aria-label="Split view options" className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-black/5"><MoreHorizontal className="h-3.5 w-3.5" /></button>
+                          <button type="button" onClick={() => { const viewing = pair.includes(current.href); close(pair[1]); const next = close(pair[0]); if (viewing) router.push(next ?? "/study"); }} aria-label={`Close split view: ${byHref(pair[0]).title} and ${byHref(pair[1]).title}`} className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-black/5"><X className="h-3.5 w-3.5" /></button>
                         </div>
                       ) : (
                         <div role="presentation" className={`${tabBox(on)} max-w-[260px]`} onDoubleClick={() => pin(t.href)} onContextMenu={(e) => { e.preventDefault(); showMenu(t.href, e.currentTarget); }}>

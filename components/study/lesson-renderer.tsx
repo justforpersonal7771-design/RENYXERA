@@ -11,6 +11,27 @@
  */
 import dynamic from "next/dynamic";
 /* Labs load on demand (bundle budget, 18 Nov): each lab module is its own chunk. */
+const RrLab = dynamic(() => import("@/components/study/os-more-labs").then((m) => m.RrLab), { ssr: false });
+const PageFaultLab = dynamic(() => import("@/components/study/os-more-labs").then((m) => m.PageFaultLab), { ssr: false });
+const WorkingSetLab = dynamic(() => import("@/components/study/os-more-labs").then((m) => m.WorkingSetLab), { ssr: false });
+
+const DmTruthLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.TruthLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmEquivLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.EquivLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmQuantLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.QuantLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmFolLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.FolLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmRelationLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.RelationLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmFuncLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.FuncLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmHasseLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.HasseLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmLatticeLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.LatticeLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmAlgebraLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.AlgebraLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmCyclicLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.CyclicLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmGraphLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.GraphLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmColourLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.ColourLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmCountLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.CountLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmDerangeLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.DerangeLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmRecurLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.RecurLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+const DmGenFunLab = dynamic(() => import("@/components/study/dm-labs").then((m) => m.GenFunLab), { ssr: false, loading: () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden /> });
+
 const labLoading = () => <div className="card-pastel h-48 animate-pulse" data-tint="plain" aria-hidden />;
 const MlfqLab = dynamic(() => import("@/components/study/os-extra-labs").then((m) => m.MlfqLab), { ssr: false, loading: labLoading });
 const PipeLab = dynamic(() => import("@/components/study/os-extra-labs").then((m) => m.PipeLab), { ssr: false, loading: labLoading });
@@ -55,7 +76,7 @@ import { StudyTabs } from "@/components/study/study-tabs";
 import { rememberScroll, recallScroll, useStudyTabs } from "@/lib/study/tabs";
 import { CHAPTERS } from "@/lib/study/chapters";
 import { CS_SHELF } from "@/lib/study/catalog";
-import { ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { LessonTools } from "@/components/study/lesson-tools";
@@ -193,7 +214,33 @@ const secId = (t: Topic, key: string) => `${t.id}--${key}`;
 const Sect = ({ t, k, children, className = "" }: { t: Topic; k: string; children: ReactNode; className?: string }) => <section id={secId(t, k)} data-sec="" className={`scroll-mt-24 lg:scroll-mt-4 ${className}`}>{children}</section>;
 
 /* ------------------------------------------------------------------ topic layout in rows */
-function TopicView({ t, index }: { t: Topic; index: number }) {
+/** Previous / next topic and a list of every topic with its sections (owner, 19 Nov). Topics share one scroll, so this scrolls. */
+function goTo(id: string) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
+function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index: number; menuOnly?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const prev = topics[index - 1], next = topics[index + 1];
+  const btn = "grid h-9 w-9 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] disabled:opacity-35 hover:enabled:bg-[var(--surface-secondary)]";
+  return (
+    <div className="relative flex shrink-0 items-center gap-1.5">
+      {!menuOnly && <button type="button" className={btn} disabled={!prev} onClick={() => prev && goTo(prev.id)} aria-label={prev ? `Previous topic: ${prev.title}` : "No previous topic"}><ChevronLeft className="h-4 w-4" /></button>}
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="inline-flex h-9 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-bold hover:bg-[var(--surface-secondary)]"><ListTree className="h-4 w-4" aria-hidden /> {menuOnly ? "Contents" : <>Topics <span className="font-num text-[var(--text-secondary)]">{index + 1}/{topics.length}</span></>}</button>
+      {!menuOnly && <button type="button" className={btn} disabled={!next} onClick={() => next && goTo(next.id)} aria-label={next ? `Next topic: ${next.title}` : "No next topic"}><ChevronRight className="h-4 w-4" /></button>}
+      {open && <>
+        <button type="button" aria-label="Close topics" className="fixed inset-0 z-[70] cursor-default" onClick={() => setOpen(false)} />
+        <div role="menu" className="custom-scrollbar absolute right-0 top-11 z-[80] max-h-[60vh] w-[min(22rem,80vw)] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-[0_20px_40px_-20px_rgba(0,0,0,.5)]">
+          {topics.map((x, i) => (
+            <div key={x.id} className={`rounded-xl p-2 ${i === index ? "bg-[color-mix(in_srgb,var(--st-accent)_10%,transparent)]" : ""}`}>
+              <button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(x.id); }} className="flex w-full items-start gap-2 text-left text-sm font-bold"><span className="font-num text-[var(--st-accent)]">{i + 1}</span><span className="min-w-0">{x.title}</span></button>
+              <ul className="mt-1 space-y-0.5 pl-5">{sectionsOf(x).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(x, sec.key)); }} className="w-full rounded-lg px-2 py-0.5 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]">{sec.label}</button></li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </>}
+    </div>
+  );
+}
+
+function TopicView({ t, index, topics }: { t: Topic; index: number; topics: Topic[] }) {
   const one = <T extends Block["type"]>(k: T) => t.blocks.find((b) => b.type === k) as B<T> | undefined;
   const all = <T extends Block["type"]>(k: T) => t.blocks.filter((b) => b.type === k) as B<T>[];
   const figs = all("figure"), loose = figs.filter((f) => !f.for);
@@ -201,9 +248,10 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
   const qs = all("check").flatMap((c) => c.questions);
   return (
     <article id={t.id} className="scroll-mt-24 space-y-5 lg:scroll-mt-4">
-      <header className="lesson-topic-head">
-        <p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
-        <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2>
+      <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
+        <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
+        <TopicNav topics={topics} index={index} />
       </header>
       {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
       {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 @3xl:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
@@ -214,12 +262,16 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
         const own = figs.filter((f) => f.for === ex.id);
         return <Sect key={ex.id} t={t} k={`ex${i}`} className={`grid gap-5 ${own.length ? "@3xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</Sect>;
       })}
-      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : lab.lab === "threads" ? <ThreadLab /> : lab.lab === "syscall" ? <SyscallLab /> : lab.lab === "sched" ? <SchedLab /> : lab.lab === "sched-prio" ? <SchedLab initial="PRIO" /> : lab.lab === "race" ? <RaceLab /> : lab.lab === "semaphore" ? <SemaphoreLab /> : lab.lab === "buffer" ? <BufferLab /> : lab.lab === "fit" ? <FitLab /> : lab.lab === "paging" ? <PagingLab /> : lab.lab === "tlb" ? <TlbLab /> : lab.lab === "replace" ? <ReplaceLab /> : lab.lab === "disk" ? <DiskLab /> : lab.lab === "alloc" ? <AllocLab /> : lab.lab === "sched-hrrn" ? <SchedLab initial="HRRN" /> : lab.lab === "mlfq" ? <MlfqLab /> : lab.lab === "pipe" ? <PipeLab /> : lab.lab === "segment" ? <SegmentLab /> : lab.lab === "encap" ? <EncapLab /> : lab.lab === "delay" ? <DelayLab /> : lab.lab === "crc" ? <CrcLab /> : lab.lab === "window" ? <WindowLab /> : lab.lab === "mac" ? <MacLab /> : lab.lab === "subnet" ? <SubnetLab /> : lab.lab === "frag" ? <FragLab /> : lab.lab === "route" ? <RouteLab /> : lab.lab === "seq" ? <SeqLab /> : lab.lab === "cwnd" ? <CwndLab /> : lab.lab === "http" ? <HttpLab /> : lab.lab === "ports" ? <PortsLab /> : <StarveLab />}</Sect>}
+      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : lab.lab === "threads" ? <ThreadLab /> : lab.lab === "syscall" ? <SyscallLab /> : lab.lab === "sched" ? <SchedLab /> : lab.lab === "sched-prio" ? <SchedLab initial="PRIO" /> : lab.lab === "race" ? <RaceLab /> : lab.lab === "semaphore" ? <SemaphoreLab /> : lab.lab === "buffer" ? <BufferLab /> : lab.lab === "fit" ? <FitLab /> : lab.lab === "paging" ? <PagingLab /> : lab.lab === "tlb" ? <TlbLab /> : lab.lab === "replace" ? <ReplaceLab /> : lab.lab === "disk" ? <DiskLab /> : lab.lab === "alloc" ? <AllocLab /> : lab.lab === "rr" ? <RrLab /> : lab.lab === "pagefault" ? <PageFaultLab /> : lab.lab === "workingset" ? <WorkingSetLab /> : lab.lab === "truth" ? <DmTruthLab /> : lab.lab === "equiv" ? <DmEquivLab /> : lab.lab === "quant" ? <DmQuantLab /> : lab.lab === "fol" ? <DmFolLab /> : lab.lab === "relation" ? <DmRelationLab /> : lab.lab === "funcs" ? <DmFuncLab /> : lab.lab === "hasse" ? <DmHasseLab /> : lab.lab === "lattice" ? <DmLatticeLab /> : lab.lab === "algebra" ? <DmAlgebraLab /> : lab.lab === "cyclic" ? <DmCyclicLab /> : lab.lab === "graph-basic" ? <DmGraphLab /> : lab.lab === "colour" ? <DmColourLab /> : lab.lab === "count-dm" ? <DmCountLab /> : lab.lab === "derange" ? <DmDerangeLab /> : lab.lab === "recur" ? <DmRecurLab /> : lab.lab === "genfun" ? <DmGenFunLab /> : lab.lab === "sched-hrrn" ? <SchedLab initial="HRRN" /> : lab.lab === "mlfq" ? <MlfqLab /> : lab.lab === "pipe" ? <PipeLab /> : lab.lab === "segment" ? <SegmentLab /> : lab.lab === "encap" ? <EncapLab /> : lab.lab === "delay" ? <DelayLab /> : lab.lab === "crc" ? <CrcLab /> : lab.lab === "window" ? <WindowLab /> : lab.lab === "mac" ? <MacLab /> : lab.lab === "subnet" ? <SubnetLab /> : lab.lab === "frag" ? <FragLab /> : lab.lab === "route" ? <RouteLab /> : lab.lab === "seq" ? <SeqLab /> : lab.lab === "cwnd" ? <CwndLab /> : lab.lab === "http" ? <HttpLab /> : lab.lab === "ports" ? <PortsLab /> : <StarveLab />}</Sect>}
       {(faded || shortcut) && <Sect t={t} k="faded" className={`grid gap-5 ${faded && shortcut ? "@3xl:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</Sect>}
       {all("trap").length > 0 && <Sect t={t} k="traps" className="grid gap-5 @xl:grid-cols-2 @5xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</Sect>}
       {(gate || recall) && <Sect t={t} k="gate" className="grid gap-5 @3xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</Sect>}
       {qs.length > 0 && <Sect t={t} k="check"><h3 className="lesson-h flex items-center gap-2"><Check className="h-5 w-5" aria-hidden /> Check yourself</h3><ol className="mt-2 grid gap-4 @5xl:grid-cols-2">{qs.map((q, i) => <CheckQuestion key={q.id} q={q} n={i + 1} />)}</ol></Sect>}
       {(links || practice) && <Sect t={t} k="next" className="space-y-5">{links && <Links b={links} />}{practice && <Practice b={practice} />}</Sect>}
+      <nav aria-label="Topic navigation" className="grid gap-3 sm:grid-cols-2">
+        {topics[index - 1] ? <button type="button" onClick={() => goTo(topics[index - 1].id)} className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-left hover:bg-[var(--surface-secondary)]"><ChevronLeft className="h-5 w-5 shrink-0" aria-hidden /><span className="min-w-0"><span className="block text-xs font-bold text-[var(--text-secondary)]">Previous topic</span><span className="block font-bold">{topics[index - 1].title}</span></span></button> : <span />}
+        {topics[index + 1] && <button type="button" onClick={() => goTo(topics[index + 1].id)} className="flex items-center justify-end gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-right hover:bg-[var(--surface-secondary)]"><span className="min-w-0"><span className="block text-xs font-bold text-[var(--text-secondary)]">Next topic</span><span className="block font-bold">{topics[index + 1].title}</span></span><ChevronRight className="h-5 w-5 shrink-0" aria-hidden /></button>}
+      </nav>
     </article>
   );
 }
@@ -234,11 +286,12 @@ function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
     <section aria-label={`Beside: ${ch.subject}, ${ch.title}`} className="flex min-h-0 min-w-0 flex-col rounded-[22px] border border-[var(--border)] bg-[var(--surface)]/60">
       <header className="flex shrink-0 items-center gap-2 border-b border-[var(--border)] px-4 py-2.5">
         <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--text-secondary)]">{ch.subject}</span><span className="block truncate font-display text-base font-extrabold text-[var(--text-primary)]">{ch.title}</span></span>
+        <TopicNav topics={ch.topics} index={-1} menuOnly />
         <Link href={href} aria-label={`Open ${ch.title} on its own`} className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><ExternalLink className="h-4 w-4" /></Link>
         <button type="button" onClick={onClose} aria-label="Close split view" className="grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><XIcon className="h-4 w-4" /></button>
       </header>
       <div className="@container custom-scrollbar relative min-h-0 flex-1 space-y-12 overflow-y-auto p-4">
-        {ch.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
+        {ch.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} topics={ch.topics} />)}
       </div>
     </section>
   );
@@ -247,7 +300,9 @@ function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
 /* ------------------------------------------------------------------ chapter */
 export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chapter; backHref?: string }) {
   const { attach, toolbar, list, count, items } = useLessonHighlights(chapter.id);
-  const steps = chapter.map.kind === "strip" ? chapter.map.items : [];
+  // the rail lists every written topic (not the chapter's summary map, which can lag behind new topics); map subtitles are kept where they line up
+  const mapItems = chapter.map.kind === "strip" ? chapter.map.items : [];
+  const steps = chapter.topics.map((t, i) => ({ label: `${i + 1}. ${t.title}`, sub: mapItems.length === chapter.topics.length ? mapItems[i]?.sub : undefined, state: "done" as const }));
   const pane = useRef<HTMLDivElement | null>(null);
   const [current, setCurrent] = useState<string>("");
   const [soon, setSoon] = useState<number | null>(null);
@@ -420,7 +475,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
         </>, sheetHost)}
       <div className={splitHref ? "grid min-h-0 min-w-0 gap-0" : "contents"} style={splitHref ? { gridTemplateColumns: `minmax(0,${splitW}fr) 14px minmax(0,${100 - splitW}fr)`, gridTemplateRows: "minmax(0,1fr)" } : undefined}>
       <div ref={bind} className="@container custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
-        {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
+        {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} topics={chapter.topics} />)}
       </div>
       {splitHref && <>
         <div role="separator" aria-orientation="vertical" aria-label="Drag to resize the two chapters" tabIndex={0} onPointerDown={dragSplit}

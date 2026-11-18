@@ -15,4 +15,12 @@ export const CHAPTERS: Record<string, () => Promise<Chapter>> = {
   "/study/ip": () => import("@/content/study/CS/cn-ip").then((x) => x.CN_IP),
   "/study/transport": () => import("@/content/study/CS/cn-tcp").then((x) => x.CN_TCP),
   "/study/application": () => import("@/content/study/CS/cn-app").then((x) => x.CN_APP),
+  "/study/logic": () => import("@/content/study/CS/dm-logic").then((x) => x.DM_LOGIC),
+  "/study/first-order-logic": () => import("@/content/study/CS/dm-logic").then((x) => x.DM_FOL),
+  "/study/sets-relations": () => import("@/content/study/CS/dm-sets").then((x) => x.DM_SETS),
+  "/study/posets": () => import("@/content/study/CS/dm-sets").then((x) => x.DM_POSET),
+  "/study/groups": () => import("@/content/study/CS/dm-sets").then((x) => x.DM_GROUPS),
+  "/study/graph-theory": () => import("@/content/study/CS/dm-graph").then((x) => x.DM_GRAPH),
+  "/study/counting": () => import("@/content/study/CS/dm-count").then((x) => x.DM_COUNT),
+  "/study/recurrences": () => import("@/content/study/CS/dm-count").then((x) => x.DM_RECUR),
 };

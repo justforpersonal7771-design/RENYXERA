@@ -118,7 +118,7 @@ const preemptive: Topic = {
       ],
       answer: "Average waiting time 3, with 2 switches.",
       check: "With quantum 5 it would be FCFS: A 0–5, B 5–8, average waiting 2.5." },
-    { type: "lab", lab: "sched" },
+    { type: "lab", lab: "rr" },
     { type: "faded", title: "Your turn", given: "Round robin, quantum 2: X arrives at 0 needing 3, Y at 0 needing 2.",
       steps: [
         { say: "Schedule?", blank: true, answer: "X 0–2, Y 2–4, X 4–5." },
@@ -220,6 +220,8 @@ export const OS_SCHEDULING: Chapter = {
     { label: "1. Measures, FCFS, SJF", sub: "Gantt charts and the convoy effect", state: "done" },
     { label: "2. SRTF and round robin", sub: "pre-emption and the quantum", state: "done" },
     { label: "3. Priority and MLFQ", sub: "starvation and ageing", state: "done" },
+    { label: "4. HRRN and LJF", sub: "response ratio", state: "done" },
+    { label: "5. Multilevel queues", sub: "feedback queues", state: "done" },
   ] },
   topics: [basics, preemptive, priority, OS_HRRN, OS_MLFQ],
 };

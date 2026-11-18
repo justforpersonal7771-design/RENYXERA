@@ -8,6 +8,7 @@ export type GraphNode = { id: string; label: string; kind: "process" | "resource
 export type GraphEdge = { from: string; to: string; kind: "request" | "assign" | "wait"; hl?: boolean };
 export type Fig =
   | { kind: "graph"; w: number; h: number; nodes: GraphNode[]; edges: GraphEdge[]; note?: string }
+  | { kind: "net"; w: number; h: number; nodes: { id: string; label: string; x: number; y: number; hl?: boolean }[]; edges: { a: string; b: string; label?: string; hl?: boolean; dir?: boolean }[]; note?: string }
   | { kind: "matrix"; title: string; cols: string[]; rows: { label: string; cells: (number | string)[]; hl?: boolean; dim?: boolean }[] }
   | { kind: "steps"; frames: { caption: string; fig: Fig }[] }
   | { kind: "strip"; items: { label: string; sub?: string; state: "done" | "now" | "todo" | "bad" }[] };
@@ -28,7 +29,7 @@ export type Block =
   | { type: "recall"; cards: { q: string; a: string }[] }
   | { type: "check"; questions: CheckQ[] }
   | { type: "links"; prereq?: string[]; usedIn?: string[]; cross?: string[] }
-  | { type: "lab"; lab: "rag" | "prevent" | "banker" | "detect" | "count" | "starve" | "states" | "fork" | "threads" | "syscall" | "sched" | "sched-prio" | "race" | "semaphore" | "buffer" | "fit" | "paging" | "tlb" | "replace" | "disk" | "alloc" | "encap" | "delay" | "crc" | "window" | "mac" | "subnet" | "frag" | "route" | "seq" | "cwnd" | "http" | "ports" | "sched-hrrn" | "mlfq" | "pipe" | "segment" }
+  | { type: "lab"; lab: "rag" | "prevent" | "banker" | "detect" | "count" | "starve" | "states" | "fork" | "threads" | "syscall" | "sched" | "sched-prio" | "race" | "semaphore" | "buffer" | "fit" | "paging" | "tlb" | "replace" | "disk" | "alloc" | "encap" | "delay" | "crc" | "window" | "mac" | "subnet" | "frag" | "route" | "seq" | "cwnd" | "http" | "ports" | "sched-hrrn" | "mlfq" | "pipe" | "segment" | "truth" | "equiv" | "quant" | "fol" | "relation" | "funcs" | "hasse" | "lattice" | "algebra" | "cyclic" | "graph-basic" | "colour" | "count-dm" | "derange" | "recur" | "genfun" | "rr" | "pagefault" | "workingset" }
   | { type: "practice"; links: { label: string; sub: string; href: string }[] };
 
 export type CheckQ = { id: string; kind: "MCQ" | "MSQ" | "NAT"; marks: 1 | 2; q: string; options?: string[]; answer: string; solution: string };

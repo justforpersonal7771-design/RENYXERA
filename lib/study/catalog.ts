@@ -49,9 +49,9 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "seq", title: "Sequential circuits" }, { id: "num", title: "Number representation" }, { id: "arith", title: "Computer arithmetic: fixed and floating point" },
   ] },
   { id: "dm", title: "Discrete Mathematics", short: "Discrete", tint: "rose", cloth: "#E4C9D2", ink: "#1B1917", paper: "#6A1B3A", dark: "#6A1B3A", band: "maths", chapters: [
-    { id: "logic", title: "Propositional logic" }, { id: "fol", title: "First-order logic" }, { id: "sets", title: "Sets, relations and functions" },
-    { id: "poset", title: "Partial orders and lattices" }, { id: "groups", title: "Monoids and groups" }, { id: "graph-t", title: "Graph theory: connectivity, matching, colouring" },
-    { id: "combi", title: "Counting and combinatorics" }, { id: "recur", title: "Recurrences and generating functions" },
+    { id: "logic", title: "Propositional logic", href: "/study/logic", ready: "2 topics ready" }, { id: "fol", title: "First-order logic", href: "/study/first-order-logic", ready: "2 topics ready" }, { id: "sets", title: "Sets, relations and functions", href: "/study/sets-relations", ready: "2 topics ready" },
+    { id: "poset", title: "Partial orders and lattices", href: "/study/posets", ready: "2 topics ready" }, { id: "groups", title: "Monoids and groups", href: "/study/groups", ready: "2 topics ready" }, { id: "graph-t", title: "Graph theory: connectivity, matching, colouring", href: "/study/graph-theory", ready: "2 topics ready" },
+    { id: "combi", title: "Counting and combinatorics", href: "/study/counting", ready: "2 topics ready" }, { id: "recur", title: "Recurrences and generating functions", href: "/study/recurrences", ready: "2 topics ready" },
   ] },
   { id: "la", title: "Linear Algebra", short: "Lin. Alg.", tint: "peach", cloth: "#E9D9B8", ink: "#1B1917", paper: "#8C5A12", dark: "#8C5A12", band: "maths", chapters: [
     { id: "matrices", title: "Matrices and determinants" }, { id: "systems", title: "Systems of linear equations" }, { id: "eigen", title: "Eigenvalues and eigenvectors" },

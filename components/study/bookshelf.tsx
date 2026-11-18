@@ -71,7 +71,7 @@ function MarksPeek({ b }: { b: ShelfBook }) {
 const ready = (b: ShelfBook) => b.chapters.filter((c) => c.ready).length;
 
 /** A book lying flat: app pastel cloth with a deep spine edge, the full name horizontal in big heavy capitals.
- *  The featured book (has a ready chapter) is thicker, carries the gold ribbon and names its free chapter. Hover slides it out. */
+ *  The featured book (has a ready chapter) is thicker, names its free chapter. Hover slides it out. */
 function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number; flat?: boolean }) {
   const r = ready(b);
   const free = b.chapters.find((c) => c.ready);
@@ -79,7 +79,6 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i
     <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: flat ? "0px" : `${(i % 3) * 8}px`, ["--h" as string]: flat ? "76px" : `${44 + b.chapters.length * 8}px` }}
       aria-label={`${b.title}. ${b.chapters.length} chapters, ${r ? `${r} ready to read` : "being written"}.`}
       className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
-      {free && <span aria-hidden className="sp2-ribbon !right-24" />}
       <span className="min-w-0 flex-1">
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
         {free && <span className="mt-0.5 block text-sm font-bold text-[var(--tint-ink)]">Free chapter: {free.title}</span>}
@@ -114,17 +113,17 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
         const row = (
           <>
             <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
-            <span className="min-w-[55%] flex-1">
+            <span className="min-w-0 flex-1">
               <span className={`block ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
               {w.qs === 0 && topics.length > 0 && <span className="mt-1 block text-[11px] font-semibold text-[var(--text-secondary)]">Not tagged as its own topic in past papers</span>}
-              {w.qs > 0 && <span className="mt-1 flex items-center gap-2"><span className="h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, w.share * 12)}%`, background: ink }} /></span><span className="text-[11px] font-semibold text-[var(--text-secondary)]">{w.share.toFixed(1)}% of marks · {w.qs} PYQs{focus?.active && !w.inTarget ? " · outside your target" : ""}</span></span>}
+              {w.qs > 0 && <span className="mt-1 flex flex-wrap items-center gap-2">{mark}<span className="h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, w.share * 12)}%`, background: ink }} /></span><span className="text-[11px] font-semibold text-[var(--text-secondary)]">{w.share.toFixed(1)}% of marks · {w.qs} PYQs{focus?.active && !w.inTarget ? " · outside your target" : ""}</span></span>}
             </span>
-            {mark}
+            <span className="flex shrink-0 flex-col items-end gap-1">
             {c.href ? <span className="flex items-center gap-1.5"><span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span></span>
-              : <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]"><Feather className="h-3 w-3" aria-hidden /> Being written</span>}
+              : <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]"><Feather className="h-3 w-3" aria-hidden /> Being written</span>}</span>
           </>
         );
-        const cls = `group relative flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl px-3 py-2.5 ${w.tier === "high" ? "border-l-4" : "border-l-4 border-transparent"} ${focus?.active && !w.inTarget ? "opacity-45" : ""}`;
+        const cls = `group relative flex items-center gap-x-3 rounded-xl px-3 py-2.5 ${w.tier === "high" ? "border-l-4" : "border-l-4 border-transparent"} ${focus?.active && !w.inTarget ? "opacity-45" : ""}`;
         const style = w.tier === "high" ? { borderLeftColor: ink } : undefined;
         return (
           <li key={c.id}>
@@ -181,7 +180,7 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
           <motion.div role="dialog" aria-modal="true" aria-label={b.title} onClick={(e) => e.stopPropagation()} style={{ transformPerspective: 1400 }}
             initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
             transition={{ duration: reduce ? 0.14 : 0.38, ease: [0.22, 1, 0.36, 1] }}
-            className="grid max-h-[88dvh] w-full max-w-4xl overflow-y-auto rounded-[16px] md:overflow-hidden shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr]">
+            className="grid max-h-[88dvh] w-full max-w-4xl overflow-y-auto rounded-[16px] md:overflow-hidden shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr] md:grid-rows-[minmax(0,1fr)]">
             <div className="relative p-6 sm:p-8" style={{ background: `var(--tint-${b.tint ?? "peri"})`, color: `var(--tint-${b.tint ?? "peri"}-ink)`, borderLeft: `14px solid var(--tint-${b.tint ?? "peri"}-ink)` }}>
               <BookOpen className="h-7 w-7" aria-hidden />
               <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
@@ -191,7 +190,7 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
               <MarksPeek key={b.id} b={b} />
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/10 md:hidden"><X className="h-5 w-5" /></button>
             </div>
-            <div className="no-scrollbar relative overflow-y-auto p-5 sm:p-7" style={{ background: `color-mix(in srgb, var(--tint-${b.tint ?? "peri"}) 35%, var(--surface))` }}>
+            <div className="custom-scrollbar relative min-h-0 overflow-y-auto overscroll-contain p-5 sm:p-7" data-tint={b.tint ?? "peri"} style={{ background: `color-mix(in srgb, var(--tint-${b.tint ?? "peri"}) 35%, var(--surface))` }}>
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full border border-[var(--border)] md:grid"><X className="h-5 w-5" /></button>
               <p className="mb-2 text-sm font-bold text-[var(--text-secondary)]">Contents</p>
               <Contents b={b} focus={focus} />
@@ -278,16 +277,16 @@ export function Bookshelf() {
           const openIt = (b: ShelfBook) => setOpen(b);
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
           return (
-            <div key={sh.id} className="sp2-shelf">
+            <div key={sh.id} className="sp2-shelf flex flex-col">
               <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b-2 border-dashed border-[var(--border)] pb-2">
                 <span className="h-3 w-3 self-center rounded-full" style={{ background: `var(--tint-${sh.tint}-ink)` }} aria-hidden />
                 <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{sh.title}</h2>
                 {weightOf(books) > 0 && <span className="rounded-full px-2.5 py-0.5 text-xs font-extrabold" style={{ background: `var(--tint-${sh.tint})`, color: `var(--tint-${sh.tint}-ink)` }}>{weightOf(books).toFixed(1)}% of marks</span>}
               </div>
-              <div className={`grid items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
+              <div className={`grid flex-1 items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
                 {stacks.map((st, si) => (
                   <div key={si} className="flex flex-col gap-3">
-                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} flat={sh.id !== "core"} onOpen={() => openIt(byId(id))} />)}</div>
+                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} onOpen={() => openIt(byId(id))} />)}</div>
                   </div>
                 ))}
               </div>
@@ -306,7 +305,7 @@ export function Bookshelf() {
           );
         });
         // core books across the whole width; mathematics and aptitude side by side underneath
-        return <>{shelves[0]}<div className="grid gap-5 lg:grid-cols-2 [&>.sp2-shelf]:!mt-0">{shelves.slice(1)}</div></>; })()}
+        return <>{shelves[0]}<div className="mt-8 grid gap-5 lg:grid-cols-2 [&>.sp2-shelf]:!mt-0">{shelves.slice(1)}</div></>; })()}
         {hits === 0 && <p className="rounded-2xl bg-[var(--surface)] p-4 text-center text-[var(--text-secondary)]">No book matches “{q}”. <button type="button" onClick={() => { setQ(""); setOnlyReady(false); }} className="font-bold underline underline-offset-4">Clear the search</button> or <Link href="/topics/operating-systems-os" className="font-bold underline underline-offset-4">search the past-question bank</Link>.</p>}
       </div>
       <OpenBook b={open} onClose={() => setOpen(null)} focus={focus} />

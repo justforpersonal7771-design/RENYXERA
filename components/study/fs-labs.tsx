@@ -21,6 +21,7 @@ export function seek(reqs: number[], head: number, algo: DiskAlgo, max = 199, di
   return { path, total };
 }
 
+const FULL = { FCFS: "First come, first served", SJF: "Shortest job first", SRTF: "Shortest remaining time first", HRRN: "Highest response ratio next", LJF: "Longest job first", LRTF: "Longest remaining time first", SSTF: "Shortest seek time first", SCAN: "Elevator: sweep to the disk end and back", CSCAN: "Circular SCAN", LOOK: "SCAN that turns at the last request", CLOOK: "Circular LOOK", FIFO: "First in, first out", LRU: "Least recently used" } as Record<string, string>;
 export const DISK_REQ = [82, 170, 43, 140, 24, 16, 190];
 export function DiskLab() {
   const [algo, setAlgo] = useState<DiskAlgo>("FCFS");
@@ -32,7 +33,7 @@ export function DiskLab() {
     <section className="card-pastel p-5 sm:p-6" data-tint="butter" aria-label="Disk scheduling lab">
       <div className="flex flex-wrap items-baseline gap-2"><p className="font-display text-xl font-extrabold text-[var(--text-primary)]">Disk scheduling lab</p><span className="text-sm text-[var(--text-secondary)]">Cylinders 0 to 199. Requests {DISK_REQ.join(", ")}. The head moves towards higher cylinders first.</span></div>
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        {(["FCFS", "SSTF", "SCAN", "CSCAN", "LOOK", "CLOOK"] as DiskAlgo[]).map((a) => <button key={a} type="button" aria-pressed={algo === a} onClick={() => setAlgo(a)} className={algo === a ? "pill-ink" : "pill-soft"}>{a === "CSCAN" ? "C-SCAN" : a === "CLOOK" ? "C-LOOK" : a}</button>)}
+        {(["FCFS", "SSTF", "SCAN", "CSCAN", "LOOK", "CLOOK"] as DiskAlgo[]).map((a) => <button key={a} type="button" title={FULL[a]} aria-pressed={algo === a} onClick={() => setAlgo(a)} className={algo === a ? "pill-ink" : "pill-soft"}>{a === "CSCAN" ? "C-SCAN" : a === "CLOOK" ? "C-LOOK" : a}</button>)}
         <label className="inline-flex items-center gap-2 rounded-xl bg-[var(--surface)] px-3 py-1 text-sm"><b>Head at</b><input type="range" min={0} max={199} value={head} onChange={(e) => setHead(Number(e.target.value))} aria-label="Head position" className="accent-[var(--tint-ink)]" /><span className="font-num w-8">{head}</span></label>
       </div>
       <div className="mt-4 overflow-x-auto rounded-2xl bg-[var(--surface)] p-3">

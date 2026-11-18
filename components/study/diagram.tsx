@@ -16,6 +16,23 @@ function edgePoint(n: GraphNode, tx: number, ty: number) {
   return { x: n.x + dx * s, y: n.y + dy * s };
 }
 
+/** General node-and-edge figure: Hasse diagrams, lattices, graphs. Undirected unless dir is set. */
+function Net({ fig }: { fig: Extract<Fig, { kind: "net" }> }) {
+  const by = new Map(fig.nodes.map((n) => [n.id, n]));
+  const r = 17;
+  return (
+    <figure className="m-0">
+      <svg viewBox={`0 0 ${fig.w} ${fig.h}`} className="h-auto w-full max-w-[560px]" role="img" aria-label={fig.note ?? "Diagram"}>
+        <defs><marker id="net-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--text-secondary)" /></marker></defs>
+        {fig.edges.map((e, i) => { const p = by.get(e.a), q = by.get(e.b); if (!p || !q) return null; const dx = q.x - p.x, dy = q.y - p.y, L = Math.hypot(dx, dy) || 1; const x1 = p.x + (dx / L) * r, y1 = p.y + (dy / L) * r, x2 = q.x - (dx / L) * (r + (e.dir ? 3 : 0)), y2 = q.y - (dy / L) * (r + (e.dir ? 3 : 0));
+          return <g key={i}><line x1={x1} y1={y1} x2={x2} y2={y2} stroke={e.hl ? "var(--st-accent)" : "var(--text-secondary)"} strokeWidth={e.hl ? 2.8 : 1.6} markerEnd={e.dir ? "url(#net-arr)" : undefined} />{e.label && <text x={(p.x + q.x) / 2 + 5} y={(p.y + q.y) / 2 - 4} fontSize="11" fontWeight="700" fill="var(--text-secondary)">{e.label}</text>}</g>; })}
+        {fig.nodes.map((n) => <g key={n.id}><circle cx={n.x} cy={n.y} r={r} fill={n.hl ? "var(--st-accent)" : "var(--surface)"} stroke="var(--text-primary)" strokeWidth="1.4" /><text x={n.x} y={n.y + 4} fontSize={n.label.length > 3 ? 10 : 12} fontWeight="800" textAnchor="middle" fill={n.hl ? "var(--surface)" : "var(--text-primary)"}>{n.label}</text></g>)}
+      </svg>
+      {fig.note && <figcaption className="mt-1 text-xs text-[var(--text-secondary)]">{fig.note}</figcaption>}
+    </figure>
+  );
+}
+
 function Graph({ fig }: { fig: Extract<Fig, { kind: "graph" }> }) {
   const byId = new Map(fig.nodes.map((n) => [n.id, n]));
   return (
@@ -78,6 +95,7 @@ function Matrix({ fig }: { fig: Extract<Fig, { kind: "matrix" }> }) {
 
 export function Diagram({ fig }: { fig: Fig }) {
   if (fig.kind === "graph") return <Graph fig={fig} />;
+  if (fig.kind === "net") return <Net fig={fig} />;
   if (fig.kind === "strip") return <Strip fig={fig} />;
   if (fig.kind === "matrix") return <Matrix fig={fig} />;
   return <div className="grid gap-4 sm:grid-cols-2">{fig.frames.map((f, i) => <figure key={i}><Diagram fig={f.fig} /><figcaption className="mt-1 text-xs text-[var(--text-secondary)]">{f.caption}</figcaption></figure>)}</div>;

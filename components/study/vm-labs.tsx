@@ -32,6 +32,7 @@ export function replace(refs: number[], frames: number, policy: Policy) {
   return { steps, faults: steps.filter((s) => s.fault).length };
 }
 
+const FULL = { FCFS: "First come, first served", SJF: "Shortest job first", SRTF: "Shortest remaining time first", HRRN: "Highest response ratio next", LJF: "Longest job first", LRTF: "Longest remaining time first", SSTF: "Shortest seek time first", SCAN: "Elevator: sweep to the disk end and back", CSCAN: "Circular SCAN", LOOK: "SCAN that turns at the last request", CLOOK: "Circular LOOK", FIFO: "First in, first out", LRU: "Least recently used" } as Record<string, string>;
 const PRESETS = [
   { name: "Lesson string", refs: [2, 3, 2, 1, 5, 2, 4, 5, 3, 2, 5, 2] },
   { name: "Belady's anomaly", refs: [1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5] },
@@ -49,7 +50,7 @@ export function ReplaceLab() {
       <div className="flex flex-wrap items-baseline gap-2"><p className="font-display text-xl font-extrabold text-[var(--text-primary)]">Page replacement lab</p><span className="text-sm text-[var(--text-secondary)]">Edit the reference string, the number of frames and the policy.</span></div>
       <div className="mt-3 flex flex-wrap items-center gap-2">
         {PRESETS.map((p, i) => <button key={p.name} type="button" aria-pressed={preset === i} onClick={() => { setPreset(i); setText(p.refs.join(" ")); }} className={preset === i ? "pill-ink" : "pill-soft"}>{p.name}</button>)}
-        {(["FIFO", "LRU", "OPT"] as Policy[]).map((p) => <button key={p} type="button" aria-pressed={policy === p} onClick={() => setPolicy(p)} className={policy === p ? "pill-ink" : "pill-soft"}>{p === "OPT" ? "Optimal" : p}</button>)}
+        {(["FIFO", "LRU", "OPT"] as Policy[]).map((p) => <button key={p} type="button" title={FULL[p]} aria-pressed={policy === p} onClick={() => setPolicy(p)} className={policy === p ? "pill-ink" : "pill-soft"}>{p === "OPT" ? "Optimal" : p}</button>)}
         <span className="inline-flex items-center gap-2 rounded-xl bg-[var(--surface)] px-3 py-1 text-sm"><b>Frames</b>{[2, 3, 4, 5].map((n) => <button key={n} type="button" aria-pressed={frames === n} onClick={() => setFrames(n)} className={`h-7 w-7 rounded-lg font-bold ${frames === n ? "bg-[var(--ink)] text-[var(--background)]" : "border border-[var(--border)]"}`}>{n}</button>)}</span>
       </div>
       <label className="mt-3 block text-sm font-bold">Reference string

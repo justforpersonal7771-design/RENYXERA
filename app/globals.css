@@ -2369,3 +2369,17 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
 .dark .bg-violet-500\/10 { color: #c4b5fd; }
 :root:not(.dark) :is(.text-amber-500, .text-yellow-600) { color: #92400e; }
 :root:not(.dark) :is(.text-emerald-500, .text-emerald-600, .text-emerald-700, .text-green-600) { color: #065f46; }
+
+/* Scrollbars take the colour of the card they scroll in (owner, 19 Nov): cream card → brown thumb, light green → dark green.
+   Colour only: the thumb's size, show-on-activity behaviour and hover stay exactly as defined above. Outside any card the
+   brand gradient remains. */
+[data-tint="peri"] { --sb-ink: var(--tint-peri-ink); } [data-tint="mint"] { --sb-ink: var(--tint-mint-ink); }
+[data-tint="peach"] { --sb-ink: var(--tint-peach-ink); } [data-tint="lilac"] { --sb-ink: var(--tint-lilac-ink); }
+[data-tint="butter"] { --sb-ink: var(--tint-butter-ink); } [data-tint="sky"] { --sb-ink: var(--tint-sky-ink); }
+[data-tint="rose"] { --sb-ink: var(--tint-rose-ink); }
+.study-lesson { --sb-ink: var(--st-accent); }
+:is([data-tint]:not([data-tint="plain"]), .study-lesson) {
+  --scrollbar-thumb: var(--sb-ink);
+  --scrollbar-thumb-gradient: linear-gradient(var(--sb-ink), var(--sb-ink));
+  --scrollbar-thumb-glow: color-mix(in srgb, var(--sb-ink) 45%, transparent);
+}

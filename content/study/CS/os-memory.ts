@@ -219,6 +219,7 @@ export const OS_MEMORY: Chapter = {
     { label: "1. Contiguous allocation", sub: "fits and fragmentation", state: "done" },
     { label: "2. Paging", sub: "address translation", state: "done" },
     { label: "3. TLB and multilevel tables", sub: "effective access time", state: "done" },
+    { label: "4. Segmentation", sub: "base and limit", state: "done" },
   ] },
   topics: [contiguous, paging, tlb, OS_SEGMENT],
 };

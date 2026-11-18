@@ -140,6 +140,7 @@ export const OS_PROCESSES: Chapter = {
       { label: "2. fork()", sub: "counting processes and prints", state: "done" },
       { label: "3. Threads", sub: "user vs kernel threads", state: "done" },
       { label: "4. System calls", sub: "and the kernel boundary", state: "done" },
+      { label: "5. IPC", sub: "pipes, messages, signals", state: "done" },
     ],
   },
   topics: [...deepen([states, forks, threads, syscalls]), OS_IPC],
