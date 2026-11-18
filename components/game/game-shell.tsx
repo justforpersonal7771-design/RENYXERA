@@ -197,7 +197,7 @@ export function GameShell({ children }: { children: ReactNode }) {
       {/* arena light from above, shared by every game screen */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] bg-[radial-gradient(60%_90%_at_50%_0%,rgba(255,200,130,0.14),transparent_70%)]" />
       <div aria-hidden className="g-gate"><div className="g-gate-door" /><div className="g-gate-door" /></div>
-      <div aria-hidden className="g-gate-mark"><span><b>The Citadel</b><small>by RENYXERA</small></span></div>
+      <div aria-hidden className="g-gate-mark"><span><b>Battles</b><small>by RENYXERA</small></span></div>
       <Hud />
       <main id="game-scroll" className="g-enter no-scrollbar relative z-10 min-h-0 flex-1 overflow-y-auto px-3 pb-28 pt-3 sm:px-6 lg:px-10">
         {children}
