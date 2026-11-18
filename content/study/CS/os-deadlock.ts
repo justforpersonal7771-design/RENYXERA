@@ -9,6 +9,7 @@ export const OS_DEADLOCK: Chapter = {
   subject: "Operating System",
   title: "Deadlock",
   syllabus: ["CS · Operating System: Deadlock"],
+  pyqTopic: /deadlock/i,
   map: {
     kind: "strip",
     items: [

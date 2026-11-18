@@ -33,7 +33,7 @@ export type Block =
 export type CheckQ = { id: string; kind: "MCQ" | "MSQ" | "NAT"; marks: 1 | 2; q: string; options?: string[]; answer: string; solution: string };
 
 export type Topic = { id: string; title: string; words?: number; blocks: Block[] };
-export type Chapter = { id: string; subject: string; title: string; syllabus: string[]; map: Fig; topics: Topic[] };
+export type Chapter = { id: string; subject: string; title: string; syllabus: string[]; pyqTopic: RegExp; map: Fig; topics: Topic[] };
 
 /** Blueprint minimums per topic. Returns the problems; an empty list means the topic may ship. */
 export function validateTopic(t: Topic): string[] {

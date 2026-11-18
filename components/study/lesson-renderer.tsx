@@ -11,6 +11,8 @@ import { ArrowUpRight, Check, CircleCheck, CircleX, Lightbulb, Link2, Repeat, Ro
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { RagLab } from "@/components/study/rag-lab";
+import { LessonRail } from "@/components/study/lesson-rail";
+import { useLessonHighlights } from "@/components/study/lesson-highlights";
 import Link from "next/link";
 
 type B<T extends Block["type"]> = Extract<Block, { type: T }>;
@@ -137,10 +139,11 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
 
 /* ------------------------------------------------------------------ chapter */
 export function LessonRenderer({ chapter }: { chapter: Chapter }) {
+  const { attach, toolbar, list } = useLessonHighlights(chapter.id);
   const written = new Set(chapter.topics.map((_, i) => i));
   const steps = chapter.map.kind === "strip" ? chapter.map.items : [];
   return (
-    <div className="study-lesson grid gap-8 lg:grid-cols-[15rem_minmax(0,1fr)]" style={{ ["--st-accent" as string]: "#c2410c" }}>
+    <div className="study-lesson grid gap-8 lg:grid-cols-[14rem_minmax(0,1fr)] xl:grid-cols-[14rem_minmax(0,1fr)_20rem]" style={{ ["--st-accent" as string]: "#c2410c" }}>
       <nav aria-label="Chapter topics" className="lg:sticky lg:top-24 lg:self-start">
         <p className="text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
@@ -152,9 +155,13 @@ export function LessonRenderer({ chapter }: { chapter: Chapter }) {
           })}
         </ol>
       </nav>
-      <div className="min-w-0 space-y-14">
+      <div ref={attach} className="min-w-0 space-y-14">
         {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
       </div>
+      <div className="lg:col-span-2 xl:col-span-1">
+        <LessonRail lesson={`${chapter.subject}: ${chapter.title}`} topic={chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} />
+      </div>
+      {toolbar}
     </div>
   );
 }
