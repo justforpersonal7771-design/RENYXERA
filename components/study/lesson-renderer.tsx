@@ -9,7 +9,11 @@
  * the outline lists every section of the topic, jumps to it and follows your place. Notes, PYQs and the Mentor are
  * floating tools (lesson-tools.tsx), so the lesson gets the whole remaining width.
  */
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
+import { StudyTabs } from "@/components/study/study-tabs";
+import { rememberScroll, recallScroll } from "@/lib/study/tabs";
+import { CS_SHELF } from "@/lib/study/catalog";
 import { ArrowLeft, ArrowUpRight, Check, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
@@ -172,6 +176,17 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const [soon, setSoon] = useState<number | null>(null);
   const [shut, setShut] = useState<Record<string, boolean>>({});
   const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
+  const href = usePathname() ?? "/study";
+  const tab = useMemo(() => ({ href, title: chapter.title, subject: chapter.subject, tint: CS_SHELF.find((b) => b.chapters.some((c) => c.href === href))?.tint }), [href, chapter.title, chapter.subject]);
+  // each tab returns to where you were reading
+  useEffect(() => {
+    const el = pane.current; if (!el) return;
+    const top = recallScroll(href); if (top) requestAnimationFrame(() => { el.scrollTop = top; });
+    let raf = 0;
+    const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => rememberScroll(href, el.scrollTop)); };
+    el.addEventListener("scroll", on, { passive: true });
+    return () => { el.removeEventListener("scroll", on); cancelAnimationFrame(raf); };
+  }, [href]);
 
   // follow the reader: the last section whose top has passed the upper third of the reading pane
   useEffect(() => {
@@ -196,7 +211,8 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   };
 
   return (
-    <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)] lg:gap-8" style={{ ["--st-accent" as string]: "#c2410c" }}>
+    <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-x-8 lg:gap-y-4" style={{ ["--st-accent" as string]: "#c2410c" }}>
+      <div className="min-w-0 lg:col-span-2"><StudyTabs current={tab} /></div>
       <nav aria-label="Chapter outline" className="relative flex min-h-0 flex-col">
         <div className="shrink-0 pb-3">
         <Link href={backHref} className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"><ArrowLeft className="h-4 w-4" aria-hidden /> Study materials</Link>
