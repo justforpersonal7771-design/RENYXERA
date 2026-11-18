@@ -8,9 +8,9 @@
   --g-dur-short: 200ms;
   --g-ease: cubic-bezier(0.23, 1, 0.32, 1);
   /* materials */
-  --g-felt: #145a41;
-  --g-felt-dark: #0b3a2a;
-  --g-felt-deep: #072519;
+  --g-felt: #6b3d27;
+  --g-felt-dark: #3e2418;
+  --g-felt-deep: #26150d;
   --g-wood: #6b3f22;
   --g-wood-dark: #3b200f;
   --g-wood-hi: #8c5732;
@@ -28,15 +28,15 @@
   --g-mint: #7fd1a3;
   --g-deep: var(--g-felt-deep);
   --g-bg: var(--g-felt-dark);
-  --g-surface: #0f4532;
-  --g-surface-2: #12503b;
-  --g-surface-3: #1a5f47;
+  --g-surface: #4a2b1d;
+  --g-surface-2: #573424;
+  --g-surface-3: #673e2b;
   --g-line: rgba(246, 242, 232, 0.12);
   --g-line-strong: rgba(246, 242, 232, 0.28);
   --g-grid: transparent;
   --g-text: var(--g-chalk);
-  --g-text-2: #d6e3d9;
-  --g-muted: #a8c2b3;
+  --g-text-2: #ead8c4;
+  --g-muted: #c9ab8f;
   --g-royal: var(--g-brass);
   --g-royal-hover: var(--g-brass-hi);
   --g-on-royal: var(--g-ink);
@@ -103,9 +103,10 @@
 .g-ground {
   background-color: var(--g-bg);
   background-image:
-    radial-gradient(120% 80% at 50% 30%, rgba(255, 255, 255, 0.07), transparent 60%),
+    radial-gradient(90% 60% at 50% 38%, rgba(255, 196, 120, 0.32), transparent 65%),
+    linear-gradient(180deg, #2a160d 0%, #4b2a1b 45%, #6b3d27 100%),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: auto, 160px 160px;
+  background-size: auto, auto, 160px 160px;
 }
 
 /* ---- surfaces ---- */
@@ -283,4 +284,24 @@
   .g-play, .g-orb-face { transition: none; }
   .g-play:active, .g-orb:active .g-orb-face { transform: none; }
 }
+
+/* entering the game zone: the GATE doors close over the study app, then swing open (pure CSS, no script needed) */
+.g-gate { position: fixed; inset: 0; z-index: 95; pointer-events: none; display: grid; grid-template-columns: 1fr 1fr; }
+.g-gate-door { position: relative; background: linear-gradient(90deg, #4a2c18, #6b3f22 50%, #4a2c18); box-shadow: inset 0 0 0 6px #2b170b, inset 0 0 0 9px #8c5732; animation: g-door-l 1100ms cubic-bezier(0.77, 0, 0.175, 1) 450ms forwards; }
+.g-gate-door + .g-gate-door { animation-name: g-door-r; }
+.g-gate-door::before { content: ""; position: absolute; inset: 18% 14%; border: 3px solid #2b170b; border-radius: 6px; box-shadow: inset 0 0 0 3px #8c5732; }
+.g-gate-door::after { content: ""; position: absolute; top: 50%; width: 14px; height: 54px; margin-top: -27px; border-radius: 7px; background: linear-gradient(180deg, var(--g-brass-hi), var(--g-brass-dark)); }
+.g-gate-door:first-child::after { right: 22px; } .g-gate-door + .g-gate-door::after { left: 22px; }
+.g-gate-mark { position: fixed; inset: 0; z-index: 96; display: grid; place-items: center; pointer-events: none; animation: g-gate-mark 700ms ease-out 350ms forwards; }
+.g-gate-mark span { font-family: var(--font-brand), var(--font-game); font-size: clamp(1.6rem, 5vw, 3rem); color: var(--g-brass-hi); letter-spacing: 0.08em; text-shadow: 0 2px 0 #2b170b; }
+@keyframes g-door-l { to { transform: translateX(-102%); } }
+@keyframes g-door-r { to { transform: translateX(102%); } }
+@keyframes g-gate-mark { to { opacity: 0; transform: scale(1.06); } }
+.cz-bld:focus-visible { outline: none; } .cz-bld:focus-visible polygon { stroke: var(--g-brass-hi); stroke-width: 2.5; }
+@media (hover: hover) and (pointer: fine) { .cz-bld { transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1); } .cz-bld:hover { transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) {
+  .g-gate-door { animation: g-fade-out 300ms ease-out 200ms forwards; } .g-gate-door + .g-gate-door { animation-name: g-fade-out; }
+  .g-gate-mark { animation-duration: 200ms; } .cz-bld:hover { transform: none; }
+}
+@keyframes g-fade-out { to { opacity: 0; visibility: hidden; } }
 } /* end @layer components */

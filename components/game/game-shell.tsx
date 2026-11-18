@@ -10,16 +10,15 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronLeft, Coins, DoorOpen, Home, Play, Plus, ShoppingBag, Trophy, Users } from "lucide-react";
+import { Castle, ChevronLeft, Coins, DoorOpen, Plus, Swords, Trophy, Users } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useArenaMe, usePlayer } from "@/components/game/use-arena";
 
 const DOCK = [
-  { href: "/battles", label: "Lobby", icon: Home },
-  { href: "/battles/arena", label: "Arena", icon: Trophy },
-  { href: "/battles/play", label: "Play", icon: Play },
-  { href: "/battles/social", label: "Friends", icon: Users },
-  { href: "/battles/shop", label: "Shop", icon: ShoppingBag },
+  { href: "/battles", label: "Citadel", icon: Castle },
+  { href: "/battles/play", label: "Attack", icon: Swords },
+  { href: "/battles/clubs", label: "Clan", icon: Users },
+  { href: "/battles/arena", label: "Leagues", icon: Trophy },
 ] as const;
 
 const isOn = (path: string, href: string) => (href === "/battles" ? path === "/battles" : path.startsWith(href));
@@ -107,8 +106,8 @@ function Dock() {
           if (n.href === "/battles/play") return (
             <li key={n.href} className="flex-1">
               <Link href={n.href} aria-current={on ? "page" : undefined} className="flex min-h-[56px] flex-col items-center justify-end gap-1 pt-2 text-xs font-extrabold text-[var(--g-amber)]">
-                <span className="g-play !min-h-0 !h-10 !w-12 !rounded-xl !p-0 !text-base"><Play className="h-5 w-5" fill="currentColor" aria-hidden /></span>
-                Play
+                <span className="g-play !min-h-0 !h-10 !w-12 !rounded-xl !p-0 !text-base"><Swords className="h-5 w-5" aria-hidden /></span>
+                Attack
               </Link>
             </li>
           );
@@ -131,10 +130,9 @@ export function GameShell({ children }: { children: ReactNode }) {
   return (
     <div className="game-world g-ground relative flex h-dvh w-full flex-col overflow-hidden">
       {/* arena light from above, shared by every game screen */}
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] bg-[radial-gradient(60%_90%_at_50%_0%,rgba(255,240,200,0.12),transparent_70%)]" />
-      <div aria-hidden className="g-veil fixed inset-0 z-[90] grid place-items-center bg-[var(--g-deep)]">
-        <span className="font-brand text-3xl text-[var(--g-text)]">RENYXERA</span>
-      </div>
+      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] bg-[radial-gradient(60%_90%_at_50%_0%,rgba(255,200,130,0.14),transparent_70%)]" />
+      <div aria-hidden className="g-gate"><div className="g-gate-door" /><div className="g-gate-door" /></div>
+      <div aria-hidden className="g-gate-mark"><span>RENYXERA</span></div>
       <Hud />
       <main id="game-scroll" className="g-enter no-scrollbar relative z-10 min-h-0 flex-1 overflow-y-auto px-3 pb-32 pt-4 sm:px-6 lg:px-10">
         {children}

@@ -1,54 +1,57 @@
 "use client";
 
 /**
- * Battles lobby (R31B-1, rebuilt 14 Nov after the owner's "doesn't look like a game" review).
- * Research applied (Clash Royale / Brawl Stars breakdowns): an open centre stage, one gold primary action in the lower
- * half, oversized round menu buttons, and popups that keep the lobby visible instead of leaving it.
- *  - Stage: you on a podium facing an open rival slot across the VS emblem (components/game/arena-stage.tsx).
- *  - PLAY: the one gold action, bevelled, pressed down on tap.
- *  - Round buttons: Daily, Clubs, Friends (popups over the lobby); Ranks, Matches (screens).
- *  - Challenge tickets: real invites from /api/battles. Every figure comes from the server.
+ * Battles home: the Citadel (v3, 18 Nov). Every student's base is built from their real practice: the Town Hall in the
+ * middle, one building per subject group around it, each levelled only by questions attempted and accuracy
+ * (lib/game/citadel.ts, analytics subjectPerformance). Tap a building to see its level, what the next level needs,
+ * and to train or attack that subject. Inbox, daily reward and friends open as popups over the citadel.
  */
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Gift, ListChecks, Medal, Play, Swords, UserPlus, Users, UsersRound, X } from "lucide-react";
+import { Gift, Inbox, Swords, UserPlus, Users, UsersRound, X } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useAuthModalStore } from "@/store/use-auth-modal-store";
+import { useAnalyticsStore } from "@/store/use-analytics-store";
 import { ClubPanel, DailyReward } from "@/components/battles/clubs-coins";
 import { FriendsPanel } from "@/components/friends/friends-panel";
-import { ArenaStage } from "@/components/game/arena-stage";
-import { useArenaMe, usePlayer } from "@/components/game/use-arena";
+import { CitadelScene } from "@/components/game/citadel-scene";
+import { useArenaMe } from "@/components/game/use-arena";
+import { BUILDINGS, MAX_LEVEL, buildingState, leagueOf, townHallLevel, type BuildingState } from "@/lib/game/citadel";
 
 type Ticket = { id: string; title: string; ownerName: string; questions: number; expiresAt: string };
 type ApiBattle = { id: string; title: string; ownerName: string; questions: number; expiresAt: string; expired: boolean; invited?: boolean; entries: { you: boolean; status: string }[] };
 type Sheet = "daily" | "clubs" | "friends" | "challenges" | null;
 
-export default function GameLobby() {
+export default function GameHome() {
   const user = useAuthStore((s) => s.user);
   const ready = useAuthStore((s) => !s.loading);
   const openAuth = useAuthModalStore((s) => s.open);
-  if (!user && !ready) return <div className="g-stage h-[300px] animate-pulse motion-reduce:animate-none sm:h-[460px]" aria-label="Loading the arena" />;
+  if (!user && !ready) return <div className="h-[56vh] animate-pulse rounded-3xl bg-[var(--g-surface)] motion-reduce:animate-none" aria-label="Loading your citadel" />;
   if (!user) return (
-    <div className="space-y-6">
-      <div className="g-stage relative h-[300px] sm:h-[460px]">
-        <ArenaStage name="You" avatar="" rating={null} ring={null} season={null} />
-      </div>
-      <div className="text-center">
-        <h1 className="g-title text-3xl sm:text-5xl">Same questions. Who scores more?</h1>
-        <p className="mx-auto mt-2 max-w-xl g-text-2">Real GATE questions against your friends, live or later. Scores are checked by the server, so every win is fair.</p>
-        <button type="button" onClick={() => openAuth("signup")} className="g-play mt-6">Sign in to play</button>
-      </div>
+    <div className="space-y-6 text-center">
+      <div className="mx-auto h-[46vh] max-w-3xl"><CitadelScene buildings={BUILDINGS.map((b) => buildingState(b, []))} hallLevel={1} onPick={() => openAuth("signup")} /></div>
+      <h1 className="g-title text-3xl sm:text-5xl">Build your GATE citadel</h1>
+      <p className="mx-auto max-w-xl g-text-2">Every subject is a building. It grows only when you get better at it. Attack your friends&apos; buildings, defend yours, climb the leagues with your clan.</p>
+      <button type="button" onClick={() => openAuth("signup")} className="g-play">Sign in to start building</button>
     </div>
   );
-  return <Lobby />;
+  return <Citadel />;
 }
 
-function Lobby() {
-  const p = usePlayer();
+function Citadel() {
+  const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
+  useEffect(() => { void loadAnalytics(); }, [loadAnalytics]);
+  const perf = useMemo(() => (dashboardMetrics?.subjectPerformance ?? []).map((s) => ({ subject: s.subject, attempted: s.attempted, correct: s.correct })), [dashboardMetrics]);
+  const states = useMemo(() => BUILDINGS.map((b) => buildingState(b, perf)), [perf]);
+  const hall = townHallLevel(states);
+  const levelSum = states.reduce((t, b) => t + b.level, 0);
+  const toNextHall = Math.max(0, hall * states.length - levelSum);
   const { data } = useArenaMe();
+  const league = data ? leagueOf(data.me.rating) : null;
   const tickets = useTickets();
   const [sheet, setSheet] = useState<Sheet>(null);
+  const [pick, setPick] = useState<BuildingState | null>(null);
   const [daily, setDaily] = useState<boolean | null>(null);
   useEffect(() => {
     const load = () => void fetch("/api/coins", { cache: "no-store" }).then((r) => (r.ok ? r.json() : null)).then((j: { claimedToday?: boolean } | null) => j && setDaily(!j.claimedToday)).catch(() => {});
@@ -56,61 +59,91 @@ function Lobby() {
     window.addEventListener("renyxera:coins", load);
     return () => window.removeEventListener("renyxera:coins", load);
   }, []);
-  const season = data?.season ? `Season ${data.season.number}, ${data.season.daysLeft} ${data.season.daysLeft === 1 ? "day" : "days"} left` : null;
   const count = Array.isArray(tickets) ? tickets.length : 0;
 
   const orbs: { key: string; label: string; icon: typeof Gift; c: string; badge?: string; sheet?: Sheet; href?: string }[] = [
-    { key: "challenges", label: "Challenges", icon: Swords, c: "#c4412d", badge: count > 0 ? String(count) : undefined, sheet: "challenges" },
+    { key: "attack", label: "Attack", icon: Swords, c: "#c4412d", href: "/battles/play" },
+    { key: "inbox", label: "Inbox", icon: Inbox, c: "#7a2230", badge: count > 0 ? String(count) : undefined, sheet: "challenges" },
     { key: "daily", label: "Daily", icon: Gift, c: "#e2ad25", badge: daily ? "1" : undefined, sheet: "daily" },
-    { key: "friends", label: "Friends", icon: Users, c: "#2e6b4f", sheet: "friends" },
-    { key: "clubs", label: "Clubs", icon: UsersRound, c: "#d9772b", sheet: "clubs" },
-    { key: "ranks", label: "Ranks", icon: Medal, c: "#7a2230", href: "/battles/arena" },
-    { key: "matches", label: "Matches", icon: ListChecks, c: "#24201c", href: "/battles/matches" },
+    { key: "clan", label: "Clan", icon: UsersRound, c: "#d9772b", href: "/battles/clubs" },
+    { key: "friends", label: "Friends", icon: Users, c: "#5a7230", sheet: "friends" },
   ];
 
   return (
     <>
-      <div className="grid gap-5 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-6">
-        {/* round menu buttons: a row on phones, a column on desktop */}
-        <nav aria-label="Lobby" className="order-2 grid grid-cols-6 gap-1 lg:order-1 lg:flex lg:flex-col lg:justify-start lg:gap-5 lg:pt-4 [&_.g-orb]:min-w-0 max-sm:[&_.g-orb-face]:h-12 max-sm:[&_.g-orb-face]:w-12 max-sm:[&_.g-orb]:text-[11px]">
+      <section aria-label="Your citadel" className="relative -mx-3 sm:-mx-6 lg:-mx-10">
+        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className="no-scrollbar h-[54vh] min-h-[340px] overflow-x-auto overscroll-x-contain lg:h-[64vh] lg:overflow-visible"><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => setPick(states.find((b) => b.id === id) ?? null)} /></div>
+        <div className="pointer-events-none absolute left-3 top-1 flex flex-wrap gap-2 sm:left-6 lg:left-10">
+          <span className="g-hud !pl-3">Town Hall <b className="text-[var(--g-brass-hi)]">{hall}</b></span>
+          {league && <span className="g-hud !pl-3">{league.name} league</span>}
+        </div>
+      </section>
+
+      <div className="mx-auto mt-2 grid max-w-5xl gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <div className="rounded-2xl bg-[linear-gradient(180deg,var(--g-wood),var(--g-wood-dark))] p-4 shadow-[inset_0_1px_0_rgba(255,220,170,0.3)]">
+          <p className="g-title text-lg">{toNextHall === 0 ? `Town Hall ${hall + 1} is ready` : `Town Hall ${hall + 1}: raise your buildings ${toNextHall} more level${toNextHall === 1 ? "" : "s"} in total`}</p>
+          <p className="mt-1 text-sm g-text-2">Tap a building to see what its next level needs. Levels come only from questions you solve.</p>
+        </div>
+        <nav aria-label="Citadel" className="grid grid-cols-5 gap-1 [&_.g-orb]:min-w-0 max-sm:[&_.g-orb-face]:h-12 max-sm:[&_.g-orb-face]:w-12 max-sm:[&_.g-orb]:text-[11px] lg:flex lg:gap-4">
           {orbs.map((o) => {
-            const face = (
-              <>
-                <span className="g-orb-face" style={{ ["--c" as string]: o.c }}>
-                  <o.icon className="h-7 w-7 drop-shadow" strokeWidth={2.2} aria-hidden />
-                  {o.badge && <span className="g-orb-badge" aria-label="Ready to claim">{o.badge}</span>}
-                </span>
-                {o.label}
-              </>
-            );
-            return o.href
-              ? <Link key={o.key} href={o.href} className="g-orb">{face}</Link>
-              : <button key={o.key} type="button" onClick={() => setSheet(o.sheet!)} className="g-orb cursor-pointer">{face}</button>;
+            const face = (<><span className="g-orb-face" style={{ ["--c" as string]: o.c }}><o.icon className="h-7 w-7 drop-shadow" strokeWidth={2.2} aria-hidden />{o.badge && <span className="g-orb-badge">{o.badge}</span>}</span>{o.label}</>);
+            return o.href ? <Link key={o.key} href={o.href} className="g-orb">{face}</Link> : <button key={o.key} type="button" onClick={() => setSheet(o.sheet!)} className="g-orb cursor-pointer">{face}</button>;
           })}
         </nav>
-
-        {/* the stage and PLAY */}
-        <section aria-label="Arena" className="order-1 lg:order-2">
-          <div className="g-stage relative h-[300px] sm:h-[440px] xl:h-[min(62vh,620px)]">
-            <ArenaStage name={p.name} avatar={p.avatar} rating={data?.me.rating ?? null} ring={p.ring} season={season} />
-          </div>
-          <div className="-mt-7 flex justify-center">
-            <Link href="/battles/play" className="g-play relative z-10"><Play className="h-7 w-7" fill="currentColor" aria-hidden /> PLAY</Link>
-          </div>
-          {data && (
-            <dl className="mx-auto mt-5 grid max-w-md grid-cols-3 gap-2 text-center">
-              <Figure label="Points this week" value={String(data.me.points)} />
-              <Figure label="Friends rank" value={data.me.rank > 0 ? `#${data.me.rank}` : "–"} />
-              <Figure label="Wins" value={`${data.me.wins}/${data.me.battles}`} />
-            </dl>
-          )}
-        </section>
-
-        {/* challenges waiting */}
       </div>
 
+      <BuildingSheet b={pick} onClose={() => setPick(null)} />
       <LobbySheet open={sheet} onClose={() => setSheet(null)} challenges={<Tickets tickets={tickets} onFriends={() => setSheet("friends")} />} />
     </>
+  );
+}
+
+function Bar({ value, max, label }: { value: number; max: number; label: string }) {
+  const pct = Math.min(100, Math.round((value / Math.max(1, max)) * 100));
+  return (
+    <div>
+      <div className="flex justify-between text-sm"><span className="g-text-2">{label}</span><b className="g-num">{value} / {max}</b></div>
+      <div className="mt-1 h-3 overflow-hidden rounded-full bg-[var(--g-felt-deep)]"><div className="h-full rounded-full bg-[var(--g-brass)]" style={{ width: `${pct}%` }} /></div>
+    </div>
+  );
+}
+
+function BuildingSheet({ b, onClose }: { b: BuildingState | null; onClose: () => void }) {
+  const reduce = useReducedMotion();
+  return (
+    <AnimatePresence>
+      {b && (
+        <motion.div className="fixed inset-0 z-[60] flex items-end justify-center bg-[rgba(10,6,2,0.6)] sm:items-center sm:p-6" onClick={onClose} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+          <motion.div role="dialog" aria-modal="true" aria-label={b.name} onClick={(e) => e.stopPropagation()}
+            initial={reduce ? { opacity: 0 } : { y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={reduce ? { opacity: 0 } : { y: 30, opacity: 0 }} transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            className="w-full max-w-lg rounded-t-[26px] border-4 border-[var(--g-wood)] bg-[var(--g-surface)] p-5 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)] sm:rounded-[26px]">
+            <div className="flex items-start gap-3">
+              <div className="min-w-0 flex-1">
+                <p className="g-title text-2xl">{b.name}</p>
+                <p className="g-text-2">{b.subject}{b.subjects.length > 1 ? ` (${b.subjects.join(", ")})` : ""}</p>
+              </div>
+              <span className="g-hud !pl-3 shrink-0">Level <b className="text-[var(--g-brass-hi)]">{b.level}</b>/{MAX_LEVEL}</span>
+              <button type="button" onClick={onClose} aria-label="Close" className="g-orb !min-w-0" style={{ ["--c" as string]: "#c4412d" }}><span className="g-orb-face !h-10 !w-10"><X className="h-5 w-5" aria-hidden /></span></button>
+            </div>
+            <dl className="mt-4 grid grid-cols-2 gap-3">
+              <div className="rounded-xl bg-[var(--g-felt-deep)] p-3"><dt className="text-xs g-muted">Questions solved</dt><dd className="g-num text-2xl font-black">{b.attempted}</dd></div>
+              <div className="rounded-xl bg-[var(--g-felt-deep)] p-3"><dt className="text-xs g-muted">Accuracy</dt><dd className="g-num text-2xl font-black">{b.attempted ? `${b.accuracy}%` : "–"}</dd></div>
+            </dl>
+            {b.next ? (
+              <div className="mt-4 space-y-3">
+                <p className="font-bold">To reach level {b.level + 1}</p>
+                <Bar value={Math.min(b.attempted, b.next.attempted)} max={b.next.attempted} label="Questions attempted" />
+                {b.next.accuracy > 0 && <Bar value={Math.min(b.accuracy, b.next.accuracy)} max={b.next.accuracy} label="Accuracy %" />}
+              </div>
+            ) : <p className="mt-4 font-bold text-[var(--g-brass-hi)]">Fully built. Keep it sharp.</p>}
+            <div className="mt-5 grid gap-2 sm:grid-cols-2">
+              <Link href={`/battles/play?subject=${encodeURIComponent(b.subjects[0])}`} className="g-play !min-h-[52px] !text-lg">Train</Link>
+              <Link href="/battles/play" className="g-btn-quiet justify-center">Attack a friend&apos;s {b.name}</Link>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
