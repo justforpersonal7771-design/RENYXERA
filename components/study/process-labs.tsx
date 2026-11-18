@@ -41,8 +41,8 @@ export function ProcessStateLab() {
             <defs><marker id="ps-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--text-secondary)" /></marker></defs>
             {EVENTS.map((e) => { const [x1, y1] = POS[e.from], [x2, y2] = POS[e.to]; const back = e.k === "timeout"; return <path key={e.k} d={back ? `M${x1 - 30},${y1 + 18} Q${(x1 + x2) / 2},${y1 + 60} ${x2 + 30},${y2 + 18}` : `M${x1 + (x2 > x1 ? 46 : x2 < x1 ? -46 : 0)},${y1 + (y2 > y1 ? 20 : y2 < y1 ? -20 : 0)} L${x2 - (x2 > x1 ? 46 : x2 < x1 ? -46 : 0)},${y2 - (y2 > y1 ? 20 : y2 < y1 ? -20 : 0)}`} fill="none" stroke="var(--text-secondary)" strokeWidth="1.6" markerEnd="url(#ps-arr)" />; })}
             {(Object.keys(POS) as St[]).map((s) => { const [x, y] = POS[s]; const on = s === st; return (
-              <g key={s}><rect x={x - 46} y={y - 20} width="92" height="40" rx="20" fill={on ? "var(--st-accent, #c2410c)" : "var(--surface-secondary)"} stroke="var(--text-primary)" strokeWidth={on ? 0 : 1.2} />
-                <text x={x} y={y + 5} textAnchor="middle" fontSize="13" fontWeight="700" fill={on ? "#fff" : "var(--text-primary)"}>{s}</text></g>
+              <g key={s}><rect x={x - 46} y={y - 20} width="92" height="40" rx="20" fill={on ? "var(--tint-ink)" : "var(--surface-secondary)"} stroke="var(--text-primary)" strokeWidth={on ? 0 : 1.2} />
+                <text x={x} y={y + 5} textAnchor="middle" fontSize="13" fontWeight="700" fill={on ? "var(--surface)" : "var(--text-primary)"}>{s}</text></g>
             ); })}
           </svg>
           <p className="text-xs text-[var(--text-secondary)]">Times dispatched (each one is a context switch in): <b className="font-num">{switches}</b></p>

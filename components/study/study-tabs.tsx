@@ -61,6 +61,9 @@ export function StudyTabs({ current }: { current: StudyTab }) {
     return () => window.removeEventListener("keydown", k, true);
   });
 
+  // drag to reorder only with a mouse; on touch screens the strip just scrolls sideways
+  const [fine, setFine] = useState(false);
+  useEffect(() => { const m = window.matchMedia("(pointer: fine)"); const f = () => setFine(m.matches); f(); m.addEventListener("change", f); return () => m.removeEventListener("change", f); }, []);
   const list0 = tabs.some((t) => t.href === current.href) ? tabs : [...tabs, current];
   // a split pair shows as one merged tab (Chrome split view), placed where its first tab sits
   const pair = split && split.every((h) => list0.some((t) => t.href === h)) ? split : null;
@@ -79,7 +82,7 @@ export function StudyTabs({ current }: { current: StudyTab }) {
   );
   return (
     <div className="relative">
-      <div ref={strip} className="no-scrollbar flex items-end gap-1 overflow-x-auto border-b-2 border-[var(--border)]" role="tablist" aria-label="Open chapters">
+      <div ref={strip} className="no-scrollbar flex items-end gap-1 overflow-x-auto overscroll-x-contain border-b-2 border-[var(--border)]" role="tablist" aria-label="Open chapters">
         <Reorder.Group axis="x" values={list} onReorder={(v) => reorder(pair ? v.flatMap((t) => (t.href === pair[0] ? [t, byHref(pair[1])] : [t])) : v)} className="flex items-end gap-1">
           {list.map((t, idx) => {
             const isPair = pair && t.href === pair[0];
@@ -89,7 +92,7 @@ export function StudyTabs({ current }: { current: StudyTab }) {
             const last = g && list[idx + 1]?.group !== t.group;
             const hidden = g?.collapsed && !on;
             return (
-              <Reorder.Item key={t.href} value={t} className="flex shrink-0 items-end gap-1" whileDrag={{ scale: 1.03 }}>
+              <Reorder.Item key={t.href} value={t} drag={fine ? "x" : false} dragListener={fine} className="flex shrink-0 items-end gap-1" whileDrag={{ scale: 1.03 }}>
                 {first && g && (
                   <button type="button" onClick={() => toggleGroup(g.id)} onContextMenu={(e) => { e.preventDefault(); setGroupEdit(g.id); }} onDoubleClick={() => setGroupEdit(g.id)} aria-expanded={!g.collapsed}
                     aria-label={`Group ${g.name}, ${list0.filter((x) => x.group === g.id).length} tabs. Click to ${g.collapsed ? "expand" : "collapse"}, right-click to edit`}
@@ -103,7 +106,7 @@ export function StudyTabs({ current }: { current: StudyTab }) {
                       {isPair ? (
                         <div role="presentation" className={`${tabBox(on)} max-w-[420px]`} onContextMenu={(e) => { e.preventDefault(); showMenu(t.href, e.currentTarget); }}>
                           <Columns2 className="h-4 w-4 shrink-0 text-[var(--st-accent,var(--text-secondary))]" aria-hidden />
-                          <Link href={pair.includes(current.href) ? current.href : pair[0]} role="tab" aria-selected={on} aria-current={on ? "page" : undefined} className="flex min-w-0 items-center gap-2" aria-label={`Split view: ${byHref(pair[0]).title} and ${byHref(pair[1]).title}`}>
+                          <Link draggable={false} href={pair.includes(current.href) ? current.href : pair[0]} role="tab" aria-selected={on} aria-current={on ? "page" : undefined} className="flex min-w-0 items-center gap-2" aria-label={`Split view: ${byHref(pair[0]).title} and ${byHref(pair[1]).title}`}>
                             <span className="max-w-[150px]">{label(byHref(pair[0]), on)}</span>
                             <span aria-hidden className="h-7 w-px bg-[var(--border)]" />
                             <span className="max-w-[150px]">{label(byHref(pair[1]), on)}</span>
@@ -113,7 +116,7 @@ export function StudyTabs({ current }: { current: StudyTab }) {
                       ) : (
                         <div role="presentation" className={`${tabBox(on)} max-w-[260px]`} onDoubleClick={() => pin(t.href)} onContextMenu={(e) => { e.preventDefault(); showMenu(t.href, e.currentTarget); }}>
                           <span aria-hidden className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: `var(--tint-${t.tint ?? "peri"}-ink)` }} />
-                          <Link href={t.href} role="tab" aria-selected={on} aria-current={on ? "page" : undefined} className="min-w-0" title={t.title.length > 22 || t.subject.length > 24 ? `${t.subject}: ${t.title}` : undefined}>{label(t, on)}</Link>
+                          <Link draggable={false} href={t.href} role="tab" aria-selected={on} aria-current={on ? "page" : undefined} className="min-w-0" title={t.title.length > 22 || t.subject.length > 24 ? `${t.subject}: ${t.title}` : undefined}>{label(t, on)}</Link>
                           {t.href !== NEW_TAB && <button type="button" onClick={(e) => showMenu(t.href, e.currentTarget)} aria-label={`More for ${t.title}`} className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-black/5 ${on ? "" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100"}`}><MoreHorizontal className="h-3.5 w-3.5" /></button>}
                           {t.pinned ? <button type="button" onClick={() => pin(t.href)} aria-label={`Unpin ${t.title}`} className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-black/5"><Pin className="h-3.5 w-3.5" /></button>
                             : <button type="button" onClick={() => shut(t.href)} aria-label={`Close ${t.title}`} className={`grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-black/5 ${on ? "" : "opacity-0 group-hover:opacity-100 focus-visible:opacity-100"}`}><X className="h-3.5 w-3.5" /></button>}

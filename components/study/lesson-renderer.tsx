@@ -25,6 +25,9 @@ import { BankerLab, CountLab, DetectLab, PreventLab, StarveLab } from "@/compone
 import { ForkLab, ProcessStateLab, SyscallLab, ThreadLab } from "@/components/study/process-labs";
 import { SchedLab } from "@/components/study/sched-lab";
 import { BufferLab, RaceLab, SemaphoreLab } from "@/components/study/sync-labs";
+import { FitLab, PagingLab, TlbLab } from "@/components/study/memory-labs";
+import { ReplaceLab } from "@/components/study/vm-labs";
+import { AllocLab, DiskLab } from "@/components/study/fs-labs";
 import { LessonTools } from "@/components/study/lesson-tools";
 import { useLessonHighlights } from "@/components/study/lesson-highlights";
 import Link from "next/link";
@@ -181,7 +184,7 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
         const own = figs.filter((f) => f.for === ex.id);
         return <Sect key={ex.id} t={t} k={`ex${i}`} className={`grid gap-5 ${own.length ? "@3xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</Sect>;
       })}
-      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : lab.lab === "threads" ? <ThreadLab /> : lab.lab === "syscall" ? <SyscallLab /> : lab.lab === "sched" ? <SchedLab /> : lab.lab === "sched-prio" ? <SchedLab initial="PRIO" /> : lab.lab === "race" ? <RaceLab /> : lab.lab === "semaphore" ? <SemaphoreLab /> : lab.lab === "buffer" ? <BufferLab /> : <StarveLab />}</Sect>}
+      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : lab.lab === "threads" ? <ThreadLab /> : lab.lab === "syscall" ? <SyscallLab /> : lab.lab === "sched" ? <SchedLab /> : lab.lab === "sched-prio" ? <SchedLab initial="PRIO" /> : lab.lab === "race" ? <RaceLab /> : lab.lab === "semaphore" ? <SemaphoreLab /> : lab.lab === "buffer" ? <BufferLab /> : lab.lab === "fit" ? <FitLab /> : lab.lab === "paging" ? <PagingLab /> : lab.lab === "tlb" ? <TlbLab /> : lab.lab === "replace" ? <ReplaceLab /> : lab.lab === "disk" ? <DiskLab /> : lab.lab === "alloc" ? <AllocLab /> : <StarveLab />}</Sect>}
       {(faded || shortcut) && <Sect t={t} k="faded" className={`grid gap-5 ${faded && shortcut ? "@3xl:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</Sect>}
       {all("trap").length > 0 && <Sect t={t} k="traps" className="grid gap-5 @xl:grid-cols-2 @5xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</Sect>}
       {(gate || recall) && <Sect t={t} k="gate" className="grid gap-5 @3xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</Sect>}
