@@ -40,7 +40,8 @@ function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
   const letters = ["A", "B", "C", "D"];
   const correct = q.answer.split(",").map((x) => x.trim());
   const mine = q.kind === "NAT" ? nat.trim() : [...pick].sort().join(", ");
-  const right = shown && mine === q.answer;
+  // numbers are compared as numbers (2.5 = 2.50), within a small tolerance for rounding
+  const right = shown && (q.kind === "NAT" ? Number.isFinite(parseFloat(mine)) && Math.abs(parseFloat(mine) - parseFloat(q.answer)) <= 0.01 : mine === q.answer);
   const toggle = (l: string) => { if (shown) return; setPick((p) => (q.kind === "MSQ" ? (p.includes(l) ? p.filter((x) => x !== l) : [...p, l]) : [l])); };
   const can = q.kind === "NAT" ? nat.trim() !== "" : pick.length > 0;
   const tone = (l: string) => {
@@ -100,6 +101,20 @@ const Hook = ({ b }: { b: B<"hook"> }) => <div {...card("butter")}><p className=
 const Objectives = ({ b }: { b: B<"objectives"> }) => <div {...card("peri")}><Label icon={<Target className="h-4 w-4" aria-hidden />}>What you will learn</Label><ul className="mt-2 list-disc space-y-1 pl-5 text-[15px] text-[var(--text-primary)]">{b.items.map((t) => <li key={t}>{t}</li>)}</ul></div>;
 const Intuition = ({ b }: { b: B<"intuition"> }) => <section className={plain}><h3 className="lesson-h">The idea</h3>{b.paras.map((p, i) => <p key={i} className="lesson-p mt-2">{p}</p>)}{b.analogyLimit && <p className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3 text-sm text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">Where the picture breaks: </b>{b.analogyLimit}</p>}</section>;
 const Definition = ({ b }: { b: B<"definition"> }) => <section {...card("lilac")}><h3 className="lesson-h !mb-1">{b.name}</h3><p className="lesson-p">{b.text}</p>{b.items && <ol className="mt-3 space-y-2">{b.items.map((t, i) => <li key={t} className="flex gap-3 rounded-xl bg-[var(--surface)] p-3"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--tint-ink)] text-xs font-bold text-[var(--surface)]">{i + 1}</span><span className="text-[15px] text-[var(--text-primary)]">{t}</span></li>)}</ol>}</section>;
+const Deep = ({ b }: { b: B<"deep"> }) => (
+  <section className={plain}>
+    <h3 className="lesson-h">In depth</h3>
+    <div className="mt-3 grid gap-x-10 gap-y-6 @3xl:grid-cols-2">
+      {b.sections.map((x) => (
+        <div key={x.h}>
+          <h4 className="font-display text-lg font-extrabold text-[var(--st-accent,var(--text-primary))]">{x.h}</h4>
+          {x.paras.map((p, i) => <p key={i} className="lesson-p mt-2">{p}</p>)}
+          {x.points && <ul className="mt-2 list-disc space-y-1 pl-5 text-[15px] leading-relaxed text-[var(--text-primary)]">{x.points.map((t) => <li key={t}>{t}</li>)}</ul>}
+        </div>
+      ))}
+    </div>
+  </section>
+);
 const Walk = ({ b }: { b: B<"walkthrough"> }) => <section className={plain}><h3 className="lesson-h">Step by step</h3><ol className="mt-2 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--ink)] text-xs font-bold text-[var(--background)]">{i + 1}</span><p className="lesson-p">{s}</p></li>)}</ol>{b.prompt && <details className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3"><summary className="cursor-pointer text-sm font-bold text-[var(--text-primary)]">Think: {b.prompt.q}</summary><p className="mt-2 text-sm text-[var(--text-secondary)]">{b.prompt.a}</p></details>}</section>;
 const Figure = ({ b }: { b: B<"figure"> }) => <figure className={`${plain} grid content-center justify-items-center gap-2`}><Diagram fig={b.fig} /><figcaption className="text-center text-sm text-[var(--text-secondary)]">{b.caption}</figcaption><span className="sr-only">{b.alt}</span></figure>;
 const Example = ({ b }: { b: B<"example"> }) => (
@@ -128,6 +143,7 @@ function sectionsOf(t: Topic): Sec[] {
   const out: Sec[] = [];
   if (has("hook") || has("objectives")) out.push({ key: "start", label: "What this is about" });
   if (has("intuition") || has("definition")) out.push({ key: "idea", label: "The idea and the definition" });
+  if (has("deep")) out.push({ key: "deep", label: "In depth" });
   if (has("walkthrough")) out.push({ key: "method", label: "Step by step" });
   exs.forEach((e, i) => out.push({ key: `ex${i}`, label: `Example ${i + 1}: ${e.title}` }));
   if (has("lab")) out.push({ key: "lab", label: "Lab: try it yourself" });
@@ -146,7 +162,7 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
   const one = <T extends Block["type"]>(k: T) => t.blocks.find((b) => b.type === k) as B<T> | undefined;
   const all = <T extends Block["type"]>(k: T) => t.blocks.filter((b) => b.type === k) as B<T>[];
   const figs = all("figure"), loose = figs.filter((f) => !f.for);
-  const lab = one("lab"), practice = one("practice"), hook = one("hook"), obj = one("objectives"), intu = one("intuition"), def = one("definition"), walk = one("walkthrough"), faded = one("faded"), shortcut = one("shortcut"), gate = one("gate"), recall = one("recall"), links = one("links");
+  const deep = one("deep"), lab = one("lab"), practice = one("practice"), hook = one("hook"), obj = one("objectives"), intu = one("intuition"), def = one("definition"), walk = one("walkthrough"), faded = one("faded"), shortcut = one("shortcut"), gate = one("gate"), recall = one("recall"), links = one("links");
   const qs = all("check").flatMap((c) => c.questions);
   return (
     <article id={t.id} className="scroll-mt-24 space-y-5 lg:scroll-mt-4">
@@ -156,6 +172,7 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
       </header>
       {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
       {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 @3xl:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
+      {deep && <Sect t={t} k="deep"><Deep b={deep} /></Sect>}
       {walk && <Sect t={t} k="method" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"><Walk b={walk} />{loose[0] && <Figure b={loose[0]} />}</Sect>}
       {loose.length > 1 && <div className="grid gap-5 @xl:grid-cols-2">{loose.slice(1).map((f) => <Figure key={f.id} b={f} />)}</div>}
       {all("example").map((ex, i) => {

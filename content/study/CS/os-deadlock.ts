@@ -1,5 +1,6 @@
 import type { Chapter } from "@/lib/study/schema";
 import { DEADLOCK_TOPICS_2_6 } from "./os-deadlock-more";
+import { deepen } from "./os-depth";
 
 /**
  * Reference chapter: Operating System → Deadlock (docs/study-materials/BLUEPRINT-FINAL.md).
@@ -198,3 +199,6 @@ export const OS_DEADLOCK: Chapter = {
     ...DEADLOCK_TOPICS_2_6,
   ],
 };
+
+// deeper material for every topic (content/study/CS/os-depth.ts)
+OS_DEADLOCK.topics = deepen(OS_DEADLOCK.topics);

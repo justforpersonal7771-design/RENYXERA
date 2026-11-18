@@ -17,6 +17,7 @@ export type Block =
   | { type: "objectives"; items: string[] }
   | { type: "intuition"; paras: string[]; analogyLimit?: string }
   | { type: "definition"; name: string; text: string; items?: string[] }
+  | { type: "deep"; sections: { h: string; paras: string[]; points?: string[] }[] }
   | { type: "walkthrough"; steps: string[]; prompt?: { q: string; a: string } }
   | { type: "figure"; id: string; fig: Fig; caption: string; alt: string; for?: string }
   | { type: "example"; id: string; level: "gate" | "edge" | "easy"; title: string; given: string; find: string; steps: { say: string; result?: string }[]; answer: string; check?: string }

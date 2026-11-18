@@ -1,5 +1,6 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
 import { syscalls, threads } from "./os-processes-more";
+import { deepen } from "./os-depth";
 
 /**
  * Operating System → Processes and threads (docs/study-materials/BLUEPRINT-FINAL.md). Our own words and examples.
@@ -140,5 +141,5 @@ export const OS_PROCESSES: Chapter = {
       { label: "4. System calls", sub: "and the kernel boundary", state: "done" },
     ],
   },
-  topics: [states, forks, threads, syscalls],
+  topics: deepen([states, forks, threads, syscalls]),
 };
