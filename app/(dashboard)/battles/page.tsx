@@ -104,36 +104,30 @@ function Citadel() {
     return () => window.removeEventListener("renyxera:coins", load);
   }, []);
   const count = Array.isArray(tickets) ? tickets.length : 0;
-  const weakest = perfReady ? [...states].sort((a, b) => a.level - b.level || a.attempted - b.attempted)[0] : null;
 
   return (
     <>
       <section aria-label="Your citadel" className="relative -mx-3 sm:-mx-6 lg:-mx-10">
-        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className={`no-scrollbar h-[56vh] min-h-[340px] overflow-x-auto overscroll-x-contain transition-opacity duration-300 lg:h-[66vh] lg:overflow-visible ${perfReady ? "" : "opacity-60"}`}><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => { sfx("focus"); buzz(10); setPickId(id); }} /></div>
+        <div ref={(el) => { if (el && !el.dataset.c) { el.dataset.c = "1"; el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; } }} className={`no-scrollbar h-[calc(100dvh-21rem)] min-h-[300px] overflow-x-auto overscroll-x-contain transition-opacity duration-300 lg:h-[calc(100dvh-19rem)] lg:overflow-visible ${perfReady ? "" : "opacity-60"}`}><CitadelScene buildings={states} hallLevel={hall} onPick={(id) => { sfx("focus"); buzz(10); setPickId(id); }} /></div>
         <div className="absolute inset-x-3 top-1 flex flex-wrap items-start gap-2 sm:inset-x-6 lg:inset-x-10">
           <span className="g-hud !pl-3">Town Hall <b className="text-[var(--g-brass-hi)]">{hall}</b></span>
-          {league && <span className="g-hud !pl-3">{league.name} league</span>}
+          {league && <span className="g-hud hidden !pl-3 sm:inline-flex">{league.name} league</span>}
           {!perfReady && <span className="g-hud !pl-3" role="status">Counting your practice…</span>}
           <span className="flex-1" />
-          <button type="button" onClick={() => { sfx("tap"); setSheet("challenges"); }} className="g-hud relative" aria-label={`Challenges for you${count ? `, ${count} waiting` : ""}`}>
-            <Inbox className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Inbox</span>{count > 0 && <span className="g-orb-badge !static ml-1">{count}</span>}
+          <button type="button" onClick={() => { sfx("tap"); setSheet("challenges"); }} className="g-icon-btn" aria-label={`Challenges for you${count ? `, ${count} waiting` : ""}`} title="Inbox">
+            <Inbox className="h-5 w-5" aria-hidden />{count > 0 && <span className="g-dot-badge">{count}</span>}
           </button>
-          <button type="button" onClick={() => { sfx("tap"); setSheet("daily"); }} className="g-hud relative" aria-label={daily ? "Daily reward ready" : "Daily reward"}>
-            <Gift className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Daily</span>{daily && <span className="g-orb-badge !static ml-1">1</span>}
+          <button type="button" onClick={() => { sfx("tap"); setSheet("daily"); }} className="g-icon-btn" aria-label={daily ? "Daily reward ready" : "Daily reward"} title="Daily reward">
+            <Gift className="h-5 w-5" aria-hidden />{daily && <span className="g-dot-badge">1</span>}
           </button>
         </div>
       </section>
 
-      <div className="mx-auto mt-2 grid max-w-5xl gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+      <div className="mx-auto mt-2 max-w-5xl">
         <div className="rounded-2xl bg-[linear-gradient(180deg,var(--g-wood),var(--g-wood-dark))] p-4 shadow-[inset_0_1px_0_rgba(255,220,170,0.3)]">
           <p className="g-title text-lg">{toNextHall === 0 ? `Town Hall ${hall + 1} is ready` : `Town Hall ${hall + 1}: raise your buildings ${toNextHall} more level${toNextHall === 1 ? "" : "s"} in total`}</p>
           <p className="mt-1 text-sm g-text-2">Tap a building to train it or raid a friend&apos;s. Levels come only from questions you solve.</p>
         </div>
-        {weakest && (
-          <button type="button" onClick={() => { sfx("tap"); setRound({ kind: "rush", title: `${weakest.name} rush`, subjects: weakest.subjects }); }} className="g-play !min-h-[64px] !px-6 !text-lg">
-            <Swords className="h-5 w-5" aria-hidden /> Train {weakest.name}
-          </button>
-        )}
       </div>
 
       <AnimatePresence>

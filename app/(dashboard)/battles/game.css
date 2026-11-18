@@ -337,4 +337,20 @@
   .g-opt, .g-opt.is-on { transition: none; transform: none; }
   .g-gate-close .g-gate-door, .g-gate-close .g-gate-door + .g-gate-door { transform: none; opacity: 0; animation: g-fade-in 200ms ease forwards; }
 }
+
+/* HUD (owner, 18 Nov): round buttons keep their own size and never overlap; icon buttons carry a notification dot */
+.g-hud-orb { min-width: 0 !important; width: 46px; height: 46px; display: grid; place-items: center; }
+.g-icon-btn { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; color: var(--g-text);
+  background: linear-gradient(180deg, var(--g-wood-hi), var(--g-wood) 45%, var(--g-wood-dark)); box-shadow: inset 0 1px 0 rgba(255,220,170,.35), 0 3px 0 #1a0d06; transition: transform 120ms; }
+.g-icon-btn:active { transform: translateY(2px); box-shadow: inset 0 1px 0 rgba(255,220,170,.35), 0 1px 0 #1a0d06; }
+.g-dot-badge { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; display: grid; place-items: center;
+  background: #c4412d; color: #fff; font: 800 11px/1 var(--font-sans); box-shadow: 0 0 0 2px var(--g-felt-dark); }
+/* the doors carry carved panels: a brass astrolabe on each leaf and a lattice band, so they are never blank */
+.g-gate-door::before { background:
+    radial-gradient(circle at 50% 50%, transparent 0 21%, rgba(232,193,111,.55) 21.4% 22.4%, transparent 22.8% 31%, rgba(232,193,111,.35) 31.3% 32%, transparent 32.4%),
+    conic-gradient(from 0deg at 50% 50%, rgba(232,193,111,.18) 0 4deg, transparent 4deg 30deg, rgba(232,193,111,.18) 30deg 34deg, transparent 34deg 60deg, rgba(232,193,111,.18) 60deg 64deg, transparent 64deg 90deg, rgba(232,193,111,.18) 90deg 94deg, transparent 94deg 120deg, rgba(232,193,111,.18) 120deg 124deg, transparent 124deg 150deg, rgba(232,193,111,.18) 150deg 154deg, transparent 154deg 180deg, rgba(232,193,111,.18) 180deg 184deg, transparent 184deg 210deg, rgba(232,193,111,.18) 210deg 214deg, transparent 214deg 240deg, rgba(232,193,111,.18) 240deg 244deg, transparent 244deg 270deg, rgba(232,193,111,.18) 270deg 274deg, transparent 274deg 300deg, rgba(232,193,111,.18) 300deg 304deg, transparent 304deg 330deg, rgba(232,193,111,.18) 330deg 334deg, transparent 334deg),
+    repeating-linear-gradient(45deg, rgba(43,23,11,.35) 0 2px, transparent 2px 18px), repeating-linear-gradient(-45deg, rgba(43,23,11,.35) 0 2px, transparent 2px 18px); }
+.g-gate-mark span { display: grid; justify-items: center; gap: 2px; }
+.g-gate-mark span b { font-family: var(--font-game), var(--font-brand); font-weight: 400; font-size: clamp(1.6rem, 4.6vw, 2.8rem); letter-spacing: .06em; }
+.g-gate-mark span small { font-family: var(--font-brand), var(--font-sans); font-size: clamp(.7rem, 1.4vw, .9rem); letter-spacing: .3em; color: #d9b382; }
 } /* end @layer components */

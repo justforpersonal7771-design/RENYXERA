@@ -55,7 +55,7 @@ export function GameSettingsPanel({ open, onClose }: { open: boolean; onClose: (
             </div>
             <div className="space-y-2.5">
               <p className="pt-1 text-sm font-extrabold text-[var(--g-brass-hi)]">Sound</p>
-              <Toggle label="Sound" note="Made in your browser: tanpura, santoor and tabla, tuned to the time of day" on={s.sound} onChange={(v) => put({ sound: v })} />
+              <Toggle label="Sound" note="A dholak and tabla groove with santoor riffs in the raag of the hour, made in your browser" on={s.sound} onChange={(v) => put({ sound: v })} />
               <Slider label="Music" value={s.music} disabled={!s.sound} onChange={(v) => s.set({ music: v })} />
               <Slider label="Effects" value={s.sfx} disabled={!s.sound} onChange={(v) => { s.set({ sfx: v }); sfx("coin"); }} />
               <p className="pt-3 text-sm font-extrabold text-[var(--g-brass-hi)]">Feel</p>

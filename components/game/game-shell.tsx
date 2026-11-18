@@ -60,8 +60,8 @@ function SoundToggle() {
   const on = useGameSettings((s) => s.sound);
   const set = useGameSettings((s) => s.set);
   return (
-    <button type="button" onClick={() => { set({ sound: !on }); if (!on) setTimeout(() => sfx("focus"), 30); }} className="g-orb !min-w-0 shrink-0" style={{ ["--c" as string]: "#6b3f22" }} aria-pressed={on} aria-label={on ? "Sound on. Turn it off" : "Sound off. Turn it on"}>
-      <span className="g-orb-face !h-11 !w-11 !rounded-2xl">{on ? <Volume2 className="h-5 w-5" aria-hidden /> : <VolumeX className="h-5 w-5 opacity-80" aria-hidden />}</span>
+    <button type="button" onClick={() => { set({ sound: !on }); if (!on) setTimeout(() => sfx("focus"), 30); }} className="g-orb g-hud-orb shrink-0" style={{ ["--c" as string]: "#6b3f22" }} aria-pressed={on} aria-label={on ? "Sound on. Turn it off" : "Sound off. Turn it on"}>
+      <span className="g-orb-face !h-10 !w-10 !rounded-2xl">{on ? <Volume2 className="h-5 w-5" aria-hidden /> : <VolumeX className="h-5 w-5 opacity-80" aria-hidden />}</span>
     </button>
   );
 }
@@ -92,10 +92,10 @@ function Hud() {
   const inLobby = path === "/battles";
   const [settings, setSettings] = useState(false);
   return (
-    <header className="relative z-30 flex shrink-0 items-center gap-1.5 px-3 pt-3 sm:gap-3 sm:px-6 sm:pt-4">
+    <header className="relative z-30 flex shrink-0 items-center gap-2.5 px-3 pt-3 sm:gap-3 sm:px-6 sm:pt-4">
       {!inLobby && (
-        <Link href="/battles" aria-label="Back to the lobby" className="g-orb !min-w-0 shrink-0" style={{ ["--c" as string]: "#6b3f22" }}>
-          <span className="g-orb-face !h-11 !w-11 !rounded-2xl"><ChevronLeft className="h-6 w-6" aria-hidden /></span>
+        <Link href="/battles" aria-label="Back to the lobby" className="g-orb g-hud-orb shrink-0" style={{ ["--c" as string]: "#6b3f22" }}>
+          <span className="g-orb-face !h-10 !w-10 !rounded-2xl"><ChevronLeft className="h-6 w-6" aria-hidden /></span>
         </Link>
       )}
       {user ? (
@@ -125,11 +125,11 @@ function Hud() {
         </span>
       )}
       <SoundToggle />
-      <button type="button" onClick={() => { sfx("tap"); setSettings(true); }} className="g-orb !min-w-0 shrink-0" style={{ ["--c" as string]: "#6b3f22" }} aria-label="Game settings">
-        <span className="g-orb-face !h-11 !w-11 !rounded-2xl"><Settings className="h-5 w-5" aria-hidden /></span>
+      <button type="button" onClick={() => { sfx("tap"); setSettings(true); }} className="g-orb g-hud-orb shrink-0" style={{ ["--c" as string]: "#6b3f22" }} aria-label="Game settings">
+        <span className="g-orb-face !h-10 !w-10 !rounded-2xl"><Settings className="h-5 w-5" aria-hidden /></span>
       </button>
-      <button type="button" onClick={exit} className="g-orb !min-w-0 shrink-0" style={{ ["--c" as string]: "#6b3f22" }} aria-label="Exit to study">
-        <span className="g-orb-face !h-11 !w-11 !rounded-2xl"><DoorOpen className="h-5 w-5" aria-hidden /></span>
+      <button type="button" onClick={exit} className="g-orb g-hud-orb shrink-0" style={{ ["--c" as string]: "#6b3f22" }} aria-label="Exit to study">
+        <span className="g-orb-face !h-10 !w-10 !rounded-2xl"><DoorOpen className="h-5 w-5" aria-hidden /></span>
       </button>
       <GamePortal><GameSettingsPanel open={settings} onClose={() => setSettings(false)} /></GamePortal>
     </header>
@@ -197,9 +197,9 @@ export function GameShell({ children }: { children: ReactNode }) {
       {/* arena light from above, shared by every game screen */}
       <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] bg-[radial-gradient(60%_90%_at_50%_0%,rgba(255,200,130,0.14),transparent_70%)]" />
       <div aria-hidden className="g-gate"><div className="g-gate-door" /><div className="g-gate-door" /></div>
-      <div aria-hidden className="g-gate-mark"><span>RENYXERA</span></div>
+      <div aria-hidden className="g-gate-mark"><span><b>The Citadel</b><small>by RENYXERA</small></span></div>
       <Hud />
-      <main id="game-scroll" className="g-enter no-scrollbar relative z-10 min-h-0 flex-1 overflow-y-auto px-3 pb-32 pt-4 sm:px-6 lg:px-10">
+      <main id="game-scroll" className="g-enter no-scrollbar relative z-10 min-h-0 flex-1 overflow-y-auto px-3 pb-28 pt-3 sm:px-6 lg:px-10">
         {children}
       </main>
       <Dock />

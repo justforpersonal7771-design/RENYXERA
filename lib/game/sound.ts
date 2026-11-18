@@ -83,8 +83,8 @@ class Engine {
   private setLevels() {
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
-    this.music.gain.setTargetAtTime(this.s.sound ? this.s.music * 0.35 : 0, t, 0.15);
-    this.fx.gain.setTargetAtTime(this.s.sound ? this.s.sfx * 0.9 : 0, t, 0.05);
+    this.music.gain.setTargetAtTime(this.s.sound ? this.s.music * 0.5 : 0, t, 0.15);
+    this.fx.gain.setTargetAtTime(this.s.sound ? this.s.sfx * 1.3 : 0, t, 0.05);
   }
   apply(s: GameSettings) {
     this.s = s;
@@ -156,23 +156,57 @@ class Engine {
     }
   }
 
-  /** Home music: a soft tanpura drone (Sa, Pa) with an occasional plucked phrase from the hour's raag. */
+  /** Home music (owner, 18 Nov: "the drone puts me to sleep"): an upbeat courtyard groove at 104 BPM. A dholak-style bass
+   *  on the beat, crisp tabla "na" on the off-beats, a soft shaker, a bass pluck on Sa and Pa, and a two-bar santoor riff
+   *  in the hour's raag that changes every few bars. Scheduled ahead on the audio clock, so it never drifts. */
   startMusic() {
     if (!this.s.sound || this.s.music === 0 || this.drone || !this.ensure()) return;
-    const ctx = this.ctx!; const t = ctx.currentTime;
-    const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 480; lp.Q.value = 1.2;
-    const lfo = ctx.createOscillator(), lfoG = ctx.createGain(); lfo.frequency.value = 0.15; lfoG.gain.value = 120; lfo.connect(lfoG); lfoG.connect(lp.frequency);
-    const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.16, t + 2.5);
-    const oscs = [130.81, 196, 130.81 * 2].map((f, i) => { const o = ctx.createOscillator(); o.type = "sawtooth"; o.frequency.value = f; o.detune.value = i * 3 - 3; o.connect(lp); o.start(t); return o; });
-    lp.connect(g); g.connect(this.music); lfo.start(t);
-    const loop = () => {
-      const r = RAAG[raagNow()];
-      const n = 2 + Math.floor(Math.random() * 3); let at = 0, step = Math.floor(Math.random() * r.length);
-      for (let i = 0; i < n; i++) { step = Math.max(0, Math.min(r.length - 1, step + (Math.random() < 0.5 ? -1 : 1))); this.pluck(SA * r[step], at, 0.22, this.music); at += 0.38 + Math.random() * 0.5; }
-      this.pluckTimer = setTimeout(loop, 7000 + Math.random() * 7000);
+    const ctx = this.ctx!;
+    const bus = ctx.createGain(); bus.gain.value = 0.0001; bus.connect(this.music);
+    bus.gain.exponentialRampToValueAtTime(0.9, ctx.currentTime + 1.2);
+    const BPM = 104, step = 60 / BPM / 4; // sixteenth notes
+    const kick = [1,0,0,0, 0,0,1,0, 1,0,0,0, 0,0,0,0];
+    const na =   [0,0,1,0, 1,0,0,1, 0,0,1,0, 1,0,1,0];
+    const hit = (t: number, f0: number, f1: number, dur: number, peak: number, type: OscillatorType = "sine") => {
+      const o = ctx.createOscillator(), g = ctx.createGain(); o.type = type;
+      o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(f1, t + dur);
+      g.gain.setValueAtTime(peak, t); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      o.connect(g); g.connect(bus); o.start(t); o.stop(t + dur + 0.02);
     };
-    this.pluckTimer = setTimeout(loop, 2500);
-    this.drone = { stop: () => { const n = ctx.currentTime; g.gain.cancelScheduledValues(n); g.gain.setTargetAtTime(0.0001, n, 0.15); oscs.forEach((o) => o.stop(n + 0.8)); lfo.stop(n + 0.8); } };
+    const noiseBuf = (() => { const b = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.05), ctx.sampleRate); const d = b.getChannelData(0); for (let k = 0; k < d.length; k++) d[k] = Math.random() * 2 - 1; return b; })();
+    const shake = (t: number, peak: number) => {
+      const src = ctx.createBufferSource(); src.buffer = noiseBuf;
+      const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 6000;
+      const g = ctx.createGain(); g.gain.setValueAtTime(peak, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.04);
+      src.connect(hp); hp.connect(g); g.connect(bus); src.start(t);
+    };
+    const pl = (t: number, f: number, gain: number) => {
+      const src = ctx.createBufferSource(); src.buffer = this.pluckBuf(ctx, f);
+      const g = ctx.createGain(); g.gain.value = gain; src.connect(g); g.connect(bus); src.start(t);
+    };
+    let riff: number[] = [];
+    const newRiff = () => {
+      const r = RAAG[raagNow()];
+      riff = Array.from({ length: 32 }, (_, k) => (k % 2 === 0 && Math.random() < 0.72) || k % 8 === 0 ? r[Math.floor(Math.random() * r.length)] * (Math.random() < 0.25 ? 2 : 1) : 0);
+    };
+    newRiff();
+    let n = 0, next = ctx.currentTime + 0.1;
+    const tick = () => {
+      while (next < ctx.currentTime + 0.25) {
+        const k = n % 16, bar = Math.floor(n / 16);
+        if (kick[k]) hit(next, 150, 52, 0.28, 0.75);
+        if (na[k]) { hit(next, 620, 560, 0.08, 0.16); hit(next, 930, 900, 0.04, 0.08); }
+        shake(next, k % 2 ? 0.05 : 0.09);
+        if (k === 0) pl(next, SA / 2, 0.55);
+        if (k === 8) pl(next, (SA * 1.4983) / 2, 0.45);
+        const m = riff[n % 32]; if (m) pl(next, SA * m, 0.38);
+        if (k === 15 && bar % 4 === 3) newRiff();
+        next += step; n++;
+      }
+      this.pluckTimer = setTimeout(tick, 60);
+    };
+    tick();
+    this.drone = { stop: () => { const t = ctx.currentTime; bus.gain.cancelScheduledValues(t); bus.gain.setTargetAtTime(0.0001, t, 0.12); setTimeout(() => bus.disconnect(), 800); } };
   }
   stopMusic() {
     this.drone?.stop(); this.drone = null;

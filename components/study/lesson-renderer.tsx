@@ -141,7 +141,10 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
   const qs = all("check").flatMap((c) => c.questions);
   return (
     <article id={t.id} className="scroll-mt-4 space-y-5">
-      <h2 className="font-display text-2xl font-extrabold text-[var(--text-primary)] sm:text-3xl">{index + 1}. {t.title}</h2>
+      <header className="lesson-topic-head">
+        <p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
+        <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2>
+      </header>
       {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
       {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 lg:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
       {walk && <Sect t={t} k="method" className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"><Walk b={walk} />{loose[0] && <Figure b={loose[0]} />}</Sect>}
@@ -167,6 +170,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const pane = useRef<HTMLDivElement | null>(null);
   const [current, setCurrent] = useState<string>("");
   const [soon, setSoon] = useState<number | null>(null);
+  const [shut, setShut] = useState<Record<string, boolean>>({});
   const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
 
   // follow the reader: the last section whose top has passed the upper third of the reading pane
@@ -193,17 +197,19 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
 
   return (
     <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)] lg:gap-8" style={{ ["--st-accent" as string]: "#c2410c" }}>
-      <nav aria-label="Chapter outline" className="no-scrollbar relative min-h-0 lg:overflow-y-auto lg:pr-1">
+      <nav aria-label="Chapter outline" className="relative flex min-h-0 flex-col">
+        <div className="shrink-0 pb-3">
         <Link href={backHref} className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"><ArrowLeft className="h-4 w-4" aria-hidden /> Study materials</Link>
         <p className="mt-4 text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
-        <ol className="mt-4 space-y-1">
+        </div>
+        <ol className="lesson-scroll min-h-0 space-y-2 lg:flex-1 lg:overflow-y-auto lg:pr-2">
           {steps.map((s, i) => {
             const t = chapter.topics[i];
             if (!t) return (
               <li key={i}>
                 <button type="button" onClick={() => setSoon((x) => (x === i ? null : i))} aria-expanded={soon === i}
-                  className="flex w-full items-start gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-[var(--surface-secondary)]">
+                  className="flex w-full items-start gap-3 rounded-xl border-2 border-dashed border-[var(--border)] px-2 py-2 text-left transition-colors hover:border-[var(--text-secondary)]">
                   <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-[var(--border)] text-[11px] font-bold text-[var(--text-secondary)]">{i + 1}</span>
                   <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-secondary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-muted,var(--text-secondary))]">{s.sub}</span></span>
                 </button>
@@ -214,11 +220,12 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
             const inTopic = current.startsWith(`${t.id}--`) || (!current && i === 0);
             return (
               <li key={i}>
-                <button type="button" onClick={() => go(t.id)} className={`flex w-full items-start gap-3 rounded-xl px-2 py-2 text-left transition-colors ${inTopic ? "bg-[var(--surface-secondary)]" : "hover:bg-[var(--surface-secondary)]"}`}>
+                <button type="button" onClick={() => { if (inTopic) setShut((x) => ({ ...x, [t.id]: !x[t.id] })); else { setShut((x) => ({ ...x, [t.id]: false })); go(t.id); } }} aria-expanded={!shut[t.id]}
+                  className={`flex w-full items-start gap-3 rounded-xl border-2 px-2 py-2 text-left transition-colors ${inTopic ? "border-[var(--st-accent)]" : "border-dashed border-[var(--border)] hover:border-[var(--text-secondary)]"}`}>
                   <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--st-accent)] text-[11px] font-bold text-white">{i + 1}</span>
                   <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-secondary)]">{s.sub}</span></span>
                 </button>
-                <ol className="ml-5 mt-1 border-l-2 border-[var(--border)] py-1">
+                {!shut[t.id] && <ol className="ml-5 mt-1 border-l-2 border-[var(--border)] py-1">
                   {secs.map((x) => {
                     const id = secId(t, x.key); const on = current === id;
                     return (
@@ -228,13 +235,13 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
                       </li>
                     );
                   })}
-                </ol>
+                </ol>}
               </li>
             );
           })}
         </ol>
       </nav>
-      <div ref={bind} className="no-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:pb-28 lg:pr-1">
+      <div ref={bind} className="lesson-scroll relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
         {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
       </div>
       <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} noteCount={count} noteItems={items} />
