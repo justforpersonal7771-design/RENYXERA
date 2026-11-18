@@ -5,13 +5,16 @@
  * in rows: hook beside objectives, idea beside definition, method beside its figure, every worked example beside its own
  * figures, traps in a row, GATE note beside recall cards, questions two across. Blocks use the app's pastel card system
  * (one tint per block kind) so lessons look like the rest of RENYXERA in light and dark.
+ * Second pass (owner, 18 Nov): one screen on desktop. The outline on the left and the lesson each scroll on their own;
+ * the outline lists every section of the topic, jumps to it and follows your place. Notes, PYQs and the Mentor are
+ * floating tools (lesson-tools.tsx), so the lesson gets the whole remaining width.
  */
-import { useState, type ReactNode } from "react";
-import { ArrowUpRight, Check, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { ArrowLeft, ArrowUpRight, Check, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { RagLab } from "@/components/study/rag-lab";
-import { LessonRail } from "@/components/study/lesson-rail";
+import { LessonTools } from "@/components/study/lesson-tools";
 import { useLessonHighlights } from "@/components/study/lesson-highlights";
 import Link from "next/link";
 
@@ -108,6 +111,27 @@ const Practice = ({ b }: { b: B<"practice"> }) => (
     <ul className="mt-3 grid gap-3 md:grid-cols-3">{b.links.map((l) => <li key={l.href}><Link href={l.href} className="group flex h-full flex-col rounded-2xl border border-[var(--border)] p-4 transition-colors hover:bg-[var(--surface-secondary)]"><span className="font-bold text-[var(--text-primary)]">{l.label}</span><span className="mt-1 text-sm text-[var(--text-secondary)]">{l.sub}</span><span className="mt-2 text-sm font-bold text-[var(--text-primary)] group-hover:underline">Open</span></Link></li>)}</ul></section>
 );
 
+/* ------------------------------------------------------------------ sections (outline + anchors) */
+type Sec = { key: string; label: string };
+function sectionsOf(t: Topic): Sec[] {
+  const has = (k: Block["type"]) => t.blocks.some((b) => b.type === k);
+  const exs = t.blocks.filter((b) => b.type === "example") as B<"example">[];
+  const out: Sec[] = [];
+  if (has("hook") || has("objectives")) out.push({ key: "start", label: "What this is about" });
+  if (has("intuition") || has("definition")) out.push({ key: "idea", label: "The idea and the definition" });
+  if (has("walkthrough")) out.push({ key: "method", label: "Step by step" });
+  exs.forEach((e, i) => out.push({ key: `ex${i}`, label: `Example ${i + 1}: ${e.title}` }));
+  if (has("lab")) out.push({ key: "lab", label: "Lab: try it yourself" });
+  if (has("faded") || has("shortcut")) out.push({ key: "faded", label: "Finish the solution" });
+  if (has("trap")) out.push({ key: "traps", label: "Traps" });
+  if (has("gate") || has("recall")) out.push({ key: "gate", label: "How GATE asks it" });
+  if (has("check")) out.push({ key: "check", label: "Check yourself" });
+  if (has("links") || has("practice")) out.push({ key: "next", label: "Where to go next" });
+  return out;
+}
+const secId = (t: Topic, key: string) => `${t.id}--${key}`;
+const Sect = ({ t, k, children, className = "" }: { t: Topic; k: string; children: ReactNode; className?: string }) => <section id={secId(t, k)} data-sec="" className={`scroll-mt-4 ${className}`}>{children}</section>;
+
 /* ------------------------------------------------------------------ topic layout in rows */
 function TopicView({ t, index }: { t: Topic; index: number }) {
   const one = <T extends Block["type"]>(k: T) => t.blocks.find((b) => b.type === k) as B<T> | undefined;
@@ -116,51 +140,104 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
   const lab = one("lab"), practice = one("practice"), hook = one("hook"), obj = one("objectives"), intu = one("intuition"), def = one("definition"), walk = one("walkthrough"), faded = one("faded"), shortcut = one("shortcut"), gate = one("gate"), recall = one("recall"), links = one("links");
   const qs = all("check").flatMap((c) => c.questions);
   return (
-    <article id={t.id} className="scroll-mt-24 space-y-5">
+    <article id={t.id} className="scroll-mt-4 space-y-5">
       <h2 className="font-display text-2xl font-extrabold text-[var(--text-primary)] sm:text-3xl">{index + 1}. {t.title}</h2>
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</div>
-      <div className="grid gap-5 lg:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</div>
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">{walk && <Walk b={walk} />}{loose[0] && <Figure b={loose[0]} />}</div>
+      {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
+      {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 lg:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
+      {walk && <Sect t={t} k="method" className="grid gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]"><Walk b={walk} />{loose[0] && <Figure b={loose[0]} />}</Sect>}
       {loose.length > 1 && <div className="grid gap-5 md:grid-cols-2">{loose.slice(1).map((f) => <Figure key={f.id} b={f} />)}</div>}
-      {all("example").map((ex) => {
+      {all("example").map((ex, i) => {
         const own = figs.filter((f) => f.for === ex.id);
-        return <div key={ex.id} className={`grid gap-5 ${own.length ? "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</div>;
+        return <Sect key={ex.id} t={t} k={`ex${i}`} className={`grid gap-5 ${own.length ? "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</Sect>;
       })}
-      {lab && <RagLab />}
-      {(faded || shortcut) && <div className={`grid gap-5 ${faded && shortcut ? "lg:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</div>}
-      {all("trap").length > 0 && <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</div>}
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</div>
-      {qs.length > 0 && <section><h3 className="lesson-h flex items-center gap-2"><Check className="h-5 w-5" aria-hidden /> Check yourself</h3><ol className="mt-2 grid gap-4 xl:grid-cols-2">{qs.map((q, i) => <CheckQuestion key={q.id} q={q} n={i + 1} />)}</ol></section>}
-      {links && <Links b={links} />}
-      {practice && <Practice b={practice} />}
+      {lab && <Sect t={t} k="lab"><RagLab /></Sect>}
+      {(faded || shortcut) && <Sect t={t} k="faded" className={`grid gap-5 ${faded && shortcut ? "lg:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</Sect>}
+      {all("trap").length > 0 && <Sect t={t} k="traps" className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</Sect>}
+      {(gate || recall) && <Sect t={t} k="gate" className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</Sect>}
+      {qs.length > 0 && <Sect t={t} k="check"><h3 className="lesson-h flex items-center gap-2"><Check className="h-5 w-5" aria-hidden /> Check yourself</h3><ol className="mt-2 grid gap-4 xl:grid-cols-2">{qs.map((q, i) => <CheckQuestion key={q.id} q={q} n={i + 1} />)}</ol></Sect>}
+      {(links || practice) && <Sect t={t} k="next" className="space-y-5">{links && <Links b={links} />}{practice && <Practice b={practice} />}</Sect>}
     </article>
   );
 }
 
 /* ------------------------------------------------------------------ chapter */
-export function LessonRenderer({ chapter }: { chapter: Chapter }) {
-  const { attach, toolbar, list } = useLessonHighlights(chapter.id);
-  const written = new Set(chapter.topics.map((_, i) => i));
+export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chapter; backHref?: string }) {
+  const { attach, toolbar, list, count } = useLessonHighlights(chapter.id);
   const steps = chapter.map.kind === "strip" ? chapter.map.items : [];
+  const pane = useRef<HTMLDivElement | null>(null);
+  const [current, setCurrent] = useState<string>("");
+  const [soon, setSoon] = useState<number | null>(null);
+  const bind = (el: HTMLDivElement | null) => { pane.current = el; attach(el); };
+
+  // follow the reader: the last section whose top has passed the upper third of the reading pane
+  useEffect(() => {
+    const root = pane.current;
+    if (!root) return;
+    const scroller = getComputedStyle(root).overflowY === "auto" ? root : null;
+    const secs = [...root.querySelectorAll<HTMLElement>("[data-sec]")];
+    const io = new IntersectionObserver((entries) => {
+      const vis = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (vis[0]) setCurrent(vis[0].target.id);
+    }, { root: scroller, rootMargin: "0px 0px -65% 0px", threshold: 0 });
+    secs.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, [chapter]);
+
+  const go = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    setCurrent(id);
+  };
+
   return (
-    <div className="study-lesson grid gap-8 lg:grid-cols-[14rem_minmax(0,1fr)] xl:grid-cols-[14rem_minmax(0,1fr)_20rem]" style={{ ["--st-accent" as string]: "#c2410c" }}>
-      <nav aria-label="Chapter topics" className="lg:sticky lg:top-24 lg:self-start">
-        <p className="text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
+    <div className="study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)] lg:gap-8" style={{ ["--st-accent" as string]: "#c2410c" }}>
+      <nav aria-label="Chapter outline" className="no-scrollbar relative min-h-0 lg:overflow-y-auto lg:pr-1">
+        <Link href={backHref} className="inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-sm font-semibold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"><ArrowLeft className="h-4 w-4" aria-hidden /> Study materials</Link>
+        <p className="mt-4 text-xs font-bold text-[var(--text-secondary)]">{chapter.subject}</p>
         <p className="font-display text-2xl font-extrabold text-[var(--text-primary)]">{chapter.title}</p>
-        <ol className="relative mt-4 space-y-3 border-l-2 border-[var(--border)] pl-5">
+        <ol className="mt-4 space-y-1">
           {steps.map((s, i) => {
-            const ready = written.has(i);
-            const inner = <><span className={`absolute -left-[9px] mt-1 h-4 w-4 rounded-full border-2 ${ready ? "border-[var(--st-accent)] bg-[var(--st-accent)]" : "border-[var(--border)] bg-[var(--background)]"}`} aria-hidden /><span className="block text-sm font-bold text-[var(--text-primary)]">{s.label}</span><span className="block text-xs text-[var(--text-secondary)]">{ready ? s.sub : `${s.sub}, being written`}</span></>;
-            return <li key={i} className={ready ? "" : "opacity-60"}>{ready ? <a href={`#${chapter.topics[i].id}`} className="block">{inner}</a> : <span className="block">{inner}</span>}</li>;
+            const t = chapter.topics[i];
+            if (!t) return (
+              <li key={i}>
+                <button type="button" onClick={() => setSoon((x) => (x === i ? null : i))} aria-expanded={soon === i}
+                  className="flex w-full items-start gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-[var(--surface-secondary)]">
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-[var(--border)] text-[11px] font-bold text-[var(--text-secondary)]">{i + 1}</span>
+                  <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-secondary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-muted,var(--text-secondary))]">{s.sub}</span></span>
+                </button>
+                {soon === i && <p className="mx-2 mb-1 rounded-xl bg-[var(--surface-secondary)] px-3 py-2 text-xs text-[var(--text-secondary)]">Being written. It opens here as soon as it passes review.</p>}
+              </li>
+            );
+            const secs = sectionsOf(t);
+            const inTopic = current.startsWith(`${t.id}--`) || (!current && i === 0);
+            return (
+              <li key={i}>
+                <button type="button" onClick={() => go(t.id)} className={`flex w-full items-start gap-3 rounded-xl px-2 py-2 text-left transition-colors ${inTopic ? "bg-[var(--surface-secondary)]" : "hover:bg-[var(--surface-secondary)]"}`}>
+                  <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--st-accent)] text-[11px] font-bold text-white">{i + 1}</span>
+                  <span className="min-w-0"><span className="block text-sm font-bold text-[var(--text-primary)]">{s.label.replace(/^\d+\.\s*/, "")}</span><span className="block text-xs text-[var(--text-secondary)]">{s.sub}</span></span>
+                </button>
+                <ol className="ml-5 mt-1 border-l-2 border-[var(--border)] py-1">
+                  {secs.map((x) => {
+                    const id = secId(t, x.key); const on = current === id;
+                    return (
+                      <li key={x.key}>
+                        <button type="button" onClick={() => go(id)} aria-current={on ? "location" : undefined}
+                          className={`-ml-[2px] block w-full border-l-2 py-1.5 pl-3 pr-2 text-left text-[13px] leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{x.label}</button>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </li>
+            );
           })}
         </ol>
       </nav>
-      <div ref={attach} className="min-w-0 space-y-14">
+      <div ref={bind} className="no-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:pb-28 lg:pr-1">
         {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} />)}
       </div>
-      <div className="lg:col-span-2 xl:col-span-1">
-        <LessonRail lesson={`${chapter.subject}: ${chapter.title}`} topic={chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} />
-      </div>
+      <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} noteCount={count} />
       {toolbar}
     </div>
   );

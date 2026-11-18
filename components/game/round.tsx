@@ -237,12 +237,12 @@ export function Round({ spec, onClose }: { spec: RoundSpec; onClose: (r: RoundRe
         {q && (phase === "play" || phase === "checking" || phase === "feedback") && (
           <AnimatePresence mode="wait" initial={false}>
             <motion.article key={q.question_id} initial={reduce ? { opacity: 0 } : { opacity: 0, x: 28 }} animate={{ opacity: 1, x: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, x: -28 }} transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-              className="mx-auto grid w-full gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-start">
+              className="mx-auto grid w-full max-w-5xl gap-4">
               <motion.div className="g-parchment" animate={verdict && !verdict.ok && !verdict.unchecked && !reduce ? { x: [0, -5, 5, -3, 0] } : { x: 0 }} transition={{ duration: 0.28 }}>
                 <p className="mb-2 text-xs font-extrabold uppercase tracking-wide opacity-70">{q.subject}, {q.marks} mark{q.marks > 1 ? "s" : ""}, {q.question_type}{q.question_type === "MSQ" ? " (pick all that apply)" : ""}</p>
                 <AstNodeRenderer nodes={q.contentAst} className="text-[17px] leading-relaxed" />
               </motion.div>
-              <div className="grid gap-2.5">
+              <div className={`grid gap-2.5 ${q.question_type === "NAT" ? "" : "md:grid-cols-2"}`}>
                 {q.question_type === "NAT" ? (
                   <label className="g-parchment block">
                     <span className="text-sm font-bold">Your answer (a number)</span>
@@ -266,7 +266,7 @@ export function Round({ spec, onClose }: { spec: RoundSpec; onClose: (r: RoundRe
                 <AnimatePresence>
                   {verdict && (
                     <motion.p initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} role="status"
-                      className={`rounded-2xl px-4 py-3 text-base font-extrabold ${verdict.unchecked ? "bg-[var(--g-felt-deep)] text-[var(--g-text)]" : verdict.ok ? "bg-[#2e6b3b] text-[#eaf6e6]" : "bg-[#8e2f1f] text-[#fbe7df]"}`}>
+                      className={`rounded-2xl px-4 py-3 text-base font-extrabold md:col-span-2 ${verdict.unchecked ? "bg-[var(--g-felt-deep)] text-[var(--g-text)]" : verdict.ok ? "bg-[#2e6b3b] text-[#eaf6e6]" : "bg-[#8e2f1f] text-[#fbe7df]"}`}>
                       {verdict.unchecked ? "Couldn't check this one right now. It is saved and graded at the end." : verdict.ok ? `Right. +${verdict.marks} mark${verdict.marks === 1 ? "" : "s"}` : `Wrong. ${verdict.marks < 0 ? `${verdict.marks.toFixed(2)} marks` : "No negative marks for this type"}${q.question_type === "NAT" ? "" : ". The right option is marked."}`}
                     </motion.p>
                   )}

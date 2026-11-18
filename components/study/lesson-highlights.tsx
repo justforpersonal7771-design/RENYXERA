@@ -88,13 +88,12 @@ export function useLessonHighlights(lesson: string) {
   );
 
   const list = (
-    <div className="card-pastel p-5" data-tint="butter">
-      <p className="flex items-center gap-2 font-bold text-[var(--text-primary)]"><Highlighter className="h-4 w-4" aria-hidden /> Highlights and notes</p>
-      <p className="mt-0.5 text-xs text-[var(--text-secondary)]">{cloud ? "Saved to your account" : "Saved on this device"}</p>
+    <div className="px-1 pb-1">
+      <p className="text-xs text-[var(--text-secondary)]">{cloud ? "Saved to your account" : "Saved on this device"}</p>
       {items.length === 0
         ? <p className="mt-2 text-sm text-[var(--text-secondary)]">{supportsHighlights() ? "Select any text in the lesson to highlight it, then add a note." : "Highlighting needs a newer browser."}</p>
         : <ul className="mt-3 space-y-3">{items.map((h) => (
-          <li key={h.id} className="rounded-2xl bg-[var(--surface)] p-3">
+          <li key={h.id} className="rounded-2xl bg-[var(--surface-secondary)] p-3">
             <div className="flex items-start gap-2 text-sm text-[var(--text-primary)]">
               <span className="mt-1 h-3 w-3 shrink-0 rounded-full" style={{ background: SWATCH[h.color] }} />
               <span className="min-w-0 flex-1 break-words font-semibold">{h.quote}</span>
@@ -104,11 +103,11 @@ export function useLessonHighlights(lesson: string) {
               <NotebookPen className="mt-2 h-3.5 w-3.5 shrink-0 text-[var(--text-muted)]" aria-hidden />
               <textarea value={h.note} onChange={(e) => setNote(h.id, e.target.value)} onBlur={() => saveNote(h.id)} rows={h.note ? 2 : 1} maxLength={2000}
                 placeholder="Add a note…" aria-label="Note for this highlight"
-                className="min-h-[34px] w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)] px-2.5 py-1.5 text-sm text-[var(--text-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-violet,#7c3aed)]" />
+                className="min-h-[34px] w-full resize-y rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1.5 text-sm text-[var(--text-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-violet,#7c3aed)]" />
             </label>
           </li>))}</ul>}
     </div>
   );
 
-  return { attach: setArt, toolbar, list };
+  return { attach: setArt, toolbar, list, count: items.length };
 }
