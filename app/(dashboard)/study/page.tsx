@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, BookOpenText, Check, Clock, Lightbulb, Lock, TriangleAlert } from "lucide-react";
 import { useLessonHighlights } from "@/components/study/lesson-highlights";
+import { Bookshelf } from "@/components/study/bookshelf";
 import { PreviewFrame } from "@/components/preview/preview-frame";
 import { PlanCompare } from "@/components/preview/plan-compare";
 import { FolderTabs } from "@/components/ui/folder-tabs";
@@ -19,18 +20,19 @@ export default function StudyPage() {
   return (
     <div className="space-y-6 pb-8">
       <PreviewFrame state={UPCOMING.study} name="Study materials" when="Lessons for every GATE CS topic, written by us and checked against official papers. Other branches follow.">
-        {(tier) => reading ? <Lesson owned={tier === "pro"} onBack={() => setReading(false)} /> : <Library owned={tier === "pro"} onRead={() => setReading(true)} />}
+        {(tier) => reading ? <Lesson owned={tier === "pro"} onBack={() => setReading(false)} /> : <><Bookshelf /><Library owned={tier === "pro"} onRead={() => setReading(true)} plansOnly /></>}
       </PreviewFrame>
     </div>
   );
 }
 
-function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
+function Library({ owned, onRead, plansOnly }: { owned: boolean; onRead: () => void; plansOnly?: boolean }) {
   const [sub, setSub] = useState(STUDY_SUBJECTS[0].id);
   const s = STUDY_SUBJECTS.find((x) => x.id === sub)!;
   const total = STUDY_SUBJECTS.reduce((a, x) => a + x.chapters.length, 0);
   return (
     <>
+      {!plansOnly && <>
       <section className="card-pastel overflow-hidden p-6 sm:p-8" data-tint="mint" aria-label="Study materials">
         <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr] lg:items-end">
           <div>
@@ -56,6 +58,7 @@ function Library({ owned, onRead }: { owned: boolean; onRead: () => void }) {
           {s.chapters.map((c, i) => <ChapterRow key={c.id} c={c} n={i + 1} tint={s.tint} locked={!owned && !c.free} onRead={onRead} />)}
         </ul>
       </FolderTabs>
+      </>}
       <PlanCompare title="Study materials by plan" rows={[
         ["Free taster: Operating Systems, Deadlock (first topics)", "✓", "✓", "✓"],
         ["Every chapter of your branch", "Study pass", "Study pass", "Study pass"],

@@ -2257,3 +2257,13 @@ html.theme-switching * { transition: none !important; }
 @keyframes play-shine { 0%, 55% { left: -60%; } 100% { left: 130%; } }
 @media (prefers-reduced-motion: reduce) { .play-btn::after { animation: none; display: none; } }
 .arena-rail-btn:focus-visible, .play-btn:focus-visible { outline: 3px solid #fde047; outline-offset: 3px; }
+
+/* Study bookshelf (components/study/bookshelf.tsx): a walnut case, planks with depth, books that slide up when picked. */
+.sp-case { background: linear-gradient(180deg, #4a2d1a, #3a2213); box-shadow: inset 0 0 0 6px #2a1709, inset 0 0 40px rgba(0,0,0,.45), 0 24px 40px -24px rgba(0,0,0,.55); }
+.sp-shelf + .sp-shelf { margin-top: 18px; }
+.sp-plank { height: 16px; margin: 0 -6px; border-radius: 3px; background: linear-gradient(180deg, #9a6a3e, #6e4524 60%, #4a2c16); box-shadow: 0 8px 14px -6px rgba(0,0,0,.6); }
+.sp-book { box-shadow: inset -2px 0 0 rgba(0,0,0,.25), 2px 0 4px rgba(0,0,0,.35); transition: transform 180ms cubic-bezier(.23,1,.32,1); }
+.sp-book:focus-visible { outline: 3px solid #f3d58c; outline-offset: 2px; }
+@media (hover: hover) and (pointer: fine) { .sp-book:hover { transform: translateY(-10px); } }
+.sp-book:active { transform: translateY(-4px); }
+@media (prefers-reduced-motion: reduce) { .sp-book { transition: none; } .sp-book:hover, .sp-book:active { transform: none; } }
