@@ -10,6 +10,9 @@ import { create } from "zustand";
 export type StudyTab = { href: string; title: string; subject: string; tint?: string; pinned?: boolean };
 const KEY = "renyxera.study.tabs.v1";
 const SCROLL_KEY = "renyxera.study.tab-scroll.v1";
+const CLOSED_KEY = "renyxera.study.tabs-closed.v1";
+const loadClosed = (): StudyTab[] => { try { const v = JSON.parse(localStorage.getItem(CLOSED_KEY) ?? "[]"); return Array.isArray(v) ? v.slice(0, 5) : []; } catch { return []; } };
+const saveClosed = (c: StudyTab[]) => { try { localStorage.setItem(CLOSED_KEY, JSON.stringify(c)); } catch { /* private */ } };
 export const MAX_TABS = 8;
 
 const load = (): StudyTab[] => {
@@ -20,7 +23,9 @@ const save = (tabs: StudyTab[]) => { try { localStorage.setItem(KEY, JSON.string
 const ordered = (tabs: StudyTab[]) => [...tabs.filter((t) => t.pinned), ...tabs.filter((t) => !t.pinned)];
 
 type S = {
-  tabs: StudyTab[]; loaded: boolean;
+  tabs: StudyTab[]; loaded: boolean; closed: StudyTab[];
+  /** Reopen the most recently closed tab; returns its href. */
+  reopen: () => string | null;
   hydrate: () => void;
   /** Open (or focus) a tab. Returns the title of a tab closed to make room, if any. */
   open: (t: StudyTab, active?: string) => string | null;
@@ -33,8 +38,13 @@ type S = {
 };
 
 export const useStudyTabs = create<S>((set, get) => ({
-  tabs: [], loaded: false,
-  hydrate: () => { if (!get().loaded) set({ tabs: load(), loaded: true }); },
+  tabs: [], loaded: false, closed: [],
+  hydrate: () => { if (!get().loaded) set({ tabs: load(), closed: loadClosed(), loaded: true }); },
+  reopen: () => {
+    get().hydrate();
+    const [t, ...rest] = get().closed; if (!t) return null;
+    set({ closed: rest }); saveClosed(rest); get().open(t, t.href); return t.href;
+  },
   open: (t, active) => {
     get().hydrate();
     const tabs = get().tabs;
@@ -55,7 +65,8 @@ export const useStudyTabs = create<S>((set, get) => ({
     const tabs = get().tabs, i = tabs.findIndex((x) => x.href === href);
     if (i < 0) return null;
     const next = tabs.filter((x) => x.href !== href);
-    set({ tabs: next }); save(next); forgetScroll(href);
+    const closed = [tabs[i], ...get().closed.filter((c) => c.href !== href)].slice(0, 5);
+    set({ tabs: next, closed }); save(next); saveClosed(closed); forgetScroll(href);
     const n = next[i] ?? next[i - 1];
     return n ? n.href : null; // the neighbour to show if the closed tab was the one being read
   },

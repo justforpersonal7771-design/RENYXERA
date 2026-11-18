@@ -11,7 +11,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { BookOpen, Feather, Search, X } from "lucide-react";
+import { BookOpen, Feather, Plus, Search, X } from "lucide-react";
+import { useStudyTabs } from "@/lib/study/tabs";
 import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { GOAL_SLIDER_DEFAULT_PERCENT, useGoalSliderStore } from "@/store/use-goal-slider-store";
@@ -116,7 +117,7 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
             <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
             <span className={`min-w-0 flex-1 ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
             {mark}
-            {c.href ? <span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span>
+            {c.href ? <span className="flex items-center gap-1.5"><span className="rounded-full bg-emerald-600/12 px-2.5 py-0.5 text-xs font-bold text-emerald-800 dark:text-emerald-300">{c.ready}</span><button type="button" title="Open in a new tab" aria-label={`Open ${c.title} in a new tab`} onClick={(e) => { e.preventDefault(); e.stopPropagation(); useStudyTabs.getState().open({ href: c.href!, title: c.title, subject: b.title, tint: b.tint }); window.location.assign(c.href!); }} className="grid h-7 w-7 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><Plus className="h-3.5 w-3.5" /></button></span>
               : <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] px-2.5 py-0.5 text-xs font-semibold text-[var(--text-muted)]"><Feather className="h-3 w-3" aria-hidden /> Being written</span>}
             <span role="tooltip" className="pointer-events-none absolute bottom-full left-10 z-10 mb-1 hidden whitespace-nowrap rounded-lg bg-[var(--ink)] px-2.5 py-1 text-xs font-semibold text-[var(--background)] shadow-lg group-hover:block group-focus-visible:block">{tip}</span>
           </>

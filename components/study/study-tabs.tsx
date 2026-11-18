@@ -8,8 +8,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion, Reorder } from "motion/react";
-import { BookOpen, Pin, Plus, X } from "lucide-react";
+import { Reorder } from "motion/react";
+import { Pin, Plus, X } from "lucide-react";
 import { CS_SHELF } from "@/lib/study/catalog";
 import { MAX_TABS, useStudyTabs, type StudyTab } from "@/lib/study/tabs";
 
@@ -18,9 +18,8 @@ const isKnown = (href: string) => READY.some((r) => r.href === href);
 
 export function StudyTabs({ current }: { current: StudyTab }) {
   const router = useRouter();
-  const { tabs, open, close, closeOthers, pin, reorder, prune, hydrate } = useStudyTabs();
+  const { tabs, open, close, closeOthers, pin, reorder, prune, hydrate, reopen } = useStudyTabs();
   const [note, setNote] = useState<string | null>(null);
-  const [picker, setPicker] = useState(false);
   const [menu, setMenu] = useState<string | null>(null);
   const strip = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -37,7 +36,23 @@ export function StudyTabs({ current }: { current: StudyTab }) {
   const shut = (href: string) => {
     const next = close(href);
     if (href === current.href) router.push(next ?? "/study");
-  };
+  };  // keyboard (Alt, because Ctrl+number belongs to the browser); ignored while typing
+  useEffect(() => {
+    const k = (e: KeyboardEvent) => {
+      if (!e.altKey || e.ctrlKey || e.metaKey) return;
+      const tg = e.target as HTMLElement | null; if (tg && typeof tg.closest === "function" && tg.closest("input, textarea, [contenteditable='true']")) return;
+      const n = /^Digit([1-8])$/.exec(e.code)?.[1];
+      const list = useStudyTabs.getState().tabs; const i = list.findIndex((t) => t.href === current.href);
+      if (n && list[Number(n) - 1]) { e.preventDefault(); router.push(list[Number(n) - 1].href); }
+      else if (e.code === "BracketRight" && list.length > 1) { e.preventDefault(); router.push(list[(i + 1) % list.length].href); }
+      else if (e.code === "BracketLeft" && list.length > 1) { e.preventDefault(); router.push(list[(i - 1 + list.length) % list.length].href); }
+      else if (e.code === "KeyW" && !e.shiftKey) { e.preventDefault(); shut(current.href); }
+      else if (e.code === "KeyT" && e.shiftKey) { e.preventDefault(); const h = reopen(); if (h) router.push(h); }
+    };
+    window.addEventListener("keydown", k, true);
+    return () => window.removeEventListener("keydown", k, true);
+  });
+
   const list = tabs.length ? tabs : [current];
   return (
     <div className="relative">
@@ -68,23 +83,8 @@ export function StudyTabs({ current }: { current: StudyTab }) {
             );
           })}
         </Reorder.Group>
-        <button type="button" onClick={() => setPicker((p) => !p)} aria-expanded={picker} aria-label="Open another chapter in a new tab" title="Open another chapter"
-          className="mb-1 grid h-9 w-9 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><Plus className="h-4 w-4" /></button>
+        <Link href="/study/new" aria-label="New tab" title="New tab (search, ready chapters, recently closed)" className="mb-1 grid h-9 w-9 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><Plus className="h-4 w-4" /></Link>
       </div>
-      <AnimatePresence>
-        {picker && (
-          <motion.div initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="absolute right-0 top-full z-40 mt-2 w-[320px] rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-[0_20px_50px_-20px_rgba(0,0,0,.45)]">
-            <p className="px-2 pb-1 pt-1 text-xs font-bold text-[var(--text-secondary)]">Open in a new tab</p>
-            {READY.map((r) => (
-              <Link key={r.href} href={r.href} onClick={() => setPicker(false)} className="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-[var(--surface-secondary)]">
-                <BookOpen className="h-4 w-4 text-[var(--text-secondary)]" aria-hidden />
-                <span className="min-w-0"><span className="block text-xs text-[var(--text-secondary)]">{r.subject}</span><span className="block text-sm font-bold text-[var(--text-primary)]">{r.title}</span></span>
-              </Link>
-            ))}
-            <Link href="/study" onClick={() => setPicker(false)} className="mt-1 block rounded-xl px-2 py-2 text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">Browse the library</Link>
-          </motion.div>
-        )}
-      </AnimatePresence>
       {note && <p role="status" className="absolute right-0 top-full z-40 mt-2 rounded-xl bg-[var(--ink)] px-3 py-2 text-xs font-semibold text-[var(--background)]">{note}</p>}
     </div>
   );
