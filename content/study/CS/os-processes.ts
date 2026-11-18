@@ -1,4 +1,5 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
+import { syscalls, threads } from "./os-processes-more";
 
 /**
  * Operating System → Processes and threads (docs/study-materials/BLUEPRINT-FINAL.md). Our own words and examples.
@@ -135,9 +136,9 @@ export const OS_PROCESSES: Chapter = {
     items: [
       { label: "1. Process states", sub: "PCB and context switch", state: "done" },
       { label: "2. fork()", sub: "counting processes and prints", state: "done" },
-      { label: "3. Threads", sub: "user vs kernel threads", state: "todo" },
-      { label: "4. System calls", sub: "and the kernel boundary", state: "todo" },
+      { label: "3. Threads", sub: "user vs kernel threads", state: "done" },
+      { label: "4. System calls", sub: "and the kernel boundary", state: "done" },
     ],
   },
-  topics: [states, forks],
+  topics: [states, forks, threads, syscalls],
 };

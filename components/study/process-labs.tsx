@@ -123,3 +123,119 @@ export function ForkLab() {
     </Lab>
   );
 }
+
+/* ------------------------------------------------------------ threads: many-to-one vs one-to-one */
+const SHARED: { item: string; shared: boolean; why: string }[] = [
+  { item: "Code (text section)", shared: true, why: "All threads run the same program." },
+  { item: "Global variables", shared: true, why: "They live in the process's data section." },
+  { item: "Heap", shared: true, why: "One address space, so malloc'd memory is visible to every thread." },
+  { item: "Open files", shared: true, why: "The file table belongs to the process." },
+  { item: "Stack", shared: false, why: "Each thread calls its own functions, so each needs its own stack." },
+  { item: "Registers and program counter", shared: false, why: "Each thread is at its own place in the code." },
+];
+export function ThreadLab() {
+  const [model, setModel] = useState<"m1" | "11">("m1");
+  const [blocked, setBlocked] = useState<number | null>(null);
+  const [picks, setPicks] = useState<Record<number, boolean>>({});
+  const threads = [1, 2, 3];
+  const runs = (t: number) => blocked === null || (model === "11" && t !== blocked);
+  return (
+    <Lab title="Threads lab" note="Block one thread on I/O and see who keeps running. Then sort what threads share." tint="peach">
+      <div className="grid gap-5 lg:grid-cols-2">
+        <div className="space-y-3">
+          <div className="flex flex-wrap gap-2">
+            <button type="button" aria-pressed={model === "m1"} onClick={() => { setModel("m1"); setBlocked(null); }} className={model === "m1" ? "pill-ink" : "pill-soft"}>User threads (many-to-one)</button>
+            <button type="button" aria-pressed={model === "11"} onClick={() => { setModel("11"); setBlocked(null); }} className={model === "11" ? "pill-ink" : "pill-soft"}>Kernel threads (one-to-one)</button>
+          </div>
+          <div className="rounded-2xl bg-[var(--surface)] p-3">
+            <p className="text-xs font-bold text-[var(--text-secondary)]">One process, three threads. The kernel sees {model === "m1" ? "one schedulable entity" : "three schedulable entities"}.</p>
+            <ul className="mt-2 space-y-2">
+              {threads.map((t) => (
+                <li key={t} className="flex items-center gap-3">
+                  <span className="w-20 text-sm font-bold">Thread {t}</span>
+                  <span className={`flex-1 rounded-full px-3 py-1 text-center text-xs font-bold ${blocked === t ? "bg-amber-500 text-white" : runs(t) ? "bg-emerald-600 text-white" : "bg-rose-600 text-white"}`}>{blocked === t ? "waiting for disk" : runs(t) ? "can run" : "stuck: whole process blocked"}</span>
+                  <button type="button" onClick={() => setBlocked(blocked === t ? null : t)} className="pill-soft !h-8 !px-3 text-xs">{blocked === t ? "I/O done" : "Read file"}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div aria-live="polite" className="rounded-2xl bg-[var(--surface)] p-3 text-sm">{blocked === null ? "Press Read file on any thread." : model === "m1" ? "With many-to-one, the kernel only knows the process. One blocking call blocks every thread." : "With one-to-one, the kernel schedules each thread, so the other two keep running."}</div>
+        </div>
+        <div>
+          <p className="text-sm font-bold text-[var(--text-primary)]">Shared by all threads, or one per thread?</p>
+          <ul className="mt-2 space-y-2">
+            {SHARED.map((x, i) => (
+              <li key={x.item} className="rounded-2xl bg-[var(--surface)] p-3 text-sm">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="min-w-0 flex-1 font-semibold text-[var(--text-primary)]">{x.item}</span>
+                  {[true, false].map((v) => { const chose = picks[i] === v, right = x.shared === v, done = i in picks; return (
+                    <button key={String(v)} type="button" onClick={() => setPicks((p) => ({ ...p, [i]: v }))} className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${done ? (right ? "border-emerald-600 bg-emerald-600 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)]"}`}>{v ? "Shared" : "Per thread"}</button>
+                  ); })}
+                </div>
+                {i in picks && <p className="mt-1 text-xs text-[var(--text-secondary)]">{x.why}</p>}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Lab>
+  );
+}
+
+/* ------------------------------------------------------------ system calls: the trip into the kernel */
+const TRIP = [
+  { who: "user", text: "The program calls read(fd, buf, n) from the C library." },
+  { who: "user", text: "The library puts the system-call number and arguments in registers." },
+  { who: "trap", text: "It executes a trap instruction. The CPU switches the mode bit to kernel mode and jumps to the kernel's handler." },
+  { who: "kernel", text: "The kernel checks the arguments (is buf really this process's memory?) and runs the read." },
+  { who: "kernel", text: "It copies the data into buf and puts the return value (bytes read) in a register." },
+  { who: "trap", text: "It returns from the trap: the mode bit goes back to user mode." },
+  { who: "user", text: "The program continues after the call with the result." },
+];
+const OPS: { op: string; priv: boolean }[] = [
+  { op: "Add two numbers in registers", priv: false },
+  { op: "Turn interrupts off", priv: true },
+  { op: "Read the time of day", priv: false },
+  { op: "Change the page table base register", priv: true },
+  { op: "Start a disk I/O operation directly", priv: true },
+  { op: "Call a function in your own program", priv: false },
+];
+export function SyscallLab() {
+  const [step, setStep] = useState(0);
+  const [picks, setPicks] = useState<Record<number, boolean>>({});
+  // kernel mode from the trap (step 3) until the return from trap (step 6)
+  const mode = step >= 3 && step <= 5 ? "kernel" : "user";
+  return (
+    <Lab title="System call lab" note="Step through one read() call, then sort which instructions need kernel mode." tint="lilac">
+      <div className="grid gap-5 lg:grid-cols-2">
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
+            <span className="text-sm font-bold">Mode bit:</span>
+            <span className={`rounded-full px-3 py-1 text-xs font-extrabold text-white ${mode === "kernel" ? "bg-rose-600" : "bg-emerald-600"}`}>{mode === "kernel" ? "0 · kernel mode" : "1 · user mode"}</span>
+          </div>
+          <ol className="space-y-1.5">
+            {TRIP.slice(0, step).map((t, i) => <li key={i} className={`rounded-xl px-3 py-2 text-sm ${t.who === "kernel" ? "bg-rose-600/10" : t.who === "trap" ? "bg-amber-500/15 font-semibold" : "bg-[var(--surface)]"}`}>{i + 1}. {t.text}</li>)}
+          </ol>
+          <div className="flex gap-2">
+            {step < TRIP.length && <button type="button" onClick={() => setStep((s) => s + 1)} className="pill-ink">{step ? "Next step" : "Call read()"}</button>}
+            {step > 0 && <button type="button" onClick={() => setStep(0)} className="pill-soft"><RotateCcw className="h-4 w-4" aria-hidden /> Reset</button>}
+          </div>
+          {step === TRIP.length && <p className="rounded-2xl bg-[var(--surface)] p-3 text-sm">Two mode switches (user → kernel → user) for one call. That is why system calls cost more than ordinary function calls.</p>}
+        </div>
+        <div>
+          <p className="text-sm font-bold text-[var(--text-primary)]">Needs kernel mode (privileged) or not?</p>
+          <ul className="mt-2 space-y-2">
+            {OPS.map((x, i) => (
+              <li key={x.op} className="flex flex-wrap items-center gap-2 rounded-2xl bg-[var(--surface)] p-3 text-sm">
+                <span className="min-w-0 flex-1 font-semibold text-[var(--text-primary)]">{x.op}</span>
+                {[true, false].map((v) => { const chose = picks[i] === v, right = x.priv === v, done = i in picks; return (
+                  <button key={String(v)} type="button" onClick={() => setPicks((p) => ({ ...p, [i]: v }))} className={`rounded-full border-2 px-2.5 py-1 text-xs font-bold ${done ? (right ? "border-emerald-600 bg-emerald-600 text-white" : chose ? "border-rose-600 bg-rose-600 text-white" : "border-[var(--border)] text-[var(--text-secondary)]") : "border-[var(--border)]"}`}>{v ? "Privileged" : "Ordinary"}</button>
+                ); })}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Lab>
+  );
+}

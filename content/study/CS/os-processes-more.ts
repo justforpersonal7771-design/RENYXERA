@@ -1,0 +1,121 @@
+import type { Topic } from "@/lib/study/schema";
+
+/** Operating System → Processes and threads, topics 3 and 4 (our own words and examples). */
+
+export const threads: Topic = {
+  id: "cs.os.processes.threads",
+  title: "Threads: several paths through one process",
+  blocks: [
+    { type: "hook", text: "A browser downloads a file, plays a video and keeps its buttons responsive, all inside one program. It does not start three processes for that; it runs three threads that share the same memory." },
+    { type: "objectives", items: ["Say what threads in one process share and what each has of its own.", "Compare user-level and kernel-level threads and the many-to-one, one-to-one and many-to-many models.", "Explain why one blocking call can freeze a whole process."] },
+    { type: "intuition", paras: ["A process is like a house: one kitchen, one set of rooms, one front door. Threads are the people living in it. They share the kitchen and rooms (code, globals, heap, open files), but each person has their own to-do list and their own place in it (stack, registers, program counter).", "Because threads share memory, creating one and switching between them is much cheaper than for processes, and they can pass data by just writing to memory. The price is that they can trip over each other, which is why synchronisation exists.", "Who manages the threads matters. If a library in user space juggles them, the kernel sees only one process; if that one thread blocks on I/O, the kernel blocks the whole process. If the kernel knows every thread, it can run another thread while one waits."], analogyLimit: "People in a house can see each other; threads cannot tell what another thread is doing unless they coordinate through shared memory or locks." },
+    { type: "definition", name: "Thread", text: "A thread is a unit of execution inside a process: its own program counter, registers and stack, sharing the process's code, data, heap and open files with the other threads.", items: ["Shared: code, global data, heap, open files, signals.", "Per thread: thread id, program counter, registers, stack.", "Many-to-one: many user threads on one kernel thread; cheap, but one blocking call blocks all, and no true parallelism on many cores.", "One-to-one: each user thread is a kernel thread (Linux, Windows); blocking affects only that thread; parallel on many cores.", "Many-to-many: many user threads multiplexed on a smaller or equal number of kernel threads."] },
+    { type: "walkthrough", steps: ["Ask what is shared: anything that belongs to the process (memory except stacks, files).", "Ask what is private: anything describing where a thread is (stack, registers, PC).", "For a blocking question, check the model: many-to-one blocks every thread; one-to-one blocks only the caller.", "For a speed question, remember that thread creation and switching avoid copying the address space, so they are cheaper than process creation and switching."], prompt: { q: "Can two threads of one process run at the same instant on two cores under many-to-one?", a: "No. The kernel sees one schedulable entity, so it can put it on only one core at a time." } },
+    { type: "figure", id: "th-shared", caption: "What threads share and what each one keeps.", alt: "Table of shared and per-thread items.",
+      fig: { kind: "matrix", title: "One process, several threads", cols: ["Shared or own", "Why"], rows: [
+        { label: "Code, globals, heap", cells: ["Shared", "One address space"] },
+        { label: "Open files", cells: ["Shared", "Process file table"] },
+        { label: "Stack", cells: ["Own", "Own function calls"], hl: true },
+        { label: "Registers, PC", cells: ["Own", "Own place in the code"], hl: true },
+      ] } },
+    { type: "example", id: "thex1", level: "gate", title: "One thread reads a file", given: "A process has three threads. Thread 2 calls a blocking read on a slow disk.", find: "What happens to threads 1 and 3 under many-to-one, and under one-to-one?",
+      steps: [
+        { say: "Many-to-one: the kernel sees one kernel thread for the whole process." },
+        { say: "Thread 2's read blocks that kernel thread, so the kernel blocks the process.", result: "threads 1 and 3 stop too" },
+        { say: "One-to-one: each thread is a kernel thread, scheduled on its own." },
+        { say: "Only thread 2 waits; the kernel keeps running 1 and 3.", result: "1 and 3 keep running" },
+      ],
+      answer: "Many-to-one: all three stop until the read finishes. One-to-one: only thread 2 waits.",
+      check: "This is the main reason modern systems use one-to-one kernel threads." },
+    { type: "figure", id: "th-models", for: "thex1", caption: "The three mapping models.", alt: "Many-to-one, one-to-one, many-to-many.",
+      fig: { kind: "strip", items: [{ label: "Many-to-one", sub: "1 kernel thread", state: "bad" }, { label: "One-to-one", sub: "1 per user thread", state: "done" }, { label: "Many-to-many", sub: "pool of kernel threads", state: "now" }] } },
+    { type: "example", id: "thex2", level: "edge", title: "A shared counter", given: "Two threads of one process each add 1 to a global variable count, which starts at 0. Each addition is load, add, store.", find: "Can count end at 1? Why?",
+      steps: [
+        { say: "count is a global, so both threads use the same memory location." },
+        { say: "Thread A loads 0. Before it stores, thread B also loads 0." },
+        { say: "A stores 1. B adds 1 to its own copy (0) and stores 1.", result: "count = 1" },
+      ],
+      answer: "Yes, count can end at 1 instead of 2: a race condition, possible exactly because threads share globals.",
+      check: "Local variables live on each thread's own stack, so they cannot race this way." },
+    { type: "lab", lab: "threads" },
+    { type: "faded", title: "Your turn", given: "A thread calls malloc and stores the pointer in a global variable.",
+      steps: [
+        { say: "Can another thread of the same process use that memory?", blank: true, answer: "Yes. The heap and globals are shared." },
+        { say: "Can a thread of a different process use it?", blank: true, answer: "No. Each process has its own address space." },
+      ] },
+    { type: "trap", wrong: "Each thread has its own heap.", tempting: "Each thread has its own stack, so the heap seems similar.", whyWrong: "The heap belongs to the process's address space, which all its threads share.", rule: "Own: stack, registers, PC. Shared: code, globals, heap, files." },
+    { type: "trap", wrong: "User-level threads always run faster than kernel threads.", tempting: "Switching user threads needs no system call.", whyWrong: "Switching is cheaper, but one blocking call blocks them all, and they cannot use several cores at once under many-to-one.", rule: "User threads: cheap switching, no parallelism, block together." },
+    { type: "gate", text: "GATE asks what threads of one process share (an MSQ favourite: stack and registers are NOT shared), and what happens on a blocking call under user-level versus kernel-level threads." },
+    { type: "recall", cards: [{ q: "Threads share", a: "Code, globals, heap, open files" }, { q: "Each thread has its own", a: "Stack, registers, program counter" }, { q: "Many-to-one, one thread blocks", a: "The whole process blocks" }] },
+    { type: "check", questions: [
+      { id: "th1", kind: "MSQ", marks: 2, q: "Which of these are shared by all threads of a process?", options: ["Heap", "Stack", "Global variables", "Program counter"], answer: "A, C", solution: "Heap and globals are part of the shared address space. Each thread has its own stack and program counter." },
+      { id: "th2", kind: "MCQ", marks: 1, q: "Under the many-to-one model, a thread makes a blocking system call. Then", options: ["Only that thread blocks", "The whole process blocks", "The kernel creates a new thread", "Other threads run on another core"], answer: "B", solution: "The kernel sees one kernel thread for the process, so the whole process blocks." },
+      { id: "th3", kind: "MCQ", marks: 1, q: "Why is creating a thread usually cheaper than creating a process?", options: ["Threads need no stack", "The new thread shares the existing address space, so nothing large is copied or set up", "Threads cannot make system calls", "Threads do not need registers"], answer: "B", solution: "A new thread needs only its own stack and registers; the address space already exists." },
+      { id: "th4", kind: "NAT", marks: 2, q: "A process has 4 threads. How many stacks does it have in total?", answer: "4", solution: "Each thread has its own stack, so 4. (The heap is one, shared.)" },
+    ] },
+    { type: "practice", links: [
+      { label: "Real GATE questions on Operating Systems", sub: "Threads and processes", href: "/topics/operating-systems-os" },
+      { label: "fork()", sub: "The process side of creating work (Topic 2)", href: "/study/processes" },
+      { label: "Deadlock", sub: "What happens when threads wait on each other", href: "/study/deadlock" },
+    ] },
+    { type: "links", prereq: ["Process states (Topic 1)"], usedIn: ["Synchronisation: race conditions and locks", "CPU scheduling of threads"], cross: ["Computer Organisation: multicore parallelism"] },
+  ],
+};
+
+export const syscalls: Topic = {
+  id: "cs.os.processes.syscalls",
+  title: "System calls: crossing into the kernel",
+  blocks: [
+    { type: "hook", text: "Your program cannot touch the disk, the network card or another program's memory on its own. To do anything like that it has to ask the kernel, and asking means a controlled jump across a hardware-enforced line." },
+    { type: "objectives", items: ["Explain user mode, kernel mode and the mode bit.", "Trace what happens during a system call, step by step.", "Tell privileged instructions from ordinary ones."] },
+    { type: "intuition", paras: ["The CPU has two modes. In user mode, ordinary programs run but some instructions are forbidden. In kernel mode, the operating system can do anything: talk to devices, change memory maps, turn interrupts off.", "A system call is the only legal door from user mode into the kernel. The program executes a trap instruction; the hardware switches to kernel mode and jumps to a fixed kernel entry point, so a program cannot choose where in the kernel it lands.", "The kernel checks the request, does the work, and returns from the trap, switching back to user mode. Two mode switches per call make a system call slower than an ordinary function call."], analogyLimit: "A bank counter lets you ask for money but never walk into the vault; unlike a bank clerk, the kernel checks every argument, such as whether a buffer address belongs to you." },
+    { type: "definition", name: "System call and dual mode", text: "A system call is a request from a user program to the kernel, made through a trap instruction that switches the CPU from user mode to kernel mode and enters the kernel at a fixed handler.", items: ["Mode bit: kernel mode (often 0) or user mode (often 1).", "Privileged instructions run only in kernel mode: I/O instructions, turning interrupts on or off, changing the page table base, setting the timer.", "If user code tries a privileged instruction, the hardware traps to the kernel, which usually ends the program.", "Examples of system calls: fork, exec, exit, wait, open, read, write, close."] },
+    { type: "walkthrough", steps: ["The program calls a library function (read).", "The library puts the call number and arguments in registers and executes trap.", "Hardware sets the mode bit to kernel and jumps to the kernel handler.", "The kernel validates the arguments and performs the service.", "It puts the result in a register and returns from the trap; the mode bit goes back to user."], prompt: { q: "Why must the jump into the kernel go to a fixed address?", a: "If a program could jump anywhere in kernel mode, it could skip the checks and do anything. The trap forces entry through the kernel's own handler." } },
+    { type: "figure", id: "sc-trip", caption: "One system call: user → kernel → user.", alt: "Steps of a system call with the mode switches.",
+      fig: { kind: "strip", items: [{ label: "User code", sub: "calls read()", state: "done" }, { label: "Trap", sub: "mode → kernel", state: "bad" }, { label: "Kernel", sub: "checks and reads", state: "now" }, { label: "Return", sub: "mode → user", state: "done" }] } },
+    { type: "example", id: "scex1", level: "gate", title: "Which instructions are privileged?", given: "Instructions: (a) set the timer, (b) read the timer, (c) turn off interrupts, (d) add two registers, (e) load a new page table base.", find: "Which must be privileged?",
+      steps: [
+        { say: "(a) Setting the timer lets a program stop the OS from ever regaining the CPU.", result: "privileged" },
+        { say: "(b) Reading the timer harms nobody.", result: "ordinary" },
+        { say: "(c) With interrupts off, the OS could never take back control.", result: "privileged" },
+        { say: "(d) Arithmetic on your own registers is harmless.", result: "ordinary" },
+        { say: "(e) A new page table would let a program see any memory.", result: "privileged" },
+      ],
+      answer: "(a), (c) and (e) are privileged; (b) and (d) are not.",
+      check: "Rule of thumb: anything that could take control away from the OS or touch others' resources is privileged." },
+    { type: "figure", id: "sc-priv", for: "scex1", caption: "Privileged versus ordinary instructions.", alt: "Table of instructions and whether they are privileged.",
+      fig: { kind: "matrix", title: "Needs kernel mode?", cols: ["Instruction", "Privileged"], rows: [
+        { label: "a", cells: ["Set the timer", "Yes"], hl: true }, { label: "b", cells: ["Read the timer", "No"] }, { label: "c", cells: ["Disable interrupts", "Yes"], hl: true }, { label: "d", cells: ["Add registers", "No"] }, { label: "e", cells: ["Load page table base", "Yes"], hl: true },
+      ] } },
+    { type: "example", id: "scex2", level: "edge", title: "Function call or system call?", given: "A program calls strlen(s) and then write(1, s, n).", find: "Which one enters the kernel?",
+      steps: [
+        { say: "strlen only reads memory the program already owns; it runs entirely in user mode." },
+        { say: "write sends bytes to a file or terminal, which needs the kernel." },
+        { say: "So write traps into the kernel; strlen is an ordinary function call.", result: "only write" },
+      ],
+      answer: "Only write(…) is a system call. strlen(…) is a plain library function.",
+      check: "printf is also a library function; it eventually calls write to output its text." },
+    { type: "lab", lab: "syscall" },
+    { type: "faded", title: "Your turn", given: "A user program executes an instruction that disables interrupts.",
+      steps: [
+        { say: "Is the CPU in user mode?", blank: true, answer: "Yes, it is a user program." },
+        { say: "What happens?", blank: true, answer: "It is privileged, so the hardware traps to the kernel, which typically terminates the program." },
+      ] },
+    { type: "trap", wrong: "Reading the system clock is privileged.", tempting: "Anything about the timer sounds sensitive.", whyWrong: "Reading it harms nothing. Setting the timer is privileged, because it decides when the OS gets the CPU back.", rule: "Read the clock: ordinary. Set the timer: privileged." },
+    { type: "trap", wrong: "A system call is just a function call into a library.", tempting: "You write it like a function: read(fd, buf, n).", whyWrong: "Behind the library wrapper is a trap that switches to kernel mode and back, which costs far more than a function call.", rule: "System call = trap + mode switch, not just a call." },
+    { type: "gate", text: "GATE asks which instructions must run in kernel mode, what a trap does, and occasionally which listed calls are system calls. Remember: change control or touch shared hardware → privileged." },
+    { type: "recall", cards: [{ q: "The only legal entry into the kernel", a: "A trap (system call), at a fixed handler" }, { q: "Set timer / disable interrupts", a: "Privileged" }, { q: "Read clock / add registers", a: "Ordinary" }] },
+    { type: "check", questions: [
+      { id: "sc1", kind: "MSQ", marks: 2, q: "Which instructions should be privileged?", options: ["Set the value of the timer", "Read the clock", "Clear memory belonging to the kernel", "Turn off interrupts"], answer: "A, C, D", solution: "Setting the timer, touching kernel memory and disabling interrupts could take control away from the OS. Reading the clock is harmless." },
+      { id: "sc2", kind: "MCQ", marks: 1, q: "What does a trap instruction do?", options: ["Ends the program", "Switches to kernel mode and jumps to a fixed kernel handler", "Calls a library function", "Turns off the timer"], answer: "B", solution: "It is the controlled entry into the kernel." },
+      { id: "sc3", kind: "NAT", marks: 1, q: "How many mode switches happen during one complete system call (enter and return)?", answer: "2", solution: "User → kernel on the trap, kernel → user on the return." },
+      { id: "sc4", kind: "MCQ", marks: 2, q: "Which of these is a system call rather than a library function that stays in user mode?", options: ["strlen", "sqrt", "fork", "toupper"], answer: "C", solution: "fork creates a process, which only the kernel can do. The others compute in user mode." },
+    ] },
+    { type: "practice", links: [
+      { label: "Real GATE questions on Operating Systems", sub: "System calls and dual mode", href: "/topics/operating-systems-os" },
+      { label: "Interrupts in Computer Organisation", sub: "How the hardware switches modes", href: "/topics/computer-organization-and-architecture-coa" },
+      { label: "fork()", sub: "A system call you can count (Topic 2)", href: "/study/processes" },
+    ] },
+    { type: "links", prereq: ["Process states (Topic 1)"], usedIn: ["Memory protection", "I/O and interrupts"], cross: ["Computer Organisation: interrupts and privilege levels"] },
+  ],
+};
