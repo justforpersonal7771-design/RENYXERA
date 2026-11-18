@@ -159,6 +159,7 @@ export const OS_DEADLOCK: Chapter = {
           alt: "Three steps: P3 finishes, then P2, then P1.",
           fig: { kind: "strip", items: [{ label: "P3 finishes", sub: "frees one R1", state: "done" }, { label: "P2 finishes", sub: "gets R1, frees R1 + R2", state: "done" }, { label: "P1 finishes", sub: "gets R2", state: "done" }, { label: "No deadlock", sub: "every process reduced", state: "now" }] },
         },
+        { type: "lab", lab: "rag" },
         {
           type: "faded",
           title: "Your turn",
@@ -184,6 +185,11 @@ export const OS_DEADLOCK: Chapter = {
             { id: "q5", kind: "MCQ", marks: 2, q: "R1 has 2 instances and R2 has 1. P1 holds one R1 and requests R2. P2 holds R2 and requests R1. P3 holds one R1 and requests nothing. Which is true?", options: ["The system is deadlocked because there is a cycle", "The system is not deadlocked; P3, then P2, then P1 can finish", "The system is deadlocked only if P3 never finishes", "The state cannot be decided without knowing the maximum needs"], answer: "B", solution: "This is Example 2. P3 needs nothing, finishes and frees an R1; P2 takes it, finishes and frees R2; P1 takes R2 and finishes. A cycle with a multi-instance resource is not a deadlock by itself. D confuses detection with avoidance: detection uses current requests, not maximum needs." },
           ],
         },
+        { type: "practice", links: [
+          { label: "Real GATE questions on Operating Systems", sub: "Every official OS question in our bank, by topic and year", href: "/topics/operating-systems-os" },
+          { label: "Cycle detection, in Algorithms", sub: "The same 'find a loop' idea on directed graphs", href: "/topics/algorithms" },
+          { label: "Wait-for graphs, in Databases", sub: "Transactions waiting on locks deadlock the same way", href: "/topics/database-management-systems-dbms" },
+        ] },
         { type: "links", prereq: ["Process states and the ready/waiting queues", "Locks and semaphores (Synchronisation)"], usedIn: ["Deadlock prevention: breaking one condition", "Banker's algorithm (avoidance)", "Detection with a wait-for graph"], cross: ["Algorithms: cycle detection in a directed graph (DFS)", "Databases: wait-for graphs between transactions holding locks"] },
       ],
     },

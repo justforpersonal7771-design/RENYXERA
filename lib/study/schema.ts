@@ -26,7 +26,9 @@ export type Block =
   | { type: "gate"; text: string }
   | { type: "recall"; cards: { q: string; a: string }[] }
   | { type: "check"; questions: CheckQ[] }
-  | { type: "links"; prereq?: string[]; usedIn?: string[]; cross?: string[] };
+  | { type: "links"; prereq?: string[]; usedIn?: string[]; cross?: string[] }
+  | { type: "lab"; lab: "rag" }
+  | { type: "practice"; links: { label: string; sub: string; href: string }[] };
 
 export type CheckQ = { id: string; kind: "MCQ" | "MSQ" | "NAT"; marks: 1 | 2; q: string; options?: string[]; answer: string; solution: string };
 

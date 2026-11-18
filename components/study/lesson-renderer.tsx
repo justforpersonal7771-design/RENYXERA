@@ -7,9 +7,11 @@
  * (one tint per block kind) so lessons look like the rest of RENYXERA in light and dark.
  */
 import { useState, type ReactNode } from "react";
-import { Check, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
+import { ArrowUpRight, Check, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
+import { RagLab } from "@/components/study/rag-lab";
+import Link from "next/link";
 
 type B<T extends Block["type"]> = Extract<Block, { type: T }>;
 const card = (tint: string, extra = "") => ({ className: `card-pastel p-5 sm:p-6 ${extra}`, "data-tint": tint });
@@ -99,12 +101,17 @@ const Gate = ({ b }: { b: B<"gate"> }) => <section {...card("butter", "h-full")}
 const Recall = ({ b }: { b: B<"recall"> }) => <section {...card("mint", "h-full")}><Label icon={<Repeat className="h-4 w-4" aria-hidden />}>Recall cards (tap to reveal)</Label><ul className="mt-3 grid gap-2 sm:grid-cols-3">{b.cards.map((c) => <li key={c.q}><details className="h-full rounded-xl bg-[var(--surface)] p-3"><summary className="cursor-pointer text-sm font-semibold text-[var(--text-primary)]">{c.q}</summary><p className="mt-2 text-sm text-[var(--text-secondary)]">{c.a}</p></details></li>)}</ul></section>;
 const Links = ({ b }: { b: B<"links"> }) => <section className={plain}><Label icon={<Link2 className="h-4 w-4" aria-hidden />}>How this connects</Label><div className="mt-2 grid gap-4 text-sm sm:grid-cols-3">{([["Needs", b.prereq], ["Used later in", b.usedIn], ["Other subjects", b.cross]] as const).map(([h, l]) => l?.length ? <div key={h}><p className="font-bold text-[var(--text-primary)]">{h}</p><ul className="mt-1 list-disc pl-5 text-[var(--text-secondary)]">{l.map((x) => <li key={x}>{x}</li>)}</ul></div> : null)}</div></section>;
 
+const Practice = ({ b }: { b: B<"practice"> }) => (
+  <section className={plain}><Label icon={<ArrowUpRight className="h-4 w-4" aria-hidden />}>Where to go next</Label>
+    <ul className="mt-3 grid gap-3 md:grid-cols-3">{b.links.map((l) => <li key={l.href}><Link href={l.href} className="group flex h-full flex-col rounded-2xl border border-[var(--border)] p-4 transition-colors hover:bg-[var(--surface-secondary)]"><span className="font-bold text-[var(--text-primary)]">{l.label}</span><span className="mt-1 text-sm text-[var(--text-secondary)]">{l.sub}</span><span className="mt-2 text-sm font-bold text-[var(--text-primary)] group-hover:underline">Open</span></Link></li>)}</ul></section>
+);
+
 /* ------------------------------------------------------------------ topic layout in rows */
 function TopicView({ t, index }: { t: Topic; index: number }) {
   const one = <T extends Block["type"]>(k: T) => t.blocks.find((b) => b.type === k) as B<T> | undefined;
   const all = <T extends Block["type"]>(k: T) => t.blocks.filter((b) => b.type === k) as B<T>[];
   const figs = all("figure"), loose = figs.filter((f) => !f.for);
-  const hook = one("hook"), obj = one("objectives"), intu = one("intuition"), def = one("definition"), walk = one("walkthrough"), faded = one("faded"), shortcut = one("shortcut"), gate = one("gate"), recall = one("recall"), links = one("links");
+  const lab = one("lab"), practice = one("practice"), hook = one("hook"), obj = one("objectives"), intu = one("intuition"), def = one("definition"), walk = one("walkthrough"), faded = one("faded"), shortcut = one("shortcut"), gate = one("gate"), recall = one("recall"), links = one("links");
   const qs = all("check").flatMap((c) => c.questions);
   return (
     <article id={t.id} className="scroll-mt-24 space-y-5">
@@ -117,11 +124,13 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
         const own = figs.filter((f) => f.for === ex.id);
         return <div key={ex.id} className={`grid gap-5 ${own.length ? "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</div>;
       })}
-      {(faded || shortcut) && <div className="grid gap-5 lg:grid-cols-2">{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</div>}
+      {lab && <RagLab />}
+      {(faded || shortcut) && <div className={`grid gap-5 ${faded && shortcut ? "lg:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</div>}
       {all("trap").length > 0 && <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</div>}
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</div>
       {qs.length > 0 && <section><h3 className="lesson-h flex items-center gap-2"><Check className="h-5 w-5" aria-hidden /> Check yourself</h3><ol className="mt-2 grid gap-4 xl:grid-cols-2">{qs.map((q, i) => <CheckQuestion key={q.id} q={q} n={i + 1} />)}</ol></section>}
       {links && <Links b={links} />}
+      {practice && <Practice b={practice} />}
     </article>
   );
 }
