@@ -19,6 +19,7 @@ import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { RagLab } from "@/components/study/rag-lab";
 import { BankerLab, CountLab, DetectLab, PreventLab, StarveLab } from "@/components/study/deadlock-labs";
+import { ForkLab, ProcessStateLab } from "@/components/study/process-labs";
 import { LessonTools } from "@/components/study/lesson-tools";
 import { useLessonHighlights } from "@/components/study/lesson-highlights";
 import Link from "next/link";
@@ -158,7 +159,7 @@ function TopicView({ t, index }: { t: Topic; index: number }) {
         const own = figs.filter((f) => f.for === ex.id);
         return <Sect key={ex.id} t={t} k={`ex${i}`} className={`grid gap-5 ${own.length ? "lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</Sect>;
       })}
-      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : <StarveLab />}</Sect>}
+      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : <StarveLab />}</Sect>}
       {(faded || shortcut) && <Sect t={t} k="faded" className={`grid gap-5 ${faded && shortcut ? "lg:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</Sect>}
       {all("trap").length > 0 && <Sect t={t} k="traps" className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</Sect>}
       {(gate || recall) && <Sect t={t} k="gate" className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</Sect>}
