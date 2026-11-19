@@ -7,12 +7,14 @@
  *   PYQs    the real GATE questions on this topic as a short list; one opens in a modal and can be answered there
  *   Mentor  a chat window that can be dragged, minimised and switched to an earlier chat; filed in Mentor history
  * Everything renders into document.body so the page's own layers cannot clip it.
- */
+ */
+import dynamic from "next/dynamic";
+const VirtualCalculator = dynamic(() => import("@/components/exam/virtual-calculator").then((m) => m.VirtualCalculator), { ssr: false });
 import { loadBank } from "@/lib/study/bank";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useDragControls, useReducedMotion } from "motion/react";
-import { Check, ScrollText, GripHorizontal, Highlighter, History, Loader2, Minus, Send, SquarePen, TextSelect, X } from "lucide-react";
+import { Calculator, Check, ScrollText, GripHorizontal, Highlighter, History, Loader2, Minus, Send, SquarePen, TextSelect, X } from "lucide-react";
 import { LESSON_SELECTION_EVENT } from "@/components/study/lesson-highlights";
 import { normalizeQuestion } from "@/lib/repository/transformers/question-normalizer";
 import type { Question } from "@/types/question.types";
@@ -260,7 +262,7 @@ function FloatPanel({ title, icon, anchor, z, onRaise, onClose, children, tools 
 
 /* ---------------------------------------------------------------- the floating dock */
 type Win = "notes" | "pyqs" | "mentor";
-export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteItems = [] }: { lesson: string; section: string; pyqTopic: RegExp; notes: ReactNode; noteCount: number; noteItems?: NoteItem[] }) {
+export function LessonTools({ lesson, section, pyqTopic, notes, notesBar, noteCount, noteItems = [] }: { lesson: string; section: string; pyqTopic: RegExp; notes: ReactNode; notesBar?: ReactNode; noteCount: number; noteItems?: NoteItem[] }) {
   const pyqs = useTopicPyqs(pyqTopic);
   const [open, setOpen] = useState<Record<Win, boolean>>({ notes: false, pyqs: false, mentor: false });
   const [stack, setStack] = useState<Win[]>(["notes", "pyqs", "mentor"]);
@@ -275,6 +277,9 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteI
     raise(w);
   };
   const close = (w: Win) => setOpen((o) => ({ ...o, [w]: false }));
+  const [calc, setCalc] = useState(false);
+  // "Real GATE questions" cards in a lesson open this panel instead of leaving the lesson
+  useEffect(() => { const h = () => { setOpen((o) => ({ ...o, pyqs: true })); raise("pyqs"); }; window.addEventListener("study:open-pyqs", h); return () => window.removeEventListener("study:open-pyqs", h); });
   useEffect(() => {
     const k = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
@@ -290,7 +295,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteI
     <Portal>
       <AnimatePresence>
         {open.notes && (
-          <FloatPanel key="notes" title="Highlights and notes" icon={<Highlighter className="h-4 w-4" aria-hidden />} anchor={at.notes} z={z("notes")} onRaise={() => raise("notes")} onClose={() => close("notes")}>{notes}</FloatPanel>
+          <FloatPanel key="notes" title="Highlights and notes" icon={<Highlighter className="h-4 w-4" aria-hidden />} anchor={at.notes} z={z("notes")} onRaise={() => raise("notes")} onClose={() => close("notes")} tools={notesBar}>{notes}</FloatPanel>
         )}
         {open.pyqs && (
           <FloatPanel key="pyqs" title="Real GATE questions" icon={<ScrollText className="h-4 w-4" aria-hidden />} anchor={at.pyqs} z={z("pyqs")} onRaise={() => raise("pyqs")} onClose={() => close("pyqs")}
@@ -310,9 +315,11 @@ export function LessonTools({ lesson, section, pyqTopic, notes, noteCount, noteI
       </AnimatePresence>
       <div className="lesson-dock fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] right-3 z-[280] flex gap-2 sm:right-6 lg:bottom-6">
         <button type="button" onClick={(e) => toggle("notes", e.currentTarget)} aria-pressed={open.notes} aria-label="Notes" className={`${btn} hl-btn`}><Highlighter className="h-4 w-4" aria-hidden /> <span className="hl-ink hidden sm:inline">Notes</span>{noteCount > 0 && <span className="rounded-full bg-white/70 px-1.5 text-xs text-[#3a2a00]">{noteCount}</span>}</button>
+        <button type="button" onClick={() => setCalc((c) => !c)} aria-pressed={calc} aria-label="Calculator" title="Calculator" className={btn}><Calculator className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Calc</span></button>
         <button type="button" onClick={(e) => toggle("pyqs", e.currentTarget)} aria-pressed={open.pyqs} aria-label="PYQs" className={`${btn} !border-transparent !bg-[var(--tint-peri)] !text-[var(--tint-peri-ink)]`}><ScrollText className="h-4 w-4" aria-hidden /> <span>PYQs</span>{pyqs && pyqs.length > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{pyqs.length}</span>}</button>
         <button type="button" onClick={(e) => toggle("mentor", e.currentTarget)} aria-pressed={open.mentor} aria-label="Ask Mentor" className={`${btn} mentor-btn !py-1.5 !pl-2`}><MentorLogo className="h-7" mode="blink" /> <span className="hidden sm:inline">Ask Mentor</span></button>
       </div>
+      <VirtualCalculator open={calc} onClose={() => setCalc(false)} />
       <MentorWindow open={open.mentor} onClose={() => close("mentor")} lesson={lesson} section={section} notes={noteItems} anchor={at.mentor} z={z("mentor")} onRaise={() => raise("mentor")} />
       <PyqModal q={q} onClose={() => setQ(null)} />
     </Portal>

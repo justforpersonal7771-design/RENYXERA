@@ -18,13 +18,12 @@ export function SmoothScroll() {
   useEffect(() => {
     const wrapper = document.getElementById("app-scroll");
     if (!wrapper || off || window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-    const lenis = new Lenis({ wrapper, content: wrapper.firstElementChild as HTMLElement, lerp: 0.1, smoothWheel: true, allowNestedScroll: true, anchors: { offset: -16 }, autoRaf: false });
-    let raf = 0;
-    const loop = (t: number) => { lenis.raf(t); raf = lenis.isScrolling ? requestAnimationFrame(loop) : 0; };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
-    wrapper.addEventListener("wheel", kick, { passive: true }); wrapper.addEventListener("click", kick); lenis.on("scroll", kick); kick();
-    return () => { cancelAnimationFrame(raf); wrapper.removeEventListener("wheel", kick); wrapper.removeEventListener("click", kick); lenis.destroy(); };
-  }, [off]);
+    const lenis = new Lenis({ wrapper, content: wrapper.firstElementChild as HTMLElement, lerp: 0.1, smoothWheel: true, allowNestedScroll: true, anchors: { offset: -16 } });
+    // Fix (19 Nov): Lenis measures the page's first content element, which is replaced on every navigation, so it must be
+    // rebuilt per page (with its frame loop running), or the mouse wheel stops after the first page change. Phones skip it.
+    let raf = requestAnimationFrame(function loop(t) { lenis.raf(t); raf = requestAnimationFrame(loop); });
+    return () => { cancelAnimationFrame(raf); lenis.destroy(); };
+  }, [off, pathname]);
   // Every screen change starts at the top (tools, tabs, any link). One-screen pages (data-fill-height)
   // mark the scroll box so it doesn't scroll on desktop (set here instead of a costly CSS :has rule).
   useEffect(() => {

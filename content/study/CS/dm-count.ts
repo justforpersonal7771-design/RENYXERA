@@ -1,4 +1,5 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
+import { DM_SPANNING, DM_PLANAR, DM_HALL, DM_ISO, DM_PIGEON, DM_BINOM, DM_MASTER } from "@/content/study/CS/dm-more2";
 
 /**
  * Discrete Mathematics → Counting and combinatorics; Recurrences and generating functions. Numbers from lib/study/dm.ts, checked by script:
@@ -259,12 +260,12 @@ const genfun: Topic = {
 export const DM_COUNT: Chapter = {
   id: "cs.dm.count", subject: "Discrete Mathematics", title: "Counting and combinatorics",
   syllabus: ["CS · Discrete Mathematics: Combinatorics: counting"], pyqTopic: /combinator|counting|permutation|pigeonhole/i,
-  map: { kind: "strip", items: [{ label: "1. Counting models", sub: "P, C, stars and bars", state: "done" }, { label: "2. Inclusion–exclusion", sub: "derangements", state: "done" }] },
-  topics: [counting, inclusion],
+  map: { kind: "strip", items: [{ label: "1. Counting models", sub: "P, C, stars and bars", state: "done" }, { label: "2. Inclusion–exclusion", sub: "derangements", state: "done" }, { label: "3. Pigeonhole", sub: "in depth", state: "done" }, { label: "4. Binomial", sub: "identities", state: "done" } ] },
+  topics: [counting, inclusion, DM_PIGEON, DM_BINOM],
 };
 export const DM_RECUR: Chapter = {
   id: "cs.dm.recur", subject: "Discrete Mathematics", title: "Recurrences and generating functions",
   syllabus: ["CS · Discrete Mathematics: Recurrence relations, generating functions"], pyqTopic: /recurrence|generating function/i,
-  map: { kind: "strip", items: [{ label: "1. Linear recurrences", sub: "characteristic roots", state: "done" }, { label: "2. Generating functions", sub: "coefficients, Catalan", state: "done" }] },
-  topics: [recur, genfun],
+  map: { kind: "strip", items: [{ label: "1. Linear recurrences", sub: "characteristic roots", state: "done" }, { label: "2. Generating functions", sub: "coefficients, Catalan", state: "done" }, { label: "3. Divide and conquer", sub: "master theorem", state: "done" } ] },
+  topics: [recur, genfun, DM_MASTER],
 };

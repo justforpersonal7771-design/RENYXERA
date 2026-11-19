@@ -232,7 +232,7 @@ export function CyclicLab() {
 
 /* ------------------------------------------------------------ graph editor shared by two labs */
 const CX = (i: number, n: number) => 110 + 85 * Math.sin((2 * Math.PI * i) / n), CY = (i: number, n: number) => 105 - 85 * Math.cos((2 * Math.PI * i) / n);
-function GraphEditor({ g, setG, colours, hlEdges = [], hlVerts = [] }: { g: D.G; setG: (g: D.G) => void; colours?: number[]; hlEdges?: [number, number][]; hlVerts?: number[] }) {
+export function GraphEditor({ g, setG, colours, hlEdges = [], hlVerts = [] }: { g: D.G; setG: (g: D.G) => void; colours?: number[]; hlEdges?: [number, number][]; hlVerts?: number[] }) {
   const has = (a: number, b: number) => g.edges.some(([x, y]) => (x === a && y === b) || (x === b && y === a));
   const toggle = (a: number, b: number) => setG({ n: g.n, edges: has(a, b) ? g.edges.filter(([x, y]) => !((x === a && y === b) || (x === b && y === a))) : [...g.edges, [a, b]] });
   const PAL = ["#be123c", "#1d4ed8", "#047857", "#b45309", "#6d28d9", "#0e7490"];

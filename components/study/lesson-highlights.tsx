@@ -157,17 +157,21 @@ export function useLessonHighlights(lesson: string) {
     </>
   );
 
+  // the filter and sort bar sits outside the scrolling list (owner, 19 Nov): nothing scrolls above it and the scrollbar starts below it
+  const listBar = items.length === 0 ? null : (
+          <div className="flex shrink-0 flex-wrap items-center gap-1.5 border-b border-[var(--border)] px-4 py-2.5">
+      <button type="button" onClick={() => setFilter(null)} aria-pressed={!filter} className={`rounded-full px-2.5 py-1 text-xs font-bold ${!filter ? "bg-[var(--ink)] text-[var(--background)]" : "bg-[var(--surface-secondary)] text-[var(--text-primary)]"}`}>All</button>
+      {HL_COLORS.map((c) => <button key={c} type="button" onClick={() => setFilter(filter === c ? null : c)} aria-pressed={filter === c} aria-label={`Only ${c}`} className={`h-6 w-6 rounded-full border-2 ${filter === c ? "border-[var(--text-primary)]" : "border-transparent"}`} style={{ background: SWATCH[c] }} />)}
+      <span className="flex-1" />
+      {(["place", "newest", "mine"] as const).map((k) => <button key={k} type="button" onClick={() => setSort(k)} aria-pressed={sort === k} className={`rounded-full px-2 py-1 text-xs font-bold ${sort === k ? "bg-[var(--surface-secondary)] text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{k === "place" ? "In lesson" : k === "newest" ? "Newest" : "My order"}</button>)}
+    </div>
+  );
   const list = (
     <div className="px-1 pb-1">
       {items.length === 0
         ? <p className="mt-1 text-sm text-[var(--text-secondary)]">{supportsHighlights() ? "Select any text in the lesson to highlight it. The pen writes a note right there." : "Highlighting needs a newer browser."}</p>
         : <>
-          <div className="sticky top-0 z-10 -mx-1 mb-2 flex flex-wrap items-center gap-1.5 bg-[var(--surface)] px-1 pb-2">
-            <button type="button" onClick={() => setFilter(null)} aria-pressed={!filter} className={`rounded-full px-2.5 py-1 text-xs font-bold ${!filter ? "bg-[var(--ink)] text-[var(--background)]" : "bg-[var(--surface-secondary)] text-[var(--text-primary)]"}`}>All</button>
-            {HL_COLORS.map((c) => <button key={c} type="button" onClick={() => setFilter(filter === c ? null : c)} aria-pressed={filter === c} aria-label={`Only ${c}`} className={`h-6 w-6 rounded-full border-2 ${filter === c ? "border-[var(--text-primary)]" : "border-transparent"}`} style={{ background: SWATCH[c] }} />)}
-            <span className="flex-1" />
-            {(["place", "newest", "mine"] as const).map((k) => <button key={k} type="button" onClick={() => setSort(k)} aria-pressed={sort === k} className={`rounded-full px-2 py-1 text-xs font-bold ${sort === k ? "bg-[var(--surface-secondary)] text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{k === "place" ? "In lesson" : k === "newest" ? "Newest" : "My order"}</button>)}
-          </div>
+
           <Reorder.Group axis="y" values={shown} onReorder={reorder} className="space-y-2.5">
             {shown.map((h) => (
               <Reorder.Item key={h.id} value={h} className="rounded-2xl p-3" style={{ background: `color-mix(in srgb, ${SWATCH[h.color]} 30%, var(--surface))`, borderLeft: `5px solid ${SWATCH[h.color]}` }}>
@@ -189,5 +193,5 @@ export function useLessonHighlights(lesson: string) {
     </div>
   );
 
-  return { attach: setArt, toolbar, list, count: items.length, items };
+  return { attach: setArt, toolbar, list, listBar, count: items.length, items };
 }

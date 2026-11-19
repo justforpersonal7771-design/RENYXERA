@@ -11,6 +11,14 @@
  */
 import dynamic from "next/dynamic";
 /* Labs load on demand (bundle budget, 18 Nov): each lab module is its own chunk. */
+const Dm3SpanningLab = dynamic(() => import("@/components/study/dm-labs-3").then((m) => m.SpanningLab), { ssr: false });
+const Dm3PlanarLab = dynamic(() => import("@/components/study/dm-labs-3").then((m) => m.PlanarLab), { ssr: false });
+const Dm3HallLab = dynamic(() => import("@/components/study/dm-labs-3").then((m) => m.HallLab), { ssr: false });
+const Dm3IsoLab = dynamic(() => import("@/components/study/dm-labs-3").then((m) => m.IsoLab), { ssr: false });
+const Dm3PigeonLab = dynamic(() => import("@/components/study/dm-labs-3").then((m) => m.PigeonLab), { ssr: false });
+const Dm3PascalLab = dynamic(() => import("@/components/study/dm-labs-3").then((m) => m.PascalLab), { ssr: false });
+const Dm3MasterLab = dynamic(() => import("@/components/study/dm-labs-3").then((m) => m.MasterLab), { ssr: false });
+
 const Dm2ArgumentLab = dynamic(() => import("@/components/study/dm-labs-2").then((m) => m.ArgumentLab), { ssr: false });
 const Dm2CompleteLab = dynamic(() => import("@/components/study/dm-labs-2").then((m) => m.CompleteLab), { ssr: false });
 const Dm2TranslateLab = dynamic(() => import("@/components/study/dm-labs-2").then((m) => m.TranslateLab), { ssr: false });
@@ -194,9 +202,23 @@ const Gate = ({ b }: { b: B<"gate"> }) => <section {...card("butter", "h-full")}
 const Recall = ({ b }: { b: B<"recall"> }) => <section {...card("mint", "h-full")}><Label icon={<Repeat className="h-4 w-4" aria-hidden />}>Recall cards (tap to reveal)</Label><ul className="mt-3 grid gap-2 sm:grid-cols-3">{b.cards.map((c) => <li key={c.q}><details className="h-full rounded-xl bg-[var(--surface)] p-3"><summary className="cursor-pointer text-sm font-semibold text-[var(--text-primary)]">{c.q}</summary><p className="mt-2 text-sm text-[var(--text-secondary)]">{c.a}</p></details></li>)}</ul></section>;
 const Links = ({ b }: { b: B<"links"> }) => <section className={plain}><Label icon={<Link2 className="h-4 w-4" aria-hidden />}>How this connects</Label><div className="mt-2 grid gap-4 text-sm sm:grid-cols-3">{([["Needs", b.prereq], ["Used later in", b.usedIn], ["Other subjects", b.cross]] as const).map(([h, l]) => l?.length ? <div key={h}><p className="font-bold text-[var(--text-primary)]">{h}</p><ul className="mt-1 list-disc pl-5 text-[var(--text-secondary)]">{l.map((x) => <li key={x}>{x}</li>)}</ul></div> : null)}</div></section>;
 
+/** "Where to go next" (owner, 19 Nov): a card for a topic in this chapter scrolls to it; "Real GATE questions" on this subject opens
+ *  the PYQs panel in the lesson instead of leaving it; anything else opens normally. */
+function onPractice(e: React.MouseEvent<HTMLAnchorElement>, l: { label: string; href: string }) {
+  const el = e.currentTarget; const here = typeof window !== "undefined" && l.href === window.location.pathname;
+  const topicNo = /^Topic (\d+)/.exec(l.label)?.[1];
+  if (here && topicNo) {
+    const pane = el.closest("[data-topic]")?.parentElement; const ids = pane ? [...pane.querySelectorAll(":scope > [data-topic]")].map((x) => x.id) : [];
+    const id = ids[Number(topicNo) - 1]; if (id) { e.preventDefault(); goTo(id); }
+    return;
+  }
+  const subject = el.closest("[data-subject]")?.getAttribute("data-subject")?.toLowerCase() ?? "";
+  if (l.href.startsWith("/topics/") && /^Real GATE questions on /.test(l.label) && subject && l.label.toLowerCase().includes(subject.slice(0, 6))) { e.preventDefault(); window.dispatchEvent(new Event("study:open-pyqs")); }
+}
 const Practice = ({ b }: { b: B<"practice"> }) => (
   <section className={plain}><Label icon={<ArrowUpRight className="h-4 w-4" aria-hidden />}>Where to go next</Label>
-    <ul className="mt-3 grid gap-3 md:grid-cols-3">{b.links.map((l) => <li key={l.href}><Link href={l.href} className="group flex h-full flex-col rounded-2xl border border-[var(--border)] p-4 transition-colors hover:bg-[var(--surface-secondary)]"><span className="font-bold text-[var(--text-primary)]">{l.label}</span><span className="mt-1 text-sm text-[var(--text-secondary)]">{l.sub}</span><span className="mt-2 text-sm font-bold text-[var(--text-primary)] group-hover:underline">Open</span></Link></li>)}</ul></section>
+    <ul className="mt-3 grid gap-3 md:grid-cols-3">{b.links.map((l) => <li key={l.href + l.label}><Link href={l.href} onClick={(e) => onPractice(e, l)} className="group flex h-full flex-col rounded-2xl border border-[var(--border)] p-4 transition-colors hover:bg-[var(--surface-secondary)]"><span className="font-bold text-[var(--text-primary)]">{l.label}</span><span className="mt-1 text-sm text-[var(--text-secondary)]">{l.sub}</span><span className="mt-2 text-sm font-bold text-[var(--text-primary)] group-hover:underline">Open</span></Link></li>)}</ul>
+  </section>
 );
 
 /* ------------------------------------------------------------------ sections (outline + anchors) */
@@ -241,7 +263,7 @@ function LazyTopic({ t, index, topics }: { t: Topic; index: number; topics: Topi
     io.observe(ph.current); return () => io.disconnect();
   }, [shown]);
   if (shown) return <TopicView t={t} index={index} topics={topics} />;
-  return <div ref={ph} id={t.id} aria-label={`Topic ${index + 1}: ${t.title}`} className="min-h-[1600px] scroll-mt-24 rounded-[22px] border border-dashed border-[var(--border)] lg:scroll-mt-4" />;
+  return <div ref={ph} id={t.id} data-topic="" aria-label={`Topic ${index + 1}: ${t.title}`} className="min-h-[1600px] scroll-mt-24 rounded-[22px] border border-dashed border-[var(--border)] lg:scroll-mt-4" />;
 }
 function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index: number; menuOnly?: boolean }) {
   const [open, setOpen] = useState(false);
@@ -269,8 +291,14 @@ function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index:
 
 /** Chapters of this subject: previous / next chapter and the whole list, the open chapter expanded to its topics (owner, 19 Nov). */
 function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
-  const [openTopic, setOpenTopic] = useState<string | null>(null); // topics start collapsed
   const [open, setOpen] = useState(false);
+  const [openTopic, setOpenTopic] = useState<string | null>(null); // topics start collapsed
+  const [openCh, setOpenCh] = useState<string | null>(href); // the current chapter starts open; any chapter can be opened
+  const [loaded, setLoaded] = useState<Record<string, Topic[]>>({});
+  const panel = useRef<HTMLDivElement | null>(null);
+  const [maxH, setMaxH] = useState<number | null>(null);
+  useEffect(() => { if (!open || !panel.current) return; const fit = () => { const t = panel.current?.getBoundingClientRect().top ?? 0; setMaxH(Math.max(220, window.innerHeight - t - 20)); }; fit(); window.addEventListener("resize", fit); return () => window.removeEventListener("resize", fit); }, [open]);
+  const openChapter = (h: string) => { setOpenCh((x) => (x === h ? null : h)); if (h !== href && !loaded[h]) CHAPTERS[h]?.().then((c) => setLoaded((m) => ({ ...m, [h]: c.topics }))); };
   const swap = useStudyTabs((st) => st.swap);
   const asTab = (c: { href?: string; title: string }) => ({ href: c.href!, title: c.title, subject: book?.title ?? "", tint: book?.tint });
   const book = CS_SHELF.find((b) => b.chapters.some((c) => c.href === href));
@@ -287,13 +315,13 @@ function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
       <Link href={next?.href ?? href} onClick={() => next && swap(href, asTab(next))} aria-disabled={!next} aria-label={next ? `Next chapter: ${next.title}` : "No next chapter"} className={btn}><ChevronRight className="h-4 w-4" /></Link>
       {open && <>
         <button type="button" aria-label="Close chapters" className="fixed inset-0 z-[70] cursor-default" onClick={() => setOpen(false)} />
-        <div role="menu" className="absolute left-0 top-10 z-[80] flex max-h-[min(34rem,calc(100dvh-15rem))] w-[min(23rem,86vw)] flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_48px_-22px_rgba(0,0,0,.55)]">
+        <div ref={panel} role="menu" style={maxH ? { maxHeight: maxH } : undefined} className="absolute left-0 top-10 z-[80] flex max-h-[60vh] w-[min(23rem,86vw)] flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_48px_-22px_rgba(0,0,0,.55)]">
           <div className="sticky top-0 z-20 flex items-center justify-between gap-2 px-4 py-3 text-[var(--surface)]" style={{ background: "var(--st-accent)" }}>
             <span className="text-xs font-extrabold uppercase tracking-[.16em]">{book.title}</span>
             <span className="rounded-full bg-black/15 px-2 py-0.5 text-[11px] font-bold">{book.chapters.length} chapters</span>
           </div>
           <ol className="custom-scrollbar relative min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3">
-            <span aria-hidden className="absolute bottom-4 left-[1.45rem] top-4 w-0.5 rounded-full" style={{ background: "color-mix(in srgb, var(--st-accent) 30%, transparent)" }} />
+            <span aria-hidden className="absolute bottom-5 left-[calc(2.2rem-1px)] top-5 w-0.5 rounded-full" style={{ background: "color-mix(in srgb, var(--st-accent) 30%, transparent)" }} />
             {book.chapters.map((c, k) => {
               const here = c.href === href;
               return (
@@ -303,9 +331,10 @@ function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
                     <Link href={c.href} role="menuitem" onClick={() => { setOpen(false); if (!here) swap(href, asTab(c)); }} className={`flex items-start gap-2 rounded-xl px-2.5 py-2 text-sm ${here ? "font-extrabold" : "font-bold hover:bg-[var(--surface-secondary)]"}`} style={here ? { background: "color-mix(in srgb, var(--st-accent) 12%, transparent)" } : undefined}>
                       <span className="min-w-0 flex-1 text-[var(--text-primary)]">{c.title}</span>
                       <span className="shrink-0 rounded-full bg-emerald-700 px-1.5 py-0.5 text-[10px] font-bold text-white">{c.ready?.replace(/ ready.*/, "")}</span>
+                      <button type="button" onClick={(e) => { e.preventDefault(); e.stopPropagation(); openChapter(c.href!); }} aria-expanded={openCh === c.href} aria-label={`${openCh === c.href ? "Hide" : "Show"} topics of ${c.title}`} className="-my-1 -mr-1 grid h-7 w-7 shrink-0 place-items-center rounded-full hover:bg-black/5 dark:hover:bg-white/10"><ChevronDown className={`h-4 w-4 transition-transform ${openCh === c.href ? "rotate-180" : ""}`} aria-hidden /></button>
                     </Link>
                   ) : <p className="flex items-start gap-2 px-2.5 py-2 text-sm text-[var(--text-secondary)]"><span className="min-w-0 flex-1">{c.title}</span><span className="shrink-0 text-[10px] font-semibold">Being written</span></p>}
-                  {here && <ul className="mt-1 space-y-1">{chapter.topics.map((t, n) => {
+                  {c.href && openCh === c.href && <ul className="mt-1 space-y-1">{(here ? chapter.topics : loaded[c.href] ?? []).map((t, n) => {
                     const on = openTopic === t.id;
                     return (
                       <li key={t.id} className="rounded-xl border border-[var(--border)] bg-[var(--surface)]">
@@ -334,7 +363,7 @@ function TopicView({ t, index, topics }: { t: Topic; index: number; topics: Topi
   const deep = one("deep"), lab = one("lab"), practice = one("practice"), hook = one("hook"), obj = one("objectives"), intu = one("intuition"), def = one("definition"), walk = one("walkthrough"), faded = one("faded"), shortcut = one("shortcut"), gate = one("gate"), recall = one("recall"), links = one("links");
   const qs = all("check").flatMap((c) => c.questions);
   return (
-    <article id={t.id} className="scroll-mt-24 space-y-5 lg:scroll-mt-4">
+    <article id={t.id} data-topic="" className="scroll-mt-24 space-y-5 lg:scroll-mt-4">
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
         <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
@@ -349,7 +378,7 @@ function TopicView({ t, index, topics }: { t: Topic; index: number; topics: Topi
         const own = figs.filter((f) => f.for === ex.id);
         return <Sect key={ex.id} t={t} k={`ex${i}`} className={`grid gap-5 ${own.length ? "@3xl:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]" : ""}`}><Example b={ex} />{own.length > 0 && <div className="grid gap-5">{own.map((f) => <Figure key={f.id} b={f} />)}</div>}</Sect>;
       })}
-      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : lab.lab === "threads" ? <ThreadLab /> : lab.lab === "syscall" ? <SyscallLab /> : lab.lab === "sched" ? <SchedLab /> : lab.lab === "sched-prio" ? <SchedLab initial="PRIO" /> : lab.lab === "race" ? <RaceLab /> : lab.lab === "semaphore" ? <SemaphoreLab /> : lab.lab === "buffer" ? <BufferLab /> : lab.lab === "fit" ? <FitLab /> : lab.lab === "paging" ? <PagingLab /> : lab.lab === "tlb" ? <TlbLab /> : lab.lab === "replace" ? <ReplaceLab /> : lab.lab === "disk" ? <DiskLab /> : lab.lab === "alloc" ? <AllocLab /> : lab.lab === "argument" ? <Dm2ArgumentLab /> : lab.lab === "complete" ? <Dm2CompleteLab /> : lab.lab === "translate" ? <Dm2TranslateLab /> : lab.lab === "setalg" ? <Dm2SetLab /> : lab.lab === "compose" ? <Dm2ComposeLab /> : lab.lab === "boolean" ? <Dm2AtomLab /> : lab.lab === "cosets" ? <Dm2CosetLab /> : lab.lab === "rr" ? <RrLab /> : lab.lab === "pagefault" ? <PageFaultLab /> : lab.lab === "workingset" ? <WorkingSetLab /> : lab.lab === "truth" ? <DmTruthLab /> : lab.lab === "equiv" ? <DmEquivLab /> : lab.lab === "quant" ? <DmQuantLab /> : lab.lab === "fol" ? <DmFolLab /> : lab.lab === "relation" ? <DmRelationLab /> : lab.lab === "funcs" ? <DmFuncLab /> : lab.lab === "hasse" ? <DmHasseLab /> : lab.lab === "lattice" ? <DmLatticeLab /> : lab.lab === "algebra" ? <DmAlgebraLab /> : lab.lab === "cyclic" ? <DmCyclicLab /> : lab.lab === "graph-basic" ? <DmGraphLab /> : lab.lab === "colour" ? <DmColourLab /> : lab.lab === "count-dm" ? <DmCountLab /> : lab.lab === "derange" ? <DmDerangeLab /> : lab.lab === "recur" ? <DmRecurLab /> : lab.lab === "genfun" ? <DmGenFunLab /> : lab.lab === "sched-hrrn" ? <SchedLab initial="HRRN" /> : lab.lab === "mlfq" ? <MlfqLab /> : lab.lab === "pipe" ? <PipeLab /> : lab.lab === "segment" ? <SegmentLab /> : lab.lab === "encap" ? <EncapLab /> : lab.lab === "delay" ? <DelayLab /> : lab.lab === "crc" ? <CrcLab /> : lab.lab === "window" ? <WindowLab /> : lab.lab === "mac" ? <MacLab /> : lab.lab === "subnet" ? <SubnetLab /> : lab.lab === "frag" ? <FragLab /> : lab.lab === "route" ? <RouteLab /> : lab.lab === "seq" ? <SeqLab /> : lab.lab === "cwnd" ? <CwndLab /> : lab.lab === "http" ? <HttpLab /> : lab.lab === "ports" ? <PortsLab /> : <StarveLab />}</Sect>}
+      {lab && <Sect t={t} k="lab">{lab.lab === "rag" ? <RagLab /> : lab.lab === "prevent" ? <PreventLab /> : lab.lab === "banker" ? <BankerLab /> : lab.lab === "detect" ? <DetectLab /> : lab.lab === "count" ? <CountLab /> : lab.lab === "states" ? <ProcessStateLab /> : lab.lab === "fork" ? <ForkLab /> : lab.lab === "threads" ? <ThreadLab /> : lab.lab === "syscall" ? <SyscallLab /> : lab.lab === "sched" ? <SchedLab /> : lab.lab === "sched-prio" ? <SchedLab initial="PRIO" /> : lab.lab === "race" ? <RaceLab /> : lab.lab === "semaphore" ? <SemaphoreLab /> : lab.lab === "buffer" ? <BufferLab /> : lab.lab === "fit" ? <FitLab /> : lab.lab === "paging" ? <PagingLab /> : lab.lab === "tlb" ? <TlbLab /> : lab.lab === "replace" ? <ReplaceLab /> : lab.lab === "disk" ? <DiskLab /> : lab.lab === "alloc" ? <AllocLab /> : lab.lab === "spanning" ? <Dm3SpanningLab /> : lab.lab === "planar" ? <Dm3PlanarLab /> : lab.lab === "hall" ? <Dm3HallLab /> : lab.lab === "iso" ? <Dm3IsoLab /> : lab.lab === "pigeon" ? <Dm3PigeonLab /> : lab.lab === "pascal" ? <Dm3PascalLab /> : lab.lab === "master" ? <Dm3MasterLab /> : lab.lab === "argument" ? <Dm2ArgumentLab /> : lab.lab === "complete" ? <Dm2CompleteLab /> : lab.lab === "translate" ? <Dm2TranslateLab /> : lab.lab === "setalg" ? <Dm2SetLab /> : lab.lab === "compose" ? <Dm2ComposeLab /> : lab.lab === "boolean" ? <Dm2AtomLab /> : lab.lab === "cosets" ? <Dm2CosetLab /> : lab.lab === "rr" ? <RrLab /> : lab.lab === "pagefault" ? <PageFaultLab /> : lab.lab === "workingset" ? <WorkingSetLab /> : lab.lab === "truth" ? <DmTruthLab /> : lab.lab === "equiv" ? <DmEquivLab /> : lab.lab === "quant" ? <DmQuantLab /> : lab.lab === "fol" ? <DmFolLab /> : lab.lab === "relation" ? <DmRelationLab /> : lab.lab === "funcs" ? <DmFuncLab /> : lab.lab === "hasse" ? <DmHasseLab /> : lab.lab === "lattice" ? <DmLatticeLab /> : lab.lab === "algebra" ? <DmAlgebraLab /> : lab.lab === "cyclic" ? <DmCyclicLab /> : lab.lab === "graph-basic" ? <DmGraphLab /> : lab.lab === "colour" ? <DmColourLab /> : lab.lab === "count-dm" ? <DmCountLab /> : lab.lab === "derange" ? <DmDerangeLab /> : lab.lab === "recur" ? <DmRecurLab /> : lab.lab === "genfun" ? <DmGenFunLab /> : lab.lab === "sched-hrrn" ? <SchedLab initial="HRRN" /> : lab.lab === "mlfq" ? <MlfqLab /> : lab.lab === "pipe" ? <PipeLab /> : lab.lab === "segment" ? <SegmentLab /> : lab.lab === "encap" ? <EncapLab /> : lab.lab === "delay" ? <DelayLab /> : lab.lab === "crc" ? <CrcLab /> : lab.lab === "window" ? <WindowLab /> : lab.lab === "mac" ? <MacLab /> : lab.lab === "subnet" ? <SubnetLab /> : lab.lab === "frag" ? <FragLab /> : lab.lab === "route" ? <RouteLab /> : lab.lab === "seq" ? <SeqLab /> : lab.lab === "cwnd" ? <CwndLab /> : lab.lab === "http" ? <HttpLab /> : lab.lab === "ports" ? <PortsLab /> : <StarveLab />}</Sect>}
       {(faded || shortcut) && <Sect t={t} k="faded" className={`grid gap-5 ${faded && shortcut ? "@3xl:grid-cols-2" : ""}`}>{faded && <Faded b={faded} />}{shortcut && <Shortcut b={shortcut} />}</Sect>}
       {all("trap").length > 0 && <Sect t={t} k="traps" className="grid gap-5 @xl:grid-cols-2 @5xl:grid-cols-3">{all("trap").map((b, i) => <Trap key={i} b={b} />)}</Sect>}
       {(gate || recall) && <Sect t={t} k="gate" className="grid gap-5 @3xl:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">{gate && <Gate b={gate} />}{recall && <Recall b={recall} />}</Sect>}
@@ -412,7 +441,7 @@ function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
 
 /* ------------------------------------------------------------------ chapter */
 export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chapter; backHref?: string }) {
-  const { attach, toolbar, list, count, items } = useLessonHighlights(chapter.id);
+  const { attach, toolbar, list, listBar, count, items } = useLessonHighlights(chapter.id);
   // the rail lists every written topic (not the chapter's summary map, which can lag behind new topics); map subtitles are kept where they line up
   const mapItems = chapter.map.kind === "strip" ? chapter.map.items : [];
   const steps = chapter.topics.map((t, i) => ({ label: `${i + 1}. ${t.title}`, sub: mapItems.length === chapter.topics.length ? mapItems[i]?.sub : undefined, state: "done" as const }));
@@ -558,7 +587,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     </>
   );
   return (
-    <div className={`study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
+    <div data-subject={chapter.subject} className={`study-lesson grid gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
       <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex !h-9 shrink-0 items-center gap-1.5 !px-2.5 sm:!h-10 sm:!px-4" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Books</span></Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
       {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
       <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">
@@ -598,7 +627,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
         <SplitPane href={splitHref} onClose={() => setSplit(null)} />
       </>}
       </div>
-      <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} noteCount={count} noteItems={items} />
+      <LessonTools lesson={`${chapter.subject}: ${chapter.title}`} section={chapter.topics.find((t) => current.startsWith(`${t.id}--`))?.title ?? chapter.topics[0]?.title ?? chapter.title} pyqTopic={chapter.pyqTopic} notes={list} notesBar={listBar} noteCount={count} noteItems={items} />
       {toolbar}
     </div>
   );

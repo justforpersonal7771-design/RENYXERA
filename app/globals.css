@@ -2392,3 +2392,17 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
  surfaces; a tinted card, the book panel or a lesson sets --sb-ink to its own ink (rules above). Firefox follows the same colour. */
 :root { --sb-ink: #a1a1aa; --scrollbar-thumb-glow: transparent; }
 .dark { --sb-ink: #6b7280; }
+
+/* Scrollbar tracks stop short of rounded corners everywhere (owner, 19 Nov): the thumb never runs into a curved edge. */
+:is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-auto"], textarea):not(#app-scroll)::-webkit-scrollbar-track { margin-block: 14px; }
+:is(.custom-scrollbar, [class*="overflow-x-auto"]):not(#app-scroll)::-webkit-scrollbar-track:horizontal { margin-inline: 14px; margin-block: 0; }
+
+/* The page scrollbar takes the current section's ink (owner, 19 Nov): #app-scroll carries data-section like the page layer. */
+#app-scroll[data-section] { --sb-ink: var(--tint-lilac-ink); }
+#app-scroll[data-section="mint"] { --sb-ink: var(--tint-mint-ink); }
+#app-scroll[data-section="peri"] { --sb-ink: var(--tint-peri-ink); }
+#app-scroll[data-section="peach"] { --sb-ink: var(--tint-peach-ink); }
+#app-scroll[data-section="butter"] { --sb-ink: var(--tint-butter-ink); }
+#app-scroll[data-section="sky"] { --sb-ink: var(--tint-sky-ink); }
+#app-scroll[data-section="rose"] { --sb-ink: var(--tint-rose-ink); }
+#app-scroll[data-section="lilac"] { --sb-ink: var(--tint-lilac-ink); }

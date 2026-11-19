@@ -1,4 +1,5 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
+import { DM_SPANNING, DM_PLANAR, DM_HALL, DM_ISO, DM_PIGEON, DM_BINOM, DM_MASTER } from "@/content/study/CS/dm-more2";
 
 /**
  * Discrete Mathematics → Graph theory. Numbers from lib/study/dm.ts, checked by script:
@@ -134,6 +135,6 @@ const colouring: Topic = {
 export const DM_GRAPH: Chapter = {
   id: "cs.dm.graph", subject: "Discrete Mathematics", title: "Graph theory: connectivity, matching, colouring",
   syllabus: ["CS · Discrete Mathematics: Graphs: connectivity, matching, colouring"], pyqTopic: /graph/i,
-  map: { kind: "strip", items: [{ label: "1. Basics", sub: "degrees, Euler, trees", state: "done" }, { label: "2. Colouring", sub: "matching, planarity", state: "done" }] },
-  topics: [basics, colouring],
+  map: { kind: "strip", items: [{ label: "1. Basics", sub: "degrees, Euler, trees", state: "done" }, { label: "2. Colouring", sub: "matching, planarity", state: "done" }, { label: "3. Trees", sub: "spanning trees", state: "done" }, { label: "4. Planarity", sub: "Euler's formula", state: "done" }, { label: "5. Matching", sub: "Hall's theorem", state: "done" }, { label: "6. Isomorphism", sub: "invariants", state: "done" } ] },
+  topics: [basics, colouring, DM_SPANNING, DM_PLANAR, DM_HALL, DM_ISO],
 };

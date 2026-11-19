@@ -28,9 +28,9 @@ Status: [ ] to write · [x] written
 - Sets, relations and functions: [x] set algebra, power sets, cardinality and countability · [x] composition, inverses and equivalence classes
 - Partial orders and lattices: [x] Boolean algebra as a lattice
 - Monoids and groups: [x] cosets, normal subgroups, isomorphism
-- Graph theory: [ ] trees and spanning trees (Cayley, counting) · [ ] planarity and Euler's formula · [ ] matching and Hall's theorem · [ ] graph isomorphism
-- Counting: [ ] pigeonhole in depth · [ ] binomial identities and the binomial theorem
-- Recurrences: [ ] non-homogeneous recurrences and divide-and-conquer recurrences
+- Graph theory: [x] trees and spanning trees (Cayley, counting) · [x] planarity and Euler's formula · [x] matching and Hall's theorem · [x] graph isomorphism
+- Counting: [x] pigeonhole in depth · [x] binomial identities and the binomial theorem
+- Recurrences: [x] non-homogeneous recurrences and divide-and-conquer recurrences
 
 Order of work (owner's subject order): Discrete Mathematics expansions alongside the Databases book, then OS and CN expansions,
 then Programming and DS, Algorithms, and the rest. One subject (book or expansion) per turn.
