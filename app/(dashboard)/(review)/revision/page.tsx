@@ -1,10 +1,11 @@
 "use client";
 
+import { LoadMore } from "@/components/system/load-more";
 import { ReviewTabs } from "@/components/layout/review-tabs";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { TIER_RANK } from "@/lib/billing/plans";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { motion } from "motion/react";
 import { useStudyStore } from "@/store/use-study-store";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
@@ -33,6 +34,8 @@ export default function RevisionBuilderPage() {
   const { mistakes, bookmarks, loadStudyData } = useStudyStore();
   const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
   
+  const [shownQ, setShownQ] = useState(25); // queue renders 25 rows at a time, more load near the bottom (speed pass, 19 Nov)
+  const moreQ = useCallback(() => setShownQ((n) => n + 25), []);
   const [mounted, setMounted] = useState(false);
   const [mode, setMode] = useState<"mistakes" | "bookmarks" | "weak_topics" | "ai_insights">("mistakes");
   const insightsOk = TIER_RANK[useEntitlements().tier] >= TIER_RANK.plus;
@@ -286,7 +289,7 @@ export default function RevisionBuilderPage() {
             </div>
           ) : (
             <div className="flex-1 min-h-0 overflow-auto custom-scrollbar">
-              {!loadingIntel && intel && filteredRevisionQueue.length > 0 ? (
+              {!loadingIntel && intel && filteredRevisionQueue.length > 0 ? (<>
                 <table className="w-full text-xs text-left min-w-[700px]">
                   <thead className="text-[9px] font-black uppercase bg-[var(--surface-secondary)] text-[var(--text-muted)] border-b border-[var(--border-subtle)] sticky top-0 z-10">
                     <tr>
@@ -300,13 +303,8 @@ export default function RevisionBuilderPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                    {filteredRevisionQueue.map((item, idx) => (
-                      <motion.tr
-                        key={item.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: Math.min(idx * 0.03, 0.3) }}
-                        className="hover:bg-[var(--surface-secondary)]/30 transition"
+                    {filteredRevisionQueue.slice(0, shownQ).map((item) => (
+                      <tr key={item.id} className="hover:bg-[var(--surface-secondary)]/30 transition"
                       >
                         <td className="px-5 py-3.5">
                           <span className="font-bold text-[var(--text-primary)] flex items-center gap-1 text-xs truncate max-w-[180px]">
@@ -337,11 +335,12 @@ export default function RevisionBuilderPage() {
                         <td className="px-5 py-3.5 text-right text-[10px] font-bold text-[var(--text-muted)] font-num">
                           {item.nextSuggestedRevision}
                         </td>
-                      </motion.tr>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
-              ) : (
+                <LoadMore shown={Math.min(shownQ, filteredRevisionQueue.length)} total={filteredRevisionQueue.length} step={25} onMore={moreQ} label="topics" />
+              </>) : (
                 <div className="p-12 text-center text-xs text-[var(--text-muted)] font-semibold flex flex-col items-center justify-center gap-3">
                   <ShieldCheck className="w-12 h-12 text-emerald-500" />
                   <span>Your revision queue is empty! Great job mastering all mistakes.</span>

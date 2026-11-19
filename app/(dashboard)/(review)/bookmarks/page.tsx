@@ -1,8 +1,9 @@
 "use client";
 
+import { LoadMore } from "@/components/system/load-more";
 import { ReviewTabs } from "@/components/layout/review-tabs";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { GuestLocalNotice } from "@/components/auth/guest-local-notice";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { AnimatePresence, motion } from "motion/react";
@@ -33,7 +34,8 @@ export default function BookmarksPage() {
   const { bookmarks, loadStudyData, removeBookmark } = useStudyStore();
   
   const [activeBookmark, setActiveBookmark] = useState<string | null>(null);
-  const [shown, setShown] = useState(60); // the list renders in pages of 60: hundreds of animated rows at once is slow on a phone
+  const [shown, setShown] = useState(25); // the list renders in pages of 25 (loads more near the bottom): hundreds of animated rows at once is slow on a phone
+  const loadMore = useCallback(() => setShown((n) => n + 25), []);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   // Phones: list first; tapping an item opens its detail full-width, Back returns (md+: side by side).
   const [mobileDetail, setMobileDetail] = useState(false);
@@ -347,12 +349,8 @@ export default function BookmarksPage() {
                         : (activeBookmark === b.questionId ? "border-amber-500" : "border-transparent hover:border-amber-500/40");
 
                     return (
-                      <motion.li
-                        key={b.questionId}
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: Math.min(idx * 0.03, 0.4), duration: 0.2 }}
-                      >
+                      <li
+                        key={b.questionId}>
                         <button
                           onClick={() => {
                             setActiveBookmark(b.questionId);
@@ -399,14 +397,12 @@ export default function BookmarksPage() {
                             </div>
                           )}
                         </button>
-                      </motion.li>
+                      </li>
                     );
                   })}
                 </ul>
               )}
-              {visibleBookmarks.length < processedBookmarks.length ? (
-                <button type="button" onClick={() => setShown((n) => n + 60)} className="btn-soft m-3 w-[calc(100%-1.5rem)] justify-center text-xs">Show {Math.min(60, processedBookmarks.length - visibleBookmarks.length)} more ({processedBookmarks.length - visibleBookmarks.length} left)</button>
-              ) : null}
+              <LoadMore shown={visibleBookmarks.length} total={processedBookmarks.length} step={25} onMore={loadMore} label="bookmarks" />
             </div>
           </div>
         </div>

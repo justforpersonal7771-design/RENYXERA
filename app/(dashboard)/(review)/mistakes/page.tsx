@@ -1,10 +1,11 @@
 "use client";
 
 import { SmartUpgrade } from "@/components/growth/smart-upgrade";
+import { LoadMore } from "@/components/system/load-more";
 import { ReviewTabs } from "@/components/layout/review-tabs";
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { GuestLocalNotice } from "@/components/auth/guest-local-notice";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { AnimatePresence, motion } from "motion/react";
@@ -36,7 +37,8 @@ export default function MistakesPage() {
 
   const [activeMistake, setActiveMistake] = useState<string | null>(null);
   const [filterSubject, setFilterSubject] = useState<string>("ALL");
-  const [shown, setShown] = useState(60); // the list renders in pages of 60: hundreds of animated rows at once is slow on a phone
+  const [shown, setShown] = useState(25); // the list renders in pages of 25 (loads more near the bottom): hundreds of animated rows at once is slow on a phone
+  const loadMore = useCallback(() => setShown((n) => n + 25), []);
   const [filterTopic, setFilterTopic] = useState<string>("ALL");
   const [showMastered, setShowMastered] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -363,12 +365,8 @@ export default function MistakesPage() {
                   const repeatCount = m.occurrences || 1;
 
                   return (
-                    <motion.li
-                      key={m.questionId}
-                      initial={{ opacity: 0, x: -8 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: Math.min(idx * 0.03, 0.4), duration: 0.2 }}
-                    >
+                    <li
+                      key={m.questionId}>
                       <button
                         onClick={() => { setActiveMistake(m.questionId); setMobileDetail(true); }}
                         className={`w-full text-left px-4 py-2.5 hover:bg-[var(--surface-elevated)] transition-all duration-200 border-l-4 ${isCurrent
@@ -395,14 +393,12 @@ export default function MistakesPage() {
                           <span className="truncate">{m.topic}</span>
                         </span>
                       </button>
-                    </motion.li>
+                    </li>
                   );
                 })}
               </ul>
             )}
-            {visibleMistakes.length < filteredMistakes.length ? (
-              <button type="button" onClick={() => setShown((n) => n + 60)} className="btn-soft m-3 w-[calc(100%-1.5rem)] justify-center text-xs">Show {Math.min(60, filteredMistakes.length - visibleMistakes.length)} more ({filteredMistakes.length - visibleMistakes.length} left)</button>
-            ) : null}
+            <LoadMore shown={visibleMistakes.length} total={filteredMistakes.length} step={25} onMore={loadMore} label="mistakes" />
           </div>
         </div>
 

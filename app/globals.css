@@ -458,7 +458,7 @@
     border-radius: 9999px;
     border: 3px solid transparent;
     background-clip: padding-box;
-    background-image: var(--scrollbar-thumb-gradient);
+    background-image: none; background-color: color-mix(in srgb, var(--sb-ink) calc(var(--sb-alpha, 1) * 100%), transparent);
   }
   textarea::-webkit-scrollbar-thumb:hover {
     border-width: 1px;
@@ -470,7 +470,7 @@
   @supports not selector(::-webkit-scrollbar) {
     textarea {
       scrollbar-width: thin;
-      scrollbar-color: var(--scrollbar-thumb) transparent;
+      scrollbar-color: var(--sb-ink) transparent;
     }
   }
 
@@ -886,7 +886,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-image: var(--scrollbar-thumb-gradient);
+    background-image: none; background-color: color-mix(in srgb, var(--sb-ink) calc(var(--sb-alpha, 1) * 100%), transparent);
     border-radius: 9999px;
     background-clip: padding-box;
   }
@@ -925,13 +925,7 @@
     border-radius: 9999px;
     border: 3px solid transparent;
     background-clip: padding-box;
-    background-image: linear-gradient(
-      180deg,
-      rgb(var(--sb-c1) / var(--sb-alpha)),
-      rgb(var(--sb-c2) / var(--sb-alpha)) 35%,
-      rgb(var(--sb-c3) / var(--sb-alpha)) 70%,
-      rgb(var(--sb-c4) / var(--sb-alpha))
-    );
+    background-image: linear-gradient(color-mix(in srgb, var(--sb-ink) calc(var(--sb-alpha) * 100%), transparent), color-mix(in srgb, var(--sb-ink) calc(var(--sb-alpha) * 100%), transparent));
   }
 
   :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"] {
@@ -954,7 +948,7 @@
       scrollbar-color: transparent transparent;
     }
     :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"] {
-      scrollbar-color: var(--scrollbar-thumb) transparent;
+      scrollbar-color: var(--sb-ink) transparent;
     }
   }
 }
@@ -2393,3 +2387,8 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
 @supports not selector(::-webkit-scrollbar) {
   :is([data-tint]:not([data-tint="plain"]), .study-lesson) :is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"], :is([data-tint]:not([data-tint="plain"]), .study-lesson):is(.custom-scrollbar, [class*="overflow-y-auto"], [class*="overflow-x-auto"], [class*="overflow-auto"], [class*="overflow-y-scroll"], [class*="overflow-x-scroll"], .iv-md pre, .iv-table, .iv-flow, textarea)[data-scrollbar-reveal="true"] { scrollbar-color: var(--sb-ink) transparent; }
 }
+
+/* Scrollbars are one solid colour everywhere (owner, 19 Nov): no brand gradient. Neutral grey on plain, white and page
+ surfaces; a tinted card, the book panel or a lesson sets --sb-ink to its own ink (rules above). Firefox follows the same colour. */
+:root { --sb-ink: #a1a1aa; --scrollbar-thumb-glow: transparent; }
+.dark { --sb-ink: #6b7280; }
