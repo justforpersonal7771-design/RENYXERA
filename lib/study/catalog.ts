@@ -18,8 +18,8 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "txn", title: "Transactions", href: "/study/transactions", ready: "3 topics ready" }, { id: "cc", title: "Concurrency control", href: "/study/concurrency-control", ready: "4 topics ready" },
   ] },
   { id: "cn", title: "Computer Networks", short: "CN", tint: "butter", cloth: "#EBD8B0", ink: "#1B1917", paper: "#B07A1E", dark: "#B07A1E", band: "core", chapters: [
-    { id: "layers", title: "Layering and switching", match: "OSI|Protocol Layers", href: "/study/layering", ready: "2 topics ready" }, { id: "dll", title: "Data link and MAC", href: "/study/data-link", ready: "3 topics ready" }, { id: "ip", title: "IP addressing and routing", href: "/study/ip", ready: "3 topics ready" },
-    { id: "tcp", title: "TCP, UDP and flow control", href: "/study/transport", ready: "2 topics ready" }, { id: "app", title: "Application layer", href: "/study/application", ready: "2 topics ready" },
+    { id: "layers", title: "Layering and switching", match: "OSI|Protocol Layers", href: "/study/layering", ready: "3 topics ready" }, { id: "dll", title: "Data link and MAC", href: "/study/data-link", ready: "6 topics ready" }, { id: "ip", title: "IP addressing and routing", href: "/study/ip", ready: "6 topics ready" },
+    { id: "tcp", title: "TCP, UDP and flow control", href: "/study/transport", ready: "5 topics ready" }, { id: "app", title: "Application layer", href: "/study/application", ready: "5 topics ready" },
   ] },
   { id: "algo", title: "Algorithms", short: "Algo", tint: "peri", cloth: "#D9D2C2", ink: "#1B1917", paper: "#22324F", dark: "#22324F", band: "core", chapters: [
     { id: "asym", title: "Asymptotics and recurrences" }, { id: "sort", title: "Searching and sorting" }, { id: "hash", title: "Hashing" },

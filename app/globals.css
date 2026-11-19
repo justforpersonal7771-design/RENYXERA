@@ -2371,7 +2371,7 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
 [data-tint="peach"] { --sb-ink: var(--tint-peach-ink); } [data-tint="lilac"] { --sb-ink: var(--tint-lilac-ink); }
 [data-tint="butter"] { --sb-ink: var(--tint-butter-ink); } [data-tint="sky"] { --sb-ink: var(--tint-sky-ink); }
 [data-tint="rose"] { --sb-ink: var(--tint-rose-ink); }
-.study-lesson { --sb-ink: var(--st-accent); }
+.study-lesson { --sb-ink: var(--st-accent); overflow-wrap: anywhere; }
 :is([data-tint]:not([data-tint="plain"]), .study-lesson) {
   --scrollbar-thumb: var(--sb-ink);
   --scrollbar-thumb-gradient: linear-gradient(var(--sb-ink), var(--sb-ink));

@@ -1,3 +1,4 @@
+import * as DA from "./cn-deep-a";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /**
@@ -140,5 +141,5 @@ export const CN_LAYERS: Chapter = {
     { label: "1. Layers", sub: "encapsulation and devices", state: "done" },
     { label: "2. Switching", sub: "delays end to end", state: "done" },
   ] },
-  topics: [layers, switching],
+  topics: [layers, switching, DA.perfTopic],
 };

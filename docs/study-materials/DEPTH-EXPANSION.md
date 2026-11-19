@@ -16,11 +16,11 @@ Status: [ ] to write · [x] written
 - File systems and disk: [x] directory structures, links, mounting · [x] free-space management · [x] disk structure and access time · [x] RAID levels · [x] I/O systems (polling, interrupts, DMA, buffering, spooling)
 
 ## Computer Networks
-- Layering and switching: [ ] network performance (throughput, bandwidth-delay product, RTT, queueing intensity)
-- Data link and MAC: [ ] Hamming code construction and correction · [ ] Ethernet frame, learning bridges and spanning tree · [ ] wireless and CSMA/CA
-- IP addressing and routing: [ ] ARP, DHCP, ICMP and NAT · [ ] IPv6 essentials · [ ] classful addressing and supernetting
-- TCP, UDP and flow control: [ ] receive window and flow control · [ ] TCP timers and RTO estimation (Jacobson, Karn) · [ ] UDP and checksums
-- Application layer: [ ] DNS records and resolution in depth · [ ] email: SMTP, MIME, POP3, IMAP · [ ] HTTP versions, cookies and caching
+- Layering and switching: [x] network performance (throughput, bandwidth-delay product, RTT, queueing intensity)
+- Data link and MAC: [x] Hamming code construction and correction · [x] Ethernet frame, learning bridges and spanning tree · [x] wireless and CSMA/CA
+- IP addressing and routing: [x] ARP, DHCP, ICMP and NAT · [x] IPv6 essentials · [x] classful addressing and supernetting
+- TCP, UDP and flow control: [x] receive window and flow control · [x] TCP timers and RTO estimation (Jacobson, Karn) · [x] UDP and checksums
+- Application layer: [x] DNS records and resolution in depth · [x] email: SMTP, MIME, POP3, IMAP · [x] HTTP versions, cookies and caching
 
 ## Discrete Mathematics
 - Propositional logic: [x] rules of inference and proof methods · [x] normal forms and functional completeness

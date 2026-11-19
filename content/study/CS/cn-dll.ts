@@ -1,3 +1,4 @@
+import * as DA from "./cn-deep-a";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /**
@@ -207,5 +208,5 @@ export const CN_DLL: Chapter = {
     { label: "2. Flow control", sub: "windows", state: "done" },
     { label: "3. Medium access", sub: "ALOHA, CSMA/CD", state: "done" },
   ] },
-  topics: [errors, windowT, mac],
+  topics: [errors, windowT, mac, DA.hammingTopic, DA.bridgeTopic, DA.wifiTopic],
 };

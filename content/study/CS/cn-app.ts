@@ -1,3 +1,4 @@
+import * as DB2 from "./cn-deep-b";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /**
@@ -141,5 +142,5 @@ export const CN_APP: Chapter = {
     { label: "1. DNS and HTTP", sub: "round trips", state: "done" },
     { label: "2. Email and ports", sub: "SMTP, DHCP, FTP", state: "done" },
   ] },
-  topics: [web, protocols],
+  topics: [web, protocols, DB2.dnsTopic, DB2.emailTopic, DB2.httpTopic],
 };

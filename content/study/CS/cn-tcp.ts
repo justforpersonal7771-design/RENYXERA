@@ -1,3 +1,4 @@
+import * as DB2 from "./cn-deep-b";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /**
@@ -142,5 +143,5 @@ export const CN_TCP: Chapter = {
     { label: "1. TCP and UDP", sub: "segments and connections", state: "done" },
     { label: "2. Congestion", sub: "slow start, AIMD", state: "done" },
   ] },
-  topics: [tcp, congestion],
+  topics: [tcp, congestion, DB2.flowTopic, DB2.rtoTopic, DB2.udpTopic],
 };

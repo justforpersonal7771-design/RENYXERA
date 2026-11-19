@@ -1,3 +1,4 @@
+import * as DA from "./cn-deep-a";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /**
@@ -209,5 +210,5 @@ export const CN_IP: Chapter = {
     { label: "2. Fragmentation", sub: "the IPv4 header", state: "done" },
     { label: "3. Routing", sub: "DV and link state", state: "done" },
   ] },
-  topics: [addressing, frag, routing],
+  topics: [addressing, frag, routing, DA.arpNat, DA.ipv6Topic, DA.classfulTopic],
 };
