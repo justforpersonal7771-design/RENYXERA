@@ -27,9 +27,9 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "graphs", title: "Graph traversals" }, { id: "mst", title: "Minimum spanning trees" }, { id: "sp", title: "Shortest paths" },
   ] },
   { id: "pds", title: "Programming and Data Structures", short: "P & DS", tint: "peach", cloth: "#E6CDB4", ink: "#1B1917", paper: "#9A3B1F", dark: "#9A3B1F", band: "core", chapters: [
-    { id: "c", title: "Programming in C", match: "Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing" }, { id: "recursion", title: "Recursion" }, { id: "lists", title: "Arrays" },
-    { id: "stackq", title: "Stacks and queues" }, { id: "linked", title: "Linked lists" }, { id: "trees", title: "Trees and binary search trees" },
-    { id: "heaps", title: "Binary heaps" }, { id: "graph-ds", title: "Graphs: representation" },
+    { id: "c", title: "Programming in C", href: "/study/c-programming", ready: "5 topics ready", match: "Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing" }, { id: "recursion", title: "Recursion", href: "/study/recursion", ready: "3 topics ready" }, { id: "lists", title: "Arrays", href: "/study/arrays", ready: "3 topics ready" },
+    { id: "stackq", title: "Stacks and queues", href: "/study/stacks-queues", ready: "4 topics ready" }, { id: "linked", title: "Linked lists", href: "/study/linked-lists", ready: "3 topics ready" }, { id: "trees", title: "Trees and binary search trees", href: "/study/trees", ready: "4 topics ready" },
+    { id: "heaps", title: "Binary heaps", href: "/study/heaps", ready: "3 topics ready" }, { id: "graph-ds", title: "Graphs: representation", href: "/study/graph-representation", ready: "3 topics ready" },
   ] },
   { id: "toc", title: "Theory of Computation", short: "TOC", tint: "sky", cloth: "#D6CFE6", ink: "#1B1917", paper: "#155E63", dark: "#155E63", band: "core", chapters: [
     { id: "regular", title: "Regular expressions and finite automata" }, { id: "reg-props", title: "Regular languages: closure and pumping lemma" }, { id: "cfl", title: "Context-free grammars and PDAs" },
