@@ -1,4 +1,5 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
+import { DM_PROOF, DM_COMPLETE, DM_TRANSLATE, DM_SETALG, DM_COMPOSE, DM_BOOLEAN, DM_COSETS } from "@/content/study/CS/dm-more";
 
 /**
  * Discrete Mathematics → Sets, relations and functions; Partial orders and lattices; Monoids and groups.
@@ -382,18 +383,18 @@ const cyclic: Topic = {
 export const DM_SETS: Chapter = {
   id: "cs.dm.sets", subject: "Discrete Mathematics", title: "Sets, relations and functions",
   syllabus: ["CS · Discrete Mathematics: Sets, relations, functions"], pyqTopic: /relation|function|set theory|sets/i,
-  map: { kind: "strip", items: [{ label: "1. Relations", sub: "properties, closures", state: "done" }, { label: "2. Functions", sub: "and counting", state: "done" }] },
-  topics: [relations, functions],
+  map: { kind: "strip", items: [{ label: "1. Relations", sub: "properties, closures", state: "done" }, { label: "2. Functions", sub: "and counting", state: "done" }, { label: "3. Set algebra", sub: "countability", state: "done" }, { label: "4. Composition", sub: "inverses, classes", state: "done" } ] },
+  topics: [relations, functions, DM_SETALG, DM_COMPOSE],
 };
 export const DM_POSET: Chapter = {
   id: "cs.dm.poset", subject: "Discrete Mathematics", title: "Partial orders and lattices",
   syllabus: ["CS · Discrete Mathematics: Partial orders and lattices"], pyqTopic: /lattice|partial order|poset/i,
-  map: { kind: "strip", items: [{ label: "1. Hasse diagrams", sub: "bounds", state: "done" }, { label: "2. Lattices", sub: "distributive, Boolean", state: "done" }] },
-  topics: [posets, lattices],
+  map: { kind: "strip", items: [{ label: "1. Hasse diagrams", sub: "bounds", state: "done" }, { label: "2. Lattices", sub: "distributive, Boolean", state: "done" }, { label: "3. Boolean algebra", sub: "atoms", state: "done" } ] },
+  topics: [posets, lattices, DM_BOOLEAN],
 };
 export const DM_GROUPS: Chapter = {
   id: "cs.dm.groups", subject: "Discrete Mathematics", title: "Monoids and groups",
   syllabus: ["CS · Discrete Mathematics: Monoids, groups"], pyqTopic: /group|monoid|semigroup/i,
-  map: { kind: "strip", items: [{ label: "1. Structures", sub: "axioms", state: "done" }, { label: "2. Cyclic groups", sub: "order, Lagrange", state: "done" }] },
-  topics: [groups, cyclic],
+  map: { kind: "strip", items: [{ label: "1. Structures", sub: "axioms", state: "done" }, { label: "2. Cyclic groups", sub: "order, Lagrange", state: "done" }, { label: "3. Cosets", sub: "normal subgroups", state: "done" } ] },
+  topics: [groups, cyclic, DM_COSETS],
 };

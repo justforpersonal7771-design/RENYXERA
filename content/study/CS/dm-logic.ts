@@ -1,4 +1,5 @@
 import type { Chapter, Topic } from "@/lib/study/schema";
+import { DM_PROOF, DM_COMPLETE, DM_TRANSLATE, DM_SETALG, DM_COMPOSE, DM_BOOLEAN, DM_COSETS } from "@/content/study/CS/dm-more";
 
 /**
  * Discrete Mathematics → Propositional logic and First-order logic. Results from lib/study/dm.ts, checked by script:
@@ -258,12 +259,12 @@ const validity: Topic = {
 export const DM_LOGIC: Chapter = {
   id: "cs.dm.logic", subject: "Discrete Mathematics", title: "Propositional logic",
   syllabus: ["CS · Discrete Mathematics: Propositional logic"], pyqTopic: /propositional|logic/i,
-  map: { kind: "strip", items: [{ label: "1. Connectives", sub: "truth tables", state: "done" }, { label: "2. Equivalences", sub: "laws, normal forms, inference", state: "done" }] },
-  topics: [connectives, equivalence],
+  map: { kind: "strip", items: [{ label: "1. Connectives", sub: "truth tables", state: "done" }, { label: "2. Equivalences", sub: "laws, normal forms, inference", state: "done" }, { label: "3. Proof methods", sub: "rules of inference", state: "done" }, { label: "4. Completeness", sub: "normal forms, Post", state: "done" } ] },
+  topics: [connectives, equivalence, DM_PROOF, DM_COMPLETE],
 };
 export const DM_FOL: Chapter = {
   id: "cs.dm.fol", subject: "Discrete Mathematics", title: "First-order logic",
   syllabus: ["CS · Discrete Mathematics: First order logic"], pyqTopic: /first order|predicate|quantif/i,
-  map: { kind: "strip", items: [{ label: "1. Quantifiers", sub: "reading, negating", state: "done" }, { label: "2. Validity", sub: "laws and counterexamples", state: "done" }] },
-  topics: [quantifiersT, validity],
+  map: { kind: "strip", items: [{ label: "1. Quantifiers", sub: "reading, negating", state: "done" }, { label: "2. Validity", sub: "laws and counterexamples", state: "done" }, { label: "3. Translation", sub: "nested statements", state: "done" } ] },
+  topics: [quantifiersT, validity, DM_TRANSLATE],
 };
