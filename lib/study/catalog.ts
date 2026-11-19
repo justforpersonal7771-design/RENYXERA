@@ -13,9 +13,9 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "fs", title: "File systems and disk", href: "/study/files", ready: "2 topics ready" },
   ] },
   { id: "dbms", title: "Databases", short: "DBMS", tint: "mint", cloth: "#C4D9CC", ink: "#1B1917", paper: "#1F4D3A", dark: "#1F4D3A", band: "core", chapters: [
-    { id: "er", title: "ER model", href: "/study/er-model", ready: "2 topics ready" }, { id: "relational", title: "Relational model and integrity constraints", href: "/study/relational-model", ready: "2 topics ready" }, { id: "ra", title: "Relational algebra and tuple calculus", href: "/study/relational-algebra", ready: "2 topics ready" },
-    { id: "sql", title: "SQL", href: "/study/sql", ready: "2 topics ready" }, { id: "norm", title: "Functional dependencies and normal forms", href: "/study/normal-forms", ready: "2 topics ready" }, { id: "index", title: "File organisation and indexing (B and B+ trees)", href: "/study/indexing", ready: "2 topics ready" },
-    { id: "txn", title: "Transactions", href: "/study/transactions", ready: "2 topics ready" }, { id: "cc", title: "Concurrency control", href: "/study/concurrency-control", ready: "2 topics ready" },
+    { id: "er", title: "ER model", href: "/study/er-model", ready: "3 topics ready" }, { id: "relational", title: "Relational model and integrity constraints", href: "/study/relational-model", ready: "2 topics ready" }, { id: "ra", title: "Relational algebra and tuple calculus", href: "/study/relational-algebra", ready: "3 topics ready" },
+    { id: "sql", title: "SQL", href: "/study/sql", ready: "4 topics ready" }, { id: "norm", title: "Functional dependencies and normal forms", href: "/study/normal-forms", ready: "4 topics ready" }, { id: "index", title: "File organisation and indexing (B and B+ trees)", href: "/study/indexing", ready: "3 topics ready" },
+    { id: "txn", title: "Transactions", href: "/study/transactions", ready: "3 topics ready" }, { id: "cc", title: "Concurrency control", href: "/study/concurrency-control", ready: "4 topics ready" },
   ] },
   { id: "cn", title: "Computer Networks", short: "CN", tint: "butter", cloth: "#EBD8B0", ink: "#1B1917", paper: "#B07A1E", dark: "#B07A1E", band: "core", chapters: [
     { id: "layers", title: "Layering and switching", match: "OSI|Protocol Layers", href: "/study/layering", ready: "2 topics ready" }, { id: "dll", title: "Data link and MAC", href: "/study/data-link", ready: "3 topics ready" }, { id: "ip", title: "IP addressing and routing", href: "/study/ip", ready: "3 topics ready" },

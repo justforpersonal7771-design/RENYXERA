@@ -8,6 +8,7 @@ import type { Chapter, Topic } from "@/lib/study/schema";
  * Enrolled ÷ CS courses → sids 1, 3. Emp: COUNT(*) 5, COUNT(salary) 4, AVG(salary) 55; GROUP BY HAVING COUNT ≥ 2 → CS 120, EC 60;
  * above average → Ira, Kim; > ALL EC → Ira; > ANY CS → Ira, Kim; NOT IN with a NULL → 0 rows; LEFT JOIN Course–Enrolled → 6 rows.
  */
+import { eer, outer, groupby, nulls } from "./db-c";
 const DB = "/topics/database-management-systems-dbms";
 
 const erBasics: Topic = {
@@ -469,7 +470,7 @@ const sqlNested: Topic = {
   ],
 };
 
-export const DB_ER: Chapter = { id: "cs.db.er", subject: "Databases", title: "ER model", syllabus: ["CS · Databases: ER-model"], pyqTopic: /ER model|entity|E-R/i, map: { kind: "strip", items: [{ label: "1. Mapping", sub: "cardinality, participation", state: "done" }, { label: "2. Weak entities", sub: "multivalued, specialisation", state: "done" }] }, topics: [erBasics, erWeak] };
+export const DB_ER: Chapter = { id: "cs.db.er", subject: "Databases", title: "ER model", syllabus: ["CS · Databases: ER-model"], pyqTopic: /ER model|entity|E-R/i, map: { kind: "strip", items: [{ label: "1. Mapping", sub: "cardinality, participation", state: "done" }, { label: "2. Weak entities", sub: "multivalued, specialisation", state: "done" }, { label: "3. Specialisation", sub: "EER mapping", state: "done" }] }, topics: [erBasics, erWeak, eer] };
 export const DB_REL: Chapter = { id: "cs.db.rel", subject: "Databases", title: "Relational model and integrity constraints", syllabus: ["CS · Databases: Relational model, integrity constraints"], pyqTopic: /relational model|key|integrity|constraint/i, map: { kind: "strip", items: [{ label: "1. Keys", sub: "closures, superkeys", state: "done" }, { label: "2. Integrity", sub: "referential actions", state: "done" }] }, topics: [keys, integrity] };
-export const DB_RA: Chapter = { id: "cs.db.ra", subject: "Databases", title: "Relational algebra and tuple calculus", syllabus: ["CS · Databases: relational algebra, tuple calculus"], pyqTopic: /relational algebra|tuple calculus|relational calculus/i, map: { kind: "strip", items: [{ label: "1. Algebra", sub: "operators, division", state: "done" }, { label: "2. Calculus", sub: "TRC, safety", state: "done" }] }, topics: [algebra, calculus] };
-export const DB_SQL: Chapter = { id: "cs.db.sql", subject: "Databases", title: "SQL", syllabus: ["CS · Databases: SQL"], pyqTopic: /SQL/i, map: { kind: "strip", items: [{ label: "1. Queries", sub: "aggregates, NULL", state: "done" }, { label: "2. Nested", sub: "ALL, ANY, EXISTS", state: "done" }] }, topics: [sqlBasics, sqlNested] };
+export const DB_RA: Chapter = { id: "cs.db.ra", subject: "Databases", title: "Relational algebra and tuple calculus", syllabus: ["CS · Databases: relational algebra, tuple calculus"], pyqTopic: /relational algebra|tuple calculus|relational calculus/i, map: { kind: "strip", items: [{ label: "1. Algebra", sub: "operators, division", state: "done" }, { label: "2. Calculus", sub: "TRC, safety", state: "done" }, { label: "3. Extended algebra", sub: "outer joins, γ, DRC", state: "done" }] }, topics: [algebra, calculus, outer] };
+export const DB_SQL: Chapter = { id: "cs.db.sql", subject: "Databases", title: "SQL", syllabus: ["CS · Databases: SQL"], pyqTopic: /SQL/i, map: { kind: "strip", items: [{ label: "1. Queries", sub: "aggregates, NULL", state: "done" }, { label: "2. Nested", sub: "ALL, ANY, EXISTS", state: "done" }, { label: "3. Grouping", sub: "GROUP BY, HAVING", state: "done" }, { label: "4. NULLs", sub: "three-valued logic", state: "done" }] }, topics: [sqlBasics, sqlNested, groupby, nulls] };
