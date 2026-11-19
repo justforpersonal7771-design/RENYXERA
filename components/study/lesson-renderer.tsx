@@ -261,7 +261,10 @@ function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index:
 
 /** Chapters of this subject: previous / next chapter and the whole list, the open chapter expanded to its topics (owner, 19 Nov). */
 function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
+  const [openTopic, setOpenTopic] = useState<string | null>(null); // topics start collapsed
   const [open, setOpen] = useState(false);
+  const swap = useStudyTabs((st) => st.swap);
+  const asTab = (c: { href?: string; title: string }) => ({ href: c.href!, title: c.title, subject: book?.title ?? "", tint: book?.tint });
   const book = CS_SHELF.find((b) => b.chapters.some((c) => c.href === href));
   if (!book) return null;
   const i = book.chapters.findIndex((c) => c.href === href);
@@ -271,21 +274,45 @@ function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
   const btn = "grid h-8 w-8 place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] aria-disabled:pointer-events-none aria-disabled:opacity-35";
   return (
     <div className="relative mt-2 flex items-center gap-1.5">
-      <Link href={prev?.href ?? href} aria-disabled={!prev} aria-label={prev ? `Previous chapter: ${prev.title}` : "No previous chapter"} className={btn}><ChevronLeft className="h-4 w-4" /></Link>
+      <Link href={prev?.href ?? href} onClick={() => prev && swap(href, asTab(prev))} aria-disabled={!prev} aria-label={prev ? `Previous chapter: ${prev.title}` : "No previous chapter"} className={btn}><ChevronLeft className="h-4 w-4" /></Link>
       <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} className="inline-flex h-8 min-w-0 flex-1 items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-bold"><BookOpenText className="h-3.5 w-3.5 shrink-0" aria-hidden /><span className="truncate">Chapter {i + 1} of {book.chapters.length}</span><ChevronDown className="ml-auto h-3.5 w-3.5 shrink-0" aria-hidden /></button>
-      <Link href={next?.href ?? href} aria-disabled={!next} aria-label={next ? `Next chapter: ${next.title}` : "No next chapter"} className={btn}><ChevronRight className="h-4 w-4" /></Link>
+      <Link href={next?.href ?? href} onClick={() => next && swap(href, asTab(next))} aria-disabled={!next} aria-label={next ? `Next chapter: ${next.title}` : "No next chapter"} className={btn}><ChevronRight className="h-4 w-4" /></Link>
       {open && <>
         <button type="button" aria-label="Close chapters" className="fixed inset-0 z-[70] cursor-default" onClick={() => setOpen(false)} />
-        <div role="menu" className="custom-scrollbar absolute left-0 top-10 z-[80] max-h-[65vh] w-[min(22rem,85vw)] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-[0_20px_40px_-20px_rgba(0,0,0,.5)]">
-          <p className="px-2 pb-1 text-xs font-bold text-[var(--text-secondary)]">{book.title}</p>
-          {book.chapters.map((c, k) => (
-            <div key={c.id} className={`rounded-xl p-2 ${c.href === href ? "bg-[color-mix(in_srgb,var(--st-accent)_10%,transparent)]" : ""}`}>
-              {c.href ? <Link href={c.href} role="menuitem" onClick={() => setOpen(false)} className="flex items-start gap-2 text-sm font-bold"><span className="font-num text-[var(--st-accent)]">{k + 1}</span><span className="min-w-0 flex-1">{c.title}</span><span className="shrink-0 text-[11px] font-semibold text-[var(--text-secondary)]">{c.ready}</span></Link>
-                : <p className="flex items-start gap-2 text-sm text-[var(--text-secondary)]"><span className="font-num">{k + 1}</span><span className="min-w-0 flex-1">{c.title}</span><span className="shrink-0 text-[11px]">Being written</span></p>}
-              {c.href === href && <ul className="mt-1 space-y-1 pl-5">{chapter.topics.map((t, n) => <li key={t.id}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(t.id); }} className="w-full rounded-lg px-2 py-0.5 text-left text-xs font-semibold hover:bg-[var(--surface-secondary)]">{n + 1}. {t.title}</button>
-                <ul className="pl-3">{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(t, sec.key)); }} className="w-full rounded-lg px-2 py-0.5 text-left text-[11px] text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]">{sec.label}</button></li>)}</ul></li>)}</ul>}
-            </div>
-          ))}
+        <div role="menu" className="absolute left-0 top-10 z-[80] flex max-h-[min(34rem,calc(100dvh-15rem))] w-[min(23rem,86vw)] flex-col overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_24px_48px_-22px_rgba(0,0,0,.55)]">
+          <div className="sticky top-0 z-20 flex items-center justify-between gap-2 px-4 py-3 text-[var(--surface)]" style={{ background: "var(--st-accent)" }}>
+            <span className="text-xs font-extrabold uppercase tracking-[.16em]">{book.title}</span>
+            <span className="rounded-full bg-black/15 px-2 py-0.5 text-[11px] font-bold">{book.chapters.length} chapters</span>
+          </div>
+          <ol className="custom-scrollbar relative min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3">
+            <span aria-hidden className="absolute bottom-4 left-[1.45rem] top-4 w-0.5 rounded-full" style={{ background: "color-mix(in srgb, var(--st-accent) 30%, transparent)" }} />
+            {book.chapters.map((c, k) => {
+              const here = c.href === href;
+              return (
+                <li key={c.id} className="relative pb-2 pl-8">
+                  <span aria-hidden className={`absolute left-[0.7rem] top-1.5 grid h-6 w-6 place-items-center rounded-full text-[11px] font-extrabold ${here ? "text-[var(--surface)]" : c.href ? "border-2 bg-[var(--surface)]" : "border-2 border-dashed bg-[var(--surface)] text-[var(--text-muted)]"}`} style={here ? { background: "var(--st-accent)" } : c.href ? { borderColor: "var(--st-accent)", color: "var(--st-accent)" } : { borderColor: "var(--border)" }}>{k + 1}</span>
+                  {c.href ? (
+                    <Link href={c.href} role="menuitem" onClick={() => { setOpen(false); if (!here) swap(href, asTab(c)); }} className={`flex items-start gap-2 rounded-xl px-2.5 py-2 text-sm ${here ? "font-extrabold" : "font-bold hover:bg-[var(--surface-secondary)]"}`} style={here ? { background: "color-mix(in srgb, var(--st-accent) 12%, transparent)" } : undefined}>
+                      <span className="min-w-0 flex-1 text-[var(--text-primary)]">{c.title}</span>
+                      <span className="shrink-0 rounded-full bg-emerald-700 px-1.5 py-0.5 text-[10px] font-bold text-white">{c.ready?.replace(/ ready.*/, "")}</span>
+                    </Link>
+                  ) : <p className="flex items-start gap-2 px-2.5 py-2 text-sm text-[var(--text-secondary)]"><span className="min-w-0 flex-1">{c.title}</span><span className="shrink-0 text-[10px] font-semibold">Being written</span></p>}
+                  {here && <ul className="mt-1 space-y-1">{chapter.topics.map((t, n) => {
+                    const on = openTopic === t.id;
+                    return (
+                      <li key={t.id} className="rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+                        <div className="sticky top-0 z-10 flex items-center gap-1 rounded-xl bg-[var(--surface)]">
+                          <button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(t.id); }} className="min-w-0 flex-1 px-2.5 py-2 text-left text-[13px] font-bold leading-snug text-[var(--text-primary)]"><span className="mr-1.5 font-num" style={{ color: "var(--st-accent)" }}>{n + 1}</span>{t.title}</button>
+                          <button type="button" onClick={() => setOpenTopic(on ? null : t.id)} aria-expanded={on} aria-label={`${on ? "Hide" : "Show"} sections of ${t.title}`} className="mr-1 grid h-7 w-7 shrink-0 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><ChevronDown className={`h-4 w-4 transition-transform ${on ? "rotate-180" : ""}`} aria-hidden /></button>
+                        </div>
+                        {on && <ul className="mx-2.5 mb-2 border-l-2 pl-2" style={{ borderColor: "color-mix(in srgb, var(--st-accent) 35%, transparent)" }}>{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(t, sec.key)); }} className="w-full rounded-lg px-2 py-1 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]">{sec.label}</button></li>)}</ul>}
+                      </li>
+                    );
+                  })}</ul>}
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </>}
     </div>

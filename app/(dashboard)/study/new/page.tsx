@@ -82,7 +82,7 @@ export default function StudyNewTab() {
           <p className="mb-2 text-xs font-bold text-[var(--text-secondary)]">1. Section</p>
           <div className="flex flex-wrap gap-2">{SECTIONS.map((s) => <button key={s.id} type="button" aria-pressed={section === s.id} onClick={() => { setSection(s.id); setBookId(CS_SHELF.find((b) => b.band === s.id)!.id); }} className={pill(section === s.id)}>{s.label}</button>)}</div>
           <p className="mb-2 mt-4 text-xs font-bold text-[var(--text-secondary)]">2. Subject</p>
-          <div className="flex flex-wrap gap-2">{books.map((b) => { const r = b.chapters.filter((c) => c.href).length; return <button key={b.id} type="button" aria-pressed={book?.id === b.id} onClick={() => setBookId(b.id)} className={pill(book?.id === b.id)}>{b.title}{r > 0 && <span className="ml-1.5 rounded-full bg-emerald-700 px-1.5 text-[10px] font-bold text-white">{r} ready</span>}</button>; })}</div>
+          <div className="flex flex-wrap gap-2">{books.map((b) => { const r = b.chapters.filter((c) => c.href).length; return <button key={b.id} type="button" aria-pressed={book?.id === b.id} onClick={() => setBookId(b.id)} className={pill(book?.id === b.id)}>{b.title}<span className="ml-1.5 rounded-full bg-black/10 px-1.5 text-[10px] font-bold dark:bg-white/15">{b.chapters.length} chapters</span></button>; })}</div>
           {book && <>
             <p className="mb-2 mt-4 text-xs font-bold text-[var(--text-secondary)]">3. Chapter</p>
             <ol className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">

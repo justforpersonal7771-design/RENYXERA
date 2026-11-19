@@ -76,7 +76,7 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i
   const free = b.chapters.find((c) => c.ready);
   return (
     <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: flat ? "0px" : `${(i % 3) * 8}px`, ["--h" as string]: flat ? "76px" : `${56 + Math.min(b.chapters.length, 6) * 5}px` /* capped: books stay varied without 17-chapter books towering (owner, 19 Nov) */ }}
-      aria-label={`${b.title}. ${b.chapters.length} chapters, ${r ? `${r} ready to read` : "being written"}.`}
+      aria-label={`${b.title}. ${b.chapters.length} chapters.`}
       className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
       <span className="min-w-0 flex-1">
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
@@ -186,7 +186,7 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
               <BookOpen className="h-7 w-7" aria-hidden />
               <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
               <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series</p>
-              <p className="mt-4 text-[15px] leading-relaxed">{b.chapters.length} chapters in teaching order, {ready(b) ? `${ready(b)} ready to read now` : "all being written"}. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
+              <p className="mt-4 text-[15px] leading-relaxed">{b.chapters.length} chapters in teaching order. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
               {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="pill-ink mt-5 inline-flex" style={{ ["--btn" as string]: `var(--tint-${b.tint ?? "peri"}-ink)` }}>Read: {b.chapters.find((c) => c.href)!.title}</Link>}
               <MarksPeek key={b.id} b={b} />
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/10 md:hidden"><X className="h-5 w-5" /></button>

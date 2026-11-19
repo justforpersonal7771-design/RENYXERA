@@ -54,6 +54,8 @@ type S = {
   hydrate: () => void;
   /** Open (or focus) a tab. Returns the title of a tab closed to make room, if any. */
   open: (t: StudyTab, active?: string) => string | null;
+  /** Replace one open tab with another chapter in the same place (prev / next chapter keeps you in one tab). */
+  swap: (from: string, to: StudyTab) => void;
   close: (href: string) => string | null;
   closeOthers: (href: string) => void;
   pin: (href: string) => void;
@@ -92,6 +94,14 @@ export const useStudyTabs = create<S>((set, get) => ({
     get().hydrate();
     const [t, ...rest] = get().closed; if (!t) return null;
     set({ closed: rest }); saveClosed(rest); get().open(t, t.href); return t.href;
+  },
+  swap: (from, to) => {
+    get().hydrate();
+    const tabs = get().tabs;
+    const i = tabs.findIndex((x) => x.href === from);
+    if (i < 0 || tabs.some((x) => x.href === to.href)) return; // not open, or the target already has its own tab
+    const next = tabs.map((x, k) => (k === i ? { ...x, href: to.href, title: to.title, subject: to.subject, tint: to.tint ?? x.tint } : x));
+    set({ tabs: next }); save(next);
   },
   open: (t, active) => {
     get().hydrate();
