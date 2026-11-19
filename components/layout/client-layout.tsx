@@ -63,22 +63,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const loadRepository = useDataStore((state) => state.loadRepository);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
-  // After a deploy, a page that was already open asks for script chunks that no longer exist, so links seem dead (owner, 19 Nov).
-  // When a chunk fails to load, reload once to pick up the new build; the session flag stops a reload loop.
-  useEffect(() => {
-    const stale = (msg: string) => /ChunkLoadError|Loading chunk [\w-]+ failed|Failed to fetch dynamically imported module|Importing a module script failed/i.test(msg);
-    const recover = (msg: string) => {
-      if (!stale(msg)) return;
-      try { if (sessionStorage.getItem("renyxera.chunk-reload") === location.pathname) return; sessionStorage.setItem("renyxera.chunk-reload", location.pathname); } catch { /* storage off */ }
-      location.reload();
-    };
-    const onErr = (e: ErrorEvent) => recover(String(e.message || e.error?.name || ""));
-    const onRej = (e: PromiseRejectionEvent) => recover(String((e.reason as Error)?.name ?? "") + " " + String((e.reason as Error)?.message ?? e.reason ?? ""));
-    window.addEventListener("error", onErr); window.addEventListener("unhandledrejection", onRej);
-    const ok = setTimeout(() => { try { sessionStorage.removeItem("renyxera.chunk-reload"); } catch { /* storage off */ } }, 10000);
-    return () => { window.removeEventListener("error", onErr); window.removeEventListener("unhandledrejection", onRej); clearTimeout(ok); };
-  }, []);
-
   // Page width matches the navbar (owner, 19 Nov): the scroller reserves a scrollbar gutter on both edges, so subtract its
   // measured width from the side padding. Phones have overlay scrollbars (gutter 0); desktops usually ~10px per side.
   useEffect(() => {

@@ -12,13 +12,19 @@ import Lenis from "lenis";
 export function SmoothScroll() {
   const pathname = usePathname();
   const off = pathname?.startsWith("/exam/session");
+  // Speed pass (19 Nov): Lenis was rebuilt on every page change (re-measuring the whole page) and looped every frame, even on
+  // phones where touch keeps native scrolling anyway. Now: desktop mouse-wheel only, created once, and its frame loop runs
+  // only while a scroll is actually animating.
   useEffect(() => {
     const wrapper = document.getElementById("app-scroll");
-    if (!wrapper || off || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const lenis = new Lenis({ wrapper, content: wrapper.firstElementChild as HTMLElement, lerp: 0.1, smoothWheel: true, allowNestedScroll: true, anchors: { offset: -16 } });
-    let raf = requestAnimationFrame(function loop(t) { lenis.raf(t); raf = requestAnimationFrame(loop); });
-    return () => { cancelAnimationFrame(raf); lenis.destroy(); };
-  }, [off, pathname]);
+    if (!wrapper || off || window.matchMedia("(prefers-reduced-motion: reduce)").matches || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    const lenis = new Lenis({ wrapper, content: wrapper.firstElementChild as HTMLElement, lerp: 0.1, smoothWheel: true, allowNestedScroll: true, anchors: { offset: -16 }, autoRaf: false });
+    let raf = 0;
+    const loop = (t: number) => { lenis.raf(t); raf = lenis.isScrolling ? requestAnimationFrame(loop) : 0; };
+    const kick = () => { if (!raf) raf = requestAnimationFrame(loop); };
+    wrapper.addEventListener("wheel", kick, { passive: true }); wrapper.addEventListener("click", kick); lenis.on("scroll", kick); kick();
+    return () => { cancelAnimationFrame(raf); wrapper.removeEventListener("wheel", kick); wrapper.removeEventListener("click", kick); lenis.destroy(); };
+  }, [off]);
   // Every screen change starts at the top (tools, tabs, any link). One-screen pages (data-fill-height)
   // mark the scroll box so it doesn't scroll on desktop (set here instead of a costly CSS :has rule).
   useEffect(() => {

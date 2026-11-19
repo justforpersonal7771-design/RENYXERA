@@ -215,7 +215,26 @@ const Sect = ({ t, k, children, className = "" }: { t: Topic; k: string; childre
 
 /* ------------------------------------------------------------------ topic layout in rows */
 /** Previous / next topic and a list of every topic with its sections (owner, 19 Nov). Topics share one scroll, so this scrolls. */
-function goTo(id: string) { const el = document.getElementById(id); if (el) el.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); }
+function goTo(id: string, tries = 0) {
+  const el = document.getElementById(id);
+  const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  if (el) { el.scrollIntoView({ behavior, block: "start" }); return; }
+  // a section of a topic that has not been drawn yet: bring its topic into view, then retry once it renders
+  const topic = document.getElementById(id.split("--")[0]);
+  if (topic && tries < 10) { topic.scrollIntoView({ behavior: "auto", block: "start" }); setTimeout(() => goTo(id, tries + 1), 120); }
+}
+/** Draw a topic only when it comes near the screen (speed pass, 19 Nov): a chapter's later topics cost nothing until needed. */
+function LazyTopic({ t, index, topics }: { t: Topic; index: number; topics: Topic[] }) {
+  const [shown, setShown] = useState(index === 0);
+  const ph = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (shown || !ph.current) return;
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) setShown(true); }, { rootMargin: "1600px 0px" });
+    io.observe(ph.current); return () => io.disconnect();
+  }, [shown]);
+  if (shown) return <TopicView t={t} index={index} topics={topics} />;
+  return <div ref={ph} id={t.id} aria-label={`Topic ${index + 1}: ${t.title}`} className="min-h-[1600px] scroll-mt-24 rounded-[22px] border border-dashed border-[var(--border)] lg:scroll-mt-4" />;
+}
 function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index: number; menuOnly?: boolean }) {
   const [open, setOpen] = useState(false);
   const prev = topics[index - 1], next = topics[index + 1];
@@ -349,7 +368,7 @@ function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
       <div className="flex min-h-0 flex-1">
         {rail && <PaneRail topics={ch.topics} />}
         <div className="@container custom-scrollbar relative min-h-0 min-w-0 flex-1 space-y-12 overflow-y-auto p-4">
-          {ch.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} topics={ch.topics} />)}
+          {ch.topics.map((t, i) => <LazyTopic key={t.id} t={t} index={i} topics={ch.topics} />)}
         </div>
       </div>
     </section>
@@ -429,7 +448,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
 
   const go = (id: string) => {
     const el = document.getElementById(id);
-    if (!el) return;
+    if (!el) { setSheet(false); setTimeout(() => goTo(id), sheet ? 80 : 0); setCurrent(id); return; } // topic not drawn yet
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wasSheet = sheet;
     setSheet(false);
@@ -535,7 +554,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
         </>, sheetHost)}
       <div className={splitHref ? "grid min-h-0 min-w-0 gap-0" : "contents"} style={splitHref ? { gridTemplateColumns: `minmax(0,${splitW}fr) 14px minmax(0,${100 - splitW}fr)`, gridTemplateRows: "minmax(0,1fr)" } : undefined}>
       <div ref={bind} className="@container custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
-        {chapter.topics.map((t, i) => <TopicView key={t.id} t={t} index={i} topics={chapter.topics} />)}
+        {chapter.topics.map((t, i) => <LazyTopic key={t.id} t={t} index={i} topics={chapter.topics} />)}
       </div>
       {splitHref && <>
         <div role="separator" aria-orientation="vertical" aria-label="Drag to resize the two chapters" tabIndex={0} onPointerDown={dragSplit}

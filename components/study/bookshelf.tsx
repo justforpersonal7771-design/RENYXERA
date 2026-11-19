@@ -13,6 +13,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { BookOpen, Feather, Plus, Search, X } from "lucide-react";
+import { loadBank, fromBank } from "@/lib/study/bank";
 import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { GOAL_SLIDER_DEFAULT_PERCENT, useGoalSliderStore } from "@/store/use-goal-slider-store";
@@ -34,7 +35,6 @@ const BANK: Record<string, string[]> = {
 };
 const slug = (t: string) => t.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 type Peek = { papers: number; perPaper: number; qs: number; two: number; top: [string, number][] };
-let bankCache: Promise<{ exam_metadata: { "year-shift": string }; questions: { subject: string; topic?: string; marks: number }[] }[]> | null = null;
 
 /** Brief marks info for one book from the official CS bank; "See the full breakdown" opens the subject page. */
 function MarksPeek({ b }: { b: ShelfBook }) {
@@ -42,8 +42,7 @@ function MarksPeek({ b }: { b: ShelfBook }) {
   const [d, setD] = useState<Peek | null>(null);
   useEffect(() => {
     if (!open || d) return;
-    bankCache ??= fetch("/data/questions.json").then((r) => r.json());
-    void bankCache.then((papers) => {
+    void loadBank().then((papers) => {
       const subs = BANK[b.id] ?? [];
       let marks = 0, qs = 0, two = 0; const top = new Map<string, number>();
       for (const p of papers) for (const q of p.questions) if (subs.includes(q.subject)) { marks += q.marks; qs++; if (q.marks === 2) two++; if (q.topic) top.set(q.topic, (top.get(q.topic) ?? 0) + 1); }
@@ -94,12 +93,12 @@ type Weight = { share: number; qs: number; inTarget: boolean; tier: "high" | "mi
 
 /** Chapters in syllabus (teaching) order, each marked by how much GATE weight it carries; hover for the numbers. */
 function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
-  const topics = focus?.topicsOf(b) ?? [];
-  const weights: Weight[] = b.chapters.map((c) => {
+  const weights: Weight[] = useMemo(() => { const topics = focus?.topicsOf(b) ?? []; return b.chapters.map((c) => {
     const st = stems(c.title);
     const hit = c.match ? topics.filter((t) => new RegExp(c.match!, "i").test(t.topic)) : topics.filter((t) => { const ts = stems(t.topic); return st.some((w) => ts.includes(w)); });
-    return { share: hit.reduce((x, t) => x + t.marksShare, 0), qs: hit.reduce((x, t) => x + t.questionCount, 0), inTarget: !focus?.active || hit.some((t) => focus.topicIn(t)), tier: "none" };
-  });
+    return { share: hit.reduce((x, t) => x + t.marksShare, 0), qs: hit.reduce((x, t) => x + t.questionCount, 0), inTarget: !focus?.active || hit.some((t) => focus.topicIn(t)), tier: "none" as Weight["tier"] };
+  }); }, [b, focus]);
+  const topics = focus?.topicsOf(b) ?? [];
   const sorted = weights.map((w) => w.share).filter((x) => x > 0).sort((x, y) => y - x);
   const hiCut = sorted[Math.max(0, Math.ceil(sorted.length / 3) - 1)] ?? Infinity, midCut = sorted[Math.max(0, Math.ceil((sorted.length * 2) / 3) - 1)] ?? Infinity;
   weights.forEach((w) => { w.tier = w.share <= 0 ? "none" : w.share >= hiCut ? "high" : w.share >= midCut ? "mid" : "low"; });
@@ -146,12 +145,11 @@ function useLibraryFocus() {
   const [qs, setQs] = useState<RenderableQuestion[] | null>(null);
   useEffect(() => { void loadGoal(); }, [loadGoal]);
   useEffect(() => {
-    bankCache ??= fetch("/data/questions.json").then((r) => r.json());
-    void bankCache.then((papers) => setQs(papers.flatMap((p) => p.questions) as unknown as RenderableQuestion[])).catch(() => setQs([]));
+    void fromBank("all-questions", (papers) => papers.flatMap((p) => p.questions) as unknown as RenderableQuestion[]).then(setQs).catch(() => setQs([]));
   }, []);
   return useMemo(() => {
     const active = target < GOAL_SLIDER_DEFAULT_PERCENT && !!qs?.length;
-    const freq: TopicFrequency[] = qs ? computeTopicFrequencies(qs) : [];
+    const freq: TopicFrequency[] = qs ? freqOf(qs) : [];
     const inTarget = active ? new Set(computeGoalSliderResult(qs!, target).includedTopics.map((t) => `${t.subject}::${t.topic}`)) : null;
     const topicIn = (t: TopicFrequency) => !inTarget || inTarget.has(`${t.subject}::${t.topic}`);
     const bookIn = (b: ShelfBook) => !inTarget || freq.some((t) => (BANK[b.id] ?? []).includes(t.subject) && topicIn(t));
@@ -160,6 +158,9 @@ function useLibraryFocus() {
   }, [qs, target]);
 }
 type Focus = ReturnType<typeof useLibraryFocus>;
+/* Topic frequencies are computed once per session for the shared bank array (speed pass, 19 Nov). */
+const freqCache = new WeakMap<object, TopicFrequency[]>();
+function freqOf(qs: RenderableQuestion[]) { let f = freqCache.get(qs); if (!f) { f = computeTopicFrequencies(qs); freqCache.set(qs, f); } return f; }
 
 function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => void; focus: Focus }) {
   const reduce = useReducedMotion();

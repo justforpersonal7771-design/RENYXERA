@@ -8,6 +8,7 @@
  *   Mentor  a chat window that can be dragged, minimised and switched to an earlier chat; filed in Mentor history
  * Everything renders into document.body so the page's own layers cannot clip it.
  */
+import { loadBank } from "@/lib/study/bank";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion, useDragControls, useReducedMotion } from "motion/react";
@@ -50,7 +51,7 @@ function useTopicPyqs(topic: RegExp) {
   const [list, setList] = useState<RenderableQuestion[] | null>(null);
   useEffect(() => {
     let live = true;
-    fetch("/data/questions.json").then((r) => r.json()).then((papers: { exam_metadata: { "year-shift": string }; questions: Question[] }[]) => {
+    loadBank().then((bank) => { const papers = bank as unknown as { exam_metadata: { "year-shift": string }; questions: Question[] }[];
       if (!live) return;
       const out: RenderableQuestion[] = [];
       for (const p of papers) {
