@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Programming and Data Structures → Binary heaps, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { PDS_HEAP } from "@/content/study/CS/pds-d";
-
+/** /study/heaps: rendered on the server with only the topics this viewer may open. */
 export default function HeapsChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/heaps", title: `${PDS_HEAP.subject}: ${PDS_HEAP.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={PDS_HEAP} />;
+  return <ChapterPage href="/study/heaps" />;
 }

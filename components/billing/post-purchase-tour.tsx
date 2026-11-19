@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Anvil, Bot, Check, Send, X } from "lucide-react";
+import { Anvil, BookOpenText, Bot, Check, Send, X } from "lucide-react";
+import { BUNDLES, rupees } from "@/lib/study/packs";
 import { PLUS_AI_DAILY, PRO_AI_DAILY, FORGE } from "@/lib/billing/plans";
 
 const KEY = "renyxera:welcome-tour"; // set to "plus" or "pro" right after a purchase activates
@@ -37,6 +38,8 @@ export function PostPurchaseTour() {
     { icon: Anvil, title: "Forge is open", body: tier === "pro" ? "Unlimited original GATE-level questions, with worked solutions, the X tier and the archive of past Forge Mocks." : `${FORGE.plus.dailyLimit} original GATE-level questions a day, each with its worked solution, shortcut and trap.`, href: "/forge", cta: "Open Forge" },
     { icon: Bot, title: "More from the AI Mentor", body: `${tier === "pro" ? PRO_AI_DAILY : PLUS_AI_DAILY} AI requests every day, plus fresh practice sets on any topic.`, href: "/ai-mentor", cta: "Ask the Mentor" },
     { icon: Send, title: "Telegram reminders", body: tier === "pro" ? "Smart reminders, a weekly review, 10 alarms and 10 timers. Link your account from Profile, Telegram." : "A message before every study block, a morning digest, 3 alarms and 5 timers. Link your account from Profile, Telegram.", href: "/profile", cta: "Link Telegram" },
+    // Doc 13 moment 2: right after a plan purchase, point at learning (study is separate; nothing is pre-selected).
+    { icon: BookOpenText, title: "Learn the topics you miss", body: `Your plan makes practice faster. Study packs teach each subject from the ground up: pick your weakest subject's pack, or Complete CS for ${rupees(BUNDLES.find((b) => b.id === "complete")!.pricePaise)}. Separate from your plan.`, href: "/study#packs", cta: "See study packs" },
   ];
   const s = steps[step];
   const last = step === steps.length - 1;

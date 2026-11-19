@@ -34,8 +34,13 @@ export type Block =
 
 export type CheckQ = { id: string; kind: "MCQ" | "MSQ" | "NAT"; marks: 1 | 2; q: string; options?: string[]; answer: string; solution: string };
 
-export type Topic = { id: string; title: string; words?: number; blocks: Block[] };
+/** `locked`: sent by the server instead of the topic's content when the viewer cannot open it (title only, no blocks). */
+export type Topic = { id: string; title: string; words?: number; blocks: Block[]; locked?: boolean };
 export type Chapter = { id: string; subject: string; title: string; syllabus: string[]; pyqTopic: RegExp; map: Fig; topics: Topic[] };
+/** A chapter as it travels from the server to the browser (a RegExp is not serialisable). */
+export type WireChapter = Omit<Chapter, "pyqTopic"> & { pyqTopic: { source: string; flags: string } };
+export const toWire = (c: Chapter): WireChapter => ({ ...c, pyqTopic: { source: c.pyqTopic.source, flags: c.pyqTopic.flags } });
+export const fromWire = (c: WireChapter): Chapter => ({ ...c, pyqTopic: new RegExp(c.pyqTopic.source, c.pyqTopic.flags) });
 
 /** Blueprint minimums per topic. Returns the problems; an empty list means the topic may ship. */
 export function validateTopic(t: Topic): string[] {

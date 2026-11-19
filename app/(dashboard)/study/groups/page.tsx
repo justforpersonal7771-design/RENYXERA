@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Discrete Mathematics → Groups, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DM_GROUPS } from "@/content/study/CS/dm-sets";
-
+/** /study/groups: rendered on the server with only the topics this viewer may open. */
 export default function GroupsChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/groups", title: `${DM_GROUPS.subject}: ${DM_GROUPS.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DM_GROUPS} />;
+  return <ChapterPage href="/study/groups" />;
 }

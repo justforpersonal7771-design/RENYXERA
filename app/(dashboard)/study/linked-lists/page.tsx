@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Programming and Data Structures → Linked lists, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { PDS_LL } from "@/content/study/CS/pds-c";
-
+/** /study/linked-lists: rendered on the server with only the topics this viewer may open. */
 export default function LinkedListsChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/linked-lists", title: `${PDS_LL.subject}: ${PDS_LL.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={PDS_LL} />;
+  return <ChapterPage href="/study/linked-lists" />;
 }

@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Algorithms → Searching and sorting, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { ALGO_SORT } from "@/content/study/CS/algo-a";
-
+/** /study/sorting: rendered on the server with only the topics this viewer may open. */
 export default function SortingChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/sorting", title: `${ALGO_SORT.subject}: ${ALGO_SORT.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={ALGO_SORT} />;
+  return <ChapterPage href="/study/sorting" />;
 }

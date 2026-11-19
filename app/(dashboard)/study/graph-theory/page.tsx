@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Discrete Mathematics → GraphTheory, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DM_GRAPH } from "@/content/study/CS/dm-graph";
-
+/** /study/graph-theory: rendered on the server with only the topics this viewer may open. */
 export default function GraphTheoryChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/graph-theory", title: `${DM_GRAPH.subject}: ${DM_GRAPH.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DM_GRAPH} />;
+  return <ChapterPage href="/study/graph-theory" />;
 }

@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Algorithms → Shortest paths, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { ALGO_SP } from "@/content/study/CS/algo-d";
-
+/** /study/shortest-paths: rendered on the server with only the topics this viewer may open. */
 export default function ShortestPathsChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/shortest-paths", title: `${ALGO_SP.subject}: ${ALGO_SP.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={ALGO_SP} />;
+  return <ChapterPage href="/study/shortest-paths" />;
 }

@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Operating System → Files, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { OS_FS } from "@/content/study/CS/os-fs";
-
+/** /study/files: rendered on the server with only the topics this viewer may open. */
 export default function FilesChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/files", title: `${OS_FS.subject}: ${OS_FS.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={OS_FS} />;
+  return <ChapterPage href="/study/files" />;
 }

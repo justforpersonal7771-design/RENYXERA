@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Discrete Mathematics → Posets, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DM_POSET } from "@/content/study/CS/dm-sets";
-
+/** /study/posets: rendered on the server with only the topics this viewer may open. */
 export default function PosetsChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/posets", title: `${DM_POSET.subject}: ${DM_POSET.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DM_POSET} />;
+  return <ChapterPage href="/study/posets" />;
 }

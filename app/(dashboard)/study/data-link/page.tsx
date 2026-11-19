@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Computer Networks → DataLink, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { CN_DLL } from "@/content/study/CS/cn-dll";
-
+/** /study/data-link: rendered on the server with only the topics this viewer may open. */
 export default function DataLinkChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/data-link", title: `${CN_DLL.subject}: ${CN_DLL.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={CN_DLL} />;
+  return <ChapterPage href="/study/data-link" />;
 }

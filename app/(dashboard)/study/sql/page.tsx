@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Databases → SQL, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DB_SQL } from "@/content/study/CS/db-a";
-
+/** /study/sql: rendered on the server with only the topics this viewer may open. */
 export default function SqlChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/sql", title: `${DB_SQL.subject}: ${DB_SQL.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DB_SQL} />;
+  return <ChapterPage href="/study/sql" />;
 }

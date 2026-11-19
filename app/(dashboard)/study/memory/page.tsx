@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Operating System → Memory, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { OS_MEMORY } from "@/content/study/CS/os-memory";
-
+/** /study/memory: rendered on the server with only the topics this viewer may open. */
 export default function MemoryChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/memory", title: `${OS_MEMORY.subject}: ${OS_MEMORY.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={OS_MEMORY} />;
+  return <ChapterPage href="/study/memory" />;
 }

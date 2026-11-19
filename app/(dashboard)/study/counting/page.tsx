@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Discrete Mathematics → Counting, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DM_COUNT } from "@/content/study/CS/dm-count";
-
+/** /study/counting: rendered on the server with only the topics this viewer may open. */
 export default function CountingChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/counting", title: `${DM_COUNT.subject}: ${DM_COUNT.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DM_COUNT} />;
+  return <ChapterPage href="/study/counting" />;
 }

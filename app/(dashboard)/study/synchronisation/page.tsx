@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Operating System → Synchronisation, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { OS_SYNC } from "@/content/study/CS/os-sync";
-
-export default function SyncChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/synchronisation", title: `${OS_SYNC.subject}: ${OS_SYNC.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={OS_SYNC} />;
+/** /study/synchronisation: rendered on the server with only the topics this viewer may open. */
+export default function SynchronisationChapter() {
+  return <ChapterPage href="/study/synchronisation" />;
 }

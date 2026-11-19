@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Operating System → CPU scheduling, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { OS_SCHEDULING } from "@/content/study/CS/os-scheduling";
-
+/** /study/scheduling: rendered on the server with only the topics this viewer may open. */
 export default function SchedulingChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/scheduling", title: `${OS_SCHEDULING.subject}: ${OS_SCHEDULING.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={OS_SCHEDULING} />;
+  return <ChapterPage href="/study/scheduling" />;
 }

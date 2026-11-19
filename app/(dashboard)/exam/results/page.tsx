@@ -1,4 +1,5 @@
 "use client";
+import { StudyOffer } from "@/components/study/study-offer";
 import Link from "next/link";
 
 import { TelegramJoinCard, TelegramJoinLink } from "@/components/growth/telegram-join";
@@ -402,6 +403,9 @@ export default function ResultSummaryPage() {
   return (
     <div className="w-full mx-auto font-sans flex flex-col h-full min-h-0 pb-4" data-fill-height>
       <AnswersPendingBanner session={session} onGraded={setSession} className="fixed z-50 inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-xl backdrop-blur-xl lg:static lg:inset-auto lg:mb-4 lg:shadow-none" />
+
+      {/* Doc 13 moment 3: after the test, the weakest subjects point to their study packs (quiet, dismissible, never during a test). */}
+      <StudyOffer moment="results" className="mb-4 flex-none" subjects={Object.entries(subjectSplits).filter(([, v]) => v.attempted >= 2).map(([name, v]) => ({ name, pct: (100 * v.correct) / v.attempted })).filter((x) => x.pct < 60).sort((x, y) => x.pct - y.pct)} />
 
       {/* One card, one surface. Front: ring + score summary. Back: question grid + breakdown.
           The faces stay mounted and the card turns in CSS 3D, so flipping is smooth both ways. */}

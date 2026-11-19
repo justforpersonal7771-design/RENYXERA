@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Algorithms → Hashing, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { ALGO_HASH } from "@/content/study/CS/algo-b";
-
+/** /study/hashing: rendered on the server with only the topics this viewer may open. */
 export default function HashingChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/hashing", title: `${ALGO_HASH.subject}: ${ALGO_HASH.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={ALGO_HASH} />;
+  return <ChapterPage href="/study/hashing" />;
 }

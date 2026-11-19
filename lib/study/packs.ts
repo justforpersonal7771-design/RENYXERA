@@ -56,3 +56,19 @@ export function productPacks(product: string): { kind: "pack" | "bundle" | "cust
 export const customPrice = (ids: string[]) => Math.floor((packTotal(ids) * (100 - BUILD_YOUR_OWN_OFF)) / 100 / 100) * 100;
 /** Plan id stored on the order (≤ 40 chars). */
 export const studyPlanId = (product: string) => (product.startsWith("pack:") ? `study_pack_${product.slice(5)}` : product.startsWith("bundle:") ? `study_bundle_${product.slice(7)}` : "study_custom");
+
+/** Question-bank subject names per book (same names as the PYQ bank), so results and mistakes can point at the right pack. */
+export const BANK_SUBJECTS: Record<string, string[]> = {
+  os: ["Operating Systems (OS)"], dbms: ["Database Management Systems (DBMS)"], cn: ["Computer Networks (CN)"], algo: ["Algorithms"],
+  pds: ["Programming in C", "Data Structures"], toc: ["Theory of Computation (TOC)"], cd: ["Compiler Design"], coa: ["Computer Organization and Architecture (COA)"],
+  dl: ["Digital Logic"], dm: ["Discrete Mathematics"], la: ["Linear Algebra"], prob: ["Probability & Statistics"], calc: ["Calculus"],
+  verbal: ["Verbal Aptitude"], quant: ["Quantitative Aptitude"], analytical: ["Analytical Aptitude"], spatial: ["Spatial Aptitude"],
+};
+export function packOfSubject(subject: string): Pack | null {
+  const book = Object.keys(BANK_SUBJECTS).find((b) => BANK_SUBJECTS[b].some((s) => s.toLowerCase() === subject.toLowerCase() || subject.toLowerCase().startsWith(s.toLowerCase().replace(/\s*\(.*\)$/, ""))));
+  return book ? packOfBook(book) : null;
+}
+/** The cheapest curated bundle that contains every given pack (doc 13 moment 3: "both together are ₹298, or Toughest 4 for ₹479"). */
+export function bestBundleFor(packIds: string[]): Bundle | null {
+  return BUNDLES.filter((b) => b.packs.length > packIds.length && packIds.every((id) => b.packs.includes(id))).sort((x, y) => x.pricePaise - y.pricePaise)[0] ?? null;
+}

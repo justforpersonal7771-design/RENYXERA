@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Discrete Mathematics → Recurrences, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DM_RECUR } from "@/content/study/CS/dm-count";
-
+/** /study/recurrences: rendered on the server with only the topics this viewer may open. */
 export default function RecurrencesChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/recurrences", title: `${DM_RECUR.subject}: ${DM_RECUR.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DM_RECUR} />;
+  return <ChapterPage href="/study/recurrences" />;
 }

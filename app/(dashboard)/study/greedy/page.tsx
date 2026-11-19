@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Algorithms → Greedy, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { ALGO_GREEDY } from "@/content/study/CS/algo-c";
-
+/** /study/greedy: rendered on the server with only the topics this viewer may open. */
 export default function GreedyChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/greedy", title: `${ALGO_GREEDY.subject}: ${ALGO_GREEDY.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={ALGO_GREEDY} />;
+  return <ChapterPage href="/study/greedy" />;
 }

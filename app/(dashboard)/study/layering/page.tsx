@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Computer Networks → Layering, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { CN_LAYERS } from "@/content/study/CS/cn-layers";
-
+/** /study/layering: rendered on the server with only the topics this viewer may open. */
 export default function LayeringChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/layering", title: `${CN_LAYERS.subject}: ${CN_LAYERS.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={CN_LAYERS} />;
+  return <ChapterPage href="/study/layering" />;
 }

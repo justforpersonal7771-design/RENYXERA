@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Algorithms → Divide and conquer, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { ALGO_DC } from "@/content/study/CS/algo-b";
-
+/** /study/divide-conquer: rendered on the server with only the topics this viewer may open. */
 export default function DivideConquerChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/divide-conquer", title: `${ALGO_DC.subject}: ${ALGO_DC.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={ALGO_DC} />;
+  return <ChapterPage href="/study/divide-conquer" />;
 }

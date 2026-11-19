@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Discrete Mathematics → SetsRelations, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DM_SETS } from "@/content/study/CS/dm-sets";
-
+/** /study/sets-relations: rendered on the server with only the topics this viewer may open. */
 export default function SetsRelationsChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/sets-relations", title: `${DM_SETS.subject}: ${DM_SETS.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DM_SETS} />;
+  return <ChapterPage href="/study/sets-relations" />;
 }

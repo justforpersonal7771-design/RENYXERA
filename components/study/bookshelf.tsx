@@ -8,6 +8,7 @@
  * chapter status; phones open an inline drawer under the shelf row. A reading desk on top: continue or start here,
  * search across subjects and chapters, and an availability filter.
  */
+import { BANK_SUBJECTS } from "@/lib/study/packs";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
@@ -27,12 +28,7 @@ const SHELVES: { id: string; title: string; note: string; tint: string; stacks: 
   { id: "apt", title: "General aptitude", note: "15 marks, the same section in every GATE paper", tint: "peri", stacks: [["verbal", "quant"], ["analytical", "spatial"]] },
 ];
 /** Bank subject names per book, for the marks preview. */
-const BANK: Record<string, string[]> = {
-  os: ["Operating Systems (OS)"], dbms: ["Database Management Systems (DBMS)"], cn: ["Computer Networks (CN)"], algo: ["Algorithms"],
-  pds: ["Programming in C", "Data Structures"], toc: ["Theory of Computation (TOC)"], cd: ["Compiler Design"], coa: ["Computer Organization and Architecture (COA)"],
-  dl: ["Digital Logic"], dm: ["Discrete Mathematics"], la: ["Linear Algebra"], prob: ["Probability & Statistics"], calc: ["Calculus"],
-  verbal: ["Verbal Aptitude"], quant: ["Quantitative Aptitude"], analytical: ["Analytical Aptitude"], spatial: ["Spatial Aptitude"],
-};
+const BANK = BANK_SUBJECTS;
 const slug = (t: string) => t.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 type Peek = { papers: number; perPaper: number; qs: number; two: number; top: [string, number][] };
 
@@ -231,7 +227,7 @@ export function Bookshelf() {
     <section aria-label="Study library" lang="en" className="space-y-5">
       {/* reading desk */}
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-        <div className="card-pastel flex flex-col justify-between p-5 sm:p-6" data-tint="butter">
+        <div className="card-pastel flex min-w-0 flex-col justify-between p-5 sm:p-6" data-tint="butter">
           <div>
             <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] sm:text-4xl">The GATE CS library</h1>
             <p className="mt-1 text-[var(--text-secondary)]">Lessons written for the way GATE asks. Pull a book to see what is inside.</p>

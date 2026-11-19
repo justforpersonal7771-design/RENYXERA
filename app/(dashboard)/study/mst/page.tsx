@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Algorithms → Minimum spanning trees, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { ALGO_MST } from "@/content/study/CS/algo-d";
-
+/** /study/mst: rendered on the server with only the topics this viewer may open. */
 export default function MstChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/mst", title: `${ALGO_MST.subject}: ${ALGO_MST.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={ALGO_MST} />;
+  return <ChapterPage href="/study/mst" />;
 }

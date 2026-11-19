@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Programming and Data Structures → Arrays, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { PDS_ARR } from "@/content/study/CS/pds-b";
-
+/** /study/arrays: rendered on the server with only the topics this viewer may open. */
 export default function ArraysChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/arrays", title: `${PDS_ARR.subject}: ${PDS_ARR.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={PDS_ARR} />;
+  return <ChapterPage href="/study/arrays" />;
 }

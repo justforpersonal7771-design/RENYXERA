@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Databases → Indexing, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { DB_INDEX } from "@/content/study/CS/db-b";
-
+/** /study/indexing: rendered on the server with only the topics this viewer may open. */
 export default function IndexingChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/indexing", title: `${DB_INDEX.subject}: ${DB_INDEX.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={DB_INDEX} />;
+  return <ChapterPage href="/study/indexing" />;
 }

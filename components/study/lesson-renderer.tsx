@@ -199,8 +199,7 @@ const AllocLab = dynamic(() => import("@/components/study/fs-labs").then((m) => 
 const DiskLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m.DiskLab), { ssr: false, loading: labLoading });
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { markSeen } from "@/lib/study/progress";
-import { useStudyAccess } from "@/lib/study/use-study-access";
-import { chapterInfo, rupees } from "@/lib/study/packs";
+import { bestBundleFor, chapterInfo, rupees } from "@/lib/study/packs";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
@@ -373,20 +372,21 @@ function goTo(id: string, tries = 0) {
 /** Shown once, in place of the first topic a reader cannot open: what the rest holds and which pack has it. */
 function UnlockCard({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href: string }) {
   const info = chapterInfo(href); const rest = topics.slice(index);
+  const bundle = info.pack ? bestBundleFor([info.pack.id]) : null;
   return (
     <section id={t.id} data-topic="" aria-label="Unlock the rest of this chapter" className="card-pastel scroll-mt-24 p-6 sm:p-8 lg:scroll-mt-4" data-tint="butter">
       <p className="inline-flex items-center gap-1.5 rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-black text-[var(--text-primary)]"><Lock className="h-3.5 w-3.5" /> {info.sampleChapter ? "That was the free sample" : "Part of a study pack"}</p>
       <h2 className="mt-3 font-display text-2xl font-extrabold text-[var(--text-primary)]">{rest.length} more topic{rest.length === 1 ? "" : "s"} in this chapter</h2>
       <ol className="mt-3 space-y-1 text-sm text-[var(--text-primary)]">{rest.map((x, k) => <li key={x.id} className="flex gap-2"><span className="font-num font-bold text-[var(--text-secondary)]">{index + k + 1}.</span>{x.title}</li>)}</ol>
-      <p className="mt-4 text-sm text-[var(--text-secondary)]">{info.pack ? `Every chapter of ${info.book?.title ?? "this book"} comes with the ${info.pack.name} pack (${rupees(info.pack.pricePaise)}, about ${info.pack.marks} marks a paper), or in a bundle. ` : ""}Study packs are separate from Plus and Pro. Pack checkout opens soon.</p>
+      <p className="mt-4 text-sm text-[var(--text-secondary)]">{info.pack ? `Every chapter of ${info.book?.title ?? "this book"} comes with the ${info.pack.name} pack (${rupees(info.pack.pricePaise)}, about ${info.pack.marks} marks a paper)${bundle ? `, or ${bundle.name} for ${rupees(bundle.pricePaise)} with ${bundle.packs.length - 1} more subjects` : ""}. ` : ""}Study packs are separate from Plus and Pro.</p>
       <Link href="/study#packs" className="btn-main mt-4 inline-flex">See packs and bundles</Link>
     </section>
   );
 }
 function LazyTopic({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href?: string }) {
-  const access = useStudyAccess();
-  const locked = !!href && !access.loading && !access.canRead(href, index);
-  const prevLocked = !!href && index > 0 && !access.loading && !access.canRead(href, index - 1);
+  // The server sends locked topics as title-only stubs (lib/study/serve.ts); the first one shows the unlock card.
+  const locked = !!t.locked;
+  const prevLocked = index > 0 && !!topics[index - 1]?.locked;
   const [shown, setShown] = useState(index === 0);
   const ph = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -402,7 +402,7 @@ function LazyTopic({ t, index, topics, href }: { t: Topic; index: number; topics
     const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { timer ??= setTimeout(() => markSeen(t.id, href), 4000); } else if (timer) { clearTimeout(timer); timer = null; } }, { threshold: 0.25 });
     io.observe(el); return () => { io.disconnect(); if (timer) clearTimeout(timer); };
   }, [shown, locked, href, t.id]);
-  if (locked) return prevLocked ? <div id={t.id} data-topic="" aria-hidden /> : <UnlockCard t={t} index={index} topics={topics} href={href!} />;
+  if (locked) return prevLocked ? <div id={t.id} data-topic="" aria-hidden /> : <UnlockCard t={t} index={index} topics={topics} href={href ?? ""} />;
   if (shown) return <TopicView t={t} index={index} topics={topics} />;
   return <div ref={ph} id={t.id} data-topic="" aria-label={`Topic ${index + 1}: ${t.title}`} className="min-h-[1600px] scroll-mt-24 rounded-[22px] border border-dashed border-[var(--border)] lg:scroll-mt-4" />;
 }

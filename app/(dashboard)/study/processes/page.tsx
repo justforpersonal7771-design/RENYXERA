@@ -1,11 +1,6 @@
-"use client";
+import { ChapterPage } from "@/components/study/chapter-page";
 
-/** Operating System → Processes and threads, rendered from data. */
-import { useEffect } from "react";
-import { LessonRenderer } from "@/components/study/lesson-renderer";
-import { OS_PROCESSES } from "@/content/study/CS/os-processes";
-
+/** /study/processes: rendered on the server with only the topics this viewer may open. */
 export default function ProcessesChapter() {
-  useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href: "/study/processes", title: `${OS_PROCESSES.subject}: ${OS_PROCESSES.title}` })); } catch { /* storage off */ } }, []);
-  return <LessonRenderer chapter={OS_PROCESSES} />;
+  return <ChapterPage href="/study/processes" />;
 }
