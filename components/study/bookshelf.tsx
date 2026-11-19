@@ -80,9 +80,8 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i
       className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
       <span className="min-w-0 flex-1">
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
-        {free && <span className="mt-0.5 block text-sm font-bold text-[var(--tint-ink)]">Free chapter: {free.title}</span>}
       </span>
-      <span className="flex shrink-0 flex-col items-end gap-1">{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
+      <span className="flex shrink-0 flex-col items-end gap-1">{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Coming soon</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
     </button>
   );
 }
@@ -240,7 +239,7 @@ export function Bookshelf() {
           {resume && (
             <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
               <BookOpen className="h-5 w-5 text-[var(--text-primary)]" aria-hidden />
-              <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-[var(--text-secondary)]">{last ? "Continue reading" : "Start here, free"}</span><span className="block truncate font-bold text-[var(--text-primary)]">{resume.title}</span></span>
+              <span className="min-w-0 flex-1"><span className="block text-xs font-bold text-[var(--text-secondary)]">{last ? "Continue reading" : "Start here: free sample topics"}</span><span className="block truncate font-bold text-[var(--text-primary)]">{resume.title}</span></span>
               <Link href={resume.href} className="pill-ink">{last ? "Resume" : "Read now"}</Link>
             </div>
           )}
@@ -256,7 +255,16 @@ export function Bookshelf() {
             <button type="button" aria-pressed={onlyReady} onClick={() => setOnlyReady(true)} className={onlyReady ? "pill-ink" : "pill-soft"}>Ready to read</button>
             <span className="text-sm text-[var(--text-secondary)]">{hits} of {CS_SHELF.length} books</span>
           </div>
-          {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; the CS books are open to you meanwhile.</p>}
+          {term && (
+            <ul aria-label="Matching chapters" className="custom-scrollbar max-h-48 space-y-1 overflow-y-auto">
+              {CS_SHELF.flatMap((b) => b.chapters.filter((c) => b.title.toLowerCase().includes(term) || c.title.toLowerCase().includes(term)).map((c) => ({ b, c }))).slice(0, 12).map(({ b, c }) => (
+                <li key={b.id + c.id}>{c.href
+                  ? <Link href={c.href} className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm hover:bg-[var(--surface-secondary)]"><span className="min-w-0 truncate"><b>{c.title}</b> <span className="text-[var(--text-secondary)]">· {b.title}</span></span><span className="shrink-0 font-bold">Open</span></Link>
+                  : <span className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-secondary)]"><span className="min-w-0 truncate"><b className="text-[var(--text-primary)]">{c.title}</b> · {b.title}</span><span className="shrink-0">Coming soon</span></span>}</li>
+              ))}
+            </ul>
+          )}
+          {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
         </div>
       </div>
 
@@ -269,7 +277,7 @@ export function Bookshelf() {
       {/* the shelves */}
       <div className="sp2-case">
         {(() => { const shelves = SHELVES.map((sh) => {
-          const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id) && visible(b));
+          const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id) && visible(b) && match(b));
           if (!books.length) return null;
           const stacks0 = sh.stacks.map((st) => st.filter((id) => books.some((b) => b.id === id))).filter((st) => st.length);
           // maths and aptitude: one continuous stack of equal-height books so the two shelves line up

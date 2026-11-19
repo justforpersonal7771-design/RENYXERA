@@ -319,7 +319,7 @@ export function LessonTools({ lesson, section, pyqTopic, notes, notesBar, noteCo
         <button type="button" onClick={(e) => toggle("pyqs", e.currentTarget)} aria-pressed={open.pyqs} aria-label="PYQs" className={`${btn} !border-transparent !bg-[var(--tint-peri)] !text-[var(--tint-peri-ink)]`}><ScrollText className="h-4 w-4" aria-hidden /> <span>PYQs</span>{pyqs && pyqs.length > 0 && <span className="rounded-full bg-white/60 px-1.5 text-xs dark:bg-black/25">{pyqs.length}</span>}</button>
         <button type="button" onClick={(e) => toggle("mentor", e.currentTarget)} aria-pressed={open.mentor} aria-label="Ask Mentor" className={`${btn} mentor-btn !py-1.5 !pl-2`}><MentorLogo className="h-7" mode="blink" /> <span className="hidden sm:inline">Ask Mentor</span></button>
       </div>
-      <VirtualCalculator open={calc} onClose={() => setCalc(false)} />
+      <VirtualCalculator open={calc} onClose={() => setCalc(false)} anchor="bottom" />
       <MentorWindow open={open.mentor} onClose={() => close("mentor")} lesson={lesson} section={section} notes={noteItems} anchor={at.mentor} z={z("mentor")} onRaise={() => raise("mentor")} />
       <PyqModal q={q} onClose={() => setQ(null)} />
     </Portal>

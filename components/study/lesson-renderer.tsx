@@ -198,6 +198,9 @@ const ReplaceLab = dynamic(() => import("@/components/study/vm-labs").then((m) =
 const AllocLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m.AllocLab), { ssr: false, loading: labLoading });
 const DiskLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m.DiskLab), { ssr: false, loading: labLoading });
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { markSeen } from "@/lib/study/progress";
+import { useStudyAccess } from "@/lib/study/use-study-access";
+import { chapterInfo, rupees } from "@/lib/study/packs";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
@@ -205,7 +208,7 @@ import { StudyTabs } from "@/components/study/study-tabs";
 import { rememberScroll, recallScroll, useStudyTabs } from "@/lib/study/tabs";
 import { CHAPTERS } from "@/lib/study/chapters";
 import { CS_SHELF } from "@/lib/study/catalog";
-import { ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, BookOpenText, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
+import { Lock, ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, BookOpenText, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
 import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { LessonTools } from "@/components/study/lesson-tools";
@@ -367,7 +370,23 @@ function goTo(id: string, tries = 0) {
   if (topic && tries < 10) { topic.scrollIntoView({ behavior: "auto", block: "start" }); setTimeout(() => goTo(id, tries + 1), 120); }
 }
 /** Draw a topic only when it comes near the screen (speed pass, 19 Nov): a chapter's later topics cost nothing until needed. */
-function LazyTopic({ t, index, topics }: { t: Topic; index: number; topics: Topic[] }) {
+/** Shown once, in place of the first topic a reader cannot open: what the rest holds and which pack has it. */
+function UnlockCard({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href: string }) {
+  const info = chapterInfo(href); const rest = topics.slice(index);
+  return (
+    <section id={t.id} data-topic="" aria-label="Unlock the rest of this chapter" className="card-pastel scroll-mt-24 p-6 sm:p-8 lg:scroll-mt-4" data-tint="butter">
+      <p className="inline-flex items-center gap-1.5 rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-black text-[var(--text-primary)]"><Lock className="h-3.5 w-3.5" /> {info.sampleChapter ? "That was the free sample" : "Part of a study pack"}</p>
+      <h2 className="mt-3 font-display text-2xl font-extrabold text-[var(--text-primary)]">{rest.length} more topic{rest.length === 1 ? "" : "s"} in this chapter</h2>
+      <ol className="mt-3 space-y-1 text-sm text-[var(--text-primary)]">{rest.map((x, k) => <li key={x.id} className="flex gap-2"><span className="font-num font-bold text-[var(--text-secondary)]">{index + k + 1}.</span>{x.title}</li>)}</ol>
+      <p className="mt-4 text-sm text-[var(--text-secondary)]">{info.pack ? `Every chapter of ${info.book?.title ?? "this book"} comes with the ${info.pack.name} pack (${rupees(info.pack.pricePaise)}, about ${info.pack.marks} marks a paper), or in a bundle. ` : ""}Study packs are separate from Plus and Pro. Pack checkout opens soon.</p>
+      <Link href="/study#packs" className="btn-main mt-4 inline-flex">See packs and bundles</Link>
+    </section>
+  );
+}
+function LazyTopic({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href?: string }) {
+  const access = useStudyAccess();
+  const locked = !!href && !access.loading && !access.canRead(href, index);
+  const prevLocked = !!href && index > 0 && !access.loading && !access.canRead(href, index - 1);
   const [shown, setShown] = useState(index === 0);
   const ph = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -375,6 +394,15 @@ function LazyTopic({ t, index, topics }: { t: Topic; index: number; topics: Topi
     const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) setShown(true); }, { rootMargin: "1600px 0px" });
     io.observe(ph.current); return () => io.disconnect();
   }, [shown]);
+  // Reading progress (device only): a topic counts as read once it has been on screen for a moment.
+  useEffect(() => {
+    if (!shown || locked || !href) return;
+    const el = document.getElementById(t.id); if (!el) return;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { timer ??= setTimeout(() => markSeen(t.id, href), 4000); } else if (timer) { clearTimeout(timer); timer = null; } }, { threshold: 0.25 });
+    io.observe(el); return () => { io.disconnect(); if (timer) clearTimeout(timer); };
+  }, [shown, locked, href, t.id]);
+  if (locked) return prevLocked ? <div id={t.id} data-topic="" aria-hidden /> : <UnlockCard t={t} index={index} topics={topics} href={href!} />;
   if (shown) return <TopicView t={t} index={index} topics={topics} />;
   return <div ref={ph} id={t.id} data-topic="" aria-label={`Topic ${index + 1}: ${t.title}`} className="min-h-[1600px] scroll-mt-24 rounded-[22px] border border-dashed border-[var(--border)] lg:scroll-mt-4" />;
 }
@@ -545,7 +573,7 @@ function SplitPane({ href, onClose }: { href: string; onClose: () => void }) {
       <div className="flex min-h-0 flex-1">
         {rail && <PaneRail topics={ch.topics} />}
         <div className="@container custom-scrollbar relative min-h-0 min-w-0 flex-1 space-y-12 overflow-y-auto p-4">
-          {ch.topics.map((t, i) => <LazyTopic key={t.id} t={t} index={i} topics={ch.topics} />)}
+          {ch.topics.map((t, i) => <LazyTopic key={t.id} t={t} index={i} topics={ch.topics} href={href} />)}
         </div>
       </div>
     </section>
@@ -731,7 +759,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
         </>, sheetHost)}
       <div className={splitHref ? "grid min-h-0 min-w-0 gap-0" : "contents"} style={splitHref ? { gridTemplateColumns: `minmax(0,${splitW}fr) 14px minmax(0,${100 - splitW}fr)`, gridTemplateRows: "minmax(0,1fr)" } : undefined}>
       <div ref={bind} className="@container custom-scrollbar relative min-w-0 space-y-14 lg:overflow-y-auto lg:overscroll-contain lg:px-3 lg:pb-28 lg:pt-2">
-        {chapter.topics.map((t, i) => <LazyTopic key={t.id} t={t} index={i} topics={chapter.topics} />)}
+        {chapter.topics.map((t, i) => <LazyTopic key={t.id} t={t} index={i} topics={chapter.topics} href={href} />)}
       </div>
       {splitHref && <>
         <div role="separator" aria-orientation="vertical" aria-label="Drag to resize the two chapters" tabIndex={0} onPointerDown={dragSplit}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, GripHorizontal, X } from "lucide-react";
+import { ArrowLeft, GripHorizontal, Maximize2, Minus, X } from "lucide-react";
 import { expressionText, initialCalc, liveResult, press, type AngleMode } from "@/lib/exam/calculator";
 
 type Kind = "fn" | "op" | "num" | "eq" | "clear" | "mem";
@@ -42,9 +42,10 @@ const HOLD_MS = 220;
  *  Press and HOLD anywhere outside it to hide it while you look at the question (it returns on
  *  release); a quick click or tap outside closes it. It stays mounted while hidden so the
  *  display and memory survive. Mark the toggle button with data-calc-toggle. */
-export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boolean; onClose: () => void; /** "bottom": open just above a bottom tool dock (lesson tools), like the other dock panels. */ anchor?: "top" | "bottom" }) {
   const [st, setSt] = useState(() => initialCalc("deg"));
   const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const [mini, setMini] = useState(false);
   const [phone, setPhone] = useState(false);
   const [peek, setPeek] = useState(false);
   const drag = useRef<{ dx: number; dy: number } | null>(null);
@@ -54,12 +55,12 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
     const fit = () => {
       const p = window.innerWidth < 640;
       setPhone(p);
-      setPos((cur) => (p ? cur : { x: Math.max(8, Math.min(cur?.x ?? window.innerWidth - W - 16, window.innerWidth - W - 8)), y: Math.max(8, cur?.y ?? 68) }));
+      setPos((cur) => (p ? cur : { x: Math.max(8, Math.min(cur?.x ?? window.innerWidth - W - 16, window.innerWidth - W - 8)), y: Math.max(8, cur?.y ?? (anchor === "bottom" ? window.innerHeight - 380 - 96 : 68)) }));
     };
     fit();
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
-  }, []);
+  }, [anchor]);
 
   useEffect(() => {
     if (!open) { setPeek(false); return; }
@@ -143,15 +144,15 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
       aria-label="Calculator"
       hidden={!open}
       style={style}
-      className={`calc-root fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? "inset-x-1 bottom-1 mx-auto max-w-[520px]" : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
+      className={`calc-root fixed z-[60] select-none rounded-xl border border-[var(--border)] bg-[var(--surface-elevated,var(--surface))] shadow-xl shadow-black/25 transition-opacity duration-100 ${phone ? `inset-x-1 ${anchor === "bottom" ? "bottom-[calc(5.75rem+env(safe-area-inset-bottom))]" : "bottom-1"} mx-auto max-w-[520px]` : ""} ${open ? "" : "hidden"} ${peek ? "pointer-events-none opacity-0" : "opacity-100"}`}
     >
       <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
         className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 ${phone ? "py-0.5" : "py-1"} ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
         {!phone && <GripHorizontal className="h-3.5 w-3.5 text-[var(--text-muted)]" aria-hidden />}
-        <button type="button" aria-label="Close calculator" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="ml-auto rounded p-0.5 text-[var(--text-muted)] transition hover:text-[var(--text-primary)] cursor-pointer"><X className="h-3.5 w-3.5" /></button>
+        {mini && <span className="ml-1 truncate font-num text-sm font-extrabold text-[var(--text-primary)]">{result}</span>}<button type="button" aria-label={mini ? "Expand calculator" : "Minimise calculator"} title={mini ? "Expand" : "Minimise"} onClick={() => setMini((m) => !m)} onPointerDown={(e) => e.stopPropagation()} className="ml-auto my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">{mini ? <Maximize2 className="h-4 w-4" /> : <Minus className="h-4 w-4" />}</button><button type="button" aria-label="Close calculator" title="Close" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
       </div>
 
-      <div className={phone ? "px-1.5 pt-1" : "px-2 pt-1.5"}>
+      <div className={`${phone ? "px-1.5 pt-1" : "px-2 pt-1.5"} ${mini ? "hidden" : ""}`}>
         <div className={`rounded-lg bg-[var(--surface-secondary)] px-3 ${phone ? "py-0.5" : "py-1.5"}`} role="status" aria-live="polite">
           {/* Row 1: the expression as typed. Row 2: the running answer, updated after every key. */}
           <div ref={exprBox} className={`overflow-y-auto text-right ${phone ? "max-h-9 min-h-[1.25rem]" : "max-h-[3.75rem] min-h-[1.5rem]"}`} title={expr}><span className={`break-words font-semibold text-[var(--text-secondary)] font-num ${phone ? "text-sm leading-5" : "text-base leading-6"}`}>{expr || " "}</span></div>
@@ -176,7 +177,7 @@ export function VirtualCalculator({ open, onClose }: { open: boolean; onClose: (
           </div>
         </div>
       ) : (
-        <div className="grid gap-1 p-2" style={{ gridTemplateColumns: "repeat(11, minmax(0, 1fr))", gridAutoRows: "minmax(2rem, 1fr)" }}>
+        <div className={`grid gap-1 p-2 ${mini ? "!hidden" : ""}`} style={{ gridTemplateColumns: "repeat(11, minmax(0, 1fr))", gridAutoRows: "minmax(2rem, 1fr)" }}>
           <div style={{ gridRow: 1, gridColumn: "2 / span 3" }} className="grid">{angle}</div>
           {KEYS.map((b) => keyBtn(b, `min-h-8 sm:min-h-9 ${b.l.length >= 5 ? "text-[10px]" : "text-xs"}`))}
         </div>
