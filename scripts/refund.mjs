@@ -33,6 +33,10 @@ if (!rr.ok) { console.error("Refund failed:", refund.error?.description ?? rr.st
 console.log(`Refund ${refund.id} created: ₹${refund.amount / 100} (${refund.status}). It reaches the customer in about 5 to 7 working days.`);
 
 if (has("--revoke") && order) {
+  // Study packs granted by this order (migration 0063) end now as well.
+  const { data: packs } = await db.from("study_access").update({ valid_until: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("order_id", order.id).select("pack_id");
+  if (packs?.length) console.log(`Study packs ended: ${packs.map((p) => p.pack_id).join(", ")}`);
+  if (String(order.plan_id).startsWith("study_")) { console.log("Study-only order: no plan to end."); process.exit(0); }
   const { error } = await db.from("entitlements").update({ valid_until: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("user_id", order.user_id).eq("source", "razorpay");
   console.log(error ? `Couldn't end the plan: ${error.message}` : "The plan was ended now.");
 }

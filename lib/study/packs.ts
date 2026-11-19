@@ -43,3 +43,16 @@ export function chapterInfo(href: string) {
   const first = book?.chapters.find((c) => c.href)?.href ?? null;
   return { book, pack: book ? packOfBook(book.id) : null, sampleChapter: !!first && first === href };
 }
+
+/** A study product as sent to the order API: "pack:os", "bundle:complete" or "custom:os,cn,dbms" (3 or more packs). */
+export function productPacks(product: string): { kind: "pack" | "bundle" | "custom"; packs: string[]; name: string } | null {
+  const [kind, rest = ""] = product.split(":");
+  if (kind === "pack") { const p = PACKS.find((x) => x.id === rest); return p ? { kind, packs: [p.id], name: `${p.name} pack` } : null; }
+  if (kind === "bundle") { const b = BUNDLES.find((x) => x.id === rest); return b ? { kind, packs: b.packs, name: b.name } : null; }
+  if (kind === "custom") { const ids = [...new Set(rest.split(",").filter((id) => PACKS.some((p) => p.id === id)))]; return ids.length >= 3 ? { kind, packs: ids, name: `Your bundle (${ids.length} packs)` } : null; }
+  return null;
+}
+/** Build-your-own price: the packs' sum less BUILD_YOUR_OWN_OFF %, rounded down to whole rupees. */
+export const customPrice = (ids: string[]) => Math.floor((packTotal(ids) * (100 - BUILD_YOUR_OWN_OFF)) / 100 / 100) * 100;
+/** Plan id stored on the order (≤ 40 chars). */
+export const studyPlanId = (product: string) => (product.startsWith("pack:") ? `study_pack_${product.slice(5)}` : product.startsWith("bundle:") ? `study_bundle_${product.slice(7)}` : "study_custom");

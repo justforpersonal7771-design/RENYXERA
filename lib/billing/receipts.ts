@@ -1,5 +1,6 @@
 import "server-only";
 import { planById } from "@/lib/billing/plans";
+import { BUNDLES, PACKS } from "@/lib/study/packs";
 import type { PaymentProvider } from "@/lib/billing/providers";
 import type { createServiceRoleClient } from "@/lib/supabase/service-role";
 
@@ -19,6 +20,11 @@ export function planLabel(planId: string): string {
   if (fixed) return fixed.name;
   const tp = /^topup_(small|medium|large)$/.exec(planId);
   if (tp) return `AI Mentor recharge · ${tp[1][0].toUpperCase()}${tp[1].slice(1)}`;
+  const sp = /^study_pack_([a-z]+)$/.exec(planId);
+  if (sp) return `Study · ${PACKS.find((p) => p.id === sp[1])?.name ?? sp[1]} pack`;
+  const sb = /^study_bundle_([a-z0-9]+)$/.exec(planId);
+  if (sb) return `Study · ${BUNDLES.find((b) => b.id === sb[1])?.name ?? sb[1]}`;
+  if (planId === "study_custom") return "Study · Your bundle";
   const m = /^(plus|pro)_season_(\d{4})$/.exec(planId);
   if (m) return `${m[1] === "pro" ? "Pro" : "Plus"} · GATE ${m[2]} Pass`;
   return planId;

@@ -96,3 +96,12 @@ Not allowed: pre-ticked boxes, countdown timers that reset, invented "original p
 ## 7. Research notes (honest limits)
 
 Public price data for GATE notes is thin. What was found (31 Oct): a combined "all Maths subjects" notes bundle listed around ₹185; free handwritten GATE CS notes per subject from several sites; toppers' handwritten notes sold per subject by a coaching-community store (price not visible in the cached page); an all-exam one-year pack at ₹4,999 positioned against ₹18,000 coaching; and tutoring sites selling a 3-subject bundle at about 17 % below the sum. Our ₹99 to ₹149 per subject sits well above free notes and well below coaching, so the page must lead with what free notes do not give: tested numbers, GATE-weight labelling, practice links and checks. Revisit with real conversion data.
+
+## 8. Built (19 Nov 2026)
+
+- Migration `0063_study_packs.sql` (applied by the owner): `study_access (user_id, pack_id, order_id, valid_until)`, `billing_orders.study_packs` and `study_valid_until`; `apply_paid_order` grants an order's packs exactly once (a repeat purchase extends, never double-grants).
+- `POST /api/billing/study` sells `pack:<id>`, `bundle:<id>` and `custom:<ids>` (3+ packs, 15 % off). Prices come from `lib/study/packs.ts`; step-up credit (single packs paid in the last 30 days that a bundle contains) is applied on the server. `GET` returns the quote shown before paying.
+- Plans checkout: unticked "Add Complete CS" row on the confirm step (moment 1); `/api/billing/order` adds it server-side after the plan coupon.
+- Access lasts to 31 March IST of the buyer's target GATE year (or the upcoming one). Free, Plus and Pro read 2 sample topics per book; bought packs and admins read everything. The interim "Pro reads all" rule has ended.
+- `scripts/refund.mjs --revoke` also ends the study packs of a refunded order.
+- Open: server-side protection of lesson content (it still ships in client bundles), checkout moments 2–10.
