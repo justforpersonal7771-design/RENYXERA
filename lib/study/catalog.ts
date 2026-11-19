@@ -22,9 +22,9 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "tcp", title: "TCP, UDP and flow control", href: "/study/transport", ready: "5 topics ready" }, { id: "app", title: "Application layer", href: "/study/application", ready: "5 topics ready" },
   ] },
   { id: "algo", title: "Algorithms", short: "Algo", tint: "peri", cloth: "#D9D2C2", ink: "#1B1917", paper: "#22324F", dark: "#22324F", band: "core", chapters: [
-    { id: "asym", title: "Asymptotics and recurrences" }, { id: "sort", title: "Searching and sorting" }, { id: "hash", title: "Hashing" },
-    { id: "dc", title: "Divide and conquer" }, { id: "greedy", title: "Greedy" }, { id: "dp", title: "Dynamic programming" },
-    { id: "graphs", title: "Graph traversals" }, { id: "mst", title: "Minimum spanning trees" }, { id: "sp", title: "Shortest paths" },
+    { id: "asym", title: "Asymptotics and recurrences", href: "/study/asymptotics", ready: "3 topics ready" }, { id: "sort", title: "Searching and sorting", href: "/study/sorting", ready: "5 topics ready" }, { id: "hash", title: "Hashing", href: "/study/hashing", ready: "3 topics ready" },
+    { id: "dc", title: "Divide and conquer", href: "/study/divide-conquer", ready: "3 topics ready" }, { id: "greedy", title: "Greedy", href: "/study/greedy", ready: "3 topics ready" }, { id: "dp", title: "Dynamic programming", href: "/study/dynamic-programming", ready: "4 topics ready" },
+    { id: "graphs", title: "Graph traversals", href: "/study/graph-traversals", ready: "3 topics ready" }, { id: "mst", title: "Minimum spanning trees", href: "/study/mst", ready: "3 topics ready" }, { id: "sp", title: "Shortest paths", href: "/study/shortest-paths", ready: "3 topics ready" },
   ] },
   { id: "pds", title: "Programming and Data Structures", short: "P & DS", tint: "peach", cloth: "#E6CDB4", ink: "#1B1917", paper: "#9A3B1F", dark: "#9A3B1F", band: "core", chapters: [
     { id: "c", title: "Programming in C", href: "/study/c-programming", ready: "5 topics ready", match: "Data Types|Control Structures|Pointers|Dynamic Memory|Parameter Passing" }, { id: "recursion", title: "Recursion", href: "/study/recursion", ready: "3 topics ready" }, { id: "lists", title: "Arrays", href: "/study/arrays", ready: "3 topics ready" },

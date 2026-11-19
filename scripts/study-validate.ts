@@ -9,6 +9,10 @@ import { PDS_REC, PDS_ARR } from "../content/study/CS/pds-b";
 import { PDS_SQ, PDS_LL } from "../content/study/CS/pds-c";
 import { PDS_TREE, PDS_HEAP } from "../content/study/CS/pds-d";
 import { PDS_GRAPH } from "../content/study/CS/pds-e";
+import { ALGO_ASYM, ALGO_SORT } from "../content/study/CS/algo-a";
+import { ALGO_HASH, ALGO_DC } from "../content/study/CS/algo-b";
+import { ALGO_GREEDY, ALGO_DP } from "../content/study/CS/algo-c";
+import { ALGO_GRAPH, ALGO_MST, ALGO_SP } from "../content/study/CS/algo-d";
 import { OS_SCHEDULING } from "../content/study/CS/os-scheduling";
 import { OS_SYNC } from "../content/study/CS/os-sync";
 import { OS_MEMORY } from "../content/study/CS/os-memory";
@@ -24,5 +28,5 @@ import { CN_IP } from "../content/study/CS/cn-ip";
 import { CN_TCP } from "../content/study/CS/cn-tcp";
 import { CN_APP } from "../content/study/CS/cn-app";
 let bad = 0;
-for (const t of [...OS_DEADLOCK.topics, ...OS_PROCESSES.topics, ...OS_SCHEDULING.topics, ...OS_SYNC.topics, ...OS_MEMORY.topics, ...OS_VM.topics, ...OS_FS.topics, ...CN_LAYERS.topics, ...CN_DLL.topics, ...CN_IP.topics, ...CN_TCP.topics, ...CN_APP.topics, ...DM_LOGIC.topics, ...DM_FOL.topics, ...DM_SETS.topics, ...DM_POSET.topics, ...DM_GROUPS.topics, ...DM_GRAPH.topics, ...DM_COUNT.topics, ...DM_RECUR.topics, ...PDS_C.topics, ...PDS_REC.topics, ...PDS_ARR.topics, ...PDS_SQ.topics, ...PDS_LL.topics, ...PDS_TREE.topics, ...PDS_HEAP.topics, ...PDS_GRAPH.topics, ...DB_ER.topics, ...DB_REL.topics, ...DB_RA.topics, ...DB_SQL.topics, ...DB_NORM.topics, ...DB_INDEX.topics, ...DB_TXN.topics, ...DB_CC.topics]) { const p = validateTopic(t); bad += p.length; console.log(p.length ? p.join("\n") : `ok  ${t.id}`); }
+for (const t of [...OS_DEADLOCK.topics, ...OS_PROCESSES.topics, ...OS_SCHEDULING.topics, ...OS_SYNC.topics, ...OS_MEMORY.topics, ...OS_VM.topics, ...OS_FS.topics, ...CN_LAYERS.topics, ...CN_DLL.topics, ...CN_IP.topics, ...CN_TCP.topics, ...CN_APP.topics, ...DM_LOGIC.topics, ...DM_FOL.topics, ...DM_SETS.topics, ...DM_POSET.topics, ...DM_GROUPS.topics, ...DM_GRAPH.topics, ...DM_COUNT.topics, ...DM_RECUR.topics, ...ALGO_GREEDY.topics, ...ALGO_DP.topics, ...ALGO_GRAPH.topics, ...ALGO_MST.topics, ...ALGO_SP.topics, ...ALGO_ASYM.topics, ...ALGO_SORT.topics, ...ALGO_HASH.topics, ...ALGO_DC.topics, ...PDS_C.topics, ...PDS_REC.topics, ...PDS_ARR.topics, ...PDS_SQ.topics, ...PDS_LL.topics, ...PDS_TREE.topics, ...PDS_HEAP.topics, ...PDS_GRAPH.topics, ...DB_ER.topics, ...DB_REL.topics, ...DB_RA.topics, ...DB_SQL.topics, ...DB_NORM.topics, ...DB_INDEX.topics, ...DB_TXN.topics, ...DB_CC.topics]) { const p = validateTopic(t); bad += p.length; console.log(p.length ? p.join("\n") : `ok  ${t.id}`); }
 process.exit(bad ? 1 : 0);
