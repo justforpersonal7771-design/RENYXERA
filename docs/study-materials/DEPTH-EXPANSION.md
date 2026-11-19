@@ -8,12 +8,12 @@ method, 3 worked examples with figures, lab, finish-the-solution, traps, GATE no
 Status: [ ] to write · [x] written
 
 ## Operating Systems
-- Processes and threads: [ ] schedulers and queues (long/medium/short term, context-switch cost) · [ ] process termination, zombies, orphans, wait/exit
-- CPU scheduling: [ ] scheduling with I/O bursts (CPU utilisation, multiprocessor and real-time basics: RM, EDF)
-- Synchronisation: [ ] semaphore value questions (P/V traces, counting semaphores) · [ ] monitors and condition variables · [ ] readers–writers in depth · [ ] dining philosophers in depth
-- Memory management: [ ] page-table size and structures (inverted, hashed) · [ ] buddy and slab allocation
-- Virtual memory: [ ] LRU approximations (reference bits, clock, enhanced clock, counting policies) · [ ] copy-on-write and memory-mapped files
-- File systems and disk: [ ] directory structures, links, mounting · [ ] free-space management · [ ] disk structure and access time · [ ] RAID levels · [ ] I/O systems (polling, interrupts, DMA, buffering, spooling)
+- Processes and threads: [x] schedulers and queues (long/medium/short term, context-switch cost) · [x] process termination, zombies, orphans, wait/exit
+- CPU scheduling: [x] scheduling with I/O bursts (CPU utilisation, multiprocessor and real-time basics: RM, EDF)
+- Synchronisation: [x] semaphore value questions (P/V traces, counting semaphores) · [x] monitors and condition variables · [x] readers–writers in depth · [x] dining philosophers in depth
+- Memory management: [x] page-table size and structures (inverted, hashed) · [x] buddy and slab allocation
+- Virtual memory: [x] LRU approximations (reference bits, clock, enhanced clock, counting policies) · [x] copy-on-write and memory-mapped files
+- File systems and disk: [x] directory structures, links, mounting · [x] free-space management · [x] disk structure and access time · [x] RAID levels · [x] I/O systems (polling, interrupts, DMA, buffering, spooling)
 
 ## Computer Networks
 - Layering and switching: [ ] network performance (throughput, bandwidth-delay product, RTT, queueing intensity)

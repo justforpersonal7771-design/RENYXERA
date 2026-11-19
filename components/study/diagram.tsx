@@ -80,7 +80,7 @@ function Strip({ fig }: { fig: Extract<Fig, { kind: "strip" }> }) {
 
 function Matrix({ fig }: { fig: Extract<Fig, { kind: "matrix" }> }) {
   return (
-    <table className="w-full max-w-[460px] border-collapse text-sm tabular-nums">
+    <div className="max-w-full overflow-x-auto"><table className="w-full max-w-[460px] border-collapse text-sm tabular-nums">
       <caption className="mb-1 text-left text-xs font-bold text-[var(--text-secondary)]">{fig.title}</caption>
       <thead><tr><th className="border border-[var(--border)] p-1.5" />{fig.cols.map((c) => <th key={c} className="border border-[var(--border)] p-1.5 text-[var(--text-primary)]">{c}</th>)}</tr></thead>
       <tbody>{fig.rows.map((r) => (
@@ -89,7 +89,7 @@ function Matrix({ fig }: { fig: Extract<Fig, { kind: "matrix" }> }) {
           {r.cells.map((c, i) => <td key={i} className="border border-[var(--border)] p-1.5 text-center text-[var(--text-primary)]">{c}</td>)}
         </tr>
       ))}</tbody>
-    </table>
+    </table></div>
   );
 }
 

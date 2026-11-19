@@ -1,3 +1,4 @@
+import * as DB2 from "./os-deep-b";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /**
@@ -212,5 +213,5 @@ export const OS_VM: Chapter = {
     { label: "2. Page replacement", sub: "FIFO, LRU, Optimal", state: "done" },
     { label: "3. Thrashing", sub: "working sets and allocation", state: "done" },
   ] },
-  topics: [demand, replacement, thrashing],
+  topics: [demand, replacement, thrashing, DB2.clock, DB2.cowTopic],
 };

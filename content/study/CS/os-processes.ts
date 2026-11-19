@@ -1,3 +1,4 @@
+import * as DA from "./os-deep-a";
 import type { Chapter, Topic } from "@/lib/study/schema";
 import { OS_IPC } from "@/content/study/CS/os-extra";
 import { syscalls, threads } from "./os-processes-more";
@@ -143,5 +144,5 @@ export const OS_PROCESSES: Chapter = {
       { label: "5. IPC", sub: "pipes, messages, signals", state: "done" },
     ],
   },
-  topics: [...deepen([states, forks, threads, syscalls]), OS_IPC],
+  topics: [...deepen([states, forks, threads, syscalls]), OS_IPC, DA.schedulers, DA.zombies],
 };

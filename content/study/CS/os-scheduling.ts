@@ -1,3 +1,4 @@
+import * as DA from "./os-deep-a";
 import type { Chapter, Topic } from "@/lib/study/schema";
 import { OS_HRRN, OS_MLFQ } from "@/content/study/CS/os-extra";
 
@@ -223,5 +224,5 @@ export const OS_SCHEDULING: Chapter = {
     { label: "4. HRRN and LJF", sub: "response ratio", state: "done" },
     { label: "5. Multilevel queues", sub: "feedback queues", state: "done" },
   ] },
-  topics: [basics, preemptive, priority, OS_HRRN, OS_MLFQ],
+  topics: [basics, preemptive, priority, OS_HRRN, OS_MLFQ, DA.realtime],
 };

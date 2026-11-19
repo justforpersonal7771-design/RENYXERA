@@ -1,3 +1,4 @@
+import * as DA from "./os-deep-a";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /** Operating System → Synchronisation. Our own words and numbers; semaphore arithmetic worked in each solution. */
@@ -211,5 +212,5 @@ export const OS_SYNC: Chapter = {
     { label: "2. Semaphores", sub: "and mutex locks", state: "done" },
     { label: "3. Classic problems", sub: "buffer, readers–writers, philosophers", state: "done" },
   ] },
-  topics: [race, semaphores, classic],
+  topics: [race, semaphores, classic, DA.pvtrace, DA.monitors, DA.readersWriters, DA.philosophers],
 };

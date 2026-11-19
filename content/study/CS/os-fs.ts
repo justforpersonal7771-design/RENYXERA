@@ -1,3 +1,4 @@
+import * as DB2 from "./os-deep-b";
 import type { Chapter, Topic } from "@/lib/study/schema";
 
 /**
@@ -153,5 +154,5 @@ export const OS_FS: Chapter = {
     { label: "1. Allocation", sub: "inodes and file size", state: "done" },
     { label: "2. Disk scheduling", sub: "FCFS to C-LOOK", state: "done" },
   ] },
-  topics: [alloc, disk],
+  topics: [alloc, disk, DB2.dirs, DB2.freeSpaceTopic, DB2.diskTimeTopic, DB2.raidTopic, DB2.ioTopic],
 };

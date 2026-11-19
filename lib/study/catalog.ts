@@ -8,9 +8,9 @@ export type ShelfBook = { id: string; title: string; short: string; cloth: strin
 
 export const CS_SHELF: ShelfBook[] = [
   { id: "os", title: "Operating Systems", short: "OS", tint: "rose", cloth: "#E8C5B8", ink: "#1B1917", paper: "#7B1E22", dark: "#7B1E22", band: "core", chapters: [
-    { id: "deadlock", title: "Deadlock", href: "/study/deadlock", ready: "6 topics ready, free" }, { id: "process", title: "Processes and threads", href: "/study/processes", ready: "5 topics ready" }, { id: "sched", title: "CPU scheduling", href: "/study/scheduling", ready: "5 topics ready" },
-    { id: "sync", title: "Synchronisation", href: "/study/synchronisation", ready: "3 topics ready" }, { id: "memory", title: "Memory management", href: "/study/memory", ready: "4 topics ready" }, { id: "vm", title: "Virtual memory", href: "/study/virtual-memory", ready: "3 topics ready" },
-    { id: "fs", title: "File systems and disk", href: "/study/files", ready: "2 topics ready" },
+    { id: "deadlock", title: "Deadlock", href: "/study/deadlock", ready: "6 topics ready, free" }, { id: "process", title: "Processes and threads", href: "/study/processes", ready: "7 topics ready" }, { id: "sched", title: "CPU scheduling", href: "/study/scheduling", ready: "6 topics ready" },
+    { id: "sync", title: "Synchronisation", href: "/study/synchronisation", ready: "7 topics ready" }, { id: "memory", title: "Memory management", href: "/study/memory", ready: "6 topics ready" }, { id: "vm", title: "Virtual memory", href: "/study/virtual-memory", ready: "5 topics ready" },
+    { id: "fs", title: "File systems and disk", href: "/study/files", ready: "7 topics ready" },
   ] },
   { id: "dbms", title: "Databases", short: "DBMS", tint: "mint", cloth: "#C4D9CC", ink: "#1B1917", paper: "#1F4D3A", dark: "#1F4D3A", band: "core", chapters: [
     { id: "er", title: "ER model", href: "/study/er-model", ready: "3 topics ready" }, { id: "relational", title: "Relational model and integrity constraints", href: "/study/relational-model", ready: "2 topics ready" }, { id: "ra", title: "Relational algebra and tuple calculus", href: "/study/relational-algebra", ready: "3 topics ready" },

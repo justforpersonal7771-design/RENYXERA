@@ -1,3 +1,4 @@
+import * as DB2 from "./os-deep-b";
 import type { Chapter, Topic } from "@/lib/study/schema";
 import { OS_SEGMENT } from "@/content/study/CS/os-extra";
 
@@ -221,5 +222,5 @@ export const OS_MEMORY: Chapter = {
     { label: "3. TLB and multilevel tables", sub: "effective access time", state: "done" },
     { label: "4. Segmentation", sub: "base and limit", state: "done" },
   ] },
-  topics: [contiguous, paging, tlb, OS_SEGMENT],
+  topics: [contiguous, paging, tlb, OS_SEGMENT, DB2.ptSize, DB2.buddySlab],
 };
