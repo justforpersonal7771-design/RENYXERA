@@ -23,11 +23,11 @@ Status: [ ] to write · [x] written
 - Application layer: [ ] DNS records and resolution in depth · [ ] email: SMTP, MIME, POP3, IMAP · [ ] HTTP versions, cookies and caching
 
 ## Discrete Mathematics
-- Propositional logic: [ ] rules of inference and proof methods · [ ] normal forms and functional completeness
-- First-order logic: [ ] translating nested statements (practice-heavy)
-- Sets, relations and functions: [ ] set algebra, power sets, cardinality and countability · [ ] composition, inverses and equivalence classes
-- Partial orders and lattices: [ ] Boolean algebra as a lattice
-- Monoids and groups: [ ] cosets, normal subgroups, isomorphism
+- Propositional logic: [x] rules of inference and proof methods · [x] normal forms and functional completeness
+- First-order logic: [x] translating nested statements (practice-heavy)
+- Sets, relations and functions: [x] set algebra, power sets, cardinality and countability · [x] composition, inverses and equivalence classes
+- Partial orders and lattices: [x] Boolean algebra as a lattice
+- Monoids and groups: [x] cosets, normal subgroups, isomorphism
 - Graph theory: [ ] trees and spanning trees (Cayley, counting) · [ ] planarity and Euler's formula · [ ] matching and Hall's theorem · [ ] graph isomorphism
 - Counting: [ ] pigeonhole in depth · [ ] binomial identities and the binomial theorem
 - Recurrences: [ ] non-homogeneous recurrences and divide-and-conquer recurrences
