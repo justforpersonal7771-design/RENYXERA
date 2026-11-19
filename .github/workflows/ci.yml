@@ -70,7 +70,8 @@ jobs:
 
       - name: End-to-end smoke (phone + desktop × light + dark, guest exam flow)
         run: |
-          npx playwright install --with-deps chromium
+          # Ubuntu mirrors occasionally time out while fetching browser fonts; retry instead of failing the deploy.
+          for i in 1 2 3; do npx playwright install --with-deps chromium && break; echo "browser install failed (attempt $i), retrying in 20s"; sleep 20; sudo apt-get update -o Acquire::Retries=3 || true; [ "$i" = 3 ] && exit 1; done
           npx next start -p 3000 &
           for i in $(seq 1 30); do curl -s -o /dev/null http://localhost:3000/about && break; sleep 2; done
           BASE=http://localhost:3000 node scripts/e2e-smoke.mjs
