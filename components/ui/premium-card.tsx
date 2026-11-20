@@ -9,6 +9,9 @@ import { Lock, Sparkles } from "lucide-react";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { TIER_RANK } from "@/lib/billing/plans";
+import { useStudyAccess } from "@/lib/study/use-study-access";
+import { BUNDLES, rupees } from "@/lib/study/packs";
+import { openStudyShop } from "@/store/use-study-shop-store";
 
 const SKIN = {
   study: { bg: "linear-gradient(150deg,#2a1f6b 0%,#4b2fa8 55%,#7a3fc4 100%)", glow: "bg-amber-300/25", kicker: "text-amber-200", shadow: "rgba(40,20,110,.7)" },
@@ -19,7 +22,7 @@ export function MetalButton({ children, onClick, className = "" }: { metal?: str
   return <button type="button" onClick={onClick} className={`btn-champagne inline-flex h-11 items-center justify-center rounded-xl px-5 ${className}`}>{children}</button>;
 }
 
-export function PremiumCard({ skin, eyebrow, title, body, cta, onClick, compact = false, className = "" }: { skin: "study" | "silver" | "gold"; eyebrow: string; title: string; body: string; cta: string; onClick: () => void; compact?: boolean; className?: string }) {
+export function PremiumCard({ skin, eyebrow, title, body, cta, onClick, compact = false, className = "" }: { skin: "study" | "silver" | "gold" | "peri"; eyebrow: string; title: string; body: string; cta: string; onClick: () => void; compact?: boolean; className?: string }) {
   const layout = compact ? "flex flex-wrap items-center gap-x-5 gap-y-3 px-5 py-4" : "flex flex-col justify-between gap-3 p-5 sm:p-6";
   if (skin !== "study") {
     // Plus = silver, Pro = gold: foil border and strip, neutral body, metallic button (classes in globals.css)
@@ -54,4 +57,12 @@ export function PlanUpsellCard({ className = "" }: { className?: string }) {
   if (ent.loading || TIER_RANK[ent.tier] >= TIER_RANK.pro) return null;
   const free = TIER_RANK[ent.tier] < TIER_RANK.plus;
   return <PremiumCard skin={free ? "silver" : "gold"} compact className={className} eyebrow={free ? "Plus · Silver" : "Pro · Gold"} title={free ? "Practise without limits" : "Go further with Pro"} body={free ? "More Mentor messages, Forge questions and reminders every day." : "Unlimited Forge, the most Mentor messages and every reminder."} cta="See plans" onClick={() => openUpgrade(free ? "Plus plan" : "Pro plan")} />;
+}
+
+/** Study packs as a buy card in the same family as the Plus/Pro card (violet foil); hidden for students who own every pack. */
+export function StudyBuyCard({ className = "" }: { className?: string }) {
+  const access = useStudyAccess();
+  if (access.loading || access.all) return null;
+  const core = BUNDLES.find((b) => b.id === "core")!, all = BUNDLES.find((b) => b.id === "everything")!;
+  return <PremiumCard skin="peri" compact className={className} eyebrow="Study packs" title="Unlock every chapter" body={`Learn the topic, then test it here. Core CS from ${rupees(core.pricePaise)}, the whole library for ${rupees(all.pricePaise)}.`} cta="Unlock books" onClick={() => openStudyShop("Study packs and bundles")} />;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { StudyStripMini } from "@/components/study/study-loop";
 import { LoadMore } from "@/components/system/load-more";
 import { ReviewTabs } from "@/components/layout/review-tabs";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
@@ -106,6 +107,7 @@ export default function RevisionBuilderPage() {
   return (
     <MathJaxContext config={mathJaxConfig}>
     <div className="w-full mx-auto flex flex-col gap-4 font-sans h-full overflow-hidden" data-fill-height>
+      <StudyStripMini className="flex-none" />
 
       <ReviewTabs />
 

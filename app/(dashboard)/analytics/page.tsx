@@ -299,7 +299,7 @@ export default function AnalyticsDashboardPage() {
         {/* The shape of your preparation: every subject on one full-width radar. */}
         {!loadingIntel && <Reveal><SubjectRadarCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>}
         {!loadingIntel && <Reveal><PlanUpsellCard /></Reveal>}
-        {!loadingIntel && <Reveal><StudyVsScoreCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>}
+        <Reveal><StudyVsScoreCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>
 
         {!loadingIntel && <SubjectShareList subjects={dashboardMetrics?.subjectPerformance ?? []} onPractise={practice} />}
 

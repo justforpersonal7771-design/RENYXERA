@@ -1,4 +1,5 @@
 "use client";
+import { StudyStripMini } from "@/components/study/study-loop";
 import { istHour } from "@/lib/time/ist";
 
 /**
@@ -68,6 +69,7 @@ export default function AIMentorPage() {
 
   return (
     <div className="space-y-5 pb-6">
+      <StudyStripMini />
       <section className="card-pastel p-5 sm:p-7" data-tint="sky" aria-label="Your Mentor">
         <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr] lg:items-end">
           <div>
