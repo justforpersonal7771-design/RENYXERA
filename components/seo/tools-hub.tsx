@@ -9,7 +9,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, BookOpen, Calculator, CalendarDays, Download, FileText, Flame, LineChart, type LucideIcon } from "lucide-react";
+import { ArrowRight, BookOpen, Calculator, CalendarDays, Compass, Download, Dumbbell, FileText, Flame, LineChart, Trophy, type LucideIcon } from "lucide-react";
 import { TOOLS, type ToolEntry } from "@/lib/seo/tools";
 import { WordReveal } from "@/components/ui/word-reveal";
 import { useBranchHref } from "@/lib/seo/use-branch-href";
@@ -19,9 +19,9 @@ const DOWNLOADS: ToolEntry = { href: "/downloads", title: "Downloads", short: "D
 const find = (h: string) => (h === "/downloads" ? DOWNLOADS : TOOLS.find((t) => t.href === h)!);
 
 const INTENTS = [
-  { id: "rank", tint: "sky", verb: "Work out my rank", promise: "Turn marks into a score, a rank and a cut-off check.", hrefs: ["/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/tools/gate-branch-cutoffs"] },
-  { id: "plan", tint: "mint", verb: "Plan my preparation", promise: "Know what to study, in what order, and what changed.", hrefs: ["/syllabus", "/tools/gate-study-plan", "/articles/most-repeated-topics", "/gate-updates"] },
-  { id: "practise", tint: "peach", verb: "Practise and revise", promise: "Real past papers, aptitude lessons and offline study.", hrefs: ["/pyq", "/ga-lessons", "/downloads"] },
+  { id: "rank", Icon: Trophy, tint: "sky", verb: "Work out my rank", promise: "Turn marks into a score, a rank and a cut-off check.", hrefs: ["/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/tools/gate-branch-cutoffs"] },
+  { id: "plan", Icon: Compass, tint: "mint", verb: "Plan my preparation", promise: "Know what to study, in what order, and what changed.", hrefs: ["/syllabus", "/tools/gate-study-plan", "/articles/most-repeated-topics", "/gate-updates"] },
+  { id: "practise", Icon: Dumbbell, tint: "peach", verb: "Practise and revise", promise: "Real past papers, aptitude lessons and offline study.", hrefs: ["/pyq", "/ga-lessons", "/downloads"] },
 ] as const;
 
 export function ToolsHub() {
@@ -48,7 +48,7 @@ export function ToolsHub() {
             <button key={it.id} role="tab" type="button" id={`tools-tab-${it.id}`} aria-selected={on} aria-controls={`tools-panel-${it.id}`} tabIndex={on ? 0 : -1} onClick={() => setSel(it.id)}
               className="group relative flex min-w-0 cursor-pointer items-center gap-3 rounded-[22px] p-3.5 text-left transition-colors sm:p-4">
               {on && <motion.span layoutId="tools-intent-pill" aria-hidden className="absolute inset-0 rounded-[22px] border-2" style={{ background: `var(--tint-${it.tint})`, borderColor: `var(--tint-${it.tint}-ink)` }} transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
-              <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-2xl font-display text-lg font-extrabold" style={{ background: on ? `var(--tint-${it.tint}-ink)` : `var(--tint-${it.tint})`, color: on ? `var(--tint-${it.tint})` : `var(--tint-${it.tint}-ink)` }}>{it.hrefs.length}</span>
+              <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-2xl" style={{ background: on ? `var(--tint-${it.tint}-ink)` : `var(--tint-${it.tint})`, color: on ? `var(--tint-${it.tint})` : `var(--tint-${it.tint}-ink)` }}><it.Icon className="h-5 w-5" aria-hidden /></span>
               <span className="relative min-w-0">
                 <span className="block font-display text-lg font-extrabold leading-tight text-[var(--text-primary)]">{it.verb}</span>
                 <span className="mt-0.5 block text-sm leading-snug text-[var(--text-secondary)] max-sm:hidden">{it.promise}</span>
@@ -72,7 +72,7 @@ export function ToolsHub() {
                 <span className="relative mt-4 block font-display text-3xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-4xl">{lead.title}</span>
                 <span className="relative mt-2 block max-w-md text-[var(--text-secondary)] sm:text-lg">{lead.blurb}</span>
                 <span className="relative flex-1" />
-                <span className="pill-ink relative mt-6 inline-flex self-start">Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
+                <span className="relative mt-6 inline-flex h-11 items-center gap-2 self-start rounded-full px-5 font-extrabold shadow-[0_10px_22px_-10px_rgba(0,0,0,.55)] transition-transform group-hover:-translate-y-0.5" style={{ background: ink, color: tint }}>Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
               </Link>
               <ul className="flex min-w-0 flex-col gap-3 lg:col-span-5">
                 {rest.map((r) => {
