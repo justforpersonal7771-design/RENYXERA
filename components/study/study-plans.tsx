@@ -84,14 +84,6 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">Every GATE subject, <span className="grad-brand bg-clip-text text-transparent">book by book</span></h2>
         <p className="mx-auto mt-3 max-w-xl text-balance text-[var(--text-secondary)]">Learn it, try it, test it, remember it. Separate from Plus and Pro, one payment, open until your GATE season ends. Every book opens with {FREE_TOPICS} free topics.</p>
         {owned.length > 0 && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="h-4 w-4" /> You own {owned.length} pack{owned.length === 1 ? "" : "s"}: {owned.map(packName).join(", ")}</p>}
-        <div className="mt-6 inline-flex rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1" role="radiogroup" aria-label="Study pack options">
-          {(["bundles", "single", "custom"] as const).map((v) => (
-            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative h-9 cursor-pointer rounded-xl px-4 text-sm font-bold sm:px-5 ${view === v ? "text-white" : "text-[var(--text-secondary)]"}`}>
-              {view === v && <motion.span layoutId="study-view-pill" className="nav-active-pill absolute inset-0 rounded-xl" transition={{ type: "spring", stiffness: 420, damping: 32 }} />}
-              <span className="relative">{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</span>
-            </button>
-          ))}
-        </div>
       </header>
 
       <div>
@@ -106,8 +98,17 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
         </ul>
       </div>
 
+      <div className="pointer-events-none sticky -top-2 z-20 flex justify-center py-3 sm:-top-3">
+        <div role="radiogroup" aria-label="Study pack options" className="pointer-events-auto relative grid w-full max-w-md grid-cols-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_10px_24px_-12px_rgba(20,16,40,.45)]">
+          <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl border border-[color-mix(in_srgb,var(--tint-sky-ink)_30%,transparent)] bg-[var(--tint-sky)] transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
+          {(["bundles", "single", "custom"] as const).map((v) => (
+            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl text-sm font-bold transition-colors duration-200 ${view === v ? "text-[var(--tint-sky-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
+          ))}
+        </div>
+      </div>
+
       {view === "bundles" && (
-        <div className="space-y-8">
+        <div className="hub-in space-y-8">
           {/* the hero deal: the whole library */}
           <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="plan-card plan-gold relative grid gap-6 rounded-3xl border border-transparent p-6 shadow-[0_20px_50px_-28px_rgba(12,34,75,0.35)] sm:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:gap-10">
             <span className="plan-badge plan-gold absolute -top-3 left-6 z-[3] rounded-full px-3 py-1 text-xs font-black">Best value</span>
@@ -153,7 +154,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
       )}
 
       {view === "single" && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="hub-in grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PACKS.map((p) => {
             const up = BUNDLES.find((b) => (b.id === "core" || b.id === "maths") && b.packs.includes(p.id));
             return (
@@ -171,7 +172,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
       )}
 
       {view === "custom" && (
-        <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
+        <section className="hub-in rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <p className="text-sm font-black text-[var(--text-muted)]">Build your own · any 3 or more packs, {BUILD_YOUR_OWN_OFF}% off</p>
             <div className="flex flex-wrap items-baseline gap-x-2">
