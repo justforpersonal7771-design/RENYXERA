@@ -51,7 +51,6 @@ export function StudyLoopCard({ subjects, stack = false, className = "" }: { sub
       <div className="flex min-w-0 flex-col">
         <p className="flex items-center gap-1.5 text-xs font-extrabold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" aria-hidden /> Study · {last ? "where you stopped" : "start here"}</p>
         <p className="mt-1 line-clamp-2 font-display text-xl font-extrabold leading-tight text-[var(--text-primary)]">{resume ? resume.title : "Open the GATE CS library"}</p>
-        <span className="flex-1" />
         <div className="mt-3 flex flex-wrap items-center gap-2"><Link href={resume?.href ?? "/study"} className="btn-main inline-flex !h-10 !text-sm">{last ? "Resume reading" : "Read now"} <ArrowRight className="h-4 w-4" aria-hidden /></Link></div>
       </div>
       <div className="min-w-0">
@@ -64,7 +63,6 @@ export function StudyLoopCard({ subjects, stack = false, className = "" }: { sub
         <p className="text-xs font-extrabold text-[var(--text-secondary)]">Your next study move</p>
         <p className="mt-1 font-display text-lg font-extrabold leading-tight text-[var(--text-primary)]">{step.title}</p>
         <p className="mt-1 line-clamp-2 text-xs text-[var(--text-secondary)]">{step.body}</p>
-        <span className="flex-1" />
         <Link href={step.href} className="pill-ink mt-2 self-start">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
       </div>
     </section>
@@ -83,7 +81,7 @@ export function StudyStripMini({ className = "" }: { className?: string }) {
     <section aria-label="Study" className={`card-pastel flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 sm:px-5 ${className}`} data-tint="lilac">
       <BookOpen className="h-5 w-5 shrink-0 text-[var(--text-primary)]" aria-hidden />
       <p className="min-w-0 flex-1 text-sm text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">Study: {step.title}.</b> {step.body}</p>
-      <div className="flex shrink-0 flex-wrap gap-2"><Link href={step.href} className="pill-ink">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>{!access.all && <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="btn-champagne inline-flex h-9 items-center rounded-full px-4 text-sm">Unlock books</button>}</div>
+      <div className="flex shrink-0 flex-wrap gap-2"><Link href={step.href} className="pill-ink">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>{!access.all && <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="btn-study inline-flex h-9 items-center rounded-full px-4 text-sm">Unlock books</button>}</div>
     </section>
   );
 }

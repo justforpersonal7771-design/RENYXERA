@@ -269,7 +269,7 @@ export function Bookshelf() {
           )}
           {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
         </div>
-        <PremiumCard skin="study" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:h-72" onClick={() => openStudyShop("Study packs and bundles")}
+        <PremiumCard skin="peri" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:h-72" onClick={() => openStudyShop("Study packs and bundles")}
           body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />
       </div>
 

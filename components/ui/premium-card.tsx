@@ -5,7 +5,7 @@
  * recognisable: purple for study packs, teal for Plus and Pro. Other cards stay pastel, so this one stands out.
  */
 import type { ReactNode } from "react";
-import { Lock, Sparkles } from "lucide-react";
+import { BookOpen, Lock, Sparkles } from "lucide-react";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { TIER_RANK } from "@/lib/billing/plans";
@@ -27,9 +27,9 @@ export function PremiumCard({ skin, eyebrow, title, body, cta, onClick, compact 
   if (skin !== "study") {
     // Plus = silver, Pro = gold: foil border and strip, neutral body, metallic button (classes in globals.css)
     return (
-      <section aria-label={title} className={`plan-card plan-${skin} rounded-[var(--card-radius,24px)] ${layout} ${compact ? "pt-5" : ""} ${className}`}>
+      <section aria-label={title} className={`plan-card plan-${skin} rounded-[var(--card-radius,24px)] ${layout} ${compact ? "!py-3.5 pt-4" : ""} ${className}`}>
         <div className={`relative min-w-0 ${compact ? "flex-1" : ""}`}>
-          <p className="plan-kicker flex items-center gap-1.5 text-sm font-extrabold"><Sparkles className="h-4 w-4" aria-hidden /> {eyebrow}</p>
+          <p className="plan-kicker flex items-center gap-1.5 text-sm font-extrabold">{skin === "peri" ? <BookOpen className="h-4 w-4" aria-hidden /> : <Sparkles className="h-4 w-4" aria-hidden />} {eyebrow}</p>
           <p className={`mt-1 font-display font-extrabold leading-tight text-[var(--text-primary)] ${compact ? "text-xl" : "text-3xl"}`}>{title}</p>
           <p className="mt-1.5 text-sm text-[var(--text-secondary)] text-balance">{body}</p>
         </div>
@@ -56,7 +56,7 @@ export function PlanUpsellCard({ className = "" }: { className?: string }) {
   const ent = useEntitlements();
   if (ent.loading || TIER_RANK[ent.tier] >= TIER_RANK.pro) return null;
   const free = TIER_RANK[ent.tier] < TIER_RANK.plus;
-  return <PremiumCard skin={free ? "silver" : "gold"} compact className={className} eyebrow={free ? "Plus · Silver" : "Pro · Gold"} title={free ? "Practise without limits" : "Go further with Pro"} body={free ? "More Mentor messages, Forge questions and reminders every day." : "Unlimited Forge, the most Mentor messages and every reminder."} cta="See plans" onClick={() => openUpgrade(free ? "Plus plan" : "Pro plan")} />;
+  return <PremiumCard skin={free ? "silver" : "gold"} compact className={className} eyebrow={free ? "Plus · Silver" : "Pro · Gold"} title={free ? "Practise without limits" : "Go further with Pro"} body={free ? "More Mentor messages and Forge questions every day." : "Unlimited Forge and the most Mentor messages."} cta="See plans" onClick={() => openUpgrade(free ? "Plus plan" : "Pro plan")} />;
 }
 
 /** Study packs as a buy card in the same family as the Plus/Pro card (violet foil); hidden for students who own every pack. */
@@ -64,5 +64,5 @@ export function StudyBuyCard({ className = "" }: { className?: string }) {
   const access = useStudyAccess();
   if (access.loading || access.all) return null;
   const core = BUNDLES.find((b) => b.id === "core")!, all = BUNDLES.find((b) => b.id === "everything")!;
-  return <PremiumCard skin="peri" compact className={className} eyebrow="Study packs" title="Unlock every chapter" body={`Learn the topic, then test it here. Core CS from ${rupees(core.pricePaise)}, the whole library for ${rupees(all.pricePaise)}.`} cta="Unlock books" onClick={() => openStudyShop("Study packs and bundles")} />;
+  return <PremiumCard skin="peri" compact className={className} eyebrow="Study packs" title="Unlock every chapter" body={`Core CS from ${rupees(core.pricePaise)}, every book for ${rupees(all.pricePaise)}.`} cta="Unlock books" onClick={() => openStudyShop("Study packs and bundles")} />;
 }

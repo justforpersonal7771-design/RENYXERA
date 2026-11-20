@@ -9,7 +9,7 @@ export function StudyStrip() {
   const core = BUNDLES.find((b) => b.id === "core")!, maths = BUNDLES.find((b) => b.id === "maths")!, all = BUNDLES.find((b) => b.id === "everything")!;
   const apt = PACKS.find((p) => p.id === "apt")!;
   return (
-    <PremiumCard skin="study" compact eyebrow="Study materials" title="Textbook-depth books, bought on their own" cta="Unlock books" onClick={() => openStudyShop("Study packs and bundles")}
+    <PremiumCard skin="peri" compact eyebrow="Study materials" title="Textbook-depth books, bought on their own" cta="Unlock books" onClick={() => openStudyShop("Study packs and bundles")}
       body={`Not part of Plus or Pro. Every book opens with ${FREE_TOPICS} free topics. Core CS ${rupees(core.pricePaise)} (separately ${rupees(bundleSum(core))}), Maths ${rupees(maths.pricePaise)}, Aptitude ${rupees(apt.pricePaise)}, or Everything for ${rupees(all.pricePaise)}.`} />
   );
 }

@@ -19,10 +19,11 @@ import { PlanUpsellCard, StudyBuyCard } from "@/components/ui/premium-card";
 import { StudyLoopCard } from "@/components/study/study-loop";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 
-const tile = "card-pastel group relative flex min-w-0 flex-col justify-between overflow-hidden p-5";
+const tile = "card-pastel group relative flex min-w-0 flex-col justify-between overflow-hidden p-5 sm:p-6";
 const ink = "text-[var(--text-primary)]";
 const Arrow = () => <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />;
-const Mark = ({ I, size = "h-24 w-24" }: { I: typeof Timer; size?: string }) => <I aria-hidden className={`tile-mark pointer-events-none absolute bottom-3 right-3 ${size} -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110`} />;
+/** Watermark icon: scales down with the tile (never larger than 70% of its height), so a short tile shows a smaller mark instead of a cut one. */
+const Mark = ({ I, max = "7rem" }: { I: typeof Timer; max?: string }) => <I aria-hidden style={{ height: `min(${max}, 70%)`, width: "auto" }} className={`tile-mark pointer-events-none absolute bottom-3 right-3 aspect-square -rotate-12 text-[var(--text-primary)] opacity-[0.07] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110`} />;
 const Sticker = ({ children, tilt = "-rotate-2" }: { children: React.ReactNode; tilt?: string }) => <span className={`inline-block self-start ${tilt} rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold ${ink}`}>{children}</span>;
 
 export default function TestCentrePage() {
@@ -95,47 +96,48 @@ export default function TestCentrePage() {
         </div>
       </div>
 
-      <div className="order-4 grid gap-4 lg:order-none lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
-        <StudyLoopCard subjects={dashboardMetrics?.subjectPerformance ?? []} />
-        <div className="flex min-w-0 flex-col gap-4 [&>*]:flex-1"><PlanUpsellCard /><StudyBuyCard /></div>
-      </div>
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
       <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 min-h-0 md:min-h-[9rem]">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
-          <Mark I={Settings} size="h-28 w-28" />
+          <Mark I={Settings} max="9rem" />
           <div>
             <Sticker tilt="rotate-2">Most used</Sticker>
-            <h2 className={`mt-3 font-display text-3xl font-extrabold ${ink}`}>Build a test</h2>
-            <p className="mt-1 max-w-md text-[var(--text-secondary)]">Pick the questions, the length and the rules. Timed like the real exam.</p>
+            <h2 className={`mt-3 font-display text-4xl font-extrabold 2xl:text-5xl ${ink}`}>Build a test</h2>
+            <p className="mt-2 max-w-lg text-base text-[var(--text-secondary)] 2xl:text-lg">Pick the questions, the length and the rules. Timed like the real exam.</p>
           </div>
-          <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Build a test <Arrow /></span>
+          <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Build a test <Arrow /></span>
         </Link>
         <Link href="/test-centre/practice" data-tint="rose" className={`${tile} md:col-span-3`}>
           <Mark I={RotateCcw} />
-          <h2 className={`font-display text-xl font-extrabold ${ink}`}>Practice</h2>
-          <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Open <Arrow /></span>
+          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Practice</h2>
+          <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
         <Link href="/test-centre/mocks" data-tint="peri" className={`${tile} md:col-span-3`}>
           <Mark I={Trophy} />
-          <h2 className={`font-display text-xl font-extrabold ${ink}`}>Mocks</h2>
-          <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Open <Arrow /></span>
+          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Mocks</h2>
+          <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
         <Link href="/test-centre/build?view=flashcards" data-tint="butter" className={`${tile} md:col-span-2`}>
           <Mark I={Layers} />
-          <h2 className={`font-display text-xl font-extrabold ${ink}`}>Flashcards</h2>
-          <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Open <Arrow /></span>
+          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Flashcards</h2>
+          <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
         <Link href="/battles" data-tint="lilac" className={`${tile} md:col-span-2`}>
           <Mark I={Swords} />
-          <h2 className={`font-display text-xl font-extrabold ${ink}`}>Battles</h2>
-          <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Go <Arrow /></span>
+          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Battles</h2>
+          <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Go <Arrow /></span>
         </Link>
         <Link href="/test-centre/history" data-tint="sky" className={`${tile} col-span-2 md:col-span-2`}>
           <Mark I={BarChart3} />
-          <h2 className={`font-display text-xl font-extrabold ${ink}`}>History</h2>
-          <span className={`inline-flex items-center gap-1 text-sm font-bold ${ink}`}>Open <Arrow /></span>
+          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>History</h2>
+          <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
+      </div>
+
+      <div className="order-5 grid gap-4 lg:order-none lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
+        <StudyLoopCard subjects={dashboardMetrics?.subjectPerformance ?? []} />
+        <div className="flex min-w-0 flex-col gap-4 [&>*]:flex-1"><PlanUpsellCard /><StudyBuyCard /></div>
       </div>
     </div>
   );

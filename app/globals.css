@@ -2446,9 +2446,11 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 /* Buttons for paid things (21 Nov, after "gold and silver buttons look cheap"): no gradients, no shine. A solid dark fill, a champagne or silver label and a hairline
    metal border on light surfaces; the inverse (solid champagne or silver, dark label) on dark ones. The foil edge on the card carries the metal. */
 .plan-silver { --cta-bg: #232936; --cta-ink: #e8edf5; --cta-line: rgba(190,200,220,.55); }
-.plan-gold, .plan-rose, .plan-sky, .plan-peri { --cta-bg: #1d1b24; --cta-ink: #f3d27a; --cta-line: rgba(243,210,122,.5); }
+.plan-gold, .plan-rose, .plan-sky { --cta-bg: #1d1b24; --cta-ink: #f3d27a; --cta-line: rgba(243,210,122,.5); }
+.plan-peri { --cta-bg: #4b2fa8; --cta-ink: #ffffff; --cta-line: rgba(154,140,240,.6); } /* study packs: purple, as Pro is gold */
 .dark .plan-silver { --cta-bg: #e8edf5; --cta-ink: #1b2230; --cta-line: transparent; }
-.dark .plan-gold, .dark .plan-rose, .dark .plan-sky, .dark .plan-peri { --cta-bg: #f3d27a; --cta-ink: #2a1d00; --cta-line: transparent; }
+.dark .plan-gold, .dark .plan-rose, .dark .plan-sky { --cta-bg: #f3d27a; --cta-ink: #2a1d00; --cta-line: transparent; }
+.dark .plan-peri { --cta-bg: #c4baff; --cta-ink: #1e1450; --cta-line: transparent; }
 .plan-cta, .shop-cta, .btn-champagne { border: 1px solid var(--cta-line, rgba(243,210,122,.5)) !important; color: var(--cta-ink, #f3d27a) !important; background: var(--cta-bg, #1d1b24) !important; font-weight: 800;
   box-shadow: 0 10px 20px -14px rgba(20,16,40,.7) !important; transition: transform 160ms cubic-bezier(.23,1,.32,1), box-shadow 160ms cubic-bezier(.23,1,.32,1); }
 .btn-champagne { --cta-bg: #f3d27a; --cta-ink: #2a1d00; --cta-line: transparent; }
@@ -2475,3 +2477,9 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 /* Shelf headings: ink-coloured type with a highlighter swipe in the shelf colour; spine titles: one size, normal case, wrap freely. */
 .bk-mark { background: linear-gradient(transparent 60%, var(--mk) 60% 90%, transparent 90%); padding: 0 .12em; margin: 0 -.12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 .sp3-title, .sp3-title.is-long, .sp3-slab.is-feature .sp3-title { text-transform: uppercase !important; font-weight: 800 !important; font-size: clamp(24px, 2.1vw, 30px) !important; line-height: 1.06 !important; letter-spacing: -.02em !important; text-wrap: balance; overflow-wrap: break-word; }
+
+/* Study is purple everywhere (as Pro is gold): every 'buy books' button, including the study packs window. */
+.shop-cta, .btn-study { --cta-bg: #4b2fa8; --cta-ink: #ffffff; --cta-line: rgba(154,140,240,.6); }
+.dark .shop-cta, .dark .btn-study { --cta-bg: #c4baff; --cta-ink: #1e1450; --cta-line: transparent; }
+.btn-study { border: 1px solid var(--cta-line) !important; color: var(--cta-ink) !important; background: var(--cta-bg) !important; font-weight: 800; box-shadow: 0 10px 20px -14px rgba(40,20,110,.7); transition: transform 160ms cubic-bezier(.23,1,.32,1); }
+@media (hover: hover) and (pointer: fine) { .btn-study:hover { transform: translateY(-1px); } }
