@@ -3,6 +3,7 @@ import "server-only";
 import type { Chapter } from "@/lib/study/schema";
 
 export const CHAPTER_SOURCES: Record<string, () => Promise<Chapter>> = {
+  "/study/finite-automata": () => import("@/content/study/CS/toc-a").then((x) => x.TOC_REGULAR),
   "/study/deadlock": () => import("@/content/study/CS/os-deadlock").then((x) => x.OS_DEADLOCK),
   "/study/processes": () => import("@/content/study/CS/os-processes").then((x) => x.OS_PROCESSES),
   "/study/er-model": () => import("@/content/study/CS/db-a").then((x) => x.DB_ER),

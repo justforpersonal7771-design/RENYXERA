@@ -2428,17 +2428,19 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
   --c1: #fff1a8; --c2: #f6c744; --c3: #c98a1a; --c4: #f8dc7c; --c5: #b9791a; --cta-fg: #2a1d00; }
 .dark .plan-silver { --ink: #d9dfea; --t1: #eef2f8; --glow: rgba(190,205,230,.28); }
 .dark .plan-gold { --ink: #f3d27a; --t1: #ffe08a; --glow: rgba(240,190,70,.3); }
-.plan-card { position: relative; isolation: isolate; overflow: hidden; border: 1.5px solid transparent !important;
+.plan-card { position: relative; isolation: isolate; border: 1.5px solid transparent !important;
   background: linear-gradient(180deg, color-mix(in srgb, var(--wash) 10%, var(--surface)) 0%, var(--surface) 60%) padding-box,
               linear-gradient(135deg, var(--m1) 0%, var(--m2) 32%, var(--m3) 58%, var(--m2) 84%, var(--m1) 100%) border-box !important;
   box-shadow: 0 26px 50px -34px var(--glow), inset 0 1px 0 rgba(255,255,255,.55); }
 .dark .plan-card { background: linear-gradient(180deg, color-mix(in srgb, var(--wash) 14%, var(--surface)) 0%, var(--surface) 62%) padding-box,
               linear-gradient(135deg, var(--m1) 0%, var(--m2) 32%, var(--m3) 58%, var(--m2) 84%, var(--m1) 100%) border-box !important;
   box-shadow: 0 26px 50px -34px var(--glow), inset 0 1px 0 rgba(255,255,255,.1); }
-.plan-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; z-index: 1; pointer-events: none;
-  background: linear-gradient(90deg, var(--m3), var(--m1) 28%, var(--m2) 56%, var(--m3) 100%); }
-.plan-card::after { content: ""; position: absolute; right: -40px; top: -40px; width: 260px; height: 260px; z-index: -1; pointer-events: none;
-  background: radial-gradient(circle at 50% 50%, var(--glow), transparent 68%); }
+/* Not clipped with overflow, so a badge can sit half outside the card. The strip and the glow follow the card's own corners instead. */
+.plan-card::before { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: 1; pointer-events: none;
+  background: linear-gradient(90deg, var(--m3), var(--m1) 28%, var(--m2) 56%, var(--m3) 100%);
+  -webkit-mask: linear-gradient(#000 0 6px, transparent 6px); mask: linear-gradient(#000 0 6px, transparent 6px); }
+.plan-card::after { content: ""; position: absolute; inset: 0; border-radius: inherit; z-index: -1; pointer-events: none;
+  background: radial-gradient(300px circle at 100% 0, var(--glow), transparent 70%); }
 .plan-kicker { color: var(--ink) !important; letter-spacing: .02em; }
 .plan-price { color: var(--t1) !important; }
 /* Buttons for paid things (21 Nov, after "gold and silver buttons look cheap"): no gradients, no shine. A solid dark fill, a champagne or silver label and a hairline

@@ -26,9 +26,9 @@ import type { RenderableQuestion } from "@/types/question.types";
 import { branchByCode } from "@/lib/branches";
 
 const SHELVES: { id: string; title: string; note: string; tint: string; stacks: string[][] }[] = [
-  { id: "core", title: "Core computer science", note: "Nine subjects in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "toc"], ["cd", "coa", "dl"]] },
-  { id: "maths", title: "Engineering mathematics", note: "Discrete maths, linear algebra, probability and calculus", tint: "sky", stacks: [["dm", "la"], ["prob", "calc"]] },
-  { id: "apt", title: "General aptitude", note: "15 marks, the same section in every GATE paper", tint: "peri", stacks: [["verbal", "quant"], ["analytical", "spatial"]] },
+  { id: "core", title: "Core Computer Science", note: "Nine subjects in teaching order", tint: "rose", stacks: [["os", "dbms", "cn"], ["algo", "pds", "toc"], ["cd", "coa", "dl"]] },
+  { id: "maths", title: "Engineering Mathematics", note: "Discrete maths, linear algebra, probability and calculus", tint: "sky", stacks: [["dm", "la"], ["prob", "calc"]] },
+  { id: "apt", title: "General Aptitude", note: "15 marks, the same section in every GATE paper", tint: "peri", stacks: [["verbal", "quant"], ["analytical", "spatial"]] },
 ];
 /** Bank subject names per book, for the marks preview. */
 const BANK = BANK_SUBJECTS;
