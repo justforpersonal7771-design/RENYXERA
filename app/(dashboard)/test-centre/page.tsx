@@ -95,8 +95,8 @@ export default function TestCentrePage() {
         </div>
       </div>
 
+      <StudyLoopCard className="order-4 lg:order-none" subjects={dashboardMetrics?.subjectPerformance ?? []} />
       <PlanUpsellCard className="order-5 lg:order-none" />
-      <StudyLoopCard className="order-4 lg:order-none" subjects={dashboardMetrics?.subjectPerformance ?? []} pendingMistakes={open} />
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
       <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">

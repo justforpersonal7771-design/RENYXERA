@@ -34,16 +34,15 @@ export function readinessRows(subjects: SubjectAnalytics[], seen: Seen, canAll: 
 }
 
 export type NextStep = { title: string; body: string; href: string; cta: string };
-/** The single best next move across study, tests and review. */
-export function nextStep(rows: BookRow[], pendingMistakes: number): NextStep {
+/** The single best next study move (study only: mistakes and tests have their own screens). */
+export function nextStep(rows: BookRow[]): NextStep {
   const weak = rows.filter((r) => r.verdict === "unread-low").sort((a, b) => (a.accuracy ?? 0) - (b.accuracy ?? 0))[0];
   if (weak && weak.href) return { title: `Read ${weak.title} next`, body: `You score ${weak.accuracy}% here and have read ${weak.read} of ${weak.open} open topics. Learn it, then test it again.`, href: weak.href, cta: `Read ${weak.title}` };
   const untested = rows.find((r) => r.verdict === "read-untested");
   if (untested) return { title: `Test what you read in ${untested.title}`, body: `You have read ${untested.read} topic${untested.read === 1 ? "" : "s"}. A few past questions show what stuck.`, href: untested.practiceHref, cta: "Practise questions" };
-  if (pendingMistakes > 0) return { title: `Review ${Math.min(pendingMistakes, 10)} waiting mistakes`, body: "Each mistake you master moves a subject towards strong.", href: "/revision", cta: "Review mistakes" };
   const stuck = rows.find((r) => r.verdict === "read-low");
   if (stuck) return { title: `${stuck.title}: you read it, now drill it`, body: `You still score ${stuck.accuracy}% after reading. Past questions on the topics you miss will close the gap.`, href: stuck.practiceHref, cta: "Practise questions" };
   const fresh = rows.find((r) => r.verdict === "unread");
   if (fresh && fresh.href) return { title: "Start with a free sample topic", body: `Every book opens with ${FREE_TOPICS} free topics. Read one, then test yourself.`, href: fresh.href, cta: `Open ${fresh.title}` };
-  return { title: "Take a timed test", body: "Your reading and your scores are in step. A timed test shows where marks are still leaking.", href: "/test-centre/build", cta: "Build a test" };
+  return { title: "Pick your next chapter", body: "You are on top of what you have opened. The next chapter is one tap away.", href: "/study", cta: "Open Study" };
 }
