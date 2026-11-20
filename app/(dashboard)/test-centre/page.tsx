@@ -59,7 +59,7 @@ export default function TestCentrePage() {
   ];
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:h-[calc(100dvh-10.5rem)] lg:min-h-[34rem]">
+    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-10.5rem)]">
       {/* Phone order: mission, then the doors (the actions), then mock info. From lg the two blocks sit side by side again. */}
       <div className="hub-top contents lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:gap-4">
         <section className="card-well relative order-1 flex flex-col overflow-hidden p-4 sm:p-5 lg:order-none" data-tint="mint" aria-label="Today's mission">
@@ -98,7 +98,7 @@ export default function TestCentrePage() {
 
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
-      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 min-h-0 md:min-h-[9rem]">
+      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[13rem]">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
           <Mark I={Settings} max="9rem" />
           <div>
@@ -135,9 +135,9 @@ export default function TestCentrePage() {
         </Link>
       </div>
 
-      <div className="order-5 grid gap-4 lg:order-none lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
-        <StudyLoopCard subjects={dashboardMetrics?.subjectPerformance ?? []} />
-        <div className="flex min-w-0 flex-col gap-4 [&>*]:flex-1"><PlanUpsellCard /><StudyBuyCard /></div>
+      <div className="order-5 grid gap-4 lg:order-none lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)]">
+        <StudyLoopCard tight subjects={dashboardMetrics?.subjectPerformance ?? []} />
+        <PlanUpsellCard className="min-w-0 !flex-col !items-stretch !justify-between" /><StudyBuyCard className="min-w-0 !flex-col !items-stretch !justify-between" />
       </div>
     </div>
   );

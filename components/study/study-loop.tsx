@@ -34,7 +34,7 @@ const CHIP: Record<Verdict, { text: string; cls: string }> = {
 };
 
 /** Study on the screens you already use: where you stopped, how much you have read, and the one best next study move. */
-export function StudyLoopCard({ subjects, stack = false, className = "" }: { subjects: SubjectAnalytics[]; pendingMistakes?: number; stack?: boolean; className?: string }) {
+export function StudyLoopCard({ subjects, stack = false, tight = false, className = "" }: { subjects: SubjectAnalytics[]; pendingMistakes?: number; stack?: boolean; tight?: boolean; className?: string }) {
   const rows = useReadiness(subjects);
   const access = useStudyAccess();
   const step = nextStep(rows);
@@ -47,13 +47,14 @@ export function StudyLoopCard({ subjects, stack = false, className = "" }: { sub
   const resume = last ?? (first?.href ? { href: first.href, title: first.title } : null);
   const shown = [...rows].filter((r) => r.read > 0 || r.accuracy != null).sort((a, b) => ["unread-low", "read-low", "read-untested", "unread", "strong"].indexOf(a.verdict) - ["unread-low", "read-low", "read-untested", "unread", "strong"].indexOf(b.verdict)).slice(0, 3);
   return (
-    <section aria-label="Study" className={`card-pastel grid gap-3 p-4 ${stack ? "" : "gap-4 sm:p-5 lg:grid-cols-3"} ${className}`} data-tint="lilac">
+    <section aria-label="Study" className={`card-pastel grid gap-3 p-4 ${stack ? "" : tight ? "sm:p-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]" : "gap-4 sm:p-5 lg:grid-cols-3"} ${className}`} data-tint="lilac">
       <div className="flex min-w-0 flex-col">
         <p className="flex items-center gap-1.5 text-xs font-extrabold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" aria-hidden /> Study · {last ? "where you stopped" : "start here"}</p>
         <p className="mt-1 line-clamp-2 font-display text-xl font-extrabold leading-tight text-[var(--text-primary)]">{resume ? resume.title : "Open the GATE CS library"}</p>
+        {tight && <><p className="mt-1 text-xs font-semibold text-[var(--text-secondary)]">{read} of {open} open topics read</p><div className="mt-1 h-1.5 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full rounded-full bg-[var(--tint-lilac-ink)]" style={{ width: `${pct}%` }} /></div></>}
         <div className="mt-3 flex flex-wrap items-center gap-2"><Link href={resume?.href ?? "/study"} className="btn-main inline-flex !h-10 !text-sm">{last ? "Resume reading" : "Read now"} <ArrowRight className="h-4 w-4" aria-hidden /></Link></div>
       </div>
-      <div className="min-w-0">
+      <div className={`min-w-0 ${tight ? "hidden" : ""}`}>
         <p className="text-xs font-extrabold text-[var(--text-secondary)]">Your reading</p>
         <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{read}</span><span className="text-base text-[var(--text-secondary)]"> of {open} open topics read</span></p>
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full rounded-full bg-[var(--tint-lilac-ink)]" style={{ width: `${pct}%` }} /></div>
