@@ -12,7 +12,7 @@ import { BANK_SUBJECTS, BUNDLES, packOfBook, rupees } from "@/lib/study/packs";
 import { PremiumCard } from "@/components/ui/premium-card";
 import { openStudyShop } from "@/store/use-study-shop-store";
 import { useStudyAccess } from "@/lib/study/use-study-access";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -70,17 +70,37 @@ const ready = (b: ShelfBook) => b.chapters.filter((c) => c.ready).length;
 
 /** A book lying flat: app pastel cloth with a deep spine edge, the full name horizontal in big heavy capitals.
  *  The featured book (has a ready chapter) is thicker, names its free chapter. Hover slides it out. */
-function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number; flat?: boolean }) {
+function Slab({ b, i, dim, onOpen, weight = 0 }: { b: ShelfBook; i: number; dim: boolean; onOpen: () => void; weight?: number }) {
   const r = ready(b);
-  const free = b.chapters.find((c) => c.ready);
+  const ref = useRef<HTMLButtonElement | null>(null);
+  // a light glare follows the pointer across the cover (mouse only); the rest is CSS
+  const move = (e: React.PointerEvent<HTMLButtonElement>) => {
+    const el = ref.current; if (!el || e.pointerType !== "mouse") return;
+    const rc = el.getBoundingClientRect(); el.style.setProperty("--mx", `${((e.clientX - rc.left) / rc.width) * 100}%`); el.style.setProperty("--my", `${((e.clientY - rc.top) / rc.height) * 100}%`);
+  };
+  const soon = r === 0;
   return (
-    <button type="button" onClick={onOpen} data-tint={b.tint ?? "peri"} style={{ ["--d" as string]: `${i * 50}ms`, ["--x" as string]: flat ? "0px" : `${(i % 3) * 8}px`, ["--h" as string]: flat ? "76px" : `${56 + Math.min(b.chapters.length, 6) * 5}px` /* capped: books stay varied without 17-chapter books towering (owner, 19 Nov) */ }}
-      aria-label={`${b.title}. ${b.chapters.length} chapters.`}
-      className={`sp3-slab ${free ? "is-feature" : ""} ${dim ? "opacity-35" : ""}`}>
-      <span className="min-w-0 flex-1">
-        <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
+    <button ref={ref} type="button" onClick={onOpen} onPointerMove={move} data-tint={b.tint ?? "peri"} data-soon={soon ? "" : undefined}
+      style={{ ["--d" as string]: `${i * 60}ms`, ["--p" as string]: Math.min(100, (weight / 12) * 100) }}
+      aria-label={`${b.title}. ${b.chapters.length} chapters${weight > 0 ? `, ${weight.toFixed(1)} percent of marks` : ""}${soon ? ", coming soon" : ""}.`}
+      className={`bk-book ${dim ? "opacity-35" : ""}`}>
+      <span className="bk-ground" aria-hidden />
+      <span className="bk-obj">
+        <span className="bk-face bk-back" aria-hidden />
+        <span className="bk-face bk-pages" aria-hidden />
+        <span className="bk-face bk-spine" aria-hidden><span>{b.short}</span></span>
+        <span className="bk-face bk-cover">
+          <span className="bk-aurora" aria-hidden /><span className="bk-grain" aria-hidden /><span className="bk-glare" aria-hidden />
+          <span className="bk-ribbon" aria-hidden />
+          <span className="bk-top">
+            <span className="bk-series">GATE CS · {b.band === "core" ? "Core" : b.band === "maths" ? "Maths" : "Aptitude"}</span>
+            <span className="bk-ring" aria-hidden><span><b>{weight > 0 ? weight.toFixed(1) : "-"}</b><i>% marks</i></span></span>
+          </span>
+          <span className="bk-title">{b.title}</span>
+          <span className="bk-foil" aria-hidden />
+          <span className="bk-meta"><span className="bk-chip">{b.chapters.length} chapters</span><span className={`bk-chip ${soon ? "" : "is-ready"}`}>{soon ? "Coming soon" : `${r} ready`}</span></span>
+        </span>
       </span>
-      <span className="flex shrink-0 flex-col items-end gap-1">{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Coming soon</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
     </button>
   );
 }
@@ -284,9 +304,6 @@ export function Bookshelf() {
         {(() => { const shelves = SHELVES.map((sh) => {
           const books = CS_SHELF.filter((b) => sh.stacks.flat().includes(b.id) && visible(b) && match(b));
           if (!books.length) return null;
-          const stacks0 = sh.stacks.map((st) => st.filter((id) => books.some((b) => b.id === id))).filter((st) => st.length);
-          // maths and aptitude: one continuous stack of equal-height books so the two shelves line up
-          const stacks = sh.id === "core" ? stacks0 : stacks0.length ? [stacks0.flat()] : [];
           const open1 = books.find((b) => b.id === drawer);
           const openIt = (b: ShelfBook) => setOpen(b);
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
@@ -301,14 +318,9 @@ export function Bookshelf() {
                 </div>
                 {weightOf(books) > 0 && <div className="relative shrink-0 rounded-xl bg-[var(--surface)] px-3 py-1.5 text-center"><p className="font-display text-xl font-extrabold leading-none">{weightOf(books).toFixed(1)}%</p><p className="text-[11px] font-bold opacity-80">of marks</p></div>}
               </div>
-              <div className={`grid flex-1 items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
-                {stacks.map((st, si) => (
-                  <div key={si} className="flex flex-col gap-3">
-                    <div className="flex flex-col-reverse gap-[4px]">{st.map((id, k) => <Slab key={id} b={byId(id)} i={si * 3 + k} dim={!match(byId(id))} weight={weightOf([byId(id)])} onOpen={() => openIt(byId(id))} />)}</div>
-                  </div>
-                ))}
+              <div className={`grid gap-x-6 gap-y-9 px-2 pb-2 sm:grid-cols-2 ${sh.id === "core" ? "lg:grid-cols-3" : ""}`}>
+                {sh.stacks.flat().filter((id) => books.some((x) => x.id === id)).map((id, k) => <Slab key={id} b={byId(id)} i={k} dim={!match(byId(id))} weight={weightOf([byId(id)])} onOpen={() => openIt(byId(id))} />)}
               </div>
-              <div aria-hidden className="sp2-lip" />
               <AnimatePresence>
                 {open1 && (
                   <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden lg:hidden">
