@@ -146,7 +146,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
         </div>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-stretch">
+      <div className="grid grid-cols-1 items-stretch gap-4 pt-4 lg:grid-cols-3">
         <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
           <p className="text-sm font-black tracking-normal text-[var(--text-muted)]">Free · forever</p>
           <p className="mt-2 text-3xl font-extrabold text-[var(--text-primary)]">₹0</p>
@@ -164,7 +164,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - serverNow()) / 86400_000)) : 0;
           return (
             <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`spot-host relative flex flex-col rounded-3xl p-6 border ${look.ring}`} onPointerMove={spot}><span aria-hidden className="spot-layer" />
-              {tier === "pro" && <span className="plan-badge plan-gold absolute top-3.5 right-[4.75rem] z-[2] px-2.5 py-1 rounded-full text-xs font-black tracking-normal">Most loved</span>}
+              {tier === "pro" && <span className="plan-badge plan-gold absolute -top-3 right-6 z-[3] px-2.5 py-1 rounded-full text-xs font-black tracking-normal">Most loved</span>}
               <div className="flex items-center justify-between">
                 <p className={`text-sm font-black tracking-normal ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>
                 <ProCrown metal={look.metal} className="is-inline" />

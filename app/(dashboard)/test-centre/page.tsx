@@ -58,10 +58,10 @@ export default function TestCentrePage() {
   ];
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-12rem)]">
+    <div className="grid w-full gap-4 lg:h-[calc(100dvh-10.5rem)] lg:min-h-[32rem] lg:grid-cols-12 lg:grid-rows-[auto_minmax(0,1fr)]">
       {/* Phone order: mission, then the doors (the actions), then mock info. From lg the two blocks sit side by side again. */}
-      <div className="hub-top contents lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:gap-4">
-        <section className="card-well relative order-1 flex flex-col overflow-hidden p-4 sm:p-5 lg:order-none" data-tint="mint" aria-label="Today's mission">
+      <div className="hub-top contents">
+        <section className="card-well relative order-1 flex flex-col overflow-hidden p-4 sm:p-5 lg:order-none lg:col-span-8" data-tint="mint" aria-label="Today's mission">
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-48 w-48 rounded-full bg-[var(--tint-mint-ink)] opacity-10" />
           <Sticker>{TEST_CENTRE} · today&apos;s mission</Sticker>
           <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -90,16 +90,16 @@ export default function TestCentrePage() {
             ))}
           </div>
         </section>
-        <div className="hub-mock-col order-3 flex min-w-0 flex-col gap-3 lg:order-none">
-          <div className="flex min-h-0 flex-1 flex-col [&>*]:flex-1">{/* one integrated card: status, next mocks, how it works */}<MockStatusCard withUpcoming /></div>
+        <div className="hub-mock-col order-3 flex min-h-0 min-w-0 flex-col gap-3 lg:order-none lg:col-span-4 lg:row-span-2">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden [&>*]:flex-1">{/* one integrated card: status, next mocks, how it works */}<MockStatusCard withUpcoming /></div>
+          <StudyLoopCard stack subjects={dashboardMetrics?.subjectPerformance ?? []} />
+          <PlanUpsellCard />
         </div>
       </div>
 
-      <StudyLoopCard className="order-4 lg:order-none" subjects={dashboardMetrics?.subjectPerformance ?? []} />
-      <PlanUpsellCard className="order-5 lg:order-none" />
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
-      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
+      <div className="hub-doors order-2 grid min-h-0 grid-cols-2 gap-3 lg:order-none lg:col-span-8 md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
           <Mark I={Settings} size="h-28 w-28" />
           <div>

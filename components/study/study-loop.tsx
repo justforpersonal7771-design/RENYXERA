@@ -13,6 +13,7 @@ import { bookOfSubject, packOfBook } from "@/lib/study/packs";
 import { CS_SHELF } from "@/lib/study/catalog";
 import { MIN_ATTEMPTS, firstChapterHref, nextStep, readinessRows, type BookRow, type Verdict } from "@/lib/study/readiness";
 import { useStudyAccess } from "@/lib/study/use-study-access";
+import { openStudyShop } from "@/store/use-study-shop-store";
 import type { SubjectAnalytics } from "@/types/analytics.types";
 
 export function useReadiness(subjects: SubjectAnalytics[]): BookRow[] {
@@ -32,8 +33,9 @@ const CHIP: Record<Verdict, { text: string; cls: string }> = {
 };
 
 /** Study on the screens you already use: where you stopped, how much you have read, and the one best next study move. */
-export function StudyLoopCard({ subjects, className = "" }: { subjects: SubjectAnalytics[]; pendingMistakes?: number; className?: string }) {
+export function StudyLoopCard({ subjects, stack = false, className = "" }: { subjects: SubjectAnalytics[]; pendingMistakes?: number; stack?: boolean; className?: string }) {
   const rows = useReadiness(subjects);
+  const access = useStudyAccess();
   const step = nextStep(rows);
   const [last, setLast] = useState<{ href: string; title: string } | null>(null);
   // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only value, read once after mount
@@ -44,18 +46,18 @@ export function StudyLoopCard({ subjects, className = "" }: { subjects: SubjectA
   const resume = last ?? (first?.href ? { href: first.href, title: first.title } : null);
   const shown = [...rows].filter((r) => r.read > 0 || r.accuracy != null).sort((a, b) => ["unread-low", "read-low", "read-untested", "unread", "strong"].indexOf(a.verdict) - ["unread-low", "read-low", "read-untested", "unread", "strong"].indexOf(b.verdict)).slice(0, 3);
   return (
-    <section aria-label="Study" className={`card-pastel grid gap-4 p-4 sm:p-5 lg:grid-cols-3 ${className}`} data-tint="lilac">
+    <section aria-label="Study" className={`card-pastel grid gap-3 p-4 ${stack ? "" : "gap-4 sm:p-5 lg:grid-cols-3"} ${className}`} data-tint="lilac">
       <div className="flex min-w-0 flex-col">
         <p className="flex items-center gap-1.5 text-xs font-extrabold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" aria-hidden /> Study · {last ? "where you stopped" : "start here"}</p>
         <p className="mt-1 line-clamp-2 font-display text-xl font-extrabold leading-tight text-[var(--text-primary)]">{resume ? resume.title : "Open the GATE CS library"}</p>
         <span className="flex-1" />
-        <Link href={resume?.href ?? "/study"} className="btn-main mt-3 inline-flex !h-10 self-start !text-sm">{last ? "Resume reading" : "Read now"} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
+        <div className="mt-3 flex flex-wrap items-center gap-2"><Link href={resume?.href ?? "/study"} className="btn-main inline-flex !h-10 !text-sm">{last ? "Resume reading" : "Read now"} <ArrowRight className="h-4 w-4" aria-hidden /></Link>{!access.all && <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="btn-champagne inline-flex h-10 items-center rounded-xl px-4 text-sm">Unlock books</button>}</div>
       </div>
       <div className="min-w-0">
         <p className="text-xs font-extrabold text-[var(--text-secondary)]">Your reading</p>
         <p className="mt-1 font-display text-2xl font-extrabold text-[var(--text-primary)]"><span className="font-num">{read}</span><span className="text-base text-[var(--text-secondary)]"> of {open} open topics read</span></p>
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-[var(--surface)]"><div className="h-full rounded-full bg-[var(--tint-lilac-ink)]" style={{ width: `${pct}%` }} /></div>
-        {shown.length > 0 && <ul className="mt-2 space-y-1">{shown.map((r) => <li key={r.id} className="flex items-center justify-between gap-2 text-xs"><span className="min-w-0 truncate font-bold text-[var(--text-primary)]">{r.title}</span><span className={`shrink-0 rounded-full px-2 py-0.5 font-extrabold ${CHIP[r.verdict].cls}`}>{CHIP[r.verdict].text}</span></li>)}</ul>}
+        {!stack && shown.length > 0 && <ul className="mt-2 space-y-1">{shown.map((r) => <li key={r.id} className="flex items-center justify-between gap-2 text-xs"><span className="min-w-0 truncate font-bold text-[var(--text-primary)]">{r.title}</span><span className={`shrink-0 rounded-full px-2 py-0.5 font-extrabold ${CHIP[r.verdict].cls}`}>{CHIP[r.verdict].text}</span></li>)}</ul>}
       </div>
       <div className="flex min-w-0 flex-col rounded-2xl bg-[var(--surface)] p-3">
         <p className="text-xs font-extrabold text-[var(--text-secondary)]">Your next study move</p>
