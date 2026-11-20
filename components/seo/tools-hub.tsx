@@ -43,7 +43,7 @@ export function ToolsHub() {
             return (
               <button key={it.id} role="tab" type="button" id={`tools-tab-${it.id}`} aria-selected={on} aria-controls={`tools-panel-${it.id}`} tabIndex={on ? 0 : -1} onClick={() => setSel(it.id)} data-tint={it.tint}
                 style={on ? { background: `var(--tint-${it.tint})` } : undefined}
-                className={`card-pastel relative flex min-w-0 flex-1 cursor-pointer flex-col items-start p-3 text-left lg:justify-center lg:p-4 ${on ? "z-[1] !shadow-none max-lg:-mb-px max-lg:rounded-b-none max-lg:pb-5 lg:-mr-px lg:rounded-r-none lg:pr-6" : "opacity-75 hover:opacity-100 max-lg:mb-2 lg:mr-4"}`}>
+                className={`card-pastel relative flex min-w-0 flex-1 cursor-pointer flex-col items-start p-3 text-left lg:justify-center lg:p-4 ${on ? "z-[1] !shadow-none max-lg:-mb-px max-lg:rounded-b-none max-lg:pb-5 lg:-mr-[2px] lg:!rounded-r-none lg:!border-r-0 lg:pr-6" : "opacity-75 hover:opacity-100 max-lg:mb-2 lg:mr-4"}`}>
                 <span className="hidden text-[11px] font-extrabold uppercase tracking-wide text-[var(--text-muted)] lg:block">{it.hrefs.length} tools</span>
                 <span className="font-display text-sm font-extrabold leading-tight text-[var(--text-primary)] lg:mt-1 lg:text-xl">{it.verb}</span>
                 <span className="mt-1 hidden text-sm text-[var(--text-secondary)] lg:block">{it.promise}</span>
@@ -58,7 +58,7 @@ export function ToolsHub() {
             return (
               <section key={it.id} role="tabpanel" id={`tools-panel-${it.id}`} aria-labelledby={`tools-tab-${it.id}`} hidden={it.id !== sel} data-tint={it.tint}
                 style={{ background: `var(--tint-${it.tint})` }}
-                className={`card-well h-full grid-cols-[minmax(0,1fr)] gap-4 p-4 data-[open=true]:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] sm:p-5 ${it.id === INTENTS[0].id ? "max-lg:rounded-tl-none" : ""} ${it.id === INTENTS[INTENTS.length - 1].id ? "max-lg:rounded-tr-none" : ""}`} data-open={it.id === sel}>
+                className={`card-well h-full lg:!rounded-l-none grid-cols-[minmax(0,1fr)] gap-4 p-4 data-[open=true]:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] sm:p-5 ${it.id === INTENTS[0].id ? "max-lg:rounded-tl-none" : ""} ${it.id === INTENTS[INTENTS.length - 1].id ? "max-lg:rounded-tr-none" : ""}`} data-open={it.id === sel}>
                 <Link href={bh(lead.href)} className="group relative flex min-w-0 flex-col overflow-hidden rounded-3xl bg-[var(--surface)]/70 p-5 transition-transform hover:-translate-y-0.5">
                   <LeadIcon aria-hidden className="pointer-events-none absolute bottom-3 right-3 h-24 w-24 -rotate-12 text-[var(--text-primary)] opacity-[0.06] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110" />
                   <span className="inline-block self-start rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Start here</span>
