@@ -2413,13 +2413,12 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
 a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; color: var(--surface); }
 @media (prefers-reduced-motion: reduce) { .hub-in:not([hidden]) { animation: none; } }
 
-/* Study shop cards in dark mode: deep navy glass with one bright accent each, instead of the muddy dark tints. Light mode keeps the pastel tints. */
-.shop-gold { --acc: #f5c542; } .shop-rose { --acc: #ff8fa3; } .shop-silver { --acc: #5ad1e6; } .shop-peri { --acc: #a99bff; } .shop-plain { --acc: #9aa7c7; }
-.dark .shop-card { background: linear-gradient(160deg, color-mix(in srgb, var(--acc) 15%, #151a29) 0%, #111522 78%) !important; border-color: color-mix(in srgb, var(--acc) 40%, transparent) !important; box-shadow: inset 0 1px 0 color-mix(in srgb, var(--acc) 35%, transparent), 0 24px 50px -34px var(--acc); }
-.dark .shop-card .shop-kick { color: var(--acc) !important; }
-.dark .shop-card .shop-chip { background: rgba(255,255,255,.08) !important; color: #eef1f8 !important; box-shadow: none !important; }
-.dark .shop-card .shop-note { background: rgba(255,255,255,.07) !important; color: #e9edf7 !important; }
-.dark .shop-card .shop-deco { background: var(--acc) !important; opacity: .14 !important; }
+/* Study shop cards: the Plus/Pro plan-card family (foil edge, neutral body) in one colour per section; the button stays gold. */
+.plan-rose { --m1: #ffe3ea; --m2: #f08aa1; --m3: #b5304f; --wash: #f08aa1; --glow: rgba(240,138,161,.5); --ink: #9b2644; --t1: #8a1f3b; }
+.plan-sky { --m1: #dff4ff; --m2: #59b8e6; --m3: #1d6f9c; --wash: #59b8e6; --glow: rgba(89,184,230,.5); --ink: #155c82; --t1: #0f4d6e; }
+.plan-peri { --m1: #e8e4ff; --m2: #9a8cf0; --m3: #5a46c4; --wash: #9a8cf0; --glow: rgba(154,140,240,.5); --ink: #4a37b0; --t1: #3b2a98; }
+.dark .plan-rose { --ink: #ffb3c4; --t1: #ffc9d5; --glow: rgba(240,138,161,.3); } .dark .plan-sky { --ink: #8fd6f5; --t1: #b3e5fa; --glow: rgba(89,184,230,.3); } .dark .plan-peri { --ink: #c4baff; --t1: #d9d2ff; --glow: rgba(154,140,240,.3); }
+
 
 /* Plus = silver, Pro = gold. Metal is used as foil, not as a fill: a gradient hairline border, a foil strip on top, a soft corner glow,
    a metallic button and a deep-metal price, on a neutral card body (a faint metal wash only). One set of classes for every plan surface. */
@@ -2442,11 +2441,35 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
   background: radial-gradient(circle at 50% 50%, var(--glow), transparent 68%); }
 .plan-kicker { color: var(--ink) !important; letter-spacing: .02em; }
 .plan-price { color: var(--t1) !important; }
-.plan-cta { position: relative; overflow: hidden; border: 0 !important; color: var(--cta-fg) !important;
-  background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 30%, var(--c3) 55%, var(--c4) 80%, var(--c5) 100%) !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.8), inset 0 -2px 0 rgba(0,0,0,.18), 0 12px 24px -12px rgba(0,0,0,.5) !important; }
-.plan-cta::after { content: ""; position: absolute; inset-block: 0; left: -40%; width: 30%; transform: skewX(-12deg); background: rgba(255,255,255,.55); filter: blur(2px); transition: transform .7s; pointer-events: none; }
-.plan-cta:hover::after { transform: translateX(520%) skewX(-12deg); }
-.plan-badge { color: var(--cta-fg) !important; border: 0 !important;
-  background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 35%, var(--c3) 65%, var(--c4) 100%) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 6px 14px -8px rgba(0,0,0,.5); }
-@media (prefers-reduced-motion: reduce) { .plan-cta::after { transition: none; } }
+/* Buttons for paid things (21 Nov, after "gold and silver buttons look cheap"): no gradients, no shine. A solid dark fill, a champagne or silver label and a hairline
+   metal border on light surfaces; the inverse (solid champagne or silver, dark label) on dark ones. The foil edge on the card carries the metal. */
+.plan-silver { --cta-bg: #232936; --cta-ink: #e8edf5; --cta-line: rgba(190,200,220,.55); }
+.plan-gold, .plan-rose, .plan-sky, .plan-peri { --cta-bg: #1d1b24; --cta-ink: #f3d27a; --cta-line: rgba(243,210,122,.5); }
+.dark .plan-silver { --cta-bg: #e8edf5; --cta-ink: #1b2230; --cta-line: transparent; }
+.dark .plan-gold, .dark .plan-rose, .dark .plan-sky, .dark .plan-peri { --cta-bg: #f3d27a; --cta-ink: #2a1d00; --cta-line: transparent; }
+.plan-cta, .shop-cta, .btn-champagne { border: 1px solid var(--cta-line, rgba(243,210,122,.5)) !important; color: var(--cta-ink, #f3d27a) !important; background: var(--cta-bg, #1d1b24) !important; font-weight: 800;
+  box-shadow: 0 10px 20px -14px rgba(20,16,40,.7) !important; transition: transform 160ms cubic-bezier(.23,1,.32,1), box-shadow 160ms cubic-bezier(.23,1,.32,1); }
+.btn-champagne { --cta-bg: #f3d27a; --cta-ink: #2a1d00; --cta-line: transparent; }
+@media (hover: hover) and (pointer: fine) { .plan-cta:hover, .shop-cta:hover, .btn-champagne:hover { transform: translateY(-1px); box-shadow: 0 14px 24px -14px rgba(20,16,40,.75) !important; } }
+.plan-cta:active, .shop-cta:active, .btn-champagne:active { transform: scale(.98); transition-duration: 90ms; }
+.plan-cta:disabled, .shop-cta:disabled { opacity: .55; }
+.plan-badge { color: var(--cta-badge-ink, #6b4a00) !important; border: 1px solid color-mix(in srgb, var(--m2) 55%, transparent) !important; background: color-mix(in srgb, var(--m1) 70%, #fff) !important; box-shadow: none !important; }
+.plan-silver .plan-badge, .plan-badge.plan-silver { --cta-badge-ink: #3b4556; }
+.dark .plan-badge { color: var(--cta-ink) !important; background: color-mix(in srgb, var(--m2) 22%, #14131a) !important; }
+
+/* Polish pass on the book spines (21 Nov): the same shelf, with a bolder display face and a little more life. Hover only on real pointers. */
+.sp3-title { font-family: var(--font-tile), var(--font-display); font-weight: 800; letter-spacing: -.015em; text-shadow: 0 1px 0 rgba(255,255,255,.5); transition: transform 260ms cubic-bezier(.23,1,.32,1); }
+.dark .sp3-title { text-shadow: 0 1px 0 rgba(0,0,0,.45); }
+.sp3-stamp { transition: background-color 200ms ease-out, color 200ms ease-out, transform 260ms cubic-bezier(.23,1,.32,1), border-color 200ms ease-out; }
+.sp3-slab::before { transition: border-color 260ms ease-out; }
+@media (hover: hover) and (pointer: fine) {
+  .sp3-slab:hover { filter: saturate(1.12); }
+  .sp3-slab:hover .sp3-title { transform: translateX(4px); }
+  .sp3-slab:hover::before { border-color: #d9a42b; }
+  .sp3-slab:hover .sp3-stamp { background: var(--tint-ink); color: var(--tint); border-color: transparent; transform: translateY(-1px); }
+}
+@media (prefers-reduced-motion: reduce) { .sp3-title, .sp3-stamp, .sp3-slab::before { transition: none; } .sp3-slab:hover .sp3-title, .sp3-slab:hover .sp3-stamp { transform: none; } }
+
+/* Shelf headings: ink-coloured type with a highlighter swipe in the shelf colour; spine titles: one size, normal case, wrap freely. */
+.bk-mark { background: linear-gradient(transparent 60%, var(--mk) 60% 90%, transparent 90%); padding: 0 .12em; margin: 0 -.12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.sp3-title, .sp3-title.is-long, .sp3-slab.is-feature .sp3-title { text-transform: uppercase !important; font-weight: 800 !important; font-size: clamp(24px, 2.1vw, 30px) !important; line-height: 1.06 !important; letter-spacing: -.02em !important; text-wrap: balance; overflow-wrap: break-word; }

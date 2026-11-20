@@ -37,6 +37,7 @@ const FEATURES: { I: LucideIcon; t: string; d: string; tint: string }[] = [
   { I: ScrollText, t: "Past GATE questions", d: "The real PYQs for the topic, one tap away. Learn it, then see how GATE asked it.", tint: "rose" },
   { I: History, t: "Remembers everything", d: "Resumes where you stopped, tracks what you read, and splits two chapters side by side.", tint: "peach" },
 ];
+const SKIN_OF = { silver: "plan-sky", gold: "plan-gold", rose: "plan-rose", peri: "plan-peri", plain: "plan-silver" } as const;
 const B = (id: string) => BUNDLES.find((b) => b.id === id)!;
 
 export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { owned: string[]; all: boolean; onBought: () => void; initialView?: ShopView }) {
@@ -55,10 +56,10 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
     const sum = bundleSum(b); const have = b.packs.every(owns); const marks = b.packs.reduce((t, id) => t + (PACKS.find((p) => p.id === id)?.marks ?? 0), 0);
     const L = LOOK[look];
     return (
-      <motion.section key={b.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} className={`relative flex flex-col overflow-hidden rounded-3xl border ${big ? "p-7 sm:p-8" : "p-6"} ${L.ring} shop-card shop-${look}`}>
+      <motion.section key={b.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} className={`relative flex flex-col overflow-hidden rounded-3xl border ${big ? "p-7 sm:p-8" : "p-6"} ${SKIN_OF[look]} plan-card`}>
         <span aria-hidden className="shop-deco pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-[0.12]" style={{ background: L.deco }} />
-        {tag && <span className="absolute -top-3 left-6 rounded-full border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] bg-[var(--tint-butter)] px-2.5 py-1 text-xs font-black text-[var(--tint-butter-ink)] shadow">{tag}</span>}
-        <p className={`${big ? "text-base" : "text-sm"} font-black shop-kick ${L.kicker}`}>{b.name} · {booksOf(b.packs).length} {booksOf(b.packs).length === 1 ? "book" : "books"}</p>
+        {tag && <span className="absolute -top-3 left-6 z-[3] rounded-full border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] bg-[var(--tint-butter)] px-2.5 py-1 text-xs font-black text-[var(--tint-butter-ink)] shadow">{tag}</span>}
+        <p className={`${big ? "text-base" : "text-sm"} font-black plan-kicker`}>{b.name} · {booksOf(b.packs).length} {booksOf(b.packs).length === 1 ? "book" : "books"}</p>
         <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
           {sum > b.pricePaise && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-rose-500/70 decoration-2">{rupees(sum)}</span>}
           <span className={`${big ? "text-5xl" : "text-4xl"} font-extrabold text-[var(--text-primary)]`}><PriceRoll value={rupees(b.pricePaise)} /></span>
@@ -71,7 +72,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
           {booksOf(b.packs).map((n) => <li key={n} className="shop-chip inline-flex items-center rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-bold text-[var(--text-primary)] shadow-sm">{n}</li>)}
         </ul>
         {nudge && <p className="shop-note mb-3 rounded-xl bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--text-primary)]">{nudge}</p>}
-        <button type="button" disabled={have} onClick={() => void checkout.start(`bundle:${b.id}`)} className={`mt-auto inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl font-bold shadow-lg disabled:opacity-60 ${L.btn}`}>{have ? "You own all of these" : cta(`Get ${b.name}`)}</button>
+        <button type="button" disabled={have} onClick={() => void checkout.start(`bundle:${b.id}`)} className={`mt-auto inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl font-bold shadow-lg disabled:opacity-60 ${L.btn} shop-cta`}>{have ? "You own all of these" : cta(`Get ${b.name}`)}</button>
       </motion.section>
     );
   };
@@ -108,10 +109,10 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
       {view === "bundles" && (
         <div className="space-y-8">
           {/* the hero deal: the whole library */}
-          <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="shop-card shop-gold relative grid gap-6 rounded-3xl border border-transparent bg-[var(--tint-butter)] p-6 shadow-[0_20px_50px_-28px_rgba(12,34,75,0.35)] sm:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:gap-10">
-            <span className="absolute -top-3 left-6 rounded-full border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] bg-[var(--surface)] px-2.5 py-1 text-xs font-black text-[var(--tint-butter-ink)] shadow">Best value</span>
+          <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="plan-card plan-gold relative grid gap-6 rounded-3xl border border-transparent p-6 shadow-[0_20px_50px_-28px_rgba(12,34,75,0.35)] sm:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:gap-10">
+            <span className="plan-badge plan-gold absolute -top-3 left-6 z-[3] rounded-full px-3 py-1 text-xs font-black">Best value</span>
             <div className="flex min-w-0 flex-col">
-              <p className="shop-kick text-sm font-black text-amber-700 dark:text-amber-300">Everything · the whole library</p>
+              <p className="plan-kicker text-sm font-black">Everything · the whole library</p>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="text-4xl font-extrabold text-[var(--text-primary)] sm:text-5xl"><PriceRoll value={rupees(everything.pricePaise)} /></span>
                 <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-rose-500/70 decoration-2">{rupees(bundleSum(everything))}</span>
@@ -119,15 +120,15 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
               </div>
               <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">Just {rupees(perPack(everything))} a subject, one time.</p>
               <p className="mt-1 text-sm text-[var(--text-secondary)] text-balance">Bought one section at a time it is {rupees(sectionsSum)}: you save {rupees(sectionsSum - everything.pricePaise)}.</p>
-              <button type="button" disabled={everything.packs.every(owns)} onClick={() => void checkout.start("bundle:everything")} className="mt-5 inline-flex h-12 w-full cursor-pointer items-center justify-center rounded-xl bg-[var(--btn)] font-bold text-[var(--btn-fg)] shadow-lg disabled:opacity-60 lg:mt-auto">{everything.packs.every(owns) ? "You own all of these" : cta("Get Everything")}</button>
+              <button type="button" disabled={everything.packs.every(owns)} onClick={() => void checkout.start("bundle:everything")} className="mt-5 inline-flex h-12 w-full cursor-pointer items-center justify-center rounded-xl bg-[var(--btn)] font-bold text-[var(--btn-fg)] shadow-lg disabled:opacity-60 lg:mt-auto shop-cta">{everything.packs.every(owns) ? "You own all of these" : cta("Get Everything")}</button>
             </div>
             <div className="grid min-w-0 content-start gap-3">
               {([["Core CS", core.packs, "rose"], ["Engineering Maths", maths.packs, "sky"], ["General Aptitude", ["apt"], "peri"]] as const).map(([label, ids, tint]) => {
                 const names = booksOf(ids);
                 return (
-                  <div key={label} className={`shop-card shop-${tint === "sky" ? "silver" : tint} relative overflow-hidden rounded-2xl p-4`} style={{ background: `var(--tint-${tint})` }}>
+                  <div key={label} className="relative overflow-hidden rounded-2xl p-4" style={{ background: `var(--tint-${tint})` }}>
                     <span aria-hidden className="shop-deco pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-[0.14]" style={{ background: `var(--tint-${tint}-ink)` }} />
-                    <p className="shop-kick flex items-baseline gap-2 text-base font-extrabold" style={{ color: `var(--tint-${tint}-ink)` }}>{label}<span className="shop-chip rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-black">{names.length} {names.length === 1 ? "book" : "books"}</span></p>
+                    <p className="flex items-baseline gap-2 text-base font-extrabold" style={{ color: `var(--tint-${tint}-ink)` }}>{label}<span className="shop-chip rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-black">{names.length} {names.length === 1 ? "book" : "books"}</span></p>
                     <ul className="mt-2.5 flex flex-wrap gap-1.5">{names.map((n) => <li key={n} className="shop-chip rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-bold text-[var(--text-primary)] shadow-sm">{n}</li>)}</ul>
                   </div>
                 );

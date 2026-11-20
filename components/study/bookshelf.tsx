@@ -292,14 +292,18 @@ export function Bookshelf() {
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
           return (
             <div key={sh.id} className="sp2-shelf flex flex-col">
-              <div className="relative mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 overflow-hidden rounded-2xl px-4 py-3.5 sm:px-5" style={{ background: `var(--tint-${sh.tint})`, color: `var(--tint-${sh.tint}-ink)` }}>
-                <span aria-hidden className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full opacity-[0.14]" style={{ background: `var(--tint-${sh.tint}-ink)` }} />
-                <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl" style={{ background: `var(--tint-${sh.tint}-ink)`, color: `var(--tint-${sh.tint})` }} aria-hidden><BookOpen className="h-5 w-5" /></span>
-                <div className="relative min-w-0 flex-1">
-                  <h2 className="font-display text-2xl font-extrabold leading-tight tracking-[-0.01em] sm:text-3xl">{sh.title}</h2>
-                  <p className="text-sm font-semibold opacity-80">{sh.note}</p>
+              <div className="relative mb-6 flex items-center justify-between gap-4 overflow-hidden rounded-2xl px-5 py-4 text-white sm:px-6" style={{ background: "linear-gradient(120deg, #2a2831 0%, #16151b 100%)", boxShadow: "inset 6px 0 0 #d9a42b, inset 0 1px 0 rgba(255,255,255,.1), 0 18px 30px -20px rgba(0,0,0,.65)" }}>
+                <span aria-hidden className="pointer-events-none absolute -right-10 -top-14 h-40 w-40 rounded-full opacity-25 blur-2xl" style={{ background: "#d9a42b" }} />
+                <div className="relative min-w-0">
+                  <h2 className="font-extrabold leading-tight tracking-[-0.02em] text-[26px] sm:text-[32px]" style={{ fontFamily: "var(--font-tile), var(--font-display)" }}>{sh.title}</h2>
+                  <p className="mt-0.5 text-sm font-semibold text-white/70">{sh.note}</p>
                 </div>
-                {weightOf(books) > 0 && <div className="relative shrink-0 rounded-xl bg-[var(--surface)] px-3 py-1.5 text-center"><p className="font-display text-xl font-extrabold leading-none">{weightOf(books).toFixed(1)}%</p><p className="text-[11px] font-bold opacity-80">of marks</p></div>}
+                {weightOf(books) > 0 && (
+                  <div className="relative shrink-0 text-right" aria-label={`${weightOf(books).toFixed(1)} percent of the GATE paper`}>
+                    <b className="block text-[28px] font-extrabold leading-none text-[#f3d27a]" style={{ fontFamily: "var(--font-tile), var(--font-display)" }}>{weightOf(books).toFixed(1)}%</b>
+                    <span className="mt-1 block text-xs font-bold text-white/65">of the paper</span>
+                  </div>
+                )}
               </div>
               <div className={`grid flex-1 items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
                 {stacks.map((st, si) => (

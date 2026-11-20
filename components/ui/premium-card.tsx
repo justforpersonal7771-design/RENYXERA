@@ -14,19 +14,9 @@ const SKIN = {
   study: { bg: "linear-gradient(150deg,#2a1f6b 0%,#4b2fa8 55%,#7a3fc4 100%)", glow: "bg-amber-300/25", kicker: "text-amber-200", shadow: "rgba(40,20,110,.7)" },
 } as const;
 
-/** Gold for study, pearl for plans: a gradient with a bright band that slides across on hover. */
-const METAL = {
-  gold: { bg: "linear-gradient(135deg,#fff1a8 0%,#f6c744 28%,#c98a1a 55%,#f8dc7c 80%,#b9791a 100%)", fg: "#2a1d00" },
-} as const;
-
-export function MetalButton({ metal, children, onClick, className = "" }: { metal: keyof typeof METAL; children: ReactNode; onClick: () => void; className?: string }) {
-  const m = METAL[metal];
-  return (
-    <button type="button" onClick={onClick} className={`group/metal relative inline-flex h-11 items-center justify-center overflow-hidden rounded-xl px-5 font-extrabold shadow-[inset_0_1px_0_rgba(255,255,255,.8),inset_0_-2px_0_rgba(0,0,0,.18),0_10px_22px_-10px_rgba(0,0,0,.6)] transition-transform hover:-translate-y-0.5 ${className}`} style={{ background: m.bg, color: m.fg }}>
-      <span aria-hidden className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/3 -skew-x-12 bg-white/55 blur-[2px] transition-transform duration-700 group-hover/metal:translate-x-[420%]" />
-      <span className="relative">{children}</span>
-    </button>
-  );
+/** The button on the purple study card: solid champagne, dark label (no gradient, no shine; classes in globals.css). */
+export function MetalButton({ children, onClick, className = "" }: { metal?: string; children: ReactNode; onClick: () => void; className?: string }) {
+  return <button type="button" onClick={onClick} className={`btn-champagne inline-flex h-11 items-center justify-center rounded-xl px-5 ${className}`}>{children}</button>;
 }
 
 export function PremiumCard({ skin, eyebrow, title, body, cta, onClick, compact = false, className = "" }: { skin: "study" | "silver" | "gold"; eyebrow: string; title: string; body: string; cta: string; onClick: () => void; compact?: boolean; className?: string }) {
@@ -53,7 +43,7 @@ export function PremiumCard({ skin, eyebrow, title, body, cta, onClick, compact 
         <p className={`mt-1 font-display font-extrabold leading-tight ${compact ? "text-xl" : "text-3xl"}`}>{title}</p>
         <p className="mt-1.5 text-sm text-white/85 text-balance">{body}</p>
       </div>
-      <MetalButton metal="gold" onClick={onClick} className={compact ? "shrink-0" : "relative w-full"}>{cta}</MetalButton>
+      <MetalButton onClick={onClick} className={compact ? "shrink-0" : "relative w-full"}>{cta}</MetalButton>
     </section>
   );
 }
