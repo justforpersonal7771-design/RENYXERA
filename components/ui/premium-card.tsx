@@ -10,7 +10,7 @@ import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { TIER_RANK } from "@/lib/billing/plans";
 import { useStudyAccess } from "@/lib/study/use-study-access";
-import { BUNDLES, rupees } from "@/lib/study/packs";
+import { BUNDLES, PACKS, rupees } from "@/lib/study/packs";
 import { openStudyShop } from "@/store/use-study-shop-store";
 
 const SKIN = {
@@ -62,7 +62,8 @@ export function PlanUpsellCard({ className = "" }: { className?: string }) {
 /** Study packs as a buy card in the same family as the Plus/Pro card (violet foil); hidden for students who own every pack. */
 export function StudyBuyCard({ className = "" }: { className?: string }) {
   const access = useStudyAccess();
-  if (access.loading || access.all) return null;
+  // hidden only when every pack has really been bought (admins still see it, to check the flow)
+  if (PACKS.every((p) => access.packs.includes(p.id))) return null;
   const core = BUNDLES.find((b) => b.id === "core")!, all = BUNDLES.find((b) => b.id === "everything")!;
   return <PremiumCard skin="peri" compact className={className} eyebrow="Study packs" title="Unlock every chapter" body={`Core CS from ${rupees(core.pricePaise)}, every book for ${rupees(all.pricePaise)}.`} cta="Unlock books" onClick={() => openStudyShop("Study packs and bundles")} />;
 }

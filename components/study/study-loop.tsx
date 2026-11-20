@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { readSeen } from "@/lib/study/progress";
-import { bookOfSubject, packOfBook } from "@/lib/study/packs";
+import { PACKS, bookOfSubject, packOfBook } from "@/lib/study/packs";
 import { CS_SHELF } from "@/lib/study/catalog";
 import { MIN_ATTEMPTS, firstChapterHref, nextStep, readinessRows, type BookRow, type Verdict } from "@/lib/study/readiness";
 import { useStudyAccess } from "@/lib/study/use-study-access";
@@ -81,7 +81,7 @@ export function StudyStripMini({ className = "" }: { className?: string }) {
     <section aria-label="Study" className={`card-pastel flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 sm:px-5 ${className}`} data-tint="lilac">
       <BookOpen className="h-5 w-5 shrink-0 text-[var(--text-primary)]" aria-hidden />
       <p className="min-w-0 flex-1 text-sm text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">Study: {step.title}.</b> {step.body}</p>
-      <div className="flex shrink-0 flex-wrap gap-2"><Link href={step.href} className="pill-ink">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>{!access.all && <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="btn-study inline-flex h-9 items-center rounded-full px-4 text-sm">Unlock books</button>}</div>
+      <div className="flex shrink-0 flex-wrap gap-2"><Link href={step.href} className="pill-ink">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>{!PACKS.every((p) => access.packs.includes(p.id)) && <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="btn-study inline-flex h-9 items-center rounded-full px-4 text-sm">Unlock books</button>}</div>
     </section>
   );
 }
