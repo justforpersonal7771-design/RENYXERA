@@ -290,10 +290,14 @@ export function Bookshelf() {
           const byId = (id: string) => CS_SHELF.find((b) => b.id === id)!;
           return (
             <div key={sh.id} className="sp2-shelf flex flex-col">
-              <div className="mb-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b-2 border-dashed border-[var(--border)] pb-2">
-                <span className="h-3 w-3 self-center rounded-full" style={{ background: `var(--tint-${sh.tint}-ink)` }} aria-hidden />
-                <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">{sh.title}</h2>
-                {weightOf(books) > 0 && <span className="rounded-full px-2.5 py-0.5 text-xs font-extrabold" style={{ background: `var(--tint-${sh.tint})`, color: `var(--tint-${sh.tint}-ink)` }}>{weightOf(books).toFixed(1)}% of marks</span>}
+              <div className="relative mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 overflow-hidden rounded-2xl px-4 py-3.5 sm:px-5" style={{ background: `var(--tint-${sh.tint})`, color: `var(--tint-${sh.tint}-ink)` }}>
+                <span aria-hidden className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full opacity-[0.14]" style={{ background: `var(--tint-${sh.tint}-ink)` }} />
+                <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-xl" style={{ background: `var(--tint-${sh.tint}-ink)`, color: `var(--tint-${sh.tint})` }} aria-hidden><BookOpen className="h-5 w-5" /></span>
+                <div className="relative min-w-0 flex-1">
+                  <h2 className="font-display text-2xl font-extrabold leading-tight tracking-[-0.01em] sm:text-3xl">{sh.title}</h2>
+                  <p className="text-sm font-semibold opacity-80">{sh.note}</p>
+                </div>
+                {weightOf(books) > 0 && <div className="relative shrink-0 rounded-xl bg-[var(--surface)] px-3 py-1.5 text-center"><p className="font-display text-xl font-extrabold leading-none">{weightOf(books).toFixed(1)}%</p><p className="text-[11px] font-bold opacity-80">of marks</p></div>}
               </div>
               <div className={`grid flex-1 items-end gap-4 ${sh.id !== "core" ? "" : stacks.length === 3 ? "lg:grid-cols-3" : stacks.length === 2 ? "lg:grid-cols-2" : ""}`}>
                 {stacks.map((st, si) => (
