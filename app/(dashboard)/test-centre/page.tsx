@@ -15,6 +15,7 @@ import { summarizeSession, type Attempt } from "@/features/test-centre/model";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 import { TEST_CENTRE } from "@/lib/test-centre/brand";
 import { TiltCard } from "@/components/ui/interactive";
+import { PlanUpsellCard } from "@/components/ui/premium-card";
 import { StudyLoopCard } from "@/components/study/study-loop";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
 
@@ -91,6 +92,7 @@ export default function TestCentrePage() {
         </div>
       </div>
 
+      <PlanUpsellCard className="order-5 lg:order-none" />
       <StudyLoopCard className="order-4 lg:order-none" subjects={dashboardMetrics?.subjectPerformance ?? []} pendingMistakes={open} />
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}

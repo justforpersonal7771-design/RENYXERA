@@ -9,13 +9,14 @@
  * search across subjects and chapters, and an availability filter.
  */
 import { BANK_SUBJECTS, BUNDLES, packOfBook, rupees } from "@/lib/study/packs";
+import { PremiumCard } from "@/components/ui/premium-card";
 import { openStudyShop } from "@/store/use-study-shop-store";
 import { useStudyAccess } from "@/lib/study/use-study-access";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { BookOpen, Feather, Lock, Plus, Search, X } from "lucide-react";
+import { BookOpen, Feather, Plus, Search, X } from "lucide-react";
 import { loadBank, fromBank } from "@/lib/study/bank";
 import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
@@ -236,7 +237,7 @@ export function Bookshelf() {
         <div className="card-pastel flex min-w-0 flex-col justify-between p-5 sm:p-6 lg:h-72" data-tint="butter">
           <div>
             <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] sm:text-4xl">The GATE CS library</h1>
-            <p className="mt-1 text-[var(--text-secondary)]">Lessons written for the way GATE asks. Pull a book to see what is inside.</p>
+            <p className="mt-1 text-balance text-[var(--text-secondary)]">Lessons written for the way GATE asks.<br />Pull a book to see what is inside.</p>
           </div>
           {resume && (
             <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-[var(--surface)] p-3">
@@ -268,15 +269,8 @@ export function Bookshelf() {
           )}
           {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
         </div>
-        <div className="relative flex min-w-0 flex-col justify-between gap-3 overflow-hidden rounded-[var(--card-radius,24px)] p-5 text-white shadow-[0_22px_44px_-26px_rgba(40,20,110,.7)] sm:p-6 lg:h-72" style={{ background: "linear-gradient(150deg,#2a1f6b 0%,#4b2fa8 55%,#7a3fc4 100%)" }}>
-          <span aria-hidden className="pointer-events-none absolute -right-10 -top-12 h-40 w-40 rounded-full bg-amber-300/25 blur-2xl" />
-          <div className="relative">
-            <p className="flex items-center gap-1.5 text-sm font-extrabold text-amber-200"><Lock className="h-4 w-4" aria-hidden /> Study packs</p>
-            <p className="mt-1 font-display text-3xl font-extrabold leading-tight">Unlock every chapter</p>
-            <p className="mt-2 text-sm text-white/85 text-balance">Core CS from {rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for {rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.</p>
-          </div>
-          <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="relative inline-flex h-11 w-full items-center justify-center rounded-xl bg-amber-300 font-extrabold text-[#2a1d00] shadow-lg transition-transform hover:-translate-y-0.5">Unlock books</button>
-        </div>
+        <PremiumCard skin="study" eyebrow="Study packs" title="Unlock every chapter" cta="Unlock books" className="min-w-0 lg:h-72" onClick={() => openStudyShop("Study packs and bundles")}
+          body={`Core CS from ${rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for ${rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.`} />
       </div>
 
       {focus.active && (
