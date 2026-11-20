@@ -637,9 +637,10 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     const root = pane.current;
     if (!root) return;
     const scroller: HTMLElement = getComputedStyle(root).overflowY === "auto" ? root : (document.getElementById("app-scroll") ?? document.documentElement);
-    const secs = [...root.querySelectorAll<HTMLElement>("[data-sec]")];
     let raf = 0;
     const pick = () => {
+      // read the sections fresh each time: topics are drawn lazily, so a list taken at mount would miss every topic below the first
+      const secs = [...root.querySelectorAll<HTMLElement>("[data-sec]")];
       const box = scroller.getBoundingClientRect();
       const line = box.top + box.height * 0.33;
       let cur = secs[0];
