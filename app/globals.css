@@ -2459,7 +2459,7 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 .plan-cta:disabled, .shop-cta:disabled { opacity: .55; }
 .plan-badge { color: var(--cta-badge-ink, #6b4a00) !important; border: 1px solid color-mix(in srgb, var(--m2) 55%, transparent) !important; background: color-mix(in srgb, var(--m1) 70%, #fff) !important; box-shadow: none !important; }
 .plan-silver .plan-badge, .plan-badge.plan-silver { --cta-badge-ink: #3b4556; }
-.dark .plan-badge { color: var(--cta-ink) !important; background: color-mix(in srgb, var(--m2) 22%, #14131a) !important; }
+.dark .plan-badge { color: var(--t1) !important; background: color-mix(in srgb, var(--m2) 22%, #14131a) !important; }
 
 /* Polish pass on the book spines (21 Nov): the same shelf, with a bolder display face and a little more life. Hover only on real pointers. */
 .sp3-title { font-family: var(--font-tile), var(--font-display); font-weight: 800; letter-spacing: -.015em; text-shadow: 0 1px 0 rgba(255,255,255,.5); transition: transform 260ms cubic-bezier(.23,1,.32,1); }

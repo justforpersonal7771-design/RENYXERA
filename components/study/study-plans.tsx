@@ -102,7 +102,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
         <div role="radiogroup" aria-label="Study pack options" className="pointer-events-auto relative grid w-full max-w-md grid-cols-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_10px_24px_-12px_rgba(20,16,40,.45)]">
           <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl border border-[color-mix(in_srgb,var(--tint-lilac-ink)_30%,transparent)] bg-[var(--tint-lilac)] transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
           {(["bundles", "single", "custom"] as const).map((v) => (
-            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl text-sm font-bold transition-colors duration-200 ${view === v ? "text-[var(--tint-lilac-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
+            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl px-1 text-xs font-bold leading-tight transition-colors duration-200 sm:text-sm ${view === v ? "text-[var(--tint-lilac-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
           ))}
         </div>
       </div>

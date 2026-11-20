@@ -382,12 +382,12 @@ function UnlockCard({ t, index, topics, href }: { t: Topic; index: number; topic
   const info = chapterInfo(href); const rest = topics.slice(index);
   const bundle = info.pack ? bestBundleFor([info.pack.id]) : null;
   return (
-    <section id={t.id} data-topic="" aria-label="Unlock the rest of this chapter" className="card-pastel scroll-mt-24 p-6 sm:p-8 lg:scroll-mt-4" data-tint="butter">
+    <section id={t.id} data-topic="" aria-label="Unlock the rest of this chapter" className="card-pastel scroll-mt-24 p-6 sm:p-8 lg:scroll-mt-4" data-tint={info.book?.tint ?? "butter"}>
       <p className="inline-flex items-center gap-1.5 rounded-full bg-[var(--surface)] px-3 py-1 text-xs font-black text-[var(--text-primary)]"><Lock className="h-3.5 w-3.5" /> {info.sampleChapter ? "That was the free sample" : "Part of a study pack"}</p>
       <h2 className="mt-3 font-display text-2xl font-extrabold text-[var(--text-primary)]">{rest.length} more topic{rest.length === 1 ? "" : "s"} in this chapter</h2>
       <ol className="mt-3 space-y-1 text-sm text-[var(--text-primary)]">{rest.map((x, k) => <li key={x.id} className="flex gap-2"><span className="font-num font-bold text-[var(--text-secondary)]">{index + k + 1}.</span>{x.title}</li>)}</ol>
       <p className="mt-4 text-sm text-[var(--text-secondary)]">{info.pack ? `Every chapter of ${info.book?.title ?? "this book"} comes with the ${info.pack.name} pack (${rupees(info.pack.pricePaise)}, about ${info.pack.marks} marks a paper)${bundle ? `, or ${bundle.name} for ${rupees(bundle.pricePaise)} with ${bundle.packs.length - 1} more subjects` : ""}. ` : ""}Study packs are separate from Plus and Pro.</p>
-      <button type="button" onClick={() => openStudyShop(info.book ? `Unlock ${info.book.title}` : undefined)} className="btn-main mt-4 inline-flex">See packs and bundles</button>
+      <button type="button" onClick={() => openStudyShop(info.book ? `Unlock ${info.book.title}` : undefined)} className="btn-study mt-4 inline-flex h-11 items-center rounded-xl px-5">See packs and bundles</button>
     </section>
   );
 }
