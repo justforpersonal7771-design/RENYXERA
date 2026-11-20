@@ -90,3 +90,80 @@ export function MinLab() {
     </Shell>
   );
 }
+
+/** Product construction of two mod counters: states and accepting pairs for and / or / xor. */
+export function ProductLab() {
+  const [m, setM] = useState(2), [n, setN] = useState(3), [op, setOp] = useState<"and" | "or" | "xor">("and");
+  const r = T.productStates(m, n, op);
+  const pairs = Array.from({ length: m }, (_, i) => Array.from({ length: n }, (_, j) => `(${i},${j})`));
+  return (
+    <Shell title="Product construction lab" note="Machine A counts mod m, machine B counts mod n; each accepts in remainder 0." tint="sky">
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <span className="text-sm font-semibold text-[var(--text-secondary)]">m</span>{[2, 3, 4, 5].map((x) => <Pill key={`m${x}`} on={m === x} onClick={() => setM(x)}>{x}</Pill>)}
+        <span className="ml-2 text-sm font-semibold text-[var(--text-secondary)]">n</span>{[2, 3, 4, 5].map((x) => <Pill key={`n${x}`} on={n === x} onClick={() => setN(x)}>{x}</Pill>)}
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2">{(["and", "or", "xor"] as const).map((x) => <Pill key={x} on={op === x} onClick={() => setOp(x)}>{x === "and" ? "A ∩ B" : x === "or" ? "A ∪ B" : "A △ B"}</Pill>)}</div>
+      <div className="mt-3 grid gap-1" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }} aria-label="Product states">
+        {pairs.flat().map((q) => <span key={q} className={`rounded-lg px-2 py-1 text-center font-num text-sm font-bold ${r.accepting.includes(q) ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-200" : "bg-[var(--surface)]"}`}>{q}</span>)}
+      </div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2"><Stat label="Product states" value={r.states} /><Stat label="Accepting pairs" value={r.accepting.length} /></div>
+      <p className="mt-2 text-xs text-[var(--text-secondary)]">Green pairs accept. The product may shrink after minimisation; the count here is before it.</p>
+    </Shell>
+  );
+}
+
+const PUMP_LANGS: { id: T.PumpLang; label: string; w: string }[] = [
+  { id: "anbn", label: "aⁿbⁿ", w: "aaabbb" }, { id: "ww", label: "ww over {a, b}", w: "abab" }, { id: "prime", label: "aⁿ, n prime", w: "aaaaa" },
+  { id: "square", label: "aⁿ, n a square", w: "aaaa" }, { id: "evenA", label: "even number of a's (regular)", w: "aab" },
+];
+/** Split a string into x y z and pump y: see which repetitions leave the language. */
+export function PumpLab() {
+  const [L, setL] = useState<T.PumpLang>("anbn"); const [w, setW] = useState("aaabbb"); const [x, setX] = useState(1); const [y, setY] = useState(1);
+  const pick = (id: T.PumpLang) => { const d = PUMP_LANGS.find((q) => q.id === id)!; setL(id); setW(d.w); setX(id === "evenA" ? 0 : 1); setY(id === "prime" || id === "evenA" ? 2 : 1); };
+  const safeX = Math.min(x, Math.max(0, w.length - 1)); const safeY = Math.max(1, Math.min(y, w.length - safeX));
+  const r = T.pump(L, w, safeX, safeY);
+  return (
+    <Shell title="Pumping lemma lab" note="You choose the split (in a real proof the adversary does). Pump y zero to three times." tint="lilac">
+      <div className="mt-3 flex flex-wrap gap-2">{PUMP_LANGS.map((q) => <Pill key={q.id} on={L === q.id} onClick={() => pick(q.id)}>{q.label}</Pill>)}</div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-[1fr_auto_auto] sm:items-end"><Field label="String w (should be in the language)" value={w} set={setW} />
+        <div className="text-sm font-semibold text-[var(--text-secondary)]">|x|<div className="mt-1 flex gap-1">{[0, 1, 2].map((v) => <Pill key={v} on={safeX === v} onClick={() => setX(v)}>{v}</Pill>)}</div></div>
+        <div className="text-sm font-semibold text-[var(--text-secondary)]">|y|<div className="mt-1 flex gap-1">{[1, 2, 3].map((v) => <Pill key={v} on={safeY === v} onClick={() => setY(v)}>{v}</Pill>)}</div></div>
+      </div>
+      <p className="mt-3 font-num text-sm">x = <b>{r.X || "ε"}</b> · y = <b>{r.Y}</b> · z = <b>{r.Z || "ε"}</b> {T.inLang(L, w) ? "" : <span className="ml-2 font-sans font-semibold text-rose-700 dark:text-rose-300">w itself is not in the language</span>}</p>
+      <ol className="mt-2 grid gap-1.5 sm:grid-cols-4" aria-label="Pumped strings">{r.tries.map((t) => <li key={t.i} className={`rounded-xl px-3 py-2 text-sm ${t.ok ? "bg-[var(--surface)]" : "bg-rose-500/15"}`}><b className="font-num">i = {t.i}</b><span className="block font-num text-xs">length {t.len}: {t.ok ? "in L" : "out of L"}</span></li>)}</ol>
+      <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">{r.broken ? "This split is broken: some i leaves the language." : "This split survives every pump shown."}</p>
+    </Shell>
+  );
+}
+
+const CLASSIFY: { lang: string; regular: boolean; why: string }[] = [
+  { lang: "aⁿbᵐ (n, m ≥ 0)", regular: true, why: "Independent counts: a*b*." },
+  { lang: "aⁿbⁿ", regular: false, why: "Pump aᵖbᵖ with i = 0." },
+  { lang: "aⁿbⁿ with n ≤ 1000", regular: true, why: "Finite language." },
+  { lang: "aⁿbᵐ with n ≠ m", regular: false, why: "Complement ∩ a*b* is aⁿbⁿ." },
+  { lang: "aⁿbᵐ with n + m even", regular: true, why: "Track two parities: 4 states." },
+  { lang: "#a = #b over {a, b}", regular: false, why: "∩ a*b* gives aⁿbⁿ." },
+  { lang: "#a − #b ≡ 0 (mod 3)", regular: true, why: "A counter mod 3." },
+  { lang: "#ab = #ba", regular: true, why: "Equal iff first and last symbols agree." },
+  { lang: "ww over {a, b}", regular: false, why: "Pump aᵖbaᵖb." },
+  { lang: "ww over {a}", regular: true, why: "It is (aa)*." },
+  { lang: "aⁿ, n prime", regular: false, why: "Lengths not periodic; pump i = q − k." },
+  { lang: "a^(3n+1)", regular: true, why: "Periodic lengths: a(aaa)*." },
+];
+/** Guess first, then reveal: regular or not, and the one-line reason. */
+export function ClassifyLab() {
+  const [guess, setGuess] = useState<Record<number, boolean>>({});
+  const right = Object.entries(guess).filter(([k, v]) => CLASSIFY[Number(k)].regular === v).length;
+  return (
+    <Shell title="Is it regular? lab" note="Decide for each language, then read the one-line reason." tint="mint">
+      <ul className="mt-3 grid gap-2 sm:grid-cols-2">{CLASSIFY.map((c, k) => { const g = guess[k]; const done = g !== undefined; return (
+        <li key={c.lang} className="rounded-2xl bg-[var(--surface)] p-3 text-sm">
+          <p className="font-num font-bold text-[var(--text-primary)]">{c.lang}</p>
+          {!done ? <div className="mt-2 flex gap-2"><Pill on={false} onClick={() => setGuess((x) => ({ ...x, [k]: true }))}>Regular</Pill><Pill on={false} onClick={() => setGuess((x) => ({ ...x, [k]: false }))}>Not regular</Pill></div>
+            : <p className={`mt-1 ${g === c.regular ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"}`}><b>{c.regular ? "Regular" : "Not regular"}</b> ({g === c.regular ? "you were right" : "you said the opposite"}). {c.why}</p>}
+        </li>
+      ); })}</ul>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2"><Stat label="Answered" value={`${Object.keys(guess).length} of ${CLASSIFY.length}`} /><Stat label="Correct" value={right} /></div>
+    </Shell>
+  );
+}

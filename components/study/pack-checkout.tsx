@@ -81,7 +81,7 @@ export function useStudyCheckout(onBought: () => void) {
             })()}
             <ul className="mt-3 space-y-1 text-xs text-[var(--text-secondary)]">
               <li>• Opens {info?.packs.length === 1 ? "this subject" : `${info?.packs.length} subjects`} until the end of your GATE season (31 March IST).</li>
-              <li>• Separate from Plus and Pro; one-time payment, no renewal.</li>
+              <li>• Separate from Plus and Pro.</li>
               <li>• Refunds only for our errors (double charge, a payment that did not activate, a fault we cannot fix), by email.</li>
             </ul>
             <label className="mt-4 flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">

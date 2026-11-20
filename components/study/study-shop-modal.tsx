@@ -28,9 +28,10 @@ export function StudyShopHost() {
   return createPortal(
     <div className="fixed inset-0 z-[250] grid place-items-center p-3 sm:p-6">
       <button type="button" aria-label="Close" className="absolute inset-0 bg-black/55 backdrop-blur-sm" onClick={close} />
-      <div role="dialog" aria-modal="true" aria-label="Study packs and bundles" className="relative flex max-h-[94dvh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--background)] shadow-2xl">
+      <div role="dialog" aria-modal="true" aria-label="Study packs and bundles" className="plan-peri relative flex max-h-[94dvh] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-[color-mix(in_srgb,var(--m2)_45%,transparent)] shadow-2xl" style={{ background: "linear-gradient(180deg, color-mix(in srgb, var(--wash) 14%, var(--background)) 0%, var(--background) 45%)" }}>
+        <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-10 h-1.5" style={{ background: "linear-gradient(90deg, var(--m3), var(--m1) 30%, var(--m2) 60%, var(--m3))" }} />
         <div className="flex items-center justify-between gap-3 border-b border-[var(--border)] bg-[var(--surface)] px-5 py-3">
-          <p className="inline-flex min-w-0 items-center gap-2 text-sm font-extrabold text-[var(--text-primary)]"><BookOpenText className="h-4 w-4 shrink-0 text-amber-500" aria-hidden /> <span className="truncate">{reason ?? "Study packs and bundles"}</span></p>
+          <p className="inline-flex min-w-0 items-center gap-2 text-sm font-extrabold text-[var(--text-primary)]"><BookOpenText className="plan-kicker h-4 w-4 shrink-0" aria-hidden /> <span className="truncate">{reason ?? "Study packs and bundles"}</span></p>
           <button type="button" onClick={close} aria-label="Close" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)] cursor-pointer"><X className="h-4 w-4" /></button>
         </div>
         <div className="custom-scrollbar overflow-y-auto overscroll-contain p-4 sm:p-6">

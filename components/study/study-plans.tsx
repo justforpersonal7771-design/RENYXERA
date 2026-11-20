@@ -63,7 +63,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
         <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
           {sum > b.pricePaise && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-rose-500/70 decoration-2">{rupees(sum)}</span>}
           <span className={`${big ? "text-5xl" : "text-4xl"} font-extrabold text-[var(--text-primary)]`}><PriceRoll value={rupees(b.pricePaise)} /></span>
-          <span className="text-sm font-semibold text-[var(--text-muted)]">one time</span>
+          
           {sum > b.pricePaise && <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-black text-emerald-700 dark:text-emerald-300">Save {pct(sum, b.pricePaise)}%</span>}
         </div>
         <p className="mt-1 text-balance text-xs font-semibold text-[var(--text-secondary)]">{sum > b.pricePaise ? `Just ${rupees(Math.round(b.pricePaise / booksOf(b.packs).length / 100) * 100)} a book instead of ${rupees(Math.round(sum / booksOf(b.packs).length / 100) * 100)}` : "One pack covers the whole section"} · about {marks.toFixed(1)} marks a paper</p>
@@ -80,9 +80,9 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
   return (
     <section id="packs" aria-label="Study packs and bundles" className="scroll-mt-24 space-y-8">
       <header className="mx-auto max-w-3xl text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300"><BookOpenText className="h-3.5 w-3.5" /> Study packs</span>
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-500/12 px-3 py-1 text-xs font-bold text-violet-700 dark:text-violet-300"><BookOpenText className="h-3.5 w-3.5" /> Study packs</span>
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">Every GATE subject, <span className="grad-brand bg-clip-text text-transparent">book by book</span></h2>
-        <p className="mx-auto mt-3 max-w-xl text-balance text-[var(--text-secondary)]">Learn it, try it, test it, remember it. Separate from Plus and Pro, one payment, open until your GATE season ends. Every book opens with {FREE_TOPICS} free topics.</p>
+        <p className="mx-auto mt-3 max-w-xl text-balance text-[var(--text-secondary)]">Learn it, try it, test it, remember it. Separate from Plus and Pro, open until your GATE season ends. Every book opens with {FREE_TOPICS} free topics.</p>
         {owned.length > 0 && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="h-4 w-4" /> You own {owned.length} pack{owned.length === 1 ? "" : "s"}: {owned.map(packName).join(", ")}</p>}
       </header>
 
@@ -100,9 +100,9 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
 
       <div className="pointer-events-none sticky -top-2 z-20 flex justify-center py-3 sm:-top-3">
         <div role="radiogroup" aria-label="Study pack options" className="pointer-events-auto relative grid w-full max-w-md grid-cols-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_10px_24px_-12px_rgba(20,16,40,.45)]">
-          <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl border border-[color-mix(in_srgb,var(--tint-sky-ink)_30%,transparent)] bg-[var(--tint-sky)] transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
+          <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl border border-[color-mix(in_srgb,var(--tint-lilac-ink)_30%,transparent)] bg-[var(--tint-lilac)] transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
           {(["bundles", "single", "custom"] as const).map((v) => (
-            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl text-sm font-bold transition-colors duration-200 ${view === v ? "text-[var(--tint-sky-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
+            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl text-sm font-bold transition-colors duration-200 ${view === v ? "text-[var(--tint-lilac-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
           ))}
         </div>
       </div>
@@ -119,7 +119,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
                 <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-rose-500/70 decoration-2">{rupees(bundleSum(everything))}</span>
                 <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-black text-emerald-700 dark:text-emerald-300">Save {pct(bundleSum(everything), everything.pricePaise)}%</span>
               </div>
-              <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">Just {rupees(perPack(everything))} a subject, one time.</p>
+              <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">Just {rupees(perPack(everything))} a subject.</p>
               <p className="mt-1 text-sm text-[var(--text-secondary)] text-balance">Bought one section at a time it is {rupees(sectionsSum)}: you save {rupees(sectionsSum - everything.pricePaise)}.</p>
               <button type="button" disabled={everything.packs.every(owns)} onClick={() => void checkout.start("bundle:everything")} className="mt-5 inline-flex h-12 w-full cursor-pointer items-center justify-center rounded-xl bg-[var(--btn)] font-bold text-[var(--btn-fg)] shadow-lg disabled:opacity-60 lg:mt-auto shop-cta">{everything.packs.every(owns) ? "You own all of these" : cta("Get Everything")}</button>
             </div>
@@ -160,7 +160,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
             return (
               <section key={p.id} className="flex flex-col rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6">
                 <p className="text-sm font-black text-[var(--text-muted)]">{p.name}</p>
-                <div className="mt-2 flex flex-wrap items-baseline gap-x-2"><span className="text-3xl font-extrabold text-[var(--text-primary)]">{rupees(p.pricePaise)}</span><span className="text-sm font-semibold text-[var(--text-muted)]">one time</span></div>
+                <div className="mt-2 flex flex-wrap items-baseline gap-x-2"><span className="text-3xl font-extrabold text-[var(--text-primary)]">{rupees(p.pricePaise)}</span></div>
                 <p className="text-xs font-semibold text-[var(--text-secondary)]">about {p.marks} marks a paper · ≈ {rupees(Math.round(p.pricePaise / p.marks / 100) * 100)} per mark</p>
                 <p className="mt-3 text-sm text-[var(--text-secondary)]">{readyOf(p.id)}</p>
                 {up ? <button type="button" onClick={() => void checkout.start(`bundle:${up.id}`)} className="mb-5 mt-2 flex-1 text-left text-xs font-bold text-[var(--text-primary)] underline decoration-dotted underline-offset-4">Or all {up.packs.length} {up.name} subjects for {rupees(up.pricePaise)}: {rupees(perPack(up))} each. <ArrowRight className="inline h-3 w-3" aria-hidden /></button> : <span className="mb-5 flex-1" />}

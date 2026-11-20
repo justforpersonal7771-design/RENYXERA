@@ -124,7 +124,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
       <header className="text-center max-w-3xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold tracking-normal"><Crown className="w-3.5 h-3.5" /> Plans</span>
         <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">Prepare smarter with <span className="grad-brand bg-clip-text text-transparent">Plus &amp; Pro</span></h1>
-        <p className="mx-auto mt-3 max-w-2xl text-balance text-[var(--text-secondary)]">More AI help every day, deeper analytics, offline papers and a premium look. <span className="whitespace-nowrap">One payment, no auto-renewal.</span> Pick a plan and get more out of every study hour.</p>
+        <p className="mx-auto mt-3 max-w-2xl text-balance text-[var(--text-secondary)]">More AI help every day, deeper analytics, offline papers and a premium look. Pick a plan and get more out of every study hour.</p>
         <PromoVideo className="mx-auto mt-6 max-w-2xl" />
         {ent.paid && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="w-4 h-4" /> You&apos;re on {ent.tier === "pro" ? "Pro" : "Plus"}{ent.validUntil ? ` until ${new Date(ent.validUntil).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}</p>}
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -194,7 +194,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
         })}
       </div>
 
-      {period === "season" && <p className="text-center text-xs text-[var(--text-muted)]">One payment covers you until 31 March {seasonYear}, after results. It doesn&apos;t renew. The longer the runway, the lower the monthly cost.</p>}
+      {period === "season" && <p className="text-center text-xs text-[var(--text-muted)]">Covers you until 31 March {seasonYear}, after results. The longer the runway, the lower the monthly cost.</p>}
 
       <StudyStrip />
       <MentorRecharges compact={inModal} />

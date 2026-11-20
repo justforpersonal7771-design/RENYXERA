@@ -20,8 +20,7 @@ const ROWS: { label: string; free: Cell; plus: Cell; pro: Cell }[] = [
 ];
 
 const FAQ: { q: string; a: string }[] = [
-  { q: "Does it renew automatically?", a: "No. Every plan is one payment for a fixed period. Nothing is charged again and there is nothing to cancel." },
-  { q: "What is the GATE season pass?", a: "One payment that covers you from now until 31 March after your exam year's results. The longer runway makes it the lowest monthly cost." },
+  { q: "What is the GATE season pass?", a: "It covers you from now until 31 March after your exam year's results. The longer runway makes it the lowest monthly cost." },
   { q: "Can I get a refund?", a: "Purchases are final because access is delivered instantly. We refund only our own errors: a double or wrong charge, a payment that did not activate, or a fault we cannot fix. Details are on the refund page." },
   { q: "I paid but my plan has not appeared.", a: "It usually appears within a minute. If it does not, do not pay again: email us with the payment reference and we will fix it." },
   { q: "Is it for one branch only?", a: "Yes. A plan is tied to your account's branch. If you use your one branch change, the plan moves with it." },
