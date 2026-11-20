@@ -39,6 +39,7 @@ import { ChallengeBanner } from "@/components/dashboard/challenge-banner";
 import { KpiStrip } from "@/components/dashboard/kpi-strip";
 import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
 import { StudyLoopCard } from "@/components/study/study-loop";
+import { StudyOffer } from "@/components/study/study-offer";
 
 // Everything below the hero is client-only and code-split.
 
@@ -232,6 +233,7 @@ export default function Home() {
 
       {/* 4. Today: planner blocks, the day's missions, the study timer. */}
       <StudyLoopCard subjects={dashboardMetrics?.subjectPerformance ?? []} pendingMistakes={pendingMistakesCount} />
+      <StudyOffer moment="dashboard" subjects={(dashboardMetrics?.subjectPerformance ?? []).filter((s) => s.attempted >= 5 && s.correct / s.attempted < 0.6).sort((a, b) => a.correct / a.attempted - b.correct / b.attempted).map((s) => ({ name: s.subject, pct: (s.correct / s.attempted) * 100 }))} />
       <TodayBlocksCard />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2"><TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} /></div>

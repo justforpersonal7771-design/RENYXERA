@@ -3,6 +3,7 @@
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
 
 import { useEffect, useState, useMemo, useRef } from "react";
+import { LearnLink } from "@/components/study/study-loop";
 import { QuestionMetaChips, useKeepCurrentCellVisible } from "@/components/exam/question-meta";
 import { useSearchParams, useRouter } from "next/navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
@@ -193,6 +194,7 @@ export default function ReviewPage() {
               {q && (
                 <div className="hidden md:flex min-w-0">
                   <QuestionMetaChips q={q as any} compact />
+                  <LearnLink subject={(q as { subject?: string }).subject} className="ml-2" />
                 </div>
               )}
             </div>

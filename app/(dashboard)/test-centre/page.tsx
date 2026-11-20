@@ -30,6 +30,9 @@ export default function TestCentrePage() {
   const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
   useEffect(() => { void loadAnalytics(); }, [loadAnalytics]);
   const [attempts, setAttempts] = useState<Attempt[] | null>(null);
+  const [nowMs, setNowMs] = useState(0);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- the clock is read once after mount, never during render
+  useEffect(() => setNowMs(Date.now()), []);
   useEffect(() => { void loadStudyData(); }, [loadStudyData]);
   useEffect(() => {
     let alive = true;
@@ -45,7 +48,7 @@ export default function TestCentrePage() {
   // The mission: three steps in order. The first one not done is highlighted; the first is "revise" when mistakes are waiting.
   const steps = [
     { n: 1, label: open ? `Revise ${Math.min(open, 10)} mistakes` : "Revise (nothing waiting)", href: "/revision", done: open === 0 },
-    { n: 2, label: "Take a timed test", href: "/test-centre/build", done: taken > 0 && !!last && Date.now() - Date.parse(last.startedAt) < 86400000 },
+    { n: 2, label: "Take a timed test", href: "/test-centre/build", done: taken > 0 && !!last && nowMs - Date.parse(last.startedAt) < 86400000 },
     { n: 3, label: "Check your results", href: "/test-centre/history", done: false },
   ];
   const current = steps.findIndex((s) => !s.done);

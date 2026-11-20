@@ -209,7 +209,7 @@ export default function AnalyticsDashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
             {hud.map((stat, idx) => (
               <motion.div key={stat.label} {...rise} transition={{ ...rise.transition, delay: idx * 0.06 }}>
-                <TiltCard className="card-stat card-pastel p-5 flex items-center gap-4" data-tint={(["lilac", "sky", "mint", "peach"] as const)[idx % 4]}>
+                <TiltCard className="card-stat card-pastel p-5 flex items-center gap-4" tint={(["lilac", "sky", "mint", "peach"] as const)[idx % 4]}>
                   <RadialGauge value={stat.value} size={84} stroke={8} from={stat.from} to={stat.to} className="text-[var(--text-primary)] shrink-0">
                     <CountUp value={stat.value} suffix="%" className="text-lg font-bold text-[var(--text-primary)]" />
                   </RadialGauge>

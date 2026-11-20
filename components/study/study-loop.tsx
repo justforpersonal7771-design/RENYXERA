@@ -9,8 +9,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
 import { readSeen } from "@/lib/study/progress";
-import { packOfBook } from "@/lib/study/packs";
-import { MIN_ATTEMPTS, nextStep, readinessRows, type BookRow, type Verdict } from "@/lib/study/readiness";
+import { bookOfSubject, packOfBook } from "@/lib/study/packs";
+import { CS_SHELF } from "@/lib/study/catalog";
+import { MIN_ATTEMPTS, firstChapterHref, nextStep, readinessRows, type BookRow, type Verdict } from "@/lib/study/readiness";
 import { useStudyAccess } from "@/lib/study/use-study-access";
 import type { SubjectAnalytics } from "@/types/analytics.types";
 
@@ -41,6 +42,14 @@ export function StudyLoopCard({ subjects, pendingMistakes, className = "" }: { s
       <Link href={step.href} className="pill-ink shrink-0">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
     </section>
   );
+}
+
+/** "Learn the idea first": from a question you just reviewed to the book for its subject. Renders nothing when the subject has no written book yet. */
+export function LearnLink({ subject, className = "" }: { subject?: string; className?: string }) {
+  const id = subject ? bookOfSubject(subject) : null;
+  const book = id ? CS_SHELF.find((b) => b.id === id) : null; const href = book ? firstChapterHref(book) : null;
+  if (!book || !href) return null;
+  return <Link href={href} className={`inline-flex shrink-0 items-center gap-1 rounded-full border border-[var(--border)] bg-[var(--surface)] px-2.5 py-1 text-xs font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] ${className}`}><BookOpen className="h-3.5 w-3.5" aria-hidden /> Learn the idea in {book.title}</Link>;
 }
 
 /** Analytics: for every book you have touched, what you read next to what you score, and what to do about the gap. */
