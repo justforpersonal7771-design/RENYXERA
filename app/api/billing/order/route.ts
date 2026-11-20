@@ -23,7 +23,7 @@ const schema = z.object({
   // locked to their branch. Checked against the ACCOUNT's branch on the server.
   branchConfirm: z.string().trim().toUpperCase().max(4),
   coupon: z.string().trim().max(32).optional(),
-  // Doc 13 moment 1: optional "Add Complete CS" study bundle on the same order (unticked by default; priced on the server).
+  // Doc 13 moment 1: optional "Add Core CS" study bundle on the same order (unticked by default; priced on the server).
   addStudy: z.boolean().optional(),
 });
 
@@ -83,12 +83,12 @@ export async function POST(req: NextRequest) {
     amount = Math.max(100, amount - cr.discountPaise);
   }
 
-  // Study add-on: the Complete CS bundle price, added after any plan coupon (one discount per order applies to the plan).
+  // Study add-on: the Core CS bundle price, added after any plan coupon (one discount per order applies to the plan).
   let study: { packs: string[]; validUntil: string; amount: number } | null = null;
   if (parsed.data.addStudy) {
-    const complete = BUNDLES.find((b) => b.id === "complete")!;
+    const complete = BUNDLES.find((b) => b.id === "core")!;
     const owned = await ownedPacks(db, userId);
-    if (complete.packs.every((id) => owned.includes(id))) return NextResponse.json({ error: "You already have every Complete CS pack." }, { status: 409 });
+    if (complete.packs.every((id) => owned.includes(id))) return NextResponse.json({ error: "You already have every Core CS pack." }, { status: 409 });
     study = { packs: complete.packs, validUntil: await studyValidUntil(db, userId), amount: complete.pricePaise };
     amount += study.amount;
   }
@@ -119,5 +119,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Couldn't start checkout. Please try again.", code: `order:${error.code ?? ""}:${(error.message ?? "").slice(0, 120)}` }, { status: 503 });
   }
   if (couponUsed) await db.from("coupon_redemptions").insert({ code: couponUsed.code, user_id: userId, razorpay_order_id: order.id });
-  return NextResponse.json({ orderId: order.id, amount: order.amount, currency: order.currency, keyId: made.checkout.kind === "razorpay" ? made.checkout.keyId : null, checkout: made.checkout, planName: study ? `${plan.name} + Complete CS study` : plan.name, email });
+  return NextResponse.json({ orderId: order.id, amount: order.amount, currency: order.currency, keyId: made.checkout.kind === "razorpay" ? made.checkout.keyId : null, checkout: made.checkout, planName: study ? `${plan.name} + Core CS study` : plan.name, email });
 }

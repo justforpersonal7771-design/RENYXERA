@@ -200,6 +200,7 @@ const DiskLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { markSeen } from "@/lib/study/progress";
 import { bestBundleFor, chapterInfo, rupees } from "@/lib/study/packs";
+import { openStudyShop } from "@/store/use-study-shop-store";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { motion } from "motion/react";
@@ -379,7 +380,7 @@ function UnlockCard({ t, index, topics, href }: { t: Topic; index: number; topic
       <h2 className="mt-3 font-display text-2xl font-extrabold text-[var(--text-primary)]">{rest.length} more topic{rest.length === 1 ? "" : "s"} in this chapter</h2>
       <ol className="mt-3 space-y-1 text-sm text-[var(--text-primary)]">{rest.map((x, k) => <li key={x.id} className="flex gap-2"><span className="font-num font-bold text-[var(--text-secondary)]">{index + k + 1}.</span>{x.title}</li>)}</ol>
       <p className="mt-4 text-sm text-[var(--text-secondary)]">{info.pack ? `Every chapter of ${info.book?.title ?? "this book"} comes with the ${info.pack.name} pack (${rupees(info.pack.pricePaise)}, about ${info.pack.marks} marks a paper)${bundle ? `, or ${bundle.name} for ${rupees(bundle.pricePaise)} with ${bundle.packs.length - 1} more subjects` : ""}. ` : ""}Study packs are separate from Plus and Pro.</p>
-      <Link href="/study#packs" className="btn-main mt-4 inline-flex">See packs and bundles</Link>
+      <button type="button" onClick={() => openStudyShop(info.book ? `Unlock ${info.book.title}` : undefined)} className="btn-main mt-4 inline-flex">See packs and bundles</button>
     </section>
   );
 }
@@ -643,6 +644,12 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
       const line = box.top + box.height * 0.33;
       let cur = secs[0];
       for (const s of secs) { if (s.getBoundingClientRect().top <= line) cur = s; else break; }
+      // a topic whose heading has passed the line is the current one, even while its first section is still below it (the heading is sticky)
+      for (const tp of root.querySelectorAll<HTMLElement>("[data-topic]")) {
+        if (tp.getBoundingClientRect().top > line) break;
+        const first = tp.querySelector<HTMLElement>("[data-sec]");
+        if (first && (!cur || (cur.compareDocumentPosition(first) & Node.DOCUMENT_POSITION_FOLLOWING))) cur = first;
+      }
       if (cur) setCurrent((c) => (c === cur.id ? c : cur.id));
     };
     const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(pick); };

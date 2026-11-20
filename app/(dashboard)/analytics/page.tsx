@@ -23,6 +23,7 @@ import { MockAnalytics } from "@/components/analytics/mock-analytics";
 import { CoachInsights } from "@/components/analytics/coach-insights";
 import { KeyNumbers, SectionHead } from "@/components/analytics/key-numbers";
 import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
+import { StudyVsScoreCard } from "@/components/study/study-loop";
 import { TopicLadders } from "@/components/analytics/topic-ladders";
 import { GuestLock } from "@/components/auth/guest-lock";
 import { PaidScreen, TierGate } from "@/components/billing/tier-gate";
@@ -296,6 +297,7 @@ export default function AnalyticsDashboardPage() {
         {/* Where GATE's marks come from vs how you do there (expand a row for its most-asked topics). */}
         {/* The shape of your preparation: every subject on one full-width radar. */}
         {!loadingIntel && <Reveal><SubjectRadarCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>}
+        {!loadingIntel && <Reveal><StudyVsScoreCard subjects={dashboardMetrics?.subjectPerformance ?? []} /></Reveal>}
 
         {!loadingIntel && <SubjectShareList subjects={dashboardMetrics?.subjectPerformance ?? []} onPractise={practice} />}
 

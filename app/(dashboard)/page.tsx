@@ -38,6 +38,7 @@ import { DashboardHero, readinessOf } from "@/components/dashboard/dashboard-her
 import { ChallengeBanner } from "@/components/dashboard/challenge-banner";
 import { KpiStrip } from "@/components/dashboard/kpi-strip";
 import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
+import { StudyLoopCard } from "@/components/study/study-loop";
 
 // Everything below the hero is client-only and code-split.
 
@@ -230,6 +231,7 @@ export default function Home() {
       <div id="diagnostic" className="scroll-mt-24"><DiagnosticCard solved={solvedCount} /></div>
 
       {/* 4. Today: planner blocks, the day's missions, the study timer. */}
+      <StudyLoopCard subjects={dashboardMetrics?.subjectPerformance ?? []} pendingMistakes={pendingMistakesCount} />
       <TodayBlocksCard />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2"><TodayCard pendingMistakes={pendingMistakesCount} streak={streakDays} sessions={dashboardMetrics?.recentSessions ?? []} /></div>

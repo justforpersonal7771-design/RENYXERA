@@ -10,7 +10,7 @@ import { openCheckout } from "@/lib/billing/checkout-client";
 import { track } from "@/lib/growth/track";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useToastStore } from "@/store/use-toast-store";
-import { productPacks, rupees } from "@/lib/study/packs";
+import { bestBundleFor, bundleSum, productPacks, rupees } from "@/lib/study/packs";
 
 type Quote = { pricePaise: number; creditPaise: number; amountPaise: number };
 
@@ -68,6 +68,17 @@ export function useStudyCheckout(onBought: () => void) {
               {quote.creditPaise > 0 && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Credit for packs bought in the last 30 days</dt><dd className="font-num font-semibold text-emerald-700 dark:text-emerald-400">−{rupees(quote.creditPaise)}</dd></div>}
               <div className="flex justify-between border-t border-[var(--border)] pt-2"><dt className="font-bold">You pay</dt><dd className="font-num text-lg font-extrabold">{rupees(quote.amountPaise)}</dd></div>
             </dl>
+            {(() => {
+              const nb = info ? bestBundleFor(info.packs) : null; const diff = nb ? nb.pricePaise - quote.pricePaise : 0;
+              if (!nb || diff <= 0) return null;
+              return (
+                <div className="mt-3 rounded-2xl bg-[var(--tint-butter)] p-3 text-sm text-[var(--tint-butter-ink)]">
+                  <p className="font-extrabold">Add {nb.packs.length - (info?.packs.length ?? 0)} more subjects for {rupees(diff)} more</p>
+                  <p className="text-xs">{nb.name} is {rupees(nb.pricePaise)} for {nb.packs.length} subjects (separately {rupees(bundleSum(nb))}).</p>
+                  <button type="button" onClick={() => void start(`bundle:${nb.id}`)} className="mt-2 inline-flex h-8 items-center rounded-lg bg-[var(--btn)] px-3 text-xs font-bold text-[var(--btn-fg)]">Switch to {nb.name}</button>
+                </div>
+              );
+            })()}
             <ul className="mt-3 space-y-1 text-xs text-[var(--text-secondary)]">
               <li>• Opens {info?.packs.length === 1 ? "this subject" : `${info?.packs.length} subjects`} until the end of your GATE season (31 March IST).</li>
               <li>• Separate from Plus and Pro; one-time payment, no renewal.</li>

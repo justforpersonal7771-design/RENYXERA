@@ -12,6 +12,7 @@ import { Check, Crown, Loader2, Sparkles, X } from "lucide-react";
 import { PlansCompare } from "@/components/billing/plans-compare";
 import { startPurchaseTour } from "@/components/billing/post-purchase-tour";
 import { MentorRecharges } from "@/components/billing/mentor-recharges";
+import { StudyStrip } from "@/components/study/study-strip";
 import { BILLING_MODE, FREE_FOREVER, PLANS, TIER_FEATURES, TIER_RANK, comparePrice, formatPrice, planById, seasonPlan, seasonYears, upcomingSeasonYear, type PlanId } from "@/lib/billing/plans";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { useEntitlements, waitForTier } from "@/lib/billing/use-entitlements";
@@ -56,7 +57,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
   const pickPlan = (tier: "plus" | "pro") => (period === "season" ? seasonPlan(tier, seasonYear, serverNow()) : PLANS.find((p) => p.tier === tier && p.id.endsWith(period)))!;
   const [busy, setBusy] = useState<PlanId | null>(null);
   const [agreed, setAgreed] = useState(false);
-  // Doc 13 moment 1: optional Complete CS study bundle on the same order, never pre-ticked.
+  // Doc 13 moment 1: optional Core CS study bundle on the same order, never pre-ticked.
   const [addStudy, setAddStudy] = useState(false);
   // Multi-branch §9.2: the plan is locked to the account's branch; typing the paper code is the signal.
   const branchPaper = useAuthStore((s) => branchByCode(s.profile?.target_branch ?? "CSE")?.paper ?? "CS");
@@ -195,6 +196,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
 
       {period === "season" && <p className="text-center text-xs text-[var(--text-muted)]">One payment covers you until 31 March {seasonYear}, after results. It doesn&apos;t renew. The longer the runway, the lower the monthly cost.</p>}
 
+      <StudyStrip />
       <MentorRecharges compact={inModal} />
 
       {!inModal && <PlansCompare />}
@@ -211,7 +213,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           const cp = planById(confirm, serverNow())!;
           const up = cp.tier === "pro" && ent.tier === "plus";
           const credit = up ? Math.min(ent.upgradeCreditPaise, (cp.pricePaise ?? 0) - 100) : 0;
-          const complete = BUNDLES.find((b) => b.id === "complete")!;
+          const complete = BUNDLES.find((b) => b.id === "core")!;
           const total = Math.max(100, (cp.pricePaise ?? 0) - credit - (coupon?.discountPaise ?? 0)) + (addStudy ? complete.pricePaise : 0);
           const gold = cp.tier === "pro";
           return (
@@ -230,7 +232,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                 <dl className="mt-4 space-y-2 rounded-2xl bg-[var(--surface-secondary)]/60 p-4 text-sm">
                   <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">{cp.name}</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(cp.pricePaise)}</dd></div>
                   {coupon && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Coupon {coupon.code} ({coupon.label})</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">− {formatPrice(coupon.discountPaise)}</dd></div>}
-                  {addStudy && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Complete CS study bundle</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(complete.pricePaise)}</dd></div>}
+                  {addStudy && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Core CS study bundle</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(complete.pricePaise)}</dd></div>}
                   {credit > 0 && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Credit for unused Plus days</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">−{formatPrice(credit)}</dd></div>}
                   <div className="flex justify-between border-t border-[var(--border-subtle)] pt-2"><dt className="font-bold text-[var(--text-primary)]">You pay today</dt><dd className="font-num text-lg font-extrabold text-[var(--text-primary)]">{formatPrice(total)}</dd></div>
                   <p className="text-[11px] text-[var(--text-muted)]">{cp.periodDays} days of {gold ? "Pro" : "Plus"} from today · taxes included</p>
@@ -242,7 +244,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
                 </ul>
                 <label className="mt-4 flex items-start gap-2 rounded-xl border border-[var(--border)] p-3 text-xs text-[var(--text-secondary)] cursor-pointer">
                   <input type="checkbox" checked={addStudy} onChange={(e) => setAddStudy(e.target.checked)} className="mt-0.5 accent-violet-600" />
-                  <span><b className="text-[var(--text-primary)]">Add Complete CS study for {formatPrice(complete.pricePaise)}</b> (separately {formatPrice(packTotal(complete.packs))}). Every CS subject book until the end of your GATE season. Study is separate from {gold ? "Pro" : "Plus"}; the plan does not include it.</span>
+                  <span><b className="text-[var(--text-primary)]">Add Core CS study for {formatPrice(complete.pricePaise)}</b> (separately {formatPrice(packTotal(complete.packs))}). All nine core subject books until the end of your GATE season. Study is separate from {gold ? "Pro" : "Plus"}; the plan does not include it.</span>
                 </label>
                 <div className="mt-4">
                   <div className="flex gap-2">

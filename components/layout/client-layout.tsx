@@ -12,6 +12,7 @@ import { BottomTabBar } from "./bottom-tab-bar";
 import { startTimeSync } from "@/lib/time/server-time";
 import { PlanExpiryNotice } from "@/components/billing/plan-expiry-notice";
 import { UpgradeModalHost } from "@/components/billing/upgrade-modal";
+import { StudyShopHost } from "@/components/study/study-shop-modal";
 import { ChallengePromptHost } from "@/components/battles/challenge-prompt";
 import { PostPurchaseTour } from "@/components/billing/post-purchase-tour";
 import { SpacedRevisionSync } from "@/components/planner/spaced-revision-sync";
@@ -276,6 +277,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <TelegramActionsSync />
       <SpacedRevisionSync />
       <UpgradeModalHost />
+      <StudyShopHost />
       <ChallengePromptHost />
       <PostPurchaseTour />
       {!pathname?.startsWith("/exam/results") && <BottomTabBar />}

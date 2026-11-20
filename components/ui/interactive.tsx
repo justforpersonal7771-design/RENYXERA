@@ -95,9 +95,9 @@ export function RadialGauge({
 /** A surface that tilts gently toward the cursor in 3D. Pointer-only; touch and
  *  reduced-motion users get a plain box. */
 export function TiltCard({
-  children, className = "", wrapperClassName = "", max = 7, onClick, as = "div", title, ariaLabel,
+  children, className = "", wrapperClassName = "", max = 7, onClick, as = "div", title, ariaLabel, tint,
 }: {
-  children: ReactNode; className?: string; wrapperClassName?: string; max?: number; onClick?: () => void;
+  children: ReactNode; className?: string; wrapperClassName?: string; max?: number; onClick?: () => void; tint?: string;
   as?: "div" | "button"; title?: string; ariaLabel?: string;
 }) {
   const reduce = useReducedMotion();
@@ -142,6 +142,7 @@ export function TiltCard({
         onClick={onClick}
         title={title}
         aria-label={ariaLabel}
+        data-tint={tint}
         whileTap={onClick ? { scale: 0.97 } : undefined}
         style={reduce ? undefined : { rotateX: rx, rotateY: ry, transformStyle: "preserve-3d" }}
         className={`spotlight h-full w-full text-left outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${clickable ? "cursor-pointer" : ""} ${className}`}

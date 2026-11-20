@@ -7,8 +7,11 @@
  */
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { openStudyShop } from "@/store/use-study-shop-store";
+import { CS_SHELF } from "@/lib/study/catalog";
+import { firstChapterHref } from "@/lib/study/readiness";
 import { BookOpenText, X } from "lucide-react";
-import { bestBundleFor, packOfSubject, packTotal, rupees, type Pack } from "@/lib/study/packs";
+import { bestBundleFor, bookOfSubject, packOfSubject, packTotal, rupees, type Pack } from "@/lib/study/packs";
 import { useStudyAccess } from "@/lib/study/use-study-access";
 import { istDateStr } from "@/lib/time/ist";
 
@@ -31,12 +34,26 @@ export function StudyOffer({ moment, subjects, className = "" }: { moment: Offer
     // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only usage gate, read once after mount
     setReady(days >= (moment === "dashboard" ? 3 : 2) && !dismissed(moment));
   }, [moment]);
-  if (!ready || gone || access.loading || access.all) return null;
+  if (!ready || gone || access.loading) return null;
 
   const seen = new Set<string>(); const picks: { pack: Pack; name: string; pct?: number }[] = [];
-  for (const s of subjects) { const p = packOfSubject(s.name); if (p && !seen.has(p.id) && !access.packs.includes(p.id)) { seen.add(p.id); picks.push({ pack: p, name: s.name.replace(/\s*\(.*\)$/, ""), pct: s.pct }); } }
+  for (const s of subjects) { const p = packOfSubject(s.name); if (p && !access.all && !seen.has(p.id) && !access.packs.includes(p.id)) { seen.add(p.id); picks.push({ pack: p, name: s.name.replace(/\s*\(.*\)$/, ""), pct: s.pct }); } }
   const top = picks.slice(0, 2);
-  if (moment !== "purchase" && !top.length) return null;
+  if (moment !== "purchase" && !top.length) {
+    // nothing left to sell here: the student owns the pack (or is an admin), so point at the book instead
+    const hit = subjects.map((s) => ({ s, id: bookOfSubject(s.name) })).find((x) => x.id);
+    const book = hit?.id ? CS_SHELF.find((x) => x.id === hit.id) : null; const href = book ? firstChapterHref(book) : null;
+    if (!hit || !book || !href) return null;
+    const close2 = () => { try { localStorage.setItem(dismissKey(moment), String(Date.now())); } catch { /* storage off */ } setGone(true); };
+    return (
+      <aside aria-label="Revise in Study" className={`card-pastel relative flex flex-wrap items-center gap-3 p-4 pr-12 ${className}`} data-tint="mint">
+        <BookOpenText className="h-5 w-5 shrink-0 text-[var(--tint-mint-ink)]" aria-hidden />
+        <p className="min-w-0 flex-1 text-sm text-[var(--text-primary)]"><b>{moment === "mistakes" ? `Mistakes in ${hit.s.name.replace(/\s*\(.*\)$/, "")}?` : `Revise ${hit.s.name.replace(/\s*\(.*\)$/, "")}.`}</b> Read the lesson again, then retry the questions you missed.</p>
+        <Link href={href} className="pill-ink shrink-0">Open {book.title}</Link>
+        <button type="button" onClick={close2} aria-label="Dismiss suggestion" className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface)]"><X className="h-4 w-4" /></button>
+      </aside>
+    );
+  }
   const bundle = top.length ? bestBundleFor(top.map((t) => t.pack.id)) : null;
   const close = () => { try { localStorage.setItem(dismissKey(moment), String(Date.now())); } catch { /* storage off */ } setGone(true); };
 
@@ -44,7 +61,7 @@ export function StudyOffer({ moment, subjects, className = "" }: { moment: Offer
     : moment === "mistakes" ? `You keep missing questions in ${top[0].name}. Learn the topic properly:`
     : moment === "dashboard" ? `Your weakest subject right now is ${top[0].name}.`
     : `Your weakest subjects in this test: ${top.map((t) => (t.pct != null ? `${t.name} (${Math.round(t.pct)}%)` : t.name)).join(", ")}.`;
-  const offer = moment === "purchase" ? "Pick your weakest subject's pack, or Complete CS for every subject."
+  const offer = moment === "purchase" ? "Pick your weakest subject's pack, or Everything for the whole library."
     : top.length === 1 ? `The ${top[0].pack.name} pack is ${rupees(top[0].pack.pricePaise)}${bundle ? `, or ${bundle.name} for ${rupees(bundle.pricePaise)}` : ""}.`
     : `Both packs together are ${rupees(packTotal(top.map((t) => t.pack.id)))}${bundle ? `, or ${bundle.name} for ${rupees(bundle.pricePaise)}` : ""}.`;
 
@@ -52,7 +69,7 @@ export function StudyOffer({ moment, subjects, className = "" }: { moment: Offer
     <aside aria-label="Study pack suggestion" className={`card-pastel relative flex flex-wrap items-center gap-3 p-4 pr-12 ${className}`} data-tint="peach">
       <BookOpenText className="h-5 w-5 shrink-0 text-[var(--tint-peach-ink)]" aria-hidden />
       <p className="min-w-0 flex-1 text-sm text-[var(--text-primary)]"><b>{lead}</b> {offer} Study packs are separate from Plus and Pro.</p>
-      <Link href="/study#packs" className="pill-ink shrink-0">See study packs</Link>
+      <button type="button" onClick={() => openStudyShop(top[0] ? `${top[0].name} study pack` : undefined)} className="pill-ink shrink-0">See study packs</button>
       <button type="button" onClick={close} aria-label="Dismiss suggestion" className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface)]"><X className="h-4 w-4" /></button>
     </aside>
   );

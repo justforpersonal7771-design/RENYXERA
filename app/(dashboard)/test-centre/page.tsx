@@ -14,6 +14,9 @@ import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { summarizeSession, type Attempt } from "@/features/test-centre/model";
 import { MockStatusCard } from "@/components/dashboard/mock-status-card";
 import { TEST_CENTRE } from "@/lib/test-centre/brand";
+import { TiltCard } from "@/components/ui/interactive";
+import { StudyLoopCard } from "@/components/study/study-loop";
+import { useAnalyticsStore } from "@/store/use-analytics-store";
 
 const tile = "card-pastel group relative flex min-w-0 flex-col justify-between overflow-hidden p-5";
 const ink = "text-[var(--text-primary)]";
@@ -23,6 +26,8 @@ const Sticker = ({ children, tilt = "-rotate-2" }: { children: React.ReactNode; 
 
 export default function TestCentrePage() {
   const { mistakes, loadStudyData } = useStudyStore();
+  const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
+  useEffect(() => { void loadAnalytics(); }, [loadAnalytics]);
   const [attempts, setAttempts] = useState<Attempt[] | null>(null);
   useEffect(() => { void loadStudyData(); }, [loadStudyData]);
   useEffect(() => {
@@ -74,10 +79,10 @@ export default function TestCentrePage() {
           {/* Your four numbers, inside the mission card. */}
           <div className="relative mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4" aria-label="Your numbers">
             {stats.map((s) => (
-              <div key={s.l} data-tint={s.t} className="card-pastel wm-sm px-3 py-2">
+              <TiltCard key={s.l} tint={s.t} max={6} className="card-pastel wm-sm px-3 py-2">
                 <p className={`font-display text-2xl font-extrabold leading-none tabular-nums ${ink}`}>{s.v == null ? "-" : <><CountUp value={s.v} />{s.suffix}</>}</p>
                 <p className="mt-1 text-xs font-bold text-[var(--text-secondary)]">{s.l}</p>
-              </div>
+              </TiltCard>
             ))}
           </div>
         </section>
@@ -85,6 +90,8 @@ export default function TestCentrePage() {
           <div className="flex min-h-0 flex-1 flex-col [&>*]:flex-1">{/* one integrated card: status, next mocks, how it works */}<MockStatusCard withUpcoming /></div>
         </div>
       </div>
+
+      <StudyLoopCard className="order-4 lg:order-none" subjects={dashboardMetrics?.subjectPerformance ?? []} pendingMistakes={open} />
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
       <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[15rem]">
