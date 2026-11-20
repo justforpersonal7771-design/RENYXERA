@@ -8,7 +8,7 @@
  * chapter status; phones open an inline drawer under the shelf row. A reading desk on top: continue or start here,
  * search across subjects and chapters, and an availability filter.
  */
-import { BANK_SUBJECTS, packOfBook, rupees } from "@/lib/study/packs";
+import { BANK_SUBJECTS, BUNDLES, packOfBook, rupees } from "@/lib/study/packs";
 import { openStudyShop } from "@/store/use-study-shop-store";
 import { useStudyAccess } from "@/lib/study/use-study-access";
 import { useEffect, useMemo, useState } from "react";
@@ -232,7 +232,7 @@ export function Bookshelf() {
   return (
     <section aria-label="Study library" lang="en" className="space-y-5">
       {/* reading desk */}
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1.1fr)_minmax(0,0.75fr)]">
         <div className="card-pastel flex min-w-0 flex-col justify-between p-5 sm:p-6 lg:h-60" data-tint="butter">
           <div>
             <h1 className="font-display text-3xl font-extrabold tracking-[-0.02em] text-[var(--text-primary)] sm:text-4xl">The GATE CS library</h1>
@@ -246,20 +246,19 @@ export function Bookshelf() {
             </div>
           )}
         </div>
-        <div className="card-pastel flex min-h-0 min-w-0 flex-col gap-3 p-5 sm:p-6 lg:h-60" data-tint="peri">
+        <div className="card-pastel flex h-60 min-h-0 min-w-0 flex-col gap-3 p-5 sm:p-6" data-tint="peri">
           <label className="flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3">
             <Search className="h-4 w-4 text-[var(--text-muted)]" aria-hidden />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search subjects and chapters" aria-label="Search subjects and chapters" className="search-bare h-11 flex-1 bg-transparent text-[var(--text-primary)]" />
             {q && <button type="button" onClick={() => setQ("")} aria-label="Clear search" className="grid h-8 w-8 place-items-center"><X className="h-4 w-4" /></button>}
           </label>
-          <div className={`flex flex-wrap items-center gap-2 ${term ? "lg:hidden" : ""}`}>
+          <div className={`flex flex-wrap items-center gap-2 ${term ? "hidden" : ""}`}>
             <button type="button" aria-pressed={!onlyReady} onClick={() => setOnlyReady(false)} className={!onlyReady ? "pill-ink" : "pill-soft"}>All books</button>
             <button type="button" aria-pressed={onlyReady} onClick={() => setOnlyReady(true)} className={onlyReady ? "pill-ink" : "pill-soft"}>Ready to read</button>
             <span className="text-sm text-[var(--text-secondary)]">{hits} of {CS_SHELF.length} books</span>
-            <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="pill-ink ml-auto">Get books</button>
           </div>
           {term && (
-            <ul aria-label="Matching chapters" className="custom-scrollbar max-h-48 min-h-0 space-y-1 overflow-y-auto lg:max-h-none lg:flex-1">
+            <ul aria-label="Matching chapters" className="custom-scrollbar min-h-0 flex-1 space-y-1 overflow-y-auto">
               {CS_SHELF.flatMap((b) => b.chapters.filter((c) => b.title.toLowerCase().includes(term) || c.title.toLowerCase().includes(term)).map((c) => ({ b, c }))).slice(0, 12).map(({ b, c }) => (
                 <li key={b.id + c.id}>{c.href
                   ? <Link href={c.href} className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm hover:bg-[var(--surface-secondary)]"><span className="min-w-0 truncate"><b>{c.title}</b> <span className="text-[var(--text-secondary)]">· {b.title}</span></span><span className="shrink-0 font-bold">Open</span></Link>
@@ -268,6 +267,14 @@ export function Bookshelf() {
             </ul>
           )}
           {paper && paper !== "CS" && <p className="text-sm text-[var(--text-secondary)]">You are on GATE {paper}. Its shelf comes after CS; you can browse the CS books meanwhile.</p>}
+        </div>
+        <div className="card-pastel flex min-w-0 flex-col justify-between gap-3 p-5 sm:p-6 lg:h-60" data-tint="mint">
+          <div>
+            <p className="flex items-center gap-1.5 text-sm font-extrabold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" aria-hidden /> Study packs</p>
+            <p className="mt-1 font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)]">Open every chapter</p>
+            <p className="mt-1 text-sm text-[var(--text-secondary)] text-balance">Core CS from {rupees(BUNDLES.find((b) => b.id === "core")!.pricePaise)}, or the whole library for {rupees(BUNDLES.find((b) => b.id === "everything")!.pricePaise)}.</p>
+          </div>
+          <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="btn-main w-full">Get books</button>
         </div>
       </div>
 
