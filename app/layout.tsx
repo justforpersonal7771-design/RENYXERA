@@ -1,6 +1,6 @@
 import "@/lib/time/install-ist";
 import type {Metadata} from 'next';
-import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC, Jersey_15, Plus_Jakarta_Sans, Urbanist, DM_Sans, Inter, Bowlby_One, Lilita_One, Rubik, Work_Sans, Orbitron, Rajdhani, Audiowide, Exo_2, Share_Tech_Mono, Space_Mono, Playfair_Display, Lora, Silkscreen, DotGothic16, VT323, Chakra_Petch, Space_Grotesk, Archivo_Black, Outfit, Bricolage_Grotesque } from 'next/font/google';
+import { Manrope, Sora, Fraunces, JetBrains_Mono, Playball, Cinzel, Bruno_Ace_SC, Jersey_15, Plus_Jakarta_Sans, Urbanist, DM_Sans, Inter, Bowlby_One, Lilita_One, Rubik, Work_Sans, Orbitron, Rajdhani, Audiowide, Exo_2, Share_Tech_Mono, Space_Mono, Playfair_Display, Lora, Silkscreen, DotGothic16, VT323, Chakra_Petch, Space_Grotesk, Archivo_Black, Outfit } from 'next/font/google';
 import './globals.css'; // Global styles
 import './looks.css';
 import './looks-pro2.css'; // Design Studio Looks, batch 2
@@ -59,7 +59,6 @@ const fx16 = Silkscreen({ subsets: ['latin'], weight: '400', variable: '--font-s
 const fx17 = DotGothic16({ subsets: ['latin'], weight: '400', variable: '--font-dotgothic', display: 'swap', preload: false });
 const fx18 = VT323({ subsets: ['latin'], weight: '400', variable: '--font-vt323', display: 'swap', preload: false });
 const fx19 = Chakra_Petch({ subsets: ['latin'], weight: '500', variable: '--font-chakra', display: 'swap', preload: false });
-const fTile = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-tile', display: 'swap', preload: false });
 const brand = Bruno_Ace_SC({ subsets: ['latin'], weight: '400', variable: '--font-brand', display: 'swap' });
 
 export const metadata: Metadata = {
@@ -121,7 +120,7 @@ const STALE_GUARD = `(function(){function r(){try{var k="renyxera_stale_reload_a
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${luxe.variable} ${brand.variable} ${fTile.variable} ${fPixel.variable} ${fGrotesk.variable} ${fArchivo.variable} ${fOutfit.variable} ${fManropeOpt.variable} ${fSoraOpt.variable} ${fx0.variable} ${fx1.variable} ${fx2.variable} ${fx3.variable} ${fx4.variable} ${fx5.variable} ${fx6.variable} ${fx7.variable} ${fx8.variable} ${fx9.variable} ${fx10.variable} ${fx11.variable} ${fx12.variable} ${fx13.variable} ${fx14.variable} ${fx15.variable} ${fx16.variable} ${fx17.variable} ${fx18.variable} ${fx19.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${bodySans.variable} ${displaySans.variable} ${accentSerif.variable} ${mono.variable} ${script.variable} ${luxe.variable} ${brand.variable} ${fPixel.variable} ${fGrotesk.variable} ${fArchivo.variable} ${fOutfit.variable} ${fManropeOpt.variable} ${fSoraOpt.variable} ${fx0.variable} ${fx1.variable} ${fx2.variable} ${fx3.variable} ${fx4.variable} ${fx5.variable} ${fx6.variable} ${fx7.variable} ${fx8.variable} ${fx9.variable} ${fx10.variable} ${fx11.variable} ${fx12.variable} ${fx13.variable} ${fx14.variable} ${fx15.variable} ${fx16.variable} ${fx17.variable} ${fx18.variable} ${fx19.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOTSTRAP }} />
         <script dangerouslySetInnerHTML={{ __html: LOOK_BOOTSTRAP }} />
