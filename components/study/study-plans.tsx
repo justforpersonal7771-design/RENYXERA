@@ -8,7 +8,7 @@
  */
 import { useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, BookOpenText, Check } from "lucide-react";
+import { ArrowRight, Bot, BookOpenText, Check, FlaskConical, Highlighter, History, ListChecks, ScrollText, type LucideIcon } from "lucide-react";
 import { CS_SHELF } from "@/lib/study/catalog";
 import { BUILD_YOUR_OWN_OFF, BUNDLES, FREE_TOPICS, PACKS, bestBundleFor, bundleSum, customPrice, packTotal, perPack, rupees, type Bundle } from "@/lib/study/packs";
 import { useStudyCheckout } from "@/components/study/pack-checkout";
@@ -28,6 +28,15 @@ const readyOf = (id: string) => { const p = PACKS.find((x) => x.id === id)!; con
 /** The individual books inside some packs, in shelf order ("Linear Algebra, Probability & Calculus" becomes three books). */
 const booksOf = (ids: readonly string[]) => ids.flatMap((id) => PACKS.find((p) => p.id === id)?.books ?? []).map((b) => CS_SHELF.find((x) => x.id === b)?.title ?? b);
 const pct = (sum: number, price: number) => Math.round(((sum - price) / sum) * 100);
+/** What a pack really is: a study room, not a PDF. Every line is something the reader already has today. */
+const FEATURES: { I: LucideIcon; t: string; d: string; tint: string }[] = [
+  { I: FlaskConical, t: "Labs you can break", d: "Drag, step and tweak a live model in every topic. See the algorithm fail, then fix it.", tint: "mint" },
+  { I: ListChecks, t: "Quiz after every topic", d: "Check yourself with GATE-style questions. Instant answers, and the traps explained.", tint: "butter" },
+  { I: Highlighter, t: "Highlights and notes", d: "Select any line to save it. Your notes sit beside the lesson and stay with you.", tint: "sky" },
+  { I: Bot, t: "Ask the Mentor", d: "Stuck on a line? Ask without leaving the page. It knows what you are reading.", tint: "lilac" },
+  { I: ScrollText, t: "Past GATE questions", d: "The real PYQs for the topic, one tap away. Learn it, then see how GATE asked it.", tint: "rose" },
+  { I: History, t: "Remembers everything", d: "Resumes where you stopped, tracks what you read, and splits two chapters side by side.", tint: "peach" },
+];
 const B = (id: string) => BUNDLES.find((b) => b.id === id)!;
 
 export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { owned: string[]; all: boolean; onBought: () => void; initialView?: ShopView }) {
@@ -46,10 +55,10 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
     const sum = bundleSum(b); const have = b.packs.every(owns); const marks = b.packs.reduce((t, id) => t + (PACKS.find((p) => p.id === id)?.marks ?? 0), 0);
     const L = LOOK[look];
     return (
-      <motion.section key={b.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} className={`relative flex flex-col overflow-hidden rounded-3xl border ${big ? "p-7 sm:p-8" : "p-6"} ${L.ring}`}>
-        <span aria-hidden className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-[0.12]" style={{ background: L.deco }} />
+      <motion.section key={b.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 * i }} className={`relative flex flex-col overflow-hidden rounded-3xl border ${big ? "p-7 sm:p-8" : "p-6"} ${L.ring} shop-card shop-${look}`}>
+        <span aria-hidden className="shop-deco pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full opacity-[0.12]" style={{ background: L.deco }} />
         {tag && <span className="absolute -top-3 left-6 rounded-full border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] bg-[var(--tint-butter)] px-2.5 py-1 text-xs font-black text-[var(--tint-butter-ink)] shadow">{tag}</span>}
-        <p className={`${big ? "text-base" : "text-sm"} font-black ${L.kicker}`}>{b.name} · {booksOf(b.packs).length} {booksOf(b.packs).length === 1 ? "book" : "books"}</p>
+        <p className={`${big ? "text-base" : "text-sm"} font-black shop-kick ${L.kicker}`}>{b.name} · {booksOf(b.packs).length} {booksOf(b.packs).length === 1 ? "book" : "books"}</p>
         <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
           {sum > b.pricePaise && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-rose-500/70 decoration-2">{rupees(sum)}</span>}
           <span className={`${big ? "text-5xl" : "text-4xl"} font-extrabold text-[var(--text-primary)]`}><PriceRoll value={rupees(b.pricePaise)} /></span>
@@ -59,9 +68,9 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
         <p className="mt-1 text-balance text-xs font-semibold text-[var(--text-secondary)]">{sum > b.pricePaise ? `Just ${rupees(Math.round(b.pricePaise / booksOf(b.packs).length / 100) * 100)} a book instead of ${rupees(Math.round(sum / booksOf(b.packs).length / 100) * 100)}` : "One pack covers the whole section"} · about {marks.toFixed(1)} marks a paper</p>
         <p className="mt-1 text-balance text-xs text-[var(--text-muted)]">{b.note}</p>
         <ul className="mb-4 mt-3 flex flex-1 flex-wrap content-start gap-1.5" aria-label={`Subjects in ${b.name}`}>
-          {booksOf(b.packs).map((n) => <li key={n} className="inline-flex items-center rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-bold text-[var(--text-primary)] shadow-sm">{n}</li>)}
+          {booksOf(b.packs).map((n) => <li key={n} className="shop-chip inline-flex items-center rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-bold text-[var(--text-primary)] shadow-sm">{n}</li>)}
         </ul>
-        {nudge && <p className="mb-3 rounded-xl bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--text-primary)]">{nudge}</p>}
+        {nudge && <p className="shop-note mb-3 rounded-xl bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[var(--text-primary)]">{nudge}</p>}
         <button type="button" disabled={have} onClick={() => void checkout.start(`bundle:${b.id}`)} className={`mt-auto inline-flex h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-xl font-bold shadow-lg disabled:opacity-60 ${L.btn}`}>{have ? "You own all of these" : cta(`Get ${b.name}`)}</button>
       </motion.section>
     );
@@ -72,7 +81,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
       <header className="mx-auto max-w-3xl text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold text-amber-700 dark:text-amber-300"><BookOpenText className="h-3.5 w-3.5" /> Study packs</span>
         <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">Every GATE subject, <span className="grad-brand bg-clip-text text-transparent">book by book</span></h2>
-        <p className="mx-auto mt-3 max-w-xl text-balance text-[var(--text-secondary)]">Separate from Plus and Pro. One payment, no renewal, open until your GATE season ends. Every book opens with {FREE_TOPICS} free topics.</p>
+        <p className="mx-auto mt-3 max-w-xl text-balance text-[var(--text-secondary)]">Learn it, try it, test it, remember it. Separate from Plus and Pro, one payment, open until your GATE season ends. Every book opens with {FREE_TOPICS} free topics.</p>
         {owned.length > 0 && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="h-4 w-4" /> You own {owned.length} pack{owned.length === 1 ? "" : "s"}: {owned.map(packName).join(", ")}</p>}
         <div className="mt-6 inline-flex rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1" role="radiogroup" aria-label="Study pack options">
           {(["bundles", "single", "custom"] as const).map((v) => (
@@ -84,13 +93,25 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
         </div>
       </header>
 
+      <div>
+        <p className="mb-3 text-center font-display text-xl font-extrabold text-[var(--text-primary)]">Not a PDF. A study room.</p>
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map((f) => (
+            <li key={f.t} className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: `var(--tint-${f.tint})`, color: `var(--tint-${f.tint}-ink)` }}><f.I className="h-5 w-5" aria-hidden /></span>
+              <span className="min-w-0"><b className="block text-[var(--text-primary)]">{f.t}</b><span className="mt-0.5 block text-sm leading-snug text-[var(--text-secondary)]">{f.d}</span></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
       {view === "bundles" && (
         <div className="space-y-8">
           {/* the hero deal: the whole library */}
-          <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="relative grid gap-6 rounded-3xl border border-transparent bg-[var(--tint-butter)] p-6 shadow-[0_20px_50px_-28px_rgba(12,34,75,0.35)] sm:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:gap-10">
+          <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="shop-card shop-gold relative grid gap-6 rounded-3xl border border-transparent bg-[var(--tint-butter)] p-6 shadow-[0_20px_50px_-28px_rgba(12,34,75,0.35)] sm:p-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:gap-10">
             <span className="absolute -top-3 left-6 rounded-full border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] bg-[var(--surface)] px-2.5 py-1 text-xs font-black text-[var(--tint-butter-ink)] shadow">Best value</span>
             <div className="flex min-w-0 flex-col">
-              <p className="text-sm font-black text-amber-700 dark:text-amber-300">Everything · the whole library</p>
+              <p className="shop-kick text-sm font-black text-amber-700 dark:text-amber-300">Everything · the whole library</p>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-3 gap-y-1">
                 <span className="text-4xl font-extrabold text-[var(--text-primary)] sm:text-5xl"><PriceRoll value={rupees(everything.pricePaise)} /></span>
                 <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-rose-500/70 decoration-2">{rupees(bundleSum(everything))}</span>
@@ -104,10 +125,10 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
               {([["Core CS", core.packs, "rose"], ["Engineering Maths", maths.packs, "sky"], ["General Aptitude", ["apt"], "peri"]] as const).map(([label, ids, tint]) => {
                 const names = booksOf(ids);
                 return (
-                  <div key={label} className="relative overflow-hidden rounded-2xl p-4" style={{ background: `var(--tint-${tint})` }}>
-                    <span aria-hidden className="pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-[0.14]" style={{ background: `var(--tint-${tint}-ink)` }} />
-                    <p className="flex items-baseline gap-2 text-base font-extrabold" style={{ color: `var(--tint-${tint}-ink)` }}>{label}<span className="rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-black">{names.length} {names.length === 1 ? "book" : "books"}</span></p>
-                    <ul className="mt-2.5 flex flex-wrap gap-1.5">{names.map((n) => <li key={n} className="rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-bold text-[var(--text-primary)] shadow-sm">{n}</li>)}</ul>
+                  <div key={label} className={`shop-card shop-${tint === "sky" ? "silver" : tint} relative overflow-hidden rounded-2xl p-4`} style={{ background: `var(--tint-${tint})` }}>
+                    <span aria-hidden className="shop-deco pointer-events-none absolute -right-6 -top-6 h-24 w-24 rounded-full opacity-[0.14]" style={{ background: `var(--tint-${tint}-ink)` }} />
+                    <p className="shop-kick flex items-baseline gap-2 text-base font-extrabold" style={{ color: `var(--tint-${tint}-ink)` }}>{label}<span className="shop-chip rounded-full bg-[var(--surface)] px-2 py-0.5 text-xs font-black">{names.length} {names.length === 1 ? "book" : "books"}</span></p>
+                    <ul className="mt-2.5 flex flex-wrap gap-1.5">{names.map((n) => <li key={n} className="shop-chip rounded-full bg-[var(--surface)] px-2.5 py-1 text-xs font-bold text-[var(--text-primary)] shadow-sm">{n}</li>)}</ul>
                   </div>
                 );
               })}

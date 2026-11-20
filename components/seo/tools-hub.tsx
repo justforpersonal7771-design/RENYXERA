@@ -1,12 +1,14 @@
 "use client";
 
 /**
- * Tools hub (researched: task-based, verb-led entry points + master-detail, instead of a flat grid of equal cards).
- * Left: three questions the student arrives with. Right: the tools that answer the chosen one, one featured and the rest as rows.
+ * Tools hub (researched, Nov 2026: task-based verb-led entry points; bento grids work when tile sizes carry meaning, so one hero tool
+ * per intent is large and the rest are small; dark is a first-class mode). Top: three questions the student arrives with as a segmented
+ * control. Below: the tools that answer the chosen one as a bento (one hero tile, the others stacked).
  * Every panel stays in the DOM (inactive ones are `hidden`) so every tool link is still in the server-rendered HTML.
  */
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "motion/react";
 import { ArrowRight, BookOpen, Calculator, CalendarDays, Download, FileText, Flame, LineChart, type LucideIcon } from "lucide-react";
 import { TOOLS, type ToolEntry } from "@/lib/seo/tools";
 import { WordReveal } from "@/components/ui/word-reveal";
@@ -30,64 +32,69 @@ export function ToolsHub() {
     if (d) { e.preventDefault(); setSel(INTENTS[(i + d + INTENTS.length) % INTENTS.length].id); }
   };
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-17rem)]">
-      <header>
-        <span className="inline-block -rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Tools</span>
-        <h1 className="mt-2 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl"><WordReveal text="What do you want to do?" /></h1>
+    <div className="flex w-full flex-col gap-5">
+      <header className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <span className="inline-block -rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Tools</span>
+          <h1 className="mt-2 font-display text-3xl font-extrabold text-[var(--text-primary)] sm:text-4xl"><WordReveal text="What do you want to do?" /></h1>
+        </div>
+        <p className="max-w-sm text-sm text-[var(--text-secondary)] text-balance">Pick what you are trying to do. The tools that help are right below.</p>
       </header>
 
-      <div className="grid flex-1 grid-cols-[minmax(0,1fr)] gap-0 lg:grid-cols-[minmax(0,19rem)_minmax(0,1fr)]">
-        <div role="tablist" aria-label="What do you want to do" aria-orientation="vertical" onKeyDown={onKey} className="flex items-end gap-2 lg:flex-col lg:items-stretch lg:justify-center lg:gap-3">
-          {INTENTS.map((it) => {
-            const on = it.id === sel;
-            return (
-              <button key={it.id} data-edge={it.id === INTENTS[0].id ? "first" : it.id === INTENTS[INTENTS.length - 1].id ? "last" : undefined} role="tab" type="button" id={`tools-tab-${it.id}`} aria-selected={on} aria-controls={`tools-panel-${it.id}`} tabIndex={on ? 0 : -1} onClick={() => setSel(it.id)} data-tint={it.tint}
-                style={on ? { background: `var(--tint-${it.tint})`, ["--tab-tint" as string]: `var(--tint-${it.tint})` } : undefined}
-                className={`card-pastel relative flex min-w-0 flex-1 cursor-pointer flex-col items-start p-3 text-left lg:justify-center lg:p-4 ${on ? "z-[1] !shadow-none max-lg:-mb-px max-lg:rounded-b-none max-lg:pb-5 tools-tab-on lg:-mr-[2px] lg:!rounded-r-none lg:!border-r-0 lg:pr-6" : "opacity-75 hover:opacity-100 max-lg:mb-2 lg:mr-4"}`}>
-                <span className="hidden text-[11px] font-extrabold uppercase tracking-wide text-[var(--text-muted)] lg:block">{it.hrefs.length} tools</span>
-                <span className="font-display text-sm font-extrabold leading-tight text-[var(--text-primary)] lg:mt-1 lg:text-xl">{it.verb}</span>
-                <span className="mt-1 hidden text-sm text-[var(--text-secondary)] lg:block">{it.promise}</span>
-              </button>
-            );
-          })}
-        </div>
+      <div role="tablist" aria-label="What do you want to do" onKeyDown={onKey} className="grid grid-cols-1 gap-2 rounded-[28px] border border-[var(--border)] bg-[var(--surface)] p-2 sm:grid-cols-3">
+        {INTENTS.map((it) => {
+          const on = it.id === sel;
+          return (
+            <button key={it.id} role="tab" type="button" id={`tools-tab-${it.id}`} aria-selected={on} aria-controls={`tools-panel-${it.id}`} tabIndex={on ? 0 : -1} onClick={() => setSel(it.id)}
+              className="group relative flex min-w-0 cursor-pointer items-center gap-3 rounded-[22px] p-3.5 text-left transition-colors sm:p-4">
+              {on && <motion.span layoutId="tools-intent-pill" aria-hidden className="absolute inset-0 rounded-[22px] border-2" style={{ background: `var(--tint-${it.tint})`, borderColor: `var(--tint-${it.tint}-ink)` }} transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+              <span className="relative grid h-11 w-11 shrink-0 place-items-center rounded-2xl font-display text-lg font-extrabold" style={{ background: on ? `var(--tint-${it.tint}-ink)` : `var(--tint-${it.tint})`, color: on ? `var(--tint-${it.tint})` : `var(--tint-${it.tint}-ink)` }}>{it.hrefs.length}</span>
+              <span className="relative min-w-0">
+                <span className="block font-display text-lg font-extrabold leading-tight text-[var(--text-primary)]">{it.verb}</span>
+                <span className="mt-0.5 block text-sm leading-snug text-[var(--text-secondary)] max-sm:hidden">{it.promise}</span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
-        <div className="min-w-0">
-          {INTENTS.map((it) => {
-            const tools = it.hrefs.map(find), [lead, ...rest] = tools, LeadIcon = lead.href === "/downloads" ? Download : ICONS[lead.icon];
-            return (
-              <section key={it.id} role="tabpanel" id={`tools-panel-${it.id}`} aria-labelledby={`tools-tab-${it.id}`} hidden={it.id !== sel} data-tint={it.tint}
-                style={{ background: `var(--tint-${it.tint})` }}
-                className={`card-well h-full grid-cols-[minmax(0,1fr)] gap-4 p-4 data-[open=true]:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] sm:p-5 ${it.id === INTENTS[0].id ? "max-lg:rounded-tl-none lg:!rounded-tl-none" : ""} ${it.id === INTENTS[INTENTS.length - 1].id ? "lg:!rounded-bl-none" : ""} ${it.id === INTENTS[INTENTS.length - 1].id ? "max-lg:rounded-tr-none" : ""}`} data-open={it.id === sel}>
-                <Link href={bh(lead.href)} className="group relative flex min-w-0 flex-col overflow-hidden rounded-3xl bg-[var(--surface)]/70 p-5 transition-transform hover:-translate-y-0.5">
-                  <LeadIcon aria-hidden className="pointer-events-none absolute bottom-3 right-3 h-24 w-24 -rotate-12 text-[var(--text-primary)] opacity-[0.06] transition-transform duration-300 group-hover:rotate-0 group-hover:scale-110" />
-                  <span className="inline-block self-start rotate-2 rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Start here</span>
-                  <span className="mt-3 block font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)]">{lead.title}</span>
-                  <span className="mt-1 block text-[var(--text-secondary)]">{lead.blurb}</span>
-                  <span className="flex-1" />
-                  <span className="pill-ink mt-4 inline-flex self-start">Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
-                </Link>
-                <ul className="flex min-w-0 flex-col gap-3">
-                  {rest.map((t) => {
-                    const Icon = t.href === "/downloads" ? Download : ICONS[t.icon];
-                    return (
-                      <li key={t.href} className="flex-1">
-                        <Link href={bh(t.href)} className="group flex h-full items-center gap-3 rounded-3xl bg-[var(--surface)]/70 p-4 transition-transform hover:-translate-y-0.5 hover:bg-[var(--surface)]">
-                          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl text-[var(--text-primary)]" style={{ background: `var(--tint-${it.tint})` }}><Icon className="h-6 w-6" /></span>
-                          <span className="min-w-0 flex-1">
-                            <span className="block font-display text-base font-extrabold text-[var(--text-primary)]">{t.title}</span>
-                            <span className="mt-0.5 line-clamp-2 block text-sm leading-snug text-[var(--text-secondary)]">{t.blurb}</span>
-                          </span>
-                          <ArrowRight className="h-4 w-4 shrink-0 text-[var(--text-muted)] transition-transform group-hover:translate-x-1" aria-hidden />
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            );
-          })}
-        </div>
+      <div className="min-w-0">
+        {INTENTS.map((it) => {
+          const tools = it.hrefs.map(find), [lead, ...rest] = tools, LeadIcon = lead.href === "/downloads" ? Download : ICONS[lead.icon];
+          const ink = `var(--tint-${it.tint}-ink)`, tint = `var(--tint-${it.tint})`;
+          return (
+            <section key={it.id} role="tabpanel" id={`tools-panel-${it.id}`} aria-labelledby={`tools-tab-${it.id}`} hidden={it.id !== sel} className="hub-in grid gap-4 lg:min-h-[22rem] lg:grid-cols-12">
+              <Link href={bh(lead.href)} className="group relative flex min-w-0 flex-col overflow-hidden rounded-[28px] border p-6 transition-transform hover:-translate-y-0.5 sm:p-8 lg:col-span-7"
+                style={{ background: `linear-gradient(145deg, ${tint} 0%, color-mix(in srgb, ${tint} 70%, ${ink}) 130%)`, borderColor: `color-mix(in srgb, ${ink} 35%, transparent)` }}>
+                <span aria-hidden className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full opacity-20 blur-2xl" style={{ background: ink }} />
+                <LeadIcon aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 h-56 w-56 -rotate-12 opacity-[0.09] transition-transform duration-500 group-hover:rotate-0 group-hover:scale-105" style={{ color: ink }} />
+                <span className="relative inline-flex self-start rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] px-2.5 py-0.5 text-xs font-extrabold text-[var(--text-primary)]">Start here</span>
+                <span className="relative mt-4 block font-display text-3xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-4xl">{lead.title}</span>
+                <span className="relative mt-2 block max-w-md text-[var(--text-secondary)] sm:text-lg">{lead.blurb}</span>
+                <span className="relative flex-1" />
+                <span className="pill-ink relative mt-6 inline-flex self-start">Open <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" /></span>
+              </Link>
+              <ul className="flex min-w-0 flex-col gap-3 lg:col-span-5">
+                {rest.map((r) => {
+                  const Icon = r.href === "/downloads" ? Download : ICONS[r.icon];
+                  return (
+                    <li key={r.href} className="flex-1">
+                      <Link href={bh(r.href)} className="group relative flex h-full items-center gap-4 overflow-hidden rounded-[24px] border border-[var(--border)] bg-[var(--surface)] p-4 transition-all hover:-translate-y-0.5 hover:shadow-lg sm:p-5">
+                        <span aria-hidden className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-0 blur-xl transition-opacity group-hover:opacity-30" style={{ background: ink }} />
+                        <span className="relative grid h-14 w-14 shrink-0 place-items-center rounded-2xl" style={{ background: tint, color: ink }}><Icon className="h-7 w-7" /></span>
+                        <span className="relative min-w-0 flex-1">
+                          <span className="block font-display text-lg font-extrabold leading-tight text-[var(--text-primary)]">{r.title}</span>
+                          <span className="mt-0.5 line-clamp-2 block text-sm leading-snug text-[var(--text-secondary)]">{r.blurb}</span>
+                        </span>
+                        <span className="hub-chip relative grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--border)] text-[var(--text-primary)] transition-colors" style={{ ["--hub-ink" as string]: ink }}><ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden /></span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          );
+        })}
       </div>
     </div>
   );
