@@ -2406,3 +2406,13 @@ body[data-lesson-sheet] .lesson-dock { display: none; }
 #app-scroll[data-section="sky"] { --sb-ink: var(--tint-sky-ink); }
 #app-scroll[data-section="rose"] { --sb-ink: var(--tint-rose-ink); }
 #app-scroll[data-section="lilac"] { --sb-ink: var(--tint-lilac-ink); }
+
+/* Tools hub: the open tab flows into its panel with curved (concave) joins, like a folder tab. The join colour is the panel's own. */
+@media (min-width: 1024px) {
+  .tools-tab-on { --fillet: var(--tab-tint); }
+  .dark .tools-tab-on { --fillet: #171a21; }
+  .tools-tab-on::before, .tools-tab-on::after { content: ""; position: absolute; right: 0; width: 22px; height: 22px; pointer-events: none; z-index: 2; }
+  .tools-tab-on::before { top: -22px; background: radial-gradient(circle at 0 0, transparent 21px, var(--fillet) 22px); }
+  .tools-tab-on::after { bottom: -22px; background: radial-gradient(circle at 0 100%, transparent 21px, var(--fillet) 22px); }
+  .tools-tab-on[data-edge="first"]::before, .tools-tab-on[data-edge="last"]::after { display: none; }
+}
