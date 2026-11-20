@@ -37,7 +37,7 @@ export function UpgradeModalHost() {
           <p className="inline-flex min-w-0 items-center gap-2 text-sm font-extrabold text-[var(--text-primary)]"><Sparkles className="h-4 w-4 shrink-0 text-amber-500" aria-hidden /> <span className="truncate">{reason ?? "Choose your plan"}</span></p>
           <button type="button" onClick={close} aria-label="Close" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-[var(--text-muted)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)] cursor-pointer"><X className="h-4 w-4" /></button>
         </div>
-        {plus && pro && <p className="border-b border-[var(--border)] bg-[var(--tint-butter)] px-5 py-2 text-xs font-semibold text-[var(--tint-butter-ink)]">Plus is about {plus} a day and Pro about {pro} a day. One payment, no auto-renewal.</p>}
+        {plus && pro && <p className="plan-gold plan-kicker border-b border-[var(--border)] bg-[var(--surface-secondary)] px-5 py-2 text-xs font-semibold">Plus is about {plus} a day and Pro about {pro} a day. One payment, no auto-renewal.</p>}
         <div className="overflow-y-auto overscroll-contain p-4 sm:p-6 custom-scrollbar"><PlansContent inModal onDone={close} /></div>
       </div>
     </div>,

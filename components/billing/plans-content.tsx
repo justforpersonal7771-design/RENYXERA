@@ -26,8 +26,8 @@ import { serverNow } from "@/lib/time/server-time";
 import { openCheckout } from "@/lib/billing/checkout-client";
 
 const LOOK = {
-  plus: { ring: "border-transparent bg-[var(--tint-sky)]", kicker: "text-slate-600 dark:text-slate-300", btn: "bg-[var(--tint-sky)] text-[var(--tint-sky-ink)] border border-[color-mix(in_srgb,var(--tint-sky-ink)_25%,transparent)] shadow-slate-500/30", metal: "silver" as const, label: "Silver" },
-  pro: { ring: "border-transparent bg-[var(--tint-butter)] shadow-[0_20px_50px_-28px_rgba(12,34,75,0.35)]", kicker: "text-amber-700 dark:text-amber-300", btn: "bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)]", metal: "gold" as const, label: "Gold" },
+  plus: { ring: "plan-card plan-silver", kicker: "plan-kicker", btn: "plan-cta plan-silver", metal: "silver" as const, label: "Silver" },
+  pro: { ring: "plan-card plan-gold", kicker: "plan-kicker", btn: "plan-cta plan-gold", metal: "gold" as const, label: "Gold" },
 };
 
 /**
@@ -164,14 +164,14 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
           const daysLeft = upgrading && ent.validUntil ? Math.max(0, Math.floor((Date.parse(ent.validUntil) - serverNow()) / 86400_000)) : 0;
           return (
             <motion.section key={tier} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.06 * (i + 1) }} className={`spot-host relative flex flex-col rounded-3xl p-6 border ${look.ring}`} onPointerMove={spot}><span aria-hidden className="spot-layer" />
-              {tier === "pro" && <span className="absolute -top-3 left-6 px-2.5 py-1 rounded-full bg-[var(--tint-butter)] text-[var(--tint-butter-ink)] border border-[color-mix(in_srgb,var(--tint-butter-ink)_25%,transparent)] text-xs font-black tracking-normal shadow">Most loved</span>}
+              {tier === "pro" && <span className="plan-badge plan-gold absolute top-3.5 right-[4.75rem] z-[2] px-2.5 py-1 rounded-full text-xs font-black tracking-normal">Most loved</span>}
               <div className="flex items-center justify-between">
                 <p className={`text-sm font-black tracking-normal ${look.kicker}`}>{tier === "pro" ? "Pro" : "Plus"} · {look.label}</p>
                 <ProCrown metal={look.metal} className="is-inline" />
               </div>
               <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
                 {cmp && <span className="text-lg font-bold text-[var(--text-muted)] line-through decoration-2 decoration-rose-500/70">{formatPrice(cmp.wasPaise)}</span>}
-                <span className="text-3xl font-extrabold text-[var(--text-primary)]"><PriceRoll value={formatPrice(plan.pricePaise)} /></span>
+                <span className="plan-price text-3xl font-extrabold"><PriceRoll value={formatPrice(plan.pricePaise)} /></span>
                 {plan.pricePaise != null && <span className="text-sm font-semibold text-[var(--text-muted)]">{plan.periodLabel}</span>}
                 {cmp && <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 text-xs font-black tracking-normal">Save {cmp.savePct}%</span>}
               </div>

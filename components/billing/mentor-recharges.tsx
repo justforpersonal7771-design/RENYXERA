@@ -105,7 +105,7 @@ export function MentorRecharges(_props: { compact?: boolean }) {
           );
         })}
       </div>
-      <p className="mt-3 text-[11px] text-[var(--text-muted)]">A short question uses about 1.5K tokens. Long plans and long chats use more.{live ? " Payments are processed by Razorpay." : " No payment is taken yet."}</p>
+      <p className="mt-3 text-[11px] text-[var(--text-muted)]">A short question uses about 1.5K tokens. Long plans and long chats use more.{live ? " Payments are processed securely by our payment partner." : " No payment is taken yet."}</p>
     </section>
   );
 }
