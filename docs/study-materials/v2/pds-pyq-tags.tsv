@@ -1,0 +1,100 @@
+id	type	marks	bank_topic	lesson	book_chapter	key_check
+2026_FN_Q23	MSQ	1	BSTs & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2026_FN_Q33	NAT	1	Linked Lists & Binary Trees	D7	12 Trees and binary search trees	re-derived by hand
+2026_FN_Q34	NAT	1	Functions, Parameter Passing, Scope Rules, Recursion	C7	03 Functions, scope and storage	re-derived by hand
+2026_FN_Q39	MCQ	2	Linked Lists & Binary Trees	D3	10 Linked lists	re-derived by hand
+2026_FN_Q40	MCQ	2	BSTs & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2026_FN_Q61	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2026_FN_Q62	NAT	2	BSTs & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2026_AN_Q12	MCQ	1	Linked Lists & Binary Trees	D7	12 Trees and binary search trees	re-derived by hand
+2026_AN_Q17	MCQ	1	Dynamic Memory Allocation & File Handling	C15	08 Structures and dynamic memory	re-derived by hand
+2026_AN_Q19	MCQ	1	Functions, Parameter Passing, Scope Rules, Recursion	C6	03 Functions, scope and storage	needs figure check
+2026_AN_Q49	MSQ	2	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2026_AN_Q50	MSQ	2	Abstract Data Types (ADTs), Stacks, Queues	D4	11 Stacks and queues	re-derived by hand
+2026_AN_Q60	NAT	2	Pointers, Multi-Dimensional Arrays, Structures	C10	06 Pointers	re-derived by hand
+2026_AN_Q61	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2025_FN_Q26	MSQ	1	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2025_FN_Q34	NAT	1	Pointers, Multi-Dimensional Arrays, Structures	C10	06 Pointers	re-derived by hand
+2025_FN_Q35	NAT	1	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2025_FN_Q61	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C11	06 Pointers	re-derived by hand
+2025_FN_Q62	NAT	2	Linked Lists & Binary Trees	D3	10 Linked lists	needs figure check
+2025_FN_Q63	NAT	2	Data Types, Syntax, Control Structures, Loops	C19	09 Reading code: mystery functions, prediction	re-derived by hand
+2025_AN_Q13	MCQ	1	Linked Lists & Binary Trees	D7	12 Trees and binary search trees	re-derived by hand
+2025_AN_Q19	MCQ	1	Pointers, Multi-Dimensional Arrays, Structures	C12	07 Strings	re-derived by hand
+2025_AN_Q33	NAT	1	Data Types, Syntax, Control Structures, Loops	C19	09 Reading code: mystery functions, prediction	re-derived by hand
+2025_AN_Q35	NAT	1	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2025_AN_Q38	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D15	15 Maths toolkit and choosing a structure	re-derived by hand
+2025_AN_Q45	MSQ	2	Abstract Data Types (ADTs), Stacks, Queues	D4	11 Stacks and queues	re-derived by hand
+2025_AN_Q62	NAT	2	Pointers, Multi-Dimensional Arrays, Structures	C11	06 Pointers	re-derived by hand
+2025_AN_Q63	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C6	03 Functions, scope and storage	re-derived by hand
+2024_FN_Q21	MCQ	1	Data Types, Syntax, Control Structures, Loops	C5	02 Operators, decisions and loops	re-derived by hand
+2024_FN_Q27	MCQ	1	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2024_FN_Q30	NAT	1	Data Types, Syntax, Control Structures, Loops	C3	02 Operators, decisions and loops	needs figure check
+2024_FN_Q42	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2024_FN_Q54	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2024_FN_Q47	MSQ	2	Functions, Parameter Passing, Scope Rules, Recursion	C5	02 Operators, decisions and loops	re-derived by hand
+2024_AN_Q21	MCQ	1	Functions, Parameter Passing, Scope Rules, Recursion	C6	03 Functions, scope and storage	re-derived by hand
+2024_AN_Q19	MSQ	1	Pointers, Multi-Dimensional Arrays, Structures	C12	07 Strings	re-derived by hand
+2024_AN_Q50	MCQ	2	Pointers, Multi-Dimensional Arrays, Structures	C11	06 Pointers	re-derived by hand
+2024_AN_Q40	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2024_AN_Q62	MCQ	2	Data Types, Syntax, Control Structures, Loops	C19	09 Reading code: mystery functions, prediction	re-derived by hand
+2024_AN_Q65	MSQ	2	Abstract Data Types (ADTs), Stacks, Queues	D4	11 Stacks and queues	re-derived by hand
+2023_FN_Q12	MCQ	1	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2023_FN_Q13	MCQ	1	Linked Lists & Binary Trees	D3	10 Linked lists	re-derived by hand
+2023_FN_Q35	NAT	1	Functions, Parameter Passing, Scope Rules, Recursion	C7	03 Functions, scope and storage	re-derived by hand
+2023_FN_Q36	MCQ	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	needs figure check
+2023_FN_Q46	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2023_FN_Q47	MCQ	2	Functions, Parameter Passing, Scope Rules, Recursion	D7	12 Trees and binary search trees	needs figure check
+2023_FN_Q59	NAT	2	Abstract Data Types (ADTs), Stacks, Queues	D5	11 Stacks and queues	re-derived by hand
+2022_FN_Q15	MCQ	1	Linked Lists & Binary Trees	D3	10 Linked lists	re-derived by hand
+2022_FN_Q21	MCQ	1	Pointers, Multi-Dimensional Arrays, Structures	C10	06 Pointers	re-derived by hand
+2022_FN_Q28	NAT	1	Binary Search Trees (BSTs) & Binary Heaps	D7	12 Trees and binary search trees	re-derived by hand
+2022_FN_Q43	MCQ	2	Pointers, Multi-Dimensional Arrays, Structures	C9	05 Arrays	re-derived by hand
+2022_FN_Q44	MCQ	2	Data Types, Syntax, Control Structures, Loops	C3	02 Operators, decisions and loops	re-derived by hand
+2022_FN_Q62	NAT	2	Abstract Data Types (ADTs), Stacks, Queues	D5	11 Stacks and queues	needs figure check
+2021_FN_Q62	MCQ	1	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2021_FN_Q63	MCQ	1	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2021_FN_Q43	NAT	1	Abstract Data Types (ADTs), Stacks, Queues	D5	11 Stacks and queues	re-derived by hand
+2021_FN_Q58	MCQ	2	Data Types, Syntax, Control Structures, Loops	C3	02 Operators, decisions and loops	re-derived by hand
+2021_FN_Q33	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C19	09 Reading code: mystery functions, prediction	re-derived by hand
+2021_AN_Q21	MCQ	1	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2021_AN_Q52	MCQ	1	Pointers, Multi-Dimensional Arrays, Structures	C11	06 Pointers	re-derived by hand
+2021_AN_Q47	NAT	1	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2021_AN_Q35	MCQ	2	Pointers, Multi-Dimensional Arrays, Structures	C15	08 Structures and dynamic memory	re-derived by hand
+2021_AN_Q48	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2020_FN_Q20	MCQ	1	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2020_FN_Q23	MCQ	1	Binary Search Trees (BSTs) & Binary Heaps	D9	12 Trees and binary search trees	re-derived by hand
+2020_FN_Q15	MCQ	1	Linked Lists & Binary Trees	D3	10 Linked lists	re-derived by hand
+2020_FN_Q16	NAT	1	Pointers, Multi-Dimensional Arrays, Structures	C11	06 Pointers	re-derived by hand
+2020_FN_Q47	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2020_FN_Q48	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2020_FN_Q36	NAT	2	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2020_FN_Q42	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C19	09 Reading code: mystery functions, prediction	re-derived by hand
+2019_FN_Q24	NAT	1	Functions, Parameter Passing, Scope Rules, Recursion	C6	03 Functions, scope and storage	re-derived by hand
+2019_FN_Q15	NAT	1	Pointers, Multi-Dimensional Arrays, Structures	C11	06 Pointers	re-derived by hand
+2019_FN_Q40	MCQ	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2019_FN_Q52	MCQ	2	Functions, Parameter Passing, Scope Rules, Recursion	C7	03 Functions, scope and storage	re-derived by hand
+2019_FN_Q38	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2019_FN_Q48	NAT	2	Data Types, Syntax, Control Structures, Loops	C5	02 Operators, decisions and loops	re-derived by hand
+2019_FN_Q65	NAT	2	Pointers, Multi-Dimensional Arrays, Structures	C11	06 Pointers	re-derived by hand
+2018_FN_Q12	MCQ	1	Pointers, Multi-Dimensional Arrays, Structures	C14	08 Structures and dynamic memory	re-derived by hand
+2018_FN_Q13	MCQ	1	Abstract Data Types (ADTs), Stacks, Queues	D5	11 Stacks and queues	re-derived by hand
+2018_FN_Q30	NAT	1	Linked Lists & Binary Trees	D7	12 Trees and binary search trees	re-derived by hand
+2018_FN_Q31	NAT	1	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2018_FN_Q39	MCQ	2	Pointers, Multi-Dimensional Arrays, Structures	C13	06 Pointers	re-derived by hand
+2018_FN_Q56	NAT	2	Binary Search Trees (BSTs) & Binary Heaps	D10	13 Binary heaps	re-derived by hand
+2017_FN_Q33	MCQ	1	Binary Search Trees (BSTs) & Binary Heaps	D7	12 Trees and binary search trees	re-derived by hand
+2017_FN_Q35	MCQ	1	Linked Lists & Binary Trees	D3	10 Linked lists	re-derived by hand
+2017_FN_Q32	MCQ	1	Dynamic Memory Allocation & File Handling	C15	08 Structures and dynamic memory	re-derived by hand
+2017_FN_Q64	MCQ	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2017_FN_Q57	MCQ	2	Functions, Parameter Passing, Scope Rules, Recursion	C8	04 Recursion	re-derived by hand
+2017_FN_Q58	NAT	2	Data Types, Syntax, Control Structures, Loops	C2	01 Programming in C: the basics	re-derived by hand
+2017_FN_Q43	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C7	03 Functions, scope and storage	re-derived by hand
+2017_AN_Q17	MCQ	1	Dynamic Memory Allocation & File Handling	C7	03 Functions, scope and storage	re-derived by hand
+2017_AN_Q20	MCQ	1	Abstract Data Types (ADTs), Stacks, Queues	D5	11 Stacks and queues	re-derived by hand
+2017_AN_Q32	MCQ	1	Pointers, Multi-Dimensional Arrays, Structures	C10	06 Pointers	re-derived by hand
+2017_AN_Q63	MCQ	2	Binary Search Trees (BSTs) & Binary Heaps	D8	12 Trees and binary search trees	re-derived by hand
+2017_AN_Q53	MCQ	2	Data Types, Syntax, Control Structures, Loops	C5	02 Operators, decisions and loops	re-derived by hand
+2017_AN_Q64	NAT	2	Functions, Parameter Passing, Scope Rules, Recursion	C9	05 Arrays	re-derived by hand
+2017_AN_Q58	NAT	2	Data Types, Syntax, Control Structures, Loops	C3	02 Operators, decisions and loops	re-derived by hand
+2017_AN_Q49	NAT	2	Pointers, Multi-Dimensional Arrays, Structures	C12	07 Strings	re-derived by hand
