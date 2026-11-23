@@ -1,355 +1,130 @@
 "use client";
 
-import { LoadMore } from "@/components/system/load-more";
-import { ReviewTabs } from "@/components/layout/review-tabs";
-import { useEntitlements } from "@/lib/billing/use-entitlements";
-import { TIER_RANK } from "@/lib/billing/plans";
-
-import { useEffect, useState, useMemo, useCallback } from "react";
-import { motion } from "motion/react";
-import { useStudyStore } from "@/store/use-study-store";
-import { useAnalyticsStore } from "@/store/use-analytics-store";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  Loader2, RefreshCw, AlertCircle, Sparkles, Folder, Tag, Star,
-  Play, BookOpen, Clock, AlertTriangle, ArrowRight, ShieldCheck, Target, Lock,
-} from "lucide-react";
-import { LearningEngine, PersonalizedIntelligence } from "@/lib/learning/LearningEngine";
-import { AdaptiveRevisionItem } from "@/lib/learning/AdaptiveEngine";
-import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
-import { AIResponseParser } from "@/lib/ai/ai-response-parser";
-import { MathJaxContext } from "better-react-mathjax";
-import { openUpgrade } from "@/store/use-upgrade-modal-store";
+import { BookOpen, Flame, GraduationCap, Layers, Play, Zap } from "lucide-react";
+import { ItemActions } from "@/components/desk/item-actions";
+import { useRevision } from "@/lib/desk/stores";
+import { examDay, readReviewDays, streakOf, todayIst, useDeskLoad, useRevisionSeed } from "@/lib/desk/revision";
+import { daysBetween, estimateMinutes, forecast, isDue, isLeech, strengthBySubject } from "@/lib/revision/scheduler";
+import { studyHrefFor, tutorHref } from "@/lib/desk/links";
+import { useStudyStore } from "@/store/use-study-store";
 
-const mathJaxConfig = {
-  loader: { load: ["input/tex", "output/chtml"] },
-  tex: {
-    inlineMath: [["\\(", "\\)"]],
-    displayMath: [["\\[", "\\]"]],
-  },
-};
+const PER_DAY_KEY = "renyxera.rev.perday";
+const SRC_LABEL: Record<string, string> = { mistake: "Mistakes", bookmark: "Bookmarks", test: "Tests", tutor: "Tutor", note: "Notes", revision: "Revision" };
 
-export default function RevisionBuilderPage() {
+/** Revision, as an actual revision loop: what is due today, how long it takes, how strong each subject is, what is coming, and the items that keep failing. */
+export default function RevisionPage() {
   const router = useRouter();
-  const { mistakes, bookmarks, loadStudyData } = useStudyStore();
-  const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
-  
-  const [shownQ, setShownQ] = useState(25); // queue renders 25 rows at a time, more load near the bottom (speed pass, 19 Nov)
-  const moreQ = useCallback(() => setShownQ((n) => n + 25), []);
-  const [mounted, setMounted] = useState(false);
-  const [mode, setMode] = useState<"mistakes" | "bookmarks" | "weak_topics" | "ai_insights">("mistakes");
-  const insightsOk = TIER_RANK[useEntitlements().tier] >= TIER_RANK.plus;
-  
-  const [intel, setIntel] = useState<PersonalizedIntelligence | null>(null);
-  const [loadingIntel, setLoadingIntel] = useState(true);
+  useDeskLoad();
+  const { loadStudyData } = useStudyStore();
+  useEffect(() => { void loadStudyData(); }, [loadStudyData]);
+  const [perDay, setPerDay] = useState(10); const [focus, setFocus] = useState("all"); const [interleave, setInterleave] = useState(true); const [light, setLight] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- reads the saved daily limit once
+  useEffect(() => { try { const v = Number(localStorage.getItem(PER_DAY_KEY)); if (v >= 3 && v <= 40) setPerDay(v); } catch { /* default */ } }, []);
+  useRevisionSeed(perDay);
+  const items = useRevision((s) => s.items); const loaded = useRevision((s) => s.loaded);
+  const today = todayIst(); const exam = examDay();
+  const live = useMemo(() => items.filter((i) => !i.suspended), [items]);
+  const due = useMemo(() => live.filter((i) => isDue(i, today)), [live, today]);
+  const subjects = useMemo(() => [...new Set(live.map((i) => i.subject).filter(Boolean) as string[])].sort(), [live]);
+  const dueFocus = focus === "all" ? due : due.filter((i) => i.subject === focus);
+  const cap = light ? 10 : 40;
+  const sessionN = Math.min(cap, dueFocus.length);
+  const fc = useMemo(() => forecast(live, today, 14), [live, today]);
+  const strength = useMemo(() => strengthBySubject(live, today), [live, today]);
+  const leeches = useMemo(() => live.filter(isLeech).sort((a, b) => b.lapses - a.lapses).slice(0, 6), [live]);
+  const bySource = useMemo(() => { const m = new Map<string, number>(); due.forEach((i) => { m.set(i.source, (m.get(i.source) ?? 0) + 1); }); return [...m.entries()].sort((a, b) => b[1] - a[1]); }, [due]);
+  const [days, setDays] = useState<string[]>([]);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- reads this device's revision days once
+  useEffect(() => { setDays(readReviewDays()); }, []);
+  const streak = streakOf(days, today); const doneToday = days.includes(today);
+  const maxFc = Math.max(1, ...fc);
+  const examLeft = exam ? daysBetween(today, exam) : null;
+  const start = (n?: number, subj?: string) => { const f = subj ?? (focus !== "all" ? focus : ""); router.push(`/revision/session?n=${n ?? cap}&interleave=${interleave ? 1 : 0}${f ? `&focus=${encodeURIComponent(f)}` : ""}`); };
+  const heat = useMemo(() => { const set = new Set(days); return Array.from({ length: 56 }, (_, i) => { const d = new Date(Date.parse(today + "T00:00:00Z") - (55 - i) * 86_400_000).toISOString().slice(0, 10); return { d, on: set.has(d) }; }); }, [days, today]);
 
-  useEffect(() => {
-    setMounted(true);
-    loadStudyData();
-    loadAnalytics();
-
-    setLoadingIntel(true);
-    LearningEngine.getPersonalizedIntelligence()
-      .then(res => {
-        setIntel(res);
-        setLoadingIntel(false);
-      })
-      .catch((e) => {
-        console.error(e);
-        setLoadingIntel(false);
-      });
-  }, [loadStudyData, loadAnalytics]);
-
-  const weakTopics = useMemo(() => {
-    if (!dashboardMetrics) return [];
-    return dashboardMetrics.topicPerformance.filter(t => {
-      const acc = t.attempted > 0 ? (t.correct / t.attempted) * 100 : 0;
-      return t.attempted >= 1 && acc < 50;
-    });
-  }, [dashboardMetrics]);
-
-  // The engine builds one blended queue (mistakes + bookmarks); selecting a mode here must
-  // actually filter it, not just re-style the selector cards while the table stays static.
-  const filteredRevisionQueue = useMemo(() => {
-    if (!intel) return [];
-    if (mode === "mistakes") return intel.revisionQueue.filter(item => item.type === "Mistake");
-    if (mode === "bookmarks") return intel.revisionQueue.filter(item => item.type === "Bookmark");
-    if (mode === "weak_topics") {
-      const weakTopicNames = new Set(weakTopics.map(t => t.topic));
-      return intel.revisionQueue.filter(item => weakTopicNames.has(item.question.topic));
-    }
-    return intel.revisionQueue;
-  }, [intel, mode, weakTopics]);
-
-  if (!mounted) {
-    return (
-      <div className="flex h-dvh items-center justify-center bg-[var(--background)]">
-        <Loader2 className="w-8 h-8 animate-spin text-indigo-600" />
-      </div>
-    );
-  }
-
-  const handleStartRevision = () => {
-    router.push(`/revision/session?mode=${mode}`);
-  };
-
-  const priorityColor = (p: string) => {
-    switch (p) {
-      case "Very High Priority": return "bg-red-500/15 text-red-500 border border-red-500/20";
-      case "High": return "bg-amber-500/15 text-amber-500 border border-amber-500/20";
-      case "Medium": return "bg-blue-500/15 text-blue-500 border border-blue-500/20";
-      case "Low": return "bg-slate-500/15 text-slate-500 border border-slate-500/20";
-      default: return "bg-emerald-500/15 text-emerald-500 border border-emerald-500/20";
-    }
-  };
+  const card = "rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5";
+  const empty = loaded && live.length === 0;
 
   return (
-    <MathJaxContext config={mathJaxConfig}>
-    <div className="w-full mx-auto flex flex-col gap-4 font-sans h-full overflow-hidden" data-fill-height>
-
-      <ReviewTabs />
-
-      {/* Main Revision Control desk */}
-      <div className="shrink-0 grid grid-cols-1 lg:grid-cols-12 gap-4">
-
-        {/* Left Side: Revision Modes selection (Spans 7) */}
-        <div className="lg:col-span-7 card-glass rounded-2xl p-4 shadow-sm">
-          <h3 className="text-xs font-extrabold tracking-normal text-[var(--text-primary)] mb-3">
-            Select Revision Parameters
-          </h3>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <motion.div
-              whileHover={{ scale: 1.008 }}
-              whileTap={{ scale: 0.99 }}
-              className={`border border-[var(--border-subtle)] rounded-xl p-3.5 cursor-pointer transition-colors flex justify-between items-start gap-2 ${mode === "mistakes" ? "border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/15" : "bg-[var(--surface-secondary)]/50 hover:bg-[var(--surface-secondary)]"}`}
-              onClick={() => setMode("mistakes")}
-            >
-              <div>
-                <h4 className="font-bold text-sm text-[var(--text-primary)]">Mistakes bank queue</h4>
-                <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Flagged as incorrect during exams.</p>
-              </div>
-              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
-                {mistakes.filter(m => !m.mastered).length}
-              </span>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.008 }}
-              whileTap={{ scale: 0.99 }}
-              className={`border border-[var(--border-subtle)] rounded-xl p-3.5 cursor-pointer transition-colors flex justify-between items-start gap-2 ${mode === "bookmarks" ? "border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/15" : "bg-[var(--surface-secondary)]/50 hover:bg-[var(--surface-secondary)]"}`}
-              onClick={() => setMode("bookmarks")}
-            >
-              <div>
-                <h4 className="font-bold text-sm text-[var(--text-primary)]">Bookmarked items</h4>
-                <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Bookmarks, folders, formula notes.</p>
-              </div>
-              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
-                {bookmarks.length}
-              </span>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.008 }}
-              whileTap={{ scale: 0.99 }}
-              className={`border border-[var(--border-subtle)] rounded-xl p-3.5 cursor-pointer transition-colors flex justify-between items-start gap-2 ${mode === "weak_topics" ? "border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/15" : "bg-[var(--surface-secondary)]/50 hover:bg-[var(--surface-secondary)]"}`}
-              onClick={() => setMode("weak_topics")}
-            >
-              <div>
-                <h4 className="font-bold text-sm text-[var(--text-primary)]">Weak Topics (&lt;50%)</h4>
-                <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Topics you scored poorly on.</p>
-              </div>
-              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
-                {weakTopics.length}
-              </span>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.008 }}
-              whileTap={{ scale: 0.99 }}
-              className={`border border-[var(--border-subtle)] rounded-xl p-3.5 cursor-pointer transition-colors flex justify-between items-start gap-2 ${mode === "ai_insights" ? "border-indigo-500 bg-indigo-50/30 dark:bg-indigo-950/15" : "bg-[var(--surface-secondary)]/50 hover:bg-[var(--surface-secondary)]"}`}
-              onClick={() => (insightsOk ? setMode("ai_insights") : openUpgrade("AI Insights revision is a Plus feature"))}
-            >
-              <div>
-                <h4 className="font-bold text-sm text-[var(--text-primary)] flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-500" /> AI Insights
-                  {!insightsOk && <span className="ml-1 inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[9px] font-black tracking-wider bg-gradient-to-b from-slate-100 to-slate-300 text-slate-900"><Lock className="w-2.5 h-2.5" /> PLUS</span>}
-                </h4>
-                <p className="text-[var(--text-muted)] text-xs font-medium mt-0.5">Shortcuts &amp; sheets from AI.</p>
-              </div>
-              <span className="shrink-0 bg-[var(--surface)] text-xs font-black tracking-normal px-2.5 py-1 rounded-lg border border-[var(--border-subtle)] shadow-sm text-indigo-500">
-                {bookmarks.filter(b => b.aiShortcut || b.personalObservations).length}
-              </span>
-            </motion.div>
+    <div className="w-full space-y-4 pb-8">
+      <section className="card-pastel p-5 sm:p-7" data-tint="rose" aria-label="Today's revision">
+        <div className="grid gap-5 lg:grid-cols-[1.3fr_1fr] lg:items-center">
+          <div>
+            <p className="text-sm font-bold text-[var(--text-secondary)]">{doneToday && due.length === 0 ? "You have revised today" : "Revision for today"}</p>
+            <h1 className="mt-1 font-display text-4xl font-extrabold leading-none text-[var(--text-primary)] sm:text-5xl">{due.length} <span className="text-2xl font-bold text-[var(--text-secondary)] sm:text-3xl">{due.length === 1 ? "item due" : "items due"}</span></h1>
+            <p className="mt-2 text-[var(--text-secondary)]">{due.length > 0 ? `About ${estimateMinutes(sessionN)} minutes. Every item asks you to recall first; then you rate how it went and the next review is scheduled.` : empty ? "Nothing to revise yet. Mistakes, bookmarks, notes you mark to revise and questions the Tutor taught arrive here on their own." : "All caught up. The next items fall due soon; the forecast below shows when."}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <button type="button" onClick={() => start()} disabled={dueFocus.length === 0} className="btn-main !h-12 !px-6 disabled:opacity-50"><Play className="h-4 w-4" /> Start revision</button>
+              <button type="button" onClick={() => start(10)} disabled={dueFocus.length === 0} className="btn-soft !h-12 !px-5"><Zap className="h-4 w-4" /> Quick 10</button>
+              {subjects.length > 0 && <select value={focus} onChange={(e) => setFocus(e.target.value)} aria-label="Focus on a subject" className="h-12 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 text-sm font-semibold text-[var(--text-primary)]"><option value="all">All subjects, mixed</option>{subjects.map((s) => <option key={s} value={s}>{s}</option>)}</select>}
+            </div>
           </div>
-
-          <div className="pt-3 mt-3 border-t border-[var(--border-subtle)] flex justify-end">
-            <motion.button
-              whileTap={{ scale: 0.97 }}
-              onClick={handleStartRevision}
-              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold tracking-normal rounded-xl transition shadow-lg shadow-indigo-600/10 flex items-center gap-2 cursor-pointer text-xs"
-            >
-              <Play className="w-4 h-4 fill-white" />
-              <span>Launch revision session</span>
-            </motion.button>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="rounded-2xl bg-[var(--surface)] p-3"><Flame className="mx-auto h-5 w-5 text-[var(--tint-peach-ink)]" aria-hidden /><b className="mt-1 block font-num text-2xl text-[var(--text-primary)]">{streak}</b><span className="text-xs text-[var(--text-secondary)]">day streak</span></div>
+            <div className="rounded-2xl bg-[var(--surface)] p-3"><Layers className="mx-auto h-5 w-5 text-[var(--tint-sky-ink)]" aria-hidden /><b className="mt-1 block font-num text-2xl text-[var(--text-primary)]">{live.length}</b><span className="text-xs text-[var(--text-secondary)]">in your queue</span></div>
+            <div className="rounded-2xl bg-[var(--surface)] p-3"><GraduationCap className="mx-auto h-5 w-5 text-[var(--tint-mint-ink)]" aria-hidden /><b className="mt-1 block font-num text-2xl text-[var(--text-primary)]">{examLeft != null && examLeft > 0 ? examLeft : "-"}</b><span className="text-xs text-[var(--text-secondary)]">{examLeft != null && examLeft > 0 ? "days to exam" : "exam date not set"}</span></div>
           </div>
         </div>
+        {examLeft != null && examLeft > 0 && <p className="mt-4 rounded-2xl bg-[var(--surface)] px-4 py-2.5 text-sm text-[var(--text-secondary)]">The scheduler fits your reviews before the exam: no gap is longer than half the days you have left, so each item comes back at least twice more.</p>}
+      </section>
 
-        {/* Right Side: Quick Adaptive recommendations (Spans 5) */}
-        <div className="lg:col-span-5 card-glass rounded-2xl p-4 shadow-sm">
-          <h3 className="text-xs font-extrabold tracking-normal text-[var(--text-primary)] mb-3">
-            Engine Suggestions
-          </h3>
-
-          {!loadingIntel && intel && (
-            <div className="space-y-3">
-              <div className="p-3.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Revision due today</span>
-                  <span className="text-xs font-extrabold text-[var(--text-primary)] block mb-1">
-                    {intel.todaysFocus.topic}
-                  </span>
-                  <p className="text-[10px] text-[var(--text-secondary)] font-semibold leading-relaxed">{intel.todaysFocus.reason}</p>
-                </div>
-              </div>
-
-              <div className="p-3.5 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-xl flex items-start gap-3">
-                <Clock className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />
-                <div>
-                  <span className="block text-[8px] font-black tracking-normal text-[var(--text-muted)] mb-0.5">Estimated queue review time</span>
-                  <span className="text-xs font-extrabold text-[var(--text-primary)] block mb-0.5">
-                    {filteredRevisionQueue.reduce((acc, q) => acc + q.estimatedTimeMin, 0)} Minutes
-                  </span>
-                  <p className="text-[10px] text-[var(--text-secondary)] font-semibold leading-relaxed">Required time to resolve all pending high-priority review tasks.</p>
-                </div>
-              </div>
+      {empty ? (
+        <section className={card} aria-label="How items get here">
+          <h2 className="font-display text-xl font-extrabold text-[var(--text-primary)]">What goes into revision</h2>
+          <ul className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {[{ t: "Mistakes", b: "Questions you got wrong in tests and practice.", h: "/mistakes" }, { t: "Bookmarks", b: "Questions you saved to come back to.", h: "/bookmarks" }, { t: "Notes", b: "Any note you mark “Revise this note”.", h: "/notes" }, { t: "The Tutor", b: "Add a question you were taught from its menu.", h: "/ai-tutor" }].map((x) => <li key={x.t}><Link href={x.h} className="block h-full rounded-2xl bg-[var(--surface-secondary)] p-4 hover:shadow-md"><b className="text-[var(--text-primary)]">{x.t}</b><span className="mt-1 block text-sm text-[var(--text-secondary)]">{x.b}</span></Link></li>)}
+          </ul>
+        </section>
+      ) : (
+        <div className="grid gap-4 lg:grid-cols-2">
+          <section className={card} aria-label="Forecast">
+            <div className="flex items-baseline justify-between"><h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Next 14 days</h2><span className="text-xs text-[var(--text-secondary)]">items falling due</span></div>
+            <div className="mt-4 flex h-32 items-end gap-1.5" role="img" aria-label={`Items due each day for the next 14 days: ${fc.join(", ")}`}>
+              {fc.map((n, i) => <div key={i} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1"><span className="font-num text-[10px] text-[var(--text-secondary)]">{n || ""}</span><div className="w-full rounded-t-md" style={{ height: `${Math.max(n ? 6 : 2, (n / maxFc) * 70)}%`, background: i === 0 ? "var(--tint-rose-ink)" : "var(--tint-sky-ink)", opacity: n ? 1 : 0.25 }} /><span className="text-[10px] text-[var(--text-muted)]">{i === 0 ? "now" : new Date(Date.parse(today + "T00:00:00Z") + i * 86_400_000).getUTCDate()}</span></div>)}
             </div>
+            {bySource.length > 0 && <p className="mt-3 flex flex-wrap gap-2 text-xs text-[var(--text-secondary)]">{bySource.map(([k, n]) => <span key={k} className="rounded-full bg-[var(--surface-secondary)] px-2.5 py-1 font-semibold">{SRC_LABEL[k] ?? k} {n}</span>)}</p>}
+          </section>
+
+          <section className={card} aria-label="Memory strength">
+            <div className="flex items-baseline justify-between"><h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Memory strength</h2><span className="text-xs text-[var(--text-secondary)]">by subject</span></div>
+            {strength.length === 0 ? <p className="mt-3 text-sm text-[var(--text-secondary)]">Strength appears after your first session.</p> : (
+              <ul className="mt-3 space-y-2.5">{strength.slice(0, 7).map((s) => (
+                <li key={s.subject} className="flex items-center gap-3"><span className="w-36 shrink-0 truncate text-sm font-semibold text-[var(--text-primary)]" title={s.subject}>{s.subject}</span>
+                  <span className="h-2.5 min-w-0 flex-1 overflow-hidden rounded-full bg-[var(--surface-secondary)]"><span className="block h-full rounded-full" style={{ width: `${Math.max(4, s.strength)}%`, background: s.strength < 40 ? "var(--tint-rose-ink)" : s.strength < 70 ? "var(--tint-butter-ink)" : "var(--tint-mint-ink)" }} /></span>
+                  <span className="w-10 text-right font-num text-xs text-[var(--text-secondary)]">{s.strength}%</span>
+                  <button type="button" onClick={() => start(15, s.subject)} className="pill-soft cursor-pointer text-xs">Review</button></li>
+              ))}</ul>
+            )}
+          </section>
+
+          {leeches.length > 0 && (
+            <section className={`${card} lg:col-span-2`} aria-label="Items that keep failing">
+              <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Needs teaching, not repeating</h2>
+              <p className="mt-1 text-sm text-[var(--text-secondary)]">You have missed these four times or more. Reading the explanation helps more than another attempt.</p>
+              <ul className="mt-3 grid gap-2 md:grid-cols-2">{leeches.map((l) => (
+                <li key={l.id} className="flex items-center gap-3 rounded-2xl bg-[var(--surface-secondary)] px-4 py-3"><span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{l.title}</span><span className="block truncate text-xs text-[var(--text-secondary)]">{l.subject}{l.topic ? ` · ${l.topic}` : ""} · missed {l.lapses}×</span></span>
+                  {l.kind === "question" ? <Link href={tutorHref(l.refId)} className="pill-ink text-xs"><GraduationCap className="mr-1 inline h-3.5 w-3.5" />Teach me</Link> : <Link href={studyHrefFor(l.topic, l.subject)} className="pill-ink text-xs"><BookOpen className="mr-1 inline h-3.5 w-3.5" />Lesson</Link>}
+                  {l.kind === "question" && <ItemActions questionId={l.refId} subject={l.subject} topic={l.topic} title={l.title} source="test" />}</li>
+              ))}</ul>
+            </section>
           )}
-        </div>
-      </div>
 
-      {/* 3. Reordered Revision Queue list — fills remaining space, scrolls internally */}
-      <div className="flex-1 min-h-0 card-glass rounded-2xl shadow-sm overflow-hidden flex flex-col">
-        <div className="shrink-0 px-5 py-3 border-b border-[var(--border-subtle)] bg-[var(--surface-secondary)]/50 flex justify-between items-center">
-          <h3 className="font-extrabold text-xs tracking-normal text-[var(--text-primary)] flex items-center gap-1.5">
-            <BookOpen className="w-4 h-4 text-indigo-500" />
-            <span>{mode === "ai_insights" ? "Saved AI Formulas & Shortcuts" : "Dynamic Revision Queue"}</span>
-          </h3>
+          <section className={`${card} lg:col-span-2`} aria-label="Settings and history">
+            <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+              <div><h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Your last eight weeks</h2>
+                <div className="mt-3 grid grid-flow-col gap-1" style={{ gridTemplateRows: "repeat(7, auto)", justifyContent: "start" }} role="img" aria-label={`${days.length} days revised in total`}>{heat.map((h) => <span key={h.d} title={h.d} className="h-3 w-3 rounded-[3px] sm:h-3.5 sm:w-3.5" style={{ background: h.on ? "var(--tint-mint-ink)" : "var(--surface-secondary)" }} />)}</div></div>
+              <div className="space-y-3 text-sm">
+                <label className="flex items-center justify-between gap-3 font-semibold text-[var(--text-primary)]">New items a day <input type="number" min={3} max={40} value={perDay} onChange={(e) => { const v = Math.min(40, Math.max(3, Number(e.target.value) || 10)); setPerDay(v); try { localStorage.setItem(PER_DAY_KEY, String(v)); } catch { /* ignore */ } }} className="h-9 w-20 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 font-num" /></label>
+                <label className="flex cursor-pointer items-center gap-2 font-semibold text-[var(--text-primary)]"><input type="checkbox" checked={interleave} onChange={(e) => setInterleave(e.target.checked)} className="h-4 w-4" /> Mix subjects (better for memory)</label>
+                <label className="flex cursor-pointer items-center gap-2 font-semibold text-[var(--text-primary)]"><input type="checkbox" checked={light} onChange={(e) => setLight(e.target.checked)} className="h-4 w-4" /> Light day: at most 10 items</label>
+              </div>
+            </div>
+          </section>
         </div>
-
-          {mode === "ai_insights" ? (
-            <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-5">
-              {bookmarks.filter(b => b.aiShortcut || b.personalObservations).length === 0 ? (
-                <div className="p-12 text-center text-xs text-[var(--text-muted)] font-semibold flex flex-col items-center justify-center gap-3">
-                  <Sparkles className="w-12 h-12 text-indigo-500 animate-pulse" />
-                  <span>No AI tutor shortcuts or observations saved yet. Explain questions inside the AI Tutor to compile revision guides!</span>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {bookmarks.filter(b => b.aiShortcut || b.personalObservations).map((b, idx) => (
-                    <motion.div
-                      key={b.questionId}
-                      initial={{ opacity: 0, y: 72 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
-                      className="bg-[var(--surface-secondary)]/50 border border-[var(--border-subtle)] p-4 rounded-xl space-y-3 shadow-sm hover-lift"
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs font-black tracking-normal text-[var(--text-muted)]">{b.subject}</span>
-                        <button 
-                          onClick={() => router.push(`/ai-tutor?qid=${b.questionId}`)}
-                          className="text-[9px] font-black uppercase text-indigo-500 hover:underline cursor-pointer"
-                        >
-                          Open in Tutor
-                        </button>
-                      </div>
-                      <h4 className="font-extrabold text-xs text-[var(--text-primary)]">{b.topic}</h4>
-                      {b.aiShortcut && (
-                        <div className="bg-[var(--surface)] border border-[var(--border-subtle)] p-3 rounded-lg">
-                          <span className="text-[9px] font-black uppercase text-indigo-500 block mb-1">Saved shortcut</span>
-                          <div className="text-xs font-semibold text-[var(--text-secondary)] leading-relaxed">
-                            <AstNodeRenderer nodes={AIResponseParser.parse(b.aiShortcut)} />
-                          </div>
-                        </div>
-                      )}
-                      {b.personalObservations && (
-                        <div className="bg-[var(--surface)] border border-[var(--border-subtle)] p-3 rounded-lg">
-                          <span className="text-[9px] font-black uppercase text-amber-500 block mb-1">Personal observation</span>
-                          <div className="text-xs font-semibold text-[var(--text-secondary)] leading-relaxed">
-                            <AstNodeRenderer nodes={AIResponseParser.parse(b.personalObservations)} />
-                          </div>
-                        </div>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex-1 min-h-0 overflow-auto custom-scrollbar">
-              {!loadingIntel && intel && filteredRevisionQueue.length > 0 ? (<>
-                <table className="w-full text-xs text-left min-w-[700px]">
-                  <thead className="text-[9px] font-black uppercase bg-[var(--surface-secondary)] text-[var(--text-muted)] border-b border-[var(--border-subtle)] sticky top-0 z-10">
-                    <tr>
-                      <th className="px-5 py-3.5">Topic details</th>
-                      <th className="px-5 py-3.5 text-center">Priority</th>
-                      <th className="px-5 py-3.5">Revision reason</th>
-                      <th className="px-5 py-3.5 text-center">Est. Time</th>
-                      <th className="px-5 py-3.5 text-center">Confidence</th>
-                      <th className="px-5 py-3.5 text-center">Solved counts</th>
-                      <th className="px-5 py-3.5 text-right">Next suggested</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
-                    {filteredRevisionQueue.slice(0, shownQ).map((item) => (
-                      <tr key={item.id} className="hover:bg-[var(--surface-secondary)]/30 transition"
-                      >
-                        <td className="px-5 py-3.5">
-                          <span className="font-bold text-[var(--text-primary)] flex items-center gap-1 text-xs truncate max-w-[180px]">
-                            {item.sourceGoalTag && (
-                              <Target className="w-3 h-3 text-indigo-500 shrink-0" aria-label={`From a Focus Target ${item.sourceGoalTag.targetPercent}% goal test`} />
-                            )}
-                            <span className="truncate">{item.question.topic}</span>
-                          </span>
-                          <span className="text-[10px] text-[var(--text-muted)] font-semibold block truncate mt-0.5">{item.question.subject}</span>
-                        </td>
-                        <td className="px-5 py-3.5 text-center">
-                          <span className={`inline-flex whitespace-nowrap px-2 py-0.5 rounded-full text-xs font-extrabold tracking-normal ${priorityColor(item.priority)}`}>
-                            {item.priority.replace(" Priority", "")}
-                          </span>
-                        </td>
-                        <td className="px-5 py-3.5">
-                          <span className="text-[11px] text-[var(--text-secondary)] font-semibold">{item.reason}</span>
-                        </td>
-                        <td className="px-5 py-3.5 text-center font-bold font-num text-[var(--text-secondary)]">
-                          {item.estimatedTimeMin}m
-                        </td>
-                        <td className="px-5 py-3.5 text-center font-bold font-num text-[var(--text-secondary)]">
-                          {item.confidencePercent}%
-                        </td>
-                        <td className="px-5 py-3.5 text-center font-bold font-num text-[var(--text-secondary)]">
-                          {item.revisionCount} reviews
-                        </td>
-                        <td className="px-5 py-3.5 text-right text-[10px] font-bold text-[var(--text-muted)] font-num">
-                          {item.nextSuggestedRevision}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <LoadMore shown={Math.min(shownQ, filteredRevisionQueue.length)} total={filteredRevisionQueue.length} step={25} onMore={moreQ} label="topics" />
-              </>) : (
-                <div className="p-12 text-center text-xs text-[var(--text-muted)] font-semibold flex flex-col items-center justify-center gap-3">
-                  <ShieldCheck className="w-12 h-12 text-emerald-500" />
-                  <span>Your revision queue is empty! Great job mastering all mistakes.</span>
-                </div>
-              )}
-            </div>
-          )}
-      </div>
+      )}
     </div>
-    </MathJaxContext>
   );
 }

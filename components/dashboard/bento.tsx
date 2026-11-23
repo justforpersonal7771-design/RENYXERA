@@ -1,4 +1,5 @@
 "use client";
+import { useRevisionDue } from "@/lib/desk/revision";
 import { istHour } from "@/lib/time/ist";
 
 /**
@@ -246,20 +247,21 @@ export function MarksLeakCard({ topics }: { topics: TopicAnalytics[] }) {
 
 export function RevisionDueCard({ pending, mastered }: { pending: number; mastered: number }) {
   const total = pending + mastered;
+  const rev = useRevisionDue(); const live = rev.loaded && rev.total > 0; // the real spaced queue when it has items, the mistakes count until then
   return (
     <Rise className="h-full" delay={0.05}>
       <section className="card-metal metal flex h-full flex-col p-5 sm:p-6" aria-label="Revision due">
         <span className="section-label">Revision</span>
         <div className="mt-3 flex items-end gap-2">
-          <span className="font-num text-5xl font-extrabold leading-none text-[var(--text-primary)]"><CountUp value={pending} /></span>
-          <span className="pb-1 text-sm font-semibold text-[var(--text-secondary)]">mistakes to revise</span>
+          <span className="font-num text-5xl font-extrabold leading-none text-[var(--text-primary)]"><CountUp value={live ? rev.due : pending} /></span>
+          <span className="pb-1 text-sm font-semibold text-[var(--text-secondary)]">{live ? (rev.due === 1 ? "item due today" : "items due today") : "mistakes to revise"}</span>
         </div>
         <div className="card-inset mt-4 p-3">
           <div className="flex justify-between text-[11px] font-semibold text-[var(--text-muted)]"><span>Mastered</span><span className="font-num">{mastered}/{total || 0}</span></div>
           <div className="mt-1.5"><Fill value={total ? (mastered / total) * 100 : 0} color="#ea580c" /></div>
         </div>
         <div className="mt-auto pt-4">
-          <Link href={pending ? "/revision" : "/setup"} className="pill-ink w-full">{pending ? "Start revision" : "Practise to fill it"} <ArrowRight className="w-4 h-4" /></Link>
+          <Link href={live ? (rev.due ? "/revision/session?n=20" : "/revision") : pending ? "/revision" : "/setup"} className="pill-ink w-full">{live ? (rev.due ? "Start revision" : "See the forecast") : pending ? "Start revision" : "Practise to fill it"} <ArrowRight className="w-4 h-4" /></Link>
         </div>
       </section>
     </Rise>

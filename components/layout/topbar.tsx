@@ -42,6 +42,7 @@ import { MentorNavButton } from "@/components/layout/mentor-nav-button";
 import { effectiveLookId, useLookStore } from "@/store/use-look-store";
 import { lookById } from "@/lib/looks/looks";
 import { MENTOR_HOME } from "@/lib/mentor/links";
+import { HUB_NAME } from "@/lib/mentor/brand";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
 import { CITADEL, CITADEL_HREF, isCitadelPath } from "@/lib/citadel/brand";
 import { Castle } from "lucide-react";
@@ -51,7 +52,7 @@ const NAV_ITEMS = [
   { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: ClipboardCheck },
   // Forge lives inside Exam Setup (question source); Tools moved to the icon group.
   { label: "Study", href: "/study", icon: BookOpenText },
-  { label: "AI Mentor", href: MENTOR_HOME, icon: BrainCircuit },
+  { label: HUB_NAME, href: MENTOR_HOME, icon: BrainCircuit },
   // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
   { label: "Review", href: "/mistakes", icon: Library },
   { label: "Analytics", href: "/analytics", icon: PieChart },
@@ -75,7 +76,7 @@ function screenTint(path: string): string {
 // Each section keeps its own pastel when it is the current page (navbar highlight).
 const NAV_TINTS: Record<string, string> = {
   Dashboard: "lilac", [TEST_CENTRE]: "mint", Forge: "peach", Study: "butter",
-  "AI Mentor": "sky", Review: "rose", Analytics: "mint", Tools: "peach", Interview: "butter",
+  [HUB_NAME]: "sky", Review: "rose", Analytics: "mint", Tools: "peach", Interview: "butter",
 };
 
 export function Topbar() {

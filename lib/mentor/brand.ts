@@ -1,6 +1,6 @@
 /**
- * The AI Mentor is one place with two halves: the chatbot that knows your plan and data, and the Tutor that teaches one question.
- * The landing page and the navbar keep the name "AI Mentor" (the whole); the chatbot half has its own name so the two are never confused.
- * Change the name here and it changes everywhere.
+ * One place, two halves. The whole (navbar entry and landing page) is the HUB; its two halves are the chatbot, called the Mentor,
+ * and the Tutor, which teaches one chosen question. Change a name here and it changes everywhere.
  */
-export const CHATBOT_NAME = "Sage";
+export const HUB_NAME = "AI Desk";
+export const CHATBOT_NAME = "Mentor";

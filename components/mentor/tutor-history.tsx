@@ -51,7 +51,7 @@ export function TutorHistory({ limit = 6 }: { limit?: number }) {
  * The Tutor's History button: a menu of the questions you went through with the Tutor, newest first. Choosing one opens that question
  * with its whole conversation, ready to carry on. Kept on this device. (It is not shown on the Mentor screens.)
  */
-export function TutorHistoryMenu() {
+export function TutorHistoryMenu({ iconOnly = false }: { iconOnly?: boolean }) {
   const [open, setOpen] = useState(false);
   const [rows, setRows] = useState<Row[] | null>(null);
   const box = useRef<HTMLDivElement>(null);
@@ -66,8 +66,8 @@ export function TutorHistoryMenu() {
   }, [open, load]);
   return (
     <div ref={box} className="relative">
-      <button type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="dialog" aria-expanded={open} className={`inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border px-3 text-xs font-black tracking-normal transition ${open ? "border-[var(--text-primary)] bg-[var(--surface-secondary)] text-[var(--text-primary)]" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-        <HistoryIcon className="h-4 w-4" aria-hidden /> History
+      <button type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="dialog" aria-expanded={open} aria-label="History of Tutor sessions" title="History" className={`inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border px-3 text-xs font-black tracking-normal transition ${open ? "border-[var(--text-primary)] bg-[var(--surface-secondary)] text-[var(--text-primary)]" : "border-[var(--border)] bg-[var(--surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+        <HistoryIcon className="h-4 w-4" aria-hidden /><span className={iconOnly ? "max-2xl:hidden" : ""}>History</span>
       </button>
       {open && (
         <div role="dialog" aria-label="Tutor history" className="absolute right-0 top-full z-[60] mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-2 shadow-2xl">

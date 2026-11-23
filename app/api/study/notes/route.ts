@@ -16,6 +16,11 @@ export async function GET(req: NextRequest) {
   const { sb, uid } = await who();
   if (!uid) return NextResponse.json({ error: "Sign in" }, { status: 401 });
   const lesson = req.nextUrl.searchParams.get("lesson") ?? "";
+  if (!lesson) { // no lesson named: every highlight and note of the student, for the central Notes tab
+    const all = await sb.from("study_notes").select("id,lesson,quote,note,color,created_at").eq("user_id", uid).order("created_at", { ascending: false }).limit(500);
+    if (all.error) return NextResponse.json({ error: all.error.message }, { status: missing(all.error.message) ? 503 : 500 });
+    return NextResponse.json({ notes: all.data ?? [] }, { headers: NO });
+  }
   const { data, error } = await sb.from("study_notes").select("id,quote,note,color").eq("user_id", uid).eq("lesson", lesson).order("created_at").limit(300);
   if (error) return NextResponse.json({ error: error.message }, { status: missing(error.message) ? 503 : 500 });
   return NextResponse.json({ notes: data ?? [] }, { headers: NO });

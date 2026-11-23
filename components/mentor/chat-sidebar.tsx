@@ -14,6 +14,7 @@ import { ChevronRight, Cloud, Folder, FolderInput, FolderMinus, MessageSquarePlu
 import { MentorLogo } from "@/components/brand/mentor-logo";
 import { istDateStr } from "@/lib/time/ist";
 import type { ChatMeta } from "@/lib/mentor/chat-tree";
+import { CHATBOT_NAME } from "@/lib/mentor/brand";
 
 type Section = { key: string; label: string; kind: "pinned" | "folder" | "date"; items: ChatMeta[] };
 
@@ -104,7 +105,7 @@ export function ChatSidebar(p: Props) {
     <div className="flex h-full min-h-0 flex-col">
       <div className="mb-3 flex items-center gap-2 px-1">
         <MentorLogo className="h-9" mode="blink" />
-        <span className="min-w-0 flex-1 truncate font-display text-base font-extrabold text-[var(--text-primary)]">AI Mentor</span>
+        <span className="min-w-0 flex-1 truncate font-display text-base font-extrabold text-[var(--text-primary)]">{CHATBOT_NAME}</span>
         <button type="button" onClick={p.onClose} aria-label={p.inDrawer ? "Close chat history" : "Hide chat history"} title={p.inDrawer ? "Close" : "Hide history"} className={`${ICON_BTN} !h-8 !w-8 group/c`}>{p.inDrawer ? <X className="h-[18px] w-[18px]" /> : <PanelLeftClose className="h-[18px] w-[18px] transition-transform duration-200 group-hover/c:-translate-x-0.5" />}</button>
       </div>
 

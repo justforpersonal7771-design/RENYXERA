@@ -2,6 +2,7 @@
 
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath } from "@/lib/test-centre/brand";
 import { MENTOR_HOME } from "@/lib/mentor/links";
+import { HUB_NAME } from "@/lib/mentor/brand";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { LayoutGroup, motion } from "motion/react";
@@ -40,7 +41,7 @@ export function BottomTabBar() {
     // Four places, Citadel Clash and More: the name shows under the active icon only, so the bar stays calm. Citadel Clash is last, with its own look.
     { label: "Home", short: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
     { label: TEST_CENTRE, short: "Tests", href: TEST_CENTRE_HREF, icon: ClipboardCheck, active: isTestCentrePath(pathname) },
-    { label: "AI Mentor", short: "Mentor", href: MENTOR_HOME, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
+    { label: HUB_NAME, short: "Desk", href: MENTOR_HOME, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
     { label: "Review", short: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
     { label: CITADEL, short: "Clash", href: CITADEL_HREF, icon: Castle, active: isCitadelPath(pathname), citadel: true },
   ];

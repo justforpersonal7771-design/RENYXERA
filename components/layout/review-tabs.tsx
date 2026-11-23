@@ -4,12 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { useEffect } from "react";
-import { Bookmark, ClipboardList, RefreshCw } from "lucide-react";
+import { Bookmark, ClipboardList, NotebookPen, RefreshCw } from "lucide-react";
 import { StudyStripMini } from "@/components/study/study-loop";
+import { useDeskLoad, useRevisionDue } from "@/lib/desk/revision";
 
 export const REVIEW_TABS = [
   { href: "/mistakes", label: "Mistakes", icon: ClipboardList },
   { href: "/bookmarks", label: "Bookmarks", icon: Bookmark },
+  { href: "/notes", label: "Notes", icon: NotebookPen },
   { href: "/revision", label: "Revision", icon: RefreshCw },
 ] as const;
 
@@ -29,6 +31,7 @@ export function lastReviewHref() {
 export function ReviewTabs() {
   const path = usePathname();
   const current = REVIEW_TABS.find((t) => path === t.href)?.href;
+  useDeskLoad(); const rev = useRevisionDue();
   useEffect(() => { if (current) try { localStorage.setItem(LAST_KEY, current); } catch {} }, [current]);
   if (!current) return null;
   return (
@@ -44,6 +47,7 @@ export function ReviewTabs() {
               {on && <motion.span layoutId="review-tab-pill" className="absolute inset-0 rounded-xl nav-active-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
               <t.icon className="relative w-4 h-4" />
               <span className="relative">{t.label}</span>
+              {t.href === "/revision" && rev.due > 0 && <span className="relative rounded-full bg-[var(--tint-rose-ink)] px-1.5 py-0.5 font-num text-[10px] font-extrabold leading-none text-[var(--background)]" aria-label={`${rev.due} due today`}>{rev.due > 99 ? "99+" : rev.due}</span>}
             </Link>
           );
         })}

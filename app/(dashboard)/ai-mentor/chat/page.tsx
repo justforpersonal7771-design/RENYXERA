@@ -177,7 +177,9 @@ function ChatScreen() {
   useEffect(() => {
     if (newFired.current || params.get("new") !== "1" || !c.loaded) return;
     newFired.current = true; c.newChat();
+    const ask = params.get("q"); // another screen sent a question for the Mentor (Ask the Mentor on a question, note or revision card)
     router.replace(fromBar ? "/ai-mentor/chat?from=bar" : "/ai-mentor/chat");
+    if (ask) void c.send(ask.slice(0, 1500));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once, when the history has loaded
   }, [c.loaded]);
   // The address names the open conversation (?chat=<id>), so a refresh keeps it and a link to one works; no address means a new chat.
@@ -323,7 +325,6 @@ function ChatScreen() {
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
           {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
-          {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> AI Mentor</Link>}
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : `Chat with ${CHATBOT_NAME}`}</h1>
           {tier !== "pro" && <button type="button" onClick={() => openUpgrade(tier === "free" ? "Plus and Pro plans" : "Pro plan")} className={`plan-cta ${tier === "free" ? "plan-silver" : "plan-gold"} ml-auto inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm`}><MentorLogo className="h-5" /> {tier === "free" ? "Upgrade" : "Go Pro"}</button>}
           <MentorSwitch active="mentor" />

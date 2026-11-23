@@ -2242,8 +2242,8 @@ html.theme-switching * { transition: none !important; }
 .dark:not([data-dk]) :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well, .card-inset),
 .dark[data-dk="edge"] :is(.card-pastel, .card-well)[data-tint] :is(.card-pastel, .card-well, .card-inset) { --text-muted: #9aa1b0; }
 /* inputs sit below their surface: darker, so they read as "type here" */
-.dark:not([data-dk]) :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.field-bare),
-.dark[data-dk="edge"] :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.field-bare) { background-color: #0f1218; }
+.dark:not([data-dk]) :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.field-bare):not(.search-bare):not([class*="bg-transparent"]),
+.dark[data-dk="edge"] :is(input, textarea):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(.field-bare):not(.search-bare):not([class*="bg-transparent"]) { background-color: #0f1218; }
 /* the page shell (the big rounded frame around each screen) is barely lifted, so cards lead */
 .dark:not([data-dk]) .page-shell[data-section], .dark[data-dk="edge"] .page-shell[data-section] {
   background: linear-gradient(180deg, color-mix(in oklab, var(--sec) 22%, #0d0f14) 0%, #0d0f14 55%) !important; border-color: rgba(255,255,255,.05) !important;
@@ -2527,3 +2527,23 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 
 /* AI Tutor: a slim, equal 10px between the card edge and the panels, on every side (owner, 23 Nov 2026). */
 .page-shell:has(.tutor-shell) { padding: 10px !important; }
+
+/* ── Fields that sit inside a styled row (search pills, composers): the row draws the box and the focus, the field itself never does ──────────
+   Before this, a "bare" input in dark mode got the dark inset fill and the violet focus glow of a boxed field, which showed as a black rectangle
+   inside the pill. Anything written with bg-transparent, .search-bare or .field-bare is bare. (Unlayered, so it beats the utilities.) */
+input[class*="bg-transparent"], textarea[class*="bg-transparent"], input.search-bare, textarea.field-bare { background-color: transparent; }
+input[class*="bg-transparent"]:focus, input[class*="bg-transparent"]:focus-visible, textarea[class*="bg-transparent"]:focus, textarea[class*="bg-transparent"]:focus-visible { box-shadow: none; border-color: transparent; outline: none; }
+
+/* ── Select menus: one look everywhere. The browser's arrow sat hard against the right edge with no room; this draws our own chevron with
+   proper space on both sides, and keeps the text clear of it. ─────────────────────────────────────────────────────────────────────────── */
+select:not([multiple]):not([size]) {
+  -webkit-appearance: none; appearance: none;
+  padding-right: 2.5rem;
+  background-repeat: no-repeat; background-position: right 0.9rem center; background-size: 0.95rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23596079' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  text-overflow: ellipsis;
+}
+.dark select:not([multiple]):not([size]) {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b4bacb' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+select:not([multiple]):not([size]):disabled { opacity: .6; }

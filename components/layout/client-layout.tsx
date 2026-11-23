@@ -32,6 +32,7 @@ import { MotionPrefs } from "@/components/system/motion-prefs";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { TestCentreBar } from "@/components/layout/test-centre-bar";
+import { DeskSync } from "@/components/desk/desk-sync";
 import { testCentreTint } from "@/lib/test-centre/brand";
 import { useAuthStore } from "@/store/use-auth-store";
 import { OnboardingGate } from "@/components/auth/onboarding-gate";
@@ -47,6 +48,16 @@ const ToastContainer = dynamic(
 );
 
 // The pastel of the section the student is in: drives the page layer and the navbar wash.
+/** What identifies the mounted frame. Screens of one section (Mentor and Tutor, the Review tabs, the Test Centre's pages) share a key, so moving between them swaps only the
+ * content: the bars stay mounted and nothing fades in again, which is what makes a toggle feel like a toggle and not like a new page. */
+function frameKey(p: string | null): string {
+  if (!p) return "/";
+  if (p.startsWith("/ai-mentor/chat") || p.startsWith("/ai-tutor")) return "desk";
+  if (/^\/(mistakes|bookmarks|revision|notes)(\/|$)/.test(p)) return "review";
+  if (p.startsWith("/test-centre")) return "test-centre";
+  return p;
+}
+
 function sectionTint(p: string | null): string {
   // a study chapter takes its book's colour, so navbar, panel and tab agree from the first paint
   { const bt = p ? bookTintFor(p) : null; if (bt) return bt; }
@@ -261,7 +272,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <main className="relative z-10 w-full h-full overflow-hidden">
         <div id="app-scroll" data-section={sectionTint(pathname)} className={`absolute inset-x-0 bottom-0 top-[72px] overflow-y-auto overflow-x-hidden overscroll-x-none [scrollbar-gutter:stable_both-edges] custom-scrollbar px-[max(0px,calc(0.5rem-var(--sb-gutter,0px)))] sm:px-[max(0px,calc(1rem-var(--sb-gutter,0px)))] pt-3 sm:pt-4 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-[calc(10rem+env(safe-area-inset-bottom))]"} lg:pb-8`}>
           <motion.div
-            key={pathname}
+            key={frameKey(pathname)}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
@@ -276,6 +287,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </main>
       <TelegramActionsSync />
       <SpacedRevisionSync />
+      <DeskSync />
       <UpgradeModalHost />
       <StudyShopHost />
       <ChallengePromptHost />

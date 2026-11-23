@@ -1,7 +1,6 @@
 "use client";
 
 import { LoadMore } from "@/components/system/load-more";
-import { ReviewTabs } from "@/components/layout/review-tabs";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { GuestLocalNotice } from "@/components/auth/guest-local-notice";
@@ -19,6 +18,8 @@ import {
 } from "lucide-react";
 import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { PersonalNotesDrawer } from "@/components/ui/personal-notes-drawer";
+import { ItemActions } from "@/components/desk/item-actions";
+import { addToRevision } from "@/lib/desk/revision";
 import { PyqSolution } from "@/components/exam/pyq-solution";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
@@ -122,7 +123,9 @@ export default function BookmarksPage() {
   // into that front-of-queue position and jump straight to the Revision screen.
   const handleMoveToRevision = async (qid: string) => {
     await handleUpdateBookmarkMeta(qid, { priority: "High" });
-    useToastStore.getState().show("Moved to top of your Revision queue");
+    const bm = bookmarks.find((b) => b.questionId === qid);
+    addToRevision({ kind: "question", refId: qid, source: "bookmark", title: bm ? `${bm.subject}: ${bm.topic}` : qid, subject: bm?.subject, topic: bm?.topic });
+    useToastStore.getState().show("Added to your Revision queue");
     router.push("/revision");
   };
 
@@ -244,7 +247,6 @@ export default function BookmarksPage() {
       },
     }}>
       <div className="w-full h-full flex flex-col" data-fill-height>
-      <ReviewTabs />
       <GuestLocalNotice what="bookmarks" />
       <div className="flex-1 min-h-0 w-full flex flex-col md:flex-row gap-4 relative">
         {/* Sidebar merged into a single continuous card */}
@@ -481,6 +483,8 @@ export default function BookmarksPage() {
                   >
                     <Sparkles className="w-4 h-4" />
                   </button>
+
+                  <ItemActions questionId={activeBookmark} source="bookmark" />
 
                   <button
                     onClick={() => handleMoveToRevision(activeBookmark)}

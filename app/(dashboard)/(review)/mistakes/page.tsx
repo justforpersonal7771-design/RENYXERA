@@ -3,7 +3,6 @@
 import { StudyOffer } from "@/components/study/study-offer";
 import { SmartUpgrade } from "@/components/growth/smart-upgrade";
 import { LoadMore } from "@/components/system/load-more";
-import { ReviewTabs } from "@/components/layout/review-tabs";
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
 import { PyqSolution } from "@/components/exam/pyq-solution";
 
@@ -24,6 +23,7 @@ import {
 import { useRouter } from "next/navigation";
 import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { PersonalNotesDrawer } from "@/components/ui/personal-notes-drawer";
+import { ItemActions } from "@/components/desk/item-actions";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { GuestDataBanner } from "@/components/auth/guest-data-banner";
@@ -284,7 +284,6 @@ export default function MistakesPage() {
       },
     }}>
       <div className="w-full h-full flex flex-col" data-fill-height>
-      <ReviewTabs />
       <GuestLocalNotice what="mistakes" />
       <SmartUpgrade context="mistakes" pendingMistakes={mistakes.filter((m) => !m.mastered).length} />
       {/* Doc 13 moment 4: three or more open mistakes in one subject point to its study pack (quiet, dismissible). */}
@@ -459,6 +458,8 @@ export default function MistakesPage() {
                   >
                     <Sparkles className="w-4 h-4" />
                   </button>
+
+                  <ItemActions questionId={activeMistake} source="test" />
 
                   <button
                     onClick={() => {

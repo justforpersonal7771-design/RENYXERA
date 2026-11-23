@@ -27,7 +27,10 @@ import { MentorLogo } from "@/components/brand/mentor-logo";
 import { MentorSwitch, TutorHeaderTail } from "@/components/mentor/mentor-switch";
 import { TutorHistoryMenu } from "@/components/mentor/tutor-history";
 import { RateLimiter } from "@/lib/ai/rate-limiter";
-import { Square } from "lucide-react";
+import { Square, NotebookPen, ChevronRight } from "lucide-react";
+import { DeskModal } from "@/components/desk/modal";
+import { saveNote } from "@/lib/desk/stores";
+import { addToRevision } from "@/lib/desk/revision";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
@@ -63,7 +66,8 @@ export default function AITutorWorkspace() {
   const skipSigRef = useRef("");
   const stoppedRef = useRef(false); // the student pressed Stop: no error message, the question stays so they can ask again
   const [fetchTick, setFetchTick] = useState(0); // bumped to ask for the explanation again after a Stop
-  const stopNow = () => { stoppedRef.current = true; RateLimiter.cancelAll(); };
+  const stopEpoch = useRef(0); // bumped by Stop, so an answer that was already on its way is ignored instead of appearing after the student stopped it
+  const stopNow = () => { stoppedRef.current = true; stopEpoch.current += 1; RateLimiter.cancelAll(); AIService.cancelRequest(`explain_${qid}_${explainMode}_${personality}`); setLoading(false); };
 
   // Cards layout states (collapsing/pinning)
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({
@@ -83,6 +87,13 @@ export default function AITutorWorkspace() {
   const [notesPreviewMode, setNotesPreviewMode] = useState(false);
   const [generatingNotes, setGeneratingNotes] = useState(false);
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false); const [practiceOpen, setPracticeOpen] = useState(false); const [reviseNote, setReviseNote] = useState(false);
+  const [queueInfo, setQueueInfo] = useState<{ ids: string[]; at: number } | null>(null);
+  // a line-up made on the question desk: shows where you are in it and moves through it
+  useEffect(() => {
+    try { const raw = sessionStorage.getItem("renyxera.tutor.queue"); const q = raw ? (JSON.parse(raw) as { ids: string[] }) : null; const at = q ? q.ids.indexOf(qid) : -1; setQueueInfo(q && at >= 0 ? { ids: q.ids, at } : null); } catch { setQueueInfo(null); }
+  }, [qid]);
+  const goQueue = (d: number) => { if (!queueInfo) return; const next = queueInfo.ids[queueInfo.at + d]; if (next) router.push(`/ai-tutor?qid=${encodeURIComponent(next)}`); };
   const [isOutlineCollapsed, setIsOutlineCollapsed] = useState(false);
   const [expandedPracticeId, setExpandedPracticeId] = useState<number | null>(null);
 
@@ -203,6 +214,7 @@ export default function AITutorWorkspace() {
     let active = true;
 
     const fetchExplanation = async () => {
+      const epoch = stopEpoch.current;
       setLoading(true);
       setError(null);
       try {
@@ -222,7 +234,7 @@ export default function AITutorWorkspace() {
             }
           : undefined;
         const res = await AIService.explainQuestion(qid, currentResponse, explainMode, personality, false);
-        if (!active) return;
+        if (!active || stopEpoch.current !== epoch) return;
 
         if (res.success && res.data) {
           setError(null);
@@ -260,7 +272,7 @@ export default function AITutorWorkspace() {
           }
         }
       } catch (err: any) {
-        if (!active) return;
+        if (!active || stopEpoch.current !== epoch) return;
         if (err.message !== "Request aborted") {
           setError(err.message || "An error occurred.");
         }
@@ -355,7 +367,9 @@ export default function AITutorWorkspace() {
       await IDBManager.saveBookmark(updated);
       await loadStudyData();
     }
-    useToastStore.getState().show("Notes successfully saved to local workspace!");
+    const central = saveNote({ source: "tutor", refId: qid, title: question.topic ?? "", body: personalNotes, subject: question.subject, topic: question.topic, revise: reviseNote });
+    if (reviseNote) addToRevision({ kind: "note", refId: central.id, source: "note", title: central.title || central.body.slice(0, 80), subject: central.subject, topic: central.topic });
+    useToastStore.getState().show("Notes saved. They are also in Review, under Notes.");
   };
 
   const handleSaveShortcut = async () => {
@@ -365,7 +379,9 @@ export default function AITutorWorkspace() {
       await IDBManager.saveBookmark({ ...activeBookmarkEntry, aiShortcut: explanation.shortcut });
       await loadStudyData();
       setIsShortcutBookmarked(true);
-      useToastStore.getState().show("Shortcut trick saved to your Library!");
+      const sc = saveNote({ source: "tutor", kind: "shortcut", refId: qid, title: `Shortcut · ${question.topic ?? ""}`, body: explanation.shortcut, subject: question.subject, topic: question.topic, revise: true });
+      addToRevision({ kind: "note", refId: sc.id, source: "note", title: sc.title, subject: sc.subject, topic: sc.topic });
+      useToastStore.getState().show("Shortcut saved to your Library and your revision queue.");
       return;
     }
     await useStudyStore.getState().addBookmark(
@@ -648,8 +664,8 @@ export default function AITutorWorkspace() {
       <div className="tutor-shell w-full h-full flex flex-col gap-2.5 overflow-hidden" data-fill-height="always">
 
         {/* Sticky Command Bar */}
-        <header className="flex-none rounded-2xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
-          <div className="flex items-center gap-3">
+        <header className="flex-none rounded-2xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap md:flex-nowrap justify-between items-center gap-3">
+          <div className="flex min-w-0 flex-1 items-center gap-3">
             <button
               onClick={() => router.back()}
               className="p-1.5 hover:bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-lg text-[var(--text-secondary)] transition"
@@ -657,42 +673,51 @@ export default function AITutorWorkspace() {
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
-            <div className="flex items-center gap-2">
+            {queueInfo && (
+              <div className="flex items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface-secondary)] px-1.5 py-1" role="group" aria-label="Your queue">
+                <button type="button" disabled={queueInfo.at <= 0} onClick={() => goQueue(-1)} aria-label="Previous question in the queue" className="grid h-7 w-7 cursor-pointer place-items-center rounded-md text-[var(--text-secondary)] hover:bg-[var(--surface)] disabled:opacity-40"><ArrowLeft className="h-4 w-4" /></button>
+                <span className="px-1 font-num text-xs font-bold text-[var(--text-primary)]">Queue {queueInfo.at + 1} of {queueInfo.ids.length}</span>
+                <button type="button" disabled={queueInfo.at >= queueInfo.ids.length - 1} onClick={() => goQueue(1)} aria-label="Next question in the queue" className="grid h-7 w-7 cursor-pointer place-items-center rounded-md text-[var(--text-secondary)] hover:bg-[var(--surface)] disabled:opacity-40"><ChevronRight className="h-4 w-4" /></button>
+              </div>
+            )}
+            <div className="flex min-w-0 flex-1 items-center gap-2">
               {question && (
-                <span className="text-[11px] text-[var(--text-muted)] font-bold hidden sm:inline">
+                <span className="block min-w-0 truncate text-xs font-bold text-[var(--text-secondary)]" title={`${question.subject} • ${question.topic}`}>
                   {question.subject} • {question.topic}
                 </span>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5 flex-wrap">
-            {/* History of Tutor chats (not shown on the Mentor screens) */}
-            <TutorHistoryMenu />
+          <div className="flex w-full flex-wrap items-center gap-2 md:w-auto md:shrink-0 md:flex-nowrap">
+            <button type="button" onClick={() => setNotesOpen(true)} title="Notes on this question" aria-label="Notes on this question" className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-black tracking-normal text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"><NotebookPen className="h-4 w-4" aria-hidden /><span className="max-xl:hidden">Notes</span></button>
+            <button type="button" onClick={() => setPracticeOpen(true)} title="Practice set" aria-label="Practice set" className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-black tracking-normal text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"><Sparkles className="h-4 w-4" aria-hidden /><span className="max-xl:hidden">Practice set</span>{practiceQuestions.length > 0 ? <span className="font-num">{practiceQuestions.length}</span> : null}</button>
 
             {/* Bookmark button */}
             <button
               onClick={handleToggleBookmark}
-              className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black tracking-normal ${isRealBookmark
+              title={isRealBookmark ? "Remove the bookmark" : "Bookmark this question"} aria-label={isRealBookmark ? "Remove the bookmark" : "Bookmark this question"}
+              className={`h-10 px-3 border rounded-lg transition flex items-center gap-1.5 text-xs font-black tracking-normal ${isRealBookmark
                 ? "bg-amber-500/10 border-amber-500/30 text-amber-500"
                 : "bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-amber-500"
                 }`}
             >
               <Bookmark className={`w-4 h-4 ${isRealBookmark ? "fill-amber-500" : ""}`} />
-              <span>{isRealBookmark ? "Bookmarked" : "Bookmark"}</span>
+              <span className="max-xl:hidden">{isRealBookmark ? "Bookmarked" : "Bookmark"}</span>
             </button>
 
             {/* Save Shortcut button */}
             {explanation?.shortcut && (
               <button
                 onClick={handleSaveShortcut}
-                className={`p-2 border rounded-lg transition flex items-center gap-1.5 text-xs font-black tracking-normal ${isShortcutBookmarked
+                title="Save this shortcut" aria-label="Save this shortcut"
+                className={`h-10 px-3 border rounded-lg transition flex items-center gap-1.5 text-xs font-black tracking-normal ${isShortcutBookmarked
                   ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
                   : "bg-[var(--surface)] border-[var(--border)] text-[var(--text-muted)] hover:text-emerald-500"
                   }`}
               >
                 <Zap className={`w-4 h-4 ${isShortcutBookmarked ? "fill-emerald-500 text-emerald-500" : ""}`} />
-                <span>{isShortcutBookmarked ? "Shortcut Saved" : "Save Shortcut"}</span>
+                <span className="max-2xl:hidden">{isShortcutBookmarked ? "Shortcut Saved" : "Save Shortcut"}</span>
               </button>
             )}
 
@@ -829,7 +854,7 @@ export default function AITutorWorkspace() {
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
 
               {loading && !questionMissing ? (
-                <div className="mx-auto max-w-3xl py-10"><MentorThinking label="The Tutor is working on this question" /><div className="mt-3 pl-[3.75rem]"><button type="button" onClick={stopNow} className="pill-soft inline-flex cursor-pointer items-center gap-2"><Square className="h-3.5 w-3.5 fill-current" aria-hidden /> Stop</button></div></div>
+                <div className="mx-auto max-w-3xl py-10"><MentorThinking label="The Tutor is working on this question" /></div>
               ) : !error && history.length === 0 && !explanation ? (
                 <div className="mx-auto max-w-3xl py-10 text-center"><p className="text-sm text-[var(--text-secondary)]">Stopped. Ask the Tutor to explain this question again whenever you are ready.</p><button type="button" onClick={() => setFetchTick((n) => n + 1)} className="btn-main mt-3 cursor-pointer">Explain this question</button></div>
               ) : error && history.length === 0 ? (
@@ -1075,7 +1100,7 @@ export default function AITutorWorkspace() {
 
               {/* Chat processing state animation */}
               {chatLoading && (
-                <div className="mx-auto max-w-3xl"><MentorThinking label="The Tutor is replying" /><div className="mt-3 pl-[3.75rem]"><button type="button" onClick={stopNow} className="pill-soft inline-flex cursor-pointer items-center gap-2"><Square className="h-3.5 w-3.5 fill-current" aria-hidden /> Stop</button></div></div>
+                <div className="mx-auto max-w-3xl"><MentorThinking label="The Tutor is replying" /></div>
               )}
 
               <div ref={chatBottomRef} />
@@ -1106,7 +1131,7 @@ export default function AITutorWorkspace() {
                 </div>
               )}
 
-              <MentorComposer value={chatInput} onChange={setChatInput} onSubmit={() => void sendMessage(chatInput)} busy={chatLoading} onStop={stopNow}
+              <MentorComposer value={chatInput} onChange={setChatInput} onSubmit={() => void sendMessage(chatInput)} busy={chatLoading || loading} onStop={stopNow}
                 disabled={loading} placeholder="Ask follow-up (why is option B wrong?)" label="Ask the Tutor a follow-up" submitId="send-chat-submit">
                 <MenuSelect label="How should I explain" value={explainMode}
                   options={EXPLAIN_MODES.map((m) => ({ id: m as string, label: m === "Exam Oriented" ? "Exam focus" : m }))} onChange={setExplainMode} />
@@ -1115,69 +1140,11 @@ export default function AITutorWorkspace() {
 
           </section>
 
-          {/* RIGHT PANEL: Outline / Saved Practice / Notes (Width 30%) */}
-          {isRightPanelCollapsed && (
-            <button type="button" onClick={() => setIsRightPanelCollapsed(false)} aria-label="Show the outline, notes and practice panel" title="Show panel"
-              className="hidden shrink-0 cursor-pointer flex-col items-center gap-2 border-l border-[var(--border)] bg-[var(--surface)] px-2 py-4 text-[var(--text-secondary)] hover:text-[var(--text-primary)] lg:flex">
-              <PanelRightOpen className="h-5 w-5" />
-              <span className="text-[10px] font-black uppercase tracking-widest [writing-mode:vertical-rl]">Outline and notes</span>
-            </button>
-          )}
-          {!isRightPanelCollapsed && (
-            <section className="w-full lg:w-80 border-l border-[var(--border)] bg-[var(--surface)] flex flex-col h-full overflow-hidden shrink-0">
-              <div className="hidden flex-none items-center justify-end border-b border-[var(--border)] px-3 py-1.5 lg:flex">
-                <button type="button" onClick={() => setIsRightPanelCollapsed(true)} aria-label="Collapse this panel" title="Collapse panel" className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-bold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"><PanelRightClose className="h-4 w-4" /> Collapse</button>
-              </div>
-              <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
+        </main>
 
-                {/* Outline index navigator */}
-                <div className="space-y-2">
-                  <button
-                    type="button"
-                    onClick={() => setIsOutlineCollapsed(!isOutlineCollapsed)}
-                    className="w-full flex justify-between items-center text-left focus:outline-none cursor-pointer group"
-                  >
-                    <span className="text-xs font-black tracking-normal text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition">Tutor outline navigator</span>
-                    {isOutlineCollapsed ? (
-                      <ChevronDown className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition" />
-                    ) : (
-                      <ChevronUp className="w-3.5 h-3.5 text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition" />
-                    )}
-                  </button>
-                  {!isOutlineCollapsed && (
-                    <div className="flex flex-col gap-1.5 pt-1">
-                      <button
-                        onClick={() => scrollToCard("overview")}
-                        className="flex justify-between items-center text-left text-xs p-2 rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] font-semibold cursor-pointer transition"
-                      >
-                        <span>1. Concept Overview</span>
-                        <span className="text-[9px] bg-[var(--surface-secondary)] px-1.5 py-0.5 rounded font-black text-[var(--text-muted)]">ALT+1</span>
-                      </button>
-                      <button
-                        onClick={() => scrollToCard("steps")}
-                        className="flex justify-between items-center text-left text-xs p-2 rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] font-semibold cursor-pointer transition"
-                      >
-                        <span>2. Step-by-Step Proof</span>
-                        <span className="text-[9px] bg-[var(--surface-secondary)] px-1.5 py-0.5 rounded font-black text-[var(--text-muted)]">ALT+2</span>
-                      </button>
-                      <button
-                        onClick={() => scrollToCard("formulas")}
-                        className="flex justify-between items-center text-left text-xs p-2 rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] font-semibold cursor-pointer transition"
-                      >
-                        <span>3. Latex Formulas</span>
-                        <span className="text-[9px] bg-[var(--surface-secondary)] px-1.5 py-0.5 rounded font-black text-[var(--text-muted)]">ALT+3</span>
-                      </button>
-                      <button
-                        onClick={() => scrollToCard("shortcut")}
-                        className="flex justify-between items-center text-left text-xs p-2 rounded-lg hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] font-semibold cursor-pointer transition"
-                      >
-                        <span>4. Shortcut Tricks</span>
-                        <span className="text-[9px] bg-[var(--surface-secondary)] px-1.5 py-0.5 rounded font-black text-[var(--text-muted)]">ALT+4</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
-
+        {/* Notes and the practice set open as windows, the way Study's tools do, so the workspace is just the question and the teaching. */}
+        <DeskModal open={notesOpen} onClose={() => setNotesOpen(false)} title="Notes on this question">
+          <div className="space-y-4">
                 {/* Personal notes attachments editor */}
                 <div className="space-y-2 border-t border-[var(--border-subtle)] pt-4">
                   <div className="flex justify-between items-center">
@@ -1225,6 +1192,13 @@ export default function AITutorWorkspace() {
                   )}
                 </div>
 
+
+            <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[var(--text-primary)]"><input type="checkbox" checked={reviseNote} onChange={(e) => setReviseNote(e.target.checked)} className="h-4 w-4" /> Revise this note later</label>
+            <p className="text-xs text-[var(--text-secondary)]">Saved notes also appear in Review, under Notes, with every other note you keep.</p>
+          </div>
+        </DeskModal>
+        <DeskModal open={practiceOpen} onClose={() => setPracticeOpen(false)} title="Practice set" wide>
+          <div className="space-y-4">
                 {/* Dynamic practice generation trigger & list */}
                 <div className="space-y-3 border-t border-[var(--border-subtle)] pt-4">
                   <div className="flex justify-between items-center">
@@ -1351,11 +1325,10 @@ export default function AITutorWorkspace() {
                   )}
                 </div>
 
-              </div>
-            </section>
-          )}
 
-        </main>
+          </div>
+        </DeskModal>
+
       </div>
     </MathJaxContext>
   );

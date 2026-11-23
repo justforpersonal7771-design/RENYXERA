@@ -17,6 +17,8 @@ import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { AI_DAILY } from "@/lib/billing/plans";
 import { Segmented } from "@/components/ui/folder-tabs";
 import { CardView, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
+import { HUB_NAME } from "@/lib/mentor/brand";
+import { RevisionStrip } from "@/components/desk/revision-due-card";
 import { MentorNote, useMentorData } from "@/components/mentor/use-mentor-data";
 import { CheckInPanel, FocusTimer, GoalsPanel, NoticedPanel, RoadmapPanel } from "@/components/mentor/mentor-extras";
 import { AiPracticePanel } from "@/components/mentor/ai-practice";
@@ -73,10 +75,11 @@ export default function AIMentorPage() {
     <div className="space-y-5 pb-6">
       <StudyStripMini />
       <PlanUpsellCard />
+      <RevisionStrip />
       <section className="card-pastel p-5 sm:p-7" data-tint="sky" aria-label="Your Mentor">
         <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr] lg:items-end">
           <div>
-            <span className="section-label"><BrainCircuit className="h-3.5 w-3.5" /> AI Mentor</span>
+            <span className="section-label"><BrainCircuit className="h-3.5 w-3.5" /> {HUB_NAME}</span>
             <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.1] text-[var(--text-primary)] sm:text-4xl">{greet}{d.firstName ? `, ${d.firstName}` : ""}.</h1>
             <p className="mt-2 max-w-xl text-[var(--text-secondary)]">{d.daysToExam != null && d.daysToExam >= 0 ? `${d.daysToExam} days to GATE ${d.targetYear ?? ""}. ` : ""}{focus ? focus.line : "Getting to know your progress..."}</p>
             <div className="mt-4 flex flex-wrap gap-2">
