@@ -5,12 +5,12 @@ import { MENTOR_HOME } from "@/lib/mentor/links";
 import { HUB_NAME } from "@/lib/mentor/brand";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { LayoutGroup, motion } from "motion/react";
+import { LayoutGroup, motion, useDragControls } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SocialDot } from "@/components/friends/social-dot";
 import { useInterviewAccess } from "@/components/interview/interview-gate";
-import { Briefcase, BrainCircuit, Download, LayoutDashboard, Library, ListTree, Menu, PieChart, ClipboardCheck, Wrench, X, BookOpenText, Swords } from "lucide-react";
+import { Briefcase, BrainCircuit, LayoutDashboard, Library, ListTree, Menu, PieChart, ClipboardCheck, Wrench, X, BookOpenText, Swords } from "lucide-react";
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
@@ -19,14 +19,14 @@ import { Castle } from "lucide-react";
 
 /**
  * Phone/tablet tab bar (below lg): the four places a student goes most, within thumb reach. "More" slides a sheet up
- * from the bottom with only the pages that aren't already in the bar (Mocks, Analytics, Tools, Downloads).
+ * from the bottom with only the pages that aren't already in the bar (Review, Analytics, Interview, Browse topics, Tools).
  */
 export function BottomTabBar() {
   const pathname = usePathname() ?? "";
-  const signedIn = useAuthStore((s) => !!s.user);
   const interview = useInterviewAccess();   // only the allowed accounts get the Interview door
   const [reviewHref, setReviewHref] = useState("/mistakes");
   const [more, setMore] = useState(false);
+  const sheetDrag = useDragControls();
   useEffect(() => { setReviewHref(lastReviewHref()); }, [pathname]);
   useEffect(() => { setMore(false); }, [pathname]);
   useEffect(() => {
@@ -42,16 +42,15 @@ export function BottomTabBar() {
     { label: "Home", short: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
     { label: TEST_CENTRE, short: "Tests", href: TEST_CENTRE_HREF, icon: ClipboardCheck, active: isTestCentrePath(pathname) },
     { label: HUB_NAME, short: "Desk", href: MENTOR_HOME, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
-    { label: "Review", short: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
+    { label: "Study materials", short: "Study", href: "/study", icon: BookOpenText, active: pathname.startsWith("/study") },
     { label: CITADEL, short: "Clash", href: CITADEL_HREF, icon: Castle, active: isCitadelPath(pathname), citadel: true },
   ];
   const rest = [
-    { label: "Study materials", hint: "Books, labs and quizzes", tint: "mint", href: "/study", icon: BookOpenText, active: pathname.startsWith("/study") },
+    { label: "Review", hint: "Mistakes, bookmarks, notes, revision", tint: "rose", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
     { label: "Analytics", hint: "Your progress", tint: "peri", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },
     ...(interview ? [{ label: "Interview", hint: "Books, flashcards, code lab, mock interviews", tint: "butter", wide: true, href: "/interview", icon: Briefcase, active: pathname.startsWith("/interview") }] : []),
     { label: "Browse topics", hint: "Every topic, one tap", tint: "sky", href: "/browse", icon: ListTree, active: pathname.startsWith("/browse") },
     { label: "Tools", hint: "Calculators and plans", tint: "butter", href: TOOLS_HOME, icon: Wrench, active: isToolPath(pathname) },
-    ...(signedIn ? [{ label: "Downloads", hint: "Your saved files", tint: "peach", href: "/downloads", icon: Download, active: pathname.startsWith("/downloads") }] : []),
   ];
   const oddRegular = rest.filter((r) => !("wide" in r && r.wide)).length % 2 === 1;   // an odd last tile spans the row, so no empty cell
   const moreActive = rest.some((r) => r.active);
@@ -87,8 +86,8 @@ export function BottomTabBar() {
         <div className="lg:hidden">
           <button type="button" aria-label="Close menu" className="fixed inset-0 z-[39] bg-black/40" onClick={() => setMore(false)} />
           <div className="pointer-events-none fixed inset-x-3 top-0 bottom-[calc(5.4rem+env(safe-area-inset-bottom))] z-[45] flex items-end overflow-hidden">
-          <motion.div role="dialog" aria-label="More pages" drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="pointer-events-auto touch-pan-y mx-auto max-h-full w-full max-w-xl overflow-y-auto overscroll-contain rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
-            <div className="mx-auto mb-2 h-1.5 w-12 rounded-full bg-[var(--text-muted)]/40" aria-hidden />
+          <motion.div role="dialog" aria-label="More pages" drag="y" dragListener={false} dragControls={sheetDrag} dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.7 }} onDragEnd={(_, i) => { if (i.offset.y > 70 || i.velocity.y > 500) setMore(false); }} initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ type: "spring", stiffness: 420, damping: 34 }} className="pointer-events-auto touch-pan-y mx-auto max-h-full w-full max-w-xl overflow-y-auto overscroll-contain rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shadow-[0_-20px_50px_-20px_rgba(0,0,0,0.35)] animate-[sheet-up_0.22s_ease-out]">
+            <div onPointerDown={(e) => sheetDrag.start(e)} className="-mx-3 -mt-3 mb-1 cursor-grab touch-none px-3 pb-1 pt-3" aria-hidden><div className="mx-auto h-1.5 w-12 rounded-full bg-[var(--text-muted)]/40" /></div>
             <p className="mb-2.5 px-1 text-[11px] font-extrabold uppercase tracking-wide text-[var(--text-muted)]">More from RENYXERA</p>
             <ul className="grid grid-cols-2 gap-2.5 pb-1">
               {rest.map((r, i) => (
