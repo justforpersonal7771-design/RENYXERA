@@ -33,9 +33,18 @@ Do one subject at a time, in the order below. The order follows marks in the pap
 | 16 | `verbal-aptitude/` | 33 | 45 | v0 |
 | 17 | `spatial-aptitude/` | 15 | 24 | v0 |
 
+## In-depth review: one file per chapter (added 24 Nov)
+
+Each subject folder now has a **`chapters/`** folder with **one review file per chapter** (135 files in all). Each file holds the reviewer instructions, the chapter's details, and **the full text of every PYQ for that chapter with the official answer**. The reviewer is asked for a deeper gap table (40+ rows), the full lesson plan, a check of each PYQ's answer and transcription, and more question ideas.
+
+- **Quick pass for a whole subject:** use `00-REVIEW-INPUT.md`.
+- **In-depth pass (recommended):** do the `chapters/NN-*.md` files one by one. Save replies as `chatgpt-NN-<name>.md` and `gemini-NN-<name>.md` next to each file (the name is printed inside each file).
+- `02-all-pyqs.md`: every PYQ of the subject (full text, official key), for chapters whose PYQs could not be matched by name.
+- For the chapters whose PYQs are matched by title words, a question can appear in two chapters; the reviewer is asked to say where it really belongs. Nine chapters have no matched PYQ (Quantitative: number system, ratio, profit and loss, time-speed-distance, time and work; Analytical: seating; Databases: SQL; P&DS: graphs, practice): the reviewer finds theirs in `02-all-pyqs.md`.
+
 ## What is in each folder
 
-- `00-REVIEW-INPUT.md`: **give this to ChatGPT and Gemini.**
+- `00-REVIEW-INPUT.md`: the quick whole-subject version.
 - `01-contents-draft-v0.md`: the contents draft inside the input (also readable on its own): syllabus lines, the app's chapters, the PYQ bank by topic with every question ID.
 - After review: the two review files, a `REVIEW-MERGE` note, and the finished plan (plus the book contents with weights, as done for Programming and Data Structures).
 
