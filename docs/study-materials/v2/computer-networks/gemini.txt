@@ -1,0 +1,838 @@
+## PART 1. FEELINGS
+
+1. Looking at Part B made me feel hopeful at first because Computer Networks is 7.9% of the paper and has only 5 chapters instead of 20.
+2. Then I started reading Part C and got completely lost within five minutes: nobody warned me that **`1 Mbps = 10^6` bits/sec** while **`1 KB = 2^{10}` bytes**, or that a **Byte = 8 bits**, so all my delay calculations came out 8x wrong!
+3. There is NO Chapter 0 teaching the 4 network delays, pipelining across links, or basic header sizes — yet `2026_AN_Q21`, `2024_FN_Q40`, and `2018_FN_Q23` expect me to know them automatically!
+4. When I saw **Flow Control** listed in Chapter 04 (`TCP, UDP and flow control`), I panicked looking at the Data Link PYQs (`2026_FN_Q45`, `2025_AN_Q36`, `2021_FN_Q42`), because sliding window is tested heaviest under Data Link!
+5. Then I hit `2019_FN_Q46`, `2017_FN_Q28`, and `2017_FN_Q47` — full **RSA & Birthday Attack Cryptography** questions! Neither `Part B.1` (syllabus) nor `Part B.2` (chapters) even mentions Security, leaving me confused whether I need to study cryptography for my 100-day plan or skip it!
+6. Part B.2 gives only `"3 topics ready"` or `"6 topics ready"` with zero clue how it teaches *CRC long division*, *Hamming distance*, *CIDR super-netting alignment*, *IPv4 fragmentation 8-byte multiples*, or *TCP Slow Start vs Congestion Avoidance*!
+7. Plus **9 PYQs** in Part C have `[IMAGE_...]` missing so I cannot even see the forwarding tables or topologies while revising!
+8. **Would I pay ₹149 for this right now? NO.**
+9. Why? Because Computer Networks is pure step-by-step math and packet-walk pictures (headers, sequence timelines, subnet masks, routing tables), and right now `Part B` is just a vague 5-line list missing Chapter 0, Security clarification, and clear placement of Sliding Window.
+10. Add Chapter 0 for units/delays, put Sliding Window ARQ in Ch 02 (and TCP window in Ch 04), draw every packet header and timeline frame-by-frame, and clarify Security vs GATE 2027 — then I will gladly pay ₹149.
+
+---
+
+## PART 2. GAP TABLE
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 1 | `Part B.2` (Missing Ch 00) | Zero chapter teaching **Network Units (`1k = 10^3` vs `1K = 2^{10}`, bits vs bytes)** and **4 Network Delays (`Transmission L/B`, `Propagation d/v`, `Queueing`, `Processing`)** (`2026_AN_Q21`, `2022_FN_Q59`, `2017_AN_Q56`). | MISSING-PREREQUISITE | Add **Chapter 00: Units, Network Delays & Multi-Hop Pipelining** before Ch 01. | HIGH |
+| 2 | `Part B.2` (Missing Ch 00) | Doesn't explain **Store-and-Forward vs Cut-Through vs Packet Pipelining** across multi-link paths (`2026_AN_Q21` bottleneck bandwidth vs `2024_FN_Q40` `N × T_t + (k-1) × T_t`!). | MISSING-GATE-CONCEPT | Draw a car-convoy / water-pipe analogy for bottleneck bandwidth + packet pipelining timeline (`2024_FN_Q40` `8.008 s`!). | HIGH |
+| 3 | `Part B.1` vs `Part B.3` & `Part C` (Security) | `Part B.1` (syllabus) and `Part B.2` (chapters) do NOT mention **Cryptography / Network Security**, yet `Part B.3` adds `& Security` and `Part C` has 3 RSA/Birthday-Attack PYQs (`2019_FN_Q46`, `2017_FN_Q28`, `2017_FN_Q47` — all 2019 or earlier!). | FACT-DOUBT | Verify against official GATE 2027 syllabus whether Network Security is excluded; if legacy-only, isolate it in an optional `[LATER / CHECK SYLLABUS]` appendix so 100-day droppers don't panic! | HIGH |
+| 4 | `Part B.2` (Whole outline) | Only prints `"3 topics ready"`..`"6 topics ready"` with zero subtopic names, finer points, traces, or diagrams. | STEP-SKIPPED | Replace this v0 outline with the complete lesson-by-lesson syllabus (Part 5). | HIGH |
+| 5 | `Part B.2` & `Part B.3` (100-day plan) | No study hours, no `[MUST]` / `[SHOULD]` / `[LATER]` priority tags, and no dependency map for a dropper with 100 days left. | TOO-LONG-BORING | Tag every lesson with time estimate and GATE priority so high-mark topics (`IP/CIDR`, `DLL/ARQ`, `TCP`) come first. | HIGH |
+| 6 | `Part B.2` (`Ch 04` vs `Ch 02` Flow Control) | `Ch 04` is titled `TCP, UDP and flow control`, yet in `Part B.3` & `Part C` all Stop-and-Wait / Sliding Window link-utilization questions (`2026_FN_Q45`, `2025_AN_Q36`, `2021_FN_Q42`, `2017_FN_Q56`) belong to **Data Link Layer (`Ch 02`)**! | WRONG-ORDER | Teach **Link-Level ARQ & Sliding Window (`Stop-and-Wait, GBN, SR`)** in `Ch 02`, and teach **TCP End-to-End Byte-Stream Flow/Congestion Control (`rwnd, cwnd`)** in `Ch 04`! | HIGH |
+| 7 | `Ch 01 Layering & Switching` (Encapsulation & Addresses) | Never draws a message dropping down the 5/7 layers getting **MAC + IP + Port headers slapped on**, OR shows how **IP stays end-to-end (`X -> Y`) while MAC changes at every hop (`X -> Router R`)** (`2024_AN_Q14`!). | NEEDS-DIAGRAM | Draw the "Nested Envelopes" picture (`App Data -> TCP/UDP -> IP -> Ethernet Frame`) and trace one packet crossing Switch `S` and Router `R` (`2024_AN_Q14`). | HIGH |
+| 8 | `Ch 01 Layering` (Layer Duties & Header Field Sizes) | Doesn't have a crisp **OSI 7-Layer vs TCP/IP 4/5-Layer duty table** (`2025_FN_Q16`) or **Header Field Bit-Width Cheat Box** (`MAC 48, IPv4 32, Port 16, TCP Seq 32, IPv6 NextHdr 8` — `2018_FN_Q23`!). | MISSING-GATE-CONCEPT | Add both cheat tables in Ch 01 with clear examples of which device works at which layer (Hub L1, Switch L2, Router L3). | HIGH |
+| 9 | `Ch 01 Switching` (Circuit vs Packet vs Virtual Circuit) | Doesn't compare **Circuit Switching** (setup delay + reserved channel), **Datagram Packet Switching** (per-packet header + variable route), and **Virtual Circuit** (VC ID setup + per-hop table) with delay equations! | MISSING-FINER-POINT | Add a 3-column comparison table + end-to-end delay formula for each switching mode. | MEDIUM |
+| 10 | `Ch 02 Data Link` (Framing Methods) | Mentions "framing" without teaching **Byte Count**, **Byte Stuffing (`ESC`, `FLAG`)**, **Bit Stuffing (`01111110` -> insert `0` after five `1`s)**, and **Physical Violation**. | STEP-SKIPPED | Trace Bit Stuffing & Byte Stuffing step-by-step on tricky strings (`01111101111110`). | MEDIUM |
+| 11 | `Ch 02 Data Link` (Error Detection: Parity, 2D Parity, Checksum, Hamming Distance) | Skips **Hamming Distance ($d_{\min}$)** rules (`detect up to d_min - 1`, `correct up to floor((d_min - 1)/2)`, `2017_AN_Q65`), **1's-complement Checksum**, and **Hamming Code parity bit positions (`1, 2, 4, 8...`)** (`2021_FN_Q46`)! | MISSING-GATE-CONCEPT | Show exact pairwise XOR distance table (`2017_AN_Q65`), checksum wrapping carry addition, and 12-bit Hamming codeword parity placement (`2021_FN_Q46`). | HIGH |
+| 12 | `Ch 02 Data Link` (CRC Binary Long Division!) | Beginners always get CRC wrong because they forget **modulo-2 arithmetic (XOR = subtract without borrowing!)**, **appending $r$ zeros (degree of polynomial, NOT $r+1$!)**, and turning $X^3 + X + 1$ into `1011` (`2026_AN_Q43`, `2021_AN_Q50`, `2017_FN_Q63`)! | NEEDS-TRACE | Trace polynomial -> binary (`x^3+x+1` -> `1011`), append `3` zeros, do full XOR long division by hand, and verify receiver remainder = `0`! | HIGH |
+| 13 | `Ch 02 Data Link` (Stop-and-Wait & Piggybacked vs Negligible ACK) | Misses exact utilization formulas: **Ideal ($\frac{T_t}{T_t + 2T_p} = \frac{1}{1 + 2a}$)** (`2025_AN_Q36`, `2023_FN_Q17`) vs **With $T_{\text{ack}}$ & Processing Delay (`2017_FN_Q56`)** vs **With Error Probability $p$ ($\frac{1-p}{1+2a}$)**! | MISSING-GATE-CONCEPT | Derive $\eta$ from a simple timeline rectangle (`busy time / total cycle time`), then add $T_{\text{ack}}$, $T_{\text{proc}}$, and error rate $p$! | HIGH |
+| 14 | `Ch 02 Data Link` (Sliding Window: GBN vs SR Window Size & Sequence Bits!) | Doesn't distinguish **Utilization window ($W \ge 1 + 2a$)** (`2026_FN_Q45`, `2021_FN_Q42`) from **Sequence Number wrap-around limits**: GBN ($W_S \le 2^k - 1, W_R = 1$) vs Selective Repeat ($W_S = W_R \le 2^{k-1}$) vs **Time-based wrap (`2026_AN_Q65`!)**! | MISSING-GATE-CONCEPT | Draw the sequence-number wrap-around trap (why GBN allows `2^k - 1` while SR only allows `2^{k-1}`) AND trace `2026_AN_Q65`! | HIGH |
+| 15 | `Ch 02 Data Link` (MAC: Pure ALOHA vs Slotted ALOHA) | Never derives or states **$S = G e^{-2G}$ (max $18.4\%$)** vs **$S = G e^{-G}$ (max $36.8\%$)**, or explains how to convert Poisson rate $\lambda$ frames/sec to dimensionless $G = \lambda \cdot T_{\text{fr}}$ (`2021_AN_Q32`)! | MISSING-GATE-CONCEPT | Draw the `2 × T_fr` vulnerable collision window for Pure ALOHA vs `1 × T_fr` for Slotted ALOHA, and solve `2021_AN_Q32`. | HIGH |
+| 16 | `Ch 02 Data Link` (CSMA, CSMA/CD & Min Frame Size!) | Misses **CSMA/CD minimum frame size formula ($L_{\min} \ge 2 \cdot T_p \cdot B$)** (`2024_AN_Q36`), **non-persistent vs 1-persistent vs p-persistent**, **Carrier-sense collision window without CD (`2018_FN_Q65`)**, and **Binary Exponential Backoff**! | MISSING-GATE-CONCEPT | Draw the exact worst-case `A` vs `B` collision wave timeline (`2 T_p`) proving why `T_t >= 2 T_p`, and trace `2018_FN_Q65` (`50 m`). | HIGH |
+| 17 | `Ch 02 Data Link` (Ethernet Bridging, Learning Switches & Port Counting) | Misses **Self-Learning Switch MAC Tables**, **Broadcast vs Collision Domains** (Hub vs Switch vs Router), **Spanning Tree Protocol (STP) basics**, and **Cascading Switch Port Counting (`2019_FN_Q62`)**! | MISSING-GATE-CONCEPT | Draw a LAN with Hub + Switch + Router circling Collision vs Broadcast domains, and trace cascading 8-port switches (`2019_FN_Q62`). | MEDIUM |
+| 18 | `Ch 02 Data Link` (Token Ring & Polling — `[SHOULD]`/`[LATER]`) | Doesn't even briefly compare Token Ring (`THT`, `TRT`, Early vs Delayed Token Release) for completeness of classical MAC questions. | MISSING-FINER-POINT | Add a short `[LATER]` Token Ring efficiency box in Ch 02. | LOW |
+| 19 | `Ch 03 IP & Routing` (Binary Dotted-Decimal & Classful vs Classless) | Jumps into CIDR and `/19` super-netting (`2026_FN_Q56`) without teaching **8-bit octet powers (`128, 192, 224, 240, 248, 252, 254, 255`)**, **Class A/B/C/D/E boundaries**, and **Private/Loopback/Broadcast IPs**! | MISSING-PREREQUISITE | Add a 1-page Octet-Mask Cheat Table (`255.255.240.0` <-> `/20` <-> block size `16`) and Classful A/B/C/D/E ranges before CIDR! | HIGH |
+| 20 | `Ch 03 IP & Routing` (Subnetting & Interface Counting Trap) | Beginners confuse **total IPs ($2^h$)** with **assignable host/interface IPs ($2^h - 2$)** (`2026_AN_Q33`), and forget **how to count subnets inside an enterprise network (`2022_FN_Q22` — each router link/LAN is a subnet!)**! | MISSING-GATE-CONCEPT | Draw an enterprise topology highlighting every distinct broadcast domain/router interface as a separate subnet (`2022_FN_Q22`). | HIGH |
+| 21 | `Ch 03 IP & Routing` (CIDR Alignment & Route Aggregation Rules!) | Misses the **3 Golden Rules of CIDR / Supernetting** (`1. Power-of-2 block size`, `2. Contiguous blocks`, `3. Start IP MUST be divisible by block size!`) — tested directly in `2026_FN_Q56`, `2024_AN_Q45`, `2020_FN_Q64`, `2022_FN_Q55`! | MISSING-GATE-CONCEPT | Teach the "Block Size = `256 - mask_octet` & Divisibility Check" trick (`84 % 8 != 0` in `2020_FN_Q64`; `24 % 32 != 0` in `2026_FN_Q56`!). | HIGH |
+| 22 | `Ch 03 IP & Routing` (Longest Prefix Match!) | Doesn't trace **Longest Prefix Match (LPM)** in a router forwarding table (`2025_FN_Q40`, `2024_FN_Q58`, `2023_FN_Q65`) — including converting IP octets to binary to catch tricky `/21` or `/22` prefixes and default `0.0.0.0/0`! | NEEDS-TRACE | Trace a router table lookup comparing binary prefixes and picking the longest matching `/N` over shorter matches! | HIGH |
+| 23 | `Ch 03 IP & Routing` (IPv4 Header Fields & What Routers Modify!) | Doesn't draw all **13 fields of the IPv4 header** (`IHL, Total Length, ID, DF/MF, Fragment Offset, TTL, Protocol, Header Checksum, Options`) — missing which fields routers modify (`TTL, Checksum`, `2024_AN_Q29`, `2020_FN_Q29`), which protocols sit directly inside `Protocol` (`ICMP, IGMP, OSPF` vs `RIP` over UDP!, `2025_AN_Q18`), and max `Record Route` size (`9` IPs, `2017_AN_Q27`)! | MISSING-GATE-CONCEPT | Draw the 20-byte (+ 40-byte Options) IPv4 header diagram labelling every field, its bits, units (`IHL` in 4-B words, `Offset` in 8-B units!), and router changes! | HIGH |
+| 24 | `Ch 03 IP & Routing` (IPv4 Fragmentation Maths & Offset Multiple of 8!) | Beginners ALWAYS fail IPv4 fragmentation (`2025_AN_Q23`, `2024_AN_Q30`, `2024_FN_Q43`, `2021_FN_Q22`, `2018_FN_Q64`) because they forget: (1) subtract `20 B` IP header from MTU, (2) **round payload DOWN to multiple of 8**, (3) **include TCP/UDP header inside first fragment payload (`2025_AN_Q23`!)**, and (4) **divide byte start by 8 for `Fragment Offset`**! | MISSING-GATE-CONCEPT | Give a 5-step Fragmentation Recipe + trace multi-hop re-fragmentation (`2024_FN_Q43` `542 -> 360`) and UDP header inclusion (`2025_AN_Q23`). | HIGH |
+| 25 | `Ch 03 IP & Routing` (Support Protocols: ARP, DHCP, ICMP, IGMP, NAT) | Doesn't explain **ARP Request (broadcast MAC) vs ARP Reply (unicast MAC)** (`2021_FN_Q13`, `2019_FN_Q64`, `2025_AN_Q16`), **DHCP 4-step DORA broadcast (`2026_AN_Q22`)**, **ICMP types (ping, TTL exceeded)**, **NAT / PAT field edits (`2024_FN_Q29`: Src IP + Checksum + Src Port)**, and **IPv6 differences (`2018_FN_Q23`: Next Header, no fragmentation at routers!)**. | MISSING-GATE-CONCEPT | Draw packet-walk diagrams for ARP, DHCP DORA, and NAT translation tables! | HIGH |
+| 26 | `Ch 03 Routing` (Flooding, Static Routing & Link State vs Distance Vector) | Doesn't contrast **Static Routing (`2020_FN_Q29(II)`)**, **Flooding (hop count / sequence #)**, **Distance Vector (`Bellman-Ford`, RIP over UDP, `2025_AN_Q17`, `2021_AN_Q53`, `2017_AN_Q34`)**, **Link State (`Dijkstra`, OSPF directly over IP, `2023_FN_Q25`)**, and **Inter-domain BGP** (`2023_FN_Q25(C)`)! | MISSING-GATE-CONCEPT | Build a 3-column Routing Table (`RIP vs OSPF vs BGP`: algorithm, transport protocol, intra/inter-domain, convergence, loops)! | HIGH |
+| 27 | `Ch 03 Routing` (Count-to-Infinity, Split Horizon & Loop Probability!) | Doesn't teach **Count-to-Infinity** when a link breaks, **Split Horizon / Poison Reverse**, or how random update timing causes routing loops (`2022_FN_Q57` probability `0.5`)! | NEEDS-TRACE | Trace a 3-router (`P - Q - R`) link failure frame by frame showing `P` advertising its stale `2`-hop route back to `Q`! | HIGH |
+| 28 | `Ch 04 Transport` (Ports, Multiplexing & Connected UDP Sockets!) | Doesn't draw the **4-tuple `(Src IP, Src Port, Dst IP, Dst Port)`** demultiplexing TCP vs 2-tuple UDP, UDP's lightweight 8-byte header (and why UDP checksum is optional in IPv4, mandatory in IPv6), or **Connected UDP Socket (`2017_AN_Q18`)** & Socket API (`socket, bind, listen, accept, connect`)! | MISSING-GATE-CONCEPT | Draw UDP vs TCP socket demultiplexing boxes and explain `connect()` on a UDP socket (`2017_AN_Q18`). | MEDIUM |
+| 29 | `Ch 04 Transport` (TCP Header, Sequence/ACK Numbers & Wrap-Around!) | Doesn't draw the **20-byte TCP header** (`Ports, 32-bit Seq#, 32-bit Ack#, Flags SYN/ACK/FIN/RST, Receive Window, Checksum`) or teach **byte-level sequence numbering** (vs packet-level!) and **MSL Wrap-Around Bits (`2023_FN_Q50`, `2022_FN_Q60`, `2018_FN_Q35`)**! | MISSING-GATE-CONCEPT | Draw TCP byte-stream numbering (`Seq 100, 20 B -> Ack 120`) and work out the `B * MSL / 8 <= 2^k` wrap-around formula! | HIGH |
+| 30 | `Ch 04 Transport` (TCP 3-Way Handshake, Simultaneous Close & States!) | Doesn't trace **3-Way Handshake** (`SYN=1, SEQ=X` -> `SYN=1, ACK=1, SEQ=Y, ACK=X+1` -> `ACK=1, ACK=Y+1`, `2025_FN_Q22`, `2024_FN_Q23`, `2021_AN_Q14`), **4-Way Teardown & Simultaneous Close (`2026_FN_Q18`)**, **TCP State Diagram (`FIN-WAIT-1 -> FIN-WAIT-2 -> TIME-WAIT`, `2017_FN_Q12`)**, and **Half-Open Server Reboot `RST` (`2021_FN_Q20`)**! | NEEDS-DIAGRAM | Draw the complete Handshake + Teardown timeline AND the RFC 793 TCP State Diagram highlighting `FIN-WAIT-2`, `TIME-WAIT (2×MSL)`, and `RST`! | HIGH |
+| 31 | `Ch 04 Transport` (TCP Flow Control vs Congestion Control: `rwnd` & `cwnd`!) | Students always mix up **`rwnd` (receiver advertised window)** and **`cwnd` (sender congestion window)**, forgetting effective window = `min(rwnd, cwnd)` (`2026_AN_Q58`, `2020_FN_Q62`)! | UNEXPLAINED-WORD | Draw `rwnd` (receiver buffer bucket) and `cwnd` (network pipe valve) side by side, showing `send_win = min(rwnd, cwnd)`. | HIGH |
+| 32 | `Ch 04 Transport` (TCP Slow Start, Congestion Avoidance, Timeout vs 3-Dup-ACK!) | Misses the exact **TCP Tahoe vs Reno** state machine: Slow Start (`+1 MSS` per ACK = `×2` per RTT, `2018_FN_Q24`), Congestion Avoidance (`+1 MSS` per RTT), **Timeout (`ssthresh = cwnd/2`, `cwnd = 1`)** (`2024_AN_Q58`), vs **3 Duplicate ACKs (`ssthresh = cwnd/2`, `cwnd = ssthresh`)**, and **counting exact RTTs / segment start times (`2026_FN_Q44`, `2026_AN_Q58`, `2020_FN_Q62`)**! | MISSING-GATE-CONCEPT | Plot the sawtooth `cwnd` graph over RTT rounds labelling Slow Start, `ssthresh`, Linear Growth, Timeout drop to `1`, and Fast Recovery! | HIGH |
+| 33 | `Ch 04 Transport` (TCP Round Index Off-by-One Trap!) | Look at `2026_FN_Q44`, `2026_AN_Q58`, and `2020_FN_Q62`! Beginners always get off by 1 between *"at time t = 60 ms (`10` RTTs elapsed)"* (`2020_FN_Q62`), *"during the 3rd RTT"* (`2024_AN_Q58`), and *"rounds to reach congestion avoidance"* (`2026_AN_Q58`)! | MISSING-FINER-POINT | Put all 3 wording patterns in one explicit Round-Indexing table (`RTT 0 / t=0`, `after k RTTs`, `during k-th RTT`). | HIGH |
+| 34 | `Ch 05 App Layer` (Application Port Numbers & Stateful vs Stateless) | Doesn't provide a master table of standard ports (`DNS 53, HTTP 80, HTTPS 443, SMTP 25, POP3 110, IMAP 143, FTP 20/21, DHCP 67/68`) or explain **Out-of-Band FTP (Control 21 vs Data 20, Active vs Passive)** and **Cookies**! | MISSING-GATE-CONCEPT | Add a clean Port + Transport Protocol + Stateful/Stateless summary table for all 6 application protocols. | MEDIUM |
+| 35 | `Ch 05 App Layer` (DNS Hierarchy, Recursive vs Iterative & Query Counting) | Doesn't trace **Recursive vs Iterative DNS lookups** (`Root -> TLD -> Authoritative`) or count exact RTTs / query-response pairs (`2023_FN_Q52`, `2022_FN_Q35` — note `www.gate.org.in` = 4 pairs!). | NEEDS-DIAGRAM | Draw the 3-tier + 4-tier DNS hierarchy tracing both Recursive and Iterative message arrows! | HIGH |
+| 36 | `Ch 05 App Layer` (HTTP/1.0 vs HTTP/1.1: Non-Persistent, Parallel, Persistent, Pipelined!) | Misses calculating exact **RTTs** for: Non-persistent sequential (`2 + 2N`), Non-persistent with $k$ parallel TCP (`2 + 2*ceil(N/k)`), Persistent non-pipelined (`2 + N`), Persistent pipelined (`2 + 1` or `2 + ceil(N/k)`? Wait: all on 1 TCP = `1` RTT for `N` small objects!), plus `2026_FN_Q19` (`multiple webpages/objects on same server`, NOT different servers!)! | MISSING-GATE-CONCEPT | Draw side-by-side HTTP timelines for `1 HTML + 10 small objects` (`2023_FN_Q52` = `9` RTTs vs `6` RTTs, `2020_FN_Q31` = `6` TCP)! | HIGH |
+| 37 | `Ch 05 App Layer` (Email: SMTP vs POP3 vs IMAP vs MIME) | Doesn't clarify why **SMTP pushes mail** (`client -> server -> server`), **POP3/IMAP pull mail** (`2019_FN_Q25`), and **MIME** converts binary attachments (images/PDFs) into 7-bit ASCII text! | UNEXPLAINED-WORD | Draw the Email Journey (`Sender MUA -> SMTP -> Mail Server -> SMTP -> Receiver Mail Server -> POP3/IMAP -> Receiver MUA`). | MEDIUM |
+| 38 | `Ch 05 App Layer` (RSA, Digital Signatures & Birthday Attack — If Retained!) | Look at `2019_FN_Q46`, `2017_FN_Q28`, `2017_FN_Q47`: Zero coverage of `n = p*q`, `phi(n) = (p-1)(q-1)`, modular inverse `ed = 1 mod phi(n)`, Digital Signatures (Private key signs, Public key verifies!), and Birthday Attack (`sqrt(2^n)` collision)! | MISSING-GATE-CONCEPT | Add an explicit Security Appendix (`[CHECK GATE 2027 SYLLABUS]`) covering RSA math, Digital Signatures, and Birthday vs Preimage attacks! | MEDIUM |
+| 39 | `Part C` (9 Missing Figures!) | **9 PYQs** (`2025_FN_Q40`, `2025_FN_Q57`, `2024_FN_Q58`, `2023_FN_Q65`, `2022_FN_Q22`, `2022_FN_Q55`, `2022_FN_Q57`, `2021_FN_Q46`, `2021_AN_Q53`) have `[IMAGE_...]` missing so forwarding tables, Hamming table, and topologies can't be checked! | NEEDS-DIAGRAM | Restore/transcribe all 9 missing tables & topologies into `Part C`. | HIGH |
+| 40 | `Part C` (`2026_AN_Q65` vs `2023_FN_Q50` vs `2022_FN_Q60`) | Look at the 3 wrap-around questions! `2026_AN_Q65` (link-layer byte wrap in 60s + BDP), `2023_FN_Q50` (150ms RTT + 2 min MSL -> valid widths), `2022_FN_Q60` (1 Gbps + 60s MSL -> min 33 bits), `2018_FN_Q35` (1 Gbps -> wrap time ~34.36 s). Nowhere does the book unify this formula family! | MISSING-GATE-CONCEPT | Group all 4 into one clear "Sequence Space Wrap-Around" lesson pattern (`Max_Bytes_In_Window = B * T / 8`, check `<= 2^N`). | HIGH |
+| 41 | `Ch 02 Data Link` (Leaky Bucket & Token Bucket Traffic Shaping) | Often taught in textbooks / GateWallah under Network/Transport Congestion Control (`r, b, M` burst duration formula $S = b / (M - r)$) — completely absent from `Part B.2`! | MISSING-FINER-POINT | Add Leaky Bucket vs Token Bucket with the burst-time formula as a `[SHOULD]` topic in Ch 04. | LOW |
+| 42 | `Ch 03 IP & Routing` (Variable Length Subnet Masking — VLSM) | Dividing one big block into **unequal** subnets (`100` hosts, `50` hosts, `20` hosts — allocate largest block first!) is a standard Made Easy/GateWallah skill missing from Ch 03! | MISSING-GATE-CONCEPT | Trace one complete 3-department VLSM allocation problem starting from largest to smallest subnet! | HIGH |
+| 43 | `Ch 03 IP & Routing` (Private IP Ranges & Special Addresses) | Misses `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16` (why NAT exists!), `127.0.0.0/8` loopback, `0.0.0.0`, `255.255.255.255` limited broadcast, and directed broadcast! | MISSING-FINER-POINT | Add a "Special IPv4 Addresses" reference box in Ch 03 (`2026_AN_Q22` uses `255.255.255.255`!). | MEDIUM |
+| 44 | `Ch 01` / `Ch 03` (Byte Ordering: Network Byte Order = Big Endian!) | Since C book assumes Little Endian laptops while Networks use **Big Endian (Network Byte Order)** (`htons`, `htonl`), beginners get shocked if not told why multi-byte headers transmit MSB first! | UNEXPLAINED-WORD | Add a 1-box note linking C's Little Endian vs Network Big Endian. | LOW |
+| 45 | `Ch 02` / `Ch 03` (`10^6` vs `2^{20}` Unit Convention Trap!) | `2026_AN_Q21`, `2026_FN_Q45`, `2021_FN_Q42`, `2021_AN_Q32`, `2018_FN_Q35` use **$10^3, 10^6, 10^9$** for link speeds & files, whereas `2026_AN_Q58` uses **$2^{10}$** for `KB` buffer/MSS! Beginners mix them constantly! | UNCLEAR-ENGLISH | Put a bold rule in Ch 00: **Link bitrates (`kbps/Mbps/Gbps`) are ALWAYS powers of `10`**; **RAM/TCP buffer sizes (`KB/MB`) are usually powers of `2` (or check problem note)**! | HIGH |
+| 46 | `Ch 04 Transport` (TCP Silly Window Syndrome, Nagle's Algorithm & Delayed ACK) | Briefly needed conceptually (`[LATER]`/`[SHOULD]`) so students recognize why TCP avoids sending 1-byte segments per keystroke. | MISSING-FINER-POINT | Add a short note on Nagle's algorithm + Clark's solution in Ch 04. | LOW |
+| 47 | `Part B.2` (Old Standard Warning) | All 25 existing topics were written `"for people who already know"`, with zero visual packet timelines or subnetting step-throughs. | UNCLEAR-ENGLISH | Expand into structured beginner-first lessons with mandatory timelines and byte-header diagrams (Parts 4 & 5). | MEDIUM |
+
+---
+*(Note: Continuing Part 2 to reach 80+ rows across every chapter cleanly!)*
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 48 | `Ch 00` (Propagation Speed vs Link Bandwidth Confusion) | Zero-level students ALWAYS confuse **Bandwidth (`B` in bits/sec = pipe width)** with **Propagation Speed (`v` in m/sec = speed of light in cable)**! They think a 1 Gbps link arrives "faster" for 1 single bit! | UNEXPLAINED-WORD | Use the **Highway Analogy** (Bandwidth = number of lanes = cars/sec; Propagation Speed = car speed limit = `d / v`), showing `2017_AN_Q56` (`p = 400 ms, q = 50 ms`)! | HIGH |
+| 49 | `Ch 00` (Full-Duplex vs Half-Duplex vs Simplex) | `2026_FN_Q18` tests **half-duplex vs full-duplex**, and `2021_FN_Q42` relies on **full-duplex** link (`T_t(ack)` overlaps or doesn't block data direction!), yet Ch 01 never defines duplex modes! | UNEXPLAINED-WORD | Define Simplex, Half-Duplex (walkie-talkie, CSMA/CD), and Full-Duplex (phone call, TCP, switched Ethernet) with pictures in Ch 00/01. | MEDIUM |
+| 50 | `Ch 01` (Packetization Overhead vs Delay Trade-off) | Why split a huge message (`10^6 B`) into smaller packets (`10^3 B`, `2024_FN_Q40`) instead of 1 giant chunk? (Faster pipelining vs extra header overhead + optimal packet size minimizing total delay!) | MISSING-FINER-POINT | Add a worked comparison: 1 huge packet (`16 s` over 2 hops!) vs 1000 pipelined packets (`8.008 s`, `2024_FN_Q40`)! | HIGH |
+| 51 | `Ch 01` (Hub vs Switch vs Bridge vs Router vs Gateway) | Beginners don't know which devices read MAC addresses, which read IP addresses, which drop corrupted frames, and why a Switch is NOT a Router (`2024_AN_Q14`!). | NEEDS-DIAGRAM | Add a 4-device layer comparison box (`Repeater/Hub L1 | Bridge/Switch L2 | Router L3 | Gateway L7`). | HIGH |
+| 52 | `Ch 02` (Ethernet Frame Format & Min/Max Payload `46..1500 B`) | Never draws an IEEE 802.3 Ethernet frame (`Preamble 8 | DstMAC 6 | SrcMAC 6 | Type 2 | Data 46–1500 | CRC 4`) — so `1500 B` Ethernet MTU in `2025_AN_Q23` and `2021_FN_Q22` feels arbitrary! | NEEDS-DIAGRAM | Draw the Ethernet frame and show why `64 B` min frame = `18 B` header/trailer + `46 B` min payload! | MEDIUM |
+| 53 | `Ch 02` (Go-Back-N vs Selective Repeat Retransmission Timelines!) | Doesn't trace **what happens when Frame #2 is lost** or **ACK #2 is lost** in Stop-and-Wait, Go-Back-N (cumulative ACK, discards out-of-order `3, 4`!), and Selective Repeat (individual ACK, buffers out-of-order `3, 4`!) — plus exact total transmissions! | NEEDS-TRACE | Draw side-by-side timeline diagrams of Frame #2 lost under Stop-and-Wait, GBN, and SR, counting total frames sent! | HIGH |
+| 54 | `Ch 02` (Why GBN Max Window is `2^k - 1` While SR is `2^{k-1}`) | Beginners memorize `2^k - 1` vs `2^{k-1}` without seeing the exact duplicate-frame ambiguity when all `2^k` ACKs get lost! | STEP-SKIPPED | Trace a 2-bit sequence number (`0,1,2,3`) breaking GBN at `W = 4` and breaking SR at `W = 3`! | HIGH |
+| 55 | `Ch 02` (Piggybacking & Neglecting `T_ack` vs Including `T_ack`) | Students don't know when to include `T_t(ack)` (`2021_FN_Q42`: `10 bits`!) vs neglect it (`2026_FN_Q45`, `2025_AN_Q36`)! | UNCLEAR-ENGLISH | Teach the exact reading checklist (`"ack size negligible"` -> `T_ack = 0`; `"ack = X bits"` -> add `X / B`)! | MEDIUM |
+| 56 | `Ch 02` (CSMA/CD Collision Detection Condition: `T_t >= 2 T_p` vs `2018_FN_Q65` Non-CD!) | Students confuse **Ethernet CSMA/CD (`T_t >= 2 T_p`, `2024_AN_Q36`)** with **Carrier-Sense WITHOUT collision detection (`2018_FN_Q65` `d <= v * T_sense`)**! | MISSING-FINER-POINT | Contrast `CSMA/CD` (detect during transmission -> `2 T_p`) with `CSMA` (`sense window T_s` -> `T_p <= T_s`)! | HIGH |
+| 57 | `Ch 02` (Binary Exponential Backoff Details) | Doesn't explain collision # $c$ choosing random $K \in \{0, 1, \dots, 2^{\min(c, 10)} - 1\} \times 51.2\ \mu\text{s}$ and giving up after `16` collisions! | MISSING-FINER-POINT | Add a short worked example of Backoff range after 1st, 2nd, 3rd collision (`[LATER]` / `[SHOULD]`). | LOW |
+| 58 | `Ch 02` (CRC Generator Properties: Single, Double, Burst & Odd Errors) | Doesn't state the 4 error-detection guarantees of a CRC polynomial $G(x)$ (e.g., `(x + 1)` factor catches ALL odd-bit errors; degree `r` catches ALL burst errors $\le r$)! | MISSING-FINER-POINT | Add a clean 4-bullet CRC Power Cheat Box (`>= 2` terms catches 1-bit; `x+1` factor catches odd errors; degree `r` catches burst `<= r`). | MEDIUM |
+| 59 | `Ch 02` (Hamming Code Parity Check Placement & Error Syndrome) | `2021_FN_Q46` specifically tests a 12-bit Hamming codeword (`c_1, c_2, c_4, c_8` interspersed at powers of 2!). Without knowing which positions each `c_k` checks (`1,3,5,7,9,11` etc.), you can't solve `x, y`! | NEEDS-TRACE | Draw bit positions `1..12` showing exact binary mask sets (`bit 0=1` for `c_1`, `bit 1=1` for `c_2`, etc.) and trace syndrome error detection! | HIGH |
+| 60 | `Ch 03` (Subnet Masks, Wildcard Bits & Broadcast vs Network ID) | Beginners constantly try to assign `.0` or `.255` (or the first/last IP of a `/26` or `/20` subnet!) to a host interface (`2026_AN_Q33`, `2019_FN_Q58`)! | NEEDS-EXAMPLE | Trace `100.10.5.0/30` (`100.10.5.4/30`, `2019_FN_Q58`) clearly marking Network ID (`.4`), Host 1 (`.5`), Host 2 (`.6`), and Broadcast (`.7`)! | HIGH |
+| 61 | `Ch 03` (Two-Subnet vs Multi-Host Counting in Hierarchical Subnetting) | Classic GATE trick: `"Subnets vs Hosts"` — e.g. borrowing 3 bits gives `2^3 = 8` subnets (or `8 - 2` in legacy RFC 950; modern CIDR uses all `2^3 = 8` subnets while subtracting 2 hosts per subnet!). | MISSING-FINER-POINT | Explicitly state modern CIDR rule (`all 2^s subnets usable; 2^h - 2 hosts per subnet`). | MEDIUM |
+| 62 | `Ch 03` (Supernetting / Route Aggregation Rules!) | `2022_FN_Q55` asks which CIDR prefixes collectively aggregate a routing table! Beginners try merging two non-aligned blocks (`164` and `168` don't align to `/21`, needing TWO `/22`s instead of one `/21`!!)! | MISSING-GATE-CONCEPT | Draw the binary tree of `164 (10100100)` and `168 (10101000)` showing why sibling `/22`s (`164..167` and `168..171`) CANNOT merge into `164.0/21` (`160..167`)! | HIGH |
+| 63 | `Ch 03` (IPv4 Fragmentation: `MF` Flag & Multi-Hop Re-Fragmentation!) | Students forget that when Fragment 1 (`MF = 1`) gets split AGAIN at Router 2 (`2024_FN_Q43`), ALL its child sub-fragments keep `MF = 1`, whereas only the final fragment of the *original* datagram has `MF = 0`! | NEEDS-TRACE | Trace a 2-hop fragmentation (`2024_FN_Q43`: `542 -> 360`) writing `(TotalLen, ID, DF, MF, Offset)` for EVERY fragment! | HIGH |
+| 64 | `Ch 03` (Why TCP/UDP Ports Exist ONLY in Fragment 0) | `2021_FN_Q22(D)` tests why analyzing ONLY the second fragment CANNOT reveal the TCP destination port! Beginners don't see why Fragment 2 lacks a TCP header! | NEEDS-DIAGRAM | Draw the 2 fragments side-by-side showing `[IP Hdr | TCP Hdr + Data]` in Frag 1 vs `[IP Hdr | Data ONLY]` in Frag 2! | HIGH |
+| 65 | `Ch 03` (DF Flag & Path MTU Discovery) | `2021_FN_Q22` mentions the `Don't Fragment (DF)` flag — what happens when `DF = 1` hits a small MTU link? (Router drops packet & sends ICMP *"Fragmentation Needed"* back to source!). | MISSING-FINER-POINT | Explain `DF=1` drop + ICMP error in 3 lines inside IPv4 Fragmentation. | LOW |
+| 66 | `Ch 03` (Proxy ARP, Gratuitous ARP & ARP Cache Timeout) | Beginners know basic ARP (`2019_FN_Q64`) yet miss what happens when `Y` is in a **different** subnet (`X` ARPs for Default Gateway's MAC, NOT `Y`'s MAC! `2024_AN_Q14`). | MISSING-FINER-POINT | Trace BOTH cases: `X` and `Y` in SAME subnet (`2019_FN_Q64`) vs DIFFERENT subnets via Router `R` (`2024_AN_Q14`)! | HIGH |
+| 67 | `Ch 03` (DHCP 4-Step DORA & Lease Renewal) | `2026_AN_Q22` asks which protocol broadcasts, yet beginners don't see WHY a brand-new host with IP `0.0.0.0` MUST broadcast `DHCPDISCOVER` to `255.255.255.255` (and why Offer/Request/ACK are often broadcast too)! | NEEDS-DIAGRAM | Draw the 4-arrow DHCP `DORA` timeline (`Discover -> Offer -> Request -> Ack`). | MEDIUM |
+| 68 | `Ch 03` (NAT vs PAT/NAPT Port Translation) | `2024_FN_Q29` tests IP header edits at NAT, yet doesn't explain how **PAT (Port Address Translation)** lets 100 office PCs share ONE public IP by rewriting Source Port too (and TCP/UDP checksums!). | NEEDS-DIAGRAM | Draw a NAT translation table mapping `(192.168.1.5:5000) <-> (203.0.113.1:61001)` as a packet crosses the NAT router. | MEDIUM |
+| 69 | `Ch 03` (Distance Vector Bellman-Ford Step-by-Step Trace) | `2021_AN_Q53` tests updating router `R`'s distance vector table given neighbor vectors `X, Y, Z`, yet `Part B.2` doesn't show a worked Bellman-Ford table trace! | NEEDS-TRACE | Trace `R`'s cost vector calculation `min_v { c(R, v) + D_v(dest) }` for `2021_AN_Q53`. | HIGH |
+| 70 | `Ch 03` (OSPF Dijkstra Trace & Area Hierarchy) | `2023_FN_Q25(D)` mentions OSPF hierarchical routing (Areas & Area 0 Backbone), yet `Part B.2` omits Dijkstra routing traces and OSPF Area 0 hierarchy! | MISSING-FINER-POINT | Add a Dijkstra shortest-path trace on a 5-router graph + 1 diagram of OSPF Backbone Area 0. | MEDIUM |
+| 71 | `Ch 04` (TCP Byte-Stream vs UDP Message-Boundary!) | Beginners don't understand why UDP preserves message boundaries (1 `sendto` = 1 `recvfrom`) while TCP is a continuous byte stream (2 `send`s can arrive in 1 `recv`)! | UNEXPLAINED-WORD | Draw two envelopes arriving separately in UDP vs water flowing through a pipe in TCP. | MEDIUM |
+| 72 | `Ch 04` (TCP 3-Way Handshake SYN/FIN Consuming 1 Sequence Number!) | Beginners ask: *"Why is `ACK = X + 1` in `2024_FN_Q23` and `2021_AN_Q14` when SYN carries ZERO data bytes?"* Nobody tells them `SYN` and `FIN` flags each consume **1 virtual sequence number**! | STEP-SKIPPED | Explicitly state: "`SYN` and `FIN` each cost `1` sequence number (`ACK = X + 1`), whereas pure `ACK` consumes `0`!" | HIGH |
+| 73 | `Ch 04` (TCP `TIME-WAIT` State & `2 × MSL` Reason) | `2017_FN_Q12` tests TCP close states, yet nobody explains WHY the active closer sits in `TIME-WAIT` for `2 × MSL` (1. Let final `ACK` reach peer or retransmit if lost; 2. Let old duplicate segments die in network!). | MISSING-FINER-POINT | Trace the final `FIN -> ACK` packet loss scenario showing why `TIME-WAIT` exists. | MEDIUM |
+| 74 | `Ch 04` (TCP Retransmission Timeout — Jacobson / Karn's Algorithm) | Briefly cover how TCP sets `RTO` from `EstimatedRTT` and `DevRTT` (exponential smoothing, similar to OS SJF burst prediction!) and Karn's rule (don't sample RTT on retransmitted segments). | MISSING-FINER-POINT | Add a 1-box `[LATER]` note on `EstimatedRTT` & `RTO` doubling on timeout. | LOW |
+| 75 | `Ch 04` (TCP Keepalive vs Idle Connection Crash Behavior) | `2021_FN_Q20` hinges on what happens when a TCP server crashes & reboots while client waits without keepalive (`client hangs reading`, `client sending gets RST`). | NEEDS-DIAGRAM | Draw the 2 crash timelines (`Client reading -> hangs` vs `Client writing -> RST`). | HIGH |
+| 76 | `Ch 04` (Congestion Control: Fast Retransmit / Reno `ssthresh` Floor!) | `2024_AN_Q58` tests timeout (`cwnd -> 1`), yet GATE also tests **3 Duplicate ACKs** (`cwnd -> ssthresh = cwnd/2`, NOT `1`!) and minimum `ssthresh >= 2 MSS`! | MISSING-GATE-CONCEPT | Compare **Timeout** (`cwnd = 1`) vs **3-Dup-ACK** (`cwnd = cwnd/2`) side-by-side on the same sawtooth graph! | HIGH |
+| 77 | `Ch 04` (TCP `cwnd` Byte-Mode vs Segment-Mode Confusion!) | `2026_AN_Q58` & `2020_FN_Q62` measure `cwnd` in **KB** (`MSS = 2 KB`), while `2026_FN_Q44` & `2024_AN_Q58` measure in **segments/MSS**! Also in Congestion Avoidance, receiving 1 ACK adds `MSS * (MSS / cwnd)`! | UNCLEAR-ENGLISH | Show BOTH unit modes (`segments` and `KB = k × MSS`) and clarify `rwnd` cap (`effective = min(cwnd, rwnd)`). | HIGH |
+| 78 | `Ch 04` (Socket System Calls Flowchart: TCP vs UDP Server/Client) | `Part B.1` explicitly lists **Sockets**, yet `Part B.2` never draws `socket -> bind -> listen -> accept <-> connect -> send/recv -> close` (`2017_AN_Q18`!)! | NEEDS-DIAGRAM | Draw the TCP Client-Server socket call ladder side by side with UDP `sendto/recvfrom` (and `connect()` on UDP!). | MEDIUM |
+| 79 | `Ch 05` (DNS Resource Records: `A, NS, CNAME, MX, AAAA`) | Doesn't explain **DNS Record Types** (`A` = IPv4, `AAAA` = IPv6, `NS` = nameserver, `CNAME` = alias, `MX` = mail server) or why resolving `MX` / `CNAME` can add extra queries! | MISSING-FINER-POINT | Add a 5-row DNS Resource Record Cheat Table in Ch 05. | MEDIUM |
+| 80 | `Ch 05` (HTTP/1.1 vs HTTP/1.0 vs HTTPS & Status Codes) | Misses HTTP request/response structure (`GET/POST/HEAD`), key status codes (`200, 301, 304, 400, 403, 404, 500`), **Conditional GET (`If-Modified-Since`)**, and why `HTTPS` adds TLS handshake RTTs! | MISSING-FINER-POINT | Add an HTTP Status Code + Methods + Conditional GET summary box in Ch 05. | MEDIUM |
+| 81 | `Ch 05` (SMTP Commands & Base64 MIME) | Misses basic SMTP 3-phase flow (`HELO -> MAIL FROM -> RCPT TO -> DATA -> QUIT`) and why **IMAP** syncs folders on the server whereas **POP3** downloads & typically deletes (`2019_FN_Q25`). | MISSING-FINER-POINT | Compare `SMTP` vs `POP3` vs `IMAP` vs `MIME` in one clean table. | LOW |
+| 82 | `Ch 05` (Symmetric vs Asymmetric Crypto & Hash Functions — `[Verify Syllabus]`) | If security questions (`2019_FN_Q46`, `2017_FN_Q28`, `2017_FN_Q47`) remain in practice, students need the clear difference between **Confidentiality** (encrypt with Receiver's **Public** key) vs **Authentication/Signature** (sign with Sender's **Private** key) and **Birthday vs 2nd-Preimage Attacks** (`2017_FN_Q28`)! | MISSING-PREREQUISITE | Draw Alice & Bob Public/Private key-ring locks showing Confidentiality vs Digital Signature (`2017_FN_Q28`). | MEDIUM |
+
+---
+
+## PART 3. WHAT A COMPLETE SUBJECT MUST HAVE
+
+Checked against the official GATE CS syllabus (`Part B.1`), `Part C` (76 PYQs), Kurose–Ross, Tanenbaum, Forouzan, Made Easy, GateWallah, and NPTEL Computer Networks:
+
+1. **Chapter 00: Network Fundamentals, Units, Delays & Pipelining** *(completely missing!)*
+   - **Sub-topics:** Bitrate (`10^3, 10^6, 10^9`) vs Memory/Packet bytes (`2^{10}, 2^{20}`); **4 Delays** ($T_t = L/B$, $T_p = d/v$, $T_q$, $T_{\text{proc}}$); Bandwidth vs Propagation Speed analogy; Bottleneck link bandwidth (`2026_AN_Q21`); Store-and-Forward vs Multi-hop Packet Pipelining (`2024_FN_Q40`); Duplex modes (Simplex, Half-Duplex, Full-Duplex); Network Big Endian byte order.
+   - **Syllabus line:** Foundation for all lines of `Computer Networks`.
+   - **How often GATE asks it:** Frequently — delay & pipelining math underpins Ch 01, Ch 02, and Ch 04 (`2026_AN_Q21`, `2024_FN_Q40`, `2022_FN_Q59`, `2017_AN_Q56`; exact standalone count: not sure).
+   - **Typical question type:** MCQ/NAT (total transfer time, bottleneck delay, $T_t$ vs $T_p$).
+   - **Zero-level prerequisite:** Basic arithmetic and scientific notation (`10^6`, `10^{-3}`).
+
+2. **Complete Layering, Encapsulation & Switching (`Ch 01`)**
+   - **Sub-topics:** OSI 7 layers vs TCP/IP 4/5 layers & exact functions (`2025_FN_Q16`); **Header Field Bit-Sizes** (`MAC 48, IPv4 32, Port 16, TCP Seq 32, IPv6 NextHdr 8`, `2018_FN_Q23`); Encapsulation/De-encapsulation across Switch (L2 transparent!) and Router (L3 swaps MAC, preserves end-to-end IP, `2024_AN_Q14`); Hub vs Switch vs Router; Circuit vs Packet vs Virtual Circuit Switching delay comparisons.
+   - **Syllabus line:** `Concept of layering: OSI and TCP/IP protocol stacks; basics of packet, circuit and virtual circuit switching`.
+   - **How often GATE asks it:** Occasionally to regularly (5 Qs / 6 marks in `Part B.3` bank across 4/10 years; exact future rate: not sure).
+   - **Typical question type:** MCQ/MSQ (layer matching, field sizes, destination IP vs MAC at hop).
+   - **Zero-level prerequisite:** Ch 00.
+
+3. **Complete Data Link Layer, Link ARQ Sliding Window & MAC (`Ch 02` — Move Link ARQ Here!)**
+   - **Sub-topics:** Framing (Byte Count, Byte Stuffing, **Bit Stuffing**); Error detection (**Hamming Distance** $d_{\min} - 1$ / $\lfloor(d_{\min}-1)/2\rfloor$, **Hamming Code parity bit positions**, 1's-complement Checksum, **CRC polynomial XOR division**); **Link-Level Flow & Error Control** (`Stop-and-Wait`, `Go-Back-N`, `Selective Repeat` — utilization $\eta$ with $T_{\text{ack}}, T_{\text{proc}}, p$, min window $1 + 2a$, sequence bit limits `2^k - 1` vs `2^{k-1}`, byte-level wrap-around `2026_AN_Q65`); **MAC Protocols** (`Pure ALOHA`, `Slotted ALOHA` with Poisson $G$, `CSMA`, `CSMA/CD` min frame `2 T_p B`, non-CD sense window `2018_FN_Q65`, Exponential Backoff); **Ethernet Frame, Self-Learning Switches, STP, Collision/Broadcast Domains & Switch Port Counting (`2019_FN_Q62`)**.
+   - **Syllabus line:** `Data link layer: framing, error detection, Medium Access Control, Ethernet bridging`.
+   - **How often GATE asks it:** Highest mark-density topic in CN! (`Part B.3`: 18 Qs / 34 marks across 9/10 years = `2.27%` of GATE marks; exact subtopic counts: not sure).
+   - **Typical question type:** 2-mark MCQ/NAT (CRC remainder, utilization %, min window size, ALOHA throughput, CSMA/CD min frame, switch count).
+   - **Zero-level prerequisite:** Ch 00 (`T_t`, `T_p`), XOR binary math, basic exponential $e^{-x}$.
+
+4. **Complete IPv4/IPv6 Addressing, CIDR, Fragmentation, Support Protocols & Routing (`Ch 03`)**
+   - **Sub-topics:** Classful vs Classless addressing, Octet-mask table, Special IPs (`loopback, private, broadcast`), Subnetting & **Enterprise Subnet Counting (`2022_FN_Q22`)**, **VLSM**, **CIDR Block Alignment & Route Aggregation (`2026_FN_Q56`, `2020_FN_Q64`, `2022_FN_Q55`)**, **Longest Prefix Match (`2025_FN_Q40`, `2024_FN_Q58`, `2023_FN_Q65`)**; **IPv4 Header Fields** (`Protocol` field vs UDP-based RIP, `Record Route` max 9 IPs, TTL/Checksum edits at routers); **IPv4 Fragmentation** (8-byte alignment, TCP/UDP header inside payload, multi-hop re-fragmentation `2024_FN_Q43`); **IPv6 header differences**; **ARP (Broadcast Req / Unicast Reply), DHCP (DORA broadcast), ICMP, IGMP, NAT/PAT**; **Routing** (Static, Flooding, **Distance Vector Bellman-Ford + Count-to-Infinity/Loop Prob `2022_FN_Q57`**, **Link State Dijkstra + OSPF over IP + Areas**, **BGP inter-domain**).
+   - **Syllabus line:** `Routing protocols: shortest path, flooding, distance vector and link state routing` & `Fragmentation and IP addressing, IPv4, CIDR notation, basics of IP support protocols (ARP, DHCP, ICMP), Network Address Translation (NAT)`.
+   - **How often GATE asks it:** Very frequently (`Part B.3` combined IP + Routing: 29 Qs / 44 marks = `37%` of all CN marks across 9/10 years; exact split: not sure).
+   - **Typical question type:** MCQ/MSQ/NAT (host count, valid CIDR prefixes, LPM forwarding port, fragment count/last size/offset, NAT/router header edits, DVR update/loop prob).
+   - **Zero-level prerequisite:** Ch 00, Ch 01, binary masks, basic Dijkstra/Bellman-Ford intuition.
+
+5. **Complete Transport Layer, TCP State Machine, Congestion Control & Sockets (`Ch 04`)**
+   - **Sub-topics:** UDP vs TCP (4-tuple vs 2-tuple demux, byte stream vs message boundary); **Socket API & Connected UDP Sockets (`2017_AN_Q18`)**; TCP Header & **Byte Sequence Wrap-Around (`2023_FN_Q50`, `2022_FN_Q60`, `2018_FN_Q35`)**; **3-Way Handshake (`SYN/FIN` consume 1 seq#), 4-Way Close, Simultaneous Close (`2026_FN_Q18`), RFC 793 State Diagram (`FIN-WAIT-2`, `TIME-WAIT`), Server Crash `RST` vs Hang (`2021_FN_Q20`)**; **Flow Control (`rwnd`) vs Congestion Control (`cwnd`)**; **Slow Start, Congestion Avoidance, Timeout (`cwnd=1`) vs 3-Dup-ACK (`cwnd=ssthresh`)**, Exact Round-Indexing (`2026_FN_Q44`, `2026_AN_Q58`, `2020_FN_Q62`); Leaky/Token Bucket (`[SHOULD]`), Silly Window / Nagle / Karn RTT (`[LATER]`).
+   - **Syllabus line:** `Transport layer: flow control and congestion control, UDP, TCP, sockets`.
+   - **How often GATE asks it:** Very frequently (`Part B.3`: 15 Qs / 22 marks across 9/10 years; exact subtopic frequency: not sure).
+   - **Typical question type:** MCQ/MSQ/NAT (wrap-around bits, `cwnd` size at RTT $k$, handshake flags, TCP close state, reboot behaviour).
+   - **Zero-level prerequisite:** Ch 00 (`RTT`, `BDP`), Ch 01 (ports/encapsulation), Ch 02 (sliding window intuition).
+
+6. **Complete Application Layer Protocols & Security Check (`Ch 05`)**
+   - **Sub-topics:** Standard Ports & Stateful/Stateless matrix; **DNS** (`Root/TLD/Auth`, Recursive vs Iterative, `A/NS/MX/CNAME` records, RTT & query-pair counting); **HTTP/1.0 vs HTTP/1.1** (Non-persistent sequential vs parallel, Persistent non-pipelined vs pipelined RTTs, Cookies, Conditional GET, Status codes); **Email (`SMTP` push vs `POP3`/`IMAP` pull + `MIME`)**; **FTP (Control port 21 vs Data port 20)**; **Optional Security Appendix (`[CHECK GATE 2027 SYLLABUS]`)**: RSA ($n=pq$, $\phi(n)$, $ed \equiv 1 \pmod{\phi(n)}$), Digital Signatures (Confidentiality vs Auth), Birthday Attack vs 2nd-Preimage (`2019_FN_Q46`, `2017_FN_Q28`, `2017_FN_Q47`).
+   - **Syllabus line:** `Application layer protocols: DNS, SMTP, HTTP, FTP, Email`.
+   - **How often GATE asks it:** Regularly (9 Qs / 12 marks in `Part B.3` across 7/10 years; note all 3 Security Qs in the bank are from 2017–2019 and Security is absent from `Part B.1` — future frequency: **not sure**).
+   - **Typical question type:** MCQ/MSQ/NAT (HTTP+DNS RTTs, DNS pairs, HTTP/1.1 properties, email protocol matching, legacy RSA `p/q/d`).
+   - **Zero-level prerequisite:** Ch 04 (TCP connections & RTT), modular arithmetic (if Security appendix included).
+
+---
+
+## PART 4. THE DIAGRAMS I NEED
+
+### Ch 00 · Units, Network Delays & Pipelining
+1. **Highway Analogy (`Bandwidth` vs `Propagation Speed`) & the 4 Delays**
+   - *What to draw:* A toll booth (`Bandwidth B` = how fast cars enter the highway = `L / B`) leading onto a 1000-km highway (`Propagation Speed v` = speed of cars driving = `d / v`), plus waiting line at the toll booth (`Queueing Delay`) and toll inspection (`Processing Delay`).
+   - *What to notice:* Increasing Bandwidth widens the toll gate (`T_t` shrinks); it NEVER changes how fast a single bit flies down the wire (`T_p` depends ONLY on `d` and `v`!)!
+   - *Format:* **Single picture**
+2. **Store-and-Forward vs Multi-Hop Packet Pipelining Timeline (`2024_FN_Q40`)**
+   - *What to draw:* Left: 1 giant `10^6 B` truck travelling `P -> Q -> R` taking `8 s + 8 s = 16 s`. Right: `1000` tiny `10^3 B` cars flowing back-to-back where Car 1 leaves `Q -> R` at `0.008 s` while Car 2 drives `P -> Q`, finishing all `1000` cars at **`8.008 s`**!
+   - *What to notice:* Why splitting into chunks cuts 2-hop transfer time in half (`N·T_t + (k-1)·T_t`) and why the slowest link (`2026_AN_Q21`) sets the pipeline speed!
+   - *Format:* **Step-by-step series of pictures**
+
+### Ch 01 · Layering, Encapsulation & Switching
+3. **Nested Envelopes (Encapsulation) & End-to-End IP vs Hop-by-Hop MAC (`2024_AN_Q14`)**
+   - *What to draw:* Top: Data dropping down layers picking up `[TCP Hdr]` -> `[IP Hdr]` -> `[MAC Hdr | Trailer]`. Bottom: `Host X -- Switch S -- Router R -- Host Y` showing packet leaving `X` with `Dst IP = Y` (unchanged!) and `Dst MAC = R` (Switch `S` invisible at L3; Router `R` strips old MAC and writes `Dst MAC = Y`!).
+   - *What to notice:* IP addresses stay end-to-end (`X` to `Y`), whereas MAC addresses only jump to the very next Layer-3 box (`X` to `R`, then `R` to `Y`)!
+   - *Format:* **Single picture** + **Step-by-step series of pictures**
+4. **OSI 7 Layers vs TCP/IP 5 Layers + Header Bit-Width Cheat Grid (`2018_FN_Q23`)**
+   - *What to draw:* Side-by-side layer stacks mapped to `Hub (L1)`, `Switch (L2)`, `Router (L3)`, `Gateway (L7)`, next to a compact visual ruler showing bit lengths: `IPv6 NextHdr (8) | Port (16) | IPv4 / TCP Seq (32) | MAC (48) | IPv6 Addr (128)`.
+   - *What to notice:* Exact responsibilities (`Framing=L2, Routing=L3, Host-to-Host/Process=L4`) and core header sizes.
+   - *Format:* **Single picture**
+5. **Circuit vs Datagram Packet vs Virtual Circuit Switching Timelines**
+   - *What to draw:* Three vertical time ladders from Host A -> Switch 1 -> Switch 2 -> Host B: Circuit (Call Setup -> continuous non-stop data pipe -> Teardown), Datagram (independent routed packets with full headers, no setup), Virtual Circuit (VC Setup table fill -> pipelined packets carrying short VC ID).
+   - *What to notice:* Where setup delay appears and why packet switching shares links statistically.
+   - *Format:* **Single picture**
+
+### Ch 02 · Data Link Layer, Link ARQ & MAC
+6. **CRC Polynomial XOR Long Division & Hamming Code Parity Grid (`2026_AN_Q43`, `2021_FN_Q46`)**
+   - *What to draw:* Left: Exact long division of `110001011000` by `1001` with XOR signs highlighted (no borrows!), boxing the 3 remainder bits `100`. Right: 12-bit array `1..12` showing power-of-2 check slots (`1,2,4,8`) and binary-bit masks grouping which data bits feed each parity bit.
+   - *What to notice:* CRC subtracts with XOR (never borrows!), appends `degree` zeros (3 for `x^3+x+1`), and Hamming syndrome points directly to the flipped bit index!
+   - *Format:* **Step-by-step series of pictures**
+7. **Stop-and-Wait, Go-Back-N & Selective Repeat Timelines (Packet Lost + Utilization)**
+   - *What to draw:* Three diagonal sender-to-receiver space-time ladders: (1) Stop-and-Wait rectangle proving $\eta = T_t / (T_t + 2T_p)$; (2) GBN losing Frame 2 (Receiver drops Frames 3, 4 and resends `2, 3, 4`); (3) SR losing Frame 2 (Receiver buffers `3, 4`, sends `NAK 2`, Sender resends ONLY `2`!).
+   - *What to notice:* How pipelining fills the empty `2 T_p` wait gap (`W >= 1 + 2a`), and why SR saves retransmissions yet needs double sequence space (`W <= 2^{k-1}`).
+   - *Format:* **Step-by-step series of pictures**
+8. **Sequence Number Wrap-Around Ambiguity (GBN `2^k - 1` vs SR `2^{k-1}`)**
+   - *What to draw:* A 4-slot sequence clock `{0, 1, 2, 3}` (`k = 2`) for Selective Repeat with `W = 3`: Sender sends `0, 1, 2` -> Receiver advances window to `{3, 0, 1}` -> all 3 ACKs drop -> Sender times out and resends old `0` -> Receiver mistakes old `0` for NEW `0`! Contrast with `W = 2`: `{2, 3}` cannot overlap `{0, 1}`!
+   - *What to notice:* Why SR window can NEVER exceed half the sequence space ($2^{k-1}$).
+   - *Format:* **Step-by-step series of pictures**
+9. **Pure ALOHA (`2 T_fr`) vs Slotted ALOHA (`1 T_fr`) & CSMA/CD `2 T_p` Collision Wave**
+   - *What to draw:* Top: Two timeline strips showing any overlap inside `[t0 - T_fr, t0 + T_fr]` (`2 T_fr` vulnerable window!) kills Pure ALOHA, while slotted boundaries halve it to `1 T_fr`. Bottom: Host A at `t=0` sending a bit across cable to B (`T_p - \epsilon`), B transmitting just before A arrives, and collision wave travelling `T_p` back to A (`2 T_p` total before A stops!).
+   - *What to notice:* Why `T_t >= 2 T_p` is mandatory in CSMA/CD (`2024_AN_Q36`), versus non-CD sensing `T_p <= T_sense` (`2018_FN_Q65`)!
+   - *Format:* **Single picture** + **Step-by-step series of pictures**
+10. **Self-Learning Switch & Collision vs Broadcast Domains (`2019_FN_Q62`)**
+    - *What to draw:* Two Hubs wired to an 8-port Switch wired to a Router: shade each Hub port as 1 Collision Domain, each Switch port as separate Collision Domains yet ONE shared Broadcast Domain, and each Router interface separating Broadcast Domains!
+    - *What to notice:* Hubs share collisions, Switches isolate collisions yet pass broadcasts, Routers stop broadcasts!
+    - *Format:* **Single picture**
+
+### Ch 03 · IP Addressing, Fragmentation, Support Protocols & Routing
+11. **CIDR Alignment Tree & Subnetted Enterprise Topology (`2026_FN_Q56`, `2022_FN_Q55`, `2022_FN_Q22`)**
+    - *What to draw:* Left: Binary address interval tree (`0..255` split into `/21` blocks of 8 vs `/22` blocks of 4), showing why `164` (`10100100`) and `168` (`10101000`) are cousins on opposite branches of a `/21` boundary! Right: Router-and-Switch topology circling each Router-link / LAN segment as 1 distinct Subnet.
+    - *What to notice:* A `/21` block MUST start on a multiple of `8`, a `/19` block on a multiple of `32`!
+    - *Format:* **Single picture**
+12. **IPv4 Header Map & Router Modification Highlight (`2024_AN_Q29`, `2017_AN_Q27`)**
+    - *What to draw:* The 20-byte IPv4 header grid (`4` rows × `32` bits + Options strip), highlighting `TTL` & `Checksum` in orange (changed at EVERY router!), `Src IP` in blue (changed ONLY at NAT!), and `ID / Flags / Offset` in green (changed at Fragmenting routers!).
+    - *What to notice:* Every unit (`IHL` in 4-B chunks, `Total Length` in 1-B, `Fragment Offset` in 8-B chunks) and max `40 B` Options = `9` Record Route IPs.
+    - *Format:* **Single picture**
+13. **2-Hop IPv4 Fragmentation Frames (`542 MTU -> 360 MTU`, `2024_FN_Q43`, `2021_FN_Q22`)**
+    - *What to draw:* Original `1420 B` packet (`20 IP + [TCP Hdr + Data]`) entering Router 1 (`MTU 542` -> 3 fragments showing exact `[IP Hdr | Payload]`, `MF`, `Offset`), then each fragment entering Router 2 (`MTU 360` -> 6 fragments), highlighting that ONLY Fragment 0 carries the TCP/UDP header!
+    - *What to notice:* Why payload must be rounded DOWN to a multiple of `8`, why sub-fragments of a `MF=1` fragment stay `MF=1`, and why Fragment 2 cannot show TCP ports (`2021_FN_Q22(D)`).
+    - *Format:* **Step-by-step series of pictures**
+14. **ARP (Same vs Cross-Subnet), DHCP `DORA`, and NAT Translation Table**
+    - *What to draw:* Three crisp flow diagrams: (1) ARP Request broadcast `FF:FF:FF:FF:FF:FF` -> Unicast ARP Reply; (2) DHCP `Discover (Bcast) -> Offer -> Request (Bcast) -> Ack`; (3) NAT router rewriting `(Private IP:Port) <-> (Public IP:Port)` + updating Checksum.
+    - *What to notice:* Which protocols use broadcast (`DHCP`, `ARP Request`), and which header fields change at NAT (`Src IP, Src Port, Checksum`).
+    - *Format:* **Step-by-step series of pictures**
+15. **Distance Vector Update Table (`2021_AN_Q53`), Count-to-Infinity (`2022_FN_Q57`), and OSPF Dijkstra**
+    - *What to draw:* Router `R`'s Bellman-Ford table computing `cost(R, neighbor) + neighbor_vec`, PLUS a 3-router `P - Q - R` triangle where `Q - R` snaps: if `P` updates `Q` before `Q` notifies `P`, `Q` thinks `P` has a `2`-hop route through `Q` itself (creating an infinite `3 -> 4 -> 5...` bounce)!
+    - *What to notice:* Why simultaneous/unlucky update ordering causes a `50%` chance of routing loop in `2022_FN_Q57`!
+    - *Format:* **Trace table** + **Step-by-step series of pictures**
+
+### Ch 04 · Transport Layer, TCP/UDP & Congestion Control
+16. **TCP Header Map & Handshake / Teardown / Simultaneous Close / State Diagram**
+    - *What to draw:* (Left) TCP 20-byte header highlighting 32-bit Seq/Ack and `SYN, ACK, FIN, RST` flags; (Center) Two timelines: 3-Way Handshake (`SYN(X) -> SYN-ACK(Y, X+1) -> ACK(Y+1)`) and Client-initiated Close (`FIN -> ACK -> FIN -> ACK`) vs Simultaneous Close (`2026_FN_Q18`); (Right) Simplified RFC 793 state graph circling `FIN-WAIT-1`, `FIN-WAIT-2`, `TIME-WAIT`, and `RST` on crash/reboot (`2021_FN_Q20`).
+    - *What to notice:* `SYN` and `FIN` each burn `1` sequence number, and `FIN-WAIT-2` sits waiting for the server's `FIN` (`2017_FN_Q12`).
+    - *Format:* **Step-by-step series of pictures** + **Single picture**
+17. **TCP `cwnd` Congestion Sawtooth Graph (`Slow Start`, `ssthresh`, `Timeout` vs `3-Dup-ACK`)**
+    - *What to draw:* X-axis = RTT rounds (`0, 1, 2, ...` aligned with `t = 0, 6, 12, ...`), Y-axis = `cwnd` (`MSS` and `KB` dual labels!): exponential climb (`1 -> 2 -> 4 -> 8 -> 16 = ssthresh`), linear climb (`+1` per RTT), a **Timeout** cliff crashing `cwnd -> 1` (while `ssthresh -> cwnd/2`, `2024_AN_Q58`), and a **3-Dup-ACK** bounce dropping `cwnd -> cwnd/2` (Fast Recovery), capped by horizontal `rwnd` ceiling!
+    - *What to notice:* Difference between `cwnd = 1` (Timeout) vs `cwnd = ssthresh` (3-Dup-ACK), and exact RTT round numbers (`2026_FN_Q44`, `2026_AN_Q58`, `2020_FN_Q62`).
+    - *Format:* **Single picture** + **Trace table**
+18. **Socket Call Ladder (`TCP` vs `UDP` vs `Connected UDP`)**
+    - *What to draw:* Client and Server vertical call ladders (`socket -> bind -> listen -> accept` <-> `connect -> send/recv -> close` for TCP; `socket -> bind -> recvfrom` <-> `sendto` + `connect` re-binding peer for UDP, `2017_AN_Q18`).
+    - *What to notice:* Where TCP blocks waiting for connections (`accept`) and how calling `connect()` twice on a UDP socket simply swaps its pinned peer.
+    - *Format:* **Single picture**
+
+### Ch 05 · Application Layer Protocols (& Security Appendix)
+19. **Complete DNS + HTTP RTT Timeline (`Non-Persistent`, `Parallel`, `Persistent`, `Pipelined`, `2023_FN_Q52`)**
+    - *What to draw:* Vertical user/resolver/DNS/WebServer lanes tracing: (1) 3-tier iterative DNS lookup (`3` RTTs), (2) TCP Handshake + HTML fetch (`2` RTTs), and (3) 10 embedded objects under Non-Persistent Sequential (`20` RTTs), 5 Parallel Connections (`4` RTTs -> `9` total), and Persistent + Pipelined (`1` RTT -> `6` total)!
+    - *What to notice:* Each non-persistent connection pays `1 RTT (SYN/ACK) + 1 RTT (GET/Data) = 2 RTTs`, whereas persistent pipelining sends all 10 `GET`s back-to-back in 1 RTT (`2026_FN_Q19`, `2023_FN_Q52`)!
+    - *Format:* **Step-by-step series of pictures**
+20. **Email (`SMTP` Push -> `POP3/IMAP` Pull) & FTP Dual-Port (`21` Control / `20` Data)**
+    - *What to draw:* Sender -> SMTP -> Mail Server -> SMTP -> Receiver Server -> POP3/IMAP -> Receiver, plus FTP showing TWO separate TCP pipes (`Port 21` persistent control vs `Port 20` ephemeral data per file).
+    - *What to notice:* SMTP never pulls mail from a server (`2019_FN_Q25`), and FTP uses out-of-band control (`21`) + data (`20`).
+    - *Format:* **Single picture**
+21. **RSA Public/Private Locks & Birthday Collision Check (`[Security Appendix]`)**
+    - *What to draw:* Alice encrypting confidential data with Bob's **Public** padlock vs Alice signing a digest `H(m)` with Alice's **Private** stamp (verifiable by anyone, repudiation possible ONLY if Alice generates colliding `(m, m')` via Birthday Attack, `2017_FN_Q28`).
+    - *What to notice:* Encryption uses Receiver's Public key; Signing uses Sender's Private key!
+    - *Format:* **Single picture**
+
+---
+
+## PART 5. THE FULL PLAN, CHAPTER BY CHAPTER
+
+*(Starting with Chapter 00 and Chapter 01 below; continuing from Chapter 02 on next turn!)*
+
+### Chapter 00 · Network Fundamentals, Units, Delays & Pipelining *(New Prerequisite Chapter)*
+
+#### Lesson 00.1 · Units (`10^3` vs `2^{10}`), Bandwidth vs Speed & The 4 Network Delays
+- **Tag:** `[MUST]` — Without mastering bits/bytes and $T_t$ vs $T_p$, almost every numerical CN question fails immediately (`2026_AN_Q21`, `2022_FN_Q59`, `2017_AN_Q56`).
+- **Estimated reading time:** 50 minutes.
+- **Prerequisites:** High-school ratios & powers of 10 / powers of 2.
+- **Beginner must-see:** Sending a file over a cable is like sending a fleet of trucks through a toll booth onto a highway! **Bandwidth ($B$)** is how wide the toll gate is (`Transmission Delay T_t = FileSize / B`); **Propagation Speed ($v$)** is how fast the trucks drive down the highway (`Propagation Delay T_p = Distance / v`)! Buying a faster 1 Gbps internet plan widens your toll gate (`T_t` shrinks), yet light inside fiber still travels at $2 \times 10^8$ m/s (`T_p` doesn't budge)!
+- **Finer points:**
+  - **The Golden Unit Rule:**
+    - Link bandwidths (`kbps, Mbps, Gbps`) and distances (`km`) ALWAYS use **`10^3, 10^6, 10^9`** (`2026_AN_Q21`, `2018_FN_Q35`, `2017_AN_Q56`).
+    - Packet sizes/data (`bytes`, `KB`, `MB`) use **`1 Byte = 8 bits`** (`1 KB = 1024 B` when `2^{10}` is specified for RAM/buffers, or `10^6` when `"million bytes"`/`"1M=10^6"` is stated, `2026_AN_Q21`!).
+  - **4 Delays:** Transmission ($T_t = L / B$), Propagation ($T_p = d / v$), Processing ($T_{\text{proc}}$), Queueing ($T_q$).
+  - **Bandwidth-Delay Product (`BDP = B × T_p` or `B × RTT`):** "How many bits can be flying mid-air inside the cable right now!" (`2026_AN_Q65`).
+  - **Duplex Modes:** Simplex, Half-Duplex, Full-Duplex (`2026_FN_Q18`, `2021_FN_Q42`), and Network Byte Order (**Big Endian**).
+- **GATE-level items:** Computing $T_t$ and $T_p$ in ms (`2017_AN_Q56`, `2022_FN_Q59`); converting `MB` to bits using `× 8` (`2026_AN_Q21`).
+- **Diagrams needed:** `TIMELINE` / `FLOW` (Highway Toll-Booth analogy showing $T_t = L/B$ vs $T_p = d/v$ + cable filled with $B \times T_p$ bits).
+- **Hand traces:** Computing $T_t, T_p$ for `2017_AN_Q56` (`p = 400 ms, q = 50 ms`) and `2022_FN_Q59` (`7.08 ms`).
+- **Common mistakes:** Forgetting `× 8` when file is in bytes and bandwidth is in bits/sec (`2026_AN_Q21` gives `8 s` instead of `64 s`!); mixing $10^6$ with $2^{20}$; thinking higher bandwidth reduces propagation delay $T_p$!
+
+#### Lesson 00.2 · Store-and-Forward, Bottleneck Links & Multi-Hop Packet Pipelining
+- **Tag:** `[MUST]` — Solves multi-hop transfer delays directly (`2026_AN_Q21`, `2024_FN_Q40`).
+- **Estimated reading time:** 45 minutes.
+- **Prerequisites:** Lesson 00.1.
+- **Beginner must-see:** Routers use **Store-and-Forward**: a router MUST receive the *entire* packet before sending bit #1 out the next link! So sending 1 huge `10^6`-byte file over 2 identical links takes `8 s + 8 s = 16 s` — yet chopping it into `1000` small chunks lets Packet 1 leave Link 2 *while* Packet 2 enters Link 1, cutting total time down to `8.008 s`!
+- **Finer points:**
+  - **Bottleneck Bandwidth (`2026_AN_Q21`):** When streaming continuously across links $B_1, B_2, B_3$, steady-state throughput is $\min(B_1, B_2, B_3)$!
+  - **Equal-Bandwidth Pipelining Formula (`2024_FN_Q40`):** $N$ chunks across $H$ hops (each taking $T_t$): First chunk finishes at $H \cdot T_t + \sum T_p$, remaining $N - 1$ chunks finish one every $T_t$ -> **Total = $(N + H - 1) T_t + \sum T_p$**!
+  - **Heterogeneous-Bandwidth Pipelining (`[GATE+]`):** Wait for the bottleneck chunk rate `(N - 1) * T_t(slowest)`!
+  - Optimal packet size trade-off (`[SHOULD]`): smaller chunks reduce pipelining delay, yet add more header bytes per chunk!
+- **GATE-level items:** Exact pipelined transfer time (`2024_FN_Q40`: `8.008 s` vs `16.000 s`); bottleneck file transfer (`2026_AN_Q21`: `64 s`).
+- **Diagrams needed:** `TIMELINE` (1 giant packet `16 s` vs 1000 pipelined chunks `8.008 s` across `P -> Q -> R`, `2024_FN_Q40`); `FLOW` (3 water pipes of widths `2, 0.5, 1` showing `0.5 Mbps` bottleneck, `2026_AN_Q21`).
+- **Hand traces:** Tracing 3 chunks of `1000 B` across `P -> Q -> R` (`4 × 0.008 s = 0.032 s`), then scaling to `1000` chunks (`1001 × 0.008 = 8.008 s`, `2024_FN_Q40`).
+- **Common mistakes:** Multiplying $N \cdot H \cdot T_t$ when chunks pipeline (`16 s` instead of `8.008 s`, `2024_FN_Q40`); averaging link bandwidths instead of taking `min()` (`2026_AN_Q21`).
+
+---
+
+### Chapter 01 · Layering, Encapsulation and Switching
+
+#### Lesson 01.1 · OSI & TCP/IP Layers, Encapsulation, Devices & Header Sizes
+- **Tag:** `[MUST]` — Needed for `2025_FN_Q16`, `2024_AN_Q14`, `2018_FN_Q23`, and every protocol boundary later.
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** Lesson 00.1.
+- **Beginner must-see:** Sending an email is like mailing a letter inside nested envelopes: Layer 7 writes the letter, Layer 4 writes **Port numbers** (which app?), Layer 3 writes **IP addresses** (which final house?), and Layer 2 writes **MAC addresses** (which exact neighbour router/door right now?).
+- **Finer points:**
+  - **OSI 7 Layers vs TCP/IP 4/5 Layers (`2025_FN_Q16`):** Physical (bits), Data Link (framing, error control, MAC), Network (routing, IP, fragmentation), Transport (process-to-process / host-to-host reliability, ports), Session/Presentation/Application.
+  - **Critical Header Field Sizes (`2018_FN_Q23`):** UDP/TCP Ports (`16` bits), IPv4 Addr (`32` bits), TCP Seq/Ack (`32` bits), Ethernet MAC (`48` bits), IPv6 Next Header (`8` bits), IPv6 Addr (`128` bits).
+  - **Devices by Layer & Address Rule (`2024_AN_Q14`):** Hub/Repeater (L1, modifies nothing), **Switch/Bridge** (L2, reads/forwards by MAC transparently — invisible to L3/IP!), **Router** (L3, swaps L2 MAC headers hop-by-hop while keeping `Src IP` & `Dst IP` end-to-end!).
+- **GATE-level items:** Layer duty matching (`2025_FN_Q16`), field bit-width matching (`2018_FN_Q23`), Destination IP vs Destination MAC on a packet leaving a host through Switch & Router (`2024_AN_Q14`).
+- **Diagrams needed:** `MEMORY` (Nested envelope encapsulation down the stack); `GRAPHPIC` (`Host X -- Switch S -- Router R -- Host Y` showing `Dst IP = Y` and `Dst MAC = R`, `2024_AN_Q14`); `COMPARE` (OSI 7 vs TCP/IP 5 + Header Size Cheat Bar).
+- **Hand traces:** Tracing `Src/Dst IP` and `Src/Dst MAC` of a packet at each hop across `X -> S -> R -> Y` (`2024_AN_Q14`).
+- **Common mistakes:** Thinking Destination MAC leaving X is Switch S's MAC (`2024_AN_Q14(C)`!) or Host Y's MAC across a router (`2024_AN_Q14(D)`!); confusing Transport (`process-to-process` / `host-to-host`) with Network (`packet routing`) (`2025_FN_Q16`).
+
+#### Lesson 01.2 · Circuit, Datagram Packet & Virtual Circuit Switching
+- **Tag:** `[SHOULD]` — Directly in `Part B.1` syllabus line (`basics of packet, circuit and virtual circuit switching`).
+- **Estimated reading time:** 45 minutes.
+- **Prerequisites:** Lesson 00.2, Lesson 01.1.
+- **Beginner must-see:** **Circuit Switching** reserves an entire empty train track before your train moves (zero sharing, guaranteed bandwidth, setup delay first). **Datagram Packet Switching** mails individual postcards that each carry the full address and may take different paths. **Virtual Circuit** sets up a numbered route once (like a subway pass) so packets travel fast in order with short VC tags!
+- **Finer points:**
+  - Circuit switching total delay: `Call_Setup (2 T_p + proc) + Message_T_t + T_p` (no per-switch store-and-forward wait!).
+  - Datagram vs Virtual Circuit: Routing decision (per packet vs once at setup), out-of-order delivery (possible vs guaranteed in-order), fault tolerance (survives link crash vs tears down VC), header overhead (full IP vs small VC ID).
+  - Statistical multiplexing advantage of packet switching (`why 35 users can share a 1 Mbps link when each bursts 10% of the time!`).
+- **GATE-level items:** End-to-end delay comparison between Circuit Switching and Store-and-Forward Packet Switching; comparing Datagram vs Virtual Circuit properties.
+- **Diagrams needed:** `TIMELINE` (Circuit vs Datagram vs Virtual Circuit space-time comparison); `COMPARE` (3-column property & delay table).
+- **Hand traces:** Computing total transfer time for a `1 MB` message across 4 hops under Circuit Switching (`setup = 50 ms`) vs Packet Switching (`chunk = 1 KB`).
+- **Common mistakes:** Adding store-and-forward delay per switch in Circuit Switching (only `T_p` + setup applies!); assuming Virtual Circuit reserves physical dedicated bandwidth like Circuit Switching (still statistically shared unless QoS reserved!).
+
+---
+
+`CONTINUE FROM CHAPTER 02`
+
+## PART 5 (Continued) · Chapters 02 to 04
+
+### Chapter 02 · Data Link Layer, Link ARQ and MAC
+
+#### Lesson 02.1 · Framing, Hamming Distance, Hamming Code & CRC Polynomial Division
+- **Tag:** `[MUST]` — High-frequency 2-mark MCQ foundation (`2026_AN_Q43`, `2021_FN_Q46`, `2021_AN_Q50`, `2017_FN_Q63`, `2017_AN_Q65`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 01.1, C3 (XOR bitwise operator).
+- **Beginner must-see:** Noise on a wire can flip `0` to `1`! Before sending bits, Data Link wraps them inside a **Frame** (so the receiver knows where one message starts and ends) and glues on extra **Check Bits** (like a receipt total!) so the receiver can catch corrupted frames — or even auto-repair 1 flipped bit (**Hamming Code**)!
+- **Finer points:**
+  - **Framing Methods:** Character/Byte Count (fragile if count corrupts!), Byte Stuffing (`FLAG`, `ESC` before `FLAG`/`ESC`), **Bit Stuffing** (`01111110` delimiter -> insert `0` after 5 consecutive `1`s at sender, delete `0` after 5 `1`s at receiver!).
+  - **Hamming Distance ($d_{\min}$) (`2017_AN_Q65`):**
+    - Minimum bitwise XOR weight across all pairs of valid codewords.
+    - Detect up to **$d_{\min} - 1$** bit errors; Correct up to **$\lfloor (d_{\min} - 1) / 2 \rfloor$** bit errors!
+  - **Hamming Error-Correcting Code (`2021_FN_Q46`):**
+    - Parity bits $c_1, c_2, c_4, c_8, \dots$ sit at **power-of-2 positions** (`1, 2, 4, 8, ...` from right/LSB!).
+    - Minimum parity bits $r$ for $m$ data bits satisfies $2^r \ge m + r + 1$.
+    - Computing parity (`c_1` checks bit-index LSB=1: `1,3,5,7,9,11`; `c_2` checks bit 1=1: `2,3,6,7,10,11`; etc.) & syndrome pointing directly to flipped bit position!
+  - **1's-Complement Checksum:** Add $k$-bit chunks wrapping overflow carry back to LSB, then invert all bits (`~sum`).
+  - **CRC Polynomial Division (`2026_AN_Q43`, `2021_AN_Q50`, `2017_FN_Q63`):**
+    - Generator $G(x)$ of degree $r$ (`r + 1` bits): append **$r$ zeros** to data, divide using **XOR (no borrows!)**, replace the $r$ appended zeros with the $r$-bit remainder!
+    - CRC error-catching rules: $\ge 2$ non-zero terms catches all 1-bit errors; $(x+1)$ factor catches ALL odd-number bit errors; degree $r$ catches all burst errors of length $\le r$!
+- **GATE-level items:** Computing exact CRC check bits (`2026_AN_Q43`, `2021_AN_Q50`, `2017_FN_Q63`), missing check/data bits in 12-bit Hamming codeword (`2021_FN_Q46`), and $d_{\min}$ error-correction limit (`2017_AN_Q65`).
+- **Diagrams needed:** `ARRAY` + `FRAMES` (Bit Stuffing inserting `0` after `11111`); `TRACE` (Full XOR long division for `110001011000 ÷ 1001` = `100`, `2026_AN_Q43`); `ARRAY` (12-bit Hamming position ruler `1..12` showing which data bits feed `c_1, c_2, c_4, c_8`, `2021_FN_Q46`).
+- **Hand traces:** Tracing `2026_AN_Q43` (`100`), `2021_AN_Q50` (`100`), `2017_FN_Q63` (`101`), `2017_AN_Q65` (`p=3, q=1`), and bit-stuffing `01111110111110`.
+- **Common mistakes:** Appending `r + 1` zeros instead of `r` zeros in CRC; borrowing during binary subtraction instead of pure bitwise XOR; converting `x^3 + x + 1` into `111` instead of `1011` (`0*x^2` missing!); checking wrong bit direction in Hamming parity positions.
+
+#### Lesson 02.2 · Link-Layer Flow & Error Control (`Stop-and-Wait`, `GBN`, `SR`, Wrap-Around)
+- **Tag:** `[MUST]` — Huge 2-mark NAT generator (`2026_FN_Q45`, `2026_AN_Q65`, `2025_AN_Q36`, `2023_FN_Q17`, `2022_FN_Q59`, `2021_FN_Q42`, `2017_FN_Q56`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 00.1 ($T_t, T_p$, BDP).
+- **Beginner must-see:** Imagine mailing 1 letter (`T_t = 1 ms`) to another city and sitting completely idle for `200 ms` (`2 × T_p`) waiting for a signed receipt before mailing letter #2! That's **Stop-and-Wait** — terrible utilization (`1 / 201 < 0.5%`)! **Sliding Window** fixes this by letting you mail **`W`** letters back-to-back in a pipeline while waiting for old receipts to arrive!
+- **Finer points:**
+  - **Stop-and-Wait Efficiency (`2025_AN_Q36`, `2023_FN_Q17`, `2017_FN_Q56`):**
+    - Ideal (tiny ACK, no errors): $\eta = \frac{T_t}{T_t + 2T_p} = \frac{1}{1 + 2a}$, where $a = T_p / T_t$. (Lowest utilization when $d$ and $B$ are large and $L$ is small, `2023_FN_Q17`!).
+    - With $T_{\text{ack}}$, $T_{\text{proc}}$, and header overhead: $\eta = \frac{T_t(\text{useful data})}{T_t(\text{frame}) + 2T_p + T_t(\text{ack}) + T_{\text{proc}}}$ (`2017_FN_Q56`).
+    - With frame error probability $p$ (expected transmissions $= \frac{1}{1-p}$): $\eta = \frac{1 - p}{1 + 2a}$!
+  - **Sliding Window Utilization & Min Window (`2026_FN_Q45`, `2021_FN_Q42`):**
+    - Total cycle time $T_{\text{cycle}} = T_t(\text{data}) + 2T_p + T_t(\text{ack}) + T_{\text{proc}}$.
+    - Utilization $\eta = \min\left(1,\ \frac{W \cdot T_t}{T_{\text{cycle}}}\right)$.
+    - For $100\%$ utilization: $W \ge \lceil T_{\text{cycle}} / T_t \rceil = \lceil 1 + 2a \rceil$ (`2026_FN_Q45`: $W = 21$)! For target $u\%$ utilization: $W \ge \lceil u \cdot T_{\text{cycle}} / T_t \rceil$ (`2021_FN_Q42` -> `51`).
+  - **Go-Back-N (GBN) vs Selective Repeat (SR):**
+    - GBN: $W_S \le 2^k - 1$, $W_R = 1$; cumulative ACKs; discards out-of-order frames (`N`-th lost frame resends $k$ frames!).
+    - SR: $W_S = W_R \le 2^{k-1}$; individual ACKs + NAK; receiver buffers out-of-order frames (`N`-th lost resends ONLY 1 frame!).
+    - **Why $2^k - 1$ vs $2^{k-1}$:** Draw sequence-clock duplicate ambiguity!
+  - **Byte-Level Sequence Wrap-Around (`2026_AN_Q65`):** Sequence bits $N$ must cover BOTH $2^N > \text{bytes sent in wrap-guard time } T$ AND $2^N \ge 2 \cdot \text{BDP}$ (or max window)!
+- **GATE-level items:** Exact Stop-and-Wait % (`2025_AN_Q36`, `2017_FN_Q56`), min window for 100% / 50% utilization (`2026_FN_Q45`, `2021_FN_Q42`), byte-sequence bits (`2026_AN_Q65`), total transmissions when every $k$-th packet drops (`[GATE+]`).
+- **Diagrams needed:** `TIMELINE` (Stop-and-Wait idle gap vs Sliding Window full pipe; Frame #2 loss in GBN vs SR); `FRAMES` (Sequence-clock `0,1,2,3` duplicate-packet failure in SR with `W=3`).
+- **Hand traces:** Tracing `2026_FN_Q45` (`W = 21`), `2021_FN_Q42` (`51`), `2025_AN_Q36` (`88.23%`), `2026_AN_Q65` (`30` bits), and counting transmissions for `every 5th frame lost` across 10 frames in GBN (`W=4`).
+- **Common mistakes:** Forgetting `ceil()` or `1 + 2a` (giving `20` instead of `21` in `2026_FN_Q45`!); forgetting `× 2` in `2 T_p`; subtracting useful payload header vs full frame inconsistently without checking `2017_FN_Q56`; setting GBN window to $2^k$ instead of $2^k - 1$!
+
+#### Lesson 02.3 · MAC Protocols (`ALOHA`, `CSMA/CD`) & Ethernet Bridging/Switches
+- **Tag:** `[MUST]` — Tests classic formulas (`2024_AN_Q36`, `2021_AN_Q32`, `2019_FN_Q62`, `2018_FN_Q65`).
+- **Estimated reading time:** 70 minutes.
+- **Prerequisites:** Lesson 00.1, Lesson 01.1.
+- **Beginner must-see:** When 10 laptops share one cable or Wi-Fi room, if two speak at the exact same moment their signals collide into garbage! **MAC protocols** decide who gets to speak cleanly: either shout randomly and retry (**ALOHA**), listen first then shout and stop immediately if someone clashes (**CSMA/CD**), or plug everyone into a smart **Switch** so nobody shares collisions anymore!
+- **Finer points:**
+  - **Pure ALOHA vs Slotted ALOHA (`2021_AN_Q32`):**
+    - Vulnerable window = $2 T_{\text{fr}}$ (Pure) vs $T_{\text{fr}}$ (Slotted).
+    - Poisson load $G = \lambda \cdot T_{\text{fr}}$ (offered frames per frame-time!).
+    - Throughput $S = G e^{-2G}$ (max $\frac{1}{2e} \approx 18.4\%$ at $G = 0.5$) for Pure ALOHA; $S = G e^{-G}$ (max $\frac{1}{e} \approx 36.8\%$ at $G = 1$) for Slotted ALOHA. Convert $S \to \text{frames/sec}$ via $S / T_{\text{fr}}$ (`2021_AN_Q32`)!
+  - **CSMA Variants & Carrier-Sense Distance (`2018_FN_Q65`):**
+    - 1-persistent, non-persistent, p-persistent CSMA.
+    - Non-CD carrier sense (`2018_FN_Q65`): if Q senses for $T_{\text{sense}}$ before transmitting, collision is avoided iff P's wave reaches Q before $T_{\text{sense}}$ ends ($d / v \le T_{\text{sense}}$)!
+  - **CSMA/CD Minimum Frame Size (`2024_AN_Q36`) & Binary Exponential Backoff:**
+    - Sender MUST still be transmitting when worst-case collision wave returns: **$T_t \ge 2 T_p \implies L_{\min} \ge 2 \cdot (d / v) \cdot B$**!
+    - IEEE 802.3 Ethernet (`64 B` min frame = `512 bits`, max `1500 B` payload, 48-bit MAC).
+    - Backoff after $c$ collisions: wait $K \times 51.2\ \mu\text{s}$ where $K \in \{0, \dots, 2^{\min(c,10)} - 1\}$.
+  - **Bridges / Self-Learning Ethernet Switches & Port Counting (`2019_FN_Q62`):**
+    - Learning `(MAC, Port)` from source MAC; flooding unknown/broadcast destinations; Spanning Tree Protocol (STP) breaking L2 loops!
+    - **Collision Domains vs Broadcast Domains:** Hub = 1 collision domain; Switch = 1 collision domain *per port*, 1 shared broadcast domain; Router = separates broadcast domains!
+    - Cascading $k$ $p$-port switches (no dedicated uplink): free host ports = $k \cdot p - 2(k - 1)$ (`2019_FN_Q62` -> $8k - 2(k-1) \ge 15 \implies k=3$)!
+  - **Token Ring (`[LATER]`):** Efficiency $\eta = \frac{1}{1 + a/N}$ (Early vs Delayed token release).
+- **GATE-level items:** ALOHA frames/sec (`2021_AN_Q32`), CSMA/CD min frame bits (`2024_AN_Q36`), non-CD sensing max distance (`2018_FN_Q65`), cascading switches (`2019_FN_Q62`).
+- **Diagrams needed:** `TIMELINE` (Pure ALOHA $2 T_{\text{fr}}$ vs Slotted $T_{\text{fr}}$ collision windows; CSMA/CD $2 T_p$ collision wave vs `2018_FN_Q65` $T_{\text{sense}}$); `GRAPHPIC` (Hub vs Switch vs Router Collision/Broadcast domains + 3 cascaded 8-port switches, `2019_FN_Q62`).
+- **Hand traces:** Tracing `2021_AN_Q32` (`G=1 -> 135.3 frames/s`), `2024_AN_Q36` (`500 bits`), `2018_FN_Q65` (`50 m`), `2019_FN_Q62` (`3` switches).
+- **Common mistakes:** Plugging $G = 1000$ directly into $G e^{-2G}$ without multiplying by $T_{\text{fr}} = 0.001$ (`2021_AN_Q32`!); using $2 T_p$ instead of $1 \cdot T_{\text{sense}}$ when there is NO collision detection (`2018_FN_Q65`!); subtracting only `1` port instead of `2` ports per switch-to-switch cable (`2019_FN_Q62`!).
+
+---
+
+### Chapter 03 · IP Addressing, Fragmentation, Support Protocols and Routing
+
+#### Lesson 03.1 · IPv4 Classful/Classless Addressing, Subnetting, VLSM & CIDR Aggregation
+- **Tag:** `[MUST]` — Highest Easy/Medium mark-getter in CN (`2026_AN_Q33`, `2026_FN_Q56`, `2024_AN_Q45`, `2022_FN_Q22`, `2022_FN_Q55`, `2020_FN_Q64`, `2019_FN_Q58`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Binary ↔ decimal conversion (`8`-bit octets).
+- **Beginner must-see:** An IPv4 address is 32 bits written as 4 byte-numbers (`0..255`). Just like a phone number splits into `(Area Code | Local Number)`, a **Subnet Mask** splits the 32 bits into `(Network Prefix | Host ID)` — and **CIDR (`/N`)** lets ISPs pick ANY cut-point `N` instead of stiff Class A/B/C boundaries, as long as blocks align cleanly on powers of 2!
+- **Finer points:**
+  - **8-Bit Mask Table:** `/25=.128 (128)`, `/26=.192 (64)`, `/27=.224 (32)`, `/28=.240 (16)`, `/29=.248 (8)`, `/30=.252 (4)`, `/31=.254 (2)`, `/32=.255 (1)`.
+  - **Classful Ranges (`A: 0–127`, `B: 128–191`, `C: 192–223`, `D: 224–239`, `E: 240–255`)** & **Special IPs** (Private `10/8, 172.16/12, 192.168/16`, Loopback `127/8`, `0.0.0.0`, `255.255.255.255`).
+  - **Host & Subnet Counting (`2026_AN_Q33`, `2019_FN_Q58`, `2022_FN_Q22`):**
+    - Total IPs in `/N` = $2^{32-N}$; Assignable hosts/interfaces = **$2^{32-N} - 2$** (first = Network ID, last = Directed Broadcast!).
+    - **Counting Subnets in a Topology (`2022_FN_Q22`):** Every isolated LAN segment AND every point-to-point router-to-router link is 1 distinct subnet!
+  - **3 Golden Rules of CIDR / Supernetting (`2026_FN_Q56`, `2024_AN_Q45`, `2020_FN_Q64`, `2022_FN_Q55`):**
+    1. Size must be a power of 2 (`>= needed hosts + 2` if host subnetting, or `>= needed total IPs`!).
+    2. Must sit inside parent ISP range.
+    3. **Alignment Rule:** Block start MUST have ALL host bits = 0 (i.e., changing octet MUST be divisible by `BlockSize = 256 - mask_octet`!).
+  - **Route Aggregation / Supernetting (`2022_FN_Q55`):** Binary prefix comparison showing when 2+ blocks collapse into 1 prefix vs cannot merge!
+  - **VLSM (Variable Length Subnetting):** Always allocate **largest** subnet block first so alignment stays clean!
+- **GATE-level items:** Host count from mask (`2026_AN_Q33`), valid aligned `/19` & `/21` CIDR allocations (`2026_FN_Q56`, `2020_FN_Q64`), exact range -> CIDR (`2024_AN_Q45`), enterprise subnet counting (`2022_FN_Q22`), same-subnet check (`2019_FN_Q58`), and multi-prefix route aggregation (`2022_FN_Q55`).
+- **Diagrams needed:** `ARRAY` (32-bit binary IP + Mask bitwise AND alignment); `TREE` (Binary CIDR interval splitting `0..255` showing why `84` isn't `/21`-aligned and `164+168` don't merge into `/21`); `GRAPHPIC` (Enterprise topology with every router link/LAN circled as 1 subnet, `2022_FN_Q22`).
+- **Hand traces:** Tracing `2026_FN_Q56` (`/19` multiples of 32), `2020_FN_Q64` (`/21` multiples of 8 inside `/17`), `2019_FN_Q58` (`.2, .5, .6` under `/30`), and a 3-department VLSM split.
+- **Common mistakes:** Forgetting `- 2` for network/broadcast IPs (`2026_AN_Q33`); forgetting alignment divisibility (`202.17.24.0/19` fails because `24 % 32 != 0`, `2026_FN_Q56`!); forgetting point-to-point router-to-router cables count as subnets (`2022_FN_Q22`!); merging non-sibling blocks (`164 + 168`, `2022_FN_Q55`!).
+
+#### Lesson 03.2 · IPv4 Header, Longest Prefix Match & Multi-Hop Fragmentation (+ IPv6)
+- **Tag:** `[MUST]` — Core 2-mark NAT & MSQ generator (`2025_AN_Q18`, `2025_AN_Q23`, `2025_FN_Q40`, `2025_FN_Q57`, `2024_AN_Q29`, `2024_AN_Q30`, `2024_FN_Q43`, `2024_FN_Q58`, `2023_FN_Q65`, `2021_FN_Q22`, `2020_FN_Q29`, `2018_FN_Q64`, `2017_AN_Q27`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 03.1.
+- **Beginner must-see:** Every IP packet wears a 20-byte shipping label (`IPv4 Header`). When a packet hits a narrow bridge (**smaller MTU**), the router chops the data cargo into **Fragments** (measuring start positions in **chunks of 8 bytes**) — and ONLY the final receiver glues those fragments back together!
+- **Finer points:**
+  - **IPv4 Header Map & Units:**
+    - `IHL` (4 bits, **4-byte words**: min 5 = 20 B, max 15 = 60 B -> max Options = `40 B` -> max **Record Route IPs = `9`**, `2017_AN_Q27`!).
+    - `Total Length` (16 bits, bytes, max 65,535 B).
+    - `Identification` (16 bits, copied to all fragments), `Flags` (`0 | DF | MF`), `Fragment Offset` (13 bits, **8-byte units**!).
+    - `TTL` (8 bits, decremented by 1 at every router -> changes `Header Checksum` too! `2024_AN_Q29`, `2020_FN_Q29`).
+    - `Protocol` (8 bits: `1 = ICMP`, `2 = IGMP`, `6 = TCP`, `17 = UDP`, `89 = OSPF` — **RIP runs over UDP**, NOT directly over IP! `2025_AN_Q18`).
+  - **Longest Prefix Match (LPM) (`2025_FN_Q40`, `2024_FN_Q58`, `2023_FN_Q65`):** Match destination IP in binary against every routing table prefix; pick the **largest `/N`** (longest match), falling back to `0.0.0.0/0` default!
+  - **The 5-Step IPv4 Fragmentation Recipe (`2025_AN_Q23`, `2024_FN_Q43`, `2021_FN_Q22`, `2018_FN_Q64`):**
+    1. Subtract `IP_hdr` (`20 B`) from `MTU` -> `raw_max_payload`.
+    2. **Round DOWN to largest multiple of `8`** (except possibly the final fragment!).
+    3. Make sure **TCP/UDP header (`8 B` for UDP, `20–40 B` for TCP) sits INSIDE IP payload** (`2025_AN_Q23` UDP `7488 + 8 = 7496 B`!; only Fragment 0 contains transport port numbers `2021_FN_Q22(D)`!).
+    4. Fragmentation happens at source OR any router (`DF=0`); **reassembly ONLY at final destination** (`2024_AN_Q30`, `2020_FN_Q29`); routers do NOT retransmit lost fragments (`2021_FN_Q22(B,C)`).
+    5. On 2-hop re-fragmentation (`2024_FN_Q43`), any sub-fragment of a non-final fragment (`MF = 1`) keeps `MF = 1`!
+  - **IPv6 Contrast:** Fixed 40-byte header, `128-bit` addresses, `Next Header` (`8` bits, `2018_FN_Q23`), **no router fragmentation** (source does Path MTU Discovery!).
+- **GATE-level items:** Multi-hop fragmentation counts (`2024_FN_Q43`, `2025_FN_Q57`), UDP payload + header fragmentation (`2025_AN_Q23`), 3rd fragment offset (`2018_FN_Q64`), LPM packet counting (`2024_FN_Q58`), IPv4 protocol numbers (`2025_AN_Q18`), Record Route max IPs (`2017_AN_Q27`), router field modifications (`2024_AN_Q29`).
+- **Diagrams needed:** `MEMORY` (20-byte IPv4 header + 40-byte Options bar with field widths and router-modified highlights); `FRAMES` (2-hop fragmentation `1420 B -> 542 MTU -> 360 MTU` showing `[IP | Payload]`, `MF`, `Offset`, `2024_FN_Q43`); `TRACE` (Binary LPM forwarding table matching `10.1.1.16..205`).
+- **Hand traces:** Tracing `2025_AN_Q23` (`7488 + 8 = 7496 -> 116 B`), `2024_FN_Q43` (`3 -> 6` fragments), `2018_FN_Q64` (`offset = 144`), and `2021_FN_Q22` (`620 B`).
+- **Common mistakes:** Forgetting `8 B` UDP header inside IP payload (`2025_AN_Q23` gives `108` trap!); forgetting to round payload DOWN to multiple of `8` (`522 -> 520` in `2024_FN_Q43`; `580 -> 576` in `2018_FN_Q64`!); forgetting Fragment 0's `40 B` TCP header doesn't subtract from `4480 B` IP payload (`2018_FN_Q64`!); picking first matching prefix instead of longest `/N`!
+
+#### Lesson 03.3 · IP Support Protocols (`ARP`, `DHCP`, `ICMP`, `IGMP`, `NAT/PAT`)
+- **Tag:** `[MUST]` — Guaranteed 1–2 mark Easy/Medium wins (`2026_AN_Q22`, `2025_AN_Q16(i)`, `2024_FN_Q29`, `2021_FN_Q13`, `2019_FN_Q64`).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 01.1, Lesson 03.1.
+- **Beginner must-see:** IPv4 needs a team of helpers to actually run on a real LAN: **DHCP** hands out your brand-new IP address by shouting to everyone (`Broadcast`!), **ARP** yells *"Who owns IP `10.0.0.5`? Tell me your MAC card!"* (`Broadcast` Request -> `Unicast` Reply!), **ICMP** sends back *"Host unreachable / TTL expired!"* error notes, and **NAT** lets 50 home devices share ONE public IP!
+- **Finer points:**
+  - **ARP (`2025_AN_Q16`, `2021_FN_Q13`, `2019_FN_Q64`):** Maps L3 IP -> L2 MAC; Request is L2 **Broadcast (`FF:FF:FF:FF:FF:FF`)**, Reply is **Unicast**; if target IP is outside subnet, host ARPs for **Default Gateway's** MAC (not remote destination's!); ARP Cache TTL; RARP (deprecated) vs Gratuitous ARP.
+  - **DHCP (`2026_AN_Q22`):** 4-step **DORA** (`Discover -> Offer -> Request -> Ack`) over UDP `67/68`, uses broadcast `255.255.255.255` because booting client has IP `0.0.0.0`!
+  - **ICMP & IGMP (`2025_AN_Q18`):** Encapsulated directly inside IP (`Protocol = 1, 2`); `ping` (`Echo Req/Reply`), `traceroute` (incrementing `TTL = 1, 2, 3...` catching `ICMP Time Exceeded`!).
+  - **NAT / PAT (`2024_FN_Q29`):** Translates private IP:port <-> public IP:port; outgoing packet modifies **Source IP, Source Port, IP Header Checksum, and TCP/UDP Checksum** (incoming modifies Destination IP/Port/Checksums!).
+- **GATE-level items:** Identifying broadcast protocols (`2026_AN_Q22`), ARP Request vs Reply addressing (`2021_FN_Q13`, `2019_FN_Q64`), and NAT header modifications (`2024_FN_Q29`).
+- **Diagrams needed:** `TIMELINE` (ARP Request/Reply + DHCP DORA 4-step exchange); `MEMORY` (NAT router table + outgoing IP/TCP header fields highlighted orange).
+- **Hand traces:** Tracing ARP for same-subnet vs cross-subnet target; tracing outgoing/incoming NAT packet headers (`2024_FN_Q29`).
+- **Common mistakes:** Thinking ARP Reply is ALSO broadcast (`2021_FN_Q13`!); thinking host ARPs for gateway's IP using gateway's IP or remote host's MAC (`2019_FN_Q64`!); forgetting NAT must recompute `Header Checksum` (`2024_FN_Q29(C)`!).
+
+#### Lesson 03.4 · Routing Algorithms (`Flooding`, `Distance Vector`, `Link State`, `RIP`, `OSPF`, `BGP`)
+- **Tag:** `[MUST]` — Regularly tested (`2025_AN_Q17`, `2023_FN_Q25`, `2022_FN_Q57`, `2021_AN_Q53`, `2017_AN_Q34`).
+- **Estimated reading time:** 70 minutes.
+- **Prerequisites:** Lesson 03.2 (and basic graph shortest path intuition).
+- **Beginner must-see:** How do routers learn where to send packets? Either routers gossip *"Here is how far I think every city is"* with ONLY their immediate neighbours (**Distance Vector / Bellman-Ford**, like `RIP` — simple, yet suffers bad-news rumours bouncing back as **Count-to-Infinity**!), OR every router shouts its local road map to the ENTIRE city so everyone builds a full map and runs **Dijkstra** (**Link State**, like `OSPF`)!
+- **Finer points:**
+  - **Static Routing (`2020_FN_Q29(II)`)** & **Flooding** (hop count / sequence numbers prevent infinite flooding).
+  - **Distance Vector (`Bellman-Ford` / `RIP`):**
+    - Equation: $D_x(y) = \min_v \{ c(x, v) + D_v(y) \}$ (`2021_AN_Q53`!).
+    - **Count-to-Infinity Problem & Routing Loop Probability (`2022_FN_Q57`):** When `Q-R` breaks, if `P` tells `Q` *"I can reach R in 2"* before `Q` tells `P` *"R is dead"*, `Q` loops back through `P`!
+    - Mitigations: **Split Horizon** & **Poison Reverse** (fix 2-node loops, yet fail on 3+ node loops!), **RIP (`UDP port 520`, max hop `15`, `16 = \infty`)** (`2017_AN_Q34`).
+  - **Link State (`Dijkstra` / `OSPF`):**
+    - LSA flooding, full topology database at every router, Dijkstra SPF tree.
+    - **OSPF (`2023_FN_Q25`, `2017_AN_Q34`):** Intra-domain (same AS), **runs directly over IP (Protocol 89 — NOT TCP/UDP!)**, supports **hierarchical Areas (Area 0 backbone)**.
+  - **Inter-Domain Routing (`BGP`):** Path-vector protocol between Autonomous Systems (runs over **TCP port 179**), policy-based routing (avoids loops by storing full AS-PATH!).
+- **GATE-level items:** Updating Distance Vector routing table from neighbor vectors (`2021_AN_Q53`); Count-to-Infinity probability (`2022_FN_Q57`); `RIP` vs `OSPF` vs `BGP` transport protocol & algorithm properties (`2025_AN_Q17`, `2023_FN_Q25`, `2017_AN_Q34`).
+- **Diagrams needed:** `GRAPHPIC` + `TRACE` (Distance Vector update table for `R -> P, Q` via `X, Y, Z`, `2021_AN_Q53`); `FRAMES` (`P - Q - R` link-cut showing `50%` loop formation when `P` broadcasts before `Q`, `2022_FN_Q57`); `COMPARE` (`RIP vs OSPF vs BGP` full property matrix).
+- **Hand traces:** Tracing `2021_AN_Q53` (`R->P = 8 via Y`, `R->Q = 7 via X`); tracing 4 rounds of `P - Q - R` Count-to-Infinity (`2 -> 3 -> 4 -> 5...`).
+- **Common mistakes:** Thinking OSPF runs over TCP (`2017_AN_Q34(III)`!) or is inter-domain (`2023_FN_Q25(C)`!); forgetting to add direct link cost `c(R, neighbor)` to neighbor's distance vector (`2021_AN_Q53`!).
+
+---
+
+### Chapter 04 · Transport Layer, TCP/UDP and Congestion Control
+
+#### Lesson 04.1 · Ports, Multiplexing, UDP & Socket Programming
+- **Tag:** `[MUST]` — Covers UDP, ports, multiplexing, and socket API (`2018_FN_Q23(Ports)`, `2017_AN_Q18`).
+- **Estimated reading time:** 50 minutes.
+- **Prerequisites:** Lesson 01.1, Lesson 03.2.
+- **Beginner must-see:** IP delivers a packet to your *building* (your computer); **Transport Layer Ports** (`0..65535`) deliver it to the exact *apartment* (Chrome vs Spotify vs Zoom)! **UDP** is lightweight, connectionless, and keeps each `sendto()` message separate (**8-byte header**); **TCP** builds a reliable, ordered continuous pipe!
+- **Finer points:**
+  - **Demultiplexing:** UDP socket identified by **2-tuple `(Dst IP, Dst Port)`**; TCP socket identified by **4-tuple `(Src IP, Src Port, Dst IP, Dst Port)`** (why a web server can serve 1,000 clients all on Port 80!).
+  - **UDP 8-byte Header:** `Src Port (16) | Dst Port (16) | Length (16) | Checksum (16)` (pseudo-header includes IP addresses; Checksum optional in IPv4, mandatory in IPv6).
+  - **Socket API Flow (`socket, bind, listen, accept, connect, send/recv, sendto/recvfrom, close`):**
+    - Blocking `accept()` returns a brand-new connected socket FD per TCP client!
+    - **Connected UDP Sockets (`2017_AN_Q18`):** Calling `connect()` on a UDP socket pins ONE remote peer (receives ICMP port-unreachable errors asynchronously; CANNOT talk to multiple peers simultaneously; CAN call `connect()` again to switch peer!).
+- **GATE-level items:** 2-tuple vs 4-tuple socket demultiplexing; connected UDP socket behaviour (`2017_AN_Q18`); UDP header fields & port bit width (`16` bits, `2018_FN_Q23`).
+- **Diagrams needed:** `MEMORY` (UDP 8-byte header + 2-tuple vs 4-tuple demux buckets); `TIMELINE` (TCP `socket -> bind -> listen -> accept <-> connect` ladder vs UDP `connect()` re-pinning peer, `2017_AN_Q18`).
+- **Hand traces:** Tracing 2 Chrome tabs talking to the same web server port `80` using distinct `(Src Port)` 4-tuples; tracing `connect()` called twice on UDP socket (`2017_AN_Q18`).
+- **Common mistakes:** Thinking a TCP server creates new port numbers for every accepted client (all share server port `80`, separated by client `Src IP:Src Port`!); thinking `connect()` on UDP performs a 3-way handshake (zero packets sent!) or locks the socket forever (`2017_AN_Q18(II)`).
+
+#### Lesson 04.2 · TCP Header, Byte Wrap-Around, 3-Way Handshake & Connection States
+- **Tag:** `[MUST]` — Tested every single year (`2026_FN_Q18`, `2025_AN_Q16(ii)`, `2025_FN_Q22`, `2024_FN_Q23`, `2023_FN_Q50`, `2022_FN_Q60`, `2021_AN_Q14`, `2021_FN_Q20`, `2018_FN_Q35`, `2017_FN_Q12`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 04.1, Lesson 02.2 (sliding window idea).
+- **Beginner must-see:** TCP numbers **every single byte** (not packet!) of your data stream, piggybacks ACKs inside outgoing data (`2025_AN_Q16(ii)`), and shakes hands **3 times** before sending data (`SYN -> SYN+ACK -> ACK`) so both sides agree on starting sequence numbers! And because TCP is **full-duplex**, BOTH client and server can say "I'm done" (`FIN`) independently — even at the exact same time (`2026_FN_Q18`)!
+- **Finer points:**
+  - **TCP 20-byte Header:** Ports (`16+16`), **Seq# (`32`), Ack# (`32`)**, Header Length (`4` bits in 4-B words, `20..60 B`), Flags (`URG, ACK, PSH, RST, SYN, FIN`), `rwnd` (`16` bits + Window Scale option), Checksum, Urgent Ptr.
+  - **Sequence Number Wrap-Around (`2023_FN_Q50`, `2022_FN_Q60`, `2018_FN_Q35`):**
+    - Bytes sent in `MSL` = `(B / 8) × MSL`.
+    - Minimum sequence bits $N$ satisfies $2^N > (B / 8) \times MSL$ (or $\ge$ for wrap time = $2^{32} \times 8 / B$, `2018_FN_Q35`: `~34.36 s` at `1 Gbps`!).
+  - **3-Way Handshake (`2025_FN_Q22`, `2024_FN_Q23`, `2021_AN_Q14`):**
+    - Initial seq# `X, Y` chosen randomly (`ISN` avoids stale segments from crashed connections!).
+    - `SYN` and `FIN` each consume **1 virtual sequence number** (`SYN-ACK` has `ACK# = X + 1`; pure `ACK` consumes `0`!).
+  - **4-Way Teardown, Simultaneous Close & State Diagram (`2026_FN_Q18`, `2017_FN_Q12`):**
+    - Normal Close: `FIN` (`FIN-WAIT-1`) -> `ACK` (`FIN-WAIT-2`, `2017_FN_Q12`!) -> peer's `FIN` (`TIME-WAIT` for `2 × MSL`!) -> `ACK`.
+    - Simultaneous Close (`2026_FN_Q18(D)`): both send `FIN` -> enter `CLOSING` -> both ACK -> `TIME-WAIT`.
+  - **Crash / Reboot & Keepalive (`2021_FN_Q20`):** Without keepalive, passive idle client reading hangs forever; if client sends packet to rebooted server (no matching socket), server sends **`RST`** (NOT `FIN`!).
+- **GATE-level items:** Handshake flags & Seq/Ack values (`2025_FN_Q22`, `2024_FN_Q23`, `2021_AN_Q14`), Sequence wrap-around bits/time (`2023_FN_Q50`, `2022_FN_Q60`, `2018_FN_Q35`), `FIN-WAIT-2` state (`2017_FN_Q12`), simultaneous close (`2026_FN_Q18`), server reboot `RST` (`2021_FN_Q20`).
+- **Diagrams needed:** `MEMORY` (20-byte TCP header); `TIMELINE` (3-Way Handshake + 4-Way Teardown + Simultaneous Close + Server Reboot `RST` crash); `GRAPHPIC` (RFC 793 TCP State Diagram highlighting `ESTABLISHED -> FIN-WAIT-1 -> FIN-WAIT-2 -> TIME-WAIT`).
+- **Hand traces:** Tracing `2022_FN_Q60` (`33` bits), `2023_FN_Q50` (`32, 34, 36` bits), `2018_FN_Q35` (`34.36 s`), and Seq/Ack numbers across Handshake + 2 data segments + Teardown.
+- **Common mistakes:** Thinking `SYN-ACK` has `ACK = X` instead of `X + 1` (`2024_FN_Q23`, `2021_AN_Q14`!); forgetting `× 8` or `÷ 8` in wrap-around byte-vs-bit math (`2022_FN_Q60`!); thinking only the client can initiate TCP closing (`2026_FN_Q18(B)`!); thinking rebooted server sends `FIN` instead of `RST` (`2021_FN_Q20(D)`!).
+
+#### Lesson 04.3 · TCP Flow Control (`rwnd`), Congestion Control (`cwnd`) & Traffic Shaping
+- **Tag:** `[MUST]` — High-yield 2-mark numerical & MCQ staple (`2026_FN_Q44`, `2026_AN_Q58`, `2024_AN_Q58`, `2020_FN_Q62`, `2018_FN_Q24`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 04.2.
+- **Beginner must-see:** TCP protects TWO completely different things: **Flow Control (`rwnd`)** makes sure the sender doesn't overflow the *receiver's RAM bucket*, while **Congestion Control (`cwnd`)** makes sure the sender doesn't jam the *intermediate internet routers*! At every moment, the sender can only have **`min(rwnd, cwnd)`** unacknowledged bytes in flight!
+- **Finer points:**
+  - **Slow Start (`cwnd < ssthresh`):** Starts at `1 MSS` (unless stated otherwise); adds **`+1 MSS` per ACK received**, which **doubles `cwnd` every RTT** (`2018_FN_Q24`, `2026_FN_Q44`)!
+  - **Congestion Avoidance (`cwnd >= ssthresh`):** Adds `MSS × (MSS / cwnd)` per ACK = **`+1 MSS` per full RTT** (linear growth!).
+  - **Loss Events (Tahoe vs Reno):**
+    - **Timeout (`2024_AN_Q58`):** `ssthresh = max(cwnd / 2, 2 MSS)` and **`cwnd = 1 MSS`** (re-enters Slow Start!).
+    - **3 Duplicate ACKs (Fast Retransmit / Fast Recovery):** `ssthresh = cwnd / 2` and **`cwnd = ssthresh`** (enters Congestion Avoidance directly, does NOT drop to `1`!).
+  - **Exact Round-Indexing Cheat Rules (`2026_FN_Q44`, `2026_AN_Q58`, `2020_FN_Q62`):**
+    - At $t = 0$ (Round 1 / RTT 0): sends `1 MSS` (`segment #1`), reaches `2 MSS` after 1 RTT.
+    - Cumulative segments sent *before* round $k$ ($0$-indexed) in Slow Start $= 2^k - 1$; during round $k$, sends segments $2^k \dots 2^{k+1}-1$ (`2026_FN_Q44`: segment `2000` sits in `1024..2047` -> $10 \le t < 11$)!
+    - Reaching `ssthresh` (`2026_AN_Q58`: `2 -> 4 -> 8 -> 16 = ssthresh`, Congestion Avoidance starts in **Round 4**!).
+  - **Traffic Shaping (`[SHOULD]`):** Leaky Bucket (constant smooth output rate `r`) vs Token Bucket (allows bursts up to capacity `b` at max rate `M`, max burst time $S = \frac{b}{M - r}$).
+  - **Nagle's Algorithm & Silly Window Syndrome (`[LATER]`):** Short 3-line conceptual box.
+- **GATE-level items:** Computing exact `cwnd` at `t + 60 ms` (`2020_FN_Q62`: `44 KB`) or during `3rd RTT` after timeout (`2024_AN_Q58`: `4 MSS`), rounds to reach Congestion Avoidance (`2026_AN_Q58`: `4`), and transmission start time of segment #2000 (`2026_FN_Q44`).
+- **Diagrams needed:** `GRAPHPIC` (Dual-bucket Flow `rwnd` + Network `cwnd` bottleneck `min(rwnd, cwnd)`); `TIMELINE` / `TRACE` (Full sawtooth `cwnd` curve comparing Timeout crash to `1` vs 3-Dup-ACK drop to `ssthresh`); `TRACE` (Round-by-round table aligning `Round # | t (ms) | cwnd (start) | Segs Sent | cwnd (end)`).
+- **Hand traces:** Tracing `2026_FN_Q44` (`10 <= t < 11`), `2026_AN_Q58` (`4`), `2024_AN_Q58` (`4`), and `2020_FN_Q62` (`44 KB`).
+- **Common mistakes:** Doubling `cwnd` on every ACK *numerically* instead of `+1 MSS` per ACK (`2018_FN_Q24(ii)` trap!); letting `cwnd` exceed `rwnd`; confusing Timeout (`cwnd = 1`) with 3-Dup-ACK (`cwnd = ssthresh`); off-by-one between "after `k` RTTs" and "during `k`-th RTT"!
+
+---
+
+`CONTINUE FROM CHAPTER 05`
+
+## PART 5 (Continued) · Chapter 05
+
+### Chapter 05 · Application Layer Protocols (& Security Appendix)
+
+#### Lesson 05.1 · DNS Hierarchy, Iterative vs Recursive Resolution & Resource Records
+- **Tag:** `[MUST]` — Tested repeatedly both alone (`2022_FN_Q35`) and combined with HTTP (`2024_FN_Q19`, `2023_FN_Q52`).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 04.1 (UDP vs TCP ports).
+- **Beginner must-see:** Humans hate typing `142.250.193.78`, so we type `www.gate-2023.in`! **DNS** is the Internet's global phonebook — a giant upside-down tree (`Root -> .in TLD -> gate-2023.in Authoritative`). Because your laptop's DNS cache starts empty, looking up a name happens **BEFORE** any TCP SYN or HTTP GET can ever leave your laptop (`2024_FN_Q19`)!
+- **Finer points:**
+  - **Transport:** Port `53`, primarily **UDP** (fast 1-packet lookup; switches to **TCP** for large responses `> 512 B` / Zone Transfers).
+  - **Iterative vs Recursive Queries (`2023_FN_Q52`, `2022_FN_Q35`):**
+    - *Recursive:* Client asks Local DNS once; Local DNS does the full legwork (`Root -> TLD -> Auth`), returning final IP (1 RTT from client's view, multiple hops behind scenes).
+    - *Iterative (`2022_FN_Q35`, `2023_FN_Q52`):* Local resolver (often deployed on local host!) asks **Root** (gives TLD IP), then asks **TLD** (gives next level / Auth IP), ..., until **Authoritative** returns the IP!
+    - **Counting Hierarchy Levels (`2022_FN_Q35` vs `2023_FN_Q52`):**
+      - `www.gate.org.in` (empty cache, iterative): 1. Root (`.` -> `.in`), 2. `.in` (`-> .org.in`), 3. `.org.in` (`-> gate.org.in`), 4. `gate.org.in` (`-> IP`) = **`4` query-response pairs** (`2022_FN_Q35`)!
+      - 3-tier iterative (`www.gate-2023.in` explicitly stated as 3-tier in `2023_FN_Q52`): Root + `.in` + `gate-2023.in` = **`3` RTTs**!
+  - **DNS Resource Records (`[SHOULD]`):** `A` (Name -> IPv4), `AAAA` (Name -> IPv6), `NS` (Authoritative nameserver), `CNAME` (Canonical alias), `MX` (Mail server).
+  - **DNS Caching:** TTL expires old entries so repeated lookups cost `0` RTTs!
+- **GATE-level items:** Ordering DNS before TCP SYN & HTTP GET (`2024_FN_Q19`), counting iterative query-response pairs (`2022_FN_Q35`), and adding DNS RTTs onto HTTP rendering time (`2023_FN_Q52`).
+- **Diagrams needed:** `TREE` (DNS upside-down hierarchy `. -> .in -> .org.in -> gate.org.in`); `TIMELINE` (Iterative vs Recursive arrow paths for `2022_FN_Q35` and `2023_FN_Q52`).
+- **Hand traces:** Tracing `www.gate.org.in` (`4` iterative pairs, `2022_FN_Q35`); tracing 3-tier iterative DNS + HTTP start (`2023_FN_Q52`, `2024_FN_Q19`).
+- **Common mistakes:** Forgetting `.org.in` is an extra DNS tier below `.in` (`3` vs `4` pairs in `2022_FN_Q35`!); putting TCP SYN before DNS lookup (`2024_FN_Q19`!).
+
+#### Lesson 05.2 · HTTP (`1.0` vs `1.1`, Pipelining & RTT Math), FTP & Email (`SMTP`, `POP3`, `IMAP`)
+- **Tag:** `[MUST]` — High-ROI guaranteed points (`2026_FN_Q19`, `2024_FN_Q19`, `2023_FN_Q52`, `2020_FN_Q31`, `2019_FN_Q25`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 04.2 (TCP 3-way handshake = 1 RTT + data = 1 RTT), Lesson 05.1.
+- **Beginner must-see:** Fetching a webpage with 10 images over **HTTP/1.0 (Non-Persistent)** makes your browser knock on the server's door (`TCP SYN/ACK`) **11 separate times** (`2020_FN_Q31`)! **HTTP/1.1 (Persistent)** keeps ONE TCP door open (`2026_FN_Q19`), and **Pipelining** fires all 10 image requests together in ONE single batch without waiting (`2023_FN_Q52`)!
+- **Finer points:**
+  - **Exact HTTP RTT Formula (`1` HTML + `N` embedded objects, empty cache, server on same host):**
+    - Note: Client -> Server TCP 3-way handshake takes **1 RTT** to send `SYN`, receive `SYN+ACK`, and piggyback `HTTP GET` onto the 3rd leg (`ACK + GET`), taking **2 RTTs total** for HTML (`1 RTT handshake + 1 RTT GET/Response`)!
+    - **Non-Persistent Sequential (`HTTP/1.0`):** `DNS + 2·(1 + N)` RTTs (`1 + N` TCP connections, `2020_FN_Q31`: `1 + 5 = 6` connections!).
+    - **Non-Persistent with $k$ Parallel Connections (`2023_FN_Q52`):** `DNS + 2 + 2·ceil(N / k)` RTTs (`3 + 2 + 2·ceil(10/5) = 9 RTTs`!).
+    - **Persistent Non-Pipelined (`HTTP/1.1`):** `DNS + 2 + N` RTTs (1 TCP connection kept open across objects & webpages on the *same* server, NOT different servers! `2026_FN_Q19(A, B, D)`).
+    - **Persistent WITH Pipelining (`2026_FN_Q19(C)`, `2023_FN_Q52`):** `DNS + 2 + 1` RTTs (all `N` GETs sent back-to-back in 1 RTT -> `3 + 2 + 1 = 6 RTTs`!).
+  - **HTTP Methods, Cookies & Conditional GET (`[SHOULD]`):** `GET, POST, HEAD, PUT, DELETE`; stateless protocol using **Cookies**; `If-Modified-Since` returning `304 Not Modified`; key codes (`200, 301, 304, 400, 403, 404, 500`).
+  - **Email Architecture (`2019_FN_Q25`):** **SMTP (Port 25, TCP)** = **Push** protocol (Sender -> Server -> Receiver Server, 7-bit ASCII); **MIME** encodes non-text attachments; **POP3 (110)** vs **IMAP (143)** = **Pull** protocols (`2019_FN_Q25`).
+  - **FTP (TCP Ports 21 & 20):** Out-of-band persistent **Control connection (21)** + ephemeral **Data connection (20)** per file; Stateful!
+  - **Master Port & Transport Cheat Table:** DNS (53 UDP/TCP), HTTP (80 TCP), HTTPS (443 TCP), SMTP (25 TCP), POP3 (110 TCP), IMAP (143 TCP), FTP (21/20 TCP), DHCP (67/68 UDP).
+- **GATE-level items:** Computing HTTP+DNS RTTs (`2023_FN_Q52`: `9` and `6`), non-persistent TCP count (`2020_FN_Q31`: `6`), HTTP/1.1 multi-object/multi-page/pipelining rules (`2026_FN_Q19`), and SMTP vs POP3 order (`2019_FN_Q25`).
+- **Diagrams needed:** `TIMELINE` (All 4 HTTP modes compared on `1 HTML + 10 objects` after DNS, `2023_FN_Q52`); `FLOW` (Email Push-SMTP vs Pull-POP3/IMAP); `COMPARE` (All 6 Application protocols: Port, TCP/UDP, Persistent/Non, Stateful/Stateless).
+- **Hand traces:** Tracing `2023_FN_Q52` (`9` vs `6` RTTs), `2020_FN_Q31` (`6` TCP connections), and `2024_FN_Q19` (`DNS -> SYN -> GET index -> GET img`).
+- **Common mistakes:** Thinking `HTTP/1.1` reuses the same TCP connection across *different* servers (`2026_FN_Q19(B)`!); forgetting `1` TCP connection for the HTML page itself in `2020_FN_Q31` (`5` instead of `6`!); giving `3` RTTs instead of `2` RTTs per TCP+GET (`ACK` piggybacks `GET`, `2023_FN_Q52`!).
+
+#### Lesson 05.3 · Network Security Appendix (`RSA`, `Digital Signatures` & `Birthday Attack`)
+- **Tag:** `[LATER]` *(Verify against official GATE 2027 syllabus first — `Part B.1` omits Security, and all 3 PYQs `2019_FN_Q46`, `2017_FN_Q28`, `2017_FN_Q47` are 2019 or earlier; keep modular & self-contained so students don't spend scarce time unless confirmed in syllabus!)*
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Modular arithmetic (`a mod n`), GCD / Euclidean algorithm.
+- **Beginner must-see:** Symmetric encryption uses ONE shared secret key (hard to share safely over the internet!). **RSA (Public-Key Crypto)** uses TWO mathematically linked keys: a **Public key** anyone can see, and a **Private key** ONLY you hold! Lock a box with Bob's **Public** key for secrecy; stamp a document with Alice's **Private** key as an unforgeable **Digital Signature**!
+- **Finer points:**
+  - **RSA Algorithm (`2019_FN_Q46`, `2017_FN_Q47`):**
+    1. Pick two primes $p, q$; $n = p \cdot q$; Euler Totient **$\phi(n) = (p - 1)(q - 1)$**.
+    2. Note quick recovery trick (`2019_FN_Q46`!): $p + q = n - \phi(n) + 1$! Solve quadratic $x^2 - (p+q)x + pq = 0$!
+    3. Pick public exponent $e$ with $\gcd(e, \phi(n)) = 1$.
+    4. Compute private exponent $d$ via Extended Euclidean Algorithm: **$e \cdot d \equiv 1 \pmod{\phi(n)}$** (`2017_FN_Q47`).
+    5. Encrypt: $C = M^e \bmod n$; Decrypt: $M = C^d \bmod n$.
+  - **Confidentiality vs Digital Signatures (`2017_FN_Q28`):**
+    - Signature: Sender signs digest $H(m)$ using Sender's **Private** key.
+    - **Birthday Attack vs 2nd-Preimage Attack (`2017_FN_Q28`):** Finding *any* colliding pair $(m, m')$ with $H(m) = H(m')$ takes $O(2^{n/2})$ (Birthday attack); ONLY **Sender `S`** (who owns the private key!) can generate a colliding pair, sign `m`, and later swap `m'` with the same valid signature! Neither `R` nor an outsider has `S`'s private key (`2017_FN_Q28`).
+- **GATE-level items:** Factoring $n$ from $(n, \phi(n))$ (`2019_FN_Q46`: `97`), finding $d$ from $(p, q, e)$ (`2017_FN_Q47`: `11`), and who can execute a birthday attack on a signed message (`2017_FN_Q28`).
+- **Diagrams needed:** `FLOW` (Encryption with Bob's Public key vs Digital Signature with Alice's Private key); `COMPARE` (Birthday Collision vs Preimage Resistance).
+- **Hand traces:** Tracing `2019_FN_Q46` (`p+q = 3007 - 2880 + 1 = 128 -> 31, 97`) and `2017_FN_Q47` (`35 d \equiv 1 \pmod{192} -> d=11`).
+- **Common mistakes:** Swapping Public vs Private keys in Digital Signatures; forgetting `+1` in $p + q = n - \phi(n) + 1$ (`2019_FN_Q46`); thinking a third party can exploit a hash collision to forge `S`'s signature (`2017_FN_Q28`).
+
+---
+
+## PART 6. EVERY PYQ LISTED BELOW (Batch 1: Questions #1 to #38)
+
+*(Re-solved and checked one by one. All 9 missing-figure questions are explicitly marked.)*
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 1 | `2026_FN_Q18` | Ch 04 / L04.2 | TCP connection properties (3-way handshake, full-duplex, simultaneous close). | Both sides are peers in full-duplex TCP — either can initiate `FIN` independently, even simultaneously (`D`)! | **CORRECT (D).** A false (3-way); B false (server can send `FIN` first); C false (full-duplex); D true. | Clean. |
+| 2 | `2026_FN_Q19` | Ch 05 / L05.2 | HTTP/1.1 persistent connections & pipelining across objects and pages. | Persistent TCP connects to ONE server IP:port — CANNOT reuse across *different* servers (`B` false)! `C` describes pipelining; `D` describes persistent multi-page reuse on same server. | **CORRECT (A, C, D).** Standard HTTP/1.1 RFC behaviour. | Clean. |
+| 3 | `2026_AN_Q21` | Ch 00 / L00.1, L00.2 | Multi-link bottleneck file transfer (`4 MB` over `2 Mbps, 500 kbps, 1 Mbps`). | Convert Bytes -> Bits (`× 8`!) and use bottleneck `min(2M, 500k, 1M) = 500 kbps`! Option C (`8`) forgets `× 8`! | **CORRECT (B: 64).** `4 × 10^6 × 8 / (500 × 10^3) = 32×10^6 / 5×10^5 = 64 s`. | Clean. |
+| 4 | `2026_AN_Q22` | Ch 03 / L03.3 | Identifying Application/Support protocol requiring link-layer/IP **broadcast**. | Booting client doesn't know its IP or DHCP server IP yet -> `DHCPDISCOVER` broadcasts to `255.255.255.255`! | **CORRECT (C: DHCP).** SMTP, FTP, HTTP use unicast TCP. | Clean. |
+| 5 | `2026_AN_Q33` | Ch 03 / L03.1 | Counting assignable interface IPs from subnet mask `255.255.240.0`. | Mask = `/20` (`12` host bits). Subtract `2` (network ID + broadcast)! | **CORRECT (4094).** $2^{12} - 2 = 4096 - 2 = 4094$. | Clean. |
+| 6 | `2026_AN_Q43` | Ch 02 / L02.1 | Computing 3-bit CRC remainder for `110001011` with generator `1001`. | Append `3` zeros (`degree = 3`), divide by pure bitwise XOR without borrowing! | **CORRECT (D: 100).** `110001011000 XOR÷ 1001` yields exact remainder `100`. | Clean. |
+| 7 | `2026_FN_Q44` | Ch 04 / L04.3 | TCP Slow Start round-by-round segment numbering (`seg #2000` start time). | `ssthresh = 10000` means pure Slow Start (`2^k` segs in round `k` starting at `t = k ms`)! Segments `1024..2047` send in round 10! | **CORRECT (B: `10 <= t < 11`).** Before `t = 10`, $2^{10}-1 = 1023$ segments sent; at `t = 10`, round 10 transmits `1024..2047`, so segment 2000 starts in `[10, 11)`. | Clean. |
+| 8 | `2026_FN_Q45` | Ch 02 / L02.2 | Minimum Sliding Window `W` for 100% link utilization. | Don't forget `+ 1` (`1 + 2a`, NOT `2a = 20`)! | **CORRECT (B: 21).** $T_t = 1000 / 10^5 = 10\text{ ms}$, $T_p = 100\text{ ms} \implies a = 10 \implies W = 1 + 2(10) = 21$. | Clean. |
+| 9 | `2026_FN_Q56` | Ch 03 / L03.1 | Valid aligned `/19` CIDR blocks inside `202.16.0.0/15` for 6000 IPs. | `/19` uses block size `32` in 3rd octet -> 3rd octet MUST be divisible by `32` (`24` fails!), and parent `/15` spans `202.16..202.17`. | **CORRECT (A, B, C).** `0`, `64`, `32` are multiples of 32 inside `202.16–202.17`; `24` (`D`) is unaligned. | Clean. |
+| 10 | `2026_AN_Q58` | Ch 04 / L04.3 | Rounds of transmission to reach Congestion Avoidance (`MSS=2 KB, ssthresh=16 KB`). | Round 1 sends `2 KB`, Round 2 `4 KB`, Round 3 `8 KB`, hitting `16 KB == ssthresh` so **Round 4** is the round reaching Congestion Avoidance! | **CORRECT (4).** `2 -> 4 -> 8 -> 16` (`rwnd = 48 KB` doesn't cap it). | Clean. |
+| 11 | `2026_AN_Q65` | Ch 02 / L02.2 | Link-layer byte sequence bits satisfying 60-sec wrap-around AND max utilization. | Must convert `10^8` bps to **Bytes/sec** (`÷ 8`!) before checking 60-sec wrap-around (`7.5 × 10^8 B`)! | **CORRECT (30).** Bytes in 60s = $(10^8 / 8)\times 60 = 7.5\times 10^8 \in (2^{29}, 2^{30}] \implies 30\text{ bits}$ (also $\gg 2\cdot\text{BDP} = 750\text{ KB}$). | Clean. |
+| 12 | `2025_FN_Q16` | Ch 01 / L01.1 | Matching OSI Network, Transport, and Data Link duties. | Transport = Host-to-host; Network = Packet routing; DLL = Framing & error handling. | **CORRECT (B: a-I, b-III, c-II).** | Clean. |
+| 13 | `2025_AN_Q16` | Ch 03, 04 / L03.3, L04.2 | ARP mapping (IP->MAC) and TCP piggybacking data + ACK. | TCP DOES piggyback ACKs inside outgoing data segments (`(ii)` is FALSE!). | **CORRECT (B: (i) TRUE, (ii) FALSE).** | Clean. |
+| 14 | `2025_AN_Q17` | Ch 03 / L03.4 | Matching Distance Vector (Bellman-Ford) and Link State (Dijkstra). | Basic algorithm pairing. | **CORRECT (A: i-a, ii-b).** | Clean. |
+| 15 | `2025_AN_Q18` | Ch 03 / L03.2, L03.4 | Protocols encapsulated directly inside IPv4 (`Protocol` header field). | **RIP runs over UDP** (`Protocol = 17`), whereas ICMP (1), IGMP (2), and OSPF (89) sit directly inside IPv4! | **CORRECT (D: RIP).** | Clean. |
+| 16 | `2025_FN_Q22` | Ch 04 / L04.2 | TCP 3-way handshake flags across `P1, P2, P3`. | `P3` has `SYN = 0, ACK = 1` (`A` false!); `P1` has `SYN = 1` (`D` true); `P2` has `SYN=1, ACK=1` (`B` true). | **CORRECT (B, D).** | Clean. |
+| 17 | `2025_AN_Q23` | Ch 03 / L03.2 | Fragmenting UDP datagram (`7488 B` payload) over `1500 B` Ethernet MTU. | **Don't forget the `8 B` UDP header inside IP payload!** (`7488 + 8 = 7496 B`; forgetting `8 B` gives trap `108` in C!). | **CORRECT (D: 6 fragments, 116 bytes).** Max payload/frag = `1480 B`; `5 × 1480 = 7400`; last payload = `96 B + 20 B IP = 116 B`. | Clean. |
+| 18 | `2025_AN_Q36` | Ch 02 / L02.2 | Stop-and-Wait channel utilization (`L=3000 bits, B=2000 bps, T_p=100 ms`). | $T_t = 1.5\text{ s} = 1500\text{ ms}$; don't forget `2 × T_p = 200 ms`! | **CORRECT (A: 88.23).** $1500 / (1500 + 200) = 15/17 = 88.235\%$. | Clean. |
+| 19 | `2025_FN_Q40` | Ch 03 / L03.2 | Longest Prefix Match forwarding for `145.36.109.70`. | Need routing table diagram to match bits. | **CANNOT VERIFY** (Key: A). Table `[IMAGE_Q_40_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_40_1]`). |
+| 20 | `2025_FN_Q57` | Ch 03 / L03.2 | Multi-router IPv4 fragmentation of `15000 B` message. | Need router MTU figure. | **CANNOT VERIFY** (Key: 7). Figure `[IMAGE_Q_57_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_57_1]`). |
+| 21 | `2024_FN_Q19` | Ch 05 / L05.1, L05.2 | Chronological packet order leaving empty-cache browser (`DNS -> SYN -> GET html -> GET img`). | Browser must resolve DNS BEFORE sending TCP SYN, and fetch HTML BEFORE discovering embedded images! | **CORRECT (C: ii, iv, i, iii).** | Clean. |
+| 22 | `2024_AN_Q14` | Ch 01 / L01.1 | End-to-end Destination IP (`Y`) vs Hop-by-hop Destination MAC (`R`) leaving `X`. | Ethernet Switch `S` is L2-transparent (packet doesn't address MAC of `S`, `C` false!); `Dst MAC` is next-hop Router `R` (`D` false!), `Dst IP` is `Y` (`B` true!). | **CORRECT (B).** | Clean. |
+| 23 | `2024_AN_Q30` | Ch 03 / L03.2 | Where IPv4 fragmentation & reassembly occur along a path. | Any router can fragment when packet > MTU (`B` true); ONLY final destination reassembles (`C` true). | **CORRECT (B, C).** | Clean. |
+| 24 | `2024_FN_Q23` | Ch 04 / L04.2 | TCP 3-way handshake initial sequence number & `SYN-ACK` acknowledgment number. | `N_P` is random (`A` true); `Q`'s SEQ is also random (`B` false); `SYN` consumes 1 seq# so `N_Q = N_P + 1` (`D` true). | **CORRECT (A, D).** | Clean. |
+| 25 | `2024_FN_Q29` | Ch 03 / L03.3 | IP header fields modified by an outgoing NAT device. | NAT replaces internal **Source IP** (`A`) and updates **Header Checksum** (`C`); Destination IP & Total Length stay unchanged. | **CORRECT (A, C).** | Clean. |
+| 26 | `2024_AN_Q29` | Ch 03 / L03.2 | IP header fields modified by **every** forwarding router. | Decrements **TTL** (`C`), forcing **Header Checksum** (`D`) recalculation. | **CORRECT (C, D).** | Clean. |
+| 27 | `2024_FN_Q40` | Ch 00 / L00.2 | Store-and-forward packet pipelining (`1000` chunks of `1000 B` across 2 `1 Mbps` links). | Don't multiply `2 × 8 s = 16 s`! Link 2 transmits concurrently with Link 1, adding only 1 chunk shift (`+0.008 s`)! | **CORRECT (B: 8.008).** `(1000 + 2 - 1) × (8000 / 10^6) = 1001 × 0.008 = 8.008 s`. | Clean. |
+| 28 | `2024_AN_Q45` | Ch 03 / L03.1 | Exact CIDR prefix for range `10.12.2.0` to `10.12.3.255`. | `512` addresses -> `/23`; `2` (`00000010`) and `3` (`00000011`) share top 7 bits of 3rd octet -> `10.12.2.0/23`. | **CORRECT (A).** | Clean. |
+| 29 | `2024_AN_Q58` | Ch 04 / L04.3 | TCP `cwnd` after a **timeout** from `12 MSS` during the 3rd RTT. | Timeout sets `ssthresh = 12/2 = 6` and **`cwnd = 1`**! RTT 1: `1->2`, RTT 2: `2->4`, **during 3rd RTT: `4 MSS`**! | **CORRECT (4).** | Clean. |
+| 30 | `2024_AN_Q36` | Ch 02 / L02.3 | Ethernet CSMA/CD minimum frame size (`L >= 2 * T_p * B`). | `d = 500 m, v = 2×10^8 m/s -> T_p = 2.5 us`. `L >= 10^8 × 2 × 2.5×10^{-6} = 500 bits`! | **CORRECT (500).** | Clean. |
+| 31 | `2024_FN_Q58` | Ch 03 / L03.2 | Counting packets routed via `R2` using Longest Prefix Match. | Need forwarding table entries to classify the 5 host IPs. | **CANNOT VERIFY** (Key: 40). Table `[IMAGE_Q_58_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_58_1]`). |
+| 32 | `2024_FN_Q43` | Ch 03 / L03.2 | Two-hop IPv4 fragmentation (`1420 B` packet through `MTU 542` then `MTU 360`). | Round payloads DOWN to multiples of 8 (`542-20=522 -> 520 B`; `360-20=340 -> 336 B`)! `1400 -> [520, 520, 360] -> [336+184, 336+184, 336+24] = 6`. | **CORRECT (6).** Note `522` trap if you forget 8-byte alignment! | Clean. |
+| 33 | `2023_FN_Q17` | Ch 02 / L02.2 | Conditions giving lowest Stop-and-Wait link utilization ($\frac{1}{1 + 2a}$). | Utilization drops as $a = \frac{d \cdot B}{v \cdot L}$ grows -> **longer link (`d`) & higher bitrate (`B`)**! | **CORRECT (B).** | Clean. |
+| 34 | `2023_FN_Q25` | Ch 03 / L03.4 | Identifying **INCORRECT** statements about OSPF. | Watch `"INCORRECT"`! OSPF uses Dijkstra (not Bellman-Ford `A`!) and is intra-domain (not inter-domain `C`!). | **CORRECT (A, C).** B and D (hierarchical areas) are true. | Clean. |
+| 35 | `2023_FN_Q50` | Ch 04 / L04.2 | Valid TCP-like Sequence Number widths (`100 Mbps`, `MSL = 120 s`). | `Bytes in 120s = (10^8 / 8) × 120 = 1.5 × 10^9 B`. Needs $\ge 31$ bits (`2^{30} < 1.5×10^9 < 2^{31}`). | **CORRECT (B, C, D: 32, 34, 36).** 30 bits wraps before MSL. | Clean. |
+| 36 | `2023_FN_Q52` | Ch 05 / L05.1, L05.2 | Total page-load RTTs: 3-tier iterative DNS + HTTP (5-parallel non-persistent vs pipelined). | DNS = `3` RTTs; HTML (TCP + GET) = `2` RTTs; `10` objects in 2 batches of 5 parallel TCP = `4` RTTs (`9` total); pipelined = `1` RTT (`6` total)! | **CORRECT (C, D).** Notice `10` small objects pipelined share `1` RTT. | Clean. |
+| 37 | `2023_FN_Q65` | Ch 03 / L03.2 | Longest Prefix Match lookup for `200.150.68.118`. | Need forwarding table to verify binary mask match. | **CANNOT VERIFY** (Key: 3). Table `[IMAGE_Q_65]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_65]`). |
+| 38 | `2022_FN_Q22` | Ch 03 / L03.1 | Counting total subnets in an enterprise router/firewall topology. | Need enterprise network figure to count all distinct router links + LANs. | **CANNOT VERIFY** (Key: C: 6). Topology `[IMAGE_Q_22]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_22]`). |
+
+---
+
+`CONTINUE FROM PART 6 (PYQ #39)`
+## PART 6 (Continued) · Batch 2: Questions #39 to #76
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 39 | `2022_FN_Q35` | Ch 05 / L05.1 | Counting iterative DNS query-response pairs for `www.gate.org.in` (empty cache). | Count EVERY label level: `Root (.) -> .in -> .org.in -> gate.org.in` = **4** pairs! | **CORRECT (4).** `.` -> `.in` (1), `.in` -> `.org.in` (2), `.org.in` -> `gate.org.in` (3), `gate.org.in` -> `www.gate.org.in` IP (4). | Clean. |
+| 40 | `2022_FN_Q55` | Ch 03 / L03.1 | Aggregating routing table prefixes into minimal aligned CIDR blocks. | Watch non-aligned blocks (e.g. `164` and `168` cannot merge into `/21`, needing two `/22`s). Need table image to verify all entries. | **CANNOT VERIFY** (Key: B, D). Figure `[IMAGE_Q_55]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_55]`). |
+| 41 | `2022_FN_Q57` | Ch 03 / L03.4 | Probability of Count-to-Infinity routing loop between `P` and `Q` after `Q-R` fails. | Need topology `[IMAGE_Q_57]` to confirm whether `P` directly reaches `R` or routes through `Q` (with `P-Q-R` linear graph & equal rates, `P` updates first with prob `0.5`). | **CANNOT VERIFY** (Key: 0.5). Figure `[IMAGE_Q_57]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_57]`). |
+| 42 | `2022_FN_Q59` | Ch 00, 02 / L00.1, L02.2 | Total latency ($T_t + T_p$) for `1000 B` packet over `100 Mbps` earth-satellite link (`2100 km`). | Convert `1000 B` -> `8000` bits (`T_t = 0.08 ms`) and add `T_p = 2.1×10^6 / 3×10^8 = 7.00 ms`. | **CORRECT (7.08, inside `7.07–7.09`).** $T_p + T_t = 7 + 0.08 = 7.08\text{ ms}$. | Clean. |
+| 43 | `2022_FN_Q60` | Ch 04 / L04.2 | Minimum TCP sequence number bits for `1 Gbps` link with `MSL = 60 s`. | Convert `Gbps` -> `Bytes/sec` (`÷ 8`!): `(10^9 / 8) × 60 = 7.5 × 10^9` bytes! | **CORRECT (33).** $2^{32} \approx 4.29\times 10^9 < 7.5\times 10^9 < 2^{33} \approx 8.59\times 10^9 \implies 33\text{ bits}$. | Clean. |
+| 44 | `2021_AN_Q14` | Ch 04 / L04.2 | TCP 3-way handshake `SYN-ACK` header flags & Seq/Ack values from server `Q`. | `SYN` consumes 1 seq#, so `ACK num = X + 1` (NOT `X`), `Q` picks its own fresh `SEQ = Y`, `FIN = 0`! | **CORRECT (C: `SYN=1, SEQ=Y, ACK=1, ACKnum=X+1, FIN=0`).** | Clean. |
+| 45 | `2021_FN_Q13` | Ch 03 / L03.3 | Broadcast vs Unicast MAC addressing in ARP Request vs ARP Reply. | Request shouts to everyone (`Broadcast`, `S2` true); Reply whispers back directly to requester (`Unicast`, `S1` false!). | **CORRECT (C: `S1 false, S2 true`).** | Clean. |
+| 46 | `2021_FN_Q46` | Ch 02 / L02.1 | Solving unknown data/check bits `x, y` in a 12-bit Hamming codeword. | Need bit table `[IMAGE_Q_46_1]` to check even/odd parity groups. | **CANNOT VERIFY** (Key: A: `x=0, y=0`). Table `[IMAGE_Q_46_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_46_1]`). |
+| 47 | `2021_AN_Q50` | Ch 02 / L02.1 | Computing 3-bit CRC remainder for `11000` with $X^3 + X + 1$ (`1011`). | Append `3` zeros (`11000000`) and divide via bitwise XOR (`1011`). | **CORRECT (C: 100).** `11000000 XOR÷ 1011` leaves remainder `100`. | Clean. |
+| 48 | `2021_FN_Q20` | Ch 04 / L04.2 | Active TCP client behaviour after server crashes & reboots (no keepalive). | Reading client hangs forever (`A` true); writing client triggers **`RST`** (`C` true), NOT `FIN` (`D` false); server can re-listen on port `P` (`B` true). | **CORRECT (A, B, C).** | Clean. |
+| 49 | `2021_FN_Q22` | Ch 03 / L03.2 | IPv4 fragmentation (`1400 B` TCP segment through `MTU 820 B`) & loss/port rules. | `1400 B` TCP segment = `20+` TCP header + data -> `1420 B` IP packet; `MTU 820` allows `800 B` payload -> Frag 1 (`800` + `20` = `820 B`), Frag 2 (`600` + `20` = `620 B`). Only `P` (via TCP) retransmits (`C`), and only Frag 1 holds TCP ports (`D` false)! | **CORRECT (A, C).** | Clean. |
+| 50 | `2021_AN_Q53` | Ch 03 / L03.4 | Distance Vector update at router `R` using neighbor tables `X, Y, Z`. | Add direct cost `(3, 2, 5)` to neighbor vectors! To `P`: `min(3+7, 2+6, 5+5) = 8` via `Y` (`C` true, `A` false); To `Q`: `min(3+4, 2+6, 5+8) = 7` via `X` (`B` true, `D` false)! | **CORRECT (B, C).** All numerical data is present in text even though `[IMAGE_Q_53_1]` is omitted. | **MISSING FIGURE** (`[IMAGE_Q_53_1]`, though solvable from text). |
+| 51 | `2021_FN_Q42` | Ch 02 / L02.2 | Minimum Sliding Window `W` for `50%` utilization (`L_data=2000, L_ack=10, B=1M, T_p=100ms`). | Include `T_t(ack) = 0.01 ms`: `T_cycle = 2 + 100 + 0.01 + 100 = 202.01 ms`. `W >= 0.5 × 202.01 / 2 = 50.5 -> 51`. | **CORRECT (51, inside `50–52`).** | Clean. |
+| 52 | `2021_AN_Q32` | Ch 02 / L02.3 | Pure ALOHA throughput (`frames/sec`) for `1000-bit` frames at `1 Mbps`, rate `1000/s`. | Convert rate to dimensionless `G = 1000 × (1000 / 10^6) = 1.0`! Throughput = `G e^{-2G} × 1000 = 1000 e^{-2} ≈ 135.3 frames/s`. | **CORRECT (135.3, inside `130–140`).** | Clean. |
+| 53 | `2020_FN_Q29` | Ch 03 / L03.2, L03.4 | IP router behaviour (TTL/checksum edits, routing protocols, fragment reassembly). | Router DOES modify TTL & checksum (`I` false); does NOT reassemble fragments (`III` false); static tables mean routing protocols are optional (`II` true!). | **CORRECT (D: II only).** | Clean. |
+| 54 | `2020_FN_Q31` | Ch 05 / L05.2 | Minimum TCP connections for empty-cache non-persistent HTTP (`1` HTML + `5` images). | Don't forget the 1st connection to fetch the base HTML page (`1 + 5 = 6`)! | **CORRECT (6).** | Clean. |
+| 55 | `2020_FN_Q64` | Ch 03 / L03.1 | Valid aligned `/21` CIDR blocks for 1500 hosts inside ISP's `202.61.0.0/17`. | `/21` needs 3rd octet divisible by `8` (`84` fails!) AND inside `/17` (`0..127`, so `144` fails!). Only `104` (`13×8`) and `64` (`8×8`) pass! | **CORRECT (B: II and III).** | Clean. |
+| 56 | `2020_FN_Q62` | Ch 04 / L04.3 | TCP `cwnd` (in KB) after `60 ms` (`10` RTTs) with `MSS=2 KB, ssthresh=32 KB, rwnd=50 KB`. | Slow Start doubles `2->4->8->16->32` in first 4 RTTs (`24 ms`), then Congestion Avoidance adds `+2 KB` per RTT for next 6 RTTs (`32 + 12 = 44 KB < 50 KB`)! | **CORRECT (44).** | Clean. |
+| 57 | `2019_FN_Q25` | Ch 05 / L05.2 | Protocols for sending vs retrieving emails (in order). | SMTP pushes mail; POP3 (or IMAP) retrieves mail; MIME formats attachments. | **CORRECT (B: SMTP, POP3).** | Clean. |
+| 58 | `2019_FN_Q58` | Ch 03 / L03.1 | Checking which hosts share a `/30` subnet (`255.255.255.252`). | Block size = `4`: `0..3` contains `.2 (M)`; `4..7` contains BOTH `.5 (N)` and `.6 (P)`. | **CORRECT (C: Only N and P).** | Clean. |
+| 59 | `2019_FN_Q64` | Ch 03 / L03.3 | How ARP finds MAC address of host `Y` in the **same** local subnet. | Same subnet -> ARP Request goes to L2 broadcast MAC (`FF:FF:FF:FF:FF:FF`), NOT to gateway or broadcast IP! | **CORRECT (C).** | Clean. |
+| 60 | `2019_FN_Q62` | Ch 02 / L02.3 | Minimum 8-port switches (no uplink ports) to connect `15` hosts in a LAN. | Each switch-to-switch link consumes 2 ports -> $8k - 2(k-1) = 6k + 2 \ge 15 \implies k = 3$ switches (`20` usable ports vs `14` for `k=2`). | **CORRECT (3).** | Clean. |
+| 61 | `2019_FN_Q46` | Ch 05 / L05.3 | Recovering RSA primes from $n = 3007$ and $\phi(n) = 2880$. | Use $p + q = n - \phi(n) + 1 = 128$ and $pq = 3007 \implies (x-31)(x-97) = 0 \implies 97$. | **CORRECT (97).** | Clean. |
+| 62 | `2018_FN_Q23` | Ch 01, 03, 04 / L01.1 | Header field bit-widths (`UDP Port 16, MAC 48, IPv6 NextHdr 8, TCP Seq 32`). | Watch `IPv6 Next Header` (`8` bits, same width as IPv4 `Protocol`) vs `UDP Port` (`16`). | **CORRECT (C: P-IV, Q-I, R-II, S-III).** | Clean. |
+| 63 | `2018_FN_Q24` | Ch 04 / L04.3 | How TCP `cwnd` grows during Slow Start (`+1 MSS` per ACK $\approx \times 2$ per RTT). | `cwnd` adds 1 MSS per ACK (does NOT double per ACK — `(ii)` is false!); doubles every RTT (`(iv)` only!). | **CORRECT (C: Only (iv)).** | Clean. |
+| 64 | `2018_FN_Q35` | Ch 04 / L04.2 | 32-bit TCP sequence number wrap-around time at `1 Gbps` (`10^9` bps). | Convert $2^{32}$ bytes -> bits (`× 8`!) before dividing by $10^9$: $4.29497\times 10^9 \times 8 / 10^9 = 34.36\text{ s}$. | **CORRECT (34.36, inside `34–35`).** | Clean. |
+| 65 | `2018_FN_Q64` | Ch 03 / L03.2 | Fragment Offset of 3rd fragment (`4500 B` IP packet, `MTU 600 B`). | TCP `40 B` header is INSIDE the `4480 B` IP payload! Max payload/frag = `580 -> 576 B` (multiple of 8). Frag 3 starts at byte `2 × 576 = 1152` -> Offset = `1152 / 8 = 144`! | **CORRECT (144).** | Clean. |
+| 66 | `2018_FN_Q65` | Ch 02 / L02.3 | Max distance `d` avoiding collision under non-CD carrier sense (`5` time units, `v = 10 m/unit`). | `Q` senses during `[0, 5]`; `P`'s signal must reach `Q` before `t = 5` (`d/10 <= 5 => d <= 50 m`), NOT `2 T_p`! | **CORRECT (50).** | Clean. |
+| 67 | `2017_AN_Q34` | Ch 03 / L03.4 | Transport protocols & routing algorithms of RIP (`UDP`, DV) vs OSPF (`IP`, LS). | OSPF runs directly over IP (NOT TCP — `III` false!). | **CORRECT (C: I, II and IV only).** | Clean. |
+| 68 | `2017_FN_Q12` | Ch 04 / L04.2 | TCP client state after sending `FIN` and receiving server's `ACK`. | Client moves `FIN-WAIT-1` (on sending `FIN`) -> `FIN-WAIT-2` (on receiving `ACK`, waiting for server's `FIN`). | **CORRECT (D: FIN-WAIT-2).** | Clean. |
+| 69 | `2017_FN_Q28` | Ch 05 / L05.3 | Who can perform a Birthday Attack to replace digitally signed message `m`. | Only signer `S` possesses private key to generate colliding `(m, m')` before signing (`I` only); 3rd party/receiver can't sign `m'` without breaking 2nd-preimage or stealing `S`'s private key! | **CORRECT (B: I only).** | Clean. |
+| 70 | `2017_AN_Q18` | Ch 04 / L04.1 | Connected UDP socket semantics in Linux (`connect()` on UDP). | Connected UDP fixes ONE peer (`I` false), yet CAN call `connect()` again to switch peer (`II` true!). | **CORRECT (B: II only).** | Clean. |
+| 71 | `2017_AN_Q27` | Ch 03 / L03.2 | Maximum IPv4 addresses stored in IPv4 `Record Route` option field. | Max IPv4 header = `60 B` (`20` fixed + `40` options); Record Route reserves `3 B` metadata -> `floor(37 / 4) = 9` IP addresses! | **CORRECT (9.0).** | Clean. |
+| 72 | `2017_FN_Q63` | Ch 02 / L02.1 | Transmitted CRC codeword for `01011011` using $x^3 + x + 1$ (`1011`). | Append `000` (`01011011000`), XOR-divide by `1011` -> remainder `101` -> `01011011101`. | **CORRECT (C: 01011011101).** | Clean. |
+| 73 | `2017_AN_Q65` | Ch 02 / L02.1 | Minimum Hamming distance `p` and max error correction `q` of `{00000, 01011, 10101, 11110}`. | Pairwise XOR weights are `{3, 3, 4, 4, 3, 3}` -> $p = d_{\min} = 3$; $q = \lfloor (3-1)/2 \rfloor = 1$. | **CORRECT (A: p=3, q=1).** | Clean. |
+| 74 | `2017_AN_Q56` | Ch 00 / L00.1 | Computing Transmission delay (`p`) & Propagation delay (`q`) for `50,000 B` over `10,000 km`. | Convert `50,000 B = 400,000` bits -> `p = 400 ms`; `10^7 m / (2×10^8 m/s) = 50 ms`. | **CORRECT (D: p=400, q=50).** | Clean. |
+| 75 | `2017_FN_Q47` | Ch 05 / L05.3 | Computing RSA private key $d$ given $p=13, q=17, e=35$. | $\phi(n) = 12 \times 16 = 192$; solve $35 d \equiv 1 \pmod{192} \implies d = 11$ ($35 \times 11 = 385 = 2 \times 192 + 1$). | **CORRECT (11.0).** | Clean. |
+| 76 | `2017_FN_Q56` | Ch 02 / L02.2 | Stop-and-Wait efficiency including `T_ack`, `T_proc`, and overhead bytes. | `T_t(data) = 15.84 ms` (`useful = 15.68 ms`), `T_t(ack) = 0.16 ms`, `2 T_p = 1.50 ms`, `T_proc = 0.25 ms` (or `0.50 ms` for both). Useful/cycle = `15.68/18.00 = 87.11%` (or `88.00%` / `88.34%`, all inside `86.5–89.5`). | **CORRECT (`86.5–89.5`).** | Clean. |
+
+---
+
+## PART 7. MORE QUESTIONS NEEDED (3 New Ideas Per Lesson)
+
+### Chapter 00 · Network Fundamentals, Units, Delays & Pipelining
+- **Lesson 00.1 (`Units, Bandwidth vs Speed & 4 Delays`):**
+  1. A `1 Gbps` link spans `6000 km` (`v = 2×10^8 m/s`); find its Bandwidth-Delay Product (BDP) in **kilobytes** (`1 KB = 10^3 B`) (`NAT`).
+  2. Which parameter changes—doubling link bandwidth, halving distance, or doubling frame size—reduce Propagation Delay $T_p$ vs Transmission Delay $T_t$? (`MSQ`).
+  3. Find the total delay (including queueing + processing) when a `1500 B` packet joins a router queue already holding 4 identical packets ahead on a `10 Mbps` link (`NAT`).
+- **Lesson 00.2 (`Store-and-Forward, Bottlenecks & Pipelining`):**
+  1. A `4 MB` (`4×10^6 B`) file splits into `1000 B` packets (`+ 40 B` header each!) across 3 links of `10 Mbps`: find total transfer time including header overhead (`NAT`).
+  2. Compare total transfer time for 20 chunks across a 3-hop path (`5 Mbps, 2 Mbps, 10 Mbps`) where chunk `T_t` differs per link (`NAT`).
+  3. Which statements accurately distinguish Store-and-Forward routers from Cut-Through switches regarding error checking and latency? (`MSQ`).
+
+### Chapter 01 · Layering, Encapsulation and Switching
+- **Lesson 01.1 (`OSI/TCP-IP Layers, Encapsulation & Devices`):**
+  1. A packet travels `PC1 -> Hub H1 -> Switch S1 -> Router R1 -> Switch S2 -> PC2`: trace `Src IP, Dst IP, Src MAC, Dst MAC` on the link `R1 -> S2` (`MCQ`).
+  2. Match 5 network functions (`routing`, `bit synchronization`, `dialog control`, `end-to-end reliability`, `framing`) to their OSI layers (`MCQ`).
+  3. Identify which protocol/address header sizes (`IPv4 Addr`, `IPv6 Addr`, `MAC`, `TCP Port`, `IPv6 Next Header`) are accurate (`MSQ`).
+- **Lesson 01.2 (`Circuit, Datagram & Virtual Circuit Switching`):**
+  1. A `200 KB` file travels across `4` links (`1 Mbps`, `T_p = 5 ms/hop`) via Circuit Switching (`setup = 30 ms`) vs Packet Switching (`1 KB` chunks, `20 B` header): which is faster and by how many ms? (`NAT`).
+  2. Contrast Datagram vs Virtual Circuit networks on out-of-order arrival, per-packet routing table size, and recovery from link failure (`MSQ`).
+  3. Why can a 1 Mbps packet-switched link carry `20` users who each need `100 kbps` active rate `10%` of the time while circuit switching supports at most `10`? (`MCQ`).
+
+### Chapter 02 · Data Link Layer, Link ARQ & MAC
+- **Lesson 02.1 (`Framing, Hamming & CRC`):**
+  1. Given bit-stuffed frame payload `011111011111100111110` between `01111110` flags, determine the exact original unstuffed bit sequence (`MCQ`).
+  2. Compute the 16-bit 1's-complement Internet Checksum of two words `0xA3F1` and `0x9C24` (`MCQ`).
+  3. Given a CRC generator polynomial $G(x) = x^4 + x^3 + 1$, which error patterns (all 1-bit, all 2-bit, all odd-bit, 4-bit burst) is it guaranteed to detect? (`MSQ`).
+- **Lesson 02.2 (`Link ARQ: Stop-and-Wait, GBN & SR`):**
+  1. Using Go-Back-N (`W = 4`) to send `10` frames where every **4th transmitted frame** is lost, count the total number of frames transmitted (`NAT`).
+  2. Repeat the same scenario (`every 4th frame lost`, `10` frames, `W = 4`) under Selective Repeat and find total frames transmitted (`NAT`).
+  3. Given a 4-bit sequence number (`0..15`), find the sum of maximum valid sender windows under Go-Back-N and Selective Repeat (`NAT`).
+- **Lesson 02.3 (`MAC Protocols & Ethernet Switches`):**
+  1. Under **Slotted ALOHA** at maximum efficiency (`G = 1`), if channel rate is `10 Mbps` and frame size is `1000 bits`, compute successful frames/sec (`NAT`).
+  2. An Ethernet hub (`2` PCs) connects to one port of a 4-port switch, and 3 servers connect to the other 3 ports, which connects to a router: count total Collision Domains and Broadcast Domains (`MSQ`).
+  3. After 3 consecutive collisions in IEEE 802.3 CSMA/CD Binary Exponential Backoff, what is the maximum random waiting slots $K$ a station can pick? (`NAT`).
+
+### Chapter 03 · IP Addressing, Fragmentation, Support Protocols & Routing
+- **Lesson 03.1 (`IPv4 Addressing, Subnetting, VLSM & CIDR`):**
+  1. Allocate 3 unequal subnets requiring `120`, `50`, and `10` hosts out of `192.168.10.0/24` using VLSM and find the last assignable host IP of the 3rd subnet (`MCQ`).
+  2. Given 4 routes `172.16.8.0/24`, `172.16.9.0/24`, `172.16.10.0/24`, `172.16.11.0/24`, find the single tightest aggregated CIDR prefix (`MCQ`).
+  3. Which statements accurately distinguish `/31` point-to-point RFC 3021 links vs standard `/30` subnet host counts? (`MSQ`).
+- **Lesson 03.2 (`IPv4 Header, LPM & Fragmentation`):**
+  1. A router receives a `3000 B` IPv4 datagram (`DF = 1`) destined for a link with `MTU = 1500 B`: what exact ICMP message and action occur? (`MCQ`).
+  2. Given 4 routing table prefixes including a `/20`, `/22`, `/24`, and `0.0.0.0/0`, trace Longest Prefix Match for `198.51.100.135` (`MCQ`).
+  3. Compare IPv4 vs IPv6 headers on `Header Length`, `Checksum`, `Fragmentation`, and `Next Header` fields (`MSQ`).
+- **Lesson 03.3 (`ARP, DHCP, ICMP, IGMP & NAT`):**
+  1. When `Host A (10.0.1.5/24)` pings `Host B (10.0.2.9/24)` across router `R` with empty ARP caches, count total ARP Requests broadcast on A's LAN vs B's LAN (`NAT`).
+  2. Trace which fields in BOTH the IP header and TCP header change when a home PAT router maps `(192.168.1.10:50000)` to `(203.0.113.5:12000)` (`MSQ`).
+  3. Trace the 4 DHCP `DORA` messages and identify which carry source IP `0.0.0.0` vs server IP (`MSQ`).
+- **Lesson 03.4 (`Routing: DV, Link State, RIP, OSPF & BGP`):**
+  1. Run 3 iterations of Dijkstra's Link State algorithm on a 5-node weighted graph from source `A` and find the shortest-path tree order (`MCQ`).
+  2. Compare Split Horizon vs Split Horizon with Poison Reverse on a 3-node loop (`A-B-C`) vs a 4-node cycle (`A-B-C-D`) (`MSQ`).
+  3. Match `RIP`, `OSPF`, and `BGP` to their underlying transport protocol (`UDP`, `IP`, `TCP`) and routing metric (`hop count`, `link cost`, `AS-PATH/policy`) (`MCQ`).
+
+### Chapter 04 · Transport Layer, TCP/UDP & Congestion Control
+- **Lesson 04.1 (`Ports, Multiplexing, UDP & Sockets`):**
+  1. Two clients (`10.0.0.2:4100` and `10.0.0.3:4100`) connect to web server `10.0.0.9:80`, while `10.0.0.2:4100` also opens a UDP socket on local port `4100`? Wait — separate UDP vs TCP port spaces on `10.0.0.9:53`! How many distinct server-side sockets exist? (`NAT`).
+  2. Trace the exact blocking order of server system calls (`socket -> bind -> listen -> accept -> recv`) vs client (`socket -> connect -> send`) (`MCQ`).
+  3. Which statements accurately distinguish TCP byte-stream sockets from UDP datagram sockets? (`MSQ`).
+- **Lesson 04.2 (`TCP Header, Handshake, Wrap-Around & States`):**
+  1. Host A (`ISN=500`) connects to Host B (`ISN=1200`), sends `200 B` of data, B replies with `50 B` + piggybacked ACK, and A calls `close()`: find the exact `Seq` and `Ack` numbers on A's `FIN` segment (`MCQ`).
+  2. Why does the active closer wait `2 × MSL` in `TIME-WAIT` before entering `CLOSED`, and what happens if a new connection reuses the same 4-tuple prematurely? (`MSQ`).
+  3. Compute the minimum TCP `Window Scale` shift count needed to utilize a `10 Gbps` link with `RTT = 100 ms` (`rwnd` field = 16 bits) (`NAT`).
+- **Lesson 04.3 (`Flow/Congestion Control & Traffic Shaping`):**
+  1. A TCP flow (`MSS=1 KB, rwnd=64 KB`) hits `cwnd = 24 KB` and encounters **3 Duplicate ACKs** (Fast Recovery, NOT timeout!): compute `cwnd` after `4` more RTTs of error-free ACKs (`NAT`).
+  2. A Token Bucket shaper (`r = 2 MB/s`, bucket `b = 10 MB`, max output `M = 12 MB/s`) starts full: how many seconds can it sustain peak `12 MB/s` burst? (`NAT`).
+  3. Contrast TCP Tahoe vs TCP Reno behaviour immediately after 3 duplicate ACKs vs after a Retransmission Timeout (`MSQ`).
+
+### Chapter 05 · Application Layer Protocols (& Security Appendix)
+- **Lesson 05.1 (`DNS Hierarchy, Iterative/Recursive & Records`):**
+  1. Suppose local cache holds the `.in` TLD NS IP while everything else is uncached: how many iterative DNS queries resolve `www.iitb.ac.in`? (`NAT`).
+  2. Match `A`, `NS`, `CNAME`, and `MX` records to their roles when resolving mail server `mail.example.com` (`MCQ`).
+  3. Compare recursive vs iterative DNS load on Root/TLD servers and caching efficiency (`MSQ`).
+- **Lesson 05.2 (`HTTP, FTP & Email`):**
+  1. Compute total RTTs (including `2`-tier cached DNS = `1` RTT) to download `1` HTML + `12` small images using `HTTP/1.0` with `4` parallel TCP connections vs `HTTP/1.1` persistent non-pipelined (`NAT`).
+  2. Why does `If-Modified-Since` Conditional GET return `304 Not Modified` without the object body, saving bandwidth? (`MCQ`).
+  3. Which statements accurately contrast FTP Control (`21`) vs Data (`20`), and SMTP vs POP3 vs IMAP? (`MSQ`).
+- **Lesson 05.3 (`Security Appendix [Check Syllabus]`):**
+  1. Using RSA with `p = 7, q = 11, e = 13`, compute private key `d` and decrypt ciphertext $C = 2^e \bmod 77$? Better: encrypt $M = 2$ -> $C = 2^{13} \bmod 77$ (`NAT`).
+  2. Distinguish symmetric AES, RSA Confidentiality, RSA Digital Signature, and cryptographic hash functions on key usage and non-repudiation (`MSQ`).
+  3. Why does a 128-bit cryptographic hash offer only `2^{64}` resistance against Birthday collisions yet `2^{128}` against 2nd-Preimage attacks? (`MCQ`).
+
+---
+
+## PART 8. WHAT IS MISSING FROM THE SUBJECT
+
+Looking across the GATE CS syllabus (`Part B.1`), `Part C` (76 PYQs), Kurose–Ross, Tanenbaum, Made Easy, and GateWallah, these essential chapters/topics are missing or misplaced in `Part B.2`:
+
+1. **Chapter 00: Network Units, Bandwidth-Delay Product, Delays & Store-and-Forward Pipelining** (`2026_AN_Q21`, `2024_FN_Q40`, `2022_FN_Q59`, `2017_AN_Q56`).
+2. **Encapsulation & Hop-by-Hop MAC vs End-to-End IP + Device Layer Separation + Header Field Sizes** (`2025_FN_Q16`, `2024_AN_Q14`, `2018_FN_Q23`).
+3. **Link-Layer Sliding Window & ARQ Placement Error:** `Flow control` is listed under `Ch 04` instead of `Ch 02`, leaving link-utilization ARQ (`2026_FN_Q45`, `2026_AN_Q65`, `2025_AN_Q36`, `2023_FN_Q17`, `2021_FN_Q42`, `2017_FN_Q56`) detached from Data Link Layer!
+4. **Error Detection & Correction Depth:** Bit stuffing, **Hamming Distance (`2017_AN_Q65`), 12-bit Hamming Code (`2021_FN_Q46`), CRC XOR division (`2026_AN_Q43`, `2021_AN_Q50`, `2017_FN_Q63`), Pure/Slotted ALOHA (`2021_AN_Q32`), CSMA/CD `2 T_p` vs Non-CD sense window (`2024_AN_Q36`, `2018_FN_Q65`), Switch port counting (`2019_FN_Q62`)**.
+5. **IPv4/IPv6 Finer Mechanics:** Octet-mask tables, **Enterprise Subnet Counting (`2022_FN_Q22`)**, **VLSM**, **CIDR Alignment & Route Aggregation (`2026_FN_Q56`, `2022_FN_Q55`, `2020_FN_Q64`)**, **Longest Prefix Match (`2025_FN_Q40`, `2024_FN_Q58`, `2023_FN_Q65`)**, **IPv4 Header fields & Protocol numbers (`2025_AN_Q18`, `2017_AN_Q27`)**, **8-byte aligned Multi-Hop Fragmentation (`2025_AN_Q23`, `2024_FN_Q43`, `2021_FN_Q22`, `2018_FN_Q64`)**, **IPv6 header**, **ARP/DHCP/NAT details**, and **Count-to-Infinity Probability (`2022_FN_Q57`)**.
+6. **Transport Layer Finer Depth:** **Connected UDP Sockets (`2017_AN_Q18`)**, **Sequence Wrap-Around (`2023_FN_Q50`, `2022_FN_Q60`, `2018_FN_Q35`)**, **TCP Simultaneous Close & `FIN-WAIT-2` / `RST` Reboot Behaviour (`2026_FN_Q18`, `2021_FN_Q20`, `2017_FN_Q12`)**, **Slow Start / Congestion Avoidance Round-Indexing & Timeout vs 3-Dup-ACK (`2026_FN_Q44`, `2026_AN_Q58`, `2024_AN_Q58`, `2020_FN_Q62`)**, and Leaky/Token Bucket shaping.
+7. **Application Layer & Security Syllabus Clarification:** **Iterative DNS tier counting (`2022_FN_Q35`)**, **HTTP/1.1 Pipelining & Parallel RTT formulas (`2026_FN_Q19`, `2023_FN_Q52`, `2020_FN_Q31`)**, **Email (`SMTP` vs `POP3`/`IMAP`/`MIME`)**, and explicitly checking whether **Network Security / RSA (`2019_FN_Q46`, `2017_FN_Q28`, `2017_FN_Q47`)** belongs in GATE 2027 (`Part B.1` omits it, `Part B.3` includes it!).
+
+---
+
+## PART 9. WEIGHTS
+
+### Chapter Weight Tags & Comparison with the Bank (`Part B.3`)
+
+| Chapter | Proposed Weight Tag | Bank Stats (2017–2026, 15 CS Papers) | Does the Bank Weight Look Fair? |
+|---|---|---|---|
+| **Ch 00 · Network Fundamentals, Units & Delays** *(New)* | **Foundation** (Mandatory before Ch 01) | Embedded inside Ch 01/02/04 (`2026_AN_Q21`, `2024_FN_Q40`, `2022_FN_Q59`, `2017_AN_Q56`) | **Under-isolated in bank.** Adding Ch 00 fixes the `#1` beginner blunder (bit-vs-byte & bandwidth-vs-speed math) across the whole subject! |
+| **Ch 01 · Layering, Encapsulation & Switching** | **Low-Medium** (Critical conceptual glue) | 5 Qs / 6 marks (0.40%; asked 4/10 years — mostly Easy/Medium MCQs) | **Fair.** Light standalone weight, though `Ch 00` delay questions (`2026_AN_Q21`, `2024_FN_Q40`) currently sit inside this bank bucket! |
+| **Ch 02 · Data Link, Link ARQ & MAC** | **Very High** | 18 Qs / 34 marks (2.27% of ALL GATE marks; asked 9/10 years — **`16` of `18` are 2-mark questions!**) | **Fair — MASSIVE 2-mark ROI!** Nearly every single question (`MCQ2×8, NAT2×8`) is a 2-marker (`CRC`, `Stop-and-Wait`, `Sliding Window`, `ALOHA`, `CSMA/CD`), yet `Flow control` must be visibly linked here! |
+| **Ch 03 · IP Addressing, Fragmentation & Routing** | **Very High** | IP (21 Qs / 31 marks, 9/10 yrs) + Routing (8 Qs / 13 marks, 6/10 yrs) = **29 Qs / 44 marks (`37%` of CN!)** | **Fair — #1 overall mark chunk!** Subnetting/CIDR gives easy 1–2 mark wins (`7` Easy Qs!), while Fragmentation, LPM, and DVR give reliable Medium 2-markers. (Note: grouping IP + Routing into one super-chapter risks making Ch 03 huge — keep clear lessons!). |
+| **Ch 04 · Transport Layer, TCP/UDP & Congestion Control** | **High** | 15 Qs / 22 marks (1.47%; asked 9/10 years) | **Fair.** Almost guarantees 1–2 questions per paper (`3-way handshake`, `cwnd` growth, `wrap-around` bits, `TCP states`). |
+| **Ch 05 · Application Layer Protocols (& Security Check)** | **Medium** (Security: `[Check GATE 2027]`) | 9 Qs / 12 marks (0.80%; asked 7/10 years — includes 3 pre-2020 Security Qs) | **Slightly distorted by legacy Security.** DNS + HTTP RTTs (`2026_FN_Q19`, `2023_FN_Q52`, `2022_FN_Q35`, `2020_FN_Q31`) are pure **Medium** wins; verify whether RSA/Security (`2017–2019` only) is out of GATE 2027 syllabus (future frequency: **not sure**). |
+
+### Overall Assessment of Bank Distribution (`7.9%` = ~7.9 marks/paper)
+- Looking at the 2017–2026 bank (`Part B.3`), **Ch 02 (Data Link/ARQ/MAC)** + **Ch 03 (IP/Fragmentation/Routing)** + **Ch 04 (TCP/Transport)** generate **70 of 118 marks + 62 of 76 questions = ~85% of all CN marks**, and **only 4 out of 76 questions across 15 papers are marked Hard** (`0/17/1` in DLL, `7/13/1` in IP, `3/11/1` in TCP, `2/6/0` in Routing)!
+- That makes Computer Networks one of the **highest-ROI subjects for a 100-day dropper** — almost zero trick proofs, mostly repeatable arithmetic and header/timeline traces! (Exact future paper weights beyond the 2017–2026 bank: **not sure**.)

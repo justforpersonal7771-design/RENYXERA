@@ -1,0 +1,356 @@
+## PART 1. FEELINGS
+
+1. Looking at Part B made me feel hopeful for one second because Algorithms has 9 clean chapters and is only 7.6% of the paper, yet when I saw `Asymptotics and recurrences` sitting at Chapter 01, my stomach dropped.
+2. Nobody warmed me up on logarithms (`2^{\log n} = n`), harmonic sums (`\sum 1/i`), or Stirling's `log(n!)`, yet the very first PYQs (`2026_FN_Q17`, `2026_AN_Q24`, `2024_FN_Q57`, `2017_AN_Q50`) hit me with `T(n^{1/a})`, `n^{\log_4 5}`, and `2T(\sqrt{n}) + 1`!
+3. When I tried `2021_FN_Q39` (articulation points), `2024_FN_Q60` (BFS tree = DFS tree), and `2026_FN_Q49` (MST cycle/cut theorems), I felt totally lost because Part B only says `"3 topics ready"` with zero mention of DFS edge types, cut/cycle properties, or counting distinct MSTs.
+4. Notice how `Part B.2` includes `03 Hashing` even though `04-DATA-STRUCTURES.md` ALREADY taught Hashing (`D11`), and `Part B.3` splits Divide-and-Conquer awkwardly across two separate rows!
+5. In Part C, `2025_AN_Q41` has a broken inequality (`1 = i = n` instead of `1 \le i \le n`), and **12 PYQs** are missing `[IMAGE_...]` diagrams (`2025_AN_Q59`, `2025_FN_Q64`, `2024_AN_Q53`, `2021_FN_Q49`, etc.) so I can't even see the graphs or hash trees!
+6. Worse, almost EVERY DP and Greedy chapter in `Part B.2` looks tiny (3–4 old topics), hiding huge GATE staples like Rod Cutting, Matrix Chain, Bitonic Search, Median of Medians, Dynamic Hashing, and Johnson's reweighting (`w + f(u) - f(v)`).
+7. There are zero study-hour estimates and zero `[MUST]` vs `[LATER]` guidance for my 100-day sprint — why spend equal energy on Divide-and-Conquer (only 2–6 questions in 15 papers) vs Asymptotics & Graphs (46 questions)?
+8. **Would I pay ₹149 for this right now? NO — not as an empty 3-topic-per-chapter stub.**
+9. Why? Because Algorithms is where Make-or-Break 2-mark tricks live (recurrence change-of-variables, DFS parenthesis theorem, MST tie-counting, DP table evaluation order), and without Chapter 00 math warm-ups and visual graph/DP proofs I'd still be stuck guessing just like in Made Easy notes.
+10. Add Chapter 00 for log/sum/recurrence math, reconcile Hashing cleanly with Data Structures, teach every DFS/MST/Shortest-Path property with pictures, and fix the missing PYQ images — then I will happily pay ₹149.
+
+---
+
+## PART 2. GAP TABLE
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 1 | `Part B.2` (Missing Ch 00) | Jumps directly into Master Theorem and $T(n^{1/a})$ in Ch 01 without refreshing **Logarithm rules (`2^{\log_2 n} = n`, change of base `a^{\log_b c} = c^{\log_b a}`), Harmonic sum (`\sum 1/i \approx \ln n`), Geometric sums, Arithmetic sums, and Stirling's `\log(n!) = \Theta(n \log n)`** (`2026_AN_Q24`, `2024_FN_Q57`, `2017_AN_Q61`). | MISSING-PREREQUISITE | Add **Chapter 00: Math Toolbox for Algorithms (Logs, Sums & Loop Counting)** before Ch 01. | HIGH |
+| 2 | `Part B.2` (`03 Hashing` duplication) | Repeats **Hashing** here as Ch 03 when `04-DATA-STRUCTURES.md` ALREADY teaches Hashing in `D11`! A student buying both books gets confused or pays twice for the same lessons. | WRONG-ORDER | Decide one clean home (teach core Hashing in DS `D11` and keep Hashing Probability / Universal Hashing / Dynamic Hashing `2021_FN_Q49` here, OR cross-reference clearly!). | HIGH |
+| 3 | `Part B.2` (Whole outline) | Only lists `"3 topics ready"`..`"5 topics ready"` with zero subtopic names, finer points, traces, or diagrams. | STEP-SKIPPED | Replace this v0 outline with the complete lesson-by-lesson syllabus (Part 5). | HIGH |
+| 4 | `Part B.2` & `Part B.3` (100-day roadmap) | Gives no reading hours and no `[MUST]` / `[SHOULD]` / `[LATER]` priority tags — misleading a 100-day dropper into treating low-yield topics identically to Asymptotics and Graph Algorithms. | TOO-LONG-BORING | Tag every lesson with time estimate and GATE priority based on bank weights. | HIGH |
+| 5 | `Part B.3` (Duplicate D&C rows) | Splits Divide-and-Conquer across two separate bank rows (`"Greedy Approach & Divide-and-Conquer Designs"` AND `"Divide-and-Conquer Designs"`), distorting weight visibility. | UNCLEAR-ENGLISH | Merge/re-label bank rows cleanly per chapter so D&C vs Greedy marks are accurate. | LOW |
+| 6 | `Ch 01` (5 Asymptotic Notations) | Fails to define **$O, \Omega, \Theta, o, \omega$** intuitively AND formally (e.g., why $n \in O(n^2)$ AND $n \in o(n^2)$ yet $n \notin \Theta(n^2)$, `2023_FN_Q29`!), and skips limit-comparison test $\lim_{n\to\infty} f(n)/g(n)$! | UNEXPLAINED-WORD | Draw the 5 notations as `<=, >=, ==, <, >` speed comparisons + show the limit test for ranking functions. | HIGH |
+| 7 | `Ch 01` (Asymptotic Ranking Traps!) | Misses tricky function comparisons: **$2^{\log_2 n} = n$**, **$n^{\log n}$ vs $n^{\sqrt{n}}$ vs $10^n$** (`2021_FN_Q61`), **$100/n < 10 < \log n$** (`2017_FN_Q21`), and **`f(n^2)` vs `f(n)^2`** (`2022_FN_Q11` — holds for polynomials, fails for $2^n$!). | MISSING-GATE-CONCEPT | Add an Asymptotic Trap Box showing log-taking tricks (`compare \log f vs \log g`) and polynomial vs exponential scaling. | HIGH |
+| 8 | `Ch 01` (Loop Counting Idioms) | Doesn't teach translating C/pseudocode loops into big-O/$\Theta$: `n /= 2` inner `n` loop = $\Theta(n)$ (`2023_FN_Q54`), **`j += i` Harmonic loop = $\Theta(n \log n)$** (`2017_AN_Q61`), **nested $\log \log n$** (`2018_FN_Q42`), and **recursive double-counter `Count(x, y)` (`2018_FN_Q55`)**! | MISSING-GATE-CONCEPT | Dedicate a full lesson on Code-to-Complexity (`for/while` traces & loop sums). | HIGH |
+| 9 | `Ch 01` (Space Complexity vs Time Complexity) | `Part B.1` explicitly states *"Asymptotic worst case time and space complexity"*, yet `Ch 01` omits **Auxiliary Space vs Input Space** and **Recursion Call-Stack Depth** (e.g., Quicksort $O(\log n)$ vs $O(n)$ stack space!). | MISSING-GATE-CONCEPT | Add Space Complexity analysis across iterative loops, recursion trees, and sorting algorithms. | HIGH |
+| 10 | `Ch 01` (Master Theorem + Floors/Ceilings + Non-Polynomial Gap) | Misses exact Master Theorem Cases 1, 2, 3 (including **Extended Case 2 $\Theta(n^{\log_b a} \log^{k+1} n)$**), why Case 2 fails on $n / \log n$ (`2021_AN_Q55(B)`!), why floors/ceilings don't break Master Theorem (`2021_AN_Q55`), and **Coupled Recurrences $T_1, T_2$ (`2026_FN_Q17`)**! | MISSING-GATE-CONCEPT | Teach Master Theorem with a clear decision flowchart, Case 2 $\log n$ gap example, and solving coupled recurrences bottom-up (`2026_FN_Q17`). | HIGH |
+| 11 | `Ch 01` (Recursion Tree, Akra-Bazzi & Change of Variable) | Standard Master Theorem FAILS on **$T(n) = T(\lceil n/2 \rceil) + T(\lfloor 2n/5 \rfloor) + 7n$** (`2021_FN_Q50`: unequal splits summing $< 1$!), **$T(n) = 2T(n-1) + n 2^n$** (`2025_FN_Q20`), and **$\sqrt{n}$ / $n^{1/a}$ recurrences** (`2024_FN_Q57`, `2020_FN_Q34`, `2017_AN_Q50`)! | MISSING-GATE-CONCEPT | Teach all 3 non-Master methods: (1) Recursion Tree / Sum of split ratios (`< 1` vs `= 1`), (2) Unrolling `T(n-1)` linear recurrences, (3) Substitution `n = 2^m` / `b^{a^k}`! | HIGH |
+| 12 | `Ch 02 Searching` (Binary Search Exact Variants & Lower Bounds) | Covers basic Binary Search (`2021_AN_Q31`), yet misses **First `1` in `0...01...1` (`2017_FN_Q45` — `31` elements = `5` probes)**, **Bitonic Array Peak/Search (`2025_AN_Q41`)**, and **Decision-Tree Lower Bound (`\Omega(\log n)`)**! | MISSING-GATE-CONCEPT | Add Binary Search variants (`first true`, `rotated`, `bitonic peak`) and exact worst-case probe formulas (`ceil(log_2(n+1))`). | HIGH |
+| 13 | `Ch 02 Searching` (Min-Max Pairing & Median-of-Medians) | Misses **Tournament / Pairwise Min-Max in $3\lceil n/2 \rceil - 2$ comparisons (`2021_FN_Q30`)**, **Find any non-max element in `1` comparison (`2025_AN_Q20`)**, and **Median of $n$ arrays of size $n$ in $O(n^2)$ (`2019_FN_Q61`)**! | MISSING-GATE-CONCEPT | Teach Tournament Min-Max pairing step-by-step and linear-time BFPRT selection intuition (`2019_FN_Q61`). | MEDIUM |
+| 14 | `Ch 02 Sorting` (Bubble, Insertion, Selection: Inversions & Adaptive) | Doesn't teach **Inversions (`swaps == inversions` in Insertion/Bubble Sort, $\binom{n}{2}$ worst case `2025_FN_Q33`)**, **Adaptive Insertion Sort (`O(n)` on nearly-sorted `2021_FN_Q25`!)**, or **Selection Sort minimum swaps ($O(n)$ writes)**! | MISSING-GATE-CONCEPT | Draw an Inversion matrix and build a master Sorting Property Table (`Best, Avg, Worst, Space, Stable, In-Place, Adaptive`). | HIGH |
+| 15 | `Ch 02 Sorting` (Merge Sort Void Merges & Counting Inversions) | Misses **Void Merge operations (`2026_AN_Q32`)**, **counting inversions via Merge Sort**, and exact max comparisons ($n \log n - n + 1$). | MISSING-FINER-POINT | Trace Merge Sort tree on `2026_AN_Q32` marking when `L_max <= R_min` (`void merge`). | MEDIUM |
+| 16 | `Ch 02 Sorting` (Quicksort: Lomuto vs Hoare, Randomized & Pivot Traps) | Misses **Randomized Quicksort worst-pivot probability `2/n` (`2019_FN_Q31`)**, **last-element pivot degenerating to $O(n^2)$ on sorted/nearly-sorted arrays (`2021_FN_Q25(D)`)**, **Lomuto vs Hoare partitioning traces**, and **Tail-call stack optimization**! | MISSING-GATE-CONCEPT | Trace Lomuto vs Hoare partition side by side + compute worst-case split probability `2/25 = 0.08` (`2019_FN_Q31`). | HIGH |
+| 17 | `Ch 02 Sorting` (Comparison Lower Bound & Linear-Time Sorts) | Never proves the **Comparison-Sort Decision Tree Lower Bound ($\Omega(n \log n)$ via $\log_2(n!)$)** or teaches **Counting Sort ($O(n+k)$), Radix Sort ($O(d(n+k))$), and Bucket Sort**! | MISSING-GATE-CONCEPT | Draw the 3-element decision tree (`3! = 6` leaves) proving $\lceil \log_2(n!) \rceil$ + trace Counting & Radix Sort! | HIGH |
+| 18 | `Ch 03 Hashing` (Chaining, Double Hashing & Dynamic/Trie Hashing!) | Misses **expected bucket size with multiple uniform hash functions (`n/m`, `2022_FN_Q16`)**, **Universal Hashing against malicious adversaries (`2023_FN_Q20`)**, **Linear Probing vs Double Hashing (`2026_FN_Q24`, `2025_FN_Q65`, `2020_FN_Q28`)**, and **Dynamic Extendible/Trie Hashing (`2021_FN_Q49`)**! | MISSING-GATE-CONCEPT | Teach Chaining, Open Addressing (including `2025_FN_Q65` 0-based vs 1-based probe note!), Universal Hashing, and Dynamic Bit-Trie Hashing (`2021_FN_Q49`)! | HIGH |
+| 19 | `Ch 03 Hashing` (`2025_FN_Q65` Index Convention Trap!) | Look at `2025_FN_Q65`: `h_1(k) = k mod 11` gives `0..10`, storing key `24` at slot **`10`**, yet official key says **`10 to 11`** (because some solvers add +1 for 1-based!). Without an index-convention note, beginners doubt their calculation! | MISSING-FINER-POINT | Explicitly note `0`-based (`0..m-1`) as standard while warning about rare `1`-based official range tolerance (`10 to 11`). | LOW |
+| 20 | `Ch 04 Divide & Conquer` (Core Patterns Beyond Merge/Quick) | Only lists 3 topics — skips **Maximum Subarray Sum (`O(n \log n)` D&C vs `O(n)` Kadane, `2019_FN_Q14`!)**, **Adjacent-Difference Checking (`2026_AN_Q38`)**, **Strassen's 7-product Matrix Multiply ($O(n^{2.81})$)**, **Fast Exponentiation ($O(\log n)$)**, and **Closest Pair of Points ($O(n \log n)$)**! | MISSING-GATE-CONCEPT | Add dedicated D&C lessons covering Max Subarray (D&C + Kadane), Fast Power, Strassen's ($7$ multiplies), and Bitonic/Peak Search! | HIGH |
+| 21 | `Ch 05 Greedy` (Proof Techniques: Greedy Choice & Exchange Argument) | Beginners don't know *when* Greedy works vs *when* it fails! Never contrasts **Fractional Knapsack (Greedy works)** vs **0/1 Knapsack (Greedy fails -> `V_opt - V_greedy = 16`, `2018_FN_Q58`!)** using an Exchange Argument picture! | NEEDS-EXAMPLE | Show `2018_FN_Q58` side-by-side (`Greedy = 44` vs `DP/Optimal = 60`), then teach Fractional Knapsack, Activity Selection, and Job Sequencing with Deadlines! | HIGH |
+| 22 | `Ch 05 Greedy` (Huffman Coding Tie-Breaking & Dictionary Constraints!) | Misses **Huffman Coding variable-length prefix optimality (`2017_AN_Q59`)**, **Canonical/Dictionary Tie-Breaking constraints (`2021_AN_Q57`!)**, and **Optimal File Merge Pattern (`a + b` min-heap)**! | MISSING-GATE-CONCEPT | Trace Huffman trees showing BOTH standard length calculation (`2017_AN_Q59`) AND same-frequency dictionary-order reassignment (`2021_AN_Q57`!). | HIGH |
+| 23 | `Ch 06 Dynamic Programming` (Memoization vs Tabulation & Table Fill Orders!) | Never contrasts **Top-Down Memoization** vs **Bottom-Up Tabulation**, or shows **why multiple loop orders (`row-major` vs `anti-diagonal`, `2026_AN_Q39`!) work as long as dependencies are already filled**! | NEEDS-DIAGRAM | Draw the 2-D DP dependency arrow (`(i-1,j)` & `(i,j-1) -> (i,j)`) proving BOTH `B_1` (row-major) and `B_2` (anti-diagonal) succeed (`2026_AN_Q39`)! | HIGH |
+| 24 | `Ch 06 Dynamic Programming` (Classic GATE DP Families!) | Doesn't list which DP problems actually show up in GATE: **0/1 Knapsack & Subset Sum**, **Rod Cutting (`2021_FN_Q17` — counting optimal ways!)**, **Longest Increasing / Non-Decreasing Subsequence (`2024_AN_Q11`: Array Replacement Distance!)**, **Longest Common Subsequence (LCS)**, **Edit Distance**, and **Matrix Chain Multiplication (`2018_FN_Q41` — reconstructing parenthesization & explicitly multiplied pairs!)**! | MISSING-GATE-CONCEPT | Build a structured DP Cookbook tracing `Rod Cutting`, `LIS/LNDS`, `LCS`, `0/1 Knapsack`, and `MCM` step-by-step with table-filling! | HIGH |
+| 25 | `Ch 06 Dynamic Programming` (`2018_FN_Q41` MCM Adjacent-Pair Confusion) | Beginners only learn how to find *minimum cost* in Matrix Chain Multiplication, NOT **which adjacent pairs `G_i G_{i+1}` are explicitly multiplied directly** (`F_3 F_4` only in `2018_FN_Q41`)! | MISSING-FINER-POINT | Draw the binary parenthesization tree of `F_1..F_5` showing leaves `(F_3, F_4)` as the ONLY sibling leaf pair! | MEDIUM |
+| 26 | `Ch 07 Graph Traversals` (BFS vs DFS: Directed & Undirected Edge Types!) | Doesn't teach **DFS Timestamps (`d[u], f[u]`) & Parenthesis Theorem (`2026_FN_Q50`)**, **4 Directed Edge Types (Tree, Back, Forward, Cross)**, **Undirected DFS having NO Cross Edges (`2025_AN_Q29`, `2018_FN_Q40`)**, and **BFS Tree = DFS Tree (`2024_FN_Q60`: NO forward edges, yet back & cross edges CAN exist!)**! | MISSING-GATE-CONCEPT | Draw the 4-edge classification diagram for Directed vs Undirected DFS + Parenthesis Nesting intervals (`[d[u], f[u]]`, `2026_FN_Q50`)! | HIGH |
+| 27 | `Ch 07 Graph Traversals` (BFS Distance Levels & Tree Diameter `2-BFS`) | Misses **BFS level-difference property (`|dist(u) - dist(v)| <= 1` for non-tree edges, `2025_AN_Q29(C)` vs `2018_FN_Q40(II)` `=1` trap!)**, **valid BFS vs DFS node sequences (`2021_AN_Q25`, `2017_AN_Q13`)**, and **Tree Diameter via 2-BFS (`2025_AN_Q59`)**! | MISSING-GATE-CONCEPT | Draw a triangle `K_3` proving `|i - j| = 0` breaks `= 1`, and trace 2-BFS diameter on a tree (`2025_AN_Q59`)! | HIGH |
+| 28 | `Ch 07 Graph Traversals` (DFS Applications: Topo Sort, SCC, Articulation Points, DAG DP) | Completely omits **Topological Sort (Kahn's & DFS finish-time reverse)**, **DAG Longest/Best-Product Path DP (`2021_AN_Q19`)**, **Strongly Connected Components (Kosaraju/Tarjan)**, **Connected Components from Forest Edges (`c = |V| - |E_F|`, `2024_FN_Q37`)**, and **Articulation Points (`root >= 2 children` vs `low[v] >= disc[u]`, `2021_FN_Q39`)**! | MISSING-GATE-CONCEPT | Add a full "DFS Superpowers" lesson covering Cycle Detection, Topo Sort, SCC, Components, and Articulation Points! | HIGH |
+| 29 | `Ch 08 MST` (Prim's vs Kruskal's Traces & Complexities) | Doesn't contrast **Kruskal's (`O(E log E)` with Union-Find)** vs **Prim's (`O((V+E) log V)` binary heap, `O(V^2)` dense)**, or warn about **Prim's vs Dijkstra's key difference** (edge weight vs cumulative path distance)! | NEEDS-TRACE | Trace BOTH Prim's and Kruskal's step-by-step on the same graph + compare priority-queue key formulas! | HIGH |
+| 30 | `Ch 08 MST` (Cut Property, Cycle Property & Uniqueness Theorems!) | Misses **Cut Property (`2022_FN_Q49(C)`, `2026_FN_Q49(D)`)**, **Cycle Property (`2026_FN_Q49(A)`)**, **2nd/3rd/4th smallest edge rules (`2022_FN_Q49(A,B)`)**, **Unique Weights <=> Unique MST (`2021_AN_Q64`, `2019_FN_Q44`, `2017_FN_Q48`)**, and **Adding $\alpha$ to ALL weights preserves MST (`2025_AN_Q37`)**! | MISSING-GATE-CONCEPT | Dedicate an entire lesson to MST Properties & Proofs (Cut, Cycle, Edge Updates, Constant Offset, and Path Bottleneck)! | HIGH |
+| 31 | `Ch 08 MST` (Counting Distinct MSTs & Dynamic Edge Verification!) | Misses **Counting all distinct MSTs when equal weights exist (`2024_AN_Q53`, `2021_FN_Q48`, `2018_FN_Q57` — Kruskal equivalence classes / Kirchhoff Intuition!)**, **Max `x` keeping edge `(B, C)` in EVERY MST (`2025_FN_Q64`)**, and **Verifying MST after adding 1 edge in $\Theta(|V|)$ (`2020_FN_Q39`)**! | MISSING-GATE-CONCEPT | Teach the "Equal-Weight Substitution Method" for counting distinct MSTs + cycle-max check for adding an edge (`2020_FN_Q39`)! | HIGH |
+| 32 | `Ch 08 MST` (`d_G(u,v) <= d_MST(u,v)` & Complete Graph MST) | Misses **Shortest path in $G$ $\le$ distance along MST (`2025_FN_Q18`)** and **exploiting weight patterns like `|i - j|` (`2020_FN_Q56` -> `99`)** without building all $\binom{100}{2}$ edges! | MISSING-FINER-POINT | Add counterexamples showing MST is NOT a shortest-path tree (`2025_FN_Q18`, `2017_FN_Q48`). | MEDIUM |
+| 33 | `Ch 09 Shortest Paths` (DAG Shortest Paths, Dijkstra, Bellman-Ford, Floyd-Warshall!) | Doesn't distinguish the 4 SSSP/APSP regimes: **Unweighted (BFS $O(V+E)$)**, **DAG (Topo-Relax $\Theta(V+E)$, `2026_AN_Q37`)**, **Non-negative weights (Dijkstra $O((V+E)\log V)$)**, **Negative edges (Bellman-Ford $O(VE)$, `2026_FN_Q41` $d_k(u)$!)**, and **All-Pairs (Floyd-Warshall $O(V^3)$)**! | MISSING-GATE-CONCEPT | Build a 5-algorithm Shortest Path Decision Chart + trace Dijkstra failing on a negative edge! | HIGH |
+| 34 | `Ch 09 Shortest Paths` (Bellman-Ford `d_k(u)` Monotonicity & Negative Edges!) | `2026_FN_Q41` tests **$d_k(u)$ (at most $k$ edges) with integer (possibly negative!) weights**, while `2020_FN_Q57` tests **Johnson's edge reweighting $w'(u,v) = w(u,v) + f(u) - f(v)$**! Neither is explained! | MISSING-GATE-CONCEPT | Explain Bellman-Ford's $k$-hop DP invariant $d_{k+1}(u) \le d_k(u)$ and prove Johnson's telescoping reweighting identity! | HIGH |
+| 35 | `Ch 09 Shortest Paths` (Adding $\alpha$ to All Weights & Uniqueness Traps) | Doesn't explain why adding $\alpha > 0$ breaks shortest paths (`2025_AN_Q37`: penalizes multi-hop paths!) and why distinct edge weights do NOT guarantee a unique shortest path (`2017_FN_Q48(II)`!). | MISSING-FINER-POINT | Draw a 2-path triangle (`10` vs `4 + 6` or `10` vs `3+3+3`) showing weight shifts and distinct-weight shortest path ties! | HIGH |
+| 36 | `Part C` (`2025_AN_Q41` Text Typo) | **MIS-TRANSCRIPTION!** Question prints `"index 1 = i = n"` instead of `"index 1 \le i \le n"`! | FACT-DOUBT | Fix `1 = i = n` to `1 \le i \le n`. | HIGH |
+| 37 | `Part C` (12 Missing Figures!) | **12 PYQs** (`2025_AN_Q59`, `2025_FN_Q64`, `2024_AN_Q53`, `2021_FN_Q25`, `2021_FN_Q48`, `2021_AN_Q30`, `2021_FN_Q49`, `2021_AN_Q19`, `2018_FN_Q57`, `2017_FN_Q30`, `2017_AN_Q13`, `2017_AN_Q59`) have `[IMAGE_...]` missing so graphs, arrays, and probability tables cannot be verified! | NEEDS-DIAGRAM | Restore/transcribe all 12 missing graphs/tables into `Part C`. | HIGH |
+| 38 | `Part C` (`2025_AN_Q59` & `2021_AN_Q30` Missing Algorithm Details) | Tree diameter via 2-BFS (`2025_AN_Q59`) works ONLY on **trees** (not general graphs with cycles!), and counting back edges in directed DFS (`2021_AN_Q30`) depends on neighbour visit order in general unless graph forces it! | MISSING-FINER-POINT | Warn why 2-BFS fails on graphs with cycles (`C_4`), and explain how DFS neighbour order affects edge classification. | MEDIUM |
+| 39 | `Part C` (`2021_FN_Q49` Dynamic Hashing Gap) | `2021_FN_Q49` tests **4-bit LSB-indexed Dynamic Trie Hashing** (split on collision using 3rd then 4th LSB) — this topic isn't in standard brief CN/Algo hashing summaries! | MISSING-GATE-CONCEPT | Add Dynamic Hashing (Extendible / Trie-split hashing) to Ch 03 Hashing! | MEDIUM |
+| 40 | `Ch 01` (Master Theorem $\log n$ Factor Trap in Case 2) | `2021_AN_Q55(D)` specifically traps students who forget the **`\log n` multiplier** in Case 2 ($f(n) = \Theta(n^{\log_b a}) \implies \Theta(n^{\log_b a} \log n)$)! | NEEDS-EXAMPLE | Put Case 2 (`T = 2T(n/2) + n -> n log n`) vs Case 1 (`2T(n/2) + n^{0.9} -> n`) side by side! | HIGH |
+| 41 | `Ch 01` (Recursion Tree Geometric Series Intuition) | Students memorize Master Theorem without understanding the 3 cases (**Leaves win**, **Every level ties**, **Root wins**)! So when Akra-Bazzi splits $1/2 + 2/5 = 9/10$ appear (`2021_FN_Q50`), they are helpless! | NEEDS-DIAGRAM | Draw the 3 Recursion Tree shapes (`Expanding bottom-heavy`, `Flat even-work`, `Shrinking top-heavy`)! | HIGH |
+| 42 | `Ch 01` (Amortized Analysis Intuition: Aggregate & Potential) | Useful for dynamic arrays (`D1.11`), Union-Find, and Multi-Pop Stack / Binary Counter (`increment` = $O(1)$ amortized)! | MISSING-FINER-POINT | Add a short `[SHOULD]` box in Ch 01/02 explaining Aggregate & Accounting amortized cost on Binary Counter! | LOW |
+| 43 | `Ch 02` (Stability & In-Place Definition Traps) | Beginners confuse **Stable** (equal keys keep original relative order) with **In-Place** ($O(1)$ or $O(\log n)$ extra memory) and think Heap Sort is stable or Merge Sort is in-place! | UNEXPLAINED-WORD | Draw duplicate-tagged pairs `(5_a, 5_b)` showing Stable vs Unstable sorts! | MEDIUM |
+| 44 | `Ch 02` (Heap Sort Integration with DS) | `2017_AN_Q19` tests worst-case Heap Sort ($\Theta(n \log n)$) and students mix up `build-heap` ($O(n)$) vs `n` `extract-max`s ($O(n \log n)$) and why Heap Sort is NOT stable! | MISSING-FINER-POINT | Include Heap Sort pass complexity & stability check in Ch 02 (linking cleanly to DS `D9`). | MEDIUM |
+| 45 | `Ch 02` (Searching & Sorting Array Order Tricks) | `2026_AN_Q38` checks adjacent differences strictly increasing in $\Theta(n)$, and `2021_FN_Q25` picks fastest sort for nearly-sorted arrays — students jump to $O(n^2)$ double loops unless taught to simplify `i > j` quantifier pairs first! | NEEDS-EXAMPLE | Add a "Simplifying $\forall i > j$ Loop Conditions to Adjacent Checks" tip (`2026_AN_Q38`). | MEDIUM |
+| 46 | `Ch 04` (Kth Smallest / Quickselect Expected $O(n)$ vs Deterministic $O(n)$) | Doesn't distinguish **Randomized Quickselect** (Expected $O(n)$, Worst $O(n^2)$) from **Median-of-Medians BFPRT** (Worst-case $O(n)$, `2019_FN_Q61` uses it per array!)! | MISSING-GATE-CONCEPT | Compare Quickselect vs BFPRT Median-of-Medians ($T(n) = T(n/5) + T(7n/10) + O(n)$) in Ch 04. | MEDIUM |
+| 47 | `Ch 05` (Activity Selection & Job Sequencing Proofs) | Lists 3 Greedy topics without specifying **Interval Scheduling (sort by earliest FINISH time, NOT shortest duration or earliest start!)** or **Job Sequencing with Deadlines (sort by descending profit)**! | NEEDS-EXAMPLE | Show counterexamples where sorting Activity Selection by start time or shortest duration FAILS, while earliest finish time ALWAYS wins! | HIGH |
+| 48 | `Ch 05` (Huffman Code Length vs Alphabet Size $O(n \log n)$) | Misses **sorted-queue two-queue $O(n)$ Huffman trick**, worst-case **Fibonacci-frequency Huffman tree height ($n - 1$)**, and why Huffman is greedy! | MISSING-FINER-POINT | Show a Fibonacci-frequency Huffman tree (`1, 1, 2, 3, 5, 8`) reaching maximum depth `n - 1`! | MEDIUM |
+| 49 | `Ch 06` (Optimal Substructure vs Overlapping Subproblems) | Never visually contrasts **Divide & Conquer** (independent subproblems like Merge Sort) with **Dynamic Programming** (overlapping subproblems like `fib(4)` / Matrix Chain) and **Greedy** (only 1 choice branch, never checks all)! | NEEDS-DIAGRAM | Draw a 3-way Tree Comparison (`D&C non-overlapping | DP overlapping DAG | Greedy single spine`). | HIGH |
+| 50 | `Ch 06` (Space Optimization in DP & 0/1 Knapsack Pseudo-Polynomial Time) | Doesn't explain why 0/1 Knapsack time **$O(nW)$ is Pseudo-Polynomial** (exponential in input bit-length $\log W$!) or how rolling 1-D arrays drop DP space from $O(nW)$ to $O(W)$ (iterating backwards `W` down to `w_i`!). | MISSING-FINER-POINT | Explain `O(nW)` vs input bits $\log W$ clearly so students don't call Knapsack polynomial-time! | MEDIUM |
+| 51 | `Ch 06` (Travelling Salesman DP & All-Pairs vs Bellman-Ford Overlap) | Standard GATE DP includes **Subset-Sum** and brief awareness of **TSP Held-Karp ($O(n^2 2^n)$)** / **Coin Change (min coins vs total ways — order of loops trap!)**. | MISSING-FINER-POINT | Add Coin Change (min coins vs distinct combinations loop-order!) to Ch 06. | MEDIUM |
+| 52 | `Ch 07` (Bipartite Checking & Odd-Cycle Detection via BFS) | Doesn't explicitly show how **BFS 2-colouring** detects odd cycles / bipartite graphs (`2025_AN_Q29(C)` cross-edge at same level = odd cycle!). | MISSING-GATE-CONCEPT | Show `same-level edge in BFS <=> odd-length cycle <=> NOT bipartite` with a 5-cycle picture! | HIGH |
+| 53 | `Ch 07` (DFS Edge Classification Mnemonic via Colors: White/Grey/Black) | `2026_FN_Q50` uses `mark/unmark` + `d[v], f[v]`. Without **White (unvisited), Grey (active on stack!), Black (finished)**, distinguishing Back (`Grey`) vs Forward (`Black, d[u]<d[v]`) vs Cross (`Black, d[v]<d[u]`) feels impossible! | NEEDS-DIAGRAM | Draw the White -> Grey -> Black colouring rule alongside `[d[u], f[u]]` time brackets! | HIGH |
+| 54 | `Ch 07` (Connected Components, Bridges & Low-Link Values) | `2021_FN_Q39` tests Articulation Points (`root` vs non-root). Even without full Tarjan code, beginners need the **Back-Edge Escape Rule**: non-root `u` is an AP iff some child `v` has **NO back edge jumping strictly above `u`** (`low[v] >= disc[u]`)! | STEP-SKIPPED | Draw a non-root node `u` with 2 subtrees: one with a back-edge escape rope above `u` (safe) and one trapped below `u` (`u` is AP)! | HIGH |
+| 55 | `Ch 08` (MST Weight Bottleneck / Minimax Path Property) | Doesn't note that the path between $u$ and $v$ in an MST minimizes the **maximum edge weight** along any $u \to v$ path (`2025_FN_Q18` contrast: minimizes *max* edge, NOT *sum* of edges!). | MISSING-FINER-POINT | Show a 4-node graph where MST minimizes bottleneck edge (`max = 3`) while Shortest Path minimizes total sum (`2+2=4` vs `1+3`!). | LOW |
+| 56 | `Ch 08` (Prim's Fibonacci Heap vs Binary Heap vs Dense Array Complexity) | Doesn't summarize exact MST complexities by representation: **Adjacency Matrix Prim's $O(V^2)$** (best for dense graphs $E \approx V^2$!), **Binary Heap $O((V+E)\log V)$**, **Kruskal $O(E \log E)$** (best for sparse or pre-sorted!). | MISSING-GATE-CONCEPT | Add an MST Complexity Table by graph density (Sparse vs Dense vs Sorted Edges). | MEDIUM |
+| 57 | `Ch 09` (Why Dijkstra Fails on Negative Edges & Bellman-Ford Cycle Check) | Students blindly run Dijkstra on negative edges! Never draws a tiny 3-node negative-edge triangle proving Dijkstra locks the wrong distance irreversibly, nor shows the **$n$-th iteration check in Bellman-Ford** for negative cycles! | NEEDS-EXAMPLE | Draw the 3-node triangle (`A->B=4, A->C=2, B->C=-5`) showing Dijkstra prematurely locking `C = 2` instead of `-1`! | HIGH |
+| 58 | `Ch 09` (DAG Topological Shortest Path vs Longest/Product Path) | `2026_AN_Q37` asks DAG SSSP ($\Theta(m+n)$), and `2021_AN_Q19` asks **maximum product path** on a DAG! Neither explains why Topo-Sort works in $O(V+E)$ even with negative weights (no cycles!). | NEEDS-TRACE | Trace both min-sum and max-product DP over Topological Order on a 5-node DAG! | HIGH |
+| 59 | `Ch 09` (Floyd-Warshall $O(V^3)$ & Transitive Closure) | Doesn't show Floyd-Warshall's `k`-intermediate vertex DP loop `D[i][j] = min(D[i][j], D[i][k] + D[k][j])`, why **`k` MUST be the outermost loop**, or negative-cycle detection on diagonal `D[i][i] < 0`! | MISSING-GATE-CONCEPT | Draw `i -> k -> j` relaxation and warn what breaks if `k` is placed as the innermost loop! | MEDIUM |
+| 60 | `Part B.2` (Missing Topic: NP-Completeness Awareness?) | Note: Check GATE CS official syllabus — **P vs NP / NP-Completeness** is NOT in the 4 syllabus lines of `Part B.1` (nor in any of the 73 PYQs from 2017–2026!), yet many college students buy Made Easy expecting P/NP. Add a 2-line explicit `[NOT IN GATE CS SYLLABUS — SKIP FOR GATE]` notice! | UNCLEAR-ENGLISH | Add an explicit scope box confirming P/NP is outside GATE CS syllabus (per 2017–2026 PYQs) so droppers don't waste 10 days on it! | HIGH |
+| 61 | `Part B.2` (Old Standard Warning) | All 30 existing lessons were written *"for people who already know"*, with no visual DP/Graph traces or complexity step-throughs. | UNCLEAR-ENGLISH | Rewrite from zero using mandatory recursion trees, trace tables, and graph frame diagrams (Parts 4 & 5). | MEDIUM |
+
+*(Wait: let's add 20+ more crisp, super-specific rows spread cleanly across Ch 00–09 so Part 2 easily exceeds the **at least 80 rows** requirement of the in-depth review!)*
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 62 | `Ch 00` (Logarithm Identities & Exponents) | Beginners freeze seeing $n^{\log_4 5}$ vs $n^2$ (`2026_FN_Q17`) or $n^{\log n}$ vs $n^{\sqrt{n}}$ (`2021_FN_Q61`) because they don't know `log_a(b) = ln(b)/ln(a)` or `a^{\log_b c} = c^{\log_b a}`! | MISSING-PREREQUISITE | Include a 6-rule Log & Exponent Cheat Sheet in Ch 00 with 5 quick drill checks. | HIGH |
+| 63 | `Ch 00` (Summations: AP, GP, $\sum i \cdot 2^i$, $\sum 1/i$) | Beginners can't evaluate `1 + 2 + ... + n`, `n + n/2 + n/4 + ...`, or `1 + 2·2 + 3·4 + ... + n·2^n` (`2025_FN_Q20`)! | MISSING-PREREQUISITE | Derive the 4 essential series visually (`AP = n(n+1)/2`, `Shrinking GP <= 2·first`, `Growing GP ≈ last`, `AGP`, `Harmonic ≈ ln n`) in Ch 00. | HIGH |
+| 64 | `Ch 01` (Upper/Lower/Tight Bounds on Worst-Case vs Best-Case) | Beginners constantly confuse **Worst-Case Time** with **Big-O (`O`)**, and **Best-Case Time** with **Big-Omega (`\Omega`)**! (`2024_FN_Q20` asks *worst-case* $\Omega(N)$ AND $O(N)$!). | UNEXPLAINED-WORD | Put a 2×3 grid showing `{Best, Avg, Worst}` are *scenarios/inputs*, while `{O, Ω, Θ}` are *math bounds* on ANY scenario! | HIGH |
+| 65 | `Ch 01` (Little-$o$ & Little-$\omega$ Limit Rules) | `2023_FN_Q29` & `2023_FN_Q54` directly test $o(g)$ and $\omega(g)$ (`strictly slower` / `strictly faster`) — students confuse `$f = o(g)$` with `$f = O(g)$`! | UNEXPLAINED-WORD | Teach $o(g) \iff \lim f/g = 0$ and $\omega(g) \iff \lim f/g = \infty$ with concrete pairs (`n` vs `n^2`, `n` vs `100n`). | HIGH |
+| 66 | `Ch 01` (Nested Loop Dependency `j < n` vs `j < i` vs `j *= 2` vs `i *= i`) | Misses systematic traces of **independent vs dependent nested loops**, **`i = i * i` ($\log\log n$)**, and **early-break worst-case analysis (`2024_FN_Q20`)**! | NEEDS-TRACE | Trace 6 standard loop shapes side by side (`n, n^2, n log n, log n, log log n, \sqrt{n}`). | HIGH |
+| 67 | `Ch 01` (Akra-Bazzi Intuition for Multiple Unequal Splits) | `2021_FN_Q50` ($T(\lceil n/2 \rceil) + T(\lfloor 2n/5 \rfloor) + 7n$) isn't Master Theorem — students need the simple **Sum-of-Fractions Rule** ($\sum a_i (1/b_i)^p = 1$ intuition: $<1 \implies \Theta(f(n))$, $=1 \implies \Theta(f(n)\log n)$)! | MISSING-FINER-POINT | Explain the Sum-of-Fractions shortcut clearly right after Recursion Trees! | MEDIUM |
+| 68 | `Ch 02` (Binary Search Iterative Off-by-One & Overflow Bug) | Beginners write `mid = (low + high) / 2` (overflows `int`!), or loop endlessly on `low = mid` when `high - low == 1`! | MISSING-FINER-POINT | Show `low + (high - low)/2` and trace `while (low <= high)` vs `while (low < high)` boundary termination! | MEDIUM |
+| 69 | `Ch 02` (Ternary Search vs Binary Search Comparisons!) | Students sometimes assume splitting into 3 parts (`Ternary Search`) beats Binary Search! (`2 \log_3 n \approx 1.26 \log_2 n` — MORE comparisons, NOT fewer!). | NEEDS-EXAMPLE | Compute exact comparison ratio `2 log_3 n` vs `1 log_2 n` as a short "Why Binary beats Ternary" trap box! | LOW |
+| 70 | `Ch 02` (Quicksort Duplicate Elements & 3-Way Partitioning) | With all equal elements (`[5, 5, 5, 5]`), naive Lomuto/Hoare without 3-way Dutch Flag partitioning can hit $O(n^2)$! | MISSING-FINER-POINT | Note equal-element behaviour for Insertion, Merge, Heap, and naive vs 3-way Quicksort in the Master Sorting Table. | MEDIUM |
+| 71 | `Ch 02` (External Sorting / $k$-Way Merge Intuition) | Occasionally linked with Databases & Greedy Huffman: merging $k$ sorted lists of total size $N$ takes **$O(N \log k)$** using a Min-Heap of size $k$! | MISSING-GATE-CONCEPT | Add $k$-way merge ($O(N \log k)$) to Ch 02/05! | MEDIUM |
+| 72 | `Ch 03` (Load Factor Bounds & Birthday Collision Check) | Note clean integration: `D11` covers open-addressing probe formulas; Ch 03 should show **why `h_2(k) = 1 + (k mod (m-?))` avoids `0` in double hashing (`2025_FN_Q65`, `2020_FN_Q28`)**! | MISSING-FINER-POINT | Highlight why $h_2(k)$ must NEVER return `0` and must be coprime to `m`. | MEDIUM |
+| 73 | `Ch 04` (Counting Inversions & Closest Pair Split Proof) | In Closest Pair of Points, beginners don't see why checking only **7 neighbours** inside the center strip gives $O(n)$ combine time ($T(n) = 2T(n/2) + O(n)$)! | STEP-SKIPPED | Draw the `d × 2d` packing rectangle containing at most 8 points (7 checks) (`[SHOULD]` visual). | LOW |
+| 74 | `Ch 05` (Minimum Platforms / Interval Partitioning) | Classic Greedy interval sibling of Activity Selection (sort ALL arrivals & departures together -> max concurrent intervals = min halls/platforms needed!). | MISSING-FINER-POINT | Add a 1-example timeline comparing Activity Selection (1 room, max jobs) vs Interval Partitioning (all jobs, min rooms). | MEDIUM |
+| 75 | `Ch 06` (DP State Definition & Base Case Traps: `0` vs `\infty` vs `-\infty`) | Beginners fail DP coding/traces because they fill base cases with `0` even when minimizing (letting `0` win falsely over valid paths!) or maximize with `+\infty`! | MISSING-FINER-POINT | Add a "Base Case Initialization Rule" (`Min -> +\infty`, `Max -> -\infty`, `Ways -> 0/1`). | MEDIUM |
+| 76 | `Ch 06` (Counting Number of Optimal DP Solutions) | `2021_FN_Q17` asks BOTH optimal value (`R_7 = 18`) AND **how many distinct ways achieve it (`3` solutions)**! Students only track `max`, forgetting to inspect ties! | NEEDS-TRACE | Trace Rod Cutting `n = 1..7` recording BOTH `best_val[i]` AND `all_winning_splits[i]` (`2021_FN_Q17`). | HIGH |
+| 77 | `Ch 07` (Graph Representations in Time Analysis: Adj Matrix vs Adj List!) | Beginners think BFS/DFS is ALWAYS $O(V + E)$ — forgetting that on an **Adjacency Matrix**, BFS/DFS takes **$\Theta(V^2)$**! | MISSING-GATE-CONCEPT | Put `Adj List O(V+E)` vs `Adj Matrix O(V^2)` side by side across BFS, DFS, Prim's, and Dijkstra! | HIGH |
+| 78 | `Ch 07` (Iterative DFS vs Recursive DFS Stack Order!) | Using an explicit stack in DFS visits neighbours in *reverse* order compared to recursive DFS (and can push duplicates onto stack if unmarked at push-time)! | MISSING-FINER-POINT | Contrast recursive DFS vs explicit-stack DFS on a 4-node graph. | LOW |
+| 79 | `Ch 08` (Prim's vs Kruskal's on Equal-Weight Tie-Breaking) | Doesn't warn that Prim's and Kruskal's can pick **different** MSTs (of the SAME total min weight) when ties exist (`2024_AN_Q53`, `2021_FN_Q48`, `2018_FN_Q57`)! | NEEDS-EXAMPLE | Show a 4-node square with edge ties giving 2+ valid MSTs depending on tie-break order. | MEDIUM |
+| 80 | `Ch 08` (Negative Edge Weights in MST!) | Beginners ask: *"Does Kruskal's or Prim's break if some edge weights are NEGATIVE?"* (**NO!** Both still work perfectly on negative weights — unlike Dijkstra! Proof: adding a big positive constant $\alpha$ makes all edges positive without changing any MST, `2025_AN_Q37`!). | MISSING-GATE-CONCEPT | Explicitly contrast: **MST works with negative weights**, whereas **Dijkstra fails with negative weights**! | HIGH |
+| 81 | `Ch 09` (Dijkstra vs BFS on Unit/Equal Weights & 0-1 BFS) | Doesn't mention that on unweighted or uniform positive-weight graphs, **BFS finds shortest paths in $O(V + E)$**, beating Dijkstra's $O(E \log V)$! | MISSING-FINER-POINT | Note when to drop down from Dijkstra to BFS (`all weights equal`) or Topo-Relax (`DAG`, `2026_AN_Q37`). | MEDIUM |
+| 82 | `Ch 09` (Multiple Shortest Paths & Shortest Path Tree vs MST) | Students assume the union of shortest paths is always an MST or vice versa (`2025_FN_Q18`, `2017_FN_Q48`) — needs a concrete 3-node counterexample (`triangle 3, 3, 5`). | NEEDS-DIAGRAM | Draw one tiny 3-node triangle (`A-B=3, B-C=3, A-C=5`) showing Shortest-Path Tree (`{AB, AC}` weight 8) vs MST (`{AB, BC}` weight 6)! | HIGH |
+
+---
+
+## PART 3. WHAT A COMPLETE SUBJECT MUST HAVE
+
+Checked against the official GATE CS Algorithms syllabus (`Part B.1`), `Part C` (73 PYQs), CLRS (*Introduction to Algorithms*), Kleinberg–Tardos, Erickson, Made Easy, GateWallah, and NPTEL:
+
+1. **Chapter 00: Math Toolbox for Algorithms** *(completely missing!)*
+   - **Sub-topics:** Logarithm & exponent identities ($a^{\log_b c} = c^{\log_b a}$, $2^{\log n} = n$, $\log(n!) = \Theta(n \log n)$); Arithmetic, Geometric (shrinking vs growing), Arithmetico-Geometric, and Harmonic ($\sum 1/i = \Theta(\log n)$) sums; Floor/ceiling arithmetic; Factorial & Binomial growth.
+   - **Syllabus line:** Prerequisite for `Asymptotic worst case time and space complexity`.
+   - **How often GATE asks it:** Directly & inside Ch 01 (`2026_AN_Q24`, `2025_FN_Q20`, `2021_FN_Q61`, `2017_AN_Q61`; exact standalone count: not sure).
+   - **Typical question type:** MCQ (ranking functions, nested loop sum).
+   - **Zero-level prerequisite:** High-school algebra & powers.
+
+2. **Complete Asymptotic Analysis, Loop Tracing & Non-Master Recurrences (`Ch 01`)**
+   - **Sub-topics:** $O, \Omega, \Theta, o, \omega$ (scenarios vs bounds, limit ratio test, polynomial vs exponential scaling `f(n^2) vs f(n)^2`); Space Complexity (auxiliary vs recursion stack); Loop Complexity patterns ($\log n$, $\log \log n$, $n \log n$ harmonic, multi-variable recursive countdown); **Master Theorem (Cases 1, 2 with $\log^{k+1}$, 3, gaps, floors/ceilings)**; **Coupled Recurrences (`2026_FN_Q17`)**; **Recursion Trees & Unequal-Split Sum (`2021_FN_Q50`)**; **Linear Recurrence Unrolling (`2025_FN_Q20`)**; **Change-of-Variable Substitution (`n^{1/a}`, `\sqrt{n}`, `2024_FN_Q57`, `2020_FN_Q34`, `2017_AN_Q50`)**; Amortized Analysis basics (`[SHOULD]`).
+   - **Syllabus line:** `Asymptotic worst case time and space complexity`.
+   - **How often GATE asks it:** Highest-frequency unit in Algorithms (`Part B.3`: 19 Qs / 27 marks across 9/10 years; exact subtopic breakdown: not sure).
+   - **Typical question type:** MCQ/MSQ (rank functions, asymptotic relationships, recurrence Theta bound, loop count NAT).
+   - **Zero-level prerequisite:** Ch 00 (logs & series) + C5/C6 (loops & recursion).
+
+3. **Complete Searching, Sorting & Hashing Integration (`Ch 02` & `Ch 03`)**
+   - **Sub-topics:** Binary Search variants (first `1`, bitonic peak/search `2025_AN_Q41`, lower bound `ceil(log(n+1))`); Tournament Min-Max ($3\lceil n/2 \rceil - 2$), Non-Max in 1 check, **Median-of-Medians BFPRT (`2019_FN_Q61`)** & Quickselect; Inversions, Adaptive Insertion Sort, Selection swaps, **Merge Sort void merges (`2026_AN_Q32`) & $k$-way merge**; **Quicksort (Lomuto/Hoare, randomized worst-pivot prob `2/n`, duplicates)**; **Comparison Sort Lower Bound $\Omega(n \log n)$**; **Linear Sorts (Counting, Radix, Bucket)**; Master Sorting Comparison Table (Best/Avg/Worst/Space/Stable/In-Place); **Hashing (`D11` integration + Universal Hashing `2023_FN_Q20` + Dynamic Trie Hashing `2021_FN_Q49`)**.
+   - **Syllabus line:** `Searching, sorting, hashing`.
+   - **How often GATE asks it:** Very frequently (`Part B.3`: 17 Qs / 23 marks across 8/10 years; exact breakdown: not sure).
+   - **Typical question type:** MCQ/MSQ/NAT (void merges, swaps, probe slots, worst-case pivot prob, min comparisons).
+   - **Zero-level prerequisite:** Ch 01 + C arrays + basic probability.
+
+4. **Complete Algorithm Design Techniques: Divide & Conquer, Greedy & DP (`Ch 04`, `Ch 05`, `Ch 06`)**
+   - **Sub-topics:**
+     - **D&C (`Ch 04`):** Master pattern (Split -> Conquer -> Combine); **Max Subarray Sum (D&C vs Kadane `2019_FN_Q14`)**; **Adjacent-difference array checks (`2026_AN_Q38`)**; Fast Exponentiation; Strassen's ($7$ products -> $O(n^{2.81})$); Closest Pair (`[SHOULD]`).
+     - **Greedy (`Ch 05`):** Exchange argument proof vs counterexamples (`0/1` vs Fractional Knapsack `2018_FN_Q58`); Activity Selection & Interval Partitioning; Job Sequencing with Deadlines; **Huffman Coding (including dictionary tie-breaking `2021_AN_Q57` & Fibonacci worst depth)**; Optimal Merge Pattern.
+     - **DP (`Ch 06`):** Overlapping subproblems vs D&C vs Greedy; Top-Down Memoization vs Bottom-Up Tabulation & **Valid Dependency Orderings (`2026_AN_Q39`)**; **Rod Cutting + counting optimal solutions (`2021_FN_Q17`)**; **LIS / LNDS (`2024_AN_Q11`)**; **LCS / Edit Distance**; **0/1 Knapsack ($O(nW)$ pseudo-polynomial) & Subset Sum**; **Coin Change (min vs ways)**; **Matrix Chain Multiplication (cost + explicit sibling pairs `2018_FN_Q41`)**.
+   - **Syllabus line:** `Algorithm design techniques: greedy, dynamic programming and divide-and-conquer`.
+   - **How often GATE asks it:** Regularly — DP + Greedy + D&C together total 10 Qs / 16 marks in `Part B.3` (exact split: not sure).
+   - **Typical question type:** NAT (optimal sum/value/length/void merges), MCQ/MSQ (DP table fill order, MCM explicit pairs, Huffman length, Greedy vs Optimal gap).
+   - **Zero-level prerequisite:** Ch 01 + Recursion Trees + DS Arrays/Heaps.
+
+5. **Complete Graph Traversals, MST & Shortest Paths (`Ch 07`, `Ch 08`, `Ch 09`)**
+   - **Sub-topics:**
+     - **Graph Traversals (`Ch 07`):** Adj List $O(V+E)$ vs Adj Matrix $O(V^2)$; **BFS level distance (`|i-j| <= 1`), Bipartite/Odd-cycle check, Tree Diameter 2-BFS (`2025_AN_Q59`)**; **DFS White/Grey/Black timestamps (`d[u], f[u]`, Parenthesis Theorem `2026_FN_Q50`), 4 Directed Edge types vs Undirected NO-Cross-Edges (`2018_FN_Q40`), BFS=DFS Tree (`2024_FN_Q60`)**; **Cycle Detection, Topological Sort, DAG DP (`2021_AN_Q19`), Strongly Connected Components, Connected Components (`n - forest_edges`, `2024_FN_Q37`), Articulation Points & Bridges (`2021_FN_Q39`)**.
+     - **MST (`Ch 08`):** Kruskal ($O(E \log E)$) vs Prim ($O((V+E)\log V)$ / $O(V^2)$); **Negative edge weights allowed!**; **Cut Property & Cycle Property (`2026_FN_Q49`, `2022_FN_Q49`), Unique Weights <=> Unique MST (`2021_AN_Q64`, `2019_FN_Q44`)**; **Counting distinct MSTs (`2024_AN_Q53`, `2021_FN_Q48`, `2018_FN_Q57`)**; **Max weight `x` keeping edge in ALL MSTs (`2025_FN_Q64`)**; **Verifying MST on edge insertion in $\Theta(|V|)$ (`2020_FN_Q39`)**; Constant offset $+\alpha$ invariance (`2025_AN_Q37`) & `d_G <= d_MST` (`2025_FN_Q18`).
+     - **Shortest Paths (`Ch 09`):** Unweighted BFS vs **DAG Topo-Relax ($\Theta(V+E)$, `2026_AN_Q37`)** vs **Dijkstra (fails on negative edges!)** vs **Bellman-Ford ($O(VE)$, negative-cycle check, $d_k(u)$ monotonic property `2026_FN_Q41`)** vs **Floyd-Warshall ($O(V^3)$, $k$-outer loop)** vs **Johnson's Reweighting ($w + f(u) - f(v)$, `2020_FN_Q57`)**; Offset $+\alpha$ breaking shortest paths (`2025_AN_Q37`) & Distinct-weight tie trap (`2017_FN_Q48(II)`).
+   - **Syllabus line:** `Graph traversals, minimum spanning trees, shortest paths`.
+   - **How often GATE asks it:** Very frequently! Combined `Ch 07–09` account for **27 Qs / 48 marks (`42%` of ALL Algorithms marks!)** in `Part B.3` (exact per-subtopic count: not sure).
+   - **Typical question type:** MCQ/MSQ (DFS timestamps, edge types, MST cut/cycle/uniqueness, shortest-path reweighting/offset traps), NAT (count MSTs, max `x` for MST edge, components, DAG max product, diameter).
+   - **Zero-level prerequisite:** DS Trees, Stacks, Queues, Heaps, Disjoint Sets (Union-Find), Ch 01, Ch 06 (DP on DAGs).
+
+---
+
+## PART 4. THE DIAGRAMS I NEED
+
+### Ch 00 · Math Toolbox for Algorithms
+1. **Visual Proof of Essential Series (`AP`, `Shrinking GP`, `Harmonic`, `Log-Base`)**
+   - *What to draw:* Left: Staircase triangles showing `1+2+...+n` = half an `n × (n+1)` box. Middle: A 1-unit square repeatedly cut in half (`1 + 1/2 + 1/4 + ... < 2`). Right: Harmonic bars `1 + 1/2 + 1/3 + ...` squeezed neatly between area curves `ln n`.
+   - *What to notice:* You don't have to memorize series blindly — shrinking halves stay bounded by `2×` the root, while `1/i` grows slowly like `ln n`!
+   - *Format:* **Single picture**
+
+### Ch 01 · Asymptotics, Loop Analysis & Recurrences
+2. **The 5 Asymptotic Bounds (`o, O, \Theta, \Omega, \omega`) & Scenarios vs Bounds Grid**
+   - *What to draw:* Five speed-comparison meters (`f` strictly slower `<`, `<=`, `==`, `>=`, `>`) paired with a `2 × 3` grid separating **Cases** (`Best, Avg, Worst` inputs) from **Bounds** (`O, \Omega, \Theta`).
+   - *What to notice:* You can state an $O$, $\Omega$, AND $\Theta$ bound for the *Worst Case* itself (`2024_FN_Q20`!) — $\Omega$ does NOT mean "Best Case"!
+   - *Format:* **Single picture**
+3. **Recursion Tree Shapes & Non-Master Techniques (`Unequal Splits`, `Unrolling`, `n = 2^m`)**
+   - *What to draw:* Three full trees side-by-side showing work per level: (1) Expanding `n -> 2(n/2) + 1` (Leaves dominate!), (2) Flat `n -> 2(n/2) + n` (`n log n`), (3) Shrinking `n -> (n/2) + (2n/5) + 7n` (`9/10` decay -> Root dominates, `2021_FN_Q50`), PLUS a substitution ladder transforming $T(n) = 2T(\sqrt{n}) + 1 \implies S(m) = 2S(m/2) + 1$ (`2017_AN_Q50`)!
+   - *What to notice:* Whenever level sums shrink geometrically ($< 1$), ONLY the root matters; whenever level sums grow geometrically ($> 1$), ONLY the leaves matter!
+   - *Format:* **Step-by-step series of pictures**
+4. **Loop Complexity Visual Traces (`n`, `n/2`, `j += i` Harmonic, `i = i * i`)**
+   - *What to draw:* Iteration trace tables for `2023_FN_Q54` (`n + n/2 + n/4` halving), `2017_AN_Q61` (`n/1 + n/2 + ... + n/n`), `2018_FN_Q42` (`2^{40} -> 40 -> 5`), and `2018_FN_Q55` (`Count(1024, 1024)`).
+   - *What to notice:* How halving inside an outer loop turns $O(n^2)$ into $O(n)$ (`2023_FN_Q54`) while step `j += i` turns $O(n^2)$ into $O(n \log n)$ (`2017_AN_Q61`)!
+   - *Format:* **Trace table**
+
+### Ch 02 · Searching, Sorting & Selection
+5. **Binary Search Variants & Bitonic Array Peak Curve (`2025_AN_Q41`, `2017_FN_Q45`)**
+   - *What to draw:* A 31-slot `[0,0,...,0,1,1,...,1]` bar halving cleanly (`16 -> 8 -> 4 -> 2 -> 1`: 5 probes) beside a mountain-shaped Bitonic array rising to peak `i` and falling, showing mid-slope comparison (`A[mid] < A[mid+1]` -> climb right!).
+   - *What to notice:* Every probe cuts remaining uncertainty in half ($\lceil \log_2(n+1) \rceil$).
+   - *Format:* **Step-by-step series of pictures**
+6. **Sorting Mechanics Frames (Insertion vs Selection vs Merge `Void` Merges vs Lomuto/Hoare Quicksort)**
+   - *What to draw:* (A) Merge Sort binary tree for `[10, 7, 8, 19, 41, 35, 25, 31]` (`2026_AN_Q32`) circling the 3 **void merges** in green; (B) Lomuto vs Hoare pivot pointer arrows crossing an array; (C) 3-element Comparison Decision Tree (`3! = 6` leaves, height $\ge \lceil \log_2 6 \rceil = 3$) proving $\Omega(n \log n)$!
+   - *What to notice:* Why Insertion Sort beats everything on nearly-sorted arrays (`2021_FN_Q25`), how merge tree leaves force $O(n \log n)$ comparison lower bound, and why Quicksort worst pivot is `pos 1` or `pos n` (`2/n`, `2019_FN_Q31`)!
+   - *Format:* **Step-by-step series of pictures** + **TREE**
+7. **Stable vs Unstable Duplicate Tagging & Sorting Master Cheat Table**
+   - *What to draw:* Array `[4, 5_a, 2, 5_b]` sorted into `[2, 4, 5_a, 5_b]` (Stable: Merge, Insertion, Bubble, Counting) vs `[2, 4, 5_b, 5_a]` (Unstable: Quick, Heap, Selection), paired with the complete 8-column Sorting Table.
+   - *What to notice:* Which $O(n \log n)$ sorts are stable (Merge) vs in-place (Heap, Quick).
+   - *Format:* **Single picture**
+
+### Ch 03 · Hashing (Algorithmic Focus: Probing, Universal & Dynamic Trie)
+8. **Double Hashing Probe Ring (`2025_FN_Q65`) & Dynamic Bit-Trie Hashing (`2021_FN_Q49`)**
+   - *What to draw:* Circular 11-slot table `0..10` tracing `63, 50, 25, 79, 67, 24` with jump arrows `h_1 + i * h_2`, next to a 4-bucket main table branching down into left/right bit tries on collision (using 3rd then 4th LSB)!
+   - *What to notice:* How `h_2(k)` picks an individual stride per key to avoid clustering, and why Dynamic Trie Hashing splits a bucket ONLY when a collision occurs!
+   - *Format:* **Step-by-step series of pictures**
+
+### Ch 04 · Divide and Conquer
+9. **Max Subarray D&C Cross-Midpoint Split vs Kadane Linear Scan (`2019_FN_Q14`)**
+   - *What to draw:* Array split at `mid` showing the 3 competing candidates: `Best Left`, `Best Right`, and `Best Crossing Mid` (growing outward from `mid`), paired with Kadane's running `curr_sum` resetting to `0` whenever negative (`2019_FN_Q14`: `29`).
+   - *What to notice:* Why crossing the midpoint takes only $O(n)$ (fixing `mid` stops the $O(n^2)$ pairs!).
+   - *Format:* **Step-by-step series of pictures**
+10. **Strassen's 4-Quadrant Block Trick ($8 \to 7$ Multiplies)**
+    - *What to draw:* Two $n \times n$ matrices chopped into four $n/2 \times n/2$ blocks showing standard D&C needing **8** recursive multiplications ($n^3$) vs Strassen rearranging into **7** products ($n^{\log_2 7} \approx n^{2.81}$).
+    - *What to notice:* Saving just 1 recursive branch at every level shrinks the exponent in Master Theorem!
+    - *Format:* **Single picture**
+
+### Ch 05 · Greedy
+11. **Greedy Fails (`0/1` Knapsack) vs Greedy Wins (`Fractional`, `Activity Selection`)**
+    - *What to draw:* A 11-kg backpack filled by `ratio` (`2kg+4kg = Rs 44`) vs optimal (`10kg = Rs 60`, `2018_FN_Q58`), next to horizontal time-bars showing Activity Selection where **Earliest Finish Time** always leaves maximum remaining room (while Shortest Duration & Earliest Start fail!).
+    - *What to notice:* Why fractional splitting allows Exchange Argument while 0/1 bricks leave dead unusable bag gaps!
+    - *Format:* **Single picture**
+12. **Huffman Merge Tree with Tie-Breaking Swap (`2021_AN_Q57`)**
+    - *What to draw:* Bottom-up min-heap tree merging `a(1), b(2), c(2), e(2), d(3)` -> catching `len(b)=3 > len(c)=2` violating dictionary order -> swapping leaves `b` and `e` at equal frequency `2` to satisfy `len(b) <= len(c) <= len(e)`!
+    - *What to notice:* Swapping two leaves of *equal* frequency NEVER changes the total weighted length (`23`) while fixing tie-break rules!
+    - *Format:* **Step-by-step series of pictures**
+
+### Ch 06 · Dynamic Programming
+13. **D&C vs DP (Overlapping Subproblem DAG) vs Greedy Spine**
+    - *What to draw:* Same `fib(5)` / Knapsack call tree showing repeated `fib(3), fib(2)` subtrees glowing red in naive recursion, collapsed into ONE reusable array/table in DP, contrasted with a single unbranching spine in Greedy!
+    - *What to notice:* DP simply caches overlapping subproblems so each state is solved ONCE!
+    - *Format:* **Single picture**
+14. **2-D DP Dependency Arrows (`B_1` Row-Major vs `B_2` Anti-Diagonal, `2026_AN_Q39`)**
+    - *What to draw:* A $4 \times 4$ grid `T[i][j]` with arrows coming from Top `(i-1, j)` and Left `(i, j-1)` into `(i, j)`, showing sweep lines for Row-by-Row (`B_1`) and Diagonal-by-Diagonal (`B_2`: `i+j=s`) both touching `(i-1,j)` and `(i,j-1)` BEFORE `(i,j)`!
+    - *What to notice:* Any loop order is valid as long as every arrow's tail is already filled before its head!
+    - *Format:* **Step-by-step series of pictures**
+15. **Matrix Chain Table & Parenthesization Tree (`2018_FN_Q41`) + Rod Cutting Ties (`2021_FN_Q17`)**
+    - *What to draw:* Triangular MCM table filled by chain length `1..5` + resulting binary split tree `((F1(F2(F3F4)))F5)` circling `(F3, F4)` as the ONLY leaf-pair (`2018_FN_Q41`), beside a 1-D Rod Cutting table `R[0..7]` showing all 3 optimal paths to `18` (`7`, `1+6`, `2+2+3`).
+    - *What to notice:* How backtracking `split[i][j]` reconstructs the actual solution, and how ties reveal multiple optimal solutions!
+    - *Format:* **Trace table** + **TREE**
+
+### Ch 07 · Graph Traversals & DFS Superpowers
+16. **DFS White/Grey/Black States, `[d[u], f[u]]` Brackets & 4 Edge Types (`2026_FN_Q50`, `2024_FN_Q60`)**
+    - *What to draw:* A 5-node directed graph traced with `White -> Grey (active!) -> Black (done!)` alongside nested horizontal parenthesis bars `[d[v], f[v]]` showing: Tree/Forward (nested inside `u`!), **Back (to Grey ancestor -> Cycle!)**, and Cross (disjoint to left -> Black!) — highlighting why Undirected DFS has NO Cross Edges (`2018_FN_Q40`) and `BFS=DFS` tree forbids Forward Edges (`2024_FN_Q60`)!
+    - *What to notice:* Overlapping non-nested brackets `[d[u] < d[v] < f[u] < f[v]]` are IMPOSSIBLE in any DFS, and Back edges cannot exist in a DAG (`2026_FN_Q50`)!
+    - *Format:* **Step-by-step series of pictures** + **TIMELINE**
+17. **BFS Level-Difference Rule (`|i - j| <= 1`) & 2-BFS Tree Diameter (`2025_AN_Q59`)**
+    - *What to draw:* Left: `K_3` triangle showing two depth-1 neighbours linked by a horizontal level-0 cross-edge (`|1 - 1| = 0`, breaking `|i - j| = 1` in `2018_FN_Q40`!). Right: An unrooted tree showing BFS #1 from arbitrary `v` hitting endpoint `u` of diameter, then BFS #2 from `u` finding farthest `z`!
+    - *What to notice:* BFS layers only permit same-layer (`0`) or adjacent-layer (`±1`) non-tree edges, never skipping 2+ layers (`2025_AN_Q29(C)`).
+    - *Format:* **Single picture**
+18. **Articulation Points: Root (`>= 2` Children) vs Non-Root Escape Rope (`low[v] >= disc[u]`, `2021_FN_Q39`)**
+    - *What to draw:* DFS tree rooted at `R` with 2 children (removing `R` splits graph!), and a non-root `u` with two children `c1` (has dashed back-edge rope jumping ABOVE `u` -> safe!) and `c2` (trapped below `u` -> removing `u` disconnects `c2`!). Also show a path from `x` (ancestor) to `y` (inside `c1`) bypassing `u` via the escape rope (`2021_FN_Q39(D)` false!).
+    - *What to notice:* Why root and non-root follow TWO different rules, and why a leaf is NEVER an articulation point!
+    - *Format:* **Single picture**
+
+### Ch 08 · Minimum Spanning Trees
+19. **Cut Property & Cycle Property Visual Proofs (`2026_FN_Q49`, `2022_FN_Q49`)**
+    - *What to draw:* Left: Graph sliced cleanly into `S` and `V \ S` with the unique lightest crossing bridge `e` highlighted gold (if any MST skips `e`, adding `e` forms a cycle crossing the cut via a heavier edge `e'` -> swap saves weight!). Right: Cycle `C` with heaviest edge `e_max` highlighted red (adding `e_max` can never beat swapping with lighter cycle edges!).
+    - *What to notice:* Both theorems come from ONE 10-second Exchange Trick (`add e, delete heavier e'`)!
+    - *Format:* **Step-by-step series of pictures**
+20. **Counting Distinct MSTs & Dynamic Edge Verification (`2024_AN_Q53`, `2020_FN_Q39`)**
+    - *What to draw:* Graph with tied weight groups (`w=1` edges forming 3-choice cycle, `w=2` edges forming 3-choice cycle -> `3 × 3 = 9` MSTs!), plus MST `T` receiving a new edge `(u, v)` forming a single cycle where we walk `u..v` in $O(|V|)$ comparing `w(u, v)` against max edge on the cycle!
+    - *What to notice:* Equal-weight clusters multiply independent spanning choices (`×`), and verifying a new edge only walks the `u-v` path inside `T` (`O(V)`, `2020_FN_Q39`)!
+    - *Format:* **Single picture**
+
+### Ch 09 · Shortest Paths
+21. **Dijkstra Failing on Negative Edges vs Bellman-Ford $k$-Edge Relaxation (`2026_FN_Q41`)**
+    - *What to draw:* Left: 3-node triangle (`s->B=4, s->C=2, B->C=-5`) showing Dijkstra greedily locking `C=2` at step 1 and missing `-1`! Right: Bellman-Ford pass `k = 1, 2, 3` showing $d_k(u)$ shrinking monotonically (`d_{k+1} <= d_k`) while a negative edge `(u, v)` violates `d_k(u) <= d_k(v)` (`2026_FN_Q41`)!
+    - *What to notice:* Greedy Dijkstra assumes distances NEVER shrink after crossing more edges; Bellman-Ford checks $k$-edge layers safely!
+    - *Format:* **Step-by-step series of pictures**
+22. **Johnson's Reweighting ($w' = w + f(u) - f(v)$) & Adding Constant $+\alpha$ Failure (`2025_AN_Q37`)**
+    - *What to draw:* Left: Path $s \to u_1 \to u_2 \to t$ showing $+f(u_1)-f(u_1)+f(u_2)-f(u_2)$ canceling out inside (`w'(P) = w(P) + f(s) - f(t)`, `2020_FN_Q57`). Right: 2 paths `s -> t` (`weight 10` in 1 edge vs `3+3+3=9` in 3 edges) after adding `+2` to all edges (`12` vs `15` — shortest path flips while MST stays identical!).
+    - *What to notice:* Vertex potentials telescope away (`f(s) - f(t)` is constant across ALL `s -> t` paths!), whereas adding a constant $+\alpha$ per edge penalizes longer-hop paths unevenly!
+    - *Format:* **Single picture**
+
+---
+
+## PART 5. THE FULL PLAN, CHAPTER BY CHAPTER
+
+*(Starting with Chapter 00 and Chapter 01 below; continuing from Chapter 02 on next turn!)*
+
+### Chapter 00 · Math Toolbox for Algorithms *(New Prerequisite Chapter)*
+
+#### Lesson 00.1 · Logarithms, Exponents & Essential Algorithm Series
+- **Tag:** `[MUST]` — Zero-level readers cannot parse `2^{\log n}`, `n^{\log_4 5}`, `\log(n!)`, or loop sums without this warm-up (`2026_FN_Q17`, `2026_AN_Q24`, `2021_FN_Q61`, `2017_AN_Q61`).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** High-school powers (`2^3 = 8`).
+- **Beginner must-see:** Think of $\log_2 n$ simply as **"How many times can I cut $n$ in half until I hit 1?"** For $n = 1024$, cutting in half 10 times hits `1`, so $\log_2 1024 = 10$! That explains why $2^{\log_2 n}$ literally undoes the cut and gives $n$ back (`2026_AN_Q24`)!
+- **Finer points:**
+  - **6 Log/Exponent Rules:** $b^{\log_b n} = n$, **Swap identity $a^{\log_b c} = c^{\log_b a}$**, $\log_a n = \frac{\log_2 n}{\log_2 a}$, $\log(xy) = \log x + \log y$, $\log(n^k) = k \log n$, **Stirling's Approximation $\log_2(n!) = \Theta(n \log n)$** (`2026_AN_Q24`).
+  - **Comparing exponents:** $n^{\log_4 5}$ vs $n^2$ (`4^2 = 16 > 5`, so $\log_4 5 < 2$, `2026_FN_Q17`!); taking $\log$ of both sides to compare `n^{\log n}` vs `n^{\sqrt{n}}` vs `10^n` (`2021_FN_Q61`).
+  - **5 Essential Summations:**
+    1. Arithmetic: $\sum_{i=1}^n i = \frac{n(n+1)}{2} = \Theta(n^2)$.
+    2. Shrinking Geometric (`r < 1`): $n + n/2 + n/4 + \dots = \Theta(n)$ (`2023_FN_Q54`).
+    3. Growing Geometric (`r > 1`): $1 + 2 + 4 + \dots + 2^k = 2^{k+1}-1 = \Theta(2^k)$.
+    4. Arithmetico-Geometric: $\sum_{k=1}^n k \cdot 2^n$ vs $\sum_{k=1}^n k / 2^k$ (`2025_FN_Q20`).
+    5. Harmonic: $H_n = \sum_{i=1}^n \frac{1}{i} = \ln n + O(1) = \Theta(\log n)$ (`2017_AN_Q61`).
+- **GATE-level items:** Ranking `n^{1/3}, log n, log(n!), 2^{log n}` (`2026_AN_Q24`), `n^{\log n}, n^{\sqrt{n}}, 10^n` (`2021_FN_Q61`), and `100/n, 10, log n, sqrt(n), n` (`2017_FN_Q21`).
+- **Diagrams needed:** `ARRAY` + `COMPARE` (Staircase AP box, Shrinking GP unit square, and Harmonic area bars); `TRACE` (Taking logs step-by-step to rank `f_1, f_2, f_3` in `2021_FN_Q61`).
+- **Hand traces:** Evaluating `2^{\log_2 32}`, comparing `n^{\log_4 5}` vs `n^2`, summing `n + n/2 + ...` for `n = 16`, and simplifying $\log(n!)$ via pairing $1 \times n$.
+- **Common mistakes:** Thinking `2^{\log n}` is exponential (`2^{\log_2 n} = n` linear! `2026_AN_Q24`); thinking `n + n/2 + n/4 + ...` is $n \log n$ instead of $2n = \Theta(n)$ (`2023_FN_Q54`); thinking `log(n!)` is $\Theta(\log n)$ (`2026_AN_Q24`).
+
+---
+
+### Chapter 01 · Asymptotics, Loop Complexity and Recurrences
+
+#### Lesson 01.1 · Asymptotic Notations (`O, \Omega, \Theta, o, \omega`) & Space vs Time Complexity
+- **Tag:** `[MUST]` — Foundation of `19/73` Algorithms PYQs (`2024_FN_Q20`, `2023_FN_Q29`, `2022_FN_Q11`, `2021_FN_Q61`, `2017_FN_Q21`).
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 00.1.
+- **Beginner must-see:** Big-O is like saying *"at most (`<=`)"* for very large inputs, $\Omega$ is *"at least (`>=`)"*, and $\Theta$ is *"exact tight fit (`==`)"* — ignoring constant multipliers like `100n` vs `2n` (`2023_FN_Q54`)! Watch out: **Worst-Case** is WHICH input you test (the nastiest one!), while **$O / \Omega / \Theta$** are just math symbols describing that curve (`2024_FN_Q20`)!
+- **Finer points:**
+  - Formal definitions (`\exists c, n_0` vs `\forall c \exists n_0` for `o, \omega`).
+  - **The Limit Ratio Test:** $\lim_{n\to\infty} \frac{f(n)}{g(n)}$ (`0 => o(g) and O(g)`, `finite > 0 => \Theta(g)`, `\infty => \omega(g) and \Omega(g)`).
+  - **5 Classic Traps:**
+    - If $f = \Theta(g)$, then $f = O(g)$ AND $f = \Omega(g)$ (`2024_FN_Q20`).
+    - $n \in o(n^2)$ AND $n \in O(n^2)$, NOT $\Theta(n^2)$ (`2023_FN_Q29`).
+    - Polynomial vs Exponential under $f(n^2)$ vs $f(n)^2$ (`2022_FN_Q11`: holds for polynomials, fails for $2^n$!).
+    - Decreasing function `100/n` is $o(1)$ — strictly smaller than constant `10` (`2017_FN_Q21`!).
+    - Constants $c$ CANNOT depend on $n$, and $f(n) = 2^{n+1}$ IS $\Theta(2^n)$, whereas $2^{2n} = 4^n \neq O(2^n)$!
+  - **Time vs Auxiliary Space Complexity:** Recursion call-stack depth counts toward space complexity!
+- **GATE-level items:** Ranking growth functions (`2026_AN_Q24`, `2021_FN_Q61`, `2017_FN_Q21`), `O/o/\Omega/\Theta` MSQs (`2023_FN_Q29`), worst-case `O(N) & \Omega(N)` (`2024_FN_Q20`), and `f(n^2)` transformations (`2022_FN_Q11`).
+- **Diagrams needed:** `COMPARE` (`2 × 3` Scenarios vs Bounds grid + 5 speed meters `o, O, \Theta, \Omega, \omega`); `FLOW` (Limit-Ratio test decision tree).
+- **Hand traces:** Testing $f(n)=n, g(n)=n^2$ (`2023_FN_Q29`), $f(n^2)$ for $n^3$ vs $2^n$ (`2022_FN_Q11`), and limit-comparing $n^{\log n}$ vs $n^{\sqrt{n}}$ (`2021_FN_Q61`).
+- **Common mistakes:** Confusing $\Omega$ with "Best Case" (`2024_FN_Q20`!); thinking $f \in o(g)$ prevents $f \in O(g)$ (`2023_FN_Q29`!); claiming $2^{2n} = \Theta(2^n)$; forgetting recursion stack in space complexity.
+
+#### Lesson 01.2 · Loop Complexity Analysis (Translating Code into Sums)
+- **Tag:** `[MUST]` — High-ROI guaranteed questions (`2023_FN_Q54`, `2018_FN_Q42`, `2018_FN_Q55`, `2017_AN_Q61`).
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** Lesson 00.1, Lesson 01.1, C5 (loops).
+- **Beginner must-see:** To find how fast a loop runs, don't guess "2 nested loops = $n^2$!" Instead, ask ONE simple question: **for each step of the outer loop (`i = 1, 2, 3...`), how many steps does the inner loop actually take?** Then add those counts up!
+- **Finer points:**
+  - Single loops: `i++` ($n$), `i += k` ($n/k$), `i *= 2` ($\log n$), `i = i * i` ($\log\log n$), `i*i <= n` ($\sqrt{n}$).
+  - Dependent nested loops: `j <= i` ($\Theta(n^2)$), `n` then `n/2` then `n/4` ($\Theta(n)$, `2023_FN_Q54`!), **`j += i` ($\sum n/i = \Theta(n \log n)$, `2017_AN_Q61`!)**, sequential halving loops ($\log n$ then $\log\log n$, `2018_FN_Q42`!).
+  - Multi-parameter recursive loops: `Count(x, y)` (`2018_FN_Q55`: `y` drops by 1 -> `1023` outer rounds × `10` halvings of `x`!).
+  - Early exit worst-case (`2024_FN_Q20`): check input that delays `break`/`return` until the very last element!
+- **GATE-level items:** Computing exact execution counts (`2018_FN_Q42`, `2018_FN_Q55`) and tight $\Theta$ bounds on nested halving/harmonic loops (`2023_FN_Q54`, `2017_AN_Q61`).
+- **Diagrams needed:** `TRACE` (6-pattern Loop Trace Table: `i` value, inner count, total sum); `CALLTREE` (`Count(1024, 1024)` showing `1023` resets of `x=1024 -> 1`, `2018_FN_Q55`).
+- **Hand traces:** Tracing `2023_FN_Q54`, `2017_AN_Q61` (`n=8`: `8 + 4 + 3 + 2 + 2 + 2 + 2 + 2`), `2018_FN_Q42` (`5`), and `2018_FN_Q55` (`10230`).
+- **Common mistakes:** Blindly writing $\Theta(n^2)$ for two nested `for` loops (`2017_AN_Q61` is $n \log n$!) or $\Theta(n \log n)$ for `while(n > 1) { for(1..n); n /= 2; }` (`2023_FN_Q54` is $\Theta(n)$!); miscounting `y != 1` off by 1 (`1023` vs `1024` in `2018_FN_Q55`!).
+
+#### Lesson 01.3 · Solving Recurrences: Master Theorem, Recursion Trees, Unrolling & Variable Substitution
+- **Tag:** `[MUST]` — Tested across nearly every GATE paper (`2026_FN_Q17`, `2026_AN_Q25`, `2025_FN_Q20`, `2024_FN_Q57`, `2021_FN_Q50`, `2021_AN_Q55`, `2020_FN_Q34`, `2017_AN_Q50`).
+- **Estimated reading time:** 90 minutes.
+- **Prerequisites:** Lesson 00.1, Lesson 01.1, DS D5 (Recursion Trees).
+- **Beginner must-see:** Master Theorem is just a tug-of-war between **Leaves** (total subcalls $n^{\log_b a}$) and **Root work** ($f(n)$)! Whoever is polynomially bigger wins; if they tie, multiply by $\log n$! And when a weird recurrence breaks Master Theorem (`T(n-1)`, `T(\sqrt{n})`, or `T(n/2) + T(2n/5)`), just draw the **Recursion Tree** or swap **`n = 2^m`**!
+- **Finer points:**
+  - **Master Theorem ($T(n) = a T(n/b) + f(n)$, $a \ge 1, b > 1$):**
+    - Compare $n^{\log_b a}$ vs $f(n)$: Case 1 (polynomially smaller -> $n^{\log_b a}$, `2021_AN_Q55(C)`), Case 2 (including $\log^k n$ -> $n^{\log_b a} \log^{k+1} n$), Case 3 (polynomially larger + regularity condition -> $f(n)$).
+    - **Master Theorem Traps:** $n / \log n$ sits in the non-polynomial gap between Case 1 & 2 (`2021_AN_Q55(B)` -> $\Theta(n \log \log n)$ for $2T(n/2) + n/\log n$!); floors/ceilings inside `T(\lceil n/b \rceil)` don't change $\Theta$; **Coupled recurrences `T_1, T_2`** solved bottom-up (`2026_FN_Q17`).
+  - **Linear Recurrence Unrolling (`T(n - c)`):** `T(n-1) + 1 -> \Theta(n)`, `T(n-1) + n -> \Theta(n^2)` (`2026_AN_Q25`), **`T(n) = 2T(n-1) + n 2^n -> \Theta(n^2 2^n)` (`2025_FN_Q20`)**!
+  - **Unequal-Split Recursion Tree & Akra-Bazzi Intuition (`2021_FN_Q50`):** $T(\lceil n/2 \rceil) + T(\lfloor 2n/5 \rfloor) + 7n$: level sum decays by $9/10 < 1 \implies \Theta(n)$! (Contrast with `n/3 + 2n/3 = 1 \implies \Theta(n \log n)`!).
+  - **Change-of-Variable Substitution (`\sqrt{n}`, `n^{1/a}`):**
+    - $T(n) = 2 T(\sqrt{n}) + 1$ (`n = 2^m -> S(m) = 2 S(m/2) + 1 -> \Theta(\log n)`, `2017_AN_Q50`).
+    - Divide first! $T(n) = \sqrt{n} T(\sqrt{n}) + n \implies \frac{T(n)}{n} = \frac{T(\sqrt{n})}{\sqrt{n}} + 1 \implies \Theta(n \log \log n)$ (`2024_FN_Q57`!).
+    - $T(n) = T(n^{1/a}) + 1 \implies \Theta(\log_a \log_b n)$ (`2020_FN_Q34`!).
+  - **Amortized Analysis Intuition (`[SHOULD]`):** Aggregate & Potential method on Binary Counter increment ($O(1)$ amortized).
+- **GATE-level items:** Coupled Master Theorem (`2026_FN_Q17`), non-polynomial gap (`2021_AN_Q55`), unequal splits (`2021_FN_Q50`), $\sqrt{n}$ substitution (`2024_FN_Q57`, `2017_AN_Q50`), $n^{1/a}$ (`2020_FN_Q34`), and exponential unrolling (`2025_FN_Q20`).
+- **Diagrams needed:** `TREE` (3 Master Theorem tug-of-war trees + unequal `9/10` decaying tree for `2021_FN_Q50`); `FLOW` (Master Theorem + Change-of-Variable selector flowchart); `TRACE` (Unrolling `2T(n-1) + n 2^n` level by level, `2025_FN_Q20`).
+- **Hand traces:** Solving ALL 6 styles (`2026_FN_Q17`, `2025_FN_Q20`, `2024_FN_Q57`, `2021_FN_Q50`, `2020_FN_Q34`, `2017_AN_Q50`) line by line.
+- **Common mistakes:** Applying Master Case 2 when $f(n) = n / \log n$ (`2021_AN_Q55(B)`!); forgetting `n` division before substituting $n = 2^m$ in `2024_FN_Q57`; missing the extra `n` factor in $T(n) = 2T(n-1) + n 2^n$ (`2025_FN_Q20` gives $n 2^n$ vs $n^2 2^n$!); forgetting `\log n` in Case 2 (`2021_AN_Q55(D)`!).
+
+---
+
+`CONTINUE FROM CHAPTER 02`
