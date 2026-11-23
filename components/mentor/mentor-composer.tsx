@@ -53,10 +53,12 @@ export function MentorComposer({ value, onChange, onSubmit, busy, onStop, placeh
   const [stacked, setStacked] = useState(false);
   const [lines, setLines] = useState(1);
   const [big, setBig] = useState(false);
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => { const m = window.matchMedia("(max-width: 639px)"); const f = () => setNarrow(m.matches); f(); m.addEventListener("change", f); return () => m.removeEventListener("change", f); }, []);
   /* eslint-disable react-hooks/set-state-in-effect -- sizes the box from what was typed, as the Mentor's does */
   useEffect(() => {
     const ta = taRef.current; if (!ta) return;
-    if (!value) { setStacked(false); setLines(1); setBig(false); }
+    if (!value) { setStacked(false); setLines(1); setBig(false); ta.style.height = "24px"; ta.style.overflowY = "hidden"; return; } // an empty box is one line whatever the placeholder does (measuring it here looped on phones)
     if (big) { ta.style.height = "38dvh"; ta.style.overflowY = "auto"; return; }
     ta.style.height = "auto";
     const n = Math.max(1, Math.round(ta.scrollHeight / 24));
@@ -64,10 +66,10 @@ export function MentorComposer({ value, onChange, onSubmit, busy, onStop, placeh
     if (n > 1 || value.includes("\n")) setStacked(true);
     const h = Math.min(ta.scrollHeight, 168);
     ta.style.height = `${h}px`; ta.style.overflowY = ta.scrollHeight > 168 ? "auto" : "hidden";
-  }, [value, big, stacked]);
+  }, [value, big, stacked, narrow]);
   /* eslint-enable react-hooks/set-state-in-effect */
   const showExpand = big || lines >= 3;
-  const wrap = stacked || big;
+  const wrap = stacked || big || narrow;
   const submit = () => { if (!value.trim() || busy || disabled) return; onSubmit(); };
   return (
     <form onSubmit={(e) => { e.preventDefault(); submit(); }}

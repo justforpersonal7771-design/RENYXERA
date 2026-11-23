@@ -24,7 +24,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { MentorThinking } from "@/components/mentor/mentor-thinking";
 import { MentorLogo } from "@/components/brand/mentor-logo";
-import { MentorSwitch } from "@/components/mentor/mentor-switch";
+import { MentorSwitch, TutorHeaderTail } from "@/components/mentor/mentor-switch";
 import { TutorHistoryMenu } from "@/components/mentor/tutor-history";
 import { RateLimiter } from "@/lib/ai/rate-limiter";
 import { Square } from "lucide-react";
@@ -650,7 +650,6 @@ export default function AITutorWorkspace() {
         {/* Sticky Command Bar */}
         <header className="flex-none rounded-2xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
           <div className="flex items-center gap-3">
-            <MentorSwitch active="tutor" className="mr-0.5" />
             <button
               onClick={() => router.back()}
               className="p-1.5 hover:bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-lg text-[var(--text-secondary)] transition"
@@ -696,6 +695,9 @@ export default function AITutorWorkspace() {
                 <span>{isShortcutBookmarked ? "Shortcut Saved" : "Save Shortcut"}</span>
               </button>
             )}
+
+            <MentorSwitch active="tutor" />
+            <TutorHeaderTail />
           </div>
         </header>
 

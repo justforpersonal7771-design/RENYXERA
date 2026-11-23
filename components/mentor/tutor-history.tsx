@@ -7,11 +7,11 @@ import { MentorLogo } from "@/components/brand/mentor-logo";
 import { ConversationMemory } from "@/lib/ai/memory/ConversationMemory";
 import { istDateStr } from "@/lib/time/ist";
 
-type Row = Awaited<ReturnType<typeof ConversationMemory.listConversations>>[number];
+export type Row = Awaited<ReturnType<typeof ConversationMemory.listConversations>>[number];
 
 /** "GATE_CS_2026_FN_Q5" → "GATE CS 2026 FN · Q5" */
-const nameOf = (id: string) => { const m = /^GATE_([A-Z]+)_(\d{4})_([A-Za-z0-9]+)_Q(\d+)$/.exec(id); return m ? `GATE ${m[1]} ${m[2]} ${m[3]} · Q${m[4]}` : id.startsWith("ai_") ? "Practice question" : id.replace(/_/g, " "); };
-const plain = (s: string) => s.replace(/\\\(|\\\)|\\\[|\\\]|\$\$?/g, "").replace(/\s+/g, " ").trim();
+export const nameOf = (id: string) => { const m = /^GATE_([A-Z]+)_(\d{4})_([A-Za-z0-9]+)_Q(\d+)$/.exec(id); return m ? `GATE ${m[1]} ${m[2]} ${m[3]} · Q${m[4]}` : id.startsWith("ai_") ? "Practice question" : id.replace(/_/g, " "); };
+export const plain = (s: string) => s.replace(/\\\(|\\\)|\\\[|\\\]|\$\$?/g, "").replace(/\s+/g, " ").trim();
 
 /**
  * The AI Mentor's "Tutor chats" group: every question the student has talked through with the Tutor, newest first, with the last thing said.

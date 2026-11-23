@@ -16,6 +16,7 @@ import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, H
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { MentorLogo } from "@/components/brand/mentor-logo";
 import { MentorSwitch } from "@/components/mentor/mentor-switch";
+import { CHATBOT_NAME } from "@/lib/mentor/brand";
 import { ChatSidebar } from "@/components/mentor/chat-sidebar";
 import { CardView, MODES, Mode, Msg, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { useMentorData } from "@/components/mentor/use-mentor-data";
@@ -36,7 +37,6 @@ const STARTERS: { title: string; text: string; mode?: Mode }[] = [
   { title: "Quiz me", text: AUTO.Quiz!, mode: "Quiz" },
   { title: "My weekly review", text: AUTO.Weekly!, mode: "Weekly" },
 ];
-const VOICES: { id: Voice; label: string }[] = [{ id: "Friendly", label: "Friendly" }, { id: "Strict", label: "Strict" }, { id: "Concise", label: "Concise" }];
 
 const prefersReduced = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 const store = {
@@ -262,7 +262,7 @@ function ChatScreen() {
       <form hidden={c.guestLocked} onSubmit={(e) => { e.preventDefault(); submit(); }}
         className={`relative flex flex-wrap items-center border-2 border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-18px_rgba(67,56,202,.55)] transition-[border-radius,border-color] duration-200 focus-within:border-[var(--tint-sky-ink)] ${stacked || big || narrow ? "rounded-3xl px-4 pb-2 pt-3" : "rounded-full py-1.5 pl-5 pr-2"}`}>
         <textarea ref={taRef} value={input} rows={1} autoFocus={empty} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } if (e.key === "Escape" && c.busy) c.stop(); }}
-          maxLength={1500} placeholder="Ask your Mentor" aria-label="Message your Mentor"
+          maxLength={1500} placeholder={`Ask ${CHATBOT_NAME}`} aria-label={`Message ${CHATBOT_NAME}`}
           className={`field-bare block min-h-6 resize-none leading-6 text-[var(--text-primary)] ${stacked || big || narrow ? `w-full basis-full ${showExpand ? "pr-8" : ""}` : "min-w-0 flex-1"}`} />
         {showExpand && (
           <button type="button" onClick={() => setBig((v) => !v)} aria-pressed={big} aria-label={big ? "Make the text box smaller" : "Make the text box bigger"} title={big ? "Smaller box" : "Bigger box"}
@@ -272,7 +272,6 @@ function ChatScreen() {
         )}
         <div className={`flex items-center gap-1 ${stacked || big || narrow ? "mt-1 w-full justify-end" : "shrink-0"}`}>
           <MenuSelect label="What should I do" value={c.mode} options={MODES} onChange={c.setMode} />
-          <MenuSelect label="How should I sound" value={c.voice} options={VOICES} onChange={c.setVoice} />
           {c.busy ? (
             <button type="button" onClick={c.stop} className="btn-main !h-9 !w-9 !p-0 justify-center" aria-label="Stop"><Square className="h-3.5 w-3.5 fill-current" /></button>
           ) : (
@@ -280,7 +279,7 @@ function ChatScreen() {
           )}
         </div>
       </form>
-      {c.msgs.length > 0 && <p className="mx-auto mt-1.5 w-fit max-w-full rounded-full bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-3 py-0.5 text-center text-[11px] leading-snug text-[var(--text-muted)] backdrop-blur-sm">AI Mentor can make mistakes. Check important facts.</p>}
+      {c.msgs.length > 0 && <p className="mx-auto mt-1.5 w-fit max-w-full rounded-full bg-[color-mix(in_srgb,var(--surface)_70%,transparent)] px-3 py-0.5 text-center text-[11px] leading-snug text-[var(--text-muted)] backdrop-blur-sm">{CHATBOT_NAME} can make mistakes. Check important facts.</p>}
     </div>
   );
 
@@ -302,7 +301,7 @@ function ChatScreen() {
   );
 
   const body = (
-    <div className={`flex w-full gap-3 ${wide ? "h-full" : "h-[calc(100dvh-9.5rem)] min-h-[26rem]"}`} data-fill-height="always">
+    <div className={`flex w-full gap-3 ${wide ? "h-full" : "min-h-0 flex-1"}`} data-fill-height="always">
       <motion.aside aria-label="Chats" aria-hidden={!sideOpen} initial={false}
         animate={{ width: sideOpen ? 284 : 0, opacity: sideOpen ? 1 : 0, marginRight: sideOpen ? 0 : -12 }} transition={{ type: "spring", stiffness: 360, damping: 38 }}
         style={{ pointerEvents: sideOpen ? "auto" : "none" }} className="mentor-side hidden shrink-0 overflow-hidden lg:block">
@@ -324,10 +323,10 @@ function ChatScreen() {
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
           {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
-          {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
-          <MentorSwitch active="mentor" className="max-sm:hidden" />
-          <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
+          {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> AI Mentor</Link>}
+          <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : `Chat with ${CHATBOT_NAME}`}</h1>
           {tier !== "pro" && <button type="button" onClick={() => openUpgrade(tier === "free" ? "Plus and Pro plans" : "Pro plan")} className={`plan-cta ${tier === "free" ? "plan-silver" : "plan-gold"} ml-auto inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm`}><MentorLogo className="h-5" /> {tier === "free" ? "Upgrade" : "Go Pro"}</button>}
+          <MentorSwitch active="mentor" />
           <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>
           {c.signedIn && <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>}
         </div>
@@ -421,11 +420,11 @@ function ChatScreen() {
   useEffect(() => {
     if (!host) return;
     if (wide) { host.className = "mentor-wide fixed inset-0 z-[320] bg-[var(--background)] p-2 sm:p-3"; document.body.appendChild(host); }
-    else { host.className = "contents"; slotRef.current?.appendChild(host); }
+    else { host.className = "flex min-h-0 flex-1 flex-col"; slotRef.current?.appendChild(host); }
     return () => { host.remove(); };
   }, [host, wide]);
-  const framed = <div className={wide ? "h-full rounded-[var(--card-radius)] border border-[var(--border)] bg-[color-mix(in_srgb,var(--tint-sky)_55%,var(--surface))] p-3 shadow-sm sm:p-4" : "contents"}>{body}</div>;
-  return <><div ref={slotRef} className="contents" />{host ? createPortal(framed, host) : null}</>;
+  const framed = <div className={wide ? "h-full rounded-[var(--card-radius)] border border-[var(--border)] bg-[color-mix(in_srgb,var(--tint-sky)_55%,var(--surface))] p-3 shadow-sm sm:p-4" : "flex min-h-0 flex-1 flex-col"}>{body}</div>;
+  return <><div ref={slotRef} className="mentor-fill-slot" />{host ? createPortal(framed, host) : null}</>;
 }
 
 export default function MentorChatPage() {

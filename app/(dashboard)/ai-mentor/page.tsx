@@ -11,7 +11,6 @@ import { istHour } from "@/lib/time/ist";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
-import { MentorSwitch } from "@/components/mentor/mentor-switch";
 import { useRouter } from "next/navigation";
 import { ArrowRight, BookOpen, BrainCircuit, CalendarPlus, Check, Loader2, MessageSquareText, Plus, Send, Sparkles, Target, Trash2, X, Zap } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
@@ -86,7 +85,6 @@ export default function AIMentorPage() {
             </div>
           </div>
           <div className="card-inset space-y-3 p-4">
-            <MentorSwitch active="mentor" />
             {locked ? (
               <p className="text-sm text-[var(--text-secondary)]">Chat is part of Plus ({AI_DAILY.plus} requests a day) and Pro ({AI_DAILY.pro}). Free accounts get a few starter requests. <button type="button" onClick={() => openUpgrade("Plus and Pro plans")} className="cursor-pointer font-bold underline">See plans</button></p>
             ) : (
