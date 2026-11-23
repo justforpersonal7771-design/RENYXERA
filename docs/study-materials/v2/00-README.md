@@ -1,5 +1,7 @@
 # Study materials v2: the rewrite plan (start here)
 
+> **Layout (24 Nov 2026):** common documents (00, 01, 02) stay here. **Each subject has its own folder** named after the subject. Programming and Data Structures files (03 to 07, the tags, and the reviews received) moved to `programming-and-data-structures/`. To review another subject, follow **`REVIEW-PACK-INDEX.md`**.
+
 | # | File | What it is | Who reads it |
 |---|---|---|---|
 | 00 | `00-HONEST-REVIEW.md` | An honest review of the current books, from a dropper's seat, and what changes | You |
