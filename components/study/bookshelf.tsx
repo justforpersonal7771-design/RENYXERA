@@ -182,18 +182,18 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
           <motion.div role="dialog" aria-modal="true" aria-label={b.title} onClick={(e) => e.stopPropagation()} style={{ transformPerspective: 1400 }}
             initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.94, rotateY: -12 }} animate={{ opacity: 1, scale: 1, rotateY: 0 }} exit={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.97 }}
             transition={{ duration: reduce ? 0.14 : 0.38, ease: [0.22, 1, 0.36, 1] }}
-            className="grid max-h-[88dvh] w-full max-w-4xl overflow-y-auto rounded-[16px] md:overflow-hidden shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr] md:grid-rows-[minmax(0,1fr)]">
+            className="grid max-h-[88dvh] w-full max-w-4xl overflow-y-auto overscroll-contain rounded-[16px] md:overflow-hidden shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr] md:grid-rows-[minmax(0,1fr)]">
             <div className="relative p-6 sm:p-8" style={{ background: `var(--tint-${b.tint ?? "peri"})`, color: `var(--tint-${b.tint ?? "peri"}-ink)`, borderLeft: `14px solid var(--tint-${b.tint ?? "peri"}-ink)` }}>
               <BookOpen className="h-7 w-7" aria-hidden />
               <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
-              <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series</p>
-              <p className="mt-4 text-[15px] leading-relaxed">{b.chapters.length} chapters in teaching order. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
+              <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series<span className="md:hidden"> · {b.chapters.length} chapters</span></p>
+              <p className="mt-4 hidden text-[15px] leading-relaxed md:block">{b.chapters.length} chapters in teaching order. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
               {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="pill-ink mt-5 inline-flex" style={{ ["--btn" as string]: `var(--tint-${b.tint ?? "peri"}-ink)` }}>Read: {b.chapters.find((c) => c.href)!.title}</Link>}
               {pack && !owns(pack.id) && <button type="button" onClick={() => { onClose(); openStudyShop(`Unlock ${b.title}`); }} className="pill-soft mt-2 inline-flex">Get this book · {rupees(pack.pricePaise)}</button>}
               <MarksPeek key={b.id} b={b} />
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full bg-black/10 md:hidden"><X className="h-5 w-5" /></button>
             </div>
-            <div className="custom-scrollbar relative min-h-0 overflow-y-auto overscroll-contain p-5 sm:p-7" data-tint={b.tint ?? "peri"} style={{ background: `color-mix(in srgb, var(--tint-${b.tint ?? "peri"}) 35%, var(--surface))` }}>
+            <div className="custom-scrollbar relative min-h-0 p-5 sm:p-7 md:overflow-y-auto md:overscroll-contain" data-tint={b.tint ?? "peri"} style={{ background: `color-mix(in srgb, var(--tint-${b.tint ?? "peri"}) 35%, var(--surface))` }}>
               <button type="button" onClick={onClose} aria-label="Close the book" className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full border border-[var(--border)] md:grid"><X className="h-5 w-5" /></button>
               <p className="mb-2 text-sm font-bold text-[var(--text-secondary)]">Contents</p>
               <Contents b={b} focus={focus} />
