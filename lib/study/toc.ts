@@ -166,3 +166,27 @@ export function cfSplits(L: CfPumpLang, w: string, p: number) {
   }
   return { total, survive };
 }
+
+/* ------------------------------------------------------------ chapter 5: Turing machine simulator */
+export type TM = { name: string; blurb: string; start: string; accept: string; alpha: string; /** "state,symbol" → [write, move, next state]; a missing entry rejects. "_" is the blank. */ delta: Record<string, [string, "L" | "R", string]> };
+export const TMS: Record<string, TM> = {
+  inc: { name: "Binary increment", blurb: "Adds 1 to a binary number written most significant bit first.", start: "q0", accept: "qa", alpha: "01",
+    delta: { "q0,0": ["0", "R", "q0"], "q0,1": ["1", "R", "q0"], "q0,_": ["_", "L", "q1"], "q1,1": ["0", "L", "q1"], "q1,0": ["1", "L", "q2"], "q1,_": ["1", "L", "q2"], "q2,0": ["0", "L", "q2"], "q2,1": ["1", "L", "q2"], "q2,_": ["_", "R", "qa"] } },
+  anbn: { name: "aⁿbⁿ", blurb: "Marks one a (X) and one b (Y) per round, until nothing is left unmatched.", start: "q0", accept: "qa", alpha: "ab",
+    delta: { "q0,a": ["X", "R", "q1"], "q0,Y": ["Y", "R", "q3"], "q0,_": ["_", "R", "qa"], "q1,a": ["a", "R", "q1"], "q1,Y": ["Y", "R", "q1"], "q1,b": ["Y", "L", "q2"], "q2,a": ["a", "L", "q2"], "q2,Y": ["Y", "L", "q2"], "q2,X": ["X", "R", "q0"], "q3,Y": ["Y", "R", "q3"], "q3,_": ["_", "R", "qa"] } },
+  anbncn: { name: "aⁿbⁿcⁿ", blurb: "A language that is not context-free: mark one a, one b and one c per round.", start: "q0", accept: "qa", alpha: "abc",
+    delta: { "q0,a": ["X", "R", "q1"], "q0,Y": ["Y", "R", "q4"], "q0,_": ["_", "R", "qa"], "q1,a": ["a", "R", "q1"], "q1,Y": ["Y", "R", "q1"], "q1,b": ["Y", "R", "q2"], "q2,b": ["b", "R", "q2"], "q2,Z": ["Z", "R", "q2"], "q2,c": ["Z", "L", "q3"],
+      "q3,a": ["a", "L", "q3"], "q3,b": ["b", "L", "q3"], "q3,Y": ["Y", "L", "q3"], "q3,Z": ["Z", "L", "q3"], "q3,X": ["X", "R", "q0"], "q4,Y": ["Y", "R", "q4"], "q4,Z": ["Z", "R", "q4"], "q4,_": ["_", "R", "qa"] } },
+};
+export function runTM(tm: TM, input: string, max = 4000) {
+  const tape = new Map<number, string>(); [...input].forEach((c, i) => tape.set(i, c));
+  let state = tm.start, head = 0, count = 0; const trace: { state: string; head: number; tape: string }[] = [];
+  const snap = () => { const keys = [...tape.keys()]; const lo = Math.min(0, head, ...keys), hi = Math.max(input.length - 1, head, ...keys); let s = ""; for (let i = lo; i <= hi; i++) s += tape.get(i) ?? "_"; return { state, head: head - lo, tape: s }; };
+  trace.push(snap());
+  while (state !== tm.accept && count < max) {
+    const sym = tape.get(head) ?? "_"; const rule = tm.delta[`${state},${sym}`];
+    if (!rule) return { result: "reject" as const, count, trace: trace.slice(0, 300), tape: snap().tape };
+    tape.set(head, rule[0]); head += rule[1] === "R" ? 1 : -1; state = rule[2]; count++; if (trace.length < 300) trace.push(snap());
+  }
+  return { result: state === tm.accept ? ("accept" as const) : ("limit" as const), count, trace: trace.slice(0, 300), tape: snap().tape.replace(/_+$/, "").replace(/^_+/, "") };
+}

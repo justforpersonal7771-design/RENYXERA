@@ -308,3 +308,111 @@ export function CfClassifyLab() {
     </Shell>
   );
 }
+
+
+/* ---------------------------------------------------------------- chapters 5 and 6: Turing machines, decidability */
+type QuizItem = { q: string; a: number; why: string };
+/** One guess-then-reveal quiz: a statement, a few class names, and the one-line reason. */
+function QuizLab({ title, note, tint, names, items }: { title: string; note: string; tint: string; names: string[]; items: QuizItem[] }) {
+  const [guess, setGuess] = useState<Record<number, number>>({});
+  const right = Object.entries(guess).filter(([k, v]) => items[Number(k)].a === v).length;
+  return (
+    <Shell title={title} note={note} tint={tint}>
+      <ul className="mt-3 grid gap-2 sm:grid-cols-2">{items.map((c, k) => { const g = guess[k]; const done = g !== undefined; return (
+        <li key={c.q} className="rounded-2xl bg-[var(--surface)] p-3 text-sm">
+          <p className="font-bold text-[var(--text-primary)]">{c.q}</p>
+          {!done ? <div className="mt-2 flex flex-wrap gap-2">{names.map((nm, v) => <Pill key={nm} on={false} onClick={() => setGuess((x) => ({ ...x, [k]: v }))}>{nm}</Pill>)}</div>
+            : <p className={`mt-1 ${g === c.a ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"}`}><b>{names[c.a]}</b> ({g === c.a ? "you were right" : "you said " + names[g].toLowerCase()}). {c.why}</p>}
+        </li>
+      ); })}</ul>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2"><Stat label="Answered" value={`${Object.keys(guess).length} of ${items.length}`} /><Stat label="Correct" value={right} /></div>
+    </Shell>
+  );
+}
+
+const RECRE: QuizItem[] = [
+  { q: "{ aⁿbⁿcⁿ }", a: 0, why: "The machine above decides it: it always halts." },
+  { q: "A_TM: does M accept w?", a: 1, why: "Run M on w and accept if it accepts; it may loop, and it is not decidable." },
+  { q: "HALT_TM: does M halt on w?", a: 1, why: "Simulate M on w: halting is detected, looping never is." },
+  { q: "The complement of A_TM", a: 2, why: "If it and A_TM were both recognisable, A_TM would be decidable." },
+  { q: "E_TM: L(M) = ∅", a: 2, why: "Its complement (some string is accepted) is recognisable by dovetailing, so E_TM is not." },
+  { q: "EQ_TM: L(M₁) = L(M₂)", a: 2, why: "Neither EQ_TM nor its complement is recognisable." },
+  { q: "Every regular language", a: 0, why: "Run the DFA: it always halts." },
+  { q: "Palindromes over {a, b}", a: 0, why: "Compare the two ends and shrink: it always halts." },
+  { q: "A_DFA: does a DFA accept w?", a: 0, why: "Simulate the DFA: it halts after |w| steps." },
+  { q: "{ ⟨M⟩ : M halts on the empty tape }", a: 1, why: "A special case of HALT_TM: recognisable, not decidable." },
+];
+export function RecReLab() {
+  return <QuizLab title="Decidable or only recognisable? lab" note="Decidable (a machine that always halts), recognisable but not decidable, or not even recognisable." tint="mint" names={["Decidable", "Recognisable, not decidable", "Not recognisable"]} items={RECRE} />;
+}
+
+const RICE: QuizItem[] = [
+  { q: "L(M) is empty", a: 0, why: "A non-trivial property of the language: Rice's theorem." },
+  { q: "L(M) is regular", a: 0, why: "Some machines have it, some do not, and it depends only on L(M)." },
+  { q: "L(M) contains the string 01", a: 0, why: "Non-trivial and about the language: undecidable." },
+  { q: "L(M) is finite", a: 0, why: "Non-trivial property of the language." },
+  { q: "L(M) is recursively enumerable", a: 1, why: "Every Turing machine's language is r.e.: the property is trivial, always true." },
+  { q: "M has at least 5 states", a: 1, why: "A property of the description, not of L(M): just count." },
+  { q: "M halts within 100 steps on input 0", a: 1, why: "Simulate 100 steps: always decidable." },
+  { q: "M has a transition into state q7", a: 1, why: "A syntactic check of the table." },
+  { q: "M halts on the empty tape", a: 2, why: "About how M runs, not about L(M), so Rice does not apply; it is undecidable by a reduction from HALT_TM." },
+  { q: "M ever writes a blank over a non-blank symbol", a: 2, why: "A property of the run, not of L(M): undecidable, but not by Rice." },
+];
+export function RiceLab() {
+  return <QuizLab title="Does Rice's theorem apply? lab" note="A property of the machine: decidable, undecidable by Rice's theorem, or undecidable for another reason." tint="rose" names={["Undecidable by Rice", "Decidable", "Undecidable, not by Rice"]} items={RICE} />;
+}
+
+const DECIDE: QuizItem[] = [
+  { q: "A_DFA: does a DFA accept w?", a: 0, why: "Simulate it." },
+  { q: "E_DFA: is a DFA's language empty?", a: 0, why: "Is an accepting state reachable?" },
+  { q: "EQ_DFA: do two DFAs agree?", a: 0, why: "Check the symmetric difference for emptiness." },
+  { q: "A_CFG: does a grammar generate w?", a: 0, why: "CYK in O(n³)." },
+  { q: "E_CFG: is a grammar's language empty?", a: 0, why: "Is S a generating variable?" },
+  { q: "EQ_CFG: do two grammars agree?", a: 1, why: "Undecidable (and so is L(G) = Σ*)." },
+  { q: "Is a CFG ambiguous?", a: 1, why: "Undecidable." },
+  { q: "A_LBA: does a linear-bounded automaton accept w?", a: 0, why: "Only finitely many configurations: decidable." },
+  { q: "E_LBA: is an LBA's language empty?", a: 1, why: "Undecidable, unlike E_CFG." },
+  { q: "A_TM: does a Turing machine accept w?", a: 1, why: "Undecidable (diagonalisation)." },
+  { q: "Post Correspondence Problem", a: 1, why: "Undecidable." },
+  { q: "Is a CFL regular? (given a grammar)", a: 1, why: "Undecidable." },
+];
+export function DecideLab() {
+  return <QuizLab title="Decidable or undecidable? lab" note="The standard problems about automata and grammars." tint="lilac" names={["Decidable", "Undecidable"]} items={DECIDE} />;
+}
+
+/** Run a Turing machine and step through its tape. */
+export function TmLab() {
+  const [id, setId] = useState<keyof typeof T.TMS>("anbn"); const [w, setW] = useState("aabb"); const [k, setK] = useState(0);
+  const tm = T.TMS[id];
+  const r = useMemo(() => T.runTM(tm, clean(w, [...tm.alpha]).slice(0, 12)), [tm, w]);
+  const step = Math.min(k, r.trace.length - 1); const cur = r.trace[step];
+  const pick = (x: keyof typeof T.TMS, dflt: string) => { setId(x); setW(dflt); setK(0); };
+  return (
+    <Shell title="Turing machine lab" note={tm.blurb} tint="sky">
+      <div className="mt-3 flex flex-wrap gap-2">{(["inc", "anbn", "anbncn"] as const).map((x) => <Pill key={x} on={id === x} onClick={() => pick(x, x === "inc" ? "1011" : x === "anbn" ? "aabb" : "aabbcc")}>{T.TMS[x].name}</Pill>)}</div>
+      <div className="mt-3 max-w-xs"><Field label={`Input over {${[...tm.alpha].join(", ")}}`} value={w} set={(v) => { setW(v); setK(0); }} /></div>
+      <div className="mt-3 grid gap-2 sm:grid-cols-3"><Stat label="Result" value={r.result === "accept" ? "Accepted" : r.result === "reject" ? "Rejected" : "Step limit"} /><Stat label="Steps" value={r.count} /><Stat label="Final tape" value={r.tape || "ε"} /></div>
+      <label className="mt-3 block text-sm font-semibold text-[var(--text-secondary)]">Step {step} of {r.trace.length - 1}<input type="range" min={0} max={r.trace.length - 1} value={step} onChange={(e) => setK(Number(e.target.value))} className="mt-1 w-full" aria-label="Step through the run" /></label>
+      <div className="mt-2 overflow-x-auto"><div className="flex w-max gap-1 font-num text-lg" aria-label="Tape">{[...cur.tape].map((c, i) => <span key={i} className={`grid h-9 w-9 place-items-center rounded-lg border-2 ${i === cur.head ? "border-[var(--text-primary)] bg-[var(--tint-sky)] font-extrabold" : "border-[var(--border)] bg-[var(--surface)]"}`}>{c === "_" ? "␣" : c}</span>)}</div></div>
+      <p className="mt-2 text-sm">State <b className="font-num">{cur.state}</b>{cur.state === tm.accept ? " (accepting)" : ""}, head on cell {cur.head}.</p>
+    </Shell>
+  );
+}
+
+/** The diagonal argument on a small table: flip the diagonal and the new row differs from every row. */
+export function DiagLab() {
+  const [g, setG] = useState<boolean[][]>([[true, false, true, true, false], [false, false, true, false, true], [true, true, true, false, false], [false, true, false, true, true], [true, false, false, true, false]]);
+  const flip = g.map((row, i) => !row[i]);
+  const toggle = (i: number, j: number) => setG((m) => m.map((row, a) => row.map((v, b) => (a === i && b === j ? !v : v))));
+  const bit = (v: boolean) => (v ? "1" : "0");
+  return (
+    <Shell title="Diagonal argument lab" note="Row i says which of the strings w₁ … w₅ the machine Mᵢ accepts. Tap a cell to change it." tint="peach">
+      <div className="mt-3 overflow-x-auto"><table className="border-separate border-spacing-1 text-sm" aria-label="Acceptance table"><thead><tr><th className="px-1" />{[1, 2, 3, 4, 5].map((j) => <th key={j} className="px-2 font-num text-[var(--text-muted)]">w{j}</th>)}<th className="px-2 text-[var(--text-muted)]">differs from D at</th></tr></thead>
+        <tbody>{g.map((row, i) => (
+          <tr key={i}><th className="pr-2 text-left font-num text-[var(--text-muted)]">M{i + 1}</th>{row.map((v, j) => <td key={j}><button type="button" onClick={() => toggle(i, j)} aria-label={`M${i + 1} on w${j + 1}: ${v ? "accepts" : "rejects"}`} className={`grid h-9 w-9 cursor-pointer place-items-center rounded-lg border-2 font-num font-bold ${i === j ? "border-[var(--text-primary)]" : "border-[var(--border)]"} ${v ? "bg-emerald-500/15" : "bg-[var(--surface)]"}`}>{bit(v)}</button></td>)}<td className="px-2 font-num text-xs">w{i + 1}: D says {bit(flip[i])}, M{i + 1} says {bit(row[i])}</td></tr>
+        ))}
+        <tr><th className="pr-2 text-left font-num text-[var(--text-primary)]">D</th>{flip.map((v, j) => <td key={j}><span className={`grid h-9 w-9 place-items-center rounded-lg border-2 border-[var(--tint-peach-ink)] font-num font-extrabold ${v ? "bg-emerald-500/15" : "bg-[var(--surface)]"}`}>{bit(v)}</span></td>)}<td className="px-2 text-xs font-semibold">the flipped diagonal</td></tr></tbody></table></div>
+      <p className="mt-3 text-sm font-semibold text-[var(--text-primary)]">D disagrees with every Mᵢ on wᵢ, whatever you put in the table: D is not any of the rows. The same trick, with D defined from a decider for A_TM, is the proof that A_TM is undecidable.</p>
+    </Shell>
+  );
+}
