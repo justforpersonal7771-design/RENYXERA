@@ -4195,7 +4195,7 @@
           },
           {
             "option_id": "C",
-            "text": "**$*##*#",
+            "text": "**$##*#",
             "is_correct": true,
             "has_image": false
           },
@@ -10281,7 +10281,7 @@
         "subject": "Operating Systems (OS)",
         "topic": "Concurrency & Synchronization (Semaphores, Mutex, Monitors, Locks)",
         "difficulty": "Medium",
-        "question_text": "Consider the following two threads T1 and T2 that update two shared variables \\( a \\) and \\( b \\). Assume that initially \\( a = b = 1 \\). Though context switching between threads can happen at any time, each statement of T1 or T2 is executed atomically without interruption.\n**T1**\n\\( a = a + 1; \\)\n\\( b = b + 1; \\)\n**T2**\n\\( b = 2 * b; \\)\n\\( a = 2 + a; \\)\nWhich one of the following options lists all the possible combinations of values of \\( a \\) and \\( b \\) after both T1 and T2 finish execution?",
+        "question_text": "Consider the following two threads T1 and T2 that update two shared variables \\( a \\) and \\( b \\). Assume that initially \\( a = b = 1 \\). Though context switching between threads can happen at any time, each statement of T1 or T2 is executed atomically without interruption.\n**T1**\n\\( a = a + 1; \\)\n\\( b = b + 1; \\)\n**T2**\n\\( b = 2 * b; \\)\n\\( a = 2 * a; \\)\nWhich one of the following options lists all the possible combinations of values of \\( a \\) and \\( b \\) after both T1 and T2 finish execution?",
         "has_image": false,
         "images_required": [],
         "options": [
