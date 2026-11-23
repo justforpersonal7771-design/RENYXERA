@@ -51,6 +51,7 @@ export function PyqSolution({ questionId, className = "" }: { questionId: string
   const [sol, setSol] = useState<Solution | null>(null);
   const [state, setState] = useState<"idle" | "loading" | "error">("idle");
   // another question on the same screen: start closed
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- reset when the screen moves to another question
   useEffect(() => { setOpen(false); setSol(null); setState("idle"); }, [questionId]);
 
   if (!has) return null;
