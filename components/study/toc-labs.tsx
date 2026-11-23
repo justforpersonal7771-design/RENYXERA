@@ -167,3 +167,74 @@ export function ClassifyLab() {
     </Shell>
   );
 }
+
+/* ---------------------------------------------------------------- chapter 3: context-free grammars and PDAs */
+const GRAMMARS: { id: string; label: string; src: string; w: string }[] = [
+  { id: "amb", label: "E → E+E | E*E | a", src: "E -> E+E | E*E | a", w: "a+a*a" },
+  { id: "fix", label: "Layered E, T, F", src: "E -> E+T | T; T -> T*F | F; F -> a", w: "a+a*a" },
+  { id: "else", label: "Dangling else", src: "S -> iS | iSeS | a", w: "iiaea" },
+  { id: "par", label: "Parentheses SS | (S) | ()", src: "S -> SS | (S) | ()", w: "()()()" },
+  { id: "pal", label: "Palindromes", src: "S -> aSa | bSb | a | b | ε", w: "abba" },
+];
+/** Type a grammar and a string: count its parse trees. Zero = not generated, one = unambiguous for this string, two or more = ambiguous. */
+export function CfgLab() {
+  const [src, setSrc] = useState(GRAMMARS[0].src); const [w, setW] = useState(GRAMMARS[0].w);
+  const parsed = useMemo(() => T.parseGrammar(src), [src]);
+  const trees = useMemo(() => (parsed ? T.countTrees(parsed.g, parsed.start, w) : 0), [parsed, w]);
+  return (
+    <Shell title="Parse-tree lab" note="Count the distinct parse trees a grammar gives a string. Two or more means the grammar is ambiguous." tint="sky">
+      <div className="mt-3 flex flex-wrap gap-2">{GRAMMARS.map((g) => <Pill key={g.id} on={src === g.src} onClick={() => { setSrc(g.src); setW(g.w); }}>{g.label}</Pill>)}</div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-[2fr_1fr]"><Field label="Grammar (rules separated by ; , alternatives by |, ε for empty)" value={src} set={setSrc} /><Field label="String" value={w} set={setW} hint="Terminals are lowercase letters and ( ) + *" /></div>
+      {!parsed ? <p className="mt-3 text-sm font-semibold text-rose-700 dark:text-rose-300">Write rules like S -&gt; aSb | ε</p> : (
+        <div className="mt-3 grid gap-2 sm:grid-cols-3">
+          <Stat label="Parse trees" value={trees} />
+          <Stat label="Generated?" value={trees > 0 ? "Yes" : "No"} />
+          <Stat label="For this string" value={trees > 1 ? "Ambiguous" : trees === 1 ? "Unambiguous" : "n/a"} />
+        </div>
+      )}
+    </Shell>
+  );
+}
+
+const CNF_SRC = "S -> AB | BC; A -> BA | a; B -> CC | b; C -> AB | a";
+/** CYK on a fixed Chomsky-normal-form grammar: the triangular table, cell by cell. */
+export function CykLab() {
+  const [w, setW] = useState("baaba");
+  const s = clean(w, ["a", "b"]).slice(0, 8);
+  const g = useMemo(() => T.parseGrammar(CNF_SRC)!, []);
+  const r = useMemo(() => T.cyk(g.g, g.start, s), [g, s]);
+  return (
+    <Shell title="CYK table lab" note="Grammar: S → AB | BC, A → BA | a, B → CC | b, C → AB | a. Each cell lists the variables that derive that substring." tint="butter">
+      <div className="mt-3 max-w-xs"><Field label="String over {a, b} (up to 8)" value={w} set={setW} /></div>
+      {s.length > 0 && (
+        <div className="mt-3 overflow-x-auto"><table className="border-separate border-spacing-1 text-sm" aria-label="CYK table"><tbody>
+          {Array.from({ length: s.length }, (_, k) => s.length - 1 - k).map((len) => (
+            <tr key={len}>{Array.from({ length: s.length - len }, (_, i) => <td key={i} className="min-w-[3.5rem] rounded-lg bg-[var(--surface)] px-2 py-1.5 text-center font-num"><span className="block text-[10px] text-[var(--text-muted)]">{s.slice(i, i + len + 1)}</span>{r.table[i][i + len].join(",") || "·"}</td>)}</tr>
+          ))}
+        </tbody></table></div>
+      )}
+      <p className="mt-3 flex flex-wrap items-center gap-3 text-sm font-semibold text-[var(--text-primary)]">{s ? <>Top cell {r.table[0]?.[s.length - 1]?.length ? r.table[0][s.length - 1].join(", ") : "empty"} · {s.length ? <Verdict ok={r.accepted} /> : null}</> : "Type a string."}</p>
+    </Shell>
+  );
+}
+
+const PDAS: { id: T.PdaKind; label: string; w: string }[] = [
+  { id: "anbn", label: "aⁿbⁿ", w: "aaabbb" },
+  { id: "wcwr", label: "w c wᴿ", w: "abcba" },
+  { id: "balanced", label: "Balanced ( )", w: "(()())" },
+];
+/** Step through a pushdown automaton: remaining input, stack (top on the left) and the move made. */
+export function PdaLab() {
+  const [k, setK] = useState<T.PdaKind>("anbn"); const [w, setW] = useState("aaabbb");
+  const alpha = k === "balanced" ? ["(", ")"] : k === "wcwr" ? ["a", "b", "c"] : ["a", "b"];
+  const s = clean(w, alpha).slice(0, 12);
+  const r = useMemo(() => T.runPDA(k, s), [k, s]);
+  return (
+    <Shell title="Pushdown automaton lab" note="Watch the stack. The top of the stack is the left end of each stack string." tint="lilac">
+      <div className="mt-3 flex flex-wrap gap-2">{PDAS.map((p) => <Pill key={p.id} on={k === p.id} onClick={() => { setK(p.id); setW(p.w); }}>{p.label}</Pill>)}</div>
+      <div className="mt-3 max-w-xs"><Field label="Input string" value={w} set={setW} /></div>
+      <ol className="mt-3 grid gap-1.5" aria-label="PDA trace">{r.log.map((l, i) => <li key={i} className="grid grid-cols-[1.5rem_minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.4fr)] gap-2 rounded-xl bg-[var(--surface)] px-3 py-1.5 text-sm"><span className="text-[var(--text-muted)]">{i}</span><span className="font-num">{l.rest}</span><span className="font-num">{l.stack}</span><span>{l.note}</span></li>)}</ol>
+      <p className="mt-3 flex flex-wrap items-center gap-3 text-sm font-semibold text-[var(--text-primary)]">Tallest stack {r.maxStack} <Verdict ok={r.accepted} /></p>
+    </Shell>
+  );
+}

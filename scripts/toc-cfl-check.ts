@@ -1,0 +1,24 @@
+// Re-computes every number quoted in content/study/CS/toc-c.ts with the engines in lib/study/toc.ts. Run: npx tsx scripts/toc-cfl-check.ts
+import { parseGrammar, countTrees, cyk, runPDA } from "../lib/study/toc";
+let bad = 0;
+const eq = (name: string, got: unknown, want: unknown) => { const ok = JSON.stringify(got) === JSON.stringify(want); if (!ok) bad++; console.log(`${ok ? "ok  " : "FAIL"} ${name}: ${JSON.stringify(got)}${ok ? "" : ` (expected ${JSON.stringify(want)})`}`); };
+const T = (g: string, w: string) => { const p = parseGrammar(g)!; return countTrees(p.g, p.start, w); };
+const E = "E -> E+E | E*E | a", L = "E -> E+T | T; T -> T*F | F; F -> a", D = "S -> iS | iSeS | a", P = "S -> SS | (S) | ()";
+eq("ambiguous a+a*a", T(E, "a+a*a"), 2); eq("ambiguous a+a+a+a", T(E, "a+a+a+a"), 5); eq("layered a+a*a", T(L, "a+a*a"), 1); eq("layered a+a+a", T(L, "a+a+a"), 1);
+eq("a^n b^n aabb", T("S -> aSb | ε", "aabb"), 1); eq("a^n b^n aab", T("S -> aSb | ε", "aab"), 0);
+eq("dangling else iiaea", T(D, "iiaea"), 2); eq("dangling else iaea", T(D, "iaea"), 1);
+eq("palindrome abba", T("S -> aSa | bSb | a | b | ε", "abba"), 1); eq("palindrome abab", T("S -> aSa | bSb | a | b | ε", "abab"), 0);
+eq("brackets ()()()", T(P, "()()()"), 2); eq("brackets ()()()()", T(P, "()()()()"), 5); eq("brackets (())", T(P, "(())"), 1);
+eq("unambiguous brackets ()()()", T("S -> (S)S | ε", "()()()"), 1);
+const g = parseGrammar("S -> AB | BC; A -> BA | a; B -> CC | b; C -> AB | a")!;
+const top = (w: string) => cyk(g.g, g.start, w);
+eq("CYK baaba", [top("baaba").accepted, top("baaba").table[0][4]], [true, ["A", "C", "S"]]);
+eq("CYK table row 2", [top("baaba").table[0][1], top("baaba").table[1][2], top("baaba").table[2][3], top("baaba").table[3][4]], [["A", "S"], ["B"], ["C", "S"], ["A", "S"]]);
+eq("CYK baaba length 3 and 4", [top("baaba").table[0][2], top("baaba").table[1][3], top("baaba").table[2][4], top("baaba").table[0][3], top("baaba").table[1][4]], [[], ["B"], ["B"], [], ["A", "C", "S"]]);
+eq("CYK aaaa", [top("aaaa").accepted, top("aaaa").table[0][3]], [false, ["B"]]); eq("CYK baab", [top("baab").accepted, top("baab").table[0][3]], [false, []]); eq("CYK ab", top("ab").table[0][1], ["C", "S"]);
+const pda = (k: "anbn" | "wcwr" | "balanced", w: string) => { const r = runPDA(k, w); return [r.accepted, r.log.length - 1, r.maxStack]; };
+eq("PDA aaabbb", pda("anbn", "aaabbb"), [true, 6, 4]); eq("PDA aab", pda("anbn", "aab"), [false, 3, 3]); eq("PDA abb", pda("anbn", "abb"), [false, 3, 2]);
+eq("PDA abcba", pda("wcwr", "abcba"), [true, 5, 3]); eq("PDA abcab", pda("wcwr", "abcab"), [false, 4, 3]); eq("PDA (()())", pda("balanced", "(()())"), [true, 6, 3]);
+eq("CNF steps n=7 and n=6 and n=10", [2 * 7 - 1, 2 * 6 - 1, 2 * 10 - 1], [13, 11, 19]); eq("triple construction 3 states 2 symbols", [3 * 3 * 2, 3 * 3 * 2 + 1, 2 * 2 * 2 + 1], [18, 19, 9]);
+eq("PDA from S -> aSb | ε transitions", 2 + 2, 4); eq("derivation steps a^5 b^5", 5 + 1, 6);
+process.exit(bad ? 1 : 0);

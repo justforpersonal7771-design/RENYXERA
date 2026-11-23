@@ -98,7 +98,7 @@ export default function TestCentrePage() {
 
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
-      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[8rem] lg:min-h-0">
+      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-[repeat(2,minmax(5.75rem,1fr))] md:min-h-[12rem] lg:min-h-0">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
           <Mark I={Settings} max="9rem" />
           <div>
@@ -108,27 +108,27 @@ export default function TestCentrePage() {
           </div>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Build a test <Arrow /></span>
         </Link>
-        <Link href="/test-centre/practice" data-tint="rose" className={`${tile} md:col-span-3`}>
+        <Link href="/test-centre/practice" data-tint="rose" className={`${tile} !py-3 gap-1 md:!py-3.5 md:col-span-3`}>
           <Mark I={RotateCcw} />
           <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Practice</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
-        <Link href="/test-centre/mocks" data-tint="peri" className={`${tile} md:col-span-3`}>
+        <Link href="/test-centre/mocks" data-tint="peri" className={`${tile} !py-3 gap-1 md:!py-3.5 md:col-span-3`}>
           <Mark I={Trophy} />
           <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Mocks</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
-        <Link href="/test-centre/build?view=flashcards" data-tint="butter" className={`${tile} md:col-span-2`}>
+        <Link href="/test-centre/build?view=flashcards" data-tint="butter" className={`${tile} !py-3 gap-1 md:!py-3.5 md:col-span-2`}>
           <Mark I={Layers} />
           <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Flashcards</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
-        <Link href="/battles" data-tint="lilac" className={`${tile} md:col-span-2`}>
+        <Link href="/battles" data-tint="lilac" className={`${tile} !py-3 gap-1 md:!py-3.5 md:col-span-2`}>
           <Mark I={Swords} />
           <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Battles</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Go <Arrow /></span>
         </Link>
-        <Link href="/test-centre/history" data-tint="sky" className={`${tile} col-span-2 md:col-span-2`}>
+        <Link href="/test-centre/history" data-tint="sky" className={`${tile} !py-3 gap-1 md:!py-3.5 col-span-2 md:col-span-2`}>
           <Mark I={BarChart3} />
           <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>History</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>

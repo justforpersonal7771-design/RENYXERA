@@ -85,7 +85,7 @@ export function useStudyCheckout(onBought: () => void) {
               <li>• Refunds only for our errors (double charge, a payment that did not activate, a fault we cannot fix), by email.</li>
             </ul>
             <label className="mt-4 flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">
-              <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
+              <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-[#6d4be8]" />
               <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold underline">Refund policy</Link>.</span>
             </label>
             <button type="button" onClick={() => void pay()} disabled={!agreed || busy} className="btn-main mt-4 inline-flex w-full items-center justify-center gap-2 disabled:opacity-50">{busy && <Loader2 className="h-4 w-4 animate-spin" />} Pay {rupees(quote.amountPaise)}</button>

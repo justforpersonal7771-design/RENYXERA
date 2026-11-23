@@ -80,8 +80,8 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
   return (
     <section id="packs" aria-label="Study packs and bundles" className="scroll-mt-24 space-y-8">
       <header className="mx-auto max-w-3xl text-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-500/12 px-3 py-1 text-xs font-bold text-violet-700 dark:text-violet-300"><BookOpenText className="h-3.5 w-3.5" /> Study packs</span>
-        <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">Every GATE subject, <span className="text-violet-700 dark:text-violet-300">book by book</span></h2>
+        <span className="inline-flex items-center gap-1.5 rounded-full study-chip px-3 py-1 text-xs font-bold"><BookOpenText className="h-3.5 w-3.5" /> Study packs</span>
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">Every GATE subject, <span className="study-grad">book by book</span></h2>
         <p className="mx-auto mt-3 max-w-xl text-balance text-[var(--text-secondary)]">Learn it, try it, test it, remember it. Separate from Plus and Pro, open until your GATE season ends. Every book opens with {FREE_TOPICS} free topics.</p>
         {owned.length > 0 && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="h-4 w-4" /> You own {owned.length} pack{owned.length === 1 ? "" : "s"}: {owned.map(packName).join(", ")}</p>}
       </header>
@@ -100,9 +100,9 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
 
       <div className="pointer-events-none sticky -top-2 z-20 flex justify-center py-3 sm:-top-3">
         <div role="radiogroup" aria-label="Study pack options" className="pointer-events-auto relative grid w-full max-w-md grid-cols-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_10px_24px_-12px_rgba(20,16,40,.45)]">
-          <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl border border-violet-500/40 bg-violet-500/15 transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
+          <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl study-thumb transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
           {(["bundles", "single", "custom"] as const).map((v) => (
-            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl px-1 text-xs font-bold leading-tight transition-colors duration-200 sm:text-sm ${view === v ? "text-violet-700 dark:text-violet-200" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
+            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl px-1 text-xs font-bold leading-tight transition-colors duration-200 sm:text-sm ${view === v ? "study-on" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
           ))}
         </div>
       </div>
@@ -183,7 +183,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
           <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {PACKS.map((p) => { const on = pick.includes(p.id); const disabled = owns(p.id); return (
               <label key={p.id} className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-3 text-sm ${on ? "border-[var(--text-primary)] bg-[var(--surface-secondary)]" : "border-[var(--border)]"} ${disabled ? "cursor-not-allowed opacity-60" : ""}`}>
-                <input type="checkbox" disabled={disabled} checked={on} onChange={(e) => setPick((x) => (e.target.checked ? [...x, p.id] : x.filter((y) => y !== p.id)))} className="accent-violet-600" aria-label={`Pick ${p.name}`} />
+                <input type="checkbox" disabled={disabled} checked={on} onChange={(e) => setPick((x) => (e.target.checked ? [...x, p.id] : x.filter((y) => y !== p.id)))} className="accent-[#6d4be8]" aria-label={`Pick ${p.name}`} />
                 <span className="min-w-0 flex-1"><b className="text-[var(--text-primary)]">{p.name}</b><span className="block text-xs text-[var(--text-secondary)]">{disabled ? "Owned" : readyOf(p.id)}</span></span>
                 <span className="font-num font-bold">{rupees(p.pricePaise)}</span>
               </label>

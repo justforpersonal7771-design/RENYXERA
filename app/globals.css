@@ -2488,3 +2488,12 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 .study-lesson { -webkit-touch-callout: none; }
 .study-lesson img, .study-lesson svg { -webkit-user-drag: none; user-drag: none; }
 @media print { .study-lesson, .rx-watermark { display: none !important; } body::before { content: "Lessons cannot be printed."; display: block; padding: 2rem; font: 700 18px sans-serif; } }
+
+/* Study purple. The theme maps Tailwind's violet-* to blue, so study surfaces use these real purples (owner, 23 Nov 2026). */
+.study-chip { background: rgba(124, 92, 240, .14); color: #5a3fd0; }
+.dark .study-chip { background: rgba(167, 139, 250, .18); color: #d6cbff; }
+.study-grad { background-image: linear-gradient(100deg, #4f2fe0 0%, #8b4df0 52%, #c13fe0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.dark .study-grad { background-image: linear-gradient(100deg, #a5b4ff 0%, #c4a8ff 50%, #f0a6ff 100%); }
+.study-thumb { border: 1px solid rgba(124, 92, 240, .5); background: rgba(124, 92, 240, .16); }
+.study-on { color: #4b2fa8; }
+.dark .study-on { color: #dcd2ff; }
