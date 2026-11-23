@@ -4,6 +4,8 @@
  * so a thin topic cannot ship.
  */
 
+import type { FigX } from "./figures";
+
 export type GraphNode = { id: string; label: string; kind: "process" | "resource"; x: number; y: number; instances?: number };
 export type GraphEdge = { from: string; to: string; kind: "request" | "assign" | "wait"; hl?: boolean };
 export type Fig =
@@ -11,7 +13,8 @@ export type Fig =
   | { kind: "net"; w: number; h: number; nodes: { id: string; label: string; x: number; y: number; hl?: boolean }[]; edges: { a: string; b: string; label?: string; hl?: boolean; dir?: boolean }[]; note?: string }
   | { kind: "matrix"; title: string; cols: string[]; rows: { label: string; cells: (number | string)[]; hl?: boolean; dim?: boolean }[] }
   | { kind: "steps"; frames: { caption: string; fig: Fig }[] }
-  | { kind: "strip"; items: { label: string; sub?: string; state: "done" | "now" | "todo" | "bad" }[] };
+  | { kind: "strip"; items: { label: string; sub?: string; state: "done" | "now" | "todo" | "bad" }[] }
+  | FigX; // master figure kinds: memory, array, linked, tree, calltree, heap, stackframe, trace, bits, ring, hashtable, frames
 
 export type Block =
   | { type: "hook"; text: string }

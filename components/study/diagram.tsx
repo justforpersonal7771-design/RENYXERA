@@ -6,6 +6,9 @@
  * Colours come from tokens so light and dark both work; the highlighted path uses one accent.
  */
 import type { Fig, GraphNode } from "@/lib/study/schema";
+import { ArrayView, Bits, HashTable, Linked, Memory, Ring, StackFrames, Trace } from "@/components/study/figures/linear";
+import { CallTree, Heap, Tree } from "@/components/study/figures/trees";
+import { Frames } from "@/components/study/figures/frames";
 
 const R = 26, RW = 74, RH = 44;
 
@@ -94,6 +97,18 @@ function Matrix({ fig }: { fig: Extract<Fig, { kind: "matrix" }> }) {
 }
 
 export function Diagram({ fig }: { fig: Fig }) {
+  if (fig.kind === "memory") return <Memory fig={fig} />;
+  if (fig.kind === "array") return <ArrayView fig={fig} />;
+  if (fig.kind === "linked") return <Linked fig={fig} />;
+  if (fig.kind === "stackframe") return <StackFrames fig={fig} />;
+  if (fig.kind === "trace") return <Trace fig={fig} />;
+  if (fig.kind === "bits") return <Bits fig={fig} />;
+  if (fig.kind === "ring") return <Ring fig={fig} />;
+  if (fig.kind === "hashtable") return <HashTable fig={fig} />;
+  if (fig.kind === "tree") return <Tree fig={fig} />;
+  if (fig.kind === "calltree") return <CallTree fig={fig} />;
+  if (fig.kind === "heap") return <Heap fig={fig} />;
+  if (fig.kind === "frames") return <Frames fig={fig} render={(f) => <Diagram fig={f as Fig} />} />;
   if (fig.kind === "graph") return <Graph fig={fig} />;
   if (fig.kind === "net") return <Net fig={fig} />;
   if (fig.kind === "strip") return <Strip fig={fig} />;
