@@ -45,9 +45,9 @@ export function MenuSelect<T extends string>({ label, value, options, onChange }
  * a bigger-box toggle from the third, Enter sends and Shift+Enter adds a line, Escape stops a running reply.
  * Only the menus (children) differ between the Mentor and the Tutor.
  */
-export function MentorComposer({ value, onChange, onSubmit, busy, onStop, placeholder, label, maxLength = 1500, disabled = false, children, submitId }: {
+export function MentorComposer({ value, onChange, onSubmit, busy, onStop, placeholder, label, maxLength = 1500, disabled = false, children, submitId, maxW = "max-w-3xl" }: {
   value: string; onChange: (v: string) => void; onSubmit: () => void; busy: boolean; onStop: () => void;
-  placeholder: string; label: string; maxLength?: number; disabled?: boolean; children?: ReactNode; submitId?: string;
+  placeholder: string; label: string; maxLength?: number; disabled?: boolean; children?: ReactNode; submitId?: string; /** Width cap of the box: the Mentor keeps a reading width, the Tutor uses the whole column. */ maxW?: string;
 }) {
   const taRef = useRef<HTMLTextAreaElement>(null);
   const [stacked, setStacked] = useState(false);
@@ -73,7 +73,7 @@ export function MentorComposer({ value, onChange, onSubmit, busy, onStop, placeh
   const submit = () => { if (!value.trim() || busy || disabled) return; onSubmit(); };
   return (
     <form onSubmit={(e) => { e.preventDefault(); submit(); }}
-      className={`relative mx-auto flex w-full max-w-3xl flex-wrap items-center border-2 border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-18px_rgba(67,56,202,.55)] transition-[border-radius,border-color] duration-200 focus-within:border-[var(--tint-sky-ink)] ${wrap ? "rounded-3xl px-4 pb-2 pt-3" : "rounded-full py-1.5 pl-5 pr-1.5"}`}>
+      className={`relative mx-auto flex w-full ${maxW} flex-wrap items-center border-2 border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-18px_rgba(67,56,202,.55)] transition-[border-radius,border-color] duration-200 focus-within:border-[var(--tint-sky-ink)] ${wrap ? "rounded-3xl px-4 pb-2 pt-3" : "rounded-full py-1.5 pl-5 pr-1.5"}`}>
       <textarea ref={taRef} value={value} rows={1} disabled={disabled} onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submit(); } if (e.key === "Escape" && busy) onStop(); }}
         maxLength={maxLength} placeholder={placeholder} aria-label={label}

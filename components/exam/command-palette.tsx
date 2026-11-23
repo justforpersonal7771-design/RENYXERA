@@ -104,6 +104,27 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
       action: () => { router.push("/mistakes"); onClose(); }
     },
     {
+      id: "action-notes",
+      title: "Open my Notes",
+      category: "Actions",
+      icon: ClipboardList,
+      action: () => { router.push("/notes"); onClose(); }
+    },
+    {
+      id: "action-revision",
+      title: "Start today's revision",
+      category: "Actions",
+      icon: ClipboardList,
+      action: () => { router.push("/revision"); onClose(); }
+    },
+    {
+      id: "action-tutor",
+      title: "Choose a question for the Tutor",
+      category: "Actions",
+      icon: Award,
+      action: () => { router.push("/ai-tutor"); onClose(); }
+    },
+    {
       id: "action-bookmarks",
       title: "Open Bookmarks Manager",
       category: "Actions",

@@ -237,7 +237,9 @@ import { StudyTabs } from "@/components/study/study-tabs";
 import { rememberScroll, recallScroll, useStudyTabs } from "@/lib/study/tabs";
 import { CHAPTERS } from "@/lib/study/chapters";
 import { CS_SHELF } from "@/lib/study/catalog";
-import { saveNote } from "@/lib/desk/stores";
+import { saveNote, useNotes } from "@/lib/desk/stores";
+import { NoteEditor } from "@/components/desk/note-editor";
+import { NotebookPen } from "lucide-react";
 import { addToRevision } from "@/lib/desk/revision";
 import { useToastStore } from "@/store/use-toast-store";
 import { Lock, ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, BookOpenText, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
@@ -350,6 +352,20 @@ const Faded = ({ b }: { b: B<"faded"> }) => <section {...card("peach")}><p class
 const Trap = ({ b }: { b: B<"trap"> }) => <section {...card("rose", "h-full")}><Label icon={<TriangleAlert className="h-4 w-4" aria-hidden />}>Trap</Label><p className="mt-1 font-bold text-[var(--text-primary)]">{b.wrong}</p><p className="mt-2 text-sm text-[var(--text-primary)]"><b>Why it feels right: </b>{b.tempting}</p><p className="mt-1 text-sm text-[var(--text-primary)]"><b>Why it is wrong: </b>{b.whyWrong}</p><p className="mt-3 rounded-xl bg-[var(--surface)] p-2.5 text-sm font-bold text-[var(--text-primary)]">Rule: {b.rule}</p></section>;
 const Shortcut = ({ b }: { b: B<"shortcut"> }) => <section {...card("mint")}><Label icon={<Zap className="h-4 w-4" aria-hidden />}>Shortcut</Label><p className="lesson-p mt-1">{b.text}</p><p className="mt-1 text-sm">Valid when: {b.validWhen}</p></section>;
 const Gate = ({ b }: { b: B<"gate"> }) => <section {...card("butter", "h-full")}><Label icon={<Lightbulb className="h-4 w-4" aria-hidden />}>How GATE asks it</Label><p className="lesson-p mt-1">{b.text}</p></section>;
+/** One personal note on this topic, kept in the Notes tab with everything else; the button shows when there is already one. */
+function TopicNoteButton({ t, meta }: { t: Topic; meta: { subject: string; topic: string } }) {
+  const [open, setOpen] = useState(false);
+  const has = useNotes((s) => s.items.some((n) => n.source === "study" && n.refId === t.id && n.kind === "note"));
+  return (
+    <>
+      <button type="button" onClick={() => setOpen(true)} className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)]" aria-label={has ? "Edit my note on this topic" : "Add a note on this topic"}>
+        <NotebookPen className="h-4 w-4" aria-hidden /> {has ? "My note" : "Add a note"}
+      </button>
+      <NoteEditor open={open} onClose={() => setOpen(false)} title="Note on this topic" initial={{ source: "study", refId: t.id, subject: meta.subject, topic: meta.topic, title: t.title }} />
+    </>
+  );
+}
+
 /** A recall card can be kept: it goes into the Notes (source Study) and into the Revision queue, so it comes back on the schedule. */
 function keepRecall(c: { q: string; a: string }, meta: { subject: string; topic: string }) {
   const n = saveNote({ source: "study", kind: "note", refId: `recall:${c.q.slice(0, 80)}`, title: c.q, body: c.a, subject: meta.subject, topic: meta.topic, revise: true });
@@ -554,7 +570,7 @@ function TopicView({ t, index, topics, href }: { t: Topic; index: number; topics
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
         <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
-        <TopicNav topics={topics} index={index} />
+        <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
       </header>
       {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
       {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 @3xl:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}

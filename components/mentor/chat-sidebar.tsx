@@ -8,6 +8,7 @@
  *    and are always visible on touch screens; folders open and close with a height animation.
  * All behaviour (open, new, pin, rename, move to a folder, delete) is passed in, so the same panel serves the side column and the phone drawer.
  */
+import { DeskSelect } from "@/components/desk/desk-select";
 import { useMemo, useState } from "react";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import { ChevronRight, Cloud, Folder, FolderInput, FolderMinus, MessageSquarePlus, PanelLeftClose, Pencil, Pin, PinOff, Search, Trash2, X } from "lucide-react";
@@ -67,9 +68,9 @@ export function ChatSidebar(p: Props) {
     const on = m.id === p.activeId;
     return (
       <li key={m.id} className="relative">
-        <div className="group relative flex items-center gap-1 rounded-xl pl-2.5 pr-1">
+        <div className="group relative flex items-center gap-1 rounded-xl pl-4 pr-1">
           {on && <motion.span layoutId="mentor-active-row" aria-hidden transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 520, damping: 40 }} className="absolute inset-0 rounded-xl bg-[var(--surface)] shadow-sm ring-1 ring-[color-mix(in_srgb,var(--tint-ink,#6366f1)_30%,transparent)]" />}
-          {on && <span aria-hidden className="absolute left-0 top-2 bottom-2 w-[3px] rounded-full bg-[var(--tint-sky-ink)]" />}
+          {on && <span aria-hidden className="absolute left-1.5 top-2.5 bottom-2.5 w-[3px] rounded-full bg-[var(--tint-sky-ink)]" />}
           {renaming?.id === m.id ? (
             <input autoFocus value={renaming.text} aria-label="Chat name" maxLength={80} onChange={(e) => setRenaming({ id: m.id, text: e.target.value })}
               onKeyDown={(e) => { if (e.key === "Enter") { p.onRename(m.id, renaming.text); setRenaming(null); } if (e.key === "Escape") setRenaming(null); }}
@@ -80,7 +81,7 @@ export function ChatSidebar(p: Props) {
               className={`relative z-10 min-w-0 flex-1 cursor-pointer truncate py-2 text-left text-[13.5px] leading-tight ${on ? "font-extrabold text-[var(--text-primary)]" : "font-medium text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>{m.title}</button>
           )}
           {renaming?.id !== m.id && (
-            <span className="relative z-10 flex shrink-0 items-center opacity-100 transition-opacity duration-150 [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100">
+            <span className="relative z-10 flex shrink-0 items-center opacity-100 transition-opacity duration-150 [@media(hover:hover)]:absolute [@media(hover:hover)]:right-1 [@media(hover:hover)]:top-1/2 [@media(hover:hover)]:-translate-y-1/2 [@media(hover:hover)]:rounded-lg [@media(hover:hover)]:bg-[var(--surface)] [@media(hover:hover)]:px-0.5 [@media(hover:hover)]:shadow-[0_2px_8px_-2px_rgba(12,34,75,.25)] [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100">
               <button type="button" onClick={() => p.onPin(m.id)} aria-label={m.pinned ? "Unpin chat" : "Pin chat"} title={m.pinned ? "Unpin" : "Pin"} className={ICON_BTN}>{m.pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}</button>
               <button type="button" onClick={() => { setMoveFor(moveFor === m.id ? null : m.id); setNewFolder(""); }} aria-label="Move to a folder" title="Move to a folder" aria-expanded={moveFor === m.id} className={ICON_BTN}><FolderInput className="h-3.5 w-3.5" /></button>
               <button type="button" onClick={() => setRenaming({ id: m.id, text: m.title })} aria-label="Rename chat" title="Rename" className={ICON_BTN}><Pencil className="h-3.5 w-3.5" /></button>
@@ -138,7 +139,7 @@ export function ChatSidebar(p: Props) {
             {query && <button type="button" onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-2 top-1/2 grid h-6 w-6 -translate-y-1/2 cursor-pointer place-items-center rounded-full text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><X className="h-3.5 w-3.5" /></button>}
           </label>
 
-          <label className="mb-2 block"><span className="sr-only">Order of chats</span><select value={view} onChange={(e) => setView(e.target.value as RailView)} className="h-9 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 px-3 text-xs font-semibold text-[var(--text-primary)]"><option value="smart">View: folders, then date</option><option value="date">View: by date only</option><option value="old">View: oldest first</option><option value="az">View: A to Z</option></select></label>
+          <div className="mb-2"><DeskSelect label="Order of chats" prefix="View: " value={view} onChange={(v) => setView(v as RailView)} options={[{ id: "smart", label: "folders, then date" }, { id: "date", label: "by date only" }, { id: "old", label: "oldest first" }, { id: "az", label: "A to Z" }]} /></div>
 
           <nav aria-label="Chat history" className="custom-scrollbar -mr-1 min-h-0 flex-1 overflow-y-auto pr-1">
             {sections.length === 0 && <p className="px-2 py-3 text-sm text-[var(--text-muted)]">{q ? "No chats match." : "Your chats will appear here."}</p>}
@@ -156,7 +157,7 @@ export function ChatSidebar(p: Props) {
                       </button>
                       <AnimatePresence initial={false}>
                         {!closed[g.key] && (
-                          <motion.ul initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }} className="folder-kids relative ml-[1.15rem] overflow-hidden border-l-2 border-[color-mix(in_srgb,var(--tint-sky-ink)_28%,transparent)] pl-2">
+                          <motion.ul initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }} className="folder-kids relative ml-[1.2rem] overflow-hidden py-0.5 pl-4 pr-1">
                             {g.items.map(row)}
                           </motion.ul>
                         )}

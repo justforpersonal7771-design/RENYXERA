@@ -329,7 +329,7 @@ function ChatScreen() {
           {tier !== "pro" && <button type="button" onClick={() => openUpgrade(tier === "free" ? "Plus and Pro plans" : "Pro plan")} className={`plan-cta ${tier === "free" ? "plan-silver" : "plan-gold"} ml-auto inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm`}><MentorLogo className="h-5" /> {tier === "free" ? "Upgrade" : "Go Pro"}</button>}
           <MentorSwitch active="mentor" />
           <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>
-          {c.signedIn && <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>}
+          {c.signedIn && !empty && <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>}
         </div>
 
         <section className="relative min-h-0 flex-1" aria-label="Conversation">

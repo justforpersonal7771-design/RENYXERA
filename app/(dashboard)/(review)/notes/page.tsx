@@ -1,5 +1,6 @@
 "use client";
 
+import { DeskSelect } from "@/components/desk/desk-select";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Filter, NotebookPen, Pin, PinOff, Plus, Repeat, Search, X } from "lucide-react";
@@ -84,6 +85,7 @@ export default function NotesPage() {
   const togglePin = (r: Row) => { if (r.note) useNotes.getState().upsert({ ...r.note, pinned: !r.note.pinned, updatedAt: new Date().toISOString() }); };
   const reviseAll = () => { let n = 0; shown.forEach((r) => { if (r.note) { if (addToRevision({ kind: "note", refId: r.note.id, source: "note", title: r.note.title || r.note.body.slice(0, 80), subject: r.note.subject, topic: r.note.topic })) n += 1; useNotes.getState().upsert({ ...r.note, revise: true, updatedAt: new Date().toISOString() }); } else if (r.refId) { if (addToRevision({ kind: "question", refId: r.refId, source: r.source, title: r.title, subject: r.subject, topic: r.topic })) n += 1; } }); void n; };
   const inRev = useRevision((s) => s.items);
+  const reviseOne = (r: Row) => { if (r.note) { addToRevision({ kind: "note", refId: r.note.id, source: "note", title: r.note.title || r.note.body.slice(0, 80), subject: r.note.subject, topic: r.note.topic }); useNotes.getState().upsert({ ...r.note, revise: true, updatedAt: new Date().toISOString() }); } else if (r.refId) addToRevision({ kind: "question", refId: r.refId, source: r.source, title: r.title, subject: r.subject, topic: r.topic }); };
 
   const rail = (
     <div className="space-y-5">
@@ -91,8 +93,8 @@ export default function NotesPage() {
         <ul className="space-y-0.5">{(["all", "study", "test", "bookmark", "tutor", "mentor", "mine"] as const).map((s) => (
           <li key={s}><button type="button" aria-pressed={src === s} onClick={() => setSrc(s)} className={`flex w-full cursor-pointer items-center justify-between rounded-xl px-3 py-2 text-sm font-semibold ${src === s ? "bg-[var(--tint-sky)] text-[var(--tint-sky-ink)] shadow-[inset_0_0_0_1.5px_var(--tint-sky-ink)]" : "text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"}`}>
             <span className="flex items-center gap-2">{s !== "all" && <span className="h-2.5 w-2.5 rounded-full" style={{ background: `var(--tint-${SOURCE_TINT[s]}-ink)` }} />}{s === "all" ? "Everything" : SOURCE_LABEL[s]}</span><span className="font-num text-xs opacity-80">{counts[s] ?? 0}</span></button></li>))}</ul></div>
-      <label className="block text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)]">Subject
-        <select value={subject} onChange={(e) => setSubject(e.target.value)} className="mt-1.5 h-10 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-semibold normal-case tracking-normal text-[var(--text-primary)]"><option value="all">All subjects</option>{subjects.map((s) => <option key={s} value={s}>{s}</option>)}</select></label>
+      <div><p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)]">Subject</p>
+        <DeskSelect label="Subject" value={subject} options={[{ id: "all", label: "All subjects" }, ...subjects.map((s) => ({ id: s, label: s }))]} onChange={setSubject} /></div>
       {tags.length > 0 && <div><p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)]">Tags</p><div className="flex flex-wrap gap-1.5">{tags.map((t) => <button key={t} type="button" aria-pressed={tag === t} onClick={() => setTag(tag === t ? "" : t)} className={tag === t ? "pill-ink" : "pill-soft"}>{t}</button>)}</div></div>}
       <div className="space-y-2"><label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[var(--text-primary)]"><input type="checkbox" checked={onlyRevise} onChange={(e) => setOnlyRevise(e.target.checked)} className="h-4 w-4" /> Marked for revision</label>
         <label className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[var(--text-primary)]"><input type="checkbox" checked={onlyPinned} onChange={(e) => setOnlyPinned(e.target.checked)} className="h-4 w-4" /> Pinned only</label></div>
@@ -106,8 +108,8 @@ export default function NotesPage() {
         <div className="mb-3 flex flex-wrap items-center gap-2">
           <label className="flex h-10 min-w-[12rem] flex-1 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 focus-within:border-[var(--tint-sky-ink)]"><Search className="h-4 w-4 text-[var(--text-muted)]" aria-hidden /><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search your notes" aria-label="Search notes" className="w-full bg-transparent text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)]" /></label>
           <button type="button" onClick={() => setFilters(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Filters"><Filter className="h-4 w-4" /> Filters</button>
-          <label className="sr-only" htmlFor="notes-group">Group by</label><select id="notes-group" value={group} onChange={(e) => setGroup(e.target.value as typeof group)} className="h-10 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-semibold text-[var(--text-primary)]">{GROUPS.map((g) => <option key={g.id} value={g.id}>{g.id === "none" ? "Group: none" : `Group: ${g.label}`}</option>)}</select>
-          <label className="sr-only" htmlFor="notes-sort">Sort by</label><select id="notes-sort" value={sort} onChange={(e) => setSort(e.target.value as typeof sort)} className="h-10 rounded-full border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-semibold text-[var(--text-primary)]">{SORTS.map((s) => <option key={s.id} value={s.id}>Sort: {s.label}</option>)}</select>
+          <DeskSelect label="Group by" prefix="Group: " value={group} options={GROUPS.map((g) => ({ id: g.id, label: g.id === "none" ? "none" : g.label }))} onChange={(v) => setGroup(v as typeof group)} className="w-44" />
+          <DeskSelect label="Sort by" prefix="Sort: " value={sort} options={SORTS.map((s) => ({ id: s.id, label: s.label }))} onChange={(v) => setSort(v as typeof sort)} className="w-44" align="right" />
           <button type="button" onClick={reviseAll} disabled={!shown.length} className="btn-soft !h-10 !px-3 text-sm disabled:opacity-50" title="Add what is shown to your revision queue"><Repeat className="h-4 w-4" /> Revise these</button>
           <button type="button" onClick={() => setEditor({ source: "mine" })} className="btn-main !h-10 !px-4 text-sm"><Plus className="h-4 w-4" /> New note</button>
         </div>
@@ -137,6 +139,7 @@ export default function NotesPage() {
                         {(r.subject || r.tags.length > 0) && <p className="mt-2 flex flex-wrap gap-1.5 text-[11px] text-[var(--text-secondary)]">{r.subject && <span>{r.subject}{r.topic && r.topic !== r.title ? ` · ${r.topic}` : ""}</span>}{r.tags.map((t) => <span key={t} className="rounded-full bg-[var(--surface-secondary)] px-2 py-0.5 font-semibold">#{t}</span>)}</p>}
                         <div className="mt-auto flex items-center gap-2 pt-3">
                           {(r.note || r.edit) && <button type="button" onClick={() => edit(r)} className="pill-soft cursor-pointer text-xs">Edit</button>}
+                          {!rev && (r.note || r.refId) && r.source !== "study" && <button type="button" onClick={() => reviseOne(r)} className="pill-soft cursor-pointer text-xs">Revise</button>}
                           {r.href && <Link href={r.href} className="pill-soft text-xs">{r.hrefLabel}</Link>}
                         </div>
                       </li>

@@ -29,6 +29,8 @@ import { TutorHistoryMenu } from "@/components/mentor/tutor-history";
 import { RateLimiter } from "@/lib/ai/rate-limiter";
 import { Square, NotebookPen, ChevronRight } from "lucide-react";
 import { DeskModal } from "@/components/desk/modal";
+import { WideFrame, WideButton, useWide } from "@/components/desk/wide-frame";
+import { ItemActions } from "@/components/desk/item-actions";
 import { saveNote } from "@/lib/desk/stores";
 import { addToRevision } from "@/lib/desk/revision";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
@@ -87,7 +89,11 @@ export default function AITutorWorkspace() {
   const [notesPreviewMode, setNotesPreviewMode] = useState(false);
   const [generatingNotes, setGeneratingNotes] = useState(false);
   const [isRightPanelCollapsed, setIsRightPanelCollapsed] = useState(false);
+  const { wide, toggle: toggleWide } = useWide();
+  const [notesReady, setNotesReady] = useState(false); const [practiceReady, setPracticeReady] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false); const [practiceOpen, setPracticeOpen] = useState(false); const [reviseNote, setReviseNote] = useState(false);
+  const notesOpenRef = useRef(false); const practiceOpenRef = useRef(false);
+  useEffect(() => { notesOpenRef.current = notesOpen; practiceOpenRef.current = practiceOpen; });
   const [queueInfo, setQueueInfo] = useState<{ ids: string[]; at: number } | null>(null);
   // a line-up made on the question desk: shows where you are in it and moves through it
   useEffect(() => {
@@ -101,7 +107,7 @@ export default function AITutorWorkspace() {
 
   const handleAutoNotes = async () => {
     if (!qid) return;
-    setGeneratingNotes(true);
+    setGeneratingNotes(true); setNotesReady(false);
     try {
       const res = await AIService.chatFollowUp(
         qid,
@@ -112,6 +118,8 @@ export default function AITutorWorkspace() {
       if (res.success && res.data) {
         const notes = res.data.concept + "\n\n" + res.data.steps.join("\n");
         setPersonalNotes(notes);
+        setNotesReady(true);
+        if (!notesOpenRef.current) useToastStore.getState().show("Your notes are drafted. Open Notes to read them.", "success");
       } else {
         useToastStore.getState().show("Failed to auto-generate notes.", "error");
       }
@@ -542,7 +550,7 @@ export default function AITutorWorkspace() {
       openUpgrade("GATE-level practice sets are part of Plus and Pro");
       return;
     }
-    setGeneratingPractice(true);
+    setGeneratingPractice(true); setPracticeReady(false);
     try {
       // bypassCache: true — this is an explicit user click asking for a fresh set, not a
       // background prefetch, so a cached identical set from an earlier click would defeat
@@ -598,6 +606,8 @@ export default function AITutorWorkspace() {
       }
 
       setExpandedPracticeId(0);
+      setPracticeReady(true);
+      if (!practiceOpenRef.current) useToastStore.getState().show("Your practice set is ready. Open Practice set to start.", "success");
     } catch (err) {
       console.warn("Failed generating practice set", err);
     } finally {
@@ -661,7 +671,8 @@ export default function AITutorWorkspace() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="tutor-shell w-full h-full flex flex-col gap-2.5 overflow-hidden" data-fill-height="always">
+      <WideFrame wide={wide}>
+      <div className="tutor-shell w-full flex-1 min-h-0 flex flex-col gap-2.5 overflow-hidden">
 
         {/* Sticky Command Bar */}
         <header className="flex-none rounded-2xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap md:flex-nowrap justify-between items-center gap-3">
@@ -690,8 +701,9 @@ export default function AITutorWorkspace() {
           </div>
 
           <div className="flex w-full flex-wrap items-center gap-2 md:w-auto md:shrink-0 md:flex-nowrap">
-            <button type="button" onClick={() => setNotesOpen(true)} title="Notes on this question" aria-label="Notes on this question" className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-black tracking-normal text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"><NotebookPen className="h-4 w-4" aria-hidden /><span className="max-xl:hidden">Notes</span></button>
-            <button type="button" onClick={() => setPracticeOpen(true)} title="Practice set" aria-label="Practice set" className="inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-black tracking-normal text-[var(--text-secondary)] transition hover:text-[var(--text-primary)]"><Sparkles className="h-4 w-4" aria-hidden /><span className="max-xl:hidden">Practice set</span>{practiceQuestions.length > 0 ? <span className="font-num">{practiceQuestions.length}</span> : null}</button>
+            {qid && <ItemActions questionId={qid} subject={question?.subject} topic={question?.topic} source="tutor" hideTeach />}
+            <button type="button" onClick={() => setNotesOpen(true)} title="Notes on this question" aria-label="Notes on this question" className={`inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-black tracking-normal text-[var(--text-secondary)] transition hover:text-[var(--text-primary)] ${generatingNotes ? "gen-working" : notesReady ? "gen-ready" : ""}`}>{generatingNotes ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <NotebookPen className="h-4 w-4" aria-hidden />}<span className="max-xl:hidden">{generatingNotes ? "Drafting…" : notesReady ? "Notes ready" : "Notes"}</span>{notesReady && !generatingNotes ? <span className="gen-dot" aria-hidden /> : null}</button>
+            <button type="button" onClick={() => setPracticeOpen(true)} title="Practice set" aria-label="Practice set" className={`inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-xs font-black tracking-normal text-[var(--text-secondary)] transition hover:text-[var(--text-primary)] ${generatingPractice ? "gen-working" : practiceReady ? "gen-ready" : ""}`}>{generatingPractice ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Sparkles className="h-4 w-4" aria-hidden />}<span className="max-xl:hidden">{generatingPractice ? "Generating…" : practiceReady ? "Set ready" : "Practice set"}</span>{practiceQuestions.length > 0 && !generatingPractice ? <span className="font-num">{practiceQuestions.length}</span> : null}{practiceReady && !generatingPractice ? <span className="gen-dot" aria-hidden /> : null}</button>
 
             {/* Bookmark button */}
             <button
@@ -722,6 +734,7 @@ export default function AITutorWorkspace() {
             )}
 
             <MentorSwitch active="tutor" />
+            <WideButton wide={wide} onToggle={toggleWide} />
             <TutorHeaderTail />
           </div>
         </header>
@@ -730,7 +743,7 @@ export default function AITutorWorkspace() {
         <main className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0 rounded-2xl border border-[var(--border)]">
 
           {/* LEFT PANEL: Question Details */}
-          <section className={`w-full border-r border-[var(--border)] bg-[var(--surface)] flex flex-col h-full overflow-hidden shrink-0 transition-all duration-300 ${isRightPanelCollapsed ? "lg:w-[50%]" : "lg:w-96"
+          <section className={`w-full border-r border-[var(--border)] bg-[var(--surface)] flex flex-col h-full overflow-hidden shrink-0 transition-all duration-300 ${isRightPanelCollapsed ? "lg:w-[50%]" : "lg:w-[34%] lg:min-w-[24rem] lg:max-w-[42rem]"
             }`}>
             {question ? (
               <div className="flex-1 overflow-y-auto p-5 space-y-6 custom-scrollbar">
@@ -854,17 +867,17 @@ export default function AITutorWorkspace() {
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
 
               {loading && !questionMissing ? (
-                <div className="mx-auto max-w-3xl py-10"><MentorThinking label="The Tutor is working on this question" /></div>
+                <div className="w-full py-10"><MentorThinking label="The Tutor is working on this question" /></div>
               ) : !error && history.length === 0 && !explanation ? (
-                <div className="mx-auto max-w-3xl py-10 text-center"><p className="text-sm text-[var(--text-secondary)]">Stopped. Ask the Tutor to explain this question again whenever you are ready.</p><button type="button" onClick={() => setFetchTick((n) => n + 1)} className="btn-main mt-3 cursor-pointer">Explain this question</button></div>
+                <div className="w-full py-10 text-center"><p className="text-sm text-[var(--text-secondary)]">Stopped. Ask the Tutor to explain this question again whenever you are ready.</p><button type="button" onClick={() => setFetchTick((n) => n + 1)} className="btn-main mt-3 cursor-pointer">Explain this question</button></div>
               ) : error && history.length === 0 ? (
-                <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-3 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-xs text-rose-600 dark:text-rose-400">
+                <div className="flex w-full flex-wrap items-center gap-3 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-xs text-rose-600 dark:text-rose-400">
                   <AlertTriangle className="h-4 w-4 shrink-0" />
                   <span className="min-w-0 flex-1">{error}</span>
                   {LIMIT_RE.test(error) && <button type="button" onClick={() => openUpgrade("More AI requests every day")} className="plan-cta plan-silver inline-flex h-9 shrink-0 cursor-pointer items-center rounded-xl px-4 text-xs font-extrabold">Upgrade</button>}
                 </div>
               ) : (
-                <div className="space-y-8 max-w-3xl mx-auto">
+                <div className="space-y-8 w-full">
                   {error && (
                     <div className="flex flex-wrap items-center gap-3 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-xs text-rose-600 dark:text-rose-400">
                       <AlertTriangle className="h-4 w-4 shrink-0" />
@@ -1100,7 +1113,7 @@ export default function AITutorWorkspace() {
 
               {/* Chat processing state animation */}
               {chatLoading && (
-                <div className="mx-auto max-w-3xl"><MentorThinking label="The Tutor is replying" /></div>
+                <div className="w-full"><MentorThinking label="The Tutor is replying" /></div>
               )}
 
               <div ref={chatBottomRef} />
@@ -1111,7 +1124,7 @@ export default function AITutorWorkspace() {
 
               {/* Dynamic Quick follow-up buttons (Part 10: Auto follow-up asks) */}
               {explanation && (
-                <div className="flex flex-wrap gap-1.5 justify-center max-w-3xl mx-auto">
+                <div className="flex flex-wrap gap-1.5 justify-center">
                   {[
                     { label: "Harder question", prompt: "", ask: "harder" as const },
                     { label: "Simpler question", prompt: "", ask: "simpler" as const },
@@ -1132,7 +1145,7 @@ export default function AITutorWorkspace() {
               )}
 
               <MentorComposer value={chatInput} onChange={setChatInput} onSubmit={() => void sendMessage(chatInput)} busy={chatLoading || loading} onStop={stopNow}
-                disabled={loading} placeholder="Ask follow-up (why is option B wrong?)" label="Ask the Tutor a follow-up" submitId="send-chat-submit">
+                disabled={loading} placeholder="Ask follow-up (why is option B wrong?)" label="Ask the Tutor a follow-up" submitId="send-chat-submit" maxW="max-w-none">
                 <MenuSelect label="How should I explain" value={explainMode}
                   options={EXPLAIN_MODES.map((m) => ({ id: m as string, label: m === "Exam Oriented" ? "Exam focus" : m }))} onChange={setExplainMode} />
               </MentorComposer>
@@ -1143,7 +1156,7 @@ export default function AITutorWorkspace() {
         </main>
 
         {/* Notes and the practice set open as windows, the way Study's tools do, so the workspace is just the question and the teaching. */}
-        <DeskModal open={notesOpen} onClose={() => setNotesOpen(false)} title="Notes on this question">
+        <DeskModal open={notesOpen} onClose={() => setNotesOpen(false)} title="Notes on this question" status={generatingNotes ? "working" : notesReady ? "ready" : null} statusLabel={generatingNotes ? "Drafting notes…" : "Notes drafted"} onSeen={() => setNotesReady(false)}>
           <div className="space-y-4">
                 {/* Personal notes attachments editor */}
                 <div className="space-y-2 border-t border-[var(--border-subtle)] pt-4">
@@ -1197,7 +1210,7 @@ export default function AITutorWorkspace() {
             <p className="text-xs text-[var(--text-secondary)]">Saved notes also appear in Review, under Notes, with every other note you keep.</p>
           </div>
         </DeskModal>
-        <DeskModal open={practiceOpen} onClose={() => setPracticeOpen(false)} title="Practice set" wide>
+        <DeskModal open={practiceOpen} onClose={() => setPracticeOpen(false)} title="Practice set" wide status={generatingPractice ? "working" : practiceReady ? "ready" : null} statusLabel={generatingPractice ? "Generating…" : "Set ready"} onSeen={() => setPracticeReady(false)}>
           <div className="space-y-4">
                 {/* Dynamic practice generation trigger & list */}
                 <div className="space-y-3 border-t border-[var(--border-subtle)] pt-4">
@@ -1330,6 +1343,7 @@ export default function AITutorWorkspace() {
         </DeskModal>
 
       </div>
+      </WideFrame>
     </MathJaxContext>
   );
 }

@@ -1966,9 +1966,10 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
 .folder-tab-stitch { display: none; }
 /* the panel's dashed stitch follows the card's own curve at every corner */
 .folder-panel::before { border-radius: calc(var(--card-radius) - 7px); border-style: dashed; }
-/* chat history: a folder's chats hang from a curved connector instead of a straight rule */
-.folder-kids > li { position: relative; }
-.folder-kids > li::before { content: ""; position: absolute; left: -14px; top: -10px; width: 12px; height: calc(50% + 10px); border-left: 2px solid color-mix(in srgb, var(--tint-lilac-ink) 45%, transparent); border-bottom: 2px solid color-mix(in srgb, var(--tint-lilac-ink) 45%, transparent); border-bottom-left-radius: 10px; pointer-events: none; }
+/* chat history: a folder's chats hang from one soft tree: a curved elbow into each chat and a spine that continues to the next, in one colour. */
+.folder-kids > li { position: relative; padding-block: 1px; }
+.folder-kids > li::before { content: ""; position: absolute; left: -12px; top: -4px; width: 11px; height: calc(50% + 4px); border-left: 2px solid color-mix(in srgb, var(--tint-sky-ink) 32%, transparent); border-bottom: 2px solid color-mix(in srgb, var(--tint-sky-ink) 32%, transparent); border-bottom-left-radius: 9px; pointer-events: none; }
+.folder-kids > li:not(:last-child)::after { content: ""; position: absolute; left: -12px; top: 50%; bottom: -4px; border-left: 2px solid color-mix(in srgb, var(--tint-sky-ink) 32%, transparent); pointer-events: none; }
 
 /* One press effect for every solid call-to-action (the "bump" of the hero button): a hard shadow that grows on hover and collapses on press.
    Covers the buttons built with plain colour classes (timer Start, Start revision, Resume, ...) so none of them feels flat next to .btn-main. */
@@ -2547,3 +2548,12 @@ select:not([multiple]):not([size]) {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b4bacb' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 select:not([multiple]):not([size]):disabled { opacity: .6; }
+
+/* ── Background work shown on a button or a window title: sweeping light while something is being made, a soft pop and glow when it is ready ─────────── */
+.gen-working { position: relative; border-color: var(--tint-sky-ink) !important; color: var(--tint-sky-ink) !important; background-image: linear-gradient(110deg, transparent 30%, color-mix(in srgb, var(--tint-sky-ink) 22%, transparent) 50%, transparent 70%); background-size: 220% 100%; animation: gen-sweep 1.4s linear infinite; }
+@keyframes gen-sweep { from { background-position: 120% 0; } to { background-position: -120% 0; } }
+.gen-ready { border-color: var(--tint-mint-ink) !important; color: var(--tint-mint-ink) !important; background-color: var(--tint-mint) !important; animation: gen-pop .5s cubic-bezier(.23, 1, .32, 1), gen-glow 2.2s ease-in-out .5s infinite; }
+@keyframes gen-pop { 0% { transform: scale(.94); } 60% { transform: scale(1.05); } 100% { transform: scale(1); } }
+@keyframes gen-glow { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--tint-mint-ink) 38%, transparent); } 50% { box-shadow: 0 0 0 6px transparent; } }
+.gen-dot { width: .5rem; height: .5rem; flex: none; border-radius: 9999px; background: var(--tint-mint-ink); }
+@media (prefers-reduced-motion: reduce) { .gen-working, .gen-ready { animation: none; } }

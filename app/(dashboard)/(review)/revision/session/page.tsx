@@ -13,7 +13,7 @@ import { useEnsureAnswer } from "@/components/exam/answers-pending-banner";
 import { useNotes, useRevision } from "@/lib/desk/stores";
 import { examDay, noteReviewDay, todayIst, useDeskLoad, useRevisionSeed } from "@/lib/desk/revision";
 import { RATING_LABEL, buildQueue, dayLabel, estimateMinutes, previewDays, rate, type Rating } from "@/lib/revision/scheduler";
-import { tutorHref } from "@/lib/desk/links";
+import { studyHrefFor, tutorHref, tutorQueueHref } from "@/lib/desk/links";
 import { QuestionRepository } from "@/lib/repository/question-repository";
 import { useDataStore } from "@/store/use-data-store";
 import { useStudyStore } from "@/store/use-study-store";
@@ -96,7 +96,8 @@ function Session() {
           <section className="rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5" aria-label="What to do about the misses">
             <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Worth a closer look</h2>
             <p className="mt-1 text-sm text-[var(--text-secondary)]">{topics.length ? `You missed items in ${topics.join(", ")}.` : "You missed a few items."} Repeating them is not enough; read the explanation.</p>
-            <div className="mt-3 flex flex-wrap gap-2">{firstMissed && <Link href={tutorHref(firstMissed.item.refId)} className="btn-main !h-10 !px-4 text-sm"><GraduationCap className="h-4 w-4" /> Teach me the first one</Link>}<Link href="/notes" className="btn-soft !h-10 !px-4 text-sm">Open my notes</Link></div>
+            <ul className="mt-3 space-y-1.5">{missed.slice(0, 8).map((x, i) => <li key={i} className="flex items-center gap-3 rounded-2xl bg-[var(--surface-secondary)] px-4 py-2.5"><span className="min-w-0 flex-1 truncate text-sm font-semibold text-[var(--text-primary)]">{x.item.title}</span>{x.item.kind === "question" ? <Link href={tutorHref(x.item.refId)} className="pill-ink text-xs"><GraduationCap className="mr-1 inline h-3.5 w-3.5" />Teach me</Link> : <Link href={studyHrefFor(x.item.topic, x.item.subject)} className="pill-ink text-xs">Open lesson</Link>}</li>)}</ul>
+            <div className="mt-3 flex flex-wrap gap-2">{missed.filter((x) => x.item.kind === "question").length > 1 && <button type="button" onClick={() => router.push(tutorQueueHref(missed.filter((x) => x.item.kind === "question").map((x) => x.item.refId)))} className="btn-main !h-10 !px-4 text-sm"><GraduationCap className="h-4 w-4" /> Teach me all {missed.filter((x) => x.item.kind === "question").length}</button>}<Link href="/notes" className="btn-soft !h-10 !px-4 text-sm">Open my notes</Link></div>
           </section>
         )}
         <div className="flex flex-wrap gap-2"><Link href="/revision" className="btn-main !h-11 !px-5">Back to Revision</Link><button type="button" onClick={() => router.refresh()} className="sr-only">Refresh</button></div>
@@ -175,6 +176,8 @@ function Session() {
           ) : (
             <div className="mt-6">
               {correct !== null && <p className={`mb-3 text-sm font-bold ${correct ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"}`}>{correct ? "Correct. Rate how easy it felt." : "Not this time. Be honest with the rating; it schedules the next review."}</p>}
+              {q && <p className="mb-3"><Link href={tutorHref(q.question_id)} className="pill-soft inline-flex items-center gap-1.5 text-xs"><GraduationCap className="h-3.5 w-3.5" aria-hidden /> Teach me this question</Link></p>}
+              {note && <p className="mb-3 flex flex-wrap gap-2">{note.refId && note.source !== "study" && note.source !== "mine" ? <Link href={tutorHref(note.refId)} className="pill-soft inline-flex items-center gap-1.5 text-xs"><GraduationCap className="h-3.5 w-3.5" aria-hidden /> Teach me the question</Link> : null}{note.source === "study" || note.topic ? <Link href={studyHrefFor(note.topic, note.subject)} className="pill-soft text-xs">Open the lesson</Link> : null}</p>}
               <div role="group" aria-label="How did it go" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 {([1, 2, 3, 4] as Rating[]).map((r, i) => (
                   <button key={r} type="button" onClick={() => finish(r)} className={`flex cursor-pointer flex-col items-center rounded-2xl border-2 px-3 py-3 font-bold transition hover:-translate-y-0.5 ${(correct === false && r === 1) || (correct === true && r === 3) ? "ring-2 ring-[var(--text-primary)]" : ""}`} style={{ background: `var(--tint-${TINT[r]})`, color: `var(--tint-${TINT[r]}-ink)`, borderColor: `var(--tint-${TINT[r]}-ink)` }}>

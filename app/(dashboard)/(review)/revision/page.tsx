@@ -1,5 +1,6 @@
 "use client";
 
+import { DeskSelect } from "@/components/desk/desk-select";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,7 +9,7 @@ import { ItemActions } from "@/components/desk/item-actions";
 import { useRevision } from "@/lib/desk/stores";
 import { examDay, readReviewDays, streakOf, todayIst, useDeskLoad, useRevisionSeed } from "@/lib/desk/revision";
 import { daysBetween, estimateMinutes, forecast, isDue, isLeech, strengthBySubject } from "@/lib/revision/scheduler";
-import { studyHrefFor, tutorHref } from "@/lib/desk/links";
+import { studyHrefFor, tutorHref, tutorQueueHref } from "@/lib/desk/links";
 import { useStudyStore } from "@/store/use-study-store";
 
 const PER_DAY_KEY = "renyxera.rev.perday";
@@ -59,7 +60,7 @@ export default function RevisionPage() {
             <div className="mt-4 flex flex-wrap items-center gap-2">
               <button type="button" onClick={() => start()} disabled={dueFocus.length === 0} className="btn-main !h-12 !px-6 disabled:opacity-50"><Play className="h-4 w-4" /> Start revision</button>
               <button type="button" onClick={() => start(10)} disabled={dueFocus.length === 0} className="btn-soft !h-12 !px-5"><Zap className="h-4 w-4" /> Quick 10</button>
-              {subjects.length > 0 && <select value={focus} onChange={(e) => setFocus(e.target.value)} aria-label="Focus on a subject" className="h-12 rounded-full border border-[var(--border)] bg-[var(--surface)] px-4 text-sm font-semibold text-[var(--text-primary)]"><option value="all">All subjects, mixed</option>{subjects.map((s) => <option key={s} value={s}>{s}</option>)}</select>}
+              {subjects.length > 0 && <DeskSelect label="Focus on a subject" value={focus} options={[{ id: "all", label: "All subjects, mixed" }, ...subjects.map((s) => ({ id: s, label: s }))]} onChange={setFocus} className="w-60" />}
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2 text-center">
@@ -104,6 +105,7 @@ export default function RevisionPage() {
             <section className={`${card} lg:col-span-2`} aria-label="Items that keep failing">
               <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Needs teaching, not repeating</h2>
               <p className="mt-1 text-sm text-[var(--text-secondary)]">You have missed these four times or more. Reading the explanation helps more than another attempt.</p>
+              {leeches.filter((l) => l.kind === "question").length > 1 && <button type="button" onClick={() => router.push(tutorQueueHref(leeches.filter((l) => l.kind === "question").map((l) => l.refId)))} className="btn-main mt-3 !h-10 !px-4 text-sm"><GraduationCap className="h-4 w-4" /> Teach me all {leeches.filter((l) => l.kind === "question").length}</button>}
               <ul className="mt-3 grid gap-2 md:grid-cols-2">{leeches.map((l) => (
                 <li key={l.id} className="flex items-center gap-3 rounded-2xl bg-[var(--surface-secondary)] px-4 py-3"><span className="min-w-0 flex-1"><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{l.title}</span><span className="block truncate text-xs text-[var(--text-secondary)]">{l.subject}{l.topic ? ` · ${l.topic}` : ""} · missed {l.lapses}×</span></span>
                   {l.kind === "question" ? <Link href={tutorHref(l.refId)} className="pill-ink text-xs"><GraduationCap className="mr-1 inline h-3.5 w-3.5" />Teach me</Link> : <Link href={studyHrefFor(l.topic, l.subject)} className="pill-ink text-xs"><BookOpen className="mr-1 inline h-3.5 w-3.5" />Lesson</Link>}

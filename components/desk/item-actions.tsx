@@ -16,12 +16,12 @@ import type { Note } from "@/lib/desk/types";
  * One menu on every question, note and card, so the pieces of the app can be reached from each other: Teach me (Tutor), Add note, Add to revision,
  * Open in Study, Ask the Mentor. It is the single place those links are written.
  */
-export function ItemActions({ questionId, subject, topic, title, source = "test", align = "right", label }: {
-  questionId: string; subject?: string; topic?: string; title?: string; source?: Note["source"]; align?: "left" | "right"; label?: boolean;
+export function ItemActions({ questionId, subject, topic, title, source = "test", align = "right", label, hideTeach = false }: {
+  questionId: string; subject?: string; topic?: string; title?: string; source?: Note["source"]; align?: "left" | "right"; label?: boolean; hideTeach?: boolean;
 }) {
-  const [open, setOpen] = useState(false); const [note, setNote] = useState(false);
+  const [open, setOpen] = useState(false); const [note, setNote] = useState(false); const [up, setUp] = useState(false);
   const ref = useRef<HTMLDivElement>(null); const router = useRouter();
-  const q = QuestionRepository.getQuestionById(questionId);
+  const q = (() => { try { return QuestionRepository.getQuestionById(questionId); } catch { return undefined; } })(); // the bank may not be loaded yet on a direct link
   const sub = subject ?? q?.subject; const top = topic ?? q?.topic;
   const inRev = useRevision((s) => s.items.some((i) => i.id === `question:${questionId}` && !i.suspended));
   useEffect(() => {
@@ -35,13 +35,13 @@ export function ItemActions({ questionId, subject, topic, title, source = "test"
   const item = "flex w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]";
   return (
     <div ref={ref} className="relative inline-block" onClick={(e) => e.stopPropagation()}>
-      <button type="button" onClick={() => setOpen((v) => !v)} aria-haspopup="menu" aria-expanded={open} aria-label="More actions for this question" title="Teach me, note, revise…"
+      <button type="button" onClick={() => { if (!open) { const r = ref.current?.getBoundingClientRect(); setUp(!!r && window.innerHeight - r.bottom < 300 && r.top > 300); } setOpen((v) => !v); }} aria-haspopup="menu" aria-expanded={open} aria-label="More actions for this question" title="Teach me, note, revise…"
         className={`inline-flex h-9 cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] text-sm font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)] ${label ? "px-3" : "w-9"}`}>
-        <MoreHorizontal className="h-4 w-4" />{label && "Do more"}
+        <MoreHorizontal className="h-4 w-4" />{label && "More"}
       </button>
       {open && (
-        <div role="menu" aria-label="Actions" className={`absolute top-full z-50 mt-1.5 w-56 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-xl ${align === "right" ? "right-0" : "left-0"}`}>
-          <Link role="menuitem" href={tutorHref(questionId)} className={item} onClick={() => setOpen(false)}><GraduationCap className="h-4 w-4" /> Teach me this</Link>
+        <div role="menu" aria-label="Actions" className={`absolute z-50 w-56 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-xl ${up ? "bottom-full mb-1.5" : "top-full mt-1.5"} ${align === "right" ? "right-0" : "left-0"}`}>
+          {!hideTeach && <Link role="menuitem" href={tutorHref(questionId)} className={item} onClick={() => setOpen(false)}><GraduationCap className="h-4 w-4" /> Teach me this</Link>}
           <button role="menuitem" type="button" className={item} onClick={() => { setOpen(false); setNote(true); }}><NotebookPen className="h-4 w-4" /> Add a note</button>
           <button role="menuitem" type="button" className={item} onClick={() => { setOpen(false); const made = addToRevision({ kind: "question", refId: questionId, source, title: text.slice(0, 110), subject: sub, topic: top }); useToastStore.getState().show(made ? "Added to your revision queue" : "Already in your revision queue", "success"); }}>
             {inRev ? <Check className="h-4 w-4 text-[var(--tint-mint-ink)]" /> : <Repeat className="h-4 w-4" />}{inRev ? "In revision" : "Add to revision"}

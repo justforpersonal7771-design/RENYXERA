@@ -5,14 +5,17 @@
  * Left: your Tutor sessions (grouped and sorted like the Mentor's history). Middle: the board, with "Pick by" reasons, filters, a topic heat board or a list, and a
  * queue tray to line several questions up. Right: the preview. A flat workbench, deliberately not the rounded chat card of the Mentor.
  */
+import { DeskSelect } from "@/components/desk/desk-select";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { MathJaxContext } from "better-react-mathjax";
-import { Bookmark, ClipboardX, Filter, GraduationCap, LayoutGrid, List, ListPlus, NotebookPen, Search, Sparkles, Target, X } from "lucide-react";
+import { PanelLeftOpen, Bookmark, ClipboardX, Filter, GraduationCap, LayoutGrid, List, ListPlus, NotebookPen, Search, Sparkles, Target, X } from "lucide-react";
 import { MentorSwitch } from "@/components/mentor/mentor-switch";
 import { TutorHistoryMenu } from "@/components/mentor/tutor-history";
 import { HistoryRail, type RailRow } from "@/components/desk/history-rail";
 import { DeskModal } from "@/components/desk/modal";
+import { WideFrame, WideButton, useWide } from "@/components/desk/wide-frame";
+import { motion } from "motion/react";
 import { ItemActions } from "@/components/desk/item-actions";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { ConversationMemory } from "@/lib/ai/memory/ConversationMemory";
@@ -59,8 +62,8 @@ export function TutorHome() {
   const [view, setView] = useState<"topics" | "list">("topics"); const [group, setGroup] = useState<(typeof GROUPS)[number]["id"]>("none"); const [sort, setSort] = useState<(typeof SORTS)[number]["id"]>("missed");
   const [sel, setSel] = useState<string | null>(null); const [limit, setLimit] = useState(40);
   const [queue, setQueue] = useState<string[]>([]); const [qname, setQname] = useState("");
-  const [filters, setFilters] = useState(false); const [peek, setPeek] = useState(false); const [wide, setWide] = useState(true);
-  useEffect(() => { const m = window.matchMedia("(min-width: 1280px)"); const f = () => setWide(m.matches); f(); m.addEventListener("change", f); return () => m.removeEventListener("change", f); }, []);
+  const [filters, setFilters] = useState(false); const [peek, setPeek] = useState(false); const [xl, setXl] = useState(true);
+  useEffect(() => { const m = window.matchMedia("(min-width: 1280px)"); const f = () => setXl(m.matches); f(); m.addEventListener("change", f); return () => m.removeEventListener("change", f); }, []);
   // eslint-disable-next-line react-hooks/exhaustive-deps -- the bank is re-read when it is ready or Spark adds questions
   const all = useMemo(() => (isInitialized ? QuestionRepository.getAllQuestions() : []), [isInitialized, totalQuestions]);
 
@@ -100,12 +103,18 @@ export function TutorHome() {
 
   const selQ = sel ? QuestionRepository.getQuestionById(sel) : undefined;
   const open = (id: string) => { try { sessionStorage.removeItem(QUEUE_KEY); } catch { /* ignore */ } router.push(tutorHref(id)); };
-  const pick = (id: string) => { setSel(id); if (!wide) setPeek(true); };
+  const pick = (id: string) => { setSel(id); if (!xl) setPeek(true); };
   const inQ = (id: string) => queue.includes(id);
   const toggleQ = (id: string) => setQueue((s) => (s.includes(id) ? s.filter((x) => x !== id) : [...s, id].slice(0, 30)));
   const startQueue = (ids: string[]) => { if (!ids.length) return; try { sessionStorage.setItem(QUEUE_KEY, JSON.stringify({ ids, at: 0 })); } catch { /* ignore */ } router.push(tutorHref(ids[0])); };
   const saveQueue = () => { if (!queue.length) return; useQueues.getState().upsert({ id: newId("q"), updatedAt: nowIso(), createdAt: nowIso(), name: qname.trim() || `${queue.length} questions · ${istDateStr()}`, ids: queue }); setQname(""); };
   const reset = () => { setSrc("all"); setSubject("all"); setTopic("all"); setDiff("all"); setType("all"); setMarks("all"); setYear("all"); setQ(""); };
+  const { wide, toggle: toggleWide } = useWide();
+  const [sideOpen, setSideOpen] = useState(true); // the Mentor's own setting, so the history rail opens and closes the same way on both halves
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- reads the saved choice once after mount
+  useEffect(() => { try { setSideOpen(localStorage.getItem("mentor_side") !== "0"); } catch { /* default open */ } }, []);
+  const toggleSide = () => setSideOpen((v) => { try { localStorage.setItem("mentor_side", v ? "0" : "1"); } catch { /* private mode */ } return !v; });
+  const newQuestion = () => { reset(); setView("topics"); setSel(null); document.getElementById("tutor-board-search")?.focus(); };
   const active = src !== "all" || subject !== "all" || topic !== "all" || diff !== "all" || type !== "all" || marks !== "all" || year !== "all" || q.trim() !== "";
 
   const railRows: RailRow[] | null = rows === null ? null : rows.map((r) => { const qq = QuestionRepository.getQuestionById(r.questionId); return { id: r.questionId, href: tutorHref(r.questionId), title: nameOf(r.questionId), sub: r.lastUser ? `You: ${plain(r.lastUser)}` : plain(r.lastText).slice(0, 90), at: r.updatedAt, subject: qq?.subject, topic: qq?.topic, year: qq ? String(qq.year) : undefined, difficulty: qq ? norm(String(qq.difficulty)) : undefined }; });
@@ -120,12 +129,12 @@ export function TutorHome() {
   );
   const filterFields = (
     <div className="flex flex-wrap items-center gap-2">
-      <select value={subject} onChange={(e) => { setSubject(e.target.value); setTopic("all"); }} aria-label="Subject" className={field}><option value="all">All subjects</option>{subjects.map((s) => <option key={s} value={s}>{s}</option>)}</select>
-      <select value={topic} onChange={(e) => setTopic(e.target.value)} aria-label="Topic" className={`${field} max-w-[14rem]`}><option value="all">All topics</option>{topics.map((s) => <option key={s} value={s}>{s}</option>)}</select>
-      <select value={diff} onChange={(e) => setDiff(e.target.value)} aria-label="Difficulty" className={field}><option value="all">Any difficulty</option><option>Easy</option><option>Medium</option><option>Hard</option></select>
-      <select value={type} onChange={(e) => setType(e.target.value)} aria-label="Question type" className={field}><option value="all">Any type</option><option>MCQ</option><option>MSQ</option><option>NAT</option></select>
-      <select value={marks} onChange={(e) => setMarks(e.target.value)} aria-label="Marks" className={field}><option value="all">Any marks</option><option value="1">1 mark</option><option value="2">2 marks</option></select>
-      <select value={year} onChange={(e) => setYear(e.target.value)} aria-label="Year" className={field}><option value="all">Any year</option>{years.map((y) => <option key={y} value={y}>{y}</option>)}</select>
+      <DeskSelect label="Subject" value={subject} options={[{ id: "all", label: "All subjects" }, ...subjects.map((s) => ({ id: s, label: s }))]} onChange={(v) => { setSubject(v); setTopic("all"); }} className="w-44" />
+      <DeskSelect label="Topic" value={topic} options={[{ id: "all", label: "All topics" }, ...topics.map((s) => ({ id: s, label: s }))]} onChange={setTopic} className="w-56" />
+      <DeskSelect label="Difficulty" value={diff} options={[{ id: "all", label: "Any difficulty" }, { id: "Easy", label: "Easy" }, { id: "Medium", label: "Medium" }, { id: "Hard", label: "Hard" }]} onChange={setDiff} className="w-36" />
+      <DeskSelect label="Question type" value={type} options={[{ id: "all", label: "Any type" }, { id: "MCQ", label: "MCQ" }, { id: "MSQ", label: "MSQ" }, { id: "NAT", label: "NAT" }]} onChange={setType} className="w-32" />
+      <DeskSelect label="Marks" value={marks} options={[{ id: "all", label: "Any marks" }, { id: "1", label: "1 mark" }, { id: "2", label: "2 marks" }]} onChange={setMarks} className="w-32" />
+      <DeskSelect label="Year" value={year} options={[{ id: "all", label: "Any year" }, ...years.map((y) => ({ id: y, label: y }))]} onChange={setYear} className="w-32" />
       {active && <button type="button" onClick={reset} className="inline-flex h-9 cursor-pointer items-center gap-1 rounded-lg px-2 text-xs font-bold text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><X className="h-3.5 w-3.5" /> Clear</button>}
     </div>
   );
@@ -159,7 +168,7 @@ export function TutorHome() {
       <div className="mt-3 space-y-2 border-t border-[var(--border)] pt-3">
         <button type="button" disabled={locked} onClick={() => open(selQ.question_id)} className="btn-main !h-12 w-full justify-center disabled:opacity-50"><GraduationCap className="h-4 w-4" /> {taught.has(selQ.question_id) ? "Continue with the Tutor" : "Teach me this question"}</button>
         {locked && <p className="text-center text-xs text-[var(--text-secondary)]">Tutor explanations come with Plus and Pro. <button type="button" onClick={() => openUpgrade("Plus and Pro plans")} className="cursor-pointer font-bold underline">See plans</button></p>}
-        <div className="flex items-center gap-2"><button type="button" onClick={() => toggleQ(selQ.question_id)} className="btn-soft !h-10 flex-1 justify-center text-sm"><ListPlus className="h-4 w-4" /> {inQ(selQ.question_id) ? "In the queue" : "Add to queue"}</button><ItemActions questionId={selQ.question_id} subject={selQ.subject} topic={selQ.topic} source="tutor" align="right" /></div>
+        <div className="flex items-center gap-2"><button type="button" onClick={() => toggleQ(selQ.question_id)} className="btn-soft !h-10 flex-1 justify-center text-sm"><ListPlus className="h-4 w-4" /> {inQ(selQ.question_id) ? "In the queue" : "Add to queue"}</button><ItemActions questionId={selQ.question_id} subject={selQ.subject} topic={selQ.topic} source="tutor" align="right" label /></div>
       </div>
     </div>
   ) : (
@@ -168,17 +177,23 @@ export function TutorHome() {
 
   return (
     <MathJaxContext config={mathJax}>
-      <div className="flex min-h-0 w-full flex-col gap-2" data-fill-height="always">
-        <header className="flex flex-wrap items-center gap-2">
-          <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:sr-only">Choose a question</h1>
-          <MentorSwitch active="tutor" />
-          <div className="lg:hidden"><TutorHistoryMenu iconOnly /></div>
-        </header>
+      <WideFrame wide={wide}>
+      <div className="flex min-h-0 w-full flex-1 gap-3">
+          <motion.aside aria-label="Tutor sessions" aria-hidden={!sideOpen} initial={false} animate={{ width: sideOpen ? 284 : 0, opacity: sideOpen ? 1 : 0, marginRight: sideOpen ? 0 : -12 }} transition={{ type: "spring", stiffness: 360, damping: 38 }} style={{ pointerEvents: sideOpen ? "auto" : "none" }} className="mentor-side hidden shrink-0 overflow-hidden lg:block"><div className="h-full w-[284px] p-3"><HistoryRail title="Tutor" rows={railRows} onCollapse={toggleSide} onNew={newQuestion} newLabel="New question" note="Kept on this device" today={istDateStr()} empty="Questions you go through with the Tutor will be listed here." onDelete={(id) => { void ConversationMemory.clearConversation(id).then(() => ConversationMemory.listConversations().then(setRows)); }}
+            footer={queues.length > 0 ? <section aria-label="Saved queues"><p className="px-2 pb-1 text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)]">Saved queues</p><ul className="space-y-0.5">{queues.map((s) => <li key={s.id} className="group flex items-center rounded-lg hover:bg-[var(--surface-secondary)]"><button type="button" onClick={() => setQueue(s.ids)} className="min-w-0 flex-1 cursor-pointer px-2.5 py-2 text-left"><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{s.name}</span><span className="block text-xs text-[var(--text-secondary)]">{s.ids.length} questions</span></button><button type="button" aria-label={`Delete ${s.name}`} onClick={() => useQueues.getState().remove(s.id)} className="mr-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-[var(--text-muted)] hover:text-rose-600"><X className="h-4 w-4" /></button></li>)}</ul></section> : null} /></div></motion.aside>
 
-        <div className="flex min-h-0 flex-1 divide-x divide-[var(--border)] overflow-hidden border-y border-[var(--border)] bg-[var(--surface)]">
-          <aside aria-label="Tutor sessions" className="hidden w-[17.5rem] shrink-0 bg-[color-mix(in_srgb,var(--tint-sky)_38%,var(--surface))] p-3 lg:block"><HistoryRail title="Tutor sessions" rows={railRows} today={istDateStr()} empty="Questions you go through with the Tutor will be listed here." onDelete={(id) => { void ConversationMemory.clearConversation(id).then(() => ConversationMemory.listConversations().then(setRows)); }}
-            footer={queues.length > 0 ? <section aria-label="Saved queues"><p className="px-2 pb-1 text-[11px] font-bold uppercase tracking-wide text-[var(--text-muted)]">Saved queues</p><ul className="space-y-0.5">{queues.map((s) => <li key={s.id} className="group flex items-center rounded-lg hover:bg-[var(--surface-secondary)]"><button type="button" onClick={() => setQueue(s.ids)} className="min-w-0 flex-1 cursor-pointer px-2.5 py-2 text-left"><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{s.name}</span><span className="block text-xs text-[var(--text-secondary)]">{s.ids.length} questions</span></button><button type="button" aria-label={`Delete ${s.name}`} onClick={() => useQueues.getState().remove(s.id)} className="mr-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-[var(--text-muted)] hover:text-rose-600"><X className="h-4 w-4" /></button></li>)}</ul></section> : null} /></aside>
-
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-2">
+          <header className="flex flex-wrap items-center gap-2">
+            <div className="lg:hidden"><TutorHistoryMenu iconOnly /></div>
+            {!sideOpen && <button type="button" onClick={toggleSide} aria-label="Show history" title="Show history" className="btn-soft !h-10 !px-3 max-lg:hidden"><PanelLeftOpen className="h-4 w-4" /></button>}
+            <div className="flex min-w-0 flex-1 items-center gap-3">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl" style={{ background: "var(--tint-peri)", color: "var(--tint-peri-ink)", boxShadow: "inset 0 0 0 1.5px var(--tint-peri-ink)" }} aria-hidden><GraduationCap className="h-5 w-5" /></span>
+              <div className="min-w-0"><h1 className="truncate font-display text-xl font-extrabold leading-tight tracking-tight text-[var(--text-primary)]">Pick a question</h1><p className="truncate text-xs font-semibold text-[var(--text-secondary)] max-sm:hidden">Preview it first. The Tutor starts only when you press Teach me.</p></div>
+            </div>
+            <MentorSwitch active="tutor" />
+            <WideButton wide={wide} onToggle={toggleWide} />
+          </header>
+          <div className="flex min-h-0 min-w-0 flex-1 divide-x divide-[var(--border)] overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] shadow-[0_10px_30px_-22px_rgba(12,34,75,.45)]">
           <section aria-label="Question board" className="flex min-w-0 flex-1 flex-col">
             <div className="space-y-2.5 border-b border-[var(--border)] p-3">
               <div className="flex flex-wrap items-center gap-2">
@@ -188,7 +203,7 @@ export function TutorHome() {
               </div>
               {reasons}
               <div className={`${filters ? "block" : "hidden"} lg:block`}>{filterFields}</div>
-              {view === "list" && <div className="flex flex-wrap items-center gap-2 text-xs"><label className="flex items-center gap-1.5 font-semibold text-[var(--text-secondary)]">Group<select value={group} onChange={(e) => setGroup(e.target.value as typeof group)} className={field}>{GROUPS.map((g) => <option key={g.id} value={g.id}>{g.label}</option>)}</select></label><label className="flex items-center gap-1.5 font-semibold text-[var(--text-secondary)]">Sort<select value={sort} onChange={(e) => setSort(e.target.value as typeof sort)} className={field}>{SORTS.map((s) => <option key={s.id} value={s.id}>{s.label}</option>)}</select></label></div>}
+              {view === "list" && <div className="flex flex-wrap items-center gap-2 text-xs"><DeskSelect label="Group by" prefix="Group: " value={group} options={GROUPS.map((g) => ({ id: g.id, label: g.label }))} onChange={(v) => setGroup(v as typeof group)} className="w-48" /><DeskSelect label="Sort by" prefix="Sort: " value={sort} options={SORTS.map((s) => ({ id: s.id, label: s.label }))} onChange={(v) => setSort(v as typeof sort)} className="w-52" /></div>}
               <p className="text-xs text-[var(--text-secondary)]" aria-live="polite">{!isInitialized ? "Loading the question bank…" : `${filtered.length} ${filtered.length === 1 ? "question" : "questions"}${active ? " match" : ""}`}</p>
             </div>
 
@@ -222,11 +237,13 @@ export function TutorHome() {
           </section>
 
           <aside aria-label="Preview" className="hidden w-[24rem] shrink-0 bg-[color-mix(in_srgb,var(--tint-peri)_30%,var(--surface))] p-4 xl:block">{preview}</aside>
+          </div>
         </div>
 
-        <DeskModal open={peek && !wide} onClose={() => setPeek(false)} title="Question preview">{<div className="h-[70dvh]">{preview}</div>}</DeskModal>
+        <DeskModal open={peek && !xl} onClose={() => setPeek(false)} title="Question preview">{<div className="h-[70dvh]">{preview}</div>}</DeskModal>
         <p className="sr-only">{locked ? "Tutor explanations come with Plus and Pro." : `${AI_DAILY[tier]} AI requests a day on your plan.`}</p>
       </div>
+      </WideFrame>
     </MathJaxContext>
   );
 }

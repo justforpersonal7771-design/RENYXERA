@@ -3,6 +3,11 @@ import { CS_SHELF } from "@/lib/study/catalog";
 /** Where each screen of the AI Desk and its neighbours can be reached from any other. Every question, note and card uses these, so a link is written once. */
 export const tutorHref = (qid: string) => `/ai-tutor?qid=${encodeURIComponent(qid)}`;
 export const mentorAskHref = (text: string) => `/ai-mentor/chat?new=1&q=${encodeURIComponent(text.slice(0, 600))}`;
+/** Lines several questions up for the Tutor (the same queue the question desk makes) and returns the address of the first. */
+export function tutorQueueHref(ids: string[]): string {
+  try { sessionStorage.setItem("renyxera.tutor.queue", JSON.stringify({ ids: ids.slice(0, 30), at: 0 })); } catch { /* the first question still opens */ }
+  return tutorHref(ids[0]);
+}
 export const NOTES_HREF = "/notes";
 export const REVISION_HREF = "/revision";
 

@@ -66,7 +66,7 @@ function sectionTint(p: string | null): string {
   const tc = testCentreTint(path);
   if (tc) return tc;
   const map: [string, string][] = [["/test-centre", "mint"], ["/setup", "mint"], ["/exam", "mint"], ["/mocks", "peri"], ["/study", "butter"], ["/ai-mentor", "sky"], ["/ai-tutor", "sky"],
-    ["/mistakes", "rose"], ["/bookmarks", "rose"], ["/revision", "rose"], ["/analytics", "mint"], ["/profile", "peri"], ["/pro", "butter"]];
+    ["/mistakes", "rose"], ["/bookmarks", "rose"], ["/notes", "rose"], ["/revision", "rose"], ["/analytics", "mint"], ["/profile", "peri"], ["/pro", "butter"]];
   return map.find(([k]) => path.startsWith(k))?.[1] ?? "sky";
 }
 
