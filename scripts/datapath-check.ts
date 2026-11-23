@@ -1,0 +1,32 @@
+// Verifies the ALU / data path / control engines and prints the numbers quoted in content/study/CS/coa-c.ts. Run: npx tsx scripts/datapath-check.ts
+import { addFlags, booth, controlStore, cycleTimes, fieldBits, ieeeDecode, ieeeEncode, rippleDelay, toSigned } from "../lib/study/datapath";
+let bad = 0;
+const eq = (name: string, got: unknown, want: unknown) => { const ok = JSON.stringify(got) === JSON.stringify(want); if (!ok) bad++; console.log(`${ok ? "ok  " : "FAIL"} ${name}: ${JSON.stringify(got)}${ok ? "" : ` (expected ${JSON.stringify(want)})`}`); };
+const f = (a: number, b: number, sub = false) => { const r = addFlags(a, b, 8, sub); return [r.result, r.signed, r.carry, r.overflow]; };
+eq("8-bit 100 + 50", f(100, 50), [150, -106, false, true]);
+eq("8-bit 200 + 100 (unsigned carry, no signed overflow)", f(200, 100), [44, 44, true, false]);
+eq("8-bit -128 + -1", f(128, 255), [127, 127, true, true]);
+eq("8-bit 5 - 7", f(5, 7, true), [254, -2, false, false]);
+eq("8-bit -128 - 1 overflows", f(128, 1, true), [127, 127, true, true]);
+eq("toSigned(0xF0, 8)", toSigned(0xf0, 8), -16);
+const b1 = booth(-3, 5, 4); eq("Booth -3 x 5 (4-bit)", [b1.product, b1.rows.length - 1], [-15, 4]);
+eq("Booth 7 x 7 (4-bit signed 7 x 7 = 49)", booth(7, 7, 4).product, 49);
+eq("Booth -8 x -8 (4-bit)", booth(-8, -8, 4).product, 64);
+eq("Booth 3 x -2", booth(3, -2, 4).product, -6);
+const e = ieeeEncode(5.75); eq("IEEE 5.75", [e.hex, e.expBits, e.frac.slice(0, 6)], ["0x40B80000", "10000001", "011100"]);
+eq("IEEE -12.5", ieeeEncode(-12.5).hex, "0xC1480000");
+eq("IEEE 0.15625", [ieeeEncode(0.15625).hex, ieeeEncode(0.15625).exp], ["0x3E200000", 124]);
+eq("IEEE decode 0x40490FDB", Math.abs(ieeeDecode(0x40490fdb) - 3.14159274) < 1e-6, true);
+eq("IEEE zero / infinity kinds", [ieeeEncode(0).kind, ieeeEncode(Infinity).kind], ["zero", "infinity"]);
+eq("ripple carry 32 bits at 2 delays per stage", rippleDelay(32, 2), 64);
+// stages: 0 fetch 200, 1 reg read 100, 2 ALU 200, 3 memory 200, 4 write 100
+const st = [200, 100, 200, 200, 100];
+const classes = [{ name: "R", freq: 0.4, stages: [0, 1, 2, 4], cycles: 4 }, { name: "lw", freq: 0.3, stages: [0, 1, 2, 3, 4], cycles: 5 }, { name: "sw", freq: 0.1, stages: [0, 1, 2, 3], cycles: 4 }, { name: "beq", freq: 0.2, stages: [0, 1, 2], cycles: 3 }];
+const c = cycleTimes(classes, st);
+eq("path delays R, lw, sw, beq", c.paths, [600, 800, 700, 500]);
+eq("single-cycle clock, multi-cycle clock", [c.single, c.multi], [800, 200]);
+eq("multi-cycle CPI and time per instruction", [Math.round(c.cpi * 100) / 100, Math.round(c.multiPerInstr)], [4.1, 820]);
+eq("field bits for 8, 4, 16, 3 signals", [8, 4, 16, 3].map(fieldBits), [3, 2, 4, 2]);
+const cs = controlStore(256, [8, 4, 16, 3], 8);
+eq("control store: 256 words, groups 8/4/16/3, 8-bit next address", cs, { horizontalWidth: 39, verticalWidth: 19, addrBits: 8, horizontalBits: 9984, verticalBits: 4864 });
+process.exit(bad ? 1 : 0);
