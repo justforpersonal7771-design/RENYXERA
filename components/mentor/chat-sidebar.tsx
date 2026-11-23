@@ -9,9 +9,10 @@
  * All behaviour (open, new, pin, rename, move to a folder, delete) is passed in, so the same panel serves the side column and the phone drawer.
  */
 import { DeskSelect } from "@/components/desk/desk-select";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
-import { ChevronRight, Cloud, Folder, FolderInput, FolderMinus, MessageSquarePlus, PanelLeftClose, Pencil, Pin, PinOff, Search, Trash2, X } from "lucide-react";
+import { ChevronRight, Cloud, Folder, FolderInput, FolderMinus, MessageSquarePlus, MoreHorizontal, PanelLeftClose, Pencil, Pin, PinOff, Search, Trash2, X } from "lucide-react";
 import { MentorLogo } from "@/components/brand/mentor-logo";
 import { istDateStr } from "@/lib/time/ist";
 import type { ChatMeta } from "@/lib/mentor/chat-tree";
@@ -51,6 +52,38 @@ type Props = {
 
 const ICON_BTN = "grid h-7 w-7 cursor-pointer place-items-center rounded-lg text-[var(--text-muted)] transition-colors hover:bg-[var(--surface)] hover:text-[var(--text-primary)]";
 
+/**
+ * One small "more" button per chat instead of four icons beside the title: the title keeps its line, and Pin, Move, Rename and Delete open in a short menu under the button.
+ * The menu is drawn in <body> so a folder's clipped list cannot cut it off.
+ */
+function RowMenu({ pinned, onPin, onMove, onRename, onDelete }: { pinned: boolean; onPin: () => void; onMove: () => void; onRename: () => void; onDelete: () => void }) {
+  const [at, setAt] = useState<{ top: number; right: number } | null>(null);
+  const btn = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!at) return;
+    const away = (e: MouseEvent) => { if (!btn.current?.contains(e.target as Node) && !(e.target as HTMLElement).closest("[data-row-menu]")) setAt(null); };
+    const esc = (e: KeyboardEvent) => { if (e.key === "Escape") setAt(null); };
+    const close = () => setAt(null);
+    document.addEventListener("mousedown", away); document.addEventListener("keydown", esc); window.addEventListener("scroll", close, true); window.addEventListener("resize", close);
+    return () => { document.removeEventListener("mousedown", away); document.removeEventListener("keydown", esc); window.removeEventListener("scroll", close, true); window.removeEventListener("resize", close); };
+  }, [at]);
+  const item = "flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-semibold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]";
+  const run = (f: () => void) => () => { setAt(null); f(); };
+  return (
+    <>
+      <button ref={btn} type="button" aria-label="Chat options" aria-haspopup="menu" aria-expanded={!!at} title="Options" onClick={() => { if (at) { setAt(null); return; } const r = btn.current?.getBoundingClientRect(); if (r) setAt({ top: r.bottom + 4, right: window.innerWidth - r.right }); }}
+        className="relative z-10 mr-1 grid h-7 w-7 shrink-0 cursor-pointer place-items-center rounded-lg text-[var(--text-muted)] opacity-100 transition-opacity duration-150 hover:bg-[var(--surface)] hover:text-[var(--text-primary)] [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100 aria-expanded:opacity-100"><MoreHorizontal className="h-4 w-4" /></button>
+      {at && typeof document !== "undefined" && createPortal(
+        <div data-row-menu role="menu" aria-label="Chat options" style={{ position: "fixed", top: at.top, right: at.right, zIndex: 360 }} className="w-44 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-xl">
+          <button role="menuitem" type="button" className={item} onClick={run(onPin)}>{pinned ? <PinOff className="h-4 w-4" /> : <Pin className="h-4 w-4" />}{pinned ? "Unpin" : "Pin"}</button>
+          <button role="menuitem" type="button" className={item} onClick={run(onMove)}><FolderInput className="h-4 w-4" /> Move to a folder</button>
+          <button role="menuitem" type="button" className={item} onClick={run(onRename)}><Pencil className="h-4 w-4" /> Rename</button>
+          <button role="menuitem" type="button" className={`${item} !text-[var(--tint-rose-ink)]`} onClick={run(onDelete)}><Trash2 className="h-4 w-4" /> Delete</button>
+        </div>, document.body)}
+    </>
+  );
+}
+
 export function ChatSidebar(p: Props) {
   const reduce = useReducedMotion();
   const [query, setQuery] = useState("");
@@ -81,12 +114,7 @@ export function ChatSidebar(p: Props) {
               className={`relative z-10 min-w-0 flex-1 cursor-pointer truncate py-2 text-left text-[13.5px] leading-tight ${on ? "font-extrabold text-[var(--text-primary)]" : "font-medium text-[var(--text-secondary)] group-hover:text-[var(--text-primary)]"}`}>{m.title}</button>
           )}
           {renaming?.id !== m.id && (
-            <span className="relative z-10 flex shrink-0 items-center opacity-100 transition-opacity duration-150 [@media(hover:hover)]:absolute [@media(hover:hover)]:right-1 [@media(hover:hover)]:top-1/2 [@media(hover:hover)]:-translate-y-1/2 [@media(hover:hover)]:rounded-lg [@media(hover:hover)]:bg-[var(--surface)] [@media(hover:hover)]:px-0.5 [@media(hover:hover)]:shadow-[0_2px_8px_-2px_rgba(12,34,75,.25)] [@media(hover:hover)]:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-hover:opacity-100">
-              <button type="button" onClick={() => p.onPin(m.id)} aria-label={m.pinned ? "Unpin chat" : "Pin chat"} title={m.pinned ? "Unpin" : "Pin"} className={ICON_BTN}>{m.pinned ? <PinOff className="h-3.5 w-3.5" /> : <Pin className="h-3.5 w-3.5" />}</button>
-              <button type="button" onClick={() => { setMoveFor(moveFor === m.id ? null : m.id); setNewFolder(""); }} aria-label="Move to a folder" title="Move to a folder" aria-expanded={moveFor === m.id} className={ICON_BTN}><FolderInput className="h-3.5 w-3.5" /></button>
-              <button type="button" onClick={() => setRenaming({ id: m.id, text: m.title })} aria-label="Rename chat" title="Rename" className={ICON_BTN}><Pencil className="h-3.5 w-3.5" /></button>
-              <button type="button" onClick={() => p.onDelete(m)} aria-label="Delete chat" title="Delete" className={`${ICON_BTN} hover:!text-[var(--tint-rose-ink)]`}><Trash2 className="h-3.5 w-3.5" /></button>
-            </span>
+            <RowMenu pinned={!!m.pinned} onPin={() => p.onPin(m.id)} onMove={() => { setMoveFor(moveFor === m.id ? null : m.id); setNewFolder(""); }} onRename={() => setRenaming({ id: m.id, text: m.title })} onDelete={() => p.onDelete(m)} />
           )}
         </div>
         <AnimatePresence initial={false}>

@@ -7,6 +7,8 @@ export const CHAPTER_SOURCES: Record<string, () => Promise<Chapter>> = {
   "/study/instructions-addressing": () => import("@/content/study/CS/coa-b").then((x) => x.COA_ISA),
   "/study/alu-datapath-control": () => import("@/content/study/CS/coa-c").then((x) => x.COA_DATAPATH),
   "/study/pipelining": () => import("@/content/study/CS/coa-d").then((x) => x.COA_PIPE),
+  "/study/main-memory": () => import("@/content/study/CS/coa-e").then((x) => x.COA_MEM),
+  "/study/io-interrupts-dma": () => import("@/content/study/CS/coa-f").then((x) => x.COA_IO),
   "/study/turing-machines": () => import("@/content/study/CS/toc-e").then((x) => x.TOC_TM),
   "/study/decidability": () => import("@/content/study/CS/toc-f").then((x) => x.TOC_DECIDE),
   "/study/context-free-properties": () => import("@/content/study/CS/toc-d").then((x) => x.TOC_CFL_PROPS),

@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, RefreshCw, Send, ThumbsUp } from "lucide-react";
+import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, History, Maximize2, Minimize2, MessageSquarePlus, MessageSquareText, Square, PanelLeftClose, PanelLeftOpen, Pencil, RefreshCw, Send, ThumbsUp } from "lucide-react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { MentorLogo } from "@/components/brand/mentor-logo";
 import { MentorSwitch } from "@/components/mentor/mentor-switch";
@@ -325,7 +325,13 @@ function ChatScreen() {
         <div className="mb-2 flex flex-wrap items-center gap-2">
           <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
           {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
-          <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : `Chat with ${CHATBOT_NAME}`}</h1>
+          <div className="flex min-w-0 flex-1 items-center gap-3 max-sm:order-last max-sm:basis-full">
+            <span aria-hidden className="grid h-11 w-11 shrink-0 place-items-center rounded-full" style={{ background: "linear-gradient(135deg, var(--tint-lilac), var(--tint-sky))", color: "var(--tint-lilac-ink)", boxShadow: "inset 0 0 0 1.5px color-mix(in srgb, var(--tint-lilac-ink) 55%, transparent)" }}><MessageSquareText className="h-5 w-5" /></span>
+            <div className="min-w-0">
+              <h1 className="truncate font-display text-lg font-extrabold leading-tight tracking-tight text-[var(--text-primary)]" title={c.title}>{c.activeId ? c.title : `Chat with ${CHATBOT_NAME}`}</h1>
+              <p className="truncate text-xs font-semibold text-[var(--text-secondary)] max-sm:hidden">{c.activeId ? `${CHATBOT_NAME} · knows your plan, tests and notes` : "Ask anything about your preparation"}</p>
+            </div>
+          </div>
           {tier !== "pro" && <button type="button" onClick={() => openUpgrade(tier === "free" ? "Plus and Pro plans" : "Pro plan")} className={`plan-cta ${tier === "free" ? "plan-silver" : "plan-gold"} ml-auto inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm`}><MentorLogo className="h-5" /> {tier === "free" ? "Upgrade" : "Go Pro"}</button>}
           <MentorSwitch active="mentor" />
           <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>

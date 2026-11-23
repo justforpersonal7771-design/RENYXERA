@@ -1,0 +1,25 @@
+// Verifies the input/output engines and prints the numbers quoted in content/study/CS/coa-f.ts. Run: npx tsx scripts/io-hw-check.ts
+import { burstBlockMicros, busBandwidth, cycleStealFraction, daisyChain, dmaFraction, interruptCeiling, interruptFraction, pollFraction, pollFractionRate, rotatingPoll } from "../lib/study/io-hw";
+let bad = 0;
+const eq = (name: string, got: unknown, want: unknown) => { const ok = JSON.stringify(got) === JSON.stringify(want); if (!ok) bad++; console.log(`${ok ? "ok  " : "FAIL"} ${name}: ${JSON.stringify(got)}${ok ? "" : ` (expected ${JSON.stringify(want)})`}`); };
+const pct = (x: number, d = 3) => Math.round(x * 100 * 10 ** d) / 10 ** d;
+const CLK = 500e6;
+eq("mouse polled 30 times a second, 400 cycles each, 500 MHz: 0.0024%", pct(pollFractionRate(30, 400, CLK), 4), 0.0024);
+eq("floppy 50 KB/s in 2-byte chunks: 2%", pct(pollFraction(50_000, 2, 400, CLK), 2), 2);
+eq("disk 4 MB/s in 16-byte chunks: 250,000 polls a second = 20%", [4_000_000 / 16, pct(pollFraction(4_000_000, 16, 400, CLK), 2)], [250000, 20]);
+eq("disk by interrupts (500 cycles each), always busy: 25%", pct(interruptFraction(4_000_000, 16, 500, CLK), 2), 25);
+eq("same disk busy only 5% of the time: 1.25%", pct(interruptFraction(4_000_000, 16, 500, CLK, 0.05), 3), 1.25);
+eq("DMA: 8 KB blocks, 1000 setup + 500 completion cycles: 0.146%", pct(dmaFraction(4_000_000, 8192, 1000, 500, CLK), 3), 0.146);
+eq("DMA busy 5% of the time: 0.0073%", pct(dmaFraction(4_000_000, 8192, 1000, 500, CLK, 0.05), 4), 0.0073);
+eq("cycle stealing: 1 MB/s, 2-byte words, 500 ns memory cycle: 25% of memory cycles", pct(cycleStealFraction(1_000_000, 2, 500), 2), 25);
+eq("cycle stealing: 4 MB/s, 4-byte words, 100 ns memory cycle: 10%", pct(cycleStealFraction(4_000_000, 4, 100), 2), 10);
+eq("burst of 1024 words at 100 ns: CPU locked out for 102.4 microseconds", burstBlockMicros(1024, 100), 102.4);
+eq("500 MHz CPU, 500-cycle handler: at most 1,000,000 interrupts a second", interruptCeiling(CLK, 500), 1000000);
+eq("daisy chain: devices 1 and 3 request; device 1 wins, the grant passes only device 0 and 1", daisyChain([false, true, false, true]), { granted: 1, path: [0, 1] });
+eq("daisy chain: only device 3 requests: the grant travels the whole chain", daisyChain([false, false, false, true]), { granted: 3, path: [0, 1, 2, 3] });
+eq("daisy chain: no request", daisyChain([false, false]).granted, -1);
+eq("rotating poll: 0 and 2 request, last winner 0: device 2; then device 0 again", [rotatingPoll([true, false, true, false], 0), rotatingPoll([true, false, true, false], 2)], [2, 0]);
+eq("32-bit bus, 100 MHz, a word a cycle: 400 MB/s", busBandwidth(32, 100) / 1e6, 400);
+eq("same bus with a separate address cycle per word: 200 MB/s", busBandwidth(32, 100, 1, 1) / 1e6, 200);
+eq("same bus, 8-word bursts with one address cycle: 355.6 MB/s", Math.round(busBandwidth(32, 100, 8, 1) / 1e5) / 10, 355.6);
+process.exit(bad ? 1 : 0);
