@@ -5,7 +5,7 @@ import { switchTheme } from "@/lib/theme/switch-theme";
 import { LeaderboardButton } from "@/components/layout/leaderboard-panel";
 import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
-import { Moon, Sun, LayoutDashboard, Settings, PieChart, Menu, X, BrainCircuit, Briefcase, Calendar as CalendarIcon, ListTodo, Target, Search, Library, Wrench, BookOpenText, Swords } from "lucide-react";
+import { Moon, Sun, LayoutDashboard, ClipboardCheck, PieChart, Menu, X, BrainCircuit, Briefcase, Calendar as CalendarIcon, ListTodo, Target, Search, Library, Wrench, BookOpenText, Swords } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -46,7 +46,7 @@ import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from 
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
-  { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: Settings },
+  { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: ClipboardCheck },
   // Forge lives inside Exam Setup (question source); Tools moved to the icon group.
   { label: "Study", href: "/study", icon: BookOpenText },
   { label: "AI Mentor", href: MENTOR_HOME, icon: BrainCircuit },

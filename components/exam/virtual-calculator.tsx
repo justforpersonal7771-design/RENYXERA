@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowLeft, GripHorizontal, Maximize2, Minus, X } from "lucide-react";
+import { ArrowLeft, GripHorizontal, History, Maximize2, Minus, Trash2, X } from "lucide-react";
 import { expressionText, initialCalc, liveResult, press, type AngleMode } from "@/lib/exam/calculator";
 
 type Kind = "fn" | "op" | "num" | "eq" | "clear" | "mem";
@@ -48,6 +48,9 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
   const [mini, setMini] = useState(false);
   const [phone, setPhone] = useState(false);
   const [peek, setPeek] = useState(false);
+  // History of finished calculations (newest first), kept while the calculator stays mounted; tap one to bring its answer back.
+  const [hist, setHist] = useState<{ expr: string; res: string }[]>([]);
+  const [showHist, setShowHist] = useState(false);
   const drag = useRef<{ dx: number; dy: number } | null>(null);
   const panel = useRef<HTMLDivElement>(null);
 
@@ -98,7 +101,21 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
     };
   }, [open, onClose]);
 
-  const key = useCallback((k: string) => setSt((s) => press(s, k)), []);
+  // the latest state lives in a ref so the history is written once per "=" (a state updater may run twice in development)
+  const stRef = useRef(st);
+  const key = useCallback((k: string) => {
+    const s = stRef.current, n = press(s, k);
+    if (k === "=" && n.last && !n.error && n.last !== s.last) setHist((h) => [{ expr: n.last as string, res: n.entry }, ...h].slice(0, 30));
+    stRef.current = n; setSt(n);
+  }, []);
+  const recall = (res: string) => { const n = { ...initialCalc(stRef.current.mode), mem: stRef.current.mem, entry: res, fresh: true }; stRef.current = n; setSt(n); };
+  // opening the history makes the panel taller: keep it fully on screen
+  useEffect(() => {
+    if (!showHist || phone) return;
+    const h = panel.current?.offsetHeight ?? 0;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- measured after the panel grew
+    setPos((c) => (c && h && c.y + h > window.innerHeight - 8 ? { ...c, y: Math.max(8, window.innerHeight - h - 8) } : c));
+  }, [showHist, phone, hist.length]);
   const onDown = (e: React.PointerEvent) => {
     if (phone || !pos) return;
     drag.current = { dx: e.clientX - pos.x, dy: e.clientY - pos.y };
@@ -149,7 +166,7 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
       <div onPointerDown={onDown} onPointerMove={onMove} onPointerUp={() => (drag.current = null)} onPointerCancel={() => (drag.current = null)}
         className={`flex items-center gap-1.5 rounded-t-xl border-b border-[var(--border)] px-2 ${phone ? "py-0.5" : "py-1"} ${phone ? "" : "cursor-grab active:cursor-grabbing"}`} style={{ touchAction: "none" }}>
         {!phone && <GripHorizontal className="h-3.5 w-3.5 text-[var(--text-muted)]" aria-hidden />}
-        {mini && <span className="ml-1 truncate font-num text-sm font-extrabold text-[var(--text-primary)]">{result}</span>}<button type="button" aria-label={mini ? "Expand calculator" : "Minimise calculator"} title={mini ? "Expand" : "Minimise"} onClick={() => setMini((m) => !m)} onPointerDown={(e) => e.stopPropagation()} className="ml-auto my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">{mini ? <Maximize2 className="h-4 w-4" /> : <Minus className="h-4 w-4" />}</button><button type="button" aria-label="Close calculator" title="Close" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
+        {mini && <span className="ml-1 truncate font-num text-sm font-extrabold text-[var(--text-primary)]">{result}</span>}<button type="button" aria-label="Calculation history" aria-expanded={showHist} title="History" onClick={() => setShowHist((v) => !v)} onPointerDown={(e) => e.stopPropagation()} className={`${mini ? "" : "ml-auto"} my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] ${showHist ? "bg-[var(--surface-secondary)]" : "bg-[var(--surface)]"}`}><History className="h-4 w-4" /></button><button type="button" aria-label={mini ? "Expand calculator" : "Minimise calculator"} title={mini ? "Expand" : "Minimise"} onClick={() => setMini((m) => !m)} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]">{mini ? <Maximize2 className="h-4 w-4" /> : <Minus className="h-4 w-4" />}</button><button type="button" aria-label="Close calculator" title="Close" onClick={onClose} onPointerDown={(e) => e.stopPropagation()} className="my-1 grid h-8 w-8 cursor-pointer place-items-center rounded-full border-2 border-[var(--text-primary)]/70 bg-[var(--surface)] text-[var(--text-primary)] hover:bg-[var(--surface-secondary)]"><X className="h-4 w-4" /></button>
       </div>
 
       <div className={`${phone ? "px-1.5 pt-1" : "px-2 pt-1.5"} ${mini ? "hidden" : ""}`}>
@@ -161,6 +178,13 @@ export function VirtualCalculator({ open, onClose, anchor = "top" }: { open: boo
             <span className={`truncate font-extrabold font-num ${phone ? "text-xl leading-7" : "text-2xl leading-8"} ${st.error ? "text-rose-500" : "text-[var(--text-primary)]"}`}>{result}</span>
           </div>
         </div>
+        {showHist && (
+          <div className="mt-1.5 rounded-lg border border-[var(--border)] bg-[var(--surface)] p-1.5" aria-label="History">
+            <div className="flex items-center justify-between px-1 pb-1 text-[11px] font-bold text-[var(--text-secondary)]"><span>History</span>{hist.length > 0 && <button type="button" onClick={() => setHist([])} className="inline-flex cursor-pointer items-center gap-1 hover:text-[var(--text-primary)]"><Trash2 className="h-3 w-3" aria-hidden /> Clear</button>}</div>
+            {hist.length === 0 ? <p className="px-1 py-2 text-center text-xs text-[var(--text-muted)]">Finished calculations appear here.</p>
+              : <ul className={`${phone ? "max-h-20" : "max-h-28"} space-y-0.5 overflow-y-auto`}>{hist.map((h, i) => <li key={i}><button type="button" onClick={() => recall(h.res)} title="Use this answer" className="flex w-full cursor-pointer items-baseline justify-between gap-3 rounded-md px-1.5 py-1 text-left hover:bg-[var(--surface-secondary)]"><span className="min-w-0 truncate font-num text-xs text-[var(--text-secondary)]">{h.expr}</span><span className="shrink-0 font-num text-sm font-extrabold text-[var(--text-primary)]">{h.res}</span></button></li>)}</ul>}
+          </div>
+        )}
       </div>
 
       {phone ? (
