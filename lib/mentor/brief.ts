@@ -9,6 +9,10 @@ export interface BriefInput {
   plannerDone: number | null; eventsNext7: number; burnout: string | null;
   readiness: { marks: number; rank: number; rating: string } | null;
   notes: string[];
+  /** The revision queue: items due today and in all. */
+  revision?: { due: number; total: number };
+  /** The student's newest notes, as short titles. */
+  deskNotes?: string[];
 }
 
 export function buildBrief(i: BriefInput): string {
@@ -25,6 +29,8 @@ export function buildBrief(i: BriefInput): string {
   if (i.burnout) L.push(`Burnout risk: ${i.burnout}.`);
   if (i.readiness) L.push(`Readiness estimate: about ${i.readiness.marks} marks of 100, expected rank about ${i.readiness.rank}, rating ${i.readiness.rating}. This is an estimate, say so.`);
   if (i.notes.length) L.push("Things the student told the Mentor: " + i.notes.join(" | "));
+  if (i.revision && i.revision.total > 0) L.push(`Revision queue: ${i.revision.due} items due today, ${i.revision.total} in the queue.`);
+  if (i.deskNotes?.length) L.push("The student's recent notes: " + i.deskNotes.join(" | "));
   return L.join("\n");
 }
 

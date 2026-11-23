@@ -40,6 +40,7 @@ export function TodayBlocksCard() {
               <span className={`block truncate text-sm font-semibold ${b.completed ? "text-[var(--text-muted)] line-through" : "text-[var(--text-primary)]"}`}>{b.title}</span>
               <span className="block text-xs text-[var(--text-muted)]">{b.startTime ? `${b.startTime}${b.endTime ? ` to ${b.endTime}` : ""}` : "Any time today"}</span>
             </span>
+            {!b.completed && (b.category === "Revision" || /^Review/i.test(b.title)) && <Link href={`/revision/session?n=15${b.subject ? `&focus=${encodeURIComponent(b.subject)}` : ""}`} className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg border border-[var(--tint-rose-ink)]/40 bg-[var(--tint-rose)] px-3 text-xs font-bold text-[var(--tint-rose-ink)]">Revise</Link>}
             {!b.completed && (
               <button type="button" onClick={() => window.dispatchEvent(new CustomEvent(START_TIMER_EVENT, { detail: { label: b.subject ?? b.title } }))} className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 text-xs font-bold text-violet-600 dark:text-violet-400 hover:bg-violet-500/10 cursor-pointer"><Play className="h-3 w-3 fill-current" /> Start timer</button>
             )}

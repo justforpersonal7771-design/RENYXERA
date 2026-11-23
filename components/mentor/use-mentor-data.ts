@@ -1,4 +1,6 @@
 "use client";
+import { useRevisionDue } from "@/lib/desk/revision";
+import { useNotes } from "@/lib/desk/stores";
 import { useEffect, useMemo, useState } from "react";
 import { useStudyStore } from "@/store/use-study-store";
 import { useAnalyticsStore } from "@/store/use-analytics-store";
@@ -79,6 +81,7 @@ export function useMentorData() {
     .filter((t) => t.attempts > 0).sort((a, b) => a.score - b.score).slice(0, 5), [mastery]);
   const open = useMemo(() => mistakes.filter((m) => !m.mastered), [mistakes]);
 
+  const revDue = useRevisionDue(); const deskNotes = useNotes((s) => s.items);
   const brief = useMemo(() => {
     const done = sessions.filter((s) => s?.serverScore != null || s?.status === "SUBMITTED" || s?.status === "COMPLETED")
       .sort((a, b) => String(b.updatedAt ?? b.startedAt).localeCompare(String(a.updatedAt ?? a.startedAt)));
@@ -97,9 +100,11 @@ export function useMentorData() {
       plannerDone, eventsNext7: events.filter((e) => e.date >= today && e.date <= weekEnd).length, burnout: readiness?.burnoutRisk ?? null,
       readiness: readiness ? { marks: Math.round(readiness.expectedMarks), rank: Math.round(readiness.expectedRank), rating: readiness.readinessRating } : null,
       notes: notes.map((n) => n.text).slice(-8),
+      revision: revDue.total > 0 ? { due: revDue.due, total: revDue.total } : undefined,
+      deskNotes: deskNotes.slice(0, 6).map((n) => [n.title || n.body.slice(0, 50), n.topic].filter(Boolean).join(" (") + (n.topic ? ")" : "")),
     });
     return [base, ...extrasBriefLines(goals, checkins, focus), practiceBriefLine(practice)].filter(Boolean).join(String.fromCharCode(10));
-  }, [firstName, targetYear, daysToExam, dashboardMetrics, subjects, weakTopics, open, sessions, events, today, plannerDone, readiness, notes, goals, checkins, focus, practice]);
+  }, [firstName, targetYear, daysToExam, dashboardMetrics, subjects, weakTopics, open, sessions, events, today, plannerDone, readiness, notes, goals, checkins, focus, practice, revDue, deskNotes]);
 
   const saveNotes = async (next: MentorNote[]) => { setNotes(next); await IDBManager.saveAIMemory(NOTES_KEY, next); };
   return { goals, setGoals, checkins, setCheckins, focus, setFocus, ready, firstName, targetYear, daysToExam, examDate, subjects, weakTopics, open, suggestions, readiness, sessions, plannerDone, notes, saveNotes, brief, events, today };

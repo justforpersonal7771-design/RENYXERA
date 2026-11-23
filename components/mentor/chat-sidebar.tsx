@@ -19,12 +19,19 @@ import { CHATBOT_NAME } from "@/lib/mentor/brand";
 type Section = { key: string; label: string; kind: "pinned" | "folder" | "date"; items: ChatMeta[] };
 
 /** Pinned, then each folder, then the unfiled chats by India-time day. Empty groups never appear. */
-export function sectionsOf(list: ChatMeta[]): Section[] {
+export type RailView = "smart" | "date" | "old" | "az";
+export function sectionsOf(list: ChatMeta[], view: RailView = "smart"): Section[] {
+  // the other views drop the folders: one flat list by the chosen order, with Pinned still first
+  if (view === "az" || view === "old") {
+    const pin = list.filter((c) => c.pinned), rest = list.filter((c) => !c.pinned);
+    const by = view === "az" ? (a: ChatMeta, b: ChatMeta) => a.title.localeCompare(b.title) : (a: ChatMeta, b: ChatMeta) => (a.updatedAt < b.updatedAt ? -1 : 1);
+    return [...(pin.length ? [{ key: "pinned", label: "Pinned", kind: "pinned" as const, items: pin }] : []), ...(rest.length ? [{ key: "all", label: view === "az" ? "A to Z" : "Oldest first", kind: "date" as const, items: [...rest].sort(by) }] : [])];
+  }
   const pinned: ChatMeta[] = [], folders: Record<string, ChatMeta[]> = {}, dated: Record<string, ChatMeta[]> = {};
   const today = istDateStr(), yest = istDateStr(new Date(Date.now() - 86400000)), week = istDateStr(new Date(Date.now() - 7 * 86400000));
   for (const c of list) {
     if (c.pinned) { pinned.push(c); continue; }
-    if (c.group) { (folders[c.group] ??= []).push(c); continue; }
+    if (c.group && view === "smart") { (folders[c.group] ??= []).push(c); continue; }
     const d = istDateStr(new Date(c.updatedAt));
     (dated[d === today ? "Today" : d === yest ? "Yesterday" : d >= week ? "Previous 7 days" : "Older"] ??= []).push(c);
   }
@@ -46,12 +53,13 @@ const ICON_BTN = "grid h-7 w-7 cursor-pointer place-items-center rounded-lg text
 export function ChatSidebar(p: Props) {
   const reduce = useReducedMotion();
   const [query, setQuery] = useState("");
+  const [view, setView] = useState<RailView>("smart");
   const [closed, setClosed] = useState<Record<string, boolean>>({});
   const [renaming, setRenaming] = useState<{ id: string; text: string } | null>(null);
   const [moveFor, setMoveFor] = useState<string | null>(null);
   const [newFolder, setNewFolder] = useState("");
   const q = query.trim().toLowerCase();
-  const sections = useMemo(() => sectionsOf(p.chats.filter((x) => !q || x.title.toLowerCase().includes(q) || (x.snippet ?? "").includes(q) || (x.group ?? "").toLowerCase().includes(q))), [p.chats, q]);
+  const sections = useMemo(() => sectionsOf(p.chats.filter((x) => !q || x.title.toLowerCase().includes(q) || (x.snippet ?? "").includes(q) || (x.group ?? "").toLowerCase().includes(q)), view), [p.chats, q, view]);
   const folderNames = useMemo(() => [...new Set(p.chats.map((x) => x.group).filter(Boolean) as string[])].sort((a, b) => a.localeCompare(b)), [p.chats]);
   const firstFolder = sections.findIndex((s) => s.kind === "folder");
 
@@ -129,6 +137,8 @@ export function ChatSidebar(p: Props) {
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search chats" aria-label="Search chats" className="h-10 w-full rounded-2xl border border-[var(--border)] bg-[var(--surface)]/80 pl-9 pr-9 text-sm outline-none transition-shadow focus:border-[var(--tint-sky-ink)] focus:shadow-[0_0_0_4px_color-mix(in_srgb,var(--tint-sky-ink)_16%,transparent)]" />
             {query && <button type="button" onClick={() => setQuery("")} aria-label="Clear search" className="absolute right-2 top-1/2 grid h-6 w-6 -translate-y-1/2 cursor-pointer place-items-center rounded-full text-[var(--text-muted)] hover:bg-[var(--surface-secondary)]"><X className="h-3.5 w-3.5" /></button>}
           </label>
+
+          <label className="mb-2 block"><span className="sr-only">Order of chats</span><select value={view} onChange={(e) => setView(e.target.value as RailView)} className="h-9 w-full rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 px-3 text-xs font-semibold text-[var(--text-primary)]"><option value="smart">View: folders, then date</option><option value="date">View: by date only</option><option value="old">View: oldest first</option><option value="az">View: A to Z</option></select></label>
 
           <nav aria-label="Chat history" className="custom-scrollbar -mr-1 min-h-0 flex-1 overflow-y-auto pr-1">
             {sections.length === 0 && <p className="px-2 py-3 text-sm text-[var(--text-muted)]">{q ? "No chats match." : "Your chats will appear here."}</p>}
