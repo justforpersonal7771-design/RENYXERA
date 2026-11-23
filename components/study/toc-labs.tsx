@@ -248,6 +248,10 @@ const CF_LANGS: { id: T.CfPumpLang; label: string; w: string; lu: number; lv: nu
   { id: "square", label: "a^(n²)", w: "aaaaaaaaa", lu: 0, lv: 1, lm: 0, lx: 1 },
   { id: "ijk", label: "aⁱbʲcᵏ, i < j < k", w: "abbccc", lu: 0, lv: 1, lm: 0, lx: 0 },
 ];
+const Num = ({ v, set, label, max }: { v: number; set: (x: number) => void; label: string; max: number }) => (
+  <label className="block text-xs font-semibold text-[var(--text-secondary)]">{label}<input type="number" min={0} max={max} value={v} onChange={(ev) => set(Math.max(0, Math.min(max, Number(ev.target.value) || 0)))} className="mt-1 h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 font-num text-[var(--text-primary)]" />
+  </label>
+);
 /** You cut a string into u v w x y (v and x are pumped together), see the four pumped strings, and count how many allowed cuts survive. */
 export function CfPumpLab() {
   const [L, setL] = useState<T.CfPumpLang>("anbncn"); const d0 = CF_LANGS.find((q) => q.id === "anbncn")!;
@@ -258,9 +262,6 @@ export function CfPumpLab() {
   const r = T.pumpCf(L, w, a, b, c, e);
   const legal = b + e >= 1 && b + c + e <= p;
   const all = useMemo(() => (n <= 14 ? T.cfSplits(L, w, p) : null), [L, w, p, n]);
-  const Num = ({ v, set, label, max }: { v: number; set: (x: number) => void; label: string; max: number }) => (
-    <label className="block text-xs font-semibold text-[var(--text-secondary)]">{label}<input type="number" min={0} max={max} value={v} onChange={(ev) => set(Math.max(0, Math.min(max, Number(ev.target.value) || 0)))} className="mt-1 h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 font-num text-[var(--text-primary)]" /></label>
-  );
   return (
     <Shell title="Pumping lemma lab (context-free)" note="Cut w into u v w x y, then pump v and x together. In a real proof the adversary picks the cut." tint="lilac">
       <div className="mt-3 flex flex-wrap gap-2">{CF_LANGS.map((q) => <Pill key={q.id} on={L === q.id} onClick={() => pick(q.id)}>{q.label}</Pill>)}</div>
