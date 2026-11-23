@@ -1,4 +1,6 @@
-# Algorithms: review merge and plan v1
+# Algorithms: review merge and plan v1 (PROVISIONAL)
+
+> **Provisional (24 Nov):** the Algorithms reviews were not finished when this was merged (a reply stopped part-way or is still being continued). Treat this plan as a draft. When the remaining parts arrive, save them in `reviews-received/` and tell me; I will re-merge and remove this banner.
 
 Merged: ChatGPT (`reviews-received/chatgpt-review-algorithms.md`) and Gemini (`reviews-received/gemini.txt`). Note: I read ChatGPT's plan, scope and PYQ audit in detail and Gemini's data findings and feelings; Gemini's lesson-level plan was skimmed and is to be compared lesson by lesson when each chapter is written.
 
