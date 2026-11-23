@@ -41,7 +41,7 @@ export const CS_SHELF: ShelfBook[] = [
     { id: "codegen", title: "Local optimisation" }, { id: "dfa", title: "Data-flow analysis" },
   ] },
   { id: "coa", title: "Computer Organisation", short: "COA", tint: "butter", cloth: "#E3D3A8", ink: "#1B1917", paper: "#6B5A1E", dark: "#6B5A1E", band: "core", chapters: [
-    { id: "isa", title: "Machine instructions and addressing modes" }, { id: "datapath", title: "ALU, data path and control unit" }, { id: "pipeline", title: "Instruction pipelining and hazards" },
+    { id: "isa", title: "Machine instructions and addressing modes", href: "/study/instructions-addressing", ready: "3 topics ready", match: "Instruction|Addressing" }, { id: "datapath", title: "ALU, data path and control unit" }, { id: "pipeline", title: "Instruction pipelining and hazards" },
     { id: "memory-h", title: "Cache memory", href: "/study/cache-memory", ready: "3 topics ready", match: "Cache|Memory Hierarchy" }, { id: "mainmem", title: "Main memory and secondary storage" }, { id: "io", title: "I/O interface: interrupts and DMA" },
   ] },
   { id: "dl", title: "Digital Logic", short: "Digital", tint: "mint", cloth: "#C9D6C2", ink: "#1B1917", paper: "#2E4A2A", dark: "#2E4A2A", band: "core", chapters: [
