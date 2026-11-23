@@ -80,7 +80,7 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i
       <span className="min-w-0 flex-1">
         <span className={`sp3-title ${b.title.length > 20 ? "is-long" : ""}`}>{b.title}</span>
       </span>
-      <span className="flex shrink-0 flex-col items-end gap-1">{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Coming soon</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
+      <span className="flex shrink-0 flex-col items-end gap-1">{r === 0 && <span className="sp3-stamp !border-transparent !bg-[var(--tint-ink)] !text-[var(--tint)]">Being written</span>}{weight > 0 && <span className="sp3-stamp !bg-[var(--tint-ink)] !text-[var(--tint)]">{weight.toFixed(1)}% of marks</span>}<span className="sp3-stamp">{`${b.chapters.length} chapters`}</span></span>
     </button>
   );
 }
@@ -263,7 +263,7 @@ export function Bookshelf() {
               {CS_SHELF.flatMap((b) => b.chapters.filter((c) => b.title.toLowerCase().includes(term) || c.title.toLowerCase().includes(term)).map((c) => ({ b, c }))).slice(0, 12).map(({ b, c }) => (
                 <li key={b.id + c.id}>{c.href
                   ? <Link href={c.href} className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm hover:bg-[var(--surface-secondary)]"><span className="min-w-0 truncate"><b>{c.title}</b> <span className="text-[var(--text-secondary)]">· {b.title}</span></span><span className="shrink-0 font-bold">Open</span></Link>
-                  : <span className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-secondary)]"><span className="min-w-0 truncate"><b className="text-[var(--text-primary)]">{c.title}</b> · {b.title}</span><span className="shrink-0">Coming soon</span></span>}</li>
+                  : <span className="flex items-center justify-between gap-2 rounded-xl bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-secondary)]"><span className="min-w-0 truncate"><b className="text-[var(--text-primary)]">{c.title}</b> · {b.title}</span><span className="shrink-0">Being written</span></span>}</li>
               ))}
             </ul>
           )}

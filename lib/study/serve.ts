@@ -26,9 +26,13 @@ export function canReadTopic(href: string, index: number, access: { all: boolean
 }
 
 const stub = (t: Topic): Topic => ({ id: t.id, title: t.title, blocks: [], locked: true });
+const deferred = (t: Topic): Topic => ({ id: t.id, title: t.title, blocks: [], deferred: true });
 
-export async function chapterForViewer(href: string, access?: { all: boolean; packs: string[] }): Promise<Chapter | null> {
+/** `forPage`: the page HTML (view-source, the page payload) carries only the free sample topics; a paid reader's topics are marked
+ *  `deferred` and fetched by the browser from the guarded API, so lesson text of a bought pack never sits in the page source. */
+export async function chapterForViewer(href: string, access?: { all: boolean; packs: string[] }, forPage = false): Promise<Chapter | null> {
   const load = CHAPTER_SOURCES[href]; if (!load) return null;
   const ch = await load(); const a = access ?? (await viewerAccess());
-  return { ...ch, topics: ch.topics.map((t, i) => (canReadTopic(href, i, a) ? t : stub(t))) };
+  const free = chapterInfo(href).sampleChapter;
+  return { ...ch, topics: ch.topics.map((t, i) => (!canReadTopic(href, i, a) ? stub(t) : forPage && !(free && i < FREE_TOPICS) ? deferred(t) : t)) };
 }

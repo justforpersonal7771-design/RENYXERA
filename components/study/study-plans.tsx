@@ -24,7 +24,7 @@ const LOOK = {
 };
 const packName = (id: string) => PACKS.find((p) => p.id === id)?.name ?? id;
 const shortName = (id: string) => packName(id).replace(/^Computer /, "").replace(/ Management Systems?/, "").replace(/ & Data Structures/, " & DS").replace(/Linear Algebra, Probability & Calculus/, "LA, Prob & Calc");
-const readyOf = (id: string) => { const p = PACKS.find((x) => x.id === id)!; const books = p.books.map((b) => CS_SHELF.find((x) => x.id === b)!).filter(Boolean); const r = books.filter((b) => b.chapters.some((c) => c.href)).length; return r === books.length ? "Ready" : r ? `${r} of ${books.length} books ready` : "Coming soon"; };
+const readyOf = (id: string) => { const p = PACKS.find((x) => x.id === id)!; const books = p.books.map((b) => CS_SHELF.find((x) => x.id === b)!).filter(Boolean); const r = books.filter((b) => b.chapters.some((c) => c.href)).length; return r === books.length ? "Ready" : r ? `${r} of ${books.length} books ready` : "Being written"; };
 /** The individual books inside some packs, in shelf order ("Linear Algebra, Probability & Calculus" becomes three books). */
 const booksOf = (ids: readonly string[]) => ids.flatMap((id) => PACKS.find((p) => p.id === id)?.books ?? []).map((b) => CS_SHELF.find((x) => x.id === b)?.title ?? b);
 const pct = (sum: number, price: number) => Math.round(((sum - price) / sum) * 100);
@@ -81,7 +81,7 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
     <section id="packs" aria-label="Study packs and bundles" className="scroll-mt-24 space-y-8">
       <header className="mx-auto max-w-3xl text-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-500/12 px-3 py-1 text-xs font-bold text-violet-700 dark:text-violet-300"><BookOpenText className="h-3.5 w-3.5" /> Study packs</span>
-        <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">Every GATE subject, <span className="grad-brand bg-clip-text text-transparent">book by book</span></h2>
+        <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[var(--text-primary)] sm:text-4xl">Every GATE subject, <span className="text-violet-700 dark:text-violet-300">book by book</span></h2>
         <p className="mx-auto mt-3 max-w-xl text-balance text-[var(--text-secondary)]">Learn it, try it, test it, remember it. Separate from Plus and Pro, open until your GATE season ends. Every book opens with {FREE_TOPICS} free topics.</p>
         {owned.length > 0 && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="h-4 w-4" /> You own {owned.length} pack{owned.length === 1 ? "" : "s"}: {owned.map(packName).join(", ")}</p>}
       </header>
@@ -100,9 +100,9 @@ export function StudyPlans({ owned, all, onBought, initialView = "bundles" }: { 
 
       <div className="pointer-events-none sticky -top-2 z-20 flex justify-center py-3 sm:-top-3">
         <div role="radiogroup" aria-label="Study pack options" className="pointer-events-auto relative grid w-full max-w-md grid-cols-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-1 shadow-[0_10px_24px_-12px_rgba(20,16,40,.45)]">
-          <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl border border-[color-mix(in_srgb,var(--tint-lilac-ink)_30%,transparent)] bg-[var(--tint-lilac)] transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
+          <span aria-hidden className="absolute inset-y-1 left-1 rounded-xl border border-violet-500/40 bg-violet-500/15 transition-transform duration-300 motion-reduce:transition-none" style={{ width: "calc((100% - 0.5rem) / 3)", transform: `translateX(${(["bundles", "single", "custom"] as const).indexOf(view) * 100}%)`, transitionTimingFunction: "cubic-bezier(.23,1,.32,1)" }} />
           {(["bundles", "single", "custom"] as const).map((v) => (
-            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl px-1 text-xs font-bold leading-tight transition-colors duration-200 sm:text-sm ${view === v ? "text-[var(--tint-lilac-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
+            <button key={v} type="button" role="radio" aria-checked={view === v} onClick={() => setView(v)} className={`relative z-10 h-10 cursor-pointer rounded-xl px-1 text-xs font-bold leading-tight transition-colors duration-200 sm:text-sm ${view === v ? "text-violet-700 dark:text-violet-200" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>{v === "bundles" ? "Bundles" : v === "single" ? "Single subjects" : "Build your own"}</button>
           ))}
         </div>
       </div>

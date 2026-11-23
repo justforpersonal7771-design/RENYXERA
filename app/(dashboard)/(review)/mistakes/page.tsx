@@ -1,7 +1,6 @@
 "use client";
 
 import { StudyOffer } from "@/components/study/study-offer";
-import { StudyStripMini } from "@/components/study/study-loop";
 import { SmartUpgrade } from "@/components/growth/smart-upgrade";
 import { LoadMore } from "@/components/system/load-more";
 import { ReviewTabs } from "@/components/layout/review-tabs";
@@ -287,7 +286,6 @@ export default function MistakesPage() {
       <ReviewTabs />
       <GuestLocalNotice what="mistakes" />
       <SmartUpgrade context="mistakes" pendingMistakes={mistakes.filter((m) => !m.mastered).length} />
-      <StudyStripMini className="mb-3 flex-none" />
       {/* Doc 13 moment 4: three or more open mistakes in one subject point to its study pack (quiet, dismissible). */}
       <StudyOffer moment="mistakes" className="mb-3 flex-none" subjects={Object.entries(mistakes.filter((m) => !m.mastered).reduce<Record<string, number>>((acc, m) => { acc[m.subject] = (acc[m.subject] ?? 0) + 1; return acc; }, {})).filter(([, n]) => n >= 3).sort((x, y) => y[1] - x[1]).map(([name]) => ({ name }))} />
       <div className="flex-1 min-h-0 w-full flex flex-col md:flex-row gap-4 relative">

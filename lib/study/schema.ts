@@ -35,7 +35,8 @@ export type Block =
 export type CheckQ = { id: string; kind: "MCQ" | "MSQ" | "NAT"; marks: 1 | 2; q: string; options?: string[]; answer: string; solution: string };
 
 /** `locked`: sent by the server instead of the topic's content when the viewer cannot open it (title only, no blocks). */
-export type Topic = { id: string; title: string; words?: number; blocks: Block[]; locked?: boolean };
+/** `deferred`: the viewer may read it, but the page HTML does not carry it; the browser fetches it from /api/study/chapter (lib/study/serve.ts). */
+export type Topic = { id: string; title: string; words?: number; blocks: Block[]; locked?: boolean; deferred?: boolean };
 export type Chapter = { id: string; subject: string; title: string; syllabus: string[]; pyqTopic: RegExp; map: Fig; topics: Topic[] };
 /** A chapter as it travels from the server to the browser (a RegExp is not serialisable). */
 export type WireChapter = Omit<Chapter, "pyqTopic"> & { pyqTopic: { source: string; flags: string } };

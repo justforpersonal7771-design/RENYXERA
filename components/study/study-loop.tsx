@@ -7,7 +7,7 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import { ArrowRight, BookOpen } from "lucide-react";
+import { ArrowRight, BookOpen, X } from "lucide-react";
 import { readSeen } from "@/lib/study/progress";
 import { PACKS, bookOfSubject, packOfBook } from "@/lib/study/packs";
 import { CS_SHELF } from "@/lib/study/catalog";
@@ -38,6 +38,10 @@ export function StudyLoopCard({ subjects, stack = false, tight = false, classNam
   const rows = useReadiness(subjects);
   const access = useStudyAccess();
   const step = nextStep(rows);
+  // closable: hidden for 14 days after a dismiss (this device only)
+  const [gone, setGone] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only value, read once after mount
+  useEffect(() => { try { setGone(Date.now() - Number(localStorage.getItem("renyxera.studycard.off") ?? 0) < 14 * 86400_000); } catch { /* storage off */ } }, []);
   const [last, setLast] = useState<{ href: string; title: string } | null>(null);
   // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only value, read once after mount
   useEffect(() => { try { const v = localStorage.getItem("renyxera.study.last"); if (v) setLast(JSON.parse(v)); } catch { /* storage off */ } }, []);
@@ -46,8 +50,9 @@ export function StudyLoopCard({ subjects, stack = false, tight = false, classNam
   const first = rows.find((r) => r.href);
   const resume = last ?? (first?.href ? { href: first.href, title: first.title } : null);
   const shown = [...rows].filter((r) => r.read > 0 || r.accuracy != null).sort((a, b) => ["unread-low", "read-low", "read-untested", "unread", "strong"].indexOf(a.verdict) - ["unread-low", "read-low", "read-untested", "unread", "strong"].indexOf(b.verdict)).slice(0, 3);
+  if (gone) return null;
   return (
-    <section aria-label="Study" className={`card-pastel grid gap-3 p-4 ${stack ? "" : tight ? "sm:p-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]" : "gap-4 sm:p-5 lg:grid-cols-3"} ${className}`} data-tint="lilac">
+    <section aria-label="Study" className={`card-pastel relative grid gap-3 p-4 ${stack ? "" : tight ? "sm:p-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]" : "gap-4 sm:p-5 lg:grid-cols-3"} ${className}`} data-tint="lilac">
       <div className="flex min-w-0 flex-col">
         <p className="flex items-center gap-1.5 text-xs font-extrabold text-[var(--text-secondary)]"><BookOpen className="h-4 w-4" aria-hidden /> Study · {last ? "where you stopped" : "start here"}</p>
         <p className="mt-1 line-clamp-2 font-display text-xl font-extrabold leading-tight text-[var(--text-primary)]">{resume ? resume.title : "Open the GATE CS library"}</p>
@@ -66,6 +71,7 @@ export function StudyLoopCard({ subjects, stack = false, tight = false, classNam
         <p className="mt-1 line-clamp-2 text-xs text-[var(--text-secondary)]">{step.body}</p>
         <Link href={step.href} className="pill-ink mt-2 self-start">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>
       </div>
+      <button type="button" aria-label="Hide the study card" onClick={() => { try { localStorage.setItem("renyxera.studycard.off", String(Date.now())); } catch { /* storage off */ } setGone(true); }} className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full hover:bg-[var(--surface)]"><X className="h-4 w-4" /></button>
     </section>
   );
 }
@@ -75,14 +81,20 @@ export function StudyLoopCard({ subjects, stack = false, tight = false, classNam
 export function StudyStripMini({ className = "" }: { className?: string }) {
   const { dashboardMetrics, loadAnalytics } = useAnalyticsStore();
   useEffect(() => { void loadAnalytics(); }, [loadAnalytics]);
+  // closable: hidden for 14 days after a dismiss (this device only)
+  const [gone, setGone] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- device-only value, read once after mount
+  useEffect(() => { try { setGone(Date.now() - Number(localStorage.getItem("renyxera.studystrip.off") ?? 0) < 14 * 86400_000); } catch { /* storage off */ } }, []);
   const rows = useReadiness(dashboardMetrics?.subjectPerformance ?? []);
   const access = useStudyAccess();
   const step = nextStep(rows);
+  if (gone) return null;
   return (
-    <section aria-label="Study" className={`card-pastel flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 sm:px-5 ${className}`} data-tint="lilac">
+    <section aria-label="Study" className={`card-pastel relative flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 pr-12 sm:px-5 sm:pr-14 ${className}`} data-tint="lilac">
       <BookOpen className="h-5 w-5 shrink-0 text-[var(--text-primary)]" aria-hidden />
       <p className="min-w-0 flex-1 text-sm text-[var(--text-secondary)]"><b className="text-[var(--text-primary)]">Study: {step.title}.</b> {step.body}</p>
       <div className="flex shrink-0 flex-wrap gap-2"><Link href={step.href} className="pill-ink">{step.cta} <ArrowRight className="h-4 w-4" aria-hidden /></Link>{!PACKS.every((p) => access.packs.includes(p.id)) && <button type="button" onClick={() => openStudyShop("Study packs and bundles")} className="btn-study inline-flex h-9 items-center rounded-full px-4 text-sm">Unlock books</button>}</div>
+      <button type="button" aria-label="Hide the study suggestion" onClick={() => { try { localStorage.setItem("renyxera.studystrip.off", String(Date.now())); } catch { /* storage off */ } setGone(true); }} className="absolute right-3 top-1/2 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-full hover:bg-[var(--surface)]"><X className="h-4 w-4" /></button>
     </section>
   );
 }

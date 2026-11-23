@@ -106,16 +106,16 @@ export function TodoQuickPanel() {
             </motion.button>
           </div>
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1.5 p-1" role="radiogroup" aria-label="Priority">
               {PRIORITY_OPTIONS.map((p) => (
                 <button
                   key={p}
+                  type="button" role="radio" aria-checked={priority === p}
                   onClick={() => setPriority(p)}
                   className={`relative flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] font-semibold transition-colors cursor-pointer ${
-                    priority === p ? PRIORITY[p].chip : "text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                    priority === p ? "border-2 border-[var(--text-primary)] bg-[var(--surface)] text-[var(--text-primary)] shadow-[2px_2px_0_var(--text-primary)]" : "border-2 border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                   }`}
                 >
-                  {priority === p && <motion.span layoutId="todo-priority" className="absolute inset-0 rounded-lg ring-1 ring-current opacity-40" transition={{ type: "spring", stiffness: 500, damping: 34 }} />}
                   <span className={`relative w-1.5 h-1.5 rounded-full ${PRIORITY[p].dot}`} />
                   <span className="relative">{p}</span>
                 </button>

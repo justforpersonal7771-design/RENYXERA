@@ -2483,3 +2483,8 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 .dark .shop-cta, .dark .btn-study { --cta-bg: #c4baff; --cta-ink: #1e1450; --cta-line: transparent; }
 .btn-study { border: 1px solid var(--cta-line) !important; color: var(--cta-ink) !important; background: var(--cta-bg) !important; font-weight: 800; box-shadow: 0 10px 20px -14px rgba(40,20,110,.7); transition: transform 160ms cubic-bezier(.23,1,.32,1); }
 @media (hover: hover) and (pointer: fine) { .btn-study:hover { transform: translateY(-1px); } }
+
+/* Study content protection (components/study/content-guard.tsx): no printing, no dragging out of lessons. */
+.study-lesson { -webkit-touch-callout: none; }
+.study-lesson img, .study-lesson svg { -webkit-user-drag: none; user-drag: none; }
+@media print { .study-lesson, .rx-watermark { display: none !important; } body::before { content: "Lessons cannot be printed."; display: block; padding: 2rem; font: 700 18px sans-serif; } }

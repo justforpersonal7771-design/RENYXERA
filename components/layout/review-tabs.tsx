@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { useEffect } from "react";
 import { Bookmark, ClipboardList, RefreshCw } from "lucide-react";
+import { StudyStripMini } from "@/components/study/study-loop";
 
 export const REVIEW_TABS = [
   { href: "/mistakes", label: "Mistakes", icon: ClipboardList },
@@ -31,6 +32,7 @@ export function ReviewTabs() {
   useEffect(() => { if (current) try { localStorage.setItem(LAST_KEY, current); } catch {} }, [current]);
   if (!current) return null;
   return (
+    <>
     <div className="shrink-0 mb-3 flex items-center justify-between gap-3 flex-wrap">
       <h1 className="hidden sm:block text-xl md:text-2xl font-extrabold tracking-tight text-[var(--text-primary)]">Review</h1>
       <nav aria-label="Review" className="relative flex w-full sm:w-auto p-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)]">
@@ -47,5 +49,8 @@ export function ReviewTabs() {
         })}
       </nav>
     </div>
+    {/* study sits under the heading and toggle on all three review screens; room around it so its shadows are not clipped */}
+    <div className="shrink-0 px-1.5 pb-2.5"><StudyStripMini /></div>
+    </>
   );
 }

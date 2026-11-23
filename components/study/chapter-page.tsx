@@ -5,7 +5,7 @@ import { ChapterView } from "@/components/study/chapter-view";
 
 /** Server component behind every chapter route: reads the viewer's access and sends only the topics they may open. */
 export async function ChapterPage({ href }: { href: string }) {
-  const ch = await chapterForViewer(href);
+  const ch = await chapterForViewer(href, undefined, true);
   if (!ch) notFound();
   return <ChapterView chapter={toWire(ch)} href={href} />;
 }

@@ -59,7 +59,7 @@ export default function StudyNewTab() {
             <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search every chapter" aria-label="Search chapters" className="search-bare h-10 min-w-0 flex-1 bg-transparent text-sm text-[var(--text-primary)]" />
             {q && <button type="button" onClick={() => setQ("")} aria-label="Clear search"><X className="h-4 w-4" /></button>}
           </label>
-          <div className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-4 overflow-y-auto pr-1">
+          <div className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-4 overflow-y-auto p-1.5 pr-2">
             {term ? (
               <div>
                 <p className="mb-2 text-xs font-bold text-[var(--text-secondary)]">{found.length} match{found.length === 1 ? "" : "es"}</p>
@@ -81,7 +81,7 @@ export default function StudyNewTab() {
         </section>
         <section aria-label="Section and subject" className="card-pastel flex min-h-0 flex-col p-4" data-tint="peri">
           <div className="flex shrink-0 flex-wrap gap-1.5">{SECTIONS.map((s) => <button key={s.id} type="button" aria-pressed={section === s.id} onClick={() => { setSection(s.id); setBookId(CS_SHELF.find((b) => b.band === s.id)!.id); }} className={`${section === s.id ? "pill-ink" : "pill-soft"} !h-9 !px-3 text-sm`}>{s.label}</button>)}</div>
-          <ul className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-1.5 overflow-y-auto pr-1">{books.map((b) => (
+          <ul className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-1.5 overflow-y-auto p-1.5 pr-2">{books.map((b) => (
             <li key={b.id}><button type="button" aria-pressed={book?.id === b.id} onClick={() => setBookId(b.id)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left ${book?.id === b.id ? "bg-[var(--surface)] shadow-sm ring-2 ring-[var(--tint-ink)]" : "bg-[var(--surface)]/60 hover:bg-[var(--surface)]"}`}>
               <span aria-hidden className="h-8 w-1.5 shrink-0 rounded-full" style={{ background: `var(--tint-${b.tint ?? "peri"}-ink)` }} />
               <span className="min-w-0 flex-1 text-sm font-bold text-[var(--text-primary)]">{b.title}</span>
@@ -90,7 +90,7 @@ export default function StudyNewTab() {
         </section>
         <section aria-label="Chapters" className="card-pastel flex min-h-0 flex-col p-4" data-tint={book?.tint ?? "peri"}>
           <p className="shrink-0 text-xs font-extrabold uppercase tracking-[.14em] text-[var(--tint-ink)]">{book?.title}</p>
-          <ol className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-1.5 overflow-y-auto pr-1">{book?.chapters.map((c, i) => (
+          <ol className="custom-scrollbar mt-3 min-h-0 flex-1 space-y-1.5 overflow-y-auto p-1.5 pr-2">{book?.chapters.map((c, i) => (
             <li key={c.id}><button type="button" disabled={!c.href} onClick={() => c.href && go(c.href)} className="flex w-full items-center gap-3 rounded-xl bg-[var(--surface)] px-3 py-2.5 text-left enabled:hover:bg-[var(--surface-secondary)] disabled:opacity-60">
               <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
               <span className="min-w-0 flex-1 text-sm font-bold text-[var(--text-primary)]">{c.title}</span>

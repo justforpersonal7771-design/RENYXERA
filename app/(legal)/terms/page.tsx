@@ -86,6 +86,7 @@ export default function TermsOfServicePage() {
 
         <section>
           <h2 className="text-lg font-bold text-[var(--text-primary)] mb-2">12. AI Mentor — accuracy disclaimer</h2>
+          <p><strong className="text-[var(--text-primary)]">Study materials.</strong> The books, lessons, labs, figures and quizzes in Study are copyrighted works owned by RENYXERA. A purchase gives you a personal, non-transferable licence to read them on your own account until your access ends. You may not copy, scrape, download, reproduce, resell, share your account for, or republish any part of them, and you may not use them to train or build another product. Copies are traceable to the account they came from, and we may suspend an account and take legal action for a breach.</p>
           <p>The AI Mentor uses Google's Gemini models to generate explanations and hints. Like any AI system, it can occasionally be wrong. Use it as a study aid, not a substitute for verifying an answer against the official key or your own understanding. We continuously work to improve accuracy but don't guarantee it.</p>
         </section>
 

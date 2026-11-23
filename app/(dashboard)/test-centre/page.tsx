@@ -59,7 +59,7 @@ export default function TestCentrePage() {
   ];
 
   return (
-    <div className="flex w-full flex-col gap-4 lg:min-h-[calc(100dvh-10.5rem)]">
+    <div className="flex w-full flex-col gap-4 lg:h-[calc(100dvh-10.5rem)]">
       {/* Phone order: mission, then the doors (the actions), then mock info. From lg the two blocks sit side by side again. */}
       <div className="hub-top contents lg:grid lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)] lg:gap-4">
         <section className="card-well relative order-1 flex flex-col overflow-hidden p-4 sm:p-5 lg:order-none" data-tint="mint" aria-label="Today's mission">
@@ -98,39 +98,39 @@ export default function TestCentrePage() {
 
 
       {/* Doors: Build a test is the one tall tile on the left, the others on the right. */}
-      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[13rem]">
+      <div className="hub-doors order-2 grid flex-1 grid-cols-2 gap-3 lg:order-none md:grid-cols-12 md:grid-rows-2 md:min-h-[8rem] lg:min-h-0">
         <Link href="/test-centre/build" data-tint="mint" className={`${tile} col-span-2 md:col-span-6 md:row-span-2`}>
           <Mark I={Settings} max="9rem" />
           <div>
             <Sticker tilt="rotate-2">Most used</Sticker>
-            <h2 className={`mt-3 font-display text-4xl font-extrabold 2xl:text-5xl ${ink}`}>Build a test</h2>
-            <p className="mt-2 max-w-lg text-base text-[var(--text-secondary)] 2xl:text-lg">Pick the questions, the length and the rules. Timed like the real exam.</p>
+            <h2 className={`mt-2 font-display text-[clamp(1.7rem,5.2vh,3.1rem)] font-extrabold leading-none ${ink}`}>Build a test</h2>
+            <p className="mt-2 max-w-lg text-[clamp(.85rem,1.9vh,1.15rem)] text-[var(--text-secondary)]">Pick the questions, the length and the rules. Timed like the real exam.</p>
           </div>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Build a test <Arrow /></span>
         </Link>
         <Link href="/test-centre/practice" data-tint="rose" className={`${tile} md:col-span-3`}>
           <Mark I={RotateCcw} />
-          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Practice</h2>
+          <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Practice</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
         <Link href="/test-centre/mocks" data-tint="peri" className={`${tile} md:col-span-3`}>
           <Mark I={Trophy} />
-          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Mocks</h2>
+          <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Mocks</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
         <Link href="/test-centre/build?view=flashcards" data-tint="butter" className={`${tile} md:col-span-2`}>
           <Mark I={Layers} />
-          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Flashcards</h2>
+          <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Flashcards</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
         <Link href="/battles" data-tint="lilac" className={`${tile} md:col-span-2`}>
           <Mark I={Swords} />
-          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>Battles</h2>
+          <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Battles</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Go <Arrow /></span>
         </Link>
         <Link href="/test-centre/history" data-tint="sky" className={`${tile} col-span-2 md:col-span-2`}>
           <Mark I={BarChart3} />
-          <h2 className={`font-display text-2xl font-extrabold 2xl:text-3xl ${ink}`}>History</h2>
+          <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>History</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
       </div>

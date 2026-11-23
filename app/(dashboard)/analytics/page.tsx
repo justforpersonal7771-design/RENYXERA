@@ -581,6 +581,13 @@ function SubjectShareList({ subjects, onPractise }: { subjects: { subject: strin
     }).sort((a, b) => b.share - a.share);
   }, [subjects]);
   const max = Math.max(1, ...rows.map((r) => r.share));
+  // the list scrolls inside the card and draws 12 subjects at a time; the next 12 slide in as you reach the bottom
+  const [shown, setShown] = useState(12); const [more, setMore] = useState(false);
+  const onScroll = (e: React.UIEvent<HTMLUListElement>) => {
+    const el = e.currentTarget;
+    if (shown >= rows.length || more || el.scrollTop + el.clientHeight < el.scrollHeight - 96) return;
+    setMore(true); window.setTimeout(() => { setShown((n) => Math.min(rows.length, n + 12)); setMore(false); }, 380);
+  };
   return (
     <Reveal>
       <section className="card-well p-5 sm:p-6" data-tint="sky">
@@ -588,9 +595,9 @@ function SubjectShareList({ subjects, onPractise }: { subjects: { subject: strin
           <div><span className="section-label">Where the marks are</span><h3 className="mt-2 text-lg font-extrabold text-[var(--text-primary)]">Share of marks by subject, and how you do there</h3></div>
           <p className="text-[11px] text-[var(--text-muted)]">From every official paper in your bank · tap a subject</p>
         </div>
-        <ul className="card-inset mt-4 divide-y divide-[var(--border-subtle)] p-1.5">
-          {rows.map((r) => (
-            <li key={r.subject}>
+        <ul onScroll={onScroll} aria-label="Subjects by share of marks" className="card-inset custom-scrollbar mt-4 max-h-[26rem] divide-y divide-[var(--border-subtle)] overflow-y-auto overscroll-contain p-1.5">
+          {rows.slice(0, shown).map((r, i) => (
+            <motion.li key={r.subject} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1], delay: Math.min(i % 12, 11) * 0.03 }}>
               <button type="button" onClick={() => setOpen(open === r.subject ? null : r.subject)} aria-expanded={open === r.subject}
                 className={`grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 rounded-xl px-3 py-2.5 text-left sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)_auto_auto] ${open === r.subject ? "bg-[var(--tint-peri)]" : "hover:bg-[var(--tint-peri)]/60"}`}>
                 <span className="truncate text-sm font-semibold text-[var(--text-primary)]">{r.subject}</span>
@@ -614,9 +621,11 @@ function SubjectShareList({ subjects, onPractise }: { subjects: { subject: strin
                   </motion.div>
                 )}
               </AnimatePresence>
-            </li>
+            </motion.li>
           ))}
+          {more && [0, 1].map((k) => <li key={`sk${k}`} aria-hidden className="px-3 py-3"><div className="skeleton-shimmer h-8 rounded-xl" /></li>)}
         </ul>
+        <p className="mt-2 text-[11px] text-[var(--text-muted)]">Showing {Math.min(shown, rows.length)} of {rows.length} subjects{shown < rows.length ? " · scroll for more" : ""}</p>
       </section>
     </Reveal>
   );

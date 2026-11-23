@@ -6,6 +6,7 @@
  * and keep both versions (the "1 / 2" pager), ask again for another answer, a flowing-logo thinking state, answers that type out,
  * a composer with mode and style menus, an enlarge-the-box button, and an enlarge-the-whole-chat button (fills the app, not full screen).
  */
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -324,7 +325,7 @@ function ChatScreen() {
           {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
           {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
-          {tier !== "pro" && <Link href="/pro" className="ml-auto inline-flex h-10 items-center gap-1.5 rounded-full bg-[color-mix(in_srgb,var(--tint-sky-ink)_16%,var(--surface))] px-4 text-sm font-bold text-[var(--tint-sky-ink)] transition-transform hover:-translate-y-0.5"><MentorLogo className="h-5" /> Upgrade</Link>}
+          {tier !== "pro" && <button type="button" onClick={() => openUpgrade(tier === "free" ? "Plus and Pro plans" : "Pro plan")} className={`plan-cta ${tier === "free" ? "plan-silver" : "plan-gold"} ml-auto inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm`}><MentorLogo className="h-5" /> {tier === "free" ? "Upgrade" : "Go Pro"}</button>}
           <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>
           {c.signedIn && <button type="button" onClick={c.newChat} className="btn-soft !h-10 !px-3" aria-label="New chat" title="New chat"><MessageSquarePlus className="h-4 w-4" /></button>}
         </div>

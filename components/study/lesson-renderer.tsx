@@ -410,6 +410,7 @@ function LazyTopic({ t, index, topics, href }: { t: Topic; index: number; topics
     const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { timer ??= setTimeout(() => markSeen(t.id, href), 4000); } else if (timer) { clearTimeout(timer); timer = null; } }, { threshold: 0.25 });
     io.observe(el); return () => { io.disconnect(); if (timer) clearTimeout(timer); };
   }, [shown, locked, href, t.id]);
+  if (t.deferred) return <div id={t.id} data-topic="" aria-busy="true" aria-label={`Topic ${index + 1}: ${t.title}`} className="card-pastel min-h-[24rem] scroll-mt-24 p-6 lg:scroll-mt-4"><div className="skeleton-shimmer h-8 w-2/3 rounded-xl" /><div className="skeleton-shimmer mt-4 h-24 rounded-2xl" /><div className="skeleton-shimmer mt-4 h-40 rounded-2xl" /></div>;
   if (locked) return prevLocked ? <div id={t.id} data-topic="" aria-hidden /> : <UnlockCard t={t} index={index} topics={topics} href={href ?? ""} />;
   if (shown) return <TopicView t={t} index={index} topics={topics} />;
   return <div ref={ph} id={t.id} data-topic="" aria-label={`Topic ${index + 1}: ${t.title}`} className="min-h-[1600px] scroll-mt-24 rounded-[22px] border border-dashed border-[var(--border)] lg:scroll-mt-4" />;

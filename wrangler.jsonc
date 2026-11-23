@@ -39,9 +39,10 @@
     "enabled": true
   },
   // Public, non-secret runtime values. Plain vars set only in the Cloudflare dashboard are
-  // replaced on every deploy, so they live here. Secrets (RAZORPAY_KEY_SECRET,
+  // replaced on every deploy, so they live here (BILLING_PROVIDER picks the payment gateway: cashfree or razorpay). Secrets (CASHFREE_APP_ID, CASHFREE_SECRET_KEY, RAZORPAY_KEY_SECRET,
   // RAZORPAY_WEBHOOK_SECRET, ...) stay dashboard/`wrangler secret` only.
   "vars": {
+    "BILLING_PROVIDER": "cashfree",
     "RAZORPAY_KEY_ID": "rzp_live_TlwbSoqeN7fzxR"
   }
 }
