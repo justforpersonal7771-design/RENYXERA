@@ -3,6 +3,7 @@
 /** Client side of a chapter page: the server component passes only what this viewer may read (lib/study/serve.ts). */
 import { useEffect, useMemo, useState } from "react";
 import { ContentGuard } from "@/components/study/content-guard";
+import { FocusNote } from "@/components/study/focus-note";
 import { CHAPTERS } from "@/lib/study/chapters";
 import type { Chapter } from "@/lib/study/schema";
 import { LessonRenderer } from "@/components/study/lesson-renderer";
@@ -20,5 +21,5 @@ export function ChapterView({ chapter, href }: { chapter: WireChapter; href: str
   }, [waiting, href]);
   const ch = full ?? first;
   useEffect(() => { try { localStorage.setItem("renyxera.study.last", JSON.stringify({ href, title: `${ch.subject}: ${ch.title}` })); } catch { /* storage off */ } }, [href, ch.subject, ch.title]);
-  return <ContentGuard><LessonRenderer chapter={ch} /></ContentGuard>;
+  return <ContentGuard><FocusNote href={href} /><LessonRenderer chapter={ch} /></ContentGuard>;
 }

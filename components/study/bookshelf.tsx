@@ -17,12 +17,10 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { BookOpen, Feather, Plus, Search, X } from "lucide-react";
-import { loadBank, fromBank } from "@/lib/study/bank";
+import { loadBank } from "@/lib/study/bank";
 import { CS_SHELF, type ShelfBook } from "@/lib/study/catalog";
 import { getCurrentBranch } from "@/lib/branch/current";
-import { GOAL_SLIDER_DEFAULT_PERCENT, useGoalSliderStore } from "@/store/use-goal-slider-store";
-import { computeGoalSliderResult, computeTopicFrequencies, type TopicFrequency } from "@/lib/analytics/goal-slider-engine";
-import type { RenderableQuestion } from "@/types/question.types";
+import { useLibraryFocus, type Focus } from "@/lib/study/use-focus";
 import { branchByCode } from "@/lib/branches";
 
 const SHELVES: { id: string; title: string; note: string; tint: string; stacks: string[][] }[] = [
@@ -85,17 +83,11 @@ function Slab({ b, i, dim, onOpen, weight = 0, flat = false }: { b: ShelfBook; i
   );
 }
 
-/** Words that tie a chapter to the bank's topic names ("Synchronisation" ~ "Synchronization"). */
-const stems = (t: string) => t.toLowerCase().replace(/is(e|ing|ation)/g, "iz$1").split(/[^a-z]+/).filter((w) => w.length > 3 && !["and", "with", "from"].includes(w)).map((w) => w.slice(0, 6));
-type Weight = { share: number; qs: number; inTarget: boolean; tier: "high" | "mid" | "low" | "none" };
+type Weight = { share: number; qs: number; inTarget: boolean; foundation?: boolean; tier: "high" | "mid" | "low" | "none" };
 
 /** Chapters in syllabus (teaching) order, each marked by how much GATE weight it carries; hover for the numbers. */
 function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
-  const weights: Weight[] = useMemo(() => { const topics = focus?.topicsOf(b) ?? []; return b.chapters.map((c) => {
-    const st = stems(c.title);
-    const hit = c.match ? topics.filter((t) => new RegExp(c.match!, "i").test(t.topic)) : topics.filter((t) => { const ts = stems(t.topic); return st.some((w) => ts.includes(w)); });
-    return { share: hit.reduce((x, t) => x + t.marksShare, 0), qs: hit.reduce((x, t) => x + t.questionCount, 0), inTarget: !focus?.active || hit.some((t) => focus.topicIn(t)), tier: "none" as Weight["tier"] };
-  }); }, [b, focus]);
+  const weights: Weight[] = useMemo(() => b.chapters.map((c) => { const f = focus?.chapter(b, c); return { share: f?.share ?? 0, qs: f?.qs ?? 0, inTarget: f?.inTarget ?? true, tier: "none" as Weight["tier"], foundation: f?.foundation ?? false }; }), [b, focus]);
   const topics = focus?.topicsOf(b) ?? [];
   const sorted = weights.map((w) => w.share).filter((x) => x > 0).sort((x, y) => y - x);
   const hiCut = sorted[Math.max(0, Math.ceil(sorted.length / 3) - 1)] ?? Infinity, midCut = sorted[Math.max(0, Math.ceil((sorted.length * 2) / 3) - 1)] ?? Infinity;
@@ -112,7 +104,7 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
             <span className="font-num text-sm text-[var(--text-muted)]">{String(i + 1).padStart(2, "0")}</span>
             <span className="min-w-0 flex-1">
               <span className={`block ${c.href ? "font-bold text-[var(--text-primary)]" : w.tier === "high" ? "font-semibold text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>{c.title}</span>
-              {w.qs === 0 && topics.length > 0 && <span className="mt-1 block text-[11px] font-semibold text-[var(--text-secondary)]">Not tagged as its own topic in past papers</span>}
+              {w.qs === 0 && topics.length > 0 && <span className="mt-1 block text-[11px] font-semibold text-[var(--text-secondary)]">Foundation: no past-paper question is tagged here</span>}
               {w.qs > 0 && <span className="mt-1 flex flex-wrap items-center gap-2">{mark}<span className="h-1.5 w-20 overflow-hidden rounded-full bg-black/10 dark:bg-white/10"><span className="block h-full rounded-full" style={{ width: `${Math.min(100, w.share * 12)}%`, background: ink }} /></span><span className="text-[11px] font-semibold text-[var(--text-secondary)]">{w.share.toFixed(1)}% of marks · {w.qs} PYQs{focus?.active && !w.inTarget ? " · outside your target" : ""}</span></span>}
             </span>
             <span className="flex shrink-0 flex-col items-end gap-1">
@@ -133,32 +125,6 @@ function Contents({ b, focus }: { b: ShelfBook; focus?: Focus }) {
   );
 }
 
-/**
- * Topic weight from the official CS bank, and the student's Focus Target (the top-bar goal slider). With a target below
- * 100%, only subjects and topics inside it are shown (owner, 18 Nov).
- */
-function useLibraryFocus() {
-  const target = useGoalSliderStore((x) => x.targetPercent);
-  const loadGoal = useGoalSliderStore((x) => x.load);
-  const [qs, setQs] = useState<RenderableQuestion[] | null>(null);
-  useEffect(() => { void loadGoal(); }, [loadGoal]);
-  useEffect(() => {
-    void fromBank("all-questions", (papers) => papers.flatMap((p) => p.questions) as unknown as RenderableQuestion[]).then(setQs).catch(() => setQs([]));
-  }, []);
-  return useMemo(() => {
-    const active = target < GOAL_SLIDER_DEFAULT_PERCENT && !!qs?.length;
-    const freq: TopicFrequency[] = qs ? freqOf(qs) : [];
-    const inTarget = active ? new Set(computeGoalSliderResult(qs!, target).includedTopics.map((t) => `${t.subject}::${t.topic}`)) : null;
-    const topicIn = (t: TopicFrequency) => !inTarget || inTarget.has(`${t.subject}::${t.topic}`);
-    const bookIn = (b: ShelfBook) => !inTarget || freq.some((t) => (BANK[b.id] ?? []).includes(t.subject) && topicIn(t));
-    const topicsOf = (b: ShelfBook) => freq.filter((t) => (BANK[b.id] ?? []).includes(t.subject));
-    return { active, target, topicIn, bookIn, topicsOf };
-  }, [qs, target]);
-}
-type Focus = ReturnType<typeof useLibraryFocus>;
-/* Topic frequencies are computed once per session for the shared bank array (speed pass, 19 Nov). */
-const freqCache = new WeakMap<object, TopicFrequency[]>();
-function freqOf(qs: RenderableQuestion[]) { let f = freqCache.get(qs); if (!f) { f = computeTopicFrequencies(qs); freqCache.set(qs, f); } return f; }
 
 function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => void; focus: Focus }) {
   const reduce = useReducedMotion();
