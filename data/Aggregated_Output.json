@@ -14559,7 +14559,7 @@
         "subject": "Programming in C",
         "topic": "Functions, Parameter Passing, Scope Rules, Recursion",
         "difficulty": "Medium",
-        "question_text": "Consider the following program:\n```c\nint main( )\n{\n    f1( );\n    f1(2);\n    f3( );\n    return (0);\n}\nint f1( )\n{\n    return(1);\n}\nint f2(int X)\n{\n    f3( );\n    if (X == 1)\n        return f1( );\n    else\n        return (X * f2(X - 1));\n}\nint f3( )\n{\n    return(5);\n}\n```\nWhich one of the following options represents the activation tree corresponding to the main function?",
+        "question_text": "Consider the following program:\n```c\nint main( )\n{\n    f1( );\n    f2(2);\n    f3( );\n    return (0);\n}\nint f1( )\n{\n    return(1);\n}\nint f2(int X)\n{\n    f3( );\n    if (X == 1)\n        return f1( );\n    else\n        return (X * f2(X - 1));\n}\nint f3( )\n{\n    return(5);\n}\n```\nWhich one of the following options represents the activation tree corresponding to the main function?",
         "has_image": true,
         "images_required": [
           "IMAGE_Q_36_A",
