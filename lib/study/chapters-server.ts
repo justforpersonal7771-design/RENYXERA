@@ -3,6 +3,7 @@ import "server-only";
 import type { Chapter } from "@/lib/study/schema";
 
 export const CHAPTER_SOURCES: Record<string, () => Promise<Chapter>> = {
+  "/study/cache-memory": () => import("@/content/study/CS/coa-a").then((x) => x.COA_CACHE),
   "/study/turing-machines": () => import("@/content/study/CS/toc-e").then((x) => x.TOC_TM),
   "/study/decidability": () => import("@/content/study/CS/toc-f").then((x) => x.TOC_DECIDE),
   "/study/context-free-properties": () => import("@/content/study/CS/toc-d").then((x) => x.TOC_CFL_PROPS),

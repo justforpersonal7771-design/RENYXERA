@@ -76,8 +76,21 @@
     "mathjax-full": "^3.2.2",
     "playwright": "^1.63.0",
     "tailwindcss": "4.1.11",
-    "tsx": "4.19.2",
+    "tsx": "^4.23.15",
     "typescript": "5.9.3",
     "wrangler": "^4.153.0"
+  },
+  "overrides": {
+    "@tailwindcss/typography": {
+      "postcss-selector-parser": "^6.1.5"
+    },
+    "@opennextjs/cloudflare": {
+      "glob": "^14.0.6",
+      "minimatch": "^11.0.9"
+    },
+    "@node-minify/core": {
+      "glob": "^14.0.6",
+      "minimatch": "^11.0.9"
+    }
   }
 }

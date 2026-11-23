@@ -5,6 +5,8 @@
  * a question they got wrong, one they bookmarked, anything from the bank by search or subject, or the Forge/Spark
  * question they just made. Picking one opens the Tutor workspace for that question (/ai-tutor?qid=...).
  */
+import { MentorSwitch } from "@/components/mentor/mentor-switch";
+import { TutorHistoryMenu } from "@/components/mentor/tutor-history";
 import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
@@ -59,7 +61,7 @@ export function TutorHome() {
       <section className="card-pastel p-6 sm:p-8" data-tint="sky" aria-label="AI Tutor">
         <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
-            <span className="section-label"><Sparkles className="h-3.5 w-3.5" /> AI Tutor</span>
+            <div className="flex flex-wrap items-center gap-2"><MentorSwitch active="tutor" /><TutorHistoryMenu /></div>
             <h1 className="mt-3 font-display text-3xl font-extrabold leading-[1.1] text-[var(--text-primary)] sm:text-4xl">Pick a question and get it taught.</h1>
             <p className="mt-2 max-w-xl text-[var(--text-secondary)]">The Tutor explains one GATE question at a time: the idea, every step, the formulas and a shortcut. Then ask it anything about that question.</p>
           </div>

@@ -15,6 +15,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Flag, History, Maximize2, Minimize2, MessageSquarePlus, Square, PanelLeftClose, PanelLeftOpen, Pencil, RefreshCw, Send, ThumbsUp } from "lucide-react";
 import { confirmDialog } from "@/components/ui/confirm-dialog";
 import { MentorLogo } from "@/components/brand/mentor-logo";
+import { MentorSwitch } from "@/components/mentor/mentor-switch";
 import { ChatSidebar } from "@/components/mentor/chat-sidebar";
 import { CardView, MODES, Mode, Msg, Voice, clean, useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { useMentorData } from "@/components/mentor/use-mentor-data";
@@ -324,6 +325,7 @@ function ChatScreen() {
           <button type="button" onClick={() => setDrawer(true)} className="btn-soft !h-10 !px-3 text-sm lg:hidden" aria-label="Chat history"><History className="h-4 w-4" /></button>
           {!sideOpen && <span className="hidden lg:block"><LogoToggle open={false} label="Show chat history" onClick={toggleSide} /></span>}
           {!fromBar && <Link href="/ai-mentor" className="btn-soft !h-10 !px-3 text-sm"><ArrowLeft className="h-4 w-4" /> Mentor</Link>}
+          <MentorSwitch active="mentor" className="max-sm:hidden" />
           <h1 className="min-w-0 flex-1 truncate font-display text-xl font-extrabold text-[var(--text-primary)] max-sm:order-last max-sm:basis-full" title={c.title}>{c.activeId ? c.title : "Chat with your Mentor"}</h1>
           {tier !== "pro" && <button type="button" onClick={() => openUpgrade(tier === "free" ? "Plus and Pro plans" : "Pro plan")} className={`plan-cta ${tier === "free" ? "plan-silver" : "plan-gold"} ml-auto inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-sm`}><MentorLogo className="h-5" /> {tier === "free" ? "Upgrade" : "Go Pro"}</button>}
           <button type="button" onClick={toggleWide} aria-pressed={wide} aria-label={wide ? "Shrink the chat" : "Enlarge the chat to fill the app"} title={wide ? "Shrink the chat" : "Fill the whole app"} className="btn-soft !h-10 !px-3">{wide ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}</button>

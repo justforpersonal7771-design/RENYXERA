@@ -10,7 +10,7 @@ import { AIService } from "@/lib/ai/AIService";
 import { PracticeGenerator } from "@/lib/ai/practice-generator";
 import { AstNodeRenderer } from "@/components/exam/ast-node-renderer";
 import { MathJaxContext } from "better-react-mathjax";
-import { CustomDropdown } from "@/components/ui/custom-dropdown";
+import { MentorComposer, MenuSelect } from "@/components/mentor/mentor-composer";
 import {
   Sparkles, Loader2, Send, Bookmark, Star, ArrowLeft, ArrowRight,
   BookOpen, Lightbulb, Zap, HelpCircle, FileText, ChevronDown, ChevronUp,
@@ -24,33 +24,16 @@ import { useToastStore } from "@/store/use-toast-store";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { MentorThinking } from "@/components/mentor/mentor-thinking";
 import { MentorLogo } from "@/components/brand/mentor-logo";
+import { MentorSwitch } from "@/components/mentor/mentor-switch";
+import { TutorHistoryMenu } from "@/components/mentor/tutor-history";
+import { RateLimiter } from "@/lib/ai/rate-limiter";
+import { Square } from "lucide-react";
 import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 import { formatNatAnswer } from "@/lib/grading";
-const EXPLAIN_MODES = [
-  "Detailed",
-  "Simple",
-  "Exam Oriented",
-  "Mathematical",
-  "Visual",
-  "Algorithmic",
-  "Pseudo Code",
-  "Step-by-Step",
-  "Beginner",
-  "Advanced"
-] as const;
+const EXPLAIN_MODES = ["Detailed", "Simple", "Exam Oriented"] as const;
 
-const PERSONALITIES = [
-  "Mentor",
-  "Teacher",
-  "Examiner",
-  "Interviewer",
-  "Motivator",
-  "Fast Solver",
-  "Concept Builder",
-  "Revision Coach"
-] as const;
 
 export default function AITutorWorkspace() {
   const searchParams = useSearchParams();
@@ -62,7 +45,7 @@ export default function AITutorWorkspace() {
   const [mounted, setMounted] = useState(false);
   const [question, setQuestion] = useState<any>(null);
   const [explainMode, setExplainMode] = useState<string>("Detailed");
-  const [personality, setPersonality] = useState<string>("Mentor");
+  const personality = "Mentor"; // one voice: the Tutor is the Mentor teaching one question
   const [activeBookmarkEntry, setActiveBookmarkEntry] = useState<any>(null);
   const [isShortcutBookmarked, setIsShortcutBookmarked] = useState(false);
 
@@ -78,6 +61,9 @@ export default function AITutorWorkspace() {
   const [restoredQid, setRestoredQid] = useState<string | null>(null);
   const skipAutoFetchRef = useRef(false);
   const skipSigRef = useRef("");
+  const stoppedRef = useRef(false); // the student pressed Stop: no error message, the question stays so they can ask again
+  const [fetchTick, setFetchTick] = useState(0); // bumped to ask for the explanation again after a Stop
+  const stopNow = () => { stoppedRef.current = true; RateLimiter.cancelAll(); };
 
   // Cards layout states (collapsing/pinning)
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({
@@ -291,7 +277,7 @@ export default function AITutorWorkspace() {
       active = false;
       AIService.cancelRequest(`explain_${qid}_${explainMode}_${personality}`);
     };
-  }, [qid, explainMode, personality, question, restoredQid]);
+  }, [qid, explainMode, personality, question, restoredQid, fetchTick]);
 
   // Scroll to chat bottom whenever history updates
   useEffect(() => {
@@ -427,7 +413,6 @@ export default function AITutorWorkspace() {
   useEffect(() => { if (asked.length) setOpenQ(`q${asked[asked.length - 1].idx}`); }, [asked.length]);
   const origOpen = asked.length === 0 || openQ === "orig";
 
-  const handleSendChat = (e: React.FormEvent) => { e.preventDefault(); void sendMessage(chatInput); };
 
   // "Harder question" / "Simpler question": the Tutor sets ONE question and the student tries it first (left panel). Only after the attempt does the
   // Tutor reply, about that answer (checkPractice below), so the exchange is interactive instead of a lecture.
@@ -469,11 +454,14 @@ export default function AITutorWorkspace() {
         let sparkId: string | undefined;
         try { sparkId = await saveAsSpark(q, kind); } catch (e) { console.warn("Couldn't save the question to Spark", e); }
         setHistory(prev => [...prev, { role: "model", text: "practice-question", data: { concept: "Try this one first. It is in the panel on the left, and it is saved to Spark so you can practise it again later. Answer it and check it, and then we will go through your answer together.", steps: [], formulas: [], practice: { ...q, kind, sparkId } } as TutorData }]);
+      } else if (stoppedRef.current || /abort/i.test(res.error ?? "")) {
+        stoppedRef.current = false;
       } else {
         setHistory(prev => [...prev, { role: "model", text: `Error: ${res.error || "I couldn't set a good question just now. Please try again."}` }]);
       }
     } catch (err: any) {
-      setHistory(prev => [...prev, { role: "model", text: `Error: ${err.message || "Failed to establish connection."}` }]);
+      if (stoppedRef.current || /abort/i.test(err?.message ?? "")) stoppedRef.current = false;
+      else setHistory(prev => [...prev, { role: "model", text: `Error: ${err.message || "Failed to establish connection."}` }]);
     } finally {
       setChatLoading(false);
     }
@@ -505,19 +493,25 @@ export default function AITutorWorkspace() {
 
     try {
       // Re-map messages to prompt-friendly formats
-      const conversationHistory = history.map(h => ({
-        role: h.role,
-        text: h.text + (h.data ? `\nData: ${JSON.stringify(h.data)}` : "")
-      }));
+      const brief = (h: (typeof history)[number]) => {
+        const d = h.data;
+        if (d?.practice) return `Practice question you set (${d.practice.kind}): ${d.practice.questionText}${d.attempt ? ` The student answered: ${d.attempt.picked.join(", ") || d.attempt.nat}, which was ${d.attempt.right ? "right" : "wrong"}.` : ""}`;
+        if (d) return `${d.concept ?? ""} ${(d.steps ?? []).slice(0, 3).join(" ")}`.trim().slice(0, 900);
+        return h.text;
+      };
+      const conversationHistory = history.slice(-8).map(h => ({ role: h.role, text: brief(h) }));
 
       const res = await AIService.chatFollowUp(qid, conversationHistory, userMsg, false);
       if (res.success && res.data) {
         setHistory(prev => [...prev, { role: "model", text: "Answer generated", data: res.data }]);
+      } else if (stoppedRef.current || /abort/i.test(res.error ?? "")) {
+        stoppedRef.current = false;
       } else {
         setHistory(prev => [...prev, { role: "model", text: `Error: ${res.error || "Failed to generate follow-up answer."}` }]);
       }
     } catch (err: any) {
-      setHistory(prev => [...prev, { role: "model", text: `Error: ${err.message || "Failed to establish connection."}` }]);
+      if (stoppedRef.current || /abort/i.test(err?.message ?? "")) stoppedRef.current = false;
+      else setHistory(prev => [...prev, { role: "model", text: `Error: ${err.message || "Failed to establish connection."}` }]);
     } finally {
       setChatLoading(false);
     }
@@ -656,13 +650,7 @@ export default function AITutorWorkspace() {
         {/* Sticky Command Bar */}
         <header className="flex-none rounded-2xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2.5 pr-3 mr-0.5 border-r border-[var(--border)]">
-              <MentorLogo className="h-10" mode={chatLoading || loading ? "think" : "blink"} />
-              <div className="leading-tight">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--text-muted)]">AI Mentor</p>
-                <p className="font-display text-lg font-extrabold text-[var(--text-primary)]">Tutor</p>
-              </div>
-            </div>
+            <MentorSwitch active="tutor" className="mr-0.5" />
             <button
               onClick={() => router.back()}
               className="p-1.5 hover:bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-lg text-[var(--text-secondary)] transition"
@@ -680,21 +668,8 @@ export default function AITutorWorkspace() {
           </div>
 
           <div className="flex items-center gap-2.5 flex-wrap">
-            {/* Explain Mode selector */}
-            <CustomDropdown
-              value={explainMode}
-              onChange={setExplainMode}
-              options={EXPLAIN_MODES.map(m => ({ label: `${m} Format`, value: m }))}
-              className="w-40 text-xs font-bold"
-            />
-
-            {/* Coach Personality selector */}
-            <CustomDropdown
-              value={personality}
-              onChange={setPersonality}
-              options={PERSONALITIES.map(p => ({ label: `Coach: ${p}`, value: p }))}
-              className="w-40 text-xs font-bold"
-            />
+            {/* History of Tutor chats (not shown on the Mentor screens) */}
+            <TutorHistoryMenu />
 
             {/* Bookmark button */}
             <button
@@ -852,7 +827,9 @@ export default function AITutorWorkspace() {
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
 
               {loading && !questionMissing ? (
-                <div className="mx-auto max-w-3xl py-10"><MentorThinking label="The Tutor is working on this question" /></div>
+                <div className="mx-auto max-w-3xl py-10"><MentorThinking label="The Tutor is working on this question" /><div className="mt-3 pl-[3.75rem]"><button type="button" onClick={stopNow} className="pill-soft inline-flex cursor-pointer items-center gap-2"><Square className="h-3.5 w-3.5 fill-current" aria-hidden /> Stop</button></div></div>
+              ) : !error && history.length === 0 && !explanation ? (
+                <div className="mx-auto max-w-3xl py-10 text-center"><p className="text-sm text-[var(--text-secondary)]">Stopped. Ask the Tutor to explain this question again whenever you are ready.</p><button type="button" onClick={() => setFetchTick((n) => n + 1)} className="btn-main mt-3 cursor-pointer">Explain this question</button></div>
               ) : error && history.length === 0 ? (
                 <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-3 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-xs text-rose-600 dark:text-rose-400">
                   <AlertTriangle className="h-4 w-4 shrink-0" />
@@ -1096,7 +1073,7 @@ export default function AITutorWorkspace() {
 
               {/* Chat processing state animation */}
               {chatLoading && (
-                <div className="mx-auto max-w-3xl"><MentorThinking label="The Tutor is replying" /></div>
+                <div className="mx-auto max-w-3xl"><MentorThinking label="The Tutor is replying" /><div className="mt-3 pl-[3.75rem]"><button type="button" onClick={stopNow} className="pill-soft inline-flex cursor-pointer items-center gap-2"><Square className="h-3.5 w-3.5 fill-current" aria-hidden /> Stop</button></div></div>
               )}
 
               <div ref={chatBottomRef} />
@@ -1112,11 +1089,7 @@ export default function AITutorWorkspace() {
                     { label: "Harder question", prompt: "", ask: "harder" as const },
                     { label: "Simpler question", prompt: "", ask: "simpler" as const },
                     { label: "Another approach", prompt: "Is there another mathematical approach or alternative solution to solve this?" },
-                    { label: "Visual explanation", prompt: "Can you provide a visual ASCII chart or transition diagram for this?" },
-                    { label: "Shortcut", prompt: "Show me a fast elimination trick or mental shortcut rules." },
-                    { label: "Proof", prompt: "Derive the mathematical proof for this formula/concept." },
-                    { label: "Interview version", prompt: "Explain how to present this concept verbally in a technical interview." },
-                    { label: "Revision notes", prompt: "Draft quick bullet point revision notes highlighting key formulas." }
+                    { label: "Shortcut", prompt: "Show me a fast elimination trick or mental shortcut rules." }
                   ].map((pill, idx) => (
                     <button
                       key={idx}
@@ -1131,24 +1104,11 @@ export default function AITutorWorkspace() {
                 </div>
               )}
 
-              <form onSubmit={handleSendChat} className="flex gap-2 items-center max-w-3xl mx-auto">
-                <input
-                  type="text"
-                  placeholder="Ask follow-up... (e.g. 'Why is option B wrong?', 'Explain visually')"
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  disabled={chatLoading || loading}
-                  className="flex-1 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] px-4 py-2.5 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 disabled:opacity-50 text-[var(--text-primary)] font-semibold"
-                />
-                <button
-                  id="send-chat-submit"
-                  type="submit"
-                  disabled={chatLoading || loading || !chatInput.trim()}
-                  className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition disabled:opacity-40 cursor-pointer"
-                >
-                  <Send className="w-4 h-4" />
-                </button>
-              </form>
+              <MentorComposer value={chatInput} onChange={setChatInput} onSubmit={() => void sendMessage(chatInput)} busy={chatLoading} onStop={stopNow}
+                disabled={loading} placeholder="Ask follow-up (why is option B wrong?)" label="Ask the Tutor a follow-up" submitId="send-chat-submit">
+                <MenuSelect label="How should I explain" value={explainMode}
+                  options={EXPLAIN_MODES.map((m) => ({ id: m as string, label: m === "Exam Oriented" ? "Exam focus" : m }))} onChange={setExplainMode} />
+              </MentorComposer>
             </div>
 
           </section>

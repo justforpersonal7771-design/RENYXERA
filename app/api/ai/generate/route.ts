@@ -50,6 +50,9 @@ const RATE_LIMIT = { limit: 15, windowMs: 60_000 };
 // Bail out of a hung Gemini call rather than tying up the function (and the caller's
 // retry budget) indefinitely.
 const GEMINI_TIMEOUT_MS = 30_000;
+/** Writing a whole question or a full explanation takes longer than a short chat answer. */
+const SLOW_TIMEOUT_MS = 55_000;
+const SLOW_TYPES = new Set(["PRACTICE", "EXPLAIN", "REVISION"]);
 
 function extractErrorMessage(err: any): string {
   let message = err?.message || "Failed to contact Gemini API";
@@ -308,7 +311,7 @@ export async function POST(req: NextRequest) {
   }
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), SLOW_TYPES.has(parsed.data.type) ? SLOW_TIMEOUT_MS : GEMINI_TIMEOUT_MS);
 
   try {
     const text = await generateJson({ geminiModel: route.model, systemInstruction, prompt, maxOutputTokens: route.maxOutputTokens, signal: controller.signal });

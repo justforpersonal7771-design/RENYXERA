@@ -12,7 +12,28 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
+  # Speed (23 Nov 2026): the pipeline took 15-20 minutes because everything ran one after another. Now lint and the quick checks run beside the
+  # build, the Next build cache and the Playwright browser are cached between runs, and the deploy waits for `check` and `quick` only.
+  lint:
+    runs-on: ubuntu-latest
+    continue-on-error: true # informational, matches next.config.ts's eslint.ignoreDuringBuilds: true; never blocks a deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Lint
+        run: npm run lint
+
+  quick:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,30 +46,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline --no-audit --no-fund
 
       - name: Type-check
         run: npx tsc --noEmit
-
-      - name: Lint
-        run: npm run lint
-        continue-on-error: true # matches next.config.ts's eslint.ignoreDuringBuilds: true — lint is informational here, not a gate
-
-      - name: Build
-        run: npm run build
-        env:
-          # Public values only (the browser gets them anyway) — lets the smoke test load data.
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
-
-      - name: Bundle size budget
-        run: node scripts/check-bundle.mjs
-
-      - name: Security checks (no service-role key in bundle; anon can't read answer keys)
-        run: npm run check:security
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
 
       - name: Goals engine acceptance test
         run: npm run check:goals
@@ -68,6 +69,53 @@ jobs:
       - name: Every question image resolves (incl. shared-pool questions)
         run: npm run check:images
 
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Next build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            next-${{ runner.os }}-
+
+      - name: Build
+        run: npm run build
+        env:
+          # Public values only (the browser gets them anyway) — lets the smoke test load data.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Bundle size budget
+        run: node scripts/check-bundle.mjs
+
+      - name: Security checks (no service-role key in bundle; anon can't read answer keys)
+        run: npm run check:security
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+
+      - name: Playwright browser cache
+        id: pw
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
       - name: End-to-end smoke (phone + desktop × light + dark, guest exam flow)
         run: |
           # Ubuntu mirrors occasionally time out while fetching browser fonts; retry instead of failing the deploy.
@@ -84,7 +132,7 @@ jobs:
   # and CLOUDFLARE_ACCOUNT_ID, plus the public NEXT_PUBLIC_* values (baked in at build).
   # Server-only secrets (service role, Gemini) already live on the Worker itself.
   deploy:
-    needs: check
+    needs: [check, quick]
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     concurrency:
@@ -102,7 +150,16 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Next build cache
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: next-deploy-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            next-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
+            next-deploy-${{ runner.os }}-${{ hashFiles('package-lock.json') }}-
 
       - name: Build and deploy to Cloudflare Workers
         run: npm run deploy:cf
