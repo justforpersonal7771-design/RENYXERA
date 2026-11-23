@@ -109,7 +109,8 @@ export class AIService {
     subject: string,
     count = 2,
     bypassCache = false,
-    currentQuestion?: any
+    currentQuestion?: any,
+    focus?: "harder" | "simpler"
   ): Promise<AIResponse<{ questions: AIPracticeQuestion[] }>> {
     const rawContext = await ContextBuilder.buildContext(undefined);
     if (currentQuestion) {
@@ -129,7 +130,7 @@ export class AIService {
     return await AIClient.request<{ questions: AIPracticeQuestion[] }>(
       `practice_${topic}_${count}`,
       "PRACTICE",
-      { context: compressedContext, topic, subject, count, samples, currentQuestion },
+      { context: compressedContext, topic, subject, count, samples, currentQuestion, ...(focus ? { focus } : {}) },
       {
         topic,
         bypassCache

@@ -293,9 +293,15 @@ Provide the time-saving shortcut trick in JSON format.
     subject: string,
     count = 2,
     samples?: any[],
-    currentQuestion?: any
+    currentQuestion?: any,
+    focus?: "harder" | "simpler"
   ): { systemInstruction: string; prompt: string } {
     const profile = this.formatLearnerProfile(context);
+    const focusRule = focus === "harder"
+      ? `\n5. This is ONE question the student asked for after the style reference above: make it clearly HARDER than that reference (an extra reasoning step, a tighter constraint or a plausible trap), still solvable in about 3 minutes, with exactly one correct answer for MCQ.`
+      : focus === "simpler"
+        ? `\n5. This is ONE question the student asked for after the style reference above: make it clearly EASIER than that reference (a single idea, direct numbers, no trap), solvable in about a minute, with exactly one correct answer for MCQ.`
+        : "";
 
     let samplesText = "";
     if (samples && samples.length > 0) {
@@ -322,7 +328,7 @@ The generated questions must:
 1. Stay entirely within "${topic}" (within "${subject}") — do not drift into other subjects or only-loosely-related topics. Every question must be unambiguously about this exact topic.
 2. Represent DIFFERENT question types across the set (mix of MCQ, MSQ, NAT) and different difficulty angles, so the set feels varied, not eight versions of the same question.
 3. Be precise, technically rigorous, and unique from any "standard textbook" phrasing of this topic — do not simply reformat a well-known canonical example; construct a genuinely new scenario, dataset, or parameter set each time (variety seed: ${varietyNonce}).
-4. Maintain the technical rigor, mathematical depth, and LaTeX formatting (using inline LaTeX \\\\( ... \\\\) where appropriate) typical of GATE ${PromptBuilder.paperName(context)} questions.
+4. Maintain the technical rigor, mathematical depth, and LaTeX formatting (using inline LaTeX \\\\( ... \\\\) where appropriate) typical of GATE ${PromptBuilder.paperName(context)} questions.${focusRule}
 
 Output JSON matching:
 {

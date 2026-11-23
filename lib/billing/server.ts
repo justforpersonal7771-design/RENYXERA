@@ -8,7 +8,9 @@ export type Entitlement = { tier: Tier; plan: Tier; pro: boolean; paid: boolean;
  * Server-side entitlement check (7A) — the source of truth for every gated action. Never
  * trust a client flag. Fails closed to "free" (a DB hiccup never grants a paid tier).
  */
-export async function getEntitlement(userId: string | null): Promise<Entitlement> {
+let queueReady = true; // flips to false if migration 0065 has not been run, so the check is not repeated on every request
+
+export async function getEntitlement(userId: string | null, afterQueue = false): Promise<Entitlement> {
   const free: Entitlement = { tier: "free", plan: "free", pro: false, paid: false, validUntil: null };
   if (!userId) return free;
   try {
@@ -23,6 +25,12 @@ export async function getEntitlement(userId: string | null): Promise<Entitlement
       if (prof?.target_branch && prof.target_branch !== data.branch_code) active = false;
     }
     const tier: Tier = active && (data?.plan === "pro" || data?.plan === "plus") ? data.plan : "free";
+    // Referral days that waited behind a Pro plan start as soon as nothing is running (supabase 0065, apply_queued_plan_days).
+    if (tier === "free" && queueReady && !afterQueue) {
+      const { data: started, error } = await db.rpc("apply_queued_plan_days", { p_user: userId });
+      if (error) { if (/apply_queued_plan_days|does not exist|PGRST202/i.test(`${error.code} ${error.message}`)) queueReady = false; }
+      else if (typeof started === "number" && started > 0) return getEntitlement(userId, true);
+    }
     return { tier, plan: tier, pro: tier === "pro", paid: tier !== "free", validUntil: tier === "free" ? null : validUntil };
   } catch {
     return free;

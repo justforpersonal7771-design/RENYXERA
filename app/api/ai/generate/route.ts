@@ -86,7 +86,8 @@ function buildPrompt(req: AIGenerateRequest): { systemInstruction: string; promp
         req.params.subject,
         req.params.count,
         req.params.samples as any,
-        req.params.currentQuestion as any
+        req.params.currentQuestion as any,
+        req.params.focus
       );
     case "REVISION":
       return PromptBuilder.buildRevisionPrompt(req.params.context as any, req.params.subject);

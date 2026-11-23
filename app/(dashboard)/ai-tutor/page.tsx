@@ -71,7 +71,7 @@ export default function AITutorWorkspace() {
   const [error, setError] = useState<string | null>(null);
 
   // Conversational follow-up history
-  const [history, setHistory] = useState<{ role: "user" | "model"; text: string; data?: AIExplanation }[]>([]);
+  const [history, setHistory] = useState<{ role: "user" | "model"; text: string; data?: TutorData }[]>([]);
   const [chatInput, setChatInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [restoredQid, setRestoredQid] = useState<string | null>(null);
@@ -414,11 +414,9 @@ export default function AITutorWorkspace() {
   // Questions requested in this chat ("Harder question", "Simpler question"): each one piles up in the left panel, the newest open and the
   // earlier ones collapsed. Derived from the saved thread, so they come back with the conversation.
   const asked = useMemo(() => {
-    const out: { idx: number; label: string; data: AIExplanation }[] = [];
+    const out: { idx: number; label: string; practice: PracticeAsk; attempt?: Attempt }[] = [];
     history.forEach((m, i) => {
-      if (m.role !== "user" || !QUESTION_ASKS.includes(m.text)) return;
-      const r = history[i + 1];
-      if (r?.role === "model" && r.data) out.push({ idx: i + 1, label: m.text === QUESTION_ASKS[0] ? "Harder question" : "Simpler question", data: r.data });
+      if (m.role === "model" && m.data?.practice) out.push({ idx: i, label: m.data.practice.kind === "harder" ? "Harder question" : "Simpler question", practice: m.data.practice, attempt: m.data.attempt });
     });
     return out;
   }, [history]);
@@ -428,12 +426,78 @@ export default function AITutorWorkspace() {
   const origOpen = asked.length === 0 || openQ === "orig";
 
   const handleSendChat = (e: React.FormEvent) => { e.preventDefault(); void sendMessage(chatInput); };
-  // One send path for the text box and the quick buttons (Harder question, Simpler question, ...): the message is added to THIS conversation.
-  const sendMessage = async (text: string) => {
+
+  // "Harder question" / "Simpler question": the Tutor sets ONE question and the student tries it first (left panel). Only after the attempt does the
+  // Tutor reply, about that answer (checkPractice below), so the exchange is interactive instead of a lecture.
+  const saveAsSpark = async (pq: AIPracticeQuestion, kind: "harder" | "simpler"): Promise<string> => {
+    const qId = `ai_${Date.now()}_t`;
+    const correctIds = new Set(pq.correctOptionIds || []);
+    const renderableQ = {
+      question_no: 1,
+      question_id: qId,
+      question_type: pq.questionType || "MCQ",
+      marks: pq.questionType === "NAT" ? 2 : 1,
+      section: "AI Generated",
+      subject: question.subject,
+      topic: question.topic,
+      difficulty: (pq.difficulty ? (pq.difficulty === "Medium" ? "Moderate" : pq.difficulty) : kind === "harder" ? "Hard" : "Easy") as any,
+      year: "AI",
+      shift: "Gen",
+      year_shift: "AI Generated",
+      questionTextRaw: pq.questionText,
+      contentAst: AIResponseParser.parse(pq.questionText),
+      options: (pq.options || []).map((o) => ({ option_id: o.option_id, is_correct: correctIds.has(o.option_id), optionTextRaw: o.content, contentAst: AIResponseParser.parse(o.content) })),
+      nat_answer_range: pq.natAnswerRange,
+      isAiGenerated: true,
+      has_image: false,
+      requires_latex: pq.questionText.includes("\\(") || pq.questionText.includes("\\["),
+    };
+    await IDBManager.saveAIGeneratedQuestion(renderableQ);
+    QuestionRepository.registerDynamicQuestion(renderableQ);
+    return qId;
+  };
+  const requestQuestion = async (kind: "harder" | "simpler") => {
+    if (chatLoading || !qid || !question) return;
+    setHistory(prev => [...prev, { role: "user", text: kind === "harder" ? "Give me a harder question on this concept." : "Give me a simpler question on this concept." }]);
+    setChatLoading(true);
+    try {
+      const res = await AIService.generatePracticeQuestions(question.topic, question.subject, 1, true, question, kind);
+      const q = res.success ? res.data?.questions?.[0] : undefined;
+      if (q && (q.questionType === "NAT" ? q.natAnswerRange : (q.options?.length && q.correctOptionIds?.length))) {
+        let sparkId: string | undefined;
+        try { sparkId = await saveAsSpark(q, kind); } catch (e) { console.warn("Couldn't save the question to Spark", e); }
+        setHistory(prev => [...prev, { role: "model", text: "practice-question", data: { concept: "Try this one first. It is in the panel on the left, and it is saved to Spark so you can practise it again later. Answer it and check it, and then we will go through your answer together.", steps: [], formulas: [], practice: { ...q, kind, sparkId } } as TutorData }]);
+      } else {
+        setHistory(prev => [...prev, { role: "model", text: `Error: ${res.error || "I couldn't set a good question just now. Please try again."}` }]);
+      }
+    } catch (err: any) {
+      setHistory(prev => [...prev, { role: "model", text: `Error: ${err.message || "Failed to establish connection."}` }]);
+    } finally {
+      setChatLoading(false);
+    }
+  };
+  // The student checked their answer: keep it with the question, then the Tutor reacts to exactly what they answered.
+  const checkPractice = (idx: number, picked: string[], nat: string) => {
+    const msg = history[idx]; const pr = msg?.data?.practice; if (!pr) return;
+    const natNum = Number(nat);
+    const right = pr.questionType === "NAT"
+      ? Number.isFinite(natNum) && !!pr.natAnswerRange && natNum >= pr.natAnswerRange.min && natNum <= pr.natAnswerRange.max
+      : (() => { const c = [...(pr.correctOptionIds ?? [])].sort().join(","); return [...picked].sort().join(",") === c; })();
+    const mine = pr.questionType === "NAT" ? nat.trim() : [...picked].sort().join(", ");
+    const key = pr.questionType === "NAT" ? `${pr.natAnswerRange?.min}${pr.natAnswerRange && pr.natAnswerRange.max !== pr.natAnswerRange.min ? " to " + pr.natAnswerRange.max : ""}` : (pr.correctOptionIds ?? []).join(", ");
+    setHistory(prev => prev.map((h, i) => (i === idx && h.data ? { ...h, data: { ...h.data, attempt: { picked, nat, right } } } : h)));
+    void sendMessage(
+      `I tried the ${pr.kind} question you set: "${pr.questionText}". My answer: ${mine || "(none)"}. The correct answer is ${key}, so my answer is ${right ? "RIGHT" : "WRONG"}. ${right ? "Tell me what made this one harder or easier than the original and what to try next." : "Tell me exactly where my reasoning most likely went wrong given my answer, then show the correct route briefly."} Keep it short and specific to my answer.`,
+      `My answer to the ${pr.kind} question: ${mine || "(none)"}`
+    );
+  };
+
+  // One send path for the text box and the quick buttons: the message is added to THIS conversation.
+  const sendMessage = async (text: string, display?: string) => {
     if (!text.trim() || chatLoading || !qid) return;
 
     const userMsg = text.trim();
-    setHistory(prev => [...prev, { role: "user", text: userMsg }]);
+    setHistory(prev => [...prev, { role: "user", text: display ?? userMsg }]);
     setChatInput("");
     setChatLoading(true);
 
@@ -585,7 +649,7 @@ export default function AITutorWorkspace() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="tutor-shell w-full h-full flex flex-col overflow-hidden rounded-[var(--card-radius)] bg-[var(--tint-sky)]" data-fill-height="always">
+      <div className="tutor-shell w-full h-full flex flex-col overflow-hidden" data-fill-height="always">
 
         {/* Sticky Command Bar */}
         <header className="flex-none bg-transparent border-b border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
@@ -598,9 +662,6 @@ export default function AITutorWorkspace() {
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-500/10 px-2.5 py-1 text-xs font-extrabold tracking-normal text-indigo-500">
-                <MentorLogo className="h-4" mode={chatLoading || loading ? "think" : "still"} /> AI Mentor · Tutor
-              </span>
               {question && (
                 <span className="text-[11px] text-[var(--text-muted)] font-bold hidden sm:inline">
                   {question.subject} • {question.topic}
@@ -755,22 +816,17 @@ export default function AITutorWorkspace() {
 
                 </div>
 
-                {/* Questions asked for in this chat: the newest is open, the others fold into one line each */}
+                {/* Questions the Tutor set in this chat: the newest is open to try, the others fold into one line each */}
                 {asked.map((a, n) => {
                   const id = `q${a.idx}`, open = openQ === id;
                   return (
-                    <div key={id} className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+                    <div key={id} id={`pq-${a.idx}`} className="scroll-mt-4 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)]">
                       <button type="button" onClick={() => setOpenQ(open ? "" : id)} aria-expanded={open} className="flex w-full cursor-pointer items-center gap-2.5 px-3 py-2.5 text-left">
                         <MentorLogo className="h-5" />
-                        <span className="min-w-0 flex-1"><span className="block text-xs font-extrabold text-[var(--text-primary)]">{a.label} #{n + 1}</span>{!open && <span className="block truncate text-[11px] text-[var(--text-muted)]">{(a.data.concept ?? "").replace(/\\\(|\\\)|\\\[|\\\]/g, "").slice(0, 90)}</span>}</span>
+                        <span className="min-w-0 flex-1"><span className="block text-xs font-extrabold text-[var(--text-primary)]">{a.label} #{n + 1}{a.attempt ? (a.attempt.right ? " · correct" : " · tried") : ""}</span>{!open && <span className="block truncate text-[11px] text-[var(--text-muted)]">{(a.practice.questionText ?? "").replace(/\\\(|\\\)|\\\[|\\\]/g, "").slice(0, 90)}</span>}</span>
                         <ChevronDown className={`h-4 w-4 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} aria-hidden />
                       </button>
-                      {open && (
-                        <div className="space-y-2 border-t border-[var(--border)] px-3 py-3 text-sm leading-relaxed text-[var(--text-primary)]">
-                          <AstNodeRenderer nodes={AIResponseParser.parse(a.data.concept ?? "")} />
-                          <button type="button" onClick={() => document.getElementById(`reply-${a.idx}`)?.scrollIntoView({ behavior: "smooth", block: "center" })} className="pill-soft cursor-pointer text-[11px]">Jump to the reply in the chat</button>
-                        </div>
-                      )}
+                      {open && <PracticeAttempt key={id} p={a.practice} attempt={a.attempt} busy={chatLoading} onCheck={(picked, nat) => checkPractice(a.idx, picked, nat)} />}
                     </div>
                   );
                 })}
@@ -806,6 +862,16 @@ export default function AITutorWorkspace() {
 
           {/* CENTER PANEL: Chat & Scrollable AI Cards (Width Flex-1) */}
           <section className="flex-1 bg-[var(--surface-secondary)]/20 flex flex-col h-full overflow-hidden relative min-w-0">
+
+            {/* The Tutor is part of the AI Mentor: its own lockup, with the flame working when the Tutor is */}
+            <div className="flex flex-none items-center gap-3 border-b border-[var(--border)] bg-[var(--surface)]/70 px-4 py-3 backdrop-blur md:px-6">
+              <MentorLogo className="h-11" mode={chatLoading || loading ? "think" : "blink"} />
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--text-muted)]">AI Mentor</p>
+                <p className="font-display text-xl font-extrabold leading-tight text-[var(--text-primary)]">Tutor</p>
+              </div>
+              <p className="hidden max-w-[16rem] text-right text-[11px] leading-snug text-[var(--text-secondary)] md:block">Ask anything about this question. Your chat is saved and shows in AI Mentor.</p>
+            </div>
 
             {/* Scrollable list of cards & message history */}
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
@@ -866,7 +932,18 @@ export default function AITutorWorkspace() {
 
                     // The first answer is the full explanation (the cards below). Everything after it is the conversation: a reply is a
                     // message in the same thread, not a second copy of the whole card set (which also repeated the diagnostic card).
-                    if (msgIdx !== history.findIndex((m) => m.role === "model" && m.data)) {
+                    if (data.practice) {
+                      return (
+                        <motion.div key={msgIdx} id={`reply-${msgIdx}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex scroll-mt-4 items-start gap-3">
+                          <MentorLogo className="mt-1 h-9" />
+                          <div className="min-w-0 flex-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-xs leading-relaxed shadow-sm">
+                            <p className="font-semibold text-[var(--text-primary)]">{data.concept}</p>
+                            <button type="button" onClick={() => { setOpenQ(`q${msgIdx}`); document.getElementById(`pq-${msgIdx}`)?.scrollIntoView({ behavior: "smooth", block: "center" }); }} className="pill-soft mt-2 cursor-pointer text-[11px]">{data.attempt ? (data.attempt.right ? "You got it right: view the question" : "View the question") : "Go to the question"}</button>
+                          </div>
+                        </motion.div>
+                      );
+                    }
+                    if (msgIdx !== history.findIndex((m) => m.role === "model" && m.data && !m.data.practice)) {
                       return <TutorReply key={msgIdx} data={data} anchorId={`reply-${msgIdx}`} />;
                     }
 
@@ -1057,8 +1134,8 @@ export default function AITutorWorkspace() {
               {explanation && (
                 <div className="flex flex-wrap gap-1.5 justify-center max-w-3xl mx-auto">
                   {[
-                    { label: "Harder question", prompt: "Can you give me a harder practice question on this concept?" },
-                    { label: "Simpler question", prompt: "Can you simplify this concept with an easier example?" },
+                    { label: "Harder question", prompt: "", ask: "harder" as const },
+                    { label: "Simpler question", prompt: "", ask: "simpler" as const },
                     { label: "Another approach", prompt: "Is there another mathematical approach or alternative solution to solve this?" },
                     { label: "Visual explanation", prompt: "Can you provide a visual ASCII chart or transition diagram for this?" },
                     { label: "Shortcut", prompt: "Show me a fast elimination trick or mental shortcut rules." },
@@ -1070,7 +1147,7 @@ export default function AITutorWorkspace() {
                       key={idx}
                       type="button"
                       disabled={chatLoading}
-                      onClick={() => { void sendMessage(pill.prompt); }}
+                      onClick={() => { if ("ask" in pill && pill.ask) void requestQuestion(pill.ask); else void sendMessage(pill.prompt); }}
                       className="text-[10px] px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/20 dark:hover:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-extrabold uppercase rounded-lg border border-indigo-500/10 transition cursor-pointer disabled:opacity-50"
                     >
                       {pill.label}
@@ -1338,7 +1415,10 @@ export default function AITutorWorkspace() {
 }
 
 
-const QUESTION_ASKS = ["Can you give me a harder practice question on this concept?", "Can you simplify this concept with an easier example?"];
+/** A question the Tutor set (Harder / Simpler) and the student's attempt at it. Both live in the saved thread. */
+type PracticeAsk = AIPracticeQuestion & { kind: "harder" | "simpler"; sparkId?: string };
+type Attempt = { picked: string[]; nat: string; right: boolean };
+type TutorData = AIExplanation & { practice?: PracticeAsk; attempt?: Attempt };
 
 /** AI limit messages ("You've used your free AI tries ...", daily limit): they carry an Upgrade button. */
 const LIMIT_RE = /free AI tries|daily (AI )?limit|requests a day|upgrade to (Plus|Pro)|limit reached/i;
@@ -1361,5 +1441,46 @@ function TutorReply({ data, anchorId }: { data: AIExplanation; anchorId: string 
         {data.shortcut && <div className="rounded-xl bg-violet-500/10 p-2.5"><span className="mb-0.5 flex items-center gap-1 font-extrabold text-violet-700 dark:text-violet-300"><Zap className="h-3.5 w-3.5" aria-hidden /> Shortcut</span><AstNodeRenderer nodes={AIResponseParser.parse(data.shortcut)} /></div>}
       </div>
     </motion.div>
+  );
+}
+
+/** One question to try: pick or type an answer, check it, see the result and the reasoning. The Tutor's reply about the answer lands in the chat. */
+function PracticeAttempt({ p, attempt, busy, onCheck }: { p: PracticeAsk; attempt?: Attempt; busy: boolean; onCheck: (picked: string[], nat: string) => void }) {
+  const [picked, setPicked] = useState<string[]>(attempt?.picked ?? []);
+  const [nat, setNat] = useState(attempt?.nat ?? "");
+  const done = !!attempt;
+  const isNat = p.questionType === "NAT";
+  const correct = p.correctOptionIds ?? [];
+  const can = isNat ? nat.trim() !== "" : picked.length > 0;
+  const toggle = (id: string) => { if (done) return; setPicked((s) => (p.questionType === "MSQ" ? (s.includes(id) ? s.filter((x) => x !== id) : [...s, id]) : [id])); };
+  return (
+    <div className="space-y-3 border-t border-[var(--border)] px-3 py-3 text-sm leading-relaxed text-[var(--text-primary)]">
+      <p className="text-[11px] font-bold text-[var(--text-muted)]">{p.questionType === "MSQ" ? "Pick all that apply" : p.questionType === "NAT" ? "Type a number" : "Pick one"}</p>
+      <div className="text-[var(--text-primary)]"><AstNodeRenderer nodes={AIResponseParser.parse(p.questionText ?? "")} /></div>
+      {!isNat && (
+        <div className="space-y-2" role={p.questionType === "MSQ" ? "group" : "radiogroup"}>
+          {(p.options ?? []).map((o) => {
+            const on = picked.includes(o.option_id), isRight = correct.includes(o.option_id);
+            const tone = done ? (isRight ? "border-emerald-600 bg-emerald-500/12" : on ? "border-rose-600 bg-rose-500/12" : "border-[var(--border)] opacity-70") : on ? "border-[var(--text-primary)] bg-[var(--surface-secondary)]" : "border-[var(--border)] hover:bg-[var(--surface-secondary)]";
+            return (
+              <button key={o.option_id} type="button" disabled={done} onClick={() => toggle(o.option_id)} role={p.questionType === "MSQ" ? "checkbox" : "radio"} aria-checked={on}
+                className={`flex w-full cursor-pointer items-start gap-2.5 rounded-xl border-2 px-3 py-2 text-left text-xs font-semibold transition-colors ${tone}`}>
+                <span className="font-extrabold">{o.option_id}.</span><span className="min-w-0 flex-1 break-words"><AstNodeRenderer nodes={AIResponseParser.parse(o.content ?? "")} /></span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+      {isNat && <input value={nat} onChange={(e) => setNat(e.target.value)} disabled={done} inputMode="decimal" aria-label="Your answer" placeholder="Your answer" className="h-10 w-40 rounded-xl border-2 border-[var(--border)] bg-[var(--surface)] px-3 font-num text-[var(--text-primary)] disabled:opacity-80" />}
+      {!done ? (
+        <button type="button" onClick={() => onCheck(picked, nat)} disabled={!can || busy} className="pill-ink cursor-pointer disabled:opacity-40">Check my answer</button>
+      ) : (
+        <div className="space-y-2">
+          <p className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-extrabold ${attempt!.right ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" : "bg-rose-500/15 text-rose-700 dark:text-rose-300"}`}>{attempt!.right ? "Correct" : `Not quite. Answer: ${isNat ? `${p.natAnswerRange?.min}${p.natAnswerRange && p.natAnswerRange.max !== p.natAnswerRange.min ? " to " + p.natAnswerRange.max : ""}` : correct.join(", ")}`}</p>
+          {p.explanation && <div className="rounded-xl bg-[var(--surface-secondary)] p-3 text-xs"><AstNodeRenderer nodes={AIResponseParser.parse(p.explanation)} /></div>}
+          <p className="text-[11px] text-[var(--text-muted)]">The Tutor&apos;s reply about your answer is in the chat.{p.sparkId ? " This question is saved to Spark." : ""}</p>
+        </div>
+      )}
+    </div>
   );
 }

@@ -104,6 +104,8 @@ const practiceParamsSchema = z.object({
   count: z.number().int().min(1).max(10),
   samples: z.array(looseRecord).max(5).optional(),
   currentQuestion: looseRecord.optional(),
+  // the Tutor's "Harder question" / "Simpler question": one question, a step above or below the one being studied
+  focus: z.enum(["harder", "simpler"]).optional(),
 });
 
 const revisionParamsSchema = z.object({

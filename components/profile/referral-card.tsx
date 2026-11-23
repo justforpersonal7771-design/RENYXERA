@@ -5,12 +5,16 @@ import { track } from "@/lib/growth/track";
 import { useEffect, useState } from "react";
 import { Check, Copy, Gift, Share2 } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
+import { useEntitlements } from "@/lib/billing/use-entitlements";
 
-type Stats = { code: string | null; joined: number; credited: number };
+type Stats = { code: string | null; joined: number; credited: number; waiting: number };
 
 /** 7E: "Invite friends": once the friend has really practised, the inviter gets 1 day of Plus + 15 AI requests and the friend 10 AI requests (supabase 0021). Never Pro days. */
 export function ReferralCard() {
   const signedIn = useAuthStore((s) => !!s.user);
+  // What the inviter earns depends on the plan they are on (supabase 0021, grant_pro_days_tier): Free gets a day of Plus, Plus gets a day added
+  // on, Pro already has more than Plus so only the AI requests apply.
+  const tier = useEntitlements().tier;
   const [stats, setStats] = useState<Stats | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -24,8 +28,10 @@ export function ReferralCard() {
         const { data: code } = await sb.rpc("my_referral_code");
         const { data } = await sb.rpc("my_referrals");
         const row = Array.isArray(data) ? data[0] : data;
-        if (alive) setStats({ code: (code as string) ?? row?.code ?? null, joined: row?.joined ?? 0, credited: row?.credited ?? 0 });
-      } catch { if (alive) setStats({ code: null, joined: 0, credited: 0 }); }
+        // referral days banked behind a Pro plan (supabase 0065); 0 when that migration is not in place yet
+        const { data: waiting } = await sb.rpc("my_queued_days");
+        if (alive) setStats({ code: (code as string) ?? row?.code ?? null, joined: row?.joined ?? 0, credited: row?.credited ?? 0, waiting: typeof waiting === "number" ? waiting : 0 });
+      } catch { if (alive) setStats({ code: null, joined: 0, credited: 0, waiting: 0 }); }
     })();
     return () => { alive = false; };
   }, [signedIn]);
@@ -47,7 +53,8 @@ export function ReferralCard() {
           <span className="shrink-0 w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white grid place-items-center shadow-md"><Gift className="w-5 h-5" /></span>
           <div>
             <h2 className="text-lg font-extrabold text-[var(--text-primary)]">Invite friends, earn Plus + AI credits</h2>
-            <p className="text-sm text-[var(--text-secondary)]">When a friend joins with your link and practises on 2 different days, you get 1 day of Plus + 15 AI requests and they get 10 AI requests. Up to 3 a month.</p>
+            <p className="text-sm text-[var(--text-secondary)]">When a friend joins with your link and practises on 2 different days, you get {tier === "pro" ? "15 AI requests + a day of Plus that starts when your Pro ends" : tier === "plus" ? "1 extra day of Plus + 15 AI requests" : "1 day of Plus + 15 AI requests"} and they get 10 AI requests. Up to 3 a month.</p>
+            {stats && stats.waiting > 0 && <p className="mt-1.5 inline-flex rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-300">{stats.waiting} day{stats.waiting === 1 ? "" : "s"} of Plus waiting: starts when your plan ends</p>}
           </div>
         </div>
         <div className="shrink-0 flex gap-2"><p className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 px-4 py-2 text-center min-w-[92px]"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{stats?.credited ?? 0}<span className="text-sm text-[var(--text-muted)]">/10</span></span><span className="text-xs font-semibold text-[var(--text-secondary)]">rewarded</span></p><p className="rounded-2xl border border-[var(--border)] bg-[var(--surface)]/70 px-4 py-2 text-center min-w-[92px]"><span className="block text-2xl font-extrabold font-num text-[var(--text-primary)]">{stats?.joined ?? 0}</span><span className="text-xs font-semibold text-[var(--text-secondary)]">joined</span></p></div>
