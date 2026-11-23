@@ -27,3 +27,39 @@ export function decodeWire(data: string, nonce: string, href: string): string {
   return new TextDecoder().decode(b);
 }
 export type Scrambled = { v: 1; n: string; d: string };
+
+/**
+ * Invisible per-account fingerprint (owner, 23 Nov 2026: no visible watermark while studying).
+ * The server writes a short code of the reader's account into long prose strings as zero-width characters (U+200B = 0, U+200C = 1,
+ * fenced by U+2060). Nothing shows on screen and reading, highlights and notes are untouched; text lifted from the page, the DOM or a
+ * saved response still carries the code, so a leaked copy can be traced to an account with `readStamp`. A screenshot or a retyped copy
+ * does not carry it: that limit is real, and the terms of use cover it.
+ */
+const ZERO = "​", ONE = "‌", FENCE = "⁠";
+const PROSE_TEXT = new Set(["hook", "definition", "shortcut", "gate"]);
+export function stampFor(userId: string): string {
+  let h = 2166136261; const s = `rx.stamp|${userId}`;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  const bits = (h >>> 0).toString(2).padStart(32, "0");
+  return FENCE + [...bits].map((b) => (b === "1" ? ONE : ZERO)).join("") + FENCE;
+}
+export function readStamp(text: string): string | null {
+  const m = text.match(/⁠([​‌]{32})⁠/); if (!m) return null;
+  return parseInt([...m[1]].map((c) => (c === ONE ? "1" : "0")).join(""), 2).toString(16).padStart(8, "0");
+}
+const put = (t: string, mark: string) => { if (t.length < 60) return t; const i = t.indexOf(" ", 12); return i < 0 ? t : t.slice(0, i) + mark + t.slice(i); };
+/** Walks lesson blocks and stamps prose only (never ids, labels, answers or lab data, which are compared by value). */
+export function stampBlocks<T>(node: T, mark: string): T {
+  if (Array.isArray(node)) return node.map((x) => stampBlocks(x, mark)) as unknown as T;
+  if (node && typeof node === "object") {
+    const o = node as Record<string, unknown>, out: Record<string, unknown> = {};
+    const prose = typeof o.type === "string" && PROSE_TEXT.has(o.type);
+    for (const k of Object.keys(o)) {
+      const v = o[k];
+      out[k] = k === "paras" && Array.isArray(v) ? v.map((x) => (typeof x === "string" ? put(x, mark) : x))
+        : k === "text" && prose && typeof v === "string" ? put(v, mark) : stampBlocks(v, mark);
+    }
+    return out as T;
+  }
+  return node;
+}

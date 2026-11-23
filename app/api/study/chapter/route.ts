@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { chapterForViewer } from "@/lib/study/serve";
 import { toWire } from "@/lib/study/schema";
-import { encodeWire, type Scrambled } from "@/lib/study/wire-guard";
+import { encodeWire, stampBlocks, stampFor, type Scrambled } from "@/lib/study/wire-guard";
 import { isAdminRequest } from "@/lib/server/admin";
 
 /**
@@ -31,6 +31,6 @@ export async function GET(req: NextRequest) {
   const ch = await chapterForViewer(href);
   if (!ch) return NextResponse.json({ error: "No such chapter." }, { status: 404, headers: NO });
   const nonce = crypto.randomUUID().replace(/-/g, "").slice(0, 16);
-  const body: Scrambled = { v: 1, n: nonce, d: encodeWire(JSON.stringify(toWire(ch)), nonce, href) };
+  const body: Scrambled = { v: 1, n: nonce, d: encodeWire(JSON.stringify(stampBlocks(toWire(ch), stampFor(userId ?? `ip:${ip}`))), nonce, href) };
   return NextResponse.json(body, { headers: NO });
 }
