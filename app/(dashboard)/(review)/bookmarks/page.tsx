@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { FullscreenToggle } from "@/components/ui/fullscreen-toggle";
 import { PersonalNotesDrawer } from "@/components/ui/personal-notes-drawer";
+import { PyqSolution } from "@/components/exam/pyq-solution";
 import { FullscreenNavigation } from "@/components/ui/fullscreen-navigation";
 import { IDBManager } from "@/lib/repository/storage/idb-manager";
 import { useRouter } from "next/navigation";
@@ -621,6 +622,8 @@ export default function BookmarksPage() {
                   <div className="text-lg md:text-xl font-medium leading-relaxed text-[var(--text-primary)] mb-8">
                      <AstNodeRenderer nodes={question.contentAst} />
                   </div>
+
+                  <PyqSolution questionId={activeEntry.questionId} className="mb-6" />
 
                   {/* AI Tutor Insights integration */}
                   {(activeEntry.aiShortcut || activeEntry.personalObservations) && (
