@@ -123,7 +123,7 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
     <div className={inModal ? "space-y-6 pb-2" : "space-y-8 pb-10"}>
       <header className="text-center max-w-3xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs font-bold tracking-normal"><Crown className="w-3.5 h-3.5" /> Plans</span>
-        <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">Prepare smarter with <span className="grad-brand bg-clip-text text-transparent">Plus &amp; Pro</span></h1>
+        <h1 className="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">Prepare smarter with <span className="plan-text-silver">Plus</span> <span className="text-[var(--text-primary)]">&amp;</span> <span className="plan-text-gold">Pro</span></h1>
         <p className="mx-auto mt-3 max-w-2xl text-balance text-[var(--text-secondary)]">More AI help every day, deeper analytics, offline papers and a premium look. Pick a plan and get more out of every study hour.</p>
         <PromoVideo className="mx-auto mt-6 max-w-2xl" />
         {ent.paid && <p className="mx-auto mt-4 flex w-fit items-center gap-2 rounded-xl bg-emerald-500/10 px-4 py-2 text-sm font-bold text-emerald-700 dark:text-emerald-300"><Check className="w-4 h-4" /> You&apos;re on {ent.tier === "pro" ? "Pro" : "Plus"}{ent.validUntil ? ` until ${new Date(ent.validUntil).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}` : ""}</p>}
@@ -131,8 +131,8 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
         <div className="inline-flex p-1 rounded-2xl border border-[var(--border)] bg-[var(--surface)]" role="radiogroup" aria-label="Billing period">
           {(["monthly", "yearly", "season"] as const).map((p) => (
             <button key={p} type="button" role="radio" aria-checked={period === p} onClick={() => setPeriod(p)}
-              className={`relative px-5 h-9 rounded-xl text-sm font-bold cursor-pointer ${period === p ? "text-white" : "text-[var(--text-secondary)]"}`}>
-              {period === p && <motion.span layoutId="period-pill" className="absolute inset-0 rounded-xl nav-active-pill" transition={{ type: "spring", stiffness: 420, damping: 32 }} />}
+              className={`relative px-5 h-9 rounded-xl text-sm font-bold cursor-pointer ${period === p ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)]"}`}>
+              {period === p && <motion.span layoutId="period-pill" className="absolute inset-0 rounded-xl plan-toggle-pill" transition={{ type: "spring", stiffness: 420, damping: 32 }} />}
               <span className="relative">{p === "monthly" ? "Monthly" : p === "yearly" ? "Yearly" : "GATE season pass"}</span>
             </button>
           ))}

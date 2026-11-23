@@ -21,6 +21,7 @@ import { AIPracticeQuestion, AIExplanation } from "@/types/ai.types";
 import { AIResponseParser } from "@/lib/ai/ai-response-parser";
 import { ConversationMemory } from "@/lib/ai/memory/ConversationMemory";
 import { useToastStore } from "@/store/use-toast-store";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 import { formatNatAnswer } from "@/lib/grading";
@@ -442,8 +443,8 @@ export default function AITutorWorkspace() {
     if (!question) return;
     // GATE-level practice sets are Plus (daily limit) and Pro (full); the server enforces it too.
     if (!ent.loading && ent.tier === "free") {
-      useToastStore.getState().show("GATE-level practice sets come with Plus and Pro. See the Plans page.", "info");
-      router.push("/pro");
+      useToastStore.getState().show("GATE-level practice sets come with Plus and Pro.", "info");
+      openUpgrade("GATE-level practice sets are part of Plus and Pro");
       return;
     }
     setGeneratingPractice(true);

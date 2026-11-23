@@ -7,6 +7,7 @@
  */
 import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { useRouter } from "next/navigation";
 import { Bookmark, BrainCircuit, ChevronRight, ClipboardX, FlaskConical, Lock, Search, Sparkles, SquareFunction, Zap, ListChecks } from "lucide-react";
 import { QuestionRepository } from "@/lib/repository/question-repository";
@@ -68,7 +69,7 @@ export function TutorHome() {
               <>
                 <p className="font-display text-lg font-extrabold text-[var(--text-primary)]">Tutor explanations come with Plus and Pro</p>
                 <p className="text-sm text-[var(--text-secondary)]">Plus gives {AI_DAILY.plus} AI requests a day, Pro {AI_DAILY.pro}. You can look around here for free.</p>
-                <Link href="/pro" className="btn-main mt-1"><Lock className="h-4 w-4" /> See plans</Link>
+                <button type="button" onClick={() => openUpgrade("Plus and Pro plans")} className="btn-main mt-1 cursor-pointer"><Lock className="h-4 w-4" /> See plans</button>
               </>
             ) : (
               <>

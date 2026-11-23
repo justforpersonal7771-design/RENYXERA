@@ -7,6 +7,7 @@
  */
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { Loader2, Lock, Sparkles } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 import { AI_DAILY } from "@/lib/billing/plans";
@@ -71,7 +72,7 @@ export function SparkGenerator({ onMade }: { onMade?: (n: number) => void }) {
         <div className="mt-4 flex flex-wrap items-center gap-3 rounded-2xl bg-[var(--surface)] p-4">
           <Lock className="h-5 w-5 text-[var(--tint-butter-ink)]" />
           <p className="flex-1 text-sm text-[var(--text-secondary)]">Making AI question sets comes with Plus ({AI_DAILY.plus} AI requests a day) and Pro ({AI_DAILY.pro} a day).</p>
-          <Link href="/pro" className="btn-main">See plans</Link>
+          <button type="button" onClick={() => openUpgrade("Spark AI questions are part of Plus and Pro")} className="btn-main cursor-pointer">See plans</button>
         </div>
       ) : (
         <div className="mt-4 grid gap-4 md:grid-cols-[1fr_1fr_auto] md:items-end">

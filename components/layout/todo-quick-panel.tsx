@@ -105,8 +105,8 @@ export function TodoQuickPanel() {
               <Plus className="w-4 h-4" />
             </motion.button>
           </div>
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5 p-1" role="radiogroup" aria-label="Priority">
+          <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+            <div className="flex items-center gap-1 p-1" role="radiogroup" aria-label="Priority">
               {PRIORITY_OPTIONS.map((p) => (
                 <button
                   key={p}

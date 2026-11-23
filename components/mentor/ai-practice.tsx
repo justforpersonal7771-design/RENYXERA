@@ -6,6 +6,7 @@
  */
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { Check, Loader2, Sparkles, X } from "lucide-react";
 import { PracticeGenerator } from "@/lib/ai/practice-generator";
 import { savePracticeSet } from "@/lib/ai/save-practice-set";
@@ -66,7 +67,7 @@ export function AiPracticePanel({ topics, subjects }: { topics: { topic: string;
         {options.length > 0 ? <CustomDropdown value={sel || options[0].value} onChange={setSel} options={options} className="w-full text-sm sm:w-80" /> : <p className="text-sm text-[var(--text-muted)]">Take a test and I will suggest topics. ({subjects.length} subjects known)</p>}
         <button type="button" onClick={gen} disabled={busy || !options.length} className="btn-main !h-11 !text-sm disabled:opacity-50">{busy ? <><Loader2 className="h-4 w-4 animate-spin" /> Making your set</> : "Make 8 questions"}</button>
       </div>
-      {err && <p className="mt-3 rounded-xl bg-[var(--tint-butter)] px-3 py-2 text-sm text-[var(--tint-butter-ink)]">{err} <Link href="/pro" className="font-bold underline">See plans</Link></p>}
+      {err && <p className="mt-3 rounded-xl bg-[var(--tint-butter)] px-3 py-2 text-sm text-[var(--tint-butter-ink)]">{err} <button type="button" onClick={() => openUpgrade("Plus and Pro plans")} className="cursor-pointer font-bold underline">See plans</button></p>}
       {set && (
         <div className="mt-4 space-y-4">
           {set.map((q, i) => {

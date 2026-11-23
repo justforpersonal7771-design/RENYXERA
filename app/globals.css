@@ -2492,8 +2492,16 @@ a:hover > .hub-chip { background: var(--hub-ink); border-color: transparent; col
 /* Study purple. The theme maps Tailwind's violet-* to blue, so study surfaces use these real purples (owner, 23 Nov 2026). */
 .study-chip { background: rgba(124, 92, 240, .14); color: #5a3fd0; }
 .dark .study-chip { background: rgba(167, 139, 250, .18); color: #d6cbff; }
-.study-grad { background-image: linear-gradient(100deg, #4f2fe0 0%, #8b4df0 52%, #c13fe0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
-.dark .study-grad { background-image: linear-gradient(100deg, #a5b4ff 0%, #c4a8ff 50%, #f0a6ff 100%); }
-.study-thumb { border: 1px solid rgba(124, 92, 240, .5); background: rgba(124, 92, 240, .16); }
-.study-on { color: #4b2fa8; }
+.study-grad { background-image: linear-gradient(100deg, #3b2a98 0%, #5a46c4 50%, #8a78ec 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.dark .study-grad { background-image: linear-gradient(100deg, #d9d2ff 0%, #b3a6ff 55%, #9a8cf0 100%); }
+.study-thumb { border: 1px solid rgba(154, 140, 240, .6); background: linear-gradient(135deg, rgba(232, 228, 255, .95), rgba(154, 140, 240, .28)); }
+.study-on { color: #3b2a98; }
 .dark .study-on { color: #dcd2ff; }
+
+/* Plans heading and toggle: Plus is silver, Pro is gold (owner, 23 Nov 2026). Flat metal inks, never a full gradient wash. */
+.plan-text-silver { background-image: linear-gradient(100deg, #5d6a82 0%, #8d99b0 50%, #4a5568 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.plan-text-gold { background-image: linear-gradient(100deg, #9a6a12 0%, #d9a93a 50%, #a8741a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.dark .plan-text-silver { background-image: linear-gradient(100deg, #ffffff 0%, #b4bdcf 55%, #e8edf8 100%); }
+.dark .plan-text-gold { background-image: linear-gradient(100deg, #ffe9a8 0%, #e0a93a 55%, #ffd36a 100%); }
+.plan-toggle-pill { background: linear-gradient(135deg, rgba(214,222,236,.9), rgba(232,200,120,.55)); border: 1px solid rgba(160,140,90,.45); }
+.dark .plan-toggle-pill { background: linear-gradient(135deg, rgba(148,160,184,.28), rgba(224,169,58,.22)); border: 1px solid rgba(224,190,110,.4); }
