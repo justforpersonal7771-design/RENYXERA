@@ -19,10 +19,16 @@ import { ensureAnswers } from "@/lib/repository/answer-keys";
 import { FORGE_ITEMS } from "@/lib/preview/sample-data";
 import { CustomDropdown } from "@/components/ui/custom-dropdown";
 import { Segmented } from "@/components/ui/folder-tabs";
+import { UPCOMING } from "@/lib/preview/features";
+import { getCurrentBranch } from "@/lib/branch/current";
+import { BranchSoon } from "@/components/branch/branch-soon";
 
 export type FlashSource = "pyq" | "forge" | "ai" | "mix";
 type Opt = { option_id: string; is_correct?: boolean; contentAst?: RenderableQuestion["contentAst"] };
-type Card = { id: string; subject: string; topic: string; diff: "E" | "M" | "H"; kind: "bank" | "forge"; q?: RenderableQuestion; forge?: (typeof FORGE_ITEMS)[number] };
+/** A Forge card. Live items arrive without their key; `answer` and `solution` are filled in from /api/answers when the student checks. */
+type ForgeCard = { id: string; subject: string; topic: string; difficulty: "E" | "M" | "H"; type: "MCQ" | "MSQ" | "NAT"; text: string; options?: string[]; answer?: string; solution?: { steps: string[]; shortcut: string; trap: string } };
+type Card = { id: string; subject: string; topic: string; diff: "E" | "M" | "H"; kind: "bank" | "forge"; q?: RenderableQuestion; forge?: ForgeCard };
+const FORGE_LIVE = UPCOMING.forge === "live";
 
 // ---- spaced repetition store (per device) ----
 const SR_KEY = "renyxera_flash_sr";
@@ -38,17 +44,26 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
   const reduce = useReducedMotion();
   const [subject, setSubject] = useState("all");
   const [diff, setDiff] = useState<"all" | "E" | "M" | "H">("all");
-  const [size, setSize] = useState<"10" | "20" | "40">("20");
   const [mode, setMode] = useState<"due" | "new" | "all">("due");
   const [seed, setSeed] = useState(7);
   const [sr, setSr] = useState<SR>(() => (typeof window === "undefined" ? {} : readSR()));
   const [onlyIds, setOnlyIds] = useState<string[] | null>(null); // "revise missed" deck
 
+  // Forge: the questions released to this account for its own branch (the API filters by branch and plan); preview builds use the samples.
+  const [live, setLive] = useState<{ cards: ForgeCard[]; state: "loading" | "ready" | "error" }>({ cards: FORGE_LIVE ? [] : (FORGE_ITEMS as unknown as ForgeCard[]), state: FORGE_LIVE ? "loading" : "ready" });
+  const [keys, setKeys] = useState<Record<string, { answer: string; solution?: ForgeCard["solution"] }>>({});
+  useEffect(() => {
+    if (!FORGE_LIVE || (source !== "forge" && source !== "mix")) return; let off = false;
+    fetch("/api/forge/items?set=practice").then((r) => (r.ok ? r.json() : Promise.reject(r.status))).then((j: { items: { id: string; subject: string; topic: string; difficulty: string; question_type: "MCQ" | "MSQ" | "NAT"; question_text: string; options: { option_id: string; text: string }[] }[] }) => {
+      if (!off) setLive({ state: "ready", cards: (j.items ?? []).map((r) => ({ id: r.id, subject: r.subject, topic: r.topic, difficulty: diffOf(r.difficulty), type: r.question_type, text: r.question_text, options: r.options?.length ? r.options.map((o) => o.text) : undefined })) });
+    }).catch(() => { if (!off) setLive({ cards: [], state: "error" }); });
+    return () => { off = true; };
+  }, [source]);
   const all: Card[] = useMemo(() => {
     const bank = (qs: RenderableQuestion[]): Card[] => qs.filter((q) => q.contentAst?.length).map((q) => ({ id: q.question_id, subject: q.subject, topic: q.topic, diff: diffOf(q.difficulty), kind: "bank", q }));
-    const forge: Card[] = FORGE_ITEMS.map((f) => ({ id: f.id, subject: f.subject, topic: f.topic, diff: f.difficulty, kind: "forge", forge: f }));
+    const forge: Card[] = live.cards.map((f) => ({ id: f.id, subject: f.subject, topic: f.topic, diff: f.difficulty, kind: "forge", forge: { ...f, ...(keys[f.id] ?? {}) } }));
     return source === "pyq" ? bank(pyq) : source === "ai" ? bank(ai) : source === "forge" ? forge : [...bank(pyq).slice(0, 400), ...bank(ai), ...forge];
-  }, [source, pyq, ai]);
+  }, [source, pyq, ai, live.cards, keys]);
   const subjects = useMemo(() => [...new Set(all.map((c) => c.subject).filter(Boolean))].sort(), [all]);
   const now = Date.now();
   const deck = useMemo(() => {
@@ -57,10 +72,10 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
     if (mode === "new") pool = pool.filter((c) => !sr[c.id]);
     const ordered = shuffle(pool, seed);
     if (mode === "due") ordered.sort((a, b) => (sr[a.id] ? (sr[a.id].due <= now ? 0 : 2) : 1) - (sr[b.id] ? (sr[b.id].due <= now ? 0 : 2) : 1));
-    return ordered.slice(0, Number(size));
+    return ordered;
     // sr deliberately read only when the deck is (re)built, so cards don't jump while you answer
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [all, subject, diff, size, mode, seed, onlyIds]);
+  }, [all, subject, diff, mode, seed, onlyIds]);
   const dueCount = useMemo(() => all.filter((c) => sr[c.id] && sr[c.id].due <= now).length, [all, sr, now]);
 
   const [i, setI] = useState(0);
@@ -77,7 +92,7 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
   // Options and type for the current card (bank questions render their own AST; Forge has plain text).
   const qType = card?.kind === "forge" ? card.forge!.type : (card?.q?.question_type ?? "MCQ");
   const opts: { id: string; correct: boolean; node: React.ReactNode }[] = !card ? [] : card.kind === "forge"
-    ? (card.forge!.options ?? []).map((o, k) => ({ id: "ABCD"[k], correct: card.forge!.answer === "ABCD"[k], node: o }))
+    ? (card.forge!.options ?? []).map((o, k) => ({ id: "ABCD"[k], correct: (card.forge!.answer ?? "").split(",").map((x) => x.trim()).includes("ABCD"[k]), node: o }))
     : ((card.q!.options ?? []) as Opt[]).map((o) => ({ id: o.option_id, correct: !!o.is_correct, node: o.contentAst ? <AstNodeRenderer nodes={o.contentAst} /> : null }));
   const natOk = (() => {
     const v = Number(nat); if (!nat.trim() || Number.isNaN(v)) return false;
@@ -90,7 +105,17 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
   const unlock = useCallback(async () => {
     // AI questions carry their own answers; official ones are unlocked per card from the server.
     if (card?.kind === "bank" && !card.id.startsWith("ai_")) { setLoading(true); await ensureAnswers([card.id]).catch(() => false); setLoading(false); }
-  }, [card]);
+    // live Forge cards: the key comes from the server only once the student asks for it
+    if (card?.kind === "forge" && FORGE_LIVE && !keys[card.id]) {
+      setLoading(true);
+      try {
+        const r = await fetch("/api/answers", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question_ids: [card.id] }) });
+        const a = ((await r.json()) as { answers?: Record<string, { c: string[]; n: [number, number][] | null; s?: ForgeCard["solution"] }> }).answers?.[card.id];
+        if (r.ok && a) setKeys((k) => ({ ...k, [card.id]: { answer: card.forge!.type === "NAT" ? String(a.n?.[0]?.[0] ?? "") : a.c.join(", "), solution: a.s } }));
+      } catch { /* the card stays unchecked */ }
+      setLoading(false);
+    }
+  }, [card, keys]);
   const check = useCallback(async () => { await unlock(); setChecked(true); }, [unlock]);
   const reveal = useCallback(async () => { await unlock(); setRevealed(true); setChecked(true); }, [unlock]);
   const restart = (ids: string[] | null = null) => { setOnlyIds(ids); setI(0); resetCard(); setResults({}); if (!ids) setSeed((s) => s + 1); };
@@ -124,9 +149,17 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
     <div className="flex flex-wrap items-center gap-3">
       <CustomDropdown value={subject} onChange={(v) => { setSubject(v); restart(); }} options={[{ label: "All subjects", value: "all" }, ...subjects.map((s) => ({ label: s, value: s }))]} className="w-60 text-sm" />
       <Segmented label="Difficulty" value={diff} onChange={(v) => { setDiff(v); restart(); }} options={[{ id: "all", label: "All" }, { id: "E", label: "Easy" }, { id: "M", label: "Medium" }, { id: "H", label: "Hard" }]} />
-      <Segmented label="Cards" value={size} onChange={(v) => { setSize(v); restart(); }} options={[{ id: "10", label: "10" }, { id: "20", label: "20" }, { id: "40", label: "40" }]} />
       <Segmented label="Which cards" value={mode} onChange={(v) => { setMode(v); restart(); }} options={[{ id: "due", label: `Due first${dueCount ? ` (${dueCount})` : ""}` }, { id: "new", label: "New only" }, { id: "all", label: "All" }]} />
       <button type="button" onClick={() => restart()} className="pill-soft"><Shuffle className="h-4 w-4" /> Shuffle</button>
+    </div>
+  );
+
+  if (source === "forge" && FORGE_LIVE && !live.cards.length) return (
+    <div className="space-y-4">
+      {live.state === "loading" ? <div className="card-pastel flex items-center justify-center gap-2 p-8 text-sm" data-tint="lilac"><Loader2 className="h-4 w-4 animate-spin" /> Loading Forge questions</div>
+        : live.state === "error" ? <div className="card-pastel p-8 text-center text-sm" data-tint="rose">Couldn&apos;t load Forge questions. Please try again in a moment.</div>
+        : getCurrentBranch() !== "CSE" ? <BranchSoon feature="forge" />
+        : <div className="card-pastel p-8 text-center text-sm" data-tint="lilac">No Forge questions are released to your plan yet.</div>}
     </div>
   );
 
@@ -160,7 +193,7 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
       {filters}
       <div>
         <div className="flex items-center justify-between text-sm text-[var(--text-secondary)]">
-          <span>Card <b className="font-num text-[var(--text-primary)]">{i + 1}</b> of {deck.length}{box ? ` · box ${box} of 5` : " · new card"}</span>
+          <span>Question <b className="font-num text-[var(--text-primary)]">{i + 1}</b> of {deck.length}{box ? ` · box ${box} of 5` : " · new card"}</span>
           <span><b className="text-[var(--tint-mint-ink)]">{got} got it</b> · <b className="text-[var(--tint-rose-ink)]">{Object.values(results).filter((x) => !x).length} again</b></span>
         </div>
         <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-[var(--surface)]" role="progressbar" aria-valuenow={Object.keys(results).length} aria-valuemin={0} aria-valuemax={deck.length} aria-label="Deck progress">
@@ -214,9 +247,9 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
             {card.kind === "forge" ? (
               <>
                 <p className="mt-1 font-display text-2xl font-extrabold">{card.forge!.answer}</p>
-                <ol className="mt-2 space-y-1 text-[var(--text-secondary)]">{card.forge!.solution.steps.map((st, k) => <li key={k}><b className="text-[var(--text-primary)]">{k + 1}.</b> {st}</li>)}</ol>
-                <p className="mt-2"><b>Shortcut:</b> {card.forge!.solution.shortcut}</p>
-                <p className="mt-1"><b>Trap:</b> {card.forge!.solution.trap}</p>
+                <ol className="mt-2 space-y-1 text-[var(--text-secondary)]">{(card.forge!.solution?.steps ?? []).map((st, k) => <li key={k}><b className="text-[var(--text-primary)]">{k + 1}.</b> {st}</li>)}</ol>
+                <p className="mt-2"><b>Shortcut:</b> {card.forge!.solution?.shortcut}</p>
+                <p className="mt-1"><b>Trap:</b> {card.forge!.solution?.trap}</p>
               </>
             ) : <div className="mt-1"><BankAnswer q={card.q!} /></div>}
           </div>

@@ -235,6 +235,7 @@ function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
   const [pick, setPick] = useState<string[]>([]);
   const [nat, setNat] = useState("");
   const [shown, setShown] = useState(false);
+  const [sol, setSol] = useState(false); // the worked solution, on request: before or after answering
   const letters = ["A", "B", "C", "D"];
   const correct = q.answer.split(",").map((x) => x.trim());
   const mine = q.kind === "NAT" ? nat.trim() : [...pick].sort().join(", ");
@@ -243,8 +244,9 @@ function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
   const toggle = (l: string) => { if (shown) return; setPick((p) => (q.kind === "MSQ" ? (p.includes(l) ? p.filter((x) => x !== l) : [...p, l]) : [l])); };
   const can = q.kind === "NAT" ? nat.trim() !== "" : pick.length > 0;
   const tone = (l: string) => {
-    if (!shown) return pick.includes(l) ? "border-[var(--text-primary)] bg-[var(--surface-secondary)]" : "border-[var(--border)] hover:bg-[var(--surface-secondary)]";
+    if (!shown && !sol) return pick.includes(l) ? "border-[var(--text-primary)] bg-[var(--surface-secondary)]" : "border-[var(--border)] hover:bg-[var(--surface-secondary)]";
     if (correct.includes(l)) return "border-emerald-600 bg-emerald-500/12";
+    if (!shown) return pick.includes(l) ? "border-[var(--text-primary)] bg-[var(--surface-secondary)]" : "border-[var(--border)] opacity-70";
     if (pick.includes(l)) return "border-rose-600 bg-rose-500/12";
     return "border-[var(--border)] opacity-70";
   };
@@ -258,13 +260,13 @@ function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
             const l = letters[i], on = pick.includes(l);
             return (
               <li key={i}>
-                <button type="button" onClick={() => toggle(l)} role={q.kind === "MSQ" ? "checkbox" : "radio"} aria-checked={on} disabled={shown}
+                <button type="button" onClick={() => toggle(l)} role={q.kind === "MSQ" ? "checkbox" : "radio"} aria-checked={on} disabled={shown || sol}
                   className={`flex w-full items-start gap-3 rounded-xl border-2 px-3 py-2.5 text-left text-sm transition-colors ${tone(l)}`}>
                   <span aria-hidden className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center border-2 border-[var(--text-primary)] ${q.kind === "MSQ" ? "rounded-md" : "rounded-full"} ${on ? "bg-[var(--text-primary)] text-[var(--background)]" : ""}`}>
                     {on && (q.kind === "MSQ" ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : <span className="h-2 w-2 rounded-full bg-[var(--background)]" />)}
                   </span>
                   <span className="min-w-0 flex-1 text-[var(--text-primary)]"><b className="mr-1.5">{l}.</b>{o}</span>
-                  {shown && correct.includes(l) && <CircleCheck className="h-5 w-5 shrink-0 text-emerald-600" aria-label="Correct option" />}
+                  {(shown || sol) && correct.includes(l) && <CircleCheck className="h-5 w-5 shrink-0 text-emerald-600" aria-label="Correct option" />}
                   {shown && on && !correct.includes(l) && <CircleX className="h-5 w-5 shrink-0 text-rose-600" aria-label="Wrong pick" />}
                 </button>
               </li>
@@ -272,15 +274,16 @@ function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
           })}
         </ul>
       ) : (
-        <input value={nat} onChange={(e) => setNat(e.target.value)} disabled={shown} inputMode="decimal" aria-label="Your answer" placeholder="Your answer"
+        <input value={nat} onChange={(e) => setNat(e.target.value)} disabled={shown || sol} inputMode="decimal" aria-label="Your answer" placeholder="Your answer"
           className={`mt-3 h-11 w-44 rounded-xl border-2 bg-[var(--surface)] px-3 font-num text-[var(--text-primary)] ${shown ? (right ? "border-emerald-600" : "border-rose-600") : "border-[var(--border)]"}`} />
       )}
       <div className="mt-4 flex flex-wrap items-center gap-3">
         {!shown ? <button type="button" onClick={() => setShown(true)} disabled={!can} className="pill-ink disabled:opacity-40">Check answer</button>
-          : <button type="button" onClick={() => { setShown(false); setPick([]); setNat(""); }} className="pill-soft"><RotateCcw className="h-4 w-4" aria-hidden /> Try again</button>}
+          : <button type="button" onClick={() => { setShown(false); setSol(false); setPick([]); setNat(""); }} className="pill-soft"><RotateCcw className="h-4 w-4" aria-hidden /> Try again</button>}
+        <button type="button" onClick={() => setSol((v) => !v)} aria-expanded={sol} className="pill-soft"><Lightbulb className="h-4 w-4" aria-hidden /> {sol ? "Hide solution" : "Show solution"}</button>
         {shown && <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-bold ${right ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300" : "bg-rose-500/15 text-rose-700 dark:text-rose-300"}`}>{right ? <CircleCheck className="h-4 w-4" /> : <CircleX className="h-4 w-4" />}{right ? "Correct" : `Not quite. Answer: ${q.answer}`}</span>}
       </div>
-      {shown && <p className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3 text-sm leading-relaxed text-[var(--text-primary)]">{q.solution}</p>}
+      {sol && <div className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3 text-sm leading-relaxed text-[var(--text-primary)]"><p className="font-bold">Answer: <span className="font-num">{q.answer}</span></p><p className="mt-1">{q.solution}</p></div>}
     </li>
   );
 }

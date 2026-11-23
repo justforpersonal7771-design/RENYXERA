@@ -5,6 +5,18 @@ import { FREE_TOPICS, chapterInfo } from "@/lib/study/packs";
 import { isAdminRequest } from "@/lib/server/admin";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { ownedPacks } from "@/lib/study/server";
+import { cookies } from "next/headers";
+import { getVerifiedClaims } from "@/lib/supabase/server";
+import { getUserBranch } from "@/lib/server/branch";
+
+/** Study books are written for Computer Science so far; other branches see "coming soon" (components/branch/branch-soon.tsx). */
+export async function studyOpenForBranch(): Promise<boolean> {
+  const claims = await getVerifiedClaims().catch(() => null);
+  const userId = typeof claims?.sub === "string" ? claims.sub : null;
+  if (userId) return (await getUserBranch(createServiceRoleClient(), userId).catch(() => "CSE")) === "CSE";
+  const c = (await cookies()).get("renyxera_branch")?.value?.toUpperCase();
+  return !c || c === "CSE";
+}
 
 /**
  * The server decides what a viewer may read (docs/study-materials/13, migration 0063). Topics the viewer cannot open are sent as

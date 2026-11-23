@@ -15,6 +15,8 @@ import { highlightCount, readSeen } from "@/lib/study/progress";
 import { useStudyAccess } from "@/lib/study/use-study-access";
 import { TiltCard } from "@/components/ui/interactive";
 import { openStudyShop } from "@/store/use-study-shop-store";
+import { BranchSoon } from "@/components/branch/branch-soon";
+import { getCurrentBranch } from "@/lib/branch/current";
 
 const readyChapters = CS_SHELF.flatMap((b) => b.chapters.filter((c) => c.href).map((c) => ({ b, c, topics: Number(/(\d+)\s+topics?/.exec(c.ready ?? "")?.[1] ?? 0) })));
 const totalTopics = readyChapters.reduce((s, x) => s + x.topics, 0);
@@ -23,6 +25,9 @@ const sampleTopics = CS_SHELF.filter((b) => b.chapters.some((c) => c.href)).leng
 
 export default function StudyPage() {
   const access = useStudyAccess();
+  const [soon, setSoon] = useState(false); // study books exist for Computer Science only so far
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- the branch is read from this browser after mount
+  useEffect(() => { setSoon(getCurrentBranch() !== "CSE"); }, []);
   const [stats, setStats] = useState<{ read: number; chapters: number; hl: number } | null>(null);
   useEffect(() => {
     const seen = readSeen();
@@ -32,6 +37,7 @@ export default function StudyPage() {
   }, []);
   const open = access.all ? totalTopics : sampleTopics;
   const pct = stats && open ? Math.min(100, Math.round((stats.read / open) * 100)) : 0;
+  if (soon) return <div className="p-4 sm:p-6"><BranchSoon feature="study" /></div>;
   return (
     <div className="space-y-6 pb-8">
       <section aria-label="Your reading" className="grid grid-cols-2 gap-3 lg:grid-cols-4">

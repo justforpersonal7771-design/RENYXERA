@@ -7,7 +7,7 @@
  *   PYQs    the real GATE questions on this topic as a short list; one opens in a modal and can be answered there
  *   Mentor  a chat window that can be dragged, minimised and switched to an earlier chat; filed in Mentor history
  * Everything renders into document.body so the page's own layers cannot clip it.
- */
+ */
 import dynamic from "next/dynamic";
 const VirtualCalculator = dynamic(() => import("@/components/exam/virtual-calculator").then((m) => m.VirtualCalculator), { ssr: false });
 import { loadBank } from "@/lib/study/bank";
@@ -17,6 +17,7 @@ import { AnimatePresence, motion, useDragControls, useReducedMotion } from "moti
 import { Calculator, Check, ScrollText, GripHorizontal, Highlighter, History, Loader2, Minus, Send, SquarePen, TextSelect, X } from "lucide-react";
 import { LESSON_SELECTION_EVENT } from "@/components/study/lesson-highlights";
 import { normalizeQuestion } from "@/lib/repository/transformers/question-normalizer";
+import { getCurrentBranch } from "@/lib/branch/current";
 import type { Question } from "@/types/question.types";
 import { useMentorChat } from "@/components/mentor/use-mentor-chat";
 import { useMentorData } from "@/components/mentor/use-mentor-data";
@@ -53,6 +54,7 @@ function useTopicPyqs(topic: RegExp) {
   const [list, setList] = useState<RenderableQuestion[] | null>(null);
   useEffect(() => {
     let live = true;
+    if (getCurrentBranch() !== "CSE") { setList([]); return () => { live = false; }; } // study books are Computer Science: only that branch's own PYQs belong here
     loadBank().then((bank) => { const papers = bank as unknown as { exam_metadata: { "year-shift": string }; questions: Question[] }[];
       if (!live) return;
       const out: RenderableQuestion[] = [];

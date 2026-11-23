@@ -4,6 +4,8 @@
  * Forge hub (R11): original GATE-level questions. Free: Forge Mocks only. Plus: 15 a day + bookmarks, no X.
  * Pro: everything. Runs on sample data until the CS batches are seeded (lib/preview/features.ts).
  */
+import { BranchSoon } from "@/components/branch/branch-soon";
+import { getCurrentBranch } from "@/lib/branch/current";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { MathJax } from "better-react-mathjax";
 import { isNatCorrect, isOptionsCorrect } from "@/lib/grading";
@@ -74,6 +76,10 @@ function useBookmarks() {
 
 /** Forge hub: shown inside Exam Setup when the question source is Forge (and at /forge, which redirects there). */
 export function ForgeHub() {
+  const [soon, setSoon] = useState(false); // Forge questions exist for Computer Science only so far
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- the branch is read from this browser after mount
+  useEffect(() => { setSoon(UPCOMING.forge === "live" && getCurrentBranch() !== "CSE"); }, []);
+  if (soon) return <div className="space-y-6"><BranchSoon feature="forge" /></div>;
   return (
     <div className="space-y-6">
       <PreviewFrame state={UPCOMING.forge} name="Forge" when="Original GATE-level questions, a Daily Forge and Forge Mocks. CS first, then every branch.">

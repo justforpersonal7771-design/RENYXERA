@@ -74,3 +74,13 @@ export async function plusUpgradeCredit(userId: string): Promise<number> {
   const daysLeft = Math.min(data.period_days, Math.floor(msLeft / 86400_000));
   return Math.max(0, Math.floor((data.amount_paise * daysLeft) / data.period_days));
 }
+
+/** The account's own mobile number for the payment provider (Cashfree requires one), as 10 digits, or null when the profile has none.
+ *  Never invent a number: a real checkout shows and stores whatever is sent here. */
+export async function customerPhone(userId: string): Promise<string | null> {
+  try {
+    const { createServiceRoleClient } = await import("@/lib/supabase/service-role");
+    const { data } = await createServiceRoleClient().from("profiles").select("phone").eq("id", userId).maybeSingle();
+    const m = /^\+91([6-9][0-9]{9})$/.exec(String(data?.phone ?? "")); return m ? m[1] : null;
+  } catch { return null; }
+}

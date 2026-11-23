@@ -5,7 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BILLING_MODE } from "@/lib/billing/plans";
-import { isDisposableEmail } from "@/lib/billing/server";
+import { isDisposableEmail, customerPhone } from "@/lib/billing/server";
 import { activeProvider } from "@/lib/billing/providers";
 import { getUserBranch } from "@/lib/server/branch";
 import { BUNDLES, PACKS, customPrice, productPacks, studyPlanId } from "@/lib/study/packs";
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
   const validUntil = await studyValidUntil(db, userId);
   const periodDays = Math.max(1, Math.ceil((Date.parse(validUntil) - Date.now()) / 86400_000));
 
-  const made = await provider.createOrder({ amountPaise: amount, receipt: `s_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: planId, branch }, customer: { id: userId, email }, returnUrl: `${(process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin)}/study?paid=1` });
+  const made = await provider.createOrder({ amountPaise: amount, receipt: `s_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: planId, branch }, customer: { id: userId, email, phone: await customerPhone(userId) }, returnUrl: `${(process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin)}/study?paid=1` });
   if ("error" in made) return NextResponse.json({ error: made.error }, { status: 502 });
   const { error } = await db.from("billing_orders").insert({
     user_id: userId, plan_id: planId, amount_paise: amount, upgrade_credit_paise: q.credit, period_days: periodDays,

@@ -5,7 +5,7 @@ import { isCrossOriginRequest } from "@/lib/security/origin-check";
 import { getVerifiedClaims } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service-role";
 import { BILLING_MODE, planById } from "@/lib/billing/plans";
-import { getEntitlement, isDisposableEmail, plusUpgradeCredit } from "@/lib/billing/server";
+import { getEntitlement, isDisposableEmail, plusUpgradeCredit, customerPhone } from "@/lib/billing/server";
 import { activeProvider } from "@/lib/billing/providers";
 import { getUserBranch } from "@/lib/server/branch";
 import { evaluateCoupon } from "@/lib/billing/coupons";
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
     amount += study.amount;
   }
 
-  const made = await provider.createOrder({ amountPaise: amount, receipt: `u_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: plan.id, branch }, customer: { id: userId, email }, returnUrl: `${(process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin)}/pro?paid=1` });
+  const made = await provider.createOrder({ amountPaise: amount, receipt: `u_${userId.slice(0, 8)}_${Date.now()}`, notes: { user_id: userId, plan_id: plan.id, branch }, customer: { id: userId, email, phone: await customerPhone(userId) }, returnUrl: `${(process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin)}/pro?paid=1` });
   if ("error" in made) return NextResponse.json({ error: made.error }, { status: 502 });
   const order = { id: made.orderId, amount, currency: "INR" };
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { chapterForViewer } from "@/lib/study/serve";
+import { chapterForViewer, studyOpenForBranch } from "@/lib/study/serve";
 import { toWire } from "@/lib/study/schema";
 import { encodeWire, stampBlocks, stampFor, type Scrambled } from "@/lib/study/wire-guard";
 import { isAdminRequest } from "@/lib/server/admin";
@@ -23,6 +23,7 @@ const NO = { "Cache-Control": "private, no-store", "X-Robots-Tag": "noindex, nof
 export async function GET(req: NextRequest) {
   const site = req.headers.get("sec-fetch-site"), dest = req.headers.get("sec-fetch-dest");
   if (req.headers.get("x-rx-study") !== "1" || (site && site !== "same-origin") || (dest && dest !== "empty")) return NextResponse.json({ error: "Not available." }, { status: 403, headers: NO });
+  if (!(await studyOpenForBranch())) return NextResponse.json({ error: "Study books are not open for your branch yet.", reason: "branch" }, { status: 403, headers: NO });
   const href = req.nextUrl.searchParams.get("href") ?? "";
   if (!/^\/study\/[a-z0-9-]+$/.test(href)) return NextResponse.json({ error: "Bad chapter." }, { status: 400, headers: NO });
   const { userId } = await isAdminRequest().catch(() => ({ userId: null as string | null }));
