@@ -1,10 +1,10 @@
-# Review input: Spatial Aptitude
+# In-depth review input: Spatial Aptitude
 
-**How to use:** paste everything under the line into ChatGPT (and again, in a new chat, into Gemini). Save each reply as `chatgpt-review-spatial-aptitude.md` and `gemini-review-spatial-aptitude.md` in this folder and send them back.
+**One file, one review.** Paste everything below the line into ChatGPT (new chat), and again into Gemini (new chat). If the chat refuses the length, attach this file and write: "Follow the instructions inside the file."
 
-This input has **two parts**: (A) the reviewer instructions, (B) the contents draft. This is a v0 *contents list*, so after Part 3 and Part 4 of the instructions, **also write the complete proposed chapter-and-lesson plan** for this subject, in the same layout as the example plan summary below.
+Save the replies in this folder as `chatgpt-review-spatial-aptitude.md` and `gemini-review-spatial-aptitude.md`, then tell me.
 
-**Example layout of a finished plan** (from the Programming in C plan): for every chapter list *Lessons → Beginner must see → Finer points → GATE level → Diagrams → Traces by hand*, and tag every chapter [MUST], [SHOULD] or [LATER].
+Contains: reviewer instructions (A), the subject's contents with the PYQ statistics (B), and all 15 PYQs with full text and the official key (C).
 
 ---
 
@@ -47,13 +47,33 @@ RULES FOR YOU
  - Do not just praise. If you find fewer than 40 problems in a long plan, you read too fast; read again.
  - Say it in simple English.
  - If a fact in the document looks wrong, say exactly which and why (FACT-DOUBT).
+
+This is the **in-depth review of the whole Spatial Aptitude book**. Take your time. Go chapter by chapter, and give a much deeper answer than a quick review: at least **80 rows** in the gap table in Part 2 (spread across every chapter).
+
+If your reply gets too long, **stop at the end of a chapter** and write "CONTINUE FROM CHAPTER <number>". I will answer "continue" and you carry on. Do not shorten later chapters to fit; every chapter gets the same depth.
+
+In addition to Parts 1 to 4 above, answer these parts:
+
+PART 5. THE FULL PLAN, CHAPTER BY CHAPTER
+ For every chapter (the ones given below, plus any you think are missing), list the lessons (each = 45 to 90 minutes of reading). For each lesson give: title; tag [MUST]/[SHOULD]/[LATER] with the reason; prerequisites; beginner must-see; finer points; GATE-level items; diagrams needed (kind and what it shows); hand traces; common mistakes.
+
+PART 6. EVERY PYQ LISTED BELOW
+ For EACH previous-year question: (a) the chapter and lesson of your plan it belongs to, (b) the exact concept it tests, (c) the trap or finer point, (d) whether the official answer is correct (re-solve it; if you disagree show the working and write FACT-DOUBT), (e) whether the question text looks mis-transcribed (say exactly what).
+
+PART 7. MORE QUESTIONS NEEDED
+ For each lesson, three question ideas GATE could ask that the PYQs do not cover (one line each, with the type MCQ / MSQ / NAT).
+
+PART 8. WHAT IS MISSING FROM THE SUBJECT
+ Topics GATE has asked, or could ask, that no chapter below covers.
+
+PART 9. WEIGHTS
+ Give each chapter a weight tag (High / Medium / Low / Foundation) and say whether the one derived from the bank (below) looks fair. Do not invent frequencies; write "not sure".
 ```
 
 ---
 
-## PART B. THE DOCUMENT TO REVIEW
+## PART B. THE CONTENTS TO REVIEW
 
-# Spatial Aptitude: contents draft v0 (from the app's catalog and the PYQ bank)
 
 Generated 24 Nov 2026. **Status: v0.** This is a contents list, not yet a full plan. Reviewers: your job is to turn it into a complete, beginner-first plan (see the prompt at the top of `00-REVIEW-INPUT.md`).
 
@@ -91,17 +111,193 @@ The bank's own topic labels are coarse; they are shown as they are.
 | Paper Folding and Cutting Diagnostics | 4 | 6 | 0.40% | 3 | 1/3/0 | MCQ2×2, MCQ1×2 |
 | Shape Transformation (Translation, Rotation, Scaling) | 1 | 2 | 0.13% | 1 | 0/1/0 | MCQ2×1 |
 
-### Question IDs by bank topic (so a reviewer can say which ones a lesson should use)
 
-- **Structural Morphing (Mirroring, Assembling, Grouping)**: 2026_FN_Q2, 2026_AN_Q2, 2025_AN_Q4, 2024_FN_Q7, 2024_AN_Q6, 2021_AN_Q5
-- **Pattern Identification in 2D and 3D Spaces**: 2026_FN_Q7, 2026_AN_Q7, 2023_FN_Q5, 2022_FN_Q10
-- **Paper Folding and Cutting Diagnostics**: 2025_FN_Q9, 2024_FN_Q4, 2021_FN_Q3, 2021_AN_Q10
-- **Shape Transformation (Translation, Rotation, Scaling)**: 2023_FN_Q10
+---
 
-## 4. What we need from this review
+## PART C. ALL 15 PREVIOUS-YEAR QUESTIONS (Spatial Aptitude)
 
-1. A **complete chapter and lesson list** for a beginner-first book on this subject (use the syllabus lines above, the standard books and what GATE really asks).
-2. For each lesson: **finer points**, **GATE question patterns**, **diagrams needed**, **hand traces**, and which **prerequisite** a zero-level reader needs.
-3. Which of the bank's topic labels map to which lesson, and which PYQs are **mis-labelled**.
-4. A **weight tag** for each lesson ([MUST] / [SHOULD] / [LATER]) with a reason; do not invent frequencies; say "not sure".
-5. The **question supply** needed: how many practice questions per lesson (20 for High-weight chapters, 10 for Low and foundation ones), and what types are missing in the bank.
+Official key marked "✔ official". Figures are not shown; the question says so.
+
+**2026_FN_Q2** · 2026-FN · MCQ · 1 mark · Medium · bank topic: Structural Morphing (Mirroring, Assembling, Grouping) · HAS A FIGURE (not shown here)
+
+The figure shows two 4-tile patterns.
+[IMAGE_Q_02_1]
+Either one or both of the patterns can be used any number of times and in any orientation to construct a new pattern. Which one of the options below cannot be constructed by using only these two 4-tile patterns assuming there are no overlaps among them?
+
+- A) [IMAGE_Q_02_A]
+- B) [IMAGE_Q_02_B]
+- C) [IMAGE_Q_02_C]  ✔ official
+- D) [IMAGE_Q_02_D]
+
+---
+
+**2026_AN_Q2** · 2026-AN · MCQ · 1 mark · Easy · bank topic: Structural Morphing (Mirroring, Assembling, Grouping) · HAS A FIGURE (not shown here)
+
+A black square PQRS has been cut into two parts. One part of it is shown in Panel I. Which one of the shapes in Panel II is the other part?
+[IMAGE_Q_02_1]
+
+- A) (i)
+- B) (ii)
+- C) (iii)  ✔ official
+- D) (iv)
+
+---
+
+**2026_FN_Q7** · 2026-FN · MCQ · 2 marks · Medium · bank topic: Pattern Identification in 2D and 3D Spaces · HAS A FIGURE (not shown here)
+
+In Panel I of the figure below, the front view and top view of a structure are shown. Which one of the 3D structures shown in Panel II possesses the views shown in Panel I?
+[IMAGE_Q_07_1]
+
+- A) (i)
+- B) (ii)
+- C) (iii)
+- D) (iv)  ✔ official
+
+---
+
+**2026_AN_Q7** · 2026-AN · MCQ · 2 marks · Medium · bank topic: Pattern Identification in 2D and 3D Spaces · HAS A FIGURE (not shown here)
+
+Two tiles are missing in Panel I. Which one of the options in Panel II is the appropriate choice for the missing tiles?
+[IMAGE_Q_07_1]
+
+- A) (i)  ✔ official
+- B) (ii)
+- C) (iii)
+- D) (iv)
+
+---
+
+**2025_AN_Q4** · 2025-AN · MCQ · 1 mark · Medium · bank topic: Structural Morphing (Mirroring, Assembling, Grouping) · HAS A FIGURE (not shown here)
+
+The paper as shown in the figure is folded to make a cube where each square corresponds to a particular face of the cube. Which one of the following options correctly represents the cube?
+Note: The figures shown are representative.
+[IMAGE_Q_04_1]
+
+- A) [IMAGE_Q_04_A]  ✔ official
+- B) [IMAGE_Q_04_B]
+- C) [IMAGE_Q_04_C]
+- D) [IMAGE_Q_04_D]
+
+---
+
+**2025_FN_Q9** · 2025-FN · MCQ · 2 marks · Medium · bank topic: Paper Folding and Cutting Diagnostics · HAS A FIGURE (not shown here)
+
+A square paper, shown in figure (I), is folded along the dotted lines as shown in the figures (II) and (III). Then a few cuts are made as shown in figure (IV). Which one of the following patterns will be obtained when the paper is unfolded?
+Note: The figures shown are representative.
+[IMAGE_Q_09_1]
+
+- A) [IMAGE_Q_09_A]  ✔ official
+- B) [IMAGE_Q_09_B]
+- C) [IMAGE_Q_09_C]
+- D) [IMAGE_Q_09_D]
+
+---
+
+**2024_FN_Q4** · 2024-FN · MCQ · 2 marks · Medium · bank topic: Paper Folding and Cutting Diagnostics
+
+A rectangular paper of 20 cm × 8 cm is folded 3 times. Each fold is made along the line of symmetry, which is perpendicular to its long edge. The perimeter of the final folded sheet (in cm) is
+
+- A) 18  ✔ official
+- B) 24
+- C) 20
+- D) 21
+
+---
+
+**2024_AN_Q6** · 2024-AN · MCQ · 2 marks · Easy · bank topic: Structural Morphing (Mirroring, Assembling, Grouping)
+
+A cube is to be cut into 8 pieces of equal size and shape. Here, each cut should be straight and it should not stop till it reaches the other end of the cube.
+The minimum number of such cuts required is
+
+- A) 3  ✔ official
+- B) 4
+- C) 7
+- D) 8
+
+---
+
+**2024_FN_Q7** · 2024-FN · MCQ · 2 marks · Medium · bank topic: Structural Morphing (Mirroring, Assembling, Grouping) · HAS A FIGURE (not shown here)
+
+The least number of squares to be added in the figure to make AB a line of symmetry is
+[IMAGE_Q_07_1]
+
+- A) 6  ✔ official
+- B) 4
+- C) 5
+- D) 7
+
+---
+
+**2023_FN_Q5** · 2023-FN · MCQ · 1 mark · Medium · bank topic: Pattern Identification in 2D and 3D Spaces
+
+Looking at the surface of a smooth 3-dimensional object from the outside, which one of the following options is TRUE?
+
+- A) The surface of the object must be concave everywhere.
+- B) The surface of the object must be convex everywhere.
+- C) The surface of the object may be concave in some places and convex in other places.  ✔ official
+- D) The object can have edges, but no corners.
+
+---
+
+**2023_FN_Q10** · 2023-FN · MCQ · 2 marks · Medium · bank topic: Shape Transformation (Translation, Rotation, Scaling) · HAS A FIGURE (not shown here)
+
+Which one of the options best describes the transformation of the 2-dimensional figure \( P \) to \( Q \), and then to \( R \), as shown?
+[IMAGE_Q_10_1]
+
+- A) Operation 1: A clockwise rotation by \( 90^\circ \) about an axis perpendicular to the plane of the figure Operation 2: A reflection along a horizontal line  ✔ official
+- B) Operation 1: A counter clockwise rotation by \( 90^\circ \) about an axis perpendicular to the plane of the figure Operation 2: A reflection along a horizontal line
+- C) Operation 1: A clockwise rotation by \( 90^\circ \) about an axis perpendicular to the plane of the figure Operation 2: A reflection along a vertical line
+- D) Operation 1: A counter clockwise rotation by \( 180^\circ \) about an axis perpendicular to the plane of the figure Operation 2: A reflection along a vertical line
+
+---
+
+**2022_FN_Q10** · 2022-FN · MCQ · 2 marks · Medium · bank topic: Pattern Identification in 2D and 3D Spaces · HAS A FIGURE (not shown here)
+
+A plot of land must be divided between four families. They want their individual plots to be similar in shape, not necessarily equal in area. The land has equally spaced poles, marked as dots in the below figure. Two ropes, R1 and R2, are already present and cannot be moved.
+What is the least number of additional straight ropes needed to create the desired plots? A single rope can pass through three poles that are aligned in a straight line.
+
+[IMAGE_Q_10]
+
+- A) 2
+- B) 4
+- C) 5
+- D) 3  ✔ official
+
+---
+
+**2021_AN_Q10** · 2021-AN · MCQ · 1 mark · Easy · bank topic: Paper Folding and Cutting Diagnostics · HAS A FIGURE (not shown here)
+
+A transparent square sheet shown above is folded along the dotted line. The folded sheet will look like _____.
+
+[IMAGE_Q_10_1]
+
+- A) [IMAGE_Q_10_A]
+- B) [IMAGE_Q_10_D]  ✔ official
+- C) [IMAGE_Q_10_C]
+- D) [IMAGE_Q_10_B]
+
+---
+
+**2021_FN_Q3** · 2021-FN · MCQ · 1 mark · Medium · bank topic: Paper Folding and Cutting Diagnostics · HAS A FIGURE (not shown here)
+
+[IMAGE_Q_03_1]
+A circular sheet of paper is folded along the lines in the directions shown. The paper, after being punched in the final folded state as shown and unfolded in the reverse order of folding, will look like _________.
+
+- A) [IMAGE_Q_03_A]  ✔ official
+- B) [IMAGE_Q_03_D]
+- C) [IMAGE_Q_03_C]
+- D) [IMAGE_Q_03_B]
+
+---
+
+**2021_AN_Q5** · 2021-AN · MCQ · 2 marks · Easy · bank topic: Structural Morphing (Mirroring, Assembling, Grouping) · HAS A FIGURE (not shown here)
+
+What will be the remaining part to make it a rectangle?
+
+[IMAGE_Q_05_1]
+
+- A) [IMAGE_Q_05_C]  ✔ official
+- B) [IMAGE_Q_05_D]
+- C) [IMAGE_Q_05_A]
+- D) [IMAGE_Q_05_B]
+

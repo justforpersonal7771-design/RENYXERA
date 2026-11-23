@@ -1,53 +1,43 @@
-# Review packs: which file to give ChatGPT and Gemini, subject by subject
+# Review packs: one file per subject (in depth)
 
-Every subject has its own folder (named after the subject). In each folder, **`00-REVIEW-INPUT.md` is the only file you need to upload or paste**: it already contains the reviewer instructions (the "back bencher" prompt) and the subject's contents draft.
+Every subject has its own folder (named after the subject). In each folder, **`00-REVIEW-INPUT.md` is the one file to give ChatGPT and Gemini.** It holds everything for an in-depth review of that whole subject:
+
+- **A.** the reviewer instructions (back-bencher prompt) plus in-depth parts: a gap table of at least 80 rows, the full plan chapter by chapter, a check of **every** PYQ (chapter, concept, trap, is the official key right, is the text mis-transcribed), more question ideas per lesson, what is missing, and weights;
+- **B.** the subject's contents: syllabus lines, the app's chapters, the PYQ statistics by topic;
+- **C.** **all** the subject's PYQs with full text and the official key.
 
 ## Click-by-click
 
-1. Open the subject folder in VS Code (left bar → `docs/study-materials/v2/<subject>/`).
-2. Open `00-REVIEW-INPUT.md`, press `Ctrl+A`, then `Ctrl+C`.
-3. Open ChatGPT, start a **new chat**, press `Ctrl+V`, send. (If the text is too long for the box, attach the file instead and write "Follow the instructions inside the file".)
-4. Copy ChatGPT's whole reply into a new file in the **same subject folder** named `chatgpt-review-<subject>.md`.
-5. Repeat steps 3 and 4 in a **new Gemini chat**, saving as `gemini-review-<subject>.md`.
-6. Tell me which subject is done. I merge the two replies (items both list are accepted, items from one are checked), write the subject's full plan, and move the reviewed documents into that same folder.
+1. In VS Code, open `docs/study-materials/v2/<subject>/00-REVIEW-INPUT.md`.
+2. Press `Ctrl+A`, then `Ctrl+C`.
+3. Open ChatGPT, start a **new chat**, press `Ctrl+V`, send. If it says the text is too long, attach the file and write "Follow the instructions inside the file".
+4. If the reply stops part-way it will say "CONTINUE FROM CHAPTER n". Reply "continue" until it finishes.
+5. Copy the whole reply into a new file in the same subject folder: `chatgpt-review-<subject>.md`.
+6. Repeat 3 to 5 in a **new Gemini chat**, saving as `gemini-review-<subject>.md`.
+7. Tell me the subject is done. I merge the two replies (both-agree items accepted, single-source items checked), write the subject's full plan and contents, and keep all of it in that folder.
 
-Do one subject at a time, in the order below. The order follows marks in the paper and what already has lessons.
+| Order | Subject folder | Questions | File size |
+|---|---|---|---|
+| 1 | `programming-and-data-structures/` (round 2: contents v3 with exact tags) | 99 | 85 KB |
+| 2 | `theory-of-computation/` | 77 | 50 KB |
+| 3 | `operating-systems/` | 78 | 60 KB |
+| 4 | `computer-networks/` | 76 | 58 KB |
+| 5 | `algorithms/` | 73 | 53 KB |
+| 6 | `databases/` | 72 | 55 KB |
+| 7 | `computer-organisation/` | 72 | 56 KB |
+| 8 | `discrete-mathematics/` | 75 | 48 KB |
+| 9 | `digital-logic/` | 69 | 44 KB |
+| 10 | `compiler-design/` | 55 | 44 KB |
+| 11 | `probability-and-statistics/` | 31 | 25 KB |
+| 12 | `linear-algebra/` | 30 | 22 KB |
+| 13 | `calculus/` | 18 | 14 KB |
+| 14 | `quantitative-aptitude/` | 53 | 33 KB |
+| 15 | `analytical-aptitude/` | 49 | 32 KB |
+| 16 | `verbal-aptitude/` | 33 | 25 KB |
+| 17 | `spatial-aptitude/` | 15 | 14 KB |
 
-| Order | Subject folder | Questions | Marks | Review input |
-|---|---|---|---|---|
-| 1 | `programming-and-data-structures/` | 99 | 152 | round 2: contents v3 |
-| 2 | `theory-of-computation/` | 77 | 121 | v0 |
-| 3 | `operating-systems/` | 78 | 126 | v0 |
-| 4 | `computer-networks/` | 76 | 118 | v0 |
-| 5 | `algorithms/` | 73 | 114 | v0 |
-| 6 | `databases/` | 72 | 111 | v0 |
-| 7 | `computer-organisation/` | 72 | 115 | v0 |
-| 8 | `discrete-mathematics/` | 75 | 113 | v0 |
-| 9 | `digital-logic/` | 69 | 103 | v0 |
-| 10 | `compiler-design/` | 55 | 85 | v0 |
-| 11 | `probability-and-statistics/` | 31 | 51 | v0 |
-| 12 | `linear-algebra/` | 30 | 45 | v0 |
-| 13 | `calculus/` | 18 | 21 | v0 |
-| 14 | `quantitative-aptitude/` | 53 | 86 | v0 |
-| 15 | `analytical-aptitude/` | 49 | 70 | v0 |
-| 16 | `verbal-aptitude/` | 33 | 45 | v0 |
-| 17 | `spatial-aptitude/` | 15 | 24 | v0 |
+Notes: figures are not in the files (each such question says "HAS A FIGURE"); chapters other than P&DS are matched to PYQs by bank topic label, so the reviewer is asked to place each PYQ in its real chapter.
 
-## In-depth review: one file per chapter (added 24 Nov)
-
-Each subject folder now has a **`chapters/`** folder with **one review file per chapter** (135 files in all). Each file holds the reviewer instructions, the chapter's details, and **the full text of every PYQ for that chapter with the official answer**. The reviewer is asked for a deeper gap table (40+ rows), the full lesson plan, a check of each PYQ's answer and transcription, and more question ideas.
-
-- **Quick pass for a whole subject:** use `00-REVIEW-INPUT.md`.
-- **In-depth pass (recommended):** do the `chapters/NN-*.md` files one by one. Save replies as `chatgpt-NN-<name>.md` and `gemini-NN-<name>.md` next to each file (the name is printed inside each file).
-- `02-all-pyqs.md`: every PYQ of the subject (full text, official key), for chapters whose PYQs could not be matched by name.
-- For the chapters whose PYQs are matched by title words, a question can appear in two chapters; the reviewer is asked to say where it really belongs. Nine chapters have no matched PYQ (Quantitative: number system, ratio, profit and loss, time-speed-distance, time and work; Analytical: seating; Databases: SQL; P&DS: graphs, practice): the reviewer finds theirs in `02-all-pyqs.md`.
-
-## What is in each folder
-
-- `00-REVIEW-INPUT.md`: the quick whole-subject version.
-- `01-contents-draft-v0.md`: the contents draft inside the input (also readable on its own): syllabus lines, the app's chapters, the PYQ bank by topic with every question ID.
-- After review: the two review files, a `REVIEW-MERGE` note, and the finished plan (plus the book contents with weights, as done for Programming and Data Structures).
-
-## What stays in the common folder
+## Common documents (stay in this folder)
 
 `00-README.md`, `00-HONEST-REVIEW.md`, `01-MASTER-PROMPT.md` (how every topic is written), `02-REVIEWER-PROMPT.md` (the reviewer prompt, already inside each input).
