@@ -44,7 +44,7 @@ THE LADDER (every topic must contain these 12 stations, in this order, with thes
  S9  MISTAKES EVERYONE MAKES   At least 5. Each: the wrong belief, why it feels right, what really happens (a picture),
                                the rule that prevents it.
  S10 SHORTCUTS & TRICKS        Only tricks that are always valid. State exactly when each stops working.
- S11 PRACTICE LADDER           Warm-up (6), Core (10), GATE-level (10), Twisted (5). Each with the answer AND a
+ S11 PRACTICE LADDER           Warm-up (5), Core (6), GATE-level (6), Twisted (3) = 20 per LESSON (a lesson = one run of this prompt, 45 to 90 minutes). Tag each [MCQ], [MSQ] or [NAT]. Each with the answer AND a
                                worked solution for every one. The first six must be doable by a beginner.
  S12 RECAP                     A 10-line summary, 8 flash cards (question / answer), a one-page "cheat picture",
                                and "what comes next and why".
@@ -119,7 +119,7 @@ SELF-CHECK (answer this list at the very end, honestly; fix and rewrite if any a
  [ ] A reader with only the PREREQUISITES can follow every line.        [ ] 8+ diagrams, each with caption.
  [ ] Every new word is in the glossary and explained at first use.      [ ] 3+ fully traced examples.
  [ ] Every coverage-list item is answered.                              [ ] 5+ mistakes with pictures.
- [ ] Every example's output is real/verified.                           [ ] Practice ladder of 31 with full solutions.
+ [ ] Every example's output is real/verified.                           [ ] Practice ladder of 20 with full solutions.
  [ ] The GATE question types in the brief are all demonstrated.         [ ] Recap + 8 flash cards + cheat picture.
 
 TOPIC BRIEF  (fill in, then send)
@@ -131,7 +131,10 @@ TOPIC BRIEF  (fill in, then send)
  Finer points to cover:   (paste from the subject plan document)
  GATE question patterns:  (paste from the subject plan document)
  Diagrams required:       (paste from the subject plan document)
- Machine assumptions:     e.g. "32-bit: int 4 bytes, pointer 4 bytes, char 1 byte, little endian"
+ Machine assumptions:     Use only the sizes, signedness, alignment and endianness the question gives. If none, separate
+                          what ISO C guarantees from what a common platform does; label addresses as illustrative.
+                          Never assume pointer size, int size, endianness or padding silently.
+ Study time + weight:     e.g. "45 min read + 45 min practice; [MUST] / [SHOULD] / [LATER]"
  Length:                  as long as needed; no upper limit
 ```
 

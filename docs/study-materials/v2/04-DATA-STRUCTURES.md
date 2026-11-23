@@ -1,165 +1,190 @@
-# 04 · Subject plan: Data Structures (plan v1, for review)
+# 04 · Subject plan: Data Structures (plan **v2**, after two reviews)
 
-**Reader:** a dropper who has finished (or will first finish) the C plan. **Goal:** the reader can draw, build, trace and count any structure GATE asks: arrays, linked lists, stacks, queues, trees, binary search trees, balanced trees, heaps, graphs (representation) and hash tables; and can say the cost of every operation and why.
+**Reader:** a dropper who has finished the C plan (or its [MUST] path). **Goal:** the reader can draw, build, trace and count any structure GATE asks: arrays, linked lists, stacks, queues, trees, binary search trees, heaps, graphs (representation), and hash tables; can say the cost of every operation and *why*; and can read the small amount of maths those costs need.
 
-## 0. How big is this subject?
+**What changed from v1** (full list in `06-REVIEW-MERGE-DS.md`): a beginner maths toolkit before any `O(...)`; ten order fixes; AVL split from the multi-way trees; B and B+ trees pointed at DBMS; hashing owned here with correct formulas; every chapter now has all parts (no stubs); many missing GATE traps added; one height convention locked; units, tags and hours.
 
-The GATE syllabus lists: *"Recursion; Arrays, stacks, queues, linked lists, trees, binary search trees, binary heaps, graphs"* under Programming and Data Structures, and *"Searching, sorting, hashing"* under Algorithms. A student needs **about 16 chapters** because GATE asks them as: drawing and counting questions (heights, nodes, leaves), operation traces (insert, delete, rotate, heapify), conversions (infix/postfix, traversals), code-output questions with pointers, and complexity of operations.
+Units and tags are the same as in `03` (chapter → lesson → sub-topic; **[MUST] / [SHOULD] / [LATER]**). Practice: **20 per lesson** (5 + 6 + 6 + 3), tagged MCQ / MSQ / NAT. Hours are estimates until the pilot.
 
-| GATE asks | The student must know |
+---
+
+## 0. What does GATE do with data structures?
+
+| GATE asks | You must be able to |
 |---|---|
-| "How many nodes / leaves / height?" | Tree vocabulary and counting formulas (and the proofs, as pictures) |
-| "Insert these keys; what is the tree?" | BST, AVL, heap, B-tree algorithms traced by hand |
-| "Which traversal gives this?" / "reconstruct" | Pre-, in-, post-, level-order; uniqueness; counting trees |
-| "Output of this code on a list" | C pointers + linked-list operations |
-| "Stack contents / postfix value" | Stack applications and expression conversion |
-| "Time of this operation" | Cost of each operation on each structure, with reasons |
-| "Which structure is best for ...?" | Comparison tables with the reason |
-| "Hash table: where does this key go?" | Hash functions, collisions, probing, load factor, expected probes |
+| "How many nodes / leaves / height?" | Use the counting facts, and know which height convention the question uses |
+| "Insert these keys; what does the tree / table / heap look like?" | Run the algorithm by hand, step by step |
+| "Which traversals give this tree?" / "How many trees?" | Traverse, rebuild, count |
+| "What does this function do to the list?" | Read pointer code and draw the list after each line |
+| "Is this output order possible? What is on the stack now?" | Simulate push and pop; convert and evaluate expressions |
+| "What is the time of this operation?" | Give the cost and the reason, for the stated case (best, worst, average, amortised) |
+| "Which structure fits this job?" | Compare costs and pick, with the reason |
+| "Where does this key go in the table? How many probes?" | Apply the hash and probe rules; use load factor |
 
-> **To verify from our question bank:** how often each structure is asked, and the question types for each.
+Official syllabus names (Section 4): recursion, arrays, stacks, queues, linked lists, trees, binary search trees, binary heaps, graphs. **Hashing, searching and sorting are named under Algorithms.** AVL, B/B+ (also DBMS indexing), red-black, tries and union-find are *not named* in the Section 4 line, so they are tagged [LATER] or cross-links until the PYQ audit shows how often they are asked. **Nothing here claims how often GATE asks something; every frequency says "not sure" until the tagged PYQ bank proves it.**
 
-## 1. The ladder of chapters
+## 1. The order of chapters (each uses only what came before)
 
 ```
-Part A  Ideas                D0  What is a data structure? Abstract data types, cost, memory pictures
-Part B  Linear structures    D1  Arrays (operations, addressing, sparse and triangular storage)
-                             D2  Linked lists (singly, doubly, circular)
-                             D3  Stacks
-                             D4  Queues, circular queues, deques, priority queues
-                             D5  Recursion as a tool (call tree, base case, depth)
-Part C  Trees                D6  Trees: vocabulary, binary trees, counting, traversals
-                             D7  Binary search trees
-                             D8  Balanced trees: AVL (and B, B+, red-black basics)
-                             D9  Binary heaps and priority queues
-                             D10 Tries and other trees (light; mostly [BEYOND])
-Part D  Hashing and graphs   D11 Hashing
-                             D12 Graphs: representation and basic properties
-                             D13 Disjoint sets (union-find) (light)
-Part E  Putting it together  D14 Choosing the right structure; cost tables
-                             D15 GATE patterns and mixed practice
+Part A  Ideas and tools     D0  What is a data structure?                        [MUST]  ~3 h
+                            D1  Counting and growth: the maths toolkit           [MUST]  ~6 h
+Part B  Linear structures   D2  Arrays as a data structure                       [MUST]  ~8 h
+                            D3  Linked lists                                     [MUST] ~10 h
+                            D4  Stacks                                           [MUST]  ~9 h
+                            D5  Queues                                           [MUST]  ~7 h
+                            D6  Recursion in data structures                     [MUST]  ~5 h
+Part C  Trees               D7  Trees: vocabulary, binary trees, traversals      [MUST] ~11 h
+                            D8  Binary search trees                              [MUST]  ~8 h
+                            D9  AVL trees                                        [SHOULD] ~6 h
+                            D10 Binary heaps and priority queues                 [MUST]  ~8 h
+                            D11 Multi-way trees: B, B+ (and a red-black note)    [LATER] ~4 h
+Part D  Hashing and graphs  D12 Hashing                                          [SHOULD] ~9 h
+                            D13 Graphs: representation and basic traversal      [MUST]  ~8 h
+                            D14 Extras: tries, disjoint sets                     [LATER] ~3 h
+Part E  Together            D15 Choosing the right structure                     [MUST]  ~4 h
+                            D16 GATE patterns and mixed practice                 [MUST]  ~8 h
 ```
+About 55 lessons; ~110 h in all; [MUST] path about 80 h (recomputed after the pilot). Algorithms (sorting, searching, graph algorithms, recurrences solved) is a separate plan; here only what these structures need.
 
-(Graph algorithms, sorting, searching and complexity proofs belong to the **Algorithms** plan; here we build the structures those algorithms stand on.)
-
-## 2. How each chapter is written
-
-Every topic follows the 12-station ladder of the master prompt. For each chapter: **Topics → Beginner must see → Finer points → GATE level → Diagrams → Traces by hand → Code.** Every structure is taught three ways: **picture → operations drawn frame by frame → C code with the memory drawn beside it.**
+**Conventions locked for the whole book:** (1) **Height is edge-based**: empty tree −1, single node 0; a translation column for node-based books (empty 0, single node 1) wherever a formula contains `h`. (2) **Tree words**: *strict* (every node has 0 or 2 children), *complete* (all levels full except possibly the last, filled left to right), *perfect* (all leaves on one level, all internal nodes have 2 children); the "full / complete / perfect / almost-complete" clash between textbooks is shown in a warning picture, and each GATE-style question is read for its own definition. (3) **Keys are distinct** unless stated. (4) **B-tree "order"** is stated each time (max children vs max keys). (5) Costs always say best / worst / average / amortised.
 
 ---
 
-## D0 · What is a data structure?
+## D0 · What is a data structure?  [MUST]
 
-- **Topics:** D0.1 data and the need to organise it (library, phone contacts, queue at a counter); D0.2 abstract data type (what it does) vs data structure (how it does it); D0.3 the main operations: insert, delete, search, traverse, update; D0.4 cost of an operation: counting steps; D0.5 the memory model: contiguous vs linked; D0.6 static vs dynamic; D0.7 linear vs non-linear; D0.8 reading the cost tables used in the rest of the book.
-- **Beginner must see:** the same data in two arrangements behaves very differently; "cost" means how many steps as the data grows.
-- **Diagrams:** COMPARE (array vs list on the same operations); MEMORY (contiguous vs scattered); a "steps vs size" picture for constant, linear and quadratic.
+- **Lessons:** (1) Organising data (contact list, library, queue at a counter); abstract data type (the buttons) vs data structure (the wiring). (2) Contiguous vs linked memory; "fixed size at start" vs "grows" (and a warning: this is *not* C's `static` keyword). (3) The main operations: insert, delete, search, traverse, update.
+- **Beginner must see:** the same buttons can sit on very different wiring, with very different speeds.
+- **Finer points:** linear vs non-linear; static vs dynamic structure; time and space.
+- **GATE level:** "which structure gives O(1) access / insertion".
+- **Diagrams:** TV-remote picture (ADT) with two implementations behind it; the street of boxes with an array tight and list nodes scattered; a COMPARE of array vs list.
+- **Traces:** the same five operations on both.
 
-## D1 · Arrays as a data structure
+## D1 · Counting and growth: the maths toolkit  [MUST] *(new)*
 
-- **Topics:** D1.1 array operations: access, insert at position, delete at position, search, traverse; D1.2 shifting elements (the cost, drawn); D1.3 insertion in a sorted array; D1.4 binary search on an array (drawn); D1.5 two-dimensional arrays and storage order; D1.6 **address formulas** (row-major, column-major, with lower bounds not equal to 0, 3-D); D1.7 special matrices: diagonal, upper/lower triangular, symmetric, tri-diagonal, band: how to store only the non-zero part and the **index formula** for each; D1.8 sparse matrices (triplet form); D1.9 rotation, reversal, merge of arrays; D1.10 strings as arrays; D1.11 dynamic arrays (doubling) and amortised cost.
-- **Finer points:** insertion at the front costs n shifts; `a[i]` is constant time because of the formula; lower bound ≠ 0 changes the formula; storing triangular matrices saves n(n-1)/2 cells; amortised cost of appending with doubling is O(1) and *why* (the sum of copies); array vs list trade-off.
-- **GATE level:** address calculation (very common); position formulas for triangular storage; count of shifts; amortised analysis of doubling.
-- **Diagrams:** ARRAY with shifting arrows frame by frame; row-major vs column-major as a grid and as one row; triangular matrix with its packed 1-D array and the mapping; FRAMES for dynamic-array doubling.
+- **Lessons:** (1) Counting steps: what one step is; size of input `n`; best, worst, average. (2) **Big-O, Ω, Θ** in plain words with tables for n = 10, 1,000, 10^6. (3) **Logarithms**: halving until 1 takes about log₂ n steps; powers of 2. (4) **Sums GATE needs**: 1+2+…+n, 1+2+4+…+2^k, h/2^h series (`= 2`), explained with pictures first. (5) **Reading a recurrence from a call tree**: `T(n)=T(n-1)+1`, `T(n/2)+1`, `2T(n-1)+1`, `2T(n/2)+n`, by adding the work per level. (6) Amortised cost with the piggy-bank picture. (7) Just enough probability: complement, expected value.
+- **Beginner must see:** why log n is tiny; why n² explodes.
+- **Finer points:** O is an upper bound, Θ is tight; amortised is not average-case; space and auxiliary space.
+- **GATE level:** compare growth rates; count loop steps; read a recurrence.
+- **Diagrams:** growth curves with a table; halving ladder; the 2^k sum as a doubling bar; the h/2^h pyramid; call trees with work per level; the piggy-bank picture.
+- **Traces:** step counts for three small loops; `T(n)=2T(n-1)+1` unrolled for n = 4.
 
-## D2 · Linked lists
+## D2 · Arrays as a data structure  [MUST]
 
-- **Topics:** D2.1 the idea (a chain of nodes each pointing to the next); D2.2 node as a C `struct`; D2.3 singly linked list: traverse, search, insert at head, at tail, at position, delete head, tail, a given key; D2.4 using a **dummy (header) node**; D2.5 reversing a list (iterative and recursive, both drawn); D2.6 finding the middle (slow/fast pointers); D2.7 detecting and removing a cycle (Floyd's tortoise and hare, why it works); D2.8 merging two sorted lists; D2.9 doubly linked list; D2.10 circular lists; D2.11 deleting a node when only its pointer is given; D2.12 list vs array: cost table; D2.13 variations: skip list (note), XOR list (note).
-- **Finer points:** the order of pointer assignments matters (`new->next = cur->next` *before* `cur->next = new`); empty list; one-node list; `head` may change; losing the rest of the list; memory leaks; the O(n) cost of reaching the tail unless a tail pointer is kept; the O(1) deletion in a doubly list given the node.
-- **GATE level:** "what does this function do to the list?"; pointer-update order bugs; reverse and recursion output; cycle detection; counting pointer changes.
-- **Diagrams:** LINKED (node boxes with arrows, `head`, NULL); FRAMES of every operation, one pointer change per frame; the reverse algorithm with `prev`, `cur`, `next` labelled in each frame; the cycle meeting-point picture with distances.
-- **Code:** each operation in C with the memory beside it; run and shown.
+- **Lessons:** (1) Operations and their cost: access, insert and delete (shifting), search; binary search (and its traps). (2) Address formulas with **arbitrary lower bounds**, row-major and column-major, 2-D and 3-D (what C9 did not do). (3) **Special matrices**: lower and upper triangular, symmetric, tri-diagonal, Toeplitz; the 1-D index formula derived for **row-major and column-major, 0-based and 1-based**; sparse matrices (triplet form; worth it only when `3k < m×n`). (4) Dynamic arrays: doubling and amortised cost (uses D1).
+- **Beginner must see:** the formula is just "count the full rows above, then the steps inside this row".
+- **Finer points:** insert at the front costs n shifts; binary search needs sorted input; `mid = low + (high-low)/2` (avoids overflow); `low <= high` vs `low < high`; searching for a missing key; triangular storage saves n(n-1)/2 cells.
+- **GATE level:** address calculation (very common); position in the packed array; number of shifts and comparisons.
+- **Diagrams:** shifting arrows frame by frame; a grid `[-2..1][3..5]` mapped onto a street; a 4×4 lower-triangular matrix packed into 10 cells (row-major and column-major); doubling copies `1+2+4+…`.
+- **Traces:** `A[5][7]` for three bound choices; a failed binary search; index of `M[3][2]` in four conventions.
 
-## D3 · Stacks
+## D3 · Linked lists  [MUST]
 
-- **Topics:** D3.1 the idea (a pile of plates: last in, first out); D3.2 operations: push, pop, peek, isEmpty, isFull; D3.3 array implementation; D3.4 linked-list implementation; D3.5 overflow and underflow; D3.6 applications: balanced brackets; function calls and recursion; undo; D3.7 **expression evaluation**: postfix evaluation traced; D3.8 **infix → postfix and infix → prefix conversion** with the operator stack, precedence and associativity (including right-associative `^`); D3.9 next-greater-element and monotonic stack; D3.10 min-stack; D3.11 two stacks in one array; D3.12 sequences of push/pop: **which output permutations are possible** (counting = Catalan numbers); D3.13 stack using queues.
-- **Finer points:** unary minus; parentheses handling; the stack's contents after each token; maximum stack depth for an expression; reversing a string; pushing and popping counts.
-- **GATE level:** conversion and evaluation (every year or two); "is this output sequence possible?"; stack depth; number of valid sequences.
-- **Diagrams:** a vertical STACK with push/pop FRAMES; TRACE for postfix evaluation (token, action, stack); TRACE for infix to postfix (token, stack, output); a permutation checker drawn as push/pop timelines.
+- **Lessons:** (1) The idea; the node as a C `struct`; traverse and search. (2) Insert (front, end, position) and delete (front, end, key) with **one pointer change per frame**; the order rule `new->next = cur->next` *before* `cur->next = new`. (3) **The head trap**: why `insert(Node *head)` cannot change the caller's `head`, and the two fixes (`Node **head`, or return the new head). (4) Dummy node; **iterative reversal** (`prev`, `cur`, `next`); middle with slow/fast; cycle detection and finding the cycle start (Floyd, with the distance equation). (5) Merge two sorted lists; delete a node given only its pointer (and why that fails on the last node); doubly and circular lists (circular with a *tail* pointer: O(1) insert at both ends); cost matrix. (6) [BEYOND] skip list, XOR list.
+- **Beginner must see:** a list is a chain; to reach node i you walk i arrows.
+- **Finer points:** empty list and one-node list; `head` may change; **a tail pointer makes insert-at-end O(1) but delete-at-end is still O(n) in a singly list** (you cannot step back); `p && p->next` (test `p` first); losing the rest of the list; leaks; O(1) delete in a doubly list given the node.
+- **GATE level:** "what does this function do to the list"; move-last-to-front and swap-adjacent traces; cycle detection; counting pointer changes.
+- **Diagrams:** the right and wrong insertion order; the `*head` vs `**head` stack frames; reversal frames; the rho-shaped cycle with `L = kC − x`; singly / doubly / circular-tail comparison.
+- **Code:** each operation in C with the memory beside it. **Recursive reversal moves to D6.**
 
-## D4 · Queues
+## D4 · Stacks  [MUST]
 
-- **Topics:** D4.1 the idea (line at a ticket counter: first in, first out); D4.2 operations: enqueue, dequeue, front, rear; D4.3 array implementation and why a plain one wastes space; D4.4 **circular queue** (the `(rear+1) % n` idea; full vs empty detection; the one-slot-empty method and the count method); D4.5 linked-list implementation; D4.6 double-ended queue (deque), input- and output-restricted; D4.7 priority queue (concept; implementation by array, list and heap); D4.8 queue using two stacks; stack using two queues; costs; D4.9 applications (BFS, scheduling, buffering); D4.10 counting questions (how many elements, where are front and rear after k operations).
-- **Finer points:** full condition `(rear+1)%n == front`; empty `front == rear`; why one cell is left unused; amortised cost of the two-stack queue; deque with a circular array.
-- **GATE level:** front/rear positions after operations; capacity of circular queues; amortised analysis; simulate with stacks.
-- **Diagrams:** a circular array drawn as a ring with `front` and `rear` markers, FRAMES for each enqueue/dequeue; TRACE of operations; two-stack queue FRAMES.
+- **Lessons:** (1) Last in, first out; push, pop, peek; array stack (`top`), linked stack (top = head); overflow and underflow. (2) Balanced brackets; the call stack link (to C6, C8). (3) **Expression conversion and evaluation**: infix → postfix; infix → prefix (reverse, convert, reverse, and the associativity flip); postfix evaluation (first popped = right operand); **prefix evaluation** (scan right to left, first popped = left operand); unary operators; right-associative `^`; stack depth for an expression. (4) **Which output orders are possible**: simulate; the **`c … a … b` forbidden pattern** (if a < b < c, the output order c, a, b is impossible); Catalan count `C(2n, n)/(n+1)`. (5) Next-greater element and the monotonic stack (monotonic = always rising or always falling); min-stack; two stacks in one array.
+- **Beginner must see:** a pile of plates; only the top is reachable.
+- **Finer points:** parentheses; equal precedence pops except right-associative; the stack contents at each token.
+- **GATE level:** conversion and evaluation; "is this sequence possible"; counting sequences; stack contents after a sequence.
+- **Diagrams:** array stack vs linked stack; token / action / stack / output trace tables; postfix vs prefix operand-order picture for `a - b`; push/pop timeline for a possible and an impossible permutation.
+- **(Stack using queues moves to D5.)**
 
-## D5 · Recursion as a tool
+## D5 · Queues  [MUST]
 
-- **Topics:** D5.1 a function that calls itself; D5.2 base case and recursive case; D5.3 how the call stack grows and shrinks (draw every frame); D5.4 the **recursion tree** and counting calls; D5.5 direct, indirect, tail recursion; D5.6 classic examples: factorial, Fibonacci, power, GCD, sum of digits, reverse a string, Tower of Hanoi, permutations, subsets, binary search; D5.7 writing a recurrence for the running time; D5.8 recursion vs loops; D5.9 stack overflow; D5.10 output puzzles with printing before and after the recursive call.
-- **Finer points:** two printing positions (pre-order vs post-order effect); number of calls for Fibonacci; stack depth n vs log n; mutual recursion; missing base case; a static/global variable inside recursion.
-- **GATE level:** "what is returned by f(n)?"; count the calls; the output order puzzles; recurrences (links to Algorithms).
-- **Diagrams:** STACKFRAME series; CALLTREE with values returned on the way back; Hanoi FRAMES for 3 discs; TRACE tables.
+- **Lessons:** (1) First in, first out; enqueue, dequeue; array queue and its wasted space; linked queue (including removing the last item: reset both ends). (2) **Circular queue and its three conventions**: `front = rear` empty with one slot left unused (capacity n−1); `front = −1` start (capacity n); a `count` variable; the **element-count formula** `(rear − front + n) mod n` (and when to add 1). (3) Deque and its restricted forms; priority queue as an idea (array and list versions; the heap version waits for D10). (4) **Queue using two stacks** (two designs: O(n) enqueue / O(1) dequeue, or O(1) enqueue / amortised O(1) dequeue) and **stack using two queues**.
+- **Finer points:** full vs empty detection; why a slot is left empty; the amortised argument.
+- **GATE level:** positions of front and rear after a sequence; capacity under each convention; costs of the two-stack designs.
+- **Diagrams:** the plain array with drifted `front`/`rear` vs the ring; three rings side by side holding A, B, C; two-stack queue frames.
+- **Traces:** a sequence of 8 operations on a ring of 6 (`front = 4, rear = 1` example); worst-case vs amortised cost count.
 
-## D6 · Trees: vocabulary, binary trees, counting and traversals
+## D6 · Recursion in data structures  [MUST]
 
-- **Topics:** D6.1 why trees (family tree, folders); D6.2 vocabulary: root, parent, child, leaf, internal, siblings, ancestor, descendant, edge, path, depth, height, level, degree, subtree; D6.3 binary tree and its types: full (strict), complete, perfect, degenerate (skewed), almost-complete; D6.4 **counting facts** with their picture proofs: nodes in a perfect tree, max nodes at level `l`, max nodes of height `h`, min height for `n` nodes, `n0 = n2 + 1`, edges = n − 1, number of null pointers = n + 1; D6.5 representation: linked nodes and array (`2i`, `2i+1`, parent `i/2`); D6.6 traversals: preorder, inorder, postorder, level-order, each **recursively and with a stack/queue**, each traced; D6.7 the results of traversals; D6.8 **reconstructing a tree** from two traversals (which pairs work and which do not, and why); D6.9 number of distinct binary trees with n nodes (Catalan) and with given traversal; D6.10 threaded binary trees; D6.11 n-ary trees and the left-child right-sibling form; D6.12 expression trees; D6.13 tree algorithms: height, count leaves, mirror, check equal, diameter, lowest common ancestor.
-- **Finer points:** height of empty tree (−1 or 0, state the convention GATE uses); height vs depth vs level; a tree with n nodes has exactly n − 1 edges; inorder + preorder (or postorder) is unique, preorder + postorder is not (unless full); level counting from 0 or from 1.
-- **GATE level:** counting nodes with given leaf/degree conditions; max/min height; traversal outputs; reconstruction; Catalan counts; "how many binary trees have preorder 1 2 3 ...".
-- **Diagrams:** TREE with levels labelled; side-by-side full, complete, perfect, skewed; each traversal as a path around the tree with the visit order numbered, three colours for pre/in/post; reconstruction in FRAMES (root, then left and right subsets); array-index tree picture.
+(The mechanics and C puzzles are in **C8**. This chapter uses recursion on data structures and adds the running-time view.)
+- **Lessons:** (1) Quick recap by picture; the call tree vs the call stack: total calls vs maximum depth. (2) **Recursive reversal of a list**; recursion on lists and arrays. (3) Hanoi (`2^n − 1` moves; calls vs moves), permutations, subsets; the base-case traps in counting `fib` calls (`n ≤ 1` vs `n = 0`). (4) Reading the running time from the call tree (D1), and the recurrence.
+- **Diagrams:** call tree with returned values beside the live stack frames; Hanoi frames for 3 discs; recursive-reversal frames.
+- **Traces:** `fib(4)` both conventions; `hanoi(3)`.
 
-## D7 · Binary search trees
+## D7 · Trees: vocabulary, binary trees, traversals  [MUST]
 
-- **Topics:** D7.1 the rule (left smaller, right larger) and why it helps; D7.2 search; D7.3 insertion (frames); D7.4 deletion: leaf, one child, two children (inorder successor/predecessor); D7.5 minimum, maximum, successor, predecessor; D7.6 inorder traversal gives sorted order; D7.7 building a BST from a sequence (and how the order changes the shape); D7.8 number of BST shapes for n keys; D7.9 height: best, worst, average; D7.10 validity check; D7.11 range queries, k-th smallest; D7.12 duplicates; D7.13 time costs.
-- **Finer points:** worst case is a chain (sorted input) giving O(n); average height O(log n) for random insertions; deletion with two children replaced by successor, then deleting the successor; the preorder/postorder of a BST determines it uniquely (and how).
-- **GATE level:** construct the BST from a sequence; the tree after deleting keys; height after insertions; the number of comparisons for a search; counting BSTs; which sequences give the same BST; which sequence could be a search path.
-- **Diagrams:** TREE FRAMES (one insertion per frame, with the comparison path highlighted); deletion cases as three before/after pictures; search-path pictures.
+- **Lessons:** (1) Why trees; vocabulary (root, parent, child, leaf, internal, sibling, ancestor, depth, height, level, degree, subtree) with the locked height convention. (2) Binary tree types and the naming clash; **counting facts with picture proofs**: max nodes at level l, max nodes of height h (`2^(h+1) − 1`), min height for n nodes, `n0 = n2 + 1`, edges `= n − 1`, null pointers `= n + 1`; and for **k-ary trees**: leaves `L = (k−1)I + 1`, nodes `n = kI + 1`, max nodes `(k^(h+1) − 1)/(k − 1)`. (3) Representation: nodes; array (`2i`, `2i+1`, `⌊i/2⌋`, in 0- and 1-based forms). (4) **Traversals** (pre, in, post, level) recursively *and* with a stack or queue (why right is pushed before left); the ant-walk picture. (5) **Rebuilding** from two traversals (in + pre, in + post work; pre + post does not); **equality conditions** (when pre = in, in = post, pre = reverse of post); the number of trees sharing pre + post (`2^k` for k single-child nodes); unlabelled `C_n` vs labelled `n!·C_n` trees. (6) Tree algorithms: height, leaf count, mirror, equal, diameter (O(n²) naive vs O(n)), lowest common ancestor; expression trees; threaded trees and the left-child right-sibling form ([LATER]).
+- **Finer points:** level counted from 0 or 1; height vs depth vs level; a tree with n nodes has n−1 edges.
+- **GATE level:** counting nodes and leaves from degree conditions; max / min height; traversal outputs; reconstruction; Catalan counts.
+- **Diagrams:** a labelled tree; the naming-clash map; the null-slot picture proof; the ant walk; reconstruction frames; the Euler tour.
 
-## D8 · Balanced trees: AVL (and B, B+, red-black, 2-3 basics)
+## D8 · Binary search trees  [MUST]
 
-- **Topics:** D8.1 why balance; D8.2 AVL: the balance factor and the rule (−1, 0, +1); D8.3 the four imbalance cases and their **rotations** (LL, RR, LR, RL), each as a before/after picture with the three nodes and four subtrees labelled; D8.4 insertion step by step; D8.5 deletion step by step; D8.6 height bounds: **minimum number of nodes in an AVL tree of height h** (`N(h) = N(h−1) + N(h−2) + 1`) and max height for n nodes; D8.7 red-black trees: rules and why they keep height ≤ 2 log n (picture-level); D8.8 2-3 trees and B-trees: order, keys per node, split on overflow, merge on underflow; D8.9 B+ trees: leaf links, why databases use them; D8.10 counting questions for B/B+ (maximum/minimum keys, height for a given number of records); D8.11 splay trees (note).
-- **Finer points:** a single rotation fixes insertion imbalance; deletion may need rotations all the way up; the rotation preserves the BST order; the difference between height balanced and weight balanced; B-tree min/max keys formulas for order m; root exceptions.
-- **GATE level:** insert/delete sequence and the final AVL tree (very common); count of rotations; minimum nodes for height h; B-tree/B+ order, height and key counts (also DBMS).
-- **Diagrams:** TREE FRAMES for each rotation (before, pivot, after); balance factors written on every node; a full AVL insertion sequence in frames; B-tree split FRAMES; B+ tree with linked leaves.
+- **Lessons:** (1) The rule and why it helps; search; insert (frames). (2) **Delete**: leaf, one child, two children, with **both** the inorder successor and the inorder predecessor shown (two valid but different trees; delete-then-reinsert does not give back the original). (3) Min, max, successor, predecessor; inorder gives sorted order; build a BST from a sequence and how the order changes the shape; the number of shapes; height best / worst / average. (4) **Valid search paths** (the shrinking `(min, max)` interval rule); **how many insertion orders give the same BST** (`C(L+R, L)·w(L)·w(R)`); BST from a given preorder or postorder; range queries, k-th smallest; duplicates (three policies; GATE assumes distinct).
+- **Finer points:** the worst case is a chain (sorted input).
+- **GATE level:** construct, delete, count comparisons; "which sequence cannot be a search path"; counting orders.
+- **Diagrams:** insertion frames with the comparison path; the interval funnel; deletion case pictures including successor vs predecessor; chain vs balanced for {1..5}.
 
-## D9 · Binary heaps and priority queues
+## D9 · AVL trees  [SHOULD]
 
-- **Topics:** D9.1 priority queue (idea); D9.2 complete binary tree and the heap-order rule (min-heap, max-heap); D9.3 the **array representation** (index maths, 0- or 1-based: both shown); D9.4 insertion (sift up); D9.5 delete-min / delete-max (sift down); D9.6 `heapify`; D9.7 **build-heap in O(n)** (why it is not n log n, with the sum shown); D9.8 heap sort; D9.9 operations: decrease-key, increase-key, delete arbitrary, find k-th largest; D9.10 merging heaps (note: binomial, Fibonacci); D9.11 heap vs BST; D9.12 counting: where can the minimum/maximum be, number of heaps with n keys.
-- **Finer points:** the heap is not sorted; the max of a min-heap is in a leaf (the last n/2 positions); height `⌊log2 n⌋`; sift cost = height of the node; the order of the array after insertions; number of comparisons in build-heap.
-- **GATE level:** array state after a sequence of inserts/delete-mins; build-heap result and count of swaps; max element position; heap sort passes; time of operations.
-- **Diagrams:** HEAP drawn as a tree and as an array together, with index arrows; FRAMES for sift up and sift down; build-heap from the bottom level up; the "cost per level" pyramid.
+- **Lessons:** (1) Why balance; balance factor (state the sign convention) and the rule −1, 0, +1. (2) The four cases LL, RR, LR, RL with before / after pictures and subtrees T1–T4 labelled. (3) Insertion step by step (at most one single or one double rotation) and deletion (may rotate up the path, O(log n)). (4) **Minimum nodes** `N(h) = N(h−1) + N(h−2) + 1` with the base cases for the edge-based height (`N(−1)=0, N(0)=1, N(1)=2`) and the Fibonacci link; maximum height for n nodes.
+- **Finer points:** rotation keeps BST order; AVL vs red-black one-line comparison (details in D11).
+- **GATE level:** insert/delete sequence and final tree; count rotations; N(h).
+- **Diagrams:** the four rotations; balance factors written on every node; the minimal AVL trees for h = 0..3; a full insertion sequence in frames.
 
-## D10 · Tries and other trees  *(light, mostly [BEYOND] unless the syllabus demands)*
+## D10 · Binary heaps and priority queues  [MUST]
 
-- **Topics:** tries (prefix trees), suffix ideas, segment and Fenwick trees (note only), k-d trees (note only).
-- **Purpose:** broaden vision; clearly marked so the student does not spend time that GATE does not repay.
+- **Lessons:** (1) Priority queue (idea); the heap shape (complete tree) and order rule (min-heap, max-heap); the array form with both index conventions. (2) Insert (sift up), delete-min / delete-max (last leaf to the root, sift down); decrease-key, delete arbitrary. (3) **Heapify and build-heap in O(n)** with the sum shown (and why repeated insertion is O(n log n) and **gives a different array**). (4) Heap sort (max-heap, in place, trace the end swaps); positions: where the maximum of a min-heap can be (last ⌈n/2⌉ slots), where the 2nd and 3rd smallest can be; counting heaps (`T(n) = C(n−1, L)·T(L)·T(R)`); heap vs BST; k-th largest.
+- **Finer points:** the heap is not sorted; height `⌊log₂ n⌋`; sift cost = height of the node.
+- **GATE level:** array after a sequence of inserts and delete-mins; build-heap result and swap count; position questions.
+- **Diagrams:** tree and array side by side with index arrows; sift frames; the cost pyramid; repeated-insert vs build-heap on the same input; heap sort frames.
 
-## D11 · Hashing
+## D11 · Multi-way trees: B, B+, red-black note  [LATER]
 
-- **Topics:** D11.1 the idea (a locker for every key: the hash function chooses the locker); D11.2 hash functions: division (`k mod m`), multiplication, folding, mid-square; what makes a function good; D11.3 collisions; D11.4 **chaining** (separate chaining) with cost; D11.5 **open addressing**: linear probing, quadratic probing, double hashing, each traced; primary and secondary clustering; D11.6 **load factor** α and expected number of probes (successful and unsuccessful search, formulas for chaining and for open addressing under uniform hashing: `1/(1-α)`, `(1/α) ln 1/(1-α)`); D11.7 **deletion** in open addressing (tombstones); D11.8 rehashing and table size (prime sizes); D11.9 perfect hashing and universal hashing (concepts); D11.10 comparison with trees; D11.11 counting questions (maximum probes, empty slots, which key lands where).
-- **Finer points:** a table of size m with n keys has α = n/m; chaining can exceed 1, open addressing cannot; a bad `m` (power of 2) with a bad function causes clustering; the order of insertion decides the layout under probing.
-- **GATE level:** fill a table with a sequence under a given function and probing; number of collisions; the probing sequence for a key; time to search under chaining; bucket loads.
-- **Diagrams:** a TABLE of slots 0..m−1 with keys landing and probes marked as arrows, FRAMES per insertion; chains drawn as linked lists hanging from slots; a curve of probes against load factor.
+- **Lessons:** (1) B-tree: **order stated both ways**, min and max keys and children, root exceptions, split on overflow and merge on underflow; counting questions (height for a number of records). (2) B+ tree: leaf links, why databases use them; the **block-size calculation** (keys, pointers, block); full teaching in the DBMS book, this is a bridge. (3) Red-black: the rules at a glance, height ≤ 2 log n, compared with AVL (every AVL tree can be coloured red-black, not the reverse). 2-3 trees and splay trees: [BEYOND], one paragraph.
+- **Diagrams:** B-tree split frames; B+ with linked leaves; AVL vs red-black COMPARE.
 
-## D12 · Graphs: representation and basic properties
+## D12 · Hashing  [SHOULD] *(one owner: this book; Algorithms links here)*
 
-- **Topics:** D12.1 what a graph is (cities and roads, friends); D12.2 vocabulary: vertex, edge, directed, undirected, weighted, degree, in-degree and out-degree, path, cycle, connected, strongly connected, component, tree as a graph, complete, bipartite, planar; D12.3 counting: maximum edges, handshake lemma, number of graphs; D12.4 **adjacency matrix** and **adjacency list**, both drawn for the same graph, with space and operation costs; D12.5 incidence matrix; D12.6 choosing a representation (dense vs sparse); D12.7 BFS and DFS shown as traversals with a queue/stack (the full algorithms in the Algorithms plan); D12.8 connected components, cycle detection (idea).
-- **Finer points:** matrix symmetric for undirected; the diagonal for self-loops; space `n²` vs `n + e`; checking an edge is O(1) in a matrix and O(degree) in a list; listing neighbours is O(n) vs O(degree).
-- **GATE level:** counting edges and degrees; space and time comparisons; reading a matrix or list to describe the graph.
-- **Diagrams:** GRAPHPIC beside its adjacency matrix and its adjacency list; BFS/DFS FRAMES with the queue/stack drawn.
+- **Lessons:** (1) The idea (a locker per key); hash functions (division, multiplication, folding, mid-square); collisions. (2) **Chaining**. (3) **Open addressing**: linear, quadratic, double hashing, each traced; clustering; **quadratic probing can fail with the table over half empty**; **`h2(k)` must never be 0 and must be coprime to m**. (4) **Deletion and tombstones**, with the four-frame trace of the broken search. (5) **Load factor α and expected probes, correctly separated:** chaining `1 + α` (unsuccessful) and `1 + α/2` (successful); open addressing under uniform hashing `1/(1−α)` (unsuccessful) and `(1/α)·ln(1/(1−α))` (successful), with the `ln` values explained. (6) Counting and probability in hashing: probability two keys collide `1/m`, expected collisions `C(n,2)/m`, expected empty slots `m(1−1/m)^n`, the birthday-style probability. (7) Rehashing, prime sizes, perfect and universal hashing (ideas); hash vs tree.
+- **Finer points:** chaining can have α > 1, open addressing cannot; the insertion order decides the layout under probing.
+- **GATE level:** fill a table under a stated rule and list the probes; count collisions; expected probes.
+- **Diagrams:** slots 0..m−1 with probe arrows, frames per insertion; chains hanging from slots; the probes-vs-α curves; the tombstone frames.
 
-## D13 · Disjoint sets (union-find)  *(light)*
+## D13 · Graphs: representation and basic traversal  [MUST]
 
-- **Topics:** make-set, find, union; union by rank/size, path compression; costs.
-- **Diagrams:** FRAMES of unions and find with path compression.
+- **Lessons:** (1) What a graph is; vocabulary (directed, undirected, weighted, degree, in- and out-degree, path, cycle, connected, strongly connected, component, complete, bipartite, tree as a graph); simple graph vs multigraph; handshake lemma; counting (max edges, labelled graphs `2^(n(n−1)/2)`; directed `2^(n(n−1))`, bipartite max `⌊n²/4⌋`; Euler's formula and `e ≤ 3v − 6` as notes). (2) **Adjacency matrix and list for the same graph**, space and costs (an edge test O(1) vs O(degree); **in-degree in a list is O(V+E)**); incidence matrix; choosing (dense vs sparse). (3) BFS (queue) and DFS (stack) shown as traversals with tie-breaking stated; **edge types** (tree, back, forward, cross; an undirected graph has only tree and back); valid orderings; cycle detection (undirected: visited and not the parent; directed: three states).
+- **GATE level:** counting edges and degrees; space and time comparisons; reading a matrix or list; valid BFS/DFS orders; which edge types can occur.
+- **Diagrams:** one graph beside its matrix and its list; BFS/DFS frames with the queue / stack drawn; a DFS tree with the four edge types.
+- (Shortest paths, spanning trees and the rest are in the Algorithms plan.)
 
-## D14 · Choosing the right structure
+## D14 · Extras: tries, disjoint sets  [LATER]
 
-- **Topics:** one master COMPARE table: operation costs (access, search, insert, delete; best/average/worst) for array, sorted array, linked list, stack, queue, BST, AVL, heap, hash table, with the **reason** for each cell; a decision flow: "what do you need most?".
+- **Lessons:** (1) Trie: prefixes shared (`CAT`, `CAR`, `DOG`), why prefix search depends only on word length. (2) Disjoint sets: make-set, find, union; the `parent[]` array (storing −size or −rank); union by rank/size (height ≤ ⌊log₂ n⌋; a tree of height h has at least 2^h nodes) and path compression, traced. Cross-link to the graph-algorithms chapter of Algorithms (where it is used).
+- **Beginner must see:** why it exists (grouping and merging).
+- **Diagrams:** a trie; `parent[]` beside the forest, union and find-with-compression frames.
+- (Fenwick, segment and k-d trees are dropped from this book.)
 
-## D15 · GATE patterns and mixed practice
+## D15 · Choosing the right structure  [MUST]
 
-- **Topics:** pattern library for each structure; mixed sets; time per question; common wrong-answer traps.
+- **Lessons:** (1) The master cost table (access, search, insert, delete; best / average / worst; array, sorted array, list, stack, queue, BST, AVL, heap, hash) with the **reason** under every cell and the assumptions stated. (2) The decision flow ("what do you need most?"). (3) Ten "choose the structure" problems (undo, LRU cache, median of a stream, autocomplete, scheduling, ...).
+- **Diagrams:** the decision flowchart; the cost table as a CHEATPIC.
+
+## D16 · GATE patterns and mixed practice  [MUST]
+
+- **Lessons:** per structure, the question patterns with model solved questions from the tagged PYQ bank (self-contained inside the book); mixed sets in MCQ, MSQ and NAT; time per question; common wrong-answer traps.
+- **Rule:** no pattern is called "frequent" without the tagged source count.
 
 ---
 
-## 3. Practice and tools
+## 2. Practice and tools
 
-- **Per topic:** Warm-up 6 · Core 10 · GATE 10 · Twisted 5, all with worked solutions.
-- **Interactive labs to build:** list-pointer stepper (one pointer change per click), stack/queue stepper, expression converter with the operator stack shown, BST/AVL/heap builders that show every step and rotation, hash-table filler with probing choices, a tree-from-traversals reconstructor, a graph representation switcher.
+- **Per lesson:** 20 (5 warm-up, 6 core, 6 GATE-level, 3 twisted), all with worked solutions; tagged MCQ / MSQ / NAT.
+- **Labs to build:** list-pointer stepper (one pointer change per click), stack and queue stepper (with the ring), expression converter showing the operator stack, BST / AVL / heap builders that show every step and rotation, hash-table filler with probe choices, tree-from-traversals reconstructor, graph-representation switcher with BFS/DFS stepper.
+- **New diagram kinds needed** (added to the engine list): `bits`, `heap` (tree and array synced), `hashtable` (slots, chains, tombstones), `queue_ring` (circular array with front and rear), on top of `memory`, `array`, `linked`, `tree`, `stackframe`, `calltree`, `trace`, `frames`.
 
-## 4. Questions for your review
+## 3. Open points for your decision
 
-1. Is hashing better placed here (as GATE's own syllabus line puts it under Algorithms) or in Algorithms? (Suggested: taught here in full, linked from Algorithms.)
-2. Do you want red-black trees and splay trees only as a short note (GATE rarely asks), as planned?
-3. Which GATE years' question styles do you want quoted as models for the "how GATE asks" station?
-4. Anything missing?
+1. D1 (the maths toolkit) is new and early. OK?
+2. AVL is [SHOULD], B / B+ and red-black [LATER] (taught in DBMS). OK until the PYQ audit says otherwise?
+3. Hashing is taught fully here; the Algorithms plan will link to it. OK?
+4. Heights are edge-based (empty −1, leaf 0) with a translation column. OK?
