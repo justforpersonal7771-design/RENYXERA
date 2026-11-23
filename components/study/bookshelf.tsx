@@ -184,8 +184,8 @@ function OpenBook({ b, onClose, focus }: { b: ShelfBook | null; onClose: () => v
             transition={{ duration: reduce ? 0.14 : 0.38, ease: [0.22, 1, 0.36, 1] }}
             className="grid max-h-[88dvh] w-full max-w-4xl overflow-y-auto overscroll-contain rounded-[16px] md:overflow-hidden shadow-[0_40px_80px_-30px_rgba(0,0,0,.7)] md:grid-cols-[0.9fr_1.1fr] md:grid-rows-[minmax(0,1fr)]">
             <div className="relative p-6 sm:p-8" style={{ background: `var(--tint-${b.tint ?? "peri"})`, color: `var(--tint-${b.tint ?? "peri"}-ink)`, borderLeft: `14px solid var(--tint-${b.tint ?? "peri"}-ink)` }}>
-              <BookOpen className="h-7 w-7" aria-hidden />
-              <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
+              <BookOpen className="hidden h-7 w-7 md:block" aria-hidden />
+              <h2 className="mt-0 font-display md:mt-4 text-3xl font-extrabold leading-tight tracking-[-0.02em] sm:text-4xl">{b.title}</h2>
               <p className="mt-1 text-sm font-semibold">RENYXERA GATE CS series<span className="md:hidden"> · {b.chapters.length} chapters</span></p>
               <p className="mt-4 hidden text-[15px] leading-relaxed md:block">{b.chapters.length} chapters in teaching order. Every lesson: the idea, real figures, worked examples, traps, a lab to try it yourself, and the real GATE questions to finish.</p>
               {b.chapters.find((c) => c.href) && <Link href={b.chapters.find((c) => c.href)!.href!} className="pill-ink mt-5 inline-flex" style={{ ["--btn" as string]: `var(--tint-${b.tint ?? "peri"}-ink)` }}>Read: {b.chapters.find((c) => c.href)!.title}</Link>}
