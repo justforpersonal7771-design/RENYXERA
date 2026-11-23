@@ -33,7 +33,7 @@ export const CS_SHELF: ShelfBook[] = [
   ] },
   { id: "toc", title: "Theory of Computation", short: "TOC", tint: "sky", cloth: "#D6CFE6", ink: "#1B1917", paper: "#155E63", dark: "#155E63", band: "core", chapters: [
     { id: "regular", title: "Regular expressions and finite automata", href: "/study/finite-automata", ready: "4 topics ready", match: "Finite Automata|Regular Expression|Regular Language|DFA|NFA" }, { id: "reg-props", title: "Regular languages: closure and pumping lemma", href: "/study/regular-properties", ready: "3 topics ready", match: "Regular Language|Pumping|Closure" }, { id: "cfl", title: "Context-free grammars and PDAs", href: "/study/context-free", ready: "3 topics ready", match: "Context-free|Grammar|Pushdown|PDA|Ambig" },
-    { id: "cfl-props", title: "Context-free languages: closure and pumping lemma" }, { id: "tm", title: "Turing machines" }, { id: "undec", title: "Decidability and undecidability" },
+    { id: "cfl-props", title: "Context-free languages: closure and pumping lemma", href: "/study/context-free-properties", ready: "3 topics ready", match: "Context-free|Pumping|Closure" }, { id: "tm", title: "Turing machines" }, { id: "undec", title: "Decidability and undecidability" },
   ] },
   { id: "cd", title: "Compiler Design", short: "Compiler", tint: "lilac", cloth: "#D8C7B5", ink: "#1B1917", paper: "#4A2C2A", dark: "#4A2C2A", band: "core", chapters: [
     { id: "lex", title: "Lexical analysis" }, { id: "parse", title: "Top-down parsing" }, { id: "lr", title: "Bottom-up parsing (LR, SLR, LALR)" },

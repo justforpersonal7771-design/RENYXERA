@@ -140,3 +140,29 @@ export function runPDA(kind: PdaKind, w: string) {
   const accepted = ok && stack.length === 1 && (kind !== "wcwr" || state === "q1");
   return { log, accepted, maxStack: Math.max(...log.map((l) => l.stack.length)) };
 }
+
+/* ------------------------------------------------------------ chapter 4: pumping lemma for context-free languages */
+export type CfPumpLang = "anbn" | "anbncn" | "ww" | "square" | "ijk";
+/** Membership for the languages used in the pumping lab. anbn: aⁿbⁿ. anbncn: aⁿbⁿcⁿ. ww: a string repeated. square: a^(n²). ijk: aⁱbʲcᵏ with i < j < k. */
+export function inCfLang(L: CfPumpLang, w: string): boolean {
+  if (L === "anbn") { const n = w.length / 2; return Number.isInteger(n) && w === "a".repeat(n) + "b".repeat(n); }
+  if (L === "anbncn") { const n = w.length / 3; return Number.isInteger(n) && w === "a".repeat(n) + "b".repeat(n) + "c".repeat(n); }
+  if (L === "ww") { const h = w.length / 2; return Number.isInteger(h) && w.slice(0, h) === w.slice(h) && /^[ab]*$/.test(w); }
+  if (L === "square") { const r = Math.round(Math.sqrt(w.length)); return /^a*$/.test(w) && r * r === w.length; }
+  const m = /^(a*)(b*)(c*)$/.exec(w); return !!m && m[1].length < m[2].length && m[2].length < m[3].length;
+}
+/** Cut w = u v x' y' ... as five pieces by the lengths of u, v, the middle w, and x (y is the rest), then pump v and x together i times. */
+export function pumpCf(L: CfPumpLang, w: string, lu: number, lv: number, lm: number, lx: number) {
+  const u = w.slice(0, lu), v = w.slice(lu, lu + lv), m = w.slice(lu + lv, lu + lv + lm), x = w.slice(lu + lv + lm, lu + lv + lm + lx), y = w.slice(lu + lv + lm + lx);
+  const tries = [0, 1, 2, 3].map((i) => { const s = u + v.repeat(i) + m + x.repeat(i) + y; return { i, s, ok: inCfLang(L, s) }; });
+  return { u, v, m, x, y, tries, broken: tries.some((t) => !t.ok) };
+}
+/** Every way to cut w as u v m x y with |v m x| ≤ p and |v x| ≥ 1, and how many of them survive every pump i = 0..3 (the lemma says: some always do, for a context-free language). */
+export function cfSplits(L: CfPumpLang, w: string, p: number) {
+  let total = 0, survive = 0; const n = w.length;
+  for (let a = 0; a <= n; a++) for (let b = a; b <= n && b - a <= p; b++) for (let c = b; c <= n && c - a <= p; c++) for (let d = c; d <= n && d - a <= p; d++) {
+    if ((b - a) + (d - c) < 1) continue; total++;
+    const r = pumpCf(L, w, a, b - a, c - b, d - c); if (!r.broken) survive++;
+  }
+  return { total, survive };
+}

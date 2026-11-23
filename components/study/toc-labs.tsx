@@ -238,3 +238,72 @@ export function PdaLab() {
     </Shell>
   );
 }
+
+
+/* ---------------------------------------------------------------- chapter 4: context-free closure and the pumping lemma */
+const CF_LANGS: { id: T.CfPumpLang; label: string; w: string; lu: number; lv: number; lm: number; lx: number }[] = [
+  { id: "anbn", label: "aⁿbⁿ (context-free)", w: "aaabbb", lu: 2, lv: 1, lm: 0, lx: 1 },
+  { id: "anbncn", label: "aⁿbⁿcⁿ", w: "aaabbbccc", lu: 2, lv: 1, lm: 0, lx: 1 },
+  { id: "ww", label: "ww", w: "aaabbbaaabbb", lu: 2, lv: 1, lm: 3, lx: 1 },
+  { id: "square", label: "a^(n²)", w: "aaaaaaaaa", lu: 0, lv: 1, lm: 0, lx: 1 },
+  { id: "ijk", label: "aⁱbʲcᵏ, i < j < k", w: "abbccc", lu: 0, lv: 1, lm: 0, lx: 0 },
+];
+/** You cut a string into u v w x y (v and x are pumped together), see the four pumped strings, and count how many allowed cuts survive. */
+export function CfPumpLab() {
+  const [L, setL] = useState<T.CfPumpLang>("anbncn"); const d0 = CF_LANGS.find((q) => q.id === "anbncn")!;
+  const [w, setW] = useState(d0.w); const [lu, setLu] = useState(d0.lu); const [lv, setLv] = useState(d0.lv); const [lm, setLm] = useState(d0.lm); const [lx, setLx] = useState(d0.lx); const [p, setP] = useState(3);
+  const pick = (id: T.CfPumpLang) => { const d = CF_LANGS.find((q) => q.id === id)!; setL(id); setW(d.w); setLu(d.lu); setLv(d.lv); setLm(d.lm); setLx(d.lx); };
+  const n = w.length;
+  const a = Math.min(lu, n), b = Math.min(lv, n - a), c = Math.min(lm, n - a - b), e = Math.min(lx, n - a - b - c);
+  const r = T.pumpCf(L, w, a, b, c, e);
+  const legal = b + e >= 1 && b + c + e <= p;
+  const all = useMemo(() => (n <= 14 ? T.cfSplits(L, w, p) : null), [L, w, p, n]);
+  const Num = ({ v, set, label, max }: { v: number; set: (x: number) => void; label: string; max: number }) => (
+    <label className="block text-xs font-semibold text-[var(--text-secondary)]">{label}<input type="number" min={0} max={max} value={v} onChange={(ev) => set(Math.max(0, Math.min(max, Number(ev.target.value) || 0)))} className="mt-1 h-9 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-2 font-num text-[var(--text-primary)]" /></label>
+  );
+  return (
+    <Shell title="Pumping lemma lab (context-free)" note="Cut w into u v w x y, then pump v and x together. In a real proof the adversary picks the cut." tint="lilac">
+      <div className="mt-3 flex flex-wrap gap-2">{CF_LANGS.map((q) => <Pill key={q.id} on={L === q.id} onClick={() => pick(q.id)}>{q.label}</Pill>)}</div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-[2fr_1fr]"><Field label="String (it should be in the language)" value={w} set={(v) => setW(clean(v, ["a", "b", "c"]).slice(0, 14))} /><Num v={p} set={setP} label="Pumping length p" max={6} /></div>
+      <div className="mt-2 grid grid-cols-4 gap-2"><Num v={lu} set={setLu} label="|u|" max={n} /><Num v={lv} set={setLv} label="|v|" max={n} /><Num v={lm} set={setLm} label="|w|" max={n} /><Num v={lx} set={setLx} label="|x|" max={n} /></div>
+      <p className="mt-3 font-num text-sm">u = <b>{r.u || "ε"}</b> · v = <b>{r.v || "ε"}</b> · w = <b>{r.m || "ε"}</b> · x = <b>{r.x || "ε"}</b> · y = <b>{r.y || "ε"}</b></p>
+      <p className={`mt-1 text-xs font-semibold ${legal ? "text-[var(--text-secondary)]" : "text-rose-700 dark:text-rose-300"}`}>{legal ? `A legal cut: |vwx| = ${b + c + e} ≤ p and |vx| = ${b + e} ≥ 1.` : `Not a legal cut: the lemma needs |vwx| ≤ ${p} and |vx| ≥ 1 (here |vwx| = ${b + c + e}, |vx| = ${b + e}).`}</p>
+      <ol className="mt-2 grid gap-1.5 sm:grid-cols-4" aria-label="Pumped strings">{r.tries.map((t) => <li key={t.i} className={`rounded-xl px-3 py-2 text-sm ${t.ok ? "bg-[var(--surface)]" : "bg-rose-500/15"}`}><b className="font-num">i = {t.i}</b><span className="block text-xs">length {t.s.length}</span><span className="block break-all font-num text-xs">{t.s.length > 22 ? t.s.slice(0, 20) + "…" : t.s || "ε"}</span><span className="text-xs font-bold">{t.ok ? "in the language" : "out"}</span></li>)}</ol>
+      <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]">{r.broken ? "This cut is broken: some i leaves the language." : "This cut survives every pump shown."}</p>
+      {all ? <div className="mt-3 grid gap-2 sm:grid-cols-3"><Stat label="Legal cuts (|vwx| ≤ p, |vx| ≥ 1)" value={all.total} /><Stat label="Cuts that survive every pump" value={all.survive} /><Stat label="Verdict" value={all.survive === 0 ? "Every cut fails: not context-free" : "Some cut survives"} /></div> : <p className="mt-3 text-xs text-[var(--text-muted)]">Use a string of 14 symbols or fewer to count every legal cut.</p>}
+    </Shell>
+  );
+}
+
+const CF_CLASSIFY: { lang: string; kind: 0 | 1 | 2; why: string }[] = [
+  { lang: "aⁿbⁿ", kind: 1, why: "Context-free (S → aSb | ε) and not regular." },
+  { lang: "aⁿbⁿcⁿ", kind: 2, why: "Needs two comparisons at once: pump aᵖbᵖcᵖ." },
+  { lang: "(ab)*", kind: 0, why: "Regular." },
+  { lang: "ww", kind: 2, why: "Copying needs a queue, not a stack: pump aᵖbᵖaᵖbᵖ." },
+  { lang: "w wᴿ", kind: 1, why: "A stack matches the second half to the first (non-deterministic)." },
+  { lang: "aⁱbʲcᵏ with i = j or j = k", kind: 1, why: "A union of two context-free languages." },
+  { lang: "aⁿ, n a perfect square", kind: 2, why: "Gaps between squares grow: not even context-free." },
+  { lang: "#a = #b over {a, b}", kind: 1, why: "S → aSbS | bSaS | ε; ∩ a*b* gives aⁿbⁿ, so not regular." },
+  { lang: "aⁱbʲcᵏ with i < j < k", kind: 2, why: "Two strict comparisons: pump aᵖbᵖ⁺¹cᵖ⁺²." },
+  { lang: "{ aⁿbⁿ : n ≤ 100 }", kind: 0, why: "Finite, so regular." },
+  { lang: "complement of ww", kind: 1, why: "Surprisingly context-free: a mismatch at one position can be guessed." },
+  { lang: "aⁿbᵐcⁿ⁺ᵐ", kind: 1, why: "Context-free: a stack counts n then m and matches n + m c's." },
+];
+/** Guess the class of each language, then read why: regular, context-free but not regular, or not context-free. */
+export function CfClassifyLab() {
+  const [guess, setGuess] = useState<Record<number, number>>({});
+  const names = ["Regular", "Context-free, not regular", "Not context-free"];
+  const right = Object.entries(guess).filter(([k, v]) => CF_CLASSIFY[Number(k)].kind === v).length;
+  return (
+    <Shell title="Which class? lab" note="Decide for each language, then read the one-line reason." tint="butter">
+      <ul className="mt-3 grid gap-2 sm:grid-cols-2">{CF_CLASSIFY.map((c, k) => { const g = guess[k]; const done = g !== undefined; return (
+        <li key={c.lang} className="rounded-2xl bg-[var(--surface)] p-3 text-sm">
+          <p className="font-num font-bold text-[var(--text-primary)]">{c.lang}</p>
+          {!done ? <div className="mt-2 flex flex-wrap gap-2">{names.map((nm, v) => <Pill key={nm} on={false} onClick={() => setGuess((x) => ({ ...x, [k]: v }))}>{nm}</Pill>)}</div>
+            : <p className={`mt-1 ${g === c.kind ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"}`}><b>{names[c.kind]}</b> ({g === c.kind ? "you were right" : "you said " + names[g].toLowerCase()}). {c.why}</p>}
+        </li>
+      ); })}</ul>
+      <div className="mt-3 grid gap-2 sm:grid-cols-2"><Stat label="Answered" value={`${Object.keys(guess).length} of ${CF_CLASSIFY.length}`} /><Stat label="Correct" value={right} /></div>
+    </Shell>
+  );
+}
