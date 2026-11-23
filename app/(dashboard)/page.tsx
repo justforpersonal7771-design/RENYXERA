@@ -40,6 +40,7 @@ import { KpiStrip } from "@/components/dashboard/kpi-strip";
 import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
 import { StudyLoopCard } from "@/components/study/study-loop";
 import { StudyOffer } from "@/components/study/study-offer";
+import { ReferralCard } from "@/components/profile/referral-card";
 
 // Everything below the hero is client-only and code-split.
 
@@ -268,6 +269,8 @@ export default function Home() {
       <FeatureDeck solved={solvedCount} totalBank={totalBank} paper={paper} accuracy={accuracyValue} pendingMistakes={pendingMistakesCount}
         subjects={dashboardMetrics?.subjectPerformance ?? []} topics={dashboardMetrics?.topicPerformance ?? []}
         studyHours={studyHours} streak={streakDays} daysToGate={daysToGate} />
+
+      <Reveal><ReferralCard /></Reveal>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
         <div className="lg:col-span-8 flex flex-col gap-4">
