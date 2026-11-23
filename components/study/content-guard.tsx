@@ -41,7 +41,7 @@ export function ContentGuard({ children }: { children: ReactNode }) {
   return (
     <>
       {children}
-      <div aria-hidden className="rx-watermark pointer-events-none fixed inset-0 z-[5] opacity-[0.07] dark:opacity-[0.09] dark:invert" style={{ backgroundImage: mark }} />
+      <div aria-hidden className="rx-watermark pointer-events-none fixed inset-0 z-[5] opacity-[0.018] dark:opacity-[0.03] dark:invert" style={{ backgroundImage: mark }} />
     </>
   );
 }
