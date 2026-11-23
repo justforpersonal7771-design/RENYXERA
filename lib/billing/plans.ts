@@ -80,7 +80,7 @@ export function comparePrice(plan: Plan) {
   if (!ref || ref <= plan.pricePaise) return null;
   return { wasPaise: ref, savePct: Math.round((1 - plan.pricePaise / ref) * 100), perMonthPaise: plan.periodDays >= 365 ? Math.round(plan.pricePaise / 12) : null, reason: plan.periodDays >= 365 || season ? "vs paying monthly" : "launch price" };
 }
-export const formatPrice = (paise: number | null) => (paise == null ? "Price coming soon" : `₹${(paise / 100).toLocaleString("en-IN")}`);
+export const formatPrice = (paise: number | null) => (paise == null ? "Price coming soon" : `₹${(paise / 100).toLocaleString("en-IN", Number.isInteger(paise / 100) ? undefined : { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
 
 /** Free has no daily AI allowance — a one-time teaser instead (FREE_AI_TEASER) + earned credits. */
 export const FREE_AI_DAILY = 0;

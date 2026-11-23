@@ -220,57 +220,60 @@ export function PlansContent({ onDone, inModal = false }: { onDone?: () => void;
             <motion.div className="fixed inset-0 z-[300] grid place-items-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               <button type="button" aria-label="Close" className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setConfirm(null)} />
               <motion.div role="dialog" aria-modal="true" aria-label={`Confirm ${cp.name}`} initial={{ scale: 0.95, y: 10 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 10 }}
-                className={`relative w-full max-w-md max-h-[90dvh] overflow-y-auto rounded-3xl border bg-[var(--surface)] p-6 shadow-2xl ${gold ? "border-amber-400/60" : "border-slate-400/60"}`}>
-                <div className="flex items-center justify-between">
-                  <p className={`text-xs font-black tracking-normal ${LOOK[cp.tier].kicker}`}>{gold ? "Pro · Gold" : "Plus · Silver"}</p>
-                  <div className="flex items-center gap-1">
-                    <ProCrown metal={LOOK[cp.tier].metal} className="is-inline" />
-                    <button type="button" onClick={() => setConfirm(null)} aria-label="Close" className="group w-8 h-8 -mr-2 rounded-lg grid place-items-center text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] cursor-pointer"><X className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90" /></button>
-                  </div>
+                className={`${LOOK[cp.tier].ring} relative w-full max-w-md max-h-[92dvh] overflow-y-auto rounded-3xl bg-[var(--surface)] shadow-2xl`}>
+                <div className="flex items-center justify-between gap-3 px-6 pt-6">
+                  <span className="plan-badge plan-kicker inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-black tracking-normal"><Crown className="h-3.5 w-3.5" aria-hidden /> {gold ? "Pro · Gold" : "Plus · Silver"}</span>
+                  <button type="button" onClick={() => setConfirm(null)} aria-label="Close" className="group grid h-9 w-9 cursor-pointer place-items-center rounded-full border border-[var(--border)] bg-[var(--surface)] text-[var(--text-muted)] hover:text-[var(--text-primary)]"><X className="h-4 w-4 transition-transform duration-300 group-hover:rotate-90" /></button>
                 </div>
-                <h2 className="mt-1 text-xl font-extrabold text-[var(--text-primary)]">Confirm {cp.name}</h2>
-                <dl className="mt-4 space-y-2 rounded-2xl bg-[var(--surface-secondary)]/60 p-4 text-sm">
-                  <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">{cp.name}</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(cp.pricePaise)}</dd></div>
-                  {coupon && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Coupon {coupon.code} ({coupon.label})</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">− {formatPrice(coupon.discountPaise)}</dd></div>}
-                  {addStudy && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Core CS study bundle</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(complete.pricePaise)}</dd></div>}
-                  {credit > 0 && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Credit for unused Plus days</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">−{formatPrice(credit)}</dd></div>}
-                  <div className="flex justify-between border-t border-[var(--border-subtle)] pt-2"><dt className="font-bold text-[var(--text-primary)]">You pay today</dt><dd className="font-num text-lg font-extrabold text-[var(--text-primary)]">{formatPrice(total)}</dd></div>
-                  <p className="text-[11px] text-[var(--text-muted)]">{cp.periodDays} days of {gold ? "Pro" : "Plus"} from today · taxes included</p>
-                </dl>
-                <ul className="mt-4 space-y-1.5 text-xs text-[var(--text-secondary)]">
-                  <li>• Starts instantly once the payment is confirmed.</li>
-                  <li>• Does <b className="text-[var(--text-primary)]">not</b> renew automatically — no surprise charges.</li>
-                  <li>• Purchases are final: <b className="text-[var(--text-primary)]">refunds only for our errors</b> (double charge, payment that did not activate, a fault we cannot fix), by email with a genuine reason.</li>
+                <div className="px-6 pt-4">
+                  <h2 className="text-sm font-bold text-[var(--text-secondary)]">Confirm {cp.name}</h2>
+                  <p className="mt-1 flex items-baseline gap-2"><span className={`font-num text-5xl font-black tracking-tight ${gold ? "plan-text-gold" : "plan-text-silver"}`}>{formatPrice(total)}</span><span className="text-sm font-semibold text-[var(--text-secondary)]">today</span></p>
+                  <p className="mt-1 text-xs text-[var(--text-muted)]">{cp.periodDays} days of {gold ? "Pro" : "Plus"} from today · taxes included</p>
+                  {(coupon || addStudy || credit > 0) && (
+                    <dl className="mt-3 space-y-1.5 border-t border-[var(--border)] pt-3 text-sm">
+                      <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">{cp.name}</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(cp.pricePaise)}</dd></div>
+                      {coupon && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Coupon {coupon.code} ({coupon.label})</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">− {formatPrice(coupon.discountPaise)}</dd></div>}
+                      {addStudy && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Core CS study bundle</dt><dd className="font-num font-semibold text-[var(--text-primary)]">{formatPrice(complete.pricePaise)}</dd></div>}
+                      {credit > 0 && <div className="flex justify-between"><dt className="text-[var(--text-secondary)]">Credit for unused Plus days</dt><dd className="font-num font-semibold text-emerald-600 dark:text-emerald-400">−{formatPrice(credit)}</dd></div>}
+                    </dl>
+                  )}
+                </div>
+                <ul className="mx-6 mt-4 grid gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 p-3.5 text-xs text-[var(--text-secondary)]">
+                  <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden /><span>Starts instantly once the payment is confirmed.</span></li>
+                  <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden /><span>Does <b className="text-[var(--text-primary)]">not</b> renew automatically, so no surprise charges.</span></li>
+                  <li className="flex gap-2"><Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400" aria-hidden /><span>Purchases are final: <b className="text-[var(--text-primary)]">refunds only for our errors</b> (double charge, payment that did not activate, a fault we cannot fix), by email with a genuine reason.</span></li>
                 </ul>
-                <label className="mt-4 flex items-start gap-2 rounded-xl border border-[var(--border)] p-3 text-xs text-[var(--text-secondary)] cursor-pointer">
-                  <input type="checkbox" checked={addStudy} onChange={(e) => setAddStudy(e.target.checked)} className="mt-0.5 accent-violet-600" />
-                  <span><b className="text-[var(--text-primary)]">Add Core CS study for {formatPrice(complete.pricePaise)}</b> (separately {formatPrice(packTotal(complete.packs))}). All nine core subject books until the end of your GATE season. Study is separate from {gold ? "Pro" : "Plus"}; the plan does not include it.</span>
+                <label className="mx-6 mt-3 flex cursor-pointer items-start gap-3 rounded-2xl p-3.5 text-xs text-[var(--text-secondary)]" style={{ background: "linear-gradient(135deg, rgba(232,228,255,.55), rgba(154,140,240,.16))", border: "1px solid rgba(154,140,240,.4)" }}>
+                  <input type="checkbox" checked={addStudy} onChange={(e) => setAddStudy(e.target.checked)} className="mt-0.5 h-4 w-4 accent-[#6d4be8]" />
+                  <span><b className="text-[var(--text-primary)]">Add Core CS study for {formatPrice(complete.pricePaise)}</b> <span className="study-chip ml-1 rounded-full px-2 py-0.5 text-[10px] font-bold">Save {formatPrice(Math.max(0, packTotal(complete.packs) - complete.pricePaise))}</span><span className="mt-1 block">All nine core subject books until the end of your GATE season. Study is separate from {gold ? "Pro" : "Plus"}; the plan does not include it.</span></span>
                 </label>
-                <div className="mt-4">
+                <div className="mx-6 mt-3">
                   <div className="flex gap-2">
                     <input value={couponText} onChange={(e) => { setCouponText(e.target.value.toUpperCase()); setCoupon(null); setCouponMsg(null); }} placeholder="Coupon code (optional)" maxLength={32} autoComplete="off" spellCheck={false} aria-label="Coupon code"
-                      className="h-10 min-w-0 flex-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold tracking-normal placeholder:font-normal placeholder:normal-case placeholder:tracking-normal" />
-                    <button type="button" onClick={() => applyCoupon(cp.id)} disabled={couponBusy || couponText.trim().length < 3} className="h-10 shrink-0 rounded-xl border border-[var(--border)] px-4 text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] disabled:opacity-50 cursor-pointer">{couponBusy ? "Checking…" : "Apply"}</button>
+                      className="h-11 min-w-0 flex-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-semibold tracking-normal placeholder:font-normal placeholder:normal-case placeholder:tracking-normal" />
+                    <button type="button" onClick={() => applyCoupon(cp.id)} disabled={couponBusy || couponText.trim().length < 3} className="h-11 shrink-0 cursor-pointer rounded-xl border border-[var(--border)] bg-[var(--surface)] px-4 text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--surface-secondary)] disabled:opacity-50">{couponBusy ? "Checking…" : "Apply"}</button>
                   </div>
                   {coupon && <p className="mt-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">Code applied: {coupon.label}.</p>}
                   {couponMsg && <p className="mt-1.5 text-xs font-semibold text-rose-500">{couponMsg}</p>}
                 </div>
-                <div className="mt-4 rounded-xl border border-amber-500/40 bg-amber-500/5 p-3">
+                <div className="mx-6 mt-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 p-3.5">
                   <p className="text-xs text-[var(--text-secondary)]">This plan is for <b className="text-[var(--text-primary)]">GATE {branchPaper}</b> only and stays locked to your account&apos;s branch. If you use your one branch change later, the plan moves with it.</p>
                   <label className="mt-2 block text-[11px] text-[var(--text-secondary)]">Type <b>{branchPaper}</b> to confirm
                     <input value={typedPaper} onChange={(e) => setTypedPaper(e.target.value)} maxLength={4} autoComplete="off" spellCheck={false} aria-label={`Type ${branchPaper} to confirm`}
-                      className="mt-1 w-full h-9 rounded-lg border border-[var(--border-subtle)] bg-[var(--surface)] px-3 text-sm font-semibold tracking-normal" />
+                      className="mt-1 h-10 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 text-sm font-semibold tracking-normal" />
                   </label>
                 </div>
-                <label className="mt-4 flex items-start gap-2 text-xs text-[var(--text-secondary)] cursor-pointer">
-                  <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-violet-600" />
-                  <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold text-violet-600 dark:text-violet-400 underline">Refund &amp; Cancellation Policy</Link>.</span>
+                <label className="mx-6 mt-4 flex cursor-pointer items-start gap-2 text-xs text-[var(--text-secondary)]">
+                  <input type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 h-4 w-4 accent-[#6d4be8]" />
+                  <span>I agree to the <Link href="/terms" target="_blank" className="font-semibold text-[var(--text-primary)] underline">Terms</Link> and the <Link href="/refunds" target="_blank" className="font-semibold text-[var(--text-primary)] underline">Refund &amp; Cancellation Policy</Link>.</span>
                 </label>
-                <button type="button" onClick={() => upgrade(cp.id)} disabled={!agreed || !paperOk || !!busy}
-                  className={`mt-4 w-full h-12 rounded-xl font-bold shadow-lg disabled:opacity-50 inline-flex items-center justify-center gap-2 cursor-pointer ${LOOK[cp.tier].btn}`}>
-                  {busy === cp.id && <Loader2 className="w-4 h-4 animate-spin" />} Pay {formatPrice(total)} securely
-                </button>
-                <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!paperOk ? `Type ${branchPaper} above to confirm your branch.` : !agreed ? "Tick the box to continue." : "You'll finish on the secure payment pay — UPI, cards or net banking."}</p>
+                <div className="mt-4 px-6 pb-6">
+                  <button type="button" onClick={() => upgrade(cp.id)} disabled={!agreed || !paperOk || !!busy}
+                    className={`w-full h-14 rounded-2xl text-base font-extrabold shadow-lg disabled:opacity-50 inline-flex items-center justify-center gap-2 cursor-pointer ${LOOK[cp.tier].btn}`}>
+                    {busy === cp.id && <Loader2 className="w-4 h-4 animate-spin" />} Pay {formatPrice(total)} securely
+                  </button>
+                  <p className="mt-2 text-center text-[11px] text-[var(--text-muted)]">{!paperOk ? `Type ${branchPaper} above to confirm your branch.` : !agreed ? "Tick the box to continue." : "You'll finish on the secure payment page: UPI, cards or net banking."}</p>
+                </div>
               </motion.div>
             </motion.div>
           );
