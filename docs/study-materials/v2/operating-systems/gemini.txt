@@ -1,0 +1,915 @@
+## PART 1. FEELINGS
+
+1. Looking at Part B.2 made me feel tricked immediately: **Chapter 01 is Deadlock** only because someone made those 6 topics "free", BEFORE teaching me what a process, thread, or lock even is!
+2. There is NO Chapter 0 explaining what an OS actually does, why **User Mode vs Kernel Mode** exists, or what happens during a **System Call** and **Interrupt**, yet the PYQs test that right away (`2023_FN_Q23`, `2021_FN_Q60`, `2024_AN_Q12`).
+3. When I jumped into `Part C`, I felt lost and panicked within 10 minutes: `fork()` loops with `wait(NULL)`, binary vs counting semaphores losing updates, `TLB reach`, 2-level page tables, and `inode` double-indirect blocks hit me with zero pictures.
+4. Worse, two PYQs have broken text that would make a student doubt their own brain: `2026_AN_Q51` prints a **4-star pattern `**$*##*#`** when only 3 processes print `*` once, and `2024_FN_Q64` says `a = 2 + a;` instead of `a = 2 * a;`!
+5. Another 9 PYQs have `[IMAGE_...]` missing, and `2023_FN_Q42` is literally a Computer Organization chip-select decoder question sitting inside the OS bank!
+6. Even `2020_FN_Q37` gives `155 ns` only by taking page fault rate `10%` of *TLB misses* instead of *all accesses* — without a warning note, I would get `720 ns` and think I am stupid.
+7. The table only gives vague chapter titles with `"6 topics ready"` or `"7 topics ready"` — no subtopic list, no order, no study hours, and no `[MUST]` vs `[LATER]` plan for my 100 days left.
+8. **Would I pay ₹149 for this right now? NO.**
+9. Why? Because `Deadlock` as Chapter 1 breaks beginner logic completely, there is no Chapter 0 for hardware/OS basics, and `Part C` has nasty mis-transcriptions (`2024_FN_Q64`, `2026_AN_Q51`) without warnings.
+10. Move Deadlock AFTER Processes and Synchronization, add Chapter 0, give full step-by-step memory/timeline pictures, and fix the PYQ text bugs — then I will happily pay ₹149.
+
+---
+
+## PART 2. GAP TABLE
+
+| # | Where (chapter/topic/line) | What I could not understand or what is missing | Type | What to add or change | Priority |
+|---|---|---|---|---|---|
+| 1 | `Part B.2` (`01 Deadlock` first) | Puts **Deadlock** as Chapter 01 before `02 Processes`, `03 CPU Scheduling`, and `04 Synchronisation` just because it's the free sample! I don't even know what a process or lock is yet! | WRONG-ORDER | Reorder the book logically: Ch 00 Foundations -> Ch 01 Processes/Threads -> Ch 02 CPU Scheduling -> Ch 03 Synchronization -> **Ch 04 Deadlock** -> Ch 05 Memory Mgmt -> Ch 06 Virtual Memory -> Ch 07 File Systems & Disk. | HIGH |
+| 2 | `Part B.2` (Missing Ch 00) | Zero chapter introducing **what an OS is**, **User Mode vs Kernel Mode**, **Mode Bit**, **Interrupts vs Traps vs Exceptions**, and **System Calls** (`2023_FN_Q23`, `2021_FN_Q60`, `2024_AN_Q12`). | MISSING-PREREQUISITE | Add **Chapter 00: OS Foundations, Dual Mode, Interrupts & System Calls** before Processes. | HIGH |
+| 3 | `Part B.2` (Missing Ch 00) | Never explains **System Libraries (`malloc`, `strlen`, `printf`) vs OS System Calls (`exit`, `sleep`, `read`, `fork`)** — so `2021_FN_Q60` feels like guessing! | UNEXPLAINED-WORD | Draw a 3-layer stack (`User Code -> C Library libc -> Kernel Syscall Trap`) showing which functions stay in user mode vs trap to kernel. | HIGH |
+| 4 | `Part B.2` (Whole outline) | Only prints `"6 topics ready"` / `"7 topics ready"` with zero topic names, finer points, traces, or diagrams — impossible to review whether key GATE subtopics exist. | STEP-SKIPPED | Replace this v0 stub with the full lesson-by-lesson plan (Part 5). | HIGH |
+| 5 | `Part B.2` & `Part B.3` (100-day plan) | No reading time estimates, no `[MUST]` / `[SHOULD]` / `[LATER]` priority tags, and no dependency map for a dropper with 100 days left. | TOO-LONG-BORING | Tag every lesson with time and priority so high-mark topics (`VM`, `Sync`, `CPU Sched`) get locked first. | HIGH |
+| 6 | `Part B.1` (Syllabus check) | Lists the 5 official GATE CS lines accurately, yet fails to warn about **COA overlap** (disk geometry, cache/MMU/chip-select `2023_FN_Q42`, interrupt hardware) and **C programming overlap** (`fork()`, `stdout` buffering, volatile/atomicity). | MISSING-FINER-POINT | Add a prerequisite cross-reference note in Part B.1 linking C and COA concepts. | MEDIUM |
+| 7 | `Ch 02 Processes` (Process Anatomy) | Never shows **what lives inside one process in RAM** (`Text, Data, BSS, Heap ↑, ↓ Stack`) + **Process Control Block (PCB)** (`PID, PC, SP, Registers, Open Files, Page Table Base`). | NEEDS-DIAGRAM | Draw a single process's memory map alongside its PCB card before explaining context switches or threads. | HIGH |
+| 8 | `Ch 02 Processes` (5-State / 7-State Diagram) | Doesn't teach the **Process State Transition Diagram** (`New -> Ready <-> Running -> Waiting/Blocked -> Terminated`, plus Suspended states) — directly tested in `2024_FN_Q26`, `2020_FN_Q18`, `2025_FN_Q29`, `2024_AN_Q12`! | MISSING-GATE-CONCEPT | Draw the full 5-state and 7-state diagrams showing EVERY legal and illegal arrow (`Waiting -> Running` and `Ready -> Waiting` marked red X!). | HIGH |
+| 9 | `Ch 02 Processes` (`fork()` mechanics) | Beginners think `fork()` starts the program over from `main()`! They don't see that `fork()` clones the process AT THAT EXACT LINE, returning `0` to child and `child_PID (> 0)` to parent! | UNEXPLAINED-WORD | Draw a cloning tree at the exact `fork()` line, showing return value `0` vs `>0`, `||` and `&&` short-circuit `fork()` puzzles, and `$2^n - 1$` children! | HIGH |
+| 10 | `Ch 02 Processes` (`fork()` + `wait()` + `continue/break`) | Misses `fork()` inside loops with `break`/`continue` (`2026_FN_Q63`), `wait(NULL)` (`2024_FN_Q53`), and `stdout` buffering without `\n`! | MISSING-GATE-CONCEPT | Trace `2026_FN_Q63` and `2024_FN_Q53` as step-by-step process trees + explain buffered vs unbuffered `printf`. | HIGH |
+| 11 | `Ch 02 Processes` (Zombie & Orphan processes) | Standard process lifecycle concepts (**Zombie process**, **Orphan process**, `init/systemd` reaping, `exec()` replacing address space) are completely absent! | MISSING-FINER-POINT | Add Zombie vs Orphan vs `exec()` with simple parent/child timelines. | MEDIUM |
+| 12 | `Ch 02 Processes` (Threads: What is Shared vs Private) | Doesn't visually contrast **what threads SHARE** (`Code, Data/Globals, Heap, Open File Descriptors, Address Space`) vs **what each thread OWNS privately** (`Stack, Registers, PC, Thread ID`) — tested in `2024_FN_Q12`, `2023_FN_Q22`, `2017_AN_Q14`, `2017_FN_Q25`! | MISSING-GATE-CONCEPT | Draw 2 threads inside ONE process box sharing Heap/Globals/Files yet holding separate Stacks, PCs, and Register cards! | HIGH |
+| 13 | `Ch 02 Processes` (User vs Kernel Threads & Models) | Doesn't explain **User-Level vs Kernel-Level Threads** (`Many-to-One`, `One-to-One`, `Many-to-Many`) or why blocking a User-level thread blocks the ENTIRE process! | MISSING-FINER-POINT | Compare 1:1, M:1, and M:N thread models (`2024_FN_Q12` option A). | MEDIUM |
+| 14 | `Ch 02 Processes` (IPC: Pipes, Shared Memory, Message Passing) | `Part B.1` explicitly lists **Inter-Process Communication**, yet `Part B.2` doesn't even mention **Pipes**, **Shared Memory**, **Message Passing**, or **Signals**! | MISSING-GATE-CONCEPT | Add an IPC lesson covering Shared Memory vs Message Passing and Pipe buffer blocking. | MEDIUM |
+| 15 | `Ch 03 CPU Scheduling` (Metrics & Gantt Charts) | Doesn't define **Arrival Time (AT), Burst Time (BT), Completion Time (CT), Turnaround Time (`CT - AT`), Waiting Time (`TAT - BT`), Response Time, Throughput, CPU Utilization, Convoy Effect** before jumping into algorithms! | UNEXPLAINED-WORD | Build one clean metric cheat box + trace Gantt charts for a 4-process example (`2025_AN_Q26`, `2024_AN_Q54`). | HIGH |
+| 16 | `Ch 03 CPU Scheduling` (Preemptive vs Non-Preemptive) | Doesn't contrast which algorithms CAN be preemptive vs strictly non-preemptive (`FCFS` & `NP-SJF` vs `SRTF`, `RR`, `Preemptive Priority` — `2026_AN_Q23`, `2021_AN_Q29`) or explain why preemptive needs **timer interrupt hardware**. | MISSING-GATE-CONCEPT | Draw a comparison table of all scheduling policies (`Preemptive?`, `Starvation?`, `Optimal Avg Wait?`, `Needs Burst Prediction?`). | HIGH |
+| 17 | `Ch 03 CPU Scheduling` (Round Robin Tie-Breaking & Ready Queue!) | Beginners ALWAYS mess up **Round Robin** when a newly arriving process enters the Ready Queue at the EXACT same time a running process's quantum expires (who goes first into the FIFO queue? New arrival or preempted process? And `2022_FN_Q42` context-switch counting!). | MISSING-FINER-POINT | Draw the FIFO Ready Queue alongside the Gantt chart step by step, stating the standard GATE tie-breaker rule + context-switch counting rules (`2022_FN_Q42`). | HIGH |
+| 18 | `Ch 03 CPU Scheduling` (Starvation & FCFS Controversy!) | Doesn't explain **Starvation** vs **Aging**, or why `2023_FN_Q27` includes **FCFS/FIFO** alongside Priority and SJF ("infinite burst process ahead blocks everyone behind!"). | MISSING-FINER-POINT | Explain normal finite-burst starvation (SJF, Priority) AND the infinite-burst FCFS edge case (`2023_FN_Q27`). | MEDIUM |
+| 19 | `Ch 03 CPU Scheduling` (Burst Prediction & Exponential Averaging) | Standard GATE formula $\tau_{n+1} = \alpha t_n + (1 - \alpha)\tau_n$ for predicting CPU bursts in SJF/SRTF (`2021_AN_Q29(C)`) is missing! | MISSING-GATE-CONCEPT | Teach exponential averaging with 1 numerical trace showing how $\alpha$ weights recent vs past history. | MEDIUM |
+| 20 | `Ch 03 CPU Scheduling` (Multi-Processor & CPU-I/O Interleaved Scheduling) | Misses **Multi-Processor Priority Scheduling (`2025_FN_Q38`)**, **CPU-bound vs I/O-bound scheduling with `scanf`/`printf` (`2025_FN_Q29`)**, **Periodic Real-Time (RMS / EDF)**, and **Multilevel Feedback Queues (MLFQ)**! | MISSING-GATE-CONCEPT | Add worked traces for dual-processor scheduling (`2025_FN_Q38`), CPU/I/O burst interleaving (`2025_FN_Q29`), and MLFQ/RMS basics. | HIGH |
+| 21 | `Ch 04 Synchronisation` (Race Conditions & Lost Updates) | Doesn't zoom into **assembly/machine instructions** (`LOAD R1, X; ADD R1, 1; STORE X, R1`) to show WHY `X++` is NOT atomic! Without seeing 3 assembly steps, `2023_FN_Q38`, `2021_FN_Q59`, and `2019_FN_Q32` make zero sense! | MISSING-PREREQUISITE | Draw 2 threads interleaving `LOAD / ADD / STORE` on a shared box `X` to visibly lose an update! | HIGH |
+| 22 | `Ch 04 Synchronisation` (Critical Section 3 Requirements) | Never defines the 3 mandatory rules of a Critical Section solution: **1. Mutual Exclusion, 2. Progress, 3. Bounded Waiting** (plus why Progress $\neq$ Deadlock-freedom!). | MISSING-GATE-CONCEPT | Explain all 3 rules in plain English with everyday counterexamples breaking each one individually. | HIGH |
+| 23 | `Ch 04 Synchronisation` (Software & Hardware Lock Solutions) | Misses **Lock Variables**, **Strict Alternation (Turn variable)**, **Peterson's Solution** (why it needs memory barriers on modern CPUs!), **Test-and-Set (`TSL`)**, and **Compare-and-Swap (`CAS`)** — plus **Busy Waiting (Spinlock) vs Blocking**, and **Priority Inversion**! | MISSING-GATE-CONCEPT | Trace Peterson's algorithm (`flag[2]`, `turn`) and `TestAndSet` step by step checking ME, Progress, and Bounded Waiting! | HIGH |
+| 24 | `Ch 04 Synchronisation` (Binary vs Counting Semaphores & Negative Values) | Doesn't distinguish **Binary Semaphore (`0/1`)**, **Counting Semaphore**, and **Mutex (ownership rule!)**, or explain **Blocked Queue inside a semaphore** (`S` negative count `-k` = `k` blocked processes in textbook variant vs `0` spin-wait variant!). | UNEXPLAINED-WORD | Draw a semaphore struct `{int value; queue list;}` showing `wait()` decrementing & sleeping vs `signal()` waking one process up. | HIGH |
+| 25 | `Ch 04 Synchronisation` (Order of `wait()`s, Barriers & Classic Problems) | Misses **Swapped `wait()` deadlock trap (`2021_FN_Q59`, `2024_AN_Q44`)**, **Producer-Consumer** (`2018_FN_Q50` swapped `empty/full` naming!), **Readers-Writers** (reader priority vs writer priority), **Dining Philosophers**, and **Rendezvous / Barrier Turnstile (`2020_FN_Q38`)**! | MISSING-GATE-CONCEPT | Trace all 4 classic problems + show how reversing `wait(mutex)` and `wait(empty)` causes instant deadlock! | HIGH |
+| 26 | `Ch 04 Synchronisation` (Monitors & Condition Variables) | Syllabus & bank explicitly name **Monitors**, yet `Part B.2` doesn't mention **Monitors (`wait()`, `signal()`, Hoare vs Mesa semantics)**! | MISSING-GATE-CONCEPT | Explain Monitors as a "room with automatic lock + waiting benches (condition variables)" and contrast Mesa (`while`) vs Hoare (`if`). | MEDIUM |
+| 27 | `Ch 04 Synchronisation` (Deadlock vs Livelock vs Starvation) | Doesn't separate **Deadlock** (stuck sleeping forever), **Livelock** (busy changing state, making zero progress, `2021_AN_Q13`), and **Starvation** (someone else keeps winning). | UNEXPLAINED-WORD | Draw a 3-column comparison table using real-world hallway/traffic analogies (`2021_AN_Q13`). | MEDIUM |
+| 28 | `Ch 01 Deadlock` (4 Coffman Conditions & RAG Edges) | Doesn't explicitly highlight **Assignment Edge (`Resource -> Process`) vs Request/Claim Edge (`Process -> Resource`)** (`2026_FN_Q29`!), and **Single-Instance Cycle = Deadlock (IFF) vs Multi-Instance Cycle = Necessary ONLY (`2022_FN_Q26`)**! | MISSING-GATE-CONCEPT | Draw a Single-Instance RAG cycle (deadlock) vs a Multi-Instance RAG cycle (NOT deadlock because one process outside cycle frees an instance!). | HIGH |
+| 29 | `Ch 01 Deadlock` (Prevention vs Avoidance vs Detection vs Recovery) | Beginners mix up **Deadlock Prevention** (breaking 1 of the 4 Coffman conditions — e.g. lock ordering breaks Circular Wait) with **Deadlock Avoidance** (Banker's Algorithm! `2026_FN_Q29(A)`!). | UNEXPLAINED-WORD | Put Prevention, Avoidance, Detection, and Recovery in a 4-row table (`How it stops deadlock`, `Cost`, `Famous example`). | HIGH |
+| 30 | `Ch 01 Deadlock` (Banker's Algorithm & Safe vs Unsafe State) | Doesn't clarify that **Unsafe $\neq$ Deadlocked** (`2022_FN_Q26(C)`!), doesn't show `Need = Max - Allocation` step-by-step (`2018_FN_Q49`), and omits the **Resource Request Algorithm** (checking `Request <= Need` & `Request <= Available`). | NEEDS-TRACE | Draw the `Safe vs Unsafe vs Deadlock` target rings and trace Banker's `2018_FN_Q49` row by row. | HIGH |
+| 31 | `Ch 01 Deadlock` (Pigeonhole Minimum-Resource Formula) | Misses the exact formula for `n` processes needing max `K` instances each (`min R = n(K - 1) + 1`, or generalized $\sum (K_i - 1) + 1$) (`2026_FN_Q35`, `2018_FN_Q34`, `2019_FN_Q43`)! | MISSING-GATE-CONCEPT | Draw the worst-case "everybody hoards $K - 1$ items" boxes so the formula is never blindly memorized. | HIGH |
+| 32 | `Ch 01 Deadlock` (Breaking Cycles by Aborting Processes) | Doesn't show **multi-cycle RAG reduction / minimum processes to abort** (`2025_AN_Q48`). | NEEDS-EXAMPLE | Trace finding ALL cycles in a 4-process RAG (`2025_AN_Q48`) and picking the minimum vertex cut (`P2` alone vs `P1 + P4`). | MEDIUM |
+| 33 | `Ch 05 Memory Mgmt` (Address Binding & Logical vs Physical Address) | Doesn't explain **Compile-time vs Load-time vs Execution-time binding**, **MMU (Base + Limit registers)**, or **Logical/Virtual Address vs Physical Address** before jumping into partitions and paging! | MISSING-PREREQUISITE | Draw CPU outputting Logical Address -> MMU (`+ Relocation` / `< Limit`) -> RAM Physical Address (`2024_AN_Q28`). | HIGH |
+| 34 | `Ch 05 Memory Mgmt` (Fixed vs Variable Partitioning & Fit Policies) | Doesn't contrast **Internal Fragmentation** (wasted inside allocated partition) vs **External Fragmentation** (tiny scattered holes outside), or trace **First Fit, Next Fit, Best Fit, Worst Fit** (`2026_AN_Q55`, `2020_FN_Q14`) and **Compaction**! | NEEDS-DIAGRAM | Draw memory strips comparing First/Next/Best/Worst Fit step by step (`2026_AN_Q55`), plus Internal vs External Fragmentation boxes (`2021_FN_Q31`). | HIGH |
+| 35 | `Ch 05 Memory Mgmt` (Basic Paging & Address Splitting Maths!) | Students panic at bit-splitting (`2025_FN_Q14`, `2024_FN_Q50`) because they aren't shown the clean 2-step bridge between **decimal division** (`VA / PageSize`, `VA % PageSize`) and **binary bit-slicing** (`p` high bits + `d` low bits, $2^{10}=1\text{K}, 2^{20}=1\text{M}, 2^{30}=1\text{G}$)! | MISSING-PREREQUISITE | Add a "Powers of 2 & Byte-vs-Word Addressable" cheat box (`2019_FN_Q42`!) and trace BOTH decimal (`2500 / 2048`) and binary bit-splitting! | HIGH |
+| 36 | `Ch 05 Memory Mgmt` (Word-Addressable vs Byte-Addressable Trap!) | `2019_FN_Q42` tests **word-addressable** memory (`8 KB` page with `4 B` word = `2K` distinct addresses, NOT `8K`!). Standard books only teach byte-addressable! | MISSING-GATE-CONCEPT | Compare Byte-Addressable vs Word-Addressable address counts side-by-side (`2019_FN_Q42`). | HIGH |
+| 37 | `Ch 05 Memory Mgmt` (TLB, TLB Reach & EMAT Formulas) | Misses **TLB Associative Parallel Lookup (`2022_FN_Q38(A)`)**, **TLB Hit vs Miss EMAT**, **ASID/PID bits in TLB (`2026_AN_Q54`)**, and **TLB Reach = `entries × page_size`** (`2026_AN_Q54`, `2019_FN_Q42`)! | MISSING-GATE-CONCEPT | Draw CPU -> TLB (parallel check) -> Hit (1 RAM access) vs Miss (PT RAM access + data RAM access), plus TLB entry bit fields (`PID | VPN | PFN | Ctrl`). | HIGH |
+| 38 | `Ch 05 Memory Mgmt` (Page Table Types: Multi-Level, Inverted, Hashed, Segmentation) | Misses **Multi-Level Paging bit math & Min/Max Page Table Space (`2025_AN_Q58`, `2024_AN_Q47`, `2023_FN_Q58`, `2021_AN_Q62`)**, **Inverted Page Table (`2022_FN_Q38(C)` — lookup isn't $O(1)$!)**, **Hashed Page Table (`2022_FN_Q38(D)`)**, and **Segmentation / Segmented Paging**! | MISSING-GATE-CONCEPT | Draw a 2-level & 3-level page-walk diagram, trace Min vs Max inner pages (`2024_AN_Q47`), and contrast Inverted vs Hashed PT lookup costs! | HIGH |
+| 39 | `Ch 05 Memory Mgmt` (Optimal Page Size Trade-off!) | Doesn't teach the **Optimal Page Size formula** ($\sqrt{2 \cdot s \cdot e}$ balancing internal fragmentation `p/2` vs page table size `(s/p)·e`) or why larger pages reduce TLB misses yet worsen internal fragmentation (`2021_FN_Q31`)! | MISSING-FINER-POINT | Add a simple trade-off curve and optimal page size derivation. | LOW |
+| 40 | `Ch 06 Virtual Memory` (Demand Paging & Page Fault Handling Steps) | Never walks through the **6 hardware/OS steps of a Page Fault** (Valid/Invalid bit `0` -> Trap to Kernel -> Find free frame / Evict dirty victim -> Disk read -> Update PT & restart instruction) (`2024_AN_Q12`, `2024_AN_Q28`)! | NEEDS-DIAGRAM | Draw the 6 numbered arrows of a Page Fault from MMU trap to disk swap and instruction restart! | HIGH |
+| 41 | `Ch 06 Virtual Memory` (Page Fault EMAT Formula & Dirty Bit!) | Misses **EMAT with Page Faults & Dirty Page Writeback** (`2018_FN_Q20`, `2020_FN_Q37`) and the exact ambiguity warning for `2020_FN_Q37` (`p` applied to TLB misses vs all accesses)! | MISSING-GATE-CONCEPT | Draw the probability decision tree (`TLB Hit -> TLB Miss & Page Hit -> TLB Miss & Page Fault [Clean vs Dirty]`)! | HIGH |
+| 42 | `Ch 06 Virtual Memory` (Page Replacement Policies & Variations!) | Doesn't list **FIFO, Optimal (Belady's), Limited-Lookahead Optimal (`2025_FN_Q54`), LRU, LFU, MFU (`2025_AN_Q47`), MRU, Second-Chance / Clock** — OR tie-breaking rules for LFU/MFU (FIFO tie-breaker)! | MISSING-GATE-CONCEPT | Trace the same reference string on FIFO, Optimal, LRU, LFU, MFU, and 4-lookahead Optimal (`2025_FN_Q54`) with explicit tie-breaker rules! | HIGH |
+| 43 | `Ch 06 Virtual Memory` (Stack Algorithms & Belady's Anomaly!) | Mentions Belady's anomaly without defining **Stack Property** ($B_t(m) \subseteq B_t(m+1)$) — which instantly answers why LRU & Optimal NEVER suffer Belady's anomaly while FIFO, Random (`2017_FN_Q36`), and LFU DO! | MISSING-GATE-CONCEPT | Draw frame sets for `m=3` vs `m=4` showing `1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5` breaking FIFO (`9 -> 10` faults) while staying nested in LRU! | HIGH |
+| 44 | `Ch 06 Virtual Memory` (2-D Array Traversal Page Faults!) | Misses **C Row-Major vs Column-Major Matrix Loop Page Faults (`2023_FN_Q57`)** — one of GATE's favourite bridges between C and Virtual Memory! | MISSING-GATE-CONCEPT | Draw `int D[128][128]` sitting 4 rows per page and trace `D[j][i]` jumping across all 32 pages with only 30 frames (`2023_FN_Q57`)! | HIGH |
+| 45 | `Ch 06 Virtual Memory` (Thrashing, Working Set & Copy-on-Write) | Doesn't cover **Thrashing** (CPU utilization crash curve!), **Working Set Model ($\Delta$)**, **Page-Fault Frequency (PFF)**, **Local vs Global Replacement**, or **Copy-on-Write (`fork()` optimization, `2024_AN_Q28(D)`)**! | MISSING-GATE-CONCEPT | Draw the Thrashing U-turn curve (`Multiprogramming degree vs CPU Utilization`) and Working Set sliding window! | MEDIUM |
+| 46 | `Ch 07 File Systems` (File Attributes, Operations & Directory Structures) | Skips **File metadata/FCB**, **Open-File Table** (Per-process vs System-wide!), **Hard Links vs Soft/Symbolic Links**, and **Directory Implementation scans (`2021_FN_Q34`: Create & Rename need full scan for duplicate names!)**. | MISSING-GATE-CONCEPT | Draw Directory -> FCB/Inode -> Data Blocks, and contrast Hard Link (shared inode count) vs Soft Link (path pointer). | HIGH |
+| 47 | `Ch 07 File Systems` (Allocation Methods: Contiguous, Linked, FAT, Indexed/Inode) | Doesn't compare random access cost, sequential cost, external/internal fragmentation, middle-block insertion disk I/O (`2022_FN_Q63`!), and linked-allocation internal waste (`2025_FN_Q51`)! | MISSING-GATE-CONCEPT | Draw Contiguous, Linked, FAT, and Indexed blocks side by side, and trace inserting block 51 in Contiguous vs Linked (`2022_FN_Q63`). | HIGH |
+| 48 | `Ch 07 File Systems` (Unix Inode Max File Size Maths!) | Misses **Unix Inode multi-level pointer maths** (`direct + single + double + triple indirect` -> `2019_FN_Q63`!) and how block size vs pointer size sets the limit! | MISSING-GATE-CONCEPT | Draw the Unix Inode tree (`12 direct -> 1 single -> 1 double -> 1 triple`) showing exact capacity multipliers! | HIGH |
+| 49 | `Ch 07 File Systems` (Free-Space Management: Bitmap vs Linked Free List) | Doesn't teach **Bit Vectors / Bitmaps** (size in blocks, finding first free word) vs **Linked Free Lists** (pointer takes 4 B out of block! `2026_AN_Q53`!), **Grouping**, and **Counting**. | MISSING-GATE-CONCEPT | Draw a Bitmap array vs a Linked Free-List block (`511 pointers + 1 next-block pointer`, `2026_AN_Q53`). | HIGH |
+| 50 | `Ch 07 Disk` (Disk Geometry: Platters, Tracks, Sectors, Cylinders) | Jumps into disk formulas without drawing a physical hard disk! Beginners don't know why **Cylinder = matching track across all platters** or `Capacity = Surfaces × Tracks/Surface × Sectors/Track × Bytes/Sector` (`2024_FN_Q39`)! | MISSING-PREREQUISITE | Draw a 3-D multi-platter disk labelling Platter, Surface, Track, Sector, Arm, and vertical Cylinder! | HIGH |
+| 51 | `Ch 07 Disk` (Disk Access Time Breakdown: Seek + Rotational Latency + Transfer) | Misses **RPM -> rotation time (`60/RPM` sec) -> avg rotational latency (`0.5 × rotation`) -> transfer time**, AND **sequential vs random multi-sector reads (`2026_FN_Q59` vs `2024_AN_Q61`)**! | MISSING-GATE-CONCEPT | Break down one disk I/O timeline (`Seek -> Rotate -> Transfer`) and compare 10 random sectors on 1 track vs 10 contiguous sectors (`2026_FN_Q59`). | HIGH |
+| 52 | `Ch 07 Disk` (Disk Scheduling Algorithms & Reversal Counting) | Doesn't trace **FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK** — or warn about **initial head direction**, **hitting boundary `0` or `max` in SCAN/C-SCAN vs stopping at last request in LOOK/C-LOOK**, and **counting direction reversals (`2018_FN_Q63`, `2020_FN_Q40`)**! | MISSING-GATE-CONCEPT | Draw zig-zag head-movement charts on cylinder ruler `0..199` for all 6 algorithms on the same queue, highlighting boundary bounces and reversals! | HIGH |
+| 53 | `Ch 07 Disk` (RAID Levels & Reliability Basics) | Doesn't even mention **RAID 0, 1, 4, 5, 6** (striping, mirroring, parity, usable capacity) — standard OS disk topic occasionally asked in GATE/interviews. | MISSING-FINER-POINT | Add a light `[LATER]` comparison box for RAID 0, 1, 5. | LOW |
+| 54 | `Part C` (`2026_AN_Q51` Option C) | **MIS-TRANSCRIPTION / `FACT-DOUBT`!** Option C prints `**$*##*#` — that has **FOUR `*`s**, which is IMPOSSIBLE since only 3 processes execute `Print(*)` once! Actual GATE 2026 option was `**$##*#` (3 stars, 1 `$`, 3 `#`)! | FACT-DOUBT | Fix Option C in Part C from `**$*##*#` to `**$##*#` and add a sanity-check note ("count total prints per symbol first!"). | HIGH |
+| 55 | `Part C` (`2024_FN_Q64` Code) | **MIS-TRANSCRIPTION / `FACT-DOUBT`!** Code for T2 prints **`a = 2 + a;`** instead of **`a = 2 * a;`**! With `a = 2 + a;`, `a` ALWAYS ends up `4`, making `(a = 3, b = 3)` in official Option A impossible! | FACT-DOUBT | Fix `a = 2 + a;` in `2024_FN_Q64` to `a = 2 * a;`! | HIGH |
+| 56 | `Part C` (`2020_FN_Q37` Ambiguity) | **KEY SUBTLETY / `FACT-DOUBT` RISK!** `2020_FN_Q37` gives `155 ns` ONLY by treating "page fault rate = 10%" as 10% **of TLB misses** (`0.05 × 0.1`), NOT 10% of all accesses (which gives `~720 ns`)! | UNCLEAR-ENGLISH | Add an explicit warning box on `2020_FN_Q37` showing BOTH interpretations and why GATE 2020 used `0.05 × 0.1` (`155.0 ns`). | HIGH |
+| 57 | `Part C` (`2023_FN_Q42` Misplacement) | `2023_FN_Q42` (4 KB memory with `IA4, IA3` decoder to chip-select `CS` ports) is a **Computer Organization (Memory Interfacing)** hardware question placed inside the OS Virtual Memory bank! | WRONG-ORDER | Move `2023_FN_Q42` to COA Memory Interfacing (or label clearly `[COA CROSSOVER]`). | MEDIUM |
+| 58 | `Part C` (`2023_FN_Q27` FCFS Starvation!) | Official key marks **FCFS/FIFO (A)** as "can potentially cause starvation", contradicting standard beginner notes ("FCFS never starves") unless infinite CPU bursts are assumed! | MISSING-FINER-POINT | Explain explicitly why finite-burst FCFS is starvation-free yet infinite-burst FCFS starves later processes (`2023_FN_Q27`). | MEDIUM |
+| 59 | `Part C` (9 Missing Figures!) | **9 PYQs** (`2025_AN_Q47`, `2023_FN_Q42`, `2021_AN_Q62`, `2020_FN_Q61`, `2019_FN_Q32`, `2019_FN_Q51`, `2017_FN_Q34`, `2017_AN_Q42`, `2017_AN_Q57`) have `[IMAGE_...]` missing so tables/diagrams can't be verified! | NEEDS-DIAGRAM | Restore/transcribe all 9 missing tables & figures into the PYQ bank before finalizing solutions. | HIGH |
+| 60 | `Part C` (`2019_FN_Q63` Dual Key) | Official key shows `3.7 to 3.8 OR 4.0 to 4.1` without explaining that `4.0–4.1` uses $1\text{ KB} = 1024$ while `3.7–3.8` appeared because GATE accepted decimal $k=1000$ divided by $2^{30}$! | MISSING-FINER-POINT | Explain `1K = 1024` vs `10^3` explicitly in Ch 00/05/07 so students never lose marks on GB vs GiB rounding. | MEDIUM |
+| 61 | `Part C` (`2026_AN_Q53` Free-List Self-Reference) | Uses `ceil(2^23 / 511) = 16417`, treating all $2^{23}$ blocks as entries without subtracting the free-list blocks themselves (`2^23 / 512 = 16384`). | MISSING-FINER-POINT | Explicitly state this standard GATE convention when teaching linked free-space block counts. | LOW |
+| 62 | `Ch 02 Processes` (`fork()` short-circuit `&&` / `||`) | Misses classic GATE `fork() && fork() || fork()` precedence/short-circuit puzzles! | MISSING-GATE-CONCEPT | Teach C operator precedence + short-circuiting combined with `fork()` process trees. | HIGH |
+| 63 | `Ch 02 Processes` (Context Switch Overhead & Dispatcher) | Doesn't distinguish **Dispatcher** vs **Scheduler**, or account for **Context Switch Time** in Gantt charts (`CS` added per switch!) and why context switching between processes costs more than between threads (TLB flush!). | MISSING-FINER-POINT | Show a Gantt chart with non-zero Context Switch Time (`cs = 1 ms`) and compare Process Switch vs Thread Switch costs. | MEDIUM |
+| 64 | `Ch 03 CPU Scheduling` (Priority Ties & Ready Queue Order) | Never specifies tie-breaking order in SJF / SRTF / Priority (standard rule: **FCFS / lower arrival time**, then lower PID). | MISSING-FINER-POINT | State the tie-breaking order explicitly before tracing SRTF/Priority. | MEDIUM |
+| 65 | `Ch 03 CPU Scheduling` (Throughput & I/O-bound CPU Utilization formula) | Misses `CPU Utilization = 1 - p^n` (where $p$ = I/O wait fraction, $n$ = multiprogramming degree) — classic OS concept often asked in 1-mark conceptual questions! | MISSING-FINER-POINT | Add the simple `1 - p^n` curve and formula in Ch 01/02. | LOW |
+| 66 | `Ch 04 Synchronisation` (Peterson's on Modern Out-of-Order CPUs & `volatile`) | Doesn't explain **Atomic vs Non-Atomic** (`2024_FN_Q64`, `2026_AN_Q51` assume each line is atomic; `2021_FN_Q59` says `counter++` is NOT atomic!). Students confuse when a line is atomic vs 3 instructions! | UNCLEAR-ENGLISH | Teach a crystal-clear rule: real C statements (`x++`) are 3 machine steps UNLESS the problem explicitly says "executed atomically"! | HIGH |
+| 67 | `Ch 04 Synchronisation` (`2019_FN_Q32` Min/Max Shared Variable Trace) | Doesn't teach the systematic **Min/Max Interleaving Method** (finding minimum & maximum final value of shared variable `D` across 3 unsynchronized threads). | NEEDS-TRACE | Trace a 2-thread and 3-thread `LOAD/OP/STORE` puzzle step-by-step to hit extreme minimum and maximum values! | HIGH |
+| 68 | `Ch 04 Synchronisation` (Semaphore Implementation with Busy-Wait vs Sleep-Wakeup) | Doesn't explain **Spinlocks** (good for short locks on multi-core, bad on single-core!) vs **Sleep-blocking semaphores** (good on uniprocessor or long waits!). | MISSING-FINER-POINT | Add a Spinlock vs Blocking Mutex comparison table (`single-core` vs `multi-core`!). | MEDIUM |
+| 69 | `Ch 01 Deadlock` (Maximum Resources That CAN Deadlock vs Guarantee Free) | Students flip **"minimum $K$ to guarantee deadlock-free"** (`n(R-1)+1`, `2026_FN_Q35`) with **"maximum $R$ that still allows deadlock"** (`n(K-1)`, `2018_FN_Q34`)! | MISSING-FINER-POINT | Contrast both exact wording forms side by side so students never miss by $\pm 1$. | HIGH |
+| 70 | `Ch 01 Deadlock` (Ostrich Algorithm & Deadlock Detection $O(m \cdot n^2)$) | Doesn't cover **Deadlock Detection Matrix Algorithm** (Request matrix vs Allocation matrix — unlike Banker's Max!) or **Recovery options** (process termination vs resource preemption + rollback). | MISSING-FINER-POINT | Trace 1 Deadlock Detection example (`Request` instead of `Need`) and explain rollback/starvation on recovery. | MEDIUM |
+| 71 | `Ch 05 Memory Mgmt` (Dynamic Linking & Swapping) | Never explains **Static vs Dynamic Linking (DLL/shared `.so` libraries)** or **Swapping** (backing store on disk). | UNEXPLAINED-WORD | Add a 1-paragraph picture contrasting Static Libraries (duplicated per process) vs Shared Libraries (one RAM copy!). | LOW |
+| 72 | `Ch 05 Memory Mgmt` (Protection Bits & Page Sharing in Page Tables) | Doesn't show ALL bits inside a Page Table Entry (**Valid/Invalid, R/W/X protection, Dirty/Modified, Reference/Accessed, Cache-disable**) — `2024_AN_Q28(D)` directly tests read-only trap! | MISSING-GATE-CONCEPT | Draw one zoomed-in Page Table Entry (PTE) showing every flag bit and what hardware event sets/checks it. | HIGH |
+| 73 | `Ch 05 Memory Mgmt` (Exact Size of Page Table vs Page Size of PT) | Students constantly confuse **"number of entries in page table"** (`2025_FN_Q14`) with **"size of page table in bytes"** (`entries × PTE_size`) and **"number of pages occupied by page table"**! | UNCLEAR-ENGLISH | Write the 3 distinct formulas right next to each other with units (`entries`, `bytes`, `pages`)! | HIGH |
+| 74 | `Ch 05 Memory Mgmt` (Multi-Level Paging Remainder Bits!) | What happens when VPN bits aren't an exact multiple of index bits per level (e.g. `45 / 9 = 5` in `2023_FN_Q58` vs `20 / 9 = 2 rem 2`, outer level gets `11` bits in `2025_AN_Q58`!)? | MISSING-FINER-POINT | Show a non-divisible VPN example (`2025_AN_Q58`: `11 + 9 + 12 = 32`!) where outer page table uses the leftover bits! | HIGH |
+| 75 | `Ch 06 Virtual Memory` (Page Fault Rate vs Hit Ratio Arithmetic) | Doesn't show the quick algebra rearrangement solving for `p` (`(X - M)/(D - M)`, `2018_FN_Q20`) or what happens if **Page Fault Rate** is defined per 1000 instructions vs percentage of accesses! | NEEDS-EXAMPLE | Work out `2018_FN_Q20` and a unit-conversion EMAT problem step by step. | MEDIUM |
+| 76 | `Ch 06 Virtual Memory` (Page Fault Rate vs Miss Count Definition) | `2022_FN_Q64` explicitly defines **page fault rate = `faults / accesses` (`0.6`)**, whereas some students write percentage `60` instead of `0.6`! Also cold misses on empty frames count as faults! | MISSING-FINER-POINT | Clarify decimal `0.6` vs percentage `60%` and confirm empty-frame compulsory misses count as page faults. | MEDIUM |
+| 77 | `Ch 06 Virtual Memory` (Clock / Second-Chance Algorithm) | Doesn't trace the **Clock (Second-Chance) Page Replacement** hand sweeping around circular frames clearing `R=1 -> R=0`! | MISSING-GATE-CONCEPT | Draw a 4-frame circular clock with `R`-bits and trace 8 page references. | MEDIUM |
+| 78 | `Ch 06 Virtual Memory` (Memory-Mapped Files & `vfork()` vs `fork()`) | Doesn't mention **Memory-Mapped Files (`mmap`)** or **Copy-on-Write (COW)** (`fork()` sharing read-only pages until a write triggers a protection trap -> copy page!). | MISSING-FINER-POINT | Draw COW `fork()` sharing frames marked `Read-Only` until Child writes, linking `2024_AN_Q28(D)`. | MEDIUM |
+| 79 | `Ch 07 File Systems` (VFS & Mounting File Systems) | Doesn't mention **Virtual File System (VFS)** layer or **Mounting / Partition Boot Block / Superblock** (how Linux supports ext4, FAT32, NTFS together). | UNEXPLAINED-WORD | Draw the 3-layer VFS stack + disk partition layout (`Boot Block | Superblock | Inode List | Data Blocks`). | LOW |
+| 80 | `Ch 07 File Systems` (FAT File Allocation Table Details) | Often grouped with Linked Allocation (`2022_FN_Q63`), yet **FAT** puts all links into one cached RAM table so random access doesn't walk disk blocks! | MISSING-FINER-POINT | Compare raw Linked Allocation (links inside data blocks -> slow seek!) vs FAT (links pulled into one RAM table -> fast seek!). | MEDIUM |
+| 81 | `Ch 07 File Systems` (Consistency Checking: `fsck` & Journaling) | Standard textbook topic on what happens if power fails halfway through file creation (directory updated, bitmap not!) and how **Journaling (Write-Ahead Log)** prevents corruption. | MISSING-FINER-POINT | Show a 2-step crash scenario and how a Journal log replays safely. | LOW |
+| 82 | `Ch 07 Disk` (2-D vs 3-D Disk Request Tuple `[sector, cylinder, platter]`) | Beginners panic seeing `[212, 86, 3]` in `2018_FN_Q63` (`sector=212, cyl=86, platter=3`)! They don't know **head seek depends ONLY on cylinder**, NOT platter or sector! | MISSING-FINER-POINT | Explicitly highlight in bold: "All platters share ONE moving arm — switching platter costs 0 seek; only cylinder changes cause seek!" | HIGH |
+| 83 | `Ch 07 Disk` (SCAN vs LOOK & C-SCAN vs C-LOOK) | Students ALWAYS lose 2 marks mixing up whether the head touches cylinder `0` / `199` (SCAN/C-SCAN) vs turning around at the last request (LOOK/C-LOOK) — AND whether C-SCAN's jump back counts toward total head movement! | MISSING-GATE-CONCEPT | Draw all 4 (`SCAN, LOOK, C-SCAN, C-LOOK`) side-by-side on `0..199` and state the standard GATE return-jump convention clearly. | HIGH |
+| 84 | `Part B.2` (Old Standard Warning) | All 44 old lessons (`"written for people who already know"`) have no mapping showing how they turn into beginner-first lessons or interactive visuals (`fork` tree stepper, Gantt builder, TLB/PT walker, page replacement simulator). | UNCLEAR-ENGLISH | Map every chapter to the full lesson breakdown (Part 5) and require memory/timeline diagrams per lesson. | MEDIUM |
+
+---
+
+## PART 3. WHAT A COMPLETE SUBJECT MUST HAVE
+
+Checked against the official GATE CS/IT Operating Systems syllabus, GATE PYQs (`Part C`), Silberschatz (Galvin), Tanenbaum, Arpaci-Dusseau (*OSTEP*), Made Easy, GateWallah, and NPTEL OS courses:
+
+1. **Chapter 00: OS Architecture, Dual-Mode Protection, Interrupts & System Calls** *(completely missing!)*
+   - **Sub-topics:** What an OS does (resource manager + virtualizer); **User Mode vs Kernel Mode (Mode Bit)**; **Privileged vs Non-Privileged Instructions**; **Hardware Interrupts vs Traps vs Exceptions (Page Fault, Divide-by-Zero)**; **System Calls** (`fork, exec, wait, exit, open, read, write, sleep`) vs **User-Space C Library functions** (`strlen, printf, buffered malloc`); OS structures (Monolithic, Microkernel, Layered).
+   - **Syllabus line:** `System calls, processes, threads, inter-process communication...`
+   - **How often GATE asks it:** Regularly (see `Part B.3` bank: 12 Qs in Processes/Syscalls across 7/10 years; exact standalone mode/syscall count: not sure).
+   - **Typical question type:** MSQ/MCQ ("Which always transitions to kernel mode?" `2023_FN_Q23`, "Which C function always invokes a syscall?" `2021_FN_Q60`, "Which always forces context switch?" `2024_AN_Q12`).
+   - **Zero-level prerequisite:** Basic computer architecture (CPU, RAM, Disk) & C function calls.
+
+2. **Complete Process Lifecycle, `fork()` Trees, Thread Sharing & IPC (`Ch 01 / Old Ch 02`)**
+   - **Sub-topics:** Process memory image (Text/Data/BSS/Heap/Stack) + PCB; 5-state & 7-state transitions (`Running/Ready/Blocked`); **`fork()` execution cloning**, `fork()` + `&&`/`||` short-circuit, `fork()` + `break`/`continue` loops, `wait()`, `exec()`, Zombie & Orphan processes, `stdout` buffering caveat; **Thread shared vs private resources** (Address space/Heap/Globals/Open FDs vs Stack/PC/Registers), User vs Kernel threads (1:1, M:1, M:N); **IPC** (Shared Memory, Message Passing, Pipes).
+   - **Syllabus line:** `System calls, processes, threads, inter-process communication...`
+   - **How often GATE asks it:** Frequently (12 Qs / 14 marks in 7 of 10 years in Part B.3 bank; exact subtopic frequency: not sure).
+   - **Typical question type:** NAT (`fork()` process/print count), MSQ (legal state transitions, shared thread components).
+   - **Zero-level prerequisite:** Ch 00 + C loops, `if`, and process memory layout.
+
+3. **Complete CPU & I/O Scheduling (`Ch 02 / Old Ch 03`)**
+   - **Sub-topics:** Burst metrics (AT, BT, CT, TAT, WT, RT), Dispatcher vs Scheduler, Context Switch Overhead; FCFS (Convoy effect & infinite-burst starvation nuance), SJF, SRTF, Round Robin (Ready Queue arrival-vs-preemption tie-breaker & context switch counting), Priority & Aging; **Exponential Averaging Burst Prediction**; **Multi-processor scheduling** (`2025_FN_Q38`); **CPU-I/O interleaved Ready Queue entries** (`2025_FN_Q29`); MLFQ, RMS & EDF real-time basics (`[SHOULD]`/`[LATER]`); `1 - p^n` CPU utilization.
+   - **Syllabus line:** `CPU and I/O scheduling`.
+   - **How often GATE asks it:** Very frequently (14 Qs / 21 marks across 9/10 years in bank; exact breakdown: not sure).
+   - **Typical question type:** NAT/MCQ (average WT/TAT, SRTF missing burst `Z`, RR context-switch constraints, multiprocessor WT), MSQ (starvation, preemption properties).
+   - **Zero-level prerequisite:** Ch 01 (process states & ready/waiting queues).
+
+4. **Complete Concurrency & Synchronization (`Ch 03 / Old Ch 04`)**
+   - **Sub-topics:** Atomicity vs non-atomic `LOAD/ADD/STORE` interleaving, Min/Max final value of shared variables (`2019_FN_Q32`, `2023_FN_Q38`, `2021_FN_Q59`); Critical Section requirements (**Mutual Exclusion, Progress, Bounded Waiting**); Lock variables, Strict Alternation, **Peterson's Solution**, Hardware atomic instructions (**TSL, CAS**); Spinlocks vs Blocking Mutex vs Binary/Counting Semaphores (positive/negative blocked-queue count); **Barriers (`2020_FN_Q38`), Producer-Consumer (`2018_FN_Q50`), Readers-Writers, Dining Philosophers**; **Monitors & Condition Variables (Hoare vs Mesa)**; Priority Inversion; Deadlock vs Livelock vs Starvation (`2021_AN_Q13`).
+   - **Syllabus line:** `...concurrency and synchronization`.
+   - **How often GATE asks it:** Very frequently (11 Qs / 20 marks across 9/10 years in bank; exact breakdown: not sure).
+   - **Typical question type:** MSQ/MCQ (possible output strings, deadlock/final variable values, fill semaphore placeholders), NAT (min/max shared variable value).
+   - **Zero-level prerequisite:** Ch 01 (threads sharing memory) + Ch 02 (preemptive context switch).
+
+5. **Complete Deadlocks (`Ch 04 / Old Ch 01` — MUST come AFTER Ch 01 & Ch 03!)**
+   - **Sub-topics:** 4 Coffman conditions; **RAG edge directions (`Resource -> Process` assignment vs `Process -> Resource` request)**, single-instance vs multi-instance cycle rules; **Prevention vs Avoidance vs Detection vs Recovery**; **Safe vs Unsafe vs Deadlocked**, **Banker's Safety + Resource Request algorithms**, Detection matrix (`Request` vs `Need`); **Minimum resources for deadlock-freedom (`n(K-1)+1`)** & max resources that still deadlock (`n(K-1)`); Breaking multi-cycle RAGs (`2025_AN_Q48`).
+   - **Syllabus line:** `Deadlock`.
+   - **How often GATE asks it:** Regularly (9 Qs / 14 marks in 7/10 years in bank; exact breakdown: not sure).
+   - **Typical question type:** MCQ/MSQ (Banker's safe state, FALSE deadlock statements, aborting process to break cycles), NAT (min/max resource instances).
+   - **Zero-level prerequisite:** Ch 01 (processes) + Ch 03 (locks, mutual exclusion, wait/hold).
+
+6. **Complete Memory Management & Multi-Level Paging (`Ch 05`)**
+   - **Sub-topics:** Logical vs Physical address, Binding times, MMU base/limit relocation; Variable Partitioning (**First, Next, Best, Worst Fit**, Compaction), Internal vs External Fragmentation; Basic Paging (`entries`, `PT bytes`, `PT pages`, PTE flags: valid, dirty, R/W/X, ref), **Word-addressable vs Byte-addressable** (`2019_FN_Q42`); **TLB**, ASID/PID, **TLB Reach**, Hit/Miss EMAT; **Multi-Level Paging** (including non-divisible remainder bits, Min/Max inner PT allocation `2024_AN_Q47`); **Inverted & Hashed Page Tables**; Segmentation & Segmented Paging; Optimal Page Size formula.
+   - **Syllabus line:** `Memory management and virtual memory`.
+   - **How often GATE asks it:** Highest-weight OS unit! (Merged with VM in bank: 21 Qs / 37 marks across 10/10 years — nearly 30% of all OS marks; exact split: not sure).
+   - **Typical question type:** NAT (TLB size, physical address, multi-level bits/levels, min+max PT pages, hole count), MCQ/MSQ (MMU traps, inverted/hashed PT behaviour).
+   - **Zero-level prerequisite:** Binary powers (`2^10..2^30`), C arrays/pointers, Ch 00 (address spaces & traps).
+
+7. **Complete Virtual Memory (`Ch 06`)**
+   - **Sub-topics:** Demand Paging & 6-step Page Fault handling; Page Fault EMAT (Clean vs Dirty writeback, solving for fault rate `p`, TLB+PF combined formulas); **Page Replacement Policies (FIFO, Optimal, $k$-lookahead Optimal, LRU, LFU, MFU, MRU, Clock/Second-Chance)** + tie-breakers; **Stack Algorithms & Belady's Anomaly (`FIFO/Random` vs `LRU/Optimal`)**; **2-D C Array Row vs Column-Major Page Faults (`2023_FN_Q57`)**; **Thrashing, Working Set, PFF, Local vs Global allocation, Copy-on-Write (`fork()`)**.
+   - **Syllabus line:** `Memory management and virtual memory`.
+   - **How often GATE asks it:** Very frequently (shared inside the 21-Q / 37-mark top OS bucket; exact split: not sure).
+   - **Typical question type:** NAT (page faults, fault rate, EMAT, 2-D loop faults), MSQ/MCQ (identify replacement policy from frame trace, Belady statements).
+   - **Zero-level prerequisite:** Ch 05 (Paging, TLB, PTE bits) + C 2-D arrays (`row-major`).
+
+8. **Complete File Systems & Disk Geometry/Scheduling (`Ch 07`)**
+   - **Sub-topics:** File metadata/FCB, Open-File tables, Hard vs Soft links, Directory implementations (Linear scan `2021_FN_Q34`, Hash table, B-tree); **Allocation methods** (Contiguous, Linked, FAT, Indexed, **Unix Inode multi-level pointers**, internal fragmentation & middle-insert disk I/O); **Free-Space Management** (Bitmaps vs Linked free lists with next-block pointer overhead `2026_AN_Q53`); VFS & Partition layout, `fsck`/Journaling; **3-D Disk Geometry** (Platters/Surfaces/Tracks/Cylinders/Sectors, 0-seek platter switch); **Disk Access Time** (`Seek + Avg Rot Latency + Transfer`, random vs sequential sectors); **Disk Scheduling** (`FCFS, SSTF, SCAN, C-SCAN, LOOK, C-LOOK`, direction reversals & energy/power costs `2018_FN_Q63`); RAID 0/1/5 basics (`[LATER]`).
+   - **Syllabus line:** `File systems` and `CPU and I/O scheduling` (disk I/O).
+   - **How often GATE asks it:** Regularly (11 Qs / 20 marks in 9/10 years in bank; exact split: not sure).
+   - **Typical question type:** NAT (inode max file size, free-list blocks, internal waste, middle-insert disk accesses, total transfer time, SSTF seek/power), MCQ/MSQ (directory scans, fragmentation, SSTF order).
+   - **Zero-level prerequisite:** Ch 00 (disk vs RAM speeds), binary powers (`2^{10}, 2^{20}, 2^{30}`), C structs/pointers.
+
+---
+
+## PART 4. THE DIAGRAMS I NEED
+
+### Ch 00 · OS Foundations (Dual Mode, Interrupts & System Calls)
+1. **The OS Layer Cake & Dual-Mode Hardware Switch (`Mode Bit 0/1`)**
+   - *What to draw:* Three horizontal layers: `User Programs` (Mode Bit = 1) -> `C Standard Library (libc)` -> `OS Kernel` (Mode Bit = 0) -> `CPU / MMU / Disk Hardware`, showing `strlen()` staying above the line while `fork()`, `read()`, `sleep()`, and `Page Fault` hit a `TRAP` gate flipping Mode Bit `1 -> 0` and jumping into Kernel!
+   - *What to notice:* User programs CANNOT touch RAM/Disk directly; `libc` functions only cross the Kernel gate when they actually need OS help!
+   - *Format:* **Single picture**
+
+### Ch 01 · Processes, `fork()`, Threads & IPC
+2. **Process Memory Image + PCB Card + 5-State Transition Map**
+   - *What to draw:* Left: Process RAM box (`Text | Data | BSS | Heap ↑ | ↓ Stack`) beside its `PCB` card (`PID, State, PC, SP, Registers, PTBR, Open FDs`). Right: 5 state ovals (`New, Ready, Running, Waiting/Blocked, Terminated`) with ONLY legal arrows drawn green and illegal arrows (`Waiting -> Running`, `Ready -> Waiting`) crossed out with giant red `X`s!
+   - *What to notice:* Ready = "I just need the CPU"; Waiting = "I am stuck waiting for Disk/Semaphore/I/O, so even an idle CPU cannot run me!"
+   - *Format:* **Single picture**
+3. **`fork()` Cloning Tree & `wait(NULL)` Execution Frames**
+   - *What to draw:* Step-by-step branching process tree starting from `P0`: at each `fork()`, box splits in two — Parent receives `ret = child_PID (>0)`, Child receives `ret = 0`, both continuing from the **very next instruction** (NOT from `main()`!), plus arrows showing `wait(NULL)` pausing Parent until Child hits `return 0`.
+   - *What to notice:* Why `if (fork() == 0) continue; break;` builds a straight chain (`4` prints, `2026_FN_Q63`) instead of an exponential tree (`2^n`)!
+   - *Format:* **Step-by-step series of pictures**
+4. **Threads Inside One Process (Shared Room vs Private Backpacks)**
+   - *What to draw:* ONE large Process house containing shared `Globals`, `Heap`, `Code`, and `Open File Table` in the living room, with 3 Threads (`T1, T2, T3`) inside — each thread carrying its OWN private backpack (`Stack`, `Registers`, `Program Counter`)! Compare this with two SEPARATE Process houses (`P1`, `P2` in `2021_AN_Q41`)!
+   - *What to notice:* Threads in the same process share global `x` yet have private local `y` on their own stack; threads in DIFFERENT processes (`P1` vs `P2`) share NEITHER!
+   - *Format:* **Single picture**
+
+### Ch 02 · CPU & I/O Scheduling
+5. **Gantt Chart + Live FIFO Ready Queue (SRTF vs RR)**
+   - *What to draw:* Horizontal time ruler (`0, 2, 4, ...`) paired directly below with snapshots of the **Ready Queue** at arrival/quantum moments, showing new arrivals vs quantum-expired processes entering the queue (`2022_FN_Q42`), and highlighting `Waiting = CT - AT - BT`.
+   - *What to notice:* Why preemptive SRTF compares remaining burst against newly arriving processes at each arrival tick, and how context switches happen on termination too.
+   - *Format:* **Step-by-step series of pictures** + **Trace table**
+6. **CPU <-> Ready <-> I/O Queue Loop (`scanf` / `printf` Trace)**
+   - *What to draw:* A circular racetrack: `Ready Queue -> CPU -> (I/O request: scanf/printf) -> I/O Waiting Queue -> Ready Queue`, counting every lap made by a loop (`2025_FN_Q29`: 1 `scanf` + 20 `printf` = 21 laps!).
+   - *What to notice:* Every blocking I/O moves the process off the CPU to I/O Queue and back to Ready Queue upon completion.
+   - *Format:* **Single picture**
+
+### Ch 03 · Concurrency & Synchronization
+7. **Non-Atomic `X++` Lost-Update Interleaving (`LOAD / ADD / STORE`)**
+   - *What to draw:* Two thread timelines (`T1`, `T2`) racing on shared memory box `X = 10` (plus their private CPU registers `R1`, `R2`): `T1` loads `10` -> context switch! -> `T2` loads `10`, decrements to `9`, stores `9` -> `T1` wakes up, adds `1` to its stale `10`, and overwrites `X = 11` (losing `T2`'s decrement!).
+   - *What to notice:* Why one C line (`X++`) splits into 3 machine steps where a context switch destroys data (`2023_FN_Q38`, `2021_FN_Q59`, `2019_FN_Q32`)!
+   - *Format:* **Step-by-step series of pictures**
+8. **Semaphore Internals (`value + blocked queue`), Deadlock Swap & Barrier Turnstile**
+   - *What to draw:* A semaphore as a gatehouse with a ticket counter (`value`) and a waiting bench (`queue`), next to two threads holding opposite keys (`T1 holds s1, waits s2; T2 holds s2, waits s1`, `2024_AN_Q44`), plus the N-process **Barrier Turnstile** (`wait(b); signal(b);` letting all $N$ processes pass one-by-one once `count == N`, `2020_FN_Q38`).
+   - *What to notice:* Why `wait(B); Print(#); Signal(B);` acts as a turnstile letting multiple threads cascade through (`2026_AN_Q51`), and why holding `s1` while blocking on `s2` deadlocks `T2`!
+   - *Format:* **Step-by-step series of pictures**
+9. **Deadlock vs Livelock vs Starvation (Hallway Analogy)**
+   - *What to draw:* Three tiny comics: (1) Two people staring at each other refusing to step aside (**Deadlock**), (2) Both endlessly stepping left-right together blocking each other (**Livelock**, `2021_AN_Q13`), (3) Busy doorway where tall people always cut ahead of one tiny person (**Starvation**).
+   - *What to notice:* Livelocked threads stay Runnable and waste 100% CPU while making zero progress!
+   - *Format:* **Single picture**
+
+### Ch 04 · Deadlocks
+10. **Resource Allocation Graph (RAG): Edge Arrows & Single vs Multi-Instance Cycles**
+    - *What to draw:* Squares for Resources (dots inside = instances!), Circles for Processes: **Assignment arrow `Resource dot -> Process`** vs **Request arrow `Process -> Resource`**. Side-by-side: 1-instance cycle (Guaranteed Deadlock!) vs 2-instance cycle where `P4` outside the cycle finishes and breaks the knot (Cycle $\neq$ Deadlock!).
+    - *What to notice:* Edge direction (`R -> P` is assigned, `P -> R` is requested, `2026_FN_Q29`!) and why a cycle is Necessary + Sufficient ONLY for single-instance resources (`2022_FN_Q26`)!
+    - *Format:* **Single picture**
+11. **Safe State vs Unsafe vs Deadlock Rings & Banker's Trace Table**
+    - *What to draw:* Three nested regions (`All States > Unsafe States > Deadlocked States` — showing Unsafe doesn't automatically equal Deadlock!) paired with a full `Allocation | Max | Need = Max - Alloc | Available` table checking `Need <= Work` step by step (`2018_FN_Q49`).
+    - *What to notice:* Unsafe simply means *if* processes now ask for their worst-case Max, the OS cannot stop a deadlock!
+    - *Format:* **Single picture** + **Trace table**
+12. **Worst-Case Hoarding Boxes (`n(K-1) + 1`)**
+    - *What to draw:* `5` process boxes each stubbornly holding `1` (`K - 1`) resource while asking for `1` more (`2026_FN_Q35`): with `5` total resources everyone freezes; dropping ONE extra (`6th`) resource lets one process finish and start a domino cascade!
+    - *What to notice:* Visual proof of why minimum deadlock-free count = $\sum (K_i - 1) + 1$.
+    - *Format:* **Single picture**
+
+### Ch 05 · Memory Management
+13. **Variable Partitioning Fit Policies (`First, Next, Best, Worst`)**
+    - *What to draw:* Memory bar showing 8 holes (`20, 4, 25, 18, 7, 9, 15, 12`) with `P1=16 KB` and `P2=9 KB` slotted in across 4 strips, shading remaining tiny splinter holes (`< 8 KB`) (`2026_AN_Q55`).
+    - *What to notice:* Why Best-Fit creates tiny unusable fragments (2 KB) while still leaving Best-Fit leftover $\le$ First-Fit leftover (`2020_FN_Q14`).
+    - *Format:* **Step-by-step series of pictures**
+14. **Paging Address Split + MMU + TLB Parallel Lookup & Page Table Entry Bits**
+    - *What to draw:* Top: 32-bit Logical Address split into `[Page # (p bits) | Offset (d bits)]` -> Parallel TLB lookup (`PID | VPN | PFN | Ctrl`, `2026_AN_Q54`) -> Hit skips PT straight to RAM `[Frame # | Offset]`; Miss walks Page Table in RAM (zoomed PTE showing `Valid, R/W/X, Dirty, Ref` bits, `2024_AN_Q28`).
+    - *What to notice:* Offset `d` NEVER changes during translation (`Page Size = Frame Size`)! And a TLB searches ALL entries in parallel at once (`2022_FN_Q38(A)`).
+    - *Format:* **Single picture** + **Step-by-step series of pictures**
+15. **Multi-Level Page Table Walk (With Min vs Max Inner Table Pages)**
+    - *What to draw:* Virtual address split `[Outer (b) | Inner (9) | Offset (12)]` walking from Outer Page Directory (always 1 page) -> active Inner Page Table pages -> Data Frame! Side-by-side: packing 2000 pages tightly into `2` inner tables (Min = 3 pages) vs scattering 1 entry into each of `1024` inner tables (Max = 1025 pages, `2024_AN_Q47`).
+    - *What to notice:* Demand-paging the page table avoids allocating inner tables for unused virtual holes!
+    - *Format:* **Single picture**
+
+### Ch 06 · Virtual Memory
+16. **The 6 Steps of a Page Fault & EMAT Probability Tree**
+    - *What to draw:* Circular step diagram (`1. Valid bit = 0 -> 2. MMU Trap to OS -> 3. Pick victim / write back if Dirty=1 -> 4. Disk reads page into frame -> 5. Set Valid=1 in PT -> 6. Restart instruction`), next to a branching EMAT probability tree (`TLB Hit | TLB Miss & Mem Hit | Page Fault Clean | Page Fault Dirty`, `2020_FN_Q37`).
+    - *What to notice:* Every single access cost is just `probability × time` added across all branches of the tree!
+    - *Format:* **Step-by-step series of pictures** + **Single picture**
+17. **Page Replacement Trace Matrix (`FIFO, Optimal, LRU, LFU, MFU`) & Belady's Anomaly**
+    - *What to draw:* Vertical columns of frame contents under each reference (`1 2 3 4 1 2 5 1 2 3 4 5`) with `*` fault markers for `3` frames (`9` faults) vs `4` frames (`10` faults in FIFO!), side-by-side with LRU showing nested subset property ($B_t(3) \subset B_t(4)$)!
+    - *What to notice:* Why FIFO can suffer *more* faults with *more* frames while LRU/Optimal never can (`2017_FN_Q36`)!
+    - *Format:* **Trace table**
+18. **2-D Row-Major Array `D[128][128]` Accessed Column-by-Column (`2023_FN_Q57`)**
+    - *What to draw:* `D` stacked in RAM (`4` rows = `512` ints = `1` page; `32` pages total) with a vertical loop arrow hopping `Page 0 -> Page 1 -> ... -> Page 31 -> Page 0` while only `30` LRU frames sit in RAM!
+    - *What to notice:* Every time the loop wraps back to `Page 0`, `Page 0` was evicted 2 pages earlier -> thrashing every single page boundary (`32 × 128 = 4096` faults)!
+    - *Format:* **Single picture**
+19. **Thrashing U-Turn Curve & Working Set Window**
+    - *What to draw:* Graph (`Degree of Multiprogramming` vs `CPU Utilization`) rising smoothly then plunging to near-zero at the Thrashing cliff, alongside a timeline sliding window $\Delta$ counting active working-set pages.
+    - *What to notice:* Adding more processes past RAM capacity steals frames, causes nonstop page faults, and crashes CPU work to 0%.
+    - *Format:* **Single picture**
+
+### Ch 07 · File Systems & Disk
+20. **Contiguous vs Linked vs FAT vs Indexed / Unix Inode**
+    - *What to draw:* Four parallel disk-block pictures: Contiguous (`[50][51][52]`), Linked (`[data | ptr] -> ...`, highlighting `4 B` overhead per block `2025_FN_Q51`), FAT (RAM table holding all chain pointers), and Unix Inode (`12 Direct + Single Indirect -> 1024 ptrs + Double Indirect -> 1024×1024 ptrs`, `2019_FN_Q63`), plus frames showing middle-insert shifting 50 blocks in Contiguous vs walking 50 blocks in Linked (`2022_FN_Q63`)!
+    - *What to notice:* Why linked allocation has zero external fragmentation yet awful random access, and how double indirection multiplies block capacity by $P^2$!
+    - *Format:* **Single picture** + **Step-by-step series of pictures**
+21. **Free-Space Bitmap vs Linked Free-List Blocks (`2026_AN_Q53`)**
+    - *What to draw:* A 1-bit-per-block Bitmap array (`1011001...`) next to a Linked Free-List block (`[511 block numbers (2044 B) | next-list-block ptr (4 B)]`).
+    - *What to notice:* Each free-list block loses 4 bytes for its next pointer, leaving `511` block slots (`2026_AN_Q53`)!
+    - *Format:* **Single picture**
+22. **3-D Hard Disk Geometry & Disk Scheduling Cylinder Ruler (`0..199`)**
+    - *What to draw:* Left: Stacked spinning platters sharing one vertical arm showing **Platter, Surface, Track, Sector, and Cylinder** (same track across all platters!). Right: 2-D zig-zag timeline on horizontal cylinder axis `0..199` comparing `SSTF` (`2018_FN_Q63` 3 reversals!), `SCAN` (hits boundary), `LOOK` (stops at request), `C-SCAN`, and `C-LOOK`.
+    - *What to notice:* Platter switching needs ZERO head seek; only cylinder changes cost seek & reversals!
+    - *Format:* **Single picture**
+
+---
+
+## PART 5. THE FULL PLAN, CHAPTER BY CHAPTER
+
+*(Ordered logically from zero level: Ch 00 Foundations -> Ch 01 Processes & Threads -> Ch 02 CPU Scheduling -> Ch 03 Synchronization -> Ch 04 Deadlocks -> Ch 05 Memory Management -> Ch 06 Virtual Memory -> Ch 07 File Systems & Disk. Continuing from Chapter 02 on next turn!)*
+
+### Chapter 00 · OS Foundations: Dual Mode, Interrupts & System Calls *(New Prerequisite Chapter)*
+
+#### Lesson 00.1 · What an OS Does, Dual-Mode Protection, Interrupts & System Calls
+- **Tag:** `[MUST]` — Zero-level readers get stuck immediately on `2023_FN_Q23`, `2021_FN_Q60`, `2024_AN_Q12` without knowing User Mode vs Kernel Mode and Syscall vs Library calls.
+- **Estimated reading time:** 50 minutes.
+- **Prerequisites:** C0 (RAM, CPU, Disk basics) & C1/C6 (C functions).
+- **Beginner must-see:** Think of a computer like a bank: **User Programs** are customers standing in the lobby (`User Mode`, `Mode Bit = 1`); **the OS Kernel** is the vault manager behind bulletproof glass (`Kernel Mode`, `Mode Bit = 0`). Customers can count their own pocket cash (`strlen`, `x + y`), yet whenever they want money from the vault (read Disk, allocate new memory page, pause for `sleep()`, create a child `fork()`), they MUST press a buzzer (`System Call / Trap`) to ask the Kernel!
+- **Finer points:**
+  - OS roles: Resource allocator (CPU, RAM, Disk) & Illusion creator (makes 1 CPU feel like 100, makes scattered RAM look contiguous).
+  - **Mode Bit (`1 = User`, `0 = Kernel`):** Privileged instructions (`HALT`, `CLI/STI` disable interrupts, writing Page Table Base Register `PTBR`, direct I/O) are illegal in User Mode (hardware raises trap!).
+  - **Interrupts vs Traps vs Exceptions:**
+    - Asynchronous Hardware Interrupts (Timer tick, Disk I/O finished).
+    - Synchronous Software Trap (intentional System Call `syscall` / `int 0x80`).
+    - Synchronous CPU Exceptions (Page Fault `2023_FN_Q23`, Division by Zero, Illegal Memory Write `2024_AN_Q28`).
+  - **C Library (`libc`) vs System Calls (`2021_FN_Q60`):**
+    - Always enters Kernel: `exit()`, `sleep()`, `fork()`, `read()`, `write()`, `wait()`.
+    - Pure User-Space: `strlen()`, `strcpy()`, `abs()`, `sin()`.
+    - Cached/Conditional Syscall: `malloc()` (reuses user heap free-list when possible; only calls `brk`/`mmap` when out of heap!) and `printf()` (buffers in user RAM until `\n` or buffer full before calling `write()`!).
+- **GATE-level items:** Identifying which actions **always** switch User -> Kernel mode (`2023_FN_Q23`: Page Fault & System Call vs function call & `malloc`), and which C functions **always** invoke syscalls (`2021_FN_Q60`: `exit`, `sleep` vs `malloc`, `strlen`).
+- **Diagrams needed:** `MEMORY` / `FLOW` (Dual-Mode Bank/Layer Cake showing Mode Bit flipping `1 -> 0` on Syscall/Page Fault/Timer vs staying `1` on `strlen`/`malloc` hit); `TIMELINE` (Syscall round-trip: User code -> `trap` -> Kernel handler -> `iret` -> User code).
+- **Hand traces:** Tracing 5 lines of C (`strlen`, `malloc(10)` cached vs uncached, `sleep(1)`, division by `0`, `exit(0)`) marking `Mode Bit = 1` vs `0`.
+- **Common mistakes:** Thinking `malloc()` always makes a syscall (`2021_FN_Q60`, `2023_FN_Q23`); thinking `function call` enters kernel mode; thinking Page Fault stays in user mode.
+
+---
+
+### Chapter 01 · Processes, `fork()`, Threads & Inter-Process Communication *(Old Ch 02 — Moved Before Scheduling, Sync & Deadlock!)*
+
+#### Lesson 01.1 · Process Anatomy, PCB & Process State Transitions
+- **Tag:** `[MUST]` — Core foundation tested directly in `2024_FN_Q26`, `2024_AN_Q12`, `2020_FN_Q18`, `2025_FN_Q29`.
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 00.1.
+- **Beginner must-see:** A **program** is a dead recipe book sitting on Disk; a **process** is a live chef cooking that recipe in RAM! Each process gets its own private kitchen (`Text, Data, BSS, Heap, Stack`) and an ID badge called a **PCB (Process Control Block)** so the OS can pause one chef mid-recipe and switch to another.
+- **Finer points:**
+  - Memory sections of a process + contents of **PCB** (PID, State, PC, Registers, Stack Pointer, PTBR, Open File list, Scheduling priority).
+  - **5-State Model** (`New, Ready, Running, Waiting/Blocked, Terminated`) + **7-State Model** (`Suspended Ready`, `Suspended Blocked` when swapped to disk).
+  - Legal vs Illegal transitions (`2024_FN_Q26`, `2020_FN_Q18`):
+    - Legal: `Ready <-> Running`, `Running -> Waiting` (blocking syscall / page fault / wait), `Waiting -> Ready` (I/O completes).
+    - **ILLEGAL:** `Waiting -> Running` (must wait in Ready Queue!), `Ready -> Waiting` (not even running to request I/O!), `Terminated -> Ready`.
+  - **What ALWAYS triggers a Context Switch to non-running (`2024_AN_Q12`):** Blocking syscall (yes!), Page fault (yes!), Disk interrupt for *another* process (NO — resumes P!), Timer interrupt (NO — if P's quantum isn't over or higher-priority doesn't preempt!).
+  - **CPU Utilisation formula (`1 - p^n`):** intuitive I/O-wait overlap calculation (`[SHOULD]`).
+- **GATE-level items:** Spotting illegal transitions (`2024_FN_Q26`, `2020_FN_Q18`); distinguishing events that *always* preempt P (`2024_AN_Q12`); Process Switch cost (saves PCB + flushes/switches Page Table `PTBR`!).
+- **Diagrams needed:** `MEMORY` (Process RAM layout + PCB card); `GRAPHPIC` (5-state & 7-state diagrams with legal green arrows and forbidden red-X arrows).
+- **Hand traces:** Tracing `2024_AN_Q12` across 4 events; tracing a process through `New -> Ready -> Running -> Waiting -> Ready -> Terminated`.
+- **Common mistakes:** Thinking a blocked process jumps straight from `Waiting` to `Running` when disk finishes (`2020_FN_Q18`, `2024_FN_Q26`); thinking ANY timer interrupt forces a process off the CPU (`2024_AN_Q12(D)`!).
+
+#### Lesson 01.2 · `fork()`, `wait()`, `exec()` & Process Creation Trees
+- **Tag:** `[MUST]` — Frequent GATE NAT favourite (`2026_FN_Q63`, `2024_FN_Q53`, `2019_FN_Q29`).
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 01.1, C3 (short-circuit `&&`/`||`), C5 (loops `break`/`continue`).
+- **Beginner must-see:** Calling `fork()` splits ONE running process into TWO identical twins **from the exact line right after `fork()`**! Only ONE tiny number differs between them: `fork()` returns **`0` inside the brand-new Child** and returns **`child_PID (> 0)` inside the Parent**!
+- **Finer points:**
+  - $n$ unconditional consecutive `fork()` calls -> $2^n$ total processes = $2^n - 1$ child processes (`2019_FN_Q29`).
+  - `fork()` with `if` / `break` / `continue` (`2026_FN_Q63`: only child continues loop, parent breaks out -> linear chain!).
+  - `fork()` combined with **`&&` and `||` short-circuiting** (`fork() && fork() || fork()`): evaluate left-to-right using `0` (child = false) vs `>0` (parent = true)!
+  - **`wait(NULL)` (`2024_FN_Q53`):** parent pauses until one child exits; does NOT stop child from running loop iterations.
+  - **`exec()` family:** replaces current memory image (`Text, Data, Heap, Stack`) with a brand-new program (same PID!), never returns on success!
+  - **Zombie** (terminated child waiting for parent's `wait()`) vs **Orphan** (parent died first, adopted by PID 1 `init`) + C `stdout` buffering (`\n` vs no `\n`) finer note!
+- **GATE-level items:** Exact `printf` execution counts and child counts for loop-based `fork()` (`2026_FN_Q63`, `2024_FN_Q53`, `2019_FN_Q29`) and boolean short-circuit `fork()`.
+- **Diagrams needed:** `CALLTREE` / `TREE` (`fork()` branching trees labelling Parent `>0` and Child `0` at every split, with `break` and `wait(NULL)` markers).
+- **Hand traces:** Full process-tree trace for `2026_FN_Q63` (`4` prints), `2024_FN_Q53` (`2+4+8 = 14` prints), `2019_FN_Q29` (`5` forks = `31` children), and `if (fork() || fork()) fork();`.
+- **Common mistakes:** Counting parent in `"total child processes created"` (`2^n` instead of `2^n - 1`, `2019_FN_Q29`!); thinking a child starts executing from line 1 of `main()` instead of right after `fork()`; missing `break` only executing in the parent (`2026_FN_Q63`).
+
+#### Lesson 01.3 · Threads (Shared vs Private), User/Kernel Thread Models & IPC
+- **Tag:** `[MUST]` — Tested across nearly half of all Process questions (`2024_FN_Q12`, `2023_FN_Q22`, `2021_AN_Q41`, `2017_AN_Q14`, `2017_FN_Q25`).
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** Lesson 01.1, C7 (global vs local stack vs heap).
+- **Beginner must-see:** Creating a whole new Process (`fork()`) copies the entire house — slow and heavy! A **Thread** is a lightweight worker INSIDE the same house: all threads in one process share the **same RAM address space (`Code, Global Data, Heap, Open Files`)**, while each thread carries its own private **`Stack, Registers, and Program Counter`**!
+- **Finer points:**
+  - **What is Shared vs Private (`2024_FN_Q12`, `2023_FN_Q22`, `2017_AN_Q14`, `2017_FN_Q25`):**
+    - Shared across threads of SAME process: Address space (PTBR!), Global/Static variables, Heap, Open File Descriptor Table, Signal handlers.
+    - Private per thread: Stack (local variables!), Program Counter (PC), General Purpose Registers, Stack Pointer (SP), State.
+    - **Separate across DIFFERENT processes (`2021_AN_Q41`):** `P1` and `P2` each get separate global `x`!
+  - Why Threads are NOT memory-protected from each other (`2024_FN_Q12(D)`): a wild pointer in Thread 1 can corrupt Thread 2's stack/data!
+  - Thread Context Switch vs Process Context Switch (no address space / `PTBR` / TLB switch in same-process thread switch, `2023_FN_Q22(A)`!).
+  - **User-Level vs Kernel-Level Threads & Mapping Models (`M:1`, `1:1`, `M:N`):** User-level threads don't need kernel syscalls to switch, YET one blocking syscall blocks the whole process (and can't use multiple CPU cores!).
+  - **IPC (`[SHOULD]`):** Shared Memory (fast after setup, needs synchronization!) vs Message Passing (kernel copies data, naturally synchronized) vs Pipes (`fd[0]` read, `fd[1]` write).
+- **GATE-level items:** Multi-process + multi-thread variable scope puzzles (`2021_AN_Q41`); exact thread context-switch save list (`2023_FN_Q22`); thread properties MSQs (`2024_FN_Q12`).
+- **Diagrams needed:** `MEMORY` (Two processes `P1, P2` each holding 2 threads `T1, T2`: Globals/Heap shared *inside* `P1` only, Stacks private *per thread*, `2021_AN_Q41`); `COMPARE` (User-level vs Kernel-level threads & `1:1` vs `M:1` vs `M:N`).
+- **Hand traces:** Tracing `2021_AN_Q41` (`P1` and `P2` each have `x=2`, all threads print `y=1`); testing `2023_FN_Q22` context switch steps.
+- **Common mistakes:** Thinking threads share a common stack (`2024_FN_Q12(C)`!) or each thread has its own open-file table (`2024_FN_Q12(B)`!); thinking `P1` and `P2` share global `x` (`2021_AN_Q41`!); thinking threads can ONLY live in kernel space (`2024_FN_Q12(A)`!).
+
+---
+
+`CONTINUE FROM CHAPTER 02`
+## PART 5 (Continued) · Chapters 02 to 05
+
+### Chapter 02 · CPU and I/O Scheduling *(Old Ch 03)*
+
+#### Lesson 02.1 · Scheduling Fundamentals, Metrics & Non-Preemptive Policies (`FCFS`, `SJF`)
+- **Tag:** `[MUST]` — Foundation for every scheduling calculation (`2026_AN_Q23`, `2026_FN_Q64`, `2021_FN_Q14`, `2021_AN_Q29`, `2023_FN_Q27`).
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 01.1 (process states & ready queue).
+- **Beginner must-see:** Only ONE process can sit on a single CPU core at any instant! Scheduling is just deciding *who in the Ready Queue gets the CPU chair next* — like a doctor calling patients from a waiting room (`FCFS` = first in line; `SJF` = fastest checkup first!).
+- **Finer points:**
+  - **The 5 Exact Metrics:** Arrival Time (`AT`), Burst Time (`BT`), Completion Time (`CT`), **Turnaround Time (`TAT = CT - AT`)**, **Waiting Time (`WT = TAT - BT`)**, **Response Time (`First_Run - AT`)**.
+  - Optimization goals: Maximize CPU utilization & Throughput; Minimize TAT, WT, Response Time (`2021_AN_Q29(B)` trap!).
+  - **Preemptive vs Non-Preemptive (`2026_AN_Q23`):** Why FCFS can NEVER be preemptive (no timer/burst condition interrupts an ongoing FCFS run), whereas Priority/RR/SRTF can be preemptive (requiring timer hardware support, `2021_AN_Q29(D)`).
+  - **Convoy Effect** in FCFS + **Starvation Nuance (`2023_FN_Q27`):** Why SJF starves long jobs when short jobs keep arriving, AND why `2023_FN_Q27` counts FCFS as potentially starving (only if a job ahead has an *infinite* CPU burst!).
+  - **Optimal Non-Preemptive Avg WT (`2021_FN_Q14`):** Why SJF provably minimizes average waiting time for any given set of non-preemptive jobs at `t = 0`.
+- **GATE-level items:** Computing exact average waiting time across staggered arrivals (`2026_FN_Q64`: Actuators & Controllers arriving every 10s vs 11s); spotting FCFS impossibility of preemption (`2026_AN_Q23`) and `2023_FN_Q27` starvation MSQ.
+- **Diagrams needed:** `TIMELINE` (Gantt chart matched with a calculation table `PID | AT | BT | CT | TAT | WT`); `COMPARE` (FCFS vs SJF Convoy Effect picture).
+- **Hand traces:** Tracing all 10 processes of `2026_FN_Q64` (`Avg WT = 9.5 s`); tracing `2021_FN_Q14` (`12 ms`).
+- **Common mistakes:** Forgetting `AT` when computing `TAT = CT - AT` (using `CT` directly!); subtracting `BT` twice; thinking CPU stays busy when `t < next_arrival` (leaving idle gaps out of Gantt chart!).
+
+#### Lesson 02.2 · Preemptive Scheduling (`SRTF`, `Round Robin`, `Priority`) & Ready Queue Ties
+- **Tag:** `[MUST]` — Core 2-mark NAT/MCQ generator (`2025_AN_Q26`, `2024_AN_Q54`, `2022_FN_Q42`, `2019_FN_Q51`, `2017_FN_Q34`, `2017_AN_Q57`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 02.1.
+- **Beginner must-see:** Preemptive means the OS can tap a running process on the shoulder mid-work and say *"Step back to the Ready Queue — someone shorter, higher-priority, or fresher just arrived, OR your time-slice is up!"* To avoid mistakes in **Round Robin**, always draw the **FIFO waiting line** beside your timeline!
+- **Finer points:**
+  - **SRTF (Preemptive SJF):** Check remaining burst at every new arrival; tie-breaking rule (keep running current process unless strictly shorter, else FCFS / lower PID).
+  - **Exponential Averaging Burst Prediction ($\tau_{n+1} = \alpha t_n + (1 - \alpha)\tau_n$):** Why SJF/SRTF needs burst estimation whereas RR needs NO prior burst knowledge (`2021_AN_Q29(C)`!).
+  - **Round Robin (`q`):** Time quantum trade-off (`q` too small = context-switch thrash; `q -> \infty` = FCFS); **exact Ready Queue tie-breaker** (new arrival at `t` enters queue before preempted process OR clarify prompt rule); counting context switches including switches after process termination (`2022_FN_Q42`).
+  - **Preemptive vs Non-Preemptive Priority & Aging:** Lower number = higher priority convention (`0` highest in `2017_AN_Q57`); preventing starvation via **Aging**.
+- **GATE-level items:** Computing SRTF vs NP-SJF (`2024_AN_Q54`, `2025_AN_Q26`); solving backward for unknown burst `Z` given average waiting time (`2019_FN_Q51`); checking Round Robin context-switch constraints (`2022_FN_Q42`).
+- **Diagrams needed:** `TIMELINE` + `ARRAY` (Gantt chart paired with live FIFO Ready Queue snapshots at every quantum/arrival); `TRACE` (Remaining-Burst tracking table at every event timestamp `t = 0, 1, 2, 4, 8...`).
+- **Hand traces:** Full SRTF & NP-SJF trace for `2024_AN_Q54` (`6` and `7.5`); RR trace of `2022_FN_Q42` option D checking `S->Q`, `R->Q`, `Q->R` counts; backward SRTF equation for `Z`.
+- **Common mistakes:** Preempting in SRTF on equal remaining burst unnecessarily; forgetting to put a quantum-expired process back at the **tail** of the Ready Queue in RR; counting `WT = first_start - AT` instead of `CT - AT - BT` for preempted processes!
+
+#### Lesson 02.3 · Multi-Processor, CPU-I/O Interleaved & Real-Time Scheduling
+- **Tag:** `[SHOULD]` — Directly tested in recent papers (`2025_FN_Q38`, `2025_FN_Q29`) and rounds out MLFQ/Real-Time.
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 01.1, Lesson 02.2.
+- **Beginner must-see:** Real programs don't run on CPU forever — every `scanf()` or `printf()` pauses CPU work to talk to Keyboard/Screen (I/O Queue) and then re-enters the Ready Queue! And when a computer has **two CPU cores ($M_1, M_2$)**, they can both grab waiting processes simultaneously!
+- **Finer points:**
+  - **CPU-I/O Burst Interleaving (`2025_FN_Q29`):** Each blocking `scanf`/`printf` moves process `Running -> Waiting (I/O Queue) -> Ready Queue`; count initial vs post-I/O Ready Queue entries carefully!
+  - **Multi-Processor Scheduling (`2025_FN_Q38`):** Asymmetric/heterogeneous processor priorities (`M_1` vs `M_2`); processor affinity; load balancing.
+  - **Multilevel Queue (MLQ) vs Multilevel Feedback Queue (MLFQ):** Demoting CPU hogs, promoting I/O-interactive jobs (`aging`).
+  - **Real-Time Scheduling (`[LATER]`):** Rate Monotonic Scheduling (RMS: shorter period = higher priority, utilization bound $n(2^{1/n}-1)$) vs Earliest Deadline First (EDF: dynamic priority, up to $100\%$ utilization!).
+- **GATE-level items:** Tracing heterogeneous 2-processor priority scheduling (`2025_FN_Q38`); counting Ready Queue transitions from C `scanf`/`printf` loops (`2025_FN_Q29`).
+- **Diagrams needed:** `TIMELINE` (Two parallel processor Gantt tracks $M_1$ and $M_2$ pulling from one shared waiting pool, `2025_FN_Q38`); `FLOW` (Ready -> CPU -> I/O Queue loop for `2025_FN_Q29`).
+- **Hand traces:** Tracing `2025_FN_Q38` (`Avg WT = 9.00 ms`) and `2025_FN_Q29` (`1 scanf + 20 printf = 21` Ready Queue entries).
+- **Common mistakes:** Counting initial Ready Queue entry when the problem explicitly excludes it (`2025_FN_Q29`!); assigning the same process to both processors or forgetting $M_2$ finishes earlier at `t = 16` (`2025_FN_Q38`!).
+
+---
+
+### Chapter 03 · Concurrency and Synchronization *(Old Ch 04)*
+
+#### Lesson 03.1 · Race Conditions, Atomicity & Critical Section Rules (`Peterson`, `TSL`, `CAS`)
+- **Tag:** `[MUST]` — Unlocks `2024_FN_Q64`, `2023_FN_Q38`, `2021_FN_Q59`, `2019_FN_Q32`, and every lock problem.
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 01.3 (threads sharing globals), Lesson 02.2 (preemptive context switching).
+- **Beginner must-see:** Even a tiny line like `X++` is NOT one single step to the CPU — it is THREE steps: **1. Read `X` into register, 2. Add `1`, 3. Write back to `X`**. If a thread gets interrupted between Step 1 and Step 3, another thread's update gets **silently overwritten**!
+- **Finer points:**
+  - **Atomicity Rule in GATE (`2024_FN_Q64`, `2026_AN_Q51` vs `2021_FN_Q59`, `2019_FN_Q32`):** Real C statements (`counter++`) split into `LOAD / OP / STORE` unless the question explicitly says *"each line executes atomically"*!
+  - **Finding Min / Max of Unsynchronized Shared Variable (`2019_FN_Q32`):** Systematic interleaving trick (to minimize: have one thread read low initial value, let others raise it, then wake up late to overwrite low!).
+  - **The 3 Critical Section Requirements:**
+    1. **Mutual Exclusion** (at most one inside CS).
+    2. **Progress** (outside CS cannot block inside; finite selection time — note: NO deadlock!).
+    3. **Bounded Waiting** (limit on how many times others cut ahead — NO starvation!).
+  - **Software Solutions:** Lock variable (fails ME!), Strict Alternation `turn` (fails Progress!), **Peterson's Algorithm** (`flag[2]`, `turn` — satisfies all 3 for 2 processes on sequential memory!).
+  - **Hardware Atomic Instructions:** Disabling interrupts (dangerous in user mode / fails multi-core!), **`TestAndSet(lock)`**, **`CompareAndSwap`**.
+  - **Busy Waiting (Spinlock) vs Priority Inversion** (high-priority thread spinning waiting for preempted low-priority lock-holder!).
+- **GATE-level items:** Checking ME, Progress, Bounded Waiting on modified Peterson's/lock pseudocode; computing exact min/max final values of shared variables (`2019_FN_Q32`, `2024_FN_Q64`).
+- **Diagrams needed:** `TIMELINE` + `MEMORY` (2 threads racing on `X++` via private registers `R1, R2`); `COMPARE` (Lock variable vs Strict Alternation vs Peterson's checking ME/Progress/BW); `FRAMES` (Priority Inversion deadlock on single-core spinlock).
+- **Hand traces:** Tracing `2024_FN_Q64` (`(4,4), (3,3), (4,3)` once corrected to `a=2*a`); tracing a 2-thread `LOAD/ADD/STORE` lost update; testing Peterson's when both threads set `flag[i] = true` simultaneously.
+- **Common mistakes:** Assuming `X++` is atomic (`2021_FN_Q59`); thinking Strict Alternation satisfies Progress (fails when `P0` wants CS twice while `P1` isn't interested!); confusing Progress with Bounded Waiting.
+
+#### Lesson 03.2 · Semaphores, Mutexes, Barriers & Output-Order Puzzles
+- **Tag:** `[MUST]` — Directly covers `2026_AN_Q51`, `2024_AN_Q44`, `2023_FN_Q38`, `2021_FN_Q59`, `2020_FN_Q38`, `2017_FN_Q61`.
+- **Estimated reading time:** 80 minutes.
+- **Prerequisites:** Lesson 03.1.
+- **Beginner must-see:** A **Semaphore** is a bouncer holding a counter `S` and a waiting bench (`queue`): `wait(S)` takes a ticket (`S--`; if no tickets left, sleep on the bench!), and `signal(S)` puts a ticket back (waking one sleeper!). Setting `S = 1` creates a 1-person bathroom lock (**Mutual Exclusion**); setting `S = 0` creates a **start-gun / ordering gate** (`T2` sleeps until `T1` rings the bell)!
+- **Finer points:**
+  - **Binary Semaphore (`0/1`) vs Counting Semaphore vs Mutex (ownership!):** Only the thread that locked a mutex can unlock it; any thread can call `signal()` on a semaphore!
+  - **Two Semaphore Conventions:** Blocking queue (`S` goes negative `-k`, meaning `k` processes asleep) vs Busy-wait (`wait(S)` spins while `S <= 0`).
+  - **Re-entrant vs Non-Reentrant Locks (`2017_FN_Q61`):** Why 1 thread locking the same non-reentrant lock twice deadlocks itself (`x = 1, y = 1`)!
+  - **Double `wait(S)` Deadlock & Stale-Read Lost Update (`2021_FN_Q59`):** With `S = 5` and 5 threads doing `wait(S); wait(S);`, all 5 grab 1 permit (`S = 0`) and deadlock; yet if 2 enter CS simultaneously, `counter` can drop all the way to `1`!
+  - **Barrier / Turnstile Synchronization (`2020_FN_Q38`, `2026_AN_Q51`):** `wait(b); signal(b);` acts as a revolving door letting all waiting threads pass one after another once the barrier opens!
+  - **Counting semaphore minimum value (`2023_FN_Q38`):** `S = 2` allows 2 simultaneous threads -> how far can `X` drop?
+- **GATE-level items:** Possible output string MSQs (`2026_AN_Q51`), deadlock interleavings (`2024_AN_Q44`), minimum final shared variable values (`2023_FN_Q38`, `2021_FN_Q59`), identifying what a semaphore snippet enforces (`2020_FN_Q38`).
+- **Diagrams needed:** `FRAMES` (Semaphore struct `{val, queue}` waking and sleeping processes); `TIMELINE` (Interleaving diagrams for `2026_AN_Q51` showing `$` barrier opening `#`, and `2024_AN_Q44` showing `T1` sleeping while holding `s1`); `FRAMES` (How 5 threads in `2021_FN_Q59` end with `counter = 1`).
+- **Hand traces:** Tracing `2026_AN_Q51` (all 4 options), `2024_AN_Q44`, `2023_FN_Q38` (`12, 7`), `2021_FN_Q59` (`counter = 1` & deadlock), and `2020_FN_Q38` (`n`-process barrier).
+- **Common mistakes:** Thinking `wait(B); Print(#); Signal(B);` lets only 1 process print `#` (`Signal(B)` wakes the next one immediately!); forgetting `T1` STILL holds `s1` when blocking on `wait(s2)` (`2024_AN_Q44`!); thinking `S = 5` with `wait(S); wait(S);` means `counter` can become `0` (`2021_FN_Q59`!).
+
+#### Lesson 03.3 · Classic Synchronization Problems, Monitors & Livelock
+- **Tag:** `[MUST]` — Covers `2022_FN_Q19`, `2021_AN_Q13`, `2018_FN_Q50`, plus Readers-Writers, Dining Philosophers, and Monitors.
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 03.2.
+- **Beginner must-see:** Real OS synchronization builds on 4 classic puzzles: **Producer-Consumer** (bounded buffer), **Readers-Writers** (multiple readers OK, writers exclusive), **Dining Philosophers** (5 chopsticks, circular wait!), and **Monitors** (putting the lock + waiting benches automatically inside a safe class/room so programmers stop making deadlock typos!).
+- **Finer points:**
+  - **Producer-Consumer (`2018_FN_Q50`):** Watch **variable names carefully!** (`2018_FN_Q50` swapped standard meanings by setting `full = N` = empty slots and `empty = 0` = filled slots!!); why **`wait(slot)` MUST come BEFORE `wait(mutex)`** (reversing them deadlocks when buffer is full/empty!).
+  - **Sequence Enforcement with Semaphores (`2022_FN_Q19`):** Repeating sequence `BCABCABCA...` using 3 semaphores (`S1 = 1, S2 = 0, S3 = 0`).
+  - **Readers-Writers:** First Readers-Writers (starves Writers!) vs Second (starves Readers) vs Fair solution.
+  - **Dining Philosophers:** Deadlock if all pick left fork simultaneously -> fix via asymmetric pick order or waiter semaphore `N - 1`.
+  - **Monitors & Condition Variables (`c.wait()`, `c.signal()`):** Difference from semaphores (no memory! `c.signal()` with empty queue is lost/no-op, unlike `sem_post` which increments `value`!); **Hoare** (immediate transfer) vs **Mesa** (signaler continues -> waiter MUST use `while(!cond) wait()`, not `if`!).
+  - **Deadlock vs Livelock vs Starvation (`2021_AN_Q13`):** Killing and restarting competing process `P` prevents Deadlock yet can bounce back-and-forth endlessly (Livelock) and starve `P`!
+- **GATE-level items:** Filling semaphore placeholders (`2018_FN_Q50`, `2022_FN_Q19`); distinguishing Deadlock, Livelock, Starvation, and Mutual Exclusion (`2021_AN_Q13`).
+- **Diagrams needed:** `GRAPHPIC` (Producer-Consumer circular buffer with `wait(slots)` before `wait(mutex)` + red swap warning); `GRAPHPIC` (3-thread ring `T2 -> T1 -> T3 -> T2` for `2022_FN_Q19`); `COMPARE` (Deadlock vs Livelock vs Starvation + Semaphore vs Monitor Condition Variable).
+- **Hand traces:** Tracing `2018_FN_Q50` (careful with swapped `empty`/`full` names!), `2022_FN_Q19` (`BCABCA...`), and `2021_AN_Q13` (2-thread ping-pong restart causing livelock).
+- **Common mistakes:** Blindly memorizing `wait(empty)` without reading how the problem defines `empty` vs `full` (`2018_FN_Q50`!); thinking Monitor `signal()` increments a counter like a semaphore; thinking "no deadlock" implies "no livelock/starvation" (`2021_AN_Q13`!).
+
+---
+
+### Chapter 04 · Deadlocks *(Old Ch 01 — Now Placed Safely After Processes & Sync!)*
+
+#### Lesson 04.1 · Deadlock Model, 4 Coffman Conditions, Prevention & RAGs
+- **Tag:** `[MUST]` — Free-sample quality foundation (`2026_FN_Q29`, `2025_AN_Q48`, `2022_FN_Q26`).
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** Lesson 01.1, Lesson 03.2 (locks & mutual exclusion).
+- **Beginner must-see:** Four thieves sitting in a circle, each gripping one coin in their left hand and refusing to drop it until they grab the coin in the next thief's right hand — nobody can move forever! Deadlock ONLY happens if **ALL FOUR** conditions hold simultaneously; breaking even ONE (**Deadlock Prevention**) makes deadlock impossible!
+- **Finer points:**
+  - **4 Necessary Conditions (Coffman):** Mutual Exclusion, Hold and Wait, No Preemption, Circular Wait.
+  - **Deadlock Prevention (breaking 1 of the 4):**
+    - Break Hold & Wait (`2026_FN_Q29(B)`): request all resources up front or drop all before requesting.
+    - Break No Preemption: OS takes resource back (`2021_AN_Q13`).
+    - Break Circular Wait: number resources $1..m$ and force strictly increasing lock order!
+  - **Resource Allocation Graph (RAG):**
+    - **Edge Direction Rule (`2026_FN_Q29(C)`):** **`Resource -> Process` = Assignment (held)**; **`Process -> Resource` = Request (waiting)**!
+    - **Cycle Rule (`2022_FN_Q26(B)`):**
+      - All resources have **1 instance** $\implies$ Cycle **IFF** Deadlock!
+      - Any resource has **> 1 instance** $\implies$ Cycle is Necessary ONLY (Wait-For Graph cycle does NOT guarantee deadlock!).
+      - Zero request edges (only assignment edges) $\implies$ NO Deadlock (`2022_FN_Q26(D)`)!
+  - **Aborting Minimum Processes to Break Deadlock (`2025_AN_Q48`):** Finding ALL directed cycles in a RAG and hitting every cycle.
+- **GATE-level items:** Spotting flipped RAG edge definitions & Prevention-vs-Avoidance mix-ups (`2026_FN_Q29`); multi-cycle process termination (`2025_AN_Q48`); single vs multi-instance cycle MSQs (`2022_FN_Q26`).
+- **Diagrams needed:** `GRAPHPIC` (RAG with dots inside resource squares showing `R -> P` assignment vs `P -> R` request); `COMPARE` (1-instance cycle = Deadlock vs 2-instance cycle = Safe!); `GRAPHPIC` (4-process 2-cycle RAG from `2025_AN_Q48`).
+- **Hand traces:** Tracing `2025_AN_Q48` cycles (`P1-P2-P3` and `P2-P4`); testing all 4 options of `2026_FN_Q29` and `2022_FN_Q26`.
+- **Common mistakes:** Flipping RAG edge direction (`P -> R` is request, NOT assignment!, `2026_FN_Q29(C)`); claiming a cycle in a multi-instance wait-for graph always means deadlock (`2022_FN_Q26(B)`); calling Banker's algorithm "Prevention" (`2026_FN_Q29(A)`).
+
+#### Lesson 04.2 · Deadlock Avoidance (Banker's Algorithm), Detection & Pigeonhole Resource Math
+- **Tag:** `[MUST]` — Classic NAT & matrix favourite (`2026_FN_Q35`, `2019_FN_Q43`, `2018_FN_Q34`, `2018_FN_Q49`, `2017_AN_Q42`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 04.1.
+- **Beginner must-see:** Instead of banning locks upfront (Prevention), **Deadlock Avoidance (Banker's Algorithm)** acts like a smart bank manager: before lending extra cash, it checks *"Even if every customer immediately demands their full credit limit, is there at least ONE order I can pay off one customer at a time and get all my money back?"*
+- **Finer points:**
+  - **Safe State vs Unsafe State vs Deadlock (`2026_FN_Q29(D)`, `2022_FN_Q26(C)`):** Safe guarantees no deadlock; **Unsafe does NOT guarantee deadlock** (only means deadlock is *possible* if worst-case requests occur!).
+  - **Banker's Safety Algorithm (`2018_FN_Q49`):** `Need = Max - Allocation`, `Work = Available`, repeatedly find unfinished `P_i` with `Need[i] <= Work`, set `Work += Allocation[i]` (`O(m \cdot n^2)`).
+  - **Resource-Request Algorithm:** Check `Request <= Need` & `Request <= Available`, tentatively grant, run Safety Check.
+  - **Deadlock Detection vs Banker's (`[SHOULD]`):** Detection uses current **`Request`** matrix instead of future `Max`/`Need`!
+  - **Pigeonhole Resource Counting (`2026_FN_Q35`, `2018_FN_Q34`, `2019_FN_Q43`):**
+    - Minimum resources for deadlock-freedom (`n` processes, max `K_i` each): $\sum_{i=1}^n (K_i - 1) + 1$ (if equal $K$: $n(K - 1) + 1$).
+    - Maximum $K$ for guaranteed deadlock-freedom given $R$ instances: solve $n(K - 1) + 1 \le R$ (`2018_FN_Q34`).
+    - Freezing everyone else (`2019_FN_Q43`): freeing $X_p + X_q$ still cannot unblock any $k$ if $X_p + X_q < \min(Y_k)$.
+- **GATE-level items:** Full 3-resource Banker's matrix check (`2018_FN_Q49`, `2017_AN_Q42`); solving for min `K` (`2026_FN_Q35`) or max `K` (`2018_FN_Q34`) and symbolic condition (`2019_FN_Q43`).
+- **Diagrams needed:** `CHEATPIC` (Safe > Unsafe > Deadlock nested target rings + 4-row Prevention/Avoidance/Detection/Recovery comparison); `TRACE` (Full Banker's `Allocation | Max | Need | Work` step table for `2018_FN_Q49`); `MEMORY` (Worst-case hoarding boxes for `n(K-1)+1`).
+- **Hand traces:** Tracing `2018_FN_Q49` (`P0 -> P2 -> P1 -> P3` safe!); computing `2026_FN_Q35` (`5*(2-1)+1 = 6`) and `2018_FN_Q34` (`K = 2`).
+- **Common mistakes:** Forgetting `Need = Max - Allocation` (using `Max` instead of `Need`!); thinking unsafe = already deadlocked (`2022_FN_Q26(C)`!); being off by 1 on `n(K-1) + 1` vs `n(K-1)`.
+
+---
+
+### Chapter 05 · Memory Management & Multi-Level Paging *(Old Ch 05)*
+
+#### Lesson 05.1 · Address Spaces, Contiguous Partitioning & Fragmentation
+- **Tag:** `[MUST]` — Covers `2026_AN_Q55`, `2020_FN_Q14`, `2021_FN_Q31(A,B)`, plus MMU base/limit basics.
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 00.1, Lesson 01.1.
+- **Beginner must-see:** A program's code thinks its own memory starts at address `0` (**Logical Address**), while actual RAM might load it at byte `50,000` (**Physical Address**). The hardware **MMU** adds a Base register automatically! When programs load and exit in variable-sized chunks, RAM turns into Swiss cheese full of tiny unusable gaps (**External Fragmentation**).
+- **Finer points:**
+  - Compile-time, Load-time, Execution-time binding (why dynamic relocation needs MMU Base + Limit!).
+  - **Fixed Partitioning** (Internal Fragmentation) vs **Variable Partitioning** (External Fragmentation).
+  - **Allocation Policies (`2026_AN_Q55`, `2020_FN_Q14`):** First Fit, Next Fit (keeps roving pointer!), Best Fit (`Best Fit leftover <= First Fit leftover`, `2020_FN_Q14(C)`!), Worst Fit; Compaction & Buddy System (`[LATER]`).
+  - Why non-contiguous Paging kills External Fragmentation (`2021_FN_Q31(A)`), while larger pages worsen Internal Fragmentation (`last page / 2` average waste, `2021_FN_Q31(B)`!).
+- **GATE-level items:** Tracing hole splitting after sequential Best-Fit allocations (`2026_AN_Q55`); proving invariants comparing holes left by First vs Best vs Worst Fit (`2020_FN_Q14`).
+- **Diagrams needed:** `MEMORY` (CPU Logical Addr -> MMU Base/Limit check -> RAM Physical Addr); `FRAMES` (8-hole RAM strip tracing `P1=16K`, `P2=9K` across First, Best, Worst Fit, `2026_AN_Q55`).
+- **Hand traces:** Tracing `2026_AN_Q55` (`3` holes `< 8 KB`); testing `2020_FN_Q14` with concrete hole sets `[50, 20, 30]` and request `18`.
+- **Common mistakes:** Confusing Internal Fragmentation (inside an assigned block/page) with External Fragmentation (unallocated holes between blocks); forgetting Next Fit doesn't restart from the beginning!
+
+#### Lesson 05.2 · Paging Mechanics, Address Translation & Byte vs Word Addressing
+- **Tag:** `[MUST]` — Core of the highest-weight OS chapter (`2025_FN_Q14`, `2024_AN_Q28`, `2024_FN_Q50`, `2021_FN_Q31`, `2019_FN_Q42`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 05.1, binary powers (`2^{10}=1\text{K}, 2^{20}=1\text{M}, 2^{30}=1\text{G}`).
+- **Beginner must-see:** Instead of squeezing an entire program into one big hole, **Paging** chops the program into tiny equal-sized pages (e.g. `4 KB`) and RAM into equal-sized frames (`4 KB`), using a lookup directory (**Page Table**) so any page can sit in ANY free frame anywhere in RAM!
+- **Finer points:**
+  - **Exact Bit-Splitting Rules:** `VA bits = p (Page #) + d (Offset)`; `PA bits = f (Frame #) + d (Offset)`; `Page Size = Frame Size = 2^d` units!
+  - **Decimal Translation Shortcut (`2024_FN_Q50`):** `Page# = VA / PageSize`, `Offset = VA % PageSize`, `PA = Frame# * PageSize + Offset`!
+  - **Byte-Addressable vs Word-Addressable (`2019_FN_Q42`):** Number of addresses in a page = `Page Size (bytes) / Word Size (bytes)`!
+  - **Page Table Formulas:**
+    1. Number of entries = `2^p = Virtual Space / Page Size` (`2025_FN_Q14`!).
+    2. PT size = `Entries × PTE_size` (memory overhead! `2021_FN_Q31(C)`).
+    3. Pages occupied by PT = `ceil(PT_size / Page_size)`.
+  - **Inside One PTE & MMU Responsibilities (`2024_AN_Q28`):** Valid/Invalid bit, R/W/X protection bits, Dirty/Modified, Reference/Accessed. MMU translates VA->PA and raises Page Fault or Protection Fault traps (`2024_AN_Q28(B,C,D)`), while OS allocates new page tables (`A` is OS, not MMU!).
+  - **Optimal Page Size Formula (`[SHOULD]`):** $\sqrt{2 \cdot s \cdot e}$.
+- **GATE-level items:** Computing max PT entries (`2025_FN_Q14`), decimal VA -> PA (`2024_FN_Q50`), word-addressable distinct VA counts (`2019_FN_Q42`), and MMU vs OS responsibility MSQs (`2024_AN_Q28`).
+- **Diagrams needed:** `MEMORY` (VA `[p | d]` -> Page Table lookup -> PA `[f | d]` showing `d` passing straight through unchanged); `MEMORY` (Zoomed-in Page Table Entry showing Valid, R/W, Dirty, Ref bits); `COMPARE` (Byte-addressable vs Word-addressable page offset bits).
+- **Hand traces:** Converting VA `2500` with `2 KB` page (`2024_FN_Q50` -> `6596`); computing PT entries for `32-bit` VA + `2048 B` page (`2025_FN_Q14` -> `2^{21}`); calculating `2019_FN_Q42` (`128 × 2K = 256 × 2^{10}`).
+- **Common mistakes:** Using Physical Address bits instead of Virtual Address bits to count Page Table entries (`2025_FN_Q14` gives `20-bit PA` as a distractor!); forgetting `Word Size = 4 B` divides page capacity (`2019_FN_Q42`!); thinking MMU allocates page tables (`2024_AN_Q28(A)`!).
+
+#### Lesson 05.3 · TLB, Multi-Level Paging, Inverted/Hashed Page Tables & Segmentation
+- **Tag:** `[MUST]` — Massive 2-mark NAT generator (`2026_AN_Q54`, `2025_AN_Q58`, `2024_AN_Q47`, `2023_FN_Q58`, `2022_FN_Q38`, `2021_AN_Q62`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 05.2.
+- **Beginner must-see:** Looking up a Page Table in RAM for every single instruction DOUBLES memory time (`1 access for PT + 1 access for data`), AND a 32-bit/64-bit Page Table can be megabytes/terabytes huge! OS fixes BOTH using two tricks: a tiny super-fast hardware cache for translations (**TLB**) and chopping the giant Page Table into a tree of smaller tables (**Multi-Level Paging**)!
+- **Finer points:**
+  - **TLB Mechanics (`2022_FN_Q38(A,B)`, `2026_AN_Q54`, `2019_FN_Q42`):**
+    - Associative parallel search across all valid entries (`O(1)` hardware).
+    - **TLB Reach** = `Number of TLB entries × Page Size` (`2026_AN_Q54`).
+    - TLB Entry fields: `ASID/PID + VPN + PFN + Control bits` (round entry bits to bytes when asked total TLB size in bytes, `2026_AN_Q54`!).
+    - **TLB Hit + Cache Miss (`2022_FN_Q38(B)`):** If TLB hits, the page MUST already be resident in RAM!
+    - **TLB EMAT (without page faults):** `h(t_TLB + t_RAM) + (1 - h)(t_TLB + (L + 1) * t_RAM)` for `L`-level paging!
+  - **Multi-Level Paging (`2025_AN_Q58`, `2024_AN_Q47`, `2023_FN_Q58`, `2021_AN_Q62`):**
+    - Entries per PT page = `PageSize / PTE_size` -> `k` bits per inner index (`2025_AN_Q58`, `2023_FN_Q58`).
+    - When VPN bits aren't divisible by `k`, **outer directory takes the remaining top bits** (`2025_AN_Q58`: `11 + 9 + 12 = 32`!).
+    - **Min vs Max Page Table Memory (`2024_AN_Q47`):** Outer dir is 1 page; Min inner pages = `ceil(used_pages / entries_per_inner_page)`; Max inner pages = `min(used_pages, outer_entries)`!
+  - **Inverted & Hashed Page Tables (`2022_FN_Q38(C,D)`):**
+    - Inverted PT has 1 entry per **Physical Frame** (`PID + VPN`), saving huge RAM on 64-bit systems, yet linear/hash search means access time is **NOT constant** for all VAs (`2022_FN_Q38(C)` is FALSE!), and Hashed PT collision chains vary lookup time (`2022_FN_Q38(D)` is TRUE!).
+  - **Segmentation & Segmented Paging (`[SHOULD]`):** `<Segment#, Offset>`, `Offset < Limit` protection check, external fragmentation vs internal paging.
+- **GATE-level items:** Computing TLB bytes from TLB reach (`2026_AN_Q54`), outer index bits `b` (`2025_AN_Q58`), levels `L` (`2023_FN_Q58`), `Min + Max` PT pages (`2024_AN_Q47`), and Inverted/Hashed PT properties (`2022_FN_Q38`).
+- **Diagrams needed:** `FLOW` (CPU -> TLB Parallel Search -> Hit vs Miss through $L$-level PT -> Cache -> RAM); `MEMORY` (TLB Entry bit layout `PID | VPN | PFN | Ctrl`); `TREE` (2-level PT packing 2000 pages tightly [Min=3] vs 1 per outer slot [Max=1025], `2024_AN_Q47`); `COMPARE` (Flat vs Multi-Level vs Inverted vs Hashed PT).
+- **Hand traces:** Solving `2026_AN_Q54` (`1536 B`), `2025_AN_Q58` (`b = 11`), `2024_AN_Q47` (`3 + 1025 = 1028`), and `2023_FN_Q58` (`45 / 9 = 5` levels).
+- **Common mistakes:** Using `PA` bits for `VPN` in TLB entry width (`2026_AN_Q54`); forgetting outer directory takes leftover bits instead of inner table (`2025_AN_Q58`); forgetting `1` outer page directory in Min/Max PT counts (`2024_AN_Q47`); thinking Inverted PT has constant $O(1)$ lookup (`2022_FN_Q38(C)`!).
+
+---
+
+`CONTINUE FROM CHAPTER 06`
+
+## PART 5 (Continued) · Chapters 06 and 07
+
+### Chapter 06 · Virtual Memory and Page Replacement *(Old Ch 06)*
+
+#### Lesson 06.1 · Demand Paging, Page Fault Steps & Combined TLB + Page-Fault EMAT
+- **Tag:** `[MUST]` — High-yield 2-mark formulas (`2024_AN_Q12`, `2020_FN_Q37`, `2018_FN_Q20`).
+- **Estimated reading time:** 65 minutes.
+- **Prerequisites:** Lesson 00.1 (Traps), Lesson 05.3 (Paging & TLB).
+- **Beginner must-see:** Why load a 4 GB game into RAM if you only visit the main menu? **Demand Paging** starts a process with ZERO pages in RAM (all Page Table `Valid` bits set to `0`!) and loads each 4 KB page from Disk **only when the CPU actually touches it**! Hitting an `Invalid` page stops the CPU with a **Page Fault trap**, pulls that page from Disk, flips `Valid = 1`, and replays the exact same instruction!
+- **Finer points:**
+  - **6 Steps of Handling a Page Fault:** MMU sees `Valid = 0` -> Trap to Kernel -> OS checks valid address (vs Segfault!) -> Find free frame (or evict victim; write back to disk first if `Dirty = 1`!) -> Disk DMA loads page -> Update PT (`Valid = 1`) -> Restart faulted instruction!
+  - **Page Fault EMAT (without TLB, `2018_FN_Q20`):** $X = (1 - p)M + pD \implies p = \frac{X - M}{D - M}$!
+  - **Combined TLB + Page Fault + Dirty Bit EMAT (`2020_FN_Q37`):**
+    - Show standard full formula `(TLB_hit)(t_TLB + t_RAM) + (TLB_miss)[t_TLB + t_PT + (1 - pf)(t_RAM) + pf(t_disk_clean_or_dirty + t_restart)]` **AND explicitly warn about GATE's `2020_FN_Q37` assumption** (where `10%` page fault was multiplied by `5%` TLB miss = `0.005`, yielding `155.0 ns`)!
+- **GATE-level items:** Solving algebraically for `p` (`2018_FN_Q20`); multi-branch EMAT (`2020_FN_Q37`); why page fault forces context switch (`2024_AN_Q12(B)`).
+- **Diagrams needed:** `FRAMES` (The 6 numbered steps of a Page Fault from CPU trap to Disk load & restart); `TREE` (Probability branching tree for TLB Hit / Miss × Page Hit / Clean Fault / Dirty Fault).
+- **Hand traces:** Tracing `2018_FN_Q20` (`(X - M)/(D - M)`) and both readings of `2020_FN_Q37` (`155.0 ns`).
+- **Common mistakes:** Forgetting `t_TLB` applies on misses too; forgetting dirty writeback costs **2** disk transfers (write dirty victim + read new page!); losing the `5%` vs `100%` conditional probability in `2020_FN_Q37`.
+
+#### Lesson 06.2 · Page Replacement Policies, Belady's Anomaly & 2-D Array Page Faults
+- **Tag:** `[MUST]` — Guaranteed bread-and-butter GATE topic (`2025_AN_Q47`, `2025_FN_Q54`, `2023_FN_Q57`, `2022_FN_Q64`, `2017_FN_Q36`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 06.1, C8 (2-D row-major array memory layout).
+- **Beginner must-see:** When all physical RAM frames are full and a new page is needed, the OS must kick one existing page out! Picking the wrong victim causes endless disk swapping — like kicking out the textbook you need 2 minutes later!
+- **Finer points:**
+  - **All Replacement Algorithms Traced:**
+    - **FIFO:** Oldest loaded frame evicted (simple queue, suffers Belady!).
+    - **Optimal (Belady's):** Evicts page unused for longest future time; **Bounded-Lookahead Optimal (`2025_FN_Q54`)** looks only `k` steps ahead!
+    - **LRU (Least Recently Used):** Evicts oldest last-used timestamp (needs hardware stack/counters).
+    - **LFU & MFU (`2025_AN_Q47`):** Count usage frequency (with explicit FIFO tie-breaker rule!).
+    - **Second-Chance / Clock (`[SHOULD]`):** Circular queue clearing `R = 1 -> R = 0` before evicting `R = 0`.
+  - **Stack Algorithms & Belady's Anomaly (`2017_FN_Q36`):**
+    - A policy is a **Stack Algorithm** iff frames kept for `m` frames are always a subset of frames kept for `m+1` frames ($B_t(m) \subseteq B_t(m+1)$).
+    - Stack algorithms (**LRU, Optimal**) NEVER suffer Belady's Anomaly; **FIFO, Random (`2017_FN_Q36`), LFU, MFU** do NOT satisfy the stack property and CAN suffer Belady's Anomaly!
+  - **C 2-D Array Traversal Page Faults (`2023_FN_Q57`):** Row-major `D[128][128]` walked column-by-column (`D[j][i]`) when `allocated_frames < total_array_pages` causes thrashing on EVERY column pass (`32 × 128 = 4096`)!
+- **GATE-level items:** Tracing `4-lookahead Optimal` (`2025_FN_Q54`); identifying which policy produced a given frame snapshot (`2025_AN_Q47`); computing page fault rate `faults / accesses` (`2022_FN_Q64`: `0.6`); 2-D C loop LRU page faults (`2023_FN_Q57`); Random vs LRU Belady's anomaly (`2017_FN_Q36`).
+- **Diagrams needed:** `TRACE` (Frame-by-frame reference trace table comparing FIFO, Optimal, LRU, LFU, MFU on the same string); `ARRAY` (`1,2,3,4,1,2,5,1,2,3,4,5` breaking FIFO `3->4` frames while staying nested in LRU); `MEMORY` (`D[128][128]` row-major layout across 32 pages with 30 LRU frames, `2023_FN_Q57`).
+- **Hand traces:** Full hand trace of `2025_FN_Q54` (`6` faults), `2022_FN_Q64` (`9/15 = 0.6`), and `2023_FN_Q57` (`4096` faults).
+- **Common mistakes:** Counting hits when initial frames are empty (first load into an empty frame IS a page fault!); using frequency *since start of time* without checking if evicted pages reset frequency in LFU/MFU; writing `60` instead of `0.6` for page fault rate (`2022_FN_Q64`); ignoring row-major layout in `D[j][i]` (`2023_FN_Q57`!).
+
+#### Lesson 06.3 · Thrashing, Working Set Model & Copy-on-Write (`fork()`)
+- **Tag:** `[SHOULD]` — Important conceptual bridge explaining OS stability and `fork()` efficiency (`2024_AN_Q28(D)`).
+- **Estimated reading time:** 50 minutes.
+- **Prerequisites:** Lesson 01.2, Lesson 06.2.
+- **Beginner must-see:** If you open 50 heavy apps on a 4 GB RAM laptop, every app steals frames from the others — so the CPU spends 99% of its time waiting for disk swaps (**Thrashing**), and everything freezes!
+- **Finer points:**
+  - **Thrashing Curve:** Degree of Multiprogramming vs CPU utilization; Local vs Global frame replacement.
+  - **Working Set Model ($\Delta$):** Sum of all active working sets $D = \sum WSS_i$; if $D > m$ (total physical frames), OS suspends a process!
+  - **Page-Fault Frequency (PFF):** High fault rate -> add frame; low fault rate -> take away frame.
+  - **Copy-on-Write (COW):** Why `fork()` doesn't copy 2 GB of RAM immediately — parent & child share frames marked **Read-Only**, triggering a trap (`2024_AN_Q28(D)`) to copy ONLY the modified page on first write!
+- **GATE-level items:** Identifying thrashing symptoms & Working Set allocation formulas; how read-only PTE trap implements COW `fork()`.
+- **Diagrams needed:** `TIMELINE` (Degree of Multiprogramming vs CPU Utilization U-turn curve + Working Set sliding window $\Delta$); `FRAMES` (Parent & Child sharing read-only frames -> Child writes -> MMU trap -> private copied frame!).
+- **Hand traces:** Computing Working Set sizes $WSS(t)$ across a 12-page trace with window $\Delta = 4$; checking if 3 processes fit in 10 frames.
+- **Common mistakes:** Thinking raising multiprogramming ALWAYS improves CPU utilization; thinking `fork()` physically copies every RAM frame upfront.
+
+---
+
+### Chapter 07 · File Systems and Disk Scheduling *(Old Ch 07)*
+
+#### Lesson 07.1 · Files, Directories, Allocation Methods & Unix Inodes
+- **Tag:** `[MUST]` — High-yield NAT generator (`2026_AN_Q53`, `2025_FN_Q51`, `2022_FN_Q63`, `2021_FN_Q34`, `2019_FN_Q63`, `2017_AN_Q21`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 05.1 (Internal vs External fragmentation), C13 (pointers & structs).
+- **Beginner must-see:** Hard disks don't know what a "folder" or "movie.mp4" is — they just hold millions of numbered 4 KB blocks! File systems organize those blocks using directories and index cards (**Inodes**), just like a library card catalog pointing to shelf numbers!
+- **Finer points:**
+  - **File Attributes & Open-File Tables:** Per-process FD table vs System-wide open-file table (seek offset vs reference count!); **Hard Links** (two names pointing to same Inode) vs **Symbolic/Soft Links** (file holding path string).
+  - **Directory Implementations (`2021_FN_Q34`):** Linear list (Create & Rename MUST scan entire directory to verify uniqueness; Delete/Open can stop early once found!) vs Hash table / B-tree.
+  - **4 Allocation Methods (`2017_AN_Q21`, `2022_FN_Q63`, `2025_FN_Q51`):**
+    1. **Contiguous:** Fast sequential/random (`O(1)`), suffers **External Fragmentation**, middle insert shifts trailing blocks (`read+write` = $2 \times 50 + 2$? Wait: trace `2022_FN_Q63` carefully!).
+    2. **Linked:** No external fragmentation (`2017_AN_Q21`), `4 B` pointer overhead per block reduces data capacity (`2025_FN_Q51` internal waste!), middle insert walks `50` blocks + writes new + updates 50th (`2022_FN_Q63`!).
+    3. **FAT:** Pulls links out of data blocks into one cached RAM table!
+    4. **Indexed & Unix Inode (`2019_FN_Q63`):** Direct pointers + Single Indirect ($P$) + Double Indirect ($P^2$) + Triple Indirect ($P^3$), where $P = \text{BlockSize} / \text{PointerSize}$! (Warn about $1000$ vs $1024$ unit distinction in `2019_FN_Q63`!).
+  - **Free-Space Management (`2026_AN_Q53`):** Bit Vectors (1 bit per disk block) vs Linked Free List (next-block pointer consumes 4 bytes inside every list block!).
+  - **VFS, Partitions & Crash Consistency (`fsck`/Journaling) (`[LATER]`):** Boot block, Superblock, Inode bitmap/table, Write-Ahead Logging.
+- **GATE-level items:** Unix Inode max file size (`2019_FN_Q63`), free-list block counts (`2026_AN_Q53`), linked-allocation internal waste (`2025_FN_Q51`), middle-insert disk I/O (`2022_FN_Q63`), full linear directory scans (`2021_FN_Q34`).
+- **Diagrams needed:** `LINKED` + `MEMORY` (Contiguous vs Linked `[data|ptr]` vs FAT RAM table vs Unix Inode multi-level tree); `FRAMES` (Inserting block 51 in Contiguous vs Linked `2022_FN_Q63`); `ARRAY` (Bitmap vs Linked Free-List block `2026_AN_Q53`).
+- **Hand traces:** Calculating `2026_AN_Q53` (`16,417` blocks), `2025_FN_Q51` (`65,468 B` waste), `2022_FN_Q63` (`153` disk accesses), and `2019_FN_Q63` (`3.7–3.8` / `4.0–4.1 GB`).
+- **Common mistakes:** Counting the 4-byte link pointer inside `2025_FN_Q51` as internal fragmentation (it's metadata overhead; internal fragmentation = `65,532 - 64 = 65,468`!); forgetting FCB update or block shift read+write cost in `2022_FN_Q63`; forgetting opening/deleting in linear directory stops early once found while create/rename scans ALL entries (`2021_FN_Q34`!).
+
+#### Lesson 07.2 · Disk Geometry, Access Time & Disk Scheduling Algorithms (`RAID` Note)
+- **Tag:** `[MUST]` — Regular 2-mark NATs (`2026_FN_Q59`, `2024_AN_Q61`, `2024_FN_Q39`, `2020_FN_Q40`, `2018_FN_Q63`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** Lesson 07.1, unit conversions (`RPM -> RPS -> ms`).
+- **Beginner must-see:** Inside a spinning hard disk, multiple magnetic platters sit stacked like pancakes on one spindle, and **ONE shared mechanical arm** slides in and out across all platters together! So jumping from Platter 0 to Platter 3 on the SAME cylinder takes **zero seek movement** — ONLY changing **Cylinder** moves the arm!
+- **Finer points:**
+  - **3-D Geometry (`2024_FN_Q39`, `2018_FN_Q63`):** Platter, Surface (`2` per platter if double-sided!), Track, Sector, **Cylinder** (same track across all surfaces). `Disk Capacity = Surfaces × Cylinders × Sectors/Track × Bytes/Sector`!
+  - **3 Components of Disk Transfer Time (`2026_FN_Q59`, `2024_AN_Q61`):**
+    1. **Seek Time:** moving arm across cylinders (given avg or `tracks × ms/track`).
+    2. **Rotational Latency:** spinning desired sector under head (`avg = 0.5 × (60 / RPM)`!).
+    3. **Transfer Time:** reading sector bytes (`(bytes_read / track_bytes) × rotation_time`).
+    - **Random vs Sequential Sectors (`2026_FN_Q59` vs `2024_AN_Q61`):** 10 random sectors on a track each pay `avg rot latency + sector transfer` (unless stated otherwise)!
+  - **Disk Scheduling Algorithms (`2020_FN_Q40`, `2018_FN_Q63`):**
+    - `FCFS`, `SSTF` (always check BOTH closer-up and closer-down distances so you don't miss a reversal! `2018_FN_Q63`), `SCAN` (elevator — hits boundary `0` or `max`), `LOOK` (stops at last request), `C-SCAN` (one-way sweep hitting boundary), `C-LOOK` (one-way sweep stopping at last request).
+    - **Direction Reversals (`2018_FN_Q63`)** & initial head direction!
+  - **RAID Levels 0, 1, 5 (`[LATER]`):** Striping, mirroring, distributed parity (`N - 1` usable disks).
+- **GATE-level items:** Cylinder counting (`2024_FN_Q39`), multi-track random-sector transfer time (`2026_FN_Q59`, `2024_AN_Q61`), SSTF power + reversal counting (`2018_FN_Q63`), SSTF sequence traps (`2020_FN_Q40`).
+- **Diagrams needed:** `MEMORY`/3-D sketch (Stacked platters, single shared actuator arm, highlighted Cylinder); `TIMELINE` (1-sector I/O: Seek + Rot Latency + Transfer); `GRAPHPIC` (Cylinder ruler `0..199` plotting zig-zags for SSTF, SCAN, LOOK, C-SCAN, C-LOOK with reversal arrows circled).
+- **Hand traces:** Tracing `2026_FN_Q59` (`77.3 ms`), `2024_AN_Q61` (`30.06 s`), `2024_FN_Q39` (`4096`), `2018_FN_Q63` (`80 -> 86 -> 72 -> 116 -> 134 -> 20 -> 16`, 3 reversals = `85 mW`), and `2020_FN_Q40`.
+- **Common mistakes:** Trying to seek across platter numbers (`2018_FN_Q63`!); missing SSTF turning back up at `72 -> 116` (`44` < `52`, `2018_FN_Q63`!); using `1 ×` instead of `0.5 ×` rotation time for average rotational latency; forgetting `SCAN` hits `0`/`199` while `LOOK` stops at the extreme request.
+
+---
+
+## PART 6. EVERY PYQ LISTED BELOW (Batch 1: Questions #1 to #39)
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 1 | `2026_AN_Q23` | Ch 02 / L02.1 | Preemptive vs strictly non-preemptive CPU scheduling algorithms. | SRTF, RR, and Priority all have preemptive versions; FCFS never preempts a running burst. | **CORRECT (B: FCFS).** FCFS runs purely to completion/block once scheduled. | Clean. |
+| 2 | `2026_FN_Q29` | Ch 04 / L04.1, L04.2 | Deadlock Prevention vs Avoidance (`Banker's`) & RAG edge directions (asking **FALSE**!). | Watch `"FALSE"`! Banker's is **Avoidance** (not Prevention), and assignment edges go `Resource -> Process` (not `Process -> Resource`). | **CORRECT (A, C).** A is false (Avoidance); B is true (Prevention breaks Hold & Wait); C is false (`R -> P` is assignment, `P -> R` is request); D is true (definition of safe state). | Clean. |
+| 3 | `2026_FN_Q35` | Ch 04 / L04.2 | Minimum resource instances $K$ for deadlock-freedom via Pigeonhole Principle. | All 5 processes hoard $2 - 1 = 1$ instance each (5 held), needing 1 extra -> `5*(2 - 1) + 1 = 6`. | **CORRECT (6).** Worst-case hold = 5; 6th instance allows one process to finish and cascade. | Clean. |
+| 4 | `2026_AN_Q51` | Ch 03 / L03.2 | Concurrent binary semaphore turnstile (`wait(B); Print(#); Signal(B);`) & shared counter interleavings. | Wait(B) blocks `#` until `X == 2` executes `Signal(B)`; `Print($)` happens *before* `Signal(A)` lets the 3rd `*` print (so `***$###` is impossible!). | **FACT-DOUBT on Option C (`**$*##*#`)!** **A** (`**$*###`) and **B** (`**$#*##`) are valid; D (`***$###`) is impossible. **However, Option C prints FOUR `*`s (`**$*##*#`)**, which is impossible when 3 processes print `*` once! Intended GATE pattern was `**$##*#` (3 stars, 1 `$`, 3 `#`s), which IS valid! | **MIS-TRANSCRIPTION:** Option C printed as `**$*##*#`; should be `**$##*#`! |
+| 5 | `2026_AN_Q53` | Ch 07 / L07.1 | Disk free-space management using Linked List blocks (pointer overhead inside block). | Each 2 KB (`2048 B`) block reserves `4 B` for next-block pointer -> `2044 / 4 = 511` entries per block (not 512!). | **CORRECT (16417).** Disk blocks = $16\text{ GB} / 2\text{ KB} = 2^{34}/2^{11} = 2^{23} = 8,388,608$. List blocks needed = $\lceil 8,388,608 / 511 \rceil = \lceil 16416.0626 \rceil = 16417$. (Follows standard GATE convention listing all $2^{23}$ blocks). | Clean. |
+| 6 | `2026_AN_Q54` | Ch 05 / L05.3 | TLB size from TLB Reach (`entries × page_size`), virtual/physical bit widths, and PID/control fields. | TLB stores **VPN** (from 64 GB VA -> `24` bits) + **PFN** (from 1 GB PA -> `18` bits) + `4` PID + `2` Ctrl! Don't mix VA & PA widths! | **CORRECT (1536).** Entries = $1\text{ MB} / 4\text{ KB} = 256$. Entry bits = $4 + 24 + 18 + 2 = 48\text{ bits} = 6\text{ B}$. TLB size = $256 \times 6 = 1536\text{ B}$. | Clean. |
+| 7 | `2026_AN_Q55` | Ch 05 / L05.1 | Variable partitioning Best-Fit hole splitting & counting holes `< 8 KB`. | Check best-fit carefully (`18 KB` -> `2 KB` left; `9 KB` -> `0` left) and don't forget original `< 8 KB` holes (`4 KB`, `7 KB`). | **CORRECT (3).** Remaining holes after `P1(16)` in `18` and `P2(9)` in `9`: `{20, 4, 25, 2, 7, 15, 12}`. Holes `< 8`: `{4, 7, 2}` = 3. | Clean. |
+| 8 | `2026_FN_Q59` | Ch 07 / L07.2 | Hard disk access time across tracks with multiple **randomly located** sectors per track. | 10 random sectors on a track do NOT read in 1 rotation! Each sector averages `0.5 × rotation` + `sector transfer`! | **CORRECT (77.3).** `15000 RPM` -> `4 ms/rot`, avg rot = `2 ms`, sector xfer = `4/400 = 0.01 ms` -> `2.01 ms` per sector. `30` sectors = `60.3 ms`. Seek (`0->5->12->7`) = `5 + 7 + 5 = 17 ms`. Total = `77.3 ms`. | Clean. |
+| 9 | `2026_FN_Q63` | Ch 01 / L01.2 | `fork()` inside `for` loop with `continue` (only in child) and `break` (only in parent). | Only children continue looping (`continue` skips `break`), while each parent exits loop and prints once -> linear chain, NOT $2^3 = 8$! | **CORRECT (4).** `i=0`: P0->C1 (P0 prints #1); `i=1`: C1->C2 (C1 prints #2); `i=2`: C2->C3 (C2 prints #3, C3 finishes loop and prints #4). Total = 4. | Clean. |
+| 10 | `2026_FN_Q64` | Ch 02 / L02.1 | FCFS scheduling with two periodic arrival streams (`A` every 10s, `C` every 11s). | Queue never resets cleanly until end; trace every arrival timestamp against CPU finish time! | **CORRECT (9.5).** Finishes: A1(16, WT=0), C1(24, 5), A2(30, 4), C2(38, 8), A3(44, 8), C3(52, 11), A4(58, 12), C4(66, 14), A5(72, 16), C5(80, 17). Sum WT = `95 / 10 = 9.5 s`. | Clean. |
+| 11 | `2025_FN_Q14` | Ch 05 / L05.2 | Maximum entries in flat Page Table (`VA_size / Page_size`). | 20-bit Physical Address is a distractor! Number of page table entries depends ONLY on Virtual/Logical Address space. | **CORRECT (A: `2^{21}`).** $2^{32} / 2048 = 2^{32} / 2^{11} = 2^{21}$. | Clean. |
+| 12 | `2025_AN_Q26` | Ch 02 / L02.2 | Preemptive SRTF scheduling & computing Average **Turnaround Time** (`CT - AT`). | Question asks **Turnaround Time**, NOT Waiting Time! Also check preemption at `t=2` (`P3=6 < P1=8`). | **CORRECT (D: 19).** Completions: `P3=8` (TAT 6), `P1=16` (TAT 16), `P4=25` (TAT 17), `P2=38` (TAT 37). Avg = `(6+16+17+37)/4 = 76/4 = 19 ms`. | Clean. |
+| 13 | `2025_FN_Q29` | Ch 01, 02 / L01.1, L02.3 | Counting transitions back into **Ready Queue** from `scanf` and loop `printf` I/O calls. | `scanf` enters I/O queue (1st Ready entry on return) + 20 `printf` calls (20 more Ready entries); exclude initial Ready entry per prompt! | **CORRECT (21).** 1 (`scanf`) + 20 (`printf`) = 21 post-I/O entries into Ready Queue. | Clean. |
+| 14 | `2025_FN_Q38` | Ch 02 / L02.3 | Dual-processor (`M1`, `M2`) non-preemptive scheduling with distinct priority orders per core. | At `t=16`, `M2` frees up first and immediately picks its highest remaining (`P3`, not `P4`), leaving `P4` for `M1` at `t=20`! | **CORRECT (A: 9.00).** `M1`: `P1(0..20)`, `P4(20..30)`. `M2`: `P2(0..16)`, `P3(16..41)`. WTs = `0, 0, 16, 20`; Avg = `36 / 4 = 9.00 ms`. | Clean. |
+| 15 | `2025_AN_Q47` | Ch 06 / L06.2 | Identifying valid Page Replacement policy (`Optimal` vs `LRU/LFU/MFU`) from frame snapshot table. | Watch replacement ties & future references carefully. | **CANNOT VERIFY** (Key: D). Figure `[IMAGE_Q_47_1]` (frame contents table) is missing. | **MISSING FIGURE** (`[IMAGE_Q_47_1]`). |
+| 16 | `2025_AN_Q48` | Ch 04 / L04.1 | Finding ALL directed cycles in a RAG & minimum process aborts to clear deadlock. | System has TWO cycles sharing `P2`: `(P1->R2->P2->R3->P3->R1->P1)` AND `(P2->R4->P4->R2->P2)`. Aborting `P1` alone leaves `(P2, P4)` deadlocked! | **CORRECT (C, D).** Aborting `P2` breaks both cycles (C); aborting both `P1` and `P4` breaks both cycles (D). | Clean. |
+| 17 | `2025_FN_Q51` | Ch 07 / L07.1 | Linked file allocation usable block size & internal fragmentation in final block. | 4-byte block pointers are metadata overhead, NOT internal fragmentation! Only leftover unused bytes in the 17th block count. | **CORRECT (65468).** Usable/block = $65536 - 4 = 65532\text{ B}$. $1048576 = 16 \times 65532 + 64$. Last block waste = $65532 - 64 = 65468\text{ B}$. | Clean. |
+| 18 | `2025_FN_Q54` | Ch 06 / L06.2 | Page fault count under 4-lookahead Optimal replacement (`3` frames). | Window includes **current page + next 3**; at step 4 (`4`), window `[4, 2, 3, 1]` sees `1` furthest; at step 7 (`1`), window `[1, 2, 4, 3]` sees `3` furthest; at step 10 (`3`), `2` is absent! | **CORRECT (6).** Faults at steps 1 (`1`), 2 (`3`), 3 (`2`), 4 (`4` evicts `1`), 7 (`1` evicts `3`), 10 (`3` evicts `2`) = 6 faults. | Clean. |
+| 19 | `2025_AN_Q58` | Ch 05 / L05.3 | Outer index bit width `b` in 2-level paging when VPN isn't evenly divisible by inner bits. | Inner page holds `4096 / 8 = 512 = 2^9` entries (`9` inner bits!), so outer index takes remaining `32 - 12 - 9 = 11` bits (not `10` & `10`!). | **CORRECT (11).** Offset = 12, Inner = 9, Outer $b = 32 - 21 = 11$. | Clean. |
+| 20 | `2024_FN_Q12` | Ch 01 / L01.3 | Properties of Threads (shared vs private resources & user/kernel implementation). | Threads share heap/FDs/globals (`B` false), have private stacks (`C` false), can be user-space (`A` false), and share memory with zero hardware protection (`D` true). | **CORRECT (D).** Only D is true across process threads. | Clean. |
+| 21 | `2024_AN_Q28` | Ch 05, 06 / L05.2, L06.1 | Hardware MMU tasks vs OS Kernel tasks in paging. | OS allocates page tables on process creation (`A` is OS!); MMU translates VA->PA and raises Invalid/Protection traps (`B, C, D`). | **CORRECT (B, C, D).** Standard hardware MMU vs OS boundary. | Clean. |
+| 22 | `2024_FN_Q26` | Ch 01 / L01.1 | Illegal process state transitions (asking **NOT possible**!). | Watch `"NOT possible"`! Blocked process must move `Waiting -> Ready`, NEVER `Waiting -> Running`; Ready process cannot block (`Ready -> Waiting`). | **CORRECT (B, C).** `Waiting -> Running` and `Ready -> Waiting` are impossible. | Clean. |
+| 23 | `2024_AN_Q12` | Ch 01, 06 / L01.1, L06.1 | Events **always** forcing running process P to a non-running state. | Blocking syscall & page fault MUST take P off CPU (`A, B`); disk interrupt for *other* process or timer tick needn't always evict P (`C, D` false). | **CORRECT (A, B).** Blocking syscall -> Waiting; Page fault -> Waiting. | Clean. |
+| 24 | `2024_AN_Q54` | Ch 02 / L02.1, L02.2 | Comparing Average Waiting Time of Preemptive SRTF vs Non-Preemptive SJF. | In NP-SJF, `A` runs full `0..10` uninterrupted before `C, B, D` run! | **CORRECT (B: SRTF = 6, NP-SJF = 7.5).** SRTF WTs: `A=16, B=3, C=0, D=5` (`24/4=6`); NP-SJF WTs: `A=0, C=6, B=11, D=13` (`30/4=7.5`). | Clean. |
+| 25 | `2024_FN_Q64` | Ch 03 / L03.1 | Interleaving two threads executing atomic lines updating shared `a, b`. | `(a=3, b=3)` is only possible if `a` doubles AFTER `a` increments or increments AFTER `a` doubles (`1*2 + 1 = 3`)! | **FACT-DOUBT (CODE MIS-TRANSCRIPTION)!** Printed T2 line **`a = 2 + a;`** makes `a` ALWAYS equal `1 + 1 + 2 = 4`, making `(a=3, b=3)` in official key **A** impossible! Intended GATE 2024 code was **`a = 2 * a;`**, which yields `{(4,4), (3,3), (4,3)}` (`A`). | **MIS-TRANSCRIPTION:** T2 line `a = 2 + a;` should be `a = 2 * a;`! |
+| 26 | `2024_AN_Q44` | Ch 03 / L03.2 | Semaphore deadlock when `T1` calls `wait(s2)` while still holding `s1`. | If `T1` starts first, `T1` prints `1` and holds `s1` while blocking on `s2`, blocking `T2` on `s1` (deadlock!); if `T2` starts first, both print `1, 2` cleanly! | **CORRECT (B, C).** A requires `T1` to wake from `wait(s2)` before `T2` signals `s2` (impossible); D cannot deadlock because `T2` signals `s2` & `s1`. | Clean. |
+| 27 | `2024_AN_Q61` | Ch 07 / L07.2 | Random disk sector read time (`seek + avg_rot + transfer` × 3000 sectors). | `6000 RPM` -> `10 ms/rot`, avg rot = `5 ms`, transfer = `10/500 = 0.02 ms`. Random reads don't share seeks! | **CORRECT (30.06, inside 29.50–30.50).** $3000 \times (5 + 5 + 0.02)\text{ ms} = 30060\text{ ms} = 30.06\text{ s}$. | Clean. |
+| 28 | `2024_FN_Q39` | Ch 07 / L07.2 | Hard disk geometry (`Capacity = Surfaces × Cylinders × Sectors/Track × SectorSize`). | `512 GB = 2^{39} B`, not $512 \times 10^9$ (powers of 2 give clean integer!). | **CORRECT (4096).** $2^{39} / (32 \times 4096 \times 1024) = 2^{39} / (2^5 \cdot 2^{12} \cdot 2^{10}) = 2^{12} = 4096$. | Clean. |
+| 29 | `2024_FN_Q53` | Ch 01 / L01.2 | `fork()` inside `while` loop combined with `wait(NULL)`. | `wait(NULL)` serializes parent behind child YET does NOT reduce total `fork()` calls (`1 + 2 + 4` children, printing `2 + 4 + 8 = 14` times!). | **CORRECT (14).** At `x=3`: 2 processes print; at `x=2`: 4 processes print; at `x=1`: 8 processes print. Total = `14`. | Clean. |
+| 30 | `2024_FN_Q50` | Ch 05 / L05.2 | Decimal virtual-to-physical paging address translation (`VA = 2500`, `2 KB` page). | Both VA and PA start at 0; `2 KB = 2048 B` (not `2000 B`!). | **CORRECT (6596).** Page = $\lfloor 2500/2048 \rfloor = 1$, Offset = $2500 - 2048 = 452$. Page `1` -> Frame `3`. PA = $3 \times 2048 + 452 = 6596$. | Clean. |
+| 31 | `2024_AN_Q47` | Ch 05 / L05.3 | Demand-paged 2-level page table minimum & maximum page table size for 2000 active pages. | Outer directory (1 page) is ALWAYS allocated at creation; 1024 entries/page caps max inner tables at `1024` (not `2000`!)! | **CORRECT (1028).** Min $X = 1 + \lceil 2000/1024 \rceil = 1 + 2 = 3$. Max $Y = 1 + \min(2000, 1024) = 1025$. $X + Y = 1028$. | Clean. |
+| 32 | `2023_FN_Q22` | Ch 01 / L01.3 | Context switch between two threads of the **same process**. | Page Table Base Register (`A`) is shared across threads of the same process -> NOT saved/switched! | **CORRECT (B, C, D).** Stack pointer, PC, and general registers are private per thread. | Clean. |
+| 33 | `2023_FN_Q23` | Ch 00 / L00.1 | Operations guaranteeing User Mode -> Kernel Mode transition. | Function call (`A`) stays in user space; `malloc` (`B`) reuses user heap free-list without syscall when space exists! | **CORRECT (C, D).** Page fault (MMU trap) and System call always enter Kernel Mode. | Clean. |
+| 34 | `2023_FN_Q27` | Ch 02 / L02.1, L02.2 | Identifying CPU scheduling policies that can **potentially** cause starvation. | Official key includes **FCFS/FIFO (A)** because an infinite-burst process ahead starves later jobs (unlike RR which preempts by quantum!). | **CORRECT (A, C, D).** Priority & SJF starve under continuous arrivals; FCFS starves if a prior job loops forever on CPU (`potentially`); RR guarantees bounded turns. | Clean. |
+| 35 | `2023_FN_Q38` | Ch 03 / L03.1, L03.2 | Minimum final value of shared `X` under binary (`s=1`) vs counting (`s=2`) semaphore. | With `s=2`, 1 `decr` can read stale `10`, let all 5 `incr`s finish (`X=15`), overwrite `X=9`, and let remaining 2 `decr`s drop `X` to `7`! | **CORRECT (C: 12, 7).** `I-1` gives mutual exclusion ($V_1 = 10+5-3 = 12$); `I-2` allows $V_2 = 7$ (`10 - 3`!). | Clean. |
+| 36 | `2023_FN_Q42` | Ch 05 (COA Crossover) | Memory block interleaving / Chip-Select (`IA4, IA3` decoder) starting addresses. | `CS` uses middle bits `(IA4, IA3)` while `IA11..5` and `IA2..0` are `0` -> blocks start at `0, 8, 16, 24`, NOT `0, 1024, 2048, 3072`! (Note: COA hardware question placed in OS bank). | **CORRECT (C: `0, 8, 16, 24`).** Setting `IA11..5 = 0, IA2..0 = 0` and `(IA4, IA3) \in \{00, 01, 10, 11\}` gives $0, 8, 16, 24$. | **MISSING FIGURE** (`[IMAGE_Q_42_1]`, though solvable from text). Flag COA mis-categorization. |
+| 37 | `2023_FN_Q57` | Ch 06 / L06.2 | C row-major 2-D array `D[128][128]` traversed column-wise `D[j][i]` under 30-frame LRU. | `128×128 / 512 = 32` total pages > `30` frames! In LRU, touching `0..31` in sequence evicts `0` right before pass `i+1` needs `0`! | **CORRECT (4096).** Every inner pass (`128` iterations of `i`) touches all `32` pages sequentially with `30` LRU frames -> `32` faults/pass $\times 128 = 4096$. | Clean. |
+| 38 | `2023_FN_Q58` | Ch 05 / L05.3 | Number of levels `L` in 57-bit tree-structured multi-level page table. | `4 KB` page / `8 B` PTE = `512 = 2^9` entries (`9` bits/level); `57 - 12 = 45` VPN bits! | **CORRECT (5).** $L = \lceil 45 / 9 \rceil = 5$. | Clean. |
+| 39 | `2022_FN_Q19` | Ch 03 / L03.3 | Initializing 3 binary semaphores for cyclic sequence `BCABCABCA...`. | `T2` must start first (`print B` -> `signal(S3)` -> `T1` `C` -> `signal(S2)` -> `T3` `A` -> `signal(S1)`). | **CORRECT (C: `S1=1, S2=0, S3=0`).** Only `T2` (`wait(S1)`) is initially unblocked, triggering the exact `B -> C -> A` ring. | Clean. |
+
+---
+
+`CONTINUE FROM PART 6 (PYQ #40)`
+
+## PART 6 (Continued) · Batch 2: Questions #40 to #78
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 40 | `2022_FN_Q26` | Ch 04 / L04.1, L04.2 | Deadlock RAG cycles (single vs multi-instance) & Unsafe vs Deadlock. | Multi-instance Wait-For cycle does NOT confirm deadlock (`B` false); Unsafe does NOT guarantee deadlock (`C` false)! | **CORRECT (A, D).** A: Circular wait is Coffman necessary condition. D: Only assignment edges -> nobody waiting -> no deadlock. | Clean. |
+| 41 | `2022_FN_Q38` | Ch 05 / L05.3 | TLB lookup, Cache miss after TLB hit, and Inverted vs Hashed PT costs (asking **FALSE**!). | Inverted page table must search/probe by hash or scan, so memory access time varies across VAs (`C` is FALSE)! | **CORRECT (C).** A (parallel TLB), B (TLB hit implies RAM resident), and D (hash collision chains differ) are true; C is false. | Clean. |
+| 42 | `2022_FN_Q42` | Ch 02 / L02.2 | Round Robin (`q=4`) context-switch tracing & impossible burst combination. | Termination counts as a context switch! Check `R -> Q` count! | **CORRECT (D: `P=3, Q=7, R=7, S=3`).** A, B, C produce `P->Q->R->S->Q->R->Q` (satisfies `S->Q:1, R->Q:1, Q->R:2`). D gives `P->Q->R->S->Q->R` (both finish in Round 2, so **0** `R->Q` switches!). | Clean. |
+| 43 | `2022_FN_Q63` | Ch 07 / L07.1 | Disk I/O cost of inserting a block in the middle of Contiguous vs Linked files. | Contiguous shifts blocks 51..100 right (`50` reads + `50` writes + `1` new write = `101`); Linked walks blocks 1..50 (`50` reads) + writes new block (`1`) + updates block 50 pointer (`1`) = `52`! | **CORRECT (153).** $n_A = 101$, $n_B = 52 \implies n_A + n_B = 153$. | Clean. |
+| 44 | `2022_FN_Q64` | Ch 06 / L06.2 | LRU page replacement with 4 frames & decimal **page fault rate**. | Don't report percentage (`60`)! Report ratio `faults / accesses` (`0.6`). | **CORRECT (0.6).** Faults on refs `{1,2,4,6,8,9,10,12,13}` = 9 faults out of 15 accesses -> $9/15 = 0.6$. | Clean. |
+| 45 | `2021_FN_Q31` | Ch 05 / L05.1, L05.2 | Properties of Paging (external fragmentation, internal impact, PT overhead, multi-level). | Multi-level paging shrinks contiguous PT space, NOT to support mixed page sizes (`D` false); larger pages raise internal fragmentation (`B` false). | **CORRECT (A, C).** Eliminates external fragmentation (A) and costs page table RAM overhead (C). | Clean. |
+| 46 | `2021_FN_Q60` | Ch 00 / L00.1 | Standard C library calls **always** triggering a kernel system call (`exit`, `sleep` vs `malloc`, `strlen`). | `malloc` manages user heap chunks in `libc` without calling `brk`/`mmap` every time! | **CORRECT (A, C).** `exit` (`_exit`) and `sleep` (`nanosleep`) always invoke syscalls; `strlen` never does; `malloc` only when heap pool needs expansion. | Clean. |
+| 47 | `2021_AN_Q29` | Ch 02 / L02.1, L02.2 | CPU scheduling goals, Turnaround = Wait + Burst, Round Robin & timer hardware. | B wrongly says *"minimize throughput"*! C is true (RR needs no burst sizes); D is true (needs timer interrupt). | **CORRECT (A, C, D).** Standard CPU scheduling fundamentals. | Clean. |
+| 48 | `2021_FN_Q34` | Ch 07 / L07.1 | Linear-list directory operations necessarily requiring a **full scan**. | Opening/Deleting stop early on match; **Creating** & **Renaming** must verify the target name doesn't appear ANYWHERE in the list! | **CORRECT (A, C).** Full duplicate check required for Create and Rename. | Clean. |
+| 49 | `2021_FN_Q14` | Ch 02 / L02.1 | Minimum achievable non-preemptive average waiting time (SJF optimality). | Order shortest-first `10 -> 16 -> 20` at `t = 0`. | **CORRECT (12).** WTs = `0, 10, 26`; Avg = `36 / 3 = 12 ms`. | Clean. |
+| 50 | `2021_AN_Q41` | Ch 01 / L01.3 | Separate processes (`P1, P2`) vs shared threads (`T1, T2`) updating global `x` and local `y`. | `P1` and `P2` do NOT share global `x`! Each thread gets its own private stack `y = 0`. | **CORRECT (A, D).** Both `P1, P2` print `x = 2`; all 4 threads print `y = 1`. | Clean. |
+| 51 | `2021_AN_Q13` | Ch 03, 04 / L03.3, L04.1 | Preempt-and-restart resource lock scheme (Deadlock vs Livelock vs Starvation). | Terminating holder `P` guarantees deadlock-freedom (`A`), yet repeated preemption/restart can ping-pong forever (`B` livelock, `C` starvation)! | **CORRECT (A, B, C).** Mutual exclusion (`D`) is preserved since `R` is exclusively owned. | Clean. |
+| 52 | `2021_FN_Q59` | Ch 03 / L03.1, L03.2 | Double `wait(S)` with `S=5` (deadlock vs non-atomic `counter++` min value). | All 5 threads taking 1st permit drops `S` from 5 to 0 -> Deadlock (`D`)! If 2 enter together, 1 thread can keep stale `0` until all others exit, leaving `counter = 1` (`B`)! | **CORRECT (A, B, D).** Serial gives `5` (A); stale overwrite gives `1` (B); double-wait blocks all 5 (D); `0` is impossible (C). | Clean. |
+| 53 | `2021_AN_Q62` | Ch 05 / L05.3 | Minimum total page-table memory across 3 levels for 2 GB mapped process. | Must know exact 3-level bit splits from diagram (e.g. `9|9|9|12` -> `1 + 2 + 1024 = 1027` pages × `4 KB` = `4108 KB`). | **CANNOT VERIFY** (Key: 4108). Figure `[IMAGE_Q_62_1]` is missing (standard `9-9-9-12` matches `4108`). | **MISSING FIGURE** (`[IMAGE_Q_62_1]`). |
+| 54 | `2020_FN_Q14` | Ch 05 / L05.1 | Guaranteed leftover-hole inequality across First, Best, Worst, and Next Fit. | Best-Fit picks the *smallest* fitting hole, so its leftover fragment can NEVER exceed First-Fit's leftover (`C` true)! | **CORRECT (C).** A, B, D fail via simple counterexample hole sequences. | Clean. |
+| 55 | `2020_FN_Q18` | Ch 01 / L01.1 | Legal state transitions in preemptive OS (`Blocked -> Running` is false!). | Blocked must always wake up into Ready queue first (III false). | **CORRECT (C: I, II and IV only).** | Clean. |
+| 56 | `2020_FN_Q38` | Ch 03 / L03.2 | N-process Barrier (`count == n` unlocking turnstile `wait(b); signal(b);`). | All `n` processes pass Q together once the last (`n`-th) process triggers `signal(b)`! | **CORRECT (A).** No process enters Q before all `n` complete P. | Clean. |
+| 57 | `2020_FN_Q40` | Ch 07 / L07.2 | SSTF disk scheduling trace from cylinder `100` (asking **FALSE**!). | Watch `"FALSE"`! From `100`: `110 (R)` -> `115 (T)` -> `85 (Q)` -> `30 (S)` -> `155 (P)`. | **CORRECT (B).** `Q` is serviced *after* `T` and *before* `S`, opposite of B! | Clean. |
+| 58 | `2020_FN_Q61` | Ch 02 / L02.1, L02.2 | Difference between SJF and Round Robin (`q=4`) average turnaround times. | Need burst table to compute exact CT/TAT. | **CANNOT VERIFY** (Key: 5.25). Figure `[IMAGE_Q_61]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_61]`). |
+| 59 | `2020_FN_Q37` | Ch 06 / L06.1 | Combined TLB + Page Fault + Dirty Writeback EMAT calculation. | **MAJOR WORDING TRAP:** Gives `155.0 ns` ONLY if 10% page fault rate is applied to *TLB misses* (`0.05 * 0.1`), NOT all memory accesses (`~720 ns`)! | **KEY VERIFIED WITH AMBIGUITY NOTE (155.0 inside `154.5–155.5`).** `0.95*(20+100) + 0.05*(0.9*(20+100+100) + 0.1*(20+100+0.8*5000+0.2*10000+100)) = 114 + 41 = 155.0 ns`. Must explicitly warn students about the conditional-probability assumption! | **AMBIGUOUS WORDING** (`page fault rate` treated as conditional on TLB miss). |
+| 60 | `2019_FN_Q29` | Ch 01 / L01.2 | Counting **child** processes created by `fork()` on even iterations (`0,2,4,6,8`). | Question asks **child** processes ($2^5 - 1 = 31$), NOT total processes ($32$)! | **CORRECT (31).** 5 `fork()` executions -> $2^5 - 1 = 31$ children. | Clean. |
+| 61 | `2019_FN_Q32` | Ch 03 / L03.1 | Min/Max final value of shared variable `D` across 3 unsynchronized threads. | Need pseudocode of P1, P2, P3 to trace `LOAD/OP/STORE` bounds. | **CANNOT VERIFY** (Key: 80). Figure `[IMAGE_Q_32]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_32]`). |
+| 62 | `2019_FN_Q42` | Ch 05 / L05.2, L05.3 | Maximum distinct **word-addressable** virtual addresses translated by 128-entry TLB. | **Word-addressable (`4 B`)!** Each `8 KB` page holds `8192 / 4 = 2048` (`2K`) addresses, NOT `8K`! | **CORRECT (B: `256 × 2^{10}`).** `128 × 2048 = 2^7 × 2^{11} = 2^{18} = 256 × 2^{10}`. | Clean. |
+| 63 | `2019_FN_Q43` | Ch 04 / L04.2 | Symbolic deadlock guarantee when only processes `p, q` need `0` more instances (`Y_p = Y_q = 0`). | Once `p` and `q` finish, `Available` becomes $X_p + X_q$; nobody else can finish iff $X_p + X_q < \min\{Y_k\}$. | **CORRECT (A).** Strict `< min` blocks every remaining process $k \neq p, q$. | Clean. |
+| 64 | `2019_FN_Q51` | Ch 02 / L02.2 | Backward SRTF problem finding unknown burst `Z` given average waiting time `1 ms`. | Need arrival/burst table to trace SRTF. | **CANNOT VERIFY** (Key: 2). Figure `[IMAGE_Q_51]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_51]`). |
+| 65 | `2019_FN_Q63` | Ch 07 / L07.1 | Unix Inode maximum file size (`12` direct, `1` single, `1` double indirect; `4 kB` block, `32-bit` ptr). | Dual official range covers `4096 B` (`4.00 GB`) vs `4000 B` (`3.73 GB` divided by `2^{30}`). | **CORRECT (`4.0–4.1` or `3.7–3.8`).** `(12 + 1024 + 1024^2) × 4096 / 2^{30} = 4.004 GB`. | Clean (dual unit convention). |
+| 66 | `2018_FN_Q20` | Ch 06 / L06.1 | Algebraic formula for page fault rate `p` from hit time `M`, fault time `D`, and effective time `X`. | Solve $X = (1-p)M + pD$ for $p$. | **CORRECT (B: `(X - M)/(D - M)`).** Standard EMAT rearrangement. | Clean. |
+| 67 | `2018_FN_Q34` | Ch 04 / L04.2 | Largest `K` instances needed per process (`3` processes, `4` resources) to always avoid deadlock. | Test $3(K - 1) + 1 \le 4 \implies K \le 2$. | **CORRECT (2).** At `K = 3`, each holds 2? Wait: 3 processes can't hold 2 each with 4 total (`2+1+1=4` deadlocks if all need 1 or 2 more!). Max `K = 2`. | Clean. |
+| 68 | `2018_FN_Q49` | Ch 04 / L04.2 | Banker's Safety Algorithm with 3 resources (`E, F, G`) and `Available = (3, 3, 0)`. | `Need = Max - Alloc`: `P0=(3,3,0), P1=(1,0,2), P2=(0,3,0), P3=(3,4,1)`. Note `P0` & `P2` need `0` of `G`! | **CORRECT (A: Safe state).** Sequence `P0 -> P2 -> P1 -> P3` succeeds with `Work = (3,3,0) -> (4,3,1) -> (5,3,4) -> (6,4,6) -> (8,4,6)`. | Clean. |
+| 69 | `2018_FN_Q50` | Ch 03 / L03.3 | Producer-Consumer semaphores with **swapped** variable meanings (`full = N`, `empty = 0`). | Read the question's definitions instead of textbook habit! Here `full = N` = empty slots! | **CORRECT (C: `P:full, Q:empty, R:empty, S:full`).** Producer waits on `full` (empty slots), signals `empty` (filled items); Consumer does opposite. | Clean. |
+| 70 | `2018_FN_Q63` | Ch 07 / L07.2 | SSTF disk power calculation (`20 mW / 100 cyl`, `15 mW / reversal`, ignore platter/sector). | At `72`, `116` (`44` away) is closer than `20` (`52` away), causing **3 reversals**: `80->86->72->116->134->20->16`! | **CORRECT (85).** Seek = `6 + 14 + 44 + 18 + 114 + 4 = 200` cyl (`40 mW`) + `3` reversals (`45 mW`) = `85 mW`. | Clean. |
+| 71 | `2017_AN_Q14` | Ch 01 / L01.3 | Identifying resource shared by all threads in a process (`Address space` only). | PC, Stack, and Registers are private per thread. | **CORRECT (B: III only).** | Clean. |
+| 72 | `2017_AN_Q21` | Ch 07 / L07.1 | File allocation methods free from external fragmentation (`Linked` & `Indexed`). | Contiguous allocation suffers external fragmentation. | **CORRECT (D: II and III only).** | Clean. |
+| 73 | `2017_FN_Q25` | Ch 01 / L01.3 | Threads of a process share both heap and global variables. | Both global/data and heap live in shared process address space. | **CORRECT (D).** | Clean. |
+| 74 | `2017_FN_Q34` | Ch 02 / L02.2 | Preemptive SRTF average waiting time from arrival/burst table. | Need arrival/burst table to trace preemptions. | **CANNOT VERIFY** (Key: 3.0). Figure `[IMAGE_Q_34]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_34]`). |
+| 75 | `2017_FN_Q61` | Ch 03 / L03.2 | Minimum threads `x` and non-reentrant locks `y` needed to cause deadlock. | Single thread (`x = 1`) acquiring one non-reentrant lock (`y = 1`) twice blocks on itself forever! | **CORRECT (D: `x=1, y=1`).** | Clean. |
+| 76 | `2017_AN_Q42` | Ch 04 / L04.2 | Determining Safe/Deadlocked state for 3 processes sharing 9 tape drives. | Need Allocation/Max table to compute `Need` & `Available`. | **CANNOT VERIFY** (Key: B). Figure `[IMAGE_Q_42]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_42]`). |
+| 77 | `2017_FN_Q36` | Ch 06 / L06.2 | Belady's anomaly in Random replacement vs LRU. | Random doesn't satisfy Stack Property (can suffer Belady's anomaly); LRU satisfies Stack Property (never suffers!). | **CORRECT (B: S1 true, S2 false).** | Clean. |
+| 78 | `2017_AN_Q57` | Ch 02 / L02.2 | Preemptive Priority scheduling (`0` highest) average waiting time. | Need arrival/burst/priority table. | **CANNOT VERIFY** (Key: 29.0). Figure `[IMAGE_Q_57]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_57]`). |
+
+---
+
+## PART 7. MORE QUESTIONS NEEDED (3 New Ideas Per Lesson)
+
+### Chapter 00 · OS Foundations
+- **Lesson 00.1 (`OS, Dual Mode, Interrupts & Syscalls`):**
+  1. Which of the following CPU instructions (`HALT`, `ADD`, `CLI` disable interrupts, `MOV` stack register, loading `PTBR`) MUST be privileged? (`MSQ`).
+  2. Trace the exact privilege mode transitions when a C program executes `printf("Hi\n");` with buffered vs unbuffered output (`MCQ`).
+  3. Contrast asynchronous hardware interrupts, synchronous `syscall` traps, and synchronous page-fault exceptions (`MSQ`).
+
+### Chapter 01 · Processes, `fork()`, Threads & IPC
+- **Lesson 01.1 (`Process Anatomy, PCB & States`):**
+  1. A uniprocessor runs 4 processes each spending `80%` of time waiting for I/O; find minimum CPU utilization percentage (`NAT`).
+  2. When Process `P1` switches to `P2`, which hardware registers and OS structures MUST change vs stay untouched (`MSQ`)?
+  3. Identify legal transitions in a **7-state** model including `Suspended Ready` and `Suspended Blocked` (`MSQ`).
+- **Lesson 01.2 (`fork(), wait(), exec()`):**
+  1. How many total processes and how many `"GATE"` prints happen in `if (fork() && fork()) fork(); printf("GATE\n");`? (`NAT`).
+  2. Suppose `printf("A"); fork(); printf("B\n");` runs without `\n` before `fork()`: how many `A`s and `B`s print due to `stdout` buffering? (`NAT`).
+  3. Compare process state transitions and PID retention across `fork()`, `exec()`, `wait()`, and `exit()` (Zombie vs Orphan) (`MSQ`).
+- **Lesson 01.3 (`Threads & IPC`):**
+  1. Contrast `Many-to-One`, `One-to-One`, and `Many-to-Many` thread models when one user thread performs a blocking `read()` on a 4-core CPU (`MSQ`).
+  2. In an OS with process `P` containing 3 threads, one thread opens a file (`fd = 4`) and calls `malloc`: which other threads can access `fd = 4` and the allocated pointer? (`MCQ`).
+  3. Compare Shared Memory vs Message Passing IPC on kernel involvement per message and synchronization requirement (`MSQ`).
+
+### Chapter 02 · CPU and I/O Scheduling
+- **Lesson 02.1 (`Scheduling Metrics, FCFS & SJF`):**
+  1. Using exponential burst averaging $\tau_{n+1} = 0.5 t_n + 0.5 \tau_n$ with $\tau_0 = 10$ and actual bursts `6, 4, 8`, compute predicted $\tau_3$ (`NAT`).
+  2. Four jobs arrive staggered (`0, 2, 5, 6`) with idle gaps: trace NP-SJF and compute average Response Time vs average Waiting Time (`NAT`).
+  3. Which statements accurately compare Convoy Effect, Aging, and Turnaround Time across FCFS and SJF? (`MSQ`).
+- **Lesson 02.2 (`SRTF, RR & Priority`):**
+  1. Trace Round Robin (`q = 3`) with **Context Switch Overhead = 1 ms** per switch for 3 processes and compute total CPU busy efficiency percentage (`NAT`).
+  2. Given 4 processes in RR (`q = 4`) arriving at `0, 1, 2, 3`, compare total context switches under "new arrival enters queue before preempted job" vs opposite tie-breaker (`NAT`).
+  3. Solve for arrival time `X` of `P3` in preemptive Priority scheduling (`0` highest) so average waiting time equals `4.5 ms` (`NAT`).
+- **Lesson 02.3 (`Multi-Processor, CPU-I/O & Real-Time`):**
+  1. Given 2 periodic real-time tasks `(C1=2, T1=5)` and `(C2=2, T2=6)`, test schedulability under Rate Monotonic Scheduling (RMS) vs Earliest Deadline First (EDF) (`MSQ`).
+  2. Trace a 3-level Multilevel Feedback Queue (`q=2`, `q=4`, `FCFS`) for a job of burst `11 ms` and report which queue finishes it and its total wait (`NAT`).
+  3. Trace 2 identical cores scheduling 5 jobs with an asymmetric I/O wait inside one job (`NAT`).
+
+### Chapter 03 · Concurrency and Synchronization
+- **Lesson 03.1 (`Race Conditions, Peterson & Spinlocks`):**
+  1. Given a broken version of Peterson's algorithm (`turn` updated *before* `flag[i] = true`), identify which of Mutual Exclusion, Progress, or Bounded Waiting breaks (`MCQ`).
+  2. Two threads execute `x = x + 2` and `x = x * 3` non-atomically (`LOAD/OP/STORE`) starting from `x = 1`: find all possible final values of `x` (`MSQ`).
+  3. Explain why Priority Inversion occurs when a high-priority thread spins on a `TestAndSet` lock held by a low-priority thread on a single CPU (`MCQ`).
+- **Lesson 03.2 (`Semaphores, Barriers & Output Order`):**
+  1. Initialize counting/binary semaphores `S1, S2` so Thread A runs strictly between two executions of Thread B (`BABAB...`) (`MCQ`).
+  2. A counting semaphore `S` starts at `5`; after `12` `wait(S)` and `9` `signal(S)` operations (some blocking), check valid/invalid states and queue length (`NAT`).
+  3. Trace `wait(a); wait(b);` vs `wait(b); wait(a);` in two processes to determine exact deadlock probability scenarios (`MSQ`).
+- **Lesson 03.3 (`Classic Sync, Monitors & Livelock`):**
+  1. Identify why First Readers-Writers starves Writers while a turnstile-guarded Readers-Writers prevents Writer starvation (`MCQ`).
+  2. Compare Dining Philosophers deadlock-free fixes (asymmetric pick, `N - 1` room limit, atomic pick-both) on starvation and concurrency (`MSQ`).
+  3. Why must a thread waiting on a Mesa-style Monitor condition variable re-check `while (!ready) c.wait();` instead of `if (!ready) c.wait();`? (`MCQ`).
+
+### Chapter 04 · Deadlocks
+- **Lesson 04.1 (`Coffman, Prevention & RAG`):**
+  1. Given a multi-instance RAG with 2 cycles, determine whether the system is deadlocked by running cycle-reduction (`MCQ`).
+  2. Match 4 real OS lock protocols (e.g. numbered lock ordering, lock-all-or-nothing, lock preemption) to which Coffman condition each breaks (`MCQ`).
+  3. Find the minimum number of edges to flip/delete in a 5-process single-instance RAG to make it deadlock-free (`NAT`).
+- **Lesson 04.2 (`Banker's, Detection & Resource Math`):**
+  1. Three processes need max `3, 4, 5` instances of resource `R` respectively: find the minimum total instances guaranteeing deadlock-freedom (`NAT`).
+  2. In a Banker's snapshot, Process `P1` requests `(1, 0, 2)`: check whether granting immediately leaves the system in a safe state (`MCQ`).
+  3. Given `Allocation` and current `Request` matrices (Detection algorithm, NO `Max`!), identify exactly which subset of processes is deadlocked (`MSQ`).
+
+### Chapter 05 · Memory Management
+- **Lesson 05.1 (`Address Binding, Partitioning & Fit Policies`):**
+  1. Using a roving pointer (`Next Fit`) starting at hole #3 on 6 holes, trace 3 allocations and report wasted external fragments (`NAT`).
+  2. Compare MMU relocation + limit checks against illegal out-of-bounds memory access traps (`MCQ`).
+  3. Given process average size `s = 64 KB` and page table entry `e = 8 B`, find optimal page size minimizing internal fragmentation + PT overhead (`NAT`).
+- **Lesson 05.2 (`Paging, Bit-Splitting & Word Addressing`):**
+  1. A word-addressable system has `48-bit` physical address, `2 B` word size, and `16 KB` page size: find physical frame number bits (`NAT`).
+  2. A `36-bit` virtual address space uses `8 KB` pages and `4 B` PTEs (valid/dirty/R/W flags): find size of the flat page table in MB (`NAT`).
+  3. Which PTE flag bits get modified by hardware MMU vs OS kernel during a read vs write to a clean page? (`MSQ`).
+- **Lesson 05.3 (`TLB, Multi-Level, Inverted & Hashed PTs`):**
+  1. A 2-level paging system has `90%` TLB hit rate (`10 ns` TLB, `100 ns` RAM): compute EMAT assuming no page faults (`NAT`).
+  2. Contrast Inverted Page Table size vs Flat Page Table size on a `64-bit` VA machine with `16 GB` RAM (`4 KB` pages, `8 B` PTEs) (`NAT`).
+  3. Given a Segmented-Paging address `<Seg 2, Page 5, Offset 120>` with segment/page tables, compute the physical address or detect segment-limit trap (`NAT`).
+
+### Chapter 06 · Virtual Memory
+- **Lesson 06.1 (`Demand Paging, Page Faults & EMAT`):**
+  1. A CPU instruction `ADD [A], [B]` touches 3 different pages (instruction + 2 operands): how many page faults can ONE instruction trigger in worst case? (`NAT`).
+  2. Given `t_TLB = 10 ns`, `t_RAM = 80 ns`, `TLB hit = 90%`, `page fault = 0.01%` of **all** memory accesses (`5 ms` clean, `50%` dirty), compute EMAT in ns (`NAT`).
+  3. Explain why a page fault handler restarts the faulted instruction rather than skipping to `PC + 4` (`MCQ`).
+- **Lesson 06.2 (`Page Replacement, Belady & 2-D Array Loops`):**
+  1. Trace `1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5` on `3` frames vs `4` frames under **Clock (Second-Chance)** and count faults (`NAT`).
+  2. Contrast faults of row-major `A[i][j]` vs column-major `A[j][i]` for `int A[64][64]` (`1 KB` page, `4 B` int, `10` LRU frames) (`NAT`).
+  3. Which replacement policies among FIFO, Clock, LRU, LFU, Optimal, and MRU satisfy the Stack Property and avoid Belady's Anomaly? (`MSQ`).
+- **Lesson 06.3 (`Thrashing, Working Set & Copy-on-Write`):**
+  1. Given reference string and Working Set window $\Delta = 4$, find the total frames required by 3 concurrent processes at time `t = 8` (`NAT`).
+  2. After `fork()`, a parent with `1000` mapped pages writes to `12` pages while child writes to `8` *other* pages under Copy-on-Write: how many total physical frames hold data now? (`NAT`).
+  3. Identify symptoms and remedies for Thrashing (lowering multiprogramming vs adding more frames vs swapping vs increasing quantum) (`MSQ`).
+
+### Chapter 07 · File Systems and Disk
+- **Lesson 07.1 (`Files, Directories, Allocation & Inodes`):**
+  1. Compute total blocks needed for a **Free-Space Bitmap** on a `128 GB` disk with `4 KB` blocks (`NAT`).
+  2. A Unix Inode has `10` direct, `1` single, `1` double, and `1` triple indirect pointers (`1 KB` block, `4 B` ptr): find the block-offset range served by double indirect pointers (`MCQ`).
+  3. Compare Hard Link vs Soft Link behaviour when the original file is deleted and recreated with the same filename (`MSQ`).
+- **Lesson 07.2 (`Disk Geometry, Access Time & Disk Scheduling`):**
+  1. Compute total cylinder movements for `SCAN` vs `LOOK` vs `C-SCAN` (counting return sweep vs not counting) on request queue `[98, 183, 37, 122, 14, 124, 65, 67]` starting at `53` moving down (`NAT`).
+  2. Compare reading `100` **contiguous** sectors on the same track vs `100` **random** sectors on the same track at `7200 RPM` (`NAT`).
+  3. Given 5 data disks of `2 TB` each under RAID-0, RAID-1 (mirrored pairs), and RAID-5, compare usable capacity and single-disk fault tolerance (`MSQ`).
+
+---
+
+## PART 8. WHAT IS MISSING FROM THE SUBJECT
+
+Looking across the official GATE CS Operating Systems syllabus, `Part C` (78 PYQs), Galvin/OSTEP, Made Easy, and GateWallah, these topics are missing or buried without explicit coverage in `Part B.2`'s 7-chapter list:
+
+1. **Chapter 00 (Dual Mode, Privileged Instructions, Interrupts vs Traps vs Exceptions & C Library vs Syscalls):** Completely omitted from `Part B.2`, yet directly tested (`2023_FN_Q23`, `2021_FN_Q60`, `2024_AN_Q12`).
+2. **Wrong Order of Chapter 01 (`Deadlock` before `Processes` and `Sync`):** Placing Deadlock first only because it is free breaks zero-level dependency (`Processes/Locks -> Deadlock`).
+3. **`fork()` Loop/Short-Circuit Trees, `wait(NULL)`, `exec()`, Zombie/Orphan & Thread Shared-vs-Private Memory (`P1/P2` vs `T1/T2`):** Absent from `Part B.2` details, yet tested in almost every Process/Thread question (`2026_FN_Q63`, `2024_FN_Q53`, `2024_FN_Q12`, `2023_FN_Q22`, `2021_AN_Q41`, `2019_FN_Q29`, `2017_AN_Q14`, `2017_FN_Q25`).
+4. **Inter-Process Communication (IPC: Shared Memory, Message Passing, Pipes):** Named in `Part B.1` syllabus line, missing from `Part B.2` chapters.
+5. **CPU Scheduling Edge Topics:** Multi-processor scheduling (`2025_FN_Q38`), CPU-I/O loop Ready Queue entries (`2025_FN_Q29`), RR queue tie-breaking & context-switch rules (`2022_FN_Q42`), exponential burst prediction, `1 - p^n` CPU utilization, MLFQ, and Real-Time (RMS/EDF).
+6. **Synchronization Depth:** Non-atomic `LOAD/ADD/STORE` min/max interleavings (`2023_FN_Q38`, `2021_FN_Q59`, `2019_FN_Q32`), Peterson's / `TSL` / `CAS` with 3 CS criteria, Barriers (`2020_FN_Q38`), Monitors (Hoare vs Mesa), Spinlocks vs Sleep-Mutex, Priority Inversion, Livelock (`2021_AN_Q13`).
+7. **Memory & Paging Finer Math:** Word-addressable paging (`2019_FN_Q42`), TLB Reach (`2026_AN_Q54`), Non-divisible multi-level paging (`2025_AN_Q58`) & Min/Max demand-paged PT pages (`2024_AN_Q47`), Inverted vs Hashed PT lookup costs (`2022_FN_Q38`), Segmentation/Segmented Paging, Optimal Page Size, and explicit flagging of COA Memory Interfacing crossovers (`2023_FN_Q42`).
+8. **Virtual Memory Depth:** Limited-lookahead Optimal (`2025_FN_Q54`), LFU/MFU/Clock policies (`2025_AN_Q47`), Stack Property proof of Belady's Anomaly (`2017_FN_Q36`), 2-D C Array traversal page faults (`2023_FN_Q57`), Dirty-page EMAT conditional probability warning (`2020_FN_Q37`), Thrashing, Working Set, and Copy-on-Write (`fork()`).
+9. **File Systems & Disk Mechanics:** Linear directory full-scan rule (`2021_FN_Q34`), Unix Inodes (`2019_FN_Q63`), Linked free-list pointer overhead (`2026_AN_Q53`), Linked-allocation internal waste (`2025_FN_Q51`), Middle-insert disk I/O (`2022_FN_Q63`), 3-D disk geometry (`2024_FN_Q39`), 0-seek platter switching & reversal power costs (`2018_FN_Q63`), Random vs sequential sector reads (`2026_FN_Q59`, `2024_AN_Q61`), SCAN vs LOOK / C-SCAN vs C-LOOK, Hard vs Soft links, Journaling/`fsck`, and RAID basics.
+
+---
+
+## PART 9. WEIGHTS
+
+### Chapter Weight Tags & Comparison with the Bank (`Part B.3`)
+
+| Chapter (Reordered Logical Plan) | Proposed Weight Tag | Bank Stats (2017–2026, 15 CS Papers) | Does the Bank Weight Look Fair? |
+|---|---|---|---|
+| **Ch 00 · OS Foundations (Dual Mode & Syscalls)** *(New)* | **Foundation** (Mandatory before Ch 01) | Grouped inside Processes/Syscalls (`2023_FN_Q23`, `2021_FN_Q60`) | **Under-isolated in bank.** Giving Ch 00 its own short Foundation chapter prevents beginners from guessing on syscall/mode-bit/trap MSQs. |
+| **Ch 01 · Processes, `fork()`, Threads & IPC** *(Old Ch 02)* | **Medium-High** | 12 Qs / 14 marks (0.93%; asked 7/10 years — mostly 1-mark MCQs/MSQs + `fork()` NATs) | **Fair (note `Easy` skew!).** Notice 7 of 12 Qs in the bank are marked *Easy* — easy guaranteed marks (`fork()`, thread sharing, state transitions) once drawn visually! |
+| **Ch 02 · CPU & I/O Scheduling** *(Old Ch 03)* | **High** | 14 Qs / 21 marks (1.40%; asked 9/10 years) | **Fair.** Appears in 9/10 years and yields reliable 1–2 mark NAT/MCQ wins (`SRTF`, `FCFS`, `RR`). |
+| **Ch 03 · Concurrency & Synchronization** *(Old Ch 04)* | **High** | 11 Qs / 20 marks (1.33%; asked 9/10 years — almost all 2-markers!) | **Fair — slightly higher conceptual difficulty!** Notice 9 of 11 questions are 2-markers (`MSQ2×4, MCQ2×5`), making it one of the highest-impact 2-mark discriminators in OS! |
+| **Ch 04 · Deadlocks** *(Old Ch 01 — Move Here!)* | **Medium** | 9 Qs / 14 marks (0.93%; asked 7/10 years) | **Fair, though WRONG as Ch 01!** High ROI because `n(K-1)+1`, RAG cycles, and Banker's are very predictable once Synchronization is understood. |
+| **Ch 05 · Memory Management & Multi-Level Paging** | **Very High** | Merged with Ch 06: 21 Qs / 37 marks (2.47% of ALL GATE marks; asked 10/10 years!) | **Fair — #1 mark-getter in OS!** Roughly **30%** of all OS marks sit across Ch 05 + Ch 06, dominated by 2-mark NATs (`11` NAT2 questions!). |
+| **Ch 06 · Virtual Memory & Page Replacement** | **High** | Merged with Ch 05 (shared 21 Qs / 37 marks across 10/10 years) | **Fair (split from Ch 05 for clearer study pacing).** Exact standalone Ch 05 vs Ch 06 split outside this bank: **not sure**, though inside `Part C` both carry heavy 2-mark NAT weight! |
+| **Ch 07 · File Systems & Disk Scheduling** | **Medium-High** | 11 Qs / 20 marks (1.33%; asked 9/10 years — `8` NAT2 questions!) | **Fair — huge NAT ROI!** Almost entirely 2-mark numericals (`inode`, `linked`, `bitmap`, `seek/rot`, `SSTF`), so mastering 5 simple formulas guarantees near-full marks here! |
+
+### Overall Assessment of Bank Distribution (`8.4%` = ~8.4 marks/paper)
+- Across the 15 CS papers (2017–2026) in `Part B.3`, **Memory Management & Virtual Memory (`2.47%`)**, **CPU Scheduling (`1.40%`)**, **Synchronization (`1.33%`)**, and **File Systems & Disk (`1.33%`)** form the core ~`78%` of OS marks, with **Processes/Threads/Syscalls** and **Deadlocks** giving high-ROI Easy/Medium points.
+- Notice one strong pattern in `Part B.3`: out of 78 OS questions, **32 are NATs** (`23` of them 2-mark NATs!) — far higher numerical density than TOC (`10` NATs!). That means a zero-level student CANNOT just read theory; they MUST practice unit conversions ($2^{10}, 2^{20}, 2^{30}$, RPM->ms), Gantt traces, and page-table bit-slicing by hand. (Beyond the 2017–2026 bank provided, future exam frequency: **not sure**.)
