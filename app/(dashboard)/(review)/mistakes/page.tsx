@@ -5,6 +5,7 @@ import { SmartUpgrade } from "@/components/growth/smart-upgrade";
 import { LoadMore } from "@/components/system/load-more";
 import { ReviewTabs } from "@/components/layout/review-tabs";
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
+import { PyqSolution } from "@/components/exam/pyq-solution";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { GuestLocalNotice } from "@/components/auth/guest-local-notice";
@@ -575,6 +576,8 @@ export default function MistakesPage() {
                     )}
                   </div>
                 </div>
+
+                {activeMistake && <div className="flex-none max-h-[45vh] overflow-y-auto border-t border-[var(--border-subtle)] px-4 py-3"><PyqSolution questionId={activeMistake} /></div>}
 
                 {/* Bottom Bar: Moves Stats and Check answer action blocks */}
                 <div className="flex-none p-4 border-t border-[var(--border-subtle)] bg-[var(--surface-secondary)] z-10 w-full flex flex-col sm:flex-row gap-4 items-center justify-between shrink-0">

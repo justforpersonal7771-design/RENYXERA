@@ -531,6 +531,18 @@ export class IDBManager {
     }
   }
 
+  /** Every AI-memory record whose key starts with `prefix`, newest first (the Tutor history lists `chat_history_*`). */
+  public static async listAIMemory(prefix: string): Promise<{ key: string; value: any; updatedAt: string }[]> {
+    try {
+      const db = await this.initializeDatabase();
+      const all = (await db.getAll(STORE_AI_MEMORY)) as { key: string; value: any; updatedAt: string }[];
+      return all.filter((r) => typeof r.key === "string" && r.key.startsWith(prefix)).sort((a, b) => String(b.updatedAt).localeCompare(String(a.updatedAt)));
+    } catch (e) {
+      console.error(`Failed to list AI Memory for ${prefix}`, e);
+      return [];
+    }
+  }
+
   public static async deleteAIMemory(key: string): Promise<void> {
     try {
       const db = await this.initializeDatabase();

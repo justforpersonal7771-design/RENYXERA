@@ -172,6 +172,50 @@ Please explain this question, referencing the learner's weaknesses${context.curr
   }
 
   /**
+   * The written solution shown under an official PYQ ("Show solution"). Written once for everyone, so it never refers to a
+   * particular student: a clear, fixed structure (answer, key idea, steps, why each option, shortcut, trap) that a learner can follow
+   * from the top. Pre-generated in the background (app/api/ai/pregen) and read from the shared cache (app/api/solution).
+   */
+  public static buildSolutionPrompt(context: AIContext): { systemInstruction: string; prompt: string } {
+    const q = context.currentQuestion;
+    if (!q) throw new Error("No active question context provided for solution generation.");
+    const isChoice = q.question_type === "MCQ" || q.question_type === "MSQ";
+    const systemInstruction = `
+You write the worked solution for one GATE question, for a student who got it wrong or never knew how to start. ${PromptBuilder.paperLine(context)}
+The solution must be logically ordered, correct, and understandable on a first read.
+
+RULES
+1. The official answer is given in the question data (the options marked is_correct, or the NAT range). Your answer MUST match it. If your working disagrees, re-check the working, never the key.
+2. Start from what the question asks, then the one idea that solves it, then the steps. Define a term the first time you use it. Never skip an arithmetic line that a student could get wrong.
+3. Write 3 to 5 steps. Each step is one logical move (set up, apply the rule, compute, check), written as a short paragraph; keep a calculation together in its step.
+4. ${isChoice ? 'Give a one-line reason for EVERY option in "options": why the correct ones hold and exactly where each wrong one breaks.' : 'Omit "options" (this question has no options).'}
+5. "shortcut": a faster exam method if one honestly exists, else an empty string. "trap": the mistake most students make here, else an empty string.
+6. Plain, calm language. Do not mention AI, the student, their history, or this being generated. Do not praise or address the reader.
+7. Formulas inside text use LaTeX with double-escaped delimiters: inline \\\\( ... \\\\) and block \\[ ... \\].
+8. Output ONLY valid JSON, no markdown fences, in exactly this shape:
+{
+  "answer": "The final answer, e.g. 'B: 34, no overflow' or '12' for a NAT",
+  "idea": "The one idea this question tests, in one or two sentences",
+  "steps": ["Step 1 ...", "Step 2 ...", "Step 3 ..."],
+  "options": { "A": "why A is right or wrong", "B": "..." },
+  "shortcut": "",
+  "trap": "",
+  "formulas": ["Key formulas in LaTeX"]
+}
+`;
+    const prompt = `
+### Question
+- Subject: ${q.subject} · Topic: ${q.topic} · ${q.marks} mark(s) · ${q.question_type} · GATE ${q.year || ""}
+- Text: ${JSON.stringify(q.contentAst)}
+- Options (is_correct marks the official key): ${JSON.stringify(q.options || [])}
+- Official NAT range: ${JSON.stringify(q.nat_answer_range || "None")}
+
+Write the solution JSON.
+`;
+    return { systemInstruction, prompt };
+  }
+
+  /**
    * Generates Hint prompts.
    */
   public static buildHintPrompt(context: AIContext): { systemInstruction: string; prompt: string } {

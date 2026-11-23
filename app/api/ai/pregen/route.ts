@@ -82,8 +82,9 @@ export async function POST(req: NextRequest) {
     const kind = PREGEN_KINDS[cursor % PREGEN_KINDS.length];
 
     // Already done in an earlier pass → skip quickly.
-    const { data: prev } = await db.from("ai_pregen_items").select("status, attempts").eq("question_id", qid).eq("kind", kind).maybeSingle();
-    if (prev?.status === "done") { cursor++; continue; }
+    const { data: prev } = await db.from("ai_pregen_items").select("status, attempts, cache_key").eq("question_id", qid).eq("kind", kind).maybeSingle();
+    // EXPLAIN rows written before the SOLUTION format point at the old cache key: they are done again in the new format
+    if (prev?.status === "done" && (kind !== "EXPLAIN" || prev.cache_key === await sharedCacheKey("SOLUTION", qid))) { cursor++; continue; }
 
     const [{ data: q }, { data: opts }, { data: ans }] = await Promise.all([
       db.from("questions").select("*").eq("id", qid).maybeSingle(),
@@ -99,13 +100,14 @@ export async function POST(req: NextRequest) {
     };
     const context = { currentQuestion, studentStats: NEUTRAL_STATS, weakTopics: [], strongTopics: [], recentMistakes: [], bookmarks: [], activePlannerTasks: [], recentSessions: [], revisionQueue: [] };
     const route = AI_ROUTE[kind];
-    const key = await sharedCacheKey(kind, qid);
+    // the explanation step writes the student-neutral SOLUTION (buildSolutionPrompt) under its own key
+    const key = await sharedCacheKey(kind === "EXPLAIN" ? "SOLUTION" : kind, qid);
 
     try {
       const { systemInstruction, prompt } =
         kind === "HINT" ? PromptBuilder.buildHintPrompt(context as any)
         : kind === "SHORTCUT" ? PromptBuilder.buildShortcutPrompt(context as any)
-        : PromptBuilder.buildExplainPrompt(context as any);
+        : PromptBuilder.buildSolutionPrompt(context as any);
       const res = await getGoogleGenAIClient().models.generateContent({
         model: route.model, contents: prompt,
         config: { systemInstruction, responseMimeType: "application/json", maxOutputTokens: route.maxOutputTokens },

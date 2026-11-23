@@ -11,6 +11,7 @@ import { istHour } from "@/lib/time/ist";
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
+import { TutorHistory } from "@/components/mentor/tutor-history";
 import { useRouter } from "next/navigation";
 import { ArrowRight, BookOpen, BrainCircuit, CalendarPlus, Check, Loader2, MessageSquareText, Plus, Send, Sparkles, Target, Trash2, X, Zap } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
@@ -97,6 +98,7 @@ export default function AIMentorPage() {
 
       <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:block lg:columns-2 lg:gap-5">
         <div className="contents lg:[&>section]:mb-5 lg:[&>section]:break-inside-avoid">
+          <TutorHistory />
           {/* Quick ask: short questions only. */}
           <section className="card-well p-4 sm:p-5" data-tint="lilac" aria-label="Quick ask">
             <h2 className="font-display text-lg font-extrabold text-[var(--text-primary)]">Quick question</h2>

@@ -40,6 +40,19 @@ export class ConversationMemory {
     }
   }
 
+  /** Past Tutor chats, newest first: the question, the last thing said and when. Only chats with a student message count. */
+  public static async listConversations(): Promise<{ questionId: string; updatedAt: string; messages: number; lastUser: string; lastText: string }[]> {
+    const rows = await IDBManager.listAIMemory("chat_history_");
+    return rows.flatMap((r) => {
+      const h = Array.isArray(r.value) ? (r.value as ConversationHistoryMessage[]) : [];
+      if (!h.length) return [];
+      const lastUser = [...h].reverse().find((m) => m.role === "user")?.text ?? "";
+      const lastModel = [...h].reverse().find((m) => m.role === "model");
+      const lastText = lastModel?.data?.concept ?? lastModel?.text ?? "";
+      return [{ questionId: r.key.slice("chat_history_".length), updatedAt: r.updatedAt, messages: h.length, lastUser, lastText: String(lastText) }];
+    });
+  }
+
   /**
    * Clear conversation history.
    */

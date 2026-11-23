@@ -1,6 +1,7 @@
 "use client";
 
 import { ReportIssueButton } from "@/components/ui/report-issue-button";
+import { PyqSolution } from "@/components/exam/pyq-solution";
 
 import { useEffect, useState, useMemo, useRef } from "react";
 import { LearnLink } from "@/components/study/study-loop";
@@ -366,6 +367,8 @@ export default function ReviewPage() {
                     </div>
                   </motion.div>
                 </AnimatePresence>
+
+                {q && <div className="flex-none max-h-[45vh] overflow-y-auto px-4 pb-3 sm:px-6"><PyqSolution questionId={q.question_id} /></div>}
 
                 {/* BOTTOM ACTION BAR */}
                 <div className="flex-none px-4 py-3 sm:px-6 flex justify-between items-center gap-2 border-t border-[var(--border)] exam-foot z-20">

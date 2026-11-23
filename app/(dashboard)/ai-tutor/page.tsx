@@ -22,6 +22,8 @@ import { AIResponseParser } from "@/lib/ai/ai-response-parser";
 import { ConversationMemory } from "@/lib/ai/memory/ConversationMemory";
 import { useToastStore } from "@/store/use-toast-store";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
+import { MentorThinking } from "@/components/mentor/mentor-thinking";
+import { MentorLogo } from "@/components/brand/mentor-logo";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 import { formatNatAnswer } from "@/lib/grading";
@@ -74,6 +76,7 @@ export default function AITutorWorkspace() {
   const [chatLoading, setChatLoading] = useState(false);
   const [restoredQid, setRestoredQid] = useState<string | null>(null);
   const skipAutoFetchRef = useRef(false);
+  const skipSigRef = useRef("");
 
   // Cards layout states (collapsing/pinning)
   const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({
@@ -180,6 +183,7 @@ export default function AITutorWorkspace() {
           setExplanation(lastModelWithData.data as AIExplanation);
         }
         skipAutoFetchRef.current = true;
+        skipSigRef.current = `${explainMode}|${personality}`;
       } else {
         setHistory([]);
         setExplanation(null);
@@ -205,10 +209,8 @@ export default function AITutorWorkspace() {
   useEffect(() => {
     if (!qid || restoredQid !== qid) return; // wait for the restore attempt above to finish first
 
-    if (skipAutoFetchRef.current) {
-      skipAutoFetchRef.current = false;
-      return;
-    }
+    if (skipAutoFetchRef.current && skipSigRef.current === `${explainMode}|${personality}`) return; // restored thread: carry on, do not explain again
+    skipAutoFetchRef.current = false;
 
     let active = true;
 
@@ -409,11 +411,28 @@ export default function AITutorWorkspace() {
   };
 
   // Submit follow-up message to Gemini
-  const handleSendChat = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!chatInput.trim() || chatLoading || !qid) return;
+  // Questions requested in this chat ("Harder question", "Simpler question"): each one piles up in the left panel, the newest open and the
+  // earlier ones collapsed. Derived from the saved thread, so they come back with the conversation.
+  const asked = useMemo(() => {
+    const out: { idx: number; label: string; data: AIExplanation }[] = [];
+    history.forEach((m, i) => {
+      if (m.role !== "user" || !QUESTION_ASKS.includes(m.text)) return;
+      const r = history[i + 1];
+      if (r?.role === "model" && r.data) out.push({ idx: i + 1, label: m.text === QUESTION_ASKS[0] ? "Harder question" : "Simpler question", data: r.data });
+    });
+    return out;
+  }, [history]);
+  const [openQ, setOpenQ] = useState<string>("orig");
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- a new question opens, the others fold
+  useEffect(() => { if (asked.length) setOpenQ(`q${asked[asked.length - 1].idx}`); }, [asked.length]);
+  const origOpen = asked.length === 0 || openQ === "orig";
 
-    const userMsg = chatInput.trim();
+  const handleSendChat = (e: React.FormEvent) => { e.preventDefault(); void sendMessage(chatInput); };
+  // One send path for the text box and the quick buttons (Harder question, Simpler question, ...): the message is added to THIS conversation.
+  const sendMessage = async (text: string) => {
+    if (!text.trim() || chatLoading || !qid) return;
+
+    const userMsg = text.trim();
     setHistory(prev => [...prev, { role: "user", text: userMsg }]);
     setChatInput("");
     setChatLoading(true);
@@ -579,8 +598,8 @@ export default function AITutorWorkspace() {
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div className="flex items-center gap-2">
-              <span className="text-xs px-2.5 py-1 bg-indigo-500/10 text-indigo-500 font-extrabold rounded-lg tracking-normal">
-                AI Tutor
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-500/10 px-2.5 py-1 text-xs font-extrabold tracking-normal text-indigo-500">
+                <MentorLogo className="h-4" mode={chatLoading || loading ? "think" : "still"} /> AI Mentor · Tutor
               </span>
               {question && (
                 <span className="text-[11px] text-[var(--text-muted)] font-bold hidden sm:inline">
@@ -668,6 +687,14 @@ export default function AITutorWorkspace() {
             {question ? (
               <div className="flex-1 overflow-y-auto p-5 space-y-6 custom-scrollbar">
 
+                {asked.length > 0 && (
+                  <button type="button" onClick={() => setOpenQ(origOpen ? "" : "orig")} aria-expanded={origOpen}
+                    className="flex w-full cursor-pointer items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--surface-secondary)]/50 px-3 py-2.5 text-left">
+                    <span className="min-w-0 flex-1"><span className="block text-xs font-extrabold text-[var(--text-primary)]">Original question</span>{!origOpen && <span className="block truncate text-[11px] text-[var(--text-muted)]">{question.subject} · {question.topic}</span>}</span>
+                    <ChevronDown className={`h-4 w-4 shrink-0 transition-transform duration-200 ${origOpen ? "rotate-180" : ""}`} aria-hidden />
+                  </button>
+                )}
+                <div className={origOpen ? "space-y-6" : "hidden"}>
                 {/* Meta details */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
@@ -726,6 +753,28 @@ export default function AITutorWorkspace() {
                   )}
                 </div>
 
+                </div>
+
+                {/* Questions asked for in this chat: the newest is open, the others fold into one line each */}
+                {asked.map((a, n) => {
+                  const id = `q${a.idx}`, open = openQ === id;
+                  return (
+                    <div key={id} className="overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--surface)]">
+                      <button type="button" onClick={() => setOpenQ(open ? "" : id)} aria-expanded={open} className="flex w-full cursor-pointer items-center gap-2.5 px-3 py-2.5 text-left">
+                        <MentorLogo className="h-5" />
+                        <span className="min-w-0 flex-1"><span className="block text-xs font-extrabold text-[var(--text-primary)]">{a.label} #{n + 1}</span>{!open && <span className="block truncate text-[11px] text-[var(--text-muted)]">{(a.data.concept ?? "").replace(/\\\(|\\\)|\\\[|\\\]/g, "").slice(0, 90)}</span>}</span>
+                        <ChevronDown className={`h-4 w-4 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} aria-hidden />
+                      </button>
+                      {open && (
+                        <div className="space-y-2 border-t border-[var(--border)] px-3 py-3 text-sm leading-relaxed text-[var(--text-primary)]">
+                          <AstNodeRenderer nodes={AIResponseParser.parse(a.data.concept ?? "")} />
+                          <button type="button" onClick={() => document.getElementById(`reply-${a.idx}`)?.scrollIntoView({ behavior: "smooth", block: "center" })} className="pill-soft cursor-pointer text-[11px]">Jump to the reply in the chat</button>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+
                 {/* Historical Attempt summary metrics */}
                 <div className="p-4 bg-[var(--surface-secondary)]/30 border border-[var(--border-subtle)] rounded-xl space-y-2.5">
                   <span className="text-xs font-black tracking-normal text-[var(--text-muted)] block">Tutor Diagnostic logs</span>
@@ -762,17 +811,22 @@ export default function AITutorWorkspace() {
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
 
               {loading && !questionMissing ? (
-                <div className="py-20 flex flex-col items-center justify-center gap-3">
-                  <Loader2 className="w-8 h-8 animate-spin text-indigo-500" />
-                  <span className="text-xs font-bold text-[var(--text-secondary)] tracking-normal">Compiling contextual AI response...</span>
-                </div>
-              ) : error ? (
-                <div className="p-4 bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 rounded-xl text-xs flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 shrink-0" />
-                  <span>{error}</span>
+                <div className="mx-auto max-w-3xl py-10"><MentorThinking label="The Tutor is working on this question" /></div>
+              ) : error && history.length === 0 ? (
+                <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-3 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-xs text-rose-600 dark:text-rose-400">
+                  <AlertTriangle className="h-4 w-4 shrink-0" />
+                  <span className="min-w-0 flex-1">{error}</span>
+                  {LIMIT_RE.test(error) && <button type="button" onClick={() => openUpgrade("More AI requests every day")} className="plan-cta plan-silver inline-flex h-9 shrink-0 cursor-pointer items-center rounded-xl px-4 text-xs font-extrabold">Upgrade</button>}
                 </div>
               ) : (
                 <div className="space-y-8 max-w-3xl mx-auto">
+                  {error && (
+                    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-rose-500/20 bg-rose-500/10 p-4 text-xs text-rose-600 dark:text-rose-400">
+                      <AlertTriangle className="h-4 w-4 shrink-0" />
+                      <span className="min-w-0 flex-1">{error}</span>
+                      {LIMIT_RE.test(error) && <button type="button" onClick={() => openUpgrade("More AI requests every day")} className="plan-cta plan-silver inline-flex h-9 shrink-0 cursor-pointer items-center rounded-xl px-4 text-xs font-extrabold">Upgrade</button>}
+                    </div>
+                  )}
                   {history.map((msg, msgIdx) => {
                     const isModel = msg.role === "model";
                     const data = msg.data;
@@ -804,9 +858,16 @@ export default function AITutorWorkspace() {
                         >
                           <div className="bg-[var(--surface)] border border-[var(--border)] text-[var(--text-primary)] rounded-2xl px-4 py-2.5 text-xs font-medium max-w-md shadow-sm">
                             {msg.text}
+                            {LIMIT_RE.test(msg.text) && <button type="button" onClick={() => openUpgrade("More AI requests every day")} className="plan-cta plan-silver mt-2 inline-flex h-8 cursor-pointer items-center rounded-lg px-3 text-[11px] font-extrabold">Upgrade</button>}
                           </div>
                         </motion.div>
                       );
+                    }
+
+                    // The first answer is the full explanation (the cards below). Everything after it is the conversation: a reply is a
+                    // message in the same thread, not a second copy of the whole card set (which also repeated the diagnostic card).
+                    if (msgIdx !== history.findIndex((m) => m.role === "model" && m.data)) {
+                      return <TutorReply key={msgIdx} data={data} anchorId={`reply-${msgIdx}`} />;
                     }
 
                     // Render dynamic Collapsible Cards
@@ -983,10 +1044,7 @@ export default function AITutorWorkspace() {
 
               {/* Chat processing state animation */}
               {chatLoading && (
-                <div className="flex gap-2 items-center text-xs text-[var(--text-muted)] max-w-xs bg-[var(--surface)] border border-[var(--border-subtle)] px-3 py-2 rounded-xl shadow-sm animate-pulse">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-500" />
-                  <span>AI Tutor is drafting conceptual response...</span>
-                </div>
+                <div className="mx-auto max-w-3xl"><MentorThinking label="The Tutor is replying" /></div>
               )}
 
               <div ref={chatBottomRef} />
@@ -1012,13 +1070,7 @@ export default function AITutorWorkspace() {
                       key={idx}
                       type="button"
                       disabled={chatLoading}
-                      onClick={() => {
-                        setChatInput(pill.prompt);
-                        setTimeout(() => {
-                          const submitBtn = document.getElementById("send-chat-submit");
-                          submitBtn?.click();
-                        }, 50);
-                      }}
+                      onClick={() => { void sendMessage(pill.prompt); }}
                       className="text-[10px] px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/20 dark:hover:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-extrabold uppercase rounded-lg border border-indigo-500/10 transition cursor-pointer disabled:opacity-50"
                     >
                       {pill.label}
@@ -1282,5 +1334,32 @@ export default function AITutorWorkspace() {
         </main>
       </div>
     </MathJaxContext>
+  );
+}
+
+
+const QUESTION_ASKS = ["Can you give me a harder practice question on this concept?", "Can you simplify this concept with an easier example?"];
+
+/** AI limit messages ("You've used your free AI tries ...", daily limit): they carry an Upgrade button. */
+const LIMIT_RE = /free AI tries|daily (AI )?limit|requests a day|upgrade to (Plus|Pro)|limit reached/i;
+
+/** A follow-up answer in the thread: the Mentor's logo, the point first, then the steps, formulas and a shortcut when there are any. */
+function TutorReply({ data, anchorId }: { data: AIExplanation; anchorId: string }) {
+  const steps = (data.steps ?? []).filter(Boolean);
+  const formulas = (data.formulas ?? []).filter(Boolean);
+  return (
+    <motion.div id={anchorId} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2 }} className="flex scroll-mt-4 items-start gap-3">
+      <MentorLogo className="mt-1 h-9" />
+      <div className="min-w-0 flex-1 space-y-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-xs leading-relaxed text-[var(--text-primary)] shadow-sm">
+        {data.concept && <div className="text-sm font-semibold"><AstNodeRenderer nodes={AIResponseParser.parse(data.concept)} /></div>}
+        {steps.length > 0 && (
+          <ol className="space-y-2.5">{steps.map((st, i) => (
+            <li key={i} className="flex gap-2.5"><span aria-hidden className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-[var(--text-primary)] text-[10px] font-extrabold text-[var(--background)]">{i + 1}</span><div className="min-w-0 flex-1 text-[var(--text-secondary)]"><AstNodeRenderer nodes={AIResponseParser.parse(st)} /></div></li>
+          ))}</ol>
+        )}
+        {formulas.length > 0 && <div className="space-y-1 rounded-xl bg-[var(--surface-secondary)] p-2.5">{formulas.map((f, i) => <div key={i}><AstNodeRenderer nodes={AIResponseParser.parse(f)} /></div>)}</div>}
+        {data.shortcut && <div className="rounded-xl bg-violet-500/10 p-2.5"><span className="mb-0.5 flex items-center gap-1 font-extrabold text-violet-700 dark:text-violet-300"><Zap className="h-3.5 w-3.5" aria-hidden /> Shortcut</span><AstNodeRenderer nodes={AIResponseParser.parse(data.shortcut)} /></div>}
+      </div>
+    </motion.div>
   );
 }
