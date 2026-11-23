@@ -31,7 +31,7 @@ function ChallengeInner() {
 
   // /challenge with no friend link is the Challenge door: send people to their battles.
   const bare = params.toString() === "";
-  useEffect(() => { if (bare) router.replace("/battles"); }, [bare, router]);
+  useEffect(() => { if (bare) router.replace("/citadel-clash"); }, [bare, router]);
 
   const available = useMemo(() => (challenge && isInitialized ? challenge.ids.filter((id) => !!QuestionRepository.getQuestionById(id)) : []), [challenge, isInitialized]);
   useEffect(() => { if (challenge && isInitialized) setMissing(challenge.ids.length - available.length); }, [challenge, isInitialized, available]);

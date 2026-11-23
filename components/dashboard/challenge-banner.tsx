@@ -14,7 +14,7 @@ export function ChallengeBanner() {
   if (list.length === 0) return null;
   const first = list[0];
   return (
-    <Link href="/battles" className="card-pastel metal flex items-center gap-4 p-4 sm:p-5" data-tint="rose" data-nowm aria-label="Open your challenges">
+    <Link href="/citadel-clash" className="card-pastel metal flex items-center gap-4 p-4 sm:p-5" data-tint="rose" data-nowm aria-label="Open your challenges">
       <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[var(--surface)] text-[var(--tint-ink)]"><Swords className="h-6 w-6" aria-hidden /></span>
       <span className="min-w-0 flex-1">
         <span className="block font-display text-lg font-extrabold text-[var(--text-primary)]">{list.length === 1 ? `${first.from} challenged you` : `${list.length} friends challenged you`}</span>

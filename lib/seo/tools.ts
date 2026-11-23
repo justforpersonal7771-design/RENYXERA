@@ -15,4 +15,11 @@ export const TOOLS: ToolEntry[] = [
 ];
 
 export const TOOLS_HOME = "/tools";
+
+/** The Tools hub's three questions, in its order. The tools dock lists the tools in this order with a divider between groups. */
+export const TOOL_GROUPS: { id: string; label: string; hrefs: string[] }[] = [
+  { id: "rank", label: "Work out my rank", hrefs: ["/tools/gate-score-calculator", "/tools/gate-cs-cutoff", "/tools/gate-branch-cutoffs"] },
+  { id: "plan", label: "Plan my preparation", hrefs: ["/syllabus", "/tools/gate-study-plan", "/articles/most-repeated-topics", "/gate-updates"] },
+  { id: "practise", label: "Practise and revise", hrefs: ["/pyq", "/ga-lessons", "/downloads"] },
+];
 export const isToolPath = (p: string | null | undefined) => !!p && (p === "/tools" || TOOLS.some((t) => p === t.href || (t.also ?? []).some((a) => p.startsWith(a))));

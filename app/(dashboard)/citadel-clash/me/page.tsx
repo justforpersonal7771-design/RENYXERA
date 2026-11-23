@@ -66,7 +66,7 @@ export default function MePage() {
           <h2 id="look-h" className="g-title text-lg">Your look</h2>
           <p className="mt-1 text-sm g-text-2">Frames from the shop sit around your avatar here and on the leaderboard.</p>
           <div className="mt-4 flex flex-wrap gap-3">
-            <Link href="/battles/shop" className="g-btn-quiet"><ShoppingBag className="h-4 w-4" aria-hidden /> Frames</Link>
+            <Link href="/citadel-clash/shop" className="g-btn-quiet"><ShoppingBag className="h-4 w-4" aria-hidden /> Frames</Link>
             <Link href="/profile" className="g-btn-quiet">Change avatar in Profile</Link>
           </div>
         </section>

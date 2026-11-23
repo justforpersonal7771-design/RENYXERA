@@ -8,7 +8,7 @@ import { UPCOMING } from "@/lib/preview/features";
 const ITEMS = [
   { key: "forge", href: "/forge", icon: Anvil, tint: "peach", title: "Forge", body: "New GATE-level questions every day, with a Daily Forge streak and Forge Mocks." },
   { key: "study", href: "/study", icon: BookOpenText, tint: "mint", title: "Study materials", body: "Lessons per topic: the idea, a worked example, traps and the PYQs to try next." },
-  { key: "battles", href: "/battles", icon: Swords, tint: "rose", title: "Battles", body: "Send a set to friends and watch them play it live." },
+  { key: "battles", href: "/citadel-clash", icon: Swords, tint: "rose", title: "Citadel Clash", body: "Send a set to friends and watch them play it live." },
 ] as const;
 
 export function ComingUp() {

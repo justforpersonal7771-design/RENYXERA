@@ -15,7 +15,7 @@ const ITEMS = [
   { href: "/test-centre/mocks", label: "Mocks", on: (p: string) => p.startsWith("/test-centre/mocks") || p.startsWith("/mocks") || p.startsWith("/fresh-mock") },
   { href: "/test-centre/practice", label: "Practice", on: (p: string) => p.startsWith("/test-centre/practice") || p.startsWith("/checkpoint") },
   { href: "/test-centre/history", label: "History", on: (p: string) => p.startsWith("/test-centre/history") },
-  { href: "/battles", label: "Battles", on: (p: string) => p.startsWith("/battles") || p.startsWith("/challenge") },
+  { href: "/citadel-clash", label: "Citadel Clash", on: (p: string) => p.startsWith("/citadel-clash") || p.startsWith("/challenge") },
 ];
 
 export function TestCentreBar() {

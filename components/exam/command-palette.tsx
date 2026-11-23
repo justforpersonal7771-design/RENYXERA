@@ -161,10 +161,10 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     },
     {
       id: "action-battles",
-      title: "Battles",
+      title: "Citadel Clash",
       category: "Actions",
       icon: Swords,
-      action: () => { router.push("/battles"); onClose(); }
+      action: () => { router.push("/citadel-clash"); onClose(); }
     },
     {
       id: "action-tools",

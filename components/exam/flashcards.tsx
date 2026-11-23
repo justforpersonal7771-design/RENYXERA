@@ -22,6 +22,7 @@ import { Segmented } from "@/components/ui/folder-tabs";
 import { UPCOMING } from "@/lib/preview/features";
 import { getCurrentBranch } from "@/lib/branch/current";
 import { BranchSoon } from "@/components/branch/branch-soon";
+import { PyqSolution } from "@/components/exam/pyq-solution";
 
 export type FlashSource = "pyq" | "forge" | "ai" | "mix";
 type Opt = { option_id: string; is_correct?: boolean; contentAst?: RenderableQuestion["contentAst"] };
@@ -251,7 +252,7 @@ export function Flashcards({ source, pyq, ai }: { source: FlashSource; pyq: Rend
                 <p className="mt-2"><b>Shortcut:</b> {card.forge!.solution?.shortcut}</p>
                 <p className="mt-1"><b>Trap:</b> {card.forge!.solution?.trap}</p>
               </>
-            ) : <div className="mt-1"><BankAnswer q={card.q!} /></div>}
+            ) : <div className="mt-1"><BankAnswer q={card.q!} /><PyqSolution questionId={card.id} className="mt-3" /></div>}
           </div>
         )}
       </motion.article>

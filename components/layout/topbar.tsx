@@ -43,6 +43,8 @@ import { effectiveLookId, useLookStore } from "@/store/use-look-store";
 import { lookById } from "@/lib/looks/looks";
 import { MENTOR_HOME } from "@/lib/mentor/links";
 import { TEST_CENTRE, TEST_CENTRE_HREF, isTestCentrePath, testCentreTint } from "@/lib/test-centre/brand";
+import { CITADEL, CITADEL_HREF, isCitadelPath } from "@/lib/citadel/brand";
+import { Castle } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -51,7 +53,6 @@ const NAV_ITEMS = [
   { label: "Study", href: "/study", icon: BookOpenText },
   { label: "AI Mentor", href: MENTOR_HOME, icon: BrainCircuit },
   // Mistakes, Bookmarks and Revision are one section with tabs (components/layout/review-tabs).
-  { label: "Battles", href: "/battles", icon: Swords },
   { label: "Review", href: "/mistakes", icon: Library },
   { label: "Analytics", href: "/analytics", icon: PieChart },
 ];
@@ -80,7 +81,8 @@ const NAV_TINTS: Record<string, string> = {
 export function Topbar() {
   // The private Interview section shows only for the accounts the server lists (see lib/server/interview.ts).
   const interviewAccess = useInterviewAccess();
-  const navItems = interviewAccess ? [...NAV_ITEMS, { label: "Interview", href: "/interview", icon: Briefcase }] : NAV_ITEMS;
+  // Citadel Clash is the last item, with a look of its own (the game section)
+  const navItems = [...NAV_ITEMS, ...(interviewAccess ? [{ label: "Interview", href: "/interview", icon: Briefcase }] : []), { label: CITADEL, href: CITADEL_HREF, icon: Castle }];
   useEffect(() => {
     // The goal panel carries the chart library (about 340 KB). Fetch it ahead of time only on a fast, unmetered connection; elsewhere it loads
     // when the student points at or touches the goal button (see onPointerEnter below), which is still before the click lands.
@@ -268,7 +270,7 @@ export function Topbar() {
             className="main-dock flex items-center gap-0.5"
           >
             {navItems.map((item) => {
-              const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === TEST_CENTRE ? isTestCentrePath(pathname) : item.label === "Tools" ? isToolPath(pathname) : item.label === "AI Mentor" ? pathname.startsWith("/ai-mentor") : item.label === "Interview" ? pathname.startsWith("/interview") : item.label === "Battles" ? (pathname.startsWith("/battles") || pathname.startsWith("/challenge")) : pathname === item.href;
+              const isActive = item.label === "Review" ? isReviewPath(pathname) : item.label === TEST_CENTRE ? isTestCentrePath(pathname) : item.label === "Tools" ? isToolPath(pathname) : item.label === "AI Mentor" ? pathname.startsWith("/ai-mentor") : item.label === "Interview" ? pathname.startsWith("/interview") : item.label === CITADEL ? isCitadelPath(pathname) : pathname === item.href;
               const link = (
                 <Link
                   key={item.href}
@@ -280,17 +282,17 @@ export function Topbar() {
                   data-tint={NAV_TINTS[item.label]}
                   title={compactNav ? item.label : undefined}
                   className={`group relative flex items-center gap-2 px-2.5 min-[1340px]:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
-                    isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    item.label === CITADEL ? `citadel-nav ml-1.5 ${isActive ? "is-on" : ""}` : isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
-                  {hovered === item.href && !isActive && (
+                  {item.label !== CITADEL && hovered === item.href && !isActive && (
                     <motion.span
                       layoutId="topbar-hover-pill"
                       className="absolute inset-0 rounded-xl bg-[var(--surface-secondary)] -z-10"
                       transition={{ type: "spring", stiffness: 500, damping: 38 }}
                     />
                   )}
-                  {isActive && (
+                  {item.label !== CITADEL && isActive && (
                     <motion.span
                       layoutId="topbar-active-pill"
                       className="absolute inset-0 rounded-xl -z-10 nav-active-pill"
@@ -299,7 +301,7 @@ export function Topbar() {
                   )}
                   <span className="relative">
                     <item.icon className="w-4 h-4 shrink-0 transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110" />
-                    {item.label === "Battles" && pendingChallenges > 0 ? <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-extrabold leading-none text-white" aria-label={`${pendingChallenges} challenges waiting`}>{pendingChallenges}</span> : null}
+                    {item.label === CITADEL && pendingChallenges > 0 ? <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-rose-500 px-1 text-[10px] font-extrabold leading-none text-white" aria-label={`${pendingChallenges} challenges waiting`}>{pendingChallenges}</span> : null}
                   </span>
                   {/* Seven items: names shown from 1340px (at 1280 they ran into the wordmark and clipped Analytics); below that icons, name on hover. */}
                   <span className={interviewAccess ? "hidden min-[1660px]:inline" : "hidden min-[1340px]:inline"}>{item.label}</span>

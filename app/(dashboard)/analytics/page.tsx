@@ -546,7 +546,7 @@ export default function AnalyticsDashboardPage() {
                     <YAxis yAxisId="left" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
                     <YAxis yAxisId="right" orientation="right" stroke="var(--text-muted)" fontSize={10} tickLine={false} axisLine={false} />
                     <RechartsTooltip cursor={{ fill: "var(--surface-secondary)" }} content={<ChartTooltip />} />
-                    <Legend iconType="circle" wrapperStyle={{ paddingTop: "16px", fontSize: "11px" }} />
+                    <Legend iconType="circle" wrapperStyle={{ paddingTop: "16px", fontSize: "11px" }} formatter={(v) => <span style={{ color: "var(--text-secondary)" }}>{v}</span>} />
                     <Bar yAxisId="left" dataKey="Attempted" name="Questions solved" fill="#cbd5e1" radius={[6, 6, 0, 0]} maxBarSize={30} />
                     <Bar yAxisId="right" dataKey="Accuracy" name="Accuracy" fill="#10b981" radius={[6, 6, 0, 0]} maxBarSize={30} />
                   </BarChart>

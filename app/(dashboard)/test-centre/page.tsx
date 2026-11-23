@@ -123,9 +123,9 @@ export default function TestCentrePage() {
           <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Flashcards</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Open <Arrow /></span>
         </Link>
-        <Link href="/battles" data-tint="lilac" className={`${tile} !py-3 gap-1 md:!py-3.5 md:col-span-2`}>
+        <Link href="/citadel-clash" data-tint="lilac" className={`${tile} !py-3 gap-1 md:!py-3.5 md:col-span-2`}>
           <Mark I={Swords} />
-          <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Battles</h2>
+          <h2 className={`font-display text-[clamp(1.15rem,2.9vh,1.9rem)] font-extrabold ${ink}`}>Citadel Clash</h2>
           <span className={`inline-flex items-center gap-1 text-base font-bold ${ink}`}>Go <Arrow /></span>
         </Link>
         <Link href="/test-centre/history" data-tint="sky" className={`${tile} !py-3 gap-1 md:!py-3.5 col-span-2 md:col-span-2`}>

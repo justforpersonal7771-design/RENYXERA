@@ -59,6 +59,9 @@ const nextConfig: NextConfig = {
       { source: '/setup', destination: '/test-centre/build', permanent: false },
       { source: '/mocks', destination: '/test-centre/mocks', permanent: false },
       { source: '/mocks/results', destination: '/test-centre/mocks/results', permanent: false },
+      // Battles became Citadel Clash (23 Nov 2026)
+      { source: '/battles', destination: '/citadel-clash', permanent: false },
+      { source: '/battles/:path*', destination: '/citadel-clash/:path*', permanent: false },
     ];
   },
 };

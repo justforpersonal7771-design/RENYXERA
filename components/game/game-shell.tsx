@@ -4,7 +4,7 @@
  * Battles game shell (R31A, second pass after the owner's 14 Nov review: "the side menu doesn't feel like a game").
  * No website navigation. A game HUD on top (back to lobby, your avatar and rating badge, coins, exit) and a game dock
  * at the bottom (Lobby, Arena, PLAY raised in the centre, Friends, Shop), on phones and desktops alike.
- * The site navbar, dock, banners and challenge pop-ups are not drawn on /battles (components/layout/client-layout.tsx).
+ * The site navbar, dock, banners and challenge pop-ups are not drawn on /citadel-clash (components/layout/client-layout.tsx).
  * "Exit to study" returns to the last study screen this tab visited (sessionStorage), or Home.
  * 18 Nov (GAME-DESIGN-MERGED.md): one menu (Citadel, Friends, Attack, Clan, Leagues); sound toggle and Settings in the
  * HUD; leaving closes the doors (480 ms) before the app takes over.
@@ -20,14 +20,14 @@ import { GameSettingsPanel } from "@/components/game/settings-panel";
 import { initGameAudio, music, sfx, useGameSettings } from "@/lib/game/sound";
 
 const DOCK = [
-  { href: "/battles", label: "Citadel", icon: Castle },
-  { href: "/battles/social", label: "Friends", icon: Users },
-  { href: "/battles/play", label: "Attack", icon: Swords },
-  { href: "/battles/clubs", label: "Clan", icon: UsersRound },
-  { href: "/battles/arena", label: "Leagues", icon: Trophy },
+  { href: "/citadel-clash", label: "Citadel", icon: Castle },
+  { href: "/citadel-clash/social", label: "Friends", icon: Users },
+  { href: "/citadel-clash/play", label: "Attack", icon: Swords },
+  { href: "/citadel-clash/clubs", label: "Clan", icon: UsersRound },
+  { href: "/citadel-clash/arena", label: "Leagues", icon: Trophy },
 ] as const;
 
-const isOn = (path: string, href: string) => (href === "/battles" ? path === "/battles" : path.startsWith(href));
+const isOn = (path: string, href: string) => (href === "/citadel-clash" ? path === "/citadel-clash" : path.startsWith(href));
 
 /** Leave the game: the doors close first (the shell listens for this event), then the study app takes over. */
 export function useStudyExit() {
@@ -83,23 +83,23 @@ function useCoins(): number | null {
 }
 
 function Hud() {
-  const path = usePathname() ?? "/battles";
+  const path = usePathname() ?? "/citadel-clash";
   const user = useAuthStore((s) => s.user);
   const exit = useStudyExit();
   const coins = useCoins();
   const p = usePlayer();
   const { data } = useArenaMe();
-  const inLobby = path === "/battles";
+  const inLobby = path === "/citadel-clash";
   const [settings, setSettings] = useState(false);
   return (
     <header className="relative z-30 flex shrink-0 items-center gap-2.5 px-3 pt-3 sm:gap-3 sm:px-6 sm:pt-4">
       {!inLobby && (
-        <Link href="/battles" aria-label="Back to the lobby" className="g-orb g-hud-orb shrink-0" style={{ ["--c" as string]: "#6b3f22" }}>
+        <Link href="/citadel-clash" aria-label="Back to the lobby" className="g-orb g-hud-orb shrink-0" style={{ ["--c" as string]: "#6b3f22" }}>
           <span className="g-orb-face !h-10 !w-10 !rounded-2xl"><ChevronLeft className="h-6 w-6" aria-hidden /></span>
         </Link>
       )}
       {user ? (
-        <Link href="/battles/me" className="g-hud min-w-0 !pr-4" aria-label="Your player card">
+        <Link href="/citadel-clash/me" className="g-hud min-w-0 !pr-4" aria-label="Your player card">
           <span className="relative grid h-9 w-9 shrink-0 place-items-center rounded-full p-[2px]" style={{ background: p.ring ?? "var(--g-signal)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element -- data: URI avatar */}
             <img src={p.avatar} alt="" width={64} height={64} className="h-full w-full rounded-full bg-[var(--g-surface-2)]" />
@@ -112,7 +112,7 @@ function Hud() {
       )}
       <span className="flex-1" />
       {coins !== null && (
-        <Link href="/battles/shop" className="g-hud shrink-0" aria-label={`${coins} coins, open the shop`}>
+        <Link href="/citadel-clash/shop" className="g-hud shrink-0" aria-label={`${coins} coins, open the shop`}>
           <span className="g-hud-ico bg-[var(--g-amber)] text-[var(--g-on-amber)]"><Coins className="h-4 w-4" aria-hidden /></span>
           {coins.toLocaleString("en-IN")}
           <Plus className="ml-0.5 h-4 w-4 text-[var(--g-mint)]" aria-hidden />
@@ -137,13 +137,13 @@ function Hud() {
 }
 
 function Dock() {
-  const path = usePathname() ?? "/battles";
+  const path = usePathname() ?? "/citadel-clash";
   return (
-    <nav aria-label="Battles" className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)]">
+    <nav aria-label="Citadel Clash" className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-center px-3 pb-[max(env(safe-area-inset-bottom),0.75rem)]">
       <ul className="pointer-events-auto flex w-full max-w-xl items-end justify-between rounded-[22px] bg-[linear-gradient(180deg,var(--g-wood-hi),var(--g-wood)_40%,var(--g-wood-dark))] px-2 pb-1.5 pt-1 shadow-[inset_0_1px_0_rgba(255,220,170,0.35),0_-6px_24px_-8px_rgba(0,0,0,0.7)]">
         {DOCK.map((n) => {
           const on = isOn(path, n.href);
-          if (n.href === "/battles/play") return (
+          if (n.href === "/citadel-clash/play") return (
             <li key={n.href} className="flex-1">
               <Link href={n.href} aria-current={on ? "page" : undefined} className="flex min-h-[56px] flex-col items-center justify-end gap-1 pt-2 text-xs font-extrabold text-[var(--g-amber)]">
                 <span className="g-play !min-h-0 !h-10 !w-12 !rounded-xl !p-0 !text-base"><Swords className="h-5 w-5" aria-hidden /></span>

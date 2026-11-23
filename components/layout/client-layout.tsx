@@ -181,7 +181,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   // Remember the last study screen so the Battles "Exit to study" button returns there.
   useEffect(() => {
-    if (!pathname || pathname.startsWith("/battles") || pathname.startsWith("/exam/session")) return;
+    if (!pathname || pathname.startsWith("/citadel-clash") || pathname.startsWith("/exam/session")) return;
     try { sessionStorage.setItem("renyxera_study_path", pathname + window.location.search); } catch { /* storage off */ }
   }, [pathname]);
 
@@ -217,9 +217,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Battles is a game (R31): its own full-screen shell (app/(dashboard)/battles/layout.tsx) with game navigation and
+  // Battles is a game (R31): its own full-screen shell (app/(dashboard)/citadel-clash/layout.tsx) with game navigation and
   // "Exit to study". The site navbar, dock, banners, challenge pop-ups and Test Centre bar are not drawn here.
-  if (pathname?.startsWith("/battles")) {
+  if (pathname?.startsWith("/citadel-clash")) {
     return (
       <MotionPrefs><MathJaxContext config={MATHJAX_CONFIG}>
       <div className="h-dvh w-screen overflow-hidden font-sans relative">

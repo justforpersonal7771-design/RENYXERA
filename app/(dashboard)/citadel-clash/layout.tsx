@@ -6,7 +6,7 @@ import { GameShell } from "@/components/game/game-shell";
 const russo = Russo_One({ subsets: ["latin"], weight: "400", variable: "--font-russo", display: "swap" });
 const chakra = Chakra_Petch({ subsets: ["latin"], weight: ["500", "700"], variable: "--font-chakra", display: "swap" });
 
-/** Battles is a game (R31): every /battles screen renders inside the full-screen Duel Table shell. */
+/** Battles is a game (R31): every /citadel-clash screen renders inside the full-screen Duel Table shell. */
 export default function BattlesLayout({ children }: { children: React.ReactNode }) {
   return <div className={`${russo.variable} ${chakra.variable} contents`}><GameShell>{children}</GameShell></div>;
 }

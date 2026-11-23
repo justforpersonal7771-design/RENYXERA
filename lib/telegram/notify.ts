@@ -24,7 +24,7 @@ export async function notifyBattle(db: Db, ownerId: string, battleId: string, te
   try {
     const acct = await accountOf(db, ownerId);
     if (!acct || acct.blocked || acct.prefs.battles === false) return;
-    await send(acct.chat_id, `⚔️ ${text}`, [[{ text: "Open the battle board", url: appLink("/battles") }]]);
+    await send(acct.chat_id, `⚔️ ${text}`, [[{ text: "Open the battle board", url: appLink("/citadel-clash") }]]);
   } catch { /* a missed Telegram message must never affect a battle */ }
 }
 export const battleText = { started: (who: string, title: string) => `<b>${esc(who)}</b> started your battle <i>${esc(title)}</i>.`,

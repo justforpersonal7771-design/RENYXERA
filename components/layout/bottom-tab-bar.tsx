@@ -13,6 +13,8 @@ import { Briefcase, BrainCircuit, Download, LayoutDashboard, Library, ListTree, 
 import { isReviewPath, lastReviewHref } from "./review-tabs";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TOOLS_HOME, isToolPath } from "@/lib/seo/tools";
+import { CITADEL, CITADEL_HREF, isCitadelPath } from "@/lib/citadel/brand";
+import { Castle } from "lucide-react";
 
 /**
  * Phone/tablet tab bar (below lg): the four places a student goes most, within thumb reach. "More" slides a sheet up
@@ -35,16 +37,17 @@ export function BottomTabBar() {
 
   const on = "text-violet-600 dark:text-violet-400";
   const tabs = [
-    { label: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
-    { label: TEST_CENTRE, href: TEST_CENTRE_HREF, icon: ClipboardCheck, active: isTestCentrePath(pathname) },
-    { label: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
-    { label: "AI Mentor", href: MENTOR_HOME, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
+    // Four places, Citadel Clash and More: the name shows under the active icon only, so the bar stays calm. Citadel Clash is last, with its own look.
+    { label: "Home", short: "Home", href: "/", icon: LayoutDashboard, active: pathname === "/" },
+    { label: TEST_CENTRE, short: "Tests", href: TEST_CENTRE_HREF, icon: ClipboardCheck, active: isTestCentrePath(pathname) },
+    { label: "AI Mentor", short: "Mentor", href: MENTOR_HOME, icon: BrainCircuit, active: pathname.startsWith("/ai-mentor") },
+    { label: "Review", short: "Review", href: reviewHref, icon: Library, active: isReviewPath(pathname) },
+    { label: CITADEL, short: "Clash", href: CITADEL_HREF, icon: Castle, active: isCitadelPath(pathname), citadel: true },
   ];
   const rest = [
-    ...(interview ? [{ label: "Interview", hint: "Books, flashcards, code lab, mock interviews", tint: "butter", wide: true, href: "/interview", icon: Briefcase, active: pathname.startsWith("/interview") }] : []),
-    { label: "Battles", hint: "Challenge friends, climb the board", tint: "rose", wide: true, href: "/battles", icon: Swords, active: pathname.startsWith("/battles") },
-    { label: "Study materials", hint: "Notes and formulas", tint: "mint", href: "/study", icon: BookOpenText, active: pathname.startsWith("/study") },
+    { label: "Study materials", hint: "Books, labs and quizzes", tint: "mint", href: "/study", icon: BookOpenText, active: pathname.startsWith("/study") },
     { label: "Analytics", hint: "Your progress", tint: "peri", href: "/analytics", icon: PieChart, active: pathname.startsWith("/analytics") },
+    ...(interview ? [{ label: "Interview", hint: "Books, flashcards, code lab, mock interviews", tint: "butter", wide: true, href: "/interview", icon: Briefcase, active: pathname.startsWith("/interview") }] : []),
     { label: "Browse topics", hint: "Every topic, one tap", tint: "sky", href: "/browse", icon: ListTree, active: pathname.startsWith("/browse") },
     { label: "Tools", hint: "Calculators and plans", tint: "butter", href: TOOLS_HOME, icon: Wrench, active: isToolPath(pathname) },
     ...(signedIn ? [{ label: "Downloads", hint: "Your saved files", tint: "peach", href: "/downloads", icon: Download, active: pathname.startsWith("/downloads") }] : []),
@@ -58,20 +61,20 @@ export function BottomTabBar() {
           pill that glides between items and shows its name; the rest are icons. */}
       <nav aria-label="Main" className={`bottom-dock lg:hidden fixed inset-x-3 ${more ? "z-[46]" : "z-40"}`} style={{ bottom: "calc(12px + env(safe-area-inset-bottom))" }}>
         <LayoutGroup id="bottom-dock">
-          <ul className="bottom-dock__bar mx-auto flex max-w-md items-center justify-between gap-1 p-1.5">
+          <ul className="bottom-dock__bar mx-auto flex max-w-md items-stretch justify-between gap-0.5 p-1.5">
             {tabs.map((t) => (
-              <li key={t.label} className="min-w-0 shrink-0">
-                <Link href={t.href} aria-label={t.label} aria-current={t.active ? "page" : undefined} data-active={t.active && !more ? "" : undefined} className="dock-item">
-                  {t.active && !more && <motion.span layoutId="bottom-dock-pill" className="dock-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
-                  <t.icon className="dock-icon h-[21px] w-[21px]" />
-                  <span className="dock-label">{t.label}</span>
+              <li key={t.label} className="min-w-0 flex-1">
+                <Link href={t.href} aria-label={t.label} aria-current={t.active ? "page" : undefined} data-active={t.active && !more ? "" : undefined} className={`dock-item ${"citadel" in t && t.citadel ? "citadel-nav dock-citadel" : ""} ${"citadel" in t && t.citadel && t.active ? "is-on" : ""}`}>
+                  {t.active && !more && !("citadel" in t && t.citadel) && <motion.span layoutId="bottom-dock-pill" className="dock-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+                  <span className="relative"><t.icon className="dock-icon h-5 w-5" />{"citadel" in t && t.citadel ? <SocialDot className="absolute -right-1.5 -top-1" /> : null}</span>
+                  <span className="dock-label">{t.short ?? t.label}</span>
                 </Link>
               </li>
             ))}
-            <li className="min-w-0 shrink-0">
+            <li className="min-w-0 flex-1">
               <button type="button" aria-haspopup="dialog" aria-expanded={more} aria-label="More pages" onClick={() => setMore((o) => !o)} data-active={more || moreActive ? "" : undefined} className="dock-item cursor-pointer">
                 {(more || moreActive) && <motion.span layoutId="bottom-dock-pill" className="dock-pill" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
-                <span className="relative">{more ? <X className="dock-icon h-[21px] w-[21px]" /> : <Menu className="dock-icon h-[21px] w-[21px]" />}{!more ? <SocialDot plain className="absolute -right-1 -top-0.5" /> : null}</span>
+                <span className="relative">{more ? <X className="dock-icon h-5 w-5" /> : <Menu className="dock-icon h-5 w-5" />}{!more ? <SocialDot plain className="absolute -right-1 -top-0.5" /> : null}</span>
                 <span className="dock-label">More</span>
               </button>
             </li>
@@ -94,7 +97,7 @@ export function BottomTabBar() {
                     className={`relative flex h-full overflow-hidden rounded-2xl border border-[color-mix(in_srgb,currentColor_14%,transparent)] p-3.5 active:scale-[.98] transition-transform ${r.wide ? "items-center gap-3.5" : "flex-col gap-2.5"} ${r.active ? "ring-2 ring-current" : ""}`}>
                     <span className="relative grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--surface)] shadow-sm">
                       <r.icon className="h-5 w-5" aria-hidden />
-                      {r.href === "/battles" ? <SocialDot className="absolute -right-1.5 -top-1.5" /> : null}
+                      {r.href === "/citadel-clash" ? <SocialDot className="absolute -right-1.5 -top-1.5" /> : null}
                     </span>
                     <span className="min-w-0">
                       <span className="block text-sm font-extrabold leading-tight text-[var(--text-primary)]">{r.label}</span>

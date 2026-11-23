@@ -45,7 +45,7 @@ export function InviteFriends({ battleId }: { battleId: string }) {
   };
 
   if (friends === null) return <p className="mt-4 text-sm text-[var(--text-secondary)]" role="status"><Loader2 className="mr-2 inline h-4 w-4 animate-spin" />Loading friends…</p>;
-  if (friends.length === 0) return <p className="mt-4 text-sm text-[var(--text-secondary)]">Add friends on the <Link href="/battles" className="font-bold underline">Battles</Link> screen to challenge them here, or send them the link.</p>;
+  if (friends.length === 0) return <p className="mt-4 text-sm text-[var(--text-secondary)]">Add friends on the <Link href="/citadel-clash" className="font-bold underline">Battles</Link> screen to challenge them here, or send them the link.</p>;
   return (
     <div className="mt-5 text-left">
       <p className="text-xs font-bold uppercase tracking-wide text-[var(--text-muted)]">Challenge friends</p>

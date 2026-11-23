@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Download, CheckCircle2, Trash2, Loader2, ShieldCheck, WifiOff, FileText, Layers, Eye, HardDrive, KeyRound, AlertTriangle } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { TierGate } from "@/components/billing/tier-gate";
+import { ToolsDock } from "@/components/seo/tool-shell";
 import { useDataStore } from "@/store/use-data-store";
 import { useToastStore } from "@/store/use-toast-store";
 import { QuestionRepository } from "@/lib/repository/question-repository";
@@ -132,7 +133,7 @@ export default function DownloadsPage() {
 
   return (
     <TierGate tier="pro" feature="Offline downloads" perk="Save whole papers to this device and practise without internet — on the train, in the library, anywhere.">
-    <div className="w-full flex flex-col gap-5 pb-8">
+    <div className="w-full flex flex-col gap-5 pb-24">
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6">
         <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-violet-500/15 blur-3xl pointer-events-none" />
@@ -235,6 +236,7 @@ export default function DownloadsPage() {
       {visible.length === 0 && (
         <p className="text-center text-sm text-[var(--text-muted)] py-10">No {tab === "paper" ? "papers" : "subjects"} available yet.</p>
       )}
+      <ToolsDock />
     </div>
     </TierGate>
   );

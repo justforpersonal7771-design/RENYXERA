@@ -24,6 +24,7 @@ import { useToastStore } from "@/store/use-toast-store";
 import { openUpgrade } from "@/store/use-upgrade-modal-store";
 import { MentorThinking } from "@/components/mentor/mentor-thinking";
 import { MentorLogo } from "@/components/brand/mentor-logo";
+import { PanelRightClose, PanelRightOpen } from "lucide-react";
 import { useEntitlements } from "@/lib/billing/use-entitlements";
 
 import { formatNatAnswer } from "@/lib/grading";
@@ -178,9 +179,10 @@ export default function AITutorWorkspace() {
 
       if (saved.length > 0) {
         setHistory(saved.map(({ role, text, data }) => ({ role, text, data: data as AIExplanation | undefined })));
-        const lastModelWithData = [...saved].reverse().find(m => m.role === "model" && m.data);
-        if (lastModelWithData?.data) {
-          setExplanation(lastModelWithData.data as AIExplanation);
+        // The explanation is the original one (the first answer), not a later reply or a question the Tutor set: Save Shortcut and the outline use it.
+        const original = saved.find(m => m.role === "model" && m.data && !(m.data as TutorData).practice);
+        if (original?.data) {
+          setExplanation(original.data as AIExplanation);
         }
         skipAutoFetchRef.current = true;
         skipSigRef.current = `${explainMode}|${personality}`;
@@ -649,11 +651,18 @@ export default function AITutorWorkspace() {
         displayMath: [["\\[", "\\]"]],
       },
     }}>
-      <div className="tutor-shell w-full h-full flex flex-col overflow-hidden" data-fill-height="always">
+      <div className="tutor-shell w-full h-full flex flex-col gap-2.5 overflow-hidden" data-fill-height="always">
 
         {/* Sticky Command Bar */}
-        <header className="flex-none bg-transparent border-b border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
+        <header className="flex-none rounded-2xl bg-[var(--surface)] border border-[var(--border)] px-4 py-3 sticky top-0 z-50 flex flex-wrap justify-between items-center gap-3">
           <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 pr-3 mr-0.5 border-r border-[var(--border)]">
+              <MentorLogo className="h-10" mode={chatLoading || loading ? "think" : "blink"} />
+              <div className="leading-tight">
+                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--text-muted)]">AI Mentor</p>
+                <p className="font-display text-lg font-extrabold text-[var(--text-primary)]">Tutor</p>
+              </div>
+            </div>
             <button
               onClick={() => router.back()}
               className="p-1.5 hover:bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-lg text-[var(--text-secondary)] transition"
@@ -712,35 +721,11 @@ export default function AITutorWorkspace() {
                 <span>{isShortcutBookmarked ? "Shortcut Saved" : "Save Shortcut"}</span>
               </button>
             )}
-
-            {/* Export Menu */}
-            <button
-              onClick={() => handleExportText("MD")}
-              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black tracking-normal flex items-center gap-1.5"
-              title="Export Markdown Sheet"
-            >
-              <Download className="w-4 h-4" /> Export
-            </button>
-
-            <button
-              onClick={() => window.print()}
-              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black tracking-normal flex items-center gap-1.5"
-              title="Print Session"
-            >
-              <Printer className="w-4 h-4" /></button>
-
-            <button
-              onClick={() => setIsRightPanelCollapsed(!isRightPanelCollapsed)}
-              className="p-2 bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-secondary)] text-[var(--text-secondary)] rounded-lg transition text-xs font-black tracking-normal flex items-center gap-1.5"
-              title="Toggle Sidebar"
-            >
-              <span>{isRightPanelCollapsed ? "Show" : "Hide"}</span>
-            </button>
           </div>
         </header>
 
         {/* Workspace Body: 3-Column Layout */}
-        <main className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0">
+        <main className="flex-1 flex flex-col lg:flex-row overflow-hidden min-h-0 rounded-2xl border border-[var(--border)]">
 
           {/* LEFT PANEL: Question Details */}
           <section className={`w-full border-r border-[var(--border)] bg-[var(--surface)] flex flex-col h-full overflow-hidden shrink-0 transition-all duration-300 ${isRightPanelCollapsed ? "lg:w-[50%]" : "lg:w-96"
@@ -862,16 +847,6 @@ export default function AITutorWorkspace() {
 
           {/* CENTER PANEL: Chat & Scrollable AI Cards (Width Flex-1) */}
           <section className="flex-1 bg-[var(--surface-secondary)]/20 flex flex-col h-full overflow-hidden relative min-w-0">
-
-            {/* The Tutor is part of the AI Mentor: its own lockup, with the flame working when the Tutor is */}
-            <div className="flex flex-none items-center gap-3 border-b border-[var(--border)] bg-[var(--surface)]/70 px-4 py-3 backdrop-blur md:px-6">
-              <MentorLogo className="h-11" mode={chatLoading || loading ? "think" : "blink"} />
-              <div className="min-w-0 flex-1">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[var(--text-muted)]">AI Mentor</p>
-                <p className="font-display text-xl font-extrabold leading-tight text-[var(--text-primary)]">Tutor</p>
-              </div>
-              <p className="hidden max-w-[16rem] text-right text-[11px] leading-snug text-[var(--text-secondary)] md:block">Ask anything about this question. Your chat is saved and shows in AI Mentor.</p>
-            </div>
 
             {/* Scrollable list of cards & message history */}
             <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar">
@@ -1179,8 +1154,18 @@ export default function AITutorWorkspace() {
           </section>
 
           {/* RIGHT PANEL: Outline / Saved Practice / Notes (Width 30%) */}
+          {isRightPanelCollapsed && (
+            <button type="button" onClick={() => setIsRightPanelCollapsed(false)} aria-label="Show the outline, notes and practice panel" title="Show panel"
+              className="hidden shrink-0 cursor-pointer flex-col items-center gap-2 border-l border-[var(--border)] bg-[var(--surface)] px-2 py-4 text-[var(--text-secondary)] hover:text-[var(--text-primary)] lg:flex">
+              <PanelRightOpen className="h-5 w-5" />
+              <span className="text-[10px] font-black uppercase tracking-widest [writing-mode:vertical-rl]">Outline and notes</span>
+            </button>
+          )}
           {!isRightPanelCollapsed && (
             <section className="w-full lg:w-80 border-l border-[var(--border)] bg-[var(--surface)] flex flex-col h-full overflow-hidden shrink-0">
+              <div className="hidden flex-none items-center justify-end border-b border-[var(--border)] px-3 py-1.5 lg:flex">
+                <button type="button" onClick={() => setIsRightPanelCollapsed(true)} aria-label="Collapse this panel" title="Collapse panel" className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1 text-[11px] font-bold text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]"><PanelRightClose className="h-4 w-4" /> Collapse</button>
+              </div>
               <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar">
 
                 {/* Outline index navigator */}

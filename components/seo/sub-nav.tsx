@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import type { LucideIcon } from "lucide-react";
 
-type Item = { href: string; label: string; short?: string; icon: LucideIcon; also?: string[] };
+type Item = { href: string; label: string; short?: string; icon: LucideIcon; also?: string[]; /** items of one group sit together, with a divider between groups */ group?: string };
 
 /**
  * Adaptive section dock (tools, legal pages): floats at the bottom of the screen, slides
@@ -70,8 +70,10 @@ export function SubNav({ items, label, home }: { items: Item[]; label: string; h
           {items.map((it, idx) => {
             const on = it.href === active;
             const tint = SUB_TINTS[idx % SUB_TINTS.length];
+            const newGroup = idx > 0 && it.group !== items[idx - 1].group;
             return (
-              <li key={it.href}>
+              <li key={it.href} className="flex items-center">
+                {newGroup && <span aria-hidden className="mx-1.5 h-5 w-px shrink-0 bg-[var(--border)]" />}
                 <Link href={it.href} aria-current={on ? "page" : undefined} title={it.label} data-tint={tint}
                   onMouseEnter={() => setHover(it.href)} onFocus={() => setHover(it.href)} onBlur={() => setHover(null)}
                   className={`relative flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-semibold whitespace-nowrap transition-colors ${on ? "text-[var(--tint-lilac-ink)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
