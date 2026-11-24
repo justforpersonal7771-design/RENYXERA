@@ -78,13 +78,14 @@ PART 9. WEIGHTS
 Generated 24 Nov 2026. **Status: v0.** This is a contents list, not yet a full plan. Reviewers: your job is to turn it into a complete, beginner-first plan (see the prompt at the top of `00-REVIEW-INPUT.md`).
 
 ## 1. GATE syllabus lines for this subject
-*(written from memory of the GATE CS syllabus; please check them against the official GATE 2027 document and say if anything is missing or wrong)*
+*(official GATE 2027 CS syllabus, copied verbatim from the IIT Madras PDF)*
 
-- Machine instructions and addressing modes.
-- ALU, data-path and control unit.
+- Instruction set and addressing modes.
+- Design of arithmetic and logic unit (ALU).
+- Design of control unit – hardwired and microprogrammed.
+- Memory interfacing and hierarchy: performance, cache memory mapping.
+- I/O interface (interrupt and DMA).
 - Instruction pipelining, pipeline hazards.
-- Memory hierarchy: cache, main memory and secondary storage.
-- I/O interface (interrupt and DMA mode).
 
 ## 2. What the app has today: chapters in the book
 

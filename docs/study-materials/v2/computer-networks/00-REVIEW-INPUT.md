@@ -78,14 +78,14 @@ PART 9. WEIGHTS
 Generated 24 Nov 2026. **Status: v0.** This is a contents list, not yet a full plan. Reviewers: your job is to turn it into a complete, beginner-first plan (see the prompt at the top of `00-REVIEW-INPUT.md`).
 
 ## 1. GATE syllabus lines for this subject
-*(written from memory of the GATE CS syllabus; please check them against the official GATE 2027 document and say if anything is missing or wrong)*
+*(official GATE 2027 CS syllabus, copied verbatim from the IIT Madras PDF)*
 
-- Concept of layering: OSI and TCP/IP protocol stacks; basics of packet, circuit and virtual circuit switching.
-- Data link layer: framing, error detection, Medium Access Control, Ethernet bridging.
-- Routing protocols: shortest path, flooding, distance vector and link state routing.
-- Fragmentation and IP addressing, IPv4, CIDR notation, basics of IP support protocols (ARP, DHCP, ICMP), Network Address Translation (NAT).
-- Transport layer: flow control and congestion control, UDP, TCP, sockets.
-- Application layer protocols: DNS, SMTP, HTTP, FTP, Email.
+- Principles of Layering; Basics of switching (circuit, packet and virtual circuit) and performance metrics.
+- Data link layer: error detection, Medium Access Control, Ethernet.
+- Distance vector and link state routing.
+- IPv4 - Fragmentation, CIDR Notation, Network Address Translation.
+- TCP - flow control and congestion control, socket API.
+- DNS and HTTP.
 
 ## 2. What the app has today: chapters in the book
 

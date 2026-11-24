@@ -78,12 +78,11 @@ PART 9. WEIGHTS
 Generated 24 Nov 2026. **Status: v0.** This is a contents list, not yet a full plan. Reviewers: your job is to turn it into a complete, beginner-first plan (see the prompt at the top of `00-REVIEW-INPUT.md`).
 
 ## 1. GATE syllabus lines for this subject
-*(written from memory of the GATE CS syllabus; please check them against the official GATE 2027 document and say if anything is missing or wrong)*
+*(official GATE 2027 CS syllabus, copied verbatim from the IIT Madras PDF)*
 
-- Boolean algebra.
-- Combinational and sequential circuits.
-- Minimization.
-- Number representations and computer arithmetic (fixed and floating point).
+- Boolean algebra and minimization – algebraic technique, Karnaugh map, tabular method.
+- Design of combinational and sequential circuits.
+- Number representation and arithmetic (fixed and floating point).
 
 ## 2. What the app has today: chapters in the book
 
