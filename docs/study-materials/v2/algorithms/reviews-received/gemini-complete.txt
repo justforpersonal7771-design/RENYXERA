@@ -546,3 +546,361 @@ Checked against the official GATE CS Algorithms syllabus (`Part B.1`), `Part C` 
 ---
 
 `CONTINUE FROM CHAPTER 07`
+
+## PART 5 (Continued) · Chapters 07 to 09
+
+### Chapter 07 · Graph Traversals and DFS Applications
+
+#### Lesson 07.1 · BFS, DFS, Graph Representations, Level Properties & Tree Diameter (`2-BFS`)
+- **Tag:** `[MUST]` — Foundation for all graph algorithms (`2025_AN_Q29`, `2025_AN_Q59`, `2024_FN_Q37`, `2021_AN_Q25`, `2018_FN_Q40(II)`, `2017_AN_Q13`).
+- **Estimated reading time:** 75 minutes.
+- **Prerequisites:** DS `D3` (Stack), `D4` (Queue), `D12` (Graph Representations).
+- **Beginner must-see:** Exploring an unknown maze has two natural styles: **BFS (Breadth-First Search)** uses a **Queue** to check every neighbour 1 step away, then 2 steps away, like ripples on water (automatically giving **unweighted shortest paths**!). **DFS (Depth-First Search)** uses a **Stack / Recursion** to dive blindly down one corridor until it hits a wall, then backtracks!
+- **Finer points:**
+  - **Time Complexity Trap:** Adjacency List = **$\Theta(V + E)$**; Adjacency Matrix = **$\Theta(V^2)$**!
+  - **Connected Components & Forest Edge Count (`2024_FN_Q37`, `2025_AN_Q29(D)`):** An undirected graph on $V$ vertices whose BFS/DFS spanning forest has $E_F$ edges MUST have **$c = |V| - |E_F|$ connected components** (`100 - 40 = 60`, `2024_FN_Q37`)!
+  - **BFS Level-Difference Property (`2025_AN_Q29(C)`, `2018_FN_Q40(II)`):**
+    - For ANY non-tree edge `(u, v)` in an **undirected** BFS tree, **`|dist(u) - dist(v)| <= 1`** (can be `0` on a triangle $K_3$ -> so `= 1` in `2018_FN_Q40(II)` is FALSE!).
+    - **Bipartite / Odd-Cycle Test:** Graph is bipartite $\iff$ NO same-level edge (`dist(u) == dist(v)`) exists in BFS!
+  - **Valid BFS vs DFS Orders (`2021_AN_Q25`, `2017_AN_Q13`):** Checking valid queue/stack orders when adjacency list neighbour orders vary (first 3 BFS = level 0 + level 1, whereas first 3 DFS = depth 0, 1, 2, `2021_AN_Q25`!).
+  - **Tree Diameter via 2-BFS (`2025_AN_Q59`):** BFS #1 from any vertex `v` finds farthest `u`; BFS #2 from `u` finds farthest `z`; `dist(u, z)` = exact **Tree Diameter**! (Warn: works on trees, FAILS on general graphs with cycles!).
+- **GATE-level items:** Connected components from forest edges (`2024_FN_Q37`), undirected BFS level difference `<= 1` vs `= 1` (`2025_AN_Q29`, `2018_FN_Q40`), valid BFS sequences (`2017_AN_Q13`), `|BFS_3 - DFS_3|` (`2021_AN_Q25`), and 2-BFS tree diameter (`2025_AN_Q59`).
+- **Diagrams needed:** `GRAPHPIC` + `FRAMES` (BFS layer ripples with Queue vs DFS path diving with Stack); `GRAPHPIC` (Triangle $K_3$ showing same-level edge `|1 - 1| = 0`, breaking `|i - j| = 1`); `TREE` (2-BFS Diameter finding `v -> u -> z`, `2025_AN_Q59`).
+- **Hand traces:** Tracing `2021_AN_Q25` on 7-node complete binary tree (`|A - B| = 1`); tracing 2-BFS on an asymmetric 7-node tree; checking BFS bipartite 2-colouring on `C_5`.
+- **Common mistakes:** Claiming `|depth(u) - depth(v)| = 1` instead of `<= 1` for undirected BFS non-tree edges (`2018_FN_Q40(II)`!); forgetting `O(V^2)` complexity when graph uses an Adjacency Matrix; applying 2-BFS diameter blindly to cyclic graphs.
+
+#### Lesson 07.2 · DFS Timestamps, Edge Types, Topological Sort, SCC & Articulation Points
+- **Tag:** `[MUST]` — High-frequency 2-mark MSQ/NAT unit (`2026_FN_Q50`, `2024_FN_Q60`, `2021_FN_Q39`, `2021_AN_Q30`, `2021_AN_Q19`, `2018_FN_Q40(I)`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 07.1.
+- **Beginner must-see:** Give DFS a ticking clock `t` that stamps **`d[u]` (entry time, turns Grey)** and **`f[u]` (exit time, turns Black)**! Those two numbers act like matching brackets `( ... )` that immediately tell you whether a graph has a cycle (**Back Edge** to an active Grey node!), how to sort tasks in order (**Topological Sort**), and which single router failure disconnects the whole network (**Articulation Point**)!
+- **Finer points:**
+  - **Parenthesis Theorem & Nesting (`2026_FN_Q50`):** For any $u, v$, `[d[u], f[u]]` and `[d[v], f[v]]` are either **strictly nested** OR **completely disjoint** — NEVER partially overlapping (`2026_FN_Q50(D)` impossible!).
+  - **4 Directed Edge Types (for edge `u -> v`):**
+    1. **Tree Edge** (`v` White -> `d[u] < d[v] < f[v] < f[u]`, `2026_FN_Q50(A)`).
+    2. **Back Edge** (`v` Grey -> **`d[v] < d[u] < f[u] < f[v]`** -> **CYCLE exists!** Impossible in a DAG! `2026_FN_Q50(B)`).
+    3. **Forward Edge** (`v` Black & `d[u] < d[v] < f[v] < f[u]`).
+    4. **Cross Edge** (`v` Black & `d[v] < f[v] < d[u] < f[u]`, `2026_FN_Q50(C)`!).
+  - **Undirected DFS Edge Theorem (`2025_AN_Q29(B)`, `2018_FN_Q40(I)`):** An undirected simple graph has **ONLY Tree & Back edges** — **NO Cross edges and NO distinct Forward edges**!
+  - **Directed Graph where `T` is BOTH BFS & DFS Tree (`2024_FN_Q60`):** **NO Forward edges** can exist (a forward edge jumps $\ge 2$ BFS depths, impossible in BFS!), whereas **Back edges and Cross edges CAN exist** (`2024_FN_Q60(C)`)!
+  - **Topological Sort & DAG DP (`2021_AN_Q30`, `2021_AN_Q19`):** Exists $\iff$ graph is a **DAG** (no back edges!); Kahn's in-degree=0 queue OR reverse DFS finishing times (`f[u]`); computing max-product/longest path on a DAG (`2021_AN_Q19`).
+  - **Strongly Connected Components (Kosaraju / Tarjan) (`2021_AN_Q30`):** 2-DFS method ($G$ then $G^T$ in decreasing $f[u]$ order); every vertex is trivially an SCC of size $\ge 1$!
+  - **Articulation Points & Bridges (`2021_FN_Q39`):**
+    - Root of DFS tree is an AP $\iff$ it has **$\ge 2$ children** in the DFS tree (`2021_FN_Q39(B)`).
+    - Non-root `u` is an AP $\iff$ some DFS child `v` has **no back edge** jumping strictly above `u` (`low[v] >= d[u]`).
+    - Leaf of DFS tree is NEVER an AP (`2021_FN_Q39(C)` false); an ancestor-descendant path CAN bypass an AP via another child's back edge (`2021_FN_Q39(D)` false!).
+- **GATE-level items:** `[d[u], f[u]]` DAG edge inequalities (`2026_FN_Q50`), directed `BFS = DFS` tree edge elimination (`2024_FN_Q60`), Articulation Point MSQ (`2021_FN_Q39`), Topological Sort / Back Edges / SCCs (`2021_AN_Q30`), and DAG path product DP (`2021_AN_Q19`).
+- **Diagrams needed:** `TIMELINE` + `GRAPHPIC` (White/Grey/Black DFS run with `[d[u], f[u]]` nesting bars + 4 edge classes); `GRAPHPIC` (Directed graph `v -> a, v -> b, b -> a` proving cross edges survive when BFS tree = DFS tree, `2024_FN_Q60`); `TREE` (AP Root $\ge 2$ children & non-root escape-rope back edge bypassing `u`, `2021_FN_Q39`).
+- **Hand traces:** Tracing `d[u], f[u]` on a 5-node DAG (`2026_FN_Q50`), running Kahn's Topological Sort, and computing SCCs via Kosaraju.
+- **Common mistakes:** Thinking a directed graph with `BFS tree = DFS tree` has NO edges outside `T` (`2024_FN_Q60(D)`!); thinking any path from ancestor `x` to descendant `y` must pass through AP `u` (`2021_FN_Q39(D)`!); thinking a graph without a cycle has "0 strongly connected components" (every single node is an SCC of size 1, `2021_AN_Q30(C)`!).
+
+---
+
+### Chapter 08 · Minimum Spanning Trees
+
+#### Lesson 08.1 · Kruskal's & Prim's Algorithms, Complexities & Negative Edge Weights
+- **Tag:** `[MUST]` — Foundation for `13/73` MST PYQs (`2025_FN_Q18`, `2020_FN_Q56`).
+- **Estimated reading time:** 60 minutes.
+- **Prerequisites:** DS `D9` (Binary Heaps), `D13` (Disjoint Sets / Union-Find).
+- **Beginner must-see:** You want to connect $n$ cities with fiber cable using the **lowest total cable cost** (`n - 1` edges, zero cycles)! **Kruskal's** sorts ALL roads globally by cheapest price and keeps adding any road that doesn't create a loop (`Union-Find`); **Prim's** grows ONE single tree out from a starting city by always grabbing the cheapest bridge crossing into unvisited cities!
+- **Finer points:**
+  - **Kruskal's Algorithm:** Sort edges + Disjoint-Set (`O(E log E)` = `O(E log V)` — great for **sparse** or **pre-sorted** graphs!).
+  - **Prim's Algorithm:** Binary Heap `O((V + E) log V)`, Fibonacci Heap `O(E + V log V)`, **Adjacency Matrix Array `O(V^2)`** (best for **dense** graphs $E \approx V^2$!).
+  - **Negative Edge Weights Work!** Both Prim's and Kruskal's handle negative edges effortlessly (every spanning tree has exact $n - 1$ edges, so adding a constant makes all weights positive without changing any MST!).
+  - **Shortest Path in $G$ vs MST Path (`2025_FN_Q18`):** MST minimizes total tree weight (and minimax bottleneck edge on paths), NOT pairwise path sums -> **`d_G(u, v) <= d_MST(u, v)`** always!
+  - **Implicit Complete Graph Trick (`2020_FN_Q56`):** Weight `|i - j|` on $K_{100}$ uses only the 99 weight-1 edges `(v_i, v_{i+1})` -> weight `99`!
+- **GATE-level items:** MST total weight on patterned complete graphs (`2020_FN_Q56`), `d_G(u,v) <= d_MST(u,v)` (`2025_FN_Q18`), Prim vs Kruskal time complexities across dense vs sparse representations.
+- **Diagrams needed:** `GRAPHPIC` + `FRAMES` (Prim's growing blob vs Kruskal's merging forest step-by-step on the exact same 6-node graph); `COMPARE` (Kruskal vs Prim Binary Heap vs Prim Matrix + `d_G` vs `d_MST` triangle).
+- **Hand traces:** Tracing both Kruskal's (with Union-Find `parent[]`) and Prim's (key array updates) on a 6-node graph; verifying `2020_FN_Q56` (`99`).
+- **Common mistakes:** Thinking Prim's/Kruskal's break on negative edge weights; confusing Prim's key (`w(u, v)`) with Dijkstra's key (`dist[u] + w(u, v)`); assuming MST shortest path = graph shortest path (`2025_FN_Q18`).
+
+#### Lesson 08.2 · MST Theorems (`Cut`, `Cycle`), Uniqueness, Counting MSTs & Edge Updates
+- **Tag:** `[MUST]` — Highest-density 2-mark proof/counting trap unit (`2026_FN_Q49`, `2025_AN_Q37`, `2025_FN_Q64`, `2024_AN_Q53`, `2022_FN_Q49`, `2021_AN_Q64`, `2021_FN_Q48`, `2020_FN_Q39`, `2019_FN_Q44`, `2018_FN_Q57`, `2017_FN_Q48`).
+- **Estimated reading time:** 85 minutes.
+- **Prerequisites:** Lesson 08.1.
+- **Beginner must-see:** Every MST proof in GATE boils down to ONE golden rule: **"Add a cheaper edge to create a cycle, then kick out a heavier edge on that cycle!"** From that single rule come the Cut Property, Cycle Property, Unique-Weight Uniqueness, AND how to check a new edge in $O(V)$ time!
+- **Finer points:**
+  - **Cut Property (`2022_FN_Q49(C)`, `2026_FN_Q49(D)`):** For any cut $(S, V \setminus S)$, the **unique lightest crossing edge** MUST be in every MST (special case $S = \{v\}$: lightest edge incident on EVERY vertex $v$ is in every MST when weights are distinct, `2026_FN_Q49(D)`!).
+  - **Cycle Property (`2026_FN_Q49(A)`):** In any cycle $C$, the **unique heaviest edge** can NEVER be in any MST! (Beware converse: lightest edge of a cycle does NOT have to be in the MST if lighter edges connect those vertices outside `C`, `2026_FN_Q49(B)`!).
+  - **Small-Edge Guarantees (`2022_FN_Q49(A, B)`):** With distinct weights, **1st & 2nd smallest** edges are ALWAYS in the MST; at least **one of 3rd & 4th smallest** is ALWAYS in the MST!
+  - **Uniqueness Conditions (`2021_AN_Q64`, `2019_FN_Q44`, `2017_FN_Q48`):**
+    - Distinct edge weights $\implies$ Unique MST (converse is FALSE: tied weights can STILL have a unique MST!).
+    - Necessary & Sufficient: For EVERY cut, unique min crossing edge (or equivalently, cycle property holds strictly!).
+  - **Constant Weight Offset (`2025_AN_Q37`):** Adding $\alpha$ to ALL edge weights shifts EVERY spanning tree by $(n - 1)\alpha$ -> **ALL MSTs remain identical!**
+  - **Counting Distinct MSTs (`2024_AN_Q53`, `2021_FN_Q48`, `2018_FN_Q57`) & Keeping Edge `(B, C)` (`2025_FN_Q64`):**
+    - Kruskal equal-weight layers: replace edges of weight $w$ inside same component structure, multiplying spanning ways across weight tiers!
+    - Edge `(B, C)` is in *every* MST iff `x` is strictly smaller than the heaviest edge on EVERY alternative `B..C` path (`max_weight` bottleneck, `2025_FN_Q64`)!
+  - **Dynamic MST Check on Adding 1 Edge `(u, v)` (`2020_FN_Q39`):** Find unique `u..v` path inside $T$ via DFS/BFS in **$\Theta(|V|)$**; $T$ remains an MST iff `w(u, v) >= max edge weight on u..v path in T`!
+- **GATE-level items:** Cycle/Cut/Vertex-incident MSQs (`2026_FN_Q49`, `2022_FN_Q49`), counting distinct MSTs (`2024_AN_Q53`, `2021_FN_Q48`, `2018_FN_Q57`), max `x` for mandatory MST edge (`2025_FN_Q64`), $+\alpha$ offset (`2025_AN_Q37`), and $\Theta(|V|)$ new-edge verification (`2020_FN_Q39`).
+- **Diagrams needed:** `FRAMES` (Exchange Argument proving Cut Property & Cycle Property); `GRAPHPIC` (Counterexample to `lightest edge in every cycle is in MST` & `heaviest incident edge is never in MST` via degree-1 bridge, `2026_FN_Q49`); `GRAPHPIC` (Equal-weight substitution multiplying MST counts `3 × 3 = 9`); `GRAPHPIC` (New edge `(u,v)` creating 1 cycle in `T`, `2020_FN_Q39`).
+- **Hand traces:** Tracing `2022_FN_Q49(A,B)` on $K_3$ + 4th edge; tracing max bottleneck `u..v` path to bound `x` (`2025_FN_Q64` style); checking `2020_FN_Q39` in $\Theta(|V|)$.
+- **Common mistakes:** Thinking "lightest edge in every cycle must be in MST" (`2026_FN_Q49(B)`!); thinking "distinct weights $\iff$ unique MST" (if-only, NOT if-and-only-if!); confusing $O(|E|)$ or $O(|E|\log|V|)$ when checking a new edge against an ALREADY built tree $T$ (`T` only has $|V|-1$ edges -> $\Theta(|V|)$, `2020_FN_Q39`!).
+
+---
+
+### Chapter 09 · Shortest Paths
+
+#### Lesson 09.1 · Single-Source Shortest Paths: DAG Topo-Relax, Dijkstra & Bellman-Ford (`d_k(u)`)
+- **Tag:** `[MUST]` — Core graph algorithms (`2026_AN_Q37`, `2026_FN_Q41`, `2025_AN_Q37`, `2017_FN_Q48(II)`).
+- **Estimated reading time:** 80 minutes.
+- **Prerequisites:** Lesson 07.2 (Topological Sort), DS `D9` (Min-Heap).
+- **Beginner must-see:** How you find the fastest route from `s` depends 100% on the road weights! Unweighted? Plain **BFS** ($\Theta(V+E)$). No cycles (**DAG**)? Sort topologically and relax once (**$\Theta(V+E)$**, even with negative weights! `2026_AN_Q37`). All weights $\ge 0$? **Dijkstra** ($O((V+E)\log V)$). Negative edges allowed? **Bellman-Ford** ($O(VE)$)!
+- **Finer points:**
+  - **Unweighted BFS (`O(V+E)`) vs DAG Shortest Path (`O(V+E)`, `2026_AN_Q37`):** Topological Sort + 1 pass relaxing outgoing edges (`2026_AN_Q37`!).
+  - **Dijkstra's Algorithm:** Greedy vertex extraction (`O(V^2)` matrix, `O((V+E)\log V)` binary heap); **FAILS on negative edges** (show 3-node counterexample!).
+  - **Bellman-Ford & $k$-Hop DP `d_k(u)` (`2026_FN_Q41`):**
+    - `d_k(u)` = min weight of path $s \to u$ using $\le k$ edges.
+    - Monotonicity: **$d_{k+1}(u) \le d_k(u)$ ALWAYS** (`2026_FN_Q41(S1)`).
+    - Failure of `d_k(u) <= d_k(v)` on edge `(u, v)` (`2026_FN_Q41(S2)`): breaks BOTH on multi-hop paths (where $d_1(v)$ exists via direct edge yet $d_1(u) = \infty$!) AND on negative-weight edges!
+    - $V - 1$ passes find all shortest paths; **$V$-th pass** detects negative-weight cycles!
+  - **Shortest Path Pitfalls (`2025_AN_Q37`, `2017_FN_Q48`):**
+    - Adding constant $+\alpha$ to all edges CAN flip shortest paths (multi-hop paths pay $k\alpha$ penalty!).
+    - Distinct positive edge weights do **NOT** guarantee unique shortest paths (`1 + 2 = 3` vs `3`? With distinct weights: `2 + 5 = 7` vs `1 + 6 = 7`!).
+- **GATE-level items:** Fastest SSSP on DAG (`2026_AN_Q37`: $\Theta(m + n)$), Bellman-Ford $d_k(u)$ properties (`2026_FN_Q41`), $+\alpha$ weight shift (`2025_AN_Q37`), and distinct-weight shortest path ties (`2017_FN_Q48(II)`).
+- **Diagrams needed:** `COMPARE` (5-row Shortest Path Selector: BFS / DAG-Topo / Dijkstra / Bellman-Ford / Floyd-Warshall); `FRAMES` (Dijkstra failing on `A->B=4, A->C=2, B->C=-5`); `GRAPHPIC` (Counterexamples breaking `2026_FN_Q41(S2)` and `2025_AN_Q37` & `2017_FN_Q48(II)`).
+- **Hand traces:** Tracing DAG Topo-Relax on a 5-node DAG; tracing Bellman-Ford $d_0..d_3$ on a 4-node graph with negative edges; verifying `2026_FN_Q41(S1, S2)`.
+- **Common mistakes:** Saying Dijkstra takes $\Theta(m + n)$ on a DAG (`2026_AN_Q37`!); thinking `d_k(u) <= d_k(v)` holds along a shortest-path edge `(u, v)` for ALL `k` (`2026_FN_Q41(S2)`!); claiming distinct edge weights make shortest paths unique (`2017_FN_Q48(II)`!).
+
+#### Lesson 09.2 · All-Pairs Shortest Paths (`Floyd-Warshall`) & Johnson's Potential Reweighting
+- **Tag:** `[MUST]` — Covers `2020_FN_Q57` and standard APSP ($O(V^3)$).
+- **Estimated reading time:** 55 minutes.
+- **Prerequisites:** Lesson 06.1 (DP), Lesson 09.1.
+- **Beginner must-see:** To find shortest distances between *every* pair $(i, j)$, **Floyd-Warshall** gradually unlocks intermediate pit-stops `k = 1, 2, ..., n` (`can i -> j get faster by stopping at k?`). And if a sparse graph has negative edges, **Johnson's Reweighting** shifts edge weights cleanly using `w(u,v) + f(u) - f(v)` so ALL edges become $\ge 0$ without changing a single shortest path (`2020_FN_Q57`)!
+- **Finer points:**
+  - **Floyd-Warshall (`\Theta(V^3)` time, `\Theta(V^2)` space):**
+    - `D[i][j] = min(D[i][j], D[i][k] + D[k][j])`.
+    - Why **`k` MUST be the outermost loop**; negative cycle detection via `D[i][i] < 0`; **Warshall's Transitive Closure** (`||` and `&&`).
+  - **Johnson's Reweighting Invariance (`2020_FN_Q57`):**
+    - Define $w'(u, v) = w(u, v) + f(u) - f(v)$ for **ANY arbitrary function $f: V \to \mathbb{R}$** (even negative $f$!).
+    - Telescoping proof: for any $s \to t$ path $P$, $w'(P) = w(P) + f(s) - f(t)$ -> preserves ALL shortest paths (and cycles!) **for EVERY $f$** (`2020_FN_Q57(A)`!).
+    - Why Johnson's specifically sets $f(u) = \text{BellmanFord}(s_0, u)$? ONLY to make all $w'(u, v) \ge 0$ so Dijkstra can run in $O(VE + V^2 \log V)$, NOT because other `f` change shortest paths!
+- **GATE-level items:** Proving why `w' = w + f(u) - f(v)` preserves shortest paths for **every** function $f$ (`2020_FN_Q57`); Floyd-Warshall step matrix updates and negative-cycle diagonal check.
+- **Diagrams needed:** `MATRIX` + `FRAMES` (Floyd-Warshall `k = 1, 2, 3` matrix relaxation updates); `GRAPHPIC` (Telescoping potential cancellation along $s \to u_1 \to u_2 \to t$, `2020_FN_Q57`).
+- **Hand traces:** Running Floyd-Warshall on a 4-vertex directed weighted graph; verifying `w'(P) = w(P) + f(s) - f(t)` with negative `f` values on two competing paths (`2020_FN_Q57`).
+- **Common mistakes:** Picking `2020_FN_Q57(D)` ("if and only if `f(u)` is Bellman-Ford distance from dummy `s`") — missing that `f(u)` from dummy `s` is only needed to ensure `w' >= 0` for Dijkstra, whereas shortest-path preservation holds for **EVERY** $f$! Putting `k` as the innermost loop in Floyd-Warshall!
+
+---
+
+## PART 6. EVERY PYQ LISTED BELOW (Batch 1: Questions #1 to #36)
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 1 | `2026_FN_Q17` | Ch 01 / L01.3 | Coupled Master Theorem recurrences ($T_1$ uses $T_2$). | Compare $n^{\log_4 5}$ vs $n^2$: since $4^2 = 16 > 5$, $\log_4 5 < 2$, so $n^2$ dominates Case 1! | **CORRECT (A: `\Theta(n^2)`).** $T_2(n) = \Theta(n^{\log_4 5})$ (Case 1 over $\log n$); $T_1(n) = 4T_1(n/2) + \Theta(n^{\log_4 5}) = \Theta(n^2)$ (Case 1). | Clean. |
+| 2 | `2026_FN_Q24` | Ch 03 / L03.1 | Open addressing Linear Probing (`h(x) = (x+7) mod 11`) wrap-around. | Don't forget `10 + 1 -> 0 -> 1` wrap-around when placing `24`! | **CORRECT (C: 2).** Slots: `1->8, 13->9, 22->7, 15->0, 11->(7,8,9)->10, 24->(9,10,0)->1`. Empty among options = `2`. | Clean. |
+| 3 | `2026_AN_Q24` | Ch 00, 01 / L00.1, L01.1 | Ranking asymptotic growth rates (`2^{\log n}` & `\log(n!)` traps). | `2^{\log_2 n} = n` (linear, NOT exponential!) and `log(n!) = \Theta(n \log n)` (Stirling!). | **CORRECT (A: `\log n, n^{1/3}, 2^{\log n}, \log(n!)`).** | Clean. |
+| 4 | `2026_AN_Q25` | Ch 01 / L01.3 | Identifying recurrences whose solution is $\Theta(n)$. | `2T(n/2) + 1` gives leaves $n^{\log_2 2} = \Theta(n)$ (Case 1), while `2T(n/2) + n` gives $\Theta(n \log n)$! | **CORRECT (A, B).** A: $\Theta(n)$; B: $\Theta(n)$; C: $\Theta(n \log n)$; D: $\Theta(n^2)$. | Clean. |
+| 5 | `2026_AN_Q30` | Ch 03 / L03.1 | Longest chain length in Chaining with `h(k) = k mod 9`. | Check all 9 keys modulo 9 carefully (`28, 19, 10` all mod 9 = 1!). | **CORRECT (3).** Chains: `1: {28,19,10}` (len 3), `3: {12}`, `5: {5}`, `6: {15,33}`, `8: {26,17}`. Max = 3. | Clean. |
+| 6 | `2026_AN_Q32` | Ch 02 / L02.2 | Counting **void merges** (`L` followed directly by `R`) in Merge Sort. | Check EVERY level of the 7 merges (`[8]+[19]`, `[25]+[31]`, `[7,8,10,19]+[25,31,35,41]`!). | **CORRECT (3).** Void merges occur when $\max(L) \le \min(R)$: `(8,19)`, `(25,31)`, and final `(7..19, 25..41)` = 3. | Clean. |
+| 7 | `2026_AN_Q37` | Ch 09 / L09.1 | Fastest SSSP algorithm on a weighted **DAG**. | Because graph is acyclic, Topological Sort + 1 pass edge relaxation beats Dijkstra (`\Theta(m + n)` vs `m + n log n`)! | **CORRECT (A: `\Theta(m + n)`).** | Clean. |
+| 8 | `2026_AN_Q38` | Ch 04 / L04.1 | Simplifying $\forall i > j$ condition to optimal $\Theta(n)$ scan. | `A[i+1] - A[i]` strictly increasing over all pairs $i > j$ is equivalent to checking adjacent differences $d_1 < d_2 < \dots < d_{n-1}$ in ONE pass! | **CORRECT (A: `\Theta(n)`).** Must inspect all $n$ elements -> $\Theta(n)$ worst case. | Clean. |
+| 9 | `2026_AN_Q39` | Ch 06 / L06.1 | Valid 2-D DP table traversal orders (`row-major` vs `anti-diagonal`). | `T[i][j]` reads ONLY `(i-1, j)` and `(i, j-1)`: both `B_1` (`i` then `j`) and `B_2` (`i+j = s` increasing!) compute both dependencies earlier! | **CORRECT (A: Both `B_1` and `B_2` correct).** | Clean. |
+| 10 | `2026_FN_Q41` | Ch 09 / L09.1 | Bellman-Ford $k$-edge distance `d_k(u)` monotonicity & negative/hop edge trap. | S2 breaks BOTH when a longer-hop shortest path has `d_1(u) = \infty > d_1(v)` (direct `s-v` edge) AND when `(u,v)` is negative! | **CORRECT (A: Only S1 is true).** S1: paths of $\le k$ edges are subset of $\le k+1$ edges. S2 false. | Clean. |
+| 11 | `2026_FN_Q49` | Ch 08 / L08.2 | MST Cycle Property, Cut Property & false converses under unique weights. | B is false (lightest edge in cycle needn't be in MST); C is false (degree-1 vertex edge is heaviest incident edge yet MUST be in MST!); D holds by Cut `{v}`! | **CORRECT (A, D).** A = Cycle Property; D = Cut Property on singletons `{v}`. | Clean. |
+| 12 | `2026_FN_Q50` | Ch 07 / L07.2 | Directed DFS timestamps `d[u], f[u]` on a **DAG** (asking **NEVER** correct!). | Watch `"NEVER"`! In a DAG there are NO back edges (`B` impossible!), and Parenthesis Theorem forbids overlapping non-nested brackets (`D` impossible!). | **CORRECT (B, D).** A = Tree/Forward edge; C = Cross edge; B = Back edge (cycle); D = illegal overlap. | Clean. |
+| 13 | `2025_FN_Q18` | Ch 08 / L08.1 | Graph shortest distance $d_1(u,v)$ vs MST path distance $d_2(u,v)$. | Every path in MST `T` is also a path in `G`, so shortest in `G` $\le$ shortest in `T`! | **CORRECT (B: `d_1(u,v) <= d_2(u,v)`).** | Clean. |
+| 14 | `2025_FN_Q20` | Ch 01 / L01.3 | Linear recurrence $T(n) = 2T(n-1) + n 2^n$ via unrolling. | Don't miss the extra factor of `n` when summing $\sum_{k=1}^n k \cdot 2^n = 2^n \frac{n(n+1)}{2} = \Theta(n^2 2^n)$! | **CORRECT (A: `\Theta(n^2 2^n)`).** | Clean. |
+| 15 | `2025_AN_Q20` | Ch 02 / L02.1 | Minimum comparisons to find ANY element that is NOT the largest. | Pick ANY 2 elements and compare: the smaller cannot be the maximum -> **1 comparison**! | **CORRECT (A: 1).** | Clean. |
+| 16 | `2025_AN_Q29` | Ch 07 / L07.1, L07.2 | Properties of BFS and DFS on an undirected simple graph. | Undirected DFS has NO cross edges (`B` true); undirected BFS non-tree edges differ in depth by $\le 1$ (`C` true); DFS isn't shortest-path (`A` false). | **CORRECT (B, C, D).** | Clean. |
+| 17 | `2025_FN_Q33` | Ch 02 / L02.2 | Total Bubble Sort swaps on 30 strictly descending elements. | Maximum inversions = $\binom{30}{2} = 30 \times 29 / 2 = 435$. | **CORRECT (435).** | Clean. |
+| 18 | `2025_AN_Q37` | Ch 08, 09 / L08.2, L09.1 | Effect of adding positive constant $\alpha$ to EVERY edge weight on MSTs vs Shortest Paths. | All spanning trees have exact `n-1` edges (shifted equally by `(n-1)\alpha`), whereas shortest paths have varying edge counts (longer-hop paths penalized more!). | **CORRECT (C).** Every MST stays an MST; SPs need NOT stay SPs. | Clean. |
+| 19 | `2025_AN_Q41` | Ch 02 / L02.1 | Optimal worst-case search complexity in a Bitonic array. | Find peak via binary search ($\Theta(\log n)$), then binary search both sorted halves ($\Theta(\log n)$). | **CORRECT (D: `\Theta(\log n)`).** | **MIS-TRANSCRIPTION:** Prints `1 = i = n` instead of `1 \le i \le n`! |
+| 20 | `2025_AN_Q59` | Ch 07 / L07.1 | Tree Diameter via 2-BFS algorithm on a tree diagram. | Need tree figure `[IMAGE_Q_59_1]` to measure longest path distance. | **CANNOT VERIFY** (Key: 6). Figure `[IMAGE_Q_59_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_59_1]`). |
+| 21 | `2025_FN_Q64` | Ch 08 / L08.2 | Maximum edge weight `x` ensuring `(B, C)` stays in EVERY MST. | Need graph figure `[IMAGE_Q_64_1]` to find min bottleneck path between `B` and `C`. | **CANNOT VERIFY** (Key: 5). Figure `[IMAGE_Q_64_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_64_1]`). |
+| 22 | `2025_FN_Q65` | Ch 03 / L03.1 | Double hashing insertion slot (`m = 11`, `h1 = k%11`, `h2 = 1 + k%7`). | Key `24`: `h1=2` (occupied by `79`), `h2=4` -> probe 1: `(2+4)%11=6` (`50`), probe 2: `(2+8)%11 = 10` (0-based slot `10`; official tolerance `10–11` allows 1-based). | **CORRECT (`10`, inside `10–11`).** | Clean (note 0-based vs 1-based range). |
+| 23 | `2024_FN_Q20` | Ch 01 / L01.1 | Worst-case $O(N)$ AND $\Omega(N)$ tight complexity for checking sorted array. | Worst-case input (already sorted) scans all $N - 1$ pairs -> tight $\Theta(N)$, meaning BOTH $O(N)$ and $\Omega(N)$! | **CORRECT (A).** | Clean. |
+| 24 | `2024_AN_Q11` | Ch 06 / L06.2 | Minimum replacements to make array non-decreasing (`n - LNDS`). | Keep Longest Non-Decreasing Subsequence `[2, 3, 4, 6]` (len `4`) intact -> replace remaining `7 - 4 = 3` elements! | **CORRECT (3).** | Clean. |
+| 25 | `2024_FN_Q57` | Ch 01 / L01.3 | Solving $T(n) = \sqrt{n} T(\sqrt{n}) + n$ by dividing by $n$ then substituting. | Divide by $n$ first: $S(n) = S(\sqrt{n}) + 1 \implies S(n) = \Theta(\log\log n) \implies T(n) = \Theta(n \log\log n)$! | **CORRECT (A).** | Clean. |
+| 26 | `2024_FN_Q60` | Ch 07 / L07.2 | Directed graph where spanning tree `T` is BOTH a DFS tree AND a BFS tree. | Forward edge `(u, w)` forces `depth_T(w) >= depth_T(u) + 2`, contradicting BFS shortest-path property! Back edges (`u->v`) & cross edges (`v->a, v->b, b->a`) CAN still exist! | **CORRECT (C: No forward edges).** | Clean. |
+| 27 | `2024_AN_Q53` | Ch 08 / L08.2 | Counting total number of distinct MSTs in a graph with tied weights. | Need graph figure `[IMAGE_Q_53_1]` to inspect weight groups & cycles. | **CANNOT VERIFY** (Key: 9). Figure `[IMAGE_Q_53_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_53_1]`). |
+| 28 | `2024_FN_Q37` | Ch 07 / L07.1 | Connected components from undirected DFS forest (`c = |V| - |E_F|`). | Each tree in a spanning forest with $k$ vertices has $k - 1$ edges -> $c$ trees have $V - c$ edges! | **CORRECT (60).** $100 - 40 = 60$. | Clean. |
+| 29 | `2023_FN_Q20` | Ch 03 / L03.1 | Best hashing strategy to counter an adversarial key generator. | Fixed `Division` or `Multiplication` functions can always be attacked once `m, A` are known; **Universal Hashing** picks randomly at runtime! | **CORRECT (C: Universal hashing).** | Clean. |
+| 30 | `2023_FN_Q29` | Ch 01 / L01.1 | Comparing $f(n)=n$ vs $g(n)=n^2$ across $O, \Omega, o, \Theta$. | Strictly slower means BOTH $O(g)$ AND little-$o(g)$! | **CORRECT (A, C).** | Clean. |
+| 31 | `2023_FN_Q54` | Ch 01 / L01.1, L01.2 | Nested loop with inner `n` halving each step (`n + n/2 + n/4... = \Theta(n)`). | Watch constant `100 * n` in Function 2: both are $\Theta(n)$, so $f_1 \in \Theta(f_2)$ and $f_1 \in O(n)$! | **CORRECT (A, D).** | Clean. |
+| 32 | `2022_FN_Q11` | Ch 01 / L01.1 | Comparing $f(n^2)$ vs $f(n)^2$ for general/polynomial/exponential functions. | Holds for polynomials (`(n^2)^k = (n^k)^2`), fails for exponentials (`2^{n^2} >> (2^n)^2`!). | **CORRECT (A).** | Clean. |
+| 33 | `2022_FN_Q16` | Ch 03 / L03.1 | Expected keys per slot using two uniform hash functions ($h_1$ odd, $h_2$ even). | Each key independently lands in any slot with probability $1/m$, so linearity of expectation still gives $n/m$! | **CORRECT (B: `n/m`).** | Clean. |
+| 34 | `2022_FN_Q49` | Ch 08 / L08.2 | MST properties under distinct edge weights (`2nd`, `3rd/4th` smallest & Cut property). | 1st & 2nd can't form a cycle -> both in MST! If 3rd forms triangle with 1st+2nd, 4th CANNOT stay inside those 3 vertices in a simple graph -> MUST enter MST! | **CORRECT (A, B, C).** D is false (distinct weights -> unique MST). | Clean. |
+| 35 | `2021_AN_Q64` | Ch 08 / L08.2 | MST uniqueness when weights are equal (`S1`) vs distinct (`S2`). | If weights aren't distinct (e.g. unit-weight $K_3$), NO single min edge lies in *every* MST (`S1` false)! Distinct weights -> unique MST (`S2` true)! | **CORRECT (C: S1 false, S2 true).** | Clean. |
+| 36 | `2021_FN_Q30` | Ch 02 / L02.1 | Tight upper bound `t` on comparisons to find BOTH Min and Max simultaneously. | Optimal pairwise comparison uses $3\lceil n/2 \rceil - 2$ (`<= 3\lceil n/2 \rceil` and `> n` for $n \ge 5$). | **CORRECT (C: `n < t <= 3 ceil(n/2)`).** | Clean. |
+
+---
+
+`CONTINUE FROM PART 6 (PYQ #37)`
+
+## PART 6 (Continued) · Batch 2: Questions #37 to #73
+
+| # | PYQ ID | (a) Ch / Lesson | (b) Exact Concept Tested | (c) Trap / Finer Point | (d) Official Key Check & Working | (e) Transcription Check |
+|---|---|---|---|---|---|---|
+| 37 | `2021_FN_Q61` | Ch 00, 01 / L00.1, L01.1 | Comparing superpolynomial vs exponential growth (`10^n`, `n^{\log n}`, `n^{\sqrt{n}}`). | Take $\log$ of all 3: $(\log n)^2 < \sqrt{n} \log n < n \log 10$! | **CORRECT (D: `f_2, f_3, f_1`).** | Clean. |
+| 38 | `2021_AN_Q31` | Ch 02 / L02.1 | Worst-case operations in recursive Binary Search. | $T(n) = T(n/2) + \Theta(1) = \Theta(\log_2 n)$. | **CORRECT (B: `\Theta(\log_2 n)`).** | Clean. |
+| 39 | `2021_FN_Q25` | Ch 02 / L02.2 | Adaptive sorting comparison count on a nearly-sorted array. | Insertion Sort skips inner loops on ordered elements (`O(n)`), whereas Selection/Merge stay $\Theta(n^2)$ / $\Theta(n \log n)$ and last-pivot Quicksort degrades! | **CANNOT VERIFY** (Key: C: Insertion sort). Array `[IMAGE_Q_25_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_25_1]`). |
+| 40 | `2021_AN_Q25` | Ch 07 / L07.1 | First 3 visited nodes in BFS vs DFS on a 7-node complete binary tree (`|A - B|`). | `A = {1, 2, 3}` (root + both level-1 children); `B = {1, child, grandchild}` -> overlap = `{1, child}` of size 2, so `|A - B| = 1` regardless of left-first or right-first order! | **CORRECT (1).** | Clean. |
+| 41 | `2021_FN_Q48` | Ch 08 / L08.2 | Counting distinct MSTs in a given undirected weighted graph. | Need graph figure `[IMAGE_Q_48_1]` to inspect equal-weight cycles. | **CANNOT VERIFY** (Key: 3). Figure `[IMAGE_Q_48_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_48_1]`). |
+| 42 | `2021_AN_Q57` | Ch 05 / L05.2 | Huffman binary prefix code respecting same-frequency dictionary length constraint. | Frequencies `a:1, b:2, c:2, e:2, d:3`. Raw Huffman gives `c:2,e:2,d:2,a:3,b:3`, breaking `len(b) <= len(c)`! Swap equal-freq `b` and `e` (`b:2, c:2, d:2, a:3, e:3`) -> `23`! | **CORRECT (B: 23).** $1(3)+2(2)+2(2)+3(2)+2(3) = 23$. | Clean. |
+| 43 | `2021_FN_Q50` | Ch 01 / L01.3 | Solving unequal-split recurrence $T(\lceil n/2 \rceil) + T(\lfloor 2n/5 \rfloor) + 7n$. | Sum of subproblem fractions $1/2 + 2/5 = 9/10 < 1 \implies$ geometrically shrinking tree dominated by root $7n$ -> $\Theta(n)$! | **CORRECT (C: `\Theta(n)`).** | Clean. |
+| 44 | `2021_AN_Q55` | Ch 01 / L01.3 | Master Theorem with ceiling `T(\lceil n/b \rceil)` & testing Case 1/2/gap traps. | A fails when $a > b$; B sits in polynomial gap ($\Theta(n \log \log n)$); D misses the $\log n$ factor (`n^{\log_b a} \log n`)! | **CORRECT (C).** Case 1 of Master Theorem applies cleanly despite ceiling. | Clean. |
+| 45 | `2021_FN_Q17` | Ch 06 / L06.1 | Rod Cutting optimal value $R_7$ & counting ALL distinct optimal solutions. | Check every partition summing to 7: `7` (`18`), `1+6` (`1+17=18`), and `2+2+3` (`5+5+8=18` — 3 pieces!) -> `R_7 = 18` via **3** solutions! | **CORRECT (A, C).** D is false because `2+2+3` uses 3 pieces. | Clean. |
+| 46 | `2021_FN_Q39` | Ch 07 / L07.2 | Articulation points in an undirected DFS tree (`root` vs `non-root` vs `leaf`). | Root is AP iff $\ge 2$ children (`B` true); leaf is never AP (`C` false); D is false because another subtree of `u` can have a back-edge bypass from `y` up to `x`! | **CORRECT (B).** | Clean. |
+| 47 | `2021_AN_Q30` | Ch 07 / L07.2 | Topological sort, back edges & SCCs on a directed graph diagram. | Need directed graph `[IMAGE_Q_30_1]` to count back edges from `S`. (Note: any finite directed graph always has $\ge 1$ SCC, making C false!). | **CANNOT VERIFY** (Key: A, B). Figure `[IMAGE_Q_30_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_30_1]`). |
+| 48 | `2021_FN_Q49` | Ch 03 / L03.1 | Dynamic 4-bit LSB-indexed Trie Hashing insertion trace. | Must see final trie structure `[IMAGE_Q_49_1]` to verify which insertion order caused splits on 3rd/4th LSB. | **CANNOT VERIFY** (Key: C). Figure `[IMAGE_Q_49_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_49_1]`). |
+| 49 | `2021_AN_Q19` | Ch 07, 09 / L07.2, L09.1 | Maximum path product DP over a weighted DAG. | Need DAG weights `[IMAGE_Q_19_1]` to sum quality-scores. | **CANNOT VERIFY** (Key: 929). Figure `[IMAGE_Q_19_1]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_19_1]`). |
+| 50 | `2020_FN_Q34` | Ch 01 / L01.3 | Solving $T(n) = T(n^{1/a}) + 1$ with base $T(b) = 1$. | Express $n = b^{a^k} \implies \log_b n = a^k \implies k = \log_a \log_b n$! Notice base order `a` then `b` (`C` flips them!). | **CORRECT (A: `\Theta(\log_a \log_b n)`).** | Clean. |
+| 51 | `2020_FN_Q28` | Ch 03 / L03.1 | Double hashing probe 1 address (`m=23`, `k=90`, `h1=k%23`, `h2=1+k%19`). | Probe `0` = `90 % 23 = 21`; `h2 = 1 + (90 % 19) = 1 + 14 = 15`. Probe `1` = `(21 + 15) % 23 = 36 % 23 = 13`. | **CORRECT (13).** | Clean. |
+| 52 | `2020_FN_Q39` | Ch 08 / L08.2 | Worst-case complexity to check if MST `T` remains valid after adding 1 edge `(u, v)`. | Find the unique path `u..v` inside `T` (which has ONLY `|V| - 1` edges!) via BFS/DFS in $\Theta(|V|)$ and compare against `w(u, v)`! | **CORRECT (D: `\Theta(|V|)`).** | Clean. |
+| 53 | `2020_FN_Q57` | Ch 09 / L09.2 | Johnson's edge reweighting $w'(u, v) = w(u, v) + f(u) - f(v)$. | Telescoping sum gives $w'(P) = w(P) + f(s) - f(t)$ for ALL $s \to t$ paths — holds for **EVERY** function $f: V \to \mathbb{R}$ (`D` is only needed to ensure $w' \ge 0$ for Dijkstra!). | **CORRECT (A).** | Clean. |
+| 54 | `2020_FN_Q56` | Ch 08 / L08.1 | MST weight of complete graph $K_{100}$ with edge weights `|i - j|`. | Minimum positive weight is `1` (`|i - (i+1)|`); the 99 weight-1 edges `(v_1,v_2)...(v_{99},v_{100})` span all 100 vertices! | **CORRECT (99).** | Clean. |
+| 55 | `2019_FN_Q31` | Ch 02 / L02.2 | Probability of worst pivot in 1st round of Randomized Quicksort (`n = 25`). | Worst split happens when pivot is EITHER smallest (`1/25`) OR largest (`1/25`) -> `2 / 25 = 0.08`! | **CORRECT (0.08).** | Clean. |
+| 56 | `2019_FN_Q14` | Ch 04, 06 / L04.1, L06.2 | Maximum contiguous subarray sum (`D&C` / `Kadane`). | Don't stop at `[6,3,-1,-2,13,4] = 23`; continuing across `-9, -1, +4, +12` hits `23 - 10 + 16 = 29`! | **CORRECT (29).** Optimal slice `[6, 3, -1, -2, 13, 4, -9, -1, 4, 12]`. | Clean. |
+| 57 | `2019_FN_Q61` | Ch 02, 04 / L02.1 | Complexity of finding median of medians across $n$ unsorted arrays of size $n$. | Each array's median takes $O(n)$ (BFPRT) -> $n \times O(n) = O(n^2)$; median of $n$ medians takes $O(n)$ -> total $O(n^2)$! | **CORRECT (C: `O(n^2)`).** | Clean. |
+| 58 | `2019_FN_Q44` | Ch 08 / L08.2 | Sufficient conditions for a unique MST (distinct weights vs unique cut-min edges). | Distinct weights imply every cut has a unique min edge, and unique cut-min edge per cut implies unique MST! | **CORRECT (C: Both I and II).** | Clean. |
+| 59 | `2018_FN_Q40` | Ch 07 / L07.1, L07.2 | Cross edges in undirected DFS (`I`) vs exact depth difference `|i - j| = 1` in BFS (`II`). | Undirected DFS has no cross edges (`I` true); triangle $K_3$ gives `|1 - 1| = 0` in BFS (`II` false!). | **CORRECT (A: I only).** | Clean. |
+| 60 | `2018_FN_Q41` | Ch 06 / L06.2 | Matrix Chain Multiplication explicit adjacent pairs (`F_1..F_5`). | Shrinking via tiny `1` at `F_4` gives `((F_1(F_2(F_3 F_4)))F_5)` (cost `48+75+50+2000 = 2173`), beating `((F_1 F_2)(F_3 F_4))F_5` (`2204`)! Only `F_3 F_4` multiplies directly! | **CORRECT (C: `F_3 F_4 only`).** | Clean. |
+| 61 | `2018_FN_Q42` | Ch 01 / L01.2 | Sequential halving loop complexity returning $\lfloor \log_2(\log_2 n) \rfloor$. | `n = 2^{40}` -> `j = 40` -> `40 -> 20 -> 10 -> 5 -> 2 -> 1` = `5` iterations. | **CORRECT (B: 5).** | Clean. |
+| 62 | `2018_FN_Q55` | Ch 01 / L01.2 | Nested recursive countdown `Count(1024, 1024)` print frequency. | `y` runs `1024..2` (`1023` outer rounds); for each `y`, `x = 1024 -> 512 -> ... -> 2` prints `10` stars -> `1023 × 10 = 10230`. | **CORRECT (10230).** | Clean. |
+| 63 | `2018_FN_Q57` | Ch 08 / L08.2 | Choosing edge weight `x` to maximize total number of distinct MSTs. | Need graph figure `[IMAGE_Q_57]` to count equal-weight cycles. | **CANNOT VERIFY** (Key: 4). Figure `[IMAGE_Q_57]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_57]`). |
+| 64 | `2018_FN_Q58` | Ch 05, 06 / L05.1, L06.2 | 0/1 Knapsack optimal (`V_opt`) vs Fractional Greedy heuristic (`V_greedy`). | Ratios: `#4(12), #1(6), #3(5), #2(4)`. Greedy picks `#4 (2kg, 24)` + `#3 (4kg, 20)` = `44`; Optimal picks `#1 (10kg)` = `60`! Diff = `60 - 44 = 16`. | **CORRECT (16).** | Clean. |
+| 65 | `2017_AN_Q19` | Ch 01, 02 / L01.3, L02.2 | Matching Hanoi (`2^n`), Binary Search (`log n`), Heap Sort (`n log n`), Matrix Add (`n^2`). | Standard worst-case complexities. | **CORRECT (C).** | Clean. |
+| 66 | `2017_FN_Q21` | Ch 00, 01 / L00.1, L01.1 | Ordering `10, sqrt(n), n, log_2 n, 100/n` increasingly. | `100/n -> 0` asymptotically, so `100/n < 10 < log_2 n < sqrt(n) < n`. | **CORRECT (B).** | Clean. |
+| 67 | `2017_FN_Q30` | Ch 04, 05, 06 / L04.1, L05.1 | Matching classic algorithms to D&C, Greedy, and DP paradigms. | Need table `[IMAGE_Q_30]`. | **CANNOT VERIFY** (Key: C). Table `[IMAGE_Q_30]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_30]`). |
+| 68 | `2017_AN_Q13` | Ch 07 / L07.1 | Valid BFS queue traversal order on a graph diagram. | Need graph `[IMAGE_Q_13]`. | **CANNOT VERIFY** (Key: D). Figure `[IMAGE_Q_13]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_13]`). |
+| 69 | `2017_FN_Q48` | Ch 08, 09 / L08.2, L09.1 | Uniqueness of MST vs Shortest Path under positive distinct edge weights. | Distinct weights guarantee unique MST (`I` true), NOT unique shortest paths (`2 + 5 = 7` vs `1 + 6 = 7` -> `II` false!). | **CORRECT (A: I only).** | Clean. |
+| 70 | `2017_AN_Q50` | Ch 01 / L01.3 | Solving $T(n) = 2 T(\sqrt{n}) + 1$ via substitution $n = 2^m$. | $S(m) = 2S(m/2) + 1 = \Theta(m) = \Theta(\log_2 n)$! (Watch `A: \log\log n` trap — happens ONLY when coeff is `1`!). | **CORRECT (B: `\Theta(\log n)`).** | Clean. |
+| 71 | `2017_AN_Q61` | Ch 00, 01 / L00.1, L01.2 | Nested Harmonic loop (`j += i`) running $\sum_{i=1}^n \lceil n/i \rceil$ steps. | Harmonic series $\sum_{i=1}^n (1/i) = \Theta(\log n)$ -> total $\Theta(n \log n)$! | **CORRECT (C: `\Theta(n \log n)`).** | Clean. |
+| 72 | `2017_FN_Q45` | Ch 02 / L02.1 | Optimal worst-case probes to find first `1` in `31`-element `0...01...1` array. | Binary search on `31` elements: $\lceil \log_2(31 + 1) \rceil = \log_2 32 = 5$ probes! | **CORRECT (5.0).** | Clean. |
+| 73 | `2017_AN_Q59` | Ch 05 / L05.2 | Expected encoded length of 100-char Huffman message. | Need probability table `[IMAGE_Q_59]`. | **CANNOT VERIFY** (Key: 225.0). Table `[IMAGE_Q_59]` is missing. | **MISSING FIGURE** (`[IMAGE_Q_59]`). |
+
+---
+
+## PART 7. MORE QUESTIONS NEEDED (3 New Ideas Per Lesson)
+
+### Chapter 00 · Math Toolbox for Algorithms
+- **Lesson 00.1 (`Logarithms, Exponents & Series`):**
+  1. Simplify and rank $4^{\log_2 n}$, $n^{\log_2 4}$, $2^{\sqrt{\log_2 n}}$, and $(\log_2 n)^{\log_2 \log_2 n}$ asymptotically (`MCQ`).
+  2. Evaluate the tight $\Theta$-bound of the nested sum $\sum_{i=1}^n \sum_{j=1}^i \frac{1}{j}$ (`MCQ`).
+  3. Find the exact integer value of $\sum_{k=0}^{10} k \cdot 2^k$ or asymptotic order of $\sum_{k=1}^n k^2 / 2^k$ (`MCQ`).
+
+### Chapter 01 · Asymptotics, Loop Complexity and Recurrences
+- **Lesson 01.1 (`Asymptotic Notations & Space Complexity`):**
+  1. Let $f(n) = n^{\sin n}$? No — standard deterministic trap: let $f(n) = n^{1 + \sin(\pi n/2)}$ vs $g(n) = n$: which of $f = O(g)$, $f = \Omega(g)$, $f = \Theta(g)$ hold? (`MSQ`).
+  2. Contrast Worst-Case Time vs Auxiliary Space Complexity of Merge Sort, In-place Quicksort, and Iterative Binary Search (`MSQ`).
+  3. Which identities hold for positive functions: $f(n) + g(n) = \Theta(\max(f(n), g(n)))$, $2^{f(n)} = O(2^{g(n)})$ when $f(n) = O(g(n))$, $\log(f(n)) = \Theta(\log(g(n)))$? (`MSQ`).
+- **Lesson 01.2 (`Loop Complexity Analysis`):**
+  1. Find the tight $\Theta$ bound of `for(i=2; i<=n; i=i*i) for(j=1; j<=i; j++)` (`MCQ`).
+  2. Count exact `printf` executions in `for(i=1; i<=64; i*=2) for(j=1; j<=i; j++)` (`NAT`).
+  3. Find worst-case time complexity of checking if an array of $n$ integers contains any duplicate using two nested loops with early `return` (`MCQ`).
+- **Lesson 01.3 (`Master Theorem, Recursion Trees & Substitutions`):**
+  1. Solve $T(n) = 4 T(n/2) + n^2 \log n$ (Extended Master Case 2) (`MCQ`).
+  2. Solve $T(n) = T(n/3) + T(2n/3) + c n$ using a Recursion Tree (`MCQ`).
+  3. Compute the exact amortized cost per `INCREMENT` over $2^k$ calls on a $k$-bit binary counter (`MCQ`).
+
+### Chapter 02 · Searching, Sorting and Selection
+- **Lesson 02.1 (`Binary Search, Bitonic & Selection`):**
+  1. Given a rotated sorted array `[15, 18, 22, 3, 6, 9, 11]`, find worst-case comparisons to locate minimum element across $n$ distinct rotated items (`MCQ`).
+  2. Compare expected vs worst-case complexity of Randomized Quickselect vs Deterministic BFPRT Selection on $n$ elements (`MSQ`).
+  3. Explain why Ternary Search (`mid1, mid2`) requires more worst-case comparisons ($\approx 2 \log_3 n$) than Binary Search (`\log_2 n`) (`MCQ`).
+- **Lesson 02.2 (`Comparison Sorts`):**
+  1. Count exact inversions in `[8, 4, 2, 1, 5, 3]` and match to swaps in Insertion Sort (`NAT`).
+  2. In Quicksort on `[10, 20, 30, 40, 50, 60]` using Hoare vs Lomuto partition with pivot = last element, count partition recursive calls (`NAT`).
+  3. Which sorting algorithms preserve Stability AND achieve $O(n \log n)$ worst-case time (`MSQ`)?
+- **Lesson 02.3 (`Lower Bounds, Linear Sorts & k-Way Merge`):**
+  1. Find the minimum worst-case comparisons required by any comparison-based algorithm to sort 5 distinct integers (`NAT`).
+  2. Sort $n$ integers each lying in range $[0, n^3 - 1]$ in optimal $O(n)$ worst-case time using Radix Sort in base $n$: how many passes are needed? (`NAT`).
+  3. Compute worst-case time complexity of merging $k$ sorted arrays of size $n/k$ each using a Min-Heap vs sequential pairwise merging (`MSQ`).
+
+### Chapter 03 · Hashing (Algorithmic Focus)
+- **Lesson 03.1 (`Probing, Universal & Dynamic Trie Hashing`):**
+  1. Insert 7 keys using `h_1(k) = k mod 10` and `h_2(k) = 1 + (k mod 7)` into a table of size 10 — explain why `h_2(k) = 4` fails to reach all slots (`MCQ`).
+  2. Show why a hash family $\mathcal{H} = \{h_{a,b}(x) = ((ax + b) \bmod p) \bmod m\}$ is universal and protects against adversarial inputs (`MSQ`).
+  3. Given a 4-bucket Dynamic Trie hash state after 5 insertions, determine which new key forces a depth-2 binary split (`MCQ`).
+
+### Chapter 04 · Divide and Conquer
+- **Lesson 04.1 (`D&C: Max Subarray, Fast Power, Strassen & Inversions`):**
+  1. Count exact number of multiplications made by Recursive Squaring `power(x, 29)` (`NAT`).
+  2. Find total inversions in `[5, 2, 6, 1, 3, 4]` and trace the D&C Merge Sort cross-inversion count (`NAT`).
+  3. Compare asymptotic time complexities of Standard Matrix Multiply, Strassen's ($7$ products), and Karatsuba's integer multiply ($3$ products) (`MSQ`).
+
+### Chapter 05 · Greedy Algorithms
+- **Lesson 05.1 (`Greedy Proofs, Activity Selection & Job Sequencing`):**
+  1. Given 6 overlapping lecture intervals `[1,4], [2,5], [3,6], [5,7], [4,8], [6,9]`, find minimum number of lecture halls needed (`NAT`).
+  2. Schedule 5 jobs with `(deadline, profit)` `[(2, 60), (1, 100), (3, 20), (2, 40), (1, 20)]` to maximize profit (`NAT`).
+  3. Give a small 3-activity counterexample where Greedy "Shortest Duration First" fails Activity Selection (`MCQ`).
+- **Lesson 05.2 (`Huffman Coding & Optimal Merge`):**
+  1. Six symbols have Fibonacci frequencies `1, 1, 2, 3, 5, 8`: find the length of the longest Huffman codeword (`NAT`).
+  2. Five sorted files of sizes `5, 10, 15, 20, 25` must be merged pairwise: find minimum total record moves (`NAT`).
+  3. Which frequency distributions guarantee a balanced Huffman tree of fixed uniform codeword lengths (`MSQ`)?
+
+### Chapter 06 · Dynamic Programming
+- **Lesson 06.1 (`DP Foundations, Loop Orders & Rod Cutting`):**
+  1. Given `dp[i][j] = dp[i+1][j] + dp[i][j-1]`, identify which nested loop directions (`i` up/down, `j` up/down) compute the table correctly (`MSQ`).
+  2. For Rod Cutting prices `p = [2, 5, 7, 8]`, find maximum revenue and number of optimal cuts for length 4 (`NAT`).
+  3. Identify which problems exhibit BOTH Optimal Substructure AND Overlapping Subproblems (`MSQ`).
+- **Lesson 06.2 (`Classic DP: LIS, Knapsack, LCS, Coin Change & MCM`):**
+  1. Find length of Longest Common Subsequence (LCS) of `"ABCBDAB"` and `"BDCABA"` (`NAT`).
+  2. Given coins `{1, 3, 4}` and target `6`, contrast Greedy choice (`4+1+1 = 3` coins) vs DP minimum coins (`3+3 = 2` coins) (`NAT`).
+  3. Given 4 matrices $A_1(10\times 20), A_2(20\times 5), A_3(5\times 30), A_4(30\times 10)$, compute minimum scalar multiplications (`NAT`).
+
+### Chapter 07 · Graph Traversals and DFS Applications
+- **Lesson 07.1 (`BFS, DFS, Level Properties & 2-BFS Diameter`):**
+  1. A disconnected undirected graph on 50 vertices has 35 tree edges in its BFS forest and 12 non-tree edges: find total connected components (`NAT`).
+  2. Check whether a 6-vertex graph with a 5-cycle is 2-colourable using BFS levels (`MCQ`).
+  3. Construct a 4-vertex cyclic graph where 2-BFS fails to find the true longest shortest-path diameter (`MCQ`).
+- **Lesson 07.2 (`DFS Timestamps, Edge Types, Topo Sort, SCC & AP`):**
+  1. Given `d[u]=2, f[u]=9` and `d[v]=3, f[v]=6` for directed edge `(u, v)`, could `(u, v)` be a Back edge or Cross edge? (`MSQ`).
+  2. Count total valid topological orderings of a 5-vertex directed graph (`s -> a, s -> b, a -> c, b -> c, c -> t`) (`NAT`).
+  3. On a 6-vertex undirected graph with 1 bridge `(2, 3)`, identify all Articulation Points and Bridges (`MSQ`).
+
+### Chapter 08 · Minimum Spanning Trees
+- **Lesson 08.1 (`Kruskal, Prim & Negative Weights`):**
+  1. Run Kruskal's & Prim's on a 5-vertex graph containing negative edge weights (`-4, -2, 1, 3, 5`) and find MST weight (`NAT`).
+  2. Compare Prim's (Adj Matrix) vs Kruskal's (Union-Find) asymptotic time on a complete graph $K_V$ (`MCQ`).
+  3. Construct a 4-vertex graph where total MST weight is `6` yet shortest path from `A` to `D` in `T` is strictly greater than in `G` (`MCQ`).
+- **Lesson 08.2 (`MST Cut/Cycle, Uniqueness, Counting & Edge Checks`):**
+  1. All edge weights in connected $G$ are multiplied by `-1`: what does Kruskal's now find (`Maximum Spanning Tree`)? (`MCQ`).
+  2. A connected graph has two cycles sharing no edges, each containing two tied minimum edges of weight `3`: find total distinct MSTs (`NAT`).
+  3. If an existing edge `e` ALREADY inside MST `T` has its weight **increased** by `5`, what is the time complexity to check if `T` stays an MST? (`MCQ`).
+
+### Chapter 09 · Shortest Paths
+- **Lesson 09.1 (`DAG Topo-Relax, Dijkstra & Bellman-Ford`):**
+  1. Show a 4-vertex weighted directed graph with a negative edge where Dijkstra returns a wrong shortest path (`MCQ`).
+  2. In a graph with 6 vertices, after 2 iterations of Bellman-Ford from `s`, what structural property holds for `d_2(u)`? (`MSQ`).
+  3. Find shortest path from `s` to `t` in a 6-node DAG containing negative edge weights in $\Theta(V + E)$ (`NAT`).
+- **Lesson 09.2 (`Floyd-Warshall & Johnson's Reweighting`):**
+  1. After iteration `k = 2` of Floyd-Warshall on a 4-vertex graph, compute matrix entry `D[3][4]` (`NAT`).
+  2. How does Floyd-Warshall detect whether a graph contains ANY negative-weight cycle (`D[i][i] < 0`)? (`MCQ`).
+  3. Given potential `f(u)` from Bellman-Ford on dummy source $s_0$, verify all reweighted edges $w'(u, v) = w(u, v) + f(u) - f(v)$ are non-negative (`NAT`).
+
+---
+
+## PART 8. WHAT IS MISSING FROM THE SUBJECT
+
+Looking across the GATE CS Algorithms syllabus (`Part B.1`), `Part C` (73 PYQs), CLRS, Made Easy, and GateWallah, these essential chapters/subtopics are absent from `Part B.2`'s 9-chapter skeleton:
+
+1. **Chapter 00: Math Toolbox for Algorithms:** Logarithm identities (`2^{\log n}`, swap rule, Stirling's `log(n!)`), Arithmetic/Geometric/AGP/Harmonic sums (`2026_AN_Q24`, `2025_FN_Q20`, `2021_FN_Q61`, `2017_AN_Q61`).
+2. **Asymptotic Depth & Recurrence Solving Beyond Simple Master Theorem:** Little-$o$/$\omega$ limit rules (`2023_FN_Q29`), Space Complexity (Auxiliary vs Stack), Loop complexity traces (`2023_FN_Q54`, `2018_FN_Q42`, `2018_FN_Q55`), Coupled recurrences (`2026_FN_Q17`), Unequal-split Akra-Bazzi intuition (`2021_FN_Q50`), Exponential unrolling (`2025_FN_Q20`), and $\sqrt{n}$ / $n^{1/a}$ substitution (`2024_FN_Q57`, `2020_FN_Q34`, `2017_AN_Q50`).
+3. **Searching/Sorting Depth:** Bitonic Search (`2025_AN_Q41`), Tournament Min-Max ($3\lceil n/2 \rceil - 2$, `2021_FN_Q30`), Non-Max in `1` check (`2025_AN_Q20`), BFPRT Median-of-Medians (`2019_FN_Q61`), Void Merges (`2026_AN_Q32`), Randomized Quicksort worst-pivot prob (`2019_FN_Q31`), Adaptive Insertion Sort (`2021_FN_Q25`), Inversions (`2025_FN_Q33`), Decision-Tree Lower Bound $\Omega(n \log n)$, Stability/In-place matrix, and Linear Sorts (`Counting, Radix, Bucket`).
+4. **Hashing Duplication & Dynamic Hashing:** Unifying `03 Hashing` cleanly with Data Structures `D11`, plus adding **Universal Hashing (`2023_FN_Q20`)** and **Dynamic Bit-Trie Hashing (`2021_FN_Q49`)**.
+5. **Divide & Conquer, Greedy & DP Depth:** Max Subarray (`2019_FN_Q14`), Quantifier reduction to $\Theta(n)$ (`2026_AN_Q38`), Strassen's, Exchange Arguments (`0/1` vs `Fractional`, `2018_FN_Q58`), Activity Selection counterexamples, Dictionary tie-breaking in Huffman (`2021_AN_Q57`), Valid 2-D DP table fill orders (`2026_AN_Q39`), Rod Cutting solution counting (`2021_FN_Q17`), LIS/LNDS (`2024_AN_Q11`), LCS, and MCM explicit adjacent pairs (`2018_FN_Q41`).
+6. **Graph Traversal, MST & Shortest Path Theorems:** Adj List vs Matrix cost, Connected Components $= |V| - |E_F|$ (`2024_FN_Q37`), 2-BFS Tree Diameter (`2025_AN_Q59`), DFS `[d[u], f[u]]` Parenthesis Theorem & 4 Edge Types (`2026_FN_Q50`), Undirected NO-Cross-Edges (`2025_AN_Q29`, `2018_FN_Q40`), `BFS=DFS` NO-Forward-Edges (`2024_FN_Q60`), Topological Sort, SCC, DAG DP (`2021_AN_Q19`), Articulation Points (`2021_FN_Q39`); MST Cut/Cycle Properties (`2026_FN_Q49`, `2022_FN_Q49`), Counting Distinct MSTs (`2024_AN_Q53`, `2021_FN_Q48`, `2018_FN_Q57`), Adding Constant $\alpha$ (`2025_AN_Q37`), Edge Insertion Verification in $\Theta(|V|)$ (`2020_FN_Q39`); DAG SSSP $\Theta(m+n)$ (`2026_AN_Q37`), Bellman-Ford $d_k(u)$ (`2026_FN_Q41`), Dijkstra negative-edge failure, Floyd-Warshall, and Johnson's Reweighting (`2020_FN_Q57`).
+7. **Syllabus Scope Notice on P/NP:** Explicit note confirming P/NP-Completeness is NOT in `Part B.1` (nor in 2017–2026 PYQs) so 100-day droppers don't waste time on it.
+
+---
+
+## PART 9. WEIGHTS
+
+### Chapter Weight Tags & Comparison with the Bank (`Part B.3`)
+
+| Chapter | Proposed Weight Tag | Bank Stats (2017–2026, 15 CS Papers) | Does the Bank Weight Look Fair? |
+|---|---|---|---|
+| **Ch 00 · Math Toolbox (Logs, Sums)** *(New)* | **Foundation** (Mandatory before Ch 01) | Embedded inside Ch 01 (`2026_AN_Q24`, `2021_FN_Q61`, `2017_AN_Q61`) | **Under-isolated in bank.** Adding Ch 00 fixes the math gap that causes half of Ch 01 errors. |
+| **Ch 01 · Asymptotics, Loops & Recurrences** | **Very High** | 19 Qs / 27 marks (`1.80%`; asked 9/10 yrs — `6` Hard Qs!) | **Fair — #1 single topic in Algorithms!** Carries ~24% of all Algorithms marks, with several Hard substitution/recurrence traps. |
+| **Ch 02 · Searching & Sorting** | **High** | Merged with Hashing in bank (17 Qs / 23 marks across 8/10 yrs) | **Fair (split Searching/Sorting from Hashing for clarity).** Easy/Medium reliable points (`3 Easy, 11 Med`). Exact standalone split vs Hashing: **not sure** beyond counting Part C (~`11` Searching/Sorting vs `6` Hashing). |
+| **Ch 03 · Hashing** *(Unify with DS `D11`)* | **Medium-High** | Merged into Searching/Sorting/Hashing bucket (`17` Qs total) | **Needs de-duplication with DS.** Core Hashing belongs in DS `D11` with Universal & Dynamic Trie Hashing linked cleanly here. |
+| **Ch 04 · Divide and Conquer** | **Low-Medium** (Important technique, light standalone weight) | Split awkwardly across 2 bank rows (`Greedy+D&C`: 4 Qs, `D&C`: 2 Qs) | **Bank labels are messy.** Pure non-sort D&C (`Max Subarray, Strassen`) appears lightly (~2–4 Qs across 15 papers); merge the duplicate D&C bank row cleanly! |
+| **Ch 05 · Greedy Algorithms** | **Medium** | Shared in `Greedy + D&C` (`4` Qs / `7` marks across 3/10 yrs — excluding MST/Dijkstra!) | **Bank under-states Greedy's real footprint!** Bank puts Huffman & Knapsack here (few Qs), while Greedy Graph Algorithms (Prim/Kruskal/Dijkstra) carry 20+ Qs in Ch 08–09! |
+| **Ch 06 · Dynamic Programming** | **Medium-High** (Important 2-mark skill, lower recent volume in 2017–2026) | 4 Qs / 7 marks across 4/10 yrs (`0/2/2` Easy/Med/Hard) | **Noticeably lower in 2017–2026 bank than expected** (though DP ideas also overlap into DAG DP & Bellman-Ford!). Still requires core mastery (`Rod Cut, LIS, LCS, Knapsack, MCM`); future paper frequency: **not sure**. |
+| **Ch 07 · Graph Traversals & DFS Applications** | **Very High** | Merged with Ch 09 in bank (`14` Qs / `25` marks across 7/10 yrs) | **Fair — massive 2-mark MSQ/NAT zone!** Separating Ch 07 (`Traversals/DFS/AP/Topo`) from Ch 09 (`Shortest Paths`) gives clearer study tracking (`~9–10` Traversals Qs in Part C!). |
+| **Ch 08 · Minimum Spanning Trees** | **Very High** | 13 Qs / 23 marks (`1.53%`; asked 9/10 yrs — `0` Easy, `12` Medium, `1` Hard!) | **Fair — insanely consistent ROI!** Appears in 9/10 years, almost all Medium 2-mark theorem/counting wins (`Cut`, `Cycle`, `Unique`, `Count MSTs`)! |
+| **Ch 09 · Shortest Paths** | **Medium-High** | Merged with Ch 07 (`14` Qs / `25` marks shared) | **Fair (once split from Ch 07).** Fewer raw trace questions than MST, yet high-impact conceptual traps (`DAG \Theta(m+n)`, `Bellman-Ford d_k`, `Johnson's reweighting`, `+\alpha` shift). |
+
+### Overall Assessment of Bank Distribution (`7.6%` = ~7.6 marks/paper)
+- Looking at the 2017–2026 bank (`Part B.3`), **Graph Algorithms (`Ch 07 + Ch 08 + Ch 09`: `27` Qs / `48` marks = `42%` of Algorithms!)**, **Asymptotics & Recurrences (`Ch 01`: `19` Qs / `27` marks = `24%`)**, and **Searching/Sorting/Hashing (`Ch 02 + Ch 03`: `17` Qs / `23` marks = `20%`)** make up **`86%` of all Algorithms marks**, while standalone D&C, Greedy (non-graph), and DP make up the remaining **`14%`**.
+- Note also: Algorithms has **far fewer Easy questions (`7/73 = <10%`)** than OS or CN, and **`12` Hard questions** (heavily concentrated in `Ch 01` Recurrences and `Ch 06` DP). That makes `Ch 00` math prep and `Ch 08` MST theorems (`12/13` Medium!) the smartest fast-scoring priorities for a 100-day dropper! (Exact future paper frequencies beyond the 15-paper bank provided: **not sure**.)

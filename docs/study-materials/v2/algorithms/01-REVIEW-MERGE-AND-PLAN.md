@@ -1,6 +1,6 @@
-# Algorithms: review merge and plan v1 (PROVISIONAL)
+# Algorithms: review merge and plan v1
 
-> **Provisional (24 Nov):** the Algorithms reviews were not finished when this was merged (a reply stopped part-way or is still being continued). Treat this plan as a draft. When the remaining parts arrive, save them in `reviews-received/` and tell me; I will re-merge and remove this banner.
+> **Complete (24 Nov):** both full reviews are merged (ChatGPT `reviews-received/chatgpt-review-algorithms.md`, Gemini `reviews-received/gemini-complete.txt`). The earlier partial Gemini reply is kept as `reviews-received/gemini-partial.txt`.
 
 Merged: ChatGPT (`reviews-received/chatgpt-review-algorithms.md`) and Gemini (`reviews-received/gemini.txt`). Note: I read ChatGPT's plan, scope and PYQ audit in detail and Gemini's data findings and feelings; Gemini's lesson-level plan was skimmed and is to be compared lesson by lesson when each chapter is written.
 
@@ -11,7 +11,7 @@ Both agree that the nine headline chapters are right and the syllabus line list 
 Keep all four syllabus lines in full: searching, sorting and hashing; asymptotic worst-case time and space; greedy, dynamic programming and divide and conquer; graph traversals, MSTs and shortest paths. Extras the reviewers mention beyond the bank's tags (Floyd–Warshall, SCCs, articulation points and bridges, universal hashing, median of medians, Bellman–Ford and negative cycles, LNDS) are **kept as [SHOULD]**, not dropped just because the bank tags few questions there. NP-completeness and advanced complexity stay out of this book (they are not in the four lines).
 
 ## 3. Cross-subject ownership (decided here, to avoid two books with different formulas)
-- **Hashing:** taught once. The Algorithms book keeps the hashing chapter (it is under the Algorithms syllabus line and already a chapter in the app). The Data Structures plan's hashing chapter is a link back here, as decided earlier.
+- **Hashing: the two reviewers disagree.** Gemini says the core belongs in Data Structures D12 and links here; ChatGPT says one clear owner is needed. **Decision, by the official 2027 text:** hashing is named in the **Algorithms** line ("Searching, sorting, hashing") and not in the Programming and Data Structures line, so **Algorithms owns the full hashing chapter**. The Data Structures D12 becomes a short bridge (idea, chaining, linear probing by example) that points here. The `04-DATA-STRUCTURES.md` header is updated to match.
 - **Recurrences, growth rates, Big-O:** the maths toolkit chapter in Data Structures (D1) is the beginner on-ramp; this book's chapter 1 goes deeper (Master theorem, substitution, log-log recurrences, floor/ceil).
 - **Graph representation, BFS/DFS as traversals:** Data Structures chapter 13; this book adds DFS edge classes, topological sort, SCCs and the proofs.
 
@@ -51,6 +51,14 @@ Bank evidence (coarse, shared labels): asymptotics 19 q / 27 marks; graph traver
 **9 · Shortest paths** [MUST, High] ~11 h. A9.1 relaxation basics; A9.2 BFS for unweighted and DAG shortest paths (Θ(V + E)); A9.3 Dijkstra (and why negative edges break it); A9.4 Bellman–Ford, negative cycles, reweighting [SHOULD]; A9.5 Floyd–Warshall [SHOULD]; shortest path vs MST are different (the added-constant trap).
 
 **10 · Previous-year practice** [MUST] ~6 h. Every PYQ by pattern, MCQ / MSQ / NAT.
+
+## 5b. Additions from the complete Gemini review (checked against the official 2027 Algorithms line, which is unchanged)
+- **Chapter 0 maths toolbox** gets named content: logarithm identities (`2^log n`, swap rule, Stirling for `log(n!)`), arithmetic, geometric, AGP and harmonic sums. These decide many chapter-1 questions.
+- **Sorting depth:** the decision-tree lower bound Ω(n log n); **linear-time sorts (counting, radix, bucket) [SHOULD]**; stability and in-place table; adaptive insertion sort; inversions as swap count.
+- **Divide and conquer / greedy / DP:** Strassen [SHOULD]; exchange arguments; Huffman tie-breaking by the stated rule; **LCS and 0/1 knapsack** added to DP (the bank has few DP questions, but they are standard); counting optimal solutions; valid 2-D table fill orders.
+- **Graphs:** connected components = |V| − |E_F| for a DFS forest; the two-BFS tree-diameter trick; DFS parenthesis theorem; BFS-tree = DFS-tree facts; DAG DP; Johnson reweighting [SHOULD].
+- **Scope note adopted:** P, NP and NP-completeness are **not** in the Algorithms line (official 2027 text confirms) nor in the 2017–2026 bank, so they stay out; the book says so, to save a 100-day student's time.
+- **Weights (Gemini, adopted with the bank's caveat):** graph algorithms (chapters 7 to 9) carry about 42% of Algorithms marks in the bank, asymptotics and recurrences about 24%, searching/sorting/hashing about 20%; only 7 of 73 questions are Easy and 12 are Hard, so the maths toolbox and the MST theorem templates are the fastest early wins. These are bank statistics, not forecasts.
 
 ## 6. Other adopted points
 - Every algorithm trace (Gantt-style tables for sorting passes, DP tables, Dijkstra, DFS times) comes from a program, shown with the new figure kinds (`array`, `tree`, `trace`, `frames`).
