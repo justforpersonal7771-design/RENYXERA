@@ -32,6 +32,7 @@
     "preview:cf": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy:cf": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "check:lesson": "node scripts/lesson-verify.mjs",
     "check:figures": "tsx --tsconfig tsconfig.json scripts/figures-check.ts",
     "check:images": "tsx --tsconfig tsconfig.json scripts/check-images.mts"
   },
