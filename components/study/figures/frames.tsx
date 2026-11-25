@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { FramesFig } from "@/lib/study/figures";
+import { Rich } from "../rich-text";
 
 /**
  * Frames: one operation changing a structure, one picture per step, with Back / Next / Play and the arrow keys.
@@ -25,9 +26,9 @@ export function Frames({ fig, render }: { fig: FramesFig; render: (f: unknown) =
   return (
     <div ref={box} tabIndex={0} role="group" aria-label={fig.title ?? "Step by step figure"} className="max-w-full rounded-xl outline-offset-2"
       onKeyDown={(e) => { if (e.key === "ArrowRight") { e.preventDefault(); go(1); } else if (e.key === "ArrowLeft") { e.preventDefault(); go(-1); } }}>
-      {fig.title && <p className="mb-1 text-xs font-bold text-[var(--text-secondary)]">{fig.title}</p>}
-      <div className="min-h-[3rem]" aria-live="polite">{render(f.fig)}</div>
-      <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]"><span className="mr-2 rounded-full bg-[var(--st-accent)] px-2 py-0.5 text-xs font-extrabold text-[var(--surface)]">Step {i + 1} of {n}</span>{f.caption}</p>
+      {fig.title && <p className="mx-auto mb-3 w-fit max-w-full overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--surface-secondary)] px-3 py-1.5 font-mono text-[0.95rem] font-semibold text-[var(--text-primary)]">{fig.title}</p>}
+      <div className="grid" aria-live="polite">{fig.frames.map((fr, k) => <div key={k} className={`col-start-1 row-start-1 ${k === i ? "" : "invisible"}`} aria-hidden={k !== i}>{render(fr.fig)}</div>)}</div>
+      <p className="mt-2 text-sm font-semibold text-[var(--text-primary)]"><span className="mr-2 rounded-full bg-[var(--st-accent)] px-2 py-0.5 text-xs font-extrabold text-[var(--surface)]">Step {i + 1} of {n}</span><Rich s={f.caption} /></p>
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <button type="button" className={btn} onClick={() => go(-1)} disabled={i === 0} aria-label="Previous step">← Back</button>
         <button type="button" className={btn} onClick={() => go(1)} disabled={i === n - 1} aria-label="Next step">Next →</button>

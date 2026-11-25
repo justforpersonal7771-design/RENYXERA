@@ -12,7 +12,7 @@ function TreeSvg({ root, calls, order, label }: { root: TreeNode; calls?: boolea
   const hw = (n: TreeNode) => (calls ? Math.max(40, String(n.label).length * 7.4 + 16) / 2 : 16);
   return (
     <div className="max-w-full overflow-x-auto">
-      <svg viewBox={`0 0 ${w + (calls ? 24 : 0)} ${h + (calls ? 22 : 18)}`} style={{ width: Math.max(w + (calls ? 24 : 0), 140) }} className={calls ? "h-auto max-w-none" : "h-auto max-w-full"} role="img" aria-label={label}>
+      <svg viewBox={`0 0 ${w + (calls ? 24 : 0)} ${h + (calls ? 22 : 18)}`} style={calls ? { width: Math.max(w + 24, 140) } : { width: "100%", maxWidth: Math.round(Math.max(w, 140) * 1.7) }} className={calls ? "mx-auto h-auto max-w-none" : "mx-auto h-auto"} role="img" aria-label={label}>
         <ArrowDefs id={id} />
         {nodes.map((p, i) => {
           if (p.parent < 0) return null;

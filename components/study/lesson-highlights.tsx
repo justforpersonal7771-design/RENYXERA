@@ -12,6 +12,8 @@ const orderKey = (lesson: string) => `renyxera.study.hl-order.${lesson}`;
 const loadLocal = (lesson: string): Item[] => { try { return (JSON.parse(localStorage.getItem(key(lesson)) ?? "[]") as Item[]).map((x) => ({ ...x, note: x.note ?? "" })); } catch { return []; } };
 const saveLocal = (lesson: string, items: Item[]) => { try { localStorage.setItem(key(lesson), JSON.stringify(items)); } catch { /* private mode */ } };
 const WORD = /[\p{L}\p{N}_'’-]/u;
+/** Lessons whose device copy is being uploaded right now (two mounted hooks must not upload the same notes twice). */
+const uploading = new Set<string>();
 
 /** Grow a selection to whole words, so a highlight never starts or ends inside a word. */
 function snapToWords(r: Range) {
@@ -50,14 +52,16 @@ export function useLessonHighlights(lesson: string) {
       const r = await fetch(`/api/study/notes?lesson=${encodeURIComponent(lesson)}`, { cache: "no-store" }).catch(() => null);
       if (!alive || !r?.ok) return;
       let list = ((await r.json()) as { notes: Item[] }).notes;
-      const fresh = local.filter((l) => !list.some((c) => c.quote === l.quote));
+      const fresh = uploading.has(lesson) ? [] : local.filter((l) => !list.some((c) => c.quote === l.quote));
+      if (fresh.length) uploading.add(lesson);
       for (const l of fresh) {
         const u = await fetch("/api/study/notes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lesson, quote: l.quote, note: l.note, color: l.color }) }).catch(() => null);
         if (u?.ok) list = [...list, ((await u.json()) as { note: Item }).note];
       }
       if (!alive) return;
+      uploading.delete(lesson);
       saveLocal(lesson, []);
-      setCloud(true); setItems(list);
+      setCloud(true); setItems(list.filter((x, i, all) => all.findIndex((y) => y.id === x.id) === i));
     })();
     return () => { alive = false; };
   }, [lesson]);
@@ -86,6 +90,9 @@ export function useLessonHighlights(lesson: string) {
     if (!sel) return;
     const quote = sel.text, at = { x: sel.x, y: sel.y };
     window.getSelection()?.removeAllRanges(); setSel(null);
+    // the same words are never saved twice: reuse the existing highlight (and open its note) instead of adding another
+    const same = items.find((x) => x.quote === quote);
+    if (same) { persist(items.map((x) => (x.id === same.id ? { ...x, color } : x))); if (withNote) setPenFor({ id: same.id, ...at }); return; }
     let made: Item | null = null;
     if (cloud) {
       const r = await fetch("/api/study/notes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ lesson, quote, color }) }).catch(() => null);

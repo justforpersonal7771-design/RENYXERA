@@ -14,7 +14,7 @@ export function Memory({ fig }: { fig: MemoryFig }) {
   const W = boxX + boxW + 96, H = top * 2 + fig.cells.length * (U + G);
   return (
     <FigFrame title={fig.title} note={fig.note} label={fig.title ?? "Memory diagram"}>
-      <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full max-w-[420px]" role="img" aria-label={fig.title ?? "Memory"}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="mx-auto h-auto w-full max-w-[600px]" role="img" aria-label={fig.title ?? "Memory"}>
         <ArrowDefs id={id} />
         {fig.cells.map((c, i) => {
           const t = c.ptr !== undefined ? idx.get(String(c.ptr)) : undefined;
@@ -45,7 +45,7 @@ export function ArrayView({ fig }: { fig: ArrayFig }) {
   return (
     <FigFrame title={fig.title} note={fig.note} label={fig.title ?? "Array diagram"}>
       <div className="max-w-full overflow-x-auto">
-        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: Math.max(W, 120) }} className="h-auto max-w-full" role="img" aria-label={fig.title ?? "Array"}>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: Math.round(Math.max(W, 120) * 2) }} className="mx-auto h-auto" role="img" aria-label={fig.title ?? "Array"}>
           <ArrowDefs id={id} />
           {fig.index && Array.from({ length: cols }, (_, c) => <text key={c} x={left + c * cw + cw / 2} y={top - 8} textAnchor="middle" fontSize="11" fill={SUB}>{c}</text>)}
           {fig.rowIndex && fig.data.map((_, r) => <text key={r} x={left - 8} y={top + r * ch + ch / 2 + 4} textAnchor="end" fontSize="11" fill={SUB}>{r}</text>)}
@@ -80,7 +80,7 @@ export function Linked({ fig }: { fig: LinkedFig }) {
   return (
     <FigFrame title={fig.title} note={fig.note} label={fig.title ?? "Linked list"}>
       <div className="max-w-full overflow-x-auto">
-        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: Math.max(W, 160) }} className="h-auto max-w-full" role="img" aria-label={fig.title ?? "Linked list"}>
+        <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", maxWidth: Math.round(Math.max(W, 160) * 1.6) }} className="mx-auto h-auto" role="img" aria-label={fig.title ?? "Linked list"}>
           <ArrowDefs id={id} />
           {(fig.heads ?? []).map((hd, k) => { const i = idx.get(hd.to); if (i === undefined) return null; const cx = X(i) + nw / 2 + (k % 2) * 0; return <g key={k}><text x={cx} y={14} textAnchor="middle" fontSize="13" fontWeight="800" fill="var(--st-accent)">{hd.name}</text><line x1={cx} y1={18} x2={cx} y2={y0 - 2} stroke="var(--st-accent)" strokeWidth="2" markerEnd={`url(#${id}-a)`} /></g>; })}
           {fig.nodes.map((n, i) => {
@@ -113,7 +113,7 @@ export function Linked({ fig }: { fig: LinkedFig }) {
 export function StackFrames({ fig }: { fig: StackFrameFig }) {
   return (
     <FigFrame title={fig.title} note={fig.note} label={fig.title ?? "Call stack"}>
-      <div className="flex max-w-[340px] flex-col gap-0" role="img" aria-label={fig.title ?? "Call stack"}>
+      <div className="mx-auto flex max-w-[520px] flex-col gap-0 text-[1.05rem]" role="img" aria-label={fig.title ?? "Call stack"}>
         <p className="mb-1 text-[11px] font-bold text-[var(--text-muted)]">top of the stack (newest call)</p>
         {fig.frames.map((f, i) => (
           <div key={i} className="overflow-hidden rounded-lg border-2" style={{ ...toneStyle(f.tone), marginTop: i ? -2 : 0 }}>
@@ -180,7 +180,7 @@ export function Ring({ fig }: { fig: RingFig }) {
   const id = useId().replace(/:/g, ""), n = fig.n, R = Math.max(64, n * 13), cx = R + 64, cy = R + 78, W = cx * 2, H = cy * 2 - 34;
   return (
     <FigFrame title={fig.title} note={fig.note} label={fig.title ?? "Circular queue"}>
-      <svg viewBox={`0 0 ${W} ${H}`} className="h-auto w-full max-w-[340px]" role="img" aria-label={fig.title ?? "Circular queue"}>
+      <svg viewBox={`0 0 ${W} ${H}`} className="mx-auto h-auto w-full max-w-[460px]" role="img" aria-label={fig.title ?? "Circular queue"}>
         <ArrowDefs id={id} />
         <circle cx={cx} cy={cy} r={R} fill="none" stroke="var(--border)" strokeWidth="1.2" strokeDasharray="3 4" />
         {Array.from({ length: n }, (_, i) => {

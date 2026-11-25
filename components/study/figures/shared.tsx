@@ -30,7 +30,7 @@ export function ArrowDefs({ id }: { id: string }) {
 export function FigFrame({ title, note, children, label }: { title?: string; note?: string; children: ReactNode; label: string }) {
   return (
     <figure className="m-0 max-w-full" aria-label={label}>
-      {title && <figcaption className="mb-1 text-xs font-bold text-[var(--text-secondary)]">{title}</figcaption>}
+      {title && <figcaption className="mx-auto mb-3 w-fit max-w-full overflow-x-auto rounded-lg border border-[var(--border)] bg-[var(--surface-secondary)] px-3 py-1.5 font-mono text-[0.95rem] font-semibold text-[var(--text-primary)]">{title}</figcaption>}
       {children}
       {note && <p className="mt-1 text-xs text-[var(--text-secondary)]">{note}</p>}
     </figure>

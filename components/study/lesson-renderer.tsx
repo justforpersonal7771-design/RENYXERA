@@ -248,10 +248,11 @@ import { CS_SHELF } from "@/lib/study/catalog";
 import { saveNote, useNotes } from "@/lib/desk/stores";
 import { NoteEditor } from "@/components/desk/note-editor";
 import { NotebookPen } from "lucide-react";
+import { Inline, Rich, splitCodeQ } from "./rich-text";
 import { addToRevision } from "@/lib/desk/revision";
 import { useToastStore } from "@/store/use-toast-store";
-import { Lock, ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, BookOpenText, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap } from "lucide-react";
-import type { Block, Chapter, CheckQ, Topic } from "@/lib/study/schema";
+import { Lock, ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, BookOpenText, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap, Sparkles } from "lucide-react";
+import type { Block, Chapter, CheckQ, Topic, BookNode } from "@/lib/study/schema";
 import { Diagram } from "@/components/study/diagram";
 import { LessonTools } from "@/components/study/lesson-tools";
 import { useLessonHighlights } from "@/components/study/lesson-highlights";
@@ -260,7 +261,7 @@ import Link from "next/link";
 type B<T extends Block["type"]> = Extract<Block, { type: T }>;
 const card = (tint: string, extra = "") => ({ className: `card-pastel p-5 sm:p-6 ${extra}`, "data-tint": tint });
 const plain = "rounded-[var(--card-radius,24px)] border border-[var(--border)] bg-[var(--surface)] p-5 sm:p-6";
-const Label = ({ icon, children }: { icon?: ReactNode; children: ReactNode }) => <p className="flex items-center gap-2 text-sm font-bold text-[var(--tint-ink,var(--text-primary))]">{icon}{children}</p>;
+const Label = ({ icon, children }: { icon?: ReactNode; children: ReactNode }) => <p className="flex items-center gap-2 text-sm font-bold text-[var(--tint-ink,var(--text-primary))]">{icon}{children}{icon && <span aria-hidden className="tile-mark">{icon}</span>}</p>;
 
 /* ------------------------------------------------------------------ check questions */
 function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
@@ -285,7 +286,7 @@ function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
   return (
     <li className={plain}>
       <p className="text-xs font-bold text-[var(--text-secondary)]">Question {n} · {q.kind === "MSQ" ? "MSQ, pick all that apply" : q.kind === "NAT" ? "NAT, type a number" : "MCQ, pick one"} · {q.marks} mark{q.marks > 1 ? "s" : ""} · {q.kind === "MCQ" ? (q.marks === 1 ? "−1/3 if wrong" : "−2/3 if wrong") : "no negative marks"}</p>
-      <p className="mt-2 text-[15px] leading-relaxed text-[var(--text-primary)]">{q.q}</p>
+      {(() => { const sp = splitCodeQ(q.q); return sp ? <>{sp.before && <p className="mt-2 text-[15px] leading-relaxed text-[var(--text-primary)]"><Rich s={sp.before} /></p>}<div className="mt-2"><CodeEditor text={sp.code} name="question.c" /></div>{sp.after && <p className="mt-1 text-[15px] font-semibold leading-relaxed text-[var(--text-primary)]"><Rich s={sp.after} /></p>}</> : <p className="mt-2 text-[15px] leading-relaxed text-[var(--text-primary)]"><Rich s={q.q} /></p>; })()}
       {q.options ? (
         <ul className="mt-3 grid gap-2" role={q.kind === "MSQ" ? "group" : "radiogroup"} aria-label={`Options for question ${n}`}>
           {q.options.map((o, i) => {
@@ -297,7 +298,7 @@ function CheckQuestion({ q, n }: { q: CheckQ; n: number }) {
                   <span aria-hidden className={`mt-0.5 grid h-5 w-5 shrink-0 place-items-center border-2 border-[var(--text-primary)] ${q.kind === "MSQ" ? "rounded-md" : "rounded-full"} ${on ? "bg-[var(--text-primary)] text-[var(--background)]" : ""}`}>
                     {on && (q.kind === "MSQ" ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : <span className="h-2 w-2 rounded-full bg-[var(--background)]" />)}
                   </span>
-                  <span className="min-w-0 flex-1 text-[var(--text-primary)]"><b className="mr-1.5">{l}.</b>{o}</span>
+                  <span className="min-w-0 flex-1 text-[var(--text-primary)]"><b className="mr-1.5">{l}.</b><Rich s={o} /></span>
                   {(shown || sol) && correct.includes(l) && <CircleCheck className="h-5 w-5 shrink-0 text-emerald-600" aria-label="Correct option" />}
                   {shown && on && !correct.includes(l) && <CircleX className="h-5 w-5 shrink-0 text-rose-600" aria-label="Wrong pick" />}
                 </button>
@@ -348,18 +349,18 @@ const Deep = ({ b }: { b: B<"deep"> }) => (
     </div>
   </section>
 );
-const Walk = ({ b }: { b: B<"walkthrough"> }) => <section className={plain}><h3 className="lesson-h">Step by step</h3><ol className="mt-2 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--ink)] text-xs font-bold text-[var(--background)]">{i + 1}</span><p className="lesson-p">{s}</p></li>)}</ol>{b.prompt && <details className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3"><summary className="cursor-pointer text-sm font-bold text-[var(--text-primary)]">Think: {b.prompt.q}</summary><p className="mt-2 text-sm text-[var(--text-secondary)]">{b.prompt.a}</p></details>}</section>;
+const Walk = ({ b }: { b: B<"walkthrough"> }) => <section className={plain}><h3 className="lesson-h">Step by step</h3><ol className="mt-2 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--ink)] text-xs font-bold text-[var(--background)]">{i + 1}</span><p className="lesson-p"><Rich s={s} /></p></li>)}</ol>{b.prompt && <details className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3"><summary className="cursor-pointer text-sm font-bold text-[var(--text-primary)]">Think: <Rich s={b.prompt.q} /></summary><p className="mt-2 text-sm text-[var(--text-secondary)]"><Rich s={b.prompt.a} /></p></details>}</section>;
 const Figure = ({ b }: { b: B<"figure"> }) => <figure className={`${plain} grid content-center justify-items-center gap-2`}><Diagram fig={b.fig} /><figcaption className="text-center text-sm text-[var(--text-secondary)]">{b.caption}</figcaption><span className="sr-only">{b.alt}</span></figure>;
-const Example = ({ b }: { b: B<"example"> }) => (
+const Example = ({ b, code }: { b: B<"example">; code?: boolean }) => (
   <section {...card("sky")}><p className="text-xs font-bold text-[var(--tint-ink)]">Worked example{b.level === "edge" ? ", edge case" : b.level === "gate" ? ", GATE level" : ""}</p><h3 className="lesson-h !mt-1">{b.title}</h3>
-    <p className="lesson-p"><b>Given: </b>{b.given}</p><p className="lesson-p mt-1"><b>Find: </b>{b.find}</p>
-    <ol className="mt-3 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3 rounded-xl bg-[var(--surface)] p-3"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--tint-ink)] text-xs font-bold text-[var(--surface)]">{i + 1}</span><p className="text-[15px] leading-relaxed text-[var(--text-primary)]">{s.say}{s.result && <b className="ml-1">→ {s.result}</b>}</p></li>)}</ol>
-    <p className="mt-3 rounded-xl bg-[var(--surface)] p-3 font-bold text-[var(--text-primary)]">Answer: {b.answer}</p>{b.check && <p className="mt-2 text-sm text-[var(--text-primary)]"><b>Check it another way: </b>{b.check}</p>}</section>
+    {code ? <><p className="lesson-p"><b>Given:</b></p><CodeEditor text={b.given} name={b.file ?? "trace.c"} /></> : <p className="lesson-p"><b>Given: </b>{b.given}</p>}<p className="lesson-p mt-1"><b>Find: </b><Rich s={b.find} /></p>
+    <ol className="mt-3 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3 rounded-xl bg-[var(--surface)] p-3"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[var(--tint-ink)] text-xs font-bold text-[var(--surface)]">{i + 1}</span><p className="text-[15px] leading-relaxed text-[var(--text-primary)]"><Rich s={s.say} />{s.result && <b className="ml-1">→ <Rich s={s.result} /></b>}</p></li>)}</ol>
+    <p className="mt-3 rounded-xl bg-[var(--surface)] p-3 font-bold text-[var(--text-primary)]">Answer: <Rich s={b.answer} /></p>{b.check && <p className="mt-2 text-sm text-[var(--text-primary)]"><b>Check it another way: </b><Rich s={b.check} /></p>}</section>
 );
-const Faded = ({ b }: { b: B<"faded"> }) => <section {...card("peach")}><p className="text-xs font-bold text-[var(--tint-ink)]">Try it yourself</p><h3 className="lesson-h !mt-1">{b.title}</h3><p className="lesson-p">{b.given}</p><ol className="mt-2 list-decimal space-y-2 pl-5">{b.steps.map((s, i) => <FadedStep key={i} s={s} />)}</ol></section>;
-const Trap = ({ b }: { b: B<"trap"> }) => <section {...card("rose", "h-full")}><Label icon={<TriangleAlert className="h-4 w-4" aria-hidden />}>Trap</Label><p className="mt-1 font-bold text-[var(--text-primary)]">{b.wrong}</p><p className="mt-2 text-sm text-[var(--text-primary)]"><b>Why it feels right: </b>{b.tempting}</p><p className="mt-1 text-sm text-[var(--text-primary)]"><b>Why it is wrong: </b>{b.whyWrong}</p><p className="mt-3 rounded-xl bg-[var(--surface)] p-2.5 text-sm font-bold text-[var(--text-primary)]">Rule: {b.rule}</p></section>;
-const Shortcut = ({ b }: { b: B<"shortcut"> }) => <section {...card("mint")}><Label icon={<Zap className="h-4 w-4" aria-hidden />}>Shortcut</Label><p className="lesson-p mt-1">{b.text}</p><p className="mt-1 text-sm">Valid when: {b.validWhen}</p></section>;
-const Gate = ({ b }: { b: B<"gate"> }) => <section {...card("butter", "h-full")}><Label icon={<Lightbulb className="h-4 w-4" aria-hidden />}>How GATE asks it</Label><p className="lesson-p mt-1">{b.text}</p></section>;
+const Faded = ({ b }: { b: B<"faded"> }) => <section {...card("peach")}><p className="text-xs font-bold text-[var(--tint-ink)]">Try it yourself</p><h3 className="lesson-h !mt-1">{b.title}</h3><div className="mt-2"><CodeEditor text={b.given.replace(/; /g, ";\n")} name="your_turn.c" /></div><ol className="mt-2 list-decimal space-y-2 pl-5">{b.steps.map((s, i) => <FadedStep key={i} s={s} />)}</ol></section>;
+const Trap = ({ b }: { b: B<"trap"> }) => <section {...card("rose", "h-full")}><Label icon={<TriangleAlert className="h-4 w-4" aria-hidden />}>Trap</Label><p className="mt-1 font-bold text-[var(--text-primary)]"><Rich s={b.wrong} /></p><p className="mt-2 text-sm leading-6 text-[var(--text-primary)]"><b>Why it feels right: </b><Rich s={b.tempting} /></p><p className="mt-1 text-sm leading-6 text-[var(--text-primary)]"><b>Why it is wrong: </b><Rich s={b.whyWrong} /></p><p className="mt-3 rounded-xl bg-[var(--surface)] p-2.5 text-sm font-bold leading-6 text-[var(--text-primary)]">Rule: <Rich s={b.rule} /></p></section>;
+const Shortcut = ({ b }: { b: B<"shortcut"> }) => <section {...card("mint")}><Label icon={<Zap className="h-4 w-4" aria-hidden />}>Shortcut</Label><p className="lesson-p mt-1"><Rich s={b.text} /></p><p className="mt-1 text-sm">Valid when: <Rich s={b.validWhen} /></p></section>;
+const Gate = ({ b }: { b: B<"gate"> }) => <section {...card("butter", "h-full")}><Label icon={<Lightbulb className="h-4 w-4" aria-hidden />}>How GATE asks it</Label><p className="lesson-p mt-1"><Rich s={b.text} /></p></section>;
 /** One personal note on this topic, kept in the Notes tab with everything else; the button shows when there is already one. */
 function TopicNoteButton({ t, meta }: { t: Topic; meta: { subject: string; topic: string } }) {
   const [open, setOpen] = useState(false);
@@ -405,6 +406,7 @@ const Practice = ({ b }: { b: B<"practice"> }) => (
 /* ------------------------------------------------------------------ sections (outline + anchors) */
 type Sec = { key: string; label: string };
 function sectionsOf(t: Topic): Sec[] {
+  if (t.book) return bookSections(t);
   const has = (k: Block["type"]) => t.blocks.some((b) => b.type === k);
   const exs = t.blocks.filter((b) => b.type === "example") as B<"example">[];
   const out: Sec[] = [];
@@ -566,7 +568,128 @@ function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
   );
 }
 
+/* ------------------------------------------------------------------ textbook layout (Topic.book) */
+/* A small C syntax colouring for the code editor (colours are fixed: the editor is always dark). */
+const C_KW = new Set(["if", "else", "for", "while", "do", "return", "break", "continue", "switch", "case", "default", "sizeof", "struct", "union", "enum", "typedef", "static", "extern", "const", "goto", "NULL"]);
+const C_TY = new Set(["void", "int", "char", "float", "double", "long", "short", "unsigned", "signed", "size_t"]);
+function colourLine(line: string): ReactNode[] {
+  const out: ReactNode[] = []; const re = /(\/\*.*?\*\/|\/\/.*|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|#\s*\w+|\b\d+(?:\.\d+)?\b|\b[A-Za-z_]\w*\b)/g;
+  let last = 0, m: RegExpExecArray | null, k = 0;
+  while ((m = re.exec(line))) {
+    if (m.index > last) out.push(line.slice(last, m.index));
+    const w = m[0]; let c = "var(--ce-fg)";
+    if (w.startsWith("/*") || w.startsWith("//")) c = "var(--ce-cmt)"; else if (w[0] === '"' || w[0] === "'") c = "var(--ce-str)"; else if (w[0] === "#") c = "var(--ce-pp)";
+    else if (/^\d/.test(w)) c = "var(--ce-num)"; else if (C_KW.has(w)) c = "var(--ce-kw)"; else if (C_TY.has(w)) c = "var(--ce-ty)"; else if (line[re.lastIndex] === "(") c = "var(--ce-fn)";
+    out.push(<span key={k++} style={{ color: c, fontStyle: c === "var(--ce-cmt)" ? "italic" : undefined }}>{w}</span>); last = re.lastIndex;
+  }
+  if (last < line.length) out.push(line.slice(last));
+  return out;
+}
+/** Code in an editor frame: line numbers, colours, and NOT selectable or copyable (highlights and notes work on the text around it). */
+function CodeEditor({ text, out, name = "main.c" }: { text: string; out?: string; name?: string }) {
+  const lines = text.replace(/\n$/, "").split("\n");
+  const block = (e: React.SyntheticEvent) => e.preventDefault();
+  return (
+    <div className="code-ed clear-both my-5 select-none overflow-hidden rounded-xl" style={{ WebkitUserSelect: "none", userSelect: "none" }} onCopy={block} onCut={block} onContextMenu={block} onDragStart={block} data-code="">
+      <div className="code-ed-bar flex items-center gap-1.5 px-3 py-2"><span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" /><span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" /><span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" /><span className="ml-3 font-mono text-xs" style={{ color: "var(--ce-gutter)" }}>{name}</span></div>
+      <pre className="overflow-x-auto py-3 font-mono text-[0.92rem] leading-6" style={{ color: "var(--ce-fg)" }} aria-label="Code example">{lines.map((l, i) => <div key={i} className="flex"><span className="w-10 shrink-0 pr-3 text-right" style={{ color: "var(--ce-gutter)" }}>{i + 1}</span><span className="whitespace-pre pr-4">{colourLine(l)}</span></div>)}</pre>
+      {out !== undefined && <div className="code-ed-out px-3 py-2.5"><p className="mb-1 font-mono text-[10px] font-extrabold uppercase tracking-widest" style={{ color: "var(--ce-out-label)" }}>Output</p><pre className="overflow-x-auto font-mono text-[0.9rem] leading-6" style={{ color: "var(--ce-fg)" }}>{out}</pre></div>}
+    </div>
+  );
+}
+const CALLOUT: Record<string, { label: string; tint: string; icon: ReactNode }> = {
+  key: { label: "Key idea", tint: "butter", icon: <Lightbulb className="h-4 w-4" aria-hidden /> }, note: { label: "Note", tint: "sky", icon: <BookOpenText className="h-4 w-4" aria-hidden /> },
+  trap: { label: "Trap", tint: "rose", icon: <TriangleAlert className="h-4 w-4" aria-hidden /> }, warning: { label: "Warning", tint: "rose", icon: <TriangleAlert className="h-4 w-4" aria-hidden /> },
+  remember: { label: "Remember", tint: "mint", icon: <Repeat className="h-4 w-4" aria-hidden /> }, try: { label: "Try it", tint: "peach", icon: <Zap className="h-4 w-4" aria-hidden /> },
+  gate: { label: "How GATE asks this", tint: "butter", icon: <Lightbulb className="h-4 w-4" aria-hidden /> },
+  tip: { label: "Tip", tint: "mint", icon: <Sparkles className="h-4 w-4" aria-hidden /> }, shortcut: { label: "Shortcut", tint: "mint", icon: <Zap className="h-4 w-4" aria-hidden /> },
+  variation: { label: "Variation", tint: "sky", icon: <Repeat className="h-4 w-4" aria-hidden /> },
+};
+/** Heading numbers: h2 = 10.1, h3 = 10.1.1, h4 = 10.1.1.1, h5 = 10.1.1.1.1 (a deeper level restarts when a shallower one appears). */
+function headNumbers(nodes: BookNode[], no: string): Map<number, string> {
+  const c = [0, 0, 0, 0]; const out = new Map<number, string>();
+  nodes.forEach((n, i) => { if (n.t === "h2" || n.t === "h3" || n.t === "h4" || n.t === "h5") { const d = Number(n.t[1]) - 2; c[d]++; for (let k = d + 1; k < 4; k++) c[k] = 0; out.set(i, `${no}.${c.slice(0, d + 1).join(".")}`); } });
+  return out;
+}
+/** Outline for a textbook topic: every h2 and h3 (the heading elements carry the anchors), then the exercises. */
+function bookSections(t: Topic): Sec[] {
+  const nodes = t.book ?? []; const nums = headNumbers(nodes, t.no ?? "");
+  const out: Sec[] = [];
+  nodes.forEach((n, i) => { if (n.t === "h2" || n.t === "h3") out.push({ key: `s${i}`, label: `${nums.get(i)} ${n.text}` }); });
+  out.push({ key: "check", label: "Exercises" });
+  return out;
+}
+function BookTopicView({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href?: string }) {
+  const recallMeta = { subject: CS_SHELF.find((bk) => bk.chapters.some((c) => c.href === href))?.title ?? "Study", topic: t.title };
+  const no = t.no ?? String(index + 1);
+  const nodes = t.book ?? [];
+  const nums = headNumbers(nodes, no);
+  const figs = new Map((t.blocks.filter((b) => b.type === "figure") as B<"figure">[]).map((b) => [b.id, b]));
+  const exs = new Map((t.blocks.filter((b) => b.type === "example") as B<"example">[]).map((b) => [b.id, b]));
+  const traps = t.blocks.filter((b) => b.type === "trap") as B<"trap">[];
+  const single = <K extends Block["type"]>(k: K) => t.blocks.find((b) => b.type === k) as B<K> | undefined;
+  const figNo = new Map<string, number>(); const exNo = new Map<string, number>();
+  nodes.forEach((n) => { if (n.t === "fig") figNo.set(n.id, figNo.size + 1); if (n.t === "ex") exNo.set(n.id, exNo.size + 1); });
+  const qs = t.blocks.flatMap((b) => (b.type === "check" ? b.questions : []));
+  const recall = single("recall"), links = single("links"), practice = single("practice");
+  // four heading levels, each its own shape: h2 a numbered banner with a filled badge, h3 a side-barred title, h4 a small-caps label, h5 an italic run-in
+  const HEAD = [
+    { wrap: "mt-12 flex items-center gap-3 border-b-2 pb-2.5", ws: { borderColor: "color-mix(in srgb, var(--st-accent) 45%, transparent)" }, num: "rounded-lg px-2.5 py-0.5 text-[1.05rem] font-extrabold tabular-nums text-[var(--surface)]", ns: { background: "var(--st-accent)" }, text: "font-display text-[1.75rem] font-extrabold leading-tight tracking-tight" },
+    { wrap: "mt-9 flex items-baseline gap-3 border-l-[5px] pl-3.5", ws: { borderColor: "var(--st-accent)" }, num: "text-[1.05rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-[1.35rem] font-bold leading-snug" },
+    { wrap: "mt-7 flex items-baseline gap-2.5 border-b border-dotted border-[var(--border)] pb-1", ws: {}, num: "text-sm font-extrabold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-[0.95rem] font-extrabold uppercase tracking-[.09em]" },
+    { wrap: "mt-5 flex items-baseline gap-2", ws: {}, num: "text-xs font-bold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-base font-semibold italic text-[var(--text-secondary)]" },
+  ];
+  const firstHead = nodes.findIndex((n) => n.t === "h2" || n.t === "h3"); const leadAt = nodes.findIndex((n) => n.t === "p");
+  const render = (n: BookNode, i: number) => {
+    if (n.t === "h2" || n.t === "h3" || n.t === "h4" || n.t === "h5") { const d = Number(n.t[1]) - 2; const H = (d === 0 ? "h3" : "h4") as "h3" | "h4"; const w = HEAD[d]; return <H key={i} id={secId(t, `s${i}`)} data-sec="" className={`clear-both scroll-mt-24 text-[var(--text-primary)] lg:scroll-mt-4 ${w.wrap}`} style={w.ws}><span className={w.num} style={w.ns}>{nums.get(i)}</span><span className={w.text}>{n.text}</span></H>; }
+    if (n.t === "p") return <p key={i} className={i === leadAt && (firstHead < 0 || i < firstHead) ? "mt-4 border-l-4 pl-4 text-justify text-[1.22rem] font-medium leading-9 text-[var(--text-primary)] hyphens-auto" : "mt-4 text-justify text-[1.05rem] leading-8 text-[var(--text-primary)] hyphens-auto [text-wrap:pretty]"} style={i === leadAt && (firstHead < 0 || i < firstHead) ? { borderColor: "color-mix(in srgb, var(--st-accent) 55%, transparent)" } : undefined}><Inline s={n.text} /></p>;
+    if (n.t === "ul" || n.t === "ol") { const L = n.t === "ul" ? "ul" : "ol"; return <L key={i} className={`mt-4 space-y-1.5 pl-7 text-justify text-[1.05rem] leading-8 text-[var(--text-primary)] hyphens-auto ${n.t === "ul" ? "list-disc" : "list-decimal"}`}>{n.items.map((x, k) => <li key={k}><Inline s={x} /></li>)}</L>; }
+    if (n.t === "code") return <CodeEditor key={i} text={n.text} out={n.out} name={n.file} />;
+    if (n.t === "table") return <div key={i} className="clear-both my-5 overflow-x-auto"><table className="w-full border-collapse text-[0.98rem]"><thead><tr>{n.head.map((h, k) => <th key={k} className="border-b-2 border-[var(--text-primary)] px-3 py-2 text-left font-bold text-[var(--text-primary)]">{h}</th>)}</tr></thead><tbody>{n.rows.map((r, k) => <tr key={k}>{r.map((c, m) => <td key={m} className="border-b border-[var(--border)] px-3 py-2 align-top text-[var(--text-primary)]"><Inline s={c} /></td>)}</tr>)}</tbody></table>{n.caption && <p className="mt-1 text-sm text-[var(--text-secondary)]">{n.caption}</p>}</div>;
+    if (n.t === "callout") { const c = CALLOUT[n.kind]; return <aside key={i} {...card(c.tint, "clear-both my-5")}><Label icon={c.icon}>{n.title ?? c.label}</Label><p className="lesson-p mt-1.5"><Inline s={n.text} /></p></aside>; }
+    if (n.t === "fig") { const f = figs.get(n.id); if (!f) return null;
+      const kind = f.fig.kind === "frames" ? ((f.fig.frames[0]?.fig as { kind?: string } | undefined)?.kind ?? "memory") : f.fig.kind;
+      const wide = f.fig.kind === "frames" || !["memory", "stackframe", "ring"].includes(kind);
+      const stage = f.fig.kind === "frames" ? "max-w-[640px]" : "max-w-[860px]";
+      return <figure key={i} className={`${plain} my-6 grid content-center justify-items-center gap-2 ${wide ? "clear-both w-full" : "lg:float-right lg:clear-right lg:ml-8 lg:w-[50%]"}`}><div className={`w-full ${stage}`}><Diagram fig={f.fig} /></div><figcaption className={`${stage} text-center text-sm leading-6 text-[var(--text-secondary)]`}><b className="text-[var(--text-primary)]">Figure {no}.{figNo.get(n.id)}.</b> <Rich s={f.caption} /></figcaption><span className="sr-only">{f.alt}</span></figure>; }
+    if (n.t === "ex") { const e = exs.get(n.id); return e ? <div key={i} className="clear-both my-6"><p className="mb-1.5 text-xs font-extrabold uppercase tracking-wide text-[var(--st-accent)]">Example {no}.{exNo.get(n.id)}</p><Example b={e} code /></div> : null; }
+    if (n.t === "trap") { const b = traps[n.i ?? 0]; return b ? <div key={i} className="clear-both my-5"><Trap b={b} /></div> : null; }
+    if (n.t === "gate") { const b = single("gate"); return b ? <div key={i} className="clear-both my-5"><Gate b={b} /></div> : null; }
+    if (n.t === "shortcut") { const b = single("shortcut"); return b ? <div key={i} className="clear-both my-5"><Shortcut b={b} /></div> : null; }
+    if (n.t === "faded") { const b = single("faded"); return b ? <div key={i} className="clear-both my-5"><Faded b={b} /></div> : null; }
+    if (n.t === "walk") { const b = single("walkthrough"); return b ? <div key={i} className="clear-both my-5"><Walk b={b} /></div> : null; }
+    if (n.t === "lab") return <section key={i} {...card("plain", "clear-both my-6")}><Label icon={<Zap className="h-4 w-4" aria-hidden />}>Try it: lab</Label><div className="mt-3"><PdsPtrLab /></div></section>;
+    return null;
+  };
+  return (
+    <article id={t.id} data-topic="" data-book="" lang="en" className="scroll-mt-24 lg:scroll-mt-4">
+      <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
+        <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Chapter {no}</p>
+          <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
+        <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
+      </header>
+      <div className="mt-2 px-1 sm:px-3">
+        {nodes.map(render)}
+        <div className="clear-both" />
+        {(qs.length > 0 || recall) && (
+          <Sect t={t} k="check" className="clear-both pb-2">
+            <h3 className="clear-both mt-10 border-b-2 border-[var(--text-primary)] pb-1.5 font-display text-[1.6rem] font-extrabold leading-tight text-[var(--text-primary)]">Exercises</h3>
+            {qs.length > 0 && <ol className="mt-4 grid gap-4 @5xl:grid-cols-2">{qs.map((q, i) => <CheckQuestion key={q.id} q={q} n={i + 1} />)}</ol>}
+            {recall && <div className="mt-6"><Recall b={recall} meta={recallMeta} /></div>}
+          </Sect>
+        )}
+        {(links || practice) && <div className="mt-8 space-y-5">{links && <Links b={links} />}{practice && <Practice b={practice} />}</div>}
+        <nav aria-label="Topic navigation" className="mt-8 grid gap-3 sm:grid-cols-2">
+          {topics[index - 1] ? <button type="button" onClick={() => goTo(topics[index - 1].id)} className="flex items-center gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-left hover:bg-[var(--surface-secondary)]"><span className="text-xs font-bold text-[var(--text-muted)]">Previous</span><span className="font-bold text-[var(--text-primary)]">{topics[index - 1].title}</span></button> : <span />}
+          {topics[index + 1] && <button type="button" onClick={() => goTo(topics[index + 1].id)} className="flex items-center justify-end gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-right hover:bg-[var(--surface-secondary)]"><span className="font-bold text-[var(--text-primary)]">{topics[index + 1].title}</span><span className="text-xs font-bold text-[var(--text-muted)]">Next</span></button>}
+        </nav>
+      </div>
+    </article>
+  );
+}
+
 function TopicView({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href?: string }) {
+  if (t.book) return <BookTopicView t={t} index={index} topics={topics} href={href} />;
   const recallMeta = { subject: CS_SHELF.find((bk) => bk.chapters.some((c) => c.href === href))?.title ?? "Study", topic: t.title };
   const one = <T extends Block["type"]>(k: T) => t.blocks.find((b) => b.type === k) as B<T> | undefined;
   const all = <T extends Block["type"]>(k: T) => t.blocks.filter((b) => b.type === k) as B<T>[];

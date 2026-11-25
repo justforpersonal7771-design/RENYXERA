@@ -2081,10 +2081,10 @@ textarea.field-bare, textarea.field-bare:focus, textarea.field-bare:focus-visibl
   .iv-flow__row.is-branch > .iv-flow__node { text-align: left; }
   .iv-flow__row.is-branch > .iv-flow__node::before { top: 50%; left: -13px; width: 13px; height: 2px; }
 }
-::highlight(iv-yellow) { background-color: rgba(250, 204, 21, .5); color: inherit; }
-::highlight(iv-green) { background-color: rgba(74, 222, 128, .45); color: inherit; }
-::highlight(iv-pink) { background-color: rgba(244, 114, 182, .42); color: inherit; }
-::highlight(iv-blue) { background-color: rgba(96, 165, 250, .42); color: inherit; }
+::highlight(iv-yellow) { background-color: rgba(250, 190, 0, .78); color: inherit; text-decoration: underline 2px #a16207; }
+::highlight(iv-green) { background-color: rgba(52, 211, 120, .7); color: inherit; text-decoration: underline 2px #15803d; }
+::highlight(iv-pink) { background-color: rgba(244, 114, 182, .68); color: inherit; text-decoration: underline 2px #be185d; }
+::highlight(iv-blue) { background-color: rgba(96, 165, 250, .7); color: inherit; text-decoration: underline 2px #1d4ed8; }
 
 /* Side panes that scroll but never show a scrollbar (the outline and tool rail beside a lesson); only the middle content keeps its bar. */
 .no-scrollbar { scrollbar-width: none !important; -ms-overflow-style: none; }
@@ -2557,3 +2557,72 @@ select:not([multiple]):not([size]):disabled { opacity: .6; }
 @keyframes gen-glow { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--tint-mint-ink) 38%, transparent); } 50% { box-shadow: 0 0 0 6px transparent; } }
 .gen-dot { width: .5rem; height: .5rem; flex: none; border-radius: 9999px; background: var(--tint-mint-ink); }
 @media (prefers-reduced-motion: reduce) { .gen-working, .gen-ready { animation: none; } }
+
+/* ---- Textbook code editor: light in light mode, dark in dark mode (colours are variables, set once here) ---- */
+.code-ed { --ce-bg: #fffaf2; --ce-bar: #f3eadb; --ce-out: #f7efe2; --ce-border: #e2d5bf; --ce-fg: #2b2118; --ce-gutter: #a8977e; --ce-cmt: #8a7b66; --ce-kw: #7c3aed; --ce-ty: #0369a1; --ce-str: #15803d; --ce-num: #b45309; --ce-pp: #be185d; --ce-fn: #a16207; --ce-out-label: #15803d; background: var(--ce-bg); border: 1px solid var(--ce-border); box-shadow: 0 8px 22px -16px rgba(60, 40, 10, .35); }
+.dark .code-ed { --ce-bg: #1e1e2e; --ce-bar: #181825; --ce-out: #14141e; --ce-border: rgba(255, 255, 255, .1); --ce-fg: #e5e7eb; --ce-gutter: #64748b; --ce-cmt: #94a3b8; --ce-kw: #c084fc; --ce-ty: #7dd3fc; --ce-str: #86efac; --ce-num: #fca5a5; --ce-pp: #f9a8d4; --ce-fn: #fde68a; --ce-out-label: #34d399; box-shadow: 0 12px 28px -18px #000; }
+.code-ed-bar { background: var(--ce-bar); border-bottom: 1px solid var(--ce-border); }
+.code-ed-out { background: var(--ce-out); border-top: 1px solid var(--ce-border); }
+
+/* ---- ONE CARD PALETTE FOR THE WHOLE APP (26 Nov 2026, v3: harmony, cards only) ----
+   Research: Material 3 builds every surface from ONE source colour (tone-based containers); Radix uses a 12-step ramp from one hue;
+   colour-harmony guides (analogous 30-90 degrees, split-complementary, the 60-30-10 proportion) say how other hues may join without clashing.
+   Each section (data-section) has ONE source colour. Its cards use:
+     dominant (about 60%)  the section hue, graded:            butter / peach  (key idea, definition, hook)
+     secondary (about 30%) the two analogous neighbours, +/-32:  sky (notes, objectives)  and  lilac / peri (examples, recall)
+     accent (about 10%)    the split-complementary, +150:        mint (try it, lab, shortcut)
+     warning               a muted red at the same lightness:    rose (trap)
+   Every hue has the same lightness and chroma, so they sit together. The tint NAMES are unchanged; only what they resolve to is new.
+   The tokens are redefined ON THE CARDS only, so page backgrounds, bars and chips keep their original colours. */
+[data-section="mint"]   { --card-accent: #047857; }  [data-section="rose"]  { --card-accent: #be123c; }  [data-section="peach"] { --card-accent: #9a3412; }
+[data-section="peri"]   { --card-accent: #4338ca; }  [data-section="lilac"] { --card-accent: #5b21e0; }  [data-section="butter"]{ --card-accent: #854d0e; }
+[data-section="sky"]    { --card-accent: #0369a1; }
+[data-section] :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset), .study-lesson :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset) {
+  --tint-lilac: color-mix(in srgb, var(--card-accent, #5b21e0) 8%, var(--surface)); --tint-peri: color-mix(in srgb, var(--card-accent, #5b21e0) 8%, var(--surface)); --tint-sky: color-mix(in srgb, var(--card-accent, #5b21e0) 9%, var(--surface)); --tint-mint: color-mix(in srgb, var(--card-accent, #5b21e0) 11%, var(--surface));
+  --tint-butter: color-mix(in srgb, var(--card-accent, #5b21e0) 15%, var(--surface)); --tint-peach: color-mix(in srgb, var(--card-accent, #5b21e0) 14%, var(--surface)); --tint-rose: color-mix(in srgb, var(--card-accent, #5b21e0) 20%, var(--surface));
+  --tint-lilac-ink: color-mix(in srgb, var(--card-accent, #5b21e0) 84%, #000); --tint-peri-ink: color-mix(in srgb, var(--card-accent, #5b21e0) 84%, #000); --tint-sky-ink: color-mix(in srgb, var(--card-accent, #5b21e0) 84%, #000); --tint-mint-ink: color-mix(in srgb, var(--card-accent, #5b21e0) 84%, #000); --tint-butter-ink: color-mix(in srgb, var(--card-accent, #5b21e0) 84%, #000); --tint-peach-ink: color-mix(in srgb, var(--card-accent, #5b21e0) 84%, #000); --tint-rose-ink: color-mix(in srgb, var(--card-accent, #5b21e0) 84%, #000);
+}
+.dark [data-section] :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset), .dark .study-lesson :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset) {
+  --tint-lilac: color-mix(in srgb, var(--card-accent, #8b5cf6) 14%, var(--surface)); --tint-peri: color-mix(in srgb, var(--card-accent, #8b5cf6) 14%, var(--surface)); --tint-sky: color-mix(in srgb, var(--card-accent, #8b5cf6) 16%, var(--surface)); --tint-mint: color-mix(in srgb, var(--card-accent, #8b5cf6) 19%, var(--surface));
+  --tint-butter: color-mix(in srgb, var(--card-accent, #8b5cf6) 24%, var(--surface)); --tint-peach: color-mix(in srgb, var(--card-accent, #8b5cf6) 22%, var(--surface)); --tint-rose: color-mix(in srgb, var(--card-accent, #8b5cf6) 30%, var(--surface));
+  --tint-lilac-ink: color-mix(in srgb, var(--card-accent, #8b5cf6) 55%, #fff); --tint-peri-ink: color-mix(in srgb, var(--card-accent, #8b5cf6) 55%, #fff); --tint-sky-ink: color-mix(in srgb, var(--card-accent, #8b5cf6) 55%, #fff); --tint-mint-ink: color-mix(in srgb, var(--card-accent, #8b5cf6) 55%, #fff); --tint-butter-ink: color-mix(in srgb, var(--card-accent, #8b5cf6) 55%, #fff); --tint-peach-ink: color-mix(in srgb, var(--card-accent, #8b5cf6) 55%, #fff); --tint-rose-ink: color-mix(in srgb, var(--card-accent, #8b5cf6) 55%, #fff);
+}
+
+/* Bright, clean pastels (26 Nov, "no dull colours"): every card tint is the section hue rotated by a fixed angle, at ONE lightness (0.945) and a lively chroma (0.09),
+   so they are cheerful and still sit together. Dark mode: the same hues, deeper (0.31) with light inks. Needs relative colour syntax (baseline since 2024);
+   older browsers keep the graded tonal fallback above. */
+@supports (color: oklch(from red l c h)) {
+  [data-section] :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset),
+  .study-lesson :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset) {
+    --tint-butter: oklch(from var(--card-accent, #5b21e0) 0.955 0.034 calc(h + 0)); --tint-peach: oklch(from var(--card-accent, #5b21e0) 0.955 0.034 calc(h + 14));
+    --tint-sky: oklch(from var(--card-accent, #5b21e0) 0.955 0.034 calc(h + 24));
+    --tint-lilac: oklch(from var(--card-accent, #5b21e0) 0.955 0.034 calc(h + -26)); --tint-peri: oklch(from var(--card-accent, #5b21e0) 0.955 0.034 calc(h + -48));
+    --tint-mint: oklch(from var(--card-accent, #5b21e0) 0.955 0.034 calc(h + 95));
+    --tint-rose: oklch(0.955 0.034 24);
+    --tint-butter-ink: oklch(from var(--card-accent, #5b21e0) 0.40 0.11 calc(h + 0)); --tint-peach-ink: oklch(from var(--card-accent, #5b21e0) 0.40 0.11 calc(h + 14));
+    --tint-sky-ink: oklch(from var(--card-accent, #5b21e0) 0.40 0.11 calc(h + 24));
+    --tint-lilac-ink: oklch(from var(--card-accent, #5b21e0) 0.40 0.11 calc(h + -26)); --tint-peri-ink: oklch(from var(--card-accent, #5b21e0) 0.40 0.11 calc(h + -48));
+    --tint-mint-ink: oklch(from var(--card-accent, #5b21e0) 0.40 0.11 calc(h + 95));
+    --tint-rose-ink: oklch(0.40 0.11 24);
+  }
+  .dark [data-section] :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset),
+  .dark .study-lesson :is(.card-pastel, .card-band, .card-well, .card-glass, .card-inset) {
+    --tint-butter: oklch(from var(--card-accent, #5b21e0) 0.30 0.045 calc(h + 0)); --tint-peach: oklch(from var(--card-accent, #5b21e0) 0.30 0.045 calc(h + 14));
+    --tint-sky: oklch(from var(--card-accent, #5b21e0) 0.30 0.045 calc(h + 24));
+    --tint-lilac: oklch(from var(--card-accent, #5b21e0) 0.30 0.045 calc(h + -26)); --tint-peri: oklch(from var(--card-accent, #5b21e0) 0.30 0.045 calc(h + -48));
+    --tint-mint: oklch(from var(--card-accent, #5b21e0) 0.30 0.045 calc(h + 95));
+    --tint-rose: oklch(0.30 0.045 24);
+    --tint-butter-ink: oklch(from var(--card-accent, #5b21e0) 0.87 0.08 calc(h + 0)); --tint-peach-ink: oklch(from var(--card-accent, #5b21e0) 0.87 0.08 calc(h + 14));
+    --tint-sky-ink: oklch(from var(--card-accent, #5b21e0) 0.87 0.08 calc(h + 24));
+    --tint-lilac-ink: oklch(from var(--card-accent, #5b21e0) 0.87 0.08 calc(h + -26)); --tint-peri-ink: oklch(from var(--card-accent, #5b21e0) 0.87 0.08 calc(h + -48));
+    --tint-mint-ink: oklch(from var(--card-accent, #5b21e0) 0.87 0.08 calc(h + 95));
+    --tint-rose-ink: oklch(0.87 0.08 24);
+  }
+}
+
+/* ---- Icon watermark (26 Nov): a card's own icon, large and faint in the corner, instead of a generic star or circle.
+   The Label component adds <span class="tile-mark"> with the card's icon; the shape watermark above skips such cards. ---- */
+.tile-mark { position: absolute; right: 14px; bottom: 8px; width: 92px; height: 92px; opacity: .13; color: var(--tint-ink, var(--text-primary)); pointer-events: none; transform: rotate(-9deg); transition: transform .3s ease; z-index: 0; }
+.tile-mark svg { width: 100% !important; height: 100% !important; stroke-width: 1.4; }
+.card-pastel:hover .tile-mark, .card-well:hover .tile-mark { transform: rotate(-3deg) scale(1.06); }
+.dark .tile-mark { opacity: .16; }

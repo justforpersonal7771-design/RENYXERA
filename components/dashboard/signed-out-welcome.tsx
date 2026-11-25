@@ -29,10 +29,10 @@ export function SignedOutWelcome() {
       <p className="text-xs font-black tracking-normal text-violet-600 dark:text-violet-400">
         {TOTAL_QUESTIONS.toLocaleString("en-IN")} official GATE questions · {PAPERS} papers · 2017–2026
       </p>
-      <h2 className="mt-2 max-w-3xl text-2xl sm:text-3xl font-extrabold tracking-tight text-[var(--text-primary)]">
+      <h2 className="mt-2 text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[var(--text-primary)]">
         Practise like the real exam. Let your account remember everything.
       </h2>
-      <p className="mt-2 max-w-2xl text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">
+      <p className="mt-3 text-sm sm:text-lg text-[var(--text-secondary)] leading-relaxed">
         Sign in once and your branch, targets, mistakes and scores stay with you — so every session starts exactly where the last one ended.
       </p>
       <div className="mt-5 flex flex-wrap items-center gap-3">

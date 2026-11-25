@@ -8,6 +8,14 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 
 ---
 
+## 0-books. 26 Nov 2026: P&DS books, chapter by chapter (tracker: [docs/study-materials/v2/programming-and-data-structures/BOOK-PROGRESS.md](docs/study-materials/v2/programming-and-data-structures/BOOK-PROGRESS.md))
+Rule: a chapter is Done only when every gate G1 to G11 in that file is ticked, with proof.
+- [x] **(me)** Chapter 10 Pointers I written as a textbook chapter (10 sections, 4 real GATE questions explained in full with variations, 12 step-by-step and diagram figures, 10 exercises); compiled, figure-validated, browser-tested (47 figures x 4 settings); push pending
+- [x] **(me)** Code styling: statements in text look different from prose; code in the editor, never on one line; figure titles as code lines; one soft card palette; icon watermarks; top bar overlap fixed; sign-in hero full width
+- [ ] **(me)** Programming in C chapters C0 to C9, C11 to C21 (one at a time, each through gates G1 to G11)
+- [ ] **(me)** Data Structures chapters D0 to D16
+- [ ] **(you)** Check the live Chapter 10 on your phone (text pages), then say go for the next chapter
+
 ## 0-now. 18 Nov 2026: Study materials Phase 0 + Battles v3
 - [x] **(me)** Study blueprint merged from both ChatGPT reports: docs/study-materials/BLUEPRINT-FINAL.md
 - [x] **(me)** Lesson format + validator (lib/study/schema.ts, scripts/study-validate.ts), diagram engine, lesson renderer

@@ -282,7 +282,7 @@ export function Topbar() {
                   onFocus={() => setHovered(item.href)}
                   data-tint={NAV_TINTS[item.label]}
                   title={compactNav ? item.label : undefined}
-                  className={`group relative flex items-center gap-2 px-2.5 min-[1340px]:px-3 py-2 rounded-xl font-semibold text-[13px] whitespace-nowrap transition-colors z-10 ${
+                  className={`group relative flex items-center px-1.5 min-[1700px]:px-3 py-2 rounded-xl font-semibold text-[12px] min-[1700px]:text-[13px] gap-1.5 min-[1700px]:gap-2 whitespace-nowrap transition-colors z-10 ${
                     item.label === CITADEL ? `citadel-nav ml-1.5 ${isActive ? "is-on" : ""}` : isActive ? "text-[var(--text-primary)]" : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                   }`}
                 >
