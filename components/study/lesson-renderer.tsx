@@ -234,7 +234,7 @@ const TlbLab = dynamic(() => import("@/components/study/memory-labs").then((m) =
 const ReplaceLab = dynamic(() => import("@/components/study/vm-labs").then((m) => m.ReplaceLab), { ssr: false, loading: labLoading });
 const AllocLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m.AllocLab), { ssr: false, loading: labLoading });
 const DiskLab = dynamic(() => import("@/components/study/fs-labs").then((m) => m.DiskLab), { ssr: false, loading: labLoading });
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { memo, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { markSeen } from "@/lib/study/progress";
 import { bestBundleFor, chapterInfo, rupees } from "@/lib/study/packs";
 import { openStudyShop } from "@/store/use-study-shop-store";
@@ -249,6 +249,8 @@ import { saveNote, useNotes } from "@/lib/desk/stores";
 import { NoteEditor } from "@/components/desk/note-editor";
 import { NotebookPen } from "lucide-react";
 import { Inline, Rich, splitCodeQ } from "./rich-text";
+import { FocusButton } from "./focus-mode";
+import { useFocusStore } from "@/store/use-focus-store";
 import { addToRevision } from "@/lib/desk/revision";
 import { useToastStore } from "@/store/use-toast-store";
 import { Lock, ArrowLeft, ArrowUpRight, Check, ChevronDown, ChevronLeft, ChevronRight, ListTree, BookOpenText, ChevronsLeft, ChevronsRight, ExternalLink, X as XIcon, CircleCheck, CircleX, Lightbulb, Link2, Repeat, RotateCcw, Target, TriangleAlert, Zap, Sparkles } from "lucide-react";
@@ -349,7 +351,7 @@ const Deep = ({ b }: { b: B<"deep"> }) => (
     </div>
   </section>
 );
-const Walk = ({ b }: { b: B<"walkthrough"> }) => <section className={plain}><h3 className="lesson-h">Step by step</h3><ol className="mt-2 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--ink)] text-xs font-bold text-[var(--background)]">{i + 1}</span><p className="lesson-p"><Rich s={s} /></p></li>)}</ol>{b.prompt && <details className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3"><summary className="cursor-pointer text-sm font-bold text-[var(--text-primary)]">Think: <Rich s={b.prompt.q} /></summary><p className="mt-2 text-sm text-[var(--text-secondary)]"><Rich s={b.prompt.a} /></p></details>}</section>;
+const Walk = ({ b }: { b: B<"walkthrough"> }) => <section className={plain}><h3 className="lesson-h">Step by step</h3><ol className="mt-2 space-y-2">{b.steps.map((s, i) => <li key={i} className="flex gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-[var(--ink)] text-xs font-bold text-[var(--background)]">{i + 1}</span><p className="lesson-p"><Rich s={s} /></p></li>)}</ol>{b.prompt && <details className="mt-3 rounded-xl bg-[var(--surface-secondary)] p-3">{(() => { const sp = splitCodeQ(b.prompt.q); return <><summary className="cursor-pointer text-sm font-bold text-[var(--text-primary)]">Think: {sp ? <Rich s={sp.after || sp.before || "what happens?"} /> : <Rich s={b.prompt.q} />}</summary>{sp && <div className="mt-2"><CodeEditor text={sp.code} name="think.c" /></div>}</>; })()}<p className="mt-2 text-sm text-[var(--text-secondary)]"><Rich s={b.prompt.a} /></p></details>}</section>;
 const Figure = ({ b }: { b: B<"figure"> }) => <figure className={`${plain} grid content-center justify-items-center gap-2`}><Diagram fig={b.fig} /><figcaption className="text-center text-sm text-[var(--text-secondary)]">{b.caption}</figcaption><span className="sr-only">{b.alt}</span></figure>;
 const Example = ({ b, code }: { b: B<"example">; code?: boolean }) => (
   <section {...card("sky")}><p className="text-xs font-bold text-[var(--tint-ink)]">Worked example{b.level === "edge" ? ", edge case" : b.level === "gate" ? ", GATE level" : ""}</p><h3 className="lesson-h !mt-1">{b.title}</h3>
@@ -404,8 +406,23 @@ const Practice = ({ b }: { b: B<"practice"> }) => (
 );
 
 /* ------------------------------------------------------------------ sections (outline + anchors) */
-type Sec = { key: string; label: string };
+/** lvl: 1 = a numbered chapter section (10.1), 2 = a sub-section (10.1.1); only set for textbook topics. */
+type Sec = { key: string; label: string; lvl?: 1 | 2 };
+/** Outline rows: a section is bold with a filled number chip; a sub-section is smaller, indented, with a muted number. */
+function SecLabel({ sec }: { sec: Sec }) {
+  const sp = sec.label.indexOf(" "); const num = sp > 0 && /^\d/.test(sec.label) ? sec.label.slice(0, sp) : ""; const rest = num ? sec.label.slice(sp + 1) : sec.label;
+  if (sec.lvl === 1) return <><b className="mr-1.5 rounded-md px-1.5 py-px text-[11px] font-extrabold tabular-nums text-[var(--surface)]" style={{ background: "var(--st-accent)" }}>{num}</b>{rest}</>;
+  if (sec.lvl === 2) return <><span className="mr-1.5 text-[11px] tabular-nums text-[var(--text-muted,var(--text-secondary))]">{num}</span>{rest}</>;
+  return <>{sec.label}</>;
+}
+const secRow = (sec: Sec) => (sec.lvl === 1 ? "mt-1.5 font-extrabold text-[var(--text-primary)]" : sec.lvl === 2 ? "pl-4 text-[11.5px]" : "");
+const SECTIONS_CACHE = new WeakMap<Topic, Sec[]>();
 function sectionsOf(t: Topic): Sec[] {
+  let s = SECTIONS_CACHE.get(t);
+  if (!s) { s = computeSections(t); SECTIONS_CACHE.set(t, s); }
+  return s;
+}
+function computeSections(t: Topic): Sec[] {
   if (t.book) return bookSections(t);
   const has = (k: Block["type"]) => t.blocks.some((b) => b.type === k);
   const exs = t.blocks.filter((b) => b.type === "example") as B<"example">[];
@@ -451,7 +468,7 @@ function UnlockCard({ t, index, topics, href }: { t: Topic; index: number; topic
     </section>
   );
 }
-function LazyTopic({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href?: string }) {
+const LazyTopic = memo(function LazyTopic({ t, index, topics, href }: { t: Topic; index: number; topics: Topic[]; href?: string }) {
   // The server sends locked topics as title-only stubs (lib/study/serve.ts); the first one shows the unlock card.
   const locked = !!t.locked;
   const prevLocked = index > 0 && !!topics[index - 1]?.locked;
@@ -475,7 +492,7 @@ function LazyTopic({ t, index, topics, href }: { t: Topic; index: number; topics
   if (locked) return prevLocked ? <div id={t.id} data-topic="" aria-hidden /> : <UnlockCard t={t} index={index} topics={topics} href={href ?? ""} />;
   if (shown) return <TopicView t={t} index={index} topics={topics} href={href ?? undefined} />;
   return <div ref={ph} id={t.id} data-topic="" aria-label={`Topic ${index + 1}: ${t.title}`} className="min-h-[1600px] scroll-mt-24 rounded-[22px] border border-dashed border-[var(--border)] lg:scroll-mt-4" />;
-}
+});
 function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index: number; menuOnly?: boolean }) {
   const [open, setOpen] = useState(false);
   const prev = topics[index - 1], next = topics[index + 1];
@@ -491,7 +508,7 @@ function TopicNav({ topics, index, menuOnly = false }: { topics: Topic[]; index:
           {topics.map((x, i) => (
             <div key={x.id} className={`rounded-xl p-2 ${i === index ? "bg-[color-mix(in_srgb,var(--st-accent)_10%,transparent)]" : ""}`}>
               <button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(x.id); }} className="flex w-full items-start gap-2 text-left text-sm font-bold"><span className="font-num text-[var(--st-accent)]">{i + 1}</span><span className="min-w-0">{x.title}</span></button>
-              <ul className="mt-1 space-y-0.5 pl-5">{sectionsOf(x).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(x, sec.key)); }} className="w-full rounded-lg px-2 py-0.5 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]">{sec.label}</button></li>)}</ul>
+              <ul className="mt-1 space-y-0.5 pl-5">{sectionsOf(x).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(x, sec.key)); }} className={`w-full rounded-lg px-2 py-0.5 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)] ${secRow(sec)}`}><SecLabel sec={sec} /></button></li>)}</ul>
             </div>
           ))}
         </div>
@@ -554,7 +571,7 @@ function ChapterNav({ href, chapter }: { href: string; chapter: Chapter }) {
                           <button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(t.id); }} className="min-w-0 flex-1 px-2.5 py-2 text-left text-[13px] font-bold leading-snug text-[var(--text-primary)]"><span className="mr-1.5 font-num" style={{ color: "var(--st-accent)" }}>{n + 1}</span>{t.title}</button>
                           <button type="button" onClick={() => setOpenTopic(on ? null : t.id)} aria-expanded={on} aria-label={`${on ? "Hide" : "Show"} sections of ${t.title}`} className="mr-1 grid h-7 w-7 shrink-0 place-items-center rounded-full hover:bg-[var(--surface-secondary)]"><ChevronDown className={`h-4 w-4 transition-transform ${on ? "rotate-180" : ""}`} aria-hidden /></button>
                         </div>
-                        {on && <ul className="mx-2.5 mb-2 border-l-2 pl-2" style={{ borderColor: "color-mix(in srgb, var(--st-accent) 35%, transparent)" }}>{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(t, sec.key)); }} className="w-full rounded-lg px-2 py-1 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]">{sec.label}</button></li>)}</ul>}
+                        {on && <ul className="mx-2.5 mb-2 border-l-2 pl-2" style={{ borderColor: "color-mix(in srgb, var(--st-accent) 35%, transparent)" }}>{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" role="menuitem" onClick={() => { setOpen(false); goTo(secId(t, sec.key)); }} className={`w-full rounded-lg px-2 py-1 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)] ${secRow(sec)}`}><SecLabel sec={sec} /></button></li>)}</ul>}
                       </li>
                     );
                   })}</ul>}
@@ -615,7 +632,7 @@ function headNumbers(nodes: BookNode[], no: string): Map<number, string> {
 function bookSections(t: Topic): Sec[] {
   const nodes = t.book ?? []; const nums = headNumbers(nodes, t.no ?? "");
   const out: Sec[] = [];
-  nodes.forEach((n, i) => { if (n.t === "h2" || n.t === "h3") out.push({ key: `s${i}`, label: `${nums.get(i)} ${n.text}` }); });
+  nodes.forEach((n, i) => { if (n.t === "h2" || n.t === "h3") out.push({ key: `s${i}`, label: `${nums.get(i)} ${n.text}`, lvl: n.t === "h2" ? 1 : 2 }); });
   out.push({ key: "check", label: "Exercises" });
   return out;
 }
@@ -634,15 +651,20 @@ function BookTopicView({ t, index, topics, href }: { t: Topic; index: number; to
   const recall = single("recall"), links = single("links"), practice = single("practice");
   // four heading levels, each its own shape: h2 a numbered banner with a filled badge, h3 a side-barred title, h4 a small-caps label, h5 an italic run-in
   const HEAD = [
-    { wrap: "mt-12 flex items-center gap-3 border-b-2 pb-2.5", ws: { borderColor: "color-mix(in srgb, var(--st-accent) 45%, transparent)" }, num: "rounded-lg px-2.5 py-0.5 text-[1.05rem] font-extrabold tabular-nums text-[var(--surface)]", ns: { background: "var(--st-accent)" }, text: "font-display text-[1.75rem] font-extrabold leading-tight tracking-tight" },
-    { wrap: "mt-9 flex items-baseline gap-3 border-l-[5px] pl-3.5", ws: { borderColor: "var(--st-accent)" }, num: "text-[1.05rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-[1.35rem] font-bold leading-snug" },
-    { wrap: "mt-7 flex items-baseline gap-2.5 border-b border-dotted border-[var(--border)] pb-1", ws: {}, num: "text-sm font-extrabold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-[0.95rem] font-extrabold uppercase tracking-[.09em]" },
-    { wrap: "mt-5 flex items-baseline gap-2", ws: {}, num: "text-xs font-bold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-base font-semibold italic text-[var(--text-secondary)]" },
+    { wrap: "mt-12 flex items-start gap-3 border-b-2 pb-2.5", ws: { borderColor: "color-mix(in srgb, var(--st-accent) 45%, transparent)" }, num: "mt-1 shrink-0 rounded-lg px-2.5 py-0.5 text-[1.05rem] font-extrabold tabular-nums text-[var(--surface)]", ns: { background: "var(--st-accent)" }, text: "font-display text-[1.75rem] font-extrabold leading-tight tracking-tight" },
+    { wrap: "mt-9 flex items-start gap-3 border-l-[5px] pl-3.5", ws: { borderColor: "var(--st-accent)" }, num: "mt-0.5 shrink-0 rounded-md border px-2 py-0.5 text-[0.88rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)", borderColor: "color-mix(in srgb, var(--st-accent) 55%, transparent)", background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }, text: "text-[1.35rem] font-bold leading-snug" },
+    { wrap: "mt-7 flex items-start gap-2.5 border-b border-dotted border-[var(--border)] pb-1", ws: {}, num: "mt-0.5 shrink-0 rounded px-1.5 py-px text-[0.78rem] font-extrabold tabular-nums", ns: { color: "var(--st-accent)", background: "color-mix(in srgb, var(--st-accent) 12%, transparent)" }, text: "text-[0.95rem] font-extrabold uppercase tracking-[.09em]" },
+    { wrap: "mt-5 flex items-start gap-2", ws: {}, num: "mt-1 shrink-0 text-xs font-bold tabular-nums", ns: { color: "var(--st-accent)" }, text: "text-base font-semibold italic text-[var(--text-secondary)]" },
   ];
   const firstHead = nodes.findIndex((n) => n.t === "h2" || n.t === "h3"); const leadAt = nodes.findIndex((n) => n.t === "p");
   const render = (n: BookNode, i: number) => {
     if (n.t === "h2" || n.t === "h3" || n.t === "h4" || n.t === "h5") { const d = Number(n.t[1]) - 2; const H = (d === 0 ? "h3" : "h4") as "h3" | "h4"; const w = HEAD[d]; return <H key={i} id={secId(t, `s${i}`)} data-sec="" className={`clear-both scroll-mt-24 text-[var(--text-primary)] lg:scroll-mt-4 ${w.wrap}`} style={w.ws}><span className={w.num} style={w.ns}>{nums.get(i)}</span><span className={w.text}>{n.text}</span></H>; }
-    if (n.t === "p") return <p key={i} className={i === leadAt && (firstHead < 0 || i < firstHead) ? "mt-4 border-l-4 pl-4 text-justify text-[1.22rem] font-medium leading-9 text-[var(--text-primary)] hyphens-auto" : "mt-4 text-justify text-[1.05rem] leading-8 text-[var(--text-primary)] hyphens-auto [text-wrap:pretty]"} style={i === leadAt && (firstHead < 0 || i < firstHead) ? { borderColor: "color-mix(in srgb, var(--st-accent) 55%, transparent)" } : undefined}><Inline s={n.text} /></p>;
+    if (n.t === "p" && n.text.startsWith("By the end of this chapter") && nodes[i + 1]?.t === "ul") {
+      const goals = nodes[i + 1] as Extract<BookNode, { items: string[] }>;
+      return <aside key={i} {...card("mint", "clear-both my-6")}><Label icon={<Target className="h-4 w-4" aria-hidden />}>What you will be able to do</Label><ul className="mt-3 grid gap-2.5 sm:grid-cols-2">{goals.items.map((g, k) => <li key={k} className="flex items-start gap-2.5 text-[0.98rem] leading-7 text-[var(--text-primary)]"><span className="mt-1.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[var(--surface)]" style={{ background: "var(--st-accent)" }}><Check className="h-3 w-3" strokeWidth={3} aria-hidden /></span><span><Inline s={g} /></span></li>)}</ul></aside>;
+    }
+    if (n.t === "ul" && i > 0 && nodes[i - 1].t === "p" && (nodes[i - 1] as Extract<BookNode, { t: "p" }>).text.startsWith("By the end of this chapter")) return null;
+    if (n.t === "p") return <p key={i} className={i === leadAt && (firstHead < 0 || i < firstHead) ? "mt-4 border-l-4 pl-4 text-justify text-[1.12rem] font-medium leading-8 text-[var(--text-primary)] hyphens-auto" : "mt-4 text-justify text-[1.05rem] leading-8 text-[var(--text-primary)] hyphens-auto [text-wrap:pretty]"} style={i === leadAt && (firstHead < 0 || i < firstHead) ? { borderColor: "color-mix(in srgb, var(--st-accent) 55%, transparent)" } : undefined}><Inline s={n.text} /></p>;
     if (n.t === "ul" || n.t === "ol") { const L = n.t === "ul" ? "ul" : "ol"; return <L key={i} className={`mt-4 space-y-1.5 pl-7 text-justify text-[1.05rem] leading-8 text-[var(--text-primary)] hyphens-auto ${n.t === "ul" ? "list-disc" : "list-decimal"}`}>{n.items.map((x, k) => <li key={k}><Inline s={x} /></li>)}</L>; }
     if (n.t === "code") return <CodeEditor key={i} text={n.text} out={n.out} name={n.file} />;
     if (n.t === "table") return <div key={i} className="clear-both my-5 overflow-x-auto"><table className="w-full border-collapse text-[0.98rem]"><thead><tr>{n.head.map((h, k) => <th key={k} className="border-b-2 border-[var(--text-primary)] px-3 py-2 text-left font-bold text-[var(--text-primary)]">{h}</th>)}</tr></thead><tbody>{n.rows.map((r, k) => <tr key={k}>{r.map((c, m) => <td key={m} className="border-b border-[var(--border)] px-3 py-2 align-top text-[var(--text-primary)]"><Inline s={c} /></td>)}</tr>)}</tbody></table>{n.caption && <p className="mt-1 text-sm text-[var(--text-secondary)]">{n.caption}</p>}</div>;
@@ -666,7 +688,7 @@ function BookTopicView({ t, index, topics, href }: { t: Topic; index: number; to
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Chapter {no}</p>
           <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
-        <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
+        <div className="flex flex-wrap items-center gap-2"><FocusButton label={recallMeta.subject} /><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
       </header>
       <div className="mt-2 px-1 sm:px-3">
         {nodes.map(render)}
@@ -701,7 +723,7 @@ function TopicView({ t, index, topics, href }: { t: Topic; index: number; topics
       <header className="lesson-topic-head flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0"><p className="text-xs font-extrabold uppercase tracking-[.12em] text-[var(--st-accent)]">Topic {index + 1}</p>
         <h2 className="font-display text-2xl font-extrabold leading-tight text-[var(--text-primary)] sm:text-[2rem]">{t.title}</h2></div>
-        <div className="flex flex-wrap items-center gap-2"><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
+        <div className="flex flex-wrap items-center gap-2"><FocusButton label={recallMeta.subject} /><TopicNoteButton t={t} meta={recallMeta} /><TopicNav topics={topics} index={index} /></div>
       </header>
       {(hook || obj) && <Sect t={t} k="start" className="grid gap-5 @3xl:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">{hook && <Hook b={hook} />}{obj && <Objectives b={obj} />}</Sect>}
       {(intu || def) && <Sect t={t} k="idea" className="grid gap-5 @3xl:grid-cols-2">{intu && <Intuition b={intu} />}{def && <Definition b={def} />}</Sect>}
@@ -741,7 +763,7 @@ function PaneRail({ topics }: { topics: Topic[] }) {
               <span className="min-w-0 flex-1 text-sm font-bold leading-snug text-[var(--text-primary)]">{t.title}</span>
               <ChevronDown className={`mt-0.5 h-4 w-4 shrink-0 text-[var(--text-secondary)] transition-transform ${on ? "rotate-180" : ""}`} aria-hidden />
             </button>
-            {on && <ul className="ml-4 mt-1 space-y-0.5 border-l-2 border-[var(--border)] pl-2">{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" onClick={() => goTo(secId(t, sec.key))} className="w-full rounded-lg px-2 py-1 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)]">{sec.label}</button></li>)}</ul>}
+            {on && <ul className="ml-4 mt-1 space-y-0.5 border-l-2 border-[var(--border)] pl-2">{sectionsOf(t).map((sec) => <li key={sec.key}><button type="button" onClick={() => goTo(secId(t, sec.key))} className={`w-full rounded-lg px-2 py-1 text-left text-xs text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)] hover:text-[var(--text-primary)] ${secRow(sec)}`}><SecLabel sec={sec} /></button></li>)}</ul>}
           </div>
         );
       })}
@@ -783,6 +805,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const [current, setCurrent] = useState<string>("");
   const [soon, setSoon] = useState<number | null>(null);
   const [open, setOpen] = useState<Record<string, boolean>>({});
+  const [fold, setFold] = useState<Record<string, boolean>>({}); // `${topic}:${section}` true = the sub-sections of that section are hidden
   const [sheet, setSheet] = useState(false);
   const [sheetHost, setSheetHost] = useState<HTMLElement | null>(null);
   // eslint-disable-next-line react-hooks/set-state-in-effect -- the portal target exists only after mount
@@ -791,6 +814,7 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
   const setSplit = useStudyTabs((x) => x.setSplit);
   const [wide, setWide] = useState(false);
   const [splitW, setSplitW] = useState(55); // % of the reading area for the current chapter
+  const focus = useFocusStore((s) => s.on);
   const [railShut, setRailShut] = useState<boolean | null>(null); // null = automatic (folded while split)
   useEffect(() => { const m = window.matchMedia("(min-width: 1280px)"); const f = () => setWide(m.matches); f(); m.addEventListener("change", f); return () => m.removeEventListener("change", f); }, []);
   const dragSplit = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -829,26 +853,36 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     const root = pane.current;
     if (!root) return;
     const scroller: HTMLElement = getComputedStyle(root).overflowY === "auto" ? root : (document.getElementById("app-scroll") ?? document.documentElement);
-    let raf = 0;
+    let raf = 0, rebuildTimer: ReturnType<typeof setTimeout> | null = null;
+    // Positions of every section and topic are measured once (and again when the content changes size or a topic is drawn), not on every scroll
+    // step: reading layout on each scroll event forced the browser to re-layout the whole long chapter and made scrolling stutter.
+    let els: HTMLElement[] = [], tops: number[] = [], topicTops: number[] = [], topicFirst: number[] = [];
+    const rebuild = () => {
+      const sb = scroller.getBoundingClientRect(), st = scroller.scrollTop;
+      els = [...root.querySelectorAll<HTMLElement>("[data-sec]")];
+      tops = els.map((e) => e.getBoundingClientRect().top - sb.top + st);
+      const topics = [...root.querySelectorAll<HTMLElement>("[data-topic]")];
+      topicTops = topics.map((e) => e.getBoundingClientRect().top - sb.top + st);
+      topicFirst = topics.map((tp) => { const f = tp.querySelector<HTMLElement>("[data-sec]"); return f ? els.indexOf(f) : -1; });
+    };
+    const later = () => { if (rebuildTimer) clearTimeout(rebuildTimer); rebuildTimer = setTimeout(() => { rebuild(); pick(); }, 160); };
     const pick = () => {
-      // read the sections fresh each time: topics are drawn lazily, so a list taken at mount would miss every topic below the first
-      const secs = [...root.querySelectorAll<HTMLElement>("[data-sec]")];
-      const box = scroller.getBoundingClientRect();
-      const line = box.top + box.height * 0.33;
-      let cur = secs[0];
-      for (const s of secs) { if (s.getBoundingClientRect().top <= line) cur = s; else break; }
+      if (!els.length) rebuild();
+      if (!els.length) return;
+      const line = scroller.scrollTop + scroller.clientHeight * 0.33;
+      let lo = 0, hi = els.length - 1, ci = 0;
+      while (lo <= hi) { const m = (lo + hi) >> 1; if (tops[m] <= line) { ci = m; lo = m + 1; } else hi = m - 1; }
       // a topic whose heading has passed the line is the current one, even while its first section is still below it (the heading is sticky)
-      for (const tp of root.querySelectorAll<HTMLElement>("[data-topic]")) {
-        if (tp.getBoundingClientRect().top > line) break;
-        const first = tp.querySelector<HTMLElement>("[data-sec]");
-        if (first && (!cur || (cur.compareDocumentPosition(first) & Node.DOCUMENT_POSITION_FOLLOWING))) cur = first;
-      }
-      if (cur) setCurrent((c) => (c === cur.id ? c : cur.id));
+      for (let k = 0; k < topicTops.length; k++) { if (topicTops[k] > line) break; if (topicFirst[k] > ci) ci = topicFirst[k]; }
+      const cur = els[ci]; if (cur) setCurrent((c) => (c === cur.id ? c : cur.id));
     };
     const on = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(pick); };
     scroller.addEventListener("scroll", on, { passive: true });
-    pick();
-    return () => { scroller.removeEventListener("scroll", on); cancelAnimationFrame(raf); };
+    const ro = new ResizeObserver(later); ro.observe(root);
+    const mo = new MutationObserver(later); mo.observe(root, { childList: true, subtree: true });
+    window.addEventListener("resize", later);
+    rebuild(); pick();
+    return () => { scroller.removeEventListener("scroll", on); window.removeEventListener("resize", later); ro.disconnect(); mo.disconnect(); if (rebuildTimer) clearTimeout(rebuildTimer); cancelAnimationFrame(raf); };
   }, [chapter]);
 
   const go = (id: string) => {
@@ -908,18 +942,26 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
                   <button type="button" onClick={() => setOpen((x) => ({ ...x, [t.id]: !expanded }))} aria-expanded={expanded} aria-label={`${expanded ? "Hide" : "Show"} sections of ${s.label}`} className="grid h-7 w-7 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><ChevronDown className={`h-4 w-4 transition-transform ${expanded ? "rotate-180" : ""}`} /></button>
                 </div>
                 {expanded && <ol className="ml-5 mt-1 border-l-2 border-[var(--border)] py-1">
-                  {secs.map((x) => {
+                  {(() => {
+                    const parentOf: Record<string, string> = {}; let cur = "";
+                    secs.forEach((x) => { if (x.lvl === 1) cur = x.key; else if (x.lvl === 2) parentOf[x.key] = cur; });
+                    const hasKids = new Set(Object.values(parentOf));
+                    return secs.map((x) => {
                     const id = secId(t, x.key); const on = current === id;
+                    const folded = !!fold[t.id + ":" + x.key]; const toggle = x.lvl === 1 && hasKids.has(x.key);
+                    if (x.lvl === 2 && fold[t.id + ":" + parentOf[x.key]] && !on) return null;
                     return (
-                      <li key={x.key}>
+                      <li key={x.key} className={toggle ? "flex items-center" : undefined}>
                         <button type="button" onClick={() => go(id)} aria-current={on ? "location" : undefined}
-                          className={`relative -ml-[2px] block w-full border-l-2 py-1.5 pl-3 pr-2 text-left text-[13px] leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
-                          {on && <motion.span layoutId="lesson-outline-pill" aria-hidden className="absolute inset-0 rounded-r-lg" style={{ background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }} transition={{ type: "spring", stiffness: 480, damping: 38 }} />}
-                          <span className="relative">{x.label}</span>
+                          className={`relative -ml-[2px] block w-full border-l-2 ${x.lvl === 2 ? "py-1 pl-7 pr-2 text-[12px]" : x.lvl === 1 ? "mt-1.5 py-1.5 pl-3 pr-2 text-[13.5px] font-extrabold" : "py-1.5 pl-3 pr-2 text-[13px]"} text-left leading-snug transition-colors ${on ? "border-[var(--st-accent)] font-bold text-[var(--text-primary)]" : "border-transparent text-[var(--text-secondary)] hover:border-[var(--text-secondary)] hover:text-[var(--text-primary)]"}`}>
+                          {on && <span aria-hidden className="absolute inset-0 rounded-r-lg" style={{ background: "color-mix(in srgb, var(--st-accent) 10%, transparent)" }} />}
+                          <span className="relative"><SecLabel sec={x} /></span>
                         </button>
+                        {toggle && <button type="button" onClick={() => setFold((z) => ({ ...z, [t.id + ":" + x.key]: !folded }))} aria-expanded={!folded} aria-label={(folded ? "Show" : "Hide") + " the sub-sections of " + x.label} className="mt-1.5 grid h-6 w-6 shrink-0 place-items-center rounded-full text-[var(--text-secondary)] hover:bg-[var(--surface-secondary)]"><ChevronDown className={"h-3.5 w-3.5 transition-transform " + (folded ? "-rotate-90" : "")} /></button>}
                       </li>
                     );
-                  })}
+                  });
+                  })()}
                 </ol>}
               </li>
             );
@@ -928,8 +970,8 @@ export function LessonRenderer({ chapter, backHref = "/study" }: { chapter: Chap
     </>
   );
   return (
-    <div data-subject={chapter.subject} className={`study-lesson grid grid-cols-[minmax(0,1fr)] gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c" }}>
-      <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex !h-9 shrink-0 items-center gap-1.5 !px-2.5 sm:!h-10 sm:!px-4" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Books</span></Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>
+    <div data-subject={chapter.subject} className={`study-lesson grid grid-cols-[minmax(0,1fr)] gap-6 lg:h-[calc(100dvh-var(--lesson-chrome,10.5rem))] lg:grid-rows-[auto_minmax(0,1fr)] lg:gap-y-4 ${folded ? "lg:grid-cols-[3.5rem_minmax(0,1fr)] lg:gap-x-4" : "lg:grid-cols-[17rem_minmax(0,1fr)] lg:gap-x-8"}`} style={{ ["--st-accent" as string]: tab.tint ? `var(--tint-${tab.tint}-ink)` : "#c2410c", ...(focus ? { ["--lesson-chrome" as string]: "4rem" } : {}) }}>
+      {!focus && <div className="flex min-w-0 items-end gap-2 lg:col-span-2"><Link href={backHref} aria-label="Back to all books" title="Back to all books" className="pill-ink mb-1 inline-flex !h-9 shrink-0 items-center gap-1.5 !px-2.5 sm:!h-10 sm:!px-4" style={{ ["--btn" as string]: "var(--st-accent)" }}><ArrowLeft className="h-4 w-4" aria-hidden /><span className="hidden sm:inline">Books</span></Link><div className="min-w-0 flex-1"><StudyTabs current={tab} /></div></div>}
       {/* phones: a sticky bar shows where you are; the outline opens as a bottom sheet */}
       <div className="sticky top-0 z-30 -mx-1 flex items-center gap-2 rounded-2xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 shadow-[0_8px_20px_-14px_rgba(0,0,0,.4)] lg:hidden">
         <span className="min-w-0 flex-1"><span className="block text-[10px] font-extrabold uppercase tracking-[.14em] text-[var(--st-accent)]">{chapter.subject} · {chapter.title}</span><span className="block truncate text-sm font-bold text-[var(--text-primary)]">{(() => { const t = chapter.topics.find((x) => current.startsWith(`${x.id}--`)) ?? chapter.topics[0]; const sec = t ? sectionsOf(t).find((x) => secId(t, x.key) === current) : null; return sec ? sec.label : t?.title; })()}</span></span>

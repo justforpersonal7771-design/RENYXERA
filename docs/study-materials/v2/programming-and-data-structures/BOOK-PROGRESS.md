@@ -25,7 +25,7 @@ Legend: `[x]` done and proved · `[~]` partly, the note says what is missing · 
 | Book chapter | Lesson | Title | G1 | G2 | G3 | G4 | G5 | G6 | G7 | G8 | G9 | G10 | G11 | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 01 Basics | **C0** | **How a computer runs a program** | [x] | [x] | [x] | [x] | n/a | [x] | [x] | [~] | [x] | [~] | [ ] | **written and tested; push pending** |
-| 01 Basics | C1 | Your first program | [x] | [ ] | [ ] | [ ] | n/a | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
+| 01 Basics | **C1** | **Your first program** | [x] | [x] | [x] | [x] | n/a | [x] | [x] | [~] | [x] | [~] | [ ] | **written and tested; push in this batch** |
 | 01 Basics | C2 | Variables and data types | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
 | 02 Operators, decisions, loops | C3 | Operators | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
 | 02 Operators, decisions, loops | C4 | Decisions | [x] | [ ] | [ ] | [ ] | n/a | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
@@ -91,3 +91,19 @@ Not started. Order of work after Programming in C: D0, D1, D2, D3, D4, D5, D6, D
 
 - A card's icon watermark was taller than short cards and spilled into the card above (the stray "A" in the Step by step card). Cards with a watermark now clip it and size it to the card height.
 - `autoCode` (statement styling in prose) wrongly wrapped words that merely end in a semicolon; it now needs a code-looking token, and whole arithmetic such as `128 + 32 + 16 + 4 + 2 = 182` is one code span.
+
+### Chapter 1 detail
+
+- [x] 1.1 Getting C running (compiler, terminal commands, the smallest program, line by line, old Turbo C habits to drop) · 1.2 Printing with printf (escapes, format specifiers, width and precision, printf returns a count) · 1.3 Reading with scanf (why it needs &, return value, keyboard buffer and leftover newline as a 4-step figure) · 1.4 Tokens, comments and mistakes (maximal munch, four kinds of error) · 1.5 How GATE asks it (4 patterns with variations) · 1.6 Tips · 1.7 Summary
+- [x] G3: 8 programs compiled and run, outputs match; 2 programs that read input checked by hand with the input shown
+- [x] G4: 5 figures (1 step-by-step), constant frame size; no side-scroll at desktop or mobile
+- [~] No real GATE question is tagged to this chapter in the bank; the four patterns use compiled variations, not invented question numbers
+
+### Reader changes in this batch (27 Nov)
+
+- Outline rail: sections and sub-sections differ (section = bold with filled number chip; sub-section = smaller, indented, muted number); sections collapse their sub-sections.
+- Scroll smoothness: topbar scroll handler now one update per frame without a forced layout; scroll-spy measures positions once instead of on every scroll; topics are memoised; outline highlight is plain CSS.
+- Focus mode: the Focus button in the lesson header is the switch and the timer (gradient, breathing glow); hides navbar, tab bar, banners and study tabs; Notes, Calc, PYQs and Ask Mentor stay; time is saved as study time every 15 s and on exit (shared record with the dashboard Study timer, no double counting) and shown on a new Study time card in Analytics. On phones a small floating chip is kept because the lesson header scrolls away.
+- Chapter header is sticky on desktop; on phones it is not (the location bar is sticky there, checked: no overlap).
+- Intro: calmer lead paragraph; "What you will be able to do" as its own card; heading numbers stay on the first line of a wrapped title.
+- Not done yet: the study tabs strip redesign (needs the research pass); the numbering for deeper levels (0.1.1.1) in the rail; rail focus test for sub-sub topics; mobile text pages in dark mode.

@@ -2627,3 +2627,20 @@ select:not([multiple]):not([size]):disabled { opacity: .6; }
 .tile-mark svg { width: 100% !important; height: 100% !important; stroke-width: 1.4; }
 .card-pastel:hover .tile-mark, .card-well:hover .tile-mark { transform: rotate(-3deg) scale(1.06); }
 .dark .tile-mark { opacity: .16; }
+
+/* ---- Smooth scrolling in long lessons (27 Nov): large blurred shadows on dozens of cards are repainted on every scroll step; the lesson uses one light edge instead. ---- */
+.study-lesson :is(.card-pastel, .card-well, .card-band, .card-glass, .card-inset) { box-shadow: 0 1px 2px rgb(15 23 42 / .07) !important; }
+.study-lesson [data-book] figure { box-shadow: none; }
+.study-lesson .code-ed { box-shadow: none; }
+
+/* The chapter header (title, Focus, notes, previous/next) stays in view while the chapter scrolls beneath it (desktop; on phones the sticky location bar does this job). */
+@media (min-width: 1024px) {
+  .study-lesson .lesson-topic-head { position: sticky; top: 0; z-index: 6; box-shadow: 0 6px 14px -10px rgb(15 23 42 / .35); }
+}
+
+/* Focus button (27 Nov): the button is the switch and the timer. On: accent gradient, a slow breathing glow and a ping on the icon. */
+.focus-btn-on { background: linear-gradient(135deg, var(--st-accent, #c2410c), color-mix(in srgb, var(--st-accent, #c2410c) 60%, #7c3aed)); animation: focus-glow 2.6s ease-in-out infinite; }
+.focus-ping { border: 1.5px solid currentColor; opacity: .6; animation: focus-ping 1.8s cubic-bezier(0, 0, .2, 1) infinite; }
+@keyframes focus-glow { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st-accent, #c2410c) 40%, transparent); } 50% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--st-accent, #c2410c) 0%, transparent); } }
+@keyframes focus-ping { 0% { transform: scale(.7); opacity: .7; } 80%, 100% { transform: scale(1.7); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .focus-btn-on, .focus-ping { animation: none; } }

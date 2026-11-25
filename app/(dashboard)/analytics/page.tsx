@@ -22,6 +22,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { MockAnalytics } from "@/components/analytics/mock-analytics";
 import { CoachInsights } from "@/components/analytics/coach-insights";
 import { KeyNumbers, SectionHead } from "@/components/analytics/key-numbers";
+import { StudyTimeCard } from "@/components/analytics/study-time-card";
 import { SubjectRadarCard } from "@/components/analytics/subject-radar-card";
 import { StudyVsScoreCard } from "@/components/study/study-loop";
 import { PlanUpsellCard } from "@/components/ui/premium-card";
@@ -227,6 +228,7 @@ export default function AnalyticsDashboardPage() {
           </div>
         )}
         <KeyNumbers m={dashboardMetrics} />
+        <StudyTimeCard />
 
         <SectionHead title="What to do next" hint="From your latest attempts" />
         {/* 2. Insights + adaptive path */}

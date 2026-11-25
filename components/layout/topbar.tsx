@@ -120,15 +120,24 @@ export function Topbar() {
   const progress = useSpring(progressRaw, { stiffness: 200, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
+    // One update per frame, and the scroll height is measured at most every 300 ms: reading it on every scroll event forced a layout of the
+    // whole page each time, which made long lessons stutter.
+    let raf = 0, last: HTMLElement | null = null, max = 0, maxAt = 0;
     const onScroll = (e: Event) => {
       const el = e.target as HTMLElement;
       if (!(el instanceof HTMLElement) || !el.closest("main")) return;
-      setScrolled(el.scrollTop > 8);
-      const max = el.scrollHeight - el.clientHeight;
-      progressRaw.set(max > 0 ? el.scrollTop / max : 0);
+      last = el;
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0; const t = last; if (!t) return;
+        const top = t.scrollTop; setScrolled(top > 8);
+        const now = performance.now();
+        if (maxAt === 0 || now - maxAt > 300) { max = t.scrollHeight - t.clientHeight; maxAt = now; }
+        progressRaw.set(max > 0 ? top / max : 0);
+      });
     };
     document.addEventListener("scroll", onScroll, { capture: true, passive: true });
-    return () => document.removeEventListener("scroll", onScroll, { capture: true } as any);
+    return () => { cancelAnimationFrame(raf); document.removeEventListener("scroll", onScroll, { capture: true } as any); };
   }, [progressRaw]);
 
   // New page → starts at the top.

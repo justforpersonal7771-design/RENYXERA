@@ -12,7 +12,9 @@ Every open task below has its key steps, a "done when" check and a reference. Fu
 Rule: a chapter is Done only when every gate G1 to G11 in that file is ticked, with proof.
 - [x] **(me)** Chapter 10 Pointers I written as a textbook chapter (10 sections, 4 real GATE questions explained in full with variations, 12 step-by-step and diagram figures, 10 exercises); compiled, figure-validated, browser-tested (47 figures x 4 settings); push pending
 - [x] **(me)** Code styling: statements in text look different from prose; code in the editor, never on one line; figure titles as code lines; one soft card palette; icon watermarks; top bar overlap fixed; sign-in hero full width
-- [ ] **(me)** Programming in C chapters C0 to C9, C11 to C21 (one at a time, each through gates G1 to G11)
+- [x] **(me)** Chapters C0, C1, C10 done (tracker). Focus mode with study time in Analytics and the dashboard timer; smoother scrolling; sticky chapter header; rail with differentiated sections
+- [ ] **(me)** Study tabs strip redesign (research first, 5 to 10 design skills); rail focus test for sub-sub topics
+- [ ] **(me)** Programming in C chapters C2 to C9, C11 to C21 (one at a time, each through gates G1 to G11)
 - [ ] **(me)** Data Structures chapters D0 to D16
 - [ ] **(you)** Check the live Chapter 10 on your phone (text pages), then say go for the next chapter
 

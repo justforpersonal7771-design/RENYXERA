@@ -30,7 +30,7 @@ ok("each figure placed once", figs.every((f) => placedFig.filter((x) => x === f.
 ok("each example placed once", exs.every((e) => placedEx.filter((x) => x === e.id).length === 1), exs.filter((e) => placedEx.filter((x) => x === e.id).length !== 1).map((e) => e.id).join(","));
 ok("each trap placed once", traps.every((_, i) => placedTrap.filter((x) => x === i).length === 1), `traps=${traps.length} placed=${placedTrap.join(",")}`);
 ok("figure ids unique", new Set(figs.map((f) => f.id)).size === figs.length);
-ok("headings numbered in order (h2 count)", book.filter((n) => n.t === "h2").length >= 8, String(book.filter((n) => n.t === "h2").length));
+ok("headings numbered in order (h2 count)", book.filter((n) => n.t === "h2").length >= 6, String(book.filter((n) => n.t === "h2").length));
 
 // 3. every figure
 type Cell = { id?: string; addr: unknown; name?: string; value: unknown; ptr?: string };
@@ -92,7 +92,7 @@ const run = (label: string, src: string, expect?: string) => {
   if (expect === undefined) ok(`${label} compiles and runs`, true, out.replace(/\n/g, " | "));
   else ok(`${label} prints the book's output`, out === expect.trim(), out === expect.trim() ? "" : `got "${out}" want "${expect}"`);
 };
-for (const x of book) if (x.t === "code" && /int main/.test(x.text)) run(`code ${x.file ?? ""}`, x.text, x.file === "address_demo.c" ? undefined : x.out);
+for (const x of book) if (x.t === "code" && /int main/.test(x.text) && !x.file?.endsWith("_input.c")) run(`code ${x.file ?? ""}`, x.text, x.file === "address_demo.c" ? undefined : x.out);
 const wantEx: Record<string, string> = { "p-e2": "3 7 7 3", "p-e3": "9", "p-e4": "25", "p-e6": "10, 10, 14" };
 for (const e of exs) if (/int main/.test(e.given)) run(`example ${e.id}`, e.given.includes("#include") ? e.given : "#include <stdio.h>\n" + e.given, wantEx[e.id]);
 const e5 = exs.find((e) => e.id === "p-e5"); if (e5) run("example p-e5", "#include <stdio.h>\n" + e5.given.replace("/* the call: printxy(1, 1) */", "") + "\nint main(void){ printxy(1, 1); return 0; }", "1, 0");

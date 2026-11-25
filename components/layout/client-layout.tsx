@@ -30,6 +30,8 @@ import { MATHJAX_CONFIG } from "@/lib/mathjax-config";
 import { MotionPrefs } from "@/components/system/motion-prefs";
 
 import { useState } from "react";
+import { useFocusStore } from "@/store/use-focus-store";
+import { FocusSession } from "@/components/study/focus-mode";
 import dynamic from "next/dynamic";
 import { TestCentreBar } from "@/components/layout/test-centre-bar";
 import { DeskSync } from "@/components/desk/desk-sync";
@@ -72,6 +74,8 @@ function sectionTint(p: string | null): string {
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  // Focus mode (study pages only): the navbar, tab bar, banners and pop-ups are not drawn; the lesson tools stay.
+  const focus = useFocusStore((s) => s.on) && !!pathname?.startsWith("/study");
   const loadRepository = useDataStore((state) => state.loadRepository);
   const [isPaletteOpen, setIsPaletteOpen] = useState(false);
 
@@ -255,8 +259,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           (background-attachment: fixed, unaffected by scroll position) still
           shows through its glass/blur regardless of how the content below is
           structured. */}
-      <Topbar />
+      {!focus && <Topbar />}
       <SmoothScroll />
+      <FocusSession />
       {/* <main> itself no longer owns the scroll — it's a full-height,
           non-scrolling passthrough. The actual scrolling element is the inner
           div below, explicitly positioned to start exactly at the topbar's
@@ -270,7 +275,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           topbar is the only way to keep the scrollbar from ever reaching that
           region. */}
       <main className="relative z-10 w-full h-full overflow-hidden">
-        <div id="app-scroll" data-section={sectionTint(pathname)} className={`absolute inset-x-0 bottom-0 top-[72px] overflow-y-auto overflow-x-hidden overscroll-x-none [scrollbar-gutter:stable_both-edges] custom-scrollbar px-[max(0px,calc(0.5rem-var(--sb-gutter,0px)))] sm:px-[max(0px,calc(1rem-var(--sb-gutter,0px)))] pt-3 sm:pt-4 ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-[calc(10rem+env(safe-area-inset-bottom))]"} lg:pb-8`}>
+        <div id="app-scroll" data-section={sectionTint(pathname)} className={`absolute inset-x-0 bottom-0 ${focus ? "top-0" : "top-[72px]"} overflow-y-auto overflow-x-hidden overscroll-x-none [scrollbar-gutter:stable_both-edges] custom-scrollbar px-[max(0px,calc(0.5rem-var(--sb-gutter,0px)))] sm:px-[max(0px,calc(1rem-var(--sb-gutter,0px)))] ${focus ? "pt-14" : "pt-3 sm:pt-4"} ${pathname?.startsWith("/exam/results") ? "pb-6" : "pb-[calc(10rem+env(safe-area-inset-bottom))]"} lg:pb-8`}>
           <motion.div
             key={frameKey(pathname)}
             initial={{ opacity: 0, y: 8 }}
@@ -279,8 +284,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             className="page-shell"
             data-section={sectionTint(pathname)}
           >
-            <PlanExpiryNotice />
-            <TestCentreBar />
+            {!focus && <PlanExpiryNotice />}
+            {!focus && <TestCentreBar />}
             {children}
           </motion.div>
         </div>
@@ -290,9 +295,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <DeskSync />
       <UpgradeModalHost />
       <StudyShopHost />
-      <ChallengePromptHost />
-      <PostPurchaseTour />
-      {!pathname?.startsWith("/exam/results") && <BottomTabBar />}
+      {!focus && <ChallengePromptHost />}
+      {!focus && <PostPurchaseTour />}
+      {!focus && !pathname?.startsWith("/exam/results") && <BottomTabBar />}
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
       <ToastContainer />
       <AuthModal />

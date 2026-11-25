@@ -5,24 +5,13 @@ import { Pause, Play, Timer } from "lucide-react";
 import { useAuthStore } from "@/store/use-auth-store";
 import { serverDate, serverNow } from "@/lib/time/server-time";
 import { START_TIMER_EVENT } from "@/components/planner/today-blocks-card";
+import { EMPTY_STUDY_TIME, STUDY_TIME_EVENT, STUDY_TIME_KEY, dayKey, fmtHM, loadStudyTime, saveStudyTime, stopStudyTimer, type StudyTime } from "@/lib/study/study-time";
 
-const KEY = "renyxera.study-timer";
 const GOAL_MIN = 120;
-type Saved = { days: Record<string, number>; since: number | null; label: string | null; bySubject: Record<string, Record<string, number>> };
-const EMPTY: Saved = { days: {}, since: null, label: null, bySubject: {} };
-
-const dayKey = (d = serverDate()) => `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-const load = (): Saved => { try { return { ...EMPTY, ...(JSON.parse(localStorage.getItem(KEY) || "") as Partial<Saved>) }; } catch { return EMPTY; } };
-const save = (s: Saved) => { try { localStorage.setItem(KEY, JSON.stringify(s)); } catch { /* storage unavailable */ } };
-const fmt = (sec: number) => `${Math.floor(sec / 3600)}h ${String(Math.floor((sec % 3600) / 60)).padStart(2, "0")}m`;
-
-/** Folds the running session into today's total (and into its subject, if it has one) and stops it. */
-function stopped(s: Saved, at: number): Saved {
-  if (s.since == null) return s;
-  const secs = Math.max(0, Math.floor((at - s.since) / 1000)), k = dayKey();
-  const subj = s.label ? { ...s.bySubject, [k]: { ...(s.bySubject[k] ?? {}), [s.label]: (s.bySubject[k]?.[s.label] ?? 0) + secs } } : s.bySubject;
-  return { days: { ...s.days, [k]: (s.days[k] ?? 0) + secs }, since: null, label: null, bySubject: subj };
-}
+// the record, the day key and the stop rule are shared with Focus mode and Analytics (lib/study/study-time.ts)
+type Saved = StudyTime;
+const EMPTY = EMPTY_STUDY_TIME;
+const load = loadStudyTime, save = saveStudyTime, stopped = stopStudyTimer, fmt = fmtHM;
 
 /** Study timer with a daily goal. Starting it from a planner block labels the session with that subject. Time is counted on this device and survives reloads. */
 export function StudyTimer() {
@@ -30,7 +19,13 @@ export function StudyTimer() {
   const [state, setState] = useState<Saved>(EMPTY);
   const [now, setNow] = useState(() => serverNow());
 
-  useEffect(() => { setState(load()); }, []);
+  useEffect(() => {
+    const reload = () => setState(load());
+    reload();
+    const onStorage = (e: StorageEvent) => { if (e.key === STUDY_TIME_KEY) reload(); };
+    window.addEventListener(STUDY_TIME_EVENT, reload); window.addEventListener("storage", onStorage);
+    return () => { window.removeEventListener(STUDY_TIME_EVENT, reload); window.removeEventListener("storage", onStorage); };
+  }, []);
   useEffect(() => {
     if (state.since == null) return;
     const t = setInterval(() => setNow(serverNow()), 1000);
