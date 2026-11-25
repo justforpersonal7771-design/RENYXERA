@@ -9,7 +9,7 @@
 
 const OPS = new Set(["=", "+=", "-=", "*=", "/=", "==", "!=", "<=", ">=", "->"]);
 const TYPES = new Set(["int", "char", "float", "double", "void", "long", "short", "unsigned", "NULL", "printf", "scanf", "sizeof", "return"]);
-const codeLike = (w: string) => /^\(?[*&]+[A-Za-z_(]/.test(w) || /[A-Za-z_]\w*\(/.test(w) || /[=;]/.test(w) || /\[\w*\]/.test(w) || /\+\+|--/.test(w) || /^\(\*/.test(w) || OPS.has(w) || /^(printf|scanf|sizeof|NULL)[.,:;?]*$/.test(w);
+const codeLike = (w: string) => /^\(?[*&]+[A-Za-z_(]/.test(w) || /[A-Za-z_]\w*\(/.test(w) || /=/.test(w) || /[)\]0-9];$/.test(w) || /\[\w*\]/.test(w) || /\+\+|--/.test(w) || /^\(\*/.test(w) || OPS.has(w) || /^(printf|scanf|sizeof|NULL)[.,:;?]*$/.test(w);
 
 export function autoCode(s: string): string {
   if (s.includes("`") || s.includes("**")) return s;
@@ -29,15 +29,20 @@ export function autoCode(s: string): string {
     const w = parts[i]; if (mark.has(i) || !/^[A-Za-z_]\w{0,3}[,;)]?$/.test(w)) return;
     const prev = idx[k - 1], next = idx[k + 1];
     if ((next !== undefined && OPS.has(parts[next])) || (prev !== undefined && OPS.has(parts[prev]))) mark.add(i);
+    else if (/;$/.test(w) && prev !== undefined && mark.has(prev) && /,$/.test(parts[prev])) mark.add(i); // "int *p, q;"
   });
   // arithmetic inside a statement: "c = 20 - 11 = 9": a lone operator between code, and numbers next to an = or such an operator
-  for (let pass = 0; pass < 2; pass++) idx.forEach((i, k) => {
+  const isNum = (w?: string) => w !== undefined && /^\d+[.,;)]*$/.test(w);
+  const isArith = (w?: string) => w !== undefined && /^[-+/%<>×÷]$/.test(w);
+  for (let pass = 0; pass < 8; pass++) idx.forEach((i, k) => {
     const w = parts[i], prev = idx[k - 1], next = idx[k + 1];
-    if (/^[-+/%<>]$/.test(w) && prev !== undefined && next !== undefined && mark.has(prev) && mark.has(next)) mark.add(i);
-    else if (/^\d+[.,;)]*$/.test(w) && !mark.has(i) && ((prev !== undefined && (OPS.has(parts[prev]) || (/^[-+/%<>]$/.test(parts[prev]) && mark.has(prev)))) || (next !== undefined && (OPS.has(parts[next]) || (/^[-+/%<>]$/.test(parts[next]) && mark.has(next)))))) mark.add(i);
+    const pm = prev !== undefined && (mark.has(prev) || isNum(parts[prev])), nm = next !== undefined && (mark.has(next) || isNum(parts[next]));
+    const isId = (x?: string) => x !== undefined && /^[A-Za-z_]\w{0,3}[;,)]?$/.test(x);
+    if (isArith(w) && !mark.has(i) && ((pm && nm) || (prev !== undefined && mark.has(prev) && isId(parts[next ?? -1])) || (next !== undefined && mark.has(next) && isId(parts[prev ?? -1])))) mark.add(i);
+    else if ((isNum(w) || isId(w)) && !mark.has(i) && ((prev !== undefined && (OPS.has(parts[prev]) || (isArith(parts[prev]) && mark.has(prev)))) || (next !== undefined && (OPS.has(parts[next]) || (isArith(parts[next]) && mark.has(next)))))) mark.add(i);
   });
   // a type word belongs to the code that follows it: "int *p", "int x"
-  for (let k = idx.length - 2; k >= 0; k--) { const i = idx[k], nx = idx[k + 1]; if (!mark.has(i) && /^(int|char|float|double|void|long|short|unsigned)$/.test(parts[i]) && (mark.has(nx) || /^[A-Za-z_]w*[,;]?$/.test(parts[nx]) && /[;=,]/.test(parts[nx] + (parts[idx[k + 2]] ?? "")))) mark.add(i); }
+  for (let k = idx.length - 2; k >= 0; k--) { const i = idx[k], nx = idx[k + 1]; if (!mark.has(i) && /^(int|char|float|double|void|long|short|unsigned)$/.test(parts[i]) && (mark.has(nx) || /^[A-Za-z_]\w*[,;]?$/.test(parts[nx]) && /[;=,]/.test(parts[nx] + (parts[idx[k + 2]] ?? "")))) mark.add(i); }
   // a bare name straight after a type word is a declaration: "int x"
   idx.forEach((i, k) => { const prev = idx[k - 1]; if (!mark.has(i) && prev !== undefined && mark.has(prev) && /^(int|char|float|double|void)$/.test(parts[prev]) && /^[A-Za-z_]\w*[,;]?$/.test(parts[i])) mark.add(i); });
   let out = "", run: string[] = [];

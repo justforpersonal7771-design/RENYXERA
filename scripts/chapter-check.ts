@@ -6,12 +6,14 @@ import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { validateTopic, type Block, type Topic } from "../lib/study/schema";
-import { pilotPointers } from "../content/study/CS/pds-pilot";
 import { autoCode, formatC, splitCodeQ } from "../components/study/rich-text";
 
 let bad = 0;
 const ok = (name: string, pass: boolean, detail = "") => { if (!pass) bad++; console.log(`${pass ? "ok  " : "FAIL"} ${name}${detail ? ": " + detail : ""}`); };
-const t: Topic = pilotPointers;
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const mod = require(process.argv[2] ?? "../content/study/CS/pds-pilot") as Record<string, Topic>;
+const t: Topic = mod[process.argv[3] ?? "pilotPointers"];
+console.log(`chapter ${t.no}: ${t.title}`);
 
 // 1. the blueprint rules
 const problems = validateTopic(t); ok("validateTopic", problems.length === 0, problems.join("; "));
@@ -57,6 +59,9 @@ for (const f of figs) {
       fg.frames.forEach((x, i) => memOk({ cells: x.fig.cells ?? [] }, `${f.id} frame ${i + 1}`));
     }
     ok(`${f.id}: every frame has a caption`, fg.frames.every((x) => x.caption.length > 8));
+    type Fr = { fig: { kind: string; items?: { label: string }[]; rows?: { label?: string }[]; frames?: { title: string; rows: unknown[] }[] } };
+    const sig = (x: Fr) => x.fig.kind === "strip" ? (x.fig.items ?? []).map((i) => i.label).join("|") : x.fig.kind === "bits" ? (x.fig.rows ?? []).map((r) => r.label).join("|") : "";
+    if (["strip", "bits"].includes(fg.frames[0].fig.kind)) ok(`${f.id}: every frame has the same parts (constant size)`, new Set((fg.frames as unknown as Fr[]).map(sig)).size === 1);
   }
 }
 
@@ -67,6 +72,11 @@ A("p = &b moves the arrow.", "`p = &b` moves the arrow.");
 A("The star belongs to p only. q is an int.", "The star belongs to p only. q is an int.");
 A("Rule: One declaration per pointer: int *p; int *q;", "Rule: One declaration per pointer: `int *p; int *q;`");
 A("*p = 25; goes to the box", "`*p = 25;` goes to the box");
+A("keeps the program; the RAM holds what is being used now; the CPU takes", "keeps the program; the RAM holds what is being used now; the CPU takes");
+A("they add: 128 + 32 + 16 + 4 + 2 = 182.", "they add: `128 + 32 + 16 + 4 + 2 = 182`.");
+A("What does int *p, q; declare?", "What does `int *p, q;` declare?");
+A("c = *ptr - a; : *ptr is c itself (20), so c = 20 - 11 = 9.", "`c = *ptr - a;` : `*ptr` is c itself (20), so `c = 20 - 11 = 9`.");
+A("Call printxy(1, 1): x = 1, y = 1 are copies.", "Call `printxy(1, 1)`: `x = 1, y = 1` are copies.");
 const sp = splitCodeQ("int a = 4; int *p = &a; (*p)++; printf(\"%d\", a); What is printed?");
 ok("splitCodeQ lifts the code and keeps the question", !!sp && sp.after === "What is printed?" && sp.code.split("\n").length === 4, sp ? sp.code.replace(/\n/g, " | ") : "null");
 ok("formatC indents braces", formatC("void f(void) { int a = 1; a++; }") === "void f(void) {\n    int a = 1;\n    a++;\n}");

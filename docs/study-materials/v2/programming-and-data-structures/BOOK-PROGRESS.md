@@ -24,7 +24,7 @@ Legend: `[x]` done and proved · `[~]` partly, the note says what is missing · 
 
 | Book chapter | Lesson | Title | G1 | G2 | G3 | G4 | G5 | G6 | G7 | G8 | G9 | G10 | G11 | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 01 Basics | C0 | How a computer runs a program | [x] | [ ] | [ ] | [ ] | n/a | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
+| 01 Basics | **C0** | **How a computer runs a program** | [x] | [x] | [x] | [x] | n/a | [x] | [x] | [~] | [x] | [~] | [ ] | **written and tested; push pending** |
 | 01 Basics | C1 | Your first program | [x] | [ ] | [ ] | [ ] | n/a | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
 | 01 Basics | C2 | Variables and data types | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
 | 02 Operators, decisions, loops | C3 | Operators | [x] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | [ ] | not started |
@@ -73,3 +73,21 @@ Not started. Order of work after Programming in C: D0, D1, D2, D3, D4, D5, D6, D
 
 - `npx tsx scripts/chapter-check.ts` — G3, G4, G6, G7 for the chapter named at the top of the script (change the import to test another chapter). gcc must be on PATH (`C:\msys64\ucrt64\bin`).
 - The figure browser test (Playwright, four passes) — G8. Saved as `scripts/chapter-figures-browser.mjs`.
+
+### Chapter 0 detail
+
+- [x] 0.1 What a program is (instructions and data; disk, RAM and CPU as a 3-step figure and a kitchen picture)
+- [x] 0.2 Memory: bits, bytes and addresses (bit; byte with place-value figure; address street; counting bytes with address bits)
+- [x] 0.3 Number systems (place values; decimal to binary by division with a trace table; binary to hex as a 4-step figure; octal; hex to octal through binary; numbers in C)
+- [x] 0.4 Sizes and units (KB = 1024; `sizeof` program)
+- [x] 0.5 From source code to a running program (compiler, linker, loader as a 6-step figure; compile-time, link, run-time and logic errors)
+- [x] 0.6 How GATE asks it: GATE 2017 AN Q23 (Digital Logic, hex to octal) explained in full with 4 variations
+- [x] 0.7 Tips, shortcuts and tricks (seven) · 0.8 Summary · 8 exercises · 10 recall cards · 5 traps
+- [x] G3: 3 programs compiled and run, output matches · G4: 6 figures (3 step-by-step), constant frame size at 4 settings
+- [~] G8: text pages checked at desktop light only; mobile and dark text pages not read
+- [~] G10: contrast not audited with the new palette
+
+### Fixes found while testing (26 Nov)
+
+- A card's icon watermark was taller than short cards and spilled into the card above (the stray "A" in the Step by step card). Cards with a watermark now clip it and size it to the card height.
+- `autoCode` (statement styling in prose) wrongly wrapped words that merely end in a semicolon; it now needs a code-looking token, and whole arithmetic such as `128 + 32 + 16 + 4 + 2 = 182` is one code span.

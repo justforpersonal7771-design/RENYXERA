@@ -2622,7 +2622,8 @@ select:not([multiple]):not([size]):disabled { opacity: .6; }
 
 /* ---- Icon watermark (26 Nov): a card's own icon, large and faint in the corner, instead of a generic star or circle.
    The Label component adds <span class="tile-mark"> with the card's icon; the shape watermark above skips such cards. ---- */
-.tile-mark { position: absolute; right: 14px; bottom: 8px; width: 92px; height: 92px; opacity: .13; color: var(--tint-ink, var(--text-primary)); pointer-events: none; transform: rotate(-9deg); transition: transform .3s ease; z-index: 0; }
+:is(.card-pastel, .card-well):has(.tile-mark) { overflow: hidden; }
+.tile-mark { position: absolute; right: 14px; bottom: 8px; height: min(92px, calc(100% - 20px)); aspect-ratio: 1; opacity: .13; color: var(--tint-ink, var(--text-primary)); pointer-events: none; transform: rotate(-9deg); transition: transform .3s ease; z-index: 0; }
 .tile-mark svg { width: 100% !important; height: 100% !important; stroke-width: 1.4; }
 .card-pastel:hover .tile-mark, .card-well:hover .tile-mark { transform: rotate(-3deg) scale(1.06); }
 .dark .tile-mark { opacity: .16; }
