@@ -26,6 +26,7 @@ export const CHAPTER_SOURCES: Record<string, () => Promise<Chapter>> = {
   "/study/transactions": () => import("@/content/study/CS/db-b").then((x) => x.DB_TXN),
   "/study/concurrency-control": () => import("@/content/study/CS/db-b").then((x) => x.DB_CC),
   "/study/c-programming": () => import("@/content/study/CS/pds-a").then((x) => x.PDS_C),
+  "/study/data-structures": () => import("@/content/study/CS/pds-ds").then((x) => x.PDS_DS),
   "/study/recursion": () => import("@/content/study/CS/pds-b").then((x) => x.PDS_REC),
   "/study/arrays": () => import("@/content/study/CS/pds-b").then((x) => x.PDS_ARR),
   "/study/stacks-queues": () => import("@/content/study/CS/pds-c").then((x) => x.PDS_SQ),

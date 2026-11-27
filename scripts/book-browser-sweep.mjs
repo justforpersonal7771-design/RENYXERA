@@ -9,7 +9,7 @@ for (const [vw, vh, theme, tag] of [[1440, 900, "light", "desktop"], [390, 844, 
   const ctx = await b.newContext({ viewport: { width: vw, height: vh }, colorScheme: theme });
   await ctx.addInitScript((t) => { try { localStorage.setItem("theme", t); sessionStorage.setItem("renyxera_intro_seen", "1"); } catch {} }, theme);
   const p = await ctx.newPage(); const errs = []; p.on("pageerror", (e) => errs.push(String(e).slice(0, 100)));
-  for (let i = 0; i < 40; i++) { try { await p.goto("http://localhost:3111/study/c-programming", { waitUntil: "networkidle", timeout: 120000 }); break; } catch { await p.waitForTimeout(5000); } }
+  for (let i = 0; i < 40; i++) { try { await p.goto(`http://localhost:3111/study/${process.env.BOOK ?? "c-programming"}`, { waitUntil: "networkidle", timeout: 120000 }); break; } catch { await p.waitForTimeout(5000); } }
   await p.waitForTimeout(4500);
   const titles = await p.evaluate(() => [...document.querySelector("ol.no-scrollbar").children].map((li) => li.querySelector("span.block")?.textContent?.trim() ?? ""));
   for (let k = 0; k < titles.length; k++) {
